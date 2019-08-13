@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace PrepedidoApi.Controllers
 {
+    //TODO: apagar estar classe
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
