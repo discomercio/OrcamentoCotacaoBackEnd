@@ -23,10 +23,44 @@ namespace PrepedidoBusiness.Bll
             var db = contextoProvider.GetContexto();
             var lista = from r in db.Torcamentos
                             where r.Orcamentista == orcamentista
+                            orderby r.Orcamento
                         select r.Orcamento;
             var res = lista.AsEnumerable();
             return await Task.FromResult(res);
         }
+
+        /*
+
+        public class PedidoDto
+        {
+            public string nomecliente;
+            public decimal? valorpediddo;
+        }
+        public async Task<IEnumerable<PedidoDto>> BuscarPedidosDoCliente(string idCliente)
+        {
+            var db = contextoProvider.GetContexto();
+            var lista = from r in db.Torcamentos
+                        where r.Id_Cliente== idCliente
+                        orderby r.Orcamento
+                        select new PedidoDto() {
+                             nomecliente=r.Orcamentista,
+                              valorpediddo=r.Vl_Total
+                        };
+
+            
+            var lista2 = db.Torcamentos.Where(r => r.Orcamentista == idPedido).OrderBy(r => r.Orcamento).
+                        Select(r => new PedidoDto()
+                        {
+                            nomecliente = r.Orcamentista,
+                            valorpediddo = r.Vl_Total
+                        });
+                        
+
+            var res = lista.AsEnumerable();
+            return await Task.FromResult(res);
+        }
+        */
+
 
     }
 }
