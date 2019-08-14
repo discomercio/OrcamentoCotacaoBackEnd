@@ -35,7 +35,7 @@ namespace PrepedidoApi.Controllers
      * */
 
 
-    [Authorize]
+    [Authorize(Roles = Utils.Autenticacao.RoleAcesso)]
     [ApiController]
     [Route("api/[controller]")]
     public class AcessoController : ControllerBase

@@ -6,8 +6,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
-
 using PrepedidoApi.Utils;
+using Microsoft.EntityFrameworkCore;
 
 namespace PrepedidoApi
 {
@@ -30,6 +30,15 @@ namespace PrepedidoApi
             // configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<Configuracao>(appSettingsSection);
+
+            //bll
+            services.AddTransient<PrepedidoBusiness.Bll.PrepedidoBll, PrepedidoBusiness.Bll.PrepedidoBll>();
+            services.AddTransient<InfraBanco.ContextoProvider, InfraBanco.ContextoProvider>();
+
+            //banco de dados
+            services.AddDbContext<InfraBanco.ContextoBd>(options => {
+                options.UseSqlServer(Configuration.GetConnectionString("conexao"));
+            });
 
             // configure jwt authentication
             var appSettings = appSettingsSection.Get<Configuracao>();
