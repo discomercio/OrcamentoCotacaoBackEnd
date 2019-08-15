@@ -1,19 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { ErroComponent } from './erro.component';
 
 
 const routes: Routes = [
-  /*
   {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
+    path: 'erro',
+    component: ErroComponent
   }
-  */
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class ErroRoutingModule { }
