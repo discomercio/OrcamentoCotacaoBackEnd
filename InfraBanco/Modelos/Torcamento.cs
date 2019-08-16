@@ -26,6 +26,7 @@ namespace InfraBanco.Modelos
 
         [Column("id_cliente")]
         [MaxLength(12)]
+        [ForeignKey("Tcliente")]
         public string Id_Cliente { get; set; }
 
         [Column("midia")]
@@ -47,7 +48,7 @@ namespace InfraBanco.Modelos
         [Column("obs_1")]
         [MaxLength(500)]
         public string Obs_1 { get; set; }
-
+        
         [Column("obs_2")]
         [MaxLength(10)]
         public string Obs_2 { get; set; }
@@ -55,7 +56,7 @@ namespace InfraBanco.Modelos
         [Column("qtde_parcelas")]
         public short? Qtde_Parcelas { get; set; }
 
-        [Column("forma_pagamento")]
+        [Column("forma_pagto")]
         [MaxLength(250)]
         public string Forma_Pagamento { get; set; }
 
@@ -70,7 +71,7 @@ namespace InfraBanco.Modelos
         [MaxLength(20)]
         public string Cancelado_Usuario { get; set; }
 
-        [Column("st_fechamento")]
+        [Column("st_fechamento")]        
         [MaxLength(1)]
         public string St_Fechamento { get; set; }
 
@@ -86,19 +87,19 @@ namespace InfraBanco.Modelos
         public string Loja_Indicou { get; set; }
 
         [Column("comissao_loja_indicou")]
-        public decimal? Comissao_Loja_Indicou { get; set; }
+        public float? Comissao_Loja_Indicou { get; set; }
 
         [Column("venda_externa")]
         public short? Venda_Externa { get; set; }
 
-        [Column("timestamp")]
-        public DateTime? Timestamp { get; set; }
+        //[Column("timestamp")]
+        //public DateTime? Timestamp { get; set; }
 
         [Column("tipo_parcelamento")]
         [Required]
         public short Tipo_Parcelamento { get; set; }
 
-        [Column("av_forma_pagamento")]
+        [Column("av_forma_pagto")]
         [Required]
         public short Av_Forma_Pagto { get; set; }
 
@@ -120,7 +121,7 @@ namespace InfraBanco.Modelos
         [Column("pce_entrada_valor")]
         public decimal? Pce_Entrada_Valor { get; set; }
 
-        [Column("pce_prestacao_servico")]
+        [Column("pce_prestacao_qtde")]
         [Required]
         public short Pce_Prestacao_Qtde { get; set; }
 
@@ -135,7 +136,7 @@ namespace InfraBanco.Modelos
         [Required]
         public short Pse_Forma_Pagto_Prim_Prest { get; set; }
 
-        [Column("pde_forma_pagto_demai_prest")]
+        [Column("pse_forma_pagto_demais_prest")]
         [Required]
         public short Pse_Forma_Pagto_Demais_Prest { get; set; }
 
@@ -182,7 +183,7 @@ namespace InfraBanco.Modelos
         public decimal? Vl_Total_RA { get; set; }
 
         [Column("perc_RT")]
-        public decimal? Perc_RT { get; set; }
+        public float? Perc_RT { get; set; }
 
         [Column("st_orc_virou_pedido")]
         public short? St_Orc_Virou_Pedido { get; set; }
@@ -220,7 +221,7 @@ namespace InfraBanco.Modelos
         public short St_Etg_Imediata { get; set; }
 
         [Column("etg_imediata_data")]
-        public decimal? Etg_Imediata_Data { get; set; }
+        public DateTime? Etg_Imediata_Data { get; set; }
 
         [Column("etg_imediata_usuario")]
         [MaxLength(20)]
@@ -230,9 +231,9 @@ namespace InfraBanco.Modelos
         [Required]
         public short StBemUsoConsumo { get; set; }
 
-        [Column("custoFinancFornecParacelamento")]
+        [Column("custoFinancFornecTipoParcelamento")]        
         [MaxLength(2)]
-        public string CustoFinancFornecParacelamento { get; set; }
+        public string CustoFinancFornecParcelamento { get; set; }
 
         [Column("custoFinancFornecQtdeParcelas")]
         [Required]
@@ -240,7 +241,7 @@ namespace InfraBanco.Modelos
 
         [Column("EndEtg_endereco_numero")]
         [MaxLength(20)]
-        public short? EndEtg_Endereco_Numero { get; set; }
+        public string EndEtg_Endereco_Numero { get; set; }
 
         [Column("EndEtg_endereco_complemento")]
         [MaxLength(60)]
@@ -250,35 +251,35 @@ namespace InfraBanco.Modelos
         [Required]
         public short InstaladorInstalaStatus { get; set; }
 
-        [Column("InstaladoInstalaUsuarioUltAtualiz")]
+        [Column("InstaladorInstalaUsuarioUltAtualiz")]
         [MaxLength(20)]
-        public string InstaladoInstalaUsuarioUltAtualiz { get; set; }
+        public string InstaladorInstalaUsuarioUltAtualiz { get; set; }
 
-        [Column("InstaladoInstalaDtHrUltAtualiz")]
-        public DateTime? InstaladoInstalaDtHrUltAtualiz { get; set; }
+        [Column("InstaladorInstalaDtHrUltAtualiz")]
+        public DateTime? InstaladorInstalaDtHrUltAtualiz { get; set; }
 
         [Column("GarantiaIndicadorStatus")]
         [Required]
-        public byte GarantiaIndicadorStatus { get; set; }
+        public Byte GarantiaIndicadorStatus { get; set; }
 
         [Column("GarantiaIndicadorUsuarioUltAtualiz")]
         [MaxLength(20)]
         public string GarantiaIndicadorUsuarioUltAtualiz { get; set; }
 
-        [Column("GarantiaInidicadorDtHrUltAtualiz")]
+        [Column("GarantiaIndicadorDtHrUltAtualiz")]
         public DateTime? GarantiaInidicadorDtHrUltAtualiz { get; set; }
 
         [Column("perc_desagio_RA_liquida")]
         [Required]
-        public decimal Perc_Desagio_RA_Liquida { get; set; }
+        public float Perc_Desagio_RA_Liquida { get; set; }
 
         [Column("permite_RA_status")]
         [Required]
-        public decimal Permite_RA_Status { get; set; }
+        public short Permite_RA_Status { get; set; }
 
-        [Column("st_violado_permite_RA")]
+        [Column("st_violado_permite_RA_status")]
         [Required]
-        public short St_Violado_Permite_RA { get; set; }
+        public short St_Violado_Permite_RA_Status { get; set; }
 
         [Column("dt_hr_violado_permite_RA_status")]
         public DateTime? Dt_Hr_Violado_Permite_RA_Status { get; set; }
@@ -309,6 +310,7 @@ namespace InfraBanco.Modelos
         [Required]
         public decimal Pc_Maquineta_Valor_Parcela { get; set; }
 
-
+        //propriedades
+        public Tcliente Tcliente { get; set; }
     }
 }

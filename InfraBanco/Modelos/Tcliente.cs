@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -12,7 +13,7 @@ namespace InfraBanco.Modelos
         [Key]
         [MaxLength(12)]
         public string Id { get; set; }
-
+        
         [Column("cnpj_cpf")]
         [MaxLength(14)]
         public string Cnpj_Cpf { get; set; }
@@ -74,9 +75,9 @@ namespace InfraBanco.Modelos
         [MaxLength(11)]
         public string Tel_Com { get; set; }
 
-        [Column("ramal")]
+        [Column("ramal_com")]
         [MaxLength(4)]
-        public string Ramal { get; set; }
+        public string Ramal_Com { get; set; }
 
         [Column("contato")]
         [MaxLength(30)]
@@ -91,7 +92,7 @@ namespace InfraBanco.Modelos
 
         [Column("obs_crediticias")]
         [MaxLength(50)]
-        public int Obs_crediticias { get; set; }
+        public string Obs_crediticias { get; set; }
 
         [Column("midia")]
         [MaxLength(3)]
@@ -145,7 +146,7 @@ namespace InfraBanco.Modelos
         [MaxLength(40)]
         public string SocMaj_Contato { get; set; }
 
-        [Column("usuario_cadastrado")]
+        [Column("usuario_cadastro")]
         [MaxLength(20)]
         public string Usuario_Cadastrado { get; set; }
 
@@ -214,7 +215,7 @@ namespace InfraBanco.Modelos
         [MaxLength(20)]
         public string Contribuinte_Icms_Usuario { get; set; }
 
-        [Column("produto_rural_status")]
+        [Column("produtor_rural_status")]
         [Required]
         public byte Produtor_Rural_Status { get; set; }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -7,26 +8,23 @@ namespace InfraBanco.Modelos
     [Table("t_CLIENTE_REF_BANCARIA")]
     public class TclienteRefBancaria
     {
-        [Key]
+
         [Column("id_cliente")]
         [Required]
         [MaxLength(12)]
-        //[ForeignKey("Tcliente")]
+        //[ForeignKey("Id")]
         public string Id_Cliente { get; set; }
 
-        [Key]
         [Column("banco")]
         [Required]
         [MaxLength(4)]
         public string Banco { get; set; }
 
-        [Key]
         [Column("agencia")]
         [Required]
         [MaxLength(8)]
         public string Agencia { get; set; }
 
-        [Key]
         [Column("conta")]
         [Required]
         [MaxLength(12)]

@@ -34,6 +34,7 @@ namespace PrepedidoApi
             //bll
             services.AddTransient<PrepedidoBusiness.Bll.PrepedidoBll, PrepedidoBusiness.Bll.PrepedidoBll>();
             services.AddTransient<InfraBanco.ContextoProvider, InfraBanco.ContextoProvider>();
+            services.AddTransient<PrepedidoBusiness.Bll.ClienteBll, PrepedidoBusiness.Bll.ClienteBll>();
 
             //banco de dados
             services.AddDbContext<InfraBanco.ContextoBd>(options => {

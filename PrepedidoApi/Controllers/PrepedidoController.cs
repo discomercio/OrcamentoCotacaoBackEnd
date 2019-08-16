@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace PrepedidoApi.Controllers
 {
     [Route("api/[controller]")]
@@ -30,8 +31,45 @@ namespace PrepedidoApi.Controllers
             //string apelido = User.Claims.FirstOrDefault(r => r.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value;
             string apelido = "OFICINA DO GELO"; // "PARCEIRO_ITS";
             var ret = await prepedidoBll.ListarNumerosPrepedidosCombo(apelido);
-            var rest2 = ret.ToList();
             return Ok(ret);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("listarCpfCnpjPrepedidosCombo")]
+        public async Task<IActionResult> ListarCpfCnpjPrepedidosCombo()
+        {
+            //para testar :http://localhost:60877/api/prepedido/listarCpfCnpjPrepedidosCombo
+            string apelido = "SALOMÃO";
+            var lista = await prepedidoBll.ListarCpfCnpjPrepedidosCombo(apelido);
+
+            return Ok(lista);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("listarPrePedidos")]
+        public async Task<IActionResult> ListarPrePedidos(string clienteBusca, string numeroPrePedido, DateTime? dataInicial, DateTime? dataFinal)
+        {
+            //para testar: http://localhost:60877/api/prepedido/listarPrePedidos
+            //TODO: passar para utils
+            //string apelido = User.Claims.FirstOrDefault(r => r.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value;
+            string apelido = "SALOMÃO";
+            var lista = await prepedidoBll.ListarPrePedidos(apelido);
+            return Ok(lista);
+        }
+
+        [AllowAnonymous]
+        [HttpPut("removerPrePedido/{numeroPrePedido}")]
+        public IActionResult RemoverPrePedido(string numeroPrePedido)
+        {
+            string apelido = "SALOMÃO";
+            if (numeroPrePedido == null || numeroPrePedido == "")
+            {
+                return NotFound();
+            }
+
+            prepedidoBll.RemoverPrePedido(numeroPrePedido, apelido);
+
+            return NoContent();
         }
     }
 }
