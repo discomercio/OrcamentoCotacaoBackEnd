@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UtilsModule } from './utils/utils.module';
 import { HomeModule } from './home/home.module';
+import { MatButtonModule, MatIconModule } from '@angular/material';
+import { PrepedidoModule } from './prepedido/prepedido.module';
 
 @NgModule({
   declarations: [
@@ -15,7 +17,10 @@ import { HomeModule } from './home/home.module';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    MatButtonModule,
+    MatIconModule,
     HomeModule,
+    PrepedidoModule,
     UtilsModule
   ],
   providers: [],

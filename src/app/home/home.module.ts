@@ -3,16 +3,23 @@ import { CommonModule } from '@angular/common';
 
 import { HomeRoutingModule } from './home-routing.module';
 import { ConsultaClienteComponent } from './consulta-cliente/consulta-cliente.component';
-import { ConsultaPrepedidoComponent } from './consulta-prepedido/consulta-prepedido.component';
 import { ConsultaPedidoComponent } from './consulta-pedido/consulta-pedido.component';
-import { HomeComponent } from './home.component';
-
+import { HomeComponent } from './home/home.component';
+import { MatInputModule, MatIconModule, MatSnackBarModule, MatSidenavModule, MatDividerModule, MatBadgeModule, MatMenu, MatMenuModule, MatListModule } from '@angular/material';
+import {MatButtonModule} from '@angular/material/button';
 
 @NgModule({
-  declarations: [ConsultaClienteComponent, ConsultaPrepedidoComponent, ConsultaPedidoComponent, HomeComponent],
+  declarations: [ConsultaClienteComponent, ConsultaPedidoComponent, HomeComponent],
   imports: [
     CommonModule,
-    HomeRoutingModule
+    MatIconModule,
+    HomeRoutingModule,
+    MatBadgeModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatListModule,
+    MatDividerModule,
+    MatSidenavModule
   ]
 })
 export class HomeModule { }

@@ -1,0 +1,27 @@
+:host{
+    .corpohome
+    {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch ;
+        align-content: center;
+        height: 100%;
+        text-align:center;
+        min-height: 80vh;
+    }
+    .botaoMenu
+    {
+      text-align: center;
+      width: 200px;
+      margin-top: 15px;
+    }
+    .spanMenu
+    {
+      flex: 1;
+      flex-grow: 1;
+      flex-shrink: 1;
+      flex-basis: auto;
+      align-items: center;
+    }
+
+}

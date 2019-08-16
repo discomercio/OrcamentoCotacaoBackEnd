@@ -4,7 +4,8 @@ import { CommonModule } from '@angular/common';
 import { ErroRoutingModule } from './erro-routing.module';
 import { ErroComponent } from './erro.component';
 
-import { MatButtonModule, MatInputModule, MatIconModule, MatSnackBarModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   declarations: [ErroComponent],
