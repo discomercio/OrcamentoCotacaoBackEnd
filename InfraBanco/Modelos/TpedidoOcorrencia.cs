@@ -6,7 +6,7 @@ using System.Linq;
 using System.Web;
 
 
-namespace ArclubePrepedidosWebapi.Models
+namespace InfraBanco.Modelos
 {
     [Table("t_PEDIDO_OCORRENCIA")]
     public class TpedidoOcorrencia

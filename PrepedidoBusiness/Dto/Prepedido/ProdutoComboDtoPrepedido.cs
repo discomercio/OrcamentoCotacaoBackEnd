@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace ArclubePrepedidosWebapi.Dtos.Prepedido
+namespace PrepedidoBusiness.Dtos.Prepedido
 {
     public class ProdutoComboDtoPrepedido
     {

@@ -190,6 +190,7 @@ namespace InfraBanco.Modelos
 
         [Column("pedido")]
         [MaxLength(9)]
+        [ForeignKey("Tpedido")]
         public string Pedido { get; set; }
 
         [Column("st_end_entrega")]
@@ -312,5 +313,6 @@ namespace InfraBanco.Modelos
 
         //propriedades
         public Tcliente Tcliente { get; set; }
+        public Tpedido Tpedido { get; set; }
     }
 }

@@ -47,13 +47,16 @@ namespace PrepedidoApi.Controllers
 
         [AllowAnonymous]
         [HttpGet("listarPrePedidos")]
-        public async Task<IActionResult> ListarPrePedidos(string clienteBusca, string numeroPrePedido, DateTime? dataInicial, DateTime? dataFinal)
+        public async Task<IActionResult> ListarPrePedidos(int tipoBusca, string clienteBusca, string numeroPrePedido, 
+            DateTime? dataInicial, DateTime? dataFinal)
         {
             //para testar: http://localhost:60877/api/prepedido/listarPrePedidos
             //TODO: passar para utils
             //string apelido = User.Claims.FirstOrDefault(r => r.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value;
-            string apelido = "SALOMÃO";
-            var lista = await prepedidoBll.ListarPrePedidos(apelido);
+            string apelido = "RUI LUIS";
+            var lista = await prepedidoBll.ListarPrePedidos(apelido, 
+                (PrepedidoBusiness.Bll.PrepedidoBll.TipoBuscaPrepedido)tipoBusca, 
+                clienteBusca, numeroPrePedido, dataInicial, dataFinal);
             return Ok(lista);
         }
 

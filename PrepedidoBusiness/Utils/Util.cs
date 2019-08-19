@@ -6,6 +6,7 @@ namespace PrepedidoBusiness.Utils
 {
     public class Util
     {
+        //Formata CPF e CNPJ
         public static string FormatCpf_Cnpj(string cpf_cnpj)
         {
             if (cpf_cnpj.Length > 11)

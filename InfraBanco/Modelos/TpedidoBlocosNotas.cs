@@ -6,7 +6,7 @@ using System.Linq;
 using System.Web;
 
 
-namespace ArclubePrepedidosWebapi.Models
+namespace InfraBanco.Modelos
 {
     [Table("t_PEDIDO_BLOCOS_NOTAS")]
     public class TpedidoBlocosNotas

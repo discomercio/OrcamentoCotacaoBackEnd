@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace ArclubePrepedidosWebapi.Models
+namespace InfraBanco.Modelos
 {
     [Table("t_ORCAMENTO_ITEM")]
     public class TorcamentoItem

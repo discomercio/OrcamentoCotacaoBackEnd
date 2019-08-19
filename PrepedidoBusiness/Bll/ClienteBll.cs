@@ -1,11 +1,11 @@
-﻿using ArclubePrepedidosWebapi.Dtos.ClienteCadastro;
-using InfraBanco.Modelos;
+﻿using InfraBanco.Modelos;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using PrepedidoBusiness;
 using System.Linq;
+using PrepedidoBusiness.Dtos.ClienteCadastro;
 
 namespace PrepedidoBusiness.Bll
 {
@@ -24,7 +24,7 @@ namespace PrepedidoBusiness.Bll
         {
             var db = contextoProvider.GetContexto();
 
-            var dadosCliente = db.Tcliente.Where(r => r.Cnpj_Cpf == cpf_cnpj)
+            var dadosCliente = db.Tclientes.Where(r => r.Cnpj_Cpf == cpf_cnpj)
                 .FirstOrDefault();
             
             DadosClienteCadastroDto dados = new DadosClienteCadastroDto()

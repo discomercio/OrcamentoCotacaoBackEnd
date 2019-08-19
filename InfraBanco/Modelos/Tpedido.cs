@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InfraBanco.Modelos;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Web;
 
 
-namespace ArclubePrepedidosWebapi.Models
+namespace InfraBanco.Modelos
 {
     [Table("t_PEDIDO")]
     public class Tpedido
@@ -30,6 +31,7 @@ namespace ArclubePrepedidosWebapi.Models
 
         [Column("id_cliente")]
         [MaxLength(12)]
+        [ForeignKey("Tcliente")]
         public string Id_Cliente { get; set; }
 
         [Column("midia")]
@@ -42,7 +44,7 @@ namespace ArclubePrepedidosWebapi.Models
 
         [Column("vl_servicos")]
         [Required]
-        public DateTime Vl_Servicos { get; set; }
+        public Decimal Vl_Servicos { get; set; }
 
         [Column("vendedor")]
         [MaxLength(10)]
@@ -111,32 +113,32 @@ namespace ArclubePrepedidosWebapi.Models
         [MaxLength(10)]
         public string Split_Usuario { get; set; }
 
-        [Column("a_entrega_status")]
-        public short? A_Entrega_Status { get; set; }
+        [Column("a_entregar_status")]
+        public short? A_Entregar_Status { get; set; }
 
-        [Column("a_entrega_data_marcada")]
-        public DateTime? A_Entrega_Data_Marcada { get; set; }
+        [Column("a_entregar_data_marcada")]
+        public DateTime? A_Entregar_Data_Marcada { get; set; }
 
-        [Column("a_entrega_data")]
-        public DateTime? A_Entrega_Data { get; set; }
+        [Column("a_entregar_data")]
+        public DateTime? A_Entregar_Data { get; set; }
 
-        [Column("a_entrega_hora")]
+        [Column("a_entregar_hora")]
         [MaxLength(6)]
-        public string A_Entrega_Hora { get; set; }
+        public string A_Entregar_Hora { get; set; }
 
-        [Column("a_entrega_usuario")]
+        [Column("a_entregar_usuario")]
         [MaxLength(10)]
-        public string A_Entrega_Usuario { get; set; }
+        public string A_Entregar_Usuario { get; set; }
 
-        [Column("timestamp")]
-        public decimal? Timestamp { get; set; }
+        //[Column("timestamp")]
+        //public byte[] Timestamp { get; set; }
 
         [Column("loja_indicou")]
         [MaxLength(3)]
         public string Loja_Indicou { get; set; }
 
-        [Column("comissao_loja")]
-        public decimal? Comissao_Loja { get; set; }
+        [Column("comissao_loja_indicou")]
+        public float? Comissao_Loja_Indicou { get; set; }
 
         [Column("venda_externa")]
         public short? Venda_Externa { get; set; }
@@ -148,10 +150,10 @@ namespace ArclubePrepedidosWebapi.Models
         [MaxLength(10)]
         public string Transportadora_Id { get; set; }
 
-        [Column("transportador_data")]
+        [Column("transportadora_data")]
         public DateTime? Transportadora_Data { get; set; }
 
-        [Column("transportador_usuario")]
+        [Column("transportadora_usuario")]
         [MaxLength(10)]
         public string Transportadora_Usuario { get; set; }
 
@@ -207,7 +209,7 @@ namespace ArclubePrepedidosWebapi.Models
         [Required]
         public short Pse_Forma_Pagto_Prim_Prest { get; set; }
 
-        [Column("pse_forma_demais_prest")]
+        [Column("pse_forma_pagto_demais_prest")]
         [Required]
         public short Pse_Forma_Pagto_Demais_Prest { get; set; }
 
@@ -229,7 +231,7 @@ namespace ArclubePrepedidosWebapi.Models
         [Required]
         public short Pse_Demais_Prest_Periodo { get; set; }
 
-        [Column("pu_forma_pagtpo")]
+        [Column("pu_forma_pagto")]
         [Required]
         public short Pu_Forma_Pagto { get; set; }
 
@@ -251,7 +253,7 @@ namespace ArclubePrepedidosWebapi.Models
         public decimal? Vl_Total_RA { get; set; }
 
         [Column("perc_RT")]
-        public decimal? Perc_RT { get; set; }
+        public float? Perc_RT { get; set; }
 
         [Column("st_orc_virou_pedido")]
         public short? St_Orc_Virou_Pedido { get; set; }
@@ -280,10 +282,10 @@ namespace ArclubePrepedidosWebapi.Models
         public string Comissao_Paga_Usuario { get; set; }
 
         [Column("perc_desagio_RA")]
-        public decimal? Perc_Desagio_RA { get; set; }
+        public float? Perc_Desagio_RA { get; set; }
 
         [Column("perc_limite_RA_sem_desagio")]
-        public decimal? Perc_Limite_RA_Sem_Desagio { get; set; }
+        public float? Perc_Limite_RA_Sem_Desagio { get; set; }
 
         [Column("vl_total_RA_liquido")]
         public decimal? Vl_Total_RA_Liquido { get; set; }
@@ -446,9 +448,9 @@ namespace ArclubePrepedidosWebapi.Models
         [MaxLength(10)]
         public string Danfe_Impressa_Usuario { get; set; }
 
-        [Column("transportadora_confere")]
+        [Column("transportadora_conferente")]
         [MaxLength(30)]
-        public string Transportadora_Confere { get; set; }
+        public string Transportadora_Conferente { get; set; }
 
         [Column("transportadora_motorista")]
         [MaxLength(30)]
@@ -460,7 +462,7 @@ namespace ArclubePrepedidosWebapi.Models
 
         [Column("perc_desagio_RA_liquida")]
         [Required]
-        public decimal Perc_Desagio_RA_Liquida { get; set; }
+        public float Perc_Desagio_RA_Liquida { get; set; }
 
         [Column("indicador_editado_manual_status")]
         [Required]
@@ -512,9 +514,9 @@ namespace ArclubePrepedidosWebapi.Models
         [Column("st_forma_pagto_somente_cartao")]
         public byte? St_Forma_Pagto_Somente_Cartao { get; set; }
 
-        [Column("endereco_memorizando_status")]
+        [Column("endereco_memorizado_status")]
         [Required]
-        public byte Endereco_Memorizando_Status { get; set; }
+        public byte Endereco_Memorizado_Status { get; set; }
 
         [Column("endereco_logradouro")]
         [MaxLength(80)]
@@ -562,18 +564,18 @@ namespace ArclubePrepedidosWebapi.Models
         [MaxLength(10)]
         public string Analise_Endereco_Tratado_Usuario { get; set; }
 
-        [Column("analise_credito_data_sem_hota")]
+        [Column("analise_credito_data_sem_hora")]
         public DateTime? Analise_Credito_Data_Sem_Hora { get; set; }
 
         [Column("cancelado_auto_status")]
         [Required]
         public byte Cancelado_Auto_Status { get; set; }
 
-        [Column("cancela_auto_data")]
-        public DateTime? Cancela_Auto_Data { get; set; }
+        [Column("cancelado_auto_data")]
+        public DateTime? Cancelado_Auto_Data { get; set; }
 
-        [Column("cancela_auto_data_hora")]
-        public DateTime? Cancela_Auto_Data_Hora { get; set; }
+        [Column("cancelado_auto_data_hora")]
+        public DateTime? Cancelado_Auto_Data_Hora { get; set; }
 
         [Column("cancelado_auto_motivo")]
         [MaxLength(160)]
@@ -752,5 +754,7 @@ namespace ArclubePrepedidosWebapi.Models
         [Column("pc_maquineta_valor_parcela")]
         [Required]
         public decimal Pc_Maquineta_Valor_Parcela { get; set; }
+
+        public Tcliente Tcliente { get; set; }
     }
 }

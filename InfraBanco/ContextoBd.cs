@@ -13,14 +13,16 @@ namespace InfraBanco
         {
 
         }
-        public DbSet<Tcliente> Tcliente { get; set; }
+        public DbSet<Tcliente> Tclientes { get; set; }
         public DbSet<Torcamento> Torcamentos { get; set; }
-        public DbSet<TclienteRefBancaria> TclienteRefBancaria { get; set; }
+        public DbSet<TclienteRefBancaria> TclienteRefBancarias { get; set; }
+        public DbSet<Tpedido> Tpedidos { get; set; }
+        //public DbSet<TpedidoItem> TpedidoItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<TclienteRefBancaria>()
-                .HasKey(o => new { o.Id_Cliente, o.Banco ,o.Agencia , o.Conta });
+                .HasKey(o => new { o.Id_Cliente, o.Banco, o.Agencia, o.Conta });
         }
     }
 }
