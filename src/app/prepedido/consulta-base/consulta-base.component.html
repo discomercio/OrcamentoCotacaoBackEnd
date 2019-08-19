@@ -1,0 +1,64 @@
+<span class="corpohome">
+    <h2 style="padding-bottom: 1em;">Consultar Pré Pedido
+    </h2>
+
+    <form #loginForm="ngForm" class="login-container" (ngSubmit)="buscar()">
+        <div class="container divCampos" fxLayout="row wrap" fxLayout.xs="column" fxLayout.sm="column"
+            fxLayoutAlign="center">
+            <div class="item item-1">
+                <mat-form-field class="campoTexto">
+                    <input matInput type="text" placeholder="CPF ou CNPJ do cliente" [(ngModel)]="clienteBusca"
+                        name="clienteBusca" list="dlclienteBusca">
+                    <datalist id="dlclienteBusca">
+                        <option *ngFor="let option of optionsClienteBusca$|async" [value]="option">
+                    </datalist>
+                </mat-form-field>
+            </div>
+            <div class="item item-3">
+                <mat-form-field class="campoTexto">
+                    <input matInput type="text" placeholder="Número Pré Pedido" [(ngModel)]="numeroPrePedidoBusca"
+                        name="numeroPrePedidoBusca" list="dlnumpedidoBUsca">
+                </mat-form-field>
+                <datalist id="dlnumpedidoBUsca">
+                    <option *ngFor="let option of optionsNumeroPrePedidoBusca$|async" [value]="option">
+                </datalist>
+            </div>
+
+            <div class="item item-3">
+                <mat-form-field class="campoTexto">
+                    <input matInput type="date" placeholder="Período de" [(ngModel)]="dataInicial" name="dataInicial">
+                </mat-form-field>
+            </div>
+            <div class="item item-4">
+                <mat-form-field class="campoTexto">
+                    <input matInput type="date" placeholder="até" [(ngModel)]="dataFinal" name="dataFinal">
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="container divCampos" fxLayout="row wrap" fxLayout.xs="column" fxLayout.sm="column"
+            fxLayoutAlign="center">
+            <span style="text-align: left;">
+                <div class="item item-4">
+                    <mat-checkbox class="campoTexto" [(ngModel)]="tipoBuscaAndamento" name="tipoBuscaAndamento">Pré
+                        Pedidos
+                        em andamento
+                    </mat-checkbox>
+
+                </div>
+                <div class="item item-4" style="text-align: left; float: left;">
+                    <mat-checkbox class="campoTexto" [(ngModel)]="tipoBuscaPedido" name="tipoBuscaPedido">Pré Pedidos
+                        que
+                        viraram pedidos
+                    </mat-checkbox>
+                </div>
+            </span>
+
+            <div class="item item-4" style="float: right;">
+                <button mat-raised-button color="accent" type="submit">
+                    <mat-icon>search</mat-icon> Pesquisar
+                </button>
+            </div>
+        </div> 
+    </form>
+</span>

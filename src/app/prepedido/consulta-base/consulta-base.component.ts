@@ -4,11 +4,11 @@ import { PrepedidoComboCpfcnpjService } from 'src/app/servicos/prepedido/prepedi
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-consulta-prepedido',
-  templateUrl: './consulta-prepedido.component.html',
-  styleUrls: ['./consulta-prepedido.component.scss']
+  selector: 'app-consulta-base',
+  templateUrl: './consulta-base.component.html',
+  styleUrls: ['./consulta-base.component.scss']
 })
-export class ConsultaPrepedidoComponent implements OnInit {
+export class ConsultaBaseComponent implements OnInit {
 
   //campos do formulário
   clienteBusca: string;

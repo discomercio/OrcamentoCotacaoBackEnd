@@ -7,10 +7,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule, MatInputModule, MatButtonModule, MatCardModule, MatRadioModule, MatAutocompleteModule, MatCheckbox, MatCheckboxModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ListaPrepedidoComponent } from './lista-prepedido/lista-prepedido.component';
+import { ConsultaBaseComponent } from './consulta-base/consulta-base.component';
+import { ListaBaseComponent } from './lista-base/lista-base.component';
 
 
 @NgModule({
-  declarations: [ConsultaPrepedidoComponent, ListaPrepedidoComponent],
+  declarations: [ConsultaPrepedidoComponent, ListaPrepedidoComponent, ConsultaBaseComponent, ListaBaseComponent],
   imports: [
     CommonModule,
     FormsModule,
