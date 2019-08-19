@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="PrepedidoBusiness.Bll.ClienteBll" Collapsed="true">
+    <Position X="10" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABEAAAAA=</HashCode>
+      <FileName>Bll\ClienteBll.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PrepedidoBusiness.Bll.PrepedidoBll" Collapsed="true">
+    <Position X="8.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIABgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEIAAAA=</HashCode>
+      <FileName>Bll\PrepedidoBll.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ArclubePrepedidosWebapi.Dtos.ClienteCadastro.ClienteCadastroDto">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>Dto\ClienteCadastro\ClienteCadastroDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ArclubePrepedidosWebapi.Dtos.ClienteCadastro.DadosClienteCadastroDto">
+    <Position X="4.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAACAAIAACAAACgEgCAAQAOAAgAAAAAAAQBCgAkBEAA=</HashCode>
+      <FileName>Dto\ClienteCadastro\DadosClienteCadastroDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ArclubePrepedidosWebapi.Dtos.ClienteCadastro.EnderecoEntregaDtoClienteCadastro">
+    <Position X="2.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIACBAAAAAAAABIAAEAgCAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Dto\ClienteCadastro\EnderecoEntregaDTOClienteCadastro.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ArclubePrepedidosWebapi.Dtos.Pedido.PedidoDtoPedido" Collapsed="true">
+    <Position X="6.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAEAABAAIAAAAAAAAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Dto\Pedido\PedidosEncerradosDtoPedido.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ArclubePrepedidosWebapi.Dtos.Prepedido.DadosClienteDtoPrepedido">
+    <Position X="2.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAACAAAAAAAAAABAIAAAEAAAAAAQBgAAkAEAA=</HashCode>
+      <FileName>Dto\Prepedido\DadosClienteDtoPrepedido.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ArclubePrepedidosWebapi.Dtos.Prepedido.DetalhesDtoPrepedido" Collapsed="true">
+    <Position X="8.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAIAAAAAAAAAAEAAAAAAAEAQAAABAAAAAAEA=</HashCode>
+      <FileName>Dto\Prepedido\DetalhesDtoPrepedido.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ArclubePrepedidosWebapi.Dtos.Prepedido.PrePedidoClienteDto">
+    <Position X="6.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Dto\Prepedido\PrePedidoClienteDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ArclubePrepedidosWebapi.Dtos.Prepedido.PrepedidoQueViraramPedidoDtoPedido" Collapsed="true">
+    <Position X="8.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAgEAABAAIAAEAAAAAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Dto\Prepedido\PrepedidoQueViraramPedidoDtoPedido.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ArclubePrepedidosWebapi.Dtos.Prepedido.PrepedidosCadastradosDtoPrepedido">
+    <Position X="0.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAABAAAAAAQAAAAAAAAAAAAAAAIAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Dto\Prepedido\PrepedidosCadastradosDtoPrepedido.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ArclubePrepedidosWebapi.Dtos.Prepedido.ProdutoComboDtoPrepedido" Collapsed="true">
+    <Position X="6.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAIAAAAAJBAAAAAAQAAAAAAQAAAAAAAE=</HashCode>
+      <FileName>Dto\Prepedido\ProdutoComboDtoPrepedido.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PrepedidoBusiness.Dto.ClienteCadastro.RefBancariaDtoCliente">
+    <Position X="6.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Dto\ClienteCadastro\RefBancariaDtoCliente.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PrepedidoBusiness.Utils.Util">
+    <Position X="8.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utils\Util.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InfraBanco.Modelos.Torcamento">
+    <Position X="11.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
