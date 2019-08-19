@@ -1,30 +1,25 @@
 :host{
-
-    .corpo
-    {
-        text-align:center;
-        width: 400px;
-    }
-
     .corpohome
     {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch ;
-        align-content: center;
-        height: 100%;
         text-align:center;
-        min-height: 80vh;
+        padding: 2em;
     }
-    .botaoMenu
+
+    .container
     {
-      text-align: center;
-      width: 200px;
-      margin-top: 15px;
+        text-align: center;
     }
-    .spanMenu
+
+    .campoTexto{
+        height: 3em;
+        line-height: 1em;
+        padding: 1em;
+    }
+ 
+    .divCampos
     {
-      display: block;
+        margin:.5rem;
     }
+
 
 }

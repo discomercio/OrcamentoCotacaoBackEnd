@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { PrepedidoComboNumeroService } from 'src/app/servicos/prepedido/prepedido-combo-numero.service';
+import { PrepedidoComboCpfcnpjService } from 'src/app/servicos/prepedido/prepedido-combo-cpfcnpj.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-consulta-prepedido',
@@ -7,7 +11,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ConsultaPrepedidoComponent implements OnInit {
 
-  constructor() { }
+  //campos do formulário
+  clienteBusca: string;
+  optionsClienteBusca$: Observable<string[]>;
+  numeroPrePedidoBusca: string;
+  optionsNumeroPrePedidoBusca$: Observable<string[]>;
+  dataInicial: Date;
+  dataFinal: Date;
+  tipoBuscaAndamento: boolean;
+  tipoBuscaPedido: boolean;
+
+  constructor(private prepedidoComboNumeroService: PrepedidoComboNumeroService,
+    private prepedidoComboCpfcnpjService: PrepedidoComboCpfcnpjService) {
+
+    //carrega os combos
+    this.optionsNumeroPrePedidoBusca$ = this.prepedidoComboNumeroService.obter();
+    this.optionsClienteBusca$ = this.prepedidoComboCpfcnpjService.obter();
+
+  }
 
   ngOnInit() {
   }

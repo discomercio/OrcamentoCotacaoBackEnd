@@ -3,18 +3,26 @@ import { CommonModule } from '@angular/common';
 
 import { PrepedidoRoutingModule } from './prepedido-routing.module';
 import { ConsultaPrepedidoComponent } from './consulta-prepedido/consulta-prepedido.component';
-import { FormsModule } from '@angular/forms';
-import { MatIconModule, MatInputModule, MatButtonModule } from '@angular/material';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatIconModule, MatInputModule, MatButtonModule, MatCardModule, MatRadioModule, MatAutocompleteModule, MatCheckbox, MatCheckboxModule } from '@angular/material';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { ListaPrepedidoComponent } from './lista-prepedido/lista-prepedido.component';
 
 
 @NgModule({
-  declarations: [ConsultaPrepedidoComponent],
+  declarations: [ConsultaPrepedidoComponent, ListaPrepedidoComponent],
   imports: [
     CommonModule,
     FormsModule,
     MatButtonModule,
     MatInputModule, 
+    MatAutocompleteModule,
     MatIconModule,
+    FlexLayoutModule,
+    MatCardModule,
+    MatRadioModule,
+    MatCheckboxModule,
+    ReactiveFormsModule,
     PrepedidoRoutingModule
   ]
 })
