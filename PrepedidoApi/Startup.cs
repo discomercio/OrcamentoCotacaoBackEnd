@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using PrepedidoApi.Utils;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Serialization;
 
 namespace PrepedidoApi
 {
@@ -25,7 +26,10 @@ namespace PrepedidoApi
         {
             services.AddCors();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().
+                SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                //nao usamos camelcase nos dados gerados
+                .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
             // configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection("AppSettings");
