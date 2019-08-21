@@ -14,7 +14,15 @@ namespace PrepedidoApi
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            var app = CreateWebHostBuilder(args).Build();
+
+            /*
+            Microsoft.EntityFrameworkCore.DbContextOptions<InfraBanco.ContextoBd> Opt = new Microsoft.EntityFrameworkCore.DbContextOptions<InfraBanco.ContextoBd>();
+            var bll = new PrepedidoBusiness.Bll.ClienteBll(new InfraBanco.ContextoProvider(Opt));
+            var res = bll.BuscarCliente("34");
+            */
+
+            app.Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>

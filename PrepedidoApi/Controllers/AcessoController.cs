@@ -42,11 +42,14 @@ namespace PrepedidoApi.Controllers
     {
         private readonly InfraIdentity.IServicoAutenticacao servicoAutenticacao;
         private readonly IConfiguration configuration;
+        private readonly PrepedidoBusiness.Bll.AcessoBll acessoBll;
 
-        public AcessoController(InfraIdentity.IServicoAutenticacao servicoAutenticacao, IConfiguration configuration)
+
+        public AcessoController(InfraIdentity.IServicoAutenticacao servicoAutenticacao, IConfiguration configuration, PrepedidoBusiness.Bll.AcessoBll acessoBll)
         {
             this.servicoAutenticacao = servicoAutenticacao;
             this.configuration = configuration;
+            this.acessoBll = acessoBll;
         }
 
 
@@ -74,7 +77,7 @@ namespace PrepedidoApi.Controllers
             var appSettingsSection = configuration.GetSection("AppSettings");
             var appSettings = appSettingsSection.Get<Utils.Configuracao>();
 
-            string token = await servicoAutenticacao.ObterTokenAutenticacao(apelido, senha, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos, Utils.Autenticacao.RoleAcesso, new ServicoAutenticacaoProvider());
+            string token = await servicoAutenticacao.ObterTokenAutenticacao(apelido, senha, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos, Utils.Autenticacao.RoleAcesso, new ServicoAutenticacaoProvider(acessoBll));
 
             if (token == null)
                 return BadRequest(new { message = "Usuário ou senha incorreta." });
