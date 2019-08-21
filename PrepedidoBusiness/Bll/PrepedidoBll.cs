@@ -84,9 +84,9 @@ namespace PrepedidoBusiness.Bll
             if (!string.IsNullOrEmpty(numeroPrePedido))
                 lst = lst.Where(r => r.Orcamento.Contains(numeroPrePedido));
             if (dataInicial.HasValue)
-                lst = lst.Where(r => r.Data >= dataInicial.Value);
+                lst = lst.Where(r => r.Data <= dataInicial.Value);
             if (dataFinal.HasValue)
-                lst = lst.Where(r => r.Data <= dataFinal.Value);
+                lst = lst.Where(r => r.Data >= dataFinal.Value);
 
 
             //COLOCAR O STATUS DO PEDIDO PARA PREPEDIDOS QUE VIRARAM PEDIDOS
