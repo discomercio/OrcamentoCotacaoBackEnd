@@ -7,7 +7,7 @@ import { MatInputModule, MatIconModule, MatSnackBarModule, MatSidenavModule, Mat
 import {MatButtonModule} from '@angular/material/button';
 
 @NgModule({
-  declarations: [ HomeComponent],
+  declarations: [ HomeComponent ],
   imports: [
     CommonModule,
     MatIconModule,
@@ -18,6 +18,7 @@ import {MatButtonModule} from '@angular/material/button';
     MatListModule,
     MatDividerModule,
     MatSidenavModule
-  ]
+  ],
+  exports:[ HomeComponent ]
 })
 export class HomeModule { }

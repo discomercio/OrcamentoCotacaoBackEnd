@@ -1,0 +1,80 @@
+@import "../../../variaveis.scss";
+
+:host {
+  .corpohome {
+    padding: 0.5em;
+  }
+
+  .corpohomeDesktop {
+    text-align: left;
+  }
+
+  .corpohomeCelular {
+    padding: 2em;
+    text-align: left;
+  }
+
+  //para o desktop
+  .tabeladesktop {
+    width: calc(100% - 2em);
+    margin: 1em;
+    padding-left: 0em;
+    padding-right: 0em;
+    text-align: left;
+    background-color: $cor-fundo-listapedidos;
+  }
+  .mat-header-row th {
+      font-weight: bold;
+      //color: black;
+  }
+  .mat-column-valoTotal {
+    text-align: right;
+  }
+  .mat-header-row .mat-column-valoTotal {
+    text-align: center;
+  }
+
+  .mat-column-numeroPrepedido {
+    text-align: center;
+  }
+  .mat-column-dataPrePedido {
+    text-align: center;
+  }
+  .mat-column-nomeCliente {
+    text-align: left;
+  }
+  /*
+    .tabeladesktop th {
+        border-bottom-style: solid;
+        border-bottom-color: black;
+        border-bottom-width: 0px;
+        margin-bottom: 2em;
+        padding: 0px;
+        margin: 0;
+        padding-bottom: 10px;
+    }
+    */
+    .tabeladesktop td {
+        border-top-style: solid;
+        border-top-color: white;
+        border-top-width: 10px;
+    }
+
+  //para o celular
+  .containercel {
+    margin: 0.5em;
+    background-color: $cor-fundo-listapedidos;
+    border: 0.5em solid $cor-fundo-listapedidos;
+  }
+  .celcol1 {
+    min-width: 23%;
+    display: inline-block;
+  }
+  .celcol2 {
+    width: auto;
+    display: inline-block;
+  }
+  .cellinha {
+    height: 1em;
+  }
+}

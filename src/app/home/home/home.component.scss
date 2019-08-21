@@ -1,3 +1,5 @@
+@import '../../../variaveis.scss';
+
 :host{
     .corpohome
     {
@@ -9,19 +11,43 @@
         text-align:center;
         min-height: 80vh;
     }
-    .botaoMenu
+    .botaoTela
     {
       text-align: center;
       width: 200px;
       margin-top: 15px;
     }
-    .spanMenu
+    .spanTela
     {
       flex: 1;
-      flex-grow: 1;
-      flex-shrink: 1;
+      flex-grow: 0.1;
+      flex-shrink: 0.2;
       flex-basis: auto;
       align-items: center;
+    }
+
+    /*
+    classes para aparecer bno menu da esquerda 
+    */
+    .corpoMenu
+    {
+      height: 100%;
+      background-color: $cor-fundo-menu;
+    }
+    .spanMenu
+    {
+      background-color: $cor-fundo-menu;
+      border-bottom-color: $cor-borda-menu;
+      border-bottom-width: 1px;
+      border-bottom-style: solid;
+    }
+    .botaoMenu
+    {
+      text-align: left;
+      width: 100%;
+      margin-top: 15px;
+      font-size: small;
+      color: $cor-botoes-menu-desktop;
     }
 
 }

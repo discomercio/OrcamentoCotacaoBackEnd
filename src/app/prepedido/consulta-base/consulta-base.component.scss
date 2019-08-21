@@ -1,11 +1,25 @@
 :host{
     .corpohome
     {
-        text-align:center;
         padding: 2em;
     }
 
-    .container
+    .corpohomeDesktop
+    {
+        text-align:left;
+    }
+
+    .corpohomeCelular
+    {
+        text-align:center;
+    }
+
+
+    .containerDesktop
+    {
+        text-align: left;
+    }
+    .containerCelular
     {
         text-align: center;
     }

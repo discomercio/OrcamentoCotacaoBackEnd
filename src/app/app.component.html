@@ -1,25 +1,32 @@
-<header>
-  <a mat-button color="accent" [routerLink]="['']" title="Home">
+<div class="larguratotal" fxLayout="column" fxLayoutAlign="fill fill" style="text-align: center">
+  <mat-toolbar class="cabecalho larguramaxima">
+    <a mat-button color="accent" [routerLink]="['']" title="Home">
 
-    <div class="limiteclicavel">
-      <span *ngIf="telaDesktop">
+      <div class="limiteclicavel larguramaxima">
         <span style="float: left"><img src="../assets/logo_arclube.png" height="30"
             style="padding-top: 10px; padding-left: 10px;" /></span>
-        <span style="float:none; text-align:center; color: black; vertical-align: center;">
-          &nbsp;&nbsp;&nbsp;
-          CENTRAL DE PEDIDOS
-        </span>
-      </span>
-      <img *ngIf="!telaDesktop" src="../assets/logo_arclube.png" height="30"
-        style="padding-top: 10px; padding-left: 10px;" />
+        <!-- <div style="float:none; text-align:center; color: black; vertical-align: center; display: inline;"
+            [fxHide]="1" [fxShow.gt-sm]="1">
+            &nbsp;&nbsp;&nbsp;
+            CENTRAL DE PEDIDOS
+          </div> -->
 
-      <span style="float: right">
-        <!-- <button *ngIf="(usuario$ | async).estaLogado" class='px-0' type="submit" (click)="logout()" mat-button -->
-        <button class='px-0' type="submit" (click)="logout()" mat-button style="padding: 0%" title="Logout">
-          <mat-icon color="accent">exit_to_app</mat-icon>
-        </button>
-      </span>
+        <span style="float: right">
+          <button class='px-0' type="submit" (click)="logout()" mat-button style="padding: 0%" title="Logout">
+            <mat-icon color="accent">exit_to_app</mat-icon>
+          </button>
+        </span>
+      </div>
+    </a>
+  </mat-toolbar>
+  <mat-sidenav-container class="larguramaxima" *ngIf="telaDesktop" >
+    <mat-sidenav mode="side" opened class="menudaesquerda alturamaxima" >
+      <app-home [menuDesktop]="true" ></app-home>
+    </mat-sidenav>
+    <div class="alturamaxima" >
+      <router-outlet ></router-outlet>
     </div>
-  </a>
-</header>
-<router-outlet></router-outlet>
+  </mat-sidenav-container>
+
+  <router-outlet *ngIf="!telaDesktop"></router-outlet>
+</div>

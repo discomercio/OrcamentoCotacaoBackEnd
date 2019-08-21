@@ -1,1 +1,82 @@
-<p>lista-base works!</p>
+<div *ngIf="telaDesktop" [class]="telaDesktop? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'">
+    <div style="float: right; padding-right: 2em; padding-bottom: 0.5em;">
+        Pré-pedidos localizados: {{(prepedidos$|async)?.length}}
+    </div>
+    <table mat-table matSort [dataSource]="dataSourceTabelaDesktop" class="mat-elevation-z1 tabeladesktop">
+
+        <ng-container matColumnDef="numeroPrepedido">
+            <th mat-sort-header="numeroPrepedido" mat-header-cell *matHeaderCellDef> Número </th>
+            <td mat-cell *matCellDef="let element"> {{element.numeroPrepedido}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="dataPrePedido">
+            <th mat-header-cell *matHeaderCellDef> Data </th>
+            <td mat-cell *matCellDef="let element"> {{dataFormatarTela(element.dataPrePedido)}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nomeCliente">
+            <th mat-header-cell *matHeaderCellDef> Cliente </th>
+            <td mat-cell *matCellDef="let element"> {{element.nomeCliente}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="valoTotal">
+            <th mat-header-cell *matHeaderCellDef> Valor </th>
+            <td mat-cell *matCellDef="let element"> {{moedaUtils.formatarMoeda(element.valoTotal)}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</div>
+
+
+<div *ngIf="!telaDesktop" [class]="telaDesktop? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'">
+    <div style="float: left;">
+        Pré-pedidos localizados: {{(prepedidos$|async)?.length}}
+    </div>
+    <button mat-raised-button color="accent" *ngIf="!telaDesktop" (click)="voltar()" style="float: right; ">Nova
+        busca</button>
+    <br>
+    <br>
+    <br>
+
+    <div *ngFor="let option of prepedidos$|async" style="width: 100%; text-align: left;">
+        <div class="containercel">
+            <div class=".cellinha">
+                <div class="celcol1">
+                    Núm: </div>
+                <div class="celcol2">
+                    {{option.numeroPrepedido}}
+                </div>
+                <div class=".cellinha">
+                    <div class="celcol1">
+                        Data:
+                    </div>
+                    <div class="celcol2">
+                        {{dataFormatarTela(option.dataPrePedido)}}
+                    </div>
+                </div>
+                <!-- nao colocamos?
+            <br>
+        Loja: {{option.loja}}
+        <br> -->
+                <div class=".cellinha">
+                    <div class="celcol1">
+                        Cliente:
+                    </div>
+                    <div class="celcol2">
+                        {{option.nomeCliente}}
+                    </div>
+                </div>
+                <div class=".cellinha">
+                    <div class="celcol1">
+                        Valor:
+                    </div>
+                    <div class="celcol2">
+                        {{moedaUtils.formatarMoeda(option.valoTotal)}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

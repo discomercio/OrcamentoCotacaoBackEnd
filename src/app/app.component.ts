@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
+import { TelaDesktopService } from './servicos/telaDesktop/telaDesktop.service';
 
 @Component({
   selector: 'app-root',
@@ -9,16 +9,11 @@ import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/l
 export class AppComponent implements OnInit {
   telaDesktop: boolean = true;
 
-  constructor(private breakpointObserver: BreakpointObserver){
+  constructor(private telaDesktopService: TelaDesktopService) {
+    telaDesktopService.telaAtual$.subscribe(r => this.telaDesktop = r);
+  }
 
-  }
-  
   ngOnInit(): void {
-    this.breakpointObserver
-      .observe([Breakpoints.Small, Breakpoints.HandsetPortrait])
-      .subscribe((state: BreakpointState) => {
-        this.telaDesktop = !state.matches;
-      });
   }
-  title = 'pre-pedido';
+  title = 'Sistema de pré-pedidos';
 }
