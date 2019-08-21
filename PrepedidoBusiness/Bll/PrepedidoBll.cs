@@ -43,7 +43,7 @@ namespace PrepedidoBusiness.Bll
                         select c.Tcliente.Cnpj_Cpf;
 
             var ret = await lista.Distinct().ToListAsync();
-            List<string> cpfCnpjFormat = new List<string>();
+            List<string> cpfCnpjFormat = new List<string>();            
 
             foreach (string cpf in ret)
             {

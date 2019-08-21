@@ -119,9 +119,9 @@ namespace InfraBanco.Modelos
         [Column("dt_cadastro")]
         public DateTime? Dt_Cadastro { get; set; }
 
-        [Column("usuario_cadastrado")]
+        [Column("usuario_cadastro")]
         [MaxLength(10)]
-        public string Usuario_Cadastrado { get; set; }
+        public string Usuario_Cadastro { get; set; }
 
         [Column("dt_ult_atualizacao")]
         public DateTime? Dt_Ult_Atualizacao { get; set; }
@@ -134,7 +134,7 @@ namespace InfraBanco.Modelos
         public DateTime? Dt_Ult_Acesso { get; set; }
 
         [Column("timestamp")]
-        public DateTime? Timestamp { get; set; }
+        public byte[] Timestamp { get; set; }
 
         [Column("desempenho_nota")]
         [MaxLength(1)]
@@ -148,7 +148,7 @@ namespace InfraBanco.Modelos
         public string Desempenho_Nota_Usuario { get; set; }
 
         [Column("perc_desagio_RA")]
-        public decimal? Perc_Desagio_RA { get; set; }
+        public float? Perc_Desagio_RA { get; set; }
 
         [Column("vl_limite_mensal")]
         [Required]
@@ -221,7 +221,7 @@ namespace InfraBanco.Modelos
         [Column("forma_como_conheceu_data_hora")]
         public DateTime? Forma_Como_Conheceu_Data_Hora { get; set; }
 
-        [Column("forma_como_conheceu_cogigo_anterior")]
+        [Column("forma_como_conheceu_codigo_anterior")]
         [MaxLength(20)]
         public string Fomra_Como_Conheceu_Codigo_Anterior { get; set; }
 
@@ -324,7 +324,7 @@ namespace InfraBanco.Modelos
         [MaxLength(1)]
         public string Tipo_Conta { get; set; }
 
-        [Column("vendedor_dt_ult_atuaizacao")]
+        [Column("vendedor_dt_ult_atualizacao")]
         public DateTime? Vendedor_Dt_Ult_Atualizacao { get; set; }
 
         [Column("vendedor_dt_hr_ult_atualizacao")]

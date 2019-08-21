@@ -53,7 +53,7 @@ namespace PrepedidoApi.Controllers
             //para testar: http://localhost:60877/api/prepedido/listarPrePedidos
             //TODO: passar para utils
             //string apelido = User.Claims.FirstOrDefault(r => r.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value;
-            string apelido = "RUI LUIS";
+            string apelido = "PARCEIRO_ITS";
             var lista = await prepedidoBll.ListarPrePedidos(apelido, 
                 (PrepedidoBusiness.Bll.PrepedidoBll.TipoBuscaPrepedido)tipoBusca, 
                 clienteBusca, numeroPrePedido, dataInicial, dataFinal);

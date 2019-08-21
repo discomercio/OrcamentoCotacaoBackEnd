@@ -17,7 +17,7 @@ namespace InfraBanco
         public DbSet<Torcamento> Torcamentos { get; set; }
         public DbSet<TclienteRefBancaria> TclienteRefBancarias { get; set; }
         public DbSet<Tpedido> Tpedidos { get; set; }
-        //public DbSet<TpedidoItem> TpedidoItems { get; set; }
+        public DbSet<TorcamentistaEindicador> TorcamentistaEindicadors { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
