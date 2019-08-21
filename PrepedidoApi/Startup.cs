@@ -38,7 +38,8 @@ namespace PrepedidoApi
             services.AddTransient<PrepedidoBusiness.Bll.PedidoBll, PrepedidoBusiness.Bll.PedidoBll>();
 
             //banco de dados
-            services.AddDbContext<InfraBanco.ContextoBd>(options => {
+            services.AddDbContext<InfraBanco.ContextoBd>(options =>
+            {
                 options.UseSqlServer(Configuration.GetConnectionString("conexao"));
             });
 
@@ -71,16 +72,25 @@ namespace PrepedidoApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
+            /*
+             * 
+             * nao precisamo de CROs porque servimos tudo do aplicativo principal
+             * quer dizer, copiamos os arquivos do angular para o wwwroot
+             * 
             // global cors policy
             app.UseCors(x => x
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader());
+                */
             app.UseAuthentication();
             app.UseMvc();
 
 
-            if (env.IsDevelopment())
+            //if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }

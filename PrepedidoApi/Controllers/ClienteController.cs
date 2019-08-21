@@ -14,9 +14,12 @@ namespace PrepedidoApi.Controllers
     public class ClienteController : ControllerBase
     {
         private readonly PrepedidoBusiness.Bll.ClienteBll clienteBll;
-        public ClienteController(PrepedidoBusiness.Bll.ClienteBll clienteBll)
+        private readonly InfraIdentity.IServicoDecodificarToken servicoDecodificarToken;
+
+        public ClienteController(PrepedidoBusiness.Bll.ClienteBll clienteBll, InfraIdentity.IServicoDecodificarToken servicoDecodificarToken)
         {
             this.clienteBll = clienteBll;
+            this.servicoDecodificarToken = servicoDecodificarToken;
         }
 
         //[AllowAnonymous]
@@ -35,8 +38,7 @@ namespace PrepedidoApi.Controllers
         public async Task<IActionResult> BuscarCliente(string cnpj_cpf)
         {
             //para testar: http://localhost:60877/api/cliente/buscarCliente
-            //TODO: passar para utils
-            //string apelido = User.Claims.FirstOrDefault(r => r.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value;
+            //string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
             string apelido = "SALOMÃO";
             var dadosCliente = await clienteBll.BuscarCliente(cnpj_cpf);
             return Ok(dadosCliente);
