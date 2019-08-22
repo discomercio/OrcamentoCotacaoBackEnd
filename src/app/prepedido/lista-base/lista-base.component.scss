@@ -27,20 +27,20 @@
       font-weight: bold;
       //color: black;
   }
-  .mat-column-valoTotal {
+  .mat-column-ValoTotal {
     text-align: right;
   }
-  .mat-header-row .mat-column-valoTotal {
+  .mat-header-row .mat-column-ValoTotal {
     text-align: center;
   }
 
-  .mat-column-numeroPrepedido {
+  .mat-column-NumeroPrepedido {
     text-align: center;
   }
-  .mat-column-dataPrePedido {
+  .mat-column-DataPrePedido {
     text-align: center;
   }
-  .mat-column-nomeCliente {
+  .mat-column-NomeCliente {
     text-align: left;
   }
   /*
@@ -67,7 +67,7 @@
     border: 0.5em solid $cor-fundo-listapedidos;
   }
   .celcol1 {
-    min-width: 23%;
+    min-width: 4em;
     display: inline-block;
   }
   .celcol2 {

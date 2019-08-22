@@ -11,14 +11,14 @@
             CENTRAL DE PEDIDOS
           </div> -->
 
-        <span style="float: right">
-          <button class='px-0' type="submit" (click)="logout()" mat-button style="padding: 0%" title="Logout">
-            <mat-icon color="accent">exit_to_app</mat-icon>
-          </button>
-        </span>
       </div>
     </a>
-  </mat-toolbar>
+          <!-- (click)="logout()" -->
+          <button class='px-0' type="submit" 
+    mat-button style="padding: 0%" title="Logout" [routerLink]="['/login']">
+     <mat-icon color="accent">exit_to_app</mat-icon>
+   </button>
+</mat-toolbar>
   <mat-sidenav-container class="larguramaxima" *ngIf="telaDesktop" >
     <mat-sidenav mode="side" opened class="menudaesquerda alturamaxima" >
       <app-home [menuDesktop]="true" ></app-home>

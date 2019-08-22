@@ -1,3 +1,8 @@
+# para compilar:
+ng build --prod
+e copiar arclube\PrepedidoSpa\dist\pre-pedido
+para its-appdev C:\inetpub\wwwroot\arclubeprepedidos
+
 # PrePedido
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.2.1.

@@ -6,11 +6,13 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UtilsModule } from './utils/utils.module';
 import { HomeModule } from './home/home.module';
-import { MatButtonModule, MatIconModule, MatToolbarModule, MatSidenavModule, MatTableModule } from '@angular/material';
+import { MatButtonModule, MatIconModule, MatToolbarModule, MatSidenavModule, MatTableModule, MatDialogModule } from '@angular/material';
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { PrepedidoModule } from './prepedido/prepedido.module';
 import { HttpClientModule } from '@angular/common/http';
 import { CdkTableModule } from '@angular/cdk/table';
+import { PedidoModule } from './pedido/pedido.module';
+import { LoginModule } from './login/login.module';
 
 @NgModule({
   declarations: [
@@ -29,8 +31,14 @@ import { CdkTableModule } from '@angular/cdk/table';
     HttpClientModule,
     HomeModule,
     PrepedidoModule,
-    UtilsModule
-  ],
+    PedidoModule,
+    UtilsModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    MatDialogModule,
+    MatButtonModule,
+    LoginModule
+    ],
   providers: [  ],
   bootstrap: [AppComponent]
 })

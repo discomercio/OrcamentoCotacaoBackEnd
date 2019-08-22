@@ -2,12 +2,20 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { LoginRoutingModule } from './login-routing.module';
-import { FormularioComponent } from './formulario/formulario.component';
+import { MatButtonModule, MatInputModule, MatIconModule } from '@angular/material';
+import { RouterModule } from '@angular/router';
+import { LoginformularioComponent } from './loginformulario/loginformulario.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [FormularioComponent],
+  declarations: [LoginformularioComponent],
   imports: [
+    FormsModule,
+    MatButtonModule,
+    MatInputModule, 
+    MatIconModule,
+    RouterModule,
     CommonModule,
     LoginRoutingModule
   ]

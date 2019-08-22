@@ -16,12 +16,13 @@ export class PrepedidoBuscaService {
 
   constructor(private http: HttpClient) {
     //incializa as datas
-    this.paramsBuscaPrepedido.dataInicial = DataUtils.formataParaFormulario(new Date());
-    this.paramsBuscaPrepedido.dataFinal = DataUtils.formataParaFormulario(DataUtils.somarDias(new Date(), -60));
+    this.paramsBuscaPrepedido.dataFinal = DataUtils.formataParaFormulario(new Date());
+    this.paramsBuscaPrepedido.dataInicial = DataUtils.formataParaFormulario(DataUtils.somarDias(new Date(), -60));
 
   }
 
   prepedidos$: BehaviorSubject<PrepedidosCadastradosDtoPrepedido[]> = new BehaviorSubject(new Array());
+  errosPrepedidos$: BehaviorSubject<any> = new BehaviorSubject(null);
 
   public atualizar(): void {
     // Initialize Params Object
@@ -33,11 +34,25 @@ export class PrepedidoBuscaService {
     params = params.append('numeroPrePedido', this.paramsBuscaPrepedido.numeroPrePedido);
     params = params.append('dataInicial', this.paramsBuscaPrepedido.dataInicial);
     params = params.append('dataFinal', this.paramsBuscaPrepedido.dataFinal);
-    //TODO: tipo de busca, não consta na API
+    /*
+    //tipo de busca:
+    tipoBusca:
+            Todos = 0, NaoViraramPedido = 1, SomenteViraramPedido = 2
+    */
+    let tipoBusca: number = 0;
+    if (this.paramsBuscaPrepedido.tipoBuscaAndamento && !this.paramsBuscaPrepedido.tipoBuscaPedido)
+      tipoBusca = 1;
+    if (!this.paramsBuscaPrepedido.tipoBuscaAndamento && this.paramsBuscaPrepedido.tipoBuscaPedido)
+      tipoBusca = 2;
+    params = params.append('tipoBusca', tipoBusca.toString());
 
-    //TODO: mostrar erros
+
+    let __this = this;
     this.http.get<PrepedidosCadastradosDtoPrepedido[]>(environment.apiUrl + 'prepedido/listarPrePedidos', { params: params }).subscribe(
-      r=> this.prepedidos$.next(r)
+      {
+        next(r) { __this.prepedidos$.next(r); },
+        error(err) { __this.errosPrepedidos$.next(err); }
+      }
     );
   }
 
