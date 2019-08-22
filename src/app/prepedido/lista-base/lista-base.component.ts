@@ -69,9 +69,12 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
   voltar() {
     this.location.back();
   }
-  displayedColumns: string[] = ['NumeroPrepedido', 'NomeCliente', 'Status', 'ValoTotal'];
-  displayedColumnsPedido: string[] = ['NumeroPedido', 'NomeCliente', 'Status', 'ValoTotal'];
+  displayedColumns: string[] = ['DataPrepedido', 'NumeroPrepedido', 'NomeCliente', 'Status', 'ValoTotal', 'Remover'];
+  displayedColumnsPedido: string[] = ['DataPedido', 'NumeroPedido', 'NomeCliente', 'Status', 'ValoTotal'];
 
 
+  removerPrepedido(numeroPrepedio: string): void {
+    window.alert("Ainda não implementado");
+  }
 }
 

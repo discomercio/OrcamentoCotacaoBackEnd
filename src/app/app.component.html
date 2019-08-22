@@ -17,10 +17,10 @@
     <span style="float: right; font-size: 0.7em" *ngIf="autenticacaoService.authEstaLogado()">
       Olá {{autenticacaoService.authNomeUsuario}}
     </span>
-    <button class='px-0' type="submit" mat-button style="padding: 0%" title="Logout" (click)="logout()"
+    <button class='px-0' type="submit" mat-button style="padding: 0%;" title="Logout" (click)="logout()"
       *ngIf="autenticacaoService.authEstaLogado()">
 
-      <mat-icon color="accent">exit_to_app</mat-icon>
+      <mat-icon class="iconelogout">exit_to_app</mat-icon>
     </button>
   </mat-toolbar>
   <mat-sidenav-container class="larguramaxima" *ngIf="telaDesktop">

@@ -10,12 +10,15 @@
                 <mat-form-field class="campoTexto">
                     <input *ngIf="emPrepedidos" matInput type="text" placeholder="CPF ou CNPJ do cliente"
                         [(ngModel)]="prepedidoBuscaService.paramsBuscaPrepedido.clienteBusca" name="clienteBusca"
-                        list="dlclienteBusca">
+                        list="dlclienteBusca1">
                     <input *ngIf="!emPrepedidos" matInput type="text" placeholder="CPF ou CNPJ do cliente"
                         [(ngModel)]="pedidoBuscaService.paramsBuscaPedido.clienteBusca" name="clienteBusca"
-                        list="dlclienteBusca">
-                    <datalist id="dlclienteBusca">
-                        <option *ngFor="let option of optionsClienteBusca$|async" [value]="option">
+                        list="dlclienteBusca2">
+                    <datalist *ngIf="emPrepedidos" id="dlclienteBusca1">
+                        <option *ngFor="let option of optionsPrepedidoClienteBusca$|async" [value]="option">
+                    </datalist>
+                    <datalist *ngIf="!emPrepedidos" id="dlclienteBusca2">
+                        <option *ngFor="let option of optionsPedidoClienteBusca$|async" [value]="option">
                     </datalist>
                 </mat-form-field>
             </div>
@@ -23,13 +26,16 @@
                 <mat-form-field class="campoTexto">
                     <input *ngIf="emPrepedidos" matInput type="text" placeholder="Número Pré Pedido"
                         [(ngModel)]="prepedidoBuscaService.paramsBuscaPrepedido.numeroPrePedido"
-                        name="numeroPrePedidoBusca" list="dlnumpedidoBUsca">
+                        name="numeroPrePedidoBusca" list="dlnumpedidoBUsca1">
                     <input *ngIf="!emPrepedidos" matInput type="text" placeholder="Número Pedido"
                         [(ngModel)]="pedidoBuscaService.paramsBuscaPedido.numeroPedido" name="numeroPrePedidoBusca"
-                        list="dlnumpedidoBUsca">
+                        list="dlnumpedidoBUsca2">
                 </mat-form-field>
-                <datalist id="dlnumpedidoBUsca">
-                    <option *ngFor="let option of optionsNumeroPrePedidoBusca$|async" [value]="option">
+                <datalist *ngIf="emPrepedidos" id="dlnumpedidoBUsca1">
+                    <option *ngFor="let option of optionsPrepedidoNumeroPrePedidoBusca$|async" [value]="option">
+                </datalist>
+                <datalist *ngIf="!emPrepedidos" id="dlnumpedidoBUsca2">
+                    <option *ngFor="let option of optionsPedidoNumeroPrePedidoBusca$|async" [value]="option">
                 </datalist>
             </div>
 

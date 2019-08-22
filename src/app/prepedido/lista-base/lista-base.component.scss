@@ -43,6 +43,10 @@
   .mat-column-NomeCliente {
     text-align: left;
   }
+  .mat-column-Remover {
+    text-align: center;
+    color: $cor-verde-icones;   
+  }
   /*
     .tabeladesktop th {
         border-bottom-style: solid;
@@ -63,8 +67,6 @@
   //para o celular
   .containercel {
     margin: 0.5em;
-    background-color: $cor-fundo-listapedidos;
-    border: 0.5em solid $cor-fundo-listapedidos;
   }
   .celcol1 {
     min-width: 4em;
@@ -76,5 +78,11 @@
   }
   .cellinha {
     height: 1em;
+  }
+  .cartao
+  {
+    background-color: $cor-fundo-listapedidos;
+    padding: 5px;
+    margin-bottom: 10px;
   }
 }

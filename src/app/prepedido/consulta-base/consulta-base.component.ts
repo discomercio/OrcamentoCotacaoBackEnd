@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 import { PedidoBuscaService } from 'src/app/servicos/pedido/pedido-busca.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from 'src/environments/environment';
+import { PedidoComboCpfcnpjService } from 'src/app/servicos/pedido/pedido-combo-cpfcnpj.service';
+import { PedidoComboNumeroService } from 'src/app/servicos/pedido/pedido-combo-numero.service';
 
 @Component({
   selector: 'app-consulta-base',
@@ -21,14 +23,20 @@ export class ConsultaBaseComponent extends TelaDesktopBaseComponent implements O
   //se estamos em prepedidos ou em pedidos
   @Input() emPrepedidos: boolean = true;
 
+  //optionsClienteBusca
+  //optionsNumeroPrePedidoBusca
   //listas para os combos
-  optionsNumeroPrePedidoBusca$: Observable<string[]>;
-  optionsClienteBusca$: Observable<string[]>;
+  optionsPrepedidoNumeroPrePedidoBusca$: Observable<string[]>;
+  optionsPrepedidoClienteBusca$: Observable<string[]>;
+  optionsPedidoNumeroPrePedidoBusca$: Observable<string[]>;
+  optionsPedidoClienteBusca$: Observable<string[]>;
 
 
   constructor(private prepedidoComboNumeroService: PrepedidoComboNumeroService,
     private _snackBar: MatSnackBar,
     private prepedidoComboCpfcnpjService: PrepedidoComboCpfcnpjService,
+    private pedidoComboCpfcnpjService: PedidoComboCpfcnpjService,
+    private pedidoComboNumeroService: PedidoComboNumeroService,
     telaDesktopService: TelaDesktopService,
     private router: Router,
     public pedidoBuscaService: PedidoBuscaService,
@@ -36,8 +44,10 @@ export class ConsultaBaseComponent extends TelaDesktopBaseComponent implements O
     super(telaDesktopService);
 
     //carrega os combos
-    this.optionsNumeroPrePedidoBusca$ = this.prepedidoComboNumeroService.obter();
-    this.optionsClienteBusca$ = this.prepedidoComboCpfcnpjService.obter();
+    this.optionsPrepedidoNumeroPrePedidoBusca$ = this.prepedidoComboNumeroService.obter();
+    this.optionsPrepedidoClienteBusca$ = this.prepedidoComboCpfcnpjService.obter();
+    this.optionsPedidoNumeroPrePedidoBusca$ = this.pedidoComboNumeroService.obter();
+    this.optionsPedidoClienteBusca$ = this.pedidoComboCpfcnpjService.obter();
 
   }
 
