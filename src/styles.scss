@@ -9,6 +9,61 @@
 // Be sure that you only ever include this mixin once!
 @include mat-core();
 
+/*
+// nossa paleta, baseada em Teal 50 
+$my-blue: (
+    
+
+    50:#E0F2F1
+    100 #B2DFDB
+    200 #80CBC4
+    300 #4DB6AC
+    400 #26A69A
+    500 #009688
+    600 #00897B
+    700 #00796B
+    800 #00695C
+    900 #004D40
+    A100 #A7FFEB
+    A200 #64FFDA
+    A400 #1DE9B6
+    A700 #00BFA5
+    
+
+  50: #7fdddd,
+  100: #7faedd,
+  200: #7f7fdd,
+  300: #7faedd,
+  400: #7faedd,
+  500: #7faedd,
+  600: #7faedd,
+  700: #7faedd,
+  800: #7faedd,
+  900: #7faedd,
+  A100: #7faedd,
+  A200: #7faedd,
+  A400: #7faedd,
+  A700: #7faedd,
+  contrast: (
+    50: white,
+    100: white,
+    200: white,
+    300: white,
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: white,
+    A200: white,
+    A400: white,
+    A700: white,
+  )
+);
+*/
+
+
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/

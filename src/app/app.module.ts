@@ -9,10 +9,10 @@ import { HomeModule } from './home/home.module';
 import { MatButtonModule, MatIconModule, MatToolbarModule, MatSidenavModule, MatTableModule, MatDialogModule } from '@angular/material';
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { PrepedidoModule } from './prepedido/prepedido.module';
-import { HttpClientModule } from '@angular/common/http';
-import { CdkTableModule } from '@angular/cdk/table';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { PedidoModule } from './pedido/pedido.module';
 import { LoginModule } from './login/login.module';
+import { TokenInterceptor } from './servicos/autenticacao/token.interceptor';
 
 @NgModule({
   declarations: [
@@ -39,7 +39,13 @@ import { LoginModule } from './login/login.module';
     MatButtonModule,
     LoginModule
     ],
-  providers: [  ],
+  providers: [ 
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }
+   ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -45,7 +45,7 @@ export class AutenticacaoService {
       sessionStorage.setItem("token", token);
   }
 
-  private obterToken(): string {
+  public obterToken(): string {
     //tentamos nos dois lugares
     var ret = localStorage.getItem("token");
     if (ret)

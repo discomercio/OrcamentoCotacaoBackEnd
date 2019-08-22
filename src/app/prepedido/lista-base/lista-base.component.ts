@@ -46,7 +46,7 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
       {
         next(r) {
           if (r == null) return;
-          this._snackBar.open("Ocorreu um erro ao fazer a busca de pré-pedidos. Verifique a conexão e tente novamente.", "", {
+          __this._snackBar.open("Ocorreu um erro ao fazer a busca de pré-pedidos. Verifique a conexão e tente novamente.", "", {
             duration: environment.esperaErros
           });
         }
@@ -58,7 +58,7 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
       {
         next(r) {
           if (r == null) return;
-          this._snackBar.open("Ocorreu um erro ao fazer a busca de pedidos. Verifique a conexão e tente novamente.", "", {
+          __this._snackBar.open("Ocorreu um erro ao fazer a busca de pedidos. Verifique a conexão e tente novamente.", "", {
             duration: environment.esperaErros
           });
         }
