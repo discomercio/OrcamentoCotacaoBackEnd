@@ -38,7 +38,7 @@ namespace PrepedidoApi.Controllers
             DateTime? dataInicial, DateTime? dataFinal)
         {
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            //var apelido = "SALOMÃO";
+            //string apelido = "SALOMÃO";
             var ret = await pedidoBll.ListarPedidos(apelido,
                 (PrepedidoBusiness.Bll.PedidoBll.TipoBuscaPedido)tipoBusca, clienteBusca,
                 numPedido, dataInicial, dataFinal);

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using InfraIdentity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using PrepedidoApi.Utils;
@@ -40,16 +41,18 @@ namespace PrepedidoApi.Controllers
     [Route("api/[controller]")]
     public class AcessoController : ControllerBase
     {
-        private readonly InfraIdentity.IServicoAutenticacao servicoAutenticacao;
+        private readonly IServicoAutenticacao servicoAutenticacao;
         private readonly IConfiguration configuration;
         private readonly PrepedidoBusiness.Bll.AcessoBll acessoBll;
+        private readonly IServicoDecodificarToken servicoDecodificarToken;
 
-
-        public AcessoController(InfraIdentity.IServicoAutenticacao servicoAutenticacao, IConfiguration configuration, PrepedidoBusiness.Bll.AcessoBll acessoBll)
+        public AcessoController(IServicoAutenticacao servicoAutenticacao, IConfiguration configuration, PrepedidoBusiness.Bll.AcessoBll acessoBll,
+            IServicoDecodificarToken servicoDecodificarToken)
         {
             this.servicoAutenticacao = servicoAutenticacao;
             this.configuration = configuration;
             this.acessoBll = acessoBll;
+            this.servicoDecodificarToken = servicoDecodificarToken;
         }
 
 
@@ -84,7 +87,6 @@ namespace PrepedidoApi.Controllers
             string ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
             string userAgent = Request.Headers["User-agent"];
 
-            //string loja = 
             await acessoBll.GravarSessao(ip, apelido, userAgent);
 
             if (token == null)
@@ -93,11 +95,18 @@ namespace PrepedidoApi.Controllers
             return Ok(token);
         }
 
+        [AllowAnonymous]
+        [HttpPut("fazerLogout")]
         public async Task<IActionResult> FazerLogout()
         {
-            //Faz um update na t_Usuario e update no t_SESSAO_HISTORICO
+            //para testar: http://localhost:60877/api/acesso/fazerLogout
+            //string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
+            string apelido = "SALOMÃO";
 
-            return Ok();      
+            //Faz um update na t_Usuario e update no t_SESSAO_HISTORICO
+            await acessoBll.FazerLogout(apelido);
+
+            return Ok();
         }
 
     }

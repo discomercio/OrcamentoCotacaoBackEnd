@@ -74,8 +74,25 @@ namespace PrepedidoBusiness.Bll
                 ValorTotal = r.Vl_Total_NF
             }).OrderByDescending(r => r.DataPedido);
 
-            var res = listaFinal.AsEnumerable();
-            return await Task.FromResult(res);
+
+            //colocar as mensagens de status
+            var listaComStatus = await listaFinal.ToListAsync();
+            foreach (var pedido in listaComStatus)
+            {                
+                if (pedido.Status == "ESP")
+                    pedido.Status = "Em espera";
+                if (pedido.Status == "SPL")
+                    pedido.Status = "Split possível";
+                if (pedido.Status == "SEP")
+                    pedido.Status = "SEPARAR";
+                if (pedido.Status == "AET")
+                    pedido.Status = "A entregar";
+                if (pedido.Status == "ETG")
+                    pedido.Status = "Entrega";
+                if (pedido.Status == "CAN")
+                    pedido.Status = "Cancelado";
+            }
+            return await Task.FromResult(listaComStatus);
         }
     }
 }

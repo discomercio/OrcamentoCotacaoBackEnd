@@ -138,8 +138,6 @@ namespace PrepedidoBusiness.Bll
                         (r.St_Orcamento == "" || r.St_Orcamento == null)
                       ).Single();
 
-            var t = db.TclienteRefBancarias;
-
             prePedido.St_Orcamento = "CAN";
             prePedido.Cancelado_Data = DateTime.Now;
             prePedido.Cancelado_Usuario = apelido;

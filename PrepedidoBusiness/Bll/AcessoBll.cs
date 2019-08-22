@@ -20,6 +20,8 @@ namespace PrepedidoBusiness.Bll
 
         public async Task<string> ValidarUsuario(string apelido, string senha)
         {
+            //apelido = "SALOMÃO";
+
             var db = contextoProvider.GetContexto();
             //Validar o dados no bd
             var dados = from c in db.TorcamentistaEindicadors
@@ -48,6 +50,7 @@ namespace PrepedidoBusiness.Bll
 
             //validar a senha
             //SLM112233 - SALOMÃO
+            
             var senha_banco = DecodificaSenha(t.Datastamp);
             if (senha != senha_banco)
                 return await Task.FromResult(retorno);
@@ -216,6 +219,34 @@ namespace PrepedidoBusiness.Bll
             s_destino = "0x" + destino.ToUpper();
 
             return s_destino;
+        }
+
+        public async Task FazerLogout(string apelido)
+        {
+            var db = contextoProvider.GetContexto();
+
+            //O orcamentista não é salvo nessa tabela
+            //o Usuario é o usuario_cadastro da tabela t_ORCAMENTISTA_E_INDICADOR
+            //CAMILA IRÁ VERIFICAR COM O HAMILTON
+
+            //Tusuario usuario = db.Tusuarios.
+            //    Where(r => r.Usuario == apelido)
+            //    .Single();
+            ////atualiza a tabela t_USUARIO
+            //usuario.SessionCtrlTicket = null;
+            //usuario.SessionCtrlLoja = null;
+            //usuario.SessionCtrlModulo = null;
+            //usuario.SessionCtrlDtHrLogon = null;
+
+            //atualiza a tabela t_SESSAO_HISTORICO
+            TsessaoHistorico sessaoHist = db.TsessaoHistoricos
+                .Where(r => r.Usuario == apelido 
+                         && r.DtHrInicio >= DateTime.Now.AddHours(-1))                         
+                .SingleOrDefault();
+            sessaoHist.DtHrTermino = DateTime.Now;
+
+            db.TsessaoHistoricos.Add(sessaoHist);
+            await db.SaveChangesAsync();
         }
 
     }
