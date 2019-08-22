@@ -19,7 +19,10 @@ namespace InfraIdentity
         {
             if (User == null)
                 return null;
-            string apelido = User.Claims.FirstOrDefault(r => r.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value;
+            var aux = User.Claims.FirstOrDefault(r => r.Type == System.Security.Claims.ClaimTypes.NameIdentifier);
+            if(aux == null)
+                return null;
+            string apelido = aux.Value;
             return apelido;
         }
     }
