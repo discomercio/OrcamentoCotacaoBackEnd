@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TelaDesktopService } from './servicos/telaDesktop/telaDesktop.service';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
+import { AutenticacaoService } from './servicos/autenticacao/autenticacao.service'
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,7 @@ export class AppComponent implements OnInit {
   telaDesktop: boolean = true;
 
   constructor(private telaDesktopService: TelaDesktopService,
+    public autenticacaoService: AutenticacaoService,
     private router: Router) {
     telaDesktopService.telaAtual$.subscribe(r => this.telaDesktop = r);
   }
@@ -35,6 +37,11 @@ export class AppComponent implements OnInit {
         }
       }
     });
+  }
+
+  logout(){
+    this.autenticacaoService.authLogout();
+    this.router.navigateByUrl("/login");
   }
   title = 'Sistema de pré-pedidos';
 }

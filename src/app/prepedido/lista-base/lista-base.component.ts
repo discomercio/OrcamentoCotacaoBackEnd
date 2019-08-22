@@ -8,9 +8,10 @@ import { DataUtils } from 'src/app/utils/dataUtils';
 import { MoedaUtils } from 'src/app/utils/erro/moedaUtils';
 import { Location } from '@angular/common';
 import { Sort } from '@angular/material/sort';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { PedidoBuscaService } from 'src/app/servicos/pedido/pedido-busca.service';
 import { PedidosDtoPedido } from 'src/app/dto/pedido/pedidosDtoPedido';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-lista-base',
@@ -26,6 +27,7 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
     public pedidoBuscaService: PedidoBuscaService,
     private location: Location,
     telaDesktopService: TelaDesktopService,
+    private _snackBar: MatSnackBar,
     public dialog: MatDialog) {
     super(telaDesktopService);
 
@@ -44,8 +46,9 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
       {
         next(r) {
           if (r == null) return;
-          //TODO: mostrar erro em uma caixa de diálogo personalizada
-          window.alert("Ocorreu um erro ao fazer a busca de pré-pedidos. Verifique a conexão e tente novamente.");
+          this._snackBar.open("Ocorreu um erro ao fazer a busca de pré-pedidos. Verifique a conexão e tente novamente.", "", {
+            duration: environment.esperaErros
+          });
         }
       });
     this.prepedidoBuscaService.atualizar();
@@ -55,8 +58,9 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
       {
         next(r) {
           if (r == null) return;
-          //TODO: mostrar erro em uma caixa de diálogo personalizada
-          window.alert("Ocorreu um erro ao fazer a busca de pedidos. Verifique a conexão e tente novamente.");
+          this._snackBar.open("Ocorreu um erro ao fazer a busca de pedidos. Verifique a conexão e tente novamente.", "", {
+            duration: environment.esperaErros
+          });
         }
       });
     this.pedidoBuscaService.atualizar();

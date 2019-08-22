@@ -3,7 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
+  autenticaStorageSession: false, //se false, gaurda no localstorage
+
   esperaAvisos: 3000,
+  esperaErros: 5000,
   apiUrl: 'http://localhost:60877/api/',
   production: false
 };

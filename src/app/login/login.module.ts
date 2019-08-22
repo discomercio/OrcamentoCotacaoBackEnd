@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { LoginRoutingModule } from './login-routing.module';
-import { MatButtonModule, MatInputModule, MatIconModule } from '@angular/material';
+import { MatButtonModule, MatInputModule, MatIconModule, MatSnackBarModule, MatCheckboxModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 import { LoginformularioComponent } from './loginformulario/loginformulario.component';
 import { FormsModule } from '@angular/forms';
@@ -17,7 +17,9 @@ import { FormsModule } from '@angular/forms';
     MatIconModule,
     RouterModule,
     CommonModule,
-    LoginRoutingModule
+    LoginRoutingModule,
+    MatSnackBarModule,
+    MatCheckboxModule
   ]
 })
 export class LoginModule { }

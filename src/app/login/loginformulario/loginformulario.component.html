@@ -1,35 +1,8 @@
-<div *ngIf="telaDesktop" [class]="telaDesktop? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'" layout="row"
-  fxLayoutAlign="center center">
-
-  <div class="titulopagina" style="margin-left: 0px;">Faça login para acessar o sistema</div>
-<br>
-  <form #loginForm="ngForm" class="login-container" (ngSubmit)="login()">
-
-    <div class="divCampos" >
-      <mat-form-field class="campoTexto">
-        <input matInput type="text" placeholder="Usuário" required [(ngModel)]="usuario" name="usuario">
-      </mat-form-field>
-      <br>
-      <mat-form-field class="campoTexto">
-        <input matInput type="password" placeholder="Senha" required [(ngModel)]="senha" name="senha">
-      </mat-form-field>
-
-      <br>
-      <br>
-      <button [disabled]="!loginForm.valid" mat-raised-button type="submit" color="accent">
-        <mat-icon>arrow_forward</mat-icon> Entrar
-      </button>
-    </div>
-  </form>
-
-</div>
-
-
-<div *ngIf="!telaDesktop" [class]="telaDesktop? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'" layout="row"
+<div [class]="telaDesktop? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'" layout="row"
   fxLayoutAlign="center center">
 
   <div style="flex-grow: 0.5">  </div>
-  <div class="titulopagina">Faça login para acessar o sistema</div>
+  <div class="titulopagina">Faça o login para acessar o sistema</div>
 
   <div style="flex-grow: 0.3">  </div>
   <form #loginForm="ngForm" class="login-container" (ngSubmit)="login()">
@@ -44,7 +17,11 @@
       </mat-form-field>
 
       <br style="height: 10px;">
+      <mat-checkbox class="campoTexto" [(ngModel)]="lembrar" name="lembrar">Manter conectado</mat-checkbox>
       <br style="height: 10px;">
+      <br style="height: 10px;">
+      <br style="height: 10px;">
+
       <button [disabled]="!loginForm.valid" mat-raised-button type="submit" color="accent">
         <mat-icon>arrow_forward</mat-icon> Entrar
       </button>
