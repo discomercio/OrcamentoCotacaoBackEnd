@@ -4,8 +4,8 @@ using System.Text;
 using InfraBanco.Modelos;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using PrepedidoBusiness.Dto.Acesso;
 using System.Threading.Tasks;
+
 
 namespace PrepedidoBusiness.Bll
 {
@@ -33,10 +33,12 @@ namespace PrepedidoBusiness.Bll
                             c.Status
                         };
 
-
             string retorno = null;
             var t = await dados.FirstOrDefaultAsync();
 
+            //se o apelido nao existe
+            if (t == null)
+                return await Task.FromResult(retorno);
             if (t.Datastamp == "")
                 return await Task.FromResult(retorno);
             if (t.Hab_Acesso_Sistema != 1)
@@ -54,13 +56,44 @@ namespace PrepedidoBusiness.Bll
             TorcamentistaEindicador orcamentista = await db.TorcamentistaEindicadors
                 .Where(c => c.Apelido == apelido).SingleAsync();
             orcamentista.Dt_Ult_Acesso = DateTime.Now;
-            
-            //inseri na t_SESSAO_HISTORICO
-
 
             await db.SaveChangesAsync();
 
             return await Task.FromResult(t.Razao_Social_Nome);
+        }
+
+        private async Task<string> BuscarLojaUsuario(string apelido)
+        {
+            var db = contextoProvider.GetContexto();
+
+            var loja = (from c in db.TorcamentistaEindicadors
+                       where c.Apelido == apelido
+                       select c.Loja).Single();
+             
+            return await Task.FromResult(loja);
+        }
+
+        public async Task GravarSessao(string ip, string apelido, string userAgent)
+        {
+            var db = contextoProvider.GetContexto();
+
+            string loja = await BuscarLojaUsuario(apelido);
+
+            //inserir na t_SESSAO_HISTORICO
+            TsessaoHistorico sessaoHist = new TsessaoHistorico
+            {
+                Usuario = apelido,
+                SessionCtrlTicket = "",
+                DtHrInicio = DateTime.Now,
+                DtHrTermino = null,
+                Loja = loja,
+                Modulo = "ORCTO",
+                IP = ip,
+                UserAgent = userAgent
+            };
+
+            db.TsessaoHistoricos.Add(sessaoHist);
+            await db.SaveChangesAsync();
         }
 
         public string geraChave()

@@ -134,6 +134,7 @@ namespace InfraBanco.Modelos
         public DateTime? Dt_Ult_Acesso { get; set; }
 
         [Column("timestamp")]
+        [Timestamp]
         public byte[] Timestamp { get; set; }
 
         [Column("desempenho_nota")]

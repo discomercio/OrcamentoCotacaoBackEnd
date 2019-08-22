@@ -30,8 +30,8 @@ namespace PrepedidoApi.Controllers
         public async Task<IActionResult> ListarNumerosPrepedidosCombo()
         {
             //para testar: http://localhost:60877/api/prepedido/listarNumerosPrepedidosCombo
-            //string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            string apelido = "RUI LUIS";
+            string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
+            //string apelido = "RUI LUIS";
             var ret = await prepedidoBll.ListarNumerosPrepedidosCombo(apelido);
             return Ok(ret);
         }
@@ -41,8 +41,8 @@ namespace PrepedidoApi.Controllers
         public async Task<IActionResult> ListarCpfCnpjPrepedidosCombo()
         {
             //para testar :http://localhost:60877/api/prepedido/listarCpfCnpjPrepedidosCombo
-            //string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            string apelido = "RUI LUIS";
+            string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
+            //string apelido = "RUI LUIS";
             var lista = await prepedidoBll.ListarCpfCnpjPrepedidosCombo(apelido);
 
             return Ok(lista);
@@ -54,8 +54,8 @@ namespace PrepedidoApi.Controllers
             DateTime? dataInicial, DateTime? dataFinal)
         {
             //para testar: http://localhost:60877/api/prepedido/listarPrePedidos
-            //string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            string apelido = "RUI LUIS";
+            string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
+            //string apelido = "A. SYSTEM";
             var lista = await prepedidoBll.ListarPrePedidos(apelido, 
                 (PrepedidoBusiness.Bll.PrepedidoBll.TipoBuscaPrepedido)tipoBusca, 
                 clienteBusca, numeroPrePedido, dataInicial, dataFinal);
@@ -64,10 +64,10 @@ namespace PrepedidoApi.Controllers
 
         [AllowAnonymous]
         [HttpPut("removerPrePedido/{numeroPrePedido}")]
-        public async Task<IActionResult> RemoverPrePedido(string numeroPrePedido)
+        public IActionResult RemoverPrePedido(string numeroPrePedido)
         {
-            //string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            string apelido = "SALOMÃO";
+            string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
+            //string apelido = "SALOMÃO";
             if (numeroPrePedido == null || numeroPrePedido == "")
             {
                 return NotFound();

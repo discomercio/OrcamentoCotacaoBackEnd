@@ -92,8 +92,9 @@ namespace InfraBanco.Modelos
         [Column("venda_externa")]
         public short? Venda_Externa { get; set; }
 
-        //[Column("timestamp")]
-        //public DateTime? Timestamp { get; set; }
+        [Column("timestamp")]
+        [Timestamp]
+        public byte[] Timestamp { get; set; }
 
         [Column("tipo_parcelamento")]
         [Required]

@@ -71,8 +71,8 @@ namespace PrepedidoBusiness.Bll
                 NumeroPedido = r.Pedido,
                 DataPedido = r.Data,
                 Status = r.St_Entrega,
-                ValorTotal = 0
-            });
+                ValorTotal = r.Vl_Total_NF
+            }).OrderByDescending(r => r.DataPedido);
 
             var res = listaFinal.AsEnumerable();
             return await Task.FromResult(res);

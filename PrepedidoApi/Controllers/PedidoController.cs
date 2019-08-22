@@ -25,8 +25,8 @@ namespace PrepedidoApi.Controllers
         [HttpGet("listarNumerosPedidosCombo")]
         public async Task<IActionResult> ListarNumerosPedidosCombo()
         {
-            //string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            string apelido = "SALOMÃO";
+            string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
+            //string apelido = "SALOMÃO";
             var ret = await pedidoBll.ListarNumerosPedidoCombo(apelido);
 
             return Ok(ret);
@@ -37,8 +37,8 @@ namespace PrepedidoApi.Controllers
         public async Task<IActionResult> ListarPedidos(string clienteBusca, int tipoBusca, string numPedido,
             DateTime? dataInicial, DateTime? dataFinal)
         {
-            //string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            var apelido = "SALOMÃO";
+            string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
+            //var apelido = "SALOMÃO";
             var ret = await pedidoBll.ListarPedidos(apelido,
                 (PrepedidoBusiness.Bll.PedidoBll.TipoBuscaPedido)tipoBusca, clienteBusca,
                 numPedido, dataInicial, dataFinal);

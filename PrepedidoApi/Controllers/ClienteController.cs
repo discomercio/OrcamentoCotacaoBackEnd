@@ -39,7 +39,7 @@ namespace PrepedidoApi.Controllers
         {
             //para testar: http://localhost:60877/api/cliente/buscarCliente
             //string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            string apelido = "SALOMÃO";
+            //string apelido = "SALOMÃO";
             var dadosCliente = await clienteBll.BuscarCliente(cnpj_cpf);
             return Ok(dadosCliente);
 

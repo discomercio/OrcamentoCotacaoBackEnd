@@ -43,7 +43,7 @@ namespace PrepedidoBusiness.Bll
                         select c.Tcliente.Cnpj_Cpf;
 
             var ret = await lista.Distinct().ToListAsync();
-            List<string> cpfCnpjFormat = new List<string>();            
+            List<string> cpfCnpjFormat = new List<string>();
 
             foreach (string cpf in ret)
             {
@@ -57,7 +57,7 @@ namespace PrepedidoBusiness.Bll
         {
             Todos = 0, NaoViraramPedido = 1, SomenteViraramPedido = 2
         }
-        public async Task<IEnumerable<PrepedidosCadastradosDtoPrepedido>> ListarPrePedidos(string apelido, TipoBuscaPrepedido tipoBusca, 
+        public async Task<IEnumerable<PrepedidosCadastradosDtoPrepedido>> ListarPrePedidos(string apelido, TipoBuscaPrepedido tipoBusca,
             string clienteBusca, string numeroPrePedido, DateTime? dataInicial, DateTime? dataFinal)
         {
             var db = contextoProvider.GetContexto();
@@ -69,11 +69,10 @@ namespace PrepedidoBusiness.Bll
             switch (tipoBusca)
             {
                 case TipoBuscaPrepedido.Todos:
-                    //sem filtro adicional
+                    lst = lst.Where(r => r.St_Orcamento != "CAN");
                     break;
                 case TipoBuscaPrepedido.NaoViraramPedido:
-                    lst = lst.Where(r => (r.St_Orcamento == "" || r.St_Orcamento == null)
-                        && (r.St_Fechamento == "" || r.St_Fechamento == null));
+                    lst = lst.Where(r => (r.St_Orc_Virou_Pedido == 0) && (r.St_Orcamento != "CAN"));
                     break;
                 case TipoBuscaPrepedido.SomenteViraramPedido:
                     lst = lst.Where(c => c.St_Orc_Virou_Pedido == 1);
@@ -88,17 +87,15 @@ namespace PrepedidoBusiness.Bll
             if (dataFinal.HasValue)
                 lst = lst.Where(r => r.Data >= dataFinal.Value);
 
-
             //COLOCAR O STATUS DO PEDIDO PARA PREPEDIDOS QUE VIRARAM PEDIDOS
             var lstfinal = lst.Select(r => new PrepedidosCadastradosDtoPrepedido
             {
-                //A LOJA NÃO IRÁ MAIS APARECER
-                Status = "Pré-Pedido",
+                Status = r.St_Orc_Virou_Pedido == 1 ? "Pré-Pedido - Com Pedido" : "Pré-Pedido - Sem Pedido",
                 DataPrePedido = r.Data_Hora,
                 NumeroPrepedido = r.Orcamento,
                 NomeCliente = r.Tcliente.Nome,
                 ValoTotal = r.Vl_Total
-            });            
+            }).OrderByDescending(r => r.DataPrePedido);
 
             var res = lstfinal.AsEnumerable();
             return await Task.FromResult(res);

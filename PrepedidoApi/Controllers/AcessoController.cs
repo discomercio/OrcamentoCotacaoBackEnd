@@ -78,11 +78,26 @@ namespace PrepedidoApi.Controllers
             var appSettings = appSettingsSection.Get<Utils.Configuracao>();
 
             string token = await servicoAutenticacao.ObterTokenAutenticacao(apelido, senha, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos, Utils.Autenticacao.RoleAcesso, new ServicoAutenticacaoProvider(acessoBll));
+            //pegar o ip do usuario e salvar
+            //IPHostEntry hostUser = Dns.GetHostEntry(Dns.GetHostName());
+            //IPAddress ipUsuario = hostUser.AddressList[1];
+            string ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+            string userAgent = Request.Headers["User-agent"];
+
+            //string loja = 
+            await acessoBll.GravarSessao(ip, apelido, userAgent);
 
             if (token == null)
                 return BadRequest(new { message = "Usuário ou senha incorreta." });
 
             return Ok(token);
+        }
+
+        public async Task<IActionResult> FazerLogout()
+        {
+            //Faz um update na t_Usuario e update no t_SESSAO_HISTORICO
+
+            return Ok();      
         }
 
     }
