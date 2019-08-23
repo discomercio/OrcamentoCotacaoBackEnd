@@ -7,22 +7,23 @@ import { AutenticacaoService } from './autenticacao.service';
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
-  constructor(private autenticacaoService:AutenticacaoService) { 
+  constructor(private autenticacaoService: AutenticacaoService) {
 
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpSentEvent
     | HttpHeaderResponse | HttpProgressEvent | HttpResponse<any> | HttpUserEvent<any>> {
 
+    this.autenticacaoService.renovarTokenSeNecessario();
+
     //adicioan o header de autenticação
-    if (this.autenticacaoService.authEstaLogado())
-    {
-          req = req.clone({
-            setHeaders: {
-              'Authorization': 'Bearer ' + this.autenticacaoService.obterToken()
-            }
-          });
+    if (this.autenticacaoService.authEstaLogado()) {
+      req = req.clone({
+        setHeaders: {
+          'Authorization': 'Bearer ' + this.autenticacaoService.obterToken()
         }
+      });
+    }
     return next.handle(req);
   }
 }

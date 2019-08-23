@@ -21,6 +21,7 @@ export class PedidoBuscaService {
 
   }
 
+  public carregando: boolean = false;
   pedidos$: BehaviorSubject<PedidosDtoPedido[]> = new BehaviorSubject(new Array());
   errosPedidos$: BehaviorSubject<any> = new BehaviorSubject(null);
 
@@ -47,10 +48,22 @@ export class PedidoBuscaService {
     params = params.append('tipoBusca', tipoBusca.toString());
 
     let __this = this;
+    __this.carregando = true;
+
     this.http.get<PedidosDtoPedido[]>(environment.apiUrl + 'pedido/listarPedidos', { params: params }).subscribe(
       {
-        next(r) { __this.pedidos$.next(r); },
-        error(err) { __this.errosPedidos$.next(err); }
+        next(r) {
+          __this.carregando = false;
+          __this.pedidos$.next(r);
+        },
+        error(err) {
+          __this.carregando = false;
+          __this.errosPedidos$.next(err);
+        },
+        complete() {
+          __this.carregando = false;
+        }
+
       }
     );
   }
