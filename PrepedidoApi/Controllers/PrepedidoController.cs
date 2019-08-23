@@ -64,8 +64,9 @@ namespace PrepedidoApi.Controllers
 
         [AllowAnonymous]
         [HttpPut("removerPrePedido/{numeroPrePedido}")]
-        public IActionResult RemoverPrePedido(string numeroPrePedido)
+        public async Task<IActionResult> RemoverPrePedido(string numeroPrePedido)
         {
+            //para testar: http://localhost:60877/api/prepedido/removerPrePedido/{numeroPrePedido}
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
             //string apelido = "SALOMÃO";
             if (numeroPrePedido == null || numeroPrePedido == "")
@@ -73,9 +74,12 @@ namespace PrepedidoApi.Controllers
                 return NotFound();
             }
 
-            prepedidoBll.RemoverPrePedido(numeroPrePedido, apelido);
+            var ret = await prepedidoBll.RemoverPrePedido(numeroPrePedido, apelido);
 
-            return NoContent();
+            if (ret == true)
+                return NoContent();
+            else
+                return NotFound();
         }
     }
 }

@@ -25,6 +25,7 @@ namespace PrepedidoApi.Controllers
         [HttpGet("listarNumerosPedidosCombo")]
         public async Task<IActionResult> ListarNumerosPedidosCombo()
         {
+            //para testar: http://localhost:60877/api/pedido/listarNumerosPedidosCombo
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
             //string apelido = "SALOMÃO";
             var ret = await pedidoBll.ListarNumerosPedidoCombo(apelido);
@@ -37,6 +38,7 @@ namespace PrepedidoApi.Controllers
         public async Task<IActionResult> ListarPedidos(string clienteBusca, int tipoBusca, string numPedido,
             DateTime? dataInicial, DateTime? dataFinal)
         {
+            //para testar: http://localhost:60877/api/pedido/listarPedidos
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
             //string apelido = "SALOMÃO";
             var ret = await pedidoBll.ListarPedidos(apelido,
@@ -50,6 +52,7 @@ namespace PrepedidoApi.Controllers
         [HttpGet("listarCpfCnpjPedidosCombo")]
         public async Task<IActionResult> ListarCpfCnpjPedidosCombo()
         {
+            //para testar: http://localhost:60877/api/pedido/listarCpfCnpjPedidosCombo
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
             var ret = await pedidoBll.ListarCpfCnpjPedidosCombo(apelido);

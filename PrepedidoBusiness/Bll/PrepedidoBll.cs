@@ -103,33 +103,7 @@ namespace PrepedidoBusiness.Bll
             return await Task.FromResult(res);
         }
 
-        //ESSE METODO ESTA SENDO EXECUTADO NO METODO ListarPrePedidos(parametros)
-        //public async Task<IEnumerable<PrepedidoQueViraramPedidoDtoPedido>> ListarPrePedidosQueViraramPedidos(string apelido, DateTime? inicio, DateTime? fim)
-        //{
-        //    var db = contextoProvider.GetContexto();
-
-        //    var lst = from c in db.Torcamentos.Include(r => r.Tcliente).Include(r => r.Tpedido)
-        //              where c.Orcamentista == apelido &&
-        //                    c.St_Orc_Virou_Pedido == 1 &&
-        //                    c.Tpedido.Data >= inicio && c.Tpedido.Data <= DateTime.Now
-        //              orderby c.Numero_Loja, c.Data, c.Orcamento
-        //              select new PrepedidoQueViraramPedidoDtoPedido
-        //              {
-        //                  NumeroPrePedido = c.Orcamento,
-        //                  DataOrcamento = c.Data,
-        //                  NumeroPedido = c.Pedido,
-        //                  DataPedido = c.Tpedido.Data,
-        //                  NomeCliente = c.Tcliente.Nome,
-        //                  Vl_Total_Familia = c.Tpedido.Vl_Total_Familia,
-        //                  St_Entrega = c.Tpedido.St_Entrega
-
-        //              };
-
-        //    var res = lst.AsEnumerable();
-        //    return await Task.FromResult(res);
-        //}
-
-        public void RemoverPrePedido(string numeroPrePedido, string apelido)
+        public async Task<bool> RemoverPrePedido(string numeroPrePedido, string apelido)
         {
             var db = contextoProvider.GetContexto();
 
@@ -141,10 +115,16 @@ namespace PrepedidoBusiness.Bll
                         r.St_Orc_Virou_Pedido == 0
                       ).SingleOrDefault();
 
-            prePedido.St_Orcamento = "CAN";
-            prePedido.Cancelado_Data = DateTime.Now;
-            prePedido.Cancelado_Usuario = apelido;
-            db.SaveChanges();
+            if (!string.IsNullOrEmpty(prePedido.ToString()))
+            {
+                prePedido.St_Orcamento = "CAN";
+                prePedido.Cancelado_Data = DateTime.Now;
+                prePedido.Cancelado_Usuario = apelido;
+                await db.SaveChangesAsync();
+                return await Task.FromResult(true);
+            }
+            
+            return await Task.FromResult(false);
         }
 
 

@@ -22,22 +22,11 @@ namespace PrepedidoApi.Controllers
             this.servicoDecodificarToken = servicoDecodificarToken;
         }
 
-        //[AllowAnonymous]
-        //[HttpGet("listarClientesPrePedidosCombo")]
-        //public async Task<IActionResult> ListarClientesPrepedidosCombo()
-        //{
-        //    //para testar :http://localhost:60877/api/cliente/listarClientesPrePedidosCombo
-        //    string apelido = "SALOMÃO";
-        //    var lista = await prepedido.ListarClientesPrepedidosCombo(apelido);
-
-        //    return Ok(lista);
-        //}
-
         [AllowAnonymous]
         [HttpGet("buscarCliente/{cnpj_cpf}")]
         public async Task<IActionResult> BuscarCliente(string cnpj_cpf)
         {
-            //para testar: http://localhost:60877/api/cliente/buscarCliente
+            //para testar: http://localhost:60877/api/cliente/buscarCliente/{cnpj_cpf}
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
             //string apelido = "SALOMÃO";
             var dadosCliente = await clienteBll.BuscarCliente(cnpj_cpf);

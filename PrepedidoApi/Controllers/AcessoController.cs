@@ -81,9 +81,7 @@ namespace PrepedidoApi.Controllers
             var appSettings = appSettingsSection.Get<Utils.Configuracao>();
 
             string token = await servicoAutenticacao.ObterTokenAutenticacao(apelido, senha, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos, Utils.Autenticacao.RoleAcesso, new ServicoAutenticacaoProvider(acessoBll));
-            //pegar o ip do usuario e salvar
-            //IPHostEntry hostUser = Dns.GetHostEntry(Dns.GetHostName());
-            //IPAddress ipUsuario = hostUser.AddressList[1];
+            
             string ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
             string userAgent = Request.Headers["User-agent"];
 
@@ -100,8 +98,8 @@ namespace PrepedidoApi.Controllers
         public async Task<IActionResult> FazerLogout()
         {
             //para testar: http://localhost:60877/api/acesso/fazerLogout
-            //string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            string apelido = "SALOMÃO";
+            string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
+            //string apelido = "SALOMÃO";
 
             //Faz um update na t_Usuario e update no t_SESSAO_HISTORICO
             await acessoBll.FazerLogout(apelido);
