@@ -5,13 +5,18 @@ VisualStudioVersion = 16.0.29201.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrepedidoApi", "PrepedidoApi\PrepedidoApi.csproj", "{F12D7CF6-EF7D-4963-BDC0-0632C434B467}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfraIdentity", "InfraIdentity\InfraIdentity.csproj", "{DF193EBA-BDB8-4555-8CDC-3DA3D60C8498}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfraIdentity", "InfraIdentity\InfraIdentity.csproj", "{DF193EBA-BDB8-4555-8CDC-3DA3D60C8498}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infra", "Infra", "{C408137C-E3F1-4F50-BA91-8888CDB37085}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfraBanco", "InfraBanco\InfraBanco.csproj", "{09A98367-6741-4CFF-972F-ACB4315C8C53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfraBanco", "InfraBanco\InfraBanco.csproj", "{09A98367-6741-4CFF-972F-ACB4315C8C53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrepedidoBusiness", "PrepedidoBusiness\PrepedidoBusiness.csproj", "{85832938-E118-4818-A5FC-21CB139CC3B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrepedidoBusiness", "PrepedidoBusiness\PrepedidoBusiness.csproj", "{85832938-E118-4818-A5FC-21CB139CC3B9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bats", "Bats", "{A0F97C04-F675-4875-85EC-9D198181884E}"
+	ProjectSection(SolutionItems) = preProject
+		AtualizarSonar.bat = AtualizarSonar.bat
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
