@@ -87,7 +87,7 @@
 
     <div *ngIf="!telaDesktop && emPrepedidos"
         [class]="telaDesktop? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'">
-        <div style="float: left;">
+        <div style="float: left;" class="textocelnumero">
             Pré-pedidos localizados: {{(prepedidos$|async)?.length}}
         </div>
         <button mat-raised-button color="accent" *ngIf="!telaDesktop" (click)="voltar()" style="float: right; ">Nova
@@ -147,7 +147,7 @@
 
     <div *ngIf="!telaDesktop && !emPrepedidos"
         [class]="telaDesktop? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'">
-        <div style="float: left;">
+        <div style="float: left;" class="textocelnumero">
             Pedidos localizados: {{(pedidos$|async)?.length}}
         </div>
         <button mat-raised-button color="accent" *ngIf="!telaDesktop" (click)="voltar()" style="float: right; ">Nova
