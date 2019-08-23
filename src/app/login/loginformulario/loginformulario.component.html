@@ -22,7 +22,7 @@
       <br style="height: 10px;">
       <br style="height: 10px;">
 
-      <button [disabled]="!loginForm.valid" mat-raised-button type="submit" color="accent">
+      <button [disabled]="!loginForm.valid" mat-raised-button type="submit" color="accent"  [ngClass]="{'carregando': fazendoLogin}">
         <mat-icon>arrow_forward</mat-icon> Entrar
       </button>
     </div>

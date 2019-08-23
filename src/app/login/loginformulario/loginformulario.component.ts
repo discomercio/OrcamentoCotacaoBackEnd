@@ -20,6 +20,8 @@ export class LoginformularioComponent extends TelaDesktopBaseComponent implement
     super(telaDesktopService);
   }
 
+  fazendoLogin: boolean = false;
+
   usuario = "";
   senha = "";
   lembrar = !environment.autenticaStorageSession;
@@ -28,14 +30,17 @@ export class LoginformularioComponent extends TelaDesktopBaseComponent implement
   }
   login() {
     const __this = this;
+    __this.fazendoLogin = true;
     this.autenticacaoService.authLogin(this.usuario, this.senha, this.lembrar).subscribe(
       {
         next(e) {
+          __this.fazendoLogin = false;
           __this.autenticacaoService.setarToken(e);
           __this.router.navigate(['/']);
         }
         ,
         error(e) {
+          __this.fazendoLogin = false;
           let msg = "" + ((e && e.message) ? e.message : e.toString());
           if ((e && e.status) == 400)
             msg = "usuário e senha inválidos."

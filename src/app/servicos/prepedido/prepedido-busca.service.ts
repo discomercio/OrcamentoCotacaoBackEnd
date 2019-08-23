@@ -21,6 +21,7 @@ export class PrepedidoBuscaService {
 
   }
 
+  public carregando: boolean = false;
   prepedidos$: BehaviorSubject<PrepedidosCadastradosDtoPrepedido[]> = new BehaviorSubject(new Array());
   errosPrepedidos$: BehaviorSubject<any> = new BehaviorSubject(null);
 
@@ -48,10 +49,20 @@ export class PrepedidoBuscaService {
 
 
     let __this = this;
+    __this.carregando = true;
     this.http.get<PrepedidosCadastradosDtoPrepedido[]>(environment.apiUrl + 'prepedido/listarPrePedidos', { params: params }).subscribe(
       {
-        next(r) { __this.prepedidos$.next(r); },
-        error(err) { __this.errosPrepedidos$.next(err); }
+        next(r) {
+          __this.carregando = false;
+          __this.prepedidos$.next(r);
+        },
+        error(err) {
+          __this.carregando = false;
+          __this.errosPrepedidos$.next(err);
+        },
+        complete() {
+          __this.carregando = false;
+        }
       }
     );
   }

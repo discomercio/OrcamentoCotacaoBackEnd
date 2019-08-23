@@ -1,6 +1,7 @@
+<div  [ngClass]="{'carregando': prepedidoBuscaService.carregando, 'carregando': pedidoBuscaService.carregando}">
 <div *ngIf="telaDesktop && emPrepedidos"
     [class]="telaDesktop? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'">
-    <div style="float: right; padding-right: 2em; padding-bottom: 0.5em;">
+    <div style="float: right; padding-right: 2em; padding-bottom: 0.5em;" >
         Pré-pedidos localizados: {{(prepedidos$|async)?.length}}
     </div>
 
@@ -193,4 +194,5 @@
             </div>
         </div>
     </mat-card>
+</div>
 </div>

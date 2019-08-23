@@ -3,7 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  autenticaStorageSession: false, //se false, gaurda no localstorage
+  autenticaStorageSession: false, //se false, gaurda no localstorage (o usuário pode escolher na tela)
+  minutosRenovarTokenAntesExpirar: 20,
 
   esperaAvisos: 3000,
   esperaErros: 5000,

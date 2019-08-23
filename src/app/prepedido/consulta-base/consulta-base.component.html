@@ -95,7 +95,7 @@
             </div>
 
             <div class="item item-4" style="float: right;">
-                <button mat-raised-button color="accent" type="submit">
+                <button mat-raised-button color="accent" type="submit" [ngClass]="{'carregando': prepedidoBuscaService.carregando, 'carregando': pedidoBuscaService.carregando}">
                     <mat-icon>search</mat-icon> Pesquisar
                 </button>
             </div>
