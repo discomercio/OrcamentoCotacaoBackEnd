@@ -26,7 +26,8 @@ namespace PrepedidoBusiness.Bll
             //toda vez precisamos de uma nova conexao para os casos em que houver transacao
             var db = contextoProvider.GetContexto();
             var lista = from r in db.Torcamentos
-                        where r.Orcamentista == orcamentista
+                        where r.Orcamentista == orcamentista &&
+                              r.St_Orcamento != "CAN"
                         orderby r.Orcamento
                         select r.Orcamento;
             var res = lista.AsEnumerable();
@@ -37,10 +38,11 @@ namespace PrepedidoBusiness.Bll
         {
             var db = contextoProvider.GetContexto();
 
-            var lista = from c in db.Torcamentos.Include(r => r.Tcliente)
-                        where c.Orcamentista == apelido
+            var lista = (from c in db.Torcamentos.Include(r => r.Tcliente)
+                        where c.Orcamentista == apelido &&
+                              c.St_Orcamento != "CAN"
                         orderby c.Tcliente.Cnpj_Cpf
-                        select c.Tcliente.Cnpj_Cpf;
+                        select c.Tcliente.Cnpj_Cpf).Distinct();
 
             var ret = await lista.Distinct().ToListAsync();
             List<string> cpfCnpjFormat = new List<string>();
@@ -135,8 +137,9 @@ namespace PrepedidoBusiness.Bll
                 Where(
                         r => r.Orcamentista == apelido &&
                         r.Orcamento == numeroPrePedido &&
-                        (r.St_Orcamento == "" || r.St_Orcamento == null)
-                      ).Single();
+                        (r.St_Orcamento == "" || r.St_Orcamento == null) &&
+                        r.St_Orc_Virou_Pedido == 0
+                      ).SingleOrDefault();
 
             prePedido.St_Orcamento = "CAN";
             prePedido.Cancelado_Data = DateTime.Now;

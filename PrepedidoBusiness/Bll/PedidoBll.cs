@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System;
 using PrepedidoBusiness.Dtos.Pedido;
+using PrepedidoBusiness.Utils;
 
 namespace PrepedidoBusiness.Bll
 {
@@ -46,7 +47,8 @@ namespace PrepedidoBusiness.Bll
             switch (tipoBusca)
             {
                 case TipoBuscaPedido.Todos:
-                    //sem filtro
+                    //SE TIVER QUE INCLUIR OS PEDIDO CANCELADOS É SÓ DESCOMENTAR A LINHA ABAIXO
+                    //lista = lista.Where(r => r.St_Entrega != "CAN");
                     break;
                 case TipoBuscaPedido.PedidosEncerrados:
                     lista = lista.Where(r => r.St_Entrega == "ETG" || r.St_Entrega == "CAN");
@@ -78,13 +80,13 @@ namespace PrepedidoBusiness.Bll
             //colocar as mensagens de status
             var listaComStatus = await listaFinal.ToListAsync();
             foreach (var pedido in listaComStatus)
-            {                
+            {
                 if (pedido.Status == "ESP")
                     pedido.Status = "Em espera";
                 if (pedido.Status == "SPL")
                     pedido.Status = "Split possível";
                 if (pedido.Status == "SEP")
-                    pedido.Status = "SEPARAR";
+                    pedido.Status = "Separar";
                 if (pedido.Status == "AET")
                     pedido.Status = "A entregar";
                 if (pedido.Status == "ETG")
@@ -93,6 +95,26 @@ namespace PrepedidoBusiness.Bll
                     pedido.Status = "Cancelado";
             }
             return await Task.FromResult(listaComStatus);
+        }
+                
+        public async Task<IEnumerable<string>> ListarCpfCnpjPedidosCombo(string apelido)
+        {
+            var db = contextoProvider.GetContexto();
+
+            var lista = (from c in db.Tpedidos.Include(r => r.Tcliente)
+                        where c.Orcamentista == apelido
+                        orderby c.Tcliente.Cnpj_Cpf
+                        select c.Tcliente.Cnpj_Cpf).Distinct();
+
+            var ret = await lista.Distinct().ToListAsync();
+            List<string> cpfCnpjFormat = new List<string>();
+
+            foreach (string cpf in ret)
+            {
+                cpfCnpjFormat.Add(Util.FormatCpf_Cnpj(cpf));
+            }
+
+            return cpfCnpjFormat;
         }
     }
 }

@@ -45,5 +45,16 @@ namespace PrepedidoApi.Controllers
 
             return Ok(ret);
         }
+
+        [AllowAnonymous]
+        [HttpGet("listarCpfCnpjPedidosCombo")]
+        public async Task<IActionResult> ListarCpfCnpjPedidosCombo()
+        {
+            string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
+
+            var ret = await pedidoBll.ListarCpfCnpjPedidosCombo(apelido);
+
+            return Ok(ret);
+        }
     }
 }
