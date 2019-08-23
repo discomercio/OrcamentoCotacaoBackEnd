@@ -34,7 +34,7 @@
 
             <ng-container matColumnDef="Remover">
                 <th mat-header-cell *matHeaderCellDef> </th>
-                <td mat-cell *matCellDef="let element"><button *ngIf="!(element.Status.indexOf('com pedido') == -1)"
+                <td mat-cell *matCellDef="let element"><button *ngIf="(element.Status.toLowerCase().indexOf('com pedido') == -1)"
                         mat-button (click)="removerPrepedido(element.NumeroPrepedido)">
                         <mat-icon title="Remover pré-pedido">delete</mat-icon>
                     </button></td>

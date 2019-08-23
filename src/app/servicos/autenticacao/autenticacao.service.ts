@@ -5,7 +5,6 @@ import * as jtw_decode from 'jwt-decode';
 
 import { environment } from '../../../environments/environment'
 import { Observable } from 'rxjs';
-import { DateAdapter } from '@angular/material';
 
 /*
 precisa instalar:
@@ -103,7 +102,6 @@ export class AutenticacaoService {
     this.http.get(environment.apiUrl + 'acesso/RenovarToken').subscribe(
       {
         next(e) {
-          debugger;
           __this.setarToken(e as string);
           __this.renovacaoPendnete = false;
         },

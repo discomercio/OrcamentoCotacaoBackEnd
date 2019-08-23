@@ -12,6 +12,8 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { PedidoBuscaService } from 'src/app/servicos/pedido/pedido-busca.service';
 import { PedidosDtoPedido } from 'src/app/dto/pedido/pedidosDtoPedido';
 import { environment } from 'src/environments/environment';
+import { ConfirmationDialogComponent } from 'src/app/utils/confirmation-dialog/confirmation-dialog.component';
+import { PrepedidoRemoverService } from 'src/app/servicos/prepedido/prepedido-remover.service';
 
 @Component({
   selector: 'app-lista-base',
@@ -28,6 +30,7 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
     private location: Location,
     telaDesktopService: TelaDesktopService,
     private _snackBar: MatSnackBar,
+    private prepedidoRemoverService: PrepedidoRemoverService,
     public dialog: MatDialog) {
     super(telaDesktopService);
 
@@ -74,7 +77,32 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
 
 
   removerPrepedido(numeroPrepedio: string): void {
-    window.alert("Ainda não implementado");
+    const __this = this;
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: `Tem certeza de que deseja excluir o pedido ${numeroPrepedio}? `
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        __this.prepedidoRemoverService.remover(numeroPrepedio).subscribe(
+          {
+            next() {
+              const msg = `Pré-pedido ${numeroPrepedio} removido.`;
+              __this._snackBar.open(msg, undefined, {
+                duration: environment.esperaErros
+              });
+              __this.prepedidoBuscaService.atualizar();
+            },
+            error() {
+              const msg = `Erro: erro ao remover pré-pedido  ${numeroPrepedio}.`;
+              __this._snackBar.open(msg, undefined, {
+                duration: environment.esperaErros
+              });
+            },
+          }
+        );
+      }
+    });
   }
 }
 
