@@ -3,16 +3,21 @@ import { CommonModule } from '@angular/common';
 
 import { ErroModule } from './erro/erro.module';
 import { UtilsRoutingModule } from './utils-routing.module';
-import { MatDialog, MatDialogModule } from '@angular/material';
+import { MatDialog, MatDialogModule, MatButtonModule } from '@angular/material';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [ConfirmationDialogComponent],
   imports: [
     CommonModule,
     MatDialogModule,
+    MatButtonModule,
     UtilsRoutingModule,
     ErroModule
+  ],
+  entryComponents: [
+    ConfirmationDialogComponent
   ]
 })
 export class UtilsModule { }
