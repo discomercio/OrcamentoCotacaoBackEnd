@@ -1,36 +1,43 @@
-<div class="larguratotal" fxLayout="column" fxLayoutAlign="fill fill" style="text-align: center">
-  <mat-toolbar class="cabecalho larguramaxima">
-    <a mat-button color="accent" [routerLink]="['']" title="Home">
+<div style="display: flex; flex-direction: row; justify-content: center; height: 100vh; width: 100vw">
+  <div style="display: flex; flex-direction: column; justify-content: center; height: 100vh; ">
+    <div style="flex-grow: 0; flex-shrink: 0; ">
+      <mat-toolbar class="cabecalho larguramaxima">
+        <a mat-button color="accent" [routerLink]="['']" title="Home">
 
-      <div class="limiteclicavel larguramaxima">
-        <span style="float: left"><img src="../assets/logo_arclube.png" height="30"
-            style="padding-top: 10px; padding-left: 10px;" /></span>
-        <!-- <div style="float:none; text-align:center; color: black; vertical-align: center; display: inline;"
-            [fxHide]="1" [fxShow.gt-sm]="1">
-            &nbsp;&nbsp;&nbsp;
-            CENTRAL DE PEDIDOS
-          </div> -->
+          <div class="limiteclicavel larguramaxima">
+            <span style="float: left"><img src="../assets/logo_arclube.png" height="30"
+                style="padding-top: 10px; padding-left: 10px;" /></span>
+            <!-- <div style="float:none; text-align:center; color: black; vertical-align: center; display: inline;"
+              [fxHide]="1" [fxShow.gt-sm]="1">
+              &nbsp;&nbsp;&nbsp;
+              CENTRAL DE PEDIDOS
+            </div> -->
 
-      </div>
-    </a>
-    <!-- (click)="logout()" -->
-    <span style="float: right; font-size: 0.7em" *ngIf="autenticacaoService.authEstaLogado()">
-      Olá {{autenticacaoService.authNomeUsuario}}
-    </span>
-    <button class='px-0' type="submit" mat-button style="padding: 0%;" title="Logout" (click)="logout()"
-      *ngIf="autenticacaoService.authEstaLogado()">
-
-      <mat-icon class="iconelogout">exit_to_app</mat-icon>
-    </button>
-  </mat-toolbar>
-  <mat-sidenav-container class="larguramaxima" *ngIf="telaDesktop">
-    <mat-sidenav mode="side" opened class="menudaesquerda alturamaxima" *ngIf="autenticacaoService.authEstaLogado()">
-      <app-home [menuDesktop]="true"></app-home>
-    </mat-sidenav>
-    <div class="alturamaxima">
-      <router-outlet></router-outlet>
+          </div>
+        </a>
+        <span style="float: right; font-size: 0.7em" *ngIf="autenticacaoService.authEstaLogado()">
+          Olá {{autenticacaoService.authNomeUsuario}}
+        </span>
+        <button class='px-0' type="submit" mat-button style="padding: 0%;" title="Logout" (click)="logout()"
+          *ngIf="autenticacaoService.authEstaLogado()">
+          <mat-icon class="iconelogout">exit_to_app</mat-icon>
+        </button>
+      </mat-toolbar>
     </div>
-  </mat-sidenav-container>
+    <div style="flex-grow: 1; flex-shrink: 1; overflow: auto;">
+      <div style="display: flex; flex-direction: column; justify-content: center; " class="bordadocorpo">
+        <mat-sidenav-container class="larguramaxima" *ngIf="telaDesktop">
+          <mat-sidenav mode="side" opened class="menudaesquerda alturamaxima"
+            *ngIf="autenticacaoService.authEstaLogado()">
+            <app-home [menuDesktop]="true"></app-home>
+          </mat-sidenav>
+          <div class="alturamaxima fundoprincipal" >
+            <router-outlet></router-outlet>
+          </div>
+        </mat-sidenav-container>
+      </div>
 
-  <router-outlet *ngIf="!telaDesktop"></router-outlet>
+      <router-outlet *ngIf="!telaDesktop"></router-outlet>
+    </div>
+  </div>
 </div>

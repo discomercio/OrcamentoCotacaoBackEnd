@@ -10,7 +10,7 @@
 @include mat-core();
 
 // nossa paleta, baseada em Teal 50
-$nossapaleta: (
+$nossapaletateal: (
   50: #e0f2f1,
   100: #b2dfdb,
   200: #80cbc4,
@@ -69,11 +69,10 @@ a verde:
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-//$candy-app-primary: mat-palette($mat-indigo);
 //$candy-app-accent:  mat-palette($mat-pink, A200, A100, A400);
 $candy-app-primary: mat-palette($mat-gray);
 //$candy-app-accent:  mat-palette($mat-green, A400, A100, A200);
-$candy-app-accent: mat-palette($nossapaleta, A200, A100, A400);
+$candy-app-accent: mat-palette($nossapaletateal, A400, A100, A200);
 
 // The warn palette is optional (defaults to red).
 $candy-app-warn: mat-palette($mat-red);

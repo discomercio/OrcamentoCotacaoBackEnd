@@ -5,6 +5,7 @@
             Pré-pedidos localizados: {{(prepedidos$|async)?.length}}
         </div>
 
+        <!-- <div style="overflow: auto; max-height: 50vh; width: 100%;"> -->
         <table mat-table matSort [dataSource]="prepedidos$|async" class="mat-elevation-z1 tabeladesktop">
 
             <ng-container matColumnDef="DataPrepedido">
@@ -43,6 +44,7 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
+    <!-- </div> -->
     </div>
 
     <div *ngIf="telaDesktop && !emPrepedidos"
