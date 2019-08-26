@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { TelaDesktopBaseComponent } from 'src/app/servicos/telaDesktop/telaDesktopBaseComponent';
-import { TelaDesktopService } from 'src/app/servicos/telaDesktop/telaDesktop.service';
-import { AutenticacaoService } from 'src/app/servicos/autenticacao/autenticacao.service';
+import { TelaDesktopBaseComponent } from '../../../../src/app/servicos/telaDesktop/telaDesktopBaseComponent';
+import { TelaDesktopService } from '../../../../src/app/servicos/telaDesktop/telaDesktop.service';
+import { AutenticacaoService } from '../../../../src/app/servicos/autenticacao/autenticacao.service';
 import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../../src/environments/environment';
 import { MatSnackBar } from '@angular/material';
 
 @Component({
@@ -14,9 +14,9 @@ import { MatSnackBar } from '@angular/material';
 export class LoginformularioComponent extends TelaDesktopBaseComponent implements OnInit {
 
   constructor(telaDesktopService: TelaDesktopService,
-    private autenticacaoService: AutenticacaoService,
-    private _snackBar: MatSnackBar,
-    private router: Router) {
+    private readonly autenticacaoService: AutenticacaoService,
+    private readonly _snackBar: MatSnackBar,
+    private readonly router: Router) {
     super(telaDesktopService);
   }
 
@@ -42,11 +42,11 @@ export class LoginformularioComponent extends TelaDesktopBaseComponent implement
         error(e) {
           __this.fazendoLogin = false;
           let msg = "" + ((e && e.message) ? e.message : e.toString());
-          if ((e && e.status) == 400)
+          if (e && e.status === 400)
             msg = "usuário e senha inválidos."
-          if ((e && e.status) == 0)
+          if (e && e.status === 0)
             msg = "servidor de autenticação não disponível."
-          if ((e && e.status) == 500)
+          if (e && e.status === 500)
             msg = "erro interno no servidor de autenticação."
 
 

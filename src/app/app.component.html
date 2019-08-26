@@ -15,7 +15,7 @@
 
           </div>
         </a>
-        <span style="float: right; font-size: 0.7em" *ngIf="autenticacaoService.authEstaLogado()">
+        <span style="float: right; font-size: 0.7em" *ngIf="autenticacaoService.authEstaLogado() && telaDesktop">
           Olá {{autenticacaoService.authNomeUsuario}}
         </span>
         <button class='px-0' type="submit" mat-button style="padding: 0%;" title="Logout" (click)="logout()"

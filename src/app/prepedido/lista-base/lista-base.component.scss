@@ -24,8 +24,8 @@
     background-color: $cor-fundo-listapedidos;
   }
   .mat-header-row th {
-      font-weight: bold;
-      //color: black;
+    font-weight: bold;
+    //color: black;
   }
   .mat-column-ValoTotal {
     text-align: right;
@@ -45,7 +45,7 @@
   }
   .mat-column-Remover {
     text-align: center;
-    color: $cor-verde-icones;   
+    color: $cor-verde-icones;
   }
   /*
     .tabeladesktop th {
@@ -58,11 +58,11 @@
         padding-bottom: 10px;
     }
     */
-    .tabeladesktop td {
-        border-top-style: solid;
-        border-top-color: white;
-        border-top-width: 10px;
-    }
+  .tabeladesktop td {
+    border-top-style: solid;
+    border-top-color: white;
+    border-top-width: 10px;
+  }
 
   //para o celular
   .containercel {
@@ -79,15 +79,28 @@
   .cellinha {
     height: 1em;
   }
-  .textocelnumero{
+  .textocelnumero {
     font-size: 14px;
     vertical-align: bottom;
-    height: 100%;
+    //height: 100%;
   }
-  .cartao
-  {
+  .cartao {
     background-color: $cor-fundo-listapedidos;
     padding: 5px;
     margin-bottom: 10px;
+  }
+
+  /*
+  controle do flex
+  */
+  .contgrande {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .contgrande article {
+    flex: 1 1 auto;
+    overflow-y: auto;
   }
 }

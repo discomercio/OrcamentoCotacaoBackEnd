@@ -1,19 +1,19 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { PrepedidoBuscaService } from 'src/app/servicos/prepedido/prepedido-busca.service';
-import { PrepedidosCadastradosDtoPrepedido } from 'src/app/dto/prepedido/prepedidosCadastradosDtoPrepedido';
+import { PrepedidoBuscaService } from '../../../../src/app/servicos/prepedido/prepedido-busca.service';
+import { PrepedidosCadastradosDtoPrepedido } from '../../../../src/app/dto/prepedido/prepedidosCadastradosDtoPrepedido';
 import { Observable } from 'rxjs';
-import { TelaDesktopBaseComponent } from 'src/app/servicos/telaDesktop/telaDesktopBaseComponent';
-import { TelaDesktopService } from 'src/app/servicos/telaDesktop/telaDesktop.service';
-import { DataUtils } from 'src/app/utils/dataUtils';
-import { MoedaUtils } from 'src/app/utils/erro/moedaUtils';
+import { TelaDesktopBaseComponent } from '../../../../src/app/servicos/telaDesktop/telaDesktopBaseComponent';
+import { TelaDesktopService } from '../../../../src/app/servicos/telaDesktop/telaDesktop.service';
+import { DataUtils } from '../../../../src/app/utils/dataUtils';
+import { MoedaUtils } from '../../../../src/app/utils/erro/moedaUtils';
 import { Location } from '@angular/common';
 import { Sort } from '@angular/material/sort';
 import { MatDialog, MatSnackBar } from '@angular/material';
-import { PedidoBuscaService } from 'src/app/servicos/pedido/pedido-busca.service';
-import { PedidosDtoPedido } from 'src/app/dto/pedido/pedidosDtoPedido';
-import { environment } from 'src/environments/environment';
-import { ConfirmationDialogComponent } from 'src/app/utils/confirmation-dialog/confirmation-dialog.component';
-import { PrepedidoRemoverService } from 'src/app/servicos/prepedido/prepedido-remover.service';
+import { PedidoBuscaService } from '../../../../src/app/servicos/pedido/pedido-busca.service';
+import { PedidosDtoPedido } from '../../../../src/app/dto/pedido/pedidosDtoPedido';
+import { environment } from '../../../../src/environments/environment';
+import { ConfirmationDialogComponent } from '../../../../src/app/utils/confirmation-dialog/confirmation-dialog.component';
+import { PrepedidoRemoverService } from '../../../../src/app/servicos/prepedido/prepedido-remover.service';
 
 @Component({
   selector: 'app-lista-base',
@@ -25,13 +25,13 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
   //se estamos em prepedidos ou em pedidos
   @Input() emPrepedidos: boolean = true;
 
-  constructor(public prepedidoBuscaService: PrepedidoBuscaService,
-    public pedidoBuscaService: PedidoBuscaService,
-    private location: Location,
+  constructor(public readonly prepedidoBuscaService: PrepedidoBuscaService,
+    public readonly pedidoBuscaService: PedidoBuscaService,
+    private readonly location: Location,
     telaDesktopService: TelaDesktopService,
-    private _snackBar: MatSnackBar,
-    private prepedidoRemoverService: PrepedidoRemoverService,
-    public dialog: MatDialog) {
+    private readonly _snackBar: MatSnackBar,
+    private readonly prepedidoRemoverService: PrepedidoRemoverService,
+    public readonly dialog: MatDialog) {
     super(telaDesktopService);
 
   }
@@ -43,13 +43,13 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
   prepedidos$: Observable<PrepedidosCadastradosDtoPrepedido[]>;
   pedidos$: Observable<PedidosDtoPedido[]>;
   ngOnInit() {
-    let __this = this;
+    let esteThis = this;
     this.prepedidos$ = this.prepedidoBuscaService.prepedidos$;
     this.prepedidoBuscaService.errosPrepedidos$.subscribe(
       {
         next(r) {
           if (r == null) return;
-          __this._snackBar.open("Ocorreu um erro ao fazer a busca de pré-pedidos. Verifique a conexão e tente novamente.", "", {
+          esteThis._snackBar.open("Ocorreu um erro ao fazer a busca de pré-pedidos. Verifique a conexão e tente novamente.", "", {
             duration: environment.esperaErros
           });
         }
@@ -61,7 +61,7 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
       {
         next(r) {
           if (r == null) return;
-          __this._snackBar.open("Ocorreu um erro ao fazer a busca de pedidos. Verifique a conexão e tente novamente.", "", {
+          esteThis._snackBar.open("Ocorreu um erro ao fazer a busca de pedidos. Verifique a conexão e tente novamente.", "", {
             duration: environment.esperaErros
           });
         }
@@ -77,25 +77,25 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
 
 
   removerPrepedido(numeroPrepedio: string): void {
-    const __this = this;
+    const esteThis = this;
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '350px',
       data: `Tem certeza de que deseja excluir o pedido ${numeroPrepedio}? `
     });
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        __this.prepedidoRemoverService.remover(numeroPrepedio).subscribe(
+        esteThis.prepedidoRemoverService.remover(numeroPrepedio).subscribe(
           {
             next() {
               const msg = `Pré-pedido ${numeroPrepedio} removido.`;
-              __this._snackBar.open(msg, undefined, {
+              esteThis._snackBar.open(msg, undefined, {
                 duration: environment.esperaErros
               });
-              __this.prepedidoBuscaService.atualizar();
+              esteThis.prepedidoBuscaService.atualizar();
             },
             error() {
               const msg = `Erro: erro ao remover pré-pedido  ${numeroPrepedio}.`;
-              __this._snackBar.open(msg, undefined, {
+              esteThis._snackBar.open(msg, undefined, {
                 duration: environment.esperaErros
               });
             },

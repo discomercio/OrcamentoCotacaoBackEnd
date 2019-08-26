@@ -12,7 +12,8 @@ export class ErroComponent implements OnInit {
 
   state$: Observable<object>;
   mensagem: string = "Erro interno.";
-  constructor(private router: Router, public activatedRoute: ActivatedRoute) { }
+  constructor(private readonly router: Router,
+    public readonly activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
     //this.mensagem = this.router.getCurrentNavigation().extras.state.mensagem;

@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
 })
 export class PrepedidoComboCpfcnpjService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private readonly http: HttpClient) { }
   public obter(): Observable<string[]> {
     return this.http.get<string[]>(environment.apiUrl + 'prepedido/listarCpfCnpjPrepedidosCombo');
   }

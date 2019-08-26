@@ -14,7 +14,7 @@ export class PedidoBuscaService {
   //a tela da busca edita diretamente as variáveis aqui dentro
   public paramsBuscaPedido: ParamsBuscaPedido = new ParamsBuscaPedido();
 
-  constructor(private http: HttpClient) {
+  constructor(private readonly http: HttpClient) {
     //incializa as datas
     this.paramsBuscaPedido.dataFinal = DataUtils.formataParaFormulario(new Date());
     this.paramsBuscaPedido.dataInicial = DataUtils.formataParaFormulario(DataUtils.somarDias(new Date(), -60));

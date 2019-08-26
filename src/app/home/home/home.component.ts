@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { TelaDesktopBaseComponent } from 'src/app/servicos/telaDesktop/telaDesktopBaseComponent';
-import { TelaDesktopService } from 'src/app/servicos/telaDesktop/telaDesktop.service';
+import { TelaDesktopBaseComponent } from '../../../../src/app/servicos/telaDesktop/telaDesktopBaseComponent';
+import { TelaDesktopService } from '../../../../src/app/servicos/telaDesktop/telaDesktop.service';
 
 @Component({
   selector: 'app-home',
@@ -9,9 +9,9 @@ import { TelaDesktopService } from 'src/app/servicos/telaDesktop/telaDesktop.ser
 })
 export class HomeComponent extends TelaDesktopBaseComponent implements OnInit {
 
-  @Input() menuDesktop: boolean = false;
-  
-  constructor(telaDesktopService: TelaDesktopService) { 
+  @Input() menuDesktop = false;
+
+  constructor(telaDesktopService: TelaDesktopService) {
     super(telaDesktopService);
   }
 

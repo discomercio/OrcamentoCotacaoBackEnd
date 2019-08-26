@@ -17,24 +17,23 @@ export class TelaDesktopService {
   constructor(private breakpointObserver: BreakpointObserver,
     private readonly router: Router) {
     this.breakpointObserver
-      .observe([Breakpoints.Small, Breakpoints.HandsetPortrait])
+      .observe([Breakpoints.Small, Breakpoints.XSmall, Breakpoints.HandsetPortrait])
       .subscribe((state: BreakpointState) => {
         this.telaDesktop = !state.matches;
+
+        //nao podemos estar diretamente na consulta nos pedidos e prepedidos
+        if (this.telaDesktop) {
+          if (this.router.url.indexOf('/prepedido/lista') >= 0)
+            this.router.navigateByUrl('/prepedido/consulta');
+          if (this.router.url.indexOf('/pedido/lista') >= 0)
+            this.router.navigateByUrl('/pedido/consulta');
+        }
 
         //está um pouco instável quando chaveia
         //as vezes ele não consegue carregar o ponto de navegaçãoc corretamente
         //então recarregamos a página toda. unico inconveniente: perdemos o que tiver sido digitado nos campos de busca.
         if (this.jaLido && this.telaDesktopAnterior != this.telaDesktop) {
-          //em teste
-          //window.location.reload();
-
-          //nao podemos estar diretamente na consulta nos pedidos e prepedidos
-          if (this.telaDesktop) {
-            if (this.router.url.indexOf('/prepedido/lista') >= 0)
-              this.router.navigateByUrl('/prepedido/consulta');
-            if (this.router.url.indexOf('/pedido/lista') >= 0)
-              this.router.navigateByUrl('/pedido/consulta');
-          }
+          window.location.reload();
         }
         this.jaLido = true;
         this.telaDesktopAnterior = this.telaDesktop;

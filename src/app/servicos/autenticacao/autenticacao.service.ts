@@ -17,7 +17,7 @@ npm i jwt-decode --save
 })
 export class AutenticacaoService {
 
-  constructor(private http: HttpClient, private location: Location) {
+  constructor(private readonly http: HttpClient, private readonly location: Location) {
   }
 
   salvar: boolean = false;

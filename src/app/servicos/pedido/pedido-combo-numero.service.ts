@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class PedidoComboNumeroService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private readonly http: HttpClient) { }
   public obter(): Observable<string[]> {
     return this.http.get<string[]>(environment.apiUrl + 'pedido/listarNumerosPedidosCombo');
   }

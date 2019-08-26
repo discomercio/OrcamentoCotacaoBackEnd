@@ -9,11 +9,11 @@ import { AutenticacaoService } from './servicos/autenticacao/autenticacao.servic
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  telaDesktop: boolean = true;
+  telaDesktop = true;
 
-  constructor(private telaDesktopService: TelaDesktopService,
-    public autenticacaoService: AutenticacaoService,
-    private router: Router) {
+  constructor(private readonly telaDesktopService: TelaDesktopService,
+    public readonly autenticacaoService: AutenticacaoService,
+    private readonly router: Router) {
     telaDesktopService.telaAtual$.subscribe(r => this.telaDesktop = r);
   }
 
@@ -28,10 +28,10 @@ export class AppComponent implements OnInit {
         /prepedido/consulta
         */
         if (this.telaDesktop) {
-          if (event.url == "/prepedido/lista") {
+          if (event.url.toString() === "/prepedido/lista") {
             this.router.navigateByUrl("/prepedido/consulta");
           }
-          if (event.url == "/pedido/lista") {
+          if (event.url.toString() === "/pedido/lista") {
             this.router.navigateByUrl("/pedido/consulta");
           }
         }
@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  logout(){
+  logout() {
     this.autenticacaoService.authLogout();
     this.router.navigateByUrl("/login");
   }

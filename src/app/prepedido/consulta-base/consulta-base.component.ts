@@ -1,17 +1,17 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { PrepedidoComboNumeroService } from 'src/app/servicos/prepedido/prepedido-combo-numero.service';
-import { PrepedidoComboCpfcnpjService } from 'src/app/servicos/prepedido/prepedido-combo-cpfcnpj.service';
+import { PrepedidoComboNumeroService } from '../../../../src/app/servicos/prepedido/prepedido-combo-numero.service';
+import { PrepedidoComboCpfcnpjService } from '../../../../src/app/servicos/prepedido/prepedido-combo-cpfcnpj.service';
 import { Observable } from 'rxjs';
-import { DataUtils } from 'src/app/utils/dataUtils';
-import { TelaDesktopService } from 'src/app/servicos/telaDesktop/telaDesktop.service';
-import { PrepedidoBuscaService } from 'src/app/servicos/prepedido/prepedido-busca.service';
-import { TelaDesktopBaseComponent } from 'src/app/servicos/telaDesktop/telaDesktopBaseComponent';
+import { DataUtils } from '../../../../src/app/utils/dataUtils';
+import { TelaDesktopService } from '../../../../src/app/servicos/telaDesktop/telaDesktop.service';
+import { PrepedidoBuscaService } from '../../../../src/app/servicos/prepedido/prepedido-busca.service';
+import { TelaDesktopBaseComponent } from '../../../../src/app/servicos/telaDesktop/telaDesktopBaseComponent';
 import { Router } from '@angular/router';
-import { PedidoBuscaService } from 'src/app/servicos/pedido/pedido-busca.service';
+import { PedidoBuscaService } from '../../../../src/app/servicos/pedido/pedido-busca.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { environment } from 'src/environments/environment';
-import { PedidoComboCpfcnpjService } from 'src/app/servicos/pedido/pedido-combo-cpfcnpj.service';
-import { PedidoComboNumeroService } from 'src/app/servicos/pedido/pedido-combo-numero.service';
+import { environment } from '../../../../src/environments/environment';
+import { PedidoComboCpfcnpjService } from '../../../../src/app/servicos/pedido/pedido-combo-cpfcnpj.service';
+import { PedidoComboNumeroService } from '../../../../src/app/servicos/pedido/pedido-combo-numero.service';
 
 @Component({
   selector: 'app-consulta-base',
@@ -32,15 +32,15 @@ export class ConsultaBaseComponent extends TelaDesktopBaseComponent implements O
   optionsPedidoClienteBusca$: Observable<string[]>;
 
 
-  constructor(private prepedidoComboNumeroService: PrepedidoComboNumeroService,
-    private _snackBar: MatSnackBar,
-    private prepedidoComboCpfcnpjService: PrepedidoComboCpfcnpjService,
-    private pedidoComboCpfcnpjService: PedidoComboCpfcnpjService,
-    private pedidoComboNumeroService: PedidoComboNumeroService,
+  constructor(private readonly prepedidoComboNumeroService: PrepedidoComboNumeroService,
+    private readonly _snackBar: MatSnackBar,
+    private readonly prepedidoComboCpfcnpjService: PrepedidoComboCpfcnpjService,
+    private readonly pedidoComboCpfcnpjService: PedidoComboCpfcnpjService,
+    private readonly pedidoComboNumeroService: PedidoComboNumeroService,
     telaDesktopService: TelaDesktopService,
-    private router: Router,
-    public pedidoBuscaService: PedidoBuscaService,
-    public prepedidoBuscaService: PrepedidoBuscaService) {
+    private readonly router: Router,
+    public readonly pedidoBuscaService: PedidoBuscaService,
+    public readonly prepedidoBuscaService: PrepedidoBuscaService) {
     super(telaDesktopService);
 
     //carrega os combos

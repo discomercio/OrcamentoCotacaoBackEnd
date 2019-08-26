@@ -14,7 +14,7 @@ export class PrepedidoBuscaService {
   //a tela da busca edita diretamente as variáveis aqui dentro
   public paramsBuscaPrepedido: ParamsBuscaPrepedido = new ParamsBuscaPrepedido();
 
-  constructor(private http: HttpClient) {
+  constructor(private readonly http: HttpClient) {
     //incializa as datas
     this.paramsBuscaPrepedido.dataFinal = DataUtils.formataParaFormulario(new Date());
     this.paramsBuscaPrepedido.dataInicial = DataUtils.formataParaFormulario(DataUtils.somarDias(new Date(), -60));

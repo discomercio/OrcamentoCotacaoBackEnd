@@ -7,13 +7,25 @@
     max-width: 100vw;
     width: 1280px;
   }
+/*
   .alturamaxima {
-    height: calc(100vh - 83px);
+    height: calc(100vh - $altura-cabecalho-mais3);
   }
   .alturamaximamenos1 {
-    height: calc(100vh - 84px);
+    height: calc(100vh - $altura-cabecalho-mais4);
   }
   .cabecalho {
+    height: $altura-cabecalho;
+*/
+
+  .alturamaxima {
+    height: calc(100vh - 53px);
+  }
+  .alturamaximamenos1 {
+    height: calc(100vh - 54px);
+  }
+  .cabecalho {
+    height: 50px;
     margin: 0px;
     border: 0px;
     padding: 0px;

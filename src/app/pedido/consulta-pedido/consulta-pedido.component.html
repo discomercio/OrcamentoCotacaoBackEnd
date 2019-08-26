@@ -1,2 +1,9 @@
-<app-consulta-base [emPrepedidos]="false"></app-consulta-base>
-<app-lista-pedido *ngIf="telaDesktop"></app-lista-pedido>
+<app-consulta-base [emPrepedidos]="false" *ngIf="!telaDesktop"></app-consulta-base>
+<section *ngIf="telaDesktop" [ngClass]="'contgrande'">
+    <header id="header">
+        <app-consulta-base [emPrepedidos]="false"></app-consulta-base>
+    </header>
+    <article id="content">
+        <app-lista-pedido></app-lista-pedido>
+    </article>
+</section>

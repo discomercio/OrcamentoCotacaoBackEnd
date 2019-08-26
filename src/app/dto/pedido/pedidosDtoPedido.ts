@@ -1,5 +1,4 @@
-export class PedidosDtoPedido
-{
+export class PedidosDtoPedido {
     NumeroPedido: string;
     //está vindo como string do c#!
     DataPedido: Date | null;
