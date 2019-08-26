@@ -7,13 +7,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule, MatInputModule, MatButtonModule, MatCardModule, MatRadioModule, MatAutocompleteModule, MatCheckbox, MatCheckboxModule, MatTableModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ListaPedidoComponent } from './lista-pedido/lista-pedido.component';
-import { ConsultaBaseComponent } from '../prepedido/consulta-base/consulta-base.component';
-import { ListaBaseComponent } from '../prepedido/lista-base/lista-base.component';
 import { PrepedidoModule } from '../prepedido/prepedido.module';
 
 
 @NgModule({
-  declarations: [ConsultaPedidoComponent, ListaPedidoComponent ],
+  declarations: [ConsultaPedidoComponent, ListaPedidoComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -32,3 +30,4 @@ import { PrepedidoModule } from '../prepedido/prepedido.module';
   ]
 })
 export class PedidoModule { }
+

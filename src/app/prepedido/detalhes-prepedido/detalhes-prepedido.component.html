@@ -1,0 +1,30 @@
+<section class="contgrande"
+    [ngClass]="{'carregando': prepedidoBuscarService.carregando || pedidoBuscarService.carregando}"
+    [class]="telaDesktop? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'">
+    <header id="header" *ngIf="emPrepedidos">
+        <div class="titulopagina"> Detalhes do Pré Pedido {{numeroPrepedido}}</div>
+    </header>
+    <header id="header" *ngIf="!emPrepedidos">
+        <div class="titulopagina"> Detalhes do Pedido {{numeroPedido}}</div>
+    </header>
+
+    <article id="content" *ngIf="!prepedido.numeroPrepedido && !pedido.numeroPedido">
+        Carregando dados, aguarde...
+    </article>
+
+    <article id="content" *ngIf="emPrepedidos && prepedido.numeroPrepedido">
+        Detalhes do pré-pedido
+        <br>
+        Em desenvolvimento!
+    </article>
+    <article id="content" *ngIf="!emPrepedidos && pedido.numeroPedido">
+        Detalhes do pedido
+        <br>
+        Em desenvolvimento!
+    </article>
+    <footer>
+        <button mat-raised-button color="accent" (click)="voltar()">
+            <mat-icon>arrow_back</mat-icon> Voltar
+        </button>
+    </footer>
+</section>

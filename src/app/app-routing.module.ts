@@ -8,6 +8,7 @@ import { ConsultaPedidoComponent } from './pedido/consulta-pedido/consulta-pedid
 import { ListaPedidoComponent } from './pedido/lista-pedido/lista-pedido.component';
 import { LoginformularioComponent } from './login/loginformulario/loginformulario.component';
 import { LoginGuard } from './servicos/autenticacao/login.guard';
+import { DetalhesPrepedidoComponent } from './prepedido/detalhes-prepedido/detalhes-prepedido.component';
 
 
 const routes: Routes = [
@@ -33,6 +34,11 @@ const routes: Routes = [
     component: ListaPrepedidoComponent
   },
   {
+    path: 'prepedido/detalhes/:numeroPrepedido',
+    canActivate: [LoginGuard],
+    component: DetalhesPrepedidoComponent
+  },
+  {
     path: 'pedido/consulta',
     canActivate: [LoginGuard],
     component: ConsultaPedidoComponent
@@ -41,6 +47,12 @@ const routes: Routes = [
     path: 'pedido/lista',
     canActivate: [LoginGuard],
     component: ListaPedidoComponent
+  },
+  {
+    path: 'pedido/detalhes/:numeroPedido',
+    canActivate: [LoginGuard],
+    //fazemos no próprio DetalhesPrepedidoComponent, ele identifica pelo parâmetro
+    component: DetalhesPrepedidoComponent
   },
   {
     path: 'home',

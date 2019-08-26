@@ -1,5 +1,5 @@
 <section
-    [ngClass]="{'carregando': prepedidoBuscaService.carregando || pedidoBuscaService.carregando, 'contgrandeDesktop': telaDesktop, 'contgrande': !telaDesktop}">
+    [ngClass]="{'carregando': prepedidoListarService.carregando || pedidoListarService.carregando, 'contgrandeDesktop': telaDesktop, 'contgrande': !telaDesktop}">
     <header id="header" *ngIf="telaDesktop && emPrepedidos"
         [class]="telaDesktop? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'">
         <div style="float: right; padding-right: 2em; padding-bottom: 0.5em;">
@@ -46,7 +46,8 @@
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="cliqueLinha(row)"
+                style="cursor: pointer" title="Detalhes do pré-pedido"></tr>
         </table>
     </article>
 
@@ -86,14 +87,15 @@
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumnsPedido"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumnsPedido;"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsPedido;" (click)="cliqueLinha(row)"
+                style="cursor: pointer" title="Detalhes do pedido"></tr>
         </table>
     </article>
 
 
     <article id="content" *ngIf="!telaDesktop && emPrepedidos"
         [class]="telaDesktop? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'">
-        <mat-card *ngFor="let option of prepedidos$|async" class="cartao">
+        <mat-card *ngFor="let option of prepedidos$|async" class="cartao" (click)="cliqueLinha(option)">
             <div class="containercel">
                 <div class=".cellinha">
                     <div class="celcol1">
@@ -151,7 +153,7 @@
 
     <article id="content" *ngIf="!telaDesktop && !emPrepedidos"
         [class]="telaDesktop? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'">
-        <mat-card *ngFor="let option of pedidos$|async" class="cartao">
+        <mat-card *ngFor="let option of pedidos$|async" class="cartao" (click)="cliqueLinha(option)">
             <div class="containercel">
                 <div class=".cellinha">
                     <div class="celcol1">

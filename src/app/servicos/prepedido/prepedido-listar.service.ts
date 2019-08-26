@@ -9,7 +9,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class PrepedidoBuscaService {
+export class PrepedidoListarService {
 
   //a tela da busca edita diretamente as variáveis aqui dentro
   public paramsBuscaPrepedido: ParamsBuscaPrepedido = new ParamsBuscaPrepedido();
@@ -48,20 +48,19 @@ export class PrepedidoBuscaService {
     params = params.append('tipoBusca', tipoBusca.toString());
 
 
-    let __this = this;
-    __this.carregando = true;
+    this.carregando = true;
     this.http.get<PrepedidosCadastradosDtoPrepedido[]>(environment.apiUrl + 'prepedido/listarPrePedidos', { params: params }).subscribe(
       {
-        next(r) {
-          __this.carregando = false;
-          __this.prepedidos$.next(r);
+        next: (r) => {
+          this.carregando = false;
+          this.prepedidos$.next(r);
         },
-        error(err) {
-          __this.carregando = false;
-          __this.errosPrepedidos$.next(err);
+        error: (err) => {
+          this.carregando = false;
+          this.errosPrepedidos$.next(err);
         },
-        complete() {
-          __this.carregando = false;
+        complete: () => {
+          this.carregando = false;
         }
       }
     );

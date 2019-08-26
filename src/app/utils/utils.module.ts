@@ -5,10 +5,11 @@ import { ErroModule } from './erro/erro.module';
 import { UtilsRoutingModule } from './utils-routing.module';
 import { MatDialog, MatDialogModule, MatButtonModule } from '@angular/material';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
 
 
 @NgModule({
-  declarations: [ConfirmationDialogComponent],
+  declarations: [ConfirmationDialogComponent, AlertDialogComponent],
   imports: [
     CommonModule,
     MatDialogModule,
@@ -17,7 +18,7 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
     ErroModule
   ],
   entryComponents: [
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent, AlertDialogComponent
   ]
 })
 export class UtilsModule { }

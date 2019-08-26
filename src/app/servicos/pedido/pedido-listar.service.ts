@@ -9,7 +9,7 @@ import { PedidosDtoPedido } from '../../dto/pedido/pedidosDtoPedido'
 @Injectable({
   providedIn: 'root'
 })
-export class PedidoBuscaService {
+export class PedidoListarService {
 
   //a tela da busca edita diretamente as variáveis aqui dentro
   public paramsBuscaPedido: ParamsBuscaPedido = new ParamsBuscaPedido();
@@ -47,21 +47,20 @@ export class PedidoBuscaService {
       tipoBusca = 1;
     params = params.append('tipoBusca', tipoBusca.toString());
 
-    let __this = this;
-    __this.carregando = true;
+    this.carregando = true;
 
     this.http.get<PedidosDtoPedido[]>(environment.apiUrl + 'pedido/listarPedidos', { params: params }).subscribe(
       {
-        next(r) {
-          __this.carregando = false;
-          __this.pedidos$.next(r);
+        next: (r) => {
+          this.carregando = false;
+          this.pedidos$.next(r);
         },
-        error(err) {
-          __this.carregando = false;
-          __this.errosPedidos$.next(err);
+        error: (err) => {
+          this.carregando = false;
+          this.errosPedidos$.next(err);
         },
-        complete() {
-          __this.carregando = false;
+        complete: () => {
+          this.carregando = false;
         }
 
       }

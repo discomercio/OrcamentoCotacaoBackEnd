@@ -1,0 +1,39 @@
+@import "../../../variaveis.scss";
+
+:host {
+  .corpohome {
+    padding: 0em;
+  }
+
+  .corpohomeDesktop {
+    text-align: left;
+  }
+
+  .corpohomeCelular {
+    text-align: left;
+  }
+
+  /*
+  controle do flex
+  */
+  .contgrande {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .contgrande header {
+    margin: 1em;
+    padding: 0em;
+  }
+  .contgrande article {
+    margin-left: 2.0em;
+    margin-right: 0em;
+    flex: 1 1 auto;
+    overflow-y: auto;
+  }
+  .contgrande footer {
+    margin: 1em;
+    text-align: center;
+  }
+}

@@ -29,18 +29,17 @@ export class LoginformularioComponent extends TelaDesktopBaseComponent implement
   ngOnInit() {
   }
   login() {
-    const __this = this;
-    __this.fazendoLogin = true;
+    this.fazendoLogin = true;
     this.autenticacaoService.authLogin(this.usuario, this.senha, this.lembrar).subscribe(
       {
-        next(e) {
-          __this.fazendoLogin = false;
-          __this.autenticacaoService.setarToken(e);
-          __this.router.navigate(['/']);
+        next:(e)=> {
+          this.fazendoLogin = false;
+          this.autenticacaoService.setarToken(e);
+          this.router.navigate(['/']);
         }
         ,
-        error(e) {
-          __this.fazendoLogin = false;
+        error:(e)=> {
+          this.fazendoLogin = false;
           let msg = "" + ((e && e.message) ? e.message : e.toString());
           if (e && e.status === 400)
             msg = "usuário e senha inválidos."
@@ -50,7 +49,7 @@ export class LoginformularioComponent extends TelaDesktopBaseComponent implement
             msg = "erro interno no servidor de autenticação."
 
 
-          __this._snackBar.open("Erro no login: " + msg, undefined, {
+          this._snackBar.open("Erro no login: " + msg, undefined, {
             duration: environment.esperaErros
           });
         },

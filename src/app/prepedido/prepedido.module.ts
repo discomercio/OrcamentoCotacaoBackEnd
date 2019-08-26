@@ -9,10 +9,11 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ListaPrepedidoComponent } from './lista-prepedido/lista-prepedido.component';
 import { ConsultaBaseComponent } from './consulta-base/consulta-base.component';
 import { ListaBaseComponent } from './lista-base/lista-base.component';
+import { DetalhesPrepedidoComponent } from './detalhes-prepedido/detalhes-prepedido.component';
 
 
 @NgModule({
-  declarations: [ConsultaPrepedidoComponent, ListaPrepedidoComponent, ConsultaBaseComponent, ListaBaseComponent],
+  declarations: [ConsultaPrepedidoComponent, ListaPrepedidoComponent, ConsultaBaseComponent, ListaBaseComponent, DetalhesPrepedidoComponent],
   imports: [
     CommonModule,
     FormsModule,

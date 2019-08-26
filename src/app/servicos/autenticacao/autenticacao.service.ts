@@ -97,16 +97,15 @@ export class AutenticacaoService {
       this.renovarToken();
   }
   private renovarToken(): void {
-    var __this = this;
     this.renovacaoPendnete = true;
     this.http.get(environment.apiUrl + 'acesso/RenovarToken').subscribe(
       {
-        next(e) {
-          __this.setarToken(e as string);
-          __this.renovacaoPendnete = false;
+        next:(e)=> {
+          this.setarToken(e as string);
+          this.renovacaoPendnete = false;
         },
-        error() { __this.renovacaoPendnete = false; },
-        complete() { __this.renovacaoPendnete = false; }
+        error:()=> { this.renovacaoPendnete = false; },
+        complete:()=> { this.renovacaoPendnete = false; }
       }
     );
   }

@@ -4,10 +4,10 @@ import { PrepedidoComboCpfcnpjService } from '../../../../src/app/servicos/prepe
 import { Observable } from 'rxjs';
 import { DataUtils } from '../../../../src/app/utils/dataUtils';
 import { TelaDesktopService } from '../../../../src/app/servicos/telaDesktop/telaDesktop.service';
-import { PrepedidoBuscaService } from '../../../../src/app/servicos/prepedido/prepedido-busca.service';
+import { PrepedidoListarService } from '../../servicos/prepedido/prepedido-listar.service';
 import { TelaDesktopBaseComponent } from '../../../../src/app/servicos/telaDesktop/telaDesktopBaseComponent';
 import { Router } from '@angular/router';
-import { PedidoBuscaService } from '../../../../src/app/servicos/pedido/pedido-busca.service';
+import { PedidoListarService } from '../../servicos/pedido/pedido-listar.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from '../../../../src/environments/environment';
 import { PedidoComboCpfcnpjService } from '../../../../src/app/servicos/pedido/pedido-combo-cpfcnpj.service';
@@ -39,8 +39,8 @@ export class ConsultaBaseComponent extends TelaDesktopBaseComponent implements O
     private readonly pedidoComboNumeroService: PedidoComboNumeroService,
     telaDesktopService: TelaDesktopService,
     private readonly router: Router,
-    public readonly pedidoBuscaService: PedidoBuscaService,
-    public readonly prepedidoBuscaService: PrepedidoBuscaService) {
+    public readonly pedidoListarService: PedidoListarService,
+    public readonly prepedidoListarService: PrepedidoListarService) {
     super(telaDesktopService);
 
     //carrega os combos
@@ -57,29 +57,29 @@ export class ConsultaBaseComponent extends TelaDesktopBaseComponent implements O
   buscar() {
     if (this.emPrepedidos) {
       //nenhuma busca, ligamos os dois
-      if (!this.prepedidoBuscaService.paramsBuscaPrepedido.tipoBuscaAndamento && !this.prepedidoBuscaService.paramsBuscaPrepedido.tipoBuscaPedido) {
-        this.prepedidoBuscaService.paramsBuscaPrepedido.tipoBuscaAndamento = true;
-        this.prepedidoBuscaService.paramsBuscaPrepedido.tipoBuscaPedido = true;
+      if (!this.prepedidoListarService.paramsBuscaPrepedido.tipoBuscaAndamento && !this.prepedidoListarService.paramsBuscaPrepedido.tipoBuscaPedido) {
+        this.prepedidoListarService.paramsBuscaPrepedido.tipoBuscaAndamento = true;
+        this.prepedidoListarService.paramsBuscaPrepedido.tipoBuscaPedido = true;
 
         this._snackBar.open("Nenhum tipo estava selecionado, os dois tipos foram selecionados", "", {
           duration: environment.esperaAvisos
         });
       }
 
-      this.prepedidoBuscaService.atualizar();
+      this.prepedidoListarService.atualizar();
     }
     else {
       //nenhuma busca, ligamos os dois
-      if (!this.pedidoBuscaService.paramsBuscaPedido.tipoBuscaEmAndamento && !this.pedidoBuscaService.paramsBuscaPedido.tipoBuscaEncerrado) {
-        this.pedidoBuscaService.paramsBuscaPedido.tipoBuscaEmAndamento = true;
-        this.pedidoBuscaService.paramsBuscaPedido.tipoBuscaEncerrado = true;
+      if (!this.pedidoListarService.paramsBuscaPedido.tipoBuscaEmAndamento && !this.pedidoListarService.paramsBuscaPedido.tipoBuscaEncerrado) {
+        this.pedidoListarService.paramsBuscaPedido.tipoBuscaEmAndamento = true;
+        this.pedidoListarService.paramsBuscaPedido.tipoBuscaEncerrado = true;
 
         this._snackBar.open("Nenhum tipo estava selecionado, os dois tipos foram selecionados", "", {
           duration: environment.esperaAvisos
         });
       }
 
-      this.pedidoBuscaService.atualizar();
+      this.pedidoListarService.atualizar();
     }
 
     //na celular é outra tela, temos que navegar explicitamente

@@ -9,10 +9,10 @@
             <div class="item item-1">
                 <mat-form-field class="campoTexto">
                     <input *ngIf="emPrepedidos" matInput type="text" placeholder="CPF ou CNPJ do cliente"
-                        [(ngModel)]="prepedidoBuscaService.paramsBuscaPrepedido.clienteBusca" name="clienteBusca"
+                        [(ngModel)]="prepedidoListarService.paramsBuscaPrepedido.clienteBusca" name="clienteBusca"
                         list="dlclienteBusca1">
                     <input *ngIf="!emPrepedidos" matInput type="text" placeholder="CPF ou CNPJ do cliente"
-                        [(ngModel)]="pedidoBuscaService.paramsBuscaPedido.clienteBusca" name="clienteBusca"
+                        [(ngModel)]="pedidoListarService.paramsBuscaPedido.clienteBusca" name="clienteBusca"
                         list="dlclienteBusca2">
                     <datalist *ngIf="emPrepedidos" id="dlclienteBusca1">
                         <option *ngFor="let option of optionsPrepedidoClienteBusca$|async" [value]="option">
@@ -25,10 +25,10 @@
             <div class="item item-3">
                 <mat-form-field class="campoTexto">
                     <input *ngIf="emPrepedidos" matInput type="text" placeholder="Número Pré Pedido"
-                        [(ngModel)]="prepedidoBuscaService.paramsBuscaPrepedido.numeroPrePedido"
+                        [(ngModel)]="prepedidoListarService.paramsBuscaPrepedido.numeroPrePedido"
                         name="numeroPrePedidoBusca" list="dlnumpedidoBUsca1">
                     <input *ngIf="!emPrepedidos" matInput type="text" placeholder="Número Pedido"
-                        [(ngModel)]="pedidoBuscaService.paramsBuscaPedido.numeroPedido" name="numeroPrePedidoBusca"
+                        [(ngModel)]="pedidoListarService.paramsBuscaPedido.numeroPedido" name="numeroPrePedidoBusca"
                         list="dlnumpedidoBUsca2">
                 </mat-form-field>
                 <datalist *ngIf="emPrepedidos" id="dlnumpedidoBUsca1">
@@ -42,17 +42,17 @@
             <div class="item item-3">
                 <mat-form-field class="campoTexto">
                     <input *ngIf="emPrepedidos" matInput type="date" placeholder="Período de"
-                        [(ngModel)]="prepedidoBuscaService.paramsBuscaPrepedido.dataInicial" name="dataInicial">
+                        [(ngModel)]="prepedidoListarService.paramsBuscaPrepedido.dataInicial" name="dataInicial">
                     <input *ngIf="!emPrepedidos" matInput type="date" placeholder="Período de"
-                        [(ngModel)]="pedidoBuscaService.paramsBuscaPedido.dataInicial" name="dataInicial">
+                        [(ngModel)]="pedidoListarService.paramsBuscaPedido.dataInicial" name="dataInicial">
                 </mat-form-field>
             </div>
             <div class="item item-4">
                 <mat-form-field class="campoTexto">
                     <input *ngIf="emPrepedidos" matInput type="date" placeholder="até"
-                        [(ngModel)]="prepedidoBuscaService.paramsBuscaPrepedido.dataFinal" name="dataFinal">
+                        [(ngModel)]="prepedidoListarService.paramsBuscaPrepedido.dataFinal" name="dataFinal">
                     <input *ngIf="!emPrepedidos" matInput type="date" placeholder="até"
-                        [(ngModel)]="pedidoBuscaService.paramsBuscaPedido.dataFinal" name="dataFinal">
+                        [(ngModel)]="pedidoListarService.paramsBuscaPedido.dataFinal" name="dataFinal">
                 </mat-form-field>
             </div>
         </div>
@@ -61,7 +61,7 @@
             fxLayout="row wrap" fxLayout="column" fxLayout.gt-sm="row">
             <div *ngIf="emPrepedidos" class="item item-4">
                 <mat-checkbox class="campoTexto"
-                    [(ngModel)]="prepedidoBuscaService.paramsBuscaPrepedido.tipoBuscaAndamento"
+                    [(ngModel)]="prepedidoListarService.paramsBuscaPrepedido.tipoBuscaAndamento"
                     name="tipoBuscaAndamento">Pré
                     Pedidos
                     em andamento
@@ -69,7 +69,7 @@
             </div>
             <div *ngIf="emPrepedidos" class="item item-4">
                 <mat-checkbox class="campoTexto"
-                    [(ngModel)]="prepedidoBuscaService.paramsBuscaPrepedido.tipoBuscaPedido" name="tipoBuscaPedido">Pré
+                    [(ngModel)]="prepedidoListarService.paramsBuscaPrepedido.tipoBuscaPedido" name="tipoBuscaPedido">Pré
                     Pedidos
                     que
                     viraram pedidos
@@ -79,14 +79,14 @@
             </div>
 
             <div *ngIf="!emPrepedidos" class="item item-4">
-                <mat-checkbox class="campoTexto" [(ngModel)]="pedidoBuscaService.paramsBuscaPedido.tipoBuscaEncerrado"
+                <mat-checkbox class="campoTexto" [(ngModel)]="pedidoListarService.paramsBuscaPedido.tipoBuscaEncerrado"
                     name="tipoBuscaEncerrado">
                     Pedidos
                     encerrados
                 </mat-checkbox>
             </div>
             <div *ngIf="!emPrepedidos" class="item item-4">
-                <mat-checkbox class="campoTexto" [(ngModel)]="pedidoBuscaService.paramsBuscaPedido.tipoBuscaEmAndamento"
+                <mat-checkbox class="campoTexto" [(ngModel)]="pedidoListarService.paramsBuscaPedido.tipoBuscaEmAndamento"
                     name="tipoBuscaEmAndamento">Pedidos
                     em andamento
                 </mat-checkbox>
@@ -96,7 +96,7 @@
 
             <div class="item item-4" style="float: right;">
                 <button mat-raised-button color="accent" type="submit"
-                    [ngClass]="{'carregando': prepedidoBuscaService.carregando || pedidoBuscaService.carregando}">
+                    [ngClass]="{'carregando': prepedidoListarService.carregando || pedidoListarService.carregando}">
                     <mat-icon>search</mat-icon> Pesquisar
                 </button>
             </div>
