@@ -33,7 +33,7 @@ namespace InfraBanco.Modelos
         public short? Qtde { get; set; }
 
         [Column("desc_dado")]
-        public decimal? Desc_Dado { get; set; }
+        public float? Desc_Dado { get; set; }
 
         [Column("preco_venda")]
         [Required]
@@ -53,7 +53,7 @@ namespace InfraBanco.Modelos
         public decimal? Desc_Max { get; set; }
 
         [Column("comissao")]
-        public decimal? Comissao { get; set; }
+        public float? Comissao { get; set; }
 
         [Column("descricao")]
         [MaxLength(120)]

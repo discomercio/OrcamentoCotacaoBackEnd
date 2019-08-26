@@ -10,6 +10,8 @@ namespace PrepedidoBusiness.Dtos.ClienteCadastro
         public string Id { get; set; }
         public string Cnpj_Cpf { get; set; }
         public string Rg { get; set; }
+        public string Ie { get; set; }
+        public string Tipo { get; set; }
         public DateTime? Nascimento { get; set; }
         public string Sexo { get; set; }
         public string Nome { get; set; }

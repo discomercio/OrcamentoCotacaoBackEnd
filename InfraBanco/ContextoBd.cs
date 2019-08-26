@@ -20,6 +20,9 @@ namespace InfraBanco
         public DbSet<TorcamentistaEindicador> TorcamentistaEindicadors { get; set; }
         public DbSet<TsessaoHistorico> TsessaoHistoricos { get; set; }
         public DbSet<Tusuario> Tusuarios { get; set; }
+        public DbSet<Tproduto> Tprodutos { get; set; }
+        public DbSet<TpedidoItem> TpedidoItems { get; set; }
+        public DbSet<TpedidoItemDevolvido> TpedidoItemDevolvidos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
