@@ -147,7 +147,8 @@
         <div style="float: left;" class="textocelnumero">
             Pré-pedidos localizados: {{(prepedidos$|async)?.length}}
         </div>
-        <button mat-raised-button color="accent" *ngIf="!telaDesktop" (click)="voltar()" style="float: right; ">Nova
+        <button mat-raised-button color="accent" *ngIf="!telaDesktop" (click)="voltar()" style="float: right; "
+            [ngClass]="{'botaoDesktop': telaDesktop, 'botaoCelular': !telaDesktop}">Nova
             busca</button>
     </footer>
 
@@ -201,7 +202,8 @@
         <div style="float: left;" class="textocelnumero">
             Pedidos localizados: {{(pedidos$|async)?.length}}
         </div>
-        <button mat-raised-button color="accent" *ngIf="!telaDesktop" (click)="voltar()" style="float: right; ">Nova
+        <button mat-raised-button color="accent" *ngIf="!telaDesktop" (click)="voltar()" style="float: right; "
+            [ngClass]="{'botaoDesktop': telaDesktop, 'botaoCelular': !telaDesktop}">Nova
             busca</button>
     </footer>
 </section>

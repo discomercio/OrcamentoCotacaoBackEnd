@@ -10,8 +10,12 @@
   }
 
   .corpohomeCelular {
-    padding: 2em;
+    padding: 0.7em;
     text-align: left;
+  }
+
+  .botaoCelular {
+    padding-bottom: 0px;
   }
 
   //para o desktop
@@ -71,6 +75,7 @@
   .celcol1 {
     min-width: 4em;
     display: inline-block;
+    font-weight: bold;
   }
   .celcol2 {
     width: auto;
