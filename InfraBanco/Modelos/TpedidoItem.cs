@@ -17,18 +17,19 @@ namespace InfraBanco.Modelos
         [MaxLength(9)]
         public string Pedido { get; set; }
 
-        [Key]
+        //[Key]
         [Column("fabricante")]
         [Required]
         [MaxLength(4)]
         public string Fabricante { get; set; }
 
-        [Key]
+        //[Key]
         [Column("produto")]
         [Required]
         [MaxLength(8)]
+        [ForeignKey("Tproduto")]
         public string Produto { get; set; }
-
+        
         [Column("qtde")]
         public short? Qtde { get; set; }
 
@@ -141,5 +142,7 @@ namespace InfraBanco.Modelos
         [Column("descontinuado")]
         [MaxLength(1)]
         public string Descontinuado { get; set; }
+
+        public Tproduto Tproduto { get; set; }
     }
 }

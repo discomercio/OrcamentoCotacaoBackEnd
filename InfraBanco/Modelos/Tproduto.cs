@@ -11,7 +11,7 @@ namespace InfraBanco.Modelos
     [Table("t_PRODUTO")]
     public class Tproduto
     {
-        [Key]
+        //[Key]
         [Column("fabricante")]
         [Required]
         [MaxLength(4)]

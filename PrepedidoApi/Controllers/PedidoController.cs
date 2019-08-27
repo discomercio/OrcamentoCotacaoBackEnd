@@ -59,5 +59,17 @@ namespace PrepedidoApi.Controllers
 
             return Ok(ret);
         }
+
+        [AllowAnonymous]
+        [HttpGet("buscarPedido")]
+        public async Task<IActionResult> BuscarPedido(string numPedido)
+        {
+            //para testar: http://localhost:60877/api/pedido/buscarPedido
+            string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
+
+            var ret = await pedidoBll.BuscarPedido(apelido, numPedido);
+
+            return Ok(ret);
+        }
     }
 }

@@ -122,10 +122,14 @@ namespace PrepedidoBusiness.Bll
             return cpfCnpjFormat;
         }
 
-        public async Task<PedidoDto> BuscarCliente(string apelido, string numPedido)
+        public async Task<PedidoDto> BuscarPedido(string apelido, string numPedido)
         {
+
             var db = contextoProvider.GetContexto();
 
+            //parateste
+            numPedido = "128591N";
+            apelido = "PEDREIRA";
             var pedido = from c in db.Tpedidos
                          where c.Pedido == numPedido && c.Orcamentista == apelido
                          select c;
@@ -177,6 +181,15 @@ namespace PrepedidoBusiness.Bll
                                     Comissao = c.Comissao
                                 };
 
+            //buscar o valor Total de devoluções NF
+            var vlTotDevolucaoNF = from c in db.TpedidoItemDevolvidos
+                                   where c.Pedido.StartsWith(numPedido)
+                                   select c.Qtde * c.Preco_NF;
+
+            //buscar o valor total de devoluções Venda
+            var vlTotDevolucaoVenda = from c in db.TpedidoItems
+                                      where c.Pedido.StartsWith(numPedido)
+                                      select c.Qtde * c.Preco_Venda;
 
             DetalhesNFPedidoDtoPedido detalhesNf = new DetalhesNFPedidoDtoPedido
             {
@@ -190,14 +203,8 @@ namespace PrepedidoBusiness.Bll
                 InstaladorInstala = p.InstaladorInstalaStatus
             };
 
-
-            //buscar o valor Total de devoluções
-            var vlTotDevolucao = from c in db.TpedidoItemDevolvidos
-                                 where c.Pedido.StartsWith(numPedido)
-                                 select c.Qtde * c.Preco_NF;
-
             string analiseCredito = Convert.ToString(p.Analise_Credito);
-            
+
             switch (analiseCredito)
             {
                 case Constantes.COD_AN_CREDITO_ST_INICIAL:
@@ -229,11 +236,16 @@ namespace PrepedidoBusiness.Bll
                     break;
             }
 
-            
-            if(analiseCredito != "")
+
+            if (analiseCredito != "")
             {
                 analiseCredito += p.Analise_credito_Data;
             }
+
+            //verificar pedido perda
+            var perda = from c in db.TpedidoPerdas
+                        where c.Pedido == numPedido
+                        select c.Valor;
 
             //verifica o status da entrega
             DateTime? dataEntrega = new DateTime();
@@ -247,15 +259,19 @@ namespace PrepedidoBusiness.Bll
                 StatusPagto = p.St_Pagto,
                 VlTotalFamilia = p.Vl_Total_Familia,
                 VlPago = p.Vl_Total_Familia,
-                VlPerdas = vlTotDevolucao.Single(),//verificar se dara certo
-                SaldoAPagar = p.Vl_Total_Familia - vlTotDevolucao.Single(),
+                VlPerdas = perda.Sum(),
+                //SaldoAPagar = p.Vl_Total_Familia - vlTotDevolucao.FirstOrDefault(),
                 AnaliseCredito = analiseCredito,
                 DataColeta = dataEntrega
+                //Transportadora = 
                 //terminar de montar o dto
             };
 
             PedidoDto DtoPedido = new PedidoDto
             {
+                NumeroPedido = numPedido,
+                DataHoraPedido = p.Data_Hora,
+                StatusHoraPedido = p.St_Entrega + p.Entregue_Data,
                 DadosCliente = dadosCliente.FirstOrDefault(),
                 ListaProdutos = produtosItens.ToList(),
                 DetalhesNF = detalhesNf,
