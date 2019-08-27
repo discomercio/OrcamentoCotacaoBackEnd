@@ -7,11 +7,11 @@
         <div class="container divCampos" [class]="telaDesktop? 'containerDesktop': 'containerCelular'"
             fxLayout="row wrap" fxLayout="column" fxLayout.gt-sm="row">
             <div class="item item-1">
-                <mat-form-field class="campoTexto">
-                    <input *ngIf="emPrepedidos" matInput type="text" placeholder="CPF ou CNPJ do cliente"
+                <mat-form-field [class]="telaDesktop? 'campoTextoDesktop': 'campoTextoCel'">
+                    <input *ngIf="emPrepedidos" matInput type="number" placeholder="CPF ou CNPJ do cliente"
                         [(ngModel)]="prepedidoListarService.paramsBuscaPrepedido.clienteBusca" name="clienteBusca"
                         list="dlclienteBusca1">
-                    <input *ngIf="!emPrepedidos" matInput type="text" placeholder="CPF ou CNPJ do cliente"
+                    <input *ngIf="!emPrepedidos" matInput type="number" placeholder="CPF ou CNPJ do cliente"
                         [(ngModel)]="pedidoListarService.paramsBuscaPedido.clienteBusca" name="clienteBusca"
                         list="dlclienteBusca2">
                     <datalist *ngIf="emPrepedidos" id="dlclienteBusca1">
@@ -23,7 +23,7 @@
                 </mat-form-field>
             </div>
             <div class="item item-3">
-                <mat-form-field class="campoTexto">
+                <mat-form-field [class]="telaDesktop? 'campoTextoDesktop': 'campoTextoCel'">
                     <input *ngIf="emPrepedidos" matInput type="text" placeholder="Número Pré Pedido"
                         [(ngModel)]="prepedidoListarService.paramsBuscaPrepedido.numeroPrePedido"
                         name="numeroPrePedidoBusca" list="dlnumpedidoBUsca1">
@@ -40,7 +40,7 @@
             </div>
 
             <div class="item item-3">
-                <mat-form-field class="campoTexto">
+                <mat-form-field [class]="telaDesktop? 'campoTextoDesktop': 'campoTextoCel'">
                     <input *ngIf="emPrepedidos" matInput type="date" placeholder="Período de"
                         [(ngModel)]="prepedidoListarService.paramsBuscaPrepedido.dataInicial" name="dataInicial">
                     <input *ngIf="!emPrepedidos" matInput type="date" placeholder="Período de"
@@ -48,7 +48,7 @@
                 </mat-form-field>
             </div>
             <div class="item item-4">
-                <mat-form-field class="campoTexto">
+                <mat-form-field [class]="telaDesktop? 'campoTextoDesktop': 'campoTextoCel'">
                     <input *ngIf="emPrepedidos" matInput type="date" placeholder="até"
                         [(ngModel)]="prepedidoListarService.paramsBuscaPrepedido.dataFinal" name="dataFinal">
                     <input *ngIf="!emPrepedidos" matInput type="date" placeholder="até"
@@ -59,42 +59,33 @@
 
         <div class="container divCampos" [class]="telaDesktop? 'containerDesktop': 'containerCelular'"
             fxLayout="row wrap" fxLayout="column" fxLayout.gt-sm="row">
-            <div *ngIf="emPrepedidos" class="item item-4">
-                <mat-checkbox class="campoTexto"
+            <div *ngIf="emPrepedidos" [class]="telaDesktop? 'campoTextoDesktop cbdesktop': 'campoTextoCel cbcel'">
+                <mat-checkbox class="checkboxes"
                     [(ngModel)]="prepedidoListarService.paramsBuscaPrepedido.tipoBuscaAndamento"
-                    name="tipoBuscaAndamento">Pré
-                    Pedidos
-                    em andamento
+                    name="tipoBuscaAndamento">Em andamento
                 </mat-checkbox>
             </div>
-            <div *ngIf="emPrepedidos" class="item item-4">
-                <mat-checkbox class="campoTexto"
-                    [(ngModel)]="prepedidoListarService.paramsBuscaPrepedido.tipoBuscaPedido" name="tipoBuscaPedido">Pré
-                    Pedidos
-                    que
+            <div *ngIf="emPrepedidos" [class]="telaDesktop? 'campoTextoDesktop cbdesktop': 'campoTextoCel cbcel'">
+                <mat-checkbox class="checkboxes"
+                    [(ngModel)]="prepedidoListarService.paramsBuscaPrepedido.tipoBuscaPedido" name="tipoBuscaPedido">Que
                     viraram pedidos
                 </mat-checkbox>
-                <br>
-                <br>
             </div>
 
-            <div *ngIf="!emPrepedidos" class="item item-4">
-                <mat-checkbox class="campoTexto" [(ngModel)]="pedidoListarService.paramsBuscaPedido.tipoBuscaEncerrado"
+            <div *ngIf="!emPrepedidos" [class]="telaDesktop? 'campoTextoDesktop cbdesktop': 'campoTextoCel cbcel'">
+                <mat-checkbox class="checkboxes" [(ngModel)]="pedidoListarService.paramsBuscaPedido.tipoBuscaEncerrado"
                     name="tipoBuscaEncerrado">
-                    Pedidos
-                    encerrados
+                    Encerrados
                 </mat-checkbox>
             </div>
-            <div *ngIf="!emPrepedidos" class="item item-4">
-                <mat-checkbox class="campoTexto" [(ngModel)]="pedidoListarService.paramsBuscaPedido.tipoBuscaEmAndamento"
-                    name="tipoBuscaEmAndamento">Pedidos
-                    em andamento
+            <div *ngIf="!emPrepedidos" [class]="telaDesktop? 'campoTextoDesktop cbdesktop': 'campoTextoCel cbcel'">
+                <mat-checkbox class="checkboxes"
+                    [(ngModel)]="pedidoListarService.paramsBuscaPedido.tipoBuscaEmAndamento"
+                    name="tipoBuscaEmAndamento">Em andamento
                 </mat-checkbox>
-                <br>
-                <br>
             </div>
 
-            <div class="item item-4" style="float: right;">
+            <div class="item item-4" style="text-align: center;">
                 <button mat-raised-button color="accent" type="submit"
                     [ngClass]="{'carregando': prepedidoListarService.carregando || pedidoListarService.carregando}">
                     <mat-icon>search</mat-icon> Pesquisar

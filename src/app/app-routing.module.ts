@@ -60,6 +60,10 @@ const routes: Routes = [
     component: HomeComponent
   },
   {
+    path: 'erro/:mensagem',
+    component: ErroComponent
+  },
+  {
     path: 'erro',
     component: ErroComponent
   },

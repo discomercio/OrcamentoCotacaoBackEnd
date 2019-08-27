@@ -35,7 +35,6 @@ export class DetalhesPrepedidoComponent extends TelaDesktopBaseComponent impleme
 
   //avisamos de erros
   //temos um controle para não mostrar mensagens umas sobre as outras
-  //só damos erro na primeria vez porque esta tela precisa voltar para outra para acessar os dados de novo
   private jaDeuErro = false;
   private deuErro(r: any) {
     if (r == null) return;
@@ -43,7 +42,10 @@ export class DetalhesPrepedidoComponent extends TelaDesktopBaseComponent impleme
     this.jaDeuErro = true;
     const dialogRef = this.dialog.open(AlertDialogComponent, {
       width: '350px',
-      data: `Ocorreu um erro ao acessar os dados. Verifique a conexão com a Internet.`
+      data: `Ocorreu um erro ao acessar os dados. Verifique a conexão com a Internet. (Nota: esta tela ainda não foi implementada na API)`
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      this.jaDeuErro = false;
     });
   }
   ngOnInit() {

@@ -16,14 +16,10 @@ export class ErroComponent implements OnInit {
     public readonly activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    //this.mensagem = this.router.getCurrentNavigation().extras.state.mensagem;
-    // this.state$ = this.activatedRoute.paramMap
-    //   .pipe(map(() => window.history.state));
-    // this.state$.subscribe(c => {
-    //   let cany: any = c;
-    //   if (cany && cany.mensagem)
-    //     this.mensagem = cany.mensagem;
-    // });
+    const msg = this.activatedRoute.snapshot.params.mensagem;
+    if (!!msg) {
+      this.mensagem = msg;
+    }
   }
 
   voltarInicio() {

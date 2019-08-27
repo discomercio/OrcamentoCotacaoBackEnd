@@ -15,6 +15,7 @@ import { environment } from '../../../../src/environments/environment';
 import { ConfirmationDialogComponent } from '../../../../src/app/utils/confirmation-dialog/confirmation-dialog.component';
 import { PrepedidoRemoverService } from '../../../../src/app/servicos/prepedido/prepedido-remover.service';
 import { Router } from '@angular/router';
+import { AlertDialogComponent } from 'src/app/utils/alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'app-lista-base',
@@ -54,10 +55,7 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
       this.prepedidoListarService.errosPrepedidos$.subscribe(
         {
           next: (r) => {
-            if (r == null) return;
-            this._snackBar.open("Ocorreu um erro ao fazer a busca de pré-pedidos. Verifique a conexão e tente novamente.", "", {
-              duration: environment.esperaErros
-            });
+            this.deuErro(r);
           }
         });
       this.prepedidoListarService.atualizar();
@@ -66,15 +64,29 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
       this.pedidoListarService.errosPedidos$.subscribe(
         {
           next: (r) => {
-            if (r == null) return;
-            this._snackBar.open("Ocorreu um erro ao fazer a busca de pedidos. Verifique a conexão e tente novamente.", "", {
-              duration: environment.esperaErros
-            });
+            this.deuErro(r);
           }
         });
       this.pedidoListarService.atualizar();
     }, 1);
   }
+
+  //avisamos de erros
+  //temos um controle para não mostrar mensagens umas sobre as outras
+  private jaDeuErro = false;
+  private deuErro(r: any) {
+    if (r == null) return;
+    if (this.jaDeuErro) return;
+    this.jaDeuErro = true;
+    const dialogRef = this.dialog.open(AlertDialogComponent, {
+      width: '350px',
+      data: `Ocorreu um erro ao acessar os dados. Verifique a conexão com a Internet.`
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      this.jaDeuErro = false;
+    });
+  }
+
 
   voltar() {
     this.location.back();
@@ -83,6 +95,7 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
   displayedColumnsPedido: string[] = ['DataPedido', 'NumeroPedido', 'NomeCliente', 'Status', 'ValoTotal'];
 
 
+  //para remover o pedido, temos uma confirmação antes
   emRemoverPrepedido = false;
   removerPrepedido(numeroPrepedio: string): void {
     this.emRemoverPrepedido = true;
