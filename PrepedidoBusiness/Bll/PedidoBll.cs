@@ -10,6 +10,7 @@ using InfraBanco.Modelos;
 using PrepedidoBusiness.Dto.Pedido.DetalhesPedido;
 using Microsoft.EntityFrameworkCore.Internal;
 using InfraBanco.Constantes;
+using System.Collections;
 
 namespace PrepedidoBusiness.Bll
 {
@@ -130,6 +131,7 @@ namespace PrepedidoBusiness.Bll
             //parateste
             numPedido = "128591N";
             apelido = "PEDREIRA";
+
             var pedido = from c in db.Tpedidos
                          where c.Pedido == numPedido && c.Orcamentista == apelido
                          select c;
@@ -141,6 +143,9 @@ namespace PrepedidoBusiness.Bll
                                where c.Id == p.Id_Cliente
                                select new DadosClienteCadastroDto
                                {
+                                   Loja = p.Loja,
+                                   Indicador = p.Indicador,
+                                   Vendedor = p.Vendedor,
                                    Id = c.Id,
                                    Cnpj_Cpf = c.Cnpj_Cpf,
                                    Rg = c.Rg,
@@ -181,15 +186,11 @@ namespace PrepedidoBusiness.Bll
                                     Comissao = c.Comissao
                                 };
 
-            //buscar o valor Total de devoluções NF
-            var vlTotDevolucaoNF = from c in db.TpedidoItemDevolvidos
-                                   where c.Pedido.StartsWith(numPedido)
-                                   select c.Qtde * c.Preco_NF;
+            decimal saldo_a_pagar = await CalculaSaldoAPagar(numPedido);
+            decimal vlFamiliaParcelaRA = await CalculaTotalFamiliaRA(numPedido);
 
-            //buscar o valor total de devoluções Venda
-            var vlTotDevolucaoVenda = from c in db.TpedidoItems
-                                      where c.Pedido.StartsWith(numPedido)
-                                      select c.Qtde * c.Preco_Venda;
+            if (p.St_Entrega == Constantes.ST_PAGTO_PAGO && saldo_a_pagar > 0)
+                saldo_a_pagar = 0;
 
             DetalhesNFPedidoDtoPedido detalhesNf = new DetalhesNFPedidoDtoPedido
             {
@@ -240,12 +241,7 @@ namespace PrepedidoBusiness.Bll
             if (analiseCredito != "")
             {
                 analiseCredito += p.Analise_credito_Data;
-            }
-
-            //verificar pedido perda
-            var perda = from c in db.TpedidoPerdas
-                        where c.Pedido == numPedido
-                        select c.Valor;
+            }            
 
             //verifica o status da entrega
             DateTime? dataEntrega = new DateTime();
@@ -275,10 +271,117 @@ namespace PrepedidoBusiness.Bll
                 DadosCliente = dadosCliente.FirstOrDefault(),
                 ListaProdutos = produtosItens.ToList(),
                 DetalhesNF = detalhesNf,
-                DetalhesFormaPagto = detalhesFormaPagto
+                DetalhesFormaPagto = detalhesFormaPagto,
+                ListaProdutoDevolvido = await BuscarProdutosDevolvidos(numPedido),
+                ListaPerdas = await BuscarPerdas(numPedido)
             };
 
             return await Task.FromResult(DtoPedido);
         }
+
+        public async Task<decimal> CalculaSaldoAPagar(string numPedido)
+        {
+            var db = contextoProvider.GetContexto();
+
+            //buscar o valor total pago
+            var vlFamiliaP = from c in db.TpedidoPagamentos
+                             where c.Pedido.StartsWith(numPedido)
+                             select c;
+            decimal vl_TotalFamiliaPago = await vlFamiliaP.Select(r => r.Valor).SumAsync();
+
+            //buscar valor total NF
+            var vlNf = from c in db.TpedidoItems.Include(r => r.Tpedido)
+                       where c.Tpedido.St_Entrega != Constantes.ST_ENTREGA_CANCELADO && c.Tpedido.Pedido.StartsWith(numPedido)
+                       select c.Qtde * c.Preco_NF;
+            decimal vl_TotalFamiliaPrecoNF = await vlNf.Select(r => r.Value).SumAsync();
+
+            //buscar valor total de devoluções NF
+            var vlDevNf = from c in db.TpedidoItemDevolvidos
+                          where c.Pedido.StartsWith(numPedido)
+                          select c.Qtde * c.Preco_NF;
+            decimal vl_TotalFamiliaDevolucaoPrecoNF = await vlDevNf.Select(r => r.Value).SumAsync();
+
+            decimal result = vl_TotalFamiliaPrecoNF - vl_TotalFamiliaPago - vl_TotalFamiliaDevolucaoPrecoNF;
+
+            return await Task.FromResult(result);
+        }
+
+        public async Task<decimal> CalculaTotalFamiliaRA(string numPedido)
+        {
+            var db = contextoProvider.GetContexto();
+
+            var vlTotalVendaPorItem = from c in db.TpedidoItems.Include(r => r.Tpedido)
+                                      where c.Tpedido.St_Entrega != Constantes.ST_ENTREGA_CANCELADO && c.Tpedido.Pedido.StartsWith(numPedido)
+                                      select new { venda = c.Qtde * c.Preco_Venda, nf = c.Qtde * c.Preco_NF };
+
+            var vlTotalVenda = await vlTotalVendaPorItem.Select(r => r.venda).SumAsync();
+            var vlTotalNf = await vlTotalVendaPorItem.Select(r => r.nf).SumAsync();
+
+            decimal result = vlTotalVenda.Value - vlTotalNf.Value;
+
+            return await Task.FromResult(result);
+        }
+
+        public async Task<IEnumerable<ProdutoDevolvidoDtoPedido>> BuscarProdutosDevolvidos(string numPedido)
+        {
+            var db = contextoProvider.GetContexto();
+
+            var lista = from c in db.TpedidoItemDevolvidos
+                        where c.Pedido.StartsWith(numPedido)
+                        select new ProdutoDevolvidoDtoPedido
+                        {
+                            Data = c.Devolucao_Data,
+                            Hora = c.Devolucao_Hora,
+                            Qtde = c.Qtde,
+                            CodProduto = c.Produto,
+                            DescricaoProduto = c.Descricao,
+                            Motivo = c.Motivo,
+                            NumeroNF = c.NFe_Numero_NF
+                        };
+
+            return await Task.FromResult(lista);
+        }
+
+        public async Task<IEnumerable<PedidoPerdasDtoPedido>> BuscarPerdas(string numPedido)
+        {
+            var db = contextoProvider.GetContexto();
+
+            var lista = from c in db.TpedidoPerdas
+                        where c.Pedido == numPedido
+                        select new PedidoPerdasDtoPedido
+                        {
+                            Data = c.Data,
+                            Hora = c.Hora,
+                            Valor = c.Valor,
+                            Obs = c.Obs
+                        };
+
+            return await Task.FromResult(lista);
+        }
+
+        //public async Task<int> VerificarEstoque(string numPedido, string fabricante, string produto)
+        //{
+        //    var db = contextoProvider.GetContexto();
+
+        //    //var prod = from c in db.t
+        //    //fazer o modelo do t_ESTOQUE_MOVIMENTO 
+        //}
+
+        //public async Task<decimal> CalculaTotalDevolucoes_Venda_E_NF(string numPedido)
+        //{
+        //    var db = contextoProvider.GetContexto();
+
+        //    var itemDevTotal = from c in db.TpedidoItemDevolvidos
+        //                       where c.Pedido.StartsWith(numPedido)
+        //                       select new { venda = c.Qtde * c.Preco_Venda, nf = c.Qtde * c.Preco_NF };
+
+        //    var vlTotDevVenda = await itemDevTotal.Select(r => r.venda).SumAsync();
+        //    var vlTotDevNf = await itemDevTotal.Select(r => r.nf).SumAsync();
+
+        //    decimal result = vlTotDevVenda.Value - vlTotDevNf.Value;
+
+        //    return await Task.FromResult(result);
+        //}
+
     }
 }

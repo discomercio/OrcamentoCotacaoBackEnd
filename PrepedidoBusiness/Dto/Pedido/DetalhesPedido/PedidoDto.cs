@@ -14,5 +14,7 @@ namespace PrepedidoBusiness.Dto.Pedido.DetalhesPedido
         public List<PedidoProdutosDtoPedido> ListaProdutos { get; set; }
         public DetalhesNFPedidoDtoPedido DetalhesNF { get; set; }
         public DetalhesFormaPagamentos DetalhesFormaPagto { get; set; }
+        public IEnumerable<ProdutoDevolvidoDtoPedido> ListaProdutoDevolvido{ get; set; }
+        public IEnumerable<PedidoPerdasDtoPedido> ListaPerdas { get; set; }
     }
 }

@@ -15,6 +15,7 @@ namespace InfraBanco.Modelos
         [Column("pedido")]
         [Required]
         [MaxLength(9)]
+        [ForeignKey("Tpedido")]
         public string Pedido { get; set; }
 
         //[Key]
@@ -144,5 +145,6 @@ namespace InfraBanco.Modelos
         public string Descontinuado { get; set; }
 
         public Tproduto Tproduto { get; set; }
+        public Tpedido Tpedido { get; set; }
     }
 }
