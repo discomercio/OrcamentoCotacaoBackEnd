@@ -1,17 +1,17 @@
 <div [class]="telaDesktop? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'">
-    <div *ngIf="emPrepedidos" class="titulopagina"> Consultar Pré Pedidos </div>
-    <div *ngIf="!emPrepedidos" class="titulopagina"> Consultar Pedidos </div>
+    <div *ngIf="emPrepedidos" class="titulopagina" [ngClass]="{'tituloDesktop': telaDesktop}"> Consultar Pré Pedidos </div>
+    <div *ngIf="!emPrepedidos" class="titulopagina"  [ngClass]="{'tituloDesktop': telaDesktop}"> Consultar Pedidos </div>
 
     <form #loginForm="ngForm" class="container" [class]="telaDesktop? 'containerDesktop': 'containerCelular'"
         (ngSubmit)="buscar()">
         <div class="container divCampos" [class]="telaDesktop? 'containerDesktop': 'containerCelular'"
             fxLayout="row wrap" fxLayout="column" fxLayout.gt-sm="row">
-            <div class="item item-1">
+            <div class="item item-1" [ngClass]="{'margemdesktop': telaDesktop}">
                 <mat-form-field [class]="telaDesktop? 'campoTextoDesktop': 'campoTextoCel'">
-                    <input *ngIf="emPrepedidos" matInput type="number" placeholder="CPF ou CNPJ do cliente"
+                    <input *ngIf="emPrepedidos" matInput type="text" placeholder="CPF ou CNPJ do cliente"
                         [(ngModel)]="prepedidoListarService.paramsBuscaPrepedido.clienteBusca" name="clienteBusca"
                         list="dlclienteBusca1">
-                    <input *ngIf="!emPrepedidos" matInput type="number" placeholder="CPF ou CNPJ do cliente"
+                    <input *ngIf="!emPrepedidos" matInput type="text" placeholder="CPF ou CNPJ do cliente"
                         [(ngModel)]="pedidoListarService.paramsBuscaPedido.clienteBusca" name="clienteBusca"
                         list="dlclienteBusca2">
                     <datalist *ngIf="emPrepedidos" id="dlclienteBusca1">
@@ -22,7 +22,7 @@
                     </datalist>
                 </mat-form-field>
             </div>
-            <div class="item item-3">
+            <div class="item item-3" [ngClass]="{'margemdesktop': telaDesktop}">
                 <mat-form-field [class]="telaDesktop? 'campoTextoDesktop': 'campoTextoCel'">
                     <input *ngIf="emPrepedidos" matInput type="text" placeholder="Número Pré Pedido"
                         [(ngModel)]="prepedidoListarService.paramsBuscaPrepedido.numeroPrePedido"
@@ -39,7 +39,7 @@
                 </datalist>
             </div>
 
-            <div class="item item-3">
+            <div class="item item-3" [ngClass]="{'margemdesktop': telaDesktop}">
                 <mat-form-field [class]="telaDesktop? 'campoTextoDesktop': 'campoTextoCel'">
                     <input *ngIf="emPrepedidos" matInput type="date" placeholder="Período de"
                         [(ngModel)]="prepedidoListarService.paramsBuscaPrepedido.dataInicial" name="dataInicial">
@@ -47,7 +47,7 @@
                         [(ngModel)]="pedidoListarService.paramsBuscaPedido.dataInicial" name="dataInicial">
                 </mat-form-field>
             </div>
-            <div class="item item-4">
+            <div class="item item-4" [ngClass]="{'margemdesktop': telaDesktop}">
                 <mat-form-field [class]="telaDesktop? 'campoTextoDesktop': 'campoTextoCel'">
                     <input *ngIf="emPrepedidos" matInput type="date" placeholder="até"
                         [(ngModel)]="prepedidoListarService.paramsBuscaPrepedido.dataFinal" name="dataFinal">

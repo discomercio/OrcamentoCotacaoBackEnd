@@ -46,6 +46,7 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
   prepedidos$: Observable<PrepedidosCadastradosDtoPrepedido[]>;
   pedidos$: Observable<PedidosDtoPedido[]>;
   ngOnInit() {
+    this.jaDeuErro = false;
     /*
     evitar o 
     ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value: 'carregando: false'. Current value: 'carregando: true'.
@@ -83,7 +84,7 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
       data: `Ocorreu um erro ao acessar os dados. Verifique a conexão com a Internet.`
     });
     dialogRef.afterClosed().subscribe((result) => {
-      this.jaDeuErro = false;
+      //this.jaDeuErro = false;
     });
   }
 

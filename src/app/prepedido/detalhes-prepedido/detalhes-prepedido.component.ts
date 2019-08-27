@@ -45,10 +45,12 @@ export class DetalhesPrepedidoComponent extends TelaDesktopBaseComponent impleme
       data: `Ocorreu um erro ao acessar os dados. Verifique a conexão com a Internet. (Nota: esta tela ainda não foi implementada na API)`
     });
     dialogRef.afterClosed().subscribe((result) => {
-      this.jaDeuErro = false;
+      //somente na inicialização, ou dá várias vezes
+      //this.jaDeuErro = false;
     });
   }
   ngOnInit() {
+    this.jaDeuErro = false;
 
     //registra os observers e o tratamento de erro
     this.pedidoBuscarService.pedidos$.subscribe({
