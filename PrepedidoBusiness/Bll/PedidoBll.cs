@@ -125,12 +125,11 @@ namespace PrepedidoBusiness.Bll
 
         public async Task<PedidoDto> BuscarPedido(string apelido, string numPedido)
         {
-
             var db = contextoProvider.GetContexto();
 
             //parateste
-            numPedido = "128591N";
-            apelido = "PEDREIRA";
+            //numPedido = "128591N";
+            //apelido = "PEDREIRA";
 
             var pedido = from c in db.Tpedidos
                          where c.Pedido == numPedido && c.Orcamentista == apelido
@@ -170,6 +169,8 @@ namespace PrepedidoBusiness.Bll
                                    Cep = c.Cep
                                };
 
+            short? faltante = (short)await VerificarEstoque(numPedido);
+
             var produtosItens = from c in db.TpedidoItems
                                 where c.Pedido == numPedido
                                 select new PedidoProdutosDtoPedido
@@ -178,7 +179,7 @@ namespace PrepedidoBusiness.Bll
                                     NumProduto = c.Produto,
                                     Descricao = c.Descricao,
                                     Qtde = c.Qtde,
-                                    Faltando = c.Qtde,//Fazer um metodo para produtos que estão faltando
+                                    Faltando = faltante,
                                     VlLista = c.Preco_Lista,
                                     Desconto = c.Desc_Dado,
                                     VlVenda = c.Qtde * c.Preco_Venda,
@@ -241,12 +242,21 @@ namespace PrepedidoBusiness.Bll
             if (analiseCredito != "")
             {
                 analiseCredito += p.Analise_credito_Data;
-            }            
+            }
 
             //verifica o status da entrega
             DateTime? dataEntrega = new DateTime();
             if (p.St_Entrega == Constantes.ST_ENTREGA_A_ENTREGAR || p.St_Entrega == Constantes.ST_ENTREGA_SEPARAR)
                 dataEntrega = p.A_Entregar_Data_Marcada;
+
+            var perdas = BuscarPerdas(numPedido);
+
+            decimal TotalPerda = (decimal)perdas.Result.Select(r => r.Valor).Sum();
+
+            var transportador = from c in db.Ttransportadoras
+                                where c.Id == p.Transportadora_Id
+                                select c.Nome;
+            string TranspNome = await transportador.Select(r => r.ToString()).FirstOrDefaultAsync();
 
             DetalhesFormaPagamentos detalhesFormaPagto = new DetalhesFormaPagamentos
             {
@@ -255,12 +265,15 @@ namespace PrepedidoBusiness.Bll
                 StatusPagto = p.St_Pagto,
                 VlTotalFamilia = p.Vl_Total_Familia,
                 VlPago = p.Vl_Total_Familia,
-                VlPerdas = perda.Sum(),
-                //SaldoAPagar = p.Vl_Total_Familia - vlTotDevolucao.FirstOrDefault(),
+                VlPerdas = TotalPerda,
+                SaldoAPagar = saldo_a_pagar,
                 AnaliseCredito = analiseCredito,
-                DataColeta = dataEntrega
-                //Transportadora = 
-                //terminar de montar o dto
+                DataColeta = dataEntrega,
+                Transportadora = TranspNome,
+                VlFrete = p.Frete_Valor,
+                //BlocoNotas = "",  retirar pois precisa de DTO para eles
+                //Ocorrencias="",
+                VlDevolucao = 0
             };
 
             PedidoDto DtoPedido = new PedidoDto
@@ -273,7 +286,8 @@ namespace PrepedidoBusiness.Bll
                 DetalhesNF = detalhesNf,
                 DetalhesFormaPagto = detalhesFormaPagto,
                 ListaProdutoDevolvido = await BuscarProdutosDevolvidos(numPedido),
-                ListaPerdas = await BuscarPerdas(numPedido)
+                ListaPerdas = await BuscarPerdas(numPedido),
+                BlocoNotas = await BuscarPedidoBlocoNotas(numPedido)
             };
 
             return await Task.FromResult(DtoPedido);
@@ -359,13 +373,51 @@ namespace PrepedidoBusiness.Bll
             return await Task.FromResult(lista);
         }
 
-        //public async Task<int> VerificarEstoque(string numPedido, string fabricante, string produto)
-        //{
-        //    var db = contextoProvider.GetContexto();
+        public async Task<int> VerificarEstoque(string numPedido)
+        {
+            var db = contextoProvider.GetContexto();
 
-        //    //var prod = from c in db.t
-        //    //fazer o modelo do t_ESTOQUE_MOVIMENTO 
-        //}
+            var fabricanteProduto = from c in db.TpedidoItems
+                                    where c.Pedido == numPedido
+                                    select new { fabricante = c.Fabricante, produto = c.Produto };
+            string fabricante = await fabricanteProduto.Select(r => r.fabricante).FirstOrDefaultAsync();
+            string produto = await fabricanteProduto.Select(r => r.produto).FirstOrDefaultAsync();
+
+            var prod = from c in db.TestoqueMovimentos
+                       where c.Anulado_Status == 0 &&
+                             c.Pedido == numPedido &&
+                             c.Fabricante == fabricante &&
+                             c.Produto == produto &&
+                             c.Estoque == Constantes.ID_ESTOQUE_VENDIDO &&
+                             c.Qtde.HasValue
+                       select new { qtde = (int)c.Qtde };
+
+            int qtde = await prod.Select(r => r.qtde).SumAsync();
+
+            return await Task.FromResult(qtde);
+        }
+
+        public async Task<BlocoNotasDtoPedido> BuscarPedidoBlocoNotas(string numPedido)
+        {
+            var db = contextoProvider.GetContexto();
+
+            var bl = from c in db.TpedidoBlocosNotas
+                     where c.Pedido == numPedido &&
+                           c.Nivel_Acesso == Constantes.COD_NIVEL_ACESSO_BLOCO_NOTAS_PEDIDO__PUBLICO &&
+                           c.Anulado_Status == 0
+                     select c;
+
+            BlocoNotasDtoPedido bloco = new BlocoNotasDtoPedido
+            {
+                Dt_Hora_Cadastro = await bl.Select(r => r.Dt_Hr_Cadastro).FirstOrDefaultAsync(),
+                Usuario = await bl.Select(r => r.Usuario).FirstOrDefaultAsync(),
+                Loja = await bl.Select(r => r.Loja).FirstOrDefaultAsync(),
+                Mensagem = await bl.Select(r => r.Mensagem).FirstOrDefaultAsync()
+            };
+
+            return await Task.FromResult(bloco);
+
+        }
 
         //public async Task<decimal> CalculaTotalDevolucoes_Venda_E_NF(string numPedido)
         //{

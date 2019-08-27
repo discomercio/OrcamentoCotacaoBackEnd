@@ -16,5 +16,9 @@ namespace PrepedidoBusiness.Dto.Pedido.DetalhesPedido
         public DetalhesFormaPagamentos DetalhesFormaPagto { get; set; }
         public IEnumerable<ProdutoDevolvidoDtoPedido> ListaProdutoDevolvido{ get; set; }
         public IEnumerable<PedidoPerdasDtoPedido> ListaPerdas { get; set; }
+        public BlocoNotasDtoPedido BlocoNotas { get; set; }
+
+        //Incluir o dto de endereço de entrega
+        //verificar os telefones comerciais
     }
 }

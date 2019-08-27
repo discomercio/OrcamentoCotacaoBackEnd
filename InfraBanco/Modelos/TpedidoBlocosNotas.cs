@@ -8,7 +8,7 @@ using System.Web;
 
 namespace InfraBanco.Modelos
 {
-    [Table("t_PEDIDO_BLOCOS_NOTAS")]
+    [Table("t_PEDIDO_BLOCO_NOTAS")]
     public class TpedidoBlocosNotas
     {
         [Key]

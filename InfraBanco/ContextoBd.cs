@@ -25,6 +25,9 @@ namespace InfraBanco
         public DbSet<TpedidoItemDevolvido> TpedidoItemDevolvidos { get; set; }
         public DbSet<TpedidoPerda> TpedidoPerdas { get; set; }
         public DbSet<TpedidoPagamento> TpedidoPagamentos { get; set; }
+        public DbSet<TestoqueMovimento> TestoqueMovimentos { get; set; }
+        public DbSet<Ttransportadora> Ttransportadoras { get; set; }
+        public DbSet<TpedidoBlocosNotas> TpedidoBlocosNotas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
