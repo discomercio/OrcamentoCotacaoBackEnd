@@ -37,7 +37,7 @@ namespace InfraBanco.Modelos
         [MaxLength(60)]
         public string Servicos { get; set; }
 
-        [Column("vl_servicos")]
+        [Column("vl_servicos", TypeName = "money")]
         [Required]
         public decimal Vl_Servicos { get; set; }
 
@@ -108,7 +108,7 @@ namespace InfraBanco.Modelos
         [Required]
         public short Pc_Qtde_Parcelas { get; set; }
 
-        [Column("pc_valor_parcela")]
+        [Column("pc_valor_parcela", TypeName = "money")]
         public decimal? Pc_Valor_Parcela { get; set; }
 
         [Column("pce_forma_pagto_entrada")]
@@ -119,14 +119,14 @@ namespace InfraBanco.Modelos
         [Required]
         public short Pce_Forma_Pagto_Prestacao { get; set; }
 
-        [Column("pce_entrada_valor")]
+        [Column("pce_entrada_valor", TypeName = "money")]
         public decimal? Pce_Entrada_Valor { get; set; }
 
         [Column("pce_prestacao_qtde")]
         [Required]
         public short Pce_Prestacao_Qtde { get; set; }
 
-        [Column("pce_prestacao_valor")]
+        [Column("pce_prestacao_valor", TypeName = "money")]
         public decimal? Pce_Prestacao_Valor { get; set; }
 
         [Column("pce_prestacao_periodo")]
@@ -141,7 +141,7 @@ namespace InfraBanco.Modelos
         [Required]
         public short Pse_Forma_Pagto_Demais_Prest { get; set; }
 
-        [Column("pse_prim_prest_valor")]
+        [Column("pse_prim_prest_valor", TypeName = "money")]
         public decimal? Pse_Prim_Prest_Valor { get; set; }
 
         [Column("pse_prim_prest_apos")]
@@ -152,7 +152,7 @@ namespace InfraBanco.Modelos
         [Required]
         public short Pse_Demais_Prest_Qtde { get; set; }
 
-        [Column("pse_demais_prest_valor")]
+        [Column("pse_demais_prest_valor", TypeName = "money")]
         public decimal Pse_Demais_Prest_Valor { get; set; }
 
         [Column("pse_demais_prest_periodo")]
@@ -163,7 +163,7 @@ namespace InfraBanco.Modelos
         [Required]
         public short Pu_Forma_Pagto { get; set; }
 
-        [Column("pu_valor")]
+        [Column("pu_valor", TypeName = "money")]
         public decimal? Pu_Valor { get; set; }
 
         [Column("pu_vencto_apos")]
@@ -174,13 +174,13 @@ namespace InfraBanco.Modelos
         [MaxLength(20)]
         public string Orcamentista { get; set; }
 
-        [Column("vl_total")]
+        [Column("vl_total", TypeName = "money")]
         public decimal? Vl_Total { get; set; }
 
-        [Column("vl_total_NF")]
+        [Column("vl_total_NF", TypeName = "money")]
         public decimal? Vl_Total_NF { get; set; }
 
-        [Column("vl_total_RA")]
+        [Column("vl_total_RA", TypeName = "money")]
         public decimal? Vl_Total_RA { get; set; }
 
         [Column("perc_RT")]
@@ -308,7 +308,7 @@ namespace InfraBanco.Modelos
         [Required]
         public short Pc_Maquineta_Qtde_Parcelas { get; set; }
 
-        [Column("pc_maquineta_valor_parcela")]
+        [Column("pc_maquineta_valor_parcela", TypeName = "money")]
         [Required]
         public decimal Pc_Maquineta_Valor_Parcela { get; set; }
 

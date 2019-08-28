@@ -45,6 +45,34 @@ namespace PrepedidoBusiness.Bll
         public async Task<IEnumerable<PedidoDtoPedido>> ListarPedidos(string apelido, TipoBuscaPedido tipoBusca,
             string clienteBusca, string numeroPedido, DateTime? dataInicial, DateTime? dataFinal)
         {
+            //fazemos a busca
+            var ret = await ListarPedidosFiltroEstrito(apelido, tipoBusca, clienteBusca, numeroPedido, dataInicial, dataFinal);
+
+            //se tiver algum registro, retorna imediatamente
+            if (ret.Count() > 0)
+                return ret;
+
+            /*
+             * se fizeram a busca por algum CPF ou CNPJ ou pedido e não achamos nada, removemos o filtro de datas
+             * para não aparcer para o usuário que não tem nenhum registro
+             * */
+            if (String.IsNullOrEmpty(clienteBusca) && String.IsNullOrEmpty(numeroPedido))
+                return ret;
+
+            //busca sem datas
+            ret = await ListarPedidosFiltroEstrito(apelido, tipoBusca, clienteBusca, numeroPedido, null, null);
+            if (ret.Count() > 0)
+                return ret;
+
+            //ainda não achamos nada? então faz a busca sem filtrar por tipo
+            ret = await ListarPedidosFiltroEstrito(apelido, TipoBuscaPedido.Todos, clienteBusca, numeroPedido, null, null);
+            return ret;
+        }
+
+        //a busca sem malabarismos para econtrar algum registro
+        private async Task<IEnumerable<PedidoDtoPedido>> ListarPedidosFiltroEstrito(string apelido, TipoBuscaPedido tipoBusca,
+            string clienteBusca, string numeroPedido, DateTime? dataInicial, DateTime? dataFinal)
+        {
             var db = contextoProvider.GetContexto();
 
             var lista = db.Tpedidos.Include(r => r.Tcliente).
@@ -65,7 +93,7 @@ namespace PrepedidoBusiness.Bll
             }
 
             if (!string.IsNullOrEmpty(clienteBusca))
-                lista = lista.Where(r => r.Tcliente.Nome.Contains(clienteBusca));
+                lista = lista.Where(r => r.Tcliente.Cnpj_Cpf.Contains(clienteBusca));
             if (!string.IsNullOrEmpty(numeroPedido))
                 lista = lista.Where(r => r.Pedido.Contains(numeroPedido));
             if (dataInicial.HasValue)
@@ -135,6 +163,8 @@ namespace PrepedidoBusiness.Bll
                          where c.Pedido == numPedido && c.Orcamentista == apelido
                          select c;
             Tpedido p = pedido.FirstOrDefault();
+            if (p == null)
+                return null;
 
             var dadosCliente = from c in db.Tclientes
                                where c.Id == p.Id_Cliente

@@ -25,7 +25,7 @@ namespace InfraBanco.Modelos
         [MaxLength(6)]
         public string Hora { get; set; }
 
-        [Column("valor")]
+        [Column("valor", TypeName = "money")]
         public decimal Valor { get; set; }
 
         [Column("obs")]

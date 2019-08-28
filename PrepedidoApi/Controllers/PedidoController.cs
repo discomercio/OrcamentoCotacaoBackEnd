@@ -40,7 +40,6 @@ namespace PrepedidoApi.Controllers
         {
             //para testar: http://localhost:60877/api/pedido/listarPedidos
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            //string apelido = "SALOMÃO";
             var ret = await pedidoBll.ListarPedidos(apelido,
                 (PrepedidoBusiness.Bll.PedidoBll.TipoBuscaPedido)tipoBusca, clienteBusca,
                 numPedido, dataInicial, dataFinal);

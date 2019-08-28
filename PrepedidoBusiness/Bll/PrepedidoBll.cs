@@ -62,7 +62,35 @@ namespace PrepedidoBusiness.Bll
         public async Task<IEnumerable<PrepedidosCadastradosDtoPrepedido>> ListarPrePedidos(string apelido, TipoBuscaPrepedido tipoBusca,
             string clienteBusca, string numeroPrePedido, DateTime? dataInicial, DateTime? dataFinal)
         {
-            var db = contextoProvider.GetContexto();
+            //usamos a mesma lógica de PedidoBll.ListarPedidos:
+            /*
+             * se fizeram a busca por algum CPF ou CNPJ ou pedido e não achamos nada, removemos o filtro de datas
+             * para não aparcer para o usuário que não tem nenhum registro
+             * */
+            var ret = await ListarPrePedidosFiltroEstrito(apelido, tipoBusca, clienteBusca, numeroPrePedido, dataInicial, dataFinal);
+            //se tiver algum registro, retorna imediatamente
+            if (ret.Count() > 0)
+                return ret;
+
+            if (String.IsNullOrEmpty(clienteBusca) && String.IsNullOrEmpty(numeroPrePedido))
+                return ret;
+
+            //busca sem datas
+            ret = await ListarPrePedidosFiltroEstrito(apelido, tipoBusca, clienteBusca, numeroPrePedido, null, null);
+            if (ret.Count() > 0)
+                return ret;
+
+            //ainda não achamos nada? então faz a busca sem filtrar por tipo
+            ret = await ListarPrePedidosFiltroEstrito(apelido, TipoBuscaPrepedido.Todos, clienteBusca, numeroPrePedido, null, null);
+            return ret;
+
+        }
+
+        //a busca sem malabarismos para econtrar algum registro
+        public async Task<IEnumerable<PrepedidosCadastradosDtoPrepedido>> ListarPrePedidosFiltroEstrito(string apelido, TipoBuscaPrepedido tipoBusca,
+                string clienteBusca, string numeroPrePedido, DateTime? dataInicial, DateTime? dataFinal)
+            {
+                var db = contextoProvider.GetContexto();
 
             var lst = db.Torcamentos.
                 Where(r => r.Orcamentista == apelido);
@@ -81,7 +109,7 @@ namespace PrepedidoBusiness.Bll
                     break;
             }
             if (!string.IsNullOrEmpty(clienteBusca))
-                lst = lst.Where(r => r.Tcliente.Nome.Contains(clienteBusca));
+                lst = lst.Where(r => r.Tcliente.Cnpj_Cpf.Contains(clienteBusca));
             if (!string.IsNullOrEmpty(numeroPrePedido))
                 lst = lst.Where(r => r.Orcamento.Contains(numeroPrePedido));
             if (dataInicial.HasValue)
