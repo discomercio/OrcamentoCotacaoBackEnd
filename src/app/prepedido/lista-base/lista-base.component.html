@@ -33,7 +33,7 @@
 
             <ng-container matColumnDef="ValoTotal">
                 <th mat-header-cell *matHeaderCellDef> Valor </th>
-                <td mat-cell *matCellDef="let element"> {{moedaUtils.formatarMoeda(element.ValoTotal)}} </td>
+                <td mat-cell *matCellDef="let element"> {{moedaUtils.formatarMoedaComPrefixo(element.ValoTotal)}} </td>
             </ng-container>
 
             <ng-container matColumnDef="Remover">
@@ -83,7 +83,7 @@
 
             <ng-container matColumnDef="ValoTotal">
                 <th mat-header-cell *matHeaderCellDef> Valor </th>
-                <td mat-cell *matCellDef="let element"> {{moedaUtils.formatarMoeda(element.ValorTotal)}} </td>
+                <td mat-cell *matCellDef="let element"> {{moedaUtils.formatarMoedaComPrefixo(element.ValorTotal)}} </td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumnsPedido"></tr>
@@ -135,7 +135,7 @@
                             Valor:
                         </div>
                         <div class="celcol2">
-                            {{moedaUtils.formatarMoeda(option.ValoTotal)}}
+                            {{moedaUtils.formatarMoedaComPrefixo(option.ValoTotal)}}
                         </div>
                     </div>
                 </div>
@@ -190,7 +190,7 @@
                             Valor:
                         </div>
                         <div class="celcol2">
-                            {{moedaUtils.formatarMoeda(option.ValorTotal)}}
+                            {{moedaUtils.formatarMoedaComPrefixo(option.ValorTotal)}}
                         </div>
                     </div>
                 </div>

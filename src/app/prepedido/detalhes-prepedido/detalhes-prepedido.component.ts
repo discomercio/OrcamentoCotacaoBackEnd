@@ -8,6 +8,7 @@ import { PedidoBuscarService } from '../../../../src/app/servicos/pedido/pedido-
 import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material';
 import { AlertDialogComponent } from 'src/app/utils/alert-dialog/alert-dialog.component';
+import { PedidoDto } from 'src/app/dto/pedido/detalhesPedido/PedidoDto';
 
 @Component({
   selector: 'app-detalhes-prepedido',
@@ -31,15 +32,15 @@ export class DetalhesPrepedidoComponent extends TelaDesktopBaseComponent impleme
   numeroPrepedido = "";
   numeroPedido = "";
   prepedido: any = null;
-  pedido: any = null;
+  pedido: PedidoDto = null;
 
   //avisamos de erros
   //temos um controle para não mostrar mensagens umas sobre as outras
-  private jaDeuErro = false;
+  private static jaDeuErro = false;
   private deuErro(r: any) {
     if (r == null) return;
-    if (this.jaDeuErro) return;
-    this.jaDeuErro = true;
+    if (DetalhesPrepedidoComponent.jaDeuErro) return;
+    DetalhesPrepedidoComponent.jaDeuErro = true;
     const dialogRef = this.dialog.open(AlertDialogComponent, {
       width: '350px',
       data: `Ocorreu um erro ao acessar os dados. Verifique a conexão com a Internet. (Nota: esta tela ainda não foi implementada na API)`
@@ -50,18 +51,26 @@ export class DetalhesPrepedidoComponent extends TelaDesktopBaseComponent impleme
     });
   }
   ngOnInit() {
-    this.jaDeuErro = false;
+
+    //para mostrar a espera qenquanto carrega (senão, ele mostra os dados do pedido anterior)
+    this.prepedido = null;
+    this.pedido = null;
+
+    //TODO: resolver!
+    //DetalhesPrepedidoComponent.jaDeuErro = false;
 
     //registra os observers e o tratamento de erro
     this.pedidoBuscarService.pedidos$.subscribe({
-      next: (r) => { this.pedido = r; }
+      next: (r) => { this.pedido = r; },
+      error: (r) => { this.deuErro(r) }
     });
     this.pedidoBuscarService.errosPedidos$.subscribe(
       {
         next: (r) => this.deuErro(r)
       });
     this.prepedidoBuscarService.pedidos$.subscribe({
-      next: (r) => { this.prepedido = r; }
+      next: (r) => { this.prepedido = r; },
+      error: (r) => { this.deuErro(r) }
     });
     this.prepedidoBuscarService.errosPedidos$.subscribe(
       {

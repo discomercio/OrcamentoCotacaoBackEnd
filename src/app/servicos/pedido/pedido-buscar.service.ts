@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { HttpParams, HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { PedidoDto } from 'src/app/dto/pedido/detalhesPedido/PedidoDto';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class PedidoBuscarService {
 
   public carregando: boolean = false;
   pedidos$: BehaviorSubject<any> = new BehaviorSubject(new Object());
-  errosPedidos$: BehaviorSubject<any> = new BehaviorSubject(null);
+  errosPedidos$: BehaviorSubject<PedidoDto> = new BehaviorSubject(null);
 
   constructor(private readonly http: HttpClient) { }
 
@@ -19,10 +20,10 @@ export class PedidoBuscarService {
     let params = new HttpParams();
 
     //adiciona todos os parametros por nome
-    params = params.append('numeroPedido', numeroPedido);
+    params = params.append('numPedido', numeroPedido);
     this.carregando = true;
 
-    this.http.get<any>(environment.apiUrl + 'pedido/buscarPedido', { params: params }).subscribe(
+    this.http.get<PedidoDto>(environment.apiUrl + 'pedido/buscarPedido', { params: params }).subscribe(
       {
         next: (r) => {
           this.carregando = false;

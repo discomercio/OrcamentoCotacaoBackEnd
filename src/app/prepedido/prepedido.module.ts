@@ -10,10 +10,15 @@ import { ListaPrepedidoComponent } from './lista-prepedido/lista-prepedido.compo
 import { ConsultaBaseComponent } from './consulta-base/consulta-base.component';
 import { ListaBaseComponent } from './lista-base/lista-base.component';
 import { DetalhesPrepedidoComponent } from './detalhes-prepedido/detalhes-prepedido.component';
+import { PedidoDesktopComponent } from './detalhes-prepedido/pedido-desktop/pedido-desktop.component';
+import { PedidoCelularComponent } from './detalhes-prepedido/pedido-celular/pedido-celular.component';
+import { PrepedidoDesktopComponent } from './detalhes-prepedido/prepedido-desktop/prepedido-desktop.component';
+import { PrepedidoCelularComponent } from './detalhes-prepedido/prepedido-celular/prepedido-celular.component';
 
 
 @NgModule({
-  declarations: [ConsultaPrepedidoComponent, ListaPrepedidoComponent, ConsultaBaseComponent, ListaBaseComponent, DetalhesPrepedidoComponent],
+  declarations: [ConsultaPrepedidoComponent, ListaPrepedidoComponent, ConsultaBaseComponent, ListaBaseComponent, DetalhesPrepedidoComponent, 
+     PedidoDesktopComponent, PedidoCelularComponent, PrepedidoDesktopComponent, PrepedidoCelularComponent ],
   imports: [
     CommonModule,
     FormsModule,

@@ -13,6 +13,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { PedidoModule } from './pedido/pedido.module';
 import { LoginModule } from './login/login.module';
 import { TokenInterceptor } from './servicos/autenticacao/token.interceptor';
+import { ClienteModule } from './cliente/cliente.module';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { TokenInterceptor } from './servicos/autenticacao/token.interceptor';
     BrowserAnimationsModule,
     MatDialogModule,
     MatButtonModule,
-    LoginModule
+    LoginModule,
+    ClienteModule
     ],
   providers: [ 
     {

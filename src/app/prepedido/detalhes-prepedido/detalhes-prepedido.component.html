@@ -1,6 +1,8 @@
 <section class="contgrande"
-    [ngClass]="{'carregando': prepedidoBuscarService.carregando || pedidoBuscarService.carregando}"
-    [class]="telaDesktop? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'">
+    [ngClass]="{'carregando': prepedidoBuscarService.carregando && pedidoBuscarService.carregando}"
+    [class]="telaDesktop? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'"
+    *ngIf="prepedidoBuscarService.carregando || pedidoBuscarService.carregando">
+    <!-- somente enquanto está carregando -->
     <header id="header" *ngIf="emPrepedidos">
         <div class="titulopagina"> Detalhes do Pré Pedido {{numeroPrepedido}}</div>
     </header>
@@ -8,19 +10,35 @@
         <div class="titulopagina"> Detalhes do Pedido {{numeroPedido}}</div>
     </header>
 
-    <article id="content" *ngIf="!prepedido.numeroPrepedido && !pedido.numeroPedido">
+    <article id="content">
+        <!-- forçamos a altura para que o botão de voltar fique no mesmo lugar -->
         Carregando dados, aguarde...
     </article>
+    <footer>
+        <button mat-raised-button color="accent" (click)="voltar()">
+            <mat-icon>arrow_back</mat-icon> Voltar
+        </button>
+    </footer>
 
-    <article id="content" *ngIf="emPrepedidos && prepedido.numeroPrepedido">
-        Detalhes do pré-pedido
-        <br>
-        Em desenvolvimento!
+</section>
+<section class="contgrande"
+    [ngClass]="{'carregando': prepedidoBuscarService.carregando && pedidoBuscarService.carregando}"
+    [class]="telaDesktop? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'"
+    *ngIf="!(prepedidoBuscarService.carregando || pedidoBuscarService.carregando)">
+
+    <div style="text-align: center"> Afazer: tela ainda em desenvolvimento!
+    </div>
+
+    <header id="header" style="height: 0px; margin: 0;">
+        <div>&nbsp;</div>
+    </header>
+    <article id="content" *ngIf="emPrepedidos">
+        <app-prepedido-desktop *ngIf="telaDesktop"></app-prepedido-desktop>
+        <app-prepedido-celular *ngIf="!telaDesktop"></app-prepedido-celular>
     </article>
-    <article id="content" *ngIf="!emPrepedidos && pedido.numeroPedido">
-        Detalhes do pedido
-        <br>
-        Em desenvolvimento!
+    <article id="content" *ngIf="!emPrepedidos " style="display: flex; justify-content: center;">
+        <app-pedido-desktop [pedido]="pedido" *ngIf="telaDesktop"></app-pedido-desktop>
+        <app-pedido-celular *ngIf="!telaDesktop"></app-pedido-celular>
     </article>
     <footer>
         <button mat-raised-button color="accent" (click)="voltar()">

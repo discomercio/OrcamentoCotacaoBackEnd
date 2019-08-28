@@ -5,6 +5,8 @@ import { BehaviorSubject } from 'rxjs';
 import { DataUtils } from 'src/app/utils/dataUtils';
 import { environment } from 'src/environments/environment';
 import { PedidosDtoPedido } from '../../dto/pedido/pedidosDtoPedido'
+import { utils } from 'protractor';
+import { StringUtils } from 'src/app/utils/stringUtils';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +33,7 @@ export class PedidoListarService {
 
     //adiciona todos os parametros por nome
     //os nomes são todos iguais, devia ter um jeito de fazer isso automaticamente...
-    params = params.append('clienteBusca', this.paramsBuscaPedido.clienteBusca);
+    params = params.append('clienteBusca', StringUtils.retorna_so_digitos(this.paramsBuscaPedido.clienteBusca));
     params = params.append('numPedido', this.paramsBuscaPedido.numeroPedido);
     params = params.append('dataInicial', this.paramsBuscaPedido.dataInicial);
     params = params.append('dataFinal', this.paramsBuscaPedido.dataFinal);

@@ -9,6 +9,7 @@ import { ListaPedidoComponent } from './pedido/lista-pedido/lista-pedido.compone
 import { LoginformularioComponent } from './login/loginformulario/loginformulario.component';
 import { LoginGuard } from './servicos/autenticacao/login.guard';
 import { DetalhesPrepedidoComponent } from './prepedido/detalhes-prepedido/detalhes-prepedido.component';
+import { ClienteComponent } from './cliente/cliente/cliente.component';
 
 
 const routes: Routes = [
@@ -53,6 +54,11 @@ const routes: Routes = [
     canActivate: [LoginGuard],
     //fazemos no próprio DetalhesPrepedidoComponent, ele identifica pelo parâmetro
     component: DetalhesPrepedidoComponent
+  },
+  {
+    path: 'cliente/:cpfcnpj',
+    canActivate: [LoginGuard],
+    component: ClienteComponent
   },
   {
     path: 'home',

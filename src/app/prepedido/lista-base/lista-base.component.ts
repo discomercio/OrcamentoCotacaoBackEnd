@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { TelaDesktopBaseComponent } from '../../../../src/app/servicos/telaDesktop/telaDesktopBaseComponent';
 import { TelaDesktopService } from '../../../../src/app/servicos/telaDesktop/telaDesktop.service';
 import { DataUtils } from '../../../../src/app/utils/dataUtils';
-import { MoedaUtils } from '../../../../src/app/utils/erro/moedaUtils';
+import { MoedaUtils } from '../../../../src/app/utils/moedaUtils';
 import { Location } from '@angular/common';
 import { Sort } from '@angular/material/sort';
 import { MatDialog, MatSnackBar } from '@angular/material';

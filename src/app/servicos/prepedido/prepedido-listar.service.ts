@@ -5,6 +5,7 @@ import { PrepedidosCadastradosDtoPrepedido } from 'src/app/dto/prepedido/prepedi
 import { Observable, BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { StringUtils } from 'src/app/utils/stringUtils';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,7 @@ export class PrepedidoListarService {
 
     //adiciona todos os parametros por nome
     //os nomes são todos iguais, devia ter um jeito de fazer isso automaticamente...
-    params = params.append('clienteBusca', this.paramsBuscaPrepedido.clienteBusca);
+    params = params.append('clienteBusca', StringUtils.retorna_so_digitos(this.paramsBuscaPrepedido.clienteBusca));
     params = params.append('numeroPrePedido', this.paramsBuscaPrepedido.numeroPrePedido);
     params = params.append('dataInicial', this.paramsBuscaPrepedido.dataInicial);
     params = params.append('dataFinal', this.paramsBuscaPrepedido.dataFinal);
