@@ -42,7 +42,7 @@ namespace InfraBanco.Modelos
         [MaxLength(60)]
         public string Servicos { get; set; }
 
-        [Column("vl_servicos")]
+        [Column("vl_servicos", TypeName = "money")]
         [Required]
         public Decimal Vl_Servicos { get; set; }
 
@@ -91,11 +91,11 @@ namespace InfraBanco.Modelos
         [MaxLength(250)]
         public string Forma_Pagto { get; set; }
 
-        [Column("vl_total_familia")]
+        [Column("vl_total_familia", TypeName = "money")]
         [Required]
         public decimal Vl_Total_Familia { get; set; }
 
-        [Column("vl_pago_familia")]
+        [Column("vl_pago_familia", TypeName = "money")]
         [Required]
         public decimal Vl_Pagto_Familia { get; set; }
 
@@ -143,7 +143,7 @@ namespace InfraBanco.Modelos
         [Column("venda_externa")]
         public short? Venda_Externa { get; set; }
 
-        [Column("vl_frete")]
+        [Column("vl_frete", TypeName = "money")]
         public decimal? Vl_Frete { get; set; }
 
         [Column("transportadora_id")]
@@ -180,7 +180,7 @@ namespace InfraBanco.Modelos
         [Required]
         public short Pc_Qtde_Parcelas { get; set; }
 
-        [Column("pc_valor_parcela")]
+        [Column("pc_valor_parcela", TypeName = "money")]
         public decimal? Pc_Valor_Parcela { get; set; }
 
         [Column("pce_forma_pagto_entrada")]
@@ -191,14 +191,14 @@ namespace InfraBanco.Modelos
         [Required]
         public short Pce_Forma_Pagto_Prestacao { get; set; }
 
-        [Column("pce_entrada_valor")]
+        [Column("pce_entrada_valor", TypeName = "money")]
         public decimal? Pce_Entrada_Valor { get; set; }
 
         [Column("pce_prestacao_qtde")]
         [Required]
         public short Pce_Prestacao_Qtde { get; set; }
 
-        [Column("pce_prestacao_valor")]
+        [Column("pce_prestacao_valor", TypeName = "money")]
         public decimal? Pce_Prestacao_Valor { get; set; }
 
         [Column("pce_prestacao_periodo")]
@@ -213,7 +213,7 @@ namespace InfraBanco.Modelos
         [Required]
         public short Pse_Forma_Pagto_Demais_Prest { get; set; }
 
-        [Column("pse_prim_prest_valor")]
+        [Column("pse_prim_prest_valor", TypeName = "money")]
         public decimal? Pse_Prim_Prest_Valor { get; set; }
 
         [Column("pse_prim_prest_apos")]
@@ -224,7 +224,7 @@ namespace InfraBanco.Modelos
         [Required]
         public short Pse_Demais_Prest_Qtde { get; set; }
 
-        [Column("pse_demais_prest_valor")]
+        [Column("pse_demais_prest_valor", TypeName = "money")]
         public decimal? Pse_Demais_Prest_Valor { get; set; }
 
         [Column("pse_demais_prest_periodo")]
@@ -235,7 +235,7 @@ namespace InfraBanco.Modelos
         [Required]
         public short Pu_Forma_Pagto { get; set; }
 
-        [Column("pu_valor")]
+        [Column("pu_valor", TypeName = "money")]
         public decimal? Pu_Valor { get; set; }
 
         [Column("pu_vencto_apos")]
@@ -246,10 +246,10 @@ namespace InfraBanco.Modelos
         [MaxLength(20)]
         public string Indicador { get; set; }
 
-        [Column("vl_total_NF")]
+        [Column("vl_total_NF", TypeName = "money")]
         public decimal? Vl_Total_NF { get; set; }
 
-        [Column("vl_total_RA")]
+        [Column("vl_total_RA", TypeName = "money")]
         public decimal? Vl_Total_RA { get; set; }
 
         [Column("perc_RT")]
@@ -287,7 +287,7 @@ namespace InfraBanco.Modelos
         [Column("perc_limite_RA_sem_desagio")]
         public float? Perc_Limite_RA_Sem_Desagio { get; set; }
 
-        [Column("vl_total_RA_liquido")]
+        [Column("vl_total_RA_liquido", TypeName = "money")]
         public decimal? Vl_Total_RA_Liquido { get; set; }
 
         [Column("st_tem_desagio_RA")]
@@ -345,7 +345,7 @@ namespace InfraBanco.Modelos
         [Required]
         public short Frete_Status { get; set; }
 
-        [Column("frete_valor")]
+        [Column("frete_valor", TypeName = "money")]
         [Required]
         public decimal Frete_Valor { get; set; }
 
@@ -672,7 +672,7 @@ namespace InfraBanco.Modelos
         [Column("st_forma_pagto_possui_parcela_cartao")]
         public byte? St_Forma_Pagto_Possui_Parcela_Cartao { get; set; }
 
-        [Column("vl_previsto_cartao")]
+        [Column("vl_previsto_cartao", TypeName = "money")]
         public decimal? Vl_Previsto_Cartao { get; set; }
 
         [Column("NFe_texto_constar")]
@@ -725,15 +725,15 @@ namespace InfraBanco.Modelos
         [Required]
         public int Plataforma_Origem_Pedido { get; set; }
 
-        [Column("magento_installer_commission_value")]
+        [Column("magento_installer_commission_value", TypeName = "decimal(18,4)")]
         [Required]
         public decimal Magento_Installer_Comission_Value { get; set; }
 
-        [Column("magento_installer_commission_discount")]
+        [Column("magento_installer_commission_discount", TypeName = "decimal(18,4)")]
         [Required]
         public decimal Magento_Installer_Comission_Discount { get; set; }
 
-        [Column("magento_shipping_amount")]
+        [Column("magento_shipping_amount", TypeName = "decimal(18,4)")]
         [Required]
         public decimal Magento_Shipping_Amount { get; set; }
 
@@ -751,7 +751,7 @@ namespace InfraBanco.Modelos
         [Required]
         public short Pc_Maquineta_Qtde_Parcelas { get; set; }
 
-        [Column("pc_maquineta_valor_parcela")]
+        [Column("pc_maquineta_valor_parcela", TypeName = "money")]
         [Required]
         public decimal Pc_Maquineta_Valor_Parcela { get; set; }
 

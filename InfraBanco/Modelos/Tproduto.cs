@@ -35,7 +35,7 @@ namespace InfraBanco.Modelos
         [MaxLength(2)]
         public string Grupo { get; set; }
 
-        [Column("preco_fabricante")]
+        [Column("preco_fabricante", TypeName = "money")]
         public decimal? Preco_Fabricante { get; set; }
 
         [Column("estoque_critico")]
@@ -58,7 +58,7 @@ namespace InfraBanco.Modelos
         [Column("excluido_status")]
         public short? Excluido_Status { get; set; }
 
-        [Column("vl_custo2")]
+        [Column("vl_custo2", TypeName = "money")]
         [Required]
         public decimal Vl_Custo2 { get; set; }
 

@@ -35,27 +35,27 @@ namespace InfraBanco.Modelos
         public short? Qtde { get; set; }
 
         [Column("desc_dado")]
-        public float? Desc_Dado { get; set; }
+        public Single? Desc_Dado { get; set; }
 
-        [Column("preco_venda")]
+        [Column("preco_venda", TypeName = "money")]
         [Required]
         public decimal Preco_Venda { get; set; }
 
-        [Column("preco_fabricante")]
+        [Column("preco_fabricante", TypeName = "money")]
         public decimal? Preco_Fabricante { get; set; }
 
-        [Column("preco_lista")]
+        [Column("preco_lista", TypeName = "money")]
         [Required]
         public decimal Preco_Lista { get; set; }
 
         [Column("margem")]
-        public decimal? Margem { get; set; }
+        public Single? Margem { get; set; }
 
         [Column("desc_max")]
-        public decimal? Desc_Max { get; set; }
+        public Single? Desc_Max { get; set; }
 
         [Column("comissao")]
-        public float? Comissao { get; set; }
+        public Single? Comissao { get; set; }
 
         [Column("descricao")]
         [MaxLength(120)]
@@ -70,7 +70,7 @@ namespace InfraBanco.Modelos
         public string Grupo { get; set; }
 
         [Column("peso")]
-        public decimal? Peso { get; set; }
+        public Single? Peso { get; set; }
 
         [Column("qtde_volumes")]
         public short? Qtde_Volumes { get; set; }
@@ -90,16 +90,16 @@ namespace InfraBanco.Modelos
         public short? Sequencia { get; set; }
 
         [Column("markup_fabricante")]
-        public decimal? Markup_Fabricante { get; set; }
+        public Single? Markup_Fabricante { get; set; }
 
-        [Column("preco_NF")]
+        [Column("preco_NF", TypeName = "money")]
         public decimal? Preco_NF { get; set; }
 
         [Column("abaixo_min_superv_autorizador")]
         [MaxLength(10)]
         public string Abaixo_Min_Superv_Autorizador { get; set; }
 
-        [Column("vl_custo2")]
+        [Column("vl_custo2", TypeName = "money")]
         [Required]
         public decimal Vl_Custo2 { get; set; }
 
@@ -109,15 +109,15 @@ namespace InfraBanco.Modelos
 
         [Column("custoFinancFornecCoeficiente")]
         [Required]
-        public float CustoFinancFornecCoeficiente { get; set; }
+        public Single CustoFinancFornecCoeficiente { get; set; }
 
-        [Column("custoFinancFornecPrecoListaBase")]
+        [Column("custoFinancFornecPrecoListaBase", TypeName = "money")]
         [Required]
         public decimal CustoFinancFornecPrecoListaBase { get; set; }
 
         [Column("cubagem")]
         [Required]
-        public float Cubagem { get; set; }
+        public Single Cubagem { get; set; }
 
         [Column("ncm")]
         [MaxLength(8)]

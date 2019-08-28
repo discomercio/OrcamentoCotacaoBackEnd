@@ -51,6 +51,10 @@ namespace PrepedidoApi
                 {
                     logging.ClearProviders();
                     logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+#if DEBUG
+                    logging.AddConsole();
+                    logging.AddDebug();
+#endif
                 })
                 .UseNLog()
             // .UseUrls("http://localhost:4000") ??

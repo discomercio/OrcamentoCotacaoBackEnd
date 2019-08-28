@@ -151,7 +151,7 @@ namespace InfraBanco.Modelos
         [Column("perc_desagio_RA")]
         public float? Perc_Desagio_RA { get; set; }
 
-        [Column("vl_limite_mensal")]
+        [Column("vl_limite_mensal", TypeName = "money")]
         [Required]
         public decimal Vl_Limite_Mensal { get; set; }
 
@@ -178,7 +178,7 @@ namespace InfraBanco.Modelos
         [MaxLength(500)]
         public string Obs { get; set; }
 
-        [Column("vl_meta")]
+        [Column("vl_meta", TypeName = "money")]
         [Required]
         public decimal Vl_Meta { get; set; }
 
