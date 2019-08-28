@@ -117,7 +117,7 @@ namespace PrepedidoBusiness.Bll
 
             foreach (string cpf in ret)
             {
-                cpfCnpjFormat.Add(Util.FormatCpf_Cnpj(cpf));
+                cpfCnpjFormat.Add(Util.FormatCpf_Cnpj_Ie(cpf));
             }
 
             return cpfCnpjFormat;
@@ -146,9 +146,9 @@ namespace PrepedidoBusiness.Bll
                 Indicador = p.Indicador,
                 Vendedor = p.Vendedor,
                 Id = cli.Id,
-                Cnpj_Cpf = cli.Cnpj_Cpf,
-                Rg = cli.Rg,
-                Ie = cli.Ie,
+                Cnpj_Cpf = Util.FormatCpf_Cnpj_Ie(cli.Cnpj_Cpf),
+                Rg = Util.FormatCpf_Cnpj_Ie(cli.Rg),
+                Ie = Util.FormatCpf_Cnpj_Ie(cli.Ie),
                 Tipo = cli.Tipo,
                 Nascimento = cli.Dt_Nasc,
                 Sexo = cli.Sexo,
@@ -392,6 +392,7 @@ namespace PrepedidoBusiness.Bll
 
             return await Task.FromResult(retorno);
         }
+
         public async Task<decimal> CalculaSaldoAPagar(string numPedido)
         {
             var db = contextoProvider.GetContexto();

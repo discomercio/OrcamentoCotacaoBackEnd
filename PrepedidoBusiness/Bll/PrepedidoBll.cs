@@ -49,7 +49,7 @@ namespace PrepedidoBusiness.Bll
 
             foreach (string cpf in ret)
             {
-                cpfCnpjFormat.Add(Util.FormatCpf_Cnpj(cpf));
+                cpfCnpjFormat.Add(Util.FormatCpf_Cnpj_Ie(cpf));
             }
 
             return cpfCnpjFormat;
