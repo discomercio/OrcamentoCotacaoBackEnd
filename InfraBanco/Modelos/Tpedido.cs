@@ -413,7 +413,7 @@ namespace InfraBanco.Modelos
 
         [Column("EndEtg_endereco_numero")]
         [MaxLength(20)]
-        public string EnsEtg_Endereco_Numero { get; set; }
+        public string EndEtg_Endereco_Numero { get; set; }
 
         [Column("EndEtg_endereco_complemento")]
         [MaxLength(60)]

@@ -7,13 +7,13 @@ namespace PrepedidoBusiness.Dtos.ClienteCadastro
 {
     public class EnderecoEntregaDtoClienteCadastro
     {
-        public string EnderecoEntrega { get; set; }
-        public int NumeroEntrega { get; set; }
-        public string ComplementoEntrega { get; set; }
-        public string BairroEntrega { get; set; }
-        public string CidadeEntrega { get; set; }
-        public string UfEntrega { get; set; }
-        public string CepEntrega { get; set; }
-        public string JustificaEntrega { get; set; }
+        public string EndEtg_endereco { get; set; }
+        public string EndEtg_endereco_numero { get; set; }
+        public string EndEtg_endereco_complemento { get; set; }
+        public string EndEtg_bairro { get; set; }
+        public string EndEtg_cidade { get; set; }
+        public string EndEtg_uf { get; set; }
+        public string EndEtg_cep { get; set; }
+        public string EndEtg_cod_justificativa { get; set; }
     }
 }

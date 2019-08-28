@@ -128,46 +128,62 @@ namespace PrepedidoBusiness.Bll
             var db = contextoProvider.GetContexto();
 
             //parateste
-            //numPedido = "128591N";
-            //apelido = "PEDREIRA";
+            //numPedido = "000678N";
+            //apelido = "SOLUTION";
 
             var pedido = from c in db.Tpedidos
                          where c.Pedido == numPedido && c.Orcamentista == apelido
                          select c;
-
-            Tpedido p = new Tpedido();
-            p = pedido.FirstOrDefault();
+            Tpedido p = pedido.FirstOrDefault();
 
             var dadosCliente = from c in db.Tclientes
                                where c.Id == p.Id_Cliente
-                               select new DadosClienteCadastroDto
-                               {
-                                   Loja = p.Loja,
-                                   Indicador = p.Indicador,
-                                   Vendedor = p.Vendedor,
-                                   Id = c.Id,
-                                   Cnpj_Cpf = c.Cnpj_Cpf,
-                                   Rg = c.Rg,
-                                   Ie = c.Ie,
-                                   Tipo = c.Tipo,
-                                   Nascimento = c.Dt_Nasc,
-                                   Sexo = c.Sexo,
-                                   Nome = c.Nome,
-                                   ProdutorRural = c.Produtor_Rural_Status,
-                                   DddResidencial = c.Ddd_Res,
-                                   TelefoneResidencial = c.Tel_Res,
-                                   DddComercial = c.Ddd_Com,
-                                   Ramal = c.Ramal_Com,
-                                   DddCelular = c.Ddd_Cel,
-                                   Obs = c.Obs_crediticias,
-                                   Email = c.Email,
-                                   Endereco = c.Endereco,
-                                   Numero = c.Endereco_Numero,
-                                   Bairro = c.Bairro,
-                                   Cidade = c.Cidade,
-                                   Uf = c.Uf,
-                                   Cep = c.Cep
-                               };
+                               select c;
+            Tcliente cli = dadosCliente.FirstOrDefault();
+            DadosClienteCadastroDto cadastroCliente = new DadosClienteCadastroDto
+            {
+                Loja = p.Loja,
+                Indicador = p.Indicador,
+                Vendedor = p.Vendedor,
+                Id = cli.Id,
+                Cnpj_Cpf = cli.Cnpj_Cpf,
+                Rg = cli.Rg,
+                Ie = cli.Ie,
+                Tipo = cli.Tipo,
+                Nascimento = cli.Dt_Nasc,
+                Sexo = cli.Sexo,
+                Nome = cli.Nome,
+                ProdutorRural = cli.Produtor_Rural_Status,
+                DddResidencial = cli.Ddd_Res,
+                TelefoneResidencial = cli.Tel_Res,
+                DddComercial = cli.Ddd_Com,
+                TelComercial = cli.Tel_Com,
+                Ramal = cli.Ramal_Com,
+                DddCelular = cli.Ddd_Cel,
+                TelComercial2 = cli.Tel_Com_2,
+                DddComercial2 = cli.Ddd_Com_2,
+                Ramal2 = cli.Ramal_Com_2,
+                Obs = cli.Obs_crediticias,
+                Email = cli.Email,
+                Endereco = cli.Endereco,
+                Numero = cli.Endereco_Numero,
+                Bairro = cli.Bairro,
+                Cidade = cli.Cidade,
+                Uf = cli.Uf,
+                Cep = cli.Cep
+            };
+
+            EnderecoEntregaDtoClienteCadastro enderecoEntrega = new EnderecoEntregaDtoClienteCadastro
+            {
+                EndEtg_endereco = p.Endereco_Logradouro,
+                EndEtg_endereco_numero = p.EndEtg_Endereco_Numero,
+                EndEtg_endereco_complemento = p.EndEtg_Endereco_Complemento,
+                EndEtg_bairro = p.EndEtg_Bairro,
+                EndEtg_cidade = p.EndEtg_Cidade,
+                EndEtg_uf = p.EndEtg_UF,
+                EndEtg_cep = p.EndEtg_Cep,
+                EndEtg_cod_justificativa = await ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA, p.EndEtg_Cod_Justificativa)
+            };
 
             short? faltante = (short)await VerificarEstoque(numPedido);
 
@@ -180,6 +196,7 @@ namespace PrepedidoBusiness.Bll
                                     Descricao = c.Descricao,
                                     Qtde = c.Qtde,
                                     Faltando = faltante,
+                                    Preco = c.Preco_NF,
                                     VlLista = c.Preco_Lista,
                                     Desconto = c.Desc_Dado,
                                     VlVenda = c.Qtde * c.Preco_Venda,
@@ -205,45 +222,6 @@ namespace PrepedidoBusiness.Bll
                 InstaladorInstala = p.InstaladorInstalaStatus
             };
 
-            string analiseCredito = Convert.ToString(p.Analise_Credito);
-
-            switch (analiseCredito)
-            {
-                case Constantes.COD_AN_CREDITO_ST_INICIAL:
-                    analiseCredito = "";
-                    break;
-                case Constantes.COD_AN_CREDITO_PENDENTE:
-                    analiseCredito = "Pendente";
-                    break;
-                case Constantes.COD_AN_CREDITO_PENDENTE_VENDAS:
-                    analiseCredito = "Pendente Vendas";
-                    break;
-                case Constantes.COD_AN_CREDITO_PENDENTE_ENDERECO:
-                    analiseCredito = "Pendente Endereço";
-                    break;
-                case Constantes.COD_AN_CREDITO_OK:
-                    analiseCredito = "Crédito OK";
-                    break;
-                case Constantes.COD_AN_CREDITO_OK_AGUARDANDO_DEPOSITO:
-                    analiseCredito = "Crédito OK (aguardando depósito)";
-                    break;
-                case Constantes.COD_AN_CREDITO_OK_DEPOSITO_AGUARDANDO_DESBLOQUEIO:
-                    analiseCredito = "Crédito OK (depósito aguardando desbloqueio)";
-                    break;
-                case Constantes.COD_AN_CREDITO_NAO_ANALISADO:
-                    analiseCredito = "";
-                    break;
-                case Constantes.COD_AN_CREDITO_PENDENTE_CARTAO:
-                    analiseCredito = "Pendente Cartão de Crédito";
-                    break;
-            }
-
-
-            if (analiseCredito != "")
-            {
-                analiseCredito += p.Analise_credito_Data;
-            }
-
             //verifica o status da entrega
             DateTime? dataEntrega = new DateTime();
             if (p.St_Entrega == Constantes.ST_ENTREGA_A_ENTREGAR || p.St_Entrega == Constantes.ST_ENTREGA_SEPARAR)
@@ -253,46 +231,167 @@ namespace PrepedidoBusiness.Bll
 
             decimal TotalPerda = (decimal)perdas.Result.Select(r => r.Valor).Sum();
 
-            var transportador = from c in db.Ttransportadoras
-                                where c.Id == p.Transportadora_Id
-                                select c.Nome;
-            string TranspNome = await transportador.Select(r => r.ToString()).FirstOrDefaultAsync();
+            var transportadora = from c in db.Ttransportadoras
+                                 where c.Id == p.Transportadora_Id
+                                 select c.Nome;
+            string TranspNome = await transportadora.Select(r => r.ToString()).FirstOrDefaultAsync();
+
+            //buscar valor total de devoluções NF
+            var vlDevNf = from c in db.TpedidoItemDevolvidos
+                          where c.Pedido.StartsWith(numPedido)
+                          select c.Qtde * c.Preco_NF;
+            decimal vl_TotalFamiliaDevolucaoPrecoNF = await vlDevNf.Select(r => r.Value).SumAsync();
+
+            IEnumerable<string> lstFormaPgto = await ObterFormaPagto(numPedido, apelido);
 
             DetalhesFormaPagamentos detalhesFormaPagto = new DetalhesFormaPagamentos
             {
-                FormaPagto = p.Forma_Pagto,
+                FormaPagto = lstFormaPgto.ToList(),
                 InfosAnaliseCredito = p.Forma_Pagto,
                 StatusPagto = p.St_Pagto,
                 VlTotalFamilia = p.Vl_Total_Familia,
                 VlPago = p.Vl_Total_Familia,
+                VlDevolucao = vl_TotalFamiliaDevolucaoPrecoNF,
                 VlPerdas = TotalPerda,
                 SaldoAPagar = saldo_a_pagar,
-                AnaliseCredito = analiseCredito,
+                AnaliseCredito = await ObterAnaliseCredito(Convert.ToString(p.Analise_Credito), numPedido, apelido),
                 DataColeta = dataEntrega,
                 Transportadora = TranspNome,
-                VlFrete = p.Frete_Valor,
-                //BlocoNotas = "",  retirar pois precisa de DTO para eles
-                //Ocorrencias="",
-                VlDevolucao = 0
+                VlFrete = p.Frete_Valor
             };
+
+            var lstOcorrencia = await ObterOcorrencias(numPedido);
+            List<OcorrenciasDtoPedido> listaOcorrencia = lstOcorrencia.ToList();
 
             PedidoDto DtoPedido = new PedidoDto
             {
                 NumeroPedido = numPedido,
                 DataHoraPedido = p.Data_Hora,
                 StatusHoraPedido = p.St_Entrega + p.Entregue_Data,
-                DadosCliente = dadosCliente.FirstOrDefault(),
+                DadosCliente = cadastroCliente,
                 ListaProdutos = produtosItens.ToList(),
                 DetalhesNF = detalhesNf,
                 DetalhesFormaPagto = detalhesFormaPagto,
                 ListaProdutoDevolvido = await BuscarProdutosDevolvidos(numPedido),
                 ListaPerdas = await BuscarPerdas(numPedido),
-                BlocoNotas = await BuscarPedidoBlocoNotas(numPedido)
+                BlocoNotas = await BuscarPedidoBlocoNotas(numPedido),
+                EnderecoEntrega = enderecoEntrega,
+                ListaOcorrencia = listaOcorrencia
             };
 
             return await Task.FromResult(DtoPedido);
         }
 
+        public async Task<IEnumerable<OcorrenciasDtoPedido>> ObterOcorrencias(string numPedido)
+        {
+            var db = contextoProvider.GetContexto();
+
+            var id = await(from c in db.TpedidoOcorrencias
+                     where c.Pedido == numPedido
+                     select c.Id).FirstOrDefaultAsync();
+
+            //nenhuma ocorrencia para esse pedido
+            if (id == 0)
+                return new List<OcorrenciasDtoPedido>();
+
+
+            var msg = (await ObterMensagemOcorrencia(id)).ToList();
+
+            var ocorrencia = from d in db.TpedidoOcorrencias
+                             where d.Pedido == numPedido
+                             select new OcorrenciasDtoPedido
+                             {
+                                 Usuario = d.Usuario_Cadastro,
+                                 Dt_Hr_Cadastro = d.Dt_Hr_Cadastro,
+                                 Situacao = (d.Finalizado_Status != 0 ? "Finalizado" : (from c in db.TpedidoOcorrenciaMensagems
+                                                                                        where c.Id_Ocorrencia == d.Id &&
+                                                                                              c.Fluxo_Mensagem == Constantes.COD_FLUXO_MENSAGEM_OCORRENCIAS_EM_PEDIDOS__CENTRAL_PARA_LOJA
+                                                                                        select c).Count() > 0 ? "Em Andamento" : "Aberta"),
+                                 Contato = d.Contato + d.Tel_1 != "" ? "(" + d.Ddd_1 + ") " + d.Tel_1 : d.Tel_2 != "" ? "(" + d.Ddd_2 + ") " + d.Tel_2 : "",
+                                 Texto_Ocorrencia = d.Texto_Ocorrencia,
+                                 mensagemDtoOcorrenciaPedidos = msg,
+                                 Finalizado_Usuario = d.Finalizado_Usuario,
+                                 Finalizado_Data_Hora = d.Finalizado_Data_Hora,
+                                 Tipo_Ocorrencia = ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__OCORRENCIAS_EM_PEDIDOS__TIPO_OCORRENCIA, d.Tipo_Ocorrencia).ToString(),
+                                 Texto_Finalizacao = d.Texto_Finalizacao
+                             };
+
+            return await Task.FromResult(ocorrencia);
+        }
+
+        public async Task<IEnumerable<MensagemDtoOcorrenciaPedido>> ObterMensagemOcorrencia(int idOcorrencia)
+        {
+            var db = contextoProvider.GetContexto();
+
+            var msg = from c in db.TpedidoOcorrenciaMensagems
+                      where c.Id_Ocorrencia == idOcorrencia
+                      select new MensagemDtoOcorrenciaPedido
+                      {
+                          Dt_Hr_Cadastro = c.Dt_Hr_Cadastro,
+                          Usuario = c.Usuario_Cadastro,
+                          Loja = c.Loja,
+                          Texto_Mensagem = c.Texto_Mensagem
+                      };
+
+            return await Task.FromResult(msg);
+        }
+
+        public async Task<string> ObterAnaliseCredito(string codigo, string numPedido, string apelido)
+        {
+            string retorno = "";
+
+            switch (codigo)
+            {
+                case Constantes.COD_AN_CREDITO_ST_INICIAL:
+                    retorno = "";
+                    break;
+                case Constantes.COD_AN_CREDITO_PENDENTE:
+                    retorno = "Pendente";
+                    break;
+                case Constantes.COD_AN_CREDITO_PENDENTE_VENDAS:
+                    retorno = "Pendente Vendas";
+                    break;
+                case Constantes.COD_AN_CREDITO_PENDENTE_ENDERECO:
+                    retorno = "Pendente Endereço";
+                    break;
+                case Constantes.COD_AN_CREDITO_OK:
+                    retorno = "Crédito OK";
+                    break;
+                case Constantes.COD_AN_CREDITO_OK_AGUARDANDO_DEPOSITO:
+                    retorno = "Crédito OK (aguardando depósito)";
+                    break;
+                case Constantes.COD_AN_CREDITO_OK_DEPOSITO_AGUARDANDO_DESBLOQUEIO:
+                    retorno = "Crédito OK (depósito aguardando desbloqueio)";
+                    break;
+                case Constantes.COD_AN_CREDITO_NAO_ANALISADO:
+                    retorno = "";
+                    break;
+                case Constantes.COD_AN_CREDITO_PENDENTE_CARTAO:
+                    retorno = "Pendente Cartão de Crédito";
+                    break;
+            }
+
+            if (retorno != "")
+            {
+                var db = contextoProvider.GetContexto();
+
+                var ret = from c in db.Tpedidos
+                          where c.Pedido == numPedido && c.Orcamentista == apelido
+                          select new { analise_credito_data = c.Analise_credito_Data.ToString(), analise_credito_usuario = c.Analise_Credito_Usuario.ToString() };
+
+                if (await ret.Select(r => r.analise_credito_data).FirstOrDefaultAsync() != "")
+                {
+                    string credito = await ret.Select(r => r.analise_credito_data).FirstOrDefaultAsync();
+                    if (await ret.Select(r => r.analise_credito_usuario).FirstOrDefaultAsync() != "")
+                    {
+                        credito += " - " + await ret.Select(r => r.analise_credito_usuario).FirstOrDefaultAsync();
+                        retorno = retorno + "(" + credito + ")";
+                    }
+                }
+            }
+
+            return await Task.FromResult(retorno);
+        }
         public async Task<decimal> CalculaSaldoAPagar(string numPedido)
         {
             var db = contextoProvider.GetContexto();
@@ -418,6 +517,102 @@ namespace PrepedidoBusiness.Bll
             return await Task.FromResult(bloco);
 
         }
+
+        public async Task<string> ObterDescricao_Cod(string grupo, string cod)
+        {
+            var db = contextoProvider.GetContexto();
+
+            var desc = from c in db.TcodigoDescricaos
+                       where c.Grupo == grupo && c.Codigo == cod
+                       select c.Descricao;
+
+            string result = await desc.FirstOrDefaultAsync();
+
+            if (result == null || result == "")
+                return await Task.FromResult("Código não cadastrado (" + cod + ")");
+
+            return await Task.FromResult(result);
+        }
+
+        public async Task<IEnumerable<string>> ObterFormaPagto(string numPedido, string orcamentista)
+        {
+            var db = contextoProvider.GetContexto();
+
+            var p = from c in db.Tpedidos
+                    where c.Pedido == numPedido && c.Orcamentista == orcamentista
+                    select c;
+
+            Tpedido pedido = p.FirstOrDefault();
+            List<string> lista = new List<string>();
+            string parcelamento = Convert.ToString(pedido.Tipo_Parcelamento);
+
+            switch (parcelamento)
+            {
+                case Constantes.COD_FORMA_PAGTO_A_VISTA:
+                    lista.Add("À Vista (" + await OpcaoFormaPagto(parcelamento) + ")");
+                    break;
+                case Constantes.COD_FORMA_PAGTO_PARCELA_UNICA:
+                    lista.Add("Parcela Única: " + Constantes.SIMBOLO_MONETARIO + " " +
+                        await OpcaoFormaPagto(Convert.ToString(pedido.Pu_Forma_Pagto)) + " vencendo após " + pedido.Pu_Vencto_Apos + " dias");
+                    break;
+                case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO:
+                    lista.Add("Parcelado no Cartão (internet) em " + pedido.Pc_Qtde_Parcelas + " X " +
+                        Constantes.SIMBOLO_MONETARIO + " " + pedido.Pc_Valor_Parcela);
+                    break;
+                case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA:
+                    lista.Add("Parcelado no Cartão (maquineta) em " + pedido.Pc_Maquineta_Qtde_Parcelas + " X " + pedido.Pc_Maquineta_Valor_Parcela);
+                    break;
+                case Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA:
+                    lista.Add("Entrada: " + Constantes.SIMBOLO_MONETARIO + " " +
+                        pedido.Pce_Entrada_Valor + " (" + await OpcaoFormaPagto(Convert.ToString(pedido.Pce_Forma_Pagto_Entrada)) + ")");
+                    lista.Add("Prestações: " + pedido.Pce_Prestacao_Qtde + " X " + Constantes.SIMBOLO_MONETARIO + " " + pedido.Pce_Prestacao_Valor +
+                        " (" + await OpcaoFormaPagto(Convert.ToString(pedido.Pce_Forma_Pagto_Prestacao)) + ") vencendo a cada " +
+                        pedido.Pce_Prestacao_Periodo + " dias");
+                    break;
+                case Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA:
+                    lista.Add("1ª Prestação: " + Constantes.SIMBOLO_MONETARIO + " " + pedido.Pse_Prim_Prest_Valor + " (" +
+                        await OpcaoFormaPagto(Convert.ToString(pedido.Pse_Forma_Pagto_Prim_Prest)) + ") vencendo após " + pedido.Pse_Prim_Prest_Apos + " dias");
+                    lista.Add("Demais Prestações: " + pedido.Pse_Demais_Prest_Qtde + " X " + Constantes.SIMBOLO_MONETARIO + " " + pedido.Pse_Demais_Prest_Valor +
+                        " (" + await OpcaoFormaPagto(Convert.ToString(pedido.Pse_Forma_Pagto_Demais_Prest)) + ") vencendo a cada " +
+                        pedido.Pse_Demais_Prest_Periodo + " dias");
+                    break;
+            }
+
+            return await Task.FromResult(lista.ToList());
+        }
+
+        public async Task<string> OpcaoFormaPagto(string codigo)
+        {
+            string retorno = "";
+
+            switch (codigo)
+            {
+                case Constantes.ID_FORMA_PAGTO_DINHEIRO:
+                    retorno = "Dinheiro";
+                    break;
+                case Constantes.ID_FORMA_PAGTO_DEPOSITO:
+                    retorno = "Depósito";
+                    break;
+                case Constantes.ID_FORMA_PAGTO_CHEQUE:
+                    retorno = "Cheque";
+                    break;
+                case Constantes.ID_FORMA_PAGTO_BOLETO:
+                    retorno = "Boleto";
+                    break;
+                case Constantes.ID_FORMA_PAGTO_CARTAO:
+                    retorno = "Cartão (internet)";
+                    break;
+                case Constantes.ID_FORMA_PAGTO_CARTAO_MAQUINETA:
+                    retorno = "Cartão (maquineta)";
+                    break;
+                case Constantes.ID_FORMA_PAGTO_BOLETO_AV:
+                    retorno = "Boleto AV";
+                    break;
+            };
+
+            return await Task.FromResult(retorno);
+        }
+
 
         //public async Task<decimal> CalculaTotalDevolucoes_Venda_E_NF(string numPedido)
         //{

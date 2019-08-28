@@ -28,6 +28,9 @@ namespace InfraBanco
         public DbSet<TestoqueMovimento> TestoqueMovimentos { get; set; }
         public DbSet<Ttransportadora> Ttransportadoras { get; set; }
         public DbSet<TpedidoBlocosNotas> TpedidoBlocosNotas { get; set; }
+        public DbSet<TcodigoDescricao> TcodigoDescricaos { get; set; }
+        public DbSet<TpedidoOcorrenciaMensagem> TpedidoOcorrenciaMensagems { get; set; }
+        public DbSet<TpedidoOcorrencia> TpedidoOcorrencias { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

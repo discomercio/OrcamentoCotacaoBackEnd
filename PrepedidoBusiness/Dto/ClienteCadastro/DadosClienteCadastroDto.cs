@@ -26,6 +26,9 @@ namespace PrepedidoBusiness.Dtos.ClienteCadastro
         public string Ramal { get; set; }
         public string DddCelular { get; set; }
         public string Celular { get; set; }
+        public string TelComercial2 { get; set; }
+        public string DddComercial2 { get; set; }
+        public string Ramal2 { get; set; }
         public string Obs { get; set; }
         public string Email { get; set; }
         public string Endereco { get; set; }

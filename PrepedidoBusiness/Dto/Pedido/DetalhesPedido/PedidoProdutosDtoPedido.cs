@@ -11,6 +11,7 @@ namespace PrepedidoBusiness.Dto.Pedido.DetalhesPedido
         public string Descricao { get; set; }
         public short? Qtde { get; set; }
         public short? Faltando { get; set; }
+        public decimal? Preco { get; set; }
         public decimal VlLista { get; set; }
         public float? Desconto { get; set; }
         public decimal? VlVenda { get; set; }
