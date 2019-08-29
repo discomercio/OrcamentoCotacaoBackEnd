@@ -13,12 +13,20 @@ namespace PrepedidoBusiness.Dto.Pedido.DetalhesPedido
         public DadosClienteCadastroDto DadosCliente { get; set; }
         public EnderecoEntregaDtoClienteCadastro EnderecoEntrega { get; set; }
         public List<PedidoProdutosDtoPedido> ListaProdutos { get; set; }
+        public decimal TotalFamiliaParcelaRA { get; set; }
+        public short PermiteRAStatus { get; set; }
+        public string OpcaoPossuiRA { get; set; }
+        public float? PercRT { get; set; }
+        public decimal? ValorTotalDestePedidoComRA { get; set; }
+        public decimal? VlTotalDestePedido { get; set; }
         public DetalhesNFPedidoDtoPedido DetalhesNF { get; set; }
         public DetalhesFormaPagamentos DetalhesFormaPagto { get; set; }
         public IEnumerable<ProdutoDevolvidoDtoPedido> ListaProdutoDevolvido{ get; set; }
         public IEnumerable<PedidoPerdasDtoPedido> ListaPerdas { get; set; }
         public List<OcorrenciasDtoPedido> ListaOcorrencia { get; set; }
         public BlocoNotasDtoPedido BlocoNotas { get; set; }
+        public List<BlocoNotasDevolucaoMercadoriasDtoPedido> ListaBlocoNotasDevolucao { get; set; }
+
 
     }
 }
