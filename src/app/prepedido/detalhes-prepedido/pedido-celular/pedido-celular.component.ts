@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { PedidoDto } from 'src/app/dto/pedido/detalhesPedido/PedidoDto';
 
 @Component({
   selector: 'app-pedido-celular',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./pedido-celular.component.scss']
 })
 export class PedidoCelularComponent implements OnInit {
+
+  @Input() pedido: PedidoDto = null;
 
   constructor() { }
 

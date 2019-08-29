@@ -205,8 +205,9 @@ afazer: exibe_familia_pedido(pedido_selecionado, v_pedido)
                         style="width:21px; color:black" value='{{linha.Qtde}}' readonly tabindex=-1></td>
                 <td class="MDB" align="right"><input name="c_qtde_falta" id="c_qtde_falta" class="PLLd"
                         style="width:20px; color:black" value='{{linha.Faltando}}' readonly tabindex=-1></td>
+                        <!-- afazer: style="width:62px; color:<%=s_cor%>" -->
                 <td class="MDB" align="right"><input name="c_vl_NF" id="c_vl_NF" class="PLLd"
-                        style="width:62px; color:<%=s_cor%>" value='-1' title="afazer" readonly tabindex=-1></td>
+                        style="width:62px; color:green" value='-1' title="afazer" readonly tabindex=-1></td>
 
                 <td class="MDB" align="right"><input name="c_preco_lista" id="c_preco_lista" class="PLLd"
                         style="width:62px; color:black" value='{{moedaUtils.formatarMoedaSemPrefixo(linha.VlLista)}}'

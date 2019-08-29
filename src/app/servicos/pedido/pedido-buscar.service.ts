@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpParams, HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { PedidoDto } from 'src/app/dto/pedido/detalhesPedido/PedidoDto';
+import { ObjectUtils } from 'src/app/utils/objectUtils';
 
 @Injectable({
   providedIn: 'root'
@@ -10,12 +11,11 @@ import { PedidoDto } from 'src/app/dto/pedido/detalhesPedido/PedidoDto';
 export class PedidoBuscarService {
 
   public carregando: boolean = false;
-  pedidos$: BehaviorSubject<any> = new BehaviorSubject(new Object());
-  errosPedidos$: BehaviorSubject<PedidoDto> = new BehaviorSubject(null);
+  private pedidos$: Observable<any> = new Observable();
 
   constructor(private readonly http: HttpClient) { }
 
-  public atualizar(numeroPedido: string): void {
+  public atualizar(numeroPedido: string): Observable<any> {
     // Initialize Params Object
     let params = new HttpParams();
 
@@ -23,22 +23,19 @@ export class PedidoBuscarService {
     params = params.append('numPedido', numeroPedido);
     this.carregando = true;
 
-    this.http.get<PedidoDto>(environment.apiUrl + 'pedido/buscarPedido', { params: params }).subscribe(
-      {
-        next: (r) => {
-          this.carregando = false;
-          this.pedidos$.next(r);
-        },
-        error: (err) => {
-          this.carregando = false;
-          this.errosPedidos$.next(err);
-        },
-        complete: () => {
-          this.carregando = false;
-        }
-
-      }
-    );
+    this.pedidos$ = Observable.create(observer => {
+      this.http.get<PedidoDto>(environment.apiUrl + 'pedido/buscarPedido', { params: params }).toPromise()
+        .then(response => {
+          if(response)
+            this.carregando = false;
+          observer.next(response);
+          observer.complete();
+        })
+        .catch(err => {
+          observer.error(err);
+        });
+    });
+    return this.pedidos$;
   }
 
 }

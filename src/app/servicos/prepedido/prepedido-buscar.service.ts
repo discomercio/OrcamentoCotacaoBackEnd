@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { HttpParams, HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { PedidoDto } from 'src/app/dto/pedido/detalhesPedido/PedidoDto';
 
 @Injectable({
   providedIn: 'root'
@@ -9,12 +10,11 @@ import { environment } from 'src/environments/environment';
 export class PrepedidoBuscarService {
 
   public carregando: boolean = false;
-  pedidos$: BehaviorSubject<any> = new BehaviorSubject(new Object());
-  errosPedidos$: BehaviorSubject<any> = new BehaviorSubject(null);
+  private pedidos$: Observable<PedidoDto> = new Observable();
 
   constructor(private readonly http: HttpClient) { }
 
-  public atualizar(numeroPrePedido: string): void {
+  public atualizar(numeroPrePedido: string): Observable<PedidoDto> {
     // Initialize Params Object
     let params = new HttpParams();
 
@@ -22,22 +22,19 @@ export class PrepedidoBuscarService {
     params = params.append('numeroPrePedido', numeroPrePedido);
     this.carregando = true;
 
-    this.http.get<any>(environment.apiUrl + 'prepedido/buscarPrePedido', { params: params }).subscribe(
-      {
-        next: (r) => {
-          this.carregando = false;
-          this.pedidos$.next(r);
-        },
-        error: (err) => {
-          this.carregando = false;
-          this.errosPedidos$.next(err);
-        },
-        complete: () => {
-          this.carregando = false;
-        }
-
-      }
-    );
+    this.pedidos$ = Observable.create(observer => {
+      this.http.get<any>(environment.apiUrl + 'prepedido/buscarPrePedido', { params: params }).toPromise()
+        .then(response => {
+          if(response)
+            this.carregando = false;
+          observer.next(response);
+          observer.complete();
+        })
+        .catch(err => {
+          observer.error(err);
+        });
+    });
+    return this.pedidos$;
   }
 
 }

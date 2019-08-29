@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material';
 import { AlertDialogComponent } from 'src/app/utils/alert-dialog/alert-dialog.component';
 import { PedidoDto } from 'src/app/dto/pedido/detalhesPedido/PedidoDto';
+import { ObjectUtils } from 'src/app/utils/objectUtils';
 
 @Component({
   selector: 'app-detalhes-prepedido',
@@ -36,57 +37,57 @@ export class DetalhesPrepedidoComponent extends TelaDesktopBaseComponent impleme
 
   //avisamos de erros
   //temos um controle para não mostrar mensagens umas sobre as outras
-  private static jaDeuErro = false;
+  private jaDeuErro = false;
   private deuErro(r: any) {
     if (r == null) return;
-    if (DetalhesPrepedidoComponent.jaDeuErro) return;
-    DetalhesPrepedidoComponent.jaDeuErro = true;
+    if (this.jaDeuErro) return;
+    this.jaDeuErro = true;
     const dialogRef = this.dialog.open(AlertDialogComponent, {
       width: '350px',
       data: `Ocorreu um erro ao acessar os dados. Verifique a conexão com a Internet. (Nota: esta tela ainda não foi implementada na API)`
     });
     dialogRef.afterClosed().subscribe((result) => {
       //somente na inicialização, ou dá várias vezes
-      //this.jaDeuErro = false;
+      this.jaDeuErro = false;
     });
   }
+
   ngOnInit() {
 
     //para mostrar a espera qenquanto carrega (senão, ele mostra os dados do pedido anterior)
     this.prepedido = null;
     this.pedido = null;
 
-    //TODO: resolver!
-    //DetalhesPrepedidoComponent.jaDeuErro = false;
-
-    //registra os observers e o tratamento de erro
-    this.pedidoBuscarService.pedidos$.subscribe({
-      next: (r) => { this.pedido = r; },
-      error: (r) => { this.deuErro(r) }
-    });
-    this.pedidoBuscarService.errosPedidos$.subscribe(
-      {
-        next: (r) => this.deuErro(r)
-      });
-    this.prepedidoBuscarService.pedidos$.subscribe({
-      next: (r) => { this.prepedido = r; },
-      error: (r) => { this.deuErro(r) }
-    });
-    this.prepedidoBuscarService.errosPedidos$.subscribe(
-      {
-        next: (r) => this.deuErro(r)
-      });
+    this.jaDeuErro = false;
 
     //agora acessa o dado que vamos mostrar
     this.numeroPrepedido = this.activatedRoute.snapshot.params.numeroPrepedido;
     this.numeroPedido = this.activatedRoute.snapshot.params.numeroPedido;
     if (!!this.numeroPrepedido) {
       this.emPrepedidos = true;
-      this.prepedidoBuscarService.atualizar(this.numeroPrepedido);
+      this.prepedidoBuscarService.atualizar(this.numeroPrepedido).subscribe({
+        next: (r) => {
+          if (r == null) {
+            this.deuErro("Erro");
+            return;
+          }
+          this.prepedido = r;
+        },
+        error: (r) => this.deuErro(r)
+      });
     }
     else {
       this.emPrepedidos = false;
-      this.pedidoBuscarService.atualizar(this.numeroPedido);
+      this.pedidoBuscarService.atualizar(this.numeroPedido).subscribe({
+        next: (r) => {
+          if (r == null) {
+            this.deuErro("Erro");
+            return;
+          }
+          this.pedido = r;
+        },
+        error: (r) => this.deuErro(r)
+      });
     }
   }
 
