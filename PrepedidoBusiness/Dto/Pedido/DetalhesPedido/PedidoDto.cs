@@ -8,7 +8,7 @@ namespace PrepedidoBusiness.Dto.Pedido.DetalhesPedido
     public class PedidoDto
     {
         public string NumeroPedido { get; set; }
-        public string StatusHoraPedido { get; set; }//Verificar se todos pedidos marcam a data também
+        public StatusPedidoDtoPedido StatusHoraPedido { get; set; }//Verificar se todos pedidos marcam a data também
         public DateTime? DataHoraPedido { get; set; }
         public DadosClienteCadastroDto DadosCliente { get; set; }
         public EnderecoEntregaDtoClienteCadastro EnderecoEntrega { get; set; }

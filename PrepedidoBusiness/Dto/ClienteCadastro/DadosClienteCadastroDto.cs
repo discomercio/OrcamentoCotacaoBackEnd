@@ -8,7 +8,7 @@ namespace PrepedidoBusiness.Dtos.ClienteCadastro
     public class DadosClienteCadastroDto
     {
         public string Loja { get; set; }
-        public string Indicador { get; set; }
+        public string Indicador_Orcamentista { get; set; }
         public string Vendedor { get; set; }
         public string Id { get; set; }
         public string Cnpj_Cpf { get; set; }

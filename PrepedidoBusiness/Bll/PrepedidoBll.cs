@@ -9,6 +9,9 @@ using System.Linq;
 using InfraBanco.Modelos;
 using PrepedidoBusiness.Utils;
 using PrepedidoBusiness.Dtos.Prepedido;
+using PrepedidoBusiness.Dtos.Prepedido.DetalhesPrepedido;
+using PrepedidoBusiness.Dtos.ClienteCadastro;
+using InfraBanco.Constantes;
 
 namespace PrepedidoBusiness.Bll
 {
@@ -39,10 +42,10 @@ namespace PrepedidoBusiness.Bll
             var db = contextoProvider.GetContexto();
 
             var lista = (from c in db.Torcamentos.Include(r => r.Tcliente)
-                        where c.Orcamentista == apelido &&
-                              c.St_Orcamento != "CAN"
-                        orderby c.Tcliente.Cnpj_Cpf
-                        select c.Tcliente.Cnpj_Cpf).Distinct();
+                         where c.Orcamentista == apelido &&
+                               c.St_Orcamento != "CAN"
+                         orderby c.Tcliente.Cnpj_Cpf
+                         select c.Tcliente.Cnpj_Cpf).Distinct();
 
             var ret = await lista.Distinct().ToListAsync();
             List<string> cpfCnpjFormat = new List<string>();
@@ -89,8 +92,8 @@ namespace PrepedidoBusiness.Bll
         //a busca sem malabarismos para econtrar algum registro
         public async Task<IEnumerable<PrepedidosCadastradosDtoPrepedido>> ListarPrePedidosFiltroEstrito(string apelido, TipoBuscaPrepedido tipoBusca,
                 string clienteBusca, string numeroPrePedido, DateTime? dataInicial, DateTime? dataFinal)
-            {
-                var db = contextoProvider.GetContexto();
+        {
+            var db = contextoProvider.GetContexto();
 
             var lst = db.Torcamentos.
                 Where(r => r.Orcamentista == apelido);
@@ -151,10 +154,104 @@ namespace PrepedidoBusiness.Bll
                 await db.SaveChangesAsync();
                 return await Task.FromResult(true);
             }
-            
+
             return await Task.FromResult(false);
         }
 
+        public async Task<PrePedidoDto> BuscarPrePedido(string apelido, string numPrePedido)
+        {
+            var db = contextoProvider.GetContexto();
+
+            var prepedido = from c in db.Torcamentos
+                            where c.Orcamentista == apelido && c.Orcamento == numPrePedido
+                            select c;
+
+            Torcamento pp = prepedido.FirstOrDefault();
+
+            if (pp == null)
+                return null;
+
+            var cadastroClienteTask = ObterDadosCliente(pp.Loja, pp.Orcamentista, pp.Vendedor, pp.Id_Cliente);
+            //ClienteBll cl = new ClienteBll(contextoProvider);
+            //var cadastroClienteTask = cl.BuscarCliente(pp.)
+
+            PrePedidoDto prepedidoDto = new PrePedidoDto();
+            return await Task.FromResult(prepedidoDto);
+        }
+
+        private async Task<DadosClienteCadastroDto> ObterDadosCliente(string loja, string indicador_orcamentista, string vendedor, string idCliente)
+        {
+            var dadosCliente = from c in contextoProvider.GetContexto().Tclientes
+                               where c.Id == idCliente
+                               select c;
+            var cli = await dadosCliente.FirstOrDefaultAsync();
+            DadosClienteCadastroDto cadastroCliente = new DadosClienteCadastroDto
+            {
+                Loja = loja,
+                Indicador_Orcamentista = indicador_orcamentista,
+                Vendedor = vendedor,
+                Id = cli.Id,
+                Cnpj_Cpf = Util.FormatCpf_Cnpj_Ie(cli.Cnpj_Cpf),
+                Rg = Util.FormatCpf_Cnpj_Ie(cli.Rg),
+                Ie = Util.FormatCpf_Cnpj_Ie(cli.Ie),
+                Tipo = cli.Tipo,
+                Nascimento = cli.Dt_Nasc,
+                Sexo = cli.Sexo,
+                Nome = cli.Nome,
+                ProdutorRural = cli.Produtor_Rural_Status,
+                DddResidencial = cli.Ddd_Res,
+                TelefoneResidencial = cli.Tel_Res,
+                DddComercial = cli.Ddd_Com,
+                TelComercial = cli.Tel_Com,
+                Ramal = cli.Ramal_Com,
+                DddCelular = cli.Ddd_Cel,
+                TelComercial2 = cli.Tel_Com_2,
+                DddComercial2 = cli.Ddd_Com_2,
+                Ramal2 = cli.Ramal_Com_2,
+                Obs = cli.Obs_crediticias,
+                Email = cli.Email,
+                Endereco = cli.Endereco,
+                Numero = cli.Endereco_Numero,
+                Bairro = cli.Bairro,
+                Cidade = cli.Cidade,
+                Uf = cli.Uf,
+                Cep = cli.Cep
+            };
+            return cadastroCliente;
+        }
+
+        private async Task<EnderecoEntregaDtoClienteCadastro> ObterEnderecoEntrega(Torcamento p)
+        {
+            EnderecoEntregaDtoClienteCadastro enderecoEntrega = new EnderecoEntregaDtoClienteCadastro
+            {
+                EndEtg_endereco = p.EndEtg_Endereco,
+                EndEtg_endereco_numero = p.EndEtg_Endereco_Numero,
+                EndEtg_endereco_complemento = p.EndEtg_Endereco_Complemento,
+                EndEtg_bairro = p.EndEtg_Bairro,
+                EndEtg_cidade = p.EndEtg_Cidade,
+                EndEtg_uf = p.EndEtg_UF,
+                EndEtg_cep = p.EndEtg_CEP,
+                EndEtg_cod_justificativa = await ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA, p.EndEtg_Cod_Justificativa)
+            };
+
+            return enderecoEntrega;
+        }
+
+        private async Task<string> ObterDescricao_Cod(string grupo, string cod)
+        {
+            var db = contextoProvider.GetContexto();
+
+            var desc = from c in db.TcodigoDescricaos
+                       where c.Grupo == grupo && c.Codigo == cod
+                       select c.Descricao;
+
+            string result = await desc.FirstOrDefaultAsync();
+
+            if (result == null || result == "")
+                return "Código não cadastrado (" + cod + ")";
+
+            return result;
+        }
 
     }
 }
