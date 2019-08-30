@@ -194,7 +194,6 @@ namespace PrepedidoBusiness.Bll
 
         private async Task<EnderecoEntregaDtoClienteCadastro> ObterEnderecoEntrega(Tpedido p)
         {
-
             EnderecoEntregaDtoClienteCadastro enderecoEntrega = new EnderecoEntregaDtoClienteCadastro
             {
                 EndEtg_endereco = p.Endereco_Logradouro,
@@ -204,7 +203,7 @@ namespace PrepedidoBusiness.Bll
                 EndEtg_cidade = p.EndEtg_Cidade,
                 EndEtg_uf = p.EndEtg_UF,
                 EndEtg_cep = p.EndEtg_Cep,
-                EndEtg_cod_justificativa = Util.ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA, p.EndEtg_Cod_Justificativa, contextoProvider)
+                EndEtg_cod_justificativa = await ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA, p.EndEtg_Cod_Justificativa)
             };
 
             return enderecoEntrega;
@@ -376,7 +375,7 @@ namespace PrepedidoBusiness.Bll
 
             if (!String.IsNullOrEmpty(p.Pedido_Bs_X_Marketplace))
             {
-                status.Status = Util.ObterDescricao_Cod("PedidoECommerce_Origem", p.Marketplace_codigo_origem, contextoProvider) + ":" + p.Pedido_Bs_X_Marketplace;
+                status.Status = await ObterDescricao_Cod("PedidoECommerce_Origem", p.Marketplace_codigo_origem) + ":" + p.Pedido_Bs_X_Marketplace;
                 status.CorEntrega = CorStatusEntrega(p.St_Entrega);
             }
             else if (!String.IsNullOrEmpty(p.Pedido_Bs_X_Ac))
@@ -390,7 +389,7 @@ namespace PrepedidoBusiness.Bll
                 status.CorEntrega = CorStatusEntrega(p.St_Entrega);
             }
 
-            status.St_Entrega = FormataSatusPedido(p.St_Entrega);
+            status.St_Entrega = FormataSatusPedido(p.St_Entrega);            
             status.Entregue_Data = p.Entregue_Data?.ToString("dd/MM/yyyy");
             status.Cancelado_Data = p.Cancelado_Data?.ToString("dd/MM/yyyy");
             status.Pedido_Data = p.Data?.ToString("dd/MM/yyyy");
@@ -404,7 +403,7 @@ namespace PrepedidoBusiness.Bll
         {
             string cor = "black";
 
-            switch (st_entrega)
+            switch(st_entrega)
             {
                 case Constantes.ST_ENTREGA_ESPERAR:
                     cor = "deeppink";
@@ -553,8 +552,7 @@ namespace PrepedidoBusiness.Bll
                 ocorre.mensagemDtoOcorrenciaPedidos = msg;
                 ocorre.Finalizado_Usuario = i.Finalizado_Usuario;
                 ocorre.Finalizado_Data_Hora = i.Finalizado_Data_Hora;
-                ocorre.Tipo_Ocorrencia = Util.ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__OCORRENCIAS_EM_PEDIDOS__TIPO_OCORRENCIA,
-                    i.Tipo_Ocorrencia, contextoProvider);
+                ocorre.Tipo_Ocorrencia = await ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__OCORRENCIAS_EM_PEDIDOS__TIPO_OCORRENCIA, i.Tipo_Ocorrencia);
                 ocorre.Texto_Finalizacao = i.Texto_Finalizacao;
                 lista.Add(ocorre);
             }
@@ -783,6 +781,22 @@ namespace PrepedidoBusiness.Bll
             }
 
             return await Task.FromResult(lista);
+        }
+
+        private async Task<string> ObterDescricao_Cod(string grupo, string cod)
+        {
+            var db = contextoProvider.GetContexto();
+
+            var desc = from c in db.TcodigoDescricaos
+                       where c.Grupo == grupo && c.Codigo == cod
+                       select c.Descricao;
+
+            string result = await desc.FirstOrDefaultAsync();
+
+            if (result == null || result == "")
+                return "Código não cadastrado (" + cod + ")";
+
+            return result;
         }
 
         private async Task<IEnumerable<string>> ObterFormaPagto(string numPedido, string orcamentista)

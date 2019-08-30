@@ -32,6 +32,7 @@ namespace InfraBanco
         public DbSet<TpedidoOcorrenciaMensagem> TpedidoOcorrenciaMensagems { get; set; }
         public DbSet<TpedidoOcorrencia> TpedidoOcorrencias { get; set; }
         public DbSet<TpedidoItemDevolvidoBlocoNotas> TpedidoItemDevolvidoBlocoNotas { get; set; }
+        public DbSet<TorcamentoItem> TorcamentoItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -12,6 +12,7 @@ using PrepedidoBusiness.Dtos.Prepedido;
 using PrepedidoBusiness.Dtos.Prepedido.DetalhesPrepedido;
 using PrepedidoBusiness.Dtos.ClienteCadastro;
 using InfraBanco.Constantes;
+using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 
 namespace PrepedidoBusiness.Bll
 {
@@ -166,18 +167,73 @@ namespace PrepedidoBusiness.Bll
                             where c.Orcamentista == apelido && c.Orcamento == numPrePedido
                             select c;
 
+
             Torcamento pp = prepedido.FirstOrDefault();
 
             if (pp == null)
                 return null;
 
+            if (pp.St_Orc_Virou_Pedido == 1)
+            {
+                //se virou pedido ele redireciona para a tela de pedido
+            }
+
+            //ler os itens do orcamento
+            //var produtosTask =
+
             var cadastroClienteTask = ObterDadosCliente(pp.Loja, pp.Orcamentista, pp.Vendedor, pp.Id_Cliente);
-            //ClienteBll cl = new ClienteBll(contextoProvider);
-            //var cadastroClienteTask = cl.BuscarCliente(pp.)
+            var enderecoEntregaTask = ObterEnderecoEntrega(pp);
+            var lstProdutoTask = ObterProdutos(pp);
+            //retornar a lista de produtos em var
+            //fazer a soma no retorno dos produtos na var TotalItemRA 
+            var totalDestePedidoComRa = lstProdutoTask.Result.Select(r => r.VlTotalRA).Sum();
+            var totalDestePedido = lstProdutoTask.Result.Select(r => r.VlTotalItem).Sum();
+            //Terminar de montar a saida a partir de observaçoes 
 
             PrePedidoDto prepedidoDto = new PrePedidoDto();
             return await Task.FromResult(prepedidoDto);
         }
+
+        private async Task<IEnumerable<PrepedidoProdutoDtoPrepedido>> ObterProdutos(Torcamento orc)
+        {
+            var db = contextoProvider.GetContexto();
+
+            var produtos = from c in db.TorcamentoItems
+                           where c.Orcamento == orc.Orcamento
+                           orderby c.Sequencia
+                           select c;
+
+            var vltotalRa = produtos.Select(r => r.Qtde * (r.Preco_NF - r.Preco_Venda)).SumAsync(); 
+
+            List<PrepedidoProdutoDtoPrepedido> listaProduto = new List<PrepedidoProdutoDtoPrepedido>();
+
+            foreach (var p in produtos)
+            {
+                PrepedidoProdutoDtoPrepedido produtoPrepedido = new PrepedidoProdutoDtoPrepedido
+                {
+                    Fabricante = p.Fabricante,
+                    NumProduto = p.Produto,
+                    Descricao = p.Descricao_Html,
+                    Obs = p.Obs,
+                    Qtde = p.Qtde,
+                    Permite_Ra_Status = orc.Permite_RA_Status,
+                    BlnTemRa = p.Preco_NF != p.Preco_Venda ? true : false,
+                    Preco = p.Preco_NF,
+                    VlLista = p.Preco_Lista,
+                    Desconto = p.Desc_Dado,
+                    VlUnitario = p.Preco_Venda,
+                    VlTotalItem = p.Qtde * p.Preco_Venda,
+                    VlTotalRA = await vltotalRa,
+                    Comissao = orc.Perc_RT,
+                    TotalItemRA = p.Qtde * p.Preco_NF,
+                    TotalItem = p.Qtde * p.Preco_Venda
+                };
+                listaProduto.Add(produtoPrepedido);
+            }
+
+            return listaProduto;
+        }
+
 
         private async Task<DadosClienteCadastroDto> ObterDadosCliente(string loja, string indicador_orcamentista, string vendedor, string idCliente)
         {
@@ -222,17 +278,21 @@ namespace PrepedidoBusiness.Bll
 
         private async Task<EnderecoEntregaDtoClienteCadastro> ObterEnderecoEntrega(Torcamento p)
         {
-            EnderecoEntregaDtoClienteCadastro enderecoEntrega = new EnderecoEntregaDtoClienteCadastro
+            EnderecoEntregaDtoClienteCadastro enderecoEntrega = new EnderecoEntregaDtoClienteCadastro();
+
+            if (p.St_End_Entrega == 1)
             {
-                EndEtg_endereco = p.EndEtg_Endereco,
-                EndEtg_endereco_numero = p.EndEtg_Endereco_Numero,
-                EndEtg_endereco_complemento = p.EndEtg_Endereco_Complemento,
-                EndEtg_bairro = p.EndEtg_Bairro,
-                EndEtg_cidade = p.EndEtg_Cidade,
-                EndEtg_uf = p.EndEtg_UF,
-                EndEtg_cep = p.EndEtg_CEP,
-                EndEtg_cod_justificativa = await ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA, p.EndEtg_Cod_Justificativa)
-            };
+                enderecoEntrega.EndEtg_endereco = p.EndEtg_Endereco;
+                enderecoEntrega.EndEtg_endereco_numero = p.EndEtg_Endereco_Numero;
+                enderecoEntrega.EndEtg_endereco_complemento = p.EndEtg_Endereco_Complemento;
+                enderecoEntrega.EndEtg_bairro = p.EndEtg_Bairro;
+                enderecoEntrega.EndEtg_cidade = p.EndEtg_Cidade;
+                enderecoEntrega.EndEtg_uf = p.EndEtg_UF;
+                enderecoEntrega.EndEtg_cep = p.EndEtg_CEP;
+                enderecoEntrega.EndEtg_cod_justificativa = await ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA, p.EndEtg_Cod_Justificativa);
+            }
+            else
+                return null;
 
             return enderecoEntrega;
         }
