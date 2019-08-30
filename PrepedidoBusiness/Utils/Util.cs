@@ -8,7 +8,9 @@ namespace PrepedidoBusiness.Utils
     {
         //Formata CPF e CNPJ
         public static string FormatCpf_Cnpj_Ie(string cpf_cnpj)
-        {
+        {//estava dando erro
+            return cpf_cnpj;
+
             if (cpf_cnpj.Length > 11)
             {
                 if(cpf_cnpj.Length > 12)
