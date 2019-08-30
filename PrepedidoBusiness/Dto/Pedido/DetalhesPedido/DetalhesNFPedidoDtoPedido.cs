@@ -14,5 +14,6 @@ namespace PrepedidoBusiness.Dto.Pedido.DetalhesPedido
         public short EntregaImediata { get; set; }
         public short StBemUsoConsumo { get; set; }
         public short InstaladorInstala { get; set; }
+        public string GarantiaIndicadorStatus { get; set; }
     }
 }

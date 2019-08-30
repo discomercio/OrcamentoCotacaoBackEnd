@@ -19,7 +19,7 @@ namespace InfraBanco.Modelos
         [Column("id_item_devolvido")]
         [Required]
         [MaxLength(12)]
-        //[ForeignKey("TpedidoItemDevolvido")]
+        [ForeignKey("TpedidoItemDevolvido")]
         public string Id_Item_Devolvido { get; set; }
 
         [Column("usuario")]
@@ -58,6 +58,8 @@ namespace InfraBanco.Modelos
 
         [Column("anulado_data_hora")]
         public DateTime? Anulado_Data_Hora { get; set; }
+
+        public TpedidoItemDevolvido TpedidoItemDevolvido { get; set; }
 
     }
 }

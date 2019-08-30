@@ -151,30 +151,17 @@ namespace PrepedidoBusiness.Bll
             return cpfCnpjFormat;
         }
 
-        public async Task<PedidoDto> BuscarPedido(string apelido, string numPedido)
+        private async Task<DadosClienteCadastroDto> ObterDadosCliente(string loja, string indicador_orcamentista, string vendedor, string idCliente)
         {
-            var db = contextoProvider.GetContexto();
-
-            //parateste
-            //numPedido = "000678N";
-            //apelido = "SOLUTION";
-
-            var pedido = from c in db.Tpedidos
-                         where c.Pedido == numPedido && c.Orcamentista == apelido
-                         select c;
-            Tpedido p = pedido.FirstOrDefault();
-            if (p == null)
-                return null;
-
-            var dadosCliente = from c in db.Tclientes
-                               where c.Id == p.Id_Cliente
+            var dadosCliente = from c in contextoProvider.GetContexto().Tclientes
+                               where c.Id == idCliente
                                select c;
-            Tcliente cli = dadosCliente.FirstOrDefault();
+            var cli = await dadosCliente.FirstOrDefaultAsync();
             DadosClienteCadastroDto cadastroCliente = new DadosClienteCadastroDto
             {
-                Loja = p.Loja,
-                Indicador = p.Indicador,
-                Vendedor = p.Vendedor,
+                Loja = loja,
+                Indicador_Orcamentista = indicador_orcamentista,
+                Vendedor = vendedor,
                 Id = cli.Id,
                 Cnpj_Cpf = Util.FormatCpf_Cnpj_Ie(cli.Cnpj_Cpf),
                 Rg = Util.FormatCpf_Cnpj_Ie(cli.Rg),
@@ -202,6 +189,11 @@ namespace PrepedidoBusiness.Bll
                 Uf = cli.Uf,
                 Cep = cli.Cep
             };
+            return cadastroCliente;
+        }
+
+        private async Task<EnderecoEntregaDtoClienteCadastro> ObterEnderecoEntrega(Tpedido p)
+        {
 
             EnderecoEntregaDtoClienteCadastro enderecoEntrega = new EnderecoEntregaDtoClienteCadastro
             {
@@ -212,33 +204,85 @@ namespace PrepedidoBusiness.Bll
                 EndEtg_cidade = p.EndEtg_Cidade,
                 EndEtg_uf = p.EndEtg_UF,
                 EndEtg_cep = p.EndEtg_Cep,
-                EndEtg_cod_justificativa = await ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA, p.EndEtg_Cod_Justificativa)
+                EndEtg_cod_justificativa = Util.ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA, p.EndEtg_Cod_Justificativa, contextoProvider)
             };
 
-            short? faltante = (short)await VerificarEstoque(numPedido);
+            return enderecoEntrega;
+        }
+
+        private async Task<IEnumerable<PedidoProdutosDtoPedido>> ObterProdutos(string numPedido)
+        {
+            var db = contextoProvider.GetContexto();
 
             var produtosItens = from c in db.TpedidoItems
                                 where c.Pedido == numPedido
-                                select new PedidoProdutosDtoPedido
-                                {
-                                    Fabricante = c.Fabricante,
-                                    NumProduto = c.Produto,
-                                    Descricao = c.Descricao,
-                                    Qtde = c.Qtde,
-                                    Faltando = faltante,
-                                    Preco = c.Preco_NF,
-                                    VlLista = c.Preco_Lista,
-                                    Desconto = c.Desc_Dado,
-                                    VlVenda = c.Qtde * c.Preco_Venda,
-                                    VlTotal = c.Qtde * c.Preco_Venda,
-                                    Comissao = c.Comissao
-                                };
+                                select c;
 
-            decimal saldo_a_pagar = await CalculaSaldoAPagar(numPedido);
-            decimal vlFamiliaParcelaRA = await CalculaTotalFamiliaRA(numPedido);
+            List<PedidoProdutosDtoPedido> lstProduto = new List<PedidoProdutosDtoPedido>();
 
-            if (p.St_Entrega == Constantes.ST_PAGTO_PAGO && saldo_a_pagar > 0)
-                saldo_a_pagar = 0;
+            foreach (var c in produtosItens)
+            {
+                PedidoProdutosDtoPedido produto = new PedidoProdutosDtoPedido
+                {
+                    Fabricante = c.Fabricante,
+                    NumProduto = c.Produto,
+                    Descricao = c.Descricao,
+                    Qtde = c.Qtde,
+                    Faltando = (short)await VerificarEstoque(numPedido, c.Fabricante, c.Produto),
+                    Preco = c.Preco_NF,
+                    VlLista = c.Preco_Lista,
+                    Desconto = c.Desc_Dado,
+                    VlUnitario = c.Preco_Venda,
+                    VlTotalItem = c.Qtde * c.Preco_Venda,
+                    VlTotalItemComRA = c.Qtde * c.Preco_NF,
+                    VlVenda = c.Preco_Venda,
+                    VlTotal = c.Qtde * c.Preco_Venda,
+                    Comissao = c.Comissao
+                };
+
+                lstProduto.Add(produto);
+            }
+
+            return lstProduto;
+        }
+
+
+        public async Task<PedidoDto> BuscarPedido(string apelido, string numPedido)
+        {
+            var db = contextoProvider.GetContexto();
+
+            //parateste
+            numPedido = "094947N-A";
+            apelido = "";
+
+            var pedido = from c in db.Tpedidos
+                         where c.Pedido == numPedido && c.Orcamentista == apelido
+                         select c;
+            Tpedido p = pedido.FirstOrDefault();
+            if (p == null)
+                return null;
+
+            var cadastroClienteTask = ObterDadosCliente(p.Loja, p.Indicador, p.Vendedor, p.Id_Cliente);
+            //var statusHoraPedido = FormataSatusPedido(p.St_Entrega);
+            var enderecoEntregaTask = ObterEnderecoEntrega(p);
+            var lstProdutoTask = ObterProdutos(numPedido);
+
+            var vlTotalDestePedidoComRATask = lstProdutoTask.Result.Select(r => r.VlTotalItemComRA).Sum();
+            var vlTotalDestePedidoTask = lstProdutoTask.Result.Select(r => r.VlTotalItem).Sum();
+
+            //buscar valor total de devoluções NF
+            var vlDevNf = from c in db.TpedidoItemDevolvidos
+                          where c.Pedido.StartsWith(numPedido)
+                          select c.Qtde * c.Preco_NF;
+            var vl_TotalFamiliaDevolucaoPrecoNFTask = vlDevNf.Select(r => r.Value).SumAsync();
+
+            var vlFamiliaParcelaRATask = CalculaTotalFamiliaRA(numPedido);
+
+            string garantiaIndicadorStatus = Convert.ToString(p.GarantiaIndicadorStatus);
+            if (garantiaIndicadorStatus == Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO)
+                garantiaIndicadorStatus = "NÃO";
+            if (garantiaIndicadorStatus == Constantes.COD_GARANTIA_INDICADOR_STATUS__SIM)
+                garantiaIndicadorStatus = "SIM";
 
             DetalhesNFPedidoDtoPedido detalhesNf = new DetalhesNFPedidoDtoPedido
             {
@@ -249,7 +293,8 @@ namespace PrepedidoBusiness.Bll
                 NFSimples = p.Obs_3,
                 EntregaImediata = p.St_Etg_Imediata,
                 StBemUsoConsumo = p.StBemUsoConsumo,
-                InstaladorInstala = p.InstaladorInstalaStatus
+                InstaladorInstala = p.InstaladorInstalaStatus,
+                GarantiaIndicadorStatus = garantiaIndicadorStatus
             };
 
             //verifica o status da entrega
@@ -259,66 +304,219 @@ namespace PrepedidoBusiness.Bll
 
             var perdas = BuscarPerdas(numPedido);
 
-            decimal TotalPerda = (decimal)perdas.Result.Select(r => r.Valor).Sum();
-
             var transportadora = from c in db.Ttransportadoras
                                  where c.Id == p.Transportadora_Id
                                  select c.Nome;
-            string TranspNome = await transportadora.Select(r => r.ToString()).FirstOrDefaultAsync();
+            var TranspNomeTask = transportadora.Select(r => r.ToString()).FirstOrDefaultAsync();
 
-            //buscar valor total de devoluções NF
-            var vlDevNf = from c in db.TpedidoItemDevolvidos
-                          where c.Pedido.StartsWith(numPedido)
-                          select c.Qtde * c.Preco_NF;
-            decimal vl_TotalFamiliaDevolucaoPrecoNF = await vlDevNf.Select(r => r.Value).SumAsync();
+            var lstFormaPgtoTask = ObterFormaPagto(numPedido, apelido);
 
-            IEnumerable<string> lstFormaPgto = await ObterFormaPagto(numPedido, apelido);
+            var analiseCreditoTask = ObterAnaliseCredito(Convert.ToString(p.Analise_Credito), numPedido, apelido);
+            string corAnalise = CorAnaliseCredito(Convert.ToString(p.Analise_Credito));
+
+            string corStatusPagto = CorSatusPagto(p.St_Pagto);
+
+            var saldo_a_pagarTask = CalculaSaldoAPagar(numPedido, await vl_TotalFamiliaDevolucaoPrecoNFTask);
+
+            var TotalPerda = (await perdas).Select(r => r.Valor).Sum();
+            var lstOcorrenciaTask = ObterOcorrencias(numPedido);
+            var lstBlocNotasDevolucaoTask = BuscarPedidoBlocoNotasDevolucao(numPedido);
+
+            var saldo_a_pagar = await saldo_a_pagarTask;
+            if (p.St_Entrega == Constantes.ST_PAGTO_PAGO && saldo_a_pagar > 0)
+                saldo_a_pagar = 0;
 
             DetalhesFormaPagamentos detalhesFormaPagto = new DetalhesFormaPagamentos
             {
-                FormaPagto = lstFormaPgto.ToList(),
+                FormaPagto = (await lstFormaPgtoTask).ToList(),
                 InfosAnaliseCredito = p.Forma_Pagto,
                 StatusPagto = p.St_Pagto,
+                CorStatusPagto = corStatusPagto,
                 VlTotalFamilia = p.Vl_Total_Familia,
                 VlPago = p.Vl_Total_Familia,
-                VlDevolucao = vl_TotalFamiliaDevolucaoPrecoNF,
+                VlDevolucao = await vl_TotalFamiliaDevolucaoPrecoNFTask,
                 VlPerdas = TotalPerda,
                 SaldoAPagar = saldo_a_pagar,
-                AnaliseCredito = await ObterAnaliseCredito(Convert.ToString(p.Analise_Credito), numPedido, apelido),
+                AnaliseCredito = await analiseCreditoTask,
+                CorAnalise = corAnalise,
                 DataColeta = dataEntrega,
-                Transportadora = TranspNome,
+                Transportadora = await TranspNomeTask,
                 VlFrete = p.Frete_Valor
             };
-
-            var lstOcorrencia = await ObterOcorrencias(numPedido);
-            List<OcorrenciasDtoPedido> listaOcorrencia = lstOcorrencia.ToList();
 
             PedidoDto DtoPedido = new PedidoDto
             {
                 NumeroPedido = numPedido,
-                DataHoraPedido = p.Data_Hora,
-                StatusHoraPedido = p.St_Entrega + p.Entregue_Data,
-                DadosCliente = cadastroCliente,
-                ListaProdutos = produtosItens.ToList(),
+                DataHoraPedido = p.Data,
+                StatusHoraPedido = await MontarDtoStatuPedido(p),
+                DadosCliente = await cadastroClienteTask,
+                ListaProdutos = (await ObterProdutos(numPedido)).ToList(),
+                TotalFamiliaParcelaRA = await vlFamiliaParcelaRATask,
+                PermiteRAStatus = p.Permite_RA_Status,
+                OpcaoPossuiRA = p.Opcao_Possui_RA,
+                PercRT = p.Perc_RT,
+                ValorTotalDestePedidoComRA = vlTotalDestePedidoComRATask,
+                VlTotalDestePedido = vlTotalDestePedidoTask,
                 DetalhesNF = detalhesNf,
                 DetalhesFormaPagto = detalhesFormaPagto,
                 ListaProdutoDevolvido = await BuscarProdutosDevolvidos(numPedido),
                 ListaPerdas = await BuscarPerdas(numPedido),
                 BlocoNotas = await BuscarPedidoBlocoNotas(numPedido),
-                EnderecoEntrega = enderecoEntrega,
-                ListaOcorrencia = listaOcorrencia
+                EnderecoEntrega = await enderecoEntregaTask,
+                ListaOcorrencia = (await lstOcorrenciaTask).ToList(),
+                ListaBlocoNotasDevolucao = (await lstBlocNotasDevolucaoTask).ToList()
             };
 
             return await Task.FromResult(DtoPedido);
         }
 
-        public async Task<IEnumerable<OcorrenciasDtoPedido>> ObterOcorrencias(string numPedido)
+        private async Task<StatusPedidoDtoPedido> MontarDtoStatuPedido(Tpedido p)
+        {
+            StatusPedidoDtoPedido status = new StatusPedidoDtoPedido();
+
+            if (!String.IsNullOrEmpty(p.Pedido_Bs_X_Marketplace))
+            {
+                status.Status = Util.ObterDescricao_Cod("PedidoECommerce_Origem", p.Marketplace_codigo_origem, contextoProvider) + ":" + p.Pedido_Bs_X_Marketplace;
+                status.CorEntrega = CorStatusEntrega(p.St_Entrega);
+            }
+            else if (!String.IsNullOrEmpty(p.Pedido_Bs_X_Ac))
+            {
+                status.CorEntrega = "purple";
+                status.Pedido_Bs_X_Ac = p.Pedido_Bs_X_Ac;
+            }
+            else
+            {
+                status.Status = FormataSatusPedido(p.St_Entrega);
+                status.CorEntrega = CorStatusEntrega(p.St_Entrega);
+            }
+
+            status.St_Entrega = FormataSatusPedido(p.St_Entrega);
+            status.Entregue_Data = p.Entregue_Data?.ToString("dd/MM/yyyy");
+            status.Cancelado_Data = p.Cancelado_Data?.ToString("dd/MM/yyyy");
+            status.Pedido_Data = p.Data?.ToString("dd/MM/yyyy");
+            status.Recebida_Data = p.PedidoRecebidoData?.ToString("dd/MM/yyyy");
+
+
+            return await Task.FromResult(status);
+        }
+
+        private string CorStatusEntrega(string st_entrega)
+        {
+            string cor = "black";
+
+            switch (st_entrega)
+            {
+                case Constantes.ST_ENTREGA_ESPERAR:
+                    cor = "deeppink";
+                    break;
+                case Constantes.ST_ENTREGA_SPLIT_POSSIVEL:
+                    cor = "darkorange";
+                    break;
+                case Constantes.ST_ENTREGA_SEPARAR:
+                    cor = "maroon";
+                    break;
+                case Constantes.ST_ENTREGA_A_ENTREGAR:
+                    cor = "blue";
+                    break;
+                case Constantes.ST_ENTREGA_ENTREGUE:
+                    cor = "green";
+                    break;
+                case Constantes.ST_ENTREGA_CANCELADO:
+                    cor = "red";
+                    break;
+            }
+
+            return cor;
+        }
+
+        private string FormataSatusPedido(string status)
+        {
+            string retorno = "";
+
+            switch (status)
+            {
+                case "ESP":
+                    retorno = "Em espera";
+                    break;
+                case "SPL":
+                    retorno = "Split possível";
+                    break;
+                case "SEP":
+                    retorno = "Separar";
+                    break;
+                case "AET":
+                    retorno = "A entregar";
+                    break;
+                case "ETG":
+                    retorno = "Entrega";
+                    break;
+                case "CAN":
+                    retorno = "Cancelado";
+                    break;
+            }
+
+            return retorno;
+        }
+
+        private string CorSatusPagto(string statusPagto)
+        {
+            string retorno = "";
+
+            switch (statusPagto)
+            {
+                case Constantes.ST_PAGTO_PAGO:
+                    retorno = "green";
+                    break;
+                case Constantes.ST_PAGTO_NAO_PAGO:
+                    retorno = "red";
+                    break;
+                case Constantes.ST_PAGTO_PARCIAL:
+                    retorno = "deeppink";
+                    break;
+            }
+
+            return retorno;
+        }
+
+        private string CorAnaliseCredito(string codigo)
+        {
+            if (codigo == null)
+                return "";
+
+            string retorno = "";
+
+            switch (codigo)
+            {
+                case Constantes.COD_AN_CREDITO_PENDENTE:
+                    retorno = "red";
+                    break;
+                case Constantes.COD_AN_CREDITO_PENDENTE_VENDAS:
+                    retorno = "red";
+                    break;
+                case Constantes.COD_AN_CREDITO_PENDENTE_ENDERECO:
+                    retorno = "red";
+                    break;
+                case Constantes.COD_AN_CREDITO_OK:
+                    retorno = "green";
+                    break;
+                case Constantes.COD_AN_CREDITO_OK_AGUARDANDO_DEPOSITO:
+                    retorno = "darkorange";
+                    break;
+                case Constantes.COD_AN_CREDITO_OK_DEPOSITO_AGUARDANDO_DESBLOQUEIO:
+                    retorno = "darkorange";
+                    break;
+            }
+
+            return retorno;
+        }
+
+        private async Task<IEnumerable<OcorrenciasDtoPedido>> ObterOcorrencias(string numPedido)
         {
             var db = contextoProvider.GetContexto();
 
-            var id = await(from c in db.TpedidoOcorrencias
-                     where c.Pedido == numPedido
-                     select c.Id).FirstOrDefaultAsync();
+            var id = await (from c in db.TpedidoOcorrencias
+                            where c.Pedido == numPedido
+                            select c.Id).FirstOrDefaultAsync();
 
             //nenhuma ocorrencia para esse pedido
             if (id == 0)
@@ -329,27 +527,42 @@ namespace PrepedidoBusiness.Bll
 
             var ocorrencia = from d in db.TpedidoOcorrencias
                              where d.Pedido == numPedido
-                             select new OcorrenciasDtoPedido
-                             {
-                                 Usuario = d.Usuario_Cadastro,
-                                 Dt_Hr_Cadastro = d.Dt_Hr_Cadastro,
-                                 Situacao = (d.Finalizado_Status != 0 ? "Finalizado" : (from c in db.TpedidoOcorrenciaMensagems
-                                                                                        where c.Id_Ocorrencia == d.Id &&
-                                                                                              c.Fluxo_Mensagem == Constantes.COD_FLUXO_MENSAGEM_OCORRENCIAS_EM_PEDIDOS__CENTRAL_PARA_LOJA
-                                                                                        select c).Count() > 0 ? "Em Andamento" : "Aberta"),
-                                 Contato = d.Contato + d.Tel_1 != "" ? "(" + d.Ddd_1 + ") " + d.Tel_1 : d.Tel_2 != "" ? "(" + d.Ddd_2 + ") " + d.Tel_2 : "",
-                                 Texto_Ocorrencia = d.Texto_Ocorrencia,
-                                 mensagemDtoOcorrenciaPedidos = msg,
-                                 Finalizado_Usuario = d.Finalizado_Usuario,
-                                 Finalizado_Data_Hora = d.Finalizado_Data_Hora,
-                                 Tipo_Ocorrencia = ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__OCORRENCIAS_EM_PEDIDOS__TIPO_OCORRENCIA, d.Tipo_Ocorrencia).ToString(),
-                                 Texto_Finalizacao = d.Texto_Finalizacao
-                             };
+                             select d;
+            List<OcorrenciasDtoPedido> lista = new List<OcorrenciasDtoPedido>();
+            OcorrenciasDtoPedido ocorre = new OcorrenciasDtoPedido();
 
-            return await Task.FromResult(ocorrencia);
+            foreach (var i in ocorrencia)
+            {
+                ocorre.Usuario = i.Usuario_Cadastro;
+                ocorre.Dt_Hr_Cadastro = i.Dt_Hr_Cadastro;
+                if (i.Finalizado_Status != 0)
+                    ocorre.Situacao = "Finalizado";
+                else
+                {
+                    ocorre.Situacao = (from c in db.TpedidoOcorrenciaMensagems
+                                       where c.Id_Ocorrencia == i.Id &&
+                                             c.Fluxo_Mensagem == Constantes.COD_FLUXO_MENSAGEM_OCORRENCIAS_EM_PEDIDOS__CENTRAL_PARA_LOJA
+                                       select c).Count() > 0 ? "Em Andamento" : "Aberta";
+
+                }
+                if (i.Tel_1 != "")
+                    ocorre.Contato = i.Contato + "(" + i.Ddd_1 + ") " + i.Tel_1;
+                if (i.Tel_2 != "")
+                    ocorre.Contato = i.Contato + "(" + i.Ddd_2 + ") " + i.Tel_2;
+                ocorre.Texto_Ocorrencia = i.Texto_Ocorrencia;
+                ocorre.mensagemDtoOcorrenciaPedidos = msg;
+                ocorre.Finalizado_Usuario = i.Finalizado_Usuario;
+                ocorre.Finalizado_Data_Hora = i.Finalizado_Data_Hora;
+                ocorre.Tipo_Ocorrencia = Util.ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__OCORRENCIAS_EM_PEDIDOS__TIPO_OCORRENCIA,
+                    i.Tipo_Ocorrencia, contextoProvider);
+                ocorre.Texto_Finalizacao = i.Texto_Finalizacao;
+                lista.Add(ocorre);
+            }
+
+            return await Task.FromResult(lista);
         }
 
-        public async Task<IEnumerable<MensagemDtoOcorrenciaPedido>> ObterMensagemOcorrencia(int idOcorrencia)
+        private async Task<IEnumerable<MensagemDtoOcorrenciaPedido>> ObterMensagemOcorrencia(int idOcorrencia)
         {
             var db = contextoProvider.GetContexto();
 
@@ -366,7 +579,7 @@ namespace PrepedidoBusiness.Bll
             return await Task.FromResult(msg);
         }
 
-        public async Task<string> ObterAnaliseCredito(string codigo, string numPedido, string apelido)
+        private async Task<string> ObterAnaliseCredito(string codigo, string numPedido, string apelido)
         {
             string retorno = "";
 
@@ -423,7 +636,7 @@ namespace PrepedidoBusiness.Bll
             return await Task.FromResult(retorno);
         }
 
-        public async Task<decimal> CalculaSaldoAPagar(string numPedido)
+        private async Task<decimal> CalculaSaldoAPagar(string numPedido, decimal vlDevNf)
         {
             var db = contextoProvider.GetContexto();
 
@@ -431,26 +644,21 @@ namespace PrepedidoBusiness.Bll
             var vlFamiliaP = from c in db.TpedidoPagamentos
                              where c.Pedido.StartsWith(numPedido)
                              select c;
-            decimal vl_TotalFamiliaPago = await vlFamiliaP.Select(r => r.Valor).SumAsync();
+            var vl_TotalFamiliaPagoTask = vlFamiliaP.Select(r => r.Valor).SumAsync();
 
             //buscar valor total NF
             var vlNf = from c in db.TpedidoItems.Include(r => r.Tpedido)
                        where c.Tpedido.St_Entrega != Constantes.ST_ENTREGA_CANCELADO && c.Tpedido.Pedido.StartsWith(numPedido)
                        select c.Qtde * c.Preco_NF;
-            decimal vl_TotalFamiliaPrecoNF = await vlNf.Select(r => r.Value).SumAsync();
+            var vl_TotalFamiliaPrecoNFTask = vlNf.Select(r => r.Value).SumAsync();
 
-            //buscar valor total de devoluções NF
-            var vlDevNf = from c in db.TpedidoItemDevolvidos
-                          where c.Pedido.StartsWith(numPedido)
-                          select c.Qtde * c.Preco_NF;
-            decimal vl_TotalFamiliaDevolucaoPrecoNF = await vlDevNf.Select(r => r.Value).SumAsync();
-
-            decimal result = vl_TotalFamiliaPrecoNF - vl_TotalFamiliaPago - vl_TotalFamiliaDevolucaoPrecoNF;
+            decimal result = await vl_TotalFamiliaPrecoNFTask - await vl_TotalFamiliaPagoTask - vlDevNf;
 
             return await Task.FromResult(result);
         }
 
-        public async Task<decimal> CalculaTotalFamiliaRA(string numPedido)
+        //Retorna o valor da Familia RA
+        private async Task<decimal> CalculaTotalFamiliaRA(string numPedido)
         {
             var db = contextoProvider.GetContexto();
 
@@ -466,7 +674,7 @@ namespace PrepedidoBusiness.Bll
             return await Task.FromResult(result);
         }
 
-        public async Task<IEnumerable<ProdutoDevolvidoDtoPedido>> BuscarProdutosDevolvidos(string numPedido)
+        private async Task<IEnumerable<ProdutoDevolvidoDtoPedido>> BuscarProdutosDevolvidos(string numPedido)
         {
             var db = contextoProvider.GetContexto();
 
@@ -486,7 +694,7 @@ namespace PrepedidoBusiness.Bll
             return await Task.FromResult(lista);
         }
 
-        public async Task<IEnumerable<PedidoPerdasDtoPedido>> BuscarPerdas(string numPedido)
+        private async Task<IEnumerable<PedidoPerdasDtoPedido>> BuscarPerdas(string numPedido)
         {
             var db = contextoProvider.GetContexto();
 
@@ -503,15 +711,9 @@ namespace PrepedidoBusiness.Bll
             return await Task.FromResult(lista);
         }
 
-        public async Task<int> VerificarEstoque(string numPedido)
+        private async Task<int> VerificarEstoque(string numPedido, string fabricante, string produto)
         {
             var db = contextoProvider.GetContexto();
-
-            var fabricanteProduto = from c in db.TpedidoItems
-                                    where c.Pedido == numPedido
-                                    select new { fabricante = c.Fabricante, produto = c.Produto };
-            string fabricante = await fabricanteProduto.Select(r => r.fabricante).FirstOrDefaultAsync();
-            string produto = await fabricanteProduto.Select(r => r.produto).FirstOrDefaultAsync();
 
             var prod = from c in db.TestoqueMovimentos
                        where c.Anulado_Status == 0 &&
@@ -527,7 +729,7 @@ namespace PrepedidoBusiness.Bll
             return await Task.FromResult(qtde);
         }
 
-        public async Task<BlocoNotasDtoPedido> BuscarPedidoBlocoNotas(string numPedido)
+        private async Task<BlocoNotasDtoPedido> BuscarPedidoBlocoNotas(string numPedido)
         {
             var db = contextoProvider.GetContexto();
 
@@ -549,23 +751,41 @@ namespace PrepedidoBusiness.Bll
 
         }
 
-        public async Task<string> ObterDescricao_Cod(string grupo, string cod)
+        private async Task<IEnumerable<BlocoNotasDevolucaoMercadoriasDtoPedido>> BuscarPedidoBlocoNotasDevolucao(string numPedido)
         {
             var db = contextoProvider.GetContexto();
 
-            var desc = from c in db.TcodigoDescricaos
-                       where c.Grupo == grupo && c.Codigo == cod
-                       select c.Descricao;
+            var blDevolucao = from c in db.TpedidoItemDevolvidoBlocoNotas.Include(r => r.TpedidoItemDevolvido)
+                              where c.TpedidoItemDevolvido.Pedido == numPedido && c.Anulado_Status == 0
+                              orderby c.Dt_Hr_Cadastro, c.Id
+                              select new BlocoNotasDevolucaoMercadoriasDtoPedido
+                              {
+                                  Dt_Hr_Cadastro = c.Dt_Hr_Cadastro,
+                                  Usuario = c.Usuario,
+                                  Loja = c.Loja,
+                                  Mensagem = c.Mensagem
+                              };
 
-            string result = await desc.FirstOrDefaultAsync();
+            if (blDevolucao.Count() == 0)
+                return new List<BlocoNotasDevolucaoMercadoriasDtoPedido>();
 
-            if (result == null || result == "")
-                return await Task.FromResult("Código não cadastrado (" + cod + ")");
+            List<BlocoNotasDevolucaoMercadoriasDtoPedido> lista = new List<BlocoNotasDevolucaoMercadoriasDtoPedido>();
 
-            return await Task.FromResult(result);
+            foreach (var b in blDevolucao)
+            {
+                lista.Add(new BlocoNotasDevolucaoMercadoriasDtoPedido
+                {
+                    Dt_Hr_Cadastro = b.Dt_Hr_Cadastro,
+                    Usuario = b.Usuario,
+                    Loja = b.Loja,
+                    Mensagem = b.Mensagem
+                });
+            }
+
+            return await Task.FromResult(lista);
         }
 
-        public async Task<IEnumerable<string>> ObterFormaPagto(string numPedido, string orcamentista)
+        private async Task<IEnumerable<string>> ObterFormaPagto(string numPedido, string orcamentista)
         {
             var db = contextoProvider.GetContexto();
 
@@ -612,7 +832,7 @@ namespace PrepedidoBusiness.Bll
             return await Task.FromResult(lista.ToList());
         }
 
-        public async Task<string> OpcaoFormaPagto(string codigo)
+        private async Task<string> OpcaoFormaPagto(string codigo)
         {
             string retorno = "";
 
