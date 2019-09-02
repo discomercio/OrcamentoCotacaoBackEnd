@@ -1,57 +1,56 @@
 @import "../../../variaveis.scss";
 
-:host {
-  .corpohome {
-    padding: 0.5em;
-  }
+.corpohome {
+  padding: 0.5em;
+}
 
-  .corpohomeDesktop {
-    text-align: left;
-  }
+.corpohomeDesktop {
+  text-align: left;
+}
 
-  .corpohomeCelular {
-    padding: 0.7em;
-    text-align: left;
-  }
+.corpohomeCelular {
+  padding: 0.7em;
+  text-align: left;
+}
 
-  .botaoCelular {
-    padding-bottom: 0px;
-  }
+.botaoCelular {
+  padding-bottom: 0px;
+}
 
-  //para o desktop
-  .tabeladesktop {
-    width: calc(100% - 2em);
-    margin: 1em;
-    padding-left: 0em;
-    padding-right: 0em;
-    text-align: left;
-    background-color: $cor-fundo-listapedidos;
-  }
-  .mat-header-row th {
-    font-weight: bold;
-    //color: black;
-  }
-  .mat-column-ValoTotal {
-    text-align: right;
-  }
-  .mat-header-row .mat-column-ValoTotal {
-    text-align: center;
-  }
+//para o desktop
+.tabeladesktop {
+  width: calc(100% - 2em);
+  margin: 1em;
+  padding-left: 0em;
+  padding-right: 0em;
+  text-align: left;
+  background-color: $cor-fundo-listapedidos;
+}
+.mat-header-row th {
+  font-weight: bold;
+  //color: black;
+}
+.mat-column-ValoTotal {
+  text-align: right;
+}
+.mat-header-row .mat-column-ValoTotal {
+  text-align: center;
+}
 
-  .mat-column-NumeroPrepedido {
-    text-align: center;
-  }
-  .mat-column-DataPrePedido {
-    text-align: center;
-  }
-  .mat-column-NomeCliente {
-    text-align: left;
-  }
-  .mat-column-Remover {
-    text-align: center;
-    color: $cor-verde-icones;
-  }
-  /*
+.mat-column-NumeroPrepedido {
+  text-align: center;
+}
+.mat-column-DataPrePedido {
+  text-align: center;
+}
+.mat-column-NomeCliente {
+  text-align: left;
+}
+.mat-column-Remover {
+  text-align: center;
+  color: $cor-verde-icones;
+}
+/*
     .tabeladesktop th {
         border-bottom-style: solid;
         border-bottom-color: black;
@@ -62,50 +61,49 @@
         padding-bottom: 10px;
     }
     */
-  .tabeladesktop td {
-    border-top-style: solid;
-    border-top-color: white;
-    border-top-width: 10px;
-  }
+.tabeladesktop td {
+  border-top-style: solid;
+  border-top-color: white;
+  border-top-width: 10px;
+}
 
-  //para o celular
-  .containercel {
-    margin: 0.5em;
-  }
-  .celcol1 {
-    min-width: 4em;
-    display: inline-block;
-    font-weight: bold;
-  }
-  .celcol2 {
-    width: auto;
-    display: inline-block;
-  }
-  .cellinha {
-    height: 1em;
-  }
-  .textocelnumero {
-    font-size: 14px;
-    vertical-align: bottom;
-    //height: 100%;
-  }
-  .cartao {
-    background-color: $cor-fundo-listapedidos;
-    padding: 5px;
-    margin-bottom: 10px;
-  }
+//para o celular
+.containercel {
+  margin: 0.5em;
+}
+.celcol1 {
+  min-width: 4em;
+  display: inline-block;
+  font-weight: bold;
+}
+.celcol2 {
+  width: auto;
+  display: inline-block;
+}
+.cellinha {
+  height: 1em;
+}
+.textocelnumero {
+  font-size: 14px;
+  vertical-align: bottom;
+  //height: 100%;
+}
+.cartao {
+  background-color: $cor-fundo-listapedidos;
+  padding: 5px;
+  margin-bottom: 10px;
+}
 
-  /*
+/*
   controle do flex
   */
-  .contgrande {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
+.contgrande {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
 
-  .contgrande article {
-    flex: 1 1 auto;
-    overflow-y: auto;
-  }
+.contgrande article {
+  flex: 1 1 auto;
+  overflow-y: auto;
 }

@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material';
 import { AlertDialogComponent } from 'src/app/utils/alert-dialog/alert-dialog.component';
 import { PedidoDto } from 'src/app/dto/pedido/detalhesPedido/PedidoDto';
 import { ObjectUtils } from 'src/app/utils/objectUtils';
+import { ImpressaoService } from 'src/app/utils/impressao.service';
 
 @Component({
   selector: 'app-detalhes-prepedido',
@@ -24,6 +25,7 @@ export class DetalhesPrepedidoComponent extends TelaDesktopBaseComponent impleme
     private readonly location: Location,
     public readonly prepedidoBuscarService: PrepedidoBuscarService,
     public readonly pedidoBuscarService: PedidoBuscarService,
+    public readonly impressaoService:ImpressaoService,
     public readonly dialog: MatDialog
   ) {
     super(telaDesktopService);

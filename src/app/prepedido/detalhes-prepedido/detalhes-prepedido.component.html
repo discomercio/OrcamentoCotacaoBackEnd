@@ -1,7 +1,7 @@
 <section class="contgrande"
     [ngClass]="{'carregando': prepedidoBuscarService.carregando && pedidoBuscarService.carregando}"
     [class]="telaDesktop? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'"
-    *ngIf="prepedidoBuscarService.carregando || pedidoBuscarService.carregando">
+    *ngIf="!impressaoService.emImpressao() && (prepedidoBuscarService.carregando || pedidoBuscarService.carregando)">
     <!-- somente enquanto está carregando -->
     <header id="header" *ngIf="emPrepedidos">
         <div class="titulopagina"> Detalhes do Pré Pedido {{numeroPrepedido}}</div>
@@ -24,7 +24,7 @@
 <section class="contgrande"
     [ngClass]="{'carregando': prepedidoBuscarService.carregando && pedidoBuscarService.carregando}"
     [class]="telaDesktop? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'"
-    *ngIf="!(prepedidoBuscarService.carregando || pedidoBuscarService.carregando)">
+    *ngIf="!impressaoService.emImpressao() && (!(prepedidoBuscarService.carregando || pedidoBuscarService.carregando))">
 
     <div style="text-align: center"> Afazer: tela ainda em desenvolvimento!
     </div>
@@ -46,3 +46,6 @@
         </button>
     </footer>
 </section>
+<div *ngIf="impressaoService.emImpressao()">
+    <app-pedido-desktop [pedido]="pedido"></app-pedido-desktop>
+</div>

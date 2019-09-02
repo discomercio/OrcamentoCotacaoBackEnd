@@ -1,5 +1,5 @@
 <div [class]="telaDesktop? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'">
-    <div *ngIf="emPrepedidos" class="titulopagina" [ngClass]="{'tituloDesktop': telaDesktop}"> Consultar Pré Pedidos </div>
+    <div *ngIf="emPrepedidos" class="titulopagina" [ngClass]="{'tituloDesktop': telaDesktop}"> Consultar Pré-Pedidos </div>
     <div *ngIf="!emPrepedidos" class="titulopagina"  [ngClass]="{'tituloDesktop': telaDesktop}"> Consultar Pedidos </div>
 
     <form #loginForm="ngForm" class="container" [class]="telaDesktop? 'containerDesktop': 'containerCelular'"

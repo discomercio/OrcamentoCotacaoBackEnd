@@ -1,12 +1,11 @@
 @import "../variaveis.scss";
 
-:host {
-  .larguramaxima {
-    text-align: center;
-    justify-content: center;
-    max-width: 100vw;
-    width: 1280px;
-  }
+.larguramaxima {
+  text-align: center;
+  justify-content: center;
+  max-width: 100vw;
+  width: 1280px;
+}
 /*
   .alturamaxima {
     height: calc(100vh - $altura-cabecalho-mais3);
@@ -18,61 +17,60 @@
     height: $altura-cabecalho;
 */
 
-  .alturamaxima {
-    height: calc(100vh - 53px);
-  }
-  .alturamaximamenos1 {
-    height: calc(100vh - 54px);
-  }
-  .cabecalho {
-    height: 50px;
-    margin: 0px;
-    border: 0px;
-    padding: 0px;
-    border: 1px;
-    border-style: solid;
-    border-color: $cor-borda-menu;
-    background-color: $cor-fundo-menu;
-    border-top: 0px;
-  }
-  .cabecalho a {
-    padding: 0;
-    margin: 0;
-    border: 0;
-  }
+.alturamaxima {
+  height: calc(100vh - 53px);
+}
+.alturamaximamenos1 {
+  height: calc(100vh - 54px);
+}
+.cabecalho {
+  height: 50px;
+  margin: 0px;
+  border: 0px;
+  padding: 0px;
+  border: 1px;
+  border-style: solid;
+  border-color: $cor-borda-menu;
+  background-color: $cor-fundo-menu;
+  border-top: 0px;
+}
+.cabecalho a {
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
 
-  .menudaesquerda {
-    margin: 0;
-    border: 0;
-    padding: 0;
-    border-right: 1px;
-    border-right-style: solid;
-    border-right-color: $cor-borda-menu;
-    background-color: $cor-fundo-menu;
-  }
+.menudaesquerda {
+  margin: 0;
+  border: 0;
+  padding: 0;
+  border-right: 1px;
+  border-right-style: solid;
+  border-right-color: $cor-borda-menu;
+  background-color: $cor-fundo-menu;
+}
+.bordadocorpo {
+  margin-right: 0px;
+  border: 0px;
+  padding: 0px;
+  border: 1px;
+  border-style: solid;
+  border-color: $cor-borda-menu;
+  border-top: 0px;
+  background-color: $cor-fundo-menu;
+}
+.fundoprincipal {
+  background-color: white;
+}
+.limiteclicavel {
+  margin: 0 auto;
+}
+.iconelogout {
+  color: $cor-verde-icones;
+}
+
+@media screen and (max-width: 1280px) {
   .bordadocorpo {
-    margin-right: 0px;
     border: 0px;
-    padding: 0px;
-    border: 1px;
-    border-style: solid;
-    border-color: $cor-borda-menu;
-    border-top: 0px;
-    background-color: $cor-fundo-menu;
-  }
-  .fundoprincipal {
-    background-color: white;
-  }
-  .limiteclicavel {
-    margin: 0 auto;
-  }
-  .iconelogout {
-    color: $cor-verde-icones;
-  }
-
-  @media screen and (max-width: 1280px) {
-    .bordadocorpo {
-      border: 0px;
-    }
   }
 }

@@ -10,6 +10,7 @@ import { LoginformularioComponent } from './login/loginformulario/loginformulari
 import { LoginGuard } from './servicos/autenticacao/login.guard';
 import { DetalhesPrepedidoComponent } from './prepedido/detalhes-prepedido/detalhes-prepedido.component';
 import { ClienteComponent } from './cliente/cliente/cliente.component';
+import { SelecionarClienteComponent } from './prepedido/novo-prepedido/selecionar-cliente/selecionar-cliente.component';
 
 
 const routes: Routes = [
@@ -40,6 +41,12 @@ const routes: Routes = [
     component: DetalhesPrepedidoComponent
   },
   {
+    path: 'prepedido/imprimir/:numeroPedido',
+    canActivate: [LoginGuard],
+    outlet: 'imprimir',
+    component: DetalhesPrepedidoComponent
+  },
+  {
     path: 'pedido/consulta',
     canActivate: [LoginGuard],
     component: ConsultaPedidoComponent
@@ -54,6 +61,17 @@ const routes: Routes = [
     canActivate: [LoginGuard],
     //fazemos no próprio DetalhesPrepedidoComponent, ele identifica pelo parâmetro
     component: DetalhesPrepedidoComponent
+  },
+  {
+    path: 'pedido/imprimir/:numeroPedido',
+    canActivate: [LoginGuard],
+    //fazemos no próprio DetalhesPrepedidoComponent, ele identifica pelo parâmetro
+    component: DetalhesPrepedidoComponent
+  },
+  {
+    path: 'novo-prepedido/cliente',
+    canActivate: [LoginGuard],
+    component: SelecionarClienteComponent
   },
   {
     path: 'cliente/:cpfcnpj',

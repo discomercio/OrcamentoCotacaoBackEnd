@@ -6,6 +6,8 @@ import { Constantes } from 'src/app/dto/Constantes';
 import { Router } from '@angular/router';
 import { FormatarEndereco } from 'src/app/utils/formatarEndereco';
 import { FormatarTelefone } from 'src/app/utils/formatarTelefone';
+import { Location } from '@angular/common';
+import { ImpressaoService } from 'src/app/utils/impressao.service';
 
 @Component({
   selector: 'app-pedido-desktop',
@@ -16,6 +18,12 @@ export class PedidoDesktopComponent implements OnInit {
 
   @Input() pedido: PedidoDto = null;
 
+  constructor(private readonly router: Router,
+    public readonly impressaoService: ImpressaoService,
+    private readonly location: Location) { }
+  ngOnInit() {
+  }
+
   //cosntantes
   constantes = new Constantes();
 
@@ -24,19 +32,24 @@ export class PedidoDesktopComponent implements OnInit {
   dataFormatarTelaHora = DataUtils.formatarTelaHora;
   moedaUtils: MoedaUtils = new MoedaUtils();
 
+  //parar imprimir (qeur dizer, para ir apra a versão de impressão)
+  imprimir(): void {
+    //window.alert("Afazer: versão para impressão somente com o pedido");
+    this.router.navigate(['/pedido/imprimir', this.pedido.NumeroPedido]);
+  }
+  voltar() {
+    this.location.back();
+  }
+
   //para dizer se é PF ou PJ
   ehPf(): boolean {
     if (this.pedido && this.pedido.DadosCliente && this.pedido.DadosCliente.Tipo)
       return this.pedido.DadosCliente.Tipo == this.constantes.ID_PF;
-    //sem dados! qualqer opção serve...
+    //sem dados! qualqer opção serve...  
     return true;
   }
 
 
-  constructor(private readonly router: Router) { }
-
-  ngOnInit() {
-  }
   formata_endereco(): string {
     const p = this.pedido ? this.pedido.DadosCliente : null;
     if (!p)
@@ -49,13 +62,6 @@ export class PedidoDesktopComponent implements OnInit {
     if (!p)
       return "";
     return "Afazer: endereço de entrega";
-  }
-
-  clicarCliente(): void {
-    if (this.pedido && this.pedido.DadosCliente && this.pedido.DadosCliente.Cnpj_Cpf)
-      this.router.navigate(["cliente", this.pedido.DadosCliente.Cnpj_Cpf]);
-    else
-      window.alert("Erro: cliente sem CPF/CNPJ");
   }
 
   //total do pedido
@@ -233,6 +239,21 @@ e são usados desta forma:
     if (s_aux != "")
       s2 = "(" + s_aux + ") " + s2;
     return s2;
+  }
+
+  clicarCliente(): void {
+    if (this.pedido && this.pedido.DadosCliente && this.pedido.DadosCliente.Cnpj_Cpf)
+      this.router.navigate(["cliente", this.pedido.DadosCliente.Cnpj_Cpf]);
+    else
+      window.alert("Erro: cliente sem CPF/CNPJ");
+  }
+
+  //controle da impressão
+  imprimirOcorrenciasAlterado() {
+    this.impressaoService.imprimirOcorrenciasSet(!this.impressaoService.imprimirOcorrencias());
+  }
+  imprimirBlocoNotasAlterado() {
+    this.impressaoService.imprimirBlocoNotasSet(!this.impressaoService.imprimirBlocoNotas());
   }
 
 }

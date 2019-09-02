@@ -1,6 +1,16 @@
 <div class="nossobody">
-    <br>
-    <br>
+    <div class="botaoImprimirDIv">
+        <button mat-raised-button color="accent" (click)="imprimir()" class="botaoImprimir"
+            *ngIf="!impressaoService.emImpressao()">
+            <mat-icon>print</mat-icon> Versão para impressão
+        </button>
+    </div>
+    <div class="botaoVoltarDIv">
+        <button mat-raised-button color="accent" (click)="voltar()" class="botaoVoltar"
+            *ngIf="impressaoService.emImpressao()">
+            <mat-icon>arrow_back</mat-icon> Voltar
+        </button>
+    </div>
     <div class="nossobody-before">
         As informações aqui contidas são confidenciais e protegidas pelo sigilo legal. A divulgação, distribuição ou
         reprodução destas informações depende da autorização do emissor.
@@ -15,7 +25,7 @@
                     <table cellpadding='0' cellspacing='0'>
                         <tr>
                             <td valign='bottom' align='left'>
-                                <span class='STP' style='color:maroon;'>{{pedido.StatusHoraPedido}}
+                                <span class='STP' style='color:maroon;'>{{pedido?.StatusHoraPedido}} &nbsp;
                                 </span>
                             </td>
                             <td align='left' style='width:6px;padding-bottom:4px'>
@@ -27,19 +37,19 @@
                     </table>
                 </td>
                 <td valign='bottom' align='center' width='33%'>
-                    <span class='STP'>{{dataFormatarTela(pedido.DataHoraPedido)}}
-                        <span class='HoraPed'>{{dataFormatarTelaHora(pedido.DataHoraPedido)}}</span>
+                    <span class='STP'>{{dataFormatarTela(pedido?.DataHoraPedido)}} &nbsp;
+                        <span class='HoraPed'>{{dataFormatarTelaHora(pedido?.DataHoraPedido)}} &nbsp;</span>
                     </span>
                 </td>
                 <td valign='bottom' align='right' nowrap>
-                    <span class='PEDIDO'>Pedido Nº&nbsp;{{pedido.NumeroPedido}}</span>
+                    <span class='PEDIDO'>Pedido Nº&nbsp;{{pedido?.NumeroPedido}} </span>
                 </td>
             </tr>
         </table>
         <br>
 
         <!--  EXIBE LINKS PARA A FAMÍLIA DE PEDIDOS?   -->
-afazer: exibe_familia_pedido(pedido_selecionado, v_pedido)
+        afazer: exibe_familia_pedido(pedido_selecionado, v_pedido)
 
 
 
@@ -69,17 +79,17 @@ afazer: exibe_familia_pedido(pedido_selecionado, v_pedido)
             <tr>
 
                 <td align="left" width="50%" class="MD">
-                    <p class="Rf">{{ehPf() ? "CPF" : "CNPJ"}}</p>
+                    <p class="Rf">{{ehPf() ? "CPF" : "CNPJ"}} &nbsp;</p>
 
                     <a (click)="clicarCliente()" title='clique para consultar o cadastro do cliente'>
-                        <p class="C">{{pedido.DadosCliente?.Cnpj_Cpf}}</p>
+                        <p class="C">{{pedido?.DadosCliente?.Cnpj_Cpf}}  &nbsp;</p>
                     </a>
 
                 </td>
 
                 <td align="left" class="MD">
-                    <p class="Rf">{{ehPf() ? "RG" : "IE"}}</p>
-                    <p class="C">{{ehPf() ? pedido.DadosCliente?.Rg : pedido.DadosCliente?.Ie}}</p>
+                    <p class="Rf">{{ehPf() ? "RG" : "IE"}} &nbsp;</p>
+                    <p class="C">{{ehPf() ? pedido?.DadosCliente?.Rg : pedido?.DadosCliente?.Ie}} &nbsp;</p>
                 </td>
 
                 <td align="center" valign="middle" style="width:15px">
@@ -90,10 +100,10 @@ afazer: exibe_familia_pedido(pedido_selecionado, v_pedido)
 
             <tr>
                 <td class="MC" align="left" colspan="3">
-                    <p class="Rf">{{ehPf()?"NOME DO CLIENTE":"RAZÃO SOCIAL DO CLIENTE"}}</p>
+                    <p class="Rf">{{ehPf()?"NOME DO CLIENTE":"RAZÃO SOCIAL DO CLIENTE"}} &nbsp;</p>
 
                     <a (click)="clicarCliente()" title='clique para consultar o cadastro do cliente'>
-                        <p class="C">{{pedido.DadosCliente?.Nome}}</p>
+                        <p class="C">{{pedido?.DadosCliente?.Nome}} &nbsp;</p>
                     </a>
 
                 </td>
@@ -105,7 +115,7 @@ afazer: exibe_familia_pedido(pedido_selecionado, v_pedido)
             <tr>
                 <td align="left">
                     <p class="Rf">ENDEREÇO</p>
-                    <p class="C">{{formata_endereco()}}</p>
+                    <p class="C">{{formata_endereco()}} &nbsp;</p>
                 </td>
             </tr>
         </table>
@@ -115,26 +125,26 @@ afazer: exibe_familia_pedido(pedido_selecionado, v_pedido)
             <tr *ngIf="!ehPf()">
                 <td class="MD" width="50%" align="left">
                     <p class="Rf">TELEFONE</p>
-                    <p class="C">{{telefone1()}}</p>
+                    <p class="C">{{telefone1()}} &nbsp;</p>
                 </td>
                 <td width="50%" align="left">
                     <p class="Rf">TELEFONE</p>
-                    <p class="C">{{telefone2()}}</p>
+                    <p class="C">{{telefone2()}} &nbsp;</p>
                 </td>
             </tr>
             <tr *ngIf="ehPf()">
                 <!-- AFAZER: TELECOME COMERCIAL 3 (NA ROTINA) -->
                 <td class="MD" width="33%" align="left">
                     <p class="Rf">TELEFONE RESIDENCIAL</p>
-                    <p class="C">{{telefone1()}}</p>
+                    <p class="C">{{telefone1()}} &nbsp;</p>
                 </td>
                 <td class="MD" width="33%" align="left">
                     <p class="Rf">TELEFONE COMERCIAL</p>
-                    <p class="C">{{telefone2()}}</p>
+                    <p class="C">{{telefone2()}} &nbsp;</p>
                 </td>
                 <td align="left">
                     <p class="Rf">CELULAR</p>
-                    <p class="C">{{telefoneCelular()}}</p>
+                    <p class="C">{{telefoneCelular()}} &nbsp;</p>
                 </td>
             </tr>
 
@@ -145,7 +155,7 @@ afazer: exibe_familia_pedido(pedido_selecionado, v_pedido)
             <tr>
                 <td align="left">
                     <p class="Rf">E-MAIL</p>
-                    <p class="C">{{pedido?.DadosCliente?.Email}}</p>
+                    <p class="C">{{pedido?.DadosCliente?.Email}} &nbsp;</p>
                 </td>
             </tr>
         </table>
@@ -156,13 +166,13 @@ afazer: exibe_familia_pedido(pedido_selecionado, v_pedido)
             <tr>
                 <td align="left">
                     <p class="Rf">ENDEREÇO DE ENTREGA</p>
-                    <p class="C">{{formata_endereco_entrega()}}</p>
+                    <p class="C">{{formata_endereco_entrega()}} &nbsp;</p>
                 </td>
             </tr>
 
             <tr>
                 <td align="left" style="word-wrap:break-word">
-                    <p class="C">afazer: r_pedido.EndEtg_cod_justificativa</p>
+                    <p class="C">afazer: r_pedido?.EndEtg_cod_justificativa &nbsp;</p>
                 </td>
             </tr>
 
@@ -187,7 +197,7 @@ afazer: exibe_familia_pedido(pedido_selecionado, v_pedido)
             </tr>
 
 
-            <tr *ngFor="let linha of pedido.ListaProdutos">
+            <tr *ngFor="let linha of pedido?.ListaProdutos">
 
                 <!-- afazer: cor da linha do pedido -->
                 <!-- afazer: RA: 	<% if blnTemRA Or ((r_pedido.permite_RA_status = 1) And (r_pedido.opcao_possui_RA = "S")) then %> -->
@@ -197,7 +207,7 @@ afazer: exibe_familia_pedido(pedido_selecionado, v_pedido)
                 <td class="MDB" align="left"><input name="c_produto" id="c_produto" class="PLLe"
                         style="width:54px; color:black" value='{{linha.NumProduto}}' readonly tabindex=-1></td>
                 <td class="MDB" align="left" style="width:277px;">
-                    <span class="PLLe" style="color:black">{{linha.Descricao}}</span>
+                    <span class="PLLe" style="color:black">{{linha.Descricao}} &nbsp;</span>
                     <!-- <input type="hidden" name="c_descricao" id="c_descricao"
                         value='Evap. 45HAFI12B2FA - ECO-CLASS - FRIO'> -->
                 </td>
@@ -205,7 +215,7 @@ afazer: exibe_familia_pedido(pedido_selecionado, v_pedido)
                         style="width:21px; color:black" value='{{linha.Qtde}}' readonly tabindex=-1></td>
                 <td class="MDB" align="right"><input name="c_qtde_falta" id="c_qtde_falta" class="PLLd"
                         style="width:20px; color:black" value='{{linha.Faltando}}' readonly tabindex=-1></td>
-                        <!-- afazer: style="width:62px; color:<%=s_cor%>" -->
+                <!-- afazer: style="width:62px; color:<%=s_cor%>" -->
                 <td class="MDB" align="right"><input name="c_vl_NF" id="c_vl_NF" class="PLLd"
                         style="width:62px; color:green" value='-1' title="afazer" readonly tabindex=-1></td>
 
@@ -277,8 +287,8 @@ afazer: exibe_familia_pedido(pedido_selecionado, v_pedido)
                     <p class="Rf">Observações </p>
                     <textarea name="c_obs1" id="c_obs1" class="PLLe notPrint" rows="{{constantes.MAX_LINHAS_OBS1}}"
                         style="width:99%;margin-left:2pt;" readonly
-                        tabindex=-1>{{pedido.DetalhesNF.Observacoes}}</textarea>
-                    <span class="PLLe notVisible">{{pedido.DetalhesNF.Observacoes}}</span>
+                        tabindex=-1>{{pedido?.DetalhesNF.Observacoes}} &nbsp;</textarea>
+                    <span class="PLLe notVisible">{{pedido?.DetalhesNF.Observacoes}} &nbsp;</span>
                 </td>
             </tr>
             <tr>
@@ -286,8 +296,8 @@ afazer: exibe_familia_pedido(pedido_selecionado, v_pedido)
                     <p class="Rf">Constar na NF</p>
                     <textarea name="c_nf_texto" id="c_nf_texto" class="PLLe notPrint"
                         rows="{{constantes.MAX_LINHAS_NF_TEXTO_CONSTAR}}" style="width:641px;margin-left:2pt;" readonly
-                        tabindex=-1>{{pedido.DetalhesNF.ConstaNaNF}}</textarea>
-                    <span class="PLLe notVisible">{{pedido.DetalhesNF.ConstaNaNF}}</span>
+                        tabindex=-1>{{pedido?.DetalhesNF.ConstaNaNF}} &nbsp;</textarea>
+                    <span class="PLLe notVisible">{{pedido?.DetalhesNF.ConstaNaNF}} &nbsp;</span>
                 </td>
             </tr>
             <tr>
@@ -296,36 +306,38 @@ afazer: exibe_familia_pedido(pedido_selecionado, v_pedido)
                     <!-- onkeypress="filtra_nome_identificador();" -->
                     <!-- onblur="this.value=trim(this.value);"  -->
                     <input name="c_num_pedido_compra" id="c_num_pedido_compra" class="PLLe" maxlength="15"
-                        style="width:100px;margin-left:2pt;" value='{{pedido.DetalhesNF.XPed}}' readonly tabindex=-1>
+                        style="width:100px;margin-left:2pt;" value='{{pedido?.DetalhesNF.XPed}}' readonly tabindex=-1>
                 </td>
             </tr>
             <tr>
                 <td class="MD" align="left" nowrap>
                     <p class="Rf">Nº Nota Fiscal</p>
                     <input name="c_obs2" id="c_obs2" class="PLLe" style="width:75px;margin-left:2pt;" readonly
-                        tabindex=-1 value='{{pedido.DetalhesNF.NumeroNF}}'>
+                        tabindex=-1 value='{{pedido?.DetalhesNF.NumeroNF}}'>
                 </td>
                 <td class="MD" align="left" nowrap>
                     <p class="Rf">NF Simples Remessa</p>
                     <input name="c_obs3" id="c_obs3" class="PLLe" style="width:75px;margin-left:2pt;" readonly
-                        tabindex=-1 value='{{pedido.DetalhesNF.NFSimples}}'>
+                        tabindex=-1 value='{{pedido?.DetalhesNF.NFSimples}}'>
                 </td>
                 <td class="MD" nowrap align="left" valign="top">
                     <p class="Rf">Entrega Imediata</p>
-                    <p class="C" style="margin-top:3px;">{{entregaImediata()}}</p>
+                    <p class="C" style="margin-top:3px;">{{entregaImediata()}} &nbsp;</p>
                 </td>
                 <td class="MD" nowrap align="left" valign="top">
                     <p class="Rf">Bem Uso/Consumo</p>
                     <p class="C" style="margin-top:3px;">
-                        {{pedido.DetalhesNF.StBemUsoConsumo == constantes.COD_ST_BEM_USO_CONSUMO_NAO ? "NÃO":""}}
-                        {{pedido.DetalhesNF.StBemUsoConsumo == constantes.COD_ST_BEM_USO_CONSUMO_SIM ? "SIM":""}}
+                        {{pedido?.DetalhesNF.StBemUsoConsumo == constantes.COD_ST_BEM_USO_CONSUMO_NAO ? "NÃO":""}}
+                        {{pedido?.DetalhesNF.StBemUsoConsumo == constantes.COD_ST_BEM_USO_CONSUMO_SIM ? "SIM":""}}
+                        &nbsp;
                     </p>
                 </td>
                 <td class="MD" nowrap align="left" valign="top">
                     <p class="Rf">Instalador Instala</p>
                     <p class="C" style="margin-top:3px;">
-                        {{pedido.DetalhesNF.InstaladorInstala == constantes.COD_INSTALADOR_INSTALA_NAO ? "NÃO":""}}
-                        {{pedido.DetalhesNF.InstaladorInstala == constantes.COD_INSTALADOR_INSTALA_SIM ? "SIM":""}}
+                        {{pedido?.DetalhesNF.InstaladorInstala == constantes.COD_INSTALADOR_INSTALA_NAO ? "NÃO":""}}
+                        {{pedido?.DetalhesNF.InstaladorInstala == constantes.COD_INSTALADOR_INSTALA_SIM ? "SIM":""}}
+                        &nbsp;
                     </p>
                 </td>
                 <td class="tdGarInd" nowrap align="left" valign="top">
@@ -362,7 +374,8 @@ afazer: exibe_familia_pedido(pedido_selecionado, v_pedido)
                             <td align="left">
                                 <table cellspacing="0" cellpadding="0" border="0">
                                     <tr>
-                                        <td align="left"><span class="C">AFAZER: PRECISA DO CAMPO tipo_parcelamento À Vista&nbsp&nbsp;(Depósito)</span></td>
+                                        <td align="left"><span class="C">AFAZER: PRECISA DO CAMPO tipo_parcelamento À
+                                                Vista&nbsp&nbsp;(Depósito)</span></td>
                                     </tr>
                                 </table>
                             </td>
@@ -458,64 +471,81 @@ Desenvolvimento rural e obras</textarea>
             </tr>
         </table>
 
+        <div *ngIf="!impressaoService.emImpressao() || impressaoService.imprimirOcorrencias()">
+            <br>
+
+            <table id="tableOcorrencia" class="notPrint" width="649" cellspacing="0" cellpadding="0" border="0">
+                <tr *ngIf="!impressaoService.emImpressao()" colspan="3">
+                    <td>
+                        <span style="float: right">
+                            <mat-checkbox class="checkboxes"
+                                title="configura as informações sobre ocorrências para serem impressas ou não"
+                                (change)="imprimirOcorrenciasAlterado()"
+                                [checked]="impressaoService.imprimirOcorrencias()">
+                                Incluir ocorrências na impressão
+                            </mat-checkbox>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="ME MD MC MB" align="left"><span class="Rf">OCORRÊNCIAS
+                        </span>
+                    </td>
+                </tr>
+
+                <tr class="notVisible">
+                    <td colspan="3" class="ME MD MB" align="left">&nbsp;</td>
+                </tr>
+
+                <tr class="notPrint">
+                    <td colspan="3" style="padding:0px;" align="left">
+                        <table width="100%" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td align="left">afazer: controlar impressao OCORRENCIAS e o corpo da impressao &nbsp;
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+
+        <div *ngIf="!impressaoService.emImpressao() || impressaoService.imprimirBlocoNotas()">
+            <br>
+            <table id="tableBlocoNotas" class="notPrint" width="649" cellspacing="0" cellpadding="1">
+                <tr *ngIf="!impressaoService.emImpressao()" colspan="3">
+                    <td>
+                        <span style="float: right">
+                            <mat-checkbox class="checkboxes"
+                                title="configura as mensagens do bloco de notas para serem impressas ou não"
+                                (change)="imprimirBlocoNotasAlterado()"
+                                [checked]="impressaoService.imprimirBlocoNotas()">
+                                Incluir bloco de notas na impressão
+                            </mat-checkbox>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="ME MD MC MB" align="left"><span class="Rf">BLOCO DE NOTAS</span></td>
+                </tr>
+
+                <tr class="notVisible">
+                    <td colspan="4" class="ME MD MB" align="left">FAZER bloco de notas&nbsp;</td>
+                </tr>
 
 
-        <br>
-        <table id="tableOcorrencia" class="notPrint" width="649" cellspacing="0" cellpadding="0" border="0">
-            <tr>
-                <td colspan="3" class="ME MD MC MB" align="left"><span class="Rf">OCORRÊNCIAS</span></td>
-            </tr>
-
-            <tr class="notVisible">
-                <td colspan="3" class="ME MD MB" align="left">&nbsp;</td>
-            </tr>
-
-            <tr class="notPrint">
-                <td colspan="3" style="padding:0px;" align="left">
-                    <table width="100%" cellpadding="0" cellspacing="0">
-                        <tr>
-                            <td align="center" class="ME MB MD" style="width:45px;padding:2px;"><a
-                                    name="bOcorrenciaAlteraImpressao" id="bOcorrenciaAlteraImpressao"
-                                    href="javascript:fPEDOcorrenciaAlteraImpressao(fPED)"
-                                    title="configura as informações sobre ocorrências para serem impressas ou não"><img
-                                        name="imgPrinterOcorrencia" id="imgPrinterOcorrencia"
-                                        src="../botao/PrinterError.png" border="0"></a></td>
-                            <td align="left">&nbsp;</td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-
-        </table>
-
-
-        <br>
-        <table id="tableBlocoNotas" class="notPrint" width="649" cellspacing="0" cellpadding="1">
-            <tr>
-                <td colspan="4" class="ME MD MC MB" align="left"><span class="Rf">BLOCO DE NOTAS</span></td>
-            </tr>
-
-            <tr class="notVisible">
-                <td colspan="4" class="ME MD MB" align="left">&nbsp;</td>
-            </tr>
-
-
-            <tr class="notPrint">
-                <td colspan="4" style="padding:0px;" align="left">
-                    <table width="100%" cellpadding="0" cellspacing="0">
-                        <tr>
-                            <td align="center" class="ME MB MD" style="width:45px;padding:2px;"><a
-                                    name="bBlocoNotasAlteraImpressao" id="bBlocoNotasAlteraImpressao"
-                                    href="javascript:fPEDBlocoNotasAlteraImpressao(fPED)"
-                                    title="configura as mensagens do bloco de notas para serem impressas ou não"><img
-                                        name="imgPrinterBlocoNotas" id="imgPrinterBlocoNotas"
-                                        src="../botao/PrinterError.png" border="0"></a></td>
-                            <td align="left">&nbsp;</td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
+                <tr class="notPrint">
+                    <td colspan="4" style="padding:0px;" align="left">
+                        <table width="100%" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td align="left">afazer: controlar impressao e o corpo da impressao &nbsp;</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
 
     </form>
     <br>

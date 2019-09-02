@@ -16,6 +16,7 @@ import { ConfirmationDialogComponent } from '../../../../src/app/utils/confirmat
 import { PrepedidoRemoverService } from '../../../../src/app/servicos/prepedido/prepedido-remover.service';
 import { Router } from '@angular/router';
 import { AlertDialogComponent } from 'src/app/utils/alert-dialog/alert-dialog.component';
+import { ImpressaoService } from 'src/app/utils/impressao.service';
 
 @Component({
   selector: 'app-lista-base',
@@ -34,6 +35,7 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
     private readonly _snackBar: MatSnackBar,
     private readonly prepedidoRemoverService: PrepedidoRemoverService,
     private readonly router: Router,
+    public readonly impressaoService: ImpressaoService,
     public readonly dialog: MatDialog) {
     super(telaDesktopService);
 
@@ -50,26 +52,35 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
     /*
     evitar o 
     ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value: 'carregando: false'. Current value: 'carregando: true'.
-    */
-    setTimeout(() => {
-      this.prepedidos$ = this.prepedidoListarService.prepedidos$;
-      this.prepedidoListarService.errosPrepedidos$.subscribe(
-        {
-          next: (r) => {
-            this.deuErro(r);
-          }
-        });
-      this.prepedidoListarService.atualizar();
 
-      this.pedidos$ = this.pedidoListarService.pedidos$;
-      this.pedidoListarService.errosPedidos$.subscribe(
-        {
-          next: (r) => {
-            this.deuErro(r);
-          }
-        });
-      this.pedidoListarService.atualizar();
-    }, 1);
+    se estiver imprimindo, nao podemos usar o timeout
+    */
+    if (this.impressaoService.emImpressao()) {
+      this.inscrever();
+    }
+    else {
+      setTimeout(() => { this.inscrever(); }, 0);
+    }
+  }
+
+  inscrever(): void {
+    this.prepedidos$ = this.prepedidoListarService.prepedidos$;
+    this.prepedidoListarService.errosPrepedidos$.subscribe(
+      {
+        next: (r) => {
+          this.deuErro(r);
+        }
+      });
+    this.prepedidoListarService.atualizar();
+
+    this.pedidos$ = this.pedidoListarService.pedidos$;
+    this.pedidoListarService.errosPedidos$.subscribe(
+      {
+        next: (r) => {
+          this.deuErro(r);
+        }
+      });
+    this.pedidoListarService.atualizar();
   }
 
   //avisamos de erros
