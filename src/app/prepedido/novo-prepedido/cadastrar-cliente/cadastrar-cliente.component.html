@@ -1,0 +1,10 @@
+<section [ngClass]="{'sectionDesktop': telaDesktop, 'sectionCelular': !telaDesktop}">
+
+    <header>
+        Cadastrar Cliente
+    </header>
+    <article>
+        <app-cliente-corpo [dadosClienteCadastroDto]="dadosClienteCadastroDto" [cadastrando]="true">
+        </app-cliente-corpo>
+    </article>
+</section>

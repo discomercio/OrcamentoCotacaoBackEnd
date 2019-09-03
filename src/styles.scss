@@ -2,7 +2,10 @@
 @import "~@angular/material/theming";
 // Plus imports for other components in your app.
 
+//variaveis gerais
 @import "./variaveis.scss";
+//layout desktop/celular
+@import "./desktopCelular.scss";
 
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
@@ -99,6 +102,7 @@ body {
   //background-color: $cor-fundo-menu;
 }
 
+//tambem está definido em desktopCeluar.scss
 .titulopagina {
   font-size: 120%;
   font-weight: bold;
@@ -143,9 +147,14 @@ body {
   white-space: normal !important;
 }
 
-
 @media only screen and (max-width: 600px) {
   body {
     font-size: 80%;
+  }
+}
+
+@media only screen {
+  .largura-maxima-campo-formulario {
+    width: calc(100% - 2em);
   }
 }

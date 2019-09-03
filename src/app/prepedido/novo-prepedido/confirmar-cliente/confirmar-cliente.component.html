@@ -1,17 +1,21 @@
-<!-- [ngClass]="{'carregando': prepedidoBuscarService.carregando || pedidoBuscarService.carregando}" -->
 <section [ngClass]="{'sectionDesktop': telaDesktop, 'sectionCelular': !telaDesktop}">
-    <header >
-        Detalhes do Cliente
-    </header>
 
+    <header>
+        Confirmar Cliente
+    </header>
     <article>
         <app-cliente-corpo [dadosClienteCadastroDto]="dadosClienteCadastroDto" [cadastrando]="false">
         </app-cliente-corpo>
-
     </article>
     <footer>
         <button mat-raised-button color="accent" (click)="voltar()">
             <mat-icon>arrow_back</mat-icon> Voltar
+        </button>
+        <button mat-raised-button color="accent" (click)="salvar(false)" [disabled]="!salvarAtivo()" >
+            <mat-icon>save</mat-icon> Salvar
+        </button>
+        <button mat-raised-button color="accent" (click)="continuar()" >
+            <mat-icon>arrow_forward</mat-icon> Continuar
         </button>
     </footer>
 </section>

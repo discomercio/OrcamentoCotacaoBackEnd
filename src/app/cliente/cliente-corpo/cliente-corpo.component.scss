@@ -1,0 +1,17 @@
+:host
+{
+    //em edição, todos os blocos ficam dentro de caixas
+    .caixa{
+        display: inline-block;
+    }
+    .caixa .rotulo{
+        display: inline-block;
+        font-weight: bold;
+    }
+    .caixa .dado{
+        display: inline-block;
+        padding: 0.5em;
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+    }
+}

@@ -1,2 +1,1001 @@
-<p>Detalhes do cliente {{cpfcnpj}}</p>
-<p>Ainda não implementado</p>
+<!-- páginas do cadastro/confirmação do PF e PJ:
+    
+    cadastro PJ:
+    orcamento/ClienteEdita.asp
+    
+    consulta PJ:
+    idem...
+    
+    cadastro PF:
+    orcamento/ClienteEdita.asp
+    
+    consulta PF:
+    orcamento/clienteedita.asp?cliente_selecionado=000000246890&operacao_selecionada=C
+    
+     -->
+
+
+
+<div>
+    <span *ngIf="cadastrando">
+        <!-- CPF e CNPJ não estão ligados ao model pq não são editados -->
+        <mat-form-field floatLabel="floatLabel()" *ngIf="!ehPf()" style="width: 22ch;">
+            <input matInput type="text" placeholder="CNPJ" [(readonly)]="!cadastrando" [value]="cnpj_cpf_formatado()"
+                required>
+        </mat-form-field>
+
+        <mat-form-field floatLabel="floatLabel()" *ngIf="ehPf()" style="width: 22ch;">
+            <input matInput type="text" placeholder="CPF" [(readonly)]="!cadastrando" [value]="cnpj_cpf_formatado()"
+                required>
+        </mat-form-field>
+    </span>
+    <span *ngIf="!cadastrando">
+        <!-- CPF e CNPJ não estão ligados ao model pq não são editados -->
+        <span class="caixa" *ngIf="!ehPf()"><span class="rotulo">CNPJ:</span> <span
+                class="dado">{{cnpj_cpf_formatado()}}</span></span>
+        <span class="caixa" *ngIf="ehPf()"><span class="rotulo">CPF:</span> <span
+                class="dado">{{cnpj_cpf_formatado()}}</span></span>
+    </span>
+
+    <!-- ************   CNPJ/IE OU CPF/RG/NASCIMENTO/SEXO  ************  -->
+    <!-- campos específicos da pessoa física -->
+    <span *ngIf="cadastrando">
+        <span *ngIf="ehPf()">
+            <mat-form-field floatLabel="floatLabel()" style="width: 22ch;">
+                <input matInput type="text" placeholder="RG" [(readonly)]="!cadastrando"
+                    [(ngModel)]="dadosClienteCadastroDto.Rg" required maxlength="20">
+            </mat-form-field>
+
+            <mat-form-field floatLabel="floatLabel()" style="width: 10em;">
+                <input matInput type="date" placeholder="NASCIMENTO" [(readonly)]="!cadastrando"
+                    [(ngModel)]="dadosClienteCadastroDto.Nascimento" required>
+            </mat-form-field>
+
+            <mat-form-field floatLabel="floatLabel()" style="width: 8em;">
+                <mat-label>SEXO</mat-label>
+                <mat-select [(ngModel)]="dadosClienteCadastroDto.Sexo" required [(disabled)]="!cadastrando">
+                    <mat-option>Selecione</mat-option>
+                    <mat-option value="M">Masculino</mat-option>
+                    <mat-option value="F">Feminino</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </span>
+    </span>
+
+    <span *ngIf="!cadastrando">
+        <span class="caixa" *ngIf="ehPf()">
+            <span class="rotulo">RG:</span> <span class="dado">{{dadosClienteCadastroDto.Rg}}</span>
+            <span class="rotulo">NASCIMENTO:</span> <span
+                class="dado">{{DataUtilsFormatarTela(dadosClienteCadastroDto.Nascimento)}}</span>
+            <span class="rotulo">SEXO:</span> <span class="dado">{{dadosClienteCadastroDto.Sexo}}</span>
+        </span>
+    </span>
+
+    <!-- campos específicos da pessoa jurídica -->
+    <span *ngIf="!ehPf()">
+
+        <!-- IE sempre é editável -->
+        <mat-form-field floatLabel="floatLabel()" style="width: 25ch;">
+            <input matInput type="text" placeholder="IE" [(ngModel)]="dadosClienteCadastroDto.Ie" maxlength="20">
+        </mat-form-field>
+
+        <mat-form-field floatLabel="floatLabel()">
+            <mat-label>CONTRIBUINTE ICMS
+                <!-- (afazer, faltando no modelo contribuinte_icms_status) -->
+            </mat-label>
+            <mat-select required>
+                <mat-option>Selecione</mat-option>
+                <mat-option [(value)]="constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO">Não
+                </mat-option>
+                <mat-option [(value)]="constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM">Sim
+                </mat-option>
+                <mat-option [(value)]="constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO">
+                    Isento</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+    </span>
+</div>
+
+<!-- ************   PRODUTOR RURAL / CONTRIBUINTE ICMS / IE ************  -->
+<span *ngIf="ehPf()">
+    <div>
+        <mat-form-field floatLabel="floatLabel()">
+            <mat-label>PRODUTOR RURAL</mat-label>
+            <!-- produtor rural sempre é editável -->
+            <mat-select required [(ngModel)]="dadosClienteCadastroDto.ProdutorRural">
+                <mat-option>Selecione</mat-option>
+                <mat-option [(value)]="constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO">Não</mat-option>
+                <mat-option [(value)]="constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM">Sim</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field floatLabel="floatLabel()"
+            *ngIf="dadosClienteCadastroDto.ProdutorRural == constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM"
+            style="width: 25ch;">
+            <input matInput type="text" placeholder="IE" [(ngModel)]="dadosClienteCadastroDto.Ie" maxlength="20">
+        </mat-form-field>
+
+        <mat-form-field floatLabel="floatLabel()"
+            *ngIf="dadosClienteCadastroDto.ProdutorRural == constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM">
+            <mat-label>CONTRIBUINTE ICMS
+                <!-- (afazer, faltando no modelo contribuinte_icms_status) -->
+            </mat-label>
+            <mat-select required>
+                <mat-option>Selecione</mat-option>
+                <mat-option [(value)]="constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO">Não</mat-option>
+                <mat-option [(value)]="constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM">Sim</mat-option>
+                <mat-option [(value)]="constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO">Isento</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</span>
+
+
+<!-- ************   NOME  ************  -->
+<div *ngIf="cadastrando">
+    <mat-form-field floatLabel="floatLabel()" *ngIf="ehPf()" class="largura-maxima-campo-formulario">
+        <input matInput type="text" placeholder="NOME" [(readonly)]="!cadastrando"
+            [(ngModel)]="dadosClienteCadastroDto.Nome" required maxlength="60">
+    </mat-form-field>
+
+    <mat-form-field floatLabel="floatLabel()" *ngIf="!ehPf()" class="largura-maxima-campo-formulario">
+        <input matInput type="text" placeholder="RAZÃO SOCIAL" [(readonly)]="!cadastrando"
+            [(ngModel)]="dadosClienteCadastroDto.Nome" required maxlength="60">
+    </mat-form-field>
+</div>
+
+<div *ngIf="!cadastrando">
+    <span class="caixa" *ngIf="ehPf()"><span class="rotulo">NOME:</span> <span
+            class="dado">{{dadosClienteCadastroDto.Nome}}</span></span>
+    <span class="caixa" *ngIf="!ehPf()"><span class="rotulo">RAZÃO SOCIAL:</span> <span
+            class="dado">{{dadosClienteCadastroDto.Nome}}</span></span>
+</div>
+
+<div *ngIf="cadastrando">
+    <!-- ************   ENDEREÇO   ************  -->
+    <mat-form-field floatLabel="floatLabel()" class="largura-maxima-campo-formulario">
+        <input matInput type="text" placeholder="ENDEREÇO" [(readonly)]="!cadastrando"
+            [(ngModel)]="dadosClienteCadastroDto.Endereco" required maxlength="60" size="85">
+    </mat-form-field>
+
+    <!-- ************ Nº/COMPLEMENTO ************  -->
+    <mat-form-field floatLabel="floatLabel()" style="width: 14ch;">
+        <input matInput type="text" placeholder="Nº" [(readonly)]="!cadastrando"
+            [(ngModel)]="dadosClienteCadastroDto.Numero" required maxlength="20" size="10">
+    </mat-form-field>
+    <mat-form-field floatLabel="floatLabel()" style="width: 18ch;">
+        <input matInput type="text" placeholder="COMPLEMENTO" [(readonly)]="!cadastrando"
+            [(ngModel)]="dadosClienteCadastroDto.Complemento" maxlength="60" size="10">
+    </mat-form-field>
+
+
+    <!-- ************ BAIRRO/CIDADE ************  -->
+    <mat-form-field floatLabel="floatLabel()" style="width: 25ch;">
+        <input matInput type="text" placeholder="BAIRRO" [(readonly)]="!cadastrando"
+            [(ngModel)]="dadosClienteCadastroDto.Bairro" required maxlength="72">
+    </mat-form-field>
+
+    <mat-form-field floatLabel="floatLabel()" style="width: 25ch;">
+        <input matInput type="text" placeholder="CIDADE" [(readonly)]="!cadastrando"
+            [(ngModel)]="dadosClienteCadastroDto.Cidade" required maxlength="60">
+    </mat-form-field>
+
+
+    <!-- ************ UF/CEP ************  -->
+    <!-- Afazer: select de estados -->
+    <mat-form-field floatLabel="floatLabel()" style="width: 4em;">
+        <input matInput type="text" placeholder="UF" [(readonly)]="!cadastrando"
+            [(ngModel)]="dadosClienteCadastroDto.Uf" required maxlength="2" size="3">
+    </mat-form-field>
+
+    <!-- Afazer: janela de busca de CEP (e dar erro quando CEP for inválido) -->
+    <mat-form-field floatLabel="floatLabel()" style="width: 12ch;">
+        <input matInput type="text" placeholder="CEP" [(readonly)]="!cadastrando"
+            [(ngModel)]="dadosClienteCadastroDto.Cep" required maxlength="9" size="11">
+    </mat-form-field>
+</div>
+
+<div *ngIf="!cadastrando">
+    <span class="caixa">
+        <!-- afazer: resolver formatação do endereço -->
+        <!-- ************   ENDEREÇO   ************  -->
+        <span class="rotulo">ENDEREÇO:</span> <span
+            class="dado">{{clienteCadastroUtils.formata_endereco(dadosClienteCadastroDto)}}</span>
+    </span>
+</div>
+
+
+<div *ngIf="cadastrando">
+    <!-- ************   TELEFONE RESIDENCIAL   ************  -->
+    <div *ngIf="ehPf()">
+        <!-- afazer: colocar validação de DDD ddd_ok -->
+        <mat-form-field floatLabel="floatLabel()" style="width: 4ch;">
+            <input matInput type="number" placeholder="DDD" [(readonly)]="!cadastrando"
+                [(ngModel)]="dadosClienteCadastroDto.DddResidencial" required maxlength="4" size="5">
+        </mat-form-field>
+        <mat-form-field floatLabel="floatLabel()" style="width: 12ch;">
+            <input matInput type="text" placeholder="TELEFONE RESIDENCIAL" [(readonly)]="!cadastrando"
+                [(ngModel)]="dadosClienteCadastroDto.TelefoneResidencial" required maxlength="11" size="12">
+        </mat-form-field>
+
+        <!-- afazer: colocar validação de DDD ddd_ok -->
+        <mat-form-field floatLabel="floatLabel()" style="width: 4ch;">
+            <input matInput type="number" placeholder="DDD" [(readonly)]="!cadastrando"
+                [(ngModel)]="dadosClienteCadastroDto.DddCelular" required maxlength="4" size="5">
+        </mat-form-field>
+        <mat-form-field floatLabel="floatLabel()" style="width: 12ch;">
+            <input matInput type="text" placeholder="CELULAR" [(readonly)]="!cadastrando"
+                [(ngModel)]="dadosClienteCadastroDto.Celular" required maxlength="11" size="12">
+        </mat-form-field>
+    </div>
+
+    <!-- ************   TELEFONE COMERCIAL   ************  -->
+    <!-- para pessoa física e jurídica -->
+    <!-- afazer: colocar validação de DDD ddd_ok -->
+    <div>
+        <mat-form-field floatLabel="floatLabel()" style="width: 4ch;">
+            <input matInput type="number" placeholder="DDD" [(readonly)]="!cadastrando"
+                [(ngModel)]="dadosClienteCadastroDto.DddComercial" required maxlength="4" size="5">
+        </mat-form-field>
+        <mat-form-field floatLabel="floatLabel()" style="width: 12ch;" *ngIf="ehPf()">
+            <input matInput type="text" placeholder="TELEFONE COMERCIAL" [(readonly)]="!cadastrando"
+                [(ngModel)]="dadosClienteCadastroDto.TelComercial" required maxlength="11" size="12">
+        </mat-form-field>
+        <mat-form-field floatLabel="floatLabel()" style="width: 12ch;" *ngIf="!ehPf()">
+            <input matInput type="text" placeholder="TELEFONE" [(readonly)]="!cadastrando"
+                [(ngModel)]="dadosClienteCadastroDto.TelComercial" required maxlength="11" size="12">
+        </mat-form-field>
+
+        <mat-form-field floatLabel="floatLabel()" style="width: 12ch;">
+            <input matInput type="text" placeholder="RAMAL" [(readonly)]="!cadastrando"
+                [(ngModel)]="dadosClienteCadastroDto.Ramal" required maxlength="4" size="6">
+        </mat-form-field>
+    </div>
+
+
+    <!-- afazer: faltando campos de com_2
+                afazer: colocar validação de DDD ddd_ok -->
+    <div *ngIf="!ehPf()">
+
+        <mat-form-field floatLabel="floatLabel()" style="width: 4ch;">
+            <input matInput type="number" placeholder="DDD" [(readonly)]="!cadastrando"
+                [(ngModel)]="dadosClienteCadastroDto.DddComercial" required maxlength="4" size="5">
+        </mat-form-field>
+        <mat-form-field floatLabel="floatLabel()" style="width: 12ch;">
+            <input matInput type="text" placeholder="TELEFONE" [(readonly)]="!cadastrando"
+                [(ngModel)]="dadosClienteCadastroDto.DddComercial" required maxlength="11" size="12">
+        </mat-form-field>
+        <mat-form-field floatLabel="floatLabel()" style="width: 12ch;">
+            <input matInput type="text" placeholder="RAMAL" [(readonly)]="!cadastrando"
+                [(ngModel)]="dadosClienteCadastroDto.Ramal" required maxlength="4" size="6">
+        </mat-form-field>
+    </div>
+
+</div>
+
+<div *ngIf="!cadastrando">
+    <!-- ************   TELEFONE RESIDENCIAL   ************  -->
+    <div *ngIf="ehPf()">
+        <span class="caixa">
+            <span class="rotulo">TELEFONES:</span>
+            <span class="dado">{{clienteCadastroUtils.telefone1(dadosClienteCadastroDto)}}</span>
+            <span class="dado">{{clienteCadastroUtils.telefone2(dadosClienteCadastroDto)}}</span>
+            <span class="dado">{{clienteCadastroUtils.telefone2(dadosClienteCadastroDto)}}</span>
+        </span>
+    </div>
+
+    <div *ngIf="!ehPf()">
+        <span class="caixa">
+            <span class="rotulo">TELEFONE 1:</span>
+            <span class="dado">{{clienteCadastroUtils.telefone1(dadosClienteCadastroDto)}}</span>
+        </span>
+        <span class="caixa">
+            <span class="rotulo">TELEFONE 2:</span>
+            <span class="dado">{{clienteCadastroUtils.telefone2(dadosClienteCadastroDto)}}</span>
+        </span>
+    </div>
+
+</div>
+
+<!-- ************   OBSERVAÇÃO (ANTIGO CAMPO FILIAÇÃO)   ************  -->
+<span *ngIf="ehPf()">
+    <span *ngIf="cadastrando">
+        <mat-form-field floatLabel="floatLabel()" *ngIf="ehPf()" class="largura-maxima-campo-formulario">
+            <input matInput type="text" placeholder="OBSERVAÇÃO (afazer, falta campo filiacao)"
+                [(readonly)]="!cadastrando" [(ngModel)]="dadosClienteCadastroDto.Endereco" required maxlength="60">
+        </mat-form-field>
+    </span>
+    <span *ngIf="!cadastrando">
+        <span class="caixa">
+            <span class="rotulo">OBSERVAÇÃO:</span>
+            <span class="dado">{{dadosClienteCadastroDto.Endereco}} (afazer, falta campo filiacao)</span>
+        </span>
+    </span>
+</span>
+
+<!--  ************   CONTATO   ************ -->
+<span *ngIf="!ehPf()">
+    <span *ngIf="cadastrando">
+        <mat-form-field floatLabel="floatLabel()" *ngIf="!ehPf()" class="largura-maxima-campo-formulario">
+            <input matInput type="text"
+                placeholder="NOME DA PESSOA PARA CONTATO NA EMPRESA (afazer, falta campo contato)"
+                [(readonly)]="!cadastrando" [(ngModel)]="dadosClienteCadastroDto.Endereco" required maxlength="30">
+        </mat-form-field>
+    </span>
+    <span *ngIf="!cadastrando">
+        <span class="caixa">
+            <span class="rotulo">NOME DA PESSOA PARA CONTATO NA EMPRESA (afazer, falta campo contato)</span>
+            <span class="dado">{{dadosClienteCadastroDto.Endereco}}</span>
+        </span>
+    </span>
+</span>
+
+<!-- ************   E-MAIL   ************  -->
+<span *ngIf="cadastrando">
+    <mat-form-field floatLabel="floatLabel()" class="largura-maxima-campo-formulario">
+        <input matInput type="text" placeholder="E-MAIL" [(readonly)]="!cadastrando"
+            [(ngModel)]="dadosClienteCadastroDto.Email" required maxlength="60">
+    </mat-form-field>
+</span>
+<span *ngIf="!cadastrando">
+    <span class="caixa">
+        <span class="rotulo">E-MAIL</span>
+        <span class="dado">{{dadosClienteCadastroDto.Email}}</span>
+    </span>
+</span>
+
+
+<!-- ************   E-MAIL (XML)  ************  -->
+<span *ngIf="cadastrando">
+    <mat-form-field floatLabel="floatLabel()" class="largura-maxima-campo-formulario">
+        <input matInput type="text" placeholder="E-MAIL (XML) (afazer, falta campo email_xml) "
+            [(readonly)]="!cadastrando" [(ngModel)]="dadosClienteCadastroDto.Email" required maxlength="60">
+    </mat-form-field>
+</span>
+<span *ngIf="!cadastrando">
+    <span class="caixa">
+        <span class="rotulo">E-MAIL (XML) (afazer, falta campo email_xml)</span>
+        <span class="dado">{{dadosClienteCadastroDto.Email}}</span>
+    </span>
+</span>
+
+
+<!-- afazer: terminar o resto do formulário -->
+<!-- 
+            
+    <comentario ************  CAMPOS DO CADASTRO  ************ comentario>
+    <form id="fCAD" name="fCAD" method="post" action="ClienteAtualiza.asp">
+            <input type="hidden" name="operacao_selecionada" id="operacao_selecionada" value='<%=operacao_selecionada%>'>
+            <input type="hidden" name="cliente_selecionado" id="cliente_selecionado" value='<%=id_cliente%>'>
+            <input type="hidden" name="pagina_retorno" id="pagina_retorno" value='<%=pagina_retorno%>'>
+            
+    
+            
+    
+            
+            <comentario ************   OBS CREDITÍCIAS (INATIVO)  ************ comentario>
+            <table width="649" class="QS" cellspacing="0" style="display:none">
+                <tr>
+                <td width="100%" align="left"><p class="R">OBSERVAÇÕES CREDITÍCIAS</p><p class="C">
+                    <%if operacao_selecionada=OP_CONSULTA then s=Trim("" & rs("obs_crediticias")) else s=""%>
+                    <input id="obs_crediticias" name="obs_crediticias" <%=s_readonly%> class="TA" value="<%=s%>" maxlength="50" size="65" onkeypress="if (digitou_enter(true)) fCAD.midia.focus(); filtra_nome_identificador();"></p></td>
+                </tr>
+            </table>
+            
+            <comentario ************   MÍDIA (INATIVO)  ************ comentario>
+            <table width="649" class="QS" cellspacing="0" style="display:none">
+                <tr>
+                <td width="100%" align="left"><p class="R">FORMA PELA QUAL CONHECEU A BONSHOP</p><p class="C">
+                    <%if operacao_selecionada=OP_CONSULTA then s=Trim("" & rs("midia")) else s=""%>
+                    <select id="midia" name="midia" <%=s_disabled%> style="margin-top:4pt; margin-bottom:4pt;">
+                        <%=midia_monta_itens_select(s)%>
+                    </select>
+                </tr>
+            </table>
+            
+            <comentario ************   REF BANCÁRIA   ************ comentario>
+            <%if blnCadRefBancaria then%>
+            <comentario  ASSEGURA CRIAÇÃO DE UM ARRAY DE CAMPOS, MESMO QUANDO HOUVER SOMENTE 1 LINHA!! comentario>
+            <input type="hidden" name="c_RefBancariaBanco" id="c_RefBancariaBanco" value="">
+            <input type="hidden" name="c_RefBancariaAgencia" id="c_RefBancariaAgencia" value="">
+            <input type="hidden" name="c_RefBancariaConta" id="c_RefBancariaConta" value="">
+            <input type="hidden" name="c_RefBancariaDdd" id="c_RefBancariaDdd" value="">
+            <input type="hidden" name="c_RefBancariaTelefone" id="c_RefBancariaTelefone" value="">
+            <input type="hidden" name="c_RefBancariaContato" id="c_RefBancariaContato" value="">
+                <% 
+                if operacao_selecionada=OP_CONSULTA then
+                    s="SELECT * FROM t_CLIENTE_REF_BANCARIA WHERE (id_cliente='" & Trim("" & rs("id")) & "') ORDER BY ordem"
+                    set tRefBancaria = cn.Execute(s)
+                    end if
+                %>
+                
+                <% for intCounter=1 to int_MAX_REF_BANCARIA_CLIENTE %>
+                    <%
+                    strRefBancariaBanco=""
+                    strRefBancariaAgencia=""
+                    strRefBancariaConta=""
+                    strRefBancariaDdd=""
+                    strRefBancariaTelefone=""
+                    strRefBancariaContato=""
+                    if (operacao_selecionada=OP_CONSULTA) then
+                        if Not tRefBancaria.Eof then 
+                            strRefBancariaBanco=Trim("" & tRefBancaria("banco"))
+                            strRefBancariaAgencia=Trim("" & tRefBancaria("agencia"))
+                            strRefBancariaConta=Trim("" & tRefBancaria("conta"))
+                            strRefBancariaDdd=Trim("" & tRefBancaria("ddd"))
+                            strRefBancariaTelefone=Trim("" & tRefBancaria("telefone"))
+                            strRefBancariaContato=Trim("" & tRefBancaria("contato"))
+                            end if
+                        end if 
+                    %>
+            <% if Not eh_cpf then %>
+            <br>
+            <table width="649" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td width="100%" align="left">
+                        <table width="100%" cellspacing="0">
+                            <tr>
+                                <td width="100%" align="left">
+                                    <p class="R">REFERÊNCIA BANCÁRIA<%if int_MAX_REF_BANCARIA_CLIENTE > 1 then Response.Write " (" & CStr(intCounter) & ")"%></p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="100%" align="left">
+                        <table width="100%" class="QS" cellspacing="0">
+                            <tr>
+                                <td width="100%" class="MC" align="left">
+                                    <p class="R">BANCO</p>
+                                    <p class="C">
+                                        <select name="c_RefBancariaBanco" id="c_RefBancariaBanco" <%=s_disabled%> style="margin:1px 10px 6px 10px;" onkeyup="if (window.event.keyCode==KEYCODE_DELETE) this.options[0].selected=true;">
+                                        <%=banco_monta_itens_select(strRefBancariaBanco) %>
+                                        </select>
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="100%" align="left">
+                        <table width="100%" class="QS" cellspacing="0">
+                            <tr>
+                                <td class="MD" align="left">
+                                    <p class="R">AGÊNCIA</p>
+                                    <p class="C">
+                                        <input name="c_RefBancariaAgencia" id="c_RefBancariaAgencia" <%=s_readonly%> class="TA" maxlength="8" size="12" value="<%=strRefBancariaAgencia%>" onkeypress="if (digitou_enter(true)) fCAD.c_RefBancariaConta[<%=CStr(intCounter)%>].focus(); filtra_agencia_bancaria();">
+                                    </p>
+                                </td>
+                                <td class="MD" align="left">
+                                    <p class="R">CONTA</p>
+                                    <p class="C">
+                                        <input name="c_RefBancariaConta" id="c_RefBancariaConta" <%=s_readonly%> class="TA" maxlength="12" value="<%=strRefBancariaConta%>" onkeypress="if (digitou_enter(true)) fCAD.c_RefBancariaDdd[<%=CStr(intCounter)%>].focus(); filtra_conta_bancaria();">
+                                    </p>
+                                </td>
+                                <td class="MD" align="left">
+                                    <p class="R">DDD</p>
+                                    <p class="C">
+                                        <input name="c_RefBancariaDdd" id="c_RefBancariaDdd" <%=s_readonly%> class="TA" maxlength="2" size="4" value="<%=strRefBancariaDdd%>" onkeypress="if (digitou_enter(true)) fCAD.c_RefBancariaTelefone[<%=CStr(intCounter)%>].focus(); filtra_numerico();" onblur="if (!ddd_ok(this.value)) {alert('DDD inválido!!');this.focus();}">
+                                    </p>
+                                </td>
+                                <td align="left">
+                                    <p class="R">TELEFONE</p>
+                                    <p class="C">
+                                        <input name="c_RefBancariaTelefone" id="c_RefBancariaTelefone" <%=s_readonly%> class="TA" maxlength="9" value="<%=telefone_formata(strRefBancariaTelefone)%>" onkeypress="if (digitou_enter(true)) fCAD.c_RefBancariaContato[<%=CStr(intCounter)%>].focus(); filtra_numerico();" onblur="if (!telefone_ok(this.value)) {alert('Telefone inválido!!');this.focus();} else this.value=telefone_formata(this.value);">
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="100%" align="left">
+                        <table width="100%" class="QS" cellspacing="0">
+                            <tr>
+                                <td width="100%" align="left">
+                                    <p class="R">CONTATO</p>
+                                    <p class="C">
+                                        <input name="c_RefBancariaContato" id="c_RefBancariaContato" <%=s_readonly%> class="TA" maxlength="40"  style="width:600px;" value="<%=strRefBancariaContato%>" onkeypress="if (digitou_enter(true)) {if (<%=CStr(intCounter+1)%>==fCAD.c_RefBancariaAgencia.length) this.focus(); else fCAD.c_RefBancariaAgencia[<%=CStr(intCounter+1)%>].focus();} filtra_nome_identificador();">
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <% end if %>
+                    <% 
+                    if (operacao_selecionada=OP_CONSULTA) then
+                        if Not tRefBancaria.Eof then tRefBancaria.MoveNext
+                        end if
+                    %>
+                    
+                <% next %>
+                
+                <% 
+                if operacao_selecionada=OP_CONSULTA then
+                    tRefBancaria.Close
+                    end if
+                %>
+            <%end if%>
+            
+            
+            <comentario ************   REF PROFISSIONAL (INATIVO)   ************ comentario>
+            <%if blnCadRefProfissional then%>
+            <comentario  ASSEGURA CRIAÇÃO DE UM ARRAY DE CAMPOS, MESMO QUANDO HOUVER SOMENTE 1 LINHA!! comentario>
+            <input type="hidden" name="c_RefProfNomeEmpresa" id="c_RefProfNomeEmpresa" value="">
+            <input type="hidden" name="c_RefProfCargo" id="c_RefProfCargo" value="">
+            <input type="hidden" name="c_RefProfDdd" id="c_RefProfDdd" value="">
+            <input type="hidden" name="c_RefProfTelefone" id="c_RefProfTelefone" value="">
+            <input type="hidden" name="c_RefProfPeriodoRegistro" id="c_RefProfPeriodoRegistro" value="">
+            <input type="hidden" name="c_RefProfRendimentos" id="c_RefProfRendimentos" value="">
+            <input type="hidden" name="c_RefProfCnpj" id="c_RefProfCnpj" value="">
+                <% 
+                if operacao_selecionada=OP_CONSULTA then
+                    s="SELECT * FROM t_CLIENTE_REF_PROFISSIONAL WHERE (id_cliente='" & Trim("" & rs("id")) & "') ORDER BY ordem"
+                    set tRefProfissional = cn.Execute(s)
+                    end if
+                %>
+                
+                <% for intCounter=1 to int_MAX_REF_PROFISSIONAL_CLIENTE %>
+                    <%
+                    strRefProfNomeEmpresa=""
+                    strRefProfCargo=""
+                    strRefProfDdd=""
+                    strRefProfTelefone=""
+                    strRefProfPeriodoRegistro=""
+                    strRefProfRendimentos=""
+                    strRefProfCnpj=""
+                    if (operacao_selecionada=OP_CONSULTA) then
+                        if Not tRefProfissional.Eof then 
+                            strRefProfNomeEmpresa=Trim("" & tRefProfissional("nome_empresa"))
+                            strRefProfCargo=Trim("" & tRefProfissional("cargo"))
+                            strRefProfDdd=Trim("" & tRefProfissional("ddd"))
+                            strRefProfTelefone=Trim("" & tRefProfissional("telefone"))
+                            strRefProfPeriodoRegistro=formata_data(tRefProfissional("periodo_registro"))
+                            strRefProfRendimentos=formata_moeda(tRefProfissional("rendimentos"))
+                            strRefProfCnpj=cnpj_cpf_formata(Trim("" & tRefProfissional("cnpj")))
+                            end if
+                        end if 
+                    %>
+            
+            <table width="649" cellpadding="0" cellspacing="0" style="display:none">
+                <tr>
+                    <td width="100%" align="left">
+                        <table width="100%" cellspacing="0">
+                            <tr>
+                                <td width="100%" align="left">
+                                    <p class="R">REFERÊNCIA PROFISSIONAL<%if int_MAX_REF_PROFISSIONAL_CLIENTE > 1 then Response.Write " (" & CStr(intCounter) & ")"%></p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="100%" align="left">
+                        <table width="100%" class="QS" cellspacing="0">
+                            <tr>
+                                <td class="MC MD" align="left">
+                                    <p class="R">NOME DA EMPRESA</p>
+                                    <p class="C">
+                                        <input name="c_RefProfNomeEmpresa" id="c_RefProfNomeEmpresa" <%=s_readonly%> class="TA" maxlength="60"  style="width:450px;" value="<%=strRefProfNomeEmpresa%>" onkeypress="if (digitou_enter(true)) fCAD.c_RefProfCnpj[<%=CStr(intCounter)%>].focus(); filtra_nome_identificador();">
+                                    </p>
+                                </td>
+                                <td class="MC" align="left">
+                                    <p class="R">CNPJ</p>
+                                    <p class="C">
+                                        <input name="c_RefProfCnpj" id="c_RefProfCnpj" <%=s_readonly%> class="TA" maxlength="18"  size="24" value="<%=strRefProfCnpj%>" onkeypress="if (digitou_enter(true) && cnpj_ok(this.value)) fCAD.c_RefProfCargo[<%=CStr(intCounter)%>].focus(); filtra_cnpj();" onblur="if (!cnpj_ok(this.value)) {alert('CNPJ inválido'); this.focus();} else this.value=cnpj_formata(this.value);">
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="100%" align="left">
+                        <table width="100%" class="QS" cellspacing="0">
+                            <tr>
+                                <td class="MD" align="left">
+                                    <p class="R">CARGO</p>
+                                    <p class="C">
+                                        <input name="c_RefProfCargo" id="c_RefProfCargo" <%=s_readonly%> class="TA" maxlength="40" style="width:350px;" value="<%=strRefProfCargo%>" onkeypress="if (digitou_enter(true)) fCAD.c_RefProfDdd[<%=CStr(intCounter)%>].focus(); filtra_nome_identificador();">
+                                    </p>
+                                </td>
+                                <td class="MD" align="left">
+                                    <p class="R">DDD</p>
+                                    <p class="C">
+                                        <input name="c_RefProfDdd" id="c_RefProfDdd" <%=s_readonly%> class="TA" maxlength="2" size="4" value="<%=strRefProfDdd%>" onkeypress="if (digitou_enter(true)) fCAD.c_RefProfTelefone[<%=CStr(intCounter)%>].focus(); filtra_numerico();" onblur="if (!ddd_ok(this.value)) {alert('DDD inválido!!');this.focus();}">
+                                    </p>
+                                </td>
+                                <td align="left">
+                                    <p class="R">TELEFONE</p>
+                                    <p class="C">
+                                        <input name="c_RefProfTelefone" id="c_RefProfTelefone" <%=s_readonly%> class="TA" maxlength="9" value="<%=telefone_formata(strRefProfTelefone)%>" onkeypress="if (digitou_enter(true)) fCAD.c_RefProfPeriodoRegistro[<%=CStr(intCounter)%>].focus(); filtra_numerico();" onblur="if (!telefone_ok(this.value)) {alert('Telefone inválido!!');this.focus();} else this.value=telefone_formata(this.value);">
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="100%" align="left">
+                        <table width="100%" class="QS" cellspacing="0">
+                            <tr>
+                                <td class="MD" width="50%" align="left">
+                                    <p class="R">REGISTRADO DESDE (DD/MM/AAAA)</p>
+                                    <p class="C">
+                                        <input name="c_RefProfPeriodoRegistro" id="c_RefProfPeriodoRegistro" <%=s_readonly%> class="TA" maxlength="10" value="<%=strRefProfPeriodoRegistro%>" onkeypress="if (digitou_enter(true)) fCAD.c_RefProfRendimentos[<%=CStr(intCounter)%>].focus(); filtra_data();" onblur="if (!isDate(this)) {alert('Data inválida!!');this.focus();}">
+                                    </p>
+                                </td>
+                                <td width="50%" align="left">
+                                    <p class="R">RENDIMENTOS (<%=SIMBOLO_MONETARIO%>)</p>
+                                    <p class="C">
+                                        <input name="c_RefProfRendimentos" id="c_RefProfRendimentos" <%=s_readonly%> class="TA" maxlength="18" value="<%=strRefProfRendimentos%>" onkeypress="if (digitou_enter(true)) {if (<%=CStr(intCounter+1)%>==fCAD.c_RefProfNomeEmpresa.length) this.focus(); else fCAD.c_RefProfNomeEmpresa[<%=CStr(intCounter+1)%>].focus();} filtra_moeda_positivo();" onblur="this.value=formata_moeda(this.value);">
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+                    <% 
+                    if (operacao_selecionada=OP_CONSULTA) then
+                        if Not tRefProfissional.Eof then tRefProfissional.MoveNext
+                        end if
+                    %>
+                    
+                <% next %>
+                
+                <% 
+                if operacao_selecionada=OP_CONSULTA then
+                    tRefProfissional.Close
+                    end if
+                %>
+            <%end if%>
+            
+            
+            <comentario ************   REF COMERCIAL   ************ comentario>
+            <%if blnCadRefComercial then%>
+            <comentario  ASSEGURA CRIAÇÃO DE UM ARRAY DE CAMPOS, MESMO QUANDO HOUVER SOMENTE 1 LINHA!! comentario>
+            <input type="hidden" name="c_RefComercialNomeEmpresa" id="c_RefComercialNomeEmpresa" value="">
+            <input type="hidden" name="c_RefComercialContato" id="c_RefComercialContato" value="">
+            <input type="hidden" name="c_RefComercialDdd" id="c_RefComercialDdd" value="">
+            <input type="hidden" name="c_RefComercialTelefone" id="c_RefComercialTelefone" value="">
+                <% 
+                if operacao_selecionada=OP_CONSULTA then
+                    s="SELECT * FROM t_CLIENTE_REF_COMERCIAL WHERE (id_cliente='" & Trim("" & rs("id")) & "') ORDER BY ordem"
+                    set tRefComercial = cn.Execute(s)
+                    end if
+                %>
+                
+                <% for intCounter=1 to int_MAX_REF_COMERCIAL_CLIENTE %>
+                    <%
+                    strRefComercialNomeEmpresa=""
+                    strRefComercialContato=""
+                    strRefComercialDdd=""
+                    strRefComercialTelefone=""
+                    if (operacao_selecionada=OP_CONSULTA) then
+                        if Not tRefComercial.Eof then 
+                            strRefComercialNomeEmpresa=Trim("" & tRefComercial("nome_empresa"))
+                            strRefComercialContato=Trim("" & tRefComercial("contato"))
+                            strRefComercialDdd=Trim("" & tRefComercial("ddd"))
+                            strRefComercialTelefone=Trim("" & tRefComercial("telefone"))
+                            end if
+                        end if 
+                    %>
+            <br>
+            <table width="649" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td width="100%" align="left">
+                        <table width="100%" cellspacing="0">
+                            <tr>
+                                <td width="100%" align="left">
+                                    <p class="R">REFERÊNCIA COMERCIAL<%if int_MAX_REF_COMERCIAL_CLIENTE > 1 then Response.Write " (" & CStr(intCounter) & ")"%></p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="100%" align="left">
+                        <table width="100%" class="QS" cellspacing="0">
+                            <tr>
+                                <td width="100%" class="MC" align="left">
+                                    <p class="R">NOME DA EMPRESA</p>
+                                    <p class="C">
+                                        <input name="c_RefComercialNomeEmpresa" id="c_RefComercialNomeEmpresa" <%=s_readonly%> class="TA" maxlength="60"  style="width:600px;" value="<%=strRefComercialNomeEmpresa%>" onkeypress="if (digitou_enter(true)) fCAD.c_RefComercialContato[<%=CStr(intCounter)%>].focus(); filtra_nome_identificador();">
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="100%" align="left">
+                        <table width="100%" class="QS" cellspacing="0">
+                            <tr>
+                                <td class="MD" align="left">
+                                    <p class="R">CONTATO</p>
+                                    <p class="C">
+                                        <input name="c_RefComercialContato" id="c_RefComercialContato" <%=s_readonly%> class="TA" maxlength="40" value="<%=strRefComercialContato%>" onkeypress="if (digitou_enter(true)) fCAD.c_RefComercialDdd[<%=CStr(intCounter)%>].focus(); filtra_nome_identificador();">
+                                    </p>
+                                </td>
+                                <td class="MD" align="left">
+                                    <p class="R">DDD</p>
+                                    <p class="C">
+                                        <input name="c_RefComercialDdd" id="c_RefComercialDdd" <%=s_readonly%> class="TA" maxlength="2" size="4" value="<%=strRefComercialDdd%>" onkeypress="if (digitou_enter(true)) fCAD.c_RefComercialTelefone[<%=CStr(intCounter)%>].focus(); filtra_numerico();" onblur="if (!ddd_ok(this.value)) {alert('DDD inválido!!');this.focus();}">
+                                    </p>
+                                </td>
+                                <td align="left">
+                                    <p class="R">TELEFONE</p>
+                                    <p class="C">
+                                        <input name="c_RefComercialTelefone" id="c_RefComercialTelefone" <%=s_readonly%> class="TA" maxlength="9" value="<%=telefone_formata(strRefComercialTelefone)%>" onkeypress="if (digitou_enter(true)) {if (<%=CStr(intCounter+1)%>==fCAD.c_RefComercialNomeEmpresa.length) this.focus(); else fCAD.c_RefComercialNomeEmpresa[<%=CStr(intCounter+1)%>].focus();} filtra_numerico();" onblur="if (!telefone_ok(this.value)) {alert('Telefone inválido!!');this.focus();} else this.value=telefone_formata(this.value);">
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+                    <% 
+                    if (operacao_selecionada=OP_CONSULTA) then
+                        if Not tRefComercial.Eof then tRefComercial.MoveNext
+                        end if
+                    %>
+                    
+                <% next %>
+                
+                <% 
+                if operacao_selecionada=OP_CONSULTA then
+                    tRefComercial.Close
+                    end if
+                %>
+            <%end if%>
+            
+            
+            <comentario ************   PJ: DADOS DO SÓCIO MAJORITÁRIO (INATIVO)  ************ comentario>
+            <%if blnCadSocioMaj then%>
+            <table width="649" cellpadding="0" cellspacing="0" style="display:none">
+                <tr>
+                    <td width="100%" align="left">
+                        <table width="100%" cellspacing="0">
+                            <tr>
+                                <td width="100%" align="left">
+                                    <p class="R">DADOS DO SÓCIO MAJORITÁRIO</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="100%" align="left">
+                        <table width="100%" class="QS" cellspacing="0">
+                            <tr>
+                            <td class="MC MD" width="85%" align="left"><p class="R">NOME</p><p class="C">
+                                <%if operacao_selecionada=OP_CONSULTA then s=Trim("" & rs("SocMaj_Nome")) else s=""%>
+                                <input id="c_SocioMajNome" name="c_SocioMajNome" <%=s_readonly%> class="TA" value="<%=s%>" maxlength="60" size="61" onkeypress="if (digitou_enter(true)) fCAD.c_SocioMajCpf.focus(); filtra_nome_identificador();" onblur="this.value=trim(this.value);"></p></td>
+                            <td class="MC" align="left"><p class="R">CPF</p><p class="C">
+                                <%if operacao_selecionada=OP_CONSULTA then s=Trim("" & rs("SocMaj_CPF")) else s=""%>
+                                <input id="c_SocioMajCpf" name="c_SocioMajCpf" <%=s_readonly%> class="TA" value="<%=cnpj_cpf_formata(s)%>" maxlength="14" size="15" onkeypress="if (digitou_enter(true) && cpf_ok(this.value)) fCAD.c_SocioMajBanco.focus(); filtra_numerico();" onblur="if (!cpf_ok(this.value)) {alert('CPF inválido!!');this.focus();} else this.value=cnpj_cpf_formata(this.value);"></p></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="100%" align="left">
+                        <table width="100%" class="QS" cellspacing="0">
+                            <tr>
+                                <td width="100%" align="left">
+                                    <p class="R">BANCO</p>
+                                    <p class="C">
+                                        <select name="c_SocioMajBanco" id="c_SocioMajBanco" <%=s_disabled%> style="margin:1px 10px 6px 10px;" onkeyup="if (window.event.keyCode==KEYCODE_DELETE) this.options[0].selected=true;">
+                                        <%if operacao_selecionada=OP_CONSULTA then s=Trim("" & rs("SocMaj_banco")) else s=""%>
+                                        <%=banco_monta_itens_select(s) %>
+                                        </select>
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="100%" align="left">
+                        <table width="100%" class="QS" cellspacing="0">
+                            <tr>
+                                <td class="MD" align="left">
+                                    <p class="R">AGÊNCIA</p>
+                                    <p class="C">
+                                        <%if operacao_selecionada=OP_CONSULTA then s=Trim("" & rs("SocMaj_agencia")) else s=""%>
+                                        <input name="c_SocioMajAgencia" id="c_SocioMajAgencia" <%=s_readonly%> class="TA" maxlength="8" value="<%=s%>" onkeypress="if (digitou_enter(true)) fCAD.c_SocioMajConta.focus(); filtra_agencia_bancaria();">
+                                    </p>
+                                </td>
+                                <td class="MD" align="left">
+                                    <p class="R">CONTA</p>
+                                    <p class="C">
+                                        <%if operacao_selecionada=OP_CONSULTA then s=Trim("" & rs("SocMaj_conta")) else s=""%>
+                                        <input name="c_SocioMajConta" id="c_SocioMajConta" <%=s_readonly%> class="TA" maxlength="12" value="<%=s%>" onkeypress="if (digitou_enter(true)) fCAD.c_SocioMajDdd.focus(); filtra_conta_bancaria();">
+                                    </p>
+                                </td>
+                                <td class="MD" align="left">
+                                    <p class="R">DDD</p>
+                                    <p class="C">
+                                        <%if operacao_selecionada=OP_CONSULTA then s=Trim("" & rs("SocMaj_ddd")) else s=""%>
+                                        <input name="c_SocioMajDdd" id="c_SocioMajDdd" <%=s_readonly%> class="TA" maxlength="2" size="4" value="<%=s%>" onkeypress="if (digitou_enter(true)) fCAD.c_SocioMajTelefone.focus(); filtra_numerico();" onblur="if (!ddd_ok(this.value)) {alert('DDD inválido!!');this.focus();}">
+                                    </p>
+                                </td>
+                                <td align="left">
+                                    <p class="R">TELEFONE</p>
+                                    <p class="C">
+                                        <%if operacao_selecionada=OP_CONSULTA then s=Trim("" & rs("SocMaj_telefone")) else s=""%>
+                                        <input name="c_SocioMajTelefone" id="c_SocioMajTelefone" <%=s_readonly%> class="TA" maxlength="9" value="<%=telefone_formata(s)%>" onkeypress="if (digitou_enter(true)) fCAD.c_SocioMajContato.focus(); filtra_numerico();" onblur="if (!telefone_ok(this.value)) {alert('Telefone inválido!!');this.focus();} else this.value=telefone_formata(this.value);">
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="100%" align="left">
+                        <table width="100%" class="QS" cellspacing="0">
+                            <tr>
+                                <td width="100%" align="left">
+                                    <p class="R">CONTATO</p>
+                                    <p class="C">
+                                        <%if operacao_selecionada=OP_CONSULTA then s=Trim("" & rs("SocMaj_contato")) else s=""%>
+                                        <input name="c_SocioMajContato" id="c_SocioMajContato" <%=s_readonly%> class="TA" maxlength="40"  style="width:600px;" value="<%=s%>" onkeypress="filtra_nome_identificador();">
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <%end if%>
+            
+            </form>
+            
+            
+            <comentario ************   FORM PARA OPÇÃO DE CADASTRAR NOVO ORÇAMENTO?  ************ comentario>
+            <% if operacao_selecionada = OP_CONSULTA then %>
+                <% if isLojaHabilitadaProdCompostoECommerce(loja) then
+                        s_dest = "OrcamentoNovoProdCompostoMask.asp"
+                    else
+                        s_dest = "OrcamentoNovo.asp"
+                    end if %>
+                <form action="<%=s_dest%>" method="post" id="fORC" name="fORC" onsubmit="if (!fORCConcluir(fORC)) return false">
+                <input type="hidden" name="cliente_selecionado" id="cliente_selecionado" value='<%=id_cliente%>'>
+                <input type="hidden" name="operacao_selecionada" id="operacao_selecionada" value='<%=OP_INCLUI%>'>
+                <input type="hidden" name="c_FormFieldValues" id="c_FormFieldValues" value="" />
+            
+            <comentario ************   ENDEREÇO DE ENTREGA: S/N   ************ comentario>
+            <br>
+            <table width="649" class="Q" cellspacing="0">
+                <tr>
+                    <td align="left">
+                    <p class="R">ENDEREÇO DE ENTREGA</p><p class="C">
+                        <% intIdx = 0 %>
+                        <input type="radio" id="rb_end_entrega_nao" name="rb_end_entrega" value="N" onclick="Disabled_True(fORC);"><span class="C" style="cursor:default" onclick="fORC.rb_end_entrega[<%=Cstr(intIdx)%>].click();Disabled_True(fORC);">O mesmo endereço do cadastro</span>
+                        <% intIdx = intIdx + 1 %>
+                        <br><input type="radio" id="rb_end_entrega_sim" name="rb_end_entrega" value="S" onclick="Disabled_False(fORC);"><span class="C" style="cursor:default" onclick="fORC.rb_end_entrega[<%=Cstr(intIdx)%>].click();Disabled_False(fORC);">Outro endereço</span>
+                    </p>
+                    </td>
+                </tr>
+            </table>
+            
+            <comentario ************   ENDEREÇO DE ENTREGA: ENDEREÇO   ************ comentario>
+            <table width="649" class="QS" cellspacing="0">
+                <tr>
+                <td width="100%" align="left"><p class="R">ENDEREÇO</p><p class="C">
+                    <input id="EndEtg_endereco" name="EndEtg_endereco" class="TA" value="" maxlength="60" style="width:635px;" onkeypress="if (digitou_enter(true) && tem_info(this.value)) fORC.EndEtg_endereco_numero.focus(); filtra_nome_identificador();"></p></td>
+                </tr>
+            </table>
+            
+            <comentario ************   ENDEREÇO DE ENTREGA: Nº/COMPLEMENTO   ************ comentario>
+            <table width="649" class="QS" cellspacing="0">
+                <tr>
+                <td class="MD" width="50%" align="left"><p class="R">Nº</p><p class="C">
+                    <input id="EndEtg_endereco_numero" name="EndEtg_endereco_numero" class="TA" value="" maxlength="20" style="width:310px;" onkeypress="if (digitou_enter(true) && tem_info(this.value)) fORC.EndEtg_endereco_complemento.focus(); filtra_nome_identificador();"></p></td>
+                <td width="50%" align="left"><p class="R">COMPLEMENTO</p><p class="C">
+                    <input id="EndEtg_endereco_complemento" name="EndEtg_endereco_complemento" class="TA" value="" maxlength="60" style="width:310px;" onkeypress="if (digitou_enter(true) && tem_info(this.value)) fORC.EndEtg_bairro.focus(); filtra_nome_identificador();"></p></td>
+                </tr>
+            </table>
+            
+            <comentario ************   ENDEREÇO DE ENTREGA: BAIRRO/CIDADE   ************ comentario>
+            <table width="649" class="QS" cellspacing="0">
+                <tr>
+                <td class="MD" width="50%" align="left"><p class="R">BAIRRO</p><p class="C">
+                    <input id="EndEtg_bairro" name="EndEtg_bairro" class="TA" value="" maxlength="72" style="width:310px;" onkeypress="if (digitou_enter(true) && tem_info(this.value)) fORC.EndEtg_cidade.focus(); filtra_nome_identificador();"></p></td>
+                <td width="50%" align="left"><p class="R">CIDADE</p><p class="C">
+                    <input id="EndEtg_cidade" name="EndEtg_cidade" class="TA" value="" maxlength="60" style="width:310px;" onkeypress="if (digitou_enter(true) && tem_info(this.value)) fORC.EndEtg_uf.focus(); filtra_nome_identificador();"></p></td>
+                </tr>
+            </table>
+            
+            <comentario ************   ENDEREÇO DE ENTREGA: UF/CEP   ************ comentario>
+            <table width="649" class="QS" cellspacing="0">
+                <tr>
+                <td width="50%" class="MD" align="left"><p class="R">UF</p><p class="C">
+                    <input id="EndEtg_uf" name="EndEtg_uf" class="TA" value="" maxlength="2" size="3" onkeypress="if (digitou_enter(true) && tem_info(this.value) && uf_ok(this.value)) fORC.EndEtg_cep.focus();" onblur="this.value=trim(this.value); if (!uf_ok(this.value)) {alert('UF inválida!!');this.focus();} else this.value=ucase(this.value);"></p></td>
+                <td width="50%" align="left">
+                    <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td width="50%" align="left"><p class="R">CEP</p><p class="C">
+                            <input id="EndEtg_cep" name="EndEtg_cep" readonly tabindex=-1 class="TA" value="" maxlength="9" size="11" onkeypress="if (digitou_enter(true) && cep_ok(this.value)) filtra_cep();" onblur="if (!cep_ok(this.value)) {alert('CEP inválido!!');this.focus();} else this.value=cep_formata(this.value);"></p></td>
+                        <td align="center" width="50%">
+                            <% if blnPesquisaCEPAntiga then %>
+                            <button type="button" name="bPesqCepEndEtg" id="bPesqCepEndEtg" style='width:130px;font-size:10pt;' class="Botao" onclick="AbrePesquisaCepEndEtg();">Pesquisar CEP</button>
+                            <% end if %>
+                            <% if blnPesquisaCEPAntiga and blnPesquisaCEPNova then Response.Write "&nbsp;" %>
+                            <% if blnPesquisaCEPNova then %>
+                            <button type="button" name="bPesqCepEndEtgNovo" id="bPesqCepEndEtgNovo" style='width:130px;font-size:10pt;' class="Botao" onclick="exibeJanelaCEP_Etg();">&nbsp;Busca de CEP&nbsp;</button>
+                            <% end if %>
+                        </td>
+                    </tr>
+                    </table>
+                </td>
+                </tr>
+            </table>
+            <comentario ************   JUSTIFIQUE O ENDEREÇO   ************ comentario>
+            <table id="obs_endereco" width="649" class="QS" cellspacing="0">
+                <tr >
+                <td class="M" width="50%" align="left"><p class="R">JUSTIFIQUE O ENDEREÇO</p><p class="C">
+                    <select id="EndEtg_obs" name="EndEtg_obs" style="margin-right:225px;">			
+                         <%=codigo_descricao_monta_itens_select_por_loja(GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA, "", loja)%>
+                    </select></td>
+                </tr>
+            </table>
+                </form>
+                </form>
+            <% end if %>
+            
+            
+            
+            <comentario ************   SEPARADOR   ************ comentario>
+            <table width="698" cellpadding="4" cellspacing="0" style="border-bottom:1px solid black">
+            <tr><td class="Rc" align="left">&nbsp;</td></tr>
+            </table>
+            <br>
+            
+            
+            <table class="notPrint" width="649" cellspacing="0">
+            <tr>
+                <td align="left"><a href="javascript:history.back();" title="volta para a página anterior">
+                    <img src="../botao/voltar.gif" width="176" height="55" border="0"></a></td>
+            
+            <% if (operacao_selecionada = OP_CONSULTA) Or blnEdicaoBloqueada then %>
+                <td align="center"><div name="dATUALIZACONTRIB" id="dATUALIZACONTRIB">
+                    <a name="bATUALIZA" id="bATUALIZACONTRIB" href="javascript:AtualizaClienteContrib(fCAD)" title="atualiza o cadastro deste cliente">
+                    <img src="../botao/confirmar.gif" width="176" height="55" border="0"></a></div>
+                </td>
+                <td align="right"><div name="dORCAMENTO" id="dORCAMENTO">
+                    <a name="bORCAMENTO" id="bORCAMENTO" href="javascript:fORCConcluir(fORC);" title="cadastra um novo pré-pedido para este cliente">
+                    <img src="../botao/orcamento.gif" width="176" height="55" border="0"></a></div>
+                </td>
+            <% else %>
+                <td align="right"><div name="dATUALIZA" id="dATUALIZA">
+                    <a name="bATUALIZA" id="bATUALIZA" href="javascript:AtualizaCliente(fCAD)" title="atualiza o cadastro deste cliente">
+                    <img src="../botao/confirmar.gif" width="176" height="55" border="0"></a></div>
+                </td>
+            <% end if %>
+                
+            </tr>
+            </table>
+            
+            </center>
+            </body>
+            </html>  -->
+
+
+<!-- ************   EXIBE OBSERVAÇÕES CREDITÍCIAS?  ************
+    está com display:none!
+    <div *ngIf="!cadastrando">
+        <div *ngIf="dadosClienteCadastroDto_obs_crediticias() !== ''">
+            <span class="Lbl" style="display:none">OBSERVAÇÕES CREDITÍCIAS</span>
+            <div class='MtAviso' style="width:649px;FONT-WEIGHT:bold;border:1pt solid black;display:none;" align="CENTER">
+                <p style='margin:5px 2px 5px 2px;'>{{dadosClienteCadastroDto_obs_crediticias}}</p>
+            </div>
+            <br>
+        </div>
+    </div> -->

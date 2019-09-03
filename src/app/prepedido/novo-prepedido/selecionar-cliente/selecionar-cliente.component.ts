@@ -8,6 +8,7 @@ import { AlertDialogComponent } from 'src/app/utils/alert-dialog/alert-dialog.co
 import { StringUtils } from 'src/app/utils/stringUtils';
 import { BuscarClienteService } from 'src/app/servicos/cliente/buscar-cliente.service';
 import { ConfirmationDialogComponent } from 'src/app/utils/confirmation-dialog/confirmation-dialog.component';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-selecionar-cliente',
@@ -24,6 +25,8 @@ export class SelecionarClienteComponent extends TelaDesktopBaseComponent impleme
 
   constructor(telaDesktopService: TelaDesktopService,
     public readonly dialog: MatDialog,
+    public readonly router: Router,
+    public readonly activatedRoute: ActivatedRoute,
     private readonly buscarClienteService: BuscarClienteService) {
     super(telaDesktopService);
   }
@@ -41,22 +44,7 @@ export class SelecionarClienteComponent extends TelaDesktopBaseComponent impleme
       data: `Erro no acesso ao sistema. Verifique a conexão com a internet.`
     });
   }
-  mostrarNaoCadastrado() {
-    this.carregando = false;
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: '380px',
-      data: `Este CNPJ/CPF ainda não está cadastrado. Deseja cadastrá-lo agora?`
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        //vamos cadastrar um novo
-        window.alert("Afazer: ainda não feito: cadastrar novo cliente");
-      }
-    });
-  }
-
   buscar() {
-
     //dá erro se não tiver nenhum dígito
     if (StringUtils.retorna_so_digitos(this.clienteBusca).trim() === "") {
       const dialogRef = this.dialog.open(AlertDialogComponent, {
@@ -84,9 +72,26 @@ export class SelecionarClienteComponent extends TelaDesktopBaseComponent impleme
           this.mostrarNaoCadastrado();
           return;
         }
-        window.alert("Afazer: confirmar dados cliente");
+        //cliente já existe
+        this.router.navigate(['confirmar-cliente', r.Cnpj_Cpf], { relativeTo: this.activatedRoute, state: r })
       }).catch((r) => {
         this.mostrarErro();
       });
   }
+
+  //cliente ainda não está cadastrado
+  mostrarNaoCadastrado() {
+    this.carregando = false;
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '380px',
+      data: `Este CNPJ/CPF ainda não está cadastrado. Deseja cadastrá-lo agora?`
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        //vamos cadastrar um novo
+        this.router.navigate(['cadastrar-cliente', this.clienteBusca], { relativeTo: this.activatedRoute })
+      }
+    });
+  }
+
 }

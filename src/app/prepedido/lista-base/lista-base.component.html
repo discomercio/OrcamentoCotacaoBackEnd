@@ -1,14 +1,15 @@
 <section
-    [ngClass]="{'carregando': prepedidoListarService.carregando || pedidoListarService.carregando, 'contgrandeDesktop': telaDesktop, 'contgrande': !telaDesktop}">
-    <header id="header" *ngIf="telaDesktop && emPrepedidos"
-        [class]="telaDesktop? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'">
-        <div style="float: right; padding-right: 2em; padding-bottom: 0.5em;">
+    [ngClass]="{'carregando': prepedidoListarService.carregando || pedidoListarService.carregando, 'sectionDesktop': telaDesktop, 'sectionCelular': !telaDesktop}"
+    style="min-height: 150px;"
+    >
+    <!-- deixamos style="min-height: 200px;" para forçar o scroll se ficar muito pequeno -->
+    <header id="header" *ngIf="telaDesktop && emPrepedidos" style="padding-top: 0em; padding-bottom: 0em;">
+        <div style="float: right; padding-right: 2em; padding-bottom: 0.5em; font-weight: normal; font-size: 80%;">
             Pré-pedidos localizados: {{(prepedidos$|async)?.length}}
         </div>
     </header>
 
-    <article id="content" *ngIf="telaDesktop && emPrepedidos"
-        [class]="telaDesktop? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'">
+    <article *ngIf="telaDesktop && emPrepedidos">
         <table mat-table matSort [dataSource]="prepedidos$|async" class="mat-elevation-z1 tabeladesktop">
 
             <ng-container matColumnDef="DataPrepedido">
@@ -51,14 +52,12 @@
         </table>
     </article>
 
-    <header id="header" *ngIf="telaDesktop && !emPrepedidos"
-        [class]="telaDesktop? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'">
-        <div style="float: right; padding-right: 2em; padding-bottom: 0.5em;">
+    <header id="header" *ngIf="telaDesktop && !emPrepedidos" style="padding-top: 0em; padding-bottom: 0em;">
+        <div style="float: right; padding-right: 2em; padding-bottom: 0.5em; font-weight: normal; font-size: 80%;">
             Pedidos localizados: {{(pedidos$|async)?.length}}
         </div>
     </header>
-    <article id="content" *ngIf="telaDesktop && !emPrepedidos"
-        [class]="telaDesktop? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'">
+    <article id="content" *ngIf="telaDesktop && !emPrepedidos">
         <table mat-table matSort [dataSource]="pedidos$|async" class="mat-elevation-z1 tabeladesktop">
 
             <ng-container matColumnDef="DataPedido">
@@ -93,8 +92,7 @@
     </article>
 
 
-    <article id="content" *ngIf="!telaDesktop && emPrepedidos"
-        [class]="telaDesktop? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'">
+    <article id="content" *ngIf="!telaDesktop && emPrepedidos">
         <mat-card *ngFor="let option of prepedidos$|async" class="cartao" (click)="cliqueLinha(option)">
             <div class="containercel">
                 <div class=".cellinha">
@@ -142,8 +140,7 @@
             </div>
         </mat-card>
     </article>
-    <footer id="header" *ngIf="!telaDesktop && emPrepedidos"
-        [class]="telaDesktop? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'">
+    <footer id="header" *ngIf="!telaDesktop && emPrepedidos">
         <div style="float: left;" class="textocelnumero">
             Pré-pedidos localizados: {{(prepedidos$|async)?.length}}
         </div>
@@ -152,8 +149,7 @@
             busca</button>
     </footer>
 
-    <article id="content" *ngIf="!telaDesktop && !emPrepedidos"
-        [class]="telaDesktop? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'">
+    <article id="content" *ngIf="!telaDesktop && !emPrepedidos">
         <mat-card *ngFor="let option of pedidos$|async" class="cartao" (click)="cliqueLinha(option)">
             <div class="containercel">
                 <div class=".cellinha">
@@ -197,8 +193,7 @@
             </div>
         </mat-card>
     </article>
-    <footer id="header" *ngIf="!telaDesktop && !emPrepedidos"
-        [class]="telaDesktop? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'">
+    <footer id="header" *ngIf="!telaDesktop && !emPrepedidos">
         <div style="float: left;" class="textocelnumero">
             Pedidos localizados: {{(pedidos$|async)?.length}}
         </div>

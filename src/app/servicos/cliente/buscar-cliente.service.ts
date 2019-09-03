@@ -19,5 +19,9 @@ export class BuscarClienteService {
 
     return this.http.get<DadosClienteCadastroDto>(environment.apiUrl + 'cliente/buscarCliente/' + StringUtils.retorna_so_digitos(cpfCnpj));
   }
+
+  public atualizarCliente(dadosClienteCadastroDto:DadosClienteCadastroDto){
+    return this.http.post<string[]>(environment.apiUrl + 'cliente/atualizarCliente', dadosClienteCadastroDto);
+  }
 }
 

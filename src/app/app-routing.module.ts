@@ -11,6 +11,9 @@ import { LoginGuard } from './servicos/autenticacao/login.guard';
 import { DetalhesPrepedidoComponent } from './prepedido/detalhes-prepedido/detalhes-prepedido.component';
 import { ClienteComponent } from './cliente/cliente/cliente.component';
 import { SelecionarClienteComponent } from './prepedido/novo-prepedido/selecionar-cliente/selecionar-cliente.component';
+import { NovoPrepedidoComponent } from './prepedido/novo-prepedido/novo-prepedido.component';
+import { ConfirmarClienteComponent } from './prepedido/novo-prepedido/confirmar-cliente/confirmar-cliente.component';
+import { NovoPrepedidoModule } from './prepedido/novo-prepedido/novo-prepedido.module';
 
 
 const routes: Routes = [
@@ -69,10 +72,12 @@ const routes: Routes = [
     component: DetalhesPrepedidoComponent
   },
   {
-    path: 'novo-prepedido/cliente',
+    path: 'novo-prepedido',
     canActivate: [LoginGuard],
-    component: SelecionarClienteComponent
+    component: NovoPrepedidoComponent
+    //tem suas prórpias rotas filhas
   },
+
   {
     path: 'cliente/:cpfcnpj',
     canActivate: [LoginGuard],
@@ -99,7 +104,10 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes),
+    NovoPrepedidoModule,
+  ],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

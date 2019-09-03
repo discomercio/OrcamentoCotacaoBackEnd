@@ -43,7 +43,7 @@ export class FormatarEndereco {
 
         if (!this.cep_ok(s_cep))
             return "";
-        s_cep = s_cep.substr(0, 5) + "-" + s_cep.substr(6, 3);
+        s_cep = s_cep.substr(0, 5) + "-" + s_cep.substr(5, 3);
         return s_cep;
     }
 

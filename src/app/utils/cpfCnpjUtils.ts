@@ -134,4 +134,34 @@ export class CpfCnpjUtils {
         return true;
     }
 
+    public static cnpj_cpf_formata(cnpj_cpf: string): string {
+        let s = "" + cnpj_cpf;
+        s = StringUtils.retorna_so_digitos(s);
+        if (s.length == 11) {
+            s = this.cpf_formata(s);
+        }
+        else if (s.length == 14) {
+            s = this.cnpj_formata(s);
+        }
+
+        return s;
+    }
+
+    public static cnpj_formata(cnpj: string): string {
+        let s_cnpj = "" + cnpj;
+        s_cnpj = StringUtils.retorna_so_digitos(s_cnpj);
+        if ((s_cnpj == "") || (!this.cnpj_ok(s_cnpj))) return s_cnpj;
+        s_cnpj = s_cnpj.substring(0, 2) + "." + s_cnpj.substring(2, 5) + "." + s_cnpj.substring(5, 8) + "/" + s_cnpj.substring(8, 12) + "-" + s_cnpj.substring(12, 14);
+        return s_cnpj;
+    }
+
+    public static cpf_formata(cpf: string): string {
+        let s_cpf = "" + cpf;
+        s_cpf = StringUtils.retorna_so_digitos(s_cpf);
+        if ((s_cpf == "") || (!this.cpf_ok(s_cpf))) return s_cpf;
+        s_cpf = s_cpf.substring(0, 3) + "." + s_cpf.substring(3, 6) + "." + s_cpf.substring(6, 9) + "/" + s_cpf.substring(9, 11);
+        return s_cpf;
+    }
+
+
 }

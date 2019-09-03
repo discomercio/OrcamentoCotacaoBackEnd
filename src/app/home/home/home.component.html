@@ -6,9 +6,9 @@ no celular aparece sempre -->
     <div style="flex-grow: 0.4" *ngIf="!menuDesktop">
     </div>
     <div [class]="menuDesktop? 'spanMenu': 'spanTela'">
-        <a *ngIf="!menuDesktop" color="accent" class="botaoTela" mat-raised-button [routerLink]="['/novo-prepedido/cliente']"> Incluir Pré
+        <a *ngIf="!menuDesktop" color="accent" class="botaoTela" mat-raised-button [routerLink]="['/novo-prepedido']"> Incluir Pré
             Pedido </a>
-        <a *ngIf="menuDesktop" color="accent" class="botaoMenu" mat-button [routerLink]="['/novo-prepedido/cliente']"> Incluir Pré
+        <a *ngIf="menuDesktop" color="accent" class="botaoMenu" mat-button [routerLink]="['/novo-prepedido']"> Incluir Pré
             Pedido </a>
     </div>
     <div [class]="menuDesktop? 'spanMenu': 'spanTela'">
