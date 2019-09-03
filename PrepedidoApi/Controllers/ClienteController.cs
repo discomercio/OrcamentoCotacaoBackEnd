@@ -40,11 +40,17 @@ namespace PrepedidoApi.Controllers
 #if DEBUG
         [AllowAnonymous]
 #endif
-        [HttpPost("atualizarCliente")]
-        public async Task<IActionResult> AtualizarCliente(DadosClienteCadastroDto dadosClienteCadastroDto)
+        [HttpPost("atualizarClienteparcial")]
+        public async Task<IActionResult> AtualizarClienteParcial(DadosClienteCadastroDto dadosClienteCadastroDto)
         {
+            /*
+             * somente os seguintes campos serão atualizados:
+             * produtor rural
+             * inscrição estadual
+             * tipo de contibuinte ICMS
+             * */
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            var retorno = await clienteBll.AtualizarCliente(apelido, dadosClienteCadastroDto);
+            var retorno = await clienteBll.AtualizarClienteParcial(apelido, dadosClienteCadastroDto);
             if (retorno == null)
                 return NoContent();
             return Ok(retorno);

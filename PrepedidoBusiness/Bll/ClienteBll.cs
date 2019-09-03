@@ -18,15 +18,23 @@ namespace PrepedidoBusiness.Bll
             this.contextoProvider = contextoProvider;
         }
 
-        public async Task<List<string>> AtualizarCliente(string apelido, DadosClienteCadastroDto dadosClienteCadastroDto)
+        public async Task<List<string>> AtualizarClienteParcial(string apelido, DadosClienteCadastroDto dadosClienteCadastroDto)
         {
+            /*
+             * somente os seguintes campos serão atualizados:
+             * produtor rural
+             * inscrição estadual
+             * tipo de contibuinte ICMS
+             * */
+
+            
             //afazer: rfazer a rotina
             //afazer: validar IE conforme estadol
             //afazer: deve ter um log com o apelido do orcamentista
             //para teste
             var ret = new List<string>();
-            ret.Add("Algum erro 1.");
-            ret.Add("Algum erro 2.");
+            //ret.Add("Algum erro 1.");
+            //ret.Add("Algum erro 2.");
             return ret;
         }
 
