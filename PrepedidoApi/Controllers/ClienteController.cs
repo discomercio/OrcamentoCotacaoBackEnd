@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using PrepedidoBusiness.Dtos.ClienteCadastro;
 
 namespace PrepedidoApi.Controllers
 {
@@ -22,7 +23,9 @@ namespace PrepedidoApi.Controllers
             this.servicoDecodificarToken = servicoDecodificarToken;
         }
 
+#if DEBUG
         [AllowAnonymous]
+#endif
         [HttpGet("buscarCliente/{cnpj_cpf}")]
         public async Task<IActionResult> BuscarCliente(string cnpj_cpf)
         {
@@ -33,5 +36,20 @@ namespace PrepedidoApi.Controllers
             return Ok(dadosCliente);
 
         }
+
+#if DEBUG
+        [AllowAnonymous]
+#endif
+        [HttpPost("atualizarCliente")]
+        public async Task<IActionResult> AtualizarCliente(DadosClienteCadastroDto dadosClienteCadastroDto)
+        {
+            string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
+            var retorno = await clienteBll.AtualizarCliente(apelido, dadosClienteCadastroDto);
+            if (retorno == null)
+                return NoContent();
+            return Ok(retorno);
+
+        }
+
     }
 }

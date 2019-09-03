@@ -21,7 +21,9 @@ namespace PrepedidoApi.Controllers
             this.servicoDecodificarToken = servicoDecodificarToken;
         }
 
+#if DEBUG
         [AllowAnonymous]
+#endif
         [HttpGet("listarNumerosPedidosCombo")]
         public async Task<IActionResult> ListarNumerosPedidosCombo()
         {
@@ -33,7 +35,9 @@ namespace PrepedidoApi.Controllers
             return Ok(ret);
         }
 
+#if DEBUG
         [AllowAnonymous]
+#endif
         [HttpGet("listarPedidos")]
         public async Task<IActionResult> ListarPedidos(string clienteBusca, int tipoBusca, string numPedido,
             DateTime? dataInicial, DateTime? dataFinal)
@@ -47,7 +51,9 @@ namespace PrepedidoApi.Controllers
             return Ok(ret);
         }
 
+#if DEBUG
         [AllowAnonymous]
+#endif
         [HttpGet("listarCpfCnpjPedidosCombo")]
         public async Task<IActionResult> ListarCpfCnpjPedidosCombo()
         {
@@ -59,7 +65,9 @@ namespace PrepedidoApi.Controllers
             return Ok(ret);
         }
 
+#if DEBUG
         [AllowAnonymous]
+#endif
         [HttpGet("buscarPedido")]
         public async Task<IActionResult> BuscarPedido(string numPedido)
         {
