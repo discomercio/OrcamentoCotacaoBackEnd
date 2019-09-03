@@ -162,8 +162,8 @@ namespace PrepedidoBusiness.Bll
         public async Task<PrePedidoDto> BuscarPrePedido(string apelido, string numPrePedido)
         {
             //parateste
-            //apelido = "PEDREIRA";
-            //numPrePedido = "202996Z";
+            apelido = "PEDREIRA";
+            numPrePedido = "214289Z";
 
             var db = contextoProvider.GetContexto();
 
@@ -358,7 +358,8 @@ namespace PrepedidoBusiness.Bll
                 Bairro = cli.Bairro,
                 Cidade = cli.Cidade,
                 Uf = cli.Uf,
-                Cep = cli.Cep
+                Cep = cli.Cep,
+                Contato = cli.Contato
             };
             return cadastroCliente;
         }

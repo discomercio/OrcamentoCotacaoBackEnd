@@ -14,7 +14,7 @@ namespace InfraBanco.Modelos
         //[ForeignKey("Tcliente")]
         public string Id_Cliente { get; set; }
 
-        [Key]
+        //[Key]
         [Column("nome_empresa")]
         [Required]
         [MaxLength(60)]
