@@ -251,8 +251,8 @@ namespace PrepedidoBusiness.Bll
             var db = contextoProvider.GetContexto();
 
             //parateste
-            numPedido = "094947N-A";
-            apelido = "PEDREIRA";
+            //numPedido = "094947N-A";
+            //apelido = "PEDREIRA";
 
             var pedido = from c in db.Tpedidos
                          where c.Pedido == numPedido && c.Orcamentista == apelido
@@ -262,7 +262,6 @@ namespace PrepedidoBusiness.Bll
                 return null;
 
             var cadastroClienteTask = ObterDadosCliente(p.Loja, p.Indicador, p.Vendedor, p.Id_Cliente);
-            //var statusHoraPedido = FormataSatusPedido(p.St_Entrega);
             var enderecoEntregaTask = ObterEnderecoEntrega(p);
             var lstProdutoTask = ObterProdutos(numPedido);
 
@@ -814,11 +813,11 @@ namespace PrepedidoBusiness.Bll
             switch (parcelamento)
             {
                 case Constantes.COD_FORMA_PAGTO_A_VISTA:
-                    lista.Add("À Vista (" + await OpcaoFormaPagto(parcelamento) + ")");
+                    lista.Add("À Vista (" + Util.OpcaoFormaPagto(parcelamento) + ")");
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELA_UNICA:
                     lista.Add("Parcela Única: " + Constantes.SIMBOLO_MONETARIO + " " +
-                        await OpcaoFormaPagto(Convert.ToString(pedido.Pu_Forma_Pagto)) + " vencendo após " + pedido.Pu_Vencto_Apos + " dias");
+                        Util.OpcaoFormaPagto(Convert.ToString(pedido.Pu_Forma_Pagto)) + " vencendo após " + pedido.Pu_Vencto_Apos + " dias");
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO:
                     lista.Add("Parcelado no Cartão (internet) em " + pedido.Pc_Qtde_Parcelas + " X " +
@@ -829,16 +828,16 @@ namespace PrepedidoBusiness.Bll
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA:
                     lista.Add("Entrada: " + Constantes.SIMBOLO_MONETARIO + " " +
-                        pedido.Pce_Entrada_Valor + " (" + await OpcaoFormaPagto(Convert.ToString(pedido.Pce_Forma_Pagto_Entrada)) + ")");
+                        pedido.Pce_Entrada_Valor + " (" + Util.OpcaoFormaPagto(Convert.ToString(pedido.Pce_Forma_Pagto_Entrada)) + ")");
                     lista.Add("Prestações: " + pedido.Pce_Prestacao_Qtde + " X " + Constantes.SIMBOLO_MONETARIO + " " + pedido.Pce_Prestacao_Valor +
-                        " (" + await OpcaoFormaPagto(Convert.ToString(pedido.Pce_Forma_Pagto_Prestacao)) + ") vencendo a cada " +
+                        " (" + Util.OpcaoFormaPagto(Convert.ToString(pedido.Pce_Forma_Pagto_Prestacao)) + ") vencendo a cada " +
                         pedido.Pce_Prestacao_Periodo + " dias");
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA:
                     lista.Add("1ª Prestação: " + Constantes.SIMBOLO_MONETARIO + " " + pedido.Pse_Prim_Prest_Valor + " (" +
-                        await OpcaoFormaPagto(Convert.ToString(pedido.Pse_Forma_Pagto_Prim_Prest)) + ") vencendo após " + pedido.Pse_Prim_Prest_Apos + " dias");
+                        Util.OpcaoFormaPagto(Convert.ToString(pedido.Pse_Forma_Pagto_Prim_Prest)) + ") vencendo após " + pedido.Pse_Prim_Prest_Apos + " dias");
                     lista.Add("Demais Prestações: " + pedido.Pse_Demais_Prest_Qtde + " X " + Constantes.SIMBOLO_MONETARIO + " " + pedido.Pse_Demais_Prest_Valor +
-                        " (" + await OpcaoFormaPagto(Convert.ToString(pedido.Pse_Forma_Pagto_Demais_Prest)) + ") vencendo a cada " +
+                        " (" + Util.OpcaoFormaPagto(Convert.ToString(pedido.Pse_Forma_Pagto_Demais_Prest)) + ") vencendo a cada " +
                         pedido.Pse_Demais_Prest_Periodo + " dias");
                     break;
             }
@@ -846,37 +845,37 @@ namespace PrepedidoBusiness.Bll
             return await Task.FromResult(lista.ToList());
         }
 
-        private async Task<string> OpcaoFormaPagto(string codigo)
-        {
-            string retorno = "";
+        //private async Task<string> OpcaoFormaPagto(string codigo)
+        //{
+        //    string retorno = "";
 
-            switch (codigo)
-            {
-                case Constantes.ID_FORMA_PAGTO_DINHEIRO:
-                    retorno = "Dinheiro";
-                    break;
-                case Constantes.ID_FORMA_PAGTO_DEPOSITO:
-                    retorno = "Depósito";
-                    break;
-                case Constantes.ID_FORMA_PAGTO_CHEQUE:
-                    retorno = "Cheque";
-                    break;
-                case Constantes.ID_FORMA_PAGTO_BOLETO:
-                    retorno = "Boleto";
-                    break;
-                case Constantes.ID_FORMA_PAGTO_CARTAO:
-                    retorno = "Cartão (internet)";
-                    break;
-                case Constantes.ID_FORMA_PAGTO_CARTAO_MAQUINETA:
-                    retorno = "Cartão (maquineta)";
-                    break;
-                case Constantes.ID_FORMA_PAGTO_BOLETO_AV:
-                    retorno = "Boleto AV";
-                    break;
-            };
+        //    switch (codigo)
+        //    {
+        //        case Constantes.ID_FORMA_PAGTO_DINHEIRO:
+        //            retorno = "Dinheiro";
+        //            break;
+        //        case Constantes.ID_FORMA_PAGTO_DEPOSITO:
+        //            retorno = "Depósito";
+        //            break;
+        //        case Constantes.ID_FORMA_PAGTO_CHEQUE:
+        //            retorno = "Cheque";
+        //            break;
+        //        case Constantes.ID_FORMA_PAGTO_BOLETO:
+        //            retorno = "Boleto";
+        //            break;
+        //        case Constantes.ID_FORMA_PAGTO_CARTAO:
+        //            retorno = "Cartão (internet)";
+        //            break;
+        //        case Constantes.ID_FORMA_PAGTO_CARTAO_MAQUINETA:
+        //            retorno = "Cartão (maquineta)";
+        //            break;
+        //        case Constantes.ID_FORMA_PAGTO_BOLETO_AV:
+        //            retorno = "Boleto AV";
+        //            break;
+        //    };
 
-            return await Task.FromResult(retorno);
-        }
+        //    return await Task.FromResult(retorno);
+        //}
 
 
         //public async Task<decimal> CalculaTotalDevolucoes_Venda_E_NF(string numPedido)

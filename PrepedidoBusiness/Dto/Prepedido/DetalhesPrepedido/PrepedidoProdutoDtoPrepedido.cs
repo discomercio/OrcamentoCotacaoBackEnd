@@ -18,7 +18,7 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
         public float? Desconto { get; set; }
         public decimal VlUnitario { get; set; }
         public decimal? VlTotalItem { get; set; }
-        public decimal? VlTotalRA { get; set; }
+        public decimal VlTotalRA { get; set; }
         public float? Comissao { get; set; }
         public decimal? TotalItemRA { get; set; }
         public decimal? TotalItem { get; set; }

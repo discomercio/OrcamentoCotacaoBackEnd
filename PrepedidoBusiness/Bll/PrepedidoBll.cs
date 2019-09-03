@@ -161,6 +161,10 @@ namespace PrepedidoBusiness.Bll
 
         public async Task<PrePedidoDto> BuscarPrePedido(string apelido, string numPrePedido)
         {
+            //parateste
+            //apelido = "PEDREIRA";
+            //numPrePedido = "202996Z";
+
             var db = contextoProvider.GetContexto();
 
             var prepedido = from c in db.Torcamentos
@@ -175,66 +179,106 @@ namespace PrepedidoBusiness.Bll
 
             if (pp.St_Orc_Virou_Pedido == 1)
             {
-                //se virou pedido ele redireciona para a tela de pedido
+                var pedido = from c in db.Tpedidos
+                             where c.Orcamento == numPrePedido
+                             select c.Pedido;
+
+                PrePedidoDto prepedidoPedido = new PrePedidoDto
+                {
+                    St_Orc_Virou_Pedido = true,
+                    NumeroPedido = pedido.Select(r => r.ToString()).FirstOrDefault()
+                };
+                return prepedidoPedido;
             }
-
-            //ler os itens do orcamento
-            //var produtosTask = ObterProdutos(pp);
-
+            
             var cadastroClienteTask = ObterDadosCliente(pp.Loja, pp.Orcamentista, pp.Vendedor, pp.Id_Cliente);
             var enderecoEntregaTask = ObterEnderecoEntrega(pp);
-            var lstProdutoTask = ObterProdutos(pp);
-            //retornar a lista de produtos em var
-            //fazer a soma no retorno dos produtos na var TotalItemRA 
-            var totalDestePedidoComRa = lstProdutoTask.Result.Select(r => r.VlTotalRA).Sum();
-            var totalDestePedido = lstProdutoTask.Result.Select(r => r.VlTotalItem).Sum();
-            //Terminar de montar a saida a partir de observaçoes 
+            var lstProdutoTask = await ObterProdutos(pp);
 
+            var vltotalRa = lstProdutoTask.Select(r => r.VlTotalRA).Sum();
+            var totalDestePedidoComRa = lstProdutoTask.Select(r => r.TotalItemRA).Sum();
+            var totalDestePedido = lstProdutoTask.Select(r => r.TotalItem).Sum();
 
-            PrePedidoDto prepedidoDto = new PrePedidoDto();
+            PrePedidoDto prepedidoDto = new PrePedidoDto
+            {
+                NumeroPrePedido = pp.Orcamento,
+                DataHoraPedido = Convert.ToString(pp.Data + pp.Hora),
+                DadosCliente = await cadastroClienteTask,
+                EnderecoEntrega = await enderecoEntregaTask,
+                ListaProdutos = lstProdutoTask.ToList(),
+                TotalFamiliaParcelaRA = vltotalRa,
+                PermiteRAStatus = pp.Permite_RA_Status,
+                CorTotalFamiliaRA = vltotalRa > 0 ? "green" : "red",
+                PercRT = pp.Perc_RT,
+                ValorTotalDestePedidoComRA = totalDestePedidoComRa,
+                VlTotalDestePedido = totalDestePedido,
+                DetalhesPrepedido = ObterDetalhesPrePedido(pp),
+                FormaPagto = ObterFormaPagto(pp).ToList()
+            };
+
             return await Task.FromResult(prepedidoDto);
         }
 
-        public async Task<string> ObterFormaPagto(Torcamento torcamento)
+        private DetalhesDtoPrepedido ObterDetalhesPrePedido(Torcamento torcamento)
         {
-            string retorno = "";
+            DetalhesDtoPrepedido detail = new DetalhesDtoPrepedido
+            {
+                Observacoes = torcamento.Obs_1,
+                NumeroNF = torcamento.Obs_2,
+                EntregaImediata = Convert.ToString(torcamento.St_Etg_Imediata) == Constantes.COD_ETG_IMEDIATA_NAO ?
+                "NÃO" : "SIM " + torcamento.Etg_Imediata_Usuario +
+                " em " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy"),
+                BemDeUso_Consumo = Convert.ToString(torcamento.StBemUsoConsumo) == Constantes.COD_ST_BEM_USO_CONSUMO_NAO ?
+                "NÃO" : "SIM",
+                InstaladorInstala = Convert.ToString(torcamento.InstaladorInstalaStatus) == Constantes.COD_INSTALADOR_INSTALA_NAO ?
+                "NÃO" : "SIM",
+                GarantiaIndicador = Convert.ToString(torcamento.GarantiaIndicadorStatus) ==
+                Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO ?
+                "NÃO" : "SIM"
+            };
 
+            return detail;
+        }
+
+        private IEnumerable<string> ObterFormaPagto(Torcamento torcamento)
+        {
             List<string> lista = new List<string>();
 
-            switch(Convert.ToString(torcamento.Tipo_Parcelamento))
+            switch (Convert.ToString(torcamento.Tipo_Parcelamento))
             {
                 case Constantes.COD_FORMA_PAGTO_A_VISTA:
                     lista.Add("À vista (" + Util.OpcaoFormaPagto(Convert.ToString(torcamento.Av_Forma_Pagto)) + ")");
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELA_UNICA:
-                    lista.Add("Parcela Única: " + Constantes.SIMBOLO_MONETARIO + " " + torcamento.Pu_Valor + " (" + 
-                        Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pu_Forma_Pagto)) + ") vencendo após " + torcamento.Pu_Vencto_Apos);
+                    lista.Add(String.Format("Parcela Única: " + Constantes.SIMBOLO_MONETARIO + " {0:c2} (" +
+                        Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pu_Forma_Pagto)) + ") vencendo após " + torcamento.Pu_Vencto_Apos, torcamento.Pu_Valor));
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO:
-                    lista.Add("Parcelado no Cartão (internet) em " + torcamento.Pc_Qtde_Parcelas + " X " + 
-                        Constantes.SIMBOLO_MONETARIO + " " + torcamento.Pc_Valor_Parcela);
+                    lista.Add(String.Format("Parcelado no Cartão (internet) em " + torcamento.Pc_Qtde_Parcelas + " X " +
+                        Constantes.SIMBOLO_MONETARIO + " {0:c2}" , torcamento.Pc_Valor_Parcela));
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA:
-                    lista.Add("Parcelado no Cartão (maquineta) em " + torcamento.Pc_Maquineta_Qtde_Parcelas + " X " +
-                        Constantes.SIMBOLO_MONETARIO + " " + torcamento.Pc_Maquineta_Valor_Parcela);
+                    lista.Add(String.Format("Parcelado no Cartão (maquineta) em " + torcamento.Pc_Maquineta_Qtde_Parcelas + " X " +
+                        Constantes.SIMBOLO_MONETARIO + " {0:c2}" , torcamento.Pc_Maquineta_Valor_Parcela));
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA:
-                    lista.Add("Entrada " + Constantes.SIMBOLO_MONETARIO + torcamento.Pce_Entrada_Valor + " (" + 
-                        Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pce_Forma_Pagto_Entrada)) + ")");
-                    lista.Add("Prestações: " + torcamento.Pce_Prestacao_Qtde + " X " + Constantes.SIMBOLO_MONETARIO + " " + torcamento.Pce_Prestacao_Valor +
+                    lista.Add(String.Format("Entrada " + Constantes.SIMBOLO_MONETARIO + "{0:c2} (" +
+                        Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pce_Forma_Pagto_Entrada)) + ")", torcamento.Pce_Entrada_Valor));
+                    lista.Add(String.Format("Prestações: " + torcamento.Pce_Prestacao_Qtde + " X " + Constantes.SIMBOLO_MONETARIO + " {0:c2}" +
                         " (" + Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pce_Forma_Pagto_Prestacao)) + ") vencendo a cada " +
-                        torcamento.Pce_Prestacao_Periodo + " dias");
+                        torcamento.Pce_Prestacao_Periodo + " dias", torcamento.Pce_Prestacao_Valor));
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA:
-                    lista.Add("1ª Prestação: " + Constantes.SIMBOLO_MONETARIO + " " + torcamento.Pse_Prim_Prest_Valor + " (" +
-                        Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pse_Forma_Pagto_Prim_Prest)) + ") vencendo após " + torcamento.Pse_Prim_Prest_Apos + " dias");
-                    lista.Add("Demais Prestações: " + torcamento.Pse_Demais_Prest_Qtde + " X " + Constantes.SIMBOLO_MONETARIO + " " + torcamento.Pse_Demais_Prest_Valor +
+                    lista.Add(String.Format("1ª Prestação: " + Constantes.SIMBOLO_MONETARIO + " {0:c2} (" +
+                        Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pse_Forma_Pagto_Prim_Prest)) + ") vencendo após " + torcamento.Pse_Prim_Prest_Apos + 
+                        " dias", torcamento.Pse_Prim_Prest_Valor));
+                    lista.Add(String.Format("Demais Prestações: " + torcamento.Pse_Demais_Prest_Qtde + " X " + Constantes.SIMBOLO_MONETARIO + " {0:c2}" +
                         " (" + Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pse_Forma_Pagto_Demais_Prest)) + ") vencendo a cada " +
-                        torcamento.Pse_Demais_Prest_Periodo + " dias");
+                        torcamento.Pse_Demais_Prest_Periodo + " dias", torcamento.Pse_Demais_Prest_Valor));
                     break;
             }
 
-            return retorno;
+            return lista;
         }
 
         private async Task<IEnumerable<PrepedidoProdutoDtoPrepedido>> ObterProdutos(Torcamento orc)
@@ -245,8 +289,6 @@ namespace PrepedidoBusiness.Bll
                            where c.Orcamento == orc.Orcamento
                            orderby c.Sequencia
                            select c;
-
-            var vltotalRa = produtos.Select(r => r.Qtde * (r.Preco_NF - r.Preco_Venda)).SumAsync(); 
 
             List<PrepedidoProdutoDtoPrepedido> listaProduto = new List<PrepedidoProdutoDtoPrepedido>();
 
@@ -265,19 +307,18 @@ namespace PrepedidoBusiness.Bll
                     VlLista = p.Preco_Lista,
                     Desconto = p.Desc_Dado,
                     VlUnitario = p.Preco_Venda,
-                    VlTotalItem = p.Qtde * p.Preco_Venda,
-                    VlTotalRA = await vltotalRa,
+                    VlTotalRA = (decimal)(p.Qtde * (p.Preco_NF - p.Preco_Venda)),
                     Comissao = orc.Perc_RT,
                     TotalItemRA = p.Qtde * p.Preco_NF,
                     TotalItem = p.Qtde * p.Preco_Venda
                 };
+
                 listaProduto.Add(produtoPrepedido);
             }
 
-            return listaProduto;
+            return await Task.FromResult(listaProduto);
         }
-
-
+        
         private async Task<DadosClienteCadastroDto> ObterDadosCliente(string loja, string indicador_orcamentista, string vendedor, string idCliente)
         {
             var dadosCliente = from c in contextoProvider.GetContexto().Tclientes
