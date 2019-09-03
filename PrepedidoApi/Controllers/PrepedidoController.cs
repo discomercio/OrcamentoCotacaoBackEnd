@@ -24,51 +24,54 @@ namespace PrepedidoApi.Controllers
         }
 
         //para teste, anonimo
+#if DEBUG
         [AllowAnonymous]
-        //TODO: pq precisa do httpget com um nome?
+#endif
         [HttpGet("listarNumerosPrepedidosCombo")]
         public async Task<IActionResult> ListarNumerosPrepedidosCombo()
         {
             //para testar: http://localhost:60877/api/prepedido/listarNumerosPrepedidosCombo
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            //string apelido = "RUI LUIS";
             var ret = await prepedidoBll.ListarNumerosPrepedidosCombo(apelido);
             return Ok(ret);
         }
 
+#if DEBUG
         [AllowAnonymous]
+#endif
         [HttpGet("listarCpfCnpjPrepedidosCombo")]
         public async Task<IActionResult> ListarCpfCnpjPrepedidosCombo()
         {
             //para testar :http://localhost:60877/api/prepedido/listarCpfCnpjPrepedidosCombo
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            //string apelido = "RUI LUIS";
             var lista = await prepedidoBll.ListarCpfCnpjPrepedidosCombo(apelido);
 
             return Ok(lista);
         }
 
+#if DEBUG
         [AllowAnonymous]
+#endif
         [HttpGet("listarPrePedidos")]
         public async Task<IActionResult> ListarPrePedidos(int tipoBusca, string clienteBusca, string numeroPrePedido, 
             DateTime? dataInicial, DateTime? dataFinal)
         {
             //para testar: http://localhost:60877/api/prepedido/listarPrePedidos
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            //string apelido = "A. SYSTEM";
             var lista = await prepedidoBll.ListarPrePedidos(apelido, 
                 (PrepedidoBusiness.Bll.PrepedidoBll.TipoBuscaPrepedido)tipoBusca, 
                 clienteBusca, numeroPrePedido, dataInicial, dataFinal);
             return Ok(lista);
         }
 
+#if DEBUG
         [AllowAnonymous]
+#endif
         [HttpPut("removerPrePedido/{numeroPrePedido}")]
         public async Task<IActionResult> RemoverPrePedido(string numeroPrePedido)
         {
             //para testar: http://localhost:60877/api/prepedido/removerPrePedido/{numeroPrePedido}
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            //string apelido = "SALOMÃO";
             if (numeroPrePedido == null || numeroPrePedido == "")
             {
                 return NotFound();
@@ -82,7 +85,9 @@ namespace PrepedidoApi.Controllers
                 return NotFound();
         }
 
+#if DEBUG
         [AllowAnonymous]
+#endif
         [HttpGet("buscarPrepedido")]
         public async Task<IActionResult> BuscarPrePedido(string numPrepedido)
         {

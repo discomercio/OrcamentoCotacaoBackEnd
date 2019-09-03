@@ -56,8 +56,6 @@ namespace PrepedidoApi.Controllers
         }
 
 
-        [HttpGet]
-        [Authorize(Roles = Utils.Autenticacao.RoleAcesso)]
         [HttpGet("renovarToken")]
         public IActionResult RenovarToken()
         {
@@ -73,6 +71,7 @@ namespace PrepedidoApi.Controllers
             return Ok(token);
         }
 
+        //este é o único que permite acesso anônimo
         [AllowAnonymous]
         [HttpGet("fazerLogin")]
         public async Task<IActionResult> FazerLogin(string apelido, string senha)
@@ -93,7 +92,6 @@ namespace PrepedidoApi.Controllers
             return Ok(token);
         }
 
-        [AllowAnonymous]
         [HttpPut("fazerLogout")]
         public async Task<IActionResult> FazerLogout()
         {
