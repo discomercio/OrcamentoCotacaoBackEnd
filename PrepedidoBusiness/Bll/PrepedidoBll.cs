@@ -179,7 +179,7 @@ namespace PrepedidoBusiness.Bll
             }
 
             //ler os itens do orcamento
-            //var produtosTask =
+            //var produtosTask = ObterProdutos(pp);
 
             var cadastroClienteTask = ObterDadosCliente(pp.Loja, pp.Orcamentista, pp.Vendedor, pp.Id_Cliente);
             var enderecoEntregaTask = ObterEnderecoEntrega(pp);
@@ -190,8 +190,51 @@ namespace PrepedidoBusiness.Bll
             var totalDestePedido = lstProdutoTask.Result.Select(r => r.VlTotalItem).Sum();
             //Terminar de montar a saida a partir de observaçoes 
 
+
             PrePedidoDto prepedidoDto = new PrePedidoDto();
             return await Task.FromResult(prepedidoDto);
+        }
+
+        public async Task<string> ObterFormaPagto(Torcamento torcamento)
+        {
+            string retorno = "";
+
+            List<string> lista = new List<string>();
+
+            switch(Convert.ToString(torcamento.Tipo_Parcelamento))
+            {
+                case Constantes.COD_FORMA_PAGTO_A_VISTA:
+                    lista.Add("À vista (" + Util.OpcaoFormaPagto(Convert.ToString(torcamento.Av_Forma_Pagto)) + ")");
+                    break;
+                case Constantes.COD_FORMA_PAGTO_PARCELA_UNICA:
+                    lista.Add("Parcela Única: " + Constantes.SIMBOLO_MONETARIO + " " + torcamento.Pu_Valor + " (" + 
+                        Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pu_Forma_Pagto)) + ") vencendo após " + torcamento.Pu_Vencto_Apos);
+                    break;
+                case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO:
+                    lista.Add("Parcelado no Cartão (internet) em " + torcamento.Pc_Qtde_Parcelas + " X " + 
+                        Constantes.SIMBOLO_MONETARIO + " " + torcamento.Pc_Valor_Parcela);
+                    break;
+                case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA:
+                    lista.Add("Parcelado no Cartão (maquineta) em " + torcamento.Pc_Maquineta_Qtde_Parcelas + " X " +
+                        Constantes.SIMBOLO_MONETARIO + " " + torcamento.Pc_Maquineta_Valor_Parcela);
+                    break;
+                case Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA:
+                    lista.Add("Entrada " + Constantes.SIMBOLO_MONETARIO + torcamento.Pce_Entrada_Valor + " (" + 
+                        Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pce_Forma_Pagto_Entrada)) + ")");
+                    lista.Add("Prestações: " + torcamento.Pce_Prestacao_Qtde + " X " + Constantes.SIMBOLO_MONETARIO + " " + torcamento.Pce_Prestacao_Valor +
+                        " (" + Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pce_Forma_Pagto_Prestacao)) + ") vencendo a cada " +
+                        torcamento.Pce_Prestacao_Periodo + " dias");
+                    break;
+                case Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA:
+                    lista.Add("1ª Prestação: " + Constantes.SIMBOLO_MONETARIO + " " + torcamento.Pse_Prim_Prest_Valor + " (" +
+                        Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pse_Forma_Pagto_Prim_Prest)) + ") vencendo após " + torcamento.Pse_Prim_Prest_Apos + " dias");
+                    lista.Add("Demais Prestações: " + torcamento.Pse_Demais_Prest_Qtde + " X " + Constantes.SIMBOLO_MONETARIO + " " + torcamento.Pse_Demais_Prest_Valor +
+                        " (" + Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pse_Forma_Pagto_Demais_Prest)) + ") vencendo a cada " +
+                        torcamento.Pse_Demais_Prest_Periodo + " dias");
+                    break;
+            }
+
+            return retorno;
         }
 
         private async Task<IEnumerable<PrepedidoProdutoDtoPrepedido>> ObterProdutos(Torcamento orc)

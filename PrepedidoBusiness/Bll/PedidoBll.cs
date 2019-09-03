@@ -252,7 +252,7 @@ namespace PrepedidoBusiness.Bll
 
             //parateste
             numPedido = "094947N-A";
-            apelido = "";
+            apelido = "PEDREIRA";
 
             var pedido = from c in db.Tpedidos
                          where c.Pedido == numPedido && c.Orcamentista == apelido

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using InfraBanco;
+using InfraBanco.Constantes;
 
 namespace PrepedidoBusiness.Utils
 {
@@ -51,6 +52,38 @@ namespace PrepedidoBusiness.Utils
                 return "Código não cadastrado (" + cod + ")";
 
             return result;
+        }
+
+        public static string OpcaoFormaPagto(string codigo)
+        {
+            string retorno = "";
+
+            switch (codigo)
+            {
+                case Constantes.ID_FORMA_PAGTO_DINHEIRO:
+                    retorno = "Dinheiro";
+                    break;
+                case Constantes.ID_FORMA_PAGTO_DEPOSITO:
+                    retorno = "Depósito";
+                    break;
+                case Constantes.ID_FORMA_PAGTO_CHEQUE:
+                    retorno = "Cheque";
+                    break;
+                case Constantes.ID_FORMA_PAGTO_BOLETO:
+                    retorno = "Boleto";
+                    break;
+                case Constantes.ID_FORMA_PAGTO_CARTAO:
+                    retorno = "Cartão (internet)";
+                    break;
+                case Constantes.ID_FORMA_PAGTO_CARTAO_MAQUINETA:
+                    retorno = "Cartão (maquineta)";
+                    break;
+                case Constantes.ID_FORMA_PAGTO_BOLETO_AV:
+                    retorno = "Boleto AV";
+                    break;
+            };
+
+            return retorno;
         }
     }
 }

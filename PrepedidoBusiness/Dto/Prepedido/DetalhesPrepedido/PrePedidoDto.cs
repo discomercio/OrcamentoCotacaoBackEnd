@@ -21,6 +21,8 @@ namespace PrepedidoBusiness.Dtos.Prepedido.DetalhesPrepedido
         public float? PercRT { get; set; }
         public decimal? ValorTotalDestePedidoComRA { get; set; }
         public decimal? VlTotalDestePedido { get; set; }
+
+        public string Obs { get; set; }
         //public DetalhesNFPedidoDtoPedido DetalhesNF { get; set; }
         //public DetalhesFormaPagamentos DetalhesFormaPagto { get; set; }
         public DetalhesDtoPrepedido DetalhesFormaPagto { get; set; }

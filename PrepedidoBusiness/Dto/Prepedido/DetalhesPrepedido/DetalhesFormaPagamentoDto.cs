@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
 {
-    public class DetalhesFormaPagamento
+    public class DetalhesFormaPagamentoDto
     {
         public List<string> FormaPagto { get; set; }
         //public string InfosAnaliseCredito { get; set; }

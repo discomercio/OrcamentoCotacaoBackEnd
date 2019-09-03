@@ -12,6 +12,7 @@ namespace PrepedidoBusiness.Dtos.Prepedido.DetalhesPrepedido
         public string EntregaImediata { get; set; }
         public string BemDeUso_Consumo { get; set; }
         public string InstaladorInstala { get; set; }
+        public string GarantiaIndicador { get; set; }
         public string FormaDePagamento { get; set; }
         public string DescricaoFormaPagamento { get; set; }
     }
