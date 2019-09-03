@@ -26,7 +26,8 @@ namespace PrepedidoBusiness.Bll
 
             var dadosCliente = db.Tclientes.Where(r => r.Cnpj_Cpf == cpf_cnpj)
                 .FirstOrDefault();
-            
+            if (dadosCliente == null)
+                return null;
 
             DadosClienteCadastroDto dados = new DadosClienteCadastroDto()
             {
