@@ -14,7 +14,9 @@ namespace PrepedidoBusiness.Dtos.ClienteCadastro
         public string Cnpj_Cpf { get; set; }
         public string Rg { get; set; }
         public string Ie { get; set; }
+        public byte Contribuinte_Icms_Status { get; set; }
         public string Tipo { get; set; }
+        public string Observacao_Filiacao { get; set; }
         public DateTime? Nascimento { get; set; }
         public string Sexo { get; set; }
         public string Nome { get; set; }
@@ -31,6 +33,7 @@ namespace PrepedidoBusiness.Dtos.ClienteCadastro
         public string Ramal2 { get; set; }
         public string Obs { get; set; }
         public string Email { get; set; }
+        public string EmailXml { get; set; }
         public string Endereco { get; set; }
         public string Numero { get; set; }
         public string Complemento { get; set; }
