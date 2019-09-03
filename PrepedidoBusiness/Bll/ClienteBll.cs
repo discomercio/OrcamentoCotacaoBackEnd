@@ -42,7 +42,7 @@ namespace PrepedidoBusiness.Bll
         }
 
 
-        public async Task<DadosClienteCadastroDto> BuscarCliente(string cpf_cnpj)
+        public async Task<ClienteCadastroDto> BuscarCliente(string cpf_cnpj)
         {
             var db = contextoProvider.GetContexto();
 
