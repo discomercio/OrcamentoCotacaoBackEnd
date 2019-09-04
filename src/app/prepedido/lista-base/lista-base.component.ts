@@ -64,23 +64,26 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
   }
 
   inscrever(): void {
-    this.prepedidos$ = this.prepedidoListarService.prepedidos$;
-    this.prepedidoListarService.errosPrepedidos$.subscribe(
-      {
-        next: (r) => {
-          this.deuErro(r);
-        }
-      });
-    this.prepedidoListarService.atualizar();
-
-    this.pedidos$ = this.pedidoListarService.pedidos$;
-    this.pedidoListarService.errosPedidos$.subscribe(
-      {
-        next: (r) => {
-          this.deuErro(r);
-        }
-      });
-    this.pedidoListarService.atualizar();
+    if (this.emPrepedidos) {
+      this.prepedidos$ = this.prepedidoListarService.prepedidos$;
+      this.prepedidoListarService.errosPrepedidos$.subscribe(
+        {
+          next: (r) => {
+            this.deuErro(r);
+          }
+        });
+      this.prepedidoListarService.atualizar();
+    }
+    else {
+      this.pedidos$ = this.pedidoListarService.pedidos$;
+      this.pedidoListarService.errosPedidos$.subscribe(
+        {
+          next: (r) => {
+            this.deuErro(r);
+          }
+        });
+      this.pedidoListarService.atualizar();
+    }
   }
 
   //avisamos de erros

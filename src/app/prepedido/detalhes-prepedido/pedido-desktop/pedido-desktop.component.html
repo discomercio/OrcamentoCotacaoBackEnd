@@ -1,3 +1,4 @@
+<!-- copiado de orcamento/pedido.asp -->
 <div class="nossobody">
     <div class="botaoImprimirDIv">
         <button mat-raised-button color="accent" (click)="imprimir()" class="botaoImprimir"
@@ -16,16 +17,16 @@
         reprodução destas informações depende da autorização do emissor.
     </div>
     <form id="fPED" name="fPED" method="post">
-        <input type="hidden" name="pedido_selecionado" id="pedido_selecionado" value='115927N'>
 
         <!--  I D E N T I F I C A Ç Ã O   D O   P E D I D O -->
+        <!-- afazer: MontaHeaderIdentificacaoPedido -->
         <table width='649' cellpadding='0' cellspacing='0' style='border-bottom:1px solid black;'>
             <tr>
                 <td valign='bottom' align='left' width='33%' style='padding-bottom: 4px'>
                     <table cellpadding='0' cellspacing='0'>
                         <tr>
                             <td valign='bottom' align='left'>
-                                <span class='STP' style='color:maroon;'>{{pedido?.StatusHoraPedido}} &nbsp;
+                                <span class='STP' style='color:maroon;'>{{pedido?.StatusHoraPedido.Entregue_Data}} &nbsp;
                                 </span>
                             </td>
                             <td align='left' style='width:6px;padding-bottom:4px'>
@@ -49,7 +50,8 @@
         <br>
 
         <!--  EXIBE LINKS PARA A FAMÍLIA DE PEDIDOS?   -->
-        afazer: exibe_familia_pedido(pedido_selecionado, v_pedido)
+        <!-- afazer: definir se vamos colocar ou não
+            exibe_familia_pedido(pedido_selecionado, v_pedido) -->
 
 
 
@@ -59,15 +61,15 @@
 
                 <td class="MD" align="left">
                     <p class="Rf">LOJA</p>
-                    <p class="C">afazer: BONSHOP AR CONDICIONADO&nbsp;</p>
+                    <p class="C">{{pedido?.DadosCliente?.Loja}}&nbsp;</p>
                 </td>
                 <td width="145" class="MD" align="left">
                     <p class="Rf">INDICADOR</p>
-                    <p class="C">afazer: POLITÉCNIC&nbsp;</p>
+                    <p class="C">{{pedido?.DadosCliente?.Indicador_Orcamentista}}&nbsp;</p>
                 </td>
                 <td width="145" align="left">
                     <p class="Rf">VENDEDOR</p>
-                    <p class="C">afazer: ANDREZA&nbsp;</p>
+                    <p class="C">{{pedido?.DadosCliente?.Vendedor}}&nbsp;</p>
                 </td>
             </tr>
         </table>
@@ -133,7 +135,6 @@
                 </td>
             </tr>
             <tr *ngIf="ehPf()">
-                <!-- AFAZER: TELECOME COMERCIAL 3 (NA ROTINA) -->
                 <td class="MD" width="33%" align="left">
                     <p class="Rf">TELEFONE RESIDENCIAL</p>
                     <p class="C">{{telefone1()}} &nbsp;</p>
@@ -170,9 +171,9 @@
                 </td>
             </tr>
 
-            <tr>
+            <tr *ngIf="pedido?.EnderecoEntrega?.EndEtg_cod_justificativa?.trim() != ''">
                 <td align="left" style="word-wrap:break-word">
-                    <p class="C">afazer: r_pedido?.EndEtg_cod_justificativa &nbsp;</p>
+                    <p class="C">{{pedido?.EnderecoEntrega?.EndEtg_cod_justificativa}} &nbsp;</p>
                 </td>
             </tr>
 
@@ -180,6 +181,7 @@
 
 
         <!--  R E L A Ç Ã O   D E   P R O D U T O S  -->
+        <!-- afazer: revisar a partir daqui -->
         <br>
         <br>
         <table class="Qx" cellspacing="0">
@@ -342,25 +344,13 @@
                 </td>
                 <td class="tdGarInd" nowrap align="left" valign="top">
                     <p class="Rf">Garantia Indicador</p>
-                    <!--                     
-    AFAZER: CAMPO GarantiaIndicadorStatus
-                    <% 	if Cstr(r_pedido.GarantiaIndicadorStatus) = Cstr(COD_GARANTIA_INDICADOR_STATUS__NAO) then
-                        s = "NÃO"
-                    elseif Cstr(r_pedido.GarantiaIndicadorStatus) = Cstr(COD_GARANTIA_INDICADOR_STATUS__SIM) then
-                        s = "SIM"
-                    else
-                        s = ""
-                        end if
-                
-                    if s="" then s="&nbsp;"
-                %> -->
-                    <p class="C" style="margin-top:3px;">???</p>
+                    <p class="C" style="margin-top:3px;">{{pedido?.DetalhesNFPedidoDtoPedido?.GarantiaIndicadorStatus}}&nbsp;</p>
                 </td>
             </tr>
         </table>
         <br>
 
-        parei feito até aqui!!!!
+        afazer: parei feito até aqui!!!!
         <table class="Q" style="width:649px;" cellspacing="0">
             <tr>
                 <td align="left"><span class="Rf">Forma de Pagamento</span></td>

@@ -140,7 +140,7 @@
             </div>
         </mat-card>
     </article>
-    <footer id="header" *ngIf="!telaDesktop && emPrepedidos">
+    <footer id="header" *ngIf="!telaDesktop && emPrepedidos" style="justify-content: space-between; ">
         <div style="float: left;" class="textocelnumero">
             Pré-pedidos localizados: {{(prepedidos$|async)?.length}}
         </div>
@@ -193,7 +193,7 @@
             </div>
         </mat-card>
     </article>
-    <footer id="header" *ngIf="!telaDesktop && !emPrepedidos">
+    <footer id="header" *ngIf="!telaDesktop && !emPrepedidos" style="justify-content: space-between; ">
         <div style="float: left;" class="textocelnumero">
             Pedidos localizados: {{(pedidos$|async)?.length}}
         </div>
