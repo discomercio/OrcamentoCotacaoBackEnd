@@ -3,16 +3,22 @@ import { DadosClienteCadastroDto } from '../ClienteCadastro/DadosClienteCadastro
 import { Constantes } from '../Constantes';
 import { FormatarTelefone } from 'src/app/utils/formatarTelefone';
 
-export class ClienteCadastroUtils{
+export class ClienteCadastroUtils {
 
-    constantes= new Constantes();
+  constantes = new Constantes();
 
-    formata_endereco(p:DadosClienteCadastroDto): string {
-        return new FormatarEndereco().formata_endereco(p.Endereco, p.Numero, p.Complemento, p.Bairro, p.Cidade, p.Uf, p.Cep);
-      }
-    
-   //para dizer se é PF ou PJ
-   ehPf(p:DadosClienteCadastroDto): boolean {
+  formata_endereco(p: DadosClienteCadastroDto): string {
+    if (!p) {
+      return "Sem endereço";
+    }
+    return new FormatarEndereco().formata_endereco(p.Endereco, p.Numero, p.Complemento, p.Bairro, p.Cidade, p.Uf, p.Cep);
+  }
+
+  //para dizer se é PF ou PJ
+  ehPf(p: DadosClienteCadastroDto): boolean {
+    if (!p) {
+      return true;
+    }
     if (p.Tipo)
       return p.Tipo == this.constantes.ID_PF;
     //sem dados! qualqer opção serve...  
@@ -73,7 +79,10 @@ e são usados desta forma:
 
 
     */
-   telefone1(p:DadosClienteCadastroDto): string {
+  telefone1(p: DadosClienteCadastroDto): string {
+    if (!p) {
+      return "";
+    }
     let s = "";
 
     //pessoa física
@@ -105,7 +114,10 @@ e são usados desta forma:
       s2 = s2 + "  (R. " + s_aux + ")";
     return s2;
   }
-  telefone2(p:DadosClienteCadastroDto): string {
+  telefone2(p: DadosClienteCadastroDto): string {
+    if (!p) {
+      return "";
+    }
     let s = "";
 
     //pessoa física
@@ -126,21 +138,23 @@ e são usados desta forma:
       return s2;
     }
 
-    /*
-    afazer: preicsamos do 
-    tel_com_2
-		if (p.TelComercial.tel_com_2) <> "" then
-			s4 = telefone_formata(Trim(.tel_com_2))
-			s_aux = Trim(.ddd_com_2)
-			if s_aux<>"" then s4 = "(" & s_aux & ") " & s4
-			s_aux = Trim(.ramal_com_2)
-			if s_aux<>"" then s4 = s4 & "  (R. " & s_aux & ")"
-			end if
-    end with
-*/
-    return "afazer: tel_com_2";
+    if (!p.TelComercial2)
+      return "";
+    if (p.TelComercial2.trim() == "")
+      return "";
+    let s4 = FormatarTelefone.telefone_formata(p.TelComercial2.trim());
+    let s_aux = p.DddComercial2.trim();
+    if (s_aux != "")
+      s4 = "(" + s_aux + ") " + s4;
+    s_aux = p.Ramal2.trim();
+    if (s_aux != "")
+      s4 = s4 + "  (R. " + s_aux + ")";
+    return s4;
   }
-  telefoneCelular(p:DadosClienteCadastroDto): string {
+  telefoneCelular(p: DadosClienteCadastroDto): string {
+    if (!p) {
+      return "";
+    }
     let s2 = "";
     if (!p.Celular)
       return "";
@@ -152,6 +166,6 @@ e são usados desta forma:
     if (s_aux != "")
       s2 = "(" + s_aux + ") " + s2;
     return s2;
-  }   
+  }
 }
 

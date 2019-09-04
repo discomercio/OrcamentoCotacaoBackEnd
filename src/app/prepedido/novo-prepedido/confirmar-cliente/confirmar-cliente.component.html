@@ -11,11 +11,12 @@
         <button mat-raised-button color="accent" (click)="voltar()">
             <mat-icon>arrow_back</mat-icon> Voltar
         </button>
+        <!-- nao temos o botão salvar porque ele salva automaticamente
         <button mat-raised-button color="accent" (click)="salvar(false)" [disabled]="!salvarAtivo()" >
             <mat-icon>save</mat-icon> Salvar
-        </button>
-        <button mat-raised-button color="accent" (click)="continuar()" >
-            <mat-icon>arrow_forward</mat-icon> Continuar
+        </button> -->
+        <button mat-raised-button color="accent" (click)="continuar()" #idcontinuar type="submit">
+            <mat-icon>arrow_forward</mat-icon> Avançar
         </button>
     </footer>
 </section>

@@ -15,8 +15,33 @@
      -->
 
 
+<!-- 
+enquanto está carregando não msotramos NADA!
+para não dar erro no console
+ -->
 
-<div>
+<div *ngIf="dadosClienteCadastroDto != null">
+    <!-- ************   NOME  ************  -->
+    <div *ngIf="cadastrando">
+        <mat-form-field floatLabel="floatLabel()" *ngIf="ehPf()" class="largura-maxima-campo-formulario">
+            <input matInput type="text" placeholder="NOME" [(readonly)]="!cadastrando"
+                [(ngModel)]="dadosClienteCadastroDto.Nome" required maxlength="60">
+        </mat-form-field>
+
+        <mat-form-field floatLabel="floatLabel()" *ngIf="!ehPf()" class="largura-maxima-campo-formulario">
+            <input matInput type="text" placeholder="RAZÃO SOCIAL" [(readonly)]="!cadastrando"
+                [(ngModel)]="dadosClienteCadastroDto.Nome" required maxlength="60">
+        </mat-form-field>
+    </div>
+
+    <div *ngIf="!cadastrando">
+        <span class="caixa" *ngIf="ehPf()"><span class="rotulo">Nome:</span> <span
+                class="dado">{{dadosClienteCadastroDto?.Nome}}</span></span>
+        <span class="caixa" *ngIf="!ehPf()"><span class="rotulo">Razão social:</span> <span
+                class="dado">{{dadosClienteCadastroDto?.Nome}}</span></span>
+    </div>
+
+
     <span *ngIf="cadastrando">
         <!-- CPF e CNPJ não estão ligados ao model pq não são editados -->
         <mat-form-field floatLabel="floatLabel()" *ngIf="!ehPf()" style="width: 22ch;">
@@ -65,25 +90,272 @@
     <span *ngIf="!cadastrando">
         <span class="caixa" *ngIf="ehPf()">
             <span class="rotulo">RG:</span> <span class="dado">{{dadosClienteCadastroDto.Rg}}</span>
-            <span class="rotulo">NASCIMENTO:</span> <span
+            <span class="rotulo">Nascimento:</span> <span
                 class="dado">{{DataUtilsFormatarTela(dadosClienteCadastroDto.Nascimento)}}</span>
-            <span class="rotulo">SEXO:</span> <span class="dado">{{dadosClienteCadastroDto.Sexo}}</span>
+            <span class="rotulo">Sexo:</span> <span class="dado">{{dadosClienteCadastroDto.Sexo}}</span>
         </span>
+    </span>
+
+    <div *ngIf="cadastrando">
+        <!-- ************   ENDEREÇO   ************  -->
+        <mat-form-field floatLabel="floatLabel()" class="largura-maxima-campo-formulario">
+            <input matInput type="text" placeholder="ENDEREÇO" [(readonly)]="!cadastrando"
+                [(ngModel)]="dadosClienteCadastroDto.Endereco" required maxlength="60" size="85">
+        </mat-form-field>
+
+        <!-- ************ Nº/COMPLEMENTO ************  -->
+        <mat-form-field floatLabel="floatLabel()" style="width: 14ch;">
+            <input matInput type="text" placeholder="Nº" [(readonly)]="!cadastrando"
+                [(ngModel)]="dadosClienteCadastroDto.Numero" required maxlength="20" size="10">
+        </mat-form-field>
+        <mat-form-field floatLabel="floatLabel()" style="width: 18ch;">
+            <input matInput type="text" placeholder="COMPLEMENTO" [(readonly)]="!cadastrando"
+                [(ngModel)]="dadosClienteCadastroDto.Complemento" maxlength="60" size="10">
+        </mat-form-field>
+
+
+        <!-- ************ BAIRRO/CIDADE ************  -->
+        <mat-form-field floatLabel="floatLabel()" style="width: 25ch;">
+            <input matInput type="text" placeholder="BAIRRO" [(readonly)]="!cadastrando"
+                [(ngModel)]="dadosClienteCadastroDto.Bairro" required maxlength="72">
+        </mat-form-field>
+
+        <mat-form-field floatLabel="floatLabel()" style="width: 25ch;">
+            <input matInput type="text" placeholder="CIDADE" [(readonly)]="!cadastrando"
+                [(ngModel)]="dadosClienteCadastroDto.Cidade" required maxlength="60">
+        </mat-form-field>
+
+
+        <!-- ************ UF/CEP ************  -->
+        <!-- Afazer: select de estados -->
+        <mat-form-field floatLabel="floatLabel()" style="width: 4em;">
+            <input matInput type="text" placeholder="UF" [(readonly)]="!cadastrando"
+                [(ngModel)]="dadosClienteCadastroDto.Uf" required maxlength="2" size="3">
+        </mat-form-field>
+
+        <!-- Afazer: janela de busca de CEP (e dar erro quando CEP for inválido) -->
+        <mat-form-field floatLabel="floatLabel()" style="width: 12ch;">
+            <input matInput type="text" placeholder="CEP" [(readonly)]="!cadastrando"
+                [(ngModel)]="dadosClienteCadastroDto.Cep" required maxlength="9" size="11">
+        </mat-form-field>
+    </div>
+
+    <div *ngIf="!cadastrando">
+        <span class="caixa">
+            <!-- ************   ENDEREÇO   ************  -->
+            <span class="rotulo">Endereço:</span> <span
+                class="dado">{{clienteCadastroUtils.formata_endereco(dadosClienteCadastroDto)}}</span>
+        </span>
+    </div>
+
+
+    <div *ngIf="cadastrando">
+        <!-- ************   TELEFONE RESIDENCIAL   ************  -->
+        <div *ngIf="ehPf()">
+            <!-- afazer: colocar validação de DDD ddd_ok -->
+            <mat-form-field floatLabel="floatLabel()" style="width: 4ch;">
+                <input matInput type="number" placeholder="DDD" [(readonly)]="!cadastrando"
+                    [(ngModel)]="dadosClienteCadastroDto.DddResidencial" required maxlength="4" size="5">
+            </mat-form-field>
+            <mat-form-field floatLabel="floatLabel()" style="width: 12ch;">
+                <input matInput type="text" placeholder="TELEFONE RESIDENCIAL" [(readonly)]="!cadastrando"
+                    [(ngModel)]="dadosClienteCadastroDto.TelefoneResidencial" required maxlength="11" size="12">
+            </mat-form-field>
+
+            <!-- afazer: colocar validação de DDD ddd_ok -->
+            <mat-form-field floatLabel="floatLabel()" style="width: 4ch;">
+                <input matInput type="number" placeholder="DDD" [(readonly)]="!cadastrando"
+                    [(ngModel)]="dadosClienteCadastroDto.DddCelular" required maxlength="4" size="5">
+            </mat-form-field>
+            <mat-form-field floatLabel="floatLabel()" style="width: 12ch;">
+                <input matInput type="text" placeholder="CELULAR" [(readonly)]="!cadastrando"
+                    [(ngModel)]="dadosClienteCadastroDto.Celular" required maxlength="11" size="12">
+            </mat-form-field>
+        </div>
+
+        <!-- ************   TELEFONE COMERCIAL   ************  -->
+        <!-- para pessoa física e jurídica -->
+        <!-- afazer: colocar validação de DDD ddd_ok -->
+        <div>
+            <mat-form-field floatLabel="floatLabel()" style="width: 4ch;">
+                <input matInput type="number" placeholder="DDD" [(readonly)]="!cadastrando"
+                    [(ngModel)]="dadosClienteCadastroDto.DddComercial" required maxlength="4" size="5">
+            </mat-form-field>
+            <mat-form-field floatLabel="floatLabel()" style="width: 12ch;" *ngIf="ehPf()">
+                <input matInput type="text" placeholder="TELEFONE COMERCIAL" [(readonly)]="!cadastrando"
+                    [(ngModel)]="dadosClienteCadastroDto.TelComercial" required maxlength="11" size="12">
+            </mat-form-field>
+            <mat-form-field floatLabel="floatLabel()" style="width: 12ch;" *ngIf="!ehPf()">
+                <input matInput type="text" placeholder="TELEFONE" [(readonly)]="!cadastrando"
+                    [(ngModel)]="dadosClienteCadastroDto.TelComercial" required maxlength="11" size="12">
+            </mat-form-field>
+
+            <mat-form-field floatLabel="floatLabel()" style="width: 12ch;">
+                <input matInput type="text" placeholder="RAMAL" [(readonly)]="!cadastrando"
+                    [(ngModel)]="dadosClienteCadastroDto.Ramal" required maxlength="4" size="6">
+            </mat-form-field>
+        </div>
+
+
+        afazer: colocar validação de DDD ddd_ok -->
+        <div *ngIf="!ehPf()">
+
+            <mat-form-field floatLabel="floatLabel()" style="width: 4ch;">
+                <input matInput type="number" placeholder="DDD" [(readonly)]="!cadastrando"
+                    [(ngModel)]="dadosClienteCadastroDto.DddComercial2" required maxlength="4" size="5">
+            </mat-form-field>
+            <mat-form-field floatLabel="floatLabel()" style="width: 12ch;">
+                <input matInput type="text" placeholder="TELEFONE" [(readonly)]="!cadastrando"
+                    [(ngModel)]="dadosClienteCadastroDto.TelComercial2" required maxlength="11" size="12">
+            </mat-form-field>
+            <mat-form-field floatLabel="floatLabel()" style="width: 12ch;">
+                <input matInput type="text" placeholder="RAMAL" [(readonly)]="!cadastrando"
+                    [(ngModel)]="dadosClienteCadastroDto.Ramal2" required maxlength="4" size="6">
+            </mat-form-field>
+        </div>
+
+    </div>
+
+    <div *ngIf="!cadastrando">
+        <!-- ************   TELEFONE RESIDENCIAL   ************  -->
+        <div *ngIf="ehPf()">
+            <span class="caixa">
+                <span class="rotulo">Telefones:</span>
+                <span class="dado">{{clienteCadastroUtils.telefone1(dadosClienteCadastroDto)}}</span>
+                <span class="dado">{{clienteCadastroUtils.telefone2(dadosClienteCadastroDto)}}</span>
+                <span class="dado">{{clienteCadastroUtils.telefone2(dadosClienteCadastroDto)}}</span>
+            </span>
+        </div>
+
+        <div *ngIf="!ehPf()">
+            <span class="caixa">
+                <span class="rotulo">Telefones:</span>
+                <span class="dado">{{clienteCadastroUtils.telefone1(dadosClienteCadastroDto)}}</span>
+                <span class="dado">{{clienteCadastroUtils.telefone2(dadosClienteCadastroDto)}}</span>
+            </span>
+        </div>
+
+    </div>
+
+    <!-- ************   OBSERVAÇÃO (ANTIGO CAMPO FILIAÇÃO)   ************  -->
+    <span *ngIf="ehPf()">
+        <span *ngIf="cadastrando">
+            <mat-form-field floatLabel="floatLabel()" *ngIf="ehPf()" class="largura-maxima-campo-formulario">
+                <input matInput type="text" placeholder="OBSERVAÇÃO" [(readonly)]="!cadastrando"
+                    [(ngModel)]="dadosClienteCadastroDto.Observacao_Filiacao" required maxlength="60">
+            </mat-form-field>
+        </span>
+        <span *ngIf="!cadastrando">
+            <div>
+                <span class="caixa">
+                    <span class="rotulo">Observação:</span>
+                    <span class="dado">{{dadosClienteCadastroDto?.Observacao_Filiacao}} </span>
+                </span>
+            </div>
+        </span>
+    </span>
+
+    <!--  ************   CONTATO   ************ -->
+    <span *ngIf="!ehPf()">
+        <span *ngIf="cadastrando">
+            <mat-form-field floatLabel="floatLabel()" *ngIf="!ehPf()" class="largura-maxima-campo-formulario">
+                <input matInput type="text" placeholder="NOME DA PESSOA PARA CONTATO NA EMPRESA"
+                    [(readonly)]="!cadastrando" [(ngModel)]="dadosClienteCadastroDto.Contato" required maxlength="30">
+            </mat-form-field>
+        </span>
+        <span *ngIf="!cadastrando">
+            <div>
+                <span class="caixa">
+                    <span class="rotulo">Nome da pessoa para contato na empresa:</span>
+                    <span class="dado">{{dadosClienteCadastroDto?.Contato}}</span>
+                </span>
+            </div>
+        </span>
+    </span>
+
+    <!-- ************   E-MAIL   ************  -->
+    <span *ngIf="cadastrando">
+        <mat-form-field floatLabel="floatLabel()" class="largura-maxima-campo-formulario">
+            <input matInput type="text" placeholder="E-MAIL" [(readonly)]="!cadastrando"
+                [(ngModel)]="dadosClienteCadastroDto.Email" required maxlength="60">
+        </mat-form-field>
+    </span>
+    <span *ngIf="!cadastrando">
+        <div>
+            <span class="caixa">
+                <span class="rotulo">E-mail:</span>
+                <span class="dado">{{dadosClienteCadastroDto?.Email}}</span>
+            </span>
+        </div>
+    </span>
+
+
+    <!-- ************   E-MAIL (XML)  ************  -->
+    <span *ngIf="cadastrando">
+        <mat-form-field floatLabel="floatLabel()" class="largura-maxima-campo-formulario">
+            <input matInput type="text" placeholder="E-MAIL (XML)" [(readonly)]="!cadastrando"
+                [(ngModel)]="dadosClienteCadastroDto.EmailXml" required maxlength="60">
+        </mat-form-field>
+    </span>
+    <span *ngIf="!cadastrando">
+        <div>
+            <span class="caixa">
+                <span class="rotulo">E-mail (xml):</span>
+                <span class="dado">{{dadosClienteCadastroDto?.EmailXml}}</span>
+            </span>
+        </div>
+    </span>
+
+
+    <!-- ************   PRODUTOR RURAL / CONTRIBUINTE ICMS / IE ************  -->
+    <!-- passamos apra o fim do formulário porque,. quando está confirnado um cliente já existente, os campos editáveis ficam no fim da tela -->
+    <span *ngIf="ehPf()">
+        <div>
+            <!-- se está confirando, precisa de um espaço maior em cima -->
+            <div *ngIf="!cadastrando" style="padding-top: 1.5em;"></div>
+            <mat-form-field floatLabel="floatLabel()" [ngStyle]="{'padding':!cadastrando?'0em':''}">
+                <mat-label>PRODUTOR RURAL</mat-label>
+                <!-- produtor rural sempre é editável -->
+                <mat-select required [(ngModel)]="dadosClienteCadastroDto.ProdutorRural">
+                    <mat-option>Selecione</mat-option>
+                    <mat-option [(value)]="constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO">Não</mat-option>
+                    <mat-option [(value)]="constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM">Sim</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field floatLabel="floatLabel()"
+                *ngIf="dadosClienteCadastroDto.ProdutorRural == constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM"
+                style="width: 25ch;">
+                <input matInput type="text" placeholder="IE" [(ngModel)]="dadosClienteCadastroDto.Ie" maxlength="20">
+            </mat-form-field>
+
+            <mat-form-field floatLabel="floatLabel()"
+                *ngIf="dadosClienteCadastroDto.ProdutorRural == constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM">
+                <mat-label>CONTRIBUINTE ICMS</mat-label>
+                <mat-select required [(ngModel)]="dadosClienteCadastroDto.Contribuinte_Icms_Status">
+                    <mat-option>Selecione</mat-option>
+                    <mat-option [(value)]="constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO">Não</mat-option>
+                    <mat-option [(value)]="constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM">Sim</mat-option>
+                    <mat-option [(value)]="constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO">Isento</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
     </span>
 
     <!-- campos específicos da pessoa jurídica -->
     <span *ngIf="!ehPf()">
 
+        <!-- se está confirando, precisa de um espaço maior em cima -->
+        <div *ngIf="!cadastrando" style="padding-top: 1.5em;"></div>
+
         <!-- IE sempre é editável -->
-        <mat-form-field floatLabel="floatLabel()" style="width: 25ch;">
+        <mat-form-field floatLabel="floatLabel()" style="width: 25ch;" [ngStyle]="{'padding':!cadastrando?'0em':''}">
             <input matInput type="text" placeholder="IE" [(ngModel)]="dadosClienteCadastroDto.Ie" maxlength="20">
         </mat-form-field>
 
         <mat-form-field floatLabel="floatLabel()">
-            <mat-label>CONTRIBUINTE ICMS
-                <!-- (afazer, faltando no modelo contribuinte_icms_status) -->
-            </mat-label>
-            <mat-select required>
+            <mat-label>CONTRIBUINTE ICMS </mat-label>
+            <mat-select required [(ngModel)]="dadosClienteCadastroDto.Contribuinte_Icms_Status">
                 <mat-option>Selecione</mat-option>
                 <mat-option [(value)]="constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO">Não
                 </mat-option>
@@ -95,274 +367,9 @@
         </mat-form-field>
 
     </span>
-</div>
 
-<!-- ************   PRODUTOR RURAL / CONTRIBUINTE ICMS / IE ************  -->
-<span *ngIf="ehPf()">
-    <div>
-        <mat-form-field floatLabel="floatLabel()">
-            <mat-label>PRODUTOR RURAL</mat-label>
-            <!-- produtor rural sempre é editável -->
-            <mat-select required [(ngModel)]="dadosClienteCadastroDto.ProdutorRural">
-                <mat-option>Selecione</mat-option>
-                <mat-option [(value)]="constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO">Não</mat-option>
-                <mat-option [(value)]="constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM">Sim</mat-option>
-            </mat-select>
-        </mat-form-field>
-
-        <mat-form-field floatLabel="floatLabel()"
-            *ngIf="dadosClienteCadastroDto.ProdutorRural == constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM"
-            style="width: 25ch;">
-            <input matInput type="text" placeholder="IE" [(ngModel)]="dadosClienteCadastroDto.Ie" maxlength="20">
-        </mat-form-field>
-
-        <mat-form-field floatLabel="floatLabel()"
-            *ngIf="dadosClienteCadastroDto.ProdutorRural == constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM">
-            <mat-label>CONTRIBUINTE ICMS
-                <!-- (afazer, faltando no modelo contribuinte_icms_status) -->
-            </mat-label>
-            <mat-select required>
-                <mat-option>Selecione</mat-option>
-                <mat-option [(value)]="constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO">Não</mat-option>
-                <mat-option [(value)]="constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM">Sim</mat-option>
-                <mat-option [(value)]="constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO">Isento</mat-option>
-            </mat-select>
-        </mat-form-field>
-    </div>
-</span>
-
-
-<!-- ************   NOME  ************  -->
-<div *ngIf="cadastrando">
-    <mat-form-field floatLabel="floatLabel()" *ngIf="ehPf()" class="largura-maxima-campo-formulario">
-        <input matInput type="text" placeholder="NOME" [(readonly)]="!cadastrando"
-            [(ngModel)]="dadosClienteCadastroDto.Nome" required maxlength="60">
-    </mat-form-field>
-
-    <mat-form-field floatLabel="floatLabel()" *ngIf="!ehPf()" class="largura-maxima-campo-formulario">
-        <input matInput type="text" placeholder="RAZÃO SOCIAL" [(readonly)]="!cadastrando"
-            [(ngModel)]="dadosClienteCadastroDto.Nome" required maxlength="60">
-    </mat-form-field>
-</div>
-
-<div *ngIf="!cadastrando">
-    <span class="caixa" *ngIf="ehPf()"><span class="rotulo">NOME:</span> <span
-            class="dado">{{dadosClienteCadastroDto.Nome}}</span></span>
-    <span class="caixa" *ngIf="!ehPf()"><span class="rotulo">RAZÃO SOCIAL:</span> <span
-            class="dado">{{dadosClienteCadastroDto.Nome}}</span></span>
-</div>
-
-<div *ngIf="cadastrando">
-    <!-- ************   ENDEREÇO   ************  -->
-    <mat-form-field floatLabel="floatLabel()" class="largura-maxima-campo-formulario">
-        <input matInput type="text" placeholder="ENDEREÇO" [(readonly)]="!cadastrando"
-            [(ngModel)]="dadosClienteCadastroDto.Endereco" required maxlength="60" size="85">
-    </mat-form-field>
-
-    <!-- ************ Nº/COMPLEMENTO ************  -->
-    <mat-form-field floatLabel="floatLabel()" style="width: 14ch;">
-        <input matInput type="text" placeholder="Nº" [(readonly)]="!cadastrando"
-            [(ngModel)]="dadosClienteCadastroDto.Numero" required maxlength="20" size="10">
-    </mat-form-field>
-    <mat-form-field floatLabel="floatLabel()" style="width: 18ch;">
-        <input matInput type="text" placeholder="COMPLEMENTO" [(readonly)]="!cadastrando"
-            [(ngModel)]="dadosClienteCadastroDto.Complemento" maxlength="60" size="10">
-    </mat-form-field>
-
-
-    <!-- ************ BAIRRO/CIDADE ************  -->
-    <mat-form-field floatLabel="floatLabel()" style="width: 25ch;">
-        <input matInput type="text" placeholder="BAIRRO" [(readonly)]="!cadastrando"
-            [(ngModel)]="dadosClienteCadastroDto.Bairro" required maxlength="72">
-    </mat-form-field>
-
-    <mat-form-field floatLabel="floatLabel()" style="width: 25ch;">
-        <input matInput type="text" placeholder="CIDADE" [(readonly)]="!cadastrando"
-            [(ngModel)]="dadosClienteCadastroDto.Cidade" required maxlength="60">
-    </mat-form-field>
-
-
-    <!-- ************ UF/CEP ************  -->
-    <!-- Afazer: select de estados -->
-    <mat-form-field floatLabel="floatLabel()" style="width: 4em;">
-        <input matInput type="text" placeholder="UF" [(readonly)]="!cadastrando"
-            [(ngModel)]="dadosClienteCadastroDto.Uf" required maxlength="2" size="3">
-    </mat-form-field>
-
-    <!-- Afazer: janela de busca de CEP (e dar erro quando CEP for inválido) -->
-    <mat-form-field floatLabel="floatLabel()" style="width: 12ch;">
-        <input matInput type="text" placeholder="CEP" [(readonly)]="!cadastrando"
-            [(ngModel)]="dadosClienteCadastroDto.Cep" required maxlength="9" size="11">
-    </mat-form-field>
-</div>
-
-<div *ngIf="!cadastrando">
-    <span class="caixa">
-        <!-- afazer: resolver formatação do endereço -->
-        <!-- ************   ENDEREÇO   ************  -->
-        <span class="rotulo">ENDEREÇO:</span> <span
-            class="dado">{{clienteCadastroUtils.formata_endereco(dadosClienteCadastroDto)}}</span>
-    </span>
-</div>
-
-
-<div *ngIf="cadastrando">
-    <!-- ************   TELEFONE RESIDENCIAL   ************  -->
-    <div *ngIf="ehPf()">
-        <!-- afazer: colocar validação de DDD ddd_ok -->
-        <mat-form-field floatLabel="floatLabel()" style="width: 4ch;">
-            <input matInput type="number" placeholder="DDD" [(readonly)]="!cadastrando"
-                [(ngModel)]="dadosClienteCadastroDto.DddResidencial" required maxlength="4" size="5">
-        </mat-form-field>
-        <mat-form-field floatLabel="floatLabel()" style="width: 12ch;">
-            <input matInput type="text" placeholder="TELEFONE RESIDENCIAL" [(readonly)]="!cadastrando"
-                [(ngModel)]="dadosClienteCadastroDto.TelefoneResidencial" required maxlength="11" size="12">
-        </mat-form-field>
-
-        <!-- afazer: colocar validação de DDD ddd_ok -->
-        <mat-form-field floatLabel="floatLabel()" style="width: 4ch;">
-            <input matInput type="number" placeholder="DDD" [(readonly)]="!cadastrando"
-                [(ngModel)]="dadosClienteCadastroDto.DddCelular" required maxlength="4" size="5">
-        </mat-form-field>
-        <mat-form-field floatLabel="floatLabel()" style="width: 12ch;">
-            <input matInput type="text" placeholder="CELULAR" [(readonly)]="!cadastrando"
-                [(ngModel)]="dadosClienteCadastroDto.Celular" required maxlength="11" size="12">
-        </mat-form-field>
-    </div>
-
-    <!-- ************   TELEFONE COMERCIAL   ************  -->
-    <!-- para pessoa física e jurídica -->
-    <!-- afazer: colocar validação de DDD ddd_ok -->
-    <div>
-        <mat-form-field floatLabel="floatLabel()" style="width: 4ch;">
-            <input matInput type="number" placeholder="DDD" [(readonly)]="!cadastrando"
-                [(ngModel)]="dadosClienteCadastroDto.DddComercial" required maxlength="4" size="5">
-        </mat-form-field>
-        <mat-form-field floatLabel="floatLabel()" style="width: 12ch;" *ngIf="ehPf()">
-            <input matInput type="text" placeholder="TELEFONE COMERCIAL" [(readonly)]="!cadastrando"
-                [(ngModel)]="dadosClienteCadastroDto.TelComercial" required maxlength="11" size="12">
-        </mat-form-field>
-        <mat-form-field floatLabel="floatLabel()" style="width: 12ch;" *ngIf="!ehPf()">
-            <input matInput type="text" placeholder="TELEFONE" [(readonly)]="!cadastrando"
-                [(ngModel)]="dadosClienteCadastroDto.TelComercial" required maxlength="11" size="12">
-        </mat-form-field>
-
-        <mat-form-field floatLabel="floatLabel()" style="width: 12ch;">
-            <input matInput type="text" placeholder="RAMAL" [(readonly)]="!cadastrando"
-                [(ngModel)]="dadosClienteCadastroDto.Ramal" required maxlength="4" size="6">
-        </mat-form-field>
-    </div>
-
-
-    <!-- afazer: faltando campos de com_2
-                afazer: colocar validação de DDD ddd_ok -->
-    <div *ngIf="!ehPf()">
-
-        <mat-form-field floatLabel="floatLabel()" style="width: 4ch;">
-            <input matInput type="number" placeholder="DDD" [(readonly)]="!cadastrando"
-                [(ngModel)]="dadosClienteCadastroDto.DddComercial" required maxlength="4" size="5">
-        </mat-form-field>
-        <mat-form-field floatLabel="floatLabel()" style="width: 12ch;">
-            <input matInput type="text" placeholder="TELEFONE" [(readonly)]="!cadastrando"
-                [(ngModel)]="dadosClienteCadastroDto.DddComercial" required maxlength="11" size="12">
-        </mat-form-field>
-        <mat-form-field floatLabel="floatLabel()" style="width: 12ch;">
-            <input matInput type="text" placeholder="RAMAL" [(readonly)]="!cadastrando"
-                [(ngModel)]="dadosClienteCadastroDto.Ramal" required maxlength="4" size="6">
-        </mat-form-field>
-    </div>
-
-</div>
-
-<div *ngIf="!cadastrando">
-    <!-- ************   TELEFONE RESIDENCIAL   ************  -->
-    <div *ngIf="ehPf()">
-        <span class="caixa">
-            <span class="rotulo">TELEFONES:</span>
-            <span class="dado">{{clienteCadastroUtils.telefone1(dadosClienteCadastroDto)}}</span>
-            <span class="dado">{{clienteCadastroUtils.telefone2(dadosClienteCadastroDto)}}</span>
-            <span class="dado">{{clienteCadastroUtils.telefone2(dadosClienteCadastroDto)}}</span>
-        </span>
-    </div>
-
-    <div *ngIf="!ehPf()">
-        <span class="caixa">
-            <span class="rotulo">TELEFONE 1:</span>
-            <span class="dado">{{clienteCadastroUtils.telefone1(dadosClienteCadastroDto)}}</span>
-        </span>
-        <span class="caixa">
-            <span class="rotulo">TELEFONE 2:</span>
-            <span class="dado">{{clienteCadastroUtils.telefone2(dadosClienteCadastroDto)}}</span>
-        </span>
-    </div>
-
-</div>
-
-<!-- ************   OBSERVAÇÃO (ANTIGO CAMPO FILIAÇÃO)   ************  -->
-<span *ngIf="ehPf()">
-    <span *ngIf="cadastrando">
-        <mat-form-field floatLabel="floatLabel()" *ngIf="ehPf()" class="largura-maxima-campo-formulario">
-            <input matInput type="text" placeholder="OBSERVAÇÃO (afazer, falta campo filiacao)"
-                [(readonly)]="!cadastrando" [(ngModel)]="dadosClienteCadastroDto.Endereco" required maxlength="60">
-        </mat-form-field>
-    </span>
-    <span *ngIf="!cadastrando">
-        <span class="caixa">
-            <span class="rotulo">OBSERVAÇÃO:</span>
-            <span class="dado">{{dadosClienteCadastroDto.Endereco}} (afazer, falta campo filiacao)</span>
-        </span>
-    </span>
-</span>
-
-<!--  ************   CONTATO   ************ -->
-<span *ngIf="!ehPf()">
-    <span *ngIf="cadastrando">
-        <mat-form-field floatLabel="floatLabel()" *ngIf="!ehPf()" class="largura-maxima-campo-formulario">
-            <input matInput type="text"
-                placeholder="NOME DA PESSOA PARA CONTATO NA EMPRESA (afazer, falta campo contato)"
-                [(readonly)]="!cadastrando" [(ngModel)]="dadosClienteCadastroDto.Endereco" required maxlength="30">
-        </mat-form-field>
-    </span>
-    <span *ngIf="!cadastrando">
-        <span class="caixa">
-            <span class="rotulo">NOME DA PESSOA PARA CONTATO NA EMPRESA (afazer, falta campo contato)</span>
-            <span class="dado">{{dadosClienteCadastroDto.Endereco}}</span>
-        </span>
-    </span>
-</span>
-
-<!-- ************   E-MAIL   ************  -->
-<span *ngIf="cadastrando">
-    <mat-form-field floatLabel="floatLabel()" class="largura-maxima-campo-formulario">
-        <input matInput type="text" placeholder="E-MAIL" [(readonly)]="!cadastrando"
-            [(ngModel)]="dadosClienteCadastroDto.Email" required maxlength="60">
-    </mat-form-field>
-</span>
-<span *ngIf="!cadastrando">
-    <span class="caixa">
-        <span class="rotulo">E-MAIL</span>
-        <span class="dado">{{dadosClienteCadastroDto.Email}}</span>
-    </span>
-</span>
-
-
-<!-- ************   E-MAIL (XML)  ************  -->
-<span *ngIf="cadastrando">
-    <mat-form-field floatLabel="floatLabel()" class="largura-maxima-campo-formulario">
-        <input matInput type="text" placeholder="E-MAIL (XML) (afazer, falta campo email_xml) "
-            [(readonly)]="!cadastrando" [(ngModel)]="dadosClienteCadastroDto.Email" required maxlength="60">
-    </mat-form-field>
-</span>
-<span *ngIf="!cadastrando">
-    <span class="caixa">
-        <span class="rotulo">E-MAIL (XML) (afazer, falta campo email_xml)</span>
-        <span class="dado">{{dadosClienteCadastroDto.Email}}</span>
-    </span>
-</span>
-
-
-<!-- afazer: terminar o resto do formulário -->
-<!-- 
+    <!-- afazer: terminar o resto do formulário -->
+    <!-- 
             
     <comentario ************  CAMPOS DO CADASTRO  ************ comentario>
     <form id="fCAD" name="fCAD" method="post" action="ClienteAtualiza.asp">
@@ -988,7 +995,7 @@
             </html>  -->
 
 
-<!-- ************   EXIBE OBSERVAÇÕES CREDITÍCIAS?  ************
+    <!-- ************   EXIBE OBSERVAÇÕES CREDITÍCIAS?  ************
     está com display:none!
     <div *ngIf="!cadastrando">
         <div *ngIf="dadosClienteCadastroDto_obs_crediticias() !== ''">
@@ -999,3 +1006,4 @@
             <br>
         </div>
     </div> -->
+</div>

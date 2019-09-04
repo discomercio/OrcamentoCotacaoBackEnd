@@ -1,8 +1,7 @@
-export class PrepedidosCadastradosDtoPrepedido {
+﻿export class PrepedidosCadastradosDtoPrepedido {
     Status: string;
     NumeroPrepedido: string;
-    //está vindo como string do c#!
-    DataPrePedido: Date | null;
+    DataPrePedido: Date | string | null;
     NomeCliente: string;
     ValoTotal: number | null;
 }

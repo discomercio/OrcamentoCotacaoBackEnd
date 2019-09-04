@@ -73,7 +73,7 @@ export class SelecionarClienteComponent extends TelaDesktopBaseComponent impleme
           return;
         }
         //cliente já existe
-        this.router.navigate(['confirmar-cliente', r.Cnpj_Cpf], { relativeTo: this.activatedRoute, state: r })
+        this.router.navigate(['confirmar-cliente', StringUtils.retorna_so_digitos(r.DadosCliente.Cnpj_Cpf)], { relativeTo: this.activatedRoute, state: r })
       }).catch((r) => {
         this.mostrarErro();
       });

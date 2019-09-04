@@ -1,13 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DadosClienteCadastroDto } from 'src/app/dto/ClienteCadastro/DadosClienteCadastroDto';
-import { runInThisContext } from 'vm';
-import { StringUtils } from 'src/app/utils/stringUtils';
 import { ActivatedRoute } from '@angular/router';
-import { Title } from '@angular/platform-browser';
-import { CpfCnpjUtils } from 'src/app/utils/cpfCnpjUtils';
-import { Constantes } from 'src/app/dto/Constantes';
 import { TelaDesktopBaseComponent } from 'src/app/servicos/telaDesktop/telaDesktopBaseComponent';
-import { supportsPassiveEventListeners } from '@angular/cdk/platform';
 import { TelaDesktopService } from 'src/app/servicos/telaDesktop/telaDesktop.service';
 
 @Component({

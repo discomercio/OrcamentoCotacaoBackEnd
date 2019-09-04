@@ -39,7 +39,7 @@ export class ClienteComponent extends TelaDesktopBaseComponent implements OnInit
           return;
         }
         //cliente já existe
-        this.dadosClienteCadastroDto = r;
+        this.dadosClienteCadastroDto = r.DadosCliente;
       }).catch((r) => {
         //erro...
         const dialogRef = this.dialog.open(AlertDialogComponent, {

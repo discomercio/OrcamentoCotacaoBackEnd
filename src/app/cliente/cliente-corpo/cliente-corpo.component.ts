@@ -46,6 +46,9 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
   }
   private initEhPf() {
     //testamos pelo tamanho do CPF/CNPJ
+    if(!this.dadosClienteCadastroDto){
+      return;
+    }
     this.calculadoEhPf = false;
     if (this.dadosClienteCadastroDto.Cnpj_Cpf && StringUtils.retorna_so_digitos(this.dadosClienteCadastroDto.Cnpj_Cpf).length == 11) {
       this.calculadoEhPf = true;
@@ -74,6 +77,9 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
 
   //dados para exibir
   cnpj_cpf_formatado(): string {
+    if (!this.dadosClienteCadastroDto || !this.dadosClienteCadastroDto.Cnpj_Cpf) {
+      return "";
+    }
     return CpfCnpjUtils.cnpj_cpf_formata(this.dadosClienteCadastroDto.Cnpj_Cpf);
   }
 

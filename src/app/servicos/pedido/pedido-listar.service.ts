@@ -4,9 +4,8 @@ import { ParamsBuscaPedido } from './paramsBuscaPedido';
 import { BehaviorSubject } from 'rxjs';
 import { DataUtils } from 'src/app/utils/dataUtils';
 import { environment } from 'src/environments/environment';
-import { PedidosDtoPedido } from '../../dto/pedido/pedidosDtoPedido'
-import { utils } from 'protractor';
 import { StringUtils } from 'src/app/utils/stringUtils';
+import { PedidoDtoPedido } from 'src/app/dto/pedido/pedidosDtoPedido';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +23,7 @@ export class PedidoListarService {
   }
 
   public carregando: boolean = false;
-  pedidos$: BehaviorSubject<PedidosDtoPedido[]> = new BehaviorSubject(new Array());
+  pedidos$: BehaviorSubject<PedidoDtoPedido[]> = new BehaviorSubject(new Array());
   errosPedidos$: BehaviorSubject<any> = new BehaviorSubject(null);
 
   public atualizar(): void {
@@ -51,7 +50,7 @@ export class PedidoListarService {
 
     this.carregando = true;
 
-    this.http.get<PedidosDtoPedido[]>(environment.apiUrl + 'pedido/listarPedidos', { params: params }).subscribe(
+    this.http.get<PedidoDtoPedido[]>(environment.apiUrl + 'pedido/listarPedidos', { params: params }).subscribe(
       {
         next: (r) => {
           this.carregando = false;

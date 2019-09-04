@@ -10,13 +10,13 @@ import { Location } from '@angular/common';
 import { Sort } from '@angular/material/sort';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { PedidoListarService } from '../../servicos/pedido/pedido-listar.service';
-import { PedidosDtoPedido } from '../../../../src/app/dto/pedido/pedidosDtoPedido';
 import { environment } from '../../../../src/environments/environment';
 import { ConfirmationDialogComponent } from '../../../../src/app/utils/confirmation-dialog/confirmation-dialog.component';
 import { PrepedidoRemoverService } from '../../../../src/app/servicos/prepedido/prepedido-remover.service';
 import { Router } from '@angular/router';
 import { AlertDialogComponent } from 'src/app/utils/alert-dialog/alert-dialog.component';
 import { ImpressaoService } from 'src/app/utils/impressao.service';
+import { PedidoDtoPedido } from 'src/app/dto/pedido/pedidosDtoPedido';
 
 @Component({
   selector: 'app-lista-base',
@@ -46,7 +46,7 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
   moedaUtils: MoedaUtils = new MoedaUtils();
 
   prepedidos$: Observable<PrepedidosCadastradosDtoPrepedido[]>;
-  pedidos$: Observable<PedidosDtoPedido[]>;
+  pedidos$: Observable<PedidoDtoPedido[]>;
   ngOnInit() {
     this.jaDeuErro = false;
     /*

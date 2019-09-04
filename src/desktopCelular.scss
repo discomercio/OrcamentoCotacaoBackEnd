@@ -77,9 +77,10 @@
   justify-content: space-around;
   max-width: 100%;
   overflow: hidden;
+  flex-wrap: wrap;
 }
 
 .sectionCelular footer button,
 .sectionDesktop footer button {
-  width: 10em;
+  width: 8em;
 }

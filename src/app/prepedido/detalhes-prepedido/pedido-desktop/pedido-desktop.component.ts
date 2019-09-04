@@ -9,6 +9,7 @@ import { FormatarTelefone } from 'src/app/utils/formatarTelefone';
 import { Location } from '@angular/common';
 import { ImpressaoService } from 'src/app/utils/impressao.service';
 import { ClienteCadastroUtils } from 'src/app/dto/ClienteCadastroUtils/ClienteCadastroUtils';
+import { StringUtils } from 'src/app/utils/stringUtils';
 
 @Component({
   selector: 'app-pedido-desktop',
@@ -36,7 +37,7 @@ export class PedidoDesktopComponent implements OnInit {
 
   //parar imprimir (qeur dizer, para ir apra a versão de impressão)
   imprimir(): void {
-    //window.alert("Afazer: versão para impressão somente com o pedido");
+    //versão para impressão somente com o pedido
     this.router.navigate(['/pedido/imprimir', this.pedido.NumeroPedido]);
   }
 
@@ -56,10 +57,13 @@ export class PedidoDesktopComponent implements OnInit {
   }
 
   formata_endereco_entrega(): string {
-    const p = this.pedido ? this.pedido.DadosCliente : null;
-    if (!p)
+    const p = this.pedido ? this.pedido.EnderecoEntrega : null;
+    if (!p) {
       return "";
-    return "Afazer: endereço de entrega";
+    }
+
+    return new FormatarEndereco().formata_endereco(p.EndEtg_endereco, p.EndEtg_endereco_numero, p.EndEtg_endereco_complemento, 
+      p.EndEtg_bairro, p.EndEtg_cidade, p.EndEtg_uf, p.EndEtg_cep);
   }
 
   //total do pedido
@@ -119,7 +123,7 @@ export class PedidoDesktopComponent implements OnInit {
 
   clicarCliente(): void {
     if (this.pedido && this.pedido.DadosCliente && this.pedido.DadosCliente.Cnpj_Cpf)
-      this.router.navigate(["cliente", this.pedido.DadosCliente.Cnpj_Cpf]);
+      this.router.navigate(["cliente", StringUtils.retorna_so_digitos(this.pedido.DadosCliente.Cnpj_Cpf)]);
     else
       window.alert("Erro: cliente sem CPF/CNPJ");
   }
