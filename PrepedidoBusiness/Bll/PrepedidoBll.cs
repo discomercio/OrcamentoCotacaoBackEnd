@@ -350,7 +350,6 @@ namespace PrepedidoBusiness.Bll
                 TelComercial2 = cli.Tel_Com_2,
                 DddComercial2 = cli.Ddd_Com_2,
                 Ramal2 = cli.Ramal_Com_2,
-                Obs = cli.Obs_crediticias,
                 Email = cli.Email,
                 EmailXml = cli.Email_Xml,
                 Endereco = cli.Endereco,

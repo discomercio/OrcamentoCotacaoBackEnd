@@ -159,7 +159,7 @@ namespace PrepedidoBusiness.Bll
             var cli = await dadosCliente.FirstOrDefaultAsync();
             DadosClienteCadastroDto cadastroCliente = new DadosClienteCadastroDto
             {
-                Loja = loja,
+                Loja = await ObterRazaoSocialLoja(loja),
                 Indicador_Orcamentista = indicador_orcamentista,
                 Vendedor = vendedor,
                 Id = cli.Id,
@@ -182,7 +182,6 @@ namespace PrepedidoBusiness.Bll
                 TelComercial2 = cli.Tel_Com_2,
                 DddComercial2 = cli.Ddd_Com_2,
                 Ramal2 = cli.Ramal_Com_2,
-                Obs = cli.Obs_crediticias,
                 Email = cli.Email,
                 EmailXml = cli.Email_Xml,
                 Endereco = cli.Endereco,
@@ -191,9 +190,22 @@ namespace PrepedidoBusiness.Bll
                 Cidade = cli.Cidade,
                 Uf = cli.Uf,
                 Cep = cli.Cep,
-                Contato = cli.Contato                
+                Contato = cli.Contato
             };
             return cadastroCliente;
+        }
+
+        private async Task<string> ObterRazaoSocialLoja(string loja)
+        {
+            var db = contextoProvider.GetContexto();
+
+            var ret = from c in db.Tlojas
+                      where c.Loja == loja
+                      select c.Razao_Social;
+
+            string retorno = ret.SingleOrDefault();
+
+            return retorno;
         }
 
         private async Task<EnderecoEntregaDtoClienteCadastro> ObterEnderecoEntrega(Tpedido p)
@@ -206,9 +218,13 @@ namespace PrepedidoBusiness.Bll
                 EndEtg_bairro = p.EndEtg_Bairro,
                 EndEtg_cidade = p.EndEtg_Cidade,
                 EndEtg_uf = p.EndEtg_UF,
-                EndEtg_cep = p.EndEtg_Cep,
-                EndEtg_cod_justificativa = await ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA, p.EndEtg_Cod_Justificativa)
+                EndEtg_cep = p.EndEtg_Cep
             };
+
+            //obtemos a descricao somente se o codigo existir
+            enderecoEntrega.EndEtg_cod_justificativa = "";
+            if (!String.IsNullOrEmpty(p.EndEtg_Cod_Justificativa))
+                enderecoEntrega.EndEtg_cod_justificativa = await ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA, p.EndEtg_Cod_Justificativa);
 
             return enderecoEntrega;
         }
@@ -259,7 +275,7 @@ namespace PrepedidoBusiness.Bll
             //apelido = "PEDREIRA";
 
             var pedido = from c in db.Tpedidos
-                         where c.Pedido == numPedido && c.Orcamentista == apelido
+                         where c.Pedido == numPedido
                          select c;
             Tpedido p = pedido.FirstOrDefault();
             if (p == null)
@@ -311,7 +327,7 @@ namespace PrepedidoBusiness.Bll
                                  select c.Nome;
             var TranspNomeTask = transportadora.Select(r => r.ToString()).FirstOrDefaultAsync();
 
-            var lstFormaPgtoTask = ObterFormaPagto(numPedido, apelido);
+            var lstFormaPgtoTask = ObterFormaPagto(p);
 
             var analiseCreditoTask = ObterAnaliseCredito(Convert.ToString(p.Analise_Credito), numPedido, apelido);
             string corAnalise = CorAnaliseCredito(Convert.ToString(p.Analise_Credito));
@@ -378,21 +394,19 @@ namespace PrepedidoBusiness.Bll
 
             if (!String.IsNullOrEmpty(p.Pedido_Bs_X_Marketplace))
             {
+                //verificar
                 status.Status = await ObterDescricao_Cod("PedidoECommerce_Origem", p.Marketplace_codigo_origem) + ":" + p.Pedido_Bs_X_Marketplace;
-                status.CorEntrega = CorStatusEntrega(p.St_Entrega);
+                status.Cor_Pedido_Bs_X_Marketplace = CorStatusEntrega(p.St_Entrega);
             }
-            else if (!String.IsNullOrEmpty(p.Pedido_Bs_X_Ac))
+            if (!String.IsNullOrEmpty(p.Pedido_Bs_X_Ac))
             {
-                status.CorEntrega = "purple";
+                status.Cor_Pedido_Bs_X_Ac = "purple";
                 status.Pedido_Bs_X_Ac = p.Pedido_Bs_X_Ac;
             }
-            else
-            {
-                status.Status = FormataSatusPedido(p.St_Entrega);
-                status.CorEntrega = CorStatusEntrega(p.St_Entrega);
-            }
 
-            status.St_Entrega = FormataSatusPedido(p.St_Entrega);            
+            status.Status = FormataSatusPedido(p.St_Entrega);
+            status.CorEntrega = CorStatusEntrega(p.St_Entrega);//verificar a saida 
+            status.St_Entrega = FormataSatusPedido(p.St_Entrega);
             status.Entregue_Data = p.Entregue_Data?.ToString("dd/MM/yyyy");
             status.Cancelado_Data = p.Cancelado_Data?.ToString("dd/MM/yyyy");
             status.Pedido_Data = p.Data?.ToString("dd/MM/yyyy");
@@ -406,7 +420,7 @@ namespace PrepedidoBusiness.Bll
         {
             string cor = "black";
 
-            switch(st_entrega)
+            switch (st_entrega)
             {
                 case Constantes.ST_ENTREGA_ESPERAR:
                     cor = "deeppink";
@@ -802,12 +816,12 @@ namespace PrepedidoBusiness.Bll
             return result;
         }
 
-        private async Task<IEnumerable<string>> ObterFormaPagto(string numPedido, string orcamentista)
+        private async Task<IEnumerable<string>> ObterFormaPagto(Tpedido ped)
         {
             var db = contextoProvider.GetContexto();
 
             var p = from c in db.Tpedidos
-                    where c.Pedido == numPedido && c.Orcamentista == orcamentista
+                    where c.Pedido == ped.Pedido && c.Indicador == ped.Indicador
                     select c;
 
             Tpedido pedido = p.FirstOrDefault();

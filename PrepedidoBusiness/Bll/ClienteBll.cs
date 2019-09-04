@@ -9,6 +9,7 @@ using PrepedidoBusiness.Dtos.ClienteCadastro;
 using PrepedidoBusiness.Dto.ClienteCadastro.Referencias;
 using Microsoft.EntityFrameworkCore;
 using PrepedidoBusiness.Dto.ClienteCadastro;
+using InfraBanco.Constantes;
 
 namespace PrepedidoBusiness.Bll
 {
@@ -29,18 +30,74 @@ namespace PrepedidoBusiness.Bll
              * inscrição estadual
              * tipo de contibuinte ICMS
              * */
+            var db = contextoProvider.GetContexto();
+            var retorno = new List<string>();
 
-            
+            var dados = from c in db.Tclientes
+                        where c.Id == dadosClienteCadastroDto.Id
+                        select c;
+            var cli = await dados.FirstOrDefaultAsync();
+
+            if (cli == null)
+            {
+                retorno.Add("Registro do cliente não encontrado.");
+                return retorno;
+            }
+
+            //afazer: atualizar os dados do cliente e fazer o log
+            //validar os campos necessarios
+            if (dadosClienteCadastroDto.Contribuinte_Icms_Status == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM) &&
+                dadosClienteCadastroDto.Ie != null || dadosClienteCadastroDto.Ie != "")
+            {
+                if (dadosClienteCadastroDto.Contribuinte_Icms_Status != cli.Contribuinte_Icms_Status)
+                {
+                    //fazer a implementação do contribuinte
+                    cli.Contribuinte_Icms_Status = dadosClienteCadastroDto.Contribuinte_Icms_Status;
+                    cli.Contribuinte_Icms_Data = DateTime.Now;
+                    cli.Contribuinte_Icms_Data_Hora = DateTime.Now;
+                    cli.Contribuinte_Icms_Usuario = apelido;
+                }
+                if (dadosClienteCadastroDto.Tipo == Constantes.ID_PF &&
+                    dadosClienteCadastroDto.ProdutorRural != byte.Parse(Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL) &&
+                    dadosClienteCadastroDto.ProdutorRural != cli.Produtor_Rural_Status)
+                {
+                    //afazer: implementação  de produtor rural
+                    cli.Produtor_Rural_Status = dadosClienteCadastroDto.ProdutorRural;
+                    cli.Produtor_Rural_Data = DateTime.Now;
+                    cli.Produtor_Rural_Data_Hora = DateTime.Now;
+                    cli.Produtor_Rural_Usuario = apelido;
+                }
+                cli.Dt_Ult_Atualizacao = DateTime.Now;
+                cli.Usuario_Ult_Atualizacao = apelido;
+
+                db.SaveChanges();
+            }
+
+            //afazer: entender como é feito o Log
+            //Essa parte esta na pagina ClienteAtualiza.asp linha 1113
+            //bool salvouLog = Utils.Util.GravaLog(apelido, dadosClienteCadastroDto.Loja, "", dadosClienteCadastroDto.Id,
+            //    Constantes.OP_LOG_CLIENTE_ALTERACAO,  contextoProvider);
+
+
+            /*campos que serão salvos no log
+             * rs("usuario") = usuario
+             * rs("loja") = loja
+             * rs("pedido") = pedido
+             * rs("id_cliente") = id_cliente
+             * rs("operacao") = operacao
+             * rs("complemento") = complemento
+            */
+
+
+
             //afazer: rfazer a rotina
-            //afazer: validar IE conforme estadol
+            //afazer: validar IE conforme estado
             //afazer: deve ter um log com o apelido do orcamentista
             //para teste
-            var ret = new List<string>();
             //ret.Add("Algum erro 1.");
             //ret.Add("Algum erro 2.");
-            return ret;
+            return retorno;
         }
-
 
         public async Task<ClienteCadastroDto> BuscarCliente(string cpf_cnpj)
         {
@@ -66,7 +123,7 @@ namespace PrepedidoBusiness.Bll
             return await Task.FromResult(cliente);
         }
 
-        public async Task<IEnumerable<ListaBancoDto>> ListaBancosCombo()
+        public async Task<IEnumerable<ListaBancoDto>> ListarBancosCombo()
         {
             var db = contextoProvider.GetContexto();
 
@@ -103,7 +160,6 @@ namespace PrepedidoBusiness.Bll
                 Ramal = cli.Ramal_Com,
                 DddCelular = cli.Ddd_Cel,
                 Celular = cli.Tel_Cel,
-                Obs = cli.Obs_crediticias,
                 Email = cli.Email,
                 EmailXml = cli.Email_Xml,
                 Endereco = cli.Endereco,
@@ -160,6 +216,12 @@ namespace PrepedidoBusiness.Bll
 
             return rCom;
         }
+
+        //public async Task<string>CadastrarCliente(DadosClienteCadastroDto cliente)
+        //{
+
+        //}
+
 
 
     }

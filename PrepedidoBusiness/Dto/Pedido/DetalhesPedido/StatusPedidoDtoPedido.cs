@@ -15,6 +15,8 @@ namespace PrepedidoBusiness.Dto.Pedido.DetalhesPedido
         public string Recebida_Data { get; set; }
         public string Marketplace_Codigo_Origem { get; set; }
         public string Pedido_Bs_X_Marketplace { get; set; }
+        public string Cor_Pedido_Bs_X_Marketplace { get; set; }
         public string Pedido_Bs_X_Ac { get; set; }
+        public string Cor_Pedido_Bs_X_Ac { get; set; }
     }
 }

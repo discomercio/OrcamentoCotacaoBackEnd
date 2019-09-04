@@ -38,7 +38,6 @@ namespace PrepedidoBusiness.Dtos.ClienteCadastro
         public string TelComercial2 { get; set; }
         public string DddComercial2 { get; set; }
         public string Ramal2 { get; set; }
-        public string Obs { get; set; }
         public string Email { get; set; }
         public string EmailXml { get; set; }
         public string Contato { get; set; }

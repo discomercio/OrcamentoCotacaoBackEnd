@@ -57,5 +57,20 @@ namespace PrepedidoApi.Controllers
 
         }
 
+#if DEBUG
+        [AllowAnonymous]
+#endif
+        [HttpGet("listarBancosCombo")]
+        public async Task<IActionResult> ListaBancosCombo()
+        {
+            //para testar: http://localhost:60877/api/cliente/listarBancosCombo
+            var listaBancos = await clienteBll.ListarBancosCombo();
+
+            if (listaBancos == null)
+                return BadRequest();
+
+            return Ok(listaBancos);
+        }
+
     }
 }

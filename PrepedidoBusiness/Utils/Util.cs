@@ -6,6 +6,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using InfraBanco;
 using InfraBanco.Constantes;
+using InfraBanco.Modelos;
 
 namespace PrepedidoBusiness.Utils
 {
@@ -84,6 +85,30 @@ namespace PrepedidoBusiness.Utils
             };
 
             return retorno;
+        }
+
+        public static bool GravaLog(string apelido, string loja, string pedido, string id_cliente,
+            string operação, string complemento, ContextoProvider contexto)
+        {
+            if (apelido == null)
+                return false;
+
+            var db = contexto.GetContexto();
+
+            Tlog log = new Tlog
+            {
+                Usuario = apelido,
+                Loja = loja,
+                Pedido = pedido,
+                Id_Cliente = id_cliente,
+                Operacao = operação,
+                Complemento = complemento
+            };
+
+            db.Add(log);
+            db.SaveChanges();
+
+            return true;
         }
     }
 }
