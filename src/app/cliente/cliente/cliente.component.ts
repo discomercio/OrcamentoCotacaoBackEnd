@@ -5,9 +5,10 @@ import { TelaDesktopBaseComponent } from '../../../../src/app/servicos/telaDeskt
 import { TelaDesktopService } from '../../../../src/app/servicos/telaDesktop/telaDesktop.service';
 import { DadosClienteCadastroDto } from 'src/app/dto/ClienteCadastro/DadosClienteCadastroDto';
 import { BuscarClienteService } from 'src/app/servicos/cliente/buscar-cliente.service';
-import { AlertDialogComponent } from 'src/app/utils/alert-dialog/alert-dialog.component';
 import { MatDialog } from '@angular/material';
 import { StringUtils } from 'src/app/utils/stringUtils';
+import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
+import { ClienteCadastroDto } from 'src/app/dto/ClienteCadastro/ClienteCadastroDto';
 
 @Component({
   selector: 'app-cliente',
@@ -20,7 +21,7 @@ export class ClienteComponent extends TelaDesktopBaseComponent implements OnInit
     private readonly location: Location,
     telaDesktopService: TelaDesktopService,
     public readonly buscarClienteService: BuscarClienteService,
-    public readonly dialog: MatDialog,
+    public readonly alertaService: AlertaService,
     public readonly activatedRoute: ActivatedRoute) {
     super(telaDesktopService);
   }
@@ -32,20 +33,15 @@ export class ClienteComponent extends TelaDesktopBaseComponent implements OnInit
       .then((r) => {
         if (r === null) {
           //erro...
-          const dialogRef = this.dialog.open(AlertDialogComponent, {
-            width: '350px',
-            data: `Ocorreu um erro ao acessar os dados. Verifique a conexão com a Internet.`
-          });
+          this.alertaService.mostrarErroInternet();
           return;
         }
         //cliente já existe
         this.dadosClienteCadastroDto = r.DadosCliente;
+        this.clienteCadastroDto = r;
       }).catch((r) => {
         //erro...
-        const dialogRef = this.dialog.open(AlertDialogComponent, {
-          width: '350px',
-          data: `Ocorreu um erro ao acessar os dados. Verifique a conexão com a Internet.`
-        });
+        this.alertaService.mostrarErroInternet();
       });
   }
 
@@ -54,5 +50,6 @@ export class ClienteComponent extends TelaDesktopBaseComponent implements OnInit
   }
 
   dadosClienteCadastroDto = new DadosClienteCadastroDto();
+  clienteCadastroDto = new ClienteCadastroDto();
 
 }

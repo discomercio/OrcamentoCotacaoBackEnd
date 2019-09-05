@@ -3,6 +3,7 @@ import { DadosClienteCadastroDto } from 'src/app/dto/ClienteCadastro/DadosClient
 import { ActivatedRoute } from '@angular/router';
 import { TelaDesktopBaseComponent } from 'src/app/servicos/telaDesktop/telaDesktopBaseComponent';
 import { TelaDesktopService } from 'src/app/servicos/telaDesktop/telaDesktop.service';
+import { ClienteCadastroDto } from 'src/app/dto/ClienteCadastro/ClienteCadastroDto';
 
 @Component({
   selector: 'app-cadastrar-cliente',
@@ -13,6 +14,7 @@ export class CadastrarClienteComponent extends TelaDesktopBaseComponent implemen
 
   //o dado sendo editado
   dadosClienteCadastroDto = new DadosClienteCadastroDto();
+  clienteCadastroDto = new ClienteCadastroDto();
 
   //cosntrutor
   constructor(private readonly activatedRoute: ActivatedRoute,
@@ -27,6 +29,7 @@ export class CadastrarClienteComponent extends TelaDesktopBaseComponent implemen
     //lemos o único dado que é fixo
     const cpfCnpj = this.activatedRoute.snapshot.params.cpfCnpj;
     this.dadosClienteCadastroDto.Cnpj_Cpf = cpfCnpj;
+    this.clienteCadastroDto.DadosCliente = this.dadosClienteCadastroDto;
   }
 
 }

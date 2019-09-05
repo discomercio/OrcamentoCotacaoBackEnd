@@ -6,6 +6,7 @@ import { Title } from '@angular/platform-browser';
 import { CpfCnpjUtils } from 'src/app/utils/cpfCnpjUtils';
 import { DataUtils } from 'src/app/utils/dataUtils';
 import { ClienteCadastroUtils } from 'src/app/dto/ClienteCadastroUtils/ClienteCadastroUtils';
+import { ClienteCadastroDto } from 'src/app/dto/ClienteCadastro/ClienteCadastroDto';
 
 @Component({
   selector: 'app-cliente-corpo',
@@ -22,8 +23,15 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
 
   //o dado sendo editado
   @Input() dadosClienteCadastroDto = new DadosClienteCadastroDto();
+  //é o mesmo dado, mas passamos separadamente para ficar mais fácil de construir esta tela
+  @Input() clienteCadastroDto = new ClienteCadastroDto();
 
   @Input() cadastrando = false;
+
+  //se pode editar os campos de ICMS, produtor rural e inscrição estadual
+  @Input() editarIcms = true;
+
+
   public constantes: Constantes = new Constantes();
 
   public DataUtilsFormatarTela = DataUtils.formatarTela;

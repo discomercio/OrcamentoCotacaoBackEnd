@@ -24,6 +24,7 @@ export class ImpressaoService {
   //coisas específicas para imprimir o pedido
   private imprimirOcorrenciasChave = "pedido-imprimirOcorrencias";
   private imprimirBlocoNotasChave = "pedido-imprimirBlocoNotas";
+  private imprimirNotasDevChave = "pedido-imprimirNotasDev";
   imprimirOcorrencias(): boolean {
     return sessionStorage.getItem(this.imprimirOcorrenciasChave) == "1";
   }
@@ -35,6 +36,12 @@ export class ImpressaoService {
   }
   imprimirBlocoNotasSet(valor: boolean): void {
     sessionStorage.setItem(this.imprimirBlocoNotasChave, valor ? "1" : "0");
+  }
+  imprimirNotasDev(): boolean {
+    return sessionStorage.getItem(this.imprimirNotasDevChave) == "1";
+  }
+  imprimirNotasDevSet(valor: boolean): void {
+    sessionStorage.setItem(this.imprimirNotasDevChave, valor ? "1" : "0");
   }
 
 }

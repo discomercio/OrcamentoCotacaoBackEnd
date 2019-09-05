@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { TelaDesktopBaseComponent } from 'src/app/servicos/telaDesktop/telaDesktopBaseComponent';
-import { supportsPassiveEventListeners } from '@angular/cdk/platform';
 import { TelaDesktopService } from 'src/app/servicos/telaDesktop/telaDesktop.service';
 import { CpfCnpjUtils } from 'src/app/utils/cpfCnpjUtils';
 import { MatDialog } from '@angular/material';
-import { AlertDialogComponent } from 'src/app/utils/alert-dialog/alert-dialog.component';
 import { StringUtils } from 'src/app/utils/stringUtils';
 import { BuscarClienteService } from 'src/app/servicos/cliente/buscar-cliente.service';
 import { ConfirmationDialogComponent } from 'src/app/utils/confirmation-dialog/confirmation-dialog.component';
 import { Router, ActivatedRoute } from '@angular/router';
+import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
 
 @Component({
   selector: 'app-selecionar-cliente',
@@ -27,6 +26,7 @@ export class SelecionarClienteComponent extends TelaDesktopBaseComponent impleme
     public readonly dialog: MatDialog,
     public readonly router: Router,
     public readonly activatedRoute: ActivatedRoute,
+    private readonly alertaService:AlertaService,
     private readonly buscarClienteService: BuscarClienteService) {
     super(telaDesktopService);
   }
@@ -35,31 +35,16 @@ export class SelecionarClienteComponent extends TelaDesktopBaseComponent impleme
   }
 
 
-  //deu erro na busca
-  //ou não achou nada...
-  mostrarErro() {
-    this.carregando = false;
-    const dialogRef = this.dialog.open(AlertDialogComponent, {
-      width: '250px',
-      data: `Erro no acesso ao sistema. Verifique a conexão com a internet.`
-    });
-  }
   buscar() {
     //dá erro se não tiver nenhum dígito
     if (StringUtils.retorna_so_digitos(this.clienteBusca).trim() === "") {
-      const dialogRef = this.dialog.open(AlertDialogComponent, {
-        width: '250px',
-        data: `CNPJ/CPF inválido ou vazio.`
-      });
+      this.alertaService.mostrarMensagemComLargura(`CNPJ/CPF inválido ou vazio.`, '250px');
       return;
     }
 
     //valida
     if (!CpfCnpjUtils.cnpj_cpf_ok(this.clienteBusca)) {
-      const dialogRef = this.dialog.open(AlertDialogComponent, {
-        width: '250px',
-        data: `CNPJ/CPF inválido.`
-      });
+      this.alertaService.mostrarMensagemComLargura(`CNPJ/CPF inválido.`, '250px');
       return;
     }
 
@@ -75,7 +60,10 @@ export class SelecionarClienteComponent extends TelaDesktopBaseComponent impleme
         //cliente já existe
         this.router.navigate(['confirmar-cliente', StringUtils.retorna_so_digitos(r.DadosCliente.Cnpj_Cpf)], { relativeTo: this.activatedRoute, state: r })
       }).catch((r) => {
-        this.mostrarErro();
+          //deu erro na busca
+          //ou não achou nada...
+
+        this.alertaService.mostrarErroInternet();
       });
   }
 

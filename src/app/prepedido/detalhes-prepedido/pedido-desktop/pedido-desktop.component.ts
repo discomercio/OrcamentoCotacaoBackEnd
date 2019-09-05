@@ -10,6 +10,7 @@ import { Location } from '@angular/common';
 import { ImpressaoService } from 'src/app/utils/impressao.service';
 import { ClienteCadastroUtils } from 'src/app/dto/ClienteCadastroUtils/ClienteCadastroUtils';
 import { StringUtils } from 'src/app/utils/stringUtils';
+import { PedidoProdutosDtoPedido } from 'src/app/dto/pedido/detalhesPedido/PedidoProdutosDtoPedido';
 
 @Component({
   selector: 'app-pedido-desktop',
@@ -32,6 +33,8 @@ export class PedidoDesktopComponent implements OnInit {
   //para formatar as coisas
   dataFormatarTela = DataUtils.formatarTela;
   dataFormatarTelaHora = DataUtils.formatarTelaHora;
+  dataformatarTelaDataeHora = DataUtils.formatarTelaDataeHora;
+  dataformatarTelaHoraSemSegundos = DataUtils.formatarTelaHoraSemSegundos;
   moedaUtils: MoedaUtils = new MoedaUtils();
   clienteCadastroUtils = new ClienteCadastroUtils();
 
@@ -62,20 +65,8 @@ export class PedidoDesktopComponent implements OnInit {
       return "";
     }
 
-    return new FormatarEndereco().formata_endereco(p.EndEtg_endereco, p.EndEtg_endereco_numero, p.EndEtg_endereco_complemento, 
+    return new FormatarEndereco().formata_endereco(p.EndEtg_endereco, p.EndEtg_endereco_numero, p.EndEtg_endereco_complemento,
       p.EndEtg_bairro, p.EndEtg_cidade, p.EndEtg_uf, p.EndEtg_cep);
-  }
-
-  //total do pedido
-  totalDestePedido(): number {
-    if (!this.pedido || !this.pedido.ListaProdutos)
-      return 0;
-
-    let ret = 0;
-    for (let i = 0; i < this.pedido.ListaProdutos.length; i++) {
-      ret += this.pedido.ListaProdutos[i].VlTotal;
-    }
-    return ret;
   }
 
   //status da entrega imediata
@@ -95,7 +86,8 @@ export class PedidoDesktopComponent implements OnInit {
     if (ret == "")
       return ret;
 
-    return ret + " afazer: etg_imediata_data";
+    return ret;
+    // + " afazer: preciso do etg_imediata_data";
   }
 
   /*
@@ -121,6 +113,10 @@ export class PedidoDesktopComponent implements OnInit {
     return this.clienteCadastroUtils.telefoneCelular(p);
   }
 
+  public corDaLinhaPedido(linha:PedidoProdutosDtoPedido):string{
+    return linha.CorFaltante;
+  }
+
   clicarCliente(): void {
     if (this.pedido && this.pedido.DadosCliente && this.pedido.DadosCliente.Cnpj_Cpf)
       this.router.navigate(["cliente", StringUtils.retorna_so_digitos(this.pedido.DadosCliente.Cnpj_Cpf)]);
@@ -128,6 +124,7 @@ export class PedidoDesktopComponent implements OnInit {
       window.alert("Erro: cliente sem CPF/CNPJ");
   }
 
+  //#region  impressão
   //controle da impressão
   imprimirOcorrenciasAlterado() {
     this.impressaoService.imprimirOcorrenciasSet(!this.impressaoService.imprimirOcorrencias());
@@ -135,10 +132,14 @@ export class PedidoDesktopComponent implements OnInit {
   imprimirBlocoNotasAlterado() {
     this.impressaoService.imprimirBlocoNotasSet(!this.impressaoService.imprimirBlocoNotas());
   }
+  imprimirNotasDevAlterado() {
+    this.impressaoService.imprimirNotasDevSet(!this.impressaoService.imprimirNotasDev());
+  }
 
   voltar() {
     this.location.back();
   }
+  //#endregion
 
 }
 

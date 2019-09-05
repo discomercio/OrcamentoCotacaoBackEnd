@@ -5,12 +5,10 @@ import { BuscarClienteService } from 'src/app/servicos/cliente/buscar-cliente.se
 import { TelaDesktopService } from 'src/app/servicos/telaDesktop/telaDesktop.service';
 import { TelaDesktopBaseComponent } from 'src/app/servicos/telaDesktop/telaDesktopBaseComponent';
 import { Location } from '@angular/common';
-import { AlertDialogComponent } from 'src/app/utils/alert-dialog/alert-dialog.component';
 import { MatDialog } from '@angular/material';
-import { Constantes } from 'src/app/dto/Constantes';
 import { ClienteCadastroDto } from 'src/app/dto/ClienteCadastro/ClienteCadastroDto';
 import { ClienteCadastroUtils } from 'src/app/dto/ClienteCadastroUtils/ClienteCadastroUtils';
-import { Options } from 'selenium-webdriver';
+import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
 
 @Component({
   selector: 'app-confirmar-cliente',
@@ -24,6 +22,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     telaDesktopService: TelaDesktopService,
     private readonly location: Location,
     public readonly dialog: MatDialog,
+    private readonly alertaService: AlertaService,
     private readonly buscarClienteService: BuscarClienteService) {
     super(telaDesktopService);
 
@@ -50,6 +49,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
           }
           //cliente já existe
           this.dadosClienteCadastroDto = r.DadosCliente;
+          this.clienteCadastroDto = r;
           this.salvarAtivoInicializar();
         }).catch((r) => {
           //erro, voltamos para a tela anterior
@@ -59,6 +59,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
   }
 
   dadosClienteCadastroDto = new DadosClienteCadastroDto();
+  clienteCadastroDto = new ClienteCadastroDto();
   ngOnInit() {
   }
 
@@ -81,7 +82,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
       return false;
     }
     //se estiver com NULL é pq ainda não pegou os valores
-    if(this.dadosClienteCadastroDtoIe === null){
+    if (this.dadosClienteCadastroDtoIe === null) {
       this.salvarAtivoInicializar();
     }
     if (this.dadosClienteCadastroDtoIe !== this.dadosClienteCadastroDto.Ie) {
@@ -99,7 +100,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
   //vamos salvar as alterações
   salvar(continuar: boolean): void {
     //as validações
-    let mensagem= new ClienteCadastroUtils().validarInscricaoestadualIcms(this.dadosClienteCadastroDto);
+    let mensagem = new ClienteCadastroUtils().validarInscricaoestadualIcms(this.dadosClienteCadastroDto);
     if (mensagem && mensagem.trim() !== "") {
       this.mostrarMensagem(mensagem);
       return;
@@ -126,17 +127,14 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
           this.mostrarMensagem(`Ocorreu um erro ao salvar os dados. Mensagens de erro: ` + r.join(", "));
         },
         error: (err) => {
-          this.mostrarMensagem(`Ocorreu um erro ao salvar os dados. Verifique a conexão com a Internet.`);
+          this.alertaService.mostrarErroInternet();
         }
       }
     );
   }
 
   mostrarMensagem(msg: string): void {
-    const dialogRef = this.dialog.open(AlertDialogComponent, {
-      width: '350px',
-      data: msg
-    });
+    this.alertaService.mostrarMensagem(msg);
   }
 
   continuar(): void {

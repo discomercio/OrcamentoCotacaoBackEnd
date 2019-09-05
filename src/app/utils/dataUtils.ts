@@ -38,6 +38,8 @@ export class DataUtils {
         //está vindo como string do c#!
         if (!data)
             return "";
+        if (data.toString() === "0001-01-01T00:00:00")
+            return "";
         const aux = Date.parse(data.toString());
         if (!aux)
             return "";
@@ -52,6 +54,8 @@ export class DataUtils {
         //está vindo como string do c#!
         if (!data)
             return "";
+            if (data.toString() === "0001-01-01T00:00:00")
+            return "";
         const aux = Date.parse(data.toString());
         if (!aux)
             return "";
@@ -61,6 +65,27 @@ export class DataUtils {
         return aux2.toLocaleTimeString();
     }
 
+    public static formatarTelaHoraSemSegundos(data: Date | string): string {
+        //para imprimir na tela
+        //está vindo como string do c#!
+        if (!data)
+            return "";
+            if (data.toString() === "0001-01-01T00:00:00")
+            return "";
+        const aux = Date.parse(data.toString());
+        if (!aux)
+            return "";
+        const aux2 = new Date(aux);
+        if (!aux2)
+            return "";
+        const ret = aux2.toLocaleTimeString();
+        return ret.substr(0, ret.length - 2);
+    }
+
+    public static formatarTelaDataeHora(data: Date | string): string {
+        return this.formatarTela(data) + this.formatarTelaHora(data);
+
+    }
 
     //     ' ------------------------------------------------------------------------
     // '	FORMATA_DATA_E_TALVEZ_HORA_HHMM
@@ -71,7 +96,6 @@ export class DataUtils {
     // '	que há informação sobre o horário armazenado.
     public static formata_data_e_talvez_hora_hhmm(dt: Date | string): string {
 
-        let formata_data_e_talvez_hora_hhmm = "";
         let decodifica_data = this.decodifica_data(dt);
         if (!decodifica_data.sucesso)
             return "";

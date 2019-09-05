@@ -13,5 +13,6 @@
     VlVenda: number | null;
     VlTotal: number | null;
     Comissao: number | null;
+    CorFaltante:string;
 }
 

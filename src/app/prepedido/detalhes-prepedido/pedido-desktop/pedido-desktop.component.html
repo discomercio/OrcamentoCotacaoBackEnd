@@ -26,7 +26,8 @@
                     <table cellpadding='0' cellspacing='0'>
                         <tr>
                             <td valign='bottom' align='left'>
-                                <span class='STP' style='color:maroon;'>{{pedido?.StatusHoraPedido.Entregue_Data}} &nbsp;
+                                <span class='STP' style='color:maroon;'>{{pedido?.StatusHoraPedido.Entregue_Data}}
+                                    &nbsp;
                                 </span>
                             </td>
                             <td align='left' style='width:6px;padding-bottom:4px'>
@@ -84,7 +85,7 @@
                     <p class="Rf">{{ehPf() ? "CPF" : "CNPJ"}} &nbsp;</p>
 
                     <a (click)="clicarCliente()" title='clique para consultar o cadastro do cliente'>
-                        <p class="C">{{pedido?.DadosCliente?.Cnpj_Cpf}}  &nbsp;</p>
+                        <p class="C">{{pedido?.DadosCliente?.Cnpj_Cpf}} &nbsp;</p>
                     </a>
 
                 </td>
@@ -181,7 +182,6 @@
 
 
         <!--  R E L A Ç Ã O   D E   P R O D U T O S  -->
-        <!-- afazer: revisar a partir daqui -->
         <br>
         <br>
         <table class="Qx" cellspacing="0">
@@ -191,75 +191,79 @@
                 <td class="MB" align="left" valign="bottom"><span class="PLTe">Descrição</span></td>
                 <td class="MB" align="right" valign="bottom"><span class="PLTd">Qtd</span></td>
                 <td class="MB" align="right" valign="bottom"><span class="PLTd">Falt</span></td>
-                <td class="MB" align="right" valign="bottom"><span class="PLTd">Preço</span></td>
+                <td *ngIf="pedido?.OpcaoPossuiRA == 'S'" class="MB" align="right" valign="bottom"><span
+                        class="PLTd">Preço</span></td>
                 <td class="MB" align="right" valign="bottom"><span class="PLTd">VL Lista</span></td>
                 <td class="MB" align="right" valign="bottom"><span class="PLTd">Desc</span></td>
                 <td class="MB" align="right" valign="bottom"><span class="PLTd">VL Venda</span></td>
                 <td class="MB" align="right" valign="bottom"><span class="PLTd">VL Total</span></td>
             </tr>
 
-
             <tr *ngFor="let linha of pedido?.ListaProdutos">
 
-                <!-- afazer: cor da linha do pedido -->
-                <!-- afazer: RA: 	<% if blnTemRA Or ((r_pedido.permite_RA_status = 1) And (r_pedido.opcao_possui_RA = "S")) then %> -->
-
                 <td class="MDBE" align="left"><input name="c_fabricante" id="c_fabricante" class="PLLe"
-                        style="width:25px; color:black" value='{{linha.Fabricante}}' readonly tabindex=-1></td>
-                <td class="MDB" align="left"><input name="c_produto" id="c_produto" class="PLLe"
-                        style="width:54px; color:black" value='{{linha.NumProduto}}' readonly tabindex=-1></td>
-                <td class="MDB" align="left" style="width:277px;">
-                    <span class="PLLe" style="color:black">{{linha.Descricao}} &nbsp;</span>
-                    <!-- <input type="hidden" name="c_descricao" id="c_descricao"
-                        value='Evap. 45HAFI12B2FA - ECO-CLASS - FRIO'> -->
-                </td>
-                <td class="MDB" align="right"><input name="c_qtde" id="c_qtde" class="PLLd"
-                        style="width:21px; color:black" value='{{linha.Qtde}}' readonly tabindex=-1></td>
-                <td class="MDB" align="right"><input name="c_qtde_falta" id="c_qtde_falta" class="PLLd"
-                        style="width:20px; color:black" value='{{linha.Faltando}}' readonly tabindex=-1></td>
-                <!-- afazer: style="width:62px; color:<%=s_cor%>" -->
-                <td class="MDB" align="right"><input name="c_vl_NF" id="c_vl_NF" class="PLLd"
-                        style="width:62px; color:green" value='-1' title="afazer" readonly tabindex=-1></td>
-
-                <td class="MDB" align="right"><input name="c_preco_lista" id="c_preco_lista" class="PLLd"
-                        style="width:62px; color:black" value='{{moedaUtils.formatarMoedaSemPrefixo(linha.VlLista)}}'
+                        style="width:25px;" [ngStyle]="{'color': corDaLinhaPedido(linha)}" value='{{linha.Fabricante}}'
                         readonly tabindex=-1></td>
-                <td class="MDB" align="right"><input name="c_desc" id="c_desc" class="PLLd"
-                        style="width:28px; color:black"
+
+                <td class="MDB" align="left"><input name="c_produto" id="c_produto" class="PLLe" style="width:54px;"
+                        [ngStyle]="{'color': corDaLinhaPedido(linha)}" value='{{linha.NumProduto}}' readonly
+                        tabindex=-1></td>
+                <td class="MDB" align="left" style="width:277px;">
+                    <span class="PLLe" [ngStyle]="{'color': corDaLinhaPedido(linha)}"
+                        [innerHTML]="linha.Descricao"></span>
+                    <!-- <input type="hidden" name="c_descricao" id="c_descricao" value='<%=s_descricao%>'> -->
+                </td>
+                <td class="MDB" align="right"><input name="c_qtde" id="c_qtde" class="PLLd" style="width:21px;"
+                        [ngStyle]="{'color': corDaLinhaPedido(linha)}" value='{{linha.Qtde}}' readonly tabindex=-1></td>
+                <td class="MDB" align="right"><input name="c_qtde_falta" id="c_qtde_falta" class="PLLd"
+                        style="width:20px;" [ngStyle]="{'color': corDaLinhaPedido(linha)}" value='{{linha.Faltando}}'
+                        readonly tabindex=-1></td>
+                <td *ngIf="pedido?.OpcaoPossuiRA == 'S'" class="MDB" align="right"><input name="c_vl_NF" id="c_vl_NF"
+                        class="PLLd" style="width:62px;" [ngStyle]="{'color': corDaLinhaPedido(linha)}"
+                        value='{{moedaUtils.formatarMoedaSemPrefixo(linha.Preco)}}' readonly tabindex=-1>
+                </td>
+                <td class="MDB" align="right"><input name="c_preco_lista" id="c_preco_lista" class="PLLd"
+                        style="width:62px;" [ngStyle]="{'color': corDaLinhaPedido(linha)}"
+                        value='{{moedaUtils.formatarMoedaSemPrefixo(linha.VlLista)}}' readonly tabindex=-1></td>
+                <td class="MDB" align="right"><input name="c_desc" id="c_desc" class="PLLd" style="width:28px;"
+                        [ngStyle]="{'color': corDaLinhaPedido(linha)}"
                         value='{{moedaUtils.formatarPorcentagemUmaCasa(linha.Desconto)}}' readonly tabindex=-1></td>
                 <td class="MDB" align="right"><input name="c_vl_unitario" id="c_vl_unitario" class="PLLd"
-                        style="width:62px; color:black" value='{{moedaUtils.formatarMoedaSemPrefixo(linha.VlVenda)}}'
-                        readonly tabindex=-1></td>
-                <td class="MDB" align="right"><input name="c_vl_total" id="c_vl_total" class="PLLd"
-                        style="width:70px; color:black" value='{{moedaUtils.formatarMoedaSemPrefixo(linha.VlTotal)}}'
-                        readonly tabindex=-1></td>
+                        style="width:62px;" [ngStyle]="{'color': corDaLinhaPedido(linha)}"
+                        value='{{moedaUtils.formatarMoedaSemPrefixo(linha.VlUnitario)}}' readonly tabindex=-1></td>
+                <td class="MDB" align="right"><input name="c_vl_total" id="c_vl_total" class="PLLd" style="width:70px;"
+                        [ngStyle]="{'color': corDaLinhaPedido(linha)}"
+                        value='{{moedaUtils.formatarMoedaSemPrefixo(linha.VlTotal)}}' readonly tabindex=-1></td>
             </tr>
+
+
 
             <tr>
                 <td colspan="4" align="left">
                     <table cellspacing="0" cellpadding="0" width='100%' style="margin-top:4px;">
                         <tr>
                             <td width="50%" align="left">&nbsp;</td>
-
-                            <td align="right">
+                            <td *ngIf="pedido?.OpcaoPossuiRA == 'S'" align="right">
                                 <table cellspacing="0" cellpadding="0" style="margin-right:2px;">
                                     <tr>
                                         <td class="MTBE" align="left" nowrap><span class="PLTe">&nbsp;RA Bruto</span>
                                         </td>
                                         <td class="MTBD" align="right"><input name="c_total_RA" id="c_total_RA"
-                                                class="PLLd" value="afazer">
-                                        </td>
+                                                class="PLLd" style="width:70px;"
+                                                [ngStyle]="{'color': pedido.TotalFamiliaParcelaRA >= 0 ? 'green':'red'}"
+                                                value='{{moedaUtils.formatarMoedaSemPrefixo(pedido.TotalFamiliaParcelaRA)}}'
+                                                readonly tabindex=-1></td>
                                     </tr>
                                 </table>
                             </td>
-
                             <td align="right">
                                 <table cellspacing="0" cellpadding="0">
                                     <tr>
                                         <td class="MTBE" align="left" nowrap><span class="PLTe">&nbsp;COM(%)</span></td>
                                         <td class="MTBD" align="right"><input name="c_perc_RT" id="c_perc_RT"
-                                                class="PLLd" style="width:30px;color:blue;" value='5,0' readonly
-                                                tabindex=-1 title="afazer valor do RT"></td>
+                                                class="PLLd" style="width:30px;color:blue;"
+                                                value='{{moedaUtils.formatarPorcentagemUmaCasa(pedido.PercRT)}}'
+                                                readonly tabindex=-1></td>
                                     </tr>
                                 </table>
                             </td>
@@ -267,19 +271,23 @@
                     </table>
                 </td>
 
-                <td class="MD" align="left">&nbsp;</td>
-                <td class="MDB" align="right">
-                    <input name="c_total_NF" id="c_total_NF" class="PLLd" style="width:70px;color:blue;" value='totalRA'
-                        readonly tabindex=-1>
+                <td *ngIf="pedido?.OpcaoPossuiRA == 'S'" class="MD" align="left">&nbsp;</td>
+                <td *ngIf="pedido?.OpcaoPossuiRA == 'S'" class="MDB" align="right">
+                    <input name="c_total_NF" id="c_total_NF" class="PLLd" style="width:70px;color:blue;"
+                        value='{{moedaUtils.formatarMoedaSemPrefixo(pedido.ValorTotalDestePedidoComRA)}}' readonly
+                        tabindex=-1>
                 </td>
-                <td colspan="3" class="MD" align="left">&nbsp;</td>
+                <td *ngIf="pedido?.OpcaoPossuiRA == 'S'" colspan="3" class="MD" align="left">&nbsp;</td>
+
+                <td *ngIf="pedido?.OpcaoPossuiRA != 'S'" colspan="4" class="MD" align="left">&nbsp;</td>
 
                 <td class="MDB" align="right"><input name="c_total_geral" id="c_total_geral" class="PLLd"
                         style="width:70px;color:blue;"
-                        value='{{moedaUtils.formatarMoedaSemPrefixo(totalDestePedido())}}' readonly tabindex=-1></td>
+                        value='{{moedaUtils.formatarMoedaSemPrefixo(pedido.VlTotalDestePedido)}}' readonly tabindex=-1>
+                </td>
             </tr>
-        </table>
 
+        </table>
 
         <!--  NOVA VERSÃO DA FORMA DE PAGAMENTO   -->
         <br>
@@ -344,44 +352,38 @@
                 </td>
                 <td class="tdGarInd" nowrap align="left" valign="top">
                     <p class="Rf">Garantia Indicador</p>
-                    <p class="C" style="margin-top:3px;">{{pedido?.DetalhesNFPedidoDtoPedido?.GarantiaIndicadorStatus}}&nbsp;</p>
+                    <p class="C" style="margin-top:3px;">{{pedido?.DetalhesNF?.GarantiaIndicadorStatus}}&nbsp;</p>
                 </td>
             </tr>
         </table>
         <br>
 
-        afazer: parei feito até aqui!!!!
         <table class="Q" style="width:649px;" cellspacing="0">
             <tr>
                 <td align="left"><span class="Rf">Forma de Pagamento</span></td>
             </tr>
-            <tr>
+            <tr *ngFor="let pag of pedido.DetalhesFormaPagto.FormaPagto">
                 <td align="left">
                     <table width="100%" cellspacing="0" cellpadding="0" border="0">
-
-                        <!--  À VISTA  -->
                         <tr>
                             <td align="left">
                                 <table cellspacing="0" cellpadding="0" border="0">
                                     <tr>
-                                        <td align="left"><span class="C">AFAZER: PRECISA DO CAMPO tipo_parcelamento À
-                                                Vista&nbsp&nbsp;(Depósito)</span></td>
+                                        <td align="left"><span class="C">{{pag}} &nbsp;</span></td>
                                     </tr>
                                 </table>
                             </td>
                         </tr>
-
                     </table>
                 </td>
             </tr>
             <tr>
                 <td class="MC" align="left">
                     <p class="Rf">Informações Sobre Análise de Crédito</p>
-                    <textarea name="c_forma_pagto" id="c_forma_pagto" class="PLLe notPrint" rows="5"
-                        style="width:642px;margin-left:2pt;" readonly tabindex=-1>R$ 1.350,00
-Desenvolvimento rural e obras</textarea>
-                    <span class="PLLe notVisible">R$ 1.350,00<br>
-                        Desenvolvimento rural e obras</span>
+                    <textarea name="c_forma_pagto" id="c_forma_pagto" class="PLLe notPrint"
+                        rows="{{constantes.MAX_LINHAS_FORMA_PAGTO}}" style="width:642px;margin-left:2pt;" readonly
+                        tabindex=-1>{{pedido.DetalhesFormaPagto.InfosAnaliseCredito}}</textarea>
+                    <span class="PLLe notVisible">{{pedido.DetalhesFormaPagto.InfosAnaliseCredito}}</span>
                 </td>
             </tr>
         </table>
@@ -401,72 +403,117 @@ Desenvolvimento rural e obras</textarea>
                 <td width="16.65%" align="right" valign="bottom"><span class="Rf">Saldo a Pagar&nbsp;</span></td>
             </tr>
             <tr>
-
-                <td width="16.67%" class="MD" align="left"><span class="C" style="color:red;">NÃO-PAGO&nbsp;</span></td>
-
-                <td width="16.67%" align="right" class="MD"><span class="Cd">1.350,00</span></td>
-
-                <td width="16.67%" align="right" class="MD"><span class="Cd" style="color:black;">0,00</span></td>
-
-                <td width="16.67%" align="right" class="MD"><span class="Cd">0,00</span></td>
-
-                <td width="16.67%" align="right" class="MD"><span class="Cd">0,00</span></td>
-                <td width="16.65%" align="right"><span class="Cd" style="color:black;">1.350,00</span></td>
+                <td width="16.67%" class="MD" align="left"><span class="C"
+                        [ngStyle]="{'color': pedido.DetalhesFormaPagto.CorStatusPagto}">{{pedido.DetalhesFormaPagto.StatusPagto}}&nbsp;</span>
+                </td>
+                <td width="16.67%" align="right" class="MD"><span
+                        class="Cd">{{moedaUtils.formatarMoedaSemPrefixo(pedido.DetalhesFormaPagto.VlTotalFamilia)}}</span>
+                </td>
+                <td width="16.67%" align="right" class="MD"><span class="Cd"
+                        [ngStyle]="{'color': pedido.DetalhesFormaPagto.VlPago >=0?'black':'red'}">{{moedaUtils.formatarMoedaSemPrefixo(pedido.DetalhesFormaPagto.VlPago)}}</span>
+                </td>
+                <td width="16.67%" align="right" class="MD"><span
+                        class="Cd">{{moedaUtils.formatarMoedaSemPrefixo(pedido.DetalhesFormaPagto.VlDevolucao)}}</span>
+                </td>
+                <td width="16.67%" align="right" class="MD"><span
+                        class="Cd">{{moedaUtils.formatarMoedaSemPrefixo(pedido.DetalhesFormaPagto.VlPerdas)}}</span>
+                </td>
+                <td width="16.65%" align="right"><span class="Cd"
+                        [ngStyle]="{'color': pedido.DetalhesFormaPagto.SaldoAPagar >=0?'black':'red'}">{{moedaUtils.formatarMoedaSemPrefixo(pedido.DetalhesFormaPagto.SaldoAPagar)}}</span>
+                </td>
             </tr>
         </table>
+
 
 
         <!--  ANÁLISE DE CRÉDITO   -->
         <br>
         <table width="649" class="Q" cellspacing="0">
             <tr>
-
                 <td align="left">
                     <p class="Rf">ANÁLISE DE CRÉDITO</p>
-                    <p class="C" style="color:darkorange;">Crédito OK (aguardando depósito) &nbsp; (15/04/2019 13:03 -
-                        Automático)</p>
+                    <p class="C" [ngStyle]="{'color': pedido.DetalhesFormaPagto.CorAnalise}">
+                        {{pedido.DetalhesFormaPagto.AnaliseCredito}}</p>
                 </td>
             </tr>
         </table>
 
 
+        <!--  DEVOLUÇÕES   -->
+        <span *ngIf="pedido.ListaProdutoDevolvido.length > 0">
+            <br>
+            <table width="649" class="Q" cellspacing="0">
+                <tr>
+                    <td align="left">
+                        <p class="Rf" style="color:red;">DEVOLUÇÃO DE MERCADORIAS</p>
+                        <p class="C" *ngFor="let devolucao of pedido.ListaProdutoDevolvido">
+                            {{dataFormatarTela(devolucao.Data)}} {{devolucao.Hora}} - {{devolucao.Qtde}}
+                            {{devolucao.Qtde > 1?'unidades':'unidade'}} do
+                            {{devolucao.CodProduto}} - {{devolucao.DescricaoProduto}}
+                            <span *ngIf="devolucao.Motivo">({{devolucao.Motivo}}) </span>
+                            <span *ngIf="devolucao.NumeroNF">[NF: {{devolucao.NumeroNF}}] </span>
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </span>
+        <!--  PERDAS   -->
+        <span *ngIf="pedido.ListaPerdas.length > 0">
+            <br>
+            <table width="649" class="Q" cellspacing="0">
+                <tr>
+                    <td align="left">
+                        <p class="Rf" style="color:red;">PERDAS</p>
+                        <!-- if s_perdas <> "" then s_perdas = s_perdas & chr(13) & "<br>" & chr(13)
+                        s_perdas = s_perdas & formata_data(.data) & " " & _
+                                   formata_hhnnss_para_hh_nn_ss(.hora) & ": " & SIMBOLO_MONETARIO & " " & formata_moeda(.valor)
+                        if Trim(.obs) <> "" then s_perdas = s_perdas & " (" & .obs & ")" -->
+
+                        <p class="C" *ngFor="let perda of pedido.ListaPerdas">
+                            {{dataFormatarTela(perda.Data)}} {{perda.Hora}}
+                            {{moedaUtils.formatarMoedaComPrefixo(perda.Valor)}}
+                            <span *ngIf="perda.Obs">({{perda.Obs}}) </span>
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </span>
 
         <!--  DATA DE COLETA   -->
         <br>
         <table width="649" class="Q" cellspacing="0">
             <tr>
-
                 <td align="left">
                     <p class="Rf">DATA DE COLETA</p>
-                    <p class="C">&nbsp;</p>
+                    <p class="C">{{dataFormatarTela(pedido.DetalhesFormaPagto.DataColeta)}}</p>
                 </td>
             </tr>
         </table>
 
-        <!--  TRANSPORTADORA   -->
+
+        <span *ngIf="pedido.DetalhesFormaPagto.Transportadora != ''"></span>
         <br>
         <table width="649" class="Q" cellspacing="0">
             <tr>
-
                 <td class="MD" align="left">
                     <p class="Rf">TRANSPORTADORA</p>
-                    <p class="C">ATUAL (ATUAL CARGAS)</p>
+                    <p class="C">{{pedido.DetalhesFormaPagto.Transportadora}}</p>
                 </td>
-
-
                 <td align="right" style="width:65px;">
                     <p class="Rf">FRETE (R$)&nbsp;</p>
-                    <p class="Cd">&nbsp;</p>
+                    <p class="Cd">{{moedaUtils.formatarMoedaSemPrefixo(pedido.DetalhesFormaPagto.VlFrete)}}</p>
                 </td>
             </tr>
         </table>
+
+
 
         <div *ngIf="!impressaoService.emImpressao() || impressaoService.imprimirOcorrencias()">
             <br>
 
             <table id="tableOcorrencia" class="notPrint" width="649" cellspacing="0" cellpadding="0" border="0">
-                <tr *ngIf="!impressaoService.emImpressao()" colspan="3">
-                    <td>
+                <tr *ngIf="!impressaoService.emImpressao()">
+                    <td colspan="3">
                         <span style="float: right">
                             <mat-checkbox class="checkboxes"
                                 title="configura as informações sobre ocorrências para serem impressas ou não"
@@ -483,29 +530,160 @@ Desenvolvimento rural e obras</textarea>
                     </td>
                 </tr>
 
-                <tr class="notVisible">
+                <tr class="notVisible" *ngIf="pedido.ListaOcorrencia.length == 0">
                     <td colspan="3" class="ME MD MB" align="left">&nbsp;</td>
                 </tr>
 
-                <tr class="notPrint">
-                    <td colspan="3" style="padding:0px;" align="left">
-                        <table width="100%" cellpadding="0" cellspacing="0">
-                            <tr>
-                                <td align="left">afazer: controlar impressao OCORRENCIAS e o corpo da impressao &nbsp;
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
+                <ng-container *ngFor="let ocorrencia of pedido.ListaOcorrencia">
+                    <tr>
+                        <td class="ME" style="width:24px;" align="left">&nbsp;</td>
+                        <td colspan="2" class="ME MD" style="width: 622px;" align="left">
+                            <table width="100%" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td class="C MD MB tdWithPadding" width="33%" align="left" valign="top"><span
+                                            class="Rf" style="margin-left:0px;">ABERTA
+                                            POR:</span>&nbsp;{{ocorrencia.Usuario}}</td>
+                                    <td class="C MD MB tdWithPadding" width="33%" align="left" valign="top"><span
+                                            class="Rf" style="margin-left:0px;">EM:</span>&nbsp;
+                                        {{dataFormatarTelaHora(ocorrencia.Dt_Hr_Cadastro)}}
+                                        {{dataformatarTelaHoraSemSegundos(ocorrencia.Dt_Hr_Cadastro)}} &nbsp;
+                                    </td>
+                                    <td class="C MB tdWithPadding" align="left" valign="top"
+                                        [ngStyle]="{'color': ocorrencia.Finalizado_Data_Hora?'green':'red'}"><span
+                                            class="Rf"
+                                            style="margin-left:0px;">SITUAÇÃO:</span>&nbsp;{{ocorrencia.Situacao}}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="ME" style="width:24px;" align="left">&nbsp;</td>
+                        <td colspan="2" class="ME MD" style="width: 622px;" align="left">
+                            <table width="100%" cellspacing="0" cellpadding="1">
+                                <tr>
+                                    <td class="C MB" width="100%" align="left" valign="top"><span class="Rf"
+                                            style="margin-left:0px;">CONTATO:</span>&nbsp;{{ocorrencia.Contato}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="C MB" width="100%" align="left" valign="top"><span class="Rf"
+                                            style="margin-left:0px;">OCORRÊNCIA:</span>&nbsp;{{ocorrencia.Texto_Ocorrencia}})%>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
 
+                    <tr>
+                        <td [ngClass]="ocorrencia.Finalizado_Data_Hora?'ME':'ME MB'" style="width: 24px;" align="left">
+                            &nbsp;</td>
+                        <td [ngClass]="ocorrencia.Finalizado_Data_Hora?'ME':'ME MB'" style="width: 24px;" align="left">
+                            &nbsp;</td>
+                        <td class="ME MD" style="width: 622px;" align="left">
+                            <table width="100%" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td class="Rf tdWithPadding" align="left">MENSAGENS</td>
+                                </tr>
+
+                                <tr *ngIf="ocorrencia.mensagemDtoOcorrenciaPedidos.length == 0">
+                                    <td align="left">&nbsp;</td>
+                                </tr>
+
+                                <tr *ngFor="let mensagem of ocorrencia.mensagemDtoOcorrenciaPedidos">
+                                    <td align="left">
+                                        <table width="100%" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <td class="C MD MC tdWithPadding" style="width:60px;" align="center"
+                                                    valign="top">
+                                                    {{dataFormatarTelaHora(mensagem.Dt_Hr_Cadastro)}}
+                                                    {{dataformatarTelaHoraSemSegundos(mensagem.Dt_Hr_Cadastro)}}
+                                                </td>
+                                                <td class="C MD MC tdWithPadding" style="width:80px;" align="center"
+                                                    valign="top">
+                                                    {{mensagem.Usuario}} <ng-container *ngIf="mensagem.Loja != ''">(Loja
+                                                        {{mensagem.Loja}})</ng-container>
+                                                </td>
+                                                <td class="C MC tdWithPadding" align="left" valign="top">
+                                                    {{mensagem.Texto_Mensagem}}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <ng-container *ngIf="!ocorrencia.Finalizado_Data_Hora">
+                                    <tr class="notPrint">
+                                        <td class="MC" style="padding:0px;" align="left">
+                                            <table width="100%" cellpadding="0" cellspacing="0">
+                                                <tr>
+                                                    <td align="left">&nbsp;</td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+
+                                    <tr class="notPrint">
+                                        <td class="MB" align="left"><span
+                                                style='font-family: Arial, Helvetica, sans-serif;color:white;font-size:6pt;font-style:normal;'>&nbsp;</span>
+                                        </td>
+                                    </tr>
+                                    <tr class="notVisible">
+                                        <td class="MB MC" align="left"><span
+                                                style='font-family: Arial, Helvetica, sans-serif;color:white;font-size:6pt;font-style:normal;'>&nbsp;</span>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+
+                            </table>
+                        </td>
+                    </tr>
+
+                    <ng-container *ngIf="ocorrencia.Finalizado_Data_Hora">
+                        <tr>
+                            <td class="ME MB" style="width: 24px;" align="left">&nbsp;</td>
+                            <td colspan="2" class="MC ME MD" align="left">
+                                <table width="100%" cellspacing="0" cellpadding="1">
+                                    <tr>
+                                        <td class="C MB" width="100%" align="left" valign="top">
+                                            <table width="100%" cellspacing="0" cellpadding="0">
+                                                <tr>
+                                                    <td class="C MD tdWithPadding" width="50%" align="left"
+                                                        valign="top">
+                                                        <span class="Rf" style="margin-left:0px;">FINALIZADA
+                                                            POR:</span>&nbsp;{{ocorrencia.Finalizado_Usuario}}</td>
+                                                    <td class="C tdWithPadding" width="50%" align="left" valign="top">
+                                                        <span class="Rf" style="margin-left:0px;">EM:</span>&nbsp;
+                                                        {{dataFormatarTelaHora(ocorrencia.Finalizado_Data_Hora)}}
+                                                        {{dataformatarTelaHoraSemSegundos(ocorrencia.Finalizado_Data_Hora)}}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="C MB" width="100%" align="left" valign="top"><span class="Rf"
+                                                style="margin-left:0px;">TIPO DE
+                                                OCORRÊNCIA:</span>&nbsp;{{ocorrencia.Tipo_Ocorrencia}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="C MB" width="100%" align="left" valign="top"><span class="Rf"
+                                                style="margin-left:0px;">SOLUÇÃO:</span>&nbsp;{{ocorrencia.Texto_Finalizacao}}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </ng-container>
+
+                </ng-container>
             </table>
         </div>
+
 
         <div *ngIf="!impressaoService.emImpressao() || impressaoService.imprimirBlocoNotas()">
             <br>
             <table id="tableBlocoNotas" class="notPrint" width="649" cellspacing="0" cellpadding="1">
-                <tr *ngIf="!impressaoService.emImpressao()" colspan="3">
-                    <td>
+                <tr *ngIf="!impressaoService.emImpressao()">
+                    <td colspan="4">
                         <span style="float: right">
                             <mat-checkbox class="checkboxes"
                                 title="configura as mensagens do bloco de notas para serem impressas ou não"
@@ -520,22 +698,65 @@ Desenvolvimento rural e obras</textarea>
                     <td colspan="4" class="ME MD MC MB" align="left"><span class="Rf">BLOCO DE NOTAS</span></td>
                 </tr>
 
-                <tr class="notVisible">
-                    <td colspan="4" class="ME MD MB" align="left">FAZER bloco de notas&nbsp;</td>
+                <!-- afazer: bloco de notas é um array, mas agora está como um elemnto só... -->
+                <tr class="notVisible" *ngIf="pedido.BlocoNotas">
+                    <td colspan="4" class="ME MD MB" align="left">&nbsp;</td>
                 </tr>
 
-
-                <tr class="notPrint">
-                    <td colspan="4" style="padding:0px;" align="left">
-                        <table width="100%" cellpadding="0" cellspacing="0">
-                            <tr>
-                                <td align="left">afazer: controlar impressao e o corpo da impressao &nbsp;</td>
-                            </tr>
-                        </table>
+                <!-- afazer: bloco de notas é um array, mas agora está como um elemnto só... -->
+                <!-- <tr *ngFor="let nota of pedido.BlocoNotas"> -->
+                <tr *ngIf="pedido.BlocoNotas.Dt_Hora_Cadastro.toString().trim() != '0001-01-01T00:00:00'">
+                    <td class="C ME MD MB" style="width:60px;" align="center" valign="top">
+                        {{dataFormatarTela(pedido.BlocoNotas.Dt_Hora_Cadastro)}}
+                        {{dataFormatarTelaHora(pedido.BlocoNotas.Dt_Hora_Cadastro)}}
+                    </td>
+                    <td class="C MD MB" style="width:80px;" align="center" valign="top">
+                        {{pedido.BlocoNotas.Usuario}} <ng-container *ngIf="pedido.BlocoNotas?.Loja != ''">(Loja
+                            {{pedido.BlocoNotas.Loja}})</ng-container>
+                    </td>
+                    <td colspan="2" class="C MD MB" align="left" valign="top">
+                        {{pedido.BlocoNotas.Mensagem}}
                     </td>
                 </tr>
             </table>
         </div>
+
+
+
+        <ng-container *ngIf="pedido.ListaBlocoNotasDevolucao.length > 0">
+            <br>
+            <table id="tableBlocoNotasItemDevolvido" class="notPrint" width="649" cellspacing="0" cellpadding="1"
+                border="0">
+                <tr *ngIf="!impressaoService.emImpressao()">
+                    <td colspan="3">
+                        <span style="float: right">
+                            <mat-checkbox class="checkboxes"
+                                title="configura as mensagens do bloco de notas de itens devolvidos para serem impressas ou não"
+                                (change)="imprimirNotasDevAlterado()" [checked]="impressaoService.imprimirNotasDev()">
+                                Incluir ocorrências de devolução na impressão
+                            </mat-checkbox>
+                        </span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="3" class="ME MD MC MB" align="left"><span class="Rf">BLOCO DE NOTAS (DEVOLUÇÃO DE
+                            MERCADORIAS)</span></td>
+                </tr>
+                <tr *ngFor="let dev of pedido.ListaBlocoNotasDevolucao">
+                    <td class="C ME MD MB" style="width:60px;" align="center" valign="top">
+                        {{dataFormatarTela(dev.Dt_Hr_Cadastro)}} {{dev.Dt_Hr_Cadastro}}
+                    </td>
+                    <td class="C MD MB" style="width:80px;" align="center" valign="top">
+                        {{dev.Usuario}} <ng-container *ngIf="dev.Loja">(Loja {{dev.Loja}})</ng-container>
+                    </td>
+                    <td class="C MD MB" style="width:499px;" align="left" valign="top">
+                        {{dev.Mensagem}}</td>
+                </tr>
+
+            </table>
+        </ng-container>
+
 
     </form>
     <br>

@@ -310,62 +310,113 @@ para não dar erro no console
     <!-- ************   PRODUTOR RURAL / CONTRIBUINTE ICMS / IE ************  -->
     <!-- passamos apra o fim do formulário porque,. quando está confirnado um cliente já existente, os campos editáveis ficam no fim da tela -->
     <span *ngIf="ehPf()">
-        <div>
-            <!-- se está confirando, precisa de um espaço maior em cima -->
-            <div *ngIf="!cadastrando" style="padding-top: 1.5em;"></div>
-            <mat-form-field floatLabel="floatLabel()" [ngStyle]="{'padding':!cadastrando?'0em':''}">
-                <mat-label>PRODUTOR RURAL</mat-label>
-                <!-- produtor rural sempre é editável -->
-                <mat-select required [(ngModel)]="dadosClienteCadastroDto.ProdutorRural">
-                    <mat-option>Selecione</mat-option>
-                    <mat-option [(value)]="constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO">Não</mat-option>
-                    <mat-option [(value)]="constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM">Sim</mat-option>
-                </mat-select>
-            </mat-form-field>
+        <span *ngIf="editarIcms">
+            <div>
+                <!-- se está confirando, precisa de um espaço maior em cima -->
+                <div *ngIf="!cadastrando" style="padding-top: 1.5em;"></div>
+                <mat-form-field floatLabel="floatLabel()" [ngStyle]="{'padding':!cadastrando?'0em':''}">
+                    <mat-label>PRODUTOR RURAL</mat-label>
+                    <!-- produtor rural sempre é editável -->
+                    <mat-select required [(ngModel)]="dadosClienteCadastroDto.ProdutorRural">
+                        <mat-option>Selecione</mat-option>
+                        <mat-option [(value)]="constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO">Não</mat-option>
+                        <mat-option [(value)]="constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM">Sim</mat-option>
+                    </mat-select>
+                </mat-form-field>
 
-            <mat-form-field floatLabel="floatLabel()"
-                *ngIf="dadosClienteCadastroDto.ProdutorRural == constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM"
-                style="width: 25ch;">
-                <input matInput type="text" placeholder="IE" [(ngModel)]="dadosClienteCadastroDto.Ie" maxlength="20">
-            </mat-form-field>
+                <mat-form-field floatLabel="floatLabel()"
+                    *ngIf="dadosClienteCadastroDto.ProdutorRural == constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM"
+                    style="width: 25ch;">
+                    <input matInput type="text" placeholder="IE" [(ngModel)]="dadosClienteCadastroDto.Ie"
+                        maxlength="20">
+                </mat-form-field>
 
-            <mat-form-field floatLabel="floatLabel()"
-                *ngIf="dadosClienteCadastroDto.ProdutorRural == constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM"
-                style="width: 22ch;">
-                <mat-label>CONTRIBUINTE ICMS</mat-label>
-                <mat-select required [(ngModel)]="dadosClienteCadastroDto.Contribuinte_Icms_Status">
-                    <mat-option>Selecione</mat-option>
-                    <mat-option [(value)]="constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO">Não</mat-option>
-                    <mat-option [(value)]="constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM">Sim</mat-option>
-                    <mat-option [(value)]="constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO">Isento</mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
+                <mat-form-field floatLabel="floatLabel()"
+                    *ngIf="dadosClienteCadastroDto.ProdutorRural == constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM"
+                    style="width: 22ch;">
+                    <mat-label>CONTRIBUINTE ICMS</mat-label>
+                    <mat-select required [(ngModel)]="dadosClienteCadastroDto.Contribuinte_Icms_Status">
+                        <mat-option>Selecione</mat-option>
+                        <mat-option [(value)]="constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO">Não</mat-option>
+                        <mat-option [(value)]="constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM">Sim</mat-option>
+                        <mat-option [(value)]="constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO">Isento</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </span>
+        <span *ngIf="!editarIcms">
+            <div>
+                <span class="caixa">
+                    <span class="rotulo">Produtor rural:</span>
+                    <span class="dado">
+                        {{dadosClienteCadastroDto?.ProdutorRural == constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO?"Não":""}}
+                        {{dadosClienteCadastroDto?.ProdutorRural == constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM?"Sim":""}}
+                    </span>
+                </span>
+            </div>
+
+            <span class="caixa"
+                *ngIf="dadosClienteCadastroDto.ProdutorRural == constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM">
+                <span class="rotulo">IE:</span>
+                <span class="dado"> {{dadosClienteCadastroDto?.Ie}} </span>
+            </span>
+
+            <span class="caixa"
+                *ngIf="dadosClienteCadastroDto.ProdutorRural == constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM">
+                <span class="rotulo">Contribuinte ICMS:</span>
+                <span class="dado">
+                    {{dadosClienteCadastroDto?.Contribuinte_Icms_Status == constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO?"Não":""}}
+                    {{dadosClienteCadastroDto?.Contribuinte_Icms_Status == constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM?"Sim":""}}
+                    {{dadosClienteCadastroDto?.Contribuinte_Icms_Status == constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO?"Isento":""}}
+                </span>
+            </span>
+        </span>
     </span>
 
     <!-- campos específicos da pessoa jurídica -->
     <span *ngIf="!ehPf()">
+        <span *ngIf="editarIcms">
+            <!-- se está confirando, precisa de um espaço maior em cima -->
+            <div *ngIf="!cadastrando" style="padding-top: 1.5em;"></div>
 
-        <!-- se está confirando, precisa de um espaço maior em cima -->
-        <div *ngIf="!cadastrando" style="padding-top: 1.5em;"></div>
+            <!-- IE sempre é editável -->
+            <mat-form-field floatLabel="floatLabel()" style="width: 25ch;"
+                [ngStyle]="{'padding':!cadastrando?'0em':''}">
+                <input matInput type="text" placeholder="IE" [(ngModel)]="dadosClienteCadastroDto.Ie" maxlength="20">
+            </mat-form-field>
 
-        <!-- IE sempre é editável -->
-        <mat-form-field floatLabel="floatLabel()" style="width: 25ch;" [ngStyle]="{'padding':!cadastrando?'0em':''}">
-            <input matInput type="text" placeholder="IE" [(ngModel)]="dadosClienteCadastroDto.Ie" maxlength="20">
-        </mat-form-field>
+            <mat-form-field floatLabel="floatLabel()" style="width: 22ch;">
+                <mat-label>CONTRIBUINTE ICMS </mat-label>
+                <mat-select required [(ngModel)]="dadosClienteCadastroDto.Contribuinte_Icms_Status">
+                    <mat-option>Selecione</mat-option>
+                    <mat-option [(value)]="constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO">Não
+                    </mat-option>
+                    <mat-option [(value)]="constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM">Sim
+                    </mat-option>
+                    <mat-option [(value)]="constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO">
+                        Isento</mat-option>
+                </mat-select>
+            </mat-form-field>
 
-        <mat-form-field floatLabel="floatLabel()" style="width: 22ch;">
-            <mat-label>CONTRIBUINTE ICMS </mat-label>
-            <mat-select required [(ngModel)]="dadosClienteCadastroDto.Contribuinte_Icms_Status">
-                <mat-option>Selecione</mat-option>
-                <mat-option [(value)]="constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO">Não
-                </mat-option>
-                <mat-option [(value)]="constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM">Sim
-                </mat-option>
-                <mat-option [(value)]="constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO">
-                    Isento</mat-option>
-            </mat-select>
-        </mat-form-field>
+        </span>
+
+        <span *ngIf="!editarIcms">
+            <!-- IE sempre é editável -->
+            <span class="caixa">
+                <span class="rotulo">IE:</span>
+                <span class="dado"> {{dadosClienteCadastroDto?.Ie}} </span>
+            </span>
+
+            <span class="caixa">
+                <span class="rotulo">Contribuinte ICMS:</span>
+                <span class="dado">
+                    {{dadosClienteCadastroDto?.Contribuinte_Icms_Status == constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO?"Não":""}}
+                    {{dadosClienteCadastroDto?.Contribuinte_Icms_Status == constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM?"Sim":""}}
+                    {{dadosClienteCadastroDto?.Contribuinte_Icms_Status == constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO?"Isento":""}}
+                </span>
+            </span>
+
+        </span>
 
     </span>
 
