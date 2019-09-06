@@ -170,8 +170,8 @@ e são usados desta forma:
 
   validarInscricaoestadualIcms(dadosClienteCadastroDto: DadosClienteCadastroDto): string {
     //retorna null se não tiver nenhum erro
-    let constantes = new Constantes();
-    let clienteCadastroUtils = new ClienteCadastroUtils();
+    let constantes = this.constantes;
+    let clienteCadastroUtils = this;
 
     // copiado do ClienteEdita.asp
     if (clienteCadastroUtils.ehPf(dadosClienteCadastroDto)) {
@@ -189,7 +189,7 @@ e são usados desta forma:
           return 'Informe se o cliente é contribuinte do ICMS, não contribuinte ou isento!!';
         }
         if ((dadosClienteCadastroDto.Contribuinte_Icms_Status === constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
-          && (dadosClienteCadastroDto.Ie || (dadosClienteCadastroDto.Ie.trim() == ""))) {
+          && (!dadosClienteCadastroDto.Ie || (dadosClienteCadastroDto.Ie.trim() == ""))) {
           return 'Se o cliente é contribuinte do ICMS a inscrição estadual deve ser preenchida!!';
           //f.ie.focus();
         }
@@ -199,7 +199,7 @@ e são usados desta forma:
           //f.ie.focus();
         }
         if ((dadosClienteCadastroDto.Contribuinte_Icms_Status === constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
-          && (dadosClienteCadastroDto.Ie || dadosClienteCadastroDto.Ie.toUpperCase().indexOf('ISEN') >= 0)) {
+          && (!dadosClienteCadastroDto.Ie || dadosClienteCadastroDto.Ie.toUpperCase().indexOf('ISEN') >= 0)) {
           return 'Se cliente é contribuinte do ICMS, não pode ter o valor ISENTO no campo de Inscrição Estadual!!';
           //f.ie.focus();
         }
@@ -213,7 +213,7 @@ e são usados desta forma:
         return 'Informe se o cliente é contribuinte do ICMS, não contribuinte ou isento!!';
       }
       if ((dadosClienteCadastroDto.Contribuinte_Icms_Status === constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
-        && (dadosClienteCadastroDto.Ie || (dadosClienteCadastroDto.Ie.trim() == ""))) {
+        && (!dadosClienteCadastroDto.Ie || (dadosClienteCadastroDto.Ie.trim() == ""))) {
         return 'Se o cliente é contribuinte do ICMS a inscrição estadual deve ser preenchida!!';
         //f.ie.focus();
       }
@@ -223,7 +223,7 @@ e são usados desta forma:
         //f.ie.focus();
       }
       if ((dadosClienteCadastroDto.Contribuinte_Icms_Status === constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
-        && (dadosClienteCadastroDto.Ie || dadosClienteCadastroDto.Ie.toUpperCase().indexOf('ISEN') >= 0)) {
+        && (!dadosClienteCadastroDto.Ie || dadosClienteCadastroDto.Ie.toUpperCase().indexOf('ISEN') >= 0)) {
         return 'Se cliente é contribuinte do ICMS, não pode ter o valor ISENTO no campo de Inscrição Estadual!!';
         //f.ie.focus();
       }

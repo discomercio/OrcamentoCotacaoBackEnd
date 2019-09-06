@@ -1,0 +1,23 @@
+// campos de edicao de endereço
+
+.edicao-endereco {
+  width: calc(100% - 2em);
+}
+.edicao-numero{
+    width: 12ch;
+}
+.edicao-compl{
+    width: 12ch;
+}
+.edicao-bairro{
+    width: 22ch;
+}
+.edicao-cidade{
+    width: 22ch;
+}
+.edicao-uf{
+    width: 4em;
+}
+.edicao-cep{
+    width: 12ch;
+}

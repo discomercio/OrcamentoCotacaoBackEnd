@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material';
 import { ClienteCadastroDto } from 'src/app/dto/ClienteCadastro/ClienteCadastroDto';
 import { ClienteCadastroUtils } from 'src/app/dto/ClienteCadastroUtils/ClienteCadastroUtils';
 import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
+import { EnderecoEntregaDtoClienteCadastro } from 'src/app/dto/ClienteCadastro/EnderecoEntregaDTOClienteCadastro';
 
 @Component({
   selector: 'app-confirmar-cliente',
@@ -17,8 +18,15 @@ import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
 })
 export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implements OnInit {
 
-  constructor(router: Router,
-    activatedRoute: ActivatedRoute,
+  //dados
+  dadosClienteCadastroDto = new DadosClienteCadastroDto();
+  clienteCadastroDto = new ClienteCadastroDto();
+  enderecoEntregaDtoClienteCadastro = new EnderecoEntregaDtoClienteCadastro();
+  enderecoDiferente = false;
+
+
+  constructor(private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute,
     telaDesktopService: TelaDesktopService,
     private readonly location: Location,
     public readonly dialog: MatDialog,
@@ -58,15 +66,20 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     }
   }
 
-  dadosClienteCadastroDto = new DadosClienteCadastroDto();
-  clienteCadastroDto = new ClienteCadastroDto();
   ngOnInit() {
+    //inicializar as fases
+    this.fase1 = true;
+    this.fase2 = false;
+    this.fase1e2juntas = false;
+    if (this.telaDesktop) {
+      this.fase1 = true;
+      this.fase2 = true;
+      this.fase1e2juntas = true;
+    }
+
   }
 
-  voltar() {
-    this.location.back();
-  }
-
+  //#region salvar alterações no IE e Contribuinte_Icms_Status
   //variáveis apra controlar salvarAtivo
   salvarAtivoInicializar() {
     this.dadosClienteCadastroDtoIe = this.dadosClienteCadastroDto.Ie;
@@ -136,6 +149,35 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
   mostrarMensagem(msg: string): void {
     this.alertaService.mostrarMensagem(msg);
   }
+  //#endregion
+
+  //#region fase
+  /*
+  temos 2 fases: uma que confirma o cliente e a segunda que confirma o endereço de entrega
+  na especificação original, é uma tela só no desktop e duas telas no celular
+  talvez no desktop também fique em duas
+  aqui controlamos a transição entre as telas
+  */
+  fase1 = true;
+  fase2 = false;
+  fase1e2juntas = false;
+  //#endregion
+
+  voltar() {
+    //voltamos apra a fase anterior
+    if (this.fase1e2juntas) {
+      this.location.back();
+      return;
+    }
+    if (this.fase1) {
+      this.location.back();
+      return;
+    }
+
+    //vltamos para a fase 1
+    this.fase1 = true;
+    this.fase2 = false;
+  }
 
   continuar(): void {
     //salvamos automaticamente
@@ -146,9 +188,33 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     this.continuarEfetivo();
   }
   continuarEfetivo(): void {
-    //continuamos
-    window.alert("afazer: continuar para confirmação do endereço de entrega");
+    //se estamos na fase 2, cotninua
+    //caso contrário, volta para a fase 1
+    if (this.fase2 || this.fase1e2juntas) {
+      //vamos validar o endereço
+      // só a jsutificativa, número e complemento. O resto vai ser validado pelo CEP
+      if (this.enderecoDiferente) {
+        if(!this.enderecoEntregaDtoClienteCadastro.EndEtg_cod_justificativa || this.enderecoEntregaDtoClienteCadastro.EndEtg_cod_justificativa.trim() === ""){
+          this.mostrarMensagem("Caso seja selecionado outro endereço, selecione a justificativa do endereço de entrega!!")
+          return;
+        }
+        //somente número, o resto é feito pelo CEP
+        if(!this.enderecoEntregaDtoClienteCadastro.EndEtg_endereco_numero || this.enderecoEntregaDtoClienteCadastro.EndEtg_endereco_numero.trim() === ""){
+          this.mostrarMensagem("Caso seja selecionado outro endereço, preencha o número do endereço de entrega!!")
+          return;
+        }
+      }
+      //continuamos
+      //afazer: salvar no serviço
+      this.router.navigate(['novo-prepedido/itens']);
+      return;
+    }
+    this.fase2 = true;
+    this.fase1 = false;
   }
 
+  enderecoDiferenteChange(novo: boolean) {
+    this.enderecoDiferente = novo;
+  }
 }
 

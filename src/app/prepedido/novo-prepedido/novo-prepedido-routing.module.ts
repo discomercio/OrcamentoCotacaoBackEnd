@@ -6,6 +6,7 @@ import { NovoPrepedidoComponent } from './novo-prepedido.component';
 import { ConfirmarClienteComponent } from './confirmar-cliente/confirmar-cliente.component';
 import { SelecionarClienteComponent } from './selecionar-cliente/selecionar-cliente.component';
 import { CadastrarClienteComponent } from './cadastrar-cliente/cadastrar-cliente.component';
+import { ItensComponent } from './itens/itens.component';
 
 
 const routes: Routes = [
@@ -23,6 +24,11 @@ const routes: Routes = [
         path: 'cadastrar-cliente/:cpfCnpj',
         canActivate: [LoginGuard],
         component: CadastrarClienteComponent
+      },
+      {
+        path: 'itens',
+        canActivate: [LoginGuard],
+        component: ItensComponent
       },
       {
         path: '**',

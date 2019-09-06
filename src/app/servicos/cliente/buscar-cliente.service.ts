@@ -24,5 +24,27 @@ export class BuscarClienteService {
   public atualizarCliente(dadosClienteCadastroDto:DadosClienteCadastroDto){
     return this.http.post<string[]>(environment.apiUrl + 'cliente/atualizarClienteparcial', dadosClienteCadastroDto);
   }
+
+  public JustificativaEndEntregaComboTemporario(){
+    //afazer: chamar a API
+    //por enquanto, retornamos uma lista fixa
+   const ret:JustificativaEndEntregaComboDto []= new Array();
+   ret.push({Codigo:"001", Descricao:"Casa de Veraneio"});
+   ret.push({Codigo:"002", Descricao:"Doação"});
+   ret.push({Codigo:"003", Descricao:"Nova Unidade da Empresa/filial"});
+   ret.push({Codigo:"004", Descricao:"Parente do Proprietário (Pais, Filhos e Irmãos)"});
+   ret.push({Codigo:"005", Descricao:"Residência do Proprietário"});
+   ret.push({Codigo:"006", Descricao:"Endereço Comercial do Proprietário"});
+   ret.push({Codigo:"008", Descricao:"Endereço da Obra"});
+   ret.push({Codigo:"009", Descricao:"Endereço Novo Cliente"});
+   ret.push({Codigo:"010", Descricao:"Acerto Interno"});
+
+   return ret;
+  }
+
 }
 
+export class JustificativaEndEntregaComboDto{
+    public Codigo:string;
+    public Descricao:string;
+}

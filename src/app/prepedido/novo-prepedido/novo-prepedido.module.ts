@@ -10,10 +10,12 @@ import { ConfirmarClienteComponent } from './confirmar-cliente/confirmar-cliente
 import { NovoPrepedidoRoutingModule } from './novo-prepedido-routing.module';
 import { CadastrarClienteComponent } from './cadastrar-cliente/cadastrar-cliente.component';
 import { ClienteCorpoModule } from 'src/app/cliente/cliente-corpo/cliente-corpo.module';
+import { ConfirmarEnderecoComponent } from './confirmar-endereco/confirmar-endereco.component';
+import { ItensComponent } from './itens/itens.component';
 
 
 @NgModule({
-  declarations: [ NovoPrepedidoComponent, SelecionarClienteComponent, ConfirmarClienteComponent, CadastrarClienteComponent],
+  declarations: [ NovoPrepedidoComponent, SelecionarClienteComponent, ConfirmarClienteComponent, CadastrarClienteComponent, ConfirmarEnderecoComponent, ItensComponent],
   imports: [
     CommonModule,
     ClienteCorpoModule,

@@ -11,7 +11,7 @@ import { ClienteCadastroDto } from 'src/app/dto/ClienteCadastro/ClienteCadastroD
 @Component({
   selector: 'app-cliente-corpo',
   templateUrl: './cliente-corpo.component.html',
-  styleUrls: ['./cliente-corpo.component.scss']
+  styleUrls: ['./cliente-corpo.component.scss', '../../estilos/endereco.scss']
 })
 export class ClienteCorpoComponent implements OnInit, OnChanges {
   constructor(private readonly titleService: Title) { }
@@ -54,7 +54,7 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
   }
   private initEhPf() {
     //testamos pelo tamanho do CPF/CNPJ
-    if(!this.dadosClienteCadastroDto){
+    if (!this.dadosClienteCadastroDto) {
       return;
     }
     this.calculadoEhPf = false;
@@ -69,6 +69,8 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
   }
 
   definirTitle() {
+    //nao usamos o title pq deveriamos setar em todas as páginas!
+    /*
     if (this.ehPf() && this.cadastrando) {
       this.titleService.setTitle("Cadastro - pessoa física");
     }
@@ -81,6 +83,7 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
     if (!this.ehPf() && !this.cadastrando) {
       this.titleService.setTitle("Consulta - pessoa jurídica");
     }
+    */
   }
 
   //dados para exibir

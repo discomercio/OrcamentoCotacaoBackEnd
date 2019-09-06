@@ -5,8 +5,11 @@
     </header>
     <article>
         <app-cliente-corpo [dadosClienteCadastroDto]="dadosClienteCadastroDto" [cadastrando]="false"
-        [clienteCadastroDto]="clienteCadastroDto" [editarIcms]="true">
+            [clienteCadastroDto]="clienteCadastroDto" [editarIcms]="true" *ngIf="fase1">
         </app-cliente-corpo>
+        <app-confirmar-endereco [dadosClienteCadastroDto]="dadosClienteCadastroDto" [mostrarEndereco]="!fase1e2juntas"
+            *ngIf="fase2" [enderecoEntregaDtoClienteCadastro]="enderecoEntregaDtoClienteCadastro" (enderecoDiferenteChange)="enderecoDiferenteChange($event)">
+        </app-confirmar-endereco>
     </article>
     <footer>
         <button mat-raised-button color="accent" (click)="voltar()">

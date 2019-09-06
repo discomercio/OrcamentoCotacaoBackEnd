@@ -98,29 +98,29 @@ para não dar erro no console
 
     <div *ngIf="cadastrando">
         <!-- ************   ENDEREÇO   ************  -->
-        <mat-form-field floatLabel="floatLabel()" class="largura-maxima-campo-formulario">
+        <mat-form-field floatLabel="floatLabel()" class="edicao-endereco">
             <input matInput type="text" placeholder="ENDEREÇO" [(readonly)]="!cadastrando"
                 [(ngModel)]="dadosClienteCadastroDto.Endereco" required maxlength="60" size="85">
         </mat-form-field>
 
         <!-- ************ Nº/COMPLEMENTO ************  -->
-        <mat-form-field floatLabel="floatLabel()" style="width: 14ch;">
+        <mat-form-field floatLabel="floatLabel()" class="edicao-numero" >
             <input matInput type="text" placeholder="Nº" [(readonly)]="!cadastrando"
                 [(ngModel)]="dadosClienteCadastroDto.Numero" required maxlength="20" size="10">
         </mat-form-field>
-        <mat-form-field floatLabel="floatLabel()" style="width: 18ch;">
+        <mat-form-field floatLabel="floatLabel()" class="edicao-compl" >
             <input matInput type="text" placeholder="COMPLEMENTO" [(readonly)]="!cadastrando"
                 [(ngModel)]="dadosClienteCadastroDto.Complemento" maxlength="60" size="10">
         </mat-form-field>
 
 
         <!-- ************ BAIRRO/CIDADE ************  -->
-        <mat-form-field floatLabel="floatLabel()" style="width: 25ch;">
+        <mat-form-field floatLabel="floatLabel()" class="edicao-bairro">
             <input matInput type="text" placeholder="BAIRRO" [(readonly)]="!cadastrando"
                 [(ngModel)]="dadosClienteCadastroDto.Bairro" required maxlength="72">
         </mat-form-field>
 
-        <mat-form-field floatLabel="floatLabel()" style="width: 25ch;">
+        <mat-form-field floatLabel="floatLabel()" class="edicao-cidade" >
             <input matInput type="text" placeholder="CIDADE" [(readonly)]="!cadastrando"
                 [(ngModel)]="dadosClienteCadastroDto.Cidade" required maxlength="60">
         </mat-form-field>
@@ -128,13 +128,13 @@ para não dar erro no console
 
         <!-- ************ UF/CEP ************  -->
         <!-- Afazer: select de estados -->
-        <mat-form-field floatLabel="floatLabel()" style="width: 4em;">
+        <mat-form-field floatLabel="floatLabel()" class="edicao-uf">
             <input matInput type="text" placeholder="UF" [(readonly)]="!cadastrando"
                 [(ngModel)]="dadosClienteCadastroDto.Uf" required maxlength="2" size="3">
         </mat-form-field>
 
         <!-- Afazer: janela de busca de CEP (e dar erro quando CEP for inválido) -->
-        <mat-form-field floatLabel="floatLabel()" style="width: 12ch;">
+        <mat-form-field floatLabel="floatLabel()" class="edicao-cep" >
             <input matInput type="text" placeholder="CEP" [(readonly)]="!cadastrando"
                 [(ngModel)]="dadosClienteCadastroDto.Cep" required maxlength="9" size="11">
         </mat-form-field>
