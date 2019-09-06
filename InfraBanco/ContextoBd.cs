@@ -37,6 +37,8 @@ namespace InfraBanco
         public DbSet<TclienteRefComercial> TclienteRefComercials { get; set; }
         public DbSet<Tlog> Tlogs { get; set; }
         public DbSet<Tloja> Tlojas { get; set; }
+        public DbSet<Tcontrole> Tcontroles { get; set; }
+        public DbSet<TnfEmitente> TnfEmitentes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

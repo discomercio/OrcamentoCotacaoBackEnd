@@ -6,6 +6,8 @@ namespace InfraBanco.Constantes
 {
     public static class Constantes
     {
+        public const int FATOR_BD = 1209;
+
         public const string ID_USUARIO_SISTEMA = "SISTEMA";
 
         public const string TITULO_JANELA_MODULO_ORCAMENTO = "Pré-Pedido";

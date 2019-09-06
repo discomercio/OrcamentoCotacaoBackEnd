@@ -21,10 +21,10 @@ namespace PrepedidoBusiness.Dto.Pedido.DetalhesPedido
         public decimal? VlTotalDestePedido { get; set; }
         public DetalhesNFPedidoDtoPedido DetalhesNF { get; set; }
         public DetalhesFormaPagamentos DetalhesFormaPagto { get; set; }
-        public IEnumerable<ProdutoDevolvidoDtoPedido> ListaProdutoDevolvido{ get; set; }
-        public IEnumerable<PedidoPerdasDtoPedido> ListaPerdas { get; set; }
+        public List<ProdutoDevolvidoDtoPedido> ListaProdutoDevolvido{ get; set; }
+        public List<PedidoPerdasDtoPedido> ListaPerdas { get; set; }
         public List<OcorrenciasDtoPedido> ListaOcorrencia { get; set; }
-        public BlocoNotasDtoPedido BlocoNotas { get; set; }
+        public List<BlocoNotasDtoPedido> ListaBlocoNotas { get; set; }
         public List<BlocoNotasDevolucaoMercadoriasDtoPedido> ListaBlocoNotasDevolucao { get; set; }
 
 

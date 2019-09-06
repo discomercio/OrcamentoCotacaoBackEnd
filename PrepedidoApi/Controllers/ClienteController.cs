@@ -72,5 +72,17 @@ namespace PrepedidoApi.Controllers
             return Ok(listaBancos);
         }
 
+#if DEBUG
+        [AllowAnonymous]
+#endif
+        [HttpGet("cadastrarCliente")]
+        public async Task<IActionResult> CadastrarCliente(ClienteCadastroDto clienteDto)
+        {
+            //para testar: http://localhost:60877/api/cliente/cadastrarCliente
+            string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
+            var retorno = await clienteBll.CadastrarCliente(clienteDto, apelido);
+
+            return Ok();
+        }
     }
 }

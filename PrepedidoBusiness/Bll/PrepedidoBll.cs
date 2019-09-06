@@ -162,8 +162,8 @@ namespace PrepedidoBusiness.Bll
         public async Task<PrePedidoDto> BuscarPrePedido(string apelido, string numPrePedido)
         {
             //parateste
-            apelido = "PEDREIRA";
-            numPrePedido = "214289Z";
+            //apelido = "PEDREIRA";
+            //numPrePedido = "214289Z";
 
             var db = contextoProvider.GetContexto();
 
@@ -376,7 +376,7 @@ namespace PrepedidoBusiness.Bll
                 enderecoEntrega.EndEtg_cidade = p.EndEtg_Cidade;
                 enderecoEntrega.EndEtg_uf = p.EndEtg_UF;
                 enderecoEntrega.EndEtg_cep = p.EndEtg_CEP;
-                enderecoEntrega.EndEtg_cod_justificativa = await ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA, p.EndEtg_Cod_Justificativa);
+                enderecoEntrega.EndEtg_descricao_justificativa = await ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA, p.EndEtg_Cod_Justificativa);
             }
             else
                 return null;
