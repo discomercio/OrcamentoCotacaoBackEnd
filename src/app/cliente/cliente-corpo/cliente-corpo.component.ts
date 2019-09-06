@@ -5,7 +5,7 @@ import { StringUtils } from 'src/app/utils/stringUtils';
 import { Title } from '@angular/platform-browser';
 import { CpfCnpjUtils } from 'src/app/utils/cpfCnpjUtils';
 import { DataUtils } from 'src/app/utils/dataUtils';
-import { ClienteCadastroUtils } from 'src/app/dto/ClienteCadastroUtils/ClienteCadastroUtils';
+import { ClienteCadastroUtils } from 'src/app/dto/AngularClienteCadastroUtils/ClienteCadastroUtils';
 import { ClienteCadastroDto } from 'src/app/dto/ClienteCadastro/ClienteCadastroDto';
 
 @Component({

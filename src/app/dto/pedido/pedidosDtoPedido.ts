@@ -1,4 +1,4 @@
-﻿export class PedidoDtoPedido
+﻿export class  PedidoDtoPedido
     {
         NumeroPedido: string;
         DataPedido: Date | string | null;

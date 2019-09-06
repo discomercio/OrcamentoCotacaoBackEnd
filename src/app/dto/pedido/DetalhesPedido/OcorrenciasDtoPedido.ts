@@ -12,4 +12,3 @@ export class OcorrenciasDtoPedido {
     Tipo_Ocorrencia: string;//obtem_descricao_tabela_t_codigo_descricao(GRUPO_T_CODIGO_DESCRICAO__OCORRENCIAS_EM_PEDIDOS__TIPO_OCORRENCIA, Trim("" & rs("tipo_ocorrencia")))
     Texto_Finalizacao: string;
 }
-

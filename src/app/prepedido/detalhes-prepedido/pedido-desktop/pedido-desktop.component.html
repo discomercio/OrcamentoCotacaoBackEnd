@@ -19,7 +19,99 @@
     <form id="fPED" name="fPED" method="post">
 
         <!--  I D E N T I F I C A Ç Ã O   D O   P E D I D O -->
-        <!-- afazer: MontaHeaderIdentificacaoPedido -->
+        <!--  rotina MontaHeaderIdentificacaoPedido no asp. -->
+<!-- 
+    afazer:
+        function MontaHeaderIdentificacaoPedido(ByVal strNumPedido, ByVal r_pedido, ByVal intLargTable)
+        dim strResp
+        dim strStEntregaData
+        dim strClassData
+        dim strClassCell
+        dim strRecebidoData
+        dim loja
+        dim s_colon
+        
+            loja =  Trim(Session("loja_atual"))
+            MontaHeaderIdentificacaoPedido = ""
+            
+            strClassData="STP"
+            strClassCell=""
+            strStEntregaData=""
+            strRecebidoData=""
+            if r_pedido.st_entrega=ST_ENTREGA_ENTREGUE then 
+                if Cstr(r_pedido.PedidoRecebidoStatus) = Cstr(COD_ST_PEDIDO_RECEBIDO_SIM) then
+                    strClassData="HoraPed"
+                    strClassCell=" class='MD ME' style='border-width:2px;border-color:" & x_status_entrega_cor(r_pedido.st_entrega, strNumPedido) & ";' "
+                    strStEntregaData = formata_data(r_pedido.entregue_data)
+                    strRecebidoData = "<br>" & chr(13) & _
+                                        "<span class='" & strClassData & "' style='color:#9932CC;text-align:center;margin:0px 3px 0px 3px;'>" & _
+                                        formata_data(r_pedido.PedidoRecebidoData) & _
+                                        "</span>" & chr(13)
+                else
+                    strStEntregaData="  (" & formata_data(r_pedido.entregue_data) & ")"
+                    end if
+            elseif r_pedido.st_entrega=ST_ENTREGA_CANCELADO then
+                strStEntregaData="  (" & formata_data(r_pedido.cancelado_data) & ")"
+                end if
+        
+            strResp = _
+                "<table width='" & Cstr(intLargTable) & "' cellpadding='0' cellspacing='0' style='border-bottom:1px solid black;'>" & chr(13)
+            
+            if (r_pedido.pedido_bs_x_marketplace <> "") then
+                if r_pedido.pedido_bs_x_marketplace <> "" then s_colon = ":" else s_colon = ""
+                strResp = strResp & _
+                    "	<tr>" & chr(13) & _
+                    "		<td valign='bottom' align='right' width='100%' colspan='3' style='padding-top: 4px;padding-bottom:0'>" & chr(13) & _
+                    "           <span class='C' style='font-size:10pt'>" & obtem_descricao_tabela_t_codigo_descricao("PedidoECommerce_Origem", r_pedido.marketplace_codigo_origem) & s_colon & "</span><span class='C' style='font-size:12pt'>" & r_pedido.pedido_bs_x_marketplace & "</span>" & chr(13) & _
+                    "       </td>" & chr(13) & _
+                    "   </tr>" & chr(13)
+            end if
+        
+            if (r_pedido.pedido_ac <> "") then
+                if r_pedido.pedido_ac <> "" then s_colon = ":" else s_colon = ""
+                strResp = strResp & _
+                    "	<tr>" & chr(13) & _
+                    "		<td valign='bottom' align='right' width='100%' colspan='3' style='padding-top: 4px;padding-bottom:0'>" & chr(13) & _
+                    "           <span class='C' style='font-size:10pt;color:purple'>Magento" & s_colon & "</span><span class='C' style='font-size:12pt;color:purple'>" & r_pedido.pedido_ac & "</span>" & chr(13) & _
+                    "       </td>" & chr(13) & _
+                    "   </tr>" & chr(13)
+            
+            end if
+            strResp = strResp & _
+                "   <tr>" & chr(13) & _
+                "		<td valign='bottom' align='left' width='33%' style='padding-bottom: 4px'>" & chr(13) & _
+                "			<table cellpadding='0' cellspacing='0'>" & chr(13) & _
+                "				<tr>" & chr(13) & _
+                "					<td valign='bottom' align='left'>" & chr(13) & _
+                "						<span class='STP' style='color:" & x_status_entrega_cor(r_pedido.st_entrega, strNumPedido) & ";'>" & _
+                                            Ucase(x_status_entrega(r_pedido.st_entrega)) & chr(13) & _
+                "						</span>" & chr(13) & _
+                "					</td>" & chr(13) & _
+                "					<td align='left' style='width:6px;padding-bottom:4px'>" & chr(13) & _
+                "					</td>" & chr(13) & _
+                "					<td align='center' valign='bottom'" & strClassCell & "  style='padding-bottom: 4px'>" & chr(13) & _
+                "						<span class='" & strClassData & "' style='text-align:center;color:" & x_status_entrega_cor(r_pedido.st_entrega, strNumPedido) & ";margin:0px 3px 0px 3px;'" & _
+                                        ">" & strStEntregaData & "</span>" & chr(13) & _
+                                        strRecebidoData & _
+                "					</td>" & chr(13) & _
+                "				</tr>" & chr(13) & _
+                "			</table>" & chr(13) & _
+                "		</td>" & chr(13) & _
+                "		<td valign='bottom' align='center' width='33%'>" & chr(13) & _
+                "			<span class='STP'>" & formata_data(r_pedido.data) & chr(13) & _
+                "				<span class='HoraPed'>" & formata_hhnnss_para_hh_nn(r_pedido.hora) & "</span>" & chr(13) & _
+                "			</span>" & chr(13) & _
+                "		</td>" & chr(13) & _
+                "		<td valign='bottom' align='right' nowrap>" & chr(13) & _
+                "			<span class='PEDIDO'>Pedido Nº&nbsp;" & strNumPedido & "</span>" & chr(13)& _
+                "		</td>" & chr(13) & _
+                "	</tr>" & chr(13) & _
+                "</table>" & chr(13)
+                
+            MontaHeaderIdentificacaoPedido = strResp
+            
+        end function -->
+        
         <table width='649' cellpadding='0' cellspacing='0' style='border-bottom:1px solid black;'>
             <tr>
                 <td valign='bottom' align='left' width='33%' style='padding-bottom: 4px'>
@@ -172,9 +264,9 @@
                 </td>
             </tr>
 
-            <tr *ngIf="pedido?.EnderecoEntrega?.EndEtg_cod_justificativa?.trim() != ''">
+            <tr *ngIf="pedido?.EnderecoEntrega?.EndEtg_descricao_justificativa?.trim() != ''">
                 <td align="left" style="word-wrap:break-word">
-                    <p class="C">{{pedido?.EnderecoEntrega?.EndEtg_cod_justificativa}} &nbsp;</p>
+                    <p class="C">{{pedido?.EnderecoEntrega?.EndEtg_descricao_justificativa}} &nbsp;</p>
                 </td>
             </tr>
 
@@ -698,25 +790,25 @@
                     <td colspan="4" class="ME MD MC MB" align="left"><span class="Rf">BLOCO DE NOTAS</span></td>
                 </tr>
 
-                <!-- afazer: bloco de notas é um array, mas agora está como um elemnto só... -->
-                <tr class="notVisible" *ngIf="pedido.BlocoNotas">
+                <tr class="notVisible" *ngIf="pedido.ListaBlocoNotas.length == 0">
                     <td colspan="4" class="ME MD MB" align="left">&nbsp;</td>
                 </tr>
 
-                <!-- afazer: bloco de notas é um array, mas agora está como um elemnto só... -->
-                <!-- <tr *ngFor="let nota of pedido.BlocoNotas"> -->
-                <tr *ngIf="pedido.BlocoNotas.Dt_Hora_Cadastro.toString().trim() != '0001-01-01T00:00:00'">
-                    <td class="C ME MD MB" style="width:60px;" align="center" valign="top">
-                        {{dataFormatarTela(pedido.BlocoNotas.Dt_Hora_Cadastro)}}
-                        {{dataFormatarTelaHora(pedido.BlocoNotas.Dt_Hora_Cadastro)}}
-                    </td>
-                    <td class="C MD MB" style="width:80px;" align="center" valign="top">
-                        {{pedido.BlocoNotas.Usuario}} <ng-container *ngIf="pedido.BlocoNotas?.Loja != ''">(Loja
-                            {{pedido.BlocoNotas.Loja}})</ng-container>
-                    </td>
-                    <td colspan="2" class="C MD MB" align="left" valign="top">
-                        {{pedido.BlocoNotas.Mensagem}}
-                    </td>
+                <tr *ngFor="let nota of pedido.ListaBlocoNotas">
+                    <ng-container
+                        *ngIf="nota.Dt_Hora_Cadastro && nota.Dt_Hora_Cadastro.toString().trim() != '0001-01-01T00:00:00'">
+                        <td class="C ME MD MB" style="width:60px;" align="center" valign="top">
+                            {{dataFormatarTela(nota.Dt_Hora_Cadastro)}}
+                            {{dataFormatarTelaHora(nota.Dt_Hora_Cadastro)}}
+                        </td>
+                        <td class="C MD MB" style="width:80px;" align="center" valign="top">
+                            {{nota.Usuario}} <ng-container *ngIf="nota?.Loja != ''">(Loja
+                                {{nota.Loja}})</ng-container>
+                        </td>
+                        <td colspan="2" class="C MD MB" align="left" valign="top">
+                            {{nota.Mensagem}}
+                        </td>
+                    </ng-container>
                 </tr>
             </table>
         </div>

@@ -8,7 +8,7 @@ import { FormatarEndereco } from 'src/app/utils/formatarEndereco';
 import { FormatarTelefone } from 'src/app/utils/formatarTelefone';
 import { Location } from '@angular/common';
 import { ImpressaoService } from 'src/app/utils/impressao.service';
-import { ClienteCadastroUtils } from 'src/app/dto/ClienteCadastroUtils/ClienteCadastroUtils';
+import { ClienteCadastroUtils } from 'src/app/dto/AngularClienteCadastroUtils/ClienteCadastroUtils';
 import { StringUtils } from 'src/app/utils/stringUtils';
 import { PedidoProdutosDtoPedido } from 'src/app/dto/pedido/detalhesPedido/PedidoProdutosDtoPedido';
 
@@ -70,24 +70,10 @@ export class PedidoDesktopComponent implements OnInit {
   }
 
   //status da entrega imediata
-  entregaImediataInicio(): string {
+  entregaImediata(): string {
     if (!this.pedido || !this.pedido.DetalhesNF)
       return "";
-    if (this.pedido.DetalhesNF.EntregaImediata == this.constantes.COD_ETG_IMEDIATA_NAO)
-      return "NÃO";
-    if (this.pedido.DetalhesNF.EntregaImediata == this.constantes.COD_ETG_IMEDIATA_SIM)
-      return "SIM";
-
-    return "";
-  }
-  entregaImediata(): string {
-    let ret = this.entregaImediataInicio();
-
-    if (ret == "")
-      return ret;
-
-    return ret;
-    // + " afazer: preciso do etg_imediata_data";
+    return this.pedido.DetalhesNF.EntregaImediata;
   }
 
   /*

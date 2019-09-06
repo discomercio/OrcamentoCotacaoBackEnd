@@ -5,6 +5,7 @@ import { DadosClienteCadastroDto } from 'src/app/dto/ClienteCadastro/DadosClient
 import { Observable } from 'rxjs';
 import { StringUtils } from 'src/app/utils/stringUtils';
 import { ClienteCadastroDto } from 'src/app/dto/ClienteCadastro/ClienteCadastroDto';
+import { EnderecoEntregaJustificativaDto } from 'src/app/dto/ClienteCadastro/EnderecoEntregaJustificativaDto';
 
 @Injectable({
   providedIn: 'root'
@@ -25,19 +26,19 @@ export class BuscarClienteService {
     return this.http.post<string[]>(environment.apiUrl + 'cliente/atualizarClienteparcial', dadosClienteCadastroDto);
   }
 
-  public JustificativaEndEntregaComboTemporario(){
+  public JustificativaEndEntregaComboTemporario():EnderecoEntregaJustificativaDto[]{
     //afazer: chamar a API
     //por enquanto, retornamos uma lista fixa
-   const ret:JustificativaEndEntregaComboDto []= new Array();
-   ret.push({Codigo:"001", Descricao:"Casa de Veraneio"});
-   ret.push({Codigo:"002", Descricao:"Doação"});
-   ret.push({Codigo:"003", Descricao:"Nova Unidade da Empresa/filial"});
-   ret.push({Codigo:"004", Descricao:"Parente do Proprietário (Pais, Filhos e Irmãos)"});
-   ret.push({Codigo:"005", Descricao:"Residência do Proprietário"});
-   ret.push({Codigo:"006", Descricao:"Endereço Comercial do Proprietário"});
-   ret.push({Codigo:"008", Descricao:"Endereço da Obra"});
-   ret.push({Codigo:"009", Descricao:"Endereço Novo Cliente"});
-   ret.push({Codigo:"010", Descricao:"Acerto Interno"});
+   const ret:EnderecoEntregaJustificativaDto []= new Array();
+   ret.push({EndEtg_cod_justificativa:"001", EndEtg_descricao_justificativa:"Casa de Veraneio"});
+   ret.push({EndEtg_cod_justificativa:"002", EndEtg_descricao_justificativa:"Doação"});
+   ret.push({EndEtg_cod_justificativa:"003", EndEtg_descricao_justificativa:"Nova Unidade da Empresa/filial"});
+   ret.push({EndEtg_cod_justificativa:"004", EndEtg_descricao_justificativa:"Parente do Proprietário (Pais, Filhos e Irmãos)"});
+   ret.push({EndEtg_cod_justificativa:"005", EndEtg_descricao_justificativa:"Residência do Proprietário"});
+   ret.push({EndEtg_cod_justificativa:"006", EndEtg_descricao_justificativa:"Endereço Comercial do Proprietário"});
+   ret.push({EndEtg_cod_justificativa:"008", EndEtg_descricao_justificativa:"Endereço da Obra"});
+   ret.push({EndEtg_cod_justificativa:"009", EndEtg_descricao_justificativa:"Endereço Novo Cliente"});
+   ret.push({EndEtg_cod_justificativa:"010", EndEtg_descricao_justificativa:"Acerto Interno"});
 
    return ret;
   }

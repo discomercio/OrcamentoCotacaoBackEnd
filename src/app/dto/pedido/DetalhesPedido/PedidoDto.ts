@@ -1,24 +1,14 @@
-﻿import { StatusPedidoDtoPedido } from './StatusPedidoDtoPedido';
-
+﻿import { BlocoNotasDevolucaoMercadoriasDtoPedido } from './BlocoNotasDevolucaoMercadoriasDtoPedido';
+import { StatusPedidoDtoPedido } from './StatusPedidoDtoPedido';
 import { DadosClienteCadastroDto } from '../../ClienteCadastro/DadosClienteCadastroDto';
-
 import { EnderecoEntregaDtoClienteCadastro } from '../../ClienteCadastro/EnderecoEntregaDTOClienteCadastro';
-
 import { PedidoProdutosDtoPedido } from './PedidoProdutosDtoPedido';
-
 import { DetalhesNFPedidoDtoPedido } from './DetalhesNFPedidoDtoPedido';
-
 import { DetalhesFormaPagamentos } from './DetalhesFormaPagamentos';
-
 import { ProdutoDevolvidoDtoPedido } from './ProdutoDevolvidoDTOPedido';
-
 import { PedidoPerdasDtoPedido } from './PedidoPerdasDtoPedido';
-
 import { OcorrenciasDtoPedido } from './OcorrenciasDtoPedido';
-
 import { BlocoNotasDtoPedido } from './BlocoNotasDtoPedido';
-
-import { BlocoNotasDevolucaoMercadoriasDtoPedido } from './BlocoNotasDevolucaoMercadoriasDtoPedido';
 
 export class PedidoDto {
     NumeroPedido: string;
@@ -38,9 +28,8 @@ export class PedidoDto {
     ListaProdutoDevolvido: ProdutoDevolvidoDtoPedido[];
     ListaPerdas: PedidoPerdasDtoPedido[];
     ListaOcorrencia: OcorrenciasDtoPedido[];
-    BlocoNotas: BlocoNotasDtoPedido;
+    ListaBlocoNotas: BlocoNotasDtoPedido[];
     ListaBlocoNotasDevolucao: BlocoNotasDevolucaoMercadoriasDtoPedido[];
 
 
 }
-

@@ -13,4 +13,3 @@
     //Transportadora: string;
     //VlFrete: number;
 }
-

@@ -4,9 +4,8 @@
     XPed: string;
     NumeroNF: string;
     NFSimples: string;
-    EntregaImediata: number;
+    EntregaImediata: string;
     StBemUsoConsumo: number;
     InstaladorInstala: number;
     GarantiaIndicadorStatus: string;
 }
-

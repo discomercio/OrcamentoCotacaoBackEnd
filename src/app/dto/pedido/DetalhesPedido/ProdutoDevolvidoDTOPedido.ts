@@ -17,4 +17,3 @@
     Motivo: string;
     NumeroNF: number;
 }
-

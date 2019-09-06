@@ -15,5 +15,5 @@
     Comissao: number | null;
     TotalItemRA: number | null;
     TotalItem: number | null;
-}
 
+}

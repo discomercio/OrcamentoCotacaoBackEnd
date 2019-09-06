@@ -15,12 +15,11 @@
 
     <!-- ************   JUSTIFIQUE O ENDEREÇO   ************ -->
     
-    <!-- afazer: precisa vincular a um código e não a uma string -->
     <mat-form-field [ngClass]="{'desab':!enderecoDiferente}" style="width: 20em;">
             <mat-label>JUSTIFIQUE O ENDEREÇO</mat-label>
             <mat-select required [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_cod_justificativa" [disabled]="!enderecoDiferente" >
                 <mat-option>Selecione</mat-option>
-                <mat-option *ngFor="let i of buscarClienteServiceJustificativaEndEntregaComboTemporario" [(value)]="i.Codigo">{{i.Descricao}}</mat-option>
+                <mat-option *ngFor="let i of buscarClienteServiceJustificativaEndEntregaComboTemporario" [(value)]="i.EndEtg_cod_justificativa">{{i.EndEtg_descricao_justificativa}}</mat-option>
             </mat-select>
         </mat-form-field>
         <!-- quebrar a linha -->

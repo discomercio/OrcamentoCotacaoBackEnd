@@ -4,4 +4,3 @@
     Loja: string;
     Mensagem: string;
 }
-

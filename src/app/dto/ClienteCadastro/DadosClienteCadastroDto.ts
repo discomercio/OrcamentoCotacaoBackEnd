@@ -33,5 +33,4 @@
     Email: string;
     EmailXml: string;
     Contato: string;
-
 }

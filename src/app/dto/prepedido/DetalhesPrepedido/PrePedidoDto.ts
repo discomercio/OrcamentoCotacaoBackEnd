@@ -1,9 +1,6 @@
 ﻿import { DadosClienteCadastroDto } from '../../ClienteCadastro/DadosClienteCadastroDto';
-
 import { EnderecoEntregaDtoClienteCadastro } from '../../ClienteCadastro/EnderecoEntregaDTOClienteCadastro';
-
 import { PrepedidoProdutoDtoPrepedido } from './PrepedidoProdutoDtoPrepedido';
-
 import { DetalhesDtoPrepedido } from './DetalhesDtoPrepedido';
 
 export class PrePedidoDto {

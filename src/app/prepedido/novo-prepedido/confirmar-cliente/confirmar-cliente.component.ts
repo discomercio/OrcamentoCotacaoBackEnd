@@ -7,7 +7,7 @@ import { TelaDesktopBaseComponent } from 'src/app/servicos/telaDesktop/telaDeskt
 import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material';
 import { ClienteCadastroDto } from 'src/app/dto/ClienteCadastro/ClienteCadastroDto';
-import { ClienteCadastroUtils } from 'src/app/dto/ClienteCadastroUtils/ClienteCadastroUtils';
+import { ClienteCadastroUtils } from 'src/app/dto/AngularClienteCadastroUtils/ClienteCadastroUtils';
 import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
 import { EnderecoEntregaDtoClienteCadastro } from 'src/app/dto/ClienteCadastro/EnderecoEntregaDTOClienteCadastro';
 
@@ -35,11 +35,14 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     super(telaDesktopService);
 
     this.dadosClienteCadastroDto = null;
+    if(router.getCurrentNavigation()){
     let clienteCadastroDto: ClienteCadastroDto = (router.getCurrentNavigation().extras.state) as ClienteCadastroDto;
     if (clienteCadastroDto && clienteCadastroDto.DadosCliente) {
       this.dadosClienteCadastroDto = clienteCadastroDto.DadosCliente;
     }
-    //se chegar como null é pq foi salvo como link; n~]ao temos dados para mostrar
+  }
+
+    //se chegar como null é pq foi salvo como link; não temos dados para mostrar
     if (!this.dadosClienteCadastroDto) {
 
       //voltamos para a tela anterior
