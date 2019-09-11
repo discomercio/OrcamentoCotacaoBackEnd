@@ -1,5 +1,5 @@
 <!-- copiado de orcamento/pedido.asp -->
-<div class="nossobody">
+<div class="nossobody" *ngIf="pedido">
     <div class="botaoImprimirDIv">
         <button mat-raised-button color="accent" (click)="imprimir()" class="botaoImprimir"
             *ngIf="!impressaoService.emImpressao()">
@@ -19,127 +19,75 @@
     <form id="fPED" name="fPED" method="post">
 
         <!--  I D E N T I F I C A Ç Ã O   D O   P E D I D O -->
-        <!--  rotina MontaHeaderIdentificacaoPedido no asp. -->
-<!-- 
-    afazer:
-        function MontaHeaderIdentificacaoPedido(ByVal strNumPedido, ByVal r_pedido, ByVal intLargTable)
-        dim strResp
-        dim strStEntregaData
-        dim strClassData
-        dim strClassCell
-        dim strRecebidoData
-        dim loja
-        dim s_colon
-        
-            loja =  Trim(Session("loja_atual"))
-            MontaHeaderIdentificacaoPedido = ""
-            
-            strClassData="STP"
-            strClassCell=""
-            strStEntregaData=""
-            strRecebidoData=""
-            if r_pedido.st_entrega=ST_ENTREGA_ENTREGUE then 
-                if Cstr(r_pedido.PedidoRecebidoStatus) = Cstr(COD_ST_PEDIDO_RECEBIDO_SIM) then
-                    strClassData="HoraPed"
-                    strClassCell=" class='MD ME' style='border-width:2px;border-color:" & x_status_entrega_cor(r_pedido.st_entrega, strNumPedido) & ";' "
-                    strStEntregaData = formata_data(r_pedido.entregue_data)
-                    strRecebidoData = "<br>" & chr(13) & _
-                                        "<span class='" & strClassData & "' style='color:#9932CC;text-align:center;margin:0px 3px 0px 3px;'>" & _
-                                        formata_data(r_pedido.PedidoRecebidoData) & _
-                                        "</span>" & chr(13)
-                else
-                    strStEntregaData="  (" & formata_data(r_pedido.entregue_data) & ")"
-                    end if
-            elseif r_pedido.st_entrega=ST_ENTREGA_CANCELADO then
-                strStEntregaData="  (" & formata_data(r_pedido.cancelado_data) & ")"
-                end if
-        
-            strResp = _
-                "<table width='" & Cstr(intLargTable) & "' cellpadding='0' cellspacing='0' style='border-bottom:1px solid black;'>" & chr(13)
-            
-            if (r_pedido.pedido_bs_x_marketplace <> "") then
-                if r_pedido.pedido_bs_x_marketplace <> "" then s_colon = ":" else s_colon = ""
-                strResp = strResp & _
-                    "	<tr>" & chr(13) & _
-                    "		<td valign='bottom' align='right' width='100%' colspan='3' style='padding-top: 4px;padding-bottom:0'>" & chr(13) & _
-                    "           <span class='C' style='font-size:10pt'>" & obtem_descricao_tabela_t_codigo_descricao("PedidoECommerce_Origem", r_pedido.marketplace_codigo_origem) & s_colon & "</span><span class='C' style='font-size:12pt'>" & r_pedido.pedido_bs_x_marketplace & "</span>" & chr(13) & _
-                    "       </td>" & chr(13) & _
-                    "   </tr>" & chr(13)
-            end if
-        
-            if (r_pedido.pedido_ac <> "") then
-                if r_pedido.pedido_ac <> "" then s_colon = ":" else s_colon = ""
-                strResp = strResp & _
-                    "	<tr>" & chr(13) & _
-                    "		<td valign='bottom' align='right' width='100%' colspan='3' style='padding-top: 4px;padding-bottom:0'>" & chr(13) & _
-                    "           <span class='C' style='font-size:10pt;color:purple'>Magento" & s_colon & "</span><span class='C' style='font-size:12pt;color:purple'>" & r_pedido.pedido_ac & "</span>" & chr(13) & _
-                    "       </td>" & chr(13) & _
-                    "   </tr>" & chr(13)
-            
-            end if
-            strResp = strResp & _
-                "   <tr>" & chr(13) & _
-                "		<td valign='bottom' align='left' width='33%' style='padding-bottom: 4px'>" & chr(13) & _
-                "			<table cellpadding='0' cellspacing='0'>" & chr(13) & _
-                "				<tr>" & chr(13) & _
-                "					<td valign='bottom' align='left'>" & chr(13) & _
-                "						<span class='STP' style='color:" & x_status_entrega_cor(r_pedido.st_entrega, strNumPedido) & ";'>" & _
-                                            Ucase(x_status_entrega(r_pedido.st_entrega)) & chr(13) & _
-                "						</span>" & chr(13) & _
-                "					</td>" & chr(13) & _
-                "					<td align='left' style='width:6px;padding-bottom:4px'>" & chr(13) & _
-                "					</td>" & chr(13) & _
-                "					<td align='center' valign='bottom'" & strClassCell & "  style='padding-bottom: 4px'>" & chr(13) & _
-                "						<span class='" & strClassData & "' style='text-align:center;color:" & x_status_entrega_cor(r_pedido.st_entrega, strNumPedido) & ";margin:0px 3px 0px 3px;'" & _
-                                        ">" & strStEntregaData & "</span>" & chr(13) & _
-                                        strRecebidoData & _
-                "					</td>" & chr(13) & _
-                "				</tr>" & chr(13) & _
-                "			</table>" & chr(13) & _
-                "		</td>" & chr(13) & _
-                "		<td valign='bottom' align='center' width='33%'>" & chr(13) & _
-                "			<span class='STP'>" & formata_data(r_pedido.data) & chr(13) & _
-                "				<span class='HoraPed'>" & formata_hhnnss_para_hh_nn(r_pedido.hora) & "</span>" & chr(13) & _
-                "			</span>" & chr(13) & _
-                "		</td>" & chr(13) & _
-                "		<td valign='bottom' align='right' nowrap>" & chr(13) & _
-                "			<span class='PEDIDO'>Pedido Nº&nbsp;" & strNumPedido & "</span>" & chr(13)& _
-                "		</td>" & chr(13) & _
-                "	</tr>" & chr(13) & _
-                "</table>" & chr(13)
-                
-            MontaHeaderIdentificacaoPedido = strResp
-            
-        end function -->
-        
+        <!--  
+            rotina MontaHeaderIdentificacaoPedido no asp. 
+            MontaHeaderIdentificacaoPedido(pedido_selecionado, r_pedido, 649)
+        -->
         <table width='649' cellpadding='0' cellspacing='0' style='border-bottom:1px solid black;'>
+
+            <tr
+                *ngIf="pedido.StatusHoraPedido.Pedido_Bs_X_Marketplace && pedido.StatusHoraPedido.Pedido_Bs_X_Marketplace != ''">
+                <td valign='bottom' align='right' width='100%' colspan='3' style='padding-top: 4px;padding-bottom:0'>
+                    <span class='C' style='font-size:10pt'>
+                        <!-- afazer: campo Status_Bs_X_Marketplace -->
+                        {{pedido.StatusHoraPedido.Pedido_Bs_X_Marketplace}}:
+                    </span><span class='C' style='font-size:12pt'>
+                        {{pedido.StatusHoraPedido.Pedido_Bs_X_Marketplace}}
+                    </span></td>
+            </tr>
+
+
+
+            <tr *ngIf="pedido.StatusHoraPedido.Pedido_Bs_X_Ac && pedido.StatusHoraPedido.Pedido_Bs_X_Ac != ''">
+                <td valign='bottom' align='right' width='100%' colspan='3' style='padding-top: 4px;padding-bottom:0'>
+                    <span class='C' style='font-size:10pt;color:purple'>Magento: </span>
+                    <span class='C'
+                        style='font-size:12pt;color:purple'>{{pedido.StatusHoraPedido.Pedido_Bs_X_Ac}}</span>
+                </td>
+            </tr>
+
             <tr>
                 <td valign='bottom' align='left' width='33%' style='padding-bottom: 4px'>
                     <table cellpadding='0' cellspacing='0'>
                         <tr>
                             <td valign='bottom' align='left'>
-                                <span class='STP' style='color:maroon;'>{{pedido?.StatusHoraPedido.Entregue_Data}}
-                                    &nbsp;
+                                <span class='STP' [ngStyle]="{'color': pedido.StatusHoraPedido.CorEntrega}">
+                                    {{pedido.StatusHoraPedido.St_Entrega.toUpperCase()}}
                                 </span>
                             </td>
                             <td align='left' style='width:6px;padding-bottom:4px'>
                             </td>
-                            <td align='center' valign='bottom' style='padding-bottom: 4px'>
-                                <span class='STP' style='text-align:center;color:maroon;margin:0px 3px 0px 3px;'></span>
+                            <td align='center' valign='bottom' class='MD ME'
+                                style='border-width:2px; padding-bottom: 4px'
+                                [ngStyle]="{'border-color': pedido.StatusHoraPedido.CorEntrega}">
+                                <span
+                                    [ngClass]="{'STP': pedido.StatusHoraPedido.Status == 'Entrega', 'HoraPed':pedido.StatusHoraPedido.Status != 'Entrega'}"
+                                    [ngStyle]="{'color': pedido.StatusHoraPedido.CorEntrega}"
+                                    style='text-align:center;margin:0px 3px 0px 3px;'>
+                                    {{pedido.StatusHoraPedido.Entregue_Data}}</span>
+                                <br>
+                                <span
+                                    [ngClass]="{'STP': pedido.StatusHoraPedido.Status == 'Entrega', 'HoraPed':pedido.StatusHoraPedido.Status != 'Entrega'}"
+                                    style='color:#9932CC;text-align:center;margin:0px 3px 0px 3px;'>
+                                    {{pedido.StatusHoraPedido.Entregue_Data}}
+                                </span>
                             </td>
                         </tr>
                     </table>
                 </td>
+
                 <td valign='bottom' align='center' width='33%'>
-                    <span class='STP'>{{dataFormatarTela(pedido?.DataHoraPedido)}} &nbsp;
-                        <span class='HoraPed'>{{dataFormatarTelaHora(pedido?.DataHoraPedido)}} &nbsp;</span>
+                    <span class='STP'>{{pedido.StatusHoraPedido.Pedido_Data}}
+                        <!-- afazer: preciso do campo de hora <span class='HoraPed'>" & formata_hhnnss_para_hh_nn(r_pedido.hora) & "</span> -->
                     </span>
                 </td>
                 <td valign='bottom' align='right' nowrap>
-                    <span class='PEDIDO'>Pedido Nº&nbsp;{{pedido?.NumeroPedido}} </span>
+                    <span class='PEDIDO'>Pedido Nº&nbsp;{{pedido?.NumeroPedido}}</span>
                 </td>
             </tr>
         </table>
+
+
         <br>
 
         <!--  EXIBE LINKS PARA A FAMÍLIA DE PEDIDOS?   -->

@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ClienteCorpoComponent } from './cliente-corpo.component';
-import { MatButtonModule, MatIconModule, MatInputModule, MatAutocompleteModule, MatCardModule, MatRadioModule, MatCheckboxModule, MatTableModule, MatSnackBarModule, MatSelectModule } from '@angular/material';
+import { MatButtonModule, MatIconModule, MatInputModule, MatAutocompleteModule, MatCardModule, MatRadioModule, MatCheckboxModule, MatTableModule, MatSnackBarModule, MatSelectModule, MatExpansionModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { TextMaskModule } from 'angular2-text-mask';
 
 
 @NgModule({
@@ -21,6 +22,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatCheckboxModule,
     MatTableModule,
     MatSnackBarModule,
+    MatExpansionModule,
+    TextMaskModule,
     ReactiveFormsModule,
     MatSelectModule
   ],

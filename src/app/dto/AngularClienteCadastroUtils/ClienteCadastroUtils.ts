@@ -254,5 +254,46 @@ e são usados desta forma:
     return null;
   }
 
+  //inicializa um DadosClienteCadastroDto
+  //temos problemas se os campos forem null
+  public static inicializarDadosClienteCadastroDto(obj: DadosClienteCadastroDto) {
+    obj.Loja = "";
+    obj.Indicador_Orcamentista = "";
+    obj.Vendedor = "";
+    obj.Id = "";
+    //eset não! obj.Cnpj_Cpf="";
+    obj.Rg = "";
+    obj.Ie = "";
+    obj.Tipo = "";
+    obj.Observacao_Filiacao = "";
+    obj.Nascimento = "";
+    obj.Sexo = "";
+    obj.Nome = "";
+    obj.Endereco = "";
+    obj.Numero = "";
+    obj.Complemento = "";
+    obj.Bairro = "";
+    obj.Cidade = "";
+    obj.Uf = "";
+    obj.Cep = "";
+    obj.DddResidencial = "";
+    obj.TelefoneResidencial = "";
+    obj.DddComercial = "";
+    obj.TelComercial = "";
+    obj.Ramal = "";
+    obj.DddCelular = "";
+    obj.Celular = "";
+    obj.TelComercial2 = "";
+    obj.DddComercial2 = "";
+    obj.Ramal2 = "";
+    obj.Email = "";
+    obj.EmailXml = "";
+    obj.Contato = "";
+
+    obj.Contribuinte_Icms_Status = 0;
+    obj.ProdutorRural = 0;
+  }
+
 }
+
 

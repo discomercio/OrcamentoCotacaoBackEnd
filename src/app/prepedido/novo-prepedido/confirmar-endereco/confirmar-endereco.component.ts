@@ -19,7 +19,7 @@ export class ConfirmarEnderecoComponent implements OnInit {
 
   buscarClienteServiceJustificativaEndEntregaComboTemporario: EnderecoEntregaJustificativaDto[];
   ngOnInit() {
-    this.enderecoDiferente = false;
+    this.enderecoEntregaDtoClienteCadastro.OutroEndereco = false;
     this.buscarClienteServiceJustificativaEndEntregaComboTemporario = this.buscarClienteService.JustificativaEndEntregaComboTemporario();
   }
 
@@ -27,16 +27,9 @@ export class ConfirmarEnderecoComponent implements OnInit {
   @Input() dadosClienteCadastroDto = new DadosClienteCadastroDto();
   @Input() mostrarEndereco = false; //no celular, como é uma tela separada,temos que mostrar o endereço já cadastrado
   @Input() enderecoEntregaDtoClienteCadastro = new EnderecoEntregaDtoClienteCadastro();
-  @Output() enderecoDiferenteChange = new EventEmitter<boolean>();
 
 
   //utilitários
   public clienteCadastroUtils = new ClienteCadastroUtils();
-  enderecoDiferente = false;
-
-  atualizarEnderecoDiferente() {
-    //ah, nao fazemos nada, está tudo por estilo....
-    this.enderecoDiferenteChange.emit(this.enderecoDiferente);
-  }
 
 }

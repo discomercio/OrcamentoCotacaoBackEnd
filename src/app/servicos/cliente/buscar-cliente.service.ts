@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { StringUtils } from 'src/app/utils/stringUtils';
 import { ClienteCadastroDto } from 'src/app/dto/ClienteCadastro/ClienteCadastroDto';
 import { EnderecoEntregaJustificativaDto } from 'src/app/dto/ClienteCadastro/EnderecoEntregaJustificativaDto';
+import { ListaBancoDto } from 'src/app/dto/ClienteCadastro/ListaBancoDto';
 
 @Injectable({
   providedIn: 'root'
@@ -22,30 +23,38 @@ export class BuscarClienteService {
     return this.http.get<ClienteCadastroDto>(environment.apiUrl + 'cliente/buscarCliente/' + StringUtils.retorna_so_digitos(cpfCnpj));
   }
 
-  public atualizarCliente(dadosClienteCadastroDto:DadosClienteCadastroDto){
+  public cadastrarCliente(clienteCadastroDto: ClienteCadastroDto) {
+    return this.http.post<string[]>(environment.apiUrl + 'cliente/cadastrarCliente', clienteCadastroDto);
+  }
+
+  public atualizarCliente(dadosClienteCadastroDto: DadosClienteCadastroDto) {
     return this.http.post<string[]>(environment.apiUrl + 'cliente/atualizarClienteparcial', dadosClienteCadastroDto);
   }
 
-  public JustificativaEndEntregaComboTemporario():EnderecoEntregaJustificativaDto[]{
+  public listaBancosCombo(): Observable<ListaBancoDto[]> {
+    return this.http.get<ListaBancoDto[]>(environment.apiUrl + 'cliente/listarBancosCombo');
+  }
+
+  public JustificativaEndEntregaComboTemporario(): EnderecoEntregaJustificativaDto[] {
     //afazer: chamar a API
     //por enquanto, retornamos uma lista fixa
-   const ret:EnderecoEntregaJustificativaDto []= new Array();
-   ret.push({EndEtg_cod_justificativa:"001", EndEtg_descricao_justificativa:"Casa de Veraneio"});
-   ret.push({EndEtg_cod_justificativa:"002", EndEtg_descricao_justificativa:"Doação"});
-   ret.push({EndEtg_cod_justificativa:"003", EndEtg_descricao_justificativa:"Nova Unidade da Empresa/filial"});
-   ret.push({EndEtg_cod_justificativa:"004", EndEtg_descricao_justificativa:"Parente do Proprietário (Pais, Filhos e Irmãos)"});
-   ret.push({EndEtg_cod_justificativa:"005", EndEtg_descricao_justificativa:"Residência do Proprietário"});
-   ret.push({EndEtg_cod_justificativa:"006", EndEtg_descricao_justificativa:"Endereço Comercial do Proprietário"});
-   ret.push({EndEtg_cod_justificativa:"008", EndEtg_descricao_justificativa:"Endereço da Obra"});
-   ret.push({EndEtg_cod_justificativa:"009", EndEtg_descricao_justificativa:"Endereço Novo Cliente"});
-   ret.push({EndEtg_cod_justificativa:"010", EndEtg_descricao_justificativa:"Acerto Interno"});
+    const ret: EnderecoEntregaJustificativaDto[] = new Array();
+    ret.push({ EndEtg_cod_justificativa: "001", EndEtg_descricao_justificativa: "Casa de Veraneio" });
+    ret.push({ EndEtg_cod_justificativa: "002", EndEtg_descricao_justificativa: "Doação" });
+    ret.push({ EndEtg_cod_justificativa: "003", EndEtg_descricao_justificativa: "Nova Unidade da Empresa/filial" });
+    ret.push({ EndEtg_cod_justificativa: "004", EndEtg_descricao_justificativa: "Parente do Proprietário (Pais, Filhos e Irmãos)" });
+    ret.push({ EndEtg_cod_justificativa: "005", EndEtg_descricao_justificativa: "Residência do Proprietário" });
+    ret.push({ EndEtg_cod_justificativa: "006", EndEtg_descricao_justificativa: "Endereço Comercial do Proprietário" });
+    ret.push({ EndEtg_cod_justificativa: "008", EndEtg_descricao_justificativa: "Endereço da Obra" });
+    ret.push({ EndEtg_cod_justificativa: "009", EndEtg_descricao_justificativa: "Endereço Novo Cliente" });
+    ret.push({ EndEtg_cod_justificativa: "010", EndEtg_descricao_justificativa: "Acerto Interno" });
 
-   return ret;
+    return ret;
   }
 
 }
 
-export class JustificativaEndEntregaComboDto{
-    public Codigo:string;
-    public Descricao:string;
+export class JustificativaEndEntregaComboDto {
+  public Codigo: string;
+  public Descricao: string;
 }

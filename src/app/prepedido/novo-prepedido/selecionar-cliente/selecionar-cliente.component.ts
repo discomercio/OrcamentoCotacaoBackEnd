@@ -26,7 +26,7 @@ export class SelecionarClienteComponent extends TelaDesktopBaseComponent impleme
     public readonly dialog: MatDialog,
     public readonly router: Router,
     public readonly activatedRoute: ActivatedRoute,
-    private readonly alertaService:AlertaService,
+    private readonly alertaService: AlertaService,
     private readonly buscarClienteService: BuscarClienteService) {
     super(telaDesktopService);
   }
@@ -60,9 +60,9 @@ export class SelecionarClienteComponent extends TelaDesktopBaseComponent impleme
         //cliente já existe
         this.router.navigate(['confirmar-cliente', StringUtils.retorna_so_digitos(r.DadosCliente.Cnpj_Cpf)], { relativeTo: this.activatedRoute, state: r })
       }).catch((r) => {
-          //deu erro na busca
-          //ou não achou nada...
-
+        //deu erro na busca
+        //ou não achou nada...
+        this.carregando = false;
         this.alertaService.mostrarErroInternet();
       });
   }
