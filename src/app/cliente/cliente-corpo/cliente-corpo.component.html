@@ -547,9 +547,9 @@ para não dar erro no console
 
 
                     <div style="width: 100%; text-align: right;">
-                        <button mat-button title="Adicionar referência" (click)="adicionarRefBancaria()">
+                        <a mat-button title="Adicionar referência" (click)="adicionarRefBancaria()">
                             <mat-icon>add</mat-icon> Adicionar referência
-                        </button>
+                        </a>
                     </div>
                     <div *ngFor="let ref of clienteCadastroDto.RefBancaria; let i = index">
                         <hr style="height: 3px;
@@ -559,10 +559,10 @@ para não dar erro no console
                         border: 0px;" />
                         <div>
                             <span class="caixa">
-                                <span class="rotulo">Referência bancária {{i+1}} <button mat-button
+                                <span class="rotulo">Referência bancária {{i+1}} <a mat-button
                                         title="Remover referência" (click)="removerRefBancaria(i)">
                                         <mat-icon>remove</mat-icon>
-                                    </button> </span>
+                                </a> </span>
                                 <span class="dado"> </span>
                             </span>
                         </div>
@@ -619,9 +619,9 @@ para não dar erro no console
 
 
                     <div style="width: 100%; text-align: right;">
-                        <button mat-button title="Adicionar referência" (click)="adicionarRefComercial()">
+                        <a mat-button title="Adicionar referência" (click)="adicionarRefComercial()">
                             <mat-icon>add</mat-icon> Adicionar referência
-                        </button>
+                        </a>
                     </div>
                     <div *ngFor="let ref of clienteCadastroDto.RefComercial; let i = index">
                         <hr style="height: 3px;
@@ -631,10 +631,10 @@ para não dar erro no console
             border: 0px;" />
                         <div>
                             <span class="caixa">
-                                <span class="rotulo">Referência Comercial {{i+1}} <button mat-button
+                                <span class="rotulo">Referência Comercial {{i+1}} <a mat-button
                                         title="Remover referência" (click)="removerRefComercial(i)">
                                         <mat-icon>remove</mat-icon>
-                                    </button> </span>
+                                </a> </span>
                                 <span class="dado"> </span>
                             </span>
                         </div>

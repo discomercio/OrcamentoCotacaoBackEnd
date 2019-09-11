@@ -257,6 +257,10 @@ e são usados desta forma:
   //inicializa um DadosClienteCadastroDto
   //temos problemas se os campos forem null
   public static inicializarDadosClienteCadastroDto(obj: DadosClienteCadastroDto) {
+    //evita null
+    if(!obj){
+      return;
+    }
     obj.Loja = "";
     obj.Indicador_Orcamentista = "";
     obj.Vendedor = "";

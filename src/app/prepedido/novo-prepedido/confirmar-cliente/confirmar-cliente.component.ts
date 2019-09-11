@@ -22,7 +22,6 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
   dadosClienteCadastroDto = new DadosClienteCadastroDto();
   clienteCadastroDto = new ClienteCadastroDto();
   enderecoEntregaDtoClienteCadastro = new EnderecoEntregaDtoClienteCadastro();
-  enderecoDiferente = false;
 
 
   constructor(private readonly router: Router,
@@ -196,7 +195,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     if (this.fase2 || this.fase1e2juntas) {
       //vamos validar o endereço
       // só a jsutificativa, número e complemento. O resto vai ser validado pelo CEP
-      if (this.enderecoDiferente) {
+      if (this.enderecoEntregaDtoClienteCadastro.OutroEndereco) {
         if(!this.enderecoEntregaDtoClienteCadastro.EndEtg_cod_justificativa || this.enderecoEntregaDtoClienteCadastro.EndEtg_cod_justificativa.trim() === ""){
           this.mostrarMensagem("Caso seja selecionado outro endereço, selecione a justificativa do endereço de entrega!!")
           return;
@@ -216,8 +215,5 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     this.fase1 = false;
   }
 
-  enderecoDiferenteChange(novo: boolean) {
-    this.enderecoDiferente = novo;
-  }
 }
 

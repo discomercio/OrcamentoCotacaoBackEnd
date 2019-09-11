@@ -1,26 +1,29 @@
 <section [ngClass]="{'sectionDesktop': telaDesktop, 'sectionCelular': !telaDesktop}">
-
-    <header>
-        Confirmar Cliente
-    </header>
-    <article>
-        <app-cliente-corpo [dadosClienteCadastroDto]="dadosClienteCadastroDto" [cadastrando]="false"
-            [clienteCadastroDto]="clienteCadastroDto" [editarIcms]="true" *ngIf="fase1">
-        </app-cliente-corpo>
-        <app-confirmar-endereco [dadosClienteCadastroDto]="dadosClienteCadastroDto" [mostrarEndereco]="!fase1e2juntas"
-            *ngIf="fase2" [enderecoEntregaDtoClienteCadastro]="enderecoEntregaDtoClienteCadastro" (enderecoDiferenteChange)="enderecoDiferenteChange($event)">
-        </app-confirmar-endereco>
-    </article>
-    <footer>
-        <button mat-raised-button color="accent" (click)="voltar()">
-            <mat-icon>arrow_back</mat-icon> Voltar
-        </button>
-        <!-- nao temos o botão salvar porque ele salva automaticamente
+    <form style="display: contents;">
+        <header>
+            Confirmar Cliente
+        </header>
+        <article>
+            <app-cliente-corpo [dadosClienteCadastroDto]="dadosClienteCadastroDto" [cadastrando]="false"
+                [clienteCadastroDto]="clienteCadastroDto" [editarIcms]="true" *ngIf="fase1">
+            </app-cliente-corpo>
+            <app-confirmar-endereco [dadosClienteCadastroDto]="dadosClienteCadastroDto"
+                [mostrarEndereco]="!fase1e2juntas" *ngIf="fase2"
+                [enderecoEntregaDtoClienteCadastro]="enderecoEntregaDtoClienteCadastro"
+                >
+            </app-confirmar-endereco>
+        </article>
+        <footer>
+            <a mat-raised-button color="accent" (click)="voltar()">
+                <mat-icon>arrow_back</mat-icon> Voltar
+            </a>
+            <!-- nao temos o botão salvar porque ele salva automaticamente
         <button mat-raised-button color="accent" (click)="salvar(false)" [disabled]="!salvarAtivo()" >
             <mat-icon>save</mat-icon> Salvar
         </button> -->
-        <button mat-raised-button color="accent" (click)="continuar()" #idcontinuar type="submit">
-            <mat-icon>arrow_forward</mat-icon> Avançar
-        </button>
-    </footer>
+            <button mat-raised-button color="accent" (click)="continuar()" type="submit">
+                <mat-icon>arrow_forward</mat-icon> Avançar
+            </button>
+        </footer>
+    </form>
 </section>
