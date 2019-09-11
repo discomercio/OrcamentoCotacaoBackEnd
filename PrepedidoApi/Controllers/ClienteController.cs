@@ -82,7 +82,21 @@ namespace PrepedidoApi.Controllers
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
             var retorno = await clienteBll.CadastrarCliente(clienteDto, apelido);
 
-            return Ok();
+            return Ok(retorno);
+        }
+
+#if DEBUG
+        [AllowAnonymous]
+#endif
+        [HttpGet("listarComboJustificaEndereco")]
+        public async Task<IActionResult> ListarComboJustificaEndereco()
+        {
+            //para testar: http://localhost:60877/api/cliente/listarComboJustificaEndereco
+            string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
+            var retorno = await clienteBll.ListarComboJustificaEndereco(apelido);
+
+            return Ok(retorno);
+
         }
     }
 }

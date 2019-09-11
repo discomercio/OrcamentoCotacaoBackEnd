@@ -10,5 +10,6 @@ namespace PrepedidoBusiness.Dto.ClienteCadastro.Referencias
         public string Contato{ get; set; }
         public string Ddd { get; set; }
         public string Telefone { get; set; }
+        public int Ordem { get; set; }
     }
 }

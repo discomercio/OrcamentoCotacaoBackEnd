@@ -28,7 +28,7 @@ namespace PrepedidoBusiness.Bll
         public async Task<IEnumerable<string>> ListarNumerosPrepedidosCombo(string orcamentista)
         {
             //toda vez precisamos de uma nova conexao para os casos em que houver transacao
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
             var lista = from r in db.Torcamentos
                         where r.Orcamentista == orcamentista &&
                               r.St_Orcamento != "CAN"
@@ -40,7 +40,7 @@ namespace PrepedidoBusiness.Bll
 
         public async Task<IEnumerable<string>> ListarCpfCnpjPrepedidosCombo(string apelido)
         {
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
 
             var lista = (from c in db.Torcamentos.Include(r => r.Tcliente)
                          where c.Orcamentista == apelido &&
@@ -94,7 +94,7 @@ namespace PrepedidoBusiness.Bll
         public async Task<IEnumerable<PrepedidosCadastradosDtoPrepedido>> ListarPrePedidosFiltroEstrito(string apelido, TipoBuscaPrepedido tipoBusca,
                 string clienteBusca, string numeroPrePedido, DateTime? dataInicial, DateTime? dataFinal)
         {
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
 
             var lst = db.Torcamentos.
                 Where(r => r.Orcamentista == apelido);
@@ -137,7 +137,7 @@ namespace PrepedidoBusiness.Bll
 
         public async Task<bool> RemoverPrePedido(string numeroPrePedido, string apelido)
         {
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
 
             Torcamento prePedido = db.Torcamentos.
                 Where(
@@ -165,7 +165,7 @@ namespace PrepedidoBusiness.Bll
             //apelido = "PEDREIRA";
             //numPrePedido = "214289Z";
 
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
 
             var prepedido = from c in db.Torcamentos
                             where c.Orcamentista == apelido && c.Orcamento == numPrePedido
@@ -283,7 +283,7 @@ namespace PrepedidoBusiness.Bll
 
         private async Task<IEnumerable<PrepedidoProdutoDtoPrepedido>> ObterProdutos(Torcamento orc)
         {
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
 
             var produtos = from c in db.TorcamentoItems
                            where c.Orcamento == orc.Orcamento
@@ -321,7 +321,7 @@ namespace PrepedidoBusiness.Bll
         
         private async Task<DadosClienteCadastroDto> ObterDadosCliente(string loja, string indicador_orcamentista, string vendedor, string idCliente)
         {
-            var dadosCliente = from c in contextoProvider.GetContexto().Tclientes
+            var dadosCliente = from c in contextoProvider.GetContextoLeitura().Tclientes
                                where c.Id == idCliente
                                select c;
             var cli = await dadosCliente.FirstOrDefaultAsync();
@@ -386,7 +386,7 @@ namespace PrepedidoBusiness.Bll
 
         private async Task<string> ObterDescricao_Cod(string grupo, string cod)
         {
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
 
             var desc = from c in db.TcodigoDescricaos
                        where c.Grupo == grupo && c.Codigo == cod
@@ -398,6 +398,21 @@ namespace PrepedidoBusiness.Bll
                 return "Código não cadastrado (" + cod + ")";
 
             return result;
+        }
+
+        public async Task<short> Obter_Permite_RA_Status(string apelido)
+        {
+            //paraTeste
+            //apelido = "PEDREIRA";
+
+            var db = contextoProvider.GetContextoLeitura();
+
+            var raStatus = (from c in db.TorcamentistaEindicadors
+                           where c.Apelido == apelido
+                           select c.Permite_RA_Status).FirstOrDefaultAsync();
+
+                       
+            return await raStatus;
         }
 
     }

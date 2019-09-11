@@ -25,7 +25,7 @@ namespace PrepedidoBusiness.Bll
 
         public async Task<IEnumerable<string>> ListarNumerosPedidoCombo(string apelido)
         {
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
 
             var lista = from p in db.Tpedidos
                         where p.Orcamentista == apelido
@@ -73,7 +73,7 @@ namespace PrepedidoBusiness.Bll
         private async Task<IEnumerable<PedidoDtoPedido>> ListarPedidosFiltroEstrito(string apelido, TipoBuscaPedido tipoBusca,
             string clienteBusca, string numeroPedido, DateTime? dataInicial, DateTime? dataFinal)
         {
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
 
             var lista = db.Tpedidos.Include(r => r.Tcliente).
                 Where(r => r.Indicador == apelido);
@@ -133,7 +133,7 @@ namespace PrepedidoBusiness.Bll
 
         public async Task<IEnumerable<string>> ListarCpfCnpjPedidosCombo(string apelido)
         {
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
 
             var lista = (from c in db.Tpedidos.Include(r => r.Tcliente)
                          where c.Orcamentista == apelido
@@ -153,7 +153,7 @@ namespace PrepedidoBusiness.Bll
 
         private async Task<DadosClienteCadastroDto> ObterDadosCliente(string loja, string indicador_orcamentista, string vendedor, string idCliente)
         {
-            var dadosCliente = from c in contextoProvider.GetContexto().Tclientes
+            var dadosCliente = from c in contextoProvider.GetContextoLeitura().Tclientes
                                where c.Id == idCliente
                                select c;
             var cli = await dadosCliente.FirstOrDefaultAsync();
@@ -197,13 +197,13 @@ namespace PrepedidoBusiness.Bll
 
         private async Task<string> ObterRazaoSocialLoja(string loja)
         {
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
 
             var ret = from c in db.Tlojas
                       where c.Loja == loja
                       select c.Razao_Social;
 
-            string retorno = ret.SingleOrDefault();
+            string retorno = await ret.SingleOrDefaultAsync();
 
             return retorno;
         }
@@ -231,7 +231,7 @@ namespace PrepedidoBusiness.Bll
 
         private async Task<IEnumerable<PedidoProdutosDtoPedido>> ObterProdutos(string numPedido)
         {
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
 
             var produtosItens = from c in db.TpedidoItems
                                 where c.Pedido == numPedido
@@ -279,7 +279,7 @@ namespace PrepedidoBusiness.Bll
 
         public async Task<PedidoDto> BuscarPedido(string apelido, string numPedido)
         {
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
 
             //parateste
             //numPedido = "094947N-A";
@@ -522,7 +522,7 @@ namespace PrepedidoBusiness.Bll
 
         private async Task<string> ObterNomeTransportadora(string idTransportadora)
         {
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
 
             var transportadora = from c in db.Ttransportadoras
                                  where c.Id == idTransportadora
@@ -539,8 +539,8 @@ namespace PrepedidoBusiness.Bll
             if (!String.IsNullOrEmpty(p.Pedido_Bs_X_Marketplace))
             {
                 //verificar
-                status.Status = await ObterDescricao_Cod("PedidoECommerce_Origem", p.Marketplace_codigo_origem) + ":" + p.Pedido_Bs_X_Marketplace;
-                status.Cor_Pedido_Bs_X_Marketplace = CorStatusEntrega(p.St_Entrega);
+                status.Descricao_Pedido_Bs_X_Marketplace = await ObterDescricao_Cod("PedidoECommerce_Origem", p.Marketplace_codigo_origem) + ":" + p.Pedido_Bs_X_Marketplace;
+                //status.Cor_Pedido_Bs_X_Marketplace = CorStatusEntrega(p.St_Entrega);
             }
             if (!String.IsNullOrEmpty(p.Pedido_Bs_X_Ac))
             {
@@ -553,11 +553,31 @@ namespace PrepedidoBusiness.Bll
             status.St_Entrega = FormataSatusPedido(p.St_Entrega);
             status.Entregue_Data = p.Entregue_Data?.ToString("dd/MM/yyyy");
             status.Cancelado_Data = p.Cancelado_Data?.ToString("dd/MM/yyyy");
-            status.Pedido_Data = p.Data?.ToString("dd/MM/yyyy");
+            status.Pedido_Data = p.Data?.ToString("dd/MM/yyyy") + " " + Formata_hhmmss_para_hh_minuto(p.Hora);
             status.Recebida_Data = p.PedidoRecebidoData?.ToString("dd/MM/yyyy");
 
 
             return await Task.FromResult(status);
+        }
+
+        private string Formata_hhmmss_para_hh_minuto(string hora)
+        {
+            string hh = "";
+            string mm = "";
+            string ss = "";
+            string retorno = "";
+
+            if(!string.IsNullOrEmpty(hora))
+            {
+                hh = hora.Substring(0, 2);
+                mm = hora.Substring(2, 2);
+                ss = hora.Substring(4, 2);
+
+                retorno = hh + ":" + mm + ":" + ss;
+            }
+
+            return retorno;
+            
         }
 
         private string CorStatusEntrega(string st_entrega)
@@ -672,7 +692,7 @@ namespace PrepedidoBusiness.Bll
 
         private async Task<IEnumerable<OcorrenciasDtoPedido>> ObterOcorrencias(string numPedido)
         {
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
 
             var id = await (from c in db.TpedidoOcorrencias
                             where c.Pedido == numPedido
@@ -723,7 +743,7 @@ namespace PrepedidoBusiness.Bll
 
         private async Task<IEnumerable<MensagemDtoOcorrenciaPedido>> ObterMensagemOcorrencia(int idOcorrencia)
         {
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
 
             var msg = from c in db.TpedidoOcorrenciaMensagems
                       where c.Id_Ocorrencia == idOcorrencia
@@ -775,7 +795,7 @@ namespace PrepedidoBusiness.Bll
 
             if (retorno != "")
             {
-                var db = contextoProvider.GetContexto();
+                var db = contextoProvider.GetContextoLeitura();
 
                 var ret = from c in db.Tpedidos
                           where c.Pedido == numPedido && c.Orcamentista == apelido
@@ -789,7 +809,7 @@ namespace PrepedidoBusiness.Bll
                         //string credito = registro.analise_credito_data;
                         if (!string.IsNullOrEmpty(registro.analise_credito_usuario))
                         {
-                            retorno = retorno + "(" + registro.analise_credito_data + " - " 
+                            retorno = retorno + "(" + registro.analise_credito_data + " - "
                                 + registro.analise_credito_usuario + ")";
                         }
                     }
@@ -801,7 +821,7 @@ namespace PrepedidoBusiness.Bll
 
         private async Task<decimal> CalculaSaldoAPagar(string numPedido, decimal vlDevNf)
         {
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
 
             //buscar o valor total pago
             var vlFamiliaP = from c in db.TpedidoPagamentos
@@ -823,7 +843,7 @@ namespace PrepedidoBusiness.Bll
         //Retorna o valor da Familia RA
         private async Task<decimal> CalculaTotalFamiliaRA(string numPedido)
         {
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
 
             var vlTotalVendaPorItem = from c in db.TpedidoItems.Include(r => r.Tpedido)
                                       where c.Tpedido.St_Entrega != Constantes.ST_ENTREGA_CANCELADO && c.Tpedido.Pedido.StartsWith(numPedido)
@@ -839,7 +859,7 @@ namespace PrepedidoBusiness.Bll
 
         private async Task<IEnumerable<ProdutoDevolvidoDtoPedido>> BuscarProdutosDevolvidos(string numPedido)
         {
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
 
             var lista = from c in db.TpedidoItemDevolvidos
                         where c.Pedido.StartsWith(numPedido)
@@ -859,7 +879,7 @@ namespace PrepedidoBusiness.Bll
 
         private async Task<IEnumerable<PedidoPerdasDtoPedido>> BuscarPerdas(string numPedido)
         {
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
 
             var lista = from c in db.TpedidoPerdas
                         where c.Pedido == numPedido
@@ -876,7 +896,7 @@ namespace PrepedidoBusiness.Bll
 
         private async Task<int> VerificarEstoqueVendido(string numPedido, string fabricante, string produto)
         {
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
 
             var prod = from c in db.TestoqueMovimentos
                        where c.Anulado_Status == 0 &&
@@ -894,7 +914,7 @@ namespace PrepedidoBusiness.Bll
 
         private async Task<int> VerificarEstoqueSemPresenca(string numPedido, string fabricante, string produto)
         {
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
 
             var prod = from c in db.TestoqueMovimentos
                        where c.Anulado_Status == 0 &&
@@ -928,7 +948,7 @@ namespace PrepedidoBusiness.Bll
 
         private async Task<IEnumerable<BlocoNotasDtoPedido>> BuscarPedidoBlocoNotas(string numPedido)
         {
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
 
             var bl = from c in db.TpedidoBlocosNotas
                      where c.Pedido == numPedido &&
@@ -964,7 +984,7 @@ namespace PrepedidoBusiness.Bll
 
         private async Task<IEnumerable<BlocoNotasDevolucaoMercadoriasDtoPedido>> BuscarPedidoBlocoNotasDevolucao(string numPedido)
         {
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
 
             var blDevolucao = from c in db.TpedidoItemDevolvidoBlocoNotas.Include(r => r.TpedidoItemDevolvido)
                               where c.TpedidoItemDevolvido.Pedido == numPedido && c.Anulado_Status == 0
@@ -998,7 +1018,7 @@ namespace PrepedidoBusiness.Bll
 
         private async Task<string> ObterDescricao_Cod(string grupo, string cod)
         {
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
 
             var desc = from c in db.TcodigoDescricaos
                        where c.Grupo == grupo && c.Codigo == cod
@@ -1014,7 +1034,7 @@ namespace PrepedidoBusiness.Bll
 
         private async Task<IEnumerable<string>> ObterFormaPagto(Tpedido ped)
         {
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
 
             var p = from c in db.Tpedidos
                     where c.Pedido == ped.Pedido && c.Indicador == ped.Indicador

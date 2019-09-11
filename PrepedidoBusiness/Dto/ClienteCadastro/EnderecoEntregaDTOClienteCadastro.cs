@@ -18,5 +18,7 @@ namespace PrepedidoBusiness.Dtos.ClienteCadastro
         public string EndEtg_cod_justificativa { get; set; }
         //descrição da justificativa, preenchdio para mostrar (da api para o spa)
         public string EndEtg_descricao_justificativa { get; set; }
+        //se foi selecionado um endereco diferente para a entrega (do spa para a api)
+        public bool OutroEndereco { get; set; }
     }
 }

@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using InfraBanco;
 using InfraBanco.Constantes;
 using InfraBanco.Modelos;
+using System.Reflection;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PrepedidoBusiness.Utils
 {
@@ -68,7 +70,7 @@ namespace PrepedidoBusiness.Utils
 
         public static string ObterDescricao_Cod(string grupo, string cod, ContextoProvider contextoProvider)
         {
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
 
             var desc = from c in db.TcodigoDescricaos
                        where c.Grupo == grupo && c.Codigo == cod
@@ -211,25 +213,54 @@ namespace PrepedidoBusiness.Utils
             return s_destino;
         }
 
+        /*afazer: Precisa pedir acesso
+         * servidor: Win2008R2BS,29981
+         * BD: CEP_Homologacao
+         */
+        //public static string BuscarCep(string tipo)
+
+        
+        public static string MontaLog(Object obj, string log, string campos_a_omitir)
+        {
+            PropertyInfo[] property = obj.GetType().GetProperties();
+            string[] campos = campos_a_omitir.Split('|');
+            
+            foreach (var c in property)
+            {
+                //pegando o real nome da coluna 
+                ColumnAttribute column = (ColumnAttribute)Attribute.GetCustomAttribute(c, typeof(ColumnAttribute));
+                string coluna = column.Name;
+                if (!campos_a_omitir.Contains(coluna))
+                {
+                    //pegando o valor coluna
+                    var value = (c.GetValue(obj, null));
+                    log = log + coluna + "=" + value + "; ";
+                }
+
+            }
+
+            return log;
+        }
         public static bool GravaLog(string apelido, string loja, string pedido, string id_cliente,
-            string operação, string complemento, ContextoProvider contexto)
+            string operação, string log, ContextoProvider contexto)
         {
             if (apelido == null)
                 return false;
 
-            var db = contexto.GetContexto();
+            var db = contexto.GetContextoGravacao();
 
-            Tlog log = new Tlog
+            Tlog tLog = new Tlog
             {
+                Data = DateTime.Now,
                 Usuario = apelido,
                 Loja = loja,
                 Pedido = pedido,
                 Id_Cliente = id_cliente,
                 Operacao = operação,
-                Complemento = complemento
+                Complemento = log
             };
 
-            db.Add(log);
+            db.Add(tLog);
             db.SaveChanges();
 
             return true;
