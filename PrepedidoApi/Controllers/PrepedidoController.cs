@@ -98,6 +98,20 @@ namespace PrepedidoApi.Controllers
 
             return Ok(ret);
         }
+
+#if DEBUG
+        [AllowAnonymous]
+#endif
+        [HttpGet("obter_permite_ra_status")]
+        public async Task<IActionResult> Obter_Permite_RA_Status()
+        {
+            //para testar: http://localhost:60877/api/prepedido/obter_permite_ra_status
+            string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
+
+            var ret = await prepedidoBll.Obter_Permite_RA_Status(apelido);
+
+            return Ok(ret);
+        }
     }
 }
 

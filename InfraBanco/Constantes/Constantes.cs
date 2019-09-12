@@ -2602,6 +2602,19 @@ namespace InfraBanco.Constantes
 
         public const string ERR_MULTI_CD_REGRA_NAO_CADASTRADA = "5102";
 
+        public const string NUMERO_LOJA_ECOMMERCE_AR_CLUBE = "201";
 
+        public const string NUMERO_LOJA_BONSHOP = "202";
+        public const string NUMERO_LOJA_BONSHOP_LAB = "204";
+        public const string NUMERO_LOJA_VRF = "205";
+        public const string NUMERO_LOJA_VRF2 = "206";
+        public const string NUMERO_LOJA_VRF3 = "207";
+        public const string NUMERO_LOJA_VRF4 = "208";
+        public const string NUMERO_LOJA_OLD03 = "300";
+        public const string NUMERO_LOJA_OLD03_BONIFICACAO = "301";
+        public const string NUMERO_LOJA_OLD03_ASSISTENCIA = "302";
+        public const string NUMERO_LOJA_MARCELO_ARTVEN = "305";
+        public const string NUMERO_LOJA_TRANSFERENCIA = "01";
+        public const string NUMERO_LOJA_KITS = "02";
     }
 }

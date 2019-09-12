@@ -7,7 +7,7 @@ namespace InfraBanco.Modelos
     [Table("t_CLIENTE_REF_COMERCIAL")]
     public class TclienteRefComercial
     {
-        [Key]
+        //[Key]
         [Column("id_cliente")]
         [Required]
         [MaxLength(12)]

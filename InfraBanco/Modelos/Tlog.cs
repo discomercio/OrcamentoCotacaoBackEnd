@@ -11,8 +11,8 @@ namespace InfraBanco.Modelos
     {
         [Column("data")]
         [Required]
-        [Key]//Não é chave no banco, mas precisando declarar um chave para o EF
-        public DateTime Date { get; set; }
+        //[Key]//Não é chave no banco, mas precisando declarar um chave para o EF
+        public DateTime Data { get; set; }
 
         [Column("usuario")]
         [MaxLength(20)]
@@ -28,6 +28,7 @@ namespace InfraBanco.Modelos
 
         [Column("id_cliente")]
         [MaxLength(12)]
+        [Key]
         public string Id_Cliente { get; set; }
 
         [Column("operacao")]
@@ -35,7 +36,6 @@ namespace InfraBanco.Modelos
         public string Operacao { get; set; }
 
         [Column("complemento")]
-        [MaxLength]
         public string Complemento { get; set; }
 
     }

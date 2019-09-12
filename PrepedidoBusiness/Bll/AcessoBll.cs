@@ -22,7 +22,7 @@ namespace PrepedidoBusiness.Bll
         {
             //apelido = "SALOMÃO";
 
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
             //Validar o dados no bd
             var dados = from c in db.TorcamentistaEindicadors
                         where c.Apelido == apelido
@@ -67,7 +67,7 @@ namespace PrepedidoBusiness.Bll
 
         private async Task<string> BuscarLojaUsuario(string apelido)
         {
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
 
             var loja = (from c in db.TorcamentistaEindicadors
                        where c.Apelido == apelido
@@ -78,7 +78,7 @@ namespace PrepedidoBusiness.Bll
 
         public async Task GravarSessao(string ip, string apelido, string userAgent)
         {
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoGravacao();
 
             string loja = await BuscarLojaUsuario(apelido);
 
@@ -223,7 +223,7 @@ namespace PrepedidoBusiness.Bll
 
         public async Task FazerLogout(string apelido)
         {
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoGravacao();
 
             //O orcamentista não é salvo nessa tabela
             //o Usuario é o usuario_cadastro da tabela t_ORCAMENTISTA_E_INDICADOR

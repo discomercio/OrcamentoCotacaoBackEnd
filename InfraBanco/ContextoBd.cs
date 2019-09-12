@@ -39,11 +39,14 @@ namespace InfraBanco
         public DbSet<Tloja> Tlojas { get; set; }
         public DbSet<Tcontrole> Tcontroles { get; set; }
         public DbSet<TnfEmitente> TnfEmitentes { get; set; }
+        public DbSet<TecProdutoComposto> TecProdutoCompostos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<TclienteRefBancaria>()
                 .HasKey(o => new { o.Id_Cliente, o.Banco, o.Agencia, o.Conta });
+            modelBuilder.Entity<TclienteRefComercial>()
+                .HasKey(o => new { o.Id_Cliente, o.Nome_Empresa });
         }
     }
 }

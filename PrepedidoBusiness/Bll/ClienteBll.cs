@@ -10,6 +10,8 @@ using PrepedidoBusiness.Dto.ClienteCadastro.Referencias;
 using Microsoft.EntityFrameworkCore;
 using PrepedidoBusiness.Dto.ClienteCadastro;
 using InfraBanco.Constantes;
+using System.Transactions;
+using System.Reflection;
 
 namespace PrepedidoBusiness.Bll
 {
@@ -20,6 +22,7 @@ namespace PrepedidoBusiness.Bll
         public ClienteBll(InfraBanco.ContextoProvider contextoProvider)
         {
             this.contextoProvider = contextoProvider;
+
         }
 
         public async Task<List<string>> AtualizarClienteParcial(string apelido, DadosClienteCadastroDto dadosClienteCadastroDto)
@@ -30,8 +33,10 @@ namespace PrepedidoBusiness.Bll
              * inscrição estadual
              * tipo de contibuinte ICMS
              * */
-            var db = contextoProvider.GetContexto();
-            var retorno = new List<string>();
+            var db = contextoProvider.GetContextoLeitura();
+            string log = "";
+            string campos_a_omitir = "|dt_cadastro|usuario_cadastro|dt_ult_atualizacao|usuario_ult_atualizacao|";
+            List<string> lstErros = ValidarDadosClientesCadastro(dadosClienteCadastroDto);
 
             var dados = from c in db.Tclientes
                         where c.Id == dadosClienteCadastroDto.Id
@@ -40,82 +45,69 @@ namespace PrepedidoBusiness.Bll
 
             if (cli == null)
             {
-                retorno.Add("Registro do cliente não encontrado.");
-                return retorno;
+                lstErros.Add("Registro do cliente não encontrado.");
             }
 
-            //afazer: atualizar os dados do cliente e fazer o log
-            //validar os campos necessarios
-            if (dadosClienteCadastroDto.Contribuinte_Icms_Status == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM) &&
-                dadosClienteCadastroDto.Ie != null || dadosClienteCadastroDto.Ie != "")
+            if (lstErros.Count == 0)
             {
-                if (dadosClienteCadastroDto.Contribuinte_Icms_Status != cli.Contribuinte_Icms_Status)
+                using (TransactionScope trans = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
-                    //fazer a implementação do contribuinte
-                    cli.Contribuinte_Icms_Status = dadosClienteCadastroDto.Contribuinte_Icms_Status;
-                    cli.Contribuinte_Icms_Data = DateTime.Now;
-                    cli.Contribuinte_Icms_Data_Hora = DateTime.Now;
-                    cli.Contribuinte_Icms_Usuario = apelido;
-                }
-                if (dadosClienteCadastroDto.Tipo == Constantes.ID_PF &&
-                    dadosClienteCadastroDto.ProdutorRural != byte.Parse(Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL) &&
-                    dadosClienteCadastroDto.ProdutorRural != cli.Produtor_Rural_Status)
-                {
-                    //afazer: implementação  de produtor rural
-                    cli.Produtor_Rural_Status = dadosClienteCadastroDto.ProdutorRural;
-                    cli.Produtor_Rural_Data = DateTime.Now;
-                    cli.Produtor_Rural_Data_Hora = DateTime.Now;
-                    cli.Produtor_Rural_Usuario = apelido;
-                }
-                cli.Dt_Ult_Atualizacao = DateTime.Now;
-                cli.Usuario_Ult_Atualizacao = apelido;
+                    db = contextoProvider.GetContextoGravacao();
 
-                db.SaveChanges();
+                    if (dadosClienteCadastroDto.Contribuinte_Icms_Status == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM) &&
+                    dadosClienteCadastroDto.Ie != null || dadosClienteCadastroDto.Ie != "")
+                    {
+                        cli.Ie = dadosClienteCadastroDto.Ie;
+                        if (dadosClienteCadastroDto.Contribuinte_Icms_Status != cli.Contribuinte_Icms_Status)
+                        {
+                            //fazer a implementação do contribuinte
+                            cli.Contribuinte_Icms_Status = dadosClienteCadastroDto.Contribuinte_Icms_Status;
+                            cli.Contribuinte_Icms_Data = DateTime.Now;
+                            cli.Contribuinte_Icms_Data_Hora = DateTime.Now;
+                            cli.Contribuinte_Icms_Usuario = apelido;
+                        }
+                        if (dadosClienteCadastroDto.Tipo == Constantes.ID_PF &&
+                            dadosClienteCadastroDto.ProdutorRural != byte.Parse(Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL) &&
+                            dadosClienteCadastroDto.ProdutorRural != cli.Produtor_Rural_Status)
+                        {
+                            cli.Produtor_Rural_Status = dadosClienteCadastroDto.ProdutorRural;
+                            cli.Produtor_Rural_Data = DateTime.Now;
+                            cli.Produtor_Rural_Data_Hora = DateTime.Now;
+                            cli.Produtor_Rural_Usuario = apelido;
+                        }
+                        cli.Dt_Ult_Atualizacao = DateTime.Now;
+                        cli.Usuario_Ult_Atualizacao = apelido;
+
+                        db.Update(cli);
+                        db.SaveChanges();
+
+                        log = Utils.Util.MontaLog(cli, log, campos_a_omitir);
+                        //Essa parte esta na pagina ClienteAtualiza.asp linha 1113
+                        bool salvouLog = Utils.Util.GravaLog(apelido, dadosClienteCadastroDto.Loja, "", dadosClienteCadastroDto.Id,
+                            Constantes.OP_LOG_CLIENTE_ALTERACAO, log, contextoProvider);
+                    }
+                }
             }
 
-            //afazer: entender como é feito o Log
-            //Essa parte esta na pagina ClienteAtualiza.asp linha 1113
-            //bool salvouLog = Utils.Util.GravaLog(apelido, dadosClienteCadastroDto.Loja, "", dadosClienteCadastroDto.Id,
-            //    Constantes.OP_LOG_CLIENTE_ALTERACAO,  contextoProvider);
-
-
-            /*campos que serão salvos no log
-             * rs("usuario") = usuario
-             * rs("loja") = loja
-             * rs("pedido") = pedido
-             * rs("id_cliente") = id_cliente
-             * rs("operacao") = operacao
-             * rs("complemento") = complemento
-            */
-
-
-
-            //afazer: rfazer a rotina
-            //afazer: validar IE conforme estado
-            //afazer: deve ter um log com o apelido do orcamentista
-            //para teste
-            //ret.Add("Algum erro 1.");
-            //ret.Add("Algum erro 2.");
-            return retorno;
+            return lstErros;
         }
 
         public async Task<ClienteCadastroDto> BuscarCliente(string cpf_cnpj)
         {
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
 
             var dadosCliente = db.Tclientes.Where(r => r.Cnpj_Cpf == cpf_cnpj)
                 .FirstOrDefault();
             if (dadosCliente == null)
                 return null;
 
-            //afazer: Montar os 4 dto's para retornar para tela de cliente
             var dadosClienteTask = ObterDadosClienteCadastro(dadosCliente);
             var refBancariaTask = ObterReferenciaBancaria(dadosCliente);
             var refComercialTask = ObterReferenciaComercial(dadosCliente);
 
             ClienteCadastroDto cliente = new ClienteCadastroDto
             {
-                DadosCliente = await dadosClienteTask,
+                DadosCliente = dadosClienteTask,
                 RefBancaria = (await refBancariaTask).ToList(),
                 RefComercial = (await refComercialTask).ToList()
             };
@@ -125,7 +117,7 @@ namespace PrepedidoBusiness.Bll
 
         public async Task<IEnumerable<ListaBancoDto>> ListarBancosCombo()
         {
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
 
             var bancos = from c in db.Tbancos
                          orderby c.Codigo
@@ -135,10 +127,40 @@ namespace PrepedidoBusiness.Bll
                              Descricao = c.Descricao
                          };
 
-            return bancos;
+            return await bancos.ToListAsync();
         }
 
-        public async Task<DadosClienteCadastroDto> ObterDadosClienteCadastro(Tcliente cli)
+        public async Task<IEnumerable<EnderecoEntregaJustificativaDto>> ListarComboJustificaEndereco(string apelido)
+        {
+            //paraTeste
+            //string apelido = "MARISARJ";
+            var db = contextoProvider.GetContextoLeitura();
+
+            string loja = await (from c in db.TorcamentistaEindicadors
+                                 where c.Apelido == apelido
+                                 select c.Loja).FirstOrDefaultAsync();
+
+            var retorno = from c in db.TcodigoDescricaos
+                          where c.Grupo == Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA &&
+                          (c.Lojas_Habilitadas == null || c.Lojas_Habilitadas.Length == 0 || c.Lojas_Habilitadas.Contains("|" + loja + "|")) &&
+                          (c.St_Inativo == 0 || c.Codigo == "")
+                          select new { c.Codigo, c.Descricao };
+
+            List<EnderecoEntregaJustificativaDto> lst = new List<EnderecoEntregaJustificativaDto>();
+
+            foreach (var r in await retorno.ToListAsync())
+            {
+                EnderecoEntregaJustificativaDto jus = new EnderecoEntregaJustificativaDto
+                {
+                    EndEtg_cod_justificativa = r.Codigo,
+                    EndEtg_descricao_justificativa = r.Descricao
+                };
+                lst.Add(jus);
+            }
+            return lst;
+        }
+
+        public DadosClienteCadastroDto ObterDadosClienteCadastro(Tcliente cli)
         {
             DadosClienteCadastroDto dados = new DadosClienteCadastroDto
             {
@@ -178,18 +200,21 @@ namespace PrepedidoBusiness.Bll
         private async Task<IEnumerable<RefBancariaDtoCliente>> ObterReferenciaBancaria(Tcliente cli)
         {
             List<RefBancariaDtoCliente> lstRef = new List<RefBancariaDtoCliente>();
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
 
+            //selecionamos as referências bancárias já incluindo a descrição do banco
             var rBanco = from c in db.TclienteRefBancarias
+                         join banco in db.Tbancos on c.Banco equals banco.Codigo
                          where c.Id_Cliente == cli.Id
                          orderby c.Ordem
-                         select c;
+                         select new { c.Banco, c.Agencia, c.Conta, c.Contato, c.Ddd, c.Telefone, banco.Descricao };
 
-            foreach (var i in rBanco)
+            foreach (var i in await rBanco.ToListAsync())
             {
                 RefBancariaDtoCliente refBanco = new RefBancariaDtoCliente
                 {
                     Banco = i.Banco,
+                    BancoDescricao = i.Descricao,
                     Agencia = i.Agencia,
                     Conta = i.Conta,
                     Contato = i.Contato,
@@ -205,14 +230,14 @@ namespace PrepedidoBusiness.Bll
         private async Task<IEnumerable<RefComercialDtoCliente>> ObterReferenciaComercial(Tcliente cli)
         {
             List<RefComercialDtoCliente> lstRefComercial = new List<RefComercialDtoCliente>();
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
 
             var rComercial = from c in db.TclienteRefComercials
                              where c.Id_Cliente == cli.Id
                              orderby c.Ordem
                              select c;
 
-            foreach (var i in rComercial)
+            foreach (var i in await rComercial.ToListAsync())
             {
                 RefComercialDtoCliente rCom = new RefComercialDtoCliente
                 {
@@ -230,75 +255,227 @@ namespace PrepedidoBusiness.Bll
 
         public async Task<IEnumerable<string>> CadastrarCliente(ClienteCadastroDto clienteDto, string apelido)
         {
-            string retorno = "";
             string id_cliente = "";
 
-            var db = contextoProvider.GetContexto();
+            //teste
+            //apelido = "MARISARJ";
+
+            var db = contextoProvider.GetContextoLeitura();
             var verifica = await (from c in db.Tclientes
                                   where c.Id == clienteDto.DadosCliente.Id
                                   select c.Id).FirstOrDefaultAsync();
 
-            List<string> lstErros = ValidarDadosClientesCadastro(clienteDto.DadosCliente);
+            List<string> lstErros = new List<string>();
+            lstErros = ValidarDadosClientesCadastro(clienteDto.DadosCliente);
+            lstErros = ValidarRefBancaria(clienteDto.RefBancaria, lstErros);
+            lstErros = ValidarRefComercial(clienteDto.RefComercial, lstErros);
 
             if (verifica != null)
                 lstErros.Add("REGISTRO COM ID=" + clienteDto.DadosCliente.Id + " JÁ EXISTE.");
 
             if (lstErros.Count <= 0)
             {
-                DadosClienteCadastroDto cliente = clienteDto.DadosCliente;
-                //salvar os dados CadastrarDadosClienteDto(DadosClienteCadastroDto clienteDto)
-                id_cliente = await CadastrarDadosClienteDto(cliente, apelido);
-
-                if (id_cliente.Length == 12)
+                using (TransactionScope trans = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
-                    //afazer
-                    //validar os dados de refBancaria
-                    //Caso a validação da refBancaria esteja true
+                    string log = "";
 
-                    //RefBancariaDtoCliente bancaria = clienteDto.RefBancaria;
-                    //RefComercialDtoCliente comercial = clienteDto.RefComercial;
+                    db = contextoProvider.GetContextoGravacao();
+                    DadosClienteCadastroDto cliente = clienteDto.DadosCliente;
+                    List<string> lstRetorno = (await CadastrarDadosClienteDto(cliente, apelido, log)).ToList();
+                    id_cliente = lstRetorno[0].ToString();
+                    log = lstRetorno[1].ToString();
+                    //Por padrão o id do cliente tem 12 caracteres, caso não seja 12 caracteres esta errado
+                    if (id_cliente.Length == 12)
+                    {
+                        await CadastrarRefBancaria(clienteDto.RefBancaria, apelido, id_cliente, log);
+                        await CadastrarRefComercial(clienteDto.RefComercial, apelido, id_cliente, log);
+                        //fazer a inserção de Log aqui.
+                        bool gravouLog = Utils.Util.GravaLog(apelido, cliente.Loja, "", id_cliente,
+                            Constantes.OP_LOG_CLIENTE_INCLUSAO, log, contextoProvider);
+                        trans.Complete();
+                    }
+                    else
+                    {
+                        lstErros.Add(id_cliente);
+                    }
                 }
-                else
+            }
+            return lstErros;
+        }
+
+        private async Task<IEnumerable<string>> CadastrarDadosClienteDto(DadosClienteCadastroDto clienteDto, string apelido, string log)
+        {
+            string retorno = "";
+            List<string> lstRetorno = new List<string>();
+            string id_cliente = await GerarIdCliente(Constantes.NSU_CADASTRO_CLIENTES);
+
+            string campos_a_omitir = "dt_cadastro|usuario_cadastro|dt_ult_atualizacao|usuario_ult_atualizacao";
+
+            lstRetorno.Add(id_cliente);
+
+            if (id_cliente.Length > 12)
+                retorno = id_cliente;
+            else
+            {
+                Tcliente tCliente = new Tcliente
                 {
-                    lstErros.Add(id_cliente);
-                }
+                    Id = id_cliente,
+                    Dt_Cadastro = DateTime.Now,
+                    Usuario_Cadastrado = apelido,
+                    Indicador = apelido,
+                    Cnpj_Cpf = clienteDto.Cnpj_Cpf.Replace(".", "").Replace("/", "").Replace("-", ""),
+                    Tipo = clienteDto.Tipo,
+                    Ie = clienteDto.Ie,
+                    Rg = clienteDto.Rg,
+                    Nome = clienteDto.Nome,
+                    Sexo = clienteDto.Sexo,
+                    Contribuinte_Icms_Status = clienteDto.Contribuinte_Icms_Status,
+                    Contribuinte_Icms_Data = DateTime.Now,
+                    Contribuinte_Icms_Data_Hora = DateTime.Now,
+                    Contribuinte_Icms_Usuario = apelido,
+                    Produtor_Rural_Status = clienteDto.ProdutorRural,
+                    Produtor_Rural_Data = DateTime.Now,
+                    Produtor_Rural_Data_Hora = DateTime.Now,
+                    Produtor_Rural_Usuario = apelido,
+                    Endereco = clienteDto.Endereco,
+                    Endereco_Numero = clienteDto.Numero,
+                    Endereco_Complemento = clienteDto.Complemento,
+                    Bairro = clienteDto.Bairro,
+                    Cidade = clienteDto.Cidade,
+                    Cep = clienteDto.Cep,
+                    Uf = clienteDto.Uf,
+                    Ddd_Res = clienteDto.DddResidencial,
+                    Tel_Res = clienteDto.TelefoneResidencial,
+                    Ddd_Com = clienteDto.DddComercial,
+                    Tel_Com = clienteDto.TelComercial,
+                    Ramal_Com = clienteDto.Ramal,
+                    Contato = clienteDto.Contato,
+                    Ddd_Com_2 = clienteDto.DddComercial2,
+                    Tel_Com_2 = clienteDto.TelComercial2,
+                    Ramal_Com_2 = clienteDto.Ramal2,
+                    Dt_Nasc = clienteDto.Nascimento,
+                    Filiacao = clienteDto.Observacao_Filiacao,
+                    Obs_crediticias = "",
+                    Midia = "",
+                    Email = clienteDto.Email,
+                    Email_Xml = clienteDto.EmailXml,
+                    Dt_Ult_Atualizacao = DateTime.Now,
+                    Usuario_Ult_Atualizacao = apelido
+                };
+
+                var db = contextoProvider.GetContextoGravacao();
+
+                //Busca os nomes reais das colunas da tabela SQL
+                lstRetorno.Add(Utils.Util.MontaLog(tCliente, log, campos_a_omitir));
+
+                db.Add(tCliente);
+                await db.SaveChangesAsync();
+                retorno = tCliente.Id;
+            }
+
+            return lstRetorno;
+        }
+
+        private async Task<string> CadastrarRefBancaria(List<RefBancariaDtoCliente> lstRefBancaria, string apelido, string id_cliente, string log)
+        {
+            var db = contextoProvider.GetContextoGravacao();
+            int qtdeRef = 1;
+            string campos_a_omitir_ref_bancaria = "id_cliente|ordem|excluido_status|dt_cadastro|usuario_cadastro";
+
+            log = log + "Ref Bancária incluída: ";
+
+            foreach (RefBancariaDtoCliente r in lstRefBancaria)
+            {
+
+                TclienteRefBancaria cliRefBancaria = new TclienteRefBancaria
+                {
+                    Id_Cliente = id_cliente,
+                    Banco = r.Banco,
+                    Agencia = r.Agencia,
+                    Conta = r.Conta,
+                    Dt_Cadastro = DateTime.Now,
+                    Usuario_Cadastro = apelido,
+                    Ordem = (short)(qtdeRef),
+                    Ddd = r.Ddd,
+                    Telefone = r.Telefone,
+                    Contato = r.Contato,
+                    Excluido_Status = 0
+                };
+                db.Add(cliRefBancaria);
+                qtdeRef++;
+
+                //Busca os nomes reais das colunas da tabela SQL
+                log = Utils.Util.MontaLog(cliRefBancaria, log, campos_a_omitir_ref_bancaria);
+            }
+
+            await db.SaveChangesAsync();
+            return log;
+        }
+
+        private async Task<string> CadastrarRefComercial(List<RefComercialDtoCliente> lstRefComercial, string apelido, string id_cliente, string log)
+        {
+            var db = contextoProvider.GetContextoGravacao();
+            int qtdeRef = 1;
+
+            string campos_a_omitir_ref_comercial = "id_cliente|ordem|excluido_status|dt_cadastro|usuario_cadastro";
+
+            log = log + "Ref Comercial incluída: ";
+
+            foreach (RefComercialDtoCliente r in lstRefComercial)
+            {
+                TclienteRefComercial c = new TclienteRefComercial
+                {
+                    Id_Cliente = id_cliente,
+                    Nome_Empresa = r.Nome_Empresa,
+                    Dt_Cadastro = DateTime.Now,
+                    Usuario_Cadastro = apelido,
+                    Ordem = (short)qtdeRef,//verificar se esta sendo inserido a qtde na validação
+                    Contato = r.Contato,
+                    Ddd = r.Ddd,
+                    Telefone = r.Telefone,
+                    Excluido_Status = 0
+                };
+                db.Add(c);
+                qtdeRef++;
+                log = Utils.Util.MontaLog(c, log, campos_a_omitir_ref_comercial);
+            }
+
+            await db.SaveChangesAsync();
+            return log;
+        }
+
+        private List<string> ValidarRefBancaria(List<RefBancariaDtoCliente> lstRefBancaria, List<string> lstErros)
+        {
+            for (int i = 0; i < lstRefBancaria.Count; i++)
+            {
+                if (string.IsNullOrEmpty(lstRefBancaria[i].Banco))
+                    lstErros.Add("Ref Bancária (" + lstRefBancaria[i].Ordem.ToString() + "): informe o banco.");
+                if (string.IsNullOrEmpty(lstRefBancaria[i].Agencia))
+                    lstErros.Add("Ref Bancária (" + lstRefBancaria[i].Ordem.ToString() + "): informe o agência.");
+                if (string.IsNullOrEmpty(lstRefBancaria[i].Conta))
+                    lstErros.Add("Ref Bancária (" + lstRefBancaria[i].Ordem.ToString() + "): informe o número da conta.");
             }
 
             return lstErros;
-
         }
-        /*afazer
-         * verificar com o João
-         * o que esta ocorrendo na pág ClienteAtualiza.asp linha 708 até linha 729
-         */
-        private Task<string> CadastrarRefBancaria(List<RefBancariaDtoCliente> lstRefBancaria, string apelido, string id_cliente)
+
+        private List<string> ValidarRefComercial(List<RefComercialDtoCliente> lstRefComercial, List<string> lstErros)
         {
-            string retorno = "";
-
-            var db = contextoProvider.GetContexto();
-
-            foreach(RefBancariaDtoCliente r in lstRefBancaria)
+            for (int i = 0; i < lstRefComercial.Count; i++)
             {
-                //TclienteRefBancaria cliRefBancaria = new TclienteRefBancaria
-                //{
-                //    Id_Cliente = id_cliente,
-                //    Banco = r.Banco,
-                //    Agencia = r.Agencia,
-                //    Conta = r.Conta,
-                //    Dt_Cadastro = DateTime.Now,
-                //    Usuario_Cadastro = apelido,
-                //    Ordem = 
-                //};
+                lstRefComercial[i].Ordem = i;
+                if (string.IsNullOrEmpty(lstRefComercial[i].Nome_Empresa))
+                    lstErros.Add("Ref Comercial (" + lstRefComercial[i].Ordem + "): informe o nome da empresa.");
             }
 
-            return Task.FromResult(retorno);
+            return lstErros;
         }
 
         private async Task<IEnumerable<string>> ConsisteMunicipioIBGE(string municipio, string uf)
         {
             List<string> erros = new List<string>();
             List<string> lstSugerida = new List<string>();
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoLeitura();
             string chave = "";
             string senhaCripto = "";
 
@@ -325,7 +502,7 @@ namespace PrepedidoBusiness.Bll
                 if (nfEmitente == null)
                     erros.Add("Não há um emitente de NFe padrão definido no sistema!!");
 
-                string senhaNfEmitente = nfEmitente.Select(r => r.NFe_T1_senha_BD).FirstOrDefault();
+                string senhaNfEmitente = await nfEmitente.Select(r => r.NFe_T1_senha_BD).FirstOrDefaultAsync();
 
                 chave = Utils.Util.GeraChave(Constantes.FATOR_BD);
                 senhaCripto = Utils.Util.DecodificaSenha(senhaNfEmitente, chave);
@@ -333,28 +510,44 @@ namespace PrepedidoBusiness.Bll
                 //afazer: Verificar com o João e Hamilton o metodo abaixo
                 //BuscarSiglaUf(string servidor, string nomedb, string usuariodb, string senhadb)
 
+
+
             }
 
             return lstSugerida;
         }
 
-        private string BuscarSiglaUf(string servidor, string nomedb, string usuariodb, string senhadb)
-        {
-            /*afazer:
+        /*afazer:
              * Esse metodo necessita de acesso em outra base
              * Necessário verificar com o João e Hamilton 
              * Esse metodo esta na pág. BDD.asp linha 4840
              * Isso faz parte do metodo da validação para salvar a RefBancaria pág ClienteAtualiza.asp linha 329 
              * que faz a chamada para o metodo consiste_municipio_IBGE_ok(s_cidade, s_uf, s_lista_sugerida_municipios, msg_erro)
              */
+        private string BuscarSiglaUf(string servidor, string nomedb, string usuariodb, string senhadb, string uf, string municipio)
+        {
+            //verificar se passo a lista de erros
             string retorno = "";
 
-            string conexao = "Provider=SQLOLEDB;" +
-                "Data Source=" + servidor + ";" +
-                "Initial Catalog=" + nomedb + ";" +
-                "User ID=" + usuariodb + ";" +
-                "Password=" + senhadb + ";";
+            var db = contextoProvider.GetContextoLeitura();
+            //var nfeUF = from c in db.NFE_UF
+            //            where c.SiglaUF == uf.ToUpper()
+            //            select c;
 
+
+            //if (nfeUF == null)
+            //    retorno = "Não é possível consistir o município através da relação de municípios do IBGE: " +
+            //        "a UF '" + uf + "' não foi localizada na relação do IBGE!!";
+            //else
+            //{
+            //    string codUF = nfeUF.CodUF;
+            //    var nomeMunicipio = from c in db.NFE_MUNICIPIO
+            //                        where c.CodMunic.Contains(uf) && c.Descricao == municipio
+            //                        orderby c.Descricao
+            //                        select c;
+
+            //    //adicionar na lista sugerida
+            //}
 
 
             return retorno;
@@ -366,9 +559,9 @@ namespace PrepedidoBusiness.Bll
 
             if (cliente.Cnpj_Cpf == "")
                 listaErros.Add("CNPJ / CPF NÃO FORNECIDO.");
-            if (Utils.Util.ValidaCpf_Cnpj(cliente.Cnpj_Cpf))
+            if (!Utils.Util.ValidaCpf_Cnpj(cliente.Cnpj_Cpf))
                 listaErros.Add("CNPJ/CPF INVÁLIDO.");
-            if (cliente.Sexo != "M" || cliente.Sexo != "F")
+            if (cliente.Sexo != "M" && cliente.Sexo != "F")
                 listaErros.Add("INDIQUE QUAL O SEXO.");
             if (cliente.Nome == "")
             {
@@ -438,16 +631,14 @@ namespace PrepedidoBusiness.Bll
             return listaErros;
         }
 
-        //Verificar:com João
+        //afazer:ADICIONA A DLL DllInscE32
         private string VerificarInscricaoEstadualValida(string ie, string uf)
         {
-            bool valida = false;
             string c = "";
             bool blnOk = true;
             int qtdeDig = 0;
             int num;
             string retorno = "";
-            string ieNormalizado = "";
 
             if (ie != "ISENTO")
             {
@@ -459,125 +650,64 @@ namespace PrepedidoBusiness.Bll
                     if (int.TryParse(c, out num))
                         qtdeDig += 1;
                 }
-                if (qtdeDig < 2 || qtdeDig > 14)
+                if (qtdeDig < 2 && qtdeDig > 14)
                     retorno = "Preencha a IE (Inscrição Estadual) com um número válido!!" +
                             "Certifique-se de que a UF informada corresponde à UF responsável pelo registro da IE.";
+                else
+                    retorno = ie;
             }
             else
             {
-                ieNormalizado = ie;
+                retorno = ie;
             }
 
-            //verificar: olhar na pág Funcoes.asp linha 4375
-            //PERGUNTAR PARA HAMILTON SE ADICIONA A DLL DllInscE32 OU SE QUER INCORPORAR O FONTE ou outra coisa
+            //afazer: olhar na pág Funcoes.asp linha 4375
+            //set objIE = CreateObject("ComPlusWrapper_DllInscE32.ComPlusWrapper_DllInscE32")
+            //blnResultado = objIE.isInscricaoEstadualOk(strInscricaoEstadualNormalizado, uf)
+            //Instalar A DLL DllInscE32 QUER INCORPORAR O FONTE ou outra coisa
 
             return retorno;
         }
 
-        private async Task<string> CadastrarDadosClienteDto(DadosClienteCadastroDto clienteDto, string apelido)
-        {
-            string retorno = "";
-            string id_cliente = GerarIdCliente(Constantes.NSU_CADASTRO_CLIENTES);
-
-            if (id_cliente.Length > 12)
-                retorno = id_cliente;
-            else
-            {
-                Tcliente tCliente = new Tcliente
-                {
-                    Id = id_cliente,
-                    Dt_Cadastro = DateTime.Now,
-                    Usuario_Cadastrado = apelido,
-                    Indicador = apelido,
-                    Cnpj_Cpf = clienteDto.Cnpj_Cpf,
-                    Tipo = clienteDto.Tipo,
-                    Ie = clienteDto.Ie,
-                    Rg = clienteDto.Rg,
-                    Nome = clienteDto.Nome,
-                    Sexo = clienteDto.Sexo,
-                    Contribuinte_Icms_Status = clienteDto.Contribuinte_Icms_Status,
-                    Contribuinte_Icms_Data = DateTime.Now,
-                    Contribuinte_Icms_Data_Hora = DateTime.Now,
-                    Contribuinte_Icms_Usuario = apelido,
-                    Produtor_Rural_Status = clienteDto.ProdutorRural,
-                    Produtor_Rural_Data = DateTime.Now,
-                    Produtor_Rural_Data_Hora = DateTime.Now,
-                    Produtor_Rural_Usuario = apelido,
-                    Endereco = clienteDto.Endereco,
-                    Endereco_Numero = clienteDto.Numero,
-                    Endereco_Complemento = clienteDto.Complemento,
-                    Bairro = clienteDto.Bairro,
-                    Cidade = clienteDto.Cidade,
-                    Cep = clienteDto.Cep,
-                    Uf = clienteDto.Uf,
-                    Ddd_Res = clienteDto.DddResidencial,
-                    Tel_Res = clienteDto.TelefoneResidencial,
-                    Ddd_Com = clienteDto.DddComercial,
-                    Tel_Com = clienteDto.TelComercial,
-                    Ramal_Com = clienteDto.Ramal,
-                    Contato = clienteDto.Contato,
-                    Ddd_Com_2 = clienteDto.DddComercial2,
-                    Tel_Com_2 = clienteDto.TelComercial2,
-                    Ramal_Com_2 = clienteDto.Ramal2,
-                    Dt_Nasc = clienteDto.Nascimento,
-                    Filiacao = clienteDto.Observacao_Filiacao,
-                    Obs_crediticias = "",
-                    Midia = "",
-                    Email = clienteDto.Email,
-                    Email_Xml = clienteDto.EmailXml,
-                    Dt_Ult_Atualizacao = DateTime.Now,
-                    Usuario_Ult_Atualizacao = apelido
-                };
-
-                var db = contextoProvider.GetContexto();
-
-                db.Add(tCliente);
-                db.SaveChangesAsync();
-                retorno = tCliente.Id;
-            }
-
-            return retorno;
-        }
-
-        private string GerarIdCliente(string id_nsu)
+        private async Task<string> GerarIdCliente(string id_nsu)
         {
             string retorno = "";
             int n_nsu = -1;
             string s = "0";
             int asc;
             char chr;
-            int novoNsu = 0;
 
-            var db = contextoProvider.GetContexto();
+            var db = contextoProvider.GetContextoGravacao();
 
             if (id_nsu == "")
                 retorno = "Não foi especificado o NSU a ser gerado!!";
 
             for (int i = 0; i <= 100; i++)
             {
-                var ret = (from c in db.Tcontroles
-                           where c.Id_Nsu == id_nsu
-                           select c).FirstOrDefault();
+                var ret = from c in db.Tcontroles
+                          where c.Id_Nsu == id_nsu
+                          select c;
 
-                if (!string.IsNullOrEmpty(ret.Nsu))
+                var controle = await ret.FirstOrDefaultAsync();
+
+
+                if (!string.IsNullOrEmpty(controle.Nsu))
                 {
-                    if (ret.Seq_Anual != 0)
+                    if (controle.Seq_Anual != 0)
                     {
-                        if (DateTime.Now.Year > ret.Dt_Ult_Atualizacao.Year)
+                        if (DateTime.Now.Year > controle.Dt_Ult_Atualizacao.Year)
                         {
-                            //afazer:terminar de montar
                             s = Normaliza_Codigo(s, Constantes.TAM_MAX_NSU);
-                            ret.Dt_Ult_Atualizacao = DateTime.Now;
-                            if (!String.IsNullOrEmpty(ret.Ano_Letra_Seq))
+                            controle.Dt_Ult_Atualizacao = DateTime.Now;
+                            if (!String.IsNullOrEmpty(controle.Ano_Letra_Seq))
                             {
                                 //Precisa revisar essa parte, pois lendo a doc do BD e analisando os dados na base não bate
-                                asc = int.Parse(ret.Ano_Letra_Seq) + ret.Ano_Letra_Step;
+                                asc = int.Parse(controle.Ano_Letra_Seq) + controle.Ano_Letra_Step;
                                 chr = (char)asc;
                             }
                         }
-                        n_nsu = int.Parse(ret.Nsu);
-
                     }
+                    n_nsu = int.Parse(controle.Nsu);
                 }
                 if (n_nsu < 0)
                 {
@@ -586,21 +716,25 @@ namespace PrepedidoBusiness.Bll
                 n_nsu += 1;
                 s = Convert.ToString(n_nsu);
                 s = Normaliza_Codigo(s, Constantes.TAM_MAX_NSU);
-                novoNsu = int.Parse(s);
-                //para salvar o novo numero
-                ret.Nsu = s;
-                if (DateTime.Now > ret.Dt_Ult_Atualizacao)
-                    ret.Dt_Ult_Atualizacao = DateTime.Now;
-
-                retorno = ret.Nsu;
-
-                try
+                if (s.Length == 12)
                 {
-                    db.SaveChangesAsync();
-                }
-                catch (Exception ex)
-                {
-                    retorno = "Não foi possível gerar o NSU, pois ocorreu o seguinte erro: " + ex.HResult + ":" + ex.Message;
+                    i = 101;
+                    //para salvar o novo numero
+                    controle.Nsu = s;
+                    if (DateTime.Now > controle.Dt_Ult_Atualizacao)
+                        controle.Dt_Ult_Atualizacao = DateTime.Now;
+
+                    retorno = controle.Nsu;
+
+                    try
+                    {
+                        db.Update(controle);
+                        await db.SaveChangesAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        retorno = "Não foi possível gerar o NSU, pois ocorreu o seguinte erro: " + ex.HResult + ":" + ex.Message;
+                    }
                 }
             }
 
@@ -609,20 +743,22 @@ namespace PrepedidoBusiness.Bll
 
         private static string Normaliza_Codigo(string cod, int tamanho_default)
         {
-            string retorno = "";
+            string retorno = cod;
+            string s = "0";
+
 
             if (cod != "")
             {
-                for (int i = 0; i < tamanho_default; i++)
+                for (int i = cod.Length; i < tamanho_default; i++)
                 {
-                    retorno += cod;
+                    retorno = s + retorno;
                 }
             }
 
             return retorno;
         }
 
-        //afazer: Método para trazer o combo de Justifica Endereco
+
 
     }
 }
