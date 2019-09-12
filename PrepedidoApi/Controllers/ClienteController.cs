@@ -75,7 +75,7 @@ namespace PrepedidoApi.Controllers
 #if DEBUG
         [AllowAnonymous]
 #endif
-        [HttpGet("cadastrarCliente")]
+        [HttpPost("cadastrarCliente")]
         public async Task<IActionResult> CadastrarCliente(ClienteCadastroDto clienteDto)
         {
             //para testar: http://localhost:60877/api/cliente/cadastrarCliente
