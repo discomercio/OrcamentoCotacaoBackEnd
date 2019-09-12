@@ -69,10 +69,10 @@ export class CadastrarClienteComponent extends TelaDesktopBaseComponent implemen
 
     let constantes = new Constantes();
     if (this.ehPf()) {
-      this.dadosClienteCadastroDto.Tipo == constantes.ID_PF;
+      this.dadosClienteCadastroDto.Tipo = constantes.ID_PF;
     }
     else {
-      this.dadosClienteCadastroDto.Tipo == constantes.ID_PJ;
+      this.dadosClienteCadastroDto.Tipo = constantes.ID_PJ;
     }
 
     this.converterTelefones();
@@ -104,7 +104,6 @@ export class CadastrarClienteComponent extends TelaDesktopBaseComponent implemen
     CEP
 
     */
-
 
     //um MONTE de validações....
     validacoes = validacoes.concat(this.validarGeral());
@@ -363,7 +362,7 @@ TelComercial2
     else {
 
       //PJ, telefone 1 é obrigatório
-      if (this.dadosClienteCadastroDto.TelComercial.trim() !== "") {
+      if (this.dadosClienteCadastroDto.TelComercial.trim() === "") {
         ret.push('Preencha o telefone comercial!!');
       }
 

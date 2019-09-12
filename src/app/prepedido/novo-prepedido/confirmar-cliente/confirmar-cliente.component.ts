@@ -34,18 +34,22 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     super(telaDesktopService);
 
     this.dadosClienteCadastroDto = null;
-    if(router.getCurrentNavigation()){
-    let clienteCadastroDto: ClienteCadastroDto = (router.getCurrentNavigation().extras.state) as ClienteCadastroDto;
-    if (clienteCadastroDto && clienteCadastroDto.DadosCliente) {
-      this.dadosClienteCadastroDto = clienteCadastroDto.DadosCliente;
+    if (router.getCurrentNavigation()) {
+      let clienteCadastroDto: ClienteCadastroDto = (router.getCurrentNavigation().extras.state) as ClienteCadastroDto;
+      if (clienteCadastroDto && clienteCadastroDto.DadosCliente) {
+        //estramente, precisamos fazer por timeout
+        //é que, se for simplesmente setado, ele não "percebe" que foi carregado
+        setTimeout(() => {
+          this.dadosClienteCadastroDto = clienteCadastroDto.DadosCliente;
+        }, 0);
+        return;
+      }
     }
-  }
 
     //se chegar como null é pq foi salvo como link; não temos dados para mostrar
     if (!this.dadosClienteCadastroDto) {
 
-      //voltamos para a tela anterior
-      //router.navigate(["/novo-prepedido"]);
+      //voltamos para a tela anterior: router.navigate(["/novo-prepedido"]);
 
       //ou melhor, fazemos a busca de novo!
       const clienteBusca = activatedRoute.snapshot.params.cpfCnpj;
@@ -196,12 +200,12 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
       //vamos validar o endereço
       // só a jsutificativa, número e complemento. O resto vai ser validado pelo CEP
       if (this.enderecoEntregaDtoClienteCadastro.OutroEndereco) {
-        if(!this.enderecoEntregaDtoClienteCadastro.EndEtg_cod_justificativa || this.enderecoEntregaDtoClienteCadastro.EndEtg_cod_justificativa.trim() === ""){
+        if (!this.enderecoEntregaDtoClienteCadastro.EndEtg_cod_justificativa || this.enderecoEntregaDtoClienteCadastro.EndEtg_cod_justificativa.trim() === "") {
           this.mostrarMensagem("Caso seja selecionado outro endereço, selecione a justificativa do endereço de entrega!!")
           return;
         }
         //somente número, o resto é feito pelo CEP
-        if(!this.enderecoEntregaDtoClienteCadastro.EndEtg_endereco_numero || this.enderecoEntregaDtoClienteCadastro.EndEtg_endereco_numero.trim() === ""){
+        if (!this.enderecoEntregaDtoClienteCadastro.EndEtg_endereco_numero || this.enderecoEntregaDtoClienteCadastro.EndEtg_endereco_numero.trim() === "") {
           this.mostrarMensagem("Caso seja selecionado outro endereço, preencha o número do endereço de entrega!!")
           return;
         }
