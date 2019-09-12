@@ -557,19 +557,39 @@ namespace PrepedidoBusiness.Bll
         {
             List<string> listaErros = new List<string>();
 
+            string cpf_cnpjSoDig = Utils.Util.SoDigitosCpf_Cnpj(cliente.Cnpj_Cpf);
+            bool ehCpf = Utils.Util.ValidaCpf_Cnpj(cliente.Cnpj_Cpf);
+
             if (cliente.Cnpj_Cpf == "")
                 listaErros.Add("CNPJ / CPF NÃO FORNECIDO.");
             if (!Utils.Util.ValidaCpf_Cnpj(cliente.Cnpj_Cpf))
                 listaErros.Add("CNPJ/CPF INVÁLIDO.");
-            if (cliente.Sexo != "M" && cliente.Sexo != "F")
-                listaErros.Add("INDIQUE QUAL O SEXO.");
-            if (cliente.Nome == "")
+
+            if (ehCpf)
             {
-                if (cliente.Tipo == Constantes.ID_PF)
-                    listaErros.Add("PREENCHA O NOME DO CLIENTE.");
+                if (cliente.Sexo != "M" && cliente.Sexo != "F")
+                    listaErros.Add("INDIQUE QUAL O SEXO.");
+                if (cliente.Nome == "")
+                {
+                    if (cliente.Tipo == Constantes.ID_PF)
+                        listaErros.Add("PREENCHA O NOME DO CLIENTE.");
+                }
+                if (cliente.Tipo == Constantes.ID_PF &&
+                cliente.TelefoneResidencial == "" &&
+                cliente.TelComercial == "" &&
+                cliente.Celular == "")
+                    listaErros.Add("PREENCHA PELO MENOS UM TELEFONE.");
+            }
+            else
+            {
                 if (cliente.Tipo == Constantes.ID_PJ)
                     listaErros.Add("PREENCHA A RAZÃO SOCIAL DO CLIENTE.");
+                if (cliente.Tipo == Constantes.ID_PJ &&
+                cliente.TelComercial == "" &&
+                cliente.TelComercial2 == "")
+                    listaErros.Add("PREENCHA O TELEFONE.");
             }
+
             if (cliente.Endereco == "")
                 listaErros.Add("PREENCHA O ENDEREÇO.");
             if (cliente.Endereco.Length > Constantes.MAX_TAMANHO_CAMPO_ENDERECO)
@@ -603,16 +623,7 @@ namespace PrepedidoBusiness.Bll
             if (cliente.DddComercial != "" && cliente.TelComercial == "")
                 listaErros.Add("PREENCHA O TELEFONE COMERCIAL.");
             if (cliente.DddComercial == "" && cliente.TelComercial != "")
-                listaErros.Add("PREENCHA O DDD.");
-            if (cliente.Tipo == Constantes.ID_PF &&
-                cliente.TelefoneResidencial == "" &&
-                cliente.TelComercial == "" &&
-                cliente.Celular == "")
-                listaErros.Add("PREENCHA PELO MENOS UM TELEFONE.");
-            if (cliente.Tipo == Constantes.ID_PJ &&
-                cliente.TelComercial == "" &&
-                cliente.TelComercial2 == "")
-                listaErros.Add("PREENCHA O TELEFONE.");
+                listaErros.Add("PREENCHA O DDD.");            
             if (cliente.Ie == "" &&
                 Convert.ToString(cliente.Contribuinte_Icms_Status) == Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
                 listaErros.Add("PREENCHA A INSCRIÇÃO ESTADUAL.");

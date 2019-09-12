@@ -46,24 +46,38 @@ namespace PrepedidoBusiness.Utils
             bool retorno = false;
             string formatCpf_Cnpj = "";
 
-            if (cpf_cnpj.Length > 11)
-            {
+            if (cpf_cnpj.Length >= 11)
+            {                
                 if (cpf_cnpj.Length > 12)
                 {
-                    formatCpf_Cnpj = cpf_cnpj.Replace(".", "").Replace("/", "").Replace("-", "");
                     retorno = true;
                 }
                 else
                 {
-                    formatCpf_Cnpj = cpf_cnpj.Replace(".", "");
                     retorno = true;
                 }
             }
-            else
+            if(cpf_cnpj.Length < 11)
             {
-                formatCpf_Cnpj = cpf_cnpj.Replace(".", "").Replace("-", "");
-                retorno = true;
+                retorno = false;
             }
+
+            return retorno;
+        }
+
+        public static string SoDigitosCpf_Cnpj(string cpf_cnpj)
+        {
+            string retorno = "";
+
+            if (cpf_cnpj.Length > 11)
+            {
+                if (cpf_cnpj.Length > 12)
+                    retorno = cpf_cnpj.Replace(".", "").Replace("/", "").Replace("-", "");
+                else
+                    retorno = cpf_cnpj.Replace(".", "");
+            }
+            else
+                retorno = cpf_cnpj.Replace(".", "").Replace("-", "");
 
             return retorno;
         }
@@ -219,12 +233,12 @@ namespace PrepedidoBusiness.Utils
          */
         //public static string BuscarCep(string tipo)
 
-        
+
         public static string MontaLog(Object obj, string log, string campos_a_omitir)
         {
             PropertyInfo[] property = obj.GetType().GetProperties();
             string[] campos = campos_a_omitir.Split('|');
-            
+
             foreach (var c in property)
             {
                 //pegando o real nome da coluna 
