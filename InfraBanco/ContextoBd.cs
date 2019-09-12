@@ -40,6 +40,8 @@ namespace InfraBanco
         public DbSet<Tcontrole> Tcontroles { get; set; }
         public DbSet<TnfEmitente> TnfEmitentes { get; set; }
         public DbSet<TecProdutoComposto> TecProdutoCompostos { get; set; }
+        public DbSet<Tfabricante> Tfabricantes { get; set; }
+        public DbSet<TpercentualCustoFinanceiroFornecedor> TpercentualCustoFinanceiroFornecedors { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

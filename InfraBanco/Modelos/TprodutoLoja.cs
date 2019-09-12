@@ -18,13 +18,13 @@ namespace InfraBanco.Modelos
         public string Fabricante { get; set; }
 
         [Column("produto")]
-        [Key]
+        //[Key]
         [Required]
         [MaxLength(8)]
         public string Produto { get; set; }
 
         [Column("loja")]
-        [Key]
+        //[Key]
         [Required]
         [MaxLength(3)]
         public string Loja { get; set; }

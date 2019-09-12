@@ -190,7 +190,7 @@ namespace PrepedidoBusiness.Bll
                 };
                 return prepedidoPedido;
             }
-            
+
             var cadastroClienteTask = ObterDadosCliente(pp.Loja, pp.Orcamentista, pp.Vendedor, pp.Id_Cliente);
             var enderecoEntregaTask = ObterEnderecoEntrega(pp);
             var lstProdutoTask = await ObterProdutos(pp);
@@ -255,11 +255,11 @@ namespace PrepedidoBusiness.Bll
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO:
                     lista.Add(String.Format("Parcelado no Cartão (internet) em " + torcamento.Pc_Qtde_Parcelas + " X " +
-                        Constantes.SIMBOLO_MONETARIO + " {0:c2}" , torcamento.Pc_Valor_Parcela));
+                        Constantes.SIMBOLO_MONETARIO + " {0:c2}", torcamento.Pc_Valor_Parcela));
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA:
                     lista.Add(String.Format("Parcelado no Cartão (maquineta) em " + torcamento.Pc_Maquineta_Qtde_Parcelas + " X " +
-                        Constantes.SIMBOLO_MONETARIO + " {0:c2}" , torcamento.Pc_Maquineta_Valor_Parcela));
+                        Constantes.SIMBOLO_MONETARIO + " {0:c2}", torcamento.Pc_Maquineta_Valor_Parcela));
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA:
                     lista.Add(String.Format("Entrada " + Constantes.SIMBOLO_MONETARIO + "{0:c2} (" +
@@ -270,7 +270,7 @@ namespace PrepedidoBusiness.Bll
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA:
                     lista.Add(String.Format("1ª Prestação: " + Constantes.SIMBOLO_MONETARIO + " {0:c2} (" +
-                        Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pse_Forma_Pagto_Prim_Prest)) + ") vencendo após " + torcamento.Pse_Prim_Prest_Apos + 
+                        Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pse_Forma_Pagto_Prim_Prest)) + ") vencendo após " + torcamento.Pse_Prim_Prest_Apos +
                         " dias", torcamento.Pse_Prim_Prest_Valor));
                     lista.Add(String.Format("Demais Prestações: " + torcamento.Pse_Demais_Prest_Qtde + " X " + Constantes.SIMBOLO_MONETARIO + " {0:c2}" +
                         " (" + Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pse_Forma_Pagto_Demais_Prest)) + ") vencendo a cada " +
@@ -318,7 +318,7 @@ namespace PrepedidoBusiness.Bll
 
             return await Task.FromResult(listaProduto);
         }
-        
+
         private async Task<DadosClienteCadastroDto> ObterDadosCliente(string loja, string indicador_orcamentista, string vendedor, string idCliente)
         {
             var dadosCliente = from c in contextoProvider.GetContextoLeitura().Tclientes
@@ -408,12 +408,144 @@ namespace PrepedidoBusiness.Bll
             var db = contextoProvider.GetContextoLeitura();
 
             var raStatus = (from c in db.TorcamentistaEindicadors
-                           where c.Apelido == apelido
-                           select c.Permite_RA_Status).FirstOrDefaultAsync();
+                            where c.Apelido == apelido
+                            select c.Permite_RA_Status).FirstOrDefaultAsync();
 
-                       
+
             return await raStatus;
         }
 
+        public void CadastrarPrepedido(PrePedidoDto prePedido, string apelido)
+        {
+            //validar o Orcamentista
+            //verifica se o Orçamento ja foi gravado
+            //Valida custo financeiro fornecedor
+            //Verifica cada um dos produtos selecionados
+        }
+
+        private List<string> ValidarCustoFinanceiroFornecedor(List<string> lstErros)
+        {
+            string custoFinanceiroQtdeParcelas= "";
+
+            if (custoFinanceiroQtdeParcelas != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA &&
+                custoFinanceiroQtdeParcelas != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA &&
+                custoFinanceiroQtdeParcelas != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA)
+                lstErros.Add("A forma de pagamento não foi informada (à vista, com entrada, sem entrada).");
+
+            if (custoFinanceiroQtdeParcelas != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA &&
+                custoFinanceiroQtdeParcelas != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA)
+            {
+                if (int.Parse(custoFinanceiroQtdeParcelas) <= 0)
+                    lstErros.Add("Não foi informada a quantidade de parcelas para a forma de pagamento selecionada " +
+                        "(" + DescricaoCustoFornecTipoParcelamento(custoFinanceiroQtdeParcelas) + ")");
+            }
+
+
+            return lstErros;
+        }
+
+        private string DescricaoCustoFornecTipoParcelamento(string custoFinanceiro)
+        {
+            string retorno = "";
+
+            switch (custoFinanceiro)
+            {
+                case Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA:
+                    retorno = "Com Entrada";
+                    break;
+                case Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA:
+                    retorno = "Sem Entrada";
+                    break;
+                case Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA:
+                    retorno = "À Vista";
+                    break;
+            }
+
+            return retorno;
+        }
+
+        private async Task<IEnumerable<string>> VerificaCadaProdutoSelecionado(List<PrepedidoProdutoDtoPrepedido> lstProdutos,
+            string loja, List<string> lstErros, string custoFinancFornecTipoParcelamento, string custoFinanceiroQtdeParcelas)
+        {
+            TorcamentoItem torcamentoItem = new TorcamentoItem();
+
+            float coeficiente = 0;
+            var db = contextoProvider.GetContextoLeitura();
+
+            foreach (PrepedidoProdutoDtoPrepedido p in lstProdutos)
+            {
+                var prodLista = from c in db.Tprodutos.Include(r => r.TprodutoLoja).Include(r => r.Tfabricante)
+                           where c.Fabricante == p.Fabricante && c.Produto == p.NumProduto && c.TprodutoLoja.Loja == loja
+                           select new 
+                           {
+                               precoLista = c.TprodutoLoja.Preco_Lista,
+                               margem = c.TprodutoLoja.Margem,
+                               descMax = c.TprodutoLoja.Desc_Max,
+                               comissao = c.TprodutoLoja.Comissao,
+                               precoFabricante = c.Preco_Fabricante,
+                               vlCusto2 = c.Vl_Custo2,
+                               descricao = c.Descricao,
+                               descricaoHtml = c.Descricao_Html,
+                               ean = c.Ean,
+                               grupo = c.Grupo,
+                               peso = c.Peso,
+                               qtdeVolume = c.Qtde_Volumes,
+                               markupFabricante = c.Tfabricante.Markup,
+                               cubagem = c.Cubagem,
+                               ncm = c.Ncm,
+                               cst = c.Cst,
+                               descontinuado = c.Descontinuado
+                           };
+
+                var prod = await prodLista.FirstOrDefaultAsync();
+
+                decimal? custoFinanFornecPrecoListaBase = prod.precoLista;
+                
+                if (custoFinancFornecTipoParcelamento == Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA)
+                    coeficiente = 1;
+                else
+                {
+                    var percCustoFinFornecTask = from c in db.TpercentualCustoFinanceiroFornecedors
+                                             where c.Fabricante == p.Fabricante &&
+                                                   c.Tipo_Parcelamento == custoFinancFornecTipoParcelamento &&
+                                                   c.Qtde_Parcelas == short.Parse(custoFinanceiroQtdeParcelas)
+                                             select c;
+                    var percCustoFinFornec = await percCustoFinFornecTask.FirstOrDefaultAsync();
+
+                    if (percCustoFinFornec == null)
+                        lstErros.Add("Opção de parcelamento não disponível para fornecedor " + p.Fabricante + ": " +
+                            DecodificaCustoFinanFornecQtdeParcelas(custoFinancFornecTipoParcelamento, custoFinanceiroQtdeParcelas) + " parcela(s)");
+                    else
+                    {
+                        coeficiente = percCustoFinFornec.Coeficiente;
+                        float precoLista = coeficiente * (float)custoFinanFornecPrecoListaBase;
+                    }
+                    float custoFinanCoeficiente = coeficiente;
+
+                    if (prod.precoLista == 0)
+                        p.Desconto = 0;
+                    else
+                        p.Desconto = (float)(100 * (prod.precoLista - p.Preco) / prod.precoLista);
+
+                }
+
+            }
+
+            return lstErros;
+        }
+
+        private string DecodificaCustoFinanFornecQtdeParcelas(string tipoParcelamento, string custoFFQtdeParcelas)
+        {
+            string retorno = "";
+
+            if (tipoParcelamento == Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA)
+                retorno = "0+" + custoFFQtdeParcelas;
+            else if (tipoParcelamento == Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA)
+                retorno = "1+" + custoFFQtdeParcelas;
+
+            return retorno;
+        }
+
+       
     }
 }
