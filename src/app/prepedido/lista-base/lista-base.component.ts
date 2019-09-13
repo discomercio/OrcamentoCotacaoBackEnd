@@ -17,6 +17,8 @@ import { Router } from '@angular/router';
 import { AlertDialogComponent } from 'src/app/utils/alert-dialog/alert-dialog.component';
 import { ImpressaoService } from 'src/app/utils/impressao.service';
 import { PedidoDtoPedido } from 'src/app/dto/pedido/pedidosDtoPedido';
+import { NovoPrepedidoDadosService } from '../novo-prepedido/novo-prepedido-dados.service';
+import { PrepedidoBuscarService } from 'src/app/servicos/prepedido/prepedido-buscar.service';
 
 @Component({
   selector: 'app-lista-base',
@@ -36,6 +38,8 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
     private readonly prepedidoRemoverService: PrepedidoRemoverService,
     private readonly router: Router,
     public readonly impressaoService: ImpressaoService,
+    public readonly novoPrepedidoDadosService: NovoPrepedidoDadosService,
+    public readonly prepedidoBuscarService: PrepedidoBuscarService,
     public readonly dialog: MatDialog) {
     super(telaDesktopService);
 
@@ -149,9 +153,28 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
       this.router.navigate(['/pedido/detalhes', linha.NumeroPedido]);
     }
     else {
-      this.router.navigate(['/prepedido/detalhes', linha.NumeroPrepedido]);
-    }
+      //vamos ver os detalhes: this.router.navigate(['/prepedido/detalhes', linha.NumeroPrepedido]);
+      this.prepedidoBuscarService.buscar(linha.NumeroPrepedido).subscribe({
+        next: (r) => {
+          if (r == null) {
+            this.deuErro("Erro");
+            return;
+          }
 
+          //virou pedido? vamos direto para o pedido
+          if (r.St_Orc_Virou_Pedido) {
+            this.router.navigate(['/pedido/detalhes', r.NumeroPedido]);
+            return;
+          }
+
+          //detalhes do prepedido
+          this.novoPrepedidoDadosService.setar(r);
+          this.router.navigate(['/novo-prepedido/itens']);
+        },
+        error: (r) => this.deuErro(r)
+
+      });
+    }
   }
 }
 

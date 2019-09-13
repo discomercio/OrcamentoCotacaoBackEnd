@@ -1,2 +1,485 @@
-Afazer: tela em desenvolvimento
-<p>itens works!</p>
+<!-- 
+página de edição em ASP:
+http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoProdCompostoMask.asp para escolher os producots
+http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para listar os produtos
+
+ -->
+
+<section [ngClass]="{'sectionDesktop': telaDesktop, 'sectionCelular': !telaDesktop}" *ngIf="prePedidoDto">
+    <form style="display: contents;">
+        <header>
+            <ng-container *ngIf="criando; else tituloEditando">Criar Pré-pedido</ng-container>
+            <ng-template #tituloEditando>Editar Pré-pedido</ng-template>
+        </header>
+        <article>
+            <div><strong>Cliente:</strong> {{cpfCnpj()}} - {{prePedidoDto.DadosCliente.Nome}}</div>
+
+            <!-- afazer: -->
+            <!--  RELAÇÃO DE PRODUTOS SEM PRESENÇA NO ESTOQUE -->
+
+            <!--             
+<% if erro_produto_indisponivel then %>
+!--  RELAÇÃO DE PRODUTOS SEM PRESENÇA NO ESTOQUE --
+<table class="Qx" cellspacing="0">
+	<tr><td class="MB ALERTA" colspan="6" align="center"><span class="ALERTA" style="font-size:9pt;">PRODUTOS SEM PRESENÇA NO ESTOQUE</span></td></tr>
+	<tr bgcolor="#FFFFFF">
+	<td class="MDBE" align="left"><span class="PLTe">Fabr</span></td>
+	<td class="MDB" align="left"><span class="PLTe">Produto</span></td>
+	<td class="MDB" align="left"><span class="PLTe">Descrição</span></td>
+	<td class="MDB" align="right"><span class="PLTd">Solicitado</span></td>
+	<td class="MDB" align="right"><span class="PLTd">Disponível</span></td>
+	<td class="MDB" align="right"><span class="PLTd">Faltam</span></td>
+	</tr>
+
+<%	for i=Lbound(v_item) to Ubound(v_item)
+		if Trim(v_item(i).produto) <> "" then
+			with v_item(i)
+				if .qtde > .qtde_estoque_total_disponivel then
+%>
+			<tr>
+			<td class="MDBE" align="left"><input name="c_spe_fabricante" id="c_spe_fabricante" class="PLLe" style="width:26px;"
+				value='<%=.fabricante%>' readonly tabindex=-1></td>
+			<td class="MDB" align="left"><input name="c_spe_produto" id="c_spe_produto" class="PLLe" style="width:55px;"
+				value='<%=.produto%>' readonly tabindex=-1></td>
+			<td class="MDB" align="left">
+				<span class="PLLe" style="width:333px;"><%=produto_formata_descricao_em_html(.descricao_html)%></span>
+				<input type="hidden" name="c_spe_descricao" id="c_spe_descricao" value='<%=.descricao%>'>
+			</td>
+			<td class="MDB" align="right"><input name="c_spe_qtde_solicitada" id="c_spe_qtde_solicitada" class="PLLd" style="width:70px;"
+				value='<%=Cstr(.qtde)%>' readonly tabindex=-1></td>
+			<td class="MDB" align="right"><input name="c_spe_qtde_estoque" id="c_spe_qtde_estoque" class="PLLd" style="width:70px;"
+				value='<%=Cstr(.qtde_estoque_total_disponivel)%>' readonly tabindex=-1></td>
+			<td class="MDB" align="right"><input name="c_spe_saldo" id="c_spe_saldo" class="PLLd" style="width:70px;color:red;"
+				value='<%=Cstr(Abs(.qtde_estoque_total_disponivel - .qtde))%>' readonly tabindex=-1></td>
+			</tr>
+		<%			end if
+				end with
+			end if
+		next		%>
+</table>
+<% end if %>
+
+<% if Not (erro_produto_indisponivel And bloquear_cadastramento_quando_produto_indiponivel) then %>
+nessa condição ele nao mostra o resto da tela e não deixa continuar....
+<br> -->
+
+            <div><a mat-raised-button (click)="adicionarProduto()">
+                    <mat-icon>add</mat-icon> Adicionar produto
+                </a></div>
+
+
+            <!--  R E L A Ç Ã O   D E   P R O D U T O S  -->
+            <!-- afazer fazendo -->
+            <table class="tabelaresponsiva">
+                <thead>
+
+                    <tr bgcolor="#FFFFFF">
+                        <th scope="col" class="MB" align="left" valign="bottom"><span class="PLTe">Código</span></th>
+                        <th scope="col" class="MB" align="left" valign="bottom"><span class="PLTe">Descrição</span></th>
+                        <th scope="col" class="MB tdProdObs" align="left" valign="bottom"><span class="PLTe">Observações</span></th>
+                        <th scope="col" class="MB" align="right" valign="bottom"><span class="PLTd">Qtde</span></th>
+                        <!-- afazer -->
+                        <!-- <% if r_orcamentista_e_indicador.permite_RA_status = 1 then %> -->
+                        <th scope="col" class="MB" align="right" valign="bottom"><span class="PLTd">Preço</span></th>
+                        <!-- <% end if %> -->
+                        <th scope="col" class="MB" align="right" valign="bottom"><span class="PLTd">VL Lista</span></th>
+                        <th scope="col" class="MB" align="right" valign="bottom"><span class="PLTd">Desc%</span></th>
+                        <th scope="col" class="MB" align="right" valign="bottom"><span class="PLTd">VL Venda</span></th>
+                        <th scope="col" class="MB" align="right" valign="bottom"><span class="PLTd">VL Total</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr *ngFor="let i of prePedidoDto?.ListaProdutos">
+                        <td scope="row" data-label="Código" class="MDBE" align="left"  >
+                            {{i.Fabricante}}/{{i.NumProduto}}
+                        </td>
+                        <td class="MDB" align="left" style="width:277px;">
+                            <span class="PLLe" [innerHTML]="i.Descricao"></span>
+                        </td>
+                        <!-- afazer: confuso.....
+                    <td class="MDB tdProdObs" align="left">
+                        <% if isLojaHabilitadaProdCompostoECommerce(loja) then s_campo_focus="c_desc" else s_campo_focus="c_vl_unitario"%>
+                        <input name="c_obs" id="c_obs" maxlength="10" class="PLLe" style="width:80px;"
+                            onkeypress="if (digitou_enter(true)) <%if r_orcamentista_e_indicador.permite_RA_status = 1 then Response.Write "fORC.c_vl_NF" else Response.Write "fORC." & s_campo_focus%>[<%=Cstr(i-1)%>].focus(); filtra_nome_identificador();"
+                            onblur="this.value=trim(this.value);" value='' <%=s_readonly%> />
+                    </td> -->
+                        <td class="MDB" align="right">
+                            <input name="c_qtde" id="c_qtde" class="PLLd" style="width:27px;" value='{{i.Qtde}}'
+                                readonly tabindex=-1 />
+                        </td>
+                        <!-- afazer
+                    <% if r_orcamentista_e_indicador.permite_RA_status = 1 then %>
+                    <td class="MDB" align="right">
+                        <% if isLojaHabilitadaProdCompostoECommerce(loja) then s_campo_focus="c_desc" else s_campo_focus="c_vl_unitario"%>
+                        <input name="c_vl_NF" id="c_vl_NF" class="PLLd" style="width:62px;"
+                            onkeypress="if (digitou_enter(true)) fORC.<%=s_campo_focus%>[<%=Cstr(i-1)%>].focus(); filtra_moeda_positivo();"
+                            onblur="this.value=formata_moeda(this.value); recalcula_RA(); recalcula_parcelas();"
+                            value='<%=s_preco_lista%>' <%=s_readonly%> />
+                    </td>
+                    <% end if %> -->
+                        <td class="MDB" align="right">
+                            <input name="c_preco_lista" id="c_preco_lista" class="PLLd" style="width:62px;"
+                                value='{{i.VlLista}}' readonly tabindex=-1 />
+                        </td>
+                        <!-- afazer tratamento do teclado
+                    <td class="MDB" align="right">
+                        <input name="c_desc" id="c_desc" class="PLLd" style="width:36px;" value=""
+                            <% if isLojaHabilitadaProdCompostoECommerce(loja) then %> <%=s_readonly%>
+                            onkeypress="if (digitou_enter(true)){fORC.c_vl_unitario[<%=Cstr(i-1)%>].focus();} filtra_percentual();"
+                            onblur="this.value=formata_perc_desconto(this.value); calcula_desconto(<%=Cstr(i-1)%>); trata_edicao_RA(<%=Cstr(i-1)%>); recalcula_total_linha(<%=Cstr(i)%>); recalcula_RA();"
+                            <% else %> readonly tabindex=-1 <% end if %> />
+                    </td> -->
+                        <!-- afazer
+                    <td class="MDB" align="right">
+                        <input name="c_vl_unitario" id="c_vl_unitario" class="PLLd" style="width:62px;"
+                            onkeypress="if (digitou_enter(true)) {if ((<%=Cstr(i)%>==fORC.c_vl_unitario.length)||(trim(fORC.c_produto[<%=Cstr(i)%>].value)=='')) fORC.c_obs1.focus(); else fORC.c_obs[<%=Cstr(i)%>].focus();} filtra_moeda_positivo();"
+                            onblur="this.value=formata_moeda(this.value); recalcula_total(<%=Cstr(i)%>); recalcula_RA(); recalcula_parcelas();"
+                            value='<%=s_preco_lista%>' <%=s_readonly%> />
+                    </td> -->
+                        <td class="MDB" align="right">
+                            <input name="c_vl_total" id="c_vl_total" class="PLLd" style="width:70px;"
+                                value='{{i.TotalItem}}' readonly tabindex=-1 />
+                        </td>
+                    </tr>
+
+                    <!-- afazer parte de baixo da tabela
+                <tr>
+                    <% if r_orcamentista_e_indicador.permite_RA_status = 1 then %>
+                    <td colspan="<%=Cstr(4-qtdeHiddenColumnTabProd)%>" align="left">
+                        <table cellspacing=0 cellpadding=0 width='100%' style="margin-top:4px;">
+                            <tr>
+                                <td width="60%" align="left">&nbsp;</td>
+                                <td align="right">
+                                    <table cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td class="MTBE" align="left"><span class="PLTe">&nbsp;RA</span></td>
+                                            <td class="MTBD" align="right"><input name="c_total_RA" id="c_total_RA"
+                                                    class="PLLd" style="width:70px;color:blue;" value='' readonly
+                                                    tabindex=-1></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td class="MD" align="left">&nbsp;</td>
+                    <td class="MDB" align="right">
+                        <%s_TotalDestePedidoComRA=formata_moeda(m_TotalDestePedidoComRA)%>
+                        <input name="c_total_NF" id="c_total_NF" class="PLLd" style="width:70px;color:blue;"
+                            value='<%=s_TotalDestePedidoComRA%>' readonly tabindex=-1>
+                    </td>
+                    <% else %>
+                    <td colspan="<%=Cstr(5-qtdeHiddenColumnTabProd)%>" align="left">&nbsp;</td>
+                    <% end if %>
+                    <td colspan="3" class="MD" align="left">&nbsp;</td>
+                    <td class="MDB" align="right"><input name="c_total_geral" id="c_total_geral" class="PLLd"
+                            style="width:70px;color:blue;" value='<%=formata_moeda(m_TotalDestePedido)%>' readonly
+                            tabindex=-1></td>
+                </tr> -->
+                </tbody>
+
+            </table>
+
+        </article>
+        <footer>
+            <a mat-raised-button color="accent" (click)="voltar()">
+                <mat-icon>arrow_back</mat-icon> Voltar
+            </a>
+            <button mat-raised-button color="accent" (click)="continuar()" type="submit">
+                <mat-icon>arrow_forward</mat-icon> Avançar
+            </button>
+        </footer>
+    </form>
+</section>
+
+<!-- 
+afazer: isto aqui vai ser em outra tela
+
+<br>
+<table class="Q" cellspacing="0">
+	<tr>
+		<td class="MB" colspan="5" align="left"><p class="Rf">Observações</p>
+			<textarea name="c_obs1" id="c_obs1" class="PLLe" rows="<%=Cstr(MAX_LINHAS_OBS1)%>" 
+				style="width:641px;margin-left:2pt;" onkeypress="limita_tamanho(this,MAX_TAM_OBS1);" onblur="this.value=trim(this.value);"
+				></textarea>
+		</td>
+	</tr>
+	<tr>
+		<td class="MD" align="left" nowrap><p class="Rf">Nº Nota Fiscal</p>
+			<input name="c_obs2" id="c_obs2" class="PLLe" maxlength="10" style="width:100px;margin-left:2pt;" onkeypress="filtra_nome_identificador();" onblur="this.value=trim(this.value);"
+				value='' readonly tabindex=-1>
+		</td>
+		<td class="MD" align="left" nowrap><p class="Rf">Entrega Imediata</p>
+			<input type="radio" id="rb_etg_imediata" name="rb_etg_imediata" 
+				value="<%=COD_ETG_IMEDIATA_NAO%>"><span class="C" style="cursor:default" onclick="fORC.rb_etg_imediata[0].click();">Não</span>
+			<input type="radio" id="rb_etg_imediata" name="rb_etg_imediata" 
+				value="<%=COD_ETG_IMEDIATA_SIM%>"><span class="C" style="cursor:default" onclick="fORC.rb_etg_imediata[1].click();">Sim</span>
+		</td>
+		<td align="left" nowrap><p class="Rf">Bem de Uso/Consumo</p>
+			<input type="radio" id="rb_bem_uso_consumo" name="rb_bem_uso_consumo" 
+				value="<%=COD_ST_BEM_USO_CONSUMO_NAO%>"><span class="C" style="cursor:default" onclick="fORC.rb_bem_uso_consumo[0].click();">Não</span>
+			<input type="radio" id="rb_bem_uso_consumo" name="rb_bem_uso_consumo" 
+				value="<%=COD_ST_BEM_USO_CONSUMO_SIM%>"><span class="C" style="cursor:default" onclick="fORC.rb_bem_uso_consumo[1].click();">Sim</span>
+		</td>
+		<td class="ME" align="left" nowrap><p class="Rf">Instalador Instala</p>
+			<input type="radio" id="rb_instalador_instala" name="rb_instalador_instala" 
+				value="<%=COD_INSTALADOR_INSTALA_NAO%>"><span class="C" style="cursor:default" onclick="fORC.rb_instalador_instala[0].click();">Não</span>
+			<input type="radio" id="rb_instalador_instala" name="rb_instalador_instala" 
+				value="<%=COD_INSTALADOR_INSTALA_SIM%>"><span class="C" style="cursor:default" onclick="fORC.rb_instalador_instala[1].click();">Sim</span>
+		</td>
+		<td class="ME tdGarInd" align="left" nowrap><p class="Rf">Garantia Indicador</p>
+			<input type="radio" id="rb_garantia_indicador" name="rb_garantia_indicador" class="rbGarIndNao"
+				value="<%=COD_GARANTIA_INDICADOR_STATUS__NAO%>"><span class="C" style="cursor:default" onclick="fORC.rb_garantia_indicador[0].click();">Não</span>
+			<input type="radio" id="rb_garantia_indicador" name="rb_garantia_indicador"
+				value="<%=COD_GARANTIA_INDICADOR_STATUS__SIM%>"><span class="C" style="cursor:default" onclick="fORC.rb_garantia_indicador[1].click();">Sim</span>
+		</td>
+	</tr>
+</table>
+	
+!--  NOVA VERSÃO DA FORMA DE PAGAMENTO  --
+<br>
+<table class="Q" style="width:649px;" cellspacing="0">
+  <tr>
+	<td align="left">
+	  <p class="Rf">Forma de Pagamento</p>
+	</td>
+  </tr>  
+  <tr>
+	<td align="left">
+	  <table width="100%" cellspacing="0" cellpadding="4" border="0">
+		!--  À VISTA  --
+		<tr>
+		  <td align="left">
+			<table cellspacing="0" cellpadding="1" border="0">
+			  <tr>
+				<td align="left">
+				  <% intIdx = 0 %>
+				  <input type="radio" id="rb_forma_pagto" name="rb_forma_pagto" 
+						value="<%=COD_FORMA_PAGTO_A_VISTA%>"
+						<%if c_custoFinancFornecTipoParcelamento=COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA then Response.Write " checked"%>
+						onclick="recalculaCustoFinanceiroPrecoLista();"
+						><span class="C" style="cursor:default" onclick="fORC.rb_forma_pagto[<%=Cstr(intIdx)%>].click();">À Vista</span>
+				</td>
+				<td align="left">&nbsp;</td>
+				<td align="left">
+				  <select id="op_av_forma_pagto" name="op_av_forma_pagto" onclick="fORC.rb_forma_pagto[<%=Cstr(intIdx)%>].click();">
+					<% =forma_pagto_liberada_av_monta_itens_select(Null, r_orcamentista_e_indicador.apelido, r_cliente.tipo) %>
+				  </select>
+				</td>
+			  </tr>
+			</table>
+		  </td>
+		</tr>
+		!--  PARCELA ÚNICA  --
+		<tr class="TR_FP_PU">
+		  <td class="MC" align="left">
+			<table cellspacing="0" cellpadding="1" border="0">
+			  <tr>
+				<td align="left">
+				  <% intIdx = intIdx+1 %>
+				  <input type="radio" id="rb_forma_pagto" name="rb_forma_pagto" 
+						value="<%=COD_FORMA_PAGTO_PARCELA_UNICA%>" 
+						<%if (c_custoFinancFornecTipoParcelamento=COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA) And _
+							 (converte_numero(c_custoFinancFornecQtdeParcelas)=1) then Response.Write " checked"%>
+						onclick="recalculaCustoFinanceiroPrecoLista();pu_atualiza_valor();"
+						><span class="C" style="cursor:default" onclick="fORC.rb_forma_pagto[<%=Cstr(intIdx)%>].click();">Parcela Única</span>
+				</td>
+				<td align="left">&nbsp;</td>
+				<td align="left">
+				  <select id="op_pu_forma_pagto" name="op_pu_forma_pagto" onclick="fORC.rb_forma_pagto[<%=Cstr(intIdx)%>].click();">
+					<% =forma_pagto_liberada_da_parcela_unica_monta_itens_select(Null, r_orcamentista_e_indicador.apelido, r_cliente.tipo) %>
+				  </select>
+				  <span style="width:10px;">&nbsp;</span>
+				  <span class="C" style="margin-right:0pt;"><%=SIMBOLO_MONETARIO%></span
+				  ><input name="c_pu_valor" id="c_pu_valor" class="Cd" maxlength="18" style="width:90px;" onclick="fORC.rb_forma_pagto[<%=Cstr(intIdx)%>].click();" onkeypress="if (digitou_enter(true)&&tem_info(this.value)) fORC.c_pu_vencto_apos.focus(); filtra_moeda_positivo();" onblur="this.value=formata_moeda(this.value);" value=''
+				  ><span style="width:10px;">&nbsp;</span
+				  ><span class="C">vencendo após</span
+				  ><input name="c_pu_vencto_apos" id="c_pu_vencto_apos" class="Cc" maxlength="2" style="width:30px;" onclick="fORC.rb_forma_pagto[<%=Cstr(intIdx)%>].click();" onkeypress="if (digitou_enter(true)&&tem_info(this.value)) fORC.c_forma_pagto.focus(); filtra_numerico();" value=''
+				  ><span class="C">dias</span>
+				</td>
+			  </tr>
+			</table>
+		  </td>
+		</tr>
+		!--  PARCELADO NO CARTÃO (INTERNET)  --
+		<% if is_restricao_ativa_forma_pagto(r_orcamentista_e_indicador.apelido, ID_FORMA_PAGTO_CARTAO, r_cliente.tipo) then%>
+		<tr style="display:none;">
+		<% else %>
+		<tr>
+		<% end if %>
+		  <td class="MC" align="left">
+			<table cellspacing="0" cellpadding="1" border="0">
+			  <tr>
+				<td align="left">
+				  <% intIdx = intIdx+1 %>
+				  <input type="radio" id="rb_forma_pagto" name="rb_forma_pagto" 
+						value="<%=COD_FORMA_PAGTO_PARCELADO_CARTAO%>"
+						onclick="recalculaCustoFinanceiroPrecoLista();"
+						><span class="C" style="cursor:default" onclick="fORC.rb_forma_pagto[<%=Cstr(intIdx)%>].click();">Parcelado no Cartão (internet)</span>
+				</td>
+				<td align="left">&nbsp;</td>
+				<td align="left">
+				  <input name="c_pc_qtde" id="c_pc_qtde" class="Cc" maxlength="2" style="width:30px;"  onclick="fORC.rb_forma_pagto[<%=Cstr(intIdx)%>].click();" onkeypress="if (digitou_enter(true)&&tem_info(this.value)) fORC.c_pc_valor.focus(); filtra_numerico();" onblur="pc_calcula_valor_parcela();recalculaCustoFinanceiroPrecoLista();" value=''>
+				</td>
+				<td align="left"><span class="C" style="margin-right:0pt;">&nbsp;X&nbsp;&nbsp;&nbsp;<%=SIMBOLO_MONETARIO%></span></td>
+				<td align="left">
+				  <input name="c_pc_valor" id="c_pc_valor" class="Cd" maxlength="18" style="width:90px;" onclick="fORC.rb_forma_pagto[<%=Cstr(intIdx)%>].click();" onkeypress="if (digitou_enter(true)&&tem_info(this.value)) fORC.c_forma_pagto.focus(); filtra_moeda_positivo();" onblur="this.value=formata_moeda(this.value);" value=''>
+				</td>
+			  </tr>
+			</table>
+		  </td>
+		</tr>
+		!--  PARCELADO NO CARTÃO (MAQUINETA)  --
+		<% if is_restricao_ativa_forma_pagto(r_orcamentista_e_indicador.apelido, ID_FORMA_PAGTO_CARTAO_MAQUINETA, r_cliente.tipo) then%>
+		<tr style="display:none;">
+		<% else %>
+		<tr>
+		<% end if %>
+		  <td class="MC" align="left">
+			<table cellspacing="0" cellpadding="1" border="0">
+			  <tr>
+				<td align="left">
+				  <% intIdx = intIdx+1 %>
+				  <input type="radio" id="rb_forma_pagto" name="rb_forma_pagto" 
+						value="<%=COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA%>"
+						onclick="recalculaCustoFinanceiroPrecoLista();"
+						><span class="C" style="cursor:default" onclick="fORC.rb_forma_pagto[<%=Cstr(intIdx)%>].click();">Parcelado no Cartão (maquineta)</span>
+				</td>
+				<td align="left">&nbsp;</td>
+				<td align="left">
+				  <input name="c_pc_maquineta_qtde" id="c_pc_maquineta_qtde" class="Cc" maxlength="2" style="width:30px;" onclick="fORC.rb_forma_pagto[<%=Cstr(intIdx)%>].click();" onkeypress="if (digitou_enter(true)&&tem_info(this.value)) fORC.c_pc_maquineta_valor.focus(); filtra_numerico();" onblur="pc_maquineta_calcula_valor_parcela();recalculaCustoFinanceiroPrecoLista();" value=''>
+				</td>
+				<td align="left"><span class="C" style="margin-right:0pt;">&nbsp;X&nbsp;&nbsp;&nbsp;<%=SIMBOLO_MONETARIO%></span></td>
+				<td align="left">
+				  <input name="c_pc_maquineta_valor" id="c_pc_maquineta_valor" class="Cd" maxlength="18" style="width:90px;" onclick="fORC.rb_forma_pagto[<%=Cstr(intIdx)%>].click();" onkeypress="if (digitou_enter(true)&&tem_info(this.value)) fORC.c_forma_pagto.focus(); filtra_moeda_positivo();" onblur="this.value=formata_moeda(this.value);" value=''>
+				</td>
+			  </tr>
+			</table>
+		  </td>
+		</tr>
+		!--  PARCELADO COM ENTRADA  --
+		<tr>
+		  <td class="MC" align="left">
+			<table cellspacing="0" cellpadding="1" border="0">
+			  <tr>
+				<td colspan="3" align="left">
+				  <% intIdx = intIdx+1 %>
+				  <input type="radio" id="rb_forma_pagto" name="rb_forma_pagto" 
+						value="<%=COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA%>" 
+						<%if (c_custoFinancFornecTipoParcelamento=COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA) then Response.Write " checked"%>
+						onclick="recalculaCustoFinanceiroPrecoLista();pce_preenche_sugestao_intervalo();"
+						><span class="C" style="cursor:default" onclick="fORC.rb_forma_pagto[<%=Cstr(intIdx)%>].click();">Parcelado com Entrada</span>
+				</td>
+			  </tr>
+			  <tr>
+				<td style="width:60px;" align="left">&nbsp;</td>
+				<td align="right"><span class="C">Entrada&nbsp;</span></td>
+				<td align="left">
+				  <select id="op_pce_entrada_forma_pagto" name="op_pce_entrada_forma_pagto" onclick="fORC.rb_forma_pagto[<%=Cstr(intIdx)%>].click();">
+					<% =forma_pagto_liberada_da_entrada_monta_itens_select(Null, r_orcamentista_e_indicador.apelido, r_cliente.tipo) %>
+				  </select>
+				  <span style="width:10px;">&nbsp;</span>
+				  <span class="C" style="margin-right:0pt;"><%=SIMBOLO_MONETARIO%></span
+				  ><input name="c_pce_entrada_valor" id="c_pce_entrada_valor" class="Cd" maxlength="18" style="width:90px;" onclick="fORC.rb_forma_pagto[<%=Cstr(intIdx)%>].click();" onkeypress="if (digitou_enter(true)&&tem_info(this.value)) fORC.op_pce_prestacao_forma_pagto.focus(); filtra_moeda_positivo();" onblur="this.value=formata_moeda(this.value);" value=''>
+				</td>
+			  </tr>
+			  <tr>
+				<td style="width:60px;" align="left">&nbsp;</td>
+				<td align="right"><span class="C">Prestações&nbsp;</span></td>
+				<td align="left">
+				  <select id="op_pce_prestacao_forma_pagto" name="op_pce_prestacao_forma_pagto" onclick="fORC.rb_forma_pagto[<%=Cstr(intIdx)%>].click();">
+					<% =forma_pagto_liberada_da_prestacao_monta_itens_select(Null, r_orcamentista_e_indicador.apelido, r_cliente.tipo) %>
+				  </select>
+				  <span style="width:10px;">&nbsp;</span>
+				  <input name="c_pce_prestacao_qtde" id="c_pce_prestacao_qtde" class="Cc" maxlength="2" style="width:30px;" onclick="fORC.rb_forma_pagto[<%=Cstr(intIdx)%>].click();" onblur="recalculaCustoFinanceiroPrecoLista();pce_calcula_valor_parcela();" onkeypress="if (digitou_enter(true)&&tem_info(this.value)) fORC.c_pce_prestacao_valor.focus(); filtra_numerico();" 
+						value='<%if (c_custoFinancFornecTipoParcelamento=COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA) then Response.Write c_custoFinancFornecQtdeParcelas%>'
+						>
+				  <span class="C" style="margin-right:0pt;">&nbsp;X&nbsp;&nbsp;&nbsp;<%=SIMBOLO_MONETARIO%></span
+				  ><input name="c_pce_prestacao_valor" id="c_pce_prestacao_valor" class="Cd" maxlength="18" style="width:90px;" onclick="fORC.rb_forma_pagto[<%=Cstr(intIdx)%>].click();" onkeypress="if (digitou_enter(true)&&tem_info(this.value)) fORC.c_pce_prestacao_periodo.focus(); filtra_moeda_positivo();" onblur="this.value=formata_moeda(this.value);" value=''>
+				</td>
+			  </tr>
+			  <tr>
+				<td style="width:60px;" align="left">&nbsp;</td>
+				<td colspan="2" align="left"><span class="C">Parcelas vencendo a cada</span
+				><input name="c_pce_prestacao_periodo" id="c_pce_prestacao_periodo" class="Cc" maxlength="2" style="width:30px;" onclick="fORC.rb_forma_pagto[<%=Cstr(intIdx)%>].click();" onkeypress="if (digitou_enter(true)&&tem_info(this.value)) fORC.c_forma_pagto.focus(); filtra_numerico();" 
+						value='<%if (c_custoFinancFornecTipoParcelamento=COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA) then Response.Write "30"%>'
+				><span class="C">dias</span
+				><span style="width:10px;">&nbsp;</span
+				><span class="notPrint"><input name="b_pce_SugereFormaPagto" id="b_pce_SugereFormaPagto" type="button" class="Button" onclick="pce_sugestao_forma_pagto();" value="sugestão automática" title="preenche o campo 'Forma de Pagamento' com uma sugestão de texto"></span
+				></td>
+			  </tr>
+			</table>
+		  </td>
+		</tr>
+		!--  PARCELADO SEM ENTRADA  --
+		<tr class="TR_FP_PSE">
+		  <td class="MC" align="left">
+			<table cellspacing="0" cellpadding="1" border="0">
+			  <tr>
+				<td colspan="3" align="left">
+				  <% intIdx = intIdx+1 %>
+				  <input type="radio" id="rb_forma_pagto" name="rb_forma_pagto" 
+						value="<%=COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA%>" 
+						<%if (c_custoFinancFornecTipoParcelamento=COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA) And _
+							 (converte_numero(c_custoFinancFornecQtdeParcelas)>1) then Response.Write " checked"%>
+						onclick="pse_preenche_sugestao_intervalo();recalculaCustoFinanceiroPrecoLista();"
+						><span class="C" style="cursor:default" onclick="fORC.rb_forma_pagto[<%=Cstr(intIdx)%>].click();">Parcelado sem Entrada</span>
+				</td>
+			  </tr>
+			  <tr>
+				<td style="width:60px;" align="left">&nbsp;</td>
+				<td align="right"><span class="C">1ª Prestação&nbsp;</span></td>
+				<td align="left">
+				  <select id="op_pse_prim_prest_forma_pagto" name="op_pse_prim_prest_forma_pagto" onclick="fORC.rb_forma_pagto[<%=Cstr(intIdx)%>].click();">
+					<% =forma_pagto_liberada_da_prestacao_monta_itens_select(Null, r_orcamentista_e_indicador.apelido, r_cliente.tipo) %>
+				  </select>
+				  <span style="width:10px;">&nbsp;</span>
+				  <span class="C" style="margin-right:0pt;"><%=SIMBOLO_MONETARIO%></span
+				  ><input name="c_pse_prim_prest_valor" id="c_pse_prim_prest_valor" class="Cd" maxlength="18" style="width:90px;" onclick="fORC.rb_forma_pagto[<%=Cstr(intIdx)%>].click();" onkeypress="if (digitou_enter(true)&&tem_info(this.value)) fORC.c_pse_prim_prest_apos.focus(); filtra_moeda_positivo();" onblur="this.value=formata_moeda(this.value); pse_calcula_valor_parcela();" value=''
+				  ><span style="width:10px;">&nbsp;</span
+				  ><span class="C">vencendo após</span
+				  ><input name="c_pse_prim_prest_apos" id="c_pse_prim_prest_apos" class="Cc" maxlength="2" style="width:30px;" onclick="fORC.rb_forma_pagto[<%=Cstr(intIdx)%>].click();" onkeypress="if (digitou_enter(true)&&tem_info(this.value)) fORC.op_pse_demais_prest_forma_pagto.focus(); filtra_numerico();" value=''
+				  ><span class="C">dias</span>
+				</td>
+			  </tr>
+			  <tr>
+				<td style="width:60px;" align="left">&nbsp;</td>
+				<td align="right"><span class="C">Demais Prestações&nbsp;</span></td>
+				<td align="left">
+				  <select id="op_pse_demais_prest_forma_pagto" name="op_pse_demais_prest_forma_pagto" onclick="fORC.rb_forma_pagto[<%=Cstr(intIdx)%>].click();">
+					<% =forma_pagto_liberada_da_prestacao_monta_itens_select(Null, r_orcamentista_e_indicador.apelido, r_cliente.tipo) %>
+				  </select>
+				  <span style="width:10px;">&nbsp;</span>
+				  <input name="c_pse_demais_prest_qtde" id="c_pse_demais_prest_qtde" class="Cc" maxlength="2" style="width:30px;" onclick="fORC.rb_forma_pagto[<%=Cstr(intIdx)%>].click();" onblur="pse_calcula_valor_parcela();recalculaCustoFinanceiroPrecoLista();" onkeypress="if (digitou_enter(true)&&tem_info(this.value)) fORC.c_pse_demais_prest_valor.focus(); filtra_numerico();" 
+						value='<%if (c_custoFinancFornecTipoParcelamento=COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA) And (converte_numero(c_custoFinancFornecQtdeParcelas)>1) then Response.Write Cstr(converte_numero(c_custoFinancFornecQtdeParcelas)-1)%>'
+						>
+				  <span class="C" style="margin-right:0pt;">&nbsp;X&nbsp;&nbsp;&nbsp;<%=SIMBOLO_MONETARIO%></span
+				  ><input name="c_pse_demais_prest_valor" id="c_pse_demais_prest_valor" class="Cd" maxlength="18" style="width:90px;" onclick="fORC.rb_forma_pagto[<%=Cstr(intIdx)%>].click();" onkeypress="if (digitou_enter(true)&&tem_info(this.value)) fORC.c_pse_demais_prest_periodo.focus(); filtra_moeda_positivo();" onblur="this.value=formata_moeda(this.value); " value=''>
+				</td>
+			  </tr>
+			  <tr>
+				<td style="width:60px;" align="left">&nbsp;</td>
+				<td colspan="2" align="left"><span class="C">Parcelas vencendo a cada</span
+				><input name="c_pse_demais_prest_periodo" id="c_pse_demais_prest_periodo" class="Cc" maxlength="2" style="width:30px;" onclick="fORC.rb_forma_pagto[<%=Cstr(intIdx)%>].click();" onkeypress="if (digitou_enter(true)&&tem_info(this.value)) fORC.c_forma_pagto.focus(); filtra_numerico();" 
+						value='<%if (c_custoFinancFornecTipoParcelamento=COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA) And (converte_numero(c_custoFinancFornecQtdeParcelas)>1) then Response.Write "30"%>'
+				><span class="C">dias</span
+				><span style="width:10px;">&nbsp;</span
+				><span class="notPrint"><input name="b_pse_SugereFormaPagto" id="b_pse_SugereFormaPagto" type="BUTTON" class="Button" onclick="pse_sugestao_forma_pagto();" value="sugestão automática" title="preenche o campo 'Forma de Pagamento' com uma sugestão de texto"></span
+				></td>
+			  </tr>
+			</table>
+		  </td>
+		</tr>
+	  </table>
+	</td>
+  </tr>
+  <tr>
+	<td class="MC" align="left">
+	  <p class="Rf">Descrição da Forma de Pagamento</p>
+		<textarea name="c_forma_pagto" id="c_forma_pagto" class="PLLe" rows="<%=Cstr(MAX_LINHAS_FORMA_PAGTO)%>"
+			style="width:641px;margin-left:2pt;" onkeypress="limita_tamanho(this,MAX_TAM_FORMA_PAGTO);" onblur="this.value=trim(this.value);"
+			></textarea>
+	</td>
+  </tr>
+</table> -->

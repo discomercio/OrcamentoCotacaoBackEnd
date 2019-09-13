@@ -150,7 +150,7 @@ export class CadastrarClienteComponent extends TelaDesktopBaseComponent implemen
       return;
     }
 
-    //afazer: salvar e ir para a tela de confirmação de cliente
+    //salvar e ir para a tela de confirmação de cliente
     this.carregando = true;
     this.buscarClienteService.cadastrarCliente(this.clienteCadastroDto).toPromise()
       .then((r) => {
@@ -166,7 +166,7 @@ export class CadastrarClienteComponent extends TelaDesktopBaseComponent implemen
           return;
         }
         //agora podemos continuar
-        this.router.navigate(['confirmar-cliente', StringUtils.retorna_so_digitos(this.clienteCadastroDto.DadosCliente.Cnpj_Cpf)], { relativeTo: this.activatedRoute, state: r })
+        this.router.navigate(['/novo-prepedido/confirmar-cliente', StringUtils.retorna_so_digitos(this.clienteCadastroDto.DadosCliente.Cnpj_Cpf)], { state: r })
       }).catch((r) => {
         //deu erro na busca
         //ou não achou nada...

@@ -7,6 +7,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NovoPrepedidoComponent implements OnInit {
 
+  /*
+  fluxo da criação do prepedido:
+  selecionar-cliente
+  se não existir: cadastrar-cliente
+  confirmar-cliente
+    que usa o confirmar-endereco
+  nesse momento os dados são salvos no novo-prepedido-dados.service
+
+  itens
+  */
+
+
   constructor() { }
 
   ngOnInit() {

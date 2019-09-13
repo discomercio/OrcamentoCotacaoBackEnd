@@ -24,7 +24,7 @@
             </div>
             <div class="item item-3" [ngClass]="{'margemdesktop': telaDesktop}">
                 <mat-form-field [class]="telaDesktop? 'campoTextoDesktop': 'campoTextoCel'">
-                    <input *ngIf="emPrepedidos" matInput type="text" placeholder="Número Pré Pedido"
+                    <input *ngIf="emPrepedidos" matInput type="text" placeholder="Número Pré-Pedido"
                         [(ngModel)]="prepedidoListarService.paramsBuscaPrepedido.numeroPrePedido"
                         name="numeroPrePedidoBusca" list="dlnumpedidoBUsca1">
                     <input *ngIf="!emPrepedidos" matInput type="text" placeholder="Número Pedido"

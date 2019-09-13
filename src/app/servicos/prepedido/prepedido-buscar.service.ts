@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { HttpParams, HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { PedidoDto } from 'src/app/dto/pedido/detalhesPedido/PedidoDto';
+import { PrePedidoDto } from 'src/app/dto/Prepedido/DetalhesPrepedido/PrePedidoDto';
 
 @Injectable({
   providedIn: 'root'
@@ -10,16 +11,16 @@ import { PedidoDto } from 'src/app/dto/pedido/detalhesPedido/PedidoDto';
 export class PrepedidoBuscarService {
 
   public carregando: boolean = false;
-  private pedidos$: Observable<PedidoDto> = new Observable();
+  private pedidos$: Observable<PrePedidoDto> = new Observable();
 
   constructor(private readonly http: HttpClient) { }
 
-  public atualizar(numeroPrePedido: string): Observable<PedidoDto> {
+  public buscar(numeroPrePedido: string): Observable<PrePedidoDto> {
     // Initialize Params Object
     let params = new HttpParams();
 
     //adiciona todos os parametros por nome
-    params = params.append('numeroPrePedido', numeroPrePedido);
+    params = params.append('numPrepedido', numeroPrePedido);
     this.carregando = true;
 
     this.pedidos$ = Observable.create(observer => {

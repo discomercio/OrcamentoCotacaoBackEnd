@@ -67,7 +67,7 @@ export class DetalhesPrepedidoComponent extends TelaDesktopBaseComponent impleme
     this.numeroPedido = this.activatedRoute.snapshot.params.numeroPedido;
     if (!!this.numeroPrepedido) {
       this.emPrepedidos = true;
-      this.prepedidoBuscarService.atualizar(this.numeroPrepedido).subscribe({
+      this.prepedidoBuscarService.buscar(this.numeroPrepedido).subscribe({
         next: (r) => {
           if (r == null) {
             this.deuErro("Erro");

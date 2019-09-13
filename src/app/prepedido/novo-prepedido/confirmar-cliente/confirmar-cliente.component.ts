@@ -10,6 +10,7 @@ import { ClienteCadastroDto } from 'src/app/dto/ClienteCadastro/ClienteCadastroD
 import { ClienteCadastroUtils } from 'src/app/dto/AngularClienteCadastroUtils/ClienteCadastroUtils';
 import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
 import { EnderecoEntregaDtoClienteCadastro } from 'src/app/dto/ClienteCadastro/EnderecoEntregaDTOClienteCadastro';
+import { NovoPrepedidoDadosService } from '../novo-prepedido-dados.service';
 
 @Component({
   selector: 'app-confirmar-cliente',
@@ -30,6 +31,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     private readonly location: Location,
     public readonly dialog: MatDialog,
     private readonly alertaService: AlertaService,
+    private readonly novoPrepedidoDadosService: NovoPrepedidoDadosService,
     private readonly buscarClienteService: BuscarClienteService) {
     super(telaDesktopService);
 
@@ -83,6 +85,8 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
       this.fase1e2juntas = true;
     }
 
+    //para pegar o enter
+    document.getElementById("idcontinuar").focus();
   }
 
   //#region salvar alterações no IE e Contribuinte_Icms_Status
@@ -101,7 +105,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
       return false;
     }
     //se estiver com NULL é pq ainda não pegou os valores
-    if (this.dadosClienteCadastroDtoIe === null) {
+    if (!this.dadosClienteCadastroDtoIe) {
       this.salvarAtivoInicializar();
     }
     if (this.dadosClienteCadastroDtoIe !== this.dadosClienteCadastroDto.Ie) {
@@ -210,8 +214,10 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
           return;
         }
       }
+      //salvar no serviço
+      this.novoPrepedidoDadosService.criarNovo(this.dadosClienteCadastroDto, this.enderecoEntregaDtoClienteCadastro);
+
       //continuamos
-      //afazer: salvar no serviço
       this.router.navigate(['novo-prepedido/itens']);
       return;
     }
