@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
+using PrepedidoBusiness.Dtos.Prepedido.DetalhesPrepedido;
 
 namespace PrepedidoApi.Controllers
 {
@@ -53,13 +53,13 @@ namespace PrepedidoApi.Controllers
         [AllowAnonymous]
 #endif
         [HttpGet("listarPrePedidos")]
-        public async Task<IActionResult> ListarPrePedidos(int tipoBusca, string clienteBusca, string numeroPrePedido, 
+        public async Task<IActionResult> ListarPrePedidos(int tipoBusca, string clienteBusca, string numeroPrePedido,
             DateTime? dataInicial, DateTime? dataFinal)
         {
             //para testar: http://localhost:60877/api/prepedido/listarPrePedidos
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            var lista = await prepedidoBll.ListarPrePedidos(apelido, 
-                (PrepedidoBusiness.Bll.PrepedidoBll.TipoBuscaPrepedido)tipoBusca, 
+            var lista = await prepedidoBll.ListarPrePedidos(apelido,
+                (PrepedidoBusiness.Bll.PrepedidoBll.TipoBuscaPrepedido)tipoBusca,
                 clienteBusca, numeroPrePedido, dataInicial, dataFinal);
             return Ok(lista);
         }
@@ -109,6 +109,21 @@ namespace PrepedidoApi.Controllers
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
             var ret = await prepedidoBll.Obter_Permite_RA_Status(apelido);
+
+            return Ok(ret);
+        }
+
+        //CadastrarPrepedido
+#if DEBUG
+        [AllowAnonymous]
+#endif
+        [HttpPost("cadastrarPrepedido")]
+        public async Task<IActionResult> CadastrarPrepedido(PrePedidoDto prePedido)
+        {
+            //para testar: http://localhost:60877/api/prepedido/cadastrarPrepedido
+            string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
+
+            var ret = await prepedidoBll.CadastrarPrepedido(prePedido, apelido);
 
             return Ok(ret);
         }

@@ -13,6 +13,8 @@ using PrepedidoBusiness.Dtos.Prepedido.DetalhesPrepedido;
 using PrepedidoBusiness.Dtos.ClienteCadastro;
 using InfraBanco.Constantes;
 using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
+using PrepedidoBusiness.Dto.Produto;
+using PrepedidoBusiness.Bll.Regras;
 
 namespace PrepedidoBusiness.Bll
 {
@@ -66,6 +68,7 @@ namespace PrepedidoBusiness.Bll
         public async Task<IEnumerable<PrepedidosCadastradosDtoPrepedido>> ListarPrePedidos(string apelido, TipoBuscaPrepedido tipoBusca,
             string clienteBusca, string numeroPrePedido, DateTime? dataInicial, DateTime? dataFinal)
         {
+            //apelido = "MARISARJ";
             //usamos a mesma lógica de PedidoBll.ListarPedidos:
             /*
              * se fizeram a busca por algum CPF ou CNPJ ou pedido e não achamos nada, removemos o filtro de datas
@@ -162,7 +165,7 @@ namespace PrepedidoBusiness.Bll
         public async Task<PrePedidoDto> BuscarPrePedido(string apelido, string numPrePedido)
         {
             //parateste
-            //apelido = "PEDREIRA";
+            //apelido = "MARISARJ";
             //numPrePedido = "214289Z";
 
             var db = contextoProvider.GetContextoLeitura();
@@ -281,6 +284,7 @@ namespace PrepedidoBusiness.Bll
             return lista;
         }
 
+        //Obtem produtos do orçamento
         private async Task<IEnumerable<PrepedidoProdutoDtoPrepedido>> ObterProdutos(Torcamento orc)
         {
             var db = contextoProvider.GetContextoLeitura();
@@ -304,7 +308,7 @@ namespace PrepedidoBusiness.Bll
                     Permite_Ra_Status = orc.Permite_RA_Status,
                     BlnTemRa = p.Preco_NF != p.Preco_Venda ? true : false,
                     Preco = p.Preco_NF,
-                    VlLista = p.Preco_Lista,
+                    VlLista = (decimal)p.Preco_Lista,
                     Desconto = p.Desc_Dado,
                     VlUnitario = p.Preco_Venda,
                     VlTotalRA = (decimal)(p.Qtde * (p.Preco_NF - p.Preco_Venda)),
@@ -384,6 +388,8 @@ namespace PrepedidoBusiness.Bll
             return enderecoEntrega;
         }
 
+        //Esse metodo esta em Util.cs
+        //afazer: alterar a chamada desse método para Util.cs
         private async Task<string> ObterDescricao_Cod(string grupo, string cod)
         {
             var db = contextoProvider.GetContextoLeitura();
@@ -415,29 +421,635 @@ namespace PrepedidoBusiness.Bll
             return await raStatus;
         }
 
-        public void CadastrarPrepedido(PrePedidoDto prePedido, string apelido)
+        public async Task<IEnumerable<string>> CadastrarPrepedido(PrePedidoDto prePedido, string apelido)
         {
+            apelido = "MARISARJ";
+
+            List<string> lstErros = new List<string>();
+
+            string vendedor = await BuscarVendedor(apelido);
+            if (string.IsNullOrEmpty(vendedor))
+                lstErros.Add("NÃO HÁ NENHUM VENDEDOR DEFINIDO PARA ATENDÊ-LO");
+
             //validar o Orcamentista
-            //verifica se o Orçamento ja foi gravado
-            //Valida custo financeiro fornecedor
+            if (!await (ValidarOrcamentistaIndicador(apelido)))
+                lstErros.Add("Falha ao recuperar os dados cadastrais!!");
+
+            if (LojaHabilitadaProdutosECommerce(prePedido.DadosCliente.Loja))
+            {
+                //monta os produtos
+                var lstProd = MontaProdutos(prePedido.ListaProdutos, lstErros, prePedido.DadosCliente.Loja);
+                //descrição do tipo de parcelamento
+                //afazer: necessário analisar qual o tipo de forma de pagamento que esta vindo 
+                string desc_tipo_parcelamento = DescricaoCustoFornecTipoParcelamento(prePedido.FormaPagtoCriacao.Rb_forma_pagto);
+                int c_custoFinancFornecQtdeParcelas = 0;
+                //
+                //decimal comissao = 
+
+                //Validar endereço de entraga
+                if (ValidarEndecoEntrega(prePedido.EnderecoEntrega, lstErros))
+                {
+                    if (Util.ValidarTipoCustoFinanceiroFornecedor(lstErros, prePedido.FormaPagtoCriacao.Rb_forma_pagto))
+                    {
+                        //Analizar o funcionamento
+                        BuscarCoeficientePercentualCustoFinanFornec(prePedido, (short)c_custoFinancFornecQtdeParcelas, lstErros);
+
+                        Tparametro parametroRegra = await BuscarRegistroParametro(Constantes.ID_PARAMETRO_Flag_Orcamento_ConsisteDisponibilidadeEstoqueGlobal);
+                        string tipoPessoa = MultiCdRegraDeterminaPessoa(prePedido.DadosCliente.Tipo, prePedido.DadosCliente.Contribuinte_Icms_Status,
+                            prePedido.DadosCliente.ProdutorRural);
+                        string descricao = DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo);
+
+                        List<RegrasBll> regraCrtlEstoque = (await ObterCtrlEstoqueProdutoRegra(prePedido, lstErros)).ToList();
+
+
+                    }
+                }
+            }
+
+
+
+            List<TorcamentoItem> lstOrcamentoItem = MontaListaOrcamentoItem(prePedido.ListaProdutos);
+
+            //Se existe retorna true
+            if (await ValidarSeOrcamentoJaExiste(prePedido))
+                lstErros.Add("Este pré-pedido já foi gravado com o número");
+
+            //Valida tipo custo financeiro fornecedor
+            ValidarTipoCustoFinanceiroFornecedor(lstErros, prePedido.FormaPagtoCriacao.C_forma_pagto);
+
+            //Buscar coeficiente 
+
             //Verifica cada um dos produtos selecionados
+            List<string> existeErros = (await VerificaCadaProdutoSelecionado(lstOrcamentoItem,
+                prePedido.DadosCliente.Loja)).ToList();
+            if (existeErros.Count != 0)
+            {
+                foreach (string i in existeErros)
+                    lstErros.Add(i);
+            }
+            else
+            {
+                (await ComplementarInfosOrcamentoItem(lstOrcamentoItem,
+                    prePedido.DadosCliente.Loja)).ToList();
+
+                //verificar se os existe a qtde de produtos disponiveis para venda de cada produto.
+                //afazer: verificação de estoque e regras pag. OrcamentoNovoConsiste.asp inicio na linha 297
+                //serão usados para verificar o estoque
+                //metodo get_registro_t_parametro = BuscarRegistroParametro
+                //metodo multi_cd_regra_determina_tipo_pessoa = MultiCdRegraDeterminaPessoa
+
+                //obtemCtrlEstoqueProdutoRegra = VerificarCtrlEstoqueProdutoRegra
+                //Lógica de consumo do estoque
+
+            }
+            return lstErros;
         }
 
-        private List<string> ValidarCustoFinanceiroFornecedor(List<string> lstErros)
-        {
-            string custoFinanceiroQtdeParcelas= "";
 
-            if (custoFinanceiroQtdeParcelas != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA &&
-                custoFinanceiroQtdeParcelas != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA &&
-                custoFinanceiroQtdeParcelas != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA)
+
+
+        private async void VerificarRegrasAssociadasAosProdutos(List<RegrasBll> lstRegras, List<string> lstErros, DadosClienteCadastroDto cliente)
+        {
+            foreach (var r in lstRegras)
+            {
+                if (!string.IsNullOrEmpty(r.Produto))
+                {
+                    if (r.TwmsRegraCd.Id == 0)
+                        lstErros.Add("Produto (" + r.Fabricante + ")" + r.Produto + " não possui regra de consumo do estoque associada");
+                    else if (r.TwmsRegraCd.St_inativo == 1)
+                    {
+                        lstErros.Add("Regra de consumo do estoque '" + r.TwmsRegraCd.Apelido + "' associada ao produto(" +
+                            r.Fabricante + ")" + r.Produto + " está desativada");
+                    }
+                    else if (r.TwmsRegraCdXUf.St_inativo == 1)
+                    {
+                        lstErros.Add("Regra de consumo do estoque '" + r.TwmsRegraCd.Apelido + "' associada ao produto (" +
+                            r.Fabricante + ")" + r.Produto + " está bloqueada para a UF '" + cliente.Uf + "'");
+                    }
+                    else if (r.TwmsRegraCdXUfXPessoa.St_inativo == 1)
+                    {
+                        lstErros.Add("Regra de consumo do estoque '" + r.TwmsRegraCd.Apelido + "' associada ao produto (" +
+                            r.Fabricante + ")" + r.Produto + " está bloqueada para clientes '" + cliente.Tipo + "' da UF '" + cliente.Uf + "'");
+                    }
+                    else if (r.TwmsRegraCdXUfXPessoa.Spe_id_nfe_emitente == 0)
+                    {
+                        lstErros.Add("Regra de consumo do estoque '" + r.TwmsRegraCd.Apelido + "' associada ao produto (" +
+                            r.Fabricante + ")" + r.Produto + " não especifica nenhum CD para aguardar produtos sem presença no estoque para clientes '" +
+                            cliente.Tipo + "' da UF '" + cliente.Uf + "'");
+                    }
+                    int verificaErros = 0;
+                    foreach (var re in r.TwmsCdXUfXPessoaXCd)
+                    {
+                        if(re.Id_nfe_emitente > 0)
+                        {
+                            if (re.St_inativo == 0)
+                                verificaErros++;
+                        }
+                    }
+                    if(verificaErros == 0)
+                    {
+                        lstErros.Add("Regra de consumo do estoque '" + r.TwmsRegraCd.Apelido + "' associada ao produto (" +
+                            r.Fabricante + ")" + r.Produto + " não especifica nenhum CD ativo para clientes '" +
+                            cliente.Tipo + "' da UF '" + cliente.Uf + "'");
+                    }
+                }
+            }
+        }
+
+        //qtde_estoque_total_global_disponivel é uma variavel que esta global no deles
+        private async void ObterDisponibilidadeEstoque(List<RegrasBll> lstRegras, PrePedidoDto prepedido, Tparametro parametroRegra)
+        {
+            int id_nfe_emitente_selecao_manual = 0;
+
+            foreach (var regra in lstRegras)
+            {
+                if(!string.IsNullOrEmpty(regra.Produto))
+                {
+                    foreach(var re in regra.TwmsCdXUfXPessoaXCd)
+                    {
+                        if(re.Id_nfe_emitente > 0 && id_nfe_emitente_selecao_manual == 0)
+                        {
+                            if(re.St_inativo == 0)
+                            {
+                                foreach(var p in prepedido.ListaProdutos)
+                                {
+                                    if(regra.Fabricante == p.Fabricante && regra.Produto == p.NumProduto)
+                                    {
+                                        //re.
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+
+
+           
+        }
+
+        private bool ValidarEndecoEntrega(EnderecoEntregaDtoClienteCadastro endEtg, List<string> lstErros)
+        {
+            bool retorno = false;
+
+            if (string.IsNullOrEmpty(endEtg.EndEtg_endereco))
+                lstErros.Add("PREENCHA O ENDEREÇO DE ENTREGA.");
+            if (endEtg.EndEtg_endereco.Length > Constantes.MAX_TAMANHO_CAMPO_ENDERECO)
+                lstErros.Add("ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: " + endEtg.EndEtg_endereco.Length +
+                    " CARACTERES<br>TAMANHO MÁXIMO: " + Constantes.MAX_TAMANHO_CAMPO_ENDERECO + " CARACTERES");
+            if (string.IsNullOrEmpty(endEtg.EndEtg_endereco_numero))
+                lstErros.Add("PREENCHA O NÚMERO DO ENDEREÇO DE ENTREGA.");
+            if (string.IsNullOrEmpty(endEtg.EndEtg_bairro))
+                lstErros.Add("PREENCHA O BAIRRO DO ENDEREÇO DE ENTREGA.");
+            if (string.IsNullOrEmpty(endEtg.EndEtg_cidade))
+                lstErros.Add("PREENCHA A CIDADE DO ENDEREÇO DE ENTREGA.");
+            if (string.IsNullOrEmpty(endEtg.EndEtg_uf) || !Util.VerificaUf(endEtg.EndEtg_uf))
+                lstErros.Add("UF INVÁLIDA NO ENDEREÇO DE ENTREGA.");
+            if (!Util.VerificaCep(endEtg.EndEtg_cep))
+                lstErros.Add("CEP INVÁLIDO NO ENDEREÇO DE ENTREGA.");
+
+            return retorno;
+        }
+
+
+        //Monta produtos seguindo as regras existentes
+        private async Task<IEnumerable<ProdutoDto>> MontaProdutos(List<PrepedidoProdutoDtoPrepedido> lstProdutos, List<string> lstErros, string loja)
+        {
+            ProdutoDto produtoDto = new ProdutoDto();
+            List<ProdutoDto> lstProdutoDto = new List<ProdutoDto>();
+
+            var db = contextoProvider.GetContextoLeitura();
+
+            foreach (var p in lstProdutos)
+            {
+                string fabricante = Util.Normaliza_Codigo(p.Fabricante, Constantes.TAM_MIN_FABRICANTE);
+                string codProduto = Util.Normaliza_Codigo(p.NumProduto, Constantes.TAM_MIN_PRODUTO);
+
+                int qtde = (int)p.Qtde;
+
+                if (string.IsNullOrEmpty(fabricante) && !string.IsNullOrEmpty(codProduto))
+                {
+                    var prodCompostoTask = from c in db.TecProdutoCompostos
+                                           where c.Produto_Composto == codProduto
+                                           select c;
+                    var prodComposto = (await prodCompostoTask.FirstOrDefaultAsync());
+
+                    if (prodComposto.Produto_Composto != null)
+                    {
+                        var prodCompostoItensTask = from c in db.TecProdutoCompostoItems
+                                                    where c.Fabricante_composto == prodComposto.Fabricante_Composto &&
+                                                          c.Produto_composto == prodComposto.Produto_Composto &&
+                                                          c.Excluido_status == 0
+                                                    orderby c.Sequencia
+                                                    select c;
+                        var prodCompostoItens = prodCompostoItensTask.ToList();
+
+                        if (prodCompostoItens.Count > 0)
+                        {
+                            foreach (var pi in prodCompostoItens)
+                            {
+                                var produtoTask = from c in db.Tprodutos.Include(r => r.TprodutoLoja)
+                                                  where c.TprodutoLoja.Fabricante == pi.Fabricante_item &&
+                                                        c.TprodutoLoja.Produto == pi.Produto_item &&
+                                                        c.TprodutoLoja.Loja == loja
+                                                  select c;
+
+                                var produto = await produtoTask.FirstOrDefaultAsync();
+
+                                if (string.IsNullOrEmpty(produto.Produto))
+                                    lstErros.Add("O produto(" + pi.Fabricante_item + ")" + pi.Produto_item + " não está disponível para a loja " + loja + "!!");
+                                else
+                                {
+                                    produtoDto = new ProdutoDto
+                                    {
+                                        Fabricante = pi.Fabricante_item,
+                                        Produto = pi.Produto_item,
+                                        Qtde = pi.Qtde,
+                                        ValorLista = produto.TprodutoLoja.Preco_Lista,
+                                        Descricao = produto.Descricao
+                                    };
+                                    lstProdutoDto.Add(produtoDto);
+                                }
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        //faz produto normal
+                        var produtoTask = from c in db.Tprodutos.Include(r => r.TprodutoLoja)
+                                          where c.TprodutoLoja.Fabricante == fabricante &&
+                                                c.TprodutoLoja.Produto == codProduto &&
+                                                c.TprodutoLoja.Loja == loja
+                                          select c;
+
+                        var produto = await produtoTask.FirstOrDefaultAsync();
+
+                        if (string.IsNullOrEmpty(produto.Produto))
+                            lstErros.Add("Produto '" + codProduto + "' não foi encontrado para a loja " + loja + "!!");
+
+                        produtoDto = new ProdutoDto
+                        {
+                            Fabricante = produto.Fabricante,
+                            Produto = produto.Produto,
+                            Qtde = qtde,
+                            ValorLista = produto.TprodutoLoja.Preco_Lista,
+                            Descricao = produto.Descricao
+                        };
+                        lstProdutoDto.Add(produtoDto);
+                    }
+                }
+
+            }
+
+            return lstProdutoDto;
+        }
+
+        //afazer: é necessário saber o tipo de pagamento que será feito para que seja passado a qtde de parcelas para a query
+        public async void BuscarCoeficientePercentualCustoFinanFornec(PrePedidoDto prePedido, short qtdeParcelas, List<string> lstErros)
+        {
+            float coeficiente = 0;
+
+            var db = contextoProvider.GetContextoLeitura();
+
+            foreach (var i in prePedido.ListaProdutos)
+            {
+                var percCustoTask = from c in db.TpercentualCustoFinanceiroFornecedors
+                                    where c.Fabricante == i.Fabricante &&
+                                          c.Tipo_Parcelamento == prePedido.FormaPagtoCriacao.C_forma_pagto &&
+                                          c.Qtde_Parcelas == qtdeParcelas
+                                    select c;
+
+                var percCusto = await percCustoTask.FirstOrDefaultAsync();
+
+                if (percCusto != null)
+                {
+                    coeficiente = percCusto.Coeficiente;
+                    i.VlLista = (decimal)coeficiente * i.VlLista;
+                }
+                else
+                {
+                    lstErros.Add("Opção de parcelamento não disponível para fornecedor " + i.Fabricante + ": " +
+                        DecodificaCustoFinanFornecQtdeParcelas(prePedido.FormaPagtoCriacao.C_forma_pagto, qtdeParcelas) + " parcela(s)");
+                }
+
+            }
+        }
+
+        private async Task<IEnumerable<RegrasBll>> ObterCtrlEstoqueProdutoRegra(PrePedidoDto prePedido, List<string> lstErros)
+        {
+            List<RegrasBll> lstRegrasCrtlEstoque = new List<RegrasBll>();
+
+            var db = contextoProvider.GetContextoLeitura();
+
+            foreach (var item in prePedido.ListaProdutos)
+            {
+                var regraProdutoTask = from c in db.TprodutoXwmsRegraCds
+                                       where c.Fabricante == item.Fabricante &&
+                                             c.Produto == item.NumProduto
+                                       select c;
+
+                var regra = await regraProdutoTask.FirstOrDefaultAsync();
+
+                if (regra == null)
+                {
+                    lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
+                        DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': produto (" + item.Fabricante + ")" +
+                        item.NumProduto + " não possui regra associada");
+                }
+                else
+                {
+                    if (regra.Id_wms_regra_cd == 0)
+                        lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
+                            DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': produto (" + item.Fabricante + ")" +
+                            item.NumProduto + " não está associado a nenhuma regra");
+                    else
+                    {
+                        var wmsRegraTask = from c in db.TwmsRegraCds
+                                           where c.Id == regra.Id_wms_regra_cd
+                                           select c;
+
+                        var wmsRegra = await wmsRegraTask.FirstOrDefaultAsync();
+                        if (wmsRegra == null)
+                            lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
+                                DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': regra associada ao produto (" + item.Fabricante + ")" +
+                                item.NumProduto + " não foi localizada no banco de dados (Id=" + regra.Id_wms_regra_cd + ")");
+                        else
+                        {
+
+                            //fazer montagem dos dados apartir daqui
+                            RegrasBll itemRegra = new RegrasBll();
+                            itemRegra.Fabricante = item.Fabricante;
+                            itemRegra.Produto = item.NumProduto;
+
+                            itemRegra.TwmsRegraCd = new Regras.t_WMS_REGRA_CD
+                            {
+                                Id = wmsRegra.Id,
+                                Apelido = wmsRegra.Apelido,
+                                Descricao = wmsRegra.Descricao,
+                                St_inativo = wmsRegra.St_inativo
+                            };
+
+                            var wmsRegraCdXUfTask = from c in db.TwmsRegraCdXUfs
+                                                    where c.Id_wms_regra_cd == itemRegra.TwmsRegraCd.Id &&
+                                                          c.Uf == prePedido.DadosCliente.Uf
+                                                    select c;
+                            var wmsRegraCdXUf = await wmsRegraCdXUfTask.FirstOrDefaultAsync();
+
+                            if (wmsRegraCdXUf == null)
+                            {
+                                itemRegra.St_Regra = false;
+                                lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
+                                    DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': regra associada ao produto (" + item.Fabricante + ")" +
+                                    item.NumProduto + " não está cadastrada para a UF '" + prePedido.DadosCliente.Uf + "' (Id=" + regra.Id_wms_regra_cd + ")");
+                            }
+                            else
+                            {
+                                itemRegra.TwmsRegraCdXUf = new Regras.t_WMS_REGRA_CD_X_UF
+                                {
+                                    Id = wmsRegraCdXUf.Id,
+                                    Id_wms_regra_cd = wmsRegraCdXUf.Id_wms_regra_cd,
+                                    Uf = wmsRegraCdXUf.Uf,
+                                    St_inativo = wmsRegraCdXUf.St_inativo
+                                };
+
+                                var wmsRegraCdXUfXPessoaTask = from c in db.TwmsRegraCdXUfPessoas
+                                                               where c.Id_wms_regra_cd_x_uf == itemRegra.TwmsRegraCdXUf.Id &&
+                                                                     c.Tipo_pessoa == prePedido.DadosCliente.Tipo
+                                                               select c;
+
+                                var wmsRegraCdXUfXPessoa = await wmsRegraCdXUfXPessoaTask.FirstOrDefaultAsync();
+
+                                if (wmsRegraCdXUfXPessoa == null)
+                                {
+                                    itemRegra.St_Regra = false;
+                                    lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
+                                        DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': regra associada ao produto (" + item.Fabricante + ")" +
+                                        item.NumProduto + " não está cadastrada para a UF '" + prePedido.DadosCliente.Uf + "' (Id=" + regra.Id_wms_regra_cd + ")");
+                                }
+                                else
+                                {
+                                    itemRegra.TwmsRegraCdXUfXPessoa = new Regras.t_WMS_REGRA_CD_X_UF_X_PESSOA
+                                    {
+                                        Id = wmsRegraCdXUfXPessoa.Id,
+                                        Id_wms_regra_cd_x_uf = wmsRegraCdXUfXPessoa.Id_wms_regra_cd_x_uf,
+                                        Tipo_pessoa = wmsRegraCdXUfXPessoa.Tipo_pessoa,
+                                        St_inativo = wmsRegraCdXUfXPessoa.St_inativo,
+                                        Spe_id_nfe_emitente = wmsRegraCdXUfXPessoa.Spe_id_nfe_emitente
+                                    };
+
+                                    if (wmsRegraCdXUfXPessoa.Spe_id_nfe_emitente == 0)
+                                    {
+                                        itemRegra.St_Regra = false;
+                                        lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
+                                            DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': regra associada ao produto (" + item.Fabricante + ")" +
+                                            item.NumProduto + " não especifica nenhum CD para aguardar produtos sem presença no estoque (Id=" + regra.Id_wms_regra_cd + ")");
+                                    }
+                                    else
+                                    {
+                                        var nfEmitenteTask = from c in db.TnfEmitentes
+                                                             where c.Id == wmsRegraCdXUfXPessoa.Spe_id_nfe_emitente
+                                                             select c;
+                                        var nfEmitente = await nfEmitenteTask.FirstOrDefaultAsync();
+
+                                        if (nfEmitente != null)
+                                        {
+                                            if (nfEmitente.St_Ativo != 1)
+                                            {
+                                                itemRegra.St_Regra = false;
+                                                lstErros.Add("Falha na regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
+                                                    DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': regra associada ao produto (" + item.Fabricante +
+                                                    ")" + item.NumProduto + " especifica um CD para aguardar produtos sem presença no estoque que não está habilitado " +
+                                                    "(Id=" + regra.Id_wms_regra_cd + ")");
+                                            }
+                                        }
+                                        var wmsRegraCdXUfXPessoaXcdTask = from c in db.TwmsRegraCdXUfXPessoaXCds
+                                                                          where c.Id_wms_regra_cd_x_uf_x_pessoa == wmsRegraCdXUfXPessoa.Id
+                                                                          orderby c.Ordem_prioridade
+                                                                          select c;
+                                        var wmsRegraCdXUfXPessoaXcd = await wmsRegraCdXUfXPessoaXcdTask.ToListAsync();
+
+                                        if (wmsRegraCdXUfXPessoaXcd.Count == 0)
+                                        {
+                                            itemRegra.St_Regra = false;
+                                            lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
+                                                DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': regra associada ao produto (" + item.Fabricante + ")" +
+                                                item.NumProduto + " não especifica nenhum CD para consumo do estoque (Id=" + regra.Id_wms_regra_cd + ")");
+                                        }
+                                        else
+                                        {
+                                            foreach (var i in wmsRegraCdXUfXPessoaXcd)
+                                            {
+                                                Regras.t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD item_cd_uf_pess_cd = new Regras.t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD
+                                                {
+                                                    Id = i.Id,
+                                                    Id_wms_regra_cd_x_uf_x_pessoa = i.Id_wms_regra_cd_x_uf_x_pessoa,
+                                                    Id_nfe_emitente = i.Id_nfe_emitente,
+                                                    Ordem_prioridade = i.Ordem_prioridade,
+                                                    St_inativo = i.St_inativo
+                                                };
+
+                                                var nfeCadastroPrincipalTask = from c in db.TnfEmitentes
+                                                                               where c.Id == item_cd_uf_pess_cd.Id_nfe_emitente
+                                                                               select c;
+
+                                                var nfeCadastroPrincipal = await nfeCadastroPrincipalTask.FirstOrDefaultAsync();
+
+                                                if (nfeCadastroPrincipal != null)
+                                                {
+                                                    if (nfeCadastroPrincipal.St_Ativo != 1)
+                                                        item_cd_uf_pess_cd.St_inativo = 1;
+                                                }
+
+                                                itemRegra.TwmsCdXUfXPessoaXCd.Add(item_cd_uf_pess_cd);
+                                            }
+                                            foreach (var i in itemRegra.TwmsCdXUfXPessoaXCd)
+                                            {
+
+                                                if (i.Id_nfe_emitente == itemRegra.TwmsRegraCdXUfXPessoa.Spe_id_nfe_emitente)
+                                                {
+                                                    if (i.St_inativo == 1)
+                                                        lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
+                                                            DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': regra associada ao produto (" +
+                                                            item.Fabricante + ")" + item.NumProduto + " especifica o CD '" + nfEmitente.Apelido +
+                                                            "' para alocação de produtos sem presença no estoque, sendo que este CD está desativado para " +
+                                                            "processar produtos disponíveis (Id=" + regra.Id_wms_regra_cd + ")");
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            lstRegrasCrtlEstoque.Add(itemRegra);
+                        }
+                    }
+                }
+
+            }
+
+            return lstRegrasCrtlEstoque;
+        }
+
+        private async Task<IEnumerable<TorcamentoItem>> ComplementarInfosOrcamentoItem(List<TorcamentoItem> lstOrcamentoItem, string loja)
+        {
+            List<TorcamentoItem> lstRetorno = new List<TorcamentoItem>();
+
+            var db = contextoProvider.GetContextoLeitura();
+
+            foreach (TorcamentoItem item in lstOrcamentoItem)
+            {
+
+                var prodLista = from c in db.Tprodutos.Include(r => r.TprodutoLoja).Include(r => r.Tfabricante)
+                                where c.Fabricante == item.Fabricante &&
+                                      c.Produto == item.Produto &&
+                                      c.TprodutoLoja.Loja == loja
+                                select c;
+
+                var prod = await prodLista.FirstOrDefaultAsync();
+
+                if (prod != null)
+                {
+                    //montagem das informações do produto
+                    item.Preco_Lista = prod.TprodutoLoja.Preco_Lista;
+                    item.Margem = prod.TprodutoLoja.Margem;
+                    item.Desc_Max = prod.TprodutoLoja.Desc_Max;
+                    item.Comissao = prod.TprodutoLoja.Comissao;
+                    item.Preco_Fabricante = prod.Preco_Fabricante;
+                    item.Vl_Custo2 = prod.Vl_Custo2;
+                    item.Descricao = prod.Descricao;
+                    item.Descricao_Html = prod.Descricao_Html;
+                    item.Ean = prod.Ean;
+                    item.Grupo = prod.Grupo;
+                    item.Peso = prod.Peso;
+                    item.Qtde_Volumes = prod.Qtde_Volumes;
+                    item.Markup_Fabricante = prod.Tfabricante.Markup;
+                    item.Cubagem = prod.Cubagem;
+                    item.Ncm = prod.Ncm;
+                    item.Cst = prod.Cst;
+                    item.Descontinuado = prod.Descontinuado;
+                    item.CustoFinancFornecPrecoListaBase = (decimal)prod.TprodutoLoja.Preco_Lista;
+                }
+            }
+
+            return lstRetorno;
+        }
+
+        private List<TorcamentoItem> MontaListaOrcamentoItem(List<PrepedidoProdutoDtoPrepedido> lstProdutos)
+        {
+            List<TorcamentoItem> lstOrcamentoItem = new List<TorcamentoItem>();
+
+            foreach (PrepedidoProdutoDtoPrepedido p in lstProdutos)
+            {
+                TorcamentoItem item = new TorcamentoItem
+                {
+                    Produto = p.NumProduto,
+                    Fabricante = Utils.Util.Normaliza_Codigo(p.Fabricante, Constantes.TAM_MIN_FABRICANTE),
+                    Qtde = p.Qtde,
+                    Preco_Venda = p.VlUnitario,
+                    Preco_NF = p.Permite_Ra_Status == 1 ? p.Preco : p.VlUnitario,
+                    Obs = p.Obs
+                };
+                lstOrcamentoItem.Add(item);
+            }
+
+            return lstOrcamentoItem;
+        }
+
+
+        private async Task<bool> ValidarOrcamentistaIndicador(string apelido)
+        {
+            bool retorno = false;
+
+            var db = contextoProvider.GetContextoLeitura();
+
+            var orcamentistaTask = await (from c in db.TorcamentistaEindicadors
+                                          where c.Apelido == apelido
+                                          select c.Apelido).FirstOrDefaultAsync();
+            if (orcamentistaTask == apelido)
+                retorno = true;
+
+            return retorno;
+        }
+
+        private async Task<bool> ValidarSeOrcamentoJaExiste(PrePedidoDto prePedido)
+        {
+            bool retorno = true;
+
+            var db = contextoProvider.GetContextoLeitura();
+
+            var orcamentoTask = from c in db.Torcamentos.Include(r => r.TorcamentoItem)
+                                where c.Id_Cliente == prePedido.DadosCliente.Id &&
+                                      c.Data == DateTime.Now.Date &&
+                                      c.Loja == prePedido.DadosCliente.Loja &&
+                                      c.Orcamentista == prePedido.DadosCliente.Indicador_Orcamentista &&
+                                      c.Hora == Convert.ToString(DateTime.Now.Hour +
+                                                                 DateTime.Now.Minute +
+                                                                 DateTime.Now.Second)
+                                orderby c.TorcamentoItem.Orcamento, c.TorcamentoItem.Sequencia
+                                select c.Orcamento;
+
+            var qtdeRegistro = await orcamentoTask.ToListAsync();
+
+            if (qtdeRegistro.Count == 0)
+                retorno = false;
+
+            return retorno;
+        }
+
+        private List<string> ValidarTipoCustoFinanceiroFornecedor(List<string> lstErros, string custoFinanceiroTipoParcelato)
+        {
+            if (custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA &&
+                custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA &&
+                custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA)
                 lstErros.Add("A forma de pagamento não foi informada (à vista, com entrada, sem entrada).");
 
-            if (custoFinanceiroQtdeParcelas != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA &&
-                custoFinanceiroQtdeParcelas != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA)
+            if (custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA &&
+                custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA)
             {
-                if (int.Parse(custoFinanceiroQtdeParcelas) <= 0)
+                if (int.Parse(custoFinanceiroTipoParcelato) <= 0)
                     lstErros.Add("Não foi informada a quantidade de parcelas para a forma de pagamento selecionada " +
-                        "(" + DescricaoCustoFornecTipoParcelamento(custoFinanceiroQtdeParcelas) + ")");
+                        "(" + DescricaoCustoFornecTipoParcelamento(custoFinanceiroTipoParcelato) + ")");
             }
 
 
@@ -464,77 +1076,33 @@ namespace PrepedidoBusiness.Bll
             return retorno;
         }
 
-        private async Task<IEnumerable<string>> VerificaCadaProdutoSelecionado(List<PrepedidoProdutoDtoPrepedido> lstProdutos,
-            string loja, List<string> lstErros, string custoFinancFornecTipoParcelamento, string custoFinanceiroQtdeParcelas)
+        //Busca produtos e verifica se loja esta cadastrada
+        private async Task<IEnumerable<string>> VerificaCadaProdutoSelecionado(List<TorcamentoItem> lstOrcamentoItem,
+            string loja)
         {
-            TorcamentoItem torcamentoItem = new TorcamentoItem();
+            List<string> lstErros = new List<string>();
 
-            float coeficiente = 0;
             var db = contextoProvider.GetContextoLeitura();
 
-            foreach (PrepedidoProdutoDtoPrepedido p in lstProdutos)
+            foreach (TorcamentoItem item in lstOrcamentoItem)
             {
+
                 var prodLista = from c in db.Tprodutos.Include(r => r.TprodutoLoja).Include(r => r.Tfabricante)
-                           where c.Fabricante == p.Fabricante && c.Produto == p.NumProduto && c.TprodutoLoja.Loja == loja
-                           select new 
-                           {
-                               precoLista = c.TprodutoLoja.Preco_Lista,
-                               margem = c.TprodutoLoja.Margem,
-                               descMax = c.TprodutoLoja.Desc_Max,
-                               comissao = c.TprodutoLoja.Comissao,
-                               precoFabricante = c.Preco_Fabricante,
-                               vlCusto2 = c.Vl_Custo2,
-                               descricao = c.Descricao,
-                               descricaoHtml = c.Descricao_Html,
-                               ean = c.Ean,
-                               grupo = c.Grupo,
-                               peso = c.Peso,
-                               qtdeVolume = c.Qtde_Volumes,
-                               markupFabricante = c.Tfabricante.Markup,
-                               cubagem = c.Cubagem,
-                               ncm = c.Ncm,
-                               cst = c.Cst,
-                               descontinuado = c.Descontinuado
-                           };
+                                where c.Fabricante == item.Fabricante &&
+                                      c.Produto == item.Produto &&
+                                      c.TprodutoLoja.Loja == loja
+                                select c.Produto;
 
                 var prod = await prodLista.FirstOrDefaultAsync();
 
-                decimal? custoFinanFornecPrecoListaBase = prod.precoLista;
-                
-                if (custoFinancFornecTipoParcelamento == Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA)
-                    coeficiente = 1;
-                else
-                {
-                    var percCustoFinFornecTask = from c in db.TpercentualCustoFinanceiroFornecedors
-                                             where c.Fabricante == p.Fabricante &&
-                                                   c.Tipo_Parcelamento == custoFinancFornecTipoParcelamento &&
-                                                   c.Qtde_Parcelas == short.Parse(custoFinanceiroQtdeParcelas)
-                                             select c;
-                    var percCustoFinFornec = await percCustoFinFornecTask.FirstOrDefaultAsync();
-
-                    if (percCustoFinFornec == null)
-                        lstErros.Add("Opção de parcelamento não disponível para fornecedor " + p.Fabricante + ": " +
-                            DecodificaCustoFinanFornecQtdeParcelas(custoFinancFornecTipoParcelamento, custoFinanceiroQtdeParcelas) + " parcela(s)");
-                    else
-                    {
-                        coeficiente = percCustoFinFornec.Coeficiente;
-                        float precoLista = coeficiente * (float)custoFinanFornecPrecoListaBase;
-                    }
-                    float custoFinanCoeficiente = coeficiente;
-
-                    if (prod.precoLista == 0)
-                        p.Desconto = 0;
-                    else
-                        p.Desconto = (float)(100 * (prod.precoLista - p.Preco) / prod.precoLista);
-
-                }
-
+                if (prod == null)
+                    lstErros.Add("Produto " + item.Produto + " do fabricante " + item.Fabricante +
+                        " NÃO está cadastrado para a loja " + loja);
             }
-
             return lstErros;
         }
 
-        private string DecodificaCustoFinanFornecQtdeParcelas(string tipoParcelamento, string custoFFQtdeParcelas)
+        private string DecodificaCustoFinanFornecQtdeParcelas(string tipoParcelamento, short custoFFQtdeParcelas)
         {
             string retorno = "";
 
@@ -546,6 +1114,122 @@ namespace PrepedidoBusiness.Bll
             return retorno;
         }
 
-       
+        private async Task<Tparametro> BuscarRegistroParametro(string id)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+
+            var parametroTask = from c in db.Tparametros
+                                where c.Id == id
+                                select c;
+
+            var parametro = await parametroTask.FirstOrDefaultAsync();
+
+            return parametro;
+
+        }
+
+        private string MultiCdRegraDeterminaPessoa(string tipoCliente, byte contribuinteIcmsStatus, byte produtoRuralStatus)
+        {
+            string tipoPessoa = "";
+
+            if (tipoCliente == Constantes.ID_PF)
+            {
+                if (produtoRuralStatus == byte.Parse(Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM))
+                    tipoPessoa = Constantes.COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PRODUTOR_RURAL;
+                else if (produtoRuralStatus == byte.Parse(Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO))
+                    tipoPessoa = Constantes.COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PESSOA_FISICA;
+            }
+            else if (tipoCliente == Constantes.ID_PJ)
+            {
+                if (contribuinteIcmsStatus == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM))
+                    tipoPessoa = Constantes.COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PESSOA_JURIDICA_CONTRIBUINTE;
+                else if (contribuinteIcmsStatus == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO))
+                    tipoPessoa = Constantes.COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PESSOA_JURIDICA_NAO_CONTRIBUINTE;
+                else if (contribuinteIcmsStatus == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO))
+                    tipoPessoa = Constantes.COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PESSOA_JURIDICA_ISENTO;
+            }
+
+            return tipoPessoa;
+        }
+
+        private string DescricaoMultiCDRegraTipoPessoa(string codTipoPessoa)
+        {
+            string retorno = "";
+
+            codTipoPessoa = codTipoPessoa.ToUpper();
+
+            switch (codTipoPessoa)
+            {
+                case Constantes.COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PESSOA_FISICA:
+                    retorno = "Pessoa Física";
+                    break;
+                case Constantes.COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PRODUTOR_RURAL:
+                    retorno = "Produtor Rural";
+                    break;
+                case Constantes.COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PESSOA_JURIDICA_CONTRIBUINTE:
+                    retorno = "PJ Contribuinte";
+                    break;
+                case Constantes.COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PESSOA_JURIDICA_NAO_CONTRIBUINTE:
+                    retorno = "PJ Não Contribuinte";
+                    break;
+                case Constantes.COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PESSOA_JURIDICA_ISENTO:
+                    retorno = "PJ Isento";
+                    break;
+            }
+
+            return retorno;
+        }
+
+        private async Task<string> BuscarVendedor(string apelido)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+
+            var vendedorTask = from c in db.TorcamentistaEindicadors
+                               where c.Apelido == apelido
+                               select c.Vendedor;
+            var vendedor = await vendedorTask.FirstOrDefaultAsync();
+
+            return vendedor;
+        }
+
+        private bool LojaHabilitadaProdutosECommerce(string loja)
+        {
+            bool retorno = false;
+
+            if (loja == Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE)
+                retorno = true;
+            if (loja == Constantes.NUMERO_LOJA_BONSHOP)
+                retorno = true;
+            if (IsLojaVrf(loja))
+                retorno = true;
+            if (loja == Constantes.NUMERO_LOJA_MARCELO_ARTVEN)
+                retorno = true;
+            if (loja == Constantes.NUMERO_LOJA_BONSHOP_LAB)
+                retorno = true;
+
+            return retorno;
+        }
+
+        private bool IsLojaVrf(string loja)
+        {
+            bool retorno = false;
+
+            if (loja == Constantes.NUMERO_LOJA_VRF ||
+                loja == Constantes.NUMERO_LOJA_VRF2 ||
+                loja == Constantes.NUMERO_LOJA_VRF3 ||
+                loja == Constantes.NUMERO_LOJA_VRF4)
+                retorno = true;
+
+            return retorno;
+        }
+
+        private string DescobrirQualTipoFormaPagamento(FormaPagtoCriacaoDto formaPagto)
+        {
+            string retorno = "nada";
+
+
+
+            return retorno;
+        }
     }
 }

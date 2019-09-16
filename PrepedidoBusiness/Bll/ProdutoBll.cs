@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using InfraBanco.Modelos;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace PrepedidoBusiness.Bll
 {
@@ -36,6 +37,7 @@ namespace PrepedidoBusiness.Bll
             return retorno;
         }
 
+
         private bool IsLojaVrf(string loja)
         {
             bool retorno = false;
@@ -49,15 +51,17 @@ namespace PrepedidoBusiness.Bll
             return retorno;
         }
 
-        public async Task<IEnumerable<ProdutoDto>> BuscarProduto(string codProduto, string loja, string apelido)
+
+        public async Task<IEnumerable<ProdutoDto>> BuscarProduto(string codProduto, string loja, string apelido, List<string> lstErros)
         {
             //paraTeste
             //apelido = "MARISARJ";
             //codProduto = "003000";
             //loja = "202";
-
+            int qtde = 0;
             bool lojaHabilitada = false;
             decimal vlProdCompostoPrecoListaLoja = 0;
+            ProdutoDto produtoDto = new ProdutoDto();
 
             List<ProdutoDto> lstProduto = new List<ProdutoDto>();
 
@@ -76,13 +80,72 @@ namespace PrepedidoBusiness.Bll
 
                 string parada = "";
 
-                var t = prodCompostoTask.FirstOrDefault();
+                var prodComposto = prodCompostoTask.FirstOrDefault();
 
-                if (t != null)
+                if (prodComposto.Produto_Composto != null)
                 {
-                    
+                    var prodCompostoItensTask = from c in db.TecProdutoCompostoItems
+                                                where c.Fabricante_composto == prodComposto.Fabricante_Composto &&
+                                                      c.Produto_composto == prodComposto.Produto_Composto &&
+                                                      c.Excluido_status == 0
+                                                orderby c.Sequencia
+                                                select c;
+                    var prodCompostoItens = prodCompostoItensTask.ToList();
+
+                    if (prodCompostoItens.Count > 0)
+                    {
+                        foreach (var pi in prodCompostoItens)
+                        {
+                            var produtoTask = from c in db.Tprodutos.Include(r => r.TprodutoLoja)
+                                              where c.TprodutoLoja.Fabricante == pi.Fabricante_item &&
+                                                    c.TprodutoLoja.Produto == pi.Produto_item &&
+                                                    c.TprodutoLoja.Loja == loja
+                                              select c;
+
+                            var produto = await produtoTask.FirstOrDefaultAsync();
+
+                            if (string.IsNullOrEmpty(produto.Produto))
+                                lstErros.Add("O produto(" + pi.Fabricante_item + ")" + pi.Produto_item + " não está disponível para a loja " + loja + "!!");
+                            else
+                            {
+                                produtoDto = new ProdutoDto
+                                {
+                                    Fabricante = pi.Fabricante_item,
+                                    Produto = pi.Produto_item,
+                                    Qtde = pi.Qtde,
+                                    ValorLista = produto.TprodutoLoja.Preco_Lista,
+                                    Descricao = produto.Descricao
+                                };
+                            }
+                        }
+                    }
+
+                }
+                else
+                {
+                    var produtoTask = from c in db.Tprodutos.Include(r => r.TprodutoLoja)
+                                      where c.TprodutoLoja.Produto == codProduto &&
+                                            c.TprodutoLoja.Loja == loja
+                                      select c;
+
+                    var produto = await produtoTask.FirstOrDefaultAsync();
+
+                    if (string.IsNullOrEmpty(produto.Produto))
+                        lstErros.Add("Produto '" + codProduto + "' não foi encontrado para a loja " + loja + "!!");
+                    else
+                    {
+                        produtoDto = new ProdutoDto
+                        {
+                            Fabricante = produto.Fabricante,
+                            Produto = produto.Produto,
+                            Qtde = qtde,
+                            ValorLista = produto.TprodutoLoja.Preco_Lista,
+                            Descricao = produto.Descricao
+                        };
+                    }
                 }
             }
+            
 
 
             return lstProduto;

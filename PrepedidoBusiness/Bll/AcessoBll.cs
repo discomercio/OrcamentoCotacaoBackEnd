@@ -138,7 +138,7 @@ namespace PrepedidoBusiness.Bll
                 s = s_origem.Substring((i - 1), 2);
                 if (s != "00")
                 {
-                    codificar = s_origem.Substring((i - 1), (s_origem.Length - i + 1)); ;
+                    codificar = s_origem.Substring((i - 1), (s_origem.Length - i + 1));
                     break;
                 }
                 i++;

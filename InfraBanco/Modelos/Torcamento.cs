@@ -11,6 +11,7 @@ namespace InfraBanco.Modelos
         [Column("orcamento")]
         [MaxLength(9)]
         [Required]
+        [ForeignKey("TorcamentoItem")]
         public string Orcamento { get; set; }
 
         [Column("loja")]
@@ -315,5 +316,7 @@ namespace InfraBanco.Modelos
         //propriedades
         public Tcliente Tcliente { get; set; }
         public Tpedido Tpedido { get; set; }
+
+        public TorcamentoItem TorcamentoItem { get; set; }
     }
 }

@@ -24,14 +24,14 @@ namespace PrepedidoApi.Controllers
         [AllowAnonymous]
 #endif
         [HttpGet("buscarProduto")]
-        public async Task<IActionResult>BuscarProduto(string codProduto, string loja)
+        public async Task<IActionResult> BuscarProduto(string codProduto, string loja)
         {
             //para testar: http://localhost:60877/api/produto/buscarProduto
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
             //string apelido = "SALOMÃO";
-            var ret = await produtoBll.BuscarProduto(codProduto, loja, apelido);
+            //var ret = await produtoBll.BuscarProduto(codProduto, loja, apelido);
 
-            return Ok(ret);
+            return Ok();
         }
     }
 }

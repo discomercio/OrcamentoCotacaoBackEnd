@@ -24,6 +24,7 @@ namespace PrepedidoBusiness.Dtos.Prepedido.DetalhesPrepedido
         public decimal? VlTotalDestePedido { get; set; }
         public DetalhesDtoPrepedido DetalhesPrepedido { get; set; }
         public List<string> FormaPagto { get; set; }
+        public FormaPagtoCriacaoDto FormaPagtoCriacao { get; set; }
         public bool St_Orc_Virou_Pedido { get; set; }//se virou pedido retornar esse campo
         public string NumeroPedido { get; set; }//se virou pedido retornar esse campo
     }

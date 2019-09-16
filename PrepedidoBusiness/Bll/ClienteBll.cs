@@ -43,50 +43,52 @@ namespace PrepedidoBusiness.Bll
                         select c;
             var cli = await dados.FirstOrDefaultAsync();
 
-            if (cli == null)
+            if (cli != null)
             {
-                lstErros.Add("Registro do cliente não encontrado.");
-            }
-
-            if (lstErros.Count == 0)
-            {
-                using (TransactionScope trans = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                if (lstErros.Count == 0)
                 {
-                    db = contextoProvider.GetContextoGravacao();
-
-                    if (dadosClienteCadastroDto.Contribuinte_Icms_Status == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM) &&
-                    dadosClienteCadastroDto.Ie != null || dadosClienteCadastroDto.Ie != "")
+                    using (TransactionScope trans = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                     {
-                        cli.Ie = dadosClienteCadastroDto.Ie;
-                        if (dadosClienteCadastroDto.Contribuinte_Icms_Status != cli.Contribuinte_Icms_Status)
-                        {
-                            //fazer a implementação do contribuinte
-                            cli.Contribuinte_Icms_Status = dadosClienteCadastroDto.Contribuinte_Icms_Status;
-                            cli.Contribuinte_Icms_Data = DateTime.Now;
-                            cli.Contribuinte_Icms_Data_Hora = DateTime.Now;
-                            cli.Contribuinte_Icms_Usuario = apelido;
-                        }
-                        if (dadosClienteCadastroDto.Tipo == Constantes.ID_PF &&
-                            dadosClienteCadastroDto.ProdutorRural != byte.Parse(Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL) &&
-                            dadosClienteCadastroDto.ProdutorRural != cli.Produtor_Rural_Status)
-                        {
-                            cli.Produtor_Rural_Status = dadosClienteCadastroDto.ProdutorRural;
-                            cli.Produtor_Rural_Data = DateTime.Now;
-                            cli.Produtor_Rural_Data_Hora = DateTime.Now;
-                            cli.Produtor_Rural_Usuario = apelido;
-                        }
-                        cli.Dt_Ult_Atualizacao = DateTime.Now;
-                        cli.Usuario_Ult_Atualizacao = apelido;
+                        db = contextoProvider.GetContextoGravacao();
 
-                        db.Update(cli);
-                        db.SaveChanges();
+                        if (dadosClienteCadastroDto.Contribuinte_Icms_Status == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM) &&
+                        dadosClienteCadastroDto.Ie != null || dadosClienteCadastroDto.Ie != "")
+                        {
+                            cli.Ie = dadosClienteCadastroDto.Ie;
+                            if (dadosClienteCadastroDto.Contribuinte_Icms_Status != cli.Contribuinte_Icms_Status)
+                            {
+                                //fazer a implementação do contribuinte
+                                cli.Contribuinte_Icms_Status = dadosClienteCadastroDto.Contribuinte_Icms_Status;
+                                cli.Contribuinte_Icms_Data = DateTime.Now;
+                                cli.Contribuinte_Icms_Data_Hora = DateTime.Now;
+                                cli.Contribuinte_Icms_Usuario = apelido;
+                            }
+                            if (dadosClienteCadastroDto.Tipo == Constantes.ID_PF &&
+                                dadosClienteCadastroDto.ProdutorRural != byte.Parse(Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL) &&
+                                dadosClienteCadastroDto.ProdutorRural != cli.Produtor_Rural_Status)
+                            {
+                                cli.Produtor_Rural_Status = dadosClienteCadastroDto.ProdutorRural;
+                                cli.Produtor_Rural_Data = DateTime.Now;
+                                cli.Produtor_Rural_Data_Hora = DateTime.Now;
+                                cli.Produtor_Rural_Usuario = apelido;
+                            }
+                            cli.Dt_Ult_Atualizacao = DateTime.Now;
+                            cli.Usuario_Ult_Atualizacao = apelido;
 
-                        log = Utils.Util.MontaLog(cli, log, campos_a_omitir);
-                        //Essa parte esta na pagina ClienteAtualiza.asp linha 1113
-                        bool salvouLog = Utils.Util.GravaLog(apelido, dadosClienteCadastroDto.Loja, "", dadosClienteCadastroDto.Id,
-                            Constantes.OP_LOG_CLIENTE_ALTERACAO, log, contextoProvider);
+                            db.Update(cli);
+                            db.SaveChanges();
+
+                            log = Utils.Util.MontaLog(cli, log, campos_a_omitir);
+                            //Essa parte esta na pagina ClienteAtualiza.asp linha 1113
+                            bool salvouLog = Utils.Util.GravaLog(apelido, dadosClienteCadastroDto.Loja, "", dadosClienteCadastroDto.Id,
+                                Constantes.OP_LOG_CLIENTE_ALTERACAO, log, contextoProvider);
+                        }
                     }
                 }
+            }
+            else
+            {
+                lstErros.Add("Registro do cliente não encontrado.");
             }
 
             return lstErros;
@@ -321,46 +323,46 @@ namespace PrepedidoBusiness.Bll
                 {
                     Id = id_cliente,
                     Dt_Cadastro = DateTime.Now,
-                    Usuario_Cadastrado = apelido,
-                    Indicador = apelido,
+                    Usuario_Cadastrado = apelido.ToUpper(),
+                    Indicador = apelido.ToUpper(),
                     Cnpj_Cpf = clienteDto.Cnpj_Cpf.Replace(".", "").Replace("/", "").Replace("-", ""),
-                    Tipo = clienteDto.Tipo,
+                    Tipo = clienteDto.Tipo.ToUpper(),
                     Ie = clienteDto.Ie,
                     Rg = clienteDto.Rg,
-                    Nome = clienteDto.Nome,
-                    Sexo = clienteDto.Sexo,
+                    Nome = clienteDto.Nome.ToUpper(),
+                    Sexo = clienteDto.Sexo.ToUpper(),
                     Contribuinte_Icms_Status = clienteDto.Contribuinte_Icms_Status,
                     Contribuinte_Icms_Data = DateTime.Now,
                     Contribuinte_Icms_Data_Hora = DateTime.Now,
-                    Contribuinte_Icms_Usuario = apelido,
+                    Contribuinte_Icms_Usuario = apelido.ToUpper(),
                     Produtor_Rural_Status = clienteDto.ProdutorRural,
                     Produtor_Rural_Data = DateTime.Now,
                     Produtor_Rural_Data_Hora = DateTime.Now,
-                    Produtor_Rural_Usuario = apelido,
-                    Endereco = clienteDto.Endereco,
+                    Produtor_Rural_Usuario = apelido.ToUpper(),
+                    Endereco = clienteDto.Endereco.ToUpper(),
                     Endereco_Numero = clienteDto.Numero,
                     Endereco_Complemento = clienteDto.Complemento,
-                    Bairro = clienteDto.Bairro,
-                    Cidade = clienteDto.Cidade,
-                    Cep = clienteDto.Cep,
-                    Uf = clienteDto.Uf,
+                    Bairro = clienteDto.Bairro.ToUpper(),
+                    Cidade = clienteDto.Cidade.ToUpper(),
+                    Cep = clienteDto.Cep.Replace("-", ""),
+                    Uf = clienteDto.Uf.ToUpper(),
                     Ddd_Res = clienteDto.DddResidencial,
                     Tel_Res = clienteDto.TelefoneResidencial,
                     Ddd_Com = clienteDto.DddComercial,
                     Tel_Com = clienteDto.TelComercial,
                     Ramal_Com = clienteDto.Ramal,
-                    Contato = clienteDto.Contato,
+                    Contato = clienteDto.Contato.ToUpper(),
                     Ddd_Com_2 = clienteDto.DddComercial2,
                     Tel_Com_2 = clienteDto.TelComercial2,
                     Ramal_Com_2 = clienteDto.Ramal2,
                     Dt_Nasc = clienteDto.Nascimento,
-                    Filiacao = clienteDto.Observacao_Filiacao,
+                    Filiacao = clienteDto.Observacao_Filiacao.ToUpper(),
                     Obs_crediticias = "",
                     Midia = "",
                     Email = clienteDto.Email,
                     Email_Xml = clienteDto.EmailXml,
                     Dt_Ult_Atualizacao = DateTime.Now,
-                    Usuario_Ult_Atualizacao = apelido
+                    Usuario_Ult_Atualizacao = apelido.ToUpper()
                 };
 
                 var db = contextoProvider.GetContextoGravacao();
@@ -485,9 +487,13 @@ namespace PrepedidoBusiness.Bll
             if (string.IsNullOrEmpty(uf))
                 erros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
                     "a UF não foi informada!!");
-            if (uf.Length > 2)
-                erros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
-                    "a UF é inválida (" + uf + ")!!");
+            else
+            {
+                if (uf.Length > 2)
+                    erros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
+                        "a UF é inválida (" + uf + ")!!");
+            }
+
             if (erros.Count == 0)
             {
                 var nfEmitente = from c in db.TnfEmitentes
@@ -562,8 +568,8 @@ namespace PrepedidoBusiness.Bll
 
             if (cliente.Cnpj_Cpf == "")
                 listaErros.Add("CNPJ / CPF NÃO FORNECIDO.");
-            if (!Utils.Util.ValidaCpf_Cnpj(cliente.Cnpj_Cpf))
-                listaErros.Add("CNPJ/CPF INVÁLIDO.");
+            //if (!Utils.Util.ValidaCpf_Cnpj(cliente.Cnpj_Cpf))
+            //    listaErros.Add("CNPJ/CPF INVÁLIDO.");
 
             if (ehCpf)
             {
@@ -574,20 +580,45 @@ namespace PrepedidoBusiness.Bll
                     if (cliente.Tipo == Constantes.ID_PF)
                         listaErros.Add("PREENCHA O NOME DO CLIENTE.");
                 }
+                //a verificação de Nascimento esta sendo feita no cliente
+                //if (cliente.Nascimento == null)
+                //    listaErros.Add("DATA DE NASCIMENTO É INVÁLIDA.");
+                
                 if (cliente.Tipo == Constantes.ID_PF &&
                 cliente.TelefoneResidencial == "" &&
                 cliente.TelComercial == "" &&
                 cliente.Celular == "")
                     listaErros.Add("PREENCHA PELO MENOS UM TELEFONE.");
+                else if (cliente.DddResidencial.Length != 2 && cliente.DddResidencial != "")
+                    listaErros.Add("DDD INVÁLIDO.");
+                else if (cliente.TelefoneResidencial.Length < 6 && cliente.TelefoneResidencial != "")
+                    listaErros.Add("TELEFONE RESIDENCIAL INVÁLIDO.");
+                else if (cliente.DddResidencial != "" && cliente.TelefoneResidencial == "")
+                    listaErros.Add("PREENCHA O TELEFONE RESIDENCIAL.");
+                else if (cliente.DddResidencial == "" && cliente.TelefoneResidencial != "")
+                    listaErros.Add("PREENCHA O DDD.");
+                else if (cliente.TelComercial != "" && cliente.DddComercial == "")
+                    listaErros.Add("PREENCHA O DDD COMERCIAL.");
+                else if (cliente.DddComercial != "" && cliente.TelComercial == "")
+                    listaErros.Add("PREENCHA O TELEFONE COMERCIAL.");
             }
             else
             {
-                if (cliente.Tipo == Constantes.ID_PJ)
+                if (cliente.Tipo == Constantes.ID_PJ && cliente.Nome == "")
                     listaErros.Add("PREENCHA A RAZÃO SOCIAL DO CLIENTE.");
                 if (cliente.Tipo == Constantes.ID_PJ &&
                 cliente.TelComercial == "" &&
                 cliente.TelComercial2 == "")
                     listaErros.Add("PREENCHA O TELEFONE.");
+
+                if (cliente.DddComercial.Length != 2 && cliente.DddComercial != "")
+                    listaErros.Add("DDD INVÁLIDO.");
+                else if (cliente.TelComercial.Length < 6 && cliente.TelComercial != "")
+                    listaErros.Add("TELEFONE COMERCIAL INVÁLIDO.");
+                else if (cliente.DddComercial != "" && cliente.TelComercial == "")
+                    listaErros.Add("PREENCHA O TELEFONE COMERCIAL.");
+                else if (cliente.DddComercial == "" && cliente.TelComercial != "")
+                    listaErros.Add("PREENCHA O DDD.");
             }
 
             if (cliente.Endereco == "")
@@ -608,22 +639,8 @@ namespace PrepedidoBusiness.Bll
                 listaErros.Add("INFORME O CEP.");
             if (!Utils.Util.VerificaCep(cliente.Cep))
                 listaErros.Add("CEP INVÁLIDO.");
-            if (cliente.DddResidencial.Length != 2)
-                listaErros.Add("DDD INVÁLIDO.");
-            if (cliente.TelefoneResidencial.Length < 6)
-                listaErros.Add("TELEFONE RESIDENCIAL INVÁLIDO.");
-            if (cliente.DddResidencial != "" && cliente.TelefoneResidencial == "")
-                listaErros.Add("PREENCHA O TELEFONE RESIDENCIAL.");
-            if (cliente.DddResidencial == "" && cliente.TelefoneResidencial != "")
-                listaErros.Add("PREENCHA O DDD.");
-            if (cliente.DddComercial.Length != 2)
-                listaErros.Add("DDD INVÁLIDO.");
-            if (cliente.TelComercial.Length < 6)
-                listaErros.Add("TELEFONE COMERCIAL INVÁLIDO.");
-            if (cliente.DddComercial != "" && cliente.TelComercial == "")
-                listaErros.Add("PREENCHA O TELEFONE COMERCIAL.");
-            if (cliente.DddComercial == "" && cliente.TelComercial != "")
-                listaErros.Add("PREENCHA O DDD.");            
+
+
             if (cliente.Ie == "" &&
                 Convert.ToString(cliente.Contribuinte_Icms_Status) == Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
                 listaErros.Add("PREENCHA A INSCRIÇÃO ESTADUAL.");
@@ -632,6 +649,7 @@ namespace PrepedidoBusiness.Bll
                 Convert.ToString(cliente.Contribuinte_Icms_Status) == Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
                     listaErros.Add("Para ser cadastrado como Produtor Rural, " +
                         "é necessário ser contribuinte do ICMS e possuir nº de IE");
+
             string s_tabela_municipios_IBGE = "";
             if (cliente.Ie != "")
             {
@@ -708,7 +726,7 @@ namespace PrepedidoBusiness.Bll
                     {
                         if (DateTime.Now.Year > controle.Dt_Ult_Atualizacao.Year)
                         {
-                            s = Normaliza_Codigo(s, Constantes.TAM_MAX_NSU);
+                            s = Utils.Util.Normaliza_Codigo(s, Constantes.TAM_MAX_NSU);
                             controle.Dt_Ult_Atualizacao = DateTime.Now;
                             if (!String.IsNullOrEmpty(controle.Ano_Letra_Seq))
                             {
@@ -726,7 +744,7 @@ namespace PrepedidoBusiness.Bll
                 }
                 n_nsu += 1;
                 s = Convert.ToString(n_nsu);
-                s = Normaliza_Codigo(s, Constantes.TAM_MAX_NSU);
+                s = Utils.Util.Normaliza_Codigo(s, Constantes.TAM_MAX_NSU);
                 if (s.Length == 12)
                 {
                     i = 101;
@@ -746,23 +764,6 @@ namespace PrepedidoBusiness.Bll
                     {
                         retorno = "Não foi possível gerar o NSU, pois ocorreu o seguinte erro: " + ex.HResult + ":" + ex.Message;
                     }
-                }
-            }
-
-            return retorno;
-        }
-
-        private static string Normaliza_Codigo(string cod, int tamanho_default)
-        {
-            string retorno = cod;
-            string s = "0";
-
-
-            if (cod != "")
-            {
-                for (int i = cod.Length; i < tamanho_default; i++)
-                {
-                    retorno = s + retorno;
                 }
             }
 

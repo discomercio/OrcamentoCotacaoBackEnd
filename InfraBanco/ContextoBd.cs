@@ -41,7 +41,14 @@ namespace InfraBanco
         public DbSet<TnfEmitente> TnfEmitentes { get; set; }
         public DbSet<TecProdutoComposto> TecProdutoCompostos { get; set; }
         public DbSet<Tfabricante> Tfabricantes { get; set; }
+        public DbSet<Tparametro> Tparametros { get; set; }
         public DbSet<TpercentualCustoFinanceiroFornecedor> TpercentualCustoFinanceiroFornecedors { get; set; }
+        public DbSet<TprodutoXwmsRegraCd> TprodutoXwmsRegraCds { get; set; }
+        public DbSet<TwmsRegraCd> TwmsRegraCds { get; set; }
+        public DbSet<TwmsRegraCdXUf> TwmsRegraCdXUfs { get; set; }
+        public DbSet<TwmsRegraCdXUfPessoa> TwmsRegraCdXUfPessoas { get; set; }
+        public DbSet<TwmsRegraCdXUfXPessoaXCd> TwmsRegraCdXUfXPessoaXCds { get; set; }
+        public DbSet<TecProdutoCompostoItem> TecProdutoCompostoItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -46,7 +46,7 @@ namespace InfraBanco.Modelos
 
         [Column("preco_lista")]
         [Required]
-        public decimal Preco_Lista { get; set; }
+        public decimal? Preco_Lista { get; set; }
 
         [Column("margem")]
         public float? Margem { get; set; }
@@ -134,5 +134,7 @@ namespace InfraBanco.Modelos
         [Column("descontinuado")]
         [MaxLength(1)]
         public string Descontinuado { get; set; }
+
+        
     }
 }

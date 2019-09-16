@@ -46,18 +46,18 @@ namespace PrepedidoBusiness.Utils
             bool retorno = false;
             string formatCpf_Cnpj = "";
 
+            cpf_cnpj = cpf_cnpj.Replace(".", "").Replace("/", "").Replace("-", "");
+
             if (cpf_cnpj.Length >= 11)
-            {                
-                if (cpf_cnpj.Length > 12)
+            {
+                retorno = true;
+
+                if (cpf_cnpj.Length >= 14)
                 {
-                    retorno = true;
-                }
-                else
-                {
-                    retorno = true;
+                    retorno = false;
                 }
             }
-            if(cpf_cnpj.Length < 11)
+            if (cpf_cnpj.Length < 11)
             {
                 retorno = false;
             }
@@ -136,7 +136,7 @@ namespace PrepedidoBusiness.Utils
             string sigla = "AC AL AM AP BA CE DF ES GO MA MG MS MT PA PB PE PI PR RJ RN RO RR RS SC SE SP TO  ";
 
             if (uf.Length == 2)
-                if (sigla.Contains(uf))
+                if (sigla.Contains(uf.ToUpper()))
                     retorno = true;
 
             return retorno;
@@ -278,6 +278,69 @@ namespace PrepedidoBusiness.Utils
             db.SaveChanges();
 
             return true;
+        }
+
+        public static string Normaliza_Codigo(string cod, int tamanho_default)
+        {
+            string retorno = cod;
+            string s = "0";
+
+
+            if (cod != "")
+            {
+                for (int i = cod.Length; i < tamanho_default; i++)
+                {
+                    retorno = s + retorno;
+                }
+            }
+
+            return retorno;
+        }
+
+        public static bool ValidarTipoCustoFinanceiroFornecedor(List<string> lstErros, string custoFinanceiroTipoParcelato)
+        {
+            bool retorno = true;
+
+            if (custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA &&
+                custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA &&
+                custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA)
+            {
+                lstErros.Add("A forma de pagamento não foi informada (à vista, com entrada, sem entrada).");
+                retorno = false;
+            }
+            if (custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA &&
+                custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA)
+            {
+                if (int.Parse(custoFinanceiroTipoParcelato) <= 0)
+                {
+                    lstErros.Add("Não foi informada a quantidade de parcelas para a forma de pagamento selecionada " +
+                        "(" + DescricaoCustoFornecTipoParcelamento(custoFinanceiroTipoParcelato) + ")");
+                    retorno = false;
+                }
+            }
+
+
+            return retorno;
+        }
+
+        public static string DescricaoCustoFornecTipoParcelamento(string custoFinanceiro)
+        {
+            string retorno = "";
+
+            switch (custoFinanceiro)
+            {
+                case Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA:
+                    retorno = "Com Entrada";
+                    break;
+                case Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA:
+                    retorno = "Sem Entrada";
+                    break;
+                case Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA:
+                    retorno = "À Vista";
+                    break;
+            }
+
+            return retorno;
         }
     }
 }
