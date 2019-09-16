@@ -34,7 +34,7 @@ export class AutenticacaoService {
 
   public authLogout(): void {
     this.http.get(environment.apiUrl + 'acesso/fazerLogout').subscribe(
-      e=>{
+      e => {
         //nao fazemos nada..
       }
     );
@@ -66,6 +66,12 @@ export class AutenticacaoService {
     const user = jtw_decode(token);
     if (!user)
       return false;
+
+    //vamos ver se extá expirado
+    const expira: Date = new Date(user.exp * 1000);
+    if (expira < new Date())
+      return false;
+
     return true;
   }
 
@@ -74,8 +80,7 @@ export class AutenticacaoService {
     if (this._NomeUsuario == null) {
       const token = this.obterToken();
       const user = jtw_decode(token);
-      if (user)
-        this._NomeUsuario = (user && user.nameid) ? user.nameid : "não logado";
+      this._NomeUsuario = (user && user.nameid) ? user.nameid : "não logado";
     }
     return this._NomeUsuario;
   }
@@ -100,12 +105,12 @@ export class AutenticacaoService {
     this.renovacaoPendnete = true;
     this.http.get(environment.apiUrl + 'acesso/RenovarToken').subscribe(
       {
-        next:(e)=> {
+        next: (e) => {
           this.setarToken(e as string);
           this.renovacaoPendnete = false;
         },
-        error:()=> { this.renovacaoPendnete = false; },
-        complete:()=> { this.renovacaoPendnete = false; }
+        error: () => { this.renovacaoPendnete = false; },
+        complete: () => { this.renovacaoPendnete = false; }
       }
     );
   }

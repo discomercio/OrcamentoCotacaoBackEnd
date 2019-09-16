@@ -26,6 +26,11 @@ const routes: Routes = [
         component: CadastrarClienteComponent
       },
       {
+        path: 'itens/:numeroPrepedido',
+        canActivate: [LoginGuard],
+        component: ItensComponent
+      },
+      {
         path: 'itens',
         canActivate: [LoginGuard],
         component: ItensComponent

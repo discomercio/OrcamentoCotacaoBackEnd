@@ -38,4 +38,7 @@ export class PrepedidoBuscarService {
     return this.pedidos$;
   }
 
+  public Obter_Permite_RA_Status():Observable<number> {
+    return this.http.get<any>(environment.apiUrl + 'prepedido/obter_permite_ra_status');
+  }
 }

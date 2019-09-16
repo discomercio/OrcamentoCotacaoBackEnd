@@ -34,10 +34,12 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     private readonly novoPrepedidoDadosService: NovoPrepedidoDadosService,
     private readonly buscarClienteService: BuscarClienteService) {
     super(telaDesktopService);
+  }
 
+  ngOnInit() {
     this.dadosClienteCadastroDto = null;
-    if (router.getCurrentNavigation()) {
-      let clienteCadastroDto: ClienteCadastroDto = (router.getCurrentNavigation().extras.state) as ClienteCadastroDto;
+    if (this.router.getCurrentNavigation()) {
+      let clienteCadastroDto: ClienteCadastroDto = (this.router.getCurrentNavigation().extras.state) as ClienteCadastroDto;
       if (clienteCadastroDto && clienteCadastroDto.DadosCliente) {
         //estramente, precisamos fazer por timeout
         //é que, se for simplesmente setado, ele não "percebe" que foi carregado
@@ -54,13 +56,13 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
       //voltamos para a tela anterior: router.navigate(["/novo-prepedido"]);
 
       //ou melhor, fazemos a busca de novo!
-      const clienteBusca = activatedRoute.snapshot.params.cpfCnpj;
+      const clienteBusca = this.activatedRoute.snapshot.params.cpfCnpj;
 
-      buscarClienteService.buscar(clienteBusca).toPromise()
+      this.buscarClienteService.buscar(clienteBusca).toPromise()
         .then((r) => {
           if (r === null) {
             //erro, voltamos para a tela anterior
-            router.navigate(["/novo-prepedido"]);
+            this.router.navigate(["/novo-prepedido"]);
             return;
           }
           //cliente já existe
@@ -69,12 +71,15 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
           this.salvarAtivoInicializar();
         }).catch((r) => {
           //erro, voltamos para a tela anterior
-          router.navigate(["/novo-prepedido"]);
+          this.router.navigate(["/novo-prepedido"]);
         });
     }
-  }
+    else {
+      //inicializamos
+      this.salvarAtivoInicializar();
+    }
 
-  ngOnInit() {
+
     //inicializar as fases
     this.fase1 = true;
     this.fase2 = false;
@@ -105,8 +110,8 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
       return false;
     }
     //se estiver com NULL é pq ainda não pegou os valores
-    if (!this.dadosClienteCadastroDtoIe) {
-      this.salvarAtivoInicializar();
+    if (this.dadosClienteCadastroDtoIe == null) {
+      return false;
     }
     if (this.dadosClienteCadastroDtoIe !== this.dadosClienteCadastroDto.Ie) {
       return true;

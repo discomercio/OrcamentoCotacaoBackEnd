@@ -6,18 +6,19 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
  -->
 
 <section [ngClass]="{'sectionDesktop': telaDesktop, 'sectionCelular': !telaDesktop}" *ngIf="prePedidoDto">
-    <form style="display: contents;">
-        <header>
-            <ng-container *ngIf="criando; else tituloEditando">Criar Pré-pedido</ng-container>
-            <ng-template #tituloEditando>Editar Pré-pedido</ng-template>
-        </header>
-        <article>
-            <div><strong>Cliente:</strong> {{cpfCnpj()}} - {{prePedidoDto.DadosCliente.Nome}}</div>
+	<form style="display: contents;">
+		<header>
+			<ng-container *ngIf="criando; else tituloEditando">Criar Pré-pedido</ng-container>
+			<ng-template #tituloEditando>Editar Pré-pedido</ng-template>
+			- afazer: tela ainda em desenvolvimento
+		</header>
+		<article>
+			<div><strong>Cliente:</strong> {{cpfCnpj()}} - {{prePedidoDto.DadosCliente.Nome}}</div>
 
-            <!-- afazer: -->
-            <!--  RELAÇÃO DE PRODUTOS SEM PRESENÇA NO ESTOQUE -->
+			<!-- afazer: -->
+			<!--  RELAÇÃO DE PRODUTOS SEM PRESENÇA NO ESTOQUE -->
 
-            <!--             
+			<!--             
 <% if erro_produto_indisponivel then %>
 !--  RELAÇÃO DE PRODUTOS SEM PRESENÇA NO ESTOQUE --
 <table class="Qx" cellspacing="0">
@@ -63,87 +64,109 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 nessa condição ele nao mostra o resto da tela e não deixa continuar....
 <br> -->
 
-            <div><a mat-raised-button (click)="adicionarProduto()">
-                    <mat-icon>add</mat-icon> Adicionar produto
-                </a></div>
+			<div style="width: 100%; text-align: right; padding-bottom: 1em;">
+				<div><a mat-raised-button (click)="adicionarProduto()">
+						<mat-icon>add</mat-icon> Adicionar produto
+					</a></div>
+			</div>
 
+			<!--  R E L A Ç Ã O   D E   P R O D U T O S  -->
+			<!-- afazer fazendo -->
+			<table class="tabelaresponsiva">
+				<thead>
 
-            <!--  R E L A Ç Ã O   D E   P R O D U T O S  -->
-            <!-- afazer fazendo -->
-            <table class="tabelaresponsiva">
-                <thead>
+					<tr bgcolor="#FFFFFF">
+						<th scope="col" class="MB" align="left" valign="bottom"><span class="PLTe">Código</span></th>
+						<th scope="col" class="MB" align="left" valign="bottom"><span class="PLTe">Descrição</span></th>
 
-                    <tr bgcolor="#FFFFFF">
-                        <th scope="col" class="MB" align="left" valign="bottom"><span class="PLTe">Código</span></th>
-                        <th scope="col" class="MB" align="left" valign="bottom"><span class="PLTe">Descrição</span></th>
-                        <th scope="col" class="MB tdProdObs" align="left" valign="bottom"><span class="PLTe">Observações</span></th>
-                        <th scope="col" class="MB" align="right" valign="bottom"><span class="PLTd">Qtde</span></th>
-                        <!-- afazer -->
-                        <!-- <% if r_orcamentista_e_indicador.permite_RA_status = 1 then %> -->
-                        <th scope="col" class="MB" align="right" valign="bottom"><span class="PLTd">Preço</span></th>
-                        <!-- <% end if %> -->
-                        <th scope="col" class="MB" align="right" valign="bottom"><span class="PLTd">VL Lista</span></th>
-                        <th scope="col" class="MB" align="right" valign="bottom"><span class="PLTd">Desc%</span></th>
-                        <th scope="col" class="MB" align="right" valign="bottom"><span class="PLTd">VL Venda</span></th>
-                        <th scope="col" class="MB" align="right" valign="bottom"><span class="PLTd">VL Total</span></th>
-                    </tr>
-                </thead>
-                <tbody>
+						<!-- esta coluna está oculta: $(".tdProdObs").hide(); 
+						<th scope="col" class="MB tdProdObs" align="left" valign="bottom"><span class="PLTe">Observações</span></th> -->
 
-                    <tr *ngFor="let i of prePedidoDto?.ListaProdutos">
-                        <td scope="row" data-label="Código" class="MDBE" align="left"  >
-                            {{i.Fabricante}}/{{i.NumProduto}}
-                        </td>
-                        <td class="MDB" align="left" style="width:277px;">
-                            <span class="PLLe" [innerHTML]="i.Descricao"></span>
-                        </td>
-                        <!-- afazer: confuso.....
+						<th scope="col" class="MB" align="right" valign="bottom"><span class="PLTd">Qtde</span></th>
+						<!-- <% if r_orcamentista_e_indicador.permite_RA_status = 1 then %> -->
+						<th *ngIf="permite_RA_Status" scope="col" class="MB" align="right" valign="bottom"><span
+								class="PLTd">Preço</span></th>
+						<!-- <% end if %> -->
+						<th scope="col" class="MB" align="right" valign="bottom"><span class="PLTd">VL Lista</span></th>
+						<th scope="col" class="MB" align="right" valign="bottom"><span class="PLTd">Desc%</span></th>
+						<th scope="col" class="MB" align="right" valign="bottom"><span class="PLTd">VL Venda</span></th>
+						<th scope="col" class="MB" align="right" valign="bottom"><span class="PLTd">VL Total</span></th>
+						<th scope="col">
+							<!-- excluir  -->
+						</th>
+
+					</tr>
+				</thead>
+				<tbody>
+
+					<tr *ngFor="let i of prePedidoDto?.ListaProdutos">
+						<td scope="row" data-label="Código" class="MDBE" align="left">
+							{{i.Fabricante}}/{{i.NumProduto}}
+						</td>
+						<td data-label="Descrição" class="MDB" align="left">
+							<span class="PLLe" [innerHTML]="i.Descricao"></span>
+						</td>
+						<!-- esta coluna está oculta: 
+							$(".tdProdObs").hide(); 
                     <td class="MDB tdProdObs" align="left">
                         <% if isLojaHabilitadaProdCompostoECommerce(loja) then s_campo_focus="c_desc" else s_campo_focus="c_vl_unitario"%>
                         <input name="c_obs" id="c_obs" maxlength="10" class="PLLe" style="width:80px;"
                             onkeypress="if (digitou_enter(true)) <%if r_orcamentista_e_indicador.permite_RA_status = 1 then Response.Write "fORC.c_vl_NF" else Response.Write "fORC." & s_campo_focus%>[<%=Cstr(i-1)%>].focus(); filtra_nome_identificador();"
                             onblur="this.value=trim(this.value);" value='' <%=s_readonly%> />
-                    </td> -->
-                        <td class="MDB" align="right">
-                            <input name="c_qtde" id="c_qtde" class="PLLd" style="width:27px;" value='{{i.Qtde}}'
-                                readonly tabindex=-1 />
-                        </td>
-                        <!-- afazer
-                    <% if r_orcamentista_e_indicador.permite_RA_status = 1 then %>
-                    <td class="MDB" align="right">
-                        <% if isLojaHabilitadaProdCompostoECommerce(loja) then s_campo_focus="c_desc" else s_campo_focus="c_vl_unitario"%>
-                        <input name="c_vl_NF" id="c_vl_NF" class="PLLd" style="width:62px;"
-                            onkeypress="if (digitou_enter(true)) fORC.<%=s_campo_focus%>[<%=Cstr(i-1)%>].focus(); filtra_moeda_positivo();"
-                            onblur="this.value=formata_moeda(this.value); recalcula_RA(); recalcula_parcelas();"
-                            value='<%=s_preco_lista%>' <%=s_readonly%> />
-                    </td>
-                    <% end if %> -->
-                        <td class="MDB" align="right">
-                            <input name="c_preco_lista" id="c_preco_lista" class="PLLd" style="width:62px;"
-                                value='{{i.VlLista}}' readonly tabindex=-1 />
-                        </td>
-                        <!-- afazer tratamento do teclado
-                    <td class="MDB" align="right">
-                        <input name="c_desc" id="c_desc" class="PLLd" style="width:36px;" value=""
-                            <% if isLojaHabilitadaProdCompostoECommerce(loja) then %> <%=s_readonly%>
+					</td> -->
+
+						<td class="MDB" align="right">
+							<input name="c_qtde" id="c_qtde" class="PLLd" style="width:27px;" value='{{i.Qtde}}' />
+						</td>
+						<td *ngIf="permite_RA_Status" class="MDB" align="right">
+							<input name="c_vl_NF" id="c_vl_NF" class="PLLd" style="width:62px;" value='{{i.Preco}}' />
+						</td>
+
+						<!-- afazer no campo antrior:
+					                            onkeypress="if (digitou_enter(true)) fORC.<%=s_campo_focus%>[<%=Cstr(i-1)%>].focus(); filtra_moeda_positivo();"
+							onblur="this.value=formata_moeda(this.value); recalcula_RA(); recalcula_parcelas();" -->
+
+
+						<td class="MDB" align="right">
+							{{i.VlLista}}
+						</td>
+
+
+						<!-- no original somente isLojaHabilitadaProdCompostoECommerce podia digitar o desconto, 
+						mas todo mundo podia digitar o c_vl_unitario
+						mudamos para deixar todo mundo digitar o desconto -->
+						<!-- afazer tratamento do teclado 
                             onkeypress="if (digitou_enter(true)){fORC.c_vl_unitario[<%=Cstr(i-1)%>].focus();} filtra_percentual();"
                             onblur="this.value=formata_perc_desconto(this.value); calcula_desconto(<%=Cstr(i-1)%>); trata_edicao_RA(<%=Cstr(i-1)%>); recalcula_total_linha(<%=Cstr(i)%>); recalcula_RA();"
-                            <% else %> readonly tabindex=-1 <% end if %> />
-                    </td> -->
-                        <!-- afazer
-                    <td class="MDB" align="right">
-                        <input name="c_vl_unitario" id="c_vl_unitario" class="PLLd" style="width:62px;"
+						-->
+						<td class="MDB" align="right">
+							<input name="c_desc" id="c_desc" class="PLLd" style="width:36px;" value="{{i.Desconto}}" />
+						</td>
+
+
+						<!-- afazer tratamento do teclado 
                             onkeypress="if (digitou_enter(true)) {if ((<%=Cstr(i)%>==fORC.c_vl_unitario.length)||(trim(fORC.c_produto[<%=Cstr(i)%>].value)=='')) fORC.c_obs1.focus(); else fORC.c_obs[<%=Cstr(i)%>].focus();} filtra_moeda_positivo();"
                             onblur="this.value=formata_moeda(this.value); recalcula_total(<%=Cstr(i)%>); recalcula_RA(); recalcula_parcelas();"
-                            value='<%=s_preco_lista%>' <%=s_readonly%> />
-                    </td> -->
-                        <td class="MDB" align="right">
-                            <input name="c_vl_total" id="c_vl_total" class="PLLd" style="width:70px;"
-                                value='{{i.TotalItem}}' readonly tabindex=-1 />
-                        </td>
-                    </tr>
+                     	-->
+						<td class="MDB" align="right">
+							<input name="c_vl_unitario" id="c_vl_unitario" class="PLLd" style="width:62px;"
+								value='{{i.VlUnitario}}' />
+						</td>
 
-                    <!-- afazer parte de baixo da tabela
+
+						<td class="MDB" align="right">
+							<!-- input name="c_vl_total" id="c_vl_total" class="PLLd" style="width:70px;" -->
+							{{i.TotalItem}}
+						</td>
+
+						<td>
+							<button mat-button (click)="removerLinha(i)">
+								<mat-icon title="Remover linha">delete</mat-icon>
+							</button>
+						</td>
+					</tr>
+
+					<!-- afazer parte de baixo da tabela
                 <tr>
                     <% if r_orcamentista_e_indicador.permite_RA_status = 1 then %>
                     <td colspan="<%=Cstr(4-qtdeHiddenColumnTabProd)%>" align="left">
@@ -177,20 +200,20 @@ nessa condição ele nao mostra o resto da tela e não deixa continuar....
                             style="width:70px;color:blue;" value='<%=formata_moeda(m_TotalDestePedido)%>' readonly
                             tabindex=-1></td>
                 </tr> -->
-                </tbody>
+				</tbody>
 
-            </table>
+			</table>
 
-        </article>
-        <footer>
-            <a mat-raised-button color="accent" (click)="voltar()">
-                <mat-icon>arrow_back</mat-icon> Voltar
-            </a>
-            <button mat-raised-button color="accent" (click)="continuar()" type="submit">
-                <mat-icon>arrow_forward</mat-icon> Avançar
-            </button>
-        </footer>
-    </form>
+		</article>
+		<footer>
+			<a mat-raised-button color="accent" (click)="voltar()">
+				<mat-icon>arrow_back</mat-icon> Voltar
+			</a>
+			<button mat-raised-button color="accent" (click)="continuar()" type="submit">
+				<mat-icon>arrow_forward</mat-icon> Avançar
+			</button>
+		</footer>
+	</form>
 </section>
 
 <!-- 
@@ -483,3 +506,7 @@ afazer: isto aqui vai ser em outra tela
 	</td>
   </tr>
 </table> -->
+
+<!-- afazer: validações, verificar na pagina asp 
+http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoProdCompostoMask.asp para escolher os producots
+http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para listar os produtos -->

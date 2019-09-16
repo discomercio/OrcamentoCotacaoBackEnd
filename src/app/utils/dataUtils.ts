@@ -36,10 +36,12 @@ export class DataUtils {
     public static formatarTela(data: Date | string): string {
         //para imprimir na tela
         //está vindo como string do c#!
-        if (!data)
+        if (!data) {
             return "";
-        if (data.toString() === "0001-01-01T00:00:00")
+        }
+        if (data.toString() === "0001-01-01T00:00:00") {
             return "";
+        }
         const aux = Date.parse(data.toString());
         if (!aux)
             return "";
@@ -52,10 +54,12 @@ export class DataUtils {
     public static formatarTelaHora(data: Date | string): string {
         //para imprimir na tela
         //está vindo como string do c#!
-        if (!data)
+        if (!data) {
             return "";
-            if (data.toString() === "0001-01-01T00:00:00")
+        }
+        if (data.toString() === "0001-01-01T00:00:00") {
             return "";
+        }
         const aux = Date.parse(data.toString());
         if (!aux)
             return "";
@@ -68,10 +72,12 @@ export class DataUtils {
     public static formatarTelaHoraSemSegundos(data: Date | string): string {
         //para imprimir na tela
         //está vindo como string do c#!
-        if (!data)
+        if (!data) {
             return "";
-            if (data.toString() === "0001-01-01T00:00:00")
+        }
+        if (data.toString() === "0001-01-01T00:00:00") {
             return "";
+        }
         const aux = Date.parse(data.toString());
         if (!aux)
             return "";

@@ -15,6 +15,8 @@
   margin: 0em;
   padding: 1em;
   padding-bottom: 0.3em;
+  flex-grow: 0;
+  flex-shrink: 0;
 }
 .sectionDesktop article {
   width: calc(100% - 2em);
@@ -25,7 +27,9 @@
 }
 .sectionDesktop footer {
   text-align: center;
-  padding-bottom: 1em;
+  padding: 1em;
+  flex-grow: 0;
+  flex-shrink: 0;
 }
 
 //caixa de texto
@@ -49,12 +53,14 @@
   text-align: left;
   font-size: 120%;
   font-weight: bold;
+  flex-grow: 0;
+  flex-shrink: 0;
 }
 .sectionCelular article {
-  flex: 1 1 auto;
   overflow-y: auto;
   padding: 0.7em;
   text-align: left;
+  flex: 1 1 auto;
 }
 //caixa de texto
 .sectionCelular article .mat-form-field {
@@ -67,6 +73,8 @@
 .sectionCelular footer {
   padding: 0.7em;
   text-align: center;
+  flex-grow: 0;
+  flex-shrink: 0;
 }
 
 //deixar os botões da parte de baixo distribuidos uniformemente

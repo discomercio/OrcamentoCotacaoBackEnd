@@ -169,7 +169,9 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
 
           //detalhes do prepedido
           this.novoPrepedidoDadosService.setar(r);
-          this.router.navigate(['/novo-prepedido/itens']);
+          //também passamos o número do pré-pedido no link
+
+          this.router.navigate(['/novo-prepedido/itens', r.NumeroPrePedido]);
         },
         error: (r) => this.deuErro(r)
 
