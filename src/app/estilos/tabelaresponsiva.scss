@@ -1,6 +1,9 @@
 // para tabelas responsivas
 //https://codepen.io/AllThingsSmitty/pen/MyqmdM
 
+//nao funcionou bem para os itens do prepedido, http://localhost:4200/novo-prepedido/itens/221841Z
+//esta solução é genérica demais.
+
 
 @import "../../variaveis.scss";
 
@@ -33,7 +36,6 @@
 .sectionDesktop .tabelaresponsiva th {
   font-size: 0.85em;
   letter-spacing: 0.1em;
-  text-transform: uppercase;
 }
 
 .sectionCelular .tabelaresponsiva {
@@ -76,7 +78,6 @@
   content: attr(data-label);
   float: left;
   font-weight: bold;
-  text-transform: uppercase;
 }
 
 .sectionCelular .tabelaresponsiva td:last-child {

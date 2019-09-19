@@ -13,13 +13,15 @@ import { TelaDesktopBaseComponent } from 'src/app/servicos/telaDesktop/telaDeskt
 import { TelaDesktopService } from 'src/app/servicos/telaDesktop/telaDesktop.service';
 import { PrepedidoBuscarService } from 'src/app/servicos/prepedido/prepedido-buscar.service';
 import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
+import { MoedaUtils } from 'src/app/utils/moedaUtils';
 
 @Component({
   selector: 'app-itens',
   templateUrl: './itens.component.html',
   styleUrls: [
     './itens.component.scss',
-    '../../../estilos/tabelaresponsiva.scss'
+    '../../../estilos/tabelaresponsiva.scss',
+    '../../../estilos/numeros.scss'
   ]
 })
 export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
@@ -42,6 +44,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     super(telaDesktopService);
   }
 
+  carregando = true;
   ngOnInit() {
 
     //se tem um parâmetro no link, colocamos ele no serviço
@@ -60,6 +63,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
             }
 
             //detalhes do prepedido
+            this.carregando = false;
             this.prePedidoDto = r;
             this.novoPrepedidoDadosService.setar(r);
             this.criando = !this.prePedidoDto.NumeroPrePedido;
@@ -82,6 +86,9 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
   }
 
   //#region formatação de dados para a tela
+
+  moedaUtils: MoedaUtils = new MoedaUtils();
+
   cpfCnpj() {
     let ret = "CPF: ";
     if (this.prePedidoDto.DadosCliente.Tipo == new Constantes().ID_PJ) {
@@ -92,12 +99,15 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     return ret + CpfCnpjUtils.cnpj_cpf_formata(this.prePedidoDto.DadosCliente.Cnpj_Cpf);
   }
 
-  permite_RA_Status = false;
+  //afazer: para testes, em tru
+  //permite_RA_Status = false;
+  permite_RA_Status = true;
   increverPermite_RA_Status() {
     this.prepedidoBuscarService.Obter_Permite_RA_Status().subscribe({
       next: (r) => {
         if (r != 0) {
-          this.permite_RA_Status = true;
+          //afazer: voltar, só apra testar tela
+          //this.permite_RA_Status = true;
         }
       },
       error: (r) => this.alertaService.mostrarErroInternet()
@@ -106,12 +116,94 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
 
   //#endregion
 
+  //#region digitacao de numeros
+
+  /*
+  digitouQte: atualiza o vl total a partir do vl venda
+  digitouPreco: atualiza o vl venda a partir do preco e do desc, depois digitouQte
+  digitouDesc: atualiza o vl venda a partir do preco e do desc, depois digitouQte
+  digitouVlVenda: atualiza o desc a partir do preco e do VlVenda, depois digitouQte
+  */
+
+  digitouQte(i: PrepedidoProdutoDtoPrepedido) {
+    //não deixa números negativos
+    if (i.Qtde <= 0) {
+      i.Qtde = 1;
+    }
+    i.TotalItem = i.VlUnitario * i.Qtde; // VlUnitario = Vl Venda na tela
+  }
+  digitouPreco(e: Event, i: PrepedidoProdutoDtoPrepedido) {
+    let valor = ((e.target) as HTMLInputElement).value;
+    let v: any = valor.replace(/\D/g, '');
+    v = (v / 100).toFixed(2) + '';
+
+    //se não alteraram nada, ignoramos
+    if (i.Preco === Number.parseFloat(v))
+      return;
+
+    i.Preco = Number.parseFloat(v);
+    if (i.Desconto) {
+      i.VlUnitario = i.Preco * (1 - i.Desconto / 100);
+    }
+    else {
+      i.VlUnitario = i.Preco;
+    }
+
+    this.digitouQte(i);
+  }
+  digitouVlVenda(e: Event, i: PrepedidoProdutoDtoPrepedido) {
+    let valor = ((e.target) as HTMLInputElement).value;
+    let v: any = valor.replace(/\D/g, '');
+    v = (v / 100).toFixed(2) + '';
+
+    //se não alteraram nada, ignoramos
+    if (i.VlUnitario === Number.parseFloat(v))
+      return;
+
+    i.VlUnitario = Number.parseFloat(v);
+
+    //calcula o desconto
+    i.Desconto = 100 * (i.Preco - i.VlUnitario) / i.Preco;
+    this.digitouQte(i);
+  }
+  digitouDesc(e: Event, i: PrepedidoProdutoDtoPrepedido) {
+    let valor = ((e.target) as HTMLInputElement).value;
+    let v: any = valor.replace(/\D/g, '');
+    //tem 1 casa
+    v = (v / 10).toFixed(2) + '';
+
+    //se não alteraram nada, ignoramos
+    if (i.Desconto === Number.parseFloat(v))
+      return;
+
+    i.Desconto = Number.parseFloat(v);
+    //não deixa números negativos e nem maior que 100
+    if (i.Desconto <= 0) {
+      i.Desconto = 0;
+    }
+    if (i.Desconto > 100) {
+      i.Desconto = 100;
+    }
+
+    if (i.Desconto) {
+      i.VlUnitario = i.Preco * (1 - i.Desconto / 100);
+    }
+    else {
+      i.VlUnitario = i.Preco;
+    }
+    this.digitouQte(i);
+  }
+  //#endregion
 
   //#region navegação
   voltar() {
     this.location.back();
   }
   continuar() {
+    let msg="teste ";
+    for(let i=0;i<1000;i++)
+    msg+="teste ";
+    this.alertaService.mostrarMensagemComLargura(msg, "100vw");
     window.alert("Afazer: salvar o pedido");
   }
   adicionarProduto() {

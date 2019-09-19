@@ -1,0 +1,86 @@
+@import "../../../../variaveis.scss";
+
+.sectionDesktop .tabelaitens {
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.sectionDesktop .tabelaitens caption {
+  font-size: 1.5em;
+  margin: 0.5em 0 0.75em;
+}
+
+.sectionDesktop .tabelaitens tr {
+  background-color: $cor-fundo-listapedidos;
+  border: 1px solid #ddd;
+  padding: 0.35em;
+}
+
+.sectionDesktop .tabelaitens th,
+.sectionDesktop .tabelaitens td {
+  padding: 0.625em;
+  padding-left: 0.4em;
+  padding-right: 0.4em;
+  //text-align: center;
+}
+
+.sectionDesktop .tabelaitens th {
+  font-size: 0.85em;
+  letter-spacing: 0.1em;
+}
+
+.sectionDesktop article .tabelaitens .mat-form-field {
+  padding: 0.0em;
+  padding-left: 0.4em;
+  padding-right: 0.4em;
+}
+
+.sectionCelular .tabelaitens {
+  border: 0;
+}
+
+.sectionCelular .tabelaitens caption {
+  font-size: 1.3em;
+}
+
+.sectionCelular .tabelaitens thead {
+  border: none;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.sectionCelular .tabelaitens tr {
+  border-bottom: 3px solid #ddd;
+  display: block;
+  margin-bottom: 0.625em;
+}
+
+.sectionCelular .tabelaitens td {
+  border-bottom: 1px solid #ddd;
+  display: block;
+  font-size: 0.8em;
+  text-align: right;
+}
+
+.sectionCelular .tabelaitens td::before {
+  /*
+      * aria-label has no advantage, it won't be read inside a table
+      content: attr(aria-label);
+      */
+  content: attr(data-label);
+  float: left;
+  font-weight: bold;
+}
+
+.sectionCelular .tabelaitens td:last-child {
+  border-bottom: 0;
+}

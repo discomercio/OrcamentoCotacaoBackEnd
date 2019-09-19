@@ -12,6 +12,7 @@ import { CadastrarClienteComponent } from './cadastrar-cliente/cadastrar-cliente
 import { ClienteCorpoModule } from 'src/app/cliente/cliente-corpo/cliente-corpo.module';
 import { ConfirmarEnderecoComponent } from './confirmar-endereco/confirmar-endereco.component';
 import { ItensComponent } from './itens/itens.component';
+import { TextMaskModule } from 'angular2-text-mask';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import { ItensComponent } from './itens/itens.component';
     MatSelectModule,
     MatStepperModule,
     ReactiveFormsModule,
+    TextMaskModule,
     NovoPrepedidoRoutingModule
   ],
   exports: []

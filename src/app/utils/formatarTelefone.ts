@@ -52,6 +52,7 @@ export class FormatarTelefone {
 
 
     //máscara para telefones de 8 ou 9 dígitos
+    //usando o angular2-text-mask
     static mascaraTelefone(userInput: string) {
         let numbers = StringUtils.retorna_so_digitos(userInput);
         if (numbers.length > 10) {

@@ -29,6 +29,8 @@ export class PedidoDesktopComponent implements OnInit {
 
   //cosntantes
   constantes = new Constantes();
+  stringUtils = StringUtils;
+
 
   //para formatar as coisas
   dataFormatarTela = DataUtils.formatarTela;
@@ -99,15 +101,8 @@ export class PedidoDesktopComponent implements OnInit {
     return this.clienteCadastroUtils.telefoneCelular(p);
   }
 
-  public corDaLinhaPedido(linha:PedidoProdutosDtoPedido):string{
+  public corDaLinhaPedido(linha: PedidoProdutosDtoPedido): string {
     return linha.CorFaltante;
-  }
-
-  clicarCliente(): void {
-    if (this.pedido && this.pedido.DadosCliente && this.pedido.DadosCliente.Cnpj_Cpf)
-      this.router.navigate(["cliente", StringUtils.retorna_so_digitos(this.pedido.DadosCliente.Cnpj_Cpf)]);
-    else
-      window.alert("Erro: cliente sem CPF/CNPJ");
   }
 
   //#region  impressão

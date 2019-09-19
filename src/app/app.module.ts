@@ -14,6 +14,7 @@ import { PedidoModule } from './pedido/pedido.module';
 import { LoginModule } from './login/login.module';
 import { TokenInterceptor } from './servicos/autenticacao/token.interceptor';
 import { ClienteModule } from './cliente/cliente.module';
+import { TextMaskModule } from 'angular2-text-mask';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { ClienteModule } from './cliente/cliente.module';
     MatDialogModule,
     MatButtonModule,
     LoginModule,
-    ClienteModule
+    ClienteModule,
+    TextMaskModule
     ],
   providers: [ 
     {

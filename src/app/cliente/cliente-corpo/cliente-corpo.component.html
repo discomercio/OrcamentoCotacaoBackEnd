@@ -98,13 +98,11 @@ para não dar erro no console
     <span *ngIf="cadastrando">
         <span *ngIf="ehPf()">
             <mat-form-field floatLabel="floatLabel()" style="width: 22ch;">
-                <input matInput type="text" placeholder="RG" [(ngModel)]="dadosClienteCadastroDto.Rg" 
-                    maxlength="20">
+                <input matInput type="text" placeholder="RG" [(ngModel)]="dadosClienteCadastroDto.Rg" maxlength="20">
             </mat-form-field>
 
             <mat-form-field floatLabel="floatLabel()" style="width: 10em;">
-                <input matInput type="date" placeholder="NASCIMENTO" [(ngModel)]="dadosClienteCadastroDto.Nascimento"
-                    >
+                <input matInput type="date" placeholder="NASCIMENTO" [(ngModel)]="dadosClienteCadastroDto.Nascimento">
             </mat-form-field>
 
             <mat-form-field floatLabel="floatLabel()" style="width: 8em;">
@@ -192,15 +190,15 @@ para não dar erro no console
 
             <mat-form-field floatLabel="floatLabel()" class="edicao-telefone">
                 <input [textMask]="{mask: mascaraTelefone}" [(ngModel)]="dadosClienteCadastroDto.Celular" type="text"
-                    matInput placeholder="CELULAR"  maxlength="16" size="16" />
+                    matInput placeholder="CELULAR" maxlength="16" size="16" />
             </mat-form-field>
 
             <mat-form-field floatLabel="floatLabel()" class="edicao-telefone">
                 <input [textMask]="{mask: mascaraTelefone}" [(ngModel)]="dadosClienteCadastroDto.TelComercial"
-                    type="text" matInput placeholder="FONE COMERCIAL"  maxlength="16" size="16" />
+                    type="text" matInput placeholder="FONE COMERCIAL" maxlength="16" size="16" />
             </mat-form-field>
             <mat-form-field floatLabel="floatLabel()" class="edicao-ramal">
-                <input matInput type="text" placeholder="RAMAL" [(ngModel)]="dadosClienteCadastroDto.Ramal" 
+                <input matInput type="text" placeholder="RAMAL" [(ngModel)]="dadosClienteCadastroDto.Ramal"
                     maxlength="4" size="6">
             </mat-form-field>
 
@@ -214,17 +212,17 @@ para não dar erro no console
                     type="text" matInput placeholder="TELEFONE 1" required maxlength="16" size="16" />
             </mat-form-field>
             <mat-form-field floatLabel="floatLabel()" class="edicao-ramal">
-                <input matInput type="text" placeholder="RAMAL" [(ngModel)]="dadosClienteCadastroDto.Ramal" 
+                <input matInput type="text" placeholder="RAMAL" [(ngModel)]="dadosClienteCadastroDto.Ramal"
                     maxlength="4" size="6">
             </mat-form-field>
 
 
             <mat-form-field floatLabel="floatLabel()" class="edicao-telefone">
                 <input [textMask]="{mask: mascaraTelefone}" [(ngModel)]="dadosClienteCadastroDto.TelComercial2"
-                    type="text" matInput placeholder="TELEFONE 2"  maxlength="16" size="16" />
+                    type="text" matInput placeholder="TELEFONE 2" maxlength="16" size="16" />
             </mat-form-field>
             <mat-form-field floatLabel="floatLabel()" class="edicao-ramal">
-                <input matInput type="text" placeholder="RAMAL" [(ngModel)]="dadosClienteCadastroDto.Ramal2" 
+                <input matInput type="text" placeholder="RAMAL" [(ngModel)]="dadosClienteCadastroDto.Ramal2"
                     maxlength="4" size="6">
             </mat-form-field>
 
@@ -258,7 +256,7 @@ para não dar erro no console
         <span *ngIf="cadastrando">
             <mat-form-field floatLabel="floatLabel()" *ngIf="ehPf()" class="largura-maxima-campo-formulario">
                 <input matInput type="text" placeholder="OBSERVAÇÃO"
-                    [(ngModel)]="dadosClienteCadastroDto.Observacao_Filiacao"  maxlength="60">
+                    [(ngModel)]="dadosClienteCadastroDto.Observacao_Filiacao" maxlength="60">
             </mat-form-field>
         </span>
         <span *ngIf="!cadastrando">
@@ -292,8 +290,7 @@ para não dar erro no console
     <!-- ************   E-MAIL   ************  -->
     <span *ngIf="cadastrando">
         <mat-form-field floatLabel="floatLabel()" class="largura-maxima-campo-formulario">
-            <input matInput type="text" placeholder="E-MAIL" [(ngModel)]="dadosClienteCadastroDto.Email" 
-                maxlength="60">
+            <input matInput type="text" placeholder="E-MAIL" [(ngModel)]="dadosClienteCadastroDto.Email" maxlength="60">
         </mat-form-field>
     </span>
     <span *ngIf="!cadastrando">
@@ -310,7 +307,7 @@ para não dar erro no console
     <span *ngIf="cadastrando">
         <mat-form-field floatLabel="floatLabel()" class="largura-maxima-campo-formulario">
             <input matInput type="text" placeholder="E-MAIL (XML)" [(ngModel)]="dadosClienteCadastroDto.EmailXml"
-                 maxlength="60">
+                maxlength="60">
         </mat-form-field>
     </span>
     <span *ngIf="!cadastrando">
@@ -351,7 +348,7 @@ para não dar erro no console
                     *ngIf="dadosClienteCadastroDto.ProdutorRural == constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM"
                     style="width: 22ch;">
                     <mat-label>CONTRIBUINTE ICMS</mat-label>
-                    <mat-select  [(ngModel)]="dadosClienteCadastroDto.Contribuinte_Icms_Status">
+                    <mat-select [(ngModel)]="dadosClienteCadastroDto.Contribuinte_Icms_Status">
                         <mat-option>Selecione</mat-option>
                         <mat-option [(value)]="constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO">Não</mat-option>
                         <mat-option [(value)]="constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM">Sim</mat-option>
@@ -454,10 +451,10 @@ para não dar erro no console
 
                 <!-- visualização de referência bancária, na PJ -->
                 <ng-container *ngIf="clienteCadastroDto.RefBancaria.length == 0; else comRefBancaria">
-                    <span class="caixa">
+                    <div class="caixa">
                         <span class="rotulo">Sem referências bancárias</span>
                         <span class="dado"> </span>
-                    </span>
+                    </div>
                 </ng-container>
                 <ng-template #comRefBancaria>
                     <div *ngFor="let ref of clienteCadastroDto.RefBancaria; let i = index">
@@ -497,10 +494,12 @@ para não dar erro no console
 
                 <!-- visualização de referência comercial -->
                 <ng-container *ngIf="clienteCadastroDto.RefComercial.length == 0; else comRefCOmercial">
-                    <span class="caixa">
-                        <span class="rotulo">Sem referências comerciais</span>
-                        <span class="dado"> </span>
-                    </span>
+                    <div>
+                        <span class="caixa">
+                            <span class="rotulo">Sem referências comerciais</span>
+                            <span class="dado"> </span>
+                        </span>
+                    </div>
                 </ng-container>
                 <ng-template #comRefCOmercial>
                     <div *ngFor="let ref of clienteCadastroDto.RefComercial; let i = index">
@@ -562,7 +561,7 @@ para não dar erro no console
                                 <span class="rotulo">Referência bancária {{i+1}} <a mat-button
                                         title="Remover referência" (click)="removerRefBancaria(i)">
                                         <mat-icon>remove</mat-icon>
-                                </a> </span>
+                                    </a> </span>
                                 <span class="dado"> </span>
                             </span>
                         </div>
@@ -600,7 +599,7 @@ para não dar erro no console
 
 
                             <mat-form-field floatLabel="floatLabel()" class="largura-maxima-campo-formulario">
-                                <input matInput type="text" placeholder="CONTATO" [(ngModel)]="ref.Contato" 
+                                <input matInput type="text" placeholder="CONTATO" [(ngModel)]="ref.Contato"
                                     maxlength="60">
                             </mat-form-field>
 
@@ -634,7 +633,7 @@ para não dar erro no console
                                 <span class="rotulo">Referência Comercial {{i+1}} <a mat-button
                                         title="Remover referência" (click)="removerRefComercial(i)">
                                         <mat-icon>remove</mat-icon>
-                                </a> </span>
+                                    </a> </span>
                                 <span class="dado"> </span>
                             </span>
                         </div>
@@ -646,14 +645,14 @@ para não dar erro no console
                             </mat-form-field>
 
                             <mat-form-field floatLabel="floatLabel()" class="largura-maxima-campo-formulario">
-                                <input matInput type="text" placeholder="CONTATO" [(ngModel)]="ref.Contato" 
+                                <input matInput type="text" placeholder="CONTATO" [(ngModel)]="ref.Contato"
                                     maxlength="40">
                             </mat-form-field>
 
                             <!-- este editamos diretamente no telefone, e depois separamos o DD e o telefone -->
                             <mat-form-field floatLabel="floatLabel()" class="edicao-telefone">
                                 <input [textMask]="{mask: mascaraTelefone}" [(ngModel)]="ref.Telefone" type="text"
-                                    matInput placeholder="TELEFONE"  maxlength="16" size="16" />
+                                    matInput placeholder="TELEFONE" maxlength="16" size="16" />
                             </mat-form-field>
 
                         </div>

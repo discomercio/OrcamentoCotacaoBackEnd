@@ -5,8 +5,9 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 
  -->
 
-<section [ngClass]="{'sectionDesktop': telaDesktop, 'sectionCelular': !telaDesktop}" *ngIf="prePedidoDto">
-	<form style="display: contents;">
+<section [ngClass]="{'sectionDesktop': telaDesktop, 'sectionCelular': !telaDesktop}">
+	<header *ngIf="!prePedidoDto" [ngClass]="{'carregando': carregando}">Carregando dados</header>
+	<form style="display: contents;" *ngIf="prePedidoDto">
 		<header>
 			<ng-container *ngIf="criando; else tituloEditando">Criar Pré-pedido</ng-container>
 			<ng-template #tituloEditando>Editar Pré-pedido</ng-template>
@@ -72,26 +73,31 @@ nessa condição ele nao mostra o resto da tela e não deixa continuar....
 
 			<!--  R E L A Ç Ã O   D E   P R O D U T O S  -->
 			<!-- afazer fazendo -->
-			<table class="tabelaresponsiva">
+			<table class="tabelaitens">
 				<thead>
 
 					<tr bgcolor="#FFFFFF">
-						<th scope="col" class="MB" align="left" valign="bottom"><span class="PLTe">Código</span></th>
-						<th scope="col" class="MB" align="left" valign="bottom"><span class="PLTe">Descrição</span></th>
+						<th style="width: auto;" scope="col" align="left" valign="bottom"><span
+								class="PLTe">Produto</span></th>
 
 						<!-- esta coluna está oculta: $(".tdProdObs").hide(); 
 						<th scope="col" class="MB tdProdObs" align="left" valign="bottom"><span class="PLTe">Observações</span></th> -->
 
-						<th scope="col" class="MB" align="right" valign="bottom"><span class="PLTd">Qtde</span></th>
+						<th scope="col" class="hquantidade" align="right" valign="bottom"><span class="PLTd">Qtde</span>
+						</th>
 						<!-- <% if r_orcamentista_e_indicador.permite_RA_status = 1 then %> -->
-						<th *ngIf="permite_RA_Status" scope="col" class="MB" align="right" valign="bottom"><span
+						<th *ngIf="permite_RA_Status" scope="col" class="preco" align="right" valign="bottom"><span
 								class="PLTd">Preço</span></th>
 						<!-- <% end if %> -->
-						<th scope="col" class="MB" align="right" valign="bottom"><span class="PLTd">VL Lista</span></th>
-						<th scope="col" class="MB" align="right" valign="bottom"><span class="PLTd">Desc%</span></th>
-						<th scope="col" class="MB" align="right" valign="bottom"><span class="PLTd">VL Venda</span></th>
-						<th scope="col" class="MB" align="right" valign="bottom"><span class="PLTd">VL Total</span></th>
-						<th scope="col">
+						<th scope="col" class="hpreco" align="right" valign="bottom"><span class="PLTd">VL Lista</span>
+						</th>
+						<th scope="col" class="hdesconto" align="right" valign="bottom"><span class="PLTd">Desc%
+								&nbsp;&nbsp;</span></th>
+						<th scope="col" class="hpreco" align="right" valign="bottom"><span class="PLTd">VL Venda</span>
+						</th>
+						<th scope="col" class="hpreco" align="right" valign="bottom"><span class="PLTd">VL Total</span>
+						</th>
+						<th scope="col" style="width: 2em;">
 							<!-- excluir  -->
 						</th>
 
@@ -100,11 +106,9 @@ nessa condição ele nao mostra o resto da tela e não deixa continuar....
 				<tbody>
 
 					<tr *ngFor="let i of prePedidoDto?.ListaProdutos">
-						<td scope="row" data-label="Código" class="MDBE" align="left">
-							{{i.Fabricante}}/{{i.NumProduto}}
-						</td>
-						<td data-label="Descrição" class="MDB" align="left">
-							<span class="PLLe" [innerHTML]="i.Descricao"></span>
+						<td scope="row" data-label="Produto: " align="left">
+							{{i.Fabricante}}/{{i.NumProduto}} -
+							<span [innerHTML]="i.Descricao"></span>
 						</td>
 						<!-- esta coluna está oculta: 
 							$(".tdProdObs").hide(); 
@@ -115,11 +119,20 @@ nessa condição ele nao mostra o resto da tela e não deixa continuar....
                             onblur="this.value=trim(this.value);" value='' <%=s_readonly%> />
 					</td> -->
 
-						<td class="MDB" align="right">
-							<input name="c_qtde" id="c_qtde" class="PLLd" style="width:27px;" value='{{i.Qtde}}' />
+						<td data-label="Qtde: " align="right">
+							<!-- <input name="c_qtde" id="c_qtde" class="PLLd" style="width:27px;" value='{{i.Qtde}}' /> -->
+							<mat-form-field class="quantidade">
+								<input matInput [ngModelOptions]="{standalone: true}" type="number" required
+									[(ngModel)]="i.Qtde" (keyup)="digitouQte(i)" (change)="digitouQte(i)">
+							</mat-form-field>
 						</td>
-						<td *ngIf="permite_RA_Status" class="MDB" align="right">
-							<input name="c_vl_NF" id="c_vl_NF" class="PLLd" style="width:62px;" value='{{i.Preco}}' />
+						<td data-label="Preço: " *ngIf="permite_RA_Status" align="right">
+							<!-- <input name="c_vl_NF" id="c_vl_NF" class="PLLd" style="width:62px;" value='{{i.Preco}}' /> -->
+							<mat-form-field class="preco">
+								<input matInput type="text" required
+									[value]="moedaUtils.formatarMoedaSemPrefixo(i.Preco)"
+									(change)="digitouPreco($event,i)" (keyup)="digitouPreco($event,i)">
+							</mat-form-field>
 						</td>
 
 						<!-- afazer no campo antrior:
@@ -127,8 +140,8 @@ nessa condição ele nao mostra o resto da tela e não deixa continuar....
 							onblur="this.value=formata_moeda(this.value); recalcula_RA(); recalcula_parcelas();" -->
 
 
-						<td class="MDB" align="right">
-							{{i.VlLista}}
+						<td data-label="VL Lista: " align="right">
+							{{moedaUtils.formatarMoedaSemPrefixo(i.VlLista)}}
 						</td>
 
 
@@ -139,29 +152,39 @@ nessa condição ele nao mostra o resto da tela e não deixa continuar....
                             onkeypress="if (digitou_enter(true)){fORC.c_vl_unitario[<%=Cstr(i-1)%>].focus();} filtra_percentual();"
                             onblur="this.value=formata_perc_desconto(this.value); calcula_desconto(<%=Cstr(i-1)%>); trata_edicao_RA(<%=Cstr(i-1)%>); recalcula_total_linha(<%=Cstr(i)%>); recalcula_RA();"
 						-->
-						<td class="MDB" align="right">
-							<input name="c_desc" id="c_desc" class="PLLd" style="width:36px;" value="{{i.Desconto}}" />
+						<td data-label="Desconto: " align="right">
+							<!-- <input name="c_desc" id="c_desc" class="PLLd" style="width:36px;" value="{{i.Desconto}}" /> -->
+							<mat-form-field class="desconto">
+								<input matInput type="text" [value]="moedaUtils.formatarPorcentagemUmaCasa(i.Desconto)"
+									(change)="digitouDesc($event,i)" (keyup)="digitouDesc($event,i)">
+							</mat-form-field>%
 						</td>
 
 
-						<!-- afazer tratamento do teclado 
+						<!-- afazer tratamento do teclado, verificar todas as rotinas
                             onkeypress="if (digitou_enter(true)) {if ((<%=Cstr(i)%>==fORC.c_vl_unitario.length)||(trim(fORC.c_produto[<%=Cstr(i)%>].value)=='')) fORC.c_obs1.focus(); else fORC.c_obs[<%=Cstr(i)%>].focus();} filtra_moeda_positivo();"
                             onblur="this.value=formata_moeda(this.value); recalcula_total(<%=Cstr(i)%>); recalcula_RA(); recalcula_parcelas();"
                      	-->
-						<td class="MDB" align="right">
-							<input name="c_vl_unitario" id="c_vl_unitario" class="PLLd" style="width:62px;"
-								value='{{i.VlUnitario}}' />
+						<td data-label="VL Venda: " align="right">
+							<!-- <input name="c_vl_unitario" id="c_vl_unitario" class="PLLd" style="width:62px;"
+								value='{{i.VlUnitario}}' /> -->
+							<mat-form-field class="preco">
+								<input matInput type="text" required
+									[value]="moedaUtils.formatarMoedaSemPrefixo(i.VlUnitario)"
+									(change)="digitouVlVenda($event,i)" (keyup)="digitouVlVenda($event,i)">
+							</mat-form-field>
 						</td>
 
 
-						<td class="MDB" align="right">
+						<td data-label="VL Total: " align="right">
 							<!-- input name="c_vl_total" id="c_vl_total" class="PLLd" style="width:70px;" -->
-							{{i.TotalItem}}
+							{{moedaUtils.formatarMoedaSemPrefixo(i.TotalItem)}}
 						</td>
 
-						<td>
-							<button mat-button (click)="removerLinha(i)">
-								<mat-icon title="Remover linha">delete</mat-icon>
+						<td style="padding: 0; min-width: auto; max-width: 32px;">
+							<button mat-button (click)="removerLinha(i)"
+								style="padding: 0; min-width: auto; max-width: 32px;">
+								<mat-icon style="padding: 0;" title="Remover linha">delete</mat-icon>
 							</button>
 						</td>
 					</tr>
