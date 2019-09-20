@@ -14,6 +14,8 @@ import { TelaDesktopService } from 'src/app/servicos/telaDesktop/telaDesktop.ser
 import { PrepedidoBuscarService } from 'src/app/servicos/prepedido/prepedido-buscar.service';
 import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
 import { MoedaUtils } from 'src/app/utils/moedaUtils';
+import { ProdutoComboDto } from 'src/app/servicos/produto/produtodto';
+import { ProdutoService } from 'src/app/servicos/produto/produto.service';
 
 @Component({
   selector: 'app-itens',
@@ -39,12 +41,13 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     private readonly novoPrepedidoDadosService: NovoPrepedidoDadosService,
     public readonly prepedidoBuscarService: PrepedidoBuscarService,
     public readonly alertaService: AlertaService,
+    public readonly produtoService: ProdutoService,
     telaDesktopService: TelaDesktopService
   ) {
     super(telaDesktopService);
   }
 
-  carregando = true;
+  carregandoDto = true;
   ngOnInit() {
 
     //se tem um parâmetro no link, colocamos ele no serviço
@@ -63,10 +66,13 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
             }
 
             //detalhes do prepedido
-            this.carregando = false;
+            this.carregandoDto = false;
             this.prePedidoDto = r;
             this.novoPrepedidoDadosService.setar(r);
             this.criando = !this.prePedidoDto.NumeroPrePedido;
+            this.inscreverPermite_RA_Status();
+            this.inscreverProdutoComboDto();
+
           },
           error: (r) => this.alertaService.mostrarErroInternet()
         });
@@ -82,7 +88,10 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
       return;
     }
 
+    this.carregandoDto = false;
     this.criando = !this.prePedidoDto.NumeroPrePedido;
+    this.inscreverPermite_RA_Status();
+    this.inscreverProdutoComboDto();
   }
 
   //#region formatação de dados para a tela
@@ -99,18 +108,29 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     return ret + CpfCnpjUtils.cnpj_cpf_formata(this.prePedidoDto.DadosCliente.Cnpj_Cpf);
   }
 
-  //afazer: para testes, em tru
-  //permite_RA_Status = false;
-  permite_RA_Status = true;
-  increverPermite_RA_Status() {
+  permite_RA_Status = false;
+  inscreverPermite_RA_Status() {
     this.prepedidoBuscarService.Obter_Permite_RA_Status().subscribe({
       next: (r) => {
         if (r != 0) {
-          //afazer: voltar, só apra testar tela
-          //this.permite_RA_Status = true;
+          this.permite_RA_Status = true;
         }
       },
       error: (r) => this.alertaService.mostrarErroInternet()
+    });
+  }
+
+  carregandoProds = true;
+  produtoComboDto: ProdutoComboDto;
+  inscreverProdutoComboDto() {
+    this.produtoService.listarProdutosCombo(this.prePedidoDto.DadosCliente.Uf, this.prePedidoDto.DadosCliente.Tipo).subscribe({
+      next: (r: ProdutoComboDto) => {
+        if (!!r) {
+          this.produtoComboDto = r;
+          this.carregandoProds = true;
+        }
+      },
+      error: (r: ProdutoComboDto) => this.alertaService.mostrarErroInternet()
     });
   }
 
@@ -200,9 +220,9 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     this.location.back();
   }
   continuar() {
-    let msg="teste ";
-    for(let i=0;i<1000;i++)
-    msg+="teste ";
+    let msg = "teste ";
+    for (let i = 0; i < 1000; i++)
+      msg += "teste ";
     this.alertaService.mostrarMensagemComLargura(msg, "100vw");
     window.alert("Afazer: salvar o pedido");
   }

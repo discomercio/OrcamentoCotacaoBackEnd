@@ -16,14 +16,17 @@
 
 
 .hquantidade {
+  min-width: 6ch;
   width: 6ch;
   text-align: right;
 }
 .hpreco {
+  min-width: 12ch;
   width: 12ch;
   text-align: right;
 }
 .hdesconto {
+  min-width: 10ch;
   width: 10ch;
   text-align: right;
 }

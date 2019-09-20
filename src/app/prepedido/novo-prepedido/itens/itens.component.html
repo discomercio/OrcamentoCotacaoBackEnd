@@ -6,7 +6,7 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
  -->
 
 <section [ngClass]="{'sectionDesktop': telaDesktop, 'sectionCelular': !telaDesktop}">
-	<header *ngIf="!prePedidoDto" [ngClass]="{'carregando': carregando}">Carregando dados</header>
+	<header *ngIf="!prePedidoDto" [ngClass]="{'carregando': carregandoDto || carregandoProds}">Carregando dados</header>
 	<form style="display: contents;" *ngIf="prePedidoDto">
 		<header>
 			<ng-container *ngIf="criando; else tituloEditando">Criar Pré-pedido</ng-container>
@@ -77,6 +77,14 @@ nessa condição ele nao mostra o resto da tela e não deixa continuar....
 				<thead>
 
 					<tr bgcolor="#FFFFFF">
+						<!-- //esepcifica para a tela de itens do pedido, largura do produto
+							//3 ou 4 preços, o desconto e a quantidade
+							//10+6+36 ou 10+6+48 = 52 ou 64
+							.hproduto {
+							  width: 100%;
+							}
+							 -->
+
 						<th style="width: auto;" scope="col" align="left" valign="bottom"><span
 								class="PLTe">Produto</span></th>
 
