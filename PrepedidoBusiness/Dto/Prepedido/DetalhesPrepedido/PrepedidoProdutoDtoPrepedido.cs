@@ -23,5 +23,8 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
         public decimal? TotalItemRA { get; set; }
         public decimal? TotalItem { get; set; }
 
+        //verificar a necessidade dessa variavel
+        public short? Qtde_estoque_total_disponivel { get; set; }
+
     }
 }

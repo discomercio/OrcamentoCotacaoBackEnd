@@ -52,8 +52,9 @@ namespace PrepedidoBusiness.Bll.Regras
         public string Estoque_Produto { get; set; }
         public string Estoque_Descricao { get; set; }
         public string Estoque_DescricaoHtml { get; set; }
-        public short Estoque_Qtde_Solicitado { get; set; }
+        public short? Estoque_Qtde_Solicitado { get; set; }
         public short Estoque_Qtde { get; set; }
+        public short? Estoque_Qtde_Estoque_Global { get; set; }
     }
 
 }

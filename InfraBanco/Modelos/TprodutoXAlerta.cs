@@ -16,16 +16,16 @@ namespace InfraBanco.Modelos
         [MaxLength(4)]
         public string Fabricante { get; set; }
 
-        [Key]
         [Column("produto")]
         [Required]
         [MaxLength(8)]
+        [ForeignKey("Tproduto")]
         public string Produto { get; set; }
 
-        [Key]
         [Column("id_alerta")]
         [Required]
         [MaxLength(12)]
+        [ForeignKey("TalertaProduto")]
         public string Id_Alerta { get; set; }
 
         [Column("excluido_status")]
@@ -40,6 +40,9 @@ namespace InfraBanco.Modelos
         [Required]
         [MaxLength(10)]
         public string Usuario_Cadastro { get; set; }
+
+        public TalertaProduto TalertaProduto { get; set; }
+        public Tproduto Tproduto { get; set; }
 
     }
 }

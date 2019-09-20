@@ -224,9 +224,10 @@ namespace PrepedidoBusiness.Bll
             //obtemos a descricao somente se o codigo existir
             enderecoEntrega.EndEtg_descricao_justificativa = "";
             if (!String.IsNullOrEmpty(p.EndEtg_Cod_Justificativa))
-                enderecoEntrega.EndEtg_descricao_justificativa = await ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA, p.EndEtg_Cod_Justificativa);
+                enderecoEntrega.EndEtg_descricao_justificativa = Util.ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
+                    p.EndEtg_Cod_Justificativa, contextoProvider);
 
-            return enderecoEntrega;
+            return await Task.FromResult(enderecoEntrega);
         }
 
         private async Task<IEnumerable<PedidoProdutosDtoPedido>> ObterProdutos(string numPedido)
@@ -539,7 +540,7 @@ namespace PrepedidoBusiness.Bll
             if (!String.IsNullOrEmpty(p.Pedido_Bs_X_Marketplace))
             {
                 //verificar
-                status.Descricao_Pedido_Bs_X_Marketplace = await ObterDescricao_Cod("PedidoECommerce_Origem", p.Marketplace_codigo_origem) + ":" + p.Pedido_Bs_X_Marketplace;
+                status.Descricao_Pedido_Bs_X_Marketplace = Util.ObterDescricao_Cod("PedidoECommerce_Origem", p.Marketplace_codigo_origem, contextoProvider) + ":" + p.Pedido_Bs_X_Marketplace;
                 //status.Cor_Pedido_Bs_X_Marketplace = CorStatusEntrega(p.St_Entrega);
             }
             if (!String.IsNullOrEmpty(p.Pedido_Bs_X_Ac))
@@ -567,7 +568,7 @@ namespace PrepedidoBusiness.Bll
             string ss = "";
             string retorno = "";
 
-            if(!string.IsNullOrEmpty(hora))
+            if (!string.IsNullOrEmpty(hora))
             {
                 hh = hora.Substring(0, 2);
                 mm = hora.Substring(2, 2);
@@ -577,7 +578,7 @@ namespace PrepedidoBusiness.Bll
             }
 
             return retorno;
-            
+
         }
 
         private string CorStatusEntrega(string st_entrega)
@@ -733,7 +734,7 @@ namespace PrepedidoBusiness.Bll
                 ocorre.mensagemDtoOcorrenciaPedidos = msg;
                 ocorre.Finalizado_Usuario = i.Finalizado_Usuario;
                 ocorre.Finalizado_Data_Hora = i.Finalizado_Data_Hora;
-                ocorre.Tipo_Ocorrencia = await ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__OCORRENCIAS_EM_PEDIDOS__TIPO_OCORRENCIA, i.Tipo_Ocorrencia);
+                ocorre.Tipo_Ocorrencia = Util.ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__OCORRENCIAS_EM_PEDIDOS__TIPO_OCORRENCIA, i.Tipo_Ocorrencia, contextoProvider);
                 ocorre.Texto_Finalizacao = i.Texto_Finalizacao;
                 lista.Add(ocorre);
             }
@@ -1014,22 +1015,6 @@ namespace PrepedidoBusiness.Bll
             }
 
             return await Task.FromResult(lista);
-        }
-
-        private async Task<string> ObterDescricao_Cod(string grupo, string cod)
-        {
-            var db = contextoProvider.GetContextoLeitura();
-
-            var desc = from c in db.TcodigoDescricaos
-                       where c.Grupo == grupo && c.Codigo == cod
-                       select c.Descricao;
-
-            string result = await desc.FirstOrDefaultAsync();
-
-            if (result == null || result == "")
-                return "Código não cadastrado (" + cod + ")";
-
-            return result;
         }
 
         private async Task<IEnumerable<string>> ObterFormaPagto(Tpedido ped)

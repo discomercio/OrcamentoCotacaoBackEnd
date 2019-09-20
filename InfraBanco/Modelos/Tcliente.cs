@@ -166,9 +166,10 @@ namespace InfraBanco.Modelos
         [MaxLength(60)]
         public string Endereco_Complemento { get; set; }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         [Column("nome_iniciais_em_maiusculas")]
         [MaxLength(60)]
-        public string Nome_Iniciais_Em_Maiusculas { get; }
+        public string Nome_Iniciais_Em_Maiusculas { get; private set; }
 
         [Column("spc_negativado_status")]
         [Required]

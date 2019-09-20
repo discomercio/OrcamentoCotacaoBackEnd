@@ -13,11 +13,13 @@ namespace InfraBanco.Modelos
         [Column("fabricante_composto")]
         [MaxLength(4)]
         [Required]
+        [ForeignKey("TecProdutoCompostoItem")]
         public string Fabricante_Composto { get; set; }
 
         [Column("produto_composto")]
         [MaxLength(8)]
         [Required]
+        [ForeignKey("Tproduto")]
         public string Produto_Composto { get; set; }
 
         [Column("descricao")]
@@ -39,5 +41,8 @@ namespace InfraBanco.Modelos
         [MaxLength(10)]
         [Required]
         public string Usuario_Ult_Atualizacao { get; set; }
+
+        public Tproduto Tproduto { get; set; }
+        public TecProdutoCompostoItem TecProdutoCompostoItem { get; set; }
     }
 }

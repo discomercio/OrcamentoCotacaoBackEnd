@@ -24,7 +24,7 @@ namespace InfraBanco.Modelos
 
         [Column("st_ativo")]
         [Required]
-        public short St_Ativo { get; set; }
+        public byte St_Ativo { get; set; }
 
         [Column("apelido")]
         [MaxLength(20)]

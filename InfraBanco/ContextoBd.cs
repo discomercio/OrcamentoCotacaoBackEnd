@@ -21,6 +21,7 @@ namespace InfraBanco
         public DbSet<TsessaoHistorico> TsessaoHistoricos { get; set; }
         public DbSet<Tusuario> Tusuarios { get; set; }
         public DbSet<Tproduto> Tprodutos { get; set; }
+        public DbSet<TprodutoLoja> TprodutoLojas { get; set; }
         public DbSet<TpedidoItem> TpedidoItems { get; set; }
         public DbSet<TpedidoItemDevolvido> TpedidoItemDevolvidos { get; set; }
         public DbSet<TpedidoPerda> TpedidoPerdas { get; set; }
@@ -49,6 +50,10 @@ namespace InfraBanco
         public DbSet<TwmsRegraCdXUfPessoa> TwmsRegraCdXUfPessoas { get; set; }
         public DbSet<TwmsRegraCdXUfXPessoaXCd> TwmsRegraCdXUfXPessoaXCds { get; set; }
         public DbSet<TecProdutoCompostoItem> TecProdutoCompostoItems { get; set; }
+        public DbSet<Testoque> Testoques { get; set; }
+        public DbSet<TestoqueItem> TestoqueItems { get; set; }
+        public DbSet<TprodutoXAlerta> TprodutoXAlertas { get; set; }
+        public DbSet<TalertaProduto> TalertaProdutos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
