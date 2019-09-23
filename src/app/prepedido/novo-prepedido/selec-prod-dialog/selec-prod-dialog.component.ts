@@ -4,18 +4,24 @@ import { SelecProdInfo } from './selec-prod-info';
 import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
 import { ProdutoTela } from './produto-tela';
 import { MoedaUtils } from 'src/app/utils/moedaUtils';
+import { TelaDesktopBaseComponent } from 'src/app/servicos/telaDesktop/telaDesktopBaseComponent';
+import { supportsPassiveEventListeners } from '@angular/cdk/platform';
+import { TelaDesktopService } from 'src/app/servicos/telaDesktop/telaDesktop.service';
 
 @Component({
   selector: 'app-selec-prod-dialog',
   templateUrl: './selec-prod-dialog.component.html',
   styleUrls: ['./selec-prod-dialog.component.scss']
 })
-export class SelecProdDialogComponent implements OnInit {
+export class SelecProdDialogComponent extends TelaDesktopBaseComponent implements OnInit {
 
   constructor(
     public readonly dialogRef: MatDialogRef<SelecProdDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public selecProdInfoPassado: SelecProdInfo,
-    public readonly alertaService: AlertaService) { }
+    telaDesktopService: TelaDesktopService,
+    public readonly alertaService: AlertaService) {
+    super(telaDesktopService);
+  }
 
   //#region carga
   //dados vazios, para mostrar enquanto constroi a lista
