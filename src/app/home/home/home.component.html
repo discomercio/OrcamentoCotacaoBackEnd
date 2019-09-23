@@ -2,28 +2,32 @@
 no celular aparece sempre -->
 <div *ngIf="menuDesktop || !telaDesktop">
 
-<div [class]="menuDesktop? 'corpoMenu': 'corpohome'" layout="row" fxLayoutAlign="center center" >
-    <div style="flex-grow: 0.4" *ngIf="!menuDesktop">
+    <div [class]="menuDesktop? 'corpoMenu': 'corpohome'" layout="row" fxLayoutAlign="center center">
+        <div style="flex-grow: 0.4" *ngIf="!menuDesktop">
+        </div>
+        <div [class]="menuDesktop? 'spanMenu': 'spanTela'">
+            <a *ngIf="!menuDesktop" color="accent" class="botaoTela" mat-raised-button
+                [routerLink]="['/novo-prepedido']" (click)="cliqueNovoPrepedido()"> Incluir Pré
+                Pedido </a>
+            <a *ngIf="menuDesktop" color="accent" class="botaoMenu" mat-button [routerLink]="['/novo-prepedido']"
+                (click)="cliqueNovoPrepedido()"> Incluir Pré
+                Pedido </a>
+        </div>
+        <div [class]="menuDesktop? 'spanMenu': 'spanTela'">
+            <a *ngIf="!menuDesktop" color="accent" class="botaoTela" mat-raised-button
+                [routerLink]="['/prepedido/consulta']"> Consultar Pré-Pedidos </a>
+            <a *ngIf="menuDesktop" color="accent" class="botaoMenu" mat-button [routerLink]="['/prepedido/consulta']">
+                Consultar Pré-Pedidos </a>
+        </div>
+        <div [class]="menuDesktop? 'spanMenu': 'spanTela'">
+            <a *ngIf="!menuDesktop" color="accent" class="botaoTela" mat-raised-button
+                [routerLink]="['/pedido/consulta']"> Consultar
+                Pedidos </a>
+            <a *ngIf="menuDesktop" color="accent" class="botaoMenu" mat-button [routerLink]="['/pedido/consulta']">
+                Consultar
+                Pedidos </a>
+        </div>
+        <div style="flex-grow: 0.5" *ngIf="!menuDesktop">
+        </div>
     </div>
-    <div [class]="menuDesktop? 'spanMenu': 'spanTela'">
-        <a *ngIf="!menuDesktop" color="accent" class="botaoTela" mat-raised-button [routerLink]="['/novo-prepedido']"> Incluir Pré
-            Pedido </a>
-        <a *ngIf="menuDesktop" color="accent" class="botaoMenu" mat-button [routerLink]="['/novo-prepedido']"> Incluir Pré
-            Pedido </a>
-    </div>
-    <div [class]="menuDesktop? 'spanMenu': 'spanTela'">
-        <a *ngIf="!menuDesktop" color="accent" class="botaoTela" mat-raised-button
-            [routerLink]="['/prepedido/consulta']"> Consultar Pré-Pedidos </a>
-        <a *ngIf="menuDesktop" color="accent" class="botaoMenu" mat-button
-            [routerLink]="['/prepedido/consulta']"> Consultar Pré-Pedidos </a>
-    </div>
-    <div [class]="menuDesktop? 'spanMenu': 'spanTela'">
-        <a *ngIf="!menuDesktop" color="accent" class="botaoTela" mat-raised-button [routerLink]="['/pedido/consulta']"> Consultar
-            Pedidos </a>
-        <a *ngIf="menuDesktop" color="accent" class="botaoMenu" mat-button [routerLink]="['/pedido/consulta']"> Consultar
-            Pedidos </a>
-    </div>
-    <div style="flex-grow: 0.5" *ngIf="!menuDesktop">
-    </div>
-</div>
 </div>

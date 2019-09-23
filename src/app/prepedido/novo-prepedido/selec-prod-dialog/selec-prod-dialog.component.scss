@@ -1,0 +1,29 @@
+@import "../../../../variaveis.scss";
+
+:host {
+  .fixo {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 70vh;
+  }
+  .listaprods {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    border-top: 1px grey solid;
+    border-bottom: 1px grey solid;
+  }
+  .prod {
+    padding: 0.5em;
+    background-color: $cor-fundo-listapedidos;
+    border: 1px solid #ddd;
+    //precisa disto ou no celular, quando tem scroll horizontal, a caixa não chega até o fim da linha
+    //não, dá propblema no desktop... width: fit-content;
+  }
+
+  .tdtabela {
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 6px;
+  }
+}

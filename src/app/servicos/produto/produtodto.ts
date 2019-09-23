@@ -2,8 +2,8 @@
 
 //método da API: ProdutoComboDto ListarProdutosCombo
 export class ProdutoComboDto {
-    public Produtos: ProdutoDto[];
-    public Compostos: ProdutoCompostoDto[];
+    public ProdutoDto: ProdutoDto[];
+    public ProdutoCompostoDto: ProdutoCompostoDto[];
 }
 
 //esta lista depende, para fazer o cálculo do estoque, do DadosClienteCadastroDto.Tipo do cliente (PF ou PJ) e UF do cliente

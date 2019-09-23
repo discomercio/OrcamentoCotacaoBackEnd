@@ -114,7 +114,7 @@ nessa condição ele nao mostra o resto da tela e não deixa continuar....
 				<tbody>
 
 					<tr *ngFor="let i of prePedidoDto?.ListaProdutos">
-						<td scope="row" data-label="Produto: " align="left">
+						<td scope="row" data-label="Produto: " align="left" style="cursor: pointer;" (click)="mostrarProdutos(i)">
 							{{i.Fabricante}}/{{i.NumProduto}} -
 							<span [innerHTML]="i.Descricao"></span>
 						</td>

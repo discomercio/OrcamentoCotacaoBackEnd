@@ -16,6 +16,9 @@ import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
 import { MoedaUtils } from 'src/app/utils/moedaUtils';
 import { ProdutoComboDto } from 'src/app/servicos/produto/produtodto';
 import { ProdutoService } from 'src/app/servicos/produto/produto.service';
+import { MatDialog } from '@angular/material';
+import { SelecProdDialogComponent } from '../selec-prod-dialog/selec-prod-dialog.component';
+import { SelecProdInfo } from '../selec-prod-dialog/selec-prod-info';
 
 @Component({
   selector: 'app-itens',
@@ -42,6 +45,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     public readonly prepedidoBuscarService: PrepedidoBuscarService,
     public readonly alertaService: AlertaService,
     public readonly produtoService: ProdutoService,
+    public readonly dialog: MatDialog,
     telaDesktopService: TelaDesktopService
   ) {
     super(telaDesktopService);
@@ -123,11 +127,11 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
   carregandoProds = true;
   produtoComboDto: ProdutoComboDto;
   inscreverProdutoComboDto() {
-    this.produtoService.listarProdutosCombo(this.prePedidoDto.DadosCliente.Uf, this.prePedidoDto.DadosCliente.Tipo).subscribe({
+    this.produtoService.listarProdutosCombo(this.prePedidoDto.DadosCliente.Id).subscribe({
       next: (r: ProdutoComboDto) => {
         if (!!r) {
           this.produtoComboDto = r;
-          this.carregandoProds = true;
+          this.carregandoProds = false;
         }
       },
       error: (r: ProdutoComboDto) => this.alertaService.mostrarErroInternet()
@@ -198,9 +202,13 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
 
     i.Desconto = Number.parseFloat(v);
     //não deixa números negativos e nem maior que 100
+    /*
+    //pensando bem, deixa negativos sim!
+    é que parece que tem caso na base com desconto negativo...
     if (i.Desconto <= 0) {
       i.Desconto = 0;
     }
+    */
     if (i.Desconto > 100) {
       i.Desconto = 100;
     }
@@ -227,14 +235,65 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     window.alert("Afazer: salvar o pedido");
   }
   adicionarProduto() {
-    let novo = new PrepedidoProdutoDtoPrepedido();
-    this.prePedidoDto.ListaProdutos.push(novo);
+    //ele mesmo já adiciona
+    this.mostrarProdutos(null);
   }
-
   removerLinha(i: PrepedidoProdutoDtoPrepedido) {
     this.prePedidoDto.ListaProdutos = this.prePedidoDto.ListaProdutos.filter(function (value, index, arr) {
       return value !== i;
     });
+  }
+  verificarCargaProdutos(): boolean {
+    if (this.carregandoProds) {
+      //ainda não carregou, vamos esperar....
+      this.alertaService.mostrarMensagem("Lista de produtos ainda sendo carregada. Por favor, tente novamente em alguns instantes.");
+      return false;
+    }
+    return true;
+  }
+  mostrarProdutos(linha: PrepedidoProdutoDtoPrepedido) {
+    if (!this.verificarCargaProdutos()) {
+      return;
+    }
+    const selecProdInfo = new SelecProdInfo();
+    selecProdInfo.produtoComboDto = this.produtoComboDto;
+    selecProdInfo.ClicouOk = false;
+    if (linha) {
+      selecProdInfo.Produto = linha.NumProduto;
+      selecProdInfo.Fabricante = linha.Fabricante;
+      selecProdInfo.Qte = linha.Qtde;
+    }
+    const dialogRef = this.dialog.open(SelecProdDialogComponent, {
+      autoFocus: false,
+      width: "100em",
+      //não colocamos aqui para que ele ajuste melhor: height:"85vh",
+      data: selecProdInfo
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result && selecProdInfo.ClicouOk) {
+        //vamos editar ou adicionar um novo
+        if (linha) {
+          //editando
+
+          //se mudou o produto, temos que mdar vários campos
+          if(linha.NumProduto !== selecProdInfo.Produto || linha.Fabricante !== selecProdInfo.Fabricante){
+            window.alert("Afazer: mudar o produto");
+          }
+          
+          linha.Qtde = selecProdInfo.Qte;
+          this.digitouQte(linha);
+        }
+        else {
+          //adicionando
+          window.alert("Afazer: criar o produto");
+          let novo = new PrepedidoProdutoDtoPrepedido();
+          this.prePedidoDto.ListaProdutos.push(novo);
+        }
+      }
+    });
+
+
+
   }
   //#endregion
 

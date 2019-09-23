@@ -11,28 +11,12 @@ export class ProdutoService {
 
   constructor(private readonly http: HttpClient) { }
 
-  public listarProdutosCombo(uf: string, tipo: string): Observable<ProdutoComboDto> {
+  public listarProdutosCombo(idCliente: string): Observable<ProdutoComboDto> {
     let params = new HttpParams();
-    params = params.append('uf', uf);
-    params = params.append('tipo', tipo);
+    params = params.append('loja', "202"); //temporario
+    params = params.append('id_cliente', idCliente);
 
-    //return this.http.get<ProdutoComboDto>(environment.apiUrl + 'produto/listarProdutosCombo', { params: params });
-
-    //afazer: apra testes:
-    const produtoComboDto = new ProdutoComboDto();
-    produtoComboDto.Produtos = new Array();
-    const ps = produtoComboDto.Produtos;
-    ps.push({ Fabricante: "001", Produto: "001", Descricao_html: "teste", Preco_lista: 10, Estoque: 10, Alertas: new Array() });
-    ps.push({ Fabricante: "002", Produto: "002", Descricao_html: "teste2", Preco_lista: 10, Estoque: 10, Alertas: new Array() });
-
-
-    const studentsObservable: Observable<ProdutoComboDto> = new Observable(observer => {
-      setTimeout(() => {
-        observer.next(produtoComboDto);
-      }, 1000);
-    });
-
-    return studentsObservable;
+    return this.http.get<ProdutoComboDto>(environment.apiUrl + 'produto/buscarProduto', { params: params });
 
   }
 

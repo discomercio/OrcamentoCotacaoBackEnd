@@ -32,8 +32,18 @@ export class TelaDesktopService {
         //está um pouco instável quando chaveia
         //as vezes ele não consegue carregar o ponto de navegaçãoc corretamente
         //então recarregamos a página toda. unico inconveniente: perdemos o que tiver sido digitado nos campos de busca.
+        /*
+        para simular o erro:
+        como dekstop:
+        http://localhost:4200/
+        http://localhost:4200/pedido/consulta
+        http://localhost:4200/pedido/detalhes/127936N
+        chavear para celular e voltar para desktop
+        clicar no menu, ele fica na mesma página
+        */
+
         if (this.jaLido && this.telaDesktopAnterior != this.telaDesktop) {
-          window.location.reload();
+          //window.location.reload();
         }
         this.jaLido = true;
         this.telaDesktopAnterior = this.telaDesktop;

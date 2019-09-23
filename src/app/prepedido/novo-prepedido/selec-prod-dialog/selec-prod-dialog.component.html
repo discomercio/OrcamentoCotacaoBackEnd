@@ -1,0 +1,59 @@
+<section [ngClass]="{'sectionDesktop': telaDesktop, 'sectionCelular': !telaDesktop}">
+    <form>
+        <article mat-dialog-content class="fixo" [ngClass]="{'carregando': carregando && digitado !== ''}">
+            <div style="display: flex; flex-direction: row;">
+                <mat-form-field style="    flex-grow: 1; flex-shrink: 1;">
+                    <input matInput type="text" name="buscaproduto" placeholder="Produto (código ou descrição)"
+                        value="{{this.selecProdInfoPassado.Produto}}" (change)="digitouProd($event)"
+                        (keyup)="digitouProd($event)" [autofocus]="true" #digitadocx>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput type="number" name="qte" placeholder="Quantidade" required [(ngModel)]="qdte"
+                        [ngModelOptions]="{standalone: true}">
+                </mat-form-field>
+            </div>
+            <div class="listaprods">
+                <mat-radio-group aria-label="Selecione o produto" [(ngModel)]="produto" required
+                    [ngModelOptions]="{standalone: true}">
+                    <table style="width: 100%;">
+                        <ng-container *ngFor="let p of prods">
+                            <tr [ngStyle]="{display: p.visivel ? '':'none'}" class="prod">
+                                <td class="tdtabela" >
+                                    <!-- usamos o display: none e não o ngif para ficar mais rápido:
+                        quando o usuário pede para editar uma linha existente, se ele apagar o código do produto na caixa de texto
+                        fica lento porque tem que reconstruir a árvore -->
+                                    <div>
+                                        <mat-radio-button type="radio" name="produto"
+                                            value="{{ProdutoTelaFabrProd(p.produtoDto.Fabricante, p.produtoDto.Produto)}}">
+                                            {{ProdutoTelaFabrProd(p.produtoDto.Fabricante, p.produtoDto.Produto)}}
+                                        </mat-radio-button>
+                                    </div>
+                                </td>
+                                <td class="tdtabela" >
+                                    <span [innerHTML]="p.produtoDto.Descricao_html"></span> </td>
+                                <!-- usar o mat-radio-button fica BEM mais lento!!
+mas paree que a veocidade está suficiente... porque fizemos o truque de passar somente X registros por atualizacao, na rotina maisDadosProd
+ -->
+                                <td class="tdtabela" >
+                                    {{moedaUtils.formatarMoedaComPrefixo(p.produtoDto.Preco_lista)}}
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </table>
+                </mat-radio-group>
+            </div>
+
+
+        </article>
+        <footer mat-dialog-actions style="justify-content: space-around;">
+            <button mat-raised-button (click)="onAdicionarClick()" color="accent">
+                <ng-template *ngIf="selecProdInfoPassado.Produto; then modificarBlock else adicionarBlock">
+                </ng-template>
+                <ng-template #modificarBlock>Modificar</ng-template>
+                <ng-template #adicionarBlock>Adicionar</ng-template>
+            </button>
+            <button mat-raised-button (click)="onNoClick()" cdkFocusInitial color="accent">Cancelar</button>
+        </footer>
+    </form>
+</section>

@@ -15,10 +15,6 @@ import { PedidoCelularComponent } from './detalhes-prepedido/pedido-celular/pedi
 import { PrepedidoDesktopComponent } from './detalhes-prepedido/prepedido-desktop/prepedido-desktop.component';
 import { PrepedidoCelularComponent } from './detalhes-prepedido/prepedido-celular/prepedido-celular.component';
 import { NovoPrepedidoModule } from './novo-prepedido/novo-prepedido.module';
-import { ClienteComponent } from '../cliente/cliente/cliente.component';
-import { ClienteModule } from '../cliente/cliente.module';
-import { ClienteCorpoComponent } from '../cliente/cliente-corpo/cliente-corpo.component';
-import { AppModule } from '../app.module';
 import { ClienteCorpoModule } from '../cliente/cliente-corpo/cliente-corpo.module';
 
 @NgModule({
