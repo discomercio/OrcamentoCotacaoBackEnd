@@ -20,7 +20,14 @@
     //precisa disto ou no celular, quando tem scroll horizontal, a caixa não chega até o fim da linha
     //não, dá propblema no desktop... width: fit-content;
   }
-
+  .itemfilho {
+    padding-left: 3em;
+    padding-right: 0;
+    padding-bottom: 6px;
+  }
+  .trfilho {
+    font-size: 80%;
+  }
   .tdtabela {
     padding-left: 0;
     padding-right: 0;

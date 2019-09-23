@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject, ElementRef, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, PageEvent } from '@angular/material';
 import { SelecProdInfo } from './selec-prod-info';
-import { ProdutoComboDto } from 'src/app/servicos/produto/produtodto';
 import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
 import { ProdutoTela } from './produto-tela';
 import { MoedaUtils } from 'src/app/utils/moedaUtils';
@@ -30,7 +29,7 @@ export class SelecProdDialogComponent implements OnInit {
       if (!(this.prods.length < this.selecProdInfoPassado.produtoComboDto.ProdutoDto.length))
         break;
       //colocamos mais um
-      this.prods.push(new ProdutoTela(this.selecProdInfoPassado.produtoComboDto.ProdutoDto[this.prods.length]));
+      this.prods.push(new ProdutoTela(this.selecProdInfoPassado.produtoComboDto.ProdutoDto[this.prods.length], this.selecProdInfoPassado.produtoComboDto.ProdutoCompostoDto));
     }
 
     ProdutoTela.AtualizarVisiveis(this.prods, this.digitado);
@@ -101,13 +100,17 @@ export class SelecProdDialogComponent implements OnInit {
     this.dialogRef.close(true);
   }
 
-  public moedaUtils= new MoedaUtils();
+  public produtoDescr(fabricante: string, produto: string) {
+    return this.selecProdInfoPassado.produtoComboDto.ProdutoDto.filter(el => el.Fabricante == fabricante && el.Produto == produto)[0];
+  }
+
+  public moedaUtils = new MoedaUtils();
 
   //a quantidade
   public qdte: number;
   //o produto
   public produto: string;
   //para formatar o produto e o fabricante
-  ProdutoTelaFabrProd = ProdutoTela.FabrProd;
+  public ProdutoTelaFabrProd = ProdutoTela.FabrProd;
 
 }

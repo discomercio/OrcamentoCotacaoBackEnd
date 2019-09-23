@@ -1,4 +1,4 @@
-import { ProdutoComboDto } from 'src/app/servicos/produto/produtodto';
+import { ProdutoComboDto } from 'src/app/dto/Produto/ProdutoComboDto';
 
 //controle para a seleção do produto
 export class SelecProdInfo {

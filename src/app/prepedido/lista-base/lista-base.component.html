@@ -10,7 +10,7 @@
     </header>
 
     <article *ngIf="telaDesktop && emPrepedidos">
-        <table mat-table [dataSource]="prepedidos$|async" class="mat-elevation-z1 tabeladesktop">
+        <table mat-table [dataSource]="prepedidos$|async" class="mat-elevation-z1 tabeladesktop destaquelinhaMatTable">
 
             <ng-container matColumnDef="DataPrepedido">
                 <th mat-header-cell *matHeaderCellDef> Data </th>
@@ -58,7 +58,7 @@
         </div>
     </header>
     <article id="content" *ngIf="telaDesktop && !emPrepedidos">
-        <table mat-table [dataSource]="pedidos$|async" class="mat-elevation-z1 tabeladesktop">
+        <table mat-table [dataSource]="pedidos$|async" class="mat-elevation-z1 tabeladesktop destaquelinhaMatTable">
 
             <ng-container matColumnDef="DataPedido">
                 <th mat-header-cell *matHeaderCellDef> Data </th>

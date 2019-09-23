@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { PrePedidoDto } from 'src/app/dto/Prepedido/DetalhesPrepedido/PrePedidoDto';
-import { DadosClienteCadastroDto } from 'src/app/dto/ClienteCadastro/DadosClienteCadastroDto';
-import { EnderecoEntregaDtoClienteCadastro } from 'src/app/dto/ClienteCadastro/EnderecoEntregaDTOClienteCadastro';
-import { DetalhesDtoPrepedido } from 'src/app/dto/Prepedido/DetalhesPrepedido/DetalhesDtoPrepedido';
 import { NovoPrepedidoDadosService } from '../novo-prepedido-dados.service';
 import { CpfCnpjUtils } from 'src/app/utils/cpfCnpjUtils';
 import { Constantes } from 'src/app/dto/Constantes';
@@ -14,11 +11,13 @@ import { TelaDesktopService } from 'src/app/servicos/telaDesktop/telaDesktop.ser
 import { PrepedidoBuscarService } from 'src/app/servicos/prepedido/prepedido-buscar.service';
 import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
 import { MoedaUtils } from 'src/app/utils/moedaUtils';
-import { ProdutoComboDto } from 'src/app/servicos/produto/produtodto';
 import { ProdutoService } from 'src/app/servicos/produto/produto.service';
 import { MatDialog } from '@angular/material';
 import { SelecProdDialogComponent } from '../selec-prod-dialog/selec-prod-dialog.component';
 import { SelecProdInfo } from '../selec-prod-dialog/selec-prod-info';
+import { ProdutoComboDto } from 'src/app/dto/Produto/ProdutoComboDto';
+import { ProdutoDto } from 'src/app/dto/Produto/ProdutoDto';
+import { asapScheduler } from 'rxjs';
 
 @Component({
   selector: 'app-itens',
@@ -131,6 +130,8 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
       next: (r: ProdutoComboDto) => {
         if (!!r) {
           this.produtoComboDto = r;
+          //afazer: por enquanto, removendo quem nao tem preco....
+          this.produtoComboDto.ProdutoDto = this.produtoComboDto.ProdutoDto.filter(el => el.Preco_lista && el.Preco_lista != 0);
           this.carregandoProds = false;
         }
       },
@@ -168,6 +169,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     i.Preco = Number.parseFloat(v);
     if (i.Desconto) {
       i.VlUnitario = i.Preco * (1 - i.Desconto / 100);
+      i.VlUnitario = Number.parseFloat(i.VlUnitario.toFixed(2));
     }
     else {
       i.VlUnitario = i.Preco;
@@ -176,6 +178,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     this.digitouQte(i);
   }
   digitouVlVenda(e: Event, i: PrepedidoProdutoDtoPrepedido) {
+    debugger;
     let valor = ((e.target) as HTMLInputElement).value;
     let v: any = valor.replace(/\D/g, '');
     v = (v / 100).toFixed(2) + '';
@@ -188,14 +191,19 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
 
     //calcula o desconto
     i.Desconto = 100 * (i.Preco - i.VlUnitario) / i.Preco;
+    i.Desconto = Number.parseFloat(i.Desconto.toFixed(1));
+
     this.digitouQte(i);
   }
   digitouDesc(e: Event, i: PrepedidoProdutoDtoPrepedido) {
+    debugger;
     let valor = ((e.target) as HTMLInputElement).value;
     let v: any = valor.replace(/\D/g, '');
     //tem 1 casa
     v = (v / 10).toFixed(2) + '';
-
+    this.digitouDescValor(i, v);
+  }
+  digitouDescValor(i: PrepedidoProdutoDtoPrepedido, v: string) {
     //se não alteraram nada, ignoramos
     if (i.Desconto === Number.parseFloat(v))
       return;
@@ -215,6 +223,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
 
     if (i.Desconto) {
       i.VlUnitario = i.Preco * (1 - i.Desconto / 100);
+      i.VlUnitario = Number.parseFloat(i.VlUnitario.toFixed(2));
     }
     else {
       i.VlUnitario = i.Preco;
@@ -276,24 +285,117 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
           //editando
 
           //se mudou o produto, temos que mdar vários campos
-          if(linha.NumProduto !== selecProdInfo.Produto || linha.Fabricante !== selecProdInfo.Fabricante){
-            window.alert("Afazer: mudar o produto");
+          if (linha.NumProduto !== selecProdInfo.Produto || linha.Fabricante !== selecProdInfo.Fabricante) {
+            //mudou o produto, temos que mudar muita coisa!
+            const filhosDiretos = this.filhosDeProdutoComposto(selecProdInfo);
+            if (!filhosDiretos) {
+              //não é produto composto
+              this.atualizarProduto(linha, selecProdInfo.Fabricante, selecProdInfo.Produto, selecProdInfo.Qte);
+            }
+            else {
+              //produto composto
+              //removemos o item atual e colocamostodos os novos
+              this.prePedidoDto.ListaProdutos = this.prePedidoDto.ListaProdutos.filter(el => el != linha);
+
+              //colcoamos todos os novos
+              for (let i = 0; i < filhosDiretos.length; i++) {
+                let novo = new PrepedidoProdutoDtoPrepedido();
+                this.prePedidoDto.ListaProdutos.push(novo);
+                this.atualizarProduto(novo, filhosDiretos[i].Fabricante, filhosDiretos[i].Produto, selecProdInfo.Qte * filhosDiretos[i].Qtde);
+              }
+
+            }
           }
-          
-          linha.Qtde = selecProdInfo.Qte;
-          this.digitouQte(linha);
+          else {
+            //o produto ficou o mesmo, só atualizamos, menos bagunça
+            this.atualizarProduto(linha, selecProdInfo.Fabricante, selecProdInfo.Produto, selecProdInfo.Qte);
+          }
         }
         else {
           //adicionando
-          window.alert("Afazer: criar o produto");
-          let novo = new PrepedidoProdutoDtoPrepedido();
-          this.prePedidoDto.ListaProdutos.push(novo);
+
+          //se for produto simples
+          const filhosDiretos = this.filhosDeProdutoComposto(selecProdInfo);
+          if (!filhosDiretos) {
+            //não é produto composto
+            let novo = new PrepedidoProdutoDtoPrepedido();
+            this.prePedidoDto.ListaProdutos.push(novo);
+            this.atualizarProduto(novo, selecProdInfo.Fabricante, selecProdInfo.Produto, selecProdInfo.Qte);
+          }
+          else {
+            //produto composto
+            for (let i = 0; i < filhosDiretos.length; i++) {
+              let novo = new PrepedidoProdutoDtoPrepedido();
+              this.prePedidoDto.ListaProdutos.push(novo);
+              this.atualizarProduto(novo, filhosDiretos[i].Fabricante, filhosDiretos[i].Produto, selecProdInfo.Qte * filhosDiretos[i].Qtde);
+            }
+          }
         }
+
+        //vamos arrumar eventuais produtos repetidos
+        this.arrumarProdsRepetidos();
       }
     });
+  }
+
+  //depois de selecionar o produto, atualiza todos os campos
+  atualizarProduto(linha: PrepedidoProdutoDtoPrepedido, fabricante: string, produto: string, qtde: number) {
+    let prodInfo = this.produtoComboDto.ProdutoDto.filter(el => el.Fabricante === fabricante && el.Produto === produto)[0];
+    if (!prodInfo) {
+      prodInfo = new ProdutoDto();
+    }
+    linha.Fabricante = fabricante;
+    linha.NumProduto = produto;
+    linha.Descricao = prodInfo.Descricao_html;
+    //Obs: string;
+    linha.Qtde = qtde;
+    //Permite_Ra_Status: number;
+    //BlnTemRa: boolean;
+    linha.Preco = prodInfo.Preco_lista;
+    linha.VlLista = prodInfo.Preco_lista;
+    linha.VlUnitario = prodInfo.Preco_lista;
+    if (!linha.Desconto) {
+      linha.Desconto = 0;
+    }
+    this.digitouDescValor(linha, linha.Desconto.toString());
+    this.digitouQte(linha);
+  }
+
+  filhosDeProdutoComposto(selecProdInfo: SelecProdInfo) {
+    const registros = this.produtoComboDto.ProdutoCompostoDto.filter(el => el.PaiFabricante === selecProdInfo.Fabricante && el.PaiProduto === selecProdInfo.Produto);
+    if (!registros) {
+      return null;
+    }
+    if (registros.length <= 0) {
+      return null;
+    }
+    return registros[0].Filhos;
+  }
 
 
+  //consolidamos produtos repetidos
+  arrumarProdsRepetidos() {
+    let lp = this.prePedidoDto.ListaProdutos;
+    for (let i = 0; i < lp.length; i++) {
+      let este = lp[i];
 
+      //se tiver algum repetido, tiramos o proximo repetido
+      let continaurBuscaRepetido = true;
+      while (continaurBuscaRepetido) {
+        continaurBuscaRepetido = false;
+        for (let irepetido = i + 1; irepetido < lp.length; irepetido++) {
+          let repetido = lp[irepetido];
+          if (este.Fabricante === repetido.Fabricante && este.NumProduto == repetido.NumProduto) {
+            //repetido, tem que tirar este!
+            continaurBuscaRepetido = true;
+            este.Qtde += repetido.Qtde;
+            this.prePedidoDto.ListaProdutos = this.prePedidoDto.ListaProdutos.filter(el => el !== repetido);
+            lp = this.prePedidoDto.ListaProdutos;
+            this.digitouQte(este);
+          }
+        }
+      }
+    }
   }
   //#endregion
 

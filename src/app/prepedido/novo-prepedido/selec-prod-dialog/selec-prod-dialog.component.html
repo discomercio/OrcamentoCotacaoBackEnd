@@ -1,6 +1,8 @@
 <section [ngClass]="{'sectionDesktop': telaDesktop, 'sectionCelular': !telaDesktop}">
     <form>
-        <article mat-dialog-content class="fixo" [ngClass]="{'carregando': carregando && digitado !== ''}">
+        <!-- este é melhor deixar sem o carregando, fica muito confuso na tela pq pisca demais.... -->
+        <!-- [ngClass]="{'carregando': carregando && digitado !== ''}" -->
+        <article mat-dialog-content class="fixo" >
             <div style="display: flex; flex-direction: row;">
                 <mat-form-field style="    flex-grow: 1; flex-shrink: 1;">
                     <input matInput type="text" name="buscaproduto" placeholder="Produto (código ou descrição)"
@@ -14,31 +16,45 @@
                 </mat-form-field>
             </div>
             <div class="listaprods">
+                <div>Afazer: verificar se o retorno da API está correto (se está listando somente os produtos disponíveis para venda). </div>
                 <mat-radio-group aria-label="Selecione o produto" [(ngModel)]="produto" required
                     [ngModelOptions]="{standalone: true}">
-                    <table style="width: 100%;">
+                    <table style="width: 100%;" class="destaquelinha">
                         <ng-container *ngFor="let p of prods">
                             <tr [ngStyle]="{display: p.visivel ? '':'none'}" class="prod">
-                                <td class="tdtabela" >
+                                <td class="tdtabela">
                                     <!-- usamos o display: none e não o ngif para ficar mais rápido:
                         quando o usuário pede para editar uma linha existente, se ele apagar o código do produto na caixa de texto
                         fica lento porque tem que reconstruir a árvore -->
                                     <div>
+                                        <!-- usar o mat-radio-button fica BEM mais lento!!
+        mas paree que a veocidade está suficiente... porque fizemos o truque de passar somente X registros por atualizacao, na rotina maisDadosProd
+         -->
                                         <mat-radio-button type="radio" name="produto"
                                             value="{{ProdutoTelaFabrProd(p.produtoDto.Fabricante, p.produtoDto.Produto)}}">
                                             {{ProdutoTelaFabrProd(p.produtoDto.Fabricante, p.produtoDto.Produto)}}
                                         </mat-radio-button>
                                     </div>
                                 </td>
-                                <td class="tdtabela" >
+                                <td class="tdtabela">
                                     <span [innerHTML]="p.produtoDto.Descricao_html"></span> </td>
-                                <!-- usar o mat-radio-button fica BEM mais lento!!
-mas paree que a veocidade está suficiente... porque fizemos o truque de passar somente X registros por atualizacao, na rotina maisDadosProd
- -->
-                                <td class="tdtabela" >
+                                <td class="tdtabela" align="right">
                                     {{moedaUtils.formatarMoedaComPrefixo(p.produtoDto.Preco_lista)}}
                                 </td>
                             </tr>
+                            <!-- filhos -->
+                            <tr [ngStyle]="{display: p.visivel ? '':'none'}" class="prod trfilho" *ngFor="let f of p.Filhos">
+                                <td class="itemfilho">
+                                    {{f.Qtde}} x {{ProdutoTelaFabrProd(f.Fabricante, f.Produto)}}
+                                </td>
+                                <td class="tdtabela">
+                                    <span innerHTML="{{produtoDescr(f.Fabricante, f.Produto).Descricao_html}}"></span>
+                                </td>
+                                <td class="tdtabela" align="right">
+                                    {{moedaUtils.formatarMoedaComPrefixo(produtoDescr(f.Fabricante, f.Produto).Preco_lista * f.Qtde)}}
+                                </td>
+                            </tr>
+
                         </ng-container>
                     </table>
                 </mat-radio-group>

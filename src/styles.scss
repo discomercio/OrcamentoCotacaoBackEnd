@@ -158,3 +158,12 @@ body {
     width: calc(100% - 2em);
   }
 }
+
+// para destacaar a linha do mouse
+.destaquelinha :hover {
+  background-color: $cor-fundo-listapedido-destaque !important;
+}
+//esepcial apra o mat-table, ele é diferente!
+.destaquelinhaMatTable tbody :hover {
+  background-color: $cor-fundo-listapedido-destaque !important;
+}
