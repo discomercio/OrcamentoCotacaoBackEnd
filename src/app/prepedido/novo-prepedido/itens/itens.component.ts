@@ -133,6 +133,8 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
           //afazer: por enquanto, removendo quem nao tem preco....
           this.produtoComboDto.ProdutoDto = this.produtoComboDto.ProdutoDto.filter(el => el.Preco_lista && el.Preco_lista != 0);
           this.carregandoProds = false;
+        } else {
+          this.alertaService.mostrarMensagem("Erro ao acessar a lista de produtos: nenhum produto retornado. Por favor, entre em contato com o suporte técnico.")
         }
       },
       error: (r: ProdutoComboDto) => this.alertaService.mostrarErroInternet()
@@ -332,12 +334,23 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
       selecProdInfo.Fabricante = linha.Fabricante;
       selecProdInfo.Qte = linha.Qtde;
     }
-    const dialogRef = this.dialog.open(SelecProdDialogComponent, {
+    let options: any = {
       autoFocus: false,
       width: "100em",
       //não colocamos aqui para que ele ajuste melhor: height:"85vh",
       data: selecProdInfo
-    });
+    };
+    if (!this.telaDesktop) {
+      //opções para celular
+      options = {
+        autoFocus: false,
+        width: "100vw", //para celular, precisamos da largura toda
+        maxWidth: "100vw",
+        //não colocamos aqui para que ele ajuste melhor: height:"85vh",
+        data: selecProdInfo
+      };
+    }
+    const dialogRef = this.dialog.open(SelecProdDialogComponent, options);
     dialogRef.afterClosed().subscribe((result) => {
       if (result && selecProdInfo.ClicouOk) {
         //vamos editar ou adicionar um novo

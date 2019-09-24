@@ -11,10 +11,10 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 		<header>
 			<ng-container *ngIf="criando; else tituloEditando">Criar Pré-pedido</ng-container>
 			<ng-template #tituloEditando>Editar Pré-pedido</ng-template>
-			- afazer: tela ainda em desenvolvimento
 		</header>
 		<article class="indicadorlinha">
-			<div style="padding-bottom: 0.6em;"><strong>Cliente:</strong> {{cpfCnpj()}} - {{prePedidoDto.DadosCliente.Nome}}</div>
+			<div style="padding-bottom: 0.6em;"><strong>Cliente:</strong> {{cpfCnpj()}} -
+				{{prePedidoDto.DadosCliente.Nome}}</div>
 
 			<!--  RELAÇÃO DE PRODUTOS SEM PRESENÇA NO ESTOQUE 
 				fazemos abaixo de cada um dos itens
@@ -188,65 +188,71 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 
 			<!--  R E L A Ç Ã O   D E   P R O D U T O S  -->
 			<!-- versão celular -->
-			<div *ngIf="!telaDesktop" class="destaquelinha">
+			<div *ngIf="!telaDesktop" >
 				<div *ngFor="let i of prePedidoDto?.ListaProdutos" class="caixacel ">
 					<!-- sempre uma linha inteira -->
-					<div style="cursor: pointer;" (click)="mostrarProdutos(i)">
+					<div style="cursor: pointer; padding-bottom: 1em; text-align: center" (click)="mostrarProdutos(i)">
 						Produto
 						{{i.Fabricante}}/{{i.NumProduto}} -
 						<span [innerHTML]="i.Descricao"></span>
 					</div>
 
-					<!-- <input name="c_qtde" id="c_qtde" class="PLLd" style="width:27px;" value='{{i.Qtde}}' /> -->
-					<span>Quantidade:
-						<mat-form-field class="quantidade">
-							<input matInput [ngModelOptions]="{standalone: true}" type="number" required
-								[(ngModel)]="i.Qtde" (keyup)="digitouQte(i)" (change)="digitouQte(i)">
-						</mat-form-field>
-					</span>
-					<span *ngIf="permite_RA_Status">Preço:
-						<!-- <input name="c_vl_NF" id="c_vl_NF" class="PLLd" style="width:62px;" value='{{i.Preco}}' /> -->
-						<mat-form-field class="preco">
-							<input matInput type="text" required [value]="moedaUtils.formatarMoedaSemPrefixo(i.Preco)"
-								(change)="digitouPreco($event,i)" (keyup)="digitouPreco($event,i)">
-						</mat-form-field>
-					</span>
+					<div style="display: flex; justify-content: space-around;">
+						<span>
+							<mat-form-field class="quantidade" style="width: 5em">
+								<input matInput [ngModelOptions]="{standalone: true}" type="number" required
+									[(ngModel)]="i.Qtde" (keyup)="digitouQte(i)" (change)="digitouQte(i)"
+									placeholder="Quantidade">
+							</mat-form-field>
+						</span>
+						<span *ngIf="permite_RA_Status">
+							<!-- <input name="c_vl_NF" id="c_vl_NF" class="PLLd" style="width:62px;" value='{{i.Preco}}' /> -->
+							<mat-form-field class="preco">
+								<input matInput type="text" required
+									[value]="moedaUtils.formatarMoedaSemPrefixo(i.Preco)"
+									(change)="digitouPreco($event,i)" (keyup)="digitouPreco($event,i)"
+									placeholder="Preço">
+							</mat-form-field>
+						</span>
 
-					<span>
-						VL Lista: {{moedaUtils.formatarMoedaSemPrefixo(i.VlLista)}}
-					</span>
+						<span>
+							<mat-form-field class="desconto">
+								<input matInput type="text" [value]="moedaUtils.formatarPorcentagemUmaCasa(i.Desconto)"
+									(change)="digitouDesc($event,i)" (keyup)="digitouDesc($event,i)"
+									placeholder="Desconto">
+							</mat-form-field>%
+						</span>
+						<span>
+							<mat-form-field class="preco">
+								<input matInput type="text" required
+									[value]="moedaUtils.formatarMoedaSemPrefixo(i.VlUnitario)"
+									(change)="digitouVlVenda($event,i)" (keyup)="digitouVlVenda($event,i)"
+									placeholder="VL Venda">
+							</mat-form-field>
+						</span>
+					</div>
+					<div style="display: flex; justify-content: space-around; align-items: center;">
+						<span>
+							VL Lista: {{moedaUtils.formatarMoedaSemPrefixo(i.VlLista)}}
+						</span>
 
-					<span> Desconto:
-						<mat-form-field class="desconto">
-							<input matInput type="text" [value]="moedaUtils.formatarPorcentagemUmaCasa(i.Desconto)"
-								(change)="digitouDesc($event,i)" (keyup)="digitouDesc($event,i)">
-						</mat-form-field>%
-					</span>
-					<span> VL Venda:
-						<mat-form-field class="preco">
-							<input matInput type="text" required
-								[value]="moedaUtils.formatarMoedaSemPrefixo(i.VlUnitario)"
-								(change)="digitouVlVenda($event,i)" (keyup)="digitouVlVenda($event,i)">
-						</mat-form-field>
-					</span>
+						<span>VL Total:
+							{{moedaUtils.formatarMoedaSemPrefixo(i.TotalItem)}}
+						</span>
 
-
-					<span>VL Total:
-						{{moedaUtils.formatarMoedaSemPrefixo(i.TotalItem)}}
-					</span>
-
-					<span>
-						<button mat-button (click)="removerLinha(i)"
-							style="padding: 0; min-width: auto; max-width: 32px;">
-							<mat-icon style="padding: 0;" title="Remover linha">delete</mat-icon>
-						</button>
-					</span>
+						<span>
+							<button mat-button (click)="removerLinha(i)"
+								style="padding: 0; min-width: auto; max-width: 32px;">
+								<mat-icon style="padding: 0;" title="Remover linha">delete</mat-icon>
+							</button>
+						</span>
+					</div>
 					<!-- mensagem de estoque em linha separada -->
-					<div *ngIf="estoqueExcedido(i)" class="avisoestoque">
+					<div *ngIf="estoqueExcedido(i)" class="avisoestoque" style="padding-top: 1em">
 						Quantidade solicitada é maior que o estoque de {{estoqueExistente(i)}}
 					</div>
 					<!-- aviso é em linha separada -->
-					<div *ngIf="produtoTemAviso(i)" class="avisoestoque">
+					<div *ngIf="produtoTemAviso(i)" class="avisoestoque" style="padding-top: 1em">
 						Aviso: {{produtoMsgAviso(i)}}
 					</div>
 				</div>
