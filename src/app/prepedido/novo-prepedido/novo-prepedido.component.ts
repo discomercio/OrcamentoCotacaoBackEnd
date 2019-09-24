@@ -16,6 +16,12 @@ export class NovoPrepedidoComponent implements OnInit {
   nesse momento os dados são salvos no novo-prepedido-dados.service
 
   itens
+    que usa o selec-prod-dialog
+  
+  dados-pagto
+
+  confirmar-prepedido
+  
   */
 
 

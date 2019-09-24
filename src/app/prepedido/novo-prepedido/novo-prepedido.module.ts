@@ -14,13 +14,17 @@ import { ConfirmarEnderecoComponent } from './confirmar-endereco/confirmar-ender
 import { ItensComponent } from './itens/itens.component';
 import { TextMaskModule } from 'angular2-text-mask';
 import { SelecProdDialogComponent } from './selec-prod-dialog/selec-prod-dialog.component';
+import { DadosPagtoComponent } from './dados-pagto/dados-pagto.component';
+import { ConfirmarPrepedidoComponent } from './confirmar-prepedido/confirmar-prepedido.component';
 
 
 @NgModule({
   declarations: [NovoPrepedidoComponent,
     SelecionarClienteComponent, ConfirmarClienteComponent, CadastrarClienteComponent,
     ConfirmarEnderecoComponent, ItensComponent,
-    SelecProdDialogComponent],
+    SelecProdDialogComponent,
+    DadosPagtoComponent,
+    ConfirmarPrepedidoComponent],
   imports: [
     CommonModule,
     ClienteCorpoModule,

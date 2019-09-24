@@ -299,11 +299,13 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     this.location.back();
   }
   continuar() {
-    let msg = "teste ";
-    for (let i = 0; i < 1000; i++)
-      msg += "teste ";
-    this.alertaService.mostrarMensagemComLargura(msg, "100vw");
-    window.alert("Afazer: salvar o pedido");
+    let numeroPrepedido = this.activatedRoute.snapshot.params.numeroPrepedido;
+    if (!!numeroPrepedido) {
+      this.router.navigate(["../../dados-pagto"], { relativeTo: this.activatedRoute });
+    }
+    else {
+      this.router.navigate(["../dados-pagto"], { relativeTo: this.activatedRoute });
+    }
   }
   adicionarProduto() {
     //ele mesmo já adiciona

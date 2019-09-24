@@ -7,6 +7,8 @@ import { ConfirmarClienteComponent } from './confirmar-cliente/confirmar-cliente
 import { SelecionarClienteComponent } from './selecionar-cliente/selecionar-cliente.component';
 import { CadastrarClienteComponent } from './cadastrar-cliente/cadastrar-cliente.component';
 import { ItensComponent } from './itens/itens.component';
+import { DadosPagtoComponent } from './dados-pagto/dados-pagto.component';
+import { ConfirmarPrepedidoComponent } from './confirmar-prepedido/confirmar-prepedido.component';
 
 
 const routes: Routes = [
@@ -34,6 +36,16 @@ const routes: Routes = [
         path: 'itens',
         canActivate: [LoginGuard],
         component: ItensComponent
+      },
+      {
+        path: 'dados-pagto',
+        canActivate: [LoginGuard],
+        component: DadosPagtoComponent
+      },
+      {
+        path: 'confirmar-prepedido',
+        canActivate: [LoginGuard],
+        component: ConfirmarPrepedidoComponent
       },
       {
         path: '**',
