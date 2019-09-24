@@ -14,56 +14,17 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 			- afazer: tela ainda em desenvolvimento
 		</header>
 		<article class="indicadorlinha">
-			<div><strong>Cliente:</strong> {{cpfCnpj()}} - {{prePedidoDto.DadosCliente.Nome}}</div>
+			<div style="padding-bottom: 0.6em;"><strong>Cliente:</strong> {{cpfCnpj()}} - {{prePedidoDto.DadosCliente.Nome}}</div>
 
-			<!-- afazer: -->
-			<!--  RELAÇÃO DE PRODUTOS SEM PRESENÇA NO ESTOQUE -->
+			<!--  RELAÇÃO DE PRODUTOS SEM PRESENÇA NO ESTOQUE 
+				fazemos abaixo de cada um dos itens
 
-			<!--             
-<% if erro_produto_indisponivel then %>
-!--  RELAÇÃO DE PRODUTOS SEM PRESENÇA NO ESTOQUE --
-<table class="Qx" cellspacing="0">
-	<tr><td class="MB ALERTA" colspan="6" align="center"><span class="ALERTA" style="font-size:9pt;">PRODUTOS SEM PRESENÇA NO ESTOQUE</span></td></tr>
-	<tr bgcolor="#FFFFFF">
-	<td class="MDBE" align="left"><span class="PLTe">Fabr</span></td>
-	<td class="MDB" align="left"><span class="PLTe">Produto</span></td>
-	<td class="MDB" align="left"><span class="PLTe">Descrição</span></td>
-	<td class="MDB" align="right"><span class="PLTd">Solicitado</span></td>
-	<td class="MDB" align="right"><span class="PLTd">Disponível</span></td>
-	<td class="MDB" align="right"><span class="PLTd">Faltam</span></td>
-	</tr>
+				afazer: verificação de estoque
+				<% if Not (erro_produto_indisponivel And bloquear_cadastramento_quando_produto_indiponivel) then %>
+				neste caso, ele não permite criar o pré-pedido. Por enquanto, estamos mandando para o servidor.
 
-<%	for i=Lbound(v_item) to Ubound(v_item)
-		if Trim(v_item(i).produto) <> "" then
-			with v_item(i)
-				if .qtde > .qtde_estoque_total_disponivel then
-%>
-			<tr>
-			<td class="MDBE" align="left"><input name="c_spe_fabricante" id="c_spe_fabricante" class="PLLe" style="width:26px;"
-				value='<%=.fabricante%>' readonly tabindex=-1></td>
-			<td class="MDB" align="left"><input name="c_spe_produto" id="c_spe_produto" class="PLLe" style="width:55px;"
-				value='<%=.produto%>' readonly tabindex=-1></td>
-			<td class="MDB" align="left">
-				<span class="PLLe" style="width:333px;"><%=produto_formata_descricao_em_html(.descricao_html)%></span>
-				<input type="hidden" name="c_spe_descricao" id="c_spe_descricao" value='<%=.descricao%>'>
-			</td>
-			<td class="MDB" align="right"><input name="c_spe_qtde_solicitada" id="c_spe_qtde_solicitada" class="PLLd" style="width:70px;"
-				value='<%=Cstr(.qtde)%>' readonly tabindex=-1></td>
-			<td class="MDB" align="right"><input name="c_spe_qtde_estoque" id="c_spe_qtde_estoque" class="PLLd" style="width:70px;"
-				value='<%=Cstr(.qtde_estoque_total_disponivel)%>' readonly tabindex=-1></td>
-			<td class="MDB" align="right"><input name="c_spe_saldo" id="c_spe_saldo" class="PLLd" style="width:70px;color:red;"
-				value='<%=Cstr(Abs(.qtde_estoque_total_disponivel - .qtde))%>' readonly tabindex=-1></td>
-			</tr>
-		<%			end if
-				end with
-			end if
-		next		%>
-</table>
-<% end if %>
+			-->
 
-<% if Not (erro_produto_indisponivel And bloquear_cadastramento_quando_produto_indiponivel) then %>
-nessa condição ele nao mostra o resto da tela e não deixa continuar....
-<br> -->
 
 			<div style="width: 100%; text-align: right; padding-bottom: 1em;">
 				<div><a mat-raised-button (click)="adicionarProduto()">
@@ -72,11 +33,11 @@ nessa condição ele nao mostra o resto da tela e não deixa continuar....
 			</div>
 
 			<!--  R E L A Ç Ã O   D E   P R O D U T O S  -->
-			<!-- afazer fazendo -->
-			<table class="tabelaitens destaquelinha">
+			<!-- versão desktop -->
+			<table class="tabelaitens destaquelinha" *ngIf="telaDesktop">
 				<thead>
 
-					<tr bgcolor="#FFFFFF">
+					<tr>
 						<!-- //esepcifica para a tela de itens do pedido, largura do produto
 							//3 ou 4 preços, o desconto e a quantidade
 							//10+6+36 ou 10+6+48 = 52 ou 64
@@ -113,12 +74,13 @@ nessa condição ele nao mostra o resto da tela e não deixa continuar....
 				</thead>
 				<tbody>
 
-					<tr *ngFor="let i of prePedidoDto?.ListaProdutos">
-						<td scope="row" data-label="Produto: " align="left" style="cursor: pointer;" (click)="mostrarProdutos(i)">
-							{{i.Fabricante}}/{{i.NumProduto}} -
-							<span [innerHTML]="i.Descricao"></span>
-						</td>
-						<!-- esta coluna está oculta: 
+					<ng-container *ngFor="let i of prePedidoDto?.ListaProdutos">
+						<tr>
+							<td align="left" style="cursor: pointer;" (click)="mostrarProdutos(i)">
+								{{i.Fabricante}}/{{i.NumProduto}} -
+								<span [innerHTML]="i.Descricao"></span>
+							</td>
+							<!-- esta coluna está oculta: 
 							$(".tdProdObs").hide(); 
                     <td class="MDB tdProdObs" align="left">
                         <% if isLojaHabilitadaProdCompostoECommerce(loja) then s_campo_focus="c_desc" else s_campo_focus="c_vl_unitario"%>
@@ -127,113 +89,181 @@ nessa condição ele nao mostra o resto da tela e não deixa continuar....
                             onblur="this.value=trim(this.value);" value='' <%=s_readonly%> />
 					</td> -->
 
-						<td data-label="Qtde: " align="right">
-							<!-- <input name="c_qtde" id="c_qtde" class="PLLd" style="width:27px;" value='{{i.Qtde}}' /> -->
-							<mat-form-field class="quantidade">
-								<input matInput [ngModelOptions]="{standalone: true}" type="number" required
-									[(ngModel)]="i.Qtde" (keyup)="digitouQte(i)" (change)="digitouQte(i)">
-							</mat-form-field>
-						</td>
-						<td data-label="Preço: " *ngIf="permite_RA_Status" align="right">
-							<!-- <input name="c_vl_NF" id="c_vl_NF" class="PLLd" style="width:62px;" value='{{i.Preco}}' /> -->
-							<mat-form-field class="preco">
-								<input matInput type="text" required
-									[value]="moedaUtils.formatarMoedaSemPrefixo(i.Preco)"
-									(change)="digitouPreco($event,i)" (keyup)="digitouPreco($event,i)">
-							</mat-form-field>
-						</td>
+							<td align="right">
+								<!-- <input name="c_qtde" id="c_qtde" class="PLLd" style="width:27px;" value='{{i.Qtde}}' /> -->
+								<mat-form-field class="quantidade">
+									<input matInput [ngModelOptions]="{standalone: true}" type="number" required
+										[(ngModel)]="i.Qtde" (keyup)="digitouQte(i)" (change)="digitouQte(i)">
+								</mat-form-field>
+							</td>
+							<td *ngIf="permite_RA_Status" align="right">
+								<!-- <input name="c_vl_NF" id="c_vl_NF" class="PLLd" style="width:62px;" value='{{i.Preco}}' /> -->
+								<mat-form-field class="preco">
+									<input matInput type="text" required
+										[value]="moedaUtils.formatarMoedaSemPrefixo(i.Preco)"
+										(change)="digitouPreco($event,i)" (keyup)="digitouPreco($event,i)">
+								</mat-form-field>
+							</td>
 
-						<!-- afazer no campo antrior:
-					                            onkeypress="if (digitou_enter(true)) fORC.<%=s_campo_focus%>[<%=Cstr(i-1)%>].focus(); filtra_moeda_positivo();"
-							onblur="this.value=formata_moeda(this.value); recalcula_RA(); recalcula_parcelas();" -->
-
-
-						<td data-label="VL Lista: " align="right">
-							{{moedaUtils.formatarMoedaSemPrefixo(i.VlLista)}}
-						</td>
+							<td align="right">
+								{{moedaUtils.formatarMoedaSemPrefixo(i.VlLista)}}
+							</td>
 
 
-						<!-- no original somente isLojaHabilitadaProdCompostoECommerce podia digitar o desconto, 
+							<!-- no original somente isLojaHabilitadaProdCompostoECommerce podia digitar o desconto, 
 						mas todo mundo podia digitar o c_vl_unitario
 						mudamos para deixar todo mundo digitar o desconto -->
-						<!-- afazer tratamento do teclado 
-                            onkeypress="if (digitou_enter(true)){fORC.c_vl_unitario[<%=Cstr(i-1)%>].focus();} filtra_percentual();"
-                            onblur="this.value=formata_perc_desconto(this.value); calcula_desconto(<%=Cstr(i-1)%>); trata_edicao_RA(<%=Cstr(i-1)%>); recalcula_total_linha(<%=Cstr(i)%>); recalcula_RA();"
-						-->
-						<td data-label="Desconto: " align="right">
-							<!-- <input name="c_desc" id="c_desc" class="PLLd" style="width:36px;" value="{{i.Desconto}}" /> -->
-							<mat-form-field class="desconto">
-								<input matInput type="text" [value]="moedaUtils.formatarPorcentagemUmaCasa(i.Desconto)"
-									(change)="digitouDesc($event,i)" (keyup)="digitouDesc($event,i)">
-							</mat-form-field>%
-						</td>
-
-
-						<!-- afazer tratamento do teclado, verificar todas as rotinas
-                            onkeypress="if (digitou_enter(true)) {if ((<%=Cstr(i)%>==fORC.c_vl_unitario.length)||(trim(fORC.c_produto[<%=Cstr(i)%>].value)=='')) fORC.c_obs1.focus(); else fORC.c_obs[<%=Cstr(i)%>].focus();} filtra_moeda_positivo();"
-                            onblur="this.value=formata_moeda(this.value); recalcula_total(<%=Cstr(i)%>); recalcula_RA(); recalcula_parcelas();"
-                     	-->
-						<td data-label="VL Venda: " align="right">
-							<!-- <input name="c_vl_unitario" id="c_vl_unitario" class="PLLd" style="width:62px;"
+							<td align="right">
+								<!-- <input name="c_desc" id="c_desc" class="PLLd" style="width:36px;" value="{{i.Desconto}}" /> -->
+								<mat-form-field class="desconto">
+									<input matInput type="text"
+										[value]="moedaUtils.formatarPorcentagemUmaCasa(i.Desconto)"
+										(change)="digitouDesc($event,i)" (keyup)="digitouDesc($event,i)">
+								</mat-form-field>%
+							</td>
+							<td align="right">
+								<!-- <input name="c_vl_unitario" id="c_vl_unitario" class="PLLd" style="width:62px;"
 								value='{{i.VlUnitario}}' /> -->
-							<mat-form-field class="preco">
-								<input matInput type="text" required
-									[value]="moedaUtils.formatarMoedaSemPrefixo(i.VlUnitario)"
-									(change)="digitouVlVenda($event,i)" (keyup)="digitouVlVenda($event,i)">
-							</mat-form-field>
-						</td>
+								<mat-form-field class="preco">
+									<input matInput type="text" required
+										[value]="moedaUtils.formatarMoedaSemPrefixo(i.VlUnitario)"
+										(change)="digitouVlVenda($event,i)" (keyup)="digitouVlVenda($event,i)">
+								</mat-form-field>
+							</td>
 
 
-						<td data-label="VL Total: " align="right">
-							<!-- input name="c_vl_total" id="c_vl_total" class="PLLd" style="width:70px;" -->
-							{{moedaUtils.formatarMoedaSemPrefixo(i.TotalItem)}}
-						</td>
+							<td align="right">
+								<!-- input name="c_vl_total" id="c_vl_total" class="PLLd" style="width:70px;" -->
+								{{moedaUtils.formatarMoedaSemPrefixo(i.TotalItem)}}
+							</td>
 
-						<td style="padding: 0; min-width: auto; max-width: 32px;">
-							<button mat-button (click)="removerLinha(i)"
-								style="padding: 0; min-width: auto; max-width: 32px;">
-								<mat-icon style="padding: 0;" title="Remover linha">delete</mat-icon>
-							</button>
+							<td style="padding: 0; min-width: auto; max-width: 32px;">
+								<button mat-button (click)="removerLinha(i)"
+									style="padding: 0; min-width: auto; max-width: 32px;">
+									<mat-icon style="padding: 0;" title="Remover linha">delete</mat-icon>
+								</button>
+							</td>
+						</tr>
+						<tr *ngIf="estoqueExcedido(i)">
+							<td colspan="7" class="avisoestoque" *ngIf="!permite_RA_Status">
+								Quantidade solicitada é maior que o estoque de {{estoqueExistente(i)}}
+							</td>
+							<td colspan="8" class="avisoestoque" *ngIf="permite_RA_Status">
+								Quantidade solicitada é maior que o estoque de {{estoqueExistente(i)}}
+							</td>
+						</tr>
+						<tr *ngIf="produtoTemAviso(i)">
+							<td colspan="7" class="avisoestoque" *ngIf="!permite_RA_Status">
+								Aviso: {{produtoMsgAviso(i)}}
+							</td>
+							<td colspan="8" class="avisoestoque" *ngIf="permite_RA_Status">
+								Aviso: {{produtoMsgAviso(i)}}
+							</td>
+						</tr>
+					</ng-container>
+
+					<!-- parte de baixo da tabela -->
+					<tr>
+						<!-- pula as colunas vazias -->
+						<td> </td>
+						<td> </td>
+						<td *ngIf="permite_RA_Status">
+							<strong>{{moedaUtils.formatarMoedaSemPrefixo(totalPedidoRA())}}</strong>
 						</td>
+						<td> </td>
+						<td> </td>
+						<td> </td>
+
+						<td align="right">
+							<strong>{{moedaUtils.formatarMoedaSemPrefixo(totalPedido())}}</strong>
+						</td>
+						<td> </td>
+
+
 					</tr>
 
-					<!-- afazer parte de baixo da tabela
-                <tr>
-                    <% if r_orcamentista_e_indicador.permite_RA_status = 1 then %>
-                    <td colspan="<%=Cstr(4-qtdeHiddenColumnTabProd)%>" align="left">
-                        <table cellspacing=0 cellpadding=0 width='100%' style="margin-top:4px;">
-                            <tr>
-                                <td width="60%" align="left">&nbsp;</td>
-                                <td align="right">
-                                    <table cellspacing="0" cellpadding="0">
-                                        <tr>
-                                            <td class="MTBE" align="left"><span class="PLTe">&nbsp;RA</span></td>
-                                            <td class="MTBD" align="right"><input name="c_total_RA" id="c_total_RA"
-                                                    class="PLLd" style="width:70px;color:blue;" value='' readonly
-                                                    tabindex=-1></td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td class="MD" align="left">&nbsp;</td>
-                    <td class="MDB" align="right">
-                        <%s_TotalDestePedidoComRA=formata_moeda(m_TotalDestePedidoComRA)%>
-                        <input name="c_total_NF" id="c_total_NF" class="PLLd" style="width:70px;color:blue;"
-                            value='<%=s_TotalDestePedidoComRA%>' readonly tabindex=-1>
-                    </td>
-                    <% else %>
-                    <td colspan="<%=Cstr(5-qtdeHiddenColumnTabProd)%>" align="left">&nbsp;</td>
-                    <% end if %>
-                    <td colspan="3" class="MD" align="left">&nbsp;</td>
-                    <td class="MDB" align="right"><input name="c_total_geral" id="c_total_geral" class="PLLd"
-                            style="width:70px;color:blue;" value='<%=formata_moeda(m_TotalDestePedido)%>' readonly
-                            tabindex=-1></td>
-                </tr> -->
 				</tbody>
 
 			</table>
+
+			<!--  R E L A Ç Ã O   D E   P R O D U T O S  -->
+			<!-- versão celular -->
+			<div *ngIf="!telaDesktop" class="destaquelinha">
+				<div *ngFor="let i of prePedidoDto?.ListaProdutos" class="caixacel ">
+					<!-- sempre uma linha inteira -->
+					<div style="cursor: pointer;" (click)="mostrarProdutos(i)">
+						Produto
+						{{i.Fabricante}}/{{i.NumProduto}} -
+						<span [innerHTML]="i.Descricao"></span>
+					</div>
+
+					<!-- <input name="c_qtde" id="c_qtde" class="PLLd" style="width:27px;" value='{{i.Qtde}}' /> -->
+					<span>Quantidade:
+						<mat-form-field class="quantidade">
+							<input matInput [ngModelOptions]="{standalone: true}" type="number" required
+								[(ngModel)]="i.Qtde" (keyup)="digitouQte(i)" (change)="digitouQte(i)">
+						</mat-form-field>
+					</span>
+					<span *ngIf="permite_RA_Status">Preço:
+						<!-- <input name="c_vl_NF" id="c_vl_NF" class="PLLd" style="width:62px;" value='{{i.Preco}}' /> -->
+						<mat-form-field class="preco">
+							<input matInput type="text" required [value]="moedaUtils.formatarMoedaSemPrefixo(i.Preco)"
+								(change)="digitouPreco($event,i)" (keyup)="digitouPreco($event,i)">
+						</mat-form-field>
+					</span>
+
+					<span>
+						VL Lista: {{moedaUtils.formatarMoedaSemPrefixo(i.VlLista)}}
+					</span>
+
+					<span> Desconto:
+						<mat-form-field class="desconto">
+							<input matInput type="text" [value]="moedaUtils.formatarPorcentagemUmaCasa(i.Desconto)"
+								(change)="digitouDesc($event,i)" (keyup)="digitouDesc($event,i)">
+						</mat-form-field>%
+					</span>
+					<span> VL Venda:
+						<mat-form-field class="preco">
+							<input matInput type="text" required
+								[value]="moedaUtils.formatarMoedaSemPrefixo(i.VlUnitario)"
+								(change)="digitouVlVenda($event,i)" (keyup)="digitouVlVenda($event,i)">
+						</mat-form-field>
+					</span>
+
+
+					<span>VL Total:
+						{{moedaUtils.formatarMoedaSemPrefixo(i.TotalItem)}}
+					</span>
+
+					<span>
+						<button mat-button (click)="removerLinha(i)"
+							style="padding: 0; min-width: auto; max-width: 32px;">
+							<mat-icon style="padding: 0;" title="Remover linha">delete</mat-icon>
+						</button>
+					</span>
+					<!-- mensagem de estoque em linha separada -->
+					<div *ngIf="estoqueExcedido(i)" class="avisoestoque">
+						Quantidade solicitada é maior que o estoque de {{estoqueExistente(i)}}
+					</div>
+					<!-- aviso é em linha separada -->
+					<div *ngIf="produtoTemAviso(i)" class="avisoestoque">
+						Aviso: {{produtoMsgAviso(i)}}
+					</div>
+				</div>
+
+			</div>
+			<div *ngIf="!telaDesktop">
+				<!-- parte de baixo da tabela -->
+				<!-- fazemos fora do div principal pq não queremos o destaque de linha aqui -->
+				<div style="text-align: right; padding-right: 1em;">
+					<span *ngIf="permite_RA_Status">
+						<strong>Preço total: {{moedaUtils.formatarMoedaSemPrefixo(totalPedidoRA())}}</strong>
+					</span>
+					<span>
+						<strong>Total do pedido: {{moedaUtils.formatarMoedaSemPrefixo(totalPedido())}}</strong>
+					</span>
+				</div>
+			</div>
 
 		</article>
 		<footer>

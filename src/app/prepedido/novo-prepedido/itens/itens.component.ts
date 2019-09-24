@@ -139,6 +139,68 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     });
   }
 
+  //mensagens de estoque
+  estoqueItem(i: PrepedidoProdutoDtoPrepedido): ProdutoDto {
+    if (!this.produtoComboDto) {
+      return null;
+    }
+
+    //procuramos esse item
+    const item = this.produtoComboDto.ProdutoDto.filter(el => el.Fabricante === i.Fabricante && el.Produto === i.NumProduto);
+    if (!item || item.length <= 0) {
+      return null;
+    }
+
+    //achamos o item
+    return item[0];
+  }
+  estoqueExcedido(i: PrepedidoProdutoDtoPrepedido): boolean {
+    const item = this.estoqueItem(i);
+    //se nao achamos, dizemos que não tem que mostrar a mensagem não...
+    if (!item) {
+      return false;
+    }
+    if (item.Estoque < i.Qtde) {
+      return true;
+    }
+    return false;
+  }
+  estoqueExistente(i: PrepedidoProdutoDtoPrepedido): number {
+    //para imprimir quantos itens tem em estoque
+    const item = this.estoqueItem(i);
+    if (!item) {
+      return null;
+    }
+    return item.Estoque;
+  }
+
+
+  produtoTemAviso(i: PrepedidoProdutoDtoPrepedido): boolean {
+    const item = this.estoqueItem(i);
+    //se nao achamos, dizemos que não tem que mostrar a mensagem não...
+    if (!item) {
+      return false;
+    }
+    if (!item.Alertas || item.Alertas.trim() === "") {
+      return false;
+    }
+    return true;
+  }
+  produtoMsgAviso(i: PrepedidoProdutoDtoPrepedido): string {
+    const item = this.estoqueItem(i);
+    if (!item) {
+      return "";
+    }
+    return item.Alertas;
+  }
+
+  totalPedido(): number {
+    return this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + current.TotalItem, 0);
+  }
+
+  totalPedidoRA(): number {
+    return this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + current.Qtde * current.Preco, 0);
+  }
   //#endregion
 
   //#region digitacao de numeros
@@ -178,7 +240,6 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     this.digitouQte(i);
   }
   digitouVlVenda(e: Event, i: PrepedidoProdutoDtoPrepedido) {
-    debugger;
     let valor = ((e.target) as HTMLInputElement).value;
     let v: any = valor.replace(/\D/g, '');
     v = (v / 100).toFixed(2) + '';
@@ -196,7 +257,6 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     this.digitouQte(i);
   }
   digitouDesc(e: Event, i: PrepedidoProdutoDtoPrepedido) {
-    debugger;
     let valor = ((e.target) as HTMLInputElement).value;
     let v: any = valor.replace(/\D/g, '');
     //tem 1 casa

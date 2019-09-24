@@ -43,7 +43,7 @@ export class TelaDesktopService {
         */
 
         if (this.jaLido && this.telaDesktopAnterior != this.telaDesktop) {
-          //window.location.reload();
+          window.location.reload();
         }
         this.jaLido = true;
         this.telaDesktopAnterior = this.telaDesktop;
