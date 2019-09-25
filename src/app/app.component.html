@@ -34,7 +34,27 @@
             <app-home [menuDesktop]="true"></app-home>
           </mat-sidenav>
           <div class="alturamaxima fundoprincipal">
-            <router-outlet></router-outlet>
+            <!-- este cara PRECISA do *ngIf="telaDesktop"
+            sem ele, dá um problema:
+            //está um pouco instável quando chaveia
+            //as vezes ele não consegue carregar o ponto de navegaçãoc corretamente
+            //então recarregamos a página toda. unico inconveniente: perdemos o que tiver sido digitado nos campos de busca.
+            /*
+            para simular o erro:
+            como dekstop:
+            http://localhost:4200/
+            http://localhost:4200/pedido/consulta
+            http://localhost:4200/pedido/detalhes/127936N
+            chavear para celular e voltar para desktop
+            clicar no menu, ele fica na mesma página
+            
+            uma solução horrível para isso no TelaDesktopService:
+            if (this.jaLido && this.telaDesktopAnterior != this.telaDesktop) {
+              window.location.reload();
+            }
+         */
+     -->
+            <router-outlet *ngIf="telaDesktop"></router-outlet>
           </div>
         </mat-sidenav-container>
       </div>

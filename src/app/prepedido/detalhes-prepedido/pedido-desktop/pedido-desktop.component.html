@@ -2,7 +2,7 @@
 <div class="nossobody" *ngIf="pedido">
     <div class="botaoImprimirDIv">
         <button mat-raised-button color="accent" (click)="imprimir()" class="botaoImprimir"
-            *ngIf="!impressaoService.emImpressao()">
+            *ngIf="!impressaoService.emImpressao() && telaDesktop">
             <mat-icon>print</mat-icon> Versão para impressão
         </button>
     </div>

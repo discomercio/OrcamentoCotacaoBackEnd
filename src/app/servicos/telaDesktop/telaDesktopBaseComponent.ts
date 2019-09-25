@@ -7,7 +7,7 @@ usamos em diversos compoentes, mais fácil colocar em uma classe base
 
 export class TelaDesktopBaseComponent {
     public telaDesktop: boolean = true;
-    constructor(private readonly telaDesktopService: TelaDesktopService) {
+    constructor(telaDesktopService: TelaDesktopService) {
         telaDesktopService.telaAtual$.subscribe(r => this.telaDesktop = r);
     }
 

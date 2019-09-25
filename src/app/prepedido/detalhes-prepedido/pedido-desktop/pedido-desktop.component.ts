@@ -11,19 +11,24 @@ import { ImpressaoService } from 'src/app/utils/impressao.service';
 import { ClienteCadastroUtils } from 'src/app/dto/AngularClienteCadastroUtils/ClienteCadastroUtils';
 import { StringUtils } from 'src/app/utils/stringUtils';
 import { PedidoProdutosDtoPedido } from 'src/app/dto/pedido/detalhesPedido/PedidoProdutosDtoPedido';
+import { TelaDesktopBaseComponent } from 'src/app/servicos/telaDesktop/telaDesktopBaseComponent';
+import { TelaDesktopService } from 'src/app/servicos/telaDesktop/telaDesktop.service';
 
 @Component({
   selector: 'app-pedido-desktop',
   templateUrl: './pedido-desktop.component.html',
   styleUrls: ['./pedido-desktop.component.scss']
 })
-export class PedidoDesktopComponent implements OnInit {
+export class PedidoDesktopComponent extends TelaDesktopBaseComponent implements OnInit {
 
   @Input() pedido: PedidoDto = null;
 
   constructor(private readonly router: Router,
     public readonly impressaoService: ImpressaoService,
-    private readonly location: Location) { }
+    telaDesktopService: TelaDesktopService,
+    private readonly location: Location) {
+    super(telaDesktopService);
+  }
   ngOnInit() {
   }
 
