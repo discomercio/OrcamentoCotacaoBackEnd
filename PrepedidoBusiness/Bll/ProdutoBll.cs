@@ -139,41 +139,88 @@ namespace PrepedidoBusiness.Bll
             //string loja = "202";
             //string id_cliente = "000000605954";
 
-            //var db = contextoProvider.GetContextoLeitura();
-            ////Buscar dados do cliente
-            //var clienteTask = (from c in db.Tclientes
-            //                   where c.Id == id_cliente
-            //                   select new
-            //                   {
-            //                       tipo_cliente = c.Tipo,
-            //                       contribuite_icms_status = c.Contribuinte_Icms_Status,
-            //                       produtor_rural_status = c.Produtor_Rural_Status,
-            //                       uf = c.Uf
-            //                   }).FirstOrDefaultAsync();
+            var db = contextoProvider.GetContextoLeitura();
+            //Buscar dados do cliente
+            var clienteTask = (from c in db.Tclientes
+                               where c.Id == id_cliente
+                               select new
+                               {
+                                   tipo_cliente = c.Tipo,
+                                   contribuite_icms_status = c.Contribuinte_Icms_Status,
+                                   produtor_rural_status = c.Produtor_Rural_Status,
+                                   uf = c.Uf
+                               }).FirstOrDefaultAsync();
 
-            //var cliente = await clienteTask;
+            var cliente = await clienteTask;
 
             ////obtém  a sigla para regra
-            //string cliente_regra = Util.MultiCdRegraDeterminaPessoa(cliente.tipo_cliente, cliente.contribuite_icms_status,
-            //    cliente.produtor_rural_status);
+            string cliente_regra = Util.MultiCdRegraDeterminaPessoa(cliente.tipo_cliente, cliente.contribuite_icms_status,
+                cliente.produtor_rural_status);
 
             var lstProdutosCompostos = BuscarProdutosCompostos(loja);
             List<ProdutoDto> lstTodosProdutos = (await BuscarTodosProdutos(loja)).ToList();
 
-            //List<RegrasBll> lst_cliente_regra = new List<RegrasBll>();
-            //MontaListaRegras(lstTodosProdutos, lst_cliente_regra);
+            List<RegrasBll> lst_cliente_regra = new List<RegrasBll>();
+            MontaListaRegras(lstTodosProdutos, lst_cliente_regra);
 
-            //List<string> lstErros = new List<string>();
-            //await ObterCtrlEstoqueProdutoRegra_Teste(lstErros, lst_cliente_regra, cliente);
-            ////varificar se houve erros ao processar as regras
-            //if (lstErros.Count > 0)
-            //{
-            //    //chama o metodo verificar regras
-            //}
+            List<string> lstErros = new List<string>();
+            await ObterCtrlEstoqueProdutoRegra_Teste(lstErros, lst_cliente_regra, cliente.uf, cliente_regra);
+
+            //afazer: Verificar disponibilidade de estoque
+            Util.ObterDisponibilidadeEstoque(lst_cliente_regra, lstTodosProdutos, lstErros, contextoProvider);
+
+            //retorna as qtdes disponiveis
+            await Util.VerificarEstoque(lst_cliente_regra, contextoProvider);
+            await Util.VerificarEstoqueComSubQuery(lst_cliente_regra, contextoProvider);
+
+            //buscar o parametro produto 001020 indice 12
+            Tparametro tparametro = await Util.BuscarRegistroParametro(Constantes.ID_PARAMETRO_Flag_Orcamento_ConsisteDisponibilidadeEstoqueGlobal, contextoProvider);
+            //atribui a qtde de estoque para o produto
+            IncluirEstoqueProduto(lst_cliente_regra, lstTodosProdutos, tparametro);
+
+            //afazer: Msg de alertas para os produtos
+            await ExisteMensagensAlertaProdutos(lstTodosProdutos);
+
+            if (lstErros.Count > 0)
+            {
+                //chama o metodo verificar regras
+            }
 
             retorno.ProdutoCompostoDto = (await lstProdutosCompostos).ToList();
             retorno.ProdutoDto = lstTodosProdutos;
             return retorno;
+        }
+
+        private async Task ExisteMensagensAlertaProdutos(List<ProdutoDto> lst_produtos)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+
+            var alertasTask = from c in db.TprodutoXAlertas.Include(r => r.TalertaProduto).Include(r => r.Tproduto)
+                              where c.TalertaProduto.Ativo == "S"
+                              orderby c.Dt_Cadastro, c.Id_Alerta
+                              select new
+                              {
+                                  alerta_fabricante = c.Fabricante,
+                                  alerta_produto = c.Produto,
+                                  alerta_mensagem = c.TalertaProduto.Mensagem,
+                                  alerta_descricao = c.Tproduto.Descricao
+                              };
+
+            var alertas = await alertasTask.ToListAsync();
+
+            foreach (var p in lst_produtos)
+            {
+                foreach (var m in alertas)
+                {
+                    if (string.IsNullOrEmpty(m.alerta_fabricante))
+                    {
+                        if (m.alerta_fabricante == p.Fabricante && m.alerta_produto == p.Produto)
+                        {
+                            p.Alertas = m.alerta_mensagem;
+                        }
+                    }
+                }
+            }
         }
 
         public void MontaListaRegras(List<ProdutoDto> lst_produtos, List<RegrasBll> lst_cliente_regra)
@@ -253,134 +300,106 @@ namespace PrepedidoBusiness.Bll
             return lstTodosProdutos;
         }
 
-        //Monta produtos seguindo as regras existentes
-        //public async Task<IEnumerable<ProdutoDto>> MontaProdutos(List<PrepedidoProdutoDtoPrepedido> lstProdutos, List<string> lstErros, string loja)
-        //{
-        //    ProdutoDto produtoDto = new ProdutoDto();
-        //    List<ProdutoDto> lstProdutoDto = new List<ProdutoDto>();
+        /*Analisar a necessidade, 
+         * pois estamos realizando a busca apenas em produtos que 
+         * a subtração entre qtde e qtde_utilizada seja maior que 0
+         */
+        private void IncluirEstoqueProduto(List<RegrasBll> lstRegras, List<ProdutoDto> lst_produtos, Tparametro parametro)
+        {
+            int qtde_estoque_total_disponivel = 0;
+            int qtde_estoque_total_disponivel_global = 0;
 
-        //    var db = contextoProvider.GetContextoLeitura();
+            foreach (var p in lst_produtos)
+            {
+                if (!string.IsNullOrEmpty(p.Produto))
+                {
+                    foreach (var regra in lstRegras)
+                    {
 
-        //    foreach (var p in lstProdutos)
-        //    {
-        //        string fabricante = Util.Normaliza_Codigo(p.Fabricante, Constantes.TAM_MIN_FABRICANTE);
-        //        string codProduto = Util.Normaliza_Codigo(p.NumProduto, Constantes.TAM_MIN_PRODUTO);
+                        if (regra.TwmsRegraCd != null)
+                        {
+                            foreach (var r in regra.TwmsCdXUfXPessoaXCd)
+                            {
+                                if (r.Id_nfe_emitente > 0)
+                                {
+                                    if (r.St_inativo == 0)
+                                    {
+                                        if (regra.Fabricante == p.Fabricante && regra.Produto == p.Produto)
+                                        {
+                                            qtde_estoque_total_disponivel += r.Estoque_Qtde;
+                                            if (qtde_estoque_total_disponivel_global == 0)
+                                            {
+                                                if (r.Estoque_Qtde_Estoque_Global != null)
+                                                    qtde_estoque_total_disponivel_global = (int)r.Estoque_Qtde_Estoque_Global;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
 
-        //        int qtde = (int)p.Qtde;
+                    if (parametro.Campo_inteiro == 1)
+                    {
+                        if (qtde_estoque_total_disponivel_global == 0)
+                        {
+                            //p.Qtde_estoque_total_disponivel = 0;
+                            p.Estoque = 0;
+                        }
+                        else
+                        {
+                            p.Estoque = qtde_estoque_total_disponivel_global;
+                        }
+                    }
+                    else
+                    {
+                        //p.Qtde_estoque_total_disponivel = (short?)qtde_estoque_total_disponivel;
+                        p.Estoque = qtde_estoque_total_disponivel;
+                    }
+                }
+                qtde_estoque_total_disponivel_global = 0;
+                qtde_estoque_total_disponivel = 0;
+            }
 
-        //        if (string.IsNullOrEmpty(fabricante) && !string.IsNullOrEmpty(codProduto))
-        //        {
-        //            var prodCompostoTask = from c in db.TecProdutoCompostos
-        //                                   where c.Produto_Composto == codProduto
-        //                                   select c;
-        //            var prodComposto = (await prodCompostoTask.FirstOrDefaultAsync());
-
-        //            if (prodComposto.Produto_Composto != null)
-        //            {
-        //                var prodCompostoItensTask = from c in db.TecProdutoCompostoItems
-        //                                            where c.Fabricante_composto == prodComposto.Fabricante_Composto &&
-        //                                                  c.Produto_composto == prodComposto.Produto_Composto &&
-        //                                                  c.Excluido_status == 0
-        //                                            orderby c.Sequencia
-        //                                            select c;
-        //                var prodCompostoItens = prodCompostoItensTask.ToList();
-
-        //                if (prodCompostoItens.Count > 0)
-        //                {
-        //                    foreach (var pi in prodCompostoItens)
-        //                    {
-        //                        var produtoTask = from c in db.Tprodutos.Include(r => r.TprodutoLoja)
-        //                                          where c.TprodutoLoja.Fabricante == pi.Fabricante_item &&
-        //                                                c.TprodutoLoja.Produto == pi.Produto_item &&
-        //                                                c.TprodutoLoja.Loja == loja
-        //                                          select c;
-
-        //                        var produto = await produtoTask.FirstOrDefaultAsync();
-
-        //                        if (string.IsNullOrEmpty(produto.Produto))
-        //                            lstErros.Add("O produto(" + pi.Fabricante_item + ")" + pi.Produto_item + " não está disponível para a loja " + loja + "!!");
-        //                        else
-        //                        {
-        //                            produtoDto = new ProdutoDto
-        //                            {
-        //                                Fabricante = pi.Fabricante_item,
-        //                                Produto = pi.Produto_item,
-        //                                Qtde = pi.Qtde,
-        //                                ValorLista = produto.TprodutoLoja.Preco_Lista,
-        //                                Descricao = produto.Descricao
-        //                            };
-        //                            lstProdutoDto.Add(produtoDto);
-        //                        }
-        //                    }
-        //                }
-
-        //            }
-        //            else
-        //            {
-        //                //faz produto normal
-        //                var produtoTask = from c in db.Tprodutos.Include(r => r.TprodutoLoja)
-        //                                  where c.TprodutoLoja.Fabricante == fabricante &&
-        //                                        c.TprodutoLoja.Produto == codProduto &&
-        //                                        c.TprodutoLoja.Loja == loja
-        //                                  select c;
-
-        //                var produto = await produtoTask.FirstOrDefaultAsync();
-
-        //                if (string.IsNullOrEmpty(produto.Produto))
-        //                    lstErros.Add("Produto '" + codProduto + "' não foi encontrado para a loja " + loja + "!!");
-
-        //                produtoDto = new ProdutoDto
-        //                {
-        //                    Fabricante = produto.Fabricante,
-        //                    Produto = produto.Produto,
-        //                    Qtde = qtde,
-        //                    ValorLista = produto.TprodutoLoja.Preco_Lista,
-        //                    Descricao = produto.Descricao
-        //                };
-        //                lstProdutoDto.Add(produtoDto);
-        //            }
-        //        }
-
-        //    }
-
-        //    return lstProdutoDto;
-        //}
-
-
+        }
 
         public async Task<IEnumerable<RegrasBll>> ObterCtrlEstoqueProdutoRegra_Teste(List<string> lstErros,
-            List<RegrasBll> lstRegrasCrtlEstoque, dynamic cliente)
+            List<RegrasBll> lstRegrasCrtlEstoque, string uf, string cliente_regra)
         {
             //o cliente esta sendo passado como dynamic
-            string uf = cliente.uf;
-            string tipo = cliente.tipo_cliente;
+            //string uf = cliente.uf;
+            //string tipo = cliente.tipo_cliente;
+
 
             var db = contextoProvider.GetContextoLeitura();
 
+            var dbTwmsRegraCdXUfXPessoaXCds = (from c in db.TwmsRegraCdXUfXPessoaXCds
+                                               join nfe in db.TnfEmitentes on c.Id_nfe_emitente equals nfe.Id
+                                               select c).ToList();
+
+            //essa query esta copiando o id do produto 
             var testeRegras = from c in db.TprodutoXwmsRegraCds
                               join r1 in db.TwmsRegraCds on c.Id_wms_regra_cd equals r1.Id
                               join r2 in db.TwmsRegraCdXUfs on r1.Id equals r2.Id_wms_regra_cd
                               join r3 in db.TwmsRegraCdXUfPessoas on r2.Id equals r3.Id_wms_regra_cd_x_uf
-                              join r4 in db.TwmsRegraCdXUfXPessoaXCds on r3.Id equals r4.Id_wms_regra_cd_x_uf_x_pessoa
                               where r2.Uf == uf &&
-                                    r3.Tipo_pessoa == tipo
-                              orderby r4.Ordem_prioridade
+                                    r3.Tipo_pessoa == cliente_regra
+                              orderby c.Produto
                               select new
                               {
                                   prod_x_reg = c,
                                   regra1 = r1,
                                   regra2 = r2,
                                   regra3 = r3,
-                                  regra4 = r4
+                                  regra4 = dbTwmsRegraCdXUfXPessoaXCds.Where(r => r.Id_wms_regra_cd_x_uf_x_pessoa == r3.Id).ToList(),
                               };
-            var llista = testeRegras.ToList();
-            var x = 1;
+            var lista = await testeRegras.ToListAsync();
 
             RegrasBll itemRegra = new RegrasBll();
 
             foreach (var item in lstRegrasCrtlEstoque)
             {
-                foreach (var r in llista)
+                foreach (var r in lista)
                 {
                     if (r.prod_x_reg.Produto == item.Produto)
                     {
@@ -410,227 +429,24 @@ namespace PrepedidoBusiness.Bll
                         };
                         item.TwmsCdXUfXPessoaXCd = new List<t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD>();
 
-                        t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD item_cd_uf_pess_cd = new t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD
+                        foreach (var r4 in r.regra4)
                         {
-                            Id = r.regra4.Id,
-                            Id_wms_regra_cd_x_uf_x_pessoa = r.regra4.Id_wms_regra_cd_x_uf_x_pessoa,
-                            Id_nfe_emitente = r.regra4.Id_nfe_emitente,
-                            Ordem_prioridade = r.regra4.Ordem_prioridade,
-                            St_inativo = r.regra4.St_inativo
-                        };
+                            t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD item_cd_uf_pess_cd = new t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD
+                            {
+                                Id = r4.Id,
+                                Id_wms_regra_cd_x_uf_x_pessoa = r4.Id_wms_regra_cd_x_uf_x_pessoa,
+                                Id_nfe_emitente = r4.Id_nfe_emitente,
+                                Ordem_prioridade = r4.Ordem_prioridade,
+                                St_inativo = r4.St_inativo
+                            };
+                            item.TwmsCdXUfXPessoaXCd.Add(item_cd_uf_pess_cd);
+                        }
 
-                        item.TwmsCdXUfXPessoaXCd.Add(item_cd_uf_pess_cd);
 
                     }
                 }
             }
-            #region
-            //    var regraProdutoTask = from c in db.TprodutoXwmsRegraCds
-            //                           where c.Fabricante == item.Fabricante &&
-            //                                 c.Produto == item.Produto
-            //                           select c;
 
-            //    var regra = await regraProdutoTask.FirstOrDefaultAsync();
-
-            //    if (regra == null)
-            //    {
-            //        lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + cliente.uf + "' e '" +
-            //            Util.DescricaoMultiCDRegraTipoPessoa(cliente.tipo_cliente) + "': produto (" + item.Fabricante + ")" +
-            //            item.Produto + " não possui regra associada");
-            //    }
-            //    else
-            //    {
-            //        if (regra.Id_wms_regra_cd == 0)
-            //            lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + cliente.uf + "' e '" +
-            //                Util.DescricaoMultiCDRegraTipoPessoa(cliente.tipo_cliente) + "': produto (" + item.Fabricante + ")" +
-            //                item.Produto + " não está associado a nenhuma regra");
-            //        else
-            //        {
-            //            var wmsRegraTask = from c in db.TwmsRegraCds
-            //                               where c.Id == regra.Id_wms_regra_cd
-            //                               select c;
-
-            //            var wmsRegra = await wmsRegraTask.FirstOrDefaultAsync();
-            //            if (wmsRegra == null)
-            //                lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + cliente.uf + "' e '" +
-            //                    Util.DescricaoMultiCDRegraTipoPessoa(cliente.tipo_cliente) + "': regra associada ao produto (" + item.Fabricante + ")" +
-            //                    item.Produto + " não foi localizada no banco de dados (Id=" + regra.Id_wms_regra_cd + ")");
-            //            else
-            //            {
-
-            //                //fazer montagem dos dados apartir daqui
-
-            //                itemRegra.Fabricante = item.Fabricante;
-            //                itemRegra.Produto = item.Produto;
-
-            //                item.TwmsRegraCd = new t_WMS_REGRA_CD
-            //                {
-            //                    Id = wmsRegra.Id,
-            //                    Apelido = wmsRegra.Apelido,
-            //                    Descricao = wmsRegra.Descricao,
-            //                    St_inativo = wmsRegra.St_inativo
-            //                };
-
-            //                //itemRegra.TwmsRegraCd = new t_WMS_REGRA_CD
-            //                //{
-            //                //    Id = wmsRegra.Id,
-            //                //    Apelido = wmsRegra.Apelido,
-            //                //    Descricao = wmsRegra.Descricao,
-            //                //    St_inativo = wmsRegra.St_inativo
-            //                //};
-
-            //                var wmsRegraCdXUfTask = from c in db.TwmsRegraCdXUfs
-            //                                        where c.Id_wms_regra_cd == item.TwmsRegraCd.Id &&
-            //                                              c.Uf == uf
-            //                                        select c;
-            //                var wmsRegraCdXUf = await wmsRegraCdXUfTask.FirstOrDefaultAsync();
-
-            //                if (wmsRegraCdXUf == null)
-            //                {
-            //                    item.St_Regra = false;
-            //                    lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + cliente.uf + "' e '" +
-            //                        Util.DescricaoMultiCDRegraTipoPessoa(cliente.tipo_cliente) + "': regra associada ao produto (" + item.Fabricante + ")" +
-            //                        item.Produto + " não está cadastrada para a UF '" + cliente.uf + "' (Id=" + regra.Id_wms_regra_cd + ")");
-            //                }
-            //                else
-            //                {
-            //                    item.TwmsRegraCdXUf = new t_WMS_REGRA_CD_X_UF
-            //                    {
-            //                        Id = wmsRegraCdXUf.Id,
-            //                        Id_wms_regra_cd = wmsRegraCdXUf.Id_wms_regra_cd,
-            //                        Uf = wmsRegraCdXUf.Uf,
-            //                        St_inativo = wmsRegraCdXUf.St_inativo
-            //                    };
-            //                    //itemRegra.TwmsRegraCdXUf = new t_WMS_REGRA_CD_X_UF
-            //                    //{
-            //                    //    Id = wmsRegraCdXUf.Id,
-            //                    //    Id_wms_regra_cd = wmsRegraCdXUf.Id_wms_regra_cd,
-            //                    //    Uf = wmsRegraCdXUf.Uf,
-            //                    //    St_inativo = wmsRegraCdXUf.St_inativo
-            //                    //};
-
-            //                    var wmsRegraCdXUfXPessoaTask = from c in db.TwmsRegraCdXUfPessoas
-            //                                                   where c.Id_wms_regra_cd_x_uf == item.TwmsRegraCdXUf.Id &&
-            //                                                         c.Tipo_pessoa == tipo
-            //                                                   select c;
-
-            //                    var wmsRegraCdXUfXPessoa = await wmsRegraCdXUfXPessoaTask.FirstOrDefaultAsync();
-
-            //                    if (wmsRegraCdXUfXPessoa == null)
-            //                    {
-            //                        item.St_Regra = false;
-            //                        lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + cliente.uf + "' e '" +
-            //                            Util.DescricaoMultiCDRegraTipoPessoa(cliente.tipo_cliente) + "': regra associada ao produto (" + item.Fabricante + ")" +
-            //                            item.Produto + " não está cadastrada para a UF '" + cliente.uf + "' (Id=" + regra.Id_wms_regra_cd + ")");
-            //                    }
-            //                    else
-            //                    {
-            //                        item.TwmsRegraCdXUfXPessoa = new t_WMS_REGRA_CD_X_UF_X_PESSOA
-            //                        {
-            //                            Id = wmsRegraCdXUfXPessoa.Id,
-            //                            Id_wms_regra_cd_x_uf = wmsRegraCdXUfXPessoa.Id_wms_regra_cd_x_uf,
-            //                            Tipo_pessoa = wmsRegraCdXUfXPessoa.Tipo_pessoa,
-            //                            St_inativo = wmsRegraCdXUfXPessoa.St_inativo,
-            //                            Spe_id_nfe_emitente = wmsRegraCdXUfXPessoa.Spe_id_nfe_emitente
-            //                        };
-            //                        //itemRegra.TwmsRegraCdXUfXPessoa = new t_WMS_REGRA_CD_X_UF_X_PESSOA
-            //                        //{
-            //                        //    Id = wmsRegraCdXUfXPessoa.Id,
-            //                        //    Id_wms_regra_cd_x_uf = wmsRegraCdXUfXPessoa.Id_wms_regra_cd_x_uf,
-            //                        //    Tipo_pessoa = wmsRegraCdXUfXPessoa.Tipo_pessoa,
-            //                        //    St_inativo = wmsRegraCdXUfXPessoa.St_inativo,
-            //                        //    Spe_id_nfe_emitente = wmsRegraCdXUfXPessoa.Spe_id_nfe_emitente
-            //                        //};
-
-            //                        if (wmsRegraCdXUfXPessoa.Spe_id_nfe_emitente == 0)
-            //                        {
-            //                            item.St_Regra = false;
-            //                            lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + cliente.uf + "' e '" +
-            //                                Util.DescricaoMultiCDRegraTipoPessoa(cliente.tipo_cliente) + "': regra associada ao produto (" + item.Fabricante + ")" +
-            //                                item.Produto + " não especifica nenhum CD para aguardar produtos sem presença no estoque (Id=" + regra.Id_wms_regra_cd + ")");
-            //                        }
-            //                        else
-            //                        {
-            //                            var nfEmitenteTask = from c in db.TnfEmitentes
-            //                                                 where c.Id == wmsRegraCdXUfXPessoa.Spe_id_nfe_emitente
-            //                                                 select c;
-            //                            var nfEmitente = await nfEmitenteTask.FirstOrDefaultAsync();
-
-            //                            if (nfEmitente != null)
-            //                            {
-            //                                if (nfEmitente.St_Ativo != 1)
-            //                                {
-            //                                    item.St_Regra = false;
-            //                                    lstErros.Add("Falha na regra de consumo do estoque para a UF '" + cliente.uf + "' e '" +
-            //                                        Util.DescricaoMultiCDRegraTipoPessoa(cliente.tipo_cliente) + "': regra associada ao produto (" + item.Fabricante +
-            //                                        ")" + item.Produto + " especifica um CD para aguardar produtos sem presença no estoque que não está habilitado " +
-            //                                        "(Id=" + regra.Id_wms_regra_cd + ")");
-            //                                }
-            //                            }
-            //                            var wmsRegraCdXUfXPessoaXcdTask = from c in db.TwmsRegraCdXUfXPessoaXCds
-            //                                                              where c.Id_wms_regra_cd_x_uf_x_pessoa == wmsRegraCdXUfXPessoa.Id
-            //                                                              orderby c.Ordem_prioridade
-            //                                                              select c;
-            //                            var wmsRegraCdXUfXPessoaXcd = await wmsRegraCdXUfXPessoaXcdTask.ToListAsync();
-
-            //                            if (wmsRegraCdXUfXPessoaXcd.Count == 0)
-            //                            {
-            //                                item.St_Regra = false;
-            //                                lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + cliente.uf + "' e '" +
-            //                                    Util.DescricaoMultiCDRegraTipoPessoa(cliente.tipo_cliente) + "': regra associada ao produto (" + item.Fabricante + ")" +
-            //                                    item.Produto + " não especifica nenhum CD para consumo do estoque (Id=" + regra.Id_wms_regra_cd + ")");
-            //                            }
-            //                            else
-            //                            {
-            //                                foreach (var i in wmsRegraCdXUfXPessoaXcd)
-            //                                {
-            //                                    t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD item_cd_uf_pess_cd = new t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD
-            //                                    {
-            //                                        Id = i.Id,
-            //                                        Id_wms_regra_cd_x_uf_x_pessoa = i.Id_wms_regra_cd_x_uf_x_pessoa,
-            //                                        Id_nfe_emitente = i.Id_nfe_emitente,
-            //                                        Ordem_prioridade = i.Ordem_prioridade,
-            //                                        St_inativo = i.St_inativo
-            //                                    };
-
-            //                                    var nfeCadastroPrincipalTask = from c in db.TnfEmitentes
-            //                                                                   where c.Id == item_cd_uf_pess_cd.Id_nfe_emitente
-            //                                                                   select c;
-
-            //                                    var nfeCadastroPrincipal = await nfeCadastroPrincipalTask.FirstOrDefaultAsync();
-
-            //                                    if (nfeCadastroPrincipal != null)
-            //                                    {
-            //                                        if (nfeCadastroPrincipal.St_Ativo != 1)
-            //                                            item_cd_uf_pess_cd.St_inativo = 1;
-            //                                    }
-            //                                    item.TwmsCdXUfXPessoaXCd = new List<t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD>();
-            //                                    item.TwmsCdXUfXPessoaXCd.Add(item_cd_uf_pess_cd);
-            //                                    //itemRegra.TwmsCdXUfXPessoaXCd.Add(item_cd_uf_pess_cd);
-            //                                }
-            //                                foreach (var i in item.TwmsCdXUfXPessoaXCd)
-            //                                {
-
-            //                                    if (i.Id_nfe_emitente == item.TwmsRegraCdXUfXPessoa.Spe_id_nfe_emitente)
-            //                                    {
-            //                                        if (i.St_inativo == 1)
-            //                                            lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + cliente.uf + "' e '" +
-            //                                                Util.DescricaoMultiCDRegraTipoPessoa(cliente.tipo_cliente) + "': regra associada ao produto (" +
-            //                                                item.Fabricante + ")" + item.Produto + " especifica o CD '" + Util.ObterApelidoEmpresaNfeEmitentes(wmsRegraCdXUfXPessoa.Spe_id_nfe_emitente, contextoProvider) +
-            //                                                "' para alocação de produtos sem presença no estoque, sendo que este CD está desativado para " +
-            //                                                "processar produtos disponíveis (Id=" + regra.Id_wms_regra_cd + ")");
-            //                                    }
-            //                                }
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //                //lstRegrasCrtlEstoque.Add(itemRegra);
-            //            }
-            //        }
-            //    }
-            //}
-            #endregion
             return lstRegrasCrtlEstoque;
         }
 

@@ -19,6 +19,7 @@ namespace PrepedidoBusiness.Bll
 {
     public class PrepedidoBll
     {
+        //afazer: Criar rotina que altera o prepedido
         private readonly InfraBanco.ContextoProvider contextoProvider;
 
         public PrepedidoBll(InfraBanco.ContextoProvider contextoProvider)
@@ -75,7 +76,7 @@ namespace PrepedidoBusiness.Bll
              * */
             var ret = await ListarPrePedidosFiltroEstrito(apelido, tipoBusca, clienteBusca, numeroPrePedido, dataInicial, dataFinal);
             //se tiver algum registro, retorna imediatamente
-            if (ret.Count() > 0)
+            if (ret.Any())
                 return ret;
 
             if (String.IsNullOrEmpty(clienteBusca) && String.IsNullOrEmpty(numeroPrePedido))
@@ -83,7 +84,7 @@ namespace PrepedidoBusiness.Bll
 
             //busca sem datas
             ret = await ListarPrePedidosFiltroEstrito(apelido, tipoBusca, clienteBusca, numeroPrePedido, null, null);
-            if (ret.Count() > 0)
+            if (ret.Any())
                 return ret;
 
             //ainda não achamos nada? então faz a busca sem filtrar por tipo
@@ -163,10 +164,6 @@ namespace PrepedidoBusiness.Bll
 
         public async Task<PrePedidoDto> BuscarPrePedido(string apelido, string numPrePedido)
         {
-            //parateste
-            //apelido = "MARISARJ";
-            //numPrePedido = "214289Z";
-
             var db = contextoProvider.GetContextoLeitura();
 
             var prepedido = from c in db.Torcamentos
@@ -407,9 +404,6 @@ namespace PrepedidoBusiness.Bll
 
         public async Task<short> Obter_Permite_RA_Status(string apelido)
         {
-            //paraTeste
-            //apelido = "PEDREIRA";
-
             var db = contextoProvider.GetContextoLeitura();
 
             var raStatus = (from c in db.TorcamentistaEindicadors
@@ -454,7 +448,7 @@ namespace PrepedidoBusiness.Bll
                         //Analizar o funcionamento
                         float coeficiente = await BuscarCoeficientePercentualCustoFinanFornec(prePedido, (short)c_custoFinancFornecQtdeParcelas, lstErros);
 
-                        Tparametro parametroRegra = await BuscarRegistroParametro(Constantes.ID_PARAMETRO_Flag_Orcamento_ConsisteDisponibilidadeEstoqueGlobal);
+                        Tparametro parametroRegra = await Util.BuscarRegistroParametro(Constantes.ID_PARAMETRO_Flag_Orcamento_ConsisteDisponibilidadeEstoqueGlobal, contextoProvider);
                         string tipoPessoa = Util.MultiCdRegraDeterminaPessoa(prePedido.DadosCliente.Tipo, prePedido.DadosCliente.Contribuinte_Icms_Status,
                             prePedido.DadosCliente.ProdutorRural);
                         string descricao = Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo);
@@ -469,7 +463,7 @@ namespace PrepedidoBusiness.Bll
                         //JÁ QUE CADA PEDIDO SE REFERE AO ESTOQUE DE UMA EMPRESA
                         List<int> lst_empresa_selecionada = ContagemEmpresasUsadasAutoSplit(regraCrtlEstoque, prePedido);//verificar quando é usado essa lista
                         //HÁ ALGUM PRODUTO DESCONTINUADO?
-                        ExisteProdutoDescontinuado(prePedido, lstErros);
+                        await ExisteProdutoDescontinuado(prePedido, lstErros);
 
                         //afazer:Validar todos os campos que estão sendo validados
                         //validar detalhesPrepedidos
@@ -487,10 +481,11 @@ namespace PrepedidoBusiness.Bll
                                 string log = await EfetivarCadastroPrepedido(prePedido, tOrcamentista);
                                 //Cadastrar orcamento itens
                                 List<TorcamentoItem> lstOrcamentoItem = MontaListaOrcamentoItem(prePedido.ListaProdutos, prePedido.NumeroPrePedido);
-                                (await ComplementarInfosOrcamentoItem(lstOrcamentoItem, prePedido.DadosCliente.Loja)).ToList();
+                                await ComplementarInfosOrcamentoItem(lstOrcamentoItem, prePedido.DadosCliente.Loja);
                                 log = await CadastrarOrctoItens(lstOrcamentoItem, log);
-
-
+                                bool gravouLog = Util.GravaLog(apelido, prePedido.DadosCliente.Loja, prePedido.NumeroPrePedido,
+                                    prePedido.DadosCliente.Id, Constantes.OP_LOG_ORCAMENTO_NOVO, log, contextoProvider);
+                                trans.Complete();
                             }
                         }
                     }
@@ -498,31 +493,6 @@ namespace PrepedidoBusiness.Bll
             }
             return lstErros;
         }
-
-        #region ExisteMensagensAlertaProdutos
-        //ESSE METODO SERÁ USADO NO COMBO DE PRODUTOS PARA SELECIONAR
-        //CASO EXISTA ALERTA, ELA SERÁ USADA
-        //private async void ExisteMensagensAlertaProdutos(PrePedidoDto prepedido, List<string> lstErros)
-        //{
-        //    var db = contextoProvider.GetContextoLeitura();
-
-        //    foreach(var p in prepedido.ListaProdutos)
-        //    {
-        //        var produtoTask = from c in db.TprodutoXAlertas.Include(r => r.TalertaProduto).Include(r => r.Tproduto)
-        //                          where c.Fabricante == p.Fabricante &&
-        //                                c.Produto == p.NumProduto &&
-        //                                c.TalertaProduto.Ativo == "S"
-        //                          orderby c.Dt_Cadastro, c.Id_Alerta
-        //                          select c;
-        //        var produto = await produtoTask.FirstOrDefaultAsync();
-
-        //        if(!string.IsNullOrEmpty(produto.TalertaProduto.Mensagem))
-        //        {
-        //            lstErros.Add()
-        //        }
-        //    }
-        //}
-        #endregion
 
         private async Task<string> EfetivarCadastroPrepedido(PrePedidoDto prepedido, TorcamentistaEindicador orcamentista)
         {
@@ -847,7 +817,7 @@ namespace PrepedidoBusiness.Bll
             return vl_total_NF;
         }
 
-        private async void ExisteProdutoDescontinuado(PrePedidoDto prepedido, List<string> lstErros)
+        private async Task ExisteProdutoDescontinuado(PrePedidoDto prepedido, List<string> lstErros)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -1024,7 +994,7 @@ namespace PrepedidoBusiness.Bll
         }
 
         //qtde_estoque_total_global_disponivel é uma variavel que esta global no deles
-        private async void ObterDisponibilidadeEstoque(List<RegrasBll> lstRegras, PrePedidoDto prepedido, Tparametro parametroRegra, List<string> lstErros)
+        private void ObterDisponibilidadeEstoque(List<RegrasBll> lstRegras, PrePedidoDto prepedido, Tparametro parametroRegra, List<string> lstErros)
         {
             int id_nfe_emitente_selecao_manual = 0;
 
@@ -1053,11 +1023,11 @@ namespace PrepedidoBusiness.Bll
                             }
                         }
 
-                        if (!await EstoqueVerificaDisponibilidadeIntegralV2(re))
-                        {
-                            lstErros.Add("Falha ao tentar consultar disponibilidade no estoque do produto(" +
-                                regra.Fabricante + ")" + regra.Produto);
-                        }
+                        //if (!Util.EstoqueVerificaDisponibilidadeIntegralV2(re, contextoProvider))
+                        //{
+                        //    lstErros.Add("Falha ao tentar consultar disponibilidade no estoque do produto(" +
+                        //        regra.Fabricante + ")" + regra.Produto);
+                        //}
                     }
                 }
             }
@@ -1082,44 +1052,6 @@ namespace PrepedidoBusiness.Bll
                 lstErros.Add("UF INVÁLIDA NO ENDEREÇO DE ENTREGA.");
             if (!Util.VerificaCep(endEtg.EndEtg_cep))
                 lstErros.Add("CEP INVÁLIDO NO ENDEREÇO DE ENTREGA.");
-
-            return retorno;
-        }
-
-        private async Task<bool> EstoqueVerificaDisponibilidadeIntegralV2(t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD regra)
-        {
-            bool retorno = false;
-
-            var db = contextoProvider.GetContextoLeitura();
-
-            if (regra.Id_nfe_emitente != 0)
-            {
-                var somaEstoqueTask = from c in db.Testoques.Include(r => r.TestoqueItem)
-                                      where c.Id_nfe_emitente == regra.Id_nfe_emitente &&
-                                            c.TestoqueItem.Fabricante == regra.Estoque_Fabricante &&
-                                            c.TestoqueItem.Produto == regra.Estoque_Produto &&
-                                            c.TestoqueItem.Qtde_utilizada > 0 &&
-                                            c.TestoqueItem.Qtde_utilizada.HasValue
-                                      select (int)c.TestoqueItem.Qtde_utilizada;
-
-                var somaEstoque = somaEstoqueTask.Select(r => r).SumAsync();
-
-                var somaEstoqueGlobalTask = from c in db.Testoques.Include(r => r.TestoqueItem)
-                                            where c.Fabricante == regra.Estoque_Fabricante &&
-                                                  c.TestoqueItem.Produto == regra.Estoque_Produto &&
-                                                  ((c.TestoqueItem.Qtde_utilizada > 0) &&
-                                                   (c.Id_nfe_emitente == regra.Id_nfe_emitente) ||
-                                                   ((from d in db.TnfEmitentes
-                                                     where d.St_Habilitado_Ctrl_Estoque == 1 && d.St_Ativo == 1
-                                                     select d.Id).Contains(c.Id_nfe_emitente)))
-                                            select c.TestoqueItem.Qtde - c.TestoqueItem.Qtde_utilizada;
-
-                var somaEstoqueGlobal = await somaEstoqueGlobalTask.Select(r => r).SumAsync();
-
-
-                regra.Estoque_Qtde = (short)(await somaEstoque);
-                retorno = true;
-            }
 
             return retorno;
         }
@@ -1351,12 +1283,8 @@ namespace PrepedidoBusiness.Bll
             return lstRegrasCrtlEstoque;
         }
 
-        
-
-        private async Task<IEnumerable<TorcamentoItem>> ComplementarInfosOrcamentoItem(List<TorcamentoItem> lstOrcamentoItem, string loja)
+        private async Task ComplementarInfosOrcamentoItem(List<TorcamentoItem> lstOrcamentoItem, string loja)
         {
-            List<TorcamentoItem> lstRetorno = new List<TorcamentoItem>();
-
             var db = contextoProvider.GetContextoLeitura();
 
             foreach (TorcamentoItem item in lstOrcamentoItem)
@@ -1393,8 +1321,6 @@ namespace PrepedidoBusiness.Bll
                     item.CustoFinancFornecPrecoListaBase = (decimal)prod.TprodutoLoja.Preco_Lista;
                 }
             }
-
-            return lstRetorno;
         }
 
         private List<TorcamentoItem> MontaListaOrcamentoItem(List<PrepedidoProdutoDtoPrepedido> lstProdutos, string id_orcamento)
@@ -1418,7 +1344,6 @@ namespace PrepedidoBusiness.Bll
 
             return lstOrcamentoItem;
         }
-
 
         private async Task<bool> ValidarOrcamentistaIndicador(string apelido)
         {
@@ -1537,20 +1462,6 @@ namespace PrepedidoBusiness.Bll
             return retorno;
         }
 
-        private async Task<Tparametro> BuscarRegistroParametro(string id)
-        {
-            var db = contextoProvider.GetContextoLeitura();
-
-            var parametroTask = from c in db.Tparametros
-                                where c.Id == id
-                                select c;
-
-            var parametro = await parametroTask.FirstOrDefaultAsync();
-
-            return parametro;
-
-        }
-
         //private string MultiCdRegraDeterminaPessoa(string tipoCliente, byte contribuinteIcmsStatus, byte produtoRuralStatus)
         //{
         //    string tipoPessoa = "";
@@ -1613,15 +1524,6 @@ namespace PrepedidoBusiness.Bll
             TorcamentistaEindicador tOrcamentista = await tOrcamentistaTask.FirstOrDefaultAsync();
 
             return tOrcamentista;
-        }        
-
-        private string DescobrirQualTipoFormaPagamento(FormaPagtoCriacaoDto formaPagto)
-        {
-            string retorno = "nada";
-
-
-
-            return retorno;
         }
 
         public void GerarNumeroOrcamento(PrePedidoDto prepedido)

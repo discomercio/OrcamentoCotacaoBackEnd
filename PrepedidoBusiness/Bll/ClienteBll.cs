@@ -82,6 +82,8 @@ namespace PrepedidoBusiness.Bll
                             //Essa parte esta na pagina ClienteAtualiza.asp linha 1113
                             bool salvouLog = Utils.Util.GravaLog(apelido, dadosClienteCadastroDto.Loja, "", dadosClienteCadastroDto.Id,
                                 Constantes.OP_LOG_CLIENTE_ALTERACAO, log, contextoProvider);
+                            if (salvouLog)
+                                trans.Complete();
                         }
                     }
                 }
@@ -294,7 +296,8 @@ namespace PrepedidoBusiness.Bll
                         //fazer a inserção de Log aqui.
                         bool gravouLog = Utils.Util.GravaLog(apelido, cliente.Loja, "", id_cliente,
                             Constantes.OP_LOG_CLIENTE_INCLUSAO, log, contextoProvider);
-                        trans.Complete();
+                        if (gravouLog)
+                            trans.Complete();
                     }
                     else
                     {
@@ -472,7 +475,7 @@ namespace PrepedidoBusiness.Bll
 
             return lstErros;
         }
-
+        //afazer:as tabelas já estão disponiveis
         private async Task<IEnumerable<string>> ConsisteMunicipioIBGE(string municipio, string uf)
         {
             List<string> erros = new List<string>();
@@ -583,7 +586,7 @@ namespace PrepedidoBusiness.Bll
                 //a verificação de Nascimento esta sendo feita no cliente
                 //if (cliente.Nascimento == null)
                 //    listaErros.Add("DATA DE NASCIMENTO É INVÁLIDA.");
-                
+
                 if (cliente.Tipo == Constantes.ID_PF &&
                 cliente.TelefoneResidencial == "" &&
                 cliente.TelComercial == "" &&

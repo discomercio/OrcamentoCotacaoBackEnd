@@ -38,6 +38,7 @@ namespace PrepedidoApi
             //bll
             services.AddTransient<PrepedidoBusiness.Bll.PrepedidoBll, PrepedidoBusiness.Bll.PrepedidoBll>();
             services.AddTransient<InfraBanco.ContextoProvider, InfraBanco.ContextoProvider>();
+            services.AddTransient<InfraBanco.ContextoCepProvider, InfraBanco.ContextoCepProvider>();
             services.AddTransient<PrepedidoBusiness.Bll.ClienteBll, PrepedidoBusiness.Bll.ClienteBll>();
             services.AddTransient<PrepedidoBusiness.Bll.PedidoBll, PrepedidoBusiness.Bll.PedidoBll>();
             services.AddTransient<PrepedidoBusiness.Bll.AcessoBll, PrepedidoBusiness.Bll.AcessoBll>();
@@ -48,6 +49,11 @@ namespace PrepedidoApi
             {
                 options.UseSqlServer(Configuration.GetConnectionString("conexao"));
             });
+            services.AddDbContext<InfraBanco.ContextoCepBd>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("conexaoCep"));
+            });
+
 
             // configure jwt authentication
             var appSettings = appSettingsSection.Get<Configuracao>();

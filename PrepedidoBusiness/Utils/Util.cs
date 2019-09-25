@@ -10,18 +10,13 @@ using InfraBanco.Modelos;
 using System.Reflection;
 using System.ComponentModel.DataAnnotations.Schema;
 using PrepedidoBusiness.Bll.Regras;
+using PrepedidoBusiness.Dtos.Prepedido.DetalhesPrepedido;
+using PrepedidoBusiness.Dto.Produto;
 
 namespace PrepedidoBusiness.Utils
 {
     public class Util
     {
-        //private readonly InfraBanco.ContextoProvider contextoProvider;
-
-        //public Util(InfraBanco.ContextoProvider contextoProvider)
-        //{
-        //    this.contextoProvider = contextoProvider;
-        //}
-
         public static string FormatCpf_Cnpj_Ie(string cpf_cnpj)
         {
             //caso esteja vazio, não formatamos
@@ -45,7 +40,6 @@ namespace PrepedidoBusiness.Utils
         public static bool ValidaCpf_Cnpj(string cpf_cnpj)
         {
             bool retorno = false;
-            string formatCpf_Cnpj = "";
 
             cpf_cnpj = cpf_cnpj.Replace(".", "").Replace("/", "").Replace("-", "");
 
@@ -136,9 +130,8 @@ namespace PrepedidoBusiness.Utils
             bool retorno = false;
             string sigla = "AC AL AM AP BA CE DF ES GO MA MG MS MT PA PB PE PI PR RJ RN RO RR RS SC SE SP TO  ";
 
-            if (uf.Length == 2)
-                if (sigla.Contains(uf.ToUpper()))
-                    retorno = true;
+            if (uf.Length == 2 && sigla.Contains(uf.ToUpper()))
+                retorno = true;
 
             return retorno;
         }
@@ -310,16 +303,13 @@ namespace PrepedidoBusiness.Utils
                 retorno = false;
             }
             if (custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA &&
-                custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA)
+                custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA &&
+                int.Parse(custoFinanceiroTipoParcelato) <= 0)
             {
-                if (int.Parse(custoFinanceiroTipoParcelato) <= 0)
-                {
-                    lstErros.Add("Não foi informada a quantidade de parcelas para a forma de pagamento selecionada " +
+                lstErros.Add("Não foi informada a quantidade de parcelas para a forma de pagamento selecionada " +
                         "(" + DescricaoCustoFornecTipoParcelamento(custoFinanceiroTipoParcelato) + ")");
-                    retorno = false;
-                }
+                retorno = false;
             }
-
 
             return retorno;
         }
@@ -520,7 +510,236 @@ namespace PrepedidoBusiness.Utils
             return apelidoEmpresa;
         }
 
+        //public static bool EstoqueVerificaDisponibilidadeIntegralV2(t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD regra, ContextoProvider contextoProvider)
+        //{
+        //    bool retorno = false;
 
+        //    var lst1 = BuscarListaQtdeEstoque(contextoProvider);
+        //    var lst2 = BuscarListaQtdeEstoqueComSubquery(contextoProvider);
+
+        //    foreach (var p1 in lst1.Result)
+        //    {
+        //        foreach(var r in regra)
+        //        {
+        //            if(p1.Id_nfe_emitente != 0)
+        //            {
+
+        //            }
+        //        }
+        //    }
+
+        //    if (regra.Id_nfe_emitente != 0)
+        //    {
+
+        //    }
+
+        //    return retorno;
+        //}
+
+        public static async Task VerificarEstoque(List<RegrasBll> lst_cliente_regra, ContextoProvider contextoProvider)
+        {
+            var lst1 = await BuscarListaQtdeEstoque(contextoProvider);
+
+
+            foreach (var regra in lst_cliente_regra)
+            {
+                if (regra.TwmsRegraCd != null)
+                {
+                    foreach (var r in regra.TwmsCdXUfXPessoaXCd)
+                    {
+                        if (r.Id_nfe_emitente != 0)
+                        {
+                            foreach (var p1 in lst1)
+                            {
+                                if (regra.Produto == p1.Produto)
+                                {
+                                    //valor subtraido
+                                    r.Estoque_Qtde += (short)(p1.Qtde - p1.Qtde_Utilizada);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+
+        public static async Task VerificarEstoqueComSubQuery(List<RegrasBll> lst_cliente_regra, ContextoProvider contextoProvider)
+        {
+            var lst2 = await BuscarListaQtdeEstoqueComSubquery(contextoProvider);
+
+            foreach (var regra in lst_cliente_regra)
+            {
+                if (regra.TwmsRegraCd != null)
+                {
+                    foreach (var r in regra.TwmsCdXUfXPessoaXCd)
+                    {
+                        if (r.Id_nfe_emitente != 0)
+                        {
+                            foreach (var p2 in lst2)
+                            {
+                                if (regra.Produto == p2.Produto)
+                                {
+                                    //valor subtraido
+                                    if (!r.Estoque_Qtde_Estoque_Global.HasValue)
+                                        r.Estoque_Qtde_Estoque_Global = 0;
+                                    r.Estoque_Qtde_Estoque_Global += (short)(p2.Qtde - p2.Qtde_Utilizada);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private static async Task<IEnumerable<ProdutosEstoqueDto>> BuscarListaQtdeEstoque(ContextoProvider contextoProvider)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+
+            var lstEstoqueQtdeUtilZero = from c in db.Testoques.Include(r => r.TestoqueItem)
+                                         where (c.TestoqueItem.Qtde - c.TestoqueItem.Qtde_utilizada) > 0 &&
+                                               c.TestoqueItem.Qtde_utilizada.HasValue
+                                         select new ProdutosEstoqueDto
+                                         {
+                                             Produto = c.TestoqueItem.Produto,
+                                             Qtde = (int)c.TestoqueItem.Qtde,
+                                             Qtde_Utilizada = (int)c.TestoqueItem.Qtde_utilizada,
+                                             Id_nfe_emitente = c.Id_nfe_emitente
+                                         };
+
+            List<ProdutosEstoqueDto> produtosEstoqueDtos = await lstEstoqueQtdeUtilZero.ToListAsync();
+
+            return produtosEstoqueDtos;
+        }
+
+        private static async Task<IEnumerable<ProdutosEstoqueDto>> BuscarListaQtdeEstoqueComSubquery(ContextoProvider contextoProvider)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+
+            var lstEstoqueQtdeUtilZeroComSubQuery = from c in db.Testoques.Include(r => r.TestoqueItem)
+                                                    where ((c.TestoqueItem.Qtde - c.TestoqueItem.Qtde_utilizada) > 0) &&
+                                                          ((c.TestoqueItem.Qtde_utilizada.HasValue) ||
+                                                          (from d in db.TnfEmitentes
+                                                           where d.St_Habilitado_Ctrl_Estoque == 1 && d.St_Ativo == 1
+                                                           select d.Id)
+                                                           .Contains(c.Id_nfe_emitente))
+                                                    select new ProdutosEstoqueDto
+                                                    {
+                                                        Produto = c.TestoqueItem.Produto,
+                                                        Qtde = (int)c.TestoqueItem.Qtde,
+                                                        Qtde_Utilizada = (int)c.TestoqueItem.Qtde_utilizada,
+                                                        Id_nfe_emitente = c.Id_nfe_emitente
+                                                    };
+
+            List<ProdutosEstoqueDto> produtosEstoqueDtos = await lstEstoqueQtdeUtilZeroComSubQuery.ToListAsync();
+
+            return produtosEstoqueDtos;
+        }
+
+        public static bool VerificarEstoqueInsuficiente(List<RegrasBll> lstRegras, PrePedidoDto prepedido, Tparametro parametro)
+        {
+            bool retorno = false;
+            int qtde_estoque_total_disponivel = 0;
+            int qtde_estoque_total_disponivel_global = 0;
+
+            foreach (var p in prepedido.ListaProdutos)
+            {
+                if (!string.IsNullOrEmpty(p.NumProduto))
+                {
+                    foreach (var regra in lstRegras)
+                    {
+                        if (!string.IsNullOrEmpty(regra.Produto))
+                        {
+                            foreach (var r in regra.TwmsCdXUfXPessoaXCd)
+                            {
+                                if (r.Id_nfe_emitente > 0)
+                                {
+                                    if (r.St_inativo == 0)
+                                    {
+                                        if (regra.Fabricante == p.Fabricante && regra.Produto == p.NumProduto)
+                                        {
+                                            qtde_estoque_total_disponivel += r.Estoque_Qtde;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if (parametro.Campo_inteiro == 1)
+                    {
+                        if (qtde_estoque_total_disponivel_global == 0)
+                        {
+                            p.Qtde_estoque_total_disponivel = 0;
+
+                        }
+                    }
+                    else
+                    {
+                        p.Qtde_estoque_total_disponivel = (short?)qtde_estoque_total_disponivel;
+                    }
+                    if (p.Qtde > p.Qtde_estoque_total_disponivel)
+                        retorno = true;
+                }
+            }
+            return retorno;
+
+        }
+
+        public static void ObterDisponibilidadeEstoque(List<RegrasBll> lstRegrasCrtlEstoque, List<ProdutoDto> lst_produtos,
+            List<string> lstErros, ContextoProvider contextoProvider)
+        {
+            foreach (var r in lstRegrasCrtlEstoque)
+            {
+                if (!string.IsNullOrEmpty(r.Produto))
+                {
+                    if (r.TwmsRegraCd != null)
+                    {
+                        foreach (var p in r.TwmsCdXUfXPessoaXCd)
+                        {
+                            if (p.Id_nfe_emitente > 0)
+                            {
+                                if (p.St_inativo == 0)
+                                {
+                                    foreach (var produto in lst_produtos)
+                                    {
+                                        if (r.Fabricante == produto.Fabricante && r.Produto == produto.Produto)
+                                        {
+                                            p.Estoque_Fabricante = produto.Fabricante;
+                                            p.Estoque_Produto = produto.Produto;
+                                            p.Estoque_DescricaoHtml = produto.Descricao_html;
+                                            //p.Estoque_Qtde_Solicitado = essa variavel não deve ser utilizada, a qtde só sera solicitada 
+                                            //quando o usuario inserir a qtde 
+                                            p.Estoque_Qtde = 0;
+                                            //if (!Util.EstoqueVerificaDisponibilidadeIntegralV2(p, contextoProvider))
+                                            //{
+                                            //    lstErros.Add("Falha ao tentar consultar disponibilidade no estoque do produto (" +
+                                            //        r.Fabricante + ")" + r.Produto);
+                                            //}
+                                        }
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public static async Task<Tparametro> BuscarRegistroParametro(string id, ContextoProvider contextoProvider)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+
+            var parametroTask = from c in db.Tparametros
+                                where c.Id == id
+                                select c;
+
+            var parametro = await parametroTask.FirstOrDefaultAsync();
+
+            return parametro;
+
+        }
         //Na verdade recebe uma lista de produtos e não o PrepedidoDto
         //public static async Task<IEnumerable<RegrasBll>> ObterCtrlEstoqueProdutoRegra(PrePedidoDto prePedido, List<string> lstErros,
         //    ContextoProvider contextoProvider)

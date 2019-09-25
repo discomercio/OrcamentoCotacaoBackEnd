@@ -61,6 +61,8 @@ namespace InfraBanco
                 .HasKey(o => new { o.Id_Cliente, o.Banco, o.Agencia, o.Conta });
             modelBuilder.Entity<TclienteRefComercial>()
                 .HasKey(o => new { o.Id_Cliente, o.Nome_Empresa });
+            modelBuilder.Entity<TpedidoItem>()
+                .HasKey(o => new { o.Pedido, o.Fabricante, o.Produto });
         }
     }
 }

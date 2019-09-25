@@ -49,7 +49,7 @@ namespace PrepedidoBusiness.Bll
             var ret = await ListarPedidosFiltroEstrito(apelido, tipoBusca, clienteBusca, numeroPedido, dataInicial, dataFinal);
 
             //se tiver algum registro, retorna imediatamente
-            if (ret.Count() > 0)
+            if (ret.Any())
                 return ret;
 
             /*
@@ -61,7 +61,7 @@ namespace PrepedidoBusiness.Bll
 
             //busca sem datas
             ret = await ListarPedidosFiltroEstrito(apelido, tipoBusca, clienteBusca, numeroPedido, null, null);
-            if (ret.Count() > 0)
+            if (ret.Any())
                 return ret;
 
             //ainda não achamos nada? então faz a busca sem filtrar por tipo
@@ -353,7 +353,7 @@ namespace PrepedidoBusiness.Bll
             {
                 FormaPagto = (await lstFormaPgtoTask).ToList(),
                 InfosAnaliseCredito = p.Forma_Pagto,
-                StatusPagto = p.St_Pagto,
+                StatusPagto = StatusPagto(p.St_Pagto).ToUpper(),
                 CorStatusPagto = corStatusPagto,
                 VlTotalFamilia = p.Vl_Total_Familia,
                 VlPago = p.Vl_Total_Familia,
@@ -393,14 +393,14 @@ namespace PrepedidoBusiness.Bll
             return await Task.FromResult(DtoPedido);
         }
 
-        private string FormatarDescriçãoProduto(string descricao)
-        {
-            string retorno = "";
-            //afazer: verificar com o Edu se faz o método ou ele faz no front
+        //private string FormatarDescricaoProduto(string descricao)
+        //{
+        //    string retorno = "";
+        //    //afazer: verificar com o Edu se faz o método ou ele faz no front
 
 
-            return retorno;
-        }
+        //    return retorno;
+        //}
 
         private string ObterEntregaImediata(Tpedido p)
         {
@@ -1062,6 +1062,25 @@ namespace PrepedidoBusiness.Bll
             }
 
             return await Task.FromResult(lista.ToList());
+        }
+
+        private string StatusPagto(string status)
+        {
+            string retorno = "";
+
+            switch (status)
+            {
+                case Constantes.ST_PAGTO_PAGO:
+                    retorno = "Pago";
+                    break;
+                case Constantes.ST_PAGTO_NAO_PAGO:
+                    retorno = "Não-Pago";
+                    break;
+                case Constantes.ST_PAGTO_PARCIAL:
+                    retorno = "Pago Parcial";
+                    break;
+            };
+            return retorno;
         }
 
         //private async Task<string> OpcaoFormaPagto(string codigo)

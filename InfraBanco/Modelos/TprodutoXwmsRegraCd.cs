@@ -9,12 +9,12 @@ namespace InfraBanco.Modelos
     [Table("t_PRODUTO_X_WMS_REGRA_CD")]
     public class TprodutoXwmsRegraCd
     {
-        [Key]
         [Column("fabricante")]
         [MaxLength(4)]
         [Required]
         public string Fabricante { get; set; }
 
+        [Key]
         [Column("produto")]
         [MaxLength(8)]
         [Required]
