@@ -42,7 +42,7 @@ namespace PrepedidoApi
             services.AddTransient<PrepedidoBusiness.Bll.ClienteBll, PrepedidoBusiness.Bll.ClienteBll>();
             services.AddTransient<PrepedidoBusiness.Bll.PedidoBll, PrepedidoBusiness.Bll.PedidoBll>();
             services.AddTransient<PrepedidoBusiness.Bll.AcessoBll, PrepedidoBusiness.Bll.AcessoBll>();
-            services.AddTransient<PrepedidoBusiness.Bll.ProdutoBll, PrepedidoBusiness.Bll.ProdutoBll>(); 
+            services.AddTransient<PrepedidoBusiness.Bll.ProdutoBll, PrepedidoBusiness.Bll.ProdutoBll>();
 
             //banco de dados
             services.AddDbContext<InfraBanco.ContextoBd>(options =>
@@ -69,6 +69,11 @@ namespace PrepedidoApi
             {
                 x.RequireHttpsMetadata = false;
                 x.SaveToken = true;
+                //afazer:
+                /*
+	            verificar se usuário continua ativo a cada requisição? dá algum trabalho e fica mais lento. 
+                Resposta em 26/09/2019: sim, verificar se o usuário está ativo em cada requisição.
+                */
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
