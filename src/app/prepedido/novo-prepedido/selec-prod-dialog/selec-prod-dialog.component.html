@@ -1,6 +1,8 @@
 <section [ngClass]="{'sectionDesktop': telaDesktop, 'sectionCelular': !telaDesktop}">
     <form>
-        <!-- este é melhor deixar sem o carregando, fica muito confuso na tela pq pisca demais.... -->
+        <!-- este é melhor deixar sem o carregando, fica muito confuso na tela pq pisca demais.... 
+            e, se a gente estiver carregando os dados sem timeout, a animação nem aparece
+        -->
         <!-- [ngClass]="{'carregando': carregando && digitado !== ''}" -->
         <article mat-dialog-content class="fixo">
             <!-- este fica ruim: div style="display: flex; " [ngStyle]="{'flex-direction':telaDesktop?'row':'column'}" -->
@@ -22,7 +24,7 @@
                 <mat-radio-group aria-label="Selecione o produto" [(ngModel)]="produto" required
                     [ngModelOptions]="{standalone: true}">
                     <table style="width: 100%;" class="destaquelinha">
-                        <ng-container *ngFor="let p of prods">
+                        <ng-container *ngFor="let p of prodsTela; let i=index">
                             <tr [ngStyle]="{display: p.visivel ? '':'none'}" class="prod">
                                 <td class="tdtabela">
                                     <!-- usamos o display: none e não o ngif para ficar mais rápido:
@@ -70,8 +72,22 @@
                                     {{moedaUtils.formatarMoedaComPrefixo(produtoDescr(f.Fabricante, f.Produto).Preco_lista * f.Qtde)}}
                                 </td>
                             </tr>
-
                         </ng-container>
+
+                        <!-- botão para msotrar o resto dos registros
+                        aparece somente se nao está mostrando todos e está mostrando na tela o limite 
+                        (quer dizer, não mostra o botão se não fosse mostrar mais registros de qq forma) -->
+                        <tr *ngIf="limiteTela != limiteMaximo && prodsTela.length == limiteTela" class="prod">
+                            <td class="tdtabela" colspan="3">
+                                <button mat-raised-button (click)="limiteZerar()" color="accent">Mostrar todos</button>
+                            </td>
+                        </tr>
+                        <tr *ngIf="limiteMudando" class="prod">
+                            <td class="tdtabela" colspan="3">
+                                <button mat-raised-button>Carregando...</button>
+                            </td>
+                        </tr>
+
                     </table>
                 </mat-radio-group>
             </div>
