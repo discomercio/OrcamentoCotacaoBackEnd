@@ -286,46 +286,6 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 <!-- 
 afazer: isto aqui vai ser em outra tela
 
-<br>
-<table class="Q" cellspacing="0">
-	<tr>
-		<td class="MB" colspan="5" align="left"><p class="Rf">Observações</p>
-			<textarea name="c_obs1" id="c_obs1" class="PLLe" rows="<%=Cstr(MAX_LINHAS_OBS1)%>" 
-				style="width:641px;margin-left:2pt;" onkeypress="limita_tamanho(this,MAX_TAM_OBS1);" onblur="this.value=trim(this.value);"
-				></textarea>
-		</td>
-	</tr>
-	<tr>
-		<td class="MD" align="left" nowrap><p class="Rf">Nº Nota Fiscal</p>
-			<input name="c_obs2" id="c_obs2" class="PLLe" maxlength="10" style="width:100px;margin-left:2pt;" onkeypress="filtra_nome_identificador();" onblur="this.value=trim(this.value);"
-				value='' readonly tabindex=-1>
-		</td>
-		<td class="MD" align="left" nowrap><p class="Rf">Entrega Imediata</p>
-			<input type="radio" id="rb_etg_imediata" name="rb_etg_imediata" 
-				value="<%=COD_ETG_IMEDIATA_NAO%>"><span class="C" style="cursor:default" onclick="fORC.rb_etg_imediata[0].click();">Não</span>
-			<input type="radio" id="rb_etg_imediata" name="rb_etg_imediata" 
-				value="<%=COD_ETG_IMEDIATA_SIM%>"><span class="C" style="cursor:default" onclick="fORC.rb_etg_imediata[1].click();">Sim</span>
-		</td>
-		<td align="left" nowrap><p class="Rf">Bem de Uso/Consumo</p>
-			<input type="radio" id="rb_bem_uso_consumo" name="rb_bem_uso_consumo" 
-				value="<%=COD_ST_BEM_USO_CONSUMO_NAO%>"><span class="C" style="cursor:default" onclick="fORC.rb_bem_uso_consumo[0].click();">Não</span>
-			<input type="radio" id="rb_bem_uso_consumo" name="rb_bem_uso_consumo" 
-				value="<%=COD_ST_BEM_USO_CONSUMO_SIM%>"><span class="C" style="cursor:default" onclick="fORC.rb_bem_uso_consumo[1].click();">Sim</span>
-		</td>
-		<td class="ME" align="left" nowrap><p class="Rf">Instalador Instala</p>
-			<input type="radio" id="rb_instalador_instala" name="rb_instalador_instala" 
-				value="<%=COD_INSTALADOR_INSTALA_NAO%>"><span class="C" style="cursor:default" onclick="fORC.rb_instalador_instala[0].click();">Não</span>
-			<input type="radio" id="rb_instalador_instala" name="rb_instalador_instala" 
-				value="<%=COD_INSTALADOR_INSTALA_SIM%>"><span class="C" style="cursor:default" onclick="fORC.rb_instalador_instala[1].click();">Sim</span>
-		</td>
-		<td class="ME tdGarInd" align="left" nowrap><p class="Rf">Garantia Indicador</p>
-			<input type="radio" id="rb_garantia_indicador" name="rb_garantia_indicador" class="rbGarIndNao"
-				value="<%=COD_GARANTIA_INDICADOR_STATUS__NAO%>"><span class="C" style="cursor:default" onclick="fORC.rb_garantia_indicador[0].click();">Não</span>
-			<input type="radio" id="rb_garantia_indicador" name="rb_garantia_indicador"
-				value="<%=COD_GARANTIA_INDICADOR_STATUS__SIM%>"><span class="C" style="cursor:default" onclick="fORC.rb_garantia_indicador[1].click();">Sim</span>
-		</td>
-	</tr>
-</table>
 	
 !--  NOVA VERSÃO DA FORMA DE PAGAMENTO  --
 <br>

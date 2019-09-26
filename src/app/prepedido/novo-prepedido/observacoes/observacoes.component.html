@@ -1,0 +1,60 @@
+<section [ngClass]="{'sectionDesktop': telaDesktop, 'sectionCelular': !telaDesktop}">
+    <form style="display: contents;" *ngIf="prePedidoDto">
+        <header>
+            <ng-container *ngIf="criando; else tituloEditando">Criar Pré-pedido</ng-container>
+            <ng-template #tituloEditando>Editar Pré-pedido</ng-template>
+            - Observações
+            afazer: tela em desenvolvimento
+        </header>
+        <article class="indicadorlinha">
+            <div style="padding-bottom: 0.6em;"><strong>Cliente:</strong> {{cpfCnpj()}} -
+                {{prePedidoDto.DadosCliente.Nome}}</div>
+
+            <div>
+                <strong>Total do pedido: {{moedaUtils.formatarMoedaSemPrefixo(totalPedido())}}</strong>
+            </div>
+            <div>
+
+                <!-- ************   OBSERVAÇÕES   ************  -->
+                <mat-form-field class="edicao-endereco">
+                    <textarea matInput type="text" placeholder="OBSERVAÇÕES" [ngModelOptions]="{standalone: true}"
+                        [(ngModel)]="prePedidoDto.DetalhesPrepedido.Observacoes" #autosize="cdkTextareaAutosize"
+                        cdkTextareaAutosize cdkAutosizeMinRows="5" cdkAutosizeMaxRows="5"></textarea>
+
+                </mat-form-field>
+
+                <div class="umgrupoopcoes">
+                    <mat-slide-toggle [(ngModel)]="EntregaImediata" [ngModelOptions]="{standalone: true}"> Entrega
+                        Imediata
+                    </mat-slide-toggle>
+                </div>
+                <div class="umgrupoopcoes">
+                    <mat-slide-toggle [(ngModel)]="BemDeUso_Consumo" [ngModelOptions]="{standalone: true}"> Bem de
+                        Uso/Consumo
+                    </mat-slide-toggle>
+                </div>
+                <div class="umgrupoopcoes">
+                    <mat-slide-toggle [(ngModel)]="InstaladorInstala" [ngModelOptions]="{standalone: true}"> Instalador
+                        Instala
+                    </mat-slide-toggle>
+                </div>
+                <div class="umgrupoopcoes">
+                    <mat-slide-toggle [(ngModel)]="GarantiaIndicador" [ngModelOptions]="{standalone: true}"> Garantia
+                        Indicador
+                    </mat-slide-toggle>
+                </div>
+            </div>
+
+
+
+        </article>
+        <footer>
+            <a mat-raised-button color="accent" (click)="voltar()">
+                <mat-icon>arrow_back</mat-icon> Voltar
+            </a>
+            <button mat-raised-button color="accent" (click)="continuar()" type="submit">
+                <mat-icon>arrow_forward</mat-icon> Avançar
+            </button>
+        </footer>
+    </form>
+</section>

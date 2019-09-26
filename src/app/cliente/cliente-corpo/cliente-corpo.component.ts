@@ -25,6 +25,8 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
     private readonly alertaService: AlertaService) {
   }
 
+  @Input() mostrarEndereco = true; //ao confrimar o cliente para um pre-pedido, não queremos mostrar o endereço aqui
+  
   ngOnInit() {
 
     this.criarElementos();

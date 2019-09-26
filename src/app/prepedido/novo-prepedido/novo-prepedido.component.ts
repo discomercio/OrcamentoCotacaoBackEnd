@@ -18,6 +18,8 @@ export class NovoPrepedidoComponent implements OnInit {
   itens
     que usa o selec-prod-dialog
   
+  observacoes
+  
   dados-pagto
 
   confirmar-prepedido

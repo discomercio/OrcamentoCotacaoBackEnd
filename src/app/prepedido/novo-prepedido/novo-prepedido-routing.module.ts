@@ -9,6 +9,7 @@ import { CadastrarClienteComponent } from './cadastrar-cliente/cadastrar-cliente
 import { ItensComponent } from './itens/itens.component';
 import { DadosPagtoComponent } from './dados-pagto/dados-pagto.component';
 import { ConfirmarPrepedidoComponent } from './confirmar-prepedido/confirmar-prepedido.component';
+import { ObservacoesComponent } from './observacoes/observacoes.component';
 
 
 const routes: Routes = [
@@ -36,6 +37,11 @@ const routes: Routes = [
         path: 'itens',
         canActivate: [LoginGuard],
         component: ItensComponent
+      },
+      {
+        path: 'observacoes',
+        canActivate: [LoginGuard],
+        component: ObservacoesComponent
       },
       {
         path: 'dados-pagto',

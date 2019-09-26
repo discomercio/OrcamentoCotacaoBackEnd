@@ -1,32 +1,35 @@
-<span class="caixa" *ngIf="mostrarEndereco">
-    <!-- ************   ENDEREÇO   ************  -->
-    <span class="rotulo">Endereço:</span> <span
-        class="dado">{{clienteCadastroUtils.formata_endereco(dadosClienteCadastroDto)}}</span>
-</span>
-
 <label id="endereco-radio-group-label">Endereço de entrega</label>
-<mat-radio-group aria-labelledby="endereco-radio-group-label" [(ngModel)]="enderecoEntregaDtoClienteCadastro.OutroEndereco">
+<mat-radio-group aria-labelledby="endereco-radio-group-label"
+    [(ngModel)]="enderecoEntregaDtoClienteCadastro.OutroEndereco">
     <mat-radio-button class="enderecoradio" [value]="false">O mesmo endereço do cadastro </mat-radio-button>
+    <span class="caixa" style="padding-left: 2em; padding-bottom: 1em;">
+        <!-- ************   ENDEREÇO   ************  -->
+        <span class="dado">{{clienteCadastroUtils.formata_endereco(dadosClienteCadastroDto)}}</span>
+    </span>
+
     <mat-radio-button class="enderecoradio" [value]="true">Outro endereço </mat-radio-button>
 </mat-radio-group>
 
 <div class="boxnovoednereco" *ngIf="enderecoEntregaDtoClienteCadastro">
 
     <!-- ************   JUSTIFIQUE O ENDEREÇO   ************ -->
-    
+
     <mat-form-field [ngClass]="{'desab':!enderecoEntregaDtoClienteCadastro.OutroEndereco}" style="width: 20em;">
-            <mat-label>JUSTIFIQUE O ENDEREÇO</mat-label>
-            <mat-select required [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_cod_justificativa" [disabled]="!enderecoEntregaDtoClienteCadastro.OutroEndereco" >
-                <mat-option>Selecione</mat-option>
-                <mat-option *ngFor="let i of buscarClienteServiceJustificativaEndEntregaComboTemporario" [(value)]="i.EndEtg_cod_justificativa">{{i.EndEtg_descricao_justificativa}}</mat-option>
-            </mat-select>
-        </mat-form-field>
-        <!-- quebrar a linha -->
-        <div></div>
+        <mat-label>JUSTIFIQUE O ENDEREÇO</mat-label>
+        <mat-select required [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_cod_justificativa"
+            [disabled]="!enderecoEntregaDtoClienteCadastro.OutroEndereco">
+            <mat-option>Selecione</mat-option>
+            <mat-option *ngFor="let i of buscarClienteServiceJustificativaEndEntregaComboTemporario"
+                [(value)]="i.EndEtg_cod_justificativa">{{i.EndEtg_descricao_justificativa}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <!-- quebrar a linha -->
+    <div></div>
 
     <!-- ************   ENDEREÇO   ************  -->
     <mat-form-field class="edicao-endereco" [ngClass]="{'desab':!enderecoEntregaDtoClienteCadastro.OutroEndereco}">
-        <input matInput type="text" placeholder="ENDEREÇO" [(readonly)]="!enderecoEntregaDtoClienteCadastro.OutroEndereco"
+        <input matInput type="text" placeholder="ENDEREÇO"
+            [(readonly)]="!enderecoEntregaDtoClienteCadastro.OutroEndereco"
             [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_endereco" required maxlength="60" size="85">
     </mat-form-field>
 
@@ -36,7 +39,8 @@
             [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_endereco_numero" required maxlength="20" size="10">
     </mat-form-field>
     <mat-form-field class="edicao-compl" [ngClass]="{'desab':!enderecoEntregaDtoClienteCadastro.OutroEndereco}">
-        <input matInput type="text" placeholder="COMPLEMENTO" [(readonly)]="!enderecoEntregaDtoClienteCadastro.OutroEndereco"
+        <input matInput type="text" placeholder="COMPLEMENTO"
+            [(readonly)]="!enderecoEntregaDtoClienteCadastro.OutroEndereco"
             [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_endereco_complemento" maxlength="60" size="10">
     </mat-form-field>
 

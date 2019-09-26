@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatIconModule, MatInputModule, MatButtonModule, MatCardModule, MatRadioModule, MatAutocompleteModule, MatCheckbox, MatCheckboxModule, MatTableModule, MatSnackBarModule, MatSelectModule, MatStepperModule, MatDialogModule, MatPaginatorModule } from '@angular/material';
+import { MatIconModule, MatInputModule, MatButtonModule, MatCardModule, MatRadioModule, MatAutocompleteModule, MatCheckbox, MatCheckboxModule, MatTableModule, MatSnackBarModule, MatSelectModule, MatStepperModule, MatDialogModule, MatPaginatorModule, MatSlideToggleModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NovoPrepedidoComponent } from './novo-prepedido.component';
 import { SelecionarClienteComponent } from './selecionar-cliente/selecionar-cliente.component';
@@ -16,6 +16,7 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { SelecProdDialogComponent } from './selec-prod-dialog/selec-prod-dialog.component';
 import { DadosPagtoComponent } from './dados-pagto/dados-pagto.component';
 import { ConfirmarPrepedidoComponent } from './confirmar-prepedido/confirmar-prepedido.component';
+import { ObservacoesComponent } from './observacoes/observacoes.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { ConfirmarPrepedidoComponent } from './confirmar-prepedido/confirmar-pre
     ConfirmarEnderecoComponent, ItensComponent,
     SelecProdDialogComponent,
     DadosPagtoComponent,
-    ConfirmarPrepedidoComponent],
+    ConfirmarPrepedidoComponent,
+    ObservacoesComponent],
   imports: [
     CommonModule,
     ClienteCorpoModule,
@@ -37,6 +39,7 @@ import { ConfirmarPrepedidoComponent } from './confirmar-prepedido/confirmar-pre
     MatCardModule,
     MatRadioModule,
     MatCheckboxModule,
+    MatSlideToggleModule,
     MatTableModule,
     MatSnackBarModule,
     MatSelectModule,

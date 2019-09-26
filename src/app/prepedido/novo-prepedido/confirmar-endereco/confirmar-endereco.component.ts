@@ -25,7 +25,6 @@ export class ConfirmarEnderecoComponent implements OnInit {
 
   //dados
   @Input() dadosClienteCadastroDto = new DadosClienteCadastroDto();
-  @Input() mostrarEndereco = false; //no celular, como é uma tela separada,temos que mostrar o endereço já cadastrado
   @Input() enderecoEntregaDtoClienteCadastro = new EnderecoEntregaDtoClienteCadastro();
 
 

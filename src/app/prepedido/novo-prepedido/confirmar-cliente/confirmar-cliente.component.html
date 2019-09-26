@@ -4,11 +4,13 @@
             Confirmar Cliente
         </header>
         <article>
+            <!-- mostramos o endereço se não estiver na fase 2
+            quer dizer: no desktop não mostramo so endereço aqui, só no app-confirmar-endereco
+            no celular, mostramos o endereço aqui pq o app-confirmar-endereco não está visivel -->
             <app-cliente-corpo [dadosClienteCadastroDto]="dadosClienteCadastroDto" [cadastrando]="false"
-                [clienteCadastroDto]="clienteCadastroDto" [editarIcms]="true" *ngIf="fase1">
+                [clienteCadastroDto]="clienteCadastroDto" [editarIcms]="true" *ngIf="fase1" [mostrarEndereco]="!fase2">
             </app-cliente-corpo>
-            <app-confirmar-endereco [dadosClienteCadastroDto]="dadosClienteCadastroDto"
-                [mostrarEndereco]="!fase1e2juntas" *ngIf="fase2"
+            <app-confirmar-endereco [dadosClienteCadastroDto]="dadosClienteCadastroDto" *ngIf="fase2"
                 [enderecoEntregaDtoClienteCadastro]="enderecoEntregaDtoClienteCadastro">
             </app-confirmar-endereco>
         </article>

@@ -18,6 +18,7 @@ import { SelecProdInfo } from '../selec-prod-dialog/selec-prod-info';
 import { ProdutoComboDto } from 'src/app/dto/Produto/ProdutoComboDto';
 import { ProdutoDto } from 'src/app/dto/Produto/ProdutoDto';
 import { asapScheduler } from 'rxjs';
+import { ConfirmationDialogComponent } from 'src/app/utils/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-itens',
@@ -299,12 +300,19 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     this.location.back();
   }
   continuar() {
+
+    //validação: tem que ter algum produto
+    if (this.prePedidoDto.ListaProdutos.length === 0) {
+      this.alertaService.mostrarMensagem("Selecione ao menos um produto para continuar.");
+      return;
+    }
+
     let numeroPrepedido = this.activatedRoute.snapshot.params.numeroPrepedido;
     if (!!numeroPrepedido) {
-      this.router.navigate(["../../dados-pagto"], { relativeTo: this.activatedRoute });
+      this.router.navigate(["../../observacoes"], { relativeTo: this.activatedRoute });
     }
     else {
-      this.router.navigate(["../dados-pagto"], { relativeTo: this.activatedRoute });
+      this.router.navigate(["../observacoes"], { relativeTo: this.activatedRoute });
     }
   }
   adicionarProduto() {
@@ -312,10 +320,20 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     this.mostrarProdutos(null);
   }
   removerLinha(i: PrepedidoProdutoDtoPrepedido) {
-    this.prePedidoDto.ListaProdutos = this.prePedidoDto.ListaProdutos.filter(function (value, index, arr) {
-      return value !== i;
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: `Remover este item do pré-pedido?`
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.prePedidoDto.ListaProdutos = this.prePedidoDto.ListaProdutos.filter(function (value, index, arr) {
+          return value !== i;
+        });
+      }
     });
   }
+
+
+
   verificarCargaProdutos(): boolean {
     if (this.carregandoProds) {
       //ainda não carregou, vamos esperar....
