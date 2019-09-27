@@ -39,7 +39,7 @@
                                             value="{{ProdutoTelaFabrProd(p.produtoDto.Fabricante, p.produtoDto.Produto)}}">
                                             {{ProdutoTelaFabrProd(p.produtoDto.Fabricante, p.produtoDto.Produto)}}
                                         </mat-radio-button>
-                                        <label>
+                                        <label *ngIf="!telaDesktop">
                                             <input *ngIf="!telaDesktop" type="radio" name="produto"
                                                 value="{{ProdutoTelaFabrProd(p.produtoDto.Fabricante, p.produtoDto.Produto)}}"
                                                 [(ngModel)]="produto">

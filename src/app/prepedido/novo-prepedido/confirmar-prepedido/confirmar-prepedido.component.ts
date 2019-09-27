@@ -12,6 +12,7 @@ import { Constantes } from 'src/app/dto/Constantes';
 import { CpfCnpjUtils } from 'src/app/utils/cpfCnpjUtils';
 import { PrepedidoBuscarService } from 'src/app/servicos/prepedido/prepedido-buscar.service';
 import { PassoPrepedidoBase } from '../passo-prepedido-base';
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-confirmar-prepedido',
@@ -28,7 +29,8 @@ export class ConfirmarPrepedidoComponent extends PassoPrepedidoBase implements O
     novoPrepedidoDadosService: NovoPrepedidoDadosService,
     public readonly alertaService: AlertaService,
     public readonly dialog: MatDialog,
-    telaDesktopService: TelaDesktopService
+    telaDesktopService: TelaDesktopService,
+    public readonly prepedidoBuscarService: PrepedidoBuscarService
   ) {
     super(telaDesktopService, router, novoPrepedidoDadosService);
   }
@@ -42,7 +44,21 @@ export class ConfirmarPrepedidoComponent extends PassoPrepedidoBase implements O
     this.location.back();
   }
   continuar() {
-    this.router.navigate(["../confirmar-prepedido"], { relativeTo: this.activatedRoute });
+    this.prepedidoBuscarService.cadastrarPrepedido(this.novoPrepedidoDadosService.prePedidoDto).subscribe({
+      next: (r) => {
+        if (r == null) {
+          r = new Array();
+          r.push("Retorno nulo do servidor.");
+        }
+        if (r.length > 0) {
+          this.alertaService.mostrarMensagem("Erros ao salvar. \nLista de erros: \n" + r.join("\n"));
+          return;
+        }
+        this.alertaService.mostrarMensagem("Pré-pedido criado com sucesso.");
+        this.router.navigate(["/"]);
+      },
+      error: (r) => this.alertaService.mostrarErroInternet()
+    });
   }
   //#endregion
 
