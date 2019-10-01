@@ -15,20 +15,20 @@ namespace InfraBanco.Modelos
         [Column("pedido")]
         [Required]
         [MaxLength(9)]
-        [ForeignKey("Tpedido")]
+        //[ForeignKey("Tpedido")]
         public string Pedido { get; set; }
 
-        //[Key]
+        [Key]
         [Column("fabricante")]
         [Required]
         [MaxLength(4)]
         public string Fabricante { get; set; }
 
-        //[Key]
+        [Key]
         [Column("produto")]
         [Required]
         [MaxLength(8)]
-        [ForeignKey("Tproduto")]
+        //[ForeignKey("Tproduto")]
         public string Produto { get; set; }
         
         [Column("qtde")]

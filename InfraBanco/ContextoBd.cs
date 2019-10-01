@@ -63,6 +63,29 @@ namespace InfraBanco
                 .HasKey(o => new { o.Id_Cliente, o.Nome_Empresa });
             modelBuilder.Entity<TpedidoItem>()
                 .HasKey(o => new { o.Pedido, o.Fabricante, o.Produto });
+            modelBuilder.Entity<TorcamentoItem>(o =>
+            {
+                o.HasKey(x => new { x.Orcamento, x.Fabricante, x.Produto });
+                //o.HasOne(x => x.Torcamento)
+                //.WithMany(x => x.TorcamentoItem)
+                //.HasForeignKey(x => x.Torcamento)
+                ;
+            });
+
+            modelBuilder.Entity<Tproduto>()
+                .HasKey(x => new { x.Fabricante, x.Produto });
+
+            modelBuilder.Entity<TecProdutoComposto>()
+                .HasKey(x => new { x.Fabricante_Composto, x.Produto_Composto });
+
+            modelBuilder.Entity<TpedidoItem>()
+                .HasKey(x => new { x.Pedido, x.Fabricante, x.Produto });
+
+            modelBuilder.Entity<TprodutoXAlerta>()
+                .HasKey(x => new { x.Fabricante, x.Produto, x.Id_Alerta });
+
+            modelBuilder.Entity<TprodutoLoja>()
+                .HasKey(x => new { x.Fabricante, x.Produto, x.Loja });
         }
     }
 }

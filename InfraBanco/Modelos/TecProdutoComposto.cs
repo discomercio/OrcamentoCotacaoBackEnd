@@ -13,13 +13,14 @@ namespace InfraBanco.Modelos
         [Column("fabricante_composto")]
         [MaxLength(4)]
         [Required]
-        [ForeignKey("TecProdutoCompostoItem")]
+        //[ForeignKey("TecProdutoCompostoItem")]
         public string Fabricante_Composto { get; set; }
 
+        [Key]
         [Column("produto_composto")]
         [MaxLength(8)]
         [Required]
-        [ForeignKey("Tproduto")]
+        //[ForeignKey("Tproduto")]
         public string Produto_Composto { get; set; }
 
         [Column("descricao")]

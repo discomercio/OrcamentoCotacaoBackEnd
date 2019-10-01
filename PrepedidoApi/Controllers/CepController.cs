@@ -2,15 +2,37 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PrepedidoApi.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
+    [Authorize(Roles = Utils.Autenticacao.RoleAcesso)]
     public class CepController : Controller
     {
-        public IActionResult Index()
+        private readonly PrepedidoBusiness.Bll.CepBll cepBll;
+        private readonly InfraIdentity.IServicoDecodificarToken servicoDecodificarToken;
+
+        public CepController(PrepedidoBusiness.Bll.CepBll cepBll, InfraIdentity.IServicoDecodificarToken servicoDecodificarToken)
         {
-            return View();
+            this.cepBll = cepBll;
+            this.servicoDecodificarToken = servicoDecodificarToken;
         }
+
+#if DEBUG
+        [AllowAnonymous]
+#endif
+        [HttpGet("buscarCep")]
+        public async Task<IActionResult> BuscarCep(string cep, string endereco, string uf, string cidade)
+        {
+            //para testar: http://localhost:60877/api/cep/buscarCep
+            string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
+            var ret = await cepBll.BuscarCep(cep, endereco, uf, cidade);
+
+            return Ok(ret);
+        }
+
     }
 }

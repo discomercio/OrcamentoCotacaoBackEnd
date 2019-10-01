@@ -18,11 +18,14 @@ namespace PrepedidoBusiness.Bll
     public class ClienteBll
     {
         private readonly InfraBanco.ContextoProvider contextoProvider;
+        private readonly InfraBanco.ContextoCepProvider contextoCepProvider;
+        private readonly InfraBanco.ContextoNFeProvider contextoNFeProvider;
 
-        public ClienteBll(InfraBanco.ContextoProvider contextoProvider)
+        public ClienteBll(InfraBanco.ContextoProvider contextoProvider, InfraBanco.ContextoCepProvider contextoCepProvider, InfraBanco.ContextoNFeProvider contextoNFeProvider)
         {
             this.contextoProvider = contextoProvider;
-
+            this.contextoCepProvider = contextoCepProvider;
+            this.contextoNFeProvider = contextoNFeProvider;
         }
 
         public async Task<List<string>> AtualizarClienteParcial(string apelido, DadosClienteCadastroDto dadosClienteCadastroDto)
@@ -36,7 +39,8 @@ namespace PrepedidoBusiness.Bll
             var db = contextoProvider.GetContextoLeitura();
             string log = "";
             string campos_a_omitir = "|dt_cadastro|usuario_cadastro|dt_ult_atualizacao|usuario_ult_atualizacao|";
-            List<string> lstErros = ValidarDadosClientesCadastro(dadosClienteCadastroDto);
+            List<string> lstErros = new List<string>();
+            await ValidarDadosClientesCadastro(dadosClienteCadastroDto, lstErros);
 
             var dados = from c in db.Tclientes
                         where c.Id == dadosClienteCadastroDto.Id
@@ -270,9 +274,11 @@ namespace PrepedidoBusiness.Bll
                                   select c.Id).FirstOrDefaultAsync();
 
             List<string> lstErros = new List<string>();
-            lstErros = ValidarDadosClientesCadastro(clienteDto.DadosCliente);
-            lstErros = ValidarRefBancaria(clienteDto.RefBancaria, lstErros);
-            lstErros = ValidarRefComercial(clienteDto.RefComercial, lstErros);
+
+            //Na validação do cadastro é feito a consistencia de Municipio
+            await ValidarDadosClientesCadastro(clienteDto.DadosCliente, lstErros);
+            ValidarRefBancaria(clienteDto.RefBancaria, lstErros);
+            ValidarRefComercial(clienteDto.RefComercial, lstErros);
 
             if (verifica != null)
                 lstErros.Add("REGISTRO COM ID=" + clienteDto.DadosCliente.Id + " JÁ EXISTE.");
@@ -285,9 +291,8 @@ namespace PrepedidoBusiness.Bll
 
                     db = contextoProvider.GetContextoGravacao();
                     DadosClienteCadastroDto cliente = clienteDto.DadosCliente;
-                    List<string> lstRetorno = (await CadastrarDadosClienteDto(cliente, apelido, log)).ToList();
-                    id_cliente = lstRetorno[0].ToString();
-                    log = lstRetorno[1].ToString();
+                    id_cliente = await CadastrarDadosClienteDto(cliente, apelido, log);
+
                     //Por padrão o id do cliente tem 12 caracteres, caso não seja 12 caracteres esta errado
                     if (id_cliente.Length == 12)
                     {
@@ -308,7 +313,7 @@ namespace PrepedidoBusiness.Bll
             return lstErros;
         }
 
-        private async Task<IEnumerable<string>> CadastrarDadosClienteDto(DadosClienteCadastroDto clienteDto, string apelido, string log)
+        private async Task<string> CadastrarDadosClienteDto(DadosClienteCadastroDto clienteDto, string apelido, string log)
         {
             string retorno = "";
             List<string> lstRetorno = new List<string>();
@@ -371,14 +376,14 @@ namespace PrepedidoBusiness.Bll
                 var db = contextoProvider.GetContextoGravacao();
 
                 //Busca os nomes reais das colunas da tabela SQL
-                lstRetorno.Add(Utils.Util.MontaLog(tCliente, log, campos_a_omitir));
+                Utils.Util.MontaLog(tCliente, log, campos_a_omitir);
 
                 db.Add(tCliente);
                 await db.SaveChangesAsync();
                 retorno = tCliente.Id;
             }
 
-            return lstRetorno;
+            return retorno;
         }
 
         private async Task<string> CadastrarRefBancaria(List<RefBancariaDtoCliente> lstRefBancaria, string apelido, string id_cliente, string log)
@@ -476,54 +481,35 @@ namespace PrepedidoBusiness.Bll
             return lstErros;
         }
         //afazer:as tabelas já estão disponiveis
-        private async Task<IEnumerable<string>> ConsisteMunicipioIBGE(string municipio, string uf)
+        private async Task<IEnumerable<NfeMunicipio>> ConsisteMunicipioIBGE(string municipio, string uf, List<string> lstErros)
         {
-            List<string> erros = new List<string>();
-            List<string> lstSugerida = new List<string>();
             var db = contextoProvider.GetContextoLeitura();
-            string chave = "";
-            string senhaCripto = "";
+            List<NfeMunicipio> lst_nfeMunicipios = new List<NfeMunicipio>();
 
             if (string.IsNullOrEmpty(municipio))
-                erros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
+                lstErros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
                     "nenhum município foi informado!!");
             if (string.IsNullOrEmpty(uf))
-                erros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
+                lstErros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
                     "a UF não foi informada!!");
             else
             {
                 if (uf.Length > 2)
-                    erros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
+                    lstErros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
                         "a UF é inválida (" + uf + ")!!");
             }
 
-            if (erros.Count == 0)
+            if (lstErros.Count == 0)
             {
-                var nfEmitente = from c in db.TnfEmitentes
-                                 where c.NFe_st_emitente_padrao == 1
-                                 select new
-                                 {
-                                     c.NFe_T1_servidor_BD,
-                                     c.NFe_T1_nome_BD,
-                                     c.NFe_T1_usuario_BD,
-                                     c.NFe_T1_senha_BD
-                                 };
-                if (nfEmitente == null)
-                    erros.Add("Não há um emitente de NFe padrão definido no sistema!!");
+                lst_nfeMunicipios = (await BuscarSiglaUf(uf, municipio)).ToList();
 
-                string senhaNfEmitente = await nfEmitente.Select(r => r.NFe_T1_senha_BD).FirstOrDefaultAsync();
-
-                chave = Utils.Util.GeraChave(Constantes.FATOR_BD);
-                senhaCripto = Utils.Util.DecodificaSenha(senhaNfEmitente, chave);
-
-                //afazer: Verificar com o João e Hamilton o metodo abaixo
-                //BuscarSiglaUf(string servidor, string nomedb, string usuariodb, string senhadb)
-
-
-
+                if (!lst_nfeMunicipios.Any())
+                {
+                    lstErros.Add("Município '" + municipio + "' não consta na relação de municípios do IBGE para a UF de '" + uf + "'!!");
+                }
             }
 
-            return lstSugerida;
+            return lst_nfeMunicipios;
         }
 
         /*afazer:
@@ -533,39 +519,58 @@ namespace PrepedidoBusiness.Bll
              * Isso faz parte do metodo da validação para salvar a RefBancaria pág ClienteAtualiza.asp linha 329 
              * que faz a chamada para o metodo consiste_municipio_IBGE_ok(s_cidade, s_uf, s_lista_sugerida_municipios, msg_erro)
              */
-        private string BuscarSiglaUf(string servidor, string nomedb, string usuariodb, string senhadb, string uf, string municipio)
+        private async Task<IEnumerable<NfeMunicipio>> BuscarSiglaUf(string uf, string municipio)
         {
             //verificar se passo a lista de erros
             string retorno = "";
+            List<NfeMunicipio> lstNfeMunicipio = new List<NfeMunicipio>();
 
-            var db = contextoProvider.GetContextoLeitura();
-            //var nfeUF = from c in db.NFE_UF
-            //            where c.SiglaUF == uf.ToUpper()
-            //            select c;
+            var db = contextoNFeProvider.GetContextoLeitura();
 
+            var nfeUFTask = (from c in db.NfeUfs
+                             where c.SiglaUF == uf.ToUpper()
+                             select c).FirstOrDefaultAsync();
 
-            //if (nfeUF == null)
-            //    retorno = "Não é possível consistir o município através da relação de municípios do IBGE: " +
-            //        "a UF '" + uf + "' não foi localizada na relação do IBGE!!";
-            //else
-            //{
-            //    string codUF = nfeUF.CodUF;
-            //    var nomeMunicipio = from c in db.NFE_MUNICIPIO
-            //                        where c.CodMunic.Contains(uf) && c.Descricao == municipio
-            //                        orderby c.Descricao
-            //                        select c;
+            NfeUf nfeUf = await nfeUFTask;
 
-            //    //adicionar na lista sugerida
-            //}
+            if (string.IsNullOrEmpty(nfeUf.CodUF))
+                retorno = "Não é possível consistir o município através da relação de municípios do IBGE: " +
+                    "a UF '" + uf + "' não foi localizada na relação do IBGE!!";
+            else
+            {
+                string codUF = nfeUf.CodUF;
 
+                var nfeMunicipioTask = (from c in db.NfeMunicipios
+                                        where c.CodMunic.Contains(codUF) && c.Descricao == municipio
+                                        select c).FirstOrDefaultAsync();
 
-            return retorno;
+                if (nfeMunicipioTask != null)
+                {
+                    lstNfeMunicipio.Add(await nfeMunicipioTask);
+                }
+                else
+                {
+                    var lst_nfeMunicipioTask = from c in db.NfeMunicipios
+                                               where c.CodMunic.Contains(codUF) &&
+                                                     c.Descricao.Contains(municipio.Substring(municipio.Length - 1, 1))
+                                               orderby c.Descricao
+                                               select c;
+
+                    if (await lst_nfeMunicipioTask.AnyAsync())
+                    {
+                        foreach (var p in lst_nfeMunicipioTask)
+                        {
+                            lstNfeMunicipio.Add(p);
+                        }
+                    }
+
+                }
+            }
+            return lstNfeMunicipio;
         }
 
-        private List<string> ValidarDadosClientesCadastro(DadosClienteCadastroDto cliente)
+        private async Task ValidarDadosClientesCadastro(DadosClienteCadastroDto cliente, List<string> listaErros)
         {
-            List<string> listaErros = new List<string>();
-
             string cpf_cnpjSoDig = Utils.Util.SoDigitosCpf_Cnpj(cliente.Cnpj_Cpf);
             bool ehCpf = Utils.Util.ValidaCpf_Cnpj(cliente.Cnpj_Cpf);
 
@@ -656,11 +661,15 @@ namespace PrepedidoBusiness.Bll
             string s_tabela_municipios_IBGE = "";
             if (cliente.Ie != "")
             {
-                //if()
+                //afazer: terminar o metodo abaixo
+                //string uf = VerificarInscricaoEstadualValida(cliente.Ie, cliente.Uf);
+                //List<NfeMunicipio> lstNfeMunicipio = new List<NfeMunicipio>();
+                //lstNfeMunicipio = (await ConsisteMunicipioIBGE(cliente.Cidade, cliente.Uf, listaErros)).ToList();
+
             }
 
 
-            return listaErros;
+            //return listaErros;
         }
 
         //afazer:ADICIONA A DLL DllInscE32

@@ -128,6 +128,21 @@ namespace PrepedidoApi.Controllers
             return Ok(ret);
         }
 
+
+        //Para teste
+#if DEBUG
+        [AllowAnonymous]
+#endif
+        [HttpDelete("deletarPrepedido")]
+        public async Task<IActionResult> DeletarPrePedido(PrePedidoDto prePedido)
+        {
+            //para testar: http://localhost:60877/api/prepedido/deletarPrepedido
+            string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
+
+            await prepedidoBll.DeletarOrcamentoExiste(prePedido, apelido);
+
+            return Ok();
+        }
     }
 }
 

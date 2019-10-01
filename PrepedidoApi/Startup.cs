@@ -42,16 +42,21 @@ namespace PrepedidoApi
             services.AddTransient<PrepedidoBusiness.Bll.ClienteBll, PrepedidoBusiness.Bll.ClienteBll>();
             services.AddTransient<PrepedidoBusiness.Bll.PedidoBll, PrepedidoBusiness.Bll.PedidoBll>();
             services.AddTransient<PrepedidoBusiness.Bll.AcessoBll, PrepedidoBusiness.Bll.AcessoBll>();
-            services.AddTransient<PrepedidoBusiness.Bll.ProdutoBll, PrepedidoBusiness.Bll.ProdutoBll>(); 
+            services.AddTransient<PrepedidoBusiness.Bll.ProdutoBll, PrepedidoBusiness.Bll.ProdutoBll>();
+            services.AddTransient<PrepedidoBusiness.Bll.CepBll, PrepedidoBusiness.Bll.CepBll>();
 
             //banco de dados
             services.AddDbContext<InfraBanco.ContextoBd>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("conexao"));
+                options.UseSqlServer(Configuration.GetConnectionString("conexaoLocal"));
             });
             services.AddDbContext<InfraBanco.ContextoCepBd>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("conexaoCep"));
+            });
+            services.AddDbContext<InfraBanco.ContextoNFeBd>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("conexaoNfe"));
             });
 
 

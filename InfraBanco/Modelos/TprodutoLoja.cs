@@ -11,7 +11,7 @@ namespace InfraBanco.Modelos
     [Table("t_PRODUTO_LOJA")]
     public class TprodutoLoja
     {
-        [Key]
+        //[Key]
         [Column("fabricante")]
         [Required]
         [MaxLength(4)]
@@ -28,6 +28,9 @@ namespace InfraBanco.Modelos
         [Required]
         [MaxLength(3)]
         public string Loja { get; set; }
+
+        //[ForeignKey("fabricante,produto")]
+        public Tproduto Tproduto{ get; set; }
 
         [Column("preco_lista")]
         public decimal? Preco_Lista { get; set; }

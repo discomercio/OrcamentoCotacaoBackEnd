@@ -13,7 +13,7 @@ namespace InfraBanco.Modelos
         [Column("fabricante")]
         [MaxLength(4)]
         [Required]
-        public string Fabricante { get; set; }
+        public string Fabricante { get; set; }        
 
         [Column("cnpj")]
         [MaxLength(14)]
@@ -87,6 +87,6 @@ namespace InfraBanco.Modelos
         public string Endereco_Complemento { get; set; }
 
         [Column("perc_agio")]
-        public float Perc_Agio { get; set; }
+        public float? Perc_Agio { get; set; }
     }
 }

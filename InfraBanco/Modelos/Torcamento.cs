@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,8 +12,9 @@ namespace InfraBanco.Modelos
         [Column("orcamento")]
         [MaxLength(9)]
         [Required]
-        [ForeignKey("TorcamentoItem")]
         public string Orcamento { get; set; }
+
+        public ICollection<TorcamentoItem> TorcamentoItem { get; set; }
 
         [Column("loja")]
         [MaxLength(3)]
@@ -49,7 +51,7 @@ namespace InfraBanco.Modelos
         [Column("obs_1")]
         [MaxLength(500)]
         public string Obs_1 { get; set; }
-        
+
         [Column("obs_2")]
         [MaxLength(10)]
         public string Obs_2 { get; set; }
@@ -72,7 +74,7 @@ namespace InfraBanco.Modelos
         [MaxLength(20)]
         public string Cancelado_Usuario { get; set; }
 
-        [Column("st_fechamento")]        
+        [Column("st_fechamento")]
         [MaxLength(1)]
         public string St_Fechamento { get; set; }
 
@@ -234,7 +236,7 @@ namespace InfraBanco.Modelos
         [Required]
         public short StBemUsoConsumo { get; set; }
 
-        [Column("custoFinancFornecTipoParcelamento")]        
+        [Column("custoFinancFornecTipoParcelamento")]
         [MaxLength(2)]
         public string CustoFinancFornecParcelamento { get; set; }
 
@@ -292,10 +294,10 @@ namespace InfraBanco.Modelos
         public string Usuario_Violado_Permite_RA_Status { get; set; }
 
         [Column("numero_loja")]
-        public short? Numero_Loja { get; set; }
+        public short? Numero_Loja { get; }
 
         [Column("data_hora")]
-        public DateTime? Data_Hora { get; set; }
+        public DateTime? Data_Hora { get; }
 
         [Column("EndEtg_obs")]
         [MaxLength(100)]
@@ -317,6 +319,6 @@ namespace InfraBanco.Modelos
         public Tcliente Tcliente { get; set; }
         public Tpedido Tpedido { get; set; }
 
-        public TorcamentoItem TorcamentoItem { get; set; }
+
     }
 }

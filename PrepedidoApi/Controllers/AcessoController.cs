@@ -78,7 +78,8 @@ namespace PrepedidoApi.Controllers
         {
             var appSettingsSection = configuration.GetSection("AppSettings");
             var appSettings = appSettingsSection.Get<Utils.Configuracao>();
-
+            apelido = apelido.ToUpper();
+            senha = senha.ToUpper();
             string token = await servicoAutenticacao.ObterTokenAutenticacao(apelido, senha, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos, Utils.Autenticacao.RoleAcesso, new ServicoAutenticacaoProvider(acessoBll));
             
             string ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();

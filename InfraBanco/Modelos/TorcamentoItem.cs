@@ -16,13 +16,16 @@ namespace InfraBanco.Modelos
         [MaxLength(9)]
         public string Orcamento { get; set; }
 
-        //[Key]
+        //[ForeignKey("orcamento")]
+        public Torcamento Torcamento { get; set; }
+
+        [Key]
         [Column("fabricante")]
         [Required]
         [MaxLength(4)]
         public string Fabricante { get; set; }
 
-        //[Key]
+        [Key]
         [Column("produto")]
         [Required]
         [MaxLength(8)]
@@ -135,6 +138,6 @@ namespace InfraBanco.Modelos
         [MaxLength(1)]
         public string Descontinuado { get; set; }
 
-        
+
     }
 }

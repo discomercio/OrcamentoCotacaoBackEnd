@@ -11,19 +11,23 @@ namespace InfraBanco.Modelos
     [Table("t_PRODUTO")]
     public class Tproduto
     {
-        //[Key]
+        //        [Key]
         [Column("fabricante")]
         [Required]
         [MaxLength(4)]
-        [ForeignKey("Tfabricante")]
         public string Fabricante { get; set; }
 
-        [Key]
+        //[ForeignKey("fabricante")]
+        public Tfabricante Tfabricante { get; set; }
+
+        //        [Key]
         [Column("produto")]
         [Required]
         [MaxLength(8)]
-        [ForeignKey("TprodutoLoja")]
+        //[ForeignKey("TprodutoLoja")]
         public string Produto { get; set; }
+
+        public ICollection<TprodutoLoja> TprodutoLoja { get; set; }
 
         [Column("descricao")]
         [MaxLength(120)]
@@ -122,9 +126,7 @@ namespace InfraBanco.Modelos
         [MaxLength(10)]
         public string Posicao_Mercado { get; set; }
 
-        public TprodutoLoja TprodutoLoja { get; set; }
 
-        public Tfabricante Tfabricante { get; set; }
 
     }
 }

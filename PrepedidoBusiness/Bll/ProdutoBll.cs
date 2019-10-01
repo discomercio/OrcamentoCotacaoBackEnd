@@ -469,24 +469,27 @@ namespace PrepedidoBusiness.Bll
                         lstErros.Add("Regra de consumo do estoque '" + r.TwmsRegraCd.Apelido + "' associada ao produto (" +
                             r.Fabricante + ")" + r.Produto + " está bloqueada para a UF '" + cliente.Uf + "'");
                     }
-                    else if (r.TwmsRegraCdXUfXPessoa.St_inativo == 1)
+                    else if (r.TwmsRegraCdXUfXPessoa != null && r.TwmsRegraCdXUfXPessoa.St_inativo == 1)
                     {
                         lstErros.Add("Regra de consumo do estoque '" + r.TwmsRegraCd.Apelido + "' associada ao produto (" +
                             r.Fabricante + ")" + r.Produto + " está bloqueada para clientes '" + cliente.Tipo + "' da UF '" + cliente.Uf + "'");
                     }
-                    else if (r.TwmsRegraCdXUfXPessoa.Spe_id_nfe_emitente == 0)
+                    else if (r.TwmsRegraCdXUfXPessoa != null && r.TwmsRegraCdXUfXPessoa.Spe_id_nfe_emitente == 0)
                     {
                         lstErros.Add("Regra de consumo do estoque '" + r.TwmsRegraCd.Apelido + "' associada ao produto (" +
                             r.Fabricante + ")" + r.Produto + " não especifica nenhum CD para aguardar produtos sem presença no estoque para clientes '" +
                             cliente.Tipo + "' da UF '" + cliente.Uf + "'");
                     }
                     int verificaErros = 0;
-                    foreach (var re in r.TwmsCdXUfXPessoaXCd)
+                    if (r.TwmsCdXUfXPessoaXCd != null)
                     {
-                        if (re.Id_nfe_emitente > 0)
+                        foreach (var re in r.TwmsCdXUfXPessoaXCd)
                         {
-                            if (re.St_inativo == 0)
-                                verificaErros++;
+                            if (re.Id_nfe_emitente > 0)
+                            {
+                                if (re.St_inativo == 0)
+                                    verificaErros++;
+                            }
                         }
                     }
                     if (verificaErros == 0)

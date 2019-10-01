@@ -10,7 +10,7 @@ namespace InfraBanco.Modelos
     {
         [Column("id")]
         [Required]
-        [Key]
+        //[Key]
         [MaxLength(12)]
         public string Id { get; set; }
         
