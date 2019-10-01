@@ -74,6 +74,11 @@ namespace PrepedidoApi
             {
                 x.RequireHttpsMetadata = false;
                 x.SaveToken = true;
+                //afazer:
+                /*
+	            verificar se usuário continua ativo a cada requisição? dá algum trabalho e fica mais lento. 
+                Resposta em 26/09/2019: sim, verificar se o usuário está ativo em cada requisição.
+                */
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
