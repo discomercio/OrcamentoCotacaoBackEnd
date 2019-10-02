@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { PedidoDto } from 'src/app/dto/pedido/detalhesPedido/PedidoDto';
+import { PedidoDto } from 'src/app/dto/pedido/detalhesPedido/PedidoDto2';
 import { DataUtils } from 'src/app/utils/dataUtils';
 import { MoedaUtils } from 'src/app/utils/moedaUtils';
 import { Constantes } from 'src/app/dto/Constantes';

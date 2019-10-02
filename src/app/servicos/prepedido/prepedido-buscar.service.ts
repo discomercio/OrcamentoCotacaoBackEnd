@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { HttpParams, HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { PedidoDto } from 'src/app/dto/pedido/detalhesPedido/PedidoDto';
+import { PedidoDto } from 'src/app/dto/pedido/detalhesPedido/PedidoDto2';
 import { PrePedidoDto } from 'src/app/dto/Prepedido/DetalhesPrepedido/PrePedidoDto';
 
 @Injectable({

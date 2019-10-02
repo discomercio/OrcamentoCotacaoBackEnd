@@ -7,6 +7,7 @@
     Pedido_Data: string;
     Recebida_Data: string;
     Marketplace_Codigo_Origem: string;
+    Descricao_Pedido_Bs_X_Marketplace: string;
     Pedido_Bs_X_Marketplace: string;
     Cor_Pedido_Bs_X_Marketplace: string;
     Pedido_Bs_X_Ac: string;

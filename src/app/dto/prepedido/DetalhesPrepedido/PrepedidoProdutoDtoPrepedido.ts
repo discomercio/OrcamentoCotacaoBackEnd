@@ -16,4 +16,7 @@
     TotalItemRA: number | null;
     TotalItem: number | null;
 
+    //verificar a necessidade dessa variavel
+    Qtde_estoque_total_disponivel: number | null;
+
 }

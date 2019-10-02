@@ -8,7 +8,7 @@ import { PedidoBuscarService } from '../../../../src/app/servicos/pedido/pedido-
 import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material';
 import { AlertDialogComponent } from 'src/app/utils/alert-dialog/alert-dialog.component';
-import { PedidoDto } from 'src/app/dto/pedido/detalhesPedido/PedidoDto';
+import { PedidoDto } from 'src/app/dto/pedido/detalhesPedido/PedidoDto2';
 import { ObjectUtils } from 'src/app/utils/objectUtils';
 import { ImpressaoService } from 'src/app/utils/impressao.service';
 

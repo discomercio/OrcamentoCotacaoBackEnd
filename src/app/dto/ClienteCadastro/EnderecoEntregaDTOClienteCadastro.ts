@@ -10,5 +10,6 @@
     EndEtg_cod_justificativa: string;
     //descrição da justificativa, preenchdio para mostrar (da api para o spa)
     EndEtg_descricao_justificativa: string;
+    //se foi selecionado um endereco diferente para a entrega (do spa para a api)
     OutroEndereco: boolean;
 }

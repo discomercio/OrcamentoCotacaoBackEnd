@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
-import { PedidoDto } from 'src/app/dto/pedido/detalhesPedido/PedidoDto';
+import { PedidoDto } from 'src/app/dto/pedido/detalhesPedido/PedidoDto2';
 
 @Component({
   selector: 'app-pedido-celular',

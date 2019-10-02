@@ -3,5 +3,5 @@
     Contato: string;
     Ddd: string;
     Telefone: string;
+    Ordem: number;
 }
-

@@ -1,6 +1,4 @@
-﻿import { BlocoNotasDevolucaoMercadoriasDtoPedido } from './BlocoNotasDevolucaoMercadoriasDtoPedido';
-import { StatusPedidoDtoPedido } from './StatusPedidoDtoPedido';
-import { DadosClienteCadastroDto } from '../../ClienteCadastro/DadosClienteCadastroDto';
+﻿import { StatusPedidoDtoPedido } from './StatusPedidoDtoPedido';
 import { EnderecoEntregaDtoClienteCadastro } from '../../ClienteCadastro/EnderecoEntregaDTOClienteCadastro';
 import { PedidoProdutosDtoPedido } from './PedidoProdutosDtoPedido';
 import { DetalhesNFPedidoDtoPedido } from './DetalhesNFPedidoDtoPedido';
@@ -9,13 +7,16 @@ import { ProdutoDevolvidoDtoPedido } from './ProdutoDevolvidoDTOPedido';
 import { PedidoPerdasDtoPedido } from './PedidoPerdasDtoPedido';
 import { OcorrenciasDtoPedido } from './OcorrenciasDtoPedido';
 import { BlocoNotasDtoPedido } from './BlocoNotasDtoPedido';
+import { BlocoNotasDevolucaoMercadoriasDtoPedido } from './BlocoNotasDevolucaoMercadoriasDtoPedido';
+import { DadosClienteCadastroDto } from '../../ClienteCadastro/DadosClienteCadastroDto';
+
 
 export class PedidoDto {
     NumeroPedido: string;
-    StatusHoraPedido: StatusPedidoDtoPedido;//Verificar se todos pedidos marcam a data também
+    StatusHoraPedido: StatusPedidoDtoPedido;
     DataHoraPedido: Date | string | null;
-    DadosCliente: DadosClienteCadastroDto;
     EnderecoEntrega: EnderecoEntregaDtoClienteCadastro;
+    DadosCliente: DadosClienteCadastroDto;
     ListaProdutos: PedidoProdutosDtoPedido[];
     TotalFamiliaParcelaRA: number;
     PermiteRAStatus: number;
@@ -30,6 +31,4 @@ export class PedidoDto {
     ListaOcorrencia: OcorrenciasDtoPedido[];
     ListaBlocoNotas: BlocoNotasDtoPedido[];
     ListaBlocoNotasDevolucao: BlocoNotasDevolucaoMercadoriasDtoPedido[];
-
-
 }
