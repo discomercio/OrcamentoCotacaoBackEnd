@@ -164,7 +164,7 @@ namespace PrepedidoBusiness.Bll
             MontaListaRegras(lstTodosProdutos, lst_cliente_regra);
 
             List<string> lstErros = new List<string>();
-            await ObterCtrlEstoqueProdutoRegra_Teste(lstErros, lst_cliente_regra, cliente.uf, cliente_regra);
+            await Util.ObterCtrlEstoqueProdutoRegra_Teste(lstErros, lst_cliente_regra, cliente.uf, cliente_regra, contextoProvider);
 
             //afazer: Verificar disponibilidade de estoque
             Util.ObterDisponibilidadeEstoque(lst_cliente_regra, lstTodosProdutos, lstErros, contextoProvider);
@@ -194,6 +194,7 @@ namespace PrepedidoBusiness.Bll
         private async Task ExisteMensagensAlertaProdutos(List<ProdutoDto> lst_produtos)
         {
             var db = contextoProvider.GetContextoLeitura();
+
 
             var alertasTask = from c in db.TprodutoXAlertas.Include(r => r.TalertaProduto).Include(r => r.Tproduto)
                               where c.TalertaProduto.Ativo == "S"
@@ -363,92 +364,92 @@ namespace PrepedidoBusiness.Bll
 
         }
 
-        public async Task<IEnumerable<RegrasBll>> ObterCtrlEstoqueProdutoRegra_Teste(List<string> lstErros,
-            List<RegrasBll> lstRegrasCrtlEstoque, string uf, string cliente_regra)
-        {
-            //o cliente esta sendo passado como dynamic
-            //string uf = cliente.uf;
-            //string tipo = cliente.tipo_cliente;
+        //public async Task ObterCtrlEstoqueProdutoRegra_Teste(List<string> lstErros,
+        //    List<RegrasBll> lstRegrasCrtlEstoque, string uf, string cliente_regra)
+        //{
+        //    //o cliente esta sendo passado como dynamic
+        //    //string uf = cliente.uf;
+        //    //string tipo = cliente.tipo_cliente;
 
 
-            var db = contextoProvider.GetContextoLeitura();
+        //    var db = contextoProvider.GetContextoLeitura();
 
-            var dbTwmsRegraCdXUfXPessoaXCds = (from c in db.TwmsRegraCdXUfXPessoaXCds
-                                               join nfe in db.TnfEmitentes on c.Id_nfe_emitente equals nfe.Id
-                                               select c).ToList();
+        //    var dbTwmsRegraCdXUfXPessoaXCds = (from c in db.TwmsRegraCdXUfXPessoaXCds
+        //                                       join nfe in db.TnfEmitentes on c.Id_nfe_emitente equals nfe.Id
+        //                                       select c).ToList();
 
-            //essa query esta copiando o id do produto 
-            var testeRegras = from c in db.TprodutoXwmsRegraCds
-                              join r1 in db.TwmsRegraCds on c.Id_wms_regra_cd equals r1.Id
-                              join r2 in db.TwmsRegraCdXUfs on r1.Id equals r2.Id_wms_regra_cd
-                              join r3 in db.TwmsRegraCdXUfPessoas on r2.Id equals r3.Id_wms_regra_cd_x_uf
-                              where r2.Uf == uf &&
-                                    r3.Tipo_pessoa == cliente_regra
-                              orderby c.Produto
-                              select new
-                              {
-                                  prod_x_reg = c,
-                                  regra1 = r1,
-                                  regra2 = r2,
-                                  regra3 = r3,
-                                  regra4 = dbTwmsRegraCdXUfXPessoaXCds.Where(r => r.Id_wms_regra_cd_x_uf_x_pessoa == r3.Id).ToList(),
-                              };
-            var lista = await testeRegras.ToListAsync();
+        //    //essa query esta copiando o id do produto 
+        //    var testeRegras = from c in db.TprodutoXwmsRegraCds
+        //                      join r1 in db.TwmsRegraCds on c.Id_wms_regra_cd equals r1.Id
+        //                      join r2 in db.TwmsRegraCdXUfs on r1.Id equals r2.Id_wms_regra_cd
+        //                      join r3 in db.TwmsRegraCdXUfPessoas on r2.Id equals r3.Id_wms_regra_cd_x_uf
+        //                      where r2.Uf == uf &&
+        //                            r3.Tipo_pessoa == cliente_regra
+        //                      orderby c.Produto
+        //                      select new
+        //                      {
+        //                          prod_x_reg = c,
+        //                          regra1 = r1,
+        //                          regra2 = r2,
+        //                          regra3 = r3,
+        //                          regra4 = dbTwmsRegraCdXUfXPessoaXCds.Where(r => r.Id_wms_regra_cd_x_uf_x_pessoa == r3.Id).ToList(),
+        //                      };
+        //    var lista = await testeRegras.ToListAsync();
 
-            RegrasBll itemRegra = new RegrasBll();
+        //    RegrasBll itemRegra = new RegrasBll();
 
-            foreach (var item in lstRegrasCrtlEstoque)
-            {
-                foreach (var r in lista)
-                {
-                    if (r.prod_x_reg.Produto == item.Produto)
-                    {
-                        item.St_Regra = true;
-                        item.TwmsRegraCd = new t_WMS_REGRA_CD
-                        {
-                            Id = r.regra1.Id,
-                            Apelido = r.regra1.Apelido,
-                            Descricao = r.regra1.Descricao,
-                            St_inativo = r.regra1.St_inativo
+        //    foreach (var item in lstRegrasCrtlEstoque)
+        //    {
+        //        foreach (var r in lista)
+        //        {
+        //            if (r.prod_x_reg.Produto == item.Produto)
+        //            {
+        //                item.St_Regra = true;
+        //                item.TwmsRegraCd = new t_WMS_REGRA_CD
+        //                {
+        //                    Id = r.regra1.Id,
+        //                    Apelido = r.regra1.Apelido,
+        //                    Descricao = r.regra1.Descricao,
+        //                    St_inativo = r.regra1.St_inativo
 
-                        };
-                        item.TwmsRegraCdXUf = new t_WMS_REGRA_CD_X_UF
-                        {
-                            Id = r.regra2.Id,
-                            Id_wms_regra_cd = r.regra2.Id_wms_regra_cd,
-                            Uf = r.regra2.Uf,
-                            St_inativo = r.regra2.St_inativo
-                        };
-                        item.TwmsRegraCdXUfXPessoa = new t_WMS_REGRA_CD_X_UF_X_PESSOA
-                        {
-                            Id = r.regra3.Id,
-                            Id_wms_regra_cd_x_uf = r.regra3.Id_wms_regra_cd_x_uf,
-                            Tipo_pessoa = r.regra3.Tipo_pessoa,
-                            St_inativo = r.regra3.St_inativo,
-                            Spe_id_nfe_emitente = r.regra3.Spe_id_nfe_emitente
-                        };
-                        item.TwmsCdXUfXPessoaXCd = new List<t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD>();
+        //                };
+        //                item.TwmsRegraCdXUf = new t_WMS_REGRA_CD_X_UF
+        //                {
+        //                    Id = r.regra2.Id,
+        //                    Id_wms_regra_cd = r.regra2.Id_wms_regra_cd,
+        //                    Uf = r.regra2.Uf,
+        //                    St_inativo = r.regra2.St_inativo
+        //                };
+        //                item.TwmsRegraCdXUfXPessoa = new t_WMS_REGRA_CD_X_UF_X_PESSOA
+        //                {
+        //                    Id = r.regra3.Id,
+        //                    Id_wms_regra_cd_x_uf = r.regra3.Id_wms_regra_cd_x_uf,
+        //                    Tipo_pessoa = r.regra3.Tipo_pessoa,
+        //                    St_inativo = r.regra3.St_inativo,
+        //                    Spe_id_nfe_emitente = r.regra3.Spe_id_nfe_emitente
+        //                };
+        //                item.TwmsCdXUfXPessoaXCd = new List<t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD>();
 
-                        foreach (var r4 in r.regra4)
-                        {
-                            t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD item_cd_uf_pess_cd = new t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD
-                            {
-                                Id = r4.Id,
-                                Id_wms_regra_cd_x_uf_x_pessoa = r4.Id_wms_regra_cd_x_uf_x_pessoa,
-                                Id_nfe_emitente = r4.Id_nfe_emitente,
-                                Ordem_prioridade = r4.Ordem_prioridade,
-                                St_inativo = r4.St_inativo
-                            };
-                            item.TwmsCdXUfXPessoaXCd.Add(item_cd_uf_pess_cd);
-                        }
+        //                foreach (var r4 in r.regra4)
+        //                {
+        //                    t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD item_cd_uf_pess_cd = new t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD
+        //                    {
+        //                        Id = r4.Id,
+        //                        Id_wms_regra_cd_x_uf_x_pessoa = r4.Id_wms_regra_cd_x_uf_x_pessoa,
+        //                        Id_nfe_emitente = r4.Id_nfe_emitente,
+        //                        Ordem_prioridade = r4.Ordem_prioridade,
+        //                        St_inativo = r4.St_inativo
+        //                    };
+        //                    item.TwmsCdXUfXPessoaXCd.Add(item_cd_uf_pess_cd);
+        //                }
 
 
-                    }
-                }
-            }
+        //            }
+        //        }
+        //    }
 
-            return lstRegrasCrtlEstoque;
-        }
+        //    //return lstRegrasCrtlEstoque;
+        //}
 
 
         public static void VerificarRegrasAssociadasAosProdutos(List<RegrasBll> lstRegras, List<string> lstErros, DadosClienteCadastroDto cliente)

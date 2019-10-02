@@ -9,7 +9,7 @@ namespace InfraBanco.Modelos
     [Table("t_ALERTA_PRODUTO")]
     public class TalertaProduto
     {
-        [Key]
+        //[Key]
         [Required]
         [Column("apelido")]
         [MaxLength(12)]

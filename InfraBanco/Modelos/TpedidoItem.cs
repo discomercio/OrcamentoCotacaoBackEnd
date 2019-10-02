@@ -11,20 +11,20 @@ namespace InfraBanco.Modelos
     [Table("t_PEDIDO_ITEM")]
     public class TpedidoItem
     {
-        [Key]
+        //[Key]
         [Column("pedido")]
         [Required]
         [MaxLength(9)]
         //[ForeignKey("Tpedido")]
         public string Pedido { get; set; }
 
-        [Key]
+        //[Key]
         [Column("fabricante")]
         [Required]
         [MaxLength(4)]
         public string Fabricante { get; set; }
 
-        [Key]
+        //[Key]
         [Column("produto")]
         [Required]
         [MaxLength(8)]

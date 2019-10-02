@@ -489,16 +489,21 @@ namespace PrepedidoBusiness.Bll
 
                         Tparametro parametroRegra = await Util.BuscarRegistroParametro(Constantes.ID_PARAMETRO_Flag_Orcamento_ConsisteDisponibilidadeEstoqueGlobal,
                             contextoProvider);
-
+                        //esse metodo tb tras a sigla da pessoa
                         string tipoPessoa = Util.MultiCdRegraDeterminaPessoa(prePedido.DadosCliente.Tipo, prePedido.DadosCliente.Contribuinte_Icms_Status,
                             prePedido.DadosCliente.ProdutorRural);
                         string descricao = Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo);
 
                         List<RegrasBll> regraCrtlEstoque = (await ObterCtrlEstoqueProdutoRegra(prePedido, lstErros)).ToList();
+                        //teste
+                        await Util.ObterCtrlEstoqueProdutoRegra_Teste(lstErros, regraCrtlEstoque, prePedido.DadosCliente.Uf, tipoPessoa, contextoProvider);
+                        //fim teste
 
                         ProdutoBll.VerificarRegrasAssociadasAosProdutos(regraCrtlEstoque, lstErros, prePedido.DadosCliente);
+                        //obtendo qtde disponivel
+                        await Util.VerificarEstoque(regraCrtlEstoque, contextoProvider);
 
-                        ObterDisponibilidadeEstoque(regraCrtlEstoque, prePedido, parametroRegra, lstErros);
+                        //ObterDisponibilidadeEstoque(regraCrtlEstoque, prePedido, parametroRegra, lstErros);
 
                         VerificarEstoqueInsuficiente(regraCrtlEstoque, prePedido, parametroRegra);
 

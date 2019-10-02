@@ -54,6 +54,8 @@ namespace InfraBanco
         public DbSet<TestoqueItem> TestoqueItems { get; set; }
         public DbSet<TprodutoXAlerta> TprodutoXAlertas { get; set; }
         public DbSet<TalertaProduto> TalertaProdutos { get; set; }
+        public DbSet<TformaPagto> TformaPagtos { get; set; }
+        public DbSet<TorcamentistaEIndicadorRestricaoFormaPagto> torcamentistaEIndicadorRestricaoFormaPagtos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -66,10 +68,6 @@ namespace InfraBanco
             modelBuilder.Entity<TorcamentoItem>(o =>
             {
                 o.HasKey(x => new { x.Orcamento, x.Fabricante, x.Produto });
-                //o.HasOne(x => x.Torcamento)
-                //.WithMany(x => x.TorcamentoItem)
-                //.HasForeignKey(x => x.Torcamento)
-                ;
             });
 
             modelBuilder.Entity<Tproduto>()
@@ -86,6 +84,9 @@ namespace InfraBanco
 
             modelBuilder.Entity<TprodutoLoja>()
                 .HasKey(x => new { x.Fabricante, x.Produto, x.Loja });
+
+            modelBuilder.Entity<TalertaProduto>()
+                .HasKey(x => x.Apelido);
         }
     }
 }
