@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { DadosClienteCadastroDto } from 'src/app/dto/ClienteCadastro/DadosClienteCadastroDto';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelaDesktopBaseComponent } from 'src/app/servicos/telaDesktop/telaDesktopBaseComponent';
@@ -16,6 +16,7 @@ import { FormatarEndereco } from 'src/app/utils/formatarEndereco';
 import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
 import { BuscarClienteService } from 'src/app/servicos/cliente/buscar-cliente.service';
 import { Constantes } from 'src/app/dto/Constantes';
+import { ClienteCorpoComponent } from 'src/app/cliente/cliente-corpo/cliente-corpo.component';
 
 @Component({
   selector: 'app-cadastrar-cliente',
@@ -63,7 +64,18 @@ export class CadastrarClienteComponent extends TelaDesktopBaseComponent implemen
     this.location.back();
   }
 
+  @ViewChild("clienteCorpo", { static: true }) clienteCorpo: ClienteCorpoComponent;
+
   continuar() {
+
+    //primeiro, vamos ver o CEP que está dentro do cliente
+    if (!this.clienteCorpo.podeAvancar()) {
+      this.alertaService.mostrarMensagem("Aguarde o carregamento do endereço antes de continuar.");
+      return;
+    }
+    //avisamos para o corpo do cliente que vamos avançar
+    this.clienteCorpo.prepararAvancar();
+
     //validações
     let validacoes: string[] = new Array();
 

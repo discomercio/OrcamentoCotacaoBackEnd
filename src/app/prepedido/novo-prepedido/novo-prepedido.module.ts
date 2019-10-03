@@ -17,6 +17,7 @@ import { SelecProdDialogComponent } from './selec-prod-dialog/selec-prod-dialog.
 import { DadosPagtoComponent } from './dados-pagto/dados-pagto.component';
 import { ConfirmarPrepedidoComponent } from './confirmar-prepedido/confirmar-prepedido.component';
 import { ObservacoesComponent } from './observacoes/observacoes.component';
+import { CepModule } from 'src/app/cliente/cep/cep.module';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { ObservacoesComponent } from './observacoes/observacoes.component';
   imports: [
     CommonModule,
     ClienteCorpoModule,
+    CepModule,
     FormsModule,
     MatButtonModule,
     MatInputModule,

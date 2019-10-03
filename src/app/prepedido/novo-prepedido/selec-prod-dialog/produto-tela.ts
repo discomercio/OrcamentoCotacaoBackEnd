@@ -3,7 +3,7 @@ import { ProdutoDto } from 'src/app/dto/Produto/ProdutoDto';
 import { ProdutoFilhoDto } from 'src/app/dto/Prepedido/ProdutoFilhoDto';
 import { ProdutoCompostoDto } from 'src/app/dto/Produto/ProdutoCompostoDto';
 
-//para m sotrar um produto na tela
+//para mostrar um produto na tela
 export class ProdutoTela {
     /**
      * Constroi a partir de um ProdutoDto

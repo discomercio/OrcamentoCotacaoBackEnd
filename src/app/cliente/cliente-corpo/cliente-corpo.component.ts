@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange, ViewChild } from '@angular/core';
 import { DadosClienteCadastroDto } from 'src/app/dto/ClienteCadastro/DadosClienteCadastroDto';
 import { Constantes } from 'src/app/dto/Constantes';
 import { StringUtils } from 'src/app/utils/stringUtils';
@@ -13,6 +13,7 @@ import { ListaBancoDto } from 'src/app/dto/ClienteCadastro/ListaBancoDto';
 import { BuscarClienteService } from 'src/app/servicos/cliente/buscar-cliente.service';
 import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
 import { RefComercialDtoCliente } from 'src/app/dto/ClienteCadastro/Referencias/RefComercialDtoCliente';
+import { CepComponent } from '../cep/cep/cep.component';
 
 @Component({
   selector: 'app-cliente-corpo',
@@ -26,7 +27,7 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
   }
 
   @Input() mostrarEndereco = true; //ao confrimar o cliente para um pre-pedido, não queremos mostrar o endereço aqui
-  
+
   ngOnInit() {
 
     this.criarElementos();
@@ -86,7 +87,7 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
   public mascaraTelefone = FormatarTelefone.mascaraTelefone;
 
 
-  //se estamos confirmando, o lable das caixa de texto sempre fica para cima
+  //se estamos confirmando, o label das caixa de texto sempre fica para cima
   //se estamos cadastrando, o comportamento padrão! aparece na caixa quando está vazia e sem o foco
   public floatLabel(): string {
     if (!this.cadastrando) {
@@ -173,5 +174,27 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
   removerRefComercial(indice: number) {
     this.clienteCadastroDto.RefComercial.splice(indice, 1);
   }
+  //#endregion
+
+  //#region tratamento do CEP
+
+  //precisa do static: false porque está dentro de um ngif
+  @ViewChild("componenteCep", { static: false }) componenteCep: CepComponent;
+  public podeAvancar(): boolean {
+    return !this.componenteCep.carregando;
+  }
+  public prepararAvancar(): void {
+    //transferimos os dados do CEP para cá
+    const src = this.componenteCep;
+
+    this.dadosClienteCadastroDto.Endereco = src.Endereco ? src.Endereco : "";
+    this.dadosClienteCadastroDto.Numero = src.Numero ? src.Numero : "";
+    this.dadosClienteCadastroDto.Complemento = src.Complemento ? src.Complemento : "";
+    this.dadosClienteCadastroDto.Bairro = src.Bairro ? src.Bairro : "";
+    this.dadosClienteCadastroDto.Cidade = src.Cidade ? src.Cidade : "";
+    this.dadosClienteCadastroDto.Uf = src.Uf ? src.Uf : "";
+    this.dadosClienteCadastroDto.Cep = src.Cep ? src.Cep : "";
+  }
+
   //#endregion
 }

@@ -11,7 +11,7 @@
                 [clienteCadastroDto]="clienteCadastroDto" [editarIcms]="true" *ngIf="fase1" [mostrarEndereco]="!fase2">
             </app-cliente-corpo>
             <app-confirmar-endereco [dadosClienteCadastroDto]="dadosClienteCadastroDto" *ngIf="fase2"
-                [enderecoEntregaDtoClienteCadastro]="enderecoEntregaDtoClienteCadastro">
+                [enderecoEntregaDtoClienteCadastro]="enderecoEntregaDtoClienteCadastro" #confirmarEndereco>
             </app-confirmar-endereco>
         </article>
         <footer>

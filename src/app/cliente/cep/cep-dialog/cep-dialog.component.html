@@ -1,0 +1,14 @@
+<section [ngClass]="{'sectionDesktop': telaDesktop, 'sectionCelular': !telaDesktop}">
+    <header>Busca de CEP</header>
+    <article mat-dialog-content class="fixo">
+        afazer: acerta a classe de fixo, a largura, etc. 
+        afazer: podemos copaircopair os estilso da selec-prod-dialog.component.scss
+        dados dos ceps
+    </article>
+    <footer mat-dialog-actions style="justify-content: space-around;">
+        <button mat-raised-button (click)="onOkClick()" color="accent">
+            Modificar
+        </button>
+        <button mat-raised-button (click)="onNoClick()" cdkFocusInitial color="accent">Cancelar</button>
+    </footer>
+</section>

@@ -5,6 +5,7 @@ import { MatButtonModule, MatIconModule, MatInputModule, MatAutocompleteModule, 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { TextMaskModule } from 'angular2-text-mask';
+import { CepModule } from '../cep/cep.module';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { TextMaskModule } from 'angular2-text-mask';
     MatExpansionModule,
     TextMaskModule,
     ReactiveFormsModule,
+    CepModule,
     MatSelectModule
   ],
   exports: [ClienteCorpoComponent]

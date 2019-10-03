@@ -10,11 +10,11 @@
     <mat-radio-button class="enderecoradio" [value]="true">Outro endereço </mat-radio-button>
 </mat-radio-group>
 
-<div class="boxnovoednereco" *ngIf="enderecoEntregaDtoClienteCadastro">
+<div class="boxnovoednereco" *ngIf="enderecoEntregaDtoClienteCadastro" [ngClass]="{'desab':!enderecoEntregaDtoClienteCadastro.OutroEndereco}" >
 
     <!-- ************   JUSTIFIQUE O ENDEREÇO   ************ -->
 
-    <mat-form-field [ngClass]="{'desab':!enderecoEntregaDtoClienteCadastro.OutroEndereco}" style="width: 20em;">
+    <mat-form-field style="width: 20em;">
         <mat-label>JUSTIFIQUE O ENDEREÇO</mat-label>
         <mat-select required [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_cod_justificativa"
             [disabled]="!enderecoEntregaDtoClienteCadastro.OutroEndereco">
@@ -25,48 +25,5 @@
     </mat-form-field>
     <!-- quebrar a linha -->
     <div></div>
-
-    <!-- ************   ENDEREÇO   ************  -->
-    <mat-form-field class="edicao-endereco" [ngClass]="{'desab':!enderecoEntregaDtoClienteCadastro.OutroEndereco}">
-        <input matInput type="text" placeholder="ENDEREÇO"
-            [(readonly)]="!enderecoEntregaDtoClienteCadastro.OutroEndereco"
-            [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_endereco" required maxlength="60" size="85">
-    </mat-form-field>
-
-    <!-- ************ Nº/COMPLEMENTO ************  -->
-    <mat-form-field class="edicao-numero" [ngClass]="{'desab':!enderecoEntregaDtoClienteCadastro.OutroEndereco}">
-        <input matInput type="text" placeholder="Nº" [(readonly)]="!enderecoEntregaDtoClienteCadastro.OutroEndereco"
-            [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_endereco_numero" required maxlength="20" size="10">
-    </mat-form-field>
-    <mat-form-field class="edicao-compl" [ngClass]="{'desab':!enderecoEntregaDtoClienteCadastro.OutroEndereco}">
-        <input matInput type="text" placeholder="COMPLEMENTO"
-            [(readonly)]="!enderecoEntregaDtoClienteCadastro.OutroEndereco"
-            [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_endereco_complemento" maxlength="60" size="10">
-    </mat-form-field>
-
-
-    <!-- ************ BAIRRO/CIDADE ************  -->
-    <mat-form-field class="edicao-bairro" [ngClass]="{'desab':!enderecoEntregaDtoClienteCadastro.OutroEndereco}">
-        <input matInput type="text" placeholder="BAIRRO" [(readonly)]="!enderecoEntregaDtoClienteCadastro.OutroEndereco"
-            [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_bairro" required maxlength="72">
-    </mat-form-field>
-
-    <mat-form-field class="edicao-cidade" [ngClass]="{'desab':!enderecoEntregaDtoClienteCadastro.OutroEndereco}">
-        <input matInput type="text" placeholder="CIDADE" [(readonly)]="!enderecoEntregaDtoClienteCadastro.OutroEndereco"
-            [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_cidade" required maxlength="60">
-    </mat-form-field>
-
-
-    <!-- ************ UF/CEP ************  -->
-    <mat-form-field class="edicao-uf" [ngClass]="{'desab':!enderecoEntregaDtoClienteCadastro.OutroEndereco}">
-        <input matInput type="text" placeholder="UF" [(readonly)]="!enderecoEntregaDtoClienteCadastro.OutroEndereco"
-            [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_uf" required maxlength="2" size="3">
-    </mat-form-field>
-
-    <!-- Afazer: janela de busca de CEP (e dar erro quando CEP for inválido) -->
-    <mat-form-field class="edicao-cep" [ngClass]="{'desab':!enderecoEntregaDtoClienteCadastro.OutroEndereco}">
-        <input matInput type="text" placeholder="CEP" [(readonly)]="!enderecoEntregaDtoClienteCadastro.OutroEndereco"
-            [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_cep" required maxlength="9" size="11">
-    </mat-form-field>
-
+    <app-cep #componenteCep></app-cep>
 </div>

@@ -1,7 +1,8 @@
 // campos de edicao de endereço
 
 .edicao-endereco {
-  width: calc(100% - 2em);
+  //alterantiva para usar a linha toda: width: calc(100% - 2em);
+  width: 35ch;
 }
 .edicao-numero{
     width: 12ch;

@@ -11,6 +11,7 @@ import { ClienteCadastroUtils } from 'src/app/dto/AngularClienteCadastroUtils/Cl
 import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
 import { EnderecoEntregaDtoClienteCadastro } from 'src/app/dto/ClienteCadastro/EnderecoEntregaDTOClienteCadastro';
 import { NovoPrepedidoDadosService } from '../novo-prepedido-dados.service';
+import { ConfirmarEnderecoComponent } from '../confirmar-endereco/confirmar-endereco.component';
 
 @Component({
   selector: 'app-confirmar-cliente',
@@ -194,7 +195,22 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     this.fase2 = false;
   }
 
+  //precisa do static: false porque está dentro de um ngif
+  @ViewChild("confirmarEndereco", { static: false }) confirmarEndereco: ConfirmarEnderecoComponent;
+
   continuar(): void {
+
+    //primeiro, vamos ver o CEP que está dentro do cliente
+    //somente se o confirmarEndereco estiver atribuído. Se não estiver, é porque não estamos na tela em que precisamos testar ele
+    if (this.confirmarEndereco && !this.confirmarEndereco.podeAvancar()) {
+      this.alertaService.mostrarMensagem("Aguarde o carregamento do endereço antes de continuar.");
+      return;
+    }
+    //avisamos para o corpo do cliente que vamos avançar
+    if (this.confirmarEndereco) {
+      this.confirmarEndereco.prepararAvancar();
+    }
+
     //salvamos automaticamente
     if (this.salvarAtivo()) {
       this.salvar(true);
