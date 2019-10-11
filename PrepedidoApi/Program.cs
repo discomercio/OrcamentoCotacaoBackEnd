@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
@@ -25,10 +26,22 @@ namespace PrepedidoApi
                 var app = CreateWebHostBuilder(args).Build();
 
                 /*
-                Microsoft.EntityFrameworkCore.DbContextOptions<InfraBanco.ContextoBd> Opt = new Microsoft.EntityFrameworkCore.DbContextOptions<InfraBanco.ContextoBd>();
-                var bll = new PrepedidoBusiness.Bll.ClienteBll(new InfraBanco.ContextoProvider(Opt));
-                var res = bll.BuscarCliente("34");
-                */
+                 * 
+                 * para acessar diretamente do debug
+                 * 
+
+                {
+                    IConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+                    configurationBuilder.AddJsonFile("AppSettings.json");
+                    IConfiguration configuration = configurationBuilder.Build();
+                    var optionsBuilder = new Microsoft.EntityFrameworkCore.DbContextOptionsBuilder<InfraBanco.ContextoBd>();
+                    optionsBuilder.UseSqlServer(configuration.GetConnectionString("conexaoLocal"));
+                    var bll = new PrepedidoBusiness.Bll.ProdutoBll(new InfraBanco.ContextoProvider(optionsBuilder.Options));
+                    var res = bll.BuscarTodosProdutos("teste");
+                    var res2 = res.Result;
+                }
+                 * */
+
 
                 app.Run();
             }

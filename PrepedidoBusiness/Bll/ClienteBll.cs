@@ -40,7 +40,7 @@ namespace PrepedidoBusiness.Bll
             string log = "";
             string campos_a_omitir = "|dt_cadastro|usuario_cadastro|dt_ult_atualizacao|usuario_ult_atualizacao|";
             List<string> lstErros = new List<string>();
-            await ValidarDadosClientesCadastro(dadosClienteCadastroDto, lstErros);
+            ValidarDadosClientesCadastro(dadosClienteCadastroDto, lstErros);
 
             var dados = from c in db.Tclientes
                         where c.Id == dadosClienteCadastroDto.Id
@@ -276,7 +276,7 @@ namespace PrepedidoBusiness.Bll
             List<string> lstErros = new List<string>();
 
             //Na validação do cadastro é feito a consistencia de Municipio
-            await ValidarDadosClientesCadastro(clienteDto.DadosCliente, lstErros);
+            ValidarDadosClientesCadastro(clienteDto.DadosCliente, lstErros);
             ValidarRefBancaria(clienteDto.RefBancaria, lstErros);
             ValidarRefComercial(clienteDto.RefComercial, lstErros);
 
@@ -569,7 +569,7 @@ namespace PrepedidoBusiness.Bll
             return lstNfeMunicipio;
         }
 
-        private async Task ValidarDadosClientesCadastro(DadosClienteCadastroDto cliente, List<string> listaErros)
+        private void ValidarDadosClientesCadastro(DadosClienteCadastroDto cliente, List<string> listaErros)
         {
             string cpf_cnpjSoDig = Utils.Util.SoDigitosCpf_Cnpj(cliente.Cnpj_Cpf);
             bool ehCpf = Utils.Util.ValidaCpf_Cnpj(cliente.Cnpj_Cpf);
@@ -658,7 +658,7 @@ namespace PrepedidoBusiness.Bll
                     listaErros.Add("Para ser cadastrado como Produtor Rural, " +
                         "é necessário ser contribuinte do ICMS e possuir nº de IE");
 
-            string s_tabela_municipios_IBGE = "";
+            //string s_tabela_municipios_IBGE = "";
             if (cliente.Ie != "")
             {
                 //afazer: terminar o metodo abaixo

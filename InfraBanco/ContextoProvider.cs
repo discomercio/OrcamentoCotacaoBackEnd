@@ -11,7 +11,7 @@ namespace InfraBanco
         {
             Opt = opt;
             Ctx = new ContextoBd(Opt);
-    }
+        }
 
         public DbContextOptions<ContextoBd> Opt { get; }
 
@@ -23,10 +23,10 @@ namespace InfraBanco
         {
             //para leitura, cada leitura com uma conexao nova
             return new ContextoBd(Opt);
-            }
+        }
         public ContextoBd GetContextoGravacao()
         {
-            //para gravacao, todos compartilham a mesa coenxao (todos nesta instancia)
+            //para gravacao, todos compartilham a mesma coenxao (todos nesta instancia)
             return Ctx;
         }
     }
