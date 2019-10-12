@@ -85,7 +85,7 @@ namespace PrepedidoApi.Controllers
             string ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
             string userAgent = Request.Headers["User-agent"];
 
-            await acessoBll.GravarSessao(ip, apelido, userAgent);
+            await acessoBll.GravarSessaoComTransacao(ip, apelido, userAgent);
 
             if (token == null)
                 return BadRequest(new { message = "Usuário ou senha incorreta." });

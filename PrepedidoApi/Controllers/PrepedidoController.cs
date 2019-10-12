@@ -139,7 +139,7 @@ namespace PrepedidoApi.Controllers
             //para testar: http://localhost:60877/api/prepedido/deletarPrepedido
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            await prepedidoBll.DeletarOrcamentoExiste(prePedido, apelido);
+            await prepedidoBll.DeletarOrcamentoExisteComTransacao(prePedido, apelido);
 
             return Ok();
         }

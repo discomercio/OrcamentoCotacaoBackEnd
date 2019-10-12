@@ -53,6 +53,8 @@ namespace Testes.Labs.InfraBancoLab
 
         public async Task Executar(bool log = true)
         {
+            /*
+            está dando exceção....
             Console.WriteLine("Com o mesmo contexto");
             var db1 = contextos.ContextoNovo();
             var db2 = db1;
@@ -60,10 +62,11 @@ namespace Testes.Labs.InfraBancoLab
             await ExecutarSequencial(db1, db2, log);
             await ExecutarEmParalelo(db1, db2, log);
             await ExecutarSequencial(db1, db2, log);
+            */
 
             Console.WriteLine("Com contextos diferentes");
-            db1 = contextos.ContextoNovo();
-            db2 = contextos.ContextoNovo();
+            var db1 = contextos.ContextoNovo();
+            var db2 = contextos.ContextoNovo();
             await ExecutarEmParalelo(db1, db2, log);
             await ExecutarSequencial(db1, db2, log);
             await ExecutarEmParalelo(db1, db2, log);

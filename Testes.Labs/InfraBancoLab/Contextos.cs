@@ -18,20 +18,25 @@ namespace Testes.Labs.InfraBancoLab
             return contexto;
         }
 
+        public InfraBanco.ContextoBdGravacao ContextoGravacao()
+        {
+            return new ContextoBdProvider(optionsBuilder.Options).GetContextoGravacaoParaUsing();
+        }
+
         private InfraBanco.ContextoBd contexto;
-        private Microsoft.EntityFrameworkCore.DbContextOptionsBuilder<InfraBanco.ContextoBd> optionsBuilder;
+        private Microsoft.EntityFrameworkCore.DbContextOptionsBuilder<InfraBanco.ContextoBdBasico> optionsBuilder;
         public Contextos()
         {
             IConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
             configurationBuilder.AddJsonFile("AppSettings.json");
             IConfiguration configuration = configurationBuilder.Build();
-            optionsBuilder = new Microsoft.EntityFrameworkCore.DbContextOptionsBuilder<InfraBanco.ContextoBd>();
+            optionsBuilder = new Microsoft.EntityFrameworkCore.DbContextOptionsBuilder<InfraBanco.ContextoBdBasico>();
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("conexaoLocal"));
             contexto = CriarContexto();
         }
         private ContextoBd CriarContexto()
         {
-            var ret = new ContextoBd(optionsBuilder.Options);
+            var ret = new ContextoBdProvider(optionsBuilder.Options).GetContextoLeitura();
             return ret;
         }
 

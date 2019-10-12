@@ -73,23 +73,23 @@ ou
             {
                 try
                 {
-                    var dbGravacao = contextos.ContextoNovo();
-                    using (var dbContextTransaction = dbGravacao.Database.BeginTransaction())
+                    //using (var dbContextTransaction = dbGravacao.Database.BeginTransaction())
+                    using (var dbgravacao = contextos.ContextoGravacao())
                     {
-                        var taskGravacao = InserirRegistro(dbGravacao);
+                        var taskGravacao = InserirRegistro(dbgravacao);
 
                         //sem log!!!
                         log = false;
 
                         //tem que permitir usando outro contexto (que fica fora da transação)
                         var db1 = contextos.ContextoNovo();
-                        var db2 = db1;
+                        var db2 = contextos.ContextoNovo();
                         await LeituraEmParalelo(db1, db2, log);
                         await LeituraSequencial(db1, db2, log);
 
                         //também tem que dar certo se usarmos o mesmo contexto!
-                        await LeituraEmParalelo(dbGravacao, dbGravacao, log);
-                        await LeituraSequencial(dbGravacao, dbGravacao, log);
+                        //await LeituraEmParalelo(dbgravacao, dbgravacao, log);
+                        //await LeituraSequencial(dbgravacao, dbgravacao, log);
 
 
 
@@ -107,7 +107,7 @@ ou
 
         }
 
-        private async Task InserirRegistro(InfraBanco.ContextoBd bd1)
+        private async Task InserirRegistro(InfraBanco.ContextoBdGravacao bd1)
         {
             Tcliente tCliente = new Tcliente
             {
@@ -182,7 +182,7 @@ ou
             var t2res = await t2;
             enfileiradas.Stop();
             if (log)
-                ImprimirTempos(enfileiradas, "async em apralelo");
+                ImprimirTempos(enfileiradas, "async em paralelo");
         }
 
         private void ImprimirTempos(Stopwatch stopWatch, string msg)

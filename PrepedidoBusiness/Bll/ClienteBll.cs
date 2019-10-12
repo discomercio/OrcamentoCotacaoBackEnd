@@ -17,11 +17,11 @@ namespace PrepedidoBusiness.Bll
 {
     public class ClienteBll
     {
-        private readonly InfraBanco.ContextoProvider contextoProvider;
+        private readonly InfraBanco.ContextoBdProvider contextoProvider;
         private readonly InfraBanco.ContextoCepProvider contextoCepProvider;
         private readonly InfraBanco.ContextoNFeProvider contextoNFeProvider;
 
-        public ClienteBll(InfraBanco.ContextoProvider contextoProvider, InfraBanco.ContextoCepProvider contextoCepProvider, InfraBanco.ContextoNFeProvider contextoNFeProvider)
+        public ClienteBll(InfraBanco.ContextoBdProvider contextoProvider, InfraBanco.ContextoCepProvider contextoCepProvider, InfraBanco.ContextoNFeProvider contextoNFeProvider)
         {
             this.contextoProvider = contextoProvider;
             this.contextoCepProvider = contextoCepProvider;
@@ -51,10 +51,8 @@ namespace PrepedidoBusiness.Bll
             {
                 if (lstErros.Count == 0)
                 {
-                    using (TransactionScope trans = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                    using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
                     {
-                        db = contextoProvider.GetContextoGravacao();
-
                         if (dadosClienteCadastroDto.Contribuinte_Icms_Status == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM) &&
                         dadosClienteCadastroDto.Ie != null || dadosClienteCadastroDto.Ie != "")
                         {
@@ -79,15 +77,15 @@ namespace PrepedidoBusiness.Bll
                             cli.Dt_Ult_Atualizacao = DateTime.Now;
                             cli.Usuario_Ult_Atualizacao = apelido;
 
-                            db.Update(cli);
-                            db.SaveChanges();
+                            dbgravacao.Update(cli);
+                            dbgravacao.SaveChanges();
 
                             log = Utils.Util.MontaLog(cli, log, campos_a_omitir);
                             //Essa parte esta na pagina ClienteAtualiza.asp linha 1113
-                            bool salvouLog = Utils.Util.GravaLog(apelido, dadosClienteCadastroDto.Loja, "", dadosClienteCadastroDto.Id,
+                            bool salvouLog = Utils.Util.GravaLog(dbgravacao, apelido, dadosClienteCadastroDto.Loja, "", dadosClienteCadastroDto.Id,
                                 Constantes.OP_LOG_CLIENTE_ALTERACAO, log, contextoProvider);
                             if (salvouLog)
-                                trans.Complete();
+                                dbgravacao.transacao.Commit();
                         }
                     }
                 }
@@ -285,24 +283,23 @@ namespace PrepedidoBusiness.Bll
 
             if (lstErros.Count <= 0)
             {
-                using (TransactionScope trans = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
                 {
                     string log = "";
 
-                    db = contextoProvider.GetContextoGravacao();
                     DadosClienteCadastroDto cliente = clienteDto.DadosCliente;
-                    id_cliente = await CadastrarDadosClienteDto(cliente, apelido, log);
+                    id_cliente = await CadastrarDadosClienteDto(dbgravacao, cliente, apelido, log);
 
                     //Por padrão o id do cliente tem 12 caracteres, caso não seja 12 caracteres esta errado
                     if (id_cliente.Length == 12)
                     {
-                        await CadastrarRefBancaria(clienteDto.RefBancaria, apelido, id_cliente, log);
-                        await CadastrarRefComercial(clienteDto.RefComercial, apelido, id_cliente, log);
+                        await CadastrarRefBancaria(dbgravacao, clienteDto.RefBancaria, apelido, id_cliente, log);
+                        await CadastrarRefComercial(dbgravacao, clienteDto.RefComercial, apelido, id_cliente, log);
                         //fazer a inserção de Log aqui.
-                        bool gravouLog = Utils.Util.GravaLog(apelido, cliente.Loja, "", id_cliente,
+                        bool gravouLog = Utils.Util.GravaLog(dbgravacao, apelido, cliente.Loja, "", id_cliente,
                             Constantes.OP_LOG_CLIENTE_INCLUSAO, log, contextoProvider);
                         if (gravouLog)
-                            trans.Complete();
+                            dbgravacao.transacao.Commit();
                     }
                     else
                     {
@@ -313,11 +310,11 @@ namespace PrepedidoBusiness.Bll
             return lstErros;
         }
 
-        private async Task<string> CadastrarDadosClienteDto(DadosClienteCadastroDto clienteDto, string apelido, string log)
+        private async Task<string> CadastrarDadosClienteDto(InfraBanco.ContextoBdGravacao dbgravacao, DadosClienteCadastroDto clienteDto, string apelido, string log)
         {
             string retorno = "";
             List<string> lstRetorno = new List<string>();
-            string id_cliente = await GerarIdCliente(Constantes.NSU_CADASTRO_CLIENTES);
+            string id_cliente = await GerarIdCliente(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES);
 
             string campos_a_omitir = "dt_cadastro|usuario_cadastro|dt_ult_atualizacao|usuario_ult_atualizacao";
 
@@ -373,22 +370,19 @@ namespace PrepedidoBusiness.Bll
                     Usuario_Ult_Atualizacao = apelido.ToUpper()
                 };
 
-                var db = contextoProvider.GetContextoGravacao();
-
                 //Busca os nomes reais das colunas da tabela SQL
                 Utils.Util.MontaLog(tCliente, log, campos_a_omitir);
 
-                db.Add(tCliente);
-                await db.SaveChangesAsync();
+                dbgravacao.Add(tCliente);
+                await dbgravacao.SaveChangesAsync();
                 retorno = tCliente.Id;
             }
 
             return retorno;
         }
 
-        private async Task<string> CadastrarRefBancaria(List<RefBancariaDtoCliente> lstRefBancaria, string apelido, string id_cliente, string log)
+        private async Task<string> CadastrarRefBancaria(InfraBanco.ContextoBdGravacao dbgravacao, List<RefBancariaDtoCliente> lstRefBancaria, string apelido, string id_cliente, string log)
         {
-            var db = contextoProvider.GetContextoGravacao();
             int qtdeRef = 1;
             string campos_a_omitir_ref_bancaria = "id_cliente|ordem|excluido_status|dt_cadastro|usuario_cadastro";
 
@@ -411,20 +405,19 @@ namespace PrepedidoBusiness.Bll
                     Contato = r.Contato,
                     Excluido_Status = 0
                 };
-                db.Add(cliRefBancaria);
+                dbgravacao.Add(cliRefBancaria);
                 qtdeRef++;
 
                 //Busca os nomes reais das colunas da tabela SQL
                 log = Utils.Util.MontaLog(cliRefBancaria, log, campos_a_omitir_ref_bancaria);
             }
 
-            await db.SaveChangesAsync();
+            await dbgravacao.SaveChangesAsync();
             return log;
         }
 
-        private async Task<string> CadastrarRefComercial(List<RefComercialDtoCliente> lstRefComercial, string apelido, string id_cliente, string log)
+        private async Task<string> CadastrarRefComercial(InfraBanco.ContextoBdGravacao dbgravacao, List<RefComercialDtoCliente> lstRefComercial, string apelido, string id_cliente, string log)
         {
-            var db = contextoProvider.GetContextoGravacao();
             int qtdeRef = 1;
 
             string campos_a_omitir_ref_comercial = "id_cliente|ordem|excluido_status|dt_cadastro|usuario_cadastro";
@@ -445,12 +438,12 @@ namespace PrepedidoBusiness.Bll
                     Telefone = r.Telefone,
                     Excluido_Status = 0
                 };
-                db.Add(c);
+                dbgravacao.Add(c);
                 qtdeRef++;
                 log = Utils.Util.MontaLog(c, log, campos_a_omitir_ref_comercial);
             }
 
-            await db.SaveChangesAsync();
+            await dbgravacao.SaveChangesAsync();
             return log;
         }
 
@@ -710,7 +703,7 @@ namespace PrepedidoBusiness.Bll
             return retorno;
         }
 
-        private async Task<string> GerarIdCliente(string id_nsu)
+        private async Task<string> GerarIdCliente(InfraBanco.ContextoBdGravacao dbgravacao, string id_nsu)
         {
             string retorno = "";
             int n_nsu = -1;
@@ -718,14 +711,12 @@ namespace PrepedidoBusiness.Bll
             int asc;
             char chr;
 
-            var db = contextoProvider.GetContextoGravacao();
-
             if (id_nsu == "")
                 retorno = "Não foi especificado o NSU a ser gerado!!";
 
             for (int i = 0; i <= 100; i++)
             {
-                var ret = from c in db.Tcontroles
+                var ret = from c in dbgravacao.Tcontroles
                           where c.Id_Nsu == id_nsu
                           select c;
 
@@ -769,8 +760,8 @@ namespace PrepedidoBusiness.Bll
 
                     try
                     {
-                        db.Update(controle);
-                        await db.SaveChangesAsync();
+                        dbgravacao.Update(controle);
+                        await dbgravacao.SaveChangesAsync();
                     }
                     catch (Exception ex)
                     {

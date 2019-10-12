@@ -44,12 +44,12 @@ namespace PrepedidoApi
             services.AddTransient<PrepedidoBusiness.Bll.CepBll, PrepedidoBusiness.Bll.CepBll>();
 
             //ContextoProvider
-            services.AddTransient<InfraBanco.ContextoProvider, InfraBanco.ContextoProvider>();
+            services.AddTransient<InfraBanco.ContextoBdProvider, InfraBanco.ContextoBdProvider>();
             services.AddTransient<InfraBanco.ContextoCepProvider, InfraBanco.ContextoCepProvider>();
             services.AddTransient<InfraBanco.ContextoNFeProvider, InfraBanco.ContextoNFeProvider>();
 
             //banco de dados
-            services.AddDbContext<InfraBanco.ContextoBd>(options =>
+            services.AddDbContext<InfraBanco.ContextoBdBasico>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("conexaoLocal"));
             });
