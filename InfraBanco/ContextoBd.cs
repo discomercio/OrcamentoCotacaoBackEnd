@@ -13,6 +13,8 @@ namespace InfraBanco
         internal ContextoBd(ContextoBdBasico contexto)
         {
             this.contexto = contexto;
+            //sem nenhum rastreamento de mudanças na conexao (a rigor, com isto não precisamos dos AsNoTracking)
+            contexto.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         public IQueryable<Tcliente> Tclientes { get => contexto.Tclientes.AsNoTracking(); }

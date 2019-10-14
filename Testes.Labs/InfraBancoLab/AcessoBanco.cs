@@ -30,11 +30,6 @@ Pode-se fazer leituras na dbGravacao (recomendável) ou em outro contexto (que e
 ";
             msg += @"Números:
 
-Com o mesmo contexto
-async em apralelo 00:00:01.83
-async uma depois da outra 00:00:01.51
-async em apralelo 00:00:01.83
-async uma depois da outra 00:00:01.79
 Com contextos diferentes
 async em apralelo 00:00:00.93
 async uma depois da outra 00:00:01.74
