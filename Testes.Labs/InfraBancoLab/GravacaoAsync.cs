@@ -30,25 +30,25 @@ ou
         using (var dbContextTransaction = context.Database.BeginTransaction())
 */
 
-  /*          
-                        //ExecutionStrategyExtensions código gera exceçõa quando tentamos gravar e ler ao mesmo tempo:
-                        //PlatformNotSupportedException: This platform does not support distributed transactions.
+            /*          
+                                  //ExecutionStrategyExtensions código gera exceçõa quando tentamos gravar e ler ao mesmo tempo:
+                                  //PlatformNotSupportedException: This platform does not support distributed transactions.
 
-                        {
-                            using (TransactionScope trans = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-                            {
-                                var dbGravacao = contextos.ContextoNovo();
-                                var taskGravacao = InserirRegistro(dbGravacao);
+                                  {
+                                      using (TransactionScope trans = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                                      {
+                                          var dbGravacao = contextos.ContextoNovo();
+                                          var taskGravacao = InserirRegistro(dbGravacao);
 
-                                var db1 = contextos.ContextoNovo();
-                                var db2 = db1;
-                                await LeituraEmParalelo(db1, db2, log);
-                                await LeituraSequencial(db1, db2, log);
+                                          var db1 = contextos.ContextoNovo();
+                                          var db2 = db1;
+                                          await LeituraEmParalelo(db1, db2, log);
+                                          await LeituraSequencial(db1, db2, log);
 
-                                taskGravacao.Wait();
-                            }
-                        }
-                        */
+                                          taskGravacao.Wait();
+                                      }
+                                  }
+                                  */
 
 
             /*
@@ -63,6 +63,13 @@ ou
                     taskGravacao.Wait();
                 }
             }
+
+
+
+
+            https://docs.microsoft.com/en-in/ef/ef6/saving/transactions
+In summary, with the new Database.BeginTransaction() and Database.UseTransaction() APIs above, the TransactionScope approach is no longer necessary for most users. If you do continue to use TransactionScope then be aware of the above limitations. We recommend using the approach outlined in the previous sections instead where possible.
+
             */
 
 

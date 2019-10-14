@@ -20,7 +20,7 @@ namespace Testes.Labs.InfraBancoLab
 
         public InfraBanco.ContextoBdGravacao ContextoGravacao()
         {
-            return new ContextoBdProvider(optionsBuilder.Options).GetContextoGravacaoParaUsing();
+            return new ContextoBdProvider(optionsBuilder.Options).GetContextoGravacao();
         }
 
         private InfraBanco.ContextoBd contexto;

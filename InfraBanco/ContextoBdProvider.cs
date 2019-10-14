@@ -19,10 +19,11 @@ namespace InfraBanco
             //para leitura, cada leitura com uma conexao nova
             return new ContextoBd(new ContextoBdBasico(Opt));
         }
-        public ContextoBdGravacao GetContextoGravacaoParaUsing()
+        public ContextoBdGravacao GetContextoGravacao()
         {
             //para gravacao, todos compartilham a mesma coenxao (todos nesta instancia)
             //mas todos precisam estar dentro da transação!
+            //para usar:  using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
             return new ContextoBdGravacao(new ContextoBdBasico(Opt));
         }
     }

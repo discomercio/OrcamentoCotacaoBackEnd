@@ -252,7 +252,7 @@ namespace PrepedidoBusiness.Utils
             return log;
         }
         public static bool GravaLog(ContextoBdGravacao dbgravacao, string apelido, string loja, string pedido, string id_cliente,
-            string operação, string log, ContextoBdProvider contexto)
+            string operação, string log)
         {
             if (apelido == null)
                 return false;
@@ -338,7 +338,7 @@ namespace PrepedidoBusiness.Utils
             return retorno;
         }
 
-        public static async Task<string> GerarNsu(ContextoBdGravacao dbgravacao, string id_nsu, ContextoBdProvider contextoProvider)
+        public static async Task<string> GerarNsu(ContextoBdGravacao dbgravacao, string id_nsu)
         {
             string retorno = "";
             int n_nsu = -1;

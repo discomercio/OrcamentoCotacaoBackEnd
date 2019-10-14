@@ -141,7 +141,7 @@ namespace PrepedidoBusiness.Bll
 
         public async Task<bool> RemoverPrePedido(string numeroPrePedido, string apelido)
         {
-            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+            using (var dbgravacao = contextoProvider.GetContextoGravacao())
             {
 
                 Torcamento prePedido = dbgravacao.Torcamentos.
@@ -524,7 +524,7 @@ namespace PrepedidoBusiness.Bll
 
                         if (lstErros.Count <= 0)
                         {
-                            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+                            using (var dbgravacao = contextoProvider.GetContextoGravacao())
                             {
 
                                 //Se orcamento existir, fazer o delete das informações
@@ -551,7 +551,7 @@ namespace PrepedidoBusiness.Bll
                                 log = await CadastrarOrctoItens(dbgravacao, lstOrcamentoItem, log);
 
                                 bool gravouLog = Util.GravaLog(dbgravacao, apelido, prePedido.DadosCliente.Loja, prePedido.NumeroPrePedido,
-                                    prePedido.DadosCliente.Id, Constantes.OP_LOG_ORCAMENTO_NOVO, log, contextoProvider);
+                                    prePedido.DadosCliente.Id, Constantes.OP_LOG_ORCAMENTO_NOVO, log);
 
                                 dbgravacao.transacao.Commit();
                             }
@@ -610,7 +610,7 @@ namespace PrepedidoBusiness.Bll
 
         public async Task DeletarOrcamentoExisteComTransacao(PrePedidoDto prePedido, string apelido)
         {
-            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+            using (var dbgravacao = contextoProvider.GetContextoGravacao())
             {
                 await DeletarOrcamentoExiste(dbgravacao, prePedido, apelido);
                 dbgravacao.transacao.Commit();
@@ -1655,7 +1655,7 @@ namespace PrepedidoBusiness.Bll
         {
             string sufixoIdOrcamento = Constantes.SUFIXO_ID_ORCAMENTO;
 
-            var nsuTask = await Util.GerarNsu(dbgravacao, Constantes.NSU_ORCAMENTO, contextoProvider);
+            var nsuTask = await Util.GerarNsu(dbgravacao, Constantes.NSU_ORCAMENTO);
             string nsu = nsuTask.ToString();
 
             int ndescarte = nsu.Length - Constantes.TAM_MIN_NUM_ORCAMENTO;
