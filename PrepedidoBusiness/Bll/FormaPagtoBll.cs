@@ -11,9 +11,9 @@ namespace PrepedidoBusiness.Bll
 {
     public class FormaPagtoBll
     {
-        private readonly InfraBanco.ContextoProvider contextoProvider;
+        private readonly InfraBanco.ContextoBdProvider contextoProvider;
 
-        public FormaPagtoBll(InfraBanco.ContextoProvider contextoProvider)
+        public FormaPagtoBll(InfraBanco.ContextoBdProvider contextoProvider)
         {
             this.contextoProvider = contextoProvider;
         }

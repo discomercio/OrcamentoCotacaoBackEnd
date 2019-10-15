@@ -20,9 +20,10 @@ namespace PrepedidoBusiness.Bll
 {
     public class PrepedidoBll
     {
-        private readonly ContextoProvider contextoProvider;
+        //afazer: Criar rotina que altera o prepedido
+        private readonly InfraBanco.ContextoBdProvider contextoProvider;
 
-        public PrepedidoBll(ContextoProvider contextoProvider)
+        public PrepedidoBll(InfraBanco.ContextoBdProvider contextoProvider)
         {
             this.contextoProvider = contextoProvider;
         }
@@ -140,9 +141,10 @@ namespace PrepedidoBusiness.Bll
 
         public async Task<bool> RemoverPrePedido(string numeroPrePedido, string apelido)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            using (var dbgravacao = contextoProvider.GetContextoGravacao())
+            {
 
-            Torcamento prePedido = db.Torcamentos.
+                Torcamento prePedido = dbgravacao.Torcamentos.
                 Where(
                         r => r.Orcamentista == apelido &&
                         r.Orcamento == numeroPrePedido &&
@@ -150,15 +152,16 @@ namespace PrepedidoBusiness.Bll
                         r.St_Orc_Virou_Pedido == 0
                       ).SingleOrDefault();
 
-            if (!string.IsNullOrEmpty(prePedido.ToString()))
-            {
-                prePedido.St_Orcamento = "CAN";
-                prePedido.Cancelado_Data = DateTime.Now;
-                prePedido.Cancelado_Usuario = apelido;
-                await db.SaveChangesAsync();
-                return await Task.FromResult(true);
+                if (!string.IsNullOrEmpty(prePedido.ToString()))
+                {
+                    prePedido.St_Orcamento = "CAN";
+                    prePedido.Cancelado_Data = DateTime.Now;
+                    prePedido.Cancelado_Usuario = apelido;
+                    await dbgravacao.SaveChangesAsync();
+                    dbgravacao.transacao.Commit();
+                    return await Task.FromResult(true);
+                }
             }
-
             return await Task.FromResult(false);
         }
 
@@ -493,17 +496,19 @@ namespace PrepedidoBusiness.Bll
 
                         if (lstErros.Count <= 0)
                         {
-                            using (TransactionScope trans = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                            using (var dbgravacao = contextoProvider.GetContextoGravacao())
                             {
-                                var db = contextoProvider.GetContextoGravacao();
 
                                 //Se orcamento existir, fazer o delete das informações
                                 if (!string.IsNullOrEmpty(prePedido.NumeroPrePedido))
+                                {
                                     await DeletarOrcamentoExiste(prePedido, apelido);
+                                }
 
                                 if (string.IsNullOrEmpty(prePedido.NumeroPrePedido))
                                     //gerar o numero de orçamento
                                     await GerarNumeroOrcamento(prePedido);
+                                }
 
 
                                 if (string.IsNullOrEmpty(prePedido.NumeroPrePedido))
@@ -511,22 +516,17 @@ namespace PrepedidoBusiness.Bll
 
                                 //Cadastrar dados do Orcamento e endereço de entrega 
                                 string log = await EfetivarCadastroPrepedido(prePedido, tOrcamentista, siglaPagto);
-
+                                //Cadastrar orcamento itens
                                 List<TorcamentoItem> lstOrcamentoItem = MontaListaOrcamentoItem(prePedido.ListaProdutos, prePedido.NumeroPrePedido);
 
-                                await VerificaCadaProdutoSelecionadoEComplementaLista(prePedido, lstOrcamentoItem, lstErros);
+                                await ComplementarInfosOrcamentoItem(lstOrcamentoItem, prePedido.DadosCliente.Loja);
 
-                                if (!lstErros.Any())
-                                {
-                                    log = await CadastrarOrctoItens(lstOrcamentoItem, log);
+                                log = await CadastrarOrctoItens(lstOrcamentoItem, log);
 
-                                    bool gravouLog = Util.GravaLog(apelido, prePedido.DadosCliente.Loja, prePedido.NumeroPrePedido,
-                                        prePedido.DadosCliente.Id, Constantes.OP_LOG_ORCAMENTO_NOVO, log, contextoProvider);
+                                bool gravouLog = Util.GravaLog(apelido, prePedido.DadosCliente.Loja, prePedido.NumeroPrePedido,
+                                    prePedido.DadosCliente.Id, Constantes.OP_LOG_ORCAMENTO_NOVO, log, contextoProvider);
 
-                                    trans.Complete();
-                                }
-
-
+                                trans.Complete();
                             }
                         }
                     }
@@ -566,23 +566,32 @@ namespace PrepedidoBusiness.Bll
             return retorno;
         }
 
-        public async Task DeletarOrcamentoExiste(PrePedidoDto prePedido, string apelido)
+        public async Task DeletarOrcamentoExiste(ContextoBdGravacao dbgravacao, PrePedidoDto prePedido, string apelido)
         {
             //apelido = "MARISARJ";
 
-            var db = contextoProvider.GetContextoGravacao();
-            var orcamentoTask = from c in db.Torcamentos.Include(r => r.TorcamentoItem)
+            var orcamentoTask = from c in dbgravacao.Torcamentos.Include(r => r.TorcamentoItem)
                                 where c.Orcamento == prePedido.NumeroPrePedido &&
                                       c.Orcamentista == apelido
                                 select c;
 
             Torcamento orcamento = orcamentoTask.FirstOrDefault();
 
-            db.Remove(orcamento);
-            await db.SaveChangesAsync();
+            dbgravacao.Remove(orcamento);
+            await dbgravacao.SaveChangesAsync();
         }
 
-        private async Task<string> EfetivarCadastroPrepedido(PrePedidoDto prepedido, TorcamentistaEindicador orcamentista, string siglaPagto)
+        public async Task DeletarOrcamentoExisteComTransacao(PrePedidoDto prePedido, string apelido)
+        {
+            using (var dbgravacao = contextoProvider.GetContextoGravacao())
+            {
+                await DeletarOrcamentoExiste(dbgravacao, prePedido, apelido);
+                dbgravacao.transacao.Commit();
+            }
+        }
+
+
+        private async Task<string> EfetivarCadastroPrepedido(ContextoBdGravacao dbgravacao, PrePedidoDto prepedido, TorcamentistaEindicador orcamentista, string siglaPagto)
         {
             Torcamento torcamento = new Torcamento();
 
@@ -689,26 +698,23 @@ namespace PrepedidoBusiness.Bll
             //Montar uma rotina para pegar os campos a omitir antes de montar o log
             string campos_a_omitir = MontarCamposAOmitirFormaPagtoCriacao(prepedido.FormaPagtoCriacao);
 
-            var db = contextoProvider.GetContextoGravacao();
             string log = "";
             log = Util.MontaLog(torcamento, log, campos_a_omitir);
 
-            db.Add(torcamento);
-            await db.SaveChangesAsync();
+            dbgravacao.Add(torcamento);
+            await dbgravacao.SaveChangesAsync();
 
             return log;
         }
 
-        private async Task<string> CadastrarOrctoItens(List<TorcamentoItem> lstOrcItens, string log)
+        private async Task<string> CadastrarOrctoItens(ContextoBdGravacao dbgravacao, List<TorcamentoItem> lstOrcItens, string log)
         {
-            var db = contextoProvider.GetContextoGravacao();
-
             foreach (var i in lstOrcItens)
             {
-                db.Add(i);
+                dbgravacao.Add(i);
                 log = Util.MontaLog(i, log, "");
             }
-            await db.SaveChangesAsync();
+            await dbgravacao.SaveChangesAsync();
 
             return log;
         }
@@ -1188,7 +1194,7 @@ namespace PrepedidoBusiness.Bll
         {
             float coeficiente = 0;
 
-            var db = contextoProvider.GetContextoGravacao();
+            var db = contextoProvider.GetContextoLeitura();
 
             if (siglaPagto == Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA)
                 coeficiente = 1;
@@ -1420,117 +1426,18 @@ namespace PrepedidoBusiness.Bll
             return lstRegrasCrtlEstoque;
         }
 
-        #region antigo metodo ComplementarInfosOrcamentoItem
-        //afazer: verificar se esse metodo ainda sera necessário, 
-        //pois o metodo VerificaCadaProdutoSelecionado faz o mesmo acesso que ele
-        //private async Task ComplementarInfosOrcamentoItem(List<TorcamentoItem> lstOrcamentoItem, string loja)
-        //{
-        //    var db = contextoProvider.GetContextoGravacao();
-
-        //    TorcamentoItem orcItem = new TorcamentoItem();
-        //    foreach (TorcamentoItem item in lstOrcamentoItem)
-        //    {
-        //        var prodLista = from c in db.TprodutoLojas.Include(x => x.Tproduto).Include(x => x.Tproduto.Tfabricante)
-        //                        where c.Tproduto.Tfabricante.Fabricante == item.Fabricante &&
-        //                              c.Loja == loja &&
-        //                              c.Tproduto.Produto == item.Produto
-        //                        select c;
-
-        //        var prod = await prodLista.FirstOrDefaultAsync();
-
-        //        if (prod != null)
-        //        {
-        //            //Orcamento = id_orcamento,
-        //            //Produto = p.NumProduto,
-        //            //Fabricante = Utils.Util.Normaliza_Codigo(p.Fabricante, Constantes.TAM_MIN_FABRICANTE),
-        //            //Qtde = p.Qtde,
-        //            //Preco_Venda = p.VlUnitario,
-        //            //Preco_NF = p.Permite_Ra_Status == 1 ? p.Preco : p.VlUnitario,
-        //            //Obs = p.Obs
-        //            //montagem das informações do produto
-
-        //            //afazer: passar os parametros corretamente para essas variaveis
-        //            item.Qtde_Spe = 0;//caso concorde em comprar mesmo com estoque faltando, recebe a qtde - qtde estoque
-        //            item.Desc_Dado = 0;//recebe o valor de desconto dado no produto
-        //            item.Abaixo_Min_Status = 0;//recebe 0 respeitando o preço minimo ou 1 orçamento abaixo do preço permitido
-        //            item.Abaixo_Min_Autorizacao = "";//Identificação do registro da autorização de desconto superior usado no orçamento deste produto
-        //            item.Abaixo_Min_Autorizador = "";//Usuário que cadastrou a autorização de desconto superior.
-        //            item.Sequencia = 0;//recebe o valor da ordem em que foi digitado o produto
-        //            item.Abaixo_Min_Superv_Autorizador = "";//Usuário supervisor que autorizou o desconto superior, informado pelo operador ao cadastrar a senha de desconto.
-        //            item.CustoFinancFornecCoeficiente = 0;//Coeficiente do custo financeiro aplicado de acordo com o fornecedor, o tipo de parcelamento (à vista, com entrada, sem entrada) e a quantidade de parcelas.
-
-
-        //            item.Preco_Lista = prod.Preco_Lista;// prod.TprodutoLoja.Preco_Lista;
-        //            item.Margem = prod.Margem;
-        //            item.Desc_Max = prod.Desc_Max;
-        //            item.Comissao = prod.Comissao;
-        //            item.Preco_Fabricante = prod.Tproduto.Preco_Fabricante;
-        //            item.Vl_Custo2 = prod.Tproduto.Vl_Custo2;
-        //            item.Descricao = prod.Tproduto.Descricao;
-        //            item.Descricao_Html = prod.Tproduto.Descricao_Html;
-        //            item.Ean = prod.Tproduto.Ean;
-        //            item.Grupo = prod.Tproduto.Grupo;
-        //            item.Peso = prod.Tproduto.Peso;
-        //            item.Qtde_Volumes = prod.Tproduto.Qtde_Volumes;
-        //            item.Markup_Fabricante = prod.Tproduto.Tfabricante.Markup;
-        //            item.Cubagem = prod.Tproduto.Cubagem;
-        //            item.Ncm = prod.Tproduto.Ncm;
-        //            item.Cst = prod.Tproduto.Cst;
-        //            item.Descontinuado = prod.Tproduto.Descontinuado;
-        //            item.CustoFinancFornecPrecoListaBase = (decimal)prod.Preco_Lista;
-        //        }
-        //    }
-        //}
-        #endregion
-
-
-        //Copia do metod abaixo VerificaCadaProdutoSelecionado
-        /*
-         * Montamos a lista de TorcamentoItem para poder cadastrar
-         * Adicionamos erros caso exista
-         * calcula o preco_lista com coeficiente
-         * inclui valor para desc_dado
-         */
-        //afazer: verificar como o preco_lista será enviado, pois pode ser que não haja necessidade de recalcular o valor
-        private async Task VerificaCadaProdutoSelecionadoEComplementaLista(PrePedidoDto prepedido, List<TorcamentoItem> lstOrcamentoItem, List<string> lstErros)
+        private async Task ComplementarInfosOrcamentoItem(List<TorcamentoItem> lstOrcamentoItem, string loja)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            var db = contextoProvider.GetContextoGravacao();
 
+            TorcamentoItem orcItem = new TorcamentoItem();
             foreach (TorcamentoItem item in lstOrcamentoItem)
             {
-                //busca os dados do produto
-                var produtoTask = from c in db.TprodutoLojas.Include(x => x.Tproduto).Include(x => x.Tproduto.Tfabricante)
-                                  where c.Tproduto.Tfabricante.Fabricante == item.Fabricante &&
-                                        c.Loja == prepedido.DadosCliente.Loja &&
-                                        c.Tproduto.Produto == item.Produto
-                                  select c;
-                if (produtoTask == null)
-                    lstErros.Add("Produto " + item.Produto + " do fabricante " + item.Fabricante +
-                        " NÃO está cadastrado para a loja " + prepedido.DadosCliente.Loja);
-                else
-                {
-                    var produto = await produtoTask.FirstOrDefaultAsync();
-                    if (produto != null)
-                    {
-                        ComplementarInfosOrcamentoItem(item, produto);
-
-                        float custoFinancFornecCoeficiente = 0;
-                        decimal custoFinancFornecPrecoListaBase = (decimal)produto.Preco_Lista;
-
-                        //verifica se o tipo de parcela é a vista
-                        string siglaFormaPagto = ObterSiglaFormaPagto(prepedido);
-                        float c_custoFinancFornecQtdeParcelas = ObterQtdeParcelasFormaPagto(prepedido);
-
-                        if (siglaFormaPagto == Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA)
-                            custoFinancFornecCoeficiente = 1;
-                        else
-                        {
-                            //buscar coeficiente
-                            var percCustoTask = from c in db.TpercentualCustoFinanceiroFornecedors
-                                                where c.Fabricante == produto.Fabricante &&
-                                                      c.Tipo_Parcelamento == siglaFormaPagto &&//tipo de parcela CE ou SE
-                                                      c.Qtde_Parcelas == c_custoFinancFornecQtdeParcelas
-                                                select c;
+                var prodLista = from c in db.TprodutoLojas.Include(x => x.Tproduto).Include(x => x.Tproduto.Tfabricante)
+                                where c.Tproduto.Tfabricante.Fabricante == item.Fabricante &&
+                                      c.Loja == loja &&
+                                      c.Tproduto.Produto == item.Produto
+                                select c;
 
                             var percCusto = await percCustoTask.FirstOrDefaultAsync();
 
@@ -1642,11 +1549,11 @@ namespace PrepedidoBusiness.Bll
             return tOrcamentista;
         }
 
-        public async Task GerarNumeroOrcamento(PrePedidoDto prepedido)
+        public async Task GerarNumeroOrcamento(ContextoBdGravacao dbgravacao, PrePedidoDto prepedido)
         {
             string sufixoIdOrcamento = Constantes.SUFIXO_ID_ORCAMENTO;
 
-            var nsuTask = await Util.GerarNsu(Constantes.NSU_ORCAMENTO, contextoProvider);
+            var nsuTask = await Util.GerarNsu(dbgravacao, Constantes.NSU_ORCAMENTO);
             string nsu = nsuTask.ToString();
 
             int ndescarte = nsu.Length - Constantes.TAM_MIN_NUM_ORCAMENTO;

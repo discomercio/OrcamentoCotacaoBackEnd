@@ -7,86 +7,60 @@ using System.Text;
 
 namespace InfraBanco
 {
-    public class ContextoBd : DbContext
+    public class ContextoBd
     {
-        public ContextoBd(DbContextOptions<ContextoBd> opt) : base(opt)
+        private readonly ContextoBdBasico contexto;
+        internal ContextoBd(ContextoBdBasico contexto)
         {
-
+            this.contexto = contexto;
+            //sem nenhum rastreamento de mudanças na conexao
+            //se ligamos: não podemos fazer vários acessos usando o mesmo contexto com async/await
+            //se ligamos: toda a documentação diz que a performance é bem melhor
+            //contexto.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
-        public DbSet<Tcliente> Tclientes { get; set; }
-        public DbSet<Torcamento> Torcamentos { get; set; }
-        public DbSet<TclienteRefBancaria> TclienteRefBancarias { get; set; }
-        public DbSet<Tpedido> Tpedidos { get; set; }
-        public DbSet<TorcamentistaEindicador> TorcamentistaEindicadors { get; set; }
-        public DbSet<TsessaoHistorico> TsessaoHistoricos { get; set; }
-        public DbSet<Tusuario> Tusuarios { get; set; }
-        public DbSet<Tproduto> Tprodutos { get; set; }
-        public DbSet<TprodutoLoja> TprodutoLojas { get; set; }
-        public DbSet<TpedidoItem> TpedidoItems { get; set; }
-        public DbSet<TpedidoItemDevolvido> TpedidoItemDevolvidos { get; set; }
-        public DbSet<TpedidoPerda> TpedidoPerdas { get; set; }
-        public DbSet<TpedidoPagamento> TpedidoPagamentos { get; set; }
-        public DbSet<TestoqueMovimento> TestoqueMovimentos { get; set; }
-        public DbSet<Ttransportadora> Ttransportadoras { get; set; }
-        public DbSet<TpedidoBlocosNotas> TpedidoBlocosNotas { get; set; }
-        public DbSet<TcodigoDescricao> TcodigoDescricaos { get; set; }
-        public DbSet<TpedidoOcorrenciaMensagem> TpedidoOcorrenciaMensagems { get; set; }
-        public DbSet<TpedidoOcorrencia> TpedidoOcorrencias { get; set; }
-        public DbSet<TpedidoItemDevolvidoBlocoNotas> TpedidoItemDevolvidoBlocoNotas { get; set; }
-        public DbSet<TorcamentoItem> TorcamentoItems { get; set; }
-        public DbSet<Tbanco> Tbancos { get; set; }
-        public DbSet<TclienteRefComercial> TclienteRefComercials { get; set; }
-        public DbSet<Tlog> Tlogs { get; set; }
-        public DbSet<Tloja> Tlojas { get; set; }
-        public DbSet<Tcontrole> Tcontroles { get; set; }
-        public DbSet<TnfEmitente> TnfEmitentes { get; set; }
-        public DbSet<TecProdutoComposto> TecProdutoCompostos { get; set; }
-        public DbSet<Tfabricante> Tfabricantes { get; set; }
-        public DbSet<Tparametro> Tparametros { get; set; }
-        public DbSet<TpercentualCustoFinanceiroFornecedor> TpercentualCustoFinanceiroFornecedors { get; set; }
-        public DbSet<TprodutoXwmsRegraCd> TprodutoXwmsRegraCds { get; set; }
-        public DbSet<TwmsRegraCd> TwmsRegraCds { get; set; }
-        public DbSet<TwmsRegraCdXUf> TwmsRegraCdXUfs { get; set; }
-        public DbSet<TwmsRegraCdXUfPessoa> TwmsRegraCdXUfPessoas { get; set; }
-        public DbSet<TwmsRegraCdXUfXPessoaXCd> TwmsRegraCdXUfXPessoaXCds { get; set; }
-        public DbSet<TecProdutoCompostoItem> TecProdutoCompostoItems { get; set; }
-        public DbSet<Testoque> Testoques { get; set; }
-        public DbSet<TestoqueItem> TestoqueItems { get; set; }
-        public DbSet<TprodutoXAlerta> TprodutoXAlertas { get; set; }
-        public DbSet<TalertaProduto> TalertaProdutos { get; set; }
-        public DbSet<TformaPagto> TformaPagtos { get; set; }
-        public DbSet<TorcamentistaEIndicadorRestricaoFormaPagto> torcamentistaEIndicadorRestricaoFormaPagtos { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<TclienteRefBancaria>()
-                .HasKey(o => new { o.Id_Cliente, o.Banco, o.Agencia, o.Conta });
-            modelBuilder.Entity<TclienteRefComercial>()
-                .HasKey(o => new { o.Id_Cliente, o.Nome_Empresa });
-            modelBuilder.Entity<TpedidoItem>()
-                .HasKey(o => new { o.Pedido, o.Fabricante, o.Produto });
-            modelBuilder.Entity<TorcamentoItem>(o =>
-            {
-                o.HasKey(x => new { x.Orcamento, x.Fabricante, x.Produto });
-            });
-
-            modelBuilder.Entity<Tproduto>()
-                .HasKey(x => new { x.Fabricante, x.Produto });
-
-            modelBuilder.Entity<TecProdutoComposto>()
-                .HasKey(x => new { x.Fabricante_Composto, x.Produto_Composto });
-
-            modelBuilder.Entity<TpedidoItem>()
-                .HasKey(x => new { x.Pedido, x.Fabricante, x.Produto });
-
-            modelBuilder.Entity<TprodutoXAlerta>()
-                .HasKey(x => new { x.Fabricante, x.Produto, x.Id_Alerta });
-
-            modelBuilder.Entity<TprodutoLoja>()
-                .HasKey(x => new { x.Fabricante, x.Produto, x.Loja });
-
-            modelBuilder.Entity<TalertaProduto>()
-                .HasKey(x => x.Apelido);
-        }
+        public IQueryable<Tcliente> Tclientes { get => contexto.Tclientes; }
+        public IQueryable<Torcamento> Torcamentos { get => contexto.Torcamentos; }
+        public IQueryable<TclienteRefBancaria> TclienteRefBancarias { get => contexto.TclienteRefBancarias; }
+        public IQueryable<Tpedido> Tpedidos { get => contexto.Tpedidos; }
+        public IQueryable<TorcamentistaEindicador> TorcamentistaEindicadors { get => contexto.TorcamentistaEindicadors; }
+        public IQueryable<TsessaoHistorico> TsessaoHistoricos { get => contexto.TsessaoHistoricos; }
+        public IQueryable<Tusuario> Tusuarios { get => contexto.Tusuarios; }
+        public IQueryable<Tproduto> Tprodutos { get => contexto.Tprodutos; }
+        public IQueryable<TprodutoLoja> TprodutoLojas { get => contexto.TprodutoLojas; }
+        public IQueryable<TpedidoItem> TpedidoItems { get => contexto.TpedidoItems; }
+        public IQueryable<TpedidoItemDevolvido> TpedidoItemDevolvidos { get => contexto.TpedidoItemDevolvidos; }
+        public IQueryable<TpedidoPerda> TpedidoPerdas { get => contexto.TpedidoPerdas; }
+        public IQueryable<TpedidoPagamento> TpedidoPagamentos { get => contexto.TpedidoPagamentos; }
+        public IQueryable<TestoqueMovimento> TestoqueMovimentos { get => contexto.TestoqueMovimentos; }
+        public IQueryable<Ttransportadora> Ttransportadoras { get => contexto.Ttransportadoras; }
+        public IQueryable<TpedidoBlocosNotas> TpedidoBlocosNotas { get => contexto.TpedidoBlocosNotas; }
+        public IQueryable<TcodigoDescricao> TcodigoDescricaos { get => contexto.TcodigoDescricaos; }
+        public IQueryable<TpedidoOcorrenciaMensagem> TpedidoOcorrenciaMensagems { get => contexto.TpedidoOcorrenciaMensagems; }
+        public IQueryable<TpedidoOcorrencia> TpedidoOcorrencias { get => contexto.TpedidoOcorrencias; }
+        public IQueryable<TpedidoItemDevolvidoBlocoNotas> TpedidoItemDevolvidoBlocoNotas { get => contexto.TpedidoItemDevolvidoBlocoNotas; }
+        public IQueryable<TorcamentoItem> TorcamentoItems { get => contexto.TorcamentoItems; }
+        public IQueryable<Tbanco> Tbancos { get => contexto.Tbancos; }
+        public IQueryable<TclienteRefComercial> TclienteRefComercials { get => contexto.TclienteRefComercials; }
+        public IQueryable<Tlog> Tlogs { get => contexto.Tlogs; }
+        public IQueryable<Tloja> Tlojas { get => contexto.Tlojas; }
+        public IQueryable<Tcontrole> Tcontroles { get => contexto.Tcontroles; }
+        public IQueryable<TnfEmitente> TnfEmitentes { get => contexto.TnfEmitentes; }
+        public IQueryable<TecProdutoComposto> TecProdutoCompostos { get => contexto.TecProdutoCompostos; }
+        public IQueryable<Tfabricante> Tfabricantes { get => contexto.Tfabricantes; }
+        public IQueryable<Tparametro> Tparametros { get => contexto.Tparametros; }
+        public IQueryable<TpercentualCustoFinanceiroFornecedor> TpercentualCustoFinanceiroFornecedors { get => contexto.TpercentualCustoFinanceiroFornecedors; }
+        public IQueryable<TprodutoXwmsRegraCd> TprodutoXwmsRegraCds { get => contexto.TprodutoXwmsRegraCds; }
+        public IQueryable<TwmsRegraCd> TwmsRegraCds { get => contexto.TwmsRegraCds; }
+        public IQueryable<TwmsRegraCdXUf> TwmsRegraCdXUfs { get => contexto.TwmsRegraCdXUfs; }
+        public IQueryable<TwmsRegraCdXUfPessoa> TwmsRegraCdXUfPessoas { get => contexto.TwmsRegraCdXUfPessoas; }
+        public IQueryable<TwmsRegraCdXUfXPessoaXCd> TwmsRegraCdXUfXPessoaXCds { get => contexto.TwmsRegraCdXUfXPessoaXCds; }
+        public IQueryable<TecProdutoCompostoItem> TecProdutoCompostoItems { get => contexto.TecProdutoCompostoItems; }
+        public IQueryable<Testoque> Testoques { get => contexto.Testoques; }
+        public IQueryable<TestoqueItem> TestoqueItems { get => contexto.TestoqueItems; }
+        public IQueryable<TprodutoXAlerta> TprodutoXAlertas { get => contexto.TprodutoXAlertas; }
+        public IQueryable<TalertaProduto> TalertaProdutos { get => contexto.TalertaProdutos; }
+        public IQueryable<TformaPagto> TformaPagtos { get => contexto.TformaPagtos; }
+        public IQueryable<TorcamentistaEIndicadorRestricaoFormaPagto> torcamentistaEIndicadorRestricaoFormaPagtos { get => contexto.torcamentistaEIndicadorRestricaoFormaPagtos; }
     }
 }

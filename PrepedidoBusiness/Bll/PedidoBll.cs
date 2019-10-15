@@ -16,9 +16,9 @@ namespace PrepedidoBusiness.Bll
 {
     public class PedidoBll
     {
-        private readonly InfraBanco.ContextoProvider contextoProvider;
+        private readonly InfraBanco.ContextoBdProvider contextoProvider;
 
-        public PedidoBll(InfraBanco.ContextoProvider contextoProvider)
+        public PedidoBll(InfraBanco.ContextoBdProvider contextoProvider)
         {
             this.contextoProvider = contextoProvider;
         }

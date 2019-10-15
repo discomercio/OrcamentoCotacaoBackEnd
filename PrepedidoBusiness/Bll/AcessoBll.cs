@@ -11,9 +11,9 @@ namespace PrepedidoBusiness.Bll
 {
     public class AcessoBll
     {
-        private readonly InfraBanco.ContextoProvider contextoProvider;
+        private readonly InfraBanco.ContextoBdProvider contextoProvider;
 
-        public AcessoBll(InfraBanco.ContextoProvider contextoProvider)
+        public AcessoBll(InfraBanco.ContextoBdProvider contextoProvider)
         {
             this.contextoProvider = contextoProvider;
         }
@@ -56,12 +56,15 @@ namespace PrepedidoBusiness.Bll
                 return await Task.FromResult(retorno);
 
             //Fazer Update no bd
-            TorcamentistaEindicador orcamentista = await db.TorcamentistaEindicadors
+            using (var dbgravacao = contextoProvider.GetContextoGravacao())
+            {
+                TorcamentistaEindicador orcamentista = await dbgravacao.TorcamentistaEindicadors
                 .Where(c => c.Apelido == apelido).SingleAsync();
-            orcamentista.Dt_Ult_Acesso = DateTime.Now;
+                orcamentista.Dt_Ult_Acesso = DateTime.Now;
 
-            await db.SaveChangesAsync();
-
+                await dbgravacao.SaveChangesAsync();
+                dbgravacao.transacao.Commit();
+            }
             return await Task.FromResult(t.Razao_Social_Nome);
         }
 
@@ -76,10 +79,8 @@ namespace PrepedidoBusiness.Bll
             return await Task.FromResult(loja);
         }
 
-        public async Task GravarSessao(string ip, string apelido, string userAgent)
+        public async Task GravarSessaoComTransacao(string ip, string apelido, string userAgent)
         {
-            var db = contextoProvider.GetContextoGravacao();
-
             string loja = await BuscarLojaUsuario(apelido);
 
             //inserir na t_SESSAO_HISTORICO
@@ -95,8 +96,12 @@ namespace PrepedidoBusiness.Bll
                 UserAgent = userAgent
             };
 
-            db.TsessaoHistoricos.Add(sessaoHist);
-            await db.SaveChangesAsync();
+            using (var dbgravacao = contextoProvider.GetContextoGravacao())
+            {
+                dbgravacao.TsessaoHistoricos.Add(sessaoHist);
+                await dbgravacao.SaveChangesAsync();
+                dbgravacao.transacao.Commit();
+            }
         }
 
         public string geraChave()
@@ -223,30 +228,32 @@ namespace PrepedidoBusiness.Bll
 
         public async Task FazerLogout(string apelido)
         {
-            var db = contextoProvider.GetContextoGravacao();
+            using (var dbgravacao = contextoProvider.GetContextoGravacao())
+            {
 
-            //O orcamentista não é salvo nessa tabela
-            //o Usuario é o usuario_cadastro da tabela t_ORCAMENTISTA_E_INDICADOR
-            //CAMILA IRÁ VERIFICAR COM O HAMILTON
+                //O orcamentista não é salvo nessa tabela
+                //o Usuario é o usuario_cadastro da tabela t_ORCAMENTISTA_E_INDICADOR
+                //CAMILA IRÁ VERIFICAR COM O HAMILTON
 
-            //Tusuario usuario = db.Tusuarios.
-            //    Where(r => r.Usuario == apelido)
-            //    .Single();
-            ////atualiza a tabela t_USUARIO
-            //usuario.SessionCtrlTicket = null;
-            //usuario.SessionCtrlLoja = null;
-            //usuario.SessionCtrlModulo = null;
-            //usuario.SessionCtrlDtHrLogon = null;
+                //Tusuario usuario = db.Tusuarios.
+                //    Where(r => r.Usuario == apelido)
+                //    .Single();
+                ////atualiza a tabela t_USUARIO
+                //usuario.SessionCtrlTicket = null;
+                //usuario.SessionCtrlLoja = null;
+                //usuario.SessionCtrlModulo = null;
+                //usuario.SessionCtrlDtHrLogon = null;
 
-            //atualiza a tabela t_SESSAO_HISTORICO
-            TsessaoHistorico sessaoHist = db.TsessaoHistoricos
-                .Where(r => r.Usuario == apelido 
-                         && r.DtHrInicio >= DateTime.Now.AddHours(-1))                         
-                .SingleOrDefault();
-            sessaoHist.DtHrTermino = DateTime.Now;
+                //atualiza a tabela t_SESSAO_HISTORICO
+                TsessaoHistorico sessaoHist = dbgravacao.TsessaoHistoricos
+                    .Where(r => r.Usuario == apelido
+                             && r.DtHrInicio >= DateTime.Now.AddHours(-1))
+                    .SingleOrDefault();
+                sessaoHist.DtHrTermino = DateTime.Now;
 
-            db.TsessaoHistoricos.Add(sessaoHist);
-            await db.SaveChangesAsync();
+                dbgravacao.TsessaoHistoricos.Add(sessaoHist);
+                await dbgravacao.SaveChangesAsync();
+            }
         }
 
     }

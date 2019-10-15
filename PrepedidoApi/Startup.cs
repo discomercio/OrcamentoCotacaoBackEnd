@@ -46,18 +46,12 @@ namespace PrepedidoApi
             services.AddTransient<PrepedidoBusiness.Bll.CoeficienteBll, PrepedidoBusiness.Bll.CoeficienteBll>();
 
             //ContextoProvider
-            services.AddTransient<InfraBanco.ContextoProvider, InfraBanco.ContextoProvider>();
+            services.AddTransient<InfraBanco.ContextoBdProvider, InfraBanco.ContextoBdProvider>();
             services.AddTransient<InfraBanco.ContextoCepProvider, InfraBanco.ContextoCepProvider>();
             services.AddTransient<InfraBanco.ContextoNFeProvider, InfraBanco.ContextoNFeProvider>();
 
             //banco de dados
-            //CONEXÃO HOMOLOGAÇÃO ARCLUBE
-            //services.AddDbContext<InfraBanco.ContextoBd>(options =>
-            //{
-            //    options.UseSqlServer(Configuration.GetConnectionString("conexaohomologa"));
-            //});
-            //CONEXÃO LOCAL ITS
-            services.AddDbContext<InfraBanco.ContextoBd>(options =>
+            services.AddDbContext<InfraBanco.ContextoBdBasico>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("conexaoLocal"));
             });

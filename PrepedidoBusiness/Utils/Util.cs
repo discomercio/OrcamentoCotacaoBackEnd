@@ -77,7 +77,7 @@ namespace PrepedidoBusiness.Utils
             return retorno;
         }
 
-        public static async Task<string> ObterDescricao_Cod(string grupo, string cod, ContextoProvider contextoProvider)
+        public static string ObterDescricao_Cod(string grupo, string cod, ContextoBdProvider contextoProvider)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -251,13 +251,11 @@ namespace PrepedidoBusiness.Utils
 
             return log;
         }
-        public static bool GravaLog(string apelido, string loja, string pedido, string id_cliente,
-            string operação, string log, ContextoProvider contexto)
+        public static bool GravaLog(ContextoBdGravacao dbgravacao, string apelido, string loja, string pedido, string id_cliente,
+            string operação, string log)
         {
             if (apelido == null)
                 return false;
-
-            var db = contexto.GetContextoGravacao();
 
             Tlog tLog = new Tlog
             {
@@ -270,8 +268,8 @@ namespace PrepedidoBusiness.Utils
                 Complemento = log
             };
 
-            db.Add(tLog);
-            db.SaveChanges();
+            dbgravacao.Add(tLog);
+            dbgravacao.SaveChanges();
 
             return true;
         }
@@ -340,7 +338,7 @@ namespace PrepedidoBusiness.Utils
             return retorno;
         }
 
-        public static async Task<string> GerarNsu(string id_nsu, ContextoProvider contextoProvider)
+        public static async Task<string> GerarNsu(ContextoBdGravacao dbgravacao, string id_nsu)
         {
             string retorno = "";
             int n_nsu = -1;
@@ -348,14 +346,12 @@ namespace PrepedidoBusiness.Utils
             int asc;
             char chr;
 
-            var db = contextoProvider.GetContextoGravacao();
-
             if (id_nsu == "")
                 retorno = "Não foi especificado o NSU a ser gerado!!";
 
             for (int i = 0; i <= 100; i++)
             {
-                var ret = from c in db.Tcontroles
+                var ret = from c in dbgravacao.Tcontroles
                           where c.Id_Nsu == id_nsu
                           select c;
 
@@ -399,8 +395,8 @@ namespace PrepedidoBusiness.Utils
 
                     try
                     {
-                        db.Update(controle);
-                        await db.SaveChangesAsync();
+                        dbgravacao.Update(controle);
+                        await dbgravacao.SaveChangesAsync();
                     }
                     catch (Exception ex)
                     {
@@ -495,7 +491,7 @@ namespace PrepedidoBusiness.Utils
             return retorno;
         }
 
-        public static async Task<string> ObterApelidoEmpresaNfeEmitentes(int id_nfe_emitente, ContextoProvider contextoProvider)
+        public static async Task<string> ObterApelidoEmpresaNfeEmitentes(int id_nfe_emitente, ContextoBdProvider contextoProvider)
         {
             string apelidoEmpresa = "";
 
@@ -517,7 +513,7 @@ namespace PrepedidoBusiness.Utils
         }
 
         public static async Task ObterCtrlEstoqueProdutoRegra_Teste(List<string> lstErros,
-            List<RegrasBll> lstRegrasCrtlEstoque, string uf, string cliente_regra, ContextoProvider contextoProvider)
+            List<RegrasBll> lstRegrasCrtlEstoque, string uf, string cliente_regra, ContextoBdProvider contextoProvider)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -624,7 +620,7 @@ namespace PrepedidoBusiness.Utils
         //}
         #endregion
 
-        public static async Task VerificarEstoque(List<RegrasBll> lst_cliente_regra, ContextoProvider contextoProvider)
+        public static async Task VerificarEstoque(List<RegrasBll> lst_cliente_regra, ContextoBdProvider contextoProvider)
         {
             var lst1 = await BuscarListaQtdeEstoque(contextoProvider);
 
@@ -657,7 +653,7 @@ namespace PrepedidoBusiness.Utils
 
         }
 
-        public static async Task VerificarEstoqueComSubQuery(List<RegrasBll> lst_cliente_regra, ContextoProvider contextoProvider)
+        public static async Task VerificarEstoqueComSubQuery(List<RegrasBll> lst_cliente_regra, ContextoBdProvider contextoProvider)
         {
             var lst2 = await BuscarListaQtdeEstoqueComSubquery(contextoProvider);
 
@@ -685,7 +681,7 @@ namespace PrepedidoBusiness.Utils
             }
         }
 
-        private static async Task<IEnumerable<ProdutosEstoqueDto>> BuscarListaQtdeEstoque(ContextoProvider contextoProvider)
+        private static async Task<IEnumerable<ProdutosEstoqueDto>> BuscarListaQtdeEstoque(ContextoBdProvider contextoProvider)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -705,7 +701,7 @@ namespace PrepedidoBusiness.Utils
             return produtosEstoqueDtos;
         }
 
-        private static async Task<IEnumerable<ProdutosEstoqueDto>> BuscarListaQtdeEstoqueComSubquery(ContextoProvider contextoProvider)
+        private static async Task<IEnumerable<ProdutosEstoqueDto>> BuscarListaQtdeEstoqueComSubquery(ContextoBdProvider contextoProvider)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -780,7 +776,7 @@ namespace PrepedidoBusiness.Utils
         }
 
         public static void ObterDisponibilidadeEstoque(List<RegrasBll> lstRegrasCrtlEstoque, List<ProdutoDto> lst_produtos,
-            List<string> lstErros, ContextoProvider contextoProvider)
+            List<string> lstErros, ContextoBdProvider contextoProvider)
         {
             foreach (var r in lstRegrasCrtlEstoque)
             {
@@ -820,7 +816,7 @@ namespace PrepedidoBusiness.Utils
             }
         }
 
-        public static async Task<Tparametro> BuscarRegistroParametro(string id, ContextoProvider contextoProvider)
+        public static async Task<Tparametro> BuscarRegistroParametro(string id, ContextoBdProvider contextoProvider)
         {
             var db = contextoProvider.GetContextoLeitura();
 
