@@ -42,6 +42,8 @@ namespace PrepedidoApi
             services.AddTransient<PrepedidoBusiness.Bll.AcessoBll, PrepedidoBusiness.Bll.AcessoBll>();
             services.AddTransient<PrepedidoBusiness.Bll.ProdutoBll, PrepedidoBusiness.Bll.ProdutoBll>();
             services.AddTransient<PrepedidoBusiness.Bll.CepBll, PrepedidoBusiness.Bll.CepBll>();
+            services.AddTransient<PrepedidoBusiness.Bll.FormaPagtoBll, PrepedidoBusiness.Bll.FormaPagtoBll>();
+            services.AddTransient<PrepedidoBusiness.Bll.CoeficienteBll, PrepedidoBusiness.Bll.CoeficienteBll>();
 
             //ContextoProvider
             services.AddTransient<InfraBanco.ContextoProvider, InfraBanco.ContextoProvider>();
@@ -49,6 +51,12 @@ namespace PrepedidoApi
             services.AddTransient<InfraBanco.ContextoNFeProvider, InfraBanco.ContextoNFeProvider>();
 
             //banco de dados
+            //CONEXÃO HOMOLOGAÇÃO ARCLUBE
+            //services.AddDbContext<InfraBanco.ContextoBd>(options =>
+            //{
+            //    options.UseSqlServer(Configuration.GetConnectionString("conexaohomologa"));
+            //});
+            //CONEXÃO LOCAL ITS
             services.AddDbContext<InfraBanco.ContextoBd>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("conexaoLocal"));

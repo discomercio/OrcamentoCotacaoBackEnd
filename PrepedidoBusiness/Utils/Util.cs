@@ -77,7 +77,7 @@ namespace PrepedidoBusiness.Utils
             return retorno;
         }
 
-        public static string ObterDescricao_Cod(string grupo, string cod, ContextoProvider contextoProvider)
+        public static async Task<string> ObterDescricao_Cod(string grupo, string cod, ContextoProvider contextoProvider)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -85,7 +85,7 @@ namespace PrepedidoBusiness.Utils
                        where c.Grupo == grupo && c.Codigo == cod
                        select c.Descricao;
 
-            string result = desc.FirstOrDefault();
+            string result = await desc.FirstOrDefaultAsync();
 
             if (result == null || result == "")
                 return "Código não cadastrado (" + cod + ")";
@@ -519,11 +519,6 @@ namespace PrepedidoBusiness.Utils
         public static async Task ObterCtrlEstoqueProdutoRegra_Teste(List<string> lstErros,
             List<RegrasBll> lstRegrasCrtlEstoque, string uf, string cliente_regra, ContextoProvider contextoProvider)
         {
-            //o cliente esta sendo passado como dynamic
-            //string uf = cliente.uf;
-            //string tipo = cliente.tipo_cliente;
-
-
             var db = contextoProvider.GetContextoLeitura();
 
             var dbTwmsRegraCdXUfXPessoaXCds = (from c in db.TwmsRegraCdXUfXPessoaXCds
@@ -599,10 +594,9 @@ namespace PrepedidoBusiness.Utils
                     }
                 }
             }
-
-            //return lstRegrasCrtlEstoque;
         }
 
+        #region EstoqueVerificaDisponibilidadeIntegralV2
         //public static bool EstoqueVerificaDisponibilidadeIntegralV2(t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD regra, ContextoProvider contextoProvider)
         //{
         //    bool retorno = false;
@@ -628,6 +622,7 @@ namespace PrepedidoBusiness.Utils
 
         //    return retorno;
         //}
+        #endregion
 
         public static async Task VerificarEstoque(List<RegrasBll> lst_cliente_regra, ContextoProvider contextoProvider)
         {

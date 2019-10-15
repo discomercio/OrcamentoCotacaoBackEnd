@@ -17,19 +17,24 @@ namespace PrepedidoBusiness.Bll
         {
             this.contextoProvider = contextoProvider;
         }
-
+        //afazer: criar o metodo de chamada no controller Prepedido
         public async Task<FormaPagtoDto> ObterFormaPagto(string apelido, string tipo_pessoa)
         {
             FormaPagtoDto formaPagto = new FormaPagtoDto();
 
             //implementar as buscas
             formaPagto.ListaAvista = (await ObterFormaPagtoAVista(apelido, tipo_pessoa)).ToList();
+            if (tipo_pessoa == Constantes.ID_PJ)
+                formaPagto.ListaParcUnica = (await ObterFormaPagtoParcUnica(apelido, tipo_pessoa)).ToList();
             formaPagto.ParcCartaoInternet = await ObterFlagParcCartaoInternet(apelido, tipo_pessoa);
             formaPagto.ParcCartaoMaquineta = await ObterFlagParcCartaoMaquineta(apelido, tipo_pessoa);
             formaPagto.ListaParcComEntrada = (await ObterFormaPagtoParcComEntrada(apelido, tipo_pessoa)).ToList();
             formaPagto.ListaParcComEntPrestacao = (await ObterFormaPagtoParcComEntPrestacao(apelido, tipo_pessoa)).ToList();
-            formaPagto.ListaParcSemEntPrimPrest = (await ObterFormaPagtoParcSemEntPrimPrest(apelido, tipo_pessoa)).ToList();
-            formaPagto.ListaParcSemEntPrestacao = (await ObterFormaPagtoParcSemEntPrestacao(apelido, tipo_pessoa)).ToList();  
+
+            //formaPagto.ListaParcSemEntPrimPrest = (await ObterFormaPagtoParcSemEntPrimPrest(apelido, tipo_pessoa)).ToList();
+            //formaPagto.ListaParcSemEntPrestacao = (await ObterFormaPagtoParcSemEntPrestacao(apelido, tipo_pessoa)).ToList();
+            //afazer: Parcela sem entrada não aparece nem para PJ e nem para PF
+            //conclui que não é liberado fazer pagamento sem entrada
 
 
             return formaPagto;
@@ -179,6 +184,8 @@ namespace PrepedidoBusiness.Bll
 
         private async Task<IEnumerable<ParcSemEntradaPrimPrestDto>> ObterFormaPagtoParcSemEntPrimPrest(string apelido, string tipo_pessoa)
         {
+            //COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA
+            //COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA
             var db = contextoProvider.GetContextoLeitura();
 
             var formaPagtoTask = from c in db.TformaPagtos
@@ -202,7 +209,7 @@ namespace PrepedidoBusiness.Bll
             return formaPagto;
         }
 
-        private async Task<IEnumerable<ParcSemEntPrestacao>> ObterFormaPagtoParcSemEntPrestacao(string apelido, string tipo_pessoa)
+        private async Task<IEnumerable<ParcSemEntPrestacaoDto>> ObterFormaPagtoParcSemEntPrestacao(string apelido, string tipo_pessoa)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -215,7 +222,7 @@ namespace PrepedidoBusiness.Bll
                                                d.St_restricao_ativa != 0
                                          select d.Id_forma_pagto).Contains(c.Id)
                                  orderby c.Ordenacao
-                                 select new ParcSemEntPrestacao
+                                 select new ParcSemEntPrestacaoDto
                                  {
                                      Id = c.Id,
                                      Descricao = c.Descricao,

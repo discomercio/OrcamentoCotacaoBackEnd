@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PrepedidoBusiness.Dto.FormaPagto
 {
-    public class ParcSemEntPrestacao
+    public class ParcSemEntPrestacaoDto
     {
         public short Id { get; set; }
         public string Descricao { get; set; }

@@ -6,6 +6,7 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
 {
     public class FormaPagtoCriacaoDto
     {
+        public int Qtde_Parcelas { get; set; }
         public string Rb_forma_pagto { get; set; }//Tipo da forma de pagto
         public string Op_av_forma_pagto { get; set; }
         public string Op_pu_forma_pagto { get; set; }

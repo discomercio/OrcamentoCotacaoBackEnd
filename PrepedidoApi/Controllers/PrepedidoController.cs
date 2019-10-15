@@ -16,11 +16,18 @@ namespace PrepedidoApi.Controllers
     {
         private readonly PrepedidoBusiness.Bll.PrepedidoBll prepedidoBll;
         private readonly InfraIdentity.IServicoDecodificarToken servicoDecodificarToken;
+        private readonly PrepedidoBusiness.Bll.FormaPagtoBll formaPagtoBll;
+        private readonly PrepedidoBusiness.Bll.CoeficienteBll coeficienteBll;
 
-        public PrepedidoController(PrepedidoBusiness.Bll.PrepedidoBll prepedidoBll, InfraIdentity.IServicoDecodificarToken servicoDecodificarToken)
+        public PrepedidoController(PrepedidoBusiness.Bll.PrepedidoBll prepedidoBll, 
+            InfraIdentity.IServicoDecodificarToken servicoDecodificarToken,
+            PrepedidoBusiness.Bll.FormaPagtoBll formaPagtoBll, 
+            PrepedidoBusiness.Bll.CoeficienteBll coeficienteBll)
         {
             this.prepedidoBll = prepedidoBll;
             this.servicoDecodificarToken = servicoDecodificarToken;
+            this.formaPagtoBll = formaPagtoBll;
+            this.coeficienteBll = coeficienteBll;
         }
 
         //para teste, anonimo
@@ -142,6 +149,39 @@ namespace PrepedidoApi.Controllers
             await prepedidoBll.DeletarOrcamentoExiste(prePedido, apelido);
 
             return Ok();
+        }
+
+#if DEBUG
+        [AllowAnonymous]
+#endif
+        [HttpGet("buscarFormasPagto")]
+        public async Task<IActionResult> BuscarFormasPagto(string tipo_pessoa)
+        {
+            //para testar: http://localhost:60877/api/prepedido/buscarFormasPagto
+            string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
+
+            //apelido = "MARISARJ";
+
+            var ret = await formaPagtoBll.ObterFormaPagto(apelido, tipo_pessoa);
+
+            return Ok(ret);
+        }
+
+#if DEBUG
+        [AllowAnonymous]
+#endif
+        [HttpPost("buscarCoeficiente")]
+        public async Task<IActionResult> BuscarCoeficiente(
+            List<PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido.PrepedidoProdutoDtoPrepedido> lstProdutos)
+        {
+            //para testar: http://localhost:60877/api/prepedido/buscarCoeficiente
+            string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
+
+            //apelido = "MARISARJ";
+
+            var ret = await coeficienteBll.BuscarListaCoeficientes(lstProdutos);
+
+            return Ok(ret);
         }
     }
 }

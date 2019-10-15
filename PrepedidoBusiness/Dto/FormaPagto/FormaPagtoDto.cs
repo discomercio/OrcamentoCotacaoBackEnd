@@ -13,6 +13,6 @@ namespace PrepedidoBusiness.Dto.FormaPagto
         public List<ParcComEntradaDto> ListaParcComEntrada { get; set; }
         public List<ParcComEntPrestacaoDto> ListaParcComEntPrestacao { get; set; }
         public List<ParcSemEntradaPrimPrestDto> ListaParcSemEntPrimPrest { get; set; }
-        public List<ParcSemEntPrestacao> ListaParcSemEntPrestacao { get; set; }
+        public List<ParcSemEntPrestacaoDto> ListaParcSemEntPrestacao { get; set; }
     }
 }

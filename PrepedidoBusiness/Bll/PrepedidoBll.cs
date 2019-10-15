@@ -20,10 +20,9 @@ namespace PrepedidoBusiness.Bll
 {
     public class PrepedidoBll
     {
-        //afazer: Criar rotina que altera o prepedido
-        private readonly InfraBanco.ContextoProvider contextoProvider;
+        private readonly ContextoProvider contextoProvider;
 
-        public PrepedidoBll(InfraBanco.ContextoProvider contextoProvider)
+        public PrepedidoBll(ContextoProvider contextoProvider)
         {
             this.contextoProvider = contextoProvider;
         }
@@ -166,7 +165,7 @@ namespace PrepedidoBusiness.Bll
         public async Task<PrePedidoDto> BuscarPrePedido(string apelido, string numPrePedido)
         {
             //para teste
-            apelido = "MARISARJ";
+            //apelido = "MARISARJ";
             var db = contextoProvider.GetContextoLeitura();
 
             var prepedido = from c in db.Torcamentos
@@ -380,30 +379,12 @@ namespace PrepedidoBusiness.Bll
                 enderecoEntrega.EndEtg_cidade = p.EndEtg_Cidade;
                 enderecoEntrega.EndEtg_uf = p.EndEtg_UF;
                 enderecoEntrega.EndEtg_cep = p.EndEtg_CEP;
-                enderecoEntrega.EndEtg_descricao_justificativa = await ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA, p.EndEtg_Cod_Justificativa);
+                enderecoEntrega.EndEtg_descricao_justificativa = await Util.ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA, p.EndEtg_Cod_Justificativa, contextoProvider);
             }
             else
                 return null;
 
             return enderecoEntrega;
-        }
-
-        //Esse metodo esta em Util.cs
-        //afazer: alterar a chamada desse método para Util.cs
-        private async Task<string> ObterDescricao_Cod(string grupo, string cod)
-        {
-            var db = contextoProvider.GetContextoLeitura();
-
-            var desc = from c in db.TcodigoDescricaos
-                       where c.Grupo == grupo && c.Codigo == cod
-                       select c.Descricao;
-
-            string result = await desc.FirstOrDefaultAsync();
-
-            if (result == null || result == "")
-                return "Código não cadastrado (" + cod + ")";
-
-            return result;
         }
 
         public async Task<short> Obter_Permite_RA_Status(string apelido)
@@ -418,16 +399,10 @@ namespace PrepedidoBusiness.Bll
             return await raStatus;
         }
 
-        public void AlterarPrepedido(PrePedidoDto prePedido, string apelido)
-        {
-
-        }
-
-
-
+        //afazer: verificar se será necessário alterar a lógica da forma de pagto
         public async Task<IEnumerable<string>> CadastrarPrepedido(PrePedidoDto prePedido, string apelido)
         {
-            apelido = "MARISARJ";
+            //apelido = "MARISARJ";
 
             List<string> lstErros = new List<string>();
 
@@ -452,6 +427,7 @@ namespace PrepedidoBusiness.Bll
             prePedido.EnderecoEntrega.EndEtg_bairro = prePedido.DadosCliente.Bairro;
             prePedido.EnderecoEntrega.EndEtg_cidade = prePedido.DadosCliente.Cidade;
             prePedido.EnderecoEntrega.EndEtg_uf = prePedido.DadosCliente.Uf;
+
             //}
 
             TorcamentistaEindicador tOrcamentista = await BuscarTorcamentista(apelido);
@@ -495,15 +471,13 @@ namespace PrepedidoBusiness.Bll
                         string descricao = Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo);
 
                         List<RegrasBll> regraCrtlEstoque = (await ObterCtrlEstoqueProdutoRegra(prePedido, lstErros)).ToList();
-                        //teste
+
                         await Util.ObterCtrlEstoqueProdutoRegra_Teste(lstErros, regraCrtlEstoque, prePedido.DadosCliente.Uf, tipoPessoa, contextoProvider);
-                        //fim teste
+
 
                         ProdutoBll.VerificarRegrasAssociadasAosProdutos(regraCrtlEstoque, lstErros, prePedido.DadosCliente);
                         //obtendo qtde disponivel
                         await Util.VerificarEstoque(regraCrtlEstoque, contextoProvider);
-
-                        //ObterDisponibilidadeEstoque(regraCrtlEstoque, prePedido, parametroRegra, lstErros);
 
                         VerificarEstoqueInsuficiente(regraCrtlEstoque, prePedido, parametroRegra);
 
@@ -517,9 +491,6 @@ namespace PrepedidoBusiness.Bll
                         //há algum produto descontinuado?
                         await ExisteProdutoDescontinuado(prePedido, lstErros);
 
-                        //afazer:Validar todos os campos que estão sendo validados
-                        //validar detalhesPrepedidos
-
                         if (lstErros.Count <= 0)
                         {
                             using (TransactionScope trans = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -528,31 +499,34 @@ namespace PrepedidoBusiness.Bll
 
                                 //Se orcamento existir, fazer o delete das informações
                                 if (!string.IsNullOrEmpty(prePedido.NumeroPrePedido))
-                                {
                                     await DeletarOrcamentoExiste(prePedido, apelido);
-                                }
 
                                 if (string.IsNullOrEmpty(prePedido.NumeroPrePedido))
-                                {
                                     //gerar o numero de orçamento
                                     await GerarNumeroOrcamento(prePedido);
-                                }
+
 
                                 if (string.IsNullOrEmpty(prePedido.NumeroPrePedido))
                                     lstErros.Add("FALHA NA OPERAÇÃO COM O BANCO DE DADOS AO TENTAR GERAR NSU.");
+
                                 //Cadastrar dados do Orcamento e endereço de entrega 
                                 string log = await EfetivarCadastroPrepedido(prePedido, tOrcamentista, siglaPagto);
-                                //Cadastrar orcamento itens
+
                                 List<TorcamentoItem> lstOrcamentoItem = MontaListaOrcamentoItem(prePedido.ListaProdutos, prePedido.NumeroPrePedido);
 
-                                await ComplementarInfosOrcamentoItem(lstOrcamentoItem, prePedido.DadosCliente.Loja);
+                                await VerificaCadaProdutoSelecionadoEComplementaLista(prePedido, lstOrcamentoItem, lstErros);
 
-                                log = await CadastrarOrctoItens(lstOrcamentoItem, log);
+                                if (!lstErros.Any())
+                                {
+                                    log = await CadastrarOrctoItens(lstOrcamentoItem, log);
 
-                                bool gravouLog = Util.GravaLog(apelido, prePedido.DadosCliente.Loja, prePedido.NumeroPrePedido,
-                                    prePedido.DadosCliente.Id, Constantes.OP_LOG_ORCAMENTO_NOVO, log, contextoProvider);
+                                    bool gravouLog = Util.GravaLog(apelido, prePedido.DadosCliente.Loja, prePedido.NumeroPrePedido,
+                                        prePedido.DadosCliente.Id, Constantes.OP_LOG_ORCAMENTO_NOVO, log, contextoProvider);
 
-                                trans.Complete();
+                                    trans.Complete();
+                                }
+
+
                             }
                         }
                     }
@@ -679,18 +653,18 @@ namespace PrepedidoBusiness.Bll
             torcamento.St_Orcamento = "";
             torcamento.St_Fechamento = "";
             torcamento.St_Orc_Virou_Pedido = 0;
-            torcamento.CustoFinancFornecParcelamento = prepedido.FormaPagtoCriacao.Rb_forma_pagto;//verificar o valor de entrada; esperado apenas 2 caracteres
+            torcamento.CustoFinancFornecParcelamento = ObterSiglaFormaPagto(prepedido);//verificar o valor de entrada; esperado apenas 2 caracteres
             torcamento.CustoFinancFornecQtdeParcelas = (short)ObterQtdeParcelasFormaPagto(prepedido);
             torcamento.Vl_Total = Calcular_Vl_Total(prepedido);
             torcamento.Vl_Total_NF = CalcularVl_Total_NF(prepedido);
             torcamento.Vl_Total_RA = CalcularVl_Total_NF(prepedido) - Calcular_Vl_Total(prepedido);
             torcamento.Perc_RT = 0;//não é passado valor para esse campo rever
-            torcamento.InstaladorInstalaStatus = prepedido.DetalhesPrepedido.InstaladorInstala != "" ? short.Parse(Constantes.COD_INSTALADOR_INSTALA_SIM) : short.Parse(Constantes.COD_INSTALADOR_INSTALA_NAO);
+            torcamento.InstaladorInstalaStatus = short.Parse(prepedido.DetalhesPrepedido.InstaladorInstala); //!= "0" ? short.Parse(Constantes.COD_INSTALADOR_INSTALA_SIM) : short.Parse(Constantes.COD_INSTALADOR_INSTALA_NAO);
             torcamento.InstaladorInstalaUsuarioUltAtualiz = orcamentista.Apelido;
             torcamento.InstaladorInstalaDtHrUltAtualiz = DateTime.Now;
             torcamento.Perc_Desagio_RA_Liquida = Constantes.PERC_DESAGIO_RA_LIQUIDA;
             torcamento.Permite_RA_Status = orcamentista.Permite_RA_Status;
-            torcamento.St_End_Entrega = 1;
+            torcamento.St_End_Entrega = prepedido.EnderecoEntrega.OutroEndereco == true ? (short)1 : (short)0;//se endereço de entrega for o mesmo = 0, se endereço de entrega for outro = 1
             torcamento.EndEtg_Endereco = prepedido.EnderecoEntrega.EndEtg_endereco;
             torcamento.EndEtg_Endereco_Numero = prepedido.EnderecoEntrega.EndEtg_endereco_numero;
             torcamento.EndEtg_Endereco_Complemento = prepedido.EnderecoEntrega.EndEtg_endereco_complemento;
@@ -701,7 +675,6 @@ namespace PrepedidoBusiness.Bll
             torcamento.EndEtg_Cod_Justificativa = prepedido.EnderecoEntrega.EndEtg_descricao_justificativa;
             torcamento.Etg_Imediata_Data = DateTime.Now;
             torcamento.Etg_Imediata_Usuario = orcamentista.Apelido;
-            torcamento.CustoFinancFornecParcelamento = siglaPagto;//sigla pagto
             torcamento.GarantiaIndicadorUsuarioUltAtualiz = orcamentista.Apelido;
             torcamento.GarantiaInidicadorDtHrUltAtualiz = DateTime.Now;
 
@@ -896,7 +869,7 @@ namespace PrepedidoBusiness.Bll
             return retorno;
         }
 
-        //afazer:Verificar se realmente existe necessidade de refazer o calculo
+        //afazer:Verificar se o calculo esta sendo feito corretamente
         private bool CalculaItens(PrePedidoDto prePedido, out decimal vlTotalFormaPagto)
         {
             bool retorno = true;
@@ -1074,7 +1047,7 @@ namespace PrepedidoBusiness.Bll
             //Verificar se necessita retornar algo
         }
 
-        //se estoque for insuficiente, retorna true
+        //se estoque for insuficiente, retorna true        
         private bool VerificarEstoqueInsuficiente(List<RegrasBll> lstRegras, PrePedidoDto prepedido, Tparametro parametro)
         {
             bool retorno = false;
@@ -1210,6 +1183,7 @@ namespace PrepedidoBusiness.Bll
         }
 
         //afazer: Verificar o funcionamento
+        /*Calcula o valor de VlLista com coeficiente referente ao fabricante, tipo de pessoa, qtde de parcelas*/
         public async Task<float> BuscarCoeficientePercentualCustoFinanFornec(PrePedidoDto prePedido, short qtdeParcelas, string siglaPagto, List<string> lstErros)
         {
             float coeficiente = 0;
@@ -1446,42 +1420,135 @@ namespace PrepedidoBusiness.Bll
             return lstRegrasCrtlEstoque;
         }
 
-        private async Task ComplementarInfosOrcamentoItem(List<TorcamentoItem> lstOrcamentoItem, string loja)
-        {
-            var db = contextoProvider.GetContextoGravacao();
+        #region antigo metodo ComplementarInfosOrcamentoItem
+        //afazer: verificar se esse metodo ainda sera necessário, 
+        //pois o metodo VerificaCadaProdutoSelecionado faz o mesmo acesso que ele
+        //private async Task ComplementarInfosOrcamentoItem(List<TorcamentoItem> lstOrcamentoItem, string loja)
+        //{
+        //    var db = contextoProvider.GetContextoGravacao();
 
-            TorcamentoItem orcItem = new TorcamentoItem();
+        //    TorcamentoItem orcItem = new TorcamentoItem();
+        //    foreach (TorcamentoItem item in lstOrcamentoItem)
+        //    {
+        //        var prodLista = from c in db.TprodutoLojas.Include(x => x.Tproduto).Include(x => x.Tproduto.Tfabricante)
+        //                        where c.Tproduto.Tfabricante.Fabricante == item.Fabricante &&
+        //                              c.Loja == loja &&
+        //                              c.Tproduto.Produto == item.Produto
+        //                        select c;
+
+        //        var prod = await prodLista.FirstOrDefaultAsync();
+
+        //        if (prod != null)
+        //        {
+        //            //Orcamento = id_orcamento,
+        //            //Produto = p.NumProduto,
+        //            //Fabricante = Utils.Util.Normaliza_Codigo(p.Fabricante, Constantes.TAM_MIN_FABRICANTE),
+        //            //Qtde = p.Qtde,
+        //            //Preco_Venda = p.VlUnitario,
+        //            //Preco_NF = p.Permite_Ra_Status == 1 ? p.Preco : p.VlUnitario,
+        //            //Obs = p.Obs
+        //            //montagem das informações do produto
+
+        //            //afazer: passar os parametros corretamente para essas variaveis
+        //            item.Qtde_Spe = 0;//caso concorde em comprar mesmo com estoque faltando, recebe a qtde - qtde estoque
+        //            item.Desc_Dado = 0;//recebe o valor de desconto dado no produto
+        //            item.Abaixo_Min_Status = 0;//recebe 0 respeitando o preço minimo ou 1 orçamento abaixo do preço permitido
+        //            item.Abaixo_Min_Autorizacao = "";//Identificação do registro da autorização de desconto superior usado no orçamento deste produto
+        //            item.Abaixo_Min_Autorizador = "";//Usuário que cadastrou a autorização de desconto superior.
+        //            item.Sequencia = 0;//recebe o valor da ordem em que foi digitado o produto
+        //            item.Abaixo_Min_Superv_Autorizador = "";//Usuário supervisor que autorizou o desconto superior, informado pelo operador ao cadastrar a senha de desconto.
+        //            item.CustoFinancFornecCoeficiente = 0;//Coeficiente do custo financeiro aplicado de acordo com o fornecedor, o tipo de parcelamento (à vista, com entrada, sem entrada) e a quantidade de parcelas.
+
+
+        //            item.Preco_Lista = prod.Preco_Lista;// prod.TprodutoLoja.Preco_Lista;
+        //            item.Margem = prod.Margem;
+        //            item.Desc_Max = prod.Desc_Max;
+        //            item.Comissao = prod.Comissao;
+        //            item.Preco_Fabricante = prod.Tproduto.Preco_Fabricante;
+        //            item.Vl_Custo2 = prod.Tproduto.Vl_Custo2;
+        //            item.Descricao = prod.Tproduto.Descricao;
+        //            item.Descricao_Html = prod.Tproduto.Descricao_Html;
+        //            item.Ean = prod.Tproduto.Ean;
+        //            item.Grupo = prod.Tproduto.Grupo;
+        //            item.Peso = prod.Tproduto.Peso;
+        //            item.Qtde_Volumes = prod.Tproduto.Qtde_Volumes;
+        //            item.Markup_Fabricante = prod.Tproduto.Tfabricante.Markup;
+        //            item.Cubagem = prod.Tproduto.Cubagem;
+        //            item.Ncm = prod.Tproduto.Ncm;
+        //            item.Cst = prod.Tproduto.Cst;
+        //            item.Descontinuado = prod.Tproduto.Descontinuado;
+        //            item.CustoFinancFornecPrecoListaBase = (decimal)prod.Preco_Lista;
+        //        }
+        //    }
+        //}
+        #endregion
+
+
+        //Copia do metod abaixo VerificaCadaProdutoSelecionado
+        /*
+         * Montamos a lista de TorcamentoItem para poder cadastrar
+         * Adicionamos erros caso exista
+         * calcula o preco_lista com coeficiente
+         * inclui valor para desc_dado
+         */
+        //afazer: verificar como o preco_lista será enviado, pois pode ser que não haja necessidade de recalcular o valor
+        private async Task VerificaCadaProdutoSelecionadoEComplementaLista(PrePedidoDto prepedido, List<TorcamentoItem> lstOrcamentoItem, List<string> lstErros)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+
             foreach (TorcamentoItem item in lstOrcamentoItem)
             {
-                var prodLista = from c in db.TprodutoLojas.Include(x => x.Tproduto).Include(x => x.Tproduto.Tfabricante)
-                                where c.Tproduto.Tfabricante.Fabricante == item.Fabricante &&
-                                      c.Loja == loja &&
-                                      c.Tproduto.Produto == item.Produto
-                                select c;
-
-                var prod = await prodLista.FirstOrDefaultAsync();
-
-                if (prod != null)
+                //busca os dados do produto
+                var produtoTask = from c in db.TprodutoLojas.Include(x => x.Tproduto).Include(x => x.Tproduto.Tfabricante)
+                                  where c.Tproduto.Tfabricante.Fabricante == item.Fabricante &&
+                                        c.Loja == prepedido.DadosCliente.Loja &&
+                                        c.Tproduto.Produto == item.Produto
+                                  select c;
+                if (produtoTask == null)
+                    lstErros.Add("Produto " + item.Produto + " do fabricante " + item.Fabricante +
+                        " NÃO está cadastrado para a loja " + prepedido.DadosCliente.Loja);
+                else
                 {
-                    //montagem das informações do produto
-                    item.Preco_Lista = prod.Preco_Lista;// prod.TprodutoLoja.Preco_Lista;
-                    item.Margem = prod.Margem;
-                    item.Desc_Max = prod.Desc_Max;
-                    item.Comissao = prod.Comissao;
-                    item.Preco_Fabricante = prod.Tproduto.Preco_Fabricante;
-                    item.Vl_Custo2 = prod.Tproduto.Vl_Custo2;
-                    item.Descricao = prod.Tproduto.Descricao;
-                    item.Descricao_Html = prod.Tproduto.Descricao_Html;
-                    item.Ean = prod.Tproduto.Ean;
-                    item.Grupo = prod.Tproduto.Grupo;
-                    item.Peso = prod.Tproduto.Peso;
-                    item.Qtde_Volumes = prod.Tproduto.Qtde_Volumes;
-                    item.Markup_Fabricante = prod.Tproduto.Tfabricante.Markup;
-                    item.Cubagem = prod.Tproduto.Cubagem;
-                    item.Ncm = prod.Tproduto.Ncm;
-                    item.Cst = prod.Tproduto.Cst;
-                    item.Descontinuado = prod.Tproduto.Descontinuado;
-                    item.CustoFinancFornecPrecoListaBase = (decimal)prod.Preco_Lista;
+                    var produto = await produtoTask.FirstOrDefaultAsync();
+                    if (produto != null)
+                    {
+                        ComplementarInfosOrcamentoItem(item, produto);
+
+                        float custoFinancFornecCoeficiente = 0;
+                        decimal custoFinancFornecPrecoListaBase = (decimal)produto.Preco_Lista;
+
+                        //verifica se o tipo de parcela é a vista
+                        string siglaFormaPagto = ObterSiglaFormaPagto(prepedido);
+                        float c_custoFinancFornecQtdeParcelas = ObterQtdeParcelasFormaPagto(prepedido);
+
+                        if (siglaFormaPagto == Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA)
+                            custoFinancFornecCoeficiente = 1;
+                        else
+                        {
+                            //buscar coeficiente
+                            var percCustoTask = from c in db.TpercentualCustoFinanceiroFornecedors
+                                                where c.Fabricante == produto.Fabricante &&
+                                                      c.Tipo_Parcelamento == siglaFormaPagto &&//tipo de parcela CE ou SE
+                                                      c.Qtde_Parcelas == c_custoFinancFornecQtdeParcelas
+                                                select c;
+
+                            var percCusto = await percCustoTask.FirstOrDefaultAsync();
+
+                            if (percCusto != null)
+                            {
+                                custoFinancFornecCoeficiente = percCusto.Coeficiente;
+                                item.Preco_Lista = (decimal)percCusto.Coeficiente * produto.Preco_Lista;
+
+                                if (item.Preco_Lista == 0)
+                                    item.Desc_Dado = 0;
+                                else
+                                    item.Desc_Dado = (float?)(100 * (item.Preco_Lista * item.Preco_Venda) / item.Preco_Lista);
+                            }
+                            else
+                                lstErros.Add("Opção de parcelamento não disponível para fornecedor " +
+                                    item.Fabricante + ": " + item.Qtde + " parcela(s)");
+                        }
+                    }
                 }
             }
         }
@@ -1508,118 +1575,47 @@ namespace PrepedidoBusiness.Bll
             return lstOrcamentoItem;
         }
 
-        private async Task<bool> ValidarOrcamentistaIndicador(string apelido)
+        private void ComplementarInfosOrcamentoItem(TorcamentoItem item, TprodutoLoja produto)
         {
-            bool retorno = false;
 
-            var db = contextoProvider.GetContextoLeitura();
+            item.Qtde_Spe = 0;//caso concorde em comprar mesmo com estoque faltando, recebe a qtde - qtde estoque
+                              //afazer: item.Qtde_Spe = corrigir dto para mandar a qtde de itens que o
+                              //cliente concordou em solicitar, mesmo sem estoque
+            item.Desc_Dado = item.Desc_Dado;
+            #region campos setados manualmente
+            /*
+             * essa parte não esta sendo verificada, pois não esta sendo usado no sistema antigo, 
+             * então estamos setando manualmente, para salvar os dados conforme inserido no antigo
+             */
+            item.Abaixo_Min_Status = 0;
+            item.Abaixo_Min_Autorizacao = "";
+            item.Abaixo_Min_Autorizador = "";
+            #endregion
+            item.Sequencia = 0;//recebe o valor da ordem em que foi digitado o produto
+                               //afazer: item.Sequencia = corrigir o dto para enviar a ordem com que os produtos são inseridos no prepedido
+            item.Abaixo_Min_Superv_Autorizador = "";
+            item.CustoFinancFornecCoeficiente = 0;//Coeficiente do custo financeiro aplicado de acordo com o fornecedor, o tipo de parcelamento (à vista, com entrada, sem entrada) e a quantidade de parcelas.
+                                                  //afazer: item.CustoFinancFornecCoeficiente = corrigir dto para passar o coeficiente dos produtos selecionados
 
-            var orcamentistaTask = await (from c in db.TorcamentistaEindicadors
-                                          where c.Apelido == apelido
-                                          select c.Apelido).FirstOrDefaultAsync();
-            if (orcamentistaTask == apelido)
-                retorno = true;
+            item.Preco_Lista = produto.Preco_Lista;
+            item.Margem = produto.Margem;
+            item.Desc_Max = produto.Desc_Max;
+            item.Comissao = produto.Comissao;
+            item.Preco_Fabricante = produto.Tproduto.Preco_Fabricante;
+            item.Vl_Custo2 = produto.Tproduto.Vl_Custo2;
+            item.Descricao = produto.Tproduto.Descricao;
+            item.Descricao_Html = produto.Tproduto.Descricao_Html;
+            item.Ean = produto.Tproduto.Ean;
+            item.Grupo = produto.Tproduto.Grupo;
+            item.Peso = produto.Tproduto.Peso;
+            item.Qtde_Volumes = produto.Tproduto.Qtde_Volumes;
+            item.Markup_Fabricante = produto.Tproduto.Tfabricante.Markup;
+            item.Cubagem = produto.Tproduto.Cubagem;
+            item.Ncm = produto.Tproduto.Ncm;
+            item.Cst = produto.Tproduto.Cst;
+            item.Descontinuado = produto.Tproduto.Descontinuado;
+            item.CustoFinancFornecPrecoListaBase = (decimal)produto.Preco_Lista;
 
-            return retorno;
-        }
-
-        //private async Task<bool> ValidarSeOrcamentoJaExiste(PrePedidoDto prePedido)
-        //{
-        //    bool retorno = true;
-
-        //    var db = contextoProvider.GetContextoLeitura();
-
-        //    var orcamentoTask = from c in db.Torcamentos.Include(r => r.TorcamentoItem)
-        //                        where c.Id_Cliente == prePedido.DadosCliente.Id &&
-        //                              c.Data == DateTime.Now.Date &&
-        //                              c.Loja == prePedido.DadosCliente.Loja &&
-        //                              c.Orcamentista == prePedido.DadosCliente.Indicador_Orcamentista &&
-        //                              c.Hora == Convert.ToString(DateTime.Now.Hour +
-        //                                                         DateTime.Now.Minute +
-        //                                                         DateTime.Now.Second)
-        //                        orderby c.TorcamentoItem.Orcamento, c.TorcamentoItem.Sequencia
-        //                        select c.Orcamento;
-
-        //    var qtdeRegistro = await orcamentoTask.ToListAsync();
-
-        //    if (qtdeRegistro.Count == 0)
-        //        retorno = false;
-
-        //    return retorno;
-        //}
-
-        #region ValidarTipoCustoFinanceiroFornecedor
-        //private List<string> ValidarTipoCustoFinanceiroFornecedor(List<string> lstErros, string custoFinanceiroTipoParcelato)
-        //{
-        //    if (custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA &&
-        //        custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA &&
-        //        custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA)
-        //        lstErros.Add("A forma de pagamento não foi informada (à vista, com entrada, sem entrada).");
-
-        //    if (custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA &&
-        //        custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA)
-        //    {
-        //        if (int.Parse(custoFinanceiroTipoParcelato) <= 0)
-        //            lstErros.Add("Não foi informada a quantidade de parcelas para a forma de pagamento selecionada " +
-        //                "(" + DescricaoCustoFornecTipoParcelamento(custoFinanceiroTipoParcelato) + ")");
-        //    }
-
-
-        //    return lstErros;
-        //}
-        #endregion
-
-        private string DescricaoCustoFornecTipoParcelamento(string tipoPagto)
-        {
-            string retorno = "";
-
-            switch (tipoPagto)
-            {
-                case Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA:
-                    retorno = "Com Entrada";
-                    break;
-                case Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA:
-                    retorno = "Sem Entrada";
-                    break;
-                case Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA:
-                    retorno = "À Vista";
-                    break;
-            }
-
-            return retorno;
-        }
-
-        //Busca produtos e verifica se loja esta cadastrada
-        private async Task<IEnumerable<string>> VerificaCadaProdutoSelecionado(List<TorcamentoItem> lstOrcamentoItem,
-            string loja)
-        {
-            List<string> lstErros = new List<string>();
-
-            var db = contextoProvider.GetContextoLeitura();
-
-            foreach (TorcamentoItem item in lstOrcamentoItem)
-            {
-                var prodTeste = from c in db.TprodutoLojas.Include(x => x.Tproduto).Include(x => x.Tproduto.Tfabricante)
-                                where c.Tproduto.Tfabricante.Fabricante == item.Fabricante &&
-                                      c.Loja == loja &&
-                                      c.Tproduto.Produto == item.Produto
-                                select c;
-
-                var t = await prodTeste.FirstOrDefaultAsync();
-
-                //var prodLista = from c in db.Tprodutos.Include(r => r.TprodutoLoja).Include(r => r.Tfabricante)
-                //                    where c.Fabricante == item.Fabricante &&
-                //                          c.Produto == item.Produto &&
-                //                          c.TprodutoLoja.Loja == loja
-                //                    select c.Produto;
-
-                //    var prod = await prodLista.FirstOrDefaultAsync();
-
-                if (t == null)
-                    lstErros.Add("Produto " + item.Produto + " do fabricante " + item.Fabricante +
-                        " NÃO está cadastrado para a loja " + loja);
-            }
-            return lstErros;
         }
 
         private string DecodificaCustoFinanFornecQtdeParcelas(string tipoParcelamento, short custoFFQtdeParcelas)

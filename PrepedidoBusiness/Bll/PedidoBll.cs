@@ -224,7 +224,7 @@ namespace PrepedidoBusiness.Bll
             //obtemos a descricao somente se o codigo existir
             enderecoEntrega.EndEtg_descricao_justificativa = "";
             if (!String.IsNullOrEmpty(p.EndEtg_Cod_Justificativa))
-                enderecoEntrega.EndEtg_descricao_justificativa = Util.ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
+                enderecoEntrega.EndEtg_descricao_justificativa = await Util.ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
                     p.EndEtg_Cod_Justificativa, contextoProvider);
 
             return await Task.FromResult(enderecoEntrega);
@@ -256,7 +256,7 @@ namespace PrepedidoBusiness.Bll
                 {
                     Fabricante = c.Fabricante,
                     NumProduto = c.Produto,
-                    Descricao = c.Descricao_Html,//afazer: montagem do html correto
+                    Descricao = c.Descricao_Html,
                     Qtde = c.Qtde,
                     Faltando = faltante,
                     CorFaltante = ObterCorFaltante((int)c.Qtde, qtde_vendido, qtde_sem_presenca),
@@ -276,8 +276,7 @@ namespace PrepedidoBusiness.Bll
 
             return lstProduto;
         }
-
-
+        
         public async Task<PedidoDto> BuscarPedido(string apelido, string numPedido)
         {
             var db = contextoProvider.GetContextoLeitura();
@@ -392,15 +391,6 @@ namespace PrepedidoBusiness.Bll
 
             return await Task.FromResult(DtoPedido);
         }
-
-        //private string FormatarDescricaoProduto(string descricao)
-        //{
-        //    string retorno = "";
-        //    //afazer: verificar com o Edu se faz o método ou ele faz no front
-
-
-        //    return retorno;
-        //}
 
         private string ObterEntregaImediata(Tpedido p)
         {
@@ -734,7 +724,7 @@ namespace PrepedidoBusiness.Bll
                 ocorre.mensagemDtoOcorrenciaPedidos = msg;
                 ocorre.Finalizado_Usuario = i.Finalizado_Usuario;
                 ocorre.Finalizado_Data_Hora = i.Finalizado_Data_Hora;
-                ocorre.Tipo_Ocorrencia = Util.ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__OCORRENCIAS_EM_PEDIDOS__TIPO_OCORRENCIA, i.Tipo_Ocorrencia, contextoProvider);
+                ocorre.Tipo_Ocorrencia = await Util.ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__OCORRENCIAS_EM_PEDIDOS__TIPO_OCORRENCIA, i.Tipo_Ocorrencia, contextoProvider);
                 ocorre.Texto_Finalizacao = i.Texto_Finalizacao;
                 lista.Add(ocorre);
             }
@@ -1082,55 +1072,5 @@ namespace PrepedidoBusiness.Bll
             };
             return retorno;
         }
-
-        //private async Task<string> OpcaoFormaPagto(string codigo)
-        //{
-        //    string retorno = "";
-
-        //    switch (codigo)
-        //    {
-        //        case Constantes.ID_FORMA_PAGTO_DINHEIRO:
-        //            retorno = "Dinheiro";
-        //            break;
-        //        case Constantes.ID_FORMA_PAGTO_DEPOSITO:
-        //            retorno = "Depósito";
-        //            break;
-        //        case Constantes.ID_FORMA_PAGTO_CHEQUE:
-        //            retorno = "Cheque";
-        //            break;
-        //        case Constantes.ID_FORMA_PAGTO_BOLETO:
-        //            retorno = "Boleto";
-        //            break;
-        //        case Constantes.ID_FORMA_PAGTO_CARTAO:
-        //            retorno = "Cartão (internet)";
-        //            break;
-        //        case Constantes.ID_FORMA_PAGTO_CARTAO_MAQUINETA:
-        //            retorno = "Cartão (maquineta)";
-        //            break;
-        //        case Constantes.ID_FORMA_PAGTO_BOLETO_AV:
-        //            retorno = "Boleto AV";
-        //            break;
-        //    };
-
-        //    return await Task.FromResult(retorno);
-        //}
-
-
-        //public async Task<decimal> CalculaTotalDevolucoes_Venda_E_NF(string numPedido)
-        //{
-        //    var db = contextoProvider.GetContexto();
-
-        //    var itemDevTotal = from c in db.TpedidoItemDevolvidos
-        //                       where c.Pedido.StartsWith(numPedido)
-        //                       select new { venda = c.Qtde * c.Preco_Venda, nf = c.Qtde * c.Preco_NF };
-
-        //    var vlTotDevVenda = await itemDevTotal.Select(r => r.venda).SumAsync();
-        //    var vlTotDevNf = await itemDevTotal.Select(r => r.nf).SumAsync();
-
-        //    decimal result = vlTotDevVenda.Value - vlTotDevNf.Value;
-
-        //    return await Task.FromResult(result);
-        //}
-
     }
 }
