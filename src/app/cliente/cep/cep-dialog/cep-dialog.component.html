@@ -3,7 +3,7 @@
     <header>Busca de CEP</header>
     <article mat-dialog-content class="fixo">
         
-        <form (ngSubmit)="buscar()">
+        <form>
             <div>
                 <!-- afazer: corrigir o tamanho do campos -->
                 <mat-form-field [class]="telaDesktop? 'campoTextoDesktop': 'campoTextoCel'">
@@ -19,7 +19,7 @@
                 <mat-label>Uf</mat-label>
                 <mat-select required [(ngModel)]="uf" [ngModelOptions]="{standalone: true}">
                     <mat-option value="">Selecione</mat-option>
-                    <mat-option *ngFor="let i of lstUf" [(value)]="i">
+                    <mat-option *ngFor="let i of lstUf" [value]="i">
                         {{i}}
                     </mat-option>
                 </mat-select>
