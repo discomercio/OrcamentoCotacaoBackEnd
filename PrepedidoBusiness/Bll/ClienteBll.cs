@@ -51,7 +51,7 @@ namespace PrepedidoBusiness.Bll
             {
                 if (lstErros.Count == 0)
                 {
-                    using (var dbgravacao = contextoProvider.GetContextoGravacao())
+                    using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
                     {
                         if (dadosClienteCadastroDto.Contribuinte_Icms_Status == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM) &&
                         dadosClienteCadastroDto.Ie != null || dadosClienteCadastroDto.Ie != "")
@@ -83,7 +83,7 @@ namespace PrepedidoBusiness.Bll
                             log = Utils.Util.MontaLog(cli, log, campos_a_omitir);
                             //Essa parte esta na pagina ClienteAtualiza.asp linha 1113
                             bool salvouLog = Utils.Util.GravaLog(dbgravacao, apelido, dadosClienteCadastroDto.Loja, "", dadosClienteCadastroDto.Id,
-                                Constantes.OP_LOG_CLIENTE_ALTERACAO, log);
+                                Constantes.OP_LOG_CLIENTE_ALTERACAO, log, contextoProvider);
                             if (salvouLog)
                                 dbgravacao.transacao.Commit();
                         }
@@ -283,7 +283,7 @@ namespace PrepedidoBusiness.Bll
 
             if (lstErros.Count <= 0)
             {
-                using (var dbgravacao = contextoProvider.GetContextoGravacao())
+                using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
                 {
                     string log = "";
 
@@ -297,7 +297,7 @@ namespace PrepedidoBusiness.Bll
                         await CadastrarRefComercial(dbgravacao, clienteDto.RefComercial, apelido, id_cliente, log);
                         //fazer a inserção de Log aqui.
                         bool gravouLog = Utils.Util.GravaLog(dbgravacao, apelido, cliente.Loja, "", id_cliente,
-                            Constantes.OP_LOG_CLIENTE_INCLUSAO, log);
+                            Constantes.OP_LOG_CLIENTE_INCLUSAO, log, contextoProvider);
                         if (gravouLog)
                             dbgravacao.transacao.Commit();
                     }

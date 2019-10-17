@@ -56,7 +56,7 @@ namespace PrepedidoBusiness.Bll
                 return await Task.FromResult(retorno);
 
             //Fazer Update no bd
-            using (var dbgravacao = contextoProvider.GetContextoGravacao())
+            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
             {
                 TorcamentistaEindicador orcamentista = await dbgravacao.TorcamentistaEindicadors
                 .Where(c => c.Apelido == apelido).SingleAsync();
@@ -96,7 +96,7 @@ namespace PrepedidoBusiness.Bll
                 UserAgent = userAgent
             };
 
-            using (var dbgravacao = contextoProvider.GetContextoGravacao())
+            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
             {
                 dbgravacao.TsessaoHistoricos.Add(sessaoHist);
                 await dbgravacao.SaveChangesAsync();
@@ -228,7 +228,7 @@ namespace PrepedidoBusiness.Bll
 
         public async Task FazerLogout(string apelido)
         {
-            using (var dbgravacao = contextoProvider.GetContextoGravacao())
+            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
             {
 
                 //O orcamentista não é salvo nessa tabela
