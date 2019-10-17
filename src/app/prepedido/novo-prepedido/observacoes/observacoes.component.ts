@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { take } from 'rxjs/operators';
 import { Constantes } from 'src/app/dto/Constantes';
+import { PrepedidoBuscarService } from 'src/app/servicos/prepedido/prepedido-buscar.service';
 
 
 @Component({
@@ -26,6 +27,7 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
     public readonly alertaService: AlertaService,
     public readonly dialog: MatDialog,
     telaDesktopService: TelaDesktopService,
+    public readonly prepedidoBuscarService: PrepedidoBuscarService,
     private _ngZone: NgZone
   ) {
     super(telaDesktopService, router, novoPrepedidoDadosService);
@@ -51,7 +53,25 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
   }
   continuar() {
     this.dadosParaModelo();
-    this.router.navigate(["../dados-pagto"], { relativeTo: this.activatedRoute });
+    
+    this.prepedidoBuscarService.cadastrarPrepedido(this.novoPrepedidoDadosService.prePedidoDto).subscribe({      
+      next: (r) => {
+        if (r == null) {
+          r = new Array();
+          r.push("Retorno nulo do servidor.");
+        }
+        if (r.length > 0) {
+          this.alertaService.mostrarMensagem("Erros ao salvar. \nLista de erros: \n" + r.join("\n"));
+          return;
+        }
+        this.alertaService.mostrarMensagem("Pré-pedido criado com sucesso.");
+        this.router.navigate(["/"]);
+      },
+      error: (r) => this.alertaService.mostrarErroInternet()
+    });
+    // this.dadosParaModelo();
+    
+    // this.router.navigate(["../confirmar-prepedido"], { relativeTo: this.activatedRoute });
   }
   //#endregion
 

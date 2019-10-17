@@ -22,4 +22,16 @@ export class CepService {
     return this.http.get<CepDto[]>(environment.apiUrl + 'cep/buscarCep/', { params: params });
   }
 
+  public BuscarUfs(): Observable<string[]> {
+    return this.http.get<string[]>(environment.apiUrl + 'cep/buscarUfs');
+  }
+
+  public buscarCepPorEndereco(endereco: string, localidade: string, uf: string): Observable<CepDto[]> {
+    let params = new HttpParams();
+    params = params.append('endereco', endereco);
+    params = params.append('localidade', localidade);
+    params = params.append('uf', uf);
+    return this.http.get<CepDto[]>(environment.apiUrl + 'cep/buscarCepPorEndereco', { params: params });
+    //afazer: verificar a possibilidade de buscar apenas por estado
+  }
 }

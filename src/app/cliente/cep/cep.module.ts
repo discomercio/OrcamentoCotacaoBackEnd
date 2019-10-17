@@ -2,8 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CepComponent } from './cep/cep.component';
 import { CepDialogComponent } from './cep-dialog/cep-dialog.component';
-import { MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule, MatDialogModule } from '@angular/material';
-import { FormsModule } from '@angular/forms';
+import { MatIconModule, MatInputModule, MatButtonModule, MatCardModule, 
+  MatRadioModule, MatAutocompleteModule, MatCheckbox, MatCheckboxModule, MatTableModule, 
+  MatSnackBarModule, MatSelectModule, MatStepperModule, MatDialogModule, 
+  MatPaginatorModule, MatSlideToggleModule, MatFormFieldModule, MatExpansionModule } from '@angular/material';; import { FormsModule } from '@angular/forms';
 import { TextMaskModule } from 'angular2-text-mask';
 
 
@@ -16,6 +18,8 @@ import { TextMaskModule } from 'angular2-text-mask';
     MatIconModule,
     MatButtonModule,
     MatDialogModule,
+    MatSelectModule,
+    MatRadioModule,
     FormsModule,
     TextMaskModule,
     CommonModule

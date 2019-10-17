@@ -1,9 +1,100 @@
 <section [ngClass]="{'sectionDesktop': telaDesktop, 'sectionCelular': !telaDesktop}">
+
     <header>Busca de CEP</header>
     <article mat-dialog-content class="fixo">
-        afazer: acerta a classe de fixo, a largura, etc. 
-        afazer: podemos copaircopair os estilso da selec-prod-dialog.component.scss
-        dados dos ceps
+        
+        <form (ngSubmit)="buscar()">
+            <div>
+                <!-- afazer: corrigir o tamanho do campos -->
+                <mat-form-field [class]="telaDesktop? 'campoTextoDesktop': 'campoTextoCel'">
+                    <input matInput type="text" placeholder="Endereço" [(ngModel)]="endereco" required
+                        [ngModelOptions]="{standalone: true}">
+                </mat-form-field>
+                <mat-form-field [class]="telaDesktop? 'campoTextoDesktop': 'campoTextoCel'">
+                    <input matInput type="text" placeholder="Localidade" [(ngModel)]="localidade"
+                        [ngModelOptions]="{standalone: true}">
+                </mat-form-field>
+            </div>
+            <mat-form-field [class]="telaDesktop? 'campoTextoDesktop': 'campoTextoCel'">
+                <mat-label>Uf</mat-label>
+                <mat-select required [(ngModel)]="uf" [ngModelOptions]="{standalone: true}">
+                    <mat-option value="">Selecione</mat-option>
+                    <mat-option *ngFor="let i of lstUf" [(value)]="i">
+                        {{i}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+ 
+            <div>
+                <a mat-raised-button (click)="buscarCepPorEndereco()">
+                    <mat-icon>search</mat-icon> Buscar Cep
+                </a>
+            </div>
+
+        </form>
+
+        <!-- tabela de endereços -->
+        <mat-radio-group *ngIf="lstEnderecos.length > 0" [(ngModel)]="endereco_selecionado" required
+            [ngModelOptions]="{standalone: true}">
+            <table class="tabela_endereco " *ngIf="telaDesktop">
+                <thead>
+                    <tr>
+                        <th style="width: auto;" align="left" valign="bottom">
+                            <!-- checkbox -->
+                        </th>
+
+                        <th style="width: auto;" align="left" valign="bottom">
+                            CEP
+                        </th>
+                        <th style="width: auto;" align="left" valign="bottom">
+                            UF
+                        </th>
+                        <th style="width: auto;" align="left" valign="bottom">
+                            Cidade
+                        </th>
+                        <th style="width: auto;" align="left" valign="bottom">
+                            Bairro
+                        </th>
+                        <th style="width: auto;" align="left" valign="bottom">
+                            Lougradouro
+                        </th>
+                        <th style="width: auto;" align="left" valign="bottom">
+                            Complemento
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="destaquelinha">
+                    <ng-container *ngFor="let i of lstEnderecos; let idx = index">
+                        <tr >
+                            <td>
+                                <mat-radio-button *ngIf="telaDesktop" type="radio" name="chkIndice" value="{{idx}}">
+
+                                </mat-radio-button>
+                            </td>
+                            <td>
+                                {{i.Cep}}
+                            </td>
+                            <td>
+                                {{i.Uf}}
+                            </td>
+                            <td>
+                                {{i.Cidade}}
+                            </td>
+                            <td>
+                                {{i.Bairro}}
+                            </td>
+                            <td>
+                                {{i.Endereco}}
+                            </td>
+                            <td>
+                                {{i.LogradouroComplemento}}
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </mat-radio-group>
+
     </article>
     <footer mat-dialog-actions style="justify-content: space-around;">
         <button mat-raised-button (click)="onOkClick()" color="accent">

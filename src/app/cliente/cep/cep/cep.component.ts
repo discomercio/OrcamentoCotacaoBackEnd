@@ -5,6 +5,7 @@ import { TelaDesktopService } from 'src/app/servicos/telaDesktop/telaDesktop.ser
 import { TelaDesktopBaseComponent } from 'src/app/servicos/telaDesktop/telaDesktopBaseComponent';
 import { MatDialog } from '@angular/material';
 import { CepDialogComponent } from '../cep-dialog/cep-dialog.component';
+import { CepDto } from 'src/app/dto/Cep/CepDto';
 
 @Component({
   selector: 'app-cep',
@@ -108,8 +109,12 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
     const dialogRef = this.dialog.open(CepDialogComponent, options);
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        //afazer: transferir os dados
-        window.alert("afazer: transferir os dados");
+        let end: CepDto = dialogRef.componentInstance.lstEnderecos[dialogRef.componentInstance.endereco_selecionado];
+        this.Endereco = end.Endereco;
+        this.Uf = end.Uf;
+        this.Bairro = end.Bairro;
+        this.Cidade = end.Cidade;
+        this.Cep = end.Cep;
       }
     });
   }

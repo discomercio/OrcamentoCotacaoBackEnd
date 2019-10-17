@@ -7,7 +7,7 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 
 <section [ngClass]="{'sectionDesktop': telaDesktop, 'sectionCelular': !telaDesktop}">
 	<header *ngIf="!prePedidoDto" [ngClass]="{'carregando': carregandoDto || carregandoProds}">Carregando dados</header>
-	<form style="display: contents;" *ngIf="prePedidoDto">
+	<form style="display: contents;" *ngIf="prePedidoDto" (keydown.enter)="continuar()">
 		<header>
 			<ng-container *ngIf="criando; else tituloEditando">Criar Pré-pedido</ng-container>
 			<ng-template #tituloEditando>Editar Pré-pedido</ng-template>
@@ -31,7 +31,6 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 						<mat-icon>add</mat-icon> Adicionar produto
 					</a></div>
 			</div>
-
 			<!--  R E L A Ç Ã O   D E   P R O D U T O S  -->
 			<!-- versão desktop -->
 			<table class="tabelaitens destaquelinha" *ngIf="telaDesktop">
@@ -186,14 +185,17 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 
 			</table>
 
+
+
+
 			<!--  R E L A Ç Ã O   D E   P R O D U T O S  -->
 			<!-- versão celular -->
-			<div *ngIf="!telaDesktop" >
+			<div *ngIf="!telaDesktop">
 				<div *ngFor="let i of prePedidoDto?.ListaProdutos" class="caixacel ">
 					<!-- sempre uma linha inteira -->
 					<div style="cursor: pointer; padding-bottom: 1em; text-align: center" (click)="mostrarProdutos(i)">
 						Produto
-						{{i.Fabricante}}/{{i.NumProduto}} -
+						{{i.Fabricante}}/{{i.NumProduto}} - 
 						<span [innerHTML]="i.Descricao"></span>
 					</div>
 
@@ -270,7 +272,9 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 					</span>
 				</div>
 			</div>
-
+			<div>
+				<app-dados-pagto #dadosPagto></app-dados-pagto>
+			</div>
 		</article>
 		<footer>
 			<a mat-raised-button color="accent" (click)="voltar()">

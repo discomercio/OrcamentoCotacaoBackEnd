@@ -6,6 +6,9 @@ import { Router } from '@angular/router';
 import { MoedaUtils } from 'src/app/utils/moedaUtils';
 import { Constantes } from 'src/app/dto/Constantes';
 import { CpfCnpjUtils } from 'src/app/utils/cpfCnpjUtils';
+import { FormaPagtoDto } from 'src/app/dto/FormaPagto/FormaPagtoDto';
+import { Observable } from 'rxjs';
+import { Output, EventEmitter } from '@angular/core';
 
 /*
 classe que implementa a variável telaDesktop
@@ -52,7 +55,6 @@ export class PassoPrepedidoBase extends TelaDesktopBaseComponent {
     totalPedido(): number {
         return this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + current.TotalItem, 0);
     }
-
     //#endregion
 
 

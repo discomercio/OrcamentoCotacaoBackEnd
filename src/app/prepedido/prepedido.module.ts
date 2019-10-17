@@ -4,7 +4,8 @@ import { CommonModule } from '@angular/common';
 import { PrepedidoRoutingModule } from './prepedido-routing.module';
 import { ConsultaPrepedidoComponent } from './consulta-prepedido/consulta-prepedido.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatIconModule, MatInputModule, MatButtonModule, MatCardModule, MatRadioModule, MatAutocompleteModule, MatCheckbox, MatCheckboxModule, MatTableModule, MatSnackBarModule } from '@angular/material';
+import { MatIconModule, MatInputModule, MatButtonModule, MatCardModule, MatRadioModule, 
+  MatAutocompleteModule, MatCheckbox, MatCheckboxModule, MatTableModule, MatSnackBarModule, MatFormFieldModule} from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ListaPrepedidoComponent } from './lista-prepedido/lista-prepedido.component';
 import { ConsultaBaseComponent } from './consulta-base/consulta-base.component';
@@ -16,6 +17,7 @@ import { PrepedidoDesktopComponent } from './detalhes-prepedido/prepedido-deskto
 import { PrepedidoCelularComponent } from './detalhes-prepedido/prepedido-celular/prepedido-celular.component';
 import { NovoPrepedidoModule } from './novo-prepedido/novo-prepedido.module';
 import { ClienteCorpoModule } from '../cliente/cliente-corpo/cliente-corpo.module';
+
 
 @NgModule({
   declarations: [ConsultaPrepedidoComponent, ListaPrepedidoComponent, ConsultaBaseComponent, ListaBaseComponent, DetalhesPrepedidoComponent,
@@ -35,6 +37,7 @@ import { ClienteCorpoModule } from '../cliente/cliente-corpo/cliente-corpo.modul
     MatCheckboxModule,
     MatTableModule,
     MatSnackBarModule,
+    MatFormFieldModule,
     ReactiveFormsModule,
     PrepedidoRoutingModule
   ],

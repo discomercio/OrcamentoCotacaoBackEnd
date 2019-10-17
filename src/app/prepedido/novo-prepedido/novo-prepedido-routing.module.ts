@@ -44,11 +44,6 @@ const routes: Routes = [
         component: ObservacoesComponent
       },
       {
-        path: 'dados-pagto',
-        canActivate: [LoginGuard],
-        component: DadosPagtoComponent
-      },
-      {
         path: 'confirmar-prepedido',
         canActivate: [LoginGuard],
         component: ConfirmarPrepedidoComponent

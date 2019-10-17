@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { PrePedidoDto } from 'src/app/dto/Prepedido/DetalhesPrepedido/PrePedidoDto';
 import { NovoPrepedidoDadosService } from '../novo-prepedido-dados.service';
@@ -19,6 +19,8 @@ import { ProdutoComboDto } from 'src/app/dto/Produto/ProdutoComboDto';
 import { ProdutoDto } from 'src/app/dto/Produto/ProdutoDto';
 import { asapScheduler } from 'rxjs';
 import { ConfirmationDialogComponent } from 'src/app/utils/confirmation-dialog/confirmation-dialog.component';
+import { DadosPagtoComponent } from '../dados-pagto/dados-pagto.component';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-itens',
@@ -53,7 +55,6 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
 
   carregandoDto = true;
   ngOnInit() {
-
     //se tem um parâmetro no link, colocamos ele no serviço
     let numeroPrepedido = this.activatedRoute.snapshot.params.numeroPrepedido;
     if (!!numeroPrepedido) {
@@ -68,7 +69,6 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
               this.router.navigate(["/novo-prepedido"]);
               return;
             }
-
             //detalhes do prepedido
             this.carregandoDto = false;
             this.prePedidoDto = r;
@@ -206,6 +206,9 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
   }
   //#endregion
 
+  //componente de forma de pagamento, precisa do static false
+  @ViewChild("dadosPagto", { static: false }) dadosPagto: DadosPagtoComponent;
+
   //#region digitacao de numeros
 
   /*
@@ -221,6 +224,8 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
       i.Qtde = 1;
     }
     i.TotalItem = i.VlUnitario * i.Qtde; // VlUnitario = Vl Venda na tela
+
+    this.dadosPagto.prepedidoAlterado();
   }
   digitouPreco(e: Event, i: PrepedidoProdutoDtoPrepedido) {
     let valor = ((e.target) as HTMLInputElement).value;
@@ -304,6 +309,11 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     //validação: tem que ter algum produto
     if (this.prePedidoDto.ListaProdutos.length === 0) {
       this.alertaService.mostrarMensagem("Selecione ao menos um produto para continuar.");
+      return;
+    }
+
+    //verifica se a forma de pgamento tem algum aviso
+    if (!this.dadosPagto.podeContinuar()) {
       return;
     }
 

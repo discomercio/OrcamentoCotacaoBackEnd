@@ -4,6 +4,7 @@ import { DadosClienteCadastroDto } from 'src/app/dto/ClienteCadastro/DadosClient
 import { EnderecoEntregaDtoClienteCadastro } from 'src/app/dto/ClienteCadastro/EnderecoEntregaDTOClienteCadastro';
 import { DetalhesDtoPrepedido } from 'src/app/dto/Prepedido/DetalhesPrepedido/DetalhesDtoPrepedido';
 import { ClienteCadastroDto } from 'src/app/dto/ClienteCadastro/ClienteCadastroDto';
+import { FormaPagtoCriacaoDto } from 'src/app/dto/Prepedido/DetalhesPrepedido/FormaPagtoCriacaoDto';
 
 @Injectable({
   providedIn: 'root'
@@ -43,6 +44,7 @@ export class NovoPrepedidoDadosService {
     p.FormaPagto = new Array();
     p.St_Orc_Virou_Pedido = false;
     p.NumeroPedido = "";
+    p.FormaPagtoCriacao = new FormaPagtoCriacaoDto();
 
   }
 
