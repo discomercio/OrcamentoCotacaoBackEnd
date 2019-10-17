@@ -11,9 +11,9 @@ namespace PrepedidoBusiness.Bll
 {
     public class CoeficienteBll
     {
-        private readonly InfraBanco.ContextoProvider contextoProvider;
+        private readonly InfraBanco.ContextoBdProvider contextoProvider;
 
-        public CoeficienteBll(InfraBanco.ContextoProvider contextoProvider)
+        public CoeficienteBll(InfraBanco.ContextoBdProvider contextoProvider)
         {
             this.contextoProvider = contextoProvider;
         }

@@ -30,7 +30,7 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
         public decimal? C_pse_demais_prest_valor { get; set; }
         public int? C_pse_demais_prest_periodo { get; set; }
         public string C_forma_pagto { get; set; }//Descrição da forma de pagto
-
+        public string Descricao_meio_pagto { get; set; }//para mostrar 
 
     }
 }

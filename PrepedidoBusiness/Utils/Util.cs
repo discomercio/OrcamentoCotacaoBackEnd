@@ -77,7 +77,7 @@ namespace PrepedidoBusiness.Utils
             return retorno;
         }
 
-        public static string ObterDescricao_Cod(string grupo, string cod, ContextoBdProvider contextoProvider)
+        public static async Task<string> ObterDescricao_Cod(string grupo, string cod, ContextoBdProvider contextoProvider)
         {
             var db = contextoProvider.GetContextoLeitura();
 

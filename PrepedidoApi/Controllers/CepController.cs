@@ -34,5 +34,32 @@ namespace PrepedidoApi.Controllers
             return Ok(ret);
         }
 
+#if DEBUG
+        [AllowAnonymous]
+#endif
+        [HttpGet("buscarUfs")]
+        public async Task<IActionResult> BuscarUfs()
+        {
+            //para testar: http://localhost:60877/api/cep/buscarUfs
+            string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
+            var ret = await cepBll.BuscarUfs();
+
+            return Ok(ret);
+        }
+
+#if DEBUG
+        [AllowAnonymous]
+#endif
+        [HttpGet("buscarCepPorEndereco")]
+        public async Task<IActionResult> BuscarCepPorEndereco(string endereco, string localidade, string uf)
+        {
+            //para testar: http://localhost:60877/api/cep/buscarCepPorEndereco
+            //string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
+
+            //esse metodo esta buscando apenas 300 itens
+            var ret = await cepBll.BuscarCepPorEndereco(endereco, localidade, uf);
+
+            return Ok(ret);
+        }
     }
 }
