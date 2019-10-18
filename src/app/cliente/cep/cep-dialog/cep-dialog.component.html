@@ -2,72 +2,100 @@
 
     <header>Busca de CEP</header>
     <article mat-dialog-content class="fixo">
-        
+
         <form>
-            <div>
+            <div *ngIf="telaDesktop">
                 <!-- afazer: corrigir o tamanho do campos -->
-                <mat-form-field [class]="telaDesktop? 'campoTextoDesktop': 'campoTextoCel'">
+                <mat-form-field style="width: 18em">
                     <input matInput type="text" placeholder="Endereço" [(ngModel)]="endereco" required
                         [ngModelOptions]="{standalone: true}">
                 </mat-form-field>
-                <mat-form-field [class]="telaDesktop? 'campoTextoDesktop': 'campoTextoCel'">
+                <mat-form-field style="width: 30%">
                     <input matInput type="text" placeholder="Localidade" [(ngModel)]="localidade"
                         [ngModelOptions]="{standalone: true}">
                 </mat-form-field>
-            </div>
-            <mat-form-field [class]="telaDesktop? 'campoTextoDesktop': 'campoTextoCel'">
-                <mat-label>Uf</mat-label>
-                <mat-select required [(ngModel)]="uf" [ngModelOptions]="{standalone: true}">
-                    <mat-option value="">Selecione</mat-option>
-                    <mat-option *ngFor="let i of lstUf" [value]="i">
-                        {{i}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
- 
-            <div>
-                <a mat-raised-button (click)="buscarCepPorEndereco()">
+                <mat-form-field style="width: 5em">
+                    <mat-label>Uf</mat-label>
+                    <mat-select [(ngModel)]="uf" [ngModelOptions]="{standalone: true}">
+                        <mat-option value="">Selecione</mat-option>
+                        <mat-option *ngFor="let i of lstUf" [value]="i">
+                            {{i}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <button *ngIf="telaDesktop" mat-raised-button (click)="buscarCepPorEndereco()">
                     <mat-icon>search</mat-icon> Buscar Cep
+                </button>
+            </div>
+            <div *ngIf="!telaDesktop" fxLayoutAlign="center center">
+                <!-- afazer: corrigir o tamanho do campos -->
+                <div>
+                    <mat-form-field style="width: 98%">
+                        <input matInput type="text" placeholder="Endereço" [(ngModel)]="endereco" required
+                            [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field style="width: 98%">
+                        <input matInput type="text" placeholder="Localidade" [(ngModel)]="localidade"
+                            [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field style="width: 98%">
+                        <mat-label>Uf</mat-label>
+                        <mat-select [(ngModel)]="uf" [ngModelOptions]="{standalone: true}">
+                            <mat-option value="">Selecione</mat-option>
+                            <mat-option *ngFor="let i of lstUf" [value]="i">
+                                {{i}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <a *ngIf="!telaDesktop" mat-mini-fab aria-label="teste" (click)="buscarCepPorEndereco()" 
+                style="margin-left: 40%;">
+                    <mat-icon>search</mat-icon>
                 </a>
             </div>
 
         </form>
 
-        <!-- tabela de endereços -->
+        <!-- tabela de cep versão desktop-->
         <mat-radio-group *ngIf="lstEnderecos.length > 0" [(ngModel)]="endereco_selecionado" required
             [ngModelOptions]="{standalone: true}">
-            <table class="tabela_endereco " *ngIf="telaDesktop">
+            <table class="tabela_endereco" *ngIf="telaDesktop">
                 <thead>
                     <tr>
-                        <th style="width: auto;" align="left" valign="bottom">
+                        <th style="width: 1.1em" align="left" valign="bottom">
                             <!-- checkbox -->
                         </th>
 
-                        <th style="width: auto;" align="left" valign="bottom">
+                        <th style="width: 5.5em;" align="left" valign="bottom">
                             CEP
                         </th>
-                        <th style="width: auto;" align="left" valign="bottom">
+                        <th style="width: 2em;" align="left" valign="bottom">
                             UF
                         </th>
-                        <th style="width: auto;" align="left" valign="bottom">
+                        <th style="width: 8em;" align="left" valign="bottom">
                             Cidade
                         </th>
-                        <th style="width: auto;" align="left" valign="bottom">
+                        <th style="width: 8em;" align="left" valign="bottom">
                             Bairro
                         </th>
-                        <th style="width: auto;" align="left" valign="bottom">
+                        <th style="width: 15em;" align="left" valign="bottom">
                             Lougradouro
                         </th>
-                        <th style="width: auto;" align="left" valign="bottom">
+                        <th style="width: 10vw;" align="left" valign="bottom">
                             Complemento
                         </th>
                     </tr>
                 </thead>
                 <tbody class="destaquelinha">
                     <ng-container *ngFor="let i of lstEnderecos; let idx = index">
-                        <tr >
+                        <tr>
                             <td>
-                                <mat-radio-button *ngIf="telaDesktop" type="radio" name="chkIndice" value="{{idx}}">
+                                <mat-radio-button type="radio" name="chkIndice" value="{{idx}}">
 
                                 </mat-radio-button>
                             </td>
@@ -94,9 +122,44 @@
                 </tbody>
             </table>
         </mat-radio-group>
+        <!-- versão celular -->
+        <div *ngIf="!telaDesktop" style="display: block; padding-top: 1em;">
+            <div *ngFor="let i of lstEnderecos; let idx = index" class="caixacel">
+                <!-- sempre uma linha inteira -->
+                <div style="cursor: pointer; padding-bottom: 1em; text-align: center; display: inline">
+                    <mat-radio-button *ngIf="!telaDesktop" type="radio" name="chkIndice" value="{{idx}}">
 
+                    </mat-radio-button>
+
+                </div>
+                <div style="cursor: pointer; padding-bottom: 1em; text-align: center; display: inline">
+                    {{i.Cep}} |
+
+                </div>
+                <div style="cursor: pointer; padding-bottom: 1em; text-align: center; display: inline">
+                    {{i.Uf}} |
+                </div>
+                <div style="cursor: pointer; padding-bottom: 1em; text-align: center; display: inline">
+                    {{i.Cidade}} |
+                    <!-- <span [innerHTML]="i.Descricao"></span> -->
+                </div>
+                <div style="cursor: pointer; padding-bottom: 1em; text-align: center; display: inline">
+                    {{i.Bairro}} |
+                    <!-- <span [innerHTML]="i.Descricao"></span> -->
+                </div>
+                <div style="cursor: pointer; padding-bottom: 1em; text-align: center; display: inline">
+                    {{i.Endereco}}
+                    <!-- <span [innerHTML]="i.Descricao"></span> -->
+                </div>
+                <div *ngIf="i.LogradouroComplemento != ''"
+                    style="cursor: pointer; padding-bottom: 1em; text-align: center; display: inline">
+                    | {{i.LogradouroComplemento}}
+                    <!-- <span [innerHTML]="i.Descricao"></span> -->
+                </div>
+            </div>
+        </div>
     </article>
-    <footer mat-dialog-actions style="justify-content: space-around;">
+    <footer *ngIf="lstEnderecos.length > 0" mat-dialog-actions style="justify-content: space-around;">
         <button mat-raised-button (click)="onOkClick()" color="accent">
             Modificar
         </button>

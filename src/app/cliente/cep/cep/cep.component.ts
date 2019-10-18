@@ -94,7 +94,7 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
   buscarCep() {
     let options: any = {
       autoFocus: false,
-      width: "100em"
+      width: "60em"
       //não colocamos aqui para que ele ajuste melhor: height:"85vh",
     };
     if (!this.telaDesktop) {

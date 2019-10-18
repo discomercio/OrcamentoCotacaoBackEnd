@@ -48,8 +48,11 @@
                 <div *ngIf="enumFormaPagto==EnumFormaPagto.ParcComEnt">
                     <mat-form-field>
                         <mat-label>Valor Entrada</mat-label>
-                        <input matInput type="text" required id="vlEntrada" name="vlEntrada" [(ngModel)]="vlEntrada"
-                            (blur)="calcularParcelaComEntrada();">
+                        <input matInput type="text" required id="vlEntrada" name="vlEntrada" 
+                            (blur)="calcularParcelaComEntrada();"
+                            [value]="moedaUtils.formatarMoedaSemPrefixo(vlEntrada)"
+                            (change)="digitouVlEntrada($event)"
+                            (keyup)="digitouVlEntrada($event)">
                     </mat-form-field>
 
                     <!-- Meio de pagamento entrada -->
@@ -117,7 +120,7 @@
 
 
                 <!-- Parcelado com entrada -->
-                <div *ngIf="enumFormaPagto==EnumFormaPagto.ParcComEnt">
+                <div *ngIf="enumFormaPagto==EnumFormaPagto.ParcComEnt && !!vlEntrada">
                     <mat-form-field style="width: 20em;">
                         <mat-label>Parcelamento</mat-label>
                         <mat-select [(ngModel)]="opcaoPagto" [ngModelOptions]="{standalone: true}">
@@ -202,6 +205,8 @@
                 <strong>Total do pedido: {{moedaUtils.formatarMoedaSemPrefixo(totalPedido())}}</strong>
             </div>
 
+
+            
         </article>
         <!-- <footer>
             <a mat-raised-button color="accent" (click)="voltar()">

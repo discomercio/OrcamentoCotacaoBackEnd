@@ -38,6 +38,12 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
   }
 
   ngOnInit() {
+    //afazer:alterar a lógica de inicialização dessa pág.! 
+    //estamos perdendo os dados do prepedido que esta sendo criado quando voltamos as telas
+    //afazer: na verificação da existência do cliente, caso o cliente já exista, criar o PrepedidoDto e 
+    //passar os dados do cliente, e seguir usando o mesmo Prepedido para que não perca os dados já preenchidos
+    
+
     this.dadosClienteCadastroDto = null;
     if (this.router.getCurrentNavigation()) {
       let clienteCadastroDto: ClienteCadastroDto = (this.router.getCurrentNavigation().extras.state) as ClienteCadastroDto;

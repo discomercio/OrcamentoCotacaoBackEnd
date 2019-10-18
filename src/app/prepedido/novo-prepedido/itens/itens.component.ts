@@ -251,10 +251,11 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     let valor = ((e.target) as HTMLInputElement).value;
     let v: any = valor.replace(/\D/g, '');
     v = (v / 100).toFixed(2) + '';
-
     //se não alteraram nada, ignoramos
-    if (i.VlUnitario === Number.parseFloat(v))
+    if (i.VlUnitario.toFixed(2) === v)
       return;
+
+    console.log("afazer apagar diferetne: " + i.VlUnitario + " " + v);
 
     i.VlUnitario = Number.parseFloat(v);
 
