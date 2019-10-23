@@ -96,7 +96,6 @@ export class CepDialogComponent extends TelaDesktopBaseComponent implements OnIn
       let lst = this.lstEnderecos.filter((estado) => {
         return estado.Uf === uf;
       });
-      console.log(lst);
     }
   }
 

@@ -42,7 +42,7 @@
                 <td mat-cell *matCellDef="let element"><button
                         *ngIf="(element.Status.toLowerCase().indexOf('com pedido') == -1)" mat-button
                         (click)="removerPrepedido(element.NumeroPrepedido)">
-                        <mat-icon title="Remover pré-pedido">delete</mat-icon>
+                        <mat-icon class="icone-lixeira" title="Remover pré-pedido">delete</mat-icon>
                     </button></td>
             </ng-container>
 
@@ -103,7 +103,7 @@
                     </div>
                     <span style="float: right"><button *ngIf="(option.Status.toLowerCase().indexOf('com pedido') == -1)"
                             mat-button (click)="removerPrepedido(option.NumeroPrepedido)">
-                            <mat-icon title="Remover pré-pedido" class="mat-column-Remover">delete</mat-icon>
+                            <mat-icon class="icone-lixeira" title="Remover pré-pedido" class="mat-column-Remover">delete</mat-icon>
                         </button></span>
                 </div>
                 <div class=".cellinha">

@@ -274,7 +274,6 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     if (i.VlUnitario.toFixed(2) === v)
       return;
 
-    console.log("afazer apagar diferetne: " + i.VlUnitario + " " + v);
 
     i.VlUnitario = Number.parseFloat(v);
 

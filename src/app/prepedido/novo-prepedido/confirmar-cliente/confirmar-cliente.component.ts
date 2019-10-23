@@ -200,7 +200,6 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     //vltamos para a fase 1
     this.fase1 = true;
     this.fase2 = false;
-    console.log(this.dadosClienteCadastroDto);
 //    setTimeout(()=>this.ngOnInit(),1000);
   }
 

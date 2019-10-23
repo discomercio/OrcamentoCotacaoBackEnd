@@ -21,7 +21,6 @@ export class HomeComponent extends TelaDesktopBaseComponent implements OnInit {
   }
 
   cliqueNovoPrepedido(){
-    console.log(1);
     this.router.navigateByUrl('/novo-prepedido');
   }
 }

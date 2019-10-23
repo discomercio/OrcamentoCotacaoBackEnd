@@ -26,12 +26,18 @@
 .cabecalho {
   height: 50px;
   margin: 0px;
-  border: 0px;
+  // border: 0px;
   padding: 0px;
-  border: 1px;
+  // border: 1px;
+  border: 1.5px;
   border-style: solid;
   border-color: $cor-borda-menu;
-  background-color: $cor-fundo-menu;
+  // background-color: $cor-fundo-menu;
+  //gabriel
+  
+  border-color:#f3f3f3;
+  background-color: #ffffff;
+  //fim
   border-top: 0px;
 }
 .cabecalho a {
@@ -55,7 +61,8 @@
   padding: 0px;
   border: 1px;
   border-style: solid;
-  border-color: $cor-borda-menu;
+  // border-color: $cor-borda-menu;
+  border-color:#f3f3f3;
   border-top: 0px;
   background-color: $cor-fundo-menu;
 }
