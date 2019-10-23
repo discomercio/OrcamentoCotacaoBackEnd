@@ -245,11 +245,12 @@ namespace PrepedidoBusiness.Bll
             //descrição d meio de pagto
             pagto.Descricao_meio_pagto = await ObterDescricaoFormaPagto(torcamento.Av_Forma_Pagto);//
             pagto.Tipo_parcelamento = torcamento.Tipo_Parcelamento;
+            pagto.Qtde_Parcelas = (int)torcamento.Qtde_Parcelas;
 
             if (torcamento.Tipo_Parcelamento == short.Parse(Constantes.COD_FORMA_PAGTO_A_VISTA))
             {
                 pagto.Op_av_forma_pagto = torcamento.Av_Forma_Pagto.ToString();
-                pagto.Qtde_Parcelas = (int)torcamento.Qtde_Parcelas;
+                //pagto.Qtde_Parcelas = (int)torcamento.Qtde_Parcelas;
 
             }
             else if (torcamento.Tipo_Parcelamento == short.Parse(Constantes.COD_FORMA_PAGTO_PARCELA_UNICA))
@@ -257,7 +258,6 @@ namespace PrepedidoBusiness.Bll
                 pagto.Rb_forma_pagto = torcamento.Pu_Forma_Pagto.ToString();
                 pagto.C_pu_valor = torcamento.Pu_Valor;
                 pagto.C_pu_vencto_apos = torcamento.Pu_Vencto_Apos;
-                pagto.Qtde_Parcelas = (int)torcamento.Qtde_Parcelas;
             }
             else if (torcamento.Tipo_Parcelamento == short.Parse(Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO))
             {
@@ -279,7 +279,6 @@ namespace PrepedidoBusiness.Bll
                 pagto.C_pce_prestacao_qtde = torcamento.Pce_Prestacao_Qtde;
                 pagto.C_pce_prestacao_valor = torcamento.Pce_Prestacao_Valor;
                 pagto.C_pce_prestacao_periodo = torcamento.Pce_Prestacao_Periodo;
-                pagto.C_pce_prestacao_qtde = torcamento.Qtde_Parcelas;
             }
             else if (torcamento.Tipo_Parcelamento == short.Parse(Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA))
             {
