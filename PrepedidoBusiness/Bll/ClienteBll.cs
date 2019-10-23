@@ -98,28 +98,23 @@ namespace PrepedidoBusiness.Bll
             return lstErros;
         }
 
-        public async Task<ClienteCadastroDto> BuscarCliente(string cpf_cnpj)
+        public async Task<ClienteCadastroDto> BuscarCliente(string cpf_cnpj, string apelido)
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            //var dadosCliente = db.Tclientes.Where(r => r.Cnpj_Cpf == cpf_cnpj)
-            //    .FirstOrDefault();
-
-            var dadosCliente = await (from c in db.Tclientes
-                               join t in db.TorcamentistaEindicadors on c.Usuario_Cadastrado equals t.Apelido
-                               where c.Cnpj_Cpf == cpf_cnpj
-                               select new
-                               {
-                                   c = c,
-                                   t = t.Loja
-                               }).FirstOrDefaultAsync();
+            var dadosCliente = db.Tclientes.Where(r => r.Cnpj_Cpf == cpf_cnpj)
+                .FirstOrDefault();
 
             if (dadosCliente == null)   
                 return null;
-            
-            var dadosClienteTask = ObterDadosClienteCadastro(dadosCliente.c, dadosCliente.t);
-            var refBancariaTask = ObterReferenciaBancaria(dadosCliente.c);
-            var refComercialTask = ObterReferenciaComercial(dadosCliente.c);
+
+            var lojaOrcamentista = (from c in db.TorcamentistaEindicadors
+                                   where c.Apelido == apelido
+                                   select c.Loja).FirstOrDefaultAsync();
+
+            var dadosClienteTask = ObterDadosClienteCadastro(dadosCliente, await lojaOrcamentista);
+            var refBancariaTask = ObterReferenciaBancaria(dadosCliente);
+            var refComercialTask = ObterReferenciaComercial(dadosCliente);
 
             ClienteCadastroDto cliente = new ClienteCadastroDto
             {

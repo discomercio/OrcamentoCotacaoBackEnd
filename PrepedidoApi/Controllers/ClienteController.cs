@@ -30,7 +30,8 @@ namespace PrepedidoApi.Controllers
         public async Task<IActionResult> BuscarCliente(string cnpj_cpf)
         {
             //para testar: http://localhost:60877/api/cliente/buscarCliente/{cnpj_cpf}
-            var dadosCliente = await clienteBll.BuscarCliente(cnpj_cpf);
+            string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
+            var dadosCliente = await clienteBll.BuscarCliente(cnpj_cpf, apelido);
             if (dadosCliente == null)
                 return NoContent();
             return Ok(dadosCliente);
