@@ -73,7 +73,8 @@
                         <mat-select [(ngModel)]="opcaoPagto" [ngModelOptions]="{standalone: true}">
                             <mat-option>Selecione</mat-option>
                             <mat-option *ngFor="let i of lstMsg" [value]="i">
-                                {{i}}
+                                {{i}} 
+                                <!-- 1 X R$ 408.491,38 -->
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
