@@ -102,14 +102,24 @@ namespace PrepedidoBusiness.Bll
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var dadosCliente = db.Tclientes.Where(r => r.Cnpj_Cpf == cpf_cnpj)
-                .FirstOrDefault();
-            if (dadosCliente == null)
-                return null;
+            //var dadosCliente = db.Tclientes.Where(r => r.Cnpj_Cpf == cpf_cnpj)
+            //    .FirstOrDefault();
 
-            var dadosClienteTask = ObterDadosClienteCadastro(dadosCliente);
-            var refBancariaTask = ObterReferenciaBancaria(dadosCliente);
-            var refComercialTask = ObterReferenciaComercial(dadosCliente);
+            var dadosCliente = await (from c in db.Tclientes
+                               join t in db.TorcamentistaEindicadors on c.Usuario_Cadastrado equals t.Apelido
+                               where c.Cnpj_Cpf == cpf_cnpj
+                               select new
+                               {
+                                   c = c,
+                                   t = t.Loja
+                               }).FirstOrDefaultAsync();
+
+            if (dadosCliente == null)   
+                return null;
+            
+            var dadosClienteTask = ObterDadosClienteCadastro(dadosCliente.c, dadosCliente.t);
+            var refBancariaTask = ObterReferenciaBancaria(dadosCliente.c);
+            var refComercialTask = ObterReferenciaComercial(dadosCliente.c);
 
             ClienteCadastroDto cliente = new ClienteCadastroDto
             {
@@ -166,7 +176,7 @@ namespace PrepedidoBusiness.Bll
             return lst;
         }
 
-        public DadosClienteCadastroDto ObterDadosClienteCadastro(Tcliente cli)
+        public DadosClienteCadastroDto ObterDadosClienteCadastro(Tcliente cli, string loja)
         {
             DadosClienteCadastroDto dados = new DadosClienteCadastroDto
             {
@@ -197,7 +207,8 @@ namespace PrepedidoBusiness.Bll
                 Cidade = cli.Cidade,
                 Uf = cli.Uf,
                 Cep = cli.Cep,
-                Contato = cli.Contato
+                Contato = cli.Contato,
+                Loja = loja
             };
 
             return dados;

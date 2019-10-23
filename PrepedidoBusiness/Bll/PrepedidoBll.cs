@@ -243,11 +243,12 @@ namespace PrepedidoBusiness.Bll
             //Util.OpcaoFormaPagto(Convert.ToString(torcamento.Av_Forma_Pagto))
 
             //descrição d meio de pagto
-            pagto.Descricao_meio_pagto = await ObterDescricaoFormaPagto(torcamento.Av_Forma_Pagto);
+            pagto.Descricao_meio_pagto = await ObterDescricaoFormaPagto(torcamento.Av_Forma_Pagto);//
+            pagto.Tipo_parcelamento = torcamento.Tipo_Parcelamento;
 
             if (torcamento.Tipo_Parcelamento == short.Parse(Constantes.COD_FORMA_PAGTO_A_VISTA))
             {
-                pagto.Rb_forma_pagto = torcamento.Av_Forma_Pagto.ToString();
+                pagto.Op_av_forma_pagto = torcamento.Av_Forma_Pagto.ToString();
                 pagto.Qtde_Parcelas = (int)torcamento.Qtde_Parcelas;
 
             }
@@ -325,31 +326,32 @@ namespace PrepedidoBusiness.Bll
                     lista.Add("À vista (" + Util.OpcaoFormaPagto(Convert.ToString(torcamento.Av_Forma_Pagto)) + ")");
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELA_UNICA:
-                    lista.Add(String.Format("Parcela Única: " + Constantes.SIMBOLO_MONETARIO + " {0:c2} (" +
-                        Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pu_Forma_Pagto)) + ") vencendo após " + torcamento.Pu_Vencto_Apos, torcamento.Pu_Valor));
+                    lista.Add(String.Format("Parcela Única: " + " {0:c2} (" +
+                        Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pu_Forma_Pagto)) +
+                        ") vencendo após " + torcamento.Pu_Vencto_Apos, torcamento.Pu_Valor));
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO:
                     lista.Add(String.Format("Parcelado no Cartão (internet) em " + torcamento.Pc_Qtde_Parcelas + " X " +
-                        Constantes.SIMBOLO_MONETARIO + " {0:c2}", torcamento.Pc_Valor_Parcela));
+                        " {0:c2}", torcamento.Pc_Valor_Parcela));
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA:
                     lista.Add(String.Format("Parcelado no Cartão (maquineta) em " + torcamento.Pc_Maquineta_Qtde_Parcelas + " X " +
-                        Constantes.SIMBOLO_MONETARIO + " {0:c2}", torcamento.Pc_Maquineta_Valor_Parcela));
+                        " {0:c2}", torcamento.Pc_Maquineta_Valor_Parcela));
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA:
-                    lista.Add(String.Format("Entrada " + Constantes.SIMBOLO_MONETARIO + "{0:c2} (" +
+                    lista.Add(String.Format("Entrada " + "{0:c2} (" +
                         Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pce_Forma_Pagto_Entrada)) + ")", torcamento.Pce_Entrada_Valor));
-                    lista.Add(String.Format("Prestações: " + torcamento.Pce_Prestacao_Qtde + " X " + Constantes.SIMBOLO_MONETARIO + " {0:c2}" +
+                    lista.Add(String.Format("Prestações: " + torcamento.Pce_Prestacao_Qtde + " X " + " {0:c2}" +
                         " (" + Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pce_Forma_Pagto_Prestacao)) + ") vencendo a cada " +
                         torcamento.Pce_Prestacao_Periodo + " dias", torcamento.Pce_Prestacao_Valor));
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA:
-                    lista.Add(String.Format("1ª Prestação: " + Constantes.SIMBOLO_MONETARIO + " {0:c2} (" +
-                        Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pse_Forma_Pagto_Prim_Prest)) + ") vencendo após " + torcamento.Pse_Prim_Prest_Apos +
-                        " dias", torcamento.Pse_Prim_Prest_Valor));
-                    lista.Add(String.Format("Demais Prestações: " + torcamento.Pse_Demais_Prest_Qtde + " X " + Constantes.SIMBOLO_MONETARIO + " {0:c2}" +
-                        " (" + Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pse_Forma_Pagto_Demais_Prest)) + ") vencendo a cada " +
-                        torcamento.Pse_Demais_Prest_Periodo + " dias", torcamento.Pse_Demais_Prest_Valor));
+                    lista.Add(String.Format("1ª Prestação: " + " {0:c2} (" +
+                        Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pse_Forma_Pagto_Prim_Prest)) +
+                        ") vencendo após " + torcamento.Pse_Prim_Prest_Apos + " dias", torcamento.Pse_Prim_Prest_Valor));
+                    lista.Add(String.Format("Demais Prestações: " + torcamento.Pse_Demais_Prest_Qtde + " X " +
+                        " {0:c2} (" + Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pse_Forma_Pagto_Demais_Prest)) + 
+                        ") vencendo a cada " + torcamento.Pse_Demais_Prest_Periodo + " dias", torcamento.Pse_Demais_Prest_Valor));
                     break;
             }
 
@@ -717,7 +719,7 @@ namespace PrepedidoBusiness.Bll
             }
             else if (prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELA_UNICA)
             {
-                torcamento.Pu_Forma_Pagto = short.Parse(prepedido.FormaPagtoCriacao.Rb_forma_pagto);
+                torcamento.Pu_Forma_Pagto = short.Parse(prepedido.FormaPagtoCriacao.Op_pu_forma_pagto);
                 torcamento.Pu_Valor = prepedido.FormaPagtoCriacao.C_pu_valor;
                 torcamento.Pu_Vencto_Apos = (short)prepedido.FormaPagtoCriacao.C_pu_vencto_apos;
                 torcamento.CustoFinancFornecQtdeParcelas = 0;
@@ -741,7 +743,7 @@ namespace PrepedidoBusiness.Bll
                 torcamento.Pce_Prestacao_Qtde = (short)prepedido.FormaPagtoCriacao.C_pce_prestacao_qtde;
                 torcamento.Pce_Prestacao_Valor = prepedido.FormaPagtoCriacao.C_pce_prestacao_valor;
                 torcamento.Pce_Prestacao_Periodo = (short)prepedido.FormaPagtoCriacao.C_pce_prestacao_periodo;
-                torcamento.Qtde_Parcelas = (short?)(prepedido.FormaPagtoCriacao.Qtde_Parcelas + 1);
+                torcamento.Qtde_Parcelas = (short?)(prepedido.FormaPagtoCriacao.Qtde_Parcelas);
                 torcamento.CustoFinancFornecQtdeParcelas = (short)prepedido.FormaPagtoCriacao.C_pce_prestacao_qtde;
             }
             else if (prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA)

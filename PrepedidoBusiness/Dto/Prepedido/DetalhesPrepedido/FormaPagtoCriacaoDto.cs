@@ -31,6 +31,7 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
         public int? C_pse_demais_prest_periodo { get; set; }
         public string C_forma_pagto { get; set; }//Descrição da forma de pagto
         public string Descricao_meio_pagto { get; set; }//para mostrar 
+        public short Tipo_parcelamento { get; set; }//informa o tipo de parcelamento que foi escolhido
 
     }
 }

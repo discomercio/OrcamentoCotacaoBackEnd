@@ -25,6 +25,7 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
 
         //verificar a necessidade dessa variavel
         public short? Qtde_estoque_total_disponivel { get; set; }
+        //public short? Qtde_Max_Venda { get; set; }
 
     }
 }

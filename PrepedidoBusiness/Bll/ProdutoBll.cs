@@ -239,13 +239,14 @@ namespace PrepedidoBusiness.Bll
         public async Task<IEnumerable<ProdutoCompostoDto>> BuscarProdutosCompostos(string loja)
         {
 
-            loja = "202";
+            //loja = "202";
             var db = contextoProvider.GetContextoLeitura();
 
             var produtosCompostosTask = from d in (from c in db.Tprodutos
                                                    join pc in db.TecProdutoCompostos on c.Produto equals pc.Produto_Composto
                                                    join pci in db.TecProdutoCompostoItems on pc.Fabricante_Composto equals pci.Fabricante_composto
                                                    join pl in db.TprodutoLojas on pci.Produto_item equals pl.Produto
+                                                   join fab in db.Tfabricantes on c.Fabricante equals fab.Fabricante
                                                    where pl.Loja == loja &&
                                                          pl.Vendavel == "S" &&
                                                          c.Fabricante == pc.Fabricante_Composto &&
@@ -254,12 +255,14 @@ namespace PrepedidoBusiness.Bll
                                                    {
 
                                                        fabricante_pai = c.Fabricante,
+                                                       fabricante_pai_nome = fab.Nome,
                                                        produto_pai = c.Produto,
                                                        valor = (decimal)pl.Preco_Lista,
                                                        qtde = (int)pci.Qtde,
                                                        produtosFilhos = new ProdutoFilhoDto
                                                        {
                                                            Fabricante = c.Fabricante,
+                                                           Fabricante_Nome = fab.Nome,
                                                            Produto = pci.Produto_item,
                                                            Qtde = pci.Qtde
                                                        }
@@ -268,6 +271,7 @@ namespace PrepedidoBusiness.Bll
                                         select new ProdutoCompostoDto
                                         {
                                             PaiFabricante = g.Select(r => r.fabricante_pai).FirstOrDefault(),
+                                            PaiFabricanteNome = g.Select(r => r.fabricante_pai_nome).FirstOrDefault(),
                                             PaiProduto = g.Select(r => r.produto_pai).FirstOrDefault(),
                                             Preco_total_Itens = g.Sum(r => r.qtde * r.valor),
                                             Filhos = g.Select(r => r.produtosFilhos).ToList()
@@ -280,20 +284,23 @@ namespace PrepedidoBusiness.Bll
 
         public async Task<IEnumerable<ProdutoDto>> BuscarTodosProdutos(string loja)
         {
-            loja = "202";
+            //loja = "202";
 
             var db = contextoProvider.GetContextoLeitura();
 
             var todosProdutosTask = from c in db.Tprodutos
                                     join pl in db.TprodutoLojas on c.Produto equals pl.Produto
+                                    join fab in db.Tfabricantes on c.Fabricante equals fab.Fabricante
                                     where pl.Vendavel == "S" &&
                                           pl.Loja == loja
                                     select new ProdutoDto
                                     {
                                         Fabricante = c.Fabricante,
+                                        Fabricante_Nome = fab.Nome,
                                         Produto = pl.Produto,
                                         Descricao_html = c.Descricao_Html,
-                                        Preco_lista = pl.Preco_Lista
+                                        Preco_lista = pl.Preco_Lista,
+                                        Qtde_Max_Venda = pl.Qtde_Max_Venda
                                     };
 
             List<ProdutoDto> lstTodosProdutos = await todosProdutosTask.ToListAsync();
