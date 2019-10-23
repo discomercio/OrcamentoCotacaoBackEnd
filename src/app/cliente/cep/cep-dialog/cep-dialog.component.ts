@@ -5,6 +5,7 @@ import { TelaDesktopService } from 'src/app/servicos/telaDesktop/telaDesktop.ser
 import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
 import { CepDto } from 'src/app/dto/Cep/CepDto';
 import { CepService } from 'src/app/servicos/cep/cep.service';
+import { FormatarEndereco } from 'src/app/utils/formatarEndereco';
 
 @Component({
   selector: 'app-cep-dialog',
@@ -12,6 +13,9 @@ import { CepService } from 'src/app/servicos/cep/cep.service';
   styleUrls: ['./cep-dialog.component.scss']
 })
 export class CepDialogComponent extends TelaDesktopBaseComponent implements OnInit {
+
+  formatarEndereco: FormatarEndereco = new FormatarEndereco();
+  carregando: boolean = false;
 
   constructor(
     public readonly cepService: CepService,
@@ -36,9 +40,9 @@ export class CepDialogComponent extends TelaDesktopBaseComponent implements OnIn
   }
 
   //campos que o usuario escolhe
-  public endereco: string="";
-  public localidade: string="";
-  public uf: string="";
+  public endereco: string = "";
+  public localidade: string = "";
+  public uf: string = "";
   public lstUf: string[] = [];
   public lstEnderecos: CepDto[] = [];
   public endereco_selecionado: string;
@@ -59,21 +63,27 @@ export class CepDialogComponent extends TelaDesktopBaseComponent implements OnIn
   }
 
   buscarCepPorEndereco() {
+
     if (!this.endereco && !this.localidade) {
       this.alertaService.mostrarMensagem("Favor digitar o endereco ou a localidade!");
     }
     else {
+      this.carregando = true;
       //afazer: verificar a possibilidade de fazer a busca apenas por estado
       return this.cepService.buscarCepPorEndereco(this.endereco, this.localidade, this.uf).subscribe({
         next: (r: CepDto[]) => {
+          this.carregando = false;
           if (!!r) {
             this.lstEnderecos = r;
           }
           else {
-            this.alertaService.mostrarMensagem("Erro ao carregar a lista de Estados")
+            this.alertaService.mostrarMensagem("Erro ao carregar a lista de Endereços!")
           }
         },
-        error: (r: CepDto[]) => this.alertaService.mostrarErroInternet()
+        error: (r: CepDto[]) => {
+          this.carregando = false;
+          this.alertaService.mostrarErroInternet();
+        }
       });
     }
   }
@@ -88,5 +98,10 @@ export class CepDialogComponent extends TelaDesktopBaseComponent implements OnIn
       });
       console.log(lst);
     }
+  }
+
+
+  mascaraCep() {
+    return [/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
   }
 }

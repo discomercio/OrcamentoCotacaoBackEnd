@@ -11,9 +11,9 @@ export class ProdutoService {
 
   constructor(private readonly http: HttpClient) { }
 
-  public listarProdutosCombo(idCliente: string): Observable<ProdutoComboDto> {
+  public listarProdutosCombo(loja: string, idCliente: string): Observable<ProdutoComboDto> {
     let params = new HttpParams();
-    params = params.append('loja', "202"); //temporario
+    params = params.append('loja', loja); //temporario
     params = params.append('id_cliente', idCliente);
 
     return this.http.get<ProdutoComboDto>(environment.apiUrl + 'produto/buscarProduto', { params: params });

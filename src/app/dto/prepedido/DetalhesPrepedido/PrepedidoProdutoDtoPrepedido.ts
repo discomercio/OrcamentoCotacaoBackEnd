@@ -1,5 +1,6 @@
 ﻿export class PrepedidoProdutoDtoPrepedido {
     Fabricante: string;
+    Fabricante_Nome: string;
     NumProduto: string;
     Descricao: string;
     Obs: string;

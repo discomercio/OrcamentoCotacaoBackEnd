@@ -42,7 +42,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     //estamos perdendo os dados do prepedido que esta sendo criado quando voltamos as telas
     //afazer: na verificação da existência do cliente, caso o cliente já exista, criar o PrepedidoDto e 
     //passar os dados do cliente, e seguir usando o mesmo Prepedido para que não perca os dados já preenchidos
-    
+   
 
     this.dadosClienteCadastroDto = null;
     if (this.router.getCurrentNavigation()) {
@@ -187,6 +187,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
 
   voltar() {
     //voltamos apra a fase anterior
+    //fazer uma variavel para receber um valor para saber para onde voltar
     if (this.fase1e2juntas) {
       this.location.back();
       return;
@@ -199,6 +200,8 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     //vltamos para a fase 1
     this.fase1 = true;
     this.fase2 = false;
+    console.log(this.dadosClienteCadastroDto);
+//    setTimeout(()=>this.ngOnInit(),1000);
   }
 
   //precisa do static: false porque está dentro de um ngif

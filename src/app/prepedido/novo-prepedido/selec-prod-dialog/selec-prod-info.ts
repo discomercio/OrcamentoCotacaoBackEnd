@@ -8,6 +8,7 @@ export class SelecProdInfo {
 
     //entrada e saída
     public Fabricante: string;
+    public Fabricante_Nome: string;
     public Produto: string;
     public Qte: number;
 

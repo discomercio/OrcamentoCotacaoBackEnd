@@ -1,7 +1,7 @@
 <section [ngClass]="{'sectionDesktop': telaDesktop, 'sectionCelular': !telaDesktop}">
 
     <header>Busca de CEP</header>
-    <article mat-dialog-content class="fixo">
+    <article mat-dialog-content class="fixo" [ngClass]="{'carregando': carregando}">
 
         <form>
             <div *ngIf="telaDesktop">
@@ -53,8 +53,8 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <a *ngIf="!telaDesktop" mat-mini-fab aria-label="teste" (click)="buscarCepPorEndereco()" 
-                style="margin-left: 40%;">
+                <a *ngIf="!telaDesktop" mat-mini-fab aria-label="teste" (click)="buscarCepPorEndereco()"
+                    style="margin-left: 40%;">
                     <mat-icon>search</mat-icon>
                 </a>
             </div>
@@ -100,7 +100,7 @@
                                 </mat-radio-button>
                             </td>
                             <td>
-                                {{i.Cep}}
+                                {{formatarEndereco.cep_formata(i.Cep)}}
                             </td>
                             <td>
                                 {{i.Uf}}
@@ -133,7 +133,7 @@
 
                 </div>
                 <div style="cursor: pointer; padding-bottom: 1em; text-align: center; display: inline">
-                    {{i.Cep}} |
+                    {{formatarEndereco.cep_formata(i.Cep)}} |
 
                 </div>
                 <div style="cursor: pointer; padding-bottom: 1em; text-align: center; display: inline">

@@ -12,7 +12,7 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 			<ng-container *ngIf="criando; else tituloEditando">Criar Pré-pedido</ng-container>
 			<ng-template #tituloEditando>Editar Pré-pedido</ng-template>
 		</header>
-		<article class="indicadorlinha">
+		<article class="indicadorlinha" [ngClass]="{'carregando': carregandoProds && clicouAddProd}">
 			<div style="padding-bottom: 0.6em;"><strong>Cliente:</strong> {{cpfCnpj()}} -
 				{{prePedidoDto.DadosCliente.Nome}}</div>
 
@@ -145,10 +145,12 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 						</tr>
 						<tr *ngIf="estoqueExcedido(i)">
 							<td colspan="7" class="avisoestoque" *ngIf="!permite_RA_Status">
-								Quantidade solicitada é maior que o estoque de {{estoqueExistente(i)}}
+								<!-- Quantidade solicitada é maior que o estoque de {{estoqueExistente(i)}} -->
+								Quantidade solicitada é maior que o estoque disponível!
 							</td>
 							<td colspan="8" class="avisoestoque" *ngIf="permite_RA_Status">
-								Quantidade solicitada é maior que o estoque de {{estoqueExistente(i)}}
+								<!-- Quantidade solicitada é maior que o estoque de {{estoqueExistente(i)}} -->
+								Quantidade solicitada é maior que o estoque disponível!
 							</td>
 						</tr>
 						<tr *ngIf="produtoTemAviso(i)">
@@ -157,6 +159,15 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 							</td>
 							<td colspan="8" class="avisoestoque" *ngIf="permite_RA_Status">
 								Aviso: {{produtoMsgAviso(i)}}
+							</td>
+						</tr>
+						<!-- verifica a qtde máxima de venda permitida -->
+						<tr *ngIf="qtdeVendaPermitida(i)">
+							<td colspan="7" class="avisoestoque" *ngIf="!permite_RA_Status">
+								Quantidade solicitada excede a quantidade máxima de venda permitida!
+							</td>
+							<td colspan="8" class="avisoestoque" *ngIf="permite_RA_Status">
+								Quantidade solicitada excede a quantidade máxima de venda permitida!
 							</td>
 						</tr>
 					</ng-container>
@@ -195,7 +206,7 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 					<!-- sempre uma linha inteira -->
 					<div style="cursor: pointer; padding-bottom: 1em; text-align: center" (click)="mostrarProdutos(i)">
 						Produto
-						{{i.Fabricante}}/{{i.NumProduto}} - 
+						{{i.Fabricante}}/{{i.NumProduto}} -
 						<span [innerHTML]="i.Descricao"></span>
 					</div>
 
@@ -251,11 +262,16 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 					</div>
 					<!-- mensagem de estoque em linha separada -->
 					<div *ngIf="estoqueExcedido(i)" class="avisoestoque" style="padding-top: 1em">
-						Quantidade solicitada é maior que o estoque de {{estoqueExistente(i)}}
+						<!-- Quantidade solicitada é maior que o estoque de {{estoqueExistente(i)}} -->
+						Quantidade solicitada é maior que o estoque disponível!
 					</div>
 					<!-- aviso é em linha separada -->
 					<div *ngIf="produtoTemAviso(i)" class="avisoestoque" style="padding-top: 1em">
 						Aviso: {{produtoMsgAviso(i)}}
+					</div>
+					<div *ngIf="qtdeVendaPermitida(i)" class="avisoestoque" style="padding-top: 1em">
+						<!-- Quantidade solicitada é maior que o estoque de {{estoqueExistente(i)}} -->
+						Quantidade solicitada excede a quantidade máxima de venda permitida!
 					</div>
 				</div>
 

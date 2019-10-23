@@ -24,5 +24,5 @@
     C_pse_demais_prest_periodo: number | null;
     C_forma_pagto: string;//Descrição da forma de pagto
     Descricao_meio_pagto: string;
-
+    Tipo_parcelamento: number;
 }

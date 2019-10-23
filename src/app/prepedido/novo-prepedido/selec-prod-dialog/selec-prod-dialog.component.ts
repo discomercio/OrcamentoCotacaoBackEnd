@@ -7,6 +7,7 @@ import { MoedaUtils } from 'src/app/utils/moedaUtils';
 import { TelaDesktopBaseComponent } from 'src/app/servicos/telaDesktop/telaDesktopBaseComponent';
 import { supportsPassiveEventListeners } from '@angular/cdk/platform';
 import { TelaDesktopService } from 'src/app/servicos/telaDesktop/telaDesktop.service';
+import { debugOutputAstAsTypeScript } from '@angular/compiler';
 
 @Component({
   selector: 'app-selec-prod-dialog',
@@ -71,7 +72,8 @@ export class SelecProdDialogComponent extends TelaDesktopBaseComponent implement
       if (!(this.prodsArray.length < this.selecProdInfoPassado.produtoComboDto.ProdutoDto.length))
         break;
       //colocamos mais um
-      this.prodsArray.push(new ProdutoTela(this.selecProdInfoPassado.produtoComboDto.ProdutoDto[this.prodsArray.length], this.selecProdInfoPassado.produtoComboDto.ProdutoCompostoDto));
+      this.prodsArray.push(new ProdutoTela(this.selecProdInfoPassado.produtoComboDto.ProdutoDto[this.prodsArray.length],
+        this.selecProdInfoPassado.produtoComboDto.ProdutoCompostoDto));
     }
 
     ProdutoTela.AtualizarVisiveis(this.prodsArray, this.digitado);
@@ -83,12 +85,13 @@ export class SelecProdDialogComponent extends TelaDesktopBaseComponent implement
   }
 
   ngOnInit() {
-    this.produto = ProdutoTela.FabrProd(this.selecProdInfoPassado.Fabricante, this.selecProdInfoPassado.Produto);
-    this.qdte = this.selecProdInfoPassado.Qte;
+    this.produto = ProdutoTela.FabrProd(this.selecProdInfoPassado.Fabricante, this.selecProdInfoPassado.Fabricante_Nome,
+      this.selecProdInfoPassado.Produto);
+    this.qtde = this.selecProdInfoPassado.Qte;
     if (this.selecProdInfoPassado.Produto) {
       this.digitado = this.selecProdInfoPassado.Produto;
     }
-
+    this.qtde = 1;
     this.transferirDadosArray();
   }
   //#endregion
@@ -122,17 +125,20 @@ export class SelecProdDialogComponent extends TelaDesktopBaseComponent implement
       this.alertaService.mostrarMensagem("Por favor, selecione um produto.");
       return;
     }
-    if (!this.qdte || this.qdte <= 0) {
+    if (!this.qtde || this.qtde <= 0) {
       this.alertaService.mostrarMensagem("Por favor, selecione uma quantidade.");
       return;
     }
 
     //separado por /
     //depende do ProdutoTela.FabrProd
+    //alteramos "selecProdInfoPassado" incluimos mais um campo de descrição do fabricante
+    //para que possa ser realizada a busca pelo nome do fabricante
+    //001/ELECTROLUX/001003
     this.selecProdInfoPassado.Fabricante = this.produto.split("/")[0];
-    this.selecProdInfoPassado.Produto = this.produto.split("/")[1];
+    this.selecProdInfoPassado.Produto = this.produto.split("/")[2];//o item 2 é o cód do produto
 
-    this.selecProdInfoPassado.Qte = this.qdte;
+    this.selecProdInfoPassado.Qte = this.qtde;
     this.selecProdInfoPassado.ClicouOk = true;
     this.dialogRef.close(true);
   }
@@ -144,7 +150,7 @@ export class SelecProdDialogComponent extends TelaDesktopBaseComponent implement
   public moedaUtils = new MoedaUtils();
 
   //a quantidade
-  public qdte: number;
+  public qtde: number;
   //o produto
   public produto: string;
   //para formatar o produto e o fabricante

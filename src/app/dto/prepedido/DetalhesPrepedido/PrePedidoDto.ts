@@ -22,5 +22,5 @@ export class PrePedidoDto {
     FormaPagto: string[];
     FormaPagtoCriacao: FormaPagtoCriacaoDto;
     St_Orc_Virou_Pedido: boolean;//se virou pedido retornar esse campo
-    NumeroPedido: string;//se virou pedido retornar esse campo
+    NumeroPedido: string;//se virou pedido retornar esse campo    
 }

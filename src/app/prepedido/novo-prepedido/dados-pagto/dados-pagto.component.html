@@ -10,32 +10,31 @@
                         <mat-label>Forma de Pagamento</mat-label>
                         <mat-select [(ngModel)]="enumFormaPagto" [ngModelOptions]="{standalone: true}" type="number"
                             (ngModelChange)="recalcularValoresComCoeficiente($event)">
-                            <mat-option>
-                                Selecione</mat-option>
+                            <mat-option>Selecione</mat-option>
 
-                            <mat-option *ngIf="formaPagtoDto?.ListaAvista" value="{{EnumFormaPagto.Avista}}">À vista
+                            <mat-option *ngIf="formaPagtoDto?.ListaAvista" [value]="EnumFormaPagto.Avista">À vista
                             </mat-option>
 
-                            <mat-option *ngIf="formaPagtoDto?.ListaParcUnica" value="{{EnumFormaPagto.ParcUnica}}">
+                            <mat-option *ngIf="formaPagtoDto?.ListaParcUnica" [value]="EnumFormaPagto.ParcUnica">
                                 Parcela única
                             </mat-option>
 
-                            <mat-option *ngIf="formaPagtoDto?.ListaParcComEntrada"
-                                value="{{EnumFormaPagto.ParcComEnt}}">Parcelado com entrada
+                            <mat-option *ngIf="formaPagtoDto?.ListaParcComEntrada" [value]="EnumFormaPagto.ParcComEnt">
+                                Parcelado com entrada
                             </mat-option>
 
                             <mat-option *ngIf="formaPagtoDto?.ListaParcSemEntPrimPrest"
-                                value="{{EnumFormaPagto.ParcSemEnt}}">Parcelado sem entrada
+                                [value]="EnumFormaPagto.ParcSemEnt">Parcelado sem entrada
                             </mat-option>
 
                             <!-- o tipo de pagamento para esse é "SE" para recalcular os valor com o coeficiente -->
                             <mat-option *ngIf="formaPagtoDto?.ParcCartaoInternet"
-                                value="{{EnumFormaPagto.ParcCartaoInternet}}">Parcelado Cartão Internet
+                                [value]="EnumFormaPagto.ParcCartaoInternet">Parcelado Cartão Internet
                             </mat-option>
 
                             <!-- o tipo de pagamento para esse é "SE" para recalcular os valor com o coeficiente -->
                             <mat-option *ngIf="formaPagtoDto?.ParcCartaoMaquineta"
-                                value="{{EnumFormaPagto.ParcCartaoMaquineta}}">Parcelado Cartão Maquineta
+                                [value]="EnumFormaPagto.ParcCartaoMaquineta">Parcelado Cartão Maquineta
                             </mat-option>
 
                         </mat-select>
@@ -48,10 +47,9 @@
                 <div *ngIf="enumFormaPagto==EnumFormaPagto.ParcComEnt">
                     <mat-form-field>
                         <mat-label>Valor Entrada</mat-label>
-                        <input matInput type="text" required id="vlEntrada" name="vlEntrada" 
+                        <input matInput type="text" required id="vlEntrada" name="vlEntrada"
                             (blur)="calcularParcelaComEntrada();"
-                            [value]="moedaUtils.formatarMoedaSemPrefixo(vlEntrada)"
-                            (change)="digitouVlEntrada($event)"
+                            [value]="moedaUtils.formatarMoedaSemPrefixo(vlEntrada)" (change)="digitouVlEntrada($event)"
                             (keyup)="digitouVlEntrada($event)">
                     </mat-form-field>
 
@@ -106,7 +104,7 @@
                         <mat-select [(ngModel)]="meioPagtoParcUnica" [ngModelOptions]="{standalone: true}">
                             <mat-option>Selecione</mat-option>
                             <mat-option *ngFor="let i of formaPagtoDto?.ListaParcUnica" [value]="i.Id">
-                                {{i.Descricao}}
+                                {{i.Descricao}} 
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
@@ -206,7 +204,7 @@
             </div>
 
 
-            
+
         </article>
         <!-- <footer>
             <a mat-raised-button color="accent" (click)="voltar()">

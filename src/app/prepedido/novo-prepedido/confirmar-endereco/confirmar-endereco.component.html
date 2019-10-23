@@ -2,10 +2,10 @@
 <mat-radio-group aria-labelledby="endereco-radio-group-label"
     [(ngModel)]="enderecoEntregaDtoClienteCadastro.OutroEndereco">
     <mat-radio-button class="enderecoradio" [value]="false">O mesmo endereço do cadastro </mat-radio-button>
-    <span class="caixa" style="padding-left: 2em; padding-bottom: 1em;">
+    <!-- <span class="caixa" style="padding-left: 2em; padding-bottom: 1em;"> -->
         <!-- ************   ENDEREÇO   ************  -->
-        <span class="dado">{{clienteCadastroUtils.formata_endereco(dadosClienteCadastroDto)}}</span>
-    </span>
+        <!-- <span class="dado">{{clienteCadastroUtils.formata_endereco(dadosClienteCadastroDto)}}</span>
+    </span> -->
 
     <mat-radio-button class="enderecoradio" [value]="true">Outro endereço </mat-radio-button>
 </mat-radio-group>

@@ -13,9 +13,9 @@
                         (keyup)="digitouProd($event)" [autofocus]="true" #digitadocx>
                 </mat-form-field>
 
-                <mat-form-field style="flex-grow: 0; flex-shrink: 0; width: 8ch;">
-                    <input matInput type="number" name="qte" placeholder="Quantidade" required [(ngModel)]="qdte"
-                        [ngModelOptions]="{standalone: true}">
+                <mat-form-field style="flex-grow: 0; flex-shrink: 0; width: 18ch;">
+                    <input matInput type="number" name="qtde" placeholder="Quantidade" required [(ngModel)]="qtde"
+                        [value]="qtde" [ngModelOptions]="{standalone: true}">
                 </mat-form-field>
             </div>
             <div class="listaprods">
@@ -35,14 +35,15 @@
         no celular, vamos usar só o checkbox mesmo
          -->
                                         <mat-radio-button *ngIf="telaDesktop" type="radio" name="produto"
-                                            value="{{ProdutoTelaFabrProd(p.produtoDto.Fabricante, p.produtoDto.Produto)}}">
-                                            {{ProdutoTelaFabrProd(p.produtoDto.Fabricante, p.produtoDto.Produto)}}
+                                            value="{{ProdutoTelaFabrProd(p.produtoDto.Fabricante, p.produtoDto.Fabricante_Nome, p.produtoDto.Produto)}}">
+                                            <!-- {{ProdutoTelaFabrProd(p.produtoDto.Fabricante, p.produtoDto.Fabricante_Nome, p.produtoDto.Produto)}} -->
+                                            {{p.produtoDto.Produto}}
                                         </mat-radio-button>
                                         <label *ngIf="!telaDesktop">
                                             <input *ngIf="!telaDesktop" type="radio" name="produto"
-                                                value="{{ProdutoTelaFabrProd(p.produtoDto.Fabricante, p.produtoDto.Produto)}}"
+                                                value="{{ProdutoTelaFabrProd(p.produtoDto.Fabricante, p.produtoDto.Fabricante_Nome, p.produtoDto.Produto)}}"
                                                 [(ngModel)]="produto">
-                                            {{ProdutoTelaFabrProd(p.produtoDto.Fabricante, p.produtoDto.Produto)}}
+                                            {{ProdutoTelaFabrProd(p.produtoDto.Fabricante, p.produtoDto.Fabricante_Nome, p.produtoDto.Produto)}}
                                         </label>
 
                                         <!-- no celular, nao temos a coluan de descrição, colocamos na mesma coluna -->
@@ -60,7 +61,7 @@
                             <tr [ngStyle]="{display: p.visivel ? '':'none'}" class="prod trfilho"
                                 *ngFor="let f of p.Filhos">
                                 <td class="itemfilho">
-                                    {{f.Qtde}} x {{ProdutoTelaFabrProd(f.Fabricante, f.Produto)}}
+                                    {{f.Qtde}} x {{ProdutoTelaFabrProd(f.Fabricante, f.Fabricante_Nome, f.Produto)}}
                                     <span *ngIf="!telaDesktop"
                                         innerHTML="{{produtoDescr(f.Fabricante, f.Produto).Descricao_html}}"></span>
                                 </td>
@@ -93,14 +94,14 @@
 
 
         </article>
-        <footer mat-dialog-actions style="justify-content: space-around;">
+        <footer mat-dialog-actions style="justify-content: space-around;">            
+            <button mat-raised-button (click)="onNoClick()" cdkFocusInitial color="accent">Cancelar</button>
             <button mat-raised-button (click)="onAdicionarClick()" color="accent">
                 <ng-template *ngIf="selecProdInfoPassado.Produto; then modificarBlock else adicionarBlock">
                 </ng-template>
                 <ng-template #modificarBlock>Modificar</ng-template>
                 <ng-template #adicionarBlock>Adicionar</ng-template>
             </button>
-            <button mat-raised-button (click)="onNoClick()" cdkFocusInitial color="accent">Cancelar</button>
         </footer>
     </form>
 </section>

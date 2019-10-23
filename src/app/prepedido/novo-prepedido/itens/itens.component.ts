@@ -21,6 +21,7 @@ import { asapScheduler } from 'rxjs';
 import { ConfirmationDialogComponent } from 'src/app/utils/confirmation-dialog/confirmation-dialog.component';
 import { DadosPagtoComponent } from '../dados-pagto/dados-pagto.component';
 import { NgForm } from '@angular/forms';
+import { debugOutputAstAsTypeScript } from '@angular/compiler';
 
 @Component({
   selector: 'app-itens',
@@ -127,13 +128,15 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
   carregandoProds = true;
   produtoComboDto: ProdutoComboDto;
   inscreverProdutoComboDto() {
-    this.produtoService.listarProdutosCombo(this.prePedidoDto.DadosCliente.Id).subscribe({
+    this.produtoService.listarProdutosCombo(this.prePedidoDto.DadosCliente.Loja, this.prePedidoDto.DadosCliente.Id).subscribe({
       next: (r: ProdutoComboDto) => {
         if (!!r) {
           this.produtoComboDto = r;
           //afazer: por enquanto, removendo quem nao tem preco....
           this.produtoComboDto.ProdutoDto = this.produtoComboDto.ProdutoDto.filter(el => el.Preco_lista && el.Preco_lista != 0);
           this.carregandoProds = false;
+          if (this.clicouAddProd)
+            this.adicionarProduto();
         } else {
           this.alertaService.mostrarMensagem("Erro ao acessar a lista de produtos: nenhum produto retornado. Por favor, entre em contato com o suporte técnico.")
         }
@@ -153,7 +156,6 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     if (!item || item.length <= 0) {
       return null;
     }
-
     //achamos o item
     return item[0];
   }
@@ -171,12 +173,25 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
   estoqueExistente(i: PrepedidoProdutoDtoPrepedido): number {
     //para imprimir quantos itens tem em estoque
     const item = this.estoqueItem(i);
+
     if (!item) {
       return null;
     }
     return item.Estoque;
   }
 
+  qtdeVendaPermitida(i: PrepedidoProdutoDtoPrepedido): boolean {
+    //busca o item na lista
+    const item = this.estoqueItem(i);
+    if (!item)
+      return true;
+
+
+    if (i.Qtde > item.Qtde_Max_Venda)
+      return true;
+    else
+      return false;
+  }
 
   produtoTemAviso(i: PrepedidoProdutoDtoPrepedido): boolean {
     const item = this.estoqueItem(i);
@@ -219,13 +234,17 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
   */
 
   digitouQte(i: PrepedidoProdutoDtoPrepedido) {
+    //necessário trazer e verificar a variavel "qtde_max_permitida" na tabela "T_produto_loja" 
+    //para limitar a qtde de compra para o usuário
+    //afazer:verificar a qtde maxima permitida para venda
     //não deixa números negativos
     if (i.Qtde <= 0) {
       i.Qtde = 1;
     }
     i.TotalItem = i.VlUnitario * i.Qtde; // VlUnitario = Vl Venda na tela
-
+    //this.qtdeVendaPermitida(i);
     this.dadosPagto.prepedidoAlterado();
+
   }
   digitouPreco(e: Event, i: PrepedidoProdutoDtoPrepedido) {
     let valor = ((e.target) as HTMLInputElement).value;
@@ -307,6 +326,17 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
   }
   continuar() {
 
+    //verificar se tem produtos com qtde maior que o permitido
+    let q: number = 0;
+    this.prePedidoDto.ListaProdutos.forEach(r => {
+      if (this.qtdeVendaPermitida(r)) {
+        q++;
+      }
+    });
+    if (q > 0) {
+      this.alertaService.mostrarMensagem("Produtos com quantidades maiores que a quantidade máxima permitida para venda!");
+      return;
+    }
     //validação: tem que ter algum produto
     if (this.prePedidoDto.ListaProdutos.length === 0) {
       this.alertaService.mostrarMensagem("Selecione ao menos um produto para continuar.");
@@ -328,6 +358,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
   }
   adicionarProduto() {
     //ele mesmo já adiciona
+    this.clicouAddProd = true;
     this.mostrarProdutos(null);
   }
   removerLinha(i: PrepedidoProdutoDtoPrepedido) {
@@ -344,11 +375,12 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
   }
 
 
+  public clicouAddProd: boolean = false;
 
   verificarCargaProdutos(): boolean {
     if (this.carregandoProds) {
       //ainda não carregou, vamos esperar....
-      this.alertaService.mostrarMensagem("Lista de produtos ainda sendo carregada. Por favor, tente novamente em alguns instantes.");
+      //this.alertaService.mostrarMensagem("Lista de produtos ainda sendo carregada. Por favor, tente novamente em alguns instantes.");
       return false;
     }
     return true;

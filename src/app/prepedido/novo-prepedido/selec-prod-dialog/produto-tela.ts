@@ -9,7 +9,7 @@ export class ProdutoTela {
      * Constroi a partir de um ProdutoDto
      */
     constructor(public produtoDto: ProdutoDto, produtoCompostoDto: ProdutoCompostoDto[]) {
-        this.stringBusca = ProdutoTela.StringSimples(ProdutoTela.FabrProd(produtoDto.Fabricante, produtoDto.Produto) + StringUtils.TextoDeHtml(produtoDto.Descricao_html));
+        this.stringBusca = ProdutoTela.StringSimples(ProdutoTela.FabrProd(produtoDto.Fabricante, produtoDto.Fabricante_Nome, produtoDto.Produto) + StringUtils.TextoDeHtml(produtoDto.Descricao_html));
         const filhosDiretos = produtoCompostoDto.filter(el => el.PaiFabricante === produtoDto.Fabricante && el.PaiProduto === produtoDto.Produto);
         if (filhosDiretos.length == 0) {
             this.Filhos = new Array();
@@ -54,10 +54,13 @@ export class ProdutoTela {
 
     //junta o fabricante e o produto
     //usado na tela e no checkbox
-    public static FabrProd(fabricante: string, produto: string): string {
+    public static FabrProd(fabricante: string, fabricante_nome:string, produto: string): string {
         if (!fabricante || !produto) {
             return "";
         }
-        return fabricante + "/" + produto;
+        //afazer:Gabriel retirar o código do fabricante da
+        return fabricante + "/" + fabricante_nome + "/" + produto;
     }
+
+    
 }

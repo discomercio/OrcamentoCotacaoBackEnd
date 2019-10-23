@@ -125,17 +125,19 @@ para não dar erro no console
         </span>
     </span>
 
-    <div *ngIf="cadastrando">
-        <app-cep #componenteCep></app-cep>
-    </div>
-
-    <div *ngIf="!cadastrando && mostrarEndereco">
+    <div *ngIf="!cadastrando">
         <span class="caixa">
             <!-- ************   ENDEREÇO   ************  -->
             <span class="rotulo">Endereço:</span> <span
                 class="dado">{{clienteCadastroUtils.formata_endereco(dadosClienteCadastroDto)}}</span>
         </span>
     </div>
+
+    <div *ngIf="cadastrando">
+        <app-cep #componenteCep></app-cep>
+    </div>
+
+
 
 
     <div *ngIf="cadastrando">
