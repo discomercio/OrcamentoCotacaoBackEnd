@@ -82,6 +82,7 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
   public InstaladorInstala: boolean;
   public GarantiaIndicador: boolean;
   dadosDoModelo() {
+    debugger;
     this.EntregaImediata = false;
     if (this.prePedidoDto.DetalhesPrepedido.EntregaImediata === this.constantes.COD_ETG_IMEDIATA_SIM.toString()) {
       this.EntregaImediata = true;

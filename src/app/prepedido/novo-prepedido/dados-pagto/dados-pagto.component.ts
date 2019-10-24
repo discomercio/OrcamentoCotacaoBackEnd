@@ -103,7 +103,10 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
 
   atribuirFormaPagtoParaDto() {
 
+    debugger;
 
+    this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento = this.enumFormaPagto;
+    this.prePedidoDto.VlTotalDestePedido = this.totalPedido();
     if (this.enumFormaPagto == 1) {
       //A vista      
       this.prePedidoDto.FormaPagtoCriacao.Rb_forma_pagto = this.enumFormaPagto.toString();
@@ -418,58 +421,64 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
   }
 
   montaFormaPagtoExistente() {
-    this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento;
 
-    switch (this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento.toString()) {
-      case this.constantes.COD_FORMA_PAGTO_A_VISTA:
-        //A vista
-        this.enumFormaPagto = EnumFormaPagto.Avista;//forma de pagamento
-        this.meioPagtoAVista = parseInt(this.prePedidoDto.FormaPagtoCriacao.Op_av_forma_pagto);//deposito ou...
-        this.opcaoPagto = this.montaParcelamentoExistente();//recebe a descrição (1 X R$ 00,00)
-        break;
-      case this.constantes.COD_FORMA_PAGTO_PARCELA_UNICA:
-        //ParcUnica
-        this.enumFormaPagto = EnumFormaPagto.ParcUnica;//forma de pagamento
-        this.meioPagtoParcUnica = parseInt(this.prePedidoDto.FormaPagtoCriacao.Rb_forma_pagto);//deposito ou...
-        this.opcaoPagto = this.montaParcelamentoExistente();//recebe a descrição (1 X R$ 00,00)
-        this.diasVencParcUnica = this.prePedidoDto.FormaPagtoCriacao.C_pu_vencto_apos;//dias para venc.
-        break;
-      case this.constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO:
-        //ParcCartaoInternet
-        this.enumFormaPagto = EnumFormaPagto.ParcCartaoInternet;//forma de pagamento
-        this.opcaoPagto = this.montaParcelamentoExistente();//recebe a descrição (1 X R$ 00,00)
-        break;
-      case this.constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA:
-        //ParcCartaoMaquineta
-        this.enumFormaPagto = EnumFormaPagto.ParcCartaoMaquineta;//forma de pagamento
-        this.opcaoPagto = this.montaParcelamentoExistente();//recebe a descrição (1 X R$ 00,00)
-        break;
-      case this.constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA:
-        //ParcComEnt
-        this.enumFormaPagto = EnumFormaPagto.ParcComEnt;//forma de pagamento
-        this.vlEntrada = this.prePedidoDto.FormaPagtoCriacao.C_pce_entrada_valor;//valor de entrada
-        this.meioPagtoEntrada = parseInt(this.prePedidoDto.FormaPagtoCriacao.Op_pce_entrada_forma_pagto);//deposito ou...
-        this.meioPagtoEntradaPrest = parseInt(this.prePedidoDto.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto);//deposito ou...
-        this.opcaoPagto = this.montaParcelamentoExistente();//recebe a descrição (1 X R$ 00,00)
-        this.diasVenc = this.prePedidoDto.FormaPagtoCriacao.C_pce_prestacao_periodo;//recebe os dias de vencimento
-        break;
-      case this.constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA:
-        //ParcSemEnt
-        this.prePedidoDto.FormaPagtoCriacao.Rb_forma_pagto = this.enumFormaPagto.toString();
-        this.prePedidoDto.FormaPagtoCriacao.Op_pse_prim_prest_forma_pagto = "";//meio de pagamento
-        this.prePedidoDto.FormaPagtoCriacao.Op_pse_demais_prest_forma_pagto = "";//meio de pagamento
-        this.prePedidoDto.FormaPagtoCriacao.C_pse_prim_prest_valor = 0;
-        this.prePedidoDto.FormaPagtoCriacao.C_pse_prim_prest_apos = 0;
-        this.prePedidoDto.FormaPagtoCriacao.C_pse_demais_prest_qtde = 0;
-        this.prePedidoDto.FormaPagtoCriacao.C_pse_demais_prest_valor = 0;
-        this.prePedidoDto.FormaPagtoCriacao.C_pse_demais_prest_periodo = 0;
-        this.prePedidoDto.FormaPagtoCriacao.C_pse_demais_prest_qtde = 0;
-        break;
-    };
+    debugger;
+
+    if (this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento) {
+      this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento;
+
+      switch (this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento.toString()) {
+        case this.constantes.COD_FORMA_PAGTO_A_VISTA:
+          //A vista
+          this.enumFormaPagto = EnumFormaPagto.Avista;//forma de pagamento
+          this.meioPagtoAVista = parseInt(this.prePedidoDto.FormaPagtoCriacao.Op_av_forma_pagto);//deposito ou...
+          this.opcaoPagto = this.montaParcelamentoExistente();//recebe a descrição (1 X R$ 00,00)
+          break;
+        case this.constantes.COD_FORMA_PAGTO_PARCELA_UNICA:
+          //ParcUnica
+          this.enumFormaPagto = EnumFormaPagto.ParcUnica;//forma de pagamento
+          this.meioPagtoParcUnica = parseInt(this.prePedidoDto.FormaPagtoCriacao.Rb_forma_pagto);//deposito ou...
+          this.opcaoPagto = this.montaParcelamentoExistente();//recebe a descrição (1 X R$ 00,00)
+          this.diasVencParcUnica = this.prePedidoDto.FormaPagtoCriacao.C_pu_vencto_apos;//dias para venc.
+          break;
+        case this.constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO:
+          //ParcCartaoInternet
+          this.enumFormaPagto = EnumFormaPagto.ParcCartaoInternet;//forma de pagamento
+          this.opcaoPagto = this.montaParcelamentoExistente();//recebe a descrição (1 X R$ 00,00)
+          break;
+        case this.constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA:
+          //ParcCartaoMaquineta
+          this.enumFormaPagto = EnumFormaPagto.ParcCartaoMaquineta;//forma de pagamento
+          this.opcaoPagto = this.montaParcelamentoExistente();//recebe a descrição (1 X R$ 00,00)
+          break;
+        case this.constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA:
+          //ParcComEnt
+          this.enumFormaPagto = EnumFormaPagto.ParcComEnt;//forma de pagamento
+          this.vlEntrada = this.prePedidoDto.FormaPagtoCriacao.C_pce_entrada_valor;//valor de entrada
+          this.meioPagtoEntrada = parseInt(this.prePedidoDto.FormaPagtoCriacao.Op_pce_entrada_forma_pagto);//deposito ou...
+          this.meioPagtoEntradaPrest = parseInt(this.prePedidoDto.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto);//deposito ou...
+          this.opcaoPagto = this.montaParcelamentoExistente();//recebe a descrição (1 X R$ 00,00)
+          this.diasVenc = this.prePedidoDto.FormaPagtoCriacao.C_pce_prestacao_periodo;//recebe os dias de vencimento
+          break;
+        case this.constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA:
+          //ParcSemEnt
+          this.prePedidoDto.FormaPagtoCriacao.Rb_forma_pagto = this.enumFormaPagto.toString();
+          this.prePedidoDto.FormaPagtoCriacao.Op_pse_prim_prest_forma_pagto = "";//meio de pagamento
+          this.prePedidoDto.FormaPagtoCriacao.Op_pse_demais_prest_forma_pagto = "";//meio de pagamento
+          this.prePedidoDto.FormaPagtoCriacao.C_pse_prim_prest_valor = 0;
+          this.prePedidoDto.FormaPagtoCriacao.C_pse_prim_prest_apos = 0;
+          this.prePedidoDto.FormaPagtoCriacao.C_pse_demais_prest_qtde = 0;
+          this.prePedidoDto.FormaPagtoCriacao.C_pse_demais_prest_valor = 0;
+          this.prePedidoDto.FormaPagtoCriacao.C_pse_demais_prest_periodo = 0;
+          this.prePedidoDto.FormaPagtoCriacao.C_pse_demais_prest_qtde = 0;
+          break;
+      };
+    }
   }
 
   //metodo para montar o tipo de parcelamento que foi selecionado pelo usuário
-  montaParcelamentoExistente():string {
+  montaParcelamentoExistente(): string {
+    debugger;
     let retorno = "";
     this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento;
 
@@ -477,28 +486,28 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
 
     switch (this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento.toString()) {
       case this.constantes.COD_FORMA_PAGTO_A_VISTA:
-       retorno = this.prePedidoDto.FormaPagtoCriacao.Qtde_Parcelas + " X " + 
-       this.moedaUtils.formatarMoedaComPrefixo(this.prePedidoDto.VlTotalDestePedido);
+        retorno = this.prePedidoDto.FormaPagtoCriacao.Qtde_Parcelas + " X " +
+          this.moedaUtils.formatarMoedaComPrefixo(this.prePedidoDto.VlTotalDestePedido);
         break;
       case this.constantes.COD_FORMA_PAGTO_PARCELA_UNICA:
         //ParcUnica
         retorno = this.prePedidoDto.FormaPagtoCriacao.Qtde_Parcelas + " X " +
-        this.moedaUtils.formatarMoedaComPrefixo(this.prePedidoDto.FormaPagtoCriacao.C_pu_valor);
+          this.moedaUtils.formatarMoedaComPrefixo(this.prePedidoDto.FormaPagtoCriacao.C_pu_valor);
         break;
       case this.constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO:
         //ParcCartaoInternet
-        retorno = this.prePedidoDto.FormaPagtoCriacao.Qtde_Parcelas + " X " + 
-        this.moedaUtils.formatarMoedaComPrefixo(this.prePedidoDto.FormaPagtoCriacao.C_pc_valor);
+        retorno = this.prePedidoDto.FormaPagtoCriacao.Qtde_Parcelas + " X " +
+          this.moedaUtils.formatarMoedaComPrefixo(this.prePedidoDto.FormaPagtoCriacao.C_pc_valor);
         break;
       case this.constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA:
         //ParcCartaoMaquineta
         retorno = this.prePedidoDto.FormaPagtoCriacao.Qtde_Parcelas + " X " +
-        this.moedaUtils.formatarMoedaComPrefixo(this.prePedidoDto.FormaPagtoCriacao.C_pc_maquineta_valor);
+          this.moedaUtils.formatarMoedaComPrefixo(this.prePedidoDto.FormaPagtoCriacao.C_pc_maquineta_valor);
         break;
       case this.constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA:
         //ParcComEnt
-        retorno = this.prePedidoDto.FormaPagtoCriacao.C_pce_prestacao_qtde + " X " + 
-        this.moedaUtils.formatarMoedaComPrefixo(this.prePedidoDto.FormaPagtoCriacao.C_pce_prestacao_valor);
+        retorno = this.prePedidoDto.FormaPagtoCriacao.C_pce_prestacao_qtde + " X " +
+          this.moedaUtils.formatarMoedaComPrefixo(this.prePedidoDto.FormaPagtoCriacao.C_pce_prestacao_valor);
         break;
       case this.constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA:
         //ParcSemEnt
