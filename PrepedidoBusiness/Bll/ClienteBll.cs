@@ -367,6 +367,8 @@ namespace PrepedidoBusiness.Bll
                     Ddd_Com_2 = clienteDto.DddComercial2,
                     Tel_Com_2 = clienteDto.TelComercial2,
                     Ramal_Com_2 = clienteDto.Ramal2,
+                    Ddd_Cel = clienteDto.DddCelular,
+                    Tel_Cel = clienteDto.Celular,
                     Dt_Nasc = clienteDto.Nascimento,
                     Filiacao = clienteDto.Observacao_Filiacao.ToUpper(),
                     Obs_crediticias = "",
