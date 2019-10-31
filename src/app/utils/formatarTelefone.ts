@@ -15,7 +15,7 @@ export class FormatarTelefone {
             return "";
 
         let i = s_tel.length - 4;
-        s_tel = s_tel.substr(1, i) + "-" + s_tel.substr(i + 1);
+        s_tel = s_tel.substr(0, i) + "-" + s_tel.substr(i);
 
         return s_tel;
     }
@@ -51,7 +51,7 @@ export class FormatarTelefone {
 
 
 
-    //máscara para telefones de 8 ou 9 dígitos
+    //máscara para digitar telefones de 8 ou 9 dígitos
     //usando o angular2-text-mask
     static mascaraTelefone(userInput: string) {
         let numbers = StringUtils.retorna_so_digitos(userInput);

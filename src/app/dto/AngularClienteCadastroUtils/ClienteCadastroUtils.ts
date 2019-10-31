@@ -118,8 +118,8 @@ e são usados desta forma:
     if (!p) {
       return "";
     }
+    
     let s = "";
-
     //pessoa física
     if (this.ehPf(p)) {
       let s2 = "";
