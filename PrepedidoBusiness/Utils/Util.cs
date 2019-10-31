@@ -170,6 +170,21 @@ namespace PrepedidoBusiness.Utils
             return chave;
         }
 
+        public static string FormataHora(string hora)
+        {
+            string retorno = "";
+            if (hora.Length == 6)
+            {
+                string _hora = hora.Substring(0, 2);
+                string _minuto = hora.Substring(2, 2);
+                string _segundos = hora.Substring(4, 2);
+
+                retorno = _hora + ":" + _minuto + ":" + _segundos;
+            }            
+
+            return retorno;
+        }
+
         public static string DecodificaSenha(string origem, string chave)
         {
             string s_destino = "";

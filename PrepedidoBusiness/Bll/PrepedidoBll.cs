@@ -203,10 +203,11 @@ namespace PrepedidoBusiness.Bll
             var totalDestePedidoComRa = lstProdutoTask.Select(r => r.TotalItemRA).Sum();
             var totalDestePedido = lstProdutoTask.Select(r => r.TotalItem).Sum();
 
+
             PrePedidoDto prepedidoDto = new PrePedidoDto
             {
                 NumeroPrePedido = pp.Orcamento,
-                DataHoraPedido = Convert.ToString(pp.Data + pp.Hora),
+                DataHoraPedido = Convert.ToString(pp.Data?.ToString("dd/MM/yyyy") + " " + Util.FormataHora(pp.Hora)),
                 DadosCliente = await cadastroClienteTask,
                 EnderecoEntrega = await enderecoEntregaTask,
                 ListaProdutos = lstProdutoTask.ToList(),
@@ -339,17 +340,25 @@ namespace PrepedidoBusiness.Bll
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA:
                     lista.Add(String.Format("Entrada " + "{0:c2} (" +
-                        Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pce_Forma_Pagto_Entrada)) + ")", torcamento.Pce_Entrada_Valor));
-                    lista.Add(String.Format("Prestações: " + torcamento.Pce_Prestacao_Qtde + " X " + " {0:c2}" +
-                        " (" + Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pce_Forma_Pagto_Prestacao)) + ") vencendo a cada " +
-                        torcamento.Pce_Prestacao_Periodo + " dias", torcamento.Pce_Prestacao_Valor));
+                        Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pce_Forma_Pagto_Entrada)) + ")", torcamento.Pce_Entrada_Valor));                    
+                    if (torcamento.Pce_Forma_Pagto_Prestacao != 5 && torcamento.Pce_Forma_Pagto_Prestacao != 7)
+                    {
+                        lista.Add(String.Format("Prestações: " + torcamento.Pce_Prestacao_Qtde + " X " + " {0:c2}" +
+                            " (" + Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pce_Forma_Pagto_Prestacao)) + ") vencendo a cada " +
+                            torcamento.Pce_Prestacao_Periodo + " dias", torcamento.Pce_Prestacao_Valor));
+                    }
+                    else
+                    {
+                        lista.Add(String.Format("Prestações: " + torcamento.Pce_Prestacao_Qtde + " X " + " {0:c2}" +
+                            " (" + Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pce_Forma_Pagto_Prestacao)) + ")", torcamento.Pce_Prestacao_Valor));
+                    }
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA:
                     lista.Add(String.Format("1ª Prestação: " + " {0:c2} (" +
                         Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pse_Forma_Pagto_Prim_Prest)) +
                         ") vencendo após " + torcamento.Pse_Prim_Prest_Apos + " dias", torcamento.Pse_Prim_Prest_Valor));
                     lista.Add(String.Format("Demais Prestações: " + torcamento.Pse_Demais_Prest_Qtde + " X " +
-                        " {0:c2} (" + Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pse_Forma_Pagto_Demais_Prest)) + 
+                        " {0:c2} (" + Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pse_Forma_Pagto_Demais_Prest)) +
                         ") vencendo a cada " + torcamento.Pse_Demais_Prest_Periodo + " dias", torcamento.Pse_Demais_Prest_Valor));
                     break;
             }
@@ -389,7 +398,8 @@ namespace PrepedidoBusiness.Bll
                     VlTotalRA = (decimal)(p.Qtde * (p.Preco_NF - p.Preco_Venda)),
                     Comissao = orc.Perc_RT,
                     TotalItemRA = p.Qtde * p.Preco_NF,
-                    TotalItem = p.Qtde * p.Preco_Venda
+                    TotalItem = p.Qtde * p.Preco_Venda,
+                    VlTotalItem = p.Qtde * p.Preco_Venda
                 };
 
                 listaProduto.Add(produtoPrepedido);
@@ -445,6 +455,7 @@ namespace PrepedidoBusiness.Bll
         private async Task<EnderecoEntregaDtoClienteCadastro> ObterEnderecoEntrega(Torcamento p)
         {
             EnderecoEntregaDtoClienteCadastro enderecoEntrega = new EnderecoEntregaDtoClienteCadastro();
+            enderecoEntrega.OutroEndereco = Convert.ToBoolean(p.St_End_Entrega);
 
             if (p.St_End_Entrega == 1)
             {
@@ -455,10 +466,10 @@ namespace PrepedidoBusiness.Bll
                 enderecoEntrega.EndEtg_cidade = p.EndEtg_Cidade;
                 enderecoEntrega.EndEtg_uf = p.EndEtg_UF;
                 enderecoEntrega.EndEtg_cep = p.EndEtg_CEP;
+                enderecoEntrega.EndEtg_cod_justificativa = p.EndEtg_Cod_Justificativa;
                 enderecoEntrega.EndEtg_descricao_justificativa = await ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA, p.EndEtg_Cod_Justificativa);
             }
-            else
-                return null;
+            
 
             return enderecoEntrega;
         }
@@ -519,14 +530,14 @@ namespace PrepedidoBusiness.Bll
 
             //if (!prePedido.EnderecoEntrega.OutroEndereco)
             //{
-            prePedido.EnderecoEntrega = new EnderecoEntregaDtoClienteCadastro();
-            prePedido.EnderecoEntrega.EndEtg_endereco = prePedido.DadosCliente.Endereco;
-            prePedido.EnderecoEntrega.EndEtg_endereco_numero = prePedido.DadosCliente.Numero;
-            prePedido.EnderecoEntrega.EndEtg_endereco_complemento = prePedido.DadosCliente.Complemento;
-            prePedido.EnderecoEntrega.EndEtg_cep = prePedido.DadosCliente.Cep;
-            prePedido.EnderecoEntrega.EndEtg_bairro = prePedido.DadosCliente.Bairro;
-            prePedido.EnderecoEntrega.EndEtg_cidade = prePedido.DadosCliente.Cidade;
-            prePedido.EnderecoEntrega.EndEtg_uf = prePedido.DadosCliente.Uf;
+            //prePedido.EnderecoEntrega = new EnderecoEntregaDtoClienteCadastro();
+            //prePedido.EnderecoEntrega.EndEtg_endereco = prePedido.DadosCliente.Endereco;
+            //prePedido.EnderecoEntrega.EndEtg_endereco_numero = prePedido.DadosCliente.Numero;
+            //prePedido.EnderecoEntrega.EndEtg_endereco_complemento = prePedido.DadosCliente.Complemento;
+            //prePedido.EnderecoEntrega.EndEtg_cep = prePedido.DadosCliente.Cep;
+            //prePedido.EnderecoEntrega.EndEtg_bairro = prePedido.DadosCliente.Bairro;
+            //prePedido.EnderecoEntrega.EndEtg_cidade = prePedido.DadosCliente.Cidade;
+            //prePedido.EnderecoEntrega.EndEtg_uf = prePedido.DadosCliente.Uf;
             //}
 
             TorcamentistaEindicador tOrcamentista = await BuscarTorcamentista(apelido);
@@ -703,7 +714,7 @@ namespace PrepedidoBusiness.Bll
             torcamento.Orcamentista = orcamentista.Apelido;
             torcamento.Midia = "";
             torcamento.Servicos = "";
-            //Vl_Servicos verificar como esse campo é inserido
+            //Vl_Servicos verificar como esse campo é inserido t_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FORMA_PAG TorcamentistaEIndicadorRestricao
             torcamento.Vendedor = orcamentista.Vendedor;
             torcamento.Obs_1 = prepedido.DetalhesPrepedido.Observacoes;
             torcamento.Obs_2 = prepedido.DetalhesPrepedido.NumeroNF;
@@ -725,7 +736,6 @@ namespace PrepedidoBusiness.Bll
             }
             else if (prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO)
             {
-                //afazer: verificar a qtde de parcelas
                 torcamento.Pc_Qtde_Parcelas = (short)prepedido.FormaPagtoCriacao.C_pc_qtde;
                 torcamento.Pc_Valor_Parcela = prepedido.FormaPagtoCriacao.C_pc_valor;
             }
@@ -741,7 +751,9 @@ namespace PrepedidoBusiness.Bll
                 torcamento.Pce_Entrada_Valor = prepedido.FormaPagtoCriacao.C_pce_entrada_valor;
                 torcamento.Pce_Prestacao_Qtde = (short)prepedido.FormaPagtoCriacao.C_pce_prestacao_qtde;
                 torcamento.Pce_Prestacao_Valor = prepedido.FormaPagtoCriacao.C_pce_prestacao_valor;
-                torcamento.Pce_Prestacao_Periodo = (short)prepedido.FormaPagtoCriacao.C_pce_prestacao_periodo;
+                if (prepedido.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto != "5" &&
+                    prepedido.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto != "7")
+                    torcamento.Pce_Prestacao_Periodo = (short)prepedido.FormaPagtoCriacao.C_pce_prestacao_periodo;
                 torcamento.Qtde_Parcelas = (short?)(prepedido.FormaPagtoCriacao.Qtde_Parcelas);
                 torcamento.CustoFinancFornecQtdeParcelas = (short)prepedido.FormaPagtoCriacao.C_pce_prestacao_qtde;
             }
@@ -766,23 +778,34 @@ namespace PrepedidoBusiness.Bll
             torcamento.Vl_Total_NF = CalcularVl_Total_NF(prepedido);
             torcamento.Vl_Total_RA = CalcularVl_Total_NF(prepedido) - Calcular_Vl_Total(prepedido);
             torcamento.Perc_RT = 0;//não é passado valor para esse campo rever
-            torcamento.InstaladorInstalaStatus = prepedido.DetalhesPrepedido.InstaladorInstala != "" ? short.Parse(Constantes.COD_INSTALADOR_INSTALA_SIM) : short.Parse(Constantes.COD_INSTALADOR_INSTALA_NAO);
+            torcamento.StBemUsoConsumo = prepedido.DetalhesPrepedido.BemDeUso_Consumo != "0" ? short.Parse(Constantes.COD_ST_BEM_USO_CONSUMO_SIM) : short.Parse(Constantes.COD_ST_BEM_USO_CONSUMO_NAO);
+
+            torcamento.InstaladorInstalaStatus = prepedido.DetalhesPrepedido.InstaladorInstala == "2" ? short.Parse(Constantes.COD_INSTALADOR_INSTALA_SIM) : short.Parse(Constantes.COD_INSTALADOR_INSTALA_NAO);
             torcamento.InstaladorInstalaUsuarioUltAtualiz = orcamentista.Apelido;
             torcamento.InstaladorInstalaDtHrUltAtualiz = DateTime.Now;
             torcamento.Perc_Desagio_RA_Liquida = Constantes.PERC_DESAGIO_RA_LIQUIDA;
             torcamento.Permite_RA_Status = orcamentista.Permite_RA_Status;
-            torcamento.St_End_Entrega = 1;
-            torcamento.EndEtg_Endereco = prepedido.EnderecoEntrega.EndEtg_endereco;
-            torcamento.EndEtg_Endereco_Numero = prepedido.EnderecoEntrega.EndEtg_endereco_numero;
-            torcamento.EndEtg_Endereco_Complemento = prepedido.EnderecoEntrega.EndEtg_endereco_complemento;
-            torcamento.EndEtg_Bairro = prepedido.EnderecoEntrega.EndEtg_bairro;
-            torcamento.EndEtg_Cidade = prepedido.EnderecoEntrega.EndEtg_cidade;
-            torcamento.EndEtg_UF = prepedido.EnderecoEntrega.EndEtg_uf;
-            torcamento.EndEtg_CEP = prepedido.EnderecoEntrega.EndEtg_cep;
-            torcamento.EndEtg_Cod_Justificativa = prepedido.EnderecoEntrega.EndEtg_descricao_justificativa;
-            torcamento.Etg_Imediata_Data = DateTime.Now;
-            torcamento.Etg_Imediata_Usuario = orcamentista.Apelido;
+            //afazer: verificar prepedido.EnderecoEntrega.OutroEndereco para passar os valores de endereço de entrega
+            torcamento.St_End_Entrega = prepedido.EnderecoEntrega.OutroEndereco == true ? (short)1 : (short)0;
+            if (prepedido.EnderecoEntrega.OutroEndereco)
+            {
+                torcamento.EndEtg_Endereco = prepedido.EnderecoEntrega.EndEtg_endereco;
+                torcamento.EndEtg_Endereco_Numero = prepedido.EnderecoEntrega.EndEtg_endereco_numero;
+                torcamento.EndEtg_Endereco_Complemento = prepedido.EnderecoEntrega.EndEtg_endereco_complemento;
+                torcamento.EndEtg_Bairro = prepedido.EnderecoEntrega.EndEtg_bairro;
+                torcamento.EndEtg_Cidade = prepedido.EnderecoEntrega.EndEtg_cidade;
+                torcamento.EndEtg_UF = prepedido.EnderecoEntrega.EndEtg_uf;
+                torcamento.EndEtg_CEP = prepedido.EnderecoEntrega.EndEtg_cep.Replace("-", "");
+                torcamento.EndEtg_Cod_Justificativa = prepedido.EnderecoEntrega.EndEtg_cod_justificativa;
+            }
+            torcamento.St_Etg_Imediata = prepedido.DetalhesPrepedido.EntregaImediata != "1" ? short.Parse(Constantes.COD_ETG_IMEDIATA_SIM) : short.Parse(Constantes.COD_ETG_IMEDIATA_NAO);
+            if (torcamento.St_Etg_Imediata == 2)
+            {
+                torcamento.Etg_Imediata_Data = DateTime.Now;
+                torcamento.Etg_Imediata_Usuario = orcamentista.Apelido;
+            }
             torcamento.CustoFinancFornecParcelamento = siglaPagto;//sigla pagto
+            torcamento.GarantiaIndicadorStatus = prepedido.DetalhesPrepedido.GarantiaIndicador != "0" ? byte.Parse(Constantes.COD_GARANTIA_INDICADOR_STATUS__SIM) : byte.Parse(Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO);
             torcamento.GarantiaIndicadorUsuarioUltAtualiz = orcamentista.Apelido;
             torcamento.GarantiaInidicadorDtHrUltAtualiz = DateTime.Now;
 
@@ -796,6 +819,8 @@ namespace PrepedidoBusiness.Bll
 
             //Montar uma rotina para pegar os campos a omitir antes de montar o log
             string campos_a_omitir = MontarCamposAOmitirFormaPagtoCriacao(prepedido.FormaPagtoCriacao);
+
+            campos_a_omitir = MontaCamposAOmitirEnderecoEntrega(prepedido.EnderecoEntrega);
 
             string log = "";
             log = Util.MontaLog(torcamento, log, campos_a_omitir);
@@ -816,6 +841,19 @@ namespace PrepedidoBusiness.Bll
             await dbgravacao.SaveChangesAsync();
 
             return log;
+        }
+
+        public string MontaCamposAOmitirEnderecoEntrega(EnderecoEntregaDtoClienteCadastro end)
+        {
+            string campos_a_omitir = "";
+
+            if (!end.OutroEndereco)
+            {
+                campos_a_omitir = "|EndEtg_endereco|EndEtg_bairro|EndEtg_cidade|EndEtg_uf|EndEtg_cep|" +
+                    "EndEtg_endereco_numero|EndEtg_endereco_complemento|";
+            }
+
+            return campos_a_omitir;
         }
 
         private string MontarCamposAOmitirFormaPagtoCriacao(FormaPagtoCriacaoDto forma_pagto_criacao)
@@ -839,7 +877,8 @@ namespace PrepedidoBusiness.Bll
                     "pce_prestacao_valor|pce_prestacao_periodo|";
             else if (forma_pagto_criacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA)
                 campos_a_omitir += "pse_forma_pagto_prim_prest|pse_forma_pagto_demais_prest|pse_prim_prest_valor|pse_prim_prest_apos|" +
-                    "pse_demais_prest_qtde|pse_demais_prest_valor|pse_demais_prest_periodo";
+                    "pse_demais_prest_qtde|pse_demais_prest_valor|pse_demais_prest_periodo|";
+            
 
             return campos_a_omitir;
         }
@@ -1247,41 +1286,44 @@ namespace PrepedidoBusiness.Bll
         {
             bool retorno = true;
 
-            if (string.IsNullOrEmpty(endEtg.EndEtg_endereco))
+            if (endEtg.OutroEndereco)
             {
-                lstErros.Add("PREENCHA O ENDEREÇO DE ENTREGA.");
-                retorno = false;
-            }
-            if (endEtg.EndEtg_endereco.Length > Constantes.MAX_TAMANHO_CAMPO_ENDERECO)
-            {
-                lstErros.Add("ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: " + endEtg.EndEtg_endereco.Length +
-                    " CARACTERES<br>TAMANHO MÁXIMO: " + Constantes.MAX_TAMANHO_CAMPO_ENDERECO + " CARACTERES");
-                retorno = false;
-            }
-            if (string.IsNullOrEmpty(endEtg.EndEtg_endereco_numero))
-            {
-                lstErros.Add("PREENCHA O NÚMERO DO ENDEREÇO DE ENTREGA.");
-                retorno = false;
-            }
-            if (string.IsNullOrEmpty(endEtg.EndEtg_bairro))
-            {
-                lstErros.Add("PREENCHA O BAIRRO DO ENDEREÇO DE ENTREGA.");
-                retorno = false;
-            }
-            if (string.IsNullOrEmpty(endEtg.EndEtg_cidade))
-            {
-                lstErros.Add("PREENCHA A CIDADE DO ENDEREÇO DE ENTREGA.");
-                retorno = false;
-            }
-            if (string.IsNullOrEmpty(endEtg.EndEtg_uf) || !Util.VerificaUf(endEtg.EndEtg_uf))
-            {
-                lstErros.Add("UF INVÁLIDA NO ENDEREÇO DE ENTREGA.");
-                retorno = false;
-            }
-            if (!Util.VerificaCep(endEtg.EndEtg_cep))
-            {
-                lstErros.Add("CEP INVÁLIDO NO ENDEREÇO DE ENTREGA.");
-                retorno = false;
+                if (string.IsNullOrEmpty(endEtg.EndEtg_endereco))
+                {
+                    lstErros.Add("PREENCHA O ENDEREÇO DE ENTREGA.");
+                    retorno = false;
+                }
+                if (endEtg.EndEtg_endereco.Length > Constantes.MAX_TAMANHO_CAMPO_ENDERECO)
+                {
+                    lstErros.Add("ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: " + endEtg.EndEtg_endereco.Length +
+                        " CARACTERES<br>TAMANHO MÁXIMO: " + Constantes.MAX_TAMANHO_CAMPO_ENDERECO + " CARACTERES");
+                    retorno = false;
+                }
+                if (string.IsNullOrEmpty(endEtg.EndEtg_endereco_numero))
+                {
+                    lstErros.Add("PREENCHA O NÚMERO DO ENDEREÇO DE ENTREGA.");
+                    retorno = false;
+                }
+                if (string.IsNullOrEmpty(endEtg.EndEtg_bairro))
+                {
+                    lstErros.Add("PREENCHA O BAIRRO DO ENDEREÇO DE ENTREGA.");
+                    retorno = false;
+                }
+                if (string.IsNullOrEmpty(endEtg.EndEtg_cidade))
+                {
+                    lstErros.Add("PREENCHA A CIDADE DO ENDEREÇO DE ENTREGA.");
+                    retorno = false;
+                }
+                if (string.IsNullOrEmpty(endEtg.EndEtg_uf) || !Util.VerificaUf(endEtg.EndEtg_uf))
+                {
+                    lstErros.Add("UF INVÁLIDA NO ENDEREÇO DE ENTREGA.");
+                    retorno = false;
+                }
+                if (!Util.VerificaCep(endEtg.EndEtg_cep))
+                {
+                    lstErros.Add("CEP INVÁLIDO NO ENDEREÇO DE ENTREGA.");
+                    retorno = false;
+                }
             }
 
             return retorno;

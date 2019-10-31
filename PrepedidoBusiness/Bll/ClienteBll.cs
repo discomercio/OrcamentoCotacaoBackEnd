@@ -12,6 +12,7 @@ using PrepedidoBusiness.Dto.ClienteCadastro;
 using InfraBanco.Constantes;
 using System.Transactions;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace PrepedidoBusiness.Bll
 {
@@ -568,7 +569,7 @@ namespace PrepedidoBusiness.Bll
             return lstNfeMunicipio;
         }
 
-        private void ValidarDadosClientesCadastro(DadosClienteCadastroDto cliente, List<string> listaErros)
+        private async Task ValidarDadosClientesCadastro(DadosClienteCadastroDto cliente, List<string> listaErros)
         {
             string cpf_cnpjSoDig = Utils.Util.SoDigitosCpf_Cnpj(cliente.Cnpj_Cpf);
             bool ehCpf = Utils.Util.ValidaCpf_Cnpj(cliente.Cnpj_Cpf);
@@ -661,9 +662,9 @@ namespace PrepedidoBusiness.Bll
             if (cliente.Ie != "")
             {
                 //afazer: terminar o metodo abaixo
-                //string uf = VerificarInscricaoEstadualValida(cliente.Ie, cliente.Uf);
-                //List<NfeMunicipio> lstNfeMunicipio = new List<NfeMunicipio>();
-                //lstNfeMunicipio = (await ConsisteMunicipioIBGE(cliente.Cidade, cliente.Uf, listaErros)).ToList();
+                string uf = VerificarInscricaoEstadualValida(cliente.Ie, cliente.Uf);
+                List<NfeMunicipio> lstNfeMunicipio = new List<NfeMunicipio>();
+                lstNfeMunicipio = (await ConsisteMunicipioIBGE(cliente.Cidade, cliente.Uf, listaErros)).ToList();
 
             }
 
@@ -671,7 +672,6 @@ namespace PrepedidoBusiness.Bll
             //return listaErros;
         }
 
-        //afazer:ADICIONA A DLL DllInscE32
         private string VerificarInscricaoEstadualValida(string ie, string uf)
         {
             string c = "";
@@ -679,6 +679,7 @@ namespace PrepedidoBusiness.Bll
             int qtdeDig = 0;
             int num;
             string retorno = "";
+            bool blnResultado = false;
 
             if (ie != "ISENTO")
             {
@@ -701,13 +702,43 @@ namespace PrepedidoBusiness.Bll
                 retorno = ie;
             }
 
+            //blnResultado = isInscricaoEstadualOk(strInscricaoEstadualNormalizado, uf)
             //afazer: olhar na pág Funcoes.asp linha 4375
             //set objIE = CreateObject("ComPlusWrapper_DllInscE32.ComPlusWrapper_DllInscE32")
-            //blnResultado = objIE.isInscricaoEstadualOk(strInscricaoEstadualNormalizado, uf)
+            //blnResultado = isInscricaoEstadualOkCom(ie, uf);
             //Instalar A DLL DllInscE32 QUER INCORPORAR O FONTE ou outra coisa
 
             return retorno;
         }
+
+        public bool isInscricaoEstadualOkCom(string ie, string uf)
+        {
+              var ReflectionUtilsMemberAccess =
+            BindingFlags.Public | BindingFlags.NonPublic |
+            BindingFlags.Static | BindingFlags.Instance | BindingFlags.IgnoreCase;
+
+
+        // this works with both .NET 4.5+ and .NET Core 2.0+
+
+        string progId = "ComPlusWrapper_DllInscE32.ComPlusWrapper_DllInscE32";
+            Type type = Type.GetTypeFromProgID(progId);
+            object inst = Activator.CreateInstance(type);
+
+
+            bool result = (bool)inst.GetType().InvokeMember("isInscricaoEstadualOk", 
+                ReflectionUtilsMemberAccess | BindingFlags.InvokeMethod, null, inst,
+                new object[2]
+                {
+            ie, uf
+                });
+
+            ////result = ReflectionUtils.GetPropertyCom(inst, "cAppStartPath");
+            //bool result = (bool)inst.GetType().InvokeMember("Visible",
+            //    ReflectionUtils.MemberAccess | BindingFlags.GetProperty, null, inst, null);
+            Console.WriteLine(result); // path  
+            return result;
+        }
+
 
         private async Task<string> GerarIdCliente(InfraBanco.ContextoBdGravacao dbgravacao, string id_nsu)
         {
