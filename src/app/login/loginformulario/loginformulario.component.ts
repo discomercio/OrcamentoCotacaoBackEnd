@@ -27,6 +27,9 @@ export class LoginformularioComponent extends TelaDesktopBaseComponent implement
   lembrar = !environment.autenticaStorageSession;
 
   ngOnInit() {
+    if(this.autenticacaoService.authEstaLogado()){
+      this.router.navigateByUrl('/');
+    }
   }
   login() {
     this.fazendoLogin = true;

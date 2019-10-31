@@ -414,7 +414,9 @@
                             <td align="left">
                                 <table cellspacing="0" cellpadding="0" border="0">
                                     <tr>
-                                        <td align="left"><span class="C">{{pag}} &nbsp;</span></td>
+                                        <td align="left">
+                                            <span class="C">{{pag}} &nbsp;</span>
+                                        </td>
                                     </tr>
                                 </table>
                             </td>
@@ -553,7 +555,7 @@
 
 
 
-        <div *ngIf="!impressaoService.emImpressao() || impressaoService.imprimirOcorrencias()">
+         <div *ngIf="!impressaoService.emImpressao() || impressaoService.imprimirOcorrencias()">
             <br>
 
             <table id="tableOcorrencia" class="notPrint" width="649" cellspacing="0" cellpadding="0" border="0">
@@ -721,7 +723,7 @@
 
                 </ng-container>
             </table>
-        </div>
+        </div> 
 
 
         <div *ngIf="!impressaoService.emImpressao() || impressaoService.imprimirBlocoNotas()">
@@ -764,11 +766,11 @@
                     </ng-container>
                 </tr>
             </table>
-        </div>
+        </div> 
 
 
 
-        <ng-container *ngIf="pedido.ListaBlocoNotasDevolucao.length > 0">
+       <ng-container *ngIf="pedido.ListaBlocoNotasDevolucao.length > 0">
             <br>
             <table id="tableBlocoNotasItemDevolvido" class="notPrint" width="649" cellspacing="0" cellpadding="1"
                 border="0">
@@ -800,7 +802,7 @@
                 </tr>
 
             </table>
-        </ng-container>
+        </ng-container> 
 
 
     </form>

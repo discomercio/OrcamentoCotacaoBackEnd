@@ -22,6 +22,14 @@ export class NovoPrepedidoDadosService {
     this.prePedidoDto = prePedidoDto;
   }
 
+  //somente setar dados do cliente
+  public setarDTosParciais(clienteCadastroDto: DadosClienteCadastroDto,
+    enderecoEntregaDtoClienteCadastro: EnderecoEntregaDtoClienteCadastro) {
+    let p = this.prePedidoDto;
+    p.DadosCliente = clienteCadastroDto;
+    p.EnderecoEntrega = enderecoEntregaDtoClienteCadastro;
+  }
+
   public criarNovo(clienteCadastroDto: DadosClienteCadastroDto,
     enderecoEntregaDtoClienteCadastro: EnderecoEntregaDtoClienteCadastro) {
     this.prePedidoDto = new PrePedidoDto();

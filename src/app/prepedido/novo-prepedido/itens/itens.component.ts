@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { Location } from '@angular/common';
 import { PrePedidoDto } from 'src/app/dto/Prepedido/DetalhesPrepedido/PrePedidoDto';
 import { NovoPrepedidoDadosService } from '../novo-prepedido-dados.service';
@@ -22,6 +22,11 @@ import { ConfirmationDialogComponent } from 'src/app/utils/confirmation-dialog/c
 import { DadosPagtoComponent } from '../dados-pagto/dados-pagto.component';
 import { NgForm } from '@angular/forms';
 import { debugOutputAstAsTypeScript } from '@angular/compiler';
+import { ConfirmarEnderecoComponent } from '../confirmar-endereco/confirmar-endereco.component';
+import { ConfirmarClienteComponent } from '../confirmar-cliente/confirmar-cliente.component';
+import { EnderecoEntregaDtoClienteCadastro } from 'src/app/dto/ClienteCadastro/EnderecoEntregaDTOClienteCadastro';
+import { TestBed } from '@angular/core/testing';
+import { CepComponent } from 'src/app/cliente/cep/cep/cep.component';
 
 @Component({
   selector: 'app-itens',
@@ -56,6 +61,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
 
   carregandoDto = true;
   ngOnInit() {
+
     //se tem um parâmetro no link, colocamos ele no serviço
     let numeroPrepedido = this.activatedRoute.snapshot.params.numeroPrepedido;
     if (!!numeroPrepedido) {
@@ -180,17 +186,23 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     return item.Estoque;
   }
 
+  public msgQtdePermitida: string = "";
   qtdeVendaPermitida(i: PrepedidoProdutoDtoPrepedido): boolean {
     //busca o item na lista
+    this.msgQtdePermitida = "";
+
     const item = this.estoqueItem(i);
-    if (!item)
-      return true;
+    if (!item) {
+      return false;
+    }
 
-
-    if (i.Qtde > item.Qtde_Max_Venda)
+    if (i.Qtde > item.Qtde_Max_Venda) {
+      this.msgQtdePermitida = "Quantidade solicitada excede a quantidade máxima de venda permitida!";
       return true;
+    }
     else
       return false;
+
   }
 
   produtoTemAviso(i: PrepedidoProdutoDtoPrepedido): boolean {
@@ -244,6 +256,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     i.TotalItem = i.VlUnitario * i.Qtde; // VlUnitario = Vl Venda na tela
     //this.qtdeVendaPermitida(i);
     this.dadosPagto.prepedidoAlterado();
+    // this.qtdeVendaPermitida(i);
 
   }
   digitouPreco(e: Event, i: PrepedidoProdutoDtoPrepedido) {
@@ -320,7 +333,12 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
   //#endregion
 
   //#region navegação
+
   voltar() {
+    // if(!this.dadosPagto.podeContinuar())
+    // return false;
+    this.dadosPagto.podeContinuar(false);
+    // this.dadosPagto.atribuirFormaPagtoParaDto();
     this.location.back();
   }
   continuar() {
@@ -343,7 +361,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     }
 
     //verifica se a forma de pgamento tem algum aviso
-    if (!this.dadosPagto.podeContinuar()) {
+    if (!this.dadosPagto.podeContinuar(true)) {
       return;
     }
 
@@ -369,6 +387,8 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
         this.prePedidoDto.ListaProdutos = this.prePedidoDto.ListaProdutos.filter(function (value, index, arr) {
           return value !== i;
         });
+        //Gabriel
+        this.dadosPagto.prepedidoAlterado();
       }
     });
   }

@@ -111,7 +111,7 @@ e são usados desta forma:
       s2 = "(" + s_aux + ") " + s2;
     s_aux = p.Ramal.trim();
     if (s_aux != "")
-      s2 = s2 + "  (R. " + s_aux + ")";
+      s2 = s2 + "  - (Ramal " + s_aux + ")";
     return s2;
   }
   telefone2(p: DadosClienteCadastroDto): string {
@@ -134,7 +134,7 @@ e são usados desta forma:
         s2 = "(" + s_aux + ") " + s2;
       s_aux = p.Ramal.trim();
       if (s_aux != "")
-        s2 = s2 + "  (R. " + s_aux + ")";
+        s2 = s2 + "  - (Ramal " + s_aux + ")";
       return s2;
     }
 
@@ -148,7 +148,7 @@ e são usados desta forma:
       s4 = "(" + s_aux + ") " + s4;
     s_aux = p.Ramal2.trim();
     if (s_aux != "")
-      s4 = s4 + "  (R. " + s_aux + ")";
+      s4 = s4 + "  - (Ramal " + s_aux + ")";
     return s4;
   }
   telefoneCelular(p: DadosClienteCadastroDto): string {

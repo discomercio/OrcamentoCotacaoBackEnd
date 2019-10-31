@@ -15,6 +15,7 @@ import { LoginModule } from './login/login.module';
 import { TokenInterceptor } from './servicos/autenticacao/token.interceptor';
 import { ClienteModule } from './cliente/cliente.module';
 import { TextMaskModule } from 'angular2-text-mask';
+import { PlatformLocation } from '@angular/common';
 
 @NgModule({
   declarations: [

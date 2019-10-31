@@ -34,6 +34,7 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
   }
 
   ngOnInit() {
+    debugger;
     this.verificarEmProcesso();
     this.dadosDoModelo();
   }
@@ -53,7 +54,7 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
   }
   continuar() {
     this.dadosParaModelo();
-    this.prepedidoBuscarService.cadastrarPrepedido(this.novoPrepedidoDadosService.prePedidoDto).subscribe({      
+    this.prepedidoBuscarService.cadastrarPrepedido(this.novoPrepedidoDadosService.prePedidoDto).subscribe({
       next: (r) => {
         if (r == null) {
           r = new Array();
@@ -69,7 +70,7 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
       error: (r) => this.alertaService.mostrarErroInternet()
     });
     // this.dadosParaModelo();
-    
+
     // this.router.navigate(["../confirmar-prepedido"], { relativeTo: this.activatedRoute });
   }
   //#endregion
@@ -82,26 +83,29 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
   public InstaladorInstala: boolean;
   public GarantiaIndicador: boolean;
   dadosDoModelo() {
+
     debugger;
     this.EntregaImediata = false;
-    if (this.prePedidoDto.DetalhesPrepedido.EntregaImediata === this.constantes.COD_ETG_IMEDIATA_SIM.toString()) {
+    if (this.prePedidoDto.DetalhesPrepedido.EntregaImediata != "NÃO" &&
+      this.prePedidoDto.DetalhesPrepedido.EntregaImediata !== undefined) {
       this.EntregaImediata = true;
     }
     this.BemDeUso_Consumo = false;
-    if (this.prePedidoDto.DetalhesPrepedido.BemDeUso_Consumo === this.constantes.COD_ST_BEM_USO_CONSUMO_SIM.toString()) {
+    if (this.prePedidoDto.DetalhesPrepedido.BemDeUso_Consumo != "NÃO" && 
+    this.prePedidoDto.DetalhesPrepedido.BemDeUso_Consumo !== undefined) {
       this.BemDeUso_Consumo = true;
     }
     this.InstaladorInstala = false;
-    if (this.prePedidoDto.DetalhesPrepedido.InstaladorInstala === this.constantes.COD_INSTALADOR_INSTALA_SIM.toString()) {
+    if (this.prePedidoDto.DetalhesPrepedido.InstaladorInstala != "NÃO" && 
+    this.prePedidoDto.DetalhesPrepedido.InstaladorInstala !== undefined) {
       this.InstaladorInstala = true;
     }
     this.GarantiaIndicador = false;
-    if (this.prePedidoDto.DetalhesPrepedido.GarantiaIndicador === this.constantes.COD_GARANTIA_INDICADOR_STATUS__SIM.toString()) {
+    if (!!this.prePedidoDto.DetalhesPrepedido.GarantiaIndicador && this.prePedidoDto.DetalhesPrepedido.GarantiaIndicador == "SIM") {
       this.GarantiaIndicador = true;
     }
   }
   dadosParaModelo() {
-
     this.prePedidoDto.DetalhesPrepedido.EntregaImediata = this.constantes.COD_ETG_IMEDIATA_NAO.toString();
     if (this.EntregaImediata) {
       this.prePedidoDto.DetalhesPrepedido.EntregaImediata = this.constantes.COD_ETG_IMEDIATA_SIM.toString();

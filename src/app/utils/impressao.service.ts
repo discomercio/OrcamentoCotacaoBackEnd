@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { ThrowStmt } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +10,12 @@ export class ImpressaoService {
   constructor(private readonly router: Router, ) { }
 
   emImpressao(): boolean {
+    //forçando?
+    if (this.forcarImpressao)
+      return true;
+
     //estas sempre são para impressão
-    if (this.router.url.indexOf('pedido/imprimir') >= 0 || this.router.url.indexOf('prepedido/imprimir') >= 0)
+    if (this.router.url.indexOf('/pedido/imprimir') >= 0 || this.router.url.indexOf('/prepedido/imprimir') >= 0)
       return true;
 
     //se estiver imprimindo, suprime o menu
@@ -20,6 +25,9 @@ export class ImpressaoService {
     //nao está imprimindo
     return false;
   }
+
+  //temos uma opcao para forçar a impessão
+  public forcarImpressao: boolean = false;
 
   //coisas específicas para imprimir o pedido
   private imprimirOcorrenciasChave = "pedido-imprimirOcorrencias";

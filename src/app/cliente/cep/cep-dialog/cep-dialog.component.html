@@ -1,6 +1,6 @@
 <section [ngClass]="{'sectionDesktop': telaDesktop, 'sectionCelular': !telaDesktop}">
 
-    <header>Busca de CEP</header>
+    <header style="margin-left: -10px;">Busca de CEP</header>
     <article mat-dialog-content class="fixo" [ngClass]="{'carregando': carregando}">
 
         <form>
@@ -15,7 +15,7 @@
                         [ngModelOptions]="{standalone: true}">
                 </mat-form-field>
                 <mat-form-field style="width: 5em">
-                    <mat-label>Uf</mat-label>
+                    <mat-label>UF</mat-label>
                     <mat-select [(ngModel)]="uf" [ngModelOptions]="{standalone: true}">
                         <mat-option value="">Selecione</mat-option>
                         <mat-option *ngFor="let i of lstUf" [value]="i">

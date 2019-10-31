@@ -54,7 +54,7 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
   ngOnInit() {
     this.jaDeuErro = false;
     /*
-    evitar o 
+    usamos o setTimeout para evitar o 
     ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value: 'carregando: false'. Current value: 'carregando: true'.
 
     se estiver imprimindo, nao podemos usar o timeout
@@ -151,6 +151,7 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
       return;
     if (linha.NumeroPedido) {
       this.router.navigate(['/pedido/detalhes', linha.NumeroPedido]);
+      
     }
     else {
       //vamos ver os detalhes: this.router.navigate(['/prepedido/detalhes', linha.NumeroPrepedido]);
@@ -171,7 +172,8 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
           this.novoPrepedidoDadosService.setar(r);
           //também passamos o número do pré-pedido no link
 
-          this.router.navigate(['/novo-prepedido/itens', r.NumeroPrePedido]);
+          // this.router.navigate(['/novo-prepedido/itens', r.NumeroPrePedido]);
+          this.router.navigate(['/prepedido/detalhes',r.NumeroPrePedido]);
         },
         error: (r) => this.deuErro(r)
 

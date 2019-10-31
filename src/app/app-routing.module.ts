@@ -44,9 +44,8 @@ const routes: Routes = [
     component: DetalhesPrepedidoComponent
   },
   {
-    path: 'prepedido/imprimir/:numeroPedido',
+    path: 'prepedido/imprimir/:numeroPrepedido',
     canActivate: [LoginGuard],
-    outlet: 'imprimir',
     component: DetalhesPrepedidoComponent
   },
   {

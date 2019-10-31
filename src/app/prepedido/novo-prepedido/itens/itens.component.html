@@ -9,7 +9,7 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 	<header *ngIf="!prePedidoDto" [ngClass]="{'carregando': carregandoDto || carregandoProds}">Carregando dados</header>
 	<form style="display: contents;" *ngIf="prePedidoDto" (keydown.enter)="continuar()">
 		<header>
-			<ng-container *ngIf="criando; else tituloEditando">Criar Pré-pedido</ng-container>
+			<ng-container *ngIf="criando; else tituloEditando">Criar Pré-Pedido</ng-container>
 			<ng-template #tituloEditando>Editar Pré-pedido</ng-template>
 		</header>
 		<article class="indicadorlinha" [ngClass]="{'carregando': carregandoProds && clicouAddProd}">
@@ -93,6 +93,7 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 								<mat-form-field class="quantidade">
 									<input matInput [ngModelOptions]="{standalone: true}" type="number" required
 										[(ngModel)]="i.Qtde" (keyup)="digitouQte(i)" (change)="digitouQte(i)">
+									<!-- (blur)="qtdeVendaPermitida(i)" -->
 								</mat-form-field>
 							</td>
 							<td *ngIf="permite_RA_Status" align="right">
@@ -139,17 +140,16 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 							<td style="padding: 0; min-width: auto; max-width: 32px;">
 								<button mat-button (click)="removerLinha(i)"
 									style="padding: 0; min-width: auto; max-width: 32px;">
-									<mat-icon class="icone-lixeira" style="padding: 0;" title="Remover linha">delete</mat-icon>
+									<mat-icon class="icone-lixeira" style="padding: 0;" title="Remover linha">delete
+									</mat-icon>
 								</button>
 							</td>
 						</tr>
 						<tr *ngIf="estoqueExcedido(i)">
 							<td colspan="7" class="avisoestoque" *ngIf="!permite_RA_Status">
-								<!-- Quantidade solicitada é maior que o estoque de {{estoqueExistente(i)}} -->
 								Quantidade solicitada é maior que o estoque disponível!
 							</td>
 							<td colspan="8" class="avisoestoque" *ngIf="permite_RA_Status">
-								<!-- Quantidade solicitada é maior que o estoque de {{estoqueExistente(i)}} -->
 								Quantidade solicitada é maior que o estoque disponível!
 							</td>
 						</tr>
@@ -164,10 +164,10 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 						<!-- verifica a qtde máxima de venda permitida -->
 						<tr *ngIf="qtdeVendaPermitida(i)">
 							<td colspan="7" class="avisoestoque" *ngIf="!permite_RA_Status">
-								Quantidade solicitada excede a quantidade máxima de venda permitida!
+								{{this.msgQtdePermitida}}
 							</td>
 							<td colspan="8" class="avisoestoque" *ngIf="permite_RA_Status">
-								Quantidade solicitada excede a quantidade máxima de venda permitida!
+								{{this.msgQtdePermitida}}
 							</td>
 						</tr>
 					</ng-container>
@@ -256,7 +256,8 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 						<span>
 							<button mat-button (click)="removerLinha(i)"
 								style="padding: 0; min-width: auto; max-width: 32px;">
-								<mat-icon class="icone-lixeira" style="padding: 0;" title="Remover linha">delete</mat-icon>
+								<mat-icon class="icone-lixeira" style="padding: 0;" title="Remover linha">delete
+								</mat-icon>
 							</button>
 						</span>
 					</div>

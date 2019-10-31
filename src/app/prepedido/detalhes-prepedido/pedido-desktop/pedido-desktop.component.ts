@@ -1,9 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { PedidoDto } from 'src/app/dto/pedido/detalhesPedido/PedidoDto2';
 import { DataUtils } from 'src/app/utils/dataUtils';
 import { MoedaUtils } from 'src/app/utils/moedaUtils';
 import { Constantes } from 'src/app/dto/Constantes';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormatarEndereco } from 'src/app/utils/formatarEndereco';
 import { FormatarTelefone } from 'src/app/utils/formatarTelefone';
 import { Location } from '@angular/common';
@@ -13,6 +13,7 @@ import { StringUtils } from 'src/app/utils/stringUtils';
 import { PedidoProdutosDtoPedido } from 'src/app/dto/pedido/detalhesPedido/PedidoProdutosDtoPedido';
 import { TelaDesktopBaseComponent } from 'src/app/servicos/telaDesktop/telaDesktopBaseComponent';
 import { TelaDesktopService } from 'src/app/servicos/telaDesktop/telaDesktop.service';
+import { PedidoBuscarService } from 'src/app/servicos/pedido/pedido-buscar.service';
 
 @Component({
   selector: 'app-pedido-desktop',
@@ -23,13 +24,35 @@ export class PedidoDesktopComponent extends TelaDesktopBaseComponent implements 
 
   @Input() pedido: PedidoDto = null;
 
-  constructor(private readonly router: Router,
+  constructor(private readonly activatedRoute: ActivatedRoute,
+    public readonly pedidoBuscarService: PedidoBuscarService,
+    private readonly router: Router,
     public readonly impressaoService: ImpressaoService,
     telaDesktopService: TelaDesktopService,
     private readonly location: Location) {
     super(telaDesktopService);
   }
   ngOnInit() {
+    // if(this.impressaoService.emImpressao())
+    // setTimeout(() => {
+
+    //   window.print();
+    // }, (4000));
+
+    // //agora acessa o dado que vamos mostrar
+    // let numeroPedido = this.activatedRoute.snapshot.params.numeroPedido;
+    // numeroPedido = "127936N";
+    // this.pedidoBuscarService.atualizar(numeroPedido).subscribe({
+    //   next: (r) => {
+    //     if (r == null) {
+    //       return;
+    //     }
+    //     this.pedido = r;
+    //   },
+    //   error: (r) => {//afazer mostrar erro
+    //   }
+    // });
+
   }
 
   //cosntantes
@@ -45,17 +68,30 @@ export class PedidoDesktopComponent extends TelaDesktopBaseComponent implements 
   moedaUtils: MoedaUtils = new MoedaUtils();
   clienteCadastroUtils = new ClienteCadastroUtils();
 
-  //parar imprimir (qeur dizer, para ir apra a versão de impressão)
+  //parar imprimir (quer dizer, para ir para a versão de impressão)
   imprimir(): void {
+   // window.print();
     //versão para impressão somente com o pedido
-    this.router.navigate(['/pedido/imprimir', this.pedido.NumeroPedido]);
+    //afazer apagar route de impressao
+    //this.router.navigate(['/pedido/imprimir', this.pedido.NumeroPedido]);
+    
+     this.impressaoService.forcarImpressao=true;
+        setTimeout(()=>
+        {
+          window.print();
+          this.impressaoService.forcarImpressao=false;
+        }
+      , 1);
+
+    //       return false;
+
   }
 
   //para dizer se é PF ou PJ
   ehPf(): boolean {
     if (this.pedido && this.pedido.DadosCliente && this.pedido.DadosCliente.Tipo)
       return this.pedido.DadosCliente.Tipo == this.constantes.ID_PF;
-    //sem dados! qualqer opção serve...  
+    //sem dados! qualquer opção serve...  
     return true;
   }
 

@@ -21,7 +21,21 @@ export class ConfirmarEnderecoComponent implements OnInit {
   buscarClienteServiceJustificativaEndEntregaComboTemporario: EnderecoEntregaJustificativaDto[];
   ngOnInit() {
     this.enderecoEntregaDtoClienteCadastro.OutroEndereco = false;
+    
     this.buscarClienteServiceJustificativaEndEntregaComboTemporario = this.buscarClienteService.JustificativaEndEntregaComboTemporario();
+  }
+
+  atualizarDadosEnderecoTela(enderecoEntregaDtoClienteCadastro:EnderecoEntregaDtoClienteCadastro) {
+    this.enderecoEntregaDtoClienteCadastro = enderecoEntregaDtoClienteCadastro;
+    const src = this.componenteCep;
+    src.Endereco = this.enderecoEntregaDtoClienteCadastro.EndEtg_endereco;
+    src.Numero = this.enderecoEntregaDtoClienteCadastro.EndEtg_endereco_numero;
+    src.Complemento = this.enderecoEntregaDtoClienteCadastro.EndEtg_endereco_complemento;
+    src.Bairro = this.enderecoEntregaDtoClienteCadastro.EndEtg_bairro;
+    src.Cidade = this.enderecoEntregaDtoClienteCadastro.EndEtg_cidade;
+    src.Uf = this.enderecoEntregaDtoClienteCadastro.EndEtg_uf;
+    src.Cep = this.enderecoEntregaDtoClienteCadastro.EndEtg_cep;
+    enderecoEntregaDtoClienteCadastro.EndEtg_cod_justificativa = this.enderecoEntregaDtoClienteCadastro.EndEtg_cod_justificativa;
   }
 
   //dados
@@ -40,6 +54,8 @@ export class ConfirmarEnderecoComponent implements OnInit {
   public prepararAvancar(): void {
     //transferimos os dados do CEP para cá
     const src = this.componenteCep;
+    
+    this.enderecoEntregaDtoClienteCadastro.OutroEndereco;
 
     this.enderecoEntregaDtoClienteCadastro.EndEtg_endereco = src.Endereco ? src.Endereco : "";
     this.enderecoEntregaDtoClienteCadastro.EndEtg_endereco_numero = src.Numero ? src.Numero : "";

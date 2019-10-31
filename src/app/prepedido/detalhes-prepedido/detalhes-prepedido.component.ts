@@ -11,6 +11,7 @@ import { AlertDialogComponent } from 'src/app/utils/alert-dialog/alert-dialog.co
 import { PedidoDto } from 'src/app/dto/pedido/detalhesPedido/PedidoDto2';
 import { ObjectUtils } from 'src/app/utils/objectUtils';
 import { ImpressaoService } from 'src/app/utils/impressao.service';
+import { PrePedidoDto } from 'src/app/dto/Prepedido/DetalhesPrepedido/PrePedidoDto';
 
 @Component({
   selector: 'app-detalhes-prepedido',
@@ -25,7 +26,7 @@ export class DetalhesPrepedidoComponent extends TelaDesktopBaseComponent impleme
     private readonly location: Location,
     public readonly prepedidoBuscarService: PrepedidoBuscarService,
     public readonly pedidoBuscarService: PedidoBuscarService,
-    public readonly impressaoService:ImpressaoService,
+    public readonly impressaoService: ImpressaoService,
     public readonly dialog: MatDialog
   ) {
     super(telaDesktopService);
@@ -34,12 +35,14 @@ export class DetalhesPrepedidoComponent extends TelaDesktopBaseComponent impleme
   emPrepedidos = true;
   numeroPrepedido = "";
   numeroPedido = "";
-  prepedido: any = null;
+  prepedido: PrePedidoDto = null;
   pedido: PedidoDto = null;
 
   //avisamos de erros
   //temos um controle para não mostrar mensagens umas sobre as outras
-  private jaDeuErro = false;
+
+
+  private jaDeuErro = true;
   private deuErro(r: any) {
     if (r == null) return;
     if (this.jaDeuErro) return;
@@ -54,19 +57,40 @@ export class DetalhesPrepedidoComponent extends TelaDesktopBaseComponent impleme
     });
   }
 
-  ngOnInit() {
 
-    //para mostrar a espera qenquanto carrega (senão, ele mostra os dados do pedido anterior)
-    this.prepedido = null;
-    this.pedido = null;
-
-    this.jaDeuErro = false;
-
+  //verifica se vamos mostrar um pedido ou um prepedio
+  calcularEmPrepedidos(){
     //agora acessa o dado que vamos mostrar
     this.numeroPrepedido = this.activatedRoute.snapshot.params.numeroPrepedido;
     this.numeroPedido = this.activatedRoute.snapshot.params.numeroPedido;
     if (!!this.numeroPrepedido) {
       this.emPrepedidos = true;
+    }
+    else{
+      this.emPrepedidos = false;
+    }
+  }
+
+  ngOnInit() {
+
+    this.calcularEmPrepedidos()
+
+    if (this.impressaoService.emImpressao()) {
+
+      let w: any = window;
+      this.pedido = w.pedido;
+      this.prepedido = w.prepedido;
+      return;
+    }
+
+
+    //para mostrar a espera enquanto carrega (senão, ele mostra os dados do pedido anterior)
+    this.prepedido = null;
+    this.pedido = null;
+
+    this.jaDeuErro = false;
+    //agora acessa o dado que vamos mostrar
+    if (this.emPrepedidos) {
       this.prepedidoBuscarService.buscar(this.numeroPrepedido).subscribe({
         next: (r) => {
           if (r == null) {
@@ -74,12 +98,13 @@ export class DetalhesPrepedidoComponent extends TelaDesktopBaseComponent impleme
             return;
           }
           this.prepedido = r;
+          let w: any = window;
+          w.prepedido = this.prepedido;
         },
         error: (r) => this.deuErro(r)
       });
     }
     else {
-      this.emPrepedidos = false;
       this.pedidoBuscarService.atualizar(this.numeroPedido).subscribe({
         next: (r) => {
           if (r == null) {
@@ -87,6 +112,8 @@ export class DetalhesPrepedidoComponent extends TelaDesktopBaseComponent impleme
             return;
           }
           this.pedido = r;
+          let w: any = window;
+          w.pedido = this.pedido;
         },
         error: (r) => this.deuErro(r)
       });

@@ -37,12 +37,31 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     super(telaDesktopService);
   }
 
+  verificarCriarNovoPrepedido() {
+    
+    if (!!this.novoPrepedidoDadosService.prePedidoDto) {
+      let existente = this.novoPrepedidoDadosService.prePedidoDto.DadosCliente.Id;
+      if (existente == this.dadosClienteCadastroDto.Id) {
+        //nao criamos! usamos o que já está no serviço
+        this.dadosClienteCadastroDto = this.novoPrepedidoDadosService.prePedidoDto.DadosCliente;
+        this.enderecoEntregaDtoClienteCadastro = this.novoPrepedidoDadosService.prePedidoDto.EnderecoEntrega;
+        this.confirmarEndereco.atualizarDadosEnderecoTela(this.enderecoEntregaDtoClienteCadastro);
+        return;
+      }
+    }
+
+    ///vamos criar um novo
+    this.novoPrepedidoDadosService.criarNovo(this.dadosClienteCadastroDto, this.enderecoEntregaDtoClienteCadastro);
+    this.confirmarEndereco.atualizarDadosEnderecoTela(this.enderecoEntregaDtoClienteCadastro);
+  }
+
   ngOnInit() {
+
     //afazer:alterar a lógica de inicialização dessa pág.! 
     //estamos perdendo os dados do prepedido que esta sendo criado quando voltamos as telas
     //afazer: na verificação da existência do cliente, caso o cliente já exista, criar o PrepedidoDto e 
     //passar os dados do cliente, e seguir usando o mesmo Prepedido para que não perca os dados já preenchidos
-   
+
 
     this.dadosClienteCadastroDto = null;
     if (this.router.getCurrentNavigation()) {
@@ -52,6 +71,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
         //é que, se for simplesmente setado, ele não "percebe" que foi carregado
         setTimeout(() => {
           this.dadosClienteCadastroDto = clienteCadastroDto.DadosCliente;
+          this.verificarCriarNovoPrepedido();
         }, 0);
         return;
       }
@@ -75,6 +95,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
           //cliente já existe
           this.dadosClienteCadastroDto = r.DadosCliente;
           this.clienteCadastroDto = r;
+          this.verificarCriarNovoPrepedido();
           this.salvarAtivoInicializar();
         }).catch((r) => {
           //erro, voltamos para a tela anterior
@@ -200,7 +221,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     //vltamos para a fase 1
     this.fase1 = true;
     this.fase2 = false;
-//    setTimeout(()=>this.ngOnInit(),1000);
+    //    setTimeout(()=>this.ngOnInit(),1000);
   }
 
   //precisa do static: false porque está dentro de um ngif
@@ -229,9 +250,11 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
   continuarEfetivo(): void {
     //se estamos na fase 2, cotninua
     //caso contrário, volta para a fase 1
+
     if (this.fase2 || this.fase1e2juntas) {
       //vamos validar o endereço
       // só a jsutificativa, número e complemento. O resto vai ser validado pelo CEP
+
       if (this.enderecoEntregaDtoClienteCadastro.OutroEndereco) {
         if (!this.enderecoEntregaDtoClienteCadastro.EndEtg_cod_justificativa || this.enderecoEntregaDtoClienteCadastro.EndEtg_cod_justificativa.trim() === "") {
           this.mostrarMensagem("Caso seja selecionado outro endereço, selecione a justificativa do endereço de entrega!!")
@@ -244,7 +267,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
         }
       }
       //salvar no serviço
-      this.novoPrepedidoDadosService.criarNovo(this.dadosClienteCadastroDto, this.enderecoEntregaDtoClienteCadastro);
+      this.novoPrepedidoDadosService.setarDTosParciais(this.dadosClienteCadastroDto, this.enderecoEntregaDtoClienteCadastro);
 
       //continuamos
       this.router.navigate(['novo-prepedido/itens']);

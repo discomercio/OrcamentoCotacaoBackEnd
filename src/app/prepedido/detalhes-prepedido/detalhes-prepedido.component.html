@@ -29,7 +29,7 @@
     <header id="header" style="height: 0px; margin: 0;">
         <div>&nbsp;</div>
     </header>
-    <article id="content" *ngIf="emPrepedidos">
+    <article id="content" *ngIf="emPrepedidos" style="display: flex; justify-content: center;">
         <app-prepedido-desktop *ngIf="telaDesktop"></app-prepedido-desktop>
         <app-prepedido-celular *ngIf="!telaDesktop"></app-prepedido-celular>
     </article>
@@ -43,6 +43,9 @@
         </button>
     </footer>
 </section>
-<div *ngIf="impressaoService.emImpressao()">
+<div *ngIf="impressaoService.emImpressao() && !emPrepedidos">
     <app-pedido-desktop [pedido]="pedido"></app-pedido-desktop>
+</div>
+<div *ngIf="impressaoService.emImpressao() && emPrepedidos">
+    <app-prepedido-desktop></app-prepedido-desktop>
 </div>

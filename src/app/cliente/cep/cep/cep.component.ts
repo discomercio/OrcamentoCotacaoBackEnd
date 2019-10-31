@@ -45,7 +45,15 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
   public Cep: string;
 
   mostrarCepNaoEncontrado() {
+    this.Endereco = "";
+    this.Numero = "";
+    this.Complemento = "";
+    this.Bairro = "";
+    this.Cidade = "";
+    this.Uf = "";
+    this.Cep = "";
     this.alertaService.mostrarMensagem("CEP inválido ou não encontrado.");
+
   }
 
   mascaraCep() {

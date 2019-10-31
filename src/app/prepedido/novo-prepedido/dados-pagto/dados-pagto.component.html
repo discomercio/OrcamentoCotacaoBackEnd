@@ -70,7 +70,7 @@
                 <div *ngIf="enumFormaPagto==EnumFormaPagto.Avista">
                     <mat-form-field style="width: 20em;">
                         <mat-label>Parcelamento</mat-label>
-                        <mat-select [(ngModel)]="opcaoPagto" [ngModelOptions]="{standalone: true}">
+                        <mat-select [(ngModel)]="opcaoPagtoAvista" [ngModelOptions]="{standalone: true}">
                             <mat-option>Selecione</mat-option>
                             <mat-option *ngFor="let i of lstMsg" [value]="i">
                                 {{i}} 
@@ -93,7 +93,7 @@
                 <div *ngIf="enumFormaPagto==EnumFormaPagto.ParcUnica">
                     <mat-form-field style="width: 20em;">
                         <mat-label>Parcelamento</mat-label>
-                        <mat-select [(ngModel)]="opcaoPagto" [ngModelOptions]="{standalone: true}">
+                        <mat-select [(ngModel)]="opcaoPagtoParcUnica" [ngModelOptions]="{standalone: true}">
                             <mat-option>Selecione</mat-option>
                             <mat-option *ngFor="let i of lstMsg" [value]="i">
                                 {{i}}
@@ -112,7 +112,7 @@
                     <mat-form-field>
                         <mat-label>Dias para vencimento</mat-label>
                         <input [(ngModel)]="diasVencParcUnica" [ngModelOptions]="{standalone: true}" matInput
-                            type="number" required>
+                            type="text" required [maxlength]="3">
                     </mat-form-field>
                 </div>
 
@@ -122,7 +122,7 @@
                 <div *ngIf="enumFormaPagto==EnumFormaPagto.ParcComEnt && !!vlEntrada">
                     <mat-form-field style="width: 20em;">
                         <mat-label>Parcelamento</mat-label>
-                        <mat-select [(ngModel)]="opcaoPagto" [ngModelOptions]="{standalone: true}">
+                        <mat-select [(ngModel)]="opcaoPagtoParcComEntrada" [ngModelOptions]="{standalone: true}">
                             <mat-option>Selecione</mat-option>
                             <mat-option *ngFor="let i of lstMsg" [value]="i">
                                 {{i}}
@@ -138,11 +138,11 @@
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
-                    <!-- dias para vencimento -->
-                    <mat-form-field>
-                        <mat-label>Dias para vencimento</mat-label>
-                        <input [(ngModel)]="diasVenc" [ngModelOptions]="{standalone: true}" matInput type="number"
-                            required>
+                    <!-- dias para vencimento  -->
+                    <mat-form-field *ngIf="!!meioPagtoEntradaPrest && meioPagtoEntradaPrest != 5 && meioPagtoEntradaPrest != 7">
+                        <mat-label>Dias para vencimento Prest</mat-label>
+                        <input [(ngModel)]="diasVenc" [ngModelOptions]="{standalone: true}" matInput type="text"
+                            required [maxlength]="3">
                     </mat-form-field>
                 </div>
 
@@ -173,7 +173,7 @@
                 <div *ngIf="enumFormaPagto==EnumFormaPagto.ParcCartaoInternet">
                     <mat-form-field style="width: 20em;">
                         <mat-label>Parcelamento</mat-label>
-                        <mat-select [(ngModel)]="opcaoPagto" [ngModelOptions]="{standalone: true}">
+                        <mat-select [(ngModel)]="opcaoPagtoParcCartaoInternet" [ngModelOptions]="{standalone: true}">
                             <mat-option>Selecione</mat-option>
                             <mat-option *ngFor="let i of lstMsg" [value]="i">
                                 {{i}}
@@ -186,7 +186,7 @@
                 <div *ngIf="enumFormaPagto==EnumFormaPagto.ParcCartaoMaquineta">
                     <mat-form-field style="width: 20em;">
                         <mat-label>Parcelamento</mat-label>
-                        <mat-select [(ngModel)]="opcaoPagto" [ngModelOptions]="{standalone: true}">
+                        <mat-select [(ngModel)]="opcaoPagtoParcCartaoMaquineta" [ngModelOptions]="{standalone: true}">
                             <mat-option>Selecione</mat-option>
                             <mat-option *ngFor="let i of lstMsg" [value]="i">
                                 {{i}}

@@ -69,14 +69,15 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
 
 
 
-  public podeContinuar(): boolean {
+  public podeContinuar(mostrarMsg: boolean): boolean {
     //afazer: verificar forma de pagto selecionada para incluir no DTO
     if (this.enumFormaPagto == 0) {
       //necessário verificar se os dados de pagto estão corretamente preenchido
-
-      this.alertaService.mostrarMensagem("Favor escolher uma forma de pagamento!");
+      if (mostrarMsg) {
+        this.alertaService.mostrarMensagem("Favor escolher uma forma de pagamento!");
+      }
     }
-    else if (!this.validarFormaPagto()) {
+    else if (!this.validarFormaPagto(mostrarMsg)) {
       return false;
     }
     else {
@@ -91,7 +92,16 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
 
 
 
-  public opcaoPagto: string;
+  // public opcaoPagto: string;
+  //afazer: criar uma opção de pagamento para cada modalidade, 
+  // para podermos validar cada modalidade de pagto separadamente
+  //inicio
+  public opcaoPagtoAvista: string;
+  public opcaoPagtoParcUnica: string;
+  public opcaoPagtoParcComEntrada: string;
+  public opcaoPagtoParcCartaoInternet: string;
+  public opcaoPagtoParcCartaoMaquineta: string;
+  //fim
   public meioPagtoEntrada: number;
   public meioPagtoAVista: number;
   public meioPagtoEntradaPrest: number;
@@ -102,9 +112,6 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
   valor: number;//valor da parcela
 
   atribuirFormaPagtoParaDto() {
-
-    debugger;
-
     this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento = this.enumFormaPagto;
     this.prePedidoDto.VlTotalDestePedido = this.totalPedido();
     if (this.enumFormaPagto == 1) {
@@ -158,55 +165,157 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
       this.prePedidoDto.FormaPagtoCriacao.C_pc_maquineta_qtde = this.qtde;
       this.prePedidoDto.FormaPagtoCriacao.C_pc_maquineta_valor = this.valor;
       this.prePedidoDto.FormaPagtoCriacao.C_pc_maquineta_qtde = this.qtde;
+      this.prePedidoDto.FormaPagtoCriacao.Qtde_Parcelas = this.qtde;
     }
 
   }
 
-  validarFormaPagto(): boolean {
+  validarFormaPagto(mostrarMsg: boolean): boolean {
 
-    this.verificaParcelamento();
-    if (this.enumFormaPagto == 1 && !this.meioPagtoAVista)//avista
-    {
-      this.alertaService.mostrarMensagem("Favor selecionar o meio de pagamento á vista");
-      return false;
+    let retorno = true;
+    // this.verificaParcelamento();
+    if (this.validarOpcoesPagto(mostrarMsg)) {
+      if (this.enumFormaPagto == 1 && !this.meioPagtoAVista)//avista
+      {
+        if (mostrarMsg) {
+          this.alertaService.mostrarMensagem("Favor selecionar o meio de pagamento á vista");
+        }
+        retorno = false;
+      }
+      if (this.enumFormaPagto == 2 && (!this.qtde || !this.valor))//ParcCartaoInternet
+      {
+        if (mostrarMsg) {
+          this.alertaService.mostrarMensagem("Favor selecionar corretamente o meio de pagamento " +
+            "para Parcelado no Cartão (Internet).");
+        }
+        retorno = false;
+      }
+      if (this.enumFormaPagto == 3) {
+        if (this.meioPagtoEntrada || this.meioPagtoEntradaPrest)
+        //ParcComEnt
+        {
+          if (this.meioPagtoEntradaPrest != 5 && this.meioPagtoEntradaPrest != 7 && !this.diasVenc) {
+            if (mostrarMsg) {
+              this.alertaService.mostrarMensagem("Favor informar corretamente os dados para pagamento Parcelado com Entrada!");
+            }
+            retorno = false;
+          }
+          else retorno = true;
+        }
+        else {
+          if (mostrarMsg) {
+            this.alertaService.mostrarMensagem("Favor informar corretamente os dados para pagamento Parcelado com Entrada!");
+          }
+          retorno = false;
+        }
+      }
+      if (this.enumFormaPagto == 4)//ParcSemEnt
+      {
+        retorno = false;
+      }
+      if (this.enumFormaPagto == 5 &&
+        (!this.meioPagtoParcUnica || !this.diasVencParcUnica))//ParcUnica
+      {
+        if (mostrarMsg) {
+          this.alertaService.mostrarMensagem("Favor informar corretamente os dados para pagamento Parcela Única!");
+        }
+        retorno = false;
+      }
+      if (this.enumFormaPagto == 6 && (!this.qtde || !this.valor))//ParcCartaoMaquineta
+      {
+        if (mostrarMsg) {
+          this.alertaService.mostrarMensagem("Favor selecionar  corretamente o meio de pagamento " +
+            "para Parcelado no Cartão (Maquineta).")
+        }
+        retorno = false;
+      }
+      return retorno;
     }
-    else if (this.enumFormaPagto == 2 && (!this.qtde || !this.valor))//ParcCartaoInternet
-    {
-      this.alertaService.mostrarMensagem("Favor selecionar corretamente o meio de pagamento " +
-        "para Parcelado no Cartão (Internet).");
-      return false;
-    }
-    else if (this.enumFormaPagto == 3 &&
-      (!this.meioPagtoEntrada ||
-        !this.meioPagtoEntradaPrest ||
-        !this.diasVenc))//ParcComEnt
-    {
-      this.alertaService.mostrarMensagem("Favor informar corretamente os dados para pagamento Parcelado com Entrada!");
-    }
-    else if (this.enumFormaPagto == 4)//ParcSemEnt
-    {
-      return false;
-    }
-    else if (this.enumFormaPagto == 5 &&
-      (!this.meioPagtoParcUnica || !this.diasVencParcUnica))//ParcUnica
-    {
-      this.alertaService.mostrarMensagem("Favor informar corretamente os dados para pagamento Parcela Única!");
-      return false;
-    }
-    else if (this.enumFormaPagto == 6 && (!this.qtde || !this.valor))//ParcCartaoMaquineta
-    {
-      this.alertaService.mostrarMensagem("Favor selecionar  corretamente o meio de pagamento " +
-        "para Parcelado no Cartão (Maquineta).")
-      return false;
-    }
-    else
-      return true;
+
   }
 
-  verificaParcelamento() {
-    if (!!this.opcaoPagto) {
-      this.qtde = parseInt(this.opcaoPagto.substring(0, 1));
-      this.valor = parseFloat(this.opcaoPagto.replace(',', '.').substring(6));
+  validarOpcoesPagto(mostrarMsg: boolean): boolean {
+    if (this.enumFormaPagto) {
+      if (this.enumFormaPagto == 1) {
+        if (!this.opcaoPagtoAvista) {
+          if (mostrarMsg)
+            this.alertaService.mostrarMensagem("Favor selecionar o campo Parcelamento para À vista!");
+          return false;
+        }
+        else {
+          //pegamos a qtde e o valor
+          this.verificaParcelamento(this.opcaoPagtoAvista);
+          return true;
+        }
+      }
+      if (this.enumFormaPagto == 2) {
+        if (!this.opcaoPagtoParcCartaoInternet) {
+          if (mostrarMsg)
+            this.alertaService.mostrarMensagem("Favor selecionar o Parcelamento para Cartão (Internet)!");
+          return false;
+        }
+        else {
+          this.verificaParcelamento(this.opcaoPagtoParcCartaoInternet);
+          return true;
+        }
+      }
+      if (this.enumFormaPagto == 3) {
+        if (this.vlEntrada) {
+          if (!this.opcaoPagtoParcComEntrada) {
+            if (mostrarMsg)
+              this.alertaService.mostrarMensagem("Favor selecionar o Parcelamento para Parcela com entrada!");
+            return false;
+          }
+          else {
+            this.verificaParcelamento(this.opcaoPagtoParcComEntrada);
+            return true;
+          }
+        }
+        else {
+          if (mostrarMsg)
+            this.alertaService.mostrarMensagem("Favor informar o valor de entrada!");
+          return false;
+        }
+      }
+      if (this.enumFormaPagto == 4) {
+        //ParcSemEntrada
+      }
+      if (this.enumFormaPagto == 5) {
+        if (!this.opcaoPagtoParcUnica) {
+          if (mostrarMsg)
+            this.alertaService.mostrarMensagem("Favor selecionar o Parcelamento para Parcela Única!");
+          return false;
+        }
+        else {
+          this.verificaParcelamento(this.opcaoPagtoParcUnica);
+          return true;
+        }
+      }
+      if (this.enumFormaPagto == 6) {
+        if (!this.opcaoPagtoParcCartaoMaquineta) {
+          if (mostrarMsg)
+            this.alertaService.mostrarMensagem("Favor selecionar o Parcelamento para Pagamento com cartão (Maquineta)!");
+          return false;
+        }
+        else {
+          this.verificaParcelamento(this.opcaoPagtoParcCartaoMaquineta);
+          return true;
+        }
+      }
+    }
+    else {
+      if (mostrarMsg)
+        this.alertaService.mostrarMensagem("Favor selecionar uma Forma de Pagamento!");
+      return false;
+    }
+  }
+
+  verificaParcelamento(opcaoPagto: string) {
+    if (!!opcaoPagto) {
+      this.qtde = parseInt(opcaoPagto.substring(0, 1));
+      // this.valor = parseInt(this.opcaoPagto.replace('.', '').substring(6));
+      //correção para não perder as casas decimais
+      this.valor = parseFloat(opcaoPagto.substring(6).trim().replace('.', '').replace(',', '.'));
     }
   }
 
@@ -246,8 +355,14 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
   //chamado quando algum item do prepedido for alterado
   //aqui é feito a limpeza do select da forma de pagamento
   public prepedidoAlterado() {
-    this.vlEntrada = 0;
-    this.enumFormaPagto = EnumFormaPagto.Selecionar;
+    // this.vlEntrada = 0;
+    // this.enumFormaPagto = EnumFormaPagto.Selecionar;
+    //afazer: manter os dados de pagamento selecionado e alterar os valores
+    //teste
+    // this.montaFormaPagtoExistente();
+    this.recalcularValoresComCoeficiente(this.enumFormaPagto);
+    this.montarListaParcelamento(this.enumFormaPagto);
+    // this.calcularParcelaComEntrada();
   }
 
   constantes = new Constantes();
@@ -351,7 +466,6 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
   montarListaParcelamento(enumFP: number): string[] {
     this.lstMsg = new Array();
     let lstCoeficiente = this.coeficienteDto;
-
     let vlTotalPedido = this.prePedidoDto.ListaProdutos.reduce((sum, prod) => sum + prod.TotalItem, 0);
 
     if (enumFP) {
@@ -361,18 +475,21 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
             this.moedaUtils.formatarMoedaComPrefixo(vlTotalPedido / lstCoeficiente[i].QtdeParcelas));
           break;
         }
-        else if (enumFP.toString() == this.constantes.COD_FORMA_PAGTO_PARCELA_UNICA) {
+        else if (enumFP.toString() == this.constantes.COD_FORMA_PAGTO_PARCELA_UNICA &&
+          lstCoeficiente[i].TipoParcela == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA) {
           this.lstMsg.push(lstCoeficiente[i].QtdeParcelas + " X " +
             this.moedaUtils.formatarMoedaComPrefixo(vlTotalPedido / lstCoeficiente[i].QtdeParcelas));
           break;
         }
-        else if (enumFP.toString() == this.constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA) {
+        else if (enumFP.toString() == this.constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA &&
+          lstCoeficiente[i].TipoParcela == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA) {
           this.lstMsg.push(lstCoeficiente[i].QtdeParcelas + " X " +
             this.moedaUtils.formatarMoedaComPrefixo(((vlTotalPedido - this.vlEntrada) / lstCoeficiente[i].QtdeParcelas)));
         }
-        else if (enumFP.toString() == this.constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA ||
+        else if ((enumFP.toString() == this.constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA ||
           enumFP.toString() == this.constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO ||
-          enumFP.toString() == this.constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA) {
+          enumFP.toString() == this.constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA) &&
+          lstCoeficiente[i].TipoParcela == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA) {
           this.lstMsg.push(lstCoeficiente[i].QtdeParcelas + " X " +
             this.moedaUtils.formatarMoedaComPrefixo(vlTotalPedido / lstCoeficiente[i].QtdeParcelas));
         }
@@ -422,8 +539,6 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
 
   montaFormaPagtoExistente() {
 
-    debugger;
-
     if (this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento) {
       this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento;
 
@@ -432,24 +547,24 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
           //A vista
           this.enumFormaPagto = EnumFormaPagto.Avista;//forma de pagamento
           this.meioPagtoAVista = parseInt(this.prePedidoDto.FormaPagtoCriacao.Op_av_forma_pagto);//deposito ou...
-          this.opcaoPagto = this.montaParcelamentoExistente();//recebe a descrição (1 X R$ 00,00)
+          this.opcaoPagtoAvista = this.montaParcelamentoExistente();//recebe a descrição (1 X R$ 00,00)
           break;
         case this.constantes.COD_FORMA_PAGTO_PARCELA_UNICA:
           //ParcUnica
           this.enumFormaPagto = EnumFormaPagto.ParcUnica;//forma de pagamento
           this.meioPagtoParcUnica = parseInt(this.prePedidoDto.FormaPagtoCriacao.Rb_forma_pagto);//deposito ou...
-          this.opcaoPagto = this.montaParcelamentoExistente();//recebe a descrição (1 X R$ 00,00)
+          this.opcaoPagtoParcUnica = this.montaParcelamentoExistente();//recebe a descrição (1 X R$ 00,00)
           this.diasVencParcUnica = this.prePedidoDto.FormaPagtoCriacao.C_pu_vencto_apos;//dias para venc.
           break;
         case this.constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO:
           //ParcCartaoInternet
           this.enumFormaPagto = EnumFormaPagto.ParcCartaoInternet;//forma de pagamento
-          this.opcaoPagto = this.montaParcelamentoExistente();//recebe a descrição (1 X R$ 00,00)
+          this.opcaoPagtoParcCartaoInternet = this.montaParcelamentoExistente();//recebe a descrição (1 X R$ 00,00)
           break;
         case this.constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA:
           //ParcCartaoMaquineta
           this.enumFormaPagto = EnumFormaPagto.ParcCartaoMaquineta;//forma de pagamento
-          this.opcaoPagto = this.montaParcelamentoExistente();//recebe a descrição (1 X R$ 00,00)
+          this.opcaoPagtoParcCartaoMaquineta = this.montaParcelamentoExistente();//recebe a descrição (1 X R$ 00,00)
           break;
         case this.constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA:
           //ParcComEnt
@@ -457,7 +572,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
           this.vlEntrada = this.prePedidoDto.FormaPagtoCriacao.C_pce_entrada_valor;//valor de entrada
           this.meioPagtoEntrada = parseInt(this.prePedidoDto.FormaPagtoCriacao.Op_pce_entrada_forma_pagto);//deposito ou...
           this.meioPagtoEntradaPrest = parseInt(this.prePedidoDto.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto);//deposito ou...
-          this.opcaoPagto = this.montaParcelamentoExistente();//recebe a descrição (1 X R$ 00,00)
+          this.opcaoPagtoParcComEntrada = this.montaParcelamentoExistente();//recebe a descrição (1 X R$ 00,00)
           this.diasVenc = this.prePedidoDto.FormaPagtoCriacao.C_pce_prestacao_periodo;//recebe os dias de vencimento
           break;
         case this.constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA:
@@ -478,10 +593,8 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
 
   //metodo para montar o tipo de parcelamento que foi selecionado pelo usuário
   montaParcelamentoExistente(): string {
-    debugger;
     let retorno = "";
     this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento;
-
     this.recalcularValoresComCoeficiente(this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento);
 
     switch (this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento.toString()) {
