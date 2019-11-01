@@ -260,6 +260,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
         }
       }
       if (this.enumFormaPagto == 3) {
+        debugger;
         if (this.vlEntrada) {
           if (!this.opcaoPagtoParcComEntrada) {
             if (mostrarMsg)
@@ -311,11 +312,13 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
   }
 
   verificaParcelamento(opcaoPagto: string) {
+    debugger;
     if (!!opcaoPagto) {
-      this.qtde = parseInt(opcaoPagto.substring(0, 1));
+      // this.qtde = parseInt(opcaoPagto.substring(0, 1));
+      this.qtde = parseInt(opcaoPagto.slice(0,2).trim());
       // this.valor = parseInt(this.opcaoPagto.replace('.', '').substring(6));
       //correção para não perder as casas decimais
-      this.valor = parseFloat(opcaoPagto.substring(6).trim().replace('.', '').replace(',', '.'));
+      this.valor = parseFloat(opcaoPagto.substring(7).trim().replace('.', '').replace(',', '.'));
     }
   }
 
@@ -355,14 +358,14 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
   //chamado quando algum item do prepedido for alterado
   //aqui é feito a limpeza do select da forma de pagamento
   public prepedidoAlterado() {
-    // this.vlEntrada = 0;
-    // this.enumFormaPagto = EnumFormaPagto.Selecionar;
-    //afazer: manter os dados de pagamento selecionado e alterar os valores
-    //teste
-    // this.montaFormaPagtoExistente();
+    
     this.recalcularValoresComCoeficiente(this.enumFormaPagto);
     this.montarListaParcelamento(this.enumFormaPagto);
-    // this.calcularParcelaComEntrada();
+    this.opcaoPagtoParcComEntrada = null;
+    this.opcaoPagtoAvista = null;
+    this.opcaoPagtoParcCartaoInternet = null;
+    this.opcaoPagtoParcCartaoMaquineta = null;
+    this.opcaoPagtoParcUnica = null;
   }
 
   constantes = new Constantes();
@@ -501,6 +504,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
   public vlEntrada: number;
   moedaUtils = new MoedaUtils();
   calcularParcelaComEntrada() {
+    debugger;
     this.lstMsg = new Array();
     this.prePedidoDto = this.novoPrepedidoDadosService.prePedidoDto;
     let lstProdutos = this.prePedidoDto.ListaProdutos;
@@ -514,14 +518,14 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
       if (this.vlEntrada > vltotal)
         this.alertaService.mostrarMensagem("Valor da entrada é maior que o total do Pré-pedido!");
       else {
-        for (var x = 0; x < lstProdutos.length; x++) {
           for (var i = 0; i < lstCoeficiente.length; i++) {
             if (lstCoeficiente[i].TipoParcela == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA) {
               this.lstMsg.push(lstCoeficiente[i].QtdeParcelas + " X " +
                 this.moedaUtils.formatarMoedaComPrefixo((vltotal / lstCoeficiente[i].QtdeParcelas)));
             }
           }
-        }
+        
+
       }
       return this.lstMsg;
     }

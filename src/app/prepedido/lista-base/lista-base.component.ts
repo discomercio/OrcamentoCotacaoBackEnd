@@ -19,6 +19,7 @@ import { ImpressaoService } from 'src/app/utils/impressao.service';
 import { PedidoDtoPedido } from 'src/app/dto/pedido/pedidosDtoPedido';
 import { NovoPrepedidoDadosService } from '../novo-prepedido/novo-prepedido-dados.service';
 import { PrepedidoBuscarService } from 'src/app/servicos/prepedido/prepedido-buscar.service';
+import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
 
 @Component({
   selector: 'app-lista-base',
@@ -40,7 +41,8 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
     public readonly impressaoService: ImpressaoService,
     public readonly novoPrepedidoDadosService: NovoPrepedidoDadosService,
     public readonly prepedidoBuscarService: PrepedidoBuscarService,
-    public readonly dialog: MatDialog) {
+    public readonly dialog: MatDialog,
+    public readonly alertaService: AlertaService) {
     super(telaDesktopService);
 
   }
@@ -51,6 +53,9 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
 
   prepedidos$: Observable<PrepedidosCadastradosDtoPrepedido[]>;
   pedidos$: Observable<PedidoDtoPedido[]>;
+
+  maxDate = DataUtils.formataParaFormulario(new Date());
+  minDate = DataUtils.formataParaFormulario(DataUtils.somarDias(new Date(), -60));
   ngOnInit() {
     this.jaDeuErro = false;
     /*
@@ -59,6 +64,9 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
 
     se estiver imprimindo, nao podemos usar o timeout
     */
+
+
+
     if (this.impressaoService.emImpressao()) {
       this.inscrever();
     }
@@ -68,7 +76,12 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
   }
 
   inscrever(): void {
+
     if (this.emPrepedidos) {
+      if (this.prepedidoListarService.paramsBuscaPrepedido.dataInicial < this.minDate) {
+        this.alertaService.mostrarMensagem("Selecione uma data inicial!");
+        return;
+      }
       this.prepedidos$ = this.prepedidoListarService.prepedidos$;
       this.prepedidoListarService.errosPrepedidos$.subscribe(
         {
@@ -79,6 +92,10 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
       this.prepedidoListarService.atualizar();
     }
     else {
+      if (this.pedidoListarService.paramsBuscaPedido.dataInicial < this.minDate) {
+        this.alertaService.mostrarMensagem("Selecione uma data inicial!");
+        return;
+      }
       this.pedidos$ = this.pedidoListarService.pedidos$;
       this.pedidoListarService.errosPedidos$.subscribe(
         {
@@ -151,7 +168,7 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
       return;
     if (linha.NumeroPedido) {
       this.router.navigate(['/pedido/detalhes', linha.NumeroPedido]);
-      
+
     }
     else {
       //vamos ver os detalhes: this.router.navigate(['/prepedido/detalhes', linha.NumeroPrepedido]);
@@ -173,7 +190,7 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
           //também passamos o número do pré-pedido no link
 
           // this.router.navigate(['/novo-prepedido/itens', r.NumeroPrePedido]);
-          this.router.navigate(['/prepedido/detalhes',r.NumeroPrePedido]);
+          this.router.navigate(['/prepedido/detalhes', r.NumeroPrePedido]);
         },
         error: (r) => this.deuErro(r)
 
