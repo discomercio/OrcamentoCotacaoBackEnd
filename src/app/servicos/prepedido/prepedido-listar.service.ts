@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { StringUtils } from 'src/app/utils/stringUtils';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -19,7 +20,7 @@ export class PrepedidoListarService {
     //incializa as datas
     this.paramsBuscaPrepedido.dataFinal = DataUtils.formataParaFormulario(new Date());
     this.paramsBuscaPrepedido.dataInicial = DataUtils.formataParaFormulario(DataUtils.somarDias(new Date(), -60));
-
+    
   }
 
   public carregando: boolean = false;
@@ -29,7 +30,6 @@ export class PrepedidoListarService {
   public atualizar(): void {
     // Initialize Params Object
     let params = new HttpParams();
-
     //adiciona todos os parametros por nome
     //os nomes são todos iguais, devia ter um jeito de fazer isso automaticamente...
     params = params.append('clienteBusca', StringUtils.retorna_so_digitos(this.paramsBuscaPrepedido.clienteBusca));

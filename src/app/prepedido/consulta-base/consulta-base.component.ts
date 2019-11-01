@@ -12,6 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from '../../../../src/environments/environment';
 import { PedidoComboCpfcnpjService } from '../../../../src/app/servicos/pedido/pedido-combo-cpfcnpj.service';
 import { PedidoComboNumeroService } from '../../../../src/app/servicos/pedido/pedido-combo-numero.service';
+import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
 
 @Component({
   selector: 'app-consulta-base',
@@ -32,6 +33,7 @@ export class ConsultaBaseComponent extends TelaDesktopBaseComponent implements O
   optionsPedidoClienteBusca$: Observable<string[]>;
 
 
+
   constructor(private readonly prepedidoComboNumeroService: PrepedidoComboNumeroService,
     private readonly _snackBar: MatSnackBar,
     private readonly prepedidoComboCpfcnpjService: PrepedidoComboCpfcnpjService,
@@ -40,7 +42,8 @@ export class ConsultaBaseComponent extends TelaDesktopBaseComponent implements O
     telaDesktopService: TelaDesktopService,
     private readonly router: Router,
     public readonly pedidoListarService: PedidoListarService,
-    public readonly prepedidoListarService: PrepedidoListarService) {
+    public readonly prepedidoListarService: PrepedidoListarService,
+    public readonly alertaService: AlertaService) {
     super(telaDesktopService);
 
     //carrega os combos
@@ -52,9 +55,13 @@ export class ConsultaBaseComponent extends TelaDesktopBaseComponent implements O
   }
 
   ngOnInit() {
+
   }
+  maxDate = DataUtils.formataParaFormulario(new Date());
+  minDate = DataUtils.formataParaFormulario(DataUtils.somarDias(new Date(), -60));
 
   buscar() {
+    debugger;
     if (this.emPrepedidos) {
       //nenhuma busca, ligamos os dois
       if (!this.prepedidoListarService.paramsBuscaPrepedido.tipoBuscaAndamento && !this.prepedidoListarService.paramsBuscaPrepedido.tipoBuscaPedido) {
@@ -65,6 +72,10 @@ export class ConsultaBaseComponent extends TelaDesktopBaseComponent implements O
           duration: environment.esperaAvisos
         });
       }
+      if (this.prepedidoListarService.paramsBuscaPrepedido.dataInicial < this.minDate ) {
+        this.alertaService.mostrarMensagem("É permitido realizar a busca dentro de um periodo de 60 dias atrás da Data atual");
+        return;
+      }
 
       this.prepedidoListarService.atualizar();
     }
@@ -73,10 +84,14 @@ export class ConsultaBaseComponent extends TelaDesktopBaseComponent implements O
       if (!this.pedidoListarService.paramsBuscaPedido.tipoBuscaEmAndamento && !this.pedidoListarService.paramsBuscaPedido.tipoBuscaEncerrado) {
         this.pedidoListarService.paramsBuscaPedido.tipoBuscaEmAndamento = true;
         this.pedidoListarService.paramsBuscaPedido.tipoBuscaEncerrado = true;
-
+        
         this._snackBar.open("Nenhum tipo estava selecionado, os dois tipos foram selecionados", "", {
           duration: environment.esperaAvisos
         });
+      }
+      if (this.pedidoListarService.paramsBuscaPedido.dataInicial < this.minDate) {
+        this.alertaService.mostrarMensagem("É permitido realizar a busca dentro de um periodo de 60 dias atrás da Data atual");
+        return;
       }
 
       this.pedidoListarService.atualizar();

@@ -6,7 +6,10 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UtilsModule } from './utils/utils.module';
 import { HomeModule } from './home/home.module';
-import { MatButtonModule, MatIconModule, MatToolbarModule, MatSidenavModule, MatTableModule, MatDialogModule } from '@angular/material';
+import {
+  MatButtonModule, MatIconModule, MatToolbarModule,
+  MatSidenavModule, MatTableModule, MatDialogModule,
+} from '@angular/material';
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { PrepedidoModule } from './prepedido/prepedido.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -43,14 +46,14 @@ import { PlatformLocation } from '@angular/common';
     LoginModule,
     ClienteModule,
     TextMaskModule
-    ],
-  providers: [ 
+  ],
+  providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
     }
-   ],
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
