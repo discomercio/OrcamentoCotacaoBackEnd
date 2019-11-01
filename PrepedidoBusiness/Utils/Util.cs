@@ -845,5 +845,12 @@ namespace PrepedidoBusiness.Utils
 
         }
 
+        public static DateTime LimiteDataBuscas()
+        {
+            DateTime data = new DateTime();
+            data = DateTime.Now.AddDays(-60);
+            return data;
+        }
+
     }
 }

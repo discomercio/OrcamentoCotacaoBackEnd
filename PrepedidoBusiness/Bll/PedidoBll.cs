@@ -23,12 +23,15 @@ namespace PrepedidoBusiness.Bll
             this.contextoProvider = contextoProvider;
         }
 
+
         public async Task<IEnumerable<string>> ListarNumerosPedidoCombo(string apelido)
         {
+
             var db = contextoProvider.GetContextoLeitura();
 
             var lista = from p in db.Tpedidos
-                        where p.Orcamentista == apelido
+                        where p.Orcamentista == apelido &&
+                              p.Data >= Util.LimiteDataBuscas()
                         orderby p.Pedido
                         select p.Pedido;
 
@@ -45,6 +48,10 @@ namespace PrepedidoBusiness.Bll
         public async Task<IEnumerable<PedidoDtoPedido>> ListarPedidos(string apelido, TipoBuscaPedido tipoBusca,
             string clienteBusca, string numeroPedido, DateTime? dataInicial, DateTime? dataFinal)
         {
+            if (dataInicial < Util.LimiteDataBuscas())
+            {
+                dataInicial = Util.LimiteDataBuscas();
+            }
             //fazemos a busca
             var ret = await ListarPedidosFiltroEstrito(apelido, tipoBusca, clienteBusca, numeroPedido, dataInicial, dataFinal);
 
@@ -59,13 +66,13 @@ namespace PrepedidoBusiness.Bll
             if (String.IsNullOrEmpty(clienteBusca) && String.IsNullOrEmpty(numeroPedido))
                 return ret;
 
-            //busca sem datas
-            ret = await ListarPedidosFiltroEstrito(apelido, tipoBusca, clienteBusca, numeroPedido, null, null);
+            //busca sem data final
+            ret = await ListarPedidosFiltroEstrito(apelido, tipoBusca, clienteBusca, numeroPedido, dataInicial, null);
             if (ret.Any())
                 return ret;
 
             //ainda não achamos nada? então faz a busca sem filtrar por tipo
-            ret = await ListarPedidosFiltroEstrito(apelido, TipoBuscaPedido.Todos, clienteBusca, numeroPedido, null, null);
+            ret = await ListarPedidosFiltroEstrito(apelido, TipoBuscaPedido.Todos, clienteBusca, numeroPedido, dataInicial, null);
             return ret;
         }
 
@@ -136,7 +143,8 @@ namespace PrepedidoBusiness.Bll
             var db = contextoProvider.GetContextoLeitura();
 
             var lista = (from c in db.Tpedidos.Include(r => r.Tcliente)
-                         where c.Orcamentista == apelido
+                         where c.Orcamentista == apelido &&
+                               c.Data >= Util.LimiteDataBuscas()
                          orderby c.Tcliente.Cnpj_Cpf
                          select c.Tcliente.Cnpj_Cpf).Distinct();
 
@@ -276,7 +284,7 @@ namespace PrepedidoBusiness.Bll
 
             return lstProduto;
         }
-        
+
         public async Task<PedidoDto> BuscarPedido(string apelido, string numPedido)
         {
             var db = contextoProvider.GetContextoLeitura();

@@ -27,7 +27,7 @@ namespace PrepedidoBusiness.Bll
         {
             this.contextoProvider = contextoProvider;
         }
-
+               
         public async Task<IEnumerable<string>> ListarNumerosPrepedidosCombo(string orcamentista)
         {
             //toda vez precisamos de uma nova conexao para os casos em que houver transacao
@@ -35,6 +35,7 @@ namespace PrepedidoBusiness.Bll
             var lista = from r in db.Torcamentos
                         where r.Orcamentista == orcamentista &&
                               r.St_Orcamento != "CAN"
+                              && r.Data >= Util.LimiteDataBuscas()
                         orderby r.Orcamento
                         select r.Orcamento;
             var res = lista.AsEnumerable();
@@ -47,7 +48,8 @@ namespace PrepedidoBusiness.Bll
 
             var lista = (from c in db.Torcamentos.Include(r => r.Tcliente)
                          where c.Orcamentista == apelido &&
-                               c.St_Orcamento != "CAN"
+                               c.St_Orcamento != "CAN" && 
+                               c.Data >= Util.LimiteDataBuscas()
                          orderby c.Tcliente.Cnpj_Cpf
                          select c.Tcliente.Cnpj_Cpf).Distinct();
 
@@ -69,6 +71,11 @@ namespace PrepedidoBusiness.Bll
         public async Task<IEnumerable<PrepedidosCadastradosDtoPrepedido>> ListarPrePedidos(string apelido, TipoBuscaPrepedido tipoBusca,
             string clienteBusca, string numeroPrePedido, DateTime? dataInicial, DateTime? dataFinal)
         {
+            if(dataInicial < Util.LimiteDataBuscas())
+            {
+                dataInicial = Util.LimiteDataBuscas();
+            }
+
             //apelido = "MARISARJ";
             //usamos a mesma lógica de PedidoBll.ListarPedidos:
             /*
@@ -84,12 +91,12 @@ namespace PrepedidoBusiness.Bll
                 return ret;
 
             //busca sem datas
-            ret = await ListarPrePedidosFiltroEstrito(apelido, tipoBusca, clienteBusca, numeroPrePedido, null, null);
+            ret = await ListarPrePedidosFiltroEstrito(apelido, tipoBusca, clienteBusca, numeroPrePedido, dataInicial, null);
             if (ret.Any())
                 return ret;
 
             //ainda não achamos nada? então faz a busca sem filtrar por tipo
-            ret = await ListarPrePedidosFiltroEstrito(apelido, TipoBuscaPrepedido.Todos, clienteBusca, numeroPrePedido, null, null);
+            ret = await ListarPrePedidosFiltroEstrito(apelido, TipoBuscaPrepedido.Todos, clienteBusca, numeroPrePedido, dataInicial, null);
             return ret;
 
         }
@@ -129,7 +136,7 @@ namespace PrepedidoBusiness.Bll
             var lstfinal = lst.Select(r => new PrepedidosCadastradosDtoPrepedido
             {
                 Status = r.St_Orc_Virou_Pedido == 1 ? "Pré-Pedido - Com Pedido" : "Pré-Pedido - Sem Pedido",
-                DataPrePedido = r.Data_Hora,
+                DataPrePedido = r.Data,
                 NumeroPrepedido = r.Orcamento,
                 NomeCliente = r.Tcliente.Nome,
                 ValoTotal = r.Vl_Total
