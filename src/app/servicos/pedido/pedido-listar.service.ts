@@ -27,6 +27,11 @@ export class PedidoListarService {
   errosPedidos$: BehaviorSubject<any> = new BehaviorSubject(null);
 
   public atualizar(): void {
+    let minDate = DataUtils.formataParaFormulario(DataUtils.somarDias(new Date(), -60));
+    if (this.paramsBuscaPedido.dataInicial < minDate) {
+      this.paramsBuscaPedido.dataInicial = minDate;
+    }
+
     // Initialize Params Object
     let params = new HttpParams();
 

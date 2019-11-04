@@ -72,9 +72,10 @@ export class ConsultaBaseComponent extends TelaDesktopBaseComponent implements O
           duration: environment.esperaAvisos
         });
       }
-      if (this.prepedidoListarService.paramsBuscaPrepedido.dataInicial < this.minDate ) {
-        this.alertaService.mostrarMensagem("É permitido realizar a busca dentro de um periodo de 60 dias atrás da Data atual");
-        return;
+      if (this.prepedidoListarService.paramsBuscaPrepedido.dataInicial < this.minDate) {
+        this._snackBar.open("É permitido realizar a busca dentro de um periodo de 60 dias atrás da Data atual", "", {
+          duration: environment.esperaAvisos
+        });
       }
 
       this.prepedidoListarService.atualizar();
@@ -84,14 +85,15 @@ export class ConsultaBaseComponent extends TelaDesktopBaseComponent implements O
       if (!this.pedidoListarService.paramsBuscaPedido.tipoBuscaEmAndamento && !this.pedidoListarService.paramsBuscaPedido.tipoBuscaEncerrado) {
         this.pedidoListarService.paramsBuscaPedido.tipoBuscaEmAndamento = true;
         this.pedidoListarService.paramsBuscaPedido.tipoBuscaEncerrado = true;
-        
+
         this._snackBar.open("Nenhum tipo estava selecionado, os dois tipos foram selecionados", "", {
           duration: environment.esperaAvisos
         });
       }
       if (this.pedidoListarService.paramsBuscaPedido.dataInicial < this.minDate) {
-        this.alertaService.mostrarMensagem("É permitido realizar a busca dentro de um periodo de 60 dias atrás da Data atual");
-        return;
+        this._snackBar.open("É permitido realizar a busca dentro de um periodo de 60 dias atrás da Data atual", "", {
+          duration: environment.esperaAvisos
+        });
       }
 
       this.pedidoListarService.atualizar();

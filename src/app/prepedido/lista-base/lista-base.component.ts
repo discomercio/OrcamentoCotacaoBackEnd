@@ -66,7 +66,6 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
     */
 
 
-
     if (this.impressaoService.emImpressao()) {
       this.inscrever();
     }
@@ -76,12 +75,9 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
   }
 
   inscrever(): void {
-
+    debugger;
     if (this.emPrepedidos) {
-      if (this.prepedidoListarService.paramsBuscaPrepedido.dataInicial < this.minDate) {
-        this.alertaService.mostrarMensagem("Selecione uma data inicial!");
-        return;
-      }
+
       this.prepedidos$ = this.prepedidoListarService.prepedidos$;
       this.prepedidoListarService.errosPrepedidos$.subscribe(
         {
@@ -90,12 +86,10 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
           }
         });
       this.prepedidoListarService.atualizar();
+
     }
     else {
-      if (this.pedidoListarService.paramsBuscaPedido.dataInicial < this.minDate) {
-        this.alertaService.mostrarMensagem("Selecione uma data inicial!");
-        return;
-      }
+
       this.pedidos$ = this.pedidoListarService.pedidos$;
       this.pedidoListarService.errosPedidos$.subscribe(
         {

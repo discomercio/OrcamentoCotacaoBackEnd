@@ -20,7 +20,7 @@ export class PrepedidoListarService {
     //incializa as datas
     this.paramsBuscaPrepedido.dataFinal = DataUtils.formataParaFormulario(new Date());
     this.paramsBuscaPrepedido.dataInicial = DataUtils.formataParaFormulario(DataUtils.somarDias(new Date(), -60));
-    
+
   }
 
   public carregando: boolean = false;
@@ -28,6 +28,10 @@ export class PrepedidoListarService {
   errosPrepedidos$: BehaviorSubject<any> = new BehaviorSubject(null);
 
   public atualizar(): void {
+    let minDate = DataUtils.formataParaFormulario(DataUtils.somarDias(new Date(), -60));
+    if (this.paramsBuscaPrepedido.dataInicial < minDate) {
+      this.paramsBuscaPrepedido.dataInicial = minDate;
+    }
     // Initialize Params Object
     let params = new HttpParams();
     //adiciona todos os parametros por nome
@@ -66,6 +70,7 @@ export class PrepedidoListarService {
       }
     );
   }
+
 
 
 }
