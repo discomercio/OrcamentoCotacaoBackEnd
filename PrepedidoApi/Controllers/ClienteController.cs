@@ -31,7 +31,7 @@ namespace PrepedidoApi.Controllers
         {
             //para testar: http://localhost:60877/api/cliente/buscarCliente/{cnpj_cpf}
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            var dadosCliente = await clienteBll.BuscarCliente(cnpj_cpf, apelido);
+            var dadosCliente = await clienteBll.BuscarCliente(cnpj_cpf, apelido.Trim());
             if (dadosCliente == null)
                 return NoContent();
             return Ok(dadosCliente);
@@ -51,7 +51,7 @@ namespace PrepedidoApi.Controllers
              * tipo de contibuinte ICMS
              * */
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            var retorno = await clienteBll.AtualizarClienteParcial(apelido, dadosClienteCadastroDto);
+            var retorno = await clienteBll.AtualizarClienteParcial(apelido.Trim(), dadosClienteCadastroDto);
             if (retorno == null)
                 return NoContent();
             return Ok(retorno);
@@ -81,7 +81,7 @@ namespace PrepedidoApi.Controllers
         {
             //para testar: http://localhost:60877/api/cliente/cadastrarCliente
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            var retorno = await clienteBll.CadastrarCliente(clienteDto, apelido);
+            var retorno = await clienteBll.CadastrarCliente(clienteDto, apelido.Trim());
 
             return Ok(retorno);
         }
@@ -94,7 +94,7 @@ namespace PrepedidoApi.Controllers
         {
             //para testar: http://localhost:60877/api/cliente/listarComboJustificaEndereco
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            var retorno = await clienteBll.ListarComboJustificaEndereco(apelido);
+            var retorno = await clienteBll.ListarComboJustificaEndereco(apelido.Trim());
 
             return Ok(retorno);
 

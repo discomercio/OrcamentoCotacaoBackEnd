@@ -61,7 +61,7 @@ namespace PrepedidoApi.Controllers
         {
             var appSettingsSection = configuration.GetSection("AppSettings");
             var appSettings = appSettingsSection.Get<Utils.Configuracao>();
-            string apelido = User.Claims.FirstOrDefault(r => r.Type == ClaimTypes.NameIdentifier).Value;
+            string apelido = User.Claims.FirstOrDefault(r => r.Type == ClaimTypes.NameIdentifier).Value.Trim();
             string nome = User.Claims.FirstOrDefault(r => r.Type == ClaimTypes.Name).Value;
             string token = servicoAutenticacao.RenovarTokenAutenticacao(apelido, nome, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos, Utils.Autenticacao.RoleAcesso);
 
@@ -78,7 +78,7 @@ namespace PrepedidoApi.Controllers
         {
             var appSettingsSection = configuration.GetSection("AppSettings");
             var appSettings = appSettingsSection.Get<Utils.Configuracao>();
-            apelido = apelido.ToUpper();
+            apelido = apelido.ToUpper().Trim();
             senha = senha.ToUpper();
             string token = await servicoAutenticacao.ObterTokenAutenticacao(apelido, senha, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos, Utils.Autenticacao.RoleAcesso, new ServicoAutenticacaoProvider(acessoBll));
             
@@ -101,7 +101,7 @@ namespace PrepedidoApi.Controllers
             //string apelido = "SALOMÃO";
 
             //Faz um update na t_Usuario e update no t_SESSAO_HISTORICO
-            await acessoBll.FazerLogout(apelido);
+            await acessoBll.FazerLogout(apelido.Trim());
 
             return Ok();
         }

@@ -130,7 +130,7 @@ namespace PrepedidoApi.Controllers
             //para testar: http://localhost:60877/api/prepedido/cadastrarPrepedido
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            var ret = await prepedidoBll.CadastrarPrepedido(prePedido, apelido);
+            var ret = await prepedidoBll.CadastrarPrepedido(prePedido, apelido.Trim());
 
             return Ok(ret);
         }
@@ -146,7 +146,7 @@ namespace PrepedidoApi.Controllers
             //para testar: http://localhost:60877/api/prepedido/deletarPrepedido
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            await prepedidoBll.DeletarOrcamentoExisteComTransacao(prePedido, apelido);
+            await prepedidoBll.DeletarOrcamentoExisteComTransacao(prePedido, apelido.Trim());
 
             return Ok();
         }
@@ -162,7 +162,7 @@ namespace PrepedidoApi.Controllers
 
             //apelido = "MARISARJ";
 
-            var ret = await formaPagtoBll.ObterFormaPagto(apelido, tipo_pessoa);
+            var ret = await formaPagtoBll.ObterFormaPagto(apelido.Trim(), tipo_pessoa);
 
             return Ok(ret);
         }

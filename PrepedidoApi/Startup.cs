@@ -53,7 +53,7 @@ namespace PrepedidoApi
             //banco de dados
             services.AddDbContext<InfraBanco.ContextoBdBasico>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("conexaoLocal"));
+                options.UseSqlServer(Configuration.GetConnectionString("conexaohomologa"));
             });
             services.AddDbContext<InfraBanco.ContextoCepBd>(options =>
             {
