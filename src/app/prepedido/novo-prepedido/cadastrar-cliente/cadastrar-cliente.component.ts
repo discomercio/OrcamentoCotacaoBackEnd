@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, AfterViewInit } from '@angular/core';
 import { DadosClienteCadastroDto } from 'src/app/dto/ClienteCadastro/DadosClienteCadastroDto';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelaDesktopBaseComponent } from 'src/app/servicos/telaDesktop/telaDesktopBaseComponent';
@@ -17,13 +17,63 @@ import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
 import { BuscarClienteService } from 'src/app/servicos/cliente/buscar-cliente.service';
 import { Constantes } from 'src/app/dto/Constantes';
 import { ClienteCorpoComponent } from 'src/app/cliente/cliente-corpo/cliente-corpo.component';
+import { MatSelect } from '@angular/material';
+import { nextTick } from 'q';
+import { HtmlAstPath } from '@angular/compiler';
+
 
 @Component({
   selector: 'app-cadastrar-cliente',
   templateUrl: './cadastrar-cliente.component.html',
   styleUrls: ['./cadastrar-cliente.component.scss']
 })
-export class CadastrarClienteComponent extends TelaDesktopBaseComponent implements OnInit {
+export class CadastrarClienteComponent extends TelaDesktopBaseComponent implements OnInit, AfterViewInit {
+
+  @ViewChild("clienteCorpo", { static: true }) clienteCorpo: ClienteCorpoComponent;
+
+  ngAfterViewInit(): void {
+    var lista = document.querySelectorAll('form input, button');
+    var mySelect2 = this.clienteCorpo;
+    var chamaMetodo = this;
+
+    for (let i = 0; i < lista.length; i++) {
+      lista[i].addEventListener('keyup',
+        function (e: KeyboardEvent) {
+          if (e.which === 13) {
+            if (mySelect2.ignorarProximoEnter) {
+              mySelect2.ignorarProximoEnter = false;
+              return;
+            }
+
+            let src: HTMLInputElement = e.srcElement as HTMLInputElement;
+
+            if (src == document.getElementById("avancar")) {
+              chamaMetodo.continuar();
+            }
+
+            for (let i2 = 0; i2 < lista.length; i2++) {
+              if (lista[i2] === src && i2 + 1 < lista.length) {
+                if (lista[i2] == document.getElementById("nasc")) {
+                  mySelect2.mySelectSexo.focus();
+                  //ele não perde o foco
+                  
+                }
+                else if (lista[i2] == document.getElementById("cep")) {
+                  (lista[i2 + 2] as HTMLInputElement).focus();
+                }
+                else if(lista[i2] == document.getElementById("emailXml"))
+                {
+                  mySelect2.mySelectProdutor.focus();
+                }
+                else {
+                  (lista[i2 + 1] as HTMLInputElement).focus();
+                }
+              }
+            }
+          }
+        });
+    }
+  }
 
   //o dado sendo editado
   dadosClienteCadastroDto = new DadosClienteCadastroDto();
@@ -54,7 +104,6 @@ export class CadastrarClienteComponent extends TelaDesktopBaseComponent implemen
     this.dadosClienteCadastroDto.Contato = "";
   }
 
-
   ehPf() {
     if (this.dadosClienteCadastroDto.Cnpj_Cpf && StringUtils.retorna_so_digitos(this.dadosClienteCadastroDto.Cnpj_Cpf).length == 11) {
       return true;
@@ -65,7 +114,9 @@ export class CadastrarClienteComponent extends TelaDesktopBaseComponent implemen
     this.location.back();
   }
 
-  @ViewChild("clienteCorpo", { static: true }) clienteCorpo: ClienteCorpoComponent;
+
+
+
 
   continuar() {
 

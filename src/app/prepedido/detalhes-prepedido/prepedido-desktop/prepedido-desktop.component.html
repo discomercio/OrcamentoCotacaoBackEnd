@@ -1,9 +1,9 @@
 <div class="nossobody" *ngIf="prepedidoDto">
     <div class="botaoImprimirDIv">
-        <button mat-raised-button color="accent" (click)="editar()" class="botaoEditar" style="float: left"
+        <!-- <button mat-raised-button color="accent" (click)="editar()" class="botaoEditar" style="float: left"
             *ngIf="!impressaoService.emImpressao() && telaDesktop">
             <mat-icon>edit</mat-icon> Editar
-        </button>
+        </button> -->
         <button mat-raised-button color="accent" (click)="imprimir()" class="botaoImprimir"
             *ngIf="!impressaoService.emImpressao() && telaDesktop">
             <mat-icon>print</mat-icon> Versão para impressão
@@ -216,7 +216,7 @@
 
                     <td class="MDB" align="left"><input name="c_produto" id="c_produto" class="PLLe" style="width:54px;"
                             value='{{linha.NumProduto}}' readonly tabindex=-1></td>
-                    <td class="MDB" align="left" style="width:277px;">
+                    <td class="MDB" align="left" style="width:253px;">
                         <span class="PLLe" [innerHTML]="linha.Descricao"></span>
                         <!-- <input type="hidden" name="c_descricao" id="c_descricao" value='<%=s_descricao%>'> -->
                     </td>

@@ -3,7 +3,7 @@
         <header>
             <ng-container *ngIf="criando; else tituloEditando">Criar Pré-Pedido</ng-container>
             <ng-template #tituloEditando>Editar Pré-pedido</ng-template>
-            - Observações
+            - Observações 
         </header>
         <article class="indicadorlinha">
             <div style="padding-bottom: 0.6em;"><strong>Cliente:</strong> {{cpfCnpj()}} -
@@ -20,7 +20,7 @@
 
                 <!-- ************   OBSERVAÇÕES   ************  -->
                 <mat-form-field class="edicao-endereco">
-                    <textarea matInput type="text" placeholder="OBSERVAÇÕES" [ngModelOptions]="{standalone: true}"
+                    <textarea matInput type="text" placeholder="Observações adicionais do Pré-Pedido" [ngModelOptions]="{standalone: true}"
                         [(ngModel)]="prePedidoDto.DetalhesPrepedido.Observacoes" #autosize="cdkTextareaAutosize"
                         cdkTextareaAutosize cdkAutosizeMinRows="5" cdkAutosizeMaxRows="5"></textarea>
 
@@ -41,11 +41,11 @@
                         Instala
                     </mat-slide-toggle>
                 </div>
-                <div class="umgrupoopcoes">
+                <!-- <div class="umgrupoopcoes">
                     <mat-slide-toggle [(ngModel)]="GarantiaIndicador" [ngModelOptions]="{standalone: true}"> Garantia
                         Indicador
                     </mat-slide-toggle>
-                </div>
+                </div> -->
             </div>
 
 

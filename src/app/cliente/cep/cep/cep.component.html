@@ -1,10 +1,10 @@
 <div [ngClass]="{'carregando': carregando}">
 
     <mat-form-field floatLabel="floatLabel()" class="edicao-cep">
-        <input matInput type="text" placeholder="CEP" [(ngModel)]="Cep" required maxlength="10" size="11"
+        <input matInput type="text" placeholder="CEP" [(ngModel)]="Cep" required maxlength="10" size="11" id="cep"
             (blur)="saiuCep()" [textMask]="{mask: mascaraCep}">
     </mat-form-field>
-    <button mat-raised-button color="accent" (click)="buscarCep()">
+    <button mat-raised-button color="accent" (click)="buscarCep()" id="naoSeiCep">
         <mat-icon>search</mat-icon> Não sei o CEP
     </button>
     <!-- afazer: naõ deixar clicar no http://localhost:4200/novo-prepedido/confirmar-cliente/08961775804 se não pedir outro endereço -->

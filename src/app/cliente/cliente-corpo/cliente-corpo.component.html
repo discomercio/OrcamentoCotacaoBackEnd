@@ -53,7 +53,7 @@ enquanto está carregando não msotramos NADA!
 para não dar erro no console
  -->
 
-<div *ngIf="dadosClienteCadastroDto != null">
+<div id="formCadastro" *ngIf="dadosClienteCadastroDto != null">
     <!-- ************   NOME  ************  -->
     <div *ngIf="cadastrando">
         <mat-form-field floatLabel="floatLabel()" *ngIf="ehPf()" class="largura-maxima-campo-formulario">
@@ -102,12 +102,14 @@ para não dar erro no console
             </mat-form-field>
 
             <mat-form-field floatLabel="floatLabel()" style="width: 10em;">
-                <input matInput type="date" placeholder="NASCIMENTO" [(ngModel)]="dadosClienteCadastroDto.Nascimento">
+                <input matInput type="date" placeholder="NASCIMENTO" [(ngModel)]="dadosClienteCadastroDto.Nascimento"
+                    id="nasc">
             </mat-form-field>
 
             <mat-form-field floatLabel="floatLabel()" style="width: 8em;">
                 <mat-label>SEXO</mat-label>
-                <mat-select [(ngModel)]="dadosClienteCadastroDto.Sexo" required [(disabled)]="!cadastrando">
+                <mat-select (keydown)="keydownSelectSexo($event);" #mySelectSexo
+                    [(ngModel)]="dadosClienteCadastroDto.Sexo" required [(disabled)]="!cadastrando">
                     <mat-option>Selecione</mat-option>
                     <mat-option value="M">Masculino</mat-option>
                     <mat-option value="F">Feminino</mat-option>
@@ -270,7 +272,7 @@ para não dar erro no console
     <span *ngIf="cadastrando">
         <mat-form-field floatLabel="floatLabel()" class="largura-maxima-campo-formulario">
             <input matInput type="text" placeholder="E-MAIL (XML)" [(ngModel)]="dadosClienteCadastroDto.EmailXml"
-                maxlength="60">
+                id="emailXml" maxlength="60">
         </mat-form-field>
     </span>
     <span *ngIf="!cadastrando">
@@ -293,7 +295,8 @@ para não dar erro no console
                 <mat-form-field floatLabel="floatLabel()" [ngStyle]="{'padding':!cadastrando?'0em':''}">
                     <mat-label>PRODUTOR RURAL</mat-label>
                     <!-- produtor rural sempre é editável -->
-                    <mat-select required [(ngModel)]="dadosClienteCadastroDto.ProdutorRural">
+                    <mat-select (keydown)="keydownSelectProdutor($event);" #mySelectProdutor required
+                        [(ngModel)]="dadosClienteCadastroDto.ProdutorRural">
                         <mat-option>Selecione</mat-option>
                         <mat-option [(value)]="constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO">Não</mat-option>
                         <mat-option [(value)]="constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM">Sim</mat-option>

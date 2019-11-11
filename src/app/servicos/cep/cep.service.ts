@@ -26,6 +26,12 @@ export class CepService {
     return this.http.get<string[]>(environment.apiUrl + 'cep/buscarUfs');
   }
 
+  public BuscarLocalidades(uf: string): Observable<string[]> {
+    let params = new HttpParams();
+    params = params.append('uf', uf);
+    return this.http.get<string[]>(environment.apiUrl + 'cep/buscarLocalidades', { params: params });
+  }
+
   public buscarCepPorEndereco(endereco: string, localidade: string, uf: string): Observable<CepDto[]> {
     let params = new HttpParams();
     params = params.append('endereco', endereco);

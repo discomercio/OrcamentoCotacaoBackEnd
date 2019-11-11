@@ -22,7 +22,7 @@ export class PrepedidoBuscarService {
   constructor(private readonly http: HttpClient) { }
 
   public buscar(numeroPrePedido: string): Observable<PrePedidoDto> {
-    
+
     // Initialize Params Object
     let params = new HttpParams();
 
@@ -62,5 +62,9 @@ export class PrepedidoBuscarService {
   // buscar lista de coeficientes para calcular os valores referentes a forma de pagamento
   public buscarCoeficiente(prepedidoProdutoDtoPrepedido: PrepedidoProdutoDtoPrepedido[]): Observable<CoeficienteDto[]> {
     return this.http.post<CoeficienteDto[]>(environment.apiUrl + 'prepedido/buscarCoeficiente', prepedidoProdutoDtoPrepedido);
+  }
+
+  public buscarQtdeParcCartaoVisa(): Observable<number> {
+    return this.http.get<number>(environment.apiUrl + 'prepedido/buscarQtdeParcCartaoVisa');
   }
 }

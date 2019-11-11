@@ -61,7 +61,6 @@ export class ConsultaBaseComponent extends TelaDesktopBaseComponent implements O
   minDate = DataUtils.formataParaFormulario(DataUtils.somarDias(new Date(), -60));
 
   buscar() {
-    debugger;
     if (this.emPrepedidos) {
       //nenhuma busca, ligamos os dois
       if (!this.prepedidoListarService.paramsBuscaPrepedido.tipoBuscaAndamento && !this.prepedidoListarService.paramsBuscaPrepedido.tipoBuscaPedido) {
@@ -82,6 +81,7 @@ export class ConsultaBaseComponent extends TelaDesktopBaseComponent implements O
     }
     else {
       //nenhuma busca, ligamos os dois
+      debugger;
       if (!this.pedidoListarService.paramsBuscaPedido.tipoBuscaEmAndamento && !this.pedidoListarService.paramsBuscaPedido.tipoBuscaEncerrado) {
         this.pedidoListarService.paramsBuscaPedido.tipoBuscaEmAndamento = true;
         this.pedidoListarService.paramsBuscaPedido.tipoBuscaEncerrado = true;

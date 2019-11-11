@@ -61,11 +61,16 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
   }
   //saiu do campo de CEP, vamos carregar o endereco
   saiuCep() {
-
     //se vazio, não damos nenhuma mensagem
-    if (this.Cep.trim() === "") {
+    if (this.Cep == "" || this.Cep == 'undefined') {
       //nao avisamos
-      return;
+      this.Endereco = "";
+      this.Numero = "";
+      this.Complemento = "";
+      this.Bairro = "";
+      this.Cidade = "";
+      this.Uf = "";
+      return false;
     }
 
 

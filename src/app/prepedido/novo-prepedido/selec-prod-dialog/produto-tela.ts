@@ -42,9 +42,14 @@ export class ProdutoTela {
         digitado = ProdutoTela.StringSimples(digitado);
         for (let i = 0; i < arr.length; i++) {
             let este = arr[i];
-            if (digitado === "" || este.stringBusca.indexOf(digitado) >= 0) {
+            // if (digitado === "" || este.stringBusca.indexOf(digitado) >= 0) {
+            //     este.visivel = true;
+            // }  
+            //alteramos a condição para que apareça apenas quando o código do produto for igual ao digitado
+            if (digitado != "" && parseInt(este.produtoDto.Produto) == parseInt(digitado)) {
+                debugger;
                 este.visivel = true;
-            }
+            }           
             else {
                 este.visivel = false;
             }

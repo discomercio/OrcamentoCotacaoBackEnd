@@ -34,7 +34,6 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
   }
 
   ngOnInit() {
-    debugger;
     this.verificarEmProcesso();
     this.dadosDoModelo();
   }
@@ -65,7 +64,7 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
           return;
         }
         this.alertaService.mostrarMensagem("Pré-pedido criado com sucesso.");
-        this.router.navigate(["/"]);
+        this.router.navigate(["prepedido/detalhes/" + this.novoPrepedidoDadosService.prePedidoDto.NumeroPrePedido]);
       },
       error: (r) => this.alertaService.mostrarErroInternet()
     });
@@ -81,29 +80,29 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
   public EntregaImediata: boolean;
   public BemDeUso_Consumo: boolean;
   public InstaladorInstala: boolean;
-  public GarantiaIndicador: boolean;
+  // public GarantiaIndicador: boolean;
   dadosDoModelo() {
 
     debugger;
-    this.EntregaImediata = false;
-    if (this.prePedidoDto.DetalhesPrepedido.EntregaImediata != "NÃO" &&
-      this.prePedidoDto.DetalhesPrepedido.EntregaImediata !== undefined) {
+    // this.EntregaImediata = false;
+    if (this.prePedidoDto.DetalhesPrepedido.EntregaImediata != "NÃO" ||
+      this.prePedidoDto.DetalhesPrepedido.EntregaImediata == undefined) {
       this.EntregaImediata = true;
     }
-    this.BemDeUso_Consumo = false;
-    if (this.prePedidoDto.DetalhesPrepedido.BemDeUso_Consumo != "NÃO" && 
-    this.prePedidoDto.DetalhesPrepedido.BemDeUso_Consumo !== undefined) {
+    // this.BemDeUso_Consumo = false;
+    if (this.prePedidoDto.DetalhesPrepedido.BemDeUso_Consumo != "NÃO" || 
+    this.prePedidoDto.DetalhesPrepedido.BemDeUso_Consumo == undefined) {
       this.BemDeUso_Consumo = true;
     }
-    this.InstaladorInstala = false;
-    if (this.prePedidoDto.DetalhesPrepedido.InstaladorInstala != "NÃO" && 
-    this.prePedidoDto.DetalhesPrepedido.InstaladorInstala !== undefined) {
+    // this.InstaladorInstala = false;
+    if (this.prePedidoDto.DetalhesPrepedido.InstaladorInstala != "NÃO" || 
+    this.prePedidoDto.DetalhesPrepedido.InstaladorInstala == undefined) {
       this.InstaladorInstala = true;
     }
-    this.GarantiaIndicador = false;
-    if (!!this.prePedidoDto.DetalhesPrepedido.GarantiaIndicador && this.prePedidoDto.DetalhesPrepedido.GarantiaIndicador == "SIM") {
-      this.GarantiaIndicador = true;
-    }
+    // this.GarantiaIndicador = false;
+    // if (!!this.prePedidoDto.DetalhesPrepedido.GarantiaIndicador && this.prePedidoDto.DetalhesPrepedido.GarantiaIndicador == "SIM") {
+    //   this.GarantiaIndicador = true;
+    // }
   }
   dadosParaModelo() {
     this.prePedidoDto.DetalhesPrepedido.EntregaImediata = this.constantes.COD_ETG_IMEDIATA_NAO.toString();
@@ -121,10 +120,10 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
       this.prePedidoDto.DetalhesPrepedido.InstaladorInstala = this.constantes.COD_INSTALADOR_INSTALA_SIM.toString();
     }
 
-    this.prePedidoDto.DetalhesPrepedido.GarantiaIndicador = this.constantes.COD_GARANTIA_INDICADOR_STATUS__NAO.toString();
-    if (this.GarantiaIndicador) {
-      this.prePedidoDto.DetalhesPrepedido.GarantiaIndicador = this.constantes.COD_GARANTIA_INDICADOR_STATUS__SIM.toString();
-    }
+    // this.prePedidoDto.DetalhesPrepedido.GarantiaIndicador = this.constantes.COD_GARANTIA_INDICADOR_STATUS__NAO.toString();
+    // if (this.GarantiaIndicador) {
+    //   this.prePedidoDto.DetalhesPrepedido.GarantiaIndicador = this.constantes.COD_GARANTIA_INDICADOR_STATUS__SIM.toString();
+    // }
   }
 
 

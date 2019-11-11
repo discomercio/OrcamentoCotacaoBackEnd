@@ -6,6 +6,7 @@ import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
 import { CepDto } from 'src/app/dto/Cep/CepDto';
 import { CepService } from 'src/app/servicos/cep/cep.service';
 import { FormatarEndereco } from 'src/app/utils/formatarEndereco';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-cep-dialog',
@@ -16,6 +17,7 @@ export class CepDialogComponent extends TelaDesktopBaseComponent implements OnIn
 
   formatarEndereco: FormatarEndereco = new FormatarEndereco();
   carregando: boolean = false;
+  // optionsCepLocalidades$ : Observable<string[]>;
 
   constructor(
     public readonly cepService: CepService,
@@ -55,36 +57,79 @@ export class CepDialogComponent extends TelaDesktopBaseComponent implements OnIn
           this.lstUf = r;
         }
         else {
-          this.alertaService.mostrarMensagem("Erro ao carregar a lista de Estados")
+          this.alertaService.mostrarMensagem("Erro ao carregar a lista de Estados!")
         }
       },
       error: (r: string) => this.alertaService.mostrarErroInternet()
     });
   }
 
-  buscarCepPorEndereco() {
+  public lstCidades: string[] = [];
 
-    if (!this.endereco && !this.localidade) {
-      this.alertaService.mostrarMensagem("Favor digitar o endereco ou a localidade!");
+  buscarLocalidades(): void {
+    debugger;
+    this.lstCidades = new Array();
+    if (!this.uf) {
+      this.alertaService.mostrarMensagem("Favor selecionar um Estado!");
     }
     else {
       this.carregando = true;
-      //afazer: verificar a possibilidade de fazer a busca apenas por estado
-      return this.cepService.buscarCepPorEndereco(this.endereco, this.localidade, this.uf).subscribe({
-        next: (r: CepDto[]) => {
-          this.carregando = false;
+      this.cepService.BuscarLocalidades(this.uf).subscribe({
+        next: (r: string[]) => {
           if (!!r) {
-            this.lstEnderecos = r;
+            this.carregando = false;
+            this.lstCidades = r;
           }
           else {
-            this.alertaService.mostrarMensagem("Erro ao carregar a lista de Endereços!")
+            this.alertaService.mostrarMensagem("Erro ao carregar a lista de Cidades!")
           }
         },
-        error: (r: CepDto[]) => {
+        error: (r: string) => {
           this.carregando = false;
           this.alertaService.mostrarErroInternet();
         }
       });
+    }
+  }
+
+  buscarCepPorEndereco() {
+
+    // if (!this.endereco && !this.localidade) {
+    //   this.alertaService.mostrarMensagem("Favor digitar o endereco ou a localidade!");
+    // }
+    if (!this.uf) {
+      this.alertaService.mostrarMensagem("Favor selecionar um Estado!");
+    }
+    else if (this.uf && !this.localidade) {
+      this.alertaService.mostrarMensagem("Favor digitar uma localidade!");
+    }
+    else {
+      
+      this.carregando = true;
+      for (let i = 0; i < this.lstCidades.length; i++) {
+        if (this.localidade == this.lstCidades[i]) {
+          //afazer: verificar a possibilidade de fazer a busca apenas por estado
+          return this.cepService.buscarCepPorEndereco(this.endereco, this.localidade, this.uf).subscribe({
+            next: (r: CepDto[]) => {
+              this.carregando = false;
+              if (!!r) {
+                this.lstEnderecos = r;
+              }
+              else {
+                this.alertaService.mostrarMensagem("Erro ao carregar a lista de Endereços!")
+              }
+            },
+            error: (r: CepDto[]) => {
+              this.carregando = false;
+              this.alertaService.mostrarErroInternet();
+            }
+          });
+        }
+      }
+      if(this.carregando){
+        this.carregando = false;
+        this.alertaService.mostrarMensagem("Favor selecionar uma Localidade na lista!");
+      }
     }
   }
 

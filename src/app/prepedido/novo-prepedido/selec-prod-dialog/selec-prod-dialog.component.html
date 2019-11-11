@@ -6,14 +6,27 @@
         <!-- [ngClass]="{'carregando': carregando && digitado !== ''}" -->
         <article mat-dialog-content class="fixo">
             <!-- este fica ruim: div style="display: flex; " [ngStyle]="{'flex-direction':telaDesktop?'row':'column'}" -->
-            <div style="display: flex; flex-direction: row; ">
+
+            <div *ngIf="telaDesktop" style="display: flex; flex-direction: row; ">
                 <mat-form-field style="flex-grow: 1; flex-shrink: 1;">
                     <input matInput type="text" name="buscaproduto" placeholder="Produto (código ou descrição)"
                         value="{{this.selecProdInfoPassado.Produto}}" (change)="digitouProd($event)"
                         (keyup)="digitouProd($event)" [autofocus]="true" #digitadocx>
                 </mat-form-field>
 
-                <mat-form-field style="flex-grow: 0; flex-shrink: 0; width: 18ch;">
+                <mat-form-field style="flex-grow: 0; flex-shrink: 0; ">
+                    <input matInput type="number" name="qtde" placeholder="Quantidade" required [(ngModel)]="qtde"
+                        [value]="qtde" [ngModelOptions]="{standalone: true}">
+                </mat-form-field>
+            </div>
+            <div *ngIf="!telaDesktop">
+                <mat-form-field>
+                    <input matInput type="text" name="buscaproduto" placeholder="Produto (código ou descrição)"
+                        value="{{this.selecProdInfoPassado.Produto}}" (change)="digitouProd($event)"
+                        (keyup)="digitouProd($event)" [autofocus]="true" #digitadocx>
+                </mat-form-field>
+
+                <mat-form-field>
                     <input matInput type="number" name="qtde" placeholder="Quantidade" required [(ngModel)]="qtde"
                         [value]="qtde" [ngModelOptions]="{standalone: true}">
                 </mat-form-field>
@@ -94,13 +107,21 @@
 
 
         </article>
-        <footer mat-dialog-actions style="justify-content: space-around;">            
+        <footer *ngIf="telaDesktop" mat-dialog-actions style="justify-content: space-around;">
             <button mat-raised-button (click)="onNoClick()" cdkFocusInitial color="accent">Cancelar</button>
             <button mat-raised-button (click)="onAdicionarClick()" color="accent">
                 <ng-template *ngIf="selecProdInfoPassado.Produto; then modificarBlock else adicionarBlock">
                 </ng-template>
                 <ng-template #modificarBlock>Modificar</ng-template>
                 <ng-template #adicionarBlock>Adicionar</ng-template>
+            </button>
+        </footer>
+        <footer *ngIf="!telaDesktop" mat-dialog-actions>
+            <button mat-raised-button (click)="onNoClick()" style="width: 10%;">
+                <mat-icon>highlight_off</mat-icon>
+            </button>
+            <button mat-raised-button (click)="onAdicionarClick()" style="width: 10%">
+                <mat-icon>add</mat-icon>
             </button>
         </footer>
     </form>
