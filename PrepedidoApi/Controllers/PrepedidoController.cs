@@ -183,6 +183,19 @@ namespace PrepedidoApi.Controllers
 
             return Ok(ret);
         }
+
+#if DEBUG
+        [AllowAnonymous]
+#endif
+        [HttpGet("buscarQtdeParcCartaoVisa")]
+        public async Task<IActionResult> BuscarQtdeParcCartaoVisa()
+        {
+            string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
+
+            var ret = await formaPagtoBll.BuscarQtdeParcCartaoVisa();
+
+            return Ok(ret);
+        }
     }
 }
 

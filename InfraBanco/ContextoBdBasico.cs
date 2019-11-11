@@ -89,5 +89,6 @@ namespace InfraBanco
         public DbSet<TalertaProduto> TalertaProdutos { get; set; }
         public DbSet<TformaPagto> TformaPagtos { get; set; }
         public DbSet<TorcamentistaEIndicadorRestricaoFormaPagto> torcamentistaEIndicadorRestricaoFormaPagtos { get; set; }
+        public DbSet<TprazoPagtoVisanet> TprazoPagtoVisanets { get; set; }
     }
 }

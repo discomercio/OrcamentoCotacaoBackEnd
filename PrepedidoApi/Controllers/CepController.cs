@@ -61,5 +61,18 @@ namespace PrepedidoApi.Controllers
 
             return Ok(ret);
         }
+
+#if DEBUG
+        [AllowAnonymous]
+#endif
+        [HttpGet("buscarLocalidades")]
+        public async Task<ActionResult> BuscarLocalidades(string uf)
+        {
+            //para testar: http://localhost:60877/api/cep/buscarCidades
+
+            var ret = await cepBll.BuscarLocalidades(uf);
+
+            return Ok(ret);
+        }
     }
 }

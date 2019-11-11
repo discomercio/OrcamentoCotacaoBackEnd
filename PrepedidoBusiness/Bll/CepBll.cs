@@ -143,6 +143,19 @@ namespace PrepedidoBusiness.Bll
             return lstUf;
         }
 
+        public async Task<IEnumerable<string>> BuscarLocalidades(string uf)
+        {
+            var db = contextoCepProvider.GetContextoLeitura();
+
+            var lstLocalidadesTask = from c in db.LogLocalidades
+                                     where c.Ufe_sg == uf
+                                     select c.Loc_nosub;
+
+            var lstLocalidades = await lstLocalidadesTask.ToListAsync();
+
+            return lstLocalidades;
+        }
+
         //afazer: fazer a busca por estados para retornar uma lista de CepDto
         //obs: fazendo a busca apenas por estado esta retornando muitos registros melhor rever os 
         public async Task<IEnumerable<CepDto>> BuscarCepPorEndereco(string endereco, string cidade, string uf)
@@ -168,6 +181,7 @@ namespace PrepedidoBusiness.Bll
                     paramLike.ParameterName = "@logradouroLike";
 
                     command.Parameters.Add(paramLike);
+
 
                     if (!string.IsNullOrWhiteSpace(uf))
                     {

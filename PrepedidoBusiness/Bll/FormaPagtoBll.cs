@@ -233,5 +233,19 @@ namespace PrepedidoBusiness.Bll
 
             return formaPagto;
         }
+
+        //Foi solicitado que a qtde de parcelas máxima permitida 
+        //seria baseada na qtde parcelas permitida pelo cartão Visa(PRAZO_LOJA)
+        public async Task<int> BuscarQtdeParcCartaoVisa()
+        {
+            var db = contextoProvider.GetContextoLeitura();
+
+            var qtdeTask = from c in db.TprazoPagtoVisanets
+                           where c.Tipo == Constantes.COD_VISANET_PRAZO_PAGTO_LOJA
+                           select c.Qtde_parcelas;
+            int qtde = Convert.ToInt32(await qtdeTask.FirstOrDefaultAsync());
+
+            return qtde;
+        }
     }
 }
