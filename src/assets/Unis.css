@@ -1,0 +1,20 @@
+.mat-raised-button,.mat-mini-fab {
+    background: #2e3192 !important;
+}
+  
+.mat-radio-inner-circle{
+    background:#2e3192 !important;
+}
+  
+.mat-radio-outer-circle{
+    border-color: #2e3192 !important;
+}
+
+.mat-slide-toggle-thumb
+{
+  background-color: #2e3192 !important;
+}
+
+.mat-slide-toggle.mat-checked .mat-slide-toggle-bar{
+  background-color: #2e3192 !important;
+}

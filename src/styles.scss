@@ -46,6 +46,39 @@ $nossapaletateal: (
   )
 );
 
+// $nossapaletateal: (
+//   50: #FBE9E7,
+//   100: #FFCCBC,
+//   200: #FFAB91,
+//   300: #FF8A65,
+//   400: #FF7043,
+//   500: #FF5722,
+//   600: #F4511E,
+//   700: #E64A19,
+//   800: #D84315,
+//   900: #BF360C,
+//   A100: #FF9E80,
+//   A200: #FF6E40,
+//   A400: #FF3D00,
+//   A700: #DD2C00,
+//   contrast: (
+//     50: black,
+//     100: black,
+//     200: black,
+//     300: black,
+//     400: black,
+//     500: black,
+//     600: black,
+//     700: black,
+//     800: black,
+//     900: black,
+//     A100: black,
+//     A200: black,
+//     A400: black,
+//     A700: black
+//   )
+// );
+
 /*
 a verde:
 
@@ -74,14 +107,21 @@ a verde:
 // hue. Available color palettes: https://material.io/design/color/
 //$candy-app-accent:  mat-palette($mat-pink, A200, A100, A400);
 $candy-app-primary: mat-palette($mat-gray);
-$candy-app-accent: mat-palette($mat-green, A400, A100, A200);
+// $candy-app-accent: mat-palette($mat-green, A400, A100, A200);
 //$candy-app-accent: mat-palette($nossapaletateal, A400, A100, A200);
 
 // The warn palette is optional (defaults to red).
 $candy-app-warn: mat-palette($mat-red);
 
+//gabriel
+
+$candy-app-accent: mat-palette($mat-green, A400,A200);
+//fim
+
 // Create the theme object (a Sass map containing all of the palettes).
 $candy-app-theme: mat-light-theme($candy-app-primary, $candy-app-accent, $candy-app-warn);
+
+
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
@@ -172,30 +212,30 @@ body {
 .mat-checkbox-background {
   background: #464646 !important;
 }
-.mat-raised-button,.mat-mini-fab {
-  background: #f58635 !important;
-}
+// .mat-raised-button,.mat-mini-fab {
+//   background: #009688;
+// }
 
-.mat-radio-inner-circle{
-  background:#f58635 !important;
-}
+// .mat-radio-inner-circle{
+//   background:#f58635 !important;
+// }
 
-.mat-radio-outer-circle{
-  border-color: #f58635 !important;
-}
+// .mat-radio-outer-circle{
+//   border-color: #f58635 !important;
+// }
 
 .icone-lixeira, .mat-column-Remover{
   color: #ed1b24 !important;
 }
 
-.mat-slide-toggle-thumb
-{
-  background-color: #f58635 !important;
-}
+// .mat-slide-toggle-thumb
+// {
+//   background-color: #f58635 !important;
+// }
 
-.mat-slide-toggle.mat-checked .mat-slide-toggle-bar{
-  background-color: #f58635b8 !important;
-}
+// .mat-slide-toggle.mat-checked .mat-slide-toggle-bar{
+//   background-color: #f58635b8 !important;
+// }
 
 
 

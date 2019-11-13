@@ -18,6 +18,7 @@ npm i jwt-decode --save
 export class AutenticacaoService {
 
   constructor(private readonly http: HttpClient, private readonly location: Location) {
+    this.carregarLayout();
   }
 
   salvar: boolean = false;
@@ -33,6 +34,7 @@ export class AutenticacaoService {
   }
 
   public authLogout(): void {
+    debugger;
     this.http.get(environment.apiUrl + 'acesso/fazerLogout').subscribe(
       e => {
         //nao fazemos nada..
@@ -40,6 +42,7 @@ export class AutenticacaoService {
     );
     sessionStorage.setItem('token', "");
     localStorage.setItem('token', "");
+    this.carregarLayout();
   }
 
   public setarToken(token: string): void {
@@ -47,6 +50,8 @@ export class AutenticacaoService {
       localStorage.setItem("token", token);
     else
       sessionStorage.setItem("token", token);
+
+    this.carregarLayout();
   }
 
   public obterToken(): string {
@@ -114,6 +119,51 @@ export class AutenticacaoService {
       }
     );
   }
+  //Gabriel criar metodo para carregar o css
+  public arquivoLogo(): string {
+    return this._logo;
+  }
+  public arquivoEstilos(): string {
+    return this._estilo;
+  }
+  private _estilo: string = null;
+  private _logo: string = null;
+  private carregarLayout(): void {
+    //tentamos obter a loja do token. se nao tiver, fica com null
+    let loja: string = null;
+    if (this.authEstaLogado()) {
+      const token = this.obterToken();
+      const user = jtw_decode(token);
+      loja = (user && user.family_name) ? user.family_name : null;
+    }
+
+    //define o estilo e o logo baseado na loja
+    if (loja == null) {
+      this._estilo = "";
+      //passar o logo tb
+      // this._logo = "../assets/log_unis.png"
+      return;
+    }
+    if (loja == "205" ||
+      loja == "206" ||
+      loja == "207" ||
+      loja == "208") {
+      this._estilo = "../assets/Unis.css";
+      //passar o logo tb
+      this._logo = "../assets/LogoUnis.png"
+    }
+    if(loja == "202" ||
+       loja == "203" || 
+       loja == "204") {
+      this._estilo = "../assets/shopVendas.css";
+      //passar o logo tb
+      this._logo = "../assets/Logo-ShopVendas.png";
+    }
+
+  }
+  //fim
+
+
   /*
   nao queremos expor este desnecessaruiamente
   na API, devemos usar o ID de usuário do token e não como um parametro extra

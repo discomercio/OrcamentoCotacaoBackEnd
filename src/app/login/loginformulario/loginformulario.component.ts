@@ -5,6 +5,7 @@ import { AutenticacaoService } from '../../../../src/app/servicos/autenticacao/a
 import { Router } from '@angular/router';
 import { environment } from '../../../../src/environments/environment';
 import { MatSnackBar } from '@angular/material';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-login',
@@ -13,14 +14,17 @@ import { MatSnackBar } from '@angular/material';
 })
 export class LoginformularioComponent extends TelaDesktopBaseComponent implements OnInit {
 
+
   constructor(telaDesktopService: TelaDesktopService,
     private readonly autenticacaoService: AutenticacaoService,
     private readonly _snackBar: MatSnackBar,
-    private readonly router: Router) {
+    private readonly router: Router,
+    private readonly appComponent:AppComponent) {
     super(telaDesktopService);
   }
 
   fazendoLogin: boolean = false;
+ 
 
   usuario = "";
   senha = "";
@@ -38,6 +42,8 @@ export class LoginformularioComponent extends TelaDesktopBaseComponent implement
         next:(e)=> {
           this.fazendoLogin = false;
           this.autenticacaoService.setarToken(e);
+          this.appComponent.loadStyle(this.autenticacaoService.arquivoEstilos());
+          // document.location.reload();
           this.router.navigate(['/']);
         }
         ,

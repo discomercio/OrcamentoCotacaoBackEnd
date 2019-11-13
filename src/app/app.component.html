@@ -1,3 +1,4 @@
+
 <div *ngIf="!impressaoService.emImpressao() && !impressaoService.forcarImpressao"
   style="display: flex; flex-direction: row; justify-content: center; height: 100vh; width: 100vw">
   <div style="display: flex; flex-direction: column; justify-content: center; height: 100vh; ">
@@ -9,13 +10,12 @@
           </button>
         </span>
         <div class="limiteclicavel larguramaxima">
-          <img src="../assets/logo_shopVendas.png" height="30" style="padding-top: 10px; padding-left: 10px;" />
+          <img src="../assets/LogoUnis.png" height="30" style="padding-top: 10px; padding-left: 10px;" />
           <!-- <div style="float:none; text-align:center; color: black; vertical-align: center; display: inline;"
               [fxHide]="1" [fxShow.gt-sm]="1">
               &nbsp;&nbsp;&nbsp;
               CENTRAL DE PEDIDOS
             </div> -->
-
         </div>
         <span style="float: right; font-size: 0.7em" *ngIf="autenticacaoService.authEstaLogado() && telaDesktop">
           Olá {{autenticacaoService.authNomeUsuario}}
