@@ -34,7 +34,6 @@ export class AutenticacaoService {
   }
 
   public authLogout(): void {
-    debugger;
     this.http.get(environment.apiUrl + 'acesso/fazerLogout').subscribe(
       e => {
         //nao fazemos nada..
@@ -139,7 +138,7 @@ export class AutenticacaoService {
 
     //define o estilo e o logo baseado na loja
     if (loja == null) {
-      this._estilo = "";
+      this._estilo = "assets/login.css";
       //passar o logo tb
       // this._logo = "../assets/log_unis.png"
       return;
@@ -148,16 +147,16 @@ export class AutenticacaoService {
       loja == "206" ||
       loja == "207" ||
       loja == "208") {
-      this._estilo = "../assets/Unis.css";
+      this._estilo = "assets/Unis.css";
       //passar o logo tb
-      this._logo = "../assets/LogoUnis.png"
+      this._logo = "assets/LogoUnis.png"
     }
-    if(loja == "202" ||
-       loja == "203" || 
-       loja == "204") {
-      this._estilo = "../assets/shopVendas.css";
+    if (loja == "202" ||
+      loja == "203" ||
+      loja == "204") {
+      this._estilo = "assets/shopVendas.css";
       //passar o logo tb
-      this._logo = "../assets/Logo-ShopVendas.png";
+      this._logo = "assets/Logo-ShopVendas.png";
     }
 
   }

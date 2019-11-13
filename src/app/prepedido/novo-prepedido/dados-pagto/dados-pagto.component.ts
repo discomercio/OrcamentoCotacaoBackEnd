@@ -261,7 +261,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
         }
       }
       if (this.enumFormaPagto == 3) {
-        debugger;
+        //debugger;
         if (this.vlEntrada) {
           if (!this.opcaoPagtoParcComEntrada) {
             if (mostrarMsg)
@@ -313,7 +313,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
   }
 
   verificaParcelamento(opcaoPagto: string) {
-    debugger;
+    //debugger;
     if (!!opcaoPagto) {
       // this.qtde = parseInt(opcaoPagto.substring(0, 1));
       this.qtde = parseInt(opcaoPagto.slice(0, 2).trim());
@@ -491,7 +491,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
     let vlTotalPedido = this.prePedidoDto.ListaProdutos.reduce((sum, prod) => sum + prod.TotalItem, 0);
     let cont = 0;
     if (enumFP) {
-      debugger;
+      //debugger;
       for (let i = 0; i < lstCoeficiente.length; i++) {
         if (enumFP.toString() == this.constantes.COD_FORMA_PAGTO_A_VISTA) {
           this.lstMsg.push(lstCoeficiente[i].QtdeParcelas + " X " +
@@ -530,7 +530,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
   public vlEntrada: number;
   moedaUtils = new MoedaUtils();
   calcularParcelaComEntrada() {
-    debugger;
+    //debugger;
     this.lstMsg = new Array();
     this.prePedidoDto = this.novoPrepedidoDadosService.prePedidoDto;
     let lstProdutos = this.prePedidoDto.ListaProdutos;

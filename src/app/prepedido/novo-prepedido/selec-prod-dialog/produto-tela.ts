@@ -47,7 +47,7 @@ export class ProdutoTela {
             // }  
             //alteramos a condição para que apareça apenas quando o código do produto for igual ao digitado
             if (digitado != "" && parseInt(este.produtoDto.Produto) == parseInt(digitado)) {
-                debugger;
+                //debugger;
                 este.visivel = true;
             }           
             else {

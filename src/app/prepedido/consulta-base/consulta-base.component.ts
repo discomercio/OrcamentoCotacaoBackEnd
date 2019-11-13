@@ -81,7 +81,6 @@ export class ConsultaBaseComponent extends TelaDesktopBaseComponent implements O
     }
     else {
       //nenhuma busca, ligamos os dois
-      debugger;
       if (!this.pedidoListarService.paramsBuscaPedido.tipoBuscaEmAndamento && !this.pedidoListarService.paramsBuscaPedido.tipoBuscaEncerrado) {
         this.pedidoListarService.paramsBuscaPedido.tipoBuscaEmAndamento = true;
         this.pedidoListarService.paramsBuscaPedido.tipoBuscaEncerrado = true;

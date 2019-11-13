@@ -67,7 +67,6 @@ export class CepDialogComponent extends TelaDesktopBaseComponent implements OnIn
   public lstCidades: string[] = [];
 
   buscarLocalidades(): void {
-    debugger;
     this.lstCidades = new Array();
     if (!this.uf) {
       this.alertaService.mostrarMensagem("Favor selecionar um Estado!");

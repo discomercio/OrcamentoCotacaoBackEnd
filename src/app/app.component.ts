@@ -16,8 +16,7 @@ export class AppComponent implements OnInit {
   constructor(private readonly telaDesktopService: TelaDesktopService,
     public readonly autenticacaoService: AutenticacaoService,
     public readonly impressaoService: ImpressaoService,
-    private readonly router: Router,
-    @Inject(DOCUMENT) private document: Document) {
+    private readonly router: Router) {
     telaDesktopService.telaAtual$.subscribe(r => this.telaDesktop = r);
 
   }
@@ -25,14 +24,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // this.loadStyle(this.autenticacaoService.arquivoEstilos());
+    this.carregarEstilo(false);
 
     this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
-
-        this.loadStyle(this.autenticacaoService.arquivoEstilos());
-        //recarrega o estilo sempre que navegou
-
         /*
         se estava em celular e foi para desktop, a rota 
         /prepedido/lista
@@ -51,31 +46,39 @@ export class AppComponent implements OnInit {
     });
   }
 
-  public loadStyle(styleName: string):void {
-    const head = this.document.getElementsByTagName('head')[0];
+  //carrega o estilo conforme o cliente. se for o caso, espera carregar para ir para a home
+  //chamado do LoginformularioComponent
+  public carregarEstilo(fazendoLogin: boolean): void {
+    const head = document.getElementsByTagName('head')[0];
 
-    let themeLink = this.document.getElementById(
-      'client-theme'
+    //se já tiver o estilo nomeado, remove ele
+    let estiloAtual = document.getElementById(
+      'estiloCliente'
     ) as HTMLLinkElement;
-    if (themeLink) {
-      themeLink.href = styleName;
-    } else {
-      const style = this.document.createElement('link');
-      style.id = 'client-theme';
-      style.rel = 'stylesheet';
-      style.href = styleName;
-      
-      head.appendChild(style);
+    if (estiloAtual) {
+      estiloAtual.parentNode.removeChild(estiloAtual);
     }
+
+    //cria de novo
+    const style = document.createElement('link');
+    style.id = 'estiloCliente';
+    style.rel = 'stylesheet';
+    style.href = this.autenticacaoService.arquivoEstilos();
+    if (fazendoLogin) {
+      //se estiver fazenod o login, ao terminar de carregar vamos para a home
+      style.onload = () => {
+        this.router.navigate(['/']);
+      };
+    }
+
+    head.appendChild(style);
   }
 
-
-
   logout() {
-    
+
     //fazer a mudança de estilos
     this.autenticacaoService.authLogout();
-    // this.loadStyle(this.autenticacaoService.arquivoEstilos());
+    this.carregarEstilo(false);
     this.router.navigateByUrl("/login");
   }
 

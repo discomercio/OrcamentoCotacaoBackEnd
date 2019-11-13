@@ -75,7 +75,6 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
   }
 
   inscrever(): void {
-    debugger;
     if (this.emPrepedidos) {
 
       this.prepedidos$ = this.prepedidoListarService.prepedidos$;

@@ -19,35 +19,36 @@ export class LoginformularioComponent extends TelaDesktopBaseComponent implement
     private readonly autenticacaoService: AutenticacaoService,
     private readonly _snackBar: MatSnackBar,
     private readonly router: Router,
-    private readonly appComponent:AppComponent) {
+    private readonly appComponent: AppComponent) {
     super(telaDesktopService);
   }
 
   fazendoLogin: boolean = false;
- 
+
 
   usuario = "";
   senha = "";
   lembrar = !environment.autenticaStorageSession;
 
   ngOnInit() {
-    if(this.autenticacaoService.authEstaLogado()){
+    if (this.autenticacaoService.authEstaLogado()) {
       this.router.navigateByUrl('/');
     }
   }
   login() {
+    //document.getElementById("estilos").setAttribute('href', "assets/Unis.css");
     this.fazendoLogin = true;
     this.autenticacaoService.authLogin(this.usuario, this.senha, this.lembrar).subscribe(
       {
-        next:(e)=> {
-          this.fazendoLogin = false;
+        next: (e) => {
+          //nunca desligamos o fazendo login porque, quando fizer, já vai para outra página, então nao fazemos this.fazendoLogin = false;
           this.autenticacaoService.setarToken(e);
-          this.appComponent.loadStyle(this.autenticacaoService.arquivoEstilos());
-          // document.location.reload();
-          this.router.navigate(['/']);
+
+          //o carregarEstilo já navega para a home
+          this.appComponent.carregarEstilo(true);
         }
         ,
-        error:(e)=> {
+        error: (e) => {
           this.fazendoLogin = false;
           let msg = "" + ((e && e.message) ? e.message : e.toString());
           if (e && e.status === 400)
