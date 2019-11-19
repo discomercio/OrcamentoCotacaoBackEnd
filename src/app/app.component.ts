@@ -21,9 +21,11 @@ export class AppComponent implements OnInit {
 
   }
 
+  public logo:string = null;
+  
 
   ngOnInit(): void {
-
+    
     this.carregarEstilo(false);
 
     this.router.events.subscribe(event => {
@@ -49,6 +51,8 @@ export class AppComponent implements OnInit {
   //carrega o estilo conforme o cliente. se for o caso, espera carregar para ir para a home
   //chamado do LoginformularioComponent
   public carregarEstilo(fazendoLogin: boolean): void {
+    
+
     const head = document.getElementsByTagName('head')[0];
 
     //se já tiver o estilo nomeado, remove ele
@@ -64,9 +68,12 @@ export class AppComponent implements OnInit {
     style.id = 'estiloCliente';
     style.rel = 'stylesheet';
     style.href = this.autenticacaoService.arquivoEstilos();
+    
+    this.logo = this.autenticacaoService.arquivoLogo(); 
     if (fazendoLogin) {
       //se estiver fazenod o login, ao terminar de carregar vamos para a home
-      style.onload = () => {
+      
+      style.onload = () => {        
         this.router.navigate(['/']);
       };
     }
@@ -75,11 +82,12 @@ export class AppComponent implements OnInit {
   }
 
   logout() {
-
+    // this.logo = null;
     //fazer a mudança de estilos
     this.autenticacaoService.authLogout();
     this.carregarEstilo(false);
     this.router.navigateByUrl("/login");
+    
   }
 
   title = 'Sistema de pré-pedidos';

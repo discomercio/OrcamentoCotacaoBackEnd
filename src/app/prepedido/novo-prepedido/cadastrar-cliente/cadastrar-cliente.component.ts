@@ -92,7 +92,6 @@ export class CadastrarClienteComponent extends TelaDesktopBaseComponent implemen
 
   //carregamos os dados que passaram pelo Router
   //ou somente o número do CPF/CNPJ
-  //afazer gabriel: necessário fazer uma verificação antes para saber se o cliente já existe
   ngOnInit() {
     //lemos o único dado que é fixo
     const cpfCnpj = this.activatedRoute.snapshot.params.cpfCnpj;

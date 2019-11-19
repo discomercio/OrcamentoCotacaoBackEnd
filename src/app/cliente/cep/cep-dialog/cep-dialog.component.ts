@@ -32,12 +32,10 @@ export class CepDialogComponent extends TelaDesktopBaseComponent implements OnIn
   }
 
   onNoClick(): void {
-    //afazer: avisar que clicou em cancelar this.selecProdInfoPassado.ClicouOk = false;
     this.dialogRef.close(false);
   }
 
   onOkClick(): void {
-    //afazer: avisar que clicou em cancelar this.selecProdInfoPassado.ClicouOk = false;
     this.dialogRef.close(true);
   }
 
@@ -107,7 +105,6 @@ export class CepDialogComponent extends TelaDesktopBaseComponent implements OnIn
       this.carregando = true;
       for (let i = 0; i < this.lstCidades.length; i++) {
         if (this.localidade == this.lstCidades[i]) {
-          //afazer: verificar a possibilidade de fazer a busca apenas por estado
           return this.cepService.buscarCepPorEndereco(this.endereco, this.localidade, this.uf).subscribe({
             next: (r: CepDto[]) => {
               this.carregando = false;

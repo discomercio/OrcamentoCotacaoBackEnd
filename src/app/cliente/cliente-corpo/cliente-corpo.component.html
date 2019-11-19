@@ -543,10 +543,6 @@ para não dar erro no console
                                 </mat-select>
                             </mat-form-field>
 
-
-                            <!-- afazer: valçidar digitação:
-                        if (((letra<"0")||(letra>"9"))&&((letra<"A")||(letra>"Z"))&&(letra!=".")&&(letra!="-")&&(letra!="/")) window.event.keyCode=0;
-                        para agencia e conta -->
                             <mat-form-field floatLabel="floatLabel()" style="width: 12ch;">
                                 <input [(ngModel)]="ref.Agencia" type="text" matInput placeholder="AGÊNCIA" required
                                     maxlength="8" size="12" />

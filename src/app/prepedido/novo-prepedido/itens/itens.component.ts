@@ -138,7 +138,6 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
       next: (r: ProdutoComboDto) => {
         if (!!r) {
           this.produtoComboDto = r;
-          //afazer: por enquanto, removendo quem nao tem preco....
           this.produtoComboDto.ProdutoDto = this.produtoComboDto.ProdutoDto.filter(el => el.Preco_lista && el.Preco_lista != 0);
           this.carregandoProds = false;
           if (this.clicouAddProd)
@@ -248,15 +247,12 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
   digitouQte(i: PrepedidoProdutoDtoPrepedido) {
     //necessário trazer e verificar a variavel "qtde_max_permitida" na tabela "T_produto_loja" 
     //para limitar a qtde de compra para o usuário
-    //afazer:verificar a qtde maxima permitida para venda
-    //não deixa números negativos
+    
     if (i.Qtde <= 0) {
       i.Qtde = 1;
     }
     i.TotalItem = i.VlUnitario * i.Qtde; // VlUnitario = Vl Venda na tela
-    //this.qtdeVendaPermitida(i);
     this.dadosPagto.prepedidoAlterado();
-    // this.qtdeVendaPermitida(i);
 
   }
   digitouPreco(e: Event, i: PrepedidoProdutoDtoPrepedido) {

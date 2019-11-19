@@ -53,7 +53,6 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
     this.verificarEmProcesso();
     this.buscarFormaPagto();
     this.buscarCoeficiente(null);
-    //afazer: montar a forma de pagamento para deixar carregado as opções 
     this.montaFormaPagtoExistente();
   }
 
@@ -71,8 +70,8 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
 
 
   public podeContinuar(mostrarMsg: boolean): boolean {
-    //afazer: verificar forma de pagto selecionada para incluir no DTO
     if (this.enumFormaPagto == 0) {
+
       //necessário verificar se os dados de pagto estão corretamente preenchido
       if (mostrarMsg) {
         this.alertaService.mostrarMensagem("Favor escolher uma forma de pagamento!");
@@ -89,20 +88,11 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
     return false;
   }
 
-  //Gabriel
-
-
-
-  // public opcaoPagto: string;
-  //afazer: criar uma opção de pagamento para cada modalidade, 
-  // para podermos validar cada modalidade de pagto separadamente
-  //inicio
   public opcaoPagtoAvista: string;
   public opcaoPagtoParcUnica: string;
   public opcaoPagtoParcComEntrada: string;
   public opcaoPagtoParcCartaoInternet: string;
   public opcaoPagtoParcCartaoMaquineta: string;
-  //fim
   public meioPagtoEntrada: number;
   public meioPagtoAVista: number;
   public meioPagtoEntradaPrest: number;
@@ -261,7 +251,6 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
         }
       }
       if (this.enumFormaPagto == 3) {
-        //debugger;
         if (this.vlEntrada) {
           if (!this.opcaoPagtoParcComEntrada) {
             if (mostrarMsg)
@@ -313,7 +302,6 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
   }
 
   verificaParcelamento(opcaoPagto: string) {
-    //debugger;
     if (!!opcaoPagto) {
       // this.qtde = parseInt(opcaoPagto.substring(0, 1));
       this.qtde = parseInt(opcaoPagto.slice(0, 2).trim());
@@ -491,7 +479,6 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
     let vlTotalPedido = this.prePedidoDto.ListaProdutos.reduce((sum, prod) => sum + prod.TotalItem, 0);
     let cont = 0;
     if (enumFP) {
-      //debugger;
       for (let i = 0; i < lstCoeficiente.length; i++) {
         if (enumFP.toString() == this.constantes.COD_FORMA_PAGTO_A_VISTA) {
           this.lstMsg.push(lstCoeficiente[i].QtdeParcelas + " X " +
@@ -530,7 +517,6 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
   public vlEntrada: number;
   moedaUtils = new MoedaUtils();
   calcularParcelaComEntrada() {
-    //debugger;
     this.lstMsg = new Array();
     this.prePedidoDto = this.novoPrepedidoDadosService.prePedidoDto;
     let lstProdutos = this.prePedidoDto.ListaProdutos;

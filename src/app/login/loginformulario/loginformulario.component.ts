@@ -31,6 +31,7 @@ export class LoginformularioComponent extends TelaDesktopBaseComponent implement
   lembrar = !environment.autenticaStorageSession;
 
   ngOnInit() {
+    this.appComponent.logo = null;
     if (this.autenticacaoService.authEstaLogado()) {
       this.router.navigateByUrl('/');
     }
@@ -38,7 +39,7 @@ export class LoginformularioComponent extends TelaDesktopBaseComponent implement
   login() {
     //document.getElementById("estilos").setAttribute('href', "assets/Unis.css");
     this.fazendoLogin = true;
-    this.autenticacaoService.authLogin(this.usuario, this.senha, this.lembrar).subscribe(
+    this.autenticacaoService.authLogin(this.usuario.trim(), this.senha.trim(), this.lembrar).subscribe(
       {
         next: (e) => {
           //nunca desligamos o fazendo login porque, quando fizer, já vai para outra página, então nao fazemos this.fazendoLogin = false;

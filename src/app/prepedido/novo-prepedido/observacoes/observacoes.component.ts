@@ -83,8 +83,6 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
   // public GarantiaIndicador: boolean;
   dadosDoModelo() {
 
-    //debugger;
-    // this.EntregaImediata = false;
     if (this.prePedidoDto.DetalhesPrepedido.EntregaImediata != "NÃO" ||
       this.prePedidoDto.DetalhesPrepedido.EntregaImediata == undefined) {
       this.EntregaImediata = true;

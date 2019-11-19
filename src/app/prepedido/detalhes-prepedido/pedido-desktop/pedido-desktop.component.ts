@@ -33,26 +33,7 @@ export class PedidoDesktopComponent extends TelaDesktopBaseComponent implements 
     super(telaDesktopService);
   }
   ngOnInit() {
-    // if(this.impressaoService.emImpressao())
-    // setTimeout(() => {
-
-    //   window.print();
-    // }, (4000));
-
-    // //agora acessa o dado que vamos mostrar
-    // let numeroPedido = this.activatedRoute.snapshot.params.numeroPedido;
-    // numeroPedido = "127936N";
-    // this.pedidoBuscarService.atualizar(numeroPedido).subscribe({
-    //   next: (r) => {
-    //     if (r == null) {
-    //       return;
-    //     }
-    //     this.pedido = r;
-    //   },
-    //   error: (r) => {//afazer mostrar erro
-    //   }
-    // });
-
+    
   }
 
   //cosntantes
@@ -70,9 +51,9 @@ export class PedidoDesktopComponent extends TelaDesktopBaseComponent implements 
 
   //parar imprimir (quer dizer, para ir para a versão de impressão)
   imprimir(): void {
-   // window.print();
     //versão para impressão somente com o pedido
-    //afazer apagar route de impressao
+    
+    //deixar a rota comentada, pois pode ser que no futuro seja utilizado
     //this.router.navigate(['/pedido/imprimir', this.pedido.NumeroPedido]);
     
      this.impressaoService.forcarImpressao=true;

@@ -36,7 +36,6 @@ export class BuscarClienteService {
   }
 
   public JustificativaEndEntregaComboTemporario(): EnderecoEntregaJustificativaDto[] {
-    //afazer: chamar a API
     //por enquanto, retornamos uma lista fixa
     const ret: EnderecoEntregaJustificativaDto[] = new Array();
     ret.push({ EndEtg_cod_justificativa: "001", EndEtg_descricao_justificativa: "Casa de Veraneio" });

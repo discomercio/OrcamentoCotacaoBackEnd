@@ -5,7 +5,6 @@
 
         <form>
             <div *ngIf="telaDesktop">
-                <!-- afazer: corrigir o tamanho do campos -->
                 <mat-form-field style="width: 5em">
                     <mat-label>UF</mat-label>
                     <mat-select [(ngModel)]="uf" [ngModelOptions]="{standalone: true}">
@@ -17,15 +16,11 @@
                 </mat-form-field>
 
                 <mat-form-field style="width: 30%">
-                    <!-- <input matInput type="text" placeholder="Localidade" [(ngModel)]="localidade"
-                        [ngModelOptions]="{standalone: true}"> -->
-                    <!-- teste -->
                     <input matInput type="text" placeholder="Localidade" [(ngModel)]="localidade" name="buscaLocalidade"
                         list="dlbuscaLocalidade">
                     <datalist id="dlbuscaLocalidade">
                         <option *ngFor="let option of lstCidades" [value]="option">
                     </datalist>
-                    <!-- fim -->
                 </mat-form-field>
                 <mat-form-field style="width: 18em">
                     <input matInput type="text" placeholder="Endereço" [(ngModel)]="endereco"
@@ -37,7 +32,6 @@
                 </button>
             </div>
             <div *ngIf="!telaDesktop" fxLayoutAlign="center center">
-                <!-- afazer: corrigir o tamanho do campos -->
                 <div>
                     <mat-form-field style="width: 98%">
                         <input matInput type="text" placeholder="Endereço" [(ngModel)]="endereco" required
@@ -149,20 +143,16 @@
                 </div>
                 <div style="cursor: pointer; padding-bottom: 1em; text-align: center; display: inline">
                     {{i.Cidade}} |
-                    <!-- <span [innerHTML]="i.Descricao"></span> -->
                 </div>
                 <div style="cursor: pointer; padding-bottom: 1em; text-align: center; display: inline">
                     {{i.Bairro}} |
-                    <!-- <span [innerHTML]="i.Descricao"></span> -->
                 </div>
                 <div style="cursor: pointer; padding-bottom: 1em; text-align: center; display: inline">
                     {{i.Endereco}}
-                    <!-- <span [innerHTML]="i.Descricao"></span> -->
                 </div>
                 <div *ngIf="i.LogradouroComplemento != ''"
                     style="cursor: pointer; padding-bottom: 1em; text-align: center; display: inline">
                     | {{i.LogradouroComplemento}}
-                    <!-- <span [innerHTML]="i.Descricao"></span> -->
                 </div>
             </div>
         </div>

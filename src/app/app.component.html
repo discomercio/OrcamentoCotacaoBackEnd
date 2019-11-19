@@ -1,21 +1,17 @@
-
 <div *ngIf="!impressaoService.emImpressao() && !impressaoService.forcarImpressao"
   style="display: flex; flex-direction: row; justify-content: center; height: 100vh; width: 100vw">
-  <div style="display: flex; flex-direction: column; justify-content: center; height: 100vh; ">
-    <div style="flex-grow: 0; flex-shrink: 0; ">
-      <mat-toolbar class="cabecalho larguramaxima" [routerLink]="['']" title="Home" style="cursor: pointer">
+  <div style="display: flex; flex-direction: column; justify-content: center; height: 100vh;">
+    <!-- pós login -->
+    <div *ngIf="logo != null && logo != ''" style="flex-grow: 0; flex-shrink: 0; ">      
+      <mat-toolbar  class="cabecalho larguramaxima" [routerLink]="['']" title="Home"
+        style="cursor: pointer">
         <span style="float: left; font-size: 0.7em">
           <button class='px-0' type="submit" mat-button style="padding: 0%;" title="Home">
             <mat-icon class="iconelogout">home</mat-icon>
           </button>
         </span>
         <div class="limiteclicavel larguramaxima">
-          <img src="../assets/LogoUnis.png" height="30" style="padding-top: 10px; padding-left: 10px;" />
-          <!-- <div style="float:none; text-align:center; color: black; vertical-align: center; display: inline;"
-              [fxHide]="1" [fxShow.gt-sm]="1">
-              &nbsp;&nbsp;&nbsp;
-              CENTRAL DE PEDIDOS
-            </div> -->
+          <img [src]="logo" height="30" style="padding-top: 10px; padding-left: 10px;" />
         </div>
         <span style="float: right; font-size: 0.7em" *ngIf="autenticacaoService.authEstaLogado() && telaDesktop">
           Olá {{autenticacaoService.authNomeUsuario}}
@@ -23,6 +19,32 @@
         <button class='px-0' type="submit" mat-button style="padding: 0%;" title="Logout" (click)="logout()"
           *ngIf="autenticacaoService.authEstaLogado()">
           <mat-icon class="iconelogout">exit_to_app</mat-icon>
+        </button>
+      </mat-toolbar>
+    </div>
+    <!-- para login -->
+    <div *ngIf="logo == null" style="flex-grow: 0; flex-shrink: 0;">
+      <mat-toolbar class="cabecalho larguramaxima" [routerLink]="['']" title="Home"
+        style="cursor: pointer;background-color: #464646;">
+        <span style="float: left; font-size: 0.7em">
+          <button class='px-0' type="submit" mat-button style="padding: 0%;" title="Home">
+            <mat-icon class="iconelogout" style="color: white">home</mat-icon>
+          </button>
+        </span>
+        <div class="limiteclicavel larguramaxima;">
+          <span style="color: white;font-size:75%;margin-left: -30%;">CENTRAL DE PEDIDOS</span>
+          <!-- <div style="float:none; text-align:center; color: black; vertical-align: center; display: inline;"
+                  [fxHide]="1" [fxShow.gt-sm]="1">
+                  &nbsp;&nbsp;&nbsp;
+                  CENTRAL DE PEDIDOS
+                </div> -->
+        </div>
+        <span style="float: right; font-size: 0.7em" *ngIf="autenticacaoService.authEstaLogado() && telaDesktop">
+          Olá {{autenticacaoService.authNomeUsuario}}
+        </span>
+        <button class='px-0' type="submit" mat-button style="padding: 0%;" title="Logout" (click)="logout()"
+          *ngIf="autenticacaoService.authEstaLogado()">
+          <mat-icon class="iconelogout" style="color: white">exit_to_app</mat-icon>
         </button>
       </mat-toolbar>
     </div>

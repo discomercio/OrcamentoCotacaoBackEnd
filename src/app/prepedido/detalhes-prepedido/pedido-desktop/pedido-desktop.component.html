@@ -29,7 +29,6 @@
                 *ngIf="pedido.StatusHoraPedido.Pedido_Bs_X_Marketplace && pedido.StatusHoraPedido.Pedido_Bs_X_Marketplace != ''">
                 <td valign='bottom' align='right' width='100%' colspan='3' style='padding-top: 4px;padding-bottom:0'>
                     <span class='C' style='font-size:10pt'>
-                        <!-- afazer: campo Status_Bs_X_Marketplace -->
                         {{pedido.StatusHoraPedido.Pedido_Bs_X_Marketplace}}:
                     </span><span class='C' style='font-size:12pt'>
                         {{pedido.StatusHoraPedido.Pedido_Bs_X_Marketplace}}
@@ -78,7 +77,6 @@
 
                 <td valign='bottom' align='center' width='33%'>
                     <span class='STP'>{{pedido.StatusHoraPedido.Pedido_Data}}
-                        <!-- afazer: preciso do campo de hora <span class='HoraPed'>" & formata_hhnnss_para_hh_nn(r_pedido.hora) & "</span> -->
                     </span>
                 </td>
                 <td valign='bottom' align='right' nowrap>
@@ -91,9 +89,6 @@
         <br>
 
         <!--  EXIBE LINKS PARA A FAMÍLIA DE PEDIDOS?   -->
-        <!-- afazer: definir se vamos colocar ou não
-            exibe_familia_pedido(pedido_selecionado, v_pedido) -->
-
 
 
         <!--  L O J A   -->

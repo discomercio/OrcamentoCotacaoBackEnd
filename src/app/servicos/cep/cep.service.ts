@@ -38,6 +38,5 @@ export class CepService {
     params = params.append('localidade', localidade);
     params = params.append('uf', uf);
     return this.http.get<CepDto[]>(environment.apiUrl + 'cep/buscarCepPorEndereco', { params: params });
-    //afazer: verificar a possibilidade de buscar apenas por estado
   }
 }

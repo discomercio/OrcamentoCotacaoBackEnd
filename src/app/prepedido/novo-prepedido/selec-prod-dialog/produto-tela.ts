@@ -47,7 +47,6 @@ export class ProdutoTela {
             // }  
             //alteramos a condição para que apareça apenas quando o código do produto for igual ao digitado
             if (digitado != "" && parseInt(este.produtoDto.Produto) == parseInt(digitado)) {
-                //debugger;
                 este.visivel = true;
             }           
             else {
@@ -63,7 +62,6 @@ export class ProdutoTela {
         if (!fabricante || !produto) {
             return "";
         }
-        //afazer:Gabriel retirar o código do fabricante da
         return fabricante + "/" + fabricante_nome + "/" + produto;
     }
 

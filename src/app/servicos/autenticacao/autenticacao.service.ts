@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Location } from '@angular/common';
 import * as jtw_decode from 'jwt-decode';
 
 import { environment } from '../../../environments/environment'
 import { Observable } from 'rxjs';
+import { SSL_OP_CIPHER_SERVER_PREFERENCE } from 'constants';
 
 /*
 precisa instalar:
@@ -23,14 +24,19 @@ export class AutenticacaoService {
 
   salvar: boolean = false;
   public authLogin(usuario: string, senha: string, salvar: boolean): Observable<any> {
+
+    var key = this.gerarChave();
+    senha = this.CodificaSenha(senha, key);
+
     this.salvar = salvar;
     this._NomeUsuario = null;
 
-    let params = new HttpParams();
-    params = params.append('apelido', usuario);
-    params = params.append('senha', senha);
-
-    return this.http.get(environment.apiUrl + 'acesso/fazerLogin', { params: params, responseType: 'text' });
+    return this.http.post(environment.apiUrl + 'acesso/fazerLogin', { apelido: usuario, senha: senha },
+      {
+        //estamos usando dessa forma, pois não estava aceitando uma "options" com mais de um parametro
+        responseType: 'text',
+        headers: new HttpHeaders({ 'Content-Type': 'application/json', 'responseType': 'text' })
+      });
   }
 
   public authLogout(): void {
@@ -51,6 +57,69 @@ export class AutenticacaoService {
       sessionStorage.setItem("token", token);
 
     this.carregarLayout();
+  }
+
+  public gerarChave() {
+    // gerar chave
+    const fator: number = 1209;
+    const cod_min: number = 35;
+    const cod_max: number = 96;
+    const tamanhoChave: number = 128;
+
+    let chave: string = "";
+
+    for (let i: number = 1; i < tamanhoChave; i++) {
+      let k: number = (cod_max - cod_min) + 1;
+      k *= fator;
+      k = (k * i) + cod_min;
+      k %= 128;
+      chave += String.fromCharCode(k);
+    }
+
+    return chave;
+  }
+
+  public CodificaSenha(origem: string, chave: string): string {
+
+    let i: number = 0;
+    let i_chave: number = 0;
+    let i_dado: number = 0;
+    let s_origem: string = origem;
+    let letra: string = "";
+    let s_destino: string = "";
+
+    if (s_origem.length > 15) {
+      s_origem = s_origem.substr(0, 15);
+    }
+
+    for (i = 0; i < s_origem.length; i++) {
+      letra = chave.substr(i, 1);
+      i_chave = (letra.charCodeAt(0) * 2) + 1;
+      i_dado = s_origem.substr(i, 1).charCodeAt(0) * 2;
+      let contaMod = i_chave ^ i_dado;
+      s_destino += String.fromCharCode(contaMod);
+    }
+
+    s_origem = s_destino;
+    s_destino = "";
+    let destino = "";
+
+    for (i = 0; i < s_origem.length; i++) {
+      letra = s_origem.substr(i, 1);
+      i_chave = letra.charCodeAt(0);
+      let hexNumber = i_chave.toString(16);
+
+      while (hexNumber.length < 2) {
+        hexNumber += "0";
+      }
+      destino += hexNumber;
+    }
+    while (destino.length < 30) {
+      destino = "0" + destino;
+    }
+    s_destino = "0x" + destino.toUpperCase();
+
+    return s_destino;
   }
 
   public obterToken(): string {
