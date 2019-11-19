@@ -63,7 +63,8 @@ namespace PrepedidoApi.Controllers
             var appSettings = appSettingsSection.Get<Utils.Configuracao>();
             string apelido = User.Claims.FirstOrDefault(r => r.Type == ClaimTypes.NameIdentifier).Value.Trim();
             string nome = User.Claims.FirstOrDefault(r => r.Type == ClaimTypes.Name).Value;
-            string token = servicoAutenticacao.RenovarTokenAutenticacao(apelido, nome, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos, Utils.Autenticacao.RoleAcesso);
+            string loja = User.Claims.FirstOrDefault(r => r.Type == ClaimTypes.Surname).Value;
+            string token = servicoAutenticacao.RenovarTokenAutenticacao(apelido, nome, loja, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos, Utils.Autenticacao.RoleAcesso);
 
             if (token == null)
                 return BadRequest(new { message = "Erro no sistema de autenticação. O usuário pode ter sido editando no banco de dados." });
@@ -71,17 +72,19 @@ namespace PrepedidoApi.Controllers
             return Ok(token);
         }
 
+        
+
         //este é o único que permite acesso anônimo
         [AllowAnonymous]
-        [HttpGet("fazerLogin")]
-        public async Task<IActionResult> FazerLogin(string apelido, string senha)
+        [HttpPost("fazerLogin")]
+        public async Task<IActionResult> FazerLogin(PrepedidoBusiness.Dto.Acesso.LoginDto login)
         {
             var appSettingsSection = configuration.GetSection("AppSettings");
             var appSettings = appSettingsSection.Get<Utils.Configuracao>();
-            apelido = apelido.ToUpper().Trim();
-            senha = senha.ToUpper();
+            string apelido = login.Apelido.ToUpper().Trim();
+            string senha = login.Senha.ToUpper().Trim();
             string token = await servicoAutenticacao.ObterTokenAutenticacao(apelido, senha, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos, Utils.Autenticacao.RoleAcesso, new ServicoAutenticacaoProvider(acessoBll));
-            
+
             string ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
             string userAgent = Request.Headers["User-agent"];
 
@@ -93,7 +96,7 @@ namespace PrepedidoApi.Controllers
             return Ok(token);
         }
 
-        [HttpPut("fazerLogout")]
+        [HttpGet("fazerLogout")]
         public async Task<IActionResult> FazerLogout()
         {
             //para testar: http://localhost:60877/api/acesso/fazerLogout

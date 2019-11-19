@@ -44,6 +44,9 @@ namespace InfraBanco
 
             modelBuilder.Entity<TalertaProduto>()
                 .HasKey(x => x.Apelido);
+
+            modelBuilder.Entity<TsessaoHistorico>()
+                .HasKey(x => new { x.Usuario, x.DtHrInicio });
         }
 
         public DbSet<Tcliente> Tclientes { get; set; }

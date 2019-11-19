@@ -30,6 +30,6 @@ namespace InfraBanco.Modelos
         public string Site { get; set; }
 
         [Column("Tabs")]
-        public short? Tabs { get; set; }
+        public byte? Tabs { get; set; }
     }
 }

@@ -28,11 +28,13 @@ namespace PrepedidoApi.Utils
 
 
             var dadosCliente = await acessoBll.ValidarUsuario(apelido, senha);
+            var loja = await acessoBll.BuscarLojaUsuario(apelido);
+
             if (string.IsNullOrEmpty(dadosCliente))
                 return null;
             else
             {               
-                UsuarioLogin usuario = new UsuarioLogin { Apelido = apelido, Nome = dadosCliente.ToString()};
+                UsuarioLogin usuario = new UsuarioLogin { Apelido = apelido, Nome = dadosCliente.ToString(), Loja = loja};
                 return usuario;
             }
         }

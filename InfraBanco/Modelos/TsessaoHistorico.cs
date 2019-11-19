@@ -12,7 +12,6 @@ namespace InfraBanco.Modelos
         [Column("Usuario")]
         [MaxLength(20)]
         [Required]
-        [Key]
         public string Usuario { get; set; }
 
         [Column("SessionCtrlTicket")]

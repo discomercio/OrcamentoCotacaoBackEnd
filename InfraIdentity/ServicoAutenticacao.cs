@@ -10,7 +10,7 @@ namespace InfraIdentity
     public interface IServicoAutenticacao
     {
         Task<string> ObterTokenAutenticacao(string apelido, string senha, string segredoToken, int validadeTokenMinutos, string role, IServicoAutenticacaoProvider servicoAutenticacaoProvider);
-        string RenovarTokenAutenticacao(string apelido, string nome, string segredoToken, int validadeTokenMinutos, string role);
+        string RenovarTokenAutenticacao(string apelido, string nome, string loja, string segredoToken, int validadeTokenMinutos, string role);
     }
 
     public interface IServicoAutenticacaoProvider
@@ -36,6 +36,7 @@ namespace InfraIdentity
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Apelido),
                     new Claim(ClaimTypes.Name, user.Nome),
+                    new Claim(ClaimTypes.Surname, user.Loja),
                     new Claim(ClaimTypes.Role, role)
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(validadeTokenMinutos),
@@ -50,7 +51,7 @@ namespace InfraIdentity
             return ret;
         }
 
-        public string RenovarTokenAutenticacao(string apelido, string nome, string segredoToken, int validadeTokenMinutos, string role)
+        public string RenovarTokenAutenticacao(string apelido, string nome, string loja, string segredoToken, int validadeTokenMinutos, string role)
         {
             // authentication successful so generate jwt token
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -61,6 +62,7 @@ namespace InfraIdentity
                 {
                     new Claim(ClaimTypes.NameIdentifier, apelido),
                     new Claim(ClaimTypes.Name, nome),
+                    new Claim(ClaimTypes.Surname, loja),
                     new Claim(ClaimTypes.Role, role)
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(validadeTokenMinutos),

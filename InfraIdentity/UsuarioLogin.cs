@@ -10,5 +10,6 @@ namespace InfraIdentity
         //esta é a chave 
         public string Apelido { get; set; }
         public string Nome { get; set; }
+        public string Loja { get; set; }
     }
 }

@@ -1,18 +1,15 @@
 ﻿using InfraBanco.Modelos;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using PrepedidoBusiness;
 using System.Linq;
 using PrepedidoBusiness.Dtos.ClienteCadastro;
 using PrepedidoBusiness.Dto.ClienteCadastro.Referencias;
 using Microsoft.EntityFrameworkCore;
 using PrepedidoBusiness.Dto.ClienteCadastro;
 using InfraBanco.Constantes;
-using System.Transactions;
 using System.Reflection;
-using System.Runtime.InteropServices;
+using PrepedidoBusiness.Dto.Cep;
 
 namespace PrepedidoBusiness.Bll
 {
@@ -106,12 +103,12 @@ namespace PrepedidoBusiness.Bll
             var dadosCliente = db.Tclientes.Where(r => r.Cnpj_Cpf == cpf_cnpj)
                 .FirstOrDefault();
 
-            if (dadosCliente == null)   
+            if (dadosCliente == null)
                 return null;
 
             var lojaOrcamentista = (from c in db.TorcamentistaEindicadors
-                                   where c.Apelido == apelido
-                                   select c.Loja).FirstOrDefaultAsync();
+                                    where c.Apelido == apelido
+                                    select c.Loja).FirstOrDefaultAsync();
 
             var dadosClienteTask = ObterDadosClienteCadastro(dadosCliente, await lojaOrcamentista);
             var refBancariaTask = ObterReferenciaBancaria(dadosCliente);
@@ -281,7 +278,7 @@ namespace PrepedidoBusiness.Bll
             List<string> lstErros = new List<string>();
 
             //Na validação do cadastro é feito a consistencia de Municipio
-            ValidarDadosClientesCadastro(clienteDto.DadosCliente, lstErros);
+            await ValidarDadosClientesCadastro(clienteDto.DadosCliente, lstErros);
             ValidarRefBancaria(clienteDto.RefBancaria, lstErros);
             ValidarRefComercial(clienteDto.RefComercial, lstErros);
 
@@ -482,7 +479,7 @@ namespace PrepedidoBusiness.Bll
 
             return lstErros;
         }
-        //afazer:as tabelas já estão disponiveis
+        
         private async Task<IEnumerable<NfeMunicipio>> ConsisteMunicipioIBGE(string municipio, string uf, List<string> lstErros)
         {
             var db = contextoProvider.GetContextoLeitura();
@@ -514,14 +511,7 @@ namespace PrepedidoBusiness.Bll
             return lst_nfeMunicipios;
         }
 
-        /*afazer:
-             * Esse metodo necessita de acesso em outra base
-             * Necessário verificar com o João e Hamilton 
-             * Esse metodo esta na pág. BDD.asp linha 4840
-             * Isso faz parte do metodo da validação para salvar a RefBancaria pág ClienteAtualiza.asp linha 329 
-             * que faz a chamada para o metodo consiste_municipio_IBGE_ok(s_cidade, s_uf, s_lista_sugerida_municipios, msg_erro)
-             */
-        private async Task<IEnumerable<NfeMunicipio>> BuscarSiglaUf(string uf, string municipio)
+        public async Task<IEnumerable<NfeMunicipio>> BuscarSiglaUf(string uf, string municipio)
         {
             //verificar se passo a lista de erros
             string retorno = "";
@@ -529,11 +519,12 @@ namespace PrepedidoBusiness.Bll
 
             var db = contextoNFeProvider.GetContextoLeitura();
 
-            var nfeUFTask = (from c in db.NfeUfs
-                             where c.SiglaUF == uf.ToUpper()
-                             select c).FirstOrDefaultAsync();
+            var nfeUFTask = from c in db.NfeUfs
+                            where c.SiglaUF == uf.ToUpper()
+                            select c;
 
-            NfeUf nfeUf = await nfeUFTask;
+
+            NfeUf nfeUf = await nfeUFTask.FirstOrDefaultAsync();
 
             if (string.IsNullOrEmpty(nfeUf.CodUF))
                 retorno = "Não é possível consistir o município através da relação de municípios do IBGE: " +
@@ -664,20 +655,39 @@ namespace PrepedidoBusiness.Bll
             if (cliente.Ie != "")
             {
                 //afazer: terminar o metodo abaixo
-                string uf = VerificarInscricaoEstadualValida(cliente.Ie, cliente.Uf);
+                string uf = VerificarInscricaoEstadualValida(cliente.Ie, cliente.Uf, listaErros);
                 List<NfeMunicipio> lstNfeMunicipio = new List<NfeMunicipio>();
                 lstNfeMunicipio = (await ConsisteMunicipioIBGE(cliente.Cidade, cliente.Uf, listaErros)).ToList();
 
             }
-
+            //vamos verificar novamente o endereço, pois o usuário pode buscar o cep e 
+            //depois alterar o nome da rua, UF, cidade, bairro
+            await VerificarEndereco(cliente, listaErros);
 
             //return listaErros;
         }
 
-        private string VerificarInscricaoEstadualValida(string ie, string uf)
+        private async Task VerificarEndereco(DadosClienteCadastroDto cliente, List<string> listaErros)
+        {
+            CepBll cep = new CepBll(contextoCepProvider);
+            List<CepDto> cepDto = new List<CepDto>();
+            string cepSoDigito = cliente.Cep.Replace(".", "").Replace("-", "");
+            cepDto = (await cep.BuscarPorCep(cepSoDigito)).ToList();
+            foreach (var c in cepDto)
+            {
+                if (c.Cep != cepSoDigito)
+                    listaErros.Add("Número do Cep diferente!");
+                if (c.Endereco != cliente.Endereco ||
+                    c.Bairro != cliente.Bairro ||
+                    c.Cidade != cliente.Cidade ||
+                    c.Uf != cliente.Uf)
+                    listaErros.Add("Os dados informados estão divergindo da base de dados!");
+            }
+        }
+
+        private string VerificarInscricaoEstadualValida(string ie, string uf, List<string> listaErros)
         {
             string c = "";
-            bool blnOk = true;
             int qtdeDig = 0;
             int num;
             string retorno = "";
@@ -689,7 +699,7 @@ namespace PrepedidoBusiness.Bll
                 {
                     c = ie.Substring(i, 1);
                     if (!int.TryParse(c, out num) && c != "." && c != "-" && c != "/")
-                        blnOk = false;
+                        blnResultado = false;
                     if (int.TryParse(c, out num))
                         qtdeDig += 1;
                 }
@@ -704,44 +714,40 @@ namespace PrepedidoBusiness.Bll
                 retorno = ie;
             }
 
-            //blnResultado = isInscricaoEstadualOk(strInscricaoEstadualNormalizado, uf)
-            //afazer: olhar na pág Funcoes.asp linha 4375
-            //set objIE = CreateObject("ComPlusWrapper_DllInscE32.ComPlusWrapper_DllInscE32")
-            //blnResultado = isInscricaoEstadualOkCom(ie, uf);
-            //Instalar A DLL DllInscE32 QUER INCORPORAR O FONTE ou outra coisa
+            blnResultado = isInscricaoEstadualOkCom(ie, uf);
+            if (!blnResultado)
+            {
+                listaErros.Add("Preencha a IE (Inscrição Estadual) com um número válido!!" +
+                            "Certifique-se de que a UF informada corresponde à UF responsável pelo registro da IE.");
+            }
 
             return retorno;
         }
 
-        public bool isInscricaoEstadualOkCom(string ie, string uf)
+        private bool isInscricaoEstadualOkCom(string ie, string uf)
         {
-              var ReflectionUtilsMemberAccess =
-            BindingFlags.Public | BindingFlags.NonPublic |
-            BindingFlags.Static | BindingFlags.Instance | BindingFlags.IgnoreCase;
+            var ReflectionUtilsMemberAccess =
+          BindingFlags.Public | BindingFlags.NonPublic |
+          BindingFlags.Static | BindingFlags.Instance | BindingFlags.IgnoreCase;
 
+            ie = ie.Replace(".", "").Replace("-", "");
+            // this works with both .NET 4.5+ and .NET Core 2.0+
 
-        // this works with both .NET 4.5+ and .NET Core 2.0+
-
-        string progId = "ComPlusWrapper_DllInscE32.ComPlusWrapper_DllInscE32";
+            string progId = "ComPlusWrapper_DllInscE32.ComPlusWrapper_DllInscE32";
             Type type = Type.GetTypeFromProgID(progId);
             object inst = Activator.CreateInstance(type);
 
 
-            bool result = (bool)inst.GetType().InvokeMember("isInscricaoEstadualOk", 
+            bool result = (bool)inst.GetType().InvokeMember("isInscricaoEstadualOk",
                 ReflectionUtilsMemberAccess | BindingFlags.InvokeMethod, null, inst,
                 new object[2]
                 {
-            ie, uf
+                    ie, uf
                 });
 
-            ////result = ReflectionUtils.GetPropertyCom(inst, "cAppStartPath");
-            //bool result = (bool)inst.GetType().InvokeMember("Visible",
-            //    ReflectionUtils.MemberAccess | BindingFlags.GetProperty, null, inst, null);
-            Console.WriteLine(result); // path  
             return result;
         }
-
-
+        
         private async Task<string> GerarIdCliente(InfraBanco.ContextoBdGravacao dbgravacao, string id_nsu)
         {
             string retorno = "";

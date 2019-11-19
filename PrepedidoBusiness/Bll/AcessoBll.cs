@@ -26,10 +26,11 @@ namespace PrepedidoBusiness.Bll
             //Validar o dados no bd
             var dados = from c in db.TorcamentistaEindicadors
                         where c.Apelido == apelido
-                        select new {
+                        select new
+                        {
                             c.Razao_Social_Nome,
                             c.Senha,
-                            c.Datastamp, 
+                            c.Datastamp,
                             c.Dt_Ult_Alteracao_Senha,
                             c.Hab_Acesso_Sistema,
                             c.Status
@@ -50,9 +51,10 @@ namespace PrepedidoBusiness.Bll
 
             //validar a senha
             //SLM112233 - SALOMÃO
-            
+            var senhaCodificada = DecodificaSenha(senha);
+
             var senha_banco = DecodificaSenha(t.Datastamp);
-            if (senha != senha_banco)
+            if (senhaCodificada != senha_banco || senha != t.Datastamp.ToUpper())
                 return await Task.FromResult(retorno);
 
             //Fazer Update no bd
@@ -68,14 +70,14 @@ namespace PrepedidoBusiness.Bll
             return await Task.FromResult(t.Razao_Social_Nome);
         }
 
-        private async Task<string> BuscarLojaUsuario(string apelido)
+        public async Task<string> BuscarLojaUsuario(string apelido)
         {
             var db = contextoProvider.GetContextoLeitura();
 
             var loja = (from c in db.TorcamentistaEindicadors
-                       where c.Apelido == apelido
-                       select c.Loja).Single();
-             
+                        where c.Apelido == apelido
+                        select c.Loja).Single();
+
             return await Task.FromResult(loja);
         }
 
@@ -245,14 +247,23 @@ namespace PrepedidoBusiness.Bll
                 //usuario.SessionCtrlDtHrLogon = null;
 
                 //atualiza a tabela t_SESSAO_HISTORICO
-                TsessaoHistorico sessaoHist = dbgravacao.TsessaoHistoricos
-                    .Where(r => r.Usuario == apelido
-                             && r.DtHrInicio >= DateTime.Now.AddHours(-1))
-                    .SingleOrDefault();
+                //TsessaoHistorico sessaoHist = dbgravacao.TsessaoHistoricos
+                //    .Where(r => r.Usuario == apelido
+                //             && r.DtHrInicio >= DateTime.Now.AddHours(-1))
+                //    .SingleOrDefault();
+                //sessaoHist.DtHrTermino = DateTime.Now;
+
+                var sessaoHistTask = (from c in dbgravacao.TsessaoHistoricos
+                                      where c.Usuario == apelido
+                                      orderby c.DtHrInicio descending
+                                      select c).FirstOrDefaultAsync();
+                TsessaoHistorico sessaoHist = await sessaoHistTask;
                 sessaoHist.DtHrTermino = DateTime.Now;
 
-                dbgravacao.TsessaoHistoricos.Add(sessaoHist);
+                //dbgravacao.TsessaoHistoricos.Add(sessaoHist);
+                dbgravacao.TsessaoHistoricos.Update(sessaoHist);
                 await dbgravacao.SaveChangesAsync();
+                dbgravacao.transacao.Commit();
             }
         }
 
