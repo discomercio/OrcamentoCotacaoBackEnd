@@ -127,7 +127,7 @@ namespace PrepedidoBusiness.Bll
                 if (pedido.Status == "SPL")
                     pedido.Status = "Split possível";
                 if (pedido.Status == "SEP")
-                    pedido.Status = "Separar";
+                    pedido.Status = "Separar Mercadoria";
                 if (pedido.Status == "AET")
                     pedido.Status = "A entregar";
                 if (pedido.Status == "ETG")
@@ -412,7 +412,7 @@ namespace PrepedidoBusiness.Bll
                 retorno = "SIM";
             //formatar a data da variavel etg_imediata_data
             if (retorno != "")
-                dataFormatada = p.Etg_Imediata_Data?.ToString("dd/MM/yyyy 00:00:00");
+                dataFormatada = p.Etg_Imediata_Data?.ToString();
             //verificar se o retorno acima esta vazio
             if (dataFormatada != "")
                 retorno += " (" + IniciaisEmMaisculas(p.Etg_Imediata_Usuario) + " - " + dataFormatada + ")";
@@ -442,8 +442,8 @@ namespace PrepedidoBusiness.Bll
                 letra = texto.Substring(i, 1);
                 palavra += letra;
 
-                if (letra == " " || i == texto.Length || letra == "(" || letra == ")" || letra == "[" || letra == "]"
-                    || letra == "'" || letra == char34 || letra == "-")
+                if ((letra == " ") || (i == texto.Length - 1) || (letra == "(") || (letra == ")") || (letra == "[") || (letra == "]")
+                    || (letra == "'") || (letra == char34) || (letra == "-"))
                 {
                     s = "|" + palavra.ToUpper().Trim() + "|";
                     if (palavras_minusculas.IndexOf(s) != 0 && frase != "")
@@ -451,44 +451,46 @@ namespace PrepedidoBusiness.Bll
                         //SE FOR FINAL DA FRASE, DEIXA INALTERADO(EX: BLOCO A)
                         if (i < texto.Length)
                             palavra = palavra.ToLower();
-                        else if (palavras_maiusculas.IndexOf(s) >= 0)
-                            palavra = palavra.ToUpper();
-                        else
-                        {
-                            //ANALISA SE CONVERTE O TEXTO OU NÃO
-                            blnAltera = true;
-                            if (TemDigito(palavra))
-                            {
-                                //ENDEREÇOS CUJO Nº DA RESIDÊNCIA SÃO SEPARADOS POR VÍRGULA, SEM NENHUM ESPAÇO EM BRANCO
-                                //CASO CONTRÁRIO, CONSIDERA QUE É ALGUM TIPO DE CÓDIGO
-                                if (palavra.IndexOf(",") != 0)
-                                    blnAltera = false;
-                            }
-                            if (palavra.IndexOf(".") >= 0)
-                            {
-                                if (palavra.IndexOf(palavra, palavra.IndexOf(".") + 1, StringComparison.OrdinalIgnoreCase.CompareTo(".")) != 0)
-                                    blnAltera = false;
-                            }
-                            if (palavra.IndexOf("/") != 0)
-                            {
-                                if (palavra.Length <= 4)
-                                    blnAltera = false;
-                            }
-                            //verifica se tem vogal
-                            if (!TemVogal(palavra))
-                                blnAltera = false;
-
-                            if (blnAltera)
-                                palavra = palavra.Substring(0, 1).ToUpper() + palavra.Substring(1, palavra.Length - 1).ToLower();//verificar
-                        }
-                        frase = frase + palavra;
-                        palavra = "";
                     }
+                    else if (palavras_maiusculas.IndexOf(s) >= 0)
+                        palavra = palavra.ToUpper();
+                    else
+                    {
+                        //ANALISA SE CONVERTE O TEXTO OU NÃO
+                        blnAltera = true;
+                        if (TemDigito(palavra))
+                        {
+                            //ENDEREÇOS CUJO Nº DA RESIDÊNCIA SÃO SEPARADOS POR VÍRGULA, SEM NENHUM ESPAÇO EM BRANCO
+                            //CASO CONTRÁRIO, CONSIDERA QUE É ALGUM TIPO DE CÓDIGO
+                            if (palavra.IndexOf(",") != 0)
+                                blnAltera = false;
+                        }
+                        if (palavra.IndexOf(".") >= 0)
+                        {
+                            if (palavra.IndexOf(palavra, palavra.IndexOf(".") + 1, StringComparison.OrdinalIgnoreCase.CompareTo(".")) != 0)
+                                blnAltera = false;
+                        }
+                        if (palavra.IndexOf("/") != 0)
+                        {
+                            if (palavra.Length <= 4)
+                                blnAltera = false;
+                        }
+                        //verifica se tem vogal
+                        if (!TemVogal(palavra))
+                            blnAltera = false;
+
+                        if (blnAltera)
+                            palavra = palavra.Substring(0, 1).ToUpper() + palavra.Substring(1, palavra.Length - 1).ToLower();//verificar
+                    }
+                    frase = frase + palavra;
+                    palavra = "";
                 }
             }
-
-            return retorno;
+            return retorno = frase;
         }
+
+
+
 
         private bool TemVogal(string texto)
         {
@@ -614,22 +616,22 @@ namespace PrepedidoBusiness.Bll
 
             switch (status)
             {
-                case "ESP":
-                    retorno = "Em espera";
+                case Constantes.ST_ENTREGA_ESPERAR:
+                    retorno = "Esperar Mercadoria";
                     break;
-                case "SPL":
-                    retorno = "Split possível";
+                case Constantes.ST_ENTREGA_SPLIT_POSSIVEL:
+                    retorno = "Split Possível";
                     break;
-                case "SEP":
-                    retorno = "Separar";
+                case Constantes.ST_ENTREGA_SEPARAR:
+                    retorno = "Separar Mercadoria";
                     break;
-                case "AET":
-                    retorno = "A entregar";
+                case Constantes.ST_ENTREGA_A_ENTREGAR:
+                    retorno = "A Entregar";
                     break;
-                case "ETG":
-                    retorno = "Entrega";
+                case Constantes.ST_ENTREGA_ENTREGUE:
+                    retorno = "Entregue";
                     break;
-                case "CAN":
+                case Constantes.ST_ENTREGA_CANCELADO:
                     retorno = "Cancelado";
                     break;
             }
@@ -704,9 +706,9 @@ namespace PrepedidoBusiness.Bll
 
             var msg = (await ObterMensagemOcorrencia(id)).ToList();
 
-            var ocorrencia = from d in db.TpedidoOcorrencias
-                             where d.Pedido == numPedido
-                             select d;
+            var ocorrencia = await (from d in db.TpedidoOcorrencias
+                                    where d.Pedido == numPedido
+                                    select d).ToListAsync();
             List<OcorrenciasDtoPedido> lista = new List<OcorrenciasDtoPedido>();
             OcorrenciasDtoPedido ocorre = new OcorrenciasDtoPedido();
 
@@ -1044,8 +1046,9 @@ namespace PrepedidoBusiness.Bll
                     lista.Add("Parcelado no Cartão (maquineta) em " + pedido.Pc_Maquineta_Qtde_Parcelas + " X " + pedido.Pc_Maquineta_Valor_Parcela);
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA:
+                    string valor = pedido.Pce_Entrada_Valor?.ToString("#0.00");
                     lista.Add("Entrada: " + Constantes.SIMBOLO_MONETARIO + " " +
-                        pedido.Pce_Entrada_Valor + " (" + Util.OpcaoFormaPagto(Convert.ToString(pedido.Pce_Forma_Pagto_Entrada)) + ")");
+                        valor + " (" + Util.OpcaoFormaPagto(Convert.ToString(pedido.Pce_Forma_Pagto_Entrada)) + ")");
                     lista.Add("Prestações: " + pedido.Pce_Prestacao_Qtde + " X " + Constantes.SIMBOLO_MONETARIO + " " + pedido.Pce_Prestacao_Valor +
                         " (" + Util.OpcaoFormaPagto(Convert.ToString(pedido.Pce_Forma_Pagto_Prestacao)) + ") vencendo a cada " +
                         pedido.Pce_Prestacao_Periodo + " dias");

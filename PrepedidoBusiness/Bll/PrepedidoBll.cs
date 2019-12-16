@@ -27,7 +27,7 @@ namespace PrepedidoBusiness.Bll
         {
             this.contextoProvider = contextoProvider;
         }
-               
+
         public async Task<IEnumerable<string>> ListarNumerosPrepedidosCombo(string orcamentista)
         {
             //toda vez precisamos de uma nova conexao para os casos em que houver transacao
@@ -48,7 +48,7 @@ namespace PrepedidoBusiness.Bll
 
             var lista = (from c in db.Torcamentos.Include(r => r.Tcliente)
                          where c.Orcamentista == apelido &&
-                               c.St_Orcamento != "CAN" && 
+                               c.St_Orcamento != "CAN" &&
                                c.Data >= Util.LimiteDataBuscas()
                          orderby c.Tcliente.Cnpj_Cpf
                          select c.Tcliente.Cnpj_Cpf).Distinct();
@@ -66,12 +66,12 @@ namespace PrepedidoBusiness.Bll
 
         public enum TipoBuscaPrepedido
         {
-            Todos = 0, NaoViraramPedido = 1, SomenteViraramPedido = 2
+            Todos = 0, NaoViraramPedido = 1, SomenteViraramPedido = 2, Excluidos = 3
         }
         public async Task<IEnumerable<PrepedidosCadastradosDtoPrepedido>> ListarPrePedidos(string apelido, TipoBuscaPrepedido tipoBusca,
             string clienteBusca, string numeroPrePedido, DateTime? dataInicial, DateTime? dataFinal)
         {
-            if(dataInicial < Util.LimiteDataBuscas())
+            if (dataInicial < Util.LimiteDataBuscas())
             {
                 dataInicial = Util.LimiteDataBuscas();
             }
@@ -80,7 +80,7 @@ namespace PrepedidoBusiness.Bll
             //usamos a mesma lógica de PedidoBll.ListarPedidos:
             /*
              * se fizeram a busca por algum CPF ou CNPJ ou pedido e não achamos nada, removemos o filtro de datas
-             * para não aparcer para o usuário que não tem nenhum registro
+             * para não aparecer para o usuário que não tem nenhum registro
              * */
             var ret = await ListarPrePedidosFiltroEstrito(apelido, tipoBusca, clienteBusca, numeroPrePedido, dataInicial, dataFinal);
             //se tiver algum registro, retorna imediatamente
@@ -122,6 +122,9 @@ namespace PrepedidoBusiness.Bll
                 case TipoBuscaPrepedido.SomenteViraramPedido:
                     lst = lst.Where(c => c.St_Orc_Virou_Pedido == 1);
                     break;
+                case TipoBuscaPrepedido.Excluidos:
+                    lst = lst.Where(c => c.St_Orcamento == "CAN");
+                    break;
             }
             if (!string.IsNullOrEmpty(clienteBusca))
                 lst = lst.Where(r => r.Tcliente.Cnpj_Cpf.Contains(clienteBusca));
@@ -132,18 +135,35 @@ namespace PrepedidoBusiness.Bll
             if (dataFinal.HasValue)
                 lst = lst.Where(r => r.Data <= dataFinal.Value);
 
-            //COLOCAR O STATUS DO PEDIDO PARA PREPEDIDOS QUE VIRARAM PEDIDOS
-            var lstfinal = lst.Select(r => new PrepedidosCadastradosDtoPrepedido
-            {
-                Status = r.St_Orc_Virou_Pedido == 1 ? "Pré-Pedido - Com Pedido" : "Pré-Pedido - Sem Pedido",
-                DataPrePedido = r.Data,
-                NumeroPrepedido = r.Orcamento,
-                NomeCliente = r.Tcliente.Nome,
-                ValoTotal = r.Vl_Total
-            }).OrderByDescending(r => r.DataPrePedido);
 
-            var res = lstfinal.AsEnumerable();
-            return await Task.FromResult(res);
+            List<PrepedidosCadastradosDtoPrepedido> lstdto = new List<PrepedidosCadastradosDtoPrepedido>();
+            //COLOCAR O STATUS DO PEDIDO PARA PREPEDIDOS QUE VIRARAM PEDIDOS
+            if (tipoBusca != TipoBuscaPrepedido.Excluidos)
+            {
+                lstdto = lst.Select(r => new PrepedidosCadastradosDtoPrepedido
+                {
+
+                    Status = r.St_Orc_Virou_Pedido == 1 ? "Pré-Pedido - Com Pedido" : "Pré-Pedido - Sem Pedido",
+                    DataPrePedido = r.Data,
+                    NumeroPrepedido = r.Orcamento,
+                    NomeCliente = r.Tcliente.Nome,
+                    ValoTotal = r.Vl_Total
+                }).OrderByDescending(r => r.DataPrePedido).ToList();
+            }
+            if(tipoBusca == TipoBuscaPrepedido.Excluidos)
+            {
+                lstdto = lst.Select(r => new PrepedidosCadastradosDtoPrepedido
+                {
+                    Status = "Excluído",
+                    DataPrePedido = r.Data,
+                    NumeroPrepedido = r.Orcamento,
+                    NomeCliente = r.Tcliente.Nome,
+                    ValoTotal = r.Vl_Total
+                }).OrderByDescending(r => r.DataPrePedido).ToList();
+            }
+            
+            //var res = lstfinal.AsEnumerable();
+            return await Task.FromResult(lstdto);
         }
 
         public async Task<bool> RemoverPrePedido(string numeroPrePedido, string apelido)
@@ -347,7 +367,7 @@ namespace PrepedidoBusiness.Bll
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA:
                     lista.Add(String.Format("Entrada " + "{0:c2} (" +
-                        Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pce_Forma_Pagto_Entrada)) + ")", torcamento.Pce_Entrada_Valor));                    
+                        Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pce_Forma_Pagto_Entrada)) + ")", torcamento.Pce_Entrada_Valor));
                     if (torcamento.Pce_Forma_Pagto_Prestacao != 5 && torcamento.Pce_Forma_Pagto_Prestacao != 7)
                     {
                         lista.Add(String.Format("Prestações: " + torcamento.Pce_Prestacao_Qtde + " X " + " {0:c2}" +
@@ -476,7 +496,7 @@ namespace PrepedidoBusiness.Bll
                 enderecoEntrega.EndEtg_cod_justificativa = p.EndEtg_Cod_Justificativa;
                 enderecoEntrega.EndEtg_descricao_justificativa = await ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA, p.EndEtg_Cod_Justificativa);
             }
-            
+
 
             return enderecoEntrega;
         }
@@ -645,6 +665,8 @@ namespace PrepedidoBusiness.Bll
                                     prePedido.DadosCliente.Id, Constantes.OP_LOG_ORCAMENTO_NOVO, log, contextoProvider);
 
                                 dbgravacao.transacao.Commit();
+                                //teste
+                                lstErros.Add(prePedido.NumeroPrePedido);
                             }
                         }
                     }
@@ -885,7 +907,7 @@ namespace PrepedidoBusiness.Bll
             else if (forma_pagto_criacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA)
                 campos_a_omitir += "pse_forma_pagto_prim_prest|pse_forma_pagto_demais_prest|pse_prim_prest_valor|pse_prim_prest_apos|" +
                     "pse_demais_prest_qtde|pse_demais_prest_valor|pse_demais_prest_periodo|";
-            
+
 
             return campos_a_omitir;
         }

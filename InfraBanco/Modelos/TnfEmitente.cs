@@ -73,11 +73,12 @@ namespace InfraBanco.Modelos
         [Required]
         public byte NFe_st_emitente_padrao { get; set; }
 
-        [Column("NFe_serie_NF")]
+        //[old_NFe_serie_NF] esta coluna mudou o nome na base de homologação deles
+        [Column("old_NFe_serie_NF")]
         [Required]
         public int NFe_serie_NF { get; set; }
-
-        [Column("NFe_numero_NF")]
+        //[old_NFe_numero_NF] esta coluna mudou o nome na base de homologação deles
+        [Column("old_NFe_numero_NF")]
         [Required]
         public int NFe_numero_NF { get; set; }
 

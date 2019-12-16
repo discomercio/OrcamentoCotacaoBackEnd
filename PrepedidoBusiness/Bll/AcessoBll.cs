@@ -260,8 +260,8 @@ namespace PrepedidoBusiness.Bll
                 TsessaoHistorico sessaoHist = await sessaoHistTask;
                 sessaoHist.DtHrTermino = DateTime.Now;
 
-                //dbgravacao.TsessaoHistoricos.Add(sessaoHist);
-                dbgravacao.TsessaoHistoricos.Update(sessaoHist);
+                dbgravacao.TsessaoHistoricos.Add(sessaoHist);
+                //dbgravacao.TsessaoHistoricos.Update(sessaoHist);
                 await dbgravacao.SaveChangesAsync();
                 dbgravacao.transacao.Commit();
             }
