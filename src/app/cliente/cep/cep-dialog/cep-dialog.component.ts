@@ -89,6 +89,8 @@ export class CepDialogComponent extends TelaDesktopBaseComponent implements OnIn
     }
   }
 
+  public endNaoEncontrado: string = "";
+
   buscarCepPorEndereco() {
 
     // if (!this.endereco && !this.localidade) {
@@ -101,7 +103,7 @@ export class CepDialogComponent extends TelaDesktopBaseComponent implements OnIn
       this.alertaService.mostrarMensagem("Favor digitar uma localidade!");
     }
     else {
-      
+
       this.carregando = true;
       for (let i = 0; i < this.lstCidades.length; i++) {
         if (this.localidade == this.lstCidades[i]) {
@@ -109,7 +111,10 @@ export class CepDialogComponent extends TelaDesktopBaseComponent implements OnIn
             next: (r: CepDto[]) => {
               this.carregando = false;
               if (!!r) {
-                this.lstEnderecos = r;
+                if (r.length > 0)
+                  this.lstEnderecos = r;
+                  else
+                  this.endNaoEncontrado = "Nenhuma endereço encontrado!";
               }
               else {
                 this.alertaService.mostrarMensagem("Erro ao carregar a lista de Endereços!")
@@ -122,7 +127,7 @@ export class CepDialogComponent extends TelaDesktopBaseComponent implements OnIn
           });
         }
       }
-      if(this.carregando){
+      if (this.carregando) {
         this.carregando = false;
         this.alertaService.mostrarMensagem("Favor selecionar uma Localidade na lista!");
       }

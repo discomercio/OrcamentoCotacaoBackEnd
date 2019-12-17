@@ -97,6 +97,7 @@ export class PedidoDesktopComponent extends TelaDesktopBaseComponent implements 
   entregaImediata(): string {
     if (!this.pedido || !this.pedido.DetalhesNF)
       return "";
+      debugger;
     return this.pedido.DetalhesNF.EntregaImediata;
   }
 

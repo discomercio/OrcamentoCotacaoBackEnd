@@ -127,11 +127,17 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
   //para remover o pedido, temos uma confirmação antes
   emRemoverPrepedido = false;
   removerPrepedido(numeroPrepedio: string): void {
+    //estamos passando o snackbar para uma var local, pois não estava funcionando corretamente
+    const snack = this._snackBar;
+    //estamos passando o this.prepedidoListarService para uma var local, pois não estava funcionando corretamente
+    const prepedidoListarService = this.prepedidoListarService;
     this.emRemoverPrepedido = true;
+
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '350px',
       data: `Tem certeza de que deseja excluir o pedido ${numeroPrepedio}? `
     });
+
     dialogRef.afterClosed().subscribe((result) => {
       this.emRemoverPrepedido = false;
       if (result) {
@@ -139,14 +145,15 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
           {
             next() {
               const msg = `Pré-pedido ${numeroPrepedio} removido.`;
-              this._snackBar.open(msg, undefined, {
+              snack.open(msg, undefined, {
                 duration: environment.esperaErros
               });
-              this.prepedidoListarService.atualizar();
+              
+              prepedidoListarService.atualizar();
             },
             error() {
               const msg = `Erro: erro ao remover pré-pedido  ${numeroPrepedio}.`;
-              this._snackBar.open(msg, undefined, {
+              snack.open(msg, undefined, {
                 duration: environment.esperaErros
               });
             },

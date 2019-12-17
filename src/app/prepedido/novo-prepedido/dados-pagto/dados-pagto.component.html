@@ -7,7 +7,7 @@
                 <div>
                     <!-- lista com todas as formas de pagamentos -->
                     <mat-form-field style="width: 20em;">
-                        <mat-label>Forma de Pagamento</mat-label>
+                        <mat-label>Forma de Pagamento *</mat-label>
                         <mat-select [(ngModel)]="enumFormaPagto" [ngModelOptions]="{standalone: true}" type="number"
                             (ngModelChange)="recalcularValoresComCoeficiente($event)">
                             <mat-option>Selecione</mat-option>
@@ -56,7 +56,7 @@
                     <!-- Meio de pagamento entrada -->
 
                     <mat-form-field style="width: 20em;">
-                        <mat-label>Meio de pagamento entrada</mat-label>
+                        <mat-label>Meio de pagamento entrada *</mat-label>
                         <mat-select [(ngModel)]="meioPagtoEntrada" [ngModelOptions]="{standalone: true}">
                             <mat-option>Selecione</mat-option>
                             <mat-option *ngFor="let i of formaPagtoDto?.ListaParcComEntrada" [value]="i.Id">
@@ -69,7 +69,7 @@
                 <!-- colocar todas as qtdes de parcelamento -->
                 <div *ngIf="enumFormaPagto==EnumFormaPagto.Avista">
                     <mat-form-field style="width: 20em;">
-                        <mat-label>Parcelamento</mat-label>
+                        <mat-label>Parcelamento *</mat-label>
                         <mat-select [(ngModel)]="opcaoPagtoAvista" [ngModelOptions]="{standalone: true}">
                             <mat-option>Selecione</mat-option>
                             <mat-option *ngFor="let i of lstMsg" [value]="i">
@@ -79,7 +79,7 @@
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field style="width: 20em;">
-                        <mat-label>Meio de pagamento parcela a vista</mat-label>
+                        <mat-label>Meio de pagamento parcela a vista *</mat-label>
                         <mat-select [(ngModel)]="meioPagtoAVista" [ngModelOptions]="{standalone: true}">
                             <mat-option>Selecione</mat-option>
                             <mat-option *ngFor="let i of formaPagtoDto?.ListaAvista" [value]="i.Id">
@@ -92,7 +92,7 @@
                 <!-- parcela única -->
                 <div *ngIf="enumFormaPagto==EnumFormaPagto.ParcUnica">
                     <mat-form-field style="width: 20em;">
-                        <mat-label>Parcelamento</mat-label>
+                        <mat-label>Parcelamento *</mat-label>
                         <mat-select [(ngModel)]="opcaoPagtoParcUnica" [ngModelOptions]="{standalone: true}">
                             <mat-option>Selecione</mat-option>
                             <mat-option *ngFor="let i of lstMsg" [value]="i">
@@ -101,7 +101,7 @@
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field style="width: 20em;">
-                        <mat-label>Meio de pagamento parcela unica</mat-label>
+                        <mat-label>Meio de pagamento parcela unica *</mat-label>
                         <mat-select [(ngModel)]="meioPagtoParcUnica" [ngModelOptions]="{standalone: true}">
                             <mat-option>Selecione</mat-option>
                             <mat-option *ngFor="let i of formaPagtoDto?.ListaParcUnica" [value]="i.Id">
@@ -110,7 +110,7 @@
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field>
-                        <mat-label>Dias para vencimento</mat-label>
+                        <mat-label>Dias para vencimento </mat-label>
                         <input [(ngModel)]="diasVencParcUnica" [ngModelOptions]="{standalone: true}" matInput
                             type="text" required [maxlength]="3">
                     </mat-form-field>
@@ -121,7 +121,7 @@
                 <!-- Parcelado com entrada -->
                 <div *ngIf="enumFormaPagto==EnumFormaPagto.ParcComEnt && !!vlEntrada">
                     <mat-form-field style="width: 20em;">
-                        <mat-label>Parcelamento</mat-label>
+                        <mat-label>Parcelamento *</mat-label>
                         <mat-select [(ngModel)]="opcaoPagtoParcComEntrada" [ngModelOptions]="{standalone: true}">
                             <mat-option>Selecione</mat-option>
                             <mat-option *ngFor="let i of lstMsg" [value]="i">
@@ -130,7 +130,7 @@
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field style="width: 20em;">
-                        <mat-label>Meio de pagamento parcela prestação</mat-label>
+                        <mat-label>Meio de pagamento parcela prestação *</mat-label>
                         <mat-select [(ngModel)]="meioPagtoEntradaPrest" [ngModelOptions]="{standalone: true}">
                             <mat-option>Selecione</mat-option>
                             <mat-option *ngFor="let i of formaPagtoDto?.ListaParcComEntPrestacao" [value]="i.Id">
@@ -140,7 +140,7 @@
                     </mat-form-field>
                     <!-- dias para vencimento  -->
                     <mat-form-field *ngIf="!!meioPagtoEntradaPrest && meioPagtoEntradaPrest != 5 && meioPagtoEntradaPrest != 7">
-                        <mat-label>Dias para vencimento Prest</mat-label>
+                        <mat-label>Dias para vencimento Prest *</mat-label>
                         <input [(ngModel)]="diasVenc" [ngModelOptions]="{standalone: true}" matInput type="text"
                             required [maxlength]="3">
                     </mat-form-field>
@@ -150,7 +150,7 @@
                 <!-- NÃO ESTA SENDO USADO -->
                 <div *ngIf="enumFormaPagto==EnumFormaPagto.ParcSemEnt">
                     <mat-form-field style="width: 20em;">
-                        <mat-label>1º prestação</mat-label>
+                        <mat-label>1º prestação *</mat-label>
                         <mat-select>
                             <mat-option>Selecione</mat-option>
                             <mat-option *ngFor="let i of formaPagtoDto?.ListaParcSemEntPrimPrest" [value]="i.Descricao">
@@ -159,7 +159,7 @@
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field style="width: 20em;">
-                        <mat-label>Meio de pagamento parcela sem entrada</mat-label>
+                        <mat-label>Meio de pagamento parcela sem entrada *</mat-label>
                         <mat-select>
                             <mat-option>Selecione</mat-option>
                             <mat-option *ngFor="let i of formaPagtoDto?.ListaParcSemEntPrimPrest" [value]="i.Descricao">
@@ -172,7 +172,7 @@
                 <!-- pagto cartão internet -->
                 <div *ngIf="enumFormaPagto==EnumFormaPagto.ParcCartaoInternet">
                     <mat-form-field style="width: 20em;">
-                        <mat-label>Parcelamento</mat-label>
+                        <mat-label>Parcelamento *</mat-label>
                         <mat-select [(ngModel)]="opcaoPagtoParcCartaoInternet" [ngModelOptions]="{standalone: true}">
                             <mat-option>Selecione</mat-option>
                             <mat-option *ngFor="let i of lstMsg" [value]="i">
@@ -185,7 +185,7 @@
                 <!-- pagto cartão Maquineta -->
                 <div *ngIf="enumFormaPagto==EnumFormaPagto.ParcCartaoMaquineta">
                     <mat-form-field style="width: 20em;">
-                        <mat-label>Parcelamento</mat-label>
+                        <mat-label>Parcelamento *</mat-label>
                         <mat-select [(ngModel)]="opcaoPagtoParcCartaoMaquineta" [ngModelOptions]="{standalone: true}">
                             <mat-option>Selecione</mat-option>
                             <mat-option *ngFor="let i of lstMsg" [value]="i">

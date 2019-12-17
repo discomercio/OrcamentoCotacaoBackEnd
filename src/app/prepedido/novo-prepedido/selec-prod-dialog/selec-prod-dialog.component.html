@@ -31,60 +31,68 @@
                         [value]="qtde" [ngModelOptions]="{standalone: true}">
                 </mat-form-field>
             </div>
+
             <div class="listaprods">
                 <div *ngIf="telaDesktop"> </div>
+                <!-- fazer a verificação aqui
+                    incluir uma mensagem no retorno da busca dos produtos e verificar se não esta vazia -->
+                <div style="text-align: center">
+                    <span *ngIf="msgProdNaoEncontrado != '' && digitado.length > 3">{{this.msgProdNaoEncontrado}}</span>
+                </div>
                 <mat-radio-group aria-label="Selecione o produto" [(ngModel)]="produto" required
                     [ngModelOptions]="{standalone: true}">
                     <table style="width: 100%;" class="destaquelinha">
                         <ng-container *ngFor="let p of prodsTela; let i=index">
-                            <tr [ngStyle]="{display: p.visivel ? '':'none'}" class="prod">
-                                <td class="tdtabela">
-                                    <!-- usamos o display: none e não o ngif para ficar mais rápido:
+                        <ng-container *ngIf="p.visivel">
+                        <tr class="prod">
+                            <td class="tdtabela">
+                                <!-- usamos o display: none e não o ngif para ficar mais rápido:
                         quando o usuário pede para editar uma linha existente, se ele apagar o código do produto na caixa de texto
                         fica lento porque tem que reconstruir a árvore -->
-                                    <div>
-                                        <!-- usar o mat-radio-button fica BEM mais lento!!
+                                <div>
+                                    <!-- usar o mat-radio-button fica BEM mais lento!!
         mas paree que a veocidade está suficiente... porque fizemos o truque de passar somente X registros por atualizacao, na rotina maisDadosProd
         no celular, vamos usar só o checkbox mesmo
          -->
-                                        <mat-radio-button *ngIf="telaDesktop" type="radio" name="produto"
-                                            value="{{ProdutoTelaFabrProd(p.produtoDto.Fabricante, p.produtoDto.Fabricante_Nome, p.produtoDto.Produto)}}">
-                                            <!-- {{ProdutoTelaFabrProd(p.produtoDto.Fabricante, p.produtoDto.Fabricante_Nome, p.produtoDto.Produto)}} -->
-                                            {{p.produtoDto.Produto}}
-                                        </mat-radio-button>
-                                        <label *ngIf="!telaDesktop">
-                                            <input *ngIf="!telaDesktop" type="radio" name="produto"
-                                                value="{{ProdutoTelaFabrProd(p.produtoDto.Fabricante, p.produtoDto.Fabricante_Nome, p.produtoDto.Produto)}}"
-                                                [(ngModel)]="produto">
-                                            {{ProdutoTelaFabrProd(p.produtoDto.Fabricante, p.produtoDto.Fabricante_Nome, p.produtoDto.Produto)}}
-                                        </label>
+                                    <mat-radio-button *ngIf="telaDesktop" type="radio" name="produto"
+                                        value="{{ProdutoTelaFabrProd(p.produtoDto.Fabricante, p.produtoDto.Fabricante_Nome, p.produtoDto.Produto)}}">
+                                        <!-- {{ProdutoTelaFabrProd(p.produtoDto.Fabricante, p.produtoDto.Fabricante_Nome, p.produtoDto.Produto)}} -->
+                                        {{p.produtoDto.Produto}}
+                                    </mat-radio-button>
+                                    <label *ngIf="!telaDesktop">
+                                        <input *ngIf="!telaDesktop" type="radio" name="produto"
+                                            value="{{ProdutoTelaFabrProd(p.produtoDto.Fabricante, p.produtoDto.Fabricante_Nome, p.produtoDto.Produto)}}"
+                                            [(ngModel)]="produto">
+                                        {{ProdutoTelaFabrProd(p.produtoDto.Fabricante, p.produtoDto.Fabricante_Nome, p.produtoDto.Produto)}}
+                                    </label>
 
-                                        <!-- no celular, nao temos a coluan de descrição, colocamos na mesma coluna -->
-                                        <span *ngIf="!telaDesktop" [innerHTML]="p.produtoDto.Descricao_html"></span>
+                                    <!-- no celular, nao temos a coluan de descrição, colocamos na mesma coluna -->
+                                    <span *ngIf="!telaDesktop" [innerHTML]="p.produtoDto.Descricao_html"></span>
 
-                                    </div>
-                                </td>
-                                <td class="tdtabela" *ngIf="telaDesktop">
-                                    <span [innerHTML]="p.produtoDto.Descricao_html"></span> </td>
-                                <td class="tdtabela" align="right">
-                                    {{moedaUtils.formatarMoedaComPrefixo(p.produtoDto.Preco_lista)}}
-                                </td>
-                            </tr>
-                            <!-- filhos -->
-                            <tr [ngStyle]="{display: p.visivel ? '':'none'}" class="prod trfilho"
-                                *ngFor="let f of p.Filhos">
-                                <td class="itemfilho">
-                                    {{f.Qtde}} x {{ProdutoTelaFabrProd(f.Fabricante, f.Fabricante_Nome, f.Produto)}}
-                                    <span *ngIf="!telaDesktop"
-                                        innerHTML="{{produtoDescr(f.Fabricante, f.Produto).Descricao_html}}"></span>
-                                </td>
-                                <td class="tdtabela" *ngIf="telaDesktop">
-                                    <span innerHTML="{{produtoDescr(f.Fabricante, f.Produto).Descricao_html}}"></span>
-                                </td>
-                                <td class="tdtabela" align="right">
-                                    {{moedaUtils.formatarMoedaComPrefixo(produtoDescr(f.Fabricante, f.Produto).Preco_lista * f.Qtde)}}
-                                </td>
-                            </tr>
+                                </div>
+                            </td>
+                            <td class="tdtabela" *ngIf="telaDesktop">
+                                <span [innerHTML]="p.produtoDto.Descricao_html"></span> </td>
+                            <td class="tdtabela" align="right">
+                                {{moedaUtils.formatarMoedaComPrefixo(p.produtoDto.Preco_lista)}}
+                            </td>
+                        </tr>
+                        <!-- filhos -->
+                        <tr [ngStyle]="{display: p.visivel ? '':'none'}" class="prod trfilho"
+                            *ngFor="let f of p.Filhos">
+                            <td class="itemfilho">
+                                {{f.Qtde}} x {{ProdutoTelaFabrProd(f.Fabricante, f.Fabricante_Nome, f.Produto)}}
+                                <span *ngIf="!telaDesktop"
+                                    innerHTML="{{produtoDescr(f.Fabricante, f.Produto).Descricao_html}}"></span>
+                            </td>
+                            <td class="tdtabela" *ngIf="telaDesktop">
+                                <span innerHTML="{{produtoDescr(f.Fabricante, f.Produto).Descricao_html}}"></span>
+                            </td>
+                            <td class="tdtabela" align="right">
+                                {{moedaUtils.formatarMoedaComPrefixo(produtoDescr(f.Fabricante, f.Produto).Preco_lista * f.Qtde)}}
+                            </td>
+                        </tr>
+                        </ng-container>
                         </ng-container>
 
                         <!-- botão para msotrar o resto dos registros

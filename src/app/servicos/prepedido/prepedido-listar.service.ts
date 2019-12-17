@@ -43,15 +43,24 @@ export class PrepedidoListarService {
     /*
     //tipo de busca:
     tipoBusca:
-            Todos = 0, NaoViraramPedido = 1, SomenteViraramPedido = 2
+            Todos = 0, NaoViraramPedido = 1, SomenteViraramPedido = 2, Excluidos = 3
     */
-    let tipoBusca: number = 0;
-    if (this.paramsBuscaPrepedido.tipoBuscaAndamento && !this.paramsBuscaPrepedido.tipoBuscaPedido)
-      tipoBusca = 1;
-    if (!this.paramsBuscaPrepedido.tipoBuscaAndamento && this.paramsBuscaPrepedido.tipoBuscaPedido)
-      tipoBusca = 2;
-    params = params.append('tipoBusca', tipoBusca.toString());
 
+    let tipoBusca: number = 0;
+    if (this.paramsBuscaPrepedido.tipoBuscaAndamento &&
+      !this.paramsBuscaPrepedido.tipoBuscaPedido &&
+      !this.paramsBuscaPrepedido.tipoBuscaPedidoExcluidos)
+      tipoBusca = 1;
+    if (!this.paramsBuscaPrepedido.tipoBuscaAndamento &&
+      this.paramsBuscaPrepedido.tipoBuscaPedido &&
+      !this.paramsBuscaPrepedido.tipoBuscaPedidoExcluidos)
+      tipoBusca = 2;
+    if (!this.paramsBuscaPrepedido.tipoBuscaAndamento &&
+      !this.paramsBuscaPrepedido.tipoBuscaPedido &&
+      this.paramsBuscaPrepedido.tipoBuscaPedidoExcluidos)
+      tipoBusca = 3;
+
+    params = params.append('tipoBusca', tipoBusca.toString());
 
     this.carregando = true;
     this.http.get<PrepedidosCadastradosDtoPrepedido[]>(environment.apiUrl + 'prepedido/listarPrePedidos', { params: params }).subscribe(

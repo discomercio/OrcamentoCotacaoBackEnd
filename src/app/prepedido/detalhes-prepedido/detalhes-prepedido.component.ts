@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TelaDesktopBaseComponent } from '../../../../src/app/servicos/telaDesktop/telaDesktopBaseComponent';
-import { Location } from '@angular/common';
+import { Location, PlatformLocation } from '@angular/common';
 import { TelaDesktopService } from '../../../../src/app/servicos/telaDesktop/telaDesktop.service';
 import { PrepedidoBuscarService } from '../../../../src/app/servicos/prepedido/prepedido-buscar.service';
 import { PedidoBuscarService } from '../../../../src/app/servicos/pedido/pedido-buscar.service';
@@ -49,7 +49,7 @@ export class DetalhesPrepedidoComponent extends TelaDesktopBaseComponent impleme
     this.jaDeuErro = true;
     const dialogRef = this.dialog.open(AlertDialogComponent, {
       width: '350px',
-      data: `Ocorreu um erro ao acessar os dados. Verifique a conexão com a Internet. (Nota: esta tela ainda não foi implementada na API)`
+      data: `Ocorreu um erro ao acessar os dados. Verifique a conexão com a Internet.`
     });
     dialogRef.afterClosed().subscribe((result) => {
       //somente na inicialização, ou dá várias vezes
@@ -59,14 +59,14 @@ export class DetalhesPrepedidoComponent extends TelaDesktopBaseComponent impleme
 
 
   //verifica se vamos mostrar um pedido ou um prepedio
-  calcularEmPrepedidos(){
+  calcularEmPrepedidos() {
     //agora acessa o dado que vamos mostrar
     this.numeroPrepedido = this.activatedRoute.snapshot.params.numeroPrepedido;
     this.numeroPedido = this.activatedRoute.snapshot.params.numeroPedido;
     if (!!this.numeroPrepedido) {
       this.emPrepedidos = true;
     }
-    else{
+    else {
       this.emPrepedidos = false;
     }
   }
@@ -120,7 +120,9 @@ export class DetalhesPrepedidoComponent extends TelaDesktopBaseComponent impleme
     }
   }
 
+  
   voltar() {
+    
     this.location.back();
   }
 

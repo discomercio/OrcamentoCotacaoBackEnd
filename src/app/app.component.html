@@ -2,9 +2,8 @@
   style="display: flex; flex-direction: row; justify-content: center; height: 100vh; width: 100vw">
   <div style="display: flex; flex-direction: column; justify-content: center; height: 100vh;">
     <!-- pós login -->
-    <div *ngIf="logo != null && logo != ''" style="flex-grow: 0; flex-shrink: 0; ">      
-      <mat-toolbar  class="cabecalho larguramaxima" [routerLink]="['']" title="Home"
-        style="cursor: pointer">
+    <div *ngIf="logo != null && logo != ''" style="flex-grow: 0; flex-shrink: 0; ">
+      <mat-toolbar class="cabecalho larguramaxima" [routerLink]="['']" title="Home" style="cursor: pointer">
         <span style="float: left; font-size: 0.7em">
           <button class='px-0' type="submit" mat-button style="padding: 0%;" title="Home">
             <mat-icon class="iconelogout">home</mat-icon>
@@ -56,6 +55,7 @@
             <app-home [menuDesktop]="true"></app-home>
           </mat-sidenav>
           <div class="alturamaxima fundoprincipal">
+
             <!-- este cara PRECISA do *ngIf="telaDesktop"
             sem ele, dá um problema:
             //está um pouco instável quando chaveia
@@ -76,6 +76,7 @@
             }
          */
      -->
+            
             <router-outlet *ngIf="telaDesktop"></router-outlet>
           </div>
         </mat-sidenav-container>

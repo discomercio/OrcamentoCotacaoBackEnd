@@ -46,7 +46,8 @@ export class AutenticacaoService {
       }
     );
     sessionStorage.setItem('token', "");
-    localStorage.setItem('token', "");
+    localStorage.setItem('token', "");   
+    this.loja = null; 
     this.carregarLayout();
   }
 
@@ -196,42 +197,58 @@ export class AutenticacaoService {
   }
   private _estilo: string = null;
   private _logo: string = null;
+  private loja: string = null;
   private carregarLayout(): void {
     //tentamos obter a loja do token. se nao tiver, fica com null
-    let loja: string = null;
+    // let loja: string = null;
     if (this.authEstaLogado()) {
       const token = this.obterToken();
       const user = jtw_decode(token);
-      loja = (user && user.family_name) ? user.family_name : null;
+      this.loja = (user && user.family_name) ? user.family_name : null;
     }
 
     //define o estilo e o logo baseado na loja
-    if (loja == null) {
-      this._estilo = "assets/login.css";
-      //passar o logo tb
-      // this._logo = "../assets/log_unis.png"
+    if (this.loja == null) {
+      this._estilo = "";
       return;
     }
-    if (loja == "205" ||
-      loja == "206" ||
-      loja == "207" ||
-      loja == "208") {
+    if (this.loja == "205" ||
+      this.loja == "206" ||
+      this.loja == "207" ||
+      this.loja == "208") {
       this._estilo = "assets/Unis.css";
       //passar o logo tb
-      this._logo = "assets/LogoUnis.png"
+      this._logo = "assets/LogoUnis.png";
+
+      this.CarregarIconUnis();
+
     }
-    if (loja == "202" ||
-      loja == "203" ||
-      loja == "204") {
+    if (this.loja == "202" ||
+      this.loja == "203" ||
+      this.loja == "204") {
       this._estilo = "assets/shopVendas.css";
       //passar o logo tb
       this._logo = "assets/Logo-ShopVendas.png";
+
+      this.CarregarIconShopVendas();
     }
 
   }
   //fim
+  private CarregarIconShopVendas(): void {
+    //teste para trocar o ico
+    const head = document.getElementsByTagName('head')[0];
+    let favicon = document.getElementById('favicon') as HTMLLinkElement;
+    favicon.href = 'assets/favicon.ico';
+    head.appendChild(favicon);
 
-
+  }
+  private CarregarIconUnis(): void {
+    const head = document.getElementsByTagName('head')[0];
+    let favicon = document.getElementById('favicon') as HTMLLinkElement;
+    favicon.href = 'assets/icones/ico-unis-16x16.ico';
+    head.appendChild(favicon);
+  }
   /*
   nao queremos expor este desnecessaruiamente
   na API, devemos usar o ID de usuário do token e não como um parametro extra
@@ -246,5 +263,46 @@ export class AutenticacaoService {
     return ret;
   }
   */
+  public BuscarImgFundo(): string {
+    if (this.loja == "205" ||
+      this.loja == "206" ||
+      this.loja == "207" ||
+      this.loja == "208") {
+      return "url('/assets/background-unis-filtro-branco80.jpg')";
+    }
+    if (this.loja == "202" ||
+      this.loja == "203" ||
+      this.loja == "204") {
 
+      return "url('/assets/background-shopvendas.jpg')";
+    }
+
+  }
+  public buscarAlturaImg(): string {
+    if (this.loja == "205" ||
+      this.loja == "206" ||
+      this.loja == "207" ||
+      this.loja == "208") {
+      return "calc(100vh - 53px)";
+    }
+    if (this.loja == "202" ||
+      this.loja == "203" ||
+      this.loja == "204") {
+      return "calc(100vh - 53px)";
+    }
+  }
+
+  public buscarTamanhoImg(): string {
+    if (this.loja == "205" ||
+      this.loja == "206" ||
+      this.loja == "207" ||
+      this.loja == "208") {
+      return "100%";
+    }
+    if (this.loja == "202" ||
+      this.loja == "203" ||
+      this.loja == "204") {
+      return "100%";
+    }
+  }
 }

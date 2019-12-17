@@ -80,8 +80,21 @@ export class SelecProdDialogComponent extends TelaDesktopBaseComponent implement
     this.atualizarProdsTela();
   }
 
+  public msgProdNaoEncontrado: string = "";
   public atualizarProdsTela() {
+    this.msgProdNaoEncontrado = "";
     this.prodsTela = this.prodsArray.filter(el => el.visivel).slice(0, this.limiteTela);
+
+    //marcar o unico produto selecionado
+    var selecionado = this.prodsArray.filter(el => el.visivel);
+    this.produto = "";
+    if (selecionado.length > 0) {
+      this.produto = this.ProdutoTelaFabrProd(selecionado[0].produtoDto.Fabricante, selecionado[0].produtoDto.Fabricante_Nome,
+        selecionado[0].produtoDto.Produto);
+    }
+
+    if (this.prodsTela.length <= 0)
+      this.msgProdNaoEncontrado = "Produto não encontrado!";
   }
 
   ngOnInit() {
@@ -109,7 +122,7 @@ export class SelecProdDialogComponent extends TelaDesktopBaseComponent implement
   }
 
   //alteraram o produto
-  digitado = "";
+  public digitado = "";
   digitouProd(e: Event) {
     this.digitado = ((e.target) as HTMLInputElement).value;
     ProdutoTela.AtualizarVisiveis(this.prodsArray, this.digitado);

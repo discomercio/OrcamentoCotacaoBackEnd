@@ -9,5 +9,5 @@ export class ParamsBuscaPrepedido {
     public dataFinal: string = "";
     public tipoBuscaAndamento: boolean = true;
     public tipoBuscaPedido: boolean = true;
-
+    public tipoBuscaPedidoExcluidos: boolean = false;
 }

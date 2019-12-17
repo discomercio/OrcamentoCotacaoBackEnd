@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, DebugElement } from '@angular/core';
 import { PrepedidoComboNumeroService } from '../../../../src/app/servicos/prepedido/prepedido-combo-numero.service';
 import { PrepedidoComboCpfcnpjService } from '../../../../src/app/servicos/prepedido/prepedido-combo-cpfcnpj.service';
 import { Observable } from 'rxjs';
@@ -63,13 +63,22 @@ export class ConsultaBaseComponent extends TelaDesktopBaseComponent implements O
   buscar() {
     if (this.emPrepedidos) {
       //nenhuma busca, ligamos os dois
-      if (!this.prepedidoListarService.paramsBuscaPrepedido.tipoBuscaAndamento && !this.prepedidoListarService.paramsBuscaPrepedido.tipoBuscaPedido) {
+      if (!this.prepedidoListarService.paramsBuscaPrepedido.tipoBuscaAndamento &&
+        !this.prepedidoListarService.paramsBuscaPrepedido.tipoBuscaPedido &&
+        !this.prepedidoListarService.paramsBuscaPrepedido.tipoBuscaPedidoExcluidos) {
         this.prepedidoListarService.paramsBuscaPrepedido.tipoBuscaAndamento = true;
         this.prepedidoListarService.paramsBuscaPrepedido.tipoBuscaPedido = true;
 
         this._snackBar.open("Nenhum tipo estava selecionado, os dois tipos foram selecionados", "", {
           duration: environment.esperaAvisos
         });
+      }
+      if (!this.prepedidoListarService.paramsBuscaPrepedido.tipoBuscaAndamento &&
+        !this.prepedidoListarService.paramsBuscaPrepedido.tipoBuscaPedido &&
+        this.prepedidoListarService.paramsBuscaPrepedido.tipoBuscaPedidoExcluidos) {
+        // buscando apenas os excluidos
+        this.prepedidoListarService.paramsBuscaPrepedido.tipoBuscaAndamento = false;
+        this.prepedidoListarService.paramsBuscaPrepedido.tipoBuscaPedido = false;
       }
       if (this.prepedidoListarService.paramsBuscaPrepedido.dataInicial < this.minDate) {
         this._snackBar.open("É permitido realizar a busca dentro de um periodo de 60 dias atrás da Data atual", "", {
@@ -105,5 +114,15 @@ export class ConsultaBaseComponent extends TelaDesktopBaseComponent implements O
       else
         this.router.navigateByUrl('/pedido/lista');
     }
+  }
+
+  public checkExcluidos(): void {
+    this.prepedidoListarService.paramsBuscaPrepedido.tipoBuscaAndamento = false;
+    this.prepedidoListarService.paramsBuscaPrepedido.tipoBuscaPedido = false;
+  }
+
+  public checkBuscas(): void {
+    if (this.prepedidoListarService.paramsBuscaPrepedido.tipoBuscaPedidoExcluidos)
+      this.prepedidoListarService.paramsBuscaPrepedido.tipoBuscaPedidoExcluidos = false;
   }
 }

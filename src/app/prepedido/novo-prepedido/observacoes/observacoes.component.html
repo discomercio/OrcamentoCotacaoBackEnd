@@ -3,7 +3,7 @@
         <header>
             <ng-container *ngIf="criando; else tituloEditando">Criar Pré-Pedido</ng-container>
             <ng-template #tituloEditando>Editar Pré-pedido</ng-template>
-            - Observações 
+            - Observações
         </header>
         <article class="indicadorlinha">
             <div style="padding-bottom: 0.6em;"><strong>Cliente:</strong> {{cpfCnpj()}} -
@@ -13,18 +13,22 @@
                 <strong>Total do pedido: {{moedaUtils.formatarMoedaSemPrefixo(totalPedido())}}</strong>
             </div>
             <div>
-                    <br>
-                    <br>
-                </div>
+                <br>
+                <br>
+            </div>
             <div>
 
                 <!-- ************   OBSERVAÇÕES   ************  -->
                 <mat-form-field class="edicao-endereco">
-                    <textarea matInput type="text" placeholder="Observações adicionais do Pré-Pedido" [ngModelOptions]="{standalone: true}"
-                        [(ngModel)]="prePedidoDto.DetalhesPrepedido.Observacoes" #autosize="cdkTextareaAutosize"
-                        cdkTextareaAutosize cdkAutosizeMinRows="5" cdkAutosizeMaxRows="5"></textarea>
-
+                    <textarea matInput type="text" placeholder="Observações adicionais do Pré-Pedido" (keyup) = "contarCaracter()"
+                        [ngModelOptions]="{standalone: true}" [(ngModel)]="prePedidoDto.DetalhesPrepedido.Observacoes"
+                        #autosize="cdkTextareaAutosize" maxlength="500" cdkTextareaAutosize cdkAutosizeMinRows="5"
+                        cdkAutosizeMaxRows="5"></textarea>
                 </mat-form-field>
+                <div style="font-size: x-small; color:rgba(0, 0, 0, 0.54); margin-left: 18%; margin-top: -1%">
+                    <!-- fazer a contagem de soma -->
+                    <span>Limite de caracteres {{this.contador}} / 500</span>
+                </div>
 
                 <div class="umgrupoopcoes">
                     <mat-slide-toggle [(ngModel)]="EntregaImediata" [ngModelOptions]="{standalone: true}"> Entrega
@@ -52,13 +56,13 @@
 
         </article>
         <footer>
-                <a mat-raised-button color="accent" (click)="voltar()">
-                    <mat-icon>arrow_back</mat-icon> Voltar
-                </a>
-                <button mat-raised-button color="accent" (click)="continuar()" type="submit">
-                    <mat-icon>save</mat-icon> Salvar
-                </button>
-            </footer>
+            <a mat-raised-button color="accent" (click)="voltar()">
+                <mat-icon>arrow_back</mat-icon> Voltar
+            </a>
+            <button mat-raised-button color="accent" (click)="continuar()" type="submit">
+                <mat-icon>save</mat-icon> Salvar
+            </button>
+        </footer>
         <!-- <footer>
             <a mat-raised-button color="accent" (click)="voltar()">
                 <mat-icon>arrow_back</mat-icon> Voltar

@@ -176,31 +176,31 @@ e são usados desta forma:
     // copiado do ClienteEdita.asp
     if (clienteCadastroUtils.ehPf(dadosClienteCadastroDto)) {
       if (!dadosClienteCadastroDto.ProdutorRural) {
-        return 'Informe se o cliente é produtor rural ou não!!';
+        return 'Informe se o cliente é produtor rural ou não!';
       }
       if ((dadosClienteCadastroDto.ProdutorRural !== constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
         && (dadosClienteCadastroDto.ProdutorRural !== constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO)) {
-        return 'Informe se o cliente é produtor rural ou não!!';
+        return 'Informe se o cliente é produtor rural ou não!';
       }
       if (dadosClienteCadastroDto.ProdutorRural !== constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO) {
         if ((dadosClienteCadastroDto.Contribuinte_Icms_Status !== constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO)
           && (dadosClienteCadastroDto.Contribuinte_Icms_Status !== constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
           && (dadosClienteCadastroDto.Contribuinte_Icms_Status !== constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO)) {
-          return 'Informe se o cliente é contribuinte do ICMS, não contribuinte ou isento!!';
+          return 'Informe se o cliente é contribuinte do ICMS, não contribuinte ou isento!';
         }
         if ((dadosClienteCadastroDto.Contribuinte_Icms_Status === constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
           && (!dadosClienteCadastroDto.Ie || (dadosClienteCadastroDto.Ie.trim() == ""))) {
-          return 'Se o cliente é contribuinte do ICMS a inscrição estadual deve ser preenchida!!';
+          return 'Se o cliente é contribuinte do ICMS a inscrição estadual deve ser preenchida!';
           //f.ie.focus();
         }
         if ((dadosClienteCadastroDto.Contribuinte_Icms_Status === constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO)
           && (dadosClienteCadastroDto.Ie && (dadosClienteCadastroDto.Ie.toUpperCase().indexOf('ISEN') >= 0))) {
-          return 'Se cliente é não contribuinte do ICMS, não pode ter o valor ISENTO no campo de Inscrição Estadual!!';
+          return 'Se cliente é não contribuinte do ICMS, não pode ter o valor ISENTO no campo de Inscrição Estadual!';
           //f.ie.focus();
         }
         if ((dadosClienteCadastroDto.Contribuinte_Icms_Status === constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
           && (!dadosClienteCadastroDto.Ie || dadosClienteCadastroDto.Ie.toUpperCase().indexOf('ISEN') >= 0)) {
-          return 'Se cliente é contribuinte do ICMS, não pode ter o valor ISENTO no campo de Inscrição Estadual!!';
+          return 'Se cliente é contribuinte do ICMS, não pode ter o valor ISENTO no campo de Inscrição Estadual!';
           //f.ie.focus();
         }
       }
@@ -210,21 +210,21 @@ e são usados desta forma:
       if ((dadosClienteCadastroDto.Contribuinte_Icms_Status !== constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO)
         && (dadosClienteCadastroDto.Contribuinte_Icms_Status !== constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
         && (dadosClienteCadastroDto.Contribuinte_Icms_Status !== constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO)) {
-        return 'Informe se o cliente é contribuinte do ICMS, não contribuinte ou isento!!';
+        return 'Informe se o cliente é contribuinte do ICMS, não contribuinte ou isento!';
       }
       if ((dadosClienteCadastroDto.Contribuinte_Icms_Status === constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
         && (!dadosClienteCadastroDto.Ie || (dadosClienteCadastroDto.Ie.trim() == ""))) {
-        return 'Se o cliente é contribuinte do ICMS a inscrição estadual deve ser preenchida!!';
+        return 'Se o cliente é contribuinte do ICMS a inscrição estadual deve ser preenchida!';
         //f.ie.focus();
       }
       if ((dadosClienteCadastroDto.Contribuinte_Icms_Status === constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO)
         && (dadosClienteCadastroDto.Ie && (dadosClienteCadastroDto.Ie.toUpperCase().indexOf('ISEN') >= 0))) {
-        return 'Se cliente é não contribuinte do ICMS, não pode ter o valor ISENTO no campo de Inscrição Estadual!!';
+        return 'Se cliente é não contribuinte do ICMS, não pode ter o valor ISENTO no campo de Inscrição Estadual!';
         //f.ie.focus();
       }
       if ((dadosClienteCadastroDto.Contribuinte_Icms_Status === constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
         && (!dadosClienteCadastroDto.Ie || dadosClienteCadastroDto.Ie.toUpperCase().indexOf('ISEN') >= 0)) {
-        return 'Se cliente é contribuinte do ICMS, não pode ter o valor ISENTO no campo de Inscrição Estadual!!';
+        return 'Se cliente é contribuinte do ICMS, não pode ter o valor ISENTO no campo de Inscrição Estadual!';
         //f.ie.focus();
       }
     }

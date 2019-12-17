@@ -62,6 +62,10 @@
             </div>
 
         </form>
+        <!-- teste mensagem  -->
+        <div style="text-align: center">
+            <span *ngIf="endNaoEncontrado !=''">{{this.endNaoEncontrado}}</span>
+        </div>
 
         <!-- tabela de cep versão desktop-->
         <mat-radio-group *ngIf="lstEnderecos.length > 0" [(ngModel)]="endereco_selecionado" required
@@ -157,10 +161,10 @@
             </div>
         </div>
     </article>
-    <footer *ngIf="lstEnderecos.length > 0" mat-dialog-actions style="justify-content: space-around;">
-        <button mat-raised-button (click)="onOkClick()" color="accent">
-            Modificar
-        </button>
+    <footer *ngIf="lstEnderecos.length > 0" mat-dialog-actions style="justify-content: space-around;">        
         <button mat-raised-button (click)="onNoClick()" cdkFocusInitial color="accent">Cancelar</button>
+        <button mat-raised-button (click)="onOkClick()" color="accent">
+                Modificar
+            </button>
     </footer>
 </section>

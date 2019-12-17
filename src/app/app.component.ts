@@ -4,6 +4,7 @@ import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { AutenticacaoService } from './servicos/autenticacao/autenticacao.service'
 import { ImpressaoService } from './utils/impressao.service';
 import { DOCUMENT } from '@angular/common';
+import * as jtw_decode from 'jwt-decode';
 
 @Component({
   selector: 'app-root',
@@ -21,11 +22,11 @@ export class AppComponent implements OnInit {
 
   }
 
-  public logo:string = null;
-  
+  public logo: string = null;
+
 
   ngOnInit(): void {
-    
+
     this.carregarEstilo(false);
 
     this.router.events.subscribe(event => {
@@ -51,7 +52,7 @@ export class AppComponent implements OnInit {
   //carrega o estilo conforme o cliente. se for o caso, espera carregar para ir para a home
   //chamado do LoginformularioComponent
   public carregarEstilo(fazendoLogin: boolean): void {
-    
+
 
     const head = document.getElementsByTagName('head')[0];
 
@@ -63,17 +64,18 @@ export class AppComponent implements OnInit {
       estiloAtual.parentNode.removeChild(estiloAtual);
     }
 
-    //cria de novo
+    //cria de novo    
     const style = document.createElement('link');
+
     style.id = 'estiloCliente';
     style.rel = 'stylesheet';
     style.href = this.autenticacaoService.arquivoEstilos();
-    
-    this.logo = this.autenticacaoService.arquivoLogo(); 
+
+    this.logo = this.autenticacaoService.arquivoLogo();
     if (fazendoLogin) {
       //se estiver fazenod o login, ao terminar de carregar vamos para a home
-      
-      style.onload = () => {        
+
+      style.onload = () => {
         this.router.navigate(['/']);
       };
     }
@@ -82,12 +84,27 @@ export class AppComponent implements OnInit {
   }
 
   logout() {
-    // this.logo = null;
+    this.logo = null;
     //fazer a mudança de estilos
+
+    //aqui estamos devolvendo o ico da Arclube
+    const head = document.getElementsByTagName('head')[0];
+    let favicon = document.getElementById('favicon') as HTMLLinkElement;
+    favicon.href = 'favicon.ico';
+    head.appendChild(favicon);
     this.autenticacaoService.authLogout();
+
     this.carregarEstilo(false);
+
+    // setTimeout(() => {
+    //   //TEM QUE SER por timeout para evitar o erro
+    //   //ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value: 'mat-form-field-should-float: false'. Current value: 'mat-form-field-should-float: true'.
+    //   this.logo = null;
+    //   this.carregarEstilo(false);
+    // }, 1);
+
     this.router.navigateByUrl("/login");
-    
+
   }
 
   title = 'Sistema de pré-pedidos';

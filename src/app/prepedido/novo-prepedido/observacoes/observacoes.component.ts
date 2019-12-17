@@ -45,7 +45,6 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
       .subscribe(() => this.autosize.resizeToFitContent(true));
   }
 
-
   //#region navegação
   voltar() {
     this.dadosParaModelo();
@@ -60,11 +59,16 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
           r.push("Retorno nulo do servidor.");
         }
         if (r.length > 0) {
-          this.alertaService.mostrarMensagem("Erros ao salvar. \nLista de erros: \n" + r.join("\n"));
-          return;
+          if (r[0].length > 9) {
+            this.alertaService.mostrarMensagem("Erros ao salvar. \nLista de erros: \n" + r.join("\n"));
+            return;
+          }
+          else {
+            this.alertaService.mostrarMensagem("Pré-Pedido criado com sucesso.");
+            this.router.navigate(["prepedido/detalhes/" + r[0]]);
+          }
         }
-        this.alertaService.mostrarMensagem("Pré-pedido criado com sucesso.");
-        this.router.navigate(["prepedido/detalhes/" + this.novoPrepedidoDadosService.prePedidoDto.NumeroPrePedido]);
+
       },
       error: (r) => this.alertaService.mostrarErroInternet()
     });
@@ -88,13 +92,13 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
       this.EntregaImediata = true;
     }
     // this.BemDeUso_Consumo = false;
-    if (this.prePedidoDto.DetalhesPrepedido.BemDeUso_Consumo != "NÃO" || 
-    this.prePedidoDto.DetalhesPrepedido.BemDeUso_Consumo == undefined) {
+    if (this.prePedidoDto.DetalhesPrepedido.BemDeUso_Consumo != "NÃO" ||
+      this.prePedidoDto.DetalhesPrepedido.BemDeUso_Consumo == undefined) {
       this.BemDeUso_Consumo = true;
     }
     // this.InstaladorInstala = false;
-    if (this.prePedidoDto.DetalhesPrepedido.InstaladorInstala != "NÃO" || 
-    this.prePedidoDto.DetalhesPrepedido.InstaladorInstala == undefined) {
+    if (this.prePedidoDto.DetalhesPrepedido.InstaladorInstala != "NÃO" ||
+      this.prePedidoDto.DetalhesPrepedido.InstaladorInstala == undefined) {
       this.InstaladorInstala = true;
     }
     // this.GarantiaIndicador = false;
@@ -123,6 +127,9 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
     //   this.prePedidoDto.DetalhesPrepedido.GarantiaIndicador = this.constantes.COD_GARANTIA_INDICADOR_STATUS__SIM.toString();
     // }
   }
-
+  public contador: number = 0;
+  public contarCaracter(): void {
+    this.contador = this.prePedidoDto.DetalhesPrepedido.Observacoes.length;
+  }
 
 }

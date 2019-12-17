@@ -57,22 +57,28 @@
                 </mat-form-field>
             </div>
         </div>
-
+        <!-- Pré-Pedidos -->
         <div class="container divCampos" [class]="telaDesktop? 'containerDesktop': 'containerCelular'"
             fxLayout="row wrap" fxLayout="column" fxLayout.gt-sm="row">
             <div *ngIf="emPrepedidos" [class]="telaDesktop? 'campoTextoDesktop cbdesktop': 'campoTextoCel cbcel'">
-                <mat-checkbox class="checkboxes"
+                <mat-checkbox class="checkboxes" (click)="checkBuscas()"
                     [(ngModel)]="prepedidoListarService.paramsBuscaPrepedido.tipoBuscaAndamento"
                     name="tipoBuscaAndamento">Em andamento
                 </mat-checkbox>
             </div>
             <div *ngIf="emPrepedidos" [class]="telaDesktop? 'campoTextoDesktop cbdesktop': 'campoTextoCel cbcel'">
-                <mat-checkbox class="checkboxes"
+                <mat-checkbox class="checkboxes" (click)="checkBuscas()"
                     [(ngModel)]="prepedidoListarService.paramsBuscaPrepedido.tipoBuscaPedido" name="tipoBuscaPedido">Que
                     viraram pedidos
                 </mat-checkbox>
             </div>
-
+            <div *ngIf="emPrepedidos" [class]="telaDesktop? 'campoTextoDesktop cbdesktop': 'campoTextoCel cbcel'">
+                    <mat-checkbox class="checkboxes"  (click)="checkExcluidos()"           
+                        [(ngModel)]="prepedidoListarService.paramsBuscaPrepedido.tipoBuscaPedidoExcluidos" name="tipoBuscaPedidoExcluidos">
+                        Excluídos
+                    </mat-checkbox>
+                </div>
+            <!-- Pedidos -->
             <div *ngIf="!emPrepedidos" [class]="telaDesktop? 'campoTextoDesktop cbdesktop': 'campoTextoCel cbcel'">
                 <mat-checkbox class="checkboxes" [(ngModel)]="pedidoListarService.paramsBuscaPedido.tipoBuscaEncerrado"
                     name="tipoBuscaEncerrado">

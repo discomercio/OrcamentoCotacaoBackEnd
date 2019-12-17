@@ -28,4 +28,16 @@ no celular aparece sempre -->
         <div style="flex-grow: 0.5" *ngIf="!menuDesktop">
         </div>
     </div>
+</div>  
+<!-- teste -->
+<div [class]="menuDesktop? 'spaMenu':'spaTela'">
+    <div id="imgFundo" *ngIf="!menuDesktop" [class]="menuDesktop? 'corpoMenu': 'corpohome'"
+    [style.background-image] = "BuscarImgFundo()" [style.height] = "buscarAlturaImg()" [style.background-size] = "buscarTamanhoImg()">
+        <!--  style="background-image: url('/assets/background-unis-filtro-branco80.jpg'); 
+    background-size:100% 100%; height: calc(100vh - 53px);" -->
+        <!-- <div *ngIf="!menuDesktop" >Teste</div> -->
+    </div>
 </div>
+<!-- <div style="background-image: url('/assets/background-unis-filtro-branco80.jpg'); 
+background-size:100% 100%;">
+teste</div> -->

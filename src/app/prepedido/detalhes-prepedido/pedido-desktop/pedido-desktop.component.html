@@ -51,13 +51,14 @@
                         <tr>
                             <td valign='bottom' align='left'>
                                 <span class='STP' [ngStyle]="{'color': pedido.StatusHoraPedido.CorEntrega}">
-                                    {{pedido.StatusHoraPedido.St_Entrega.toUpperCase()}}
+                                    {{pedido.StatusHoraPedido.St_Entrega.toUpperCase()}} 
                                 </span>
                             </td>
                             <td align='left' style='width:6px;padding-bottom:4px'>
                             </td>
-                            <td align='center' valign='bottom' class='MD ME'
-                                style='border-width:2px; padding-bottom: 4px'
+                            <!--retiramos o atributo "class='MD ME'" que estava colocando o "|" entre as datas  -->
+                            <td align='center' valign='bottom' *ngIf="pedido.StatusHoraPedido.Entregue_Data != null"                            
+                                style='border-width:2px; padding-bottom: 4px' class='MD ME'
                                 [ngStyle]="{'border-color': pedido.StatusHoraPedido.CorEntrega}">
                                 <span
                                     [ngClass]="{'STP': pedido.StatusHoraPedido.Status == 'Entrega', 'HoraPed':pedido.StatusHoraPedido.Status != 'Entrega'}"
@@ -390,10 +391,10 @@
                         &nbsp;
                     </p>
                 </td>
-                <td class="tdGarInd" nowrap align="left" valign="top">
+                <!-- <td class="tdGarInd" nowrap align="left" valign="top">
                     <p class="Rf">Garantia Indicador</p>
                     <p class="C" style="margin-top:3px;">{{pedido?.DetalhesNF?.GarantiaIndicadorStatus}}&nbsp;</p>
-                </td>
+                </td> -->
             </tr>
         </table>
         <br>

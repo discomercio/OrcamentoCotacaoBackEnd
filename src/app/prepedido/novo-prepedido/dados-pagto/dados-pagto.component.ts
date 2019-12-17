@@ -182,7 +182,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
         retorno = false;
       }
       if (this.enumFormaPagto == 3) {
-        if (this.meioPagtoEntrada || this.meioPagtoEntradaPrest)
+        if (this.meioPagtoEntrada && this.meioPagtoEntradaPrest)
         //ParcComEnt
         {
           if (this.meioPagtoEntradaPrest != 5 && this.meioPagtoEntradaPrest != 7 && !this.diasVenc) {

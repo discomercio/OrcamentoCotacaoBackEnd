@@ -315,15 +315,15 @@ TelComercial2
     let ret: string[] = new Array();
 
     if ((this.dadosClienteCadastroDto.Cnpj_Cpf.trim() === "") || (!CpfCnpjUtils.cnpj_cpf_ok(this.dadosClienteCadastroDto.Cnpj_Cpf))) {
-      ret.push('CNPJ/CPF inválido!!');
+      ret.push('CNPJ/CPF inválido!');
     }
 
     if ((this.dadosClienteCadastroDto.Email !== "") && (!ValidacoesUtils.email_ok(this.dadosClienteCadastroDto.Email))) {
-      ret.push('E-mail inválido!!');
+      ret.push('E-mail inválido!');
     }
 
     if ((this.dadosClienteCadastroDto.EmailXml !== "") && (!ValidacoesUtils.email_ok(this.dadosClienteCadastroDto.EmailXml))) {
-      ret.push('E-mail (XML) inválido!!');
+      ret.push('E-mail (XML) inválido!');
     }
     return ret;
   }
@@ -333,11 +333,11 @@ TelComercial2
 
     let s = this.dadosClienteCadastroDto.Contato.trim();
     if (s === "") {
-      ret.push('Informe o nome da pessoa para contato!!');
+      ret.push('Informe o nome da pessoa para contato!');
     }
 
     if (this.dadosClienteCadastroDto.Nome.trim() == "") {
-      ret.push('Preencha o nome!!');
+      ret.push('Preencha o nome!');
     }
 
     return ret;
@@ -348,7 +348,7 @@ TelComercial2
 
     let s = this.dadosClienteCadastroDto.Sexo;
     if ((s == "") || (!ValidacoesUtils.sexo_ok(s))) {
-      ret.push('Indique qual o sexo!!');
+      ret.push('Indique qual o sexo!');
     }
     //nao validamos a data dessa forma, ela já é uma data no formulário: if (!isDate(f.dt_nasc)) {
     //e ela é opcional, então não validamos nada!
@@ -359,13 +359,13 @@ TelComercial2
     let ret: string[] = new Array();
 
     if (ref.Banco.trim() === "") {
-      ret.push('Informe o banco no cadastro de Referência Bancária!!');
+      ret.push('Informe o banco no cadastro de Referência Bancária!');
     }
     if (ref.Agencia.trim() === "") {
-      ret.push('Informe a agência no cadastro de Referência Bancária!!');
+      ret.push('Informe a agência no cadastro de Referência Bancária!');
     }
     if (ref.Conta.trim() === "") {
-      ret.push('Informe o número da conta no cadastro de Referência Bancária!!');
+      ret.push('Informe o número da conta no cadastro de Referência Bancária!');
     }
     return ret;
   }
@@ -374,7 +374,7 @@ TelComercial2
     let ret: string[] = new Array();
 
     if (ref.Nome_Empresa.trim() == "") {
-      ret.push('Informe o nome da empresa no cadastro de Referência Comercial!!');
+      ret.push('Informe o nome da empresa no cadastro de Referência Comercial!');
     }
 
     return ret;
@@ -385,35 +385,35 @@ TelComercial2
 
     if (this.ehPf()) {
       if (!FormatarTelefone.ddd_ok(this.dadosClienteCadastroDto.DddResidencial)) {
-        ret.push('DDD residencial inválido!!');
+        ret.push('DDD residencial inválido!');
       }
       if (!FormatarTelefone.telefone_ok(this.dadosClienteCadastroDto.TelefoneResidencial)) {
-        ret.push('Telefone residencial inválido!!');
+        ret.push('Telefone residencial inválido!');
       }
       if ((this.dadosClienteCadastroDto.DddResidencial.trim() !== "") || (this.dadosClienteCadastroDto.TelefoneResidencial.trim() != "")) {
         if (this.dadosClienteCadastroDto.DddResidencial.trim() === "") {
-          ret.push('Preencha o DDD residencial!!');
+          ret.push('Preencha o DDD residencial!');
         }
         if (this.dadosClienteCadastroDto.TelefoneResidencial.trim() === "") {
-          ret.push('Preencha o telefone residencial!!');
+          ret.push('Preencha o telefone residencial!');
         }
       }
     }
 
     if (!FormatarTelefone.ddd_ok(this.dadosClienteCadastroDto.DddComercial)) {
-      ret.push('DDD comercial inválido!!');
+      ret.push('DDD comercial inválido!');
     }
 
     if (!FormatarTelefone.telefone_ok(this.dadosClienteCadastroDto.TelComercial)) {
-      ret.push('Telefone comercial inválido!!');
+      ret.push('Telefone comercial inválido!');
     }
 
     if ((this.dadosClienteCadastroDto.DddComercial.trim() !== "") || (this.dadosClienteCadastroDto.TelComercial.trim() !== "")) {
       if (this.dadosClienteCadastroDto.DddComercial.trim() === "") {
-        ret.push('Preencha o DDD comercial!!');
+        ret.push('Preencha o DDD comercial!');
       }
       if (this.dadosClienteCadastroDto.TelComercial.trim() === "") {
-        ret.push('Preencha o telefone comercial!!');
+        ret.push('Preencha o telefone comercial!');
       }
     }
 
@@ -421,33 +421,33 @@ TelComercial2
       if ((this.dadosClienteCadastroDto.TelefoneResidencial.trim() === "")
         && (this.dadosClienteCadastroDto.TelComercial.trim() === "")
         && (this.dadosClienteCadastroDto.Celular.trim() === "")) {
-        ret.push('Preencha pelo menos um telefone!!');
+        ret.push('Preencha pelo menos um telefone!');
       }
     }
     else {
 
       //PJ, telefone 1 é obrigatório
       if (this.dadosClienteCadastroDto.TelComercial.trim() === "") {
-        ret.push('Preencha o telefone comercial!!');
+        ret.push('Preencha o telefone comercial!');
       }
 
 
       if (this.dadosClienteCadastroDto.TelComercial2.trim() !== "") {
         if (this.dadosClienteCadastroDto.DddComercial2.trim() === "") {
-          ret.push('Preencha o DDD comercial 2!!');
+          ret.push('Preencha o DDD comercial 2!');
         }
         if (this.dadosClienteCadastroDto.TelComercial2.trim() === "") {
-          ret.push('Preencha o telefone comercial 2!!');
+          ret.push('Preencha o telefone comercial 2!');
         }
       }
 
     }
     if (this.ehPf()) {
       if (!FormatarTelefone.ddd_ok(this.dadosClienteCadastroDto.DddCelular)) {
-        ret.push('DDD celular inválido!!');
+        ret.push('DDD celular inválido!');
       }
       if (!FormatarTelefone.telefone_ok(this.dadosClienteCadastroDto.Celular)) {
-        ret.push('Telefone celular inválido!!');
+        ret.push('Telefone celular inválido!');
       }
       if ((this.dadosClienteCadastroDto.DddCelular.trim() === "") && (this.dadosClienteCadastroDto.Celular.trim() !== "")) {
         ret.push('Preencha o DDD do celular.');
@@ -458,10 +458,10 @@ TelComercial2
     }
     if (!this.ehPf()) {
       if (!FormatarTelefone.ddd_ok(this.dadosClienteCadastroDto.DddComercial2)) {
-        ret.push('DDD comercial 2 inválido!!');
+        ret.push('DDD comercial 2 inválido!');
       }
       if (!FormatarTelefone.telefone_ok(this.dadosClienteCadastroDto.TelComercial2)) {
-        ret.push('Telefone comercial 2 inválido!!');
+        ret.push('Telefone comercial 2 inválido!');
       }
       if ((this.dadosClienteCadastroDto.DddComercial2.trim() === "") && (this.dadosClienteCadastroDto.TelComercial2.trim() !== "")) {
         ret.push('Preencha o DDD do telefone comercial 2.');
@@ -479,32 +479,32 @@ TelComercial2
     let ret: string[] = new Array();
 
     if (this.dadosClienteCadastroDto.Endereco.trim() === "") {
-      ret.push('Preencha o endereço!!');
+      ret.push('Preencha o endereço!');
     }
 
     if (this.dadosClienteCadastroDto.Numero.trim() === "") {
-      ret.push('Preencha o número do endereço!!');
+      ret.push('Preencha o número do endereço!');
     }
 
     if (this.dadosClienteCadastroDto.Bairro.trim() === "") {
-      ret.push('Preencha o bairro!!');
+      ret.push('Preencha o bairro!');
     }
 
     if (this.dadosClienteCadastroDto.Cidade.trim() === "") {
-      ret.push('Preencha a cidade!!');
+      ret.push('Preencha a cidade!');
     }
 
     let s = this.dadosClienteCadastroDto.Uf.trim();
     if ((s === "") || (!ValidacoesUtils.uf_ok(s))) {
-      ret.push('UF inválida!!');
+      ret.push('UF inválida!');
     }
 
     if (this.dadosClienteCadastroDto.Cep.toString().trim() === "") {
-      ret.push('Informe o CEP!!');
+      ret.push('Informe o CEP!');
     }
 
     if (!new FormatarEndereco().cep_ok(this.dadosClienteCadastroDto.Cep.toString())) {
-      ret.push('CEP inválido!!');
+      ret.push('CEP inválido!');
     }
 
     return ret;
