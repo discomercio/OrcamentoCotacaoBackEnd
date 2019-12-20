@@ -74,7 +74,7 @@ namespace PrepedidoApi.Controllers
 #if DEBUG
         [AllowAnonymous]
 #endif
-        [HttpPut("removerPrePedido/{numeroPrePedido}")]
+        [HttpPost("removerPrePedido/{numeroPrePedido}")]
         public async Task<IActionResult> RemoverPrePedido(string numeroPrePedido)
         {
             //para testar: http://localhost:60877/api/prepedido/removerPrePedido/{numeroPrePedido}
@@ -87,7 +87,7 @@ namespace PrepedidoApi.Controllers
             var ret = await prepedidoBll.RemoverPrePedido(numeroPrePedido, apelido);
 
             if (ret == true)
-                return NoContent();
+                return Ok();
             else
                 return NotFound();
         }
@@ -140,7 +140,7 @@ namespace PrepedidoApi.Controllers
 #if DEBUG
         [AllowAnonymous]
 #endif
-        [HttpDelete("deletarPrepedido")]
+        [HttpPost("deletarPrepedido")]
         public async Task<IActionResult> DeletarPrePedido(PrePedidoDto prePedido)
         {
             //para testar: http://localhost:60877/api/prepedido/deletarPrepedido
