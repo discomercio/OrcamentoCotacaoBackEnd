@@ -37,33 +37,14 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     super(telaDesktopService);
   }
 
-  verificarCriarNovoPrepedido() {
-    
-    if (!!this.novoPrepedidoDadosService.prePedidoDto) {
-      let existente = this.novoPrepedidoDadosService.prePedidoDto.DadosCliente.Id;
-      if (existente == this.dadosClienteCadastroDto.Id) {
-        //nao criamos! usamos o que já está no serviço
-        this.dadosClienteCadastroDto = this.novoPrepedidoDadosService.prePedidoDto.DadosCliente;
-        this.enderecoEntregaDtoClienteCadastro = this.novoPrepedidoDadosService.prePedidoDto.EnderecoEntrega;
-        this.confirmarEndereco.atualizarDadosEnderecoTela(this.enderecoEntregaDtoClienteCadastro);
-        return;
-      }
-    }
-
-    ///vamos criar um novo
-    this.novoPrepedidoDadosService.criarNovo(this.dadosClienteCadastroDto, this.enderecoEntregaDtoClienteCadastro);
-    this.confirmarEndereco.atualizarDadosEnderecoTela(this.enderecoEntregaDtoClienteCadastro);
-  }
-
   ngOnInit() {
-
-
     this.dadosClienteCadastroDto = null;
     if (this.router.getCurrentNavigation()) {
       let clienteCadastroDto: ClienteCadastroDto = (this.router.getCurrentNavigation().extras.state) as ClienteCadastroDto;
       if (clienteCadastroDto && clienteCadastroDto.DadosCliente) {
         //estramente, precisamos fazer por timeout
         //é que, se for simplesmente setado, ele não "percebe" que foi carregado
+
         setTimeout(() => {
           this.dadosClienteCadastroDto = clienteCadastroDto.DadosCliente;
           this.verificarCriarNovoPrepedido();
@@ -115,6 +96,23 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
 
     //para pegar o enter
     document.getElementById("idcontinuar").focus();
+  }
+
+  verificarCriarNovoPrepedido() {
+    if (!!this.novoPrepedidoDadosService.prePedidoDto) {
+      let existente = this.novoPrepedidoDadosService.prePedidoDto.DadosCliente.Id;
+      if (existente == this.dadosClienteCadastroDto.Id) {
+        //nao criamos! usamos o que já está no serviço
+        this.dadosClienteCadastroDto = this.novoPrepedidoDadosService.prePedidoDto.DadosCliente;
+        this.enderecoEntregaDtoClienteCadastro = this.novoPrepedidoDadosService.prePedidoDto.EnderecoEntrega;
+        this.confirmarEndereco.atualizarDadosEnderecoTela(this.enderecoEntregaDtoClienteCadastro);
+        return;
+      }
+    }
+
+    ///vamos criar um novo
+    this.novoPrepedidoDadosService.criarNovo(this.dadosClienteCadastroDto, this.enderecoEntregaDtoClienteCadastro);
+    this.confirmarEndereco.atualizarDadosEnderecoTela(this.enderecoEntregaDtoClienteCadastro);
   }
 
   //#region salvar alterações no IE e Contribuinte_Icms_Status
@@ -223,7 +221,6 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
   @ViewChild("confirmarEndereco", { static: false }) confirmarEndereco: ConfirmarEnderecoComponent;
 
   continuar(): void {
-
     //primeiro, vamos ver o CEP que está dentro do cliente
     //somente se o confirmarEndereco estiver atribuído. Se não estiver, é porque não estamos na tela em que precisamos testar ele
     if (this.confirmarEndereco && !this.confirmarEndereco.podeAvancar()) {
@@ -249,18 +246,12 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     if (this.fase2 || this.fase1e2juntas) {
       //vamos validar o endereço
       // só a jsutificativa, número e complemento. O resto vai ser validado pelo CEP
-
-      if (this.enderecoEntregaDtoClienteCadastro.OutroEndereco) {
-        if (!this.enderecoEntregaDtoClienteCadastro.EndEtg_cod_justificativa || this.enderecoEntregaDtoClienteCadastro.EndEtg_cod_justificativa.trim() === "") {
-          this.mostrarMensagem("Caso seja selecionado outro endereço, selecione a justificativa do endereço de entrega!")
-          return;
-        }
-        //somente número, o resto é feito pelo CEP
-        if (!this.enderecoEntregaDtoClienteCadastro.EndEtg_endereco_numero || this.enderecoEntregaDtoClienteCadastro.EndEtg_endereco_numero.trim() === "") {
-          this.mostrarMensagem("Caso seja selecionado outro endereço, preencha o número do endereço de entrega!")
-          return;
-        }
+      
+      //iremos validar os campos
+      if(!this.validarEnderecoEntrega(this.enderecoEntregaDtoClienteCadastro)){
+        return;
       }
+      
       //salvar no serviço
       this.novoPrepedidoDadosService.setarDTosParciais(this.dadosClienteCadastroDto, this.enderecoEntregaDtoClienteCadastro);
 
@@ -270,6 +261,32 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     }
     this.fase2 = true;
     this.fase1 = false;
+  }
+
+  public validarEnderecoEntrega(end: EnderecoEntregaDtoClienteCadastro): boolean {
+    let retorno = true;
+    if (end.OutroEndereco) {
+      if (!end.EndEtg_cep || end.EndEtg_cep.trim() === "" ||
+        !end.EndEtg_uf || end.EndEtg_uf.trim() === "" ||
+        !end.EndEtg_cidade || end.EndEtg_cidade.trim() === "") {
+        this.mostrarMensagem("Caso seja selecionado outro endereço, informe um CEP válido!");
+        return retorno = false;
+      }
+      if (!end.EndEtg_endereco || end.EndEtg_endereco.trim() === "") {
+        this.mostrarMensagem("Caso seja selecionado outro endereço, informe um endereço!");
+        return retorno = false;
+      }
+      if (!end.EndEtg_cod_justificativa || end.EndEtg_cod_justificativa.trim() === "") {
+        this.mostrarMensagem("Caso seja selecionado outro endereço, selecione a justificativa do endereço de entrega!")
+        return retorno = false;;
+      }
+      //somente número, o resto é feito pelo CEP
+      if (!end.EndEtg_endereco_numero || end.EndEtg_endereco_numero.trim() === "") {
+        this.mostrarMensagem("Caso seja selecionado outro endereço, preencha o número do endereço de entrega!")
+        return retorno = false;;
+      }
+    }
+    return retorno;
   }
 
 }

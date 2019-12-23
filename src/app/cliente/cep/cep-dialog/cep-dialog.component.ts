@@ -65,6 +65,8 @@ export class CepDialogComponent extends TelaDesktopBaseComponent implements OnIn
   public lstCidades: string[] = [];
 
   buscarLocalidades(): void {
+
+    this.lstEnderecos = [];
     this.lstCidades = new Array();
     if (!this.uf) {
       this.alertaService.mostrarMensagem("Favor selecionar um Estado!");
@@ -76,6 +78,8 @@ export class CepDialogComponent extends TelaDesktopBaseComponent implements OnIn
           if (!!r) {
             this.carregando = false;
             this.lstCidades = r;
+            this.localidade = "";
+            this.endereco = "";
           }
           else {
             this.alertaService.mostrarMensagem("Erro ao carregar a lista de Cidades!")
@@ -92,6 +96,10 @@ export class CepDialogComponent extends TelaDesktopBaseComponent implements OnIn
   public endNaoEncontrado: string = "";
 
   buscarCepPorEndereco() {
+
+    //fazer a limpeza dos campos antes de realizar uma nova busca
+    this.lstEnderecos = [];
+
 
     // if (!this.endereco && !this.localidade) {
     //   this.alertaService.mostrarMensagem("Favor digitar o endereco ou a localidade!");
@@ -111,10 +119,15 @@ export class CepDialogComponent extends TelaDesktopBaseComponent implements OnIn
             next: (r: CepDto[]) => {
               this.carregando = false;
               if (!!r) {
-                if (r.length > 0)
+                if (r.length > 0) {
                   this.lstEnderecos = r;
-                  else
-                  this.endNaoEncontrado = "Nenhuma endereço encontrado!";
+                  this.lstCidades = [];
+                  this.localidade = "";
+                  this.endereco = "";
+                  this.endNaoEncontrado = "";
+                }
+                else
+                  this.endNaoEncontrado = "Nenhum endereço encontrado";
               }
               else {
                 this.alertaService.mostrarMensagem("Erro ao carregar a lista de Endereços!")
@@ -131,6 +144,9 @@ export class CepDialogComponent extends TelaDesktopBaseComponent implements OnIn
         this.carregando = false;
         this.alertaService.mostrarMensagem("Favor selecionar uma Localidade na lista!");
       }
+
+      //limpar campos
+
     }
   }
 

@@ -59,6 +59,25 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
   mascaraCep() {
     return [/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
   }
+
+  public zerarCamposEndEntrega(): void {
+    this.Cidade = "";
+    this.Endereco = "";
+    this.Bairro = "";
+    this.Uf = "";
+    this.Complemento = "";
+    this.Numero = "";
+
+    this.temCidade = true;
+    this.temBairro = true;
+    this.temEndereco = true;
+    this.temUf = true;
+  }
+
+  public temEndereco: boolean = true;
+  public temBairro: boolean = true;
+  public temCidade: boolean = true;
+  public temUf: boolean = true;
   //saiu do campo de CEP, vamos carregar o endereco
   saiuCep() {
     //se vazio, não damos nenhuma mensagem
@@ -73,6 +92,7 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
       return false;
     }
 
+    this.zerarCamposEndEntrega();
 
     //vamos fazer a busca
     this.carregando = true;
@@ -85,15 +105,24 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
           return;
         }
 
-        //recebemos um ednereço
+        //recebemos um endereço
         const end = r[0];
-        this.Bairro = end.Bairro;
-        this.Cidade = end.Cidade;
-        //este nao vem: this.Endereco=end.Complemento;
-        this.Endereco = end.Endereco;
-        //este nao vale quando busca por cep: = end.LogradouroComplemento;
-        //este nao vem: this.Endereco=end.Numero;
-        this.Uf = end.Uf;
+        if (!!end.Bairro) {
+          this.Bairro = end.Bairro;
+          this.temBairro = true;
+        }
+        if (!!end.Cidade) {
+          this.Cidade = end.Cidade;
+          this.temCidade = true;
+        }
+        if (!!end.Endereco) {
+          this.Endereco = end.Endereco;
+          this.temEndereco = true;
+        }
+        if (!!end.Uf) {
+          this.Uf = end.Uf;
+          this.temUf = true;
+        }
 
       }).catch((r) => {
         //deu erro na busca
@@ -105,6 +134,8 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
 
   //para acessar a caixa de diálogo
   buscarCep() {
+    this.zerarCamposEndEntrega();
+
     let options: any = {
       autoFocus: false,
       width: "60em"
@@ -120,13 +151,37 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
       };
     }
     const dialogRef = this.dialog.open(CepDialogComponent, options);
+
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         let end: CepDto = dialogRef.componentInstance.lstEnderecos[dialogRef.componentInstance.endereco_selecionado];
-        this.Endereco = end.Endereco;
-        this.Uf = end.Uf;
-        this.Bairro = end.Bairro;
-        this.Cidade = end.Cidade;
+
+        if (!!end.Endereco.trim()) {
+          this.Endereco = end.Endereco;
+          this.temEndereco = true;
+        }
+        else{
+          this.temEndereco = false;
+        }
+        if (!!end.Uf) {
+          this.Uf = end.Uf;
+          this.temUf = true;
+        }
+        if (!!end.Bairro.trim()) {
+          this.Bairro = end.Bairro;
+          this.temBairro = true;
+        }
+        else{
+          this.temBairro = false;
+        }
+        if (!!end.Cidade.trim()) {
+          this.Cidade = end.Cidade;
+          this.temCidade = true;
+        }
+        if (!!end.LogradouroComplemento) {
+          this.Complemento = end.LogradouroComplemento;
+        }
+
         this.Cep = end.Cep;
       }
     });

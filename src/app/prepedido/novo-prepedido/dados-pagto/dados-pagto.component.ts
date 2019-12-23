@@ -1,25 +1,18 @@
 import { Location } from '@angular/common';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { TelaDesktopBaseComponent } from 'src/app/servicos/telaDesktop/telaDesktopBaseComponent';
+import { Component, OnInit } from '@angular/core';
 import { NovoPrepedidoDadosService } from '../novo-prepedido-dados.service';
 import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
 import { MatDialog } from '@angular/material';
 import { TelaDesktopService } from 'src/app/servicos/telaDesktop/telaDesktop.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { PrePedidoDto } from 'src/app/dto/Prepedido/DetalhesPrepedido/PrePedidoDto';
 import { MoedaUtils } from 'src/app/utils/moedaUtils';
 import { Constantes } from 'src/app/dto/Constantes';
-import { CpfCnpjUtils } from 'src/app/utils/cpfCnpjUtils';
 import { PassoPrepedidoBase } from '../passo-prepedido-base';
 import { FormaPagtoDto } from 'src/app/dto/FormaPagto/FormaPagtoDto';
 import { PrepedidoBuscarService } from 'src/app/servicos/prepedido/prepedido-buscar.service';
 import { EnumFormaPagto } from './enum-forma-pagto';
 import { CoeficienteDto } from 'src/app/dto/Produto/CoeficienteDto';
-import { strictEqual } from 'assert';
-import { Observable } from 'rxjs';
 import { EnumTipoPagto } from './tipo-forma-pagto';
-import { parse } from 'url';
-import { FormaPagtoCriacaoDto } from 'src/app/dto/Prepedido/DetalhesPrepedido/FormaPagtoCriacaoDto';
 
 
 @Component({
@@ -47,13 +40,20 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
     super(telaDesktopService, router, novoPrepedidoDadosService);
   }
 
+  mascaraNum(){
+    return [/\d/, /\d/, /\d/];
+  }
+ 
   ngOnInit() {
-
+    
     this.buscarQtdeParcCartaoVisa();
     this.verificarEmProcesso();
     this.buscarFormaPagto();
     this.buscarCoeficiente(null);
-    this.montaFormaPagtoExistente();
+    setTimeout(() => {
+      this.montaFormaPagtoExistente();
+    }, 300);
+    
   }
 
   //#region navegação
@@ -170,34 +170,38 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
       {
         if (mostrarMsg) {
           this.alertaService.mostrarMensagem("Favor selecionar o meio de pagamento á vista");
+          retorno = false;
         }
-        retorno = false;
       }
       if (this.enumFormaPagto == 2 && (!this.qtde || !this.valor))//ParcCartaoInternet
       {
         if (mostrarMsg) {
           this.alertaService.mostrarMensagem("Favor selecionar corretamente o meio de pagamento " +
             "para Parcelado no Cartão (Internet).");
+          retorno = false;
         }
-        retorno = false;
       }
       if (this.enumFormaPagto == 3) {
         if (this.meioPagtoEntrada && this.meioPagtoEntradaPrest)
         //ParcComEnt
         {
+          debugger;
+          if (!!this.vlEntrada && this.vlEntrada == 0.00) {
+            this.alertaService.mostrarMensagem("Favor preencher o valor de entrada!");
+            retorno = false;
+          }
           if (this.meioPagtoEntradaPrest != 5 && this.meioPagtoEntradaPrest != 7 && !this.diasVenc) {
             if (mostrarMsg) {
               this.alertaService.mostrarMensagem("Favor informar corretamente os dados para pagamento Parcelado com Entrada!");
+              retorno = false;
             }
-            retorno = false;
           }
-          else retorno = true;
         }
         else {
           if (mostrarMsg) {
             this.alertaService.mostrarMensagem("Favor informar corretamente os dados para pagamento Parcelado com Entrada!");
+            retorno = false;
           }
-          retorno = false;
         }
       }
       if (this.enumFormaPagto == 4)//ParcSemEnt
@@ -209,20 +213,19 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
       {
         if (mostrarMsg) {
           this.alertaService.mostrarMensagem("Favor informar corretamente os dados para pagamento Parcela Única!");
+          retorno = false;
         }
-        retorno = false;
       }
       if (this.enumFormaPagto == 6 && (!this.qtde || !this.valor))//ParcCartaoMaquineta
       {
         if (mostrarMsg) {
           this.alertaService.mostrarMensagem("Favor selecionar  corretamente o meio de pagamento " +
-            "para Parcelado no Cartão (Maquineta).")
+            "para Parcelado no Cartão (Maquineta).");
+          retorno = false;
         }
-        retorno = false;
       }
       return retorno;
     }
-
   }
 
   validarOpcoesPagto(mostrarMsg: boolean): boolean {
@@ -379,6 +382,9 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
   lstMsg: string[] = [];
   tipoFormaPagto: string = '';
   recalcularValoresComCoeficiente(enumFP: number): void {
+    //na mudança da forma de pagto iremos zerar todos os campos
+    // this.zerarTodosCampos();
+
     //verificar EnumTipoPagto para passar o valor do tipo "AV, SE, CE"
     this.tipoFormaPagto = this.verificaEnum(enumFP);
     //aisamos que está carregando...
@@ -387,6 +393,21 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
 
     this.buscarCoeficiente(() => this.listarValoresComCoeficiente(this.tipoFormaPagto, enumFP));
 
+  }
+
+  public zerarTodosCampos(): void {
+    this.vlEntrada = null;
+    this.meioPagtoEntrada = null;
+    this.opcaoPagtoAvista = "";
+    this.meioPagtoAVista = null;
+    this.opcaoPagtoParcUnica = "";
+    this.meioPagtoParcUnica = null;
+    this.diasVencParcUnica = null;
+    this.opcaoPagtoParcComEntrada = "";
+    this.meioPagtoEntradaPrest = null;
+    this.diasVenc = null;
+    this.opcaoPagtoParcCartaoInternet = "";
+    this.opcaoPagtoParcCartaoMaquineta = "";
   }
 
   enumTipoFP = EnumTipoPagto;
@@ -427,7 +448,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
             lstProdutos[x].VlTotalItem = lstProdutos[x].Preco * (1 - lstProdutos[x].Desconto / 100);
             lstProdutos[x].VlLista = lstProdutos[x].Preco;
             lstProdutos[x].TotalItem = (lstProdutos[x].Preco * lstProdutos[x].Qtde) * (1 - lstProdutos[x].Desconto / 100);
-            //this.lstMsg.push(lstCoeficiente[i].QtdeParcelas + ' X R$' + (lstProdutos[x].TotalItem).toFixed(2));
+            //this.lstMsg.push(lstCoeficiente[i].QtdeParcelas + ' X R$' + (lstProdutos[x].TotalItem).toFixed(2));            
             break;
           }
           else if (this.enumFormaPagto.toString() == constant.COD_FORMA_PAGTO_PARCELA_UNICA &&
@@ -483,6 +504,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
         if (enumFP.toString() == this.constantes.COD_FORMA_PAGTO_A_VISTA) {
           this.lstMsg.push(lstCoeficiente[i].QtdeParcelas + " X " +
             this.moedaUtils.formatarMoedaComPrefixo(vlTotalPedido / lstCoeficiente[i].QtdeParcelas));
+          this.opcaoPagtoAvista = this.lstMsg[i];
           break;
         }
         else if (enumFP.toString() == this.constantes.COD_FORMA_PAGTO_PARCELA_UNICA &&
@@ -517,19 +539,22 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
   public vlEntrada: number;
   moedaUtils = new MoedaUtils();
   calcularParcelaComEntrada() {
+    this.opcaoPagtoParcComEntrada = "";
+
     this.lstMsg = new Array();
     this.prePedidoDto = this.novoPrepedidoDadosService.prePedidoDto;
     let lstProdutos = this.prePedidoDto.ListaProdutos;
     let lstCoeficiente = this.coeficienteDto;
-    if (!!this.vlEntrada) {
-
+    if (!!this.vlEntrada && this.vlEntrada != 0.00) {
+      debugger;
       var vltotal = this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + current.TotalItem, 0);
 
-      vltotal = vltotal - this.vlEntrada;
-
-      if (this.vlEntrada > vltotal)
+      if (this.vlEntrada > vltotal){
         this.alertaService.mostrarMensagem("Valor da entrada é maior que o total do Pré-pedido!");
+        this.vlEntrada = null;
+      }
       else {
+        vltotal = vltotal - this.vlEntrada;
         for (var i = 0; i < this.qtdeParcVisa; i++) {
           if (lstCoeficiente[i].TipoParcela == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA) {
             this.lstMsg.push(lstCoeficiente[i].QtdeParcelas + " X " +
@@ -551,6 +576,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
     let v: any = valor.replace(/\D/g, '');
     v = (v / 100).toFixed(2) + '';
     this.vlEntrada = v;
+    this.calcularParcelaComEntrada();
   }
 
   montaFormaPagtoExistente() {

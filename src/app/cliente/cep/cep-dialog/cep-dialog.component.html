@@ -14,7 +14,6 @@
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
-
                 <mat-form-field style="width: 30%">
                     <input matInput type="text" placeholder="Localidade" [(ngModel)]="localidade" name="buscaLocalidade"
                         list="dlbuscaLocalidade">
@@ -22,6 +21,7 @@
                         <option *ngFor="let option of lstCidades" [value]="option">
                     </datalist>
                 </mat-form-field>
+                
                 <mat-form-field style="width: 18em">
                     <input matInput type="text" placeholder="Endereço" [(ngModel)]="endereco"
                         [ngModelOptions]="{standalone: true}">
@@ -63,7 +63,7 @@
 
         </form>
         <!-- teste mensagem  -->
-        <div style="text-align: center">
+        <div style="text-align: center; color: red">
             <span *ngIf="endNaoEncontrado !=''">{{this.endNaoEncontrado}}</span>
         </div>
 

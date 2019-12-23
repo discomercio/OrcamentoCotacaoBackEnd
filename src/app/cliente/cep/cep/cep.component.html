@@ -13,7 +13,7 @@
 
     <!-- ************   ENDEREÇO   ************  -->
     <mat-form-field floatLabel="floatLabel()" class="edicao-endereco">
-        <input matInput type="text" placeholder="ENDEREÇO" [(ngModel)]="Endereco" required maxlength="60" size="85">
+        <input matInput [readonly]="temEndereco" type="text" placeholder="ENDEREÇO" [(ngModel)]="Endereco" required maxlength="60" size="85">
     </mat-form-field>
 
     <!-- ************ Nº/COMPLEMENTO ************  -->
@@ -27,17 +27,17 @@
 
     <!-- ************ BAIRRO/CIDADE ************  -->
     <mat-form-field floatLabel="floatLabel()" class="edicao-bairro">
-        <input matInput type="text" placeholder="BAIRRO" [(ngModel)]="Bairro" required maxlength="72">
+        <input matInput [readonly]="temBairro" type="text" placeholder="BAIRRO" [(ngModel)]="Bairro" required maxlength="72">
     </mat-form-field>
 
     <mat-form-field floatLabel="floatLabel()" class="edicao-cidade">
-        <input matInput type="text" placeholder="CIDADE" [(ngModel)]="Cidade" required maxlength="60">
+        <input matInput [readonly]="temCidade" type="text" placeholder="CIDADE" [(ngModel)]="Cidade" required maxlength="60">
     </mat-form-field>
 
 
     <!-- ************ UF/CEP ************  -->
     <mat-form-field floatLabel="floatLabel()" class="edicao-uf">
-        <input matInput type="text" placeholder="UF" [(ngModel)]="Uf" required maxlength="2" size="3">
+        <input matInput [readonly]="temUf" type="text" placeholder="UF" [(ngModel)]="Uf" required maxlength="2" size="3">
     </mat-form-field>
 
 </div>

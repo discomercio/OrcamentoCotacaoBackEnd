@@ -12,7 +12,7 @@ export class PrepedidoRemoverService {
 
   constructor(private readonly http: HttpClient) { }
   public remover(numeroPrepedido): Observable<any> {
-    return this.http.put(environment.apiUrl + 'prepedido/removerPrePedido/' + numeroPrepedido, numeroPrepedido);
+    return this.http.post(environment.apiUrl + 'prepedido/removerPrePedido/' + numeroPrepedido, numeroPrepedido);
   }
 
 }

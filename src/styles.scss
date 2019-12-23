@@ -209,8 +209,14 @@ body {
 }
 
 //gabriel
+
 .mat-checkbox-background {
-  background: #464646 !important;
+  // border: 2px solid #464646;
+  background: none !important;
+  //  background:none !important;
+}
+.mat-checkbox-checkmark-path {
+  stroke: #464646 !important;
 }
 // .mat-raised-button,.mat-mini-fab {
 //   background: #009688;
