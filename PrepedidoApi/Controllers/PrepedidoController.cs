@@ -35,6 +35,7 @@ namespace PrepedidoApi.Controllers
         [AllowAnonymous]
 #endif
         [HttpGet("listarNumerosPrepedidosCombo")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> ListarNumerosPrepedidosCombo()
         {
             //para testar: http://localhost:60877/api/prepedido/listarNumerosPrepedidosCombo
@@ -47,6 +48,7 @@ namespace PrepedidoApi.Controllers
         [AllowAnonymous]
 #endif
         [HttpGet("listarCpfCnpjPrepedidosCombo")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> ListarCpfCnpjPrepedidosCombo()
         {
             //para testar :http://localhost:60877/api/prepedido/listarCpfCnpjPrepedidosCombo
@@ -60,6 +62,7 @@ namespace PrepedidoApi.Controllers
         [AllowAnonymous]
 #endif
         [HttpGet("listarPrePedidos")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> ListarPrePedidos(int tipoBusca, string clienteBusca, string numeroPrePedido,
             DateTime? dataInicial, DateTime? dataFinal)
         {
@@ -96,6 +99,7 @@ namespace PrepedidoApi.Controllers
         [AllowAnonymous]
 #endif
         [HttpGet("buscarPrepedido")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> BuscarPrePedido(string numPrepedido)
         {
             //para testar: http://localhost:60877/api/prepedido/buscarPrepedido
@@ -110,6 +114,7 @@ namespace PrepedidoApi.Controllers
         [AllowAnonymous]
 #endif
         [HttpGet("obter_permite_ra_status")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> Obter_Permite_RA_Status()
         {
             //para testar: http://localhost:60877/api/prepedido/obter_permite_ra_status
@@ -155,6 +160,7 @@ namespace PrepedidoApi.Controllers
         [AllowAnonymous]
 #endif
         [HttpGet("buscarFormasPagto")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> BuscarFormasPagto(string tipo_pessoa)
         {
             //para testar: http://localhost:60877/api/prepedido/buscarFormasPagto
@@ -188,6 +194,7 @@ namespace PrepedidoApi.Controllers
         [AllowAnonymous]
 #endif
         [HttpGet("buscarQtdeParcCartaoVisa")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> BuscarQtdeParcCartaoVisa()
         {
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);

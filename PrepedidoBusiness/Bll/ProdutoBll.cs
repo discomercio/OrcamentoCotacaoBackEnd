@@ -166,7 +166,7 @@ namespace PrepedidoBusiness.Bll
             List<string> lstErros = new List<string>();
             await Util.ObterCtrlEstoqueProdutoRegra_Teste(lstErros, lst_cliente_regra, cliente.uf, cliente_regra, contextoProvider);
 
-            //afazer: Verificar disponibilidade de estoque
+            
             Util.ObterDisponibilidadeEstoque(lst_cliente_regra, lstTodosProdutos, lstErros, contextoProvider);
 
             //retorna as qtdes disponiveis
@@ -178,7 +178,7 @@ namespace PrepedidoBusiness.Bll
             //atribui a qtde de estoque para o produto
             IncluirEstoqueProduto(lst_cliente_regra, lstTodosProdutos, tparametro);
 
-            //afazer: Msg de alertas para os produtos
+            
             await ExisteMensagensAlertaProdutos(lstTodosProdutos);
 
             if (lstErros.Count > 0)

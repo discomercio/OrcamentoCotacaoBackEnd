@@ -57,7 +57,7 @@ namespace PrepedidoBusiness.Bll
                             cli.Ie = dadosClienteCadastroDto.Ie;
                             if (dadosClienteCadastroDto.Contribuinte_Icms_Status != cli.Contribuinte_Icms_Status)
                             {
-                                //fazer a implementação do contribuinte
+                                
                                 cli.Contribuinte_Icms_Status = dadosClienteCadastroDto.Contribuinte_Icms_Status;
                                 cli.Contribuinte_Icms_Data = DateTime.Now;
                                 cli.Contribuinte_Icms_Data_Hora = DateTime.Now;
@@ -299,7 +299,7 @@ namespace PrepedidoBusiness.Bll
                     {
                         await CadastrarRefBancaria(dbgravacao, clienteDto.RefBancaria, apelido, id_cliente, log);
                         await CadastrarRefComercial(dbgravacao, clienteDto.RefComercial, apelido, id_cliente, log);
-                        //fazer a inserção de Log aqui.
+                        
                         bool gravouLog = Utils.Util.GravaLog(dbgravacao, apelido, cliente.Loja, "", id_cliente,
                             Constantes.OP_LOG_CLIENTE_INCLUSAO, log, contextoProvider);
                         if (gravouLog)
@@ -654,7 +654,7 @@ namespace PrepedidoBusiness.Bll
             //string s_tabela_municipios_IBGE = "";
             if (cliente.Ie != "")
             {
-                //afazer: terminar o metodo abaixo
+                
                 string uf = VerificarInscricaoEstadualValida(cliente.Ie, cliente.Uf, listaErros);
                 List<NfeMunicipio> lstNfeMunicipio = new List<NfeMunicipio>();
                 lstNfeMunicipio = (await ConsisteMunicipioIBGE(cliente.Cidade, cliente.Uf, listaErros)).ToList();

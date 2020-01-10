@@ -17,8 +17,7 @@ namespace InfraBanco
             contexto.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
-        public IQueryable<Tcliente> Tclientes { get => contexto.Tclientes.AsNoTracking(); }
-        //afazer falta fazer
+        public IQueryable<Tcliente> Tclientes { get => contexto.Tclientes.AsNoTracking(); }        
         public IQueryable<Torcamento> Torcamentos { get => contexto.Torcamentos.AsNoTracking(); }
         public IQueryable<TclienteRefBancaria> TclienteRefBancarias { get => contexto.TclienteRefBancarias.AsNoTracking(); }
         public IQueryable<Tpedido> Tpedidos { get => contexto.Tpedidos.AsNoTracking(); }

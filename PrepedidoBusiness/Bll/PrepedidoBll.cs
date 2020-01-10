@@ -20,7 +20,6 @@ namespace PrepedidoBusiness.Bll
 {
     public class PrepedidoBll
     {
-        //afazer: Criar rotina que altera o prepedido
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
 
         public PrepedidoBll(InfraBanco.ContextoBdProvider contextoProvider)
@@ -150,7 +149,7 @@ namespace PrepedidoBusiness.Bll
                     ValoTotal = r.Vl_Total
                 }).OrderByDescending(r => r.DataPrePedido).ToList();
             }
-            if(tipoBusca == TipoBuscaPrepedido.Excluidos)
+            if (tipoBusca == TipoBuscaPrepedido.Excluidos)
             {
                 lstdto = lst.Select(r => new PrepedidosCadastradosDtoPrepedido
                 {
@@ -161,7 +160,7 @@ namespace PrepedidoBusiness.Bll
                     ValoTotal = r.Vl_Total
                 }).OrderByDescending(r => r.DataPrePedido).ToList();
             }
-            
+
             //var res = lstfinal.AsEnumerable();
             return await Task.FromResult(lstdto);
         }
@@ -170,14 +169,21 @@ namespace PrepedidoBusiness.Bll
         {
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
             {
+                var prepedido = from c in dbgravacao.Torcamentos
+                                where c.Orcamentista == apelido &&
+                                      c.Orcamento == numeroPrePedido &&
+                                      (c.St_Orcamento == "" || c.St_Orcamento == null) &&
+                                      c.St_Orc_Virou_Pedido == 0
+                                select c;
+                Torcamento prePedido = await prepedido.FirstOrDefaultAsync();
 
-                Torcamento prePedido = dbgravacao.Torcamentos.
-                Where(
-                        r => r.Orcamentista == apelido &&
-                        r.Orcamento == numeroPrePedido &&
-                        (r.St_Orcamento == "" || r.St_Orcamento == null) &&
-                        r.St_Orc_Virou_Pedido == 0
-                      ).SingleOrDefault();
+                //Torcamento prePedido = dbgravacao.Torcamentos.
+                //    Where(
+                //            r => r.Orcamentista == apelido &&
+                //            r.Orcamento == numeroPrePedido &&
+                //            (r.St_Orcamento == "" || r.St_Orcamento == null) &&
+                //            r.St_Orc_Virou_Pedido == 0
+                //          ).SingleOrDefault();
 
                 if (!string.IsNullOrEmpty(prePedido.ToString()))
                 {
@@ -267,8 +273,6 @@ namespace PrepedidoBusiness.Bll
         public async Task<FormaPagtoCriacaoDto> ObterFormaPagtoPrePedido(Torcamento torcamento)
         {
             FormaPagtoCriacaoDto pagto = new FormaPagtoCriacaoDto();
-            //afazer: passar o meio que fez o pagto
-            //Util.OpcaoFormaPagto(Convert.ToString(torcamento.Av_Forma_Pagto))
 
             //descrição d meio de pagto
             pagto.Descricao_meio_pagto = await ObterDescricaoFormaPagto(torcamento.Av_Forma_Pagto);//
@@ -494,30 +498,14 @@ namespace PrepedidoBusiness.Bll
                 enderecoEntrega.EndEtg_uf = p.EndEtg_UF;
                 enderecoEntrega.EndEtg_cep = p.EndEtg_CEP;
                 enderecoEntrega.EndEtg_cod_justificativa = p.EndEtg_Cod_Justificativa;
-                enderecoEntrega.EndEtg_descricao_justificativa = await ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA, p.EndEtg_Cod_Justificativa);
+                enderecoEntrega.EndEtg_descricao_justificativa = await Util.ObterDescricao_Cod(
+                    Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA, p.EndEtg_Cod_Justificativa, contextoProvider);
             }
 
 
             return enderecoEntrega;
         }
 
-        //Esse metodo esta em Util.cs
-        //afazer: alterar a chamada desse método para Util.cs
-        private async Task<string> ObterDescricao_Cod(string grupo, string cod)
-        {
-            var db = contextoProvider.GetContextoLeitura();
-
-            var desc = from c in db.TcodigoDescricaos
-                       where c.Grupo == grupo && c.Codigo == cod
-                       select c.Descricao;
-
-            string result = await desc.FirstOrDefaultAsync();
-
-            if (result == null || result == "")
-                return "Código não cadastrado (" + cod + ")";
-
-            return result;
-        }
 
         public async Task<short> Obter_Permite_RA_Status(string apelido)
         {
@@ -531,20 +519,15 @@ namespace PrepedidoBusiness.Bll
             return await raStatus;
         }
 
-        public void AlterarPrepedido(PrePedidoDto prePedido, string apelido)
-        {
-
-        }
 
 
-        //afazer: valor que nunca se altera "custoFinancFornecPrecoListaBase"
+
         public async Task<IEnumerable<string>> CadastrarPrepedido(PrePedidoDto prePedido, string apelido)
         {
             //apelido = "MARISARJ";
 
             List<string> lstErros = new List<string>();
 
-            //fazer a verificação de numero do prepedido
             if (!string.IsNullOrEmpty(prePedido.NumeroPrePedido))
             {
                 var db = contextoProvider.GetContextoLeitura();
@@ -554,18 +537,6 @@ namespace PrepedidoBusiness.Bll
                                     select c.Orcamento).FirstOrDefaultAsync();
 
             }
-
-            //if (!prePedido.EnderecoEntrega.OutroEndereco)
-            //{
-            //prePedido.EnderecoEntrega = new EnderecoEntregaDtoClienteCadastro();
-            //prePedido.EnderecoEntrega.EndEtg_endereco = prePedido.DadosCliente.Endereco;
-            //prePedido.EnderecoEntrega.EndEtg_endereco_numero = prePedido.DadosCliente.Numero;
-            //prePedido.EnderecoEntrega.EndEtg_endereco_complemento = prePedido.DadosCliente.Complemento;
-            //prePedido.EnderecoEntrega.EndEtg_cep = prePedido.DadosCliente.Cep;
-            //prePedido.EnderecoEntrega.EndEtg_bairro = prePedido.DadosCliente.Bairro;
-            //prePedido.EnderecoEntrega.EndEtg_cidade = prePedido.DadosCliente.Cidade;
-            //prePedido.EnderecoEntrega.EndEtg_uf = prePedido.DadosCliente.Uf;
-            //}
 
             TorcamentistaEindicador tOrcamentista = await BuscarTorcamentista(apelido);
 
@@ -584,7 +555,6 @@ namespace PrepedidoBusiness.Bll
 
             if (Util.LojaHabilitadaProdutosECommerce(prePedido.DadosCliente.Loja))
             {
-                //string desc_tipo_parcelamento = DescricaoCustoFornecTipoParcelamento(siglaPagto);
 
                 //Validar endereço de entraga
                 if (ValidarEndecoEntrega(prePedido.EnderecoEntrega, lstErros))
@@ -630,7 +600,7 @@ namespace PrepedidoBusiness.Bll
                         //há algum produto descontinuado?
                         await ExisteProdutoDescontinuado(prePedido, lstErros);
 
-                        //afazer:Validar todos os campos que estão sendo validados
+
                         //validar detalhesPrepedidos
 
                         if (lstErros.Count <= 0)
@@ -676,14 +646,7 @@ namespace PrepedidoBusiness.Bll
             return lstErros;
         }
 
-        /*afazer:
-            A forma de pagamento é criada dependendo do tipo do cliente e do orçamentista
-            Será necessário criar um dto para quando entrar na tela de forma de pagamento, fazer a chamada para um metodo
-            que irá realizar as querys para descobrir as formas de pagamento disponiveis para o usuario
-            Obs: será enviado numeros para informar a forma de pagamento, é necessário verificar com as Contantes 
-            que estão na linha 773 até 798
-            Necessário criar um DTO para armazenar os tipos disponiveis para cada Orçamentista
-        */
+
 
         private string ObterSiglaFormaPagto(PrePedidoDto prePedido)
         {
@@ -814,7 +777,7 @@ namespace PrepedidoBusiness.Bll
             torcamento.InstaladorInstalaDtHrUltAtualiz = DateTime.Now;
             torcamento.Perc_Desagio_RA_Liquida = Constantes.PERC_DESAGIO_RA_LIQUIDA;
             torcamento.Permite_RA_Status = orcamentista.Permite_RA_Status;
-            //afazer: verificar prepedido.EnderecoEntrega.OutroEndereco para passar os valores de endereço de entrega
+
             torcamento.St_End_Entrega = prepedido.EnderecoEntrega.OutroEndereco == true ? (short)1 : (short)0;
             if (prepedido.EnderecoEntrega.OutroEndereco)
             {
@@ -1042,7 +1005,7 @@ namespace PrepedidoBusiness.Bll
             return retorno;
         }
 
-        //afazer:Verificar se realmente existe necessidade de refazer o calculo
+
         private bool CalculaItens(PrePedidoDto prePedido, out decimal vlTotalFormaPagto)
         {
             bool retorno = true;
@@ -1358,7 +1321,7 @@ namespace PrepedidoBusiness.Bll
             return retorno;
         }
 
-        //afazer: Verificar o funcionamento
+
         public async Task<float> BuscarCoeficientePercentualCustoFinanFornec(PrePedidoDto prePedido, short qtdeParcelas, string siglaPagto, List<string> lstErros)
         {
             float coeficiente = 0;
@@ -1436,8 +1399,6 @@ namespace PrepedidoBusiness.Bll
                                 item.NumProduto + " não foi localizada no banco de dados (Id=" + regra.Id_wms_regra_cd + ")");
                         else
                         {
-
-                            //fazer montagem dos dados apartir daqui
                             RegrasBll itemRegra = new RegrasBll();
                             itemRegra.Fabricante = item.Fabricante;
                             itemRegra.Produto = item.NumProduto;

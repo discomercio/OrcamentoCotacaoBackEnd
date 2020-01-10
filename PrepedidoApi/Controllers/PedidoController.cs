@@ -25,6 +25,7 @@ namespace PrepedidoApi.Controllers
         [AllowAnonymous]
 #endif
         [HttpGet("listarNumerosPedidosCombo")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> ListarNumerosPedidosCombo()
         {
             //para testar: http://localhost:60877/api/pedido/listarNumerosPedidosCombo
@@ -39,6 +40,7 @@ namespace PrepedidoApi.Controllers
         [AllowAnonymous]
 #endif
         [HttpGet("listarPedidos")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> ListarPedidos(string clienteBusca, int tipoBusca, string numPedido,
             DateTime? dataInicial, DateTime? dataFinal)
         {
@@ -55,6 +57,7 @@ namespace PrepedidoApi.Controllers
         [AllowAnonymous]
 #endif
         [HttpGet("listarCpfCnpjPedidosCombo")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> ListarCpfCnpjPedidosCombo()
         {
             //para testar: http://localhost:60877/api/pedido/listarCpfCnpjPedidosCombo
@@ -69,6 +72,7 @@ namespace PrepedidoApi.Controllers
         [AllowAnonymous]
 #endif
         [HttpGet("buscarPedido")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> BuscarPedido(string numPedido)
         {
             //para testar: http://localhost:60877/api/pedido/buscarPedido

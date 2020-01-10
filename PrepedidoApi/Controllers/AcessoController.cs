@@ -57,6 +57,7 @@ namespace PrepedidoApi.Controllers
 
 
         [HttpGet("renovarToken")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult RenovarToken()
         {
             var appSettingsSection = configuration.GetSection("AppSettings");
@@ -97,6 +98,7 @@ namespace PrepedidoApi.Controllers
         }
 
         [HttpGet("fazerLogout")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> FazerLogout()
         {
             //para testar: http://localhost:60877/api/acesso/fazerLogout

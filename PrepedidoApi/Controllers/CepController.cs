@@ -25,6 +25,7 @@ namespace PrepedidoApi.Controllers
         [AllowAnonymous]
 #endif
         [HttpGet("buscarCep")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> BuscarCep(string cep, string endereco, string uf, string cidade)
         {
             //para testar: http://localhost:60877/api/cep/buscarCep
@@ -38,6 +39,7 @@ namespace PrepedidoApi.Controllers
         [AllowAnonymous]
 #endif
         [HttpGet("buscarUfs")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> BuscarUfs()
         {
             //para testar: http://localhost:60877/api/cep/buscarUfs
@@ -51,6 +53,7 @@ namespace PrepedidoApi.Controllers
         [AllowAnonymous]
 #endif
         [HttpGet("buscarCepPorEndereco")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> BuscarCepPorEndereco(string endereco, string localidade, string uf)
         {
             //para testar: http://localhost:60877/api/cep/buscarCepPorEndereco
@@ -66,6 +69,7 @@ namespace PrepedidoApi.Controllers
         [AllowAnonymous]
 #endif
         [HttpGet("buscarLocalidades")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<ActionResult> BuscarLocalidades(string uf)
         {
             //para testar: http://localhost:60877/api/cep/buscarCidades

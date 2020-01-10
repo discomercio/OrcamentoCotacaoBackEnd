@@ -236,12 +236,7 @@ namespace PrepedidoBusiness.Utils
             return s_destino;
         }
 
-        /*afazer: Precisa pedir acesso
-         * servidor: Win2008R2BS,29981
-         * BD: CEP_Homologacao
-         */
-        //public static string BuscarCep(string tipo)
-
+        
 
         public static string MontaLog(Object obj, string log, string campos_a_omitir)
         {
@@ -321,7 +316,7 @@ namespace PrepedidoBusiness.Utils
             if (custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA &&
                 custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA)
             {
-                //afazer: Passar a quantidade de parcelas
+                
                 if (c_custoFinancFornecQtdeParcelas <= 0)
                 {
                     lstErros.Add("Não foi informada a quantidade de parcelas para a forma de pagamento selecionada " +

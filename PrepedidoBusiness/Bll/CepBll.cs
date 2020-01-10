@@ -156,8 +156,6 @@ namespace PrepedidoBusiness.Bll
             return lstLocalidades;
         }
 
-        //afazer: fazer a busca por estados para retornar uma lista de CepDto
-        //obs: fazendo a busca apenas por estado esta retornando muitos registros melhor rever os 
         public async Task<IEnumerable<CepDto>> BuscarCepPorEndereco(string endereco, string cidade, string uf)
         {
 

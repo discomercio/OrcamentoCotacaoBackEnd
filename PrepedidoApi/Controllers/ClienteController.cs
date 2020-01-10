@@ -27,6 +27,7 @@ namespace PrepedidoApi.Controllers
         [AllowAnonymous]
 #endif
         [HttpGet("buscarCliente/{cnpj_cpf}")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> BuscarCliente(string cnpj_cpf)
         {
             //para testar: http://localhost:60877/api/cliente/buscarCliente/{cnpj_cpf}
@@ -62,6 +63,7 @@ namespace PrepedidoApi.Controllers
         [AllowAnonymous]
 #endif
         [HttpGet("listarBancosCombo")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> ListaBancosCombo()
         {
             //para testar: http://localhost:60877/api/cliente/listarBancosCombo
@@ -90,6 +92,7 @@ namespace PrepedidoApi.Controllers
         [AllowAnonymous]
 #endif
         [HttpGet("listarComboJustificaEndereco")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> ListarComboJustificaEndereco()
         {
             //para testar: http://localhost:60877/api/cliente/listarComboJustificaEndereco

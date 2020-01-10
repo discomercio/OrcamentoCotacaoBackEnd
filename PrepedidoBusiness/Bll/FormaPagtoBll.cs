@@ -17,7 +17,7 @@ namespace PrepedidoBusiness.Bll
         {
             this.contextoProvider = contextoProvider;
         }
-        //afazer: criar o metodo de chamada no controller Prepedido
+        
         public async Task<FormaPagtoDto> ObterFormaPagto(string apelido, string tipo_pessoa)
         {
             FormaPagtoDto formaPagto = new FormaPagtoDto();
@@ -33,8 +33,7 @@ namespace PrepedidoBusiness.Bll
 
             //formaPagto.ListaParcSemEntPrimPrest = (await ObterFormaPagtoParcSemEntPrimPrest(apelido, tipo_pessoa)).ToList();
             //formaPagto.ListaParcSemEntPrestacao = (await ObterFormaPagtoParcSemEntPrestacao(apelido, tipo_pessoa)).ToList();
-            //afazer: Parcela sem entrada não aparece nem para PJ e nem para PF
-            //conclui que não é liberado fazer pagamento sem entrada
+            
 
 
             return formaPagto;

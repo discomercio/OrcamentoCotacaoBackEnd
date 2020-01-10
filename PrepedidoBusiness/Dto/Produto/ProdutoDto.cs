@@ -6,8 +6,6 @@ namespace PrepedidoBusiness.Dto.Produto
 {
     public class ProdutoDto
     {
-        //esta lista depende, para fazer o cálculo do estoque, do DadosClienteCadastroDto.Tipo do cliente (PF ou PJ) e UF do cliente
-        //afazer: confirmar com hamilton, está usando UF do endereço e não do endereço de entrega
         public string Fabricante { get; set; }
         public string Fabricante_Nome { get; set; }
         public string Produto { get; set; }

@@ -24,6 +24,7 @@ namespace PrepedidoApi.Controllers
         [AllowAnonymous]
 #endif
         [HttpGet("buscarProduto")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> BuscarProduto(string loja, string id_cliente)
         {
             //para testar: http://localhost:60877/api/produto/buscarProduto
