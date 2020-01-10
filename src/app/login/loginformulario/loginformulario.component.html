@@ -1,13 +1,13 @@
 <div [class]="telaDesktop? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'" layout="row"
   fxLayoutAlign="center center">
 
-  <div style="flex-grow: 0.5">  </div>
+  <div style="flex-grow: 0.5; height: 3.5em;"> </div>
   <div class="titulopagina">Faça o login para acessar o sistema</div>
 
-  <div style="flex-grow: 0.3">  </div>
+  <div style="flex-grow: 0.3"> </div>
   <form #loginForm="ngForm" class="login-container" (ngSubmit)="login()">
 
-    <div class="divCampos" >
+    <div class="divCampos">
       <mat-form-field class="campoTexto">
         <input matInput type="text" placeholder="Usuário" required [(ngModel)]="usuario" name="usuario">
       </mat-form-field>
@@ -22,7 +22,8 @@
       <br style="height: 10px;">
       <br style="height: 10px;">
 
-      <button [disabled]="!loginForm.valid" mat-raised-button type="submit" style="background-color: #ffff"  [ngClass]="{'carregando': fazendoLogin}">
+      <button [disabled]="!loginForm.valid" mat-raised-button type="submit"
+        style="background-color: #464646; color: #ffffff;" [ngClass]="{'carregando': fazendoLogin}">
         <mat-icon>arrow_forward</mat-icon> Entrar
       </button>
     </div>

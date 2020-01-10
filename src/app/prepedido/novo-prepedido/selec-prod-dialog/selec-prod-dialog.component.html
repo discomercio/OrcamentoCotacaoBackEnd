@@ -4,7 +4,7 @@
             e, se a gente estiver carregando os dados sem timeout, a animação nem aparece
         -->
         <!-- [ngClass]="{'carregando': carregando && digitado !== ''}" -->
-        <article mat-dialog-content class="fixo">
+        <article mat-dialog-content class="fixo" style="margin:0">
             <!-- este fica ruim: div style="display: flex; " [ngStyle]="{'flex-direction':telaDesktop?'row':'column'}" -->
 
             <div *ngIf="telaDesktop" style="display: flex; flex-direction: row; ">
@@ -14,9 +14,13 @@
                         (keyup)="digitouProd($event)" [autofocus]="true" #digitadocx>
                 </mat-form-field>
 
-                <mat-form-field style="flex-grow: 0; flex-shrink: 0; ">
-                    <input matInput type="number" name="qtde" placeholder="Quantidade" required [(ngModel)]="qtde"
-                        [value]="qtde" [ngModelOptions]="{standalone: true}">
+                <mat-form-field style="flex-grow: 0; flex-shrink: 0; ">                        
+                    <input matInput type="number" name="qtde" placeholder="Quantidade" id="qtde" required [(ngModel)]="qtde"
+                        [value]="qtde" [ngModelOptions]="{standalone: true}">    
+                        <mat-icon (click)="mais()">add</mat-icon>    
+                        <mat-icon (click)="menos()">remove</mat-icon>                
+                        <!-- <button onclick="menos()" class="a">-</button>
+                        <button onclick="mais()" class="b">+</button> -->
                 </mat-form-field>
             </div>
             <div *ngIf="!telaDesktop">

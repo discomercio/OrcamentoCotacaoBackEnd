@@ -34,4 +34,32 @@
     padding-bottom: 6px;
   }
 
+  input[type=number] {
+    -webkit-appearance: textfield;
+       -moz-appearance: textfield;
+            appearance: textfield;
+  }
+  input[type=number]::-webkit-inner-spin-button, 
+  input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+  }
+  input[type=number]{
+  outline:none;
+  width: 60%;
+  }
+  label, input, button {
+      padding: 0.2em;
+      -moz-box-sizing: content-box;
+      -webkit-box-sizing: content-box;
+      box-sizing: content-box;
+  }
+  mat-icon{
+font-size: inherit;
+background-color: white;
+padding-left:2%;
+padding-right:2%;
+outline:none;
+cursor: pointer;
+}
+
 }

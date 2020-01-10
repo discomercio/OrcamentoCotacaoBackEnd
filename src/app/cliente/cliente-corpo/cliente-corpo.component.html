@@ -292,11 +292,11 @@ para não dar erro no console
             <div>
                 <!-- se está confirando, precisa de um espaço maior em cima -->
                 <div *ngIf="!cadastrando" style="padding-top: 1.5em;"></div>
-                <mat-form-field floatLabel="floatLabel()" [ngStyle]="{'padding':!cadastrando?'0em':''}">
+                <mat-form-field floatLabel="floatLabel()" [ngStyle]="{'padding':!cadastrando?'0em':''}" id="selectProdutorRural">
                     <mat-label>PRODUTOR RURAL</mat-label>
                     <!-- produtor rural sempre é editável -->
                     <mat-select (keydown)="keydownSelectProdutor($event);" #mySelectProdutor required
-                        [(ngModel)]="dadosClienteCadastroDto.ProdutorRural">
+                        [(ngModel)]="dadosClienteCadastroDto.ProdutorRural" >
                         <mat-option>Selecione</mat-option>
                         <mat-option [(value)]="constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO">Não</mat-option>
                         <mat-option [(value)]="constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM">Sim</mat-option>

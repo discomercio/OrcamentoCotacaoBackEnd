@@ -16,4 +16,9 @@
         display: inline;
         padding-right: 1.0em;
     }
+
+#selectProdutorRural .mat-form-field-wrapper .mat-form-field-flex{
+    background-color: red;
+    display: block !important;
+}
 }

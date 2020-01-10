@@ -19,9 +19,8 @@ export class AppComponent implements OnInit {
     public readonly impressaoService: ImpressaoService,
     private readonly router: Router) {
     telaDesktopService.telaAtual$.subscribe(r => this.telaDesktop = r);
-
+    
   }
-
   public logo: string = null;
 
 
@@ -102,10 +101,11 @@ export class AppComponent implements OnInit {
     //   this.logo = null;
     //   this.carregarEstilo(false);
     // }, 1);
-
+    
     this.router.navigateByUrl("/login");
 
-  }
+    location.reload();
+  }       
 
   title = 'Sistema de pré-pedidos';
 }

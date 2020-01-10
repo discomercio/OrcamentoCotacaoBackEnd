@@ -30,7 +30,9 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
 
   @Input() mostrarEndereco = true; //ao confrimar o cliente para um pre-pedido, não queremos mostrar o endereço aqui
   @ViewChild('mySelectSexo', { static: false }) mySelectSexo: MatSelect;
-  @ViewChild('mySelectProdutor', {static:false}) mySelectProdutor : MatSelect;
+  @ViewChild('mySelectProdutor', { static: false }) mySelectProdutor: MatSelect;
+
+
   ngOnInit() {
 
     this.criarElementos();
@@ -51,8 +53,19 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
           this.alertaService.mostrarErroInternet();
         });
     }
+    //isso foi incluido para que funcione corretamente no  browser "EDGE"
+
+
+
+    //   let selectProdutorRural:any = document.querySelector("#selectProdutorRural .mat-form-field-flex");      
+    //   selectProdutorRural.style.display = "block";
+    setTimeout(() => {
+      let selectProdutorRural: any = document.querySelector("#selectProdutorRural .mat-form-field-flex");
+      selectProdutorRural.style.display = "block";
+    }, 800);   
   }
 
+  
   public ignorarProximoEnter = false;
   keydownSelectSexo(event: KeyboardEvent): void {
     if (event.which == 13) {
@@ -62,9 +75,8 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
     }
   }
 
-  keydownSelectProdutor(event:KeyboardEvent):void{
-    if(event.which == 13)
-    {
+  keydownSelectProdutor(event: KeyboardEvent): void {
+    if (event.which == 13) {
       this.mySelectProdutor.toggle();
       this.ignorarProximoEnter = true;
       document.getElementById("avancar").focus();

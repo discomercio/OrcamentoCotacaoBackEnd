@@ -415,8 +415,8 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     }
     let options: any = {
       autoFocus: false,
-      width: "100em",
-      //não colocamos aqui para que ele ajuste melhor: height:"85vh",
+      width: "40vw",
+      //não colocamos aqui para que ele ajuste melhor: height:"85vh",      
       data: selecProdInfo
     };
     if (!this.telaDesktop) {

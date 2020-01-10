@@ -8,6 +8,7 @@ import { TelaDesktopBaseComponent } from 'src/app/servicos/telaDesktop/telaDeskt
 import { supportsPassiveEventListeners } from '@angular/cdk/platform';
 import { TelaDesktopService } from 'src/app/servicos/telaDesktop/telaDesktop.service';
 import { debugOutputAstAsTypeScript } from '@angular/compiler';
+import { $ } from 'protractor';
 
 @Component({
   selector: 'app-selec-prod-dialog',
@@ -119,6 +120,21 @@ export class SelecProdDialogComponent extends TelaDesktopBaseComponent implement
       //ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value: 'mat-form-field-should-float: false'. Current value: 'mat-form-field-should-float: true'.
       this.digitadoCx.nativeElement.focus();
     }, 1);
+  }
+
+
+   mais(){
+    var atual = this.qtde;
+    var novo = atual - (-1); //Evitando Concatenacoes
+    this.qtde = novo;
+  }
+  
+   menos(){
+    var atual = this.qtde;
+    if(atual > 0) { //evita números negativos
+      var novo = atual - 1;
+      this.qtde = novo;
+    }
   }
 
   //alteraram o produto
