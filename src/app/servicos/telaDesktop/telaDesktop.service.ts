@@ -20,7 +20,7 @@ export class TelaDesktopService {
       .observe([Breakpoints.Small, Breakpoints.XSmall, Breakpoints.HandsetPortrait])
       .subscribe((state: BreakpointState) => {
         this.telaDesktop = !state.matches;
-
+        
         //nao podemos estar diretamente na consulta nos pedidos e prepedidos
         if (this.telaDesktop) {
           if (this.router.url.indexOf('/prepedido/lista') >= 0)
@@ -28,7 +28,6 @@ export class TelaDesktopService {
           if (this.router.url.indexOf('/pedido/lista') >= 0)
             this.router.navigateByUrl('/pedido/consulta');
         }
-
         this.jaLido = true;
         this.telaDesktopAnterior = this.telaDesktop;
         this.telaAtual$.next(this.telaDesktop);

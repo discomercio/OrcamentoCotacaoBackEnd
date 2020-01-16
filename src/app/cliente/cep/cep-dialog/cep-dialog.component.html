@@ -17,11 +17,24 @@
                 <mat-form-field style="width: 30%">
                     <input matInput type="text" placeholder="Localidade" [(ngModel)]="localidade" name="buscaLocalidade"
                         list="dlbuscaLocalidade">
-                    <datalist id="dlbuscaLocalidade">
-                        <option *ngFor="let option of lstCidades" [value]="option">
+                    <datalist *ngIf="localidade.length > 2" id="dlbuscaLocalidade">
+                        <ng-container  *ngFor="let option of lstCidades">
+                            <option *ngIf="option.toLowerCase().indexOf(localidade.toLowerCase()) != -1" [value]="option">
+                        </ng-container>
                     </datalist>
                 </mat-form-field>
-                
+                <!-- teste para alterar o datalist -->
+                <!-- <mat-form-field>
+                    <input type="text" placeholder="Enter Location" matInput 
+                         [matAutocomplete]="auto">
+                       <mat-autocomplete #auto="matAutocomplete">
+                         <mat-option *ngFor="let option of options" [value]="option">
+                           {{option}}
+                        </mat-option>
+                    </mat-autocomplete>
+                 </mat-form-field> -->
+
+
                 <mat-form-field style="width: 18em">
                     <input matInput type="text" placeholder="Endereço" [(ngModel)]="endereco"
                         [ngModelOptions]="{standalone: true}">
@@ -161,10 +174,10 @@
             </div>
         </div>
     </article>
-    <footer *ngIf="lstEnderecos.length > 0" mat-dialog-actions style="justify-content: space-around;">        
+    <footer *ngIf="lstEnderecos.length > 0" mat-dialog-actions style="justify-content: space-around;">
         <button mat-raised-button (click)="onNoClick()" cdkFocusInitial color="accent">Cancelar</button>
         <button mat-raised-button (click)="onOkClick()" color="accent">
-                Confirmar
-            </button>
+            Confirmar
+        </button>
     </footer>
 </section>

@@ -26,6 +26,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
   enderecoEntregaDtoClienteCadastro = new EnderecoEntregaDtoClienteCadastro();
 
 
+
   constructor(private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
     telaDesktopService: TelaDesktopService,
@@ -38,6 +39,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
   }
 
   ngOnInit() {
+
     this.dadosClienteCadastroDto = null;
     if (this.router.getCurrentNavigation()) {
       let clienteCadastroDto: ClienteCadastroDto = (this.router.getCurrentNavigation().extras.state) as ClienteCadastroDto;
@@ -52,7 +54,6 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
         return;
       }
     }
-
     //se chegar como null é pq foi salvo como link; não temos dados para mostrar
     if (!this.dadosClienteCadastroDto) {
 
@@ -64,17 +65,21 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
       this.buscarClienteService.buscar(clienteBusca).toPromise()
         .then((r) => {
           if (r === null) {
+
             //erro, voltamos para a tela anterior
             this.router.navigate(["/novo-prepedido"]);
             return;
           }
           //cliente já existe
+          //quando para nesse ponto, já fomos direcionado para a tela "home"
+
           this.dadosClienteCadastroDto = r.DadosCliente;
           this.clienteCadastroDto = r;
           this.verificarCriarNovoPrepedido();
           this.salvarAtivoInicializar();
         }).catch((r) => {
           //erro, voltamos para a tela anterior
+          debugger;
           this.router.navigate(["/novo-prepedido"]);
         });
     }
@@ -82,10 +87,11 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
       //inicializamos
       this.salvarAtivoInicializar();
     }
-
-
     //inicializar as fases
     this.fase1 = true;
+    //gabriel
+    // this.fase2 = true;
+    // this.fase1e2juntas = true;
     this.fase2 = false;
     this.fase1e2juntas = false;
     if (this.telaDesktop) {
@@ -103,16 +109,23 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
       let existente = this.novoPrepedidoDadosService.prePedidoDto.DadosCliente.Id;
       if (existente == this.dadosClienteCadastroDto.Id) {
         //nao criamos! usamos o que já está no serviço
+        debugger;
         this.dadosClienteCadastroDto = this.novoPrepedidoDadosService.prePedidoDto.DadosCliente;
         this.enderecoEntregaDtoClienteCadastro = this.novoPrepedidoDadosService.prePedidoDto.EnderecoEntrega;
-        this.confirmarEndereco.atualizarDadosEnderecoTela(this.enderecoEntregaDtoClienteCadastro);
+        if (this.telaDesktop) {
+          this.confirmarEndereco.atualizarDadosEnderecoTela(this.enderecoEntregaDtoClienteCadastro);
+        }
         return;
       }
     }
 
     ///vamos criar um novo
     this.novoPrepedidoDadosService.criarNovo(this.dadosClienteCadastroDto, this.enderecoEntregaDtoClienteCadastro);
-    this.confirmarEndereco.atualizarDadosEnderecoTela(this.enderecoEntregaDtoClienteCadastro);
+    //quando a tela é para celular o "this.confirmarEndereco" esta "undefined" e já da problema
+    //comentei para teste
+    if (this.telaDesktop) {
+      this.confirmarEndereco.atualizarDadosEnderecoTela(this.enderecoEntregaDtoClienteCadastro);
+    }
   }
 
   //#region salvar alterações no IE e Contribuinte_Icms_Status
@@ -128,10 +141,12 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
   salvarAtivo(): boolean {
     //diz se o botão de salvar está ligado
     if (!this.dadosClienteCadastroDto) {
+      debugger;
       return false;
     }
     //se estiver com NULL é pq ainda não pegou os valores
     if (this.dadosClienteCadastroDtoIe == null) {
+      debugger;
       return false;
     }
     if (this.dadosClienteCadastroDtoIe !== this.dadosClienteCadastroDto.Ie) {
@@ -216,18 +231,17 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     this.fase2 = false;
     //    setTimeout(()=>this.ngOnInit(),1000);
   }
-
   //precisa do static: false porque está dentro de um ngif
   @ViewChild("confirmarEndereco", { static: false }) confirmarEndereco: ConfirmarEnderecoComponent;
 
   continuar(): void {
-    debugger;
     //primeiro, vamos ver o CEP que está dentro do cliente
     //somente se o confirmarEndereco estiver atribuído. Se não estiver, é porque não estamos na tela em que precisamos testar ele
     if (this.confirmarEndereco && !this.confirmarEndereco.podeAvancar()) {
       this.alertaService.mostrarMensagem("Aguarde o carregamento do endereço antes de continuar.");
       return;
     }
+
     //avisamos para o corpo do cliente que vamos avançar
     if (this.confirmarEndereco) {
       this.confirmarEndereco.prepararAvancar();
@@ -247,12 +261,12 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     if (this.fase2 || this.fase1e2juntas) {
       //vamos validar o endereço
       // só a jsutificativa, número e complemento. O resto vai ser validado pelo CEP
-      
+
       //iremos validar os campos
-      if(!this.validarEnderecoEntrega(this.enderecoEntregaDtoClienteCadastro)){
+      if (!this.validarEnderecoEntrega(this.enderecoEntregaDtoClienteCadastro)) {
         return;
       }
-      
+
       //salvar no serviço
       this.novoPrepedidoDadosService.setarDTosParciais(this.dadosClienteCadastroDto, this.enderecoEntregaDtoClienteCadastro);
 

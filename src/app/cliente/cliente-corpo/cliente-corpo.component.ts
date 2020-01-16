@@ -42,6 +42,7 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
       this.buscarClienteService.listaBancosCombo().toPromise()
         .then((r) => {
           if (r === null) {
+            debugger;
             //erro
             this.alertaService.mostrarErroInternet();
             return;
@@ -49,6 +50,7 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
           //cliente já existe
           this.listaBancosCombo = r;
         }).catch((r) => {
+          debugger;
           //erro
           this.alertaService.mostrarErroInternet();
         });
@@ -59,6 +61,7 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
 
     //   let selectProdutorRural:any = document.querySelector("#selectProdutorRural .mat-form-field-flex");      
     //   selectProdutorRural.style.display = "block";
+    
     setTimeout(() => {
       let selectProdutorRural: any = document.querySelector("#selectProdutorRural .mat-form-field-flex");
       selectProdutorRural.style.display = "block";
@@ -69,6 +72,10 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
   public ignorarProximoEnter = false;
   keydownSelectSexo(event: KeyboardEvent): void {
     if (event.which == 13) {
+      event.cancelBubble=true;
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+
       this.mySelectSexo.toggle();
       this.ignorarProximoEnter = true;
       document.getElementById("cep").focus();
@@ -77,6 +84,10 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
 
   keydownSelectProdutor(event: KeyboardEvent): void {
     if (event.which == 13) {
+      event.cancelBubble=true;
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+
       this.mySelectProdutor.toggle();
       this.ignorarProximoEnter = true;
       document.getElementById("avancar").focus();
@@ -177,10 +188,6 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
   }
 
 
-  focusInput(event) {
-
-
-  }
 
   //#region referencia coemrial e bancária
   adicionarRefBancaria() {

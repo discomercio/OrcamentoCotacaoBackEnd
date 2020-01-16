@@ -1,53 +1,3 @@
-<!-- páginas do cadastro/confirmação do PF e PJ:
-    
-    cadastro PJ:
-    orcamento/ClienteEdita.asp
-    
-    consulta PJ:
-    idem...
-    
-    cadastro PF:
-    orcamento/ClienteEdita.asp
-    
-    consulta PF:
-    orcamento/clienteedita.asp?cliente_selecionado=000000246890&operacao_selecionada=C
-
-    
-
-    /*
-    campos obrigatórios para PF:
-    NOME
-    CPF
-    sexo
-    produtor rural
-    ENDEREÇO
-    nro
-    BAIRRO
-    CIDADE
-    UF
-    CEP
-    algum telefone
-
-    campos obrigatórios para PJ:
-    CNPJ
-    CONTRIBUINTE ICMS
-    RAZÃO SOCIAL
-    TELEFONE
-    NOME DA PESSOA PARA CONTATO NA EMPRESA
-    ENDEREÇO
-    nro
-    BAIRRO
-    CIDADE
-    UF
-    CEP
-
-    */
-
-
-     -->
-
-
-
 <!-- 
 enquanto está carregando não msotramos NADA!
 para não dar erro no console
@@ -87,10 +37,16 @@ para não dar erro no console
     </span>
     <span *ngIf="!cadastrando">
         <!-- CPF e CNPJ não estão ligados ao model pq não são editados -->
-        <span class="caixa" *ngIf="!ehPf()"><span class="rotulo">CNPJ:</span> <span
-                class="dado">{{cnpj_cpf_formatado()}}</span></span>
-        <span class="caixa" *ngIf="ehPf()"><span class="rotulo">CPF:</span> <span
-                class="dado">{{cnpj_cpf_formatado()}}</span></span>
+        <span class="caixa" *ngIf="!ehPf()"><span class="rotulo">CNPJ:</span>
+            <span class="dado">{{cnpj_cpf_formatado()}}</span>
+        </span>
+        <span class="caixa" *ngIf="ehPf()">
+            <span class="rotulo">CPF:</span>
+            <span class="dado">{{cnpj_cpf_formatado()}}</span>
+            <!-- incluimos o RG aqui, pois o campo "Sexo" estava ficando fora da tela -->
+            <span class="rotulo">RG:</span>
+            <span class="dado">{{dadosClienteCadastroDto.Rg}}</span>
+        </span>
     </span>
 
     <!-- ************   CNPJ/IE OU CPF/RG/NASCIMENTO/SEXO  ************  -->
@@ -120,7 +76,7 @@ para não dar erro no console
 
     <span *ngIf="!cadastrando">
         <span class="caixa" *ngIf="ehPf()">
-            <span class="rotulo">RG:</span> <span class="dado">{{dadosClienteCadastroDto.Rg}}</span>
+            <!-- <span class="rotulo">RG:</span> <span class="dado">{{dadosClienteCadastroDto.Rg}}</span> -->
             <span class="rotulo">Nascimento:</span> <span
                 class="dado">{{DataUtilsFormatarTela(dadosClienteCadastroDto.Nascimento)}}</span>
             <span class="rotulo">Sexo:</span> <span class="dado">{{dadosClienteCadastroDto.Sexo}}</span>
@@ -292,11 +248,12 @@ para não dar erro no console
             <div>
                 <!-- se está confirando, precisa de um espaço maior em cima -->
                 <div *ngIf="!cadastrando" style="padding-top: 1.5em;"></div>
-                <mat-form-field floatLabel="floatLabel()" [ngStyle]="{'padding':!cadastrando?'0em':''}" id="selectProdutorRural">
+                <mat-form-field floatLabel="floatLabel()" [ngStyle]="{'padding':!cadastrando?'0em':''}"
+                    id="selectProdutorRural">
                     <mat-label>PRODUTOR RURAL</mat-label>
                     <!-- produtor rural sempre é editável -->
                     <mat-select (keydown)="keydownSelectProdutor($event);" #mySelectProdutor required
-                        [(ngModel)]="dadosClienteCadastroDto.ProdutorRural" >
+                        [(ngModel)]="dadosClienteCadastroDto.ProdutorRural">
                         <mat-option>Selecione</mat-option>
                         <mat-option [(value)]="constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO">Não</mat-option>
                         <mat-option [(value)]="constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM">Sim</mat-option>

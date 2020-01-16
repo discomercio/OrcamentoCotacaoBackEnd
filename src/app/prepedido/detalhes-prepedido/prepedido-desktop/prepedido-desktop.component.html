@@ -209,32 +209,32 @@
 
                 <tr *ngFor="let linha of this.prepedidoDto?.ListaProdutos">
 
-                    <td class="MDBE" align="left"><input name="c_fabricante" id="c_fabricante" class="PLLe"
+                    <td class="MDBE" align="left"><input name="c_fabricante" class="PLLe"
                             style="width:25px;" value='{{linha.Fabricante}}' readonly tabindex=-1></td>
 
-                    <td class="MDB" align="left"><input name="c_produto" id="c_produto" class="PLLe" style="width:54px;"
+                    <td class="MDB" align="left"><input name="c_produto" class="PLLe" style="width:54px;"
                             value='{{linha.NumProduto}}' readonly tabindex=-1></td>
                     <td class="MDB" align="left" style="width:253px;">
                         <span class="PLLe" [innerHTML]="linha.Descricao"></span>
-                        <!-- <input type="hidden" name="c_descricao" id="c_descricao" value='<%=s_descricao%>'> -->
+                        <!-- <input type="hidden" name="c_descricao" value='<%=s_descricao%>'> -->
                     </td>
-                    <td class="MDB" align="right"><input name="c_qtde" id="c_qtde" class="PLLd" style="width:21px;"
+                    <td class="MDB" align="right"><input name="c_qtde" class="PLLd" style="width:21px;"
                             value='{{linha.Qtde}}' readonly tabindex=-1></td>
-                    <td class="MDB" align="right"><input name="c_qtde_falta" id="c_qtde_falta" class="PLLd"
+                    <td class="MDB" align="right"><input name="c_qtde_falta" class="PLLd"
                             style="width:20px;" value='{{linha.Faltando}}' readonly tabindex=-1></td>
                     <td *ngIf="this.prepedidoDto?.OpcaoPossuiRA == 'S'" class="MDB" align="right"><input name="c_vl_NF"
-                            id="c_vl_NF" class="PLLd" style="width:62px;"
+                            class="PLLd" style="width:62px;"
                             value='{{moedaUtils.formatarMoedaSemPrefixo(linha.Preco)}}' readonly tabindex=-1>
                     </td>
-                    <td class="MDB" align="right"><input name="c_preco_lista" id="c_preco_lista" class="PLLd"
+                    <td class="MDB" align="right"><input name="c_preco_lista" class="PLLd"
                             style="width:62px;" value='{{moedaUtils.formatarMoedaSemPrefixo(linha.Preco)}}' readonly
                             tabindex=-1></td>
-                    <td class="MDB" align="right"><input name="c_desc" id="c_desc" class="PLLd" style="width:28px;"
+                    <td class="MDB" align="right"><input name="c_desc" class="PLLd" style="width:28px;"
                             value='{{moedaUtils.formatarPorcentagemUmaCasa(linha.Desconto)}}' readonly tabindex=-1></td>
-                    <td class="MDB" align="right"><input name="c_vl_unitario" id="c_vl_unitario" class="PLLd"
+                    <td class="MDB" align="right"><input name="c_vl_unitario" class="PLLd"
                             style="width:62px;" value='{{moedaUtils.formatarMoedaSemPrefixo(linha.VlUnitario)}}'
                             readonly tabindex=-1></td>
-                    <td class="MDB" align="right"><input name="c_vl_total" id="c_vl_total" class="PLLd"
+                    <td class="MDB" align="right"><input name="c_vl_total" class="PLLd"
                             style="width:70px;" value='{{moedaUtils.formatarMoedaSemPrefixo(linha.VlTotalItem)}}'
                             readonly tabindex=-1></td>
                 </tr>
@@ -331,11 +331,12 @@
                             &nbsp;
                         </p>
                     </td>
-                    <td class="tdGarInd" nowrap align="left" valign="top">
+                    <!-- Foi solicitado pelo cliente que este campo abaixo não seria mais utilizado -->
+                    <!-- <td class="tdGarInd" nowrap align="left" valign="top">
                         <p class="Rf">Garantia Indicador</p>
                         <p class="C" style="margin-top:3px;">
                             {{this.prepedidoDto?.DetalhesPrepedido?.GarantiaIndicador}}&nbsp;</p>
-                    </td>
+                    </td> -->
                 </tr>
             </table>
             <br>
@@ -346,7 +347,7 @@
                 </tr>
                 <tr>
                     <td align="left">
-                        <p align="left" class="C">{{this.prepedidoDto.FormaPagto}}</p>
+                        <p align="left" class="C" *ngFor="let linha of this.prepedidoDto.FormaPagto">{{linha}}</p>
                     </td>
                 </tr>
 

@@ -7,6 +7,7 @@ import { CepDto } from 'src/app/dto/Cep/CepDto';
 import { CepService } from 'src/app/servicos/cep/cep.service';
 import { FormatarEndereco } from 'src/app/utils/formatarEndereco';
 import { Observable } from 'rxjs';
+import { strictEqual } from 'assert';
 
 @Component({
   selector: 'app-cep-dialog',
@@ -36,7 +37,7 @@ export class CepDialogComponent extends TelaDesktopBaseComponent implements OnIn
   }
 
   onOkClick(): void {
-    this.dialogRef.close(true);
+    // this.dialogRef.close(true);
   }
 
   //campos que o usuario escolhe

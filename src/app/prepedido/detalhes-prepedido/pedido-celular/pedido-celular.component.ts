@@ -17,10 +17,13 @@ export class PedidoCelularComponent implements OnInit {
 
   @ViewChild("divprincipal", { static: true }) divprincipal: ElementRef;
   ngAfterViewInit() {
-    setTimeout(() => {
+    PedidoCelularComponent.redimensionarTela(this.divprincipal);
+  }
 
+  public static redimensionarTela(divprincipal: ElementRef): void {
+    setTimeout(() => {
       //para acertar o scale
-      let elem = this.divprincipal.nativeElement;
+      let elem = divprincipal.nativeElement;
       const folga = 20 + 40;
       const escala = (window.innerWidth - folga) / (elem.clientWidth);
       elem.style.transform = "scale( " + escala + ")";
@@ -30,5 +33,4 @@ export class PedidoCelularComponent implements OnInit {
       pai.style.overflowX = "hidden";
     }, 1);
   }
-
 }

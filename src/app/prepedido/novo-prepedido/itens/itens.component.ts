@@ -27,6 +27,7 @@ import { ConfirmarClienteComponent } from '../confirmar-cliente/confirmar-client
 import { EnderecoEntregaDtoClienteCadastro } from 'src/app/dto/ClienteCadastro/EnderecoEntregaDTOClienteCadastro';
 import { TestBed } from '@angular/core/testing';
 import { CepComponent } from 'src/app/cliente/cep/cep/cep.component';
+import { listLazyRoutes } from '@angular/compiler/src/aot/lazy_routes';
 
 @Component({
   selector: 'app-itens',
@@ -72,6 +73,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
         this.prepedidoBuscarService.buscar(numeroPrepedido).subscribe({
           next: (r) => {
             if (r == null) {
+              debugger;
               this.alertaService.mostrarErroInternet();
               this.router.navigate(["/novo-prepedido"]);
               return;
@@ -95,6 +97,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     //se veio diretamente para esta tela, e não tem nada no serviço, não podemos continuar
     //então voltamos para o começo do processo!
     if (!this.prePedidoDto) {
+      debugger;
       this.router.navigate(["/novo-prepedido"]);
       return;
     }
@@ -247,7 +250,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
   digitouQte(i: PrepedidoProdutoDtoPrepedido) {
     //necessário trazer e verificar a variavel "qtde_max_permitida" na tabela "T_produto_loja" 
     //para limitar a qtde de compra para o usuário
-    
+
     if (i.Qtde <= 0) {
       i.Qtde = 1;
     }
@@ -331,6 +334,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
   //#region navegação
 
   voltar() {
+    debugger;
     // if(!this.dadosPagto.podeContinuar())
     // return false;
     this.dadosPagto.podeContinuar(false);
@@ -374,7 +378,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     this.clicouAddProd = true;
     this.mostrarProdutos(null);
   }
-  
+
   removerLinha(i: PrepedidoProdutoDtoPrepedido) {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       data: `Remover este item do pré-pedido?`
@@ -401,7 +405,13 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     }
     return true;
   }
+
+  //Gabriel
+  //criaremos uma lista para armazenar os itens pelo item principal, independente se é produto composto
+  public lstProdSelectInfo: SelecProdInfo[] = [];
+
   mostrarProdutos(linha: PrepedidoProdutoDtoPrepedido) {
+
     if (!this.verificarCargaProdutos()) {
       return;
     }
@@ -415,7 +425,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     }
     let options: any = {
       autoFocus: false,
-      width: "40vw",
+      width: "55vw",
       //não colocamos aqui para que ele ajuste melhor: height:"85vh",      
       data: selecProdInfo
     };
@@ -429,13 +439,15 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
         data: selecProdInfo
       };
     }
+    
+
     const dialogRef = this.dialog.open(SelecProdDialogComponent, options);
     dialogRef.afterClosed().subscribe((result) => {
       if (result && selecProdInfo.ClicouOk) {
         //vamos editar ou adicionar um novo
         if (linha) {
           //editando
-
+          debugger;
           //se mudou o produto, temos que mdar vários campos
           if (linha.NumProduto !== selecProdInfo.Produto || linha.Fabricante !== selecProdInfo.Fabricante) {
             //mudou o produto, temos que mudar muita coisa!
@@ -465,6 +477,16 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
         }
         else {
           //adicionando
+          debugger;
+          //Gabriel
+          //add produto para verificação de itens
+          this.lstProdSelectInfo.push(selecProdInfo);
+          //será necessário verificar se o produto que esta sendo inserido é composto
+          //pois um produto composto são 2 itens, mas será tratado como sendo 1 item
+          if (this.lstProdSelectInfo.length > 12) {
+            this.alertaService.mostrarMensagem("É permitido apenas 12 itens por Pré-Pedido!");
+            return false;
+          }
 
           //se for produto simples
           const filhosDiretos = this.filhosDeProdutoComposto(selecProdInfo);
@@ -493,6 +515,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
   //depois de selecionar o produto, atualiza todos os campos
   atualizarProduto(linha: PrepedidoProdutoDtoPrepedido, fabricante: string, produto: string, qtde: number) {
     let prodInfo = this.produtoComboDto.ProdutoDto.filter(el => el.Fabricante === fabricante && el.Produto === produto)[0];
+
     if (!prodInfo) {
       prodInfo = new ProdutoDto();
     }
@@ -514,7 +537,9 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
   }
 
   filhosDeProdutoComposto(selecProdInfo: SelecProdInfo) {
+
     const registros = this.produtoComboDto.ProdutoCompostoDto.filter(el => el.PaiFabricante === selecProdInfo.Fabricante && el.PaiProduto === selecProdInfo.Produto);
+
     if (!registros) {
       return null;
     }

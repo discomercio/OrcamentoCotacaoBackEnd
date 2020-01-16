@@ -126,7 +126,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
       this.prePedidoDto.FormaPagtoCriacao.C_pce_entrada_valor = this.vlEntrada;
       this.prePedidoDto.FormaPagtoCriacao.C_pce_prestacao_qtde = this.qtde;
       this.prePedidoDto.FormaPagtoCriacao.C_pce_prestacao_valor = this.valor;
-      this.prePedidoDto.FormaPagtoCriacao.C_pce_prestacao_periodo = this.diasVenc;
+      this.prePedidoDto.FormaPagtoCriacao.C_pce_prestacao_periodo = parseInt(this.diasVenc.toString().replace("_", ""));
       this.prePedidoDto.FormaPagtoCriacao.Qtde_Parcelas = this.qtde + 1;//c_pce_prestacao_qtde + 1
     }
     //NÃO ESTA SENDO USADO
@@ -184,8 +184,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
       if (this.enumFormaPagto == 3) {
         if (this.meioPagtoEntrada && this.meioPagtoEntradaPrest)
         //ParcComEnt
-        {
-          debugger;
+        {debugger;
           if (!!this.vlEntrada && this.vlEntrada == 0.00) {
             this.alertaService.mostrarMensagem("Favor preencher o valor de entrada!");
             retorno = false;
@@ -546,7 +545,6 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
     let lstProdutos = this.prePedidoDto.ListaProdutos;
     let lstCoeficiente = this.coeficienteDto;
     if (!!this.vlEntrada && this.vlEntrada != 0.00) {
-      debugger;
       var vltotal = this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + current.TotalItem, 0);
 
       if (this.vlEntrada > vltotal){

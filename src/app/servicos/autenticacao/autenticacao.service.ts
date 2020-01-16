@@ -40,7 +40,6 @@ export class AutenticacaoService {
   }
 
   public authLogout(): void {
-    debugger;
     this.http.get(environment.apiUrl + 'acesso/fazerLogout').subscribe(
       e => {
         //nao fazemos nada..

@@ -34,7 +34,6 @@ export class NovoPrepedidoDadosService {
     enderecoEntregaDtoClienteCadastro: EnderecoEntregaDtoClienteCadastro) {
     this.prePedidoDto = new PrePedidoDto();
     let p = this.prePedidoDto;
-
     //temos que criar os objetos...
     p.NumeroPrePedido = "";
     p.DataHoraPedido = "";

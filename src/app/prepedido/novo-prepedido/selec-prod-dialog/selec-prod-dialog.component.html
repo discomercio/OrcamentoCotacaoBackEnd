@@ -3,22 +3,22 @@
         <!-- este é melhor deixar sem o carregando, fica muito confuso na tela pq pisca demais.... 
             e, se a gente estiver carregando os dados sem timeout, a animação nem aparece
         -->
-        <!-- [ngClass]="{'carregando': carregando && digitado !== ''}" -->
+        <!-- [ngClass]="{'carregando': carregando    && digitado !== ''}" -->
         <article mat-dialog-content class="fixo" style="margin:0">
-            <!-- este fica ruim: div style="display: flex; " [ngStyle]="{'flex-direction':telaDesktop?'row':'column'}" -->
+            <!-- este fica ruim: div style="display: flex; " [ngStyle]="{'flex-direction':telaDesktop?'row':'column'}"  (keydown)="keydownProduto($event)" -->
 
             <div *ngIf="telaDesktop" style="display: flex; flex-direction: row; ">
                 <mat-form-field style="flex-grow: 1; flex-shrink: 1;">
                     <input matInput type="text" name="buscaproduto" placeholder="Produto (código)"
-                        value="{{this.selecProdInfoPassado.Produto}}" (change)="digitouProd($event)"
+                        value="{{this.selecProdInfoPassado.Produto}}" (change)="digitouProd($event)" 
                         (keyup)="digitouProd($event)" [autofocus]="true" #digitadocx>
                 </mat-form-field>
 
                 <mat-form-field style="flex-grow: 0; flex-shrink: 0; ">                        
                     <input matInput type="number" name="qtde" placeholder="Quantidade" id="qtde" required [(ngModel)]="qtde"
-                        [value]="qtde" [ngModelOptions]="{standalone: true}">    
-                        <mat-icon (click)="mais()">add</mat-icon>    
-                        <mat-icon (click)="menos()">remove</mat-icon>                
+                        [value]="qtde" [ngModelOptions]="{standalone: true}">   
+                        <mat-icon (click)="menos()">remove</mat-icon>      
+                        <mat-icon (click)="mais()">add</mat-icon>          
                         <!-- <button onclick="menos()" class="a">-</button>
                         <button onclick="mais()" class="b">+</button> -->
                 </mat-form-field>
@@ -120,16 +120,18 @@
 
         </article>
         <footer *ngIf="telaDesktop" mat-dialog-actions style="justify-content: space-around;">
-            <button mat-raised-button (click)="onNoClick()" cdkFocusInitial color="accent">Cancelar</button>
+            <button mat-raised-button type="button" (click)="onNoClick($event)" color="accent">Cancelar</button>
+
             <button mat-raised-button (click)="onAdicionarClick()" color="accent">
                 <ng-template *ngIf="selecProdInfoPassado.Produto; then modificarBlock else adicionarBlock">
                 </ng-template>
                 <ng-template #modificarBlock>Modificar</ng-template>
                 <ng-template #adicionarBlock>Adicionar</ng-template>
             </button>
+            
         </footer>
         <footer *ngIf="!telaDesktop" mat-dialog-actions>
-            <button mat-raised-button (click)="onNoClick()" style="width: 10%;">
+            <button mat-raised-button type="button" (click)="onNoClick($event)" style="width: 10%;">
                 <mat-icon>highlight_off</mat-icon>
             </button>
             <button mat-raised-button (click)="onAdicionarClick()" style="width: 10%">

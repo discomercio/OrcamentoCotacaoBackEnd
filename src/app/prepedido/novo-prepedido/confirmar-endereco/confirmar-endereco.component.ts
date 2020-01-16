@@ -20,12 +20,14 @@ export class ConfirmarEnderecoComponent implements OnInit {
 
   buscarClienteServiceJustificativaEndEntregaComboTemporario: EnderecoEntregaJustificativaDto[];
   ngOnInit() {
+    debugger;
     this.enderecoEntregaDtoClienteCadastro.OutroEndereco = false;
-    
+
     this.buscarClienteServiceJustificativaEndEntregaComboTemporario = this.buscarClienteService.JustificativaEndEntregaComboTemporario();
   }
 
-  atualizarDadosEnderecoTela(enderecoEntregaDtoClienteCadastro:EnderecoEntregaDtoClienteCadastro) {
+  atualizarDadosEnderecoTela(enderecoEntregaDtoClienteCadastro: EnderecoEntregaDtoClienteCadastro) {
+    
     this.enderecoEntregaDtoClienteCadastro = enderecoEntregaDtoClienteCadastro;
     const src = this.componenteCep;
     src.Endereco = this.enderecoEntregaDtoClienteCadastro.EndEtg_endereco;
@@ -54,7 +56,7 @@ export class ConfirmarEnderecoComponent implements OnInit {
   public prepararAvancar(): void {
     //transferimos os dados do CEP para cá
     const src = this.componenteCep;
-    
+
     this.enderecoEntregaDtoClienteCadastro.OutroEndereco;
 
     this.enderecoEntregaDtoClienteCadastro.EndEtg_endereco = src.Endereco ? src.Endereco : "";
@@ -64,6 +66,16 @@ export class ConfirmarEnderecoComponent implements OnInit {
     this.enderecoEntregaDtoClienteCadastro.EndEtg_cidade = src.Cidade ? src.Cidade : "";
     this.enderecoEntregaDtoClienteCadastro.EndEtg_uf = src.Uf ? src.Uf : "";
     this.enderecoEntregaDtoClienteCadastro.EndEtg_cep = src.Cep ? src.Cep : "";
+  }
+
+  public mudarFoco(): void {
+    let article = document.getElementById("article-confirmar-cliente");
+    article.scrollTop = article.scrollHeight;
+  }
+
+  public voltarFoco():void{
+    let article = document.getElementById("article-confirmar-cliente");
+    article.scrollTop = 0;
   }
 
 }

@@ -1,19 +1,26 @@
 .mat-raised-button,.mat-mini-fab {
-    background: #f58635 !important;
+    /* background: #f58635 !important; */
+    background: #005aab !important;
 }
   
 .mat-radio-inner-circle{
-    background:#f58635 !important;
+    /* background:#f58635 !important; */
+    background: #005aab !important;
 }
   
 .mat-radio-outer-circle{
-    border-color: #f58635 !important;
-}
-.mat-slide-toggle-thumb
-{
-  background-color: #f58635 !important;
+    /* border-color: #f58635 !important; */
+    border-color: #005aab !important;
 }
 
+.mat-slide-toggle-thumb
+{
+  /* background-color: #f58635 !important; */
+  background-color: #005aab !important;
+}
+
+
 .mat-slide-toggle.mat-checked .mat-slide-toggle-bar{
-  background-color:rgba(245,134,53,0.7215686274509804) !important;
+  /* background-color:rgba(245,134,53,0.7215686274509804) !important; */
+  background-color:rgba(0,90,171,0.7215686274509804) !important
 }

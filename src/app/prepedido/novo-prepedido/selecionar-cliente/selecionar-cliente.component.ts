@@ -39,6 +39,7 @@ export class SelecionarClienteComponent extends TelaDesktopBaseComponent impleme
 
 
   buscar() {
+    
     //dá erro se não tiver nenhum dígito
     if (StringUtils.retorna_so_digitos(this.clienteBusca).trim() === "") {
       this.alertaService.mostrarMensagemComLargura(`CNPJ/CPF inválido ou vazio.`, '250px');
@@ -66,6 +67,7 @@ export class SelecionarClienteComponent extends TelaDesktopBaseComponent impleme
       }).catch((r) => {
         //deu erro na busca
         //ou não achou nada...
+        debugger;
         this.carregando = false;
         this.alertaService.mostrarErroInternet();
       });

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { PedidoCelularComponent } from '../pedido-celular/pedido-celular.component';
 
 @Component({
   selector: 'app-prepedido-celular',
@@ -10,6 +11,11 @@ export class PrepedidoCelularComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-  }
 
+  }
+  @ViewChild("divprincipal", { static: true }) divprincipal: ElementRef;
+  ngAfterViewInit() {
+    PedidoCelularComponent.redimensionarTela(this.divprincipal);
+  }
+ 
 }

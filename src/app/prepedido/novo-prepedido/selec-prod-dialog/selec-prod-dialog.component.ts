@@ -22,6 +22,7 @@ export class SelecProdDialogComponent extends TelaDesktopBaseComponent implement
     @Inject(MAT_DIALOG_DATA) public selecProdInfoPassado: SelecProdInfo,
     telaDesktopService: TelaDesktopService,
     public readonly alertaService: AlertaService) {
+
     super(telaDesktopService);
 
     //no desktop deixamos um limite inicial maior
@@ -114,27 +115,38 @@ export class SelecProdDialogComponent extends TelaDesktopBaseComponent implement
   //precisamos disto para acertar o foco
   //somente o autofocus do html não funciona quando carrega a ciaxa de diálogo pela segunda vez
   @ViewChild("digitadocx", { static: true }) digitadoCx: ElementRef;
-  ngAfterViewInit() {
-    setTimeout(() => {
-      //TEM QUE SER por timeout para evitar o erro
-      //ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value: 'mat-form-field-should-float: false'. Current value: 'mat-form-field-should-float: true'.
-      this.digitadoCx.nativeElement.focus();
-    }, 1);
-  }
+  // ngAfterViewInit() {
+  //   setTimeout(() => {
+  //     //TEM QUE SER por timeout para evitar o erro
+  //     //ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value: 'mat-form-field-should-float: false'. Current value: 'mat-form-field-should-float: true'.
+  //     this.digitadoCx.nativeElement.focus();
+  //   }, 100);
+  // }
 
 
-   mais(){
+  mais() {
     var atual = this.qtde;
     var novo = atual - (-1); //Evitando Concatenacoes
     this.qtde = novo;
   }
-  
-   menos(){
+
+  menos() {
     var atual = this.qtde;
-    if(atual > 0) { //evita números negativos
+    if (atual > 0) { //evita números negativos
       var novo = atual - 1;
       this.qtde = novo;
     }
+  }
+
+  public keydownProduto(event: KeyboardEvent): void {
+
+    if (event.which == 13) {
+      event.cancelBubble = true;
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+      this.onAdicionarClick();
+    }
+
   }
 
   //alteraram o produto
@@ -145,11 +157,17 @@ export class SelecProdDialogComponent extends TelaDesktopBaseComponent implement
     this.atualizarProdsTela();
   }
 
-  onNoClick(): void {
+  onNoClick(event: MouseEvent): void {
+
     this.selecProdInfoPassado.ClicouOk = false;
     this.dialogRef.close(false);
+
   }
+
   onAdicionarClick(): void {
+//afazer: colocar um limitador para 12 itens no máximo
+
+
     if (!this.produto || this.produto === "") {
       this.alertaService.mostrarMensagem("Por favor, selecione um produto.");
       return;
@@ -169,6 +187,7 @@ export class SelecProdDialogComponent extends TelaDesktopBaseComponent implement
 
     this.selecProdInfoPassado.Qte = this.qtde;
     this.selecProdInfoPassado.ClicouOk = true;
+
     this.dialogRef.close(true);
   }
 
