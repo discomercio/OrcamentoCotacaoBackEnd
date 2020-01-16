@@ -366,21 +366,22 @@ namespace PrepedidoBusiness.Bll
                         " {0:c2}", torcamento.Pc_Valor_Parcela));
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA:
-                    lista.Add(String.Format("Parcelado no Cartão (maquineta) em " + torcamento.Pc_Maquineta_Qtde_Parcelas + " X " +
-                        " {0:c2}", torcamento.Pc_Maquineta_Valor_Parcela));
+                    lista.Add(String.Format("Parcelado no Cartão (maquineta) em " + torcamento.Pc_Maquineta_Qtde_Parcelas + 
+                        " X {0:c2}", torcamento.Pc_Maquineta_Valor_Parcela));
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA:
                     lista.Add(String.Format("Entrada " + "{0:c2} (" +
                         Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pce_Forma_Pagto_Entrada)) + ")", torcamento.Pce_Entrada_Valor));
                     if (torcamento.Pce_Forma_Pagto_Prestacao != 5 && torcamento.Pce_Forma_Pagto_Prestacao != 7)
                     {
-                        lista.Add(String.Format("Prestações: " + torcamento.Pce_Prestacao_Qtde + " X " + " {0:c2}" +
-                            " (" + Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pce_Forma_Pagto_Prestacao)) + ") vencendo a cada " +
+                        lista.Add(String.Format("Demais Prestações: " + torcamento.Pce_Prestacao_Qtde + " X " + " {0:c2}" +
+                            " (" + Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pce_Forma_Pagto_Prestacao)) + 
+                            ") vencendo a cada " +
                             torcamento.Pce_Prestacao_Periodo + " dias", torcamento.Pce_Prestacao_Valor));
                     }
                     else
                     {
-                        lista.Add(String.Format("Prestações: " + torcamento.Pce_Prestacao_Qtde + " X " + " {0:c2}" +
+                        lista.Add(String.Format("Demais Prestações: " + torcamento.Pce_Prestacao_Qtde + " X " + " {0:c2}" +
                             " (" + Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pce_Forma_Pagto_Prestacao)) + ")", torcamento.Pce_Prestacao_Valor));
                     }
                     break;
@@ -452,7 +453,7 @@ namespace PrepedidoBusiness.Bll
                 Vendedor = vendedor,
                 Id = cli.Id,
                 Cnpj_Cpf = Util.FormatCpf_Cnpj_Ie(cli.Cnpj_Cpf),
-                Rg = Util.FormatCpf_Cnpj_Ie(cli.Rg),
+                Rg = cli.Rg,
                 Ie = Util.FormatCpf_Cnpj_Ie(cli.Ie),
                 Contribuinte_Icms_Status = cli.Contribuinte_Icms_Status,
                 Tipo = cli.Tipo,

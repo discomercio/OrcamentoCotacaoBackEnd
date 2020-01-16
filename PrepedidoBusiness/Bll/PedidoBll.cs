@@ -351,10 +351,17 @@ namespace PrepedidoBusiness.Bll
             var TotalPerda = (await perdas).Select(r => r.Valor).Sum();
             var lstOcorrenciaTask = ObterOcorrencias(numPedido);
             var lstBlocNotasDevolucaoTask = BuscarPedidoBlocoNotasDevolucao(numPedido);
+            var vlPagoTask = CalcularValorPago(numPedido);
 
             var saldo_a_pagar = await saldo_a_pagarTask;
             if (p.St_Entrega == Constantes.ST_PAGTO_PAGO && saldo_a_pagar > 0)
                 saldo_a_pagar = 0;
+
+            //afazer: calcular o VL Pago = o valor que já foi pago (entrada ou pagamento parcial)
+            /* O valor de VL Pago é um select na base
+             * precisamos calcular o saldo a pagar que é o calculo de 
+             * saldo a pagar = vl_TotalFamiliaPrecoNF - vl_TotalFamiliaPago - vl_TotalFamiliaDevolucaoPrecoNF
+             */
 
             DetalhesFormaPagamentos detalhesFormaPagto = new DetalhesFormaPagamentos
             {
@@ -363,7 +370,7 @@ namespace PrepedidoBusiness.Bll
                 StatusPagto = StatusPagto(p.St_Pagto).ToUpper(),
                 CorStatusPagto = corStatusPagto,
                 VlTotalFamilia = p.Vl_Total_Familia,
-                VlPago = p.Vl_Total_Familia,
+                VlPago = await vlPagoTask,
                 VlDevolucao = await vl_TotalFamiliaDevolucaoPrecoNFTask,
                 VlPerdas = TotalPerda,
                 SaldoAPagar = saldo_a_pagar,
@@ -398,6 +405,18 @@ namespace PrepedidoBusiness.Bll
             };
 
             return await Task.FromResult(DtoPedido);
+        }
+
+        private async Task<decimal> CalcularValorPago(string numPedido)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+
+            var vlFamiliaP = from c in db.TpedidoPagamentos
+                             where c.Pedido.StartsWith(numPedido)
+                             select c;
+            var vl_TotalFamiliaPagoTask = vlFamiliaP.Select(r => r.Valor).SumAsync();
+
+            return await vl_TotalFamiliaPagoTask;
         }
 
         private string ObterEntregaImediata(Tpedido p)
@@ -810,7 +829,7 @@ namespace PrepedidoBusiness.Bll
                         //string credito = registro.analise_credito_data;
                         if (!string.IsNullOrEmpty(registro.analise_credito_usuario))
                         {
-                            retorno = retorno + "(" + registro.analise_credito_data + " - "
+                            retorno = retorno + " (" + registro.analise_credito_data?.ToString("dd/MM/yyyy HH:MM") + " - "
                                 + registro.analise_credito_usuario + ")";
                         }
                     }
@@ -963,7 +982,7 @@ namespace PrepedidoBusiness.Bll
             {
                 BlocoNotasDtoPedido bloco = new BlocoNotasDtoPedido
                 {
-                    Dt_Hora_Cadastro = i.Dt_Cadastro,
+                    Dt_Hora_Cadastro = i.Dt_Hr_Cadastro,
                     Usuario = i.Usuario,
                     Loja = i.Loja,
                     Mensagem = i.Mensagem
@@ -1035,30 +1054,41 @@ namespace PrepedidoBusiness.Bll
                     lista.Add("À Vista (" + Util.OpcaoFormaPagto(parcelamento) + ")");
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELA_UNICA:
-                    lista.Add("Parcela Única: " + Constantes.SIMBOLO_MONETARIO + " " +
-                        Util.OpcaoFormaPagto(Convert.ToString(pedido.Pu_Forma_Pagto)) + " vencendo após " + pedido.Pu_Vencto_Apos + " dias");
+                    lista.Add(String.Format("Parcela Única: " + " {0:c2} (" +
+                        Util.OpcaoFormaPagto(Convert.ToString(pedido.Pu_Forma_Pagto)) +
+                        ") vencendo após " + pedido.Pu_Vencto_Apos + " dias"));
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO:
-                    lista.Add("Parcelado no Cartão (internet) em " + pedido.Pc_Qtde_Parcelas + " X " +
-                        Constantes.SIMBOLO_MONETARIO + " " + pedido.Pc_Valor_Parcela);
+                    lista.Add(String.Format("Parcelado no Cartão (internet) em " + pedido.Pc_Qtde_Parcelas + " X " +
+                        " {0:c2}", pedido.Pc_Valor_Parcela));
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA:
-                    lista.Add("Parcelado no Cartão (maquineta) em " + pedido.Pc_Maquineta_Qtde_Parcelas + " X " + pedido.Pc_Maquineta_Valor_Parcela);
+                    lista.Add(String.Format("Parcelado no Cartão (maquineta) em " + pedido.Pc_Maquineta_Qtde_Parcelas +
+                        " X {0:c2}" + pedido.Pc_Maquineta_Valor_Parcela));
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA:
-                    string valor = pedido.Pce_Entrada_Valor?.ToString("#0.00");
-                    lista.Add("Entrada: " + Constantes.SIMBOLO_MONETARIO + " " +
-                        valor + " (" + Util.OpcaoFormaPagto(Convert.ToString(pedido.Pce_Forma_Pagto_Entrada)) + ")");
-                    lista.Add("Prestações: " + pedido.Pce_Prestacao_Qtde + " X " + Constantes.SIMBOLO_MONETARIO + " " + pedido.Pce_Prestacao_Valor +
-                        " (" + Util.OpcaoFormaPagto(Convert.ToString(pedido.Pce_Forma_Pagto_Prestacao)) + ") vencendo a cada " +
-                        pedido.Pce_Prestacao_Periodo + " dias");
+                    lista.Add(String.Format("Entrada " + "{0:c2} (" +
+                        Util.OpcaoFormaPagto(Convert.ToString(pedido.Pce_Forma_Pagto_Entrada)) + ")", pedido.Pce_Entrada_Valor));
+                    if (pedido.Pce_Forma_Pagto_Prestacao != 5 && pedido.Pce_Forma_Pagto_Prestacao != 7)
+                    {
+                        lista.Add(String.Format("Demais Prestações: " + pedido.Pce_Prestacao_Qtde + " X " + " {0:c2}" +
+                            " (" + Util.OpcaoFormaPagto(Convert.ToString(pedido.Pce_Forma_Pagto_Prestacao)) +
+                            ") vencendo a cada " +
+                            pedido.Pce_Prestacao_Periodo + " dias", pedido.Pce_Prestacao_Valor));
+                    }
+                    else
+                    {
+                        lista.Add(String.Format("Demais Prestações: " + pedido.Pce_Prestacao_Qtde + " X " + " {0:c2}" +
+                            " (" + Util.OpcaoFormaPagto(Convert.ToString(pedido.Pce_Forma_Pagto_Prestacao)) + ")", pedido.Pce_Prestacao_Valor));
+                    }
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA:
-                    lista.Add("1ª Prestação: " + Constantes.SIMBOLO_MONETARIO + " " + pedido.Pse_Prim_Prest_Valor + " (" +
-                        Util.OpcaoFormaPagto(Convert.ToString(pedido.Pse_Forma_Pagto_Prim_Prest)) + ") vencendo após " + pedido.Pse_Prim_Prest_Apos + " dias");
-                    lista.Add("Demais Prestações: " + pedido.Pse_Demais_Prest_Qtde + " X " + Constantes.SIMBOLO_MONETARIO + " " + pedido.Pse_Demais_Prest_Valor +
-                        " (" + Util.OpcaoFormaPagto(Convert.ToString(pedido.Pse_Forma_Pagto_Demais_Prest)) + ") vencendo a cada " +
-                        pedido.Pse_Demais_Prest_Periodo + " dias");
+                    lista.Add(String.Format("1ª Prestação: " + " {0:c2} (" +
+                        Util.OpcaoFormaPagto(Convert.ToString(pedido.Pse_Forma_Pagto_Prim_Prest)) +
+                        ") vencendo após " + pedido.Pse_Prim_Prest_Apos + " dias", pedido.Pse_Prim_Prest_Valor));
+                    lista.Add(String.Format("Demais Prestações: " + pedido.Pse_Demais_Prest_Qtde + " X " +
+                        " {0:c2} (" + Util.OpcaoFormaPagto(Convert.ToString(pedido.Pse_Forma_Pagto_Demais_Prest)) +
+                        ") vencendo a cada " + pedido.Pse_Demais_Prest_Periodo + " dias", pedido.Pse_Demais_Prest_Valor));
                     break;
             }
 
