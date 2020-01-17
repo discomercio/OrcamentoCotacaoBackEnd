@@ -67,7 +67,6 @@ export class SelecionarClienteComponent extends TelaDesktopBaseComponent impleme
       }).catch((r) => {
         //deu erro na busca
         //ou não achou nada...
-        debugger;
         this.carregando = false;
         this.alertaService.mostrarErroInternet();
       });

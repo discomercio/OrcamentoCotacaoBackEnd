@@ -40,12 +40,12 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
     super(telaDesktopService, router, novoPrepedidoDadosService);
   }
 
-  mascaraNum(){
+  mascaraNum() {
     return [/\d/, /\d/, /\d/];
   }
- 
+
   ngOnInit() {
-    
+
     this.buscarQtdeParcCartaoVisa();
     this.verificarEmProcesso();
     this.buscarFormaPagto();
@@ -53,7 +53,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
     setTimeout(() => {
       this.montaFormaPagtoExistente();
     }, 300);
-    
+
   }
 
   //#region navegação
@@ -126,7 +126,8 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
       this.prePedidoDto.FormaPagtoCriacao.C_pce_entrada_valor = this.vlEntrada;
       this.prePedidoDto.FormaPagtoCriacao.C_pce_prestacao_qtde = this.qtde;
       this.prePedidoDto.FormaPagtoCriacao.C_pce_prestacao_valor = this.valor;
-      this.prePedidoDto.FormaPagtoCriacao.C_pce_prestacao_periodo = parseInt(this.diasVenc.toString().replace("_", ""));
+      this.prePedidoDto.FormaPagtoCriacao.C_pce_prestacao_periodo = this.diasVenc != null ?
+        parseInt(this.diasVenc.toString().replace("_", "")) : this.diasVenc;
       this.prePedidoDto.FormaPagtoCriacao.Qtde_Parcelas = this.qtde + 1;//c_pce_prestacao_qtde + 1
     }
     //NÃO ESTA SENDO USADO
@@ -147,7 +148,8 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
       this.prePedidoDto.FormaPagtoCriacao.Rb_forma_pagto = this.enumFormaPagto.toString();
       this.prePedidoDto.FormaPagtoCriacao.Op_pu_forma_pagto = this.meioPagtoParcUnica.toString();//meio de pagamento
       this.prePedidoDto.FormaPagtoCriacao.C_pu_valor = this.valor;
-      this.prePedidoDto.FormaPagtoCriacao.C_pu_vencto_apos = this.diasVencParcUnica;
+      this.prePedidoDto.FormaPagtoCriacao.C_pu_vencto_apos = this.diasVencParcUnica != null ?
+        parseInt(this.diasVencParcUnica.toString().replace("_", "")) : this.diasVencParcUnica;
       this.prePedidoDto.FormaPagtoCriacao.Qtde_Parcelas = 1;
     }
     if (this.enumFormaPagto == 6) {
@@ -184,7 +186,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
       if (this.enumFormaPagto == 3) {
         if (this.meioPagtoEntrada && this.meioPagtoEntradaPrest)
         //ParcComEnt
-        {debugger;
+        {
           if (!!this.vlEntrada && this.vlEntrada == 0.00) {
             this.alertaService.mostrarMensagem("Favor preencher o valor de entrada!");
             retorno = false;
@@ -510,6 +512,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
           lstCoeficiente[i].TipoParcela == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA) {
           this.lstMsg.push(lstCoeficiente[i].QtdeParcelas + " X " +
             this.moedaUtils.formatarMoedaComPrefixo(vlTotalPedido / lstCoeficiente[i].QtdeParcelas));
+          this.opcaoPagtoParcUnica = this.lstMsg[0];
           break;
         }
         else if (enumFP.toString() == this.constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA &&
@@ -547,7 +550,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
     if (!!this.vlEntrada && this.vlEntrada != 0.00) {
       var vltotal = this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + current.TotalItem, 0);
 
-      if (this.vlEntrada > vltotal){
+      if (this.vlEntrada > vltotal) {
         this.alertaService.mostrarMensagem("Valor da entrada é maior que o total do Pré-pedido!");
         this.vlEntrada = null;
       }
@@ -592,7 +595,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
         case this.constantes.COD_FORMA_PAGTO_PARCELA_UNICA:
           //ParcUnica
           this.enumFormaPagto = EnumFormaPagto.ParcUnica;//forma de pagamento
-          this.meioPagtoParcUnica = parseInt(this.prePedidoDto.FormaPagtoCriacao.Rb_forma_pagto);//deposito ou...
+          this.meioPagtoParcUnica = parseInt(this.prePedidoDto.FormaPagtoCriacao.Op_pu_forma_pagto);//deposito ou...
           this.opcaoPagtoParcUnica = this.montaParcelamentoExistente();//recebe a descrição (1 X R$ 00,00)
           this.diasVencParcUnica = this.prePedidoDto.FormaPagtoCriacao.C_pu_vencto_apos;//dias para venc.
           break;

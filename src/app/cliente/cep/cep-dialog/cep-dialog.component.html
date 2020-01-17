@@ -18,8 +18,9 @@
                     <input matInput type="text" placeholder="Localidade" [(ngModel)]="localidade" name="buscaLocalidade"
                         list="dlbuscaLocalidade">
                     <datalist *ngIf="localidade.length > 2" id="dlbuscaLocalidade">
-                        <ng-container  *ngFor="let option of lstCidades">
-                            <option *ngIf="option.toLowerCase().indexOf(localidade.toLowerCase()) != -1" [value]="option">
+                        <ng-container *ngFor="let option of lstCidades">
+                            <option *ngIf="option.toLowerCase().indexOf(localidade.toLowerCase()) != -1"
+                                [value]="option">
                         </ng-container>
                     </datalist>
                 </mat-form-field>
@@ -47,25 +48,31 @@
             <div *ngIf="!telaDesktop" fxLayoutAlign="center center">
                 <div>
                     <mat-form-field style="width: 98%">
-                        <input matInput type="text" placeholder="Endereço" [(ngModel)]="endereco" required
-                            [ngModelOptions]="{standalone: true}">
+                        <mat-label>Uf</mat-label>
+                        <mat-select [(ngModel)]="uf" [ngModelOptions]="{standalone: true}">
+                            <mat-option value="">Selecione</mat-option>
+                            <mat-option *ngFor="let i of lstUf" [value]="i" required (click)="buscarLocalidades()">
+                                {{i}}
+                            </mat-option>
+                        </mat-select>
                     </mat-form-field>
                 </div>
                 <div>
                     <mat-form-field style="width: 98%">
                         <input matInput type="text" placeholder="Localidade" [(ngModel)]="localidade"
-                            [ngModelOptions]="{standalone: true}">
+                            name="buscaLocalidade" list="dlbuscaLocalidade">
+                        <datalist *ngIf="localidade.length > 2" id="dlbuscaLocalidade">
+                            <ng-container *ngFor="let option of lstCidades">
+                                <option *ngIf="option.toLowerCase().indexOf(localidade.toLowerCase()) != -1"
+                                    [value]="option">
+                            </ng-container>
+                        </datalist>
                     </mat-form-field>
                 </div>
                 <div>
                     <mat-form-field style="width: 98%">
-                        <mat-label>Uf</mat-label>
-                        <mat-select [(ngModel)]="uf" [ngModelOptions]="{standalone: true}">
-                            <mat-option value="">Selecione</mat-option>
-                            <mat-option *ngFor="let i of lstUf" [value]="i">
-                                {{i}}
-                            </mat-option>
-                        </mat-select>
+                        <input matInput type="text" placeholder="Endereço" [(ngModel)]="endereco" required
+                            [ngModelOptions]="{standalone: true}">
                     </mat-form-field>
                 </div>
                 <a *ngIf="!telaDesktop" mat-mini-fab aria-label="teste" (click)="buscarCepPorEndereco()"
@@ -143,35 +150,39 @@
         </mat-radio-group>
         <!-- versão celular -->
         <div *ngIf="!telaDesktop" style="display: block; padding-top: 1em;">
-            <div *ngFor="let i of lstEnderecos; let idx = index" class="caixacel">
-                <!-- sempre uma linha inteira -->
-                <div style="cursor: pointer; padding-bottom: 1em; text-align: center; display: inline">
-                    <mat-radio-button *ngIf="!telaDesktop" type="radio" name="chkIndice" value="{{idx}}">
+            <mat-radio-group *ngIf="lstEnderecos.length > 0" [(ngModel)]="endereco_selecionado" required
+                [ngModelOptions]="{standalone: true}">
+                <div *ngFor="let i of lstEnderecos; let idx = index" class="caixacel">
 
-                    </mat-radio-button>
+                    <!-- sempre uma linha inteira -->
+                    <div style="cursor: pointer; padding-bottom: 1em; text-align: center; display: inline">
+                        <mat-radio-button *ngIf="!telaDesktop" type="radio" name="chkIndice" value="{{idx}}">
 
-                </div>
-                <div style="cursor: pointer; padding-bottom: 1em; text-align: center; display: inline">
-                    {{formatarEndereco.cep_formata(i.Cep)}} |
+                        </mat-radio-button>
 
+                    </div>
+                    <div style="cursor: pointer; padding-bottom: 1em; text-align: center; display: inline">
+                        {{formatarEndereco.cep_formata(i.Cep)}} |
+
+                    </div>
+                    <div style="cursor: pointer; padding-bottom: 1em; text-align: center; display: inline">
+                        {{i.Uf}} |
+                    </div>
+                    <div style="cursor: pointer; padding-bottom: 1em; text-align: center; display: inline">
+                        {{i.Cidade}} |
+                    </div>
+                    <div style="cursor: pointer; padding-bottom: 1em; text-align: center; display: inline">
+                        {{i.Bairro}} |
+                    </div>
+                    <div style="cursor: pointer; padding-bottom: 1em; text-align: center; display: inline">
+                        {{i.Endereco}}
+                    </div>
+                    <div *ngIf="i.LogradouroComplemento != ''"
+                        style="cursor: pointer; padding-bottom: 1em; text-align: center; display: inline">
+                        | {{i.LogradouroComplemento}}
+                    </div>
                 </div>
-                <div style="cursor: pointer; padding-bottom: 1em; text-align: center; display: inline">
-                    {{i.Uf}} |
-                </div>
-                <div style="cursor: pointer; padding-bottom: 1em; text-align: center; display: inline">
-                    {{i.Cidade}} |
-                </div>
-                <div style="cursor: pointer; padding-bottom: 1em; text-align: center; display: inline">
-                    {{i.Bairro}} |
-                </div>
-                <div style="cursor: pointer; padding-bottom: 1em; text-align: center; display: inline">
-                    {{i.Endereco}}
-                </div>
-                <div *ngIf="i.LogradouroComplemento != ''"
-                    style="cursor: pointer; padding-bottom: 1em; text-align: center; display: inline">
-                    | {{i.LogradouroComplemento}}
-                </div>
-            </div>
+            </mat-radio-group>
         </div>
     </article>
     <footer *ngIf="lstEnderecos.length > 0" mat-dialog-actions style="justify-content: space-around;">

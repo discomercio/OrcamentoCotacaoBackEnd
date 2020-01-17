@@ -1,6 +1,7 @@
 .mat-raised-button,.mat-mini-fab {
     /* background: #f58635 !important; */
     background: #005aab !important;
+    color:#fff !important;
 }
   
 .mat-radio-inner-circle{

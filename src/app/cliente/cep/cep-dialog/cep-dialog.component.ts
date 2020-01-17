@@ -37,7 +37,7 @@ export class CepDialogComponent extends TelaDesktopBaseComponent implements OnIn
   }
 
   onOkClick(): void {
-    // this.dialogRef.close(true);
+    this.dialogRef.close(true);
   }
 
   //campos que o usuario escolhe

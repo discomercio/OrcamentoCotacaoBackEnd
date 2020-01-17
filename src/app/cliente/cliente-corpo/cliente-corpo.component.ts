@@ -42,7 +42,6 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
       this.buscarClienteService.listaBancosCombo().toPromise()
         .then((r) => {
           if (r === null) {
-            debugger;
             //erro
             this.alertaService.mostrarErroInternet();
             return;
@@ -50,7 +49,6 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
           //cliente já existe
           this.listaBancosCombo = r;
         }).catch((r) => {
-          debugger;
           //erro
           this.alertaService.mostrarErroInternet();
         });

@@ -51,8 +51,8 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
     this.location.back();
   }
   continuar() {
-    debugger;
     this.dadosParaModelo();
+    debugger;
     this.prepedidoBuscarService.cadastrarPrepedido(this.novoPrepedidoDadosService.prePedidoDto).subscribe({
       next: (r) => {
         if (r == null) {

@@ -79,7 +79,6 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
           this.salvarAtivoInicializar();
         }).catch((r) => {
           //erro, voltamos para a tela anterior
-          debugger;
           this.router.navigate(["/novo-prepedido"]);
         });
     }
@@ -109,7 +108,6 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
       let existente = this.novoPrepedidoDadosService.prePedidoDto.DadosCliente.Id;
       if (existente == this.dadosClienteCadastroDto.Id) {
         //nao criamos! usamos o que já está no serviço
-        debugger;
         this.dadosClienteCadastroDto = this.novoPrepedidoDadosService.prePedidoDto.DadosCliente;
         this.enderecoEntregaDtoClienteCadastro = this.novoPrepedidoDadosService.prePedidoDto.EnderecoEntrega;
         if (this.telaDesktop) {
@@ -141,12 +139,10 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
   salvarAtivo(): boolean {
     //diz se o botão de salvar está ligado
     if (!this.dadosClienteCadastroDto) {
-      debugger;
       return false;
     }
     //se estiver com NULL é pq ainda não pegou os valores
     if (this.dadosClienteCadastroDtoIe == null) {
-      debugger;
       return false;
     }
     if (this.dadosClienteCadastroDtoIe !== this.dadosClienteCadastroDto.Ie) {

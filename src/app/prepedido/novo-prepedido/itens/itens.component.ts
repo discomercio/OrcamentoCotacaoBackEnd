@@ -73,7 +73,6 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
         this.prepedidoBuscarService.buscar(numeroPrepedido).subscribe({
           next: (r) => {
             if (r == null) {
-              debugger;
               this.alertaService.mostrarErroInternet();
               this.router.navigate(["/novo-prepedido"]);
               return;
@@ -97,7 +96,6 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     //se veio diretamente para esta tela, e não tem nada no serviço, não podemos continuar
     //então voltamos para o começo do processo!
     if (!this.prePedidoDto) {
-      debugger;
       this.router.navigate(["/novo-prepedido"]);
       return;
     }
@@ -334,7 +332,6 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
   //#region navegação
 
   voltar() {
-    debugger;
     // if(!this.dadosPagto.podeContinuar())
     // return false;
     this.dadosPagto.podeContinuar(false);
@@ -447,7 +444,6 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
         //vamos editar ou adicionar um novo
         if (linha) {
           //editando
-          debugger;
           //se mudou o produto, temos que mdar vários campos
           if (linha.NumProduto !== selecProdInfo.Produto || linha.Fabricante !== selecProdInfo.Fabricante) {
             //mudou o produto, temos que mudar muita coisa!
@@ -477,7 +473,6 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
         }
         else {
           //adicionando
-          debugger;
           //Gabriel
           //add produto para verificação de itens
           this.lstProdSelectInfo.push(selecProdInfo);

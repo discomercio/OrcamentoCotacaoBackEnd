@@ -28,11 +28,14 @@
                     <input matInput type="text" name="buscaproduto" placeholder="Produto (código)"
                         value="{{this.selecProdInfoPassado.Produto}}" (change)="digitouProd($event)"
                         (keyup)="digitouProd($event)" [autofocus]="true" #digitadocx>
+                        
                 </mat-form-field>
 
                 <mat-form-field>
                     <input matInput type="number" name="qtde" placeholder="Quantidade" required [(ngModel)]="qtde"
                         [value]="qtde" [ngModelOptions]="{standalone: true}">
+                        <mat-icon (click)="menos()">remove</mat-icon>      
+                        <mat-icon (click)="mais()">add</mat-icon>
                 </mat-form-field>
             </div>
 

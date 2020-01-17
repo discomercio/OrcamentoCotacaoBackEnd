@@ -30,7 +30,6 @@ export class PassoPrepedidoBase extends TelaDesktopBaseComponent {
 
     verificarEmProcesso() {
         //pegamos o que está no serviço
-        debugger;
         this.prePedidoDto = this.novoPrepedidoDadosService.prePedidoDto;
         if (!this.prePedidoDto) {
             this.router.navigate(["/novo-prepedido"]);
