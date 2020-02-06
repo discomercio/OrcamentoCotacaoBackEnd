@@ -1,6 +1,6 @@
-﻿
-///<reference path="../../stringUtils/stringUtils.ts>
-class FormatarTelefone {
+﻿import { StringUtils } from "../../stringUtils/stringUtils";
+
+export class FormatarTelefone {
     //     ' ------------------------------------------------------------------------
     // '   TELEFONE_FORMATA
     // ' 

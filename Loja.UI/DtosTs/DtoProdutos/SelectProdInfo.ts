@@ -1,6 +1,6 @@
-﻿///<reference path="DtoProdutoCombo.ts" />
+﻿import { DtoProdutoCombo } from "./DtoProdutoCombo";
 
-class SelectProdInfo {
+export class SelectProdInfo {
     //entrada
     public produtoComboDto: DtoProdutoCombo;
     //entrada e saída

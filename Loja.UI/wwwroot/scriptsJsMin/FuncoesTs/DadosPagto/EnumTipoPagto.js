@@ -1,0 +1,1 @@
+define(["require","exports"],function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),function(e){e.Avista="AV",e.ParcCartaoInternet="SE",e.ParcComEnt="CE",e.ParcSemEnt="SE",e.ParcUnica="SE",e.ParcCartaoMaquineta="SE"}(t.EnumTipoPagto||(t.EnumTipoPagto={}))});

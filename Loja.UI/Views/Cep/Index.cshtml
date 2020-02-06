@@ -132,7 +132,6 @@
 
 
     $("#btnModificar").click(function () {
-        debugger;
         $('.teste').children().find('input').filter(function () {
             if ($(this).prop('checked') == true) {
                 var elem = $(this).parent().parent().parent();
@@ -143,7 +142,8 @@
 
     function montaTabela(data) {
         var cols = "";
-        var lst = data["listaCep"];
+        debugger;
+        var lst = data["ListaCep"];
 
         if (lst.length > 0) {
             if ($('#msg').css("display", "block")) $('#msg').css("display", "none");
@@ -153,12 +153,12 @@
                 cols += "<td>";
                 cols += "<label><input class='with-gap check' type='radio' value='" + i + "'></input><span></span></label>";
                 cols += "</td>";
-                cols += "<td>" + lst[i].cep + "</td>";
-                cols += "<td>" + lst[i].uf + "</td>";
-                cols += "<td>" + lst[i].cidade + "</td>";
-                cols += "<td>" + lst[i].bairro + "</td>";
-                cols += "<td>" + lst[i].endereco + "</td>";
-                cols += "<td>" + lst[i].logradouroComplemento + "</td></tr>";
+                cols += "<td>" + lst[i].Cep + "</td>";
+                cols += "<td>" + lst[i].Uf + "</td>";
+                cols += "<td>" + lst[i].Cidade + "</td>";
+                cols += "<td>" + lst[i].Bairro + "</td>";
+                cols += "<td>" + lst[i].Endereco + "</td>";
+                cols += "<td>" + lst[i].LogradouroComplemento + "</td></tr>";
                 $("#tableBody").empty().append(cols);
             }
 
@@ -201,50 +201,7 @@
         $('#numEntrega').val('');
     }
 
-    function inscreve(o) {
-        //fazer a verificação para saber se tem valor no con[i]
-        //para ativar os campos e bloquear a edição de alguns campos caso não seja vazio
-
-        limparCamposEndEntrega();
-
-        var con = $(o);
-        debugger;
-        $('#cepEntrega').val(con[1].textContent);
-        //$("#cep").addClass('valid');
-        $("#lblcep").addClass('active');
-
-
-        $('#ufEntrega').val(con[2].textContent);
-        $('#ufEntrega').prop('readonly', true);
-        $("#lblUfEntrega").addClass('active');
-
-        $('#cidadeEntrega').val(con[3].textContent);
-        $('#cidadeEntrega').prop('readonly', true);
-        $("#lblCidadeEntrega").addClass('active');
-
-        if (con[4].textContent.trim() != "") {
-            $('#bairroEntrega').prop("readonly", true);
-            $('#bairroEntrega').val(con[4].textContent);
-            $("#lblBairroEntrega").addClass('active');
-        }
-        else {
-            $('#bairroEntrega').prop("readonly", false);
-        }
-
-        if (con[5].textContent.trim() != "") {
-            $('#enderecoEntrega').prop("readonly", true);
-            $('#enderecoEntrega').val(con[5].textContent);
-            $("#lblEnderecoEntrega").addClass('active');
-        }
-        else {
-            $('#enderecoEntrega').prop("readonly", false);
-        }
-
-        if (con[6].textContent.trim() != "") {
-            $('#compEntrega').val(con[6].textContent);
-            $("#lblComplementoEntrega").addClass('active');
-        }
-    }
+    
 
     $('#btnBuscar').on('click', function () {
         $.ajax({
@@ -303,67 +260,78 @@
         let instanceModal = M.Modal.init(Modalelem);
         instanceModal.open();
     };
+
     function buscarCep() {
-        if ($('#cepEntrega').val() != null) {
-            $('#naoseicep').addClass('pulse');
-            $.ajax({
-                url: "../Cep/BuscarCep/",
-                type: "GET",
-                data: { cep: $('#cepEntrega').val() },
-                dataType: "json",
-                success: function (data) {
-                    if (data[0].endereco != "") {
-                        $('#enderecoEntrega').prop("readonly", true);
-                        $("#enderecoEntrega").val(data[0].endereco);
-                        $("#lblEnderecoEntrega").addClass('active');
-                    }
-                    else {
-                        $('#enderecoEntrega').prop("readonly", false);
-                    }
+    if ($('#cepEntrega').val() != null) {
+        $('#naoseicep').addClass('pulse');
 
-                    if (data[0].bairro != "") {
-                        $("#bairroEntrega").prop("readonly", true);
-                        $("#bairroEntrega").val(data[0].bairro);
-                        $("#lblBairroEntrega").addClass('active');
-                    }
-                    else {
-                        $("#bairroEntrega").prop("readonly", false);
-                    }
-
-                    if (data[0].cidade != "") {
-                        $("#cidadeEntrega").prop("readonly", true);
-                        $("#cidadeEntrega").val(data[0].cidade);
-                        $("#lblCidadeEntrega").addClass('active');
-                    }
-                    else {
-                        $("#cidadeEntrega").prop("readonly", false);
-                    }
-
-                    if (data[0].uf != "") {
-                        $("#ufEntrega").prop("readonly", true);
-                        $("#ufEntrega").val(data[0].uf);
-                        $("#lblUfEntrega").addClass('active');
-                    }
-                    else {
-                        $("#ufEntrega").prop("readonly", false);
-                    }
-
-                    if (data[0].logradouroComplemento != "" &&
-                        data[0].logradouroComplemento != 'undefined' &&
-                        data[0].logradouroComplemento != null) {
-                        console.log(data[0].logradouroComplemento);
-                        $('#compEntrega').val(data[0].logradouroComplemento);
-                        $('#lblComplementoEntrega').addClass('active');
-                    }
-
-                    $('#naoseicep').removeClass('pulse');
+        debugger;
+        $.ajax({
+            url: "../Cep/BuscarCep/",
+            type: "GET",
+            data: { cep: $('#cepEntrega').val() },
+            dataType: "json",
+            success: function (data) {
+                debugger;
+                if (data[0].Endereco != "") {
+                    $('#enderecoEntrega').prop("readonly", true);
+                    $("#enderecoEntrega").val(data[0].Endereco);
+                    $("#lblEnderecoEntrega").addClass('active');
                 }
-            })
-        }
+                else {
+                    $('#enderecoEntrega').prop("readonly", false);
+                }
+
+                if (data[0].Bairro != "") {
+                    $("#bairroEntrega").prop("readonly", true);
+                    $("#bairroEntrega").val(data[0].Bairro);
+                    $("#lblBairroEntrega").addClass('active');
+                }
+                else {
+                    $("#bairroEntrega").prop("readonly", false);
+                }
+
+                if (data[0].Cidade != "") {
+                    $("#cidadeEntrega").prop("readonly", true);
+                    $("#cidadeEntrega").val(data[0].Cidade);
+                    $("#lblCidadeEntrega").addClass('active');
+                }
+                else {
+                    $("#cidadeEntrega").prop("readonly", false);
+                }
+
+                if (data[0].Uf != "") {
+                    $("#ufEntrega").prop("readonly", true);
+                    $("#ufEntrega").val(data[0].Uf);
+                    $("#lblUfEntrega").addClass('active');
+                }
+                else {
+                    $("#ufEntrega").prop("readonly", false);
+                }
+
+                if (data[0].logradouroComplemento != "" &&
+                    data[0].logradouroComplemento != 'undefined' &&
+                    data[0].logradouroComplemento != null) {
+                    console.log(data[0].LogradouroComplemento);
+                    $('#compEntrega').val(data[0].LogradouroComplemento);
+                    $('#lblComplementoEntrega').addClass('active');
+                }
+
+                $('#naoseicep').removeClass('pulse');
+            },
+            error: function(data) {
+                console.log(data);
+            }
+        })
     }
+}
+
 
 </script>
-
+@*<script>
+    requirejs(["Views/Cep/Index"], function (util) {
+    });
+</script>*@
 
 <style>
 

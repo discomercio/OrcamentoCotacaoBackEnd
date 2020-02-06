@@ -1,10 +1,9 @@
-﻿///<reference path="../DtoCliente/DtoDadosClienteCadastro.ts" />
-///<reference path="../DtoCliente/DtoEnderecoEntregaClienteCadastro.ts" />
-///<reference path="../DtoPedido/DtoPedidoProdutosPedido.ts" />
-///<reference path="../DtoPedido/DtoDetalhesPedido.ts" />
-///<reference path="../DtoPedido/DtoFormaPagtoCriacao.ts" />
+﻿import { DtoEnderecoEntregaClienteCadastro } from "../DtoCliente/DtoEnderecoEntregaClienteCadastro";
+import { DtoPedidoProdutosPedido } from "./DtoPedidoProdutosPedido";
+import { DtoDetalhesPedido } from "./DtoDetalhesPedido";
+import { DtoFormaPagtoCriacao } from "./DtoFormaPagtoCriacao";
 
-class DtoPedido {
+export class DtoPedido {
     NumeroPrePedido: string;
     //StatusHoraPedido: StatusPedidoDtoPedido;//Verificar se todos pedidos marcam a data também
     DataHoraPedido: string;

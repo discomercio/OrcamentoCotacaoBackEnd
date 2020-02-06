@@ -1,8 +1,15 @@
-///<reference path="../DtoCliente/DtoDadosClienteCadastro.ts" />
-///<reference path="../DtoCliente/DtoEnderecoEntregaClienteCadastro.ts" />
-///<reference path="../DtoPedido/DtoPedidoProdutosPedido.ts" />
-///<reference path="../DtoPedido/DtoDetalhesPedido.ts" />
-///<reference path="../DtoPedido/DtoFormaPagtoCriacao.ts" />
-class DtoPedido {
-}
+/* nao editar, arquivo compilado pelo typescript*/ 
+/* nao editar, arquivo compilado pelo typescript*/ 
+/* nao editar, arquivo compilado pelo typescript*/ 
+/* nao editar, arquivo compilado pelo typescript*/ 
+define(["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var DtoPedido = /** @class */ (function () {
+        function DtoPedido() {
+        }
+        return DtoPedido;
+    }());
+    exports.DtoPedido = DtoPedido;
+});
 //# sourceMappingURL=/scriptsJs/DtosTs/DtoPedido/DtoPedido.js.map

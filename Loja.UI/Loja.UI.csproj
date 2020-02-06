@@ -5,27 +5,41 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="DtosTs\Avisos\DtoAviso.ts" />
     <None Remove="DtosTs\DtoCliente\DtoDadosClienteCadastro.ts" />
     <None Remove="DtosTs\DtoCliente\DtoEnderecoEntregaClienteCadastro.ts" />
+    <None Remove="DtosTs\DtoFormaPagto\DtoFormaPagto.ts" />
+    <None Remove="DtosTs\DtoFormaPagto\DtoParcComEntPrestacao.ts" />
+    <None Remove="DtosTs\DtoFormaPagto\DtoParcComEntrada.ts" />
+    <None Remove="DtosTs\DtoFormaPagto\DtoParcSemEntPrestacao.ts" />
+    <None Remove="DtosTs\DtoFormaPagto\DtoParcSemEntradaPrimPrest.ts" />
+    <None Remove="DtosTs\DtoFormaPagto\DtoParcUnica.ts" />
     <None Remove="DtosTs\DtoPedido\DtoDetalhesPedido.ts" />
     <None Remove="DtosTs\DtoPedido\DtoFormaPagtoCriacao.ts" />
     <None Remove="DtosTs\DtoPedido\DtoPedido.ts" />
     <None Remove="DtosTs\DtoPedido\DtoPedidoProdutosPedido.ts" />
+    <None Remove="DtosTs\DtoPedido\PercentualMaxDescEComissao.ts" />
     <None Remove="DtosTs\DtoProdutos\DtoProduto.ts" />
     <None Remove="DtosTs\DtoProdutos\DtoProdutoCombo.ts" />
     <None Remove="DtosTs\DtoProdutos\DtoProdutoComposto.ts" />
     <None Remove="DtosTs\DtoProdutos\DtoProdutoFilho.ts" />
     <None Remove="DtosTs\DtoProdutos\SelectProdInfo.ts" />
+    <None Remove="FuncoesTs\DadosPagto\DadosPagto.ts" />
+    <None Remove="FuncoesTs\DadosPagto\EnumFormaPagto.ts" />
+    <None Remove="FuncoesTs\DadosPagto\EnumTipoPagto.ts" />
     <None Remove="FuncoesTs\Itens\Itens.ts" />
+    <None Remove="Services\NovoPepedidoDadosService.ts" />
     <None Remove="UtilTs\Constantes\Constantes.ts" />
     <None Remove="UtilTs\Fomatar\formatacao.ts" />
     <None Remove="UtilTs\Fomatar\Mascaras\formataTelefone.ts" />
     <None Remove="UtilTs\MoedaUtils\moedaUtils.ts" />
     <None Remove="UtilTs\stringUtils\stringUtils.ts" />
+    <None Remove="Views\Cep\Index.ts" />
     <None Remove="Views\Pedido\CoeficienteDto.ts" />
     <None Remove="Views\Pedido\DtoCoeficiente.ts" />
     <None Remove="Views\Pedido\FormaPagto.ts" />
     <None Remove="Views\Pedido\IniciarNovoPedido.ts" />
+    <None Remove="Views\Shared\Error.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,6 +48,7 @@
 
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>
@@ -63,10 +78,15 @@
   </ItemGroup>
 
 
+  <ItemGroup>
+    <Folder Include="wwwroot\scriptsJs\" />
+  </ItemGroup>
+
+
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <TypeScriptTarget>ES2015</TypeScriptTarget>
+    <TypeScriptTarget>ES5</TypeScriptTarget>
     <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
-    <TypeScriptModuleKind>None</TypeScriptModuleKind>
+    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
     <TypeScriptNoImplicitAny>True</TypeScriptNoImplicitAny>
     <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
@@ -76,7 +96,7 @@
     <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
     <TypeScriptSourceMap>True</TypeScriptSourceMap>
     <TypeScriptMapRoot>\scriptsJs</TypeScriptMapRoot>
-    <TypeScriptSourceRoot>\scriptsJs</TypeScriptSourceRoot>
+    <TypeScriptSourceRoot></TypeScriptSourceRoot>
   </PropertyGroup>
 
 </Project>

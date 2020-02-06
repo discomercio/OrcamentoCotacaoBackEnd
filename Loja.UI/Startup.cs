@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
+using Newtonsoft.Json.Serialization;
 
 namespace Loja.UI
 {
@@ -27,6 +27,10 @@ namespace Loja.UI
         {
 
             services.AddRazorPages();
+            services.AddControllers().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+            });
             services.AddControllersWithViews();
             services.AddDistributedMemoryCache();
             services.AddSession();
@@ -38,7 +42,7 @@ namespace Loja.UI
             services.AddTransient<Bll.PedidoBll.PedidoBll, Bll.PedidoBll.PedidoBll>();
             services.AddTransient<Bll.FormaPagtoBll.FormaPagtoBll, Bll.FormaPagtoBll.FormaPagtoBll>();
             services.AddTransient<Bll.CoeficienteBll.CoeficienteBll, Bll.CoeficienteBll.CoeficienteBll>();
-            
+
 
             //ContextoProvider
             services.AddTransient<Data.ContextoBdProvider, Data.ContextoBdProvider>();
@@ -76,7 +80,7 @@ namespace Loja.UI
             app.UseStaticFiles();
 
             app.UseRouting();
-            
+
             app.UseDefaultFiles();
 
             app.UseAuthorization();

@@ -1,4 +1,4 @@
-﻿class Constantes {
+﻿export class Constantes {
     //' CÓDIGOS QUE IDENTIFICAM SE É PESSOA FÍSICA OU JURÍDICA
     public ID_PF = "PF";
     public ID_PJ = "PJ"

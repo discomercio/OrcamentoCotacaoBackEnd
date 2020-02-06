@@ -48,6 +48,7 @@ namespace Loja.UI.Controllers
             string loja = HttpContext.Session.GetString("loja_atual");
             string id_cliente = HttpContext.Session.GetString("cliente_selecionado");
             string cpf_cnpj = HttpContext.Session.GetString("cpf_cnpj");
+            string lstOperacoesPermitidas = HttpContext.Session.GetString("lista_operacoes_permitidas");
 
             /*afazer:
              * no ViewModel:
@@ -65,24 +66,24 @@ namespace Loja.UI.Controllers
 
             //exemplo para gravar e pegar um objeto na session
             var teste = HttpContext.Session.GetString("pedidoDto");
-            Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto pedidoDto = 
+            Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto pedidoDto =
                 JsonConvert.DeserializeObject<Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto>(teste);
-                
+
 
             ProdutosFormaPagtoViewModel viewModel = new ProdutosFormaPagtoViewModel();
+
             //vamos montar o model para mostrar na tela
+
             //buscamos os produtos
-            viewModel.ProdutoCombo = await produtoBll.ListaProdutosCombo(loja, id_cliente);
+            viewModel.ProdutoCombo = await produtoBll.ListaProdutosCombo(loja, id_cliente, pedidoDto);
+
             //buscamos o nome do cliente
             ClienteCadastroDto cliente = await clienteBll.BuscarCliente(cpf_cnpj, usuario);
             viewModel.NomeCliente = cliente.DadosCliente.Nome;
 
             //buscamos a lista com as possiveis formas de pagamentos
             viewModel.FormaPagto = await formaPagtoBll.ObterFormaPagto(usuario, cliente.DadosCliente.Tipo);
-            var lstpagtoTask = await formaPagtoBll.ObterFormaPagto(usuario, cliente.DadosCliente.Tipo);
-            List<SelectListItem> lstPagto = new List<SelectListItem>();
-            lstPagto.Add(new SelectListItem { Value = "0", Text = "Selecione" });
-            
+
             //afazer: verificar com o Edu se tem como criar lista de lista com selectlist
 
             var lstEnumPagto = await formaPagtoBll.MontarListaFormaPagto(usuario, cliente.DadosCliente.Tipo);
@@ -91,12 +92,37 @@ namespace Loja.UI.Controllers
             //busca a lista de coeficientes para calcular as prestações do pedido
             viewModel.ListaCoeficiente = new List<Bll.Dto.CoeficienteDto.CoeficienteDto>();
             var lstCoeficiente = await coeficienteBll.BuscarListaCompletaCoeficientes();
+            viewModel.ListaCoeficiente = lstCoeficiente.ToList();
 
             //busca Permite_RA_Status
             viewModel.Permite_RA_Status = await pedidoBll.Obter_Permite_RA_Status(cliente.DadosCliente.Indicador_Orcamentista);
 
+            //busca qtde de parcelas visa
+            viewModel.QtdeParcVisa = await formaPagtoBll.BuscarQtdeParcCartaoVisa();
+
+            //Lista para carregar no select de Indicadores
+            var lstInd = (await produtoBll.BuscarOrcamentistaEIndicadorParaProdutos(usuario, lstOperacoesPermitidas, loja)).ToList();
+            List<SelectListItem> lst = new List<SelectListItem>();
+            lst.Add(new SelectListItem { Value = "0", Text = "Selecione" });
+            for (int i = 0; i < lstInd.Count; i++)
+            {
+                lst.Add(new SelectListItem { Value = lstInd[i], Text = lstInd[i] });
+            }
+            viewModel.LstIndicadores = new SelectList(lst, "Value", "Text");
+
+            var lstSelecaoCd = (await produtoBll.WmsApelidoEmpresaNfeEmitenteMontaItensSelect(null)).ToList();
+            List<SelectListItem> lstCd = new List<SelectListItem>();
+            lstCd.Add(new SelectListItem { Value = "0", Text = "Selecione" });
+            for (int i = 0; i < lstSelecaoCd.Count; i++)
+            {
+                lstCd.Add(new SelectListItem { Value = lstSelecaoCd[i][0], Text = lstSelecaoCd[i][1] });
+            }
+            viewModel.ListaCD = new SelectList(lstCd, "Value", "Text");
+
+            viewModel.PercMaxDescEComissao = await pedidoBll.ObterPercentualMaxDescEComissao(loja);
+
             return View(viewModel);
-        }
+        }      
 
     }
 }

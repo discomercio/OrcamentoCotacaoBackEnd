@@ -1,7 +1,7 @@
-﻿///<reference path="DtoProduto.ts" />
-///<reference path="DtoProdutoComposto.ts" /> 
+﻿import { DtoProduto } from "./DtoProduto";
+import { DtoProdutoComposto } from "./DtoProdutoComposto";
 
-class DtoProdutoCombo {
+export class DtoProdutoCombo {
     ProdutoDto: DtoProduto[];
     ProdutoCompostoDto: DtoProdutoComposto[];
 }

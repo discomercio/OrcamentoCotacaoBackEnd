@@ -8,6 +8,7 @@ using Loja.Modelos;
 using Loja.Bll.Dto.ProdutoDto;
 using Microsoft.EntityFrameworkCore;
 using Loja.Bll.RegrasCtrlEstoque;
+using Loja.Bll.Dto.PedidoDto.DetalhesPedido;
 
 namespace Loja.Bll.ProdutoBll
 {
@@ -97,7 +98,7 @@ namespace Loja.Bll.ProdutoBll
             return await Task.FromResult(nomeFabricante);
         }
 
-        public async Task<ProdutoComboDto> ListaProdutosCombo(string loja, string id_cliente)
+        public async Task<ProdutoComboDto> ListaProdutosCombo(string loja, string id_cliente, PedidoDto pedidoDto)
         {
             ProdutoComboDto retorno = new ProdutoComboDto();
             //string loja = "202";
@@ -117,7 +118,7 @@ namespace Loja.Bll.ProdutoBll
 
             var cliente = await clienteTask;
 
-            ////obtém  a sigla para regra
+            //obtém  a sigla para regra
             string cliente_regra = Util.Util.MultiCdRegraDeterminaPessoa(cliente.tipo_cliente, cliente.contribuite_icms_status,
                 cliente.produtor_rural_status);
 
@@ -126,9 +127,10 @@ namespace Loja.Bll.ProdutoBll
 
             List<RegrasBll> lst_cliente_regra = new List<RegrasBll>();
             MontaListaRegras(lstTodosProdutos, lst_cliente_regra);
-
             List<string> lstErros = new List<string>();
             await Util.Util.ObterCtrlEstoqueProdutoRegra_Teste(lstErros, lst_cliente_regra, cliente.uf, cliente_regra, contextoProvider);
+
+            //antes de verificar a disponibilidade de estoque é necessário
 
             //afazer: Verificar disponibilidade de estoque
             Util.Util.ObterDisponibilidadeEstoque(lst_cliente_regra, lstTodosProdutos, lstErros, contextoProvider);
@@ -153,6 +155,370 @@ namespace Loja.Bll.ProdutoBll
             retorno.ProdutoCompostoDto = (await lstProdutosCompostos).ToList();
             retorno.ProdutoDto = lstTodosProdutos;
             return retorno;
+        }
+
+        //vamos montar a verificação para cada produto selecionado pelo usuário
+        public async Task<IEnumerable<string>> VerificarRegrasDisponibilidadeEstoqueProdutosSelecionados(PedidoDto pedidoDto,
+            string loja, string id_cliente, List<ProdutoDto> lstProdutos)
+        {
+            List<string> lstMgsEstoque = new List<string>();
+
+            var db = contextoProvider.GetContextoLeitura();
+            //Buscar dados do cliente
+            var clienteTask = (from c in db.Tclientes
+                               where c.Id == id_cliente
+                               select new
+                               {
+                                   tipo_cliente = c.Tipo,
+                                   contribuite_icms_status = c.Contribuinte_Icms_Status,
+                                   produtor_rural_status = c.Produtor_Rural_Status,
+                                   uf = c.Uf
+                               }).FirstOrDefaultAsync();
+
+            var cliente = await clienteTask;
+
+            //obtém  a sigla para regra
+            string cliente_regra = Util.Util.MultiCdRegraDeterminaPessoa(cliente.tipo_cliente, cliente.contribuite_icms_status,
+                cliente.produtor_rural_status);
+
+            List<RegrasBll> lst_cliente_regra = new List<RegrasBll>();
+            MontaListaRegras(lstProdutos, lst_cliente_regra);
+
+            List<string> lstErros = new List<string>();
+            await Util.Util.ObterCtrlEstoqueProdutoRegra_Teste(lstErros, lst_cliente_regra, cliente.uf, cliente_regra, contextoProvider);
+
+            VerificarRegrasAssociadasAosProdutos(lst_cliente_regra, lstErros, pedidoDto);
+
+            //precisamos criar um metodo ou arrumar esse mesmo para poder receber a quantidade de produtos selecionados
+            //pelo usuário, pois é feito uma verificação em cima da quantidade que foi solicitada 
+            Util.Util.ObterDisponibilidadeEstoque(lst_cliente_regra, lstProdutos, lstErros, contextoProvider);
+
+            await Util.Util.VerificarEstoque(lst_cliente_regra, contextoProvider);
+            await Util.Util.VerificarEstoqueComSubQuery(lst_cliente_regra, contextoProvider);
+
+            //atribui a qtde de estoque para o produto
+            //IncluirEstoqueProduto(lst_cliente_regra, lstProdutos, tparametro);//aqui que esta confuso para passar o parametro
+
+            await ExisteMensagensAlertaProdutos(lstProdutos);
+
+            //estou aqui para terminar isso.
+            return lstMgsEstoque;
+        }
+
+        //não estou usando 
+        private async Task<IEnumerable<RegrasBll>> ObterCtrlEstoqueProdutoRegra(List<ProdutoDto> lstProdutos,
+            PedidoDto prePedido, List<string> lstErros)
+        {
+            List<RegrasBll> lstRegrasCrtlEstoque = new List<RegrasBll>();
+
+            var db = contextoProvider.GetContextoLeitura();
+
+            //vamos verificar passando todos os produtos simples da lista de produto que irá para ser selecionado
+
+
+            foreach (var item in lstProdutos)
+            {
+                var regraProdutoTask = from c in db.TprodutoXwmsRegraCds
+                                       where c.Fabricante == item.Fabricante &&
+                                             c.Produto == item.Produto
+                                       select c;
+
+                var regra = await regraProdutoTask.FirstOrDefaultAsync();
+
+                if (regra == null)
+                {
+                    lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
+                        Util.Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': produto (" + item.Fabricante + ")" +
+                        item.Produto + " não possui regra associada");
+                }
+                else
+                {
+                    if (regra.Id_wms_regra_cd == 0)
+                        lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
+                            Util.Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': produto (" + item.Fabricante + ")" +
+                            item.Produto + " não está associado a nenhuma regra");
+                    else
+                    {
+                        var wmsRegraTask = from c in db.TwmsRegraCds
+                                           where c.Id == regra.Id_wms_regra_cd
+                                           select c;
+
+                        var wmsRegra = await wmsRegraTask.FirstOrDefaultAsync();
+                        if (wmsRegra == null)
+                            lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
+                                Util.Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': regra associada ao produto (" + item.Fabricante + ")" +
+                                item.Produto + " não foi localizada no banco de dados (Id=" + regra.Id_wms_regra_cd + ")");
+                        else
+                        {
+                            RegrasBll itemRegra = new RegrasBll();
+                            itemRegra.Fabricante = item.Fabricante;
+                            itemRegra.Produto = item.Produto;
+
+                            itemRegra.TwmsRegraCd = new t_WMS_REGRA_CD
+                            {
+                                Id = wmsRegra.Id,
+                                Apelido = wmsRegra.Apelido,
+                                Descricao = wmsRegra.Descricao,
+                                St_inativo = wmsRegra.St_inativo
+                            };
+
+                            var wmsRegraCdXUfTask = from c in db.TwmsRegraCdXUfs
+                                                    where c.Id_wms_regra_cd == itemRegra.TwmsRegraCd.Id &&
+                                                          c.Uf == prePedido.DadosCliente.Uf
+                                                    select c;
+                            var wmsRegraCdXUf = await wmsRegraCdXUfTask.FirstOrDefaultAsync();
+
+                            if (wmsRegraCdXUf == null)
+                            {
+                                itemRegra.St_Regra = false;
+                                lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
+                                    Util.Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': regra associada ao produto (" + item.Fabricante + ")" +
+                                    item.Produto + " não está cadastrada para a UF '" + prePedido.DadosCliente.Uf + "' (Id=" + regra.Id_wms_regra_cd + ")");
+                            }
+                            else
+                            {
+                                itemRegra.TwmsRegraCdXUf = new t_WMS_REGRA_CD_X_UF
+                                {
+                                    Id = wmsRegraCdXUf.Id,
+                                    Id_wms_regra_cd = wmsRegraCdXUf.Id_wms_regra_cd,
+                                    Uf = wmsRegraCdXUf.Uf,
+                                    St_inativo = wmsRegraCdXUf.St_inativo
+                                };
+
+                                //buscar a sigla tipo pessoa
+                                var tipo_pessoa = Util.Util.MultiCdRegraDeterminaPessoa(prePedido.DadosCliente.Tipo,
+                                    prePedido.DadosCliente.Contribuinte_Icms_Status, prePedido.DadosCliente.ProdutorRural);
+
+                                var wmsRegraCdXUfXPessoaTask = from c in db.TwmsRegraCdXUfPessoas
+                                                               where c.Id_wms_regra_cd_x_uf == itemRegra.TwmsRegraCdXUf.Id &&
+                                                                     c.Tipo_pessoa == tipo_pessoa
+                                                               select c;
+
+                                var wmsRegraCdXUfXPessoa = await wmsRegraCdXUfXPessoaTask.FirstOrDefaultAsync();
+
+                                if (wmsRegraCdXUfXPessoa == null)
+                                {
+                                    itemRegra.St_Regra = false;
+                                    lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
+                                        Util.Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': regra associada ao produto (" + item.Fabricante + ")" +
+                                        item.Produto + " não está cadastrada para a UF '" + prePedido.DadosCliente.Uf + "' (Id=" + regra.Id_wms_regra_cd + ")");
+                                }
+                                else
+                                {
+                                    itemRegra.TwmsRegraCdXUfXPessoa = new t_WMS_REGRA_CD_X_UF_X_PESSOA
+                                    {
+                                        Id = wmsRegraCdXUfXPessoa.Id,
+                                        Id_wms_regra_cd_x_uf = wmsRegraCdXUfXPessoa.Id_wms_regra_cd_x_uf,
+                                        Tipo_pessoa = wmsRegraCdXUfXPessoa.Tipo_pessoa,
+                                        St_inativo = wmsRegraCdXUfXPessoa.St_inativo,
+                                        Spe_id_nfe_emitente = wmsRegraCdXUfXPessoa.Spe_id_nfe_emitente
+                                    };
+
+                                    if (wmsRegraCdXUfXPessoa.Spe_id_nfe_emitente == 0)
+                                    {
+                                        itemRegra.St_Regra = false;
+                                        lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
+                                            Util.Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': regra associada ao produto (" + item.Fabricante + ")" +
+                                            item.Produto + " não especifica nenhum CD para aguardar produtos sem presença no estoque (Id=" + regra.Id_wms_regra_cd + ")");
+                                    }
+                                    else
+                                    {
+                                        var nfEmitenteTask = from c in db.TnfEmitentes
+                                                             where c.Id == wmsRegraCdXUfXPessoa.Spe_id_nfe_emitente
+                                                             select c;
+                                        var nfEmitente = await nfEmitenteTask.FirstOrDefaultAsync();
+
+                                        if (nfEmitente != null)
+                                        {
+                                            if (nfEmitente.St_Ativo != 1)
+                                            {
+                                                itemRegra.St_Regra = false;
+                                                lstErros.Add("Falha na regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
+                                                    Util.Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': regra associada ao produto (" + item.Fabricante +
+                                                    ")" + item.Produto + " especifica um CD para aguardar produtos sem presença no estoque que não está habilitado " +
+                                                    "(Id=" + regra.Id_wms_regra_cd + ")");
+                                            }
+                                        }
+                                        var wmsRegraCdXUfXPessoaXcdTask = from c in db.TwmsRegraCdXUfXPessoaXCds
+                                                                          where c.Id_wms_regra_cd_x_uf_x_pessoa == wmsRegraCdXUfXPessoa.Id
+                                                                          orderby c.Ordem_prioridade
+                                                                          select c;
+                                        var wmsRegraCdXUfXPessoaXcd = await wmsRegraCdXUfXPessoaXcdTask.ToListAsync();
+
+                                        if (wmsRegraCdXUfXPessoaXcd.Count == 0)
+                                        {
+                                            itemRegra.St_Regra = false;
+                                            lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
+                                                Util.Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': regra associada ao produto (" + item.Fabricante + ")" +
+                                                item.Produto + " não especifica nenhum CD para consumo do estoque (Id=" + regra.Id_wms_regra_cd + ")");
+                                        }
+                                        else
+                                        {
+                                            itemRegra.TwmsCdXUfXPessoaXCd = new List<t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD>();
+                                            foreach (var i in wmsRegraCdXUfXPessoaXcd)
+                                            {
+                                                t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD item_cd_uf_pess_cd = new t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD
+                                                {
+                                                    Id = i.Id,
+                                                    Id_wms_regra_cd_x_uf_x_pessoa = i.Id_wms_regra_cd_x_uf_x_pessoa,
+                                                    Id_nfe_emitente = i.Id_nfe_emitente,
+                                                    Ordem_prioridade = i.Ordem_prioridade,
+                                                    St_inativo = i.St_inativo
+                                                };
+
+                                                var nfeCadastroPrincipalTask = from c in db.TnfEmitentes
+                                                                               where c.Id == item_cd_uf_pess_cd.Id_nfe_emitente
+                                                                               select c;
+
+                                                var nfeCadastroPrincipal = await nfeCadastroPrincipalTask.FirstOrDefaultAsync();
+
+                                                if (nfeCadastroPrincipal != null)
+                                                {
+                                                    if (nfeCadastroPrincipal.St_Ativo != 1)
+                                                        item_cd_uf_pess_cd.St_inativo = 1;
+                                                }
+
+                                                itemRegra.TwmsCdXUfXPessoaXCd.Add(item_cd_uf_pess_cd);
+                                            }
+                                            foreach (var i in itemRegra.TwmsCdXUfXPessoaXCd)
+                                            {
+
+                                                if (i.Id_nfe_emitente == itemRegra.TwmsRegraCdXUfXPessoa.Spe_id_nfe_emitente)
+                                                {
+                                                    if (i.St_inativo == 1)
+                                                        lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
+                                                            Util.Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': regra associada ao produto (" +
+                                                            item.Fabricante + ")" + item.Produto + " especifica o CD '" + Util.Util.ObterApelidoEmpresaNfeEmitentes(wmsRegraCdXUfXPessoa.Spe_id_nfe_emitente, contextoProvider) +
+                                                            "' para alocação de produtos sem presença no estoque, sendo que este CD está desativado para " +
+                                                            "processar produtos disponíveis (Id=" + regra.Id_wms_regra_cd + ")");
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            lstRegrasCrtlEstoque.Add(itemRegra);
+                        }
+                    }
+                }
+
+            }
+
+            return lstRegrasCrtlEstoque;
+        }
+
+        public void VerificarRegrasAssociadasAosProdutos(List<RegrasBll> lst, List<string> lstErros, PedidoDto dtoPedido)
+        {
+            int qtdeCdAtivo = 0;
+            int id_nfe_emitente_selecao_manual = 0;//esse é a seleção do checkebox 
+
+            foreach (var i in lst)
+            {
+                if (i.Produto == 0.ToString())
+                {
+                    lstErros.Add("Produto (" + i.Fabricante + ")" + i.Produto +
+                        " não possui regra de consumo do estoque associada");
+                }
+                else if (i.St_Regra == false)
+                {
+                    lstErros.Add("Regra de consumo do estoque '" + i.TwmsRegraCd.Apelido +
+                        "' associada ao produto (" + i.Fabricante + ")" + i.Produto + " está desativada");
+                }
+                else if (i.TwmsRegraCdXUf.St_inativo == 1)
+                {
+                    lstErros.Add("Regra de consumo do estoque '" + i.TwmsRegraCd.Apelido +
+                        "' associada ao produto (" + i.Fabricante + ")" + i.Produto + " está bloqueada para a UF '" +
+                        dtoPedido.DadosCliente.Uf + "'");
+                }
+                else if (i.TwmsRegraCdXUfXPessoa.St_inativo == 1)
+                {
+                    lstErros.Add("Regra de consumo do estoque '" + i.TwmsRegraCd.Apelido + "' associada ao produto (" +
+                        i.Fabricante + ")" + i.Produto + " está bloqueada para clientes '" +
+                        dtoPedido.DadosCliente.Tipo + "' da UF '" + dtoPedido.DadosCliente.Uf + "'");
+                }
+                else if (i.TwmsRegraCdXUfXPessoa.Spe_id_nfe_emitente == 0)
+                {
+                    lstErros.Add("Regra de consumo do estoque '" + i.TwmsRegraCd.Apelido +
+                        "' associada ao produto (" + i.Fabricante + ")" + i.Produto +
+                        " não especifica nenhum CD para aguardar produtos sem presença no estoque para clientes '" +
+                        dtoPedido.DadosCliente.Tipo + "' da UF '" + dtoPedido.DadosCliente.Uf + "'");
+                }
+                else
+                {
+                    foreach (var t in i.TwmsCdXUfXPessoaXCd)
+                    {
+                        if (t.Id_nfe_emitente > 0)
+                        {
+                            if (t.St_inativo == 0)
+                            {
+                                qtdeCdAtivo = qtdeCdAtivo + 1;
+                            }
+                        }
+                    }
+
+                    if (qtdeCdAtivo == 0 && id_nfe_emitente_selecao_manual == 0)
+                    {
+                        lstErros.Add("Regra de consumo do estoque '" + i.TwmsRegraCd.Apelido +
+                            "' associada ao produto (" + i.Fabricante + ")" + i.Produto +
+                            " não especifica nenhum CD ativo para clientes '" + dtoPedido.DadosCliente.Tipo +
+                            "' da UF '" + dtoPedido.DadosCliente.Uf + "'");
+
+
+                    }
+                }
+            }
+        }
+
+        //Caso seleção do CD Manual
+        public void VerificarCDHabilitadoTodasRegras(List<RegrasBll> lstRegras, int selecao_manual, List<string> lstErros)
+        {
+            selecao_manual = 0;//esse é a seleção do checkebox 
+            bool desativado = false;
+            bool achou = false;
+            List<string> lstErrosAux = new List<string>();
+
+            foreach (var i in lstRegras)
+            {
+                achou = false;
+                desativado = false;
+                if (i.Produto != "")
+                {
+                    foreach (var t in i.TwmsCdXUfXPessoaXCd)
+                    {
+                        if (t.Id_nfe_emitente == selecao_manual)
+                        {
+                            achou = true;
+                            if (t.St_inativo == 1)
+                            {
+                                desativado = true;
+                            }
+                        }
+                    }
+                }
+                if (!achou)
+                {
+                    lstErrosAux.Add("Produto (" + i.Fabricante + ")" + i.Produto + ": regra '"
+                        + i.TwmsRegraCd.Apelido + "' (Id=" + i.TwmsRegraCd.Id + ") não permite o CD '" +
+                        Util.Util.ObterApelidoEmpresaNfeEmitentes(selecao_manual, contextoProvider));
+                }
+                else if (desativado)
+                {
+                    lstErrosAux.Add("Regra '" + i.TwmsRegraCd.Apelido + "'(Id = " + i.TwmsRegraCd.Id + ") define o CD '" +
+                        Util.Util.ObterApelidoEmpresaNfeEmitentes(selecao_manual, contextoProvider) + "' como 'desativado'");
+                }
+
+            }
+
+            if(lstErros.Count > 0)
+            {
+                string erro = "O CD selecionado manualmente não pode ser usado devido aos seguintes motivos:";
+                foreach(var e in lstErrosAux)
+                {
+                    erro = erro + e;
+                }
+
+                lstErros.Add(erro);
+            }
         }
 
         public async Task<IEnumerable<ProdutoCompostoDto>> BuscarProdutosCompostos(string loja)
@@ -279,13 +645,13 @@ namespace Loja.Bll.ProdutoBll
 
         private void IncluirEstoqueProduto(List<RegrasBll> lstRegras, List<ProdutoDto> lst_produtos, Tparametro parametro)
         {
-            int qtde_estoque_total_disponivel = 0;
-            int qtde_estoque_total_disponivel_global = 0;
-
             foreach (var p in lst_produtos)
             {
                 if (!string.IsNullOrEmpty(p.Produto))
                 {
+                    int qtde_estoque_total_disponivel = 0;
+                    int qtde_estoque_total_disponivel_global = 0;
+
                     foreach (var regra in lstRegras)
                     {
 
@@ -330,12 +696,9 @@ namespace Loja.Bll.ProdutoBll
                         p.Estoque = qtde_estoque_total_disponivel;
                     }
                 }
-                qtde_estoque_total_disponivel_global = 0;
-                qtde_estoque_total_disponivel = 0;
             }
 
         }
-
         private async Task ExisteMensagensAlertaProdutos(List<ProdutoDto> lst_produtos)
         {
             var db = contextoProvider.GetContextoLeitura();
@@ -369,5 +732,55 @@ namespace Loja.Bll.ProdutoBll
             }
         }
 
+        public async Task<IEnumerable<string>> BuscarOrcamentistaEIndicadorParaProdutos(string usuarioSistema,
+            string lstOperacoesPermitidas, string loja)
+        {
+            List<string> lst = (await Util.Util.BuscarOrcamentistaEIndicadorParaProdutos(
+                contextoProvider, usuarioSistema, lstOperacoesPermitidas, loja)).ToList();
+
+            return lst;
+        }
+
+        public async Task<IEnumerable<string[]>> WmsApelidoEmpresaNfeEmitenteMontaItensSelect(string idDefault)
+        {
+            List<string[]> lstRetorno = new List<string[]>();
+
+            var db = contextoProvider.GetContextoLeitura();
+
+            var lstTask = from c in db.TnfEmitentes
+                          where c.St_Ativo != 0 &&
+                                c.St_Habilitado_Ctrl_Estoque != 0
+                          orderby c.Id
+                          select new
+                          {
+                              id = c.Id.ToString(),
+                              apelido = c.Apelido
+                          };
+
+            //geralmente passamos o idDefault com null
+            if (!string.IsNullOrEmpty(idDefault))
+            {
+                lstTask = from c in db.TnfEmitentes
+                          where c.St_Ativo != 0 &&
+                                c.St_Habilitado_Ctrl_Estoque != 0 ||
+                                c.Id == short.Parse(idDefault)
+                          orderby c.Id
+                          select new
+                          {
+                              id = c.Id.ToString(),
+                              apelido = c.Apelido
+                          };
+            }
+
+            var lst = await lstTask.ToListAsync();
+
+            foreach (var i in lst)
+            {
+                lstRetorno.Add(new string[] { i.id, i.apelido });
+
+            }
+
+            return lstRetorno;
+        }
     }
 }

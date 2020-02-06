@@ -1,3 +1,7 @@
+/* nao editar, arquivo compilado pelo typescript*/ 
+/* nao editar, arquivo compilado pelo typescript*/ 
+/* nao editar, arquivo compilado pelo typescript*/ 
+/* nao editar, arquivo compilado pelo typescript*/ 
 function mascaraCep() {
     return [/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
 }

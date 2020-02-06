@@ -1,4 +1,4 @@
-﻿class DtoEnderecoEntregaClienteCadastro {
+﻿export class DtoEnderecoEntregaClienteCadastro {
     EndEtg_endereco: string;
     EndEtg_endereco_numero: string;
     EndEtg_endereco_complemento: string;

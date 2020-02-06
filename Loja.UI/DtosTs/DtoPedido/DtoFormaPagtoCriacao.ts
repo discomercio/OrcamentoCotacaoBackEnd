@@ -1,4 +1,4 @@
-﻿class DtoFormaPagtoCriacao {
+﻿export class DtoFormaPagtoCriacao {
     Qtde_Parcelas: number;//Todos usam essa qtde
     Rb_forma_pagto: string;//Tipo da forma de pagto
     Op_av_forma_pagto: string;

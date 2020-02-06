@@ -29,9 +29,9 @@
     Celular: string;
     TelComercial2: string;
     DddComercial2: string;
-    Ramal2: string;
-    Email: string;
-    EmailXml: string;
-    Contato: string;
+    ramal2: string;
+    email: string;
+    emailXml: string;
+    contato: string;
 
 }

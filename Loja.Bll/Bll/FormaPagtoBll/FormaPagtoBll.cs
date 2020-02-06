@@ -1,12 +1,12 @@
 ﻿using Loja.Bll.Dto.FormaPagtoDto;
 using Loja.Data;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Mvc;
 
 namespace Loja.Bll.FormaPagtoBll
 {
@@ -258,7 +258,13 @@ namespace Loja.Bll.FormaPagtoBll
         public async Task<IEnumerable<SelectListItem>> MontarListaFormaPagto(string usuario, string tipoPessoa)
         {
             var lst = await ObterFormaPagto(usuario, tipoPessoa);
-
+            //        Selecionar = 0,
+            //Avista = 1,
+            //ParcCartaoInternet = 2,
+            //ParcComEnt = 3,
+            //ParcSemEnt = 4,
+            //ParcUnica = 5,
+            //ParcCartaoMaquineta = 6
             List<SelectListItem> enumPagto = new List<SelectListItem>();
             enumPagto.Add(new SelectListItem { Value = "0", Text = "Selecionar" });
 
@@ -266,7 +272,7 @@ namespace Loja.Bll.FormaPagtoBll
                 enumPagto.Add(new SelectListItem { Value = "1", Text = "À vista" });
 
             if (lst.ListaParcUnica != null)
-                enumPagto.Add(new SelectListItem { Value = "2", Text = "Parcela única" });
+                enumPagto.Add(new SelectListItem { Value = "5", Text = "Parcela única" });
 
             if (lst.ListaParcComEntrada != null)
                 enumPagto.Add(new SelectListItem { Value = "3", Text = "Parcelado com entrada" });
@@ -275,7 +281,7 @@ namespace Loja.Bll.FormaPagtoBll
                 enumPagto.Add(new SelectListItem { Value = "4", Text = "Parcelado sem entrada" });
 
             if (lst.ParcCartaoInternet)
-                enumPagto.Add(new SelectListItem { Value = "5", Text = "Parcelado Cartão Internet" });
+                enumPagto.Add(new SelectListItem { Value = "2", Text = "Parcelado Cartão Internet" });
 
             if (lst.ParcCartaoMaquineta)
                 enumPagto.Add(new SelectListItem { Value = "6", Text = "Parcelado Cartão Maquineta" });

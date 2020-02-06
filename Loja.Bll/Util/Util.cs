@@ -197,10 +197,10 @@ namespace Loja.Bll.Util
         }
 
         public static async Task<IEnumerable<string>> BuscarOrcamentistaEIndicador(ContextoBdProvider contexto,
-            string indicador, string usuarioSistema)
+            string indicador, string usuarioSistema, string loja)
         {
             //paraTeste
-            string loja = "202";
+            loja = "202";
 
             List<string> lstOrcaIndica = new List<string>();
 
@@ -217,7 +217,7 @@ namespace Loja.Bll.Util
             }
             else
             {
-                if (IsLojaVrf(loja))
+                if (IsLojaVrf(loja) || loja == Constantes.Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE)
                 {
                     var orcaTask = from c in db.TorcamentistaEindicadors
                                    where (c.Apelido == indicador ||
@@ -242,6 +242,62 @@ namespace Loja.Bll.Util
                     var orcaTask = from c in db.TorcamentistaEindicadors
                                    where (c.Apelido == indicador ||
                                           (c.Status == "A" && c.Vendedor == usuarioSistema))
+                                   orderby c.Apelido
+                                   select c.Apelido;
+
+                    lstOrcaIndica = await orcaTask.ToListAsync();
+                }
+            }
+
+            return lstOrcaIndica;
+        }
+
+        public static async Task<IEnumerable<string>> BuscarOrcamentistaEIndicadorParaProdutos(ContextoBdProvider contexto,
+            string usuarioSistema, string lstOperacoesPermitidas, string loja)
+        {
+            //paraTeste
+            loja = "202";
+
+            List<string> lstOrcaIndica = new List<string>();
+
+            var db = contexto.GetContextoLeitura();
+
+            if (Constantes.Constantes.ID_PARAM_SITE == Constantes.Constantes.COD_SITE_ASSISTENCIA_TECNICA)
+            {
+                var orcaTask = from c in db.TorcamentistaEindicadors
+                               where c.Status == "A"
+                               orderby c.Apelido
+                               select c.Apelido;
+
+                lstOrcaIndica = await orcaTask.ToListAsync();
+            }
+            else
+            {
+                if (IsLojaVrf(loja) || loja == Constantes.Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE)
+                {
+                    var orcaTask = from c in db.TorcamentistaEindicadors
+                                   where c.Status == "A" && c.Loja == loja
+                                   orderby c.Apelido
+                                   select c.Apelido;
+
+                    lstOrcaIndica = await orcaTask.ToListAsync();
+                }
+                else if (loja == Constantes.Constantes.NUMERO_LOJA_OLD03 ||
+                    loja == Constantes.Constantes.NUMERO_LOJA_OLD03_BONIFICACAO ||
+                    lstOperacoesPermitidas.IndexOf(
+                        Constantes.Constantes.OP_LJA_SELECIONAR_QUALQUER_INDICADOR_EM_PEDIDO_NOVO.ToString()) != -1)
+                {
+                    var orcaTask = from c in db.TorcamentistaEindicadors
+                                   where c.Status == "A"
+                                   orderby c.Apelido
+                                   select c.Apelido;
+
+                    lstOrcaIndica = await orcaTask.ToListAsync();
+                }
+                else
+                {
+                    var orcaTask = from c in db.TorcamentistaEindicadors
+                                   where c.Status == "A" && c.Vendedor == usuarioSistema
                                    orderby c.Apelido
                                    select c.Apelido;
 
@@ -556,6 +612,55 @@ namespace Loja.Bll.Util
                     }
                 }
             }
+        }
+
+        public static async Task<string> ObterApelidoEmpresaNfeEmitentes(int id_nfe_emitente, ContextoBdProvider contextoProvider)
+        {
+            string apelidoEmpresa = "";
+
+            if (id_nfe_emitente == 0)
+            {
+                apelidoEmpresa = "Cliente";
+                return apelidoEmpresa;
+            }
+
+            var db = contextoProvider.GetContextoLeitura();
+
+            var apelidoTask = from c in db.TnfEmitentes
+                              where c.Id == id_nfe_emitente
+                              select c.Apelido;
+
+            apelidoEmpresa = await apelidoTask.FirstOrDefaultAsync();
+
+            return apelidoEmpresa;
+        }
+
+        public static string DescricaoMultiCDRegraTipoPessoa(string codTipoPessoa)
+        {
+            string retorno = "";
+
+            codTipoPessoa = codTipoPessoa.ToUpper();
+
+            switch (codTipoPessoa)
+            {
+                case Constantes.Constantes.COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PESSOA_FISICA:
+                    retorno = "Pessoa Física";
+                    break;
+                case Constantes.Constantes.COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PRODUTOR_RURAL:
+                    retorno = "Produtor Rural";
+                    break;
+                case Constantes.Constantes.COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PESSOA_JURIDICA_CONTRIBUINTE:
+                    retorno = "PJ Contribuinte";
+                    break;
+                case Constantes.Constantes.COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PESSOA_JURIDICA_NAO_CONTRIBUINTE:
+                    retorno = "PJ Não Contribuinte";
+                    break;
+                case Constantes.Constantes.COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PESSOA_JURIDICA_ISENTO:
+                    retorno = "PJ Isento";
+                    break;
+            }
+
+            return retorno;
         }
 
         public static void ObterDisponibilidadeEstoque(List<RegrasBll> lstRegrasCrtlEstoque, List<ProdutoDto> lst_produtos,

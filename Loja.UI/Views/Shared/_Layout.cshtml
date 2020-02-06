@@ -23,7 +23,26 @@
     <script src="~/js/initiComponentesMat.js"></script>
     <script src="~/js/materialize.js"></script>
     <script src="~/js/Util.js"></script>
-    <script src="~/scriptsJs/stringUtils/stringUtils.js"></script>
+    @RenderSection("ScriptsDiretos", required: false)
+
+    <script src="~/lib/require.js"></script>
+    @{
+        string baseurl = "/scriptsJsMin";
+#if DEBUG
+        baseurl = "/scriptsJs";
+#endif
+    }
+    <script>
+        requirejs.config({
+            //baseUrl: '/jsts',
+            //baseUrl: '/jstsmin',
+            baseUrl: "@baseurl",
+            paths: {
+                jquery: '/lib/jquery/dist/jquery.min'
+            }
+        });
+        //requirejs(['app'], function (app) { });
+    </script>
     @RenderSection("Scripts", required: false)
 </head>
 
@@ -107,6 +126,7 @@
             @RenderBody()
 
         </main>
+        <partial name="~/Views/Shared/Error.cshtml" />
     </div>
 
 

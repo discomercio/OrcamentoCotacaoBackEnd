@@ -41,7 +41,10 @@ namespace Loja.UI.Controllers
 
             //afazer:validar usuario antes
             if (!await clienteBll.ValidarCliente(cpf_cnpj))
+            {
+                //colocar uma msg de erro para retornar para a tela
                 return RedirectToAction("Index");
+            }
             else
                 return RedirectToAction("BuscarCliente", new { cpf_cnpj = cpf_cnpj }); //editar cliente
         }
@@ -79,7 +82,8 @@ namespace Loja.UI.Controllers
             cliente.RefComercial = clienteCadastroDto.RefComercial;
 
             //Lista para carregar no select de Indicadores
-            var lstInd = (await clienteBll.BuscarListaIndicadores(cliente.DadosCliente.Indicador_Orcamentista, usuario)).ToList();
+            string loja = HttpContext.Session.GetString("loja_atual");
+            var lstInd = (await clienteBll.BuscarListaIndicadores(cliente.DadosCliente.Indicador_Orcamentista, usuario, loja)).ToList();
             List<SelectListItem> lst = new List<SelectListItem>();
             lst.Add(new SelectListItem { Value = "0", Text = "Selecione" });
             for (int i = 0; i < lstInd.Count; i++)
@@ -164,6 +168,8 @@ namespace Loja.UI.Controllers
             {
                 //Armazenando objeto na Session
                 Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto dtoPedido = new Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto();
+                dtoPedido.DadosCliente = new DadosClienteCadastroDto();
+                dtoPedido.DadosCliente = dados;
                 dtoPedido.EnderecoEntrega = new EnderecoEntregaDtoClienteCadastro();
                 dtoPedido.EnderecoEntrega = EndEntrega2;
                 

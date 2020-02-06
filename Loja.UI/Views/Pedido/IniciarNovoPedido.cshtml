@@ -13,7 +13,7 @@
 <div class="col s12 sectionDesktop" style="margin-left:5%">
     @using (Html.BeginForm("", "", FormMethod.Post))
     {
-        <article class="indicadorlinha">
+        <article>
             <div class="row">
                 <div class="col s12">
                     <span class="caixa">
@@ -22,133 +22,325 @@
                     </span>
                 </div>
             </div>
+            @* Indicadores *@
             <div class="row">
+                @* Indicação *@
+                <div class="col s6">
+                    <span class="caixa">
+                        <span class="rotulo">Indicação</span>
+                    </span>
+                </div>
+                @* Seleção CD *@
+                <div class="col s6">
+                    <span class="caixa">
+                        <span class="rotulo">Modo de Seleção do CD (Auto-Split)</span>
+                    </span>
+                </div>
+                @* Check Com ou Sem indicação *@
+                <div class="col s2">
+                    <label>
+                        <input class="with-gap" type="radio" id="chkSemIndicacao" />
+                        <span class="dado">Sem Indicação</span>
+                    </label>
+                </div>
+                <div class="col s2">
+                    <label>
+                        <input class="with-gap" type="radio" id="chkComIndicacao" />
+                        <span class="dado">Com Indicação</span>
+                    </label>
+                </div>
+                <div class="col s2">
+                    <input type="hidden" />
+                </div>
+                <div class="col s2">
+                    <label>
+                        <input class="with-gap" type="radio" id="chkAutomatico" />
+                        <span class="dado">Aultomático</span>
+                    </label>
+                </div>
+                <div class="col s2">
+                    <label>
+                        <input class="with-gap" type="radio" id="chkManual" />
+                        <span class="dado">Manual</span>
+                    </label>
+                </div>
+                <input type="hidden" />
+                <input type="hidden" />
                 <div class="col s12">
-                    <div class="input-field col s2">
-                        <button class="waves-effect waves-light btn-small"
-                                type="button" onclick="testeModal()"
-                                style="margin-top:2%;">
-                            <i class="material-icons left">add</i>Adicionar produto
-                        </button>
+                    <input type="hidden" />
+                </div>
+                <div class="col s4" id="divIndicadores">
+                    <div class="input-field">
+                        @Html.DropDownList("Indicador_Orcamentista", new SelectList(
+                       Model.LstIndicadores, "Value", "Text"),
+                       new { @id = "indicador" })
+                        <label>Indicadores</label>
                     </div>
+                </div>
+                <div class="col s2">
+                    <input type="hidden" />
+                </div>
+                <div class="col s4" id="divSelecaoCd">
+                    <div class="input-field">
+                        @Html.DropDownList("ListaCD", new SelectList(
+                       Model.ListaCD, "Value", "Text"),
+                       new { @id = "selecaoCd" })
+                        <label>Centro de Distribuição</label>
+                    </div>
+                </div>
+                <input type="hidden" />
+                <input type="hidden" />
+                <div class="col s12">
+                    <input type="hidden" />
+                </div>
+                <div class="col s2" id="divComRA">
+                    <label>
+                        <input class="with-gap" type="radio" id="chkComRa" />
+                        <span class="dado">Com RA</span>
+                    </label>
+                </div>
+                <div class="col s2" id="divSemRA">
+                    <label>
+                        <input class="with-gap" type="radio" id="chkSemRa" />
+                        <span class="dado">Sem RA</span>
+                    </label>
+                </div>
+                <input type="hidden" />
+                <input type="hidden" />
+                <div class="col s12">
+                    <input type="hidden" />
+                </div>
+                <div class="col s2" id="divCOM">
+                    <div class="input-field">
+                        <input type="text" onblur="VerificarPercMaxDescEComissao(this);" id="percComissao"/>
+                        <label>COM(%)</label>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col s10"></div>
+                <div class="input-field col s2">
+                    <a class="waves-effect waves-light btn-small"
+                       onclick="testeModal('#modal1')"
+                       style="margin-top:2%;">
+                        <i class="material-icons left">add</i>Adicionar produto
+                    </a>
                 </div>
             </div>
             @* Produtos adicionados *@
             <div class="row">
                 <div class="col s12">
-                    <table class="col s12 tabelaitens destaquelinha" style="white-space:nowrap">
-                        <thead>
-                            <tr>
-                                <th style="width: auto;" scope="col" align="left" valign="bottom">
-                                    <span class="PLTe">Produto</span>
-                                </th>
-                                <th scope="col" class="hquantidade" align="right" valign="bottom">
-                                    <span class="PLTd">Qtde</span>
-                                </th>
-                                <th scope="col" class="preco" align="right" valign="bottom">
-                                    <span class="PLTd">Preço</span>
-                                </th>
-                                <th scope="col" class="hpreco" align="right" valign="bottom">
-                                    <span class="PLTd">VL Lista</span>
-                                </th>
-                                <th scope="col" class="hdesconto" align="right" valign="bottom">
-                                    <span class="PLTd">
-                                        Desc%
-                                        &nbsp;&nbsp;
-                                    </span>
-                                </th>
-                                <th scope="col" class="hpreco" align="right" valign="bottom">
-                                    <span class="PLTd">VL Venda</span>
-                                </th>
-                                <th scope="col" class="hpreco" align="right" valign="bottom">
-                                    <span class="PLTd">VL Total</span>
-                                </th>
-                                <th scope="col" style="width: 2em;">
-                                    <!-- excluir  -->
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @* Aqui vai o produto selecionado *@
-                            @* Verificar com o Edu como passar os valores para cá *@
-                            <tr>
-                                <td align="left" style="cursor:pointer;" onclick="mostrarProdutos(i)">
-                                    @* aqui no span vai o Fabricante/NumProduto - Descricao do produto *@
-                                    <span id="detProduto"></span>
-                                </td>
-                                @*<td align="left" style="cursor: pointer;" (click)="mostrarProdutos(i)">
-                                        {{i.Fabricante}}/{{i.NumProduto}} -
-                                        <span [innerHTML]="i.Descricao"></span>
-                                    </td>*@
+                    @{
+                        var indice = 0;
+                        <input type="hidden" id="indice" value="" />
 
-                                <td align="right">
-                                    <div class="input-field quantidade">
-                                        <input type="number" id="qtdeProd" onkeyup="digitouQtde(i)" onchange="digitouQtde(i)" />
-                                    </div>
-                                </td>
-                                @*<td align="right">
-                                        <mat-form-field class="quantidade">
-                                            <input matInput [ngModelOptions]="{standalone: true}" type="number" required
-                                                   [(ngModel)]="i.Qtde" (keyup)="digitouQte(i)" (change)="digitouQte(i)">
-                                        </mat-form-field>
-                                    </td>*@
+                        <table class="col s12 tabelaitens destaquelinha" style="white-space:nowrap">
+                            <thead>
+                                <tr>
+                                    <th style="width: auto;" scope="col" valign="bottom">
+                                        <span>Produto</span>
+                                    </th>
+                                    <th scope="col" class="hquantidade" valign="bottom">
+                                        <span class="PLTd">Qtde</span>
+                                    </th>
+                                    @if (Model.Permite_RA_Status == 1)
+                                    {
+                                        <th scope="col" class="preco" valign="bottom">
+                                            <span class="PLTd">Preço</span>
+                                        </th>
+                                    }
+                                    <th scope="col" class="hpreco" valign="bottom">
+                                        <span class="PLTd">VL Lista</span>
+                                    </th>
+                                    <th scope="col" class="hdesconto" valign="bottom">
+                                        <span class="PLTd">
+                                            Desc%
+                                            &nbsp;&nbsp;
+                                        </span>
+                                    </th>
+                                    <th scope="col" class="hpreco" valign="bottom">
+                                        <span class="PLTd">VL Venda</span>
+                                    </th>
+                                    <th scope="col" class="hpreco" valign="bottom">
+                                        <span class="PLTd">VL Total</span>
+                                    </th>
+                                    <th scope="col" style="width: 7%;">
+                                        <!-- excluir  -->
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @* Parte de produtos do Model *@
+                                @{
+                                    @* Mudamos para não repetir código, o bloco antigo de modelo para adição de 01 item *@
+                                    int indexnumero = 0;
+                                    @for (int ilista = 0; ilista <= (Model.ListaProdutos?.Count() ?? 0); ilista++)
+                                    {
+                                        bool linhaNovoProduto = true;
+                                        string index = "trocarporindex";
+                                        string classe = "class=\"novoProduto\"";
+                                        string classenovoProdutoEstoque = "class=\"novoProdutoEstoque\"";
+                                        string classenovoProdutoAviso = "class=\"novoProdutoAviso\"";
+                                        string classenovoProdutoQtdeMaxPermitida = "class=\"novoProdutoQtdeMaxPermitida\"";
+                                        string estilo = "style=\"display:none\"";
+                                        Loja.Bll.Dto.PedidoDto.DetalhesPedido.PedidoProdutosDtoPedido i = new Loja.Bll.Dto.PedidoDto.DetalhesPedido.PedidoProdutosDtoPedido();
+                                        if (ilista != (Model.ListaProdutos?.Count() ?? 0))
+                                        {
+                                            linhaNovoProduto = false;
+                                            i = Model.ListaProdutos[ilista];
+                                            index = indexnumero.ToString();
+                                            classe = "";
+                                            classenovoProdutoEstoque = "";
+                                            classenovoProdutoAviso = "";
+                                            classenovoProdutoQtdeMaxPermitida = "";
+                                            estilo = "";
+                                        }
 
-                                @if (Model.Permite_RA_Status == 1)
-                                {
-                                    <td *ngIf="permite_RA_Status" align="right">
-                                        <!-- <input name="c_vl_NF" id="c_vl_NF" class="PLLd" style="width:62px;" value='{{i.Preco}}' /> -->
-                                        <mat-form-field class="preco">
-                                            <input matInput type="text" required
-                                                   [value]="moedaUtils.formatarMoedaSemPrefixo(i.Preco)"
-                                                   (change)="digitouPreco($event,i)" (keyup)="digitouPreco($event,i)">
-                                        </mat-form-field>
-                                    </td>
+                                        //Lista de Produtos
+                                        <tr @Html.Raw(classe) @Html.Raw(estilo) style="display:block !important">
+
+                                            <td style="cursor:pointer;" scope="col" onclick="mostrarProdutos(i)">
+                                                <span name="[@index].NumProduto"></span>
+                                                <input class="numProduto" type="hidden" name="[@index].NumProduto" value="@i.NumProduto?">
+                                            </td>
+                                            <td>
+                                                <div class="input-field quantidade">
+                                                    <input class="qtdeProduto" style="text-align:right;"
+                                                           type="number" min="1"
+                                                           name="[@index].Qtde" id="@i.Qtde" onkeyup="digitouQtde(this)"
+                                                           onchange="digitouQtde(this)" />
+                                                </div>
+                                            </td>
+                                            @if (Model.Permite_RA_Status == 1)
+                                            {
+                                                <td>
+                                                    <div class="input-field preco">
+                                                        <input class="precoProduto" style="text-align:right" type="text" name="[@index].Preco" id="@i.Preco"
+                                                               onchange="digitouPreco(this)" onkeyup="digitouPreco(this)" />
+                                                    </div>
+                                                </td>
+                                            }
+                                            <td class="vlListaProduto" style="text-align:right" name="[@index].VlLista" id="@i.VlLista">
+                                            </td>
+                                            <td>
+                                                <div class="input-field desconto">
+                                                    <input class="descProduto" type="text" name="[@index].Desconto" id="@i.Desconto"
+                                                           style="text-align:right" onchange="digitouDesc(this)"
+                                                           onkeyup="digitouDesc(this)" />  %
+
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="input-field" style="float:right; max-width:80%;width:80%;">
+                                                    <input class="vlUnitario" type="text" name="[@index].VlUnitario" id="@i.VlUnitario"
+                                                           style="text-align:right" onchange="digitouVlVenda(this)"
+                                                           onkeyup="digitouVlVenda(this)" />
+                                                </div>
+                                            </td>
+                                            <td class="vlTotalItem" style="text-align:right" name="[@index].VlTotalItem">
+                                            </td>
+                                            <td>
+                                                <div class="input-field">
+                                                    <span>
+                                                        <i class="material-icons icone-lixeira" title="Remover linha"
+                                                           onclick="removerLinha(this);">delete</i>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        //Estoque indisponivel
+                                        <tr @Html.Raw(classenovoProdutoEstoque) @Html.Raw(estilo)>
+                                            @* Se for diferente de verdadeiro *@
+                                            @if (Model.Permite_RA_Status == 0)
+                                            {
+                                                <td colspan="7" class="avisoestoque" name="estoqueIndisponivel">
+                                                    Quantidade solicitada é maior que o estoque disponível!
+                                                </td>
+                                            }
+                                            @if (Model.Permite_RA_Status == 1)
+                                            {
+                                                <td colspan="8" class="avisoestoque" name="estoqueIndisponivel">
+                                                    Quantidade solicitada é maior que o estoque disponível!
+                                                </td>
+                                            }
+                                        </tr>
+
+                                        //Avido de Produto
+                                        <tr @Html.Raw(classenovoProdutoAviso) @Html.Raw(estilo)>
+                                            @if (Model.Permite_RA_Status == 0)
+                                            {
+                                                <td colspan="7" class="avisoestoque">
+                                                    Aviso:
+                                                    <span name="produtoAviso"></span>
+                                                </td>
+                                            }
+                                            @if (Model.Permite_RA_Status == 1)
+                                            {
+                                                <td colspan="8" class="avisoestoque">
+                                                    Aviso:
+                                                    <span name="produtoAviso"></span>
+                                                </td>
+                                            }
+                                        </tr>
+
+                                        //Msg Qtde permitida
+                                        <tr @Html.Raw(classenovoProdutoQtdeMaxPermitida) @Html.Raw(estilo)>
+                                            @if (Model.Permite_RA_Status == 0)
+                                            {
+                                                <td colspan="7" class="avisoestoque">
+                                                    Aviso:
+                                                    <span name="msgQtdePermitida"></span>
+                                                </td>
+                                            }
+                                            @if (Model.Permite_RA_Status == 1)
+                                            {
+                                                <td colspan="8" class="avisoestoque">
+                                                    Aviso:
+                                                    <span name="msgQtdePermitida"></span>
+                                                </td>
+                                            }
+                                        </tr>
+
+                                        indexnumero++;
+                                        indice++;
+                                    }
+
                                 }
 
-                                <td align="right">
-                                    {{moedaUtils.formatarMoedaSemPrefixo(i.VlLista)}}
-                                </td>
+                                <tr class="trTotal">
+                                    <!-- pula as colunas vazias -->
+                                    <td></td>
+                                    <td> </td>
+                                    @if (Model.Permite_RA_Status == 1)
+                                    {
+                                        <td style="text-align:right;">
+                                            <strong id="totalPedidoRA"></strong>
+                                        </td>
+                                    }
+                                    <td> </td>
+                                    <td> </td>
+                                    <td> </td>
+
+                                    <td style="text-align:right;">
+                                        <strong id="totalPedido"></strong>
+                                    </td>
+                                    <td> </td>
 
 
-                                <!-- no original somente isLojaHabilitadaProdCompostoECommerce podia digitar o desconto,
-                                mas todo mundo podia digitar o c_vl_unitario
-                                mudamos para deixar todo mundo digitar o desconto -->
-                                <td align="right">
-                                    <!-- <input name="c_desc" id="c_desc" class="PLLd" style="width:36px;" value="{{i.Desconto}}" /> -->
-                                    <mat-form-field class="desconto">
-                                        <input matInput type="text"
-                                               [value]="moedaUtils.formatarPorcentagemUmaCasa(i.Desconto)"
-                                               (change)="digitouDesc($event,i)" (keyup)="digitouDesc($event,i)">
-                                    </mat-form-field>%
-                                </td>
-                                <td align="right">
-                                    <!-- <input name="c_vl_unitario" id="c_vl_unitario" class="PLLd" style="width:62px;"
-                                    value='{{i.VlUnitario}}' /> -->
-                                    <mat-form-field class="preco">
-                                        <input matInput type="text" required
-                                               [value]="moedaUtils.formatarMoedaSemPrefixo(i.VlUnitario)"
-                                               (change)="digitouVlVenda($event,i)" (keyup)="digitouVlVenda($event,i)">
-                                    </mat-form-field>
-                                </td>
+                                </tr>
+                                @* Aqui vai o produto selecionado e o foreach com os produtos já existentes no pedido *@
+                                @* Verificar com o Edu como passar os valores para cá *@
+                                @* Alterar os nomes das function que serão usadas nesse bloco
+                                    para poder chamar apenas no .ts da view
+                                *@
+                                @*Nova linha para produto*@
+                                @*Lista de Produtos*@
 
-
-                                <td align="right">
-                                    <!-- input name="c_vl_total" id="c_vl_total" class="PLLd" style="width:70px;" -->
-                                    {{moedaUtils.formatarMoedaSemPrefixo(i.TotalItem)}}
-                                </td>
-
-                                <td style="padding: 0; min-width: auto; max-width: 32px;">
-                                    <button mat-button (click)="removerLinha(i)"
-                                            style="padding: 0; min-width: auto; max-width: 32px;">
-                                        <mat-icon class="icone-lixeira" style="padding: 0;" title="Remover linha">
-                                            delete
-                                        </mat-icon>
-                                    </button>
-                                </td>
-                            </tr>
-
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    }
                 </div>
             </div>
             @* Aqui vai a parte de Forma de Pagamento *@
@@ -158,7 +350,7 @@
             <div class="row">
                 <div class="input-field col s3">
                     @Html.DropDownList("FormaPagto", new SelectList(Model.EnumFormaPagto, "Value", "Text",
-                   Model.EnumFormaPagto), new { @id = "enumPagto" })
+                   Model.EnumFormaPagto), new { @id = "enumFormaPagto", @onchange = "recalcularValoresComCoeficiente(this);" })
                     <label>Forma de Pagamento *</label>
                 </div>
             </div>
@@ -169,7 +361,7 @@
                 <div class="row col s12" id="Avista" style="display:none">
                     @* Parcelamento *@
                     <div class="input-field col s3">
-                        <select name="">
+                        <select name="" id="opcaoPagtoAvista">
                             <option value="0">Selecione</option>
                             @* Aqui vai o select com os valores calculados *@
                             @*@foreach ()
@@ -181,7 +373,7 @@
                     </div>
                     @* Meio de pagamento *@
                     <div class="input-field col s3">
-                        <select name="">
+                        <select name="" id="meioPagtoAVista">
                             <option value="0">Selecione</option>
                             @foreach (var i in Model.FormaPagto.ListaAvista)
                             {
@@ -199,7 +391,7 @@
                 <div class="row col s12" id="ParcUnica" style="display:none">
                     @* Parcelamento *@
                     <div class="input-field col s3">
-                        <select name="">
+                        <select name="" id="opcaoPagtoParcUnica">
                             <option value="0">Selecione</option>
                             @* Aqui vai o select com os valores calculados *@
                             @*@foreach ()
@@ -211,7 +403,7 @@
                     </div>
                     @* Meio de pagamento *@
                     <div class="input-field col s3">
-                        <select name="">
+                        <select name="" id="meioPagtoParcUnica">
                             <option value="0">Selecione</option>
                             @foreach (var i in Model.FormaPagto.ListaParcUnica)
                             {
@@ -235,12 +427,12 @@
                     <div class="row col s12">
                         @* Valor da entrada *@
                         <div class="input-field col s3">
-                            <input id="vlEntrada" type="text" />
+                            <input id="vlEntrada" type="text" onkeyup="digitouVlEntrada(this)" />
                             <label>Valor Entrada</label>
                         </div>
                         @* meio de pagamento Entrada *@
                         <div class="input-field col s3">
-                            <select name="">
+                            <select name="" id="meioPagtoEntrada">
                                 <option value="0">Selecione</option>
                                 @foreach (var v in Model.FormaPagto.ListaParcComEntrada)
                                 {
@@ -252,7 +444,7 @@
                     <div class="row col s12">
                         @* Parcelamento  *@
                         <div class="input-field col s3">
-                            <select name="">
+                            <select name="" id="opcaoPagtoParcComEntrada">
                                 <option value="0">Selecione</option>
                                 @* Aqui vai o select com os valores calculados *@
                                 @*@foreach ()
@@ -290,7 +482,7 @@
                 <div class="row col s12" id="PagtoCartaoInternet" style="display:none">
                     @* Parcelamento  *@
                     <div class="input-field col s3">
-                        <select name="">
+                        <select name="" id="opcaoPagtoParcCartaoInternet">
                             <option value="0">Selecione</option>
                             @* Aqui vai o select com os valores calculados *@
                             @*@foreach ()
@@ -309,7 +501,7 @@
                 <div class="row col s12" id="PagtoCartaoMaquineta" style="display:none">
                     @* Parcelamento  *@
                     <div class="input-field col s3">
-                        <select name="">
+                        <select name="" id="opcaoPagtoParcCartaoMaquineta">
                             <option value="0">Selecione</option>
                             @* Aqui vai o select com os valores calculados *@
                             @*@foreach ()
@@ -323,14 +515,31 @@
                 </div>
             }
         </article>
+        @* Botões *@
+        <footer class="page-footer">
+            <div class="row col s12">
+                <div class="col s1"></div>
+                <div class="input-field col s2">
+                    <button class="waves-effect waves-light btn-small"
+                            type="button"
+                            style="margin-top:2%;">
+                        <i class="material-icons left">arrow_back</i>Voltar
+                    </button>
+                </div>
+                <div class="col s5"></div>
+                <div class="input-field col s2">
+                    <button class="waves-effect waves-light btn-small"
+                            type="submit"
+                            style="margin-top:2%;">
+                        <i class="material-icons left">arrow_forward</i>Avançar
+                    </button>
+                </div>
+            </div>
+        </footer>
     }
 </div>
-<style>
-    .modal {
-        width: 70% !important;
-    }
-</style>
 
+@* Modal para mostrar os produtos *@
 <div id="modal1" class="modal">
     <div class="modal-content">
         <section>
@@ -339,16 +548,16 @@
                     <div class="input-field col s8">
                         @* ao digitar o produto, teremos que fazer uma busca na lista de produtos para
                             trazer o registro informado*@
-                        <input name="buscaproduto" id="buscaproduto" type="text" />
+                        <input name="buscaproduto" id="buscaproduto" type="text" class="autocomplete" />
                         <label id="lblbuscaproduto" for="buscaproduto">Produto (código) </label>
                     </div>
                     <div class="input-field col s3">
-                        <input name="qtde" id="qtde" type="number" placeholder="Quantidade" required />
+                        <input class="validate" name="qtde" id="qtde" type="number" placeholder="Quantidade" value="1" />
                     </div>
                 </div>
                 <div style="max-height:80% !important" class="listaprods">
                     <div class="row col s12 center" id="msg"></div>
-                    <table class="destaquelinha tabela_endereco"
+                    <table class="destaquelinha tabelaProd"
                            style="max-height:50%;">
                         <tbody>
                             @foreach (var i in Model.ProdutoCombo.ProdutoDto)
@@ -356,6 +565,9 @@
                                 if (i.Preco_lista > 0)
                                 {
                                     <tr class="prod">
+                                        <td style="display:none">
+                                            @i.Fabricante
+                                        </td>
                                         <td>
                                             <label>
                                                 <input class="with-gap check" type="radio" value="@i.Produto" />
@@ -375,7 +587,7 @@
                                                 var dadofilhote = Model.ProdutoCombo.ProdutoDto.Where(el => el.Fabricante == filhote.Fabricante && el.Produto == filhote.Produto);
                                                 foreach (var filhotetela in dadofilhote)
                                                 {
-                                                    <tr class="prod trfilho">
+                                                    <tr class="trfilho">
                                                         <td class="itemfilho">
                                                             <span style="padding-left:40px !important;">
                                                                 @filhote.Qtde x
@@ -383,10 +595,10 @@
                                                                 @filhotetela.Produto
                                                             </span>
                                                         </td>
-                                                        <td class="tdtabela">
+                                                        <td class="itemfilho">
                                                             @Html.Raw(filhotetela.Descricao_html)
                                                         </td>
-                                                        <td class="tdtabela preco">@string.Format("{0:c2}", filhotetela.Preco_lista)</td>
+                                                        <td class="itemfilho preco">@string.Format("{0:c2}", filhotetela.Preco_lista)</td>
                                                     </tr>
                                                 }
                                             }
@@ -402,7 +614,7 @@
             <div class="modal-footer col s12" id="footer">
                 <div class="container">
                     <button type="button" href="#!" class="modal-close waves-effect waves-green btn">Cancelar</button>
-                    <button type="button" id="btnModificar" href="#!" class="modal-close waves-effect waves-green btn">
+                    <button type="button" onclick="InserirProdutoLinha()" class="modal-close waves-effect waves-green btn">
                         Modificar
                     </button>
                 </div>
@@ -414,62 +626,54 @@
 
 <script>
 
-    function testeModal() {
-        let Modalelem = document.querySelector('.modal');
-        let instanceModal = M.Modal.init(Modalelem);
-        instanceModal.open();
-    };
+    //Estamos pegando a lista completa de produtos para passar para o .ts da tela
+    var lstprodutos = JSON.parse(@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(Json.Serialize(Model.ProdutoCombo).ToString(), true)))
 
+    function teste() {
+        let lstProdutosPreparadoParaDataList = PreparaListaProdutosParaDataList();
+        console.log(lstProdutosPreparadoParaDataList);
+        console.log(lstprodutos);
+        debugger;
+        var c = {};
+        $.each(lstProdutosPreparadoParaDataList, function (i, d) {
+            c[d] = null;
+        });
+        $('input.autocomplete').autocomplete({
+            data:c
+        });
+    }
+
+
+    var lstCoeficiente = JSON.parse(@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(Json.Serialize(Model.ListaCoeficiente).ToString(), true)))
+    var FormaPagtoServidor = JSON.parse(@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(Json.Serialize(Model.FormaPagto).ToString(), true)))
+
+    //estou add a lista de produtos selcionados para poder calcular os valores das parcelas
+    var lstProdSelecionados = [];
+    var indice;
+    var itens;
+    var moedaUtils;
+    var novoPedidoDadosService;
+    var dadosPagto;
+    var enumFormaPagto;
+    var qtdeParcVisa = (@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(Model.QtdeParcVisa.ToString()).ToString()));
+    var percMaxDescEComissaoPorLoja = JSON.parse(@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(Json.Serialize(Model.PercMaxDescEComissao).ToString(), true)));
 
 </script>
 <style>
+    .page-footer {
+        background-color: transparent;
+    }
+
     .listaprods {
         flex: 1 1 auto;
         /*overflow-y: auto;*/
     }
 
-    .destaquelinha :hover {
-        background-color: #d1d1d1 !important;
-    }
-
     .modal {
+        width: 70% !important;
         max-height: 80% !important;
         overflow-y: inherit !important;
         border-radius: 4px !important;
-    }
-
-    .tabela_endereco tbody td {
-        white-space: initial;
-        line-height: initial;
-        border: 1px solid white;
-        border-spacing: 2px;
-        width: 25% !important;
-    }
-
-    .tabela_endereco {
-        border: 1px solid #ccc;
-        border-collapse: collapse;
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        table-layout: fixed;
-    }
-
-    .itemfilho {
-        padding-left: 3em;
-        padding-right: 0;
-        padding-bottom: 6px;
-    }
-
-    .trfilho {
-        font-size: 80%;
-    }
-
-    .tdtabela {
-        padding-left: 0;
-        padding-right: 0;
-        padding-bottom: 6px;
-        /*border:1px solid white;*/
     }
 
     .prod {
@@ -482,9 +686,30 @@
         .prod td {
             padding: 0px !important;
             padding-right: 10px !important;
+            width: 10%;
         }
 
-    .sectionDesktop .tabelaitens {
+    .trfilho {
+        font-size: 80%;
+        padding: 0.5em;
+        background-color: #fbfbfb !important;
+        /*border: 1px solid white;*/
+        text-align: left !important;
+    }
+
+    .itemfilho {
+        padding-left: 3em;
+        padding-right: 0;
+        padding-bottom: 6px;
+    }
+
+    /*.tdtabela {
+        padding-left: 0;
+        padding-right: 0;
+        padding-bottom: 6px;
+    }*/
+
+    .tabelaProd {
         border: 1px solid #ccc;
         border-collapse: collapse;
         margin: 0;
@@ -493,12 +718,36 @@
         table-layout: fixed;
     }
 
-    tbody {
-        display: block;
-        height: auto;
-        max-height: 300px;
-        overflow: auto;
-    }
+        .tabelaProd tbody {
+            display: block;
+            height: auto;
+            max-height: 25ch;
+            overflow: auto;
+        }
+
+        .tabelaProd tr {
+            background-color: #fbfbfb;
+            border: 1px solid #ddd;
+            padding: 0.35em;
+            line-height: 5ch;
+        }
+
+        .tabelaProd th,
+        .tabelaProd td {
+            padding: 0.625em;
+            padding-left: 0.4em;
+            padding-right: 0.4em;
+            border: 1px solid white;
+            border-spacing: 2px;
+            /*width: 25% !important;*/
+            white-space: nowrap;
+            word-break: break-word;
+        }
+
+        .tabelaProd th {
+            font-size: 0.85em;
+            letter-spacing: 0.1em;
+        }
 
     #footer {
         text-align: center;
@@ -507,31 +756,69 @@
         flex-shrink: 0;
     }
 
-    thead, tbody tr {
-        display: table;
-        width: 100%;
-        table-layout: fixed;
-    }
-
-
-
-    .quantidade {
-        width: 6ch;
-        text-align: right;
-    }
-
     .preco {
         width: 10ch;
         text-align: right;
     }
 
-    .desconto {
-        width: 6ch;
-        text-align: right;
-        padding-right: 0 !important;
+    /*fim modal*/
+
+    .caixa {
+        display: inline-block;
+        padding: 0.5em;
+        padding-left: 0em;
     }
 
+        .caixa .rotulo {
+            display: inline;
+            font-weight: bold;
+            opacity: 0.9;
+            padding-right: 0.5em;
+        }
 
+        .caixa .dado {
+            display: inline;
+            padding-right: 1.0em;
+        }
+
+    /*tabela corpo*/
+    .destaquelinha :hover {
+        background-color: #d1d1d1 !important;
+    }
+
+    .tabelaitens {
+        border: 1px solid #ccc;
+        border-collapse: collapse;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+        .tabelaitens tr {
+            background-color: #fbfbfb;
+            border: 1px solid #ddd;
+            padding: 0.35em;
+        }
+
+
+        /*.tabelaitens th,
+        .tabelaitens td {
+            padding-left: 0.4em;
+            padding-right: 0.4em;
+        }*/
+
+        .tabelaitens tbody td {
+            white-space: initial;
+            line-height: initial;
+        }
+
+    /*.tabelaitens th {
+            font-size: 0.85em;
+            letter-spacing: 0.1em;
+        }*/
+
+    /*thead tr*/
     .hquantidade {
         min-width: 6ch;
         width: 6ch;
@@ -549,79 +836,47 @@
         width: 11ch;
         text-align: right;
     }
-    /*.sectionDesktop .tabelaitens caption {
-            font-size: 1.5em;
-            margin: 0.5em 0 0.75em;
+
+    .quantidade {
+        width: 6ch;
+    }
+
+    .desconto {
+        width: 6ch;
+        padding-right: 0 !important;
+        white-space: nowrap;
+    }
+
+    .sectionDesktop .tabelaitens th,
+    .sectionDesktop .tabelaitens td {
+        padding: 0.625em;
+        padding-left: 0.4em;
+        padding-right: 0.4em;
+    }
+
+    .icone-lixeira {
+        color: red;
+    }
+
+        .icone-lixeira:hover {
+            background-color: #d1d1d1 !important;
+            cursor: pointer;
         }
 
-        .sectionDesktop .tabelaitens tr {
-            background-color: #fbfbfb;
-            border: 1px solid #ddd;
-            padding: 0.35em;
+        .icone-lixeira:hover {
+            background-color: #bdbdbd !important;
+            cursor: pointer;
         }
 
-        .sectionDesktop .tabelaitens th,
-        .sectionDesktop .tabelaitens td {
-            padding: 0.625em;
-            padding-left: 0.4em;
-            padding-right: 0.4em;
-            //text-align: center;
-        }
-
-        .sectionDesktop .tabelaitens th {
-            font-size: 0.85em;
-            letter-spacing: 0.1em;
-        }
-
-        .sectionDesktop .tabelaitens .input-field {
-            padding: 0em;
-            padding-left: 0.4em;
-            padding-right: 0.4em;
-        }*/
-
-    /*.trfilho {
-            font-size: 80%;
-        }
-
-        .tdtabela {
-            padding-left: 0;
-            padding-right: 0;
-            padding-bottom: 6px;
-        }*/
+    .avisoestoque {
+        padding-left: 5em !important;
+        color: red;
+    }
 </style>
-
 <script>
-    //montar lista de parcelamento
-    //$('#enumPagto').change(function () {
-    //    var f = new FormaPagto();
-    //    f.montarListaParcelamento($('#enumPagto'))
-    //});
+    requirejs(["Views/Pedido/IniciarNovoPedido"], function (util) {
 
-    //var itens = new Itens;
-    //var coe = new DtoCoeficiente;
-
-
-
-
-@*
-@foreach (var coef in Model.ListaCoeficiente)
-{
-    //apenas um  exemplo de como passar valores da model para javascript e corrigir a escrita
-    <text>
-    lstCoeficiente.push( @Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(coef., true)) );
-    </text>
-
-
-}
-    console.log(lstCoeficiente);*@
-
+    });
 
 
 </script>
-<script src="C:\Users\gabriel.teodoro\source\repos\Loja.UI\Loja.UI\FuncoesTs\Itens\Itens.js"></script>
-<script src="~/scriptsJs/UtilTs/Constantes/Constantes.js"></script>
-<script src="~/scriptsJs/DtosTs/DtoCoeficiente/DtoCoeficiente.js"></script>
-<script src="~/scriptsJs/DtosTs/DtoPedido/DtoPedidoProdutosPedido.js"></script>
-<script src="~/scriptsJs/Views/Pedido/FormaPagto.js"></script>
-<script src="~/scriptsJs/UtilTs/MoedaUtils/moedaUtils.js"></script>
-<script src="~/scriptsJs/Views/Pedido/IniciarNovoPedido.js"></script>

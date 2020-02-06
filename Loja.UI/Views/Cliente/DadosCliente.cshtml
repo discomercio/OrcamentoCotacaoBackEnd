@@ -6,8 +6,9 @@
 
 <h5>Novo Pedido</h5>
 
-
+@section ScriptsDiretos{ 
 <script src="~/lib/jquery-mask/jquery.mask.js"></script>
+}
 <script>
 
     $(function () {
@@ -184,7 +185,6 @@
                 }
                 if ($("#contribuinte").val() == "1" &&
                     (!$('#ie').val() || $('#ie').val().trim() == "")) {
-                    debugger;
                     MostrarMsg('#modalErro', 'Se o cliente é contribuinte do ICMS a inscrição estadual deve ser preenchida!');
                     retorno = false;
                 }
@@ -203,9 +203,11 @@
         }
         else {
             var lblIe = $('#ie').val();
-            lblIe = StringUtils.retorna_so_digitos(lblIe);
-
-            if ($("#contribuinte").val() != "1" &&
+            //lblIe = StringUtils.retorna_so_digitos(lblIe);
+            lblIe = lblIe.replace('.', '').replace('-', '').replace('/', '');
+            debugger;
+            if ($("#contribuinte").val() != "0" &&
+                $("#contribuinte").val() != "1" &&
                 $("#contribuinte").val() != "2" &&
                 $("#contribuinte").val() != "3") {
                 MostrarMsg('#modalErro', 'Informe se o cliente é contribuinte do ICMS, não contribuinte ou isento!');
@@ -285,10 +287,12 @@
 
         var cpfCnpj;
         if ($('#permiteEditar').val() == "True") {
-            cpfCnpj = StringUtils.retorna_so_digitos($('#cpf_cnpj').val());
+            //cpfCnpj = StringUtils.retorna_so_digitos($('#cpf_cnpj').val());
+            cpfCnpj = $('#cpf_cnpj').val().replace('.', '').replace('/', '');
         }
         else {
-            cpfCnpj = StringUtils.retorna_so_digitos($('#cpf_cnpj').text());
+            //cpfCnpj = StringUtils.retorna_so_digitos($('#cpf_cnpj').text());
+            cpfCnpj = $('#cpf_cnpj').text().replace('.', '').replace('/', '');;
         }
         console.log(cpfCnpj);
         var msg;
@@ -299,7 +303,6 @@
 
         if (validou) {
             //se estiver tudo ok seguimos
-            debugger;
             if (!$('#indicador').val() || $('#indicador').val() == "undefined" || $('#indicador').val() == "0") {
                 msg = "Favor selecionar um indicador";
                 MostrarMsg("#modalErro", msg);

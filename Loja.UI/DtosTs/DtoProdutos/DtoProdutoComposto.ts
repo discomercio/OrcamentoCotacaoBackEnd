@@ -1,6 +1,6 @@
-﻿///<reference path="DtoProdutoFilho.ts" />
+﻿import { DtoProdutoFilho } from "./DtoProdutoFilho";
 
-class DtoProdutoComposto {
+export class DtoProdutoComposto {
     PaiFabricante: string;
     PaiFabricante_Nome: string;
     PaiProduto: string;

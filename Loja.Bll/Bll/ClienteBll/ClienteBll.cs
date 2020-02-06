@@ -252,9 +252,9 @@ namespace Loja.Bll.ClienteBll
             return lstRefComercial;
         }
 
-        public async Task<IEnumerable<string>> BuscarListaIndicadores(string indicador, string usuarioSistema)
+        public async Task<IEnumerable<string>> BuscarListaIndicadores(string indicador, string usuarioSistema, string loja)
         {
-            List<string> lst = (await Util.Util.BuscarOrcamentistaEIndicador(contextoProvider, indicador, usuarioSistema)).ToList();
+            List<string> lst = (await Util.Util.BuscarOrcamentistaEIndicador(contextoProvider, indicador, usuarioSistema, loja)).ToList();
 
             return lst;
         }
@@ -377,6 +377,87 @@ namespace Loja.Bll.ClienteBll
             Tcliente tClienteBase = new Tcliente();
             tClienteBase = cliente;
 
+            //cliente.Id = dadosCliente.Id;
+            //cliente.Dt_Cadastro = DateTime.Now;
+            //cliente.Usuario_Cadastrado = tClienteBase.Usuario_Cadastrado.ToUpper();
+            //cliente.Indicador = dadosCliente.Indicador_Orcamentista;
+            //cliente.Cnpj_Cpf = Util.Util.SoDigitosCpf_Cnpj(dadosCliente.Cnpj_Cpf);
+            //cliente.Tipo = dadosCliente.Tipo.ToUpper();
+            //cliente.Ie = dadosCliente.Ie == null ? dadosCliente.Ie = "" : dadosCliente.Ie;
+            //cliente.Rg = dadosCliente.Rg == null ? dadosCliente.Rg = "" : dadosCliente.Rg;
+            //cliente.Nome = dadosCliente.Nome;
+            //cliente.Sexo = dadosCliente.Sexo == null ? dadosCliente.Sexo = null : dadosCliente.Sexo.ToUpper();
+            //if (dadosCliente.Contribuinte_Icms_Status != 0 &&
+            //    dadosCliente.Contribuinte_Icms_Status != tClienteBase.Contribuinte_Icms_Status)
+            //{
+            //    cliente.Contribuinte_Icms_Status = dadosCliente.Contribuinte_Icms_Status;
+            //    cliente.Contribuinte_Icms_Data = DateTime.Now;
+            //    cliente.Contribuinte_Icms_Data_Hora = DateTime.Now;
+            //    cliente.Contribuinte_Icms_Usuario = apelido.ToUpper();
+            //}
+            //else
+            //{
+            //    cliente.Contribuinte_Icms_Status = tClienteBase.Contribuinte_Icms_Status;
+            //    cliente.Contribuinte_Icms_Data = tClienteBase.Contribuinte_Icms_Data;
+            //    cliente.Contribuinte_Icms_Data_Hora = tClienteBase.Contribuinte_Icms_Data_Hora;
+            //    cliente.Contribuinte_Icms_Usuario = tClienteBase.Contribuinte_Icms_Usuario;
+            //}
+            //if (dadosCliente.ProdutorRural != 0 && dadosCliente.ProdutorRural != tClienteBase.Produtor_Rural_Status)
+            //{
+            //    cliente.Produtor_Rural_Status = dadosCliente.ProdutorRural;
+            //    cliente.Produtor_Rural_Data = DateTime.Now;
+            //    cliente.Produtor_Rural_Data_Hora = DateTime.Now;
+            //    cliente.Produtor_Rural_Usuario = apelido.ToUpper();
+            //}
+            //else
+            //{
+            //    cliente.Produtor_Rural_Status = tClienteBase.Produtor_Rural_Status;
+            //    cliente.Produtor_Rural_Data = tClienteBase.Produtor_Rural_Data;
+            //    cliente.Produtor_Rural_Data_Hora = tClienteBase.Produtor_Rural_Data_Hora;
+            //    cliente.Produtor_Rural_Usuario = tClienteBase.Produtor_Rural_Usuario;
+            //}
+            //cliente.Endereco = dadosCliente.Endereco;
+            //cliente.Endereco_Numero = dadosCliente.Numero;
+            //cliente.Endereco_Complemento = dadosCliente.Complemento;
+            //cliente.Bairro = dadosCliente.Bairro;
+            //cliente.Cidade = dadosCliente.Cidade;
+            //cliente.Cep = dadosCliente.Cep.Replace("-", "");
+            //cliente.Uf = dadosCliente.Uf.ToUpper();
+            //cliente.Ddd_Res = dadosCliente.DddResidencial == null ?
+            //    dadosCliente.DddResidencial = "" : dadosCliente.DddResidencial;
+            //cliente.Tel_Res = dadosCliente.TelefoneResidencial == null ?
+            //    dadosCliente.TelefoneResidencial = "" : dadosCliente.TelefoneResidencial.Replace("-", "").Trim();
+            //cliente.Ddd_Com = dadosCliente.DddComercial == null ?
+            //    dadosCliente.DddComercial = "" : dadosCliente.DddComercial;
+            //cliente.Tel_Com = dadosCliente.TelComercial == null ?
+            //    dadosCliente.TelComercial = "" : dadosCliente.TelComercial.Replace("-", "").Trim();
+            //cliente.Ramal_Com = dadosCliente.Ramal == null ?
+            //    dadosCliente.Ramal = "" : dadosCliente.Ramal;
+            //cliente.Contato = dadosCliente.Contato == null ?
+            //    dadosCliente.Contato = "" : dadosCliente.Contato;
+            //cliente.Ddd_Com_2 = dadosCliente.DddComercial2 == null ?
+            //    dadosCliente.DddComercial2 = "" : dadosCliente.DddComercial2;
+            //cliente.Tel_Com_2 = dadosCliente.TelComercial2 == null ?
+            //    dadosCliente.TelComercial2 = "" : dadosCliente.TelComercial2.Replace("-", "").Trim();
+            //cliente.Ramal_Com_2 = dadosCliente.Ramal2 == null ?
+            //    dadosCliente.Ramal2 = "" : dadosCliente.Ramal2;
+            //cliente.Ddd_Cel = dadosCliente.DddCelular == null ?
+            //    dadosCliente.DddCelular = "" : dadosCliente.DddCelular;
+            //cliente.Tel_Cel = dadosCliente.Celular == null ?
+            //    dadosCliente.Celular = "" : dadosCliente.Celular.Replace("-", "").Trim();
+            //cliente.Dt_Nasc = dadosCliente.Nascimento;
+            //cliente.Filiacao = dadosCliente.Observacao_Filiacao == null ?
+            //    dadosCliente.Observacao_Filiacao = "" : dadosCliente.Observacao_Filiacao;
+            //cliente.Obs_crediticias = "";
+            //cliente.Midia = "";
+            //cliente.Email = dadosCliente.Email == null ?
+            //    dadosCliente.Email = "" : dadosCliente.Email;
+            //cliente.Email_Xml = dadosCliente.EmailXml == null ?
+            //    dadosCliente.EmailXml = "" : dadosCliente.EmailXml;
+            //cliente.Dt_Ult_Atualizacao = DateTime.Now;
+            //cliente.Usuario_Ult_Atualizacao = apelido.ToUpper();
+
+
             Tcliente tCliente = new Tcliente();
             tCliente.Id = dadosCliente.Id;
             tCliente.Dt_Cadastro = DateTime.Now;
@@ -458,17 +539,19 @@ namespace Loja.Bll.ClienteBll
             tCliente.Dt_Ult_Atualizacao = DateTime.Now;
             tCliente.Usuario_Ult_Atualizacao = apelido.ToUpper();
 
-            string log = Util.Util.MontaLogAlteracao(tCliente, tClienteBase, campos_a_omitir);
+            cliente = tCliente;
+
+            string log = Util.Util.MontaLogAlteracao(cliente, tClienteBase, campos_a_omitir);
 
             if (log != "" && log != null)
             {
                 log = "id=" + tClienteBase.Id + "; " + log;
 
                 bool salvouLog = Util.Util.GravaLog(dbgravacao, apelido, loja, "",
-                    tCliente.Id, Constantes.Constantes.OP_LOG_CLIENTE_ALTERACAO, log, contextoProvider);
+                    cliente.Id, Constantes.Constantes.OP_LOG_CLIENTE_ALTERACAO, log, contextoProvider);
             }
 
-            //dbgravacao.Update(tCliente);
+            //dbgravacao.Update(cliente);
             await dbgravacao.SaveChangesAsync();
         }
 
@@ -1104,7 +1187,7 @@ namespace Loja.Bll.ClienteBll
                             id_cliente, Constantes.Constantes.OP_LOG_CLIENTE_INCLUSAO, log, contextoProvider);
 
                         await dbgravacao.SaveChangesAsync();
-                    }                    
+                    }
                 }
                 qtdeRef++;
             }

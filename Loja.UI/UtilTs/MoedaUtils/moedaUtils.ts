@@ -1,6 +1,6 @@
 ﻿
 
-class MoedaUtils {
+export class MoedaUtils {
     formatter = new Intl.NumberFormat(undefined, {
         style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2
     });

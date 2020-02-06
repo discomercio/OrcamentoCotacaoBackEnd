@@ -1,7 +1,7 @@
-﻿/// <reference path="../../DtosTs/DtoCoeficiente/DtoCoeficiente.ts" />
-/// <reference path="../../DtosTs/DtoPedido/DtoPedidoProdutosPedido.ts" />
-/// <reference path="../../UtilTs/Constantes/Constantes.ts" />
-/// <reference path="../../UtilTs/MoedaUtils/moedaUtils.ts" />
+﻿import { DtoCoeficiente } from "../../DtosTs/DtoCoeficiente/DtoCoeficiente";
+import { DtoPedidoProdutosPedido } from "../../DtosTs/DtoPedido/DtoPedidoProdutosPedido";
+import { Constantes } from "../../UtilTs/Constantes/Constantes";
+import { MoedaUtils } from "../../UtilTs/MoedaUtils/moedaUtils";
 
 //variaveis referentes a tela
 let opcaoPagtoAvista: string;
@@ -20,7 +20,7 @@ let valor: number;//valor da parcela
 let qtdeParcVisa: number;//qtde de parcelas 
 let vlEntrada: number;
 
-class FormaPagto {
+export class FormaPagto {
     lstMsg: string[] = [];
     lstCoeficiente: DtoCoeficiente[] = [];
     lstProdutos: DtoPedidoProdutosPedido[] = [];

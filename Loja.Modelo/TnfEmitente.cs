@@ -73,11 +73,13 @@ namespace Loja.Modelos
         [Required]
         public byte NFe_st_emitente_padrao { get; set; }
 
-        [Column("NFe_serie_NF")]
+        //[Column("NFe_serie_NF")]
+        [Column("old_NFe_serie_NF")]
         [Required]
         public int NFe_serie_NF { get; set; }
 
-        [Column("NFe_numero_NF")]
+        //[Column("NFe_numero_NF")]
+        [Column("old_NFe_numero_NF")]
         [Required]
         public int NFe_numero_NF { get; set; }
 
