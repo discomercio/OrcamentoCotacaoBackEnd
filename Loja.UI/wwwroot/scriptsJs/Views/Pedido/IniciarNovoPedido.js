@@ -87,6 +87,6 @@ $(".prod").click(function () {
     $(".prod input").prop('checked', false);
     $(this).find("input").prop('checked', true);
 });
-//let formata = new MoedaUtils();
-//alert(formata.formatarMoedaComPrefixo(123));
+let formata = new MoedaUtils();
+alert(formata.formatarMoedaComPrefixo(123));
 //# sourceMappingURL=/scriptsJs/Views/Pedido/IniciarNovoPedido.js.map
