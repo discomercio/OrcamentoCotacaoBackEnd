@@ -46,6 +46,7 @@ export class PedidoDesktopComponent extends TelaDesktopBaseComponent implements 
   dataFormatarTelaHora = DataUtils.formatarTelaHora;
   dataformatarTelaDataeHora = DataUtils.formatarTelaDataeHora;
   dataformatarTelaHoraSemSegundos = DataUtils.formatarTelaHoraSemSegundos;
+  dataformatarTelaHoraComSegundos = DataUtils.formatarTelaHoraComSegundos;
   moedaUtils: MoedaUtils = new MoedaUtils();
   clienteCadastroUtils = new ClienteCadastroUtils();
 

@@ -2,42 +2,51 @@
 
     <mat-form-field floatLabel="floatLabel()" class="edicao-cep">
         <input matInput type="text" placeholder="CEP" [(ngModel)]="Cep" required maxlength="10" size="11" id="cep"
-            (blur)="saiuCep()" [textMask]="{mask: mascaraCep}">
+            (blur)="saiuCep()" [textMask]="{mask: mascaraCep}"
+            >
     </mat-form-field>
-    <button mat-raised-button color="accent" (click)="buscarCep()" id="naoSeiCep">
-        <mat-icon>search</mat-icon> Não sei o CEP
+    <button mat-raised-button color="accent" (click)="buscarCep()" id="naoSeiCep" style="font-size:80%;">
+        <mat-icon style="font-size: 180%; margin-left: -15%">search</mat-icon> Não sei o CEP
     </button>
 
     <!-- espaçador -->
     <span style="width: 2em; display: inline-block;"> </span>
+    <span style="width: 2em; display: inline-block;"> </span>
 
     <!-- ************   ENDEREÇO   ************  -->
-    <mat-form-field floatLabel="floatLabel()" class="edicao-endereco">
-        <input matInput [readonly]="temEndereco" type="text" placeholder="ENDEREÇO" [(ngModel)]="Endereco" required maxlength="60" size="85">
+    <mat-form-field floatLabel="floatLabel()" style="width: 28ch" class="edicao-endereco">
+        <input matInput [readonly]="temEndereco" type="text" placeholder="ENDEREÇO" 
+        [(ngModel)]="Endereco" required maxlength="60" size="85"
+        >
     </mat-form-field>
 
     <!-- ************ Nº/COMPLEMENTO ************  -->
     <mat-form-field floatLabel="floatLabel()" class="edicao-numero">
-        <input matInput type="text" placeholder="Nº" [(ngModel)]="Numero" required maxlength="20" size="10">
+        <input matInput type="text" placeholder="Nº" [(ngModel)]="Numero" required maxlength="20" size="10"
+        >
     </mat-form-field>
     <mat-form-field floatLabel="floatLabel()" class="edicao-compl">
-        <input matInput type="text" placeholder="COMPLEMENTO" [(ngModel)]="Complemento" maxlength="60" size="10">
+        <input matInput type="text" placeholder="COMPLEMENTO" [(ngModel)]="Complemento" maxlength="60" size="10"
+        >
     </mat-form-field>
 
 
     <!-- ************ BAIRRO/CIDADE ************  -->
     <mat-form-field floatLabel="floatLabel()" class="edicao-bairro">
-        <input matInput [readonly]="temBairro" type="text" placeholder="BAIRRO" [(ngModel)]="Bairro" required maxlength="72">
+        <input matInput [readonly]="temBairro" type="text" placeholder="BAIRRO" [(ngModel)]="Bairro" required maxlength="72"
+        >
     </mat-form-field>
 
     <mat-form-field floatLabel="floatLabel()" class="edicao-cidade">
-        <input matInput [readonly]="temCidade" type="text" placeholder="CIDADE" [(ngModel)]="Cidade" required maxlength="60">
+        <input matInput [readonly]="temCidade" type="text" placeholder="CIDADE" [(ngModel)]="Cidade" required maxlength="60"
+        >
     </mat-form-field>
 
 
     <!-- ************ UF/CEP ************  -->
     <mat-form-field floatLabel="floatLabel()" class="edicao-uf">
-        <input matInput [readonly]="temUf" type="text" placeholder="UF" [(ngModel)]="Uf" required maxlength="2" size="3">
+        <input matInput [readonly]="temUf" type="text" placeholder="UF" [(ngModel)]="Uf" required maxlength="2" size="3"
+        >
     </mat-form-field>
 
 </div>

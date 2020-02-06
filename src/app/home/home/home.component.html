@@ -30,7 +30,7 @@ no celular aparece sempre -->
     </div>
 </div>
 <!-- teste -->
-<div [class]="menuDesktop? 'spaMenu':'spaTela'">
+<div *ngIf="telaDesktop" [class]="menuDesktop? 'spaMenu':'spaTela'">
     <div id="imgFundo" *ngIf="!menuDesktop" [class]="menuDesktop? 'corpoMenu': 'corpohome'"
         [style.background-image]="BuscarImgFundo()" style="background-repeat:no-repeat"
         [style.height]="buscarAlturaImg()" [style.background-size]="buscarTamanhoImg()">

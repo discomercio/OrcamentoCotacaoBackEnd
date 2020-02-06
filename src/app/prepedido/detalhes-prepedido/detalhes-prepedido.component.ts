@@ -100,6 +100,10 @@ export class DetalhesPrepedidoComponent extends TelaDesktopBaseComponent impleme
           this.prepedido = r;
           let w: any = window;
           w.prepedido = this.prepedido;
+          debugger;
+          if(this.prepedido.St_Orc_Virou_Pedido){
+            this.router.navigate(['/pedido/detalhes', this.prepedido.NumeroPedido]);
+          }
         },
         error: (r) => this.deuErro(r)
       });

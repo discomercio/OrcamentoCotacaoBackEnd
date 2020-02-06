@@ -41,7 +41,7 @@
                         [ngModelOptions]="{standalone: true}">
                 </mat-form-field>
 
-                <button *ngIf="telaDesktop" mat-raised-button (click)="buscarCepPorEndereco()">
+                <button  mat-raised-button (click)="buscarCepPorEndereco()">
                     <mat-icon>search</mat-icon> Buscar Cep
                 </button>
             </div>
@@ -75,10 +75,13 @@
                             [ngModelOptions]="{standalone: true}">
                     </mat-form-field>
                 </div>
-                <a *ngIf="!telaDesktop" mat-mini-fab aria-label="teste" (click)="buscarCepPorEndereco()"
+                <button  mat-raised-button (click)="buscarCepPorEndereco()" style="font-size: 80%; margin-left: 20%">
+                        <mat-icon style="font-size: 180%; margin-left:-15%">search</mat-icon> Buscar Cep
+                    </button>
+                <!-- <a *ngIf="!telaDesktop" mat-mini-fab aria-label="teste" (click)="buscarCepPorEndereco()"
                     style="margin-left: 40%;">
                     <mat-icon>search</mat-icon>
-                </a>
+                </a> -->
             </div>
 
         </form>
@@ -148,6 +151,7 @@
                 </tbody>
             </table>
         </mat-radio-group>
+        
         <!-- versão celular -->
         <div *ngIf="!telaDesktop" style="display: block; padding-top: 1em;">
             <mat-radio-group *ngIf="lstEnderecos.length > 0" [(ngModel)]="endereco_selecionado" required
@@ -185,10 +189,17 @@
             </mat-radio-group>
         </div>
     </article>
-    <footer *ngIf="lstEnderecos.length > 0" mat-dialog-actions style="justify-content: space-around;">
+    <footer *ngIf="lstEnderecos.length > 0 && telaDesktop" mat-dialog-actions style="justify-content: space-around;">
         <button mat-raised-button (click)="onNoClick()" cdkFocusInitial color="accent">Cancelar</button>
         <button mat-raised-button (click)="onOkClick()" color="accent">
             Confirmar
         </button>
     </footer>
+    <footer *ngIf="lstEnderecos.length > 0 && !telaDesktop" mat-dialog-actions 
+        style="justify-content: space-around; min-width: 100%">
+            <button mat-raised-button (click)="onNoClick()" cdkFocusInitial color="accent" style="font-size: 80%;">Cancelar</button>
+            <button mat-raised-button (click)="onOkClick()" color="accent" style="font-size: 80%;">
+                Confirmar
+            </button>
+        </footer>
 </section>

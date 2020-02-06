@@ -16,15 +16,15 @@
         </article>
         <footer>
             
-            <a mat-raised-button color="accent" (click)="voltar()">
-                <mat-icon>arrow_back</mat-icon> Voltar
+            <a mat-raised-button color="accent" (click)="voltar()" style="font-size: 80%">
+                <mat-icon style="font-size: 180%; margin-left: -15%">arrow_back</mat-icon> Voltar
             </a>
             <!-- nao temos o botão salvar porque ele salva automaticamente
         <button mat-raised-button color="accent" (click)="salvar(false)" [disabled]="!salvarAtivo()" >
             <mat-icon>save</mat-icon> Salvar
         </button> -->
-            <button mat-raised-button color="accent" (click)="continuar()" type="button" autofocus id="idcontinuar">
-                <mat-icon>arrow_forward</mat-icon> Avançar
+            <button mat-raised-button color="accent" (click)="continuar()" type="button" autofocus id="idcontinuar" style="font-size: 80%">
+                <mat-icon style="font-size: 180%; margin-left: -15%">arrow_forward</mat-icon> Avançar
             </button>
         </footer>
     </form>

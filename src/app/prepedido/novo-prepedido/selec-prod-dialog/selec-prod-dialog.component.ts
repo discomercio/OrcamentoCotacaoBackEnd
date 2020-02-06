@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, ElementRef, ViewChild } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, PageEvent } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, PageEvent, MatInput } from '@angular/material';
 import { SelecProdInfo } from './selec-prod-info';
 import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
 import { ProdutoTela } from './produto-tela';
@@ -9,6 +9,7 @@ import { supportsPassiveEventListeners } from '@angular/cdk/platform';
 import { TelaDesktopService } from 'src/app/servicos/telaDesktop/telaDesktop.service';
 import { debugOutputAstAsTypeScript } from '@angular/compiler';
 import { $ } from 'protractor';
+import { AutofocusDirective } from 'src/app/utils/AutofocusDirective';
 
 @Component({
   selector: 'app-selec-prod-dialog',
@@ -33,6 +34,21 @@ export class SelecProdDialogComponent extends TelaDesktopBaseComponent implement
     this.limiteTela = this.limiteInicial;
 
   }
+  
+  
+  ngOnInit() {
+    this.produto = ProdutoTela.FabrProd(this.selecProdInfoPassado.Fabricante, this.selecProdInfoPassado.Fabricante_Nome,
+      this.selecProdInfoPassado.Produto);
+    this.qtde = this.selecProdInfoPassado.Qte;
+    if (this.selecProdInfoPassado.Produto) {
+      this.digitado = this.selecProdInfoPassado.Produto;
+    }
+    this.qtde = 1;
+    this.transferirDadosArray();
+    
+  }
+
+
 
   //#region carga
   public prodsArray: ProdutoTela[] = new Array();
@@ -99,22 +115,12 @@ export class SelecProdDialogComponent extends TelaDesktopBaseComponent implement
       this.msgProdNaoEncontrado = "Produto não encontrado!";
   }
 
-  ngOnInit() {
-    this.produto = ProdutoTela.FabrProd(this.selecProdInfoPassado.Fabricante, this.selecProdInfoPassado.Fabricante_Nome,
-      this.selecProdInfoPassado.Produto);
-    this.qtde = this.selecProdInfoPassado.Qte;
-    if (this.selecProdInfoPassado.Produto) {
-      this.digitado = this.selecProdInfoPassado.Produto;
-    }
-    this.qtde = 1;
-    this.transferirDadosArray();
-  }
-  //#endregion
+  
 
 
   //precisamos disto para acertar o foco
   //somente o autofocus do html não funciona quando carrega a ciaxa de diálogo pela segunda vez
-  @ViewChild("digitadocx", { static: true }) digitadoCx: ElementRef;
+  // @ViewChild("digitadocx", { static: true }) digitadoCx: ElementRef;
   // ngAfterViewInit() {
   //   setTimeout(() => {
   //     //TEM QUE SER por timeout para evitar o erro

@@ -24,10 +24,11 @@ export class AutenticacaoService {
 
   salvar: boolean = false;
   public authLogin(usuario: string, senha: string, salvar: boolean): Observable<any> {
-
+    
     var key = this.gerarChave();
-    senha = this.CodificaSenha(senha, key);
+    senha = this.CodificaSenha(senha.toUpperCase(), key);
 
+    debugger;
     this.salvar = salvar;
     this._NomeUsuario = null;
 

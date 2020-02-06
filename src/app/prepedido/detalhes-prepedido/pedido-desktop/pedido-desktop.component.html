@@ -129,7 +129,7 @@
 
                 <td align="left" class="MD">
                     <p class="Rf">{{ehPf() ? "RG" : "IE"}} &nbsp;</p>
-                    <p class="C">{{ehPf() ? pedido?.DadosCliente?.Rg : pedido?.DadosCliente?.Ie}} &nbsp;</p>
+                    <p class="C">{{ehPf() ? stringUtils.retorna_so_digitos(pedido?.DadosCliente?.Rg) : pedido?.DadosCliente?.Ie}} &nbsp;</p>
                 </td>
 
                 <td align="center" valign="middle" style="width:15px">
@@ -257,7 +257,7 @@
                 <td class="MDB" align="right"><input name="c_qtde" class="PLLd" style="width:21px;"
                         [ngStyle]="{'color': corDaLinhaPedido(linha)}" value='{{linha.Qtde}}' readonly tabindex=-1></td>
                 <td class="MDB" align="right"><input name="c_qtde_falta" class="PLLd"
-                        style="width:20px;" [ngStyle]="{'color': corDaLinhaPedido(linha)}" value='{{linha.Faltando}}'
+                        style="width:20px;" [ngStyle]="{'color': corDaLinhaPedido(linha)}" value='{{linha.Faltando==0?"":linha.Faltando}}'
                         readonly tabindex=-1></td>
                 <td *ngIf="pedido?.OpcaoPossuiRA == 'S'" class="MDB" align="right"><input name="c_vl_NF" 
                         class="PLLd" style="width:62px;" [ngStyle]="{'color': corDaLinhaPedido(linha)}"
@@ -303,7 +303,7 @@
                                         <td class="MTBE" align="left" nowrap><span class="PLTe">&nbsp;COM(%)</span></td>
                                         <td class="MTBD" align="right"><input name="c_perc_RT" id="c_perc_RT"
                                                 class="PLLd" style="width:30px;color:blue;"
-                                                value='{{moedaUtils.formatarPorcentagemUmaCasa(pedido.PercRT)}}'
+                                                value='{{moedaUtils.formatarPorcentagemUmaCasaReturnZero(pedido.PercRT)}}'
                                                 readonly tabindex=-1></td>
                                     </tr>
                                 </table>
@@ -489,11 +489,13 @@
                 <tr>
                     <td align="left">
                         <p class="Rf" style="color:red;">DEVOLUÇÃO DE MERCADORIAS</p>
-                        <p class="C" *ngFor="let devolucao of pedido.ListaProdutoDevolvido">
+                        <p class="C PLLe" *ngFor="let devolucao of pedido.ListaProdutoDevolvido">
+                            
                             {{dataFormatarTela(devolucao.Data)}} {{devolucao.Hora}} - {{devolucao.Qtde}}
                             {{devolucao.Qtde > 1?'unidades':'unidade'}} do
-                            {{devolucao.CodProduto}} - {{devolucao.DescricaoProduto}}
-                            <span *ngIf="devolucao.Motivo">({{devolucao.Motivo}}) </span>
+                            {{devolucao.CodProduto}} - 
+                            <span [innerHTML]="devolucao.DescricaoProduto"></span>
+                            <span *ngIf="devolucao.Motivo"> ({{devolucao.Motivo}}) </span>
                             <span *ngIf="devolucao.NumeroNF">[NF: {{devolucao.NumeroNF}}] </span>
                         </p>
                     </td>
@@ -604,12 +606,16 @@
                         <td colspan="2" class="ME MD" style="width: 622px;" align="left">
                             <table width="100%" cellspacing="0" cellpadding="1">
                                 <tr>
-                                    <td class="C MB" width="100%" align="left" valign="top"><span class="Rf"
-                                            style="margin-left:0px;">CONTATO:</span>&nbsp;{{ocorrencia.Contato}}</td>
+                                    <td class="C MB Rf" width="100%" align="left" valign="top">
+                                            CONTATO:
+                                        <span class="Rf"
+                                            style="margin-left:0px; color:black;" [innerHTML]="ocorrencia.Contato">
+                                        </span>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="C MB" width="100%" align="left" valign="top"><span class="Rf"
-                                            style="margin-left:0px;">OCORRÊNCIA:</span>&nbsp;{{ocorrencia.Texto_Ocorrencia}})%>
+                                            style="margin-left:0px;">OCORRÊNCIA:</span>&nbsp;{{ocorrencia.Texto_Ocorrencia}}
                                     </td>
                                 </tr>
                             </table>
@@ -642,8 +648,10 @@
                                                 </td>
                                                 <td class="C MD MC tdWithPadding" style="width:80px;" align="center"
                                                     valign="top">
-                                                    {{mensagem.Usuario}} <ng-container *ngIf="mensagem.Loja != ''">(Loja
-                                                        {{mensagem.Loja}})</ng-container>
+                                                    {{mensagem.Usuario}} 
+                                                    <ng-container *ngIf="mensagem.Loja != '' && mensagem.Loja != null">
+                                                        (Loja {{mensagem.Loja}})
+                                                    </ng-container>
                                                 </td>
                                                 <td class="C MC tdWithPadding" align="left" valign="top">
                                                     {{mensagem.Texto_Mensagem}}
@@ -750,7 +758,8 @@
                         *ngIf="nota.Dt_Hora_Cadastro && nota.Dt_Hora_Cadastro.toString().trim() != '0001-01-01T00:00:00'">
                         <td class="C ME MD MB" style="width:60px;" align="center" valign="top">
                             {{dataFormatarTela(nota.Dt_Hora_Cadastro)}}
-                            {{dataFormatarTelaHora(nota.Dt_Hora_Cadastro)}}
+                            {{dataformatarTelaHoraComSegundos(nota.Dt_Hora_Cadastro)}}
+                            <!-- {{dataformatarTelaDataeHora(nota.Dt_Hora_Cadastro)}} -->
                         </td>
                         <td class="C MD MB" style="width:80px;" align="center" valign="top">
                             {{nota.Usuario}} <ng-container *ngIf="nota?.Loja != '' && nota?.Loja != null">(Loja

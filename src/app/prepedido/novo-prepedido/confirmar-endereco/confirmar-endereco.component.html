@@ -1,26 +1,28 @@
 <label id="endereco-radio-group-label">Endereço de entrega</label>
 <mat-radio-group aria-labelledby="endereco-radio-group-label"
     [(ngModel)]="enderecoEntregaDtoClienteCadastro.OutroEndereco">
-    <mat-radio-button class="enderecoradio" [value]="false" (click)="voltarFoco()">O mesmo endereço do cadastro </mat-radio-button>
+    <mat-radio-button class="enderecoradio" [value]="false" (click)="voltarFoco()">O mesmo endereço do cadastro
+    </mat-radio-button>
     <!-- <span class="caixa" style="padding-left: 2em; padding-bottom: 1em;"> -->
-        <!-- ************   ENDEREÇO   ************  -->
-        <!-- <span class="dado">{{clienteCadastroUtils.formata_endereco(dadosClienteCadastroDto)}}</span>
+    <!-- ************   ENDEREÇO   ************  -->
+    <!-- <span class="dado">{{clienteCadastroUtils.formata_endereco(dadosClienteCadastroDto)}}</span>
     </span> -->
 
     <mat-radio-button class="enderecoradio" [value]="true" (click)="mudarFoco()">Outro endereço </mat-radio-button>
 </mat-radio-group>
 
-<div class="boxnovoednereco" *ngIf="enderecoEntregaDtoClienteCadastro" [ngClass]="{'desab':!enderecoEntregaDtoClienteCadastro.OutroEndereco}" >
+<div class="boxnovoednereco" *ngIf="enderecoEntregaDtoClienteCadastro"
+    [ngClass]="{'desab':!enderecoEntregaDtoClienteCadastro.OutroEndereco}">
 
     <!-- ************   JUSTIFIQUE O ENDEREÇO   ************ -->
-
-    <mat-form-field style="width: 20em;">
+    
+    <mat-form-field floatLabel="floatLabel()" style="width: 25ch;">
         <mat-label>JUSTIFIQUE O ENDEREÇO</mat-label>
-        <mat-select required [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_cod_justificativa"
-            [disabled]="!enderecoEntregaDtoClienteCadastro.OutroEndereco">
+        <mat-select required [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_cod_justificativa">
             <mat-option>Selecione</mat-option>
             <mat-option *ngFor="let i of buscarClienteServiceJustificativaEndEntregaComboTemporario"
-                [(value)]="i.EndEtg_cod_justificativa">{{i.EndEtg_descricao_justificativa}}</mat-option>
+                style="white-space: pre-line; height: auto;" [(value)]="i.EndEtg_cod_justificativa">
+                {{i.EndEtg_descricao_justificativa}}</mat-option>
         </mat-select>
     </mat-form-field>
     <!-- quebrar a linha -->

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
 import { CepService } from 'src/app/servicos/cep/cep.service';
 import { TelaDesktopService } from 'src/app/servicos/telaDesktop/telaDesktop.service';
@@ -6,6 +6,8 @@ import { TelaDesktopBaseComponent } from 'src/app/servicos/telaDesktop/telaDeskt
 import { MatDialog } from '@angular/material';
 import { CepDialogComponent } from '../cep-dialog/cep-dialog.component';
 import { CepDto } from 'src/app/dto/Cep/CepDto';
+import { EnderecoEntregaDtoClienteCadastro } from 'src/app/dto/ClienteCadastro/EnderecoEntregaDTOClienteCadastro';
+import { ConfirmarEnderecoComponent } from 'src/app/prepedido/novo-prepedido/confirmar-endereco/confirmar-endereco.component';
 
 @Component({
   selector: 'app-cep',
@@ -23,12 +25,14 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
   }
 
   ngOnInit() {
+    
   }
 
 
   //sempre usamos no modo auto
   public floatLabel(): string {
     return "auto";
+    
   }
 
 
@@ -160,7 +164,7 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
           this.Endereco = end.Endereco;
           this.temEndereco = true;
         }
-        else{
+        else {
           this.temEndereco = false;
         }
         if (!!end.Uf) {
@@ -171,7 +175,7 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
           this.Bairro = end.Bairro;
           this.temBairro = true;
         }
-        else{
+        else {
           this.temBairro = false;
         }
         if (!!end.Cidade.trim()) {

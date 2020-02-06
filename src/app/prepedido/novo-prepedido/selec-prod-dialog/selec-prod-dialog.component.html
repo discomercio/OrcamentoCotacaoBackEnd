@@ -8,10 +8,10 @@
             <!-- este fica ruim: div style="display: flex; " [ngStyle]="{'flex-direction':telaDesktop?'row':'column'}"  (keydown)="keydownProduto($event)" -->
 
             <div *ngIf="telaDesktop" style="display: flex; flex-direction: row; ">
-                <mat-form-field style="flex-grow: 1; flex-shrink: 1;">
-                    <input matInput type="text" name="buscaproduto" placeholder="Produto (código)"
+                <mat-form-field style="flex-grow: 1; flex-shrink: 1;" >
+                    <input matInput type="text" name="buscaproduto" placeholder="Produto (código)" 
                         value="{{this.selecProdInfoPassado.Produto}}" (change)="digitouProd($event)" 
-                        (keyup)="digitouProd($event)" [autofocus]="true" #digitadocx>
+                        (keyup)="digitouProd($event)" appFocoAutomatico>
                 </mat-form-field>
 
                 <mat-form-field style="flex-grow: 0; flex-shrink: 0; ">                        
@@ -27,7 +27,7 @@
                 <mat-form-field>
                     <input matInput type="text" name="buscaproduto" placeholder="Produto (código)"
                         value="{{this.selecProdInfoPassado.Produto}}" (change)="digitouProd($event)"
-                        (keyup)="digitouProd($event)" [autofocus]="true" #digitadocx>
+                        (keyup)="digitouProd($event)" appFocoAutomatico>
                         
                 </mat-form-field>
 
@@ -51,7 +51,7 @@
                     <table style="width: 100%;" class="destaquelinha">
                         <ng-container *ngFor="let p of prodsTela; let i=index">
                         <ng-container *ngIf="p.visivel">
-                        <tr class="prod">
+                        <tr class="prod" style="font-size: 80%">
                             <td class="tdtabela">
                                 <!-- usamos o display: none e não o ngif para ficar mais rápido:
                         quando o usuário pede para editar uma linha existente, se ele apagar o código do produto na caixa de texto
@@ -134,12 +134,20 @@
             
         </footer>
         <footer *ngIf="!telaDesktop" mat-dialog-actions>
-            <button mat-raised-button type="button" (click)="onNoClick($event)" style="width: 10%;">
+                <button mat-raised-button type="button" (click)="onNoClick($event)" color="accent"
+                style="width: 5%; font-size: 80%">Cancelar</button>
+                <button mat-raised-button (click)="onAdicionarClick()" color="accent" style="width: 5%;font-size: 80%">
+                        <ng-template *ngIf="selecProdInfoPassado.Produto; then modificarBlock else adicionarBlock">
+                        </ng-template>
+                        <ng-template #modificarBlock>Modificar</ng-template>
+                        <ng-template #adicionarBlock>Adicionar</ng-template>
+                    </button>
+            <!-- <button mat-raised-button type="button" (click)="onNoClick($event)" style="width: 10%;">
                 <mat-icon>highlight_off</mat-icon>
             </button>
-            <button mat-raised-button (click)="onAdicionarClick()" style="width: 10%">
+            <button mat-raised-button (click)="onAdicionarClick()" style="width: 05%">
                 <mat-icon>add</mat-icon>
-            </button>
+            </button> -->
         </footer>
     </form>
 </section>

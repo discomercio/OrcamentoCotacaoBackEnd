@@ -294,6 +294,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     this.digitouQte(i);
   }
   digitouDesc(e: Event, i: PrepedidoProdutoDtoPrepedido) {
+    debugger;
     let valor = ((e.target) as HTMLInputElement).value;
     let v: any = valor.replace(/\D/g, '');
     //tem 1 casa
@@ -477,7 +478,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
           //add produto para verificação de itens
           this.lstProdSelectInfo.push(selecProdInfo);
           //será necessário verificar se o produto que esta sendo inserido é composto
-          //pois um produto composto são 2 itens, mas será tratado como sendo 1 item
+          //pois um produto composto são 2 itens ou mais, mas será tratado como sendo 1 item
           if (this.lstProdSelectInfo.length > 12) {
             this.alertaService.mostrarMensagem("É permitido apenas 12 itens por Pré-Pedido!");
             return false;

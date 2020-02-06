@@ -16,9 +16,11 @@
           Olá {{autenticacaoService.authNomeUsuario}}
         </span>
         <button class='px-0' type="submit" mat-button style="padding: 0%;" title="Logout" (click)="logout()"
-          *ngIf="autenticacaoService.authEstaLogado()">
+          *ngIf="autenticacaoService.authEstaLogado()" style="font-size: 40%" >
           <mat-icon class="iconelogout">exit_to_app</mat-icon>
+          SAIR
         </button>
+        
       </mat-toolbar>
     </div>
     <!-- para login -->

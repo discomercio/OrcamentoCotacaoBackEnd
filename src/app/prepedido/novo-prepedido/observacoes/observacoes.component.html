@@ -19,7 +19,7 @@
             <div>
 
                 <!-- ************   OBSERVAÇÕES   ************  -->
-                <mat-form-field class="edicao-endereco">
+                <mat-form-field class="edicao-endereco" floatLabel="floatLabel()" style="width: 25ch;">
                     <textarea matInput type="text" placeholder="Observações adicionais do Pré-Pedido" (keyup) = "contarCaracter()"
                         [ngModelOptions]="{standalone: true}" [(ngModel)]="prePedidoDto.DetalhesPrepedido.Observacoes"
                         #autosize="cdkTextareaAutosize" maxlength="500" cdkTextareaAutosize cdkAutosizeMinRows="5"

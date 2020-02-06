@@ -66,7 +66,7 @@ export class DataUtils {
         const aux2 = new Date(aux);
         if (!aux2)
             return "";
-        return aux2.toLocaleTimeString();
+        return aux2.toLocaleDateString();
     }
 
     public static formatarTelaHoraSemSegundos(data: Date | string): string {
@@ -85,7 +85,27 @@ export class DataUtils {
         if (!aux2)
             return "";
         const ret = aux2.toLocaleTimeString();
-        return ret.substr(0, ret.length - 2);
+        return ret.substr(0, ret.length - 3);
+    }
+
+    public static formatarTelaHoraComSegundos(data: Date | string): string {
+        //para imprimir na tela
+        //está vindo como string do c#!
+        debugger;
+        if (!data) {
+            return "";
+        }
+        if (data.toString() === "0001-01-01T00:00:00") {
+            return "";
+        }
+        const aux = Date.parse(data.toString());
+        if (!aux)
+            return "";
+        const aux2 = new Date(aux);
+        if (!aux2)
+            return "";
+        const ret = aux2.toLocaleTimeString();
+        return ret;
     }
 
     public static formatarTelaDataeHora(data: Date | string): string {

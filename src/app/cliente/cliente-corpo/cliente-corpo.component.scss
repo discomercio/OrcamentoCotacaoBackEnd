@@ -15,10 +15,15 @@
     .caixa .dado{
         display: inline;
         padding-right: 1.0em;
+        word-break: break-word;
     }
+   
 
 #selectProdutorRural .mat-form-field-wrapper .mat-form-field-flex{
     background-color: red;
     display: block !important;
 }
+}
+.dado::before{
+    content: " ";
 }

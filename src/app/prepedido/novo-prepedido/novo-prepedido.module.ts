@@ -21,6 +21,8 @@ import { DadosPagtoComponent } from './dados-pagto/dados-pagto.component';
 import { ConfirmarPrepedidoComponent } from './confirmar-prepedido/confirmar-prepedido.component';
 import { ObservacoesComponent } from './observacoes/observacoes.component';
 import { CepModule } from 'src/app/cliente/cep/cep.module';
+import { AppModule } from 'src/app/app.module';
+import { AutofocusDirective } from 'src/app/utils/AutofocusDirective';
 
 
 @NgModule({
@@ -29,7 +31,7 @@ import { CepModule } from 'src/app/cliente/cep/cep.module';
     ConfirmarEnderecoComponent, ItensComponent,
     SelecProdDialogComponent,
     DadosPagtoComponent,
-    ConfirmarPrepedidoComponent,
+    ConfirmarPrepedidoComponent,AutofocusDirective,
     ObservacoesComponent],
   imports: [
     CommonModule,

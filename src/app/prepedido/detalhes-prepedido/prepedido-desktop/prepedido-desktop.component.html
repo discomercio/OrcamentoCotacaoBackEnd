@@ -13,7 +13,7 @@
     <div class="botaoEditarDiv">
 
     </div>
-    
+
     <section id="myPrint">
         <div class="nossobody-before">
             As informações aqui contidas são confidenciais e protegidas pelo sigilo legal. A divulgação, distribuição ou
@@ -21,9 +21,21 @@
         </div>
         <form id="fPED" name="fPED" method="post">
             <table width='649' cellpadding='0' cellspacing='0' style='border-bottom:1px solid black;'>
-                <tr>
+                <tr *ngIf="prepedidoDto.TextoHeader != '' && prepedidoDto.TextoHeader != null">
                     <td valign='bottom' align='left' width='33%'>
-                        <span class='STP'>{{this.prepedidoDto.DataHoraPedido}}</span>
+                        <span [ngStyle]="{'color':prepedidoDto.CorHeader}" class='STP'>{{this.prepedidoDto.TextoHeader}} </span>
+                        <span [ngStyle]="{'color':prepedidoDto.CorHeader}" class='STP'>({{this.prepedidoDto.CanceladoData}}) </span>
+                    </td>
+                    <td valign='bottom' align='center' width='33%'>
+                        <span class='STP'>{{this.prepedidoDto.DataHoraPedido}} </span>
+                    </td>
+                    <td valign='bottom' align='right' nowrap>
+                        <span class='PREPEDIDO'>Pré-Pedido Nº&nbsp;{{this.prepedidoDto.NumeroPrePedido}}</span>
+                    </td>
+                </tr>
+                <tr *ngIf="prepedidoDto.TextoHeader == '' || prepedidoDto.TextoHeader == null">
+                    <td valign='bottom' align='left' width='33%'>
+                        <span class='STP'>{{this.prepedidoDto.DataHoraPedido}} </span>
                     </td>
                     <td valign='bottom' align='right' nowrap>
                         <span class='PREPEDIDO'>Pré-Pedido Nº&nbsp;{{this.prepedidoDto.NumeroPrePedido}}</span>
@@ -152,12 +164,13 @@
                 <tr>
                     <td align="left">
                         <p class="Rf">ENDEREÇO DE ENTREGA</p>
-                        <!-- <p class="C">{{formata_endereco_entrega()}} &nbsp;</p> --> 
+                        <!-- <p class="C">{{formata_endereco_entrega()}} &nbsp;</p> -->
                     </td>
                 </tr>
 
                 <tr *ngIf="this.prepedidoDto?.EnderecoEntrega?.EndEtg_descricao_justificativa?.trim() != ''">
-                    <td align="left" *ngIf="this.prepedidoDto?.EnderecoEntrega?.OutroEndereco" style="word-wrap:break-word">
+                    <td align="left" *ngIf="this.prepedidoDto?.EnderecoEntrega?.OutroEndereco"
+                        style="word-wrap:break-word">
 
                         <p class="C" style="display: inline-block">
                             {{this.prepedidoDto?.EnderecoEntrega?.EndEtg_endereco}} ,
@@ -209,8 +222,8 @@
 
                 <tr *ngFor="let linha of this.prepedidoDto?.ListaProdutos">
 
-                    <td class="MDBE" align="left"><input name="c_fabricante" class="PLLe"
-                            style="width:25px;" value='{{linha.Fabricante}}' readonly tabindex=-1></td>
+                    <td class="MDBE" align="left"><input name="c_fabricante" class="PLLe" style="width:25px;"
+                            value='{{linha.Fabricante}}' readonly tabindex=-1></td>
 
                     <td class="MDB" align="left"><input name="c_produto" class="PLLe" style="width:54px;"
                             value='{{linha.NumProduto}}' readonly tabindex=-1></td>
@@ -220,23 +233,20 @@
                     </td>
                     <td class="MDB" align="right"><input name="c_qtde" class="PLLd" style="width:21px;"
                             value='{{linha.Qtde}}' readonly tabindex=-1></td>
-                    <td class="MDB" align="right"><input name="c_qtde_falta" class="PLLd"
-                            style="width:20px;" value='{{linha.Faltando}}' readonly tabindex=-1></td>
+                    <td class="MDB" align="right"><input name="c_qtde_falta" class="PLLd" style="width:20px;"
+                            value='{{linha.Faltando==0?"":linha.Faltando}}' readonly tabindex=-1></td>
                     <td *ngIf="this.prepedidoDto?.OpcaoPossuiRA == 'S'" class="MDB" align="right"><input name="c_vl_NF"
-                            class="PLLd" style="width:62px;"
-                            value='{{moedaUtils.formatarMoedaSemPrefixo(linha.Preco)}}' readonly tabindex=-1>
+                            class="PLLd" style="width:62px;" value='{{moedaUtils.formatarMoedaSemPrefixo(linha.Preco)}}'
+                            readonly tabindex=-1>
                     </td>
-                    <td class="MDB" align="right"><input name="c_preco_lista" class="PLLd"
-                            style="width:62px;" value='{{moedaUtils.formatarMoedaSemPrefixo(linha.Preco)}}' readonly
-                            tabindex=-1></td>
+                    <td class="MDB" align="right"><input name="c_preco_lista" class="PLLd" style="width:62px;"
+                            value='{{moedaUtils.formatarMoedaSemPrefixo(linha.Preco)}}' readonly tabindex=-1></td>
                     <td class="MDB" align="right"><input name="c_desc" class="PLLd" style="width:28px;"
                             value='{{moedaUtils.formatarPorcentagemUmaCasa(linha.Desconto)}}' readonly tabindex=-1></td>
-                    <td class="MDB" align="right"><input name="c_vl_unitario" class="PLLd"
-                            style="width:62px;" value='{{moedaUtils.formatarMoedaSemPrefixo(linha.VlUnitario)}}'
-                            readonly tabindex=-1></td>
-                    <td class="MDB" align="right"><input name="c_vl_total" class="PLLd"
-                            style="width:70px;" value='{{moedaUtils.formatarMoedaSemPrefixo(linha.VlTotalItem)}}'
-                            readonly tabindex=-1></td>
+                    <td class="MDB" align="right"><input name="c_vl_unitario" class="PLLd" style="width:62px;"
+                            value='{{moedaUtils.formatarMoedaSemPrefixo(linha.VlUnitario)}}' readonly tabindex=-1></td>
+                    <td class="MDB" align="right"><input name="c_vl_total" class="PLLd" style="width:70px;"
+                            value='{{moedaUtils.formatarMoedaSemPrefixo(linha.VlTotalItem)}}' readonly tabindex=-1></td>
                 </tr>
 
 
@@ -266,7 +276,7 @@
                                             </td>
                                             <td class="MTBD" align="right"><input name="c_perc_RT" id="c_perc_RT"
                                                     class="PLLd" style="width:30px;color:blue;"
-                                                    value='{{moedaUtils.formatarPorcentagemUmaCasa(this.prepedidoDto.PercRT)}}'
+                                                    value='{{moedaUtils.formatarPorcentagemUmaCasaReturnZero(this.prepedidoDto.PercRT)}}'
                                                     readonly tabindex=-1></td>
                                         </tr>
                                     </table>

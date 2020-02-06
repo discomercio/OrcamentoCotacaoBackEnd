@@ -26,6 +26,11 @@ export class MoedaUtils {
         return this.formatter1casa.format(nro);
     }
 
+    public formatarPorcentagemUmaCasaReturnZero(nro: number) {
+        if (!!!nro)
+            return "0,0";
+        return this.formatter1casa.format(nro);
+    }
     //máscara digitar valores
     //usando o angular2-text-mask
     //e o npm i text-mask-addons --save

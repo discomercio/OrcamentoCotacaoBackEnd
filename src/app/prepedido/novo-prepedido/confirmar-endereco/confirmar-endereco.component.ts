@@ -43,7 +43,6 @@ export class ConfirmarEnderecoComponent implements OnInit {
   @Input() dadosClienteCadastroDto = new DadosClienteCadastroDto();
   @Input() enderecoEntregaDtoClienteCadastro = new EnderecoEntregaDtoClienteCadastro();
 
-
   //utilitários
   public clienteCadastroUtils = new ClienteCadastroUtils();
 

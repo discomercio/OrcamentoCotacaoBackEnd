@@ -13,6 +13,7 @@ import { PrepedidoBuscarService } from 'src/app/servicos/prepedido/prepedido-bus
 import { EnumFormaPagto } from './enum-forma-pagto';
 import { CoeficienteDto } from 'src/app/dto/Produto/CoeficienteDto';
 import { EnumTipoPagto } from './tipo-forma-pagto';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 
 @Component({
@@ -445,6 +446,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
           if (this.enumFormaPagto.toString() == constant.COD_FORMA_PAGTO_A_VISTA &&
             lstProdutos[x].Fabricante == lstCoeficiente[i].Fabricante &&
             txtFormaPagto == constant.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA) {
+              debugger;
             lstProdutos[x].VlUnitario = lstProdutos[x].Preco * (1 - lstProdutos[x].Desconto / 100);
             lstProdutos[x].VlTotalItem = lstProdutos[x].Preco * (1 - lstProdutos[x].Desconto / 100);
             lstProdutos[x].VlLista = lstProdutos[x].Preco;
