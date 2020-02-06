@@ -91,7 +91,7 @@
     <TypeScriptNoImplicitAny>True</TypeScriptNoImplicitAny>
     <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
     <TypeScriptOutFile />
-    <TypeScriptOutDir>C:\Users\gabriel.teodoro\source\repos\Loja.UI\Loja.UI\wwwroot\scriptsJs</TypeScriptOutDir>
+    <TypeScriptOutDir>wwwroot\scriptsJs</TypeScriptOutDir>
     <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
     <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
     <TypeScriptSourceMap>True</TypeScriptSourceMap>
