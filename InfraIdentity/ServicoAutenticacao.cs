@@ -26,7 +26,7 @@ namespace InfraIdentity
             // retorna null se não tiver usuário
             if (user == null)
                 return null;
-
+            
             // authentication successful so generate jwt token
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(segredoToken);

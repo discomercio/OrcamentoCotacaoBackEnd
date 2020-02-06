@@ -173,13 +173,12 @@ namespace PrepedidoBusiness.Utils
         public static string FormataHora(string hora)
         {
             string retorno = "";
-            if (hora.Length == 6)
+            if (hora.Length >= 4)
             {
                 string _hora = hora.Substring(0, 2);
                 string _minuto = hora.Substring(2, 2);
-                string _segundos = hora.Substring(4, 2);
 
-                retorno = _hora + ":" + _minuto + ":" + _segundos;
+                retorno = _hora + ":" + _minuto;
             }            
 
             return retorno;

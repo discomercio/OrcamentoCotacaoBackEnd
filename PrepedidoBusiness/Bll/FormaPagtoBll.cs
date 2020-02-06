@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using InfraBanco.Constantes;
+using InfraBanco;
 
 namespace PrepedidoBusiness.Bll
 {
     public class FormaPagtoBll
     {
-        private readonly InfraBanco.ContextoBdProvider contextoProvider;
+        private readonly ContextoBdProvider contextoProvider;
 
         public FormaPagtoBll(InfraBanco.ContextoBdProvider contextoProvider)
         {

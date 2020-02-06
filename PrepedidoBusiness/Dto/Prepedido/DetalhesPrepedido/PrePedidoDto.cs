@@ -9,6 +9,9 @@ namespace PrepedidoBusiness.Dtos.Prepedido.DetalhesPrepedido
 {
     public class PrePedidoDto
     {
+        public string CorHeader { get; set; }
+        public string TextoHeader { get; set; }
+        public string CanceladoData { get; set; }
         public string NumeroPrePedido { get; set; }
         //public StatusPedidoDtoPedido StatusHoraPedido { get; set; }//Verificar se todos pedidos marcam a data também
         public string DataHoraPedido { get; set; }

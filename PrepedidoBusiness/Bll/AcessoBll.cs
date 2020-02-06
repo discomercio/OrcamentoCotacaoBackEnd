@@ -25,7 +25,7 @@ namespace PrepedidoBusiness.Bll
             var db = contextoProvider.GetContextoLeitura();
             //Validar o dados no bd
             var dados = from c in db.TorcamentistaEindicadors
-                        where c.Apelido == apelido
+                        where c.Apelido == apelido.ToUpper()
                         select new
                         {
                             c.Razao_Social_Nome,
@@ -51,10 +51,14 @@ namespace PrepedidoBusiness.Bll
 
             //validar a senha
             //SLM112233 - SALOMÃO
-            var senhaCodificada = DecodificaSenha(senha);
+            var senhaCodificada = DecodificaSenha(senha).ToUpper();
 
             var senha_banco = DecodificaSenha(t.Datastamp);
-            if (senhaCodificada != senha_banco || senha != t.Datastamp.ToUpper())
+            if(senha != t.Datastamp.ToUpper())
+            {
+                return await Task.FromResult(retorno);
+            }
+            if (senhaCodificada != senha_banco)
                 return await Task.FromResult(retorno);
 
             //Fazer Update no bd

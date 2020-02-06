@@ -131,7 +131,7 @@ namespace PrepedidoBusiness.Bll
                 if (pedido.Status == "AET")
                     pedido.Status = "A entregar";
                 if (pedido.Status == "ETG")
-                    pedido.Status = "Entrega";
+                    pedido.Status = "Entregue";
                 if (pedido.Status == "CAN")
                     pedido.Status = "Cancelado";
             }
@@ -172,7 +172,7 @@ namespace PrepedidoBusiness.Bll
                 Vendedor = vendedor,
                 Id = cli.Id,
                 Cnpj_Cpf = Util.FormatCpf_Cnpj_Ie(cli.Cnpj_Cpf),
-                Rg = Util.FormatCpf_Cnpj_Ie(cli.Rg),
+                Rg = cli.Rg,
                 Ie = Util.FormatCpf_Cnpj_Ie(cli.Ie),
                 Contribuinte_Icms_Status = cli.Contribuinte_Icms_Status,
                 Tipo = cli.Tipo,
@@ -187,6 +187,7 @@ namespace PrepedidoBusiness.Bll
                 TelComercial = cli.Tel_Com,
                 Ramal = cli.Ramal_Com,
                 DddCelular = cli.Ddd_Cel,
+                Celular = cli.Tel_Cel,
                 TelComercial2 = cli.Tel_Com_2,
                 DddComercial2 = cli.Ddd_Com_2,
                 Ramal2 = cli.Ramal_Com_2,
@@ -220,7 +221,7 @@ namespace PrepedidoBusiness.Bll
         {
             EnderecoEntregaDtoClienteCadastro enderecoEntrega = new EnderecoEntregaDtoClienteCadastro
             {
-                EndEtg_endereco = p.Endereco_Logradouro,
+                EndEtg_endereco = p.EndEtg_Endereco,
                 EndEtg_endereco_numero = p.EndEtg_Endereco_Numero,
                 EndEtg_endereco_complemento = p.EndEtg_Endereco_Complemento,
                 EndEtg_bairro = p.EndEtg_Bairro,
@@ -431,10 +432,11 @@ namespace PrepedidoBusiness.Bll
                 retorno = "SIM";
             //formatar a data da variavel etg_imediata_data
             if (retorno != "")
-                dataFormatada = p.Etg_Imediata_Data?.ToString();
+                dataFormatada = p.Etg_Imediata_Data?.ToString("dd/MM/yyyy hh:mm");
             //verificar se o retorno acima esta vazio
-            if (dataFormatada != "")
+            if (!string.IsNullOrEmpty(dataFormatada))
                 retorno += " (" + IniciaisEmMaisculas(p.Etg_Imediata_Usuario) + " - " + dataFormatada + ")";
+
 
             return retorno;
         }
@@ -548,12 +550,20 @@ namespace PrepedidoBusiness.Bll
                                  where c.Id == idTransportadora
                                  select c.Nome;
             var retorno = await transportadora.Select(r => r.ToString()).FirstOrDefaultAsync();
+            if (!string.IsNullOrEmpty(retorno))
+                retorno = idTransportadora + " (" + retorno + ")";
 
             return retorno;
         }
 
         private async Task<StatusPedidoDtoPedido> MontarDtoStatuPedido(Tpedido p)
         {
+            var db = contextoProvider.GetContextoLeitura();
+            var countTask = from c in db.TpedidoItemDevolvidos
+                            where c.Pedido == p.Pedido
+                            select c;
+            int countItemDevolvido = await countTask.CountAsync();
+
             StatusPedidoDtoPedido status = new StatusPedidoDtoPedido();
 
             if (!String.IsNullOrEmpty(p.Pedido_Bs_X_Marketplace))
@@ -569,7 +579,7 @@ namespace PrepedidoBusiness.Bll
             }
 
             status.Status = FormataSatusPedido(p.St_Entrega);
-            status.CorEntrega = CorStatusEntrega(p.St_Entrega);//verificar a saida 
+            status.CorEntrega = CorStatusEntrega(p.St_Entrega, countItemDevolvido);//verificar a saida 
             status.St_Entrega = FormataSatusPedido(p.St_Entrega);
             status.Entregue_Data = p.Entregue_Data?.ToString("dd/MM/yyyy");
             status.Cancelado_Data = p.Cancelado_Data?.ToString("dd/MM/yyyy");
@@ -591,16 +601,17 @@ namespace PrepedidoBusiness.Bll
             {
                 hh = hora.Substring(0, 2);
                 mm = hora.Substring(2, 2);
-                ss = hora.Substring(4, 2);
+                //ss = hora.Substring(4, 2);
 
-                retorno = hh + ":" + mm + ":" + ss;
+                //retorno = hh + ":" + mm + ":" + ss;
+                retorno = hh + ":" + mm;
             }
 
             return retorno;
 
         }
 
-        private string CorStatusEntrega(string st_entrega)
+        private string CorStatusEntrega(string st_entrega, int countItemDevolvido)
         {
             string cor = "black";
 
@@ -620,6 +631,9 @@ namespace PrepedidoBusiness.Bll
                     break;
                 case Constantes.ST_ENTREGA_ENTREGUE:
                     cor = "green";
+                    //fazer a verificação de itens devolvidos aqui
+                    if (countItemDevolvido > 0)
+                        cor = "red";
                     break;
                 case Constantes.ST_ENTREGA_CANCELADO:
                     cor = "red";
@@ -725,6 +739,8 @@ namespace PrepedidoBusiness.Bll
 
             var msg = (await ObterMensagemOcorrencia(id)).ToList();
 
+
+
             var ocorrencia = await (from d in db.TpedidoOcorrencias
                                     where d.Pedido == numPedido
                                     select d).ToListAsync();
@@ -736,19 +752,20 @@ namespace PrepedidoBusiness.Bll
                 ocorre.Usuario = i.Usuario_Cadastro;
                 ocorre.Dt_Hr_Cadastro = i.Dt_Hr_Cadastro;
                 if (i.Finalizado_Status != 0)
-                    ocorre.Situacao = "Finalizado";
+                    ocorre.Situacao = "FINALIZADO";
                 else
                 {
                     ocorre.Situacao = (from c in db.TpedidoOcorrenciaMensagems
                                        where c.Id_Ocorrencia == i.Id &&
                                              c.Fluxo_Mensagem == Constantes.COD_FLUXO_MENSAGEM_OCORRENCIAS_EM_PEDIDOS__CENTRAL_PARA_LOJA
-                                       select c).Count() > 0 ? "Em Andamento" : "Aberta";
+                                       select c).Count() > 0 ? "EM ANDAMENTO" : "ABERTA";
 
                 }
+                ocorre.Contato = i.Contato ?? "";
                 if (i.Tel_1 != "")
-                    ocorre.Contato = i.Contato + "(" + i.Ddd_1 + ") " + i.Tel_1;
+                    ocorre.Contato += "&nbsp;&nbsp;   (" + i.Ddd_1 + ") " + i.Tel_1;
                 if (i.Tel_2 != "")
-                    ocorre.Contato = i.Contato + "(" + i.Ddd_2 + ") " + i.Tel_2;
+                    ocorre.Contato += "   &nbsp;&nbsp;(" + i.Ddd_2 + ") " + i.Tel_2;
                 ocorre.Texto_Ocorrencia = i.Texto_Ocorrencia;
                 ocorre.mensagemDtoOcorrenciaPedidos = msg;
                 ocorre.Finalizado_Usuario = i.Finalizado_Usuario;
@@ -829,7 +846,7 @@ namespace PrepedidoBusiness.Bll
                         //string credito = registro.analise_credito_data;
                         if (!string.IsNullOrEmpty(registro.analise_credito_usuario))
                         {
-                            retorno = retorno + " (" + registro.analise_credito_data?.ToString("dd/MM/yyyy HH:MM") + " - "
+                            retorno = retorno + " (" + registro.analise_credito_data?.ToString("dd/MM/yyyy HH:mm") + " - "
                                 + registro.analise_credito_usuario + ")";
                         }
                     }
@@ -886,10 +903,10 @@ namespace PrepedidoBusiness.Bll
                         select new ProdutoDevolvidoDtoPedido
                         {
                             Data = c.Devolucao_Data,
-                            Hora = c.Devolucao_Hora,
+                            Hora = c.Devolucao_Hora.Substring(0, 2) + ":" + c.Devolucao_Hora.Substring(2, 2),
                             Qtde = c.Qtde,
                             CodProduto = c.Produto,
-                            DescricaoProduto = c.Descricao,
+                            DescricaoProduto = c.Descricao_Html,
                             Motivo = c.Motivo,
                             NumeroNF = c.NFe_Numero_NF
                         };
@@ -990,14 +1007,6 @@ namespace PrepedidoBusiness.Bll
                 lstBlocoNotas.Add(bloco);
             }
 
-            //BlocoNotasDtoPedido bloco = new BlocoNotasDtoPedido
-            //{
-            //    Dt_Hora_Cadastro = await bl.Select(r => r.Dt_Hr_Cadastro).FirstOrDefaultAsync(),
-            //    Usuario = await bl.Select(r => r.Usuario).FirstOrDefaultAsync(),
-            //    Loja = await bl.Select(r => r.Loja).FirstOrDefaultAsync(),
-            //    Mensagem = await bl.Select(r => r.Mensagem).FirstOrDefaultAsync()
-            //};
-
             return await Task.FromResult(lstBlocoNotas);
 
         }
@@ -1051,7 +1060,7 @@ namespace PrepedidoBusiness.Bll
             switch (parcelamento)
             {
                 case Constantes.COD_FORMA_PAGTO_A_VISTA:
-                    lista.Add("À Vista (" + Util.OpcaoFormaPagto(parcelamento) + ")");
+                    lista.Add("À Vista (" + Util.OpcaoFormaPagto(pedido.Av_Forma_Pagto.ToString()) + ")");
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELA_UNICA:
                     lista.Add(String.Format("Parcela Única: " + " {0:c2} (" +
@@ -1071,7 +1080,7 @@ namespace PrepedidoBusiness.Bll
                         Util.OpcaoFormaPagto(Convert.ToString(pedido.Pce_Forma_Pagto_Entrada)) + ")", pedido.Pce_Entrada_Valor));
                     if (pedido.Pce_Forma_Pagto_Prestacao != 5 && pedido.Pce_Forma_Pagto_Prestacao != 7)
                     {
-                        lista.Add(String.Format("Demais Prestações: " + pedido.Pce_Prestacao_Qtde + " X " + " {0:c2}" +
+                        lista.Add(String.Format("Demais Prestações: " + pedido.Pce_Prestacao_Qtde + " x " + " {0:c2}" +
                             " (" + Util.OpcaoFormaPagto(Convert.ToString(pedido.Pce_Forma_Pagto_Prestacao)) +
                             ") vencendo a cada " +
                             pedido.Pce_Prestacao_Periodo + " dias", pedido.Pce_Prestacao_Valor));

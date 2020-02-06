@@ -214,6 +214,17 @@ namespace PrepedidoBusiness.Bll
             if (pp == null)
                 return null;
 
+            string corHeader = "black";
+            string textoHeader = "";
+            string canceladoData = "";
+
+            if (pp.St_Orcamento == Constantes.ST_ORCAMENTO_CANCELADO)
+            {
+                corHeader = "red";
+                textoHeader = "CANCELADO";
+                canceladoData = pp.Cancelado_Data?.ToString("dd/MM/yyyy");
+            }
+
             if (pp.St_Orc_Virou_Pedido == 1)
             {
                 var pedido = from c in db.Tpedidos
@@ -239,6 +250,9 @@ namespace PrepedidoBusiness.Bll
 
             PrePedidoDto prepedidoDto = new PrePedidoDto
             {
+                CorHeader = corHeader,
+                TextoHeader = textoHeader,
+                CanceladoData = canceladoData,
                 NumeroPrePedido = pp.Orcamento,
                 DataHoraPedido = Convert.ToString(pp.Data?.ToString("dd/MM/yyyy") + " " + Util.FormataHora(pp.Hora)),
                 DadosCliente = await cadastroClienteTask,
@@ -333,8 +347,8 @@ namespace PrepedidoBusiness.Bll
                 Observacoes = torcamento.Obs_1,
                 NumeroNF = torcamento.Obs_2,
                 EntregaImediata = Convert.ToString(torcamento.St_Etg_Imediata) == Constantes.COD_ETG_IMEDIATA_NAO ?
-                "NÃO" : "SIM " + torcamento.Etg_Imediata_Usuario +
-                " em " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy"),
+                "NÃO" : "SIM (" + torcamento.Etg_Imediata_Usuario +
+                " em " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy hh:mm") + ")",
                 BemDeUso_Consumo = Convert.ToString(torcamento.StBemUsoConsumo) == Constantes.COD_ST_BEM_USO_CONSUMO_NAO ?
                 "NÃO" : "SIM",
                 InstaladorInstala = Convert.ToString(torcamento.InstaladorInstalaStatus) == Constantes.COD_INSTALADOR_INSTALA_NAO ?
@@ -366,7 +380,7 @@ namespace PrepedidoBusiness.Bll
                         " {0:c2}", torcamento.Pc_Valor_Parcela));
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA:
-                    lista.Add(String.Format("Parcelado no Cartão (maquineta) em " + torcamento.Pc_Maquineta_Qtde_Parcelas + 
+                    lista.Add(String.Format("Parcelado no Cartão (maquineta) em " + torcamento.Pc_Maquineta_Qtde_Parcelas +
                         " X {0:c2}", torcamento.Pc_Maquineta_Valor_Parcela));
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA:
@@ -375,7 +389,7 @@ namespace PrepedidoBusiness.Bll
                     if (torcamento.Pce_Forma_Pagto_Prestacao != 5 && torcamento.Pce_Forma_Pagto_Prestacao != 7)
                     {
                         lista.Add(String.Format("Demais Prestações: " + torcamento.Pce_Prestacao_Qtde + " X " + " {0:c2}" +
-                            " (" + Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pce_Forma_Pagto_Prestacao)) + 
+                            " (" + Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pce_Forma_Pagto_Prestacao)) +
                             ") vencendo a cada " +
                             torcamento.Pce_Prestacao_Periodo + " dias", torcamento.Pce_Prestacao_Valor));
                     }
@@ -468,6 +482,7 @@ namespace PrepedidoBusiness.Bll
                 TelComercial = cli.Tel_Com,
                 Ramal = cli.Ramal_Com,
                 DddCelular = cli.Ddd_Cel,
+                Celular = cli.Tel_Cel,
                 TelComercial2 = cli.Tel_Com_2,
                 DddComercial2 = cli.Ddd_Com_2,
                 Ramal2 = cli.Ramal_Com_2,

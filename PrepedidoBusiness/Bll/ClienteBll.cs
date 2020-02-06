@@ -646,7 +646,7 @@ namespace PrepedidoBusiness.Bll
                 Convert.ToString(cliente.Contribuinte_Icms_Status) == Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
                 listaErros.Add("PREENCHA A INSCRIÇÃO ESTADUAL.");
             if (Convert.ToString(cliente.ProdutorRural) == Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
-                if (cliente.Ie == "" ||
+                if (cliente.Ie == "" &&
                 Convert.ToString(cliente.Contribuinte_Icms_Status) == Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
                     listaErros.Add("Para ser cadastrado como Produtor Rural, " +
                         "é necessário ser contribuinte do ICMS e possuir nº de IE");
