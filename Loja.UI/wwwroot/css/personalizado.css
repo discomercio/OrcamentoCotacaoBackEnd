@@ -33,6 +33,14 @@
     margin-left: 20%;
     max-width: 78%;
 }
+.corpologin {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    max-width: unset;
+}
 
 label {
     margin-top: inherit !important;
