@@ -1,7 +1,3 @@
-/* nao editar, arquivo compilado pelo typescript*/ 
-/* nao editar, arquivo compilado pelo typescript*/ 
-/* nao editar, arquivo compilado pelo typescript*/ 
-/* nao editar, arquivo compilado pelo typescript*/ 
 var DtoDadosClienteCadastro = /** @class */ (function () {
     function DtoDadosClienteCadastro() {
     }

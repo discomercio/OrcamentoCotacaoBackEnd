@@ -1,7 +1,3 @@
-/* nao editar, arquivo compilado pelo typescript*/ 
-/* nao editar, arquivo compilado pelo typescript*/ 
-/* nao editar, arquivo compilado pelo typescript*/ 
-/* nao editar, arquivo compilado pelo typescript*/ 
 define(["require", "exports", "../DtosTs/DtoPedido/DtoPedido", "../DtosTs/DtoPedido/DtoDetalhesPedido", "../DtosTs/DtoPedido/DtoFormaPagtoCriacao"], function (require, exports, DtoPedido_1, DtoDetalhesPedido_1, DtoFormaPagtoCriacao_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });

@@ -1,7 +1,3 @@
-/* nao editar, arquivo compilado pelo typescript*/ 
-/* nao editar, arquivo compilado pelo typescript*/ 
-/* nao editar, arquivo compilado pelo typescript*/ 
-/* nao editar, arquivo compilado pelo typescript*/ 
 define(["require", "exports", "./EnumFormaPagto", "../../UtilTs/Constantes/Constantes", "./EnumTipoPagto", "../../UtilTs/MoedaUtils/moedaUtils"], function (require, exports, EnumFormaPagto_1, Constantes_1, EnumTipoPagto_1, moedaUtils_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });

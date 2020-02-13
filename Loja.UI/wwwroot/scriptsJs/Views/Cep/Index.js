@@ -1,7 +1,3 @@
-/* nao editar, arquivo compilado pelo typescript*/ 
-/* nao editar, arquivo compilado pelo typescript*/ 
-/* nao editar, arquivo compilado pelo typescript*/ 
-/* nao editar, arquivo compilado pelo typescript*/ 
 $("#btnModificar").click(function () {
     var _this = this;
     $('.teste').children().find('input').filter(function () {
