@@ -13,8 +13,8 @@
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="~/css/materialize.css" />
-        <link href="https://fonts.googleapis.com/icon?family=Materialize+Icons" rel="stylesheet" />
-        <link href="~/css/personalizado.css" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+        <link href="~/css/personalizado.css?rnd=4" rel="stylesheet" />
     </environment>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     @*<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
@@ -50,27 +50,28 @@
     <header>
         <div class="navbar navbar-fixed">
             <nav class="navbar">
-                <span class="right" style="margin-right: 10px">
+                <div class="right" style="margin-right: 10px">
                     @*<a class="material-icons">notifications</a>*@
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <span style="    margin-right: 20px;
+                    <span style="    margin-right: 20px;
     font-size: 20px;">
-                            Olá @User.Identity.Name
-                        </span>
-                        <a href="~/Acesso/Logout" class="material-icons" title="Logout" style="vertical-align: text-bottom;     margin-right: 20px;">
-                            exit_to_app
-                        </a>
+                        Olá @User.Identity.Name
+                    </span>
+                    <a href="~/Acesso/Logout" class="material-icons" title="Logout" style="vertical-align: text-bottom;">
+                        exit_to_app
+                    </a>
+                    <a href="~/Acesso/Logout" style="    margin-right: 20px;">SAIR</a>
                     }
                     else
                     {
                         //não temos botão de ologin pq já está na pagina de login - mas precisa para outras páginas, que eventualemte não tenham a proteção, como a home
                         if (!(ViewBag.PaginaDeLogin ?? false))
                         {
-                            <a href="~/Acesso/Login" class="btn">Login</a>
+                    <a href="~/Acesso/Login" class="btn">Login</a>
                         }
                     }
-                </span>
+                </div>
             </nav>
         </div>
 
