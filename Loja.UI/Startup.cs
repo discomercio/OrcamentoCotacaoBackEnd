@@ -10,6 +10,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace Loja.UI
 {
@@ -25,6 +29,27 @@ namespace Loja.UI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(Configuration.GetSection("Acesso").GetValue<int>("ExpiracaoCookieMinutos"));
+                    options.SlidingExpiration = Configuration.GetSection("Acesso").GetValue<bool>("ExpiracaoMovel");
+                    options.LoginPath = new PathString("/Acesso/Login");
+                    options.AccessDeniedPath = new PathString("/Acesso/AcessoNegado");
+                });
+
+            //exigimos a autenticação de todo mundo!
+            services.AddAuthorization(options =>
+            {
+                AuthorizationPolicy policy = new AuthorizationPolicyBuilder(CookieAuthenticationDefaults.AuthenticationScheme)
+                       .RequireAuthenticatedUser()
+                       .RequireAssertion(r => PrepedidoBusiness.Bll.AcessoBll.AutorizarPagina(r))
+                       .Build();
+                options.DefaultPolicy = policy;
+                options.FallbackPolicy = policy;
+            });
+
 
             services.AddRazorPages();
             services.AddControllers().AddNewtonsoftJson(options =>
@@ -83,7 +108,14 @@ namespace Loja.UI
 
             app.UseDefaultFiles();
 
+            app.UseAuthentication();
             app.UseAuthorization();
+
+            var cookiePolicyOptions = new CookiePolicyOptions
+            {
+                MinimumSameSitePolicy = SameSiteMode.Strict,
+            };
+            app.UseCookiePolicy(cookiePolicyOptions);
 
             app.UseEndpoints(endpoints =>
             {
