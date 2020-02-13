@@ -1,6 +1,4 @@
 /* nao editar, arquivo compilado pelo typescript*/ 
-/* nao editar, arquivo compilado pelo typescript*/ 
-/* nao editar, arquivo compilado pelo typescript*/ 
 define(["require", "exports", "../stringUtils/stringUtils"], function (require, exports, stringUtils_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
