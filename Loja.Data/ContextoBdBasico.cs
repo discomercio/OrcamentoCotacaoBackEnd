@@ -48,6 +48,14 @@ namespace Loja.Data
             modelBuilder.Entity<TprodutoLoja>()
                 .HasKey(x => new { x.Fabricante, x.Produto, x.Loja });
 
+            modelBuilder.Entity<TprodutoLoja>()
+                .HasOne(x => x.Tproduto)
+                .WithMany(x => x.TprodutoLoja)
+                .HasForeignKey(x => new { x.Fabricante , x.Produto});
+
+            modelBuilder.Entity<Tfabricante>()
+                .HasKey(x => x.Fabricante);
+
             modelBuilder.Entity<TalertaProduto>()
                 .HasKey(x => x.Apelido);
 

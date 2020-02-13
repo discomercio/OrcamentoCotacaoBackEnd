@@ -40,16 +40,18 @@ namespace Loja.UI.Controllers
             cpf_cnpj = Loja.Bll.Util.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
 
             //afazer:validar usuario antes
+            bool novoCliente = false;
             if (!await clienteBll.ValidarCliente(cpf_cnpj))
             {
                 //colocar uma msg de erro para retornar para a tela
-                return RedirectToAction("Index");
+                novoCliente = true;
+                return RedirectToAction("BuscarCliente", new { cpf_cnpj = cpf_cnpj, novoCliente = novoCliente });
             }
             else
-                return RedirectToAction("BuscarCliente", new { cpf_cnpj = cpf_cnpj }); //editar cliente
+                return RedirectToAction("BuscarCliente", new { cpf_cnpj = cpf_cnpj, novoCliente = novoCliente }); //editar cliente
         }
 
-        public async Task<IActionResult> BuscarCliente(string cpf_cnpj)
+        public async Task<IActionResult> BuscarCliente(string cpf_cnpj, bool novoCliente)
         {
             /*Passo a passo da entrada 
               pegar a session do usuario
@@ -70,20 +72,40 @@ namespace Loja.UI.Controllers
             cliente.PermiteEdicao = Loja.Bll.Util.Util.OpercaoPermitida(Loja.Bll.Constantes.Constantes.OP_LJA_EDITA_CLIENTE_DADOS_CADASTRAIS
                 , lstOperacoesPermitidas) ? true : false;
 
+
             //somente para teste remover após concluir
             //cliente.PermiteEdicao = false;
             HttpContext.Session.SetString("cpf_cnpj", cpf_cnpj);
-            ClienteCadastroDto clienteCadastroDto = await clienteBll.BuscarCliente(cpf_cnpj, usuario);
+            ClienteCadastroDto clienteCadastroDto = new ClienteCadastroDto();
 
-            HttpContext.Session.SetString("cliente_selecionado", clienteCadastroDto.DadosCliente.Id);
+            if (!novoCliente)
+            {
+                clienteCadastroDto = await clienteBll.BuscarCliente(cpf_cnpj, usuario);
+
+                HttpContext.Session.SetString("cliente_selecionado", clienteCadastroDto.DadosCliente.Id);
+                
+                cliente.RefBancaria = clienteCadastroDto.RefBancaria;
+                cliente.RefComercial = clienteCadastroDto.RefComercial;
+
+                HttpContext.Session.SetString("cliente_selecionado", clienteCadastroDto.DadosCliente.Id);
+            }
+            else
+            {
+                clienteCadastroDto.DadosCliente = new DadosClienteCadastroDto();
+                clienteCadastroDto.DadosCliente.Cnpj_Cpf = cpf_cnpj;
+                if (cpf_cnpj.Length == 11)
+                    clienteCadastroDto.DadosCliente.Tipo = "PF";
+                if (cpf_cnpj.Length == 14)
+                    clienteCadastroDto.DadosCliente.Tipo = "PJ";
+            }
 
             cliente.DadosCliente = clienteCadastroDto.DadosCliente;
-            cliente.RefBancaria = clienteCadastroDto.RefBancaria;
-            cliente.RefComercial = clienteCadastroDto.RefComercial;
 
+            //novo bloco
+            
             //Lista para carregar no select de Indicadores
             string loja = HttpContext.Session.GetString("loja_atual");
-            var lstInd = (await clienteBll.BuscarListaIndicadores(cliente.DadosCliente.Indicador_Orcamentista, usuario, loja)).ToList();
+            var lstInd = (await clienteBll.BuscarListaIndicadores(cliente.DadosCliente?.Indicador_Orcamentista, usuario, loja)).ToList();
             List<SelectListItem> lst = new List<SelectListItem>();
             lst.Add(new SelectListItem { Value = "0", Text = "Selecione" });
             for (int i = 0; i < lstInd.Count; i++)
@@ -131,7 +153,8 @@ namespace Loja.UI.Controllers
             Loja.Bll.Dto.ClienteDto.DadosClienteCadastroDto dados,
             List<Loja.Bll.Dto.ClienteDto.RefComercialDtoCliente> lstRefCom,
             List<Loja.Bll.Dto.ClienteDto.RefBancariaDtoCliente> lstRefBancaria,
-            Loja.Bll.Dto.ClienteDto.EnderecoEntregaDtoClienteCadastro EndEntrega2)
+            Loja.Bll.Dto.ClienteDto.EnderecoEntregaDtoClienteCadastro EndEntrega2, 
+            bool novoCliente)
         {
             /*afazer: NECESSÁRIO FAZER O TRATAMENTO PARA ERROS 
              * CRIAR A TELA DE ERRO
@@ -148,6 +171,8 @@ namespace Loja.UI.Controllers
              */
 
             //afazer: preciso de uma flag para diferenciar se é cadastro ou alteração do cliente
+            //para teste: novoCliente 
+
 
             string listaOperacoesPermitidas = HttpContext.Session.GetString("lista_operacoes_permitidas");
             string usuario = HttpContext.Session.GetString("usuario_atual");

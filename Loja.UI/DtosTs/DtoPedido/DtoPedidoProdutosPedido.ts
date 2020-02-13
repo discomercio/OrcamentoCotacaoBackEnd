@@ -1,4 +1,4 @@
-﻿export class DtoPedidoProdutosPedido {
+﻿export class PedidoProdutosDtoPedido {
     Fabricante: string;
     NumProduto: string;
     Descricao: string;

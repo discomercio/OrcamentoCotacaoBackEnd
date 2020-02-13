@@ -9,17 +9,28 @@ using Loja.Bll.Dto.PedidoDto;
 using Microsoft.EntityFrameworkCore;
 using Loja.Bll.Dto.ClienteDto;
 using Loja.Bll.Dto.PedidoDto.DetalhesPedido;
-using DadosClienteCadastroDto = Loja.Bll.Dto.ClienteDto.DadosClienteCadastroDto;
+using Loja.Bll.ClienteBll;
+using Loja.Bll.Dto.PrepedidoDto.DetalhesPrepedido;
+using Loja.Bll.Dto.ProdutoDto;
 
 namespace Loja.Bll.PedidoBll
 {
     public class PedidoBll
     {
         private readonly ContextoBdProvider contextoProvider;
+        private readonly ContextoCepProvider contextoCepProvider;
+        private readonly ContextoNFeProvider contextoNFeProvider;
+        private readonly Bll.ProdutoBll.ProdutoBll produtoBll;
+        private readonly Bll.ClienteBll.ClienteBll clienteBll;
 
-        public PedidoBll(ContextoBdProvider contextoProvider)
+        public PedidoBll(ContextoBdProvider contextoProvider, ContextoCepProvider contextoCepProvider,
+            ContextoNFeProvider contextoNFeProvider, ProdutoBll.ProdutoBll produtoBll, ClienteBll.ClienteBll clienteBll)
         {
             this.contextoProvider = contextoProvider;
+            this.contextoCepProvider = contextoCepProvider;
+            this.contextoNFeProvider = contextoNFeProvider;
+            this.produtoBll = produtoBll;
+            this.clienteBll = clienteBll;
         }
 
 
@@ -1108,6 +1119,497 @@ namespace Loja.Bll.PedidoBll
                       };
 
             return await ret.FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<string>> PreparaParaCadastrarPedido(string loja, string id_cliente, string usuario_atual, string indicador,
+            string listaOpercoesPermitidas, string cpf_cnpj, PedidoDtoCriacao pedido, int semIndicacao,
+            int comIndicacao,
+            int cdAutomatico,
+            int cdManual,
+            int ListaCD,
+            float percComissao,
+            int comRA,
+            int semRA)
+        {
+            List<string> lstErros = new List<string>();
+
+            var db = contextoProvider.GetContextoLeitura();
+
+
+            //buscar DadosClienteCadastro
+            var dadosCliente = db.Tclientes.Where(r => r.Cnpj_Cpf == cpf_cnpj)
+                .FirstOrDefault();
+
+            pedido.DadosCliente = clienteBll.ObterDadosClienteCadastro(dadosCliente, loja);
+
+
+            var percentualMaxTask = ObterPercentualMaxDescEComissao(loja);
+
+            var tparametro = Util.Util.BuscarRegistroParametro(
+                Constantes.Constantes.ID_PARAMETRO_PercMaxComissaoEDesconto_Nivel2_MeiosPagto, contextoProvider);
+
+            //obtem o percPercVlPedidoLimiteRA
+            var nsuTask = Util.Util.LeParametroControle(Constantes.Constantes.ID_PARAM_PercVlPedidoLimiteRA, contextoProvider);
+
+            //busca o vendedor externo
+            //ao se logar essa session é criada
+            //busca de t_usuario
+            short? vendedor_externo = (from c in db.Tusuarios
+                                       where usuario_atual == c.Usuario
+                                       select c.Vendedor_Externo).FirstOrDefault();
+
+            //busca a loja que indicou
+            Tloja tloja = (from c in db.Tlojas
+                           where c.Loja == loja
+                           select c).FirstOrDefault();
+
+            //le o orçamentista
+            TorcamentistaEindicador torcamentista = new TorcamentistaEindicador();
+            if (!string.IsNullOrEmpty(indicador) && comIndicacao == 1)
+            {
+                torcamentista = await ValidaIndicadorOrcamentista(indicador, comRA, semIndicacao, lstErros);
+            }
+            if (!string.IsNullOrEmpty(percComissao.ToString()))
+            {
+                PercentualMaxDescEComissao percentualMax = await percentualMaxTask;
+                ValidarPercentualRT(percComissao, percentualMax.PercMaxComissao, lstErros);
+            }
+            //fazer a verificação de cada um dos produtos selecionados linha 343 ate 427
+            List<TprodutoLoja> lstProdutoLoja = (await VerificarProdutosSelecionados(pedido.ListaProdutos, lstErros, loja)).ToList();
+
+
+            if (ValidarFormaPagto(pedido, lstErros))
+            {
+                //fazer a verificação do custoFinanFornecTipoParcelamento linha 429 ate 470
+                int c_custoFinancFornecQtdeParcelas = ObterQtdeParcelasFormaPagto(pedido);
+                string siglaPagto = ObterSiglaFormaPagto(pedido);
+                if (Util.Util.ValidarTipoCustoFinanceiroFornecedor(lstErros, siglaPagto, c_custoFinancFornecQtdeParcelas))
+                {
+                    float coeficiente = await BuscarCoeficientePercentualCustoFinanFornec(pedido,
+                        (short)c_custoFinancFornecQtdeParcelas, siglaPagto, lstErros);
+
+                    string tipoPessoa = Util.Util.MultiCdRegraDeterminaPessoa(pedido.DadosCliente.Tipo,
+                        pedido.DadosCliente.Contribuinte_Icms_Status, pedido.DadosCliente.ProdutorRural);
+
+                    string descricao = Util.Util.DescricaoMultiCDRegraTipoPessoa(pedido.DadosCliente.Tipo);
+
+                    //fazer a verificação de consumo do estoque linha 489 ate 700
+                    //verificar o tipo de seleção do cd
+                    //podemos verificar um produto por vez
+                    int id_nfe_emitente_selecao_manual;
+                    if (cdManual == 1)
+                    {
+                        id_nfe_emitente_selecao_manual = ListaCD;
+                        if (id_nfe_emitente_selecao_manual == 0)
+                        {
+                            lstErros.Add("O CD selecionado manualmente é inválido.");
+                        }
+                    }
+                    else
+                    {
+                        id_nfe_emitente_selecao_manual = 0;
+                    }
+
+
+                    //fazer a verificação quantidade de pedidos que serão cadastrados (auto-split) linha 704 ate 822
+                    /*inicializa o campo 'qtde_solicitada', 
+                     * pois ele irá controlar a quantidade a ser alocada no estoque de cada empresa
+                     */
+
+                    //prepara os produtos
+                    List<ProdutoDto> lstProdutosDtoSelecionados = new List<ProdutoDto>();
+                    lstProdutosDtoSelecionados = (await BuscarProdutosDtoSelecionados(pedido.ListaProdutos, loja)).ToList();
+
+                    //faz a verificação do controle de estoque e tudo mais
+                    //daqui retorna msgs referentes ao cd manual que não foi selecionado
+                    List<string> lstMsgEstoque = (await produtoBll.VerificarRegrasDisponibilidadeEstoqueProdutosSelecionados(pedido, loja,
+                        id_cliente, lstProdutosDtoSelecionados, id_nfe_emitente_selecao_manual)).ToList();
+
+                    //fazer a verificação se tem RA
+                    float strPercLimiteRASemDesagio = 0;
+                    float strPercDesagio = 0;
+                    if (comRA == 1)
+                    {
+                        strPercLimiteRASemDesagio = await VerificarSemDesagioRA(torcamentista);
+                        strPercDesagio = torcamentista.Perc_Desagio_RA ?? 0;
+
+                    }
+                    //fazer a verificação se tem alerta do produto linha 851 ate 889
+                    //já foi feito a verificação de alerta de produtos na rotina abaixo
+                    //produtoBll.VerificarRegrasDisponibilidadeEstoqueProdutosSelecionados
+
+
+                    //podemos montar o dto com as informações existente e armazenar na Session
+                    //DadosClienteCadastroDto
+                    //FormaPagtoCriacao
+                    //List<PedidoProdutosPedidoDto>                    
+                    //opção de venda sem estoque
+                    //strPercLimiteRASemDesagio
+                    //strPercDesagio
+
+                    //DetalhesNFPedidoDtoPedido = esse é o último a ser armazenado
+                }
+            }
+
+            //vamos verificar as msg que estão retornando
+            if (lstErros.Count > 0)
+            {
+                foreach (var erro in lstErros)
+                {
+                    if (erro == "PRESENÇA SEM ESTOQUE")
+                    {
+                        //tem msg de presença
+                        if (pedido.OpcaoVendaSemEstoque)
+                        {
+                            lstErros.Remove(erro);
+                        }
+                    }
+                }
+
+            }
+
+            return lstErros;
+        }
+
+        public async Task<float> VerificarSemDesagioRA(TorcamentistaEindicador indicador)
+        {//busca o percentual de RA sem desagio ID_PARAM_PERC_LIMITE_RA_SEM_DESAGIO            
+            string semDesagio = await Util.Util.LeParametroControle(
+                Constantes.Constantes.ID_PARAM_PERC_LIMITE_RA_SEM_DESAGIO, contextoProvider);
+
+            float retorno = float.Parse(semDesagio);
+
+            return retorno;
+        }
+        private bool ValidarFormaPagto(PedidoDtoCriacao pedidoDto, List<string> lstErros)
+        {
+            bool retorno = false;
+
+            decimal vlTotalFormaPagto = 0M;
+
+            if (pedidoDto.FormaPagtoCriacao.Rb_forma_pagto == Constantes.Constantes.COD_FORMA_PAGTO_A_VISTA)
+            {
+                if (string.IsNullOrEmpty(pedidoDto.FormaPagtoCriacao.Op_av_forma_pagto))
+                    lstErros.Add("Indique a forma de pagamento (à vista).");
+                if (!CalculaItens(pedidoDto, out vlTotalFormaPagto))
+                    lstErros.Add("Há divergência entre o valor total do pré-pedido (" +
+                        Constantes.Constantes.SIMBOLO_MONETARIO + " " +
+                        pedidoDto.FormaPagtoCriacao.TotalDestePedido + ") e o valor total descrito através da forma de pagamento (" +
+                        Constantes.Constantes.SIMBOLO_MONETARIO + " " +
+                        Math.Abs((decimal)pedidoDto.FormaPagtoCriacao.TotalDestePedido - vlTotalFormaPagto) + ")!!");
+            }
+            else if (pedidoDto.FormaPagtoCriacao.Rb_forma_pagto == Constantes.Constantes.COD_FORMA_PAGTO_PARCELA_UNICA)
+            {
+                if (string.IsNullOrEmpty(pedidoDto.FormaPagtoCriacao.Op_av_forma_pagto))
+                    lstErros.Add("Indique a forma de pagamento da parcela única.");
+                else if (string.IsNullOrEmpty(pedidoDto.FormaPagtoCriacao.C_pu_valor.ToString()))
+                    lstErros.Add("Indique o valor da parcela única.");
+                else if (pedidoDto.FormaPagtoCriacao.C_pu_valor <= 0)
+                    lstErros.Add("Valor da parcela única é inválido.");
+                else if (string.IsNullOrEmpty(pedidoDto.FormaPagtoCriacao.C_pu_vencto_apos.ToString()))
+                    lstErros.Add("Indique o intervalo de vencimento da parcela única.");
+                else if (pedidoDto.FormaPagtoCriacao.C_pu_vencto_apos <= 0)
+                    lstErros.Add("Intervalo de vencimento da parcela única é inválido.");
+            }
+            else if (pedidoDto.FormaPagtoCriacao.Rb_forma_pagto == Constantes.Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO)
+            {
+                if (string.IsNullOrEmpty(pedidoDto.FormaPagtoCriacao.C_pc_qtde.ToString()))
+                    lstErros.Add("Indique a quantidade de parcelas (parcelado no cartão [internet]).");
+                else if (pedidoDto.FormaPagtoCriacao.C_pc_qtde < 1)
+                    lstErros.Add("Quantidade de parcelas inválida (parcelado no cartão [internet]).");
+                else if (string.IsNullOrEmpty(pedidoDto.FormaPagtoCriacao.C_pc_valor.ToString()))
+                    lstErros.Add("Indique o valor da parcela (parcelado no cartão [internet]).");
+                else if (pedidoDto.FormaPagtoCriacao.C_pc_valor <= 0)
+                    lstErros.Add("Valor de parcela inválido (parcelado no cartão [internet]).");
+            }
+            else if (pedidoDto.FormaPagtoCriacao.Rb_forma_pagto == Constantes.Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA)
+            {
+                if (string.IsNullOrEmpty(pedidoDto.FormaPagtoCriacao.C_pc_maquineta_qtde.ToString()))
+                    lstErros.Add("Indique a quantidade de parcelas (parcelado no cartão [maquineta]).");
+                else if (pedidoDto.FormaPagtoCriacao.C_pc_maquineta_qtde < 1)
+                    lstErros.Add("Quantidade de parcelas inválida (parcelado no cartão [maquineta]).");
+                else if (string.IsNullOrEmpty(pedidoDto.FormaPagtoCriacao.C_pc_maquineta_valor.ToString()))
+                    lstErros.Add("Indique o valor da parcela (parcelado no cartão [maquineta]).");
+                else if (pedidoDto.FormaPagtoCriacao.C_pc_maquineta_valor <= 0)
+                    lstErros.Add("Valor de parcela inválido (parcelado no cartão [maquineta]).");
+            }
+            else if (pedidoDto.FormaPagtoCriacao.Rb_forma_pagto == Constantes.Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA)
+            {
+                if (string.IsNullOrEmpty(pedidoDto.FormaPagtoCriacao.Op_pce_entrada_forma_pagto.ToString()))
+                    lstErros.Add("Indique a forma de pagamento da entrada (parcelado com entrada).");
+                else if (string.IsNullOrEmpty(pedidoDto.FormaPagtoCriacao.C_pce_entrada_valor.ToString()))
+                    lstErros.Add("Indique o valor da entrada (parcelado com entrada).");
+                else if (pedidoDto.FormaPagtoCriacao.C_pce_entrada_valor <= 0)
+                    lstErros.Add("Valor da entrada inválido (parcelado com entrada).");
+                else if (string.IsNullOrEmpty(pedidoDto.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto))
+                    lstErros.Add("Indique a forma de pagamento das prestações (parcelado com entrada).");
+                else if (string.IsNullOrEmpty(pedidoDto.FormaPagtoCriacao.C_pce_prestacao_qtde.ToString()))
+                    lstErros.Add("Indique a quantidade de prestações (parcelado com entrada).");
+                else if (pedidoDto.FormaPagtoCriacao.C_pce_prestacao_qtde <= 0)
+                    lstErros.Add("Quantidade de prestações inválida (parcelado com entrada).");
+                else if (string.IsNullOrEmpty(pedidoDto.FormaPagtoCriacao.C_pce_prestacao_valor.ToString()))
+                    lstErros.Add("Indique o valor da prestação (parcelado com entrada).");
+                else if (pedidoDto.FormaPagtoCriacao.C_pce_prestacao_valor <= 0)
+                    lstErros.Add("Valor de prestação inválido (parcelado com entrada).");
+                else if (string.IsNullOrEmpty(pedidoDto.FormaPagtoCriacao.C_pce_prestacao_periodo.ToString()))
+                    lstErros.Add("Indique o intervalo de vencimento entre as parcelas (parcelado com entrada).");
+                else if (pedidoDto.FormaPagtoCriacao.C_pce_prestacao_periodo <= 0)
+                    lstErros.Add("Intervalo de vencimento inválido (parcelado com entrada).");
+            }
+            else if (pedidoDto.FormaPagtoCriacao.Rb_forma_pagto == Constantes.Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA)
+            {
+                if (string.IsNullOrEmpty(pedidoDto.FormaPagtoCriacao.Op_pse_prim_prest_forma_pagto))
+                    lstErros.Add("Indique a forma de pagamento da 1ª prestação (parcelado sem entrada).");
+                else if (string.IsNullOrEmpty(pedidoDto.FormaPagtoCriacao.C_pse_prim_prest_valor.ToString()))
+                    lstErros.Add("Indique o valor da 1ª prestação (parcelado sem entrada).");
+                else if (pedidoDto.FormaPagtoCriacao.C_pse_prim_prest_valor <= 0)
+                    lstErros.Add("Valor da 1ª prestação inválido (parcelado sem entrada).");
+                else if (string.IsNullOrEmpty(pedidoDto.FormaPagtoCriacao.C_pse_prim_prest_apos.ToString()))
+                    lstErros.Add("Indique o intervalo de vencimento da 1ª parcela (parcelado sem entrada).");
+                else if (pedidoDto.FormaPagtoCriacao.C_pse_prim_prest_apos <= 0)
+                    lstErros.Add("Intervalo de vencimento da 1ª parcela é inválido (parcelado sem entrada).");
+                else if (string.IsNullOrEmpty(pedidoDto.FormaPagtoCriacao.Op_pse_demais_prest_forma_pagto))
+                    lstErros.Add("Indique a forma de pagamento das demais prestações (parcelado sem entrada).");
+                else if (string.IsNullOrEmpty(pedidoDto.FormaPagtoCriacao.C_pse_demais_prest_qtde.ToString()))
+                    lstErros.Add("Indique a quantidade das demais prestações (parcelado sem entrada).");
+                else if (pedidoDto.FormaPagtoCriacao.C_pse_demais_prest_qtde <= 0)
+                    lstErros.Add("Quantidade de prestações inválida (parcelado sem entrada).");
+                else if (string.IsNullOrEmpty(pedidoDto.FormaPagtoCriacao.C_pse_demais_prest_valor.ToString()))
+                    lstErros.Add("Indique o valor das demais prestações (parcelado sem entrada).");
+                else if (pedidoDto.FormaPagtoCriacao.C_pse_demais_prest_valor <= 0)
+                    lstErros.Add("Valor de prestação inválido (parcelado sem entrada).");
+                else if (string.IsNullOrEmpty(pedidoDto.FormaPagtoCriacao.C_pse_demais_prest_periodo.ToString()))
+                    lstErros.Add("Indique o intervalo de vencimento entre as parcelas (parcelado sem entrada).");
+                else if (pedidoDto.FormaPagtoCriacao.C_pse_demais_prest_periodo < 0)
+                    lstErros.Add("Intervalo de vencimento inválido (parcelado sem entrada).");
+            }
+            else
+            {
+                lstErros.Add("É obrigatório especificar a forma de pagamento");
+            }
+
+            if (lstErros.Count == 0)
+                retorno = true;
+
+            return retorno;
+        }
+
+        private bool CalculaItens(PedidoDtoCriacao pedidoDto, out decimal vlTotalFormaPagto)
+        {
+            bool retorno = true;
+            decimal vl_total_NF = 0;
+            decimal vl_total = 0;
+
+
+            foreach (var p in pedidoDto.ListaProdutos)
+            {
+                if (!string.IsNullOrEmpty(p.NumProduto))
+                {
+                    vl_total += (decimal)(p.Qtde * p.VlUnitario);
+                    vl_total_NF += (decimal)(p.Qtde * p.Preco);
+                }
+            }
+            vlTotalFormaPagto = vl_total_NF;
+            if (Math.Abs(vlTotalFormaPagto - vl_total_NF) > 0.1M)
+                retorno = false;
+
+            return retorno;
+        }
+
+        public async Task<IEnumerable<ProdutoDto>> BuscarProdutosDtoSelecionados(List<PedidoProdutosDtoPedido> lstProdutosPedido,
+            string loja)
+        {
+            List<ProdutoDto> lstProdutoDto = (await produtoBll.BuscarTodosProdutos(loja)).ToList();
+            //vamos filtrar os produtos que foram selecionados para verificar as regras
+            List<ProdutoDto> lstProdutosDtoSelecionados = new List<ProdutoDto>();
+            foreach (var p in lstProdutosPedido)
+            {
+                var lstProdutosDtoSelecionadosTask = (from c in lstProdutoDto
+                                                      where c.Produto == p.NumProduto &&
+                                                            c.Fabricante == p.Fabricante
+                                                      select new ProdutoDto
+                                                      {
+                                                          Fabricante = c.Fabricante,
+                                                          Fabricante_Nome = c.Fabricante_Nome,
+                                                          Produto = c.Produto,
+                                                          Descricao_html = c.Descricao_html,
+                                                          Alertas = c.Alertas,
+                                                          Estoque = c.Estoque,
+                                                          Preco_lista = c.Preco_lista,
+                                                          Qtde_Max_Venda = c.Qtde_Max_Venda
+                                                          //QtdeSolicitada = p.Qtde
+
+                                                      }).FirstOrDefault();
+
+                lstProdutosDtoSelecionados.Add(lstProdutosDtoSelecionadosTask);
+            }
+
+            return lstProdutosDtoSelecionados;
+        }
+
+        public async Task<TorcamentistaEindicador> ValidaIndicadorOrcamentista(string indicador,
+            int comRA, int semRA, List<string> lstErros)
+        {
+            TorcamentistaEindicador torcamentista = await Util.Util.BuscarOrcamentistaEIndicador(indicador, contextoProvider);
+            if (torcamentista == null)
+            {
+                lstErros.Add("Informe quem é o indicador.");
+            }
+            if (comRA == 0 && semRA == 0)
+            {
+                lstErros.Add("Informe se o pedido possui RA ou não.");
+            }
+
+            return torcamentista;
+        }
+
+        public void ValidarPercentualRT(float percComissao, float percentualMax, List<string> lstErros)
+        {
+            if (percComissao < 0 || percComissao > 100)
+            {
+                lstErros.Add("Percentual de comissão inválido.");
+            }
+            if (percComissao > percentualMax)
+            {
+                lstErros.Add("O percentual de comissão excede o máximo permitido.");
+            }
+        }
+
+        public async Task<IEnumerable<TprodutoLoja>> VerificarProdutosSelecionados(List<PedidoProdutosDtoPedido> lstProdutos, List<string> lstErros, string loja)
+        {
+            List<TprodutoLoja> lstProdutoLoja = new List<TprodutoLoja>();
+
+            foreach (var prod in lstProdutos)
+            {
+                if (prod.Qtde <= 0)
+                {
+                    lstErros.Add("Produto" + prod.NumProduto + " do fabricante " + prod.Fabricante + ": quantidade " +
+                        prod.Qtde + " é inválida.");
+                }
+
+                var db = contextoProvider.GetContextoLeitura();
+
+                var prodTask = from c in db.TprodutoLojas.Include(x => x.Tproduto)
+                               where c.Tproduto.Fabricante == prod.Fabricante &&
+                                     c.Tproduto.Produto == prod.NumProduto &&
+                                     c.Loja == loja
+                               select c;
+
+                if (prodTask == null)
+                {
+                    lstErros.Add("Produto " + prod.NumProduto + " do fabricante " + prod.Fabricante +
+                        " NÃO está cadastrado.");
+                }
+                else
+                {
+                    TprodutoLoja tprodutoLoja = await prodTask.FirstOrDefaultAsync();
+
+                    if (tprodutoLoja.Vendavel != "S")
+                    {
+                        lstErros.Add("Produto " + prod.NumProduto + " do fabricante " + prod.Fabricante +
+                        " NÃO está disponível para venda.");
+                    }
+                    else if (prod.Qtde > tprodutoLoja.Qtde_Max_Venda)
+                    {
+                        lstErros.Add("Produto " + prod.NumProduto + " do fabricante " + prod.Fabricante +
+                        " : quantidade " + prod.Qtde + " excede o máximo permitido.");
+                    }
+                    else
+                    {
+                        lstProdutoLoja.Add(tprodutoLoja);
+                    }
+                }
+            }
+            return lstProdutoLoja;
+        }
+
+        private int ObterQtdeParcelasFormaPagto(PedidoDtoCriacao pedido)
+        {
+            FormaPagtoCriacaoDto formaPagto = pedido.FormaPagtoCriacao;
+            int qtdeParcelas = 0;
+
+            if (formaPagto.Rb_forma_pagto == Constantes.Constantes.COD_FORMA_PAGTO_A_VISTA)
+                qtdeParcelas = 1;
+            else if (formaPagto.Rb_forma_pagto == Constantes.Constantes.COD_FORMA_PAGTO_PARCELA_UNICA)
+                qtdeParcelas = 1;
+            else if (formaPagto.Rb_forma_pagto == Constantes.Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO)
+                qtdeParcelas = (int)formaPagto.C_pc_qtde;
+            else if (formaPagto.Rb_forma_pagto == Constantes.Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA)
+                qtdeParcelas = (int)formaPagto.C_pc_maquineta_qtde;
+            else if (formaPagto.Rb_forma_pagto == Constantes.Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA)
+                qtdeParcelas = (int)formaPagto.C_pce_prestacao_qtde;
+            else if (formaPagto.Rb_forma_pagto == Constantes.Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA)
+                qtdeParcelas = (int)formaPagto.C_pse_demais_prest_qtde++;
+
+            return qtdeParcelas;
+        }
+
+        private string ObterSiglaFormaPagto(PedidoDtoCriacao pedido)
+        {
+            FormaPagtoCriacaoDto formaPagto = pedido.FormaPagtoCriacao;
+            string retorno = "";
+
+            if (formaPagto.Rb_forma_pagto == Constantes.Constantes.COD_FORMA_PAGTO_A_VISTA)
+                retorno = Constantes.Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA;
+            else if (formaPagto.Rb_forma_pagto == Constantes.Constantes.COD_FORMA_PAGTO_PARCELA_UNICA)
+                retorno = Constantes.Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA;
+            else if (formaPagto.Rb_forma_pagto == Constantes.Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO)
+                retorno = Constantes.Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA;
+            else if (formaPagto.Rb_forma_pagto == Constantes.Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA)
+                retorno = Constantes.Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA;
+            else if (formaPagto.Rb_forma_pagto == Constantes.Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA)
+                retorno = Constantes.Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA;
+            else if (formaPagto.Rb_forma_pagto == Constantes.Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA)
+                retorno = Constantes.Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA;
+
+            return retorno;
+        }
+
+        public async Task<float> BuscarCoeficientePercentualCustoFinanFornec(PedidoDtoCriacao pedido, short qtdeParcelas, string siglaPagto, List<string> lstErros)
+        {
+            float coeficiente = 0;
+
+            var db = contextoProvider.GetContextoLeitura();
+
+            if (siglaPagto == Constantes.Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA)
+                coeficiente = 1;
+            else
+            {
+                foreach (var i in pedido.ListaProdutos)
+                {
+                    var percCustoTask = from c in db.TpercentualCustoFinanceiroFornecedors
+                                        where c.Fabricante == i.Fabricante &&
+                                              c.Tipo_Parcelamento == siglaPagto &&
+                                              c.Qtde_Parcelas == qtdeParcelas
+                                        select c;
+
+                    var percCusto = await percCustoTask.FirstOrDefaultAsync();
+
+                    if (percCusto != null)
+                    {
+                        coeficiente = percCusto.Coeficiente;
+                        i.VlLista = (decimal)coeficiente * i.VlLista;
+                    }
+                    else
+                    {
+                        lstErros.Add("Opção de parcelamento não disponível para fornecedor " + i.Fabricante + ": " +
+                            DecodificaCustoFinanFornecQtdeParcelas(pedido.FormaPagtoCriacao.C_forma_pagto, qtdeParcelas) + " parcela(s)");
+                    }
+
+                }
+            }
+
+            return coeficiente;
+        }
+        private string DecodificaCustoFinanFornecQtdeParcelas(string tipoParcelamento, short custoFFQtdeParcelas)
+        {
+            string retorno = "";
+
+            if (tipoParcelamento == Constantes.Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA)
+                retorno = "0+" + custoFFQtdeParcelas;
+            else if (tipoParcelamento == Constantes.Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA)
+                retorno = "1+" + custoFFQtdeParcelas;
+
+            return retorno;
         }
     }
 

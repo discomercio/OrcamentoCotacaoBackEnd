@@ -14,5 +14,6 @@ namespace Loja.Bll.Dto.ProdutoDto
         public int Estoque { get; set; }
         public string Alertas { get; set; }
         public short? Qtde_Max_Venda { get; set; }
+        public short? QtdeSolicitada { get; set; }
     }
 }

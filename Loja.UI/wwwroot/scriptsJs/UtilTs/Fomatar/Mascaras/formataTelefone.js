@@ -1,7 +1,6 @@
 /* nao editar, arquivo compilado pelo typescript*/ 
 /* nao editar, arquivo compilado pelo typescript*/ 
 /* nao editar, arquivo compilado pelo typescript*/ 
-/* nao editar, arquivo compilado pelo typescript*/ 
 define(["require", "exports", "../../stringUtils/stringUtils"], function (require, exports, stringUtils_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -11,21 +10,6 @@ define(["require", "exports", "../../stringUtils/stringUtils"], function (requir
         //     ' ------------------------------------------------------------------------
         // '   TELEFONE_FORMATA
         // ' 
-        FormatarTelefone.telefoneCelular = function (telefone, ddd) {
-            if (!telefone || !ddd) {
-                return "";
-            }
-            var s2 = "";
-            if (!telefone || !ddd)
-                return "";
-            if (telefone.trim() == "" || ddd.trim() == "")
-                return "";
-            s2 = FormatarTelefone.telefone_formata(telefone);
-            var s_aux = ddd.trim();
-            if (s_aux != "")
-                s2 = "(" + s_aux + ") " + s2;
-            return s2;
-        };
         FormatarTelefone.telefone_formata = function (telefone) {
             var s_tel = "";
             s_tel = "" + telefone;
@@ -66,8 +50,6 @@ define(["require", "exports", "../../stringUtils/stringUtils"], function (requir
         //máscara para digitar telefones de 8 ou 9 dígitos
         //usando o angular2-text-mask
         FormatarTelefone.mascaraTelefone = function (userInput) {
-            if (!userInput)
-                userInput = "";
             var numbers = stringUtils_1.StringUtils.retorna_so_digitos(userInput);
             if (numbers.length > 10) {
                 return ['(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];

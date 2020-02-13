@@ -1,4 +1,7 @@
-define(["require", "exports", "../../DtosTs/DtoProdutos/SelectProdInfo", "../../FuncoesTs/Itens/Itens", "../../DtosTs/DtoPedido/DtoPedido", "../../UtilTs/MoedaUtils/moedaUtils", "../../Services/NovoPepedidoDadosService", "../../FuncoesTs/DadosPagto/DadosPagto", "../../UtilTs/Constantes/Constantes", "../Shared/Error", "../../DtosTs/DtoPedido/PercentualMaxDescEComissao"], function (require, exports, SelectProdInfo_1, Itens_1, DtoPedido_1, moedaUtils_1, NovoPepedidoDadosService_1, DadosPagto_1, Constantes_1, Error_1, PercentualMaxDescEComissao_1) {
+/* nao editar, arquivo compilado pelo typescript*/ 
+/* nao editar, arquivo compilado pelo typescript*/ 
+/* nao editar, arquivo compilado pelo typescript*/ 
+define(["require", "exports", "../../DtosTs/DtoProdutos/SelectProdInfo", "../../FuncoesTs/Itens/Itens", "../../DtosTs/DtoPedido/DtoPedido", "../../UtilTs/MoedaUtils/moedaUtils", "../../Services/NovoPepedidoDadosService", "../../FuncoesTs/DadosPagto/DadosPagto", "../../UtilTs/Constantes/Constantes", "../Shared/Error", "../../DtosTs/DtoPedido/PercentualMaxDescEComissao", "../../DtosTs/DtoPedido/DtoFormaPagtoCriacao"], function (require, exports, SelectProdInfo_1, Itens_1, DtoPedido_1, moedaUtils_1, NovoPepedidoDadosService_1, DadosPagto_1, Constantes_1, Error_1, PercentualMaxDescEComissao_1, DtoFormaPagtoCriacao_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     itens = new Itens_1.Itens();
@@ -84,31 +87,95 @@ define(["require", "exports", "../../DtosTs/DtoProdutos/SelectProdInfo", "../../
     $("#chkSemRa").prop("checked", true);
     $("#chkComRa").click(function () {
         $("#chkSemRa").prop("checked", false);
+        $("#chkSemRa").val(0);
         $("#divCOM").children().find("input").prop('disabled', false);
+        $("#chkComRa").val(1);
     });
     $("#chkSemRa").click(function () {
         $("#chkComRa").prop("checked", false);
+        $("#chkComRa").val(0);
         $("#divCOM").children().find("input").prop('disabled', true);
+        $("#chkSemRa").val(1);
     });
     $("#divIndicadores").children().find("input").prop('disabled', true);
-    $("#chkSemIndicacao").prop("checked", true);
+    //$("#chkSemIndicacao").prop("checked", true);
     $("#chkSemIndicacao").click(function () {
         $("#chkComIndicacao").prop("checked", false);
+        $("#chkComIndicacao").val(0);
         $("#divIndicadores").children().find("input").prop('disabled', true);
+        $("#chkSemIndicacao").val(1);
     });
+    if ($("#chkComIndicacao").prop('checked') == true) {
+        $("#divIndicadores").children().find("input").prop('disabled', false);
+        $("#chkComIndicacao").prop('checked', true);
+        $("#chkComIndicacao").val(1);
+    }
     $("#chkComIndicacao").click(function () {
         $("#chkSemIndicacao").prop("checked", false);
+        $("#chkSemIndicacao").val(0);
         $("#divIndicadores").children().find("input").prop('disabled', false);
+        $("#chkComIndicacao").val(1);
     });
-    $("#chkAutomatico").prop("checked", true);
+    $("#btnModalProdutos").click(function () {
+        var err = new Error_1.ErrorModal();
+        if ($("#chkSemIndicacao").prop('checked') == false && $("#chkComIndicacao").prop('checked') == false) {
+            modalError();
+            err.MostrarMsg("Informe se o pedido é com indicação ou não!");
+            return false;
+        }
+        if ($("#chkComIndicacao").prop('checked') == true &&
+            ($("#indicador").val() == "0" || $("#indicador").val() == undefined)) {
+            modalError();
+            err.MostrarMsg('Selecione o "indicador"!');
+            return false;
+        }
+        if ($("#chkManual").prop("checked") == false && $("#chkAutomatico").prop("checked") == false) {
+            modalError();
+            err.MostrarMsg("Necessário selecionar o modo de seleção do CD");
+            return false;
+        }
+        else if ($("#chkManual").prop("checked") == true) {
+            debugger;
+            var selecaoCD = $("#selecaoCd").val();
+            if (selecaoCD == "0") {
+                modalError();
+                err.MostrarMsg("É necessário selecionar o CD que irá atender o pedido(sem auto-split)!");
+                return false;
+            }
+        }
+        AbrirModalProdutos();
+        return true;
+    });
+    //$("#chkAutomatico").prop("checked", false);
     $("#divSelecaoCd").children().find("input").prop('disabled', true);
     $("#chkAutomatico").click(function () {
+        $("#chkAutomatico").val(1);
         $("#chkManual").prop("checked", false);
+        $("#chkManual").val(0);
         $("#divSelecaoCd").children().find("input").prop('disabled', true);
+        $("#msgCD").text('');
+        removerTodosProdutos();
+        lstProdSelecionados = new Array();
+        zerarCamposDadosPagto(true);
+        totalPedido();
     });
-    $("#chkManual").click(function () {
-        $("#chkAutomatico").prop("checked", false);
+    if ($("#chkManual").prop('checked') == true) {
+        $("#chkManual").val(1);
+        $("#chkManual").prop('checked', true);
+        $("#chkManual").val(0);
         $("#divSelecaoCd").children().find("input").prop('disabled', false);
+        $("#msgCD").text('');
+    }
+    $("#chkManual").click(function () {
+        $("#chkManual").val(1);
+        $("#chkAutomatico").prop("checked", false);
+        $("#chkAutomatico").val(0);
+        $("#divSelecaoCd").children().find("input").prop('disabled', false);
+        $("#msgCD").text('');
+        removerTodosProdutos();
+        lstProdSelecionados = new Array();
+        zerarCamposDadosPagto(true);
+        totalPedido();
     });
     //limpando campos ao fechar a modal
     $("#buscaproduto").keyup(function () {
@@ -136,8 +203,13 @@ define(["require", "exports", "../../DtosTs/DtoProdutos/SelectProdInfo", "../../
         val = (val / 100).toFixed(2) + '';
         $("#percComissao").val(moedaUtils.formatarMoedaSemPrefixo(val));
     });
+    $("#selecaoCd").change(function () {
+        $("#msgCD").text('');
+        removerTodosProdutos();
+        lstProdSelecionados = new Array();
+        totalPedido();
+    });
     window.VerificarPercMaxDescEComissao = function (e) {
-        debugger;
         var valor = e.value;
         var val = valor.replace(/\D/g, '');
         val = (val / 100).toFixed(2) + '';
@@ -180,12 +252,11 @@ define(["require", "exports", "../../DtosTs/DtoProdutos/SelectProdInfo", "../../
             itens.selectProdInfo = selectProdInfo;
             itens.dtoPedido = new DtoPedido_1.DtoPedido();
             itens.mostrarProdutos(null);
-            //essa lista é a que esta sendo utilizada para pegar valores da tela 
             //estamos arrumando a qtde, verificando se existe e inserindo o produto
             arrumarProdsRepetidosTeste();
             //remover todas as linhas da tabela para adicionar novamente.
             removerTodosProdutos();
-            RecalcularValoresSemCoeficiente(null);
+            RecalcularValoresSemCoeficiente(null, false);
             PedidoAlterado();
             //limpar tirar o check do produto selecionado
             $('.prod').children().find('input').filter(function () {
@@ -193,7 +264,6 @@ define(["require", "exports", "../../DtosTs/DtoProdutos/SelectProdInfo", "../../
                     $(this).prop('checked', false);
                 return true;
             });
-            console.log("InserirProdutoLinha itens.msgErro: " + itens.msgErro);
             if (itens.msgErro != "" && itens.msgErro != undefined) {
                 modalError();
                 var err = new Error_1.ErrorModal();
@@ -204,11 +274,12 @@ define(["require", "exports", "../../DtosTs/DtoProdutos/SelectProdInfo", "../../
             return false;
         }
     };
+    function verificaRegras(novaClasse, produto) {
+        verificarRegraProdutoCD(novaClasse, produto);
+    }
     window.PreparaListaProdutosParaDataList = function () {
         var lstProdutosPreparadoParaDataList = new Array();
         var t = {};
-        console.log("preparando a lista");
-        console.log(lstprodutos);
         lstprodutos.ProdutoDto.forEach(function (v) {
             lstProdutosPreparadoParaDataList.push(v.Produto);
         });
@@ -230,6 +301,7 @@ define(["require", "exports", "../../DtosTs/DtoProdutos/SelectProdInfo", "../../
                         itens.digitouQte(prod);
                         //dadosPagto inicializar
                         PedidoAlterado();
+                        debugger;
                         exist = true;
                     }
                 });
@@ -263,7 +335,6 @@ define(["require", "exports", "../../DtosTs/DtoProdutos/SelectProdInfo", "../../
     function removerTodosProdutos() {
         var tbody = $(".novoProduto").parent();
         var tbodyCount = tbody.children().length;
-        console.log(tbodyCount);
         if (tbodyCount >= 4) {
             for (tbodyCount; tbodyCount > 4; tbodyCount--) {
                 var trTotal = tbody.children()[tbodyCount - 1].className;
@@ -273,6 +344,7 @@ define(["require", "exports", "../../DtosTs/DtoProdutos/SelectProdInfo", "../../
             }
         }
         indice = 0;
+        $("#indice").val(indice);
     }
     window.removerLinha = function (v) {
         //fazer a perngunta para saber se confirma remover 
@@ -284,7 +356,9 @@ define(["require", "exports", "../../DtosTs/DtoProdutos/SelectProdInfo", "../../
             var t = v;
             //pegando o tr
             var linha = t.closest("tr"); // t.parentElement.parentElement.parentElement.parentElement;
-            linha.remove();
+            var classeName = linha.className;
+            $("." + classeName + "").remove();
+            //linha.remove();
             //pegando o td
             var codProduto_1 = linha.cells[0].children[0].value;
             //pegando o produto para alterar o valor
@@ -292,13 +366,14 @@ define(["require", "exports", "../../DtosTs/DtoProdutos/SelectProdInfo", "../../
             produto = lstProdSelecionados.filter(function (e) { return e.NumProduto == codProduto_1; });
             var i = lstProdSelecionados.indexOf(produto[0]);
             lstProdSelecionados.splice(i, 1);
-            console.log(lstProdSelecionados);
+            var indice_1 = parseInt($("#indice").val().toString());
+            $("#indice").val(indice_1--);
             //recalcular o pedido
             //Gabriel
             PedidoAlterado();
             totalPedido();
         }
-        zerarCamposDadosPagto();
+        zerarCamposDadosPagto(false);
     };
     //altera valor total do item digitado
     window.digitouQtde = function (v) {
@@ -313,16 +388,19 @@ define(["require", "exports", "../../DtosTs/DtoProdutos/SelectProdInfo", "../../
         var produto = lstProdSelecionados.filter(function (e) { return e.NumProduto == codProduto; });
         produto[0].Qtde = parseInt(v.value);
         itens.digitouQte(produto[0]);
+        var classeLinha = linha.className;
+        VerificarQtdeVendaPermitida(itens, produto[0], classeLinha);
+        VerificarEstoque(itens, produto[0], classeLinha);
         //dadosPagto inicializar
         PedidoAlterado();
         itens.dtoPedido.ListaProdutos = lstProdSelecionados;
-        RecalcularValoresSemCoeficiente(null);
+        RecalcularValoresSemCoeficiente(null, true);
         ////passando para o valor para tela
         linha.children[4].children[0].children[0].value = moedaUtils.formatarMoedaSemPrefixo(produto[0].VlUnitario);
         linha.children[5].textContent = moedaUtils.formatarMoedaSemPrefixo(produto[0].TotalItem);
         PedidoAlterado(); //chamamos aqui para inicializar as variaveis
         //dadosPagto.prepedidoAlterado();
-        zerarCamposDadosPagto();
+        zerarCamposDadosPagto(true);
     };
     //Dessa forma eu consigo utilizar a modal de erro
     //essa function esta em Views/Shared/Error.cshtml
@@ -352,9 +430,10 @@ define(["require", "exports", "../../DtosTs/DtoProdutos/SelectProdInfo", "../../
         dadosPagto.dtoPedido.ListaProdutos = lstProdSelecionados;
         //RecalcularValoresSemCoeficiente(null);
         totalPedido();
-        linha.children[5].textContent = moedaUtils.formatarMoedaSemPrefixo(r[0].TotalItem);
-        linha.children[4].children[0].children[0].value = moedaUtils.formatarMoedaSemPrefixo(r[0].VlUnitario);
-        zerarCamposDadosPagto();
+        debugger;
+        linha.children[6].textContent = moedaUtils.formatarMoedaSemPrefixo(r[0].TotalItem);
+        linha.children[5].children[0].children[0].value = moedaUtils.formatarMoedaSemPrefixo(r[0].VlUnitario);
+        zerarCamposDadosPagto(true);
     };
     window.digitouVlVenda = function (v) {
         var valor = v.value;
@@ -372,10 +451,11 @@ define(["require", "exports", "../../DtosTs/DtoProdutos/SelectProdInfo", "../../
         itens.digitouQte(r[0]);
         //dadosPagto inicializar
         PedidoAlterado();
-        linha.children[3].children[0].children[0].value = moedaUtils.formatarPorcentagemUmaCasa(r[0].Desconto);
-        linha.children[4].children[0].children[0].value = moedaUtils.formatarMoedaSemPrefixo(r[0].VlUnitario);
-        linha.children[5].textContent = moedaUtils.formatarMoedaSemPrefixo(r[0].TotalItem);
-        zerarCamposDadosPagto();
+        debugger;
+        linha.children[4].children[0].children[0].value = moedaUtils.formatarPorcentagemUmaCasa(r[0].Desconto);
+        linha.children[5].children[0].children[0].value = moedaUtils.formatarMoedaSemPrefixo(r[0].VlUnitario);
+        linha.children[6].textContent = moedaUtils.formatarMoedaSemPrefixo(r[0].TotalItem);
+        zerarCamposDadosPagto(true);
     };
     //PermiteRA
     window.digitouPreco = function (v) {
@@ -402,26 +482,31 @@ define(["require", "exports", "../../DtosTs/DtoProdutos/SelectProdInfo", "../../
         linha.children[3].children[0].children[0].value = moedaUtils.formatarPorcentagemUmaCasa(r[0].Desconto);
         linha.children[4].children[0].children[0].value = moedaUtils.formatarMoedaSemPrefixo(r[0].VlUnitario);
         linha.children[5].textContent = moedaUtils.formatarMoedaSemPrefixo(r[0].TotalItem);
-        zerarCamposDadosPagto();
+        zerarCamposDadosPagto(true);
     };
+    $('#diasVenc').keyup(function () {
+        $(this).val(this.value.replace(/\D/g, ''));
+    });
     window.digitouVlEntrada = function (v) {
-        debugger;
         var valor = v.value;
         var val = valor.replace(/\D/g, '');
         val = (val / 100).toFixed(2) + '';
         v.value = moedaUtils.formatarMoedaSemPrefixo(val);
-        debugger;
         dadosPagto.vlEntrada = parseFloat(val);
         dadosPagto.calcularParcelaComEntrada();
         //this.vlEntrada = v;
         //this.calcularParcelaComEntrada();
         //tranformar o valor sem prefixo
-        console.log("digitouVlEntrada dadosPagto.msgErro: " + dadosPagto.msgErro);
         if (dadosPagto.msgErro != "" && dadosPagto.msgErro != undefined) {
             modalError();
             var err = new Error_1.ErrorModal();
             err.MostrarMsg(dadosPagto.msgErro);
             v.value = "";
+            dadosPagto.msgErro = "";
+            zerarCamposDadosPagto(false);
+            debugger;
+            $("#enumFormaPagto").prop('selectedIndex', 0);
+            $("#enumFormaPagto").formSelect();
             return false;
         }
         var selecione = $("#opcaoPagtoParcComEntrada").children()[0];
@@ -436,12 +521,12 @@ define(["require", "exports", "../../DtosTs/DtoProdutos/SelectProdInfo", "../../
         novoPedidoDadosService.dtoPedido.ListaProdutos = new Array();
         novoPedidoDadosService.dtoPedido.ListaProdutos = lstProdSelecionados;
         var totalP = $("#totalPedido").val().toString();
-        totalP = novoPedidoDadosService.totalPedido().toString();
+        //totalP = novoPedidoDadosService.totalPedido().toString();
         if (totalP != "0") {
             $("#totalPedido").text(totalP);
         }
     });
-    function InserirNovoProduto(produto) {
+    function InserirNovoProduto(produto, editandoLinha) {
         //esse é um exemplo de como clonar uma div e adicionar 
         //let novo = $(".novoProduto").clone();
         //novo.removeClass("novoProduto")
@@ -452,20 +537,19 @@ define(["require", "exports", "../../DtosTs/DtoProdutos/SelectProdInfo", "../../
          * verificar se o produto tem avisos e qtde permitida e ra_status
          */
         var indice = null;
+        //if (!editandoLinha)
         indice = parseInt($("#indice").val().toString());
         if (indice.toString() == "NaN") {
             indice = 0;
             $("indice").val(indice);
         }
-        var novo = $("<tr></tr>");
-        var html = $(".novoProduto").html();
-        html = html.replace(/trocarporindex/g, indice.toString());
-        novo.html(html);
-        novo.removeClass("novoProduto");
-        novo.show();
-        $(".trTotal").before(novo);
-        //$(".novoProduto").parent().append(novo);
-        var elem = novo.children();
+        var novaClasse = CopiarTRsMsgEProduto();
+        //verificamos se mostraremos as msgs
+        verificaRegras(novaClasse, produto);
+        //VerificarEstoque(itens, produto, novaClasse);
+        ////verificar aqui
+        //VerificarQtdeVendaPermitida(itens, produto, novaClasse);
+        debugger;
         InscreveLinhaProduto(produto, indice);
         indice++;
         $("#indice").val(indice);
@@ -473,19 +557,20 @@ define(["require", "exports", "../../DtosTs/DtoProdutos/SelectProdInfo", "../../
     //iremos inicializar as variaveis
     function PedidoAlterado() {
         //Forma pagamento
-        $("#enumFormaPagto").prop('selectedIndex', 0);
-        $("#enumFormaPagto").formSelect();
+        //$("#enumFormaPagto").prop('selectedIndex', 0);
+        //($("#enumFormaPagto") as any).formSelect();
         totalPedido();
         InicializaDadosPagto();
         dadosPagto.tipoFormaPagto;
         dadosPagto.pedidoAlterado();
-        zerarCamposDadosPagto();
-        console.log("voltou do dadosPagto pedidoalterado");
-        console.log(dadosPagto);
+        zerarCamposDadosPagto(true);
     }
-    function zerarCamposDadosPagto() {
-        console.log("entrou no");
+    function zerarCamposDadosPagto(editandoLinha) {
         var selecione;
+        if (editandoLinha) {
+            $("#enumFormaPagto").prop('selectedIndex', 0);
+            $("#enumFormaPagto").formSelect();
+        }
         //A vista   
         $("#Avista").css("display", "none");
         selecione = $("#opcaoPagtoAvista").children()[0];
@@ -523,52 +608,100 @@ define(["require", "exports", "../../DtosTs/DtoProdutos/SelectProdInfo", "../../
         $("#opcaoPagtoParcCartaoMaquineta").html(selecione);
         $("#opcaoPagtoParcCartaoMaquineta").formSelect();
     }
-    function RecalcularValoresSemCoeficiente(v) {
-        zerarCamposDadosPagto();
+    function RecalcularValoresSemCoeficiente(v, editandoLinha) {
+        zerarCamposDadosPagto(editandoLinha);
         InicializaDadosPagto();
-        debugger;
         if (v == "" || v == undefined || v == null || v == 0) {
             v = 1;
         }
         if (lstProdSelecionados.length > 0) {
             dadosPagto.enumFormaPagto = v;
             //estamos limpandos os campos
-            zerarCamposDadosPagto();
+            zerarCamposDadosPagto(editandoLinha);
             dadosPagto.qtdeParcVisa = qtdeParcVisa;
             dadosPagto.recalcularValoresComCoeficiente(v);
-            console.log("recalcularValoresComCoeficiente dadosPagto.msgErro: " + dadosPagto.msgErro);
+            debugger;
             if (dadosPagto.msgErro != "" && dadosPagto.msgErro != undefined) {
                 modalError();
                 var err = new Error_1.ErrorModal();
                 err.MostrarMsg(dadosPagto.msgErro);
+                dadosPagto.msgErro = "";
                 return false;
             }
-            console.log(dadosPagto);
             //afazer: mandar a lista para o select correspondente;
             AtribuirListaParaSelect();
             //vamos apagar a linha de produtos selecionados e montar novamente com os valores atualizados
             //remover todas as linhas da tabela para adicionar novamente.
-            removerTodosProdutos();
+            if (!editandoLinha) {
+                removerTodosProdutos();
+                lstProdSelecionados.forEach(function (value) {
+                    InserirNovoProduto(value, editandoLinha);
+                });
+            }
             //passando a lista recalculada
             lstProdSelecionados = dadosPagto.dtoPedido.ListaProdutos;
-            //estamos adicionando os produtos na tela
-            lstProdSelecionados.forEach(function (value) {
-                InserirNovoProduto(value);
-                VerificarEstoque(itens, value);
-                VerificarProdutoAviso(itens, value);
-                VerificarQtdeVendaPermitida(itens, value);
-            });
             //alterando o total do pedido
             totalPedido();
         }
     }
+    //estamos add e escondendo as msg para fazer a verificação
+    function CopiarTRsMsgEProduto() {
+        var indice = null;
+        indice = parseInt($("#indice").val().toString());
+        if (indice.toString() == "NaN") {
+            indice = 0;
+            $("indice").val(indice);
+        }
+        //criar nova classe
+        var novaClasse = "trProduto_" + indice;
+        debugger;
+        //novoProduto
+        var novoProduto = CriarLinha();
+        var htmlnovoProduto = $(".novoProduto").html();
+        htmlnovoProduto = htmlnovoProduto.replace(/trocarporindex/g, indice.toString());
+        novoProduto.html(htmlnovoProduto);
+        novoProduto.removeClass(".novoProduto");
+        novoProduto.addClass(novaClasse);
+        $(".trTotal").before(novoProduto);
+        //novoProdutoEstoque    
+        var novoProdEstoque = CriarLinha();
+        var htmlNovoProdEstoque = $(".novoProdutoEstoque").html();
+        novoProdEstoque.html(htmlNovoProdEstoque);
+        novoProdEstoque.removeClass(".novoProdutoEstoque");
+        novoProdEstoque.addClass(novaClasse);
+        novoProdEstoque.css("display", "none");
+        $(".trTotal").before(novoProdEstoque);
+        //novoProdutoQtdeMaxPermitida  display:none
+        var novoProdutoQtdeMaxPermitida = CriarLinha();
+        var htmlnovoProdutoQtdeMaxPermitida = $(".novoProdutoQtdeMaxPermitida").html();
+        novoProdutoQtdeMaxPermitida.html(htmlnovoProdutoQtdeMaxPermitida);
+        novoProdutoQtdeMaxPermitida.removeClass(".novoProdutoQtdeMaxPermitida");
+        novoProdutoQtdeMaxPermitida.addClass(novaClasse);
+        novoProdutoQtdeMaxPermitida.css("display", "none");
+        $(".trTotal").before(novoProdutoQtdeMaxPermitida);
+        //novoProdutoAviso
+        var novoProdutoAviso = CriarLinha();
+        var htmlnovoProdutoAviso = $(".novoProdutoAviso").html();
+        novoProdutoAviso.html(htmlnovoProdutoAviso);
+        novoProdutoAviso.removeClass(".novoProdutoAviso");
+        novoProdutoAviso.addClass(novaClasse);
+        novoProdutoAviso.css("display", "none");
+        $(".trTotal").before(novoProdutoAviso);
+        indice++;
+        $("#indice").val(indice);
+        return novaClasse;
+        function CriarLinha() {
+            return $('<tr><\tr>');
+        }
+    }
     window.recalcularValoresComCoeficiente = function (e) {
-        zerarCamposDadosPagto();
+        //zerarCamposDadosPagto();
         InicializaDadosPagto();
         //let v = e.selectedIndex;
         var v = parseInt(e.selectedOptions[0].value);
+        debugger;
         inicializaCampos(v);
-        RecalcularValoresSemCoeficiente(v);
+        RecalcularValoresSemCoeficiente(v, false);
         inicializaCampos(v);
     };
     function AtribuirListaParaSelect() {
@@ -629,25 +762,30 @@ define(["require", "exports", "../../DtosTs/DtoProdutos/SelectProdInfo", "../../
         dadosPagto.enumFormaPagto = enumFormaPagto; //variavel com a opção da forma de pagto selecionada
     }
     function InscreveLinhaProduto(produto, index) {
+        console.log(index);
         var texto = $("<div></div>");
         texto.html(produto.Descricao);
         $('[name="[' + index + '].NumProduto"]').text(produto.Fabricante + "/" + produto.NumProduto + " - " + texto.text());
         $('[name="[' + index + '].NumProduto"]').val(produto.NumProduto); //campo type hidden = passar para model
+        $('[name="[' + index + '].Fabricante"]').val(produto.Fabricante);
         $('[name="[' + index + '].Qtde"]').val(produto.Qtde);
         $('[name="[' + index + '].Preco"]').val(moedaUtils.formatarMoedaSemPrefixo(produto.Preco));
         $('[name="[' + index + '].VlLista"]').text(moedaUtils.formatarMoedaSemPrefixo(produto.VlLista));
+        $('[name="[' + index + '].VlLista"]').val(moedaUtils.formatarMoedaSemPrefixo(produto.VlLista));
         $('[name="[' + index + '].Desconto"]').val(produto.Desconto);
         $('[name="[' + index + '].VlUnitario"]').val(moedaUtils.formatarMoedaSemPrefixo(produto.VlUnitario));
         $('[name="[' + index + '].VlTotalItem"]').text(moedaUtils.formatarMoedaSemPrefixo(produto.TotalItem));
+        $('[name="[' + index + '].VlTotalItem"]').val(moedaUtils.formatarMoedaSemPrefixo(produto.TotalItem));
     }
-    function VerificarEstoque(itens, produto) {
+    function VerificarEstoque(itens, produto, novaClasse) {
+        debugger;
+        //será necessário alterar a verificação pq não estamos trazendo o estoque ao carregar todos produtos
+        var filho = $("." + novaClasse + "").find("[name='estoqueIndisponivel']");
         if (itens.estoqueExcedido(produto)) {
-            var novo = $("<tr><\tr>");
-            var html = $(".novoProdutoEstoque").html();
-            novo.html(html);
-            novo.removeClass(".novoProdutoEstoque");
-            novo.show();
-            $(".novoProduto").parent().append(novo);
+            filho.parent().show();
+        }
+        else {
+            filho.parent().hide();
         }
     }
     function VerificarProdutoAviso(itens, produto) {
@@ -659,66 +797,209 @@ define(["require", "exports", "../../DtosTs/DtoProdutos/SelectProdInfo", "../../
             novo.show();
             $(".novoProduto").parent().append(novo);
         }
-        //itens.dtoPedido.ListaProdutos.forEach(function (i) {
-        //    if (itens.produtoTemAviso(i)) {
-        //        let novo = $("<tr><\tr>");
-        //        let html = $(".novoProdutoAviso").html();
-        //        novo.html(html);
-        //        novo.removeClass(".novoProdutoAviso");
-        //        novo.show();
-        //        $(".novoProduto").parent().append(novo);
-        //    }
-        //});
     }
-    function VerificarQtdeVendaPermitida(itens, produto) {
-        itens.msgQtdePermitida;
-        if (itens.produtoTemAviso(produto)) {
-            var novo = $("<tr><\tr>");
-            var html = $(".novoProdutoQtdeMaxPermitida").html();
-            novo.html(html);
-            novo.removeClass(".novoProdutoQtdeMaxPermitida");
-            novo.show();
-            $(".novoProduto").parent().append(novo);
+    window.AdicionarMsgProdutoECDTela = function (v, novaClasse) {
+        AdicionarMsgProdutoECD(v, novaClasse);
+    };
+    //Metodo para atribuir as msg de retorno sobre o produto e o CD
+    function AdicionarMsgProdutoECD(v, novaClasse) {
+        //precisa criar um campo para receber a msg sobre o CD selecionado
+        var data = new Array();
+        data = v;
+        debugger;
+        //msg referente ao cd
+        $("#divMsgCD").css('display', 'block');
+        debugger;
+        //vamos verificar o retorno para mostrar as msg que estão retornando do servidor
+        if (data != undefined) {
+            //span estoqueIndisponivel
+            //pai.hide();
+            data.forEach(function (linha) {
+                if (linha.indexOf("PRODUTO SEM PRESENÇA") != -1) {
+                    var span = $("." + novaClasse + "").find('[name="produtoAviso"]');
+                    var pai = span.parent().parent();
+                    span.text(linha);
+                    span.css('color', 'red');
+                    pai.show();
+                }
+                if (linha.indexOf("define o CD") != -1) {
+                    $("#msgCD").text(data[0]);
+                }
+            });
         }
     }
-    function continuar() {
+    function VerificarQtdeVendaPermitida(itens, produto, novaClasse) {
+        itens.msgQtdePermitida;
+        //será necessário alterar a verificação
+        var filho = $("." + novaClasse + "").find("[name='msgQtdePermitida']");
+        //msgQtdePermitida = filho span do tr
+        if (itens.qtdeVendaPermitida(produto)) {
+            filho.text(itens.msgQtdePermitida);
+            filho.parent().parent().show(); //pai
+        }
+        else {
+            //esconderemos a linha
+            filho.parent().parent().hide(); //pai
+        }
+    }
+    //declare function continuar(): any;
+    //window.continuar = () => {
+    //    if (!continuar()) {
+    //        return false;
+    //    }
+    //    //continuar();
+    //}
+    //iremos fazer a validação na tela
+    window.continuar = function () {
         debugger;
         var err = new Error_1.ErrorModal();
         //verificar se tem produtos com qtde maior que o permitido
         var q = 0;
-        dadosPagto.dtoPedido.ListaProdutos.forEach(function (r) {
-            if (itens.qtdeVendaPermitida(r)) {
-                q++;
-            }
-        });
-        //this.prePedidoDto.ListaProdutos.forEach(r => {
-        //    if (this.qtdeVendaPermitida(r)) {
-        //        q++;
-        //    }
-        //});
-        if (q > 0) {
+        if ($("#chkSemIndicacao").prop('checked') == false && $("#chkComIndicacao").prop('checked') == false) {
             modalError();
-            err.MostrarMsg("Produtos com quantidades maiores que a quantidade máxima permitida para venda!");
-            //this.alertaService.mostrarMensagem("Produtos com quantidades maiores que a quantidade máxima permitida para venda!");
-            return;
+            err.MostrarMsg("Informe se o pedido é com ou sem indicação!");
+            return false;
         }
-        //validação: tem que ter algum produto
-        if (dadosPagto.dtoPedido.ListaProdutos.length === 0) {
+        if (dadosPagto.dtoPedido == null || dadosPagto.dtoPedido == undefined) {
             modalError();
             err.MostrarMsg("Selecione ao menos um produto para continuar.");
-            //this.alertaService.mostrarMensagem("Selecione ao menos um produto para continuar.");
-            return;
-        }
-        //verifica se a forma de pgamento tem algum aviso
-        if (!dadosPagto.podeContinuar(true)) {
-            return;
-        }
-        var numeroPrepedido = this.activatedRoute.snapshot.params.numeroPrepedido;
-        if (!!numeroPrepedido) {
-            this.router.navigate(["../../observacoes"], { relativeTo: this.activatedRoute });
+            return false;
         }
         else {
-            this.router.navigate(["../observacoes"], { relativeTo: this.activatedRoute });
+            dadosPagto.dtoPedido.ListaProdutos.forEach(function (r) {
+                if (itens.qtdeVendaPermitida(r)) {
+                    q++;
+                }
+            });
+            if (q > 0) {
+                modalError();
+                err.MostrarMsg("Produtos com quantidades maiores que a quantidade máxima permitida para venda!");
+                //this.alertaService.mostrarMensagem("Produtos com quantidades maiores que a quantidade máxima permitida para venda!");
+                return;
+            }
+            //validação: tem que ter algum produto
+            if (dadosPagto.dtoPedido.ListaProdutos.length === 0) {
+                modalError();
+                err.MostrarMsg("Selecione ao menos um produto para continuar.");
+                //this.alertaService.mostrarMensagem("Selecione ao menos um produto para continuar.");
+                return;
+            }
+            AtribuirFormaPagtoParaDadosPagto();
+            //verifica se a forma de pgamento tem algum aviso
+            if (!dadosPagto.podeContinuar(true)) {
+                //verificar se a forma de pagamento está preenchida
+                //necessário atribuir a forma de pagmento para dadosPagto
+                if (dadosPagto.msgErro != "") {
+                    modalError();
+                    err.MostrarMsg(dadosPagto.msgErro);
+                    return false;
+                }
+                return;
+            }
+            else {
+                debugger;
+                //vamos tentar retornar o objeto serializado para a tela mandar para o controller
+                dadosPagto.novoPedidoDadosService.dtoPedido.FormaPagtoCriacao = dadosPagto.dtoPedido.FormaPagtoCriacao;
+                dadosPagto.novoPedidoDadosService.dtoPedido.ListaProdutos = dadosPagto.dtoPedido.ListaProdutos;
+                //$("#lstProdutosSelecionados").val(dadosPagto.novoPedidoDadosService.dtoPedido.ListaProdutos.toString());
+                $("#lstProdutosSelecionados").val(itens.dtoPedido.ListaProdutos.toString());
+                //criar metodo para passar os campos para FormaPagtoCriacao
+                if (AtribuirValoresFormaPagtoCriacao()) {
+                    return true;
+                }
+                //AtribuirValoresFormaPagtoCriacao();
+            }
+        }
+    };
+    function AtribuirValoresFormaPagtoCriacao() {
+        debugger;
+        var totalPedido = $("#totalPedido").text().trim();
+        $("#Tipo_parcelamento").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Tipo_parcelamento);
+        $("#TotalDestePedido").val(moedaUtils.formatarMoedaSemPrefixo(dadosPagto.dtoPedido.VlTotalDestePedido));
+        if (dadosPagto.enumFormaPagto == 1) {
+            $("#Rb_forma_pagto").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Rb_forma_pagto);
+            $("#Op_av_forma_pagto").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Op_av_forma_pagto);
+            $("#Qtde_Parcelas").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Qtde_Parcelas);
+            return true;
+        }
+        //ParcCartaoInternet
+        if (dadosPagto.enumFormaPagto == 2) {
+            //Verificar se há necessidade de passar o valores para esse 
+            $("#Rb_forma_pagto").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Rb_forma_pagto);
+            $("#C_pc_qtde").val(dadosPagto.dtoPedido.FormaPagtoCriacao.C_pc_qtde);
+            $("#C_pc_valor").val(moedaUtils.formatarMoedaSemPrefixo(dadosPagto.dtoPedido.FormaPagtoCriacao.C_pc_valor));
+            $("#Qtde_Parcelas").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Qtde_Parcelas);
+            return true;
+        }
+        //ParcComEnt
+        if (dadosPagto.enumFormaPagto == 3) {
+            //dadosPagto.vlEntrada já foi passado para calcular os valores com coeficiente
+            $("#Rb_forma_pagto").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Rb_forma_pagto);
+            $("#Op_pce_entrada_forma_pagto").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Op_pce_entrada_forma_pagto);
+            $("#Op_pce_prestacao_forma_pagto").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto);
+            $("#C_pce_entrada_valor").val(moedaUtils.formatarMoedaSemPrefixo(dadosPagto.dtoPedido.FormaPagtoCriacao.C_pce_entrada_valor));
+            $("#C_pce_prestacao_qtde").val(dadosPagto.dtoPedido.FormaPagtoCriacao.C_pce_prestacao_qtde);
+            $("#C_pce_prestacao_valor").val(moedaUtils.formatarMoedaSemPrefixo(dadosPagto.dtoPedido.FormaPagtoCriacao.C_pce_prestacao_valor));
+            $("#C_pce_prestacao_periodo").val(dadosPagto.dtoPedido.FormaPagtoCriacao.C_pce_prestacao_periodo);
+            $("#Qtde_Parcelas").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Qtde_Parcelas);
+            return true;
+        }
+        //ParcSemEnt não esta sendo usado
+        if (dadosPagto.enumFormaPagto == 4) {
+        }
+        //ParcUnica
+        if (dadosPagto.enumFormaPagto == 5) {
+            $("#Rb_forma_pagto").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Rb_forma_pagto);
+            $("#Op_pu_forma_pagto").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Op_pu_forma_pagto);
+            $("#C_pu_valor").val(moedaUtils.formatarMoedaSemPrefixo(dadosPagto.dtoPedido.FormaPagtoCriacao.C_pu_valor));
+            $("#C_pu_vencto_apos").val(dadosPagto.dtoPedido.FormaPagtoCriacao.C_pu_vencto_apos);
+            $("#Qtde_Parcelas").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Qtde_Parcelas);
+            return true;
+        }
+        //ParcCartaoMaquineta
+        if (dadosPagto.enumFormaPagto == 6) {
+            $("#Rb_forma_pagto").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Rb_forma_pagto);
+            $("#C_pc_maquineta_qtde").val(dadosPagto.dtoPedido.FormaPagtoCriacao.C_pc_maquineta_qtde);
+            $("#C_pc_maquineta_valor").val(moedaUtils.formatarMoedaSemPrefixo(dadosPagto.dtoPedido.FormaPagtoCriacao.C_pc_maquineta_valor));
+            $("#C_pc_maquineta_qtde").val(dadosPagto.dtoPedido.FormaPagtoCriacao.C_pc_maquineta_qtde);
+            $("#Qtde_Parcelas").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Qtde_Parcelas);
+            return true;
+        }
+    }
+    function AtribuirFormaPagtoParaDadosPagto() {
+        var err = new Error_1.ErrorModal();
+        //vamos inicializar o dadosPagto.dtoPedido.FormaPagtoCriacao
+        dadosPagto.dtoPedido.FormaPagtoCriacao = new DtoFormaPagtoCriacao_1.DtoFormaPagtoCriacao();
+        dadosPagto.novoPedidoDadosService = new NovoPepedidoDadosService_1.NovoPedidoDadosService();
+        dadosPagto.novoPedidoDadosService.criarNovo();
+        dadosPagto.dtoPedido.FormaPagtoCriacao = new DtoFormaPagtoCriacao_1.DtoFormaPagtoCriacao();
+        //A vista
+        if (dadosPagto.enumFormaPagto == 1) {
+            dadosPagto.meioPagtoAVista = parseInt($("#meioPagtoAVista").val().toString());
+            dadosPagto.opcaoPagtoAvista = $("#opcaoPagtoAvista").val().toString();
+        }
+        //ParcCartaoInternet
+        if (dadosPagto.enumFormaPagto == 2) {
+            //Verificar se há necessidade de passar o valores para esse 
+        }
+        //ParcComEnt
+        if (dadosPagto.enumFormaPagto == 3) {
+            //dadosPagto.vlEntrada já foi passado para calcular os valores com coeficiente
+            dadosPagto.meioPagtoEntradaPrest = parseInt($("#meioPagtoEntradaPrest").val().toString());
+            dadosPagto.meioPagtoEntrada = parseInt($("#meioPagtoEntrada").val().toString());
+            dadosPagto.diasVenc = parseInt($("#diasVenc").val().toString());
+            dadosPagto.opcaoPagtoParcComEntrada = $("#opcaoPagtoParcComEntrada").val().toString();
+        }
+        //ParcSemEnt não esta sendo usado
+        if (dadosPagto.enumFormaPagto == 4) {
+        }
+        //ParcUnica
+        if (dadosPagto.enumFormaPagto == 5) {
+            dadosPagto.opcaoPagtoParcCartaoInternet = $("#opcaoPagtoParcCartaoInternet").val().toString();
+        }
+        //ParcCartaoMaquineta
+        if (dadosPagto.enumFormaPagto == 6) {
+            dadosPagto.opcaoPagtoParcCartaoMaquineta = $("#opcaoPagtoParcCartaoMaquineta").val().toString();
         }
     }
 });

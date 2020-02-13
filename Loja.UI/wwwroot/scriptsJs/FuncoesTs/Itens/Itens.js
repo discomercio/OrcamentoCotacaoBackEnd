@@ -1,7 +1,6 @@
 /* nao editar, arquivo compilado pelo typescript*/ 
 /* nao editar, arquivo compilado pelo typescript*/ 
 /* nao editar, arquivo compilado pelo typescript*/ 
-/* nao editar, arquivo compilado pelo typescript*/ 
 define(["require", "exports", "../../DtosTs/DtoPedido/DtoPedidoProdutosPedido", "../../DtosTs/DtoProdutos/DtoProduto", "../../DtosTs/DtoPedido/DtoPedido", "../../UtilTs/MoedaUtils/moedaUtils"], function (require, exports, DtoPedidoProdutosPedido_1, DtoProduto_1, DtoPedido_1, moedaUtils_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -15,6 +14,7 @@ define(["require", "exports", "../../DtosTs/DtoPedido/DtoPedidoProdutosPedido", 
             //const this.selectProdInfo = new SelectProdInfo();
             this.selectProdInfo.produtoComboDto = this.dtoProdutoCombo;
             if (linha) {
+                debugger;
                 this.selectProdInfo.Produto = linha.NumProduto;
                 this.selectProdInfo.Fabricante = linha.Fabricante;
                 this.selectProdInfo.Qte = linha.Qtde;
@@ -45,7 +45,7 @@ define(["require", "exports", "../../DtosTs/DtoPedido/DtoPedidoProdutosPedido", 
                             this.dtoPedido.ListaProdutos = this.dtoPedido.ListaProdutos.filter(function (el) { return el != linha; });
                             //colcoamos todos os novos
                             for (var i = 0; i < filhosDiretos.length; i++) {
-                                var novo = new DtoPedidoProdutosPedido_1.DtoPedidoProdutosPedido();
+                                var novo = new DtoPedidoProdutosPedido_1.PedidoProdutosDtoPedido();
                                 this.dtoPedido.ListaProdutos.push(novo);
                                 this.atualizarProduto(novo, filhosDiretos[i].Fabricante, filhosDiretos[i].Produto, this.selectProdInfo.Qte * filhosDiretos[i].Qtde);
                             }
@@ -73,7 +73,7 @@ define(["require", "exports", "../../DtosTs/DtoPedido/DtoPedidoProdutosPedido", 
                     var filhosDiretos = this.filhosDeProdutoComposto(this.selectProdInfo);
                     if (!filhosDiretos) {
                         //não é produto composto
-                        var novo = new DtoPedidoProdutosPedido_1.DtoPedidoProdutosPedido();
+                        var novo = new DtoPedidoProdutosPedido_1.PedidoProdutosDtoPedido();
                         this.dtoPedido.ListaProdutos = new Array();
                         this.dtoPedido.ListaProdutos.push(novo);
                         this.atualizarProduto(novo, this.selectProdInfo.Fabricante, this.selectProdInfo.Produto, this.selectProdInfo.Qte);
@@ -83,7 +83,7 @@ define(["require", "exports", "../../DtosTs/DtoPedido/DtoPedidoProdutosPedido", 
                         debugger;
                         this.dtoPedido.ListaProdutos = new Array();
                         for (var i = 0; i < filhosDiretos.length; i++) {
-                            var novo = new DtoPedidoProdutosPedido_1.DtoPedidoProdutosPedido();
+                            var novo = new DtoPedidoProdutosPedido_1.PedidoProdutosDtoPedido();
                             this.dtoPedido.ListaProdutos.push(novo);
                             this.atualizarProduto(novo, filhosDiretos[i].Fabricante, filhosDiretos[i].Produto, this.selectProdInfo.Qte * filhosDiretos[i].Qtde);
                         }
@@ -230,6 +230,7 @@ define(["require", "exports", "../../DtosTs/DtoPedido/DtoPedidoProdutosPedido", 
         Itens.prototype.qtdeVendaPermitida = function (i) {
             //busca o item na lista
             this.msgQtdePermitida = "";
+            debugger;
             var item = this.estoqueItem(i);
             if (!item) {
                 return false;

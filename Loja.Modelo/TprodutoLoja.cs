@@ -29,7 +29,8 @@ namespace Loja.Modelos
         [MaxLength(3)]
         public string Loja { get; set; }
 
-        //[ForeignKey("fabricante,produto")]
+        
+        //[ForeignKey("fabricante, produto")]
         public Tproduto Tproduto{ get; set; }
 
         [Column("preco_lista")]

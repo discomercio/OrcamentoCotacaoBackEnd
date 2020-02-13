@@ -1,27 +1,10 @@
 ﻿import { StringUtils } from "../../stringUtils/stringUtils";
 
+
 export class FormatarTelefone {
     //     ' ------------------------------------------------------------------------
     // '   TELEFONE_FORMATA
     // ' 
-    static telefoneCelular(telefone: string, ddd: string): string {
-        
-        if (!telefone || !ddd) {
-            return "";
-        }
-        let s2 = "";
-        if (!telefone || !ddd)
-            return "";
-        if (telefone.trim() == "" || ddd.trim() == "")
-            return "";
-
-        s2 = FormatarTelefone.telefone_formata(telefone);
-        let s_aux = ddd.trim();
-        if (s_aux != "")
-            s2 = "(" + s_aux + ") " + s2;
-        return s2;
-    }
-
     static telefone_formata(telefone: string): string {
         let s_tel = "";
         s_tel = "" + telefone;
@@ -72,8 +55,6 @@ export class FormatarTelefone {
     //máscara para digitar telefones de 8 ou 9 dígitos
     //usando o angular2-text-mask
     static mascaraTelefone(userInput: string) {
-        if (!userInput)
-            userInput = "";
         let numbers = StringUtils.retorna_so_digitos(userInput);
         if (numbers.length > 10) {
             return ['(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
@@ -95,6 +76,8 @@ export class FormatarTelefone {
 
 
 }
+
+
 class TelefoneSeparado {
     public Ddd: string;
     public Telefone: string;

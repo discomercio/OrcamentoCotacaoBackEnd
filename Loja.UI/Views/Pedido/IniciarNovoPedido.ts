@@ -2,7 +2,7 @@
 import { SelectProdInfo } from "../../DtosTs/DtoProdutos/SelectProdInfo";
 import { Itens } from "../../FuncoesTs/Itens/Itens";
 import { DtoPedido } from "../../DtosTs/DtoPedido/DtoPedido";
-import { DtoPedidoProdutosPedido } from "../../DtosTs/DtoPedido/DtoPedidoProdutosPedido";
+import { PedidoProdutosDtoPedido } from "../../DtosTs/DtoPedido/DtoPedidoProdutosPedido";
 import { MoedaUtils } from "../../UtilTs/MoedaUtils/moedaUtils";
 import { NovoPedidoDadosService } from "../../Services/NovoPepedidoDadosService";
 import { DadosPagto } from "../../FuncoesTs/DadosPagto/DadosPagto";
@@ -12,6 +12,7 @@ import { Constantes } from "../../UtilTs/Constantes/Constantes";
 import { DtoProduto } from "../../DtosTs/DtoProdutos/DtoProduto";
 import { ErrorModal } from "../Shared/Error";
 import { PercentualMaxDescEComissao } from "../../DtosTs/DtoPedido/PercentualMaxDescEComissao";
+import { DtoFormaPagtoCriacao } from "../../DtosTs/DtoPedido/DtoFormaPagtoCriacao";
 
 
 //moedaUtils.formatarPorcentagemUmaCasa(i.Desconto)
@@ -20,7 +21,7 @@ declare var ProdutoDto: DtoProduto;
 declare var itens: Itens;
 itens = new Itens();
 //essa variavel esta sendo usada para armazenar os itens selecionados pelo cliente
-declare var lstProdSelecionados: DtoPedidoProdutosPedido[];
+declare var lstProdSelecionados: PedidoProdutosDtoPedido[];
 declare var window: any;
 declare var indice: number;
 declare var moedaUtils: MoedaUtils;
@@ -33,6 +34,8 @@ declare var qtdeParcVisa: number;
 //alert("alterdado6 " + formata.formatarMoedaComPrefixo(123));
 
 declare function modalError(): any;
+declare function verificarRegraProdutoCD(novaClasse: string, produto:PedidoProdutosDtoPedido): any;
+declare function AbrirModalProdutos(): any;
 
 
 function inicializaCampos(v: number) {
@@ -118,34 +121,105 @@ $("#divCOM").children().find("input").prop('disabled', true);
 $("#chkSemRa").prop("checked", true);
 $("#chkComRa").click(() => {
     $("#chkSemRa").prop("checked", false);
+    $("#chkSemRa").val(0);
     $("#divCOM").children().find("input").prop('disabled', false);
+    $("#chkComRa").val(1);
 });
 $("#chkSemRa").click(() => {
     $("#chkComRa").prop("checked", false);
+    $("#chkComRa").val(0);
     $("#divCOM").children().find("input").prop('disabled', true);
+    $("#chkSemRa").val(1);
 });
 
 
 $("#divIndicadores").children().find("input").prop('disabled', true);
-$("#chkSemIndicacao").prop("checked", true);
+//$("#chkSemIndicacao").prop("checked", true);
 $("#chkSemIndicacao").click(() => {
     $("#chkComIndicacao").prop("checked", false);
+    $("#chkComIndicacao").val(0);
     $("#divIndicadores").children().find("input").prop('disabled', true);
-});
-$("#chkComIndicacao").click(() => {
-    $("#chkSemIndicacao").prop("checked", false);
-    $("#divIndicadores").children().find("input").prop('disabled', false);
+    $("#chkSemIndicacao").val(1);
 });
 
-$("#chkAutomatico").prop("checked", true);
+if ($("#chkComIndicacao").prop('checked') == true) {
+    $("#divIndicadores").children().find("input").prop('disabled', false);
+    $("#chkComIndicacao").prop('checked', true);
+    $("#chkComIndicacao").val(1);
+}
+
+$("#chkComIndicacao").click(() => {
+    $("#chkSemIndicacao").prop("checked", false);
+    $("#chkSemIndicacao").val(0);
+    $("#divIndicadores").children().find("input").prop('disabled', false);
+    $("#chkComIndicacao").val(1);
+});
+
+$("#btnModalProdutos").click(function () {
+    let err = new ErrorModal();
+
+    if ($("#chkSemIndicacao").prop('checked') == false && $("#chkComIndicacao").prop('checked') == false) {
+        modalError();
+        err.MostrarMsg("Informe se o pedido é com indicação ou não!");
+        return false;
+    }
+    if ($("#chkComIndicacao").prop('checked') == true &&
+        ($("#indicador").val() == "0" || $("#indicador").val() == undefined)) {
+        modalError();
+        err.MostrarMsg('Selecione o "indicador"!');
+        return false;
+    }
+
+    if ($("#chkManual").prop("checked") == false && $("#chkAutomatico").prop("checked") == false) {
+        modalError();
+        err.MostrarMsg("Necessário selecionar o modo de seleção do CD");
+        return false;
+    }
+    else if ($("#chkManual").prop("checked") == true) {
+        debugger;
+        let selecaoCD: any = $("#selecaoCd").val();
+        if (selecaoCD == "0") {
+            modalError();
+            err.MostrarMsg("É necessário selecionar o CD que irá atender o pedido(sem auto-split)!");
+            return false;
+        }
+    }
+    AbrirModalProdutos();
+    return true;
+});
+
+
+//$("#chkAutomatico").prop("checked", false);
 $("#divSelecaoCd").children().find("input").prop('disabled', true);
 $("#chkAutomatico").click(() => {
+    $("#chkAutomatico").val(1);
     $("#chkManual").prop("checked", false);
+    $("#chkManual").val(0);
     $("#divSelecaoCd").children().find("input").prop('disabled', true);
+    $("#msgCD").text('');
+    removerTodosProdutos();
+    lstProdSelecionados = new Array<PedidoProdutosDtoPedido>();
+    zerarCamposDadosPagto(true);
+    totalPedido();
 });
-$("#chkManual").click(() => {
-    $("#chkAutomatico").prop("checked", false);
+if ($("#chkManual").prop('checked') == true) {
+    $("#chkManual").val(1);
+    $("#chkManual").prop('checked', true);
+    $("#chkManual").val(0);
     $("#divSelecaoCd").children().find("input").prop('disabled', false);
+    $("#msgCD").text('');
+}
+
+$("#chkManual").click(() => {
+    $("#chkManual").val(1);
+    $("#chkAutomatico").prop("checked", false);
+    $("#chkAutomatico").val(0);
+    $("#divSelecaoCd").children().find("input").prop('disabled', false);
+    $("#msgCD").text('');
+    removerTodosProdutos();
+    lstProdSelecionados = new Array<PedidoProdutosDtoPedido>();
+    zerarCamposDadosPagto(true);
+    totalPedido();
 });
 
 //limpando campos ao fechar a modal
@@ -178,18 +252,26 @@ $("#percComissao").keyup(() => {
     $("#percComissao").val(moedaUtils.formatarMoedaSemPrefixo(val));
 });
 
+$("#selecaoCd").change(function () {
+    $("#msgCD").text('');
+    removerTodosProdutos();
+    lstProdSelecionados = new Array<PedidoProdutosDtoPedido>();
+    totalPedido();
+
+});
+
+
+
 declare var percMaxDescEComissaoPorLoja: PercentualMaxDescEComissao;
 
 window.VerificarPercMaxDescEComissao = (e: HTMLInputElement) => {
-    debugger;
-
     let valor = e.value;
     let val: any = valor.replace(/\D/g, '');
 
     val = (val / 100).toFixed(2) + '';
     e.value = moedaUtils.formatarMoedaSemPrefixo(val);
 
-    
+
     let msgErro: string = "";
     let percMax = new PercentualMaxDescEComissao()
     percMax = percMaxDescEComissaoPorLoja;
@@ -234,13 +316,13 @@ window.InserirProdutoLinha = () => {
         itens.dtoPedido = new DtoPedido();
         itens.mostrarProdutos(null);
 
-        //essa lista é a que esta sendo utilizada para pegar valores da tela 
+
         //estamos arrumando a qtde, verificando se existe e inserindo o produto
         arrumarProdsRepetidosTeste();
         //remover todas as linhas da tabela para adicionar novamente.
         removerTodosProdutos();
 
-        RecalcularValoresSemCoeficiente(null);
+        RecalcularValoresSemCoeficiente(null, false);
 
         PedidoAlterado();
         //limpar tirar o check do produto selecionado
@@ -250,8 +332,6 @@ window.InserirProdutoLinha = () => {
             return true;
         });
 
-
-        console.log("InserirProdutoLinha itens.msgErro: " + itens.msgErro);
         if (itens.msgErro != "" && itens.msgErro != undefined) {
             modalError();
             let err = new ErrorModal();
@@ -263,11 +343,17 @@ window.InserirProdutoLinha = () => {
     }
 }
 
+
+
+function verificaRegras(novaClasse: string, produto : PedidoProdutosDtoPedido): void {
+
+    verificarRegraProdutoCD(novaClasse, produto);
+}
+
 window.PreparaListaProdutosParaDataList = (): Array<string> => {
     let lstProdutosPreparadoParaDataList = new Array<string>();
     let t = {};
-    console.log("preparando a lista");
-    console.log(lstprodutos);
+
     lstprodutos.ProdutoDto.forEach((v) => {
         lstProdutosPreparadoParaDataList.push(v.Produto);
     });
@@ -293,7 +379,7 @@ function arrumarProdsRepetidosTeste() {
                     itens.digitouQte(prod);
                     //dadosPagto inicializar
                     PedidoAlterado();
-
+                    debugger;
                     exist = true;
                 }
             });
@@ -331,7 +417,7 @@ function totalPedido() {
 function removerTodosProdutos() {
     let tbody: any = $(".novoProduto").parent();
     let tbodyCount: number = tbody.children().length;
-    console.log(tbodyCount);
+
 
     if (tbodyCount >= 4) {
         for (tbodyCount; tbodyCount > 4; tbodyCount--) {
@@ -341,7 +427,9 @@ function removerTodosProdutos() {
             }
         }
     }
+
     indice = 0;
+    $("#indice").val(indice);
 }
 declare var enumFormaPagto: EnumFormaPagto;
 
@@ -355,19 +443,23 @@ window.removerLinha = (v: HTMLElement) => {
         let t = v as HTMLElement;
         //pegando o tr
         let linha: any = t.closest("tr");// t.parentElement.parentElement.parentElement.parentElement;
-        linha.remove();
+        let classeName = linha.className;
+        $("." + classeName + "").remove();
+        //linha.remove();
 
         //pegando o td
         let codProduto: string = linha.cells[0].children[0].value;
         //pegando o produto para alterar o valor
 
-        let produto: DtoPedidoProdutosPedido[] = new Array<DtoPedidoProdutosPedido>();
+        let produto: PedidoProdutosDtoPedido[] = new Array<PedidoProdutosDtoPedido>();
         produto = lstProdSelecionados.filter(e => e.NumProduto == codProduto);
 
         let i = lstProdSelecionados.indexOf(produto[0]);
         lstProdSelecionados.splice(i, 1);
 
-        console.log(lstProdSelecionados);
+
+        let indice: number = parseInt($("#indice").val().toString());
+        $("#indice").val(indice--);
 
         //recalcular o pedido
         //Gabriel
@@ -375,7 +467,7 @@ window.removerLinha = (v: HTMLElement) => {
         totalPedido();
     }
 
-    zerarCamposDadosPagto();
+    zerarCamposDadosPagto(false);
 }
 
 //altera valor total do item digitado
@@ -390,22 +482,32 @@ window.digitouQtde = (v: HTMLInputElement) => {
 
     lstProdSelecionados = dadosPagto.dtoPedido.ListaProdutos;
     //pegando o produto para alterar o valor
-    let produto: DtoPedidoProdutosPedido[] = lstProdSelecionados.filter(e => e.NumProduto == codProduto);
+    let produto: PedidoProdutosDtoPedido[] = lstProdSelecionados.filter(e => e.NumProduto == codProduto);
     produto[0].Qtde = parseInt(v.value);
     itens.digitouQte(produto[0]);
+    let classeLinha = linha.className;
+
+    VerificarQtdeVendaPermitida(itens, produto[0], classeLinha);
+    VerificarEstoque(itens, produto[0], classeLinha);
+
+
     //dadosPagto inicializar
     PedidoAlterado();
 
     itens.dtoPedido.ListaProdutos = lstProdSelecionados;
 
-    RecalcularValoresSemCoeficiente(null);
+
+
+    RecalcularValoresSemCoeficiente(null, true);
+
+
     ////passando para o valor para tela
     linha.children[4].children[0].children[0].value = moedaUtils.formatarMoedaSemPrefixo(produto[0].VlUnitario);
     linha.children[5].textContent = moedaUtils.formatarMoedaSemPrefixo(produto[0].TotalItem);
 
     PedidoAlterado();//chamamos aqui para inicializar as variaveis
     //dadosPagto.prepedidoAlterado();
-    zerarCamposDadosPagto();
+    zerarCamposDadosPagto(true);
 }
 
 //Dessa forma eu consigo utilizar a modal de erro
@@ -432,7 +534,7 @@ window.digitouDesc = (v: HTMLInputElement) => {
     //pegar o valor para buscar na lista
     let linha: any = v.parentElement.parentElement.parentElement;
     let numProduto: string = linha.children[0].children[0].value;
-    let r: DtoPedidoProdutosPedido[] = new Array<DtoPedidoProdutosPedido>();
+    let r: PedidoProdutosDtoPedido[] = new Array<PedidoProdutosDtoPedido>();
     r = lstProdSelecionados.filter(e => e.NumProduto == numProduto);
     //r[0].Desconto = val;
     itens.digitouDescValor(r[0], val);
@@ -440,11 +542,11 @@ window.digitouDesc = (v: HTMLInputElement) => {
     dadosPagto.dtoPedido.ListaProdutos = lstProdSelecionados;
     //RecalcularValoresSemCoeficiente(null);
     totalPedido();
+    debugger;
+    linha.children[6].textContent = moedaUtils.formatarMoedaSemPrefixo(r[0].TotalItem);
+    linha.children[5].children[0].children[0].value = moedaUtils.formatarMoedaSemPrefixo(r[0].VlUnitario);
 
-    linha.children[5].textContent = moedaUtils.formatarMoedaSemPrefixo(r[0].TotalItem);
-    linha.children[4].children[0].children[0].value = moedaUtils.formatarMoedaSemPrefixo(r[0].VlUnitario);
-
-    zerarCamposDadosPagto();
+    zerarCamposDadosPagto(true);
 
 }
 
@@ -457,7 +559,7 @@ window.digitouVlVenda = (v: HTMLInputElement) => {
 
     let linha: any = v.parentElement.parentElement.parentElement;
     let numProduto: string = linha.children[0].children[0].value;
-    let r: DtoPedidoProdutosPedido[] = new Array<DtoPedidoProdutosPedido>();
+    let r: PedidoProdutosDtoPedido[] = new Array<PedidoProdutosDtoPedido>();
     r = lstProdSelecionados.filter(e => e.NumProduto == numProduto);
 
     r[0].VlUnitario = parseFloat(val);
@@ -469,12 +571,12 @@ window.digitouVlVenda = (v: HTMLInputElement) => {
     itens.digitouQte(r[0]);
     //dadosPagto inicializar
     PedidoAlterado();
+    debugger;
+    linha.children[4].children[0].children[0].value = moedaUtils.formatarPorcentagemUmaCasa(r[0].Desconto);
+    linha.children[5].children[0].children[0].value = moedaUtils.formatarMoedaSemPrefixo(r[0].VlUnitario);
+    linha.children[6].textContent = moedaUtils.formatarMoedaSemPrefixo(r[0].TotalItem);
 
-    linha.children[3].children[0].children[0].value = moedaUtils.formatarPorcentagemUmaCasa(r[0].Desconto);
-    linha.children[4].children[0].children[0].value = moedaUtils.formatarMoedaSemPrefixo(r[0].VlUnitario);
-    linha.children[5].textContent = moedaUtils.formatarMoedaSemPrefixo(r[0].TotalItem);
-
-    zerarCamposDadosPagto();
+    zerarCamposDadosPagto(true);
 }
 //PermiteRA
 window.digitouPreco = (v: HTMLInputElement) => {
@@ -486,7 +588,7 @@ window.digitouPreco = (v: HTMLInputElement) => {
 
     let linha: any = v.parentElement.parentElement.parentElement;
     let numProduto: string = linha.children[0].children[0].value;
-    let r: DtoPedidoProdutosPedido[] = new Array<DtoPedidoProdutosPedido>();
+    let r: PedidoProdutosDtoPedido[] = new Array<PedidoProdutosDtoPedido>();
     r = lstProdSelecionados.filter(e => e.NumProduto == numProduto);
 
     r[0].Preco = parseFloat(val);
@@ -507,29 +609,38 @@ window.digitouPreco = (v: HTMLInputElement) => {
     linha.children[4].children[0].children[0].value = moedaUtils.formatarMoedaSemPrefixo(r[0].VlUnitario);
     linha.children[5].textContent = moedaUtils.formatarMoedaSemPrefixo(r[0].TotalItem);
 
-    zerarCamposDadosPagto();
+    zerarCamposDadosPagto(true);
 }
 
+$('#diasVenc').keyup(function (this: any) {
+    $(this).val(this.value.replace(/\D/g, ''));
+});
+
 window.digitouVlEntrada = (v: HTMLInputElement) => {
-    debugger;
     let valor = v.value;
     let val: any = valor.replace(/\D/g, '');
 
     val = (val / 100).toFixed(2) + '';
     v.value = moedaUtils.formatarMoedaSemPrefixo(val);
-    debugger;
+
     dadosPagto.vlEntrada = parseFloat(val);
+
     dadosPagto.calcularParcelaComEntrada();
     //this.vlEntrada = v;
     //this.calcularParcelaComEntrada();
     //tranformar o valor sem prefixo
 
-    console.log("digitouVlEntrada dadosPagto.msgErro: " + dadosPagto.msgErro);
+
     if (dadosPagto.msgErro != "" && dadosPagto.msgErro != undefined) {
         modalError();
         let err = new ErrorModal();
         err.MostrarMsg(dadosPagto.msgErro);
         v.value = "";
+        dadosPagto.msgErro = "";
+        zerarCamposDadosPagto(false);
+        debugger;
+        $("#enumFormaPagto").prop('selectedIndex', 0);
+        ($("#enumFormaPagto") as any).formSelect();
         return false;
     }
 
@@ -544,16 +655,16 @@ novoPedidoDadosService = new NovoPedidoDadosService();
 $("#totalPedido").ready(() => {
     //itens.dtoPedido.ListaProdutos = lstProdSelecionados;
     novoPedidoDadosService.dtoPedido = new DtoPedido();
-    novoPedidoDadosService.dtoPedido.ListaProdutos = new Array<DtoPedidoProdutosPedido>();
+    novoPedidoDadosService.dtoPedido.ListaProdutos = new Array<PedidoProdutosDtoPedido>();
     novoPedidoDadosService.dtoPedido.ListaProdutos = lstProdSelecionados;
     let totalP: string = $("#totalPedido").val().toString();
-    totalP = novoPedidoDadosService.totalPedido().toString();
+    //totalP = novoPedidoDadosService.totalPedido().toString();
     if (totalP != "0") {
         $("#totalPedido").text(totalP);
     }
 });
 
-function InserirNovoProduto(produto: DtoPedidoProdutosPedido) {
+function InserirNovoProduto(produto: PedidoProdutosDtoPedido, editandoLinha: boolean) {
     //esse é um exemplo de como clonar uma div e adicionar 
     //let novo = $(".novoProduto").clone();
     //novo.removeClass("novoProduto")
@@ -566,6 +677,7 @@ function InserirNovoProduto(produto: DtoPedidoProdutosPedido) {
      */
     let indice: number = null;
 
+    //if (!editandoLinha)
     indice = parseInt($("#indice").val().toString());
 
     if (indice.toString() == "NaN") {
@@ -573,16 +685,13 @@ function InserirNovoProduto(produto: DtoPedidoProdutosPedido) {
         $("indice").val(indice);
     }
 
-    let novo = $("<tr></tr>");
-    let html = $(".novoProduto").html();
-    html = html.replace(/trocarporindex/g, indice.toString());
-    novo.html(html);
-    novo.removeClass("novoProduto");
-    novo.show();
-    $(".trTotal").before(novo);
-    //$(".novoProduto").parent().append(novo);
-
-    let elem = novo.children();
+    let novaClasse: string = CopiarTRsMsgEProduto();
+    //verificamos se mostraremos as msgs
+    verificaRegras(novaClasse, produto);
+    //VerificarEstoque(itens, produto, novaClasse);
+    ////verificar aqui
+    //VerificarQtdeVendaPermitida(itens, produto, novaClasse);
+    debugger;
     InscreveLinhaProduto(produto, indice);
 
     indice++;
@@ -592,26 +701,29 @@ function InserirNovoProduto(produto: DtoPedidoProdutosPedido) {
 function PedidoAlterado() {
 
     //Forma pagamento
-    $("#enumFormaPagto").prop('selectedIndex', 0);
-    ($("#enumFormaPagto") as any).formSelect();
-
+    //$("#enumFormaPagto").prop('selectedIndex', 0);
+    //($("#enumFormaPagto") as any).formSelect();
     totalPedido();
 
     InicializaDadosPagto();
 
     dadosPagto.tipoFormaPagto;
     dadosPagto.pedidoAlterado();
-    zerarCamposDadosPagto();
+    zerarCamposDadosPagto(true);
 
-    console.log("voltou do dadosPagto pedidoalterado");
-    console.log(dadosPagto);
+
 }
 
 declare var FormaPagtoServidor: any;
-function zerarCamposDadosPagto() {
-    console.log("entrou no");
+function zerarCamposDadosPagto(editandoLinha: boolean) {
+
 
     let selecione: any;
+
+    if (editandoLinha) {
+        $("#enumFormaPagto").prop('selectedIndex', 0);
+        ($("#enumFormaPagto") as any).formSelect();
+    }
 
     //A vista   
     $("#Avista").css("display", "none");
@@ -663,10 +775,9 @@ function zerarCamposDadosPagto() {
 }
 
 
-function RecalcularValoresSemCoeficiente(v: any) {
-    zerarCamposDadosPagto();
+function RecalcularValoresSemCoeficiente(v: any, editandoLinha: boolean) {
+    zerarCamposDadosPagto(editandoLinha);
     InicializaDadosPagto();
-    debugger;
     if (v == "" || v == undefined || v == null || v == 0) {
         v = 1;
     }
@@ -675,59 +786,126 @@ function RecalcularValoresSemCoeficiente(v: any) {
 
         dadosPagto.enumFormaPagto = v;
         //estamos limpandos os campos
-        zerarCamposDadosPagto();
+        zerarCamposDadosPagto(editandoLinha);
 
         dadosPagto.qtdeParcVisa = qtdeParcVisa;
 
         dadosPagto.recalcularValoresComCoeficiente(v);
 
-        console.log("recalcularValoresComCoeficiente dadosPagto.msgErro: " + dadosPagto.msgErro);
+
+        debugger;
         if (dadosPagto.msgErro != "" && dadosPagto.msgErro != undefined) {
             modalError();
             let err = new ErrorModal();
             err.MostrarMsg(dadosPagto.msgErro);
+            dadosPagto.msgErro = "";
             return false;
         }
-        console.log(dadosPagto);
+
         //afazer: mandar a lista para o select correspondente;
         AtribuirListaParaSelect();
 
         //vamos apagar a linha de produtos selecionados e montar novamente com os valores atualizados
         //remover todas as linhas da tabela para adicionar novamente.
-        removerTodosProdutos();
+
+
+        if (!editandoLinha) {
+            removerTodosProdutos();
+            lstProdSelecionados.forEach((value) => {
+                InserirNovoProduto(value, editandoLinha);
+            });
+        }
 
         //passando a lista recalculada
         lstProdSelecionados = dadosPagto.dtoPedido.ListaProdutos;
-
-        //estamos adicionando os produtos na tela
-        lstProdSelecionados.forEach((value) => {
-            InserirNovoProduto(value);
-            VerificarEstoque(itens, value);
-            VerificarProdutoAviso(itens, value);
-            VerificarQtdeVendaPermitida(itens, value);
-        });
 
         //alterando o total do pedido
         totalPedido();
     }
 }
 
+
+//estamos add e escondendo as msg para fazer a verificação
+function CopiarTRsMsgEProduto() {
+    let indice: number = null;
+
+    indice = parseInt($("#indice").val().toString());
+
+    if (indice.toString() == "NaN") {
+        indice = 0;
+        $("indice").val(indice);
+    }
+
+    //criar nova classe
+    let novaClasse = "trProduto_" + indice;
+
+    debugger;
+    //novoProduto
+    let novoProduto = CriarLinha();
+    let htmlnovoProduto = $(".novoProduto").html();
+    htmlnovoProduto = htmlnovoProduto.replace(/trocarporindex/g, indice.toString());
+    novoProduto.html(htmlnovoProduto);
+    novoProduto.removeClass(".novoProduto");
+    novoProduto.addClass(novaClasse);
+    $(".trTotal").before(novoProduto);
+
+    //novoProdutoEstoque    
+    let novoProdEstoque = CriarLinha();
+    let htmlNovoProdEstoque = $(".novoProdutoEstoque").html();
+    novoProdEstoque.html(htmlNovoProdEstoque);
+    novoProdEstoque.removeClass(".novoProdutoEstoque");
+    novoProdEstoque.addClass(novaClasse);
+    novoProdEstoque.css("display", "none");
+    $(".trTotal").before(novoProdEstoque);
+
+    //novoProdutoQtdeMaxPermitida  display:none
+    let novoProdutoQtdeMaxPermitida = CriarLinha();
+    let htmlnovoProdutoQtdeMaxPermitida = $(".novoProdutoQtdeMaxPermitida").html();
+    novoProdutoQtdeMaxPermitida.html(htmlnovoProdutoQtdeMaxPermitida);
+    novoProdutoQtdeMaxPermitida.removeClass(".novoProdutoQtdeMaxPermitida");
+    novoProdutoQtdeMaxPermitida.addClass(novaClasse);
+    novoProdutoQtdeMaxPermitida.css("display", "none");
+    $(".trTotal").before(novoProdutoQtdeMaxPermitida);
+
+    //novoProdutoAviso
+    let novoProdutoAviso = CriarLinha();
+    let htmlnovoProdutoAviso = $(".novoProdutoAviso").html();
+    novoProdutoAviso.html(htmlnovoProdutoAviso);
+    novoProdutoAviso.removeClass(".novoProdutoAviso");
+    novoProdutoAviso.addClass(novaClasse);
+    novoProdutoAviso.css("display", "none");
+    $(".trTotal").before(novoProdutoAviso);
+
+    indice++;
+    $("#indice").val(indice);
+
+    return novaClasse;
+
+    function CriarLinha() {
+        return $('<tr><\tr>');
+    }
+
+
+}
+
 window.recalcularValoresComCoeficiente = (e: HTMLSelectElement) => {
-    zerarCamposDadosPagto();
+
+    //zerarCamposDadosPagto();
 
     InicializaDadosPagto();
     //let v = e.selectedIndex;
     let v = parseInt(e.selectedOptions[0].value);
-
+    debugger;
 
     inicializaCampos(v);
 
-    RecalcularValoresSemCoeficiente(v);
+    RecalcularValoresSemCoeficiente(v, false);
 
     inicializaCampos(v);
 }
 
 function AtribuirListaParaSelect() {
+
 
     if (dadosPagto.enumFormaPagto == 1) {
         //A vista   
@@ -778,7 +956,7 @@ function AtribuirListaParaSelect() {
 function InicializaDadosPagto() {
     dadosPagto.coeficienteDto = new Array<DtoCoeficiente>();//lista de coeficiente
     dadosPagto.dtoPedido = new DtoPedido();//Pedido
-    dadosPagto.dtoPedido.ListaProdutos = new Array<DtoPedidoProdutosPedido>();//lista de produtos selecionados
+    dadosPagto.dtoPedido.ListaProdutos = new Array<PedidoProdutosDtoPedido>();//lista de produtos selecionados
     dadosPagto.constantes = new Constantes();//será utilizado para comparação
     dadosPagto.moedaUtils = new MoedaUtils();
     dadosPagto.lstMsg = new Array();
@@ -789,36 +967,40 @@ function InicializaDadosPagto() {
     dadosPagto.enumFormaPagto = enumFormaPagto;//variavel com a opção da forma de pagto selecionada
 }
 
-function InscreveLinhaProduto(produto: DtoPedidoProdutosPedido, index: any) {
-
+function InscreveLinhaProduto(produto: PedidoProdutosDtoPedido, index: any) {
+    console.log(index);
     let texto: any = $("<div></div>");
     texto.html(produto.Descricao);
 
     $('[name="[' + index + '].NumProduto"]').text(produto.Fabricante + "/" + produto.NumProduto + " - " + texto.text());
     $('[name="[' + index + '].NumProduto"]').val(produto.NumProduto);//campo type hidden = passar para model
+    $('[name="[' + index + '].Fabricante"]').val(produto.Fabricante);
     $('[name="[' + index + '].Qtde"]').val(produto.Qtde);
     $('[name="[' + index + '].Preco"]').val(moedaUtils.formatarMoedaSemPrefixo(produto.Preco));
     $('[name="[' + index + '].VlLista"]').text(moedaUtils.formatarMoedaSemPrefixo(produto.VlLista));
+    $('[name="[' + index + '].VlLista"]').val(moedaUtils.formatarMoedaSemPrefixo(produto.VlLista));
+
 
     $('[name="[' + index + '].Desconto"]').val(produto.Desconto);
     $('[name="[' + index + '].VlUnitario"]').val(moedaUtils.formatarMoedaSemPrefixo(produto.VlUnitario));
     $('[name="[' + index + '].VlTotalItem"]').text(moedaUtils.formatarMoedaSemPrefixo(produto.TotalItem));
+    $('[name="[' + index + '].VlTotalItem"]').val(moedaUtils.formatarMoedaSemPrefixo(produto.TotalItem));
 
 }
 
-function VerificarEstoque(itens: Itens, produto: DtoPedidoProdutosPedido) {
-
+function VerificarEstoque(itens: Itens, produto: PedidoProdutosDtoPedido, novaClasse: string) {
+    debugger;
+    //será necessário alterar a verificação pq não estamos trazendo o estoque ao carregar todos produtos
+    let filho = $("." + novaClasse + "").find("[name='estoqueIndisponivel']");
     if (itens.estoqueExcedido(produto)) {
-        let novo = $("<tr><\tr>");
-        let html = $(".novoProdutoEstoque").html();
-        novo.html(html);
-        novo.removeClass(".novoProdutoEstoque");
-        novo.show();
-        $(".novoProduto").parent().append(novo);
+        filho.parent().show();
+    }
+    else {
+        filho.parent().hide();
     }
 }
 
-function VerificarProdutoAviso(itens: Itens, produto: DtoPedidoProdutosPedido) {
+function VerificarProdutoAviso(itens: Itens, produto: PedidoProdutosDtoPedido) {
 
     if (itens.produtoTemAviso(produto)) {
         let novo = $("<tr><\tr>");
@@ -828,72 +1010,252 @@ function VerificarProdutoAviso(itens: Itens, produto: DtoPedidoProdutosPedido) {
         novo.show();
         $(".novoProduto").parent().append(novo);
     }
-
-    //itens.dtoPedido.ListaProdutos.forEach(function (i) {
-    //    if (itens.produtoTemAviso(i)) {
-    //        let novo = $("<tr><\tr>");
-    //        let html = $(".novoProdutoAviso").html();
-    //        novo.html(html);
-    //        novo.removeClass(".novoProdutoAviso");
-    //        novo.show();
-    //        $(".novoProduto").parent().append(novo);
-    //    }
-    //});
 }
 
-function VerificarQtdeVendaPermitida(itens: Itens, produto: DtoPedidoProdutosPedido) {
+window.AdicionarMsgProdutoECDTela = (v: Array<string>, novaClasse: string) => {
+    AdicionarMsgProdutoECD(v, novaClasse);
+}
+
+//Metodo para atribuir as msg de retorno sobre o produto e o CD
+function AdicionarMsgProdutoECD(v: Array<string>, novaClasse: string): void {
+    //precisa criar um campo para receber a msg sobre o CD selecionado
+
+    let data: Array<string> = new Array();
+    data = v;
+
+    debugger;
+    //msg referente ao cd
+    $("#divMsgCD").css('display', 'block');
+
+    debugger;
+
+    //vamos verificar o retorno para mostrar as msg que estão retornando do servidor
+    if (data != undefined) {
+
+        //span estoqueIndisponivel
+        
+        //pai.hide();
+        data.forEach(function (linha) {
+            if (linha.indexOf("PRODUTO SEM PRESENÇA") != -1) {
+                let span = $("." + novaClasse + "").find('[name="produtoAviso"]');
+                let pai = span.parent().parent();
+                span.text(linha);
+                span.css('color', 'red');
+                pai.show();
+            }
+            if (linha.indexOf("define o CD") != -1) {
+                $("#msgCD").text(data[0]);
+
+            }
+        });
+    }
+
+
+}
+
+function VerificarQtdeVendaPermitida(itens: Itens, produto: PedidoProdutosDtoPedido, novaClasse: string) {
     itens.msgQtdePermitida;
 
-    if (itens.produtoTemAviso(produto)) {
-        let novo = $("<tr><\tr>");
-        let html = $(".novoProdutoQtdeMaxPermitida").html();
-        novo.html(html);
-        novo.removeClass(".novoProdutoQtdeMaxPermitida");
-        novo.show();
-        $(".novoProduto").parent().append(novo);
+    //será necessário alterar a verificação
+    let filho = $("." + novaClasse + "").find("[name='msgQtdePermitida']");
+    //msgQtdePermitida = filho span do tr
+    if (itens.qtdeVendaPermitida(produto)) {
+        filho.text(itens.msgQtdePermitida);
+        filho.parent().parent().show(); //pai
+    }
+    else {
+        //esconderemos a linha
+        filho.parent().parent().hide(); //pai
     }
 }
 
-function continuar() {
+//declare function continuar(): any;
+
+//window.continuar = () => {
+
+//    if (!continuar()) {
+//        return false;
+//    }
+//    //continuar();
+//}
+
+
+
+//iremos fazer a validação na tela
+window.continuar = (): any => {
     debugger;
     let err = new ErrorModal();
     //verificar se tem produtos com qtde maior que o permitido
     let q: number = 0;
-    dadosPagto.dtoPedido.ListaProdutos.forEach(r => {
-        if (itens.qtdeVendaPermitida(r)) {
-            q++;
-        }
-    });
-    //this.prePedidoDto.ListaProdutos.forEach(r => {
-    //    if (this.qtdeVendaPermitida(r)) {
-    //        q++;
-    //    }
-    //});
-    if (q > 0) {
+
+    if ($("#chkSemIndicacao").prop('checked') == false && $("#chkComIndicacao").prop('checked') == false) {
         modalError();
-        err.MostrarMsg("Produtos com quantidades maiores que a quantidade máxima permitida para venda!");
-        //this.alertaService.mostrarMensagem("Produtos com quantidades maiores que a quantidade máxima permitida para venda!");
-        return;
+        err.MostrarMsg("Informe se o pedido é com ou sem indicação!");
+        return false;
     }
-    //validação: tem que ter algum produto
-    if (dadosPagto.dtoPedido.ListaProdutos.length === 0) {
+
+    if (dadosPagto.dtoPedido == null || dadosPagto.dtoPedido == undefined) {
         modalError();
         err.MostrarMsg("Selecione ao menos um produto para continuar.");
+        return false;
+    } else {
+        dadosPagto.dtoPedido.ListaProdutos.forEach(r => {
+            if (itens.qtdeVendaPermitida(r)) {
+                q++;
+            }
+        });
 
-        //this.alertaService.mostrarMensagem("Selecione ao menos um produto para continuar.");
-        return;
+        if (q > 0) {
+            modalError();
+            err.MostrarMsg("Produtos com quantidades maiores que a quantidade máxima permitida para venda!");
+            //this.alertaService.mostrarMensagem("Produtos com quantidades maiores que a quantidade máxima permitida para venda!");
+            return;
+        }
+        //validação: tem que ter algum produto
+        if (dadosPagto.dtoPedido.ListaProdutos.length === 0) {
+            modalError();
+            err.MostrarMsg("Selecione ao menos um produto para continuar.");
+
+            //this.alertaService.mostrarMensagem("Selecione ao menos um produto para continuar.");
+            return;
+        }
+
+
+        AtribuirFormaPagtoParaDadosPagto();
+        //verifica se a forma de pgamento tem algum aviso
+        if (!dadosPagto.podeContinuar(true)) {
+            //verificar se a forma de pagamento está preenchida
+            //necessário atribuir a forma de pagmento para dadosPagto
+
+            if (dadosPagto.msgErro != "") {
+                modalError();
+                err.MostrarMsg(dadosPagto.msgErro);
+                return false;
+            }
+            return;
+        } else {
+            debugger;
+            //vamos tentar retornar o objeto serializado para a tela mandar para o controller
+            dadosPagto.novoPedidoDadosService.dtoPedido.FormaPagtoCriacao = dadosPagto.dtoPedido.FormaPagtoCriacao;
+            dadosPagto.novoPedidoDadosService.dtoPedido.ListaProdutos = dadosPagto.dtoPedido.ListaProdutos;
+
+            //$("#lstProdutosSelecionados").val(dadosPagto.novoPedidoDadosService.dtoPedido.ListaProdutos.toString());
+            $("#lstProdutosSelecionados").val(itens.dtoPedido.ListaProdutos.toString());
+            //criar metodo para passar os campos para FormaPagtoCriacao
+            if (AtribuirValoresFormaPagtoCriacao()) {
+                return true;
+            }
+            //AtribuirValoresFormaPagtoCriacao();
+        }
+
+
+
+    }
+}
+
+function AtribuirValoresFormaPagtoCriacao(): boolean {
+    debugger;
+    let totalPedido = $("#totalPedido").text().trim();
+    $("#Tipo_parcelamento").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Tipo_parcelamento);
+    $("#TotalDestePedido").val(moedaUtils.formatarMoedaSemPrefixo(dadosPagto.dtoPedido.VlTotalDestePedido));
+
+    if (dadosPagto.enumFormaPagto == 1) {
+        $("#Rb_forma_pagto").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Rb_forma_pagto);
+        $("#Op_av_forma_pagto").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Op_av_forma_pagto);
+        $("#Qtde_Parcelas").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Qtde_Parcelas);
+        return true;
+    }
+    //ParcCartaoInternet
+    if (dadosPagto.enumFormaPagto == 2) {
+        //Verificar se há necessidade de passar o valores para esse 
+        $("#Rb_forma_pagto").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Rb_forma_pagto);
+        $("#C_pc_qtde").val(dadosPagto.dtoPedido.FormaPagtoCriacao.C_pc_qtde);
+        $("#C_pc_valor").val(moedaUtils.formatarMoedaSemPrefixo(dadosPagto.dtoPedido.FormaPagtoCriacao.C_pc_valor));
+        $("#Qtde_Parcelas").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Qtde_Parcelas);
+        return true;
+    }
+    //ParcComEnt
+    if (dadosPagto.enumFormaPagto == 3) {
+        //dadosPagto.vlEntrada já foi passado para calcular os valores com coeficiente
+        $("#Rb_forma_pagto").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Rb_forma_pagto);
+        $("#Op_pce_entrada_forma_pagto").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Op_pce_entrada_forma_pagto);
+        $("#Op_pce_prestacao_forma_pagto").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto);
+        $("#C_pce_entrada_valor").val(moedaUtils.formatarMoedaSemPrefixo(
+            dadosPagto.dtoPedido.FormaPagtoCriacao.C_pce_entrada_valor));
+        $("#C_pce_prestacao_qtde").val(dadosPagto.dtoPedido.FormaPagtoCriacao.C_pce_prestacao_qtde);
+        $("#C_pce_prestacao_valor").val(moedaUtils.formatarMoedaSemPrefixo(
+            dadosPagto.dtoPedido.FormaPagtoCriacao.C_pce_prestacao_valor));
+        $("#C_pce_prestacao_periodo").val(dadosPagto.dtoPedido.FormaPagtoCriacao.C_pce_prestacao_periodo);
+        $("#Qtde_Parcelas").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Qtde_Parcelas);
+        return true;
+    }
+    //ParcSemEnt não esta sendo usado
+    if (dadosPagto.enumFormaPagto == 4) {
+
+    }
+    //ParcUnica
+    if (dadosPagto.enumFormaPagto == 5) {
+        $("#Rb_forma_pagto").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Rb_forma_pagto);
+        $("#Op_pu_forma_pagto").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Op_pu_forma_pagto);
+        $("#C_pu_valor").val(moedaUtils.formatarMoedaSemPrefixo(
+            dadosPagto.dtoPedido.FormaPagtoCriacao.C_pu_valor));
+        $("#C_pu_vencto_apos").val(dadosPagto.dtoPedido.FormaPagtoCriacao.C_pu_vencto_apos);
+        $("#Qtde_Parcelas").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Qtde_Parcelas);
+        return true;
+    }
+    //ParcCartaoMaquineta
+    if (dadosPagto.enumFormaPagto == 6) {
+        $("#Rb_forma_pagto").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Rb_forma_pagto);
+        $("#C_pc_maquineta_qtde").val(dadosPagto.dtoPedido.FormaPagtoCriacao.C_pc_maquineta_qtde);
+        $("#C_pc_maquineta_valor").val(moedaUtils.formatarMoedaSemPrefixo(
+            dadosPagto.dtoPedido.FormaPagtoCriacao.C_pc_maquineta_valor));
+        $("#C_pc_maquineta_qtde").val(dadosPagto.dtoPedido.FormaPagtoCriacao.C_pc_maquineta_qtde);
+        $("#Qtde_Parcelas").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Qtde_Parcelas);
+        return true;
+    }
+}
+
+declare var testeJson: string;
+
+function AtribuirFormaPagtoParaDadosPagto(): void {
+    let err = new ErrorModal();
+
+    //vamos inicializar o dadosPagto.dtoPedido.FormaPagtoCriacao
+    dadosPagto.dtoPedido.FormaPagtoCriacao = new DtoFormaPagtoCriacao();
+
+    dadosPagto.novoPedidoDadosService = new NovoPedidoDadosService();
+    dadosPagto.novoPedidoDadosService.criarNovo();
+    dadosPagto.dtoPedido.FormaPagtoCriacao = new DtoFormaPagtoCriacao();
+
+    //A vista
+    if (dadosPagto.enumFormaPagto == 1) {
+        dadosPagto.meioPagtoAVista = parseInt($("#meioPagtoAVista").val().toString());
+        dadosPagto.opcaoPagtoAvista = $("#opcaoPagtoAvista").val().toString();
+    }
+    //ParcCartaoInternet
+    if (dadosPagto.enumFormaPagto == 2) {
+        //Verificar se há necessidade de passar o valores para esse 
+    }
+    //ParcComEnt
+    if (dadosPagto.enumFormaPagto == 3) {
+        //dadosPagto.vlEntrada já foi passado para calcular os valores com coeficiente
+        dadosPagto.meioPagtoEntradaPrest = parseInt($("#meioPagtoEntradaPrest").val().toString());
+        dadosPagto.meioPagtoEntrada = parseInt($("#meioPagtoEntrada").val().toString());
+        dadosPagto.diasVenc = parseInt($("#diasVenc").val().toString());
+        dadosPagto.opcaoPagtoParcComEntrada = $("#opcaoPagtoParcComEntrada").val().toString();
+
+    }
+    //ParcSemEnt não esta sendo usado
+    if (dadosPagto.enumFormaPagto == 4) {
+
+    }
+    //ParcUnica
+    if (dadosPagto.enumFormaPagto == 5) {
+        dadosPagto.opcaoPagtoParcCartaoInternet = $("#opcaoPagtoParcCartaoInternet").val().toString();
+    }
+    //ParcCartaoMaquineta
+    if (dadosPagto.enumFormaPagto == 6) {
+        dadosPagto.opcaoPagtoParcCartaoMaquineta = $("#opcaoPagtoParcCartaoMaquineta").val().toString();
     }
 
-    //verifica se a forma de pgamento tem algum aviso
-    if (!dadosPagto.podeContinuar(true)) {
-        return;
-    }
-
-    let numeroPrepedido = this.activatedRoute.snapshot.params.numeroPrepedido;
-    if (!!numeroPrepedido) {
-        this.router.navigate(["../../observacoes"], { relativeTo: this.activatedRoute });
-    }
-    else {
-        this.router.navigate(["../observacoes"], { relativeTo: this.activatedRoute });
-    }
 }

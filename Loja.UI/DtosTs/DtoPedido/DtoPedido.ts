@@ -1,5 +1,5 @@
 ﻿import { DtoEnderecoEntregaClienteCadastro } from "../DtoCliente/DtoEnderecoEntregaClienteCadastro";
-import { DtoPedidoProdutosPedido } from "./DtoPedidoProdutosPedido";
+import { PedidoProdutosDtoPedido } from "./DtoPedidoProdutosPedido";
 import { DtoDetalhesPedido } from "./DtoDetalhesPedido";
 import { DtoFormaPagtoCriacao } from "./DtoFormaPagtoCriacao";
 
@@ -9,7 +9,7 @@ export class DtoPedido {
     DataHoraPedido: string;
     DadosCliente: DtoDadosClienteCadastro;
     EnderecoEntrega: DtoEnderecoEntregaClienteCadastro;
-    ListaProdutos: DtoPedidoProdutosPedido[];
+    ListaProdutos: PedidoProdutosDtoPedido[];
     TotalFamiliaParcelaRA: number;
     PermiteRAStatus: number;
     OpcaoPossuiRA: string;

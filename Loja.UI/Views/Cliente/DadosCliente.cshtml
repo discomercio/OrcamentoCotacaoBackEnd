@@ -6,12 +6,14 @@
 
 <h5>Novo Pedido</h5>
 
-@section ScriptsDiretos{ 
-<script src="~/lib/jquery-mask/jquery.mask.js"></script>
+@section ScriptsDiretos{
+    <script src="~/lib/jquery-mask/jquery.mask.js"></script>
 }
 <script>
 
     $(function () {
+        
+
         $('#cepEntrega').mask("00000-000");
         $('#cep').mask("00000-000");
         $('#ie').mask("000.000.000.000");
@@ -84,14 +86,14 @@
                 $('#0-telBanco').mask("(99) 99999-9999");
             }
         });
-       
+
 
         $('#addRefBancaria').on('click', function () {
             if (!$("#RefBancariabody-0").is(":visible")) {
                 $("#RefBancariabody-0").show();
                 return;
             }
-            
+
             MostrarMsg('#modalErro', 'Máximo de 1 referência bancária.')
             //alert("Máximo de 3 referências bancárias.");
         });
@@ -102,7 +104,7 @@
             $('#ehProdutor').hide();
 
         $('#produtor').change(function () {
-            console.log($('#produtor').val());
+
             if ($('#produtor').val() == "2")
                 $('#ehProdutor').show();
             else
@@ -287,14 +289,106 @@
 
         var cpfCnpj;
         if ($('#permiteEditar').val() == "True") {
-            //cpfCnpj = StringUtils.retorna_so_digitos($('#cpf_cnpj').val());
-            cpfCnpj = $('#cpf_cnpj').val().replace('.', '').replace('/', '');
+            debugger;
+            //cnpj = 14
+            //cpf = 11
+            cpfCnpj = $('#cpf_cnpj').val().replace(/[\.\/\- ,]/g, '');
+            if (cpfCnpj.length == 11) {
+                //validar campos de cadastro
+                if ($('#cpf_cnpj').val() == '') {
+                    msg = "Favor informar CPF ou CNPJ";
+                    MostrarMsg("#modalErro", msg);
+                    return false;
+                }
+                if ($("#nome").val() == '') {
+                    msg = "Favor informar Nome do cliente";
+                    MostrarMsg("#modalErro", msg);
+                    return false;
+                }
+                if ($("#rg").val() == '') {
+                    msg = "Favor informar RG";
+                    MostrarMsg("#modalErro", msg);
+                    return false;
+                }
+                if ($("#nascimento").val() == '') {
+                    msg = "Favor informar Nascimento";
+                    MostrarMsg("#modalErro", msg);
+                    return false;
+                }
+                if ($("#sexo").val() == '') {
+                    msg = "Favor informar Sexo";
+                    MostrarMsg("#modalErro", msg);
+                    return false;
+                }                
+                if ($("#telRes").val() == '' &&
+                    $("#celular").val() == '' &&
+                    $("#telCom").val() == '') {
+                    msg = "Favor informar preencher ao menos um número de telefone!";
+                    MostrarMsg("#modalErro", msg);
+                    return false;
+                }
+                if ($("#email").val() == '') {
+                    msg = "Favor informar E-mail!";
+                    MostrarMsg("#modalErro", msg);
+                    return false;
+                }
+            }
+            if (cpfCnpj.length == 14) {
+                if ($("#razao").val() == '') {
+                    msg = "Favor informar Razão Social!";
+                    MostrarMsg("#modalErro", msg);
+                    return false;
+                }
+                if ($("#cpf_cnpj").val() == '') {
+                    msg = "Favor informar CNPJ!";
+                    MostrarMsg("#modalErro", msg);
+                    return false;
+                }
+                if ($("#telRes").val() == '' &&
+                    $("#celular").val() == '' &&
+                    $("#telCom").val() == '') {
+                    msg = "Favor informar ao menos um número de telefone!";
+                    MostrarMsg("#modalErro", msg);
+                    return false;
+                }
+            }
+            if ($("#cep").val() == '') {
+                    msg = "Favor informar Cep";
+                    MostrarMsg("#modalErro", msg);
+                    return false;
+                }
+                if ($("#endereco").val() == '') {
+                    msg = "Favor informar Endereco";
+                    MostrarMsg("#modalErro", msg);
+                    return false;
+                }
+                if ($("#numero").val() == '') {
+                    msg = "Favor informar Número";
+                    MostrarMsg("#modalErro", msg);
+                    return false;
+                }
+                if ($("#bairro").val() == '') {
+                    msg = "Favor informar Bairro";
+                    MostrarMsg("#modalErro", msg);
+                    return false;
+                }
+                if ($("#cidade").val() == '') {
+                    msg = "Favor informar Cidade";
+                    MostrarMsg("#modalErro", msg);
+                    return false;
+                }
+                if ($("#uf").val() == '') {
+                    msg = "Favor informar UF";
+                    MostrarMsg("#modalErro", msg);
+                    return false;
+                }
+
         }
         else {
             //cpfCnpj = StringUtils.retorna_so_digitos($('#cpf_cnpj').text());
             cpfCnpj = $('#cpf_cnpj').text().replace('.', '').replace('/', '');;
         }
-        console.log(cpfCnpj);
+
         var msg;
         var validou;
         //verificar se é produtor rural
@@ -322,6 +416,71 @@
         testeModal(modal);
         $('#teste').empty().append(msg);
     }
+    function DigitouCepCadastro() {
+        if ($('#cep').val() != null) {
+            //$('#naoseicep').addClass('pulse');
+
+            debugger;
+            $.ajax({
+                url: "../Cep/BuscarCep/",
+                type: "GET",
+                data: { cep: $('#cep').val() },
+                dataType: "json",
+                success: function (data) {
+                    debugger;
+                    if (data[0].Endereco != "") {
+                        $('#endereco').prop("readonly", true);
+                        $("#endereco").val(data[0].Endereco);
+                        $("#lbEntrega").addClass('active');
+                    }
+                    else {
+                        $('#enderecoEntrega').prop("readonly", false);
+                    }
+
+                    if (data[0].Bairro != "") {
+                        $("#bairro").prop("readonly", true);
+                        $("#bairro").val(data[0].Bairro);
+                        $("#lblBairro").addClass('active');
+                    }
+                    else {
+                        $("#bairro").prop("readonly", false);
+                    }
+
+                    if (data[0].Cidade != "") {
+                        $("#cidade").prop("readonly", true);
+                        $("#cidade").val(data[0].Cidade);
+                        $("#lblCidade").addClass('active');
+                    }
+                    else {
+                        $("#cidade").prop("readonly", false);
+                    }
+
+                    if (data[0].Uf != "") {
+                        $("#uf").prop("readonly", true);
+                        $("#uf").val(data[0].Uf);
+                        $("#lblUf").addClass('active');
+                    }
+                    else {
+                        $("#uf").prop("readonly", false);
+                    }
+
+                    if (data[0].logradouroComplemento != "" &&
+                        data[0].logradouroComplemento != 'undefined' &&
+                        data[0].logradouroComplemento != null) {
+
+                        $('#complemento').val(data[0].LogradouroComplemento);
+                        $('#lblComplemento').addClass('active');
+                    }
+                    $("#numero").val('');
+                    $("#complemento").val('');
+                    //$('#naoseicep').removeClass('pulse');
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            })
+        }
+    }
 
 </script>
 
@@ -335,34 +494,34 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()" }
         <input type="hidden" id="permiteEditar" name="permiteEditar" value="@Model.PermiteEdicao.ToString()" />
         <input type="hidden" id="tipo" name="tipo" value="@Model.DadosCliente.Tipo" />
 
-        @if (Model.PermiteEdicao)
+        @if (Model.PermiteEdicao)//adicionar uma flag para dizer se é novo
         {
             //Permite edição PF
-            @if (Model.DadosCliente.Tipo == "PF")
+            @if (Model.DadosCliente?.Tipo == "PF")
             {
                 <div class="row">
                     <div class="input-field col s12">
-                        <input name="nome" id="nome" type="text" class="validate" value="@Model.DadosCliente.Nome" />
+                        <input name="nome" id="nome" type="text"  value="@Model.DadosCliente?.Nome" />
                         <label for="ie">NOME</label>
                     </div>
                 </div>
                 <div class="row col s12">
                     <div class="input-field col s3">
-                        <input name="Cnpj_Cpf" id="cpf_cnpj" type="text" class="validate" value="@Model.DadosCliente.Cnpj_Cpf" />
+                        <input name="Cnpj_Cpf" id="cpf_cnpj" type="text"  value="@Model.DadosCliente?.Cnpj_Cpf" />
                         <label for="cpf_cnpj">CPF</label>
                     </div>
                     <div class="input-field col s3">
-                        <input name="rg" id="rg" type="text" class="validate" value="@Model.DadosCliente.Rg" />
+                        <input name="rg" id="rg" type="text"  value="@Model.DadosCliente?.Rg" />
                         <label for="rg">RG</label>
                     </div>
                     <div class="input-field col s2">
                         <input name="nascimento" style="line-height:initial;"
                                id="nascimento" type="date"
-                               value="@Model.DadosCliente.Nascimento?.ToString("yyyy-MM-dd")" />
+                               value="@Model.DadosCliente?.Nascimento?.ToString("yyyy-MM-dd")" />
                         <label for="nascimento">NASCIMENTO</label>
                     </div>
                     <div class="input-field col s1">
-                        <input name="sexo" id="sexo" type="text" class="validate" value="@Model.DadosCliente.Sexo" />
+                        <input name="sexo" id="sexo" type="text"  value="@Model.DadosCliente?.Sexo" />
                         <label for="sexo">SEXO</label>
                     </div>
                 </div>
@@ -371,13 +530,13 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()" }
             {
                 <div class="row col s12">
                     <div class="input-field col s12">
-                        <input name="nome" id="razao" type="text" class="validate" value="@Model.DadosCliente.Nome" />
+                        <input name="nome" id="razao" type="text"  value="@Model.DadosCliente.Nome" />
                         <label for="razao">RAZÃO SOCIAL</label>
                     </div>
                 </div>
                 <div class="row col s12">
                     <div class="input-field col s3">
-                        <input name="Cnpj_Cpf" id="cpf_cnpj" type="text" class="validate" value="@Model.DadosCliente.Cnpj_Cpf" />
+                        <input name="Cnpj_Cpf" id="cpf_cnpj" type="text"  value="@Model.DadosCliente.Cnpj_Cpf" />
                         <label for="cpf_cnpj">CNPJ</label>
                     </div>
                 </div>
@@ -386,61 +545,61 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()" }
             <div class="row col s12">
                 <div class="input-field col s2">
                     @* ao sair do campo chamar o metodo cep/buscarCep/ *@
-                    <input name="cep" type="text" id="cep" class="validate" onblur="buscarCep()" value="@Model.DadosCliente.Cep" />
+                    <input name="cep" type="text" id="cep" class="validate"  onblur="DigitouCepCadastro()" value="@Model.DadosCliente?.Cep" />
                     <label for="cep">CEP</label>
                 </div>
                 <div class="input-field col s4">
-                    <input name="endereco" id="endereco" type="text" class="validate" value="@Model.DadosCliente.Endereco" />
-                    <label for="endereco">ENDEREÇO </label>
+                    <input name="endereco" id="endereco" type="text"  value="@Model.DadosCliente?.Endereco" />
+                    <label for="endereco" id="lbEntrega">ENDEREÇO </label>
                 </div>
                 <div class="input-field col s2">
-                    <input name="numero" id="numero" type="text" class="validate" value="@Model.DadosCliente.Numero" />
+                    <input name="numero" id="numero" type="text"  value="@Model.DadosCliente?.Numero" />
                     <label for="numero">NÚMERO </label>
                 </div>
                 <div class="input-field col s2">
-                    <input name="complemento" id="complemento" type="text" class="validate" value="@Model.DadosCliente.Complemento" />
-                    <label for="complemento">COMPLEMENTO</label>
+                    <input name="complemento" id="complemento" type="text"  value="@Model.DadosCliente?.Complemento" />
+                    <label for="complemento" id="lblComplemento">COMPLEMENTO</label>
                 </div>
             </div>
             <div class="row col s12">
                 <div class="input-field col s3">
-                    <input name="bairro" id="bairro" type="text" class="validate" value="@Model.DadosCliente.Bairro" />
-                    <label for="bairro">BAIRRO</label>
+                    <input name="bairro" id="bairro" type="text"  value="@Model.DadosCliente?.Bairro" />
+                    <label for="bairro" id="lblBairro">BAIRRO</label>
                 </div>
                 <div class="input-field col s3">
-                    <input name="cidade" id="cidade" type="text" class="validate" value="@Model.DadosCliente.Cidade" />
-                    <label for="cidade">CIDADE</label>
+                    <input name="cidade" id="cidade" type="text"  value="@Model.DadosCliente?.Cidade" />
+                    <label for="cidade" id="lblCidade">CIDADE</label>
                 </div>
                 <div class="input-field col s3">
-                    <input name="uf" id="uf" type="text" class="validate" value="@Model.DadosCliente.Uf" />
-                    <label for="uf">UF</label>
+                    <input name="uf" id="uf" type="text"  value="@Model.DadosCliente?.Uf" />
+                    <label for="uf" id="lblUf">UF</label>
                 </div>
             </div>
             //Permite edição PF
             //Telefones
-            @if (Model.DadosCliente.Tipo == "PF")
+            @if (Model.DadosCliente?.Tipo == "PF")
             {
                 <div class="row col s12">
                     <div class="input-field col s2">
-                        <input name="TelefoneResidencial" id="telRes" type="tel" class="validate" value="@Model.DadosCliente.TelefoneResidencial" />
+                        <input name="TelefoneResidencial" id="telRes" type="tel"  value="@Model.DadosCliente?.TelefoneResidencial" />
                         <label for="telRes">FONE RESIDENCIAL</label>
                     </div>
                     <div class="input-field col s2">
-                        <input name="Celular" id="celular" type="tel" class="validate" value="@Model.DadosCliente.Celular" />
+                        <input name="Celular" id="celular" type="tel"  value="@Model.DadosCliente?.Celular" />
                         <label for="celular">CELULAR</label>
                     </div>
                     <div class="input-field col s2">
-                        <input name="TelComercial" id="telCom" type="tel" class="validate" value="@Model.DadosCliente.TelComercial" />
+                        <input name="TelComercial" id="telCom" type="tel"  value="@Model.DadosCliente?.TelComercial" />
                         <label for="telCom">FONE COMERCIAL</label>
                     </div>
                     <div class="input-field col s1">
-                        <input name="Ramal" id="ramal" type="tel" class="validate" value="@Model.DadosCliente.Ramal" />
+                        <input name="Ramal" id="ramal" type="tel"  value="@Model.DadosCliente?.Ramal" />
                         <label for="ramal">RAMAL</label>
                     </div>
                 </div>
                 <div class="row col s12">
                     <div class="input-field col s12">
-                        <input name="Observacao_Filiacao" id="observacoes" type="text" value="@Model.DadosCliente.Observacao_Filiacao" />
+                        <input name="Observacao_Filiacao" id="observacoes" type="text" value="@Model.DadosCliente?.Observacao_Filiacao" />
                         <label for="observacoes">OBSERVAÇÕES</label>
                     </div>
                 </div>
@@ -450,25 +609,25 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()" }
                 //aqui vai o PJ
                 <div class="row col s12">
                     <div class="input-field col s2">
-                        <input name="telComercial" id="telCom" type="tel" class="validate" value="@Model.DadosCliente.TelComercial" />
+                        <input name="telComercial" id="telCom" type="tel" class="validate" value="@Model.DadosCliente?.TelComercial" />
                         <label for="telCom">TELEFONE 1</label>
                     </div>
                     <div class="input-field col s1">
-                        <input name="ramal" id="ramal" type="text" class="validate" value="@Model.DadosCliente.Ramal" />
+                        <input name="ramal" id="ramal" type="text" class="validate" value="@Model.DadosCliente?.Ramal" />
                         <label for="ramal">RAMAL</label>
                     </div>
                     <div class="input-field col s2">
-                        <input name="telComercial2" id="telCom2" type="tel" class="validate" value="@Model.DadosCliente.TelComercial2" />
+                        <input name="telComercial2" id="telCom2" type="tel" class="validate" value="@Model.DadosCliente?.TelComercial2" />
                         <label for="telCom2">TELEFONE 2</label>
                     </div>
                     <div class="input-field col s1">
-                        <input name="ramal2" id="ramal2" type="text" value="@Model.DadosCliente.Ramal2" />
+                        <input name="ramal2" id="ramal2" type="text" value="@Model.DadosCliente?.Ramal2" />
                         <label for="ramal2">RAMAL</label>
                     </div>
                 </div>
                 <div class="row col s12">
                     <div class="input-field">
-                        <input name="contato" id="contatoNaEmpresa" type="text" value="@Model.DadosCliente.Contato" />
+                        <input name="contato" id="contatoNaEmpresa" type="text" value="@Model.DadosCliente?.Contato" />
                         <label for="contatoNaEmpresa">NOME DA PESSOA NA EMPRESA</label>
                     </div>
                 </div>
@@ -476,36 +635,36 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()" }
             //Email
             <div class="row col s12">
                 <div class="input-field col s12">
-                    <input name="email" id="email" type="email" class="validate" value="@Model.DadosCliente.Email" />
+                    <input name="email" id="email" type="email"  value="@Model.DadosCliente?.Email" />
                     <label for="email">E-MAIL</label>
                 </div>
             </div>
             //Email xml
             <div class="row col s12">
                 <div class="input-field col s12">
-                    <input name="emailXml" id="emailXml" type="email" class="validate" value="@Model.DadosCliente.EmailXml" />
+                    <input name="emailXml" id="emailXml" type="email"  value="@Model.DadosCliente?.EmailXml" />
                     <label for="emailXml">E-MAIL (XML)</label>
                 </div>
             </div>
 
-            @if (Model.DadosCliente.Tipo == "PF")
+            @if (Model.DadosCliente?.Tipo == "PF")
             {
                 <div class="row col s12">
                     <div class="input-field col s2">
                         @Html.DropDownList("ProdutorRural",
 new SelectList(Model.LstProdutoRural, "Value", "Text",
-Model.DadosCliente.ProdutorRural), new { @id = "produtor", @name = "ProdutorRural" })
+Model.DadosCliente?.ProdutorRural), new { @id = "produtor", @name = "ProdutorRural" })
                         <label>PRODUTO RURAL</label>
                     </div>
                     <div id="ehProdutor">
                         <div class="input-field col s2">
-                            <input name="ie" id="ie" type="text" class="validate" value="@Model.DadosCliente.Ie" />
+                            <input name="ie" id="ie" type="text"  value="@Model.DadosCliente?.Ie" />
                             <label id="lblIe" for="ie">IE</label>
                         </div>
                         <div class="input-field col s2">
                             @Html.DropDownList("Contribuinte_Icms_Status",
 new SelectList(Model.LstContribuinte, "Value", "Text",
-Model.DadosCliente.Contribuinte_Icms_Status), new { @id = "contribuinte", @name = "Contribuinte_Icms_Status" })
+Model.DadosCliente?.Contribuinte_Icms_Status), new { @id = "contribuinte", @name = "Contribuinte_Icms_Status" })
                             <label>CONTRIBUINTE ICMS</label>
                         </div>
                     </div>
@@ -515,13 +674,13 @@ Model.DadosCliente.Contribuinte_Icms_Status), new { @id = "contribuinte", @name 
             {
                 <div class="row col s12">
                     <div class="input-field col s3">
-                        <input name="ie" id="ie" type="text" class="validate" value="@Model.DadosCliente.Ie" />
+                        <input name="ie" id="ie" type="text"  value="@Model.DadosCliente?.Ie" />
                         <label for="ie">IE</label>
                     </div>
                     <div class="input-field col s3">
                         @Html.DropDownList("Contribuinte_Icms_Status",
 new SelectList(Model.LstContribuinte, "Value", "Text",
-Model.DadosCliente.Contribuinte_Icms_Status), new { @id = "contribuinte", @name = "Contribuinte_Icms_Status" })
+Model.DadosCliente?.Contribuinte_Icms_Status), new { @id = "contribuinte", @name = "Contribuinte_Icms_Status" })
                         <label>CONTRIBUINTE ICMS</label>
                     </div>
                 </div>
@@ -532,7 +691,7 @@ Model.DadosCliente.Contribuinte_Icms_Status), new { @id = "contribuinte", @name 
                             <ul class="collapsible" id="collapsibleBancaria" style="border-radius:4px">
                                 <li>
                                     <div class="collapsible-header" style="color:black!important;border-radius:4px">
-                                        Referências Bancárias (@Model.RefBancaria.Count)
+                                        Referências Bancárias (@Model.RefBancaria?.Count)
 
                                     </div>
                                     <div class="collapsible-body">
@@ -548,7 +707,7 @@ Model.DadosCliente.Contribuinte_Icms_Status), new { @id = "contribuinte", @name 
                                                     </a>
                                                 </div>
                                             </div>
-                                            while (Model.RefBancaria.Count < 3)
+                                            while (Model.RefBancaria?.Count < 3)
                                             {
                                                 Model.RefBancaria.Add(new Loja.Bll.Dto.ClienteDto.RefBancariaDtoCliente());
                                             }
@@ -569,23 +728,23 @@ Model.DadosCliente.Contribuinte_Icms_Status), new { @id = "contribuinte", @name 
                                                             <label>BANCO</label>
                                                         </div>
                                                         @*<div class="input-field col s2">
-                                                                <input name="[@indice].BancoDescricao" id="@indice-banco" type="text" class="validate" value="@r.BancoDescricao" />
+                                                                <input name="[@indice].BancoDescricao" id="@indice-banco" type="text"  value="@r.BancoDescricao" />
                                                                 <label for="banco">BANCO</label>
                                                             </div>*@
                                                         <div class="input-field col s2">
-                                                            <input name="[@indice].ContaBanco" id="@indice-conta" type="text" class="validate" value="@r.ContaBanco" />
+                                                            <input name="[@indice].ContaBanco" id="@indice-conta" type="text"  value="@r.ContaBanco" />
                                                             <label for="conta">CONTA</label>
                                                         </div>
                                                         <div class="input-field col s2">
-                                                            <input name="[@indice].TelefoneBanco" id="@indice-telBanco" type="text" class="validate" value="@r.TelefoneBanco" />
+                                                            <input name="[@indice].TelefoneBanco" id="@indice-telBanco" type="text"  value="@r.TelefoneBanco" />
                                                             <label for="telBanco">TELEFONE</label>
                                                         </div>
                                                         <div class="input-field col s2">
-                                                            <input name="[@indice].Agencia" id="@indice-agencia" type="text" class="validate" value="@r.Agencia" />
+                                                            <input name="[@indice].Agencia" id="@indice-agencia" type="text"  value="@r.Agencia" />
                                                             <label for="agencia">AGÊNCIA</label>
                                                         </div>
                                                         <div class="input-field col s2">
-                                                            <input name="[@indice].ContatoBanco" id="@indice-contatoBanco" type="text" class="validate" value="@r.ContatoBanco" />
+                                                            <input name="[@indice].ContatoBanco" id="@indice-contatoBanco" type="text"  value="@r.ContatoBanco" />
                                                             <label for="contatoBanco">CONTATO</label>
                                                         </div>
                                                     </div>
@@ -613,10 +772,10 @@ Model.DadosCliente.Contribuinte_Icms_Status), new { @id = "contribuinte", @name 
                             </ul>
                             <ul class="collapsible" id="collapsibleComercial" style="border-radius:4px">
                                 <li>
-                                    <div class="collapsible-header" style="color:black!important">Referências Comerciais (@Model.RefComercial.Count)</div>
+                                    <div class="collapsible-header" style="color:black!important">Referências Comerciais (@Model.RefComercial?.Count)</div>
                                     @{
                                         var index = 0;
-                                        @if (Model.RefComercial.Count > 0)
+                                        @if (Model.RefComercial?.Count > 0)
                                         {
                                             <div class="collapsible-body" id="collapsible-body">
                                                 <div class="row">
@@ -632,15 +791,15 @@ Model.DadosCliente.Contribuinte_Icms_Status), new { @id = "contribuinte", @name 
                                                 <div class="collapsible-body">
                                                     <div class="row">
                                                         <div class="input-field col s3">
-                                                            <input name="[@index].Nome_Empresa" id="@index-Nome_Empresa" type="text" class="validate" value="@r.Nome_Empresa" />
+                                                            <input name="[@index].Nome_Empresa" id="@index-Nome_Empresa" type="text"  value="@r.Nome_Empresa" />
                                                             <label for="Nome_Empresa">NOME DA EMPRESA</label>
                                                         </div>
                                                         <div class="input-field col s2">
-                                                            <input name="[@index].Contato" id="@index-Contato" type="text" class="validate" value="@r.Contato" />
+                                                            <input name="[@index].Contato" id="@index-Contato" type="text"  value="@r.Contato" />
                                                             <label for="Contato">CONTATO</label>
                                                         </div>
                                                         <div class="input-field col s2">
-                                                            <input name="[@index].Telefone" id="@index-Telefone" type="text" class="validate" value="@r.Telefone" />
+                                                            <input name="[@index].Telefone" id="@index-Telefone" type="text"  value="@r.Telefone" />
                                                             <label for="Telefone">TELEFONE</label>
                                                         </div>
                                                     </div>
@@ -729,14 +888,14 @@ Model.DadosCliente.Contribuinte_Icms_Status), new { @id = "contribuinte", @name 
                     <span class="caixa">
                         <span class="rotulo">Endereço:</span>
                         <span class="dado" id="endereco" name="endereco">
-                            @Model.DadosCliente.Endereco,
-                            @Model.DadosCliente.Numero
-                            @if (!String.IsNullOrEmpty(Model.DadosCliente.Complemento))
-                                @Model.DadosCliente.Complemento
-                            - @Model.DadosCliente.Bairro
-                            - @Model.DadosCliente.Cidade
-                            - @Model.DadosCliente.Uf
-                            - @Model.DadosCliente.Cep
+                            @Model.DadosCliente?.Endereco,
+                            @Model.DadosCliente?.Numero
+                            @if (!String.IsNullOrEmpty(Model.DadosCliente?.Complemento))
+                                @Model.DadosCliente?.Complemento
+                            - @Model.DadosCliente?.Bairro
+                            - @Model.DadosCliente?.Cidade
+                            - @Model.DadosCliente?.Uf
+                            - @Model.DadosCliente?.Cep
                         </span>@*formatar o endereço*@
                     </span>
                 </div>
@@ -774,7 +933,7 @@ Model.DadosCliente.Contribuinte_Icms_Status), new { @id = "contribuinte", @name 
                     </span>
                 </div>
             </div>
-            @if (Model.DadosCliente.Tipo == "PF")
+            @if (Model.DadosCliente?.Tipo == "PF")
             {
                 @* Observações *@
                 <div class="row">
@@ -816,25 +975,25 @@ Model.DadosCliente.Contribuinte_Icms_Status), new { @id = "contribuinte", @name 
                 </div>
             </div>
 
-            @if (Model.DadosCliente.Tipo == "PF")
+            @if (Model.DadosCliente?.Tipo == "PF")
             {
                 <div class="row">
                     <div class="col s12">
                         <div class="input-field col s2">
                             @Html.DropDownList("ProdutorRural",
     new SelectList(Model.LstProdutoRural, "Value", "Text",
-    Model.DadosCliente.ProdutorRural), new { @id = "produtor" })
+    Model.DadosCliente?.ProdutorRural), new { @id = "produtor" })
                             <label>PRODUTO RURAL</label>
                         </div>
                         <div id="ehProdutor">
                             <div class="input-field col s2">
-                                <input name="ie" id="ie" type="text" class="validate" value="@Model.DadosCliente.Ie" />
+                                <input name="ie" id="ie" type="text"  value="@Model.DadosCliente?.Ie" />
                                 <label id="lblIe" for="ie">IE</label>
                             </div>
                             <div class="input-field col s2">
                                 @Html.DropDownList("Contribuinte_Icms_Status",
     new SelectList(Model.LstContribuinte, "Value", "Text",
-    Model.DadosCliente.Contribuinte_Icms_Status), new { @id = "contribuinte" })
+    Model.DadosCliente?.Contribuinte_Icms_Status), new { @id = "contribuinte" })
                                 <label>CONTRIBUINTE ICMS</label>
                             </div>
                         </div>
@@ -921,7 +1080,7 @@ Model.DadosCliente.Contribuinte_Icms_Status), new { @id = "contribuinte", @name 
         <div class="row col s12">
             <div class="input-field col s2">
                 @Html.DropDownList("Indicador_Orcamentista",
-new SelectList(Model.LstIndicadores, "Value", "Text", Model.DadosCliente.Indicador_Orcamentista),
+new SelectList(Model.LstIndicadores, "Value", "Text", Model.DadosCliente?.Indicador_Orcamentista),
 new { @id = "indicador" })
                 <label>INDICADORES</label>
             </div>
@@ -1052,3 +1211,10 @@ new { @id = "indicador" })
     }
 </style>
 
+<script>
+    requirejs(["Views/Cliente/DadosCliente"], function (util) {
+
+    });
+
+
+</script>

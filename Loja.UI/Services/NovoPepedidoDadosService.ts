@@ -23,15 +23,37 @@ export class NovoPedidoDadosService {
         p.EnderecoEntrega = enderecoEntregaDtoClienteCadastro;
     }
 
-    public criarNovo(clienteCadastroDto: DtoDadosClienteCadastro,
-        enderecoEntregaDtoClienteCadastro: DtoEnderecoEntregaClienteCadastro) {
+    //public criarNovo(clienteCadastroDto: DtoDadosClienteCadastro,
+    //    enderecoEntregaDtoClienteCadastro: DtoEnderecoEntregaClienteCadastro) {
+    //    this.dtoPedido = new DtoPedido();
+    //    let p = this.dtoPedido;
+    //    //temos que criar os objetos...
+    //    p.NumeroPrePedido = "";
+    //    p.DataHoraPedido = "";
+    //    p.DadosCliente = clienteCadastroDto;
+    //    p.EnderecoEntrega = enderecoEntregaDtoClienteCadastro;
+    //    p.ListaProdutos = new Array();
+    //    p.TotalFamiliaParcelaRA = 0;
+    //    p.PermiteRAStatus = 0;
+    //    p.OpcaoPossuiRA = "";
+    //    p.CorTotalFamiliaRA = "";
+    //    p.PercRT = null;
+    //    p.ValorTotalDestePedidoComRA = null;
+    //    p.VlTotalDestePedido = null;
+    //    p.DetalhesPrepedido = new DtoDetalhesPedido();
+    //    p.FormaPagto = new Array();
+    //    p.St_Orc_Virou_Pedido = false;
+    //    p.NumeroPedido = "";
+    //    p.FormaPagtoCriacao = new DtoFormaPagtoCriacao();
+
+    //}
+
+    public criarNovo() {
         this.dtoPedido = new DtoPedido();
         let p = this.dtoPedido;
         //temos que criar os objetos...
         p.NumeroPrePedido = "";
         p.DataHoraPedido = "";
-        p.DadosCliente = clienteCadastroDto;
-        p.EnderecoEntrega = enderecoEntregaDtoClienteCadastro;
         p.ListaProdutos = new Array();
         p.TotalFamiliaParcelaRA = 0;
         p.PermiteRAStatus = 0;
@@ -40,7 +62,7 @@ export class NovoPedidoDadosService {
         p.PercRT = null;
         p.ValorTotalDestePedidoComRA = null;
         p.VlTotalDestePedido = null;
-        p.DetalhesPrepedido = new DtoDetalhesPedido();
+        //p.DetalhesPrepedido = new DtoDetalhesPedido();
         p.FormaPagto = new Array();
         p.St_Orc_Virou_Pedido = false;
         p.NumeroPedido = "";
@@ -48,9 +70,7 @@ export class NovoPedidoDadosService {
 
     }
 
-    totalPedido(): number {
-        return this.dtoPedido.ListaProdutos.reduce((sum, current) => sum + current.TotalItem, 0);
-    }
+    
 
 
 }

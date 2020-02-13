@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Loja.UI.Models.Produtos;
 using Loja.Bll.Dto.ProdutoDto;
 using Microsoft.AspNetCore.Http;
+using Loja.Bll.Dto.PedidoDto.DetalhesPedido;
+using System.Text.Json;
 
 namespace Loja.UI.Controllers
 {
@@ -41,6 +43,24 @@ namespace Loja.UI.Controllers
             else
                 return View("ConsultaListaPrecos");
 
-        }        
+        }      
+        
+        [HttpGet]
+        public async Task<IEnumerable<string>> VerificarRegraProdutoCD(string produto, string id_nfe_emitente_selecao_manual)
+        {
+            List<string> lstRetorno = new List<string>();
+
+            string cpf_cnpj = HttpContext.Session.GetString("cpf_cnpj");
+
+            PedidoProdutosDtoPedido prod = new PedidoProdutosDtoPedido();
+            prod = JsonSerializer.Deserialize<PedidoProdutosDtoPedido>(produto);
+
+            //fazer a chamada do metodo
+            lstRetorno = (await produtoBll.VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado(prod, cpf_cnpj,
+                int.Parse(id_nfe_emitente_selecao_manual))).ToList();
+
+            return lstRetorno;
+        }
+        
     }
 }

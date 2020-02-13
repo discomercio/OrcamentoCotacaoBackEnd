@@ -1,15 +1,14 @@
 /* nao editar, arquivo compilado pelo typescript*/ 
 /* nao editar, arquivo compilado pelo typescript*/ 
 /* nao editar, arquivo compilado pelo typescript*/ 
-/* nao editar, arquivo compilado pelo typescript*/ 
 define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    var DtoPedidoProdutosPedido = /** @class */ (function () {
-        function DtoPedidoProdutosPedido() {
+    var PedidoProdutosDtoPedido = /** @class */ (function () {
+        function PedidoProdutosDtoPedido() {
         }
-        return DtoPedidoProdutosPedido;
+        return PedidoProdutosDtoPedido;
     }());
-    exports.DtoPedidoProdutosPedido = DtoPedidoProdutosPedido;
+    exports.PedidoProdutosDtoPedido = PedidoProdutosDtoPedido;
 });
 //# sourceMappingURL=/scriptsJs/DtosTs/DtoPedido/DtoPedidoProdutosPedido.js.map

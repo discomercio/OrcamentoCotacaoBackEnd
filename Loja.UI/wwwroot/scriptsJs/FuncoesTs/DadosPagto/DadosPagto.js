@@ -1,7 +1,6 @@
 /* nao editar, arquivo compilado pelo typescript*/ 
 /* nao editar, arquivo compilado pelo typescript*/ 
 /* nao editar, arquivo compilado pelo typescript*/ 
-/* nao editar, arquivo compilado pelo typescript*/ 
 define(["require", "exports", "./EnumFormaPagto", "../../UtilTs/Constantes/Constantes", "./EnumTipoPagto", "../../UtilTs/MoedaUtils/moedaUtils"], function (require, exports, EnumFormaPagto_1, Constantes_1, EnumTipoPagto_1, moedaUtils_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -40,7 +39,7 @@ define(["require", "exports", "./EnumFormaPagto", "../../UtilTs/Constantes/Const
         };
         DadosPagto.prototype.atribuirFormaPagtoParaDto = function () {
             this.dtoPedido.FormaPagtoCriacao.Tipo_parcelamento = this.enumFormaPagto;
-            this.dtoPedido.VlTotalDestePedido = this.novoPedidoDadosService.totalPedido();
+            this.dtoPedido.VlTotalDestePedido = this.totalPedido();
             if (this.enumFormaPagto == 1) {
                 //A vista      
                 this.dtoPedido.FormaPagtoCriacao.Rb_forma_pagto = this.enumFormaPagto.toString();
@@ -199,6 +198,7 @@ define(["require", "exports", "./EnumFormaPagto", "../../UtilTs/Constantes/Const
                     }
                 }
                 if (this.enumFormaPagto == 3) {
+                    debugger;
                     if (this.vlEntrada) {
                         if (!this.opcaoPagtoParcComEntrada) {
                             if (mostrarMsg) {
@@ -316,6 +316,9 @@ define(["require", "exports", "./EnumFormaPagto", "../../UtilTs/Constantes/Const
                 return this.enumTipoFP.ParcUnica.toString();
             else if (enumFP == EnumFormaPagto_1.EnumFormaPagto.ParcCartaoMaquineta)
                 return this.enumTipoFP.ParcCartaoMaquineta.toString();
+        };
+        DadosPagto.prototype.totalPedido = function () {
+            return this.dtoPedido.ListaProdutos.reduce(function (sum, current) { return sum + current.TotalItem; }, 0);
         };
         DadosPagto.prototype.listarValoresComCoeficiente = function (txtFormaPagto, enumFP) {
             var _this = this;

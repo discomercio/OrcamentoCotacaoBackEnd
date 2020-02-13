@@ -30,11 +30,13 @@
     <None Remove="FuncoesTs\Itens\Itens.ts" />
     <None Remove="Services\NovoPepedidoDadosService.ts" />
     <None Remove="UtilTs\Constantes\Constantes.ts" />
+    <None Remove="UtilTs\CpfCnpjUtils\CpfCnpjUtils.ts" />
     <None Remove="UtilTs\Fomatar\formatacao.ts" />
     <None Remove="UtilTs\Fomatar\Mascaras\formataTelefone.ts" />
     <None Remove="UtilTs\MoedaUtils\moedaUtils.ts" />
     <None Remove="UtilTs\stringUtils\stringUtils.ts" />
     <None Remove="Views\Cep\Index.ts" />
+    <None Remove="Views\Cliente\DadosCliente.ts" />
     <None Remove="Views\Pedido\CoeficienteDto.ts" />
     <None Remove="Views\Pedido\DtoCoeficiente.ts" />
     <None Remove="Views\Pedido\FormaPagto.ts" />

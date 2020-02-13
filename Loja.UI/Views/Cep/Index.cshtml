@@ -140,6 +140,51 @@
         });
     });
 
+    function inscreve(o) {
+    //fazer a verificação para saber se tem valor no con[i]
+    //para ativar os campos e bloquear a edição de alguns campos caso não seja vazio
+
+    limparCamposEndEntrega();
+
+    debugger;
+    var con = $(o);
+    $('#cepEntrega').val(con[1].textContent);
+    $("#cep").addClass('valid');
+    $("#lblcep").addClass('active');
+
+
+    $('#ufEntrega').val(con[2].textContent);
+    $('#ufEntrega').prop('readonly', true);
+    $("#lblUfEntrega").addClass('active');
+
+    $('#cidadeEntrega').val(con[3].textContent);
+    $('#cidadeEntrega').prop('readonly', true);
+    $("#lblCidadeEntrega").addClass('active');
+
+    if (con[4].textContent.trim() != "") {
+        $('#bairroEntrega').prop("readonly", true);
+        $('#bairroEntrega').val(con[4].textContent);
+        $("#lblBairroEntrega").addClass('active');
+    }
+    else {
+        $('#bairroEntrega').prop("readonly", false);
+    }
+
+    if (con[5].textContent.trim() != "") {
+        $('#enderecoEntrega').prop("readonly", true);
+        $('#enderecoEntrega').val(con[5].textContent);
+        $("#lblEnderecoEntrega").addClass('active');
+    }
+    else {
+        $('#enderecoEntrega').prop("readonly", false);
+    }
+
+    if (con[6].textContent.trim() != "") {
+        $('#compEntrega').val(con[6].textContent);
+        $("#lblComplementoEntrega").addClass('active');
+    }
+}
+
     function montaTabela(data) {
         var cols = "";
         debugger;
@@ -312,7 +357,7 @@
                 if (data[0].logradouroComplemento != "" &&
                     data[0].logradouroComplemento != 'undefined' &&
                     data[0].logradouroComplemento != null) {
-                    console.log(data[0].LogradouroComplemento);
+                    
                     $('#compEntrega').val(data[0].LogradouroComplemento);
                     $('#lblComplementoEntrega').addClass('active');
                 }

@@ -11,7 +11,8 @@
 
 
 <div class="col s12 sectionDesktop" style="margin-left:5%">
-    @using (Html.BeginForm("", "", FormMethod.Post))
+    @using (Html.BeginForm("PreparaParaCadastrarPedido", "Pedido", FormMethod.Post,
+new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
     {
         <article>
             <div class="row">
@@ -23,107 +24,137 @@
                 </div>
             </div>
             @* Indicadores *@
+
             <div class="row">
-                @* Indicação *@
-                <div class="col s6">
-                    <span class="caixa">
-                        <span class="rotulo">Indicação</span>
-                    </span>
-                </div>
-                @* Seleção CD *@
-                <div class="col s6">
-                    <span class="caixa">
-                        <span class="rotulo">Modo de Seleção do CD (Auto-Split)</span>
-                    </span>
-                </div>
-                @* Check Com ou Sem indicação *@
-                <div class="col s2">
-                    <label>
-                        <input class="with-gap" type="radio" id="chkSemIndicacao" />
-                        <span class="dado">Sem Indicação</span>
-                    </label>
-                </div>
-                <div class="col s2">
-                    <label>
-                        <input class="with-gap" type="radio" id="chkComIndicacao" />
-                        <span class="dado">Com Indicação</span>
-                    </label>
-                </div>
-                <div class="col s2">
-                    <input type="hidden" />
-                </div>
-                <div class="col s2">
-                    <label>
-                        <input class="with-gap" type="radio" id="chkAutomatico" />
-                        <span class="dado">Aultomático</span>
-                    </label>
-                </div>
-                <div class="col s2">
-                    <label>
-                        <input class="with-gap" type="radio" id="chkManual" />
-                        <span class="dado">Manual</span>
-                    </label>
-                </div>
+                @*@if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
+  .Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
+                {*@
+                    @* Indicação *@
+                    <div class="col s6">
+                        <span class="caixa">
+                            <span class="rotulo">Indicação</span>
+                        </span>
+                    </div>
+                    @* Seleção CD *@
+                    <div class="col s6">
+                        <span class="caixa">
+                            <span class="rotulo">Modo de Seleção do CD (Auto-Split)</span>
+                        </span>
+                    </div>
+                    @* Check Com ou Sem indicação *@
+                    <div class="col s2">
+                        <label>
+                            <input class="with-gap" type="radio" id="chkSemIndicacao" name="semIndicacao" value="false" />
+                            <span class="dado">Sem Indicação</span>
+                        </label>
+                    </div>
+                    <div class="col s2">
+                        <label>
+                            <input class="with-gap" type="radio" id="chkComIndicacao" name="comIndicacao" value="false" />
+                            <span class="dado">Com Indicação</span>
+                        </label>
+                    </div>
+                    <div class="col s2">
+                        <input type="hidden" />
+                    </div>
+                @*  }*@
+                @*@if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
+          .Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD.ToString()) != -1)
+                {*@
+
+
+                    <div class="col s2">
+                        <label>
+                            <input class="with-gap" type="radio" id="chkAutomatico" name="cdAutomatico" value="false" />
+                            <span class="dado">Aultomático</span>
+                        </label>
+                    </div>
+                    <div class="col s2">
+                        <label>
+                            <input class="with-gap" type="radio" id="chkManual" name="cdManual" value="false" />
+                            <span class="dado">Manual</span>
+                        </label>
+                    </div>
+                @*}*@
                 <input type="hidden" />
                 <input type="hidden" />
                 <div class="col s12">
                     <input type="hidden" />
                 </div>
-                <div class="col s4" id="divIndicadores">
-                    <div class="input-field">
-                        @Html.DropDownList("Indicador_Orcamentista", new SelectList(
-                       Model.LstIndicadores, "Value", "Text"),
-                       new { @id = "indicador" })
-                        <label>Indicadores</label>
+                @*@if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
+  .Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
+                {*@
+                    <div class="col s4" id="divIndicadores">
+                        <div class="input-field">
+                            @Html.DropDownList("Indicador_Orcamentista", new SelectList(
+                        Model.LstIndicadores, "Value", "Text"),
+                        new { @id = "indicador", @name = "indicador" })
+                            <label>Indicadores</label>
+                        </div>
                     </div>
-                </div>
+                @*}*@
                 <div class="col s2">
                     <input type="hidden" />
                 </div>
-                <div class="col s4" id="divSelecaoCd">
-                    <div class="input-field">
-                        @Html.DropDownList("ListaCD", new SelectList(
-                       Model.ListaCD, "Value", "Text"),
-                       new { @id = "selecaoCd" })
-                        <label>Centro de Distribuição</label>
+                @*@if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
+        .Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD.ToString()) != -1)
+                {*@
+                    <div class="col s4" id="divSelecaoCd">
+                        <div class="input-field">
+                            @Html.DropDownList("ListaCD", new SelectList(
+                        Model.ListaCD, "Value", "Text"),
+                        new { @id = "selecaoCd", @name = "nomeCD" })
+                            <label>Centro de Distribuição</label>
+                        </div>
+                        <div class="col s4" id="divMsgCD" style="line-height:normal; display:none;position:absolute;">
+                            <span id="msgCD" style="word-break:break-word; color:red;font-weight:bold"></span>
+                        </div>
                     </div>
-                </div>
+                @*}*@
                 <input type="hidden" />
                 <input type="hidden" />
                 <div class="col s12">
                     <input type="hidden" />
                 </div>
-                <div class="col s2" id="divComRA">
-                    <label>
-                        <input class="with-gap" type="radio" id="chkComRa" />
-                        <span class="dado">Com RA</span>
-                    </label>
-                </div>
-                <div class="col s2" id="divSemRA">
-                    <label>
-                        <input class="with-gap" type="radio" id="chkSemRa" />
-                        <span class="dado">Sem RA</span>
-                    </label>
-                </div>
-                <input type="hidden" />
-                <input type="hidden" />
-                <div class="col s12">
-                    <input type="hidden" />
-                </div>
-                <div class="col s2" id="divCOM">
-                    <div class="input-field">
-                        <input type="text" onblur="VerificarPercMaxDescEComissao(this);" id="percComissao"/>
-                        <label>COM(%)</label>
+                @*@if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
+.Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
+                {*@
+                    <div class="col s2" id="divComRA">
+                        <label>
+                            <input class="with-gap" type="radio" id="chkComRa" name="comRA" value="false" />
+                            <span class="dado">Com RA</span>
+                        </label>
                     </div>
-                </div>
+                    <div class="col s2" id="divSemRA">
+                        <label>
+                            <input class="with-gap" type="radio" id="chkSemRa" name="semRA" value="false" />
+                            <span class="dado">Sem RA</span>
+                        </label>
+                    </div>
+
+                    <input type="hidden" />
+                    <input type="hidden" />
+                    <div class="col s12">
+                        <input type="hidden" />
+                    </div>
+                    <div class="col s2" id="divCOM">
+                        <div class="input-field">
+                            <input type="text" onblur="VerificarPercMaxDescEComissao(this);" id="percComissao" name="percComissao" />
+                            <label>COM(%)</label>
+                        </div>
+                    </div>
+                @*}*@
+                @*<div class="col s4"><input type="hidden" /></div>
+                    <div class="col s2" style="line-height:normal">
+                        <span id="msgCD" style="word-break:break-word"></span>
+                    </div>*@
             </div>
 
 
             <div class="row">
                 <div class="col s10"></div>
                 <div class="input-field col s2">
-                    <a class="waves-effect waves-light btn-small"
-                       onclick="testeModal('#modal1')"
+                    <a class="waves-effect waves-light btn-small" id="btnModalProdutos"
                        style="margin-top:2%;">
                         <i class="material-icons left">add</i>Adicionar produto
                     </a>
@@ -131,6 +162,7 @@
             </div>
             @* Produtos adicionados *@
             <div class="row">
+
                 <div class="col s12">
                     @{
                         var indice = 0;
@@ -203,6 +235,7 @@
 
                                             <td style="cursor:pointer;" scope="col" onclick="mostrarProdutos(i)">
                                                 <span name="[@index].NumProduto"></span>
+                                                <input type="hidden" name="[@index].Fabricante" value="@i.Fabricante" />
                                                 <input class="numProduto" type="hidden" name="[@index].NumProduto" value="@i.NumProduto?">
                                             </td>
                                             <td>
@@ -224,6 +257,9 @@
                                             }
                                             <td class="vlListaProduto" style="text-align:right" name="[@index].VlLista" id="@i.VlLista">
                                             </td>
+                                            <td class="vlListaProdutoInput" style="display:none;">
+                                                <input type="hidden" name="[@index].VlLista" />
+                                            </td>
                                             <td>
                                                 <div class="input-field desconto">
                                                     <input class="descProduto" type="text" name="[@index].Desconto" id="@i.Desconto"
@@ -240,6 +276,9 @@
                                                 </div>
                                             </td>
                                             <td class="vlTotalItem" style="text-align:right" name="[@index].VlTotalItem">
+                                            </td>
+                                            <td class="vlTotalItemInput" style="display:none;">
+                                                <input type="hidden" name="[@index].VlTotalItem" />
                                             </td>
                                             <td>
                                                 <div class="input-field">
@@ -271,14 +310,14 @@
                                         <tr @Html.Raw(classenovoProdutoAviso) @Html.Raw(estilo)>
                                             @if (Model.Permite_RA_Status == 0)
                                             {
-                                                <td colspan="7" class="avisoestoque">
+                                                <td colspan="7" class="avisoProduto">
                                                     Aviso:
                                                     <span name="produtoAviso"></span>
                                                 </td>
                                             }
                                             @if (Model.Permite_RA_Status == 1)
                                             {
-                                                <td colspan="8" class="avisoestoque">
+                                                <td colspan="8" class="avisoProduto">
                                                     Aviso:
                                                     <span name="produtoAviso"></span>
                                                 </td>
@@ -432,7 +471,7 @@
                         </div>
                         @* meio de pagamento Entrada *@
                         <div class="input-field col s3">
-                            <select name="" id="meioPagtoEntrada">
+                            <select name="" id="meioPagtoEntradaPrest">
                                 <option value="0">Selecione</option>
                                 @foreach (var v in Model.FormaPagto.ListaParcComEntrada)
                                 {
@@ -457,7 +496,7 @@
                         @* Meio de pagamento parcela prestação *@
                         <div class="input-field col s3">
                             @* Meio de pagamento *@
-                            <select name="">
+                            <select name="" id="meioPagtoEntrada">
                                 <option value="0">Selecione</option>
                                 @foreach (var i in Model.FormaPagto.ListaParcComEntPrestacao)
                                 {
@@ -468,8 +507,8 @@
                         </div>
                         @* dias para vencimento *@
                         @* fazer a condição aqui para saber se é diferente de cartões *@
-                        <div class="input-field col s2">
-                            <input type="text" id="diasVenc" />
+                        <div class="input-field col s3">
+                            <input type="text" id="diasVenc" maxlength="3" />
                             <label>Dias para vencimento Prest</label>
                         </div>
                     </div>
@@ -514,6 +553,9 @@
 
                 </div>
             }
+
+
+
         </article>
         @* Botões *@
         <footer class="page-footer">
@@ -536,6 +578,38 @@
                 </div>
             </div>
         </footer>
+
+
+
+        @* criar os campos de FormaPagtoCriacao *@
+        <input type="hidden" name="Totaldestepedido" id="TotalDestePedido" value="@Model.FormaPagtoCriacao.TotalDestePedido" />
+        <input type="hidden" name="Qtde_parcelas" id="Qtde_Parcelas" value="@Model.FormaPagtoCriacao.Qtde_Parcelas" /> @*Descrição da forma de pagto*@
+        <input type="hidden" name="Rb_forma_pagto" id="Rb_forma_pagto" value="@Model.FormaPagtoCriacao.Rb_forma_pagto" /> @*Tipo da forma de pagto*@
+        <input type="hidden" name="Op_av_forma_pagto" id="Op_av_forma_pagto" />
+        <input type="hidden" name="Op_pu_forma_pagto" id="Op_pu_forma_pagto" />
+        <input type="hidden" name="C_pu_valor" id="C_pu_valor" />
+        <input type="hidden" name="C_pu_vencto_apos" id="C_pu_vencto_apos" />
+        <input type="hidden" name="C_pc_qtde" id="C_pc_qtde" />
+        <input type="hidden" name="C_pc_valor" id="C_pc_valor" />
+        <input type="hidden" name="C_pc_maquineta_qtde" id="C_pc_maquineta_qtde" />
+        <input type="hidden" name="C_pc_maquineta_valor" id="C_pc_maquineta_valor" />
+        <input type="hidden" name="Op_pce_entrada_forma_pagto" id="Op_pce_entrada_forma_pagto" />
+        <input type="hidden" name="C_pce_entrada_valor" id="C_pce_entrada_valor" />
+        <input type="hidden" name="Op_pce_prestacao_forma_pagto" id="Op_pce_prestacao_forma_pagto" />
+        <input type="hidden" name="C_pce_prestacao_qtde" id="C_pce_prestacao_qtde" />
+        <input type="hidden" name="C_pce_prestacao_valor" id="C_pce_prestacao_valor" />
+        <input type="hidden" name="C_pce_prestacao_periodo" id="C_pce_prestacao_periodo" />
+        <input type="hidden" name="Op_pse_prim_prest_forma_pagto" id="Op_pse_prim_prest_forma_pagto" />
+        <input type="hidden" name="C_pse_prim_prest_valor" id="C_pse_prim_prest_valor" />
+        <input type="hidden" name="C_pse_prim_prest_apos" id="C_pse_prim_prest_apos" />
+        <input type="hidden" name="Op_pse_demais_prest_forma_pagto" id="Op_pse_demais_prest_forma_pagto" />
+        <input type="hidden" name="C_pse_demais_prest_qtde" id="C_pse_demais_prest_qtde" />
+        <input type="hidden" name="C_pse_demais_prest_valor" id="C_pse_demais_prest_valor" />
+        <input type="hidden" name="C_pse_demais_prest_periodo" id="C_pse_demais_prest_periodo" />
+        <input type="hidden" name="C_forma_pagto" id="C_forma_pagto" />
+        <input type="hidden" name="Descricao_meio_pagto" id="Descricao_meio_pagto" />
+        <input type="hidden" name="FormaPagtoCriacao.Tipo_parcelamento" id="Tipo_parcelamento" />
+
     }
 </div>
 
@@ -629,18 +703,39 @@
     //Estamos pegando a lista completa de produtos para passar para o .ts da tela
     var lstprodutos = JSON.parse(@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(Json.Serialize(Model.ProdutoCombo).ToString(), true)))
 
-    function teste() {
-        let lstProdutosPreparadoParaDataList = PreparaListaProdutosParaDataList();
-        console.log(lstProdutosPreparadoParaDataList);
-        console.log(lstprodutos);
-        debugger;
-        var c = {};
-        $.each(lstProdutosPreparadoParaDataList, function (i, d) {
-            c[d] = null;
-        });
-        $('input.autocomplete').autocomplete({
-            data:c
-        });
+    //teste: criar uma function para fazer a chamada ajax, mas sendo utilizado pelo .ts
+    function verificarRegraProdutoCD(novaclasse, produto) {
+
+        let cdManual = $("#chkManual").prop('checked');
+        let selecaoCd = $("#selecaoCd").val();
+        if (produto != "") {
+            $.ajax({
+            url: "../Produtos/VerificarRegraProdutoCD/",
+            type: "GET",
+            data: { produto: JSON.stringify(produto), id_nfe_emitente_selecao_manual: selecaoCd},
+            dataType: "json",
+                success: function (data) {
+                    if (data.length > 0) {
+                        AdicionarMsgProdutoECDTela(data, novaclasse);
+                    }
+                }
+            });
+        }
+
+
+    }
+
+    //abrir modal para seleção de produtos
+    function AbrirModalProdutos() {
+        //'#modal1' modal de produtos
+        let modal = "#modal1";
+        let Modalelem = document.querySelector(modal);
+        let instanceModal = M.Modal.init(Modalelem);
+        instanceModal.open();
+    }
+
+    function continuar() {
+        continuar();
     }
 
 
@@ -657,6 +752,10 @@
     var enumFormaPagto;
     var qtdeParcVisa = (@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(Model.QtdeParcVisa.ToString()).ToString()));
     var percMaxDescEComissaoPorLoja = JSON.parse(@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(Json.Serialize(Model.PercMaxDescEComissao).ToString(), true)));
+
+    var testeJson;
+    var lstProdutosSelecionados;
+
 
 </script>
 <style>
@@ -704,10 +803,10 @@
     }
 
     /*.tdtabela {
-        padding-left: 0;
-        padding-right: 0;
-        padding-bottom: 6px;
-    }*/
+                padding-left: 0;
+                padding-right: 0;
+                padding-bottom: 6px;
+            }*/
 
     .tabelaProd {
         border: 1px solid #ccc;
@@ -740,7 +839,7 @@
             border: 1px solid white;
             border-spacing: 2px;
             /*width: 25% !important;*/
-            white-space: nowrap;
+            /*white-space: nowrap;*/
             word-break: break-word;
         }
 
@@ -803,10 +902,10 @@
 
 
         /*.tabelaitens th,
-        .tabelaitens td {
-            padding-left: 0.4em;
-            padding-right: 0.4em;
-        }*/
+                .tabelaitens td {
+                    padding-left: 0.4em;
+                    padding-right: 0.4em;
+                }*/
 
         .tabelaitens tbody td {
             white-space: initial;
@@ -814,9 +913,9 @@
         }
 
     /*.tabelaitens th {
-            font-size: 0.85em;
-            letter-spacing: 0.1em;
-        }*/
+                    font-size: 0.85em;
+                    letter-spacing: 0.1em;
+                }*/
 
     /*thead tr*/
     .hquantidade {
@@ -868,7 +967,7 @@
             cursor: pointer;
         }
 
-    .avisoestoque {
+    .avisoestoque, .avisoProduto {
         padding-left: 5em !important;
         color: red;
     }

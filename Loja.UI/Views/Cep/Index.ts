@@ -1,5 +1,7 @@
 ﻿
 
+declare var window: Window & typeof globalThis;
+
 $("#btnModificar").click(function () {
     $('.teste').children().find('input').filter(()  => {
         if ($(this).prop('checked') == true) {
@@ -11,7 +13,7 @@ $("#btnModificar").click(function () {
     });
 });
 
-function montaTabela(data:any) {
+(window as any).montaTabela = (data:any) => {
     var cols = "";
     var lst = data["ListaCep"];
 

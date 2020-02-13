@@ -1,7 +1,6 @@
 /* nao editar, arquivo compilado pelo typescript*/ 
 /* nao editar, arquivo compilado pelo typescript*/ 
 /* nao editar, arquivo compilado pelo typescript*/ 
-/* nao editar, arquivo compilado pelo typescript*/ 
 $("#btnModificar").click(function () {
     var _this = this;
     $('.teste').children().find('input').filter(function () {
@@ -12,7 +11,7 @@ $("#btnModificar").click(function () {
         return true;
     });
 });
-function montaTabela(data) {
+window.montaTabela = function (data) {
     var cols = "";
     var lst = data["ListaCep"];
     if (lst.length > 0) {
@@ -59,7 +58,7 @@ function montaTabela(data) {
         $("#msg").css("display", "block");
         $("#msg").empty().append(msg);
     }
-}
+};
 function limparCamposEndEntrega() {
     $('#cepEntrega').val('');
     $('#ufEntrega').val('');

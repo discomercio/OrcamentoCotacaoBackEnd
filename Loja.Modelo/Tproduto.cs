@@ -24,7 +24,6 @@ namespace Loja.Modelos
         [Column("produto")]
         [Required]
         [MaxLength(8)]
-        //[ForeignKey("TprodutoLoja")]
         public string Produto { get; set; }
 
         public ICollection<TprodutoLoja> TprodutoLoja { get; set; }

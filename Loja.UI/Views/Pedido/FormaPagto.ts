@@ -1,5 +1,5 @@
 ﻿import { DtoCoeficiente } from "../../DtosTs/DtoCoeficiente/DtoCoeficiente";
-import { DtoPedidoProdutosPedido } from "../../DtosTs/DtoPedido/DtoPedidoProdutosPedido";
+import { PedidoProdutosDtoPedido } from "../../DtosTs/DtoPedido/DtoPedidoProdutosPedido";
 import { Constantes } from "../../UtilTs/Constantes/Constantes";
 import { MoedaUtils } from "../../UtilTs/MoedaUtils/moedaUtils";
 
@@ -23,7 +23,7 @@ let vlEntrada: number;
 export class FormaPagto {
     lstMsg: string[] = [];
     lstCoeficiente: DtoCoeficiente[] = [];
-    lstProdutos: DtoPedidoProdutosPedido[] = [];
+    lstProdutos: PedidoProdutosDtoPedido[] = [];
     constantes: Constantes;
     moedaUtils: MoedaUtils;
 

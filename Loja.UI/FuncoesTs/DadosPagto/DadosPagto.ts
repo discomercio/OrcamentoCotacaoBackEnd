@@ -15,6 +15,7 @@ export class DadosPagto {
     public criando = true;
     public dtoPedido: DtoPedido;
 
+
     public mascaraNum() {
         return [/\d/, /\d/, /\d/];
     }
@@ -58,9 +59,11 @@ export class DadosPagto {
 
     atribuirFormaPagtoParaDto() {
         this.dtoPedido.FormaPagtoCriacao.Tipo_parcelamento = this.enumFormaPagto;
-        this.dtoPedido.VlTotalDestePedido = this.novoPedidoDadosService.totalPedido();
+        this.dtoPedido.VlTotalDestePedido = this.totalPedido();
+        
         if (this.enumFormaPagto == 1) {
             //A vista      
+
             this.dtoPedido.FormaPagtoCriacao.Rb_forma_pagto = this.enumFormaPagto.toString();
             this.dtoPedido.FormaPagtoCriacao.Op_av_forma_pagto = this.meioPagtoAVista.toString();//meio de pagamento
             this.dtoPedido.FormaPagtoCriacao.Qtde_Parcelas = 1;
@@ -118,7 +121,6 @@ export class DadosPagto {
     }
 
     validarFormaPagto(mostrarMsg: boolean): boolean {
-
         let retorno = true;
         // this.verificaParcelamento();
         if (this.validarOpcoesPagto(mostrarMsg)) {
@@ -221,6 +223,7 @@ export class DadosPagto {
                 }
             }
             if (this.enumFormaPagto == 3) {
+                debugger;
                 if (this.vlEntrada) {
                     if (!this.opcaoPagtoParcComEntrada) {
                         if (mostrarMsg) {
@@ -317,7 +320,7 @@ export class DadosPagto {
     constantes = new Constantes();
     lstMsg: string[] = [];
     tipoFormaPagto: string = '';
-    recalcularValoresComCoeficiente(enumFP: number): void {
+    public recalcularValoresComCoeficiente(enumFP: number): void {
         //na mudança da forma de pagto iremos zerar todos os campos
         this.zerarTodosCampos();
         //verificar EnumTipoPagto para passar o valor do tipo "AV, SE, CE"
@@ -362,6 +365,10 @@ export class DadosPagto {
             return this.enumTipoFP.ParcCartaoMaquineta.toString();
     }
     public novoPedidoDadosService: NovoPedidoDadosService;
+
+    public totalPedido(): number {
+        return this.dtoPedido.ListaProdutos.reduce((sum, current) => sum + current.TotalItem, 0);
+    }
 
     listarValoresComCoeficiente(txtFormaPagto: string, enumFP: number): void {
 

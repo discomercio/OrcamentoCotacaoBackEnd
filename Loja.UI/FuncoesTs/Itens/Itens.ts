@@ -1,6 +1,6 @@
 ﻿import { DtoProdutoCombo } from "../../DtosTs/DtoProdutos/DtoProdutoCombo";
 import { SelectProdInfo } from "../../DtosTs/DtoProdutos/SelectProdInfo";
-import { DtoPedidoProdutosPedido } from "../../DtosTs/DtoPedido/DtoPedidoProdutosPedido";
+import { PedidoProdutosDtoPedido } from "../../DtosTs/DtoPedido/DtoPedidoProdutosPedido";
 import { DtoProduto } from "../../DtosTs/DtoProdutos/DtoProduto";
 import { DtoPedido } from "../../DtosTs/DtoPedido/DtoPedido";
 import { MoedaUtils } from "../../UtilTs/MoedaUtils/moedaUtils";
@@ -10,17 +10,18 @@ export class Itens {
     public dtoProdutoCombo: DtoProdutoCombo;
     public selectProdInfo: SelectProdInfo;
     public dtoPedido: DtoPedido;
-    public dtoPedidoProdutosPedido: DtoPedidoProdutosPedido;
+    public dtoPedidoProdutosPedido: PedidoProdutosDtoPedido;
     public dadosPagto: DadosPagto;
     //iremos colocar uma variavel para ser feito a verificação de msg de erros
     public msgErro: string;
 
 
-    public mostrarProdutos(linha: DtoPedidoProdutosPedido) {
+    public mostrarProdutos(linha: PedidoProdutosDtoPedido) {
         //const this.selectProdInfo = new SelectProdInfo();
         this.selectProdInfo.produtoComboDto = this.dtoProdutoCombo;
 
         if (linha) {
+            debugger;
             this.selectProdInfo.Produto = linha.NumProduto;
             this.selectProdInfo.Fabricante = linha.Fabricante;
             this.selectProdInfo.Qte = linha.Qtde;
@@ -33,7 +34,7 @@ export class Itens {
 
     //criaremos uma lista para armazenar os itens pelo item principal, independente se é produto composto
     public lstProdSelectInfo: SelectProdInfo[] = [];
-    public EditarAdicionarProduto(linha: DtoPedidoProdutosPedido) {
+    public EditarAdicionarProduto(linha: PedidoProdutosDtoPedido) {
         let dtoPedido = new DtoPedido();
         let d = new DtoPedido();
         if (this.selectProdInfo.ClicouOk) {
@@ -55,7 +56,7 @@ export class Itens {
 
                         //colcoamos todos os novos
                         for (let i = 0; i < filhosDiretos.length; i++) {
-                            let novo = new DtoPedidoProdutosPedido();
+                            let novo = new PedidoProdutosDtoPedido();
                             this.dtoPedido.ListaProdutos.push(novo);
                             this.atualizarProduto(novo, filhosDiretos[i].Fabricante,
                                 filhosDiretos[i].Produto, this.selectProdInfo.Qte * filhosDiretos[i].Qtde);
@@ -85,17 +86,17 @@ export class Itens {
                 const filhosDiretos = this.filhosDeProdutoComposto(this.selectProdInfo);
                 if (!filhosDiretos) {
                     //não é produto composto
-                    let novo = new DtoPedidoProdutosPedido();
-                    this.dtoPedido.ListaProdutos = new Array<DtoPedidoProdutosPedido>();
+                    let novo = new PedidoProdutosDtoPedido();
+                    this.dtoPedido.ListaProdutos = new Array<PedidoProdutosDtoPedido>();
                     this.dtoPedido.ListaProdutos.push(novo);
                     this.atualizarProduto(novo, this.selectProdInfo.Fabricante, this.selectProdInfo.Produto, this.selectProdInfo.Qte);
                 }
                 else {
                     //produto composto
                     debugger;
-                    this.dtoPedido.ListaProdutos = new Array<DtoPedidoProdutosPedido>();
+                    this.dtoPedido.ListaProdutos = new Array<PedidoProdutosDtoPedido>();
                     for (let i = 0; i < filhosDiretos.length; i++) {
-                        let novo = new DtoPedidoProdutosPedido();
+                        let novo = new PedidoProdutosDtoPedido();
                         this.dtoPedido.ListaProdutos.push(novo);
                         this.atualizarProduto(novo, filhosDiretos[i].Fabricante, filhosDiretos[i].Produto, this.selectProdInfo.Qte * filhosDiretos[i].Qtde);
                     }
@@ -119,7 +120,7 @@ export class Itens {
         return registros[0].Filhos;
     }
 
-    public atualizarProduto(linha: DtoPedidoProdutosPedido, fabricante: string, produto: string, qtde: number) {
+    public atualizarProduto(linha: PedidoProdutosDtoPedido, fabricante: string, produto: string, qtde: number) {
         let prodInfo = this.dtoProdutoCombo.ProdutoDto.filter(el => el.Fabricante === fabricante && el.Produto === produto)[0];
 
 
@@ -139,7 +140,7 @@ export class Itens {
         this.digitouQte(linha);
     }
 
-    public digitouDescValor(i: DtoPedidoProdutosPedido, v: string) {
+    public digitouDescValor(i: PedidoProdutosDtoPedido, v: string) {
 
         if (v == undefined) {
             return;
@@ -173,7 +174,7 @@ export class Itens {
         this.digitouQte(i);
     }
          
-    public digitouQte(i: DtoPedidoProdutosPedido) {
+    public digitouQte(i: PedidoProdutosDtoPedido) {
         let moedaUtils: MoedaUtils = new MoedaUtils();
         //necessário trazer e verificar a variavel "qtde_max_permitida" na tabela "T_produto_loja" 
         //para limitar a qtde de compra para o usuário
@@ -189,7 +190,7 @@ export class Itens {
 
     }
 
-    public digitouDesc(e: Event, i: DtoPedidoProdutosPedido) {
+    public digitouDesc(e: Event, i: PedidoProdutosDtoPedido) {
         let valor = ((e.target) as HTMLInputElement).value;
         let v: any = valor.replace(/\D/g, '');
         //tem 1 casa
@@ -223,7 +224,7 @@ export class Itens {
         }
     }
 
-    public estoqueExcedido(i: DtoPedidoProdutosPedido): boolean {
+    public estoqueExcedido(i: PedidoProdutosDtoPedido): boolean {
         const item = this.estoqueItem(i);
         //se nao achamos, dizemos que não tem que mostrar a mensagem não...
         if (!item) {
@@ -236,7 +237,7 @@ export class Itens {
     }
 
     //mensagens de estoque
-    public estoqueItem(i: DtoPedidoProdutosPedido): DtoProduto {
+    public estoqueItem(i: PedidoProdutosDtoPedido): DtoProduto {
         if (!this.dtoProdutoCombo) {
             return null;
         }
@@ -250,7 +251,7 @@ export class Itens {
         return item[0];
     }
 
-    public produtoTemAviso(i: DtoPedidoProdutosPedido): boolean {
+    public produtoTemAviso(i: PedidoProdutosDtoPedido): boolean {
         const item = this.estoqueItem(i);
         //se nao achamos, dizemos que não tem que mostrar a mensagem não...
         if (!item) {
@@ -263,10 +264,10 @@ export class Itens {
     }
 
     public msgQtdePermitida: string = "";
-    public qtdeVendaPermitida(i: DtoPedidoProdutosPedido): boolean {
+    public qtdeVendaPermitida(i: PedidoProdutosDtoPedido): boolean {
         //busca o item na lista
         this.msgQtdePermitida = "";
-
+        debugger;
         const item = this.estoqueItem(i);
         if (!item) {
             return false;

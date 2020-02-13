@@ -21,5 +21,7 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
         public decimal? VlVenda { get; set; }
         public decimal? VlTotal { get; set; }
         public float? Comissao { get; set; }
+        public short? Qtde_estoque_total_disponivel { get; set; }
+        public string Alertas { get; set; }
     }
 }
