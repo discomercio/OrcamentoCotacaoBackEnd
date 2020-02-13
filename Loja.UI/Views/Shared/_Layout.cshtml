@@ -54,21 +54,21 @@
                     @*<a class="material-icons">notifications</a>*@
                     @if (User.Identity.IsAuthenticated)
                     {
-                    <span style="    margin-right: 20px;
+                        <span style="    margin-right: 20px;
     font-size: 20px;">
-                        Olá @User.Identity.Name
-                    </span>
-                    <a href="~/Acesso/Logout" class="material-icons" title="Logout" style="vertical-align: text-bottom;">
-                        exit_to_app
-                    </a>
-                    <a href="~/Acesso/Logout" style="    margin-right: 20px;">SAIR</a>
+                            Olá @User.Identity.Name
+                        </span>
+                        <a href="~/Acesso/Logout" class="material-icons" title="Logout" style="vertical-align: text-bottom;">
+                            exit_to_app
+                        </a>
+                        <a href="~/Acesso/Logout" style="    margin-right: 20px;">SAIR</a>
                     }
                     else
                     {
                         //não temos botão de ologin pq já está na pagina de login - mas precisa para outras páginas, que eventualemte não tenham a proteção, como a home
                         if (!(ViewBag.PaginaDeLogin ?? false))
                         {
-                    <a href="~/Acesso/Login" class="btn">Login</a>
+                            <a href="~/Acesso/Login" class="btn">Login</a>
                         }
                     }
                 </div>
@@ -79,6 +79,11 @@
     <div class="col s12" id="corpo">
         @if (User.Identity.IsAuthenticated)
         {
+            <style>
+                .menudesabilitado {
+                    cursor: not-allowed;
+                }
+            </style>
             <ul class="sidenav sidenav-fixed" style="width:18%; white-space:nowrap">
                 <li>
                     <ul class="collapsible">
@@ -86,22 +91,22 @@
                             <div class="collapsible-header">Pedidos</div>
                             <ul class="collapsible-body">
                                 <li>
-                                    <a href="#!">Análise de Pré Pedidos</a>
+                                    <a class="menudesabilitado" href="#!">Análise de Pré Pedidos</a>
                                 </li>
                                 <li>
                                     <a href="@Url.Action("Index", "Cliente")">Novo Pedido</a>
                                 </li>
                                 <li>
-                                    <a href="#!"><span>Cancelamento Automático</span></a>
+                                    <a href="@Url.Action("CancelamentoAutomatico", "Pedido")"><span>Cancelamento Automático</span></a>
                                 </li>
                                 <li>
-                                    <a href="#!">Indicadores</a>
+                                    <a class="menudesabilitado" href="#!">Indicadores</a>
                                 </li>
                                 <li>
-                                    <a href="#!">Consulta Pedido</a>
+                                    <a class="menudesabilitado" href="#!">Consulta Pedido</a>
                                 </li>
                                 <li>
-                                    <a href="#!">Consulta Pré Pedido</a>
+                                    <a class="menudesabilitado" href="#!">Consulta Pré Pedido</a>
                                 </li>
                             </ul>
                         </li>
@@ -112,10 +117,10 @@
                                     <a href="@Url.Action("Index", "Produtos")">Consulta Lista de Preços</a>
                                 </li>
                                 <li>
-                                    <a href="#!">Consulta Custo Financeiro</a>
+                                    <a class="menudesabilitado" href="#!">Consulta Custo Financeiro</a>
                                 </li>
                                 <li>
-                                    <a href="#!">Indicadores</a>
+                                    <a class="menudesabilitado" href="#!">Indicadores</a>
                                 </li>
                             </ul>
                         </li>
@@ -129,16 +134,16 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <a href="#!">Pedidos Indicadores</a>
+                                    <a class="menudesabilitado" href="#!">Pedidos Indicadores</a>
                                 </li>
                                 <li>
-                                    <a href="#!">Faturamento</a>
+                                    <a class="menudesabilitado" href="#!">Faturamento</a>
                                 </li>
                                 <li>
-                                    <a href="#!">Vendas</a>
+                                    <a class="menudesabilitado" href="#!">Vendas</a>
                                 </li>
                                 <li>
-                                    <a href="#!">Vendas com Desc. Superior</a>
+                                    <a class="menudesabilitado" href="#!">Vendas com Desc. Superior</a>
                                 </li>
                             </ul>
                         </li>

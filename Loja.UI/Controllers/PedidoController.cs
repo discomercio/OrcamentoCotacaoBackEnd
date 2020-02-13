@@ -79,8 +79,8 @@ namespace Loja.UI.Controllers
 
             //buscamos os produtos
             //aqui esta demorando
-             var lstProdutosTask = produtoBll.ListaProdutosCombo(loja, id_cliente, pedidoDto);
-            
+            var lstProdutosTask = produtoBll.ListaProdutosCombo(loja, id_cliente, pedidoDto);
+
             //buscamos o nome do cliente
             ClienteCadastroDto cliente = await clienteBll.BuscarCliente(cpf_cnpj, usuario);
             viewModel.NomeCliente = cliente.DadosCliente.Nome;
@@ -151,8 +151,8 @@ namespace Loja.UI.Controllers
         {
             //necessário formatar o valor de desconto para colocar ponto
             string retorno = "";
-           
-            
+
+
             /*
              * pegar lista de operações permitidas
              * busca os dados do cliente
@@ -241,5 +241,12 @@ namespace Loja.UI.Controllers
         //grava log 
         //commit
 
+
+
+        public async Task<IActionResult> CancelamentoAutomatico()
+        {
+            return View();
+        }
     }
 }
+

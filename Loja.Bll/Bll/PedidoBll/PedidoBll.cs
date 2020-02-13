@@ -20,8 +20,8 @@ namespace Loja.Bll.PedidoBll
         private readonly ContextoBdProvider contextoProvider;
         private readonly ContextoCepProvider contextoCepProvider;
         private readonly ContextoNFeProvider contextoNFeProvider;
-        private readonly Bll.ProdutoBll.ProdutoBll produtoBll;
-        private readonly Bll.ClienteBll.ClienteBll clienteBll;
+        private readonly ProdutoBll.ProdutoBll produtoBll;
+        private readonly ClienteBll.ClienteBll clienteBll;
 
         public PedidoBll(ContextoBdProvider contextoProvider, ContextoCepProvider contextoCepProvider,
             ContextoNFeProvider contextoNFeProvider, ProdutoBll.ProdutoBll produtoBll, ClienteBll.ClienteBll clienteBll)
