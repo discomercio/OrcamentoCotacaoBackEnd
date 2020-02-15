@@ -44,35 +44,6 @@ namespace Loja.Bll.Bll.AcessoBll
                                 select u).FirstOrDefaultAsync();
             return existe;
         }
-        public static async Task CriarSessao(ClienteBll.ClienteBll clienteBll, string usuario, ISession HttpContextSession)
-        {
-            string lstOperacoesPermitidas = await clienteBll.BuscaListaOperacoesPermitidas(usuario);
-            HttpContextSession.SetString("lista_operacoes_permitidas", lstOperacoesPermitidas);
-            HttpContextSession.SetString("usuario", usuario);
-        }
-        public static string ObterOperacoesPermitidas(ISession HttpContextSession)
-        {
-            return HttpContextSession.GetString("lista_operacoes_permitidas");
-        }
-        public static string ObterUsuario(ISession HttpContextSession)
-        {
-            return HttpContextSession.GetString("usuario");
-        }
-        public static bool operacao_permitida(int id_operacao, ISession HttpContextSession)
-        {
-            var permitidas = ObterOperacoesPermitidas(HttpContextSession);
-            var s = id_operacao.ToString();
-
-            if (string.IsNullOrWhiteSpace(s))
-                return false;
-            s = "|" + s + "|";
-
-            if (permitidas.Contains(s))
-                return true;
-
-            return false;
-        }
-
 
         public static bool AutorizarPagina(AuthorizationHandlerContext context)
         {

@@ -53,10 +53,9 @@ namespace Loja.Bll.Bll.PedidoBll
         }
 
 
-        public async Task<List<CancelamentoAutomaticoItem>> DadosTela(bool ConsultaUniversalPedidoOrcamento, string strUsuario,
-            ISession httpContextSession)
+        public async Task<List<CancelamentoAutomaticoItem>> DadosTela(bool ConsultaUniversalPedidoOrcamento, UsuarioLogado usuarioLogado)
         {
-            var listaLojas = await usuarioAcessoBll.Loja_troca_rapida_monta_itens_select(strUsuario);
+            var listaLojas = await usuarioAcessoBll.Loja_troca_rapida_monta_itens_select(usuarioLogado.Usuario);
 
 
             var strWhereBase = " (t1.st_entrega <> '" + Constantes.Constantes.ST_ENTREGA_ENTREGUE + "')" +
@@ -74,9 +73,9 @@ namespace Loja.Bll.Bll.PedidoBll
             //'								" AND (tPedBase.loja NOT IN ('" & NUMERO_LOJA_VRF2 & "','" & NUMERO_LOJA_VRF3 & "','" & NUMERO_LOJA_VRF4 & "','" & NUMERO_LOJA_VRF5 & "','" & NUMERO_LOJA_VRF6 & "','" & NUMERO_LOJA_VRF7 & "','" & NUMERO_LOJA_VRF8 & "'))"
 
 
-            if (!AcessoBll.AcessoBll.operacao_permitida(Constantes.Constantes.OP_LJA_CONSULTA_UNIVERSAL_PEDIDO_ORCAMENTO, httpContextSession))
+            if (!usuarioLogado.Operacao_permitida(Constantes.Constantes.OP_LJA_CONSULTA_UNIVERSAL_PEDIDO_ORCAMENTO))
             {
-                strWhereBase = strWhereBase + " AND (tPedBase.vendedor = '" + strUsuario + "')";
+                strWhereBase = strWhereBase + " AND (tPedBase.vendedor = '" + usuarioLogado.Usuario + "')";
             }
 
 

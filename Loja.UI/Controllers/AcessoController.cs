@@ -71,12 +71,6 @@ namespace Loja.UI.Controllers
                 loginViewModel.ErroUsuarioSenha = true;
                 return View("Login", loginViewModel);
             }
-            var tusuario = await acessoBll.LoginUsuario(loginViewModel.Apelido, loginViewModel.Senha, loginViewModel.Loja);
-            if(tusuario == null)
-            {
-                loginViewModel.ErroUsuarioSenha = true;
-                return View("Login", loginViewModel);
-            }
 
             /*
              * todo: afazer: eduperez terminar o login
@@ -97,8 +91,15 @@ namespace Loja.UI.Controllers
                 return View("Login", loginViewModel);
             }
 * */
+
+            var tusuario = await acessoBll.LoginUsuario(loginViewModel.Apelido, loginViewModel.Senha, loginViewModel.Loja);
+            if(tusuario == null)
+            {
+                loginViewModel.ErroUsuarioSenha = true;
+                return View("Login", loginViewModel);
+            }
             //cria a session
-            await AcessoBll.CriarSessao(clienteBll, loginViewModel.Apelido, HttpContext.Session);
+            await UsuarioLogado.CriarSessao(loginViewModel.Apelido, HttpContext.Session, clienteBll);
 
 
 

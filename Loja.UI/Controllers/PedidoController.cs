@@ -31,7 +31,6 @@ namespace Loja.UI.Controllers
         private readonly FormaPagtoBll formaPagtoBll;
         private readonly CoeficienteBll coeficienteBll;
         private readonly CancelamentoAutomaticoBll cancelamentoAutomaticoBll;
-        private readonly UsuarioLogado usuarioLogado;
 
         public PedidoController(PedidoBll pedidoBll, ProdutoBll produtoBll, ClienteBll clienteBll, FormaPagtoBll formaPagtoBll, CoeficienteBll coeficienteBll,
             CancelamentoAutomaticoBll cancelamentoAutomaticoBll)
@@ -42,7 +41,6 @@ namespace Loja.UI.Controllers
             this.formaPagtoBll = formaPagtoBll;
             this.coeficienteBll = coeficienteBll;
             this.cancelamentoAutomaticoBll = cancelamentoAutomaticoBll;
-            this.usuarioLogado = UsuarioLogado.ObterUsuarioLogado(User, HttpContext.Session);
         }
 
         public IActionResult Index()
@@ -253,10 +251,12 @@ namespace Loja.UI.Controllers
 
         public async Task<IActionResult> CancelamentoAutomatico()
         {
-            bool consultaUniversalPedidoOrcamento = AcessoBll.operacao_permitida(Constantes.OP_LJA_CONSULTA_UNIVERSAL_PEDIDO_ORCAMENTO, HttpContext.Session);
+            var usuarioLogado = new UsuarioLogado(User, HttpContext.Session, clienteBll);
+
+            bool consultaUniversalPedidoOrcamento = usuarioLogado.Operacao_permitida(Constantes.OP_LJA_CONSULTA_UNIVERSAL_PEDIDO_ORCAMENTO);
             var model = new Loja.UI.Models.Pedido.CancelamentoAutomaticoViewModel();
-            model.cancelamentoAutomaticoItems = await cancelamentoAutomaticoBll.DadosTela(consultaUniversalPedidoOrcamento, AcessoBll.ObterUsuario(HttpContext.Session), HttpContext.Session);
-            model.MostrarLoja = AcessoBll.operacao_permitida(Constantes.OP_LJA_LOGIN_TROCA_RAPIDA_LOJA, HttpContext.Session);
+            model.cancelamentoAutomaticoItems = await cancelamentoAutomaticoBll.DadosTela(consultaUniversalPedidoOrcamento, usuarioLogado);
+            model.MostrarLoja = usuarioLogado.Operacao_permitida(Constantes.OP_LJA_LOGIN_TROCA_RAPIDA_LOJA);
             model.MostrarLoja = true; //TODO: listar somente as lojas permitidas
             model.ConsultaUniversalPedidoOrcamento = consultaUniversalPedidoOrcamento;
             return View(model);
