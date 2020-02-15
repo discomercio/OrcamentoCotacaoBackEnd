@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Loja.Bll.Bll.AcessoBll;
 
 namespace Loja.UI
 {
@@ -44,7 +45,7 @@ namespace Loja.UI
             {
                 AuthorizationPolicy policy = new AuthorizationPolicyBuilder(CookieAuthenticationDefaults.AuthenticationScheme)
                        .RequireAuthenticatedUser()
-                       .RequireAssertion(r => PrepedidoBusiness.Bll.AcessoBll.AutorizarPagina(r))
+                       .RequireAssertion(r => AcessoBll.AutorizarPagina(r))
                        .Build();
                 options.DefaultPolicy = policy;
                 options.FallbackPolicy = policy;
@@ -58,15 +59,21 @@ namespace Loja.UI
             });
             services.AddControllersWithViews();
             services.AddDistributedMemoryCache();
-            services.AddSession();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(Configuration.GetSection("Acesso").GetValue<int>("ExpiracaoCookieMinutos"));
+            });
 
             //bll
             services.AddTransient<Bll.ProdutoBll.ProdutoBll, Bll.ProdutoBll.ProdutoBll>();
+            services.AddTransient<Loja.Bll.Bll.PedidoBll.CancelamentoAutomaticoBll, Loja.Bll.Bll.PedidoBll.CancelamentoAutomaticoBll>();
             services.AddTransient<Bll.ClienteBll.ClienteBll, Bll.ClienteBll.ClienteBll>();
             services.AddTransient<Bll.CepBll.CepBll, Bll.CepBll.CepBll>();
             services.AddTransient<Bll.PedidoBll.PedidoBll, Bll.PedidoBll.PedidoBll>();
             services.AddTransient<Bll.FormaPagtoBll.FormaPagtoBll, Bll.FormaPagtoBll.FormaPagtoBll>();
             services.AddTransient<Bll.CoeficienteBll.CoeficienteBll, Bll.CoeficienteBll.CoeficienteBll>();
+            services.AddTransient<Loja.Bll.Bll.AcessoBll.UsuarioAcessoBll, Loja.Bll.Bll.AcessoBll.UsuarioAcessoBll>();
+            services.AddTransient<Loja.Bll.Bll.AcessoBll.AcessoBll, Loja.Bll.Bll.AcessoBll.AcessoBll>();
 
 
             //ContextoProvider

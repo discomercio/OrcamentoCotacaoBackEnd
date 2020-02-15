@@ -1,12 +1,91 @@
-﻿
+﻿@model Loja.UI.Models.Pedido.CancelamentoAutomaticoViewModel
 @{
     ViewData["Title"] = "Cancelamento Automático";
 }
 
-<h5>Cancelamento Automático de Pedido</h5>
+<h5>Cancelamento Automático de Pedidos</h5>
 
 <div>
-    Em desenvolvimento.
+    <span style="color: red">
+        Em desenvolvimento.
+        <br />
+        //TODO: listar somente as lojas permitidas
+    </span>
 
+    @if (Model.cancelamentoAutomaticoItems.Count < 1)
+    {
+        <span>
+            NENHUM PEDIDO. 
+        </span>
+    }
+    else
+    {
+        <table class="striped">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>
+                        Data final
+                    </th>
+                    <th>
+                        Pedido
+                    </th>
+                    @if (Model.MostrarLoja)
+                    {
+                        <th>
+                            Loja
+                        </th>
+                    }
+                    @if (Model.ConsultaUniversalPedidoOrcamento)
+                    {
+                        <th>
+                            Vendedor
+                        </th>
+                    }
+                    <th>
+                        Nome do cliente
+                    </th>
+                    <th>
+                        Análise de crédito
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var c in Model.cancelamentoAutomaticoItems)
+                {
+                    <tr>
+                        <td>
+                            @c.NumeroLinha
+                        </td>
+                        <td>
+                            @c.DataFinal?.ToShortDateString()
+                        </td>
+                        <td>
+                            @c.Pedido
+                        </td>
+                        @if (Model.MostrarLoja)
+                        {
+                            <td>
+                                @c.Loja
+                            </td>
+                        }
+                        @if (Model.ConsultaUniversalPedidoOrcamento)
+                        {
+                            <td>
+                                @c.Vendedor
+                            </td>
+                        }
+                        <td>
+                            @c.NomeDoCliente
+                        </td>
+                        <td>
+                            @c.Analise_credito_descricao
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 </div>
 

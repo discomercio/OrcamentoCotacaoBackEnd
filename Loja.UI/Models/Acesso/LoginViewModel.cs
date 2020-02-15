@@ -7,7 +7,8 @@ namespace Loja.UI.Models.Acesso
 {
     public class LoginViewModel
     {
-        public string Usuario { get; set; }
+        public string Loja { get; set; }
+        public string Apelido { get; set; }
         public string Senha { get; set; }
         public string ReturnUrl { get; set; }
         public bool ManterConectado { get; set; }

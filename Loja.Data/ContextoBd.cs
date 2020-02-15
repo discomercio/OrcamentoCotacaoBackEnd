@@ -18,6 +18,12 @@ namespace Loja.Data
             contexto.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
+        //necessário apra poder mandar comandos SQL diretamente
+        public ContextoBdBasico GetContextoBdBasicoParaSql()
+        {
+            return contexto;
+        }
+
         public IQueryable<Tcliente> Tclientes { get => contexto.Tclientes.AsNoTracking(); }
         //afazer falta fazer
         public IQueryable<Torcamento> Torcamentos { get => contexto.Torcamentos.AsNoTracking(); }

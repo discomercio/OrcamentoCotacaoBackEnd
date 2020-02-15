@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Loja.Bll.Bll.AcessoBll;
+using Loja.Bll.ClienteBll;
 using Loja.UI.Models.Acesso;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -16,10 +18,14 @@ namespace Loja.UI.Controllers
     public class AcessoController : Controller
     {
         private readonly IConfiguration configuration;
+        private readonly ClienteBll clienteBll;
+        private readonly AcessoBll acessoBll;
 
-        public AcessoController(IConfiguration configuration)
+        public AcessoController(IConfiguration configuration, ClienteBll clienteBll, AcessoBll acessoBll)
         {
             this.configuration = configuration;
+            this.clienteBll = clienteBll;
+            this.acessoBll = acessoBll;
         }
 
         [HttpGet]
@@ -56,11 +62,17 @@ namespace Loja.UI.Controllers
         public async Task<IActionResult> LoginSubmit(LoginViewModel loginViewModel)
         {
 
-            var apelido = loginViewModel.Usuario?.ToUpper().Trim() ?? "";
-            var senha = loginViewModel.Senha?.ToUpper() ?? "";
+            loginViewModel.Apelido = loginViewModel.Apelido?.ToUpper().Trim() ?? "";
+            loginViewModel.Senha = loginViewModel.Senha?.ToUpper() ?? "";
             loginViewModel.ReturnUrl = loginViewModel.ReturnUrl ?? "/";
 
-            if (String.IsNullOrEmpty(apelido) || String.IsNullOrEmpty(senha))
+            if (String.IsNullOrEmpty(loginViewModel.Apelido) || String.IsNullOrEmpty(loginViewModel.Senha))
+            {
+                loginViewModel.ErroUsuarioSenha = true;
+                return View("Login", loginViewModel);
+            }
+            var tusuario = await acessoBll.LoginUsuario(loginViewModel.Apelido, loginViewModel.Senha, loginViewModel.Loja);
+            if(tusuario == null)
             {
                 loginViewModel.ErroUsuarioSenha = true;
                 return View("Login", loginViewModel);
@@ -85,13 +97,16 @@ namespace Loja.UI.Controllers
                 return View("Login", loginViewModel);
             }
 * */
+            //cria a session
+            await AcessoBll.CriarSessao(clienteBll, loginViewModel.Apelido, HttpContext.Session);
+
 
 
             var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, loginViewModel.Usuario?.Trim() ?? "")
+                    new Claim(ClaimTypes.Name, loginViewModel.Apelido?.Trim() ?? "")
                 };
-            foreach (var role in PrepedidoBusiness.Bll.AcessoBll.RolesDoUsuario())
+            foreach (var role in AcessoBll.RolesDoUsuario())
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }

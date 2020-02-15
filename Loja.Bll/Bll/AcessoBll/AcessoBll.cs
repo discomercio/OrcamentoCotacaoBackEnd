@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 using Loja.Data;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Loja.Modelos;
 
-namespace PrepedidoBusiness.Bll
+namespace Loja.Bll.Bll.AcessoBll
 {
     public class AcessoBll
     {
@@ -35,12 +35,55 @@ namespace PrepedidoBusiness.Bll
             return ret;
         }
 
+        public async Task<Tusuario> LoginUsuario(string usuario, string senha, string loja)
+        {
+            //vamos ver se existe
+            usuario = usuario.Trim().ToUpper();
+            var existe = await (from u in contextoProvider.GetContextoLeitura().Tusuarios
+                                where usuario == u.Usuario.Trim().ToUpper()
+                                select u).FirstOrDefaultAsync();
+            return existe;
+        }
+        public static async Task CriarSessao(ClienteBll.ClienteBll clienteBll, string usuario, ISession HttpContextSession)
+        {
+            string lstOperacoesPermitidas = await clienteBll.BuscaListaOperacoesPermitidas(usuario);
+            HttpContextSession.SetString("lista_operacoes_permitidas", lstOperacoesPermitidas);
+            HttpContextSession.SetString("usuario", usuario);
+        }
+        public static string ObterOperacoesPermitidas(ISession HttpContextSession)
+        {
+            return HttpContextSession.GetString("lista_operacoes_permitidas");
+        }
+        public static string ObterUsuario(ISession HttpContextSession)
+        {
+            return HttpContextSession.GetString("usuario");
+        }
+        public static bool operacao_permitida(int id_operacao, ISession HttpContextSession)
+        {
+            var permitidas = ObterOperacoesPermitidas(HttpContextSession);
+            var s = id_operacao.ToString();
+
+            if (string.IsNullOrWhiteSpace(s))
+                return false;
+            s = "|" + s + "|";
+
+            if (permitidas.Contains(s))
+                return true;
+
+            return false;
+        }
+
+
         public static bool AutorizarPagina(AuthorizationHandlerContext context)
         {
             if (context.User == null)
                 return false;
             if (context.Resource == null)
                 return true;
+
+            //todo: por enquanto, autorizamos todo mundo
+            return true;
+
 
             //todo: afazer: atualizar periodicamente as permissões do banco (quer dizer, ler elas novamente)
             //mas não é aqui onde devemos fazer...
