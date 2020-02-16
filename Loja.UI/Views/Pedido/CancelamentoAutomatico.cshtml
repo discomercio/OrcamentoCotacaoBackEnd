@@ -3,6 +3,25 @@
     ViewData["Title"] = "Cancelamento Automático";
 }
 
+
+@section ScriptsDiretos{
+    <link rel="stylesheet" type="text/css" href="~/lib/datatables/datatables.min.css" />
+    <script type="text/javascript" src="~/lib/datatables/datatables.min.js"></script>
+}
+
+<partial name="~/Views/Shared/Datatables.cshtml" />
+
+<script>
+    $(document).ready(function () {
+        $('#tabeladados').DataTable({
+            language: DataTables_language,
+            dom: DataTables_dom,
+            buttons: DataTables_buttons
+        });
+    });
+
+</script>
+
 <h5>Cancelamento Automático de Pedidos</h5>
 
 <div>
@@ -17,12 +36,12 @@
     @if (Model.cancelamentoAutomaticoItems.Count < 1)
     {
         <span>
-            NENHUM PEDIDO. 
+            NENHUM PEDIDO.
         </span>
     }
     else
     {
-        <table class="striped highlight">
+        <table id="tabeladados" class="striped ">
             <thead>
                 <tr>
                     <th></th>
