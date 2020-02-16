@@ -252,14 +252,12 @@ namespace Loja.UI.Controllers
 
         public async Task<IActionResult> CancelamentoAutomatico()
         {
-            var usuarioLogado = new UsuarioLogado(User, HttpContext.Session, clienteBll);
+            var usuarioLogado = new UsuarioLogado(User, HttpContext.Session, clienteBll, usuarioAcessoBll);
 
             bool consultaUniversalPedidoOrcamento = usuarioLogado.Operacao_permitida(Constantes.OP_LJA_CONSULTA_UNIVERSAL_PEDIDO_ORCAMENTO);
             var model = new Loja.UI.Models.Pedido.CancelamentoAutomaticoViewModel();
-
-            List<UsuarioAcessoBll.Loja> listaLojas = await usuarioAcessoBll.Loja_troca_rapida_monta_itens_select(usuarioLogado.Usuario, null);
-            model.LojasDisponiveis = listaLojas;
-            model.cancelamentoAutomaticoItems = await cancelamentoAutomaticoBll.DadosTela(consultaUniversalPedidoOrcamento, usuarioLogado, listaLojas);
+            model.LojasDisponiveis = usuarioLogado.Loja_troca_rapida_monta_itens_select;
+            model.cancelamentoAutomaticoItems = await cancelamentoAutomaticoBll.DadosTela(consultaUniversalPedidoOrcamento, usuarioLogado, model.LojasDisponiveis);
             model.MostrarLoja = usuarioLogado.Operacao_permitida(Constantes.OP_LJA_LOGIN_TROCA_RAPIDA_LOJA);
             model.ConsultaUniversalPedidoOrcamento = consultaUniversalPedidoOrcamento;
             return View(model);

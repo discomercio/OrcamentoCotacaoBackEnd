@@ -20,12 +20,14 @@ namespace Loja.UI.Controllers
         private readonly IConfiguration configuration;
         private readonly ClienteBll clienteBll;
         private readonly AcessoBll acessoBll;
+        private readonly UsuarioAcessoBll usuarioAcessoBll;
 
-        public AcessoController(IConfiguration configuration, ClienteBll clienteBll, AcessoBll acessoBll)
+        public AcessoController(IConfiguration configuration, ClienteBll clienteBll, AcessoBll acessoBll, UsuarioAcessoBll usuarioAcessoBll)
         {
             this.configuration = configuration;
             this.clienteBll = clienteBll;
             this.acessoBll = acessoBll;
+            this.usuarioAcessoBll = usuarioAcessoBll;
         }
 
         [HttpGet]
@@ -93,13 +95,13 @@ namespace Loja.UI.Controllers
 * */
 
             var tusuario = await acessoBll.LoginUsuario(loginViewModel.Apelido, loginViewModel.Senha, loginViewModel.Loja);
-            if(tusuario == null)
+            if (tusuario == null)
             {
                 loginViewModel.ErroUsuarioSenha = true;
                 return View("Login", loginViewModel);
             }
             //cria a session
-            await UsuarioLogado.CriarSessao(loginViewModel.Apelido, HttpContext.Session, clienteBll);
+            await UsuarioLogado.CriarSessao(loginViewModel.Apelido, HttpContext.Session, clienteBll, usuarioAcessoBll);
 
 
 

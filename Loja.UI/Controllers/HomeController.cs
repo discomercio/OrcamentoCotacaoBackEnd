@@ -7,24 +7,41 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Loja.UI.Models;
 using Microsoft.AspNetCore.Session;
+using Loja.UI.Models.Home;
+using Loja.Bll.ClienteBll;
+using Loja.Bll.Bll.AcessoBll;
 
 namespace Loja.UI.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ClienteBll clienteBll;
+        private readonly UsuarioAcessoBll usuarioAcessoBll;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ClienteBll clienteBll, UsuarioAcessoBll usuarioAcessoBll)
         {
             _logger = logger;
+            this.clienteBll = clienteBll;
+            this.usuarioAcessoBll = usuarioAcessoBll;
             _logger.LogDebug(1, "NLog injected into HomeController");
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string novaloja)
         {
-            
-            _logger.LogInformation("Hello, this is the index!");
-            return View();
+            var usuarioLogado = new UsuarioLogado(User, HttpContext.Session, clienteBll, usuarioAcessoBll);
+            var model = new HomeViewModel();
+            if (!string.IsNullOrWhiteSpace(novaloja))
+            {
+                model.LojaTentandoChavearId = novaloja;
+                if (!usuarioLogado.LojaAtivaAlterar(novaloja))
+                {
+                    model.ErroChavearLoja = true;
+                }
+            }
+            model.LojaAtivaId = usuarioLogado.LojaAtiva;
+            model.LojaAtivaNome = usuarioLogado.Loja_troca_rapida_monta_itens_select.FirstOrDefault(r => r.Id == model.LojaAtivaId)?.Nome;
+            return View(model);
         }
 
         public IActionResult Privacy()

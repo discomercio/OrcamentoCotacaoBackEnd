@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -50,31 +52,66 @@
     <header>
         <div class="navbar navbar-fixed">
             <nav class="navbar">
-                <div class="right" style="margin-right: 10px">
-                    @*<a class="material-icons">notifications</a>*@
-                    @if (User.Identity.IsAuthenticated)
+                @*<a class="material-icons">notifications</a>*@
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div style="float: right">
+                        <div class="row s12">
+                            <div class="col " style="font-size: 20px;">
+                                Olá @User.Identity.Name
+                            </div>
+                            @{
+                                var usuarioLogado = new Loja.Bll.Bll.AcessoBll.UsuarioLogado(User, HttpContextAccessor.HttpContext.Session, null, null);
+                                var lista = usuarioLogado.Loja_troca_rapida_monta_itens_select.OrderBy(r => r.Nome).ToList();
+                            }
+                            @if (lista.Count > 0)
+                            {
+                                <div class="col " style="font-size: 20px; padding-right: 8px">
+                                    Loja:
+                                </div>
+                                <div class="col " style="padding-top: 21px; padding-left: 0px" title="Alterar loja ativa - ainda não implementado">
+                                    @{
+                                        var listaSl = new List<SelectListItem>();
+                                        foreach (var item in lista)
+                                        {
+                                            listaSl.Add(new SelectListItem(item.Nome, item.Id));
+                                        }
+                                        ViewData["cabecacomboLojas"] = usuarioLogado.LojaAtiva;
+                                    }
+
+                                    @Html.DropDownList("cabecacomboLojas", listaSl, new { @id = "cabecacomboLojas" })
+                                </div>
+                            }
+
+                            <div class="col ">
+                                <a href="~/Acesso/Logout" class="material-icons" title="Logout" style="vertical-align: text-bottom;">
+                                    exit_to_app
+                                </a>
+                                <a href="~/Acesso/Logout" style="    margin-right: 20px;">SAIR</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    //não temos botão de ologin pq já está na pagina de login - mas precisa para outras páginas, que eventualemte não tenham a proteção, como a home
+                    if (!(ViewBag.PaginaDeLogin ?? false))
                     {
-                        <span style="    margin-right: 20px;
-    font-size: 20px;">
-                            Olá @User.Identity.Name
-                        </span>
-                        <a href="~/Acesso/Logout" class="material-icons" title="Logout" style="vertical-align: text-bottom;">
-                            exit_to_app
-                        </a>
-                        <a href="~/Acesso/Logout" style="    margin-right: 20px;">SAIR</a>
-                    }
-                    else
-                    {
-                        //não temos botão de ologin pq já está na pagina de login - mas precisa para outras páginas, que eventualemte não tenham a proteção, como a home
-                        if (!(ViewBag.PaginaDeLogin ?? false))
-                        {
+                        <div class="right" style="margin-right: 10px">
                             <a href="~/Acesso/Login" class="btn">Login</a>
-                        }
+                        </div>
                     }
-                </div>
+                }
             </nav>
         </div>
 
+        <script>
+            $(document).ready(function () {
+                $('#cabecacomboLojas').change(function () {
+                    document.location = "/?novaloja=" + $('#cabecacomboLojas').val();
+                });
+            });
+        </script>
     </header>
     <div class="col s12" id="corpo">
         @if (User.Identity.IsAuthenticated)

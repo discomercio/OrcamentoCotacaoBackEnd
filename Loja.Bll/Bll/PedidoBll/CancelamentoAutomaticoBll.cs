@@ -31,7 +31,7 @@ namespace Loja.Bll.Bll.PedidoBll
         }
 
         public async Task<List<CancelamentoAutomaticoItem>> DadosTela(bool ConsultaUniversalPedidoOrcamento, UsuarioLogado usuarioLogado,
-            List<UsuarioAcessoBll.Loja> listaLojas)
+            List<UsuarioAcessoBll.LojaPermtidaUsuario> listaLojas)
         {
             var strWhereBase = " (t1.st_entrega <> '" + Constantes.Constantes.ST_ENTREGA_ENTREGUE + "')" +
                                         " AND (t1.st_entrega <> '" + Constantes.Constantes.ST_ENTREGA_CANCELADO + "')" +
