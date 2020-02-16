@@ -13,13 +13,11 @@ namespace Loja.Bll.Bll.PedidoBll
 {
     public class CancelamentoAutomaticoBll
     {
-        private readonly UsuarioAcessoBll usuarioAcessoBll;
         private readonly ContextoBdProvider contextoProvider;
 
-        public CancelamentoAutomaticoBll(UsuarioAcessoBll usuarioAcessoBll, ContextoBdProvider contextoProvider)
+        public CancelamentoAutomaticoBll(ContextoBdProvider contextoProvider)
         {
             this.contextoProvider = contextoProvider;
-            this.usuarioAcessoBll = usuarioAcessoBll;
         }
         public class CancelamentoAutomaticoItem
         {
@@ -32,32 +30,9 @@ namespace Loja.Bll.Bll.PedidoBll
             public string Loja { get; set; }
         }
 
-        private static List<CancelamentoAutomaticoItem> DadosDeTeste()
+        public async Task<List<CancelamentoAutomaticoItem>> DadosTela(bool ConsultaUniversalPedidoOrcamento, UsuarioLogado usuarioLogado,
+            List<UsuarioAcessoBll.Loja> listaLojas)
         {
-            var ret = new List<CancelamentoAutomaticoItem>();
-            for (int i = 1; i < 50; i++)
-            {
-                ret.Add(new CancelamentoAutomaticoItem()
-                {
-                    NumeroLinha = i,
-                    DataFinal = DateTime.Now.AddDays(-i * 2),
-                    NomeDoCliente = "Dados fictícios" + i.ToString(),
-                    Pedido = "Dados fictícios" + i.ToString(),
-                    Vendedor = "Dados fictícios" + i.ToString(),
-                    Analise_credito_descricao = "Dados fictícios" + i.ToString(),
-                    Loja = "Dados fictícios loja" + i.ToString(),
-                });
-            }
-
-            return ret;
-        }
-
-
-        public async Task<List<CancelamentoAutomaticoItem>> DadosTela(bool ConsultaUniversalPedidoOrcamento, UsuarioLogado usuarioLogado)
-        {
-            var listaLojas = await usuarioAcessoBll.Loja_troca_rapida_monta_itens_select(usuarioLogado.Usuario);
-
-
             var strWhereBase = " (t1.st_entrega <> '" + Constantes.Constantes.ST_ENTREGA_ENTREGUE + "')" +
                                         " AND (t1.st_entrega <> '" + Constantes.Constantes.ST_ENTREGA_CANCELADO + "')" +
                                         " AND (t1.st_entrega <> '" + Constantes.Constantes.ST_ENTREGA_A_ENTREGAR + "')" +

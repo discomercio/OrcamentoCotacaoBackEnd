@@ -32,6 +32,7 @@ namespace Loja.Data
         public IQueryable<TorcamentistaEindicador> TorcamentistaEindicadors { get => contexto.TorcamentistaEindicadors.AsNoTracking(); }
         public IQueryable<TsessaoHistorico> TsessaoHistoricos { get => contexto.TsessaoHistoricos.AsNoTracking(); }
         public IQueryable<Tusuario> Tusuarios { get => contexto.Tusuarios.AsNoTracking(); }
+        public IQueryable<TusuarioXLoja> TusuarioXLojas { get => contexto.TusuarioXLojas.AsNoTracking(); }
         public IQueryable<Tproduto> Tprodutos { get => contexto.Tprodutos.AsNoTracking(); }
         public IQueryable<TprodutoLoja> TprodutoLojas { get => contexto.TprodutoLojas.AsNoTracking(); }
         public IQueryable<TpedidoItem> TpedidoItems { get => contexto.TpedidoItems.AsNoTracking(); }

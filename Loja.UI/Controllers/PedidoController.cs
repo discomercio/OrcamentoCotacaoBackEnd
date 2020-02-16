@@ -31,9 +31,10 @@ namespace Loja.UI.Controllers
         private readonly FormaPagtoBll formaPagtoBll;
         private readonly CoeficienteBll coeficienteBll;
         private readonly CancelamentoAutomaticoBll cancelamentoAutomaticoBll;
+        private readonly UsuarioAcessoBll usuarioAcessoBll;
 
         public PedidoController(PedidoBll pedidoBll, ProdutoBll produtoBll, ClienteBll clienteBll, FormaPagtoBll formaPagtoBll, CoeficienteBll coeficienteBll,
-            CancelamentoAutomaticoBll cancelamentoAutomaticoBll)
+            CancelamentoAutomaticoBll cancelamentoAutomaticoBll, UsuarioAcessoBll usuarioAcessoBll)
         {
             this.pedidoBll = pedidoBll;
             this.produtoBll = produtoBll;
@@ -41,6 +42,7 @@ namespace Loja.UI.Controllers
             this.formaPagtoBll = formaPagtoBll;
             this.coeficienteBll = coeficienteBll;
             this.cancelamentoAutomaticoBll = cancelamentoAutomaticoBll;
+            this.usuarioAcessoBll = usuarioAcessoBll;
         }
 
         public IActionResult Index()
@@ -156,7 +158,6 @@ namespace Loja.UI.Controllers
             int semRA)
         {
             //necessário formatar o valor de desconto para colocar ponto
-            string retorno = "";
 
 
             /*
@@ -255,9 +256,11 @@ namespace Loja.UI.Controllers
 
             bool consultaUniversalPedidoOrcamento = usuarioLogado.Operacao_permitida(Constantes.OP_LJA_CONSULTA_UNIVERSAL_PEDIDO_ORCAMENTO);
             var model = new Loja.UI.Models.Pedido.CancelamentoAutomaticoViewModel();
-            model.cancelamentoAutomaticoItems = await cancelamentoAutomaticoBll.DadosTela(consultaUniversalPedidoOrcamento, usuarioLogado);
+
+            List<UsuarioAcessoBll.Loja> listaLojas = await usuarioAcessoBll.Loja_troca_rapida_monta_itens_select(usuarioLogado.Usuario, null);
+            model.LojasDisponiveis = listaLojas;
+            model.cancelamentoAutomaticoItems = await cancelamentoAutomaticoBll.DadosTela(consultaUniversalPedidoOrcamento, usuarioLogado, listaLojas);
             model.MostrarLoja = usuarioLogado.Operacao_permitida(Constantes.OP_LJA_LOGIN_TROCA_RAPIDA_LOJA);
-            model.MostrarLoja = true; //TODO: listar somente as lojas permitidas
             model.ConsultaUniversalPedidoOrcamento = consultaUniversalPedidoOrcamento;
             return View(model);
         }

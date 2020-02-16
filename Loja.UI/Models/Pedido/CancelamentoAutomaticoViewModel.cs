@@ -11,5 +11,6 @@ namespace Loja.UI.Models.Pedido
         public List<CancelamentoAutomaticoItem> cancelamentoAutomaticoItems { get; set; }
         public bool ConsultaUniversalPedidoOrcamento { get; set; }
         public bool MostrarLoja { get; set; }
+        public List<Loja.Bll.Bll.AcessoBll.UsuarioAcessoBll.Loja> LojasDisponiveis { get; set; }
     }
 }

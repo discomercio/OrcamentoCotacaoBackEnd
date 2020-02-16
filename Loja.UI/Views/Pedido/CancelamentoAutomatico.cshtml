@@ -32,13 +32,6 @@
 <h5>Cancelamento Automático de Pedidos</h5>
 
 <div>
-    <span style="color: red">
-        <br />
-        <br />
-        Em desenvolvimento.
-        <br />
-        //TODO: listar somente as lojas permitidas
-    </span>
 
     @*
         select para escolher a loja a usar
@@ -57,7 +50,7 @@
             <div class="semespacamento input-field col s4 " style="padding-bottom: 0px !important;">
                 <div class="input-field">
                     @{
-                        var lista = Model.cancelamentoAutomaticoItems.Select(r => r.Loja).Distinct().OrderBy(r => r).ToList();
+                        var lista = Model.LojasDisponiveis.Select(r => r.Nome).Distinct().OrderBy(r => r).ToList();
                         lista.Insert(0, "");
                         var listaSl = new List<SelectListItem>();
                         foreach (var item in lista)

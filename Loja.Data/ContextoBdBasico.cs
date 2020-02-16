@@ -73,6 +73,9 @@ namespace Loja.Data
                 .HasKey(x => x.Id);
             modelBuilder.Entity<Tlog>()
             .HasKey(x => new { x.Id_Cliente, x.Data, x.Usuario });
+
+            modelBuilder.Entity<TusuarioXLoja>()
+                .HasKey(x => new { x.Usuario, x.Loja });
         }
 
         public DbSet<Tcliente> Tclientes { get; set; }
@@ -82,6 +85,7 @@ namespace Loja.Data
         public DbSet<TorcamentistaEindicador> TorcamentistaEindicadors { get; set; }
         public DbSet<TsessaoHistorico> TsessaoHistoricos { get; set; }
         public DbSet<Tusuario> Tusuarios { get; set; }
+        public DbSet<TusuarioXLoja> TusuarioXLojas { get; set; }
         public DbSet<Tproduto> Tprodutos { get; set; }
         public DbSet<TprodutoLoja> TprodutoLojas { get; set; }
         public DbSet<TpedidoItem> TpedidoItems { get; set; }
