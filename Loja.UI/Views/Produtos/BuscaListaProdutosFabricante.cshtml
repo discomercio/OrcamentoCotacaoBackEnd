@@ -12,36 +12,59 @@
     };
 </script>
 
-
 @if (Model != null)
 {
     @if (Model.Fabricante != null)
     {
-        <h5>Lista de Produtos</h5>
-
-        <table id="tabela" class="highlight" style="font-size:12px;margin-left:7%">
-            <tr style="margin-left:50%">
-                <td></td>
-                <td style="text-align:center">@Model.Fabricante</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Produtos</td>
-                <td>Descrição</td>
-                <td>Preço</td>
-            </tr>
+        <h5>
+            Lista de Produtos -
+            <span style="font-weight: bold">
+                @Model.Fabricante
+            </span>
+        </h5>
 
 
+        <partial name="~/Views/Shared/Datatables.cshtml" />
 
-            @foreach (var item in Model.LstProdutos)
-            {
-        <tr>
-            <td>@item.Produto</td>
-            <td>@item.Descricao</td>
-            <td>@String.Format("{0:c}", item.Preco)</td>
-        </tr>
+        <script>
+            $(document).ready(function () {
+                $('#tabela').DataTable({
+                    columnDefs: [
+                        { type: "currency", targets: 2 }
+                    ],
+                    "sPaginationType": "full_numbers",
+                    lengthMenu: DataTables_lengthMenu,
+                    language: DataTables_language,
+                    dom: DataTables_dom
+                });
+            });
 
-            }
+        </script>
+
+
+        <table id="tabela" class="highlight">
+            <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Descrição</th>
+                    <th class="right-align">Preço</th>
+                </tr>
+            </thead>
+
+
+            <tbody>
+
+                @foreach (var item in Model.LstProdutos)
+                {
+                    <tr>
+                        <td>@item.Produto</td>
+                        <td>@item.Descricao</td>
+                        <td class="right-align">@String.Format("{0:c}", item.Preco)</td>
+                    </tr>
+
+                }
+            </tbody>
+
         </table>
         <div class="row" style="margin-left:7%">
             <div class="row col xl12 l12 m12 s12">
@@ -219,7 +242,7 @@
                               vertical-align:top;
                               margin:0pt 4pt 0pt 2pt;
                               text-align:right">
-                                @i.Preco
+                                @String.Format("{0:c}", i.Preco)
                             </p>
                         </td>
                     </tr>

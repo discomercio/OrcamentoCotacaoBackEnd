@@ -1,5 +1,21 @@
 ﻿
 <style>
+
+    @* apra deixar as setas de ordenação antes dos nomes das colunas
+        na lista de produtos tem uma coluna muito grande e fica estrannho no fim dela
+        *@
+    table.dataTable thead .sorting_asc {
+        background: url("http://cdn.datatables.net/1.10.0/images/sort_asc.png") no-repeat center left;
+    }
+
+    table.dataTable thead .sorting_desc {
+        background: url("http://cdn.datatables.net/1.10.0/images/sort_desc.png") no-repeat center left;
+    }
+
+    table.dataTable thead .sorting {
+        background: url("http://cdn.datatables.net/1.10.0/images/sort_both.png") no-repeat center left;
+    }
+    @* diversos*@
     .dataTables_length select {
         display: inline-block;
         height: auto;
@@ -112,5 +128,48 @@
             extend: 'pdf', text: 'Exportar para PDF'
         }
     ];
+
+    var DataTables_lengthMenu = [[10, 25, 50, -1], [10, 25, 50, "Todos"]];
+
+
+jQuery.extend( jQuery.fn.dataTableExt.oSort, {
+    "currency-pre": function (a) {
+        a = (a === "-") ? 0 : a.replace(/[^\d\-]/g, "");
+        console.log(parseFloat( a ));
+        return parseFloat( a );
+    },
+
+    "currency-asc": function ( a, b ) {
+        return a - b;
+    },
+
+    "currency-desc": function ( a, b ) {
+        return b - a;
+    }
+});
+
+jQuery.extend( jQuery.fn.dataTableExt.oSort, {
+    "databr-pre": function (a) {
+        //order por datas, em dd/mm/aa
+        let partes = a.toString().split('/');
+        let ret = 0;
+        if (partes.length > 0)
+            ret += parseInt(partes[0]);
+        if (partes.length > 1)
+            ret += parseInt(partes[1])*32;
+        if (partes.length > 2)
+            ret += parseInt(partes[2])*380;
+        return ret;
+    },
+
+    "databr-asc": function ( a, b ) {
+        return a - b;
+    },
+
+    "databr-desc": function ( a, b ) {
+        return b - a;
+    }
+});
+
 
 </script>

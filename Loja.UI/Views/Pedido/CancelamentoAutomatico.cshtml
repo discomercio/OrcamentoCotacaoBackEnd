@@ -17,11 +17,13 @@
 <script>
     $(document).ready(function () {
         $('#tabeladados').DataTable({
+            columnDefs: [
+                { type: "databr", targets: 1 }
+            ],
             "sPaginationType": "full_numbers",
-            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+            lengthMenu: DataTables_lengthMenu,
             language: DataTables_language,
-            dom: DataTables_dom,
-            buttons: DataTables_buttons
+            dom: DataTables_dom
         });
     });
 

@@ -7,6 +7,15 @@
 <h5>Lista de Preços</h5>
 
 
+@section ScriptsDiretos{
+    <link rel="stylesheet" type="text/css" href="~/lib/datatables/datatables.min.css" />
+    <script type="text/javascript" src="~/lib/datatables/datatables.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="~/lib/datatables-materialize/dataTables.materialize.css" />
+    <script type="text/javascript" src="~/lib/datatables-materialize/dataTables.materialize.js"></script>
+}
+
+
 @using (Html.BeginForm("BuscaListaProdutosFabricante", "Produtos", FormMethod.Get))
 {
     <div class="row" style="margin-left:7%">
