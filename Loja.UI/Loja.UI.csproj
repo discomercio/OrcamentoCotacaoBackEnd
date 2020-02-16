@@ -95,6 +95,12 @@
 
 
   <ItemGroup>
+    <Content Update="wwwroot\lib\datatables-materialize\dataTables.materialize.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\datatables-materialize\dataTables.materialize.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\css\buttons.bootstrap.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

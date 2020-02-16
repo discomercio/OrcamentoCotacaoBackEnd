@@ -7,6 +7,9 @@
 @section ScriptsDiretos{
     <link rel="stylesheet" type="text/css" href="~/lib/datatables/datatables.min.css" />
     <script type="text/javascript" src="~/lib/datatables/datatables.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="~/lib/datatables-materialize/dataTables.materialize.css" />
+    <script type="text/javascript" src="~/lib/datatables-materialize/dataTables.materialize.js"></script>
 }
 
 <partial name="~/Views/Shared/Datatables.cshtml" />
@@ -14,6 +17,8 @@
 <script>
     $(document).ready(function () {
         $('#tabeladados').DataTable({
+            "sPaginationType": "full_numbers",
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
             language: DataTables_language,
             dom: DataTables_dom,
             buttons: DataTables_buttons
@@ -32,6 +37,44 @@
         <br />
         //TODO: listar somente as lojas permitidas
     </span>
+
+    @*
+        select para escolher a loja a usar
+    *@
+
+    <style>
+        .semespacamento {
+            margin-bottom: 0px;
+            padding-bottom: 0px !important;
+        }
+    </style>
+    <div class="semespacamento row " style="padding-bottom: 0px !important;">
+        <div class="semespacamento col s12 " style="padding-bottom: 0px !important;">
+            <div class="semespacamento col s8 " style="padding-bottom: 0px !important;">
+            </div>
+            <div class="semespacamento input-field col s4 " style="padding-bottom: 0px !important;">
+                <div class="input-field">
+                    @{
+                        var lista = Model.cancelamentoAutomaticoItems.Select(r => r.Loja).Distinct().OrderBy(r => r).ToList();
+                        lista.Insert(0, "");
+                        var listaSl = new List<SelectListItem>();
+                        foreach (var item in lista)
+                        {
+                            listaSl.Add(new SelectListItem(item == "" ? "Todas" : item, item));
+                        }
+                    }
+                    @Html.DropDownList("comboLojas", listaSl, new { @id = "comboLojas" })
+                    <label>Filtrar por loja:</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $("#comboLojas").change(function () {
+            $('#tabeladados').DataTable().search($("#comboLojas").val()).draw();
+        });
+    </script>
 
     @if (Model.cancelamentoAutomaticoItems.Count < 1)
     {
@@ -76,7 +119,7 @@
                 @foreach (var c in Model.cancelamentoAutomaticoItems)
                 {
                     <tr>
-                        <td>
+                        <td style="text-align: right">
                             @c.NumeroLinha
                         </td>
                         <td>

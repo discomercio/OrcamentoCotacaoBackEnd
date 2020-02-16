@@ -12,6 +12,54 @@
         padding-top: 30px;
     }
 
+    /*usando waves-effect waves-light btn-small*/
+    .dataTables_paginate a {
+        /*btn-small*/
+        text-decoration: none;
+        color: #fff;
+        background-color: #26a69a;
+        text-align: center;
+        letter-spacing: .5px;
+        -webkit-transition: background-color .2s ease-out;
+        transition: background-color .2s ease-out;
+        cursor: pointer;
+        /*waves-effect*/
+        position: relative;
+        cursor: pointer;
+        display: inline-block;
+        overflow: hidden;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        vertical-align: middle;
+        z-index: 1;
+        -webkit-transition: .3s ease-out;
+        transition: .3s ease-out;
+    }
+
+    .dataTables_paginate .disabled a {
+        color: #c5c5c5 !important;
+    }
+
+    .dataTables_paginate .pagination li.active {
+        background-color: white !important;
+    }
+
+    .dataTables_paginate .paginate_button:hover {
+        background: white !important;
+        border: 1px solid white !important;
+    }
+
+    .dataTables_paginate .pagination li a {
+        font-size: 13px; /*1.0em;*/
+    }
+
+    .dataTables_length {
+        float: right !important;
+        margin-left: 30px;
+    }
 </style>
 <script>
     var DataTables_language = {
@@ -21,7 +69,7 @@
         "sInfoFiltered": "(Filtrados de _MAX_ registros)",
         "sInfoPostFix": "",
         "sInfoThousands": ".",
-        "sLengthMenu": "_MENU_ resultados por página",
+        "sLengthMenu": "Exibir _MENU_ resultados por página",
         "sLoadingRecords": "Carregando...",
         "sProcessing": "Processando...",
         "sZeroRecords": "Nenhum registro encontrado",
@@ -46,7 +94,7 @@
     };
 
     var DataTables_dom_botoes = 'frtiBpl';
-    var DataTables_dom = 'frtipl';
+    var DataTables_dom = 'lfrtip';
     var DataTables_buttons = [
         @*
         //botao copiar, nao temos como traduzir a mensagem...
