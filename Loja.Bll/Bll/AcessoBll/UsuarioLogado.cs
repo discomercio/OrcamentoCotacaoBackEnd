@@ -13,10 +13,6 @@ namespace Loja.Bll.Bll.AcessoBll
     {
         private readonly ISession httpContextSession;
 
-        //solulção não muito elegante: fazemos um cache do último não-null que usamos
-        //é que a página Razor precisa destas informações
-        private static ClienteBll.ClienteBll clienteBll;
-        private static UsuarioAcessoBll usuarioAcessoBll;
 
         public UsuarioLogado(ClaimsPrincipal user, ISession httpContextSession, ClienteBll.ClienteBll clienteBll,
             UsuarioAcessoBll usuarioAcessoBll)
@@ -31,25 +27,10 @@ namespace Loja.Bll.Bll.AcessoBll
                             SessaoAtiva = false;
             }
 
-            if (!SessaoAtiva)
-            {
-                //tem que criar os objetos na marra!
-                UsuarioLogado.clienteBll = clienteBll ?? UsuarioLogado.clienteBll;
-                UsuarioLogado.usuarioAcessoBll = usuarioAcessoBll ?? UsuarioLogado.usuarioAcessoBll;
-                try
-                {
-                    if (!SessaoAtiva && UsuarioLogado.clienteBll != null && UsuarioLogado.usuarioAcessoBll != null)
-                        CriarSessaoPorUser(user, httpContextSession, UsuarioLogado.clienteBll, UsuarioLogado.usuarioAcessoBll, this).Wait();
-                }
-                catch (ObjectDisposedException)
-                {
-                    // ignoramos solenemente
-                }
-                catch (AggregateException)
-                {
-                    // ignoramos solenemente
-                }
-            }
+            //nao criamos automaticamente não!
+            //a pensar melhor se a gente mudar o esquema do ciclo de vida do login e da sessão
+            //if (!SessaoAtiva && clienteBll != null && usuarioAcessoBll != null)
+            //    CriarSessaoPorUser(user, httpContextSession, clienteBll, usuarioAcessoBll, this).Wait();
         }
 
         private static async Task CriarSessaoPorUser(ClaimsPrincipal user, ISession httpContextSession, ClienteBll.ClienteBll clienteBll,
@@ -113,7 +94,7 @@ namespace Loja.Bll.Bll.AcessoBll
             get => httpContextSession.GetString(StringsSession.NomeUsuario) ?? "Sem usuário";
             private set => httpContextSession.SetString(StringsSession.NomeUsuario, value);
         }
-        private bool SessaoAtiva
+        public bool SessaoAtiva
         {
             get
             {
@@ -121,7 +102,7 @@ namespace Loja.Bll.Bll.AcessoBll
                     return false;
                 return true;
             }
-            set => httpContextSession.SetInt32(StringsSession.SessaoAtiva, 1);
+            private set => httpContextSession.SetInt32(StringsSession.SessaoAtiva, 1);
         }
         public string Lista_operacoes_permitidas
         {

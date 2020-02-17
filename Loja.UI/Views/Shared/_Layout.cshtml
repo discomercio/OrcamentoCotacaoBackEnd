@@ -53,15 +53,27 @@
         <div class="navbar navbar-fixed">
             <nav class="navbar">
                 @*<a class="material-icons">notifications</a>*@
-                @if (User.Identity.IsAuthenticated)
+                @{
+                    var usuarioLogado = new Loja.Bll.Bll.AcessoBll.UsuarioLogado(User, HttpContextAccessor.HttpContext.Session, null, null);
+                    var pathLogin = "/Acesso/Login";
+                    if (!usuarioLogado.SessaoAtiva)
+                    {
+                        var pathAtual = HttpContextAccessor?.HttpContext?.Request?.Path.Value?.ToLower() ?? "";
+                        if (pathAtual.ToLower() != pathLogin.ToLower())
+                        {
+                            //vamos para o login e acabou!
+                            HttpContextAccessor.HttpContext.Response.Redirect(pathLogin);
+                        }
+                    }
+                }
+                @if (usuarioLogado.SessaoAtiva)
                 {
                     <div style="float: right">
                         <div class="row s12">
                             <div class="col " style="font-size: 20px;">
-                                Olá @User.Identity.Name
+                                Olá @usuarioLogado.Usuario
                             </div>
                             @{
-                                var usuarioLogado = new Loja.Bll.Bll.AcessoBll.UsuarioLogado(User, HttpContextAccessor.HttpContext.Session, null, null);
                                 var lista = usuarioLogado.Loja_troca_rapida_monta_itens_select.OrderBy(r => r.Nome).ToList();
                             }
                             @if (lista.Count > 0)
