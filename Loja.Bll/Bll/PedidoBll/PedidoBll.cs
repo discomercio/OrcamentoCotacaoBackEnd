@@ -766,7 +766,7 @@ namespace Loja.Bll.PedidoBll
             return await Task.FromResult(msg);
         }
 
-        private async Task<string> ObterAnaliseCredito(string codigo, string numPedido, string apelido)
+        public async Task<string> ObterAnaliseCredito(string codigo, string numPedido, string apelido)
         {
             string retorno = "";
 
