@@ -1,4 +1,5 @@
-﻿using Loja.Modelos;
+﻿using Loja.Modelo;
+using Loja.Modelos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -63,6 +64,17 @@ namespace Loja.Data
         public DbSet<TclienteRefBancaria> tclienteRefBancarias { get => contexto.TclienteRefBancarias; }
         public DbSet<TclienteRefComercial> tclienteRefComercials { get => contexto.TclienteRefComercials; }
         public DbSet<Tlog> tlogs { get => contexto.Tlogs; }
+        public DbSet<Testoque> Testoques { get; set; }
+        public DbSet<TestoqueItem> TestoqueItems { get; set; }
+        public DbSet<TestoqueMovimento> TestoqueMovimentos { get; set; }
+        public DbSet<TestoqueLog> TestoqueLogs { get; set; }
+        public DbSet<Tpedido> Tpedidos { get; set; }
+        public DbSet<TpedidoItem> TpedidoItems { get; set; }
+        public DbSet<Tdesconto> Tdescontos { get; set; }
+        public DbSet<TfinControle> TfinControles { get; set; }
+        public DbSet<TpedidoAnaliseEndereco> TpedidoAnalises { get; set; }
+        public DbSet<TpedidoAnaliseEnderecoConfrontacao> TpedidoAnaliseConfrontacaos { get; set; }
+
 
     }
 }

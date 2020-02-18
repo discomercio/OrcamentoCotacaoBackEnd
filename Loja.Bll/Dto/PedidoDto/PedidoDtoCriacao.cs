@@ -33,7 +33,7 @@ namespace Loja.Bll.Dto.PedidoDto
         public string DataHoraPedido { get; set; }
         public DetalhesNFPedidoDtoPedido DetalhesNF { get; set; }
 
-
+        public decimal TotalDestePedido { get; set; }
 
 
 

@@ -1,5 +1,5 @@
 ﻿
-export class DtoProduto {
+export class ProdutoDto {
     Fabricante: string;
     Fabricante_Nome: string;
     Produto: string;

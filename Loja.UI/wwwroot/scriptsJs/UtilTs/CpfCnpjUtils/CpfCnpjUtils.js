@@ -1,4 +1,5 @@
 /* nao editar, arquivo compilado pelo typescript*/ 
+/* nao editar, arquivo compilado pelo typescript*/ 
 define(["require", "exports", "../stringUtils/stringUtils"], function (require, exports, stringUtils_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -129,6 +130,7 @@ define(["require", "exports", "../stringUtils/stringUtils"], function (require, 
             return true;
         };
         CpfCnpjUtils.cnpj_cpf_formata = function (cnpj_cpf) {
+            debugger;
             var s = "" + cnpj_cpf;
             s = stringUtils_1.StringUtils.retorna_so_digitos(s);
             if (s.length == 11) {
@@ -152,7 +154,7 @@ define(["require", "exports", "../stringUtils/stringUtils"], function (require, 
             s_cpf = stringUtils_1.StringUtils.retorna_so_digitos(s_cpf);
             if ((s_cpf == "") || (!this.cpf_ok(s_cpf)))
                 return s_cpf;
-            s_cpf = s_cpf.substring(0, 3) + "." + s_cpf.substring(3, 6) + "." + s_cpf.substring(6, 9) + "/" + s_cpf.substring(9, 11);
+            s_cpf = s_cpf.substring(0, 3) + "." + s_cpf.substring(3, 6) + "." + s_cpf.substring(6, 9) + "-" + s_cpf.substring(9, 11);
             return s_cpf;
         };
         return CpfCnpjUtils;

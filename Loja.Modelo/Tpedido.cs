@@ -22,6 +22,8 @@ namespace Loja.Modelos
         [MaxLength(3)]
         public string Loja { get; set; }
 
+        public ICollection<TpedidoItemDevolvido> TpedidoItemDevolvido { get; set; }
+
         [Column("data")]
         public DateTime? Data { get; set; }
 
@@ -33,6 +35,7 @@ namespace Loja.Modelos
         [MaxLength(12)]
         [ForeignKey("Tcliente")]
         public string Id_Cliente { get; set; }
+        public Tcliente Tcliente { get; set; }
 
         [Column("midia")]
         [MaxLength(3)]
@@ -753,8 +756,6 @@ namespace Loja.Modelos
 
         [Column("pc_maquineta_valor_parcela", TypeName = "money")]
         [Required]
-        public decimal Pc_Maquineta_Valor_Parcela { get; set; }
-
-        public Tcliente Tcliente { get; set; }
+        public decimal Pc_Maquineta_Valor_Parcela { get; set; }        
     }
 }

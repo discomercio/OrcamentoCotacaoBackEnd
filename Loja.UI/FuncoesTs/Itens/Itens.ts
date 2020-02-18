@@ -1,13 +1,13 @@
-﻿import { DtoProdutoCombo } from "../../DtosTs/DtoProdutos/DtoProdutoCombo";
-import { SelectProdInfo } from "../../DtosTs/DtoProdutos/SelectProdInfo";
+﻿import { SelectProdInfo } from "../../DtosTs/DtoProdutos/SelectProdInfo";
 import { PedidoProdutosDtoPedido } from "../../DtosTs/DtoPedido/DtoPedidoProdutosPedido";
-import { DtoProduto } from "../../DtosTs/DtoProdutos/DtoProduto";
 import { DtoPedido } from "../../DtosTs/DtoPedido/DtoPedido";
 import { MoedaUtils } from "../../UtilTs/MoedaUtils/moedaUtils";
 import { DadosPagto } from "../DadosPagto/DadosPagto";
+import { ProdutoComboDto } from "../../DtosTs/DtoProdutos/ProdutoComboDto";
+import { ProdutoDto } from "../../DtosTs/DtoProdutos/ProdutoDto";
 
 export class Itens {
-    public dtoProdutoCombo: DtoProdutoCombo;
+    public dtoProdutoCombo: ProdutoComboDto;
     public selectProdInfo: SelectProdInfo;
     public dtoPedido: DtoPedido;
     public dtoPedidoProdutosPedido: PedidoProdutosDtoPedido;
@@ -125,7 +125,7 @@ export class Itens {
 
 
         if (!prodInfo) {
-            prodInfo = new DtoProduto();
+            prodInfo = new ProdutoDto();
         }
         linha.Fabricante = fabricante;
         linha.NumProduto = produto;
@@ -237,7 +237,7 @@ export class Itens {
     }
 
     //mensagens de estoque
-    public estoqueItem(i: PedidoProdutosDtoPedido): DtoProduto {
+    public estoqueItem(i: PedidoProdutosDtoPedido): ProdutoDto {
         if (!this.dtoProdutoCombo) {
             return null;
         }

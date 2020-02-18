@@ -26,16 +26,18 @@ namespace Loja.UI.Models.Pedido
         public SelectList ListaFormaPagto { get; set; }
         public FormaPagtoCriacaoDto FormaPagtoCriacao { get; set; }
         public SelectList LstIndicadores { get; set; }
-        public bool ComIndicacao { get; set; }//verificar essa var para saber se é com ou sem indicação
+        public int ComIndicacao { get; set; }//verificar essa var para saber se é com ou sem indicação
         public decimal PercentualRA { get; set; }//se for com indicação esse campo será preenchido
         public string ListaOperacoesPermitidas { get; set; }
         public bool SelecaoCDAutomatico { get; set; }//se essa var for false
         public string SelecaoCDManual { get; set; }//se for manual tem que vim o valor
         public SelectList ListaCD { get; set; }
+        public SelectList PedBonshop { get; set; }
         public List<CoeficienteDto> ListaCoeficiente { get; set; }
         public short Permite_RA_Status { get; set; }
         public int QtdeParcVisa { get; set; }
         public PercentualMaxDescEComissao PercMaxDescEComissao { get; set; }
+        public decimal VlTotalDestePedido { get; set; }
 
     }
 }

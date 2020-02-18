@@ -32,6 +32,7 @@
     margin-top: 1%;
     margin-left: 20%;
     max-width: 78%;
+    line-height:initial;
 }
 .corpologin {
     margin: 0;
@@ -42,9 +43,9 @@
     max-width: unset;
 }
 
-label {
+/*label {
     margin-top: inherit !important;
-}
+}*/
 
 .input-field {
     margin-bottom: 0px !important;
@@ -55,7 +56,7 @@ input[type=email]:not(.browser-default), input[type=url]:not(.browser-default), 
 input[type=date]:not(.browser-default), input[type=datetime]:not(.browser-default), 
 input[type=datetime-local]:not(.browser-default), input[type=tel]:not(.browser-default), 
 input[type=number]:not(.browser-default), input[type=search]:not(.browser-default), textarea.materialize-textarea {
-    height: 1.5rem !important;
+    height: 2.0rem !important;
 }
 
 .row .col {

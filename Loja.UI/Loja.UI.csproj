@@ -19,10 +19,11 @@
     <None Remove="DtosTs\DtoPedido\DtoPedido.ts" />
     <None Remove="DtosTs\DtoPedido\DtoPedidoProdutosPedido.ts" />
     <None Remove="DtosTs\DtoPedido\PercentualMaxDescEComissao.ts" />
-    <None Remove="DtosTs\DtoProdutos\DtoProduto.ts" />
-    <None Remove="DtosTs\DtoProdutos\DtoProdutoCombo.ts" />
-    <None Remove="DtosTs\DtoProdutos\DtoProdutoComposto.ts" />
-    <None Remove="DtosTs\DtoProdutos\DtoProdutoFilho.ts" />
+    <None Remove="DtosTs\DtoProdutos\ProdutoComboDto.ts" />
+    <None Remove="DtosTs\DtoProdutos\ProdutoCompostoDto.ts" />
+    <None Remove="DtosTs\DtoProdutos\ProdutoDto.ts" />
+    <None Remove="DtosTs\DtoProdutos\ProdutoFilhoDto.ts" />
+    <None Remove="DtosTs\DtoProdutos\ProdutoValidadoComEstoqueDto.ts" />
     <None Remove="DtosTs\DtoProdutos\SelectProdInfo.ts" />
     <None Remove="FuncoesTs\DadosPagto\DadosPagto.ts" />
     <None Remove="FuncoesTs\DadosPagto\EnumFormaPagto.ts" />

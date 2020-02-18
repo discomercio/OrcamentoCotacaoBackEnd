@@ -67,5 +67,11 @@ namespace Loja.Data
         public IQueryable<TperfilItem> TperfilItems { get => contexto.TperfilItems.AsNoTracking(); }
         public IQueryable<TperfilUsuario> TperfiUsuarios { get => contexto.TperfilUsuarios.AsNoTracking(); }
         public IQueryable<Toperacao> Toperacaos { get => contexto.Toperacaos.AsNoTracking(); }
+        public IQueryable<Tdesconto> Tdescontos { get => contexto.Tdescontos.AsNoTracking(); }
+        public IQueryable<TtransportadoraCep> TtransportadoraCeps { get => contexto.TtransportadoraCeps.AsNoTracking(); }
+        public IQueryable<TestoqueLog> TestoqueLogs { get => contexto.TestoqueLogs.AsNoTracking(); }
+        public IQueryable<TfinControle> TfinControles { get => contexto.TfinControles.AsNoTracking(); }
+        public IQueryable<TpedidoAnaliseEndereco> TpedidoAnaliseEnderecos { get => contexto.TpedidoAnaliseEnderecos.AsNoTracking(); }
+
     }
 }

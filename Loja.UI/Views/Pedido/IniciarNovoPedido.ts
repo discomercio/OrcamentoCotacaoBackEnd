@@ -1,4 +1,4 @@
-﻿import { DtoProdutoCombo } from "./../../DtosTs/DtoProdutos/DtoProdutoCombo";
+﻿import { ProdutoComboDto } from "./../../DtosTs/DtoProdutos/ProdutoComboDto";
 import { SelectProdInfo } from "../../DtosTs/DtoProdutos/SelectProdInfo";
 import { Itens } from "../../FuncoesTs/Itens/Itens";
 import { DtoPedido } from "../../DtosTs/DtoPedido/DtoPedido";
@@ -9,15 +9,16 @@ import { DadosPagto } from "../../FuncoesTs/DadosPagto/DadosPagto";
 import { EnumFormaPagto } from "../../FuncoesTs/DadosPagto/EnumFormaPagto";
 import { DtoCoeficiente } from "../../DtosTs/DtoCoeficiente/DtoCoeficiente";
 import { Constantes } from "../../UtilTs/Constantes/Constantes";
-import { DtoProduto } from "../../DtosTs/DtoProdutos/DtoProduto";
 import { ErrorModal } from "../Shared/Error";
 import { PercentualMaxDescEComissao } from "../../DtosTs/DtoPedido/PercentualMaxDescEComissao";
 import { DtoFormaPagtoCriacao } from "../../DtosTs/DtoPedido/DtoFormaPagtoCriacao";
+import { ProdutoValidadoComEstoqueDto } from "../../DtosTs/DtoProdutos/ProdutoValidadoComEstoqueDto";
+import { ProdutoDto } from "../../DtosTs/DtoProdutos/ProdutoDto";
 
 
 //moedaUtils.formatarPorcentagemUmaCasa(i.Desconto)
-declare var lstprodutos: DtoProdutoCombo;
-declare var ProdutoDto: DtoProduto;
+declare var lstprodutos: ProdutoComboDto;
+declare var produtoDto: ProdutoDto;
 declare var itens: Itens;
 itens = new Itens();
 //essa variavel esta sendo usada para armazenar os itens selecionados pelo cliente
@@ -34,7 +35,6 @@ declare var qtdeParcVisa: number;
 //alert("alterdado6 " + formata.formatarMoedaComPrefixo(123));
 
 declare function modalError(): any;
-declare function verificarRegraProdutoCD(novaClasse: string, produto:PedidoProdutosDtoPedido): any;
 declare function AbrirModalProdutos(): any;
 
 
@@ -118,19 +118,34 @@ $(".prod").click(function () {
 });
 
 $("#divCOM").children().find("input").prop('disabled', true);
+
 $("#chkSemRa").prop("checked", true);
+
 $("#chkComRa").click(() => {
     $("#chkSemRa").prop("checked", false);
     $("#chkSemRa").val(0);
     $("#divCOM").children().find("input").prop('disabled', false);
     $("#chkComRa").val(1);
 });
+if ($("#chkSemRa").prop("checked") == true) {
+    $("#chkSemRa").val(1);
+}
+if ($("#chkSemRa").prop("checked") == false) {
+    $("#chkSemRa").val(0);
+}
+
 $("#chkSemRa").click(() => {
     $("#chkComRa").prop("checked", false);
     $("#chkComRa").val(0);
     $("#divCOM").children().find("input").prop('disabled', true);
     $("#chkSemRa").val(1);
 });
+if ($("#chkSemRa").prop("checked") == true) {
+    $("#chkSemRa").val(1);
+}
+if ($("#chkSemRa").prop("checked") == false) {
+    $("#chkSemRa").val(0);
+}
 
 
 $("#divIndicadores").children().find("input").prop('disabled', true);
@@ -176,7 +191,7 @@ $("#btnModalProdutos").click(function () {
         return false;
     }
     else if ($("#chkManual").prop("checked") == true) {
-        debugger;
+
         let selecaoCD: any = $("#selecaoCd").val();
         if (selecaoCD == "0") {
             modalError();
@@ -310,7 +325,7 @@ window.InserirProdutoLinha = () => {
                 return true;
             }
         });
-
+        debugger;
         itens.dtoProdutoCombo = lstprodutos;//pegando da tela
         itens.selectProdInfo = selectProdInfo;
         itens.dtoPedido = new DtoPedido();
@@ -345,7 +360,7 @@ window.InserirProdutoLinha = () => {
 
 
 
-function verificaRegras(novaClasse: string, produto : PedidoProdutosDtoPedido): void {
+function verificaRegras(novaClasse: string, produto: PedidoProdutosDtoPedido): void {
 
     verificarRegraProdutoCD(novaClasse, produto);
 }
@@ -379,7 +394,7 @@ function arrumarProdsRepetidosTeste() {
                     itens.digitouQte(prod);
                     //dadosPagto inicializar
                     PedidoAlterado();
-                    debugger;
+
                     exist = true;
                 }
             });
@@ -393,6 +408,7 @@ function arrumarProdsRepetidosTeste() {
         });
     }
     else {
+        debugger;
         //convertemos para verificar se os produtos selecionado existe
         let t = JSON.stringify(lstProdSelecionados);
 
@@ -411,6 +427,7 @@ function arrumarProdsRepetidosTeste() {
 function totalPedido() {
     let total: number = lstProdSelecionados.reduce((sum, current) => sum + current.TotalItem, 0);
     $("#totalPedido").text(moedaUtils.formatarMoedaSemPrefixo(total));
+    $("#totalPedidoInput").val(moedaUtils.formatarMoedaSemPrefixo(total));
     return
 }
 
@@ -542,7 +559,7 @@ window.digitouDesc = (v: HTMLInputElement) => {
     dadosPagto.dtoPedido.ListaProdutos = lstProdSelecionados;
     //RecalcularValoresSemCoeficiente(null);
     totalPedido();
-    debugger;
+
     linha.children[6].textContent = moedaUtils.formatarMoedaSemPrefixo(r[0].TotalItem);
     linha.children[5].children[0].children[0].value = moedaUtils.formatarMoedaSemPrefixo(r[0].VlUnitario);
 
@@ -571,7 +588,7 @@ window.digitouVlVenda = (v: HTMLInputElement) => {
     itens.digitouQte(r[0]);
     //dadosPagto inicializar
     PedidoAlterado();
-    debugger;
+
     linha.children[4].children[0].children[0].value = moedaUtils.formatarPorcentagemUmaCasa(r[0].Desconto);
     linha.children[5].children[0].children[0].value = moedaUtils.formatarMoedaSemPrefixo(r[0].VlUnitario);
     linha.children[6].textContent = moedaUtils.formatarMoedaSemPrefixo(r[0].TotalItem);
@@ -638,7 +655,7 @@ window.digitouVlEntrada = (v: HTMLInputElement) => {
         v.value = "";
         dadosPagto.msgErro = "";
         zerarCamposDadosPagto(false);
-        debugger;
+
         $("#enumFormaPagto").prop('selectedIndex', 0);
         ($("#enumFormaPagto") as any).formSelect();
         return false;
@@ -687,11 +704,13 @@ function InserirNovoProduto(produto: PedidoProdutosDtoPedido, editandoLinha: boo
 
     let novaClasse: string = CopiarTRsMsgEProduto();
     //verificamos se mostraremos as msgs
-    verificaRegras(novaClasse, produto);
+    //chamar direto aqui
+    verificarRegraProdutoCD(novaClasse, produto);
+
     //VerificarEstoque(itens, produto, novaClasse);
     ////verificar aqui
     //VerificarQtdeVendaPermitida(itens, produto, novaClasse);
-    debugger;
+
     InscreveLinhaProduto(produto, indice);
 
     indice++;
@@ -793,7 +812,7 @@ function RecalcularValoresSemCoeficiente(v: any, editandoLinha: boolean) {
         dadosPagto.recalcularValoresComCoeficiente(v);
 
 
-        debugger;
+
         if (dadosPagto.msgErro != "" && dadosPagto.msgErro != undefined) {
             modalError();
             let err = new ErrorModal();
@@ -826,7 +845,7 @@ function RecalcularValoresSemCoeficiente(v: any, editandoLinha: boolean) {
 
 
 //estamos add e escondendo as msg para fazer a verificação
-function CopiarTRsMsgEProduto() {
+function CopiarTRsMsgEProduto(): string {
     let indice: number = null;
 
     indice = parseInt($("#indice").val().toString());
@@ -839,7 +858,7 @@ function CopiarTRsMsgEProduto() {
     //criar nova classe
     let novaClasse = "trProduto_" + indice;
 
-    debugger;
+
     //novoProduto
     let novoProduto = CriarLinha();
     let htmlnovoProduto = $(".novoProduto").html();
@@ -879,12 +898,12 @@ function CopiarTRsMsgEProduto() {
     indice++;
     $("#indice").val(indice);
 
-    return novaClasse;
+
 
     function CriarLinha() {
         return $('<tr><\tr>');
     }
-
+    return novaClasse;
 
 }
 
@@ -895,7 +914,7 @@ window.recalcularValoresComCoeficiente = (e: HTMLSelectElement) => {
     InicializaDadosPagto();
     //let v = e.selectedIndex;
     let v = parseInt(e.selectedOptions[0].value);
-    debugger;
+
 
     inicializaCampos(v);
 
@@ -989,7 +1008,7 @@ function InscreveLinhaProduto(produto: PedidoProdutosDtoPedido, index: any) {
 }
 
 function VerificarEstoque(itens: Itens, produto: PedidoProdutosDtoPedido, novaClasse: string) {
-    debugger;
+
     //será necessário alterar a verificação pq não estamos trazendo o estoque ao carregar todos produtos
     let filho = $("." + novaClasse + "").find("[name='estoqueIndisponivel']");
     if (itens.estoqueExcedido(produto)) {
@@ -1012,30 +1031,40 @@ function VerificarProdutoAviso(itens: Itens, produto: PedidoProdutosDtoPedido) {
     }
 }
 
-window.AdicionarMsgProdutoECDTela = (v: Array<string>, novaClasse: string) => {
-    AdicionarMsgProdutoECD(v, novaClasse);
+function verificarRegraProdutoCD(novaclasse: string, produto: PedidoProdutosDtoPedido) {
+
+    let cdManual = $("#chkManual").prop('checked');
+    let selecaoCd = $("#selecaoCd").val();
+    if (!!produto.NumProduto && !!produto.Fabricante) {
+        $.ajax({
+            url: "../Produtos/VerificarRegraProdutoCD/",
+            type: "GET",
+            data: { produto: JSON.stringify(produto), id_nfe_emitente_selecao_manual: selecaoCd },
+            dataType: "json",
+            success: function (data) {
+                debugger;
+                if (!!data) {
+                    AdicionarMsgProdutoECD(data, novaclasse);
+                }
+            }
+        });
+    }
+
+
 }
 
 //Metodo para atribuir as msg de retorno sobre o produto e o CD
-function AdicionarMsgProdutoECD(v: Array<string>, novaClasse: string): void {
+function AdicionarMsgProdutoECD(v: ProdutoValidadoComEstoqueDto, novaClasse: string): void {
     //precisa criar um campo para receber a msg sobre o CD selecionado
 
-    let data: Array<string> = new Array();
-    data = v;
-
-    debugger;
-    //msg referente ao cd
-    $("#divMsgCD").css('display', 'block');
-
-    debugger;
+    let produtoValidadoComEstoque: ProdutoValidadoComEstoqueDto = new ProdutoValidadoComEstoqueDto();
+    produtoValidadoComEstoque = v;
 
     //vamos verificar o retorno para mostrar as msg que estão retornando do servidor
-    if (data != undefined) {
+    if (!!produtoValidadoComEstoque) {
 
-        //span estoqueIndisponivel
-        
         //pai.hide();
-        data.forEach(function (linha) {
+        produtoValidadoComEstoque.ListaErros.forEach(function (linha) {
             if (linha.indexOf("PRODUTO SEM PRESENÇA") != -1) {
                 let span = $("." + novaClasse + "").find('[name="produtoAviso"]');
                 let pai = span.parent().parent();
@@ -1044,13 +1073,27 @@ function AdicionarMsgProdutoECD(v: Array<string>, novaClasse: string): void {
                 pai.show();
             }
             if (linha.indexOf("define o CD") != -1) {
-                $("#msgCD").text(data[0]);
-
+                //msg referente ao cd
+                $("#divMsgCD").css('display', 'block');
+                $("#msgCD").text(linha);
+                produtoValidadoComEstoque.Produto
             }
         });
+
+        //vamos atribuir o produto estoque ao produto da lista lstProdutos
+        AtribuirEstoqueAoProduto(produtoValidadoComEstoque.Produto);
     }
 
 
+}
+
+function AtribuirEstoqueAoProduto(produto: ProdutoDto) {
+    lstprodutos.ProdutoDto.filter((e) => {
+        if (e.Produto == produto.Produto && e.Fabricante == produto.Fabricante) {
+            debugger;
+            e.Estoque = produto.Estoque;
+        }
+    });
 }
 
 function VerificarQtdeVendaPermitida(itens: Itens, produto: PedidoProdutosDtoPedido, novaClasse: string) {
@@ -1083,7 +1126,7 @@ function VerificarQtdeVendaPermitida(itens: Itens, produto: PedidoProdutosDtoPed
 
 //iremos fazer a validação na tela
 window.continuar = (): any => {
-    debugger;
+
     let err = new ErrorModal();
     //verificar se tem produtos com qtde maior que o permitido
     let q: number = 0;
@@ -1134,7 +1177,7 @@ window.continuar = (): any => {
             }
             return;
         } else {
-            debugger;
+
             //vamos tentar retornar o objeto serializado para a tela mandar para o controller
             dadosPagto.novoPedidoDadosService.dtoPedido.FormaPagtoCriacao = dadosPagto.dtoPedido.FormaPagtoCriacao;
             dadosPagto.novoPedidoDadosService.dtoPedido.ListaProdutos = dadosPagto.dtoPedido.ListaProdutos;
@@ -1154,7 +1197,7 @@ window.continuar = (): any => {
 }
 
 function AtribuirValoresFormaPagtoCriacao(): boolean {
-    debugger;
+
     let totalPedido = $("#totalPedido").text().trim();
     $("#Tipo_parcelamento").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Tipo_parcelamento);
     $("#TotalDestePedido").val(moedaUtils.formatarMoedaSemPrefixo(dadosPagto.dtoPedido.VlTotalDestePedido));

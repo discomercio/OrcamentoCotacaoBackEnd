@@ -1306,5 +1306,25 @@ namespace Loja.Bll.ClienteBll
             }
         }
 
+        public async Task<IEnumerable<string>> BuscarListaPedidosBonshop(string cpf_cnpj)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+
+            List<string> lstRetorno = new List<string>();
+
+            var lstRetornoTask = from c in db.Tpedidos.Include(x => x.Tcliente)
+                                 where c.Tcliente.Cnpj_Cpf == cpf_cnpj &&
+                                       c.St_Entrega == Constantes.Constantes.ST_ENTREGA_ENTREGUE
+                                 orderby new { c.Data, c.Pedido } descending
+                                 select c.Pedido;
+            if(lstRetornoTask != null)
+            {
+                lstRetorno = await lstRetornoTask.ToListAsync();
+            }
+
+            return lstRetorno;
+
+        }
+
     }
 }

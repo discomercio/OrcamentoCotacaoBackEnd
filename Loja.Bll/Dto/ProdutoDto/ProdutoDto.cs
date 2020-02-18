@@ -15,5 +15,6 @@ namespace Loja.Bll.Dto.ProdutoDto
         public string Alertas { get; set; }
         public short? Qtde_Max_Venda { get; set; }
         public short? QtdeSolicitada { get; set; }
+        public List<int> Lst_empresa_selecionada { get; set; }
     }
 }

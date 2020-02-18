@@ -16,6 +16,7 @@ namespace Loja.Modelos
         [Required]
         [MaxLength(4)]
         public string Fabricante { get; set; }
+        public Tfabricante Tfabricante { get; set; }
 
         [Column("produto")]
         //[Key]

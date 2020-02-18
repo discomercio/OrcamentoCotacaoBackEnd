@@ -1,8 +1,8 @@
-﻿import { DtoProdutoCombo } from "./DtoProdutoCombo";
+﻿import { ProdutoComboDto } from "./ProdutoComboDto";
 
 export class SelectProdInfo {
     //entrada
-    public produtoComboDto: DtoProdutoCombo;
+    public produtoComboDto: ProdutoComboDto;
     //entrada e saída
     public Fabricante: string;
     public Fabricante_Nome: string;

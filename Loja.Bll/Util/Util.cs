@@ -11,6 +11,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Loja.Bll.RegrasCtrlEstoque;
 using Loja.Bll.Dto.ProdutoDto;
 using Loja.Bll.Dto.PedidoDto.DetalhesPedido;
+using Loja.Modelo;
+using System.Globalization;
 
 namespace Loja.Bll.Util
 {
@@ -73,6 +75,21 @@ namespace Loja.Bll.Util
             string retorno = "";
 
             retorno = telefone.Trim().Substring(4);
+
+            return retorno;
+        }
+
+        public static async Task<bool> IsActivatedFlagPedidoUsarMemorizacaoCompletaEnderecos(ContextoBdProvider contexto)
+        {
+            bool retorno = false;
+
+            var db = contexto.GetContextoLeitura();
+
+            Tparametro tparametro = await BuscarRegistroParametro(Constantes.Constantes.ID_PARAMETRO_Flag_Pedido_MemorizacaoCompletaEnderecos,
+                contexto);
+
+            if (tparametro.Campo_inteiro == 1)
+                retorno = true;
 
             return retorno;
         }
@@ -145,6 +162,18 @@ namespace Loja.Bll.Util
             }
 
             return retorno;
+        }
+
+        public static string RemoverAcentos(string text)
+        {
+            StringBuilder sbReturn = new StringBuilder();
+            var arrayText = text.Normalize(NormalizationForm.FormD).ToCharArray();
+            foreach (char letter in arrayText)
+            {
+                if (CharUnicodeInfo.GetUnicodeCategory(letter) != UnicodeCategory.NonSpacingMark)
+                    sbReturn.Append(letter);
+            }
+            return sbReturn.ToString();
         }
 
         public static string Normaliza_Codigo(string cod, int tamanho_default)
@@ -664,7 +693,7 @@ namespace Loja.Bll.Util
             return retorno;
         }
 
-        public static void ObterDisponibilidadeEstoque(List<RegrasBll> lstRegrasCrtlEstoque, List<ProdutoDto> lst_produtos,
+        public static async void ObterDisponibilidadeEstoque(List<RegrasBll> lstRegrasCrtlEstoque, List<ProdutoDto> lst_produtos,
             List<string> lstErros, ContextoBdProvider contextoProvider, int id_nfe_emitente_selecao_manual)
         {
             id_nfe_emitente_selecao_manual = 0;
@@ -691,9 +720,8 @@ namespace Loja.Bll.Util
                                             p.Estoque_DescricaoHtml = produto.Descricao_html;
                                             p.Estoque_Qtde_Solicitado = produto.QtdeSolicitada;
                                             p.Estoque_Qtde = 0;
-                                            //a disponibilidade já foi verificada
-                                            //if (!Util.EstoqueVerificaDisponibilidadeIntegralV2(produto,
-                                            //    id_nfe_emitente_selecao_manual, contextoProvider))
+                                            //if (!await EstoqueVerificaDisponibilidadeIntegralV2(p,
+                                            //    produto, contextoProvider))
                                             //{
                                             //    lstErros.Add("Falha ao tentar consultar disponibilidade no estoque do produto (" +
                                             //        r.Fabricante + ")" + r.Produto);
@@ -722,6 +750,85 @@ namespace Loja.Bll.Util
             return retorno;
         }
 
+        public static async Task<float> ObterPercentualDesagioRAIndicador(string indicador, ContextoBdProvider contexto)
+        {
+            var db = contexto.GetContextoLeitura();
+            var percDesagioIndicadorRATask = (from c in db.TorcamentistaEindicadors
+                                              where c.Apelido == indicador
+                                              select c.Perc_Desagio_RA).FirstOrDefaultAsync();
+
+            float percDesagioIndicadorRA = await percDesagioIndicadorRATask ?? 0;
+
+            return percDesagioIndicadorRA;
+        }
+        public static async Task<decimal> ObterLimiteMensalComprasDoIndicador(string indicador, ContextoBdProvider contexto)
+        {
+            var db = contexto.GetContextoLeitura();
+            var vlLimiteMensalCompraTask = (from c in db.TorcamentistaEindicadors
+                                            where c.Apelido == indicador
+                                            select c.Vl_Limite_Mensal).FirstOrDefaultAsync();
+
+            decimal vlLimiteMensalCompra = await vlLimiteMensalCompraTask;
+
+            return vlLimiteMensalCompra;
+        }
+
+        public static async Task<decimal> CalcularLimiteMensalConsumidoDoIndicador(string indicador, DateTime data, ContextoBdProvider contexto)
+        {
+            //buscar data por ano-mes-dia]
+            //SELECT ISNULL(SUM(qtde* preco_venda),0) AS vl_total
+            //FROM t_PEDIDO tP INNER JOIN t_PEDIDO_ITEM tPI ON(tP.pedido= tPI.pedido)
+            //WHERE(st_entrega <> 'CAN') AND
+            //     (indicador = 'POLITÉCNIC') AND
+            //     (data >= '2020-02-01') AND
+            //     (data < '2020-03-01')
+
+            var db = contexto.GetContextoLeitura();
+
+            DateTime dataInferior = new DateTime(data.Year, data.Month, 1);
+            DateTime dataSuperior = dataInferior.AddMonths(1);
+
+
+            var vlTotalConsumidoTask = from c in db.TpedidoItems.Include(x => x.Tpedido)
+                                       where c.Tpedido.St_Entrega != "CAN" &&
+                                             c.Tpedido.Indicador == indicador &&
+                                             c.Tpedido.Data.HasValue &&
+                                             c.Tpedido.Data.Value.Date >= dataInferior &&
+                                             c.Tpedido.Data.Value.Date < dataSuperior
+                                       select new
+                                       {
+                                           qtde = c.Qtde,
+                                           precoVenda = c.Preco_Venda
+                                       };
+
+            decimal vlTotalConsumido = await vlTotalConsumidoTask.SumAsync(x => (short)x.qtde * x.precoVenda);
+
+            var vlTotalDevolvidoTask = from c in db.TpedidoItemDevolvidos.Include(x => x.Tpedido)
+                                       where c.Tpedido.Indicador == indicador &&
+                                             c.Tpedido.Data.HasValue &&
+                                             c.Tpedido.Data.Value.Date >= dataInferior &&
+                                             c.Tpedido.Data.Value.Date < dataSuperior
+                                       select new
+                                       {
+                                           qtde = c.Qtde,
+                                           precoVenda = c.Preco_Venda
+                                       };
+            decimal vlTotalDevolvido = await vlTotalDevolvidoTask.SumAsync(x => (short)x.qtde * x.precoVenda);
+
+            decimal vlTotalConsumidoRetorno = vlTotalConsumido - vlTotalDevolvido;
+
+            return vlTotalConsumidoRetorno;
+        }
+
+        public static async Task<float> VerificarSemDesagioRA(ContextoBdProvider contextoProvider)
+        {//busca o percentual de RA sem desagio ID_PARAM_PERC_LIMITE_RA_SEM_DESAGIO            
+            string semDesagio = await LeParametroControle(
+                Constantes.Constantes.ID_PARAM_PERC_LIMITE_RA_SEM_DESAGIO, contextoProvider);
+
+            float retorno = float.Parse(semDesagio);
+
+            return retorno;
+        }
 
         //public static async Task VerificarEstoque(List<RegrasBll> lst_cliente_regra, t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD produto,
         //    int id_nfe_emitente_selecao_manual, ContextoBdProvider contextoProvider)
@@ -959,6 +1066,55 @@ namespace Loja.Bll.Util
 
         }
 
+        public static async Task<TtransportadoraCep> ObterTransportadoraPeloCep(string cep, ContextoBdProvider contexto)
+        {
+            cep = cep.Replace("-", "").Trim();
+
+            var db = contexto.GetContextoLeitura();
+
+            TtransportadoraCep transportadoraCep = await (from c in db.TtransportadoraCeps
+                                                          where (c.Tipo_range == 1 && c.Cep_unico == cep) ||
+                                                                (
+                                                                    c.Tipo_range == 2 &&
+                                                                     (
+                                                                         int.Parse(c.Cep_faixa_inicial) >= int.Parse(cep) &&
+                                                                         int.Parse(c.Cep_faixa_final) <= int.Parse(cep)
+                                                                      )
+                                                                )
+                                                          select c).FirstOrDefaultAsync();
+
+
+            return transportadoraCep;
+
+
+        }
+
+        //afazer melhorar esse metodo
+        public static async Task<IEnumerable<RegrasBll>> Buscar_IdCDselecionado(PedidoProdutosDtoPedido produto, Tcliente cliente,
+            int id_nfe_emitente_selecao_manual,
+            ProdutoValidadoComEstoqueDto prodValidadoEstoque, ContextoBdProvider contexto)
+        {
+            string cliente_regra = MultiCdRegraDeterminaPessoa(cliente.Tipo,
+                cliente.Contribuinte_Icms_Status, cliente.Produtor_Rural_Status);
+
+            Loja.Bll.ProdutoBll.ProdutoBll produtoBll = new ProdutoBll.ProdutoBll(contexto);
+            List<RegrasBll> regraCrtlEstoque = (await produtoBll.ObterCtrlEstoqueProdutoRegraParaUMProduto(
+                produto, cliente, prodValidadoEstoque.ListaErros)).ToList();
+
+            await ObterCtrlEstoqueProdutoRegra_Teste(prodValidadoEstoque.ListaErros, regraCrtlEstoque, cliente.Uf, cliente_regra, contexto);
+
+            produtoBll.VerificarRegrasAssociadasParaUMProduto(regraCrtlEstoque, prodValidadoEstoque.ListaErros, cliente, id_nfe_emitente_selecao_manual);
+
+            if (id_nfe_emitente_selecao_manual != 0)
+                await produtoBll.VerificarCDHabilitadoTodasRegras(regraCrtlEstoque, id_nfe_emitente_selecao_manual,
+                    prodValidadoEstoque.ListaErros);
+
+            await produtoBll.ObterDisponibilidadeEstoque(regraCrtlEstoque, produto, prodValidadoEstoque.ListaErros,
+                id_nfe_emitente_selecao_manual);
+
+            return regraCrtlEstoque;
+        }
+
         public static async Task<TorcamentistaEindicador> BuscarOrcamentistaEIndicador(string indicador,
             ContextoBdProvider contexto)
         {
@@ -970,6 +1126,16 @@ namespace Loja.Bll.Util
 
             return torcamentista;
         }
+
+        public static decimal FormataMoeda(decimal valor, int decimais)
+        {
+
+
+            return valor;
+        }
+
+
+
 
         public static bool ValidarTipoCustoFinanceiroFornecedor(List<string> lstErros, string custoFinanceiroTipoParcelato,
             int c_custoFinancFornecQtdeParcelas)
@@ -1016,6 +1182,52 @@ namespace Loja.Bll.Util
             }
 
             return retorno;
+        }
+
+
+        public static async Task<bool> Grava_log_estoque_v2(string strUsuario, short id_nfe_emitente, string strFabricante,
+            string strProduto, short intQtdeSolicitada, short intQtdeAtendida, string strOperacao,
+            string strCodEstoqueOrigem, string strCodEstoqueDestino, string strLojaEstoqueOrigem,
+            string strLojaEstoqueDestino, string strPedidoEstoqueOrigem, string strPedidoEstoqueDestino,
+            string strDocumento, string strComplemento, string strIdOrdemServico, ContextoBdGravacao contexto)
+        {
+            DateTime data_hora_gravacao = new DateTime();
+
+            TestoqueLog testoqueLog = new TestoqueLog();
+
+            testoqueLog.data = DateTime.Now.Date;
+            testoqueLog.Data_hora = DateTime.Now;
+            data_hora_gravacao = testoqueLog.Data_hora;//vamos verificar se salvou
+            testoqueLog.Usuario = strUsuario;
+            testoqueLog.id_nfe_emitente = id_nfe_emitente;
+            testoqueLog.Fabricante = strFabricante;
+            testoqueLog.Produto = strProduto;
+            testoqueLog.Qtde_solicitada = intQtdeSolicitada;
+            testoqueLog.Qtde_atendida = intQtdeAtendida;
+            testoqueLog.Operacao = strOperacao;
+            testoqueLog.Cod_estoque_origem = strCodEstoqueOrigem;
+            testoqueLog.Cod_estoque_destino = strCodEstoqueDestino;
+            testoqueLog.Loja_estoque_origem = strLojaEstoqueOrigem;
+            testoqueLog.Loja_estoque_destino = strLojaEstoqueDestino;
+            testoqueLog.Pedido_estoque_origem = strPedidoEstoqueOrigem;
+            testoqueLog.Pedido_estoque_destino = strPedidoEstoqueDestino;
+            testoqueLog.Documento = strDocumento;
+            testoqueLog.Complemento = strComplemento.Substring(80);
+            testoqueLog.Id_ordem_servico = strIdOrdemServico;
+
+            contexto.Add(testoqueLog);
+            contexto.SaveChangesAsync();
+
+            DateTime dataHora = (from c in contexto.TestoqueLogs
+                                 where testoqueLog.Data_hora == data_hora_gravacao
+                                 select c.Data_hora).FirstOrDefault();
+
+            if (dataHora != data_hora_gravacao)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

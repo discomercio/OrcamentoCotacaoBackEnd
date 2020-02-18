@@ -25,130 +25,150 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
             </div>
             @* Indicadores *@
 
-            <div class="row">
-                @*@if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
-  .Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
-                {*@
-                    @* Indicação *@
-                    <div class="col s6">
-                        <span class="caixa">
-                            <span class="rotulo">Indicação</span>
-                        </span>
-                    </div>
-                    @* Seleção CD *@
-                    <div class="col s6">
-                        <span class="caixa">
-                            <span class="rotulo">Modo de Seleção do CD (Auto-Split)</span>
-                        </span>
-                    </div>
-                    @* Check Com ou Sem indicação *@
-                    <div class="col s2">
-                        <label>
-                            <input class="with-gap" type="radio" id="chkSemIndicacao" name="semIndicacao" value="false" />
-                            <span class="dado">Sem Indicação</span>
-                        </label>
-                    </div>
-                    <div class="col s2">
-                        <label>
-                            <input class="with-gap" type="radio" id="chkComIndicacao" name="comIndicacao" value="false" />
-                            <span class="dado">Com Indicação</span>
-                        </label>
-                    </div>
-                    <div class="col s2">
-                        <input type="hidden" />
-                    </div>
-                @*  }*@
-                @*@if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
-          .Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD.ToString()) != -1)
-                {*@
+        <div class="row">
+            @if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
+.Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
+            {
+                @* Indicação *@
+                <div class="col s6">
+                    <span class="caixa">
+                        <span class="rotulo">Indicação</span>
+                    </span>
+                </div>
+                @* Seleção CD *@
+                <div class="col s6">
+                    <span class="caixa">
+                        <span class="rotulo">Modo de Seleção do CD (Auto-Split)</span>
+                    </span>
+                </div>
+                @* Check Com ou Sem indicação *@
+                <div class="col s2">
+                    <label>
+                        <input class="with-gap" type="radio" id="chkSemIndicacao" name="semIndicacao" value="@Model.ComIndicacao" />
+                        <span class="dado">Sem Indicação</span>
+                    </label>
+                </div>
+                <div class="col s2">
+                    <label>
+                        <input class="with-gap" type="radio" id="chkComIndicacao" name="comIndicacao" value="@Model.ComIndicacao" />
+                        <span class="dado">Com Indicação</span>
+                    </label>
+                </div>
+                <div class="col s2">
+                    <input type="hidden" />
+                </div>
+            }
+            @if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
+  .Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD.ToString()) != -1)
+            {
 
 
-                    <div class="col s2">
-                        <label>
-                            <input class="with-gap" type="radio" id="chkAutomatico" name="cdAutomatico" value="false" />
-                            <span class="dado">Aultomático</span>
-                        </label>
+                <div class="col s2">
+                    <label>
+                        <input class="with-gap" type="radio" id="chkAutomatico" name="cdAutomatico" value="false" />
+                        <span class="dado">Aultomático</span>
+                    </label>
+                </div>
+                <div class="col s2">
+                    <label>
+                        <input class="with-gap" type="radio" id="chkManual" name="cdManual" value="false" />
+                        <span class="dado">Manual</span>
+                    </label>
+                </div>
+            }
+            <input type="hidden" />
+            <input type="hidden" />
+            <div class="col s12">
+                <input type="hidden" />
+            </div>
+            @if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
+.Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
+            {
+                <div class="col s4" id="divIndicadores">
+                    <div class="input-field">
+                        @Html.DropDownList("Indicador_Orcamentista", new SelectList(
+                    Model.LstIndicadores, "Value", "Text"),
+                    new { @id = "indicador", @name = "indicador" })
+                        <label>Indicadores</label>
                     </div>
-                    <div class="col s2">
-                        <label>
-                            <input class="with-gap" type="radio" id="chkManual" name="cdManual" value="false" />
-                            <span class="dado">Manual</span>
-                        </label>
+                </div>
+            }
+            <div class="col s2">
+                <input type="hidden" />
+            </div>
+            @if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
+.Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD.ToString()) != -1)
+            {
+                <div class="col s4" id="divSelecaoCd">
+                    <div class="input-field">
+                        @Html.DropDownList("ListaCD", new SelectList(
+                    Model.ListaCD, "Value", "Text"),
+                    new { @id = "selecaoCd", @name = "nomeCD" })
+                        <label>Centro de Distribuição</label>
                     </div>
-                @*}*@
+                    <div class="col s4" id="divMsgCD" style="line-height:normal; display:none;position:absolute;">
+                        <span id="msgCD" style="word-break:break-word; color:red;font-weight:bold"></span>
+                    </div>
+                </div>
+            }
+            <input type="hidden" />
+            <input type="hidden" />
+            <div class="col s12">
+                <input type="hidden" />
+            </div>
+            @if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
+.Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
+            {
+                <div class="col s2" id="divComRA">
+                    <label>
+                        <input class="with-gap" type="radio" id="chkComRa" name="comRA" value="false" />
+                        <span class="dado">Com RA</span>
+                    </label>
+                </div>
+                <div class="col s2" id="divSemRA">
+                    <label>
+                        <input class="with-gap" type="radio" id="chkSemRa" name="semRA" value="false" />
+                        <span class="dado">Sem RA</span>
+                    </label>
+                </div>
+
                 <input type="hidden" />
                 <input type="hidden" />
                 <div class="col s12">
                     <input type="hidden" />
                 </div>
-                @*@if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
-  .Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
-                {*@
-                    <div class="col s4" id="divIndicadores">
+                <div class="col s2" id="divCOM">
+                    <div class="input-field">
+                        <input type="text" onblur="VerificarPercMaxDescEComissao(this);" id="percComissao" name="percComissao" />
+                        <label>COM(%)</label>
+                    </div>
+                </div>
+                if (Loja.Bll.Constantes.Constantes.ID_PARAM_SITE == Loja.Bll.Constantes.Constantes.COD_SITE_ASSISTENCIA_TECNICA)
+                {
+                    <div class="col s2" id="divPedBonshop">
                         <div class="input-field">
-                            @Html.DropDownList("Indicador_Orcamentista", new SelectList(
-                        Model.LstIndicadores, "Value", "Text"),
-                        new { @id = "indicador", @name = "indicador" })
-                            <label>Indicadores</label>
+                            <input type="text" id="pedBonshop" name="pedBonshop" />
+                            <label>COM(%)</label>
                         </div>
                     </div>
-                @*}*@
-                <div class="col s2">
-                    <input type="hidden" />
-                </div>
-                @*@if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
-        .Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD.ToString()) != -1)
-                {*@
-                    <div class="col s4" id="divSelecaoCd">
+                    <div class="col s4" id="divPedBonshop">
                         <div class="input-field">
-                            @Html.DropDownList("ListaCD", new SelectList(
-                        Model.ListaCD, "Value", "Text"),
-                        new { @id = "selecaoCd", @name = "nomeCD" })
-                            <label>Centro de Distribuição</label>
+                            @Html.DropDownList("PedBonshop", new SelectList(
+                        Model.PedBonshop, "Value", "Text"),
+                        new { @id = "pedBonshop", @name = "pedBonshop" })
+                            <label>Ref. Pedido Bonshop</label>
                         </div>
                         <div class="col s4" id="divMsgCD" style="line-height:normal; display:none;position:absolute;">
                             <span id="msgCD" style="word-break:break-word; color:red;font-weight:bold"></span>
                         </div>
                     </div>
-                @*}*@
-                <input type="hidden" />
-                <input type="hidden" />
-                <div class="col s12">
-                    <input type="hidden" />
-                </div>
-                @*@if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
-.Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
-                {*@
-                    <div class="col s2" id="divComRA">
-                        <label>
-                            <input class="with-gap" type="radio" id="chkComRa" name="comRA" value="false" />
-                            <span class="dado">Com RA</span>
-                        </label>
-                    </div>
-                    <div class="col s2" id="divSemRA">
-                        <label>
-                            <input class="with-gap" type="radio" id="chkSemRa" name="semRA" value="false" />
-                            <span class="dado">Sem RA</span>
-                        </label>
-                    </div>
-
-                    <input type="hidden" />
-                    <input type="hidden" />
-                    <div class="col s12">
-                        <input type="hidden" />
-                    </div>
-                    <div class="col s2" id="divCOM">
-                        <div class="input-field">
-                            <input type="text" onblur="VerificarPercMaxDescEComissao(this);" id="percComissao" name="percComissao" />
-                            <label>COM(%)</label>
-                        </div>
-                    </div>
-                @*}*@
-                @*<div class="col s4"><input type="hidden" /></div>
-                    <div class="col s2" style="line-height:normal">
-                        <span id="msgCD" style="word-break:break-word"></span>
-                    </div>*@
-            </div>
+                }
+            }
+            @*<div class="col s4"><input type="hidden" /></div>
+        <div class="col s2" style="line-height:normal">
+            <span id="msgCD" style="word-break:break-word"></span>
+        </div>*@
+        </div>
 
 
             <div class="row">
@@ -231,64 +251,67 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
                                         }
 
                                         //Lista de Produtos
-                                        <tr @Html.Raw(classe) @Html.Raw(estilo) style="display:block !important">
+                                <tr @Html.Raw(classe) @Html.Raw(estilo) style="display:block !important">
 
-                                            <td style="cursor:pointer;" scope="col" onclick="mostrarProdutos(i)">
-                                                <span name="[@index].NumProduto"></span>
-                                                <input type="hidden" name="[@index].Fabricante" value="@i.Fabricante" />
-                                                <input class="numProduto" type="hidden" name="[@index].NumProduto" value="@i.NumProduto?">
-                                            </td>
-                                            <td>
-                                                <div class="input-field quantidade">
-                                                    <input class="qtdeProduto" style="text-align:right;"
-                                                           type="number" min="1"
-                                                           name="[@index].Qtde" id="@i.Qtde" onkeyup="digitouQtde(this)"
-                                                           onchange="digitouQtde(this)" />
-                                                </div>
-                                            </td>
-                                            @if (Model.Permite_RA_Status == 1)
-                                            {
-                                                <td>
-                                                    <div class="input-field preco">
-                                                        <input class="precoProduto" style="text-align:right" type="text" name="[@index].Preco" id="@i.Preco"
-                                                               onchange="digitouPreco(this)" onkeyup="digitouPreco(this)" />
-                                                    </div>
-                                                </td>
-                                            }
-                                            <td class="vlListaProduto" style="text-align:right" name="[@index].VlLista" id="@i.VlLista">
-                                            </td>
-                                            <td class="vlListaProdutoInput" style="display:none;">
-                                                <input type="hidden" name="[@index].VlLista" />
-                                            </td>
-                                            <td>
-                                                <div class="input-field desconto">
-                                                    <input class="descProduto" type="text" name="[@index].Desconto" id="@i.Desconto"
-                                                           style="text-align:right" onchange="digitouDesc(this)"
-                                                           onkeyup="digitouDesc(this)" />  %
+                                    <td style="cursor:pointer;" scope="col" onclick="mostrarProdutos(i)">
+                                        <span name="[@index].NumProduto"></span>
+                                        <input type="hidden" name="[@index].Fabricante" value="@i.Fabricante" />
+                                        <input class="numProduto" type="hidden" name="[@index].NumProduto" value="@i.NumProduto?">
+                                    </td>
+                                    <td>
+                                        <div class="input-field quantidade">
+                                            <input class="qtdeProduto" style="text-align:right;"
+                                                   type="number" min="1"
+                                                   name="[@index].Qtde" id="@i.Qtde" onkeyup="digitouQtde(this)"
+                                                   onchange="digitouQtde(this)" />
+                                        </div>
+                                    </td>
+                                    @if (Model.Permite_RA_Status == 1)
+                                    {
+                                        <td>
+                                            <div class="input-field preco">
+                                                <input class="precoProduto" style="text-align:right" type="text" name="[@index].Preco" id="@i.Preco"
+                                                       onchange="digitouPreco(this)" onkeyup="digitouPreco(this)" />
+                                            </div>
+                                        </td>
+                                    }
+                                    <td class="vlListaProduto" style="text-align:right" name="[@index].VlLista" id="@i.VlLista">
+                                    </td>
+                                    <td class="vlListaProdutoInput" style="display:none;">
+                                        <input type="hidden" name="[@index].VlLista" />
+                                    </td>
+                                    <td class="PrecoProdutoInput" style="display:none;">
+                                        <input type="hidden" name="[@index].Preco" />
+                                    </td>
+                                    <td>
+                                        <div class="input-field desconto">
+                                            <input class="descProduto" type="text" name="[@index].Desconto" id="@i.Desconto"
+                                                   style="text-align:right" onchange="digitouDesc(this)"
+                                                   onkeyup="digitouDesc(this)" />  %
 
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="input-field" style="float:right; max-width:80%;width:80%;">
-                                                    <input class="vlUnitario" type="text" name="[@index].VlUnitario" id="@i.VlUnitario"
-                                                           style="text-align:right" onchange="digitouVlVenda(this)"
-                                                           onkeyup="digitouVlVenda(this)" />
-                                                </div>
-                                            </td>
-                                            <td class="vlTotalItem" style="text-align:right" name="[@index].VlTotalItem">
-                                            </td>
-                                            <td class="vlTotalItemInput" style="display:none;">
-                                                <input type="hidden" name="[@index].VlTotalItem" />
-                                            </td>
-                                            <td>
-                                                <div class="input-field">
-                                                    <span>
-                                                        <i class="material-icons icone-lixeira" title="Remover linha"
-                                                           onclick="removerLinha(this);">delete</i>
-                                                    </span>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="input-field" style="float:right; max-width:80%;width:80%;">
+                                            <input class="vlUnitario" type="text" name="[@index].VlUnitario" id="@i.VlUnitario"
+                                                   style="text-align:right" onchange="digitouVlVenda(this)"
+                                                   onkeyup="digitouVlVenda(this)" />
+                                        </div>
+                                    </td>
+                                    <td class="vlTotalItem" style="text-align:right" name="[@index].VlTotalItem">
+                                    </td>
+                                    <td class="vlTotalItemInput" style="display:none;">
+                                        <input type="hidden" name="[@index].VlTotalItem" />
+                                    </td>
+                                    <td>
+                                        <div class="input-field">
+                                            <span>
+                                                <i class="material-icons icone-lixeira" title="Remover linha"
+                                                   onclick="removerLinha(this);">delete</i>
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
                                         //Estoque indisponivel
                                         <tr @Html.Raw(classenovoProdutoEstoque) @Html.Raw(estilo)>
                                             @* Se for diferente de verdadeiro *@
@@ -364,6 +387,8 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
 
                                     <td style="text-align:right;">
                                         <strong id="totalPedido"></strong>
+                                        <input type="hidden" id="totalPedidoInput" 
+                                               name="totalDestePedido" value="@Model.VlTotalDestePedido" />
                                     </td>
                                     <td> </td>
 
@@ -579,10 +604,8 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
             </div>
         </footer>
 
-
-
         @* criar os campos de FormaPagtoCriacao *@
-        <input type="hidden" name="Totaldestepedido" id="TotalDestePedido" value="@Model.FormaPagtoCriacao.TotalDestePedido" />
+        <input type="hidden" name="Totaldestepedido" id="TotalDestePedido" value="@Model.VlTotalDestePedido" />
         <input type="hidden" name="Qtde_parcelas" id="Qtde_Parcelas" value="@Model.FormaPagtoCriacao.Qtde_Parcelas" /> @*Descrição da forma de pagto*@
         <input type="hidden" name="Rb_forma_pagto" id="Rb_forma_pagto" value="@Model.FormaPagtoCriacao.Rb_forma_pagto" /> @*Tipo da forma de pagto*@
         <input type="hidden" name="Op_av_forma_pagto" id="Op_av_forma_pagto" />
@@ -704,26 +727,7 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
     var lstprodutos = JSON.parse(@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(Json.Serialize(Model.ProdutoCombo).ToString(), true)))
 
     //teste: criar uma function para fazer a chamada ajax, mas sendo utilizado pelo .ts
-    function verificarRegraProdutoCD(novaclasse, produto) {
-
-        let cdManual = $("#chkManual").prop('checked');
-        let selecaoCd = $("#selecaoCd").val();
-        if (produto != "") {
-            $.ajax({
-            url: "../Produtos/VerificarRegraProdutoCD/",
-            type: "GET",
-            data: { produto: JSON.stringify(produto), id_nfe_emitente_selecao_manual: selecaoCd},
-            dataType: "json",
-                success: function (data) {
-                    if (data.length > 0) {
-                        AdicionarMsgProdutoECDTela(data, novaclasse);
-                    }
-                }
-            });
-        }
-
-
-    }
+    
 
     //abrir modal para seleção de produtos
     function AbrirModalProdutos() {

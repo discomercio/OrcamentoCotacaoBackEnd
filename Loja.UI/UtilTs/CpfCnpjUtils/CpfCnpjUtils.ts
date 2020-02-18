@@ -136,6 +136,7 @@ export class CpfCnpjUtils {
     }
 
     public static cnpj_cpf_formata(cnpj_cpf: string): string {
+        debugger;
         let s = "" + cnpj_cpf;
         s = StringUtils.retorna_so_digitos(s);
         if (s.length == 11) {
@@ -160,7 +161,7 @@ export class CpfCnpjUtils {
         let s_cpf = "" + cpf;
         s_cpf = StringUtils.retorna_so_digitos(s_cpf);
         if ((s_cpf == "") || (!this.cpf_ok(s_cpf))) return s_cpf;
-        s_cpf = s_cpf.substring(0, 3) + "." + s_cpf.substring(3, 6) + "." + s_cpf.substring(6, 9) + "/" + s_cpf.substring(9, 11);
+        s_cpf = s_cpf.substring(0, 3) + "." + s_cpf.substring(3, 6) + "." + s_cpf.substring(6, 9) + "-" + s_cpf.substring(9, 11);
         return s_cpf;
     }
 

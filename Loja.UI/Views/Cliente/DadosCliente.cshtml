@@ -580,15 +580,15 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()" }
             @if (Model.DadosCliente?.Tipo == "PF")
             {
                 <div class="row col s12">
-                    <div class="input-field col s2">
+                    <div class="input-field col s3">
                         <input name="TelefoneResidencial" id="telRes" type="tel"  value="@Model.DadosCliente?.TelefoneResidencial" />
                         <label for="telRes">FONE RESIDENCIAL</label>
                     </div>
-                    <div class="input-field col s2">
+                    <div class="input-field col s3">
                         <input name="Celular" id="celular" type="tel"  value="@Model.DadosCliente?.Celular" />
                         <label for="celular">CELULAR</label>
                     </div>
-                    <div class="input-field col s2">
+                    <div class="input-field col s3">
                         <input name="TelComercial" id="telCom" type="tel"  value="@Model.DadosCliente?.TelComercial" />
                         <label for="telCom">FONE COMERCIAL</label>
                     </div>
@@ -608,7 +608,7 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()" }
             {
                 //aqui vai o PJ
                 <div class="row col s12">
-                    <div class="input-field col s2">
+                    <div class="input-field col s3">
                         <input name="telComercial" id="telCom" type="tel" class="validate" value="@Model.DadosCliente?.TelComercial" />
                         <label for="telCom">TELEFONE 1</label>
                     </div>
@@ -616,7 +616,7 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()" }
                         <input name="ramal" id="ramal" type="text" class="validate" value="@Model.DadosCliente?.Ramal" />
                         <label for="ramal">RAMAL</label>
                     </div>
-                    <div class="input-field col s2">
+                    <div class="input-field col s3">
                         <input name="telComercial2" id="telCom2" type="tel" class="validate" value="@Model.DadosCliente?.TelComercial2" />
                         <label for="telCom2">TELEFONE 2</label>
                     </div>

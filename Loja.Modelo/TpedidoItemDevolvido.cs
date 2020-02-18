@@ -33,6 +33,8 @@ namespace Loja.Modelos
         [MaxLength(9)]
         public string Pedido { get; set; }
 
+        public Tpedido Tpedido { get; set; }
+
         [Column("fabricante")]
         [Required]
         [MaxLength(4)]

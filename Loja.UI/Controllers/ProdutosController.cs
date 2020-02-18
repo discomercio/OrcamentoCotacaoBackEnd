@@ -46,7 +46,7 @@ namespace Loja.UI.Controllers
         }      
         
         [HttpGet]
-        public async Task<IEnumerable<string>> VerificarRegraProdutoCD(string produto, string id_nfe_emitente_selecao_manual)
+        public async Task<ProdutoValidadoComEstoqueDto> VerificarRegraProdutoCD(string produto, string id_nfe_emitente_selecao_manual)
         {
             List<string> lstRetorno = new List<string>();
 
@@ -55,11 +55,12 @@ namespace Loja.UI.Controllers
             PedidoProdutosDtoPedido prod = new PedidoProdutosDtoPedido();
             prod = JsonSerializer.Deserialize<PedidoProdutosDtoPedido>(produto);
 
+            ProdutoValidadoComEstoqueDto produtoValidado = new ProdutoValidadoComEstoqueDto();
             //fazer a chamada do metodo
-            lstRetorno = (await produtoBll.VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado(prod, cpf_cnpj,
-                int.Parse(id_nfe_emitente_selecao_manual))).ToList();
+            produtoValidado = await produtoBll.VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado(prod, cpf_cnpj,
+                int.Parse(id_nfe_emitente_selecao_manual));
 
-            return lstRetorno;
+            return produtoValidado;
         }
         
     }

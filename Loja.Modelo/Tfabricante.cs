@@ -13,7 +13,9 @@ namespace Loja.Modelos
         [Column("fabricante")]
         [MaxLength(4)]
         [Required]
-        public string Fabricante { get; set; }        
+        public string Fabricante { get; set; }
+
+        public ICollection<Tproduto> Tproduto { get; set; }
 
         [Column("cnpj")]
         [MaxLength(14)]

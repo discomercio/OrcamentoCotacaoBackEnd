@@ -17,6 +17,7 @@ using Loja.Bll.CoeficienteBll;
 using Loja.Bll.Dto.PedidoDto.DetalhesPedido;
 using Loja.Bll.Dto.PrepedidoDto.DetalhesPrepedido;
 using Loja.Bll.Dto.PedidoDto;
+using Loja.Bll.Constantes;
 
 namespace Loja.UI.Controllers
 {
@@ -79,8 +80,8 @@ namespace Loja.UI.Controllers
 
             //buscamos os produtos
             //aqui esta demorando
-             var lstProdutosTask = produtoBll.ListaProdutosCombo(loja, id_cliente, pedidoDto);
-            
+            var lstProdutosTask = produtoBll.ListaProdutosCombo(loja, id_cliente, pedidoDto);
+
             //buscamos o nome do cliente
             ClienteCadastroDto cliente = await clienteBll.BuscarCliente(cpf_cnpj, usuario);
             viewModel.NomeCliente = cliente.DadosCliente.Nome;
@@ -130,12 +131,24 @@ namespace Loja.UI.Controllers
             viewModel.FormaPagtoCriacao = new FormaPagtoCriacaoDto();
             viewModel.ListaOperacoesPermitidas = HttpContext.Session.GetString("lista_operacoes_permitidas");
             viewModel.ProdutoCombo = await lstProdutosTask;
+            viewModel.ComIndicacao = 0;
+
+            //Montar o select do PedBonshop
+            List<string> lstPedidoBonshop = (await clienteBll.BuscarListaPedidosBonshop(cpf_cnpj)).ToList();
+            List<SelectListItem> lstPed = new List<SelectListItem>();
+            lstPed.Add(new SelectListItem { Value = "0", Text = "Selecione" });
+            for (int i = 0; i < lstPedidoBonshop.Count; i++)
+            {
+                lstPed.Add(new SelectListItem { Value = lstPedidoBonshop[i], Text = lstPedidoBonshop[i] });
+            }
+            viewModel.PedBonshop = new SelectList(lstCd, "Value", "Text");
 
             return View(viewModel);
         }
 
         [HttpPost]
         public async Task<IActionResult> PreparaParaCadastrarPedido(
+            decimal totalDestePedido,
             List<PedidoProdutosDtoPedido> lst,
             FormaPagtoCriacaoDto pagtoForma,
             decimal PercentualRA,
@@ -147,12 +160,13 @@ namespace Loja.UI.Controllers
             int ListaCD,
             float percComissao,
             int comRA,
-            int semRA)
+            int semRA,
+            string pedBonshop)
         {
             //necessário formatar o valor de desconto para colocar ponto
             string retorno = "";
-           
-            
+
+
             /*
              * pegar lista de operações permitidas
              * busca os dados do cliente
@@ -171,13 +185,13 @@ namespace Loja.UI.Controllers
             //validar cliente
             if (await clienteBll.ValidarCliente(cpf_cnpj))
             {
-                //fazer a montagem de PedidoDtoCriacao
-                PedidoDtoCriacao pedidoDto = new PedidoDtoCriacao();
-                pedidoDto.FormaPagtoCriacao = pagtoForma;
-                pedidoDto.ListaProdutos = lst;
+                var pedidoSession = HttpContext.Session.GetString("pedidoDto");
+                PedidoDto pedidoDtoSession = JsonConvert.DeserializeObject<PedidoDto>(pedidoSession);
+                pedidoDtoSession.FormaPagtoCriacao = pagtoForma;
+                pedidoDtoSession.ListaProdutos = lst;
 
                 List<string> lstRetorno = (await pedidoBll.PreparaParaCadastrarPedido(loja, id_cliente, usuario, Indicador_Orcamentista, operaçoesPermitidas,
-                    cpf_cnpj, pedidoDto, semIndicacao, comIndicacao, cdAutomatico, cdManual, ListaCD, percComissao,
+                    cpf_cnpj, pedidoDtoSession, semIndicacao, comIndicacao, cdAutomatico, cdManual, ListaCD, percComissao,
                     comRA, semRA)).ToList();
 
                 //vamos colocar o pedidoCriacao na session para poder salvar na base depois
@@ -187,59 +201,151 @@ namespace Loja.UI.Controllers
 
 
                 }
+                else
+                {
+                    //vamos atribuir para session
+                    if (true)
+                    {
+                        //pedidoDtoSession.ListaProdutos = pedidoDto.ListaProdutos;
+                        //pedidoDtoSession.FormaPagtoCriacao = pedidoDto.FormaPagtoCriacao;
+                        pedidoDtoSession.VlTotalDestePedido = totalDestePedido;
+                        pedidoDtoSession.PercRT = percComissao;
+                        pedidoDtoSession.PermiteRAStatus = (short)comRA;
+                        pedidoDtoSession.CDManual = cdManual == 0 ? (short)0 : (short)1;
+                        pedidoDtoSession.CDSelecionado = cdManual == 1 ? ListaCD : 0;
+                        pedidoDtoSession.ComIndicador = comIndicacao == 1 ? 1 : 0;
+                        pedidoDtoSession.NomeIndicador = comIndicacao == 1 ? Indicador_Orcamentista : null;
+                        pedidoDtoSession.PedBonshop = pedBonshop;
+                        //estamos atribuindo o pedidoDto com as inserções de dados
+                        HttpContext.Session.SetString("pedidoDto", JsonConvert.SerializeObject(pedidoDtoSession));
+
+                    }
+                }
             }
             else
             {
-                //retornar erro
+                //retornar erro para modal
             }
+            //vamos mandar para um controller para montar a modelView de Observações
+            return RedirectToAction("ObeservacoesPedido");
+        }
+
+
+        public async Task<IActionResult> ObeservacoesPedido()
+        {
+            /*
+             * montar a tela de observações 
+             * variáveis necessárias:
+             * Nome do cliente
+             * Cpf ou cnpj
+             * valor total do pedido
+             * bool entrega imediata
+             * bool bem consumo
+             * bool instalador
+             */
+
+            //montar a viewModel
+            ObservacoesViewModel viewModel = new ObservacoesViewModel();
+
+            //vamos pegar a session de pedido para atribuir valores para a view
+            var pedidoSession = HttpContext.Session.GetString("pedidoDto");
+            PedidoDto pedidoDtoSession = JsonConvert.DeserializeObject<PedidoDto>(pedidoSession);
+
+            viewModel.Cnpj_Cpf = pedidoDtoSession.DadosCliente.Cnpj_Cpf;
+            viewModel.NomeCliente = pedidoDtoSession.DadosCliente.Nome;
+            viewModel.VlTotalPedido = pedidoDtoSession.VlTotalDestePedido.ToString();
+
+            if (pedidoDtoSession.DetalhesNF != null)
+            {
+                viewModel.Observacoes = pedidoDtoSession.DetalhesNF.Observacoes;
+
+                viewModel.InstaladorInstala = pedidoDtoSession.DetalhesNF.InstaladorInstala == 2 ?
+                    Constantes.COD_INSTALADOR_INSTALA_SIM : Constantes.COD_INSTALADOR_INSTALA_NAO;
+
+                viewModel.BemConsumo = pedidoDtoSession.DetalhesNF.StBemUsoConsumo != 0 ?
+                    Constantes.COD_ST_BEM_USO_CONSUMO_SIM : Constantes.COD_ST_BEM_USO_CONSUMO_NAO;
+
+                viewModel.EntregaImediata = pedidoDtoSession.DetalhesNF.EntregaImediata != "1" ?
+                    Constantes.COD_ETG_IMEDIATA_SIM : Constantes.COD_ETG_IMEDIATA_NAO;
+            }
+            else
+            {
+                viewModel.EntregaImediata = Constantes.COD_ETG_IMEDIATA_SIM;
+                viewModel.BemConsumo = Constantes.COD_ST_BEM_USO_CONSUMO_SIM;
+                viewModel.InstaladorInstala = Constantes.COD_INSTALADOR_INSTALA_SIM;
+            }
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CadastrarPedido(ObservacoesViewModel detalhesPedido)
+        {
+            string usuario = HttpContext.Session.GetString("usuario_atual");
+            string loja = HttpContext.Session.GetString("loja_atual");
+            string id_cliente = HttpContext.Session.GetString("cliente_selecionado");
+            string cpf_cnpj = HttpContext.Session.GetString("cpf_cnpj");
+
+            if (true)
+            {
+                // vamos pegar a session de pedido para atribuir valores para a view
+                var pedidoSession = HttpContext.Session.GetString("pedidoDto");
+                PedidoDto pedidoDtoSession = JsonConvert.DeserializeObject<PedidoDto>(pedidoSession);
+
+                pedidoDtoSession.DetalhesNF = new DetalhesNFPedidoDtoPedido();
+                //instaladorInstala é 1 = não | 2= sim
+                pedidoDtoSession.DetalhesNF.InstaladorInstala = detalhesPedido.InstaladorInstala == "2" ?
+                    short.Parse(Constantes.COD_INSTALADOR_INSTALA_SIM) :
+                    short.Parse(Constantes.COD_INSTALADOR_INSTALA_NAO);
+
+                pedidoDtoSession.DetalhesNF.Observacoes = detalhesPedido.Observacoes;
+
+                //StBenUsoConsumo é 1 = sim | 0 = não
+                pedidoDtoSession.DetalhesNF.StBemUsoConsumo = detalhesPedido.BemConsumo != "0" ?
+                    short.Parse(Constantes.COD_ST_BEM_USO_CONSUMO_SIM) :
+                    short.Parse(Constantes.COD_ST_BEM_USO_CONSUMO_NAO);
+
+                //entrega imediata é 1 = não | 2 = sim
+                pedidoDtoSession.DetalhesNF.EntregaImediata = detalhesPedido.EntregaImediata.ToString() != "1" ?
+                    Constantes.COD_ETG_IMEDIATA_SIM : Constantes.COD_ETG_IMEDIATA_NAO;
+
+                //teremos que passar a session para o metodo na bll para salvar o pedido
+                //seguindo os passos da lista abaixo
+                List<string> retorno = (await pedidoBll.CadastrarPedido(pedidoDtoSession, loja, cpf_cnpj, usuario,
+                    pedidoDtoSession.CDSelecionado)).ToList();
+                //if(retorno.Count > 0)
+                //{
+                //    //deu erro
+
+                //}
+
+
+            }
+
+            //se esta tudo ok redirecionamos para a tela de Pedido
 
             return Ok();
         }
 
-        //montar a tela de observações 
-        //validar tela
+        public async Task<IActionResult> BuscarPedido(string numPedido)
+        {
+            //pegar usuario e numPedido
+            
+            string usuario = HttpContext.Session.GetString("usuario_atual");
+            string loja = HttpContext.Session.GetString("loja_atual");
+            string id_cliente = HttpContext.Session.GetString("cliente_selecionado");
+            string cpf_cnpj = HttpContext.Session.GetString("cpf_cnpj");
 
-        //valida forma de pagto já foi analisado
-        //Custo finanfornec já foi analisado
-        //end entrega já foi aramzenado
-        //opcão de venda sem estoque ja foi armazenado
-        //detalhes de observações 332 ate 348
-        //vendedor externo 350 ate 357
-        //busca dados do cliente
-        //pega percmaxcomissão
-        //busca relação de pagto preferenciais
-        //le orçamentista
-        //verificar limite mensal de compras do indicador
-        //calcular limite mensal de compras do indicador
-        //vl_limite_mensal_disponivel = vl_limite_mensal - vl_limite_mensal_consumido
-        //atribui os produto itens 433 ate 460
-        //verifica se o pedido já foi gravado 463 ate 509
-        //calcula valor total do pedido
-        //Percentual de comissão e desconto já foi analisado rever?
-        //identifica e verifica se é pagto preferencial e calcula  637 ate 712
-        //busca produtos , busca percentual custo finananceiro, calcula desconto
-        //recupera os produtos que concordou mesmo sem estoque 
-        //faz a lógica, regras para consumo do estoque 931 ate 1297
-        //busca valor de limite para aprovação automática 1300 ate 1307
-        //busca percentual de comissão
-        //valida indicador
-        //valida garantia indicador, entrega imediata, uso comum TELA observações
-        //consiste valor total da forma de pagto
-        //busca transportadora que atende o cep 1378 ate 1400
-        //valida endereço de entrega
-        //cadastra o pedido 1715 ate 2016
-        //processa estoque 2026 ate 2121
-        //gera numero do pedido
-        //seta o pedido  e estoque e cliente 2140 ate 2169
-        //faz o status entrega do pedido
-        //verifica a senha para desconto
-        //verifica se o endereço de entrega já não foi usado por outro cliente 2244 ate 2302
-        //verifica outros pedido 2304 ate 2458
-        //verifica se endereço de entrega não é usado por outro parceiro 2461 ate 2518
-        //verifica pedidos de outros clientes 2521 ate 2676
-        //monta o log 2691 ate 2881
-        //grava log 
-        //commit
+            PedidoDto ret = await pedidoBll.BuscarPedido(usuario.Trim(), numPedido);
+
+            PedidoViewModel viewModel = new PedidoViewModel();
+
+            viewModel.PedidoDto = ret;
+
+            return View(viewModel);
+        }
+
+
 
     }
 }

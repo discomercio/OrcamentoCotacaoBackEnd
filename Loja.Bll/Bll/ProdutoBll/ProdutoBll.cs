@@ -193,7 +193,7 @@ namespace Loja.Bll.ProdutoBll
         //recebe apenas 1 produto
         //fazer teste
         //fazer a chamada via ajax ao adicionar um produto na tela
-        public async Task<IEnumerable<string>> VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado(PedidoProdutosDtoPedido produto,
+        public async Task<ProdutoValidadoComEstoqueDto> VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado(PedidoProdutosDtoPedido produto,
             string cpf_cnpj, int id_nfe_emitente_selecao_manual)
         {
             var db = contextoProvider.GetContextoLeitura();
@@ -204,7 +204,8 @@ namespace Loja.Bll.ProdutoBll
 
             Tcliente cliente = await clienteTask.FirstOrDefaultAsync();
 
-            List<string> lstErros = new List<string>();
+            ProdutoValidadoComEstoqueDto prodValidadoEstoque = new ProdutoValidadoComEstoqueDto();
+            prodValidadoEstoque.ListaErros = new List<string>();
 
             //obtém  a sigla para regra
             string cliente_regra = Util.Util.MultiCdRegraDeterminaPessoa(cliente.Tipo, cliente.Contribuinte_Icms_Status,
@@ -213,34 +214,45 @@ namespace Loja.Bll.ProdutoBll
             //buscar o produto
             //PedidoProdutosDtoPedido produto = new PedidoProdutosDtoPedido();
 
-            List<RegrasBll> regraCrtlEstoque = (await ObterCtrlEstoqueProdutoRegraParaUMProduto(produto, cliente, lstErros)).ToList();
+            List<RegrasBll> regraCrtlEstoque = (await ObterCtrlEstoqueProdutoRegraParaUMProduto(produto, cliente, prodValidadoEstoque.ListaErros)).ToList();
 
-            await Util.Util.ObterCtrlEstoqueProdutoRegra_Teste(lstErros, regraCrtlEstoque, cliente.Uf, cliente_regra, contextoProvider);
+            await Util.Util.ObterCtrlEstoqueProdutoRegra_Teste(prodValidadoEstoque.ListaErros, regraCrtlEstoque, cliente.Uf, cliente_regra, contextoProvider);
 
-            VerificarRegrasAssociadasParaUMProduto(regraCrtlEstoque, lstErros, cliente, id_nfe_emitente_selecao_manual);
+            VerificarRegrasAssociadasParaUMProduto(regraCrtlEstoque, prodValidadoEstoque.ListaErros, cliente, id_nfe_emitente_selecao_manual);
 
             if (id_nfe_emitente_selecao_manual != 0)
-                await VerificarCDHabilitadoTodasRegras(regraCrtlEstoque, id_nfe_emitente_selecao_manual, lstErros);
+                await VerificarCDHabilitadoTodasRegras(regraCrtlEstoque, id_nfe_emitente_selecao_manual, prodValidadoEstoque.ListaErros);
 
-            await ObterDisponibilidadeEstoque(regraCrtlEstoque, produto, lstErros, id_nfe_emitente_selecao_manual);
+            await ObterDisponibilidadeEstoque(regraCrtlEstoque, produto, prodValidadoEstoque.ListaErros, id_nfe_emitente_selecao_manual);
 
             //meto responsavel por atribuir a qtde de estoque ao produto
             //await Util.Util.VerificarEstoque(regraCrtlEstoque, produto, id_nfe_emitente_selecao_manual, contextoProvider);
-
+            
             bool estoqueInsuficiente = VerificarEstoqueInsuficienteUMProduto(regraCrtlEstoque, produto,
-                id_nfe_emitente_selecao_manual, lstErros);
+                id_nfe_emitente_selecao_manual, prodValidadoEstoque.ListaErros);
 
-            VerificarQtdePedidosAutoSplit(regraCrtlEstoque, lstErros, produto, id_nfe_emitente_selecao_manual);
+            VerificarQtdePedidosAutoSplit(regraCrtlEstoque, prodValidadoEstoque.ListaErros, produto, id_nfe_emitente_selecao_manual);
 
             List<int> lst_empresa_selecionada = ContagemEmpresasUsadasAutoSplit(regraCrtlEstoque, id_nfe_emitente_selecao_manual);
 
-            await ExisteProdutoDescontinuado(produto, lstErros);
+            await ExisteProdutoDescontinuado(produto, prodValidadoEstoque.ListaErros);
 
-            return lstErros;
+            prodValidadoEstoque.Produto = new ProdutoDto
+            {
+                Produto = produto.NumProduto,
+                Fabricante = produto.Fabricante,
+                Estoque = (int)produto.Qtde_estoque_total_disponivel,
+                QtdeSolicitada = produto.Qtde,
+                Preco_lista = produto.VlLista,
+                Descricao_html = produto.Descricao,
+                Lst_empresa_selecionada = lst_empresa_selecionada
+            };
+
+            return prodValidadoEstoque;
         }
 
         //parateste
-        private async Task<IEnumerable<RegrasBll>> ObterCtrlEstoqueProdutoRegraParaUMProduto(PedidoProdutosDtoPedido produto,
+        public async Task<IEnumerable<RegrasBll>> ObterCtrlEstoqueProdutoRegraParaUMProduto(PedidoProdutosDtoPedido produto,
             Tcliente tcliente, List<string> lstErros)
         {
             List<RegrasBll> lstRegrasCrtlEstoque = new List<RegrasBll>();
@@ -602,17 +614,18 @@ namespace Loja.Bll.ProdutoBll
                 {
                     produto.Qtde_estoque_total_disponivel = 0;
                     lstErros.Add("PRODUTO SEM PRESENÇA NO ESTOQUE");
-
+                    retorno = true;
                 }
                 else
                 {
                     produto.Qtde_estoque_total_disponivel = (short?)qtde_estoque_total_disponivel;
                 }
-                if (produto.Qtde > produto.Qtde_estoque_total_disponivel)
-                {
-                    retorno = true;
-                    lstErros.Add("Quantidade solicitada é maior que estoque disponível!");
-                }
+                //bloco comentado, pois iremos fazer a verificação no cliente
+                //if (produto.Qtde > produto.Qtde_estoque_total_disponivel)
+                //{
+                    
+                //    lstErros.Add("Quantidade solicitada é maior que estoque disponível!");
+                //}
             }
 
             return retorno;
@@ -676,6 +689,7 @@ namespace Loja.Bll.ProdutoBll
                                     break;
                                 if (id_nfe_emitente_selecao_manual == 0)
                                 {
+                                    //seleção automática
                                     if (regra.Fabricante == produto.Fabricante && regra.Produto == produto.NumProduto &&
                                         re.Id_nfe_emitente > 0 &&
                                         re.Id_nfe_emitente == regra.TwmsRegraCdXUfXPessoa.Spe_id_nfe_emitente)
@@ -684,29 +698,42 @@ namespace Loja.Bll.ProdutoBll
                                         qtde_a_alocar = 0;
                                     }
                                 }
-
-                            }
-                        }
-                        if (regra.Produto == produto.NumProduto)
-                        {
-                            foreach (var re in regra.TwmsCdXUfXPessoaXCd)
-                            {
-                                if (regra.Fabricante == produto.Fabricante &&
-                                   regra.Produto == produto.NumProduto &&
-                                   re.Id_nfe_emitente > 0 &&
-                                   re.Id_nfe_emitente == regra.TwmsRegraCdXUfXPessoa.Spe_id_nfe_emitente)
+                                else
                                 {
-                                    re.Estoque_Qtde_Solicitado += (short)qtde_a_alocar;
-                                    qtde_a_alocar = 0;//verificar esse valor
-                                }
-                                else if (regra.Fabricante == produto.Fabricante && regra.Produto == produto.NumProduto &&
-                                    re.Id_nfe_emitente > 0 && re.Id_nfe_emitente == id_nfe_emitente_selecao_manual)
-                                {
-                                    re.Estoque_Qtde_Solicitado += (short)qtde_a_alocar;
-                                    qtde_a_alocar = 0; //verificar esse valor
+                                    //seleção manual
+                                    if (regra.Fabricante == produto.Fabricante &&
+                                       regra.Produto == produto.NumProduto &&
+                                       re.Id_nfe_emitente > 0 &&
+                                       re.Id_nfe_emitente == regra.TwmsRegraCdXUfXPessoa.Spe_id_nfe_emitente)
+                                    {
+                                        re.Estoque_Qtde_Solicitado += (short)qtde_a_alocar;
+                                        qtde_a_alocar = 0;//verificar esse valor
+                                    }
                                 }
                             }
                         }
+                        #region talvez estava errado
+                        //if (regra.Produto == produto.NumProduto)
+                        //{
+                        //    foreach (var re in regra.TwmsCdXUfXPessoaXCd)
+                        //    {
+                        //        if (regra.Fabricante == produto.Fabricante &&
+                        //           regra.Produto == produto.NumProduto &&
+                        //           re.Id_nfe_emitente > 0 &&
+                        //           re.Id_nfe_emitente == regra.TwmsRegraCdXUfXPessoa.Spe_id_nfe_emitente)
+                        //        {
+                        //            re.Estoque_Qtde_Solicitado += (short)qtde_a_alocar;
+                        //            qtde_a_alocar = 0;//verificar esse valor
+                        //        }
+                        //        else if (regra.Fabricante == produto.Fabricante && regra.Produto == produto.NumProduto &&
+                        //            re.Id_nfe_emitente > 0 && re.Id_nfe_emitente == id_nfe_emitente_selecao_manual)
+                        //        {
+                        //            re.Estoque_Qtde_Solicitado += (short)qtde_a_alocar;
+                        //            qtde_a_alocar = 0; //verificar esse valor
+                        //        }
+                        //    }
+                        //}
+                        #endregion
                     }
                 }
                 if (qtde_a_alocar > 0)
@@ -773,92 +800,93 @@ namespace Loja.Bll.ProdutoBll
 
         //vamos tentar fazer outro metodo para verificar apenas 1 produto que foi selecionado pelo cliente
         //vamos montar a verificação para cada produto selecionado pelo usuário
-        public async Task<IEnumerable<string>> VerificarRegrasDisponibilidadeEstoqueProdutosSelecionados(PedidoDtoCriacao pedidoDto,
-            string loja, string id_cliente, List<ProdutoDto> lstProdutos, int id_nfe_emitente_selecao_manual)
-        {
-            List<string> lstMgsEstoque = new List<string>();
+        #region VerificarRegrasDisponibilidadeEstoqueProdutosSelecionados todos produtos não utilizado
+        //public async Task<IEnumerable<string>> VerificarRegrasDisponibilidadeEstoqueProdutosSelecionados(PedidoDtoCriacao pedidoDto,
+        //    string loja, string id_cliente, List<ProdutoDto> lstProdutos, int id_nfe_emitente_selecao_manual)
+        //{
+        //    List<string> lstMgsEstoque = new List<string>();
 
-            var db = contextoProvider.GetContextoLeitura();
-            //Buscar dados do cliente
-            var clienteTask = (from c in db.Tclientes
-                               where c.Id == id_cliente
-                               select new
-                               {
-                                   tipo_cliente = c.Tipo,
-                                   contribuite_icms_status = c.Contribuinte_Icms_Status,
-                                   produtor_rural_status = c.Produtor_Rural_Status,
-                                   uf = c.Uf
-                               }).FirstOrDefaultAsync();
+        //    var db = contextoProvider.GetContextoLeitura();
+        //    //Buscar dados do cliente
+        //    var clienteTask = (from c in db.Tclientes
+        //                       where c.Id == id_cliente
+        //                       select new
+        //                       {
+        //                           tipo_cliente = c.Tipo,
+        //                           contribuite_icms_status = c.Contribuinte_Icms_Status,
+        //                           produtor_rural_status = c.Produtor_Rural_Status,
+        //                           uf = c.Uf
+        //                       }).FirstOrDefaultAsync();
 
-            var cliente = await clienteTask;
+        //    var cliente = await clienteTask;
 
-            //obtém  a sigla para regra
-            string cliente_regra = Util.Util.MultiCdRegraDeterminaPessoa(cliente.tipo_cliente, cliente.contribuite_icms_status,
-                cliente.produtor_rural_status);
+        //    //obtém  a sigla para regra
+        //    string cliente_regra = Util.Util.MultiCdRegraDeterminaPessoa(cliente.tipo_cliente, cliente.contribuite_icms_status,
+        //        cliente.produtor_rural_status);
 
-            //List<RegrasBll> lst_cliente_regra = new List<RegrasBll>();
-            //MontaListaRegras(lstProdutos, lst_cliente_regra);
+        //    //List<RegrasBll> lst_cliente_regra = new List<RegrasBll>();
+        //    //MontaListaRegras(lstProdutos, lst_cliente_regra);
 
 
-            List<string> lstErros = new List<string>();
+        //    List<string> lstErros = new List<string>();
 
-            List<RegrasBll> regraCrtlEstoque = (await ObterCtrlEstoqueProdutoRegra(pedidoDto, lstErros)).ToList();
+        //    List<RegrasBll> regraCrtlEstoque = (await ObterCtrlEstoqueProdutoRegra(pedidoDto, lstErros)).ToList();
 
-            await Util.Util.ObterCtrlEstoqueProdutoRegra_Teste(lstErros, regraCrtlEstoque, cliente.uf, cliente_regra, contextoProvider);
+        //    await Util.Util.ObterCtrlEstoqueProdutoRegra_Teste(lstErros, regraCrtlEstoque, cliente.uf, cliente_regra, contextoProvider);
 
-            //parateste
-            //int id_nfe_emitente_selecao_manual = 0;
-            VerificarRegrasAssociadasAosProdutos(regraCrtlEstoque, lstErros, pedidoDto, id_nfe_emitente_selecao_manual);
+        //    //parateste
+        //    //int id_nfe_emitente_selecao_manual = 0;
+        //    VerificarRegrasAssociadasAosProdutos(regraCrtlEstoque, lstErros, pedidoDto, id_nfe_emitente_selecao_manual);
 
-            //verificar se se é cd manual
-            await VerificarCDHabilitadoTodasRegras(regraCrtlEstoque, id_nfe_emitente_selecao_manual, lstErros);
+        //    //verificar se se é cd manual
+        //    await VerificarCDHabilitadoTodasRegras(regraCrtlEstoque, id_nfe_emitente_selecao_manual, lstErros);
 
-            //precisamos criar um metodo ou arrumar esse mesmo para poder receber a quantidade de produtos selecionados
-            //pelo usuário, pois é feito uma verificação em cima da quantidade que foi solicitada 
-            Util.Util.ObterDisponibilidadeEstoque(regraCrtlEstoque, lstProdutos, lstErros,
-                contextoProvider, id_nfe_emitente_selecao_manual);
+        //    //precisamos criar um metodo ou arrumar esse mesmo para poder receber a quantidade de produtos selecionados
+        //    //pelo usuário, pois é feito uma verificação em cima da quantidade que foi solicitada 
+        //    Util.Util.ObterDisponibilidadeEstoque(regraCrtlEstoque, lstProdutos, lstErros,
+        //        contextoProvider, id_nfe_emitente_selecao_manual);
 
-            //await Util.Util.VerificarEstoque(regraCrtlEstoque, contextoProvider);
-            await Util.Util.VerificarEstoqueComSubQuery(regraCrtlEstoque, contextoProvider);
+        //    //await Util.Util.VerificarEstoque(regraCrtlEstoque, contextoProvider);
+        //    await Util.Util.VerificarEstoqueComSubQuery(regraCrtlEstoque, contextoProvider);
 
-            //atribui a qtde de estoque para o produto
-            //aqui retorna msg do produto para ser verificas se o estoque é insuficiente
-            //mas aqui jã foi informado sobre o estoque e continuou mesmo assim
-            bool estoqueInsuficiente = VerificarEstoqueInsuficiente(regraCrtlEstoque, pedidoDto,
-                id_nfe_emitente_selecao_manual, lstErros);
+        //    //atribui a qtde de estoque para o produto
+        //    //aqui retorna msg do produto para ser verificas se o estoque é insuficiente
+        //    //mas aqui jã foi informado sobre o estoque e continuou mesmo assim
+        //    bool estoqueInsuficiente = VerificarEstoqueInsuficiente(regraCrtlEstoque, pedidoDto,
+        //        id_nfe_emitente_selecao_manual, lstErros);
 
-            VerificarQtdePedidosAutoSplit(regraCrtlEstoque, lstErros, pedidoDto);
+        //    VerificarQtdePedidosAutoSplit(regraCrtlEstoque, lstErros, pedidoDto);
 
-            await ExisteMensagensAlertaProdutos(lstProdutos);
+        //    await ExisteMensagensAlertaProdutos(lstProdutos);
 
-            List<int> lst_empresa_selecionada = ContagemEmpresasUsadasAutoSplit(regraCrtlEstoque, pedidoDto);
+        //    List<int> lst_empresa_selecionada = ContagemEmpresasUsadasAutoSplit(regraCrtlEstoque, pedidoDto);
 
-            //há algum produto descontinuado?
-            await ExisteProdutoDescontinuado(pedidoDto, lstErros);
+        //    //há algum produto descontinuado?
+        //    await ExisteProdutoDescontinuado(pedidoDto, lstErros);
 
-            if (lstErros.Count > 0)
-            {
-                //deu erro
-                //quando seleção do cd automático, temos msgs 
-                /*
-                 * "Produto (001)001000: regra 'regra 01' (Id=1) não permite o CD 'Cliente"
-                 * essa msg ocorreu , pois não teve nenhum cd selecionado, foi feito seleção automatica
-                 */
-                /*
-                 * "Falha ao tentar consultar disponibilidade no estoque do produto (001)001000"
-                 * essa msg ocorreu, pois não tem cd selecionado, foi selecionado automatico
-                 */
-                /*
-                 * Produto selecionado 
-                 * "PRODUTO SEM PRESENÇA NO ESTOQUE"
-                 */
-                return lstErros;
-            }
+        //    if (lstErros.Count > 0)
+        //    {
+        //        //deu erro
+        //        //quando seleção do cd automático, temos msgs 
+        //        /*
+        //         * "Produto (001)001000: regra 'regra 01' (Id=1) não permite o CD 'Cliente"
+        //         * essa msg ocorreu , pois não teve nenhum cd selecionado, foi feito seleção automatica
+        //         */
+        //        /*
+        //         * "Falha ao tentar consultar disponibilidade no estoque do produto (001)001000"
+        //         * essa msg ocorreu, pois não tem cd selecionado, foi selecionado automatico
+        //         */
+        //        /*
+        //         * Produto selecionado 
+        //         * "PRODUTO SEM PRESENÇA NO ESTOQUE"
+        //         */
+        //        return lstErros;
+        //    }
 
-            //estou aqui para terminar isso.
-            return lstMgsEstoque;
-        }
-
+        //    //estou aqui para terminar isso.
+        //    return lstMgsEstoque;
+        //}
+        #endregion 
         private async Task ExisteProdutoDescontinuado(PedidoDtoCriacao pedido, List<string> lstErros)
         {
             var db = contextoProvider.GetContextoLeitura();

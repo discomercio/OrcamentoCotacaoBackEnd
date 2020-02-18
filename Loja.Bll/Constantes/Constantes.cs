@@ -97,7 +97,9 @@ namespace Loja.Bll.Constantes
         public const string CIELO_TIPO_TRANSACAO__REQUISICAO_TRANSACAO = "REQ_TRANSACAO";
 
         public const string CIELO_TIPO_TRANSACAO__REQUISICAO_CONSULTA = "REQ_CONSULTA";
+        public const string T_PEDIDO_ANALISE_ENDERECO = "T_PEDIDO_ANALISE_ENDERECO";
 
+        public const string T_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO = "T_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO";
 
         public const string CIELO_FLUXO_XML__TX = "TX";
 

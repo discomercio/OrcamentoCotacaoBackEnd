@@ -46,12 +46,7 @@ namespace Loja.Data
                 .HasKey(x => new { x.Fabricante, x.Produto, x.Id_Alerta });
 
             modelBuilder.Entity<TprodutoLoja>()
-                .HasKey(x => new { x.Fabricante, x.Produto, x.Loja });
-
-            modelBuilder.Entity<TprodutoLoja>()
-                .HasOne(x => x.Tproduto)
-                .WithMany(x => x.TprodutoLoja)
-                .HasForeignKey(x => new { x.Fabricante , x.Produto});
+                .HasKey(x => new { x.Fabricante, x.Produto, x.Loja });            
 
             modelBuilder.Entity<Tfabricante>()
                 .HasKey(x => x.Fabricante);
@@ -65,6 +60,10 @@ namespace Loja.Data
             modelBuilder.Entity<TperfilItem>()
                 .HasKey(x => new { x.Id });
 
+            modelBuilder.Entity<TtransportadoraCep>()
+                .HasKey(x => new { x.Id });
+            //transportadora_id foreignkey
+
             modelBuilder.Entity<TperfilUsuario>()
                 .HasKey(x => new { x.Usuario, x.Id_perfil });
             modelBuilder.Entity<Tperfil>()
@@ -73,6 +72,26 @@ namespace Loja.Data
                 .HasKey(x => x.Id);
             modelBuilder.Entity<Tlog>()
             .HasKey(x => new { x.Id_Cliente, x.Data, x.Usuario });
+
+            //relacionamentos
+            modelBuilder.Entity<TprodutoLoja>()
+                .HasOne(x => x.Tproduto)
+                .WithMany(x => x.TprodutoLoja)
+                .HasForeignKey(x => new { x.Fabricante, x.Produto });
+
+            modelBuilder.Entity<TpedidoItemDevolvido>()
+                .HasOne(x => x.Tpedido)
+                .WithMany(x => x.TpedidoItemDevolvido)
+                .HasForeignKey(x => x.Pedido);
+
+            modelBuilder.Entity<Tproduto>()
+                .HasOne(x => x.Tfabricante)
+                .WithMany(x => x.Tproduto)
+                .HasForeignKey(x => x.Fabricante);
+
+            //modelBuilder.Entity<Tdesconto>()
+            //    .HasOne(x => x.Id_cliente)
+            //    .WithMany(x => x.)
         }
 
         public DbSet<Tcliente> Tclientes { get; set; }
@@ -123,5 +142,10 @@ namespace Loja.Data
         public DbSet<TperfilItem> TperfilItems { get; set; }
         public DbSet<TperfilUsuario> TperfilUsuarios { get; set; }
         public DbSet<Toperacao> Toperacaos { get; set; }
+        public DbSet<TtransportadoraCep> TtransportadoraCeps{ get; set; }
+        public DbSet<Tdesconto> Tdescontos { get; set; }
+        public DbSet<TestoqueLog> TestoqueLogs { get; set; }
+        public DbSet<TfinControle> TfinControles { get; set; }
+        public DbSet<TpedidoAnaliseEndereco> TpedidoAnaliseEnderecos { get; set; }
     }
 }

@@ -23,6 +23,7 @@ namespace PrepedidoBusiness.Bll
             public const string PedidoController = "PedidoController";
             public const string ClienteController = "ClienteController";
             public const string CepController = "CepController";
+            public const string ProdutosController = "ProdutosController";
         }
 
         //todo: retornar os roles corretos
@@ -32,6 +33,8 @@ namespace PrepedidoBusiness.Bll
             ret.Add(Roles.PedidoController);
             ret.Add(Roles.ClienteController);
             ret.Add(Roles.CepController);
+            ret.Add(Roles.ProdutosController);
+
             return ret;
         }
 
@@ -71,6 +74,13 @@ namespace PrepedidoBusiness.Bll
             if (context.Resource.ToString().Contains("CepController"))
             {
                 if (context.User.IsInRole(Roles.CepController))
+                    return true;
+                return false;
+            }
+
+            if (context.Resource.ToString().Contains("ProdutosController"))
+            {
+                if (context.User.IsInRole(Roles.ProdutosController))
                     return true;
                 return false;
             }
