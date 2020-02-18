@@ -6,18 +6,22 @@ using Loja.Data;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-
-
+using Loja.Bll.PedidoBll;
 
 namespace Loja.Bll.Bll.PedidoBll
 {
     public class CancelamentoAutomaticoBll
     {
         private readonly ContextoBdProvider contextoProvider;
+        private readonly PedidoLogBll pedidoLogBll;
+        private readonly Loja.Bll.PedidoBll.PedidoBll pedidoBll;
 
-        public CancelamentoAutomaticoBll(ContextoBdProvider contextoProvider)
+        public CancelamentoAutomaticoBll(ContextoBdProvider contextoProvider, Loja.Bll.PedidoBll.PedidoLogBll pedidoLogBll,
+            Loja.Bll.PedidoBll.PedidoBll pedidoBll)
         {
             this.contextoProvider = contextoProvider;
+            this.pedidoLogBll = pedidoLogBll;
+            this.pedidoBll = pedidoBll;
         }
         public class CancelamentoAutomaticoItem
         {

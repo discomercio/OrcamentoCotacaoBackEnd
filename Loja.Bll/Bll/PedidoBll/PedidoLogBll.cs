@@ -275,96 +275,68 @@ namespace Loja.Bll.PedidoBll
             }
 
 
+            //'	MONTA LOG DOS ITENS
             var tpedidoItems = await (from tpi in contextoBd.TpedidoItems where tpi.Pedido == pedido.Pedido select tpi).ToListAsync();
-            /*
-             * 
-             * todo: afazer: terminar!
-    //'	MONTA LOG DOS ITENS
+            foreach (var tpi in tpedidoItems)
+            {
+                if (log != "")
+                    log = log + ";" + "\n";
 
-                for i = Lbound(v_item) to Ubound(v_item)
-
-                with v_item(i)
-
-                    if s_log <> "" then s_log = s_log & ";" & chr(13)
-
-                    s_log = s_log & _
-
-                            log_produto_monta(.qtde, .fabricante, .produto) & _
-
+                /*
+                 * 
+                 * melhor fazr o log do registro completo
+                 * 
+                 * NÃO estamos fazendo log do qtde_estoque_vendido e do qtde_estoque_sem_presenca
+                 * 
+                 * 
+                log_produto_monta(.qtde, .fabricante, .produto) & _
                             "; preco_lista=" & formata_texto_log(.preco_lista) & _
-
                             "; desc_dado=" & formata_texto_log(.desc_dado) & _
-
                             "; preco_venda=" & formata_texto_log(.preco_venda) & _
-
                             "; preco_NF=" & formata_texto_log(.preco_NF) & _
-
                             "; custoFinancFornecCoeficiente=" & formata_texto_log(.custoFinancFornecCoeficiente) & _
-
                             "; custoFinancFornecPrecoListaBase=" & formata_texto_log(.custoFinancFornecPrecoListaBase)
-
                     if .qtde_estoque_vendido <> 0 then s_log = s_log & "; estoque_vendido=" & formata_texto_log(.qtde_estoque_vendido)
-
                     if .qtde_estoque_sem_presenca <> 0 then s_log = s_log & "; estoque_sem_presenca=" & formata_texto_log(.qtde_estoque_sem_presenca)
-
-
-
                     if converte_numero(.abaixo_min_status) <> 0 then
                         s_log = s_log & _
-
                                 "; abaixo_min_status=" & formata_texto_log(.abaixo_min_status) & _
-
                                 "; abaixo_min_autorizacao=" & formata_texto_log(.abaixo_min_autorizacao) & _
-
                                 "; abaixo_min_autorizador=" & formata_texto_log(.abaixo_min_autorizador) & _
-
                                 "; abaixo_min_superv_autorizador=" & formata_texto_log(.abaixo_min_superv_autorizador)
-
                         end if
 
-                    end with
-                next
+                */
 
+                log = Loja.Bll.Util.Util.MontaLog(tpi, log, null);
 
-        '	ADICIONA DETALHES SOBRE O AUTO-SPLIT
-
-            blnAchou = False
-
-            for i = LBound(vLogAutoSplit) to UBound(vLogAutoSplit)
-
-                if Trim("" & vLogAutoSplit(i)) <> "" then
-
-                    if s_log <> "" then s_log = s_log & chr(13)
-
-                    if Not blnAchou then
-
-                        s_log = s_log & "Detalhes do auto-split: Modo de seleção do CD = " & rb_selecao_cd
-
-                        if rb_selecao_cd = MODO_SELECAO_CD__MANUAL then s_log = s_log & "; id_nfe_emitente = " & c_id_nfe_emitente_selecao_manual
-
-                        s_log = s_log & chr(13)
-
-                        blnAchou = True
-
-                        end if
-
-                    s_log = s_log & vLogAutoSplit(i)
-
-                    end if
-
-                next
-
-
-            if s_log <> "" then
-                grava_log usuario, loja, id_pedido, cliente_selecionado, OP_LOG_PEDIDO_NOVO, s_log
-                end if
-
-            end if
-
-
-*/
+            }
 
             return log;
+        }
+
+        //todo: precisa receber essa variável como parametro! a vLogAutoSplit
+        public string PedidoLogInclusao_AutoSplit()
+        { 
+
+                /*
+            '	ADICIONA DETALHES SOBRE O AUTO-SPLIT
+                blnAchou = False
+                for i = LBound(vLogAutoSplit) to UBound(vLogAutoSplit)
+                    if Trim("" & vLogAutoSplit(i)) <> "" then
+                        if s_log <> "" then s_log = s_log & chr(13)
+                        if Not blnAchou then
+                            s_log = s_log & "Detalhes do auto-split: Modo de seleção do CD = " & rb_selecao_cd
+                            if rb_selecao_cd = MODO_SELECAO_CD__MANUAL then s_log = s_log & "; id_nfe_emitente = " & c_id_nfe_emitente_selecao_manual
+                            s_log = s_log & chr(13)
+                            blnAchou = True
+                            end if
+                        s_log = s_log & vLogAutoSplit(i)
+                        end if
+                    next
+                */
+
+                return "";
         }
     }
 }
