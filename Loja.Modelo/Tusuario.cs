@@ -105,15 +105,15 @@ namespace Loja.Modelos
         public string Email { get; set; }
 
         [Column("SessionTokenModuloCentral")]
-        public Guid SessionTokenModuloCentral { get; set; }
+        public Guid? SessionTokenModuloCentral { get; set; }
 
         [Column("DtHrSessionTokenModuloCentral")]
-        public DateTime DtHrSessionTokenModuloCentral { get; set; }
+        public DateTime? DtHrSessionTokenModuloCentral { get; set; }
 
         [Column("SessionTokenModuloLoja")]
-        public Guid SessionTokenModuloLoja { get; set; }
+        public Guid? SessionTokenModuloLoja { get; set; }
 
         [Column("DtHrSessionTokenModuloLoja")]
-        public DateTime DtHrSessionTokenModuloLoja { get; set; }
+        public DateTime? DtHrSessionTokenModuloLoja { get; set; }
     }
 }
