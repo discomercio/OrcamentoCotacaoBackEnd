@@ -61,8 +61,11 @@ namespace Loja.Bll.ClienteBll
                 retorno = retorno + "|" + i;
             }
 
-            if (retorno.Substring(retorno.Length - 1, 1) != "" || retorno.Substring(retorno.Length - 1, 1) != "|")
-                retorno = retorno + "|";
+            if (!String.IsNullOrWhiteSpace(retorno))
+            {
+                if (retorno.Substring(retorno.Length - 1, 1) != "" || retorno.Substring(retorno.Length - 1, 1) != "|")
+                    retorno = retorno + "|";
+            }
 
             return retorno;
         }

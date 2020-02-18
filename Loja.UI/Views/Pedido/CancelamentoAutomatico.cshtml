@@ -1,0 +1,150 @@
+﻿@model Loja.UI.Models.Pedido.CancelamentoAutomaticoViewModel
+@{
+    ViewData["Title"] = "Cancelamento Automático";
+}
+
+
+@section ScriptsDiretos{
+    <link rel="stylesheet" type="text/css" href="~/lib/datatables/datatables.min.css" />
+    <script type="text/javascript" src="~/lib/datatables/datatables.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="~/lib/datatables-materialize/dataTables.materialize.css" />
+    <script type="text/javascript" src="~/lib/datatables-materialize/dataTables.materialize.js"></script>
+}
+
+<partial name="~/Views/Shared/Datatables.cshtml" />
+
+<script>
+    $(document).ready(function () {
+        $('#tabeladados').DataTable({
+            columnDefs: [
+                { type: "databr", targets: 1 }
+            ],
+            "sPaginationType": "full_numbers",
+            lengthMenu: DataTables_lengthMenu,
+            language: DataTables_language,
+            dom: DataTables_dom
+        });
+    });
+
+</script>
+
+<h5>Cancelamento Automático de Pedidos</h5>
+
+<div>
+
+    @*
+        select para escolher a loja a usar
+    *@
+
+    <style>
+        .semespacamento {
+            margin-bottom: 0px;
+            padding-bottom: 0px !important;
+        }
+    </style>
+    <div class="semespacamento row " style="padding-bottom: 0px !important;">
+        <div class="semespacamento col s12 " style="padding-bottom: 0px !important;">
+            <div class="semespacamento col s8 " style="padding-bottom: 0px !important;">
+            </div>
+            <div class="semespacamento input-field col s4 " style="padding-bottom: 0px !important;">
+                <div class="input-field">
+                    @{
+                        var lista = Model.LojasDisponiveis.Select(r => r.Nome).Distinct().OrderBy(r => r).ToList();
+                        lista.Insert(0, "");
+                        var listaSl = new List<SelectListItem>();
+                        foreach (var item in lista)
+                        {
+                            listaSl.Add(new SelectListItem(item == "" ? "Todas" : item, item));
+                        }
+                    }
+                    @Html.DropDownList("comboLojas", listaSl, new { @id = "comboLojas" })
+                    <label>Filtrar por loja:</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $("#comboLojas").change(function () {
+            $('#tabeladados').DataTable().search($("#comboLojas").val()).draw();
+        });
+    </script>
+
+    @if (Model.cancelamentoAutomaticoItems.Count < 1)
+    {
+        <span>
+            NENHUM PEDIDO.
+        </span>
+    }
+    else
+    {
+        <table id="tabeladados" class="striped ">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>
+                        Data final
+                    </th>
+                    <th>
+                        Pedido
+                    </th>
+                    @if (Model.MostrarLoja)
+                    {
+                        <th>
+                            Loja
+                        </th>
+                    }
+                    @if (Model.ConsultaUniversalPedidoOrcamento)
+                    {
+                        <th>
+                            Vendedor
+                        </th>
+                    }
+                    <th>
+                        Nome do cliente
+                    </th>
+                    <th>
+                        Análise de crédito
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var c in Model.cancelamentoAutomaticoItems)
+                {
+                    <tr>
+                        <td style="text-align: right">
+                            @c.NumeroLinha
+                        </td>
+                        <td>
+                            @c.DataFinal?.ToShortDateString()
+                        </td>
+                        <td>
+                            @c.Pedido
+                        </td>
+                        @if (Model.MostrarLoja)
+                        {
+                            <td>
+                                @c.Loja
+                            </td>
+                        }
+                        @if (Model.ConsultaUniversalPedidoOrcamento)
+                        {
+                            <td>
+                                @c.Vendedor
+                            </td>
+                        }
+                        <td>
+                            @c.NomeDoCliente
+                        </td>
+                        <td>
+                            @c.Analise_credito_descricao
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+

@@ -15,12 +15,12 @@
 {
     @Html.HiddenFor(m => m.ReturnUrl)
 
-    <div class="container centered">
+    <div class="container centered" style="line-height: initial;">
         @if (Model.AcessoNegado)
         {
             <div class="row">
                 <div class="col s4"></div>
-                <div class="col s4" style="line-height: initial;">
+                <div class="col s4">
                     Acesso negado: o seu usuário não possui autorização para acessar essa página.
                     <br />
                     Faça o login como outro usuário ou entre em contato com o administrador do sistema.
@@ -34,8 +34,20 @@
             <div class="input-field col s4">
                 @*//o browser pode preenhcer o formulário autoamticamente
                     para resolver, tirei o label*@
+                <div style="height:1em;">Loja</div>
+                <br />
+                <div>@Html.TextBoxFor(m => m.Loja, new { @class = "form-control active", autofocus = "true" })</div>
+            </div>
+            <div class="col s4"></div>
+        </div>
+        <div class="row">
+            <div class="col s4"></div>
+            <div class="input-field col s4">
+                @*//o browser pode preenhcer o formulário autoamticamente
+                    para resolver, tirei o label*@
                 <div style="height:1em;">Nome do usuário</div>
-                <div>@Html.TextBoxFor(m => m.Usuario, new { @class = "form-control active", autofocus = "true" })</div>
+                <br />
+                <div>@Html.TextBoxFor(m => m.Apelido, new { @class = "form-control active" })</div>
             </div>
             <div class="col s4"></div>
         </div>
@@ -43,6 +55,7 @@
             <div class="col s4"></div>
             <div class="input-field col s4">
                 <div style="height:1em;">Senha</div>
+                <br />
                 @{
                     var estilos = "";
                     if (Model.ErroUsuarioSenha)
@@ -56,6 +69,13 @@
             <div class="col s4"></div>
         </div>
 
+        <div class="row">
+            <div class="col s4"></div>
+            <div class="col s4 center">
+                *No momento, apenas o usuário está sendo verificado.
+            </div>
+            <div class="col s4"></div>
+        </div>
         @if (Model.PermitirManterConectado)
         {
             <div class="row">

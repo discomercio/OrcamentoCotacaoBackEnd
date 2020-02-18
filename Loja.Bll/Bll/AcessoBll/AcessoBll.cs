@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 using Loja.Data;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Loja.Modelos;
 
-namespace PrepedidoBusiness.Bll
+namespace Loja.Bll.Bll.AcessoBll
 {
     public class AcessoBll
     {
@@ -38,12 +38,26 @@ namespace PrepedidoBusiness.Bll
             return ret;
         }
 
+        public async Task<Tusuario> LoginUsuario(string usuario, string senha, string loja)
+        {
+            //vamos ver se existe
+            usuario = usuario.Trim().ToUpper();
+            var existe = await (from u in contextoProvider.GetContextoLeitura().Tusuarios
+                                where usuario == u.Usuario.Trim().ToUpper()
+                                select u).FirstOrDefaultAsync();
+            return existe;
+        }
+
         public static bool AutorizarPagina(AuthorizationHandlerContext context)
         {
             if (context.User == null)
                 return false;
             if (context.Resource == null)
                 return true;
+
+            //todo: por enquanto, autorizamos todo mundo
+            return true;
+
 
             //todo: afazer: atualizar periodicamente as permissões do banco (quer dizer, ler elas novamente)
             //mas não é aqui onde devemos fazer...

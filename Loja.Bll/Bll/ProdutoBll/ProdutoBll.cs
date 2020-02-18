@@ -73,7 +73,7 @@ namespace Loja.Bll.ProdutoBll
                 }); ; ;
             }
 
-            return await Task.FromResult(lstProdutosTask);
+            return await Task.FromResult(lstProdutosTask.OrderBy(r=>r.Produto));
         }
 
         public async Task<string> BuscarFabricante(string fabricante)

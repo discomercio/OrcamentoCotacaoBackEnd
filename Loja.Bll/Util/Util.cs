@@ -445,8 +445,17 @@ namespace Loja.Bll.Util
 
         public static string MontaLog(Object obj, string log, string campos_a_omitir)
         {
+            return MontaLogInterno(obj, log, campos_a_omitir, null);
+        }
+        public static string MontaLogCamposIncluir(Object obj, string log, string campos_a_incluir)
+        {
+            return MontaLogInterno(obj, log, null, campos_a_incluir);
+        }
+        private static string MontaLogInterno(Object obj, string log, string campos_a_omitir, string campos_a_incluir)
+        {
             PropertyInfo[] property = obj.GetType().GetProperties();
-            string[] campos = campos_a_omitir.Split('|');
+            campos_a_omitir = campos_a_omitir.ToLower();
+            campos_a_incluir = campos_a_incluir.ToLower();
 
             foreach (var c in property)
             {
@@ -455,7 +464,30 @@ namespace Loja.Bll.Util
                 if (column != null)
                 {
                     string coluna = column.Name;
-                    if (!campos_a_omitir.Contains(coluna))
+
+                    bool incluir = false;
+
+                    if (string.IsNullOrWhiteSpace(campos_a_incluir))
+                    {
+                        incluir = true;
+                    }
+                    else
+                    {
+                        if (campos_a_incluir.Contains(coluna.ToLower()))
+                            incluir = true;
+                    }
+
+                    if (string.IsNullOrWhiteSpace(campos_a_omitir))
+                    {
+                        //nao fazemos nada
+                    }
+                    else
+                    {
+                        if (campos_a_omitir.Contains(coluna.ToLower()))
+                            incluir = false;
+                    }
+
+                    if (incluir)
                     {
                         //pegando o valor coluna
                         var value = (c.GetValue(obj, null));

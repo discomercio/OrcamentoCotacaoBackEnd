@@ -17,7 +17,9 @@ using Loja.Bll.CoeficienteBll;
 using Loja.Bll.Dto.PedidoDto.DetalhesPedido;
 using Loja.Bll.Dto.PrepedidoDto.DetalhesPrepedido;
 using Loja.Bll.Dto.PedidoDto;
+using Loja.Bll.Bll.PedidoBll;
 using Loja.Bll.Constantes;
+using Loja.Bll.Bll.AcessoBll;
 
 namespace Loja.UI.Controllers
 {
@@ -28,14 +30,19 @@ namespace Loja.UI.Controllers
         private readonly ClienteBll clienteBll;
         private readonly FormaPagtoBll formaPagtoBll;
         private readonly CoeficienteBll coeficienteBll;
+        private readonly CancelamentoAutomaticoBll cancelamentoAutomaticoBll;
+        private readonly UsuarioAcessoBll usuarioAcessoBll;
 
-        public PedidoController(PedidoBll pedidoBll, ProdutoBll produtoBll, ClienteBll clienteBll, FormaPagtoBll formaPagtoBll, CoeficienteBll coeficienteBll)
+        public PedidoController(PedidoBll pedidoBll, ProdutoBll produtoBll, ClienteBll clienteBll, FormaPagtoBll formaPagtoBll, CoeficienteBll coeficienteBll,
+            CancelamentoAutomaticoBll cancelamentoAutomaticoBll, UsuarioAcessoBll usuarioAcessoBll)
         {
             this.pedidoBll = pedidoBll;
             this.produtoBll = produtoBll;
             this.clienteBll = clienteBll;
             this.formaPagtoBll = formaPagtoBll;
             this.coeficienteBll = coeficienteBll;
+            this.cancelamentoAutomaticoBll = cancelamentoAutomaticoBll;
+            this.usuarioAcessoBll = usuarioAcessoBll;
         }
 
         public IActionResult Index()
@@ -347,5 +354,20 @@ namespace Loja.UI.Controllers
 
 
 
+
+
+        public async Task<IActionResult> CancelamentoAutomatico()
+        {
+            var usuarioLogado = new UsuarioLogado(User, HttpContext.Session, clienteBll, usuarioAcessoBll);
+
+            bool consultaUniversalPedidoOrcamento = usuarioLogado.Operacao_permitida(Constantes.OP_LJA_CONSULTA_UNIVERSAL_PEDIDO_ORCAMENTO);
+            var model = new Loja.UI.Models.Pedido.CancelamentoAutomaticoViewModel();
+            model.LojasDisponiveis = usuarioLogado.Loja_troca_rapida_monta_itens_select;
+            model.cancelamentoAutomaticoItems = await cancelamentoAutomaticoBll.DadosTela(consultaUniversalPedidoOrcamento, usuarioLogado, model.LojasDisponiveis);
+            model.MostrarLoja = usuarioLogado.Operacao_permitida(Constantes.OP_LJA_LOGIN_TROCA_RAPIDA_LOJA);
+            model.ConsultaUniversalPedidoOrcamento = consultaUniversalPedidoOrcamento;
+            return View(model);
+        }
     }
 }
+
