@@ -44,10 +44,25 @@
     max-width: unset;
 }
 
+/*destaque em tabelas*/
+table.destaquelincol {
+    overflow: hidden
+}
+
+table.destaquelincol > tbody > tr > td {
+    position: relative
+}
+
+table.destaquelincol > tbody > tr:hover {
+    background-color: #f6f6f6 !important
+}
+
+.destaquelincol
+
+
 /*label {
     margin-top: inherit !important;
 }*/
-
 .input-field {
     margin-bottom: 0px !important;
     margin-top: 0px !important;
