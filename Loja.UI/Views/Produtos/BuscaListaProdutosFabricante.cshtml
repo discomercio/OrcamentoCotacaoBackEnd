@@ -28,21 +28,16 @@
 
         <script>
             $(document).ready(function () {
-                $('#tabela').DataTable({
+                intiDatatables('#tabela', {
                     columnDefs: [
                         { type: "currency", targets: 2 }
-                    ],
-                    "sPaginationType": "full_numbers",
-                    lengthMenu: DataTables_lengthMenu,
-                    language: DataTables_language,
-                    dom: DataTables_dom
+                    ]
                 });
             });
-
         </script>
 
 
-        <table id="tabela" class="highlight">
+        <table id="tabela">
             <thead>
                 <tr>
                     <th>Produto</th>
@@ -59,7 +54,8 @@
                     <tr>
                         <td>@item.Produto</td>
                         <td>@item.Descricao</td>
-                        <td class="right-align">@String.Format("{0:c}", item.Preco)</td>
+                        @* 200218: hamilton pediu para colocar sem o cifrão *@
+                        <td class="right-align">@String.Format("{0:F2}", item.Preco)</td>
                     </tr>
 
                 }

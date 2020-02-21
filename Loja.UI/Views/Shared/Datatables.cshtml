@@ -22,13 +22,42 @@
         width: auto;
     }
 
-    .dt-buttons {
+    /*botoes ficam à direita*/
+    div.dt-buttons {
         display: inline;
-        margin-left: 100px;
-        padding-top: 30px;
+        float: right;
+        padding-top: 0.75em;
+        padding-left: 10px;
     }
 
-    /*usando waves-effect waves-light btn-small*/
+    /* cores dos botoes de paginacao */
+    .dataTables_paginate .pagination li a {
+        color: #fff;
+    }
+
+    .dataTables_paginate .pagination li.active a {
+        color: #444;
+    }
+
+    /* espaçamento dos botoes */
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        padding: 0.5em 0.4em;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .first,
+    .dataTables_wrapper .dataTables_paginate .previous,
+    .dataTables_wrapper .dataTables_paginate .next,
+    .dataTables_wrapper .dataTables_paginate .last {
+        width: 85px;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .previous {
+        margin-right: 10px;
+    }
+
+    /*usando waves-effect waves-light btn-small
+        deixamos duplicado para não piscar, mas a que vale mesmo está na rotina de incializacao
+    */
     .dataTables_paginate a {
         /*btn-small*/
         text-decoration: none;
@@ -53,6 +82,21 @@
         z-index: 1;
         -webkit-transition: .3s ease-out;
         transition: .3s ease-out;
+    }
+
+        .dataTables_paginate a:hover {
+            background-color: #2bbbad;
+            -webkit-box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 1px 7px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -1px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 1px 7px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -1px rgba(0, 0, 0, 0.2);
+        }
+
+        .dataTables_paginate a:focus {
+            background-color: #1d7d74;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:active {
+        background: white;
+        box-shadow: none;
     }
 
     .dataTables_paginate .disabled a {
@@ -109,29 +153,6 @@
         }
     };
 
-    var DataTables_dom_botoes = 'frtiBpl';
-    var DataTables_dom = 'lfrtip';
-    var DataTables_buttons = [
-        @*
-        //botao copiar, nao temos como traduzir a mensagem...
-        {
-            extend: 'copy', text: 'Copiar',
-            fnComplete: function (nButton, oConfig, oFlash, sFlash) {
-                alert('Button action complete');
-            }
-        },
-            *@
-        {
-            extend: 'excel', text: 'Exportar para Excel'
-        },
-        {
-            extend: 'pdf', text: 'Exportar para PDF'
-        }
-    ];
-
-    var DataTables_lengthMenu = [[10, 25, 50, -1], [10, 25, 50, "Todos"]];
-
-
 jQuery.extend( jQuery.fn.dataTableExt.oSort, {
     "currency-pre": function (a) {
         a = (a === "-") ? 0 : a.replace(/[^\d\-]/g, "");
@@ -170,6 +191,54 @@ jQuery.extend( jQuery.fn.dataTableExt.oSort, {
         return b - a;
     }
 });
+
+
+    var DataTables_dom_botoes = 'lfrtiBp';
+    var DataTables_dom = 'lfrtip';
+    var DataTables_buttons = [
+        @*
+        //botao copiar, nao temos como traduzir a mensagem...
+        {
+            extend: 'copy', text: 'Copiar',
+            fnComplete: function (nButton, oConfig, oFlash, sFlash) {
+                alert('Button action complete');
+            }
+        },
+            *@
+        {
+            extend: 'excel', text: 'Exportar para Excel'
+        },
+        {
+            extend: 'pdf', text: 'Exportar para PDF'
+        }
+    ];
+
+    var DataTables_lengthMenu = [[10, 25, 50, -1], [10, 25, 50, "Todos"]];
+
+    function intiDatatables(seletor, config) {
+
+        //queremos estas classes
+        $(seletor).addClass("striped destaquelincol");
+
+        config.sPaginationType = "full_numbers";
+        config.lengthMenu= DataTables_lengthMenu;
+        config.language= DataTables_language;
+        config.dom= DataTables_dom_botoes;
+        config.buttons= DataTables_buttons;
+
+        //nao funciona!
+        //digo, funciona, mas precisa redesenhar as classes. 
+        //$.fn.dataTable.ext.classes.sPageButton = "paginate_button waves-effect waves-light btn-small";
+
+        $(seletor).DataTable(config);
+
+        $(".dt-buttons button").addClass("waves-effect waves-light btn-small");
+        $(".dt-buttons button").removeClass("dt-button");
+        $(".dataTables_paginate a").addClass("waves-effect waves-light btn-small");
+        $(seletor).on(  'draw.dt', function () {
+            $(".dataTables_paginate a").addClass("waves-effect waves-light btn-small");
+        } );
+    }
 
 
 </script>

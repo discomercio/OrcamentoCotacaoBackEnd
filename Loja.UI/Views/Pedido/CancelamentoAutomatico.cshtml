@@ -16,16 +16,18 @@
 
 <script>
     $(document).ready(function () {
-        $('#tabeladados').DataTable({
+        intiDatatables('#tabeladados', {
             columnDefs: [
                 { type: "databr", targets: 1 }
-            ],
-            "sPaginationType": "full_numbers",
-            lengthMenu: DataTables_lengthMenu,
-            language: DataTables_language,
-            dom: DataTables_dom
+            ]
         });
     });
+
+    //todo: tentar trocar a classe por evento
+    //$('#tabeladados').on( 'draw.dt', function () {
+    //var info = table.page.info();
+    //$('#pageInfo').html( 'Showing page: '+info.page+' of '+info.pages );
+    //});
 
 </script>
 
@@ -79,7 +81,7 @@
     }
     else
     {
-        <table id="tabeladados" class="striped ">
+        <table id="tabeladados">
             <thead>
                 <tr>
                     <th></th>

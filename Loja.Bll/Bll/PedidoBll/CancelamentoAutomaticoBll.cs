@@ -43,7 +43,7 @@ namespace Loja.Bll.Bll.PedidoBll
                                         " AND (Coalesce(tPedBase.st_pagto, '') <> '" + Constantes.Constantes.ST_PAGTO_PAGO + "')" +
                                         " AND (Coalesce(tPedBase.st_pagto, '') <> '" + Constantes.Constantes.ST_PAGTO_PARCIAL + "')" +
                                         " AND (";
-            strWhereBase += "(1=1)";
+            strWhereBase += "(1=0)";
             foreach (var loja in listaLojas)
                 strWhereBase += "OR (tPedBase.loja = '" + loja.Id + "')";
             strWhereBase += ")";
@@ -57,6 +57,13 @@ namespace Loja.Bll.Bll.PedidoBll
                 strWhereBase = strWhereBase + " AND (tPedBase.vendedor = '" + usuarioLogado.Usuario + "')";
             }
 
+
+            //TODO: etsa variavel depende po erfil do usuario
+            /*    if operacao_permitida(OP_LJA_CONSULTA_UNIVERSAL_PEDIDO_ORCAMENTO, s_lista_operacoes_permitidas) then
+            PRAZO_EXIBICAO_CANCEL_AUTO_PEDIDO = 2
+            end if
+
+                */
 
             var PRAZO_EXIBICAO_CANCEL_AUTO_PEDIDO = 4;
 
@@ -185,51 +192,54 @@ namespace Loja.Bll.Bll.PedidoBll
             List<CancelamentoAutomaticoItem> ret = new List<CancelamentoAutomaticoItem>();
 
             int numeroLinha = 0;
-            //using (var db = contextoProvider.GetContextoLeitura().GetContextoBdBasicoParaSql())
-            //{
-            //    using (var command = db.Database.GetDbConnection().CreateCommand())
-            //    {
-            //        command.CommandText = strSql;
+            using (var db = contextoProvider.GetContextoLeitura().GetContextoBdBasicoParaSql())
+            {
+                using (var command = db.Database.GetDbConnection().CreateCommand())
+                {
+                    command.CommandText = strSql;
 
-            //        db.Database.OpenConnection();
-            //        using (var result = await command.ExecuteReaderAsync())
-            //        {
-            //            while (result.Read())
-            //            {
-            //                numeroLinha++;
+                    db.Database.OpenConnection();
+                    using (var result = await command.ExecuteReaderAsync())
+                    {
+                        while (result.Read())
+                        {
+                            numeroLinha++;
 
-            //                DateTime? dataFinal = null;
-            //                if (result["analise_credito_data_sem_hora"].GetType() == typeof(DateTime))
-            //                {
-            //                    dataFinal = ((DateTime)result["analise_credito_data_sem_hora"]);
-            //                    if (dataFinal.HasValue && result["prazo_cancelamento"].GetType() == typeof(int))
-            //                    {
-            //                        dataFinal = dataFinal.Value.AddDays((int)result["prazo_cancelamento"]);
-            //                    }
-            //                }
+                            DateTime? dataFinal = null;
+                            if (result["analise_credito_data_sem_hora"].GetType() == typeof(DateTime))
+                            {
+                                dataFinal = ((DateTime)result["analise_credito_data_sem_hora"]);
+                                if (dataFinal.HasValue && result["prazo_cancelamento"].GetType() == typeof(int))
+                                {
+                                    dataFinal = dataFinal.Value.AddDays((int)result["prazo_cancelamento"]);
+                                }
+                            }
 
-            //                ret.Add(new CancelamentoAutomaticoItem
-            //                {
-            //                    NumeroLinha = numeroLinha,
-            //                    DataFinal = dataFinal,
-            //                    Pedido = result["pedido"].ToString(),
-            //                    Vendedor = result["vendedor"].ToString(),
-            //                    NomeDoCliente = result["nome"].ToString(),
-            //                    Analise_credito_descricao = result["analise_credito_descricao"].ToString(),
-            //                    Loja = listaLojas.Where(r => r.Id == result["loja"].ToString()).FirstOrDefault()?.Nome
-            //                });
-            //            }
-            //        }
+                            var nomeLoja = listaLojas.Where(r => r.Id == result["loja"].ToString()).FirstOrDefault()?.Nome;
+                            if (string.IsNullOrWhiteSpace(nomeLoja))
+                                nomeLoja = "Loja código " + result["loja"].ToString();
+
+
+                            ret.Add(new CancelamentoAutomaticoItem
+                            {
+                                NumeroLinha = numeroLinha,
+                                DataFinal = dataFinal,
+                                Pedido = result["pedido"].ToString(),
+                                Vendedor = result["vendedor"].ToString(),
+                                NomeDoCliente = result["nome"].ToString(),
+                                Analise_credito_descricao = result["analise_credito_descricao"].ToString(),
+                                Loja = nomeLoja
+                            });
+                        }
+                    }
 
             //    }
 
-            //    //ret.AddRange(DadosDeTeste());
-
-            //    //está ordenando por data CRESCENTE
-            //    ret = ret.OrderBy(r => r.DataFinal).ToList();
-            //    return ret;
-            //}
-            return null;
+                //ret.AddRange(DadosDeTeste());
+                //está ordenando por data da análise de crédito, já está ordenado na query
+                //deixa o cliente verificar se isso é um problema... acho que é o comportamento esperado
+                return ret;
+            }
         }
     }
 }

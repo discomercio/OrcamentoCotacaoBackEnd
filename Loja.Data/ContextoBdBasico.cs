@@ -21,6 +21,10 @@ namespace Loja.Data
             //modelBuilder.Entity<TclienteRefBancaria>()
             //   .HasKey(o => new { o.Id_Cliente });
 
+    modelBuilder.Entity<TestoqueLog>()
+                .HasKey(x => new { x.Data_hora, x.Usuario, x.Fabricante, x.Produto
+    });
+
             modelBuilder.Entity<TclienteRefBancaria>()
                 .HasKey(o => new { o.Id_Cliente, o.Banco, o.Agencia, o.Conta });
 

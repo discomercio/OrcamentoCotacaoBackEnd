@@ -10,14 +10,12 @@
         <link rel="stylesheet" href="~/css/site.css" />*@
     <environment include="Development">
         <link rel="stylesheet" href="~/css/materialize.css" />
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link href="~/css/personalizado.css?rnd=4" rel="stylesheet" />
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="~/css/materialize.css" />
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-        <link href="~/css/personalizado.css?rnd=4" rel="stylesheet" />
     </environment>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="~/css/personalizado.css?rnd=6" rel="stylesheet" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     @*<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
         <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
@@ -48,24 +46,25 @@
     @RenderSection("Scripts", required: false)
 </head>
 
+@{
+    var usuarioLogado = new Loja.Bll.Bll.AcessoBll.UsuarioLogado(User, HttpContextAccessor.HttpContext.Session, null, null);
+    var pathLogin = "/Acesso/Login";
+    if (!usuarioLogado.SessaoAtiva)
+    {
+        var pathAtual = HttpContextAccessor?.HttpContext?.Request?.Path.Value?.ToLower() ?? "";
+        if (pathAtual.ToLower() != pathLogin.ToLower())
+        {
+            //vamos para o login e acabou!
+            HttpContextAccessor.HttpContext.Response.Redirect(pathLogin);
+        }
+    }
+}
+
 <body>
     <header>
         <div class="navbar navbar-fixed">
             <nav class="navbar">
                 @*<a class="material-icons">notifications</a>*@
-                @{
-                    var usuarioLogado = new Loja.Bll.Bll.AcessoBll.UsuarioLogado(User, HttpContextAccessor.HttpContext.Session, null, null);
-                    var pathLogin = "/Acesso/Login";
-                    if (!usuarioLogado.SessaoAtiva)
-                    {
-                        var pathAtual = HttpContextAccessor?.HttpContext?.Request?.Path.Value?.ToLower() ?? "";
-                        if (pathAtual.ToLower() != pathLogin.ToLower())
-                        {
-                            //vamos para o login e acabou!
-                            HttpContextAccessor.HttpContext.Response.Redirect(pathLogin);
-                        }
-                    }
-                }
                 @if (usuarioLogado.SessaoAtiva)
                 {
                     <div style="float: right">
@@ -81,7 +80,7 @@
                                 <div class="col " style="font-size: 20px; padding-right: 8px">
                                     Loja:
                                 </div>
-                                <div class="col " style="padding-top: 21px; padding-left: 0px" title="Alterar loja ativa - ainda não implementado">
+                                <div class="col " style="padding-top: 18px; padding-left: 0px" title="Alterar loja ativa - ainda não implementado">
                                     @{
                                         var listaSl = new List<SelectListItem>();
                                         foreach (var item in lista)
@@ -126,7 +125,7 @@
         </script>
     </header>
     <div class="col s12" id="corpo">
-        @if (User.Identity.IsAuthenticated)
+        @if (usuarioLogado.SessaoAtiva)
         {
             <style>
                 .menudesabilitado {
