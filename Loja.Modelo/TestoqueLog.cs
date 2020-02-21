@@ -82,8 +82,8 @@ namespace Loja.Modelo
         public string Id_ordem_servico { get; set; }
 
         [Required]
-        [Column("[id_nfe_emitente]")]
-        public short id_nfe_emitente { get; set; }
+        [Column("id_nfe_emitente")]
+        public short Id_nfe_emitente { get; set; }
 
     }
 }

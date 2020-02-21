@@ -63,6 +63,7 @@ namespace Loja.Bll.Util
 
         public static string MontarDDD(string telefone)
         {
+            telefone = telefone ?? "   ";
             string retorno = "";
 
             retorno = telefone.Substring(1, 2);
@@ -908,15 +909,15 @@ namespace Loja.Bll.Util
 
             if (regra.Estoque_Qtde_Solicitado > 0 && !string.IsNullOrEmpty(regra.Estoque_Produto))
             {
-                var estoqueCDTask = (from c in db.Testoques.Include(r => r.TestoqueItem)
-                                     where c.Id_nfe_emitente == regra.Id_nfe_emitente &&
+                var estoqueCDTask = (from c in db.TestoqueItems.Include(r => r.Testoque)
+                                     where c.Testoque.Id_nfe_emitente == regra.Id_nfe_emitente &&
                                            c.Fabricante == regra.Estoque_Fabricante &&
-                                           c.TestoqueItem.Produto == regra.Estoque_Produto &&
-                                           (c.TestoqueItem.Qtde - c.TestoqueItem.Qtde_utilizada) > 0
+                                           c.Produto == regra.Estoque_Produto &&
+                                           (c.Qtde - c.Qtde_utilizada) > 0
                                      select new
                                      {
-                                         qtde = (int)c.TestoqueItem.Qtde,
-                                         qtdeUtilizada = (int)c.TestoqueItem.Qtde_utilizada
+                                         qtde = (int)c.Qtde,
+                                         qtdeUtilizada = (int)c.Qtde_utilizada
                                      });
                 qtde = await estoqueCDTask.SumAsync(x => x.qtde);
                 qtdeUtilizada = await estoqueCDTask.SumAsync(x => x.qtdeUtilizada);
@@ -924,17 +925,17 @@ namespace Loja.Bll.Util
                 regra.Estoque_Qtde = (short)(qtde - qtdeUtilizada);
 
 
-                var estoqueGlobalTask = (from c in db.Testoques.Include(r => r.TestoqueItem)
+                var estoqueGlobalTask = (from c in db.TestoqueItems.Include(r => r.Testoque)
                                          where c.Fabricante == regra.Estoque_Fabricante &&
-                                               c.TestoqueItem.Produto == regra.Estoque_Produto &&
-                                               (c.TestoqueItem.Qtde - c.TestoqueItem.Qtde_utilizada) > 0 &&
-                                               (c.Id_nfe_emitente == regra.Id_nfe_emitente ||
+                                               c.Produto == regra.Estoque_Produto &&
+                                               (c.Qtde - c.Qtde_utilizada) > 0 &&
+                                               (c.Testoque.Id_nfe_emitente == regra.Id_nfe_emitente ||
                                                 db.TnfEmitentes.Where(r => r.St_Habilitado_Ctrl_Estoque == 1 && r.St_Ativo == 1)
-                                                .Select(r => r.Id).Contains(c.Id_nfe_emitente))
+                                                .Select(r => r.Id).Contains(c.Testoque.Id_nfe_emitente))
                                          select new
                                          {
-                                             qtde = (int)c.TestoqueItem.Qtde,
-                                             qtdeUtilizada = (int)c.TestoqueItem.Qtde_utilizada
+                                             qtde = (int)c.Qtde,
+                                             qtdeUtilizada = (int)c.Qtde_utilizada
                                          });
                 qtde = await estoqueGlobalTask.SumAsync(x => x.qtde);
                 qtdeUtilizada = await estoqueGlobalTask.SumAsync(x => x.qtdeUtilizada);
@@ -997,19 +998,19 @@ namespace Loja.Bll.Util
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var lstEstoqueQtdeUtilZeroComSubQuery = from c in db.Testoques.Include(r => r.TestoqueItem)
-                                                    where ((c.TestoqueItem.Qtde - c.TestoqueItem.Qtde_utilizada) > 0) &&
-                                                          ((c.TestoqueItem.Qtde_utilizada.HasValue) ||
+            var lstEstoqueQtdeUtilZeroComSubQuery = from c in db.TestoqueItems.Include(r => r.Testoque)
+                                                    where ((c.Qtde - c.Qtde_utilizada) > 0) &&
+                                                          ((c.Qtde_utilizada.HasValue) ||
                                                           (from d in db.TnfEmitentes
                                                            where d.St_Habilitado_Ctrl_Estoque == 1 && d.St_Ativo == 1
                                                            select d.Id)
-                                                           .Contains(c.Id_nfe_emitente))
+                                                           .Contains(c.Testoque.Id_nfe_emitente))
                                                     select new ProdutosEstoqueDto
                                                     {
-                                                        Produto = c.TestoqueItem.Produto,
-                                                        Qtde = (int)c.TestoqueItem.Qtde,
-                                                        Qtde_Utilizada = (int)c.TestoqueItem.Qtde_utilizada,
-                                                        Id_nfe_emitente = c.Id_nfe_emitente
+                                                        Produto = c.Produto,
+                                                        Qtde = (int)c.Qtde,
+                                                        Qtde_Utilizada = (int)c.Qtde_utilizada,
+                                                        Id_nfe_emitente = c.Testoque.Id_nfe_emitente
                                                     };
 
             List<ProdutosEstoqueDto> produtosEstoqueDtos = await lstEstoqueQtdeUtilZeroComSubQuery.ToListAsync();
@@ -1102,21 +1103,29 @@ namespace Loja.Bll.Util
         {
             cep = cep.Replace("-", "").Trim();
 
+            int cepteste = int.Parse(cep);
+            cep = cepteste.ToString();
             var db = contexto.GetContextoLeitura();
 
-            TtransportadoraCep transportadoraCep = await (from c in db.TtransportadoraCeps
-                                                          where (c.Tipo_range == 1 && c.Cep_unico == cep) ||
-                                                                (
-                                                                    c.Tipo_range == 2 &&
-                                                                     (
-                                                                         int.Parse(c.Cep_faixa_inicial) >= int.Parse(cep) &&
-                                                                         int.Parse(c.Cep_faixa_final) <= int.Parse(cep)
-                                                                      )
-                                                                )
-                                                          select c).FirstOrDefaultAsync();
+            
 
+            var transportadoraCepTask = from c in db.TtransportadoraCeps
+                                                   where (c.Tipo_range == 1 && c.Cep_unico == cep) ||
+                                                         (
+                                                             c.Tipo_range == 2 &&
+                                                              (
+                                                                  c.Cep_faixa_inicial.CompareTo(cep) <= 0 &&
+                                                                  c.Cep_faixa_final.CompareTo(cep) >= 0
+                                                               )
+                                                         )
+                                                   select c;
+
+            var transportadoraCepteste = transportadoraCepTask.ToList();
+
+            TtransportadoraCep transportadoraCep = new TtransportadoraCep();
 
             return transportadoraCep;
+
 
 
         }
@@ -1223,15 +1232,13 @@ namespace Loja.Bll.Util
             string strLojaEstoqueDestino, string strPedidoEstoqueOrigem, string strPedidoEstoqueDestino,
             string strDocumento, string strComplemento, string strIdOrdemServico, ContextoBdGravacao contexto)
         {
-            DateTime data_hora_gravacao = new DateTime();
 
             TestoqueLog testoqueLog = new TestoqueLog();
 
             testoqueLog.data = DateTime.Now.Date;
             testoqueLog.Data_hora = DateTime.Now;
-            data_hora_gravacao = testoqueLog.Data_hora;//vamos verificar se salvou
             testoqueLog.Usuario = strUsuario;
-            testoqueLog.id_nfe_emitente = id_nfe_emitente;
+            testoqueLog.Id_nfe_emitente = id_nfe_emitente;
             testoqueLog.Fabricante = strFabricante;
             testoqueLog.Produto = strProduto;
             testoqueLog.Qtde_solicitada = intQtdeSolicitada;
@@ -1244,20 +1251,12 @@ namespace Loja.Bll.Util
             testoqueLog.Pedido_estoque_origem = strPedidoEstoqueOrigem;
             testoqueLog.Pedido_estoque_destino = strPedidoEstoqueDestino;
             testoqueLog.Documento = strDocumento;
-            testoqueLog.Complemento = strComplemento.Substring(80);
+            testoqueLog.Complemento = strComplemento.Length > 80 ? strComplemento.Substring(0, 80) : strComplemento;
             testoqueLog.Id_ordem_servico = strIdOrdemServico;
 
             contexto.Add(testoqueLog);
-            contexto.SaveChangesAsync();
+            await contexto.SaveChangesAsync();
 
-            DateTime dataHora = (from c in contexto.TestoqueLogs
-                                 where testoqueLog.Data_hora == data_hora_gravacao
-                                 select c.Data_hora).FirstOrDefault();
-
-            if (dataHora != data_hora_gravacao)
-            {
-                return false;
-            }
 
             return true;
         }

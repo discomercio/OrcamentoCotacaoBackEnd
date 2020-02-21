@@ -293,51 +293,48 @@ namespace Loja.UI.Controllers
             string id_cliente = HttpContext.Session.GetString("cliente_selecionado");
             string cpf_cnpj = HttpContext.Session.GetString("cpf_cnpj");
 
-            if (true)
+            // vamos pegar a session de pedido para atribuir valores para a view
+            var pedidoSession = HttpContext.Session.GetString("pedidoDto");
+            PedidoDto pedidoDtoSession = JsonConvert.DeserializeObject<PedidoDto>(pedidoSession);
+
+
+            pedidoDtoSession.DetalhesNF = new DetalhesNFPedidoDtoPedido();
+            //instaladorInstala é 1 = não | 2= sim
+            pedidoDtoSession.DetalhesNF.InstaladorInstala = detalhesPedido.InstaladorInstala == "2" ?
+                short.Parse(Constantes.COD_INSTALADOR_INSTALA_SIM) :
+                short.Parse(Constantes.COD_INSTALADOR_INSTALA_NAO);
+
+            pedidoDtoSession.DetalhesNF.Observacoes = detalhesPedido.Observacoes;
+
+            //StBenUsoConsumo é 1 = sim | 0 = não
+            pedidoDtoSession.DetalhesNF.StBemUsoConsumo = detalhesPedido.BemConsumo != "0" ?
+                short.Parse(Constantes.COD_ST_BEM_USO_CONSUMO_SIM) :
+                short.Parse(Constantes.COD_ST_BEM_USO_CONSUMO_NAO);
+
+            //entrega imediata é 1 = não | 2 = sim
+            pedidoDtoSession.DetalhesNF.EntregaImediata = detalhesPedido.EntregaImediata.ToString() != "1" ?
+                Constantes.COD_ETG_IMEDIATA_SIM : Constantes.COD_ETG_IMEDIATA_NAO;
+
+            //teremos que passar a session para o metodo na bll para salvar o pedido
+            //seguindo os passos da lista abaixo
+            var retorno = (await pedidoBll.CadastrarPedido(pedidoDtoSession, loja, cpf_cnpj, usuario,
+                pedidoDtoSession.CDSelecionado));
+            if (retorno.ListaErros.Count() > 0)
             {
-                // vamos pegar a session de pedido para atribuir valores para a view
-                var pedidoSession = HttpContext.Session.GetString("pedidoDto");
-                PedidoDto pedidoDtoSession = JsonConvert.DeserializeObject<PedidoDto>(pedidoSession);
-
-                pedidoDtoSession.DetalhesNF = new DetalhesNFPedidoDtoPedido();
-                //instaladorInstala é 1 = não | 2= sim
-                pedidoDtoSession.DetalhesNF.InstaladorInstala = detalhesPedido.InstaladorInstala == "2" ?
-                    short.Parse(Constantes.COD_INSTALADOR_INSTALA_SIM) :
-                    short.Parse(Constantes.COD_INSTALADOR_INSTALA_NAO);
-
-                pedidoDtoSession.DetalhesNF.Observacoes = detalhesPedido.Observacoes;
-
-                //StBenUsoConsumo é 1 = sim | 0 = não
-                pedidoDtoSession.DetalhesNF.StBemUsoConsumo = detalhesPedido.BemConsumo != "0" ?
-                    short.Parse(Constantes.COD_ST_BEM_USO_CONSUMO_SIM) :
-                    short.Parse(Constantes.COD_ST_BEM_USO_CONSUMO_NAO);
-
-                //entrega imediata é 1 = não | 2 = sim
-                pedidoDtoSession.DetalhesNF.EntregaImediata = detalhesPedido.EntregaImediata.ToString() != "1" ?
-                    Constantes.COD_ETG_IMEDIATA_SIM : Constantes.COD_ETG_IMEDIATA_NAO;
-
-                //teremos que passar a session para o metodo na bll para salvar o pedido
-                //seguindo os passos da lista abaixo
-                List<string> retorno = (await pedidoBll.CadastrarPedido(pedidoDtoSession, loja, cpf_cnpj, usuario,
-                    pedidoDtoSession.CDSelecionado)).ToList();
-                //if(retorno.Count > 0)
-                //{
-                //    //deu erro
-
-                //}
-
+                //deu erro
 
             }
 
+
             //se esta tudo ok redirecionamos para a tela de Pedido
 
-            return Ok();
+            return RedirectToAction("BuscarPedido", new { numPedido = retorno.NumeroPedidoCriado });
         }
 
         public async Task<IActionResult> BuscarPedido(string numPedido)
         {
             //pegar usuario e numPedido
-            
+
             string usuario = HttpContext.Session.GetString("usuario_atual");
             string loja = HttpContext.Session.GetString("loja_atual");
             string id_cliente = HttpContext.Session.GetString("cliente_selecionado");

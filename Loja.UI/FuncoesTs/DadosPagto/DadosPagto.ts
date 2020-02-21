@@ -171,6 +171,7 @@ export class DadosPagto {
             {
                 retorno = false;
             }
+            debugger;
             if (this.enumFormaPagto == 5 &&
                 (!this.meioPagtoParcUnica || !this.diasVencParcUnica))//ParcUnica
             {
@@ -223,7 +224,6 @@ export class DadosPagto {
                 }
             }
             if (this.enumFormaPagto == 3) {
-                debugger;
                 if (this.vlEntrada) {
                     if (!this.opcaoPagtoParcComEntrada) {
                         if (mostrarMsg) {
@@ -371,7 +371,7 @@ export class DadosPagto {
     }
 
     listarValoresComCoeficiente(txtFormaPagto: string, enumFP: number): void {
-
+        
         //this.lstMsg
         let valor = 0
         // this.lstMsg = new Array();
@@ -446,7 +446,7 @@ export class DadosPagto {
                 }
             }
         }
-        this.montarListaParcelamento(enumFP);
+        this.montarListaParcelamento(this.enumFormaPagto);
         // return this.lstMsg;
     }
 
@@ -508,15 +508,12 @@ export class DadosPagto {
             var vltotal = this.dtoPedido.ListaProdutos.reduce((sum, current) => sum + current.TotalItem, 0);
 
             if (this.vlEntrada > vltotal) {
-                debugger;
                 //afazer: mostrar a modal de mensagem
                 this.msgErro = "Valor da entrada é maior que o total do Pré-pedido!";
 
                 this.vlEntrada = null;
-                debugger;
             }
             else {
-                debugger;
                 vltotal = vltotal - this.vlEntrada;
                 for (var i = 0; i < this.qtdeParcVisa; i++) {
                     if (lstCoeficiente[i].TipoParcela == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA) {
@@ -527,7 +524,6 @@ export class DadosPagto {
 
 
             }
-            debugger;
             return this.lstMsg;
         }
 

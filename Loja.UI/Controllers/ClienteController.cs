@@ -189,17 +189,23 @@ namespace Loja.UI.Controllers
             //validar os dados do cliente             
             var retorno = await clienteBll.CadastrarCliente(clienteCadastro, usuario, loja);
 
+            //Armazenando objeto na Session
+            Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto dtoPedido = new Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto();
+            dtoPedido.DadosCliente = new DadosClienteCadastroDto();
+            dtoPedido.DadosCliente = dados;
+
             if (EndEntrega2 != null)
             {
-                //Armazenando objeto na Session
-                Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto dtoPedido = new Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto();
-                dtoPedido.DadosCliente = new DadosClienteCadastroDto();
-                dtoPedido.DadosCliente = dados;
-                dtoPedido.EnderecoEntrega = new EnderecoEntregaDtoClienteCadastro();
-                dtoPedido.EnderecoEntrega = EndEntrega2;
-                
-                HttpContext.Session.SetString("pedidoDto", JsonConvert.SerializeObject(dtoPedido));
+                if (EndEntrega2.EndEtg_cep != null)
+                {
+                    dtoPedido.EnderecoEntrega = new EnderecoEntregaDtoClienteCadastro();
+                    //vamos normalizar o cep enviado antes de armazenar na session
+                    EndEntrega2.EndEtg_cep = EndEntrega2.EndEtg_cep.Replace("-", "");
+                }
+                dtoPedido.EnderecoEntrega = EndEntrega2;                
             }
+
+            HttpContext.Session.SetString("pedidoDto", JsonConvert.SerializeObject(dtoPedido));
 
             return RedirectToAction("IniciarNovoPedido", "Pedido");
         }

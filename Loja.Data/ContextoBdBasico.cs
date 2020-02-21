@@ -70,11 +70,19 @@ namespace Loja.Data
                 .HasKey(x => x.Id);
             modelBuilder.Entity<Toperacao>()
                 .HasKey(x => x.Id);
+
             modelBuilder.Entity<Tlog>()
             .HasKey(x => new { x.Id_Cliente, x.Data, x.Usuario });
 
             modelBuilder.Entity<TusuarioXLoja>()
                 .HasKey(x => new { x.Usuario, x.Loja });
+
+            modelBuilder.Entity<TestoqueLog>()
+                .HasKey(x => new { x.Data_hora, x.Fabricante, x.Produto, x.Qtde_atendida});
+
+            modelBuilder.Entity<TestoqueItem>()
+                .HasKey(x => new { x.Id_estoque, x.Fabricante, x.Produto });
+
 
             //relacionamentos
             modelBuilder.Entity<TprodutoLoja>()
@@ -91,6 +99,11 @@ namespace Loja.Data
                 .HasOne(x => x.Tfabricante)
                 .WithMany(x => x.Tproduto)
                 .HasForeignKey(x => x.Fabricante);
+
+            modelBuilder.Entity<TestoqueItem>()
+                .HasOne(x => x.Testoque)
+                .WithMany(x => x.TestoqueItem)
+                .HasForeignKey(x => x.Id_estoque);
 
             //modelBuilder.Entity<Tdesconto>()
             //    .HasOne(x => x.Id_cliente)
@@ -151,5 +164,7 @@ namespace Loja.Data
         public DbSet<TestoqueLog> TestoqueLogs { get; set; }
         public DbSet<TfinControle> TfinControles { get; set; }
         public DbSet<TpedidoAnaliseEndereco> TpedidoAnaliseEnderecos { get; set; }
+        public DbSet<TpedidoAnaliseEnderecoConfrontacao> TpedidoAnaliseConfrontacaos { get; set; }
+
     }
 }

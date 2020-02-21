@@ -29,7 +29,7 @@ namespace Loja.Modelo
         [MaxLength(12)]
         public string Id_cliente { get; set; }
 
-        public Tcliente Tcliente { get; set; }
+        //public Tcliente Tcliente { get; set; }
 
         [Required]
         [Column("cnpj_cpf")]

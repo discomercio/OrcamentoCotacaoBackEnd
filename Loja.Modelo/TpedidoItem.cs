@@ -137,8 +137,9 @@ namespace Loja.Modelos
         [Column("separacao_data_hora")]
         public DateTime? Separacao_Data_Hora { get; set; }
 
+        [Required]
         [Column("separacao_deposito_zona_id")]
-        public int? Separacao_Desposito_Zona_Id { get; set; }
+        public int Separacao_Desposito_Zona_Id { get; set; }
 
         [Column("descontinuado")]
         [MaxLength(1)]

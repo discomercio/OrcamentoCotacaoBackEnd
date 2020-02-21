@@ -40,7 +40,7 @@ declare function AbrirModalProdutos(): any;
 
 function inicializaCampos(v: number) {
     var div;
-    var disp;
+    var disp;                                                                                                       
     if (v.toString() == "1") {
         div = document.getElementById("Avista");
         disp = div.style.display;
@@ -56,7 +56,8 @@ function inicializaCampos(v: number) {
         }
     }
     if (v.toString() == "5") {
-
+        div = document.getElementById("ParcUnica");
+        disp = div.style.display;
         if (disp == 'none') {
             div.style.display = 'block';
         }
@@ -955,12 +956,13 @@ function AtribuirListaParaSelect() {
         });
         ($("#opcaoPagtoParcSemEntrada") as any).formSelect();
     }
+    debugger;
     if (dadosPagto.enumFormaPagto == 5) {
         //ParcUnica
         dadosPagto.lstMsg.forEach((value) => {
-            $("#opcaoPagtoParcCartaoInternet").append("<option>" + value + "</option>");
+            $("#opcaoPagtoParcUnica").append("<option>" + value + "</option>");
         });
-        ($("#opcaoPagtoParcCartaoInternet") as any).formSelect();
+        ($("#opcaoPagtoParcUnica") as any).formSelect();
     }
     if (dadosPagto.enumFormaPagto == 6) {
         //ParcCartaoMaquineta
@@ -1236,8 +1238,10 @@ function AtribuirValoresFormaPagtoCriacao(): boolean {
     if (dadosPagto.enumFormaPagto == 4) {
 
     }
+    debugger;
     //ParcUnica
     if (dadosPagto.enumFormaPagto == 5) {
+        
         $("#Rb_forma_pagto").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Rb_forma_pagto);
         $("#Op_pu_forma_pagto").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Op_pu_forma_pagto);
         $("#C_pu_valor").val(moedaUtils.formatarMoedaSemPrefixo(
@@ -1295,6 +1299,8 @@ function AtribuirFormaPagtoParaDadosPagto(): void {
     //ParcUnica
     if (dadosPagto.enumFormaPagto == 5) {
         dadosPagto.opcaoPagtoParcCartaoInternet = $("#opcaoPagtoParcCartaoInternet").val().toString();
+        dadosPagto.meioPagtoParcUnica = parseInt($("#meioPagtoParcUnica").val().toString());
+        dadosPagto.diasVencParcUnica = parseInt($("#diasVencParcUnica").val().toString());
     }
     //ParcCartaoMaquineta
     if (dadosPagto.enumFormaPagto == 6) {

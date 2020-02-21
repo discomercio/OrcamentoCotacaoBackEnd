@@ -1315,14 +1315,15 @@ namespace Loja.Bll.ClienteBll
 
             List<string> lstRetorno = new List<string>();
 
-            var lstRetornoTask = from c in db.Tpedidos.Include(x => x.Tcliente)
-                                 where c.Tcliente.Cnpj_Cpf == cpf_cnpj &&
-                                       c.St_Entrega == Constantes.Constantes.ST_ENTREGA_ENTREGUE
+            var lstRetornoTask = from c in (from c in db.Tpedidos.Include(x => x.Tcliente)
+                                            where c.Tcliente.Cnpj_Cpf == cpf_cnpj &&
+                                                  c.St_Entrega == Constantes.Constantes.ST_ENTREGA_ENTREGUE
+                                            select c).ToList()
                                  orderby new { c.Data, c.Pedido } descending
                                  select c.Pedido;
-            if(lstRetornoTask != null)
+            if (lstRetornoTask != null)
             {
-                lstRetorno = await lstRetornoTask.ToListAsync();
+                lstRetorno = (lstRetornoTask).ToList();
             }
 
             return lstRetorno;

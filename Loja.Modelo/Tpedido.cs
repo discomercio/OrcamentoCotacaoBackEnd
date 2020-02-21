@@ -12,6 +12,19 @@ namespace Loja.Modelos
     [Table("t_PEDIDO")]
     public class Tpedido
     {
+        //Colunas computadas:fazer somente GET
+        //colunas computadas:NÃO ATRIBUIR VALORES
+        //analise_credito_data_sem_hora
+        //data_hora
+        //numero_loja
+        //pedido_base
+        //pedido_bs_x_ac_reverso
+        //st_forma_pagto_possui_parcela_cartao
+        //st_forma_pagto_somente_cartao
+        //tamanho_num_pedido
+        //vl_previsto_cartao
+
+
         [Key]
         [Required]
         [Column("pedido")]
@@ -502,20 +515,20 @@ namespace Loja.Modelos
         public string Opcao_Possui_RA { get; set; }
 
         [Column("tamanho_num_pedido")]
-        public int? Tamanho_Num_Pedido { get; set; }
+        public int? Tamanho_Num_Pedido { get; }
 
         [Column("pedido_base")]
         [MaxLength(7)]
-        public string Pedido_Base { get; set; }
+        public string Pedido_Base { get; }
 
         [Column("numero_loja")]
-        public short? Numero_Loja { get; set; }
+        public short? Numero_Loja { get; }
 
         [Column("data_hora")]
-        public DateTime? Data_Hora { get; set; }
+        public DateTime? Data_Hora { get; }
 
         [Column("st_forma_pagto_somente_cartao")]
-        public byte? St_Forma_Pagto_Somente_Cartao { get; set; }
+        public byte? St_Forma_Pagto_Somente_Cartao { get; }
 
         [Column("endereco_memorizado_status")]
         [Required]
@@ -568,7 +581,7 @@ namespace Loja.Modelos
         public string Analise_Endereco_Tratado_Usuario { get; set; }
 
         [Column("analise_credito_data_sem_hora")]
-        public DateTime? Analise_Credito_Data_Sem_Hora { get; set; }
+        public DateTime? Analise_Credito_Data_Sem_Hora { get; }
 
         [Column("cancelado_auto_status")]
         [Required]
@@ -647,7 +660,7 @@ namespace Loja.Modelos
 
         [Column("pedido_bs_x_ac_reverso")]
         [MaxLength(9)]
-        public string Pedido_Bs_X_Ac_Reverso { get; set; }
+        public string Pedido_Bs_X_Ac_Reverso { get; }
 
         [Column("EndEtg_cod_justificativa")]
         [MaxLength(3)]
@@ -673,10 +686,10 @@ namespace Loja.Modelos
         public DateTime? Dt_Hr_Pedido_Novo_Analise_Credito_Msg_Alerta { get; set; }
 
         [Column("st_forma_pagto_possui_parcela_cartao")]
-        public byte? St_Forma_Pagto_Possui_Parcela_Cartao { get; set; }
+        public byte? St_Forma_Pagto_Possui_Parcela_Cartao { get; }
 
         [Column("vl_previsto_cartao", TypeName = "money")]
-        public decimal? Vl_Previsto_Cartao { get; set; }
+        public decimal? Vl_Previsto_Cartao { get; }
 
         [Column("NFe_texto_constar")]
         [MaxLength(800)]

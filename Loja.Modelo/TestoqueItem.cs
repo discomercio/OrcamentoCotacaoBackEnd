@@ -10,11 +10,13 @@ namespace Loja.Modelos
     [Table("t_ESTOQUE_ITEM")]
     public class TestoqueItem
     {
-        [Key]
+        
         [Required]
         [Column("id_estoque")]
         [MaxLength(12)]
         public string Id_estoque { get; set; }
+
+        public Testoque Testoque { get; set; }
 
         [Column("fabricante")]
         [Required]
@@ -43,7 +45,7 @@ namespace Loja.Modelos
         public short? Sequencia { get; set; }
 
         [Column("timestamp")]
-        public byte? Timestamp { get; set; }
+        public byte[]? Timestamp { get; }
 
         [Column("vl_custo2")]
         [Required]

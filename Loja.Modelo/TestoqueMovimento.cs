@@ -66,7 +66,7 @@ namespace Loja.Modelos
         public short Anulado_Status { get; set; }
 
         [Column("anulado_data")]
-        public DateTime Anulado_Data { get; set; }
+        public DateTime? Anulado_Data { get; set; }
 
         [Column("anulado_hora")]
         [MaxLength(6)]
@@ -78,7 +78,7 @@ namespace Loja.Modelos
 
         [Column("timestamp")]
         [MaxLength]
-        public byte[] Timestamp { get; set; }
+        public byte[]? Timestamp { get; }
 
         [Column("kit")]
         public short Kit { get; set; }

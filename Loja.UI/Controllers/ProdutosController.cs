@@ -45,6 +45,7 @@ namespace Loja.UI.Controllers
 
         }      
         
+
         [HttpGet]
         public async Task<ProdutoValidadoComEstoqueDto> VerificarRegraProdutoCD(string produto, string id_nfe_emitente_selecao_manual)
         {

@@ -832,16 +832,14 @@ namespace Loja.Bll.PedidoBll
 
         private async Task<decimal> CalculaSaldoAPagar(string numPedido, decimal vlDevNf)
         {
-            var db = contextoProvider.GetContextoLeitura();
-
             //buscar o valor total pago
-            var vlFamiliaP = from c in db.TpedidoPagamentos
+            var vlFamiliaP = from c in contextoProvider.GetContextoLeitura().TpedidoPagamentos
                              where c.Pedido.StartsWith(numPedido)
                              select c;
             var vl_TotalFamiliaPagoTask = vlFamiliaP.Select(r => r.Valor).SumAsync();
 
             //buscar valor total NF
-            var vlNf = from c in db.TpedidoItems.Include(r => r.Tpedido)
+            var vlNf = from c in contextoProvider.GetContextoLeitura().TpedidoItems.Include(r => r.Tpedido)
                        where c.Tpedido.St_Entrega != Constantes.Constantes.ST_ENTREGA_CANCELADO && c.Tpedido.Pedido.StartsWith(numPedido)
                        select c.Qtde * c.Preco_NF;
             var vl_TotalFamiliaPrecoNFTask = vlNf.Select(r => r.Value).SumAsync();
@@ -1291,7 +1289,12 @@ namespace Loja.Bll.PedidoBll
         }
 
 
-        public async Task<IEnumerable<string>> CadastrarPedido(PedidoDto pedido, string loja, string cpf_cnpj,
+        public class CadastrarPedidoRetorno
+        {
+            public string NumeroPedidoCriado;
+            public IEnumerable<string> ListaErros;
+        }
+        public async Task<CadastrarPedidoRetorno> CadastrarPedido(PedidoDto pedido, string loja, string cpf_cnpj,
             string usuario, int id_nfe_emitente_selecao_manual)
         {
             List<string> lstErros = new List<string>();
@@ -1319,6 +1322,8 @@ namespace Loja.Bll.PedidoBll
                 }
             }
 
+            string NumeroPedidoCriado = "";
+
             //valida forma de pagto já foi analisado
             if (ValidarFormaPagto(pedido, lstErros))
             {
@@ -1328,8 +1333,16 @@ namespace Loja.Bll.PedidoBll
                 bool validouCustoFinanFornec = Util.Util.ValidarTipoCustoFinanceiroFornecedor(lstErros,
                     c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas);
 
+                bool validouEndEntrega = false;
                 //end entrega já foi aramzenado, mas vamos validar 
-                bool validouEndEntrega = ValidarEndecoEntrega(pedido.EnderecoEntrega, lstErros);
+                if (pedido.EnderecoEntrega != null)
+                {
+                    validouEndEntrega = ValidarEndecoEntrega(pedido.EnderecoEntrega, lstErros);
+                }
+                else
+                {
+                    validouEndEntrega = true;
+                }
 
                 //variavel inicializada que será utilizada mais a frente
                 List<string> vdesconto = new List<string>();
@@ -1357,8 +1370,8 @@ namespace Loja.Bll.PedidoBll
                 //validação do percRT para saber é maior que o max de comissão já foi realizado caso exista indicador
                 //linha 1305 ate 1313
 
-                //le orçamentista
-                TorcamentistaEindicador orcamentistaIndicador = await Util.Util.BuscarOrcamentistaEIndicador(usuario, contextoProvider);
+                //le orçamentista : passar indicador
+                TorcamentistaEindicador orcamentistaIndicador = await Util.Util.BuscarOrcamentistaEIndicador(pedido.NomeIndicador, contextoProvider);
                 pedido.PermiteRAStatus = orcamentistaIndicador != null ?
                     orcamentistaIndicador.Permite_RA_Status : (short)0;
 
@@ -1421,14 +1434,18 @@ namespace Loja.Bll.PedidoBll
                 percDescComissaoUtilizar = VerificarPagtoPreferencial(tParametro, pedido, percDescComissaoUtilizar,
                     percentualMax, vl_total);
 
+                //precisa passar os valores para todos os campos da lista de produtos
+
+
                 //busca produtos , busca percentual custo finananceiro, calcula desconto 716 ate 824
                 //desc_dado_arredondado
                 //estamos retornando uma lista TpedidoItem com descontos verificados e aplicados
+                //aqui esta faltando trazer Tpedido e Tproduto
                 List<TpedidoItem> lstPedidoItem = (await VerificarDescontoArredondado(loja, pedido, lstErros,
                     c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas,
                     percDescComissaoUtilizar, vdesconto)).ToList();
 
-
+                List<cl_ITEM_PEDIDO_NOVO> v_item = new List<cl_ITEM_PEDIDO_NOVO>();
                 //Faz a verificação de regra de cada produto
                 //recupera os produtos que concordou mesmo sem estoque 
                 List<PedidoProdutosDtoPedido> lstProdutosConcordouSemEstoque = new List<PedidoProdutosDtoPedido>();
@@ -1438,7 +1455,7 @@ namespace Loja.Bll.PedidoBll
                     //COMPARAR SE É EXATAMENTE A MESMA REGRA
                     //altera: Qtde_estoque_total_disponivel
                     produtoValidado = await produtoBll.VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado(produto,
-                        cpf_cnpj, id_nfe_emitente_selecao_manual);
+                    cpf_cnpj, id_nfe_emitente_selecao_manual);
 
                     if (produtoValidado.ListaErros.Count > 0)
                     {
@@ -1455,28 +1472,24 @@ namespace Loja.Bll.PedidoBll
                                 });
                                 pedido.OpcaoVendaSemEstoque = true;
                             }
+                            //verificar sobre o cd indisponivel
                         }
                     }
-                }
-
-                //atribui os produto itens 433 ate 460
-                //montar a classe cl_ITEM_PEDIDO_NOVO
-                //aqui ja foi feito a verificação de regra
-                List<cl_ITEM_PEDIDO_NOVO> v_item = new List<cl_ITEM_PEDIDO_NOVO>();
-                foreach (var prod in pedido.ListaProdutos)
-                {
+                    //verificar aqui
                     foreach (var item in lstPedidoItem)
                     {
-                        if (item.Produto == prod.NumProduto && item.Fabricante == prod.Fabricante)
+                        if (item.Produto == produto.NumProduto && item.Fabricante == produto.Fabricante)
                         {
+
+                            //foi incluido o Tproduto
                             v_item.Add(new cl_ITEM_PEDIDO_NOVO
                             {
-                                produto = prod.NumProduto,
-                                Fabricante = Util.Util.Normaliza_Codigo(prod.Fabricante, Constantes.Constantes.TAM_MIN_FABRICANTE),
-                                Qtde = (short)prod.Qtde,
-                                Preco_Venda = prod.VlUnitario,
+                                produto = produto.NumProduto,
+                                Fabricante = Util.Util.Normaliza_Codigo(produto.Fabricante, Constantes.Constantes.TAM_MIN_FABRICANTE),
+                                Qtde = (short)produto.Qtde,
+                                Preco_Venda = produto.VlUnitario,
                                 Preco_NF = pedido.PermiteRAStatus == 1 &&
-                                           pedido.OpcaoPossuiRA == "S" ? prod.VlLista : (decimal)prod.Preco,
+                                           pedido.OpcaoPossuiRA == "S" ? produto.VlLista : (decimal)produto.Preco,
                                 qtde_estoque_total_disponivel = 0,
                                 Qtde_estoque_vendido = 0,
                                 Qtde_estoque_sem_presenca = 0,
@@ -1499,21 +1512,26 @@ namespace Loja.Bll.PedidoBll
                                 Descontinuado = item.Tproduto.Descontinuado,
                                 CustoFinancFornecPrecoListaBase = item.Preco_Lista,
                                 Desc_Dado = (float)item.Desc_Dado,
-                                Abaixo_min_status = (short)item.Abaixo_Min_Status,
+                                Abaixo_min_status = item.Abaixo_Min_Status == null ? (short)0 : (short)item.Abaixo_Min_Status,
                                 Abaixo_min_autorizador = item.Abaixo_Min_Autorizador,
                                 abaixo_min_autorizacao = item.Abaixo_Min_Autorizacao,
                                 Abaixo_min_superv_autorizador = item.Abaixo_Min_Superv_Autorizador
                             });
                         }
                     }
-                }
+                }                
 
                 //busca valor de limite para aprovação automática da analise de credito 1300 ate 1307
                 string vl_aprov_auto_analise_credito = await Util.Util.LeParametroControle(
                     Constantes.Constantes.ID_PARAM_CAD_VL_APROV_AUTO_ANALISE_CREDITO, contextoProvider);
 
+                //variavel para verificar se existe lojaIndicação_comissao
+                var lojaIndicacao_Comissao = new { loja = "", comissaoIndicacao = (float?)0 };
+
                 //busca percentual de comissão
-                var lojaIndicacao_Comissao = await (from c in db.Tlojas
+                if (orcamentistaIndicador != null)
+                {
+                    lojaIndicacao_Comissao = await (from c in db.Tlojas
                                                     where c.Loja == orcamentistaIndicador.Loja
                                                     select new
                                                     {
@@ -1521,11 +1539,14 @@ namespace Loja.Bll.PedidoBll
                                                         comissaoIndicacao = c.Comissao_Indicacao
                                                     }).FirstOrDefaultAsync();
 
-                //valida indicador
-                //valida garantia indicador, entrega imediata, bem de uso comum  - TELA observações
-                if (lojaIndicacao_Comissao.comissaoIndicacao == null)
-                {
-                    lstErros.Add("Loja " + lojaIndicacao_Comissao.loja + " não está cadastrada.");
+                    //valida indicador
+                    //valida garantia indicador, entrega imediata, bem de uso comum  - TELA observações
+                    if (lojaIndicacao_Comissao == null || lojaIndicacao_Comissao.comissaoIndicacao == null)
+                    {
+                        lstErros.Add("Loja " + orcamentistaIndicador.Loja + " não está cadastrada.");
+                    }
+
+
                 }
 
                 if (pedido.ComIndicador == 1)
@@ -1618,7 +1639,8 @@ namespace Loja.Bll.PedidoBll
                 if (lstErros.Count == 0)
                 {
                     //vamos efetivar o cadastro do pedido
-                    //vamos abrir o transaction da conexão para Using
+                    //vamos abrir uma nova transaction do contexto que esta sendo utilizado para Using
+
                     using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
                     {
                         //pegar a qtde_spe;
@@ -1627,27 +1649,30 @@ namespace Loja.Bll.PedidoBll
                         int qtdeErros = lstErros.Count;
 
                         //salvando: Pedido, itens, movimentação de estoque, forma de pagto, 
-                        bool efetivou = await EfetivarCadastro(pedido, produtoValidado,
+                        NumeroPedidoCriado = await EfetivarCadastro(pedido, produtoValidado,
                             (float)lojaIndicacao_Comissao.comissaoIndicacao, dadosCliente, usuario,
-                            perc_limite_RA_sem_desagio, perc_desagio_RA, pedido.PedBonshop, dbgravacao, lstErros, v_item, 
+                            perc_limite_RA_sem_desagio, perc_desagio_RA, pedido.PedBonshop, dbgravacao, lstErros, v_item,
                             qtde_spe, vdesconto);
-
+                        bool efetivou = !string.IsNullOrWhiteSpace(NumeroPedidoCriado);
                         if (efetivou)
                         {
                             //vamos gravar o Log aqui
                             //monta o log 2691 ate 2881
                             //grava log 
                             //commit
+                            await dbgravacao.SaveChangesAsync();
+                            await dbgravacao.transacao.CommitAsync();
                         }
 
-                        await dbgravacao.SaveChangesAsync();
-                        await dbgravacao.transacao.CommitAsync();
+
 
                     }
                 }
             }
-
-            return lstErros;
+            var cadastrarPedidoRetorno = new CadastrarPedidoRetorno();
+            cadastrarPedidoRetorno.ListaErros = lstErros;
+            cadastrarPedidoRetorno.NumeroPedidoCriado = NumeroPedidoCriado;
+            return cadastrarPedidoRetorno;
         }
 
         //retorna qtde a separar
@@ -1657,19 +1682,24 @@ namespace Loja.Bll.PedidoBll
             short qtde_spe = 0;
             foreach (var p in lstProdutosSelecionados)
             {
-
-                foreach (var produto in lstProdutosConcordouSemEstoque)
+                if (p.Qtde > p.Qtde_estoque_total_disponivel)
                 {
-                    if (p.Fabricante == produto.Fabricante && p.NumProduto == produto.NumProduto)
+                    if (lstProdutosConcordouSemEstoque.Count > 0)
                     {
-                        qtde_spe = (short)produto.Qtde_estoque_total_disponivel;
-                        break;
+                        foreach (var produto in lstProdutosConcordouSemEstoque)
+                        {
+                            if (p.Fabricante == produto.Fabricante && p.NumProduto == produto.NumProduto)
+                            {
+                                qtde_spe = (short)produto.Qtde_estoque_total_disponivel;
+                                break;
+                            }
+                        }
+                        if (qtde_spe != p.Qtde_estoque_total_disponivel)
+                        {
+                            lstErros.Add("Produto " + p.NumProduto + " do fabricante " + p.Fabricante +
+                                ": disponibilidade do estoque foi alterada.");
+                        }
                     }
-                }
-                if (qtde_spe != p.Qtde_estoque_total_disponivel)
-                {
-                    lstErros.Add("Produto " + p.NumProduto + " do fabricante " + p.Fabricante +
-                        ": disponibilidade do estoque foi alterada.");
                 }
             }
 
@@ -1677,19 +1707,20 @@ namespace Loja.Bll.PedidoBll
         }
 
         //lojaIndicacao_Comissao.comissaoIndicacao = comissaoIndicacao
-        public async Task<bool> EfetivarCadastro(PedidoDto pedido, ProdutoValidadoComEstoqueDto produtoValidado,
+        //retorna o NUmeroPedidoCriado; se null, deu erro
+        public async Task<string> EfetivarCadastro(PedidoDto pedido, ProdutoValidadoComEstoqueDto produtoValidado,
             float comissaoIndicacao, Tcliente cliente, string usuario_atual, float perc_limite_RA_sem_desagio,
             float perc_desagio_RA, string c_ped_bonshop, ContextoBdGravacao dbGravacao, List<string> lstErros,
             List<cl_ITEM_PEDIDO_NOVO> v_item, short qtde_spe, List<string> vdesconto)
         {
-            
+
             //vEmpresaAutoSplit preciso dessa lista 
             int qtde_empresa_selecionada = 0;
             List<string> lista_empresa_selecionada = new List<string>();
             List<string> vLogAutoSplit = new List<string>();
             int indicePedido = 0;
 
-            bool retorno = false;
+            string retorno = null;
             bool blnAnEnderecoEndEntregaUsaEndParceiro = false;
             bool blnAnalisarEndereco = false;
             bool blnAnEnderecoCadClienteUsaEndParceiro = false;
@@ -1703,7 +1734,9 @@ namespace Loja.Bll.PedidoBll
                 Tpedido pedidonovo = new Tpedido();
                 pedidonovo.Loja = pedido.DadosCliente.Loja;
                 pedidonovo.Data = DateTime.Now;
-                pedidonovo.Hora = DateTime.Now.Hour.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Minute.ToString();
+                pedidonovo.Hora = DateTime.Now.Hour.ToString().PadLeft(2, '0') +
+                    DateTime.Now.Month.ToString().PadLeft(2, '0') +
+                    DateTime.Now.Minute.ToString().PadLeft(2, '0');
 
                 if (indicePedido == 1)
                 {
@@ -1795,7 +1828,9 @@ namespace Loja.Bll.PedidoBll
                     pedidonovo.St_Auto_Split = 1;
                     pedidonovo.Split_Status = 1;
                     pedidonovo.Split_Data = DateTime.Now.Date;
-                    pedidonovo.Split_Hora = DateTime.Now.Hour.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Minute.ToString();
+                    pedidonovo.Split_Hora = DateTime.Now.Hour.ToString().PadLeft(2, '0') +
+                        DateTime.Now.Month.ToString().PadLeft(2, '0') +
+                        DateTime.Now.Minute.ToString().PadLeft(2, '0');
                     pedidonovo.Split_Usuario = Constantes.Constantes.ID_USUARIO_SISTEMA;
                     pedidonovo.St_Pagto = "";
                     pedidonovo.St_Recebido = "";
@@ -1998,14 +2033,30 @@ namespace Loja.Bll.PedidoBll
                 pedidonovo.Id_Nfe_Emitente = (short)item;
 
                 //Numero Pedido Temporario
-                //vamos gerar o numero de pedido
+                //vamos gerar o numero de pedido temporario
                 pedidonovo.Pedido = await GerarNumeroPedidoTemporario(lstErros, dbGravacao);
 
+                //colunas computadas:NÃO ATRIBUIR VALORES
+                //analise_credito_data_sem_hora
+                //data_hora
+                //numero_loja
+                //pedido_base
+                //pedido_bs_x_ac_reverso
+                //st_forma_pagto_possui_parcela_cartao
+                //st_forma_pagto_somente_cartao
+                //tamanho_num_pedido
+                //vl_previsto_cartao
+
+
+                /*
+                 * Não posso inserir nesse momento, pois geramos uma chave temporária 
+                 * que contém mais de 9 caracteres
+                */
                 //salvar Pedido na base
                 dbGravacao.Add(pedidonovo);
                 await dbGravacao.SaveChangesAsync();
                 #endregion
-                retorno = true;
+                
 
                 int indice_item = 0;
 
@@ -2019,6 +2070,7 @@ namespace Loja.Bll.PedidoBll
                 string s_log_item_autosplit = "";
 
                 string idPedidoBase = "";
+                string idPedidoBase_temporario = "";
                 string s_log_cliente_indicador = "";
                 /*lstPedidoItem*/
                 //com os itens verificados e preenchidos
@@ -2030,6 +2082,9 @@ namespace Loja.Bll.PedidoBll
 
                 int intQtdeTotalPedidosAnEndereco = 0;
 
+                //esse objeto esta sendo instaciado aqui, para podermos salvar o 
+                //pedido com o Id definitivo e no final da rotina
+                Tpedido pedidonovoTrocaId = new Tpedido();
                 //Verificando os itens e salvando itens, 
                 #region Itens do pedido
                 foreach (var produto in pedido.ListaProdutos)
@@ -2055,7 +2110,7 @@ namespace Loja.Bll.PedidoBll
                                         //Cd selecionado
                                         if (rCDUfPessoaCD.Id_nfe_emitente == item)
                                         {
-                                            indice_item = 1;
+                                            indice_item = -1;
                                             int indiceAuxProduto = 0;
                                             foreach (var p2 in pedido.ListaProdutos)
                                             {
@@ -2067,19 +2122,23 @@ namespace Loja.Bll.PedidoBll
                                                 indiceAuxProduto++;
                                             }
 
-                                            if (indice_item > 0)
+                                            if (indice_item > -1)
                                             {
                                                 sequencia_item++;
 
-                                                v.Pedido = pedido.NumeroPedido;
+                                                v.Pedido = pedidonovo.Pedido;
+                                                //inicio teste dbGravacao2
+                                                //vamos abrir outra transação aqui
+
 
                                                 //será necessário atribuir os valores para TpedidoItem
                                                 TpedidoItem tpedidoItem = await MontarTpedidoItemParaCadastrar(v);
 
+                                                tpedidoItem.Pedido = pedidonovo.Pedido;
 
                                                 //Salvando Item sem o ID do pedido
                                                 dbGravacao.Add(tpedidoItem);
-                                                //await dbGravacao.SaveChangesAsync();
+                                                await dbGravacao.SaveChangesAsync();
 
                                                 //vamos fazer a movimentação de estoque
                                                 if (rCDUfPessoaCD.Estoque_Qtde_Solicitado > rCDUfPessoaCD.Estoque_Qtde)
@@ -2095,14 +2154,15 @@ namespace Loja.Bll.PedidoBll
                                                 var validouEstoque = await EstoqueProdutoSaidaV2(
                                                     usuario_atual, pedidonovo.Pedido, (short)item, v.Fabricante,
                                                     v.produto, (short)rCDUfPessoaCD.Estoque_Qtde_Solicitado,
-                                                    qtde_spe, qtde_estoque_aux, lstErros);
+                                                    qtde_spe, qtde_estoque_aux, lstErros, dbGravacao);
 
                                                 if (!validouEstoque)
                                                 {
                                                     lstErros.Add(
                                                         Constantes.Constantes.ERR_FALHA_OPERACAO_MOVIMENTO_ESTOQUE);
-                                                    return false;
+                                                    return null;
                                                 }
+
 
                                                 //altera lista que concordou mesmo sem presença de estoque
                                                 v.Qtde_estoque_vendido = (short)(v.Qtde_estoque_vendido + qtde_estoque_aux[0]);
@@ -2122,6 +2182,8 @@ namespace Loja.Bll.PedidoBll
                                                     " Qtde Sem Presença Autorizada = " + qtde_spe.ToString() + "," +
                                                     " Qtde Estoque Vendido = " + qtde_estoque_aux[0].ToString() + "," +
                                                     " Qtde Sem Presença = " + qtde_estoque_aux[1].ToString();
+
+
                                             }
                                         }
                                     }
@@ -2129,12 +2191,15 @@ namespace Loja.Bll.PedidoBll
                             }//fim da regra
                             if (indicePedido == 1)
                             {
+                                //antes de gerar o numero do pedido definitivo, estamos armazenando 
+                                //o numero de pedido temporario que foi utilizado para salvar os itens e 
+                                idPedidoBase_temporario = pedidonovo.Pedido;
                                 // gerar num_pedido
                                 idPedidoBase = await GerarNumeroPedido(lstErros, dbGravacao);
                                 if (string.IsNullOrEmpty(idPedidoBase))
                                 {
                                     lstErros.Add(Constantes.Constantes.ERR_FALHA_OPERACAO_GERAR_NSU);
-                                    return false;
+                                    return null;
                                 }
                             }
                             else
@@ -2148,48 +2213,96 @@ namespace Loja.Bll.PedidoBll
                             vLogAutoSplit.Add(idPedidoBase + " (" + await Util.Util.ObterApelidoEmpresaNfeEmitentes(
                                 item, contextoProvider) + ") " + s_log_item_autosplit);
 
-                            //update em várias tabelas para setar o pedido
-                            Tpedido pedidoset = await (from c in dbGravacao.Tpedidos
-                                                       where c.Pedido == pedidonovo.Pedido
-                                                       select c).FirstOrDefaultAsync();
-                            pedidoset.Pedido = idPedidoBase;
 
-                            //Alterando pedido cadastrado
-                            dbGravacao.Update(pedidoset);
-
-                            TpedidoItem tpedidoItemset = await (from c in dbGravacao.TpedidoItems
-                                                                where c.Pedido == pedidonovo.Pedido
-                                                                select c).FirstOrDefaultAsync();
-                            tpedidoItemset.Pedido = idPedidoBase;
-
+                            //buscando o item para criar um novo com o Id_Pedido definitivo
+                            List<TpedidoItem> tpedidoItemset = await (from c in dbGravacao.TpedidoItems
+                                                                      where c.Pedido == idPedidoBase_temporario
+                                                                      select c).ToListAsync();
+                            //TpedidoItem tpedidoItemset = new TpedidoItem();
+                            //tpedidoItemset.Pedido = idPedidoBase;
+                            //tpedidoItemset.Fabricante = v.Fabricante;
                             //Alterando pedido Item Cadastrado
-                            dbGravacao.Update(tpedidoItemset);
+                            foreach (var itemset in tpedidoItemset)
+                            {
+                                dbGravacao.Remove(itemset);
+                            }
 
+                            //buscando o item para criar um novo com o Id_Pedido definitivo
                             TestoqueMovimento testoqueMovto = await (from c in dbGravacao.TestoqueMovimentos
-                                                                     where c.Pedido == pedidonovo.Pedido
+                                                                     where c.Pedido == idPedidoBase_temporario
                                                                      select c).FirstOrDefaultAsync();
-                            testoqueMovto.Pedido = idPedidoBase;
+                            //testoqueMovto.Pedido = idPedidoBase;
                             //Alterando estoque movimento Cadastrado
-                            dbGravacao.Update(testoqueMovto);
+                            dbGravacao.Remove(testoqueMovto);
 
+                            //buscando o item para criar um novo com o Id_Pedido definitivo
                             TestoqueLog testoqueLog = await (from c in dbGravacao.TestoqueLogs
-                                                             where c.Pedido_estoque_origem == pedidonovo.Pedido
+                                                             where c.Pedido_estoque_origem == idPedidoBase_temporario
                                                              select c).FirstOrDefaultAsync();
-                            testoqueLog.Pedido_estoque_origem = idPedidoBase;
+                            if (testoqueLog != null)
+                            {
+                                //testoqueLog.Pedido_estoque_origem = idPedidoBase;
+                                //alterando estoque log
+                                dbGravacao.Remove(testoqueLog);
+                            }
 
-                            //alterando estoque log
-                            dbGravacao.Update(testoqueLog);
-
+                            //buscando o item para criar um novo com o Id_Pedido definitivo
                             TestoqueLog testoqueLog2 = await (from c in dbGravacao.TestoqueLogs
-                                                              where c.Pedido_estoque_destino == pedidonovo.Pedido
+                                                              where c.Pedido_estoque_destino == idPedidoBase_temporario
                                                               select c).FirstOrDefaultAsync();
-                            testoqueLog.Pedido_estoque_destino = idPedidoBase;
+                            if (testoqueLog2 != null)
+                            {
+                                //testoqueLog2.Pedido_estoque_destino = idPedidoBase;
+                                //alterando estoque log
+                                dbGravacao.Remove(testoqueLog2);
+                            }
 
-                            //alterando estoque log
-                            dbGravacao.Update(testoqueLog2);
-
-                            //salvando alterações
                             //await dbGravacao.SaveChangesAsync();
+
+                            //para alterar o valor da chave primária, precisamos excluir o existente e inserir novamente
+                            //excluimos o pedidonovo com o Id temporario
+                            dbGravacao.Remove(pedidonovo);
+                            await dbGravacao.SaveChangesAsync();
+
+                            //iremos passar os dados dos registros que foram removidos
+                            //esse objeto esta sendo instanciado fora do foreach, pois iremos salvar no final da rotina                            
+                            pedidonovoTrocaId = pedidonovo;
+                            pedidonovoTrocaId.Pedido = idPedidoBase;
+
+                            //inserimos o pedidonovo com o Id definitivo
+                            dbGravacao.Add(pedidonovoTrocaId);
+                            await dbGravacao.SaveChangesAsync();
+
+                            List<TpedidoItem> tpedidoItemTrocaId = new List<TpedidoItem>();
+                            tpedidoItemTrocaId = tpedidoItemset;
+                            foreach (var i in tpedidoItemset)
+                            {
+                                i.Pedido = idPedidoBase;
+                                dbGravacao.Add(i);
+                            }
+
+                            TestoqueMovimento testoqueMovtoTrocaId = testoqueMovto; ;
+                            testoqueMovtoTrocaId.Pedido = idPedidoBase;
+                            dbGravacao.Add(testoqueMovtoTrocaId);
+
+                            if (testoqueLog != null)
+                            {
+                                TestoqueLog testoqueLogTrocaId = testoqueLog; ;
+                                testoqueLogTrocaId.Pedido_estoque_origem = idPedidoBase;
+                                dbGravacao.Add(testoqueLogTrocaId);
+                            }
+
+                            if (testoqueLog2 != null)
+                            {
+                                TestoqueLog testoqueLog2TrocaId = testoqueLog2;
+                                testoqueLog2TrocaId.Pedido_estoque_destino = idPedidoBase;
+                                dbGravacao.Add(testoqueLog2TrocaId);
+                            }
+                            //salvando alterações
+                            await dbGravacao.SaveChangesAsync();
+
+
+
 
                             //Indicador
                             if (indicePedido == 1)
@@ -2198,13 +2311,13 @@ namespace Loja.Bll.PedidoBll
                                 //não tem um indicador no cadastro, então cadastra este.
                                 if (pedido.ComIndicador == 1)
                                 {
-                                    if (string.IsNullOrEmpty(pedidonovo.Indicador))
+                                    if (!string.IsNullOrEmpty(pedidonovo.Indicador))
                                     {
-                                        pedidonovo.Indicador = pedido.NomeIndicador;
+                                        pedidonovoTrocaId.Indicador = pedido.NomeIndicador;
 
                                         //alterando indicado do pedido cadastrado
-                                        dbGravacao.Update(pedidonovo);
-                                        //await dbGravacao.SaveChangesAsync();
+                                        dbGravacao.Update(pedidonovoTrocaId);
+                                        await dbGravacao.SaveChangesAsync();
 
                                         s_log_cliente_indicador = "Cadastrado o indicador '" + pedido.NomeIndicador +
                                             "' no cliente id=" + pedido.DadosCliente.Id;
@@ -2221,40 +2334,39 @@ namespace Loja.Bll.PedidoBll
                             else
                                 status_entrega = Constantes.Constantes.ST_ENTREGA_SPLIT_POSSIVEL;
 
-                            pedidonovo.St_Entrega = status_entrega;
+                            pedidonovoTrocaId.St_Entrega = status_entrega;
 
                             //alterando status do pedido cadastrado
-                            dbGravacao.Update(pedidonovo);
-                            //await dbGravacao.SaveChangesAsync();
+                            dbGravacao.Update(pedidonovoTrocaId);
+                            await dbGravacao.SaveChangesAsync();
 
                             //calcula total ra liquido bd 
                             vl_total_RA_liquido = await CalculaTotalRALiquidoBD(idPedidoBase, dbGravacao, lstErros);
                             if (vl_total_RA_liquido == -1)
                             {
-                                return false;
+                                return null;
                             }
 
                             //RA
                             if (indicePedido == 1)
                             {
-                                pedidonovo.Vl_Total_RA_Liquido = vl_total_RA_liquido;
-                                pedidonovo.Qtde_Parcelas_Desagio_RA = 0;
+                                pedidonovoTrocaId.Vl_Total_RA_Liquido = vl_total_RA_liquido;
+                                pedidonovoTrocaId.Qtde_Parcelas_Desagio_RA = 0;
 
                                 if (vl_total_RA != 0)
-                                    pedidonovo.St_Tem_Desagio_RA = 1;
+                                    pedidonovoTrocaId.St_Tem_Desagio_RA = 1;
                                 else
-                                    pedidonovo.St_Tem_Desagio_RA = 0;
+                                    pedidonovoTrocaId.St_Tem_Desagio_RA = 0;
 
                                 //alterando RA e desagio pedido cadastrado
-                                dbGravacao.Update(pedidonovo);
-                                //await dbGravacao.SaveChangesAsync();
+                                dbGravacao.Update(pedidonovoTrocaId);
+                                await dbGravacao.SaveChangesAsync();
                             }
 
                             //Desconto
                             if (indicePedido == 1)
                             {
                                 //senhas de autorização para desconto superior
-                                //estou aqui
                                 foreach (var d in vdesconto)
                                 {
                                     if (!string.IsNullOrEmpty(d))
@@ -2268,7 +2380,7 @@ namespace Loja.Bll.PedidoBll
                                         if (tdesconto == null)
                                         {
                                             lstErros.Add("Senha de autorização para desconto superior não encontrado.");
-                                            return false;
+                                            return null;
                                         }
                                         else
                                         {
@@ -2284,6 +2396,7 @@ namespace Loja.Bll.PedidoBll
 
                                             //alterando tabela de desconto
                                             dbGravacao.Update(tdesconto);
+                                            await dbGravacao.SaveChangesAsync();
                                         }
                                     }
                                 }
@@ -2301,7 +2414,7 @@ namespace Loja.Bll.PedidoBll
                                     //1) verifica se o endereço usado é o do parceiro
                                     if (pedido.ComIndicador == 1)
                                     {
-                                        if (string.IsNullOrEmpty(pedidonovo.Indicador))
+                                        if (!string.IsNullOrEmpty(pedidonovoTrocaId.Indicador))
                                         {
                                             //buscar orçamentista para comparar
                                             TorcamentistaEindicador torcamentista = await (from c in dbGravacao.TorcamentistaEindicadors
@@ -2310,9 +2423,12 @@ namespace Loja.Bll.PedidoBll
                                             //verificar se o endereço é igual
                                             //retorna bool
                                             //CompararEndereco do cadastro do cliente com o orçamentista aqui
-                                            if (CompararEnderecoParceiro(pedidonovo.Endereco_Logradouro, int.Parse(pedidonovo.Endereco_Numero),
-                                                int.Parse(pedidonovo.Endereco_Cep.Replace("-", "")), torcamentista.Endereco,
-                                                int.Parse(torcamentista.Endereco_Numero), int.Parse(torcamentista.Cep.Replace("-", ""))))
+                                            if (CompararEnderecoParceiro(pedidonovoTrocaId.Endereco_Logradouro,
+                                                int.Parse(pedidonovoTrocaId.Endereco_Numero),
+                                                int.Parse(pedidonovo.Endereco_Cep.Replace("-", "")),
+                                                torcamentista.Endereco,
+                                                int.Parse(torcamentista.Endereco_Numero),
+                                                int.Parse(torcamentista.Cep.Replace("-", ""))))
                                             {
                                                 blnAnEnderecoCadClienteUsaEndParceiro = true;
                                                 blnAnalisarEndereco = true;
@@ -2330,16 +2446,16 @@ namespace Loja.Bll.PedidoBll
                                                     TpedidoAnaliseEndereco tpedidoAnaliseEnd = new TpedidoAnaliseEndereco();
                                                     tpedidoAnaliseEnd.Id = intNsuPai;
                                                     tpedidoAnaliseEnd.Pedido = idPedidoBase;
-                                                    tpedidoAnaliseEnd.Id_cliente = pedidonovo.Id_Cliente;
+                                                    tpedidoAnaliseEnd.Id_cliente = pedidonovoTrocaId.Id_Cliente;
                                                     tpedidoAnaliseEnd.Tipo_endereco = Constantes.Constantes.COD_PEDIDO_AN_ENDERECO__CAD_CLIENTE;
-                                                    tpedidoAnaliseEnd.Endereco_logradouro = pedidonovo.Endereco_Logradouro;
-                                                    tpedidoAnaliseEnd.Endereco_bairro = pedidonovo.Endereco_Bairro;
-                                                    tpedidoAnaliseEnd.Endereco_cidade = pedidonovo.Endereco_Cidade;
-                                                    tpedidoAnaliseEnd.Endereco_uf = pedidonovo.Endereco_Uf;
-                                                    tpedidoAnaliseEnd.Endereco_cep = pedidonovo.Endereco_Cep;
-                                                    tpedidoAnaliseEnd.Endereco_numero = pedidonovo.Endereco_Numero;
-                                                    tpedidoAnaliseEnd.Endereco_complemento = pedidonovo.Endereco_Complemento;
-                                                    tpedidoAnaliseEnd.Usuario_cadastro = pedidonovo.Usuario_Cadastro;
+                                                    tpedidoAnaliseEnd.Endereco_logradouro = pedidonovoTrocaId.Endereco_Logradouro;
+                                                    tpedidoAnaliseEnd.Endereco_bairro = pedidonovoTrocaId.Endereco_Bairro;
+                                                    tpedidoAnaliseEnd.Endereco_cidade = pedidonovoTrocaId.Endereco_Cidade;
+                                                    tpedidoAnaliseEnd.Endereco_uf = pedidonovoTrocaId.Endereco_Uf;
+                                                    tpedidoAnaliseEnd.Endereco_cep = pedidonovoTrocaId.Endereco_Cep;
+                                                    tpedidoAnaliseEnd.Endereco_numero = pedidonovoTrocaId.Endereco_Numero;
+                                                    tpedidoAnaliseEnd.Endereco_complemento = pedidonovoTrocaId.Endereco_Complemento;
+                                                    tpedidoAnaliseEnd.Usuario_cadastro = pedidonovoTrocaId.Usuario_Cadastro;
 
 
                                                     dbGravacao.Add(tpedidoAnaliseEnd);
@@ -2367,6 +2483,8 @@ namespace Loja.Bll.PedidoBll
                                                                       t = c,
                                                                       tipo_endereco = Constantes.Constantes.COD_PEDIDO_AN_ENDERECO__CAD_CLIENTE
                                                                   };
+
+
                                         var tpedido_St_1Task = from c in dbGravacao.Tpedidos
                                                                where c.Endereco_Memorizado_Status == 1 &&
                                                                      c.Id_Cliente == cliente.Id &&
@@ -2376,6 +2494,7 @@ namespace Loja.Bll.PedidoBll
                                                                    t = c,
                                                                    tipo_endereco = Constantes.Constantes.COD_PEDIDO_AN_ENDERECO__CAD_CLIENTE_MEMORIZADO
                                                                };
+
                                         var tpedido_St_Entrega_1Task = from c in dbGravacao.Tpedidos
                                                                        where c.St_End_Entrega == 1 &&
                                                                              c.Id_Cliente == cliente.Id &&
@@ -2386,12 +2505,17 @@ namespace Loja.Bll.PedidoBll
                                                                            tipo_endereco = Constantes.Constantes.COD_PEDIDO_AN_ENDERECO__END_ENTREGA
                                                                        };
 
-                                        var AllTpedidos = tpedidoCli_St_0Task
-                                            .Union(tpedido_St_1Task)
-                                            .Union(tpedido_St_Entrega_1Task)
-                                            .Distinct().OrderByDescending(x => x.t.Data_Hora);
 
-                                        foreach (var allPed in await AllTpedidos.ToListAsync())
+                                        var tpedidoUnion1 = tpedidoCli_St_0Task.ToList();
+                                        var tpedidoUnion2 = tpedido_St_1Task.ToList();
+                                        var tpedidoUnion3 = tpedido_St_Entrega_1Task.ToList();
+
+                                        var unionAll = (tpedidoUnion1
+                                            .Union(tpedidoUnion2)
+                                            .Union(tpedidoUnion3)
+                                            .Distinct().OrderByDescending(x => x.t.Data_Hora)).ToList();
+
+                                        foreach (var allPed in unionAll)
                                         {
                                             if (CompararEnderecoParceiro(cliente.Endereco,
                                                 int.Parse(cliente.Endereco_Numero), int.Parse(cliente.Cep),
@@ -2441,7 +2565,7 @@ namespace Loja.Bll.PedidoBll
                                                     if (intNsuPai == 0)
                                                     {
                                                         lstErros.Add("FALHA AO GERAR NSU PARA O NOVO REGISTRO (" + lstErros.Last() + ")");
-                                                        return false;
+                                                        return null;
                                                     }
                                                     else
                                                     {
@@ -2472,7 +2596,7 @@ namespace Loja.Bll.PedidoBll
                                                 if (intNsu == 0)
                                                 {
                                                     lstErros.Add("FALHA AO GERAR NSU PARA O NOVO REGISTRO (" + lstErros.Last() + ")");
-                                                    return false;
+                                                    return null;
                                                 }
                                                 else
                                                 {
@@ -2505,17 +2629,17 @@ namespace Loja.Bll.PedidoBll
                                     if (pedido.EnderecoEntrega.OutroEndereco)
                                     {
                                         //1) verifica se o endereço usado é o do parceiro
-                                        if (!string.IsNullOrEmpty(pedidonovo.Indicador))
+                                        if (!string.IsNullOrEmpty(pedidonovoTrocaId.Indicador))
                                         {
                                             //vamos buscar orçamentista para comparar
                                             //buscar orçamentista para comparar
                                             TorcamentistaEindicador torcamentista = await (from c in dbGravacao.TorcamentistaEindicadors
-                                                                                           where c.Apelido == pedidonovo.Indicador
+                                                                                           where c.Apelido == pedidonovoTrocaId.Indicador
                                                                                            select c).FirstOrDefaultAsync();
                                             //verificar se o endereço é igual
                                             //retorna bool
-                                            if (CompararEnderecoParceiro(pedidonovo.EndEtg_Endereco, int.Parse(pedidonovo.EndEtg_Endereco_Numero),
-                                                int.Parse(pedidonovo.EndEtg_Cep.Replace("-", "")), torcamentista.Endereco,
+                                            if (CompararEnderecoParceiro(pedidonovo.EndEtg_Endereco, int.Parse(pedidonovoTrocaId.EndEtg_Endereco_Numero),
+                                                int.Parse(pedidonovoTrocaId.EndEtg_Cep.Replace("-", "")), torcamentista.Endereco,
                                                 int.Parse(torcamentista.Endereco_Numero),
                                                 int.Parse(torcamentista.Cep.Replace("-", ""))))
                                             {
@@ -2529,7 +2653,7 @@ namespace Loja.Bll.PedidoBll
                                                 if (intNsuPai == 0)
                                                 {
                                                     lstErros.Add("FALHA AO GERAR NSU PARA O NOVO REGISTRO (" + lstErros.Last() + ")");
-                                                    return false;
+                                                    return null;
                                                 }
                                                 else
                                                 {
@@ -2540,19 +2664,19 @@ namespace Loja.Bll.PedidoBll
 
                                                     tpedidoAnaliseEnd.Id = intNsuPai;
                                                     tpedidoAnaliseEnd.Pedido = idPedidoBase;
-                                                    tpedidoAnaliseEnd.Id_cliente = pedidonovo.Id_Cliente;
+                                                    tpedidoAnaliseEnd.Id_cliente = pedidonovoTrocaId.Id_Cliente;
                                                     tpedidoAnaliseEnd.Tipo_endereco = Constantes.Constantes.COD_PEDIDO_AN_ENDERECO__END_ENTREGA;
-                                                    tpedidoAnaliseEnd.Endereco_logradouro = pedidonovo.EndEtg_Endereco;
-                                                    tpedidoAnaliseEnd.Endereco_bairro = pedidonovo.EndEtg_Bairro;
-                                                    tpedidoAnaliseEnd.Endereco_cidade = pedidonovo.EndEtg_Cidade;
-                                                    tpedidoAnaliseEnd.Endereco_uf = pedidonovo.EndEtg_UF;
-                                                    tpedidoAnaliseEnd.Endereco_cep = pedidonovo.EndEtg_Cep;
-                                                    tpedidoAnaliseEnd.Endereco_numero = pedidonovo.EndEtg_Endereco_Numero;
-                                                    tpedidoAnaliseEnd.Endereco_complemento = pedidonovo.EndEtg_Endereco_Complemento;
+                                                    tpedidoAnaliseEnd.Endereco_logradouro = pedidonovoTrocaId.EndEtg_Endereco;
+                                                    tpedidoAnaliseEnd.Endereco_bairro = pedidonovoTrocaId.EndEtg_Bairro;
+                                                    tpedidoAnaliseEnd.Endereco_cidade = pedidonovoTrocaId.EndEtg_Cidade;
+                                                    tpedidoAnaliseEnd.Endereco_uf = pedidonovoTrocaId.EndEtg_UF;
+                                                    tpedidoAnaliseEnd.Endereco_cep = pedidonovoTrocaId.EndEtg_Cep;
+                                                    tpedidoAnaliseEnd.Endereco_numero = pedidonovoTrocaId.EndEtg_Endereco_Numero;
+                                                    tpedidoAnaliseEnd.Endereco_complemento = pedidonovoTrocaId.EndEtg_Endereco_Complemento;
                                                     tpedidoAnaliseEnd.Usuario_cadastro = usuario_atual;
 
                                                     dbGravacao.Add(tpedidoAnaliseEnd);
-                                                    await dbGravacao.SaveChangesAsync();
+                                                    //await dbGravacao.SaveChangesAsync();
                                                 }
 
                                                 if (lstErros.Count == 0)
@@ -2563,7 +2687,7 @@ namespace Loja.Bll.PedidoBll
                                                     if (intNsuPai == 0)
                                                     {
                                                         lstErros.Add("FALHA AO GERAR NSU PARA O NOVO REGISTRO (" + lstErros.Last() + ")");
-                                                        return false;
+                                                        return null;
                                                     }
                                                     else
                                                     {
@@ -2584,7 +2708,7 @@ namespace Loja.Bll.PedidoBll
                                                         };
 
                                                         dbGravacao.Add(tpedidoAnaliseConfrontacao);
-                                                        await dbGravacao.SaveChangesAsync();
+                                                        //await dbGravacao.SaveChangesAsync();
                                                     }
                                                 }
                                             }
@@ -2620,22 +2744,26 @@ namespace Loja.Bll.PedidoBll
                                                 var tpedido_St_Entrega_1Task = from c in dbGravacao.Tpedidos
                                                                                where c.St_End_Entrega == 1 &&
                                                                                      c.Id_Cliente == cliente.Id &&
-                                                                                     c.EndEtg_Cep == pedidonovo.EndEtg_Cep
+                                                                                     c.EndEtg_Cep == pedidonovoTrocaId.EndEtg_Cep
                                                                                select new
                                                                                {
                                                                                    t = c,
                                                                                    tipo_endereco = Constantes.Constantes.COD_PEDIDO_AN_ENDERECO__END_ENTREGA
                                                                                };
 
-                                                var AllTpedidos = tpedidoCli_St_0Task
-                                                    .Union(tpedido_St_1Task)
-                                                    .Union(tpedido_St_Entrega_1Task)
-                                                    .Distinct().OrderByDescending(x => x.t.Data_Hora);
+                                                var tpedidoUnion1 = tpedidoCli_St_0Task.ToList();
+                                                var tpedidoUnion2 = tpedido_St_1Task.ToList();
+                                                var tpedidoUnion3 = tpedido_St_Entrega_1Task.ToList();
 
-                                                foreach (var allPed in await AllTpedidos.ToListAsync())
+                                                var unionAll = (tpedidoUnion1
+                                                    .Union(tpedidoUnion2)
+                                                    .Union(tpedidoUnion3)
+                                                    .Distinct().OrderByDescending(x => x.t.Data_Hora)).ToList();
+
+                                                foreach (var allPed in unionAll)
                                                 {
                                                     if (CompararEnderecoParceiro(pedido.EnderecoEntrega.EndEtg_endereco,
-                                                        int.Parse(pedido.EnderecoEntrega.EndEtg_endereco),
+                                                        int.Parse(pedido.EnderecoEntrega.EndEtg_endereco_numero),
                                                         int.Parse(pedido.EnderecoEntrega.EndEtg_cep),
                                                         allPed.t.Endereco_Logradouro, int.Parse(allPed.t.Endereco_Numero),
                                                         int.Parse(allPed.t.Endereco_Cep)))
@@ -2683,7 +2811,7 @@ namespace Loja.Bll.PedidoBll
                                                             if (intNsuPai == 0)
                                                             {
                                                                 lstErros.Add("FALHA AO GERAR NSU PARA O NOVO REGISTRO (" + lstErros.Last() + ")");
-                                                                return false;
+                                                                return null;
                                                             }
                                                             else
                                                             {
@@ -2704,7 +2832,7 @@ namespace Loja.Bll.PedidoBll
                                                                 };
 
                                                                 dbGravacao.Add(tpedidoEndAnalise);
-                                                                await dbGravacao.SaveChangesAsync();
+                                                                //await dbGravacao.SaveChangesAsync();
                                                             }
                                                         }
 
@@ -2714,7 +2842,7 @@ namespace Loja.Bll.PedidoBll
                                                         if (intNsu == 0)
                                                         {
                                                             lstErros.Add("FALHA AO GERAR NSU PARA O NOVO REGISTRO (" + lstErros.Last() + ")");
-                                                            return false;
+                                                            return null;
                                                         }
                                                         else
                                                         {
@@ -2735,7 +2863,7 @@ namespace Loja.Bll.PedidoBll
                                                             };
 
                                                             dbGravacao.Add(tpedidoAnaliseConfrontacao);
-                                                            await dbGravacao.SaveChangesAsync();
+                                                            //await dbGravacao.SaveChangesAsync();
                                                         }
                                                     }
                                                 }
@@ -2749,8 +2877,8 @@ namespace Loja.Bll.PedidoBll
                                 {
                                     if (blnAnalisarEndereco)
                                     {
-                                        pedidonovo.Analise_Endereco_Tratar_Status = 1;
-                                        dbGravacao.Update(pedidonovo);
+                                        pedidonovoTrocaId.Analise_Endereco_Tratar_Status = 1;
+                                        dbGravacao.Update(pedidonovoTrocaId);
                                         await dbGravacao.SaveChangesAsync();
                                     }
                                 }
@@ -2763,7 +2891,12 @@ namespace Loja.Bll.PedidoBll
                     }//Fim item qu condordou mesmo sem presença de estoque
                 }
                 #endregion
+
+                //salvar Pedido na base
+                dbGravacao.Update(pedidonovoTrocaId);
+                retorno = pedidonovoTrocaId.Pedido;
             }
+
 
             //salvando todas alterações
             await dbGravacao.SaveChangesAsync();
@@ -2848,7 +2981,7 @@ namespace Loja.Bll.PedidoBll
                 lstErros.Add("Falha ao tentar gerar o NSU!");
             }
 
-            await dbgravacao.SaveChangesAsync();
+            //await dbgravacao.SaveChangesAsync();
 
             return nsu;
         }
@@ -3064,7 +3197,7 @@ namespace Loja.Bll.PedidoBll
                 }
                 else
                 {
-                    return retorno;
+                    break;
                 }
             }
 
@@ -3075,15 +3208,15 @@ namespace Loja.Bll.PedidoBll
 
             letra_numerica = 0;
             int eNumero;
-            for (int i = 0; i <= id_pedido.Length; i++)
+            for (int i = 0; i < id_pedido.Length; i++)
             {
-                c += id_pedido.Substring(i, 1);
+                c = id_pedido.Substring(i, 1);
 
                 if (!int.TryParse(c, out eNumero))
                 {
                     if (string.IsNullOrEmpty(s_ano))
                         s_ano = c;
-                    if (string.IsNullOrEmpty(s_filhote))
+                    else if (string.IsNullOrEmpty(s_filhote))
                         s_filhote = c;
                 }
             }
@@ -3158,12 +3291,14 @@ namespace Loja.Bll.PedidoBll
             tpedidoItem.Descontinuado = v_item.Descontinuado;
 
 
+
             return await Task.FromResult(tpedidoItem);
         }
 
+        //Estamos gerando o id_estoque, id_estoque_movimento, gravando e gravando o Log
         public async Task<bool> EstoqueProdutoSaidaV2(string id_usuario, string id_pedido, short id_nfe_emitente,
             string id_fabricante, string id_produto, int qtde_a_sair, int qtde_autorizada_sem_presenca,
-            short[] qtde_estoque_aux, List<string> lstErros)
+            short[] qtde_estoque_aux, List<string> lstErros, ContextoBdGravacao contexto)
         {
             //essas variveis tem que retornar
             int qtde_disponivel = 0;
@@ -3175,19 +3310,18 @@ namespace Loja.Bll.PedidoBll
                 return true;
             }
 
-            var db = contextoProvider.GetContextoGravacaoParaUsing();
+            //afazer: verificar se é por causa do db abaixo, testar passando o contexto de gravação
 
-            var lotesTask = from c in db.Testoques.Include(x => x.TestoqueItem)
-                            where c.Id_nfe_emitente == id_nfe_emitente &&
-                                  c.TestoqueItem.Fabricante == id_fabricante &&
-                                  c.TestoqueItem.Produto == id_produto &&
-                                  (c.TestoqueItem.Qtde - c.TestoqueItem.Qtde_utilizada) > 0
-                            orderby c.Data_entrada, c.Id_estoque
-                            select new
-                            {
-                                id_estoque = c.Id_estoque,
-                                saldo = c.TestoqueItem.Qtde - c.TestoqueItem.Qtde_utilizada
-                            };
+            var lotesTask = await (from c in contexto.TestoqueItems.Include(x => x.Testoque)
+                                   where c.Testoque.Id_nfe_emitente == id_nfe_emitente &&
+                                         c.Fabricante == id_fabricante &&
+                                         c.Produto == id_produto &&
+                                         (c.Qtde - c.Qtde_utilizada) > 0
+                                   select new
+                                   {
+                                       id_estoque = c.Id_estoque,
+                                       saldo = (c.Qtde - c.Qtde_utilizada)
+                                   }).ToListAsync();
 
             //armazena as entradas no estoque candidatas à saída de produtos
             List<string> v_estoque = new List<string>();
@@ -3198,7 +3332,7 @@ namespace Loja.Bll.PedidoBll
                 qtde_disponivel += (int)lote.saldo;
             }
 
-            //não há produtos suficientes no estoque!!
+            //NÃO HÁ PRODUTOS SUFICIENTES NO ESTOQUE!!
             if ((qtde_a_sair - qtde_autorizada_sem_presenca) > qtde_disponivel)
             {
                 lstErros.Add("Produto " + id_produto + " do fabricante " + id_fabricante + ": faltam " +
@@ -3208,6 +3342,7 @@ namespace Loja.Bll.PedidoBll
                 return false;
             }
 
+            bool retorno = true;
             //realiza a saída do estoque!!
             int qtde_movimentada = 0;
             int qtde_movto = 0;
@@ -3218,12 +3353,13 @@ namespace Loja.Bll.PedidoBll
             {
                 if (!string.IsNullOrEmpty(v))
                 {
+                    //a quantidade necessária já foi retirada do estoque!!
                     if (qtde_movimentada >= qtde_a_sair)
                     {
                         break;
                     }
 
-                    TestoqueItem testoqueItem = await (from c in db.TestoqueItems
+                    TestoqueItem testoqueItem = await (from c in contexto.TestoqueItems
                                                        where c.Id_estoque == v &&
                                                              c.Fabricante == id_fabricante &&
                                                              c.Produto == id_produto
@@ -3231,6 +3367,7 @@ namespace Loja.Bll.PedidoBll
 
                     qtde_aux = (short)testoqueItem.Qtde;
                     qtde_utilizada_aux = (short)testoqueItem.Qtde_utilizada;
+                    qtde_estoque_aux[0] = (short)qtde_aux;
 
                     if ((qtde_a_sair - qtde_movimentada) > (qtde_aux - qtde_utilizada_aux))
                     {
@@ -3241,32 +3378,35 @@ namespace Loja.Bll.PedidoBll
                     {
                         //quantidade de produtos deste item sozinho é suficiente p / atender o pedido
                         qtde_movto = qtde_a_sair - qtde_movimentada;
+                        qtde_estoque_aux[0] = (short)qtde_movto;
                     }
 
                     testoqueItem.Qtde_utilizada = (short?)(qtde_utilizada_aux + qtde_movto);
-                    testoqueItem.Data_ult_movimento = DateTime.Now;
+                    testoqueItem.Data_ult_movimento = DateTime.Now.Date;
 
-                    db.Update(testoqueItem);
-                    await db.SaveChangesAsync();
+
+                    contexto.Update(testoqueItem);
+                    await contexto.SaveChangesAsync();
 
                     //contabiliza quantidade movimentada
                     qtde_movimentada = qtde_movimentada + qtde_movto;
 
                     //registra o movimento de saída no estoque
-                    string id_estoqueNovo = await GeraIdEstoque(db, lstErros);
+                    string id_estoqueNovo = await GeraIdEstoque(contexto, lstErros);
 
                     if (string.IsNullOrEmpty(id_estoqueNovo))
                     {
                         lstErros.Add("Falha ao tentar gerar um número identificador para o registro de movimento no estoque. " + lstErros.Last() + "");
-                        return false;
+                        return retorno = false;
                     }
 
                     TestoqueMovimento testoqueMovimento = new TestoqueMovimento();
 
-                    testoqueMovimento.Id_Estoque = id_estoqueNovo;
-                    testoqueMovimento.Data = DateTime.Now;
-                    testoqueMovimento.Hora = DateTime.Now.Hour.ToString() +
-                        DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
+                    testoqueMovimento.Id_Movimento = id_estoqueNovo;
+                    testoqueMovimento.Data = DateTime.Now.Date;
+                    testoqueMovimento.Hora = DateTime.Now.Hour.ToString().PadLeft(2, '0') +
+                        DateTime.Now.Month.ToString().PadLeft(2, '0') +
+                        DateTime.Now.Minute.ToString().PadLeft(2, '0');
                     testoqueMovimento.Usuario = id_usuario;
                     testoqueMovimento.Id_Estoque = v;
                     testoqueMovimento.Fabricante = id_fabricante;
@@ -3277,23 +3417,23 @@ namespace Loja.Bll.PedidoBll
                     testoqueMovimento.Pedido = id_pedido;
                     testoqueMovimento.Kit = 0;
 
-                    db.Add(testoqueMovimento);
-                    await db.SaveChangesAsync();
+                    contexto.Add(testoqueMovimento);
+                    await contexto.SaveChangesAsync();
 
                     //t_estoque: atualiza data do último movimento
-                    Testoque testoque = await (from c in db.Testoques
+                    Testoque testoque = await (from c in contexto.Testoques
                                                where c.Id_estoque == v
                                                select c).FirstOrDefaultAsync();
 
                     testoque.Data_ult_movimento = DateTime.Now.Date;
 
-                    db.Update(testoque);
-                    await db.SaveChangesAsync();
+                    contexto.Update(testoque);
+                    await contexto.SaveChangesAsync();
 
                     //já conseguiu alocar tudo
                     if (qtde_movimentada >= qtde_a_sair)
                     {
-                        return false;
+                        retorno = true;
                     }
                 }
             }
@@ -3304,20 +3444,22 @@ namespace Loja.Bll.PedidoBll
                 lstErros.Add("Produto " + id_produto + " do fabricante " + id_fabricante + ": faltam " +
                     ((qtde_a_sair - qtde_autorizada_sem_presenca) - qtde_movimentada) +
                     " unidades no estoque para poder atender ao pedido.");
+                return retorno = false;
             }
 
+            //Estamos gerando o id_estoque_movimento
             //registra a venda sem presença no estoque
             if (qtde_movimentada < qtde_a_sair)
             {
-                //registra o movimento de saída no estoque
-                var id_estoque_movto = await GeraIdEstoqueMovto(lstErros, db);
+                //REGISTRA O MOVIMENTO DE SAÍDA NO ESTOQUE
+                var id_estoque_movto = await GeraIdEstoqueMovto(lstErros, contexto);
 
                 string id_movto = id_estoque_movto;
 
-                if (!string.IsNullOrEmpty(id_estoque_movto))
+                if (string.IsNullOrEmpty(id_movto))
                 {
                     lstErros.Add("Falha ao tentar gerar um número identificador para o registro de movimento no estoque.");
-                    return false;
+                    return retorno = false;
                 }
 
                 qtde_estoque_aux[1] = (short)(qtde_a_sair - qtde_movimentada);
@@ -3325,11 +3467,13 @@ namespace Loja.Bll.PedidoBll
 
 
                 TestoqueMovimento testoqueMovimento = new TestoqueMovimento();
-                testoqueMovimento.Id_Estoque = id_estoque_movto;
+                testoqueMovimento.Id_Movimento = id_movto;
                 testoqueMovimento.Data = DateTime.Now.Date;
-                testoqueMovimento.Hora = DateTime.Now.Hour.ToString() +
-                        DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
+                testoqueMovimento.Hora = DateTime.Now.Hour.ToString().PadLeft(2, '0') +
+                    DateTime.Now.Month.ToString().PadLeft(2, '0') +
+                    DateTime.Now.Minute.ToString().PadLeft(2, '0');
                 testoqueMovimento.Usuario = id_usuario;
+                testoqueMovimento.Id_Estoque ="";// está sem presença no estoque
                 testoqueMovimento.Fabricante = id_fabricante;
                 testoqueMovimento.Produto = id_produto;
                 testoqueMovimento.Qtde = qtde_estoque_aux[1];
@@ -3338,37 +3482,35 @@ namespace Loja.Bll.PedidoBll
                 testoqueMovimento.Pedido = id_pedido;
                 testoqueMovimento.Kit = 0;
 
-                db.Add(testoqueMovimento);
-                await db.SaveChangesAsync();
+                contexto.Add(testoqueMovimento);
+                await contexto.SaveChangesAsync();
+            }
 
-                qtde_estoque_aux[0] = (short)qtde_movimentada;
-                //short qtde_estoque_vendido = (short)qtde_movimentada;
+            qtde_estoque_aux[0] = (short)qtde_movimentada;
+            //short qtde_estoque_vendido = (short)qtde_movimentada;
 
 
-                //log de movimentação do estoque
+            //log de movimentação do estoque
+            if (!await Util.Util.Grava_log_estoque_v2(id_usuario, id_nfe_emitente, id_fabricante, id_produto,
+                (short)qtde_a_sair, qtde_estoque_aux[0], Constantes.Constantes.OP_ESTOQUE_LOG_VENDA,
+                Constantes.Constantes.ID_ESTOQUE_VENDA, Constantes.Constantes.ID_ESTOQUE_VENDIDO,
+                "", "", "", id_pedido, "", "", "", contexto))
+            {
+                lstErros.Add("FALHA AO GRAVAR O LOG DA MOVIMENTAÇÃO NO ESTOQUE");
+                return retorno = false;
+            }
+            if (qtde_estoque_aux[1] > 0)
+            {
                 if (!await Util.Util.Grava_log_estoque_v2(id_usuario, id_nfe_emitente, id_fabricante, id_produto,
-                    (short)qtde_a_sair, qtde_estoque_aux[0], Constantes.Constantes.OP_ESTOQUE_LOG_VENDA,
-                    Constantes.Constantes.ID_ESTOQUE_VENDA, Constantes.Constantes.ID_ESTOQUE_VENDIDO,
-                    "", "", "", id_pedido, "", "", "", db))
+                qtde_estoque_aux[1], qtde_estoque_aux[1],
+                Constantes.Constantes.OP_ESTOQUE_LOG_VENDA_SEM_PRESENCA, "",
+                Constantes.Constantes.ID_ESTOQUE_SEM_PRESENCA, "", "", "", id_pedido, "", "", "", contexto))
                 {
                     lstErros.Add("FALHA AO GRAVAR O LOG DA MOVIMENTAÇÃO NO ESTOQUE");
-                    return false;
+                    return retorno = false;
                 }
-                if (qtde_estoque_aux[1] > 0)
-                {
-                    if (!await Util.Util.Grava_log_estoque_v2(id_usuario, id_nfe_emitente, id_fabricante, id_produto,
-                    qtde_estoque_aux[1], qtde_estoque_aux[1],
-                    Constantes.Constantes.OP_ESTOQUE_LOG_VENDA_SEM_PRESENCA, "",
-                    Constantes.Constantes.ID_ESTOQUE_SEM_PRESENCA, "", "", "", id_pedido, "", "", "", db))
-                    {
-                        lstErros.Add("FALHA AO GRAVAR O LOG DA MOVIMENTAÇÃO NO ESTOQUE");
-                        return false;
-                    }
-                }
-
-
             }
-            return true;
+            return retorno;
         }
 
         public async Task<string> GeraIdEstoqueMovto(List<string> lstErros, ContextoBdGravacao contexto)
@@ -3405,27 +3547,30 @@ namespace Loja.Bll.PedidoBll
             {
                 n_descarte = s_num.Length - Constantes.Constantes.TAM_MIN_NUM_PEDIDO;
                 s_descarte = s_num.Substring(0, n_descarte);
-                if (s_descarte.Length == n_descarte)
-                {
-                    s_num = s_num.Substring(s_descarte.Length - n_descarte);
+                string teste = new String('0', n_descarte);
 
-                    //obtém a letra para o sufixo do pedido de acordo c / o ano da geração do 
-                    //nsu(importante: fazer a leitura somente após gerar o nsu, pois a letra pode ter 
-                    //sido alterada devido à mudança de ano!!)
-                    var ret = from c in dbgravacao.Tcontroles
-                              where c.Id_Nsu == Constantes.Constantes.NSU_PEDIDO
-                              select c;
+                if (s_descarte != teste)
+                    return numPedido;
 
-                    var controle = await ret.FirstOrDefaultAsync();
+                s_num = s_num.Substring(s_num.Length - n_descarte);
 
-                    if (controle == null)
-                        lstErros.Add("Não existe registro na tabela de controle com o id = '" +
-                            Constantes.Constantes.NSU_PEDIDO_TEMPORARIO);
+                //obtém a letra para o sufixo do pedido de acordo c / o ano da geração do 
+                //nsu(importante: fazer a leitura somente após gerar o nsu, pois a letra pode ter 
+                //sido alterada devido à mudança de ano!!)
+                var ret = from c in dbgravacao.Tcontroles
+                          where c.Id_Nsu == Constantes.Constantes.NSU_PEDIDO
+                          select c;
 
-                    s_letra_ano = controle.Ano_Letra_Seq;
+                var controle = await ret.FirstOrDefaultAsync();
 
-                    numPedido = s_num + s_letra_ano;
-                }
+                if (controle == null)
+                    lstErros.Add("Não existe registro na tabela de controle com o id = '" +
+                        Constantes.Constantes.NSU_PEDIDO_TEMPORARIO);
+
+                s_letra_ano = controle.Ano_Letra_Seq;
+
+                numPedido = s_num + s_letra_ano;
+
             }
 
             return numPedido;
@@ -3447,27 +3592,29 @@ namespace Loja.Bll.PedidoBll
             {
                 n_descarte = s_num.Length - Constantes.Constantes.TAM_MIN_NUM_PEDIDO;
                 s_descarte = s_num.Substring(0, n_descarte);
-                if (s_descarte.Length == n_descarte)
-                {
-                    s_num = s_num.Substring(s_descarte.Length - n_descarte);
+                string teste = new String('0', n_descarte);
+                if (s_descarte != teste)
+                    return numPedido;
 
-                    //obtém a letra para o sufixo do pedido de acordo c / o ano da geração do 
-                    //nsu(importante: fazer a leitura somente após gerar o nsu, pois a letra pode ter 
-                    //sido alterada devido à mudança de ano!!)
-                    var ret = from c in dbgravacao.Tcontroles
-                              where c.Id_Nsu == Constantes.Constantes.NSU_PEDIDO_TEMPORARIO
-                              select c;
+                s_num = s_num.Substring(s_num.Length - n_descarte);
 
-                    var controle = await ret.FirstOrDefaultAsync();
+                //obtém a letra para o sufixo do pedido de acordo c / o ano da geração do 
+                //nsu(importante: fazer a leitura somente após gerar o nsu, pois a letra pode ter 
+                //sido alterada devido à mudança de ano!!)
+                var ret = from c in dbgravacao.Tcontroles
+                          where c.Id_Nsu == Constantes.Constantes.NSU_PEDIDO_TEMPORARIO
+                          select c;
 
-                    if (controle == null)
-                        lstErros.Add("Não existe registro na tabela de controle com o id = '" +
-                            Constantes.Constantes.NSU_PEDIDO_TEMPORARIO);
+                var controle = await ret.FirstOrDefaultAsync();
 
-                    s_letra_ano = controle.Ano_Letra_Seq;
+                if (controle == null)
+                    lstErros.Add("Não existe registro na tabela de controle com o id = '" +
+                        Constantes.Constantes.NSU_PEDIDO_TEMPORARIO);
 
-                    numPedido = "T" + s_num + s_letra_ano;
-                }
+                s_letra_ano = controle.Ano_Letra_Seq;
+
+                numPedido = "T" + s_num + s_letra_ano;
+
             }
 
             return numPedido;
@@ -3496,6 +3643,7 @@ namespace Loja.Bll.PedidoBll
             float? desc_dado_arredondado = 0;
             List<TpedidoItem> lstPedidoItem = new List<TpedidoItem>();
 
+            //aqui estão verificando o v_item e não pedido
             //vamos vericar cada produto da lista
             foreach (var produto in pedido.ListaProdutos)
             {
@@ -3514,6 +3662,9 @@ namespace Loja.Bll.PedidoBll
                     //vamos atribuir para um TpedidoItem que será uma lista de produtos selecionados
                     TpedidoItem tpedidoItem = new TpedidoItem();
                     {
+                        tpedidoItem.Preco_Venda = (decimal)produto.VlUnitario;
+                        tpedidoItem.Produto = produtoLoja.Tproduto.Produto;
+                        tpedidoItem.Fabricante = produtoLoja.Tproduto.Fabricante;
                         tpedidoItem.Preco_Lista = (decimal)produtoLoja.Preco_Lista;
                         tpedidoItem.Margem = produtoLoja.Margem;
                         tpedidoItem.Desc_Max = produtoLoja.Desc_Max;
@@ -3532,25 +3683,31 @@ namespace Loja.Bll.PedidoBll
                         tpedidoItem.Cst = produtoLoja.Tproduto.Cst;
                         tpedidoItem.Descontinuado = produtoLoja.Tproduto.Descontinuado;
                         tpedidoItem.CustoFinancFornecPrecoListaBase = (decimal)produtoLoja.Preco_Lista;
+                        tpedidoItem.Tproduto = produtoLoja.Tproduto;
+
+
+                        //Tproduto para ser verificado depois dessa rotina
 
                         if (c_custoFinancFornecTipoParcelamento ==
                             Constantes.Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA)
                             coeficiente = 1;
-
-                        var coeficienteTask = (from c in db.TpercentualCustoFinanceiroFornecedors
-                                               where c.Fabricante == produto.Fabricante &&
-                                                     c.Tipo_Parcelamento == c_custoFinancFornecTipoParcelamento &&
-                                                     c.Qtde_Parcelas == c_custoFinancFornecQtdeParcelas
-                                               select c).FirstOrDefaultAsync();
-                        if (await coeficienteTask == null)
-                            lstErros.Add("Opção de parcelamento não disponível para fornecedor " + produto.Fabricante +
-                                ": " + DecodificaCustoFinanFornecQtdeParcelas(c_custoFinancFornecTipoParcelamento,
-                                c_custoFinancFornecQtdeParcelas) + " parcela(s)");
                         else
                         {
-                            coeficiente = (await coeficienteTask).Coeficiente;
-                            //voltamos a atribuir ao tpedidoItem
-                            tpedidoItem.Preco_Lista = (decimal)coeficiente * tpedidoItem.Preco_Lista;
+                            var coeficienteTask = (from c in db.TpercentualCustoFinanceiroFornecedors
+                                                   where c.Fabricante == produto.Fabricante &&
+                                                         c.Tipo_Parcelamento == c_custoFinancFornecTipoParcelamento &&
+                                                         c.Qtde_Parcelas == c_custoFinancFornecQtdeParcelas
+                                                   select c).FirstOrDefaultAsync();
+                            if (await coeficienteTask == null)
+                                lstErros.Add("Opção de parcelamento não disponível para fornecedor " + produto.Fabricante +
+                                    ": " + DecodificaCustoFinanFornecQtdeParcelas(c_custoFinancFornecTipoParcelamento,
+                                    c_custoFinancFornecQtdeParcelas) + " parcela(s)");
+                            else
+                            {
+                                coeficiente = (await coeficienteTask).Coeficiente;
+                                //voltamos a atribuir ao tpedidoItem
+                                tpedidoItem.Preco_Lista = (decimal)coeficiente * tpedidoItem.Preco_Lista;
+                            }
                         }
 
                         tpedidoItem.CustoFinancFornecCoeficiente = coeficiente;
@@ -3579,14 +3736,16 @@ namespace Loja.Bll.PedidoBll
                                                 orderby c.Data descending
                                                 select c;
 
-                            if (await tDescontoTask.ToListAsync() == null)
+                            Tdesconto tdesconto = await tDescontoTask.FirstOrDefaultAsync();
+
+                            if (tdesconto == null)
                             {
                                 lstErros.Add("Produto " + produto.NumProduto + " do fabricante " + produto.Fabricante +
                                     ": desconto de " + tpedidoItem.Desc_Dado + "% excede o máximo permitido.");
                             }
                             else
                             {
-                                Tdesconto tdesconto = await tDescontoTask.FirstOrDefaultAsync();
+                                tdesconto = await tDescontoTask.FirstOrDefaultAsync();
                                 if ((decimal)tpedidoItem.Desc_Dado >= tdesconto.Desc_max)
                                     lstErros.Add("Produto " + produto.NumProduto + " do fabricante " + produto.Fabricante +
                                         ": desconto de " + tpedidoItem.Desc_Dado + " % excede o máximo autorizado.");
@@ -3780,7 +3939,7 @@ namespace Loja.Bll.PedidoBll
             }
             else if (pedidoDto.FormaPagtoCriacao.Rb_forma_pagto == Constantes.Constantes.COD_FORMA_PAGTO_PARCELA_UNICA)
             {
-                if (string.IsNullOrEmpty(pedidoDto.FormaPagtoCriacao.Op_av_forma_pagto))
+                if (string.IsNullOrEmpty(pedidoDto.FormaPagtoCriacao.Op_pu_forma_pagto))
                     lstErros.Add("Indique a forma de pagamento da parcela única.");
                 else if (string.IsNullOrEmpty(pedidoDto.FormaPagtoCriacao.C_pu_valor.ToString()))
                     lstErros.Add("Indique o valor da parcela única.");

@@ -23,6 +23,7 @@ namespace Loja.Data
         }
 
 
+
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 
@@ -64,16 +65,16 @@ namespace Loja.Data
         public DbSet<TclienteRefBancaria> tclienteRefBancarias { get => contexto.TclienteRefBancarias; }
         public DbSet<TclienteRefComercial> tclienteRefComercials { get => contexto.TclienteRefComercials; }
         public DbSet<Tlog> tlogs { get => contexto.Tlogs; }
-        public DbSet<Testoque> Testoques { get; set; }
-        public DbSet<TestoqueItem> TestoqueItems { get; set; }
-        public DbSet<TestoqueMovimento> TestoqueMovimentos { get; set; }
-        public DbSet<TestoqueLog> TestoqueLogs { get; set; }
-        public DbSet<Tpedido> Tpedidos { get; set; }
-        public DbSet<TpedidoItem> TpedidoItems { get; set; }
-        public DbSet<Tdesconto> Tdescontos { get; set; }
-        public DbSet<TfinControle> TfinControles { get; set; }
-        public DbSet<TpedidoAnaliseEndereco> TpedidoAnalises { get; set; }
-        public DbSet<TpedidoAnaliseEnderecoConfrontacao> TpedidoAnaliseConfrontacaos { get; set; }
+        public DbSet<Testoque> Testoques { get => contexto.Testoques; }
+        public DbSet<TestoqueItem> TestoqueItems { get => contexto.TestoqueItems; }
+        public DbSet<TestoqueMovimento> TestoqueMovimentos { get => contexto.TestoqueMovimentos; }
+        public DbSet<TestoqueLog> TestoqueLogs { get => contexto.TestoqueLogs; }
+        public DbSet<Tpedido> Tpedidos { get => contexto.Tpedidos; }
+        public DbSet<TpedidoItem> TpedidoItems { get => contexto.TpedidoItems; }
+        public DbSet<Tdesconto> Tdescontos { get => contexto.Tdescontos; }
+        public DbSet<TfinControle> TfinControles { get => contexto.TfinControles; }
+        public DbSet<TpedidoAnaliseEndereco> TpedidoAnaliseEnderecos { get => contexto.TpedidoAnaliseEnderecos; }
+        public DbSet<TpedidoAnaliseEnderecoConfrontacao> TpedidoAnaliseConfrontacaos { get => contexto.TpedidoAnaliseConfrontacaos; }
 
 
     }

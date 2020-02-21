@@ -185,50 +185,51 @@ namespace Loja.Bll.Bll.PedidoBll
             List<CancelamentoAutomaticoItem> ret = new List<CancelamentoAutomaticoItem>();
 
             int numeroLinha = 0;
-            using (var db = contextoProvider.GetContextoLeitura().GetContextoBdBasicoParaSql())
-            {
-                using (var command = db.Database.GetDbConnection().CreateCommand())
-                {
-                    command.CommandText = strSql;
+            //using (var db = contextoProvider.GetContextoLeitura().GetContextoBdBasicoParaSql())
+            //{
+            //    using (var command = db.Database.GetDbConnection().CreateCommand())
+            //    {
+            //        command.CommandText = strSql;
 
-                    db.Database.OpenConnection();
-                    using (var result = await command.ExecuteReaderAsync())
-                    {
-                        while (result.Read())
-                        {
-                            numeroLinha++;
+            //        db.Database.OpenConnection();
+            //        using (var result = await command.ExecuteReaderAsync())
+            //        {
+            //            while (result.Read())
+            //            {
+            //                numeroLinha++;
 
-                            DateTime? dataFinal = null;
-                            if (result["analise_credito_data_sem_hora"].GetType() == typeof(DateTime))
-                            {
-                                dataFinal = ((DateTime)result["analise_credito_data_sem_hora"]);
-                                if (dataFinal.HasValue && result["prazo_cancelamento"].GetType() == typeof(int))
-                                {
-                                    dataFinal = dataFinal.Value.AddDays((int)result["prazo_cancelamento"]);
-                                }
-                            }
+            //                DateTime? dataFinal = null;
+            //                if (result["analise_credito_data_sem_hora"].GetType() == typeof(DateTime))
+            //                {
+            //                    dataFinal = ((DateTime)result["analise_credito_data_sem_hora"]);
+            //                    if (dataFinal.HasValue && result["prazo_cancelamento"].GetType() == typeof(int))
+            //                    {
+            //                        dataFinal = dataFinal.Value.AddDays((int)result["prazo_cancelamento"]);
+            //                    }
+            //                }
 
-                            ret.Add(new CancelamentoAutomaticoItem
-                            {
-                                NumeroLinha = numeroLinha,
-                                DataFinal = dataFinal,
-                                Pedido = result["pedido"].ToString(),
-                                Vendedor = result["vendedor"].ToString(),
-                                NomeDoCliente = result["nome"].ToString(),
-                                Analise_credito_descricao = result["analise_credito_descricao"].ToString(),
-                                Loja = listaLojas.Where(r => r.Id == result["loja"].ToString()).FirstOrDefault()?.Nome
-                            });
-                        }
-                    }
+            //                ret.Add(new CancelamentoAutomaticoItem
+            //                {
+            //                    NumeroLinha = numeroLinha,
+            //                    DataFinal = dataFinal,
+            //                    Pedido = result["pedido"].ToString(),
+            //                    Vendedor = result["vendedor"].ToString(),
+            //                    NomeDoCliente = result["nome"].ToString(),
+            //                    Analise_credito_descricao = result["analise_credito_descricao"].ToString(),
+            //                    Loja = listaLojas.Where(r => r.Id == result["loja"].ToString()).FirstOrDefault()?.Nome
+            //                });
+            //            }
+            //        }
 
-                }
+            //    }
 
-                //ret.AddRange(DadosDeTeste());
+            //    //ret.AddRange(DadosDeTeste());
 
-                //está ordenando por data CRESCENTE
-                ret = ret.OrderBy(r => r.DataFinal).ToList();
-                return ret;
-            }
+            //    //está ordenando por data CRESCENTE
+            //    ret = ret.OrderBy(r => r.DataFinal).ToList();
+            //    return ret;
+            //}
+            return null;
         }
     }
 }

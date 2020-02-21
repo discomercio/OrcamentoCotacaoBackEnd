@@ -13,8 +13,9 @@ namespace Loja.Modelos
         [Required]
         [Column("id_estoque")]
         [MaxLength(12)]
-        [ForeignKey("TestoqueItem")]
         public string Id_estoque { get; set; }
+
+        public ICollection<TestoqueItem> TestoqueItem { get; set; }
 
         [Column("data_entrada")]
         [Required]
@@ -43,7 +44,7 @@ namespace Loja.Modelos
         public DateTime Data_ult_movimento { get; set; }
 
         [Column("timestamp")]
-        public byte? Timestamp { get; set; }
+        public byte[]? Timestamp { get; }
 
         [Column("kit")]
         public short? Kit { get; set; }
@@ -94,7 +95,5 @@ namespace Loja.Modelos
 
         [Column("perc_agio")]
         public float? Perc_agio { get; set; }
-
-        public TestoqueItem TestoqueItem { get; set; }
     }
 }
