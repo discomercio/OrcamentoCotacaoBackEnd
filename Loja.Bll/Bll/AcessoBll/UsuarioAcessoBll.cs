@@ -1,4 +1,7 @@
-﻿using Loja.Data;
+﻿using Loja.Bll.Util;
+using Loja.Data;
+using Loja.Modelos;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +12,42 @@ namespace Loja.Bll.Bll.AcessoBll
     public class UsuarioAcessoBll
     {
         private readonly ContextoBdProvider contextoProvider;
+        private readonly ClienteBll.ClienteBll clienteBll;
 
-        public UsuarioAcessoBll(ContextoBdProvider contextoProvider)
+        public UsuarioAcessoBll(ContextoBdProvider contextoProvider, ClienteBll.ClienteBll clienteBll)
         {
             this.contextoProvider = contextoProvider;
+            this.clienteBll = clienteBll;
+        }
+
+        public class LoginUsuarioRetorno
+        {
+            public Tusuario tusuario;
+            public bool sucesso;
+            public bool deslogouLoginAnterior;
+        }
+        public async Task<LoginUsuarioRetorno> LoginUsuario(string usuario, string senha, string loja, ISession HttpContextSession, Configuracao configuracao)
+        {
+            var ret = new LoginUsuarioRetorno();
+            ret.sucesso = false;
+            ret.deslogouLoginAnterior = false;
+            ret.tusuario = null;
+
+            //vamos ver se existe
+            usuario = usuario.Trim().ToUpper();
+            var existe = await (from u in contextoProvider.GetContextoLeitura().Tusuarios
+                                where usuario == u.Usuario.Trim().ToUpper()
+                                select u).FirstOrDefaultAsync();
+            if (existe == null)
+                return ret;
+
+            ret.tusuario = existe;
+            ret.sucesso = true;
+
+            //cria a session
+            await UsuarioLogado.CriarSessao(usuario, HttpContextSession, clienteBll, this, configuracao);
+            ret.deslogouLoginAnterior = new UsuarioSessoes().DeslogarLoginAnterior(usuario, HttpContextSession);
+            return ret;
         }
 
         public class LojaPermtidaUsuario

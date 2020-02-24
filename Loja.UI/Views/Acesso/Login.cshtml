@@ -1,4 +1,8 @@
 ﻿@model Loja.UI.Models.Acesso.LoginViewModel
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject Loja.Bll.ClienteBll.ClienteBll clienteBll
+@inject Loja.Bll.Bll.AcessoBll.UsuarioAcessoBll usuarioAcessoBll
+@inject Loja.Bll.Util.Configuracao configuracao
 @{
     ViewData["Title"] = "Login";
     ViewBag.PaginaDeLogin = true;
@@ -10,6 +14,22 @@
 <br />
 <br />
 <br />
+
+@{
+    var usuarioLogado = new Loja.Bll.Bll.AcessoBll.UsuarioLogado(User, HttpContextAccessor.HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
+}
+@if (usuarioLogado.SessaoDeslogadaForcado)
+{
+    <div>
+        <span class="red-text">
+            AVISO:
+        </span>
+        sua sessão foi encerrada porque foi feito login em outro computador ou em outro navegador. Somente é permitido um login ativo por vez.
+        <br />
+        Favor fazer o logout ao sair do terminal.
+    </div>
+}
+
 
 @using (Html.BeginForm("LoginSubmit", "Acesso", FormMethod.Post))
 {

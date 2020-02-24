@@ -6,16 +6,29 @@ using Loja.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Loja.Modelos;
+using Loja.Bll.Util;
 
 namespace Loja.Bll.Bll.AcessoBll
 {
-    public class AcessoBll
+    public class AcessoRequirement : IAuthorizationRequirement
     {
-        private readonly ContextoBdProvider contextoProvider;
+        //sim, vazia....
+    }
 
-        public AcessoBll(ContextoBdProvider contextoProvider)
+    public class AcessoAuthorizationHandlerBll : AuthorizationHandler<AcessoRequirement>
+    {
+        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly Configuracao configuracao;
+        private readonly ClienteBll.ClienteBll clienteBll;
+        private readonly UsuarioAcessoBll usuarioAcessoBll;
+
+        public AcessoAuthorizationHandlerBll(IHttpContextAccessor httpContextAccessor, Configuracao configuracao,
+            ClienteBll.ClienteBll clienteBll, UsuarioAcessoBll usuarioAcessoBll)
         {
-            this.contextoProvider = contextoProvider;
+            this.httpContextAccessor = httpContextAccessor;
+            this.configuracao = configuracao;
+            this.clienteBll = clienteBll;
+            this.usuarioAcessoBll = usuarioAcessoBll;
         }
 
         public static class Roles
@@ -38,17 +51,31 @@ namespace Loja.Bll.Bll.AcessoBll
             return ret;
         }
 
-        public async Task<Tusuario> LoginUsuario(string usuario, string senha, string loja)
+
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, AcessoRequirement requirement)
         {
-            //vamos ver se existe
-            usuario = usuario.Trim().ToUpper();
-            var existe = await (from u in contextoProvider.GetContextoLeitura().Tusuarios
-                                where usuario == u.Usuario.Trim().ToUpper()
-                                select u).FirstOrDefaultAsync();
-            return existe;
+            var usuarioLogado = new Loja.Bll.Bll.AcessoBll.UsuarioLogado(context.User, httpContextAccessor.HttpContext.Session, 
+                clienteBll, usuarioAcessoBll, configuracao);
+            if (!usuarioLogado.SessaoAtiva)
+            {
+                //sem login, ou sem sessão, conforme o cirtério do UsuarioLogado
+                context.Fail();
+                return Task.CompletedTask;
+            }
+            if(usuarioLogado.SessaoDeslogadaForcado)
+            {
+                //não permitimos!
+                context.Fail();
+                return Task.CompletedTask;
+            }
+            if (AutorizarPagina(context))
+                context.Succeed(requirement);
+            else
+                context.Fail();
+            return Task.CompletedTask;
         }
 
-        public static bool AutorizarPagina(AuthorizationHandlerContext context)
+        private bool AutorizarPagina(AuthorizationHandlerContext context)
         {
             if (context.User == null)
                 return false;
@@ -104,4 +131,5 @@ namespace Loja.Bll.Bll.AcessoBll
         }
 
     }
+
 }

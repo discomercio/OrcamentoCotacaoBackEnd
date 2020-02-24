@@ -6,6 +6,8 @@ using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Microsoft.Extensions.Configuration;
+using Loja.Bll.Util;
 
 namespace Loja.Bll.Bll.AcessoBll
 {
@@ -15,7 +17,7 @@ namespace Loja.Bll.Bll.AcessoBll
 
 
         public UsuarioLogado(ClaimsPrincipal user, ISession httpContextSession, ClienteBll.ClienteBll clienteBll,
-            UsuarioAcessoBll usuarioAcessoBll)
+            UsuarioAcessoBll usuarioAcessoBll, Configuracao configuracao)
         {
             this.httpContextSession = httpContextSession;
             if (SessaoAtiva)
@@ -27,29 +29,29 @@ namespace Loja.Bll.Bll.AcessoBll
                             SessaoAtiva = false;
             }
 
-            //nao criamos automaticamente não!
-            //a pensar melhor se a gente mudar o esquema do ciclo de vida do login e da sessão
-            //if (!SessaoAtiva && clienteBll != null && usuarioAcessoBll != null)
-            //    CriarSessaoPorUser(user, httpContextSession, clienteBll, usuarioAcessoBll, this).Wait();
+            if (configuracao.PermitirManterConectado)
+                if (!SessaoAtiva && clienteBll != null && usuarioAcessoBll != null)
+                    CriarSessaoPorUser(user, httpContextSession, clienteBll, usuarioAcessoBll, configuracao, this).Wait();
         }
 
         private static async Task CriarSessaoPorUser(ClaimsPrincipal user, ISession httpContextSession, ClienteBll.ClienteBll clienteBll,
-            UsuarioAcessoBll usuarioAcessoBll,
+            UsuarioAcessoBll usuarioAcessoBll, Configuracao configuracao,
             UsuarioLogado usuarioLogadoParaLAterarSessao)
         {
-            string usuarioClaim = user?.Claims.Where(r => r.Type == ClaimTypes.Name).FirstOrDefault()?.Value ?? "Sem usuário";
-            await CriarSessao(usuarioClaim, httpContextSession, clienteBll, usuarioAcessoBll, usuarioLogadoParaLAterarSessao);
+            string usuarioClaim = user?.Claims.Where(r => r.Type == ClaimTypes.Name).FirstOrDefault()?.Value;
+            await CriarSessao(usuarioClaim, httpContextSession, clienteBll, usuarioAcessoBll, configuracao, usuarioLogadoParaLAterarSessao);
         }
         public static async Task CriarSessao(string usuario, ISession httpContextSession, ClienteBll.ClienteBll clienteBll,
-            UsuarioAcessoBll usuarioAcessoBll,
+            UsuarioAcessoBll usuarioAcessoBll, Configuracao configuracao,
             UsuarioLogado usuarioLogadoParaLAterarSessao = null)
         {
             //nao tem risco de dar recursão porque o construtor chama com uma instância
             if (usuarioLogadoParaLAterarSessao == null)
-                usuarioLogadoParaLAterarSessao = new UsuarioLogado(null, httpContextSession, clienteBll, usuarioAcessoBll);
+                usuarioLogadoParaLAterarSessao = new UsuarioLogado(null, httpContextSession, clienteBll, usuarioAcessoBll, configuracao);
 
             //tem que recriar
-            usuario = usuario ?? "Sem usuário";
+            if (string.IsNullOrWhiteSpace(usuario))
+                return;
             usuario = usuario.Trim().ToUpper();
             usuarioLogadoParaLAterarSessao.Usuario = usuario;
 
@@ -61,6 +63,10 @@ namespace Loja.Bll.Bll.AcessoBll
             usuarioLogadoParaLAterarSessao.SessaoAtiva = true;
         }
 
+        public void EncerrarSessao()
+        {
+            SessaoAtiva = false;
+        }
 
         public bool Operacao_permitida(int id_operacao)
         {
@@ -83,26 +89,51 @@ namespace Loja.Bll.Bll.AcessoBll
         private static class StringsSession
         {
             public static readonly string SessaoAtiva = "SessaoAtiva";
+            public static readonly string SessaoDeslogadaForcado = "SessaoDeslogadaForcado";
             public static readonly string NomeUsuario = "usuario";
             public static readonly string Lista_operacoes_permitidas = "lista_operacoes_permitidas";
             public static readonly string Loja_troca_rapida_monta_itens_select = "Loja_troca_rapida_monta_itens_select";
             public static readonly string LojaAtiva = "LojaAtiva";
         }
+        //esta aqui é usada para verificar outros logins
+        public static string StringsSession_SessaoAtiva { get { return StringsSession.SessaoAtiva; } }
+        public static string StringsSession_SessaoDeslogadaForcado { get { return StringsSession.SessaoDeslogadaForcado; } }
 
         public string Usuario
         {
             get => httpContextSession.GetString(StringsSession.NomeUsuario) ?? "Sem usuário";
-            private set => httpContextSession.SetString(StringsSession.NomeUsuario, value);
+            private set
+            {
+                httpContextSession.SetString(StringsSession.NomeUsuario, value);
+                new UsuarioSessoes().RegistrarSessao(value, httpContextSession);
+            }
         }
         public bool SessaoAtiva
         {
             get
             {
-                if (httpContextSession.GetInt32(StringsSession.SessaoAtiva) == null)
-                    return false;
-                return true;
+                var ret = httpContextSession.GetInt32(StringsSession.SessaoAtiva);
+                if (ret.HasValue && ret.Value != 0)
+                    return true;
+                return false;
             }
-            private set => httpContextSession.SetInt32(StringsSession.SessaoAtiva, 1);
+            private set
+            {
+                if (value)
+                    httpContextSession.SetInt32(StringsSession.SessaoAtiva, 1);
+                else
+                    httpContextSession.SetInt32(StringsSession.SessaoAtiva, 0);
+            }
+        }
+        public bool SessaoDeslogadaForcado
+        {
+            get
+            {
+                var ret = httpContextSession.GetInt32(StringsSession.SessaoDeslogadaForcado);
+                if (ret.HasValue && ret.Value != 0)
+                    return true;
+                return false;
+            }
         }
         public string Lista_operacoes_permitidas
         {

@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Loja.Bll.Bll.AcessoBll;
 using Loja.Bll.ClienteBll;
+using Loja.Bll.Util;
 using Loja.UI.Models.Acesso;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -17,14 +18,14 @@ namespace Loja.UI.Controllers
     [AllowAnonymous]
     public class AcessoController : Controller
     {
-        private readonly IConfiguration configuration;
+        private readonly Configuracao configuracao;
         private readonly ClienteBll clienteBll;
-        private readonly AcessoBll acessoBll;
+        private readonly AcessoAuthorizationHandlerBll acessoBll;
         private readonly UsuarioAcessoBll usuarioAcessoBll;
 
-        public AcessoController(IConfiguration configuration, ClienteBll clienteBll, AcessoBll acessoBll, UsuarioAcessoBll usuarioAcessoBll)
+        public AcessoController(Configuracao configuracao, ClienteBll clienteBll, AcessoAuthorizationHandlerBll acessoBll, UsuarioAcessoBll usuarioAcessoBll)
         {
-            this.configuration = configuration;
+            this.configuracao = configuracao;
             this.clienteBll = clienteBll;
             this.acessoBll = acessoBll;
             this.usuarioAcessoBll = usuarioAcessoBll;
@@ -36,7 +37,7 @@ namespace Loja.UI.Controllers
             LoginViewModel loginViewModel = new LoginViewModel
             {
                 ReturnUrl = ReturnUrl,
-                PermitirManterConectado = configuration.GetSection("Acesso").GetValue<bool>("PermitirManterConectado"),
+                PermitirManterConectado = configuracao.PermitirManterConectado,
                 AcessoNegado = true
             };
             return View("Login", loginViewModel);
@@ -48,7 +49,7 @@ namespace Loja.UI.Controllers
             LoginViewModel loginViewModel = new LoginViewModel
             {
                 ReturnUrl = ReturnUrl,
-                PermitirManterConectado = configuration.GetSection("Acesso").GetValue<bool>("PermitirManterConectado")
+                PermitirManterConectado = configuracao.PermitirManterConectado
             };
             return View(loginViewModel);
         }
@@ -57,6 +58,8 @@ namespace Loja.UI.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var usuarioLogado = new UsuarioLogado(User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
+            usuarioLogado.EncerrarSessao();
             return Redirect("Login");
         }
 
@@ -94,22 +97,18 @@ namespace Loja.UI.Controllers
             }
 * */
 
-            var tusuario = await acessoBll.LoginUsuario(loginViewModel.Apelido, loginViewModel.Senha, loginViewModel.Loja);
-            if (tusuario == null)
+            var tusuario = await usuarioAcessoBll.LoginUsuario(loginViewModel.Apelido, loginViewModel.Senha, loginViewModel.Loja, HttpContext.Session, configuracao);
+            if (!tusuario.sucesso)
             {
                 loginViewModel.ErroUsuarioSenha = true;
                 return View("Login", loginViewModel);
             }
-            //cria a session
-            await UsuarioLogado.CriarSessao(loginViewModel.Apelido, HttpContext.Session, clienteBll, usuarioAcessoBll);
-
-
 
             var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, loginViewModel.Apelido?.Trim() ?? "")
                 };
-            foreach (var role in AcessoBll.RolesDoUsuario())
+            foreach (var role in AcessoAuthorizationHandlerBll.RolesDoUsuario())
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
@@ -119,15 +118,15 @@ namespace Loja.UI.Controllers
 
             var authProperties = new AuthenticationProperties
             {
-                AllowRefresh = configuration.GetSection("Acesso").GetValue<bool>("ExpiracaoMovel"),
+                AllowRefresh = configuracao.ExpiracaoMovel,
                 // Refreshing the authentication session should be allowed.
 
-                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(configuration.GetSection("Acesso").GetValue<int>("ExpiracaoCookieMinutos")),
+                ExpiresUtc = DateTimeOffset.UtcNow.Add(configuracao.ExpiracaoCookieMinutos),
                 // The time at which the authentication ticket expires. A 
                 // value set here overrides the ExpireTimeSpan option of 
                 // CookieAuthenticationOptions set with AddCookie.
 
-                IsPersistent = configuration.GetSection("Acesso").GetValue<bool>("PermitirManterConectado") ? loginViewModel.ManterConectado : false,
+                IsPersistent = configuracao.PermitirManterConectado ? loginViewModel.ManterConectado : false,
                 // Whether the authentication session is persisted across 
                 // multiple requests. When used with cookies, controls
                 // multiple requests. When used with cookies, controls
@@ -146,6 +145,11 @@ namespace Loja.UI.Controllers
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(claimsIdentity),
                 authProperties);
+
+            if (tusuario.deslogouLoginAnterior)
+            {
+                return View("DeslogouLoginAnterior");
+            }
 
             return LocalRedirect(loginViewModel.ReturnUrl);
         }

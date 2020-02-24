@@ -20,6 +20,7 @@ using Loja.Bll.Dto.PedidoDto;
 using Loja.Bll.Bll.PedidoBll;
 using Loja.Bll.Constantes;
 using Loja.Bll.Bll.AcessoBll;
+using Loja.Bll.Util;
 
 namespace Loja.UI.Controllers
 {
@@ -32,9 +33,10 @@ namespace Loja.UI.Controllers
         private readonly CoeficienteBll coeficienteBll;
         private readonly CancelamentoAutomaticoBll cancelamentoAutomaticoBll;
         private readonly UsuarioAcessoBll usuarioAcessoBll;
+        private readonly Configuracao configuracao;
 
         public PedidoController(PedidoBll pedidoBll, ProdutoBll produtoBll, ClienteBll clienteBll, FormaPagtoBll formaPagtoBll, CoeficienteBll coeficienteBll,
-            CancelamentoAutomaticoBll cancelamentoAutomaticoBll, UsuarioAcessoBll usuarioAcessoBll)
+            CancelamentoAutomaticoBll cancelamentoAutomaticoBll, UsuarioAcessoBll usuarioAcessoBll, Configuracao configuracao)
         {
             this.pedidoBll = pedidoBll;
             this.produtoBll = produtoBll;
@@ -43,6 +45,7 @@ namespace Loja.UI.Controllers
             this.coeficienteBll = coeficienteBll;
             this.cancelamentoAutomaticoBll = cancelamentoAutomaticoBll;
             this.usuarioAcessoBll = usuarioAcessoBll;
+            this.configuracao = configuracao;
         }
 
         public IActionResult Index()
@@ -355,7 +358,7 @@ namespace Loja.UI.Controllers
 
         public async Task<IActionResult> CancelamentoAutomatico()
         {
-            var usuarioLogado = new UsuarioLogado(User, HttpContext.Session, clienteBll, usuarioAcessoBll);
+            var usuarioLogado = new UsuarioLogado(User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
 
             bool consultaUniversalPedidoOrcamento = usuarioLogado.Operacao_permitida(Constantes.OP_LJA_CONSULTA_UNIVERSAL_PEDIDO_ORCAMENTO);
             var model = new Loja.UI.Models.Pedido.CancelamentoAutomaticoViewModel();
