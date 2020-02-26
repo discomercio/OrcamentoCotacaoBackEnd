@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+#nullable enable
+
 namespace Loja.Bll.Bll.AcessoBll
 {
     public class UsuarioAcessoBll
@@ -22,16 +24,14 @@ namespace Loja.Bll.Bll.AcessoBll
 
         public class LoginUsuarioRetorno
         {
-            public Tusuario tusuario;
-            public bool sucesso;
-            public bool deslogouLoginAnterior;
+            public Tusuario? Tusuario;
+            public bool Sucesso;
         }
         public async Task<LoginUsuarioRetorno> LoginUsuario(string usuario, string senha, string loja, ISession HttpContextSession, Configuracao configuracao)
         {
             var ret = new LoginUsuarioRetorno();
-            ret.sucesso = false;
-            ret.deslogouLoginAnterior = false;
-            ret.tusuario = null;
+            ret.Sucesso = false;
+            ret.Tusuario = null;
 
             //vamos ver se existe
             usuario = usuario.Trim().ToUpper();
@@ -41,21 +41,26 @@ namespace Loja.Bll.Bll.AcessoBll
             if (existe == null)
                 return ret;
 
-            ret.tusuario = existe;
-            ret.sucesso = true;
+            ret.Tusuario = existe;
+            ret.Sucesso = true;
 
             //cria a session
             await UsuarioLogado.CriarSessao(usuario, HttpContextSession, clienteBll, this, configuracao);
-            ret.deslogouLoginAnterior = new UsuarioSessoes().DeslogarLoginAnterior(usuario, HttpContextSession);
             return ret;
         }
 
         public class LojaPermtidaUsuario
         {
+            public LojaPermtidaUsuario(string nome, string id)
+            {
+                Nome = nome;
+                Id = id;
+            }
+
             public string Nome { get; set; }
             public string Id { get; set; }
         }
-        public async Task<List<LojaPermtidaUsuario>> Loja_troca_rapida_monta_itens_select_a_partir_banco(string strUsuario, string id_default)
+        public async Task<List<LojaPermtidaUsuario>> Loja_troca_rapida_monta_itens_select_a_partir_banco(string strUsuario, string? id_default)
         {
             var ret = new List<LojaPermtidaUsuario>();
 
@@ -64,7 +69,7 @@ namespace Loja.Bll.Bll.AcessoBll
 
             var query = from usuarioXloja in contextoProvider.GetContextoLeitura().TusuarioXLojas
                         where usuarioXloja.Usuario == strUsuario
-                        select new LojaPermtidaUsuario() { Id = usuarioXloja.Tloja.Loja, Nome = usuarioXloja.Tloja.Nome };
+                        select new LojaPermtidaUsuario(usuarioXloja.Tloja.Nome, usuarioXloja.Tloja.Loja);
             var lista = await query.ToListAsync();
 
             //'	LEMBRE-SE: O USUÁRIO QUE TEM PERMISSÃO DE ACESSO A TODAS AS LOJAS PODE
@@ -73,7 +78,7 @@ namespace Loja.Bll.Bll.AcessoBll
             {
                 var lojaDefaultQuery = from loja in contextoProvider.GetContextoLeitura().Tlojas
                                        where loja.Loja == id_default
-                                       select new LojaPermtidaUsuario() { Id = loja.Loja, Nome = loja.Nome };
+                                       select new LojaPermtidaUsuario(loja.Nome, loja.Loja);
                 var lojaDefault = await lojaDefaultQuery.FirstOrDefaultAsync();
                 if (lojaDefault != null)
                     lista.Add(lojaDefault);

@@ -22,6 +22,8 @@ using Loja.Bll.Constantes;
 using Loja.Bll.Bll.AcessoBll;
 using Loja.Bll.Util;
 
+#nullable enable
+
 namespace Loja.UI.Controllers
 {
     public class PedidoController : Controller
@@ -361,7 +363,7 @@ namespace Loja.UI.Controllers
 
             bool consultaUniversalPedidoOrcamento = usuarioLogado.Operacao_permitida(Constantes.OP_LJA_CONSULTA_UNIVERSAL_PEDIDO_ORCAMENTO);
             var model = new Loja.UI.Models.Pedido.CancelamentoAutomaticoViewModel();
-            model.LojasDisponiveis = usuarioLogado.Loja_troca_rapida_monta_itens_select;
+            model.LojasDisponiveis = usuarioLogado.LojasDisponiveis;
             model.cancelamentoAutomaticoItems = await cancelamentoAutomaticoBll.DadosTela(consultaUniversalPedidoOrcamento, usuarioLogado, model.LojasDisponiveis);
             model.MostrarLoja = usuarioLogado.Operacao_permitida(Constantes.OP_LJA_LOGIN_TROCA_RAPIDA_LOJA);
             model.ConsultaUniversalPedidoOrcamento = consultaUniversalPedidoOrcamento;

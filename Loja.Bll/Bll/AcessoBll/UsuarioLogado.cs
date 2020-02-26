@@ -9,6 +9,8 @@ using Newtonsoft.Json;
 using Microsoft.Extensions.Configuration;
 using Loja.Bll.Util;
 
+#nullable enable
+
 namespace Loja.Bll.Bll.AcessoBll
 {
     public class UsuarioLogado
@@ -16,12 +18,18 @@ namespace Loja.Bll.Bll.AcessoBll
         private readonly ISession httpContextSession;
 
 
-        public UsuarioLogado(ClaimsPrincipal user, ISession httpContextSession, ClienteBll.ClienteBll clienteBll,
+        public UsuarioLogado(ClaimsPrincipal? user, ISession httpContextSession, ClienteBll.ClienteBll clienteBll,
             UsuarioAcessoBll usuarioAcessoBll, Configuracao configuracao)
         {
             this.httpContextSession = httpContextSession;
             if (SessaoAtiva)
             {
+                //sem autenticacao, sem sessão!
+                if (user?.Identity == null)
+                    SessaoAtiva = false;
+                if (!(user?.Identity?.IsAuthenticated ?? false) || string.IsNullOrEmpty(user?.Identity?.Name))
+                    SessaoAtiva = false;
+
                 //verificamos se o nome bate
                 if (user?.Identity != null)
                     if (user.Identity.IsAuthenticated && !string.IsNullOrEmpty(user.Identity.Name))
@@ -32,18 +40,27 @@ namespace Loja.Bll.Bll.AcessoBll
             if (configuracao.PermitirManterConectado)
                 if (!SessaoAtiva && clienteBll != null && usuarioAcessoBll != null)
                     CriarSessaoPorUser(user, httpContextSession, clienteBll, usuarioAcessoBll, configuracao, this).Wait();
+
+            //verificar se devemos renovar as permissões do usuário
+            if (Lista_operacoes_permitidas_data_atualizacao.AddMinutes(configuracao.RecarregarPermissoesUsuarioMinutos) < DateTimeOffset.UtcNow
+                && clienteBll != null)
+            {
+                string lstOperacoesPermitidas = clienteBll.BuscaListaOperacoesPermitidas(Usuario).Result;
+                Lista_operacoes_permitidas = lstOperacoesPermitidas;
+                Lista_operacoes_permitidas_data_atualizacao = DateTimeOffset.UtcNow;
+            }
         }
 
-        private static async Task CriarSessaoPorUser(ClaimsPrincipal user, ISession httpContextSession, ClienteBll.ClienteBll clienteBll,
+        private static async Task CriarSessaoPorUser(ClaimsPrincipal? user, ISession httpContextSession, ClienteBll.ClienteBll clienteBll,
             UsuarioAcessoBll usuarioAcessoBll, Configuracao configuracao,
             UsuarioLogado usuarioLogadoParaLAterarSessao)
         {
-            string usuarioClaim = user?.Claims.Where(r => r.Type == ClaimTypes.Name).FirstOrDefault()?.Value;
+            string? usuarioClaim = user?.Claims.Where(r => r.Type == ClaimTypes.Name).FirstOrDefault()?.Value;
             await CriarSessao(usuarioClaim, httpContextSession, clienteBll, usuarioAcessoBll, configuracao, usuarioLogadoParaLAterarSessao);
         }
-        public static async Task CriarSessao(string usuario, ISession httpContextSession, ClienteBll.ClienteBll clienteBll,
+        public static async Task CriarSessao(string? usuario, ISession httpContextSession, ClienteBll.ClienteBll clienteBll,
             UsuarioAcessoBll usuarioAcessoBll, Configuracao configuracao,
-            UsuarioLogado usuarioLogadoParaLAterarSessao = null)
+            UsuarioLogado? usuarioLogadoParaLAterarSessao = null)
         {
             //nao tem risco de dar recursão porque o construtor chama com uma instância
             if (usuarioLogadoParaLAterarSessao == null)
@@ -55,12 +72,40 @@ namespace Loja.Bll.Bll.AcessoBll
             usuario = usuario.Trim().ToUpper();
             usuarioLogadoParaLAterarSessao.Usuario = usuario;
 
-            string lstOperacoesPermitidas = await clienteBll.BuscaListaOperacoesPermitidas(usuario);
-            usuarioLogadoParaLAterarSessao.Lista_operacoes_permitidas = lstOperacoesPermitidas;
+            usuarioLogadoParaLAterarSessao.LojasDisponiveis =
+                await usuarioAcessoBll.Loja_troca_rapida_monta_itens_select_a_partir_banco(usuario, null);
 
-            usuarioLogadoParaLAterarSessao.Loja_troca_rapida_monta_itens_select = await usuarioAcessoBll.Loja_troca_rapida_monta_itens_select_a_partir_banco(usuario, null);
-
+            //uma data suficientemente antiga
+            usuarioLogadoParaLAterarSessao.Lista_operacoes_permitidas_data_atualizacao = Lista_operacoes_permitidas_data_atualizacao_bem_antiga;
             usuarioLogadoParaLAterarSessao.SessaoAtiva = true;
+        }
+
+        private static DateTimeOffset Lista_operacoes_permitidas_data_atualizacao_bem_antiga { get => new DateTimeOffset(2000, 01, 01, 0, 0, 0, DateTimeOffset.UtcNow.Offset); }
+
+        public static class ClaimsUsuario
+        {
+            public static readonly string ClaimEmissao = "http://arclube.itssolucoes.com.br/claims/emissao";
+            public static List<Claim> CriarClaims(string apelido)
+            {
+                var claims = new List<Claim>();
+                claims.Add(new Claim(ClaimTypes.Name, apelido));
+                //emissao como ticks
+                claims.Add(new Claim(ClaimEmissao, DateTimeOffset.UtcNow.Ticks.ToString()));
+                return claims;
+            }
+            public static bool ConfirmarSenhaPorGet(IEnumerable<Claim> claims, Configuracao configuracao)
+            {
+                var emissao = claims.Where(r => r.Type == ClaimEmissao).FirstOrDefault()?.Value;
+                if (emissao == null)
+                    return true;
+                //vemos se já passou o tempo da emissao
+                if (!long.TryParse(emissao, out long emissaoticks))
+                    return true;
+                DateTimeOffset emissaodt = new DateTimeOffset(emissaoticks, DateTimeOffset.UtcNow.Offset);
+                if (emissaodt.AddMinutes(configuracao.ForcarLoginPorGetMinutos) < DateTimeOffset.UtcNow)
+                    return true;
+                return false;
+            }
         }
 
         public void EncerrarSessao()
@@ -89,24 +134,17 @@ namespace Loja.Bll.Bll.AcessoBll
         private static class StringsSession
         {
             public static readonly string SessaoAtiva = "SessaoAtiva";
-            public static readonly string SessaoDeslogadaForcado = "SessaoDeslogadaForcado";
             public static readonly string NomeUsuario = "usuario";
             public static readonly string Lista_operacoes_permitidas = "lista_operacoes_permitidas";
-            public static readonly string Loja_troca_rapida_monta_itens_select = "Loja_troca_rapida_monta_itens_select";
+            public static readonly string Lista_operacoes_permitidas_data_atualizacao = "Lista_operacoes_permitidas_data_atualizacao";
+            public static readonly string LojasDisponiveis = "LojasDisponiveis";
             public static readonly string LojaAtiva = "LojaAtiva";
         }
-        //esta aqui é usada para verificar outros logins
-        public static string StringsSession_SessaoAtiva { get { return StringsSession.SessaoAtiva; } }
-        public static string StringsSession_SessaoDeslogadaForcado { get { return StringsSession.SessaoDeslogadaForcado; } }
 
         public string Usuario
         {
             get => httpContextSession.GetString(StringsSession.NomeUsuario) ?? "Sem usuário";
-            private set
-            {
-                httpContextSession.SetString(StringsSession.NomeUsuario, value);
-                new UsuarioSessoes().RegistrarSessao(value, httpContextSession);
-            }
+            private set => httpContextSession.SetString(StringsSession.NomeUsuario, value);
         }
         public bool SessaoAtiva
         {
@@ -125,21 +163,29 @@ namespace Loja.Bll.Bll.AcessoBll
                     httpContextSession.SetInt32(StringsSession.SessaoAtiva, 0);
             }
         }
-        public bool SessaoDeslogadaForcado
-        {
-            get
-            {
-                var ret = httpContextSession.GetInt32(StringsSession.SessaoDeslogadaForcado);
-                if (ret.HasValue && ret.Value != 0)
-                    return true;
-                return false;
-            }
-        }
         public string Lista_operacoes_permitidas
         {
             get => httpContextSession.GetString(StringsSession.Lista_operacoes_permitidas) ?? "";
             private set => httpContextSession.SetString(StringsSession.Lista_operacoes_permitidas, value);
         }
+        public DateTimeOffset Lista_operacoes_permitidas_data_atualizacao
+        {
+            get
+            {
+                var emissao = httpContextSession.GetString(StringsSession.Lista_operacoes_permitidas_data_atualizacao) ?? "";
+                if (string.IsNullOrWhiteSpace(emissao))
+                    return Lista_operacoes_permitidas_data_atualizacao_bem_antiga;
+                if (!long.TryParse(emissao, out long emissaoticks))
+                    return Lista_operacoes_permitidas_data_atualizacao_bem_antiga;
+                DateTimeOffset emissaodt = new DateTimeOffset(emissaoticks, DateTimeOffset.UtcNow.Offset);
+                return emissaodt;
+            }
+            private set
+            {
+                httpContextSession.SetString(StringsSession.Lista_operacoes_permitidas_data_atualizacao, value.Ticks.ToString());
+            }
+        }
+
         public string LojaAtiva
         {
             get => httpContextSession.GetString(StringsSession.LojaAtiva) ?? "";
@@ -149,23 +195,23 @@ namespace Loja.Bll.Bll.AcessoBll
         public bool LojaAtivaAlterar(string novaloja)
         {
             //verifica se pode ir para essa loja
-            if (!Loja_troca_rapida_monta_itens_select.Any(r => r.Id == novaloja))
+            if (!LojasDisponiveis.Any(r => r.Id == novaloja))
                 return false;
             LojaAtiva = novaloja;
             return true;
         }
 
-        public List<UsuarioAcessoBll.LojaPermtidaUsuario> Loja_troca_rapida_monta_itens_select
+        public List<UsuarioAcessoBll.LojaPermtidaUsuario> LojasDisponiveis
         {
             get
             {
-                var sessao = httpContextSession.GetString(StringsSession.Loja_troca_rapida_monta_itens_select);
+                var sessao = httpContextSession.GetString(StringsSession.LojasDisponiveis);
                 //ao invés de dar exceção, retornamos uma lsita vazia. Para dimiuir o número de erros imprevistos;
                 if (sessao == null)
                     return new List<UsuarioAcessoBll.LojaPermtidaUsuario>();
                 return JsonConvert.DeserializeObject<List<UsuarioAcessoBll.LojaPermtidaUsuario>>(sessao);
             }
-            private set => httpContextSession.SetString(StringsSession.Loja_troca_rapida_monta_itens_select, JsonConvert.SerializeObject(value));
+            private set => httpContextSession.SetString(StringsSession.LojasDisponiveis, JsonConvert.SerializeObject(value));
         }
 
     }

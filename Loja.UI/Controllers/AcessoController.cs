@@ -98,21 +98,13 @@ namespace Loja.UI.Controllers
 * */
 
             var tusuario = await usuarioAcessoBll.LoginUsuario(loginViewModel.Apelido, loginViewModel.Senha, loginViewModel.Loja, HttpContext.Session, configuracao);
-            if (!tusuario.sucesso)
+            if (!tusuario.Sucesso)
             {
                 loginViewModel.ErroUsuarioSenha = true;
                 return View("Login", loginViewModel);
             }
 
-            var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, loginViewModel.Apelido?.Trim() ?? "")
-                };
-            foreach (var role in AcessoAuthorizationHandlerBll.RolesDoUsuario())
-            {
-                claims.Add(new Claim(ClaimTypes.Role, role));
-            }
-
+            var claims = UsuarioLogado.ClaimsUsuario.CriarClaims(loginViewModel.Apelido?.Trim() ?? "");
             var claimsIdentity = new ClaimsIdentity(
                 claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
@@ -145,11 +137,6 @@ namespace Loja.UI.Controllers
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(claimsIdentity),
                 authProperties);
-
-            if (tusuario.deslogouLoginAnterior)
-            {
-                return View("DeslogouLoginAnterior");
-            }
 
             return LocalRedirect(loginViewModel.ReturnUrl);
         }

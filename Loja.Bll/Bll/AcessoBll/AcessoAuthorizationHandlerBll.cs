@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Http;
 using Loja.Modelos;
 using Loja.Bll.Util;
 
+#nullable enable
+
 namespace Loja.Bll.Bll.AcessoBll
 {
     public class AcessoRequirement : IAuthorizationRequirement
@@ -31,30 +33,9 @@ namespace Loja.Bll.Bll.AcessoBll
             this.usuarioAcessoBll = usuarioAcessoBll;
         }
 
-        public static class Roles
-        {
-            public const string PedidoController = "PedidoController";
-            public const string ClienteController = "ClienteController";
-            public const string CepController = "CepController";
-            public const string ProdutosController = "ProdutosController";
-        }
-
-        //todo: retornar os roles corretos
-        public static List<string> RolesDoUsuario()
-        {
-            var ret = new List<string>();
-            ret.Add(Roles.PedidoController);
-            ret.Add(Roles.ClienteController);
-            ret.Add(Roles.CepController);
-            ret.Add(Roles.ProdutosController);
-
-            return ret;
-        }
-
-
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, AcessoRequirement requirement)
         {
-            var usuarioLogado = new Loja.Bll.Bll.AcessoBll.UsuarioLogado(context.User, httpContextAccessor.HttpContext.Session, 
+            var usuarioLogado = new Loja.Bll.Bll.AcessoBll.UsuarioLogado(context.User, httpContextAccessor.HttpContext.Session,
                 clienteBll, usuarioAcessoBll, configuracao);
             if (!usuarioLogado.SessaoAtiva)
             {
@@ -62,72 +43,35 @@ namespace Loja.Bll.Bll.AcessoBll
                 context.Fail();
                 return Task.CompletedTask;
             }
-            if(usuarioLogado.SessaoDeslogadaForcado)
-            {
-                //não permitimos!
-                context.Fail();
-                return Task.CompletedTask;
-            }
-            if (AutorizarPagina(context))
+
+            if (AutorizarPagina(context, usuarioLogado))
                 context.Succeed(requirement);
             else
                 context.Fail();
             return Task.CompletedTask;
         }
 
-        private bool AutorizarPagina(AuthorizationHandlerContext context)
+        private bool AutorizarPagina(AuthorizationHandlerContext context, UsuarioLogado usuarioLogado)
         {
             if (context.User == null)
                 return false;
             if (context.Resource == null)
                 return true;
 
-            //todo: por enquanto, autorizamos todo mundo
+            //se for um GET, verificamos se exigimos digitar a senha
+            //TODO: alguma páginas que são acessadar por ajax, como a do CEP, devem permitir o acesso
+            if ((httpContextAccessor?.HttpContext?.Request?.Method?.ToLower() ?? "") == "get")
+            {
+                if (UsuarioLogado.ClaimsUsuario.ConfirmarSenhaPorGet(context.User.Claims, configuracao))
+                {
+                    return false;
+                }
+            }
+
+
+            //TODO: corresponder páginas e controladores com as permissões do usuário
+            //precisamos converter as permisões do usuário em nomes de controllers
             return true;
-
-
-            //todo: afazer: atualizar periodicamente as permissões do banco (quer dizer, ler elas novamente)
-            //mas não é aqui onde devemos fazer...
-
-            //testar por controller
-            //todo: colocar as autorizacoes confrme vem do banco
-
-            if (context.Resource.ToString().Contains("HomeController"))
-            {
-                //sempre pode
-                return true;
-            }
-
-            if (context.Resource.ToString().Contains("PedidoController"))
-            {
-                if (context.User.IsInRole(Roles.PedidoController))
-                    return true;
-                return false;
-            }
-
-            if (context.Resource.ToString().Contains("ClienteController"))
-            {
-                if (context.User.IsInRole(Roles.ClienteController))
-                    return true;
-                return false;
-            }
-
-            if (context.Resource.ToString().Contains("CepController"))
-            {
-                if (context.User.IsInRole(Roles.CepController))
-                    return true;
-                return false;
-            }
-
-            if (context.Resource.ToString().Contains("ProdutosController"))
-            {
-                if (context.User.IsInRole(Roles.ProdutosController))
-                    return true;
-                return false;
-            }
-
-            //nao tratamos, nada feito!
-            return false;
         }
 
     }

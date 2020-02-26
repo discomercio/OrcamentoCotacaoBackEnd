@@ -43,7 +43,7 @@ namespace Loja.UI.Controllers
                 }
             }
             model.LojaAtivaId = usuarioLogado.LojaAtiva;
-            model.LojaAtivaNome = usuarioLogado.Loja_troca_rapida_monta_itens_select.FirstOrDefault(r => r.Id == model.LojaAtivaId)?.Nome;
+            model.LojaAtivaNome = usuarioLogado.LojasDisponiveis.FirstOrDefault(r => r.Id == model.LojaAtivaId)?.Nome;
             return View(model);
         }
 

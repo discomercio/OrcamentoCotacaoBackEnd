@@ -18,17 +18,6 @@
 @{
     var usuarioLogado = new Loja.Bll.Bll.AcessoBll.UsuarioLogado(User, HttpContextAccessor.HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
 }
-@if (usuarioLogado.SessaoDeslogadaForcado)
-{
-    <div>
-        <span class="red-text">
-            AVISO:
-        </span>
-        sua sessão foi encerrada porque foi feito login em outro computador ou em outro navegador. Somente é permitido um login ativo por vez.
-        <br />
-        Favor fazer o logout ao sair do terminal.
-    </div>
-}
 
 
 @using (Html.BeginForm("LoginSubmit", "Acesso", FormMethod.Post))
@@ -41,9 +30,13 @@
             <div class="row">
                 <div class="col s4"></div>
                 <div class="col s4">
-                    Acesso negado: o seu usuário não possui autorização para acessar essa página.
+                    Acesso negado: você deve fazer o login novamente. Por motivos de segurança, periodicamente
+                    você deve refazer o login.
                     <br />
-                    Faça o login como outro usuário ou entre em contato com o administrador do sistema.
+                    <br />
+                    Se você acabou de fazer o login e continua a receber esta mensagem,
+                    é possível que o seu usuário não possua autorização para acessar essa página.
+                    Nesse caso, faça o login como outro usuário ou entre em contato com o administrador do sistema.
                 </div>
                 <div class="col s4"></div>
             </div>
