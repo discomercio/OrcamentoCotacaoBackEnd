@@ -39,26 +39,35 @@ namespace Loja.Bll.Bll.AcessoBll
 
             if (configuracao.PermitirManterConectado)
                 if (!SessaoAtiva && clienteBll != null && usuarioAcessoBll != null)
-                    CriarSessaoPorUser(user, httpContextSession, clienteBll, usuarioAcessoBll, configuracao, this).Wait();
+                    CriarSessaoPorUser(user, httpContextSession, clienteBll, usuarioAcessoBll, configuracao, this);
 
             //verificar se devemos renovar as permissões do usuário
             if (Lista_operacoes_permitidas_data_atualizacao.AddMinutes(configuracao.RecarregarPermissoesUsuarioMinutos) < DateTimeOffset.UtcNow
-                && clienteBll != null)
+                && clienteBll != null && usuarioAcessoBll != null)
             {
-                string lstOperacoesPermitidas = clienteBll.BuscaListaOperacoesPermitidas(Usuario).Result;
-                Lista_operacoes_permitidas = lstOperacoesPermitidas;
-                Lista_operacoes_permitidas_data_atualizacao = DateTimeOffset.UtcNow;
+                CriarSessao_Lista_operacoes_permitidas(clienteBll, this, usuarioAcessoBll);
             }
         }
 
-        private static async Task CriarSessaoPorUser(ClaimsPrincipal? user, ISession httpContextSession, ClienteBll.ClienteBll clienteBll,
+        private void CriarSessao_Lista_operacoes_permitidas(ClienteBll.ClienteBll clienteBll, UsuarioLogado usuarioLogadoParaLAterarSessao,
+            UsuarioAcessoBll usuarioAcessoBll)
+        {
+            usuarioLogadoParaLAterarSessao.LojasDisponiveis =
+                usuarioAcessoBll.Loja_troca_rapida_monta_itens_select_a_partir_banco(Usuario, null).Result;
+
+            string lstOperacoesPermitidas = clienteBll.BuscaListaOperacoesPermitidas(Usuario).Result;
+            Lista_operacoes_permitidas = lstOperacoesPermitidas;
+            Lista_operacoes_permitidas_data_atualizacao = DateTimeOffset.UtcNow;
+        }
+
+        private void CriarSessaoPorUser(ClaimsPrincipal? user, ISession httpContextSession, ClienteBll.ClienteBll clienteBll,
             UsuarioAcessoBll usuarioAcessoBll, Configuracao configuracao,
             UsuarioLogado usuarioLogadoParaLAterarSessao)
         {
             string? usuarioClaim = user?.Claims.Where(r => r.Type == ClaimTypes.Name).FirstOrDefault()?.Value;
-            await CriarSessao(usuarioClaim, httpContextSession, clienteBll, usuarioAcessoBll, configuracao, usuarioLogadoParaLAterarSessao);
+            CriarSessao(usuarioClaim, httpContextSession, clienteBll, usuarioAcessoBll, configuracao, usuarioLogadoParaLAterarSessao);
         }
-        public static async Task CriarSessao(string? usuario, ISession httpContextSession, ClienteBll.ClienteBll clienteBll,
+        public static void CriarSessao(string? usuario, ISession httpContextSession, ClienteBll.ClienteBll clienteBll,
             UsuarioAcessoBll usuarioAcessoBll, Configuracao configuracao,
             UsuarioLogado? usuarioLogadoParaLAterarSessao = null)
         {
@@ -72,11 +81,7 @@ namespace Loja.Bll.Bll.AcessoBll
             usuario = usuario.Trim().ToUpper();
             usuarioLogadoParaLAterarSessao.Usuario = usuario;
 
-            usuarioLogadoParaLAterarSessao.LojasDisponiveis =
-                await usuarioAcessoBll.Loja_troca_rapida_monta_itens_select_a_partir_banco(usuario, null);
-
-            //uma data suficientemente antiga
-            usuarioLogadoParaLAterarSessao.Lista_operacoes_permitidas_data_atualizacao = Lista_operacoes_permitidas_data_atualizacao_bem_antiga;
+            usuarioLogadoParaLAterarSessao.CriarSessao_Lista_operacoes_permitidas(clienteBll, usuarioLogadoParaLAterarSessao, usuarioAcessoBll);
             usuarioLogadoParaLAterarSessao.SessaoAtiva = true;
         }
 

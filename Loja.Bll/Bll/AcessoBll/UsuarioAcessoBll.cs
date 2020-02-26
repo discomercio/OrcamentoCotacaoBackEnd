@@ -45,7 +45,7 @@ namespace Loja.Bll.Bll.AcessoBll
             ret.Sucesso = true;
 
             //cria a session
-            await UsuarioLogado.CriarSessao(usuario, HttpContextSession, clienteBll, this, configuracao);
+            UsuarioLogado.CriarSessao(usuario, HttpContextSession, clienteBll, this, configuracao);
             return ret;
         }
 
