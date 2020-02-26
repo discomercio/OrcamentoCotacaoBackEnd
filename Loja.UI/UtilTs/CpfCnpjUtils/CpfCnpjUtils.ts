@@ -136,7 +136,6 @@ export class CpfCnpjUtils {
     }
 
     public static cnpj_cpf_formata(cnpj_cpf: string): string {
-        debugger;
         let s = "" + cnpj_cpf;
         s = StringUtils.retorna_so_digitos(s);
         if (s.length == 11) {

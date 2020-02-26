@@ -239,7 +239,9 @@ namespace Loja.Bll.Util
 
             if (Constantes.Constantes.ID_PARAM_SITE == Constantes.Constantes.COD_SITE_ASSISTENCIA_TECNICA)
             {
+#pragma warning disable CS0162 // Unreachable code detected
                 var orcaTask = from c in db.TorcamentistaEindicadors
+#pragma warning restore CS0162 // Unreachable code detected
                                where (c.Apelido == indicador || c.Status == "A")
                                orderby c.Apelido
                                select c.Apelido;
@@ -295,7 +297,9 @@ namespace Loja.Bll.Util
 
             if (Constantes.Constantes.ID_PARAM_SITE == Constantes.Constantes.COD_SITE_ASSISTENCIA_TECNICA)
             {
+#pragma warning disable CS0162 // Unreachable code detected
                 var orcaTask = from c in db.TorcamentistaEindicadors
+#pragma warning restore CS0162 // Unreachable code detected
                                where c.Status == "A"
                                orderby c.Apelido
                                select c.Apelido;
@@ -726,7 +730,7 @@ namespace Loja.Bll.Util
             return retorno;
         }
 
-        public static async void ObterDisponibilidadeEstoque(List<RegrasBll> lstRegrasCrtlEstoque, List<ProdutoDto> lst_produtos,
+        public static void ObterDisponibilidadeEstoque(List<RegrasBll> lstRegrasCrtlEstoque, List<ProdutoDto> lst_produtos,
             List<string> lstErros, ContextoBdProvider contextoProvider, int id_nfe_emitente_selecao_manual)
         {
             id_nfe_emitente_selecao_manual = 0;
@@ -1120,14 +1124,11 @@ namespace Loja.Bll.Util
                                                          )
                                                    select c;
 
-            var transportadoraCepteste = transportadoraCepTask.ToList();
+            var transportadoraCepteste = await transportadoraCepTask.ToListAsync();
 
             TtransportadoraCep transportadoraCep = new TtransportadoraCep();
 
             return transportadoraCep;
-
-
-
         }
 
         //afazer melhorar esse metodo

@@ -174,7 +174,6 @@ namespace Loja.UI.Controllers
             string pedBonshop)
         {
             //necessário formatar o valor de desconto para colocar ponto
-            string retorno = "";
 
 
             /*
@@ -285,7 +284,7 @@ namespace Loja.UI.Controllers
                 viewModel.InstaladorInstala = Constantes.COD_INSTALADOR_INSTALA_SIM;
             }
 
-            return View(viewModel);
+            return await Task.FromResult(View(viewModel));
         }
 
         [HttpPost]

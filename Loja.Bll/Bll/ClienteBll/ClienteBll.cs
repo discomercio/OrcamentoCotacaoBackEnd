@@ -1326,7 +1326,7 @@ namespace Loja.Bll.ClienteBll
                 lstRetorno = (lstRetornoTask).ToList();
             }
 
-            return lstRetorno;
+            return await Task.FromResult(lstRetorno);
 
         }
 

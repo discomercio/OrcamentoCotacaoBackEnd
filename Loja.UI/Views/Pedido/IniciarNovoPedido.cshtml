@@ -143,6 +143,7 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
                             <label>COM(%)</label>
                         </div>
                     </div>
+#pragma warning disable CS0162
                     if (Loja.Bll.Constantes.Constantes.ID_PARAM_SITE == Loja.Bll.Constantes.Constantes.COD_SITE_ASSISTENCIA_TECNICA)
                     {
                         <div class="col s2" id="divPedBonshop">
@@ -163,6 +164,7 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
                             </div>
                         </div>
                     }
+#pragma warning restore CS0162
                 }
                 @*<div class="col s4"><input type="hidden" /></div>
                     <div class="col s2" style="line-height:normal">
@@ -230,7 +232,7 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
                                     int indexnumero = 0;
                                     @for (int ilista = 0; ilista <= (Model.ListaProdutos?.Count() ?? 0); ilista++)
                                     {
-                                        bool linhaNovoProduto = true;
+                                        //bool linhaNovoProduto = true;
                                         string index = "trocarporindex";
                                         string classe = "class=\"novoProduto\"";
                                         string classenovoProdutoEstoque = "class=\"novoProdutoEstoque\"";
@@ -240,7 +242,7 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
                                         Loja.Bll.Dto.PedidoDto.DetalhesPedido.PedidoProdutosDtoPedido i = new Loja.Bll.Dto.PedidoDto.DetalhesPedido.PedidoProdutosDtoPedido();
                                         if (ilista != (Model.ListaProdutos?.Count() ?? 0))
                                         {
-                                            linhaNovoProduto = false;
+                                            //linhaNovoProduto = false;
                                             i = Model.ListaProdutos[ilista];
                                             index = indexnumero.ToString();
                                             classe = "";

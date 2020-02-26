@@ -83,7 +83,7 @@ namespace Loja.Bll.CepBll
             lst = cepTask.ToList();
             //var cepDto = await cepTask.ToList();
 
-            return lst;
+            return await Task.FromResult(lst);
         }
 
         public async Task<IEnumerable<CepDto>> BuscarPorEndereco(string endereco, string uf, string cidade)
