@@ -8,9 +8,9 @@ namespace Loja.UI.Models.Pedido
 {
     public class CancelamentoAutomaticoViewModel
     {
-        public List<CancelamentoAutomaticoItem> cancelamentoAutomaticoItems { get; set; }
+        public List<CancelamentoAutomaticoItem>? cancelamentoAutomaticoItems { get; set; }
         public bool ConsultaUniversalPedidoOrcamento { get; set; }
         public bool MostrarLoja { get; set; }
-        public List<Loja.Bll.Bll.AcessoBll.UsuarioAcessoBll.LojaPermtidaUsuario> LojasDisponiveis { get; set; }
+        public List<Loja.Bll.Bll.AcessoBll.UsuarioAcessoBll.LojaPermtidaUsuario>? LojasDisponiveis { get; set; }
     }
 }

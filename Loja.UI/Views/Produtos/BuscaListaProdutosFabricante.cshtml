@@ -48,16 +48,18 @@
 
 
             <tbody>
-
-                @foreach (var item in Model.LstProdutos)
+                @if (Model.LstProdutos != null)
                 {
-                    <tr>
-                        <td>@item.Produto</td>
-                        <td>@item.Descricao</td>
-                        @* 200218: hamilton pediu para colocar sem o cifrão *@
-                        <td class="right-align">@String.Format("{0:F2}", item.Preco)</td>
-                    </tr>
+                    foreach (var item in Model.LstProdutos)
+                    {
+                        <tr>
+                            <td>@item.Produto</td>
+                            <td>@item.Descricao</td>
+                            @* 200218: hamilton pediu para colocar sem o cifrão *@
+                            <td class="right-align">@String.Format("{0:F2}", item.Preco)</td>
+                        </tr>
 
+                    }
                 }
             </tbody>
 
@@ -184,64 +186,67 @@
                         </p>
                     </td>
                 </tr>
-                @foreach (var i in Model.LstProdutos)
+                @if (Model.LstProdutos != null)
                 {
-                    <tr>
-                        @*<td style="background-color:#ffffff;
-                               background-size:auto;
-                               background-origin:padding-box;
-                               background-clip:border-box;
-                               border-right:1pt solid #C0C0C0;
-                               font-family:Arial, Helvetica, sans-serif;
-                               font-size:10pt;
-                               width:5px"
-                            valign="bottom"></td>*@
-                        <td style="width:70px;
+                    foreach (var i in Model.LstProdutos)
+                    {
+                        <tr>
+                            @*<td style="background-color:#ffffff;
+                                   background-size:auto;
+                                   background-origin:padding-box;
+                                   background-clip:border-box;
+                                   border-right:1pt solid #C0C0C0;
+                                   font-family:Arial, Helvetica, sans-serif;
+                                   font-size:10pt;
+                                   width:5px"
+                                valign="bottom"></td>*@
+                            <td style="width:70px;
                            border-right:1pt solid #C0C0C0;
                            border-bottom:1pt solid #C0C0C0;
                            font-family:Arial, Helvetica, sans-serif;
                            font-size:10pt;"
-                            valign="bottom">
-                            <p style="font-family:Arial, Helvetica, sans-serif;
+                                valign="bottom">
+                                <p style="font-family:Arial, Helvetica, sans-serif;
                               color:black;
                               font-weight:bold;
                               font-size:8pt;
                               vertical-align:top;
                               margin:0pt 2pt 1pt 2pt">
-                                @i.Produto
-                            </p>
-                        </td>
-                        <td style="border-right:1pt solid #C0C0C0;
+                                    @i.Produto
+                                </p>
+                            </td>
+                            <td style="border-right:1pt solid #C0C0C0;
                            border-bottom:1pt solid #C0C0C0;
                            font-family:Arial, Helvetica, sans-serif;
                            font-size:10pt;
                            width:280px;
                            " valign="bottom">
-                            <p style="font-family:Arial, Helvetica, sans-serif;
+                                <p style="font-family:Arial, Helvetica, sans-serif;
                               color:black;
                               font-weight:bold;
                               font-size:8pt;
                               vertical-align:top;
                               margin:0pt 2pt 1pt 2pt">
-                                @i.Descricao
-                            </p>
-                        </td>
-                        <td style="width:100px;
+                                    @i.Descricao
+                                </p>
+                            </td>
+                            <td style="width:100px;
                            border-bottom:1pt solid #C0C0C0;
                            font-family:Arial, Helvetica, sans-serif;
                            font-size:10pt;"
-                            valign="bottom" ;>
-                            <p onload="moeda(this)" style="font-weight:bold;
+                                valign="bottom" ;>
+                                <p onload="moeda(this)" style="font-weight:bold;
                               font-family:Arial, Helvetica, sans-serif;
                               color:black;
                               font-size:8pt;
                               vertical-align:top;
                               margin:0pt 4pt 0pt 2pt;
                               text-align:right">
-                                @String.Format("{0:c}", i.Preco)
-                            </p>
-                        </td>
-                    </tr>
+                                    @String.Format("{0:c}", i.Preco)
+                                </p>
+                            </td>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>

@@ -12,7 +12,7 @@
 <script>
 
     $(function () {
-        
+
 
         $('#cepEntrega').mask("00000-000");
         $('#cep').mask("00000-000");
@@ -319,7 +319,7 @@
                     msg = "Favor informar Sexo";
                     MostrarMsg("#modalErro", msg);
                     return false;
-                }                
+                }
                 if ($("#telRes").val() == '' &&
                     $("#celular").val() == '' &&
                     $("#telCom").val() == '') {
@@ -353,35 +353,35 @@
                 }
             }
             if ($("#cep").val() == '') {
-                    msg = "Favor informar Cep";
-                    MostrarMsg("#modalErro", msg);
-                    return false;
-                }
-                if ($("#endereco").val() == '') {
-                    msg = "Favor informar Endereco";
-                    MostrarMsg("#modalErro", msg);
-                    return false;
-                }
-                if ($("#numero").val() == '') {
-                    msg = "Favor informar Número";
-                    MostrarMsg("#modalErro", msg);
-                    return false;
-                }
-                if ($("#bairro").val() == '') {
-                    msg = "Favor informar Bairro";
-                    MostrarMsg("#modalErro", msg);
-                    return false;
-                }
-                if ($("#cidade").val() == '') {
-                    msg = "Favor informar Cidade";
-                    MostrarMsg("#modalErro", msg);
-                    return false;
-                }
-                if ($("#uf").val() == '') {
-                    msg = "Favor informar UF";
-                    MostrarMsg("#modalErro", msg);
-                    return false;
-                }
+                msg = "Favor informar Cep";
+                MostrarMsg("#modalErro", msg);
+                return false;
+            }
+            if ($("#endereco").val() == '') {
+                msg = "Favor informar Endereco";
+                MostrarMsg("#modalErro", msg);
+                return false;
+            }
+            if ($("#numero").val() == '') {
+                msg = "Favor informar Número";
+                MostrarMsg("#modalErro", msg);
+                return false;
+            }
+            if ($("#bairro").val() == '') {
+                msg = "Favor informar Bairro";
+                MostrarMsg("#modalErro", msg);
+                return false;
+            }
+            if ($("#cidade").val() == '') {
+                msg = "Favor informar Cidade";
+                MostrarMsg("#modalErro", msg);
+                return false;
+            }
+            if ($("#uf").val() == '') {
+                msg = "Favor informar UF";
+                MostrarMsg("#modalErro", msg);
+                return false;
+            }
 
         }
         else {
@@ -492,7 +492,7 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()" }
         <div class="row col s12"></div>
         //afazer: Será necessário trazer uma flag do servidor para verificar se o usuário pode alterar os dados do cliente
         <input type="hidden" id="permiteEditar" name="permiteEditar" value="@Model.PermiteEdicao.ToString()" />
-        <input type="hidden" id="tipo" name="tipo" value="@Model.DadosCliente.Tipo" />
+        <input type="hidden" id="tipo" name="tipo" value="@Model.DadosCliente?.Tipo" />
 
         @if (Model.PermiteEdicao)//adicionar uma flag para dizer se é novo
         {
@@ -501,17 +501,17 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()" }
             {
                 <div class="row">
                     <div class="input-field col s12">
-                        <input name="nome" id="nome" type="text"  value="@Model.DadosCliente?.Nome" />
+                        <input name="nome" id="nome" type="text" value="@Model.DadosCliente?.Nome" />
                         <label for="ie">NOME</label>
                     </div>
                 </div>
                 <div class="row col s12">
                     <div class="input-field col s3">
-                        <input name="Cnpj_Cpf" id="cpf_cnpj" type="text"  value="@Model.DadosCliente?.Cnpj_Cpf" />
+                        <input name="Cnpj_Cpf" id="cpf_cnpj" type="text" value="@Model.DadosCliente?.Cnpj_Cpf" />
                         <label for="cpf_cnpj">CPF</label>
                     </div>
                     <div class="input-field col s3">
-                        <input name="rg" id="rg" type="text"  value="@Model.DadosCliente?.Rg" />
+                        <input name="rg" id="rg" type="text" value="@Model.DadosCliente?.Rg" />
                         <label for="rg">RG</label>
                     </div>
                     <div class="input-field col s2">
@@ -521,7 +521,7 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()" }
                         <label for="nascimento">NASCIMENTO</label>
                     </div>
                     <div class="input-field col s1">
-                        <input name="sexo" id="sexo" type="text"  value="@Model.DadosCliente?.Sexo" />
+                        <input name="sexo" id="sexo" type="text" value="@Model.DadosCliente?.Sexo" />
                         <label for="sexo">SEXO</label>
                     </div>
                 </div>
@@ -530,13 +530,13 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()" }
             {
                 <div class="row col s12">
                     <div class="input-field col s12">
-                        <input name="nome" id="razao" type="text"  value="@Model.DadosCliente.Nome" />
+                        <input name="nome" id="razao" type="text" value="@Model.DadosCliente?.Nome" />
                         <label for="razao">RAZÃO SOCIAL</label>
                     </div>
                 </div>
                 <div class="row col s12">
                     <div class="input-field col s3">
-                        <input name="Cnpj_Cpf" id="cpf_cnpj" type="text"  value="@Model.DadosCliente.Cnpj_Cpf" />
+                        <input name="Cnpj_Cpf" id="cpf_cnpj" type="text" value="@Model.DadosCliente?.Cnpj_Cpf" />
                         <label for="cpf_cnpj">CNPJ</label>
                     </div>
                 </div>
@@ -545,33 +545,33 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()" }
             <div class="row col s12">
                 <div class="input-field col s2">
                     @* ao sair do campo chamar o metodo cep/buscarCep/ *@
-                    <input name="cep" type="text" id="cep" class="validate"  onblur="DigitouCepCadastro()" value="@Model.DadosCliente?.Cep" />
+                    <input name="cep" type="text" id="cep" class="validate" onblur="DigitouCepCadastro()" value="@Model.DadosCliente?.Cep" />
                     <label for="cep">CEP</label>
                 </div>
                 <div class="input-field col s4">
-                    <input name="endereco" id="endereco" type="text"  value="@Model.DadosCliente?.Endereco" />
+                    <input name="endereco" id="endereco" type="text" value="@Model.DadosCliente?.Endereco" />
                     <label for="endereco" id="lbEntrega">ENDEREÇO </label>
                 </div>
                 <div class="input-field col s2">
-                    <input name="numero" id="numero" type="text"  value="@Model.DadosCliente?.Numero" />
+                    <input name="numero" id="numero" type="text" value="@Model.DadosCliente?.Numero" />
                     <label for="numero">NÚMERO </label>
                 </div>
                 <div class="input-field col s2">
-                    <input name="complemento" id="complemento" type="text"  value="@Model.DadosCliente?.Complemento" />
+                    <input name="complemento" id="complemento" type="text" value="@Model.DadosCliente?.Complemento" />
                     <label for="complemento" id="lblComplemento">COMPLEMENTO</label>
                 </div>
             </div>
             <div class="row col s12">
                 <div class="input-field col s3">
-                    <input name="bairro" id="bairro" type="text"  value="@Model.DadosCliente?.Bairro" />
+                    <input name="bairro" id="bairro" type="text" value="@Model.DadosCliente?.Bairro" />
                     <label for="bairro" id="lblBairro">BAIRRO</label>
                 </div>
                 <div class="input-field col s3">
-                    <input name="cidade" id="cidade" type="text"  value="@Model.DadosCliente?.Cidade" />
+                    <input name="cidade" id="cidade" type="text" value="@Model.DadosCliente?.Cidade" />
                     <label for="cidade" id="lblCidade">CIDADE</label>
                 </div>
                 <div class="input-field col s3">
-                    <input name="uf" id="uf" type="text"  value="@Model.DadosCliente?.Uf" />
+                    <input name="uf" id="uf" type="text" value="@Model.DadosCliente?.Uf" />
                     <label for="uf" id="lblUf">UF</label>
                 </div>
             </div>
@@ -581,19 +581,19 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()" }
             {
                 <div class="row col s12">
                     <div class="input-field col s3">
-                        <input name="TelefoneResidencial" id="telRes" type="tel"  value="@Model.DadosCliente?.TelefoneResidencial" />
+                        <input name="TelefoneResidencial" id="telRes" type="tel" value="@Model.DadosCliente?.TelefoneResidencial" />
                         <label for="telRes">FONE RESIDENCIAL</label>
                     </div>
                     <div class="input-field col s3">
-                        <input name="Celular" id="celular" type="tel"  value="@Model.DadosCliente?.Celular" />
+                        <input name="Celular" id="celular" type="tel" value="@Model.DadosCliente?.Celular" />
                         <label for="celular">CELULAR</label>
                     </div>
                     <div class="input-field col s3">
-                        <input name="TelComercial" id="telCom" type="tel"  value="@Model.DadosCliente?.TelComercial" />
+                        <input name="TelComercial" id="telCom" type="tel" value="@Model.DadosCliente?.TelComercial" />
                         <label for="telCom">FONE COMERCIAL</label>
                     </div>
                     <div class="input-field col s1">
-                        <input name="Ramal" id="ramal" type="tel"  value="@Model.DadosCliente?.Ramal" />
+                        <input name="Ramal" id="ramal" type="tel" value="@Model.DadosCliente?.Ramal" />
                         <label for="ramal">RAMAL</label>
                     </div>
                 </div>
@@ -635,14 +635,14 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()" }
             //Email
             <div class="row col s12">
                 <div class="input-field col s12">
-                    <input name="email" id="email" type="email"  value="@Model.DadosCliente?.Email" />
+                    <input name="email" id="email" type="email" value="@Model.DadosCliente?.Email" />
                     <label for="email">E-MAIL</label>
                 </div>
             </div>
             //Email xml
             <div class="row col s12">
                 <div class="input-field col s12">
-                    <input name="emailXml" id="emailXml" type="email"  value="@Model.DadosCliente?.EmailXml" />
+                    <input name="emailXml" id="emailXml" type="email" value="@Model.DadosCliente?.EmailXml" />
                     <label for="emailXml">E-MAIL (XML)</label>
                 </div>
             </div>
@@ -658,7 +658,7 @@ Model.DadosCliente?.ProdutorRural), new { @id = "produtor", @name = "ProdutorRur
                     </div>
                     <div id="ehProdutor">
                         <div class="input-field col s2">
-                            <input name="ie" id="ie" type="text"  value="@Model.DadosCliente?.Ie" />
+                            <input name="ie" id="ie" type="text" value="@Model.DadosCliente?.Ie" />
                             <label id="lblIe" for="ie">IE</label>
                         </div>
                         <div class="input-field col s2">
@@ -674,7 +674,7 @@ Model.DadosCliente?.Contribuinte_Icms_Status), new { @id = "contribuinte", @name
             {
                 <div class="row col s12">
                     <div class="input-field col s3">
-                        <input name="ie" id="ie" type="text"  value="@Model.DadosCliente?.Ie" />
+                        <input name="ie" id="ie" type="text" value="@Model.DadosCliente?.Ie" />
                         <label for="ie">IE</label>
                     </div>
                     <div class="input-field col s3">
@@ -711,46 +711,49 @@ Model.DadosCliente?.Contribuinte_Icms_Status), new { @id = "contribuinte", @name
                                             {
                                                 Model.RefBancaria.Add(new Loja.Bll.Dto.ClienteDto.RefBancariaDtoCliente());
                                             }
-                                            @foreach (var r in Model.RefBancaria)
+                                            @if (Model.RefBancaria != null)
                                             {
-                                                string visible = "display: none;";
-                                                if (!String.IsNullOrWhiteSpace(r.ContaBanco))
+                                                foreach (var r in Model.RefBancaria)
                                                 {
-                                                    visible = "";
-                                                }
-                                                <div class="row" id="RefBancariabody-@indice" style="@visible">
-                                                    <div class="row">
-                                                        @* aqui vai um select com a lista de bancos *@
-                                                        <div class="input-field col s3">
-                                                            @Html.DropDownList("[" + indice + "].Banco",
-                                new SelectList(Model.LstComboBanco, "Value", "Text",
-                               r.Banco), new { @id = "banco", @name = "[" + indice + "].BancoDescricao" })
-                                                            <label>BANCO</label>
-                                                        </div>
-                                                        @*<div class="input-field col s2">
-                                                                <input name="[@indice].BancoDescricao" id="@indice-banco" type="text"  value="@r.BancoDescricao" />
-                                                                <label for="banco">BANCO</label>
-                                                            </div>*@
-                                                        <div class="input-field col s2">
-                                                            <input name="[@indice].ContaBanco" id="@indice-conta" type="text"  value="@r.ContaBanco" />
-                                                            <label for="conta">CONTA</label>
-                                                        </div>
-                                                        <div class="input-field col s2">
-                                                            <input name="[@indice].TelefoneBanco" id="@indice-telBanco" type="text"  value="@r.TelefoneBanco" />
-                                                            <label for="telBanco">TELEFONE</label>
-                                                        </div>
-                                                        <div class="input-field col s2">
-                                                            <input name="[@indice].Agencia" id="@indice-agencia" type="text"  value="@r.Agencia" />
-                                                            <label for="agencia">AGÊNCIA</label>
-                                                        </div>
-                                                        <div class="input-field col s2">
-                                                            <input name="[@indice].ContatoBanco" id="@indice-contatoBanco" type="text"  value="@r.ContatoBanco" />
-                                                            <label for="contatoBanco">CONTATO</label>
+                                                    string visible = "display: none;";
+                                                    if (!String.IsNullOrWhiteSpace(r.ContaBanco))
+                                                    {
+                                                        visible = "";
+                                                    }
+                                                    <div class="row" id="RefBancariabody-@indice" style="@visible">
+                                                        <div class="row">
+                                                            @* aqui vai um select com a lista de bancos *@
+                                                            <div class="input-field col s3">
+                                                                @Html.DropDownList("[" + indice + "].Banco",
+                                 new SelectList(Model.LstComboBanco, "Value", "Text",
+                                r.Banco), new { @id = "banco", @name = "[" + indice + "].BancoDescricao" })
+                                                                <label>BANCO</label>
+                                                            </div>
+                                                            @*<div class="input-field col s2">
+                                                                    <input name="[@indice].BancoDescricao" id="@indice-banco" type="text"  value="@r.BancoDescricao" />
+                                                                    <label for="banco">BANCO</label>
+                                                                </div>*@
+                                                            <div class="input-field col s2">
+                                                                <input name="[@indice].ContaBanco" id="@indice-conta" type="text" value="@r.ContaBanco" />
+                                                                <label for="conta">CONTA</label>
+                                                            </div>
+                                                            <div class="input-field col s2">
+                                                                <input name="[@indice].TelefoneBanco" id="@indice-telBanco" type="text" value="@r.TelefoneBanco" />
+                                                                <label for="telBanco">TELEFONE</label>
+                                                            </div>
+                                                            <div class="input-field col s2">
+                                                                <input name="[@indice].Agencia" id="@indice-agencia" type="text" value="@r.Agencia" />
+                                                                <label for="agencia">AGÊNCIA</label>
+                                                            </div>
+                                                            <div class="input-field col s2">
+                                                                <input name="[@indice].ContatoBanco" id="@indice-contatoBanco" type="text" value="@r.ContatoBanco" />
+                                                                <label for="contatoBanco">CONTATO</label>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
 
-                                                indice++;
+                                                    indice++;
+                                                }
                                             }
                                             @*}
                                                 else
@@ -791,15 +794,15 @@ Model.DadosCliente?.Contribuinte_Icms_Status), new { @id = "contribuinte", @name
                                                 <div class="collapsible-body">
                                                     <div class="row">
                                                         <div class="input-field col s3">
-                                                            <input name="[@index].Nome_Empresa" id="@index-Nome_Empresa" type="text"  value="@r.Nome_Empresa" />
+                                                            <input name="[@index].Nome_Empresa" id="@index-Nome_Empresa" type="text" value="@r.Nome_Empresa" />
                                                             <label for="Nome_Empresa">NOME DA EMPRESA</label>
                                                         </div>
                                                         <div class="input-field col s2">
-                                                            <input name="[@index].Contato" id="@index-Contato" type="text"  value="@r.Contato" />
+                                                            <input name="[@index].Contato" id="@index-Contato" type="text" value="@r.Contato" />
                                                             <label for="Contato">CONTATO</label>
                                                         </div>
                                                         <div class="input-field col s2">
-                                                            <input name="[@index].Telefone" id="@index-Telefone" type="text"  value="@r.Telefone" />
+                                                            <input name="[@index].Telefone" id="@index-Telefone" type="text" value="@r.Telefone" />
                                                             <label for="Telefone">TELEFONE</label>
                                                         </div>
                                                     </div>
@@ -830,7 +833,7 @@ Model.DadosCliente?.Contribuinte_Icms_Status), new { @id = "contribuinte", @name
         }
         else
         {
-            @if (Model.DadosCliente.Tipo == "PF")
+            @if (Model.DadosCliente?.Tipo == "PF")
             {
                 //Não permite edição PF
                 <div class="row">
@@ -869,7 +872,7 @@ Model.DadosCliente?.Contribuinte_Icms_Status), new { @id = "contribuinte", @name
                     <div class="col s12">
                         <span class="caixa">
                             <span class="rotulo">Razão Social:</span>
-                            <span class="dado" name="razao" id="nome"> @Model.DadosCliente.Nome</span>
+                            <span class="dado" name="razao" id="nome"> @Model.DadosCliente?.Nome</span>
                         </span>
                     </div>
                 </div>
@@ -877,7 +880,7 @@ Model.DadosCliente?.Contribuinte_Icms_Status), new { @id = "contribuinte", @name
                     <div class="col s12">
                         <span class="caixa">
                             <span class="rotulo">CNPJ:</span>
-                            <span class="dado" name="cpf_cnpj" id="cpf_cnpj"> @Model.DadosCliente.Cnpj_Cpf</span>
+                            <span class="dado" name="cpf_cnpj" id="cpf_cnpj"> @Model.DadosCliente?.Cnpj_Cpf</span>
                         </span>
                     </div>
                 </div>
@@ -906,25 +909,25 @@ Model.DadosCliente?.Contribuinte_Icms_Status), new { @id = "contribuinte", @name
                 <div class="col s12">
                     <span class="caixa">
                         <span class="rotulo">Telefones:</span>
-                        @if (!String.IsNullOrEmpty(Model.DadosCliente.DddResidencial) &&
+                        @if (!String.IsNullOrEmpty(Model.DadosCliente?.DddResidencial) &&
 !String.IsNullOrEmpty(Model.DadosCliente.TelefoneResidencial))
                         {
                             <span id="dddRes" name="dddRes" style="visibility:hidden">@Model.DadosCliente.DddResidencial</span>
                             <span class="dado" id="telRes" name="telRes">@Model.DadosCliente.TelefoneResidencial</span>
                         }
-                        @if (!String.IsNullOrEmpty(Model.DadosCliente.DddCelular) &&
+                        @if (!String.IsNullOrEmpty(Model.DadosCliente?.DddCelular) &&
 !String.IsNullOrEmpty(Model.DadosCliente.Celular))
                         {
                             <span id="dddCelular" name="dddCel" style="visibility:hidden">@Model.DadosCliente.DddCelular</span>
                             <span class="dado" name="telCel" id="telCelular">@Model.DadosCliente.Celular</span>
                         }
-                        @if (!String.IsNullOrEmpty(Model.DadosCliente.DddComercial) &&
+                        @if (!String.IsNullOrEmpty(Model.DadosCliente?.DddComercial) &&
 !String.IsNullOrEmpty(Model.DadosCliente.TelComercial))
                         {
                             <span id="dddComercial" name="dddCom" style="visibility:hidden">@Model.DadosCliente.DddComercial</span>
                             <span class="dado" id="telComercial" name="telCom">@Model.DadosCliente.TelComercial</span>
                         }
-                        @if (!String.IsNullOrEmpty(Model.DadosCliente.DddComercial2) &&
+                        @if (!String.IsNullOrEmpty(Model.DadosCliente?.DddComercial2) &&
 !String.IsNullOrEmpty(Model.DadosCliente.TelComercial2))
                         {
                             <span id="dddComercial2" name="dddCom2" style="visibility:hidden">@Model.DadosCliente.DddComercial2</span>
@@ -951,7 +954,7 @@ Model.DadosCliente?.Contribuinte_Icms_Status), new { @id = "contribuinte", @name
                     <div class="col s12">
                         <span class="caixa">
                             <span class="rotulo">Nome da pessoa para contato na empresa:</span>
-                            <span class="dado" id="contatoEmpresa" name="contato">@Model.DadosCliente.Contato</span>
+                            <span class="dado" id="contatoEmpresa" name="contato">@Model.DadosCliente?.Contato</span>
                         </span>
                     </div>
                 </div>
@@ -961,7 +964,7 @@ Model.DadosCliente?.Contribuinte_Icms_Status), new { @id = "contribuinte", @name
                 <div class="col s12">
                     <span class="caixa">
                         <span class="rotulo">Email:</span>
-                        <span class="dado" id="email" name="email">@Model.DadosCliente.Email</span>
+                        <span class="dado" id="email" name="email">@Model.DadosCliente?.Email</span>
                     </span>
                 </div>
             </div>
@@ -970,7 +973,7 @@ Model.DadosCliente?.Contribuinte_Icms_Status), new { @id = "contribuinte", @name
                 <div class="col s12">
                     <span class="caixa">
                         <span class="rotulo">Email (xml):</span>
-                        <span class="dado" id="emailXml" name="emailXml">@Model.DadosCliente.EmailXml</span>
+                        <span class="dado" id="emailXml" name="emailXml">@Model.DadosCliente?.EmailXml</span>
                     </span>
                 </div>
             </div>
@@ -987,7 +990,7 @@ Model.DadosCliente?.Contribuinte_Icms_Status), new { @id = "contribuinte", @name
                         </div>
                         <div id="ehProdutor">
                             <div class="input-field col s2">
-                                <input name="ie" id="ie" type="text"  value="@Model.DadosCliente?.Ie" />
+                                <input name="ie" id="ie" type="text" value="@Model.DadosCliente?.Ie" />
                                 <label id="lblIe" for="ie">IE</label>
                             </div>
                             <div class="input-field col s2">
@@ -1006,7 +1009,7 @@ Model.DadosCliente?.Contribuinte_Icms_Status), new { @id = "contribuinte", @name
                     <div class="col s12">
                         <span class="caixa">
                             <span class="rotulo">IE:</span>
-                            <span class="dado" id="ie" name="ie">@Model.DadosCliente.Ie</span>
+                            <span class="dado" id="ie" name="ie">@Model.DadosCliente?.Ie</span>
                         </span>
                     </div>
                 </div>
@@ -1015,7 +1018,7 @@ Model.DadosCliente?.Contribuinte_Icms_Status), new { @id = "contribuinte", @name
                         <div class="input-field col s4">
                             @Html.DropDownList("Contribuinte_Icms_Status",
     new SelectList(Model.LstContribuinte, "Value", "Text",
-    Model.DadosCliente.Contribuinte_Icms_Status), new { @id = "contribuinte" })
+    Model.DadosCliente?.Contribuinte_Icms_Status), new { @id = "contribuinte" })
                             <label>CONTRIBUINTE ICMS</label>
                         </div>
                     </div>
@@ -1025,49 +1028,55 @@ Model.DadosCliente?.Contribuinte_Icms_Status), new { @id = "contribuinte", @name
                         <div class="input-field">
                             <ul class="collapsible">
                                 <li>
-                                    <div class="collapsible-header" style="color:black!important">Referências Bancárias (@Model.RefBancaria.Count)</div>
-                                    @foreach (var r in Model.RefBancaria)
-                                    {<div class="collapsible-body">
-                                            <span class="caixa">
-                                                <span class="rotulo">Banco: </span>
-                                                <span class="dado">@r.BancoDescricao </span>
-                                            </span>
-                                            <span class="caixa">
-                                                <span class="rotulo">Agência: </span>
-                                                <span class="dado">@r.Agencia</span>
-                                            </span>
-                                            <span class="caixa">
-                                                <span class="rotulo">Conta: </span>
-                                                <span class="dado">@r.ContaBanco </span>
-                                            </span>
-                                            <span class="caixa">
-                                                <span class="rotulo">Telefone: </span>
-                                                <span class="dado">@r.TelefoneBanco</span>
-                                            </span>
-                                        </div>
+                                    <div class="collapsible-header" style="color:black!important">Referências Bancárias (@Model.RefBancaria?.Count)</div>
+                                    @if (Model.RefBancaria != null)
+                                    {
+                                        foreach (var r in Model.RefBancaria)
+                                        {
+                                            <div class="collapsible-body">
+                                                <span class="caixa">
+                                                    <span class="rotulo">Banco: </span>
+                                                    <span class="dado">@r.BancoDescricao </span>
+                                                </span>
+                                                <span class="caixa">
+                                                    <span class="rotulo">Agência: </span>
+                                                    <span class="dado">@r.Agencia</span>
+                                                </span>
+                                                <span class="caixa">
+                                                    <span class="rotulo">Conta: </span>
+                                                    <span class="dado">@r.ContaBanco </span>
+                                                </span>
+                                                <span class="caixa">
+                                                    <span class="rotulo">Telefone: </span>
+                                                    <span class="dado">@r.TelefoneBanco</span>
+                                                </span>
+                                            </div>
+                                        }
                                     }
                                 </li>
                                 <li>
-                                    <div class="collapsible-header" style="color:black!important">Referências Comerciais (@Model.RefComercial.Count)</div>
-                                    @foreach (var r in Model.RefComercial)
+                                    <div class="collapsible-header" style="color:black!important">Referências Comerciais (@Model.RefComercial?.Count)</div>
+                                    @if (Model.RefComercial != null)
                                     {
-                                        <div class="collapsible-body">
-                                            <span class="caixa">
-                                                <span class="rotulo">Empresa: </span>
-                                                <span class="dado">@r.Nome_Empresa </span>
-                                            </span>
-                                            <span class="caixa">
-                                                <span class="rotulo">Contato: </span>
-                                                <span class="dado">@r.Contato</span>
-                                            </span>
-                                            <span class="caixa">
-                                                <span class="rotulo">Telefone: </span>
-                                                <span class="dado">@r.Telefone </span>
-                                            </span>
-                                        </div>
+                                        foreach (var r in Model.RefComercial)
+                                        {
+                                            <div class="collapsible-body">
+                                                <span class="caixa">
+                                                    <span class="rotulo">Empresa: </span>
+                                                    <span class="dado">@r.Nome_Empresa </span>
+                                                </span>
+                                                <span class="caixa">
+                                                    <span class="rotulo">Contato: </span>
+                                                    <span class="dado">@r.Contato</span>
+                                                </span>
+                                                <span class="caixa">
+                                                    <span class="rotulo">Telefone: </span>
+                                                    <span class="dado">@r.Telefone </span>
+                                                </span>
+                                            </div>
 
+                                        }
                                     }
-
                                 </li>
                             </ul>
                         </div>
@@ -1123,9 +1132,12 @@ new { @id = "indicador" })
                 <div class="input-field col s4">
                     <select id="justificativa" name="EndEtg_cod_justificativa">
                         <option value="">Selecione</option>
-                        @foreach (var i in Model.EndJustificativa)
+                        @if (Model.EndJustificativa != null)
                         {
-                            <option value="@i.EndEtg_cod_justificativa">@i.EndEtg_descricao_justificativa</option>
+                            foreach (var i in Model.EndJustificativa)
+                            {
+                                <option value="@i.EndEtg_cod_justificativa">@i.EndEtg_descricao_justificativa</option>
+                            }
                         }
                     </select>
                     <label id="lblJustificativa">Justifique o endereço</label>

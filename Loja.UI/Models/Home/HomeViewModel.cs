@@ -7,9 +7,9 @@ namespace Loja.UI.Models.Home
 {
     public class HomeViewModel
     {
-        public string LojaAtivaId { get; set; }
-        public string LojaAtivaNome { get; set; }
+        public string? LojaAtivaId { get; set; }
+        public string? LojaAtivaNome { get; set; }
         public bool ErroChavearLoja { get; set; }
-        public string LojaTentandoChavearId { get; set; }
+        public string? LojaTentandoChavearId { get; set; }
     }
 }

@@ -22,11 +22,25 @@ namespace Loja.Bll.Bll.AcessoBll
             this.httpContextSession = httpContextSession;
             if (SessaoAtiva)
             {
-                //verificamos se o nome bate
-                if (user?.Identity != null)
+                bool inativarSessao = false;
+                if (user?.Identity == null)
+                    inativarSessao = true;
+                else
+                {
+                    //verificamos se o nome bate
                     if (user.Identity.IsAuthenticated && !string.IsNullOrEmpty(user.Identity.Name))
+                    {
                         if (user.Identity.Name != Usuario)
-                            SessaoAtiva = false;
+                            inativarSessao = true;
+                    }
+                    else
+                    {
+                        inativarSessao = true;
+                    }
+                }
+
+                if (inativarSessao)
+                    SessaoAtiva = false;
             }
 
             if (configuracao.PermitirManterConectado)
