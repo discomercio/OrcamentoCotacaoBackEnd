@@ -73,7 +73,7 @@
         });
     </script>
 
-    @if (Model.cancelamentoAutomaticoItems?.Count < 1)
+    @if (Model.cancelamentoAutomaticoItems.Count < 1)
     {
         <span>
             NENHUM PEDIDO.
@@ -113,40 +113,37 @@
             </thead>
 
             <tbody>
-                @if (Model.cancelamentoAutomaticoItems != null)
+                @foreach (var c in Model.cancelamentoAutomaticoItems)
                 {
-                    foreach (var c in Model.cancelamentoAutomaticoItems)
-                    {
-                        <tr>
-                            <td style="text-align: right">
-                                @c.NumeroLinha
-                            </td>
+                    <tr>
+                        <td style="text-align: right">
+                            @c.NumeroLinha
+                        </td>
+                        <td>
+                            @c.DataFinal?.ToShortDateString()
+                        </td>
+                        <td>
+                            @c.Pedido
+                        </td>
+                        @if (Model.MostrarLoja)
+                        {
                             <td>
-                                @c.DataFinal?.ToShortDateString()
+                                @c.Loja
                             </td>
+                        }
+                        @if (Model.ConsultaUniversalPedidoOrcamento)
+                        {
                             <td>
-                                @c.Pedido
+                                @c.Vendedor
                             </td>
-                            @if (Model.MostrarLoja)
-                            {
-                                <td>
-                                    @c.Loja
-                                </td>
-                            }
-                            @if (Model.ConsultaUniversalPedidoOrcamento)
-                            {
-                                <td>
-                                    @c.Vendedor
-                                </td>
-                            }
-                            <td>
-                                @c.NomeDoCliente
-                            </td>
-                            <td>
-                                @c.Analise_credito_descricao
-                            </td>
-                        </tr>
-                    }
+                        }
+                        <td>
+                            @c.NomeDoCliente
+                        </td>
+                        <td>
+                            @c.Analise_credito_descricao
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>

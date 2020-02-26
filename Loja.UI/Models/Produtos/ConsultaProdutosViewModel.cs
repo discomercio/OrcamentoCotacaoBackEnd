@@ -9,8 +9,8 @@ namespace Loja.UI.Models.Produtos
 {
     public class ConsultaProdutosViewModel
     {
-        public string? Fabricante { get; set; }
+        public string Fabricante { get; set; }
 
-        public List<ConsultaProdutosDto>? LstProdutos { get; set; }
+        public List<ConsultaProdutosDto> LstProdutos { get; set; }
     }
 }

@@ -58,7 +58,7 @@
         if (pathAtual.ToLower() != pathLogin.ToLower())
         {
             //vamos para o login e acabou!
-            HttpContextAccessor?.HttpContext?.Response.Redirect(pathLogin);
+            HttpContextAccessor.HttpContext.Response.Redirect(pathLogin);
         }
     }
 }

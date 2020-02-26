@@ -262,7 +262,7 @@ namespace Loja.UI.Controllers
 
             viewModel.Cnpj_Cpf = pedidoDtoSession.DadosCliente.Cnpj_Cpf;
             viewModel.NomeCliente = pedidoDtoSession.DadosCliente.Nome;
-            viewModel.VlTotalPedido = pedidoDtoSession.VlTotalDestePedido?.ToString();
+            viewModel.VlTotalPedido = pedidoDtoSession.VlTotalDestePedido.ToString();
 
             if (pedidoDtoSession.DetalhesNF != null)
             {
@@ -314,7 +314,7 @@ namespace Loja.UI.Controllers
                 short.Parse(Constantes.COD_ST_BEM_USO_CONSUMO_NAO);
 
             //entrega imediata é 1 = não | 2 = sim
-            pedidoDtoSession.DetalhesNF.EntregaImediata = detalhesPedido.EntregaImediata?.ToString() != "1" ?
+            pedidoDtoSession.DetalhesNF.EntregaImediata = detalhesPedido.EntregaImediata.ToString() != "1" ?
                 Constantes.COD_ETG_IMEDIATA_SIM : Constantes.COD_ETG_IMEDIATA_NAO;
 
             //teremos que passar a session para o metodo na bll para salvar o pedido

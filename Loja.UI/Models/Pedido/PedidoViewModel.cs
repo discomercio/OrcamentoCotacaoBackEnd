@@ -8,6 +8,6 @@ namespace Loja.UI.Models.Pedido
 {
     public class PedidoViewModel
     {
-        public PedidoDto? PedidoDto { get; set; }
+        public PedidoDto PedidoDto { get; set; }
     }
 }

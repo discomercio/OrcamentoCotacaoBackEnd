@@ -26,8 +26,8 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
             @* Indicadores *@
 
             <div class="row">
-                @if (Model.ListaOperacoesPermitidas?.IndexOf(Loja.Bll.Constantes
-.Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
+                @if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
+   .Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
                 {
                     @* Indicação *@
                     <div class="col s6">
@@ -58,15 +58,15 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
                         <input type="hidden" />
                     </div>
                 }
-                @if (Model.ListaOperacoesPermitidas?.IndexOf(Loja.Bll.Constantes
-.Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD.ToString()) != -1)
+                @if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
+   .Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD.ToString()) != -1)
                 {
 
 
                     <div class="col s2">
                         <label>
                             <input class="with-gap" type="radio" id="chkAutomatico" name="cdAutomatico" value="false" />
-                            <span class="dado">Automático</span>
+                            <span class="dado">Aultomático</span>
                         </label>
                     </div>
                     <div class="col s2">
@@ -81,8 +81,8 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
                 <div class="col s12">
                     <input type="hidden" />
                 </div>
-                @if (Model.ListaOperacoesPermitidas?.IndexOf(Loja.Bll.Constantes
-.Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
+                @if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
+   .Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
                 {
                     <div class="col s4" id="divIndicadores">
                         <div class="input-field">
@@ -96,8 +96,8 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
                 <div class="col s2">
                     <input type="hidden" />
                 </div>
-                @if (Model.ListaOperacoesPermitidas?.IndexOf(Loja.Bll.Constantes
-.Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD.ToString()) != -1)
+                @if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
+   .Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD.ToString()) != -1)
                 {
                     <div class="col s4" id="divSelecaoCd">
                         <div class="input-field">
@@ -116,8 +116,8 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
                 <div class="col s12">
                     <input type="hidden" />
                 </div>
-                @if (Model.ListaOperacoesPermitidas?.IndexOf(Loja.Bll.Constantes
-.Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
+                @if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
+   .Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
                 {
                     <div class="col s2" id="divComRA">
                         <label>
@@ -243,10 +243,7 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
                                         if (ilista != (Model.ListaProdutos?.Count() ?? 0))
                                         {
                                             //linhaNovoProduto = false;
-                                            if (Model.ListaProdutos != null)
-                                            {
-                                                i = Model.ListaProdutos[ilista];
-                                            }
+                                            i = Model.ListaProdutos[ilista];
                                             index = indexnumero.ToString();
                                             classe = "";
                                             classenovoProdutoEstoque = "";
@@ -425,7 +422,7 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
             </div>
 
             @* aqui vai a condição para mostrar a div A vista *@
-            @if (Model.FormaPagto?.ListaAvista != null)
+            @if (Model.FormaPagto.ListaAvista != null)
             {
                 <div class="row col s12" id="Avista" style="display:none">
                     @* Parcelamento *@
@@ -456,7 +453,7 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
 
 
             @* aqui vai a condição para mostrar a div Parcela Unica *@
-            @if (Model.FormaPagto?.ListaParcUnica != null)
+            @if (Model.FormaPagto.ListaParcUnica != null)
             {
                 <div class="row col s12" id="ParcUnica" style="display:none">
                     @* Parcelamento *@
@@ -491,7 +488,7 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
             }
 
             @* aqui vai a condição para mostrar a div Parcela com entrada *@
-            @if (Model.FormaPagto?.ListaParcComEntrada != null)
+            @if (Model.FormaPagto.ListaParcComEntrada != null)
             {
                 <div id="ParcComEntrada" style="display:none">
                     <div class="row col s12">
@@ -547,7 +544,7 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
             }
 
             @* aqui vai a condição para mostrar a div Pagamento com Cartão Internet *@
-            @if (Model.FormaPagto?.ParcCartaoInternet ?? false)
+            @if (Model.FormaPagto.ParcCartaoInternet)
             {
                 <div class="row col s12" id="PagtoCartaoInternet" style="display:none">
                     @* Parcelamento  *@
@@ -566,7 +563,7 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
             }
 
             @* aqui vai a condição para mostrar a div Pagamento com Cartão Maquineta *@
-            @if (Model.FormaPagto?.ParcCartaoMaquineta ?? false)
+            @if (Model.FormaPagto.ParcCartaoMaquineta)
             {
                 <div class="row col s12" id="PagtoCartaoMaquineta" style="display:none">
                     @* Parcelamento  *@
@@ -612,8 +609,8 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
 
         @* criar os campos de FormaPagtoCriacao *@
         <input type="hidden" name="Totaldestepedido" id="TotalDestePedido" value="@Model.VlTotalDestePedido" />
-        <input type="hidden" name="Qtde_parcelas" id="Qtde_Parcelas" value="@Model.FormaPagtoCriacao?.Qtde_Parcelas" /> @*Descrição da forma de pagto*@
-        <input type="hidden" name="Rb_forma_pagto" id="Rb_forma_pagto" value="@Model.FormaPagtoCriacao?.Rb_forma_pagto" /> @*Tipo da forma de pagto*@
+        <input type="hidden" name="Qtde_parcelas" id="Qtde_Parcelas" value="@Model.FormaPagtoCriacao.Qtde_Parcelas" /> @*Descrição da forma de pagto*@
+        <input type="hidden" name="Rb_forma_pagto" id="Rb_forma_pagto" value="@Model.FormaPagtoCriacao.Rb_forma_pagto" /> @*Tipo da forma de pagto*@
         <input type="hidden" name="Op_av_forma_pagto" id="Op_av_forma_pagto" />
         <input type="hidden" name="Op_pu_forma_pagto" id="Op_pu_forma_pagto" />
         <input type="hidden" name="C_pu_valor" id="C_pu_valor" />
@@ -663,53 +660,50 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
                     <table class="destaquelinha tabelaProd"
                            style="max-height:50%;">
                         <tbody>
-                            @if (Model.ProdutoCombo != null && Model.ProdutoCombo.ProdutoDto != null)
+                            @foreach (var i in Model.ProdutoCombo.ProdutoDto)
                             {
-                                foreach (var i in Model.ProdutoCombo.ProdutoDto)
+                                if (i.Preco_lista > 0)
                                 {
-                                    if (i.Preco_lista > 0)
+                                    <tr class="prod">
+                                        <td style="display:none">
+                                            @i.Fabricante
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input class="with-gap check" type="radio" value="@i.Produto" />
+                                                <span style="color:black !important;">@i.Produto</span>
+                                            </label>
+                                        </td>
+                                        @*<td> @i.Produto</td>*@
+                                        <td> @Html.Raw(i.Descricao_html)</td>
+                                        <td class="tdtabela preco">@string.Format("{0:c2}", i.Preco_lista)</td>
+                                    </tr>
                                     {
-                                        <tr class="prod">
-                                            <td style="display:none">
-                                                @i.Fabricante
-                                            </td>
-                                            <td>
-                                                <label>
-                                                    <input class="with-gap check" type="radio" value="@i.Produto" />
-                                                    <span style="color:black !important;">@i.Produto</span>
-                                                </label>
-                                            </td>
-                                            @*<td> @i.Produto</td>*@
-                                            <td> @Html.Raw(i.Descricao_html)</td>
-                                            <td class="tdtabela preco">@string.Format("{0:c2}", i.Preco_lista)</td>
-                                        </tr>
+                                        var filhosDiretos = Model.ProdutoCombo.ProdutoCompostoDto.Where(el => el.PaiFabricante == i.Fabricante && el.PaiProduto == i.Produto);
+                                        foreach (var filho in filhosDiretos)
                                         {
-                                            var filhosDiretos = Model.ProdutoCombo.ProdutoCompostoDto.Where(el => el.PaiFabricante == i.Fabricante && el.PaiProduto == i.Produto);
-                                            foreach (var filho in filhosDiretos)
+                                            foreach (var filhote in filho.Filhos)
                                             {
-                                                foreach (var filhote in filho.Filhos)
+                                                var dadofilhote = Model.ProdutoCombo.ProdutoDto.Where(el => el.Fabricante == filhote.Fabricante && el.Produto == filhote.Produto);
+                                                foreach (var filhotetela in dadofilhote)
                                                 {
-                                                    var dadofilhote = Model.ProdutoCombo.ProdutoDto.Where(el => el.Fabricante == filhote.Fabricante && el.Produto == filhote.Produto);
-                                                    foreach (var filhotetela in dadofilhote)
-                                                    {
-                                                        <tr class="trfilho">
-                                                            <td class="itemfilho">
-                                                                <span style="padding-left:40px !important;">
-                                                                    @filhote.Qtde x
-                                                                    @filhote.Fabricante/@filhote.Fabricante_Nome/
-                                                                    @filhotetela.Produto
-                                                                </span>
-                                                            </td>
-                                                            <td class="itemfilho">
-                                                                @Html.Raw(filhotetela.Descricao_html)
-                                                            </td>
-                                                            <td class="itemfilho preco">@string.Format("{0:c2}", filhotetela.Preco_lista)</td>
-                                                        </tr>
-                                                    }
+                                                    <tr class="trfilho">
+                                                        <td class="itemfilho">
+                                                            <span style="padding-left:40px !important;">
+                                                                @filhote.Qtde x
+                                                                @filhote.Fabricante/@filhote.Fabricante_Nome/
+                                                                @filhotetela.Produto
+                                                            </span>
+                                                        </td>
+                                                        <td class="itemfilho">
+                                                            @Html.Raw(filhotetela.Descricao_html)
+                                                        </td>
+                                                        <td class="itemfilho preco">@string.Format("{0:c2}", filhotetela.Preco_lista)</td>
+                                                    </tr>
                                                 }
                                             }
-
                                         }
+
                                     }
                                 }
                             }

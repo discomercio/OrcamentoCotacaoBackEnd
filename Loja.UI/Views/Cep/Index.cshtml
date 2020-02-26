@@ -8,7 +8,7 @@
 
 <div class="row col s12" id="container_cep">
     @if (Model != null)
-        @(Model.ListaCep?[0].Endereco)
+        @Model.ListaCep[0].Endereco
     <div class="input-field col s2">
         @* ao sair do campo chamar o metodo cep/buscarCep/ *@
         <input name="EndEtg_cep" type="text" id="cepEntrega" onblur="buscarCep()" />
