@@ -22,7 +22,8 @@ using Loja.Bll.Constantes;
 using Loja.Bll.Bll.AcessoBll;
 using Loja.Bll.Util;
 
-#nullable enable
+//TODO: habilitar nullable no projeto
+//#nullable enable
 
 namespace Loja.UI.Controllers
 {

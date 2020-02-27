@@ -12,6 +12,11 @@ using Loja.Bll.Util;
 
 namespace Loja.Bll.Bll.AcessoBll
 {
+    /*
+     * nota: testado com o site no ISS configurado para usar a autenticação do Windows e negar o acesso anônimo
+     * 
+     * */
+
     public class AcessoRequirement : IAuthorizationRequirement
     {
         //sim, vazia....
