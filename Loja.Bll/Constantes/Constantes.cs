@@ -50,6 +50,11 @@ namespace Loja.Bll.Constantes
 
         public const int PERC_DESAGIO_RA_LIQUIDA = 20;
 
+        //'	Criptografia em SessionCtrl (tratamento da sessão expirada)
+        public const string FATOR_CRIPTO_SESSION_CTRL = "1329";
+        public const string SESSION_CTRL_MODULO_CENTRAL = "CENTR";
+        public const string SESSION_CTRL_MODULO_LOJA = "LOJA";
+        public const string SESSION_CTRL_MODULO_ORCAMENTO = "ORCTO";
 
         //'	PARÂMETRO DE FUNCIONAMENTO DO SITE (ARTVEN3 = BONSHOP; ARTVEN = FABRICANTE)
 
@@ -379,7 +384,7 @@ namespace Loja.Bll.Constantes
         //'	VISANET
 
         public const string VISANET_AUTHENTTYPE = "1";     /*'	AUTHENTTYPE = 1: AUTENTICAÇÃO FEITA ATRAVÉS DA DIGITAÇÃO DA SENHA PELO CLIENTE (DEPENDE DE INTEGRAÇÃO ENTRE VISANET E EMISSOR DO CARTÃO)*/
-                                                           //'	AUTHENTTYPE = 0: A TRANSAÇÃO NÃO FAZ AUTENTICAÇÃO
+        //'	AUTHENTTYPE = 0: A TRANSAÇÃO NÃO FAZ AUTENTICAÇÃO
 
         public const string VISANET_TIPO_CARTAO_CREDITO = "1";
 
@@ -2065,7 +2070,7 @@ namespace Loja.Bll.Constantes
 
         public const int OP_CEN_REL_TRANSACOES_CIELO_ANDAMENTO = 25400;
 
-        public const int OP_CEN_FRETE_ADICIONAL_LEITURA = 00000;//TODO
+        public const int OP_CEN_FRETE_ADICIONAL_LEITURA = 00000;//' TODO
 
         public const int OP_CEN_FRETE_ADICIONAL_CADASTRAMENTO = 00000; //' TODO
 

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Configuration;
 using Loja.Bll.Util;
+using Loja.Modelos;
 
 #nullable enable
 
@@ -33,7 +34,7 @@ namespace Loja.Bll.Bll.AcessoBll
                 //verificamos se o nome bate
                 if (user?.Identity != null)
                     if (user.Identity.IsAuthenticated && !string.IsNullOrEmpty(user.Identity.Name))
-                        if (user.Identity.Name != Usuario)
+                        if (user.Identity.Name != Usuario_atual)
                             SessaoAtiva = false;
             }
 
@@ -45,19 +46,42 @@ namespace Loja.Bll.Bll.AcessoBll
             if (Lista_operacoes_permitidas_data_atualizacao.AddMinutes(configuracao.RecarregarPermissoesUsuarioMinutos) < DateTimeOffset.UtcNow
                 && clienteBll != null && usuarioAcessoBll != null)
             {
-                CriarSessao_Lista_operacoes_permitidas(clienteBll, this, usuarioAcessoBll);
+                CriarSessao_carregar_permissoes_banco(clienteBll, this, usuarioAcessoBll, null, null, null).Wait();
             }
         }
 
-        private void CriarSessao_Lista_operacoes_permitidas(ClienteBll.ClienteBll clienteBll, UsuarioLogado usuarioLogadoParaLAterarSessao,
-            UsuarioAcessoBll usuarioAcessoBll)
+        private static async Task CriarSessao_carregar_permissoes_banco(ClienteBll.ClienteBll clienteBll, UsuarioLogado usuarioLogadoParaLAterarSessao,
+            UsuarioAcessoBll usuarioAcessoBll, Tusuario? tusuario, string? loja, string? loja_nome)
         {
-            usuarioLogadoParaLAterarSessao.LojasDisponiveis =
-                usuarioAcessoBll.Loja_troca_rapida_monta_itens_select_a_partir_banco(Usuario, null).Result;
+            if (!usuarioLogadoParaLAterarSessao.Usuario_atual_existe)
+                return;
 
-            string lstOperacoesPermitidas = clienteBll.BuscaListaOperacoesPermitidas(Usuario).Result;
-            Lista_operacoes_permitidas = lstOperacoesPermitidas;
-            Lista_operacoes_permitidas_data_atualizacao = DateTimeOffset.UtcNow;
+            usuarioLogadoParaLAterarSessao.LojasDisponiveis =
+                usuarioAcessoBll.Loja_troca_rapida_monta_itens_select_a_partir_banco(usuarioLogadoParaLAterarSessao.Usuario_atual, null).Result;
+
+            var Lista_operacoes_permitidas_task = clienteBll.BuscaListaOperacoesPermitidas(usuarioLogadoParaLAterarSessao.Usuario_atual);
+            var Nivel_acesso_chamado_task = clienteBll.NivelAcessoChamadoPedido(usuarioLogadoParaLAterarSessao.Usuario_atual);
+            var Nivel_acesso_bloco_notas_task = clienteBll.NivelAcessoBlocoNotasPedido(usuarioLogadoParaLAterarSessao.Usuario_atual);
+
+            usuarioLogadoParaLAterarSessao.S_lista_operacoes_permitidas = await Lista_operacoes_permitidas_task;
+            usuarioLogadoParaLAterarSessao.Nivel_acesso_chamado = await Nivel_acesso_chamado_task;
+            usuarioLogadoParaLAterarSessao.Nivel_acesso_bloco_notas = await Nivel_acesso_bloco_notas_task;
+
+            //mais dados na session
+            if (tusuario == null)
+                tusuario = await usuarioAcessoBll.UsuarioCarregar(usuarioLogadoParaLAterarSessao.Usuario_atual);
+            if (loja == null)
+                loja = tusuario.Loja;
+            if (loja_nome == null)
+                loja_nome = await usuarioAcessoBll.Loja_nome(loja);
+
+            usuarioLogadoParaLAterarSessao.Loja_atual_id = loja;
+            usuarioLogadoParaLAterarSessao.Usuario_nome_atual = tusuario.Nome;
+            usuarioLogadoParaLAterarSessao.Loja_nome_atual = loja_nome ?? "";
+            usuarioLogadoParaLAterarSessao.Vendedor_loja = tusuario.Vendedor_Loja != 0;
+            usuarioLogadoParaLAterarSessao.Vendedor_externo = tusuario.Vendedor_Externo != 0;
+
+            usuarioLogadoParaLAterarSessao.Lista_operacoes_permitidas_data_atualizacao = DateTimeOffset.UtcNow;
         }
 
         private void CriarSessaoPorUser(ClaimsPrincipal? user, ISession httpContextSession, ClienteBll.ClienteBll clienteBll,
@@ -79,9 +103,11 @@ namespace Loja.Bll.Bll.AcessoBll
             if (string.IsNullOrWhiteSpace(usuario))
                 return;
             usuario = usuario.Trim().ToUpper();
-            usuarioLogadoParaLAterarSessao.Usuario = usuario;
+            usuarioLogadoParaLAterarSessao.Usuario_atual = usuario;
+            usuarioLogadoParaLAterarSessao.Verificou_quadro_avisos = false;
 
-            usuarioLogadoParaLAterarSessao.CriarSessao_Lista_operacoes_permitidas(clienteBll, usuarioLogadoParaLAterarSessao, usuarioAcessoBll);
+            CriarSessao_carregar_permissoes_banco(clienteBll, usuarioLogadoParaLAterarSessao, usuarioAcessoBll,
+                null, null, null).Wait();
             usuarioLogadoParaLAterarSessao.SessaoAtiva = true;
         }
 
@@ -118,7 +144,7 @@ namespace Loja.Bll.Bll.AcessoBll
             SessaoAtiva = false;
         }
 
-        public bool Operacao_permitida(int id_operacao)
+        public static bool Operacao_permitida_estatica(int id_operacao, string Lista_operacoes_permitidas)
         {
             var permitidas = Lista_operacoes_permitidas;
             var s = id_operacao.ToString();
@@ -132,6 +158,10 @@ namespace Loja.Bll.Bll.AcessoBll
 
             return false;
         }
+        public bool Operacao_permitida(int id_operacao)
+        {
+            return Operacao_permitida_estatica(id_operacao, S_lista_operacoes_permitidas);
+        }
 
 
 
@@ -139,17 +169,29 @@ namespace Loja.Bll.Bll.AcessoBll
         private static class StringsSession
         {
             public static readonly string SessaoAtiva = "SessaoAtiva";
-            public static readonly string NomeUsuario = "usuario";
-            public static readonly string Lista_operacoes_permitidas = "lista_operacoes_permitidas";
+            public static readonly string Usuario_atual = "Usuario_atual";
+            public static readonly string S_lista_operacoes_permitidas = "S_lista_operacoes_permitidas";
             public static readonly string Lista_operacoes_permitidas_data_atualizacao = "Lista_operacoes_permitidas_data_atualizacao";
             public static readonly string LojasDisponiveis = "LojasDisponiveis";
-            public static readonly string LojaAtiva = "LojaAtiva";
+            public static readonly string Loja_atual_id = "Loja_atual_id";
+            public static readonly string Nivel_acesso_bloco_notas = "Nivel_acesso_bloco_notas";
+            public static readonly string Nivel_acesso_chamado = "Nivel_acesso_chamado";
+            public static readonly string Verificou_quadro_avisos = "Verificou_quadro_avisos";
+            public static readonly string Loja_atual = "Loja_atual";
+            public static readonly string Usuario_nome_atual = "Usuario_nome_atual";
+            public static readonly string Loja_nome_atual = "Loja_nome_atual";
+            public static readonly string Vendedor_loja = "Vendedor_loja";
+            public static readonly string Vendedor_externo = "Vendedor_externo";
         }
 
-        public string Usuario
+        public string Usuario_atual
         {
-            get => httpContextSession.GetString(StringsSession.NomeUsuario) ?? "Sem usuário";
-            private set => httpContextSession.SetString(StringsSession.NomeUsuario, value);
+            get => httpContextSession.GetString(StringsSession.Usuario_atual) ?? "Sem usuário";
+            private set => httpContextSession.SetString(StringsSession.Usuario_atual, value);
+        }
+        public bool Usuario_atual_existe
+        {
+            get => !string.IsNullOrWhiteSpace(httpContextSession.GetString(StringsSession.Usuario_atual) ?? "");
         }
         public bool SessaoAtiva
         {
@@ -168,10 +210,10 @@ namespace Loja.Bll.Bll.AcessoBll
                     httpContextSession.SetInt32(StringsSession.SessaoAtiva, 0);
             }
         }
-        public string Lista_operacoes_permitidas
+        public string S_lista_operacoes_permitidas
         {
-            get => httpContextSession.GetString(StringsSession.Lista_operacoes_permitidas) ?? "";
-            private set => httpContextSession.SetString(StringsSession.Lista_operacoes_permitidas, value);
+            get => httpContextSession.GetString(StringsSession.S_lista_operacoes_permitidas) ?? "";
+            private set => httpContextSession.SetString(StringsSession.S_lista_operacoes_permitidas, value);
         }
         public DateTimeOffset Lista_operacoes_permitidas_data_atualizacao
         {
@@ -191,18 +233,12 @@ namespace Loja.Bll.Bll.AcessoBll
             }
         }
 
-        public string LojaAtiva
-        {
-            get => httpContextSession.GetString(StringsSession.LojaAtiva) ?? "";
-            private set => httpContextSession.SetString(StringsSession.LojaAtiva, value);
-        }
-
         public bool LojaAtivaAlterar(string novaloja)
         {
             //verifica se pode ir para essa loja
             if (!LojasDisponiveis.Any(r => r.Id == novaloja))
                 return false;
-            LojaAtiva = novaloja;
+            Loja_atual_id = novaloja;
             return true;
         }
 
@@ -219,6 +255,48 @@ namespace Loja.Bll.Bll.AcessoBll
             private set => httpContextSession.SetString(StringsSession.LojasDisponiveis, JsonConvert.SerializeObject(value));
         }
 
+        public int Nivel_acesso_chamado
+        {
+            get => httpContextSession.GetInt32(StringsSession.Nivel_acesso_chamado) ?? Constantes.Constantes.COD_NIVEL_ACESSO_CHAMADO_PEDIDO__NAO_DEFINIDO;
+            private set => httpContextSession.SetInt32(StringsSession.Nivel_acesso_chamado, value);
+        }
+        public int Nivel_acesso_bloco_notas
+        {
+            get => httpContextSession.GetInt32(StringsSession.Nivel_acesso_bloco_notas) ?? Constantes.Constantes.COD_NIVEL_ACESSO_BLOCO_NOTAS_PEDIDO__NAO_DEFINIDO;
+            private set => httpContextSession.SetInt32(StringsSession.Nivel_acesso_bloco_notas, value);
+        }
+        public bool Verificou_quadro_avisos
+        {
+            get => (httpContextSession.GetInt32(StringsSession.Verificou_quadro_avisos) ?? 0) == 1;
+            private set => httpContextSession.SetInt32(StringsSession.Verificou_quadro_avisos, value ? 1 : 0);
+        }
+        public bool Vendedor_externo
+        {
+            get => (httpContextSession.GetInt32(StringsSession.Vendedor_externo) ?? 0) == 1;
+            private set => httpContextSession.SetInt32(StringsSession.Vendedor_externo, value ? 1 : 0);
+        }
+        public bool Vendedor_loja
+        {
+            get => (httpContextSession.GetInt32(StringsSession.Vendedor_loja) ?? 0) == 1;
+            private set => httpContextSession.SetInt32(StringsSession.Vendedor_loja, value ? 1 : 0);
+        }
+
+
+        public string Loja_atual_id
+        {
+            get => httpContextSession.GetString(StringsSession.Loja_atual_id) ?? "";
+            private set => httpContextSession.SetString(StringsSession.Loja_atual_id, value);
+        }
+        public string Usuario_nome_atual
+        {
+            get => httpContextSession.GetString(StringsSession.Usuario_nome_atual) ?? "";
+            private set => httpContextSession.SetString(StringsSession.Usuario_nome_atual, value);
+        }
+        public string Loja_nome_atual
+        {
+            get => httpContextSession.GetString(StringsSession.Loja_nome_atual) ?? "";
+            private set => httpContextSession.SetString(StringsSession.Loja_nome_atual, value);
+        }
     }
 
 }

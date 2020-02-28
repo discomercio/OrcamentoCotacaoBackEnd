@@ -42,7 +42,7 @@ namespace Loja.UI.Controllers
                     model.ErroChavearLoja = true;
                 }
             }
-            model.LojaAtivaId = usuarioLogado.LojaAtiva;
+            model.LojaAtivaId = usuarioLogado.Loja_atual_id;
             model.LojaAtivaNome = usuarioLogado.LojasDisponiveis.FirstOrDefault(r => r.Id == model.LojaAtivaId)?.Nome;
             return View(model);
         }

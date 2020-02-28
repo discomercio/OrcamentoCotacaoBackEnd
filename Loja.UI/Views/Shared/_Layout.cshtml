@@ -55,7 +55,7 @@
     if (!usuarioLogado.SessaoAtiva)
     {
         var pathAtual = HttpContextAccessor?.HttpContext?.Request?.Path.Value?.ToLower() ?? "";
-        if (pathAtual.ToLower() != pathLogin.ToLower())
+        if (!pathAtual.ToLower().Contains(pathLogin.ToLower()))
         {
             //vamos para o login e acabou!
             HttpContextAccessor.HttpContext.Response.Redirect(pathLogin);
@@ -73,7 +73,7 @@
                     <div style="float: right">
                         <div class="row s12">
                             <div class="col " style="font-size: 20px;">
-                                Olá @usuarioLogado.Usuario
+                                Olá @usuarioLogado.Usuario_nome_atual
                             </div>
                             @{
                                 var lista = usuarioLogado.LojasDisponiveis.OrderBy(r => r.Nome).ToList();
@@ -90,7 +90,7 @@
                                         {
                                             listaSl.Add(new SelectListItem(item.Nome, item.Id));
                                         }
-                                        ViewData["cabecacomboLojas"] = usuarioLogado.LojaAtiva;
+                                        ViewData["cabecacomboLojas"] = usuarioLogado.Loja_atual_id;
                                     }
 
                                     @Html.DropDownList("cabecacomboLojas", listaSl, new { @id = "cabecacomboLojas" })

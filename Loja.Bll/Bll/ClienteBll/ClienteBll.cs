@@ -70,6 +70,7 @@ namespace Loja.Bll.ClienteBll
             return retorno;
         }
 
+        //function obtem_nivel_acesso_bloco_notas_pedido(ByRef cnBancoDados, byval usuario)
         public async Task<int> NivelAcessoBlocoNotasPedido(string apelido)
         {
             var db = contextoProvider.GetContextoLeitura();
@@ -79,11 +80,14 @@ namespace Loja.Bll.ClienteBll
                             where d.Usuario == apelido
                             select c;
 
-            int nivel = nivelTask.Max(r => (int)r.Nivel_acesso_bloco_notas_pedido);
+            var nivel = await nivelTask.OrderByDescending(x => x.Nivel_acesso_bloco_notas_pedido).Select(x => (int?)x.Nivel_acesso_bloco_notas_pedido).FirstOrDefaultAsync();
+            if (!nivel.HasValue)
+                nivel = Constantes.Constantes.COD_NIVEL_ACESSO_BLOCO_NOTAS_PEDIDO__NAO_DEFINIDO;
 
-            return await Task.FromResult(nivel);
+            return nivel.Value;
         }
 
+        //function obtem_nivel_acesso_chamado_pedido(ByRef cnBancoDados, byval usuario)
         public async Task<int> NivelAcessoChamadoPedido(string apelido)
         {
             var db = contextoProvider.GetContextoLeitura();
@@ -93,9 +97,11 @@ namespace Loja.Bll.ClienteBll
                             where d.Usuario == apelido
                             select c;
 
-            int nivel = nivelTask.Max(r => (int)r.Nivel_acesso_chamado);
+            var nivel = await nivelTask.OrderByDescending(x => x.Nivel_acesso_chamado).Select(x => (int?)x.Nivel_acesso_chamado).FirstOrDefaultAsync();
+            if (!nivel.HasValue)
+                nivel = Constantes.Constantes.COD_NIVEL_ACESSO_CHAMADO_PEDIDO__NAO_DEFINIDO;
 
-            return await Task.FromResult(nivel);
+            return nivel.Value;
         }
 
         public async Task<IEnumerable<ListaBancoDto>> ListarBancosCombo()

@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
+#nullable enable
+
 namespace Loja.UI.Controllers
 {
     [AllowAnonymous]
@@ -60,12 +62,19 @@ namespace Loja.UI.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             var usuarioLogado = new UsuarioLogado(User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
             usuarioLogado.EncerrarSessao();
+            await usuarioAcessoBll.LogoutUsuario(usuarioLogado);
+
             return Redirect("Login");
         }
 
         [HttpPost]
-        public async Task<IActionResult> LoginSubmit(LoginViewModel loginViewModel)
+        public async Task<IActionResult> LoginSubmit(LoginSubmitViewModel loginSubmitViewModel)
         {
+            var loginViewModel = new LoginViewModel();
+            loginViewModel.Loja = loginSubmitViewModel.Loja;
+            loginViewModel.Apelido = loginSubmitViewModel.Apelido;
+            loginViewModel.Senha = loginSubmitViewModel.Senha;
+            loginViewModel.ReturnUrl = loginSubmitViewModel.ReturnUrl;
 
             loginViewModel.Apelido = loginViewModel.Apelido?.ToUpper().Trim() ?? "";
             loginViewModel.Senha = loginViewModel.Senha?.ToUpper() ?? "";
@@ -77,31 +86,16 @@ namespace Loja.UI.Controllers
                 return View("Login", loginViewModel);
             }
 
-            /*
-             * todo: afazer: eduperez terminar o login
-            var appSettingsSection = configuration.GetSection("AppSettings");
-            var appSettings = appSettingsSection.Get<Utils.Configuracao>();
-            string token = await servicoAutenticacao.ObterTokenAutenticacao(apelido, senha, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos, Utils.Autenticacao.RoleAcesso, new ServicoAutenticacaoProvider(acessoBll));
-
-            string ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
-            string userAgent = Request.Headers["User-agent"];
-
-            await acessoBll.GravarSessaoComTransacao(ip, apelido, userAgent);
-
- * 
-             string token = "nadfa";
-            if (token == null)
+            loginViewModel.LoginUsuarioRetorno = await usuarioAcessoBll.LoginUsuario(loginViewModel.Apelido, loginViewModel.Senha, loginViewModel.Loja, HttpContext.Session, configuracao,
+                HttpContext.Connection.RemoteIpAddress.ToString(), HttpContext.Request.Headers["User-Agent"]);
+            if (!loginViewModel.LoginUsuarioRetorno.Sucesso)
             {
                 loginViewModel.ErroUsuarioSenha = true;
                 return View("Login", loginViewModel);
             }
-* */
-
-            var tusuario = await usuarioAcessoBll.LoginUsuario(loginViewModel.Apelido, loginViewModel.Senha, loginViewModel.Loja, HttpContext.Session, configuracao);
-            if (!tusuario.Sucesso)
+            if (loginViewModel.LoginUsuarioRetorno.PrecisaAlterarSenha)
             {
-                loginViewModel.ErroUsuarioSenha = true;
-                return View("Login", loginViewModel);
+                return View("PrecisaAlterarSenha", loginViewModel);
             }
 
             var claims = UsuarioLogado.ClaimsUsuario.CriarClaims(loginViewModel.Apelido?.Trim() ?? "");

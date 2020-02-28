@@ -75,7 +75,6 @@ namespace Loja.Data
         public DbSet<TfinControle> TfinControles { get => contexto.TfinControles; }
         public DbSet<TpedidoAnaliseEndereco> TpedidoAnaliseEnderecos { get => contexto.TpedidoAnaliseEnderecos; }
         public DbSet<TpedidoAnaliseEnderecoConfrontacao> TpedidoAnaliseConfrontacaos { get => contexto.TpedidoAnaliseConfrontacaos; }
-
-
+        public DbSet<Tusuario> Tusuarios { get => contexto.Tusuarios; }
     }
 }
