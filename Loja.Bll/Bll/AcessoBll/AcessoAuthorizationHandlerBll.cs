@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Loja.Modelos;
 using Loja.Bll.Util;
+using Microsoft.Extensions.Logging;
 
 #nullable enable
 
@@ -28,19 +29,21 @@ namespace Loja.Bll.Bll.AcessoBll
         private readonly Configuracao configuracao;
         private readonly ClienteBll.ClienteBll clienteBll;
         private readonly UsuarioAcessoBll usuarioAcessoBll;
+        private readonly ILogger<UsuarioLogado> logger;
 
         public AcessoAuthorizationHandlerBll(IHttpContextAccessor httpContextAccessor, Configuracao configuracao,
-            ClienteBll.ClienteBll clienteBll, UsuarioAcessoBll usuarioAcessoBll)
+            ClienteBll.ClienteBll clienteBll, UsuarioAcessoBll usuarioAcessoBll, ILogger<UsuarioLogado> logger)
         {
             this.httpContextAccessor = httpContextAccessor;
             this.configuracao = configuracao;
             this.clienteBll = clienteBll;
             this.usuarioAcessoBll = usuarioAcessoBll;
+            this.logger = logger;
         }
 
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, AcessoRequirement requirement)
         {
-            var usuarioLogado = new Loja.Bll.Bll.AcessoBll.UsuarioLogado(context.User, httpContextAccessor.HttpContext.Session,
+            var usuarioLogado = new Loja.Bll.Bll.AcessoBll.UsuarioLogado(logger, context.User, httpContextAccessor.HttpContext.Session,
                 clienteBll, usuarioAcessoBll, configuracao);
             if (!usuarioLogado.SessaoAtiva)
             {

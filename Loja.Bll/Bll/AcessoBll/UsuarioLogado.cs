@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Microsoft.Extensions.Configuration;
 using Loja.Bll.Util;
 using Loja.Modelos;
+using Microsoft.Extensions.Logging;
 
 #nullable enable
 
@@ -19,9 +20,11 @@ namespace Loja.Bll.Bll.AcessoBll
         private readonly ISession httpContextSession;
 
 
-        public UsuarioLogado(ClaimsPrincipal? user, ISession httpContextSession, ClienteBll.ClienteBll clienteBll,
+        public UsuarioLogado(ILogger<UsuarioLogado> logger, ClaimsPrincipal? user, ISession httpContextSession, ClienteBll.ClienteBll clienteBll,
             UsuarioAcessoBll usuarioAcessoBll, Configuracao configuracao)
         {
+            logger.LogTrace($"UsuarioLogado inicio");
+
             this.httpContextSession = httpContextSession;
             if (SessaoAtiva)
             {
@@ -38,23 +41,27 @@ namespace Loja.Bll.Bll.AcessoBll
                             SessaoAtiva = false;
             }
 
+            logger.LogTrace($"UsuarioLogado {SessaoAtiva}");
+
             if (configuracao.PermitirManterConectado)
                 if (!SessaoAtiva && clienteBll != null && usuarioAcessoBll != null)
-                    CriarSessaoPorUser(user, httpContextSession, clienteBll, usuarioAcessoBll, configuracao, this);
+                    CriarSessaoPorUser(logger, user, httpContextSession, clienteBll, usuarioAcessoBll, configuracao, this);
 
             //verificar se devemos renovar as permissões do usuário
             if (Lista_operacoes_permitidas_data_atualizacao.AddMinutes(configuracao.RecarregarPermissoesUsuarioMinutos) < DateTimeOffset.UtcNow
                 && clienteBll != null && usuarioAcessoBll != null)
             {
-                CriarSessao_carregar_permissoes_banco(clienteBll, this, usuarioAcessoBll, null, null, null).Wait();
+                CriarSessao_carregar_permissoes_banco(logger, clienteBll, this, usuarioAcessoBll, null, null, null).Wait();
             }
         }
 
-        private static async Task CriarSessao_carregar_permissoes_banco(ClienteBll.ClienteBll clienteBll, UsuarioLogado usuarioLogadoParaLAterarSessao,
+        private static async Task CriarSessao_carregar_permissoes_banco(ILogger<UsuarioLogado> logger, ClienteBll.ClienteBll clienteBll, UsuarioLogado usuarioLogadoParaLAterarSessao,
             UsuarioAcessoBll usuarioAcessoBll, Tusuario? tusuario, string? loja, string? loja_nome)
         {
             if (!usuarioLogadoParaLAterarSessao.Usuario_atual_existe)
                 return;
+
+            logger.LogTrace($"CriarSessao_carregar_permissoes_banco {usuarioLogadoParaLAterarSessao.Usuario_atual}");
 
             usuarioLogadoParaLAterarSessao.LojasDisponiveis =
                 usuarioAcessoBll.Loja_troca_rapida_monta_itens_select_a_partir_banco(usuarioLogadoParaLAterarSessao.Usuario_atual, null).Result;
@@ -84,20 +91,23 @@ namespace Loja.Bll.Bll.AcessoBll
             usuarioLogadoParaLAterarSessao.Lista_operacoes_permitidas_data_atualizacao = DateTimeOffset.UtcNow;
         }
 
-        private void CriarSessaoPorUser(ClaimsPrincipal? user, ISession httpContextSession, ClienteBll.ClienteBll clienteBll,
+        private void CriarSessaoPorUser(ILogger<UsuarioLogado> logger, ClaimsPrincipal? user, ISession httpContextSession, ClienteBll.ClienteBll clienteBll,
             UsuarioAcessoBll usuarioAcessoBll, Configuracao configuracao,
             UsuarioLogado usuarioLogadoParaLAterarSessao)
         {
             string? usuarioClaim = user?.Claims.Where(r => r.Type == ClaimTypes.Name).FirstOrDefault()?.Value;
-            CriarSessao(usuarioClaim, httpContextSession, clienteBll, usuarioAcessoBll, configuracao, usuarioLogadoParaLAterarSessao);
+            logger.LogTrace($"CriarSessaoPorUser {usuarioClaim}");
+            CriarSessao(logger, usuarioClaim, httpContextSession, clienteBll, usuarioAcessoBll, configuracao, usuarioLogadoParaLAterarSessao);
         }
-        public static void CriarSessao(string? usuario, ISession httpContextSession, ClienteBll.ClienteBll clienteBll,
+        public static void CriarSessao(ILogger<UsuarioLogado> logger, string? usuario, ISession httpContextSession, ClienteBll.ClienteBll clienteBll,
             UsuarioAcessoBll usuarioAcessoBll, Configuracao configuracao,
             UsuarioLogado? usuarioLogadoParaLAterarSessao = null)
         {
             //nao tem risco de dar recursão porque o construtor chama com uma instância
             if (usuarioLogadoParaLAterarSessao == null)
-                usuarioLogadoParaLAterarSessao = new UsuarioLogado(null, httpContextSession, clienteBll, usuarioAcessoBll, configuracao);
+                usuarioLogadoParaLAterarSessao = new UsuarioLogado(logger, null, httpContextSession, clienteBll, usuarioAcessoBll, configuracao);
+
+            logger.LogTrace($"CriarSessao {usuario}");
 
             //tem que recriar
             if (string.IsNullOrWhiteSpace(usuario))
@@ -106,7 +116,7 @@ namespace Loja.Bll.Bll.AcessoBll
             usuarioLogadoParaLAterarSessao.Usuario_atual = usuario;
             usuarioLogadoParaLAterarSessao.Verificou_quadro_avisos = false;
 
-            CriarSessao_carregar_permissoes_banco(clienteBll, usuarioLogadoParaLAterarSessao, usuarioAcessoBll,
+            CriarSessao_carregar_permissoes_banco(logger, clienteBll, usuarioLogadoParaLAterarSessao, usuarioAcessoBll,
                 null, null, null).Wait();
             usuarioLogadoParaLAterarSessao.SessaoAtiva = true;
         }

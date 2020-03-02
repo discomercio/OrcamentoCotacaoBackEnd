@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 #nullable enable
 
@@ -24,13 +25,16 @@ namespace Loja.UI.Controllers
         private readonly ClienteBll clienteBll;
         private readonly AcessoAuthorizationHandlerBll acessoBll;
         private readonly UsuarioAcessoBll usuarioAcessoBll;
+        private readonly ILogger<UsuarioLogado> loggerUsuarioLogado;
 
-        public AcessoController(Configuracao configuracao, ClienteBll clienteBll, AcessoAuthorizationHandlerBll acessoBll, UsuarioAcessoBll usuarioAcessoBll)
+        public AcessoController(Configuracao configuracao, ClienteBll clienteBll, AcessoAuthorizationHandlerBll acessoBll, UsuarioAcessoBll usuarioAcessoBll,
+            ILogger<UsuarioLogado> loggerUsuarioLogado)
         {
             this.configuracao = configuracao;
             this.clienteBll = clienteBll;
             this.acessoBll = acessoBll;
             this.usuarioAcessoBll = usuarioAcessoBll;
+            this.loggerUsuarioLogado = loggerUsuarioLogado;
         }
 
         [HttpGet]
@@ -60,7 +64,7 @@ namespace Loja.UI.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            var usuarioLogado = new UsuarioLogado(User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
+            var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
             usuarioLogado.EncerrarSessao();
             await usuarioAcessoBll.LogoutUsuario(usuarioLogado);
 

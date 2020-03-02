@@ -3,6 +3,7 @@
 @inject Loja.Bll.ClienteBll.ClienteBll clienteBll
 @inject Loja.Bll.Bll.AcessoBll.UsuarioAcessoBll usuarioAcessoBll
 @inject Loja.Bll.Util.Configuracao configuracao
+@inject Microsoft.Extensions.Logging.ILogger<Loja.Bll.Bll.AcessoBll.UsuarioLogado> loggerUsuarioLogado
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,7 +51,7 @@
 </head>
 
 @{
-    var usuarioLogado = new Loja.Bll.Bll.AcessoBll.UsuarioLogado(User, HttpContextAccessor.HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
+    var usuarioLogado = new Loja.Bll.Bll.AcessoBll.UsuarioLogado(loggerUsuarioLogado, User, HttpContextAccessor.HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
     var pathLogin = "/Acesso/Login";
     if (!usuarioLogado.SessaoAtiva)
     {

@@ -94,14 +94,17 @@ namespace Loja.UI
             services.AddDbContext<Loja.Data.ContextoBdBasico>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("conexaohomologa"));
+                options.EnableSensitiveDataLogging();
             });
             services.AddDbContext<Loja.Data.ContextoCepBd>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("conexaoCep"));
+                options.EnableSensitiveDataLogging();
             });
             services.AddDbContext<Loja.Data.ContextoNFeBd>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("conexaoNfe"));
+                options.EnableSensitiveDataLogging();
             });
         }
 

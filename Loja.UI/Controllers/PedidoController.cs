@@ -21,6 +21,7 @@ using Loja.Bll.Bll.PedidoBll;
 using Loja.Bll.Constantes;
 using Loja.Bll.Bll.AcessoBll;
 using Loja.Bll.Util;
+using Microsoft.Extensions.Logging;
 
 //TODO: habilitar nullable no projeto todo
 #nullable enable
@@ -37,9 +38,11 @@ namespace Loja.UI.Controllers
         private readonly CancelamentoAutomaticoBll cancelamentoAutomaticoBll;
         private readonly UsuarioAcessoBll usuarioAcessoBll;
         private readonly Configuracao configuracao;
+        private readonly ILogger<UsuarioLogado> loggerUsuarioLogado;
 
         public PedidoController(PedidoBll pedidoBll, ProdutoBll produtoBll, ClienteBll clienteBll, FormaPagtoBll formaPagtoBll, CoeficienteBll coeficienteBll,
-            CancelamentoAutomaticoBll cancelamentoAutomaticoBll, UsuarioAcessoBll usuarioAcessoBll, Configuracao configuracao)
+            CancelamentoAutomaticoBll cancelamentoAutomaticoBll, UsuarioAcessoBll usuarioAcessoBll, Configuracao configuracao,
+            ILogger<UsuarioLogado> loggerUsuarioLogado)
         {
             this.pedidoBll = pedidoBll;
             this.produtoBll = produtoBll;
@@ -49,6 +52,7 @@ namespace Loja.UI.Controllers
             this.cancelamentoAutomaticoBll = cancelamentoAutomaticoBll;
             this.usuarioAcessoBll = usuarioAcessoBll;
             this.configuracao = configuracao;
+            this.loggerUsuarioLogado = loggerUsuarioLogado;
         }
 
         public IActionResult Index()
@@ -360,7 +364,7 @@ namespace Loja.UI.Controllers
 
         public async Task<IActionResult> CancelamentoAutomatico()
         {
-            var usuarioLogado = new UsuarioLogado(User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
+            var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
 
             bool consultaUniversalPedidoOrcamento = usuarioLogado.Operacao_permitida(Constantes.OP_LJA_CONSULTA_UNIVERSAL_PEDIDO_ORCAMENTO);
             var model = new Loja.UI.Models.Pedido.CancelamentoAutomaticoViewModel();

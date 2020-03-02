@@ -20,19 +20,22 @@ namespace Loja.UI.Controllers
         private readonly ClienteBll clienteBll;
         private readonly UsuarioAcessoBll usuarioAcessoBll;
         private readonly Configuracao configuracao;
+        private readonly ILogger<UsuarioLogado> loggerUsuarioLogado;
 
-        public HomeController(ILogger<HomeController> logger, ClienteBll clienteBll, UsuarioAcessoBll usuarioAcessoBll, Configuracao configuracao)
+        public HomeController(ILogger<HomeController> logger, ClienteBll clienteBll, UsuarioAcessoBll usuarioAcessoBll, Configuracao configuracao,
+            ILogger<UsuarioLogado> loggerUsuarioLogado)
         {
             _logger = logger;
             this.clienteBll = clienteBll;
             this.usuarioAcessoBll = usuarioAcessoBll;
             this.configuracao = configuracao;
+            this.loggerUsuarioLogado = loggerUsuarioLogado;
             _logger.LogDebug(1, "NLog injected into HomeController");
         }
 
         public IActionResult Index(string novaloja)
         {
-            var usuarioLogado = new UsuarioLogado(User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
+            var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
             var model = new HomeViewModel();
             if (!string.IsNullOrWhiteSpace(novaloja))
             {

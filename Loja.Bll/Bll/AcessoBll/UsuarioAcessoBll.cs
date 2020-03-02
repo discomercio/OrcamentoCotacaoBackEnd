@@ -3,6 +3,7 @@ using Loja.Data;
 using Loja.Modelos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +17,16 @@ namespace Loja.Bll.Bll.AcessoBll
     {
         private readonly ContextoBdProvider contextoProvider;
         private readonly ClienteBll.ClienteBll clienteBll;
+        private readonly ILogger<UsuarioAcessoBll> logger;
+        private readonly ILogger<UsuarioLogado> loggerUsuarioLogado;
 
-        public UsuarioAcessoBll(ContextoBdProvider contextoProvider, ClienteBll.ClienteBll clienteBll)
+        public UsuarioAcessoBll(ContextoBdProvider contextoProvider, ClienteBll.ClienteBll clienteBll, ILogger<UsuarioAcessoBll> logger,
+            ILogger<UsuarioLogado> loggerUsuarioLogado)
         {
             this.contextoProvider = contextoProvider;
             this.clienteBll = clienteBll;
+            this.logger = logger;
+            this.loggerUsuarioLogado = loggerUsuarioLogado;
         }
 
         public class LoginUsuarioRetorno
@@ -34,6 +40,7 @@ namespace Loja.Bll.Bll.AcessoBll
         }
         public async Task LogoutUsuario(UsuarioLogado usuarioLogado)
         {
+            logger.LogInformation($"LogoutUsuario: {usuarioLogado.Usuario_atual}");
             /*
                         strSQL = "UPDATE t_USUARIO SET" & _
                                     " SessionCtrlTicket = NULL," & _
@@ -76,7 +83,7 @@ namespace Loja.Bll.Bll.AcessoBll
                                          //nao testamos a data de início porque agora as sessões podem duram MUITO tempo
                                          && u.SessionCtrlTicket == ticket
                                          select u).FirstOrDefaultAsync();
-                if(rsHistorico != null)
+                if (rsHistorico != null)
                 {
                     rsHistorico.DtHrTermino = DateTime.Now;
                 }
@@ -84,6 +91,7 @@ namespace Loja.Bll.Bll.AcessoBll
                 await dbgravacao.SaveChangesAsync();
                 dbgravacao.transacao.Commit();
             }
+            logger.LogInformation($"LogoutUsuario finalizado: {usuarioLogado.Usuario_atual}");
 
 
             /*
@@ -107,6 +115,8 @@ namespace Loja.Bll.Bll.AcessoBll
         public async Task<LoginUsuarioRetorno> LoginUsuario(string usuario, string senha, string loja, ISession httpContextSession,
         Configuracao configuracao, string remoteIpAddress, string userAgent)
         {
+            logger.LogInformation($"LoginUsuario inicio: usuario={usuario} remoteIpAddress={remoteIpAddress} userAgent={userAgent}");
+
             var ret = new LoginUsuarioRetorno();
             ret.Sucesso = false;
             ret.Tusuario = null;
@@ -117,6 +127,7 @@ namespace Loja.Bll.Bll.AcessoBll
                               select c).Any();
             if (!lojaExiste)
             {
+                logger.LogInformation($"LoginUsuario Loja_nao_existe: usuario={usuario} remoteIpAddress={remoteIpAddress} userAgent={userAgent}");
                 ret.Loja_nao_existe = true;
                 return ret;
             }
@@ -126,7 +137,10 @@ namespace Loja.Bll.Bll.AcessoBll
             usuario = usuario.Trim().ToUpper();
             Tusuario rs = await UsuarioCarregar(usuario);
             if (rs == null)
+            {
+                logger.LogInformation($"LoginUsuario usuario nao existe: usuario={usuario} remoteIpAddress={remoteIpAddress} userAgent={userAgent}");
                 return ret;
+            }
 
             //'	TEM SENHA?
             if (string.IsNullOrWhiteSpace(rs.Datastamp))
@@ -140,6 +154,7 @@ namespace Loja.Bll.Bll.AcessoBll
             else
             {
                 //bloqueado
+                logger.LogInformation($"LoginUsuario Usuario_bloqueado: usuario={usuario} remoteIpAddress={remoteIpAddress} userAgent={userAgent}");
                 ret.Usuario_bloqueado = true;
                 return ret;
             }
@@ -168,6 +183,7 @@ namespace Loja.Bll.Bll.AcessoBll
                 if (!existeLoja)
                 {
                     //já voltamos daqui....
+                    logger.LogInformation($"LoginUsuario Loja_sem_acesso: usuario={usuario} remoteIpAddress={remoteIpAddress} userAgent={userAgent}");
                     ret.Loja_sem_acesso = true;
                     return ret;
                 }
@@ -175,7 +191,10 @@ namespace Loja.Bll.Bll.AcessoBll
 
 
             if (!cadastrado)
+            {
+                logger.LogInformation($"LoginUsuario !cadastrado: usuario={usuario} remoteIpAddress={remoteIpAddress} userAgent={userAgent}");
                 return ret;
+            }
 
             /*
              * 
@@ -193,7 +212,10 @@ namespace Loja.Bll.Bll.AcessoBll
             var senha_banco = new SenhaBll().DecodificaSenha(rs.Datastamp);
             senha = senha.ToUpper() ?? "";
             if (senha != senha_banco)
+            {
+                logger.LogInformation($"LoginUsuario senha != senha_banco: usuario={usuario} remoteIpAddress={remoteIpAddress} userAgent={userAgent}");
                 return ret;
+            }
 
             /*
              * log do login
@@ -270,7 +292,9 @@ namespace Loja.Bll.Bll.AcessoBll
                 ret.PrecisaAlterarSenha = true;
 
             //cria a session
-            UsuarioLogado.CriarSessao(usuario, httpContextSession, clienteBll, this, configuracao);
+            logger.LogInformation($"LoginUsuario CriarSessao: usuario={usuario} remoteIpAddress={remoteIpAddress} userAgent={userAgent}");
+            UsuarioLogado.CriarSessao(loggerUsuarioLogado, usuario, httpContextSession, clienteBll, this, configuracao);
+            logger.LogInformation($"LoginUsuario CriarSessao feito: usuario={usuario} remoteIpAddress={remoteIpAddress} userAgent={userAgent}");
             return ret;
         }
 
