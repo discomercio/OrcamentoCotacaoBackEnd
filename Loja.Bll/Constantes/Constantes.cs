@@ -48,7 +48,7 @@ namespace Loja.Bll.Constantes
 
         //'	Percentual de deságio para RA Líquida
 
-        public const int PERC_DESAGIO_RA_LIQUIDA = 20;
+        public const int PERC_DESAGIO_RA_LIQUIDA = 25;
 
 
         //'	PARÂMETRO DE FUNCIONAMENTO DO SITE (ARTVEN3 = BONSHOP; ARTVEN = FABRICANTE)

@@ -233,12 +233,13 @@ namespace Loja.Bll.Bll.PedidoBll
                         }
                     }
 
-            //    }
+                    //    }
 
-                //ret.AddRange(DadosDeTeste());
-                //está ordenando por data da análise de crédito, já está ordenado na query
-                //deixa o cliente verificar se isso é um problema... acho que é o comportamento esperado
-                return ret;
+                    //ret.AddRange(DadosDeTeste());
+                    //está ordenando por data da análise de crédito, já está ordenado na query
+                    //deixa o cliente verificar se isso é um problema... acho que é o comportamento esperado
+                    return ret;
+                }
             }
         }
     }

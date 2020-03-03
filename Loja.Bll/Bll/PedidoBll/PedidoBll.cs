@@ -1335,7 +1335,7 @@ namespace Loja.Bll.PedidoBll
 
                 bool validouEndEntrega = false;
                 //end entrega já foi aramzenado, mas vamos validar 
-                if (pedido.EnderecoEntrega != null)
+                if (pedido.EnderecoEntrega != null && pedido.EnderecoEntrega.OutroEndereco)
                 {
                     validouEndEntrega = ValidarEndecoEntrega(pedido.EnderecoEntrega, lstErros);
                 }
@@ -3706,7 +3706,7 @@ namespace Loja.Bll.PedidoBll
                             {
                                 coeficiente = (await coeficienteTask).Coeficiente;
                                 //voltamos a atribuir ao tpedidoItem
-                                tpedidoItem.Preco_Lista = (decimal)coeficiente * tpedidoItem.Preco_Lista;
+                                tpedidoItem.Preco_Lista = Math.Round((decimal)coeficiente * tpedidoItem.Preco_Lista, 2);
                             }
                         }
 
@@ -4041,7 +4041,7 @@ namespace Loja.Bll.PedidoBll
             {
                 if (!string.IsNullOrEmpty(p.NumProduto))
                 {
-                    vl_total += (decimal)(p.Qtde * p.VlUnitario);
+                    vl_total += (decimal)(p.Qtde * p.Preco);
                 }
             }
 
@@ -4056,7 +4056,7 @@ namespace Loja.Bll.PedidoBll
             {
                 if (!string.IsNullOrEmpty(p.NumProduto))
                 {
-                    vl_total_NF += (decimal)(p.Qtde * p.Preco);
+                    vl_total_NF += (decimal)(p.Qtde * p.VlUnitario);
                 }
             }
 
@@ -4257,7 +4257,7 @@ namespace Loja.Bll.PedidoBll
                     if (percCusto != null)
                     {
                         coeficiente = percCusto.Coeficiente;
-                        i.VlLista = (decimal)coeficiente * i.VlLista;
+                        i.VlLista = (decimal)coeficiente * (decimal)i.Preco;
                     }
                     else
                     {

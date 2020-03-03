@@ -1282,6 +1282,7 @@ function AtribuirFormaPagtoParaDadosPagto(): void {
     //ParcCartaoInternet
     if (dadosPagto.enumFormaPagto == 2) {
         //Verificar se há necessidade de passar o valores para esse 
+        dadosPagto.opcaoPagtoParcCartaoInternet = $("#opcaoPagtoParcCartaoInternet").val().toString();
     }
     //ParcComEnt
     if (dadosPagto.enumFormaPagto == 3) {

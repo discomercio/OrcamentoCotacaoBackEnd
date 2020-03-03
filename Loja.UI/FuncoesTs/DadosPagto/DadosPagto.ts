@@ -211,6 +211,7 @@ export class DadosPagto {
                 }
             }
             if (this.enumFormaPagto == 2) {
+                debugger;
                 if (!this.opcaoPagtoParcCartaoInternet) {
                     if (mostrarMsg) {
                         //afazer: mostrar a modal de mensagem
@@ -371,7 +372,7 @@ export class DadosPagto {
     }
 
     listarValoresComCoeficiente(txtFormaPagto: string, enumFP: number): void {
-        
+        debugger;
         //this.lstMsg
         let valor = 0
         // this.lstMsg = new Array();
