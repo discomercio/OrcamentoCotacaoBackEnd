@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Session;
 using Loja.UI.Models.Home;
 using Loja.Bll.ClienteBll;
 using Loja.Bll.Bll.AcessoBll;
+using Loja.Bll.Util;
 
 namespace Loja.UI.Controllers
 {
@@ -18,18 +19,23 @@ namespace Loja.UI.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ClienteBll clienteBll;
         private readonly UsuarioAcessoBll usuarioAcessoBll;
+        private readonly Configuracao configuracao;
+        private readonly ILogger<UsuarioLogado> loggerUsuarioLogado;
 
-        public HomeController(ILogger<HomeController> logger, ClienteBll clienteBll, UsuarioAcessoBll usuarioAcessoBll)
+        public HomeController(ILogger<HomeController> logger, ClienteBll clienteBll, UsuarioAcessoBll usuarioAcessoBll, Configuracao configuracao,
+            ILogger<UsuarioLogado> loggerUsuarioLogado)
         {
             _logger = logger;
             this.clienteBll = clienteBll;
             this.usuarioAcessoBll = usuarioAcessoBll;
+            this.configuracao = configuracao;
+            this.loggerUsuarioLogado = loggerUsuarioLogado;
             _logger.LogDebug(1, "NLog injected into HomeController");
         }
 
         public IActionResult Index(string novaloja)
         {
-            var usuarioLogado = new UsuarioLogado(User, HttpContext.Session, clienteBll, usuarioAcessoBll);
+            var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
             var model = new HomeViewModel();
             if (!string.IsNullOrWhiteSpace(novaloja))
             {
@@ -39,8 +45,8 @@ namespace Loja.UI.Controllers
                     model.ErroChavearLoja = true;
                 }
             }
-            model.LojaAtivaId = usuarioLogado.LojaAtiva;
-            model.LojaAtivaNome = usuarioLogado.Loja_troca_rapida_monta_itens_select.FirstOrDefault(r => r.Id == model.LojaAtivaId)?.Nome;
+            model.LojaAtivaId = usuarioLogado.Loja_atual_id;
+            model.LojaAtivaNome = usuarioLogado.LojasDisponiveis.FirstOrDefault(r => r.Id == model.LojaAtivaId)?.Nome;
             return View(model);
         }
 

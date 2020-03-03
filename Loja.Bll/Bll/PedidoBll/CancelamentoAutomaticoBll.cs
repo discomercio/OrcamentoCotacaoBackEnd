@@ -54,7 +54,7 @@ namespace Loja.Bll.Bll.PedidoBll
 
             if (!usuarioLogado.Operacao_permitida(Constantes.Constantes.OP_LJA_CONSULTA_UNIVERSAL_PEDIDO_ORCAMENTO))
             {
-                strWhereBase = strWhereBase + " AND (tPedBase.vendedor = '" + usuarioLogado.Usuario + "')";
+                strWhereBase = strWhereBase + " AND (tPedBase.vendedor = '" + usuarioLogado.Usuario_atual + "')";
             }
 
 
@@ -244,5 +244,7 @@ namespace Loja.Bll.Bll.PedidoBll
         }
     }
 }
+
+
 
 

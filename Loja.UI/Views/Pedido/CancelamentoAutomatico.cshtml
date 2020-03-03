@@ -23,12 +23,6 @@
         });
     });
 
-    //todo: tentar trocar a classe por evento
-    //$('#tabeladados').on( 'draw.dt', function () {
-    //var info = table.page.info();
-    //$('#pageInfo').html( 'Showing page: '+info.page+' of '+info.pages );
-    //});
-
 </script>
 
 <h5>Cancelamento Automático de Pedidos</h5>
@@ -45,33 +39,37 @@
             padding-bottom: 0px !important;
         }
     </style>
-    <div class="semespacamento row " style="padding-bottom: 0px !important;">
-        <div class="semespacamento col s12 " style="padding-bottom: 0px !important;">
-            <div class="semespacamento col s8 " style="padding-bottom: 0px !important;">
-            </div>
-            <div class="semespacamento input-field col s4 " style="padding-bottom: 0px !important;">
-                <div class="input-field">
-                    @{
-                        var lista = Model.LojasDisponiveis.Select(r => r.Nome).Distinct().OrderBy(r => r).ToList();
-                        lista.Insert(0, "");
-                        var listaSl = new List<SelectListItem>();
-                        foreach (var item in lista)
-                        {
-                            listaSl.Add(new SelectListItem(item == "" ? "Todas" : item, item));
+    @if (Model.ConsultaUniversalPedidoOrcamento)
+    {
+
+        <div class="semespacamento row " style="padding-bottom: 0px !important;">
+            <div class="semespacamento col s12 " style="padding-bottom: 0px !important;">
+                <div class="semespacamento col s8 " style="padding-bottom: 0px !important;">
+                </div>
+                <div class="semespacamento input-field col s4 " style="padding-bottom: 0px !important;">
+                    <div class="input-field">
+                        @{
+                            var lista = Model.LojasDisponiveis.Select(r => r.Nome).Distinct().OrderBy(r => r).ToList();
+                            lista.Insert(0, "");
+                            var listaSl = new List<SelectListItem>();
+                            foreach (var item in lista)
+                            {
+                                listaSl.Add(new SelectListItem(item == "" ? "Todas" : item, item));
+                            }
                         }
-                    }
-                    @Html.DropDownList("comboLojas", listaSl, new { @id = "comboLojas" })
-                    <label>Filtrar por loja:</label>
+                        @Html.DropDownList("comboLojas", listaSl, new { @id = "comboLojas" })
+                        <label>Filtrar por loja:</label>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <script>
-        $("#comboLojas").change(function () {
-            $('#tabeladados').DataTable().search($("#comboLojas").val()).draw();
-        });
-    </script>
+        <script>
+            $("#comboLojas").change(function () {
+                $('#tabeladados').DataTable().search($("#comboLojas").val()).draw();
+            });
+        </script>
+    }
 
     @if (Model.cancelamentoAutomaticoItems.Count < 1)
     {

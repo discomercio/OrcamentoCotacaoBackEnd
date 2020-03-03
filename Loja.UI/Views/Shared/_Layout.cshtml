@@ -1,5 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Http
-@inject IHttpContextAccessor HttpContextAccessor
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject Loja.Bll.ClienteBll.ClienteBll clienteBll
+@inject Loja.Bll.Bll.AcessoBll.UsuarioAcessoBll usuarioAcessoBll
+@inject Loja.Bll.Util.Configuracao configuracao
+@inject Microsoft.Extensions.Logging.ILogger<Loja.Bll.Bll.AcessoBll.UsuarioLogado> loggerUsuarioLogado
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,12 +51,12 @@
 </head>
 
 @{
-    var usuarioLogado = new Loja.Bll.Bll.AcessoBll.UsuarioLogado(User, HttpContextAccessor.HttpContext.Session, null, null);
+    var usuarioLogado = new Loja.Bll.Bll.AcessoBll.UsuarioLogado(loggerUsuarioLogado, User, HttpContextAccessor.HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
     var pathLogin = "/Acesso/Login";
     if (!usuarioLogado.SessaoAtiva)
     {
         var pathAtual = HttpContextAccessor?.HttpContext?.Request?.Path.Value?.ToLower() ?? "";
-        if (pathAtual.ToLower() != pathLogin.ToLower())
+        if (!pathAtual.ToLower().Contains(pathLogin.ToLower()))
         {
             //vamos para o login e acabou!
             HttpContextAccessor.HttpContext.Response.Redirect(pathLogin);
@@ -70,10 +74,10 @@
                     <div style="float: right">
                         <div class="row s12">
                             <div class="col " style="font-size: 20px;">
-                                Olá @usuarioLogado.Usuario
+                                Olá @usuarioLogado.Usuario_nome_atual
                             </div>
                             @{
-                                var lista = usuarioLogado.Loja_troca_rapida_monta_itens_select.OrderBy(r => r.Nome).ToList();
+                                var lista = usuarioLogado.LojasDisponiveis.OrderBy(r => r.Nome).ToList();
                             }
                             @if (lista.Count > 0)
                             {
@@ -87,7 +91,7 @@
                                         {
                                             listaSl.Add(new SelectListItem(item.Nome, item.Id));
                                         }
-                                        ViewData["cabecacomboLojas"] = usuarioLogado.LojaAtiva;
+                                        ViewData["cabecacomboLojas"] = usuarioLogado.Loja_atual_id;
                                     }
 
                                     @Html.DropDownList("cabecacomboLojas", listaSl, new { @id = "cabecacomboLojas" })

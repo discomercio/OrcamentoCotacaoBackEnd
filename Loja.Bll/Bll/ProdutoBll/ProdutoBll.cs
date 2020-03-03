@@ -584,7 +584,6 @@ namespace Loja.Bll.ProdutoBll
         {
             bool retorno = false;
             int qtde_estoque_total_disponivel = 0;
-            int qtde_estoque_total_disponivel_global = 0;
 
             if (!string.IsNullOrEmpty(produto.NumProduto))
             {

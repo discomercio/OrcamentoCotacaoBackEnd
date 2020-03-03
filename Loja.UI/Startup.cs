@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Loja.Bll.Bll.AcessoBll;
+using Loja.Bll.Util;
 
 namespace Loja.UI
 {
@@ -30,22 +31,29 @@ namespace Loja.UI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<Configuracao, Configuracao>();
+            Configuracao configuracao = new Configuracao(Configuration);
+
+            services.AddHttpContextAccessor();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
-                    options.ExpireTimeSpan = TimeSpan.FromMinutes(Configuration.GetSection("Acesso").GetValue<int>("ExpiracaoCookieMinutos"));
-                    options.SlidingExpiration = Configuration.GetSection("Acesso").GetValue<bool>("ExpiracaoMovel");
+                    options.ExpireTimeSpan = configuracao.ExpiracaoCookieMinutos;
+                    options.SlidingExpiration = configuracao.ExpiracaoMovel;
                     options.LoginPath = new PathString("/Acesso/Login");
                     options.AccessDeniedPath = new PathString("/Acesso/AcessoNegado");
                 });
 
             //exigimos a autenticação de todo mundo!
+            services.AddTransient<IAuthorizationHandler, AcessoAuthorizationHandlerBll>();
+
+            services.AddHttpContextAccessor();
             services.AddAuthorization(options =>
             {
                 AuthorizationPolicy policy = new AuthorizationPolicyBuilder(CookieAuthenticationDefaults.AuthenticationScheme)
                        .RequireAuthenticatedUser()
-                       .RequireAssertion(r => AcessoBll.AutorizarPagina(r))
+                       .AddRequirements(new AcessoRequirement())
                        .Build();
                 options.DefaultPolicy = policy;
                 options.FallbackPolicy = policy;
@@ -61,7 +69,7 @@ namespace Loja.UI
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(Configuration.GetSection("Acesso").GetValue<int>("ExpiracaoCookieMinutos"));
+                options.IdleTimeout = configuracao.ExpiracaoCookieMinutos;
             });
 
             //bll
@@ -74,7 +82,7 @@ namespace Loja.UI
             services.AddTransient<Bll.FormaPagtoBll.FormaPagtoBll, Bll.FormaPagtoBll.FormaPagtoBll>();
             services.AddTransient<Bll.CoeficienteBll.CoeficienteBll, Bll.CoeficienteBll.CoeficienteBll>();
             services.AddTransient<Loja.Bll.Bll.AcessoBll.UsuarioAcessoBll, Loja.Bll.Bll.AcessoBll.UsuarioAcessoBll>();
-            services.AddTransient<Loja.Bll.Bll.AcessoBll.AcessoBll, Loja.Bll.Bll.AcessoBll.AcessoBll>();
+            services.AddTransient<Loja.Bll.Bll.AcessoBll.AcessoAuthorizationHandlerBll, Loja.Bll.Bll.AcessoBll.AcessoAuthorizationHandlerBll>();
 
 
             //ContextoProvider
@@ -86,14 +94,17 @@ namespace Loja.UI
             services.AddDbContext<Loja.Data.ContextoBdBasico>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("conexaohomologa"));
+                options.EnableSensitiveDataLogging();
             });
             services.AddDbContext<Loja.Data.ContextoCepBd>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("conexaoCep"));
+                options.EnableSensitiveDataLogging();
             });
             services.AddDbContext<Loja.Data.ContextoNFeBd>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("conexaoNfe"));
+                options.EnableSensitiveDataLogging();
             });
         }
 

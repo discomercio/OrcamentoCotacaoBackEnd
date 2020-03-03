@@ -5,6 +5,11 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
+
+//desabilitar o warning CS8632: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
+#nullable enable
+#nullable disable warnings
+
 namespace Loja.Modelos
 {
     [Table("t_ESTOQUE_ITEM")]

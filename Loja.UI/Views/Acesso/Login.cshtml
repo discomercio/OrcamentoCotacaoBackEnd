@@ -1,4 +1,10 @@
 ﻿@model Loja.UI.Models.Acesso.LoginViewModel
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject Loja.Bll.ClienteBll.ClienteBll clienteBll
+@inject Loja.Bll.Bll.AcessoBll.UsuarioAcessoBll usuarioAcessoBll
+@inject Loja.Bll.Util.Configuracao configuracao
+@inject Microsoft.Extensions.Logging.ILogger<Loja.Bll.Bll.AcessoBll.UsuarioLogado> loggerUsuarioLogado
+@using Newtonsoft.Json
 @{
     ViewData["Title"] = "Login";
     ViewBag.PaginaDeLogin = true;
@@ -11,6 +17,11 @@
 <br />
 <br />
 
+@{
+    var usuarioLogado = new Loja.Bll.Bll.AcessoBll.UsuarioLogado(loggerUsuarioLogado, User, HttpContextAccessor.HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
+}
+
+
 @using (Html.BeginForm("LoginSubmit", "Acesso", FormMethod.Post))
 {
     @Html.HiddenFor(m => m.ReturnUrl)
@@ -21,9 +32,51 @@
             <div class="row">
                 <div class="col s4"></div>
                 <div class="col s4">
-                    Acesso negado: o seu usuário não possui autorização para acessar essa página.
+                    Acesso negado: você deve fazer o login novamente. Por motivos de segurança, periodicamente
+                    você deve refazer o login.
                     <br />
-                    Faça o login como outro usuário ou entre em contato com o administrador do sistema.
+                    <br />
+                    Se você acabou de fazer o login e continua a receber esta mensagem,
+                    é possível que o seu usuário não possua autorização para acessar essa página.
+                    Nesse caso, faça o login como outro usuário ou entre em contato com o administrador do sistema.
+                </div>
+                <div class="col s4"></div>
+            </div>
+        }
+
+
+        @if (Model.LoginUsuarioRetorno?.Usuario_bloqueado ?? false)
+        {
+            <div class="row">
+                <div class="col s4"></div>
+                <div class="col s4">
+                    Acesso negado: o seu usuário está bloqueado.
+                    <br />
+                    <br />
+                    Entre em contato com o administrador do sistema.
+                </div>
+                <div class="col s4"></div>
+            </div>
+        }
+        @if (Model.LoginUsuarioRetorno?.Loja_nao_existe ?? false)
+        {
+            <div class="row">
+                <div class="col s4"></div>
+                <div class="col s4">
+                    Acesso negado: a loja especificada não existe.
+                </div>
+                <div class="col s4"></div>
+            </div>
+        }
+        @if (Model.LoginUsuarioRetorno?.Loja_sem_acesso ?? false)
+        {
+            <div class="row">
+                <div class="col s4"></div>
+                <div class="col s4">
+                    Acesso negado: seu usuário não tem acesso à loja especificada.
+                    <br />
+                    <br />
+                    Faça o login com outra loja ou entre em contato com o administrador do sistema.
                 </div>
                 <div class="col s4"></div>
             </div>

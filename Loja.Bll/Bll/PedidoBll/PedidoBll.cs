@@ -1594,8 +1594,10 @@ namespace Loja.Bll.PedidoBll
                 //busca transportadora que atende o cep 1378 ate 1400
                 string sTranspSelAutoTransportadoraId = "";
                 string sTranspSelAutoCep = "";
+#pragma warning disable CS0219 // Variable is assigned but its value is never used
                 int iTranspSelAutoTipoEndereco = 0;
                 int iTranspSelAutoStatus = 0;
+#pragma warning restore CS0219 // Variable is assigned but its value is never used
                 TtransportadoraCep transportadoraCep = new TtransportadoraCep();
 
                 //valida endereço de entrega
@@ -1715,7 +1717,6 @@ namespace Loja.Bll.PedidoBll
         {
 
             //vEmpresaAutoSplit preciso dessa lista 
-            int qtde_empresa_selecionada = 0;
             List<string> lista_empresa_selecionada = new List<string>();
             List<string> vLogAutoSplit = new List<string>();
             int indicePedido = 0;
@@ -2075,8 +2076,10 @@ namespace Loja.Bll.PedidoBll
                 /*lstPedidoItem*/
                 //com os itens verificados e preenchidos
                 //vamos preparar os tpedidoItem salvar os produto
+#pragma warning disable CS0219 // Variable is assigned but its value is never used
                 short qtde_estoque_vendido_aux = 0;
                 short qtde_estoque_sem_presenca_aux = 0;
+#pragma warning restore CS0219 // Variable is assigned but its value is never used
                 //montar um objeto com esses 2 parametros
                 short[] qtde_estoque_aux = new short[2] { qtde_estoque_vendido_aux = 0, qtde_estoque_sem_presenca_aux = 0 };
 
@@ -2995,7 +2998,6 @@ namespace Loja.Bll.PedidoBll
             const string PREFIXOS = "|R|RUA|AV|AVEN|AVENIDA|TV|TRAV|TRAVESSA|AL|ALAM|ALAMEDA|PC|PRACA|PQ|PARQUE|EST|ESTR|ESTRADA|CJ|CONJ|CONJUNTO|";
             string[] v1, v2;
             string s, s1, s2;
-            int i, j;
             bool blnFlag, blnNumeroIgual;
             string[] v_end_numero_1, v_end_numero_2;
             int n_end_numero_1, n_end_numero_2;
@@ -3245,7 +3247,6 @@ namespace Loja.Bll.PedidoBll
             }
 
             char letra = 'A';
-            int letra_int = 0;
 
             s_letra = (((int)letra - 1) + indice_pedido).ToString();
 
