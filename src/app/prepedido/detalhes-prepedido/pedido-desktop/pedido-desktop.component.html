@@ -209,13 +209,45 @@
             <tr>
                 <td align="left">
                     <p class="Rf">ENDEREÇO DE ENTREGA</p>
-                    <p class="C">{{formata_endereco_entrega()}} &nbsp;</p>
+                    <!-- <p class="C">{{formata_endereco_entrega()}} &nbsp;</p> -->
                 </td>
             </tr>
 
-            <tr *ngIf="pedido?.EnderecoEntrega?.EndEtg_descricao_justificativa?.trim() != ''">
+            <!-- <tr *ngIf="pedido?.EnderecoEntrega?.EndEtg_descricao_justificativa?.trim() != ''">
                 <td align="left" style="word-wrap:break-word">
                     <p class="C">{{pedido?.EnderecoEntrega?.EndEtg_descricao_justificativa}} &nbsp;</p>
+                </td>
+            </tr> -->
+
+            <tr *ngIf="pedido?.EnderecoEntrega?.EndEtg_descricao_justificativa?.trim() != ''">
+                <td align="left" style="word-wrap:break-word">
+
+                    <p class="C" style="display: inline-block">
+                        {{pedido?.EnderecoEntrega?.EndEtg_endereco}},
+                    </p>
+                    <p class="C" style="display: inline-block">
+                        {{pedido?.EnderecoEntrega?.EndEtg_endereco_numero}} -
+                    </p>
+                    <p class="C" style="display: inline-block"
+                        *ngIf="pedido?.EnderecoEntrega?.EndEtg_endereco_complemento">
+                        {{pedido?.EnderecoEntrega?.EndEtg_endereco_complemento}} -
+                    </p>
+                    <p class="C" style="display: inline-block">
+                        {{pedido?.EnderecoEntrega?.EndEtg_bairro}} -
+                    </p>
+                    <p class="C" style="display: inline-block">
+                        {{pedido?.EnderecoEntrega?.EndEtg_cidade}} -
+                    </p>
+                    <p class="C" style="display: inline-block">
+                        {{pedido?.EnderecoEntrega?.EndEtg_uf}} -
+                    </p>
+                    <p class="C" style="display: inline-block">
+                        {{pedido?.EnderecoEntrega?.EndEtg_cep}}
+                    </p>
+                    <p class="C">
+                        {{pedido?.EnderecoEntrega?.EndEtg_descricao_justificativa}}
+                    </p>
+
                 </td>
             </tr>
 
@@ -785,7 +817,7 @@
                             <mat-checkbox class="checkboxes"
                                 title="configura as mensagens do bloco de notas de itens devolvidos para serem impressas ou não"
                                 (change)="imprimirNotasDevAlterado()" [checked]="impressaoService.imprimirNotasDev()">
-                                Incluir ocorrências de devolução na impressão
+                                Incluir bloco de notas de devolução na impressão
                             </mat-checkbox>
                         </span>
                     </td>

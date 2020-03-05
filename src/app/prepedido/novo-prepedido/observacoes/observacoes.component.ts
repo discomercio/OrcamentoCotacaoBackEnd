@@ -55,6 +55,7 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
     debugger;
     this.prepedidoBuscarService.cadastrarPrepedido(this.novoPrepedidoDadosService.prePedidoDto).subscribe({
       next: (r) => {
+        debugger;
         if (r == null) {
           r = new Array();
           r.push("Retorno nulo do servidor.");
@@ -65,6 +66,7 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
             return;
           }
           else {
+            debugger;
             this.alertaService.mostrarMensagem("Pré-Pedido criado com sucesso.");
             this.router.navigate(["prepedido/detalhes/" + r[0]]);
           }

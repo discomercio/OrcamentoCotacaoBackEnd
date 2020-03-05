@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { environment } from '../../../../src/environments/environment';
 import { MatSnackBar } from '@angular/material';
 import { AppComponent } from 'src/app/app.component';
+import { Constantes } from 'src/app/dto/Constantes';
+import { IfStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-login',
@@ -36,37 +38,20 @@ export class LoginformularioComponent extends TelaDesktopBaseComponent implement
       this.router.navigateByUrl('/');
     }
   }
+
+  constantes = new Constantes();
   login() {
+    let msg = "";
     //document.getElementById("estilos").setAttribute('href', "assets/Unis.css");
     this.fazendoLogin = true;
-    this.autenticacaoService.authLogin(this.usuario.trim(), this.senha.trim(), this.lembrar).subscribe(
-      {
-        next: (e) => {
-          //nunca desligamos o fazendo login porque, quando fizer, já vai para outra página, então nao fazemos this.fazendoLogin = false;
-          this.autenticacaoService.setarToken(e);
+    this.autenticacaoService.authLogin(this.usuario.trim(), this.senha.trim(), this.lembrar,
+      () => { this.desligarFazendoLoginFOrmulario(); },
+      this._snackBar,
+      this.router, this.appComponent);
+  }
 
-          //o carregarEstilo já navega para a home
-          this.appComponent.carregarEstilo(true);
-        }
-        ,
-        error: (e) => {
-          this.fazendoLogin = false;
-          let msg = "" + ((e && e.message) ? e.message : e.toString());
-          if (e && e.status === 400)
-            msg = "usuário e senha inválidos."
-          if (e && e.status === 0)
-            msg = "servidor de autenticação não disponível."
-          if (e && e.status === 500)
-            msg = "erro interno no servidor de autenticação."
-
-
-          this._snackBar.open("Erro no login: " + msg, undefined, {
-            duration: environment.esperaErros
-          });
-        },
-
-      }
-    );
+  desligarFazendoLoginFOrmulario(): void {
+    this.fazendoLogin = false;
   }
 
 }

@@ -246,7 +246,15 @@ body {
 
 .PLLe b {
   font-size: 10pt !important;
-  font-weight: bold;
+  font-weight: 900;
 }
 
 
+footer{
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  
+}
+header{
+  z-index: 999999;
+}

@@ -6,10 +6,11 @@ import { MatButtonModule, MatInputModule, MatIconModule, MatSnackBarModule, MatC
 import { RouterModule } from '@angular/router';
 import { LoginformularioComponent } from './loginformulario/loginformulario.component';
 import { FormsModule } from '@angular/forms';
+import { AlterarsenhaComponent } from './alterarsenha/alterarsenha.component';
 
 
 @NgModule({
-  declarations: [LoginformularioComponent],
+  declarations: [LoginformularioComponent, AlterarsenhaComponent], 
   imports: [
     FormsModule,
     MatButtonModule,

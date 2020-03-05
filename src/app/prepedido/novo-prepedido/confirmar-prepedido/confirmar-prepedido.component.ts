@@ -46,7 +46,9 @@ export class ConfirmarPrepedidoComponent extends PassoPrepedidoBase implements O
   continuar() {
     this.prepedidoBuscarService.cadastrarPrepedido(this.novoPrepedidoDadosService.prePedidoDto).subscribe({
       next: (r) => {
+        
         if (r == null) {
+          
           r = new Array();
           r.push("Retorno nulo do servidor.");
         }

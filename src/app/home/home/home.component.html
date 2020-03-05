@@ -25,6 +25,13 @@ no celular aparece sempre -->
                 Consultar
                 Pedidos </a>
         </div>
+        <!-- teste alterar senha -->
+        <div [class]="menuDesktop? 'spanMenu': 'spanTela'">
+            <a *ngIf="!menuDesktop" color="accent" class="botaoTela" mat-raised-button
+                [routerLink]="['/alterarsenha']"> Alterar senha</a>
+            <a *ngIf="menuDesktop" color="accent" class="botaoMenu" mat-button [routerLink]="['/alterarsenha']">
+                Alterar senha </a>
+        </div>
         <div style="flex-grow: 0.5" *ngIf="!menuDesktop">
         </div>
     </div>

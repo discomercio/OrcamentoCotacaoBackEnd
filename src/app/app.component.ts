@@ -104,7 +104,7 @@ export class AppComponent implements OnInit {
     
     this.router.navigateByUrl("/login");
 
-    location.reload();
+    // location.reload();
   }       
 
   title = 'Sistema de pré-pedidos';

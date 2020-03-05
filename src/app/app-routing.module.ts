@@ -14,6 +14,7 @@ import { SelecionarClienteComponent } from './prepedido/novo-prepedido/seleciona
 import { NovoPrepedidoComponent } from './prepedido/novo-prepedido/novo-prepedido.component';
 import { ConfirmarClienteComponent } from './prepedido/novo-prepedido/confirmar-cliente/confirmar-cliente.component';
 import { NovoPrepedidoModule } from './prepedido/novo-prepedido/novo-prepedido.module';
+import { AlterarsenhaComponent } from './login/alterarsenha/alterarsenha.component';
 
 
 const routes: Routes = [
@@ -27,6 +28,10 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginformularioComponent
+  },
+  {
+    path: 'alterarsenha',
+    component: AlterarsenhaComponent
   },
   {
     path: 'prepedido/consulta',

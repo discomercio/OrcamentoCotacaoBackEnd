@@ -284,7 +284,7 @@ para não dar erro no console
                     *ngIf="dadosClienteCadastroDto.ProdutorRural == constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM"
                     style="width: 25ch;">
                     <input matInput type="text" placeholder="IE" [(ngModel)]="dadosClienteCadastroDto.Ie"
-                        [disabled]="dadosClienteCadastroDto?.Contribuinte_Icms_Status != 2" maxlength="20">
+                        [disabled]="dadosClienteCadastroDto?.Contribuinte_Icms_Status == 3" maxlength="20">
                 </mat-form-field>
             </div>
         </span>
@@ -337,10 +337,10 @@ para não dar erro no console
             </mat-form-field>
 
             <!-- IE sempre é editável -->
+            <!-- [disabled]="dadosClienteCadastroDto?.Contribuinte_Icms_Status != 2" -->
             <mat-form-field floatLabel="floatLabel()" style="width: 25ch;"
                 [ngStyle]="{'padding':!cadastrando?'0em':''}">
-                <input matInput type="text" placeholder="IE" [(ngModel)]="dadosClienteCadastroDto.Ie" maxlength="20"
-                    [disabled]="dadosClienteCadastroDto?.Contribuinte_Icms_Status != 2">
+                <input matInput type="text" placeholder="IE" [(ngModel)]="dadosClienteCadastroDto.Ie" maxlength="20">
             </mat-form-field>
 
         </span>

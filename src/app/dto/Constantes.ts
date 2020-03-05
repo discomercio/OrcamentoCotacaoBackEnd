@@ -59,5 +59,11 @@ export class Constantes {
 	public COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA = "4";
 	public COD_FORMA_PAGTO_PARCELA_UNICA = "5";
 	public COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA = "6";
+
+
+	//Usuário erros
+	public ERR_USUARIO_BLOQUEADO = "7";
+	public ERR_IDENTIFICACAO_LOJA = "3";
+	public ERR_SENHA_EXPIRADA = "4";
 }
 

@@ -1,0 +1,34 @@
+<div [class]="telaDesktop? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'" layout="row" fxLayoutAlign="center center">
+
+    <div style="flex-grow: 0.5; height: 3.5em;"> </div>
+    <div class="titulopagina">Alterarção de Senha</div>
+    <div class="titulopagina" *ngIf="this.senhaExpirada">(Senha Expirada)</div>
+    <div style="flex-grow: 0.3"> </div>
+    <form (ngSubmit)="alterarSenha()">
+        <div class="divCampos">
+            <br style="height: 10px;">
+            <mat-form-field class="campoTexto">
+                <input matInput type="password" placeholder="Senha" required [(ngModel)]="senha" name="senha">
+            </mat-form-field>
+
+            <br style="height: 10px;">
+            <mat-form-field class="campoTexto">
+                <input matInput type="password" placeholder="Senha Nova" required [(ngModel)]="senhaNova"
+                    name="senhaNova">
+            </mat-form-field>
+
+            <br style="height: 10px;">
+            <mat-form-field class="campoTexto">
+                <input matInput type="password" placeholder="senha Nova (Confirma)" required
+                    [(ngModel)]="senhaNovaConfirma" name="senhaNovaConfirma">
+            </mat-form-field>
+
+        </div>
+        <button mat-raised-button type="submit" style="background-color: #464646; color: #ffffff;">
+            Confirmar
+        </button>
+    </form>
+    <div style="flex-grow: 0.8">
+    </div>
+
+</div>
