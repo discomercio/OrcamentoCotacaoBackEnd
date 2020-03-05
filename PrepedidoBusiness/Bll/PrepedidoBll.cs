@@ -15,6 +15,8 @@ using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using PrepedidoBusiness.Bll.Regras;
 using System.Transactions;
 using InfraBanco;
+using System.Reflection;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PrepedidoBusiness.Bll
 {
@@ -348,7 +350,7 @@ namespace PrepedidoBusiness.Bll
                 NumeroNF = torcamento.Obs_2,
                 EntregaImediata = Convert.ToString(torcamento.St_Etg_Imediata) == Constantes.COD_ETG_IMEDIATA_NAO ?
                 "NÃO" : "SIM (" + torcamento.Etg_Imediata_Usuario +
-                " em " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy hh:mm") + ")",
+                " em " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")",
                 BemDeUso_Consumo = Convert.ToString(torcamento.StBemUsoConsumo) == Constantes.COD_ST_BEM_USO_CONSUMO_NAO ?
                 "NÃO" : "SIM",
                 InstaladorInstala = Convert.ToString(torcamento.InstaladorInstalaStatus) == Constantes.COD_INSTALADOR_INSTALA_NAO ?
@@ -368,7 +370,7 @@ namespace PrepedidoBusiness.Bll
             switch (Convert.ToString(torcamento.Tipo_Parcelamento))
             {
                 case Constantes.COD_FORMA_PAGTO_A_VISTA:
-                    lista.Add("À vista (" + Util.OpcaoFormaPagto(Convert.ToString(torcamento.Av_Forma_Pagto)) + ")");
+                    lista.Add("À Vista (" + Util.OpcaoFormaPagto(Convert.ToString(torcamento.Av_Forma_Pagto)) + ")");
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELA_UNICA:
                     lista.Add(String.Format("Parcela Única: " + " {0:c2} (" +
@@ -376,26 +378,26 @@ namespace PrepedidoBusiness.Bll
                         ") vencendo após " + torcamento.Pu_Vencto_Apos, torcamento.Pu_Valor));
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO:
-                    lista.Add(String.Format("Parcelado no Cartão (internet) em " + torcamento.Pc_Qtde_Parcelas + " X " +
+                    lista.Add(String.Format("Parcelado no Cartão (internet) em " + torcamento.Pc_Qtde_Parcelas + " x " +
                         " {0:c2}", torcamento.Pc_Valor_Parcela));
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA:
                     lista.Add(String.Format("Parcelado no Cartão (maquineta) em " + torcamento.Pc_Maquineta_Qtde_Parcelas +
-                        " X {0:c2}", torcamento.Pc_Maquineta_Valor_Parcela));
+                        " x {0:c2}", torcamento.Pc_Maquineta_Valor_Parcela));
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA:
                     lista.Add(String.Format("Entrada " + "{0:c2} (" +
                         Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pce_Forma_Pagto_Entrada)) + ")", torcamento.Pce_Entrada_Valor));
                     if (torcamento.Pce_Forma_Pagto_Prestacao != 5 && torcamento.Pce_Forma_Pagto_Prestacao != 7)
                     {
-                        lista.Add(String.Format("Demais Prestações: " + torcamento.Pce_Prestacao_Qtde + " X " + " {0:c2}" +
+                        lista.Add(String.Format("Prestações: " + torcamento.Pce_Prestacao_Qtde + " x " + " {0:c2}" +
                             " (" + Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pce_Forma_Pagto_Prestacao)) +
                             ") vencendo a cada " +
                             torcamento.Pce_Prestacao_Periodo + " dias", torcamento.Pce_Prestacao_Valor));
                     }
                     else
                     {
-                        lista.Add(String.Format("Demais Prestações: " + torcamento.Pce_Prestacao_Qtde + " X " + " {0:c2}" +
+                        lista.Add(String.Format("Prestações: " + torcamento.Pce_Prestacao_Qtde + " x " + " {0:c2}" +
                             " (" + Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pce_Forma_Pagto_Prestacao)) + ")", torcamento.Pce_Prestacao_Valor));
                     }
                     break;
@@ -403,7 +405,7 @@ namespace PrepedidoBusiness.Bll
                     lista.Add(String.Format("1ª Prestação: " + " {0:c2} (" +
                         Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pse_Forma_Pagto_Prim_Prest)) +
                         ") vencendo após " + torcamento.Pse_Prim_Prest_Apos + " dias", torcamento.Pse_Prim_Prest_Valor));
-                    lista.Add(String.Format("Demais Prestações: " + torcamento.Pse_Demais_Prest_Qtde + " X " +
+                    lista.Add(String.Format("Prestações: " + torcamento.Pse_Demais_Prest_Qtde + " x " +
                         " {0:c2} (" + Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pse_Forma_Pagto_Demais_Prest)) +
                         ") vencendo a cada " + torcamento.Pse_Demais_Prest_Periodo + " dias", torcamento.Pse_Demais_Prest_Valor));
                     break;
@@ -575,84 +577,93 @@ namespace PrepedidoBusiness.Bll
                 //Validar endereço de entraga
                 if (ValidarEndecoEntrega(prePedido.EnderecoEntrega, lstErros))
                 {
-                    //Esta sendo verificado qual o tipo de pagamento que esta sendo feito e retornando a quantidade de parcelas
-                    int c_custoFinancFornecQtdeParcelas = ObterQtdeParcelasFormaPagto(prePedido);
 
-                    //varificar o numero para saber o tipo de pagamento
-                    string siglaPagto = ObterSiglaFormaPagto(prePedido);
-
-                    if (Util.ValidarTipoCustoFinanceiroFornecedor(lstErros, siglaPagto, c_custoFinancFornecQtdeParcelas))
+                    if (ValidarFormaPagto(prePedido, lstErros))
                     {
-                        //Analizar o funcionamento
-                        float coeficiente = await BuscarCoeficientePercentualCustoFinanFornec(prePedido, (short)c_custoFinancFornecQtdeParcelas, siglaPagto, lstErros);
 
-                        Tparametro parametroRegra = await Util.BuscarRegistroParametro(Constantes.ID_PARAMETRO_Flag_Orcamento_ConsisteDisponibilidadeEstoqueGlobal,
-                            contextoProvider);
-                        //esse metodo tb tras a sigla da pessoa
-                        string tipoPessoa = Util.MultiCdRegraDeterminaPessoa(prePedido.DadosCliente.Tipo, prePedido.DadosCliente.Contribuinte_Icms_Status,
-                            prePedido.DadosCliente.ProdutorRural);
-                        string descricao = Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo);
+                        //Esta sendo verificado qual o tipo de pagamento que esta sendo feito e retornando a quantidade de parcelas
+                        int c_custoFinancFornecQtdeParcelas = ObterQtdeParcelasFormaPagto(prePedido);
 
-                        List<RegrasBll> regraCrtlEstoque = (await ObterCtrlEstoqueProdutoRegra(prePedido, lstErros)).ToList();
-                        //teste
-                        await Util.ObterCtrlEstoqueProdutoRegra_Teste(lstErros, regraCrtlEstoque, prePedido.DadosCliente.Uf, tipoPessoa, contextoProvider);
-                        //fim teste
-
-                        ProdutoBll.VerificarRegrasAssociadasAosProdutos(regraCrtlEstoque, lstErros, prePedido.DadosCliente);
-                        //obtendo qtde disponivel
-                        await Util.VerificarEstoque(regraCrtlEstoque, contextoProvider);
-
-                        //ObterDisponibilidadeEstoque(regraCrtlEstoque, prePedido, parametroRegra, lstErros);
-
-                        VerificarEstoqueInsuficiente(regraCrtlEstoque, prePedido, parametroRegra);
-
-                        //realiza a análise da quantidade de pedidos necessária(auto-split)
-                        VerificarQtdePedidosAutoSplit(regraCrtlEstoque, lstErros, prePedido);
-
-                        //contagem de empresas que serão usadas no auto-split, ou seja, a quantidade de pedidos que será cadastrada, 
-                        //já que cada pedido se refere ao estoque de uma empresa
-                        List<int> lst_empresa_selecionada = ContagemEmpresasUsadasAutoSplit(regraCrtlEstoque, prePedido);//verificar quando é usado essa lista
-
-                        //há algum produto descontinuado?
-                        await ExisteProdutoDescontinuado(prePedido, lstErros);
+                        //varificar o numero para saber o tipo de pagamento
+                        string c_custoFinancFornecTipoParcelamento = ObterSiglaFormaPagto(prePedido);
 
 
-                        //validar detalhesPrepedidos
-
-                        if (lstErros.Count <= 0)
+                        if (Util.ValidarTipoCustoFinanceiroFornecedor(lstErros, c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas))
                         {
-                            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+                            //Analizar o funcionamento
+                            float coeficiente = await BuscarCoeficientePercentualCustoFinanFornec(prePedido,
+                                (short)c_custoFinancFornecQtdeParcelas, c_custoFinancFornecTipoParcelamento, lstErros);
+
+                            Tparametro parametroRegra = await Util.BuscarRegistroParametro(Constantes.ID_PARAMETRO_Flag_Orcamento_ConsisteDisponibilidadeEstoqueGlobal,
+                                contextoProvider);
+                            //esse metodo tb tras a sigla da pessoa
+                            string tipoPessoa = Util.MultiCdRegraDeterminaPessoa(prePedido.DadosCliente.Tipo, prePedido.DadosCliente.Contribuinte_Icms_Status,
+                                prePedido.DadosCliente.ProdutorRural);
+                            string descricao = Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo);
+
+                            List<RegrasBll> regraCrtlEstoque = (await ObterCtrlEstoqueProdutoRegra(prePedido, lstErros)).ToList();
+                            //teste
+                            await Util.ObterCtrlEstoqueProdutoRegra_Teste(lstErros, regraCrtlEstoque, prePedido.DadosCliente.Uf, tipoPessoa, contextoProvider);
+                            //fim teste
+
+                            ProdutoBll.VerificarRegrasAssociadasAosProdutos(regraCrtlEstoque, lstErros, prePedido.DadosCliente);
+                            //obtendo qtde disponivel
+                            await Util.VerificarEstoque(regraCrtlEstoque, contextoProvider);
+
+                            ObterDisponibilidadeEstoque(regraCrtlEstoque, prePedido, parametroRegra, lstErros);
+
+                            VerificarEstoqueInsuficiente(regraCrtlEstoque, prePedido, parametroRegra);
+
+                            //realiza a análise da quantidade de pedidos necessária(auto-split)
+                            VerificarQtdePedidosAutoSplit(regraCrtlEstoque, lstErros, prePedido);
+
+                            //contagem de empresas que serão usadas no auto-split, ou seja, a quantidade de pedidos que será cadastrada, 
+                            //já que cada pedido se refere ao estoque de uma empresa
+                            List<int> lst_empresa_selecionada = ContagemEmpresasUsadasAutoSplit(regraCrtlEstoque, prePedido);//verificar quando é usado essa lista
+
+                            //há algum produto descontinuado?
+                            await ExisteProdutoDescontinuado(prePedido, lstErros);
+
+
+                            //validar detalhesPrepedidos
+
+                            if (lstErros.Count <= 0)
                             {
-
-                                //Se orcamento existir, fazer o delete das informações
-                                if (!string.IsNullOrEmpty(prePedido.NumeroPrePedido))
+                                using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
                                 {
-                                    await DeletarOrcamentoExiste(dbgravacao, prePedido, apelido);
+
+                                    //Se orcamento existir, fazer o delete das informações
+                                    if (!string.IsNullOrEmpty(prePedido.NumeroPrePedido))
+                                    {
+                                        await DeletarOrcamentoExiste(dbgravacao, prePedido, apelido);
+                                    }
+
+                                    if (string.IsNullOrEmpty(prePedido.NumeroPrePedido))
+                                    {
+                                        //gerar o numero de orçamento
+                                        await GerarNumeroOrcamento(dbgravacao, prePedido);
+                                    }
+
+                                    if (string.IsNullOrEmpty(prePedido.NumeroPrePedido))
+                                        lstErros.Add("FALHA NA OPERAÇÃO COM O BANCO DE DADOS AO TENTAR GERAR NSU.");
+
+                                    //Cadastrar dados do Orcamento e endereço de entrega 
+                                    string log = await EfetivarCadastroPrepedido(dbgravacao,
+                                        prePedido, tOrcamentista, c_custoFinancFornecTipoParcelamento);
+                                    //Cadastrar orcamento itens
+                                    List<TorcamentoItem> lstOrcamentoItem = MontaListaOrcamentoItem(prePedido.ListaProdutos, prePedido.NumeroPrePedido);
+
+                                    await ComplementarInfosOrcamentoItem(dbgravacao, lstOrcamentoItem, prePedido.DadosCliente.Loja);
+
+                                    log = await CadastrarOrctoItens(dbgravacao, lstOrcamentoItem, log);
+
+                                    bool gravouLog = Util.GravaLog(dbgravacao, apelido, prePedido.DadosCliente.Loja, prePedido.NumeroPrePedido,
+                                        prePedido.DadosCliente.Id, Constantes.OP_LOG_ORCAMENTO_NOVO, log);
+
+                                    dbgravacao.transacao.Commit();
+                                    //teste
+                                    lstErros.Add(prePedido.NumeroPrePedido);
                                 }
-
-                                if (string.IsNullOrEmpty(prePedido.NumeroPrePedido))
-                                {
-                                    //gerar o numero de orçamento
-                                    await GerarNumeroOrcamento(dbgravacao, prePedido);
-                                }
-
-                                if (string.IsNullOrEmpty(prePedido.NumeroPrePedido))
-                                    lstErros.Add("FALHA NA OPERAÇÃO COM O BANCO DE DADOS AO TENTAR GERAR NSU.");
-                                //Cadastrar dados do Orcamento e endereço de entrega 
-                                string log = await EfetivarCadastroPrepedido(dbgravacao, prePedido, tOrcamentista, siglaPagto);
-                                //Cadastrar orcamento itens
-                                List<TorcamentoItem> lstOrcamentoItem = MontaListaOrcamentoItem(prePedido.ListaProdutos, prePedido.NumeroPrePedido);
-
-                                await ComplementarInfosOrcamentoItem(dbgravacao, lstOrcamentoItem, prePedido.DadosCliente.Loja);
-
-                                log = await CadastrarOrctoItens(dbgravacao, lstOrcamentoItem, log);
-
-                                bool gravouLog = Util.GravaLog(dbgravacao, apelido, prePedido.DadosCliente.Loja, prePedido.NumeroPrePedido,
-                                    prePedido.DadosCliente.Id, Constantes.OP_LOG_ORCAMENTO_NOVO, log, contextoProvider);
-
-                                dbgravacao.transacao.Commit();
-                                //teste
-                                lstErros.Add(prePedido.NumeroPrePedido);
                             }
                         }
                     }
@@ -717,7 +728,9 @@ namespace PrepedidoBusiness.Bll
             torcamento.Orcamento = prepedido.NumeroPrePedido;
             torcamento.Loja = orcamentista.Loja;
             torcamento.Data = DateTime.Now.Date;
-            torcamento.Hora = DateTime.Now.Hour.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Minute.ToString();
+            torcamento.Hora = DateTime.Now.Hour.ToString().PadLeft(2, '0') +
+                    DateTime.Now.Month.ToString().PadLeft(2, '0') +
+                    DateTime.Now.Minute.ToString().PadLeft(2, '0');
             torcamento.Id_Cliente = prepedido.DadosCliente.Id;
             torcamento.Orcamentista = orcamentista.Apelido;
             torcamento.Midia = "";
@@ -813,7 +826,7 @@ namespace PrepedidoBusiness.Bll
                 torcamento.Etg_Imediata_Usuario = orcamentista.Apelido;
             }
             torcamento.CustoFinancFornecParcelamento = siglaPagto;//sigla pagto
-            torcamento.GarantiaIndicadorStatus = prepedido.DetalhesPrepedido.GarantiaIndicador != "0" ? byte.Parse(Constantes.COD_GARANTIA_INDICADOR_STATUS__SIM) : byte.Parse(Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO);
+            torcamento.GarantiaIndicadorStatus = prepedido.DetalhesPrepedido.GarantiaIndicador == null ? byte.Parse(Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO) : byte.Parse(Constantes.COD_GARANTIA_INDICADOR_STATUS__SIM);
             torcamento.GarantiaIndicadorUsuarioUltAtualiz = orcamentista.Apelido;
             torcamento.GarantiaInidicadorDtHrUltAtualiz = DateTime.Now;
 
@@ -825,13 +838,32 @@ namespace PrepedidoBusiness.Bll
             torcamento.Pce_Prestacao_Valor = torcamento.Pce_Prestacao_Valor.HasValue ? torcamento.Pce_Prestacao_Valor : 0.0M;
             torcamento.Pse_Prim_Prest_Valor = torcamento.Pse_Prim_Prest_Valor.HasValue ? torcamento.Pse_Prim_Prest_Valor : 0.0M;
 
-            //Montar uma rotina para pegar os campos a omitir antes de montar o log
-            string campos_a_omitir = MontarCamposAOmitirFormaPagtoCriacao(prepedido.FormaPagtoCriacao);
 
-            campos_a_omitir = MontaCamposAOmitirEnderecoEntrega(prepedido.EnderecoEntrega);
+            //vamos alterar o modo de criar o log e montar apenas os campos que devem ser salvos
+            //montamos os valores a serem inseridos
+            string campos_a_inserir = MontarCamposAInserirValorTotal();
+            //montamos alguns detalhes do prepedido
+            campos_a_inserir += MontarCamposAInserirDetalhes(torcamento);
+            //montamos a forma de pagto selecionada
+            campos_a_inserir += MontarCamposAInserirFormaPagto(prepedido.FormaPagtoCriacao);
+            //montamos os custos
+            campos_a_inserir += "custoFinancFornecTipoParcelamento|custoFinancFornecQtdeParcelas|";
+            //montamos os campos de endereço de entrega se existir
+            campos_a_inserir += MontaCamposAInserirEnderecoEntrega(prepedido.EnderecoEntrega);
+
+            campos_a_inserir += "InstaladorInstalaStatus|GarantiaIndicadorStatus|perc_desagio_RA_liquida";
 
             string log = "";
-            log = Util.MontaLog(torcamento, log, campos_a_omitir);
+            log = Util.MontaLogInserir(torcamento, log, campos_a_inserir, true);
+
+
+
+            ////Montar uma rotina para pegar os campos a omitir antes de montar o log
+            //string campos_a_omitir = MontarCamposAOmitirFormaPagtoCriacao(prepedido.FormaPagtoCriacao);
+
+            //campos_a_omitir += MontaCamposAOmitirEnderecoEntrega(prepedido.EnderecoEntrega);
+
+            //log = Util.MontaLog(torcamento, log, campos_a_inserir);
 
             dbgravacao.Add(torcamento);
             await dbgravacao.SaveChangesAsync();
@@ -841,60 +873,167 @@ namespace PrepedidoBusiness.Bll
 
         private async Task<string> CadastrarOrctoItens(ContextoBdGravacao dbgravacao, List<TorcamentoItem> lstOrcItens, string log)
         {
+            string logItem = "";
             foreach (var i in lstOrcItens)
             {
                 dbgravacao.Add(i);
-                log = Util.MontaLog(i, log, "");
+
+                //vamos montar os campos a inserir
+                string campos_a_inserir = "";
+                campos_a_inserir = MontarCamposAInserirItens(i);
+
+                logItem += "\n";
+
+                logItem = MontaLogInserirItens(i, campos_a_inserir, logItem);
+
+                //log = Util.MontaLogInserir(i, log, campos_a_inserir);
+                //log = Util.MontaLog(i, log, "");
             }
             await dbgravacao.SaveChangesAsync();
+            log += logItem;
+            return log;
+        }
+
+        private string MontaLogInserirItens(TorcamentoItem item, string campos_a_inserir, string log)
+        {
+            //montamos o produto ex: 1x001001(001);
+            log += item.Qtde + "x" + item.Produto;
+            if (item.Fabricante != "" && item.Fabricante != null)
+            {
+                log += "(" + item.Fabricante + ");";
+            }
+
+            PropertyInfo[] property = item.GetType().GetProperties();
+
+            foreach (var c in property)
+            {
+                //pegando o real nome da coluna 
+                ColumnAttribute column = (ColumnAttribute)Attribute.GetCustomAttribute(c, typeof(ColumnAttribute));
+                if (column != null)
+                {
+                    string coluna = column.Name;
+
+                    if (campos_a_inserir.Contains(coluna))
+                    {
+                        //pegando o valor coluna
+                        var value = (c.GetValue(item, null));
+                        log = log + coluna + "=" + value + "; ";
+                    }
+                }
+            }
 
             return log;
         }
 
-        public string MontaCamposAOmitirEnderecoEntrega(EnderecoEntregaDtoClienteCadastro end)
+        private string MontarCamposAInserirItens(TorcamentoItem item)
         {
-            string campos_a_omitir = "";
+            string campos_a_inserir = "";
 
-            if (!end.OutroEndereco)
+            campos_a_inserir = "preco_lista|desc_dado|preco_venda|preco_NF|obs|custoFinancFornecCoeficiente|custoFinancFornecPrecoListaBase|";
+
+            if (item.Qtde_Spe > 0)
             {
-                campos_a_omitir = "|EndEtg_endereco|EndEtg_bairro|EndEtg_cidade|EndEtg_uf|EndEtg_cep|" +
+                campos_a_inserir += "spe|";
+            }
+            if (item.Abaixo_Min_Status != 0 && item.Abaixo_Min_Status != null)
+            {
+                campos_a_inserir += "abaixo_min_status|abaixo_min_autorizacao|abaixo_min_autorizador|abaixo_min_superv_autorizador";
+            }
+
+            return campos_a_inserir;
+        }
+
+        private string MontaCamposAInserirEnderecoEntrega(EnderecoEntregaDtoClienteCadastro end)
+        {
+            string campos_a_inserir = "";
+
+            if (end.OutroEndereco)
+            {
+                campos_a_inserir = "|EndEtg_endereco|EndEtg_bairro|EndEtg_cidade|EndEtg_uf|EndEtg_cep|" +
                     "EndEtg_endereco_numero|EndEtg_endereco_complemento|";
             }
 
-            return campos_a_omitir;
+
+            return campos_a_inserir;
         }
 
-        private string MontarCamposAOmitirFormaPagtoCriacao(FormaPagtoCriacaoDto forma_pagto_criacao)
+        private string MontarCamposAInserirDetalhes(Torcamento orcamento)
         {
-            string campos_a_omitir = "";
+            string campos_a_inserir = "";
 
-            if (forma_pagto_criacao.Rb_forma_pagto != Constantes.COD_FORMA_PAGTO_A_VISTA)
-                campos_a_omitir = "av_forma_pagto|";
-            else if (forma_pagto_criacao.Rb_forma_pagto != Constantes.COD_FORMA_PAGTO_PARCELA_UNICA)
+            if (orcamento.Forma_Pagamento != "" && orcamento.Forma_Pagamento != null)
             {
-                if (!campos_a_omitir.Contains("av_forma_pagto"))
-                    campos_a_omitir += "av_forma_pagto|";
-                campos_a_omitir += "pu_forma_pagto|pu_valor|pu_vencto_apos|";
+                campos_a_inserir += "forma_pagto|";
+            }
+            if (orcamento.Servicos != "" && orcamento.Servicos != null)
+            {
+                campos_a_inserir += "servicos|";
+            }
+            if (orcamento.Vl_Servicos.ToString() != "" && orcamento.Vl_Servicos != 0)
+            {
+                campos_a_inserir += "vl_servicos|";
+            }
+            if (orcamento.St_Etg_Imediata.ToString() != "")
+            {
+                campos_a_inserir += "st_etg_imediata|";
+            }
+            if (orcamento.StBemUsoConsumo.ToString() != "")
+            {
+                campos_a_inserir += "StBemUsoConsumo|";
+            }
+            if (orcamento.Obs_1 != "" && orcamento.Obs_1 != null)
+            {
+                campos_a_inserir += "obs_1|";
+            }
+            if (orcamento.Obs_2 != "" && orcamento.Obs_2 != null)
+            {
+                campos_a_inserir += "obs_2|";
+            }
+
+            return campos_a_inserir;
+        }
+
+        private string MontarCamposAInserirValorTotal()
+        {
+            string campos_a_inserir = "";
+
+            campos_a_inserir = "vl total|vl_total_NF|vl_total_RA|qtde_parcelas|perc_RT|midia";
+
+            return campos_a_inserir;
+        }
+
+        private string MontarCamposAInserirFormaPagto(FormaPagtoCriacaoDto forma_pagto_criacao)
+        {
+            string campos_a_inserir = "";
+            campos_a_inserir += "tipo_parcelamento|";
+
+            if (forma_pagto_criacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_A_VISTA)
+                campos_a_inserir = "av_forma_pagto|";
+            else if (forma_pagto_criacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELA_UNICA)
+            {
+                campos_a_inserir += "pu_forma_pagto|pu_valor|pu_vencto_apos|";
             }
             else if (forma_pagto_criacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO)
-                campos_a_omitir += "pc_qtde_parcelas|pc_valor_parcela|";
+                campos_a_inserir += "pc_qtde_parcelas|pc_valor_parcela|";
             else if (forma_pagto_criacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA)
-                campos_a_omitir += "pc_maquineta_qtde_parcelas|pc_maquineta_valor_parcela|";
+                campos_a_inserir += "pc_maquineta_qtde_parcelas|pc_maquineta_valor_parcela|";
             else if (forma_pagto_criacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA)
-                campos_a_omitir += "pce_forma_pagto_entrada|pce_forma_pagto_prestacao|pce_entrada_valor|pce_prestacao_qtde|" +
+                campos_a_inserir += "pce_forma_pagto_entrada|pce_forma_pagto_prestacao|pce_entrada_valor|pce_prestacao_qtde|" +
                     "pce_prestacao_valor|pce_prestacao_periodo|";
             else if (forma_pagto_criacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA)
-                campos_a_omitir += "pse_forma_pagto_prim_prest|pse_forma_pagto_demais_prest|pse_prim_prest_valor|pse_prim_prest_apos|" +
+                campos_a_inserir += "pse_forma_pagto_prim_prest|pse_forma_pagto_demais_prest|pse_prim_prest_valor|pse_prim_prest_apos|" +
                     "pse_demais_prest_qtde|pse_demais_prest_valor|pse_demais_prest_periodo|";
 
 
-            return campos_a_omitir;
+            return campos_a_inserir;
         }
 
         private int ObterQtdeParcelasFormaPagto(PrePedidoDto prepedido)
         {
             FormaPagtoCriacaoDto formaPagto = prepedido.FormaPagtoCriacao;
             int qtdeParcelas = 0;
+
+
 
             if (formaPagto.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_A_VISTA)
                 qtdeParcelas = 1;
@@ -981,8 +1120,12 @@ namespace PrepedidoBusiness.Bll
                     lstErros.Add("Indique o valor da prestação (parcelado com entrada).");
                 else if (prepedido.FormaPagtoCriacao.C_pce_prestacao_valor <= 0)
                     lstErros.Add("Valor de prestação inválido (parcelado com entrada).");
-                else if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.C_pce_prestacao_periodo.ToString()))
-                    lstErros.Add("Indique o intervalo de vencimento entre as parcelas (parcelado com entrada).");
+                else if (prepedido.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto != "7" &&
+                    prepedido.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto != "5")
+                {
+                    if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.C_pce_prestacao_periodo.ToString()))
+                        lstErros.Add("Indique o intervalo de vencimento entre as parcelas (parcelado com entrada).");
+                }
                 else if (prepedido.FormaPagtoCriacao.C_pce_prestacao_periodo <= 0)
                     lstErros.Add("Intervalo de vencimento inválido (parcelado com entrada).");
             }
@@ -1017,6 +1160,9 @@ namespace PrepedidoBusiness.Bll
             {
                 lstErros.Add("É obrigatório especificar a forma de pagamento");
             }
+
+            if (lstErros.Count == 0)
+                retorno = true;
 
             return retorno;
         }
@@ -1056,7 +1202,7 @@ namespace PrepedidoBusiness.Bll
                 }
             }
 
-            return vl_total;
+            return Math.Round(vl_total, 2);
         }
 
         private decimal CalcularVl_Total_NF(PrePedidoDto prepedido)
@@ -1067,11 +1213,11 @@ namespace PrepedidoBusiness.Bll
             {
                 if (!string.IsNullOrEmpty(p.NumProduto))
                 {
-                    vl_total_NF += (decimal)(p.Qtde * p.Preco);
+                    vl_total_NF += (decimal)(p.Qtde * p.VlLista);
                 }
             }
 
-            return vl_total_NF;
+            return Math.Round(vl_total_NF, 2);
         }
 
         private async Task ExisteProdutoDescontinuado(PrePedidoDto prepedido, List<string> lstErros)
@@ -1337,7 +1483,6 @@ namespace PrepedidoBusiness.Bll
             return retorno;
         }
 
-
         public async Task<float> BuscarCoeficientePercentualCustoFinanFornec(PrePedidoDto prePedido, short qtdeParcelas, string siglaPagto, List<string> lstErros)
         {
             float coeficiente = 0;
@@ -1361,7 +1506,7 @@ namespace PrepedidoBusiness.Bll
                     if (percCusto != null)
                     {
                         coeficiente = percCusto.Coeficiente;
-                        i.VlLista = (decimal)coeficiente * i.VlLista;
+                        i.VlLista = (decimal)coeficiente * (decimal)i.Preco;
                     }
                     else
                     {
@@ -1588,7 +1733,7 @@ namespace PrepedidoBusiness.Bll
                 if (prod != null)
                 {
                     //montagem das informações do produto
-                    item.Preco_Lista = prod.Preco_Lista;// prod.TprodutoLoja.Preco_Lista;
+                    item.Preco_Lista = Math.Round((decimal)prod.Preco_Lista, 2);// prod.TprodutoLoja.Preco_Lista;
                     item.Margem = prod.Margem;
                     item.Desc_Max = prod.Desc_Max;
                     item.Comissao = prod.Comissao;
@@ -1605,7 +1750,7 @@ namespace PrepedidoBusiness.Bll
                     item.Ncm = prod.Tproduto.Ncm;
                     item.Cst = prod.Tproduto.Cst;
                     item.Descontinuado = prod.Tproduto.Descontinuado;
-                    item.CustoFinancFornecPrecoListaBase = (decimal)prod.Preco_Lista;
+                    item.CustoFinancFornecPrecoListaBase = Math.Round((decimal)prod.Preco_Lista, 2);
                 }
             }
         }
@@ -1693,59 +1838,6 @@ namespace PrepedidoBusiness.Bll
         //    return lstErros;
         //}
         #endregion
-
-        private string DescricaoCustoFornecTipoParcelamento(string tipoPagto)
-        {
-            string retorno = "";
-
-            switch (tipoPagto)
-            {
-                case Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA:
-                    retorno = "Com Entrada";
-                    break;
-                case Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA:
-                    retorno = "Sem Entrada";
-                    break;
-                case Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA:
-                    retorno = "À Vista";
-                    break;
-            }
-
-            return retorno;
-        }
-
-        //Busca produtos e verifica se loja esta cadastrada
-        private async Task<IEnumerable<string>> VerificaCadaProdutoSelecionado(List<TorcamentoItem> lstOrcamentoItem,
-            string loja)
-        {
-            List<string> lstErros = new List<string>();
-
-            var db = contextoProvider.GetContextoLeitura();
-
-            foreach (TorcamentoItem item in lstOrcamentoItem)
-            {
-                var prodTeste = from c in db.TprodutoLojas.Include(x => x.Tproduto).Include(x => x.Tproduto.Tfabricante)
-                                where c.Tproduto.Tfabricante.Fabricante == item.Fabricante &&
-                                      c.Loja == loja &&
-                                      c.Tproduto.Produto == item.Produto
-                                select c;
-
-                var t = await prodTeste.FirstOrDefaultAsync();
-
-                //var prodLista = from c in db.Tprodutos.Include(r => r.TprodutoLoja).Include(r => r.Tfabricante)
-                //                    where c.Fabricante == item.Fabricante &&
-                //                          c.Produto == item.Produto &&
-                //                          c.TprodutoLoja.Loja == loja
-                //                    select c.Produto;
-
-                //    var prod = await prodLista.FirstOrDefaultAsync();
-
-                if (t == null)
-                    lstErros.Add("Produto " + item.Produto + " do fabricante " + item.Fabricante +
-                        " NÃO está cadastrado para a loja " + loja);
-            }
-            return lstErros;
-        }
 
         private string DecodificaCustoFinanFornecQtdeParcelas(string tipoParcelamento, short custoFFQtdeParcelas)
         {

@@ -137,10 +137,11 @@ namespace PrepedidoBusiness.Bll
             var db = contextoProvider.GetContextoLeitura();
 
             var formaPagtoTask = from c in db.TformaPagtos
-                                 where c.Hab_parcela_unica == 1 &&
+                                 where c.Hab_entrada == 1 &&
                                        !(from d in db.torcamentistaEIndicadorRestricaoFormaPagtos
                                          where (d.Id_orcamentista_e_indicador == apelido.ToUpper() ||
-                                               d.Id_orcamentista_e_indicador == Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS) &&
+                                               d.Id_orcamentista_e_indicador == 
+                                               Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS) &&
                                                d.Tipo_cliente == tipo_pessoa &&
                                                d.St_restricao_ativa != 0
                                          select d.Id_forma_pagto).Contains(c.Id)

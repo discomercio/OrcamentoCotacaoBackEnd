@@ -432,7 +432,7 @@ namespace PrepedidoBusiness.Bll
                 retorno = "SIM";
             //formatar a data da variavel etg_imediata_data
             if (retorno != "")
-                dataFormatada = p.Etg_Imediata_Data?.ToString("dd/MM/yyyy hh:mm");
+                dataFormatada = p.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm");
             //verificar se o retorno acima esta vazio
             if (!string.IsNullOrEmpty(dataFormatada))
                 retorno += " (" + IniciaisEmMaisculas(p.Etg_Imediata_Usuario) + " - " + dataFormatada + ")";
@@ -745,10 +745,11 @@ namespace PrepedidoBusiness.Bll
                                     where d.Pedido == numPedido
                                     select d).ToListAsync();
             List<OcorrenciasDtoPedido> lista = new List<OcorrenciasDtoPedido>();
-            OcorrenciasDtoPedido ocorre = new OcorrenciasDtoPedido();
+            
 
             foreach (var i in ocorrencia)
             {
+                OcorrenciasDtoPedido ocorre = new OcorrenciasDtoPedido();
                 ocorre.Usuario = i.Usuario_Cadastro;
                 ocorre.Dt_Hr_Cadastro = i.Dt_Hr_Cadastro;
                 if (i.Finalizado_Status != 0)
@@ -763,9 +764,9 @@ namespace PrepedidoBusiness.Bll
                 }
                 ocorre.Contato = i.Contato ?? "";
                 if (i.Tel_1 != "")
-                    ocorre.Contato += "&nbsp;&nbsp;   (" + i.Ddd_1 + ") " + i.Tel_1;
+                    ocorre.Contato += "&nbsp;&nbsp; (" + i.Ddd_1 + ") " + Util.FormatarTelefones(i.Tel_1);
                 if (i.Tel_2 != "")
-                    ocorre.Contato += "   &nbsp;&nbsp;(" + i.Ddd_2 + ") " + i.Tel_2;
+                    ocorre.Contato += "   &nbsp;&nbsp;(" + i.Ddd_2 + ") " + Util.FormatarTelefones(i.Tel_2);
                 ocorre.Texto_Ocorrencia = i.Texto_Ocorrencia;
                 ocorre.mensagemDtoOcorrenciaPedidos = msg;
                 ocorre.Finalizado_Usuario = i.Finalizado_Usuario;
@@ -846,8 +847,11 @@ namespace PrepedidoBusiness.Bll
                         //string credito = registro.analise_credito_data;
                         if (!string.IsNullOrEmpty(registro.analise_credito_usuario))
                         {
+                            string maiuscula = (Char.ToUpper(registro.analise_credito_usuario[0]) +
+                                registro.analise_credito_usuario.Substring(1).ToLower());
+
                             retorno = retorno + " (" + registro.analise_credito_data?.ToString("dd/MM/yyyy HH:mm") + " - "
-                                + registro.analise_credito_usuario + ")";
+                                + maiuscula + ")";
                         }
                     }
                 }
@@ -1068,26 +1072,26 @@ namespace PrepedidoBusiness.Bll
                         ") vencendo após " + pedido.Pu_Vencto_Apos + " dias"));
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO:
-                    lista.Add(String.Format("Parcelado no Cartão (internet) em " + pedido.Pc_Qtde_Parcelas + " X " +
+                    lista.Add(String.Format("Parcelado no Cartão (internet) em " + pedido.Pc_Qtde_Parcelas + " x " +
                         " {0:c2}", pedido.Pc_Valor_Parcela));
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA:
                     lista.Add(String.Format("Parcelado no Cartão (maquineta) em " + pedido.Pc_Maquineta_Qtde_Parcelas +
-                        " X {0:c2}" + pedido.Pc_Maquineta_Valor_Parcela));
+                        " x {0:c2}" + pedido.Pc_Maquineta_Valor_Parcela));
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA:
                     lista.Add(String.Format("Entrada " + "{0:c2} (" +
                         Util.OpcaoFormaPagto(Convert.ToString(pedido.Pce_Forma_Pagto_Entrada)) + ")", pedido.Pce_Entrada_Valor));
                     if (pedido.Pce_Forma_Pagto_Prestacao != 5 && pedido.Pce_Forma_Pagto_Prestacao != 7)
                     {
-                        lista.Add(String.Format("Demais Prestações: " + pedido.Pce_Prestacao_Qtde + " x " + " {0:c2}" +
+                        lista.Add(String.Format("Prestações: " + pedido.Pce_Prestacao_Qtde + " x " + " {0:c2}" +
                             " (" + Util.OpcaoFormaPagto(Convert.ToString(pedido.Pce_Forma_Pagto_Prestacao)) +
                             ") vencendo a cada " +
                             pedido.Pce_Prestacao_Periodo + " dias", pedido.Pce_Prestacao_Valor));
                     }
                     else
                     {
-                        lista.Add(String.Format("Demais Prestações: " + pedido.Pce_Prestacao_Qtde + " X " + " {0:c2}" +
+                        lista.Add(String.Format("Prestações: " + pedido.Pce_Prestacao_Qtde + " x " + " {0:c2}" +
                             " (" + Util.OpcaoFormaPagto(Convert.ToString(pedido.Pce_Forma_Pagto_Prestacao)) + ")", pedido.Pce_Prestacao_Valor));
                     }
                     break;
@@ -1095,7 +1099,7 @@ namespace PrepedidoBusiness.Bll
                     lista.Add(String.Format("1ª Prestação: " + " {0:c2} (" +
                         Util.OpcaoFormaPagto(Convert.ToString(pedido.Pse_Forma_Pagto_Prim_Prest)) +
                         ") vencendo após " + pedido.Pse_Prim_Prest_Apos + " dias", pedido.Pse_Prim_Prest_Valor));
-                    lista.Add(String.Format("Demais Prestações: " + pedido.Pse_Demais_Prest_Qtde + " X " +
+                    lista.Add(String.Format("Prestações: " + pedido.Pse_Demais_Prest_Qtde + " x " +
                         " {0:c2} (" + Util.OpcaoFormaPagto(Convert.ToString(pedido.Pse_Forma_Pagto_Demais_Prest)) +
                         ") vencendo a cada " + pedido.Pse_Demais_Prest_Periodo + " dias", pedido.Pse_Demais_Prest_Valor));
                     break;

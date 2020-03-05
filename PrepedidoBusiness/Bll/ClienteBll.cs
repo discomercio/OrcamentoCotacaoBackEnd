@@ -51,40 +51,53 @@ namespace PrepedidoBusiness.Bll
                 {
                     using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
                     {
-                        if (dadosClienteCadastroDto.Contribuinte_Icms_Status == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM) &&
-                        dadosClienteCadastroDto.Ie != null || dadosClienteCadastroDto.Ie != "")
+                        if (dadosClienteCadastroDto.Contribuinte_Icms_Status.ToString() != "" &&
+                            dadosClienteCadastroDto.Contribuinte_Icms_Status != cli.Contribuinte_Icms_Status)
                         {
-                            cli.Ie = dadosClienteCadastroDto.Ie;
-                            if (dadosClienteCadastroDto.Contribuinte_Icms_Status != cli.Contribuinte_Icms_Status)
-                            {
-                                
-                                cli.Contribuinte_Icms_Status = dadosClienteCadastroDto.Contribuinte_Icms_Status;
-                                cli.Contribuinte_Icms_Data = DateTime.Now;
-                                cli.Contribuinte_Icms_Data_Hora = DateTime.Now;
-                                cli.Contribuinte_Icms_Usuario = apelido;
-                            }
-                            if (dadosClienteCadastroDto.Tipo == Constantes.ID_PF &&
+                            cli.Contribuinte_Icms_Status = dadosClienteCadastroDto.Contribuinte_Icms_Status;
+                            cli.Contribuinte_Icms_Data = DateTime.Now;
+                            cli.Contribuinte_Icms_Data_Hora = DateTime.Now;
+                            cli.Contribuinte_Icms_Usuario = apelido;                            
+                        }
+                        if (dadosClienteCadastroDto.Tipo == Constantes.ID_PF &&
                                 dadosClienteCadastroDto.ProdutorRural != byte.Parse(Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL) &&
                                 dadosClienteCadastroDto.ProdutorRural != cli.Produtor_Rural_Status)
-                            {
-                                cli.Produtor_Rural_Status = dadosClienteCadastroDto.ProdutorRural;
-                                cli.Produtor_Rural_Data = DateTime.Now;
-                                cli.Produtor_Rural_Data_Hora = DateTime.Now;
-                                cli.Produtor_Rural_Usuario = apelido;
-                            }
-                            cli.Dt_Ult_Atualizacao = DateTime.Now;
-                            cli.Usuario_Ult_Atualizacao = apelido;
-
-                            dbgravacao.Update(cli);
-                            dbgravacao.SaveChanges();
-
-                            log = Utils.Util.MontaLog(cli, log, campos_a_omitir);
-                            //Essa parte esta na pagina ClienteAtualiza.asp linha 1113
-                            bool salvouLog = Utils.Util.GravaLog(dbgravacao, apelido, dadosClienteCadastroDto.Loja, "", dadosClienteCadastroDto.Id,
-                                Constantes.OP_LOG_CLIENTE_ALTERACAO, log, contextoProvider);
-                            if (salvouLog)
-                                dbgravacao.transacao.Commit();
+                        {
+                            cli.Produtor_Rural_Status = dadosClienteCadastroDto.ProdutorRural;
+                            cli.Produtor_Rural_Data = DateTime.Now;
+                            cli.Produtor_Rural_Data_Hora = DateTime.Now;
+                            cli.Produtor_Rural_Usuario = apelido;
                         }
+
+                        if(dadosClienteCadastroDto.Contribuinte_Icms_Status == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO))
+                        {
+                            cli.Ie = dadosClienteCadastroDto.Ie;
+                        }
+
+                        if (dadosClienteCadastroDto.Contribuinte_Icms_Status == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM) &&
+                            (dadosClienteCadastroDto.Ie != "" || dadosClienteCadastroDto.Ie != null))
+                        {
+                            cli.Ie = dadosClienteCadastroDto.Ie;
+                        }
+                        if (dadosClienteCadastroDto.Contribuinte_Icms_Status == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO) &&
+                            (dadosClienteCadastroDto.Ie == "" || dadosClienteCadastroDto.Ie == null))
+                        {
+                            cli.Ie = "";
+                        }
+
+
+                        cli.Dt_Ult_Atualizacao = DateTime.Now;
+                        cli.Usuario_Ult_Atualizacao = apelido;
+
+                        dbgravacao.Update(cli);
+                        dbgravacao.SaveChanges();
+
+                        log = Utils.Util.MontaLog(cli, log, campos_a_omitir);
+                        //Essa parte esta na pagina ClienteAtualiza.asp linha 1113
+                        bool salvouLog = Utils.Util.GravaLog(dbgravacao, apelido, dadosClienteCadastroDto.Loja, "", dadosClienteCadastroDto.Id,
+                            Constantes.OP_LOG_CLIENTE_ALTERACAO, log);
+                        if (salvouLog)
+                            dbgravacao.transacao.Commit();
                     }
                 }
             }
@@ -299,9 +312,9 @@ namespace PrepedidoBusiness.Bll
                     {
                         await CadastrarRefBancaria(dbgravacao, clienteDto.RefBancaria, apelido, id_cliente, log);
                         await CadastrarRefComercial(dbgravacao, clienteDto.RefComercial, apelido, id_cliente, log);
-                        
+
                         bool gravouLog = Utils.Util.GravaLog(dbgravacao, apelido, cliente.Loja, "", id_cliente,
-                            Constantes.OP_LOG_CLIENTE_INCLUSAO, log, contextoProvider);
+                            Constantes.OP_LOG_CLIENTE_INCLUSAO, log);
                         if (gravouLog)
                             dbgravacao.transacao.Commit();
                     }
@@ -479,7 +492,7 @@ namespace PrepedidoBusiness.Bll
 
             return lstErros;
         }
-        
+
         private async Task<IEnumerable<NfeMunicipio>> ConsisteMunicipioIBGE(string municipio, string uf, List<string> lstErros)
         {
             var db = contextoProvider.GetContextoLeitura();
@@ -654,7 +667,7 @@ namespace PrepedidoBusiness.Bll
             //string s_tabela_municipios_IBGE = "";
             if (cliente.Ie != "")
             {
-                
+
                 string uf = VerificarInscricaoEstadualValida(cliente.Ie, cliente.Uf, listaErros);
                 List<NfeMunicipio> lstNfeMunicipio = new List<NfeMunicipio>();
                 lstNfeMunicipio = (await ConsisteMunicipioIBGE(cliente.Cidade, cliente.Uf, listaErros)).ToList();
@@ -747,7 +760,7 @@ namespace PrepedidoBusiness.Bll
 
             return result;
         }
-        
+
         private async Task<string> GerarIdCliente(InfraBanco.ContextoBdGravacao dbgravacao, string id_nsu)
         {
             string retorno = "";

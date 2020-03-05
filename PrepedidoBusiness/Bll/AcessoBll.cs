@@ -5,7 +5,8 @@ using InfraBanco.Modelos;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-
+using InfraBanco.Constantes;
+using PrepedidoBusiness.Dto.Acesso;
 
 namespace PrepedidoBusiness.Bll
 {
@@ -33,7 +34,8 @@ namespace PrepedidoBusiness.Bll
                             c.Datastamp,
                             c.Dt_Ult_Alteracao_Senha,
                             c.Hab_Acesso_Sistema,
-                            c.Status
+                            c.Status,
+                            c.Loja
                         };
 
             string retorno = null;
@@ -43,18 +45,21 @@ namespace PrepedidoBusiness.Bll
             if (t == null)
                 return await Task.FromResult(retorno);
             if (t.Datastamp == "")
-                return await Task.FromResult(retorno);
+                return await Task.FromResult(Constantes.ERR_USUARIO_BLOQUEADO);
             if (t.Hab_Acesso_Sistema != 1)
-                return await Task.FromResult(retorno);
+                return await Task.FromResult(Constantes.ERR_USUARIO_BLOQUEADO);
             if (t.Status != "A")
-                return await Task.FromResult(retorno);
+                return await Task.FromResult(Constantes.ERR_USUARIO_BLOQUEADO);
+            if (t.Loja == "")
+                return await Task.FromResult(Constantes.ERR_IDENTIFICACAO_LOJA);
+
 
             //validar a senha
             //SLM112233 - SALOMÃO
             var senhaCodificada = DecodificaSenha(senha).ToUpper();
 
             var senha_banco = DecodificaSenha(t.Datastamp);
-            if(senha != t.Datastamp.ToUpper())
+            if (senha != t.Datastamp.ToUpper())
             {
                 return await Task.FromResult(retorno);
             }
@@ -71,6 +76,14 @@ namespace PrepedidoBusiness.Bll
                 await dbgravacao.SaveChangesAsync();
                 dbgravacao.transacao.Commit();
             }
+
+            if (t.Dt_Ult_Alteracao_Senha == null)
+            {
+                //Senha expirada, precisa mandar alguma valor de senha expirada
+                //coloquei o valor "4" para saber quando a senha esta expirada
+                return await Task.FromResult("4");
+            }
+
             return await Task.FromResult(t.Razao_Social_Nome);
         }
 
@@ -87,6 +100,9 @@ namespace PrepedidoBusiness.Bll
 
         public async Task GravarSessaoComTransacao(string ip, string apelido, string userAgent)
         {
+            //afazer: realizar a validação do usuário antes de gravar a sessão na tabela
+
+
             string loja = await BuscarLojaUsuario(apelido);
 
             //inserir na t_SESSAO_HISTORICO
@@ -271,5 +287,57 @@ namespace PrepedidoBusiness.Bll
             }
         }
 
+        public async Task<string> AlterarSenha(AlterarSenhaDto alterarSenhaDto)
+        {
+            string retorno = "";
+            string senha_aleatoria = "";
+
+            if (!string.IsNullOrEmpty(alterarSenhaDto.Senha) && !string.IsNullOrEmpty(alterarSenhaDto.SenhaNova) && 
+                !string.IsNullOrEmpty(alterarSenhaDto.SenhaNovaConfirma))
+            {
+                if (alterarSenhaDto.SenhaNova.Length < 5)
+                {
+                    return retorno = "A nova senha deve possuir no mínimo 5 caracteres.";
+                }
+                if (alterarSenhaDto.SenhaNovaConfirma.Length < 5)
+                {
+                    return retorno = "A confirmação da nova senha deve possuir no mínimo 5 caracteres.";
+                }
+                if (alterarSenhaDto.SenhaNova != alterarSenhaDto.SenhaNovaConfirma)
+                {
+                    return retorno = "A confirmação da nova senha está incorreta.";
+                }
+                if (alterarSenhaDto.Senha == alterarSenhaDto.SenhaNova)
+                {
+                    return retorno = "A nova senha deve ser diferente da senha atual.";
+                }
+
+                //vamos alterar a senha na base de dados
+                using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+                {
+                    TorcamentistaEindicador orcamentista = await (from c in dbgravacao.TorcamentistaEindicadors
+                                                                  where c.Apelido == alterarSenhaDto.Apelido
+                                                                  select c).FirstOrDefaultAsync();
+
+                    senha_aleatoria = Utils.Util.GerarSenhaAleatoria();
+
+                    orcamentista.Datastamp = CodificaSenha(alterarSenhaDto.SenhaNova);
+                    orcamentista.Dt_Ult_Alteracao_Senha = DateTime.Now.Date;
+                    orcamentista.Dt_Ult_Atualizacao = DateTime.Now;
+                    orcamentista.Senha = senha_aleatoria;
+                    
+                    //vamos gravar o log
+                    if(Utils.Util.GravaLog(dbgravacao, alterarSenhaDto.Apelido, orcamentista.Loja, "", "", Constantes.OP_LOG_SENHA_ALTERACAO, "SENHA ALTERADA PELO ORÇAMENTISTA"))
+                    {
+                        dbgravacao.Update(orcamentista);
+                        await dbgravacao.SaveChangesAsync();
+
+                        dbgravacao.transacao.Commit();
+                    }
+                }
+            }
+
+            return retorno;
+        }
     }
 }

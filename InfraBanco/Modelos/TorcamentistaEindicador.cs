@@ -248,7 +248,7 @@ namespace InfraBanco.Modelos
 
         [Column("razao_social_nome_iniciais_em_maiusculas")]
         [MaxLength(60)]
-        public string Razao_Social_Nome_Iniciais_Em_Maiusculas { get; set; }
+        public string Razao_Social_Nome_Iniciais_Em_Maiusculas { get; }
 
         [Column("st_reg_copiado_automaticamente")]
         [Required]

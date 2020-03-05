@@ -26,6 +26,12 @@ namespace InfraIdentity
             // retorna null se não tiver usuário
             if (user == null)
                 return null;
+
+            //Se retornar erro de usuário bloqueado ou senha expirada
+            if (!string.IsNullOrEmpty(user.IdErro.ToString()) && user.IdErro != 0)
+            {
+                return user.IdErro.ToString();
+            }
             
             // authentication successful so generate jwt token
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -53,6 +59,8 @@ namespace InfraIdentity
 
         public string RenovarTokenAutenticacao(string apelido, string nome, string loja, string segredoToken, int validadeTokenMinutos, string role)
         {
+            //vamos verificar se usuario ainda tem permissão
+
             // authentication successful so generate jwt token
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(segredoToken);

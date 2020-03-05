@@ -37,6 +37,11 @@ namespace PrepedidoBusiness.Utils
 
         }
 
+        public static string FormatarTelefones(string telefone)
+        {
+            return telefone.Insert(telefone.Length - 4, "-");
+        }
+
         public static bool ValidaCpf_Cnpj(string cpf_cnpj)
         {
             bool retorno = false;
@@ -135,6 +140,7 @@ namespace PrepedidoBusiness.Utils
 
             return retorno;
         }
+
         public static bool VerificaCep(string cep)
         {
             bool retorno = false;
@@ -179,7 +185,7 @@ namespace PrepedidoBusiness.Utils
                 string _minuto = hora.Substring(2, 2);
 
                 retorno = _hora + ":" + _minuto;
-            }            
+            }
 
             return retorno;
         }
@@ -235,7 +241,80 @@ namespace PrepedidoBusiness.Utils
             return s_destino;
         }
 
-        
+        public static string GerarSenhaAleatoria()
+        {
+            string senha = "";
+            int i;
+            char c;
+
+            while(senha.Length < 10)
+            {
+                Random random = new Random();
+                i = random.Next(122 - 48 + 1, 122 - 48 + 1 + 48);
+
+                if (i >= 48 && i <= 57)
+                {
+                    c = (char)i;
+                }
+                else if (i >= 65 && i <= 90)
+                {
+                    c = (char)i;
+                }
+                else if (i >= 97 && i <= 122)
+                {
+                    c = (char)i;
+                }
+                else
+                {
+                    c = ' ';
+                }
+
+                senha += c.ToString().Trim();
+            }
+            
+
+            return senha;
+
+        }
+
+        public static string MontaLogInserir(Object obj, string log, string campos_a_inserir2, bool tratarEndEtg)
+        {
+            PropertyInfo[] property = obj.GetType().GetProperties();
+            string[] campos = campos_a_inserir2.Split('|');
+            int indiceDoCampo = 0;
+            foreach (var campo_atual in campos)
+            {
+                foreach (var c in property)
+                {
+                    //pegando o real nome da coluna 
+                    ColumnAttribute column = (ColumnAttribute)Attribute.GetCustomAttribute(c, typeof(ColumnAttribute));
+                    if (column != null)
+                    {
+                        string coluna = column.Name;
+
+                        //vamos verificar se existe endereço de entrega
+                        if (tratarEndEtg && indiceDoCampo == 0 && coluna == "EndEtg_cep")
+                        {
+                            var valor = (c.GetValue(obj, null));
+
+                            if (valor == null)
+                            {
+                                log = log + "Endereço entrega = mesmo do cadastro; ";
+                            }
+                        }
+
+                        if (campo_atual == coluna)
+                        {
+                            //pegando o valor coluna
+                            var value = (c.GetValue(obj, null));
+                            log = log + coluna + "=" + value + "; ";
+                        }
+                    }
+                }
+                indiceDoCampo++;
+            }
+            return log;
+        }
 
         public static string MontaLog(Object obj, string log, string campos_a_omitir)
         {
@@ -261,7 +340,7 @@ namespace PrepedidoBusiness.Utils
             return log;
         }
         public static bool GravaLog(ContextoBdGravacao dbgravacao, string apelido, string loja, string pedido, string id_cliente,
-            string operação, string log, ContextoBdProvider contexto)
+            string operação, string log)
         {
             if (apelido == null)
                 return false;
@@ -315,7 +394,7 @@ namespace PrepedidoBusiness.Utils
             if (custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA &&
                 custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA)
             {
-                
+
                 if (c_custoFinancFornecQtdeParcelas <= 0)
                 {
                     lstErros.Add("Não foi informada a quantidade de parcelas para a forma de pagamento selecionada " +

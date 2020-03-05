@@ -26,8 +26,20 @@ namespace PrepedidoApi.Utils
             apelido = apelido.ToUpperInvariant();
             senha= senha.ToUpperInvariant();
 
+            int idErro;
 
             var dadosCliente = await acessoBll.ValidarUsuario(apelido, senha);
+            //caso usuário com senha expirada ou bloqueado, retornamos um número 
+            if (!string.IsNullOrEmpty(dadosCliente))
+            {
+                if(int.TryParse(dadosCliente, out idErro))
+                {
+                    //temos um problema e precisamos mandar algum valor para avisar que é senha expirada ou usuario bloqueado para mostrar na tela
+                    UsuarioLogin usuario = new UsuarioLogin { IdErro = idErro };
+                    return usuario;
+                }
+                
+            }
             var loja = await acessoBll.BuscarLojaUsuario(apelido);
 
             if (string.IsNullOrEmpty(dadosCliente))

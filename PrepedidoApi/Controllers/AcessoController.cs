@@ -73,7 +73,7 @@ namespace PrepedidoApi.Controllers
             return Ok(token);
         }
 
-        
+
 
         //este é o único que permite acesso anônimo
         [AllowAnonymous]
@@ -111,5 +111,18 @@ namespace PrepedidoApi.Controllers
             return Ok();
         }
 
+        [HttpPost("alterarSenha")]
+        [AllowAnonymous]
+        public async Task<IActionResult> AlterarSenha(PrepedidoBusiness.Dto.Acesso.AlterarSenhaDto alterarSenhaDto)
+        {
+            string retorno = "";
+
+            if (!string.IsNullOrEmpty(alterarSenhaDto.Apelido))
+            {
+                retorno = await acessoBll.AlterarSenha(alterarSenhaDto);
+            }
+
+            return Ok(retorno);
+        }
     }
 }
