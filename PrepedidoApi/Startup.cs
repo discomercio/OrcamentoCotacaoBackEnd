@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using PrepedidoApi.Utils;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Serialization;
+using InfraIdentity;
 
 namespace PrepedidoApi
 {
@@ -51,10 +52,11 @@ namespace PrepedidoApi
             services.AddTransient<InfraBanco.ContextoNFeProvider, InfraBanco.ContextoNFeProvider>();
 
             //banco de dados
+            string conexaoBasica = Configuration.GetConnectionString("conexaohomologa");
             services.AddDbContext<InfraBanco.ContextoBdBasico>(options =>
             {
                 //options.UseSqlServer(Configuration.GetConnectionString("conexaoLocal"));
-                options.UseSqlServer(Configuration.GetConnectionString("conexaohomologa"));
+                options.UseSqlServer(conexaoBasica);
             });
             services.AddDbContext<InfraBanco.ContextoCepBd>(options =>
             {
@@ -80,11 +82,22 @@ namespace PrepedidoApi
             {
                 x.RequireHttpsMetadata = false;
                 x.SaveToken = true;
-                //afazer:
+
                 /*
 	            verificar se usuário continua ativo a cada requisição? dá algum trabalho e fica mais lento. 
                 Resposta em 26/09/2019: sim, verificar se o usuário está ativo em cada requisição.
                 */
+                x.SecurityTokenValidators.Clear();
+
+                Microsoft.EntityFrameworkCore.DbContextOptionsBuilder<InfraBanco.ContextoBdBasico> optionsBuilder;
+                optionsBuilder = new Microsoft.EntityFrameworkCore.DbContextOptionsBuilder<InfraBanco.ContextoBdBasico>();
+                optionsBuilder.UseSqlServer(conexaoBasica);
+
+                //temos que crir os objetos com todas as suas dependencias aqui mesmo 
+                //(nao podemos usar a resolução de serviços da injeção de dependencias do .net)
+                x.SecurityTokenValidators.Add(new ValidarCredenciais(new ValidarCredenciaisServico(
+                    new PrepedidoBusiness.Bll.AcessoBll(new InfraBanco.ContextoBdProvider(optionsBuilder.Options)))));
+
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
@@ -104,6 +117,22 @@ namespace PrepedidoApi
             app.Use(async (context, next) =>
             {
                 await next();
+                //Estamos fazendo essas verificaçoes para poder forçar o return de "403" para que 
+                //possamos fazer o ratamento no Angular
+                //O objetivo aqui é fazer a validação de que o usuário tem permissão de acesso
+                //Em x.SecurityTokenValidators.Add estamos fazendo a chamada para validar a cada requisição que é feita
+                if (context.Request.Method.ToLower() != "options" && context.Request.Path.HasValue &&
+                context.Response.StatusCode != 404)
+                {
+                    var autenticado = context.User.Identity.IsAuthenticated;
+                    if (!autenticado
+                        && !context.Request.Path.Value.ToLower().Contains("fazerlogin")
+                        && !context.Request.Path.Value.ToLower().Contains("alterarsenha"))
+                    {
+                        context.Response.StatusCode = 403; //negado!
+                        return;
+                    }
+                }
 
                 // If there's no available file and the request doesn't contain an extension, we're probably trying to access a page.
                 // Rewrite request to use app root
@@ -137,6 +166,7 @@ namespace PrepedidoApi
             app.UseStaticFiles();
 
             app.UseAuthentication();
+
             app.UseMvc();
         }
     }

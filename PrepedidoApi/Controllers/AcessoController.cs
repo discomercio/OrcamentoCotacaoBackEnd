@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Serialization;
+
 
 namespace PrepedidoApi.Controllers
 {
@@ -115,13 +117,14 @@ namespace PrepedidoApi.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> AlterarSenha(PrepedidoBusiness.Dto.Acesso.AlterarSenhaDto alterarSenhaDto)
         {
-            string retorno = "";
+            var retorno = "";
 
             if (!string.IsNullOrEmpty(alterarSenhaDto.Apelido))
             {
                 retorno = await acessoBll.AlterarSenha(alterarSenhaDto);
             }
 
+            retorno = Newtonsoft.Json.JsonConvert.SerializeObject(retorno);
             return Ok(retorno);
         }
     }

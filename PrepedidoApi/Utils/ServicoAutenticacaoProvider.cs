@@ -28,7 +28,7 @@ namespace PrepedidoApi.Utils
 
             int idErro;
 
-            var dadosCliente = await acessoBll.ValidarUsuario(apelido, senha);
+            var dadosCliente = await acessoBll.ValidarUsuario(apelido, senha, false);
             //caso usuário com senha expirada ou bloqueado, retornamos um número 
             if (!string.IsNullOrEmpty(dadosCliente))
             {

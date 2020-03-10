@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\InfraBanco\InfraBanco.csproj" />
+    <ProjectReference Include="..\InfraIdentity\InfraIdentity.csproj" />
   </ItemGroup>
 
 </Project>
