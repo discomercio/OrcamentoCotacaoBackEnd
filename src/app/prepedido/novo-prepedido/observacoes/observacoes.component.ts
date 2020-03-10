@@ -52,10 +52,10 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
   }
   continuar() {
     this.dadosParaModelo();
-    debugger;
+    
     this.prepedidoBuscarService.cadastrarPrepedido(this.novoPrepedidoDadosService.prePedidoDto).subscribe({
       next: (r) => {
-        debugger;
+        
         if (r == null) {
           r = new Array();
           r.push("Retorno nulo do servidor.");
@@ -66,20 +66,21 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
             return;
           }
           else {
-            debugger;
+            
             this.alertaService.mostrarMensagem("Pré-Pedido criado com sucesso.");
             this.router.navigate(["prepedido/detalhes/" + r[0]]);
           }
         }
 
       },
-      error: (r) => this.alertaService.mostrarErroInternet()
+      error: (r) => this.alertaService.mostrarErroInternet(r)
     });
     // this.dadosParaModelo();
 
     // this.router.navigate(["../confirmar-prepedido"], { relativeTo: this.activatedRoute });
   }
   //#endregion
+
 
   constantes = new Constantes();
 

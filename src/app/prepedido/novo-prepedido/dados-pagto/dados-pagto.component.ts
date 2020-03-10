@@ -327,7 +327,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
           this.alertaService.mostrarMensagem("Erro ao carregar a lista de forma de pagamentos")
         }
       },
-      error: (r: FormaPagtoDto) => this.alertaService.mostrarErroInternet()
+      error: (r: FormaPagtoDto) => this.alertaService.mostrarErroInternet(r)
     })
   }
 
@@ -345,7 +345,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
           this.alertaService.mostrarMensagem("Erro ao carregar a lista de coeficientes dos fabricantes")
         }
       },
-      error: (r: CoeficienteDto) => this.alertaService.mostrarErroInternet()
+      error: (r: CoeficienteDto) => this.alertaService.mostrarErroInternet(r)
     })
   }
 
@@ -363,14 +363,15 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
           this.alertaService.mostrarMensagem("Erro ao carregar a quantidade de parcelas!");
         }
       },
-      error: (r: number) => this.alertaService.mostrarErroInternet()
+      error: (r: number) => this.alertaService.mostrarErroInternet(r)
     })
   }
+
+
 
   //chamado quando algum item do prepedido for alterado
   //aqui é feito a limpeza do select da forma de pagamento
   public prepedidoAlterado() {
-
     this.recalcularValoresComCoeficiente(this.enumFormaPagto);
     this.montarListaParcelamento(this.enumFormaPagto);
     this.opcaoPagtoParcComEntrada = null;
@@ -393,7 +394,6 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
     this.lstMsg = new Array();
     this.lstMsg.push("Carregando dados....");
 
-    debugger;
     this.buscarCoeficiente(() => this.listarValoresComCoeficiente(this.tipoFormaPagto, enumFP));
 
   }
@@ -447,7 +447,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
           if (this.enumFormaPagto.toString() == constant.COD_FORMA_PAGTO_A_VISTA &&
             lstProdutos[x].Fabricante == lstCoeficiente[i].Fabricante &&
             txtFormaPagto == constant.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA) {
-            debugger;
+            
             lstProdutos[x].VlUnitario = lstProdutos[x].Preco * (1 - lstProdutos[x].Desconto / 100);
             lstProdutos[x].VlTotalItem = lstProdutos[x].Preco * (1 - lstProdutos[x].Desconto / 100);
             lstProdutos[x].VlLista = lstProdutos[x].Preco;
@@ -470,7 +470,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
             lstProdutos[x].Fabricante == lstCoeficiente[i].Fabricante &&
             lstCoeficiente[i].TipoParcela == constant.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA &&
             txtFormaPagto == constant.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA) {
-              debugger;
+              
             lstProdutos[x].VlUnitario = ((lstProdutos[x].Preco * lstCoeficiente[i].Coeficiente) * (1 - lstProdutos[x].Desconto / 100));
             lstProdutos[x].VlTotalItem = (lstProdutos[x].Preco * lstCoeficiente[i].Coeficiente) * (1 - lstProdutos[x].Desconto / 100);
             lstProdutos[x].VlLista = lstProdutos[x].Preco * lstCoeficiente[i].Coeficiente;
@@ -479,14 +479,14 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
             // (lstProdutos[x].TotalItem / lstCoeficiente[i].QtdeParcelas).toFixed(2));
           }
           //parcelado sem entrada
-          debugger;
+          
           if ((
             this.enumFormaPagto.toString() == constant.COD_FORMA_PAGTO_PARCELADO_CARTAO ||
             this.enumFormaPagto.toString() == constant.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA) &&
             lstProdutos[x].Fabricante == lstCoeficiente[i].Fabricante &&
             lstCoeficiente[i].TipoParcela == constant.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA &&
             txtFormaPagto == constant.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA) {
-              debugger;
+              
             lstProdutos[x].VlUnitario = ((lstProdutos[x].Preco * lstCoeficiente[i].Coeficiente) * (1 - lstProdutos[x].Desconto / 100));
             lstProdutos[x].VlTotalItem = (lstProdutos[x].Preco * lstCoeficiente[i].Coeficiente) * (1 - lstProdutos[x].Desconto / 100);
             lstProdutos[x].VlLista = lstProdutos[x].Preco * lstCoeficiente[i].Coeficiente;
@@ -534,7 +534,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
           enumFP.toString() == this.constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA) &&
           lstCoeficiente[i].TipoParcela == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA) {
           if (cont < this.qtdeParcVisa) {
-            debugger;
+            
             this.lstMsg.push(lstCoeficiente[i].QtdeParcelas + " X " +
               this.moedaUtils.formatarMoedaComPrefixo(vlTotalPedido / lstCoeficiente[i].QtdeParcelas));
             cont++;

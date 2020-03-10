@@ -59,7 +59,7 @@ export class CepDialogComponent extends TelaDesktopBaseComponent implements OnIn
           this.alertaService.mostrarMensagem("Erro ao carregar a lista de Estados!")
         }
       },
-      error: (r: string) => this.alertaService.mostrarErroInternet()
+      error: (r: string) => this.alertaService.mostrarErroInternet(r)
     });
   }
 
@@ -88,7 +88,7 @@ export class CepDialogComponent extends TelaDesktopBaseComponent implements OnIn
         },
         error: (r: string) => {
           this.carregando = false;
-          this.alertaService.mostrarErroInternet();
+          this.alertaService.mostrarErroInternet(r);
         }
       });
     }
@@ -136,7 +136,7 @@ export class CepDialogComponent extends TelaDesktopBaseComponent implements OnIn
             },
             error: (r: CepDto[]) => {
               this.carregando = false;
-              this.alertaService.mostrarErroInternet();
+              this.alertaService.mostrarErroInternet(r);
             }
           });
         }

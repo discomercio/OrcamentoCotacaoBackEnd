@@ -79,6 +79,7 @@ export class AlterarsenhaComponent extends TelaDesktopBaseComponent implements O
           this.autenticacaoService.alterarSenha(this.autenticacaoService.usuarioApelidoParaAlterarSenha, this.senha,
             this.senhaNova, this.senhaNovaConfirma).subscribe({
               next: (e) => {
+                debugger;
                 //fazer a chamada para realizar o login, passando a senha nova e o apelido
                 if (e == "" || e == null) {
                   this._snackBar.open("Alteração de senha realizada com sucesso!", undefined, {
@@ -92,15 +93,21 @@ export class AlterarsenhaComponent extends TelaDesktopBaseComponent implements O
                 //retornando erro
                 if (e != "" && e != null) {
                   msg = e.toString();
-
+                  
                   this._snackBar.open("Erro ao alterar senha: " + msg, undefined, {
                     duration: environment.esperaErros
                   });
+
+                  //Qualquer problema, podemos verificar se a msg é "Usuário bloqueado" e 
+                  //podemos redirecionar ele para a tela de login, pois ele ainda não esta logado
+                  //No momento estamos deixando ele na tela de alterar senha
+
                   return;
                 }
 
               },
               error: (e) => {
+                debugger;
                 msg = "" + ((e && e.message) ? e.message : e.toString());
                 if (e && e.status === 400)
                   msg = "usuário e senha inválidos."

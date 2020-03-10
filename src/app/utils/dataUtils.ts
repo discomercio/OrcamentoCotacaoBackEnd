@@ -91,7 +91,7 @@ export class DataUtils {
     public static formatarTelaHoraComSegundos(data: Date | string): string {
         //para imprimir na tela
         //está vindo como string do c#!
-        debugger;
+        
         if (!data) {
             return "";
         }

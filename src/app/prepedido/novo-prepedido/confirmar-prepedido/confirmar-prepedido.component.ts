@@ -59,7 +59,7 @@ export class ConfirmarPrepedidoComponent extends PassoPrepedidoBase implements O
         this.alertaService.mostrarMensagem("Pré-pedido criado com sucesso.");
         this.router.navigate(["/"]);
       },
-      error: (r) => this.alertaService.mostrarErroInternet()
+      error: (r) => this.alertaService.mostrarErroInternet(r)
     });
   }
   //#endregion

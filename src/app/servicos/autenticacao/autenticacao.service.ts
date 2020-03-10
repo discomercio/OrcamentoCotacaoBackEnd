@@ -114,6 +114,12 @@ export class AutenticacaoService {
   }
 
   public authLogout(): void {
+    this.authLogoutSemLayout();
+    this.loja = null;
+    this.carregarLayout();
+  }
+
+  public authLogoutSemLayout(): void {
     this.http.get(environment.apiUrl + 'acesso/fazerLogout').subscribe(
       e => {
         //nao fazemos nada..
@@ -121,8 +127,6 @@ export class AutenticacaoService {
     );
     sessionStorage.setItem('token', "");
     localStorage.setItem('token', "");
-    this.loja = null;
-    this.carregarLayout();
   }
 
   public setarToken(token: string): void {
@@ -219,7 +223,7 @@ export class AutenticacaoService {
       return false;
     if (token.trim() == "")
       return false;
-    if (token == "7")
+    if (token == this.constantes.ERR_USUARIO_BLOQUEADO)
       return false;
 
     const user = jtw_decode(token);

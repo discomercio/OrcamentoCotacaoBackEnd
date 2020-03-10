@@ -43,14 +43,14 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
         .then((r) => {
           if (r === null) {
             //erro
-            this.alertaService.mostrarErroInternet();
+            this.alertaService.mostrarErroInternet(r);
             return;
           }
           //cliente já existe
           this.listaBancosCombo = r;
         }).catch((r) => {
           //erro
-          this.alertaService.mostrarErroInternet();
+          this.alertaService.mostrarErroInternet(r);
         });
     }
     //isso foi incluido para que funcione corretamente no  browser "EDGE"

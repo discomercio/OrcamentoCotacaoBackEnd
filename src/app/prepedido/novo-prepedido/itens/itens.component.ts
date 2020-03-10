@@ -73,7 +73,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
         this.prepedidoBuscarService.buscar(numeroPrepedido).subscribe({
           next: (r) => {
             if (r == null) {
-              this.alertaService.mostrarErroInternet();
+              this.alertaService.mostrarErroInternet(r);
               this.router.navigate(["/novo-prepedido"]);
               return;
             }
@@ -86,7 +86,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
             this.inscreverProdutoComboDto();
 
           },
-          error: (r) => this.alertaService.mostrarErroInternet()
+          error: (r) => {debugger; this.alertaService.mostrarErroInternet(r) }
         });
         return;
       }
@@ -128,7 +128,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
           this.permite_RA_Status = true;
         }
       },
-      error: (r) => this.alertaService.mostrarErroInternet()
+      error: (r) => this.alertaService.mostrarErroInternet(r)
     });
   }
 
@@ -147,7 +147,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
           this.alertaService.mostrarMensagem("Erro ao acessar a lista de produtos: nenhum produto retornado. Por favor, entre em contato com o suporte técnico.")
         }
       },
-      error: (r: ProdutoComboDto) => this.alertaService.mostrarErroInternet()
+      error: (r: ProdutoComboDto) => this.alertaService.mostrarErroInternet(r)
     });
   }
 
@@ -294,7 +294,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     this.digitouQte(i);
   }
   digitouDesc(e: Event, i: PrepedidoProdutoDtoPrepedido) {
-    debugger;
+
     let valor = ((e.target) as HTMLInputElement).value;
     let v: any = valor.replace(/\D/g, '');
     //tem 1 casa
@@ -437,7 +437,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
         data: selecProdInfo
       };
     }
-    
+
 
     const dialogRef = this.dialog.open(SelecProdDialogComponent, options);
     dialogRef.afterClosed().subscribe((result) => {

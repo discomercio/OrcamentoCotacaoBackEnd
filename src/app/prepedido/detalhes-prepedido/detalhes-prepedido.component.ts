@@ -12,6 +12,10 @@ import { PedidoDto } from 'src/app/dto/pedido/detalhesPedido/PedidoDto2';
 import { ObjectUtils } from 'src/app/utils/objectUtils';
 import { ImpressaoService } from 'src/app/utils/impressao.service';
 import { PrePedidoDto } from 'src/app/dto/Prepedido/DetalhesPrepedido/PrePedidoDto';
+import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
+import { debug } from 'util';
+import { AutenticacaoService } from 'src/app/servicos/autenticacao/autenticacao.service';
+import { HttpClient } from 'selenium-webdriver/http';
 
 @Component({
   selector: 'app-detalhes-prepedido',
@@ -27,9 +31,13 @@ export class DetalhesPrepedidoComponent extends TelaDesktopBaseComponent impleme
     public readonly prepedidoBuscarService: PrepedidoBuscarService,
     public readonly pedidoBuscarService: PedidoBuscarService,
     public readonly impressaoService: ImpressaoService,
-    public readonly dialog: MatDialog
+    public readonly dialog: MatDialog,
+    private readonly autenticacaoService:AutenticacaoService
+    // public readonly alertaService: AlertaService
   ) {
+    
     super(telaDesktopService);
+    debugger;
   }
 
   emPrepedidos = true;
@@ -47,14 +55,19 @@ export class DetalhesPrepedidoComponent extends TelaDesktopBaseComponent impleme
     if (r == null) return;
     if (this.jaDeuErro) return;
     this.jaDeuErro = true;
-    const dialogRef = this.dialog.open(AlertDialogComponent, {
-      width: '350px',
-      data: `Ocorreu um erro ao acessar os dados. Verifique a conexão com a Internet.`
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      //somente na inicialização, ou dá várias vezes
-      this.jaDeuErro = false;
-    });
+
+    let alertaService = new AlertaService(this.dialog, this.router, this.autenticacaoService);
+    debugger;
+
+    alertaService.mostrarErroInternet(r);
+    // const dialogRef = this.dialog.open(AlertDialogComponent, {
+    //   width: '350px',
+    //   data: `Ocorreu um erro ao acessar os dados. Verifique a conexão com a Internet.`
+    // });
+    // dialogRef.afterClosed().subscribe((result) => {
+    //   //somente na inicialização, ou dá várias vezes
+    //   this.jaDeuErro = false;
+    // });
   }
 
 
@@ -100,7 +113,6 @@ export class DetalhesPrepedidoComponent extends TelaDesktopBaseComponent impleme
           this.prepedido = r;
           let w: any = window;
           w.prepedido = this.prepedido;
-          debugger;
           if(this.prepedido.St_Orc_Virou_Pedido){
             this.router.navigate(['/pedido/detalhes', this.prepedido.NumeroPedido]);
           }

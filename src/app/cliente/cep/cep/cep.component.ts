@@ -132,7 +132,7 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
         //deu erro na busca
         //ou não achou nada...
         this.carregando = false;
-        this.alertaService.mostrarErroInternet();
+        this.alertaService.mostrarErroInternet(r);
       });
   }
 

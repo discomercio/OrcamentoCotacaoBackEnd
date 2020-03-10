@@ -42,13 +42,13 @@ export class SelecionarClienteComponent extends TelaDesktopBaseComponent impleme
     
     //dá erro se não tiver nenhum dígito
     if (StringUtils.retorna_so_digitos(this.clienteBusca).trim() === "") {
-      this.alertaService.mostrarMensagemComLargura(`CNPJ/CPF inválido ou vazio.`, '250px');
+      this.alertaService.mostrarMensagemComLargura(`CNPJ/CPF inválido ou vazio.`, '250px', null);
       return;
     }
 
     //valida
     if (!CpfCnpjUtils.cnpj_cpf_ok(this.clienteBusca)) {
-      this.alertaService.mostrarMensagemComLargura(`CNPJ/CPF inválido.`, '250px');
+      this.alertaService.mostrarMensagemComLargura(`CNPJ/CPF inválido.`, '250px', null);
       return;
     }
 
@@ -68,7 +68,7 @@ export class SelecionarClienteComponent extends TelaDesktopBaseComponent impleme
         //deu erro na busca
         //ou não achou nada...
         this.carregando = false;
-        this.alertaService.mostrarErroInternet();
+        this.alertaService.mostrarErroInternet(r);
       });
   }
 

@@ -220,7 +220,7 @@ export class CadastrarClienteComponent extends TelaDesktopBaseComponent implemen
         this.carregando = false;
         if (r === null) {
           this.desconverterTelefones();
-          this.alertaService.mostrarErroInternet();
+          this.alertaService.mostrarErroInternet(r);
           return;
         }
         //se tem algum erro, mostra os erros
@@ -236,7 +236,7 @@ export class CadastrarClienteComponent extends TelaDesktopBaseComponent implemen
         //ou não achou nada...
         this.desconverterTelefones();
         this.carregando = false;
-        this.alertaService.mostrarErroInternet();
+        this.alertaService.mostrarErroInternet(r);
       });
   }
   carregando = false;

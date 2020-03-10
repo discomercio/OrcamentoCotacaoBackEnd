@@ -5,6 +5,7 @@ import { AutenticacaoService } from './servicos/autenticacao/autenticacao.servic
 import { ImpressaoService } from './utils/impressao.service';
 import { DOCUMENT } from '@angular/common';
 import * as jtw_decode from 'jwt-decode';
+import { AlertaService } from './utils/alert-dialog/alerta.service';
 
 @Component({
   selector: 'app-root',
@@ -102,6 +103,7 @@ export class AppComponent implements OnInit {
     //   this.carregarEstilo(false);
     // }, 1);
     
+    AlertaService.mostrandoErroNaoAutorizado = false;
     this.router.navigateByUrl("/login");
 
     // location.reload();

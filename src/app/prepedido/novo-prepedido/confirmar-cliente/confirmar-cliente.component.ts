@@ -186,8 +186,8 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
           //vamos mostrar os erros
           this.mostrarMensagem(`Ocorreu um erro ao salvar os dados. Mensagens de erro: ` + r.join(", "));
         },
-        error: (err) => {
-          this.alertaService.mostrarErroInternet();
+        error: (r) => {
+          this.alertaService.mostrarErroInternet(r);
         }
       }
     );

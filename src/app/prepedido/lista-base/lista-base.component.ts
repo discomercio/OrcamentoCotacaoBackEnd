@@ -20,6 +20,8 @@ import { PedidoDtoPedido } from 'src/app/dto/pedido/pedidosDtoPedido';
 import { NovoPrepedidoDadosService } from '../novo-prepedido/novo-prepedido-dados.service';
 import { PrepedidoBuscarService } from 'src/app/servicos/prepedido/prepedido-buscar.service';
 import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
+import { AutenticacaoService } from 'src/app/servicos/autenticacao/autenticacao.service';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-lista-base',
@@ -41,8 +43,8 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
     public readonly impressaoService: ImpressaoService,
     public readonly novoPrepedidoDadosService: NovoPrepedidoDadosService,
     public readonly prepedidoBuscarService: PrepedidoBuscarService,
-    public readonly dialog: MatDialog,
-    public readonly alertaService: AlertaService) {
+    private readonly autenticacaoService:AutenticacaoService,
+        public readonly dialog: MatDialog) {
     super(telaDesktopService);
 
   }
@@ -107,13 +109,19 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
     if (r == null) return;
     if (this.jaDeuErro) return;
     this.jaDeuErro = true;
-    const dialogRef = this.dialog.open(AlertDialogComponent, {
-      width: '350px',
-      data: `Ocorreu um erro ao acessar os dados. Verifique a conexão com a Internet.`
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      //this.jaDeuErro = false;
-    });
+
+    
+    let alertaService = new AlertaService(this.dialog, this.router, this.autenticacaoService);
+    debugger;
+    
+    alertaService.mostrarErroInternet(r);
+    // const dialogRef = this.dialog.open(AlertDialogComponent, {
+    //   width: '350px',
+    //   data: `Ocorreu um erro ao acessar os dados. Verifique a conexão com a Internet.`
+    // });
+    // dialogRef.afterClosed().subscribe((result) => {
+    //   //this.jaDeuErro = false;
+    // });
   }
 
 
