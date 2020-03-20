@@ -840,9 +840,10 @@
                     <td colspan="3" class="ME MD MC MB" align="left"><span class="Rf">BLOCO DE NOTAS (DEVOLUÇÃO DE
                             MERCADORIAS)</span></td>
                 </tr>
+                <!-- {{dev.Dt_Hr_Cadastro}} -->
                 <tr *ngFor="let dev of pedido.ListaBlocoNotasDevolucao">
                     <td class="C ME MD MB" style="width:60px;" align="center" valign="top">
-                        {{dataFormatarTela(dev.Dt_Hr_Cadastro)}} {{dev.Dt_Hr_Cadastro}}
+                        {{dataFormatarTela(dev.Dt_Hr_Cadastro)}} {{dataformatarTelaHoraSemSegundos(dev.Dt_Hr_Cadastro)}}
                     </td>
                     <td class="C MD MB" style="width:80px;" align="center" valign="top">
                         {{dev.Usuario}} <ng-container *ngIf="dev.Loja">(Loja {{dev.Loja}})</ng-container>
