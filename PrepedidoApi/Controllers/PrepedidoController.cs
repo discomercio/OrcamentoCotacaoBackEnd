@@ -113,6 +113,20 @@ namespace PrepedidoApi.Controllers
 #if DEBUG
         [AllowAnonymous]
 #endif
+        [HttpGet("obtemPercentualVlPedidoRA")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public async Task<IActionResult> ObtemPercentualVlPedidoRA()
+        {
+            string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
+
+            var ret = await prepedidoBll.ObtemPercentualVlPedidoRA();
+
+            return Ok(ret);
+        }
+
+#if DEBUG
+        [AllowAnonymous]
+#endif
         [HttpGet("obter_permite_ra_status")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> Obter_Permite_RA_Status()
@@ -186,6 +200,22 @@ namespace PrepedidoApi.Controllers
             //apelido = "MARISARJ";
 
             var ret = await coeficienteBll.BuscarListaCoeficientes(lstProdutos);
+
+            return Ok(ret);
+        }
+
+#if DEBUG
+        [AllowAnonymous]
+#endif
+        [HttpPost("buscarCoeficienteFornecedores")]
+        public async Task<IActionResult> BuscarCoeficienteFornecedores(List<string> lstFornecedores)
+        {
+            //para testar: http://localhost:60877/api/prepedido/buscarCoeficiente
+            string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
+
+            //apelido = "MARISARJ";
+
+            var ret = await coeficienteBll.BuscarListaCoeficientesFornecedores(lstFornecedores);
 
             return Ok(ret);
         }

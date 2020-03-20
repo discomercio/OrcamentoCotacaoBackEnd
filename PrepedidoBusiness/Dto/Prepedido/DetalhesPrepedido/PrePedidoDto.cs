@@ -15,6 +15,7 @@ namespace PrepedidoBusiness.Dtos.Prepedido.DetalhesPrepedido
         public string NumeroPrePedido { get; set; }
         //public StatusPedidoDtoPedido StatusHoraPedido { get; set; }//Verificar se todos pedidos marcam a data também
         public string DataHoraPedido { get; set; }
+        public string Hora_Prepedido { get; set; }
         public DadosClienteCadastroDto DadosCliente { get; set; }
         public EnderecoEntregaDtoClienteCadastro EnderecoEntrega { get; set; }
         public List<PrepedidoProdutoDtoPrepedido> ListaProdutos { get; set; }

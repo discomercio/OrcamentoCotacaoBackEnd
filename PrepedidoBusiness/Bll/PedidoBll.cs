@@ -125,7 +125,7 @@ namespace PrepedidoBusiness.Bll
                 if (pedido.Status == "ESP")
                     pedido.Status = "Em espera";
                 if (pedido.Status == "SPL")
-                    pedido.Status = "Split possível";
+                    pedido.Status = "Split Possível";
                 if (pedido.Status == "SEP")
                     pedido.Status = "Separar Mercadoria";
                 if (pedido.Status == "AET")
@@ -194,6 +194,7 @@ namespace PrepedidoBusiness.Bll
                 Email = cli.Email,
                 EmailXml = cli.Email_Xml,
                 Endereco = cli.Endereco,
+                Complemento = cli.Endereco_Complemento,
                 Numero = cli.Endereco_Numero,
                 Bairro = cli.Bairro,
                 Cidade = cli.Cidade,
@@ -558,6 +559,14 @@ namespace PrepedidoBusiness.Bll
 
         private async Task<StatusPedidoDtoPedido> MontarDtoStatuPedido(Tpedido p)
         {
+            /*
+             * Buscar o pedido para:
+             * verificar se o st_entrega ==  ST_ENTREGA_ENTREGUE
+             * se pedido.PedidoRecebidoStatus == COD_ST_PEDIDO_RECEBIDO_SIM => se o status é entregue monta como esta sendo feito
+             * se o status é não entregue iremos mostrar apenas a data do pedido entre "(data do pedido)"
+             * 
+             */
+
             var db = contextoProvider.GetContextoLeitura();
             var countTask = from c in db.TpedidoItemDevolvidos
                             where c.Pedido == p.Pedido
@@ -583,8 +592,13 @@ namespace PrepedidoBusiness.Bll
             status.St_Entrega = FormataSatusPedido(p.St_Entrega);
             status.Entregue_Data = p.Entregue_Data?.ToString("dd/MM/yyyy");
             status.Cancelado_Data = p.Cancelado_Data?.ToString("dd/MM/yyyy");
-            status.Pedido_Data = p.Data?.ToString("dd/MM/yyyy") + " " + Formata_hhmmss_para_hh_minuto(p.Hora);
+            status.Pedido_Data = p.Data?.ToString("dd/MM/yyyy");
+            status.Pedido_Hora = Formata_hhmmss_para_hh_minuto(p.Hora);
             status.Recebida_Data = p.PedidoRecebidoData?.ToString("dd/MM/yyyy");
+            status.PedidoRecebidoStatus = p.PedidoRecebidoStatus.ToString();
+
+
+
 
 
             return await Task.FromResult(status);
@@ -605,6 +619,27 @@ namespace PrepedidoBusiness.Bll
 
                 //retorno = hh + ":" + mm + ":" + ss;
                 retorno = hh + ":" + mm;
+            }
+
+            return retorno;
+
+        }
+
+        private string Formata_hhmmss_para_hh_minuto_ss(string hora)
+        {
+            string hh = "";
+            string mm = "";
+            string ss = "";
+            string retorno = "";
+
+            if (!string.IsNullOrEmpty(hora))
+            {
+                hh = hora.Substring(0, 2);
+                mm = hora.Substring(2, 2);
+                //ss = hora.Substring(4, 2);
+
+                //retorno = hh + ":" + mm + ":" + ss;
+                retorno = hh + ":" + mm + ":" + ss;
             }
 
             return retorno;
@@ -745,7 +780,7 @@ namespace PrepedidoBusiness.Bll
                                     where d.Pedido == numPedido
                                     select d).ToListAsync();
             List<OcorrenciasDtoPedido> lista = new List<OcorrenciasDtoPedido>();
-            
+
 
             foreach (var i in ocorrencia)
             {
@@ -927,7 +962,7 @@ namespace PrepedidoBusiness.Bll
                         select new PedidoPerdasDtoPedido
                         {
                             Data = c.Data,
-                            Hora = c.Hora,
+                            Hora = Formata_hhmmss_para_hh_minuto_ss(c.Hora),
                             Valor = c.Valor,
                             Obs = c.Obs
                         };

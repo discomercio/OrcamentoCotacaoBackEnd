@@ -23,7 +23,7 @@ namespace PrepedidoBusiness.Bll
             List<CoeficienteDto> lstRetorno = new List<CoeficienteDto>();
 
             List<string> fabricantesDistinct = (from c in produtos
-                                  select c.Fabricante).Distinct().ToList();
+                                                select c.Fabricante).Distinct().ToList();
             if (fabricantesDistinct.Any())
             {
                 var db = contextoProvider.GetContextoLeitura();
@@ -49,6 +49,30 @@ namespace PrepedidoBusiness.Bll
                         }
                     }
                 }
+            }
+
+            return lstRetorno;
+        }
+
+        public async Task<IEnumerable<IEnumerable<CoeficienteDto>>> BuscarListaCoeficientesFornecedores(List<string> lstFornecedores)
+        {
+            List<List<CoeficienteDto>> lstRetorno = new List<List<CoeficienteDto>>();
+
+            var db = contextoProvider.GetContextoLeitura();
+
+            foreach (var f in lstFornecedores)
+            {
+                var lstCoeficienteTask = from c in db.TpercentualCustoFinanceiroFornecedors
+                                         where c.Fabricante == f
+                                         select new CoeficienteDto
+                                         {
+                                             Fabricante = c.Fabricante,
+                                             TipoParcela = c.Tipo_Parcelamento,
+                                             QtdeParcelas = c.Qtde_Parcelas,
+                                             Coeficiente = c.Coeficiente
+                                         };
+
+                lstRetorno.Add(await lstCoeficienteTask.ToListAsync());
             }
 
             return lstRetorno;

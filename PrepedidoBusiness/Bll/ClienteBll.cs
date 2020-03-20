@@ -38,7 +38,7 @@ namespace PrepedidoBusiness.Bll
             string log = "";
             string campos_a_omitir = "|dt_cadastro|usuario_cadastro|dt_ult_atualizacao|usuario_ult_atualizacao|";
             List<string> lstErros = new List<string>();
-            ValidarDadosClientesCadastro(dadosClienteCadastroDto, lstErros);
+            await ValidarDadosClientesCadastro(dadosClienteCadastroDto, lstErros);
 
             var dados = from c in db.Tclientes
                         where c.Id == dadosClienteCadastroDto.Id
@@ -57,7 +57,7 @@ namespace PrepedidoBusiness.Bll
                             cli.Contribuinte_Icms_Status = dadosClienteCadastroDto.Contribuinte_Icms_Status;
                             cli.Contribuinte_Icms_Data = DateTime.Now;
                             cli.Contribuinte_Icms_Data_Hora = DateTime.Now;
-                            cli.Contribuinte_Icms_Usuario = apelido;                            
+                            cli.Contribuinte_Icms_Usuario = apelido;
                         }
                         if (dadosClienteCadastroDto.Tipo == Constantes.ID_PF &&
                                 dadosClienteCadastroDto.ProdutorRural != byte.Parse(Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL) &&
@@ -69,7 +69,9 @@ namespace PrepedidoBusiness.Bll
                             cli.Produtor_Rural_Usuario = apelido;
                         }
 
-                        if(dadosClienteCadastroDto.Contribuinte_Icms_Status == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO))
+
+                        if (dadosClienteCadastroDto.Contribuinte_Icms_Status == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO) ||
+                            dadosClienteCadastroDto.Contribuinte_Icms_Status == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL))
                         {
                             cli.Ie = dadosClienteCadastroDto.Ie;
                         }
@@ -84,6 +86,7 @@ namespace PrepedidoBusiness.Bll
                         {
                             cli.Ie = "";
                         }
+
 
 
                         cli.Dt_Ult_Atualizacao = DateTime.Now;
@@ -665,7 +668,7 @@ namespace PrepedidoBusiness.Bll
                         "é necessário ser contribuinte do ICMS e possuir nº de IE");
 
             //string s_tabela_municipios_IBGE = "";
-            if (cliente.Ie != "")
+            if (!string.IsNullOrEmpty(cliente.Ie))
             {
 
                 string uf = VerificarInscricaoEstadualValida(cliente.Ie, cliente.Uf, listaErros);
@@ -688,12 +691,18 @@ namespace PrepedidoBusiness.Bll
             cepDto = (await cep.BuscarPorCep(cepSoDigito)).ToList();
             foreach (var c in cepDto)
             {
+                /*
+                 * Só podemos verificar se o cep, pois pode ser que o cep não tem endereço
+                 */
+
                 if (c.Cep != cepSoDigito)
                     listaErros.Add("Número do Cep diferente!");
-                if (c.Endereco != cliente.Endereco ||
-                    c.Bairro != cliente.Bairro ||
-                    c.Cidade != cliente.Cidade ||
-                    c.Uf != cliente.Uf)
+                //if (c.Endereco != cliente.Endereco ||
+                //    c.Bairro != cliente.Bairro ||
+                //    c.Cidade != cliente.Cidade ||
+                //    c.Uf != cliente.Uf)
+                if (c.Cidade.ToUpper() != cliente.Cidade.ToUpper() ||
+                    c.Uf.ToUpper() != cliente.Uf.ToUpper())
                     listaErros.Add("Os dados informados estão divergindo da base de dados!");
             }
         }
@@ -727,7 +736,7 @@ namespace PrepedidoBusiness.Bll
                 retorno = ie;
             }
 
-            blnResultado = isInscricaoEstadualOkCom(ie, uf);
+            blnResultado = isInscricaoEstadualOkCom(ie, uf, listaErros);
             if (!blnResultado)
             {
                 listaErros.Add("Preencha a IE (Inscrição Estadual) com um número válido!!" +
@@ -737,7 +746,7 @@ namespace PrepedidoBusiness.Bll
             return retorno;
         }
 
-        private bool isInscricaoEstadualOkCom(string ie, string uf)
+        private bool isInscricaoEstadualOkCom(string ie, string uf, List<string> listaErros)
         {
             var ReflectionUtilsMemberAccess =
           BindingFlags.Public | BindingFlags.NonPublic |

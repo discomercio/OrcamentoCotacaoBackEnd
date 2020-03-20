@@ -247,7 +247,7 @@ namespace PrepedidoBusiness.Utils
             int i;
             char c;
 
-            while(senha.Length < 10)
+            while (senha.Length < 10)
             {
                 Random random = new Random();
                 i = random.Next(122 - 48 + 1, 122 - 48 + 1 + 48);
@@ -271,7 +271,7 @@ namespace PrepedidoBusiness.Utils
 
                 senha += c.ToString().Trim();
             }
-            
+
 
             return senha;
 
@@ -282,6 +282,7 @@ namespace PrepedidoBusiness.Utils
             PropertyInfo[] property = obj.GetType().GetProperties();
             string[] campos = campos_a_inserir2.Split('|');
             int indiceDoCampo = 0;
+            bool endEntregaMesmo = false;
             foreach (var campo_atual in campos)
             {
                 foreach (var c in property)
@@ -292,16 +293,28 @@ namespace PrepedidoBusiness.Utils
                     {
                         string coluna = column.Name;
 
-                        //vamos verificar se existe endereço de entrega
-                        if (tratarEndEtg && indiceDoCampo == 0 && coluna == "EndEtg_cep")
+                        //vl total=" & formata_moeda(vl_total)
+                        //colocar esse vl total em 1º
+                        if(campo_atual.IndexOf("vl total")>= 0)
                         {
-                            var valor = (c.GetValue(obj, null));
-
-                            if (valor == null)
-                            {
-                                log = log + "Endereço entrega = mesmo do cadastro; ";
-                            }
+                            log = campo_atual + "; ";
                         }
+                        if(campo_atual.IndexOf("Endereço entrega=mesmo do cadastro") >= 0 && !endEntregaMesmo)
+                        {
+                            endEntregaMesmo = true;
+                            log = log + campo_atual + "; ";
+                        }
+
+                        //vamos verificar se existe endereço de entrega
+                        //if (tratarEndEtg && indiceDoCampo == 0 && coluna == "EndEtg_cep")
+                        //{
+                        //    var valor = (c.GetValue(obj, null));
+
+                        //    if (valor == null)
+                        //    {
+                        //        log = log + "Endereço entrega = mesmo do cadastro; ";
+                        //    }
+                        //}
 
                         if (campo_atual == coluna)
                         {
@@ -394,12 +407,14 @@ namespace PrepedidoBusiness.Utils
             if (custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA &&
                 custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA)
             {
-
-                if (c_custoFinancFornecQtdeParcelas <= 0)
+                if (custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA)
                 {
-                    lstErros.Add("Não foi informada a quantidade de parcelas para a forma de pagamento selecionada " +
-                        "(" + DescricaoCustoFornecTipoParcelamento(custoFinanceiroTipoParcelato) + ")");
-                    retorno = false;
+                    if (c_custoFinancFornecQtdeParcelas <= 0)
+                    {
+                        lstErros.Add("Não foi informada a quantidade de parcelas para a forma de pagamento selecionada " +
+                            "(" + DescricaoCustoFornecTipoParcelamento(custoFinanceiroTipoParcelato) + ")");
+                        retorno = false;
+                    }
                 }
             }
 

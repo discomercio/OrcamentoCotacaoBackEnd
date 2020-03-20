@@ -6,6 +6,10 @@ namespace InfraBanco.Constantes
 {
     public static class Constantes
     {
+        public const int COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP = 1;
+        public const int COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS = 2;
+        public const int COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS = 3;
+
         public const int FATOR_BD = 1209;
 
         public const string ID_USUARIO_SISTEMA = "SISTEMA";

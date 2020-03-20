@@ -319,6 +319,16 @@ namespace InfraBanco.Modelos
         public Tcliente Tcliente { get; set; }
         public Tpedido Tpedido { get; set; }
 
+        //novos campos
+        [Column("sistema_responsavel_cadastro")]
+        [Required]
+        public int Sistema_responsavel_cadastro { get; set; }
+
+        [Column("sistema_responsavel_atualizacao")]
+        [Required]
+        public int Sistema_responsavel_atualizacao { get; set; }
+
+
 
     }
 }
