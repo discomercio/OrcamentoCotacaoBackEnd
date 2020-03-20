@@ -148,7 +148,14 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     if (this.dadosClienteCadastroDtoIe !== this.dadosClienteCadastroDto.Ie) {
       return true;
     }
-    if (this.dadosClienteCadastroDtoProdutorRural !== this.dadosClienteCadastroDto.ProdutorRural) {
+    //vamos verificar se o cliente selecionou Produtor Rural, pois ele é obrigado a informar sim ou não
+    /*
+      Peguei um caso que o cliente não continha essa informação, e estava sendo permitido seguir na criação do prepedido,
+      pois nesse momento estamos apenas verificando se o cliente teve alteração no cadastro dele, sendo assim, 
+      iremos verificar se Produtor Rural é igual a "0"      
+     */
+    if (this.dadosClienteCadastroDtoProdutorRural !== this.dadosClienteCadastroDto.ProdutorRural || 
+      this.dadosClienteCadastroDtoProdutorRural == 0) {
       return true;
     }
     if (this.dadosClienteCadastroDtoContribuinte_Icms_Status !== this.dadosClienteCadastroDto.Contribuinte_Icms_Status) {
@@ -165,7 +172,8 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
       this.mostrarMensagem(mensagem);
       return;
     }
-
+    //estamos removendo os dados antes de salvar
+    this.dadosClienteCadastroDto = new ClienteCadastroUtils().validarProdutorRural(this.dadosClienteCadastroDto);
     //tudo validado!
     this.buscarClienteService.atualizarCliente(this.dadosClienteCadastroDto).subscribe(
       {
@@ -242,7 +250,6 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     if (this.confirmarEndereco) {
       this.confirmarEndereco.prepararAvancar();
     }
-
     //salvamos automaticamente
     if (this.salvarAtivo()) {
       this.salvar(true);

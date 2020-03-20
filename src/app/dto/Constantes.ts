@@ -65,5 +65,7 @@ export class Constantes {
 	public ERR_USUARIO_BLOQUEADO = "7";
 	public ERR_IDENTIFICACAO_LOJA = "3";
 	public ERR_SENHA_EXPIRADA = "4";
+
+	public COD_ST_PEDIDO_RECEBIDO_SIM = "1";
 }
 

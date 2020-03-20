@@ -36,6 +36,8 @@ export class PedidoDesktopComponent extends TelaDesktopBaseComponent implements 
     
   }
 
+  formatarEndereco: FormatarEndereco = new FormatarEndereco();
+
   //cosntantes
   constantes = new Constantes();
   stringUtils = StringUtils;

@@ -11,6 +11,8 @@ export class PrePedidoDto {
     NumeroPrePedido: string;
     //StatusHoraPedido: StatusPedidoDtoPedido;//Verificar se todos pedidos marcam a data também
     DataHoraPedido: string;
+    Hora_Prepedido:string;
+    prepedidoDto:string;
     DadosCliente: DadosClienteCadastroDto;
     EnderecoEntrega: EnderecoEntregaDtoClienteCadastro;
     ListaProdutos: PrepedidoProdutoDtoPrepedido[];

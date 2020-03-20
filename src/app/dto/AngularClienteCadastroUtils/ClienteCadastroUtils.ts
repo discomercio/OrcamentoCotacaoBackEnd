@@ -118,7 +118,7 @@ e são usados desta forma:
     if (!p) {
       return "";
     }
-    
+
     let s = "";
     //pessoa física
     if (this.ehPf(p)) {
@@ -168,13 +168,35 @@ e são usados desta forma:
     return s2;
   }
 
+  validarProdutorRural(dadosClienteCadastroDto: DadosClienteCadastroDto): DadosClienteCadastroDto {
+    let constantes = this.constantes;
+    let clienteCadastroUtils = this;
+    debugger;
+    //se é produtor salvamos o contribuinte
+
+    //se não for produtor rural vamos apagar os dados
+
+
+    if (clienteCadastroUtils.ehPf(dadosClienteCadastroDto)) {
+      if (dadosClienteCadastroDto.ProdutorRural == constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO) {
+        //vamos apagar os dados de contribuinte e I.E.
+        dadosClienteCadastroDto.Contribuinte_Icms_Status = constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL;
+        dadosClienteCadastroDto.Ie = "";
+      }
+    }
+
+    return dadosClienteCadastroDto;
+  }
+
+
   validarInscricaoestadualIcms(dadosClienteCadastroDto: DadosClienteCadastroDto): string {
     //retorna null se não tiver nenhum erro
     let constantes = this.constantes;
     let clienteCadastroUtils = this;
-
+debugger;
     // copiado do ClienteEdita.asp
     if (clienteCadastroUtils.ehPf(dadosClienteCadastroDto)) {
+
       if (!dadosClienteCadastroDto.ProdutorRural) {
         return 'Informe se o cliente é produtor rural ou não!';
       }
@@ -182,7 +204,7 @@ e são usados desta forma:
         && (dadosClienteCadastroDto.ProdutorRural !== constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO)) {
         return 'Informe se o cliente é produtor rural ou não!';
       }
-      if (dadosClienteCadastroDto.ProdutorRural !== constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO) {
+      if (dadosClienteCadastroDto.ProdutorRural == constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM) {
         if ((dadosClienteCadastroDto.Contribuinte_Icms_Status !== constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO)
           && (dadosClienteCadastroDto.Contribuinte_Icms_Status !== constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
           && (dadosClienteCadastroDto.Contribuinte_Icms_Status !== constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO)) {
@@ -258,7 +280,7 @@ e são usados desta forma:
   //temos problemas se os campos forem null
   public static inicializarDadosClienteCadastroDto(obj: DadosClienteCadastroDto) {
     //evita null
-    if(!obj){
+    if (!obj) {
       return;
     }
     obj.Loja = "";

@@ -24,7 +24,6 @@
             MontaHeaderIdentificacaoPedido(pedido_selecionado, r_pedido, 649)
         -->
         <table width='649' cellpadding='0' cellspacing='0' style='border-bottom:1px solid black;'>
-
             <tr
                 *ngIf="pedido.StatusHoraPedido.Pedido_Bs_X_Marketplace && pedido.StatusHoraPedido.Pedido_Bs_X_Marketplace != ''">
                 <td valign='bottom' align='right' width='100%' colspan='3' style='padding-top: 4px;padding-bottom:0'>
@@ -51,13 +50,15 @@
                         <tr>
                             <td valign='bottom' align='left'>
                                 <span class='STP' [ngStyle]="{'color': pedido.StatusHoraPedido.CorEntrega}">
-                                    {{pedido.StatusHoraPedido.St_Entrega.toUpperCase()}} 
+                                    {{pedido.StatusHoraPedido.St_Entrega.toUpperCase()}}
                                 </span>
                             </td>
                             <td align='left' style='width:6px;padding-bottom:4px'>
                             </td>
                             <!--retiramos o atributo "class='MD ME'" que estava colocando o "|" entre as datas  -->
-                            <td align='center' valign='bottom' *ngIf="pedido.StatusHoraPedido.Entregue_Data != null"                            
+                            
+                            <td align='center' valign='bottom' *ngIf="pedido.StatusHoraPedido.Entregue_Data != null && 
+                            pedido.StatusHoraPedido.PedidoRecebidoStatus == constantes.COD_ST_PEDIDO_RECEBIDO_SIM"
                                 style='border-width:2px; padding-bottom: 4px' class='MD ME'
                                 [ngStyle]="{'border-color': pedido.StatusHoraPedido.CorEntrega}">
                                 <span
@@ -69,7 +70,13 @@
                                 <span
                                     [ngClass]="{'STP': pedido.StatusHoraPedido.Status == 'Entrega', 'HoraPed':pedido.StatusHoraPedido.Status != 'Entrega'}"
                                     style='color:#9932CC;text-align:center;margin:0px 3px 0px 3px;'>
-                                    {{pedido.StatusHoraPedido.Entregue_Data}}
+                                    {{pedido.StatusHoraPedido.Recebida_Data}}
+                                </span>
+                            </td>
+                            <td *ngIf="pedido.StatusHoraPedido.Entregue_Data != null && 
+                            pedido.StatusHoraPedido.PedidoRecebidoStatus != constantes.COD_ST_PEDIDO_RECEBIDO_SIM">
+                                <span class='STP' [ngStyle]="{'color': pedido.StatusHoraPedido.CorEntrega}">
+                                    ({{pedido.StatusHoraPedido.Entregue_Data}})
                                 </span>
                             </td>
                         </tr>
@@ -78,6 +85,10 @@
 
                 <td valign='bottom' align='center' width='33%'>
                     <span class='STP'>{{pedido.StatusHoraPedido.Pedido_Data}}
+                    </span>
+                    <span class="STP_HORA">
+                        <!-- aqui vai a a hora sem classe para mostrar tamnaho menor -->
+                        {{pedido.StatusHoraPedido.Pedido_Hora}}
                     </span>
                 </td>
                 <td valign='bottom' align='right' nowrap>
@@ -129,7 +140,9 @@
 
                 <td align="left" class="MD">
                     <p class="Rf">{{ehPf() ? "RG" : "IE"}} &nbsp;</p>
-                    <p class="C">{{ehPf() ? stringUtils.retorna_so_digitos(pedido?.DadosCliente?.Rg) : pedido?.DadosCliente?.Ie}} &nbsp;</p>
+                    <p class="C">
+                        {{ehPf() ? stringUtils.retorna_so_digitos(pedido?.DadosCliente?.Rg) : pedido?.DadosCliente?.Ie}}
+                        &nbsp;</p>
                 </td>
 
                 <td align="center" valign="middle" style="width:15px">
@@ -242,7 +255,7 @@
                         {{pedido?.EnderecoEntrega?.EndEtg_uf}} -
                     </p>
                     <p class="C" style="display: inline-block">
-                        {{pedido?.EnderecoEntrega?.EndEtg_cep}}
+                        {{formatarEndereco.cep_formata(pedido?.EnderecoEntrega?.EndEtg_cep)}}
                     </p>
                     <p class="C">
                         {{pedido?.EnderecoEntrega?.EndEtg_descricao_justificativa}}
@@ -274,9 +287,9 @@
 
             <tr *ngFor="let linha of pedido?.ListaProdutos">
 
-                <td class="MDBE" align="left"><input name="c_fabricante" class="PLLe"
-                        style="width:25px;" [ngStyle]="{'color': corDaLinhaPedido(linha)}" value='{{linha.Fabricante}}'
-                        readonly tabindex=-1></td>
+                <td class="MDBE" align="left"><input name="c_fabricante" class="PLLe" style="width:25px;"
+                        [ngStyle]="{'color': corDaLinhaPedido(linha)}" value='{{linha.Fabricante}}' readonly
+                        tabindex=-1></td>
 
                 <td class="MDB" align="left"><input name="c_produto" class="PLLe" style="width:54px;"
                         [ngStyle]="{'color': corDaLinhaPedido(linha)}" value='{{linha.NumProduto}}' readonly
@@ -288,21 +301,21 @@
                 </td>
                 <td class="MDB" align="right"><input name="c_qtde" class="PLLd" style="width:21px;"
                         [ngStyle]="{'color': corDaLinhaPedido(linha)}" value='{{linha.Qtde}}' readonly tabindex=-1></td>
-                <td class="MDB" align="right"><input name="c_qtde_falta" class="PLLd"
-                        style="width:20px;" [ngStyle]="{'color': corDaLinhaPedido(linha)}" value='{{linha.Faltando==0?"":linha.Faltando}}'
+                <td class="MDB" align="right"><input name="c_qtde_falta" class="PLLd" style="width:20px;"
+                        [ngStyle]="{'color': corDaLinhaPedido(linha)}" value='{{linha.Faltando==0?"":linha.Faltando}}'
                         readonly tabindex=-1></td>
-                <td *ngIf="pedido?.OpcaoPossuiRA == 'S'" class="MDB" align="right"><input name="c_vl_NF" 
-                        class="PLLd" style="width:62px;" [ngStyle]="{'color': corDaLinhaPedido(linha)}"
+                <td *ngIf="pedido?.OpcaoPossuiRA == 'S'" class="MDB" align="right"><input name="c_vl_NF" class="PLLd"
+                        style="width:62px;" [ngStyle]="{'color': corDaLinhaPedido(linha)}"
                         value='{{moedaUtils.formatarMoedaSemPrefixo(linha.Preco)}}' readonly tabindex=-1>
                 </td>
-                <td class="MDB" align="right"><input name="c_preco_lista" class="PLLd"
-                        style="width:62px;" [ngStyle]="{'color': corDaLinhaPedido(linha)}"
+                <td class="MDB" align="right"><input name="c_preco_lista" class="PLLd" style="width:62px;"
+                        [ngStyle]="{'color': corDaLinhaPedido(linha)}"
                         value='{{moedaUtils.formatarMoedaSemPrefixo(linha.VlLista)}}' readonly tabindex=-1></td>
                 <td class="MDB" align="right"><input name="c_desc" class="PLLd" style="width:28px;"
                         [ngStyle]="{'color': corDaLinhaPedido(linha)}"
                         value='{{moedaUtils.formatarPorcentagemUmaCasa(linha.Desconto)}}' readonly tabindex=-1></td>
-                <td class="MDB" align="right"><input name="c_vl_unitario" class="PLLd"
-                        style="width:62px;" [ngStyle]="{'color': corDaLinhaPedido(linha)}"
+                <td class="MDB" align="right"><input name="c_vl_unitario" class="PLLd" style="width:62px;"
+                        [ngStyle]="{'color': corDaLinhaPedido(linha)}"
                         value='{{moedaUtils.formatarMoedaSemPrefixo(linha.VlUnitario)}}' readonly tabindex=-1></td>
                 <td class="MDB" align="right"><input name="c_vl_total" class="PLLd" style="width:70px;"
                         [ngStyle]="{'color': corDaLinhaPedido(linha)}"
@@ -522,10 +535,10 @@
                     <td align="left">
                         <p class="Rf" style="color:red;">DEVOLUÇÃO DE MERCADORIAS</p>
                         <p class="C PLLe" *ngFor="let devolucao of pedido.ListaProdutoDevolvido">
-                            
+
                             {{dataFormatarTela(devolucao.Data)}} {{devolucao.Hora}} - {{devolucao.Qtde}}
                             {{devolucao.Qtde > 1?'unidades':'unidade'}} do
-                            {{devolucao.CodProduto}} - 
+                            {{devolucao.CodProduto}} -
                             <span [innerHTML]="devolucao.DescricaoProduto"></span>
                             <span *ngIf="devolucao.Motivo"> ({{devolucao.Motivo}}) </span>
                             <span *ngIf="devolucao.NumeroNF">[NF: {{devolucao.NumeroNF}}] </span>
@@ -585,7 +598,7 @@
 
 
 
-         <div *ngIf="!impressaoService.emImpressao() || impressaoService.imprimirOcorrencias()">
+        <div *ngIf="!impressaoService.emImpressao() || impressaoService.imprimirOcorrencias()">
             <br>
 
             <table id="tableOcorrencia" class="notPrint" width="649" cellspacing="0" cellpadding="0" border="0">
@@ -639,9 +652,9 @@
                             <table width="100%" cellspacing="0" cellpadding="1">
                                 <tr>
                                     <td class="C MB Rf" width="100%" align="left" valign="top">
-                                            CONTATO:
-                                        <span class="Rf"
-                                            style="margin-left:0px; color:black;" [innerHTML]="ocorrencia.Contato">
+                                        CONTATO:
+                                        <span class="Rf" style="margin-left:0px; color:black;"
+                                            [innerHTML]="ocorrencia.Contato">
                                         </span>
                                     </td>
                                 </tr>
@@ -680,7 +693,7 @@
                                                 </td>
                                                 <td class="C MD MC tdWithPadding" style="width:80px;" align="center"
                                                     valign="top">
-                                                    {{mensagem.Usuario}} 
+                                                    {{mensagem.Usuario}}
                                                     <ng-container *ngIf="mensagem.Loja != '' && mensagem.Loja != null">
                                                         (Loja {{mensagem.Loja}})
                                                     </ng-container>
@@ -759,7 +772,7 @@
 
                 </ng-container>
             </table>
-        </div> 
+        </div>
 
 
         <div *ngIf="!impressaoService.emImpressao() || impressaoService.imprimirBlocoNotas()">
@@ -803,11 +816,11 @@
                     </ng-container>
                 </tr>
             </table>
-        </div> 
+        </div>
 
 
 
-       <ng-container *ngIf="pedido.ListaBlocoNotasDevolucao.length > 0">
+        <ng-container *ngIf="pedido.ListaBlocoNotasDevolucao.length > 0">
             <br>
             <table id="tableBlocoNotasItemDevolvido" class="notPrint" width="649" cellspacing="0" cellpadding="1"
                 border="0">
@@ -839,11 +852,10 @@
                 </tr>
 
             </table>
-        </ng-container> 
+        </ng-container>
 
 
     </form>
     <br>
     <br>
 </div>
-

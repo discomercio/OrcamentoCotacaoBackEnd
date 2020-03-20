@@ -46,6 +46,9 @@ export class PrepedidoBuscarService {
     return this.pedidos$;
   }
 
+  
+  
+
   public Obter_Permite_RA_Status(): Observable<number> {
     return this.http.get<any>(environment.apiUrl + 'prepedido/obter_permite_ra_status');
   }
@@ -65,7 +68,15 @@ export class PrepedidoBuscarService {
     return this.http.post<CoeficienteDto[]>(environment.apiUrl + 'prepedido/buscarCoeficiente', prepedidoProdutoDtoPrepedido);
   }
 
+  public buscarCoeficienteFornecedores(fornecedores: string[]): Observable<any[]> {
+    return this.http.post<any[]>(environment.apiUrl + 'prepedido/buscarCoeficienteFornecedores', fornecedores);
+  }
+
   public buscarQtdeParcCartaoVisa(): Observable<number> {
     return this.http.get<number>(environment.apiUrl + 'prepedido/buscarQtdeParcCartaoVisa');
+  }
+
+  public ObtemPercentualVlPedidoRA():Observable<number> {
+    return this.http.get<number>(environment.apiUrl + 'prepedido/obtemPercentualVlPedidoRA');
   }
 }

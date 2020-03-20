@@ -14,7 +14,7 @@ export class FormatarEndereco {
 
         s_aux = endereco_complemento ? endereco_complemento.trim() : "";
         if (s_aux != "")
-            strResposta = strResposta + " " + s_aux;
+            strResposta =  strResposta + " - " + s_aux;
 
         s_aux = bairro ? bairro.trim() : "";
         if (s_aux != "")

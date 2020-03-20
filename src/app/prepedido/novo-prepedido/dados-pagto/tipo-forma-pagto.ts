@@ -6,3 +6,8 @@ export enum EnumTipoPagto{
     ParcUnica = 'SE',
     ParcCartaoMaquineta = 'SE'
 } 
+
+export class ProdutosCalculados{
+    QtdeParcela: number;
+    Valor:number;
+}

@@ -86,7 +86,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
             this.inscreverProdutoComboDto();
 
           },
-          error: (r) => {debugger; this.alertaService.mostrarErroInternet(r) }
+          error: (r) => { debugger; this.alertaService.mostrarErroInternet(r) }
         });
         return;
       }
@@ -104,6 +104,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     this.criando = !this.prePedidoDto.NumeroPrePedido;
     this.inscreverPermite_RA_Status();
     this.inscreverProdutoComboDto();
+    this.obtemPercentualVlPedidoRA();
   }
 
   //#region formatação de dados para a tela
@@ -126,11 +127,14 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
       next: (r) => {
         if (r != 0) {
           this.permite_RA_Status = true;
+          this.novoPrepedidoDadosService.prePedidoDto.PermiteRAStatus = 1;
         }
       },
       error: (r) => this.alertaService.mostrarErroInternet(r)
     });
   }
+
+
 
   carregandoProds = true;
   produtoComboDto: ProdutoComboDto;
@@ -229,7 +233,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
   }
 
   totalPedidoRA(): number {
-    return this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + current.Qtde * current.Preco, 0);
+    return this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + current.Qtde * current.Preco_Lista, 0);
   }
   //#endregion
 
@@ -276,32 +280,106 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
 
     this.digitouQte(i);
   }
-  digitouVlVenda(e: Event, i: PrepedidoProdutoDtoPrepedido) {
+
+  digitouPreco_Lista(e: Event, i: PrepedidoProdutoDtoPrepedido) {
+    debugger;
     let valor = ((e.target) as HTMLInputElement).value;
     let v: any = valor.replace(/\D/g, '');
     v = (v / 100).toFixed(2) + '';
-    //se não alteraram nada, ignoramos
-    if (i.VlUnitario.toFixed(2) === v)
-      return;
 
 
-    i.VlUnitario = Number.parseFloat(v);
+    if (Number.parseFloat(i.VlLista.toFixed(2)) === Number.parseFloat(v)) {
+      i.AlterouValorRa = false;
+    }
+    else {
+      i.AlterouValorRa = true;
+    }
 
+    i.Preco_Lista = Number.parseFloat(v);
+
+    this.somarRA();
+
+
+
+    this.digitouQte(i);
+  }
+
+  formatarPreco_Lista(e: Event, i: PrepedidoProdutoDtoPrepedido) {
+    let valor = ((e.target) as HTMLInputElement).value;
+    let v: any = valor.replace(/\D/g, '');
+    v = (v / 100).toFixed(2) + '';
+
+    i.Preco_Lista = v;
+  }
+
+  somaRA: number;
+  somarRA(): number {
+    debugger;
+    let total = this.totalPedido();
+    let totalRa = this.totalPedidoRA();
+    return this.somaRA = totalRa - total;
+  }
+
+
+  formataVlVenda(e: Event, i: PrepedidoProdutoDtoPrepedido) {
+    let valor = ((e.target) as HTMLInputElement).value;
+    let v: any = valor.replace(/\D/g, '');
+    v = (v / 100).toFixed(2) + '';
+
+    i.VlUnitario = v;
+  }
+
+  digitouVlVenda(e: Event, i: PrepedidoProdutoDtoPrepedido) {
+    debugger;
+    let valor = ((e.target) as HTMLInputElement).value;
+    let v: any = valor.replace(/\D/g, '');
+    v = (v / 100).toFixed(2) + '';
+    // //se não alteraram nada, ignoramos
+    // if (i.VlUnitario.toFixed(2) === v)
+    //   return;
+
+    //Gabriel apenas teste, pois os valores estão se acumulando e iremos alterar aqui
+    i.TotalItem = i.Qtde * i.VlLista;
+    i.VlTotalItem = i.Qtde * i.VlLista;
+
+    // i.VlUnitario = Number.parseFloat(v);
+    //teste de calculo
+    i.Desconto = 100 * (i.VlLista - v) / i.VlLista;
     //calcula o desconto
-    i.Desconto = 100 * (i.Preco - i.VlUnitario) / i.Preco;
-    i.Desconto = Number.parseFloat(i.Desconto.toFixed(1));
+    // i.Desconto = 100 * (i.Preco - i.VlUnitario) / i.Preco;
+    i.Desconto = Number.parseFloat(i.Desconto.toFixed(2));
+
+    i.AlterouVlVenda = true;
 
     this.digitouQte(i);
   }
   digitouDesc(e: Event, i: PrepedidoProdutoDtoPrepedido) {
-
     let valor = ((e.target) as HTMLInputElement).value;
     let v: any = valor.replace(/\D/g, '');
     //tem 1 casa
-    v = (v / 10).toFixed(2) + '';
+    v = (v / 100).toFixed(2) + '';
+
+    //se o desconto for digitado estamos alterando o valor de venda e não devemos mais alterar esse valor
+    if (i.Desconto == 0 || i.Desconto.toString() == '') {
+      i.AlterouVlVenda = false;
+    } else {
+      i.AlterouVlVenda = true;
+    }
+
     this.digitouDescValor(i, v);
   }
+
+  formatarDesc(e: Event, i: PrepedidoProdutoDtoPrepedido) {
+    debugger;
+    let valor = ((e.target) as HTMLInputElement).value;
+    let v: any = valor.replace(/\D/g, '');
+    v = (v / 100).toFixed(2) + '';
+
+    i.Desconto = v;
+  }
+
   digitouDescValor(i: PrepedidoProdutoDtoPrepedido, v: string) {
+    debugger;
     //se não alteraram nada, ignoramos
     if (i.Desconto === Number.parseFloat(v))
       return;
@@ -315,22 +393,36 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
       i.Desconto = 0;
     }
     */
+
     if (i.Desconto > 100) {
       i.Desconto = 100;
     }
 
     if (i.Desconto) {
-      i.VlUnitario = i.Preco * (1 - i.Desconto / 100);
+      i.VlUnitario = i.VlLista * (1 - i.Desconto / 100);
       i.VlUnitario = Number.parseFloat(i.VlUnitario.toFixed(2));
     }
     else {
-      i.VlUnitario = i.Preco;
+      i.VlUnitario = i.VlLista;
     }
     this.digitouQte(i);
   }
   //#endregion
 
   //#region navegação
+
+  percentualVlPedidoRA: number;
+  obtemPercentualVlPedidoRA() {
+    this.prepedidoBuscarService.ObtemPercentualVlPedidoRA().subscribe({
+      next: (r: number) => {
+        if (!!r) {
+          debugger;
+          this.percentualVlPedidoRA = r;
+        }
+      },
+      error: (r:number) => this.alertaService.mostrarErroInternet(r)
+    });
+  }
 
   voltar() {
     // if(!this.dadosPagto.podeContinuar())
@@ -356,6 +448,18 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     if (this.prePedidoDto.ListaProdutos.length === 0) {
       this.alertaService.mostrarMensagem("Selecione ao menos um produto para continuar.");
       return;
+    }
+
+    debugger;
+    if (this.prePedidoDto.PermiteRAStatus == 1) {
+      if (this.percentualVlPedidoRA != 0 && this.percentualVlPedidoRA != undefined) {
+        
+        let vlAux = (this.percentualVlPedidoRA / 100) * this.totalPedido();
+        if (this.somaRA > vlAux) {
+          this.alertaService.mostrarMensagem("O valor total de RA excede o limite permitido!");
+          return;
+        }
+      }
     }
 
     //verifica se a forma de pgamento tem algum aviso
@@ -525,6 +629,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     linha.Preco = prodInfo.Preco_lista;
     linha.VlLista = prodInfo.Preco_lista;
     linha.VlUnitario = prodInfo.Preco_lista;
+    linha.Preco_Lista = prodInfo.Preco_lista;
     if (!linha.Desconto) {
       linha.Desconto = 0;
     }

@@ -14,6 +14,7 @@ import { EnumFormaPagto } from './enum-forma-pagto';
 import { CoeficienteDto } from 'src/app/dto/Produto/CoeficienteDto';
 import { EnumTipoPagto } from './tipo-forma-pagto';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { RecalcularComCoeficiente } from './recalcularComCoeficiente';
 
 
 @Component({
@@ -50,7 +51,8 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
     this.buscarQtdeParcCartaoVisa();
     this.verificarEmProcesso();
     this.buscarFormaPagto();
-    this.buscarCoeficiente(null);
+    // this.buscarCoeficiente(null);
+    // this.buscarNovoCoeficiente();
     setTimeout(() => {
       this.montaFormaPagtoExistente();
     }, 300);
@@ -103,6 +105,11 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
   qtde: number;//qtde de parcelas
   valor: number;//valor da parcela
 
+  lstNovoCoeficiente = new RecalcularComCoeficiente(this.prepedidoBuscarService, this.novoPrepedidoDadosService,
+    this.alertaService);
+
+
+
   atribuirFormaPagtoParaDto() {
     this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento = this.enumFormaPagto;
     this.prePedidoDto.VlTotalDestePedido = this.totalPedido();
@@ -146,6 +153,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
     }
     if (this.enumFormaPagto == 5) {
       //ParcUnica
+      debugger;
       this.prePedidoDto.FormaPagtoCriacao.Rb_forma_pagto = this.enumFormaPagto.toString();
       this.prePedidoDto.FormaPagtoCriacao.Op_pu_forma_pagto = this.meioPagtoParcUnica.toString();//meio de pagamento
       this.prePedidoDto.FormaPagtoCriacao.C_pu_valor = this.valor;
@@ -185,6 +193,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
         }
       }
       if (this.enumFormaPagto == 3) {
+        debugger;
         if (this.meioPagtoEntrada && this.meioPagtoEntradaPrest)
         //ParcComEnt
         {
@@ -349,6 +358,9 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
     })
   }
 
+
+
+
   // foi solicitado que a qtde de parcelas disponível será baseada na
   // qtde de parcelas disponível no cartão Visa(PRAZO_LOJA)
   //então faremos a busca pela API
@@ -373,7 +385,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
   //aqui é feito a limpeza do select da forma de pagamento
   public prepedidoAlterado() {
     this.recalcularValoresComCoeficiente(this.enumFormaPagto);
-    this.montarListaParcelamento(this.enumFormaPagto);
+    // this.montarListaParcelamento(this.enumFormaPagto);
     this.opcaoPagtoParcComEntrada = null;
     this.opcaoPagtoAvista = null;
     this.opcaoPagtoParcCartaoInternet = null;
@@ -384,22 +396,53 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
   constantes = new Constantes();
   lstMsg: string[] = [];
   tipoFormaPagto: string = '';
+  coeficienteDtoNovo: CoeficienteDto[][];
   recalcularValoresComCoeficiente(enumFP: number): void {
     //na mudança da forma de pagto iremos zerar todos os campos
-    // this.zerarTodosCampos();
+    this.zerarTodosCampos();
+    if (!!enumFP) {
+      this.formaPagtoNum = enumFP;
+      //verificar EnumTipoPagto para passar o valor do tipo "AV, SE, CE"
+      this.tipoFormaPagto = this.verificaEnum(this.formaPagtoNum);
+      //aisamos que está carregando...
+      this.lstMsg = new Array();
+      this.lstMsg.push("Carregando dados....");
 
-    //verificar EnumTipoPagto para passar o valor do tipo "AV, SE, CE"
-    this.tipoFormaPagto = this.verificaEnum(enumFP);
-    //aisamos que está carregando...
-    this.lstMsg = new Array();
-    this.lstMsg.push("Carregando dados....");
+      //Gabriel remover esse comentário, pois é o novo modo de calcular
+      this.buscarNovoCoeficiente((coefciente: CoeficienteDto[][]) => {
+        this.coeficienteDtoNovo = coefciente;
+        this.lstMsg = new Array();
+        this.lstMsg = this.lstNovoCoeficiente.CalcularTotalProdutosComCoeficiente(this.formaPagtoNum, this.coeficienteDtoNovo,
+          this.tipoFormaPagto, this.qtdeParcVisa, this.vlEntrada);
+        if (this.formaPagtoNum.toString() == this.constantes.COD_FORMA_PAGTO_A_VISTA) {
+          this.lstNovoCoeficiente.RecalcularListaProdutos(this.formaPagtoNum, this.coeficienteDtoNovo, this.tipoFormaPagto, 1);
+          this.opcaoPagtoAvista = this.lstMsg[0];
+        }
+        if (this.formaPagtoNum.toString() == this.constantes.COD_FORMA_PAGTO_PARCELA_UNICA) {
+          this.lstNovoCoeficiente.RecalcularListaProdutos(this.formaPagtoNum, this.coeficienteDtoNovo, this.tipoFormaPagto, 1);
+          this.opcaoPagtoParcUnica = this.lstMsg[0];
+        }
+      });
+    }
+    //  this.buscarCoeficiente(() => this.listarValoresComCoeficiente(this.tipoFormaPagto, enumFP));
+  }
 
-    this.buscarCoeficiente(() => this.listarValoresComCoeficiente(this.tipoFormaPagto, enumFP));
+  formaPagtoNum: number;
+  buscarNovoCoeficiente(callback: (coefciente: CoeficienteDto[][]) => void): void {
+    this.lstNovoCoeficiente.buscarCoeficienteFornecedores(callback);
+  }
 
+  RecalcularListaProdutos() {
+    //vamos validar e descobrir a qtde de parcelas que esta sendo selecionado
+    if (!this.validarFormaPagto(false)) {
+      return false;
+    }
+    this.lstNovoCoeficiente.RecalcularListaProdutos(this.formaPagtoNum, this.coeficienteDtoNovo, this.tipoFormaPagto, 
+      this.qtde);
   }
 
   public zerarTodosCampos(): void {
-    this.vlEntrada = null;
+    // this.vlEntrada = null;
     this.meioPagtoEntrada = null;
     this.opcaoPagtoAvista = "";
     this.meioPagtoAVista = null;
@@ -435,77 +478,92 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
     let valor = 0
     // this.lstMsg = new Array();
     //pegar o valor do item e multiplicar com o coeficiente
-    let lstCoeficiente = this.coeficienteDto;
-    this.prePedidoDto = this.novoPrepedidoDadosService.prePedidoDto;
-    let lstProdutos = this.prePedidoDto.ListaProdutos;
-    let constant = this.constantes;
-    if (this.enumFormaPagto) {
-      for (var x = 0; x < lstProdutos.length; x++) {
-        for (var i = 0; i < lstCoeficiente.length; i++) {
-          //avista o coeficiente é 1, sendo assim não faz alteração nos valores
-          // verificar os o enum de formaPagto 
-          if (this.enumFormaPagto.toString() == constant.COD_FORMA_PAGTO_A_VISTA &&
-            lstProdutos[x].Fabricante == lstCoeficiente[i].Fabricante &&
-            txtFormaPagto == constant.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA) {
-            
-            lstProdutos[x].VlUnitario = lstProdutos[x].Preco * (1 - lstProdutos[x].Desconto / 100);
-            lstProdutos[x].VlTotalItem = lstProdutos[x].Preco * (1 - lstProdutos[x].Desconto / 100);
-            lstProdutos[x].VlLista = lstProdutos[x].Preco;
-            lstProdutos[x].TotalItem = (lstProdutos[x].Preco * lstProdutos[x].Qtde) * (1 - lstProdutos[x].Desconto / 100);
-            //this.lstMsg.push(lstCoeficiente[i].QtdeParcelas + ' X R$' + (lstProdutos[x].TotalItem).toFixed(2));            
-            break;
-          }
-          else if (this.enumFormaPagto.toString() == constant.COD_FORMA_PAGTO_PARCELA_UNICA &&
-            lstProdutos[x].Fabricante == lstCoeficiente[i].Fabricante &&
-            lstCoeficiente[i].TipoParcela == constant.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA &&
-            txtFormaPagto == constant.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA) {
-            lstProdutos[x].VlUnitario = lstProdutos[x].Preco * (1 - lstProdutos[x].Desconto / 100);
-            lstProdutos[x].VlTotalItem = lstProdutos[x].Preco * (1 - lstProdutos[x].Desconto / 100);
-            lstProdutos[x].VlLista = lstProdutos[x].Preco;
-            lstProdutos[x].TotalItem = (lstProdutos[x].Preco * lstProdutos[x].Qtde) * (1 - lstProdutos[x].Desconto / 100);
-            //this.lstMsg.push(lstCoeficiente[i].QtdeParcelas + ' X R$' + (lstProdutos[x].TotalItem).toFixed(2));
-            break;
-          }
-          else if (this.enumFormaPagto.toString() == constant.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA &&
-            lstProdutos[x].Fabricante == lstCoeficiente[i].Fabricante &&
-            lstCoeficiente[i].TipoParcela == constant.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA &&
-            txtFormaPagto == constant.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA) {
-              
-            lstProdutos[x].VlUnitario = ((lstProdutos[x].Preco * lstCoeficiente[i].Coeficiente) * (1 - lstProdutos[x].Desconto / 100));
-            lstProdutos[x].VlTotalItem = (lstProdutos[x].Preco * lstCoeficiente[i].Coeficiente) * (1 - lstProdutos[x].Desconto / 100);
-            lstProdutos[x].VlLista = lstProdutos[x].Preco * lstCoeficiente[i].Coeficiente;
-            lstProdutos[x].TotalItem = ((lstProdutos[x].Preco * lstProdutos[x].Qtde) * lstCoeficiente[i].Coeficiente) * (1 - lstProdutos[x].Desconto / 100);
-            //this.lstMsg.push(lstCoeficiente[i].QtdeParcelas + ' X R$' +
-            // (lstProdutos[x].TotalItem / lstCoeficiente[i].QtdeParcelas).toFixed(2));
-          }
-          //parcelado sem entrada
-          
-          if ((
-            this.enumFormaPagto.toString() == constant.COD_FORMA_PAGTO_PARCELADO_CARTAO ||
-            this.enumFormaPagto.toString() == constant.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA) &&
-            lstProdutos[x].Fabricante == lstCoeficiente[i].Fabricante &&
-            lstCoeficiente[i].TipoParcela == constant.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA &&
-            txtFormaPagto == constant.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA) {
-              
-            lstProdutos[x].VlUnitario = ((lstProdutos[x].Preco * lstCoeficiente[i].Coeficiente) * (1 - lstProdutos[x].Desconto / 100));
-            lstProdutos[x].VlTotalItem = (lstProdutos[x].Preco * lstCoeficiente[i].Coeficiente) * (1 - lstProdutos[x].Desconto / 100);
-            lstProdutos[x].VlLista = lstProdutos[x].Preco * lstCoeficiente[i].Coeficiente;
-            lstProdutos[x].TotalItem = ((lstProdutos[x].Preco * lstProdutos[x].Qtde) * lstCoeficiente[i].Coeficiente) * (1 - lstProdutos[x].Desconto / 100);
-            // this.lstMsg.push(lstCoeficiente[i].QtdeParcelas + ' X R$' +
-            //   (lstProdutos[x].TotalItem / lstCoeficiente[i].QtdeParcelas).toFixed(2));
-          }
-        }
-      }
-    }
-    this.montarListaParcelamento(enumFP);
+    // let lstCoeficiente = this.coeficienteDto;
+    // this.prePedidoDto = this.novoPrepedidoDadosService.prePedidoDto;
+    // let lstProdutos = this.prePedidoDto.ListaProdutos;
+    // let constant = this.constantes;
+    // if (this.enumFormaPagto) {
+    //   for (var x = 0; x < lstProdutos.length; x++) {
+    //     for (var i = 0; i < lstCoeficiente.length; i++) {
+    //       //avista o coeficiente é 1, sendo assim não faz alteração nos valores
+    //       // verificar os o enum de formaPagto 
+    //       if (this.enumFormaPagto.toString() == constant.COD_FORMA_PAGTO_A_VISTA &&
+    //         lstProdutos[x].Fabricante == lstCoeficiente[i].Fabricante &&
+    //         txtFormaPagto == constant.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA) {
+
+    //         lstProdutos[x].VlUnitario = lstProdutos[x].Preco * (1 - lstProdutos[x].Desconto / 100);
+    //         lstProdutos[x].VlTotalItem = lstProdutos[x].Preco * (1 - lstProdutos[x].Desconto / 100);
+    //         // lstProdutos[x].VlLista = lstProdutos[x].Preco;
+    //         lstProdutos[x].VlLista = lstProdutos[x].Preco * (1 - lstProdutos[x].Desconto / 100);
+    //         lstProdutos[x].TotalItem = (lstProdutos[x].Preco * lstProdutos[x].Qtde) * (1 - lstProdutos[x].Desconto / 100);
+    //         //this.lstMsg.push(lstCoeficiente[i].QtdeParcelas + ' X R$' + (lstProdutos[x].TotalItem).toFixed(2));            
+    //         break;
+    //       }
+    //       else if (this.enumFormaPagto.toString() == constant.COD_FORMA_PAGTO_PARCELA_UNICA &&
+    //         lstProdutos[x].Fabricante == lstCoeficiente[i].Fabricante &&
+    //         lstCoeficiente[i].TipoParcela == constant.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA &&
+    //         txtFormaPagto == constant.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA) {
+    //         // lstProdutos[x].VlUnitario = lstProdutos[x].Preco * (1 - lstProdutos[x].Desconto / 100);
+    //         // lstProdutos[x].VlTotalItem = lstProdutos[x].Preco * (1 - lstProdutos[x].Desconto / 100);
+    //         // lstProdutos[x].VlLista = lstProdutos[x].Preco;
+    //         // lstProdutos[x].TotalItem = (lstProdutos[x].Preco * lstProdutos[x].Qtde) * (1 - lstProdutos[x].Desconto / 100);
+    //         //this.lstMsg.push(lstCoeficiente[i].QtdeParcelas + ' X R$' + (lstProdutos[x].TotalItem).toFixed(2));
+
+    //         lstProdutos[x].VlUnitario = ((lstProdutos[x].Preco * lstCoeficiente[i].Coeficiente) * (1 - lstProdutos[x].Desconto / 100));
+    //         lstProdutos[x].VlTotalItem = (lstProdutos[x].Preco * lstCoeficiente[i].Coeficiente) * (1 - lstProdutos[x].Desconto / 100);
+    //         // lstProdutos[x].VlLista = lstProdutos[x].Preco * lstCoeficiente[i].Coeficiente;
+    //         lstProdutos[x].VlLista = (lstProdutos[x].Preco * lstCoeficiente[i].Coeficiente) * (1 - lstProdutos[x].Desconto / 100);
+    //         lstProdutos[x].TotalItem = ((lstProdutos[x].Preco * lstProdutos[x].Qtde) * lstCoeficiente[i].Coeficiente) * (1 - lstProdutos[x].Desconto / 100);
+    //         break;
+    //       }
+    //       else if (this.enumFormaPagto.toString() == constant.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA &&
+    //         lstProdutos[x].Fabricante == lstCoeficiente[i].Fabricante &&
+    //         lstCoeficiente[i].TipoParcela == constant.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA &&
+    //         txtFormaPagto == constant.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA) {
+
+    //         lstProdutos[x].VlUnitario = ((lstProdutos[x].Preco * lstCoeficiente[i].Coeficiente) * (1 - lstProdutos[x].Desconto / 100));
+    //         lstProdutos[x].VlTotalItem = (lstProdutos[x].Preco * lstCoeficiente[i].Coeficiente) * (1 - lstProdutos[x].Desconto / 100);
+    //         // lstProdutos[x].VlLista = lstProdutos[x].Preco * lstCoeficiente[i].Coeficiente;
+    //         lstProdutos[x].VlLista = (lstProdutos[x].Preco * lstCoeficiente[i].Coeficiente) * (1 - lstProdutos[x].Desconto / 100);
+    //         lstProdutos[x].TotalItem = ((lstProdutos[x].Preco * lstProdutos[x].Qtde) * lstCoeficiente[i].Coeficiente) * (1 - lstProdutos[x].Desconto / 100);
+    //         //this.lstMsg.push(lstCoeficiente[i].QtdeParcelas + ' X R$' +
+    //         // (lstProdutos[x].TotalItem / lstCoeficiente[i].QtdeParcelas).toFixed(2));
+    //       }
+    //       //parcelado sem entrada
+
+    //       if ((
+    //         this.enumFormaPagto.toString() == constant.COD_FORMA_PAGTO_PARCELADO_CARTAO ||
+    //         this.enumFormaPagto.toString() == constant.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA) &&
+    //         lstProdutos[x].Fabricante == lstCoeficiente[i].Fabricante &&
+    //         lstCoeficiente[i].TipoParcela == constant.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA &&
+    //         txtFormaPagto == constant.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA) {
+
+    //         lstProdutos[x].VlUnitario = ((lstProdutos[x].Preco * lstCoeficiente[i].Coeficiente) * (1 - lstProdutos[x].Desconto / 100));
+    //         lstProdutos[x].VlTotalItem = (lstProdutos[x].Preco * lstCoeficiente[i].Coeficiente) * (1 - lstProdutos[x].Desconto / 100);
+    //         lstProdutos[x].VlLista = lstProdutos[x].Preco * lstCoeficiente[i].Coeficiente;
+    //         lstProdutos[x].TotalItem = ((lstProdutos[x].Preco * lstProdutos[x].Qtde) * lstCoeficiente[i].Coeficiente) * (1 - lstProdutos[x].Desconto / 100);
+    //         console.log(lstCoeficiente[i].Coeficiente + " / " + lstProdutos[x].VlUnitario);
+    //         // this.lstMsg.push(lstCoeficiente[i].QtdeParcelas + ' X R$' +
+    //         //   (lstProdutos[x].TotalItem / lstCoeficiente[i].QtdeParcelas).toFixed(2));
+    //       }
+    //     }
+    //   }
+    // }
+    // this.montarListaParcelamento(enumFP);
     // return this.lstMsg;
   }
+
+
 
   montarListaParcelamento(enumFP: number): string[] {
     this.lstMsg = new Array();
     let lstCoeficiente = this.coeficienteDto;
     let vlTotalPedido = this.prePedidoDto.ListaProdutos.reduce((sum, prod) => sum + prod.TotalItem, 0);
     let cont = 0;
+
+    //Aqui teremos que filtrar a lista de coeficiente pelo tipo de parcelamento que esta sendo selecionado
+
+
     if (enumFP) {
       for (let i = 0; i < lstCoeficiente.length; i++) {
         if (enumFP.toString() == this.constantes.COD_FORMA_PAGTO_A_VISTA) {
@@ -534,9 +592,10 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
           enumFP.toString() == this.constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA) &&
           lstCoeficiente[i].TipoParcela == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA) {
           if (cont < this.qtdeParcVisa) {
-            
+            debugger;
             this.lstMsg.push(lstCoeficiente[i].QtdeParcelas + " X " +
               this.moedaUtils.formatarMoedaComPrefixo(vlTotalPedido / lstCoeficiente[i].QtdeParcelas));
+            // console.log(lstCoeficiente[i].Coeficiente + " / " + );
             cont++;
           }
         }
@@ -548,32 +607,34 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
   public vlEntrada: number;
   moedaUtils = new MoedaUtils();
   calcularParcelaComEntrada() {
-    this.opcaoPagtoParcComEntrada = "";
 
-    this.lstMsg = new Array();
-    this.prePedidoDto = this.novoPrepedidoDadosService.prePedidoDto;
-    let lstProdutos = this.prePedidoDto.ListaProdutos;
-    let lstCoeficiente = this.coeficienteDto;
-    if (!!this.vlEntrada && this.vlEntrada != 0.00) {
-      var vltotal = this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + current.TotalItem, 0);
+    this.recalcularValoresComCoeficiente(this.formaPagtoNum);
+    // this.opcaoPagtoParcComEntrada = "";
 
-      if (this.vlEntrada > vltotal) {
-        this.alertaService.mostrarMensagem("Valor da entrada é maior que o total do Pré-pedido!");
-        this.vlEntrada = null;
-      }
-      else {
-        vltotal = vltotal - this.vlEntrada;
-        for (var i = 0; i < this.qtdeParcVisa; i++) {
-          if (lstCoeficiente[i].TipoParcela == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA) {
-            this.lstMsg.push(lstCoeficiente[i].QtdeParcelas + " X " +
-              this.moedaUtils.formatarMoedaComPrefixo((vltotal / lstCoeficiente[i].QtdeParcelas)));
-          }
-        }
+    // this.lstMsg = new Array();
+    // this.prePedidoDto = this.novoPrepedidoDadosService.prePedidoDto;
+    // let lstProdutos = this.prePedidoDto.ListaProdutos;
+    // let lstCoeficiente = this.coeficienteDto;
+    // if (!!this.vlEntrada && this.vlEntrada != 0.00) {
+    //   var vltotal = this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + current.TotalItem, 0);
+
+    //   if (this.vlEntrada > vltotal) {
+    //     this.alertaService.mostrarMensagem("Valor da entrada é maior que o total do Pré-pedido!");
+    //     this.vlEntrada = null;
+    //   }
+    //   else {
+    //     vltotal = vltotal - this.vlEntrada;
+    //     for (var i = 0; i < this.qtdeParcVisa; i++) {
+    //       if (lstCoeficiente[i].TipoParcela == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA) {
+    //         this.lstMsg.push(lstCoeficiente[i].QtdeParcelas + " X " +
+    //           this.moedaUtils.formatarMoedaComPrefixo((vltotal / lstCoeficiente[i].QtdeParcelas)));
+    //       }
+    //     }
 
 
-      }
-      return this.lstMsg;
-    }
+    //   }
+    //   return this.lstMsg;
+    // }
 
   }
 
@@ -584,26 +645,27 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
     let v: any = valor.replace(/\D/g, '');
     v = (v / 100).toFixed(2) + '';
     this.vlEntrada = v;
-    this.calcularParcelaComEntrada();
+    // this.calcularParcelaComEntrada();
   }
 
   montaFormaPagtoExistente() {
 
     if (this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento) {
       this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento;
-
+      debugger;
       switch (this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento.toString()) {
+        
         case this.constantes.COD_FORMA_PAGTO_A_VISTA:
           //A vista
           this.enumFormaPagto = EnumFormaPagto.Avista;//forma de pagamento
-          this.meioPagtoAVista = parseInt(this.prePedidoDto.FormaPagtoCriacao.Op_av_forma_pagto);//deposito ou...
           this.opcaoPagtoAvista = this.montaParcelamentoExistente();//recebe a descrição (1 X R$ 00,00)
+          this.meioPagtoAVista = parseInt(this.prePedidoDto.FormaPagtoCriacao.Op_av_forma_pagto);//deposito ou...
           break;
         case this.constantes.COD_FORMA_PAGTO_PARCELA_UNICA:
           //ParcUnica
           this.enumFormaPagto = EnumFormaPagto.ParcUnica;//forma de pagamento
-          this.meioPagtoParcUnica = parseInt(this.prePedidoDto.FormaPagtoCriacao.Op_pu_forma_pagto);//deposito ou...
           this.opcaoPagtoParcUnica = this.montaParcelamentoExistente();//recebe a descrição (1 X R$ 00,00)
+          this.meioPagtoParcUnica = parseInt(this.prePedidoDto.FormaPagtoCriacao.Op_pu_forma_pagto);//deposito ou...
           this.diasVencParcUnica = this.prePedidoDto.FormaPagtoCriacao.C_pu_vencto_apos;//dias para venc.
           break;
         case this.constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO:
@@ -620,9 +682,9 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
           //ParcComEnt
           this.enumFormaPagto = EnumFormaPagto.ParcComEnt;//forma de pagamento
           this.vlEntrada = this.prePedidoDto.FormaPagtoCriacao.C_pce_entrada_valor;//valor de entrada
+          this.opcaoPagtoParcComEntrada = this.montaParcelamentoExistente();//recebe a descrição (1 X R$ 00,00)
           this.meioPagtoEntrada = parseInt(this.prePedidoDto.FormaPagtoCriacao.Op_pce_entrada_forma_pagto);//deposito ou...
           this.meioPagtoEntradaPrest = parseInt(this.prePedidoDto.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto);//deposito ou...
-          this.opcaoPagtoParcComEntrada = this.montaParcelamentoExistente();//recebe a descrição (1 X R$ 00,00)
           this.diasVenc = this.prePedidoDto.FormaPagtoCriacao.C_pce_prestacao_periodo;//recebe os dias de vencimento
           break;
         case this.constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA:

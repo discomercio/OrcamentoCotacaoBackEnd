@@ -37,7 +37,6 @@ export class DetalhesPrepedidoComponent extends TelaDesktopBaseComponent impleme
   ) {
     
     super(telaDesktopService);
-    debugger;
   }
 
   emPrepedidos = true;

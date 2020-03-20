@@ -99,8 +99,8 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 								<!-- <input name="c_vl_NF" id="c_vl_NF" class="PLLd" style="width:62px;" value='{{i.Preco}}' /> -->
 								<mat-form-field class="preco">
 									<input matInput type="text" required
-										[value]="moedaUtils.formatarMoedaSemPrefixo(i.Preco)"
-										(change)="digitouPreco($event,i)" (keyup)="digitouPreco($event,i)">
+										[value]="moedaUtils.formatarMoedaSemPrefixo(i.Preco_Lista)"
+										(keyup)="formatarPreco_Lista($event,i)" (blur)="digitouPreco_Lista($event,i)">
 								</mat-form-field>
 							</td>
 
@@ -111,13 +111,15 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 
 							<!-- no original somente isLojaHabilitadaProdCompostoECommerce podia digitar o desconto, 
 						mas todo mundo podia digitar o c_vl_unitario
-						mudamos para deixar todo mundo digitar o desconto -->
+						mudamos para deixar todo mundo digitar o desconto
+					[value]="moedaUtils.formatarPorcentagemUmaCasa(i.Desconto)"-->
 							<td align="right">
-								<!-- <input name="c_desc" id="c_desc" class="PLLd" style="width:36px;" value="{{i.Desconto}}" /> -->
+								<!-- <input name="c_desc" id="c_desc" class="PLLd" style="width:36px;" value="{{i.Desconto}}" 
+									/> -->
 								<mat-form-field class="desconto">
 									<input matInput type="text"
-										[value]="moedaUtils.formatarPorcentagemUmaCasa(i.Desconto)"
-										(change)="digitouDesc($event,i)" (keyup)="digitouDesc($event,i)">
+										[value]="moedaUtils.formatarMoedaSemPrefixo(i.Desconto)"
+										(keyup)="formatarDesc($event,i)" (blur)="digitouDesc($event,i)">
 								</mat-form-field>%
 							</td>
 							<td align="right">
@@ -126,7 +128,7 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 								<mat-form-field class="preco">
 									<input matInput type="text" required
 										[value]="moedaUtils.formatarMoedaSemPrefixo(i.VlUnitario)"
-										(change)="digitouVlVenda($event,i)" (keyup)="digitouVlVenda($event,i)">
+										(keyup)="formataVlVenda($event,i)" (blur)="digitouVlVenda($event,i)">
 								</mat-form-field>
 							</td>
 
@@ -174,14 +176,16 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 					<!-- parte de baixo da tabela -->
 					<tr>
 						<!-- pula as colunas vazias -->
-						<td> </td>
-						<td> </td>
-						<td *ngIf="permite_RA_Status">
-							<strong>{{moedaUtils.formatarMoedaSemPrefixo(totalPedidoRA())}}</strong>
+						<td align="right" *ngIf="permite_RA_Status">
+							<strong>RA {{moedaUtils.formatarMoedaSemPrefixo(somarRA())}}  </strong>
 						</td>
-						<td> </td>
-						<td> </td>
-						<td> </td>
+						<td align="right"></td>
+						<td align="right" *ngIf="permite_RA_Status">
+							<strong style="margin-left: 3em;">{{moedaUtils.formatarMoedaSemPrefixo(totalPedidoRA())}}</strong>
+						</td>
+						<td align="right"> </td>
+						<td align="right"> </td>
+						<td align="right"> </td>
 
 						<td align="right">
 							<strong>{{moedaUtils.formatarMoedaSemPrefixo(totalPedido())}}</strong>
