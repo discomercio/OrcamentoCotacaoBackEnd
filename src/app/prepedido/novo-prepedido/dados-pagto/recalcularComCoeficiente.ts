@@ -103,9 +103,9 @@ export class RecalcularComCoeficiente {
                       this.ProdutosCalculados.Valor = p.VlTotalItem;
                       this.lstProdutosCalculados.push(this.ProdutosCalculados);
                     } else {
-
+                      p.VlTotalItem = p.Preco * p.Qtde;
                       this.ProdutosCalculados.QtdeParcela = 1;
-                      this.ProdutosCalculados.Valor = p.Preco;
+                      this.ProdutosCalculados.Valor = p.VlTotalItem;
                       this.lstProdutosCalculados.push(this.ProdutosCalculados);
                     }
                   }
@@ -147,8 +147,9 @@ export class RecalcularComCoeficiente {
                       this.lstProdutosCalculados.push(this.ProdutosCalculados);
                     }
                     else {
+                      p.VlTotalItem = (p.Preco * coeficienteFornec[0].Coeficiente) * p.Qtde;
                       this.ProdutosCalculados.QtdeParcela = coeficienteFornec[0].QtdeParcelas;
-                      this.ProdutosCalculados.Valor = p.Preco * coeficienteFornec[0].Coeficiente;
+                      this.ProdutosCalculados.Valor = p.VlTotalItem;
                       this.lstProdutosCalculados.push(this.ProdutosCalculados);
 
                     }
@@ -192,8 +193,9 @@ export class RecalcularComCoeficiente {
                       this.lstProdutosCalculados.push(this.ProdutosCalculados);
                     }
                     else {
+                      p.VlTotalItem = (p.Preco * x.Coeficiente) * p.Qtde;
                       this.ProdutosCalculados.QtdeParcela = x.QtdeParcelas;
-                      this.ProdutosCalculados.Valor = p.Preco * x.Coeficiente;
+                      this.ProdutosCalculados.Valor = p.VlTotalItem;
                       this.lstProdutosCalculados.push(this.ProdutosCalculados);
 
                     }
@@ -233,8 +235,9 @@ export class RecalcularComCoeficiente {
                     this.lstProdutosCalculados.push(this.ProdutosCalculados);
                   }
                   else {
+                    p.VlTotalItem = (p.Preco * x.Coeficiente) * p.Qtde;
                     this.ProdutosCalculados.QtdeParcela = x.QtdeParcelas;
-                    this.ProdutosCalculados.Valor = p.Preco * x.Coeficiente;
+                    this.ProdutosCalculados.Valor = p.VlTotalItem;
                     this.lstProdutosCalculados.push(this.ProdutosCalculados);
 
                   }
@@ -343,7 +346,7 @@ export class RecalcularComCoeficiente {
                 produto.VlLista = produto.Preco;//só altera se calcular coeficiente
                 produto.TotalItem = (produto.Preco * produto.Qtde);
               }
-              if(!produto.AlterouValorRa || produto.AlterouValorRa == undefined){
+              if (!produto.AlterouValorRa || produto.AlterouValorRa == undefined) {
                 produto.Preco_Lista = produto.Preco;
               }
             }
@@ -370,8 +373,8 @@ export class RecalcularComCoeficiente {
                   produto.VlLista = (produto.Preco * x.Coeficiente);//só altera se calcular coeficiente
                   produto.TotalItem = ((produto.Preco * produto.Qtde) * x.Coeficiente);
                 }
-               debugger;
-                if(!produto.AlterouValorRa || produto.AlterouValorRa == undefined){
+                debugger;
+                if (!produto.AlterouValorRa || produto.AlterouValorRa == undefined) {
                   produto.Preco_Lista = (produto.Preco * x.Coeficiente);
                 }
 
@@ -399,7 +402,7 @@ export class RecalcularComCoeficiente {
                   produto.VlLista = (produto.Preco * x.Coeficiente);//só altera se calcular coeficiente
                   produto.TotalItem = ((produto.Preco * produto.Qtde) * x.Coeficiente);
                 }
-                if(!produto.AlterouValorRa || produto.AlterouValorRa == undefined){
+                if (!produto.AlterouValorRa || produto.AlterouValorRa == undefined) {
                   produto.Preco_Lista = (produto.Preco * x.Coeficiente);
                 }
 
@@ -431,7 +434,7 @@ export class RecalcularComCoeficiente {
                   produto.VlLista = (produto.Preco * x.Coeficiente);//só altera se calcular coeficiente
                   produto.TotalItem = ((produto.Preco * produto.Qtde) * x.Coeficiente);
                 }
-                if(!produto.AlterouValorRa || produto.AlterouValorRa == undefined){
+                if (!produto.AlterouValorRa || produto.AlterouValorRa == undefined) {
                   produto.Preco_Lista = (produto.Preco * x.Coeficiente);
                 }
 

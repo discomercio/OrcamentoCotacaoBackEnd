@@ -190,9 +190,8 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 						<td align="right">
 							<strong>{{moedaUtils.formatarMoedaSemPrefixo(totalPedido())}}</strong>
 						</td>
-						<td> </td>
-
-
+						<td  align="right"> </td>
+						<td *ngIf="!permite_RA_Status" align="right"> </td>
 					</tr>
 
 				</tbody>

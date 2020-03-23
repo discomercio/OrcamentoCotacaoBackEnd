@@ -17,9 +17,9 @@
     Comissao: number | null;
     TotalItemRA: number | null;
     TotalItem: number | null;
-    AlterouValorRa:boolean| null;
-    AlterouVlVenda:boolean| null;
+    AlterouValorRa: boolean | null;
+    AlterouVlVenda: boolean | null;
     //verificar a necessidade dessa variavel
     Qtde_estoque_total_disponivel: number | null;
-
+    ProdutoPai: string
 }

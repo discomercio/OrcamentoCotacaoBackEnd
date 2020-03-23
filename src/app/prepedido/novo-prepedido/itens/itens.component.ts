@@ -28,6 +28,7 @@ import { EnderecoEntregaDtoClienteCadastro } from 'src/app/dto/ClienteCadastro/E
 import { TestBed } from '@angular/core/testing';
 import { CepComponent } from 'src/app/cliente/cep/cep/cep.component';
 import { listLazyRoutes } from '@angular/compiler/src/aot/lazy_routes';
+import { ProdutoCompostoDto } from 'src/app/dto/Produto/ProdutoCompostoDto';
 
 @Component({
   selector: 'app-itens',
@@ -341,7 +342,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     //Gabriel apenas teste, pois os valores estão se acumulando e iremos alterar aqui
     i.TotalItem = i.Qtde * i.VlLista;
     i.VlTotalItem = i.Qtde * i.VlLista;
-
+    debugger;
     // i.VlUnitario = Number.parseFloat(v);
     //teste de calculo
     i.Desconto = 100 * (i.VlLista - v) / i.VlLista;
@@ -349,7 +350,13 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     // i.Desconto = 100 * (i.Preco - i.VlUnitario) / i.Preco;
     i.Desconto = Number.parseFloat(i.Desconto.toFixed(2));
 
-    i.AlterouVlVenda = true;
+    if (i.VlLista == i.VlUnitario) {
+      i.AlterouVlVenda = false;
+    } else {
+      i.AlterouVlVenda = true;
+    }
+
+    // i.AlterouVlVenda = true;
 
     this.digitouQte(i);
   }
@@ -359,6 +366,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     //tem 1 casa
     v = (v / 100).toFixed(2) + '';
 
+    debugger;
     //se o desconto for digitado estamos alterando o valor de venda e não devemos mais alterar esse valor
     if (i.Desconto == 0 || i.Desconto.toString() == '') {
       i.AlterouVlVenda = false;
@@ -420,7 +428,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
           this.percentualVlPedidoRA = r;
         }
       },
-      error: (r:number) => this.alertaService.mostrarErroInternet(r)
+      error: (r: number) => this.alertaService.mostrarErroInternet(r)
     });
   }
 
@@ -453,7 +461,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     debugger;
     if (this.prePedidoDto.PermiteRAStatus == 1) {
       if (this.percentualVlPedidoRA != 0 && this.percentualVlPedidoRA != undefined) {
-        
+
         let vlAux = (this.percentualVlPedidoRA / 100) * this.totalPedido();
         if (this.somaRA > vlAux) {
           this.alertaService.mostrarMensagem("O valor total de RA excede o limite permitido!");
@@ -475,6 +483,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
       this.router.navigate(["../observacoes"], { relativeTo: this.activatedRoute });
     }
   }
+
   adicionarProduto() {
     //ele mesmo já adiciona
     this.clicouAddProd = true;
@@ -485,6 +494,9 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       data: `Remover este item do pré-pedido?`
     });
+
+    debugger;
+
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.prePedidoDto.ListaProdutos = this.prePedidoDto.ListaProdutos.filter(function (value, index, arr) {
@@ -510,7 +522,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
 
   //Gabriel
   //criaremos uma lista para armazenar os itens pelo item principal, independente se é produto composto
-  public lstProdSelectInfo: SelecProdInfo[] = [];
+  public lstProdutoAdd: PrepedidoProdutoDtoPrepedido[] = [];
 
   mostrarProdutos(linha: PrepedidoProdutoDtoPrepedido) {
 
@@ -577,37 +589,73 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
           }
         }
         else {
-          //adicionando
-          //Gabriel
-          //add produto para verificação de itens
-          this.lstProdSelectInfo.push(selecProdInfo);
-          //será necessário verificar se o produto que esta sendo inserido é composto
-          //pois um produto composto são 2 itens ou mais, mas será tratado como sendo 1 item
-          if (this.lstProdSelectInfo.length > 12) {
-            this.alertaService.mostrarMensagem("É permitido apenas 12 itens por Pré-Pedido!");
-            return false;
-          }
+          let filhosDiretosNovo = this.filhosDeProdutoComposto(selecProdInfo);
+          debugger;
 
-          //se for produto simples
-          const filhosDiretos = this.filhosDeProdutoComposto(selecProdInfo);
-          if (!filhosDiretos) {
-            //não é produto composto
-            let novo = new PrepedidoProdutoDtoPrepedido();
-            this.prePedidoDto.ListaProdutos.push(novo);
-            this.atualizarProduto(novo, selecProdInfo.Fabricante, selecProdInfo.Produto, selecProdInfo.Qte);
+          let itemrepetido = new Array();
+          if (filhosDiretosNovo != null) {
+            //pegamos 2 item se for repetido
+            this.prePedidoDto.ListaProdutos.forEach(x => {
+              filhosDiretosNovo.forEach(y => {
+                if (y.Produto == x.NumProduto)
+                  itemrepetido.push(y);
+              })
+            });
+            //se a lista de produtos estiver com 11 itens, não iremos add um produto composto
+            //mostraremos uma msg que este item é composto por 2 ou mais itens
+            if (this.prePedidoDto.ListaProdutos.length == 11 && itemrepetido.length == 0) {
+              this.alertaService.mostrarMensagem("É permitido apenas 12 itens por Pré-Pedido!\n" +
+                "O produto " + selecProdInfo.Produto + " é composto por " + filhosDiretosNovo.length + " itens!");
+              return false;
+            }
           }
           else {
-            //produto composto
-            for (let i = 0; i < filhosDiretos.length; i++) {
+            //pegamos 1 item se for repetido
+            itemrepetido = this.prePedidoDto.ListaProdutos.filter(y => y.NumProduto == selecProdInfo.Produto);
+          }
+          if (this.prePedidoDto.ListaProdutos.length >= 12 && itemrepetido.length == 0) {
+            this.alertaService.mostrarMensagem("É permitido apenas 12 itens por Pré-Pedido! teste");
+            return false;
+          }
+          else {
+            if (!filhosDiretosNovo) {
+              //não é produto composto
               let novo = new PrepedidoProdutoDtoPrepedido();
               this.prePedidoDto.ListaProdutos.push(novo);
-              this.atualizarProduto(novo, filhosDiretos[i].Fabricante, filhosDiretos[i].Produto, selecProdInfo.Qte * filhosDiretos[i].Qtde);
+              this.atualizarProduto(novo, selecProdInfo.Fabricante, selecProdInfo.Produto, selecProdInfo.Qte);
+
+              //vamos arrumar eventuais produtos repetidos
+              this.arrumarProdsRepetidos();
+            }
+            else {
+              if ((this.prePedidoDto.ListaProdutos.length + filhosDiretosNovo.length - itemrepetido.length) <= 12) {
+                //produto composto
+                for (let i = 0; i < filhosDiretosNovo.length; i++) {
+                  if (this.prePedidoDto.ListaProdutos.length < 12 || itemrepetido.length >= 1) {
+                    /**
+                     * qtos itens tem na tla + qto itens vai entrar na tela e qtos itens repedidos
+                     */
+                    // if (itemrepetido[i].Produto == filhosDiretosNovo[i].Produto) {
+                    let novo = new PrepedidoProdutoDtoPrepedido();
+                    this.prePedidoDto.ListaProdutos.push(novo);
+                    this.atualizarProduto(novo, filhosDiretosNovo[i].Fabricante, filhosDiretosNovo[i].Produto,
+                      selecProdInfo.Qte * filhosDiretosNovo[i].Qtde);
+
+                    //vamos arrumar eventuais produtos repetidos
+                    this.arrumarProdsRepetidos();
+                    // }
+                  }
+
+                  // }
+                }
+              }
+              else {
+                this.alertaService.mostrarMensagem("É permitido apenas 12 itens por Pré-Pedido!");
+                return false;
+              }
             }
           }
         }
-
-        //vamos arrumar eventuais produtos repetidos
-        this.arrumarProdsRepetidos();
       }
     });
   }
@@ -630,6 +678,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     linha.VlLista = prodInfo.Preco_lista;
     linha.VlUnitario = prodInfo.Preco_lista;
     linha.Preco_Lista = prodInfo.Preco_lista;
+
     if (!linha.Desconto) {
       linha.Desconto = 0;
     }
@@ -648,6 +697,25 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
       return null;
     }
     return registros[0].Filhos;
+  }
+
+
+  buscarPaideFilho(item: string) {
+    debugger;
+    let pai = "";
+    let produtosFilhos = new Array();
+    const registro = this.produtoComboDto.ProdutoCompostoDto.filter(x => x.Filhos.filter(y => y.Produto == item));
+    if (!registro) {
+      registro.forEach(x => {
+        x.Filhos.forEach(y => {
+          if (y.Produto == item) {
+            pai = x.PaiProduto;
+          }
+        })
+      })
+    }
+
+    return pai;
   }
 
 
