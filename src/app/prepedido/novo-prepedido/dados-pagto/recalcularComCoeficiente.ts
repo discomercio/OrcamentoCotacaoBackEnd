@@ -127,7 +127,6 @@ export class RecalcularComCoeficiente {
               if (!!coeficienteFornec[0]) {
                 if (coeficienteFornec[0].Fabricante == p.Fabricante) {
                   this.ProdutosCalculados = new ProdutosCalculados();
-                  debugger;
                   if (!!this.novoPrepedidoDadosService.prePedidoDto.PermiteRAStatus &&
                     this.novoPrepedidoDadosService.prePedidoDto.PermiteRAStatus == 1) {
                     p.VlTotalItem = p.AlterouValorRa && p.AlterouValorRa != undefined ?
@@ -373,7 +372,6 @@ export class RecalcularComCoeficiente {
                   produto.VlLista = (produto.Preco * x.Coeficiente);//só altera se calcular coeficiente
                   produto.TotalItem = ((produto.Preco * produto.Qtde) * x.Coeficiente);
                 }
-                debugger;
                 if (!produto.AlterouValorRa || produto.AlterouValorRa == undefined) {
                   produto.Preco_Lista = (produto.Preco * x.Coeficiente);
                 }

@@ -171,7 +171,6 @@ e são usados desta forma:
   validarProdutorRural(dadosClienteCadastroDto: DadosClienteCadastroDto): DadosClienteCadastroDto {
     let constantes = this.constantes;
     let clienteCadastroUtils = this;
-    debugger;
     //se é produtor salvamos o contribuinte
 
     //se não for produtor rural vamos apagar os dados
@@ -193,7 +192,6 @@ e são usados desta forma:
     //retorna null se não tiver nenhum erro
     let constantes = this.constantes;
     let clienteCadastroUtils = this;
-debugger;
     // copiado do ClienteEdita.asp
     if (clienteCadastroUtils.ehPf(dadosClienteCadastroDto)) {
 

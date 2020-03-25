@@ -112,7 +112,6 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
 
     
     let alertaService = new AlertaService(this.dialog, this.router, this.autenticacaoService);
-    debugger;
     
     alertaService.mostrarErroInternet(r);
     // const dialogRef = this.dialog.open(AlertDialogComponent, {

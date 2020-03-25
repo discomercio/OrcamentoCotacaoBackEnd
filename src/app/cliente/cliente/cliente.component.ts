@@ -40,7 +40,6 @@ export class ClienteComponent extends TelaDesktopBaseComponent implements OnInit
         this.dadosClienteCadastroDto = r.DadosCliente;
         this.clienteCadastroDto = r;
       }).catch((r) => {
-        debugger;
         //erro...
         this.alertaService.mostrarErroInternet(r);
       });

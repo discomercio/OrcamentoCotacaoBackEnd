@@ -44,7 +44,6 @@ export class ConfirmarPrepedidoComponent extends PassoPrepedidoBase implements O
     this.location.back();
   }
   continuar() {
-    debugger;
     this.prepedidoBuscarService.cadastrarPrepedido(this.novoPrepedidoDadosService.prePedidoDto).subscribe({
       next: (r) => {
         

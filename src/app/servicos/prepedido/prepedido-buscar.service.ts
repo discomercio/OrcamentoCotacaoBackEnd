@@ -39,7 +39,6 @@ export class PrepedidoBuscarService {
           observer.complete();
         })
         .catch(err => {
-          debugger;
           observer.error(err);
         });
     });

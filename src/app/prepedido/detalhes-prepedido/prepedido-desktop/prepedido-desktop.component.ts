@@ -56,7 +56,6 @@ export class PrepedidoDesktopComponent extends TelaDesktopBaseComponent implemen
   }
 
   formata_endereco(): string {
-    debugger;
     const p = this.prepedidoDto ? this.prepedidoDto.DadosCliente : null;
     if (!p)
       return "Sem endereço";

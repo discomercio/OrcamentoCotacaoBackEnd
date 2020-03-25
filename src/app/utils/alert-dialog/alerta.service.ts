@@ -32,18 +32,18 @@ export class AlertaService {
       msg, "350px", null);
   }
 
+
   public static mostrandoErroNaoAutorizado: boolean = false;
   //esta é um pouco mais estreita...
   public mostrarErroInternet(r: any): void {
-    debugger;
-    //afazer: passar o status do retorno e verificar se o status é 403 e redirecionar o usuário para o login e passar o router
+    
     if (r != null) {
       let error: HttpErrorResponse = r;
       if (error.status == 403) {
         //colocamos um id no botão para poder simular o click
         let sair = document.getElementById('btnSair');
-        
-        if (AlertaService.mostrandoErroNaoAutorizado){
+
+        if (AlertaService.mostrandoErroNaoAutorizado) {
           sair.click();
           return;
         }
@@ -56,13 +56,52 @@ export class AlertaService {
 
         return;
       }
+      //no caso de satus code "0" mandar a msg de verifique sua conexão com a internet
+      //API fora ou usuário sem internet
+      if (error.status == 0) {
+        //erro 500
+        this.mostrarMensagemComLargura(
+          "Favor verifique sua conexão com a internet!",
+          "250px", null);
 
+        return;
+      }
+
+      if (error.status == 500) {
+        //erro 500
+        this.mostrarMensagemComLargura(
+          "Erro inesperado! Favor entrar em contato com o suporte técnico.",
+          "250px", null);
+
+        return;
+      }
+
+      //erro inesperado Favor entrar em contato com o suporte técnico + status.
+      if (error.status != 403 && error.status != 0 && error.status != 500) {
+        this.mostrarMensagemComLargura(
+          "Erro inesperado! Favor entrar em contato com o suporte técnico (Código: " + error.status + ").",
+          "250px", null);
+
+        return;
+      }
+    }
+    else{
+      //erro inesperado Favor entrar em contato com o suporte técnico + status == null.
+      this.mostrarMensagemComLargura(
+        "Erro inesperado! Favor entrar em contato com o suporte técnico (null).",
+        "250px", null);
+
+      return;
     }
 
 
-    this.mostrarMensagemComLargura(
-      "Erro no acesso ao sistema. Verifique a conexão com a internet.",
-      "250px", null);
   }
 
+
+
+
+
 }
+
+
+

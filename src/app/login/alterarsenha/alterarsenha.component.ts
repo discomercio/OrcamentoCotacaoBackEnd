@@ -79,7 +79,6 @@ export class AlterarsenhaComponent extends TelaDesktopBaseComponent implements O
           this.autenticacaoService.alterarSenha(this.autenticacaoService.usuarioApelidoParaAlterarSenha, this.senha,
             this.senhaNova, this.senhaNovaConfirma).subscribe({
               next: (e) => {
-                debugger;
                 //fazer a chamada para realizar o login, passando a senha nova e o apelido
                 if (e == "" || e == null) {
                   this._snackBar.open("Alteração de senha realizada com sucesso!", undefined, {
@@ -107,7 +106,6 @@ export class AlterarsenhaComponent extends TelaDesktopBaseComponent implements O
 
               },
               error: (e) => {
-                debugger;
                 msg = "" + ((e && e.message) ? e.message : e.toString());
                 if (e && e.status === 400)
                   msg = "usuário e senha inválidos."

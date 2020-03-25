@@ -87,7 +87,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
             this.inscreverProdutoComboDto();
 
           },
-          error: (r) => { debugger; this.alertaService.mostrarErroInternet(r) }
+          error: (r) => { this.alertaService.mostrarErroInternet(r) }
         });
         return;
       }
@@ -283,7 +283,6 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
   }
 
   digitouPreco_Lista(e: Event, i: PrepedidoProdutoDtoPrepedido) {
-    debugger;
     let valor = ((e.target) as HTMLInputElement).value;
     let v: any = valor.replace(/\D/g, '');
     v = (v / 100).toFixed(2) + '';
@@ -315,7 +314,6 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
 
   somaRA: number;
   somarRA(): number {
-    debugger;
     let total = this.totalPedido();
     let totalRa = this.totalPedidoRA();
     return this.somaRA = totalRa - total;
@@ -331,7 +329,6 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
   }
 
   digitouVlVenda(e: Event, i: PrepedidoProdutoDtoPrepedido) {
-    debugger;
     let valor = ((e.target) as HTMLInputElement).value;
     let v: any = valor.replace(/\D/g, '');
     v = (v / 100).toFixed(2) + '';
@@ -342,7 +339,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     //Gabriel apenas teste, pois os valores estão se acumulando e iremos alterar aqui
     i.TotalItem = i.Qtde * i.VlLista;
     i.VlTotalItem = i.Qtde * i.VlLista;
-    debugger;
+
     // i.VlUnitario = Number.parseFloat(v);
     //teste de calculo
     i.Desconto = 100 * (i.VlLista - v) / i.VlLista;
@@ -366,7 +363,6 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     //tem 1 casa
     v = (v / 100).toFixed(2) + '';
 
-    debugger;
     //se o desconto for digitado estamos alterando o valor de venda e não devemos mais alterar esse valor
     if (i.Desconto == 0 || i.Desconto.toString() == '') {
       i.AlterouVlVenda = false;
@@ -378,7 +374,6 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
   }
 
   formatarDesc(e: Event, i: PrepedidoProdutoDtoPrepedido) {
-    debugger;
     let valor = ((e.target) as HTMLInputElement).value;
     let v: any = valor.replace(/\D/g, '');
     v = (v / 100).toFixed(2) + '';
@@ -387,7 +382,6 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
   }
 
   digitouDescValor(i: PrepedidoProdutoDtoPrepedido, v: string) {
-    debugger;
     //se não alteraram nada, ignoramos
     if (i.Desconto === Number.parseFloat(v))
       return;
@@ -424,7 +418,6 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     this.prepedidoBuscarService.ObtemPercentualVlPedidoRA().subscribe({
       next: (r: number) => {
         if (!!r) {
-          debugger;
           this.percentualVlPedidoRA = r;
         }
       },
@@ -458,7 +451,6 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
       return;
     }
 
-    debugger;
     if (this.prePedidoDto.PermiteRAStatus == 1) {
       if (this.percentualVlPedidoRA != 0 && this.percentualVlPedidoRA != undefined) {
 
@@ -495,7 +487,6 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
       data: `Remover este item do pré-pedido?`
     });
 
-    debugger;
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
@@ -590,7 +581,6 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
         }
         else {
           let filhosDiretosNovo = this.filhosDeProdutoComposto(selecProdInfo);
-          debugger;
 
           let itemrepetido = new Array();
           if (filhosDiretosNovo != null) {
@@ -701,9 +691,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
 
 
   buscarPaideFilho(item: string) {
-    debugger;
     let pai = "";
-    let produtosFilhos = new Array();
     const registro = this.produtoComboDto.ProdutoCompostoDto.filter(x => x.Filhos.filter(y => y.Produto == item));
     if (!registro) {
       registro.forEach(x => {

@@ -153,7 +153,6 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
     }
     if (this.enumFormaPagto == 5) {
       //ParcUnica
-      debugger;
       this.prePedidoDto.FormaPagtoCriacao.Rb_forma_pagto = this.enumFormaPagto.toString();
       this.prePedidoDto.FormaPagtoCriacao.Op_pu_forma_pagto = this.meioPagtoParcUnica.toString();//meio de pagamento
       this.prePedidoDto.FormaPagtoCriacao.C_pu_valor = this.valor;
@@ -193,7 +192,6 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
         }
       }
       if (this.enumFormaPagto == 3) {
-        debugger;
         if (this.meioPagtoEntrada && this.meioPagtoEntradaPrest)
         //ParcComEnt
         {
@@ -592,7 +590,6 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
           enumFP.toString() == this.constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA) &&
           lstCoeficiente[i].TipoParcela == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA) {
           if (cont < this.qtdeParcVisa) {
-            debugger;
             this.lstMsg.push(lstCoeficiente[i].QtdeParcelas + " X " +
               this.moedaUtils.formatarMoedaComPrefixo(vlTotalPedido / lstCoeficiente[i].QtdeParcelas));
             // console.log(lstCoeficiente[i].Coeficiente + " / " + );
@@ -652,7 +649,6 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
 
     if (this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento) {
       this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento;
-      debugger;
       switch (this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento.toString()) {
         
         case this.constantes.COD_FORMA_PAGTO_A_VISTA:
