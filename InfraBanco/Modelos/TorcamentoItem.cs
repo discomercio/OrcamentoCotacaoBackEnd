@@ -40,14 +40,14 @@ namespace InfraBanco.Modelos
         [Column("desc_dado")]
         public float? Desc_Dado { get; set; }
 
-        [Column("preco_venda")]
+        [Column("preco_venda", TypeName = "money(19,4)")]
         [Required]
         public decimal Preco_Venda { get; set; }
 
-        [Column("preco_fabricante")]
+        [Column("preco_fabricante", TypeName = "money(19,4)")]
         public decimal? Preco_Fabricante { get; set; }
 
-        [Column("preco_lista")]
+        [Column("preco_lista", TypeName = "money(19,4)")]
         [Required]
         public decimal? Preco_Lista { get; set; }
 
@@ -99,14 +99,14 @@ namespace InfraBanco.Modelos
         [Column("sequencia")]
         public short? Sequencia { get; set; }
 
-        [Column("preco_NF")]
+        [Column("preco_NF", TypeName = "money(19,4)")]
         public decimal? Preco_NF { get; set; }
 
         [Column("abaixo_min_superv_autorizador")]
         [MaxLength(10)]
         public string Abaixo_Min_Superv_Autorizador { get; set; }
 
-        [Column("vl_custo2")]
+        [Column("vl_custo2", TypeName = "money(19,4)")]
         [Required]
         public decimal Vl_Custo2 { get; set; }
 
@@ -118,7 +118,7 @@ namespace InfraBanco.Modelos
         [Required]
         public float CustoFinancFornecCoeficiente { get; set; }
 
-        [Column("custoFinancFornecPrecoListaBase")]
+        [Column("custoFinancFornecPrecoListaBase", TypeName = "money(19,4)")]
         [Required]
         public decimal CustoFinancFornecPrecoListaBase { get; set; }
 

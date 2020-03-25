@@ -29,7 +29,7 @@ namespace InfraBanco.Modelos
         [Column("qtde")]
         public short? Qtde { get; set; }
 
-        [Column("preco_fabricante")]
+        [Column("preco_fabricante", TypeName = "money(19,4)")]
         public decimal? Preco_fabricante { get; set; }
 
         [Column("qtde_utilizada")]
@@ -45,15 +45,15 @@ namespace InfraBanco.Modelos
         [Column("timestamp")]
         public byte? Timestamp { get; set; }
 
-        [Column("vl_custo2")]
+        [Column("vl_custo2", TypeName = "money(19,4)")]
         [Required]
         public decimal Vl_custo2 { get; set; }
 
-        [Column("vl_BC_ICMS_ST")]
+        [Column("vl_BC_ICMS_ST", TypeName = "money(19,4)")]
         [Required]
         public decimal Vl_BC_ICMS_ST { get; set; }
 
-        [Column("vl_ICMS_ST")]
+        [Column("vl_ICMS_ST", TypeName = "money(19,4)")]
         [Required]
         public decimal Vl_ICMS_ST { get; set; }
 
@@ -79,10 +79,10 @@ namespace InfraBanco.Modelos
         [Column("aliq_icms")]
         public float? Aliq_icms { get; set; }
 
-        [Column("vl_ipi")]
+        [Column("vl_ipi", TypeName = "money(19,4)")]
         public decimal? Vl_ipi { get; set; }
 
-        [Column("preco_origem")]
+        [Column("preco_origem", TypeName = "money(19,4)")]
         public decimal? Preco_origem { get; set; }
 
         [Column("produto_xml")]

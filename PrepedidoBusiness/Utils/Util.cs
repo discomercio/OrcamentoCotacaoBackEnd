@@ -295,11 +295,11 @@ namespace PrepedidoBusiness.Utils
 
                         //vl total=" & formata_moeda(vl_total)
                         //colocar esse vl total em 1º
-                        if(campo_atual.IndexOf("vl total")>= 0)
+                        if (campo_atual.IndexOf("vl total") >= 0)
                         {
                             log = campo_atual + "; ";
                         }
-                        if(campo_atual.IndexOf("Endereço entrega=mesmo do cadastro") >= 0 && !endEntregaMesmo)
+                        if (campo_atual.IndexOf("Endereço entrega=mesmo do cadastro") >= 0 && !endEntregaMesmo)
                         {
                             endEntregaMesmo = true;
                             log = log + campo_atual + "; ";
@@ -620,9 +620,10 @@ namespace PrepedidoBusiness.Utils
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var dbTwmsRegraCdXUfXPessoaXCds = (from c in db.TwmsRegraCdXUfXPessoaXCds
-                                               join nfe in db.TnfEmitentes on c.Id_nfe_emitente equals nfe.Id
-                                               select c).ToList();
+            var dbTwmsRegraCdXUfXPessoaXCds = from c in db.TwmsRegraCdXUfXPessoaXCds
+                                              join nfe in db.TnfEmitentes on c.Id_nfe_emitente equals nfe.Id
+                                              select c;
+            List<TwmsRegraCdXUfXPessoaXCd> lstRegra = await dbTwmsRegraCdXUfXPessoaXCds.ToListAsync();
 
             //essa query esta copiando o id do produto 
             var testeRegras = from c in db.TprodutoXwmsRegraCds
@@ -637,8 +638,8 @@ namespace PrepedidoBusiness.Utils
                                   prod_x_reg = c,
                                   regra1 = r1,
                                   regra2 = r2,
-                                  regra3 = r3,
-                                  regra4 = dbTwmsRegraCdXUfXPessoaXCds.Where(r => r.Id_wms_regra_cd_x_uf_x_pessoa == r3.Id).ToList(),
+                                  regra3 = r3
+                                  //regra4 = lstRegra.Where(r => r.Id_wms_regra_cd_x_uf_x_pessoa == r3.Id).ToList(),
                               };
             var lista = await testeRegras.ToListAsync();
 
@@ -676,17 +677,20 @@ namespace PrepedidoBusiness.Utils
                         };
                         item.TwmsCdXUfXPessoaXCd = new List<t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD>();
 
-                        foreach (var r4 in r.regra4)
+                        foreach (var r4 in lstRegra)
                         {
-                            t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD item_cd_uf_pess_cd = new t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD
+                            if (r4.Id_wms_regra_cd_x_uf_x_pessoa == r.regra3.Id)
                             {
-                                Id = r4.Id,
-                                Id_wms_regra_cd_x_uf_x_pessoa = r4.Id_wms_regra_cd_x_uf_x_pessoa,
-                                Id_nfe_emitente = r4.Id_nfe_emitente,
-                                Ordem_prioridade = r4.Ordem_prioridade,
-                                St_inativo = r4.St_inativo
-                            };
-                            item.TwmsCdXUfXPessoaXCd.Add(item_cd_uf_pess_cd);
+                                t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD item_cd_uf_pess_cd = new t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD
+                                {
+                                    Id = r4.Id,
+                                    Id_wms_regra_cd_x_uf_x_pessoa = r4.Id_wms_regra_cd_x_uf_x_pessoa,
+                                    Id_nfe_emitente = r4.Id_nfe_emitente,
+                                    Ordem_prioridade = r4.Ordem_prioridade,
+                                    St_inativo = r4.St_inativo
+                                };
+                                item.TwmsCdXUfXPessoaXCd.Add(item_cd_uf_pess_cd);
+                            }
                         }
 
 
@@ -788,7 +792,7 @@ namespace PrepedidoBusiness.Utils
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var lstEstoqueQtdeUtilZero = from c in db.Testoques.Include(r => r.TestoqueItem)
+            var lstEstoqueQtdeUtilZero = from c in db.Testoques
                                          where (c.TestoqueItem.Qtde - c.TestoqueItem.Qtde_utilizada) > 0 &&
                                                c.TestoqueItem.Qtde_utilizada.HasValue
                                          select new ProdutosEstoqueDto
@@ -808,7 +812,7 @@ namespace PrepedidoBusiness.Utils
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var lstEstoqueQtdeUtilZeroComSubQuery = from c in db.Testoques.Include(r => r.TestoqueItem)
+            var lstEstoqueQtdeUtilZeroComSubQuery = from c in db.Testoques
                                                     where ((c.TestoqueItem.Qtde - c.TestoqueItem.Qtde_utilizada) > 0) &&
                                                           ((c.TestoqueItem.Qtde_utilizada.HasValue) ||
                                                           (from d in db.TnfEmitentes

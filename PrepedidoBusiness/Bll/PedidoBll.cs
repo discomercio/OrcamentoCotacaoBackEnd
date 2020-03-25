@@ -82,7 +82,7 @@ namespace PrepedidoBusiness.Bll
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var lista = db.Tpedidos.Include(r => r.Tcliente).
+            var lista = db.Tpedidos.
                 Where(r => r.Indicador == apelido);
 
             switch (tipoBusca)
@@ -142,7 +142,7 @@ namespace PrepedidoBusiness.Bll
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var lista = (from c in db.Tpedidos.Include(r => r.Tcliente)
+            var lista = (from c in db.Tpedidos
                          where c.Orcamentista == apelido &&
                                c.Data >= Util.LimiteDataBuscas()
                          orderby c.Tcliente.Cnpj_Cpf
@@ -906,7 +906,7 @@ namespace PrepedidoBusiness.Bll
             var vl_TotalFamiliaPagoTask = vlFamiliaP.Select(r => r.Valor).SumAsync();
 
             //buscar valor total NF
-            var vlNf = from c in db.TpedidoItems.Include(r => r.Tpedido)
+            var vlNf = from c in db.TpedidoItems
                        where c.Tpedido.St_Entrega != Constantes.ST_ENTREGA_CANCELADO && c.Tpedido.Pedido.StartsWith(numPedido)
                        select c.Qtde * c.Preco_NF;
             var vl_TotalFamiliaPrecoNFTask = vlNf.Select(r => r.Value).SumAsync();
@@ -921,7 +921,7 @@ namespace PrepedidoBusiness.Bll
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var vlTotalVendaPorItem = from c in db.TpedidoItems.Include(r => r.Tpedido)
+            var vlTotalVendaPorItem = from c in db.TpedidoItems
                                       where c.Tpedido.St_Entrega != Constantes.ST_ENTREGA_CANCELADO && c.Tpedido.Pedido.StartsWith(numPedido)
                                       select new { venda = c.Qtde * c.Preco_Venda, nf = c.Qtde * c.Preco_NF };
 
@@ -1054,7 +1054,7 @@ namespace PrepedidoBusiness.Bll
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var blDevolucao = from c in db.TpedidoItemDevolvidoBlocoNotas.Include(r => r.TpedidoItemDevolvido)
+            var blDevolucao = from c in db.TpedidoItemDevolvidoBlocoNotas
                               where c.TpedidoItemDevolvido.Pedido == numPedido && c.Anulado_Status == 0
                               orderby c.Dt_Hr_Cadastro, c.Id
                               select new BlocoNotasDevolucaoMercadoriasDtoPedido

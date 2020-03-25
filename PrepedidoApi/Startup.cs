@@ -52,7 +52,7 @@ namespace PrepedidoApi
             services.AddTransient<InfraBanco.ContextoNFeProvider, InfraBanco.ContextoNFeProvider>();
 
             //banco de dados
-            string conexaoBasica = Configuration.GetConnectionString("conexaohomologa");
+            string conexaoBasica = Configuration.GetConnectionString("conexao");
             services.AddDbContext<InfraBanco.ContextoBdBasico>(options =>
             {
                 //options.UseSqlServer(Configuration.GetConnectionString("conexaoLocal"));

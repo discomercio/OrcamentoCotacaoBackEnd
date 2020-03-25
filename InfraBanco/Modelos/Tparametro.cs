@@ -19,7 +19,7 @@ namespace InfraBanco.Modelos
         [Required]
         public int Campo_inteiro { get; set; }
 
-        [Column("campo_monetario")]
+        [Column("campo_monetario", TypeName = "money(19,4)")]
         [Required]
         public decimal Campo_monetario { get; set; }
 
@@ -28,7 +28,7 @@ namespace InfraBanco.Modelos
         public float Campo_real { get; set; }
 
         [Column("campo_data")]
-        public decimal? Campo_data { get; set; }
+        public DateTime? Campo_data { get; set; }
 
         [Column("campo_texto")]
         [MaxLength(1024)]

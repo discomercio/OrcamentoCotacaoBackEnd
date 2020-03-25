@@ -114,6 +114,14 @@ namespace PrepedidoBusiness.Bll
 
         public async Task<ClienteCadastroDto> BuscarCliente(string cpf_cnpj, string apelido)
         {
+            //vamos validar o cpf ou cnpj
+            bool m = Utils.Util.ValidaCpf_Cnpj(cpf_cnpj);
+            if (!m)
+            {
+                throw new ArgumentException("CPF ou CPJ inválido");
+                
+            }
+
             var db = contextoProvider.GetContextoLeitura();
 
             var dadosCliente = db.Tclientes.Where(r => r.Cnpj_Cpf == cpf_cnpj)

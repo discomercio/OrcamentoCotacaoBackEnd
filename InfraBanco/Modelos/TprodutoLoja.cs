@@ -32,7 +32,7 @@ namespace InfraBanco.Modelos
         //[ForeignKey("fabricante,produto")]
         public Tproduto Tproduto{ get; set; }
 
-        [Column("preco_lista")]
+        [Column("preco_lista", TypeName = "money(19,4)")]
         public decimal? Preco_Lista { get; set; }
 
         [Column("margem")]

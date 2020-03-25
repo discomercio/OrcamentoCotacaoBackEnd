@@ -24,7 +24,7 @@ namespace InfraBanco.Modelos
         [Required]
         public short Qtde_parcelas { get; set; }
 
-        [Column("vl_min_parcela")]
+        [Column("vl_min_parcela", TypeName = "money(19,4)")]
         [Required]
         public decimal Vl_min_parcela { get; set; }
 

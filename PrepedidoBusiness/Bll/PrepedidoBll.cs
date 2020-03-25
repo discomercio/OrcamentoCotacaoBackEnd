@@ -47,7 +47,7 @@ namespace PrepedidoBusiness.Bll
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var lista = (from c in db.Torcamentos.Include(r => r.Tcliente)
+            var lista = (from c in db.Torcamentos
                          where c.Orcamentista == apelido &&
                                c.St_Orcamento != "CAN" &&
                                c.Data >= Util.LimiteDataBuscas()

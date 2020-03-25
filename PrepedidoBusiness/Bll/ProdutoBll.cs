@@ -166,7 +166,7 @@ namespace PrepedidoBusiness.Bll
             List<string> lstErros = new List<string>();
             await Util.ObterCtrlEstoqueProdutoRegra_Teste(lstErros, lst_cliente_regra, cliente.uf, cliente_regra, contextoProvider);
 
-            
+
             Util.ObterDisponibilidadeEstoque(lst_cliente_regra, lstTodosProdutos, lstErros, contextoProvider);
 
             //retorna as qtdes disponiveis
@@ -178,7 +178,7 @@ namespace PrepedidoBusiness.Bll
             //atribui a qtde de estoque para o produto
             IncluirEstoqueProduto(lst_cliente_regra, lstTodosProdutos, tparametro);
 
-            
+
             await ExisteMensagensAlertaProdutos(lstTodosProdutos);
 
             if (lstErros.Count > 0)
@@ -196,7 +196,7 @@ namespace PrepedidoBusiness.Bll
             var db = contextoProvider.GetContextoLeitura();
 
 
-            var alertasTask = from c in db.TprodutoXAlertas.Include(r => r.TalertaProduto).Include(r => r.Tproduto)
+            var alertasTask = from c in db.TprodutoXAlertas
                               where c.TalertaProduto.Ativo == "S"
                               orderby c.Dt_Cadastro, c.Id_Alerta
                               select new
@@ -242,45 +242,50 @@ namespace PrepedidoBusiness.Bll
             //loja = "202";
             var db = contextoProvider.GetContextoLeitura();
 
-            var produtosCompostosTask = from d in (from c in db.Tprodutos
-                                                   join pc in db.TecProdutoCompostos on c.Produto equals pc.Produto_Composto
-                                                   join pci in db.TecProdutoCompostoItems on pc.Fabricante_Composto equals pci.Fabricante_composto
-                                                   join pl in db.TprodutoLojas on pci.Produto_item equals pl.Produto
-                                                   join fab in db.Tfabricantes on c.Fabricante equals fab.Fabricante
-                                                   where pl.Loja == loja &&
-                                                         pl.Vendavel == "S" &&
-                                                         c.Fabricante == pc.Fabricante_Composto &&
-                                                         pc.Produto_Composto == pci.Produto_composto
-                                                   select new
-                                                   {
+            var produtosCompostosSemGrupo = await (from d in (from c in db.Tprodutos
+                                                              join pc in db.TecProdutoCompostos on c.Produto equals pc.Produto_Composto
+                                                              join pci in db.TecProdutoCompostoItems on pc.Fabricante_Composto equals pci.Fabricante_composto
+                                                              join pl in db.TprodutoLojas on pci.Produto_item equals pl.Produto
+                                                              join fab in db.Tfabricantes on c.Fabricante equals fab.Fabricante
+                                                              where pl.Loja == loja &&
+                                                                    pl.Vendavel == "S" &&
+                                                                    c.Fabricante == pc.Fabricante_Composto &&
+                                                                    pc.Produto_Composto == pci.Produto_composto
+                                                              select new
+                                                              {
+                                                                  fabricante_pai = c.Fabricante,
+                                                                  fabricante_pai_nome = fab.Nome,
+                                                                  produto_pai = c.Produto,
+                                                                  valor = (decimal)pl.Preco_Lista,
+                                                                  qtde = (int)pci.Qtde,
+                                                                  produtosFilhos = new ProdutoFilhoDto
+                                                                  {
+                                                                      Fabricante = c.Fabricante,
+                                                                      Fabricante_Nome = fab.Nome,
+                                                                      Produto = pci.Produto_item,
+                                                                      Qtde = pci.Qtde
+                                                                  }
+                                                              })
+                                                   select d).ToListAsync();
 
-                                                       fabricante_pai = c.Fabricante,
-                                                       fabricante_pai_nome = fab.Nome,
-                                                       produto_pai = c.Produto,
-                                                       valor = (decimal)pl.Preco_Lista,
-                                                       qtde = (int)pci.Qtde,
-                                                       produtosFilhos = new ProdutoFilhoDto
-                                                       {
-                                                           Fabricante = c.Fabricante,
-                                                           Fabricante_Nome = fab.Nome,
-                                                           Produto = pci.Produto_item,
-                                                           Qtde = pci.Qtde
-                                                       }
-                                                   })
-                                        group d by d.produto_pai into g
-                                        select new ProdutoCompostoDto
-                                        {
-                                            PaiFabricante = g.Select(r => r.fabricante_pai).FirstOrDefault(),
-                                            PaiFabricanteNome = g.Select(r => r.fabricante_pai_nome).FirstOrDefault(),
-                                            PaiProduto = g.Select(r => r.produto_pai).FirstOrDefault(),
-                                            Preco_total_Itens = g.Sum(r => r.qtde * r.valor),
-                                            Filhos = g.Select(r => r.produtosFilhos).ToList()
-                                        };
+            var produtosCompostosGrupo = from d in produtosCompostosSemGrupo
+                                         group d by d.produto_pai into g
+                                         select g;
+            var produtosCompostosLista = from g in produtosCompostosGrupo
+                                         select new ProdutoCompostoDto
+                                         {
+                                             PaiFabricante = g.OrderBy(r => r.fabricante_pai).Select(r => r.fabricante_pai).FirstOrDefault(),
+                                             PaiFabricanteNome = g.OrderBy(r => r.fabricante_pai_nome).Select(r => r.fabricante_pai_nome).FirstOrDefault(),
+                                             PaiProduto = g.OrderBy(r => r.produto_pai).Select(r => r.produto_pai).FirstOrDefault(),
+                                             Preco_total_Itens = g.Sum(r => r.qtde * r.valor),
+                                             Filhos = g.Select(r => r.produtosFilhos).ToList()
+                                         };
 
-            List<ProdutoCompostoDto> produto = await produtosCompostosTask.ToListAsync();
+            List<ProdutoCompostoDto> produto = produtosCompostosLista.ToList();
 
             return produto;
         }
+
 
         public async Task<IEnumerable<ProdutoDto>> BuscarTodosProdutos(string loja)
         {

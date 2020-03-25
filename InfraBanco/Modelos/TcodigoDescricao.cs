@@ -90,7 +90,7 @@ namespace InfraBanco.Modelos
         [Required]
         public int Parametro_Campo_Inteiro { get; set; }
 
-        [Column("parametro_campo_monetario")]
+        [Column("parametro_campo_monetario", TypeName = "decimal(19,4)")]
         [Required]
         public decimal Parametro_Campo_Monetario { get; set; }
 
