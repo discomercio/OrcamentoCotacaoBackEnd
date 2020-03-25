@@ -45,40 +45,42 @@ namespace PrepedidoBusiness.Bll
         {
             var db = contextoCepProvider.GetContextoLeitura();
 
-            var cepTask = ((from c in db.LogLogradouros
-                            join d in db.LogBairros on c.Bai_nu_sequencial_ini equals d.Bai_nu_sequencial
-                            join e in db.LogLocalidades on c.Loc_nu_sequencial equals e.Loc_nu_sequencial
-                            where c.Cep_dig.EndsWith(cep)
-                            select new CepDto
-                            {
-                                Cep = c.Cep_dig,
-                                Uf = c.Ufe_sg,
-                                Cidade = e.Loc_nosub,
-                                Bairro = d.Bai_no,
-                                Endereco = c.Log_tipo_logradouro + " " + c.Log_no,
-                                LogradouroComplemento = c.Log_complemento
-                            })
-                           .Union(from c in db.LogLocalidades
-                                  where c.Cep_dig.EndsWith(cep)
-                                  select new CepDto
-                                  {
-                                      Cep = c.Cep_dig,
-                                      Uf = c.Ufe_sg,
-                                      Cidade = c.Loc_nosub
-                                  })
-                           .Union(from c in db.TcepLogradouros
-                                  where c.Cep8_log.EndsWith(cep)
-                                  select new CepDto
-                                  {
-                                      Cep = c.Cep8_log,
-                                      Uf = c.Uf_log,
-                                      Cidade = c.Nome_local,
-                                      Bairro = c.Extenso_bai,
-                                      Endereco = c.Abrev_tipo + " " + c.Nome_log,
-                                      LogradouroComplemento = c.Comple_log
-                                  }));
+            List<CepDto> lista1 = await (from c in db.LogLogradouros
+                                         join d in db.LogBairros on c.Bai_nu_sequencial_ini equals d.Bai_nu_sequencial
+                                         join e in db.LogLocalidades on c.Loc_nu_sequencial equals e.Loc_nu_sequencial
+                                         where c.Cep_dig.EndsWith(cep)
+                                         select new CepDto
+                                         {
+                                             Cep = c.Cep_dig,
+                                             Uf = c.Ufe_sg,
+                                             Cidade = e.Loc_nosub,
+                                             Bairro = d.Bai_no,
+                                             Endereco = c.Log_tipo_logradouro + " " + c.Log_no,
+                                             LogradouroComplemento = c.Log_complemento
+                                         }).ToListAsync();
 
-            var cepDto = await cepTask.ToListAsync();
+            List<CepDto> lista2 = await (from c in db.LogLocalidades
+                                         where c.Cep_dig.EndsWith(cep)
+                                         select new CepDto
+                                         {
+                                             Cep = c.Cep_dig,
+                                             Uf = c.Ufe_sg,
+                                             Cidade = c.Loc_nosub
+                                         }).ToListAsync();
+
+            List<CepDto> lista3 = await (from c in db.TcepLogradouros
+                                         where c.Cep8_log.EndsWith(cep)
+                                         select new CepDto
+                                         {
+                                             Cep = c.Cep8_log,
+                                             Uf = c.Uf_log,
+                                             Cidade = c.Nome_local,
+                                             Bairro = c.Extenso_bai,
+                                             Endereco = c.Abrev_tipo + " " + c.Nome_log,
+                                             LogradouroComplemento = c.Comple_log
+                                         }).ToListAsync();
+
+            var cepDto = lista1.Union(lista2).Union(lista3);
 
             return cepDto;
         }
@@ -87,46 +89,48 @@ namespace PrepedidoBusiness.Bll
         {
             var db = contextoCepProvider.GetContextoLeitura();
 
-            var cepTask = ((from c in db.LogLogradouros
-                            join d in db.LogBairros on c.Bai_nu_sequencial_ini equals d.Bai_nu_sequencial
-                            join e in db.LogLocalidades on c.Loc_nu_sequencial equals e.Loc_nu_sequencial
-                            where (c.Ufe_sg == uf) &&
-                                  (e.Loc_nosub == cidade) &&
-                                  (c.Log_no.Contains(endereco))
-                            select new CepDto
-                            {
-                                Cep = c.Cep_dig,
-                                Uf = c.Ufe_sg,
-                                Cidade = e.Loc_nosub,
-                                Bairro = d.Bai_no,
-                                Endereco = c.Log_tipo_logradouro + " " + c.Log_no,
-                                LogradouroComplemento = c.Log_complemento
-                            }).Take(300)
-                            .Union(from c in db.LogLocalidades
-                                   where c.Ufe_sg == uf &&
-                                         c.Loc_nosub == endereco &&
-                                         c.Cep_dig.Length > 0
-                                   select new CepDto
-                                   {
-                                       Cep = c.Cep_dig,
-                                       Uf = c.Ufe_sg,
-                                       Cidade = c.Loc_nosub
-                                   })
-                            .Union(from c in db.TcepLogradouros
-                                   where c.Uf_log == uf &&
-                                         c.Nome_local == endereco
-                                   orderby c.Uf_log, c.Nome_local, c.Extenso_bai, c.Nome_log
-                                   select new CepDto
-                                   {
-                                       Cep = c.Cep8_log,
-                                       Uf = c.Uf_log,
-                                       Cidade = c.Nome_local,
-                                       Bairro = c.Extenso_bai,
-                                       Endereco = c.Abrev_tipo + " " + c.Nome_log,
-                                       LogradouroComplemento = c.Comple_log
-                                   }).Take(300));
+            List<CepDto> lista1 = await (from c in db.LogLogradouros
+                                         join d in db.LogBairros on c.Bai_nu_sequencial_ini equals d.Bai_nu_sequencial
+                                         join e in db.LogLocalidades on c.Loc_nu_sequencial equals e.Loc_nu_sequencial
+                                         where (c.Ufe_sg == uf) &&
+                                               (e.Loc_nosub == cidade) &&
+                                               (c.Log_no.Contains(endereco))
+                                         select new CepDto
+                                         {
+                                             Cep = c.Cep_dig,
+                                             Uf = c.Ufe_sg,
+                                             Cidade = e.Loc_nosub,
+                                             Bairro = d.Bai_no,
+                                             Endereco = c.Log_tipo_logradouro + " " + c.Log_no,
+                                             LogradouroComplemento = c.Log_complemento
+                                         }).Take(300).ToListAsync();
 
-            var cepDto = await cepTask.ToListAsync();
+            List<CepDto> lista2 = await (from c in db.LogLocalidades
+                                         where c.Ufe_sg == uf &&
+                                               c.Loc_nosub == endereco &&
+                                               c.Cep_dig.Length > 0
+                                         select new CepDto
+                                         {
+                                             Cep = c.Cep_dig,
+                                             Uf = c.Ufe_sg,
+                                             Cidade = c.Loc_nosub
+                                         }).Take(300).ToListAsync();
+
+            List<CepDto> lista3 = await (from c in db.TcepLogradouros
+                                         where c.Uf_log == uf &&
+                                               c.Nome_local == endereco
+                                         orderby c.Uf_log, c.Nome_local, c.Extenso_bai, c.Nome_log
+                                         select new CepDto
+                                         {
+                                             Cep = c.Cep8_log,
+                                             Uf = c.Uf_log,
+                                             Cidade = c.Nome_local,
+                                             Bairro = c.Extenso_bai,
+                                             Endereco = c.Abrev_tipo + " " + c.Nome_log,
+                                             LogradouroComplemento = c.Comple_log
+                                         }).Take(300).ToListAsync();
+
+            var cepDto = lista1.Union(lista2).Union(lista3);
 
             return cepDto;
         }

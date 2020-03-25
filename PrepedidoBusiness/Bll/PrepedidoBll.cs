@@ -106,6 +106,7 @@ namespace PrepedidoBusiness.Bll
         public async Task<IEnumerable<PrepedidosCadastradosDtoPrepedido>> ListarPrePedidosFiltroEstrito(string apelido, TipoBuscaPrepedido tipoBusca,
                 string clienteBusca, string numeroPrePedido, DateTime? dataInicial, DateTime? dataFinal)
         {
+
             var db = contextoProvider.GetContextoLeitura();
 
             var lst = db.Torcamentos.

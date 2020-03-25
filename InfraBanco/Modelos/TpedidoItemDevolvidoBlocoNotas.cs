@@ -25,16 +25,15 @@ namespace InfraBanco.Modelos
         [Column("usuario")]
         [Required]
         [MaxLength(10)]
-        //[ForeignKey("Tusuario")]
         public string Usuario { get; set; }
 
         [Column("loja")]
         [MaxLength(3)]
         public string Loja { get; set; }
 
-        [Column("dt_cadastro")]
-        [Required]
-        public DateTime Dt_Cadastro { get; set; }
+        //[Column("dt_cadastro")]
+        //[Required]
+        //public DateTime Dt_Cadastro { get; set; }
 
         [Column("dt_hr_cadastro")]
         [Required]
@@ -49,15 +48,15 @@ namespace InfraBanco.Modelos
         [Required]
         public short Anulado_Status { get; set; }
 
-        [Column("anulado_usuario")]
-        [MaxLength(10)]
-        public string Anulado_Usuario { get; set; }
+        //[Column("anulado_usuario")]
+        //[MaxLength(10)]
+        //public string Anulado_Usuario { get; set; }
 
-        [Column("anulado_data")]
-        public DateTime? Anulado_Data { get; set; }
+        //[Column("anulado_data")]
+        //public DateTime? Anulado_Data { get; set; }
 
-        [Column("anulado_data_hora")]
-        public DateTime? Anulado_Data_Hora { get; set; }
+        //[Column("anulado_data_hora")]
+        //public DateTime? Anulado_Data_Hora { get; set; }
 
         public TpedidoItemDevolvido TpedidoItemDevolvido { get; set; }
 

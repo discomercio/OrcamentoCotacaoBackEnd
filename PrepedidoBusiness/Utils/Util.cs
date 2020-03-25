@@ -42,20 +42,33 @@ namespace PrepedidoBusiness.Utils
             return telefone.Insert(telefone.Length - 4, "-");
         }
 
-        public static bool ValidaCpf_Cnpj(string cpf_cnpj)
+        public static bool ValidaCPF(string cpf_cnpj)
         {
             bool retorno = false;
 
             cpf_cnpj = cpf_cnpj.Replace(".", "").Replace("/", "").Replace("-", "");
 
-            if (cpf_cnpj.Length >= 11)
+            if (cpf_cnpj.Length > 11)
+            {
+                retorno = false;
+            }
+            if (cpf_cnpj.Length == 11)
             {
                 retorno = true;
+            }
 
-                if (cpf_cnpj.Length >= 14)
-                {
-                    retorno = false;
-                }
+            return retorno;
+        }
+
+        public static bool ValidaCNPJ(string cpf_cnpj)
+        {
+            bool retorno = false;
+
+            cpf_cnpj = cpf_cnpj.Replace(".", "").Replace("/", "").Replace("-", "");
+
+            if (cpf_cnpj.Length == 14)
+            {
+                retorno = true;
             }
             if (cpf_cnpj.Length < 11)
             {

@@ -11,7 +11,6 @@ namespace InfraBanco.Modelos
     {
         [Column("data")]
         [Required]
-        //[Key]//Não é chave no banco, mas precisando declarar um chave para o EF
         public DateTime Data { get; set; }
 
         [Column("usuario")]

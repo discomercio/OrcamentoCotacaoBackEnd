@@ -18,18 +18,16 @@ namespace InfraBanco.Modelos
 
         [Column("id_ocorrencia")]
         [Required]
-        //[ForeignKey("TpedidoOcorrencia")]
         public int Id_Ocorrencia { get; set; }
 
         [Column("usuario_cadastro")]
         [Required]
         [MaxLength(10)]
-        //[ForeignKey("Tusuario")]
         public string Usuario_Cadastro { get; set; }
 
-        [Column("dt_cadastro")]
-        [Required]
-        public DateTime Dt_Cadastro { get; set; }
+        //[Column("dt_cadastro")]
+        //[Required]
+        //public DateTime Dt_Cadastro { get; set; }
 
         [Column("dt_hr_cadastro")]
         [Required]

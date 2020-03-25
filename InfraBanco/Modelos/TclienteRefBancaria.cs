@@ -12,7 +12,6 @@ namespace InfraBanco.Modelos
         [Column("id_cliente")]
         [Required]
         [MaxLength(12)]
-        //[ForeignKey("Id")]
         public string Id_Cliente { get; set; }
 
         [Column("banco")]

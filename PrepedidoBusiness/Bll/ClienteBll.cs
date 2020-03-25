@@ -114,13 +114,6 @@ namespace PrepedidoBusiness.Bll
 
         public async Task<ClienteCadastroDto> BuscarCliente(string cpf_cnpj, string apelido)
         {
-            //vamos validar o cpf ou cnpj
-            bool m = Utils.Util.ValidaCpf_Cnpj(cpf_cnpj);
-            if (!m)
-            {
-                throw new ArgumentException("CPF ou CPJ inválido");
-                
-            }
 
             var db = contextoProvider.GetContextoLeitura();
 
@@ -589,14 +582,14 @@ namespace PrepedidoBusiness.Bll
         private async Task ValidarDadosClientesCadastro(DadosClienteCadastroDto cliente, List<string> listaErros)
         {
             string cpf_cnpjSoDig = Utils.Util.SoDigitosCpf_Cnpj(cliente.Cnpj_Cpf);
-            bool ehCpf = Utils.Util.ValidaCpf_Cnpj(cliente.Cnpj_Cpf);
+            
 
             if (cliente.Cnpj_Cpf == "")
                 listaErros.Add("CNPJ / CPF NÃO FORNECIDO.");
             //if (!Utils.Util.ValidaCpf_Cnpj(cliente.Cnpj_Cpf))
             //    listaErros.Add("CNPJ/CPF INVÁLIDO.");
 
-            if (ehCpf)
+            if (Utils.Util.ValidaCPF(cpf_cnpjSoDig))
             {
                 if (cliente.Sexo != "M" && cliente.Sexo != "F")
                     listaErros.Add("INDIQUE QUAL O SEXO.");
@@ -627,7 +620,7 @@ namespace PrepedidoBusiness.Bll
                 else if (cliente.DddComercial != "" && cliente.TelComercial == "")
                     listaErros.Add("PREENCHA O TELEFONE COMERCIAL.");
             }
-            else
+            if(Utils.Util.ValidaCNPJ(cpf_cnpjSoDig))
             {
                 if (cliente.Tipo == Constantes.ID_PJ && cliente.Nome == "")
                     listaErros.Add("PREENCHA A RAZÃO SOCIAL DO CLIENTE.");

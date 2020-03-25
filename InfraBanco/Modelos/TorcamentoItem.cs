@@ -16,8 +16,7 @@ namespace InfraBanco.Modelos
         [MaxLength(9)]
         public string Orcamento { get; set; }
 
-        //[ForeignKey("orcamento")]
-        public Torcamento Torcamento { get; set; }
+        //public Torcamento Torcamento { get; set; }
 
         [Key]
         [Column("fabricante")]

@@ -17,7 +17,6 @@ namespace InfraBanco.Modelos
         public int Id { get; set; }
 
         [Column("pedido")]
-        //[ForeignKey("Tpedido")]
         [Required]
         [MaxLength(9)]
         public string Pedido { get; set; }
@@ -25,20 +24,19 @@ namespace InfraBanco.Modelos
         [Column("usuario_cadastro")]
         [MaxLength(10)]
         [Required]
-        //[ForeignKey("Tusuario")]
         public string Usuario_Cadastro { get; set; }
 
-        [Column("dt_cadastro")]
-        [Required]
-        public DateTime Dt_Cadastro { get; set; }
+        //[Column("dt_cadastro")]
+        //[Required]
+        //public DateTime Dt_Cadastro { get; set; }
 
         [Column("dt_hr_cadastro")]
         [Required]
         public DateTime Dt_Hr_Cadastro { get; set; }
 
-        [Column("loja")]
-        [MaxLength(3)]
-        public string Loja { get; set; }
+        //[Column("loja")]
+        //[MaxLength(3)]
+        //public string Loja { get; set; }
 
         [Column("contato")]
         [MaxLength(60)]
@@ -72,8 +70,8 @@ namespace InfraBanco.Modelos
         [MaxLength(10)]
         public string Finalizado_Usuario { get; set; }
 
-        [Column("finalizado_data")]
-        public DateTime? Finalizado_Data { get; set; }
+        //[Column("finalizado_data")]
+        //public DateTime? Finalizado_Data { get; set; }
 
         [Column("finalizado_data_hora")]
         public DateTime? Finalizado_Data_Hora { get; set; }
@@ -86,9 +84,9 @@ namespace InfraBanco.Modelos
         [MaxLength(800)]
         public string Texto_Finalizacao { get; set; }
 
-        [Column("cod_motivo_abertura")]
-        [MaxLength(3)]
-        public string Cod_Motivo_Abertura { get; set; }
+        //[Column("cod_motivo_abertura")]
+        //[MaxLength(3)]
+        //public string Cod_Motivo_Abertura { get; set; }
 
     }
 }

@@ -20,16 +20,16 @@ namespace InfraBanco.Modelos
         [MaxLength(2)]
         public string SiglaUF { get; set; }
 
-        [Column("Descricao")]
-        [Required]
-        [MaxLength(50)]
-        public string Descricao { get; set; }
+        //[Column("Descricao")]
+        //[Required]
+        //[MaxLength(50)]
+        //public string Descricao { get; set; }
 
-        [Column("Site")]
-        [MaxLength(250)]
-        public string Site { get; set; }
+        //[Column("Site")]
+        //[MaxLength(250)]
+        //public string Site { get; set; }
 
-        [Column("Tabs")]
-        public byte? Tabs { get; set; }
+        //[Column("Tabs")]
+        //public byte? Tabs { get; set; }
     }
 }

@@ -129,6 +129,11 @@ namespace PrepedidoApi
                         && !context.Request.Path.Value.ToLower().Contains("fazerlogin")
                         && !context.Request.Path.Value.ToLower().Contains("alterarsenha"))
                     {
+                        /*
+                         * OBS: estamos recebendo um "ERRO" no servidor ao fazer o acesso
+                         *      pois não podemos reescrever o StatusCode após o "context" ser criado.
+                         * SOLUÇÃO: será necessário escrever o StatusCode antes de ser gerado o Response do "context".
+                         */
                         context.Response.StatusCode = 403; //negado!
                         return;
                     }

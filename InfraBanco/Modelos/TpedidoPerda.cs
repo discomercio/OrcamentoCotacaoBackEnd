@@ -32,26 +32,26 @@ namespace InfraBanco.Modelos
         [MaxLength(80)]
         public string Obs { get; set; }
 
-        [Column("usuario")]
-        [MaxLength(10)]
-        public string Usuario { get; set; }
+        //[Column("usuario")]
+        //[MaxLength(10)]
+        //public string Usuario { get; set; }
 
-        [Column("timestamp")]
-        [MaxLength]
-        public byte[] Timestamp { get; set; }
+        //[Column("timestamp")]
+        //[MaxLength]
+        //public byte[] Timestamp { get; set; }
 
-        [Column("comissao_descontada")]
-        public short Comissao_Descontada { get; set; }
+        //[Column("comissao_descontada")]
+        //public short Comissao_Descontada { get; set; }
 
-        [Column("comissao_descontada_ult_op")]
-        [MaxLength(1)]
-        public string Comissao_Descontada_Ult_Op { get; set; }
+        //[Column("comissao_descontada_ult_op")]
+        //[MaxLength(1)]
+        //public string Comissao_Descontada_Ult_Op { get; set; }
 
-        [Column("comissao_descontada_data")]
-        public DateTime Comissao_Descontada_Data { get; set; }
+        //[Column("comissao_descontada_data")]
+        //public DateTime Comissao_Descontada_Data { get; set; }
 
-        [Column("comissao_descontada_usuario")]
-        [MaxLength(10)]
-        public string Comissao_Descontada_Usuario { get; set; }
+        //[Column("comissao_descontada_usuario")]
+        //[MaxLength(10)]
+        //public string Comissao_Descontada_Usuario { get; set; }
     }
 }

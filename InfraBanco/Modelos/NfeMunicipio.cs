@@ -20,8 +20,8 @@ namespace InfraBanco.Modelos
         [MaxLength(150)]
         public string Descricao { get; set; }
 
-        [Column("DescricaoSemAcento")]
-        [MaxLength(150)]
-        public string DescricaoSemAcento { get; set; }
+        //[Column("DescricaoSemAcento")]
+        //[MaxLength(150)]
+        //public string DescricaoSemAcento { get; set; }
     }
 }

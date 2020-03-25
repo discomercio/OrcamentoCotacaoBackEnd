@@ -15,22 +15,22 @@ namespace InfraBanco.Modelos
         [MaxLength(12)]
         public string Id_Movimento { get; set; }
 
-        [Column("data")]
-        [Required]
-        public DateTime Data { get; set; }
+        //[Column("data")]
+        //[Required]
+        //public DateTime Data { get; set; }
 
-        [Column("hora")]
-        [MaxLength(6)]
-        public string Hora { get; set; }
+        //[Column("hora")]
+        //[MaxLength(6)]
+        //public string Hora { get; set; }
 
-        [Column("usuario")]
-        [MaxLength(10)]
-        public string Usuario { get; set; }
+        //[Column("usuario")]
+        //[MaxLength(10)]
+        //public string Usuario { get; set; }
 
-        [Column("id_estoque")]
-        [MaxLength(12)]
-        [Required]
-        public string Id_Estoque { get; set; }
+        //[Column("id_estoque")]
+        //[MaxLength(12)]
+        //[Required]
+        //public string Id_Estoque { get; set; }
 
         [Column("fabricante")]
         [Required]
@@ -45,9 +45,9 @@ namespace InfraBanco.Modelos
         [Column("qtde")]
         public short? Qtde { get; set; }
 
-        [Column("operacao")]
-        [MaxLength(3)]
-        public string Operacao { get; set; }
+        //[Column("operacao")]
+        //[MaxLength(3)]
+        //public string Operacao { get; set; }
 
         [Column("estoque")]
         [MaxLength(3)]
@@ -58,37 +58,37 @@ namespace InfraBanco.Modelos
         [MaxLength(9)]
         public string Pedido { get; set; }
 
-        [Column("loja")]
-        [MaxLength(3)]
-        public string Loja { get; set; }
+        //[Column("loja")]
+        //[MaxLength(3)]
+        //public string Loja { get; set; }
 
         [Column("anulado_status")]
         public short Anulado_Status { get; set; }
 
-        [Column("anulado_data")]
-        public DateTime Anulado_Data { get; set; }
+        //[Column("anulado_data")]
+        //public DateTime Anulado_Data { get; set; }
 
-        [Column("anulado_hora")]
-        [MaxLength(6)]
-        public string Anulado_Hora { get; set; }
+        //[Column("anulado_hora")]
+        //[MaxLength(6)]
+        //public string Anulado_Hora { get; set; }
 
-        [Column("anulado_usuario")]
-        [MaxLength(10)]
-        public string Anulado_Usuario { get; set; }
+        //[Column("anulado_usuario")]
+        //[MaxLength(10)]
+        //public string Anulado_Usuario { get; set; }
 
-        [Column("timestamp")]
-        [MaxLength]
-        public byte[] Timestamp { get; set; }
+        //[Column("timestamp")]
+        //[MaxLength]
+        //public byte[] Timestamp { get; set; }
 
-        [Column("kit")]
-        public short Kit { get; set; }
+        //[Column("kit")]
+        //public short Kit { get; set; }
 
-        [Column("kit_id_estoque")]
-        [MaxLength(12)]
-        public string Kit_Id_Estoque { get; set; }
+        //[Column("kit_id_estoque")]
+        //[MaxLength(12)]
+        //public string Kit_Id_Estoque { get; set; }
 
-        [Column("id_ordem_servico")]
-        [MaxLength(12)]
-        public string Id_Ordem_Servico { get; set; }
+        //[Column("id_ordem_servico")]
+        //[MaxLength(12)]
+        //public string Id_Ordem_Servico { get; set; }
     }
 }

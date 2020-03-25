@@ -10,7 +10,6 @@ namespace InfraBanco.Modelos
     {
         [Column("id")]
         [Required]
-        //[Key]
         [MaxLength(12)]
         public string Id { get; set; }
         
@@ -102,9 +101,9 @@ namespace InfraBanco.Modelos
         [MaxLength(60)]
         public string Email { get; set; }
 
-        [Column("email_opcoes")]
-        [MaxLength(5)]
-        public string Email_Opcoes { get; set; }
+        //[Column("email_opcoes")]
+        //[MaxLength(5)]
+        //public string Email_Opcoes { get; set; }
 
         [Column("dt_cadastro")]
         [Required]
@@ -114,37 +113,37 @@ namespace InfraBanco.Modelos
         [Required]
         public DateTime Dt_Ult_Atualizacao { get; set; }
 
-        [Column("SocMaj_Nome")]
-        [MaxLength(60)]
-        public string SocMaj_Nome { get; set; }
+        //[Column("SocMaj_Nome")]
+        //[MaxLength(60)]
+        //public string SocMaj_Nome { get; set; }
 
-        [Column("SocMaj_CPF")]
-        [MaxLength(11)]
-        public string SocMaj_Cpf { get; set; }
+        //[Column("SocMaj_CPF")]
+        //[MaxLength(11)]
+        //public string SocMaj_Cpf { get; set; }
 
-        [Column("SocMaj_banco")]
-        [MaxLength(4)]
-        public string SocMaj_Banco { get; set; }
+        //[Column("SocMaj_banco")]
+        //[MaxLength(4)]
+        //public string SocMaj_Banco { get; set; }
 
-        [Column("SocMaj_agencia")]
-        [MaxLength(8)]
-        public string SocMaj_Agencia { get; set; }
+        //[Column("SocMaj_agencia")]
+        //[MaxLength(8)]
+        //public string SocMaj_Agencia { get; set; }
 
-        [Column("SocMaj_conta")]
-        [MaxLength(12)]
-        public string SocMaj_Conta { get; set; }
+        //[Column("SocMaj_conta")]
+        //[MaxLength(12)]
+        //public string SocMaj_Conta { get; set; }
 
-        [Column("SocMaj_ddd")]
-        [MaxLength(2)]
-        public string SocMaj_Ddd { get; set; }
+        //[Column("SocMaj_ddd")]
+        //[MaxLength(2)]
+        //public string SocMaj_Ddd { get; set; }
 
-        [Column("SocMaj_telefone")]
-        [MaxLength(9)]
-        public string SocMaj_Telefone { get; set; }
+        //[Column("SocMaj_telefone")]
+        //[MaxLength(9)]
+        //public string SocMaj_Telefone { get; set; }
 
-        [Column("SocMaj_contato")]
-        [MaxLength(40)]
-        public string SocMaj_Contato { get; set; }
+        //[Column("SocMaj_contato")]
+        //[MaxLength(40)]
+        //public string SocMaj_Contato { get; set; }
 
         [Column("usuario_cadastro")]
         [MaxLength(20)]
@@ -171,36 +170,36 @@ namespace InfraBanco.Modelos
         [MaxLength(60)]
         public string Nome_Iniciais_Em_Maiusculas { get; private set; }
 
-        [Column("spc_negativado_status")]
-        [Required]
-        public byte Spc_Negativado_Status { get; set; }
+        //[Column("spc_negativado_status")]
+        //[Required]
+        //public byte Spc_Negativado_Status { get; set; }
 
-        [Column("spc_negativado_data_negativacao")]
-        public DateTime? Spc_Negativado_Data_Negativacao { get; set; }
+        //[Column("spc_negativado_data_negativacao")]
+        //public DateTime? Spc_Negativado_Data_Negativacao { get; set; }
 
-        [Column("spc_negativado_data")]
-        public DateTime? Spc_Negativado_Data { get; set; }
+        //[Column("spc_negativado_data")]
+        //public DateTime? Spc_Negativado_Data { get; set; }
 
-        [Column("spc_negativado_data_hora")]
-        public DateTime? Spc_Negativado_Data_Hora { get; set; }
+        //[Column("spc_negativado_data_hora")]
+        //public DateTime? Spc_Negativado_Data_Hora { get; set; }
 
-        [Column("spc_negativado_usuario")]
-        [MaxLength(20)]
-        public string Spc_Negativado_Usuario { get; set; }
+        //[Column("spc_negativado_usuario")]
+        //[MaxLength(20)]
+        //public string Spc_Negativado_Usuario { get; set; }
 
-        [Column("email_anterior")]
-        [MaxLength(60)]
-        public string Email_Anterior { get; set; }
+        //[Column("email_anterior")]
+        //[MaxLength(60)]
+        //public string Email_Anterior { get; set; }
 
-        [Column("email_atualizacao_data")]
-        public DateTime? Email_Atualizacao_Data { get; set; }
+        //[Column("email_atualizacao_data")]
+        //public DateTime? Email_Atualizacao_Data { get; set; }
 
-        [Column("email_atualizacao_data_hora")]
-        public DateTime? Email_Atualizacao_Data_Hora { get; set; }
+        //[Column("email_atualizacao_data_hora")]
+        //public DateTime? Email_Atualizacao_Data_Hora { get; set; }
 
-        [Column("email_atualizacao_usuario")]
-        [MaxLength(20)]
-        public string Email_Atualizacao_Usuario { get; set; }
+        //[Column("email_atualizacao_usuario")]
+        //[MaxLength(20)]
+        //public string Email_Atualizacao_Usuario { get; set; }
 
         [Column("contribuinte_icms_status")]
         [Required]
