@@ -69,9 +69,9 @@ namespace InfraBanco.Modelos
         //[MaxLength(8)]
         //public string Cep { get; set; }
 
-        //[Column("NFe_st_emitente_padrao")]
-        //[Required]
-        //public byte NFe_st_emitente_padrao { get; set; }
+        [Column("NFe_st_emitente_padrao")]
+        [Required]
+        public byte NFe_st_emitente_padrao { get; set; }
 
         ////[old_NFe_serie_NF] esta coluna mudou o nome na base de homologação deles
         ////[Column("NFe_serie_NF")]
@@ -84,21 +84,21 @@ namespace InfraBanco.Modelos
         //[Required]
         //public int NFe_numero_NF { get; set; }
 
-        //[Column("NFe_T1_servidor_BD")]
-        //[MaxLength(160)]
-        //public string NFe_T1_servidor_BD { get; set; }
+        [Column("NFe_T1_servidor_BD")]
+        [MaxLength(160)]
+        public string NFe_T1_servidor_BD { get; set; }
 
-        //[Column("NFe_T1_nome_BD")]
-        //[MaxLength(40)]
-        //public string NFe_T1_nome_BD { get; set; }
+        [Column("NFe_T1_nome_BD")]
+        [MaxLength(40)]
+        public string NFe_T1_nome_BD { get; set; }
 
-        //[Column("NFe_T1_usuario_BD")]
-        //[MaxLength(40)]
-        //public string NFe_T1_usuario_BD { get; set; }
+        [Column("NFe_T1_usuario_BD")]
+        [MaxLength(40)]
+        public string NFe_T1_usuario_BD { get; set; }
 
-        //[Column("NFe_T1_senha_BD")]
-        //[MaxLength(160)]
-        //public string NFe_T1_senha_BD { get; set; }
+        [Column("NFe_T1_senha_BD")]
+        [MaxLength(160)]
+        public string NFe_T1_senha_BD { get; set; }
 
         //[Column("dt_cadastro")]
         //[Required]

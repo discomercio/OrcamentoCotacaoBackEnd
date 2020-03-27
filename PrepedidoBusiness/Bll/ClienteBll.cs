@@ -10,6 +10,7 @@ using PrepedidoBusiness.Dto.ClienteCadastro;
 using InfraBanco.Constantes;
 using System.Reflection;
 using PrepedidoBusiness.Dto.Cep;
+using System.Data.SqlClient;
 
 namespace PrepedidoBusiness.Bll
 {
@@ -17,13 +18,14 @@ namespace PrepedidoBusiness.Bll
     {
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
         private readonly InfraBanco.ContextoCepProvider contextoCepProvider;
-        private readonly InfraBanco.ContextoNFeProvider contextoNFeProvider;
+        //private readonly InfraBanco.ContextoNFeProvider contextoNFeProvider;
 
-        public ClienteBll(InfraBanco.ContextoBdProvider contextoProvider, InfraBanco.ContextoCepProvider contextoCepProvider, InfraBanco.ContextoNFeProvider contextoNFeProvider)
+        public ClienteBll(InfraBanco.ContextoBdProvider contextoProvider,
+            InfraBanco.ContextoCepProvider contextoCepProvider)
         {
             this.contextoProvider = contextoProvider;
             this.contextoCepProvider = contextoCepProvider;
-            this.contextoNFeProvider = contextoNFeProvider;
+            //this.contextoNFeProvider = contextoNFeProvider;
         }
 
         public async Task<List<string>> AtualizarClienteParcial(string apelido, DadosClienteCadastroDto dadosClienteCadastroDto)
@@ -530,64 +532,123 @@ namespace PrepedidoBusiness.Bll
 
         public async Task<IEnumerable<NfeMunicipio>> BuscarSiglaUf(string uf, string municipio)
         {
-            //verificar se passo a lista de erros
-            string retorno = "";
             List<NfeMunicipio> lstNfeMunicipio = new List<NfeMunicipio>();
 
-            var db = contextoNFeProvider.GetContextoLeitura();
+            var db = contextoProvider.GetContextoLeitura();
 
-            var nfeUFTask = from c in db.NfeUfs
-                            where c.SiglaUF == uf.ToUpper()
-                            select c;
+            //Buscamos a chave para utilizar na decodificação da senha da base de dados que iremos acessar,
+            //conforme o retorno do select feito em EntityFramework.
+            string chave = Utils.Util.GeraChave(Constantes.FATOR_BD);
 
+            //buscando os dados para se conectar no servidor de banco de dados
+            TnfEmitente nova_conexao = await (from c in db.TnfEmitentes
+                                              where c.NFe_st_emitente_padrao == 1
+                                              select new TnfEmitente
+                                              {
+                                                  NFe_T1_nome_BD = c.NFe_T1_nome_BD,
+                                                  NFe_T1_servidor_BD = c.NFe_T1_servidor_BD,
+                                                  NFe_T1_usuario_BD = c.NFe_T1_usuario_BD,
+                                                  NFe_T1_senha_BD = c.NFe_T1_senha_BD
+                                              }).FirstOrDefaultAsync();
 
-            NfeUf nfeUf = await nfeUFTask.FirstOrDefaultAsync();
+            SqlConnectionStringBuilder sqlBuilder = new SqlConnectionStringBuilder();
+            sqlBuilder.DataSource = nova_conexao.NFe_T1_servidor_BD;
+            sqlBuilder.InitialCatalog = nova_conexao.NFe_T1_nome_BD;
+            sqlBuilder.UserID = nova_conexao.NFe_T1_usuario_BD;
+            sqlBuilder.Password = Utils.Util.DecodificaSenha(nova_conexao.NFe_T1_senha_BD, chave);
 
-            if (string.IsNullOrEmpty(nfeUf.CodUF))
-                retorno = "Não é possível consistir o município através da relação de municípios do IBGE: " +
-                    "a UF '" + uf + "' não foi localizada na relação do IBGE!!";
-            else
+            string providerString = sqlBuilder.ToString();
+
+            using (SqlConnection sql = new SqlConnection(providerString))
             {
-                string codUF = nfeUf.CodUF;
+                string query = "SELECT *  FROM NFE_UF WHERE (SiglaUF = '" + uf.ToUpper() + "')";
+                SqlCommand command = new SqlCommand(query, sql);
 
-                var nfeMunicipioTask = (from c in db.NfeMunicipios
-                                        where c.CodMunic.Contains(codUF) && c.Descricao == municipio
-                                        select c).FirstOrDefaultAsync();
+                command.Connection.Open();
 
-                if (nfeMunicipioTask != null)
+                using (var result = await command.ExecuteReaderAsync())
                 {
-                    lstNfeMunicipio.Add(await nfeMunicipioTask);
-                }
-                else
-                {
-                    var lst_nfeMunicipioTask = from c in db.NfeMunicipios
-                                               where c.CodMunic.Contains(codUF) &&
-                                                     c.Descricao.Contains(municipio.Substring(municipio.Length - 1, 1))
-                                               orderby c.Descricao
-                                               select c;
-
-                    if (await lst_nfeMunicipioTask.AnyAsync())
+                    if (result != null)
                     {
-                        foreach (var p in lst_nfeMunicipioTask)
+                        NfeUf nfeUF = new NfeUf();
+                        while (result.Read())
                         {
-                            lstNfeMunicipio.Add(p);
+                            nfeUF.CodUF = result["CodUF"].ToString();
+                            nfeUF.SiglaUF = result["SiglaUf"].ToString();
+                        };
+
+                        command.Connection.Close();
+
+                        query = "SELECT * FROM NFE_MUNICIPIO WHERE (CodMunic LIKE '" +
+                            nfeUF.CodUF + Constantes.BD_CURINGA_TODOS + "') AND (Descricao = '" +
+                            municipio + "' COLLATE Latin1_General_CI_AI)";
+
+                        command = new SqlCommand(query, sql);
+                        command.Connection.Open();
+
+                        using (var result2 = await command.ExecuteReaderAsync())
+                        {
+                            if (result2 != null)
+                            {
+                                while (result2.Read())
+                                {
+                                    NfeMunicipio nfeMunicipio = new NfeMunicipio
+                                    {
+                                        CodMunic = result2["CodMunic"].ToString(),
+                                        Descricao = result2["Descricao"].ToString()
+                                    };
+
+                                    lstNfeMunicipio.Add(nfeMunicipio);
+                                }
+                            }
+                            else
+                            {
+                                query = "SELECT * FROM NFE_MUNICIPIO WHERE (CodMunic LIKE '" +
+                                    nfeUF.CodUF + Constantes.BD_CURINGA_TODOS + "') AND (Descricao LIKE '" +
+                                    municipio.Substring(municipio.Length - 1, 1) + Constantes.BD_CURINGA_TODOS +
+                                    "' COLLATE Latin1_General_CI_AI)";
+
+                                command = new SqlCommand(query, sql);
+
+                                command.Connection.Close();
+
+                                command.Connection.Open();
+
+                                using (var result3 = await command.ExecuteReaderAsync())
+                                {
+                                    if (result3 != null)
+                                    {
+                                        while (result3.Read())
+                                        {
+                                            NfeMunicipio nfeMunicipio = new NfeMunicipio
+                                            {
+                                                CodMunic = result3["CodMunic"].ToString(),
+                                                Descricao = result3["Descricao"].ToString()
+                                            };
+
+                                            lstNfeMunicipio.Add(nfeMunicipio);
+                                        }
+                                    }
+                                }
+
+                                command.Connection.Close();
+                            }
                         }
                     }
-
                 }
             }
+
             return lstNfeMunicipio;
         }
+
 
         private async Task ValidarDadosClientesCadastro(DadosClienteCadastroDto cliente, List<string> listaErros)
         {
             string cpf_cnpjSoDig = Utils.Util.SoDigitosCpf_Cnpj(cliente.Cnpj_Cpf);
-            
+
 
             if (cliente.Cnpj_Cpf == "")
                 listaErros.Add("CNPJ / CPF NÃO FORNECIDO.");
-            //if (!Utils.Util.ValidaCpf_Cnpj(cliente.Cnpj_Cpf))
-            //    listaErros.Add("CNPJ/CPF INVÁLIDO.");
 
             if (Utils.Util.ValidaCPF(cpf_cnpjSoDig))
             {
@@ -598,9 +659,6 @@ namespace PrepedidoBusiness.Bll
                     if (cliente.Tipo == Constantes.ID_PF)
                         listaErros.Add("PREENCHA O NOME DO CLIENTE.");
                 }
-                //a verificação de Nascimento esta sendo feita no cliente
-                //if (cliente.Nascimento == null)
-                //    listaErros.Add("DATA DE NASCIMENTO É INVÁLIDA.");
 
                 if (cliente.Tipo == Constantes.ID_PF &&
                 cliente.TelefoneResidencial == "" &&
@@ -620,7 +678,7 @@ namespace PrepedidoBusiness.Bll
                 else if (cliente.DddComercial != "" && cliente.TelComercial == "")
                     listaErros.Add("PREENCHA O TELEFONE COMERCIAL.");
             }
-            if(Utils.Util.ValidaCNPJ(cpf_cnpjSoDig))
+            if (Utils.Util.ValidaCNPJ(cpf_cnpjSoDig))
             {
                 if (cliente.Tipo == Constantes.ID_PJ && cliente.Nome == "")
                     listaErros.Add("PREENCHA A RAZÃO SOCIAL DO CLIENTE.");
@@ -681,7 +739,6 @@ namespace PrepedidoBusiness.Bll
             //depois alterar o nome da rua, UF, cidade, bairro
             await VerificarEndereco(cliente, listaErros);
 
-            //return listaErros;
         }
 
         private async Task VerificarEndereco(DadosClienteCadastroDto cliente, List<string> listaErros)
@@ -698,10 +755,7 @@ namespace PrepedidoBusiness.Bll
 
                 if (c.Cep != cepSoDigito)
                     listaErros.Add("Número do Cep diferente!");
-                //if (c.Endereco != cliente.Endereco ||
-                //    c.Bairro != cliente.Bairro ||
-                //    c.Cidade != cliente.Cidade ||
-                //    c.Uf != cliente.Uf)
+
                 if (c.Cidade.ToUpper() != cliente.Cidade.ToUpper() ||
                     c.Uf.ToUpper() != cliente.Uf.ToUpper())
                     listaErros.Add("Os dados informados estão divergindo da base de dados!");

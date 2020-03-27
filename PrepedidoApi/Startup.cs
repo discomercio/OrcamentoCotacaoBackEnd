@@ -49,7 +49,7 @@ namespace PrepedidoApi
             //ContextoProvider
             services.AddTransient<InfraBanco.ContextoBdProvider, InfraBanco.ContextoBdProvider>();
             services.AddTransient<InfraBanco.ContextoCepProvider, InfraBanco.ContextoCepProvider>();
-            services.AddTransient<InfraBanco.ContextoNFeProvider, InfraBanco.ContextoNFeProvider>();
+            //services.AddTransient<InfraBanco.ContextoNFeProvider, InfraBanco.ContextoNFeProvider>();
 
             //banco de dados
             string conexaoBasica = Configuration.GetConnectionString("conexao");
@@ -62,10 +62,10 @@ namespace PrepedidoApi
             {
                 options.UseSqlServer(Configuration.GetConnectionString("conexaoCep"));
             });
-            services.AddDbContext<InfraBanco.ContextoNFeBd>(options =>
-            {
-                options.UseSqlServer(Configuration.GetConnectionString("conexaoNfe"));
-            });
+            //services.AddDbContext<InfraBanco.ContextoNFeBd>(options =>
+            //{
+            //    options.UseSqlServer(Configuration.GetConnectionString("conexaoNfe"));
+            //});
 
 
             // configure jwt authentication
