@@ -1,11 +1,12 @@
 ﻿import { EnumFormaPagto } from "./EnumFormaPagto";
-import { DtoPedido } from "../../DtosTs/DtoPedido/DtoPedido";
-import { DtoCoeficiente } from "../../DtosTs/DtoCoeficiente/DtoCoeficiente";
 import { Constantes } from "../../UtilTs/Constantes/Constantes";
 import { EnumTipoPagto } from "./EnumTipoPagto";
 import { MoedaUtils } from "../../UtilTs/MoedaUtils/moedaUtils";
-import { DtoFormaPagto } from "../../DtosTs/DtoFormaPagto/DtoFormaPagto";
 import { NovoPedidoDadosService } from "../../Services/NovoPepedidoDadosService";
+import { RecalcularComCoeficiente } from "../RecalcularComCoeficiente/RecalcularComCoeficiente";
+import { PedidoDto } from "../../DtosTs/PedidoDto/PedidoDto";
+import { CoeficienteDto } from "../../DtosTs/CoeficienteDto/CoeficienteDto";
+import { FormaPagtoDto } from "../../DtosTs/FormaPagtoDto/FormaPagtoDto";
 
 export class DadosPagto {
     public enumFormaPagto: EnumFormaPagto;
@@ -13,7 +14,7 @@ export class DadosPagto {
     public EnumFormaPagto = EnumFormaPagto;
 
     public criando = true;
-    public dtoPedido: DtoPedido;
+    public pedidoDto: PedidoDto;
 
 
     public mascaraNum() {
@@ -58,64 +59,64 @@ export class DadosPagto {
     valor: number;//valor da parcela
 
     atribuirFormaPagtoParaDto() {
-        this.dtoPedido.FormaPagtoCriacao.Tipo_parcelamento = this.enumFormaPagto;
-        this.dtoPedido.VlTotalDestePedido = this.totalPedido();
-        
+        this.pedidoDto.FormaPagtoCriacao.Tipo_parcelamento = this.enumFormaPagto;
+        this.pedidoDto.VlTotalDestePedido = this.totalPedido();
+
         if (this.enumFormaPagto == 1) {
             //A vista      
 
-            this.dtoPedido.FormaPagtoCriacao.Rb_forma_pagto = this.enumFormaPagto.toString();
-            this.dtoPedido.FormaPagtoCriacao.Op_av_forma_pagto = this.meioPagtoAVista.toString();//meio de pagamento
-            this.dtoPedido.FormaPagtoCriacao.Qtde_Parcelas = 1;
+            this.pedidoDto.FormaPagtoCriacao.Rb_forma_pagto = this.enumFormaPagto.toString();
+            this.pedidoDto.FormaPagtoCriacao.Op_av_forma_pagto = this.meioPagtoAVista.toString();//meio de pagamento
+            this.pedidoDto.FormaPagtoCriacao.Qtde_Parcelas = 1;
         }
         if (this.enumFormaPagto == 2) {
             //ParcCartaoInternet
-            this.dtoPedido.FormaPagtoCriacao.Rb_forma_pagto = this.enumFormaPagto.toString();
-            this.dtoPedido.FormaPagtoCriacao.C_pc_qtde = this.qtde; //passar a qtde de parcelas para uma variávl "qtdeParcelas"
-            this.dtoPedido.FormaPagtoCriacao.C_pc_valor = this.valor;
-            this.dtoPedido.FormaPagtoCriacao.Qtde_Parcelas = this.qtde;
+            this.pedidoDto.FormaPagtoCriacao.Rb_forma_pagto = this.enumFormaPagto.toString();
+            this.pedidoDto.FormaPagtoCriacao.C_pc_qtde = this.qtde; //passar a qtde de parcelas para uma variávl "qtdeParcelas"
+            this.pedidoDto.FormaPagtoCriacao.C_pc_valor = this.valor;
+            this.pedidoDto.FormaPagtoCriacao.Qtde_Parcelas = this.qtde;
         }
         if (this.enumFormaPagto == 3) {
             //ParcComEnt
-            this.dtoPedido.FormaPagtoCriacao.Rb_forma_pagto = this.enumFormaPagto.toString();
-            this.dtoPedido.FormaPagtoCriacao.Op_pce_entrada_forma_pagto = this.meioPagtoEntrada.toString();//meio de pagamento
-            this.dtoPedido.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto = this.meioPagtoEntradaPrest.toString();//meio de pagamento
-            this.dtoPedido.FormaPagtoCriacao.C_pce_entrada_valor = this.vlEntrada;
-            this.dtoPedido.FormaPagtoCriacao.C_pce_prestacao_qtde = this.qtde;
-            this.dtoPedido.FormaPagtoCriacao.C_pce_prestacao_valor = this.valor;
-            this.dtoPedido.FormaPagtoCriacao.C_pce_prestacao_periodo = this.diasVenc != null ?
+            this.pedidoDto.FormaPagtoCriacao.Rb_forma_pagto = this.enumFormaPagto.toString();
+            this.pedidoDto.FormaPagtoCriacao.Op_pce_entrada_forma_pagto = this.meioPagtoEntrada.toString();//meio de pagamento
+            this.pedidoDto.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto = this.meioPagtoEntradaPrest.toString();//meio de pagamento
+            this.pedidoDto.FormaPagtoCriacao.C_pce_entrada_valor = this.vlEntrada;
+            this.pedidoDto.FormaPagtoCriacao.C_pce_prestacao_qtde = this.qtde;
+            this.pedidoDto.FormaPagtoCriacao.C_pce_prestacao_valor = this.valor;
+            this.pedidoDto.FormaPagtoCriacao.C_pce_prestacao_periodo = this.diasVenc != null ?
                 parseInt(this.diasVenc.toString().replace("_", "")) : this.diasVenc;
-            this.dtoPedido.FormaPagtoCriacao.Qtde_Parcelas = this.qtde + 1;//c_pce_prestacao_qtde + 1
+            this.pedidoDto.FormaPagtoCriacao.Qtde_Parcelas = this.qtde + 1;//c_pce_prestacao_qtde + 1
         }
         //NÃO ESTA SENDO USADO
         if (this.enumFormaPagto == 4) {
             //ParcSemEnt
-            this.dtoPedido.FormaPagtoCriacao.Rb_forma_pagto = this.enumFormaPagto.toString();
-            this.dtoPedido.FormaPagtoCriacao.Op_pse_prim_prest_forma_pagto = "";//meio de pagamento
-            this.dtoPedido.FormaPagtoCriacao.Op_pse_demais_prest_forma_pagto = "";//meio de pagamento
-            this.dtoPedido.FormaPagtoCriacao.C_pse_prim_prest_valor = 0;
-            this.dtoPedido.FormaPagtoCriacao.C_pse_prim_prest_apos = 0;
-            this.dtoPedido.FormaPagtoCriacao.C_pse_demais_prest_qtde = 0;
-            this.dtoPedido.FormaPagtoCriacao.C_pse_demais_prest_valor = 0;
-            this.dtoPedido.FormaPagtoCriacao.C_pse_demais_prest_periodo = 0;
-            this.dtoPedido.FormaPagtoCriacao.C_pse_demais_prest_qtde = 0;
+            this.pedidoDto.FormaPagtoCriacao.Rb_forma_pagto = this.enumFormaPagto.toString();
+            this.pedidoDto.FormaPagtoCriacao.Op_pse_prim_prest_forma_pagto = "";//meio de pagamento
+            this.pedidoDto.FormaPagtoCriacao.Op_pse_demais_prest_forma_pagto = "";//meio de pagamento
+            this.pedidoDto.FormaPagtoCriacao.C_pse_prim_prest_valor = 0;
+            this.pedidoDto.FormaPagtoCriacao.C_pse_prim_prest_apos = 0;
+            this.pedidoDto.FormaPagtoCriacao.C_pse_demais_prest_qtde = 0;
+            this.pedidoDto.FormaPagtoCriacao.C_pse_demais_prest_valor = 0;
+            this.pedidoDto.FormaPagtoCriacao.C_pse_demais_prest_periodo = 0;
+            this.pedidoDto.FormaPagtoCriacao.C_pse_demais_prest_qtde = 0;
         }
         if (this.enumFormaPagto == 5) {
             //ParcUnica
-            this.dtoPedido.FormaPagtoCriacao.Rb_forma_pagto = this.enumFormaPagto.toString();
-            this.dtoPedido.FormaPagtoCriacao.Op_pu_forma_pagto = this.meioPagtoParcUnica.toString();//meio de pagamento
-            this.dtoPedido.FormaPagtoCriacao.C_pu_valor = this.valor;
-            this.dtoPedido.FormaPagtoCriacao.C_pu_vencto_apos = this.diasVencParcUnica != null ?
+            this.pedidoDto.FormaPagtoCriacao.Rb_forma_pagto = this.enumFormaPagto.toString();
+            this.pedidoDto.FormaPagtoCriacao.Op_pu_forma_pagto = this.meioPagtoParcUnica.toString();//meio de pagamento
+            this.pedidoDto.FormaPagtoCriacao.C_pu_valor = this.valor;
+            this.pedidoDto.FormaPagtoCriacao.C_pu_vencto_apos = this.diasVencParcUnica != null ?
                 parseInt(this.diasVencParcUnica.toString().replace("_", "")) : this.diasVencParcUnica;
-            this.dtoPedido.FormaPagtoCriacao.Qtde_Parcelas = 1;
+            this.pedidoDto.FormaPagtoCriacao.Qtde_Parcelas = 1;
         }
         if (this.enumFormaPagto == 6) {
             //ParcCartaoMaquineta
-            this.dtoPedido.FormaPagtoCriacao.Rb_forma_pagto = this.enumFormaPagto.toString();
-            this.dtoPedido.FormaPagtoCriacao.C_pc_maquineta_qtde = this.qtde;
-            this.dtoPedido.FormaPagtoCriacao.C_pc_maquineta_valor = this.valor;
-            this.dtoPedido.FormaPagtoCriacao.C_pc_maquineta_qtde = this.qtde;
-            this.dtoPedido.FormaPagtoCriacao.Qtde_Parcelas = this.qtde;
+            this.pedidoDto.FormaPagtoCriacao.Rb_forma_pagto = this.enumFormaPagto.toString();
+            this.pedidoDto.FormaPagtoCriacao.C_pc_maquineta_qtde = this.qtde;
+            this.pedidoDto.FormaPagtoCriacao.C_pc_maquineta_valor = this.valor;
+            this.pedidoDto.FormaPagtoCriacao.C_pc_maquineta_qtde = this.qtde;
+            this.pedidoDto.FormaPagtoCriacao.Qtde_Parcelas = this.qtde;
         }
 
     }
@@ -171,7 +172,7 @@ export class DadosPagto {
             {
                 retorno = false;
             }
-            debugger;
+
             if (this.enumFormaPagto == 5 &&
                 (!this.meioPagtoParcUnica || !this.diasVencParcUnica))//ParcUnica
             {
@@ -211,7 +212,7 @@ export class DadosPagto {
                 }
             }
             if (this.enumFormaPagto == 2) {
-                debugger;
+                
                 if (!this.opcaoPagtoParcCartaoInternet) {
                     if (mostrarMsg) {
                         //afazer: mostrar a modal de mensagem
@@ -295,16 +296,17 @@ export class DadosPagto {
         }
     }
 
-    formaPagtoDto: DtoFormaPagto;
+    formaPagtoDto: FormaPagtoDto;
 
     //Método esta funcionando
-    public coeficienteDto: DtoCoeficiente[];
+    public coeficienteDto: CoeficienteDto[];
 
 
     // foi solicitado que a qtde de parcelas disponível será baseada na
     // qtde de parcelas disponível no cartão Visa(PRAZO_LOJA)
     //então faremos a busca pela API
     qtdeParcVisa: number;
+    permiteRAStatus: number;
 
     //chamado quando algum item do prepedido for alterado
     //aqui é feito a limpeza do select da forma de pagamento
@@ -321,18 +323,56 @@ export class DadosPagto {
     constantes = new Constantes();
     lstMsg: string[] = [];
     tipoFormaPagto: string = '';
+    coeficienteDtoNovo: CoeficienteDto[][];
+    recalcularComCoeficiente = new RecalcularComCoeficiente();
+    formaPagtoNum: number;
     public recalcularValoresComCoeficiente(enumFP: number): void {
         //na mudança da forma de pagto iremos zerar todos os campos
         this.zerarTodosCampos();
-        //verificar EnumTipoPagto para passar o valor do tipo "AV, SE, CE"
-        this.tipoFormaPagto = this.verificaEnum(enumFP);
-        //aisamos que está carregando...
-        this.lstMsg = new Array();
-        this.lstMsg.push("Carregando dados....");
 
-        //esse metodo esta buscandi no servidor;
-        this.listarValoresComCoeficiente(this.tipoFormaPagto, enumFP);
+        if (!!enumFP) {
+            this.formaPagtoNum = enumFP;
 
+            //verificar EnumTipoPagto para passar o valor do tipo "AV, SE, CE"
+            this.tipoFormaPagto = this.verificaEnum(enumFP);
+            //aisamos que está carregando...
+            this.lstMsg = new Array();
+            this.lstMsg.push("Carregando dados....");
+
+            //aqui vamos filtrar a lista de coeficientes para trazer apenas as informações 
+            //referentes aos produtos que estão inseridos
+            this.recalcularComCoeficiente.permiteRAStatus = this.permiteRAStatus;
+            this.recalcularComCoeficiente.pedidoDto = this.pedidoDto;
+            this.recalcularComCoeficiente.lstProdutos = this.pedidoDto.ListaProdutos;
+            this.recalcularComCoeficiente.lstCoeficientesCompleta = this.coeficienteDto;
+            this.coeficienteDtoNovo = this.recalcularComCoeficiente.buscarCoeficienteFornecedores();
+            this.lstMsg = new Array();
+            this.lstMsg = this.recalcularComCoeficiente.CalcularTotalProdutosComCoeficiente(this.formaPagtoNum, this.coeficienteDtoNovo,
+                this.tipoFormaPagto, this.qtdeParcVisa, this.vlEntrada);
+            
+            if (this.formaPagtoNum.toString() == this.constantes.COD_FORMA_PAGTO_A_VISTA) {
+                this.recalcularComCoeficiente.RecalcularListaProdutos(this.formaPagtoNum, this.coeficienteDtoNovo, this.tipoFormaPagto, 1);
+                this.opcaoPagtoAvista = this.lstMsg[0];
+            }
+            if (this.formaPagtoNum.toString() == this.constantes.COD_FORMA_PAGTO_PARCELA_UNICA) {
+                this.recalcularComCoeficiente.RecalcularListaProdutos(this.formaPagtoNum, this.coeficienteDtoNovo, this.tipoFormaPagto, 1);
+                this.opcaoPagtoParcUnica = this.lstMsg[0];
+            }
+
+            //esse metodo esta buscandi no servidor;
+            //this.listarValoresComCoeficiente(this.tipoFormaPagto, enumFP);
+        }
+    }
+
+    RecalcularListaProdutos() {
+        //vamos validar e descobrir a qtde de parcelas que esta sendo selecionado
+        if (!this.validarFormaPagto(false)) {
+            return false;
+        }
+        this.recalcularComCoeficiente.RecalcularListaProdutos(this.formaPagtoNum, this.coeficienteDtoNovo, this.tipoFormaPagto,
+            this.qtde);
+
+        this.pedidoDto.ListaProdutos = this.recalcularComCoeficiente.lstProdutos;
     }
 
     public zerarTodosCampos(): void {
@@ -368,28 +408,28 @@ export class DadosPagto {
     public novoPedidoDadosService: NovoPedidoDadosService;
 
     public totalPedido(): number {
-        return this.dtoPedido.ListaProdutos.reduce((sum, current) => sum + current.TotalItem, 0);
+        return this.pedidoDto.ListaProdutos.reduce((sum, current) => sum + current.TotalItem, 0);
     }
 
     listarValoresComCoeficiente(txtFormaPagto: string, enumFP: number): void {
-        debugger;
+        
         //this.lstMsg
         let valor = 0
         // this.lstMsg = new Array();
         //pegar o valor do item e multiplicar com o coeficiente
         let lstCoeficiente = this.coeficienteDto;
         //afazer: verificar esse serviço
-        //this.dtoPedido = this.novoPedidoDadosService.dtoPedido;
-        let lstProdutos = this.dtoPedido.ListaProdutos;
+        //this.pedidoDto = this.novoPedidoDadosService.dtoPedido;
+        let lstProdutos = this.pedidoDto.ListaProdutos;
         let constant = this.constantes;
         //utilizamos essa lista quando for diferente de A vista
-        let lstCoefFiltro: DtoCoeficiente[];
+        let lstCoefFiltro: CoeficienteDto[];
 
         if (this.enumFormaPagto) {
             for (var x = 0; x < lstProdutos.length; x++) {
                 //teste para filtrar a lista de coeficiente
                 if (this.tipoFormaPagto != "AV") {
-                    
+
                     lstCoefFiltro = lstCoeficiente.filter(e => e.Fabricante == lstProdutos[x].Fabricante &&
                         e.TipoParcela == this.tipoFormaPagto);
                 }
@@ -422,7 +462,7 @@ export class DadosPagto {
                         lstProdutos[x].Fabricante == lstCoefFiltro[i].Fabricante &&
                         lstCoefFiltro[i].TipoParcela == constant.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA &&
                         txtFormaPagto == constant.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA) {
-                        //debugger;
+                        
                         lstProdutos[x].VlUnitario = ((lstProdutos[x].Preco * lstCoefFiltro[i].Coeficiente) * (1 - lstProdutos[x].Desconto / 100));
                         lstProdutos[x].VlTotalItem = (lstProdutos[x].Preco * lstCoefFiltro[i].Coeficiente) * (1 - lstProdutos[x].Desconto / 100);
                         lstProdutos[x].VlLista = lstProdutos[x].Preco * lstCoefFiltro[i].Coeficiente;
@@ -451,10 +491,12 @@ export class DadosPagto {
         // return this.lstMsg;
     }
 
+    
+
     montarListaParcelamento(enumFP: number): string[] {
         this.lstMsg = new Array();
         let lstCoeficiente = this.coeficienteDto;
-        let vlTotalPedido = this.dtoPedido.ListaProdutos.reduce((sum, prod) => sum + prod.TotalItem, 0);
+        let vlTotalPedido = this.pedidoDto.ListaProdutos.reduce((sum, prod) => sum + prod.TotalItem, 0);
         let cont = 0;
         if (enumFP) {
             for (let i = 0; i < lstCoeficiente.length; i++) {
@@ -502,11 +544,11 @@ export class DadosPagto {
 
         this.lstMsg = new Array();
         //afazer: verificar esse serviço
-        //this.dtoPedido = this.novoPedidoDadosService.dtoPedido;
-        let lstProdutos = this.dtoPedido.ListaProdutos;
+        //this.pedidoDto = this.novoPedidoDadosService.dtoPedido;
+        let lstProdutos = this.pedidoDto.ListaProdutos;
         let lstCoeficiente = this.coeficienteDto;
         if (!!this.vlEntrada && this.vlEntrada != 0.00) {
-            var vltotal = this.dtoPedido.ListaProdutos.reduce((sum, current) => sum + current.TotalItem, 0);
+            var vltotal = this.pedidoDto.ListaProdutos.reduce((sum, current) => sum + current.TotalItem, 0);
 
             if (this.vlEntrada > vltotal) {
                 //afazer: mostrar a modal de mensagem
@@ -542,22 +584,22 @@ export class DadosPagto {
 
     montaFormaPagtoExistente() {
 
-        if (this.dtoPedido.FormaPagtoCriacao.Tipo_parcelamento) {
-            this.dtoPedido.FormaPagtoCriacao.Tipo_parcelamento;
+        if (this.pedidoDto.FormaPagtoCriacao.Tipo_parcelamento) {
+            this.pedidoDto.FormaPagtoCriacao.Tipo_parcelamento;
 
-            switch (this.dtoPedido.FormaPagtoCriacao.Tipo_parcelamento.toString()) {
+            switch (this.pedidoDto.FormaPagtoCriacao.Tipo_parcelamento.toString()) {
                 case this.constantes.COD_FORMA_PAGTO_A_VISTA:
                     //A vista
                     this.enumFormaPagto = EnumFormaPagto.Avista;//forma de pagamento
-                    this.meioPagtoAVista = parseInt(this.dtoPedido.FormaPagtoCriacao.Op_av_forma_pagto);//deposito ou...
+                    this.meioPagtoAVista = parseInt(this.pedidoDto.FormaPagtoCriacao.Op_av_forma_pagto);//deposito ou...
                     this.opcaoPagtoAvista = this.montaParcelamentoExistente();//recebe a descrição (1 X R$ 00,00)
                     break;
                 case this.constantes.COD_FORMA_PAGTO_PARCELA_UNICA:
                     //ParcUnica
                     this.enumFormaPagto = EnumFormaPagto.ParcUnica;//forma de pagamento
-                    this.meioPagtoParcUnica = parseInt(this.dtoPedido.FormaPagtoCriacao.Op_pu_forma_pagto);//deposito ou...
+                    this.meioPagtoParcUnica = parseInt(this.pedidoDto.FormaPagtoCriacao.Op_pu_forma_pagto);//deposito ou...
                     this.opcaoPagtoParcUnica = this.montaParcelamentoExistente();//recebe a descrição (1 X R$ 00,00)
-                    this.diasVencParcUnica = this.dtoPedido.FormaPagtoCriacao.C_pu_vencto_apos;//dias para venc.
+                    this.diasVencParcUnica = this.pedidoDto.FormaPagtoCriacao.C_pu_vencto_apos;//dias para venc.
                     break;
                 case this.constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO:
                     //ParcCartaoInternet
@@ -572,23 +614,23 @@ export class DadosPagto {
                 case this.constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA:
                     //ParcComEnt
                     this.enumFormaPagto = EnumFormaPagto.ParcComEnt;//forma de pagamento
-                    this.vlEntrada = this.dtoPedido.FormaPagtoCriacao.C_pce_entrada_valor;//valor de entrada
-                    this.meioPagtoEntrada = parseInt(this.dtoPedido.FormaPagtoCriacao.Op_pce_entrada_forma_pagto);//deposito ou...
-                    this.meioPagtoEntradaPrest = parseInt(this.dtoPedido.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto);//deposito ou...
+                    this.vlEntrada = this.pedidoDto.FormaPagtoCriacao.C_pce_entrada_valor;//valor de entrada
+                    this.meioPagtoEntrada = parseInt(this.pedidoDto.FormaPagtoCriacao.Op_pce_entrada_forma_pagto);//deposito ou...
+                    this.meioPagtoEntradaPrest = parseInt(this.pedidoDto.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto);//deposito ou...
                     this.opcaoPagtoParcComEntrada = this.montaParcelamentoExistente();//recebe a descrição (1 X R$ 00,00)
-                    this.diasVenc = this.dtoPedido.FormaPagtoCriacao.C_pce_prestacao_periodo;//recebe os dias de vencimento
+                    this.diasVenc = this.pedidoDto.FormaPagtoCriacao.C_pce_prestacao_periodo;//recebe os dias de vencimento
                     break;
                 case this.constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA:
                     //ParcSemEnt
-                    this.dtoPedido.FormaPagtoCriacao.Rb_forma_pagto = this.enumFormaPagto.toString();
-                    this.dtoPedido.FormaPagtoCriacao.Op_pse_prim_prest_forma_pagto = "";//meio de pagamento
-                    this.dtoPedido.FormaPagtoCriacao.Op_pse_demais_prest_forma_pagto = "";//meio de pagamento
-                    this.dtoPedido.FormaPagtoCriacao.C_pse_prim_prest_valor = 0;
-                    this.dtoPedido.FormaPagtoCriacao.C_pse_prim_prest_apos = 0;
-                    this.dtoPedido.FormaPagtoCriacao.C_pse_demais_prest_qtde = 0;
-                    this.dtoPedido.FormaPagtoCriacao.C_pse_demais_prest_valor = 0;
-                    this.dtoPedido.FormaPagtoCriacao.C_pse_demais_prest_periodo = 0;
-                    this.dtoPedido.FormaPagtoCriacao.C_pse_demais_prest_qtde = 0;
+                    this.pedidoDto.FormaPagtoCriacao.Rb_forma_pagto = this.enumFormaPagto.toString();
+                    this.pedidoDto.FormaPagtoCriacao.Op_pse_prim_prest_forma_pagto = "";//meio de pagamento
+                    this.pedidoDto.FormaPagtoCriacao.Op_pse_demais_prest_forma_pagto = "";//meio de pagamento
+                    this.pedidoDto.FormaPagtoCriacao.C_pse_prim_prest_valor = 0;
+                    this.pedidoDto.FormaPagtoCriacao.C_pse_prim_prest_apos = 0;
+                    this.pedidoDto.FormaPagtoCriacao.C_pse_demais_prest_qtde = 0;
+                    this.pedidoDto.FormaPagtoCriacao.C_pse_demais_prest_valor = 0;
+                    this.pedidoDto.FormaPagtoCriacao.C_pse_demais_prest_periodo = 0;
+                    this.pedidoDto.FormaPagtoCriacao.C_pse_demais_prest_qtde = 0;
                     break;
             };
         }
@@ -597,33 +639,33 @@ export class DadosPagto {
     //metodo para montar o tipo de parcelamento que foi selecionado pelo usuário
     montaParcelamentoExistente(): string {
         let retorno = "";
-        this.dtoPedido.FormaPagtoCriacao.Tipo_parcelamento;
-        this.recalcularValoresComCoeficiente(this.dtoPedido.FormaPagtoCriacao.Tipo_parcelamento);
+        this.pedidoDto.FormaPagtoCriacao.Tipo_parcelamento;
+        this.recalcularValoresComCoeficiente(this.pedidoDto.FormaPagtoCriacao.Tipo_parcelamento);
 
-        switch (this.dtoPedido.FormaPagtoCriacao.Tipo_parcelamento.toString()) {
+        switch (this.pedidoDto.FormaPagtoCriacao.Tipo_parcelamento.toString()) {
             case this.constantes.COD_FORMA_PAGTO_A_VISTA:
-                retorno = this.dtoPedido.FormaPagtoCriacao.Qtde_Parcelas + " X " +
-                    this.moedaUtils.formatarMoedaComPrefixo(this.dtoPedido.VlTotalDestePedido);
+                retorno = this.pedidoDto.FormaPagtoCriacao.Qtde_Parcelas + " X " +
+                    this.moedaUtils.formatarMoedaComPrefixo(this.pedidoDto.VlTotalDestePedido);
                 break;
             case this.constantes.COD_FORMA_PAGTO_PARCELA_UNICA:
                 //ParcUnica
-                retorno = this.dtoPedido.FormaPagtoCriacao.Qtde_Parcelas + " X " +
-                    this.moedaUtils.formatarMoedaComPrefixo(this.dtoPedido.FormaPagtoCriacao.C_pu_valor);
+                retorno = this.pedidoDto.FormaPagtoCriacao.Qtde_Parcelas + " X " +
+                    this.moedaUtils.formatarMoedaComPrefixo(this.pedidoDto.FormaPagtoCriacao.C_pu_valor);
                 break;
             case this.constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO:
                 //ParcCartaoInternet
-                retorno = this.dtoPedido.FormaPagtoCriacao.Qtde_Parcelas + " X " +
-                    this.moedaUtils.formatarMoedaComPrefixo(this.dtoPedido.FormaPagtoCriacao.C_pc_valor);
+                retorno = this.pedidoDto.FormaPagtoCriacao.Qtde_Parcelas + " X " +
+                    this.moedaUtils.formatarMoedaComPrefixo(this.pedidoDto.FormaPagtoCriacao.C_pc_valor);
                 break;
             case this.constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA:
                 //ParcCartaoMaquineta
-                retorno = this.dtoPedido.FormaPagtoCriacao.Qtde_Parcelas + " X " +
-                    this.moedaUtils.formatarMoedaComPrefixo(this.dtoPedido.FormaPagtoCriacao.C_pc_maquineta_valor);
+                retorno = this.pedidoDto.FormaPagtoCriacao.Qtde_Parcelas + " X " +
+                    this.moedaUtils.formatarMoedaComPrefixo(this.pedidoDto.FormaPagtoCriacao.C_pc_maquineta_valor);
                 break;
             case this.constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA:
                 //ParcComEnt
-                retorno = this.dtoPedido.FormaPagtoCriacao.C_pce_prestacao_qtde + " X " +
-                    this.moedaUtils.formatarMoedaComPrefixo(this.dtoPedido.FormaPagtoCriacao.C_pce_prestacao_valor);
+                retorno = this.pedidoDto.FormaPagtoCriacao.C_pce_prestacao_qtde + " X " +
+                    this.moedaUtils.formatarMoedaComPrefixo(this.pedidoDto.FormaPagtoCriacao.C_pce_prestacao_valor);
                 break;
             case this.constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA:
                 //ParcSemEnt

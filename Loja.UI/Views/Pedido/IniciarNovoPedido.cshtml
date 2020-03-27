@@ -289,7 +289,7 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
                                                 <div class="input-field desconto">
                                                     <input class="descProduto" type="text" name="[@index].Desconto" id="@i.Desconto"
                                                            style="text-align:right" onchange="digitouDesc(this)"
-                                                           onkeyup="digitouDesc(this)" />  %
+                                                           onkeyup="formatarDesc(this)" />  %
 
                                                 </div>
                                             </td>
@@ -297,7 +297,7 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
                                                 <div class="input-field" style="float:right; max-width:80%;width:80%;">
                                                     <input class="vlUnitario" type="text" name="[@index].VlUnitario" id="@i.VlUnitario"
                                                            style="text-align:right" onchange="digitouVlVenda(this)"
-                                                           onkeyup="digitouVlVenda(this)" />
+                                                           onkeyup="formataVlVenda(this)" />
                                                 </div>
                                             </td>
                                             <td class="vlTotalItem" style="text-align:right" name="[@index].VlTotalItem">
@@ -757,6 +757,7 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
     var novoPedidoDadosService;
     var dadosPagto;
     var enumFormaPagto;
+    var permiteRAStatus = (@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(Model.Permite_RA_Status.ToString()).ToString()));
     var qtdeParcVisa = (@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(Model.QtdeParcVisa.ToString()).ToString()));
     var percMaxDescEComissaoPorLoja = JSON.parse(@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(Json.Serialize(Model.PercMaxDescEComissao).ToString(), true)));
 

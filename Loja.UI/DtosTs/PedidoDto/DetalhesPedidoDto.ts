@@ -1,4 +1,4 @@
-﻿export class DtoDetalhesPedido {
+﻿export class DetalhesPedidoDto {
     Observacoes: string;
     NumeroNF: string;
     EntregaImediata: string;

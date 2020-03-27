@@ -1,4 +1,4 @@
-﻿export class PedidoProdutosDtoPedido {
+﻿export class PedidoProdutosPedidoDto {
     Fabricante: string;
     NumProduto: string;
     Descricao: string;
@@ -6,6 +6,7 @@
     Faltando: number | null;
     CorFaltante: string;
     Preco: number | null;
+    Preco_Lista: number | null;
     VlLista: number;
     Desconto: number | null;
     VlUnitario: number;
@@ -15,4 +16,6 @@
     VlTotal: number | null;
     Comissao: number | null;
     TotalItem: number | null;
+    AlterouValorRa: boolean | null;
+    AlterouVlVenda: boolean | null;
 }

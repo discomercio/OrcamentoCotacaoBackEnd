@@ -4057,7 +4057,7 @@ namespace Loja.Bll.PedidoBll
             {
                 if (!string.IsNullOrEmpty(p.NumProduto))
                 {
-                    vl_total_NF += (decimal)(p.Qtde * p.VlUnitario);
+                    vl_total_NF += (decimal)(p.Qtde * p.VlLista);
                 }
             }
 

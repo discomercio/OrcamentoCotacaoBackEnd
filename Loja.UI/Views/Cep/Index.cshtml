@@ -146,7 +146,7 @@
 
     limparCamposEndEntrega();
 
-    debugger;
+    
     var con = $(o);
     $('#cepEntrega').val(con[1].textContent);
     $("#cep").addClass('valid');
@@ -187,7 +187,7 @@
 
     function montaTabela(data) {
         var cols = "";
-        debugger;
+        
         var lst = data["ListaCep"];
 
         if (lst.length > 0) {
@@ -310,14 +310,14 @@
     if ($('#cepEntrega').val() != null) {
         $('#naoseicep').addClass('pulse');
 
-        debugger;
+        
         $.ajax({
             url: "../Cep/BuscarCep/",
             type: "GET",
             data: { cep: $('#cepEntrega').val() },
             dataType: "json",
             success: function (data) {
-                debugger;
+                
                 if (data[0].Endereco != "") {
                     $('#enderecoEntrega').prop("readonly", true);
                     $("#enderecoEntrega").val(data[0].Endereco);

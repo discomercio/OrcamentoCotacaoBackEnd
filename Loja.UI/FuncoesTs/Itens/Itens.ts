@@ -1,27 +1,27 @@
-﻿import { SelectProdInfo } from "../../DtosTs/DtoProdutos/SelectProdInfo";
-import { PedidoProdutosDtoPedido } from "../../DtosTs/DtoPedido/DtoPedidoProdutosPedido";
-import { DtoPedido } from "../../DtosTs/DtoPedido/DtoPedido";
+﻿import { SelectProdInfo } from "../../DtosTs/ProdutosDto/SelectProdInfo";
 import { MoedaUtils } from "../../UtilTs/MoedaUtils/moedaUtils";
 import { DadosPagto } from "../DadosPagto/DadosPagto";
-import { ProdutoComboDto } from "../../DtosTs/DtoProdutos/ProdutoComboDto";
-import { ProdutoDto } from "../../DtosTs/DtoProdutos/ProdutoDto";
+import { ProdutoComboDto } from "../../DtosTs/ProdutosDto/ProdutoComboDto";
+import { ProdutoDto } from "../../DtosTs/ProdutosDto/ProdutoDto";
+import { PedidoProdutosPedidoDto } from "../../DtosTs/PedidoDto/PedidoProdutosPedidoDto";
+import { PedidoDto } from "../../DtosTs/PedidoDto/PedidoDto";
 
 export class Itens {
     public dtoProdutoCombo: ProdutoComboDto;
     public selectProdInfo: SelectProdInfo;
-    public dtoPedido: DtoPedido;
-    public dtoPedidoProdutosPedido: PedidoProdutosDtoPedido;
+    public pedidoDto: PedidoDto;
+    public pedidoProdutosPedidoDto: PedidoProdutosPedidoDto;
     public dadosPagto: DadosPagto;
     //iremos colocar uma variavel para ser feito a verificação de msg de erros
     public msgErro: string;
 
 
-    public mostrarProdutos(linha: PedidoProdutosDtoPedido) {
+    public mostrarProdutos(linha: PedidoProdutosPedidoDto) {
         //const this.selectProdInfo = new SelectProdInfo();
         this.selectProdInfo.produtoComboDto = this.dtoProdutoCombo;
 
         if (linha) {
-            debugger;
+            
             this.selectProdInfo.Produto = linha.NumProduto;
             this.selectProdInfo.Fabricante = linha.Fabricante;
             this.selectProdInfo.Qte = linha.Qtde;
@@ -34,9 +34,9 @@ export class Itens {
 
     //criaremos uma lista para armazenar os itens pelo item principal, independente se é produto composto
     public lstProdSelectInfo: SelectProdInfo[] = [];
-    public EditarAdicionarProduto(linha: PedidoProdutosDtoPedido) {
-        let dtoPedido = new DtoPedido();
-        let d = new DtoPedido();
+    public EditarAdicionarProduto(linha: PedidoProdutosPedidoDto) {
+        let pedidoDto = new PedidoDto();
+        let d = new PedidoDto();
         if (this.selectProdInfo.ClicouOk) {
             //vamos editar ou adicionar um novo
             if (linha) {
@@ -51,13 +51,13 @@ export class Itens {
                     else {
                         //produto composto
                         //removemos o item atual e colocamostodos os novos  
-                        debugger;
-                        this.dtoPedido.ListaProdutos = this.dtoPedido.ListaProdutos.filter(el => el != linha);
+
+                        this.pedidoDto.ListaProdutos = this.pedidoDto.ListaProdutos.filter(el => el != linha);
 
                         //colcoamos todos os novos
                         for (let i = 0; i < filhosDiretos.length; i++) {
-                            let novo = new PedidoProdutosDtoPedido();
-                            this.dtoPedido.ListaProdutos.push(novo);
+                            let novo = new PedidoProdutosPedidoDto();
+                            this.pedidoDto.ListaProdutos.push(novo);
                             this.atualizarProduto(novo, filhosDiretos[i].Fabricante,
                                 filhosDiretos[i].Produto, this.selectProdInfo.Qte * filhosDiretos[i].Qtde);
                         }
@@ -86,18 +86,18 @@ export class Itens {
                 const filhosDiretos = this.filhosDeProdutoComposto(this.selectProdInfo);
                 if (!filhosDiretos) {
                     //não é produto composto
-                    let novo = new PedidoProdutosDtoPedido();
-                    this.dtoPedido.ListaProdutos = new Array<PedidoProdutosDtoPedido>();
-                    this.dtoPedido.ListaProdutos.push(novo);
+                    let novo = new PedidoProdutosPedidoDto();
+                    this.pedidoDto.ListaProdutos = new Array<PedidoProdutosPedidoDto>();
+                    this.pedidoDto.ListaProdutos.push(novo);
                     this.atualizarProduto(novo, this.selectProdInfo.Fabricante, this.selectProdInfo.Produto, this.selectProdInfo.Qte);
                 }
                 else {
                     //produto composto
-                    debugger;
-                    this.dtoPedido.ListaProdutos = new Array<PedidoProdutosDtoPedido>();
+                    
+                    this.pedidoDto.ListaProdutos = new Array<PedidoProdutosPedidoDto>();
                     for (let i = 0; i < filhosDiretos.length; i++) {
-                        let novo = new PedidoProdutosDtoPedido();
-                        this.dtoPedido.ListaProdutos.push(novo);
+                        let novo = new PedidoProdutosPedidoDto();
+                        this.pedidoDto.ListaProdutos.push(novo);
                         this.atualizarProduto(novo, filhosDiretos[i].Fabricante, filhosDiretos[i].Produto, this.selectProdInfo.Qte * filhosDiretos[i].Qtde);
                     }
                 }
@@ -120,7 +120,7 @@ export class Itens {
         return registros[0].Filhos;
     }
 
-    public atualizarProduto(linha: PedidoProdutosDtoPedido, fabricante: string, produto: string, qtde: number) {
+    public atualizarProduto(linha: PedidoProdutosPedidoDto, fabricante: string, produto: string, qtde: number) {
         let prodInfo = this.dtoProdutoCombo.ProdutoDto.filter(el => el.Fabricante === fabricante && el.Produto === produto)[0];
 
 
@@ -140,14 +140,14 @@ export class Itens {
         this.digitouQte(linha);
     }
 
-    public digitouDescValor(i: PedidoProdutosDtoPedido, v: string) {
+    public digitouDescValor(i: PedidoProdutosPedidoDto, v: string) {
 
         if (v == undefined) {
             return;
         }
         
         //se não alteraram nada, ignoramos
-        if (i.Desconto === parseFloat(v) && i.Desconto == undefined) {
+        if (i.Desconto.toString() == v && i.Desconto == undefined) {
             return;
         }
 
@@ -165,7 +165,7 @@ export class Itens {
         }
 
         if (i.Desconto) {
-            i.VlUnitario = i.Preco * (1 - i.Desconto / 100);
+            i.VlUnitario = i.VlLista * (1 - i.Desconto / 100);
             i.VlUnitario = parseFloat(i.VlUnitario.toFixed(2));
         }
         else {
@@ -174,7 +174,7 @@ export class Itens {
         this.digitouQte(i);
     }
          
-    public digitouQte(i: PedidoProdutosDtoPedido) {
+    public digitouQte(i: PedidoProdutosPedidoDto) {
         let moedaUtils: MoedaUtils = new MoedaUtils();
         //necessário trazer e verificar a variavel "qtde_max_permitida" na tabela "T_produto_loja" 
         //para limitar a qtde de compra para o usuário
@@ -190,7 +190,7 @@ export class Itens {
 
     }
 
-    public digitouDesc(e: Event, i: PedidoProdutosDtoPedido) {
+    public digitouDesc(e: Event, i: PedidoProdutosPedidoDto) {
         let valor = ((e.target) as HTMLInputElement).value;
         let v: any = valor.replace(/\D/g, '');
         //tem 1 casa
@@ -199,8 +199,8 @@ export class Itens {
     }
 
     public arrumarProdsRepetidos() {
-        debugger;
-        let lp = this.dtoPedido.ListaProdutos;
+        
+        let lp = this.pedidoDto.ListaProdutos;
         for (let i = 0; i < lp.length; i++) {
             let este = lp[i];
 
@@ -214,9 +214,9 @@ export class Itens {
                         //repetido, tem que tirar este!
                         continaurBuscaRepetido = true;
                         este.Qtde += repetido.Qtde;
-                        debugger;
-                        this.dtoPedido.ListaProdutos = this.dtoPedido.ListaProdutos.filter(el => el !== repetido);
-                        lp = this.dtoPedido.ListaProdutos;
+                        
+                        this.pedidoDto.ListaProdutos = this.pedidoDto.ListaProdutos.filter(el => el !== repetido);
+                        lp = this.pedidoDto.ListaProdutos;
                         this.digitouQte(este);
                     }
                 }
@@ -224,7 +224,7 @@ export class Itens {
         }
     }
 
-    public estoqueExcedido(i: PedidoProdutosDtoPedido): boolean {
+    public estoqueExcedido(i: PedidoProdutosPedidoDto): boolean {
         const item = this.estoqueItem(i);
         //se nao achamos, dizemos que não tem que mostrar a mensagem não...
         if (!item) {
@@ -237,7 +237,7 @@ export class Itens {
     }
 
     //mensagens de estoque
-    public estoqueItem(i: PedidoProdutosDtoPedido): ProdutoDto {
+    public estoqueItem(i: PedidoProdutosPedidoDto): ProdutoDto {
         if (!this.dtoProdutoCombo) {
             return null;
         }
@@ -251,7 +251,7 @@ export class Itens {
         return item[0];
     }
 
-    public produtoTemAviso(i: PedidoProdutosDtoPedido): boolean {
+    public produtoTemAviso(i: PedidoProdutosPedidoDto): boolean {
         const item = this.estoqueItem(i);
         //se nao achamos, dizemos que não tem que mostrar a mensagem não...
         if (!item) {
@@ -264,10 +264,10 @@ export class Itens {
     }
 
     public msgQtdePermitida: string = "";
-    public qtdeVendaPermitida(i: PedidoProdutosDtoPedido): boolean {
+    public qtdeVendaPermitida(i: PedidoProdutosPedidoDto): boolean {
         //busca o item na lista
         this.msgQtdePermitida = "";
-        debugger;
+        
         const item = this.estoqueItem(i);
         if (!item) {
             return false;

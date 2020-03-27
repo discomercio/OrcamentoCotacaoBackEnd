@@ -41,7 +41,7 @@ $("#btnModificar").click(function () {
                     $(this).find('label').each(function (s) {
                         if ($(this).find('input')) {
                             $(this).find('input').each(function (p) {
-                                debugger;
+                                
                                 var cbs = document.getElementsByClassName("check");
                                 //cbs = $(this)
                                 for (var i = 0; i < cbs.length; i++) {
@@ -81,7 +81,7 @@ function inscreve(o:any) {
 
     limparCamposEndEntrega();
 
-    debugger;
+    
     var con = $(o);
     $('#cepEntrega').val(con[1].textContent);
     $("#cep").addClass('valid');

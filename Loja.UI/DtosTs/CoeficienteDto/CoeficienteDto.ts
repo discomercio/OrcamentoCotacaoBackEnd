@@ -1,4 +1,4 @@
-﻿export class DtoCoeficiente {
+﻿export class CoeficienteDto {
     public Fabricante: string;
     public TipoParcela: string;
     public QtdeParcelas: number;

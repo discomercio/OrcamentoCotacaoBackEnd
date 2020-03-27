@@ -1,19 +1,19 @@
-﻿import { ProdutoComboDto } from "./../../DtosTs/DtoProdutos/ProdutoComboDto";
-import { SelectProdInfo } from "../../DtosTs/DtoProdutos/SelectProdInfo";
+﻿import { ProdutoComboDto } from "../../DtosTs/ProdutosDto/ProdutoComboDto";
+import { SelectProdInfo } from "../../DtosTs/ProdutosDto/SelectProdInfo";
 import { Itens } from "../../FuncoesTs/Itens/Itens";
-import { DtoPedido } from "../../DtosTs/DtoPedido/DtoPedido";
-import { PedidoProdutosDtoPedido } from "../../DtosTs/DtoPedido/DtoPedidoProdutosPedido";
 import { MoedaUtils } from "../../UtilTs/MoedaUtils/moedaUtils";
 import { NovoPedidoDadosService } from "../../Services/NovoPepedidoDadosService";
 import { DadosPagto } from "../../FuncoesTs/DadosPagto/DadosPagto";
 import { EnumFormaPagto } from "../../FuncoesTs/DadosPagto/EnumFormaPagto";
-import { DtoCoeficiente } from "../../DtosTs/DtoCoeficiente/DtoCoeficiente";
 import { Constantes } from "../../UtilTs/Constantes/Constantes";
 import { ErrorModal } from "../Shared/Error";
-import { PercentualMaxDescEComissao } from "../../DtosTs/DtoPedido/PercentualMaxDescEComissao";
-import { DtoFormaPagtoCriacao } from "../../DtosTs/DtoPedido/DtoFormaPagtoCriacao";
-import { ProdutoValidadoComEstoqueDto } from "../../DtosTs/DtoProdutos/ProdutoValidadoComEstoqueDto";
-import { ProdutoDto } from "../../DtosTs/DtoProdutos/ProdutoDto";
+import { PercentualMaxDescEComissao } from "../../DtosTs/PedidoDto/PercentualMaxDescEComissao";
+import { ProdutoValidadoComEstoqueDto } from "../../DtosTs/ProdutosDto/ProdutoValidadoComEstoqueDto";
+import { ProdutoDto } from "../../DtosTs/ProdutosDto/ProdutoDto";
+import { PedidoProdutosPedidoDto } from "../../DtosTs/PedidoDto/PedidoProdutosPedidoDto";
+import { CoeficienteDto } from "../../DtosTs/CoeficienteDto/CoeficienteDto";
+import { PedidoDto } from "../../DtosTs/PedidoDto/PedidoDto";
+import { FormaPagtoCriacaoDto } from "../../DtosTs/PedidoDto/FormaPagtoCriacaoDto";
 
 
 //moedaUtils.formatarPorcentagemUmaCasa(i.Desconto)
@@ -22,15 +22,16 @@ declare var produtoDto: ProdutoDto;
 declare var itens: Itens;
 itens = new Itens();
 //essa variavel esta sendo usada para armazenar os itens selecionados pelo cliente
-declare var lstProdSelecionados: PedidoProdutosDtoPedido[];
+declare var lstProdSelecionados: PedidoProdutosPedidoDto[];
 declare var window: any;
 declare var indice: number;
 declare var moedaUtils: MoedaUtils;
 moedaUtils = new MoedaUtils();
 declare var dadosPagto: DadosPagto;
 dadosPagto = new DadosPagto();
-declare var lstCoeficiente: DtoCoeficiente[];
+declare var lstCoeficiente: CoeficienteDto[];
 declare var qtdeParcVisa: number;
+declare var permiteRAStatus: number;
 //let formata = new MoedaUtils();
 //alert("alterdado6 " + formata.formatarMoedaComPrefixo(123));
 
@@ -40,7 +41,7 @@ declare function AbrirModalProdutos(): any;
 
 function inicializaCampos(v: number) {
     var div;
-    var disp;                                                                                                       
+    var disp;
     if (v.toString() == "1") {
         div = document.getElementById("Avista");
         disp = div.style.display;
@@ -214,7 +215,7 @@ $("#chkAutomatico").click(() => {
     $("#divSelecaoCd").children().find("input").prop('disabled', true);
     $("#msgCD").text('');
     removerTodosProdutos();
-    lstProdSelecionados = new Array<PedidoProdutosDtoPedido>();
+    lstProdSelecionados = new Array<PedidoProdutosPedidoDto>();
     zerarCamposDadosPagto(true);
     totalPedido();
 });
@@ -233,7 +234,7 @@ $("#chkManual").click(() => {
     $("#divSelecaoCd").children().find("input").prop('disabled', false);
     $("#msgCD").text('');
     removerTodosProdutos();
-    lstProdSelecionados = new Array<PedidoProdutosDtoPedido>();
+    lstProdSelecionados = new Array<PedidoProdutosPedidoDto>();
     zerarCamposDadosPagto(true);
     totalPedido();
 });
@@ -271,7 +272,7 @@ $("#percComissao").keyup(() => {
 $("#selecaoCd").change(function () {
     $("#msgCD").text('');
     removerTodosProdutos();
-    lstProdSelecionados = new Array<PedidoProdutosDtoPedido>();
+    lstProdSelecionados = new Array<PedidoProdutosPedidoDto>();
     totalPedido();
 
 });
@@ -326,10 +327,10 @@ window.InserirProdutoLinha = () => {
                 return true;
             }
         });
-        debugger;
+
         itens.dtoProdutoCombo = lstprodutos;//pegando da tela
         itens.selectProdInfo = selectProdInfo;
-        itens.dtoPedido = new DtoPedido();
+        itens.pedidoDto = new PedidoDto();
         itens.mostrarProdutos(null);
 
 
@@ -361,7 +362,7 @@ window.InserirProdutoLinha = () => {
 
 
 
-function verificaRegras(novaClasse: string, produto: PedidoProdutosDtoPedido): void {
+function verificaRegras(novaClasse: string, produto: PedidoProdutosPedidoDto): void {
 
     verificarRegraProdutoCD(novaClasse, produto);
 }
@@ -382,7 +383,7 @@ function arrumarProdsRepetidosTeste() {
     let exist: boolean = false;
 
     //é o que esta da vindo selecionado
-    let lstPedidoProdutos = itens.dtoPedido.ListaProdutos;
+    let lstPedidoProdutos = itens.pedidoDto.ListaProdutos;
     if (p.length > 0) {
         p.forEach(function (value) {
             lstPedidoProdutos.forEach(function (prod) {
@@ -409,7 +410,7 @@ function arrumarProdsRepetidosTeste() {
         });
     }
     else {
-        debugger;
+
         //convertemos para verificar se os produtos selecionado existe
         let t = JSON.stringify(lstProdSelecionados);
 
@@ -469,7 +470,7 @@ window.removerLinha = (v: HTMLElement) => {
         let codProduto: string = linha.cells[0].children[0].value;
         //pegando o produto para alterar o valor
 
-        let produto: PedidoProdutosDtoPedido[] = new Array<PedidoProdutosDtoPedido>();
+        let produto: PedidoProdutosPedidoDto[] = new Array<PedidoProdutosPedidoDto>();
         produto = lstProdSelecionados.filter(e => e.NumProduto == codProduto);
 
         let i = lstProdSelecionados.indexOf(produto[0]);
@@ -498,13 +499,13 @@ window.digitouQtde = (v: HTMLInputElement) => {
     let codProduto: string = linha.cells[0].children[0].value;
 
 
-    lstProdSelecionados = dadosPagto.dtoPedido.ListaProdutos;
+    lstProdSelecionados = dadosPagto.pedidoDto.ListaProdutos;
     //pegando o produto para alterar o valor
-    let produto: PedidoProdutosDtoPedido[] = lstProdSelecionados.filter(e => e.NumProduto == codProduto);
+    let produto: PedidoProdutosPedidoDto[] = lstProdSelecionados.filter(e => e.NumProduto == codProduto);
     produto[0].Qtde = parseInt(v.value);
     itens.digitouQte(produto[0]);
     let classeLinha = linha.className;
-
+    debugger;
     VerificarQtdeVendaPermitida(itens, produto[0], classeLinha);
     VerificarEstoque(itens, produto[0], classeLinha);
 
@@ -512,20 +513,20 @@ window.digitouQtde = (v: HTMLInputElement) => {
     //dadosPagto inicializar
     PedidoAlterado();
 
-    itens.dtoPedido.ListaProdutos = lstProdSelecionados;
+    itens.pedidoDto.ListaProdutos = lstProdSelecionados;
 
 
-
-    RecalcularValoresSemCoeficiente(null, true);
+    //aqui espera receber o enum que esta sendo usado
+    RecalcularValoresSemCoeficiente(dadosPagto.enumFormaPagto, true);
 
 
     ////passando para o valor para tela
-    linha.children[4].children[0].children[0].value = moedaUtils.formatarMoedaSemPrefixo(produto[0].VlUnitario);
-    linha.children[5].textContent = moedaUtils.formatarMoedaSemPrefixo(produto[0].TotalItem);
+    //linha.children[4].children[0].children[0].value = moedaUtils.formatarMoedaSemPrefixo(produto[0].VlUnitario);
+    linha.children[7].textContent = moedaUtils.formatarMoedaSemPrefixo(produto[0].TotalItem);
 
     PedidoAlterado();//chamamos aqui para inicializar as variaveis
     //dadosPagto.prepedidoAlterado();
-    zerarCamposDadosPagto(true);
+    //zerarCamposDadosPagto(true);
 }
 
 //Dessa forma eu consigo utilizar a modal de erro
@@ -538,33 +539,75 @@ window.digitouQtde = (v: HTMLInputElement) => {
  *      err.MostrarMsg("passar msg aqui");
  *  fazendo esses passos já estaremos solicitando que mostre a modal com a msg
  */
+window.formatarDesc = (v: HTMLInputElement) => {
+    //let valor = ((e.target) as HTMLInputElement).value;
+    //let v: any = valor.replace(/\D/g, '');
+    //v = (v / 100).toFixed(2) + '';
 
+    //i.Desconto = v;
+
+    let valor: string = v.value;
+    let val: any = valor.replace(/\D/g, '');
+    val = (val / 100).toFixed(2) + '';
+    //pegar o valor para buscar na lista
+    let linha: any = v.parentElement.parentElement.parentElement;
+    let numProduto: string = linha.children[0].children[0].value;
+    let r: PedidoProdutosPedidoDto[] = new Array<PedidoProdutosPedidoDto>();
+    r = lstProdSelecionados.filter(e => e.NumProduto == numProduto);
+
+    v.value = moedaUtils.formatarMoedaSemPrefixo(val);
+}
+
+window.formataVlVenda = (v: HTMLInputElement) => {
+    let valor: string = v.value;
+    let val: any = valor.replace(/\D/g, '');
+    val = (val / 100).toFixed(2) + '';
+
+    let linha: any = v.parentElement.parentElement.parentElement;
+    let numProduto: string = linha.children[0].children[0].value;
+    let r: PedidoProdutosPedidoDto[] = new Array<PedidoProdutosPedidoDto>();
+    r = lstProdSelecionados.filter(e => e.NumProduto == numProduto);
+
+    v.value = moedaUtils.formatarMoedaSemPrefixo(val);
+}
 
 window.digitouDesc = (v: HTMLInputElement) => {
     //let t = ((v.target) as HTMLInputElement).value;
     //let val: any = t.replace(/\D/g, '');
     let valor: string = v.value;
     let val: any = valor.replace(/\D/g, '');
-    val = (val / 10).toFixed(2) + '';
+    val = (val / 100).toFixed(2) + '';
     //passamos o valor formatado para o campo
-    v.value = moedaUtils.formatarPorcentagemUmaCasa(val);
+    //v.value = moedaUtils.formatarMoedaSemPrefixo(val);
+
 
     //pegar o valor para buscar na lista
     let linha: any = v.parentElement.parentElement.parentElement;
     let numProduto: string = linha.children[0].children[0].value;
-    let r: PedidoProdutosDtoPedido[] = new Array<PedidoProdutosDtoPedido>();
+    let r: PedidoProdutosPedidoDto[] = new Array<PedidoProdutosPedidoDto>();
     r = lstProdSelecionados.filter(e => e.NumProduto == numProduto);
-    //r[0].Desconto = val;
+    r[0].Desconto = val;
+
+    if (r[0].Desconto == 0 || r[0].Desconto.toString() == '') {
+        r[0].AlterouVlVenda = false;
+    } else {
+        r[0].AlterouVlVenda = true;
+    }
+    debugger;
     itens.digitouDescValor(r[0], val);
 
-    dadosPagto.dtoPedido.ListaProdutos = lstProdSelecionados;
-    //RecalcularValoresSemCoeficiente(null);
+    dadosPagto.pedidoDto.ListaProdutos = lstProdSelecionados;
+
+    RecalcularValoresSemCoeficiente(dadosPagto.enumFormaPagto, true);
+
     totalPedido();
 
-    linha.children[6].textContent = moedaUtils.formatarMoedaSemPrefixo(r[0].TotalItem);
-    linha.children[5].children[0].children[0].value = moedaUtils.formatarMoedaSemPrefixo(r[0].VlUnitario);
+    linha.children[6].children[0].children[0].value = moedaUtils.formatarMoedaSemPrefixo(r[0].VlUnitario);
+    //linha.children[7].value = moedaUtils.formatarMoedaSemPrefixo(r[0].VlTotalItem);
+    //linha.children[7].textContent = moedaUtils.formatarMoedaSemPrefixo(r[0].VlTotalItem);
 
-    zerarCamposDadosPagto(true);
+    //zera os campos de lista de parcelamento calculados
+    //zerarCamposDadosPagto(true);
 
 }
 
@@ -577,10 +620,16 @@ window.digitouVlVenda = (v: HTMLInputElement) => {
 
     let linha: any = v.parentElement.parentElement.parentElement;
     let numProduto: string = linha.children[0].children[0].value;
-    let r: PedidoProdutosDtoPedido[] = new Array<PedidoProdutosDtoPedido>();
+    let r: PedidoProdutosPedidoDto[] = new Array<PedidoProdutosPedidoDto>();
     r = lstProdSelecionados.filter(e => e.NumProduto == numProduto);
 
     r[0].VlUnitario = parseFloat(val);
+
+    if (r[0].VlLista == r[0].VlUnitario) {
+        r[0].AlterouVlVenda = false;
+    } else {
+        r[0].AlterouVlVenda = true;
+    }
 
     //calcula o desconto
     r[0].Desconto = 100 * (r[0].Preco - r[0].VlUnitario) / r[0].Preco;
@@ -589,10 +638,11 @@ window.digitouVlVenda = (v: HTMLInputElement) => {
     itens.digitouQte(r[0]);
     //dadosPagto inicializar
     PedidoAlterado();
+    debugger;
 
-    linha.children[4].children[0].children[0].value = moedaUtils.formatarPorcentagemUmaCasa(r[0].Desconto);
-    linha.children[5].children[0].children[0].value = moedaUtils.formatarMoedaSemPrefixo(r[0].VlUnitario);
-    linha.children[6].textContent = moedaUtils.formatarMoedaSemPrefixo(r[0].TotalItem);
+    linha.children[5].children[0].children[0].value = moedaUtils.formatarMoedaSemPrefixo(r[0].Desconto);
+    linha.children[6].children[0].children[0].value = moedaUtils.formatarMoedaSemPrefixo(r[0].VlUnitario);
+    linha.children[7].textContent = moedaUtils.formatarMoedaSemPrefixo(r[0].TotalItem);
 
     zerarCamposDadosPagto(true);
 }
@@ -606,7 +656,7 @@ window.digitouPreco = (v: HTMLInputElement) => {
 
     let linha: any = v.parentElement.parentElement.parentElement;
     let numProduto: string = linha.children[0].children[0].value;
-    let r: PedidoProdutosDtoPedido[] = new Array<PedidoProdutosDtoPedido>();
+    let r: PedidoProdutosPedidoDto[] = new Array<PedidoProdutosPedidoDto>();
     r = lstProdSelecionados.filter(e => e.NumProduto == numProduto);
 
     r[0].Preco = parseFloat(val);
@@ -671,10 +721,10 @@ window.digitouVlEntrada = (v: HTMLInputElement) => {
 declare var novoPedidoDadosService: NovoPedidoDadosService;
 novoPedidoDadosService = new NovoPedidoDadosService();
 $("#totalPedido").ready(() => {
-    //itens.dtoPedido.ListaProdutos = lstProdSelecionados;
-    novoPedidoDadosService.dtoPedido = new DtoPedido();
-    novoPedidoDadosService.dtoPedido.ListaProdutos = new Array<PedidoProdutosDtoPedido>();
-    novoPedidoDadosService.dtoPedido.ListaProdutos = lstProdSelecionados;
+    //itens.pedidoDto.ListaProdutos = lstProdSelecionados;
+    novoPedidoDadosService.pedidoDto = new PedidoDto();
+    novoPedidoDadosService.pedidoDto.ListaProdutos = new Array<PedidoProdutosPedidoDto>();
+    novoPedidoDadosService.pedidoDto.ListaProdutos = lstProdSelecionados;
     let totalP: string = $("#totalPedido").val().toString();
     //totalP = novoPedidoDadosService.totalPedido().toString();
     if (totalP != "0") {
@@ -682,7 +732,7 @@ $("#totalPedido").ready(() => {
     }
 });
 
-function InserirNovoProduto(produto: PedidoProdutosDtoPedido, editandoLinha: boolean) {
+function InserirNovoProduto(produto: PedidoProdutosPedidoDto, editandoLinha: boolean) {
     //esse é um exemplo de como clonar uma div e adicionar 
     //let novo = $(".novoProduto").clone();
     //novo.removeClass("novoProduto")
@@ -729,7 +779,7 @@ function PedidoAlterado() {
 
     dadosPagto.tipoFormaPagto;
     dadosPagto.pedidoAlterado();
-    zerarCamposDadosPagto(true);
+    //zerarCamposDadosPagto(true);
 
 
 }
@@ -740,58 +790,68 @@ function zerarCamposDadosPagto(editandoLinha: boolean) {
 
     let selecione: any;
 
-    if (editandoLinha) {
-        $("#enumFormaPagto").prop('selectedIndex', 0);
-        ($("#enumFormaPagto") as any).formSelect();
+    //if (editandoLinha) {
+    //    $("#enumFormaPagto").prop('selectedIndex', 0);
+    //    ($("#enumFormaPagto") as any).formSelect();
+    //}
+
+    if (dadosPagto.enumFormaPagto == 1) {
+        //A vista   
+        //$("#Avista").css("display", "none");
+        selecione = $("#opcaoPagtoAvista").children()[0];
+        $("#opcaoPagtoAvista").html(selecione);
+        ($("#opcaoPagtoAvista") as any).formSelect();
+
+        $("#meioPagtoAVista").prop('selectedIndex', 0);
+        ($("#meioPagtoAVista") as any).formSelect();
     }
 
-    //A vista   
-    $("#Avista").css("display", "none");
-    selecione = $("#opcaoPagtoAvista").children()[0];
-    $("#opcaoPagtoAvista").html(selecione);
-    ($("#opcaoPagtoAvista") as any).formSelect();
-
-    $("#meioPagtoAVista").prop('selectedIndex', 0);
-    ($("#meioPagtoAVista") as any).formSelect();
-
     //ParcCartaoInternet
-    $("#PagtoCartaoInternet").css("display", "none");
-    selecione = $("#opcaoPagtoParcCartaoInternet").children()[0];
-    $("#opcaoPagtoParcCartaoInternet").html(selecione);
-    ($("#opcaoPagtoParcCartaoInternet") as any).formSelect();
+    if (dadosPagto.enumFormaPagto == 2) {
 
-    //ParcComEnt
-    $("#ParcComEntrada").css("display", "none");
-    $("#vlEntrada").val('');
+        selecione = $("#opcaoPagtoParcCartaoInternet").children()[0];
+        $("#opcaoPagtoParcCartaoInternet").html(selecione);
+        ($("#opcaoPagtoParcCartaoInternet") as any).formSelect();
+    }
 
-    $("#meioPagtoEntrada").prop('selectedIndex', 0);
-    ($("#meioPagtoEntrada") as any).formSelect();
+    if (dadosPagto.enumFormaPagto == 3) {
+        //ParcComEnt
+        //$("#ParcComEntrada").css("display", "none");
+        $("#vlEntrada").val('');
 
-    selecione = $("#opcaoPagtoParcComEntrada").children()[0];
-    $("#opcaoPagtoParcComEntrada").html(selecione);
-    ($("#opcaoPagtoParcComEntrada") as any).formSelect();
+        //$("#meioPagtoEntrada").prop('selectedIndex', 0);
+        ($("#meioPagtoEntrada") as any).formSelect();
 
-    $("#meioPagtoEntradaPrest").prop('selectedIndex', 0);
-    ($("#meioPagtoEntradaPrest") as any).formSelect();
+        selecione = $("#opcaoPagtoParcComEntrada").children()[0];
+        $("#opcaoPagtoParcComEntrada").html(selecione);
+        ($("#opcaoPagtoParcComEntrada") as any).formSelect();
 
-    $("#diasVenc").val('');
+        $("#meioPagtoEntradaPrest").prop('selectedIndex', 0);
+        ($("#meioPagtoEntradaPrest") as any).formSelect();
 
-    //ParcUnica
-    $("#ParcUnica").css("display", "none");
-    selecione = $("#opcaoPagtoParcUnica").children()[0];
-    $("#opcaoPagtoParcUnica").html(selecione);
-    ($("#opcaoPagtoParcUnica") as any).formSelect();
+        //$("#diasVenc").val('');
+    }
 
-    $("#meioPagtoParcUnica").prop('selectedIndex', 0);
-    ($("#meioPagtoParcUnica") as any).formSelect();
+    if (dadosPagto.enumFormaPagto == 4) {
+        //ParcUnica
+        //$("#ParcUnica").css("display", "none");
+        selecione = $("#opcaoPagtoParcUnica").children()[0];
+        $("#opcaoPagtoParcUnica").html(selecione);
+        ($("#opcaoPagtoParcUnica") as any).formSelect();
 
-    $("#diasVencParcUnica").val('');
+        $("#meioPagtoParcUnica").prop('selectedIndex', 0);
+        ($("#meioPagtoParcUnica") as any).formSelect();
 
-    //ParcCartaoMaquineta
-    $("#PagtoCartaoMaquineta").css("display", "none");
-    selecione = $("#opcaoPagtoParcCartaoMaquineta").children()[0];
-    $("#opcaoPagtoParcCartaoMaquineta").html(selecione);
-    ($("#opcaoPagtoParcCartaoMaquineta") as any).formSelect();
+        //$("#diasVencParcUnica").val('');
+    }
+
+    if (dadosPagto.enumFormaPagto == 5) {
+        //ParcCartaoMaquineta
+        //$("#PagtoCartaoMaquineta").css("display", "none");
+        selecione = $("#opcaoPagtoParcCartaoMaquineta").children()[0];
+        $("#opcaoPagtoParcCartaoMaquineta").html(selecione);
+        ($("#opcaoPagtoParcCartaoMaquineta") as any).formSelect();
+    }
 }
 
 
@@ -809,9 +869,9 @@ function RecalcularValoresSemCoeficiente(v: any, editandoLinha: boolean) {
         zerarCamposDadosPagto(editandoLinha);
 
         dadosPagto.qtdeParcVisa = qtdeParcVisa;
+        dadosPagto.permiteRAStatus = permiteRAStatus;
 
         dadosPagto.recalcularValoresComCoeficiente(v);
-
 
 
         if (dadosPagto.msgErro != "" && dadosPagto.msgErro != undefined) {
@@ -836,8 +896,9 @@ function RecalcularValoresSemCoeficiente(v: any, editandoLinha: boolean) {
             });
         }
 
+
         //passando a lista recalculada
-        lstProdSelecionados = dadosPagto.dtoPedido.ListaProdutos;
+        lstProdSelecionados = dadosPagto.pedidoDto.ListaProdutos;
 
         //alterando o total do pedido
         totalPedido();
@@ -924,6 +985,77 @@ window.recalcularValoresComCoeficiente = (e: HTMLSelectElement) => {
     inicializaCampos(v);
 }
 
+//Escuta as mudanças do select opcaoPagtoParcCartaoInternet
+$("#opcaoPagtoParcCartaoInternet").on('change', () => {
+
+    //recebe o componente html
+    let valor: string = $("#opcaoPagtoParcCartaoInternet").val().toString();
+
+
+    //vamos validar e descobrir a qtde de parcelas que esta sendo selecionado
+    //validação feita em dadosPagto
+    if (!!valor) {
+        dadosPagto.opcaoPagtoParcCartaoInternet = valor;
+        dadosPagto.RecalcularListaProdutos();
+        debugger;
+        removerTodosProdutos();
+        lstProdSelecionados.forEach((value) => {
+            InserirNovoProduto(value, false);
+        });
+
+        lstProdSelecionados = dadosPagto.pedidoDto.ListaProdutos;
+
+        //alterando o total do pedido
+        totalPedido();
+    }
+
+});
+
+$("#opcaoPagtoParcComEntrada").on('change', () => {
+    //recebe o componente html
+    let valor: string = $("#opcaoPagtoParcComEntrada").val().toString();
+
+    //vamos validar e descobrir a qtde de parcelas que esta sendo selecionado
+    //validação feita em dadosPagto
+    if (!!valor) {
+        dadosPagto.opcaoPagtoParcCartaoInternet = valor;
+        dadosPagto.RecalcularListaProdutos();
+        debugger;
+        removerTodosProdutos();
+        lstProdSelecionados.forEach((value) => {
+            InserirNovoProduto(value, false);
+        });
+
+        lstProdSelecionados = dadosPagto.pedidoDto.ListaProdutos;
+
+        //alterando o total do pedido
+        totalPedido();
+    }
+});
+
+$("#opcaoPagtoParcCartaoMaquineta").on('change', () => {
+    //recebe o componente html
+    let valor: string = $("#opcaoPagtoParcCartaoMaquineta").val().toString();
+
+    //vamos validar e descobrir a qtde de parcelas que esta sendo selecionado
+    //validação feita em dadosPagto
+    if (!!valor) {
+        dadosPagto.opcaoPagtoParcCartaoInternet = valor;
+        dadosPagto.RecalcularListaProdutos();
+        debugger;
+        removerTodosProdutos();
+        lstProdSelecionados.forEach((value) => {
+            InserirNovoProduto(value, false);
+        });
+
+        lstProdSelecionados = dadosPagto.pedidoDto.ListaProdutos;
+
+        //alterando o total do pedido
+        totalPedido();
+    }
+});
+
+
 function AtribuirListaParaSelect() {
 
 
@@ -936,9 +1068,12 @@ function AtribuirListaParaSelect() {
     }
     if (dadosPagto.enumFormaPagto == 2) {
         //ParcCartaoInternet
+        debugger;
         dadosPagto.lstMsg.forEach((value) => {
             $("#opcaoPagtoParcCartaoInternet").append("<option>" + value + "</option>");
         });
+
+        //($("#opcaoPagtoParcCartaoInternet") as any).addEventListener('onclick', 'RecalcularListaProdutos(this)');
         ($("#opcaoPagtoParcCartaoInternet") as any).formSelect();
     }
     if (dadosPagto.enumFormaPagto == 3) {
@@ -956,11 +1091,11 @@ function AtribuirListaParaSelect() {
         });
         ($("#opcaoPagtoParcSemEntrada") as any).formSelect();
     }
-    debugger;
+
     if (dadosPagto.enumFormaPagto == 5) {
         //ParcUnica
         dadosPagto.lstMsg.forEach((value) => {
-            $("#opcaoPagtoParcUnica").append("<option>" + value + "</option>");
+            $("#opcaoPagtoParcUnica").append("<option selected>" + value + "</option>");
         });
         ($("#opcaoPagtoParcUnica") as any).formSelect();
     }
@@ -975,20 +1110,22 @@ function AtribuirListaParaSelect() {
 }
 
 function InicializaDadosPagto() {
-    dadosPagto.coeficienteDto = new Array<DtoCoeficiente>();//lista de coeficiente
-    dadosPagto.dtoPedido = new DtoPedido();//Pedido
-    dadosPagto.dtoPedido.ListaProdutos = new Array<PedidoProdutosDtoPedido>();//lista de produtos selecionados
+    dadosPagto.coeficienteDto = new Array<CoeficienteDto>();//lista de coeficiente
+    dadosPagto.pedidoDto = new PedidoDto();//Pedido
+    dadosPagto.pedidoDto.ListaProdutos = new Array<PedidoProdutosPedidoDto>();//lista de produtos selecionados
     dadosPagto.constantes = new Constantes();//será utilizado para comparação
     dadosPagto.moedaUtils = new MoedaUtils();
     dadosPagto.lstMsg = new Array();
     //dadosPagto.tipoFormaPagto = 
 
     dadosPagto.coeficienteDto = lstCoeficiente;//recebe a lista que veio do servidor
-    dadosPagto.dtoPedido.ListaProdutos = lstProdSelecionados;//recebe lst dos produtos selcionados    
-    dadosPagto.enumFormaPagto = enumFormaPagto;//variavel com a opção da forma de pagto selecionada
+    dadosPagto.pedidoDto.ListaProdutos = lstProdSelecionados;//recebe lst dos produtos selcionados    
+    //dadosPagto.enumFormaPagto = enumFormaPagto;//variavel com a opção da forma de pagto selecionada
+
+
 }
 
-function InscreveLinhaProduto(produto: PedidoProdutosDtoPedido, index: any) {
+function InscreveLinhaProduto(produto: PedidoProdutosPedidoDto, index: any) {
     console.log(index);
     let texto: any = $("<div></div>");
     texto.html(produto.Descricao);
@@ -1002,14 +1139,17 @@ function InscreveLinhaProduto(produto: PedidoProdutosDtoPedido, index: any) {
     $('[name="[' + index + '].VlLista"]').val(moedaUtils.formatarMoedaSemPrefixo(produto.VlLista));
 
 
-    $('[name="[' + index + '].Desconto"]').val(produto.Desconto);
+    $('[name="[' + index + '].Desconto"]').val(moedaUtils.formatarMoedaSemPrefixo(produto.Desconto));
+    debugger;
+
     $('[name="[' + index + '].VlUnitario"]').val(moedaUtils.formatarMoedaSemPrefixo(produto.VlUnitario));
+
     $('[name="[' + index + '].VlTotalItem"]').text(moedaUtils.formatarMoedaSemPrefixo(produto.TotalItem));
     $('[name="[' + index + '].VlTotalItem"]').val(moedaUtils.formatarMoedaSemPrefixo(produto.TotalItem));
 
 }
 
-function VerificarEstoque(itens: Itens, produto: PedidoProdutosDtoPedido, novaClasse: string) {
+function VerificarEstoque(itens: Itens, produto: PedidoProdutosPedidoDto, novaClasse: string) {
 
     //será necessário alterar a verificação pq não estamos trazendo o estoque ao carregar todos produtos
     let filho = $("." + novaClasse + "").find("[name='estoqueIndisponivel']");
@@ -1021,7 +1161,7 @@ function VerificarEstoque(itens: Itens, produto: PedidoProdutosDtoPedido, novaCl
     }
 }
 
-function VerificarProdutoAviso(itens: Itens, produto: PedidoProdutosDtoPedido) {
+function VerificarProdutoAviso(itens: Itens, produto: PedidoProdutosPedidoDto) {
 
     if (itens.produtoTemAviso(produto)) {
         let novo = $("<tr><\tr>");
@@ -1033,7 +1173,7 @@ function VerificarProdutoAviso(itens: Itens, produto: PedidoProdutosDtoPedido) {
     }
 }
 
-function verificarRegraProdutoCD(novaclasse: string, produto: PedidoProdutosDtoPedido) {
+function verificarRegraProdutoCD(novaclasse: string, produto: PedidoProdutosPedidoDto) {
 
     let cdManual = $("#chkManual").prop('checked');
     let selecaoCd = $("#selecaoCd").val();
@@ -1044,7 +1184,7 @@ function verificarRegraProdutoCD(novaclasse: string, produto: PedidoProdutosDtoP
             data: { produto: JSON.stringify(produto), id_nfe_emitente_selecao_manual: selecaoCd },
             dataType: "json",
             success: function (data) {
-                debugger;
+
                 if (!!data) {
                     AdicionarMsgProdutoECD(data, novaclasse);
                 }
@@ -1092,13 +1232,13 @@ function AdicionarMsgProdutoECD(v: ProdutoValidadoComEstoqueDto, novaClasse: str
 function AtribuirEstoqueAoProduto(produto: ProdutoDto) {
     lstprodutos.ProdutoDto.filter((e) => {
         if (e.Produto == produto.Produto && e.Fabricante == produto.Fabricante) {
-            debugger;
+
             e.Estoque = produto.Estoque;
         }
     });
 }
 
-function VerificarQtdeVendaPermitida(itens: Itens, produto: PedidoProdutosDtoPedido, novaClasse: string) {
+function VerificarQtdeVendaPermitida(itens: Itens, produto: PedidoProdutosPedidoDto, novaClasse: string) {
     itens.msgQtdePermitida;
 
     //será necessário alterar a verificação
@@ -1139,12 +1279,12 @@ window.continuar = (): any => {
         return false;
     }
 
-    if (dadosPagto.dtoPedido == null || dadosPagto.dtoPedido == undefined) {
+    if (dadosPagto.pedidoDto == null || dadosPagto.pedidoDto == undefined) {
         modalError();
         err.MostrarMsg("Selecione ao menos um produto para continuar.");
         return false;
     } else {
-        dadosPagto.dtoPedido.ListaProdutos.forEach(r => {
+        dadosPagto.pedidoDto.ListaProdutos.forEach(r => {
             if (itens.qtdeVendaPermitida(r)) {
                 q++;
             }
@@ -1157,7 +1297,7 @@ window.continuar = (): any => {
             return;
         }
         //validação: tem que ter algum produto
-        if (dadosPagto.dtoPedido.ListaProdutos.length === 0) {
+        if (dadosPagto.pedidoDto.ListaProdutos.length === 0) {
             modalError();
             err.MostrarMsg("Selecione ao menos um produto para continuar.");
 
@@ -1181,11 +1321,11 @@ window.continuar = (): any => {
         } else {
 
             //vamos tentar retornar o objeto serializado para a tela mandar para o controller
-            dadosPagto.novoPedidoDadosService.dtoPedido.FormaPagtoCriacao = dadosPagto.dtoPedido.FormaPagtoCriacao;
-            dadosPagto.novoPedidoDadosService.dtoPedido.ListaProdutos = dadosPagto.dtoPedido.ListaProdutos;
+            dadosPagto.novoPedidoDadosService.pedidoDto.FormaPagtoCriacao = dadosPagto.pedidoDto.FormaPagtoCriacao;
+            dadosPagto.novoPedidoDadosService.pedidoDto.ListaProdutos = dadosPagto.pedidoDto.ListaProdutos;
 
-            //$("#lstProdutosSelecionados").val(dadosPagto.novoPedidoDadosService.dtoPedido.ListaProdutos.toString());
-            $("#lstProdutosSelecionados").val(itens.dtoPedido.ListaProdutos.toString());
+            //$("#lstProdutosSelecionados").val(dadosPagto.novoPedidoDadosService.pedidoDto.ListaProdutos.toString());
+            $("#lstProdutosSelecionados").val(itens.pedidoDto.ListaProdutos.toString());
             //criar metodo para passar os campos para FormaPagtoCriacao
             if (AtribuirValoresFormaPagtoCriacao()) {
                 return true;
@@ -1201,63 +1341,63 @@ window.continuar = (): any => {
 function AtribuirValoresFormaPagtoCriacao(): boolean {
 
     let totalPedido = $("#totalPedido").text().trim();
-    $("#Tipo_parcelamento").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Tipo_parcelamento);
-    $("#TotalDestePedido").val(moedaUtils.formatarMoedaSemPrefixo(dadosPagto.dtoPedido.VlTotalDestePedido));
+    $("#Tipo_parcelamento").val(dadosPagto.pedidoDto.FormaPagtoCriacao.Tipo_parcelamento);
+    $("#TotalDestePedido").val(moedaUtils.formatarMoedaSemPrefixo(dadosPagto.pedidoDto.VlTotalDestePedido));
 
     if (dadosPagto.enumFormaPagto == 1) {
-        $("#Rb_forma_pagto").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Rb_forma_pagto);
-        $("#Op_av_forma_pagto").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Op_av_forma_pagto);
-        $("#Qtde_Parcelas").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Qtde_Parcelas);
+        $("#Rb_forma_pagto").val(dadosPagto.pedidoDto.FormaPagtoCriacao.Rb_forma_pagto);
+        $("#Op_av_forma_pagto").val(dadosPagto.pedidoDto.FormaPagtoCriacao.Op_av_forma_pagto);
+        $("#Qtde_Parcelas").val(dadosPagto.pedidoDto.FormaPagtoCriacao.Qtde_Parcelas);
         return true;
     }
     //ParcCartaoInternet
     if (dadosPagto.enumFormaPagto == 2) {
         //Verificar se há necessidade de passar o valores para esse 
-        $("#Rb_forma_pagto").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Rb_forma_pagto);
-        $("#C_pc_qtde").val(dadosPagto.dtoPedido.FormaPagtoCriacao.C_pc_qtde);
-        $("#C_pc_valor").val(moedaUtils.formatarMoedaSemPrefixo(dadosPagto.dtoPedido.FormaPagtoCriacao.C_pc_valor));
-        $("#Qtde_Parcelas").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Qtde_Parcelas);
+        $("#Rb_forma_pagto").val(dadosPagto.pedidoDto.FormaPagtoCriacao.Rb_forma_pagto);
+        $("#C_pc_qtde").val(dadosPagto.pedidoDto.FormaPagtoCriacao.C_pc_qtde);
+        $("#C_pc_valor").val(moedaUtils.formatarMoedaSemPrefixo(dadosPagto.pedidoDto.FormaPagtoCriacao.C_pc_valor));
+        $("#Qtde_Parcelas").val(dadosPagto.pedidoDto.FormaPagtoCriacao.Qtde_Parcelas);
         return true;
     }
     //ParcComEnt
     if (dadosPagto.enumFormaPagto == 3) {
         //dadosPagto.vlEntrada já foi passado para calcular os valores com coeficiente
-        $("#Rb_forma_pagto").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Rb_forma_pagto);
-        $("#Op_pce_entrada_forma_pagto").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Op_pce_entrada_forma_pagto);
-        $("#Op_pce_prestacao_forma_pagto").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto);
+        $("#Rb_forma_pagto").val(dadosPagto.pedidoDto.FormaPagtoCriacao.Rb_forma_pagto);
+        $("#Op_pce_entrada_forma_pagto").val(dadosPagto.pedidoDto.FormaPagtoCriacao.Op_pce_entrada_forma_pagto);
+        $("#Op_pce_prestacao_forma_pagto").val(dadosPagto.pedidoDto.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto);
         $("#C_pce_entrada_valor").val(moedaUtils.formatarMoedaSemPrefixo(
-            dadosPagto.dtoPedido.FormaPagtoCriacao.C_pce_entrada_valor));
-        $("#C_pce_prestacao_qtde").val(dadosPagto.dtoPedido.FormaPagtoCriacao.C_pce_prestacao_qtde);
+            dadosPagto.pedidoDto.FormaPagtoCriacao.C_pce_entrada_valor));
+        $("#C_pce_prestacao_qtde").val(dadosPagto.pedidoDto.FormaPagtoCriacao.C_pce_prestacao_qtde);
         $("#C_pce_prestacao_valor").val(moedaUtils.formatarMoedaSemPrefixo(
-            dadosPagto.dtoPedido.FormaPagtoCriacao.C_pce_prestacao_valor));
-        $("#C_pce_prestacao_periodo").val(dadosPagto.dtoPedido.FormaPagtoCriacao.C_pce_prestacao_periodo);
-        $("#Qtde_Parcelas").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Qtde_Parcelas);
+            dadosPagto.pedidoDto.FormaPagtoCriacao.C_pce_prestacao_valor));
+        $("#C_pce_prestacao_periodo").val(dadosPagto.pedidoDto.FormaPagtoCriacao.C_pce_prestacao_periodo);
+        $("#Qtde_Parcelas").val(dadosPagto.pedidoDto.FormaPagtoCriacao.Qtde_Parcelas);
         return true;
     }
     //ParcSemEnt não esta sendo usado
     if (dadosPagto.enumFormaPagto == 4) {
 
     }
-    debugger;
+
     //ParcUnica
     if (dadosPagto.enumFormaPagto == 5) {
-        
-        $("#Rb_forma_pagto").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Rb_forma_pagto);
-        $("#Op_pu_forma_pagto").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Op_pu_forma_pagto);
+
+        $("#Rb_forma_pagto").val(dadosPagto.pedidoDto.FormaPagtoCriacao.Rb_forma_pagto);
+        $("#Op_pu_forma_pagto").val(dadosPagto.pedidoDto.FormaPagtoCriacao.Op_pu_forma_pagto);
         $("#C_pu_valor").val(moedaUtils.formatarMoedaSemPrefixo(
-            dadosPagto.dtoPedido.FormaPagtoCriacao.C_pu_valor));
-        $("#C_pu_vencto_apos").val(dadosPagto.dtoPedido.FormaPagtoCriacao.C_pu_vencto_apos);
-        $("#Qtde_Parcelas").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Qtde_Parcelas);
+            dadosPagto.pedidoDto.FormaPagtoCriacao.C_pu_valor));
+        $("#C_pu_vencto_apos").val(dadosPagto.pedidoDto.FormaPagtoCriacao.C_pu_vencto_apos);
+        $("#Qtde_Parcelas").val(dadosPagto.pedidoDto.FormaPagtoCriacao.Qtde_Parcelas);
         return true;
     }
     //ParcCartaoMaquineta
     if (dadosPagto.enumFormaPagto == 6) {
-        $("#Rb_forma_pagto").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Rb_forma_pagto);
-        $("#C_pc_maquineta_qtde").val(dadosPagto.dtoPedido.FormaPagtoCriacao.C_pc_maquineta_qtde);
+        $("#Rb_forma_pagto").val(dadosPagto.pedidoDto.FormaPagtoCriacao.Rb_forma_pagto);
+        $("#C_pc_maquineta_qtde").val(dadosPagto.pedidoDto.FormaPagtoCriacao.C_pc_maquineta_qtde);
         $("#C_pc_maquineta_valor").val(moedaUtils.formatarMoedaSemPrefixo(
-            dadosPagto.dtoPedido.FormaPagtoCriacao.C_pc_maquineta_valor));
-        $("#C_pc_maquineta_qtde").val(dadosPagto.dtoPedido.FormaPagtoCriacao.C_pc_maquineta_qtde);
-        $("#Qtde_Parcelas").val(dadosPagto.dtoPedido.FormaPagtoCriacao.Qtde_Parcelas);
+            dadosPagto.pedidoDto.FormaPagtoCriacao.C_pc_maquineta_valor));
+        $("#C_pc_maquineta_qtde").val(dadosPagto.pedidoDto.FormaPagtoCriacao.C_pc_maquineta_qtde);
+        $("#Qtde_Parcelas").val(dadosPagto.pedidoDto.FormaPagtoCriacao.Qtde_Parcelas);
         return true;
     }
 }
@@ -1267,12 +1407,12 @@ declare var testeJson: string;
 function AtribuirFormaPagtoParaDadosPagto(): void {
     let err = new ErrorModal();
 
-    //vamos inicializar o dadosPagto.dtoPedido.FormaPagtoCriacao
-    dadosPagto.dtoPedido.FormaPagtoCriacao = new DtoFormaPagtoCriacao();
+    //vamos inicializar o dadosPagto.pedidoDto.FormaPagtoCriacao
+    dadosPagto.pedidoDto.FormaPagtoCriacao = new FormaPagtoCriacaoDto();
 
     dadosPagto.novoPedidoDadosService = new NovoPedidoDadosService();
     dadosPagto.novoPedidoDadosService.criarNovo();
-    dadosPagto.dtoPedido.FormaPagtoCriacao = new DtoFormaPagtoCriacao();
+    dadosPagto.pedidoDto.FormaPagtoCriacao = new FormaPagtoCriacaoDto();
 
     //A vista
     if (dadosPagto.enumFormaPagto == 1) {

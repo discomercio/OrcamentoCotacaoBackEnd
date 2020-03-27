@@ -1,24 +1,24 @@
-﻿import { DtoPedido } from "../DtosTs/DtoPedido/DtoPedido";
-import { DtoEnderecoEntregaClienteCadastro } from "../DtosTs/DtoCliente/DtoEnderecoEntregaClienteCadastro";
-import { DtoDetalhesPedido } from "../DtosTs/DtoPedido/DtoDetalhesPedido";
-import { DtoFormaPagtoCriacao } from "../DtosTs/DtoPedido/DtoFormaPagtoCriacao";
+﻿import { PedidoDto } from "../DtosTs/PedidoDto/PedidoDto";
+import { EnderecoEntregaClienteCadastroDto } from "../DtosTs/ClienteDto/EnderecoEntregaClienteCadastroDto";
+import { FormaPagtoCriacaoDto } from "../DtosTs/PedidoDto/FormaPagtoCriacaoDto";
+
 
 export class NovoPedidoDadosService {
 
     //esta classe mantém o PrePedidoDto sendo criado
     //gaurdamos em um serviço para manter os dados
 
-    public dtoPedido: DtoPedido = null;
+    public pedidoDto: PedidoDto = null;
     constructor() { }
 
-    public setar(dtoPedido: DtoPedido) {
-        this.dtoPedido = dtoPedido;
+    public setar(pedidoDto: PedidoDto) {
+        this.pedidoDto = pedidoDto;
     }
 
     //somente setar dados do cliente
-    public setarDTosParciais(clienteCadastroDto: DtoDadosClienteCadastro,
-        enderecoEntregaDtoClienteCadastro: DtoEnderecoEntregaClienteCadastro) {
-        let p = this.dtoPedido;
+    public setarDTosParciais(clienteCadastroDto: DadosClienteCadastroDto,
+        enderecoEntregaDtoClienteCadastro: EnderecoEntregaClienteCadastroDto) {
+        let p = this.pedidoDto;
         p.DadosCliente = clienteCadastroDto;
         p.EnderecoEntrega = enderecoEntregaDtoClienteCadastro;
     }
@@ -49,8 +49,8 @@ export class NovoPedidoDadosService {
     //}
 
     public criarNovo() {
-        this.dtoPedido = new DtoPedido();
-        let p = this.dtoPedido;
+        this.pedidoDto = new PedidoDto();
+        let p = this.pedidoDto;
         //temos que criar os objetos...
         p.NumeroPrePedido = "";
         p.DataHoraPedido = "";
@@ -66,7 +66,7 @@ export class NovoPedidoDadosService {
         p.FormaPagto = new Array();
         p.St_Orc_Virou_Pedido = false;
         p.NumeroPedido = "";
-        p.FormaPagtoCriacao = new DtoFormaPagtoCriacao();
+        p.FormaPagtoCriacao = new FormaPagtoCriacaoDto();
 
     }
 

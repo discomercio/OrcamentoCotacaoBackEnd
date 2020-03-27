@@ -1325,7 +1325,7 @@ namespace Loja.Bll.ClienteBll
                                             where c.Tcliente.Cnpj_Cpf == cpf_cnpj &&
                                                   c.St_Entrega == Constantes.Constantes.ST_ENTREGA_ENTREGUE
                                             select c).ToList()
-                                 orderby new { c.Data, c.Pedido } descending
+                                 orderby new { c.Pedido } descending
                                  select c.Pedido;
             if (lstRetornoTask != null)
             {

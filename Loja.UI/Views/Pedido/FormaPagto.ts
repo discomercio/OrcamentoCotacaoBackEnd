@@ -1,7 +1,8 @@
-﻿import { DtoCoeficiente } from "../../DtosTs/DtoCoeficiente/DtoCoeficiente";
-import { PedidoProdutosDtoPedido } from "../../DtosTs/DtoPedido/DtoPedidoProdutosPedido";
+﻿
 import { Constantes } from "../../UtilTs/Constantes/Constantes";
 import { MoedaUtils } from "../../UtilTs/MoedaUtils/moedaUtils";
+import { CoeficienteDto } from "../../DtosTs/CoeficienteDto/CoeficienteDto";
+import { PedidoProdutosPedidoDto } from "../../DtosTs/PedidoDto/PedidoProdutosPedidoDto";
 
 //variaveis referentes a tela
 let opcaoPagtoAvista: string;
@@ -22,8 +23,8 @@ let vlEntrada: number;
 
 export class FormaPagto {
     lstMsg: string[] = [];
-    lstCoeficiente: DtoCoeficiente[] = [];
-    lstProdutos: PedidoProdutosDtoPedido[] = [];
+    lstCoeficiente: CoeficienteDto[] = [];
+    lstProdutos: PedidoProdutosPedidoDto[] = [];
     constantes: Constantes;
     moedaUtils: MoedaUtils;
 

@@ -178,7 +178,7 @@
             if ($('#produtor').val() == "2") {
                 //contribuinte
                 //1 = não / 2 = sim / 3 = isento
-                debugger;
+                
                 if ($("#contribuinte").val() != "1" &&
                     $("#contribuinte").val() != "2" &&
                     $("#contribuinte").val() != "3") {
@@ -207,7 +207,7 @@
             var lblIe = $('#ie').val();
             //lblIe = StringUtils.retorna_so_digitos(lblIe);
             lblIe = lblIe.replace('.', '').replace('-', '').replace('/', '');
-            debugger;
+            
             if ($("#contribuinte").val() != "0" &&
                 $("#contribuinte").val() != "1" &&
                 $("#contribuinte").val() != "2" &&
@@ -289,7 +289,7 @@
 
         var cpfCnpj;
         if ($('#permiteEditar').val() == "True") {
-            debugger;
+            
             //cnpj = 14
             //cpf = 11
             cpfCnpj = $('#cpf_cnpj').val().replace(/[\.\/\- ,]/g, '');
@@ -420,14 +420,14 @@
         if ($('#cep').val() != null) {
             //$('#naoseicep').addClass('pulse');
 
-            debugger;
+            
             $.ajax({
                 url: "../Cep/BuscarCep/",
                 type: "GET",
                 data: { cep: $('#cep').val() },
                 dataType: "json",
                 success: function (data) {
-                    debugger;
+                    
                     if (data[0].Endereco != "") {
                         $('#endereco').prop("readonly", true);
                         $("#endereco").val(data[0].Endereco);

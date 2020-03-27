@@ -151,13 +151,13 @@ namespace Loja.UI.Controllers
             viewModel.ComIndicacao = 0;
 
             //Montar o select do PedBonshop
-            List<string> lstPedidoBonshop = (await clienteBll.BuscarListaPedidosBonshop(cpf_cnpj)).ToList();
-            List<SelectListItem> lstPed = new List<SelectListItem>();
-            lstPed.Add(new SelectListItem { Value = "0", Text = "Selecione" });
-            for (int i = 0; i < lstPedidoBonshop.Count; i++)
-            {
-                lstPed.Add(new SelectListItem { Value = lstPedidoBonshop[i], Text = lstPedidoBonshop[i] });
-            }
+            //List<string> lstPedidoBonshop = (await clienteBll.BuscarListaPedidosBonshop(cpf_cnpj)).ToList();
+            //List<SelectListItem> lstPed = new List<SelectListItem>();
+            //lstPed.Add(new SelectListItem { Value = "0", Text = "Selecione" });
+            //for (int i = 0; i < lstPedidoBonshop.Count; i++)
+            //{
+            //    lstPed.Add(new SelectListItem { Value = lstPedidoBonshop[i], Text = lstPedidoBonshop[i] });
+            //}
             viewModel.PedBonshop = new SelectList(lstCd, "Value", "Text");
 
             return View(viewModel);

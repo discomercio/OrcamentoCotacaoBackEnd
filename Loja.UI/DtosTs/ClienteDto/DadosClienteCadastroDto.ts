@@ -1,4 +1,4 @@
-﻿class DtoDadosClienteCadastro {
+﻿class DadosClienteCadastroDto {
     Loja: string;
     Indicador_Orcamentista: string;
     Vendedor: string;
