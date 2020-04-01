@@ -117,27 +117,6 @@ namespace PrepedidoApi
             app.Use(async (context, next) =>
             {
                 await next();
-                //Estamos fazendo essas verificaçoes para poder forçar o return de "403" para que 
-                //possamos fazer o ratamento no Angular
-                //O objetivo aqui é fazer a validação de que o usuário tem permissão de acesso
-                //Em x.SecurityTokenValidators.Add estamos fazendo a chamada para validar a cada requisição que é feita
-                if (context.Request.Method.ToLower() != "options" && context.Request.Path.HasValue &&
-                context.Response.StatusCode != 404)
-                {
-                    var autenticado = context.User.Identity.IsAuthenticated;
-                    if (!autenticado
-                        && !context.Request.Path.Value.ToLower().Contains("fazerlogin")
-                        && !context.Request.Path.Value.ToLower().Contains("alterarsenha"))
-                    {
-                        /*
-                         * OBS: estamos recebendo um "ERRO" no servidor ao fazer o acesso
-                         *      pois não podemos reescrever o StatusCode após o "context" ser criado.
-                         * SOLUÇÃO: será necessário escrever o StatusCode antes de ser gerado o Response do "context".
-                         */
-                        context.Response.StatusCode = 403; //negado!
-                        return;
-                    }
-                }
 
                 // If there's no available file and the request doesn't contain an extension, we're probably trying to access a page.
                 // Rewrite request to use app root
