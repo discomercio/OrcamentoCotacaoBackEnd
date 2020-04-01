@@ -72,6 +72,7 @@ export class PrepedidoListarService {
         error: (err) => {
           this.carregando = false;
           this.errosPrepedidos$.next(err);
+          this.errosPrepedidos$ = new BehaviorSubject(null);
         },
         complete: () => {
           this.carregando = false;

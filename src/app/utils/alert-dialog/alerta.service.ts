@@ -36,10 +36,10 @@ export class AlertaService {
   public static mostrandoErroNaoAutorizado: boolean = false;
   //esta é um pouco mais estreita...
   public mostrarErroInternet(r: any): void {
-    
+
     if (r != null) {
       let error: HttpErrorResponse = r;
-      if (error.status == 403) {
+      if (error.status == 403 || error.status == 401) {
         //colocamos um id no botão para poder simular o click
         let sair = document.getElementById('btnSair');
 
@@ -49,8 +49,8 @@ export class AlertaService {
         }
 
         AlertaService.mostrandoErroNaoAutorizado = true;
-
         this.mostrarMensagemComLargura("Erro: Acesso não autorizado!", "250px", () => {
+          AlertaService.mostrandoErroNaoAutorizado = false;
           sair.click();
         });
 
@@ -77,15 +77,13 @@ export class AlertaService {
       }
 
       //erro inesperado Favor entrar em contato com o suporte técnico + status.
-      if (error.status != 403 && error.status != 0 && error.status != 500) {
-        this.mostrarMensagemComLargura(
-          "Erro inesperado! Favor entrar em contato com o suporte técnico (Código: " + error.status + ").",
-          "250px", null);
+      this.mostrarMensagemComLargura(
+        "Erro inesperado! Favor entrar em contato com o suporte técnico (Código: " + error.status + ").",
+        "250px", null);
 
-        return;
-      }
+      return;
     }
-    else{
+    else {
       //erro inesperado Favor entrar em contato com o suporte técnico + status == null.
       this.mostrarMensagemComLargura(
         "Erro inesperado! Favor entrar em contato com o suporte técnico (null).",

@@ -64,6 +64,7 @@ export class PedidoListarService {
         error: (err) => {
           this.carregando = false;
           this.errosPedidos$.next(err);
+          this.errosPedidos$ = new BehaviorSubject(null);
         },
         complete: () => {
           this.carregando = false;
