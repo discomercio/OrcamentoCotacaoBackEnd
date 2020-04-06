@@ -235,8 +235,8 @@ namespace InfraBanco.Modelos
         [Required]
         public short Pu_Forma_Pagto { get; set; }
 
-        //[Column("pu_valor", TypeName = "money")]
-        //public decimal? Pu_Valor { get; set; }
+        [Column("pu_valor", TypeName = "money")]
+        public decimal? Pu_Valor { get; set; }
 
         [Column("pu_vencto_apos")]
         [Required]

@@ -37,15 +37,15 @@ namespace PrepedidoApi.Utils
                     //temos um problema e precisamos mandar algum valor para avisar que é senha expirada ou usuario bloqueado para mostrar na tela
                     UsuarioLogin usuario = new UsuarioLogin { IdErro = idErro };
                     return usuario;
-                }
-                
+                }                
             }
-            var loja = await acessoBll.BuscarLojaUsuario(apelido);
+            
 
             if (string.IsNullOrEmpty(dadosCliente))
                 return null;
             else
-            {               
+            {
+                var loja = await acessoBll.BuscarLojaUsuario(apelido);
                 UsuarioLogin usuario = new UsuarioLogin { Apelido = apelido, Nome = dadosCliente.ToString(), Loja = loja};
                 return usuario;
             }

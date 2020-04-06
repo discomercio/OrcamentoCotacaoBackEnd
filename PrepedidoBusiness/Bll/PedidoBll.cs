@@ -1104,7 +1104,7 @@ namespace PrepedidoBusiness.Bll
                 case Constantes.COD_FORMA_PAGTO_PARCELA_UNICA:
                     lista.Add(String.Format("Parcela Única: " + " {0:c2} (" +
                         Util.OpcaoFormaPagto(Convert.ToString(pedido.Pu_Forma_Pagto)) +
-                        ") vencendo após " + pedido.Pu_Vencto_Apos + " dias"));
+                        ") vencendo após " + pedido.Pu_Vencto_Apos, pedido.Pu_Valor) + " dias");
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO:
                     lista.Add(String.Format("Parcelado no Cartão (internet) em " + pedido.Pc_Qtde_Parcelas + " x " +
