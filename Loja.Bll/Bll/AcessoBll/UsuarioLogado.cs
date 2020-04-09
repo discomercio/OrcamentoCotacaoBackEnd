@@ -77,6 +77,13 @@ namespace Loja.Bll.Bll.AcessoBll
             //mais dados na session
             if (tusuario == null)
                 tusuario = await usuarioAcessoBll.UsuarioCarregar(usuarioLogadoParaLAterarSessao.Usuario_atual);
+            if (tusuario == null)
+            {
+                var msg = $"Erro: usuarioAcessoBll.UsuarioCarregar {usuarioLogadoParaLAterarSessao.Usuario_atual} não encontrou o usuário";
+                logger.LogError(msg);
+                //voltamos e permitimos o acesso. No fundo, não tem autorização nenhuma.
+                return;
+            }
             if (loja == null)
                 loja = tusuario.Loja;
             if (loja_nome == null)

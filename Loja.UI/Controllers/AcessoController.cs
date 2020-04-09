@@ -87,6 +87,7 @@ namespace Loja.UI.Controllers
             if (String.IsNullOrEmpty(loginViewModel.Apelido) || String.IsNullOrEmpty(loginViewModel.Senha))
             {
                 loginViewModel.ErroUsuarioSenha = true;
+                loginViewModel.PermitirManterConectado = configuracao.PermitirManterConectado;
                 return View("Login", loginViewModel);
             }
 
@@ -95,6 +96,7 @@ namespace Loja.UI.Controllers
             if (!loginViewModel.LoginUsuarioRetorno.Sucesso)
             {
                 loginViewModel.ErroUsuarioSenha = true;
+                loginViewModel.PermitirManterConectado = configuracao.PermitirManterConectado;
                 return View("Login", loginViewModel);
             }
             if (loginViewModel.LoginUsuarioRetorno.PrecisaAlterarSenha)
