@@ -52,20 +52,13 @@ namespace Loja.Bll.Bll.PedidoBll
             //'								" AND (tPedBase.loja NOT IN ('" & NUMERO_LOJA_VRF2 & "','" & NUMERO_LOJA_VRF3 & "','" & NUMERO_LOJA_VRF4 & "','" & NUMERO_LOJA_VRF5 & "','" & NUMERO_LOJA_VRF6 & "','" & NUMERO_LOJA_VRF7 & "','" & NUMERO_LOJA_VRF8 & "'))"
 
 
+            var PRAZO_EXIBICAO_CANCEL_AUTO_PEDIDO = 4;
             if (!usuarioLogado.Operacao_permitida(Constantes.Constantes.OP_LJA_CONSULTA_UNIVERSAL_PEDIDO_ORCAMENTO))
             {
                 strWhereBase = strWhereBase + " AND (tPedBase.vendedor = '" + usuarioLogado.Usuario_atual + "')";
+                PRAZO_EXIBICAO_CANCEL_AUTO_PEDIDO = 2;
             }
 
-
-            //TODO: etsa variavel depende po erfil do usuario
-            /*    if operacao_permitida(OP_LJA_CONSULTA_UNIVERSAL_PEDIDO_ORCAMENTO, s_lista_operacoes_permitidas) then
-            PRAZO_EXIBICAO_CANCEL_AUTO_PEDIDO = 2
-            end if
-
-                */
-
-            var PRAZO_EXIBICAO_CANCEL_AUTO_PEDIDO = 4;
 
             var strSqlVlPagoCartao = " Coalesce(" +
                             "(" +
