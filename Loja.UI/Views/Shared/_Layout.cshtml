@@ -66,25 +66,31 @@
 
 <body>
     <header>
-        <div class="navbar navbar-fixed">
+        <div class="navbar navbar-fixed alturaheader">
             <nav class="navbar">
+                <a href="#" data-target="slide-out" class="sidenav-trigger" title="Menu"><i class="material-icons">menu</i></a>
+
                 @*<a class="material-icons">notifications</a>*@
                 @if (usuarioLogado.SessaoAtiva)
                 {
-                    <div style="float: right">
-                        <div class="row s12">
-                            <div class="col " style="font-size: 20px;">
+                    //deixamos ocultando em tela pequena
+                    //fica confuso ter um menu do lado direito e outro do lado esquerdo
+                    //para resolver, acho que deveria ir para uma página com o combo de lojas
+                    //com isto, o drop-down de loja não funciona: overflow: hidden;
+                    <div class="divcabecalho hide-on-med-and-down">
+                        <ul class="right">
+                            <li style="font-size: 20px;padding-right: 16px;">
                                 Olá @usuarioLogado.Usuario_nome_atual
-                            </div>
+                            </li>
                             @{
                                 var lista = usuarioLogado.LojasDisponiveis.OrderBy(r => r.Nome).ToList();
                             }
                             @if (lista.Count > 0)
                             {
-                                <div class="col " style="font-size: 20px; padding-right: 8px">
+                                <li style="font-size: 20px; padding-right: 16px">
                                     Loja:
-                                </div>
-                                <div class="col " style="padding-top: 18px; padding-left: 0px" title="Alterar loja ativa - ainda não implementado">
+                                </li>
+                                <li style="padding-top: 18px; padding-left: 0px" title="Alterar loja ativa">
                                     @{
                                         var listaSl = new List<SelectListItem>();
                                         foreach (var item in lista)
@@ -95,16 +101,15 @@
                                     }
 
                                     @Html.DropDownList("cabecacomboLojas", listaSl, new { @id = "cabecacomboLojas" })
-                                </div>
+                                </li>
                             }
 
-                            <div class="col ">
+                            <li>
                                 <a href="~/Acesso/Logout" class="material-icons" title="Logout" style="vertical-align: text-bottom;">
                                     exit_to_app
                                 </a>
-                                <a href="~/Acesso/Logout" style="    margin-right: 20px;">SAIR</a>
-                            </div>
-                        </div>
+                            </li>
+                        </ul>
                     </div>
                 }
                 else
@@ -128,95 +133,97 @@
             });
         </script>
     </header>
-    <div class="col s12" id="corpo">
-        @if (usuarioLogado.SessaoAtiva)
-        {
-            <style>
-                .menudesabilitado {
-                    cursor: not-allowed;
-                }
-            </style>
-            <ul class="sidenav sidenav-fixed" style="width:18%; white-space:nowrap">
-                <li>
-                    <ul class="collapsible">
-                        <li>
-                            <div class="collapsible-header">Pedidos</div>
-                            <ul class="collapsible-body">
-                                <li>
-                                    <a class="menudesabilitado" href="#!">Análise de Pré Pedidos</a>
-                                </li>
-                                <li>
-                                    <a href="@Url.Action("Index", "Cliente")">Novo Pedido</a>
-                                </li>
-                                <li>
-                                    <a href="@Url.Action("CancelamentoAutomatico", "Pedido")"><span>Cancelamento Automático</span></a>
-                                </li>
-                                <li>
-                                    <a class="menudesabilitado" href="#!">Indicadores</a>
-                                </li>
-                                <li>
-                                    <a class="menudesabilitado" href="#!">Consulta Pedido</a>
-                                </li>
-                                <li>
-                                    <a class="menudesabilitado" href="#!">Consulta Pré Pedido</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <div class="collapsible-header">Produtos</div>
-                            <ul class="collapsible-body">
-                                <li>
-                                    <a href="@Url.Action("Index", "Produtos")">Consulta Lista de Preços</a>
-                                </li>
-                                <li>
-                                    <a class="menudesabilitado" href="#!">Consulta Custo Financeiro</a>
-                                </li>
-                                <li>
-                                    <a class="menudesabilitado" href="#!">Indicadores</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <div class="collapsible-header">Relatórios</div>
-                            <ul class="collapsible-body">
-                                <li>
-                                    <div class="input-field col s3">
-                                        <input id="pesquisa" type="text" />
-                                        <label for="pesquisa">Pesquisar</label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <a class="menudesabilitado" href="#!">Pedidos Indicadores</a>
-                                </li>
-                                <li>
-                                    <a class="menudesabilitado" href="#!">Faturamento</a>
-                                </li>
-                                <li>
-                                    <a class="menudesabilitado" href="#!">Vendas</a>
-                                </li>
-                                <li>
-                                    <a class="menudesabilitado" href="#!">Vendas com Desc. Superior</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        }
 
-
-        @{
-            var estilos = "corpo";
-            @if ((ViewBag.PaginaDeLogin ?? false))
-            {
-                estilos = " corpologin";
+    @if (usuarioLogado.SessaoAtiva)
+    {
+        <style>
+            .menudesabilitado {
+                cursor: not-allowed;
             }
-        }
-        <main role="main" class="container @estilos">
-            @RenderBody()
-        </main>
-        <partial name="~/Views/Shared/Error.cshtml" />
-    </div>
+        </style>
+        <ul id="slide-out" class="sidenav sidenav-fixed">
+            <li>
+                <ul class="collapsible">
+                    <li>
+                        <div class="hide-on-large-only collapsible-header"><a href="javascript:M.Sidenav.getInstance(document.getElementById('slide-out')).close()" title="Fechar menu"><i class="material-icons">menu</i></a></div>
+                        <div class="collapsible-header menuhome" onclick="javascript:window.location = '@Url.Action("Index", "Home")'" title="Home">
+                            <a href="@Url.Action("Index", "Home")" title="Home" class="show-on-medium-and-down"><i class="material-icons">home</i></a>
+                            <a href="@Url.Action("Index", "Home")" title="Home" class="hide-on-med-and-up">home</a>
+                        </div>
+                        <div class="collapsible-header">Pedidos</div>
+                        <ul class="collapsible-body">
+                            <li>
+                                <a class="menudesabilitado" href="#!">Análise de Pré Pedidos</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Index", "Cliente")">Novo Pedido</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("CancelamentoAutomatico", "Pedido")"><span>Cancelamento Automático</span></a>
+                            </li>
+                            <li>
+                                <a class="menudesabilitado" href="#!">Indicadores</a>
+                            </li>
+                            <li>
+                                <a class="menudesabilitado" href="#!">Consulta Pedido</a>
+                            </li>
+                            <li>
+                                <a class="menudesabilitado" href="#!">Consulta Pré Pedido</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <div class="collapsible-header">Produtos</div>
+                        <ul class="collapsible-body">
+                            <li>
+                                <a href="@Url.Action("Index", "Produtos")">Consulta Lista de Preços</a>
+                            </li>
+                            <li>
+                                <a class="menudesabilitado" href="#!">Consulta Custo Financeiro</a>
+                            </li>
+                            <li>
+                                <a class="menudesabilitado" href="#!">Indicadores</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <div class="collapsible-header">Relatórios</div>
+                        <ul class="collapsible-body">
+                            <li>
+                                <div class="input-field col s3">
+                                    <input id="pesquisa" type="text" />
+                                    <label for="pesquisa">Pesquisar</label>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="menudesabilitado" href="#!">Pedidos Indicadores</a>
+                            </li>
+                            <li>
+                                <a class="menudesabilitado" href="#!">Faturamento</a>
+                            </li>
+                            <li>
+                                <a class="menudesabilitado" href="#!">Vendas</a>
+                            </li>
+                            <li>
+                                <a class="menudesabilitado" href="#!">Vendas com Desc. Superior</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="hide-on-med-and-up show-on-medium-and-down">
+                        <a href="~/Acesso/Logout" title="Logout">
+                            Sair
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    }
+
+
+    <main role="main" class="container corpo" style="max-width: initial; width: 100%;">
+        @RenderBody()
+    </main>
+    <partial name="~/Views/Shared/Error.cshtml" />
 
 
 </body>

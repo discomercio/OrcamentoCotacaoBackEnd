@@ -23,25 +23,48 @@
 }
 
 .sidenav {
-    margin-top: 3.5%;
     background-color: #808080;
     box-shadow: none !important;
 }
 
+.menuhome {
+    height: 64px;
+}
+
+.alturaheader {
+    height: 64px;
+    max-height: 64px;
+    margin-top: 0px;
+    margin-left: -300px;
+}
+
 .corpo {
-    margin-top: 1%;
-    margin-left: 20%;
-    max-width: 78%;
     line-height: normal;
 }
-.corpologin {
-    line-height: normal;
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
-    max-width: unset;
+
+header, main, footer {
+    padding-left: 338px;
+    padding-right: 38px;
+}
+
+.divcabecalho {
+    padding-right: 38px;
+}
+
+@media only screen and (max-width : 992px) {
+    main, footer {
+        padding-left: 38px;
+    }
+
+    header {
+        padding-left: 0px;
+    }
+}
+
+@media only screen and (max-width : 992px) {
+    .alturaheader {
+        margin-left: 0px;
+    }
 }
 
 /*destaque em tabelas*/
@@ -49,17 +72,15 @@ table.destaquelincol {
     overflow: hidden
 }
 
-table.destaquelincol > tbody > tr > td {
-    position: relative
-}
+    table.destaquelincol > tbody > tr > td {
+        position: relative
+    }
 
-table.destaquelincol > tbody > tr:hover {
-    background-color: #f6f6f6 !important
-}
+    table.destaquelincol > tbody > tr:hover {
+        background-color: #f6f6f6 !important
+    }
 
 .destaquelincol
-
-
 /*label {
     margin-top: inherit !important;
 }*/
@@ -67,16 +88,17 @@ table.destaquelincol > tbody > tr:hover {
     margin-bottom: 0px !important;
     margin-top: 0px !important;
 }
-input:not([type]), input[type=text]:not(.browser-default), input[type=password]:not(.browser-default), 
-input[type=email]:not(.browser-default), input[type=url]:not(.browser-default), input[type=time]:not(.browser-default), 
-input[type=date]:not(.browser-default), input[type=datetime]:not(.browser-default), 
-input[type=datetime-local]:not(.browser-default), input[type=tel]:not(.browser-default), 
+
+input:not([type]), input[type=text]:not(.browser-default), input[type=password]:not(.browser-default),
+input[type=email]:not(.browser-default), input[type=url]:not(.browser-default), input[type=time]:not(.browser-default),
+input[type=date]:not(.browser-default), input[type=datetime]:not(.browser-default),
+input[type=datetime-local]:not(.browser-default), input[type=tel]:not(.browser-default),
 input[type=number]:not(.browser-default), input[type=search]:not(.browser-default), textarea.materialize-textarea {
     height: 2.0rem !important;
 }
 
 .row .col {
-    padding-bottom: 1rem !important;    
+    padding-bottom: 1rem !important;
 }
 
 #collapsible-body {
