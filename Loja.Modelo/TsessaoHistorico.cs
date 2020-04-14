@@ -19,7 +19,9 @@ namespace Loja.Modelos
         [MaxLength(64)]
         public string SessionCtrlTicket { get; set; }
 
-        [Column("DtHrInicio")]
+        //estava acontecendo: Database operation expected to affect 1 row(s) but actually affected 0 row(s).
+        //porque a coluna é uma chave
+        [Column("DtHrInicio", TypeName="datetime")]
         [Required]
         public DateTime DtHrInicio { get; set; }
 
