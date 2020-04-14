@@ -28,7 +28,7 @@
 }
 
 .menuhome {
-    height: 64px;
+    height: 64px !important;
 }
 
 .alturaheader {
@@ -108,4 +108,30 @@ input[type=number]:not(.browser-default), input[type=search]:not(.browser-defaul
 .collapsible-body .row {
     margin-bottom: 0px !important;
     padding-top: inherit !important;
+}
+
+/*ajustes bdo materialize*/
+.page-footer {
+    padding-top: 3px;
+    border-top: 1px #d4d4d4 solid;
+}
+
+    .page-footer .row {
+        margin-bottom: 5px;
+    }
+
+    .page-footer .input-field {
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+    .page-footer .row .col {
+        padding-bottom: 0px !important;
+    }
+
+/*corrigindo bug bdo materialize*/
+/* Radio Buttons
+   ========================================================================== */
+[type="radio"]:not(:checked),
+[type="radio"]:checked {
+    top: 0;
 }

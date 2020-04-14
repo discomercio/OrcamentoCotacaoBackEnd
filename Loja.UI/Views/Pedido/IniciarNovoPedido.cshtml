@@ -12,7 +12,7 @@
 
 <div class="col s12 sectionDesktop" style="margin-left:5%">
     @using (Html.BeginForm("PreparaParaCadastrarPedido", "Pedido", FormMethod.Post,
-new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
+new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "formulario" }))
     {
         <article>
             <div class="row">
@@ -27,7 +27,7 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
 
             <div class="row">
                 @if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
-   .Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
+.Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
                 {
                     @* Indicação *@
                     <div class="col s6">
@@ -59,7 +59,7 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
                     </div>
                 }
                 @if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
-   .Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD.ToString()) != -1)
+.Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD.ToString()) != -1)
                 {
 
 
@@ -82,7 +82,7 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
                     <input type="hidden" />
                 </div>
                 @if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
-   .Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
+.Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
                 {
                     <div class="col s4" id="divIndicadores">
                         <div class="input-field">
@@ -97,7 +97,7 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
                     <input type="hidden" />
                 </div>
                 @if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
-   .Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD.ToString()) != -1)
+.Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD.ToString()) != -1)
                 {
                     <div class="col s4" id="divSelecaoCd">
                         <div class="input-field">
@@ -117,7 +117,7 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
                     <input type="hidden" />
                 </div>
                 @if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
-   .Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
+.Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
                 {
                     <div class="col s2" id="divComRA">
                         <label>
@@ -586,26 +586,27 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
 
         </article>
         @* Botões *@
-        <footer class="page-footer">
-            <div class="row col s12">
-                <div class="col s1"></div>
-                <div class="input-field col s2">
-                    <button class="waves-effect waves-light btn-small"
-                            type="button"
-                            style="margin-top:2%;">
-                        <i class="material-icons left">arrow_back</i>Voltar
-                    </button>
+        @section RodapePagina {
+            <footer class="page-footer">
+                <div class="row col s12">
+                    <div class="col s1"></div>
+                    <div class="input-field col s4 center">
+                        <button class="waves-effect waves-light btn-small"
+                                type="button">
+                            <i class="material-icons left">arrow_back</i>Voltar
+                        </button>
+                    </div>
+                    <div class="col s2"></div>
+                    <div class="input-field col s4 center">
+                        <button class="waves-effect waves-light btn-small"
+                                type="submit" onclick="$('#formulario').submit()">
+                            <i class="material-icons left">arrow_forward</i>Avançar
+                        </button>
+                    </div>
+                    <div class="col s1"></div>
                 </div>
-                <div class="col s5"></div>
-                <div class="input-field col s2">
-                    <button class="waves-effect waves-light btn-small"
-                            type="submit"
-                            style="margin-top:2%;">
-                        <i class="material-icons left">arrow_forward</i>Avançar
-                    </button>
-                </div>
-            </div>
-        </footer>
+            </footer>
+        }
 
         @* criar os campos de FormaPagtoCriacao *@
         <input type="hidden" name="Totaldestepedido" id="TotalDestePedido" value="@Model.VlTotalDestePedido" />
