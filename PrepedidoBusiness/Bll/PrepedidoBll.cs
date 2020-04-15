@@ -560,22 +560,82 @@ namespace PrepedidoBusiness.Bll
 
 
 
+        private async Task<string> PrepedidoJaCadastrado(PrePedidoDto prePedido)
+        {
+            /*
+             * critério:
+             * - se já existe algum prepedido do mesmo cliente, criado com a mesma data e há menos de 10 minutos
+             * - com a mesma loja e o mesmo orcamentista
+             * - onde todos os produtos sejam iguais (fabricante, produto, qtde e preco_venda)
+             * - a ordem dos produtos no pedido não precisa ser igual (no sistema em ASP exigia a mesma ordem para considerar igual)
+             * - consequencia: se a forma de pagamento for diferente, o valor será diferente e o prepedido será considerado diferente
+             * */
+            /*
+
+            '	VERIFICA SE ESTE ORÇAMENTO JÁ FOI GRAVADO!!
+                dim orcamento_a, vjg
+                s = "SELECT t_ORCAMENTO.orcamento, fabricante, produto, qtde, preco_venda FROM t_ORCAMENTO INNER JOIN t_ORCAMENTO_ITEM ON (t_ORCAMENTO.orcamento=t_ORCAMENTO_ITEM.orcamento)" & _
+                    " WHERE (id_cliente='" & cliente_selecionado & "') AND (data=" & bd_formata_data(Date) & ")" & _
+                    " AND (loja='" & loja & "') AND (orcamentista='" & usuario & "')" & _
+                    " AND (hora>='" & formata_hora_hhnnss(Now-converte_min_to_dec(10))& "')" & _
+                    " ORDER BY t_ORCAMENTO_ITEM.orcamento, sequencia"
+                    */
+
+            var banco = contextoProvider.GetContextoLeitura();
+            var hora = Util.HoraParaBanco(DateTime.Now.AddMinutes(-10)); //no máxio há 10 minutos
+            var prepedidosExistentes = await (from prepedidoBanco in banco.Torcamentos
+                                              join item in banco.TorcamentoItems on prepedidoBanco.Orcamento equals item.Orcamento
+                                              where prepedidoBanco.Id_Cliente == prePedido.DadosCliente.Id
+                                                 && (prepedidoBanco.Data.HasValue && prepedidoBanco.Data.Value.Date == DateTime.Now.Date)
+                                                 && hora.CompareTo(prepedidoBanco.Hora) <= 0
+                                                 && prepedidoBanco.Loja == prePedido.DadosCliente.Loja
+                                                 && prepedidoBanco.Orcamentista == prePedido.DadosCliente.Indicador_Orcamentista
+                                              select new { prepedidoBanco.Orcamento, item.Fabricante, item.Produto, item.Qtde, item.Preco_Venda, item.Sequencia }).ToListAsync();
+
+            //agora já está na memória, as operações são rápidas
+            var orcamentosExistentes = (from prepedido in prepedidosExistentes select prepedido.Orcamento).Distinct();
+
+            foreach (var orcamentoExistente in orcamentosExistentes)
+            {
+                var itensDestePrepedido = (from item in prepedidosExistentes
+                                           where item.Orcamento == orcamentoExistente
+                                           orderby item.Fabricante, item.Produto, item.Qtde
+                                           select item).ToList();
+                //todos estes itens devem ser iguais aos do prepedido sendo criado para que o prepedido já exista
+                var itensParaCriar = (from item in prePedido.ListaProdutos
+                                      orderby item.Fabricante, item.NumProduto, item.Qtde
+                                      select new { item.Fabricante, Produto = item.NumProduto, item.Qtde, Preco_Venda = Math.Round(item.VlUnitario, 2) }).ToList();
+
+                if (itensDestePrepedido.Count() == itensParaCriar.Count() && itensDestePrepedido.Count() > 0)
+                {
+                    bool algumDiferente = false;
+                    for (int i = 0; i < itensDestePrepedido.Count(); i++)
+                    {
+                        var um = itensDestePrepedido[i];
+                        var dois = itensParaCriar[i];
+                        //nao comparamos a sequencia
+                        if (!(um.Fabricante == dois.Fabricante && um.Produto == dois.Produto && um.Qtde == dois.Qtde && um.Preco_Venda == dois.Preco_Venda))
+                        {
+                            algumDiferente = true;
+                            break;
+                        }
+                    }
+
+                    if (!algumDiferente)
+                        return itensDestePrepedido[0].Orcamento;
+                }
+
+            }
+
+            return null;
+        }
+
 
         public async Task<IEnumerable<string>> CadastrarPrepedido(PrePedidoDto prePedido, string apelido)
         {
             //apelido = "MARISARJ";
 
             List<string> lstErros = new List<string>();
-
-            if (!string.IsNullOrEmpty(prePedido.NumeroPrePedido))
-            {
-                var db = contextoProvider.GetContextoLeitura();
-
-                var id_prepedido = (from c in db.Torcamentos
-                                    where c.Orcamento == prePedido.NumeroPrePedido
-                                    select c.Orcamento).FirstOrDefaultAsync();
-
-            }
 
             TorcamentistaEindicador tOrcamentista = await BuscarTorcamentista(apelido);
 
@@ -584,13 +644,20 @@ namespace PrepedidoBusiness.Bll
             prePedido.DadosCliente.Loja = tOrcamentista.Loja;
             prePedido.DadosCliente.Vendedor = tOrcamentista.Vendedor.ToUpper();
 
-
             if (string.IsNullOrEmpty(tOrcamentista.Vendedor))
                 lstErros.Add("NÃO HÁ NENHUM VENDEDOR DEFINIDO PARA ATENDÊ-LO");
 
             //validar o Orcamentista
             if (tOrcamentista.Apelido != apelido)
                 lstErros.Add("Falha ao recuperar os dados cadastrais!!");
+
+            //verifica se o prepedio já foi gravado
+            var prepedidoJaCadastradoNumero = await PrepedidoJaCadastrado(prePedido);
+            if (!String.IsNullOrEmpty(prepedidoJaCadastradoNumero))
+            {
+                lstErros.Add($"Este pré-pedido já foi gravado com o número {prepedidoJaCadastradoNumero}");
+                return lstErros;
+            }
 
             if (Util.LojaHabilitadaProdutosECommerce(prePedido.DadosCliente.Loja))
             {
@@ -755,9 +822,7 @@ namespace PrepedidoBusiness.Bll
             torcamento.Orcamento = prepedido.NumeroPrePedido;
             torcamento.Loja = orcamentista.Loja;
             torcamento.Data = DateTime.Now.Date;
-            torcamento.Hora = DateTime.Now.Hour.ToString().PadLeft(2, '0') +
-                    DateTime.Now.Minute.ToString().PadLeft(2, '0') +
-                    DateTime.Now.Second.ToString().PadLeft(2, '0');
+            torcamento.Hora = Util.HoraParaBanco(DateTime.Now);
             torcamento.Id_Cliente = prepedido.DadosCliente.Id;
             torcamento.Orcamentista = orcamentista.Apelido;
             torcamento.Midia = midia == null ? midia = "" : midia;

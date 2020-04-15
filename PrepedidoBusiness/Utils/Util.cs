@@ -17,6 +17,13 @@ namespace PrepedidoBusiness.Utils
 {
     public class Util
     {
+        public static string HoraParaBanco(DateTime hora)
+        {
+            return hora.Hour.ToString().PadLeft(2, '0') +
+                    hora.Minute.ToString().PadLeft(2, '0') +
+                    hora.Second.ToString().PadLeft(2, '0');
+        }
+
         public static string FormatCpf_Cnpj_Ie(string cpf_cnpj)
         {
             //caso esteja vazio, não formatamos
