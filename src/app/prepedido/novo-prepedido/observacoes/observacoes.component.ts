@@ -54,18 +54,19 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
     this.dadosParaModelo();
     this.prepedidoBuscarService.cadastrarPrepedido(this.novoPrepedidoDadosService.prePedidoDto).subscribe({
       next: (r) => {
-        
+
         if (r == null) {
           r = new Array();
           r.push("Retorno nulo do servidor.");
         }
         if (r.length > 0) {
-          if (r[0].length > 9) {
+          //se tiver 1 item e nenhum espaço, é o numero do prepedido criado
+          if (r[0].length > 9 || r.length != 1 || r[0].indexOf(" ") >= 0) {
             this.alertaService.mostrarMensagem("Erros ao salvar. \nLista de erros: \n" + r.join("\n"));
             return;
           }
           else {
-            
+
             this.alertaService.mostrarMensagem("Pré-Pedido criado com sucesso.");
             this.router.navigate(["prepedido/detalhes/" + r[0]]);
           }
