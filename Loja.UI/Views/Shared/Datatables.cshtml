@@ -154,17 +154,17 @@
     };
 
 jQuery.extend( jQuery.fn.dataTableExt.oSort, {
-    "currency-pre": function (a) {
+    "moeda-pre": function (a) {
         a = (a === "-") ? 0 : a.replace(/[^\d\-]/g, "");
         console.log(parseFloat( a ));
         return parseFloat( a );
     },
 
-    "currency-asc": function ( a, b ) {
+    "moeda-asc": function ( a, b ) {
         return a - b;
     },
 
-    "currency-desc": function ( a, b ) {
+    "moeda-desc": function ( a, b ) {
         return b - a;
     }
 });

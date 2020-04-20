@@ -2178,6 +2178,7 @@ namespace Loja.Bll.Constantes
 
         public const int OP_LJA_LER_AVISOS_TODOS = 50900;
 
+        //se pode ver pedidos e orcamentos de outras lojas
         public const int OP_LJA_CONSULTA_UNIVERSAL_PEDIDO_ORCAMENTO = 51000;
 
         public const int OP_LJA_REL_PEDIDOS_CREDITO_PENDENTE = 51100;
@@ -2242,6 +2243,7 @@ namespace Loja.Bll.Constantes
 
         public const int OP_LJA_REL_ESTOQUE_VENDA_INTERMEDIARIO_CMVPV = 54000;
 
+        //se pode ver o combo de seleção de lojas
         public const int OP_LJA_LOGIN_TROCA_RAPIDA_LOJA = 54100;
 
         public const int OP_LJA_EDITA_ANALISE_CREDITO_PENDENTE_VENDAS = 54200;

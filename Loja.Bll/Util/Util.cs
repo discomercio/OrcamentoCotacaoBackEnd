@@ -18,6 +18,14 @@ namespace Loja.Bll.Util
 {
     public class Util
     {
+        public static string FormataMoeda(decimal? valor)
+        {
+            if (!valor.HasValue)
+                return "";
+            //@*200218: hamilton pediu para colocar sem o cifrão *@
+            return String.Format("{0:N2}", valor);
+        }
+
         public static string FormataTelefone(string ddd, string tel)
         {
             string retorno = "";
@@ -1111,18 +1119,18 @@ namespace Loja.Bll.Util
             cep = cepteste.ToString();
             var db = contexto.GetContextoLeitura();
 
-            
+
 
             var transportadoraCepTask = from c in db.TtransportadoraCeps
-                                                   where (c.Tipo_range == 1 && c.Cep_unico == cep) ||
-                                                         (
-                                                             c.Tipo_range == 2 &&
-                                                              (
-                                                                  c.Cep_faixa_inicial.CompareTo(cep) <= 0 &&
-                                                                  c.Cep_faixa_final.CompareTo(cep) >= 0
-                                                               )
-                                                         )
-                                                   select c;
+                                        where (c.Tipo_range == 1 && c.Cep_unico == cep) ||
+                                              (
+                                                  c.Tipo_range == 2 &&
+                                                   (
+                                                       c.Cep_faixa_inicial.CompareTo(cep) <= 0 &&
+                                                       c.Cep_faixa_final.CompareTo(cep) >= 0
+                                                    )
+                                              )
+                                        select c;
 
             var transportadoraCepteste = await transportadoraCepTask.ToListAsync();
 
@@ -1168,16 +1176,6 @@ namespace Loja.Bll.Util
 
             return torcamentista;
         }
-
-        public static decimal FormataMoeda(decimal valor, int decimais)
-        {
-
-
-            return valor;
-        }
-
-
-
 
         public static bool ValidarTipoCustoFinanceiroFornecedor(List<string> lstErros, string custoFinanceiroTipoParcelato,
             int c_custoFinancFornecQtdeParcelas)

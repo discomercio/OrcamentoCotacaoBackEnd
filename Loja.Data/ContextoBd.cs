@@ -25,7 +25,6 @@ namespace Loja.Data
         }
 
         public IQueryable<Tcliente> Tclientes { get => contexto.Tclientes.AsNoTracking(); }
-        //afazer falta fazer
         public IQueryable<Torcamento> Torcamentos { get => contexto.Torcamentos.AsNoTracking(); }
         public IQueryable<TclienteRefBancaria> TclienteRefBancarias { get => contexto.TclienteRefBancarias.AsNoTracking(); }
         public IQueryable<Tpedido> Tpedidos { get => contexto.Tpedidos.AsNoTracking(); }

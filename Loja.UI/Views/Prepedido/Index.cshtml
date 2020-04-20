@@ -1,6 +1,6 @@
-﻿@model Loja.UI.Models.Pedido.CancelamentoAutomaticoViewModel
+﻿@model Loja.UI.Models.Prepedido.PrepedidoIndexViewModel
 @{
-    ViewData["Title"] = "Cancelamento Automático";
+    ViewData["Title"] = "Lista de pré-pedidos";
 }
 
 
@@ -14,31 +14,56 @@
 
 <partial name="~/Views/Shared/Datatables.cshtml" />
 
+<h5>@ViewData["Title"]</h5>
+
+@{
+    //as colunas são variáveis...
+    var colunaMoeda = 5;
+    var colunaData = 3;
+    if (!Model.ListaLojasViewModel.MostrarLoja)
+    {
+        colunaMoeda--;
+        colunaData--;
+    }
+    if (!Model.ListaLojasViewModel.ConsultaUniversalPedidoOrcamento)
+    {
+        colunaMoeda--;
+        colunaData--;
+    }
+}
 <script>
     $(document).ready(function () {
         intiDatatables('#tabeladados', {
             columnDefs: [
-                { type: "databr", targets: 1 }
-            ]
+                { type: "databr", targets: @colunaData },
+                { type: "moeda", targets: @colunaMoeda }
+            ],
+            @* agrupamos por loja e Orçamentista, se forem exibidos *@
+            orderFixed: [0, 'asc'],
+                rowGroup: {
+                    dataSrc: 0
+                }
         });
     });
 
 </script>
 
-<h5>Cancelamento Automático de Pedidos</h5>
 
 <div>
+
     @if (Model.ListaLojasViewModel.MostrarLoja)
     {
         Model.ListaLojasViewModel.NomeTabelaHtml = "tabeladados";
-        Model.ListaLojasViewModel.NumeroColunaDaLoja = 3;
+        Model.ListaLojasViewModel.NumeroColunaDaLoja = 0;
         <partial name="~/Views/Comuns/ListaLojas.cshtml" for="ListaLojasViewModel" />
     }
 
-    @if (Model.CancelamentoAutomaticoItems.Count < 1)
+    @if (Model.ResumoPrepedidoListaDto.Itens.Count < 1)
     {
         <span>
-            NENHUM PEDIDO.
+            <br />
+            <br />
+            NENHUM PRÉ-PEDIDO.
         </span>
     }
     else
@@ -46,13 +71,6 @@
         <table id="tabeladados">
             <thead>
                 <tr>
-                    <th></th>
-                    <th>
-                        Data final
-                    </th>
-                    <th>
-                        Pedido
-                    </th>
                     @if (Model.ListaLojasViewModel.MostrarLoja)
                     {
                         <th>
@@ -62,48 +80,51 @@
                     @if (Model.ListaLojasViewModel.ConsultaUniversalPedidoOrcamento)
                     {
                         <th>
-                            Vendedor
+                            Orçamentista
                         </th>
                     }
                     <th>
-                        Nome do cliente
+                        Pré-Pedido
                     </th>
                     <th>
-                        Análise de crédito
+                        Data
+                    </th>
+                    <th>
+                        Cliente
+                    </th>
+                    <th class="right-align">
+                        VL Total
                     </th>
                 </tr>
             </thead>
 
             <tbody>
-                @foreach (var c in Model.CancelamentoAutomaticoItems)
+                @foreach (var c in Model.ResumoPrepedidoListaDto.Itens)
                 {
                     <tr>
-                        <td style="text-align: right">
-                            @c.NumeroLinha
-                        </td>
-                        <td>
-                            @c.DataFinal?.ToShortDateString()
-                        </td>
-                        <td>
-                            @c.Pedido
-                        </td>
                         @if (Model.ListaLojasViewModel.MostrarLoja)
                         {
                             <td>
-                                @c.LojaNome
+                                @Model.ListaLojasViewModel.LojasDisponiveis.Where(r => r.Id == c.LojaId).FirstOrDefault().Nome
                             </td>
                         }
                         @if (Model.ListaLojasViewModel.ConsultaUniversalPedidoOrcamento)
                         {
                             <td>
-                                @c.Vendedor
+                                @c.Orcamentista
                             </td>
                         }
                         <td>
-                            @c.NomeDoCliente
+                            @c.Prepedido
                         </td>
                         <td>
-                            @c.Analise_credito_descricao
+                            @(c.Data?.ToShortDateString())
+                        </td>
+                        <td>
+                            @c.Cliente
+                        </td>
+                        <td class="right-align">
+                            @Loja.Bll.Util.Util.FormataMoeda(c.VlTotal)
                         </td>
                     </tr>
                 }

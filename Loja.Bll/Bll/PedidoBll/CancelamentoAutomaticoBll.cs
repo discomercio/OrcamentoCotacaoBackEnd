@@ -31,7 +31,8 @@ namespace Loja.Bll.Bll.PedidoBll
             public string Vendedor { get; set; }
             public string NomeDoCliente { get; set; }
             public string Analise_credito_descricao { get; set; }
-            public string Loja { get; set; }
+            public string LojaNome { get; set; }
+            public string LojaId { get; set; }
         }
 
         public async Task<List<CancelamentoAutomaticoItem>> DadosTela(bool ConsultaUniversalPedidoOrcamento, UsuarioLogado usuarioLogado,
@@ -221,7 +222,8 @@ namespace Loja.Bll.Bll.PedidoBll
                                 Vendedor = result["vendedor"].ToString(),
                                 NomeDoCliente = result["nome"].ToString(),
                                 Analise_credito_descricao = result["analise_credito_descricao"].ToString(),
-                                Loja = nomeLoja
+                                LojaNome = nomeLoja,
+                                LojaId = result["loja"].ToString()
                             });
                         }
                     }

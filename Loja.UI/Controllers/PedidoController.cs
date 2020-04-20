@@ -367,11 +367,10 @@ namespace Loja.UI.Controllers
             var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
 
             bool consultaUniversalPedidoOrcamento = usuarioLogado.Operacao_permitida(Constantes.OP_LJA_CONSULTA_UNIVERSAL_PEDIDO_ORCAMENTO);
-            var model = new Loja.UI.Models.Pedido.CancelamentoAutomaticoViewModel();
-            model.LojasDisponiveis = usuarioLogado.LojasDisponiveis;
-            model.cancelamentoAutomaticoItems = await cancelamentoAutomaticoBll.DadosTela(consultaUniversalPedidoOrcamento, usuarioLogado, model.LojasDisponiveis);
-            model.MostrarLoja = usuarioLogado.Operacao_permitida(Constantes.OP_LJA_LOGIN_TROCA_RAPIDA_LOJA);
-            model.ConsultaUniversalPedidoOrcamento = consultaUniversalPedidoOrcamento;
+            var cancelamentoAutomaticoItems = await cancelamentoAutomaticoBll.DadosTela(consultaUniversalPedidoOrcamento, usuarioLogado, usuarioLogado.LojasDisponiveis);
+            var itensLoja = (from i in cancelamentoAutomaticoItems group i by i.LojaId into g select new Models.Comuns.ListaLojasViewModel.ItemLoja { Loja = g.Key, NumeroItens = g.Count() });
+            var model = new Loja.UI.Models.Pedido.CancelamentoAutomaticoViewModel(cancelamentoAutomaticoItems,
+                new Models.Comuns.ListaLojasViewModel(usuarioLogado, itensLoja.ToList()));
             return View(model);
         }
     }

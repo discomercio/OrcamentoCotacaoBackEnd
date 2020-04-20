@@ -1,16 +1,22 @@
-﻿using System;
+﻿using Loja.UI.Models.Comuns;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using static Loja.Bll.Bll.PedidoBll.CancelamentoAutomaticoBll;
 
+#nullable enable
 namespace Loja.UI.Models.Pedido
 {
     public class CancelamentoAutomaticoViewModel
     {
-        public List<CancelamentoAutomaticoItem> cancelamentoAutomaticoItems { get; set; }
-        public bool ConsultaUniversalPedidoOrcamento { get; set; }
-        public bool MostrarLoja { get; set; }
-        public List<Loja.Bll.Bll.AcessoBll.UsuarioAcessoBll.LojaPermtidaUsuario> LojasDisponiveis { get; set; }
+        public CancelamentoAutomaticoViewModel(List<CancelamentoAutomaticoItem> cancelamentoAutomaticoItems, ListaLojasViewModel listaLojasViewModel)
+        {
+            CancelamentoAutomaticoItems = cancelamentoAutomaticoItems ?? throw new ArgumentNullException(nameof(cancelamentoAutomaticoItems));
+            ListaLojasViewModel = listaLojasViewModel ?? throw new ArgumentNullException(nameof(listaLojasViewModel));
+        }
+
+        public List<CancelamentoAutomaticoItem> CancelamentoAutomaticoItems { get; }
+        public ListaLojasViewModel ListaLojasViewModel { get; }
     }
 }
