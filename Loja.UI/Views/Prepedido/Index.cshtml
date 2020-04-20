@@ -39,11 +39,24 @@
                 { type: "moeda", targets: @colunaMoeda }
             ],
             @* agrupamos por loja e Orçamentista, se forem exibidos *@
-            orderFixed: [0, 'asc'],
+            orderFixed: [ [0, 'asc'], [1, 'asc']],
                 rowGroup: {
-                    dataSrc: 0
+                    dataSrc: [0, 1],
+                    startRender:function ( rows, group ) {
+                        var total = rows
+                            .data()
+                            .pluck(5)
+                            .reduce( function (a, b) {
+                                return a + b.replace(/[^\d]/g, '')*1;
+                            }, 0);
+                        total = total / 100;
+
+                        return $('<tr/>')
+                            .append('<td colspan=6>' + group + " (pré-pedidos na tela: " + rows.count() + ", valor total: " + total + ')</td>');
+                    }
                 }
-        });
+            }
+        );
     });
 
 </script>
