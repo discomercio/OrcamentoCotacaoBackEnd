@@ -230,14 +230,17 @@ jQuery.extend( jQuery.fn.dataTableExt.oSort, {
         //digo, funciona, mas precisa redesenhar as classes. 
         //$.fn.dataTable.ext.classes.sPageButton = "paginate_button waves-effect waves-light btn-small";
 
-        $(seletor).DataTable(config);
+        let ret = $(seletor).DataTable(config);
 
         $(".dt-buttons button").addClass("waves-effect waves-light btn-small");
         $(".dt-buttons button").removeClass("dt-button");
         $(".dataTables_paginate a").addClass("waves-effect waves-light btn-small");
         $(seletor).on(  'draw.dt', function () {
             $(".dataTables_paginate a").addClass("waves-effect waves-light btn-small");
-        } );
+        });
+
+        $(seletor).show();
+        return ret;
     }
 
 

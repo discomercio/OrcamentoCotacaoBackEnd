@@ -25,11 +25,4 @@ export class MoedaUtils {
             return "";
         return this.formatter1casa.format(nro);
     }
-    public teste() {
-        alert("isso é um teste");
-    }
-
-    public teste2() {
-        alert("esse é o teste2");
-    }
 }

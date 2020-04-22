@@ -43,7 +43,7 @@
     }
     else
     {
-        <table id="tabeladados">
+        <table id="tabeladados" style="display: none;">
             <thead>
                 <tr>
                     <th></th>
@@ -59,12 +59,9 @@
                             Loja
                         </th>
                     }
-                    @if (Model.ListaLojasViewModel.ConsultaUniversalPedidoOrcamento)
-                    {
-                        <th>
-                            Vendedor
-                        </th>
-                    }
+                    <th>
+                        Vendedor
+                    </th>
                     <th>
                         Nome do cliente
                     </th>
@@ -93,12 +90,9 @@
                                 @c.LojaNome
                             </td>
                         }
-                        @if (Model.ListaLojasViewModel.ConsultaUniversalPedidoOrcamento)
-                        {
-                            <td>
-                                @c.Vendedor
-                            </td>
-                        }
+                        <td>
+                            @c.Vendedor
+                        </td>
                         <td>
                             @c.NomeDoCliente
                         </td>

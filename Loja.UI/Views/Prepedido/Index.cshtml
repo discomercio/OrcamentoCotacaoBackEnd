@@ -16,52 +16,6 @@
 
 <h5>@ViewData["Title"]</h5>
 
-@{
-    //as colunas são variáveis...
-    var colunaMoeda = 5;
-    var colunaData = 3;
-    if (!Model.ListaLojasViewModel.MostrarLoja)
-    {
-        colunaMoeda--;
-        colunaData--;
-    }
-    if (!Model.ListaLojasViewModel.ConsultaUniversalPedidoOrcamento)
-    {
-        colunaMoeda--;
-        colunaData--;
-    }
-}
-<script>
-    $(document).ready(function () {
-        intiDatatables('#tabeladados', {
-            columnDefs: [
-                { type: "databr", targets: @colunaData },
-                { type: "moeda", targets: @colunaMoeda }
-            ],
-            @* agrupamos por loja e Orçamentista, se forem exibidos *@
-            orderFixed: [ [0, 'asc'], [1, 'asc']],
-                rowGroup: {
-                    dataSrc: [0, 1],
-                    startRender:function ( rows, group ) {
-                        var total = rows
-                            .data()
-                            .pluck(5)
-                            .reduce( function (a, b) {
-                                return a + b.replace(/[^\d]/g, '')*1;
-                            }, 0);
-                        total = total / 100;
-
-                        return $('<tr/>')
-                            .append('<td colspan=6>' + group + " (pré-pedidos na tela: " + rows.count() + ", valor total: " + total + ')</td>');
-                    }
-                }
-            }
-        );
-    });
-
-</script>
-
-
 <div>
 
     @if (Model.ListaLojasViewModel.MostrarLoja)
@@ -81,7 +35,7 @@
     }
     else
     {
-        <table id="tabeladados">
+        <table id="tabeladados" style="display: none;">
             <thead>
                 <tr>
                     @if (Model.ListaLojasViewModel.MostrarLoja)
@@ -90,12 +44,9 @@
                             Loja
                         </th>
                     }
-                    @if (Model.ListaLojasViewModel.ConsultaUniversalPedidoOrcamento)
-                    {
-                        <th>
-                            Orçamentista
-                        </th>
-                    }
+                    <th>
+                        Orçamentista
+                    </th>
                     <th>
                         Pré-Pedido
                     </th>
@@ -118,15 +69,12 @@
                         @if (Model.ListaLojasViewModel.MostrarLoja)
                         {
                             <td>
-                                @Model.ListaLojasViewModel.LojasDisponiveis.Where(r => r.Id == c.LojaId).FirstOrDefault().Nome
+                                @Model.ListaLojasViewModel.LojasDisponiveis.Where(r => r.Id == c.LojaId).FirstOrDefault()?.Nome
                             </td>
                         }
-                        @if (Model.ListaLojasViewModel.ConsultaUniversalPedidoOrcamento)
-                        {
-                            <td>
-                                @c.Orcamentista
-                            </td>
-                        }
+                        <td>
+                            @c.Orcamentista
+                        </td>
                         <td>
                             @c.Prepedido
                         </td>
@@ -146,3 +94,67 @@
     }
 </div>
 
+@{
+    //as colunas são variáveis...
+    var colunaMoeda = 5;
+    var colunaData = 3;
+    if (!Model.ListaLojasViewModel.MostrarLoja)
+    {
+        colunaMoeda--;
+        colunaData--;
+    }
+}
+
+<script>
+    function carregouScript() {
+        var tabeladados;
+        $(document).ready(function () {
+            tabeladados = intiDatatables('#tabeladados', {
+                @* agrupamos por loja e Orçamentista, se forem exibidos *@
+                @if (Model.ListaLojasViewModel.MostrarLoja)
+                {
+                    <text>
+                    orderFixed: [[0, 'asc'], [1, 'asc']],
+                    rowGroup: {
+                        dataSrc: [0, 1],
+                        startRender: function(rows, group) {
+                            let row0 = rows.data()[0];
+                            if (tabeladados)
+                                rows = tabeladados.data().rows();
+                            var total = rows
+                                .data();
+                            total = total.filter(function(row) {
+                                //se agrupando pela loja, não testa o orçamentista
+                                if (group == row0[0])
+                                    return row[0] == row0[0];
+                                return row[0] == row0[0] && row[1] == row0[1];
+                            });
+                            let totalRegistros = total.length;
+                            total = total
+                                .pluck(@colunaMoeda)
+                                .reduce(function(a, b) {
+                                return a + b.replace(/[^\d]/g, '') * 1;
+                            }, 0);
+                            total = total / 100;
+                            total = window.formatarMoedaSemPrefixo(total);
+
+                            return $('<tr/>')
+                                .append('<td colspan=6>' + group + " (" + totalRegistros + " pré-pedidos, valor total: " + total + ')</td>');
+                        }
+                    },
+                    </text>
+                }
+                columnDefs: [
+                    { type: "databr", targets: @colunaData },
+                    { type: "moeda", targets: @colunaMoeda }
+                ]
+            }
+            );
+
+            tabeladados.draw();
+        });
+    }
+    requirejs(["Views/Prepedido/Index"], function (util) {
+        carregouScript();
+    });
+</script>

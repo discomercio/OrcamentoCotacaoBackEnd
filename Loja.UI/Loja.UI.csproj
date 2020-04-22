@@ -48,6 +48,7 @@
     <None Remove="Views\Pedido\DtoCoeficiente.ts" />
     <None Remove="Views\Pedido\FormaPagto.ts" />
     <None Remove="Views\Pedido\IniciarNovoPedido.ts" />
+    <None Remove="Views\Prepedido\Index.ts" />
     <None Remove="Views\Shared\Error.ts" />
   </ItemGroup>
 
@@ -82,6 +83,9 @@
 
   <ItemGroup>
     <TypeScriptCompile Update="Views\Pedido\IniciarNovoPedido.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Update="Views\Prepedido\Index.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
   </ItemGroup>
