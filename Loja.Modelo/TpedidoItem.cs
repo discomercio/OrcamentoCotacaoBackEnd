@@ -145,6 +145,12 @@ namespace Loja.Modelos
         [MaxLength(1)]
         public string Descontinuado { get; set; }
 
+        //essa coluna foi inserida recentemente e existe em várias tabelas
+        //no momento iremos ignorar a inclusão dessa coluna, pois não sabemos se foi para a produção
+        //[Column("subgrupo")]
+        //[MaxLength(10)]
+        //public string Subgrupo { get; set; }
+
         public Tproduto Tproduto { get; set; }
         public Tpedido Tpedido { get; set; }
     }

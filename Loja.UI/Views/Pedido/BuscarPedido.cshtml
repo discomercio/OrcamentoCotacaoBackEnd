@@ -17,25 +17,1797 @@
         </span>
     </div>
 </div>
+<div class="nossobody">
+    <form id="fPED" name="fPED" method="post">
 
+        <!--  I D E N T I F I C A Ç Ã O   D O   P E D I D O -->
+        <!--
+            rotina MontaHeaderIdentificacaoPedido no asp.
+            MontaHeaderIdentificacaoPedido(pedido_selecionado, r_pedido, 649)
+        -->
+
+
+        <table style="width:649px; border-bottom:1px solid black;" cellpadding="0" cellspacing="0">
+            @if (Model.PedidoDto.StatusHoraPedido.Pedido_Bs_X_Marketplace != "")
+            {
+                <tr>
+                    <td valign="bottom" align="right" colspan="3"
+                        style="padding-top: 4px;padding-bottom:0;width:100%;">
+                        <span class="C" style="font-size:10pt">
+                            @Model.PedidoDto.StatusHoraPedido.Pedido_Bs_X_Marketplace
+                        </span>
+                        <span class="C" style="font-size:12pt">
+                            @Model.PedidoDto.StatusHoraPedido.Pedido_Bs_X_Marketplace
+                        </span>
+                    </td>
+                </tr>
+            }
+
+
+            @if (Model.PedidoDto.StatusHoraPedido.Pedido_Bs_X_Ac != "" &&
+     Model.PedidoDto.StatusHoraPedido.Pedido_Bs_X_Ac != null)
+            {
+                <tr>
+                    <td valign="bottom" align="right" width="100%" colspan="3" style="padding-top: 4px;padding-bottom:0">
+                        <span class="C" style="font-size:10pt;color:purple">Magento: </span>
+                        <span class="C" style="font-size:12pt;color:purple">
+                            @Model.PedidoDto.StatusHoraPedido.Pedido_Bs_X_Ac
+                        </span>
+                    </td>
+                </tr>
+            }
+
+
+
+            <tr>
+                <td valign="bottom" align="left" style="padding-bottom: 4px; width:33%">
+                    <table cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td valign="bottom" align="left">
+                                <span class="STP">
+                                    @Model.PedidoDto.StatusHoraPedido.St_Entrega.ToUpper()
+                                </span>
+                            </td>
+                            <td align="left" style="width:6px;padding-bottom:4px">
+                            </td>
+                            <!--retiramos o atributo "class="MD ME"" que estava colocando o "|" entre as datas  -->
+
+                            @if (Model.PedidoDto.StatusHoraPedido.Entregue_Data != null &&
+Model.PedidoDto.StatusHoraPedido.PedidoRecebidoStatus ==
+Loja.Bll.Constantes.Constantes.COD_ST_PEDIDO_RECEBIDO_SIM)
+                            {
+                                <td align="center" valign="bottom">
+                                    <span style="text-align:center;margin:0px 3px 0px 3px;">
+                                        @Model.PedidoDto.StatusHoraPedido.Entregue_Data
+                                    </span>
+                                    <br>
+                                    <span style="color:#9932CC;text-align:center;margin:0px 3px 0px 3px;">
+                                        @Model.PedidoDto.StatusHoraPedido.Recebida_Data
+                                    </span>
+                                </td>
+                            }
+
+                            @if (Model.PedidoDto.StatusHoraPedido.Entregue_Data != null &&
+Model.PedidoDto.StatusHoraPedido.PedidoRecebidoStatus !=
+Loja.Bll.Constantes.Constantes.COD_ST_PEDIDO_RECEBIDO_SIM)
+                            {
+                                <td>
+                                    <span class="STP">
+                                        @Model.PedidoDto.StatusHoraPedido.Entregue_Data
+                                    </span>
+                                </td>
+                            }
+
+                        </tr>
+                    </table>
+                </td>
+
+                <td valign="bottom" align="center" style="width:33%">
+                    <span class="STP">
+                        @Model.PedidoDto.StatusHoraPedido.Pedido_Data
+                    </span>
+                    <span class="STP_HORA">
+                        <!-- aqui vai a a hora sem classe para mostrar tamnaho menor -->
+                        @Model.PedidoDto.StatusHoraPedido.Pedido_Hora
+                    </span>
+                </td>
+                <td valign="bottom" align="right" nowrap>
+                    <span class="PEDIDO">Pedido Nº&nbsp;@Model.PedidoDto.NumeroPedido</span>
+                </td>
+            </tr>
+        </table>
+
+
+        <br>
+
+        <!--  EXIBE LINKS PARA A FAMÍLIA DE PEDIDOS?   -->
+        <!--  L O J A   -->
+        <table style="width:649px" class="Q" cellspacing="0">
+            <tr>
+
+                <td class="MD" align="left">
+                    <p class="Rf">LOJA</p>
+                    <p class="C">
+                        @Model.PedidoDto.DadosCliente?.Loja&nbsp;
+                    </p>
+                </td>
+                <td style="width:145px" class="MD" align="left">
+                    <p class="Rf">INDICADOR</p>
+                    <p class="C">
+                        @Model.PedidoDto.DadosCliente?.Indicador_Orcamentista&nbsp;
+                    </p>
+                </td>
+                <td style="width:145px" align="left">
+                    <p class="Rf">VENDEDOR</p>
+                    <p class="C">
+                        @Model.PedidoDto.DadosCliente?.Vendedor&nbsp;
+                    </p>
+                </td>
+            </tr>
+        </table>
+
+        <br>
+
+        <!--  CLIENTE   -->
+        <table style="width:649px" class="Q" cellspacing="0">
+            <tr>
+
+                <td align="left" style="width:50%" class="MD">
+                    @if (Model.PedidoDto.DadosCliente.Tipo == Loja.Bll.Constantes.Constantes.ID_PF)
+                    {
+                        <p class="Rf">
+                            CPF:&nbsp;
+                        </p>
+                    }
+                    @if (Model.PedidoDto.DadosCliente.Tipo == Loja.Bll.Constantes.Constantes.ID_PJ)
+                    {
+                        <p class="Rf">
+                            CNPJ:&nbsp;
+                        </p>
+                    }
+
+                    <a href="@Url.Action("BuscarCliente", "Cliente",
+                                new { cpf_cnpj = Loja.Bll.Util.Util.SoDigitosCpf_Cnpj(Model.PedidoDto.DadosCliente.Cnpj_Cpf),
+                                    novoCliente = false})
+                           " title='clique para criar novo pré-pedido'>
+                        <p class="C">@Model.PedidoDto.DadosCliente?.Cnpj_Cpf &nbsp;</p>
+                    </a>
+                </td>
+
+                <td align="left" class="MD">
+                    @if (Model.PedidoDto.DadosCliente.Tipo == Loja.Bll.Constantes.Constantes.ID_PF)
+                    {
+                        <p class="Rf">
+                            RG:&nbsp;
+                        </p>
+                        <p class="C">
+                            @Model.PedidoDto.DadosCliente.Rg.Replace(".", "").Replace("-", "")
+                        </p>
+                    }
+                    @if (Model.PedidoDto.DadosCliente.Tipo == Loja.Bll.Constantes.Constantes.ID_PJ)
+                    {
+                        <p class="C">
+                            IE:&nbsp;
+                        </p>
+                        <p class="C">
+                            @Model.PedidoDto.DadosCliente.Ie.Replace(".", "").Replace("-", "")
+                        </p>
+                    }
+                </td>
+
+                @*afazer:
+                    incluir os endereços para fazer a busca do cliente
+                *@
+                <td align="center" valign="middle" style="width:15px">
+                    @if (Model.PedidoDto.DadosCliente.Tipo == Loja.Bll.Constantes.Constantes.ID_PF)
+                    {
+                        <a title="clique para visualizar o cadastro do cliente">
+                            <i class="material-icons">search</i>
+                        </a>
+
+                    }
+                    @if (Model.PedidoDto.DadosCliente.Tipo == Loja.Bll.Constantes.Constantes.ID_PJ)
+                    {
+                        <a title="clique para visualizar o cadastro do cliente">
+                            <i class="material-icons">search</i>
+                        </a>
+
+                    }
+                </td>
+            </tr>
+
+            <tr>
+                <td class="MC" align="left" colspan="3">
+                    @if (Model.PedidoDto.DadosCliente.Tipo == Loja.Bll.Constantes.Constantes.ID_PF)
+                    {
+                        <p class="Rf">
+                            NOME DO CLIENTE:&nbsp;
+                        </p>
+                    }
+                    @if (Model.PedidoDto.DadosCliente.Tipo == Loja.Bll.Constantes.Constantes.ID_PJ)
+                    {
+                        <p class="Rf">
+                            RAZÃO SOCIAL:&nbsp;
+                        </p>
+
+                    }
+
+                    @*afazer:
+                        incluir o href aqui passando o cnpj_cpf somente digitos
+                    *@
+                    <a href="@Url.Action("BuscarCliente", "Cliente",
+                                new { cpf_cnpj = Loja.Bll.Util.Util.SoDigitosCpf_Cnpj(Model.PedidoDto.DadosCliente.Cnpj_Cpf),
+                                    novoCliente = false})
+                           " title='clique para criar novo pré-pedido'>
+                        <p class="C">
+                            @Model.PedidoDto.DadosCliente?.Nome &nbsp;
+                        </p>
+                    </a>
+
+                </td>
+            </tr>
+        </table>
+
+        <!--  ENDEREÇO DO CLIENTE  -->
+        <table style="width:649px" class="QS" cellspacing="0">
+            <tr>
+                <td align="left">
+                    <p class="Rf">ENDEREÇO</p>
+                    <p class="C">
+                        @Model.PedidoDto.DadosCliente.Endereco , @Model.PedidoDto.DadosCliente.Numero
+                        @Model.PedidoDto.DadosCliente.Complemento - @Model.PedidoDto.DadosCliente.Bairro -
+                        @Model.PedidoDto.DadosCliente.Cidade - @Model.PedidoDto.DadosCliente.Uf -
+                        @Loja.Bll.Util.Util.FormataCep(Model.PedidoDto.DadosCliente.Cep)
+                    </p>
+                </td>
+            </tr>
+        </table>
+
+        <!--  TELEFONE DO CLIENTE  -->
+        <table style="width:649px;" class="QS" cellspacing="0">
+            <tr>
+                @* referente a PJ *@
+                @if (Model.PedidoDto.DadosCliente.Tipo == Loja.Bll.Constantes.Constantes.ID_PJ)
+                {
+                    <td class="MD" style="width:50%" align="left">
+                        <p class="Rf">TELEFONE</p>
+                        <p class="C">
+                            @Model.PedidoDto.DadosCliente.TelComercial
+                        </p>
+                    </td>
+                    <td style="width:50%" align="left">
+                        <p class="Rf">TELEFONE</p>
+                        <p class="C">
+                            @Model.PedidoDto.DadosCliente.TelComercial2
+                        </p>
+                    </td>
+                }
+                @* Referente a PF *@
+                @if (Model.PedidoDto.DadosCliente.Tipo == Loja.Bll.Constantes.Constantes.ID_PF)
+                {
+                    <td class="MD" style="width:33%" align="left">
+                        <p class="Rf">TELEFONE RESIDENCIAL</p>
+                        <p class="C">
+                            (@Model.PedidoDto.DadosCliente.DddResidencial)
+                            @Model.PedidoDto.DadosCliente.TelefoneResidencial
+                        </p>
+                    </td>
+                    <td class="MD" style="width:33%" align="left">
+                        <p class="Rf">TELEFONE COMERCIAL</p>
+                        <p class="C">
+                            (@Model.PedidoDto.DadosCliente.DddComercial)
+                            @Model.PedidoDto.DadosCliente.TelComercial
+                        </p>
+                    </td>
+                    <td align="left">
+                        <p class="Rf">CELULAR</p>
+                        <p class="C">
+                            (@Model.PedidoDto.DadosCliente.DddCelular)
+                            @Model.PedidoDto.DadosCliente.Celular
+                        </p>
+                    </td>
+                }
+
+            </tr>
+            @* apenas teste: coloquei o pf e pj dentro da mesma linha *@
+            @*@if (Model.PedidoDto.DadosCliente.Tipo == Loja.Bll.Constantes.Constantes.ID_PF)
+                {
+                    <tr>
+
+                    </tr>
+                }*@
+
+
+        </table>
+
+        <!--  E-MAIL DO CLIENTE  -->
+        <table style="width:649px" class="QS" cellspacing="0">
+            <tr>
+                <td align="left">
+                    <p class="Rf">E-MAIL</p>
+                    <p class="C">
+                        @Model.PedidoDto.DadosCliente.Email
+                    </p>
+                </td>
+            </tr>
+        </table>
+
+        <!--  ENDEREÇO DE ENTREGA  -->
+
+        <table style="width:649px;table-layout:fixed" class="QS" cellspacing="0">
+            <tr>
+                <td align="left">
+                    <p class="Rf">ENDEREÇO DE ENTREGA</p>
+
+                </td>
+            </tr>
+            @if (Model.PedidoDto.EnderecoEntrega?.EndEtg_cod_justificativa?.Trim() != "" &&
+            Model.PedidoDto.EnderecoEntrega?.EndEtg_cod_justificativa?.Trim() != null)
+            {
+                <tr>
+                    <td align="left" style="word-wrap:break-word">
+                        <p class="C" style="display: inline-block">
+                            @Model.PedidoDto.EnderecoEntrega?.EndEtg_endereco,
+                        </p>
+                        <p class="C" style="display: inline-block">
+                            @Model.PedidoDto.EnderecoEntrega?.EndEtg_endereco_numero -
+                        </p>
+                        <p class="C" style="display: inline-block">
+                            @Model.PedidoDto.EnderecoEntrega?.EndEtg_endereco_complemento -
+                        </p>
+                        <p class="C" style="display: inline-block">
+                            @Model.PedidoDto.EnderecoEntrega?.EndEtg_bairro -
+                        </p>
+                        <p class="C" style="display: inline-block">
+                            @Model.PedidoDto.EnderecoEntrega?.EndEtg_cidade -
+                        </p>
+                        <p class="C" style="display: inline-block">
+                            @Model.PedidoDto.EnderecoEntrega?.EndEtg_uf -
+                        </p>
+                        <p class="C" style="display: inline-block">
+                            @Loja.Bll.Util.Util.FormataCep(Model.PedidoDto.EnderecoEntrega?.EndEtg_cep)
+                        </p>
+                        <p class="C">
+                            @Model.PedidoDto.EnderecoEntrega?.EndEtg_descricao_justificativa
+                        </p>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td>
+                        <p class="C" style="display:inline-block">
+
+                        </p>
+                    </td>
+                </tr>
+            }
+
+
+        </table>
+
+
+        <!--  R E L A Ç Ã O   D E   P R O D U T O S  -->
+        <br>
+        <br>
+        <table style="width:649px;" class="Qx" cellspacing="0">
+            <tr style="color:#FFFFFF">
+                <td class="MB" align="left" valign="bottom"><span class="PLTe">Fabr</span></td>
+                <td class="MB" align="left" valign="bottom"><span class="PLTe">Produto</span></td>
+                <td class="MB" align="left" valign="bottom"><span class="PLTe">Descrição</span></td>
+                <td class="MB" align="right" valign="bottom"><span class="PLTd">Qtd</span></td>
+                <td class="MB" align="right" valign="bottom"><span class="PLTd">Falt</span></td>
+                @if (Model.PedidoDto.PermiteRAStatus == 1)
+                {
+                    <td class="MB" align="right" valign="bottom">
+                        <span class="PLTd">Preço</span>
+                    </td>
+                }
+                <td class="MB" align="right" valign="bottom"><span class="PLTd">VL Lista</span></td>
+                <td class="MB" align="right" valign="bottom"><span class="PLTd">Desc</span></td>
+                <td class="MB" align="right" valign="bottom"><span class="PLTd">VL Venda</span></td>
+                <td class="MB" align="right" valign="bottom"><span class="PLTd">VL Total</span></td>
+            </tr>
+            @* foreach nos produtos *@
+            @foreach (var i in Model.PedidoDto.ListaProdutos)
+            {
+                <tr>
+
+                    <td class="MDBE" align="left">
+                        <p name="c_fabricante" class="PLLe" style="width:25px;" readonly tabindex=-1>
+                            @i.Fabricante
+                        </p>
+                        @*<input name="c_fabricante" class="PLLe" style="width:25px;" readonly tabindex=-1>*@
+                    </td>
+
+                    <td class="MDB" align="left">
+                        <p name="c_produto" class="PLLe" style="width:54px;" readonly tabindex=-1>
+                            @i.NumProduto
+                        </p>
+                        @*<input name="c_produto" class="PLLe" style="width:54px;" readonly tabindex=-1>*@
+                    </td>
+                    <td class="MDB" align="left" style="width:253px;">
+                        <span class="PLLe">
+                            @Html.Raw(i.Descricao)
+                        </span>
+                    </td>
+                    <td class="MDB" align="right">
+                        <p name="c_qtde" class="PLLd" style="width:21px;" readonly tabindex=-1>
+                            @i.Qtde
+                        </p>
+                        @*<input name="c_qtde" class="PLLd" style="width:21px;" readonly tabindex=-1>*@
+
+                    </td>
+                    <td class="MDB" align="right">
+                        <p name="c_qtde_falta" class="PLLd" style="width:20px;" readonly tabindex=-1>
+                            @i.Faltando
+                        </p>
+                        @*<input name="c_qtde_falta" class="PLLd" style="width:20px;" readonly tabindex=-1>*@
+                    </td>
+                    @if (Model.PedidoDto.PermiteRAStatus == 1)
+                    {
+                        <td class="MDB" align="right">
+                            <p name="c_vl_NF" class="PLLd" style="width:62px;" readonly tabindex=-1>
+                                @string.Format("{0:0.00}", i.Preco_Lista)
+                            </p>
+                            @*<input name="c_vl_NF" class="PLLd" style="width:62px;" readonly tabindex=-1> *@
+                        </td>
+                    }
+
+                    <td class="MDB" align="right">
+                        <p name="c_preco_lista" class="PLLd" style="width:62px;" readonly tabindex=-1>
+                            @string.Format("{0:0.00}", i.VlLista)
+                        </p>
+                        @*<input name="c_preco_lista" class="PLLd" style="width:62px;" readonly tabindex=-1>*@
+                    </td>
+                    <td class="MDB" align="right">
+                        <p name="c_desc" class="PLLd" style="width:28px;" readonly tabindex=-1>
+                            @{
+                                string desc = i.Desconto > 0 ? string.Format("{0:0.00}", i.Desconto) : "";
+                            }
+
+                            @desc
+                        </p>
+                        @*<input name="c_desc" class="PLLd" style="width:28px;" readonly tabindex=-1>*@
+                    </td>
+                    <td class="MDB" align="right">
+                        <p name="c_vl_unitario" class="PLLd" style="width:62px;" readonly tabindex=-1>
+                            @string.Format("{0:0.00}", i.VlUnitario)
+                        </p>
+                        @*<input name="c_vl_unitario" class="PLLd" style="width:62px;" readonly tabindex=-1>*@
+                    </td>
+                    <td class="MDB" align="right">
+                        <p name="c_vl_total" class="PLLd" style="width:70px;" readonly tabindex=-1>
+                            @string.Format("{0:0.00}", i.VlTotalItem)
+                        </p>
+                        @*<input name="c_vl_total" class="PLLd" style="width:70px;" readonly tabindex=-1>*@
+                    </td>
+                </tr>
+            }
+
+
+
+
+        <tr>
+            <td colspan="4" align="left">
+                <table cellspacing="0" cellpadding="0" style="margin-top:4px; width:100%;">
+                    <tr>
+                        <td style="width:50%;" align="left">&nbsp;</td>
+                        @if (Model.PedidoDto.PermiteRAStatus == 1)
+                        {
+                            <td align="right">
+                                <table cellspacing="0" cellpadding="0" style="margin-right:2px;">
+                                    <tr>
+                                        <td class="MTBE" align="left" nowrap><span class="PLTe">&nbsp;RA Líquido</span></td>
+                                        <td class="MTBD" align="right">
+                                            <p name="c_total_RA_Liquido" id="c_total_RA_Liquido"
+                                               class="PLLd" readonly tabindex=-1>
+                                                @string.Format("{0:0.00}", Model.PedidoDto.TotalFamiliaParcelaRA)
+                                            </p>
+                                            @*<input name="c_total_RA_Liquido" id="c_total_RA_Liquido" class="PLLd" style="width:70px;color:<%if r_pedido.vl_total_RA_liquido >=0 then Response.Write " green" else Response.Write " red" %>;"
+                                            value='<%=formata_moeda(r_pedido.vl_total_RA_liquido)%>' readonly tabindex=-1>*@
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td align="right">
+                                <table cellspacing="0" cellpadding="0" style="margin-right:2px;">
+                                    <tr>
+                                        <td class="MTBE" align="left" nowrap>
+                                            <span class="PLTe">&nbsp;RA Bruto</span>
+                                        </td>
+                                        <td class="MTBD" align="right">
+                                            <p name="c_total_RA" id="c_total_RA"
+                                               class="PLLd" style="width:70px;" readonly tabindex=-1>
+                                                @string.Format("{0:0.00}", Model.PedidoDto.TotalFamiliaParcelaRA)
+                                            </p>
+                                            @*<input name="c_total_RA" id="c_total_RA"
+                            class="PLLd" style="width:70px;" readonly tabindex=-1>*@
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        }
+
+                        <td align="right">
+                            <table cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td class="MTBE" align="left" nowrap><span class="PLTe">&nbsp;COM(%)</span></td>
+                                    <td class="MTBD" align="right">
+                                        <p name="c_perc_RT" id="c_perc_RT" class="PLLd" style="width:30px;color:blue;"
+                                           readonly tabindex=-1>
+                                            @string.Format("{0:0.00}", Model.PedidoDto.PercRT)
+                                        </p>
+                                        @*<input name="c_perc_RT" id="c_perc_RT" class="PLLd" style="width:30px;color:blue;"
+                        readonly tabindex=-1>*@
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+
+            @if (Model.PedidoDto.PermiteRAStatus != 1)
+            {
+                <td class="MD" align="left" style="border-right:none !important;">&nbsp;</td>
+            }
+            else
+            {
+                <td class="MD" align="left">&nbsp;</td>
+            }
+            @if (Model.PedidoDto.PermiteRAStatus == 1)
+            {
+                <td class="MDB" align="right">
+                    <p name="c_total_NF" id="c_total_NF" class="PLLd" style="width:70px;color:blue;" readonly tabindex=-1>
+                        @string.Format("{0:0.00}", Model.PedidoDto.ValorTotalDestePedidoComRA)
+                    </p>
+                    @*<input name="c_total_NF" id="c_total_NF" class="PLLd" style="width:70px;color:blue;" readonly tabindex=-1>*@
+                </td>
+            }
+
+                <td colspan="3" class="MD" align="left">&nbsp;</td>
+
+                @*<td colspan="4" class="MD" align="left">&nbsp;</td>*@
+            
+            <td class="MDB" align="right">
+                <p name="c_total_geral" id="c_total_geral" class="PLLd" style="width:70px;color:blue;"
+                   readonly tabindex=-1>
+                    @string.Format("{0:0.00}", Model.PedidoDto.VlTotalDestePedido)
+                </p>
+                @*<input name="c_total_geral" id="c_total_geral" class="PLLd" style="width:70px;color:blue;"
+            readonly tabindex=-1>*@
+            </td>
+        </tr>
+
+        </table>
+
+        <!--  NOVA VERSÃO DA FORMA DE PAGAMENTO   -->
+        <br>
+        <table class="Q" style="width:649px;" cellspacing="0">
+            <tr>
+                <td class="MB" colspan="6" align="left">
+                    <p class="Rf">Observações </p>
+                    <textarea name="c_obs1" id="c_obs1" class="PLLe notPrint"
+                              style="width:99%;margin-left:2pt;" readonly
+                              tabindex=-1>aqui tem o max de linhas &nbsp;</textarea>
+                    <span class="PLLe notVisible">&nbsp;</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="MB" colspan="7" align="left">
+                    <p class="Rf">Constar na NF</p>
+                    <textarea name="c_nf_texto" id="c_nf_texto" class="PLLe notPrint"
+                              style="width:641px;margin-left:2pt;" readonly
+                              tabindex=-1>aqui tem max linhas &nbsp;</textarea>
+                    <span class="PLLe notVisible">@*{{pedido?.DetalhesNF.ConstaNaNF}}*@ &nbsp;</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="MB" align="left" colspan="7" nowrap>
+                    <p class="Rf">xPed</p>
+                    <!-- onkeypress="filtra_nome_identificador();" -->
+                    <!-- onblur="this.value=trim(this.value);"  -->
+                    <input name="c_num_pedido_compra" id="c_num_pedido_compra" class="PLLe" maxlength="15"
+                           style="width:100px;margin-left:2pt;" value="" readonly tabindex=-1>
+                </td>
+            </tr>
+            <tr>
+                <td class="MD" align="left" nowrap>
+                    <p class="Rf">Nº Nota Fiscal</p>
+                    <input name="c_obs2" id="c_obs2" class="PLLe" style="width:75px;margin-left:2pt;" readonly
+                           tabindex=-1>
+                </td>
+                <td class="MD" align="left" nowrap>
+                    <p class="Rf">NF Simples Remessa</p>
+                    <input name="c_obs3" id="c_obs3" class="PLLe" style="width:75px;margin-left:2pt;" readonly
+                           tabindex=-1>
+                </td>
+                <td class="MD" nowrap align="left" valign="top">
+                    <p class="Rf">Entrega Imediata</p>
+                    <p class="C" style="margin-top:3px;">
+
+                    </p>
+                </td>
+                <td class="MD" nowrap align="left" valign="top">
+                    <p class="Rf">Bem Uso/Consumo</p>
+                    <p class="C" style="margin-top:3px;">
+
+                    </p>
+                </td>
+                <td class="MD" nowrap align="left" valign="top">
+                    <p class="Rf">Instalador Instala</p>
+                    <p class="C" style="margin-top:3px;">
+
+                    </p>
+                </td>
+            </tr>
+        </table>
+        <br>
+
+        <table class="Q" style="width:649px;" cellspacing="0">
+            <tr>
+                <td align="left"><span class="Rf">Forma de Pagamento</span></td>
+            </tr>
+            @*aqui vai o foreach pedido.DetalhesFormaPagto.FormaPagto*@
+            <tr>
+                <td align="left">
+                    <table style="width:100%" cellspacing="0" cellpadding="0" border="0">
+                        <tr>
+                            <td align="left">
+                                <table cellspacing="0" cellpadding="0" border="0">
+                                    <tr>
+                                        <td align="left">
+                                            <span class="C"></span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td class="MC" align="left">
+                    <p class="Rf">Informações Sobre Análise de Crédito</p>
+                    <textarea name="c_forma_pagto" id="c_forma_pagto" class="PLLe notPrint"
+                              style="width:642px;margin-left:2pt;" readonly
+                              tabindex=-1>aqui tem max linhas</textarea>
+                    <span class="PLLe notVisible"></span>
+                </td>
+            </tr>
+        </table>
+
+
+        <!--  STATUS DE PAGAMENTO   -->
+        <br>
+        <table style="width:649px" class="Q" cellspacing="0">
+            <tr>
+                <td style="width:16.67%" class="MD" align="left" valign="bottom"><span class="Rf">Status de Pagto</span></td>
+                <td style="width:16.67%" class="MD" align="right" valign="bottom">
+                    <span class="Rf">
+                        VL
+                        Total&nbsp;&nbsp;(Família)&nbsp;
+                    </span>
+                </td>
+                <td style="width:16.67%" class="MD" align="right" valign="bottom"><span class="Rf">VL Pago&nbsp;</span></td>
+                <td style="width:16.67%" class="MD" align="right" valign="bottom">
+                    <span class="Rf">VL Devoluções&nbsp;</span>
+                </td>
+                <td style="width:16.67%" class="MD" align="right" valign="bottom"><span class="Rf">VL Perdas&nbsp;</span></td>
+                <td style="width:16.67%" align="right" valign="bottom"><span class="Rf">Saldo a Pagar&nbsp;</span></td>
+            </tr>
+            <tr>
+                <td style="width:16.67%" class="MD" align="left">
+                    <span class="C"></span>
+                </td>
+                <td style="width:16.67%" align="right" class="MD">
+                    <span class="Cd">
+
+                    </span>
+                </td>
+                <td style="width:16.67%" align="right" class="MD">
+                    <span class="Cd">
+
+                    </span>
+                </td>
+                <td style="width:16.67%" align="right" class="MD">
+                    <span class="Cd">
+
+                    </span>
+                </td>
+                <td style="width:16.67%" align="right" class="MD">
+                    <span class="Cd">
+
+                    </span>
+                </td>
+                <td style="width:16.67%" align="right">
+                    <span class="Cd">
+
+                    </span>
+                </td>
+            </tr>
+        </table>
+
+
+
+        <!--  ANÁLISE DE CRÉDITO   -->
+        <br>
+        <table style="width:649px" class="Q" cellspacing="0">
+            <tr>
+                <td align="left">
+                    <p class="Rf">ANÁLISE DE CRÉDITO</p>
+                    <p class="C">
+
+                    </p>
+                </td>
+            </tr>
+        </table>
+
+
+        <!--  DEVOLUÇÕES   -->
+        <span>
+            <br>
+            <table style="width:649px" class="Q" cellspacing="0">
+                <tr>
+                    <td align="left">
+                        <p class="Rf" style="color:red;">DEVOLUÇÃO DE MERCADORIAS</p>
+                        @*aqui vai o foreach pedido.ListaProdutoDevolvido*@
+                        <p class="C PLLe">
+
+
+                            <span></span>
+                            <span>
+
+                            </span>
+                            <span>
+
+                            </span>
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </span>
+        <!--  PERDAS   -->
+        <span>
+            <br>
+            <table style="width:649px" class="Q" cellspacing="0">
+                <tr>
+                    <td align="left">
+                        <p class="Rf" style="color:red;">PERDAS</p>
+                        @*aqui pedido.ListaPerdas*@
+                        <p class="C">
+
+                            <span>
+
+                            </span>
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </span>
+
+        <!--  DATA DE COLETA   -->
+        <br>
+        <table style="width:649px" class="Q" cellspacing="0">
+            <tr>
+                <td align="left">
+                    <p class="Rf">DATA DE COLETA</p>
+                    <p class="C">
+
+                    </p>
+                </td>
+            </tr>
+        </table>
+
+        @*transpostadora*@
+        <span></span>
+        <br>
+        <table style="width:649px" class="Q" cellspacing="0">
+            <tr>
+                <td class="MD" align="left">
+                    <p class="Rf">TRANSPORTADORA</p>
+                    <p class="C">
+
+                    </p>
+                </td>
+                <td align="right" style="width:65px;">
+                    <p class="Rf">FRETE (R$)&nbsp;</p>
+                    <p class="Cd">
+
+                    </p>
+                </td>
+            </tr>
+        </table>
+
+
+
+        <div>
+            <br>
+
+            <table id="tableOcorrencia" class="notPrint" style="width:649px" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                    <td colspan="3">
+                        <span style="float: right">
+                            @*afazer trocar o mat para o checkbox do materialize*@
+                            @*<mat-checkbox class="checkboxes"
+                                              title="configura as informações sobre ocorrências para serem impressas ou não"
+                                              (change)="imprimirOcorrenciasAlterado()"
+                                              [checked]="impressaoService.imprimirOcorrencias()">
+                                    Incluir ocorrências na impressão
+                                </mat-checkbox>*@
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="ME MD MC MB" align="left">
+                        <span class="Rf">
+                            OCORRÊNCIAS
+                        </span>
+                    </td>
+                </tr>
+
+                <tr class="notVisible">
+                    <td colspan="3" class="ME MD MB" align="left">&nbsp;</td>
+                </tr>
+                @*afazer trocar para o container do materialize*@
+                @*aqui tem foreach pedido.ListaOcorrencia*@
+                @*<ng-container>*@
+                <tr>
+                    <td class="ME" style="width:24px;" align="left">&nbsp;</td>
+                    <td colspan="2" class="ME MD" style="width: 622px;" align="left">
+                        <table style="width:100%" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td class="C MD MB tdWithPadding" style="width:33%" align="left" valign="top">
+                                    <span class="Rf" style="margin-left:0px;">
+                                        ABERTA
+                                        POR:
+                                    </span>
+                                </td>
+                                <td class="C MD MB tdWithPadding" style="width:33%" align="left" valign="top">
+                                    <span class="Rf" style="margin-left:0px;">EM:</span>&nbsp;
+
+                                </td>
+                                <td class="C MB tdWithPadding" align="left" valign="top">
+                                    <span class="Rf"
+                                          style="margin-left:0px;">SITUAÇÃO:</span>&nbsp;
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="ME" style="width:24px;" align="left">&nbsp;</td>
+                    <td colspan="2" class="ME MD" style="width: 622px;" align="left">
+                        <table style="width:100%" cellspacing="0" cellpadding="1">
+                            <tr>
+                                <td class="C MB Rf" style="width:100%" align="left" valign="top">
+                                    CONTATO:
+                                    <span class="Rf" style="margin-left:0px; color:black;">
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="C MB" style="width:100%" align="left" valign="top">
+                                    <span class="Rf" style="margin-left:0px;">
+                                        OCORRÊNCIA:
+                                    </span>&nbsp
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr>
+                    @*finalizado hora*@
+                    <td style="width: 24px;" align="left">
+                        &nbsp;
+                    </td>
+                    @*finalizado data e hora*@
+                    <td style="width: 24px;" align="left">
+                        &nbsp;
+                    </td>
+                    <td class="ME MD" style="width: 622px;" align="left">
+                        <table style="width:100%" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td class="Rf tdWithPadding" align="left">MENSAGENS</td>
+                            </tr>
+                            @*pedido ocorrencia*@
+                            <tr>
+                                <td align="left">&nbsp;</td>
+                            </tr>
+                            @*aqui vai o foreach ocorrencia.mensagemDtoOcorrenciaPedidos*@
+                            <tr>
+                                <td align="left">
+                                    <table style="width:100%" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td class="C MD MC tdWithPadding" style="width:60px;" align="center"
+                                                valign="top">
+                                            </td>
+                                            <td class="C MD MC tdWithPadding" style="width:80px;" align="center"
+                                                valign="top">
+
+                                                <ng-container>
+
+                                                </ng-container>
+                                            </td>
+                                            <td class="C MC tdWithPadding" align="left" valign="top">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+
+                            @*<ng-container *ngIf="!ocorrencia.Finalizado_Data_Hora">*@
+                            <tr class="notPrint">
+                                <td class="MC" style="padding:0px;" align="left">
+                                    <table style="width:100%" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td align="left">&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+
+                            <tr class="notPrint">
+                                <td class="MB" align="left">
+                                    <span style="font-family: Arial, Helvetica, sans-serif;color:white;font-size:6pt;font-style:normal;">&nbsp;</span>
+                                </td>
+                            </tr>
+                            <tr class="notVisible">
+                                <td class="MB MC" align="left">
+                                    <span style="font-family: Arial, Helvetica, sans-serif;color:white;font-size:6pt;font-style:normal;">&nbsp;</span>
+                                </td>
+                            </tr>
+                            @*</ng-container>*@
+
+                        </table>
+                    </td>
+                </tr>
+
+                @*<ng-container>*@
+                <tr>
+                    <td class="ME MB" style="width: 24px;" align="left">&nbsp;</td>
+                    <td colspan="2" class="MC ME MD" align="left">
+                        <table style="width:100%" cellspacing="0" cellpadding="1">
+                            <tr>
+                                <td class="C MB" style="width:100%" align="left" valign="top">
+                                    <table style="width:100%" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td class="C MD tdWithPadding" style="width:50%" align="left"
+                                                valign="top">
+                                                <span class="Rf" style="margin-left:0px;">
+                                                    FINALIZADA
+                                                    POR:
+                                                </span>&nbsp;
+                                            </td>
+                                            <td class="C tdWithPadding" style="width:50%" align="left" valign="top">
+                                                <span class="Rf" style="margin-left:0px;">
+                                                    EM:
+                                                </span>&nbsp;
+
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="C MB" style="width:100%" align="left" valign="top">
+                                    <span class="Rf"
+                                          style="margin-left:0px;">
+                                        TIPO DE
+                                        OCORRÊNCIA:
+                                    </span>&nbsp;
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="C MB" style="width:100%" align="left" valign="top">
+                                    <span class="Rf"
+                                          style="margin-left:0px;">SOLUÇÃO:</span>&nbsp;
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                @*</ng-container>*@
+
+                @*</ng-container>*@
+            </table>
+        </div>
+
+
+        <div>
+            <br>
+            <table id="tableBlocoNotas" class="notPrint" style="width:649px" cellspacing="0" cellpadding="1">
+                <tr>
+                    <td colspan="4">
+                        <span style="float: right">
+                            @*afazer: trocar por checkbox materialize*@
+                            @*<mat-checkbox class="checkboxes"
+                                              title="configura as mensagens do bloco de notas para serem impressas ou não"
+                                              (change)="imprimirBlocoNotasAlterado()"
+                                              [checked]="impressaoService.imprimirBlocoNotas()">
+                                    Incluir bloco de notas na impressão
+                                </mat-checkbox>*@
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="ME MD MC MB" align="left">
+                        <span class="Rf">
+                            BLOCO DE NOTAS
+                        </span>
+                    </td>
+                </tr>
+
+                <tr class="notVisible" @**ngIf="pedido.ListaBlocoNotas.length == 0"*@>
+                    <td colspan="4" class="ME MD MB" align="left">&nbsp;</td>
+                </tr>
+                @*aqui vai foreach do pedido.ListaBlocoNotas*@
+                <tr>
+                    <ng-container>
+                        <td class="C ME MD MB" style="width:60px;" align="center" valign="top">
+                        </td>
+
+                        <td class="C MD MB" style="width:80px;" align="center" valign="top">
+
+                            <ng-container>
+
+                            </ng-container>
+                        </td>
+                        <td colspan="2" class="C MD MB" align="left" valign="top">
+                        </td>
+                    </ng-container>
+                </tr>
+            </table>
+        </div>
+
+
+
+        <ng-container>
+            <br>
+            <table id="tableBlocoNotasItemDevolvido" class="notPrint" style="width:649px" cellspacing="0" cellpadding="1"
+                   border="0">
+                <tr>
+                    <td colspan="3">
+                        <span style="float: right">
+                            @*afazer: trocar por checkbox mateialize*@
+                            @*<mat-checkbox class="checkboxes"
+                                              title="configura as mensagens do bloco de notas de itens devolvidos para serem impressas ou não"
+                                              (change)="imprimirNotasDevAlterado()" [checked]="impressaoService.imprimirNotasDev()">
+                                    Incluir bloco de notas de devolução na impressão
+                                </mat-checkbox>*@
+                        </span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="3" class="ME MD MC MB" align="left">
+                        <span class="Rf">
+                            BLOCO DE NOTAS (DEVOLUÇÃO DE
+                            MERCADORIAS)
+                        </span>
+                    </td>
+                </tr>
+                @*aqui vai o foreach de pedido.ListaBlocoNotasDevolucao*@
+                <tr>
+                    <td class="C ME MD MB" style="width:60px;" align="center" valign="top">
+                    </td>
+                    <td class="C MD MB" style="width:80px;" align="center" valign="top">
+                    </td>
+                    <td class="C MD MB" style="width:499px;" align="left" valign="top">
+                    </td>
+                </tr>
+
+            </table>
+        </ng-container>
+
+
+    </form>
+
+</div>
 
 <style>
-    .caixa {
-        display: inline-block;
-        padding: 0.5em;
-        padding-left: 0em;
+    td{
+        padding:0px 0px;
     }
 
-        .caixa .rotulo {
-            display: inline;
-            font-weight: bold;
-            opacity: 0.9;
-            padding-right: 0.5em;
-        }
+    table{
+        border-collapse:separate !important;
+    }
+    /* para comprolar por impressão ou na tela, mas estamos sempre imprimirndo o que já aparece na tela! */
+.notVisible {
+  display: none;
+}
 
-        .caixa .dado {
-            display: inline;
-            padding-right: 1.0em;
-        }
+.notPrint {
+  display: auto;
+}
+
+.botaoImprimirDIv {
+    text-align: right;
+    padding: 1em;
+  }
+  .botaoVoltarDIv {
+    text-align: left;
+    padding-bottom: 1em;
+  }
+
+@*@media print {
+  .botaoVoltar {
+    display: none;
+  }*@
+  .botaoImprimirDIv {
+    display: none;
+  }
+  .botaoVoltarDIv {
+    display: none;
+  }
+  .nossobody-before{
+    height:-100vh;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden;
+}
+
+
+a {
+  text-decoration: none;
+}
+
+.nossobody {
+  background: #ffffff;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 10pt;
+  border: 0pt solid #000000;
+  margin-left:25% !important;
+}
+
+.nossobody-before {
+  font-weight: bold;
+  font-style: italic;
+  font-size: 9pt;
+  color: #696969;
+  text-align: center;
+  border: solid 2px #696969;
+  display: block;
+  position: relative;
+  padding: 4px;
+  margin-top: 2px;
+  margin-bottom: 8px;
+  width: 650px;
+}
+
+input {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 10pt;
+  font-weight: bold;
+}
+
+select {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 10pt;
+}
+
+textarea {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 10pt;
+}
+
+.ALERTA {
+  background: #f00000;
+  border: 1pt solid #ff0000;
+  color: #ffff00;
+  font-size: 12pt;
+  font-weight: bold;
+  text-align: center;
+}
+
+.Botao {
+  background: #abe0a6;
+  border: 3px double #696969;
+  cursor: pointer;
+  text-align: center;
+}
+
+.Button {
+  background: #f5f5f5;
+  border: 3px double #808080;
+  color: #808080;
+  font-size: 8pt;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+}
+
+.CBOX {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 10pt;
+  border: 0px;
+}
+
+.C {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #000000;
+  font-size: 8pt;
+  font-weight: bold;
+  font-style: normal;
+  margin: 0pt 2pt 1pt 2pt;
+}
+
+.Cc {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #000000;
+  font-size: 8pt;
+  font-weight: bold;
+  font-style: normal;
+  margin: 0pt 2pt 1pt 2pt;
+  text-align: center;
+}
+
+.Cd {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #000000;
+  font-size: 8pt;
+  font-weight: bold;
+  font-style: normal;
+  margin: 0pt 2pt 1pt 2pt;
+  text-align: right;
+}
+
+.Cn {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #000000;
+  font-size: 8pt;
+  font-style: normal;
+  margin: 0pt 2pt 1pt 2pt;
+}
+
+.Cnc {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #000000;
+  font-size: 8pt;
+  font-style: normal;
+  margin: 0pt 2pt 1pt 2pt;
+  text-align: center;
+}
+
+.Cnd {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #000000;
+  font-size: 8pt;
+  font-style: normal;
+  margin: 0pt 2pt 1pt 2pt;
+  text-align: right;
+}
+
+.DefaultBkg {
+  background: #eefaed;
+}
+
+.Expl {
+  font-family: Arial, Times New Roman, serif;
+  font-size: 10pt;
+  font-style: italic;
+  color: #808080;
+}
+
+.F {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #000000;
+  font-size: 9pt;
+  font-weight: bold;
+  font-style: normal;
+  margin: 0pt 4pt 0pt 4pt;
+}
+
+.HoraPed {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #000000;
+  font-size: 9pt;
+  font-weight: bold;
+  font-style: normal;
+}
+
+.L {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #808080;
+  font-size: 8pt;
+  font-weight: bold;
+  font-style: normal;
+  margin: 0pt 0pt 0pt 0pt;
+  text-align: right;
+}
+
+.Lbl {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 10pt;
+  font-weight: bold;
+  color: #808080;
+}
+
+.LAlteraSenha {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #008000;
+  font-size: 8pt;
+  font-weight: bold;
+  font-style: normal;
+  margin: 0pt 0pt 0pt 0pt;
+  text-align: right;
+}
+
+.LPagInicial {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #008000;
+  font-size: 8pt;
+  font-weight: bold;
+  font-style: normal;
+  margin: 0pt 0pt 0pt 0pt;
+  text-align: right;
+}
+
+.LSessaoEncerra {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #ff0000;
+  font-size: 10pt;
+  font-weight: bold;
+  font-style: normal;
+  margin: 0pt 0pt 0pt 0pt;
+  text-align: right;
+}
+
+.LPesqCep {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #094ab3;
+  font-size: 8pt;
+  font-weight: bold;
+  font-style: normal;
+  margin: 0pt 0pt 0pt 0pt;
+  text-align: right;
+  cursor: pointer;
+}
+
+.MB {
+  border-bottom: 1pt solid #c0c0c0;
+}
+
+.MC {
+  border-top: 1pt solid #c0c0c0;
+}
+
+.MD {
+  border-right: 1pt solid #c0c0c0;
+}
+
+.MDB {
+  border-right: 1pt solid #c0c0c0;
+  border-bottom: 1pt solid #c0c0c0;
+}
+
+.MDBE {
+  border-right: 1pt solid #c0c0c0;
+  border-bottom: 1pt solid #c0c0c0;
+  border-left: 1pt solid #c0c0c0;
+}
+
+.MDE {
+  border-right: 1pt solid #c0c0c0;
+  border-left: 1pt solid #c0c0c0;
+}
+
+.MDTE {
+  border-right: 1pt solid #c0c0c0;
+  border-top: 1pt solid #c0c0c0;
+  border-left: 1pt solid #c0c0c0;
+}
+
+.ME {
+  border-left: 1pt solid #c0c0c0;
+}
+
+.MEB {
+  border-left: 1pt solid #c0c0c0;
+  border-bottom: 1pt solid #c0c0c0;
+}
+
+.MT {
+  border: 1pt solid #c0c0c0;
+}
+
+.MTB {
+  border-top: 1pt solid #c0c0c0;
+  border-bottom: 1pt solid #c0c0c0;
+}
+
+.MTBD {
+  border-top: 1pt solid #c0c0c0;
+  border-bottom: 1pt solid #c0c0c0;
+  border-right: 1pt solid #c0c0c0;
+}
+
+.MTBE {
+  border-top: 1pt solid #c0c0c0;
+  border-bottom: 1pt solid #c0c0c0;
+  border-left: 1pt solid #c0c0c0;
+}
+
+.MTD {
+  border-top: 1pt solid #c0c0c0;
+  border-right: 1pt solid #c0c0c0;
+}
+
+.MTE {
+  border-top: 1pt solid #c0c0c0;
+  border-left: 1pt solid #c0c0c0;
+}
+
+.MtAviso {
+  background: #efffed;
+  color: #000080;
+  border: 1pt solid #000080;
+  margin: 0px 0px 0px 0px;
+}
+
+.MtAlerta {
+  background: #f00000;
+  color: #ffff00;
+  border: 1pt solid #ff0000;
+  margin: 0px 0px 0px 0px;
+}
+
+.MtLink {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 9pt;
+  font-weight: bold;
+  background: #fffaf0;
+  color: #2f4f4f;
+  border: 1pt solid #000000;
+  margin: 0px 0px 0px 0px;
+  cursor: pointer;
+}
+
+.N {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 10pt;
+  font-weight: bold;
+}
+
+.Np {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 8pt;
+  font-weight: bold;
+}
+
+.OpPg {
+  font-size: 10pt;
+  color: #000000;
+  font-style: normal;
+  font-family: Arial;
+  text-decoration: none;
+}
+
+.PEDIDO {
+  font-family: Times New Roman, serif;
+  font-size: 18pt;
+  font-weight: bold;
+  font-style: italic;
+}
+
+.PLLc {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 8pt;
+  color: #000000;
+  font-weight: bold;
+  text-align: center;
+  margin-left: 1pt;
+  margin-right: 1pt;
+  background: #ffffff;
+  border: 0pt;
+  border-bottom: 0pt;
+}
+
+.PLLd {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 8pt;
+  color: #000000;
+  font-weight: bold;
+  text-align: right;
+  margin-left: 1pt;
+  margin-right: 1pt;
+  background: #ffffff;
+  border: 0pt;
+  border-bottom: 0pt;
+}
+
+.PLLe {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 8pt;
+  color: #000000;
+  font-weight: bold;
+  margin-left: 1pt;
+  margin-right: 1pt;
+  background: #ffffff;
+  border: 0pt;
+  border-bottom: 0pt;
+}
+
+.PLTc {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 8pt;
+  color: #808080;
+  font-weight: bold;
+  vertical-align: top;
+  text-align: center;
+  margin-right: 2pt;
+}
+
+.PLTd {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 8pt;
+  color: #808080;
+  font-weight: bold;
+  vertical-align: top;
+  text-align: right;
+  margin-right: 2pt;
+}
+
+.PLTe {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 8pt;
+  color: #808080;
+  font-weight: bold;
+  vertical-align: top;
+  margin-left: 2pt;
+}
+
+.PLBc {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 8pt;
+  color: #000000;
+  font-weight: bold;
+  text-align: center;
+  margin-left: 1pt;
+  margin-right: 1pt;
+  background: #ffffff;
+}
+
+.PLBd {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 8pt;
+  color: #000000;
+  font-weight: bold;
+  text-align: right;
+  margin-left: 1pt;
+  margin-right: 1pt;
+  background: #ffffff;
+}
+
+.PLBe {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 8pt;
+  color: #000000;
+  font-weight: bold;
+  margin-left: 1pt;
+  margin-right: 1pt;
+  background: #ffffff;
+}
+
+.Q {
+  background: #ffffff;
+  border: 1pt solid #c0c0c0;
+
+}
+
+.Qt {
+  background: #ffffff;
+  margin: 0pt;
+  border-top: 1pt solid #c0c0c0;
+  border-bottom: 0pt;
+  border-left: 0pt;
+  border-right: 0pt;
+}
+
+.QFn {
+  background: #ffffff;
+  border: 1pt solid #c0c0c0;
+  margin: 0 50 0 50;
+  background: #eefaed;
+  width: 500px;
+}
+
+.QuadroAviso {
+  font-weight: bold;
+  font-size: 10pt;
+  background: #ffffff;
+  width: 640px;
+  height: 240px;
+  color: #000000;
+  font-family: Arial, Helvetica, sans-serif;
+  letter-spacing: 0pt;
+}
+
+.QS {
+  background: #ffffff;
+  border: 1pt solid #c0c0c0;
+  border-top: 0pt;
+  margin: 0pt;
+}
+
+.QT {
+  background: #ffffff;
+  margin-top: 0pt;
+}
+
+.Qx {
+  background: #ffffff;
+  border: 0pt;
+  margin: 0pt;
+}
+
+.R {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #808080;
+  font-size: 8pt;
+  font-weight: bold;
+  vertical-align: top;
+  margin: 1pt 0pt 0pt 2pt;
+}
+
+.Rf {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #808080;
+  font-size: 8pt;
+  font-weight: bold;
+  vertical-align: top;
+  margin: 0pt 0pt 0pt 2pt;
+}
+
+.rbLink {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 10pt;
+  border: 0px;
+  cursor: pointer;
+}
+
+.Rc {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #808080;
+  font-size: 8pt;
+  font-weight: bold;
+  vertical-align: top;
+  margin: 1pt 0pt 0pt 2pt;
+  text-align: center;
+}
+
+.Rd {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #808080;
+  font-size: 8pt;
+  vertical-align: top;
+  margin: 0pt 4pt 0pt 2pt;
+  text-align: right;
+}
+
+.STP {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #000000;
+  font-size: 12pt;
+  font-weight: bold;
+  font-style: normal;
+}
+.STP_HORA{
+  font-size: small;
+  font-weight: bold;
+  font-style: normal;
+}
+
+.T {
+  color: #0d8c01;
+  font-family: Times New Roman, serif;
+  font-size: 16pt;
+  font-weight: bold;
+  font-style: italic;
+  text-align: center;
+}
+
+.TA {
+  background: #ffffff;
+  border: 0pt;
+  border-bottom: 0pt;
+}
+
+.TFn {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 10pt;
+  font-weight: bold;
+  margin: 10 10 10 10;
+}
+
+.TracoBottom {
+  border-bottom: 1px solid #01ad00;
+}
+
+#rb_etg_imediata {
+  margin: 0pt 2pt 1pt 15pt;
+  vertical-align: top;
+}
+
+#divConsultaPedidoWrapper {
+  left: 1px;
+  position: absolute;
+  margin-left: 1px;
+  width: 110px;
+  z-index: 0;
+}
+
+#divConsultaPedido {
+  margin-top: 60px;
+  border: 1px solid #a9a9a9;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 6px;
+  padding-right: 6px;
+  position: absolute;
+  background-color: #f5f5f5;
+  top: 0;
+  z-index: 0;
+}
+
+#divConsultaPedido.divFixo {
+  position: fixed;
+  top: 0;
+}
+
+#divClienteConsultaView {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: #808080;
+  opacity: 1;
+}
+
+#divInternoClienteConsultaView {
+  position: absolute;
+  top: 6%;
+  left: 5%;
+  width: 90%;
+  height: 90%;
+  z-index: 1000;
+  background-color: #808080;
+  opacity: 1;
+}
+
+#divInternoClienteConsultaView.divFixo {
+  position: fixed;
+  top: 6%;
+}
+
+#imgFechaDivClienteConsultaView {
+  position: fixed;
+  top: 6%;
+  left: 50%;
+  margin-left: -16px;
+  /* -1 * image width / 2 */
+  margin-top: -32px;
+  z-index: 1001;
+}
+
+#iframeClienteConsultaView {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: solid 4px black;
+}
+
+
 </style>
 

@@ -152,7 +152,7 @@ namespace Loja.Bll.PedidoBll
             log = Loja.Bll.Util.Util.MontaLogCamposIncluir(tcliente, log, campos_a_incluir);
 
             var blnParametro = await Loja.Bll.Util.Util.BuscarRegistroParametro(Constantes.Constantes.ID_PARAMETRO_Flag_Pedido_MemorizacaoCompletaEnderecos,
-                contextoBdProvider);
+                contextoBdProvider.GetContextoLeitura());
             var blnUsarMemorizacaoCompletaEnderecos = false;
             if (blnParametro != null)
                 blnUsarMemorizacaoCompletaEnderecos = blnParametro.Campo_inteiro == 1;

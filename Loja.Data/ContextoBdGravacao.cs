@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Loja.Data
 {
-    public class ContextoBdGravacao : IDisposable
+    public class ContextoBdGravacao : IDisposable, IContextoBd
     {
         private readonly ContextoBdBasico contexto;
         public readonly IDbContextTransaction transacao;
@@ -76,5 +76,114 @@ namespace Loja.Data
         public DbSet<TpedidoAnaliseEndereco> TpedidoAnaliseEnderecos { get => contexto.TpedidoAnaliseEnderecos; }
         public DbSet<TpedidoAnaliseEnderecoConfrontacao> TpedidoAnaliseConfrontacaos { get => contexto.TpedidoAnaliseConfrontacaos; }
         public DbSet<Tusuario> Tusuarios { get => contexto.Tusuarios; }
+
+        IQueryable<TalertaProduto> IContextoBd.TalertaProdutos { get => contexto.TalertaProdutos; }
+
+        IQueryable<Tbanco> IContextoBd.Tbancos { get => contexto.Tbancos; }
+
+        IQueryable<TclienteRefBancaria> IContextoBd.TclienteRefBancarias { get => contexto.TclienteRefBancarias; }
+
+        IQueryable<TclienteRefComercial> IContextoBd.TclienteRefComercials { get => contexto.TclienteRefComercials; }
+
+        IQueryable<TcodigoDescricao> IContextoBd.TcodigoDescricaos { get => contexto.TcodigoDescricaos; }
+
+        IQueryable<Tcontrole> IContextoBd.Tcontroles { get => contexto.Tcontroles; }
+
+        IQueryable<Tdesconto> IContextoBd.Tdescontos { get => contexto.Tdescontos; }
+
+        IQueryable<TecProdutoCompostoItem> IContextoBd.TecProdutoCompostoItems { get => contexto.TecProdutoCompostoItems; }
+
+        IQueryable<TecProdutoComposto> IContextoBd.TecProdutoCompostos { get => contexto.TecProdutoCompostos; }
+
+        IQueryable<TestoqueItem> IContextoBd.TestoqueItems { get => contexto.TestoqueItems; }
+
+        IQueryable<TestoqueLog> IContextoBd.TestoqueLogs { get => contexto.TestoqueLogs; }
+
+        IQueryable<TestoqueMovimento> IContextoBd.TestoqueMovimentos { get => contexto.TestoqueMovimentos; }
+
+        IQueryable<Testoque> IContextoBd.Testoques { get => contexto.Testoques; }
+
+        IQueryable<Tfabricante> IContextoBd.Tfabricantes { get => contexto.Tfabricantes; }
+
+        IQueryable<TfinControle> IContextoBd.TfinControles { get => contexto.TfinControles; }
+
+        IQueryable<TformaPagto> IContextoBd.TformaPagtos { get => contexto.TformaPagtos; }
+
+        IQueryable<Tlog> IContextoBd.Tlogs { get => contexto.Tlogs; }
+
+        IQueryable<Tloja> IContextoBd.Tlojas { get => contexto.Tlojas; }
+
+        IQueryable<TnfEmitente> IContextoBd.TnfEmitentes { get => contexto.TnfEmitentes; }
+
+        IQueryable<Toperacao> IContextoBd.Toperacaos { get => contexto.Toperacaos; }
+
+        IQueryable<TorcamentistaEIndicadorRestricaoFormaPagto> IContextoBd.torcamentistaEIndicadorRestricaoFormaPagtos { get => contexto.torcamentistaEIndicadorRestricaoFormaPagtos; }
+
+        IQueryable<TorcamentistaEindicador> IContextoBd.TorcamentistaEindicadors { get => contexto.TorcamentistaEindicadors; }
+
+        IQueryable<TorcamentoItem> IContextoBd.TorcamentoItems { get => contexto.TorcamentoItems; }
+
+        IQueryable<Torcamento> IContextoBd.Torcamentos { get => contexto.Torcamentos; }
+
+        IQueryable<Tparametro> IContextoBd.Tparametros { get => contexto.Tparametros; }
+
+        IQueryable<TpedidoAnaliseEndereco> IContextoBd.TpedidoAnaliseEnderecos { get => contexto.TpedidoAnaliseEnderecos; }
+
+        IQueryable<TpedidoBlocosNotas> IContextoBd.TpedidoBlocosNotas { get => contexto.TpedidoBlocosNotas; }
+
+        IQueryable<TpedidoItemDevolvidoBlocoNotas> IContextoBd.TpedidoItemDevolvidoBlocoNotas { get => contexto.TpedidoItemDevolvidoBlocoNotas; }
+
+        IQueryable<TpedidoItemDevolvido> IContextoBd.TpedidoItemDevolvidos { get => contexto.TpedidoItemDevolvidos; }
+
+        IQueryable<TpedidoItem> IContextoBd.TpedidoItems { get => contexto.TpedidoItems; }
+
+        IQueryable<TpedidoOcorrenciaMensagem> IContextoBd.TpedidoOcorrenciaMensagems { get => contexto.TpedidoOcorrenciaMensagems; }
+
+        IQueryable<TpedidoOcorrencia> IContextoBd.TpedidoOcorrencias { get => contexto.TpedidoOcorrencias; }
+
+        IQueryable<TpedidoPagamento> IContextoBd.TpedidoPagamentos { get => contexto.TpedidoPagamentos; }
+
+        IQueryable<TpedidoPerda> IContextoBd.TpedidoPerdas { get => contexto.TpedidoPerdas; }
+
+        IQueryable<Tpedido> IContextoBd.Tpedidos { get => contexto.Tpedidos; }
+
+        IQueryable<TpercentualCustoFinanceiroFornecedor> IContextoBd.TpercentualCustoFinanceiroFornecedors { get => contexto.TpercentualCustoFinanceiroFornecedors; }
+
+        IQueryable<TperfilItem> IContextoBd.TperfilItems { get => contexto.TperfilItems; }
+
+        IQueryable<Tperfil> IContextoBd.Tperfils { get => contexto.Tperfils; }
+
+        IQueryable<TperfilUsuario> IContextoBd.TperfiUsuarios { get => contexto.TperfilUsuarios; }
+
+        IQueryable<TprazoPagtoVisanet> IContextoBd.TprazoPagtoVisanets { get => contexto.TprazoPagtoVisanets; }
+
+        IQueryable<TprodutoLoja> IContextoBd.TprodutoLojas { get => contexto.TprodutoLojas; }
+
+        IQueryable<Tproduto> IContextoBd.Tprodutos { get => contexto.Tprodutos; }
+
+        IQueryable<TprodutoXAlerta> IContextoBd.TprodutoXAlertas { get => contexto.TprodutoXAlertas; }
+
+        IQueryable<TprodutoXwmsRegraCd> IContextoBd.TprodutoXwmsRegraCds { get => contexto.TprodutoXwmsRegraCds; }
+
+        IQueryable<TsessaoHistorico> IContextoBd.TsessaoHistoricos { get => contexto.TsessaoHistoricos; }
+
+        IQueryable<TtransportadoraCep> IContextoBd.TtransportadoraCeps { get => contexto.TtransportadoraCeps; }
+
+        IQueryable<Ttransportadora> IContextoBd.Ttransportadoras { get => contexto.Ttransportadoras; }
+
+        IQueryable<Tusuario> IContextoBd.Tusuarios { get => contexto.Tusuarios; }
+
+        IQueryable<TusuarioXLoja> IContextoBd.TusuarioXLojas { get => contexto.TusuarioXLojas; }
+
+        IQueryable<TwmsRegraCd> IContextoBd.TwmsRegraCds { get => contexto.TwmsRegraCds; }
+
+        IQueryable<TwmsRegraCdXUfPessoa> IContextoBd.TwmsRegraCdXUfPessoas { get => contexto.TwmsRegraCdXUfPessoas; }
+
+        IQueryable<TwmsRegraCdXUf> IContextoBd.TwmsRegraCdXUfs { get => contexto.TwmsRegraCdXUfs; }
+
+        IQueryable<TwmsRegraCdXUfXPessoaXCd> IContextoBd.TwmsRegraCdXUfXPessoaXCds { get => contexto.TwmsRegraCdXUfXPessoaXCds; }
+
+        IQueryable<Tcliente> IContextoBd.Tclientes { get => contexto.Tclientes; }
+
     }
 }

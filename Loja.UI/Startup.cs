@@ -74,7 +74,7 @@ namespace Loja.UI
 
             //bll
             services.AddTransient<Bll.ProdutoBll.ProdutoBll, Bll.ProdutoBll.ProdutoBll>();
-            services.AddTransient<Loja.Bll.Bll.PedidoBll.CancelamentoAutomaticoBll, Loja.Bll.Bll.PedidoBll.CancelamentoAutomaticoBll>();
+            services.AddTransient<Loja.Bll.Bll.pedidoBll.CancelamentoAutomaticoBll, Loja.Bll.Bll.pedidoBll.CancelamentoAutomaticoBll>();
             services.AddTransient<Bll.ClienteBll.ClienteBll, Bll.ClienteBll.ClienteBll>();
             services.AddTransient<Bll.CepBll.CepBll, Bll.CepBll.CepBll>();
             services.AddTransient<Bll.PedidoBll.PedidoBll, Bll.PedidoBll.PedidoBll>();
@@ -83,6 +83,7 @@ namespace Loja.UI
             services.AddTransient<Bll.CoeficienteBll.CoeficienteBll, Bll.CoeficienteBll.CoeficienteBll>();
             services.AddTransient<Loja.Bll.Bll.AcessoBll.UsuarioAcessoBll, Loja.Bll.Bll.AcessoBll.UsuarioAcessoBll>();
             services.AddTransient<Loja.Bll.Bll.AcessoBll.AcessoAuthorizationHandlerBll, Loja.Bll.Bll.AcessoBll.AcessoAuthorizationHandlerBll>();
+            services.AddTransient<Loja.Bll.Bll.PedidoBll.EfetivaPedido.EfetivaPedidoBll, Loja.Bll.Bll.PedidoBll.EfetivaPedido.EfetivaPedidoBll>();
 
 
             //ContextoProvider

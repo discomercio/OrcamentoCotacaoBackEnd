@@ -13,6 +13,7 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
         public short? Faltando { get; set; }
         public string CorFaltante { get; set; }
         public decimal? Preco { get; set; }
+        public decimal? Preco_Lista { get; set; }
         public decimal VlLista { get; set; }
         public float? Desconto { get; set; }
         public decimal VlUnitario { get; set; }

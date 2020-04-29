@@ -263,7 +263,7 @@ namespace Loja.Bll.ClienteBll
 
         public async Task<IEnumerable<string>> BuscarListaIndicadores(string indicador, string usuarioSistema, string loja)
         {
-            List<string> lst = (await Util.Util.BuscarOrcamentistaEIndicador(contextoProvider, indicador, usuarioSistema, loja)).ToList();
+            List<string> lst = (await Util.Util.BuscarListaOrcamentistaEIndicador(contextoProvider, indicador, usuarioSistema, loja)).ToList();
 
             return lst;
         }
@@ -875,7 +875,7 @@ namespace Loja.Bll.ClienteBll
         {
             int qtdeRef = 1;
             string campos_a_omitir_ref_bancaria = "id_cliente|ordem|excluido_status|dt_cadastro|usuario_cadastro";
-
+            
             //afazer: verificar se é uma inclusão de nova ref
 
             //buscamos as referencias para poder comparar os dados

@@ -2625,5 +2625,11 @@ namespace Loja.Bll.Constantes
         public const string NUMERO_LOJA_KITS = "02";
 
         public const string ID_PARAM_SITE = "ArtBS";
+
+        public const int COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP = 1;
+        public const int COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS = 2;
+        public const int COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS = 3;
+
+        public const string ID_PARAMETRO_PERC_DESAGIO_RA_LIQUIDA = "PERC_DESAGIO_RA_LIQUIDA";
     }
 }

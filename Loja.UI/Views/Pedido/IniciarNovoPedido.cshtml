@@ -14,577 +14,458 @@
     @using (Html.BeginForm("PreparaParaCadastrarPedido", "Pedido", FormMethod.Post,
 new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
     {
-        <article>
-            <div class="row">
-                <div class="col s12">
-                    <span class="caixa">
+    <article>
+        <div class="row">
+            <div class="col s12">
+                <span class="caixa">
+                    <strong>
                         <span class="rotulo">Cliente:</span>
                         <span class="dado" name="nome" id="nome"> @Model.NomeCliente</span>
-                    </span>
-                </div>
+                    </strong>
+                </span>
             </div>
-            @* Indicadores *@
-
-            <div class="row">
-                @if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
-   .Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
-                {
-                    @* Indicação *@
-                    <div class="col s6">
-                        <span class="caixa">
-                            <span class="rotulo">Indicação</span>
-                        </span>
-                    </div>
-                    @* Seleção CD *@
-                    <div class="col s6">
-                        <span class="caixa">
-                            <span class="rotulo">Modo de Seleção do CD (Auto-Split)</span>
-                        </span>
-                    </div>
-                    @* Check Com ou Sem indicação *@
-                    <div class="col s2">
-                        <label>
-                            <input class="with-gap" type="radio" id="chkSemIndicacao" name="semIndicacao" value="@Model.ComIndicacao" />
-                            <span class="dado">Sem Indicação</span>
-                        </label>
-                    </div>
-                    <div class="col s2">
-                        <label>
-                            <input class="with-gap" type="radio" id="chkComIndicacao" name="comIndicacao" value="@Model.ComIndicacao" />
-                            <span class="dado">Com Indicação</span>
-                        </label>
-                    </div>
-                    <div class="col s2">
-                        <input type="hidden" />
-                    </div>
-                }
-                @if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
-   .Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD.ToString()) != -1)
-                {
-
-
-                    <div class="col s2">
-                        <label>
-                            <input class="with-gap" type="radio" id="chkAutomatico" name="cdAutomatico" value="false" />
-                            <span class="dado">Aultomático</span>
-                        </label>
-                    </div>
-                    <div class="col s2">
-                        <label>
-                            <input class="with-gap" type="radio" id="chkManual" name="cdManual" value="false" />
-                            <span class="dado">Manual</span>
-                        </label>
-                    </div>
-                }
-                <input type="hidden" />
-                <input type="hidden" />
-                <div class="col s12">
-                    <input type="hidden" />
-                </div>
-                @if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
-   .Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
-                {
-                    <div class="col s4" id="divIndicadores">
-                        <div class="input-field">
-                            @Html.DropDownList("Indicador_Orcamentista", new SelectList(
-                        Model.LstIndicadores, "Value", "Text"),
-                        new { @id = "indicador", @name = "indicador" })
-                            <label>Indicadores</label>
-                        </div>
-                    </div>
-                }
-                <div class="col s2">
-                    <input type="hidden" />
-                </div>
-                @if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
-   .Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD.ToString()) != -1)
-                {
-                    <div class="col s4" id="divSelecaoCd">
-                        <div class="input-field">
-                            @Html.DropDownList("ListaCD", new SelectList(
-                        Model.ListaCD, "Value", "Text"),
-                        new { @id = "selecaoCd", @name = "nomeCD" })
-                            <label>Centro de Distribuição</label>
-                        </div>
-                        <div class="col s4" id="divMsgCD" style="line-height:normal; display:none;position:absolute;">
-                            <span id="msgCD" style="word-break:break-word; color:red;font-weight:bold"></span>
-                        </div>
-                    </div>
-                }
-                <input type="hidden" />
-                <input type="hidden" />
-                <div class="col s12">
-                    <input type="hidden" />
-                </div>
-                @if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
-   .Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
-                {
-                    <div class="col s2" id="divComRA">
-                        <label>
-                            <input class="with-gap" type="radio" id="chkComRa" name="comRA" value="false" />
-                            <span class="dado">Com RA</span>
-                        </label>
-                    </div>
-                    <div class="col s2" id="divSemRA">
-                        <label>
-                            <input class="with-gap" type="radio" id="chkSemRa" name="semRA" value="false" />
-                            <span class="dado">Sem RA</span>
-                        </label>
-                    </div>
-
-                    <input type="hidden" />
-                    <input type="hidden" />
-                    <div class="col s12">
-                        <input type="hidden" />
-                    </div>
-                    <div class="col s2" id="divCOM">
-                        <div class="input-field">
-                            <input type="text" onblur="VerificarPercMaxDescEComissao(this);" id="percComissao" name="percComissao" />
-                            <label>COM(%)</label>
-                        </div>
-                    </div>
-#pragma warning disable CS0162
-                    if (Loja.Bll.Constantes.Constantes.ID_PARAM_SITE == Loja.Bll.Constantes.Constantes.COD_SITE_ASSISTENCIA_TECNICA)
-                    {
-                        <div class="col s2" id="divPedBonshop">
-                            <div class="input-field">
-                                <input type="text" id="pedBonshop" name="pedBonshop" />
-                                <label>COM(%)</label>
-                            </div>
-                        </div>
-                        <div class="col s4" id="divPedBonshop">
-                            <div class="input-field">
-                                @Html.DropDownList("PedBonshop", new SelectList(
-                            Model.PedBonshop, "Value", "Text"),
-                            new { @id = "pedBonshop", @name = "pedBonshop" })
-                                <label>Ref. Pedido Bonshop</label>
-                            </div>
-                            <div class="col s4" id="divMsgCD" style="line-height:normal; display:none;position:absolute;">
-                                <span id="msgCD" style="word-break:break-word; color:red;font-weight:bold"></span>
-                            </div>
-                        </div>
-                    }
-#pragma warning restore CS0162
-                }
-                @*<div class="col s4"><input type="hidden" /></div>
-                    <div class="col s2" style="line-height:normal">
-                        <span id="msgCD" style="word-break:break-word"></span>
-                    </div>*@
+            <div class="col s12">
+                <span class="caixa">
+                    <strong>
+                        <span class="rotulo">Percentual comissão:</span>
+                        <span class="dado" name="perComissao" id="perComissao" style="padding-right:0px;">@Model.PercComissao</span><strong>%</strong>
+                        <input type="hidden" id="percComissao" name="percComissao" />
+                    </strong>
+                </span>
             </div>
-
-
-            <div class="row">
-                <div class="col s10"></div>
-                <div class="input-field col s2">
-                    <a class="waves-effect waves-light btn-small" id="btnModalProdutos"
-                       style="margin-top:2%;">
-                        <i class="material-icons left">add</i>Adicionar produto
-                    </a>
-                </div>
+        </div>
+        <div class="row">
+            <div class="col s10"></div>
+            <div class="input-field col s2">
+                <a class="waves-effect waves-light btn-small" id="btnModalProdutos"
+                   style="margin-top:2%;">
+                    <i class="material-icons left">add</i>Adicionar produto
+                </a>
             </div>
-            @* Produtos adicionados *@
-            <div class="row">
+        </div>
+        @* Produtos adicionados *@
+        <div class="row">
 
-                <div class="col s12">
-                    @{
-                        var indice = 0;
-                        <input type="hidden" id="indice" value="" />
+            <div class="col s12">
+                @{
+                    var indice = 0;
+                    <input type="hidden" id="indice" value="" />
 
-                        <table class="col s12 tabelaitens destaquelinha" style="white-space:nowrap">
-                            <thead>
-                                <tr>
-                                    <th style="width: auto;" scope="col" valign="bottom">
-                                        <span>Produto</span>
-                                    </th>
-                                    <th scope="col" class="hquantidade" valign="bottom">
-                                        <span class="PLTd">Qtde</span>
-                                    </th>
-                                    @if (Model.Permite_RA_Status == 1)
-                                    {
-                                        <th scope="col" class="preco" valign="bottom">
-                                            <span class="PLTd">Preço</span>
-                                        </th>
-                                    }
+                    <table class="col s12 tabelaitens destaquelinha" style="white-space:nowrap">
+                        <thead>
+                            <tr>
+                                <th style="width: auto;" scope="col" valign="bottom">
+                                    <span>Produto</span>
+                                </th>
+                                <th scope="col" class="hquantidade" valign="bottom">
+                                    <span class="PLTd">Qtde</span>
+                                </th>
+                                @if (Model.Permite_RA_Status == 1)//NÃO SOMENTE VERIFICANDO ESSE PARAM
+                                {
                                     <th scope="col" class="hpreco" valign="bottom">
-                                        <span class="PLTd">VL Lista</span>
+                                        <span class="PLTd">Preço</span>
                                     </th>
-                                    <th scope="col" class="hdesconto" valign="bottom">
-                                        <span class="PLTd">
-                                            Desc%
-                                            &nbsp;&nbsp;
-                                        </span>
-                                    </th>
-                                    <th scope="col" class="hpreco" valign="bottom">
-                                        <span class="PLTd">VL Venda</span>
-                                    </th>
-                                    <th scope="col" class="hpreco" valign="bottom">
-                                        <span class="PLTd">VL Total</span>
-                                    </th>
-                                    <th scope="col" style="width: 7%;">
-                                        <!-- excluir  -->
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @* Parte de produtos do Model *@
-                                @{
-                                    @* Mudamos para não repetir código, o bloco antigo de modelo para adição de 01 item *@
-                                    int indexnumero = 0;
-                                    @for (int ilista = 0; ilista <= (Model.ListaProdutos?.Count() ?? 0); ilista++)
-                                    {
-                                        //bool linhaNovoProduto = true;
-                                        string index = "trocarporindex";
-                                        string classe = "class=\"novoProduto\"";
-                                        string classenovoProdutoEstoque = "class=\"novoProdutoEstoque\"";
-                                        string classenovoProdutoAviso = "class=\"novoProdutoAviso\"";
-                                        string classenovoProdutoQtdeMaxPermitida = "class=\"novoProdutoQtdeMaxPermitida\"";
-                                        string estilo = "style=\"display:none\"";
-                                        Loja.Bll.Dto.PedidoDto.DetalhesPedido.PedidoProdutosDtoPedido i = new Loja.Bll.Dto.PedidoDto.DetalhesPedido.PedidoProdutosDtoPedido();
-                                        if (ilista != (Model.ListaProdutos?.Count() ?? 0))
-                                        {
-                                            //linhaNovoProduto = false;
-                                            i = Model.ListaProdutos[ilista];
-                                            index = indexnumero.ToString();
-                                            classe = "";
-                                            classenovoProdutoEstoque = "";
-                                            classenovoProdutoAviso = "";
-                                            classenovoProdutoQtdeMaxPermitida = "";
-                                            estilo = "";
-                                        }
-
-                                        //Lista de Produtos
-                                        <tr @Html.Raw(classe) @Html.Raw(estilo) style="display:block !important">
-
-                                            <td style="cursor:pointer;" scope="col" onclick="mostrarProdutos(i)">
-                                                <span name="[@index].NumProduto"></span>
-                                                <input type="hidden" name="[@index].Fabricante" value="@i.Fabricante" />
-                                                <input class="numProduto" type="hidden" name="[@index].NumProduto" value="@i.NumProduto?">
-                                            </td>
-                                            <td>
-                                                <div class="input-field quantidade">
-                                                    <input class="qtdeProduto" style="text-align:right;"
-                                                           type="number" min="1"
-                                                           name="[@index].Qtde" id="@i.Qtde" onkeyup="digitouQtde(this)"
-                                                           onchange="digitouQtde(this)" />
-                                                </div>
-                                            </td>
-                                            @if (Model.Permite_RA_Status == 1)
-                                            {
-                                                <td>
-                                                    <div class="input-field preco">
-                                                        <input class="precoProduto" style="text-align:right" type="text" name="[@index].Preco" id="@i.Preco"
-                                                               onchange="digitouPreco(this)" onkeyup="digitouPreco(this)" />
-                                                    </div>
-                                                </td>
-                                            }
-                                            <td class="vlListaProduto" style="text-align:right" name="[@index].VlLista" id="@i.VlLista">
-                                            </td>
-                                            <td class="vlListaProdutoInput" style="display:none;">
-                                                <input type="hidden" name="[@index].VlLista" />
-                                            </td>
-                                            <td class="PrecoProdutoInput" style="display:none;">
-                                                <input type="hidden" name="[@index].Preco" />
-                                            </td>
-                                            <td>
-                                                <div class="input-field desconto">
-                                                    <input class="descProduto" type="text" name="[@index].Desconto" id="@i.Desconto"
-                                                           style="text-align:right" onchange="digitouDesc(this)"
-                                                           onkeyup="formatarDesc(this)" />  %
-
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="input-field" style="float:right; max-width:80%;width:80%;">
-                                                    <input class="vlUnitario" type="text" name="[@index].VlUnitario" id="@i.VlUnitario"
-                                                           style="text-align:right" onchange="digitouVlVenda(this)"
-                                                           onkeyup="formataVlVenda(this)" />
-                                                </div>
-                                            </td>
-                                            <td class="vlTotalItem" style="text-align:right" name="[@index].VlTotalItem">
-                                            </td>
-                                            <td class="vlTotalItemInput" style="display:none;">
-                                                <input type="hidden" name="[@index].VlTotalItem" />
-                                            </td>
-                                            <td>
-                                                <div class="input-field">
-                                                    <span>
-                                                        <i class="material-icons icone-lixeira" title="Remover linha"
-                                                           onclick="removerLinha(this);">delete</i>
-                                                    </span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        //Estoque indisponivel
-                                        <tr @Html.Raw(classenovoProdutoEstoque) @Html.Raw(estilo)>
-                                            @* Se for diferente de verdadeiro *@
-                                            @if (Model.Permite_RA_Status == 0)
-                                            {
-                                                <td colspan="7" class="avisoestoque" name="estoqueIndisponivel">
-                                                    Quantidade solicitada é maior que o estoque disponível!
-                                                </td>
-                                            }
-                                            @if (Model.Permite_RA_Status == 1)
-                                            {
-                                                <td colspan="8" class="avisoestoque" name="estoqueIndisponivel">
-                                                    Quantidade solicitada é maior que o estoque disponível!
-                                                </td>
-                                            }
-                                        </tr>
-
-                                        //Avido de Produto
-                                        <tr @Html.Raw(classenovoProdutoAviso) @Html.Raw(estilo)>
-                                            @if (Model.Permite_RA_Status == 0)
-                                            {
-                                                <td colspan="7" class="avisoProduto">
-                                                    Aviso:
-                                                    <span name="produtoAviso"></span>
-                                                </td>
-                                            }
-                                            @if (Model.Permite_RA_Status == 1)
-                                            {
-                                                <td colspan="8" class="avisoProduto">
-                                                    Aviso:
-                                                    <span name="produtoAviso"></span>
-                                                </td>
-                                            }
-                                        </tr>
-
-                                        //Msg Qtde permitida
-                                        <tr @Html.Raw(classenovoProdutoQtdeMaxPermitida) @Html.Raw(estilo)>
-                                            @if (Model.Permite_RA_Status == 0)
-                                            {
-                                                <td colspan="7" class="avisoestoque">
-                                                    Aviso:
-                                                    <span name="msgQtdePermitida"></span>
-                                                </td>
-                                            }
-                                            @if (Model.Permite_RA_Status == 1)
-                                            {
-                                                <td colspan="8" class="avisoestoque">
-                                                    Aviso:
-                                                    <span name="msgQtdePermitida"></span>
-                                                </td>
-                                            }
-                                        </tr>
-
-                                        indexnumero++;
-                                        indice++;
-                                    }
-
                                 }
-
-                                <tr class="trTotal">
-                                    <!-- pula as colunas vazias -->
-                                    <td></td>
-                                    <td> </td>
-                                    @if (Model.Permite_RA_Status == 1)
+                                <th scope="col" class="hpreco" valign="bottom">
+                                    <span class="PLTd">VL Lista</span>
+                                </th>
+                                <th scope="col" class="hdesconto" valign="bottom">
+                                    <span class="PLTd">
+                                        Desc%
+                                        &nbsp;&nbsp;
+                                    </span>
+                                </th>
+                                <th scope="col" class="hpreco" valign="bottom">
+                                    <span class="PLTd">VL Venda</span>
+                                </th>
+                                <th scope="col" class="hpreco" valign="bottom">
+                                    <span class="PLTd">VL Total</span>
+                                </th>
+                                <th scope="col" style="width: 7%;">
+                                    <!-- excluir  -->
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @* Parte de produtos do Model *@
+                            @{
+                                @* Mudamos para não repetir código, o bloco antigo de modelo para adição de 01 item *@
+                                int indexnumero = 0;
+                                @for (int ilista = 0; ilista <= (Model.ListaProdutos?.Count() ?? 0); ilista++)
+                                {
+                                    //bool linhaNovoProduto = true;
+                                    string index = "trocarporindex";
+                                    string classe = "class=\"novoProduto\"";
+                                    string classenovoProdutoEstoque = "class=\"novoProdutoEstoque\"";
+                                    string classenovoProdutoAviso = "class=\"novoProdutoAviso\"";
+                                    string classenovoProdutoQtdeMaxPermitida = "class=\"novoProdutoQtdeMaxPermitida\"";
+                                    string estilo = "style=\"display:none\"";
+                                    Loja.Bll.Dto.PedidoDto.DetalhesPedido.PedidoProdutosDtoPedido i = new Loja.Bll.Dto.PedidoDto.DetalhesPedido.PedidoProdutosDtoPedido();
+                                    if (ilista != (Model.ListaProdutos?.Count() ?? 0))
                                     {
-                                        <td style="text-align:right;">
-                                            <strong id="totalPedidoRA"></strong>
+                                        //linhaNovoProduto = false;
+                                        i = Model.ListaProdutos[ilista];
+                                        index = indexnumero.ToString();
+                                        classe = "";
+                                        classenovoProdutoEstoque = "";
+                                        classenovoProdutoAviso = "";
+                                        classenovoProdutoQtdeMaxPermitida = "";
+                                        estilo = "";
+                                    }
+
+                                    //Lista de Produtos
+                                    <tr @Html.Raw(classe) @Html.Raw(estilo) style="display:block !important">
+
+                                        <td style="cursor:pointer;" scope="col" onclick="mostrarProdutos(i)">
+                                            <span name="[@index].NumProduto"></span>
+                                            <input type="hidden" name="[@index].Fabricante" value="@i.Fabricante" />
+                                            <input class="numProduto" type="hidden" name="[@index].NumProduto" value="@i.NumProduto?">
                                         </td>
-                                    }
-                                    <td> </td>
-                                    <td> </td>
-                                    <td> </td>
+                                        <td>
+                                            <div class="input-field quantidade">
+                                                <input class="qtdeProduto" style="text-align:right;"
+                                                       type="number" min="1"
+                                                       name="[@index].Qtde" id="@i.Qtde" onkeyup="digitouQtde(this)"
+                                                       onchange="digitouQtde(this)" />
+                                            </div>
+                                        </td>
+                                        @if (Model.Permite_RA_Status == 1)
+                                        {
+                                            <td>
+                                                <div class="input-field preco" style="float:right; max-width:80%;width:80%;">
+                                                    <input class="precoProduto" style="text-align:right" type="text" name="[@index].Preco_Lista" id="@i.Preco_Lista"
+                                                           onkeyup="formatarPreco_Lista(this)" onchange="digitouPreco_Lista(this)" />
+                                                </div>
+                                            </td>
+                                        }
+                                        <td class="vlListaProduto" style="text-align:right" name="[@index].VlLista" id="@i.VlLista">
+                                        </td>
+                                        <td class="vlListaProdutoInput" style="display:none;">
+                                            <input type="hidden" name="[@index].VlLista" />
+                                        </td>
+                                        <td class="PrecoProdutoInput" style="display:none;">
+                                            <input type="hidden" name="[@index].Preco" />
+                                        </td>
+                                        <td>
+                                            <div class="input-field desconto" style="float:right; max-width:80%;width:80%;">
+                                                <input class="descProduto" type="text" name="[@index].Desconto" id="@i.Desconto"
+                                                       style="text-align:right" onchange="digitouDesc(this)"
+                                                       onkeyup="formatarDesc(this)" />  %
 
-                                    <td style="text-align:right;">
-                                        <strong id="totalPedido"></strong>
-                                        <input type="hidden" id="totalPedidoInput"
-                                               name="totalDestePedido" value="@Model.VlTotalDestePedido" />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-field" style="float:right; max-width:80%;width:80%;">
+                                                <input class="vlUnitario" type="text" name="[@index].VlUnitario" id="@i.VlUnitario"
+                                                       style="text-align:right" onchange="digitouVlVenda(this)"
+                                                       onkeyup="formataVlVenda(this)" />
+                                            </div>
+                                        </td>
+                                        <td class="vlTotalItem" style="text-align:right" name="[@index].VlTotalItem">
+                                        </td>
+                                        <td class="vlTotalItemInput" style="display:none;">
+                                            <input type="hidden" name="[@index].VlTotalItem" />
+                                        </td>
+                                        <td>
+                                            <div class="input-field">
+                                                <span>
+                                                    <i class="material-icons icone-lixeira" title="Remover linha"
+                                                       onclick="removerLinha(this);">delete</i>
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    //Estoque indisponivel
+                                    <tr @Html.Raw(classenovoProdutoEstoque) @Html.Raw(estilo)>
+                                        @* Se for diferente de verdadeiro *@
+                                        @if (Model.Permite_RA_Status == 0)
+                                        {
+                                            <td colspan="7" class="avisoestoque" name="estoqueIndisponivel">
+                                                Quantidade solicitada é maior que o estoque disponível!
+                                            </td>
+                                        }
+                                        @if (Model.Permite_RA_Status == 1)
+                                        {
+                                            <td colspan="8" class="avisoestoque" name="estoqueIndisponivel">
+                                                Quantidade solicitada é maior que o estoque disponível!
+                                            </td>
+                                        }
+                                    </tr>
+
+                                    //Avido de Produto
+                                    <tr @Html.Raw(classenovoProdutoAviso) @Html.Raw(estilo)>
+                                        @if (Model.Permite_RA_Status == 0)
+                                        {
+                                            <td colspan="7" class="avisoProduto">
+                                                Aviso:
+                                                <span name="produtoAviso"></span>
+                                            </td>
+                                        }
+                                        @if (Model.Permite_RA_Status == 1)
+                                        {
+                                            <td colspan="8" class="avisoProduto">
+                                                Aviso:
+                                                <span name="produtoAviso"></span>
+                                            </td>
+                                        }
+                                    </tr>
+
+                                    //Msg Qtde permitida
+                                    <tr @Html.Raw(classenovoProdutoQtdeMaxPermitida) @Html.Raw(estilo)>
+                                        @if (Model.Permite_RA_Status == 0)
+                                        {
+                                            <td colspan="7" class="avisoestoque">
+                                                Aviso:
+                                                <span name="msgQtdePermitida"></span>
+                                            </td>
+                                        }
+                                        @if (Model.Permite_RA_Status == 1)
+                                        {
+                                            <td colspan="8" class="avisoestoque">
+                                                Aviso:
+                                                <span name="msgQtdePermitida"></span>
+                                            </td>
+                                        }
+                                    </tr>
+
+                                    indexnumero++;
+                                    indice++;
+                                }
+
+                            }
+
+                            <tr class="trTotal">
+                                <!-- pula as colunas vazias -->
+                                @if (Model.Permite_RA_Status == 1)
+                                {
+                                    <td style="text-align:right">
+                                        RA Líquido
+                                        <strong id="totalValorRALiquido"></strong>
+                                        <input type="hidden" id="totalValorRALiquidoInput"
+                                               name="totalValorRALiquidoInput" value="@Model.TotalPedidoRALiquido" />
+                                        &nbsp;&nbsp; RA Bruto
+                                        <strong id="totalValorRABruto"></strong>
+                                        <input type="hidden" id="totalValorRABrutoInput"
+                                               name="totalValorRABrutoInput" value="@Model.TotalPedidoRABruto" />
                                     </td>
-                                    <td> </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                    </td>
+                                }
+                                <td> </td>
+                                @if (Model.Permite_RA_Status == 1)
+                                {
+                                    //valor total ra
+                                    <td style="text-align:right;">
+                                        <strong id="totalPedidoRABruto"></strong>
+                                        <input type="hidden" id="totalPedidoRABrutoInput"
+                                               name="totalPedidoRABruto" value="@Model.TotalPedidoRABruto" />
+                                    </td>
+                                }
+                                <td> </td>
+                                <td> </td>
+                                <td> </td>
+
+                                <td style="text-align:right;">
+                                    <strong id="totalPedido"></strong>
+                                    <input type="hidden" id="totalPedidoInput"
+                                           name="totalDestePedido" value="@Model.VlTotalDestePedido" />
+                                </td>
+                                <td> </td>
 
 
-                                </tr>
-                                @* Aqui vai o produto selecionado e o foreach com os produtos já existentes no pedido *@
-                                @* Verificar com o Edu como passar os valores para cá *@
-                                @* Alterar os nomes das function que serão usadas nesse bloco
-                                    para poder chamar apenas no .ts da view
-                                *@
-                                @*Nova linha para produto*@
-                                @*Lista de Produtos*@
+                            </tr>
+                            @* Aqui vai o produto selecionado e o foreach com os produtos já existentes no pedido *@
+                            @* Verificar com o Edu como passar os valores para cá *@
+                            @* Alterar os nomes das function que serão usadas nesse bloco
+                            para poder chamar apenas no .ts da view
+                            *@
+                            @*Nova linha para produto*@
+                            @*Lista de Produtos*@
 
-                            </tbody>
-                        </table>
-                    }
-                </div>
+                        </tbody>
+                    </table>
+                }
             </div>
-            @* Aqui vai a parte de Forma de Pagamento *@
-            @* preciso saber se da para passar uma variavel para esse drop para poder saber se
-                o valor corresponde a qual forma de pagamento para que possa se tornar visivel*@
+        </div>
+        @* Aqui vai a parte de Forma de Pagamento *@
+        @* preciso saber se da para passar uma variavel para esse drop para poder saber se
+        o valor corresponde a qual forma de pagamento para que possa se tornar visivel*@
 
-            <div class="row">
+        <div class="row">
+            <div class="input-field col s3">
+                @Html.DropDownList("FormaPagto", new SelectList(Model.EnumFormaPagto, "Value", "Text",
+               Model.EnumFormaPagto), new { @id = "enumFormaPagto", @onchange = "recalcularValoresComCoeficiente(this);" })
+                <label>Forma de Pagamento *</label>
+            </div>
+        </div>
+
+        @* aqui vai a condição para mostrar a div A vista *@
+        @if (Model.FormaPagto.ListaAvista != null)
+        {
+            <div class="row col s12" id="Avista" style="display:none">
+                @* Parcelamento *@
                 <div class="input-field col s3">
-                    @Html.DropDownList("FormaPagto", new SelectList(Model.EnumFormaPagto, "Value", "Text",
-                   Model.EnumFormaPagto), new { @id = "enumFormaPagto", @onchange = "recalcularValoresComCoeficiente(this);" })
-                    <label>Forma de Pagamento *</label>
+                    <select name="" id="opcaoPagtoAvista">
+                        <option value="0">Selecione</option>
+                        @* Aqui vai o select com os valores calculados *@
+                        @*@foreach ()
+                        {
+
+                        }*@
+                    </select>
+                    <label>Parcelamento</label>
+                </div>
+                @* Meio de pagamento *@
+                <div class="input-field col s3">
+                    <select name="" id="meioPagtoAVista">
+                        <option value="0">Selecione</option>
+                        @foreach (var i in Model.FormaPagto.ListaAvista)
+                        {
+                            <option value="@i.Id">@i.Descricao</option>
+                        }
+                    </select>
+                    <label>Meio de Pagamento</label>
                 </div>
             </div>
+        }
 
-            @* aqui vai a condição para mostrar a div A vista *@
-            @if (Model.FormaPagto.ListaAvista != null)
-            {
-                <div class="row col s12" id="Avista" style="display:none">
-                    @* Parcelamento *@
+
+        @* aqui vai a condição para mostrar a div Parcela Unica *@
+        @if (Model.FormaPagto.ListaParcUnica != null)
+        {
+            <div class="row col s12" id="ParcUnica" style="display:none">
+                @* Parcelamento *@
+                <div class="input-field col s3">
+                    <select name="" id="opcaoPagtoParcUnica">
+                        <option value="0">Selecione</option>
+                        @* Aqui vai o select com os valores calculados *@
+                        @*@foreach ()
+                        {
+
+                        }*@
+                    </select>
+                    <label>Parcelamento</label>
+                </div>
+                @* Meio de pagamento *@
+                <div class="input-field col s3">
+                    <select name="" id="meioPagtoParcUnica">
+                        <option value="0">Selecione</option>
+                        @foreach (var i in Model.FormaPagto.ListaParcUnica)
+                        {
+                            <option value="@i.Id">@i.Descricao</option>
+                        }
+                    </select>
+                    <label>Meio de Pagamento</label>
+                </div>
+                @* Dias para vencimento *@
+                <div class="input-field col s2">
+                    <input type="text" id="diasVencParcUnica" />
+                    <label>Dias para vencimento</label>
+                </div>
+            </div>
+        }
+
+        @* aqui vai a condição para mostrar a div Parcela com entrada *@
+        @if (Model.FormaPagto.ListaParcComEntrada != null)
+        {
+            <div id="ParcComEntrada" style="display:none">
+                <div class="row col s12">
+                    @* Valor da entrada *@
                     <div class="input-field col s3">
-                        <select name="" id="opcaoPagtoAvista">
+                        <input id="vlEntrada" type="text" onblur="digitouVlEntrada(this)" onkeyup="formatarVlEntrada(this)" />
+                        <label>Valor Entrada</label>
+                    </div>
+                    @* meio de pagamento Entrada *@
+                    <div class="input-field col s3">
+                        <select name="" id="meioPagtoEntrada">
+                            <option value="0">Selecione</option>
+                            @foreach (var v in Model.FormaPagto.ListaParcComEntrada)
+                            {
+                                <option value="@v.Id">@v.Descricao</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="row col s12">
+                    @* Parcelamento  *@
+                    <div class="input-field col s3">
+                        <select name="" id="opcaoPagtoParcComEntrada">
                             <option value="0">Selecione</option>
                             @* Aqui vai o select com os valores calculados *@
                             @*@foreach ()
-                                {
+                            {
 
-                                }*@
+                            }*@
                         </select>
                         <label>Parcelamento</label>
                     </div>
-                    @* Meio de pagamento *@
+                    @* Meio de pagamento parcela prestação *@
                     <div class="input-field col s3">
-                        <select name="" id="meioPagtoAVista">
+                        @* Meio de pagamento *@
+                        <select name="" id="meioPagtoEntradaPrest">
                             <option value="0">Selecione</option>
-                            @foreach (var i in Model.FormaPagto.ListaAvista)
+                            @foreach (var i in Model.FormaPagto.ListaParcComEntPrestacao)
                             {
                                 <option value="@i.Id">@i.Descricao</option>
                             }
                         </select>
                         <label>Meio de Pagamento</label>
                     </div>
-                </div>
-            }
-
-
-            @* aqui vai a condição para mostrar a div Parcela Unica *@
-            @if (Model.FormaPagto.ListaParcUnica != null)
-            {
-                <div class="row col s12" id="ParcUnica" style="display:none">
-                    @* Parcelamento *@
+                    @* dias para vencimento *@
+                    @* fazer a condição aqui para saber se é diferente de cartões *@
                     <div class="input-field col s3">
-                        <select name="" id="opcaoPagtoParcUnica">
-                            <option value="0">Selecione</option>
-                            @* Aqui vai o select com os valores calculados *@
-                            @*@foreach ()
-                                {
-
-                                }*@
-                        </select>
-                        <label>Parcelamento</label>
-                    </div>
-                    @* Meio de pagamento *@
-                    <div class="input-field col s3">
-                        <select name="" id="meioPagtoParcUnica">
-                            <option value="0">Selecione</option>
-                            @foreach (var i in Model.FormaPagto.ListaParcUnica)
-                            {
-                                <option value="@i.Id">@i.Descricao</option>
-                            }
-                        </select>
-                        <label>Meio de Pagamento</label>
-                    </div>
-                    @* Dias para vencimento *@
-                    <div class="input-field col s2">
-                        <input type="text" id="diasVencParcUnica" />
-                        <label>Dias para vencimento</label>
+                        <input type="text" id="diasVenc" maxlength="3" />
+                        <label>Dias para vencimento Prest</label>
                     </div>
                 </div>
-            }
+            </div>
+        }
 
-            @* aqui vai a condição para mostrar a div Parcela com entrada *@
-            @if (Model.FormaPagto.ListaParcComEntrada != null)
-            {
-                <div id="ParcComEntrada" style="display:none">
-                    <div class="row col s12">
-                        @* Valor da entrada *@
-                        <div class="input-field col s3">
-                            <input id="vlEntrada" type="text" onkeyup="digitouVlEntrada(this)" />
-                            <label>Valor Entrada</label>
-                        </div>
-                        @* meio de pagamento Entrada *@
-                        <div class="input-field col s3">
-                            <select name="" id="meioPagtoEntradaPrest">
-                                <option value="0">Selecione</option>
-                                @foreach (var v in Model.FormaPagto.ListaParcComEntrada)
-                                {
-                                    <option value="@v.Id">@v.Descricao</option>
-                                }
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row col s12">
-                        @* Parcelamento  *@
-                        <div class="input-field col s3">
-                            <select name="" id="opcaoPagtoParcComEntrada">
-                                <option value="0">Selecione</option>
-                                @* Aqui vai o select com os valores calculados *@
-                                @*@foreach ()
-                                    {
+        @* aqui vai a condição para mostrar a div Pagamento com Cartão Internet *@
+        @if (Model.FormaPagto.ParcCartaoInternet)
+        {
+            <div class="row col s12" id="PagtoCartaoInternet" style="display:none">
+                @* Parcelamento  *@
+                <div class="input-field col s3">
+                    <select name="" id="opcaoPagtoParcCartaoInternet">
+                        <option value="0">Selecione</option>
+                        @* Aqui vai o select com os valores calculados *@
+                        @*@foreach ()
+                        {
 
-                                    }*@
-                            </select>
-                            <label>Parcelamento</label>
-                        </div>
-                        @* Meio de pagamento parcela prestação *@
-                        <div class="input-field col s3">
-                            @* Meio de pagamento *@
-                            <select name="" id="meioPagtoEntrada">
-                                <option value="0">Selecione</option>
-                                @foreach (var i in Model.FormaPagto.ListaParcComEntPrestacao)
-                                {
-                                    <option value="@i.Id">@i.Descricao</option>
-                                }
-                            </select>
-                            <label>Meio de Pagamento</label>
-                        </div>
-                        @* dias para vencimento *@
-                        @* fazer a condição aqui para saber se é diferente de cartões *@
-                        <div class="input-field col s3">
-                            <input type="text" id="diasVenc" maxlength="3" />
-                            <label>Dias para vencimento Prest</label>
-                        </div>
-                    </div>
+                        }*@
+                    </select>
+                    <label>Parcelamento</label>
                 </div>
-            }
+            </div>
+        }
 
-            @* aqui vai a condição para mostrar a div Pagamento com Cartão Internet *@
-            @if (Model.FormaPagto.ParcCartaoInternet)
-            {
-                <div class="row col s12" id="PagtoCartaoInternet" style="display:none">
-                    @* Parcelamento  *@
-                    <div class="input-field col s3">
-                        <select name="" id="opcaoPagtoParcCartaoInternet">
-                            <option value="0">Selecione</option>
-                            @* Aqui vai o select com os valores calculados *@
-                            @*@foreach ()
-                                {
+        @* aqui vai a condição para mostrar a div Pagamento com Cartão Maquineta *@
+        @if (Model.FormaPagto.ParcCartaoMaquineta)
+        {
+            <div class="row col s12" id="PagtoCartaoMaquineta" style="display:none">
+                @* Parcelamento  *@
+                <div class="input-field col s3">
+                    <select name="" id="opcaoPagtoParcCartaoMaquineta">
+                        <option value="0">Selecione</option>
+                        @* Aqui vai o select com os valores calculados *@
+                        @*@foreach ()
+                        {
 
-                                }*@
-                        </select>
-                        <label>Parcelamento</label>
-                    </div>
+                        }*@
+                    </select>
+                    <label>Parcelamento</label>
                 </div>
-            }
 
-            @* aqui vai a condição para mostrar a div Pagamento com Cartão Maquineta *@
-            @if (Model.FormaPagto.ParcCartaoMaquineta)
-            {
-                <div class="row col s12" id="PagtoCartaoMaquineta" style="display:none">
-                    @* Parcelamento  *@
-                    <div class="input-field col s3">
-                        <select name="" id="opcaoPagtoParcCartaoMaquineta">
-                            <option value="0">Selecione</option>
-                            @* Aqui vai o select com os valores calculados *@
-                            @*@foreach ()
-                                {
-
-                                }*@
-                        </select>
-                        <label>Parcelamento</label>
-                    </div>
-
-                </div>
-            }
+            </div>
+        }
 
 
 
-        </article>
+    </article>
         @* Botões *@
         <footer class="page-footer">
             <div class="row col s12">
@@ -759,11 +640,22 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()" }))
     var enumFormaPagto;
     var permiteRAStatus = (@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(Model.Permite_RA_Status.ToString()).ToString()));
     var qtdeParcVisa = (@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(Model.QtdeParcVisa.ToString()).ToString()));
-    var percMaxDescEComissaoPorLoja = JSON.parse(@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(Json.Serialize(Model.PercMaxDescEComissao).ToString(), true)));
+    var percentualMaximoDto = JSON.parse(@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(Json.Serialize(Model.PercMaxDescEComissao).ToString(), true)));
 
+
+    var cdSelecionadoId = (@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(Model.CdSelecionadoId.ToString()).ToString()));
     var testeJson;
     var lstProdutosSelecionados;
 
+    var percComissao = (@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(Model.PercComissao.ToString()).ToString()));
+    var tipoCliente = JSON.parse(@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(Json.Serialize(Model.TipoCliente).ToString(), true)));
+    var meiosPagtoPreferenciais = JSON.parse(@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(Json.Serialize(Model.MeiosPagtoPreferenciais).ToString(), true)));
+    var listaObjetoSenhaDesconto = JSON.parse(@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(Json.Serialize(Model.ListaObjetoSenhaDesconto).ToString(), true)));
+
+
+    var perc_RT_novo;
+    var lstErros;
+    var erroPercNovo;
 
 </script>
 <style>

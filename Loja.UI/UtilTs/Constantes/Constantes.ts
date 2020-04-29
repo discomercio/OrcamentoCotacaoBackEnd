@@ -59,5 +59,11 @@
     public COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA = "4";
     public COD_FORMA_PAGTO_PARCELA_UNICA = "5";
     public COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA = "6";
+
+    //Percentual de deságio para RA Líquida
+    public PERC_DESAGIO_RA_LIQUIDA: number = 25;
+
+    public ID_FORMA_PAGTO_CARTAO = "5";
+    public ID_FORMA_PAGTO_CARTAO_MAQUINETA = "7";
 }
 

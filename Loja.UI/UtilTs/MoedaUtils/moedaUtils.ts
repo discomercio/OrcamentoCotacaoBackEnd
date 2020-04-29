@@ -8,6 +8,11 @@ export class MoedaUtils {
         style: 'decimal', minimumFractionDigits: 1, maximumFractionDigits: 1
     });
 
+    //se formos arredondar para baixo
+    //ignoraArredondamento = function (nro: number) {
+    //    return Math.floor(nro * 100) / 100;
+    //}
+
     public formatarMoedaComPrefixo(nro: number) {
         if (!!!nro)
             return "";
@@ -16,7 +21,7 @@ export class MoedaUtils {
 
     public formatarMoedaSemPrefixo(nro: number) {
         if (!!!nro)
-            return "";
+            return "";        
         return this.formatter.format(nro);
     }
 
@@ -25,11 +30,5 @@ export class MoedaUtils {
             return "";
         return this.formatter1casa.format(nro);
     }
-    public teste() {
-        alert("isso é um teste");
-    }
-
-    public teste2() {
-        alert("esse é o teste2");
-    }
+    
 }

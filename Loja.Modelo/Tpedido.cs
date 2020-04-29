@@ -769,6 +769,20 @@ namespace Loja.Modelos
 
         [Column("pc_maquineta_valor_parcela", TypeName = "money")]
         [Required]
-        public decimal Pc_Maquineta_Valor_Parcela { get; set; }        
+        public decimal Pc_Maquineta_Valor_Parcela { get; set; }   
+        
+        [Column("sistema_responsavel_cadastro")]
+        [Required]
+        public int Sistema_responsavel_cadastro { get; set; }
+
+        [Column("sistema_responsavel_atualizacao")]
+        [Required]
+        public int Sistema_responsavel_atualizacao { get; set; }
+
+        [Column("num_obs_2")]
+        public int? Num_obs_2 { get;}
+
+        [Column("num_obs_3")]
+        public int? Num_obs_3 { get; }
     }
 }

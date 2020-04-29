@@ -171,7 +171,7 @@ namespace Loja.Bll.Bll.AcessoBll
                 if Not rs2.Eof then cadastrado = true
                 end if
                 */
-            if (rs.Vendedor_Loja != 0)
+            if (rs.Vendedor_Loja != 0 && !cadastrado)
             {
                 loja = loja ?? "";
                 var existeLoja = await (from usuarioXloja in contextoProvider.GetContextoLeitura().TusuarioXLojas

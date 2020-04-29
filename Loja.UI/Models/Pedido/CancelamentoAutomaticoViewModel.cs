@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static Loja.Bll.Bll.PedidoBll.CancelamentoAutomaticoBll;
+using static Loja.Bll.Bll.pedidoBll.CancelamentoAutomaticoBll;
 
 namespace Loja.UI.Models.Pedido
 {

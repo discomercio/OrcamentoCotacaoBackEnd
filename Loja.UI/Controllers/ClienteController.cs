@@ -9,16 +9,26 @@ using Loja.UI.Models.Cliente;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Loja.Bll.Bll.AcessoBll;
+using Loja.Bll.Util;
+using Microsoft.Extensions.Logging;
 
 namespace Loja.UI.Controllers
 {
     public class ClienteController : Controller
     {
         private readonly Bll.ClienteBll.ClienteBll clienteBll;
+        private readonly UsuarioAcessoBll usuarioAcessoBll;
+        private readonly Configuracao configuracao;
+        private readonly ILogger<UsuarioLogado> loggerUsuarioLogado;
 
-        public ClienteController(Bll.ClienteBll.ClienteBll clienteBll)
+        public ClienteController(Bll.ClienteBll.ClienteBll clienteBll, UsuarioAcessoBll usuarioAcessoBll, Configuracao configuracao,
+            ILogger<UsuarioLogado> loggerUsuarioLogado)
         {
             this.clienteBll = clienteBll;
+            this.usuarioAcessoBll = usuarioAcessoBll;
+            this.configuracao = configuracao;
+            this.loggerUsuarioLogado = loggerUsuarioLogado;
         }
         public IActionResult Index()
         {
@@ -32,14 +42,8 @@ namespace Loja.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> ValidarCliente(string cpf_cnpj)
         {
-            //só um teste
-            HttpContext.Session.SetString("usuario_atual", "PRAGMATICA");
-            HttpContext.Session.SetString("loja_atual", "202");
-
-            //afazer:remover pontos do cpf
             cpf_cnpj = Loja.Bll.Util.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
 
-            //afazer:validar usuario antes
             bool novoCliente = false;
             if (!await clienteBll.ValidarCliente(cpf_cnpj))
             {
@@ -62,32 +66,31 @@ namespace Loja.UI.Controllers
               buscar indicadores 
             */
 
-            string usuario = HttpContext.Session.GetString("usuario_atual");
+            var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
 
             ClienteCadastroViewModel cliente = new ClienteCadastroViewModel();
 
-            string lstOperacoesPermitidas = await clienteBll.BuscaListaOperacoesPermitidas(usuario);
-            HttpContext.Session.SetString("lista_operacoes_permitidas", lstOperacoesPermitidas);
-
             cliente.PermiteEdicao = Loja.Bll.Util.Util.OpercaoPermitida(Loja.Bll.Constantes.Constantes.OP_LJA_EDITA_CLIENTE_DADOS_CADASTRAIS
-                , lstOperacoesPermitidas) ? true : false;
+                , usuarioLogado.S_lista_operacoes_permitidas) ? true : false;
 
 
             //somente para teste remover após concluir
             //cliente.PermiteEdicao = false;
-            HttpContext.Session.SetString("cpf_cnpj", cpf_cnpj);
+            //afazer: alterar essa session para utilizar no usuarioLogado
+            //vou passar o cadastro do cliente para a session
+            //HttpContext.Session.SetString("cpf_cnpj", cpf_cnpj);
+
             ClienteCadastroDto clienteCadastroDto = new ClienteCadastroDto();
 
             if (!novoCliente)
             {
-                clienteCadastroDto = await clienteBll.BuscarCliente(cpf_cnpj, usuario);
+                clienteCadastroDto = await clienteBll.BuscarCliente(cpf_cnpj, usuarioLogado.Usuario_atual);
 
-                HttpContext.Session.SetString("cliente_selecionado", clienteCadastroDto.DadosCliente.Id);
-                
+                usuarioLogado.Cliente_Selecionado = clienteCadastroDto;
+
                 cliente.RefBancaria = clienteCadastroDto.RefBancaria;
                 cliente.RefComercial = clienteCadastroDto.RefComercial;
 
-                HttpContext.Session.SetString("cliente_selecionado", clienteCadastroDto.DadosCliente.Id);
             }
             else
             {
@@ -101,11 +104,12 @@ namespace Loja.UI.Controllers
 
             cliente.DadosCliente = clienteCadastroDto.DadosCliente;
 
-            //novo bloco
-            
+
+
             //Lista para carregar no select de Indicadores
-            string loja = HttpContext.Session.GetString("loja_atual");
-            var lstInd = (await clienteBll.BuscarListaIndicadores(cliente.DadosCliente?.Indicador_Orcamentista, usuario, loja)).ToList();
+            var lstInd = (await clienteBll.BuscarListaIndicadores(cliente.DadosCliente?.Indicador_Orcamentista,
+                usuarioLogado.Usuario_atual, usuarioLogado.Loja_atual_id)).ToList();
+
             List<SelectListItem> lst = new List<SelectListItem>();
             lst.Add(new SelectListItem { Value = "0", Text = "Selecione" });
             for (int i = 0; i < lstInd.Count; i++)
@@ -133,7 +137,7 @@ namespace Loja.UI.Controllers
             };
             cliente.LstContribuinte = new SelectList(lstContrICMS, "Value", "Text");
 
-            cliente.EndJustificativa = (await clienteBll.ListarComboJustificaEndereco(usuario)).ToList();
+            cliente.EndJustificativa = (await clienteBll.ListarComboJustificaEndereco(usuarioLogado.Usuario_atual)).ToList();
 
             var lstBancos = (await clienteBll.ListarBancosCombo()).ToList();
             List<SelectListItem> lstbancos = new List<SelectListItem>();
@@ -153,7 +157,7 @@ namespace Loja.UI.Controllers
             Loja.Bll.Dto.ClienteDto.DadosClienteCadastroDto dados,
             List<Loja.Bll.Dto.ClienteDto.RefComercialDtoCliente> lstRefCom,
             List<Loja.Bll.Dto.ClienteDto.RefBancariaDtoCliente> lstRefBancaria,
-            Loja.Bll.Dto.ClienteDto.EnderecoEntregaDtoClienteCadastro EndEntrega2, 
+            Loja.Bll.Dto.ClienteDto.EnderecoEntregaDtoClienteCadastro EndEntrega2,
             bool novoCliente)
         {
             /*afazer: NECESSÁRIO FAZER O TRATAMENTO PARA ERROS 
@@ -172,13 +176,12 @@ namespace Loja.UI.Controllers
 
             //afazer: preciso de uma flag para diferenciar se é cadastro ou alteração do cliente
             //para teste: novoCliente 
+            var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
 
 
-            string listaOperacoesPermitidas = HttpContext.Session.GetString("lista_operacoes_permitidas");
-            string usuario = HttpContext.Session.GetString("usuario_atual");
-            string loja = HttpContext.Session.GetString("loja_atual");
-            string id_cliente = HttpContext.Session.GetString("cliente_selecionado");
-            dados.Id = id_cliente;
+            //afazer: alterar essa session para utilizar no usuarioLogado
+            //string id_cliente = HttpContext.Session.GetString("cliente_selecionado");
+            dados.Id = usuarioLogado.Cliente_Selecionado.DadosCliente.Id;
 
             Bll.Dto.ClienteDto.ClienteCadastroDto clienteCadastro = new Bll.Dto.ClienteDto.ClienteCadastroDto();
 
@@ -187,7 +190,8 @@ namespace Loja.UI.Controllers
             clienteCadastro.RefComercial = lstRefCom;
 
             //validar os dados do cliente             
-            var retorno = await clienteBll.CadastrarCliente(clienteCadastro, usuario, loja);
+            var retorno = await clienteBll.CadastrarCliente(clienteCadastro, usuarioLogado.Usuario_atual,
+                usuarioLogado.Loja_atual_id);
 
             //Armazenando objeto na Session
             Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto dtoPedido = new Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto();
@@ -202,12 +206,12 @@ namespace Loja.UI.Controllers
                     //vamos normalizar o cep enviado antes de armazenar na session
                     EndEntrega2.EndEtg_cep = EndEntrega2.EndEtg_cep.Replace("-", "");
                 }
-                dtoPedido.EnderecoEntrega = EndEntrega2;                
+                dtoPedido.EnderecoEntrega = EndEntrega2;
             }
 
-            HttpContext.Session.SetString("pedidoDto", JsonConvert.SerializeObject(dtoPedido));
+            usuarioLogado.PedidoDto = dtoPedido;
 
-            return RedirectToAction("IniciarNovoPedido", "Pedido");
+            return RedirectToAction("Indicador_SelecaoCD", "Pedido");
         }
     }
 }

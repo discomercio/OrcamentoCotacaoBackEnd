@@ -12,11 +12,14 @@
     <None Remove="DtosTs\Avisos\AvisoDto.ts" />
     <None Remove="DtosTs\ClienteDto\DadosClienteCadastroDto.ts" />
     <None Remove="DtosTs\ClienteDto\EnderecoEntregaClienteCadastroDto.ts" />
+    <None Remove="DtosTs\FormaPagtoDto\MeioPagtoPreferenciais.ts" />
+    <None Remove="DtosTs\IndicadorDto\IndicadorDto.ts" />
+    <None Remove="DtosTs\LojaDto\ObjetoSenhaDesconto.ts" />
     <None Remove="DtosTs\PedidoDto\DetalhesPedidoDto.ts" />
     <None Remove="DtosTs\PedidoDto\FormaPagtoCriacaoDto.ts" />
     <None Remove="DtosTs\PedidoDto\PedidoDto.ts" />
     <None Remove="DtosTs\PedidoDto\PedidoProdutosPedidoDto.ts" />
-    <None Remove="DtosTs\PedidoDto\PercentualMaxDescEComissao.ts" />
+    <None Remove="DtosTs\PedidoDto\PercentualMaximoDto.ts" />
     <None Remove="DtosTs\ProdutosDto\ProdutoComboDto.ts" />
     <None Remove="DtosTs\ProdutosDto\ProdutoCompostoDto.ts" />
     <None Remove="DtosTs\ProdutosDto\ProdutoDto.ts" />
@@ -46,6 +49,7 @@
     <None Remove="Views\Pedido\CoeficienteDto.ts" />
     <None Remove="Views\Pedido\DtoCoeficiente.ts" />
     <None Remove="Views\Pedido\FormaPagto.ts" />
+    <None Remove="Views\Pedido\Indicador_SelecaoCD.ts" />
     <None Remove="Views\Pedido\IniciarNovoPedido.ts" />
     <None Remove="Views\Shared\Error.ts" />
   </ItemGroup>

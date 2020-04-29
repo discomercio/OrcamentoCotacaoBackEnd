@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Loja.Data
 {
-    public class ContextoBd
+    public class ContextoBd : IContextoBd
     {
         private readonly ContextoBdBasico contexto;
         internal ContextoBd(ContextoBdBasico contexto)
@@ -24,8 +24,7 @@ namespace Loja.Data
             return contexto;
         }
 
-        public IQueryable<Tcliente> Tclientes { get => contexto.Tclientes.AsNoTracking(); }
-        //afazer falta fazer
+        public IQueryable<Tcliente> Tclientes { get => contexto.Tclientes.AsNoTracking(); }        
         public IQueryable<Torcamento> Torcamentos { get => contexto.Torcamentos.AsNoTracking(); }
         public IQueryable<TclienteRefBancaria> TclienteRefBancarias { get => contexto.TclienteRefBancarias.AsNoTracking(); }
         public IQueryable<Tpedido> Tpedidos { get => contexto.Tpedidos.AsNoTracking(); }

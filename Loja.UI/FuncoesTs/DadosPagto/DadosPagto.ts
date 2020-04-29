@@ -7,6 +7,7 @@ import { RecalcularComCoeficiente } from "../RecalcularComCoeficiente/Recalcular
 import { PedidoDto } from "../../DtosTs/PedidoDto/PedidoDto";
 import { CoeficienteDto } from "../../DtosTs/CoeficienteDto/CoeficienteDto";
 import { FormaPagtoDto } from "../../DtosTs/FormaPagtoDto/FormaPagtoDto";
+import { ErrorModal } from "../../Views/Shared/Error";
 
 export class DadosPagto {
     public enumFormaPagto: EnumFormaPagto;
@@ -120,7 +121,7 @@ export class DadosPagto {
         }
 
     }
-
+    erroModal = new ErrorModal();
     validarFormaPagto(mostrarMsg: boolean): boolean {
         let retorno = true;
         // this.verificaParcelamento();
@@ -131,6 +132,7 @@ export class DadosPagto {
                     //afazer: mostrar a modal de mensagem
                     //this.alertaService.mostrarMensagem("Favor selecionar o meio de pagamento á vista");
                     this.msgErro = "Favor selecionar o meio de pagamento á vista";
+                    this.erroModal.MostrarMsg(this.msgErro);
                     retorno = false;
                 }
             }
@@ -140,6 +142,7 @@ export class DadosPagto {
                     //afazer: mostrar a modal de mensagem
                     this.msgErro = "Favor selecionar corretamente o meio de pagamento " +
                         "para Parcelado no Cartão (Internet).";
+                    this.erroModal.MostrarMsg(this.msgErro);
                     retorno = false;
                 }
             }
@@ -150,12 +153,14 @@ export class DadosPagto {
                     if (!!this.vlEntrada && this.vlEntrada == 0.00) {
                         //afazer: mostrar a modal de mensagem
                         this.msgErro = "Favor preencher o valor de entrada!";
+                        this.erroModal.MostrarMsg(this.msgErro);
                         retorno = false;
                     }
                     if (this.meioPagtoEntradaPrest != 5 && this.meioPagtoEntradaPrest != 7 && !this.diasVenc) {
                         if (mostrarMsg) {
                             //afazer: mostrar a modal de mensagem
                             this.msgErro = "Favor informar corretamente os dados para pagamento Parcelado com Entrada!";
+                            this.erroModal.MostrarMsg(this.msgErro);
                             retorno = false;
                         }
                     }
@@ -164,6 +169,7 @@ export class DadosPagto {
                     if (mostrarMsg) {
                         //afazer: mostrar a modal de mensagem
                         this.msgErro = "Favor informar corretamente os dados para pagamento Parcelado com Entrada!";
+                        this.erroModal.MostrarMsg(this.msgErro);
                         retorno = false;
                     }
                 }
@@ -179,6 +185,7 @@ export class DadosPagto {
                 if (mostrarMsg) {
                     //afazer: mostrar a modal de mensagem
                     this.msgErro = "Favor informar corretamente os dados para pagamento Parcela Única!";
+                    this.erroModal.MostrarMsg(this.msgErro);
                     retorno = false;
                 }
             }
@@ -188,6 +195,7 @@ export class DadosPagto {
                     //afazer: mostrar a modal de mensagem
                     this.msgErro = "Favor selecionar  corretamente o meio de pagamento " +
                         "para Parcelado no Cartão (Maquineta).";
+                    this.erroModal.MostrarMsg(this.msgErro);
                     retorno = false;
                 }
             }
@@ -202,6 +210,7 @@ export class DadosPagto {
                     if (mostrarMsg) {
                         //afazer: mostrar a modal de mensagem
                         this.msgErro = "Favor selecionar o campo Parcelamento para À vista!";
+                        this.erroModal.MostrarMsg(this.msgErro);
                     }
                     return false;
                 }
@@ -217,6 +226,7 @@ export class DadosPagto {
                     if (mostrarMsg) {
                         //afazer: mostrar a modal de mensagem
                         this.msgErro = "Favor selecionar o Parcelamento para Cartão (Internet)!";
+                        this.erroModal.MostrarMsg(this.msgErro);
                     }
                     return false;
                 }
@@ -231,6 +241,7 @@ export class DadosPagto {
                         if (mostrarMsg) {
                             //afazer: mostrar a modal de mensagem
                             this.msgErro = "Favor selecionar o Parcelamento para Parcela com entrada!";
+                            this.erroModal.MostrarMsg(this.msgErro);
                         }
                         return false;
                     }
@@ -243,6 +254,7 @@ export class DadosPagto {
                     if (mostrarMsg) {
                         //afazer: mostrar a modal de mensagem
                         this.msgErro = "Favor informar o valor de entrada!";
+                        this.erroModal.MostrarMsg(this.msgErro);
                     }
                     return false;
                 }
@@ -255,6 +267,7 @@ export class DadosPagto {
                     if (mostrarMsg) {
                         //afazer: mostrar a modal de mensagem
                         this.msgErro = "Favor selecionar o Parcelamento para Parcela Única!";
+                        this.erroModal.MostrarMsg(this.msgErro);
                     }
                     return false;
                 }
@@ -268,6 +281,7 @@ export class DadosPagto {
                     if (mostrarMsg) {
                         //afazer: mostrar a modal de mensagem
                         this.msgErro = "Favor selecionar o Parcelamento para Pagamento com cartão (Maquineta)!";
+                        this.erroModal.MostrarMsg(this.msgErro);
                     }
                     return false;
                 }
@@ -281,6 +295,7 @@ export class DadosPagto {
             if (mostrarMsg) {
                 //afazer: mostrar a modal de mensagem
                 this.msgErro = "Favor selecionar uma Forma de Pagamento!";
+                this.erroModal.MostrarMsg(this.msgErro);
             }
             return false;
         }
@@ -328,7 +343,7 @@ export class DadosPagto {
     formaPagtoNum: number;
     public recalcularValoresComCoeficiente(enumFP: number): void {
         //na mudança da forma de pagto iremos zerar todos os campos
-        this.zerarTodosCampos();
+        //this.zerarTodosCampos();
 
         if (!!enumFP) {
             this.formaPagtoNum = enumFP;

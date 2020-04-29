@@ -7,8 +7,9 @@ using System.Text;
 
 
 //desabilitar o warning CS8632: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
-#nullable enable
-#nullable disable warnings
+//#nullable enable
+//#nullable disable warnings
+#pragma warning disable CS8632
 
 namespace Loja.Modelos
 {
@@ -95,6 +96,7 @@ namespace Loja.Modelos
         [Column("produto_xml")]
         [MaxLength(60)]
         public string Produto_xml { get; set; }
+
 
     }
 }

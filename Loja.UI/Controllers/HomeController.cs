@@ -36,6 +36,7 @@ namespace Loja.UI.Controllers
         public IActionResult Index(string novaloja)
         {
             var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
+
             var model = new HomeViewModel();
             if (!string.IsNullOrWhiteSpace(novaloja))
             {
