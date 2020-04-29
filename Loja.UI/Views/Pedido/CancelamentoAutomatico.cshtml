@@ -28,50 +28,14 @@
 <h5>Cancelamento Automático de Pedidos</h5>
 
 <div>
-
-    @*
-        select para escolher a loja a usar
-    *@
-
-    <style>
-        .semespacamento {
-            margin-bottom: 0px;
-            padding-bottom: 0px !important;
-        }
-    </style>
-    @if (Model.ConsultaUniversalPedidoOrcamento)
+    @if (Model.ListaLojasViewModel.MostrarLoja)
     {
-
-        <div class="semespacamento row " style="padding-bottom: 0px !important;">
-            <div class="semespacamento col s12 " style="padding-bottom: 0px !important;">
-                <div class="semespacamento col s8 " style="padding-bottom: 0px !important;">
-                </div>
-                <div class="semespacamento input-field col s4 " style="padding-bottom: 0px !important;">
-                    <div class="input-field">
-                        @{
-                            var lista = Model.LojasDisponiveis.Select(r => r.Nome).Distinct().OrderBy(r => r).ToList();
-                            lista.Insert(0, "");
-                            var listaSl = new List<SelectListItem>();
-                            foreach (var item in lista)
-                            {
-                                listaSl.Add(new SelectListItem(item == "" ? "Todas" : item, item));
-                            }
-                        }
-                        @Html.DropDownList("comboLojas", listaSl, new { @id = "comboLojas" })
-                        <label>Filtrar por loja:</label>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <script>
-            $("#comboLojas").change(function () {
-                $('#tabeladados').DataTable().search($("#comboLojas").val()).draw();
-            });
-        </script>
+        Model.ListaLojasViewModel.NomeTabelaHtml = "tabeladados";
+        Model.ListaLojasViewModel.NumeroColunaDaLoja = 3;
+        <partial name="~/Views/Comuns/ListaLojas.cshtml" for="ListaLojasViewModel" />
     }
 
-    @if (Model.cancelamentoAutomaticoItems.Count < 1)
+    @if (Model.CancelamentoAutomaticoItems.Count < 1)
     {
         <span>
             NENHUM PEDIDO.
@@ -79,7 +43,7 @@
     }
     else
     {
-        <table id="tabeladados">
+        <table id="tabeladados" style="display: none;">
             <thead>
                 <tr>
                     <th></th>
@@ -89,18 +53,15 @@
                     <th>
                         Pedido
                     </th>
-                    @if (Model.MostrarLoja)
+                    @if (Model.ListaLojasViewModel.MostrarLoja)
                     {
                         <th>
                             Loja
                         </th>
                     }
-                    @if (Model.ConsultaUniversalPedidoOrcamento)
-                    {
-                        <th>
-                            Vendedor
-                        </th>
-                    }
+                    <th>
+                        Vendedor
+                    </th>
                     <th>
                         Nome do cliente
                     </th>
@@ -111,7 +72,7 @@
             </thead>
 
             <tbody>
-                @foreach (var c in Model.cancelamentoAutomaticoItems)
+                @foreach (var c in Model.CancelamentoAutomaticoItems)
                 {
                     <tr>
                         <td style="text-align: right">
@@ -123,18 +84,15 @@
                         <td>
                             @c.Pedido
                         </td>
-                        @if (Model.MostrarLoja)
+                        @if (Model.ListaLojasViewModel.MostrarLoja)
                         {
                             <td>
-                                @c.Loja
+                                @c.LojaNome
                             </td>
                         }
-                        @if (Model.ConsultaUniversalPedidoOrcamento)
-                        {
-                            <td>
-                                @c.Vendedor
-                            </td>
-                        }
+                        <td>
+                            @c.Vendedor
+                        </td>
                         <td>
                             @c.NomeDoCliente
                         </td>

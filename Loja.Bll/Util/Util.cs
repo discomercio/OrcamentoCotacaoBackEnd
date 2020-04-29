@@ -18,6 +18,14 @@ namespace Loja.Bll.Util
 {
     public class Util
     {
+        public static string FormataMoeda(decimal? valor)
+        {
+            if (!valor.HasValue)
+                return "";
+            //@*200218: hamilton pediu para colocar sem o cifrão *@
+            return String.Format("{0:N2}", valor);
+        }
+
         public static string FormataTelefone(string ddd, string tel)
         {
             string retorno = "";
@@ -1315,16 +1323,6 @@ namespace Loja.Bll.Util
 
             return torcamentista;
         }
-
-        public static decimal FormataMoeda(decimal valor, int decimais)
-        {
-
-
-            return valor;
-        }
-
-
-
 
         public static bool ValidarTipoCustoFinanceiroFornecedor(List<string> lstErros, string custoFinanceiroTipoParcelato,
             int c_custoFinancFornecQtdeParcelas)

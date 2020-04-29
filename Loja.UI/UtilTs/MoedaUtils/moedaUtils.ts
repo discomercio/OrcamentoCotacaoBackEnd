@@ -8,11 +8,6 @@ export class MoedaUtils {
         style: 'decimal', minimumFractionDigits: 1, maximumFractionDigits: 1
     });
 
-    //se formos arredondar para baixo
-    //ignoraArredondamento = function (nro: number) {
-    //    return Math.floor(nro * 100) / 100;
-    //}
-
     public formatarMoedaComPrefixo(nro: number) {
         if (!!!nro)
             return "";

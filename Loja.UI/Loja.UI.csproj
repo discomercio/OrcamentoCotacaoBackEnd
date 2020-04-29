@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\lib\datatables\DataTables.zip" />
     <Content Remove="wwwroot\lib\datatables\Leiame.txt" />
   </ItemGroup>
 
@@ -51,6 +52,7 @@
     <None Remove="Views\Pedido\FormaPagto.ts" />
     <None Remove="Views\Pedido\Indicador_SelecaoCD.ts" />
     <None Remove="Views\Pedido\IniciarNovoPedido.ts" />
+    <None Remove="Views\Prepedido\Index.ts" />
     <None Remove="Views\Shared\Error.ts" />
   </ItemGroup>
 
@@ -87,6 +89,9 @@
     <TypeScriptCompile Update="Views\Pedido\IniciarNovoPedido.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Update="Views\Prepedido\Index.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
   </ItemGroup>
 
 
@@ -96,7 +101,105 @@
 
 
   <ItemGroup>
+    <None Include="wwwroot\lib\datatables\Buttons-1.6.1\css\common.scss" />
+    <None Include="wwwroot\lib\datatables\Buttons-1.6.1\css\mixins.scss" />
+    <None Include="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.bootstrap.js" />
+    <None Include="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.bootstrap.min.js" />
+    <None Include="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.bootstrap4.js" />
+    <None Include="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.bootstrap4.min.js" />
+    <None Include="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.colVis.js" />
+    <None Include="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.colVis.min.js" />
+    <None Include="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.flash.js" />
+    <None Include="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.flash.min.js" />
+    <None Include="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.foundation.js" />
+    <None Include="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.foundation.min.js" />
+    <None Include="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.html5.js" />
+    <None Include="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.html5.min.js" />
+    <None Include="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.jqueryui.js" />
+    <None Include="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.jqueryui.min.js" />
+    <None Include="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.print.js" />
+    <None Include="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.print.min.js" />
+    <None Include="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.semanticui.js" />
+    <None Include="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.semanticui.min.js" />
+    <None Include="wwwroot\lib\datatables\Buttons-1.6.1\js\dataTables.buttons.js" />
+    <None Include="wwwroot\lib\datatables\Buttons-1.6.1\js\dataTables.buttons.min.js" />
+    <None Include="wwwroot\lib\datatables\Buttons-1.6.1\swf\flashExport.swf" />
+    <None Include="wwwroot\lib\datatables\ColReorder-1.5.2\js\colReorder.bootstrap.js" />
+    <None Include="wwwroot\lib\datatables\ColReorder-1.5.2\js\colReorder.bootstrap.min.js" />
+    <None Include="wwwroot\lib\datatables\ColReorder-1.5.2\js\colReorder.bootstrap4.js" />
+    <None Include="wwwroot\lib\datatables\ColReorder-1.5.2\js\colReorder.bootstrap4.min.js" />
+    <None Include="wwwroot\lib\datatables\ColReorder-1.5.2\js\colReorder.dataTables.js" />
+    <None Include="wwwroot\lib\datatables\ColReorder-1.5.2\js\colReorder.foundation.js" />
+    <None Include="wwwroot\lib\datatables\ColReorder-1.5.2\js\colReorder.foundation.min.js" />
+    <None Include="wwwroot\lib\datatables\ColReorder-1.5.2\js\colReorder.jqueryui.js" />
+    <None Include="wwwroot\lib\datatables\ColReorder-1.5.2\js\colReorder.jqueryui.min.js" />
+    <None Include="wwwroot\lib\datatables\ColReorder-1.5.2\js\colReorder.semanicui.js" />
+    <None Include="wwwroot\lib\datatables\ColReorder-1.5.2\js\colReorder.semanticui.js" />
+    <None Include="wwwroot\lib\datatables\ColReorder-1.5.2\js\colReorder.semanticui.min.js" />
+    <None Include="wwwroot\lib\datatables\ColReorder-1.5.2\js\dataTables.colReorder.js" />
+    <None Include="wwwroot\lib\datatables\ColReorder-1.5.2\js\dataTables.colReorder.min.js" />
+    <None Include="wwwroot\lib\datatables\DataTables-1.10.20\js\dataTables.bootstrap.js" />
+    <None Include="wwwroot\lib\datatables\DataTables-1.10.20\js\dataTables.bootstrap.min.js" />
+    <None Include="wwwroot\lib\datatables\DataTables-1.10.20\js\dataTables.bootstrap4.js" />
+    <None Include="wwwroot\lib\datatables\DataTables-1.10.20\js\dataTables.bootstrap4.min.js" />
+    <None Include="wwwroot\lib\datatables\DataTables-1.10.20\js\dataTables.foundation.js" />
+    <None Include="wwwroot\lib\datatables\DataTables-1.10.20\js\dataTables.foundation.min.js" />
+    <None Include="wwwroot\lib\datatables\DataTables-1.10.20\js\dataTables.jqueryui.js" />
+    <None Include="wwwroot\lib\datatables\DataTables-1.10.20\js\dataTables.jqueryui.min.js" />
+    <None Include="wwwroot\lib\datatables\DataTables-1.10.20\js\dataTables.semanticui.js" />
+    <None Include="wwwroot\lib\datatables\DataTables-1.10.20\js\dataTables.semanticui.min.js" />
+    <None Include="wwwroot\lib\datatables\DataTables-1.10.20\js\jquery.dataTables.js" />
+    <None Include="wwwroot\lib\datatables\DataTables-1.10.20\js\jquery.dataTables.min.js" />
+    <None Include="wwwroot\lib\datatables\DataTables.zip" />
+    <None Include="wwwroot\lib\datatables\FixedHeader-3.1.6\js\dataTables.fixedHeader.js" />
+    <None Include="wwwroot\lib\datatables\FixedHeader-3.1.6\js\dataTables.fixedHeader.min.js" />
+    <None Include="wwwroot\lib\datatables\FixedHeader-3.1.6\js\fixedHeader.bootstrap.js" />
+    <None Include="wwwroot\lib\datatables\FixedHeader-3.1.6\js\fixedHeader.bootstrap.min.js" />
+    <None Include="wwwroot\lib\datatables\FixedHeader-3.1.6\js\fixedHeader.bootstrap4.js" />
+    <None Include="wwwroot\lib\datatables\FixedHeader-3.1.6\js\fixedHeader.bootstrap4.min.js" />
+    <None Include="wwwroot\lib\datatables\FixedHeader-3.1.6\js\fixedHeader.dataTables.js" />
+    <None Include="wwwroot\lib\datatables\FixedHeader-3.1.6\js\fixedHeader.foundation.js" />
+    <None Include="wwwroot\lib\datatables\FixedHeader-3.1.6\js\fixedHeader.foundation.min.js" />
+    <None Include="wwwroot\lib\datatables\FixedHeader-3.1.6\js\fixedHeader.jqueryui.js" />
+    <None Include="wwwroot\lib\datatables\FixedHeader-3.1.6\js\fixedHeader.jqueryui.min.js" />
+    <None Include="wwwroot\lib\datatables\FixedHeader-3.1.6\js\fixedHeader.semanicui.js" />
+    <None Include="wwwroot\lib\datatables\FixedHeader-3.1.6\js\fixedHeader.semanticui.js" />
+    <None Include="wwwroot\lib\datatables\FixedHeader-3.1.6\js\fixedHeader.semanticui.min.js" />
+    <None Include="wwwroot\lib\datatables\JSZip-2.5.0\jszip.js" />
+    <None Include="wwwroot\lib\datatables\JSZip-2.5.0\jszip.min.js" />
     <None Include="wwwroot\lib\datatables\Leiame.txt" />
+    <None Include="wwwroot\lib\datatables\pdfmake-0.1.36\pdfmake.js" />
+    <None Include="wwwroot\lib\datatables\pdfmake-0.1.36\pdfmake.min.js" />
+    <None Include="wwwroot\lib\datatables\pdfmake-0.1.36\vfs_fonts.js" />
+    <None Include="wwwroot\lib\datatables\RowGroup-1.1.1\js\dataTables.rowGroup.js" />
+    <None Include="wwwroot\lib\datatables\RowGroup-1.1.1\js\dataTables.rowGroup.min.js" />
+    <None Include="wwwroot\lib\datatables\RowGroup-1.1.1\js\rowGroup.bootstrap.js" />
+    <None Include="wwwroot\lib\datatables\RowGroup-1.1.1\js\rowGroup.bootstrap.min.js" />
+    <None Include="wwwroot\lib\datatables\RowGroup-1.1.1\js\rowGroup.bootstrap4.js" />
+    <None Include="wwwroot\lib\datatables\RowGroup-1.1.1\js\rowGroup.bootstrap4.min.js" />
+    <None Include="wwwroot\lib\datatables\RowGroup-1.1.1\js\rowGroup.dataTables.js" />
+    <None Include="wwwroot\lib\datatables\RowGroup-1.1.1\js\rowGroup.foundation.js" />
+    <None Include="wwwroot\lib\datatables\RowGroup-1.1.1\js\rowGroup.foundation.min.js" />
+    <None Include="wwwroot\lib\datatables\RowGroup-1.1.1\js\rowGroup.jqueryui.js" />
+    <None Include="wwwroot\lib\datatables\RowGroup-1.1.1\js\rowGroup.jqueryui.min.js" />
+    <None Include="wwwroot\lib\datatables\RowGroup-1.1.1\js\rowGroup.semanicui.js" />
+    <None Include="wwwroot\lib\datatables\RowGroup-1.1.1\js\rowGroup.semanticui.js" />
+    <None Include="wwwroot\lib\datatables\RowGroup-1.1.1\js\rowGroup.semanticui.min.js" />
+    <None Include="wwwroot\lib\datatables\SearchPanes-1.0.1\js\dataTables.searchPanes.js" />
+    <None Include="wwwroot\lib\datatables\SearchPanes-1.0.1\js\dataTables.searchPanes.min.js" />
+    <None Include="wwwroot\lib\datatables\SearchPanes-1.0.1\js\searchPanes.bootstrap.js" />
+    <None Include="wwwroot\lib\datatables\SearchPanes-1.0.1\js\searchPanes.bootstrap.min.js" />
+    <None Include="wwwroot\lib\datatables\SearchPanes-1.0.1\js\searchPanes.bootstrap4.js" />
+    <None Include="wwwroot\lib\datatables\SearchPanes-1.0.1\js\searchPanes.bootstrap4.min.js" />
+    <None Include="wwwroot\lib\datatables\SearchPanes-1.0.1\js\searchPanes.dataTables.js" />
+    <None Include="wwwroot\lib\datatables\SearchPanes-1.0.1\js\searchPanes.dataTables.min.js" />
+    <None Include="wwwroot\lib\datatables\SearchPanes-1.0.1\js\searchPanes.foundation.js" />
+    <None Include="wwwroot\lib\datatables\SearchPanes-1.0.1\js\searchPanes.foundation.min.js" />
+    <None Include="wwwroot\lib\datatables\SearchPanes-1.0.1\js\searchPanes.jqueryui.js" />
+    <None Include="wwwroot\lib\datatables\SearchPanes-1.0.1\js\searchPanes.jqueryui.min.js" />
+    <None Include="wwwroot\lib\datatables\SearchPanes-1.0.1\js\searchPanes.semanicui.js" />
+    <None Include="wwwroot\lib\datatables\SearchPanes-1.0.1\js\searchPanes.semanticui.js" />
+    <None Include="wwwroot\lib\datatables\SearchPanes-1.0.1\js\searchPanes.semanticui.min.js" />
   </ItemGroup>
 
 
@@ -105,462 +208,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\lib\datatables-materialize\dataTables.materialize.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\css\buttons.bootstrap.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\css\buttons.bootstrap.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\css\buttons.bootstrap4.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\css\buttons.bootstrap4.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\css\buttons.dataTables.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\css\buttons.dataTables.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\css\buttons.foundation.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\css\buttons.foundation.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\css\buttons.jqueryui.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\css\buttons.jqueryui.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\css\buttons.semanticui.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\css\buttons.semanticui.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\css\common.scss">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\css\mixins.scss">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.bootstrap.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.bootstrap.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.bootstrap4.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.bootstrap4.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.colVis.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.colVis.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.flash.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.flash.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.foundation.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.foundation.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.html5.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.html5.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.jqueryui.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.jqueryui.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.print.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.print.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.semanticui.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\js\buttons.semanticui.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\js\dataTables.buttons.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\js\dataTables.buttons.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\Buttons-1.6.1\swf\flashExport.swf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\ColReorder-1.5.2\css\colReorder.bootstrap.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\ColReorder-1.5.2\css\colReorder.bootstrap.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\ColReorder-1.5.2\css\colReorder.bootstrap4.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\ColReorder-1.5.2\css\colReorder.bootstrap4.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\ColReorder-1.5.2\css\colReorder.dataTables.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\ColReorder-1.5.2\css\colReorder.dataTables.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\ColReorder-1.5.2\css\colReorder.foundation.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\ColReorder-1.5.2\css\colReorder.foundation.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\ColReorder-1.5.2\css\colReorder.jqueryui.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\ColReorder-1.5.2\css\colReorder.jqueryui.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\ColReorder-1.5.2\css\colReorder.semanticui.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\ColReorder-1.5.2\css\colReorder.semanticui.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\ColReorder-1.5.2\js\colReorder.bootstrap.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\ColReorder-1.5.2\js\colReorder.bootstrap.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\ColReorder-1.5.2\js\colReorder.bootstrap4.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\ColReorder-1.5.2\js\colReorder.bootstrap4.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\ColReorder-1.5.2\js\colReorder.dataTables.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\ColReorder-1.5.2\js\colReorder.foundation.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\ColReorder-1.5.2\js\colReorder.foundation.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\ColReorder-1.5.2\js\colReorder.jqueryui.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\ColReorder-1.5.2\js\colReorder.jqueryui.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\ColReorder-1.5.2\js\colReorder.semanicui.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\ColReorder-1.5.2\js\colReorder.semanticui.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\ColReorder-1.5.2\js\colReorder.semanticui.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\ColReorder-1.5.2\js\dataTables.colReorder.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\ColReorder-1.5.2\js\dataTables.colReorder.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\DataTables-1.10.20\css\dataTables.bootstrap.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\DataTables-1.10.20\css\dataTables.bootstrap.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\DataTables-1.10.20\css\dataTables.bootstrap4.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\DataTables-1.10.20\css\dataTables.bootstrap4.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\DataTables-1.10.20\css\dataTables.foundation.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\DataTables-1.10.20\css\dataTables.foundation.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\DataTables-1.10.20\css\dataTables.jqueryui.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\DataTables-1.10.20\css\dataTables.jqueryui.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\DataTables-1.10.20\css\dataTables.semanticui.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\DataTables-1.10.20\css\dataTables.semanticui.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\DataTables-1.10.20\css\jquery.dataTables.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\DataTables-1.10.20\css\jquery.dataTables.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\DataTables-1.10.20\images\sort_asc.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\DataTables-1.10.20\images\sort_asc_disabled.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\DataTables-1.10.20\images\sort_both.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\DataTables-1.10.20\images\sort_desc.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\DataTables-1.10.20\images\sort_desc_disabled.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\DataTables-1.10.20\js\dataTables.bootstrap.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\DataTables-1.10.20\js\dataTables.bootstrap.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\DataTables-1.10.20\js\dataTables.bootstrap4.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\DataTables-1.10.20\js\dataTables.bootstrap4.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\DataTables-1.10.20\js\dataTables.foundation.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\DataTables-1.10.20\js\dataTables.foundation.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\DataTables-1.10.20\js\dataTables.jqueryui.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\DataTables-1.10.20\js\dataTables.jqueryui.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\DataTables-1.10.20\js\dataTables.semanticui.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\DataTables-1.10.20\js\dataTables.semanticui.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\DataTables-1.10.20\js\jquery.dataTables.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\DataTables-1.10.20\js\jquery.dataTables.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\datatables.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\datatables.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\datatables.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\datatables.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\FixedHeader-3.1.6\css\fixedHeader.bootstrap.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\FixedHeader-3.1.6\css\fixedHeader.bootstrap.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\FixedHeader-3.1.6\css\fixedHeader.bootstrap4.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\FixedHeader-3.1.6\css\fixedHeader.bootstrap4.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\FixedHeader-3.1.6\css\fixedHeader.dataTables.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\FixedHeader-3.1.6\css\fixedHeader.dataTables.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\FixedHeader-3.1.6\css\fixedHeader.foundation.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\FixedHeader-3.1.6\css\fixedHeader.foundation.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\FixedHeader-3.1.6\css\fixedHeader.jqueryui.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\FixedHeader-3.1.6\css\fixedHeader.jqueryui.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\FixedHeader-3.1.6\css\fixedHeader.semanticui.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\FixedHeader-3.1.6\css\fixedHeader.semanticui.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\FixedHeader-3.1.6\js\dataTables.fixedHeader.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\FixedHeader-3.1.6\js\dataTables.fixedHeader.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\FixedHeader-3.1.6\js\fixedHeader.bootstrap.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\FixedHeader-3.1.6\js\fixedHeader.bootstrap.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\FixedHeader-3.1.6\js\fixedHeader.bootstrap4.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\FixedHeader-3.1.6\js\fixedHeader.bootstrap4.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\FixedHeader-3.1.6\js\fixedHeader.dataTables.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\FixedHeader-3.1.6\js\fixedHeader.foundation.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\FixedHeader-3.1.6\js\fixedHeader.foundation.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\FixedHeader-3.1.6\js\fixedHeader.jqueryui.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\FixedHeader-3.1.6\js\fixedHeader.jqueryui.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\FixedHeader-3.1.6\js\fixedHeader.semanicui.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\FixedHeader-3.1.6\js\fixedHeader.semanticui.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\FixedHeader-3.1.6\js\fixedHeader.semanticui.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\JSZip-2.5.0\jszip.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\JSZip-2.5.0\jszip.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\pdfmake-0.1.36\pdfmake.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\pdfmake-0.1.36\pdfmake.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\pdfmake-0.1.36\vfs_fonts.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\SearchPanes-1.0.1\css\searchPanes.bootstrap.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\SearchPanes-1.0.1\css\searchPanes.bootstrap.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\SearchPanes-1.0.1\css\searchPanes.bootstrap4.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\SearchPanes-1.0.1\css\searchPanes.bootstrap4.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\SearchPanes-1.0.1\css\searchPanes.dataTables.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\SearchPanes-1.0.1\css\searchPanes.dataTables.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\SearchPanes-1.0.1\css\searchPanes.foundation.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\SearchPanes-1.0.1\css\searchPanes.foundation.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\SearchPanes-1.0.1\css\searchPanes.jqueryui.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\SearchPanes-1.0.1\css\searchPanes.jqueryui.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\SearchPanes-1.0.1\css\searchPanes.semanticui.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\SearchPanes-1.0.1\css\searchPanes.semanticui.min.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\SearchPanes-1.0.1\js\dataTables.searchPanes.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\SearchPanes-1.0.1\js\dataTables.searchPanes.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\SearchPanes-1.0.1\js\searchPanes.bootstrap.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\SearchPanes-1.0.1\js\searchPanes.bootstrap.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\SearchPanes-1.0.1\js\searchPanes.bootstrap4.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\SearchPanes-1.0.1\js\searchPanes.bootstrap4.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\SearchPanes-1.0.1\js\searchPanes.dataTables.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\SearchPanes-1.0.1\js\searchPanes.dataTables.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\SearchPanes-1.0.1\js\searchPanes.foundation.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\SearchPanes-1.0.1\js\searchPanes.foundation.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\SearchPanes-1.0.1\js\searchPanes.jqueryui.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\SearchPanes-1.0.1\js\searchPanes.jqueryui.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\SearchPanes-1.0.1\js\searchPanes.semanicui.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\SearchPanes-1.0.1\js\searchPanes.semanticui.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\datatables\SearchPanes-1.0.1\js\searchPanes.semanticui.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

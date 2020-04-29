@@ -65,159 +65,61 @@
 }
 
 <body>
-    <header>
-        <div class="navbar navbar-fixed">
-            <nav class="navbar">
-                @*<a class="material-icons">notifications</a>*@
-                @if (usuarioLogado.SessaoAtiva)
-                {
-                    <div style="float: right">
-                        <div class="row s12">
-                            <div class="col " style="font-size: 20px;">
-                                Olá @usuarioLogado.Usuario_nome_atual
-                            </div>
-                            @{
-                                var lista = usuarioLogado.LojasDisponiveis.OrderBy(r => r.Nome).ToList();
-                            }
-                            @if (lista.Count > 0)
-                            {
-                                <div class="col " style="font-size: 20px; padding-right: 8px">
-                                    Loja:
-                                </div>
-                                <div class="col " style="padding-top: 18px; padding-left: 0px" title="Alterar loja ativa - ainda não implementado">
-                                    @{
-                                        var listaSl = new List<SelectListItem>();
-                                        foreach (var item in lista)
-                                        {
-                                            listaSl.Add(new SelectListItem(item.Nome, item.Id));
-                                        }
-                                        ViewData["cabecacomboLojas"] = usuarioLogado.Loja_atual_id;
-                                    }
 
-                                    @Html.DropDownList("cabecacomboLojas", listaSl, new { @id = "cabecacomboLojas" })
-                                </div>
-                            }
-
-                            <div class="col ">
-                                <a href="~/Acesso/Logout" class="material-icons" title="Logout" style="vertical-align: text-bottom;">
-                                    exit_to_app
-                                </a>
-                                <a href="~/Acesso/Logout" style="    margin-right: 20px;">SAIR</a>
-                            </div>
-                        </div>
-                    </div>
-                }
-                else
-                {
-                    //não temos botão de ologin pq já está na pagina de login - mas precisa para outras páginas, que eventualemte não tenham a proteção, como a home
-                    if (!(ViewBag.PaginaDeLogin ?? false))
-                    {
-                        <div class="right" style="margin-right: 10px">
-                            <a href="~/Acesso/Login" class="btn">Login</a>
-                        </div>
-                    }
-                }
-            </nav>
-        </div>
-
-        <script>
-            $(document).ready(function () {
-                $('#cabecacomboLojas').change(function () {
-                    document.location = "/?novaloja=" + $('#cabecacomboLojas').val();
-                });
-            });
-        </script>
-    </header>
-    <div class="col s12" id="corpo">
+    <div style="display: flex; flex-direction: row; height: 100%; width: 100%;">
         @if (usuarioLogado.SessaoAtiva)
         {
-            <style>
-                .menudesabilitado {
-                    cursor: not-allowed;
-                }
-            </style>
-            <ul class="sidenav sidenav-fixed" style="width:18%; white-space:nowrap">
-                <li>
-                    <ul class="collapsible">
-                        <li>
-                            <div class="collapsible-header">Pedidos</div>
-                            <ul class="collapsible-body">
-                                <li>
-                                    <a class="menudesabilitado" href="#!">Análise de Pré Pedidos</a>
-                                </li>
-                                <li>
-                                    <a href="@Url.Action("Index", "Cliente")">Novo Pedido</a>
-                                </li>
-                                <li>
-                                    <a href="@Url.Action("CancelamentoAutomatico", "Pedido")"><span>Cancelamento Automático</span></a>
-                                </li>
-                                <li>
-                                    <a class="menudesabilitado" href="#!">Indicadores</a>
-                                </li>
-                                <li>
-                                    <a class="menudesabilitado" href="#!">Consulta Pedido</a>
-                                </li>
-                                <li>
-                                    <a class="menudesabilitado" href="#!">Consulta Pré Pedido</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <div class="collapsible-header">Produtos</div>
-                            <ul class="collapsible-body">
-                                <li>
-                                    <a href="@Url.Action("Index", "Produtos")">Consulta Lista de Preços</a>
-                                </li>
-                                <li>
-                                    <a class="menudesabilitado" href="#!">Consulta Custo Financeiro</a>
-                                </li>
-                                <li>
-                                    <a class="menudesabilitado" href="#!">Indicadores</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <div class="collapsible-header">Relatórios</div>
-                            <ul class="collapsible-body">
-                                <li>
-                                    <div class="input-field col s3">
-                                        <input id="pesquisa" type="text" />
-                                        <label for="pesquisa">Pesquisar</label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <a class="menudesabilitado" href="#!">Pedidos Indicadores</a>
-                                </li>
-                                <li>
-                                    <a class="menudesabilitado" href="#!">Faturamento</a>
-                                </li>
-                                <li>
-                                    <a class="menudesabilitado" href="#!">Vendas</a>
-                                </li>
-                                <li>
-                                    <a class="menudesabilitado" href="#!">Vendas com Desc. Superior</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
+            <ul id="slide-out" class="sidenav sidenav-fixed" style="flex-grow: 0; flex-shrink: 0; width: 300px;">
+                <partial name="~/Views/Shared/Menu.cshtml" model="usuarioLogado" />
             </ul>
         }
 
+        <div style="flex-grow: 1; flex-shrink: 1; ">
+            <div style="display: flex; flex-direction: column; height: 100vh; width: 100vw;">
+                <div style="flex-grow: 0; flex-shrink: 0; ">
+                    @{
+                        //para a página de login não pode ter o padding
+                        var estilo = "";
+                        if (!usuarioLogado.SessaoAtiva)
+                        {
+                            estilo = "padding-left: 300px;";
+                        }
+                    }
+                    <header style="@estilo">
+                        <div class="navbar navbar-fixed alturaheader">
+                            <nav class="navbar">
+                                @if (usuarioLogado.SessaoAtiva)
+                                {
+                                    <a href="#" data-target="slide-out" class="sidenav-trigger" title="Menu"><i class="material-icons">menu</i></a>
+                                }
 
-        @{
-            var estilos = "corpo";
-            @if ((ViewBag.PaginaDeLogin ?? false))
-            {
-                estilos = " corpologin";
-            }
-        }
-        <main role="main" class="container @estilos">
-            @RenderBody()
-        </main>
-        <partial name="~/Views/Shared/Error.cshtml" />
+                                <partial name="~/Views/Shared/Cabecalho.cshtml" model="usuarioLogado" />
+                            </nav>
+                        </div>
+                    </header>
+                </div>
+
+
+                <div style="flex-grow: 1; flex-shrink: 1; overflow: auto; ">
+                    @{
+                        //para a página de login não pode ter o padding
+                        estilo = "";
+                        if (!usuarioLogado.SessaoAtiva)
+                        {
+                            estilo = "padding-left: 38px;";
+                        }
+                    }
+                    <main role="main" class="container corpo" style="max-width: initial; width: 100%; @estilo">
+                        @RenderBody()
+                    </main>
+                </div>
+                <div style="flex-grow: 0; flex-shrink: 0; ">
+                    @RenderSection("RodapePagina", required: false)
+                </div>
+            </div>
+        </div>
     </div>
-
+    <partial name="~/Views/Shared/Error.cshtml" />
 
 </body>
 </html>

@@ -4,10 +4,10 @@
  *
  * To rebuild or modify this file with the latest versions of the included
  * software please visit:
- *   https://datatables.net/download/#dt/jszip-2.5.0/pdfmake-0.1.36/dt-1.10.20/b-1.6.1/b-html5-1.6.1/cr-1.5.2/fh-3.1.6/sp-1.0.1
+ *   https://datatables.net/download/#dt/jszip-2.5.0/pdfmake-0.1.36/dt-1.10.20/b-1.6.1/b-html5-1.6.1/cr-1.5.2/fh-3.1.6/rg-1.1.1/sp-1.0.1
  *
  * Included libraries:
- *   JSZip 2.5.0, pdfmake 0.1.36, DataTables 1.10.20, Buttons 1.6.1, HTML5 export 1.6.1, ColReorder 1.5.2, FixedHeader 3.1.6, SearchPanes 1.0.1
+ *   JSZip 2.5.0, pdfmake 0.1.36, DataTables 1.10.20, Buttons 1.6.1, HTML5 export 1.6.1, ColReorder 1.5.2, FixedHeader 3.1.6, RowGroup 1.1.1, SearchPanes 1.0.1
  */
 
 /*
@@ -873,6 +873,28 @@ table.fixedHeader-locked {
   table.fixedHeader-floating {
     display: none;
   }
+}
+
+
+table.dataTable tr.dtrg-group td {
+  background-color: #e0e0e0;
+}
+
+table.dataTable tr.dtrg-group.dtrg-level-0 td {
+  font-weight: bold;
+}
+
+table.dataTable tr.dtrg-group.dtrg-level-1 td,
+table.dataTable tr.dtrg-group.dtrg-level-2 td {
+  background-color: #f0f0f0;
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
+  padding-left: 2em;
+  font-size: 0.9em;
+}
+
+table.dataTable tr.dtrg-group.dtrg-level-2 td {
+  background-color: #f3f3f3;
 }
 
 

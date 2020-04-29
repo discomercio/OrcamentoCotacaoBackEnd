@@ -30,14 +30,14 @@
             $(document).ready(function () {
                 intiDatatables('#tabela', {
                     columnDefs: [
-                        { type: "currency", targets: 2 }
+                        { type: "moeda", targets: 2 }
                     ]
                 });
             });
         </script>
 
 
-        <table id="tabela">
+        <table id="tabela" style="display: none;">
             <thead>
                 <tr>
                     <th>Produto</th>
@@ -54,8 +54,7 @@
                     <tr>
                         <td>@item.Produto</td>
                         <td>@item.Descricao</td>
-                        @* 200218: hamilton pediu para colocar sem o cifrão *@
-                        <td class="right-align">@String.Format("{0:F2}", item.Preco)</td>
+                        <td class="right-align">@Loja.Bll.Util.Util.FormataMoeda(item.Preco)</td>
                     </tr>
 
                 }
