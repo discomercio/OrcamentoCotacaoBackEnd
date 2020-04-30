@@ -1090,6 +1090,30 @@ namespace Loja.Bll.Util
             return produtosEstoqueDtos;
         }
 
+        public static async Task<bool> IsActivatedFlagPedidoUsarMemorizacaoCompletaEnderecos(IContextoBd contexto)
+        {
+            bool retorno = false;
+
+            Tparametro tparametro = await BuscarRegistroParametro(
+                Constantes.Constantes.ID_PARAMETRO_Flag_Pedido_MemorizacaoCompletaEnderecos, contexto);
+
+            if (tparametro != null)
+            {
+                if (tparametro.Campo_inteiro == 1)
+                    retorno = true;
+            }
+
+            return retorno;
+        }
+
+        public static string TransformaHora_Minutos()
+        {
+            string hora = DateTime.Now.Hour.ToString().PadLeft(2, '0');
+            string minuto = DateTime.Now.AddMinutes(-10).ToString().PadLeft(2, '0');
+
+            return hora + minuto;
+        }
+
         public static async Task<Tparametro> BuscarRegistroParametro(string id, IContextoBd contexto)
         {
             var db = contexto;
@@ -1098,7 +1122,7 @@ namespace Loja.Bll.Util
                                 where c.Id == id
                                 select c;
 
-            var parametro = await parametroTask.FirstOrDefaultAsync();
+            Tparametro parametro = await parametroTask.FirstOrDefaultAsync();
 
             return parametro;
         }

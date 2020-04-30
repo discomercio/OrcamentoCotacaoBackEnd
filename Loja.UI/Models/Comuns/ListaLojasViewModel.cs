@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static Loja.Bll.Bll.PedidoBll.CancelamentoAutomaticoBll;
 
 #nullable enable
 

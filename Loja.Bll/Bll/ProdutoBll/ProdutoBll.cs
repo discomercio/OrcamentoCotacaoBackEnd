@@ -127,7 +127,56 @@ namespace Loja.Bll.ProdutoBll
 
             return retorno;
         }
-        
+
+        public async Task<IEnumerable<RegrasBll>> VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado_Teste(PedidoProdutosDtoPedido produto,
+            string cpf_cnpj, int id_nfe_emitente_selecao_manual)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+            //Buscar dados do cliente
+            var clienteTask = from c in db.Tclientes
+                              where c.Cnpj_Cpf == cpf_cnpj
+                              select c;
+
+            Tcliente cliente = await clienteTask.FirstOrDefaultAsync();
+
+            ProdutoValidadoComEstoqueDto prodValidadoEstoque = new ProdutoValidadoComEstoqueDto();
+            prodValidadoEstoque.ListaErros = new List<string>();
+
+            //obtém  a sigla para regra
+            string cliente_regra = Util.Util.MultiCdRegraDeterminaPessoa(cliente.Tipo, cliente.Contribuinte_Icms_Status,
+                cliente.Produtor_Rural_Status);
+
+            //buscar o produto
+            //PedidoProdutosDtoPedido produto = new PedidoProdutosDtoPedido();
+
+            List<RegrasBll> regraCrtlEstoque = (await ObterCtrlEstoqueProdutoRegraParaUMProduto(produto, cliente,
+                prodValidadoEstoque.ListaErros, contextoProvider.GetContextoLeitura())).ToList();
+
+            await Util.Util.ObterCtrlEstoqueProdutoRegra_Teste(prodValidadoEstoque.ListaErros, regraCrtlEstoque, cliente.Uf, cliente_regra, contextoProvider.GetContextoLeitura());
+
+            VerificarRegrasAssociadasParaUMProduto(regraCrtlEstoque, prodValidadoEstoque.ListaErros, cliente, id_nfe_emitente_selecao_manual);
+
+            if (id_nfe_emitente_selecao_manual != 0)
+                await VerificarCDHabilitadoTodasRegras(regraCrtlEstoque, id_nfe_emitente_selecao_manual, prodValidadoEstoque.ListaErros, contextoProvider.GetContextoLeitura());
+
+            await ObterDisponibilidadeEstoque(regraCrtlEstoque, produto, prodValidadoEstoque.ListaErros, id_nfe_emitente_selecao_manual, contextoProvider.GetContextoLeitura());
+
+            //meto responsavel por atribuir a qtde de estoque ao produto
+            //await Util.Util.VerificarEstoque(regraCrtlEstoque, produto, id_nfe_emitente_selecao_manual, contextoProvider);
+
+            bool estoqueInsuficiente = VerificarEstoqueInsuficienteUMProduto(regraCrtlEstoque, produto,
+                id_nfe_emitente_selecao_manual, prodValidadoEstoque.ListaErros);
+
+            regraCrtlEstoque = VerificarQtdePedidosAutoSplit(regraCrtlEstoque, prodValidadoEstoque.ListaErros, produto, id_nfe_emitente_selecao_manual);
+
+            List<int> lst_empresa_selecionada = ContagemEmpresasUsadasAutoSplit(regraCrtlEstoque, id_nfe_emitente_selecao_manual);
+
+            await ExisteProdutoDescontinuado(produto, prodValidadoEstoque.ListaErros);
+
+
+            return regraCrtlEstoque;
+        }
+
         public async Task<ProdutoValidadoComEstoqueDto> VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado(PedidoProdutosDtoPedido produto,
             string cpf_cnpj, int id_nfe_emitente_selecao_manual)
         {
@@ -568,16 +617,19 @@ namespace Loja.Bll.ProdutoBll
 
         }
 
-        private void VerificarQtdePedidosAutoSplit(List<RegrasBll> lstRegras, List<string> lstErros,
+        public List<RegrasBll> VerificarQtdePedidosAutoSplit(List<RegrasBll> lstRegras, List<string> lstErros,
             PedidoProdutosDtoPedido produto, int id_nfe_emitente_selecao_manual)
         {
             int qtde_a_alocar = 0;
+
+            List<RegrasBll> lstRegras_apoio = lstRegras;
+            lstRegras = new List<RegrasBll>();
 
             if (!string.IsNullOrEmpty(produto.NumProduto))
             {
                 qtde_a_alocar = (int)produto.Qtde;
 
-                foreach (var regra in lstRegras)
+                foreach (var regra in lstRegras_apoio)
                 {
                     if (qtde_a_alocar == 0)
                         break;
@@ -609,11 +661,12 @@ namespace Loja.Bll.ProdutoBll
                             }
                         }
                     }
+
                 }
 
                 if (qtde_a_alocar > 0)
                 {
-                    foreach (var regra in lstRegras)
+                    foreach (var regra in lstRegras_apoio)
                     {
                         if (qtde_a_alocar == 0)
                             break;
@@ -648,28 +701,8 @@ namespace Loja.Bll.ProdutoBll
                                 }
                             }
                         }
-                        #region talvez estava errado
-                        //if (regra.Produto == produto.NumProduto)
-                        //{
-                        //    foreach (var re in regra.TwmsCdXUfXPessoaXCd)
-                        //    {
-                        //        if (regra.Fabricante == produto.Fabricante &&
-                        //           regra.Produto == produto.NumProduto &&
-                        //           re.Id_nfe_emitente > 0 &&
-                        //           re.Id_nfe_emitente == regra.TwmsRegraCdXUfXPessoa.Spe_id_nfe_emitente)
-                        //        {
-                        //            re.Estoque_Qtde_Solicitado += (short)qtde_a_alocar;
-                        //            qtde_a_alocar = 0;//verificar esse valor
-                        //        }
-                        //        else if (regra.Fabricante == produto.Fabricante && regra.Produto == produto.NumProduto &&
-                        //            re.Id_nfe_emitente > 0 && re.Id_nfe_emitente == id_nfe_emitente_selecao_manual)
-                        //        {
-                        //            re.Estoque_Qtde_Solicitado += (short)qtde_a_alocar;
-                        //            qtde_a_alocar = 0; //verificar esse valor
-                        //        }
-                        //    }
-                        //}
-                        #endregion
+
+                        lstRegras.Add(regra);
                     }
                 }
                 if (qtde_a_alocar > 0)
@@ -680,6 +713,8 @@ namespace Loja.Bll.ProdutoBll
                         " que não puderam ser alocados na lista de produtos sem presença no estoque de nenhum CD");
                 }
             }
+
+            return lstRegras;
         }
 
         private List<int> ContagemEmpresasUsadasAutoSplit(List<RegrasBll> lstRegras, int id_nfe_emitente_selecao_manual)

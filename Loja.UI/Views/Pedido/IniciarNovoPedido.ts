@@ -1457,14 +1457,14 @@ window.continuar = (): any => {
             modalError();
             err.MostrarMsg("Produtos com quantidades maiores que a quantidade máxima permitida para venda!");
             //this.alertaService.mostrarMensagem("Produtos com quantidades maiores que a quantidade máxima permitida para venda!");
-            return;
+            return false;
         }
         //validação: tem que ter algum produto
         if (dadosPagto.pedidoDto.ListaProdutos.length === 0) {
             modalError();
             err.MostrarMsg("Selecione ao menos um produto para continuar.");
 
-            return;
+            return false;
         }
 
         AtribuirFormaPagtoParaDadosPagto();

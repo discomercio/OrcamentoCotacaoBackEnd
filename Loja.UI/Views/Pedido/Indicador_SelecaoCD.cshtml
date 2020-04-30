@@ -8,7 +8,7 @@
 
 <div class="col s12 sectionDesktop">
     @using (Html.BeginForm("Cadastrar_Indicador_SelecaoCD", "Pedido", FormMethod.Post,
-new { enctype = "multipart/form-data", onsubmit = "return continuar()", id="form" }))
+new { enctype = "multipart/form-data", onsubmit = "return continuar()", id="formulario" }))
     {
         <article>
             @* Nome do cliente *@
@@ -24,171 +24,192 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()", id="form
             </div>
             @* Indicadores *@
 
-            <div class="row">
-                @if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
+        <div class="row">
+            @if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
 .Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
-                {
-                    @* Indicação *@
-                    <div class="col s6">
-                        <span class="caixa">
-                            <span class="rotulo">Indicação</span>
-                        </span>
-                    </div>
-                    @* Seleção CD *@
-                    <div class="col s6">
-                        <span class="caixa">
-                            <span class="rotulo">Modo de Seleção do CD (Auto-Split)</span>
-                        </span>
-                    </div>
-                    @* Check Com ou Sem indicação *@
-                    <div class="col s2">
-                        <label>
-                            <input class="with-gap" type="radio" id="chkSemIndicacao" name="comIndicacao" value="0" />
-                            <span class="dado">Sem Indicação</span>
-                        </label>
-                    </div>
-                    <div class="col s2">
-                        <label>
-                            <input class="with-gap" type="radio" id="chkComIndicacao" name="comIndicacao" value="0"/>
-                            <span class="dado">Com Indicação</span>
-                        </label>
-                    </div>
-                    <div class="col s2">
-                        <input type="hidden" />
-                    </div>
-                }
-                @if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
+            {
+                @* Indicação *@
+                <div class="col s6">
+                    <span class="caixa">
+                        <span class="rotulo">Indicação</span>
+                    </span>
+                </div>
+                @* Seleção CD *@
+                <div class="col s6">
+                    <span class="caixa">
+                        <span class="rotulo">Modo de Seleção do CD (Auto-Split)</span>
+                    </span>
+                </div>
+                @* Check Com ou Sem indicação *@
+                <div class="col s2">
+                    <label>
+                        <input class="with-gap" type="radio" id="chkSemIndicacao" name="comIndicacao" value="0" />
+                        <span class="dado">Sem Indicação</span>
+                    </label>
+                </div>
+                <div class="col s2">
+                    <label>
+                        <input class="with-gap" type="radio" id="chkComIndicacao" name="comIndicacao" value="0" />
+                        <span class="dado">Com Indicação</span>
+                    </label>
+                </div>
+                <div class="col s2">
+                    <input type="hidden" />
+                </div>
+            }
+            @if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
 .Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD.ToString()) != -1)
-                {
+            {
 
 
-                    <div class="col s2">
-                        <label>
-                            <input class="with-gap" type="radio" id="chkAutomatico" name="cdAutomatico" value="false" />
-                            <span class="dado">Aultomático</span>
-                        </label>
+                <div class="col s2">
+                    <label>
+                        <input class="with-gap" type="radio" id="chkAutomatico" name="cdAutomatico" value="false" />
+                        <span class="dado">Aultomático</span>
+                    </label>
+                </div>
+                <div class="col s2">
+                    <label>
+                        <input class="with-gap" type="radio" id="chkManual" name="cdManual" value="false" />
+                        <span class="dado">Manual</span>
+                    </label>
+                </div>
+            }
+            <input type="hidden" />
+            <input type="hidden" />
+            <div class="col s12">
+                <input type="hidden" />
+            </div>
+            @if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
+.Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
+            {
+                <div class="col s4" id="divIndicadores">
+                    <div class="input-field">
+                        <select id="indicador" name="indicador" onchange="VerificaPermiteRA(this)">
+                            <option value="">Selecione</option>
+                            @*aqui vai o select de indicadores com "apelido - razao social"*@
+                        </select>
+                        <label>Indicadores</label>
                     </div>
-                    <div class="col s2">
-                        <label>
-                            <input class="with-gap" type="radio" id="chkManual" name="cdManual" value="false" />
-                            <span class="dado">Manual</span>
-                        </label>
+                </div>
+                //ao selecionar a lista vamos verificar se o indicador selecionado permite RA para poder habilitar ou desabilitar
+            }
+            <div class="col s2">
+                <input type="hidden" />
+            </div>
+            @if (Model.ListaOperacoesPermitidas.IndexOf(
+ Loja.Bll.Constantes.Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD.ToString()) != -1)
+            {
+                <div class="col s4" id="divSelecaoCd">
+                    <div class="input-field">
+                        @Html.DropDownList(
+            "ListaCD",
+            new SelectList(Model.ListaCD, "Value", "Text"),
+            new { @id = "selecaoCd", @name = "nomeCD" })
+                        <label>Centro de Distribuição</label>
                     </div>
-                }
+                    <div class="col s4" id="divMsgCD" style="line-height:normal; display:none;position:absolute;">
+                        <span id="msgCD" style="word-break:break-word; color:red;font-weight:bold"></span>
+                    </div>
+                </div>
+            }
+            <input type="hidden" />
+            <input type="hidden" />
+            <div class="col s12">
+                <input type="hidden" />
+            </div>
+            @if (Model.ListaOperacoesPermitidas.IndexOf(
+ Loja.Bll.Constantes.Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
+            {
+                <div class="col s2" id="divComRA">
+                    <label>
+                        <input class="with-gap" type="radio" id="chkComRa" name="comRA" value="false" />
+                        <span class="dado">Com RA</span>
+                    </label>
+                </div>
+                <div class="col s2" id="divSemRA">
+                    <label>
+                        <input class="with-gap" type="radio" id="chkSemRa" name="comRA" value="false" />
+                        <span class="dado">Sem RA</span>
+                    </label>
+                </div>
+
                 <input type="hidden" />
                 <input type="hidden" />
                 <div class="col s12">
                     <input type="hidden" />
                 </div>
-                @if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
-.Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
+                <div class="col s2" id="divCOM">
+                    <div class="input-field">
+                        <input type="text" onblur="VerificarPercMaxDescEComissao(this);" onkeyup="formataPercComissao(this)" id="percComissao" name="percComissao" />
+                        <label>COM(%)</label>
+                    </div>
+                </div>
+#pragma warning disable CS0162
+                if (Loja.Bll.Constantes.Constantes.ID_PARAM_SITE == Loja.Bll.Constantes.Constantes.COD_SITE_ASSISTENCIA_TECNICA)
                 {
-                    <div class="col s4" id="divIndicadores">
+                    <div class="col s2" id="divPedBonshop">
                         <div class="input-field">
-                            <select id="indicador" name="indicador" onchange="VerificaPermiteRA(this)">
-                                <option value="">Selecione</option>
-                                @*aqui vai o select de indicadores com "apelido - razao social"*@
-                            </select>
-                            <label>Indicadores</label>
+                            <input type="text" id="pedBonshop" name="pedBonshop" />
+                            <label>COM(%)</label>
                         </div>
                     </div>
-                    //ao selecionar a lista vamos verificar se o indicador selecionado permite RA para poder habilitar ou desabilitar
-                }
-                <div class="col s2">
-                    <input type="hidden" />
-                </div>
-                @if (Model.ListaOperacoesPermitidas.IndexOf(
-      Loja.Bll.Constantes.Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD.ToString()) != -1)
-                {
-                    <div class="col s4" id="divSelecaoCd">
+                    <div class="col s4" id="divPedBonshop">
                         <div class="input-field">
-                            @Html.DropDownList(
-                "ListaCD",
-                new SelectList(Model.ListaCD, "Value", "Text"),
-                new { @id = "selecaoCd", @name = "nomeCD" })
-                            <label>Centro de Distribuição</label>
+                            @Html.DropDownList("PedBonshop", new SelectList(
+             Model.PedBonshop, "Value", "Text"),
+             new { @id = "pedBonshop", @name = "pedBonshop" })
+                            <label>Ref. Pedido Bonshop</label>
                         </div>
                         <div class="col s4" id="divMsgCD" style="line-height:normal; display:none;position:absolute;">
                             <span id="msgCD" style="word-break:break-word; color:red;font-weight:bold"></span>
                         </div>
                     </div>
                 }
-                <input type="hidden" />
-                <input type="hidden" />
-                <div class="col s12">
-                    <input type="hidden" />
-                </div>
-                @if (Model.ListaOperacoesPermitidas.IndexOf(
-      Loja.Bll.Constantes.Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
-                {
-                    <div class="col s2" id="divComRA">
-                        <label>
-                            <input class="with-gap" type="radio" id="chkComRa" name="comRA" value="false" />
-                            <span class="dado">Com RA</span>
-                        </label>
-                    </div>
-                    <div class="col s2" id="divSemRA">
-                        <label>
-                            <input class="with-gap" type="radio" id="chkSemRa" name="comRA" value="false" />
-                            <span class="dado">Sem RA</span>
-                        </label>
-                    </div>
-
-                    <input type="hidden" />
-                    <input type="hidden" />
-                    <div class="col s12">
-                        <input type="hidden" />
-                    </div>
-                    <div class="col s2" id="divCOM">
-                        <div class="input-field">
-                            <input type="text" onblur="VerificarPercMaxDescEComissao(this);" onkeyup="formataPercComissao(this)" id="percComissao" name="percComissao" />
-                            <label>COM(%)</label>
-                        </div>
-                    </div>
-#pragma warning disable CS0162
-                    if (Loja.Bll.Constantes.Constantes.ID_PARAM_SITE == Loja.Bll.Constantes.Constantes.COD_SITE_ASSISTENCIA_TECNICA)
-                    {
-                        <div class="col s2" id="divPedBonshop">
-                            <div class="input-field">
-                                <input type="text" id="pedBonshop" name="pedBonshop" />
-                                <label>COM(%)</label>
-                            </div>
-                        </div>
-                        <div class="col s4" id="divPedBonshop">
-                            <div class="input-field">
-                                @Html.DropDownList("PedBonshop", new SelectList(
-                 Model.PedBonshop, "Value", "Text"),
-                 new { @id = "pedBonshop", @name = "pedBonshop" })
-                                <label>Ref. Pedido Bonshop</label>
-                            </div>
-                            <div class="col s4" id="divMsgCD" style="line-height:normal; display:none;position:absolute;">
-                                <span id="msgCD" style="word-break:break-word; color:red;font-weight:bold"></span>
-                            </div>
-                        </div>
-                    }
 #pragma warning restore CS0162
-                }
+            }
+            @section RodapePagina {
                 <footer class="page-footer">
                     <div class="row col s12">
                         <div class="col s1"></div>
-                        <div class="input-field col s2">
+                        <div class="input-field col s4 center">
                             <button class="waves-effect waves-light btn-small"
-                                    type="button"
-                                    style="margin-top:2%;">
+                                    type="button">
                                 <i class="material-icons left">arrow_back</i>Voltar
                             </button>
                         </div>
-                        <div class="col s5"></div>
-                        <div class="input-field col s2">
+                        <div class="col s2"></div>
+                        <div class="input-field col s4 center">
                             <button class="waves-effect waves-light btn-small"
-                                    type="submit"
-                                    style="margin-top:2%;">
+                                    type="submit" onclick="$('#formulario').submit()">
                                 <i class="material-icons left">arrow_forward</i>Avançar
                             </button>
                         </div>
+                        <div class="col s1"></div>
                     </div>
                 </footer>
-            </div>
+            }
+            @*<footer class="page-footer">
+                <div class="row col s12">
+                    <div class="col s1"></div>
+                    <div class="input-field col s2">
+                        <button class="waves-effect waves-light btn-small"
+                                type="button"
+                                style="margin-top:2%;">
+                            <i class="material-icons left">arrow_back</i>Voltar
+                        </button>
+                    </div>
+                    <div class="col s5"></div>
+                    <div class="input-field col s2">
+                        <button class="waves-effect waves-light btn-small"
+                                type="submit"
+                                style="margin-top:2%;">
+                            <i class="material-icons left">arrow_forward</i>Avançar
+                        </button>
+                    </div>
+                </div>
+            </footer>*@
+        </div>
         </article>
         <input type="hidden" name="semIndicacao" id="semIndicacao" />
     }
