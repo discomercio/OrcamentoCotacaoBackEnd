@@ -117,8 +117,7 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 								<!-- <input name="c_desc" id="c_desc" class="PLLd" style="width:36px;" value="{{i.Desconto}}" 
 									/> -->
 								<mat-form-field class="desconto">
-									<input matInput type="text"
-										[value]="moedaUtils.formatarMoedaSemPrefixo(i.Desconto)"
+									<input matInput type="text" [value]="moedaUtils.formatarMoedaSemPrefixo(i.Desconto)"
 										(keyup)="formatarDesc($event,i)" (blur)="digitouDesc($event,i)">
 								</mat-form-field>%
 							</td>
@@ -177,11 +176,13 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 					<tr>
 						<!-- pula as colunas vazias -->
 						<td align="right" *ngIf="permite_RA_Status">
-							<strong>RA {{moedaUtils.formatarMoedaSemPrefixo(somarRA())}}  </strong>
+							<strong style="margin-right: 30%;">RA {{moedaUtils.formatarMoedaSemPrefixo(somarRA())}}
+							</strong>
 						</td>
 						<td align="right"></td>
 						<td align="right" *ngIf="permite_RA_Status">
-							<strong style="margin-left: 3em;">{{moedaUtils.formatarMoedaSemPrefixo(totalPedidoRA())}}</strong>
+							<strong
+								style="margin-left: 3em;">{{moedaUtils.formatarMoedaSemPrefixo(totalPedidoRA())}}</strong>
 						</td>
 						<td align="right"> </td>
 						<td align="right"> </td>
@@ -190,7 +191,7 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 						<td align="right">
 							<strong>{{moedaUtils.formatarMoedaSemPrefixo(totalPedido())}}</strong>
 						</td>
-						<td  align="right"> </td>
+						<td align="right"> </td>
 						<td *ngIf="!permite_RA_Status" align="right"> </td>
 					</tr>
 
@@ -224,8 +225,8 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 							<!-- <input name="c_vl_NF" id="c_vl_NF" class="PLLd" style="width:62px;" value='{{i.Preco}}' /> -->
 							<mat-form-field class="preco">
 								<input matInput type="text" required
-									[value]="moedaUtils.formatarMoedaSemPrefixo(i.Preco)"
-									(change)="digitouPreco($event,i)" (keyup)="digitouPreco($event,i)"
+									[value]="moedaUtils.formatarMoedaSemPrefixo(i.Preco_Lista)"
+									(keyup)="formatarPreco_Lista($event,i)" (blur)="digitouPreco_Lista($event,i)"
 									placeholder="Preço">
 							</mat-form-field>
 						</span>
@@ -233,7 +234,7 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 						<span>
 							<mat-form-field class="desconto">
 								<input matInput type="text" [value]="moedaUtils.formatarPorcentagemUmaCasa(i.Desconto)"
-									(change)="digitouDesc($event,i)" (keyup)="digitouDesc($event,i)"
+									(keyup)="formatarDesc($event,i)" (blur)="digitouDesc($event,i)"
 									placeholder="Desconto">
 							</mat-form-field>%
 						</span>
@@ -241,8 +242,8 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 							<mat-form-field class="preco">
 								<input matInput type="text" required
 									[value]="moedaUtils.formatarMoedaSemPrefixo(i.VlUnitario)"
-									(change)="digitouVlVenda($event,i)" (keyup)="digitouVlVenda($event,i)"
-									placeholder="VL Venda">
+									(keyup)="formataVlVenda($event,i)" (blur)="digitouVlVenda($event,i)"
+									placeholder=" VL Venda">
 							</mat-form-field>
 						</span>
 					</div>
@@ -282,12 +283,19 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 			<div *ngIf="!telaDesktop">
 				<!-- parte de baixo da tabela -->
 				<!-- fazemos fora do div principal pq não queremos o destaque de linha aqui -->
-				<div style="text-align: right; padding-right: 1em;">
+				<div style="text-align: left; padding-right: 1em;">
 					<span *ngIf="permite_RA_Status">
-						<strong>Preço total: {{moedaUtils.formatarMoedaSemPrefixo(totalPedidoRA())}}</strong>
+						<strong>RA: {{moedaUtils.formatarMoedaSemPrefixo(somarRA())}}</strong>
 					</span>
+				</div>
+				<div style="text-align: left; padding-right: 1em;">
+					<span *ngIf="permite_RA_Status">
+						<strong>Total Preço: {{moedaUtils.formatarMoedaSemPrefixo(totalPedidoRA())}}</strong>
+					</span>
+				</div>
+				<div style="text-align: left; padding-right: 1em;">
 					<span>
-						<strong>Total do pedido: {{moedaUtils.formatarMoedaSemPrefixo(totalPedido())}}</strong>
+						<strong>Total VL Venda : {{moedaUtils.formatarMoedaSemPrefixo(totalPedido())}}</strong>
 					</span>
 				</div>
 			</div>

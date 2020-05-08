@@ -33,6 +33,11 @@ export class MoedaUtils {
             return "0,0";
         return this.formatter1casa.format(nro);
     }
+    public formatarValorDuasCasaReturnZero(nro: number) {
+        if (!!!nro)
+            return "0,00";
+        return this.formatter.format(nro);
+    }
     //máscara digitar valores
     //usando o angular2-text-mask
     //e o npm i text-mask-addons --save

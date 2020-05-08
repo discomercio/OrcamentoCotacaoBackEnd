@@ -13,6 +13,7 @@ import { DadosClienteCadastroDto } from '../../ClienteCadastro/DadosClienteCadas
 
 export class PedidoDto {
     NumeroPedido: string;
+    Lista_NumeroPedidoFilhote:Array<string[]>;
     StatusHoraPedido: StatusPedidoDtoPedido;
     DataHoraPedido: Date | string | null;
     EnderecoEntrega: EnderecoEntregaDtoClienteCadastro;

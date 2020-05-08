@@ -53,7 +53,10 @@ export class PassoPrepedidoBase extends TelaDesktopBaseComponent {
     }
 
     totalPedido(): number {
-        return this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + current.TotalItem, 0);
+        if (this.prePedidoDto.PermiteRAStatus == 1)
+            return this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + current.Preco_Lista, 0);
+        else
+            return this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + current.TotalItem, 0);
     }
     //#endregion
 

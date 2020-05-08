@@ -229,12 +229,16 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     return item.Alertas;
   }
 
+
+
   totalPedido(): number {
-    return this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + current.TotalItem, 0);
+    return this.prePedidoDto.VlTotalDestePedido =
+      this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + current.TotalItem, 0);
+
   }
 
   totalPedidoRA(): number {
-    return this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + current.Qtde * current.Preco_Lista, 0);
+    return this.prePedidoDto.ValorTotalDestePedidoComRA = this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + current.Qtde * current.Preco_Lista, 0);
   }
   //#endregion
 
@@ -253,13 +257,15 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
   digitouQte(i: PrepedidoProdutoDtoPrepedido) {
     //necessário trazer e verificar a variavel "qtde_max_permitida" na tabela "T_produto_loja" 
     //para limitar a qtde de compra para o usuário
-
+    debugger;
     if (i.Qtde <= 0) {
       i.Qtde = 1;
     }
     i.TotalItem = i.VlUnitario * i.Qtde; // VlUnitario = Vl Venda na tela
     this.dadosPagto.prepedidoAlterado();
-
+    //incluir função total do pedido aqui
+    this.totalPedido();
+    //afazer= colocar uma variavel para alterar o valor total do pedido sempre que tiver alterção
   }
   digitouPreco(e: Event, i: PrepedidoProdutoDtoPrepedido) {
     let valor = ((e.target) as HTMLInputElement).value;
@@ -604,7 +610,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
             itemrepetido = this.prePedidoDto.ListaProdutos.filter(y => y.NumProduto == selecProdInfo.Produto);
           }
           if (this.prePedidoDto.ListaProdutos.length >= 12 && itemrepetido.length == 0) {
-            this.alertaService.mostrarMensagem("É permitido apenas 12 itens por Pré-Pedido! teste");
+            this.alertaService.mostrarMensagem("É permitido apenas 12 itens por Pré-Pedido!");
             return false;
           }
           else {
