@@ -12,6 +12,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using PrepedidoBusiness.Bll.Regras;
 using PrepedidoBusiness.Dtos.Prepedido.DetalhesPrepedido;
 using PrepedidoBusiness.Dto.Produto;
+using System.Globalization;
 
 namespace PrepedidoBusiness.Utils
 {
@@ -102,6 +103,14 @@ namespace PrepedidoBusiness.Utils
             return retorno;
         }
 
+        public static string RemoverAcentuacao(string text)
+        {
+            return new string(text
+                .Normalize(NormalizationForm.FormD)
+                .Where(ch => char.GetUnicodeCategory(ch) != UnicodeCategory.NonSpacingMark)
+                .ToArray());
+        }
+
         public static async Task<string> ObterDescricao_Cod(string grupo, string cod, ContextoBdProvider contextoProvider)
         {
             var db = contextoProvider.GetContextoLeitura();
@@ -176,6 +185,109 @@ namespace PrepedidoBusiness.Utils
             return retorno;
         }
 
+        public static bool gera_chave_codificacao(Int32 fator, ref String chave_gerada)
+        {
+            int COD_MINIMO = 35;
+            int COD_MAXIMO = 96;
+            int TAMANHO_CHAVE = 128;
+            int i;
+            Int64 k;
+            StringBuilder s = new StringBuilder("");
+
+            for (i = 1; i <= TAMANHO_CHAVE; i++)
+            {
+                k = COD_MAXIMO - COD_MINIMO + 1;
+                k = k * fator;
+                k = (k * i) + COD_MINIMO;
+                k = k % 128;
+                s.Append(Texto.chr((short)k));
+            }
+            chave_gerada = s.ToString();
+            return true;
+        }
+
+        public static void shift_esquerda(ref byte byteNumero, byte byteCasas)
+        {
+            int i;
+            String s_byte;
+
+            // Transforma decimal -> binário ('0101...')
+            s_byte = converte_dec_para_bin(byteNumero);
+
+            // Rotaciona
+            for (i = 1; i <= byteCasas; i++)
+            {
+                s_byte = Texto.rightStr(s_byte, s_byte.Length - 1);
+                s_byte += "0";
+            }
+
+            // Transforma binário -> decimal
+            byteNumero = converte_bin_para_dec(s_byte);
+        }
+
+        private static String converte_dec_para_bin(byte byteNumero)
+        {
+            String s;
+            s = Convert.ToString(byteNumero, 2);
+            s = s.PadLeft(8, '0');
+            return s;
+        }
+
+        private static byte converte_bin_para_dec(String strNumero)
+        {
+            try
+            {
+                return Convert.ToByte(strNumero, 2);
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
+
+        public static void rotaciona_esquerda(ref byte byteNumero, byte byteCasas)
+        {
+            int i;
+            String s;
+            String s_byte;
+
+            // Transforma decimal -> binário ('0101...')
+            s_byte = converte_dec_para_bin(byteNumero);
+
+            // Rotaciona
+            for (i = 1; i <= byteCasas; i++)
+            {
+                s = Texto.leftStr(s_byte, 1);
+                s_byte = Texto.rightStr(s_byte, s_byte.Length - 1);
+                s_byte += s;
+            }
+
+            // Transforma binário -> decimal
+            byteNumero = converte_bin_para_dec(s_byte);
+        }
+
+        public static void rotaciona_direita(ref byte byteNumero, byte byteCasas)
+        {
+            int i;
+            String s;
+            String s_byte;
+
+            // Transforma decimal -> binário ('0101...')
+            s_byte = converte_dec_para_bin(byteNumero);
+
+            //Rotaciona
+            for (i = 1; i <= byteCasas; i++)
+            {
+                s = Texto.rightStr(s_byte, 1);
+                s_byte = Texto.leftStr(s_byte, s_byte.Length - 1);
+                s_byte = s + s_byte;
+            }
+            // Transforma binário -> decimal
+            byteNumero = converte_bin_para_dec(s_byte);
+        }
+
+        #region Antigo gera chave
+        //antigo
         public static string GeraChave(int fator)
         {
             const int cod_min = 35;
@@ -195,6 +307,7 @@ namespace PrepedidoBusiness.Utils
 
             return chave;
         }
+        #endregion
 
         public static string FormataHora(string hora)
         {
@@ -208,6 +321,87 @@ namespace PrepedidoBusiness.Utils
             }
 
             return retorno;
+        }
+
+        public static string decodificaDado(String strOrigem, int fator)
+        {
+            byte i;
+            byte i_chave;
+            byte i_dado;
+            byte k;
+            String s_origem;
+            String s_destino;
+            String s;
+            String chave = "";
+
+            string strDestino = "";
+
+            if (strOrigem == null) return strDestino;
+            if (strOrigem.Trim().Length == 0) return strDestino;
+
+            if (!gera_chave_codificacao(fator, ref chave)) return strDestino;
+
+            s_destino = "";
+            s_origem = strOrigem.Trim();
+
+            // Possui prefixo '0x'?
+            if (!Texto.leftStr(s_origem, Constantes.PREFIXO_SENHA_FORMATADA.Length).Equals(Constantes.PREFIXO_SENHA_FORMATADA)) return strDestino;
+
+            // Retira prefixo '0x' da máscara (imita formato timestamp)
+            s_origem = Texto.rightStr(s_origem, s_origem.Length - Constantes.PREFIXO_SENHA_FORMATADA.Length);
+            s_origem = s_origem.ToUpper();
+
+            // Retira caracteres de preenchimento (imita formato timestamp)
+            s = Texto.leftStr(s_origem, Constantes.TAMANHO_CAMPO_COMPRIMENTO_SENHA);
+            s = "0x" + s;
+            try
+            {
+                i = Convert.ToByte(s, 16);
+            }
+            catch (Exception)
+            {
+                i = 0;
+            }
+
+            if (i != 0)
+            {
+                s_origem = Texto.rightStr(s_origem, i);
+            }
+            else
+            {
+                while (s_origem.Substring(0, 2).Equals("00"))
+                {
+                    s_origem = Texto.rightStr(s_origem, s_origem.Length - 2);
+                }
+            }
+
+            // Hexadecimal -> ASCII
+            for (i = 1; i <= s_origem.Length; i += 2)
+            {
+                s = s_origem.Substring(i - 1, 2);
+                s = "0x" + s;
+                s_destino += Texto.chr(Convert.ToByte(s, 16));
+            }
+
+            // Descriptografa pela chave
+            s_origem = s_destino;
+            s_destino = "";
+            for (i = 1; i <= s_origem.Length; i++)
+            {
+                i_chave = Texto.asc(chave.ToCharArray()[i - 1]);
+                Util.shift_esquerda(ref i_chave, 1);
+                i_chave++;
+
+                i_dado = Texto.asc(s_origem.ToCharArray()[i - 1]);
+                // XOR
+                k = (byte)(i_chave ^ i_dado);
+
+                Util.rotaciona_direita(ref k, 1);
+                s_destino = s_destino + Texto.chr(k);
+            }
+
+            strDestino = s_destino;
+            return strDestino;
         }
 
         public static string DecodificaSenha(string origem, string chave)
@@ -259,6 +453,98 @@ namespace PrepedidoBusiness.Utils
             }
 
             return s_destino;
+        }
+
+        public static string codificaDado(String strOrigem, bool blnIncluiPreenchimento)
+        {
+            byte i;
+            int i_tam_senha;
+            byte i_chave;
+            byte i_dado;
+            byte k;
+            String s_origem;
+            String s_destino;
+            String s;
+            String chave;
+
+            string strDestino = "";
+
+            // Senha de origem está vazia
+            if (strOrigem == null) return strDestino;
+            if (strOrigem.Trim().Length == 0) return strDestino;
+
+            // Senha excede tamanho
+            if (strOrigem.Trim().Length > ((Constantes.TAMANHO_SENHA_FORMATADA -
+                Constantes.PREFIXO_SENHA_FORMATADA.Length) - Constantes.TAMANHO_CAMPO_COMPRIMENTO_SENHA) / 2) return strDestino;
+
+            // Gera chave de criptografia
+            chave = "";
+            if (!Util.gera_chave_codificacao(Constantes.FATOR_CRIPTO, ref chave)) return strDestino;
+
+            s_destino = "";
+            s_origem = strOrigem.Trim();
+
+            // Criptografa pela chave
+            for (i = 1; i <= s_origem.Length; i++)
+            {
+                i_chave = Texto.asc(chave.ToCharArray()[i - 1]);
+                Util.shift_esquerda(ref i_chave, 1);
+                i_chave++;
+
+                i_dado = Texto.asc(s_origem.ToCharArray()[i - 1]);
+                Util.rotaciona_esquerda(ref i_dado, 1);
+
+                // XOR
+                k = (byte)(i_chave ^ i_dado);
+
+                s_destino = s_destino + Texto.chr(k);
+            }
+
+            // ASCII -> Hexadecimal
+            s_origem = s_destino;
+            s_destino = "";
+            for (i = 1; i <= s_origem.Length; i++)
+            {
+                k = Texto.asc(s_origem.ToCharArray()[i - 1]);
+                s = Texto.hex(k);
+                s = s.PadLeft(2, '0');
+                s_destino = s_destino + s;
+            }
+
+            // Guarda o tamanho real da senha
+            i_tam_senha = s_destino.Length;
+
+            if (blnIncluiPreenchimento)
+            {
+                // Coloca máscara (imita formato timestamp)
+                i = 0;
+                while (s_destino.Length < (Constantes.TAMANHO_SENHA_FORMATADA -
+                    Constantes.PREFIXO_SENHA_FORMATADA.Length - Constantes.TAMANHO_CAMPO_COMPRIMENTO_SENHA))
+                {
+                    // Ao invés de preencheer com zeros, gera código p/ preenchimento
+                    i++;
+                    s = Texto.hex(i ^ (Convert.ToInt16("0x" + s_destino.Substring(s_destino.Length - (i - 1) - 1, 1), 16)) ^ (Convert.ToInt16("0x" + s_destino.Substring(s_destino.Length - i - 1, 1), 16)));
+                    // Adiciona um caracter por vez p/ não ter o risco de ultrapassar o tamanho máximo
+                    s_destino = Texto.rightStr(s, 1) + s_destino;
+                }
+
+                // Adiciona prefixo e tamanho real da senha
+                s = Texto.hex(i_tam_senha);
+                s = s.PadLeft(2, '0');
+            }
+            else
+            {
+                while (s_destino.Length < (Constantes.TAMANHO_SENHA_FORMATADA -
+                    Constantes.PREFIXO_SENHA_FORMATADA.Length - Constantes.TAMANHO_CAMPO_COMPRIMENTO_SENHA))
+                {
+                    s_destino = "0" + s_destino;
+                }
+                s = "00";
+            }
+
+            s_destino = Constantes.PREFIXO_SENHA_FORMATADA + s + s_destino;
+            strDestino = s_destino.ToLower();
+            return strDestino;
         }
 
         public static string GerarSenhaAleatoria()
@@ -470,7 +756,7 @@ namespace PrepedidoBusiness.Utils
             char chr;
 
             if (id_nsu == "")
-                retorno = "Não foi especificado o NSU a ser gerado!!";
+                retorno = "Não foi especificado o NSU a ser gerado!";
 
             for (int i = 0; i <= 100; i++)
             {
@@ -501,7 +787,7 @@ namespace PrepedidoBusiness.Utils
                 }
                 if (n_nsu < 0)
                 {
-                    retorno = "O NSU gerado é inválido!!";
+                    retorno = "O NSU gerado é inválido!";
                 }
                 n_nsu += 1;
                 s = Convert.ToString(n_nsu);

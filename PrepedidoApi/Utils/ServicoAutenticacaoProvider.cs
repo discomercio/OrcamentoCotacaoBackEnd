@@ -24,7 +24,7 @@ namespace PrepedidoApi.Utils
         {
             //trabalhamos sempre com maiúsuculas
             apelido = apelido.ToUpperInvariant();
-            senha= senha.ToUpperInvariant();
+            //senha= senha.ToUpperInvariant();
 
             int idErro;
 

@@ -8,6 +8,8 @@ namespace PrepedidoBusiness.Dto.Pedido.DetalhesPedido
     public class PedidoDto
     {
         public string NumeroPedido { get; set; }
+        // estou incluindo esse campo para trazer o pedido filhote ao visualizar o pedido pai
+        public List<List<string>> Lista_NumeroPedidoFilhote { get; set; }
         public StatusPedidoDtoPedido StatusHoraPedido { get; set; }//Verificar se todos pedidos marcam a data também
         public DateTime? DataHoraPedido { get; set; }
         public DadosClienteCadastroDto DadosCliente { get; set; }

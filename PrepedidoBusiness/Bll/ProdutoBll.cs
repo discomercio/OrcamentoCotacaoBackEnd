@@ -77,7 +77,7 @@ namespace PrepedidoBusiness.Bll
         //                    var produto = await produtoTask.FirstOrDefaultAsync();
 
         //                    if (string.IsNullOrEmpty(produto.Produto))
-        //                        lstErros.Add("O produto(" + pi.Fabricante_item + ")" + pi.Produto_item + " não está disponível para a loja " + loja + "!!");
+        //                        lstErros.Add("O produto(" + pi.Fabricante_item + ")" + pi.Produto_item + " não está disponível para a loja " + loja + "!");
         //                    else
         //                    {
         //                        produtoDto = new ProdutoDto
@@ -103,7 +103,7 @@ namespace PrepedidoBusiness.Bll
         //            var produto = await produtoTask.FirstOrDefaultAsync();
 
         //            if (string.IsNullOrEmpty(produto.Produto))
-        //                lstErros.Add("Produto '" + codProduto + "' não foi encontrado para a loja " + loja + "!!");
+        //                lstErros.Add("Produto '" + codProduto + "' não foi encontrado para a loja " + loja + "!");
         //            else
         //            {
         //                produtoDto = new ProdutoDto

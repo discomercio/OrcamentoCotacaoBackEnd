@@ -67,7 +67,7 @@ ou
 
 
             /*
-             * este código funciona!!
+             * este código funciona!
              * só dá erro por causa da chave primária repetida
              * */
             {
@@ -78,7 +78,7 @@ ou
                     {
                         var taskGravacao = InserirRegistro(dbgravacao);
 
-                        //sem log!!!
+                        //sem log!
                         log = false;
 
                         //tem que permitir usando outro contexto (que fica fora da transação)

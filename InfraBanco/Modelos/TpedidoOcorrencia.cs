@@ -84,9 +84,9 @@ namespace InfraBanco.Modelos
         [MaxLength(800)]
         public string Texto_Finalizacao { get; set; }
 
-        //[Column("cod_motivo_abertura")]
-        //[MaxLength(3)]
-        //public string Cod_Motivo_Abertura { get; set; }
+        [Column("cod_motivo_abertura")]
+        [MaxLength(3)]
+        public string Cod_Motivo_Abertura { get; set; }
 
     }
 }

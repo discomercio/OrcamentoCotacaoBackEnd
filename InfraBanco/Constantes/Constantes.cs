@@ -6,6 +6,11 @@ namespace InfraBanco.Constantes
 {
     public static class Constantes
     {
+        public static int FATOR_CRIPTO = 1209;
+        public static int TAMANHO_SENHA_FORMATADA = 32;  // Procurar usar sempre potência de 2
+        public static String PREFIXO_SENHA_FORMATADA = "0x";
+        public static int TAMANHO_CAMPO_COMPRIMENTO_SENHA = 2;
+
         public const int COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP = 1;
         public const int COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS = 2;
         public const int COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS = 3;
@@ -1162,21 +1167,21 @@ namespace InfraBanco.Constantes
 
         public const string NSU_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD = "T_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD";
 
-        public const string ID_PARAM_CAD_VL_APROV_AUTO_ANALISE_CREDITO = "VL_APR_AUTO_AN_CRED";//' NESTE CASO, O REGISTRO É USADO P/ ARMAZENAR UM PARÂMETRO E NÃO P/ GERAR UM NSU!!
+        public const string ID_PARAM_CAD_VL_APROV_AUTO_ANALISE_CREDITO = "VL_APR_AUTO_AN_CRED";//' NESTE CASO, O REGISTRO É USADO P/ ARMAZENAR UM PARÂMETRO E NÃO P/ GERAR UM NSU!
 
-        public const string ID_PARAM_PERC_LIMITE_RA_SEM_DESAGIO = "PercLimRASemDesagio";//' NESTE CASO, O REGISTRO É USADO P/ ARMAZENAR UM PARÂMETRO E NÃO P/ GERAR UM NSU!!
+        public const string ID_PARAM_PERC_LIMITE_RA_SEM_DESAGIO = "PercLimRASemDesagio";//' NESTE CASO, O REGISTRO É USADO P/ ARMAZENAR UM PARÂMETRO E NÃO P/ GERAR UM NSU!
 
-        public const string ID_PARAM_PERC_MAX_RT = "PercMaxRT";//' NESTE CASO, O REGISTRO É USADO P/ ARMAZENAR UM PARÂMETRO E NÃO P/ GERAR UM NSU!!
+        public const string ID_PARAM_PERC_MAX_RT = "PercMaxRT";//' NESTE CASO, O REGISTRO É USADO P/ ARMAZENAR UM PARÂMETRO E NÃO P/ GERAR UM NSU!
 
-        public const string ID_PARAM_MAX_DIAS_DT_INICIAL_FILTRO_PERIODO = "MaxDiasDtInicFiltro";//' NESTE CASO, O REGISTRO É USADO P/ ARMAZENAR UM PARÂMETRO E NÃO P/ GERAR UM NSU!!
+        public const string ID_PARAM_MAX_DIAS_DT_INICIAL_FILTRO_PERIODO = "MaxDiasDtInicFiltro";//' NESTE CASO, O REGISTRO É USADO P/ ARMAZENAR UM PARÂMETRO E NÃO P/ GERAR UM NSU!
 
-        public const string ID_PARAM_VlMaxSemAplicarBloqDescMaxSemZerarRT = "VlMaxSemAplicarBloqDescMaxSemZerarRT";//' NESTE CASO, O REGISTRO É USADO P/ ARMAZENAR UM PARÂMETRO E NÃO P/ GERAR UM NSU!!
+        public const string ID_PARAM_VlMaxSemAplicarBloqDescMaxSemZerarRT = "VlMaxSemAplicarBloqDescMaxSemZerarRT";//' NESTE CASO, O REGISTRO É USADO P/ ARMAZENAR UM PARÂMETRO E NÃO P/ GERAR UM NSU!
 
-        public const string ID_PARAM_VlLimiteMensalIndicadorParaCadastroFeitoNaLoja = "VlLimiteMensalIndicadorParaCadastroFeitoNaLoja";//' NESTE CASO, O REGISTRO É USADO P/ ARMAZENAR UM PARÂMETRO E NÃO P/ GERAR UM NSU!!
+        public const string ID_PARAM_VlLimiteMensalIndicadorParaCadastroFeitoNaLoja = "VlLimiteMensalIndicadorParaCadastroFeitoNaLoja";//' NESTE CASO, O REGISTRO É USADO P/ ARMAZENAR UM PARÂMETRO E NÃO P/ GERAR UM NSU!
 
-        public const string ID_PARAM_PercDesagioRAIndicadorParaCadastroFeitoNaLoja = "PercDesagioRAIndicadorParaCadastroFeitoNaLoja";//' NESTE CASO, O REGISTRO É USADO P/ ARMAZENAR UM PARÂMETRO E NÃO P/ GERAR UM NSU!!
+        public const string ID_PARAM_PercDesagioRAIndicadorParaCadastroFeitoNaLoja = "PercDesagioRAIndicadorParaCadastroFeitoNaLoja";//' NESTE CASO, O REGISTRO É USADO P/ ARMAZENAR UM PARÂMETRO E NÃO P/ GERAR UM NSU!
 
-        public const string ID_PARAM_PercVlPedidoLimiteRA = "PercVlPedidoLimiteRA";//' NESTE CASO, O REGISTRO É USADO P/ ARMAZENAR UM PARÂMETRO E NÃO P/ GERAR UM NSU!!
+        public const string ID_PARAM_PercVlPedidoLimiteRA = "PercVlPedidoLimiteRA";//' NESTE CASO, O REGISTRO É USADO P/ ARMAZENAR UM PARÂMETRO E NÃO P/ GERAR UM NSU!
 
         //'	CONSTANTES QUE IDENTIFICAM PARÂMETROS ARMAZENADOS NA TABELA "t_PARAMETRO";
 

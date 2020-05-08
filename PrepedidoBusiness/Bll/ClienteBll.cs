@@ -311,18 +311,33 @@ namespace PrepedidoBusiness.Bll
                     string log = "";
 
                     DadosClienteCadastroDto cliente = clienteDto.DadosCliente;
-                    id_cliente = await CadastrarDadosClienteDto(dbgravacao, cliente, apelido, log);
+                    Tcliente clienteCadastrado = new Tcliente();
+                    id_cliente = await CadastrarDadosClienteDto(dbgravacao, cliente, apelido, log, cliente.Loja, clienteCadastrado);
 
                     //Por padrão o id do cliente tem 12 caracteres, caso não seja 12 caracteres esta errado
                     if (id_cliente.Length == 12)
                     {
-                        await CadastrarRefBancaria(dbgravacao, clienteDto.RefBancaria, apelido, id_cliente, log);
-                        await CadastrarRefComercial(dbgravacao, clienteDto.RefComercial, apelido, id_cliente, log);
+                        //vamos montar o log do cliente
+                        //Tcliente clienteCadastrado = await (from c in db.Tclientes
+                        //                                    where c.Id == id_cliente
+                        //                                    select c).FirstOrDefaultAsync();
+
+                        string campos_a_omitir = "dt_cadastro|usuario_cadastro|dt_ult_atualizacao|usuario_ult_atualizacao";
+
+                        log = Utils.Util.MontaLog(clienteCadastrado, log, campos_a_omitir);
+
+                        if (clienteDto.DadosCliente.Tipo == Constantes.ID_PJ)
+                        {
+                            log = await CadastrarRefBancaria(dbgravacao, clienteDto.RefBancaria, apelido, id_cliente, log);
+                            log = await CadastrarRefComercial(dbgravacao, clienteDto.RefComercial, apelido, id_cliente, log);
+                        }
+
 
                         bool gravouLog = Utils.Util.GravaLog(dbgravacao, apelido, cliente.Loja, "", id_cliente,
-                            Constantes.OP_LOG_CLIENTE_INCLUSAO, log);
+                                Constantes.OP_LOG_CLIENTE_INCLUSAO, log);
                         if (gravouLog)
                             dbgravacao.transacao.Commit();
+
                     }
                     else
                     {
@@ -333,13 +348,12 @@ namespace PrepedidoBusiness.Bll
             return lstErros;
         }
 
-        private async Task<string> CadastrarDadosClienteDto(InfraBanco.ContextoBdGravacao dbgravacao, DadosClienteCadastroDto clienteDto, string apelido, string log)
+        private async Task<string> CadastrarDadosClienteDto(InfraBanco.ContextoBdGravacao dbgravacao,
+            DadosClienteCadastroDto clienteDto, string apelido, string log, string loja, Tcliente tCliente)
         {
             string retorno = "";
             List<string> lstRetorno = new List<string>();
             string id_cliente = await GerarIdCliente(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES);
-
-            string campos_a_omitir = "dt_cadastro|usuario_cadastro|dt_ult_atualizacao|usuario_ult_atualizacao";
 
             lstRetorno.Add(id_cliente);
 
@@ -347,61 +361,63 @@ namespace PrepedidoBusiness.Bll
                 retorno = id_cliente;
             else
             {
-                Tcliente tCliente = new Tcliente
-                {
-                    Id = id_cliente,
-                    Dt_Cadastro = DateTime.Now,
-                    Usuario_Cadastrado = apelido.ToUpper(),
-                    Indicador = apelido.ToUpper(),
-                    Cnpj_Cpf = clienteDto.Cnpj_Cpf.Replace(".", "").Replace("/", "").Replace("-", ""),
-                    Tipo = clienteDto.Tipo.ToUpper(),
-                    Ie = clienteDto.Ie,
-                    Rg = clienteDto.Rg,
-                    Nome = clienteDto.Nome.ToUpper(),
-                    Sexo = clienteDto.Sexo.ToUpper(),
-                    Contribuinte_Icms_Status = clienteDto.Contribuinte_Icms_Status,
-                    Contribuinte_Icms_Data = DateTime.Now,
-                    Contribuinte_Icms_Data_Hora = DateTime.Now,
-                    Contribuinte_Icms_Usuario = apelido.ToUpper(),
-                    Produtor_Rural_Status = clienteDto.ProdutorRural,
-                    Produtor_Rural_Data = DateTime.Now,
-                    Produtor_Rural_Data_Hora = DateTime.Now,
-                    Produtor_Rural_Usuario = apelido.ToUpper(),
-                    Endereco = clienteDto.Endereco.ToUpper(),
-                    Endereco_Numero = clienteDto.Numero,
-                    Endereco_Complemento = clienteDto.Complemento,
-                    Bairro = clienteDto.Bairro.ToUpper(),
-                    Cidade = clienteDto.Cidade.ToUpper(),
-                    Cep = clienteDto.Cep.Replace("-", ""),
-                    Uf = clienteDto.Uf.ToUpper(),
-                    Ddd_Res = clienteDto.DddResidencial,
-                    Tel_Res = clienteDto.TelefoneResidencial,
-                    Ddd_Com = clienteDto.DddComercial,
-                    Tel_Com = clienteDto.TelComercial,
-                    Ramal_Com = clienteDto.Ramal,
-                    Contato = clienteDto.Contato.ToUpper(),
-                    Ddd_Com_2 = clienteDto.DddComercial2,
-                    Tel_Com_2 = clienteDto.TelComercial2,
-                    Ramal_Com_2 = clienteDto.Ramal2,
-                    Ddd_Cel = clienteDto.DddCelular,
-                    Tel_Cel = clienteDto.Celular,
-                    Dt_Nasc = clienteDto.Nascimento,
-                    Filiacao = clienteDto.Observacao_Filiacao.ToUpper(),
-                    Obs_crediticias = "",
-                    Midia = "",
-                    Email = clienteDto.Email,
-                    Email_Xml = clienteDto.EmailXml,
-                    Dt_Ult_Atualizacao = DateTime.Now,
-                    Usuario_Ult_Atualizacao = apelido.ToUpper()
-                };
+                tCliente.Id = id_cliente;
+                tCliente.Dt_Cadastro = DateTime.Now;
+                tCliente.Usuario_Cadastrado = apelido.ToUpper();
+                tCliente.Indicador = apelido.ToUpper();
+                tCliente.Cnpj_Cpf = clienteDto.Cnpj_Cpf.Replace(".", "").Replace("/", "").Replace("-", "");
+                tCliente.Tipo = clienteDto.Tipo.ToUpper();
+                tCliente.Ie = clienteDto.Ie;
+                tCliente.Rg = clienteDto.Rg;
+                tCliente.Nome = clienteDto.Nome;
+                tCliente.Sexo = clienteDto.Sexo;
+                tCliente.Contribuinte_Icms_Status = clienteDto.Contribuinte_Icms_Status;
+                tCliente.Contribuinte_Icms_Data = DateTime.Now;
+                tCliente.Contribuinte_Icms_Data_Hora = DateTime.Now;
+                tCliente.Contribuinte_Icms_Usuario = apelido.ToUpper();
+                tCliente.Produtor_Rural_Status = clienteDto.ProdutorRural;
+                tCliente.Produtor_Rural_Data = DateTime.Now;
+                tCliente.Produtor_Rural_Data_Hora = DateTime.Now;
+                tCliente.Produtor_Rural_Usuario = apelido.ToUpper();
+                tCliente.Endereco = clienteDto.Endereco;
+                tCliente.Endereco_Numero = clienteDto.Numero;
+                tCliente.Endereco_Complemento = clienteDto.Complemento;
+                tCliente.Bairro = clienteDto.Bairro;
+                tCliente.Cidade = clienteDto.Cidade;
+                tCliente.Cep = clienteDto.Cep.Replace("-", "");
+                tCliente.Uf = clienteDto.Uf;
+                tCliente.Ddd_Res = clienteDto.DddResidencial;
+                tCliente.Tel_Res = clienteDto.TelefoneResidencial;
+                tCliente.Ddd_Com = clienteDto.DddComercial;
+                tCliente.Tel_Com = clienteDto.TelComercial;
+                tCliente.Ramal_Com = clienteDto.Ramal;
+                tCliente.Contato = clienteDto.Contato;
+                tCliente.Ddd_Com_2 = clienteDto.DddComercial2;
+                tCliente.Tel_Com_2 = clienteDto.TelComercial2;
+                tCliente.Ramal_Com_2 = clienteDto.Ramal2;
+                tCliente.Ddd_Cel = clienteDto.DddCelular;
+                tCliente.Tel_Cel = clienteDto.Celular;
+                tCliente.Dt_Nasc = clienteDto.Nascimento;
+                tCliente.Filiacao = clienteDto.Observacao_Filiacao;
+                tCliente.Obs_crediticias = "";
+                tCliente.Midia = "";
+                tCliente.Email = clienteDto.Email;
+                tCliente.Email_Xml = clienteDto.EmailXml;
+                tCliente.Dt_Ult_Atualizacao = DateTime.Now;
+                tCliente.Usuario_Ult_Atualizacao = apelido.ToUpper();
+                tCliente.Sistema_responsavel_cadastro = Constantes.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS;
+                tCliente.Sistema_responsavel_atualizacao = Constantes.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS;
+            };
 
-                //Busca os nomes reais das colunas da tabela SQL
-                Utils.Util.MontaLog(tCliente, log, campos_a_omitir);
+            ////Busca os nomes reais das colunas da tabela SQL
+            //log = Utils.Util.MontaLog(tCliente, log, campos_a_omitir);
 
-                dbgravacao.Add(tCliente);
-                await dbgravacao.SaveChangesAsync();
-                retorno = tCliente.Id;
-            }
+            //Utils.Util.GravaLog(dbgravacao, apelido, clienteDto.Loja, "", id_cliente,
+            //            Constantes.OP_LOG_CLIENTE_INCLUSAO, log);
+
+            dbgravacao.Add(tCliente);
+            await dbgravacao.SaveChangesAsync();
+            retorno = tCliente.Id;
 
             return retorno;
         }
@@ -506,15 +522,15 @@ namespace PrepedidoBusiness.Bll
 
             if (string.IsNullOrEmpty(municipio))
                 lstErros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
-                    "nenhum município foi informado!!");
+                    "nenhum município foi informado!");
             if (string.IsNullOrEmpty(uf))
                 lstErros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
-                    "a UF não foi informada!!");
+                    "a UF não foi informada!");
             else
             {
                 if (uf.Length > 2)
                     lstErros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
-                        "a UF é inválida (" + uf + ")!!");
+                        "a UF é inválida (" + uf + ")!");
             }
 
             if (lstErros.Count == 0)
@@ -523,7 +539,7 @@ namespace PrepedidoBusiness.Bll
 
                 if (!lst_nfeMunicipios.Any())
                 {
-                    lstErros.Add("Município '" + municipio + "' não consta na relação de municípios do IBGE para a UF de '" + uf + "'!!");
+                    lstErros.Add("Município '" + municipio + "' não consta na relação de municípios do IBGE para a UF de '" + uf + "'!");
                 }
             }
 
@@ -535,10 +551,6 @@ namespace PrepedidoBusiness.Bll
             List<NfeMunicipio> lstNfeMunicipio = new List<NfeMunicipio>();
 
             var db = contextoProvider.GetContextoLeitura();
-
-            //Buscamos a chave para utilizar na decodificação da senha da base de dados que iremos acessar,
-            //conforme o retorno do select feito em EntityFramework.
-            string chave = Utils.Util.GeraChave(Constantes.FATOR_BD);
 
             //buscando os dados para se conectar no servidor de banco de dados
             TnfEmitente nova_conexao = await (from c in db.TnfEmitentes
@@ -555,7 +567,14 @@ namespace PrepedidoBusiness.Bll
             sqlBuilder.DataSource = nova_conexao.NFe_T1_servidor_BD;
             sqlBuilder.InitialCatalog = nova_conexao.NFe_T1_nome_BD;
             sqlBuilder.UserID = nova_conexao.NFe_T1_usuario_BD;
-            sqlBuilder.Password = Utils.Util.DecodificaSenha(nova_conexao.NFe_T1_senha_BD, chave);
+
+            //Buscamos a chave para utilizar na decodificação da senha da base de dados que iremos acessar,
+            //conforme o retorno do select feito em EntityFramework.
+            //string chave = Utils.Util.GeraChave(Constantes.FATOR_BD);
+
+            //sqlBuilder.Password = Utils.Util.DecodificaSenha(nova_conexao.NFe_T1_senha_BD, chave);
+
+            sqlBuilder.Password = Utils.Util.decodificaDado(nova_conexao.NFe_T1_senha_BD, Constantes.FATOR_BD);
 
             string providerString = sqlBuilder.ToString();
 
@@ -756,7 +775,8 @@ namespace PrepedidoBusiness.Bll
                 if (c.Cep != cepSoDigito)
                     listaErros.Add("Número do Cep diferente!");
 
-                if (c.Cidade.ToUpper() != cliente.Cidade.ToUpper() ||
+
+                if (Utils.Util.RemoverAcentuacao(c.Cidade.ToUpper()) != Utils.Util.RemoverAcentuacao(cliente.Cidade.ToUpper()) ||
                     c.Uf.ToUpper() != cliente.Uf.ToUpper())
                     listaErros.Add("Os dados informados estão divergindo da base de dados!");
             }
@@ -781,7 +801,7 @@ namespace PrepedidoBusiness.Bll
                         qtdeDig += 1;
                 }
                 if (qtdeDig < 2 && qtdeDig > 14)
-                    retorno = "Preencha a IE (Inscrição Estadual) com um número válido!!" +
+                    retorno = "Preencha a IE (Inscrição Estadual) com um número válido! " +
                             "Certifique-se de que a UF informada corresponde à UF responsável pelo registro da IE.";
                 else
                     retorno = ie;
@@ -794,7 +814,7 @@ namespace PrepedidoBusiness.Bll
             blnResultado = isInscricaoEstadualOkCom(ie, uf, listaErros);
             if (!blnResultado)
             {
-                listaErros.Add("Preencha a IE (Inscrição Estadual) com um número válido!!" +
+                listaErros.Add("Preencha a IE (Inscrição Estadual) com um número válido!" +
                             "Certifique-se de que a UF informada corresponde à UF responsável pelo registro da IE.");
             }
 
@@ -834,7 +854,7 @@ namespace PrepedidoBusiness.Bll
             char chr;
 
             if (id_nsu == "")
-                retorno = "Não foi especificado o NSU a ser gerado!!";
+                retorno = "Não foi especificado o NSU a ser gerado!";
 
             for (int i = 0; i <= 100; i++)
             {
@@ -865,7 +885,7 @@ namespace PrepedidoBusiness.Bll
                 }
                 if (n_nsu < 0)
                 {
-                    retorno = "O NSU gerado é inválido!!";
+                    retorno = "O NSU gerado é inválido!";
                 }
                 n_nsu += 1;
                 s = Convert.ToString(n_nsu);

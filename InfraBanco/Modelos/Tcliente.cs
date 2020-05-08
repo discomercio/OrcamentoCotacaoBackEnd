@@ -12,7 +12,7 @@ namespace InfraBanco.Modelos
         [Required]
         [MaxLength(12)]
         public string Id { get; set; }
-        
+
         [Column("cnpj_cpf")]
         [MaxLength(14)]
         public string Cnpj_Cpf { get; set; }
@@ -252,6 +252,14 @@ namespace InfraBanco.Modelos
         [Column("ramal_com_2")]
         [MaxLength(4)]
         public string Ramal_Com_2 { get; set; }
+
+        [Column("sistema_responsavel_cadastro")]
+        [Required]
+        public int Sistema_responsavel_cadastro { get; set; }
+
+        [Column("sistema_responsavel_atualizacao")]
+        [Required]
+        public int Sistema_responsavel_atualizacao { get; set; }
 
     }
 }

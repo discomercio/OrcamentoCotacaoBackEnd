@@ -82,8 +82,9 @@ namespace PrepedidoBusiness.Bll
         {
             var db = contextoProvider.GetContextoLeitura();
 
+            //inclui um filtro para não trazer os filhos na listagem do pedido
             var lista = db.Tpedidos.
-                Where(r => r.Indicador == apelido);
+                Where(r => r.Indicador == apelido && !r.Pedido.Contains("-"));
 
             switch (tipoBusca)
             {
@@ -167,7 +168,7 @@ namespace PrepedidoBusiness.Bll
             var cli = await dadosCliente.FirstOrDefaultAsync();
             DadosClienteCadastroDto cadastroCliente = new DadosClienteCadastroDto
             {
-                Loja = await ObterRazaoSocialLoja(loja),
+                Loja = await ObterRazaoSocial_Nome_Loja(loja),
                 Indicador_Orcamentista = indicador_orcamentista,
                 Vendedor = vendedor,
                 Id = cli.Id,
@@ -205,15 +206,23 @@ namespace PrepedidoBusiness.Bll
             return cadastroCliente;
         }
 
-        private async Task<string> ObterRazaoSocialLoja(string loja)
+        private async Task<string> ObterRazaoSocial_Nome_Loja(string loja)
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var ret = from c in db.Tlojas
-                      where c.Loja == loja
-                      select c.Razao_Social;
+            string retorno = "";
 
-            string retorno = await ret.SingleOrDefaultAsync();
+            Tloja lojaTask = await (from c in db.Tlojas
+                                    where c.Loja == loja
+                                    select c).SingleOrDefaultAsync();
+
+            if(lojaTask != null)
+            {
+                if (!string.IsNullOrEmpty(lojaTask.Razao_Social))
+                    retorno = lojaTask.Razao_Social;
+                else
+                    retorno = lojaTask.Nome;
+            }
 
             return retorno;
         }
@@ -289,16 +298,39 @@ namespace PrepedidoBusiness.Bll
 
         public async Task<PedidoDto> BuscarPedido(string apelido, string numPedido)
         {
+            //afazer: refazer o metodo de buscar o pedido
+            /*
+             * caso a busca seja de pedido filhote:
+             *  coisas que devemos buscar pelo pedido pai => Forma de pagamento / status do pagamento / Vl total familia /
+             *      VL pago / VL devoluções / VL perdas / Saldo a pagar / Analise de crédito
+             * OBS: será necessário trazer todos os pedidos mesmo que seja um pedido filhote para que possamos montar
+             * o campo para exibir os pedidos filhote e pedido pai
+             */
             var db = contextoProvider.GetContextoLeitura();
 
-            //parateste
-            //numPedido = "094947N-A";
-            //apelido = "PEDREIRA";
+            //vamos verificar se o pedido é o pai 057581N
+            var pedido_pai = "";
+
+            if (numPedido.Contains('-'))
+            {
+                string[] split = numPedido.Split('-');
+                pedido_pai = split[0];
+            }
+            else
+            {
+                pedido_pai = numPedido;
+            }
 
             var pedido = from c in db.Tpedidos
-                         where c.Pedido == numPedido
+                         where c.Pedido.Contains(pedido_pai)
                          select c;
-            Tpedido p = pedido.FirstOrDefault();
+
+            //aqui vamos montar o tpedido pai para montar alguns detalhes que contém somente nele
+            Tpedido tPedidoPai = await pedido.Select(x => x).Where(x => x.Pedido == pedido_pai).FirstOrDefaultAsync();
+
+            //aqui vamos montar o pedido conforme o número do pedido que veio na entrada
+            Tpedido p = await pedido.Select(x => x).Where(x => x.Pedido == numPedido).FirstOrDefaultAsync();
+
             if (p == null)
                 return null;
 
@@ -311,11 +343,11 @@ namespace PrepedidoBusiness.Bll
 
             //buscar valor total de devoluções NF
             var vlDevNf = from c in db.TpedidoItemDevolvidos
-                          where c.Pedido.StartsWith(numPedido)
+                          where c.Pedido.StartsWith(pedido_pai)
                           select c.Qtde * c.Preco_NF;
             var vl_TotalFamiliaDevolucaoPrecoNFTask = vlDevNf.Select(r => r.Value).SumAsync();
 
-            var vlFamiliaParcelaRATask = CalculaTotalFamiliaRA(numPedido);
+            var vlFamiliaParcelaRATask = CalculaTotalFamiliaRA(pedido_pai);
 
             string garantiaIndicadorStatus = Convert.ToString(p.GarantiaIndicadorStatus);
             if (garantiaIndicadorStatus == Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO)
@@ -325,38 +357,37 @@ namespace PrepedidoBusiness.Bll
 
 
 
-            DetalhesNFPedidoDtoPedido detalhesNf = new DetalhesNFPedidoDtoPedido
-            {
-                Observacoes = p.Obs_1,
-                ConstaNaNF = p.Nfe_Texto_Constar,
-                XPed = p.Nfe_XPed,
-                NumeroNF = p.Obs_2,
-                NFSimples = p.Obs_3,
-                EntregaImediata = ObterEntregaImediata(p),
-                StBemUsoConsumo = p.StBemUsoConsumo,
-                InstaladorInstala = p.InstaladorInstalaStatus,
-                GarantiaIndicadorStatus = garantiaIndicadorStatus
-            };
+            DetalhesNFPedidoDtoPedido detalhesNf = new DetalhesNFPedidoDtoPedido();
+            detalhesNf.Observacoes = p.Obs_1;
+            detalhesNf.ConstaNaNF = p.Nfe_Texto_Constar;
+            detalhesNf.XPed = p.Nfe_XPed;
+            detalhesNf.NumeroNF = tPedidoPai.Obs_2;//consta somente no pai
+            detalhesNf.NFSimples = tPedidoPai.Obs_3;
+            detalhesNf.EntregaImediata = ObterEntregaImediata(p);
+            detalhesNf.StBemUsoConsumo = p.StBemUsoConsumo;
+            detalhesNf.InstaladorInstala = tPedidoPai.InstaladorInstalaStatus;
+            detalhesNf.GarantiaIndicadorStatus = garantiaIndicadorStatus;//esse campo não esta mais sendo utilizado
+
 
             //verifica o status da entrega
             DateTime? dataEntrega = new DateTime();
-            if (p.St_Entrega == Constantes.ST_ENTREGA_A_ENTREGAR || p.St_Entrega == Constantes.ST_ENTREGA_SEPARAR)
-                dataEntrega = p.A_Entregar_Data_Marcada;
+            if (tPedidoPai.St_Entrega == Constantes.ST_ENTREGA_A_ENTREGAR || tPedidoPai.St_Entrega == Constantes.ST_ENTREGA_SEPARAR)
+                dataEntrega = tPedidoPai.A_Entregar_Data_Marcada;
 
             var perdas = BuscarPerdas(numPedido);
             var TranspNomeTask = ObterNomeTransportadora(p.Transportadora_Id);
-            var lstFormaPgtoTask = ObterFormaPagto(p);
-            var analiseCreditoTask = ObterAnaliseCredito(Convert.ToString(p.Analise_Credito), numPedido, apelido);
-            string corAnalise = CorAnaliseCredito(Convert.ToString(p.Analise_Credito));
-            string corStatusPagto = CorSatusPagto(p.St_Pagto);
-            var saldo_a_pagarTask = CalculaSaldoAPagar(numPedido, await vl_TotalFamiliaDevolucaoPrecoNFTask);
+            var lstFormaPgtoTask = ObterFormaPagto(tPedidoPai);
+            var analiseCreditoTask = ObterAnaliseCredito(Convert.ToString(tPedidoPai.Analise_Credito), pedido_pai, apelido);
+            string corAnalise = CorAnaliseCredito(Convert.ToString(tPedidoPai.Analise_Credito));
+            string corStatusPagto = CorSatusPagto(tPedidoPai.St_Pagto);
+            var saldo_a_pagarTask = CalculaSaldoAPagar(pedido_pai, await vl_TotalFamiliaDevolucaoPrecoNFTask);
             var TotalPerda = (await perdas).Select(r => r.Valor).Sum();
-            var lstOcorrenciaTask = ObterOcorrencias(numPedido);
-            var lstBlocNotasDevolucaoTask = BuscarPedidoBlocoNotasDevolucao(numPedido);
-            var vlPagoTask = CalcularValorPago(numPedido);
+            var lstOcorrenciaTask = ObterOcorrencias(pedido_pai);
+            var lstBlocNotasDevolucaoTask = BuscarPedidoBlocoNotasDevolucao(pedido_pai);
+            var vlPagoTask = CalcularValorPago(pedido_pai);
 
             var saldo_a_pagar = await saldo_a_pagarTask;
-            if (p.St_Entrega == Constantes.ST_PAGTO_PAGO && saldo_a_pagar > 0)
+            if (tPedidoPai.St_Entrega == Constantes.ST_PAGTO_PAGO && saldo_a_pagar > 0)
                 saldo_a_pagar = 0;
 
             //afazer: calcular o VL Pago = o valor que já foi pago (entrada ou pagamento parcial)
@@ -365,27 +396,57 @@ namespace PrepedidoBusiness.Bll
              * saldo a pagar = vl_TotalFamiliaPrecoNF - vl_TotalFamiliaPago - vl_TotalFamiliaDevolucaoPrecoNF
              */
 
-            DetalhesFormaPagamentos detalhesFormaPagto = new DetalhesFormaPagamentos
+            //verifica se existe pedido filhote
+
+
+
+            DetalhesFormaPagamentos detalhesFormaPagto = new DetalhesFormaPagamentos();
+            detalhesFormaPagto.FormaPagto = (await lstFormaPgtoTask).ToList();
+            detalhesFormaPagto.InfosAnaliseCredito = p.Forma_Pagto;
+            detalhesFormaPagto.StatusPagto = StatusPagto(tPedidoPai.St_Pagto).ToUpper();
+            detalhesFormaPagto.CorStatusPagto = corStatusPagto;
+            detalhesFormaPagto.VlTotalFamilia = tPedidoPai.Vl_Total_Familia;
+            detalhesFormaPagto.VlPago = await vlPagoTask;
+            detalhesFormaPagto.VlDevolucao = await vl_TotalFamiliaDevolucaoPrecoNFTask;
+            detalhesFormaPagto.VlPerdas = TotalPerda;
+            detalhesFormaPagto.SaldoAPagar = saldo_a_pagar;
+            detalhesFormaPagto.AnaliseCredito = await analiseCreditoTask;
+            detalhesFormaPagto.CorAnalise = corAnalise;
+            detalhesFormaPagto.DataColeta = dataEntrega;
+            detalhesFormaPagto.Transportadora = await TranspNomeTask;
+            detalhesFormaPagto.VlFrete = p.Frete_Valor;
+
+            //vou montar uma lista fake para verificar como mostrar uma qtde de numeros de pedido por linha
+            List<List<string>> lstPorLinha = new List<List<string>>();
+            List<string> lstNumPedDabase = await pedido.Select(r => r.Pedido).ToListAsync();
+            //List<string> lstLinhaDabase = new List<string>
+            //{
+            //    numPedido, numPedido,numPedido, numPedido,numPedido, numPedido,numPedido, numPedido,numPedido, numPedido,
+            //    numPedido, numPedido,numPedido, numPedido,numPedido, numPedido,numPedido, numPedido,numPedido, numPedido
+            //};
+
+            List<string> lstLinha = new List<string>();
+            int aux = lstNumPedDabase.Count();
+            for (var i = 0; i <= lstNumPedDabase.Count(); i++)
             {
-                FormaPagto = (await lstFormaPgtoTask).ToList(),
-                InfosAnaliseCredito = p.Forma_Pagto,
-                StatusPagto = StatusPagto(p.St_Pagto).ToUpper(),
-                CorStatusPagto = corStatusPagto,
-                VlTotalFamilia = p.Vl_Total_Familia,
-                VlPago = await vlPagoTask,
-                VlDevolucao = await vl_TotalFamiliaDevolucaoPrecoNFTask,
-                VlPerdas = TotalPerda,
-                SaldoAPagar = saldo_a_pagar,
-                AnaliseCredito = await analiseCreditoTask,
-                CorAnalise = corAnalise,
-                DataColeta = dataEntrega,
-                Transportadora = await TranspNomeTask,
-                VlFrete = p.Frete_Valor
-            };
+                if (i < lstNumPedDabase.Count)
+                    lstLinha.Add(lstNumPedDabase[i]);
+
+                if (lstLinha.Count == 8)
+                {
+                    lstPorLinha.Add(lstLinha);
+                    lstLinha = new List<string>();
+                }
+                if (i == aux)
+                {
+                    lstPorLinha.Add(lstLinha);
+                }
+            }
 
             PedidoDto DtoPedido = new PedidoDto
             {
                 NumeroPedido = numPedido,
+                Lista_NumeroPedidoFilhote = lstPorLinha,//await pedido.Select(r => r.Pedido).ToListAsync(),
                 DataHoraPedido = p.Data,
                 StatusHoraPedido = await MontarDtoStatuPedido(p),
                 DadosCliente = await cadastroClienteTask,
@@ -442,8 +503,16 @@ namespace PrepedidoBusiness.Bll
             return retorno;
         }
 
-        private string IniciaisEmMaisculas(string texto)
+        private string IniciaisEmMaisculas(string text)
         {
+            //testar nova forma 
+            /*
+             * fazer um splice no nome
+             * fazer um loop
+             * pegar a primeira letra e fazer ToUpper()
+             * devolver para a string
+             * montar o nome novamente
+             */
             string retorno = "";
             string palavras_minusculas = "|A|AS|AO|AOS|À|ÀS|E|O|OS|UM|UNS|UMA|UMAS" +
                 "|DA|DAS|DE|DO|DOS|EM|NA|NAS|NO|NOS|COM|SEM|POR|PELO|PELA|PARA|PRA|P/|S/|C/|TEM|OU|E/OU|ATE|ATÉ|QUE|SE|QUAL|";
@@ -457,58 +526,75 @@ namespace PrepedidoBusiness.Bll
             string s = "";
             bool blnAltera = false;
 
+            string[] teste = text.Split(' ');
+
             string char34 = Convert.ToString((char)34);
 
-            for (int i = 0; i < texto.Length; i++)
+            foreach (string t in teste)
             {
-                letra = texto.Substring(i, 1);
-                palavra += letra;
-
-                if ((letra == " ") || (i == texto.Length - 1) || (letra == "(") || (letra == ")") || (letra == "[") || (letra == "]")
-                    || (letra == "'") || (letra == char34) || (letra == "-"))
+                string texto = t;
+                for (int i = 0; i < texto.Length; i++)
                 {
-                    s = "|" + palavra.ToUpper().Trim() + "|";
-                    if (palavras_minusculas.IndexOf(s) != 0 && frase != "")
-                    {
-                        //SE FOR FINAL DA FRASE, DEIXA INALTERADO(EX: BLOCO A)
-                        if (i < texto.Length)
-                            palavra = palavra.ToLower();
-                    }
-                    else if (palavras_maiusculas.IndexOf(s) >= 0)
-                        palavra = palavra.ToUpper();
-                    else
-                    {
-                        //ANALISA SE CONVERTE O TEXTO OU NÃO
-                        blnAltera = true;
-                        if (TemDigito(palavra))
-                        {
-                            //ENDEREÇOS CUJO Nº DA RESIDÊNCIA SÃO SEPARADOS POR VÍRGULA, SEM NENHUM ESPAÇO EM BRANCO
-                            //CASO CONTRÁRIO, CONSIDERA QUE É ALGUM TIPO DE CÓDIGO
-                            if (palavra.IndexOf(",") != 0)
-                                blnAltera = false;
-                        }
-                        if (palavra.IndexOf(".") >= 0)
-                        {
-                            if (palavra.IndexOf(palavra, palavra.IndexOf(".") + 1, StringComparison.OrdinalIgnoreCase.CompareTo(".")) != 0)
-                                blnAltera = false;
-                        }
-                        if (palavra.IndexOf("/") != 0)
-                        {
-                            if (palavra.Length <= 4)
-                                blnAltera = false;
-                        }
-                        //verifica se tem vogal
-                        if (!TemVogal(palavra))
-                            blnAltera = false;
+                    letra = texto.Substring(i, 1);
+                    palavra += letra;
 
-                        if (blnAltera)
-                            palavra = palavra.Substring(0, 1).ToUpper() + palavra.Substring(1, palavra.Length - 1).ToLower();//verificar
+                    if ((letra == " ") || (i == texto.Length - 1) || (letra == "(") || (letra == ")") || (letra == "[") || (letra == "]")
+                        || (letra == "'") || (letra == char34) || (letra == "-"))
+                    {
+                        s = "|" + palavra.ToUpper().Trim() + "|";
+                        if (palavras_minusculas.IndexOf(s) != 0 && frase != "")
+                        {
+                            //SE FOR FINAL DA FRASE, DEIXA INALTERADO(EX: BLOCO A)
+                            if (i < texto.Length && texto.Length < 1)
+                                palavra = palavra.ToLower();
+                        }
+                        else if (palavras_maiusculas.IndexOf(s) >= 0)
+                            palavra = palavra.ToUpper();
+                        else
+                        {
+                            //ANALISA SE CONVERTE O TEXTO OU NÃO
+                            blnAltera = true;
+                            if (TemDigito(palavra))
+                            {
+                                //ENDEREÇOS CUJO Nº DA RESIDÊNCIA SÃO SEPARADOS POR VÍRGULA, SEM NENHUM ESPAÇO EM BRANCO
+                                //CASO CONTRÁRIO, CONSIDERA QUE É ALGUM TIPO DE CÓDIGO
+                                if (palavra.IndexOf(",") != 0)
+                                    blnAltera = false;
+                            }
+                            if (palavra.IndexOf(".") >= 0)
+                            {
+                                if (palavra.IndexOf(palavra, palavra.IndexOf(".") + 1, StringComparison.OrdinalIgnoreCase.CompareTo(".")) != 0)
+                                    blnAltera = false;
+                            }
+                            if (palavra.IndexOf("/") != 0)
+                            {
+                                if (palavra.Length <= 4)
+                                    blnAltera = false;
+                            }
+                            //verifica se tem vogal
+                            if (!TemVogal(palavra))
+                                blnAltera = false;
+
+                            if (blnAltera)
+                                palavra = palavra.Substring(0, 1).ToUpper() + palavra.Substring(1, palavra.Length - 1).ToLower();//verificar
+                        }
+                        if (retorno.Length > 0)
+                        {
+                            frase = frase + " " + palavra;
+
+                        }
+                        else
+                        {
+                            frase = frase + palavra;
+                        }
+                        palavra = "";
+                        retorno += frase;
+                        frase = "";
                     }
-                    frase = frase + palavra;
-                    palavra = "";
                 }
             }
-            return retorno = frase;
+
+            return retorno;
         }
 
 
@@ -608,7 +694,6 @@ namespace PrepedidoBusiness.Bll
         {
             string hh = "";
             string mm = "";
-            string ss = "";
             string retorno = "";
 
             if (!string.IsNullOrEmpty(hora))
@@ -774,16 +859,15 @@ namespace PrepedidoBusiness.Bll
 
             var msg = (await ObterMensagemOcorrencia(id)).ToList();
 
-
-
             var ocorrencia = await (from d in db.TpedidoOcorrencias
                                     where d.Pedido == numPedido
                                     select d).ToListAsync();
             List<OcorrenciasDtoPedido> lista = new List<OcorrenciasDtoPedido>();
 
-
             foreach (var i in ocorrencia)
             {
+                //OcorrenciaPedido_MotivoAbertura
+                //GRUPO_T_CODIGO_DESCRICAO__OCORRENCIAS_EM_PEDIDOS__MOTIVO_ABERTURA
                 OcorrenciasDtoPedido ocorre = new OcorrenciasDtoPedido();
                 ocorre.Usuario = i.Usuario_Cadastro;
                 ocorre.Dt_Hr_Cadastro = i.Dt_Hr_Cadastro;
@@ -806,7 +890,7 @@ namespace PrepedidoBusiness.Bll
                 ocorre.mensagemDtoOcorrenciaPedidos = msg;
                 ocorre.Finalizado_Usuario = i.Finalizado_Usuario;
                 ocorre.Finalizado_Data_Hora = i.Finalizado_Data_Hora;
-                ocorre.Tipo_Ocorrencia = await Util.ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__OCORRENCIAS_EM_PEDIDOS__TIPO_OCORRENCIA, i.Tipo_Ocorrencia, contextoProvider);
+                ocorre.Tipo_Ocorrencia = await Util.ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__OCORRENCIAS_EM_PEDIDOS__MOTIVO_ABERTURA, i.Cod_Motivo_Abertura, contextoProvider);
                 ocorre.Texto_Finalizacao = i.Texto_Finalizacao;
                 lista.Add(ocorre);
             }
@@ -928,7 +1012,7 @@ namespace PrepedidoBusiness.Bll
             var vlTotalVenda = await vlTotalVendaPorItem.Select(r => r.venda).SumAsync();
             var vlTotalNf = await vlTotalVendaPorItem.Select(r => r.nf).SumAsync();
 
-            decimal result = vlTotalVenda.Value - vlTotalNf.Value;
+            decimal result = vlTotalNf.Value - vlTotalVenda.Value;
 
             return await Task.FromResult(result);
         }
@@ -1102,7 +1186,7 @@ namespace PrepedidoBusiness.Bll
                     lista.Add("À Vista (" + Util.OpcaoFormaPagto(pedido.Av_Forma_Pagto.ToString()) + ")");
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELA_UNICA:
-                    lista.Add(String.Format("Parcela Única: " + " {0:c2} (" +
+                    lista.Add(String.Format("Parcela Única: " + "{0:c2} (" +
                         Util.OpcaoFormaPagto(Convert.ToString(pedido.Pu_Forma_Pagto)) +
                         ") vencendo após " + pedido.Pu_Vencto_Apos, pedido.Pu_Valor) + " dias");
                     break;
@@ -1112,10 +1196,10 @@ namespace PrepedidoBusiness.Bll
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA:
                     lista.Add(String.Format("Parcelado no Cartão (maquineta) em " + pedido.Pc_Maquineta_Qtde_Parcelas +
-                        " x {0:c2}" + pedido.Pc_Maquineta_Valor_Parcela));
+                        " x {0:c2}", pedido.Pc_Maquineta_Valor_Parcela));
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA:
-                    lista.Add(String.Format("Entrada " + "{0:c2} (" +
+                    lista.Add(String.Format("Entrada: " + "{0:c2} (" +
                         Util.OpcaoFormaPagto(Convert.ToString(pedido.Pce_Forma_Pagto_Entrada)) + ")", pedido.Pce_Entrada_Valor));
                     if (pedido.Pce_Forma_Pagto_Prestacao != 5 && pedido.Pce_Forma_Pagto_Prestacao != 7)
                     {
