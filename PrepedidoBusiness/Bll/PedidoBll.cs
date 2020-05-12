@@ -84,7 +84,7 @@ namespace PrepedidoBusiness.Bll
 
             //inclui um filtro para não trazer os filhos na listagem do pedido
             var lista = db.Tpedidos.
-                Where(r => r.Indicador == apelido && !r.Pedido.Contains("-"));
+                Where(r => r.Indicador == apelido);
 
             switch (tipoBusca)
             {
@@ -109,18 +109,36 @@ namespace PrepedidoBusiness.Bll
             if (dataFinal.HasValue)
                 lista = lista.Where(r => r.Data <= dataFinal.Value);
 
-            var listaFinal = lista.Select(r => new PedidoDtoPedido
+            List<PedidoDtoPedido> lst_pedido = new List<PedidoDtoPedido>();
+
+            //precisa calcular os itens de cada produto referente ao pedido, 
+            //para trazer o valor total do pedido e não o total da familia
+            foreach (var i in await lista.ToListAsync())
             {
-                NomeCliente = r.Tcliente.Nome_Iniciais_Em_Maiusculas,
-                NumeroPedido = r.Pedido,
-                DataPedido = r.Data,
-                Status = r.St_Entrega,
-                ValorTotal = r.Vl_Total_NF
-            }).OrderByDescending(r => r.DataPedido);
+                var itens = from c in db.TpedidoItems
+                            where c.Pedido == i.Pedido
+                            select c;
+
+                if (itens != null)
+                {
+                    string nome = await (from c in itens
+                                      where c.Pedido == i.Pedido
+                                      select c.Tpedido.Tcliente.Nome_Iniciais_Em_Maiusculas).FirstOrDefaultAsync();
+
+                    lst_pedido.Add(new PedidoDtoPedido
+                    {
+                        NomeCliente = nome,
+                        NumeroPedido = i.Pedido,
+                        DataPedido = i.Data,
+                        Status = i.St_Entrega,
+                        ValorTotal = await itens.SumAsync(x => x.Preco_Venda * x.Qtde)
+                    });
+                }
+            }
 
 
             //colocar as mensagens de status
-            var listaComStatus = await listaFinal.ToListAsync();
+            var listaComStatus = lst_pedido;
             foreach (var pedido in listaComStatus)
             {
                 if (pedido.Status == "ESP")
@@ -136,7 +154,7 @@ namespace PrepedidoBusiness.Bll
                 if (pedido.Status == "CAN")
                     pedido.Status = "Cancelado";
             }
-            return await Task.FromResult(listaComStatus);
+            return await Task.FromResult(listaComStatus.OrderByDescending(x => x.DataPedido));
         }
 
         public async Task<IEnumerable<string>> ListarCpfCnpjPedidosCombo(string apelido)
@@ -216,7 +234,7 @@ namespace PrepedidoBusiness.Bll
                                     where c.Loja == loja
                                     select c).SingleOrDefaultAsync();
 
-            if(lojaTask != null)
+            if (lojaTask != null)
             {
                 if (!string.IsNullOrEmpty(lojaTask.Razao_Social))
                     retorno = lojaTask.Razao_Social;
@@ -426,6 +444,7 @@ namespace PrepedidoBusiness.Bll
             //};
 
             List<string> lstLinha = new List<string>();
+
             int aux = lstNumPedDabase.Count();
             for (var i = 0; i <= lstNumPedDabase.Count(); i++)
             {
