@@ -126,6 +126,12 @@ export class AutenticacaoService {
     );
     sessionStorage.setItem('token', "");
     localStorage.setItem('token', "");
+
+    // localStorage.clear();
+    // sessionStorage.clear();
+
+    // sessionStorage.removeItem('token');
+    // localStorage.removeItem('token');
   }
 
   public setarToken(token: string): void {

@@ -101,7 +101,7 @@
         <br>
 
         <!--  EXIBE LINKS PARA A FAMÍLIA DE PEDIDOS?   -->
-        <table width='649' class='Q' cellspacing='0' *ngIf="pedido?.Lista_NumeroPedidoFilhote.length != 0">
+        <table width='649' class='Q' cellspacing='0' *ngIf="pedido?.Lista_NumeroPedidoFilhote[0].length > 1">
             <tr>
                 <td align='left'>
                     <p class='Rf'>FAMÍLIA DE PEDIDOS</p>

@@ -42,6 +42,7 @@ export class PedidoDesktopComponent extends TelaDesktopBaseComponent implements 
     this.router.routeReuseStrategy.shouldReuseRoute = function () {
       return false;
     };    
+    alert("voltar o filtro de pedido depois de testar");
   }
 
   formatarEndereco: FormatarEndereco = new FormatarEndereco();
