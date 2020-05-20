@@ -12,6 +12,7 @@ export const environment = {
   //apiUrl: 'http://its-appdev:9000/api/', //no servidor, nao funciona pq estamos bloqueando o CORS
   // apiUrl: 'http://x.com.br/', //no servidor, nao funciona pq estamos bloqueando o CORS
   apiUrl: 'http://localhost:60877/api/',
+  versaoApi: 'DEBUG',
   production: false
 };
 

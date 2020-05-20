@@ -130,10 +130,14 @@ export class AutenticacaoService {
   }
 
   public setarToken(token: string): void {
-    if (this.salvar)
+    if (this.salvar) {
       localStorage.setItem("token", token);
-    else
+      sessionStorage.setItem('token', "");
+    }
+    else {
       sessionStorage.setItem("token", token);
+      localStorage.setItem('token', "");
+    }
 
     this.carregarLayout();
   }
@@ -209,10 +213,13 @@ export class AutenticacaoService {
     return ret;
   }
   private obterTokenInterno(): string {
-    //tentamos nos dois lugares
+    //tentamos nos dois lugares, primeiro na local
     var ret = localStorage.getItem("token");
-    if (ret)
+    if (ret && ret.trim() != "") {
+      //precisamos definir onde guardamos quando vier a renovação do token
+      this.salvar = true;
       return ret;
+    }
     return sessionStorage.getItem("token");
   }
 
@@ -268,18 +275,22 @@ export class AutenticacaoService {
   }
   private renovarToken(): void {
     this.renovacaoPendnete = true;
-    this.http.get(environment.apiUrl + 'acesso/RenovarToken').subscribe(
+    this.http.get(environment.apiUrl + 'acesso/RenovarToken', { responseType: 'text' }).subscribe(
       {
         next: (e) => {
           this.setarToken(e as string);
-          this.renovacaoPendnete = false;
+          this.desligarRenovacaoPendente();
         },
-        error: () => { this.renovacaoPendnete = false; },
-        complete: () => { this.renovacaoPendnete = false; }
+        error: () => { this.desligarRenovacaoPendente(); },
+        complete: () => { this.desligarRenovacaoPendente(); }
       }
     );
   }
 
+  private desligarRenovacaoPendente() {
+    //desligamos com timeou tpoque a solicitação da renovação do token também pode disparar outra renovação do token
+    setTimeout(() => { this.renovacaoPendnete = false; }, 500);
+  }
 
 
   //Gabriel criar metodo para carregar o css
