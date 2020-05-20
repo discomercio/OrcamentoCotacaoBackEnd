@@ -69,10 +69,6 @@ namespace PrepedidoBusiness.Bll
                 //decodifica a senha datastamp em maiuscula
                 senha_banco_datastamp_decod = Util.decodificaDado(senha_banco_datastamp_codificada, Constantes.FATOR_CRIPTO);
 
-                if (senha_digitada_datastamp != senha_banco_datastamp_codificada)
-                {
-                    return await Task.FromResult(retorno);
-                }
                 if (senha_digitada_decod != senha_banco_datastamp_decod)
                     return await Task.FromResult(retorno);
 
