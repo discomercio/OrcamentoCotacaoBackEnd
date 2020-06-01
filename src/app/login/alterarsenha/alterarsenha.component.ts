@@ -74,10 +74,18 @@ export class AlterarsenhaComponent extends TelaDesktopBaseComponent implements O
           return;
           // this.alertaService.mostrarMensagem("A nova senha deve ser diferente da senha atual.");
         }
+        
         if (this.senhaNova == this.senhaNovaConfirma) {
-          //preciso guardar o nome de usuario
-          this.autenticacaoService.alterarSenha(this.autenticacaoService.usuarioApelidoParaAlterarSenha, this.senha,
-            this.senhaNova, this.senhaNovaConfirma).subscribe({
+          //vamos codificar as senhas com elas em maiusculas
+          var key = this.autenticacaoService.gerarChave();
+          let senha = this.autenticacaoService.CodificaSenha(this.senha.toUpperCase(), key);
+          let senha_nova = this.autenticacaoService.CodificaSenha(this.senhaNova.toUpperCase(), key);
+          let senha_nova_confirma = this.autenticacaoService.CodificaSenha(this.senhaNovaConfirma.toUpperCase(), key);
+
+          //as senhas serão passadas codificadas em maiusculas
+          //preciso guardar o nome de usuario          
+          this.autenticacaoService.alterarSenha(this.autenticacaoService.usuarioApelidoParaAlterarSenha, senha,
+            senha_nova, senha_nova_confirma).subscribe({
               next: (e) => {
                 //fazer a chamada para realizar o login, passando a senha nova e o apelido
                 if (e == "" || e == null) {
@@ -85,8 +93,9 @@ export class AlterarsenhaComponent extends TelaDesktopBaseComponent implements O
                     duration: environment.esperaErros
                   });
                   this.autenticacaoService.senhaExpirada = false;
+                  debugger;
                   // this.alertaService.mostrarMensagem("Alteração de senha realizada com sucesso!");
-                  this.autenticacaoService.authLogin(this.autenticacaoService.usuarioApelidoParaAlterarSenha, this.senhaNova,
+                  this.autenticacaoService.authLogin(this.autenticacaoService.usuarioApelidoParaAlterarSenha, this.senhaNova.toUpperCase(),
                     this.autenticacaoService.lembrarSenhaParaAlterarSenha, () => { }, this._snackBar, this.router, this.appComponent)
                 }
                 //retornando erro

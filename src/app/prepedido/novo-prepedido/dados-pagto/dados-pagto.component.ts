@@ -109,8 +109,11 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
     this.alertaService);
 
 
+public C_forma_pagto:string;
 
   atribuirFormaPagtoParaDto() {
+    debugger;
+    this.prePedidoDto.FormaPagtoCriacao.C_forma_pagto = this.C_forma_pagto;
     this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento = this.enumFormaPagto;
     this.prePedidoDto.VlTotalDestePedido = this.totalPedido();
     if (this.enumFormaPagto == 1) {
@@ -169,6 +172,12 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
       this.prePedidoDto.FormaPagtoCriacao.Qtde_Parcelas = this.qtde;
     }
 
+  }
+
+  enterFormaPagto(event: Event){
+    event.cancelBubble = true;
+    event.preventDefault();
+    this.C_forma_pagto = this.C_forma_pagto + "\r\n";
   }
 
   validarFormaPagto(mostrarMsg: boolean): boolean {
@@ -319,7 +328,8 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
       this.qtde = parseInt(opcaoPagto.slice(0, 2).trim());
       // this.valor = parseInt(this.opcaoPagto.replace('.', '').substring(6));
       //correção para não perder as casas decimais
-      this.valor = parseFloat(opcaoPagto.substring(7).trim().replace('.', '').replace(',', '.'));
+      this.valor = parseFloat(opcaoPagto.substring(7).trim().replace('.', '').replace(',', '')) /100;
+      debugger;
     }
   }
 

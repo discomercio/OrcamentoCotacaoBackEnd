@@ -197,7 +197,7 @@
                             {{this.prepedidoDto?.EnderecoEntrega?.EndEtg_uf}} -
                         </p>
                         <p class="C" style="display: inline-block">
-                            {{this.prepedidoDto?.EnderecoEntrega?.EndEtg_cep}}
+                            {{formatarEndereco.cep_formata(prepedidoDto?.EnderecoEntrega?.EndEtg_cep)}}
                         </p>
                         <p class="C">
                             {{this.prepedidoDto?.EnderecoEntrega?.EndEtg_descricao_justificativa}}
@@ -221,8 +221,8 @@
                     <!-- QTDE -->
                     <td class="MB" align="right" valign="bottom"><span class="PLTd">Qtd</span></td>
                     <!-- Preco RA -->
-                    <td  class="MB" align="right" valign="bottom" *ngIf="this.prepedidoDto?.PermiteRAStatus == '1'">
-                        <span  class="PLTd">Preço</span>
+                    <td class="MB" align="right" valign="bottom" *ngIf="this.prepedidoDto?.PermiteRAStatus == '1'">
+                        <span class="PLTd">Preço</span>
                     </td>
                     <!-- VlLista -->
                     <td class="MB" align="right" valign="bottom"><span class="PLTd">VL Lista</span></td>
@@ -251,16 +251,16 @@
                     <!-- QTDE -->
                     <td class="MDB" align="right"><input name="c_qtde" class="PLLd" style="width:21px;"
                             value='{{linha.Qtde}}' readonly tabindex=-1></td>
-                    
+
                     <!-- Preco RA -->
                     <td class="MDB" align="right" *ngIf="this.prepedidoDto?.PermiteRAStatus == '1'">
-                        <input  name="c_vl_NF" class="PLLd" style="width:62px;"
-                            value='{{moedaUtils.formatarMoedaSemPrefixo(linha.TotalItemRA)}}' readonly tabindex=-1>
+                        <input name="c_vl_NF" class="PLLd" style="width:62px;"
+                            value='{{moedaUtils.formatarMoedaSemPrefixo(linha.Preco)}}' readonly tabindex=-1>
                     </td>
                     <!-- VlLista -->
                     <td class="MDB" align="right">
                         <input name="c_preco_lista" class="PLLd" style="width:62px;"
-                            value='{{moedaUtils.formatarMoedaSemPrefixo(linha.Preco)}}' readonly tabindex=-1>
+                            value='{{moedaUtils.formatarMoedaSemPrefixo(linha.VlLista)}}' readonly tabindex=-1>
                     </td>
                     <!-- Desconto -->
                     <td class="MDB" align="right">
@@ -283,20 +283,22 @@
                     <td colspan="3" align="left">
                         <table cellspacing="0" cellpadding="0" width='100%' style="margin-top:4px;">
                             <tr>
-                                <td width="40%" align="left">&nbsp;</td>
+                                <td width="45%" align="left">&nbsp;</td>
                                 <td align="right" *ngIf="this.prepedidoDto?.PermiteRAStatus == '1'">
-                                        <table cellspacing="0" cellpadding="0">
-                                            <tr>
-                                                <td class="MTBE" align="left" nowrap><span class="PLTe">&nbsp;RA</span>
-                                                </td>
-                                                <td class="MTBD" align="right"><input name="c_perc_RT" id="c_perc_RT"
-                                                        class="PLLd" style="width:30px;"
-                                                        value='{{moedaUtils.formatarMoedaSemPrefixo(this.prepedidoDto.TotalFamiliaParcelaRA)}}'
-                                                        readonly tabindex=-1>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
+                                    <table cellspacing="0" cellpadding="0" style="margin-right: 10%;">
+                                        <tr>
+                                            <td class="MTBE" align="left" nowrap><span class="PLTe">&nbsp;RA</span>
+                                            </td>
+                                            <td class="MTBD" align="right">
+                                                <input name="c_perc_RT" id="c_perc_RT"
+                                                    [ngStyle]="{'color':verificaValor()?'green':'red'}" class="PLLd"
+                                                    style="width:95%;"
+                                                    value='{{moedaUtils.formatarValorDuasCasaReturnZero(this.prepedidoDto.TotalFamiliaParcelaRA)}}'
+                                                    readonly tabindex=-1>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
                                 <td align="right">
                                     <table cellspacing="0" cellpadding="0" align="center">
                                         <tr>
@@ -324,7 +326,7 @@
 
                     <!-- <td *ngIf="this.prepedidoDto?.PermiteRAStatus != '1'" colspan="4" class="MD" align="left">&nbsp;</td> -->
                     <td *ngIf="this.prepedidoDto?.PermiteRAStatus != '1'" align="left">&nbsp;</td>
-                    <td *ngIf="this.prepedidoDto?.PermiteRAStatus != '1'"  align="left">&nbsp;</td>
+                    <td *ngIf="this.prepedidoDto?.PermiteRAStatus != '1'" align="left">&nbsp;</td>
                     <td *ngIf="this.prepedidoDto?.PermiteRAStatus != '1'" align="left">&nbsp;</td>
                     <td *ngIf="this.prepedidoDto?.PermiteRAStatus != '1'" class="MD" align="left">&nbsp;</td>
                     <td class="MDB" align="right"><input name="c_total_geral" id="c_total_geral" class="PLLd"
@@ -343,7 +345,7 @@
                     <td class="MB" colspan="6" align="left">
                         <p class="Rf">Observações </p>
                         <textarea name="c_obs1" id="c_obs1" class="PLLe" rows="{{constantes.MAX_LINHAS_OBS1}}"
-                            style="width:99%;margin-left:2pt;" readonly
+                            style="width:99%;margin-left:2pt; resize: none;" readonly
                             tabindex=-1>{{this.prepedidoDto?.DetalhesPrepedido.Observacoes}} &nbsp;</textarea>
                         <!-- <span class="PLLe">{{this.prepedidoDto?.DetalhesPrepedido.Observacoes}} &nbsp;</span> -->
                     </td>
@@ -398,10 +400,13 @@
                 <tr>
                     <td align="left"><span class="Rf">Descrição da Forma de Pagamento</span></td>
                 </tr>
-                <tr>
+                <tr>                    
                     <td align="left">
-                        <span align="left" class="C">{{this.prepedidoDto.DetalhesPrepedido.DescricaoFormaPagamento}}
-                            &nbsp;</span>
+                            <textarea name="c_obs1" id="c_obs1" class="PLLe" rows="{{constantes.MAX_LINHAS_FORMA_PAGTO}}"
+                            style="width:99%;margin-left:2pt; resize: none;" readonly tabindex=-1>{{this.prepedidoDto?.DetalhesPrepedido.DescricaoFormaPagamento}} &nbsp;
+                        </textarea>
+                        <!-- <span align="left" class="C">{{this.prepedidoDto.DetalhesPrepedido.DescricaoFormaPagamento}}
+                            &nbsp;</span> -->
                     </td>
                 </tr>
 

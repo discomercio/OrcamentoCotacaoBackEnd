@@ -44,7 +44,7 @@ export class LoginformularioComponent extends TelaDesktopBaseComponent implement
     let msg = "";
     //document.getElementById("estilos").setAttribute('href', "assets/Unis.css");
     this.fazendoLogin = true;
-    this.autenticacaoService.authLogin(this.usuario.trim(), this.senha.trim(), this.lembrar,
+    this.autenticacaoService.authLogin(this.usuario.trim(), this.senha.trim().toUpperCase(), this.lembrar,
       () => { this.desligarFazendoLoginFOrmulario(); },
       this._snackBar,
       this.router, this.appComponent);

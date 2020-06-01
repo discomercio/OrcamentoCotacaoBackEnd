@@ -14,6 +14,10 @@ import { PedidoProdutosDtoPedido } from 'src/app/dto/pedido/detalhesPedido/Pedid
 import { TelaDesktopBaseComponent } from 'src/app/servicos/telaDesktop/telaDesktopBaseComponent';
 import { TelaDesktopService } from 'src/app/servicos/telaDesktop/telaDesktop.service';
 import { PedidoBuscarService } from 'src/app/servicos/pedido/pedido-buscar.service';
+import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
+import { MatDialog } from '@angular/material';
+import { AutenticacaoService } from 'src/app/servicos/autenticacao/autenticacao.service';
+import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-pedido-desktop',
@@ -29,11 +33,16 @@ export class PedidoDesktopComponent extends TelaDesktopBaseComponent implements 
     private readonly router: Router,
     public readonly impressaoService: ImpressaoService,
     telaDesktopService: TelaDesktopService,
-    private readonly location: Location) {
+    private readonly location: Location,
+    public readonly dialog: MatDialog,
+    private readonly autenticacaoService: AutenticacaoService) {
     super(telaDesktopService);
   }
   ngOnInit() {
-    
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+      return false;
+    };    
+    alert("voltar o filtro de pedido depois de testar");
   }
 
   formatarEndereco: FormatarEndereco = new FormatarEndereco();
@@ -55,16 +64,15 @@ export class PedidoDesktopComponent extends TelaDesktopBaseComponent implements 
   //parar imprimir (quer dizer, para ir para a versão de impressão)
   imprimir(): void {
     //versão para impressão somente com o pedido
-    
+
     //deixar a rota comentada, pois pode ser que no futuro seja utilizado
     //this.router.navigate(['/pedido/imprimir', this.pedido.NumeroPedido]);
-    
-     this.impressaoService.forcarImpressao=true;
-        setTimeout(()=>
-        {
-          window.print();
-          this.impressaoService.forcarImpressao=false;
-        }
+
+    this.impressaoService.forcarImpressao = true;
+    setTimeout(() => {
+      window.print();
+      this.impressaoService.forcarImpressao = false;
+    }
       , 1);
 
     //       return false;
@@ -100,7 +108,7 @@ export class PedidoDesktopComponent extends TelaDesktopBaseComponent implements 
   entregaImediata(): string {
     if (!this.pedido || !this.pedido.DetalhesNF)
       return "";
-   
+
     return this.pedido.DetalhesNF.EntregaImediata;
   }
 
@@ -144,6 +152,7 @@ export class PedidoDesktopComponent extends TelaDesktopBaseComponent implements 
   }
 
   voltar() {
+
     this.location.back();
   }
   //#endregion

@@ -45,8 +45,7 @@ export class AutenticacaoService {
     this.lembrarSenhaParaAlterarSenha = salvar;
     this.usuarioApelidoParaAlterarSenha = usuario;
     var key = this.gerarChave();
-    senha = this.CodificaSenha(senha.toUpperCase(), key);
-
+    senha = this.CodificaSenha(senha, key);
     this.salvar = salvar;
     this._NomeUsuario = null;
     let msg = "";
@@ -127,6 +126,12 @@ export class AutenticacaoService {
     );
     sessionStorage.setItem('token', "");
     localStorage.setItem('token', "");
+
+    // localStorage.clear();
+    // sessionStorage.clear();
+
+    // sessionStorage.removeItem('token');
+    // localStorage.removeItem('token');
   }
 
   public setarToken(token: string): void {
@@ -193,15 +198,14 @@ export class AutenticacaoService {
       let hexNumber = i_chave.toString(16);
 
       while (hexNumber.length < 2) {
-        hexNumber += "0";
+        hexNumber = hexNumber.padStart(2, '0');
       }
       destino += hexNumber;
     }
     while (destino.length < 30) {
       destino = "0" + destino;
     }
-    s_destino = "0x" + destino.toUpperCase();
-
+    s_destino = "0x" + destino;
     return s_destino;
   }
 
@@ -328,15 +332,25 @@ export class AutenticacaoService {
       this.CarregarIconUnis();
 
     }
-    if (this.loja == "202" ||
-      this.loja == "203" ||
-      this.loja == "204") {
+    else if(this.loja == "202"){
+      this._logo = "assets/bonshop.png";
       this._estilo = "assets/shopVendas.css";
-      //passar o logo tb
-      this._logo = "assets/Logo-ShopVendas.png";
 
+      this.CarregarIconBonshop();
+    }
+    else{
+      this._estilo = "assets/shopVendas.css";
+      this._logo = "assets/Logo-ShopVendas.png";
       this.CarregarIconShopVendas();
     }
+    // if (this.loja == "203" ||
+    //   this.loja == "204") {
+    //   this._estilo = "assets/shopVendas.css";
+    //   //passar o logo tb
+    //   this._logo = "assets/Logo-ShopVendas.png";
+
+    //   this.CarregarIconShopVendas();
+    // }
 
   }
   //fim
@@ -352,6 +366,13 @@ export class AutenticacaoService {
     const head = document.getElementsByTagName('head')[0];
     let favicon = document.getElementById('favicon') as HTMLLinkElement;
     favicon.href = 'assets/icones/ico-unis-16x16.ico';
+    head.appendChild(favicon);
+  }
+
+  private CarregarIconBonshop():void{
+    const head = document.getElementsByTagName('head')[0];
+    let favicon = document.getElementById('favicon') as HTMLLinkElement;
+    favicon.href = 'assets/icones/ico-bonshop.ico';//alterar
     head.appendChild(favicon);
   }
   /*
@@ -375,13 +396,16 @@ export class AutenticacaoService {
       this.loja == "208") {
       return "url('/assets/background-unis-filtro-branco80.jpg')";
     }
-    if (this.loja == "202" ||
-      this.loja == "203" ||
-      this.loja == "204") {
-
+    else{
       return "url('/assets/background-shopvendas.jpg')";
     }
+    // if (this.loja == "202" ||
+    //   this.loja == "203" ||
+    //   this.loja == "204") {
 
+    //   return "url('/assets/background-shopvendas.jpg')";
+    // }
+    
   }
   public buscarAlturaImg(): string {
     if (this.loja == "205" ||
@@ -390,11 +414,14 @@ export class AutenticacaoService {
       this.loja == "208") {
       return "calc(100vh - 53px)";
     }
-    if (this.loja == "202" ||
-      this.loja == "203" ||
-      this.loja == "204") {
+    else{
       return "calc(100vh - 53px)";
     }
+    // if (this.loja == "202" ||
+    //   this.loja == "203" ||
+    //   this.loja == "204") {
+    //   return "calc(100vh - 53px)";
+    // }
   }
 
   public buscarTamanhoImg(): string {
@@ -404,11 +431,14 @@ export class AutenticacaoService {
       this.loja == "208") {
       return "100%";
     }
-    if (this.loja == "202" ||
-      this.loja == "203" ||
-      this.loja == "204") {
+    else{
       return "100%";
     }
+    // if (this.loja == "202" ||
+    //   this.loja == "203" ||
+    //   this.loja == "204") {
+    //   return "100%";
+    // }
   }
 
 

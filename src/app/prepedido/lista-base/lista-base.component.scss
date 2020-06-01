@@ -12,7 +12,13 @@
   padding-right: 0em;
   text-align: left;
   background-color: $cor-fundo-listapedidos;
+  
 }
+
+.tabeladesktop th{
+  border: 20px solid transparent;
+}
+
 .mat-header-row th {
   font-weight: bold;
   //color: black;

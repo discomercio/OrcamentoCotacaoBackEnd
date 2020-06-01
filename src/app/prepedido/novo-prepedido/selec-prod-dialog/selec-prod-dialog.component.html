@@ -14,14 +14,13 @@
                         (keyup)="digitouProd($event)" appFocoAutomatico>
                 </mat-form-field>
 
-                <mat-form-field style="flex-grow: 0; flex-shrink: 0; ">                        
+                <mat-form-field style="flex-grow: 0; flex-shrink: 0;">                        
                     <input matInput type="number" name="qtde" placeholder="Quantidade" id="qtde" required [(ngModel)]="qtde"
-                        [value]="qtde" [ngModelOptions]="{standalone: true}">   
+                        [value]="qtde" [ngModelOptions]="{standalone: true}" (keyup)="verificaNegativo()">  
                         <mat-icon (click)="menos()">remove</mat-icon>      
-                        <mat-icon (click)="mais()">add</mat-icon>          
-                        <!-- <button onclick="menos()" class="a">-</button>
-                        <button onclick="mais()" class="b">+</button> -->
+                        <mat-icon (click)="mais()">add</mat-icon> 
                 </mat-form-field>
+                
             </div>
             <div *ngIf="!telaDesktop">
                 <mat-form-field>

@@ -56,7 +56,7 @@
                             <td align='left' style='width:6px;padding-bottom:4px'>
                             </td>
                             <!--retiramos o atributo "class='MD ME'" que estava colocando o "|" entre as datas  -->
-                            
+
                             <td align='center' valign='bottom' *ngIf="pedido.StatusHoraPedido.Entregue_Data != null && 
                             pedido.StatusHoraPedido.PedidoRecebidoStatus == constantes.COD_ST_PEDIDO_RECEBIDO_SIM"
                                 style='border-width:2px; padding-bottom: 4px' class='MD ME'
@@ -101,7 +101,32 @@
         <br>
 
         <!--  EXIBE LINKS PARA A FAMÍLIA DE PEDIDOS?   -->
-
+        <table width='649' class='Q' cellspacing='0' *ngIf="pedido?.Lista_NumeroPedidoFilhote[0].length > 1">
+            <tr>
+                <td align='left'>
+                    <p class='Rf'>FAMÍLIA DE PEDIDOS</p>
+                    <table width='100%' class='QT' cellspacing='0'>
+                        <tr></tr>
+                        <!-- preciso verificar a quantidade por linha para quebrar -->
+                        <!-- '/pedido/detalhes', linha.NumeroPedido -->
+                        <tr *ngFor="let linha of pedido?.Lista_NumeroPedidoFilhote">
+                            <td *ngFor="let filhote of linha | slice:0:8" width='12.5%' class='L'
+                                style='text-align:left;color:black;' align='left'>
+                                <a [routerLink]="['/pedido/detalhes/', filhote]" title='clique para consultar o pedido'
+                                    class='L' style='color:black;'>
+                                    <span *ngIf="filhote == pedido?.NumeroPedido" style='color:gray;'>
+                                        {{filhote}}</span>
+                                    <span *ngIf="filhote != pedido?.NumeroPedido" style='color:black;'>
+                                        {{filhote}}</span>
+                                </a>
+                            </td>
+                            <td align='left'>&nbsp;</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <br>
 
         <!--  L O J A   -->
         <table width="649" class="Q" cellspacing="0">
@@ -332,12 +357,13 @@
                             <td *ngIf="pedido?.OpcaoPossuiRA == 'S'" align="right">
                                 <table cellspacing="0" cellpadding="0" style="margin-right:2px;">
                                     <tr>
-                                        <td class="MTBE" align="left" nowrap><span class="PLTe">&nbsp;RA Bruto</span>
+                                        <td class="MTBE" align="left" nowrap><span class="PLTe">&nbsp;RA
+                                                Bruto</span>
                                         </td>
                                         <td class="MTBD" align="right"><input name="c_total_RA" id="c_total_RA"
                                                 class="PLLd" style="width:70px;"
                                                 [ngStyle]="{'color': pedido.TotalFamiliaParcelaRA >= 0 ? 'green':'red'}"
-                                                value='{{moedaUtils.formatarMoedaSemPrefixo(pedido.TotalFamiliaParcelaRA)}}'
+                                                value='{{moedaUtils.formatarValorDuasCasaReturnZero(pedido.TotalFamiliaParcelaRA)}}'
                                                 readonly tabindex=-1></td>
                                     </tr>
                                 </table>
@@ -382,7 +408,7 @@
                 <td class="MB" colspan="6" align="left">
                     <p class="Rf">Observações </p>
                     <textarea name="c_obs1" id="c_obs1" class="PLLe notPrint" rows="{{constantes.MAX_LINHAS_OBS1}}"
-                        style="width:99%;margin-left:2pt;" readonly
+                        style="width:99%;margin-left:2pt; resize: none;" readonly
                         tabindex=-1>{{pedido?.DetalhesNF.Observacoes}} &nbsp;</textarea>
                     <span class="PLLe notVisible">{{pedido?.DetalhesNF.Observacoes}} &nbsp;</span>
                 </td>
@@ -391,7 +417,7 @@
                 <td class="MB" colspan="7" align="left">
                     <p class="Rf">Constar na NF</p>
                     <textarea name="c_nf_texto" id="c_nf_texto" class="PLLe notPrint"
-                        rows="{{constantes.MAX_LINHAS_NF_TEXTO_CONSTAR}}" style="width:641px;margin-left:2pt;" readonly
+                        rows="{{constantes.MAX_LINHAS_NF_TEXTO_CONSTAR}}" style="width:641px;margin-left:2pt;resize: none;" readonly
                         tabindex=-1>{{pedido?.DetalhesNF.ConstaNaNF}} &nbsp;</textarea>
                     <span class="PLLe notVisible">{{pedido?.DetalhesNF.ConstaNaNF}} &nbsp;</span>
                 </td>
@@ -469,7 +495,7 @@
                 <td class="MC" align="left">
                     <p class="Rf">Informações Sobre Análise de Crédito</p>
                     <textarea name="c_forma_pagto" id="c_forma_pagto" class="PLLe notPrint"
-                        rows="{{constantes.MAX_LINHAS_FORMA_PAGTO}}" style="width:642px;margin-left:2pt;" readonly
+                        rows="{{constantes.MAX_LINHAS_FORMA_PAGTO}}" style="width:642px;margin-left:2pt;resize: none;" readonly
                         tabindex=-1>{{pedido.DetalhesFormaPagto.InfosAnaliseCredito}}</textarea>
                     <span class="PLLe notVisible">{{pedido.DetalhesFormaPagto.InfosAnaliseCredito}}</span>
                 </td>
@@ -481,14 +507,19 @@
         <br>
         <table width="649" class="Q" cellspacing="0">
             <tr>
-                <td width="16.67%" class="MD" align="left" valign="bottom"><span class="Rf">Status de Pagto</span></td>
+                <td width="16.67%" class="MD" align="left" valign="bottom"><span class="Rf">Status de
+                        Pagto</span></td>
                 <td width="16.67%" class="MD" align="right" valign="bottom"><span class="Rf">VL
                         Total&nbsp;&nbsp;(Família)&nbsp;</span></td>
-                <td width="16.67%" class="MD" align="right" valign="bottom"><span class="Rf">VL Pago&nbsp;</span></td>
-                <td width="16.67%" class="MD" align="right" valign="bottom"><span class="Rf">VL Devoluções&nbsp;</span>
+                <td width="16.67%" class="MD" align="right" valign="bottom"><span class="Rf">VL
+                        Pago&nbsp;</span></td>
+                <td width="16.67%" class="MD" align="right" valign="bottom"><span class="Rf">VL
+                        Devoluções&nbsp;</span>
                 </td>
-                <td width="16.67%" class="MD" align="right" valign="bottom"><span class="Rf">VL Perdas&nbsp;</span></td>
-                <td width="16.65%" align="right" valign="bottom"><span class="Rf">Saldo a Pagar&nbsp;</span></td>
+                <td width="16.67%" class="MD" align="right" valign="bottom"><span class="Rf">VL
+                        Perdas&nbsp;</span></td>
+                <td width="16.65%" align="right" valign="bottom"><span class="Rf">Saldo a
+                        Pagar&nbsp;</span></td>
             </tr>
             <tr>
                 <td width="16.67%" class="MD" align="left"><span class="C"
@@ -498,16 +529,16 @@
                         class="Cd">{{moedaUtils.formatarMoedaSemPrefixo(pedido.DetalhesFormaPagto.VlTotalFamilia)}}</span>
                 </td>
                 <td width="16.67%" align="right" class="MD"><span class="Cd"
-                        [ngStyle]="{'color': pedido.DetalhesFormaPagto.VlPago >=0?'black':'red'}">{{moedaUtils.formatarMoedaSemPrefixo(pedido.DetalhesFormaPagto.VlPago)}}</span>
+                        [ngStyle]="{'color': pedido.DetalhesFormaPagto.VlPago >=0?'black':'red'}">{{moedaUtils.formatarValorDuasCasaReturnZero(pedido.DetalhesFormaPagto.VlPago)}}</span>
                 </td>
                 <td width="16.67%" align="right" class="MD"><span
-                        class="Cd">{{moedaUtils.formatarMoedaSemPrefixo(pedido.DetalhesFormaPagto.VlDevolucao)}}</span>
+                        class="Cd">{{moedaUtils.formatarValorDuasCasaReturnZero(pedido.DetalhesFormaPagto.VlDevolucao)}}</span>
                 </td>
                 <td width="16.67%" align="right" class="MD"><span
-                        class="Cd">{{moedaUtils.formatarMoedaSemPrefixo(pedido.DetalhesFormaPagto.VlPerdas)}}</span>
+                        class="Cd">{{moedaUtils.formatarValorDuasCasaReturnZero(pedido.DetalhesFormaPagto.VlPerdas)}}</span>
                 </td>
                 <td width="16.65%" align="right"><span class="Cd"
-                        [ngStyle]="{'color': pedido.DetalhesFormaPagto.SaldoAPagar >=0?'black':'red'}">{{moedaUtils.formatarMoedaSemPrefixo(pedido.DetalhesFormaPagto.SaldoAPagar)}}</span>
+                        [ngStyle]="{'color': pedido.DetalhesFormaPagto.SaldoAPagar >=0?'black':'red'}">{{moedaUtils.formatarValorDuasCasaReturnZero(pedido.DetalhesFormaPagto.SaldoAPagar)}}</span>
                 </td>
             </tr>
         </table>
@@ -591,7 +622,8 @@
                 </td>
                 <td align="right" style="width:65px;">
                     <p class="Rf">FRETE (R$)&nbsp;</p>
-                    <p class="Cd">{{moedaUtils.formatarMoedaSemPrefixo(pedido.DetalhesFormaPagto.VlFrete)}}</p>
+                    <p class="Cd">
+                        {{moedaUtils.formatarMoedaSemPrefixo(pedido.DetalhesFormaPagto.VlFrete)}}</p>
                 </td>
             </tr>
         </table>
@@ -636,12 +668,14 @@
                                     <td class="C MD MB tdWithPadding" width="33%" align="left" valign="top"><span
                                             class="Rf" style="margin-left:0px;">EM:</span>&nbsp;
                                         {{dataFormatarTelaHora(ocorrencia.Dt_Hr_Cadastro)}}
-                                        {{dataformatarTelaHoraSemSegundos(ocorrencia.Dt_Hr_Cadastro)}} &nbsp;
+                                        {{dataformatarTelaHoraSemSegundos(ocorrencia.Dt_Hr_Cadastro)}}
+                                        &nbsp;
                                     </td>
                                     <td class="C MB tdWithPadding" align="left" valign="top"
-                                        [ngStyle]="{'color': ocorrencia.Finalizado_Data_Hora?'green':'red'}"><span
-                                            class="Rf"
-                                            style="margin-left:0px;">SITUAÇÃO:</span>&nbsp;{{ocorrencia.Situacao}}</td>
+                                        [ngStyle]="{'color': ocorrencia.Finalizado_Data_Hora?'green':'red'}">
+                                        <span class="Rf"
+                                            style="margin-left:0px;">SITUAÇÃO:</span>&nbsp;{{ocorrencia.Situacao}}
+                                    </td>
                                 </tr>
                             </table>
                         </td>
@@ -660,7 +694,7 @@
                                 </tr>
                                 <tr>
                                     <td class="C MB" width="100%" align="left" valign="top"><span class="Rf"
-                                            style="margin-left:0px;">OCORRÊNCIA:</span>&nbsp;{{ocorrencia.Texto_Ocorrencia}}
+                                            style="margin-left:0px;">OCORRÊNCIA:</span>&nbsp;{{ocorrencia.Tipo_Ocorrencia}}
                                     </td>
                                 </tr>
                             </table>
@@ -698,7 +732,8 @@
                                                         (Loja {{mensagem.Loja}})
                                                     </ng-container>
                                                 </td>
-                                                <td class="C MC tdWithPadding" align="left" valign="top">
+                                                <td class="C MC" align="left" valign="top"
+                                                    style="white-space: pre-line;">
                                                     {{mensagem.Texto_Mensagem}}
                                                 </td>
                                             </tr>
@@ -745,7 +780,8 @@
                                                     <td class="C MD tdWithPadding" width="50%" align="left"
                                                         valign="top">
                                                         <span class="Rf" style="margin-left:0px;">FINALIZADA
-                                                            POR:</span>&nbsp;{{ocorrencia.Finalizado_Usuario}}</td>
+                                                            POR:</span>&nbsp;{{ocorrencia.Finalizado_Usuario}}
+                                                    </td>
                                                     <td class="C tdWithPadding" width="50%" align="left" valign="top">
                                                         <span class="Rf" style="margin-left:0px;">EM:</span>&nbsp;
                                                         {{dataFormatarTelaHora(ocorrencia.Finalizado_Data_Hora)}}
@@ -758,7 +794,8 @@
                                     <tr>
                                         <td class="C MB" width="100%" align="left" valign="top"><span class="Rf"
                                                 style="margin-left:0px;">TIPO DE
-                                                OCORRÊNCIA:</span>&nbsp;{{ocorrencia.Tipo_Ocorrencia}}</td>
+                                                OCORRÊNCIA:</span>&nbsp;{{ocorrencia.Tipo_Ocorrencia}}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td class="C MB" width="100%" align="left" valign="top"><span class="Rf"
@@ -791,7 +828,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="4" class="ME MD MC MB" align="left"><span class="Rf">BLOCO DE NOTAS</span></td>
+                    <td colspan="4" class="ME MD MC MB" align="left"><span class="Rf">BLOCO DE
+                            NOTAS</span></td>
                 </tr>
 
                 <tr class="notVisible" *ngIf="pedido.ListaBlocoNotas.length == 0">
@@ -810,7 +848,7 @@
                             {{nota.Usuario}} <ng-container *ngIf="nota?.Loja != '' && nota?.Loja != null">(Loja
                                 {{nota.Loja}})</ng-container>
                         </td>
-                        <td colspan="2" class="C MD MB" align="left" valign="top">
+                        <td colspan="2" class="C MD MB" align="left" valign="top" style="white-space: pre-line;">
                             {{nota.Mensagem}}
                         </td>
                     </ng-container>
@@ -819,41 +857,48 @@
         </div>
 
 
+        <div *ngIf="!impressaoService.emImpressao() || impressaoService.imprimirNotasDev()">
+            <ng-container *ngIf="pedido.ListaBlocoNotasDevolucao.length > 0">
+                <br>
+                <table id="tableBlocoNotasItemDevolvido" class="notPrint" width="649" cellspacing="0" cellpadding="1"
+                    border="0">
+                    <tr *ngIf="!impressaoService.emImpressao()">
+                        <td colspan="3">
+                            <span style="float: right">
+                                <mat-checkbox class="checkboxes"
+                                    title="configura as mensagens do bloco de notas de itens devolvidos para serem impressas ou não"
+                                    (change)="imprimirNotasDevAlterado()"
+                                    [checked]="impressaoService.imprimirNotasDev()">
+                                    Incluir bloco de notas de devolução na impressão
+                                </mat-checkbox>
+                            </span>
+                        </td>
+                    </tr>
 
-        <ng-container *ngIf="pedido.ListaBlocoNotasDevolucao.length > 0">
-            <br>
-            <table id="tableBlocoNotasItemDevolvido" class="notPrint" width="649" cellspacing="0" cellpadding="1"
-                border="0">
-                <tr *ngIf="!impressaoService.emImpressao()">
-                    <td colspan="3">
-                        <span style="float: right">
-                            <mat-checkbox class="checkboxes"
-                                title="configura as mensagens do bloco de notas de itens devolvidos para serem impressas ou não"
-                                (change)="imprimirNotasDevAlterado()" [checked]="impressaoService.imprimirNotasDev()">
-                                Incluir bloco de notas de devolução na impressão
-                            </mat-checkbox>
-                        </span>
-                    </td>
-                </tr>
+                    <tr>
+                        <td colspan="3" class="ME MD MC MB" align="left"><span class="Rf">BLOCO DE NOTAS
+                                (DEVOLUÇÃO DE
+                                MERCADORIAS)</span></td>
+                    </tr>
+                    <!-- {{dev.Dt_Hr_Cadastro}} -->
+                    <tr *ngFor="let dev of pedido.ListaBlocoNotasDevolucao">
+                        <td class="C ME MD MB" style="width:60px;" align="center" valign="top">
+                            {{dataFormatarTela(dev.Dt_Hr_Cadastro)}}
+                            {{dataformatarTelaHoraSemSegundos(dev.Dt_Hr_Cadastro)}}
+                        </td>
+                        <td class="C MD MB" style="width:80px;" align="center" valign="top">
+                            {{dev.Usuario}} <ng-container *ngIf="dev.Loja">(Loja {{dev.Loja}})
+                            </ng-container>
+                        </td>
+                        <td class="C MD MB" style="width:499px;" align="left" valign="top"
+                            style="white-space: pre-line;">
+                            {{dev.Mensagem}}</td>
+                    </tr>
 
-                <tr>
-                    <td colspan="3" class="ME MD MC MB" align="left"><span class="Rf">BLOCO DE NOTAS (DEVOLUÇÃO DE
-                            MERCADORIAS)</span></td>
-                </tr>
-                <!-- {{dev.Dt_Hr_Cadastro}} -->
-                <tr *ngFor="let dev of pedido.ListaBlocoNotasDevolucao">
-                    <td class="C ME MD MB" style="width:60px;" align="center" valign="top">
-                        {{dataFormatarTela(dev.Dt_Hr_Cadastro)}} {{dataformatarTelaHoraSemSegundos(dev.Dt_Hr_Cadastro)}}
-                    </td>
-                    <td class="C MD MB" style="width:80px;" align="center" valign="top">
-                        {{dev.Usuario}} <ng-container *ngIf="dev.Loja">(Loja {{dev.Loja}})</ng-container>
-                    </td>
-                    <td class="C MD MB" style="width:499px;" align="left" valign="top">
-                        {{dev.Mensagem}}</td>
-                </tr>
+                </table>
+            </ng-container>
+        </div>
 
-            </table>
-        </ng-container>
 
 
     </form>

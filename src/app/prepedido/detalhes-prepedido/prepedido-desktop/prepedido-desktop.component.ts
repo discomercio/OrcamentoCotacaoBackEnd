@@ -9,6 +9,7 @@ import { Constantes } from 'src/app/dto/Constantes';
 import { StringUtils } from 'src/app/utils/stringUtils';
 import { ClienteCadastroUtils } from 'src/app/dto/AngularClienteCadastroUtils/ClienteCadastroUtils';
 import { ImpressaoService } from 'src/app/utils/impressao.service';
+import { FormatarEndereco } from 'src/app/utils/formatarEndereco';
 
 @Component({
   selector: 'app-prepedido-desktop',
@@ -16,6 +17,7 @@ import { ImpressaoService } from 'src/app/utils/impressao.service';
   styleUrls: ['./prepedido-desktop.component.scss']
 })
 export class PrepedidoDesktopComponent extends TelaDesktopBaseComponent implements OnInit {
+  formatarEndereco: FormatarEndereco = new FormatarEndereco();
 
   constructor(
     telaDesktopService: TelaDesktopService,
@@ -88,8 +90,16 @@ export class PrepedidoDesktopComponent extends TelaDesktopBaseComponent implemen
     return this.prepedidoDto.DetalhesPrepedido.EntregaImediata;
   }
 
-  editar() {    
-    this.router.navigate(['/novo-prepedido/confirmar-cliente', 
+  editar() {
+    this.router.navigate(['/novo-prepedido/confirmar-cliente',
       this.stringUtils.retorna_so_digitos(this.prepedidoDto.DadosCliente.Cnpj_Cpf)]);
+  }
+
+  verificaValor() {
+    debugger;
+    if (this.prepedidoDto.TotalFamiliaParcelaRA >= 0)
+      return true
+    else
+      return false;
   }
 }

@@ -75,7 +75,7 @@
                     <mat-form-field floatLabel="floatLabel()" style="width: 25ch;">
                         <mat-label>Valor a vista *</mat-label>
                         <mat-select [(ngModel)]="opcaoPagtoAvista" [ngModelOptions]="{standalone: true}"
-                        (ngModelChange)="RecalcularListaProdutos()">
+                            (ngModelChange)="RecalcularListaProdutos()">
                             <mat-option>Selecione</mat-option>
                             <mat-option *ngFor="let i of lstMsg" [value]="i">
                                 {{i}}
@@ -99,8 +99,8 @@
                     <mat-form-field sfloatLabel="floatLabel()" style="width: 25ch;">
                         <mat-label>Parcelamento *</mat-label>
                         <mat-select [(ngModel)]="opcaoPagtoParcUnica" [ngModelOptions]="{standalone: true}"
-                        (ngModelChange)="RecalcularListaProdutos()"> 
-                        <!-- (ngModelChange)="recalcularProdutosComCoeficiente()" -->
+                            (ngModelChange)="RecalcularListaProdutos()">
+                            <!-- (ngModelChange)="recalcularProdutosComCoeficiente()" -->
                             <mat-option>Selecione</mat-option>
                             <mat-option *ngFor="let i of lstMsg" [value]="i">
                                 {{i}}
@@ -130,8 +130,8 @@
                     <mat-form-field floatLabel="floatLabel()" style="width: 25ch;">
                         <mat-label>Parcelamento *</mat-label>
                         <mat-select [(ngModel)]="opcaoPagtoParcComEntrada" [ngModelOptions]="{standalone: true}"
-                        (ngModelChange)="RecalcularListaProdutos()">
-                        <!-- (ngModelChange)="recalcularProdutosComCoeficiente()" -->
+                            (ngModelChange)="RecalcularListaProdutos()">
+                            <!-- (ngModelChange)="recalcularProdutosComCoeficiente()" -->
                             <mat-option>Selecione</mat-option>
                             <mat-option *ngFor="let i of lstMsg" [value]="i">
                                 {{i}}
@@ -148,9 +148,9 @@
                         </mat-select>
                     </mat-form-field>
                     <!-- dias para vencimento  -->
-                    
+
                     <mat-form-field class="quantidade"
-                    *ngIf="!!meioPagtoEntradaPrest && meioPagtoEntradaPrest != 5 && meioPagtoEntradaPrest != 7">
+                        *ngIf="!!meioPagtoEntradaPrest && meioPagtoEntradaPrest != 5 && meioPagtoEntradaPrest != 7">
                         <mat-label>Dias para vencimento Prest </mat-label>
                         <input [(ngModel)]="diasVenc" [ngModelOptions]="{standalone: true}" matInput type="text"
                             required [textMask]="{mask: mascaraNum}">
@@ -185,8 +185,8 @@
                     <mat-form-field floatLabel="floatLabel()" style="width: 25ch;">
                         <mat-label>Parcelamento *</mat-label>
                         <mat-select [(ngModel)]="opcaoPagtoParcCartaoInternet" [ngModelOptions]="{standalone: true}"
-                        (ngModelChange)="RecalcularListaProdutos()">
-                        <!-- (ngModelChange)="recalcularProdutosComCoeficiente()" -->
+                            (ngModelChange)="RecalcularListaProdutos()">
+                            <!-- (ngModelChange)="recalcularProdutosComCoeficiente()" -->
                             <mat-option>Selecione</mat-option>
                             <mat-option *ngFor="let i of lstMsg" [value]="i">
                                 {{i}}
@@ -200,8 +200,8 @@
                     <mat-form-field floatLabel="floatLabel()" style="width: 25ch;">
                         <mat-label>Parcelamento *</mat-label>
                         <mat-select [(ngModel)]="opcaoPagtoParcCartaoMaquineta" [ngModelOptions]="{standalone: true}"
-                        (ngModelChange)="RecalcularListaProdutos()">
-                        <!-- (ngModelChange)="recalcularProdutosComCoeficiente()" -->
+                            (ngModelChange)="RecalcularListaProdutos()">
+                            <!-- (ngModelChange)="recalcularProdutosComCoeficiente()" -->
                             <mat-option>Selecione</mat-option>
                             <mat-option *ngFor="let i of lstMsg" [value]="i">
                                 {{i}}
@@ -211,16 +211,23 @@
                 </div>
 
 
-
+                <mat-form-field class="edicao-endereco" floatLabel="floatLabel()" style="width: 25ch;">
+                    <textarea matInput type="text" placeholder="Descrição da Forma de Pagamento"
+                        [ngModelOptions]="{standalone: true}" (keydown.enter)="enterFormaPagto($event)"
+                        [(ngModel)]="C_forma_pagto"
+                        rows="{{constantes.MAX_LINHAS_FORMA_PAGTO}}"></textarea>
+                </mat-form-field>
 
                 <!-- fim Gabriel -->
             </div>
-            <div>
-                <strong>Total do pedido: {{moedaUtils.formatarMoedaSemPrefixo(totalPedido())}}</strong>
+            <div id="teste">
+                <span *ngIf="prePedidoDto.PermiteRAStatus == 1">
+                    <strong>Total do pedido: {{moedaUtils.formatarMoedaSemPrefixo(prePedidoDto.ValorTotalDestePedidoComRA)}}</strong>
+                </span>
+                <span *ngIf="prePedidoDto.PermiteRAStatus == 0">
+                    <strong>Total do pedido: {{moedaUtils.formatarMoedaSemPrefixo(prePedidoDto.VlTotalDestePedido)}}</strong>
+                </span>
             </div>
-
-
-
         </article>
         <!-- <footer>
             <a mat-raised-button color="accent" (click)="voltar()">

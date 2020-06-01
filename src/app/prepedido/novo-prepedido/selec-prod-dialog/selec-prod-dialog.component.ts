@@ -34,8 +34,8 @@ export class SelecProdDialogComponent extends TelaDesktopBaseComponent implement
     this.limiteTela = this.limiteInicial;
 
   }
-  
-  
+
+
   ngOnInit() {
     this.produto = ProdutoTela.FabrProd(this.selecProdInfoPassado.Fabricante, this.selecProdInfoPassado.Fabricante_Nome,
       this.selecProdInfoPassado.Produto);
@@ -45,7 +45,7 @@ export class SelecProdDialogComponent extends TelaDesktopBaseComponent implement
     }
     this.qtde = 1;
     this.transferirDadosArray();
-    
+
   }
 
 
@@ -115,7 +115,7 @@ export class SelecProdDialogComponent extends TelaDesktopBaseComponent implement
       this.msgProdNaoEncontrado = "Produto não encontrado!";
   }
 
-  
+
 
 
   //precisamos disto para acertar o foco
@@ -128,20 +128,32 @@ export class SelecProdDialogComponent extends TelaDesktopBaseComponent implement
   //     this.digitadoCx.nativeElement.focus();
   //   }, 100);
   // }
+  verificaNegativo() {
+    if (!Number.isInteger(this.qtde))
+      this.qtde = 1;
+    if (this.qtde < 0)
+      this.qtde = 1;
 
+  }
 
   mais() {
+    debugger;
     var atual = this.qtde;
     var novo = atual - (-1); //Evitando Concatenacoes
     this.qtde = novo;
   }
 
-  menos() {
+  public menos() {
+    debugger;
     var atual = this.qtde;
     if (atual > 0) { //evita números negativos
       var novo = atual - 1;
       this.qtde = novo;
-    }
+    }    
+    // if (this.qtde >= 0)
+    //   this.qtde = 1;
+
+    
   }
 
   public keydownProduto(event: KeyboardEvent): void {
@@ -171,7 +183,7 @@ export class SelecProdDialogComponent extends TelaDesktopBaseComponent implement
   }
 
   onAdicionarClick(): void {
-//afazer: colocar um limitador para 12 itens no máximo
+    //afazer: colocar um limitador para 12 itens no máximo
 
 
     if (!this.produto || this.produto === "") {

@@ -8,6 +8,8 @@ import { CepDialogComponent } from '../cep-dialog/cep-dialog.component';
 import { CepDto } from 'src/app/dto/Cep/CepDto';
 import { EnderecoEntregaDtoClienteCadastro } from 'src/app/dto/ClienteCadastro/EnderecoEntregaDTOClienteCadastro';
 import { ConfirmarEnderecoComponent } from 'src/app/prepedido/novo-prepedido/confirmar-endereco/confirmar-endereco.component';
+import { $ } from 'protractor';
+
 
 @Component({
   selector: 'app-cep',
@@ -25,14 +27,14 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+
   }
 
 
   //sempre usamos no modo auto
   public floatLabel(): string {
     return "auto";
-    
+
   }
 
 
@@ -72,10 +74,10 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
     this.Complemento = "";
     this.Numero = "";
 
-    this.temCidade = true;
-    this.temBairro = true;
-    this.temEndereco = true;
-    this.temUf = true;
+    this.temCidade = false;
+    this.temBairro = false;
+    this.temEndereco = false;
+    this.temUf = false;
   }
 
   public temEndereco: boolean = true;
@@ -84,6 +86,7 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
   public temUf: boolean = true;
   //saiu do campo de CEP, vamos carregar o endereco
   saiuCep() {
+    
     //se vazio, não damos nenhuma mensagem
     if (this.Cep == "" || this.Cep == 'undefined') {
       //nao avisamos
@@ -108,7 +111,6 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
           this.mostrarCepNaoEncontrado();
           return;
         }
-
         //recebemos um endereço
         const end = r[0];
         if (!!end.Bairro) {
@@ -136,8 +138,18 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
       });
   }
 
+  enterCep(event: Event) {
+    document.getElementById("numero").focus();
+      event.cancelBubble = true;
+      event.preventDefault();
+      // event.srcElement
+      
+  }
+
   //para acessar a caixa de diálogo
   buscarCep() {
+    debugger;
+    
     this.zerarCamposEndEntrega();
 
     let options: any = {
@@ -159,7 +171,6 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         let end: CepDto = dialogRef.componentInstance.lstEnderecos[dialogRef.componentInstance.endereco_selecionado];
-
         if (!!end.Endereco.trim()) {
           this.Endereco = end.Endereco;
           this.temEndereco = true;
@@ -190,6 +201,6 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
       }
     });
   }
-
+  
 
 }

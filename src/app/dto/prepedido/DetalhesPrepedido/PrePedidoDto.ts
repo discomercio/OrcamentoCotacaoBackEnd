@@ -8,7 +8,7 @@ export class PrePedidoDto {
     CorHeader:string;
     TextoHeader:string;
     CanceladoData:string;
-    NumeroPrePedido: string;
+    NumeroPrePedido: string;    
     //StatusHoraPedido: StatusPedidoDtoPedido;//Verificar se todos pedidos marcam a data também
     DataHoraPedido: string;
     Hora_Prepedido:string;

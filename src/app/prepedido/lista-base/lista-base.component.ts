@@ -171,6 +171,7 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
   }
   cliqueLinha(linha: any) {
     //temos que ignorar se tiver clicado sobre a lata de lixo!
+    debugger;
     if (this.emRemoverPrepedido)
       return;
     if (linha.NumeroPedido) {
