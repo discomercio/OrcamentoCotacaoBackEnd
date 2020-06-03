@@ -6,6 +6,7 @@ import { ImpressaoService } from './utils/impressao.service';
 import { DOCUMENT } from '@angular/common';
 import * as jtw_decode from 'jwt-decode';
 import { AlertaService } from './utils/alert-dialog/alerta.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -20,12 +21,17 @@ export class AppComponent implements OnInit {
     public readonly impressaoService: ImpressaoService,
     private readonly router: Router) {
     telaDesktopService.telaAtual$.subscribe(r => this.telaDesktop = r);
-    
+
   }
   public logo: string = null;
 
 
   ngOnInit(): void {
+
+    //proteção para não publicar se a verificação da versão da API não estiver correta
+    if (environment.production && (environment.versaoApi == 'DEBUG' || environment.versaoApi == 'SUBSTITUIR_VERSAO_API')) {
+      alert("Ocorreu algum erro no processo de compilação. Por favor, avise o suporte técnico.")
+    }
 
     this.carregarEstilo(false);
 
@@ -102,12 +108,12 @@ export class AppComponent implements OnInit {
     //   this.logo = null;
     //   this.carregarEstilo(false);
     // }, 1);
-    
+
     AlertaService.mostrandoErroNaoAutorizado = false;
     this.router.navigateByUrl("/login");
 
     // location.reload();
-  }       
+  }
 
   title = 'Sistema de pré-pedidos';
 }

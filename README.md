@@ -1,6 +1,6 @@
 # para compilar:
-ng build --prod
-e copiar arclube\PrepedidoSpa\dist\pre-pedido
+CompilarPrepedidoSpaApi.bat
+e copiar .CompilarPrepedidoSpaApiResultado
 para its-appdev C:\inetpub\wwwroot\arclubeprepedidos
 
 # PrePedido

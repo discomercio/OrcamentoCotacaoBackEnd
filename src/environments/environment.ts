@@ -2,6 +2,8 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+//a veriável versaoApi tem um processo de compilacao proprio, veja em CompilarPrepedidoSpaApi.bat
+
 export const environment = {
   autenticaStorageSession: false, //se false, gaurda no localstorage (o usuário pode escolher na tela)
   minutosRenovarTokenAntesExpirar: 60*24*4, //token emitido com 7 dias, renovamos 4 dais antes de vencer

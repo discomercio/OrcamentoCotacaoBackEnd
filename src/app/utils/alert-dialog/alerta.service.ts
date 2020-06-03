@@ -79,7 +79,10 @@ export class AlertaService {
       //412, erro de versão
       if (error.status == 412) {
         let versao = error.headers.get("X-API-Version");
-        if (versao != null && versao.trim() != "") {
+        if (versao == null) {
+          versao = "";
+        }
+        if (versao.trim() != "") {
           versao = " (" + versao + ")";
         }
         this.mostrarMensagemComLargura("Uma nova versão do sistema está disponível" + versao + ". Clique em OK para carregar a nova versão.", "250px", () => {
