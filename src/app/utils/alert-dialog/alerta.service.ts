@@ -77,19 +77,8 @@ export class AlertaService {
       }
 
       //412, erro de versão
-      if (error.status == 412) {
-        let versao = error.headers.get("X-API-Version");
-        if (versao == null) {
-          versao = "";
-        }
-        if (versao.trim() != "") {
-          versao = " (" + versao + ")";
-        }
-        this.mostrarMensagemComLargura("Uma nova versão do sistema está disponível" + versao + ". Clique em OK para carregar a nova versão.", "250px", () => {
-          window.location.reload();
-        });
+      if (this.mostrarErro412(error))
         return;
-      }
 
       //erro inesperado Favor entrar em contato com o suporte técnico + status.
       this.mostrarMensagemComLargura(
@@ -111,9 +100,22 @@ export class AlertaService {
   }
 
 
-
-
-
+  public mostrarErro412(error: HttpErrorResponse): boolean {
+    if (error.status == 412) {
+      let versao = error.headers.get("X-API-Version");
+      if (versao == null) {
+        versao = "";
+      }
+      if (versao.trim() != "") {
+        versao = " (" + versao + ")";
+      }
+      this.mostrarMensagemComLargura("Uma nova versão do sistema está disponível" + versao + ". Clique em OK para carregar a nova versão.", "250px", () => {
+        window.location.reload();
+      });
+      return true;
+    }
+    return false;
+  }
 }
 
 

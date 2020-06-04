@@ -11,6 +11,7 @@ import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { AppComponent } from 'src/app/app.component';
 import { query } from '@angular/animations';
+import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
 
 /*
 precisa instalar:
@@ -23,7 +24,8 @@ npm i jwt-decode --save
 })
 export class AutenticacaoService {
 
-  constructor(private readonly http: HttpClient, private readonly location: Location) {
+  constructor(private readonly http: HttpClient, private readonly location: Location,
+    private readonly alertaService: AlertaService) {
     this.carregarLayout();
   }
 
@@ -95,6 +97,8 @@ export class AutenticacaoService {
         ,
         error: (e) => {
           desligarFazendoLogin();
+          if (this.alertaService.mostrarErro412(e))
+            return;
           msg = "" + ((e && e.message) ? e.message : e.toString());
           if (e && e.status === 400)
             msg = "usuário e senha inválidos."
