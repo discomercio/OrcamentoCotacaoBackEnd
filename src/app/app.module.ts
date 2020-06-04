@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule} from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,6 +18,7 @@ import { LoginModule } from './login/login.module';
 import { TokenInterceptor } from './servicos/autenticacao/token.interceptor';
 import { ClienteModule } from './cliente/cliente.module';
 import { TextMaskModule } from 'angular2-text-mask';
+import { registerLocaleData } from '@angular/common';
 
 @NgModule({
   declarations: [

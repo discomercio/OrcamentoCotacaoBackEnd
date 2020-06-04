@@ -127,11 +127,11 @@ export class AutenticacaoService {
     sessionStorage.setItem('token', "");
     localStorage.setItem('token', "");
 
-    // localStorage.clear();
-    // sessionStorage.clear();
-
-    // sessionStorage.removeItem('token');
-    // localStorage.removeItem('token');
+    //remover a session dos parametros de busca que foram armazenados de Prepedido e Pedido
+    sessionStorage.removeItem('data_inicial_prepedido');
+    sessionStorage.removeItem('data_final_prepedido');
+    sessionStorage.removeItem('data_inicial_pedido');
+    sessionStorage.removeItem('data_final_pedido');
   }
 
   public setarToken(token: string): void {
@@ -321,13 +321,13 @@ export class AutenticacaoService {
       this.CarregarIconUnis();
 
     }
-    else if(this.loja == "202"){
+    else if (this.loja == "202") {
       this._logo = "assets/bonshop.png";
       this._estilo = "assets/shopVendas.css";
 
       this.CarregarIconBonshop();
     }
-    else{
+    else {
       this._estilo = "assets/shopVendas.css";
       this._logo = "assets/Logo-ShopVendas.png";
       this.CarregarIconShopVendas();
@@ -358,7 +358,7 @@ export class AutenticacaoService {
     head.appendChild(favicon);
   }
 
-  private CarregarIconBonshop():void{
+  private CarregarIconBonshop(): void {
     const head = document.getElementsByTagName('head')[0];
     let favicon = document.getElementById('favicon') as HTMLLinkElement;
     favicon.href = 'assets/icones/ico-bonshop.ico';//alterar
@@ -385,7 +385,7 @@ export class AutenticacaoService {
       this.loja == "208") {
       return "url('/assets/background-unis-filtro-branco80.jpg')";
     }
-    else{
+    else {
       return "url('/assets/background-shopvendas.jpg')";
     }
     // if (this.loja == "202" ||
@@ -394,7 +394,7 @@ export class AutenticacaoService {
 
     //   return "url('/assets/background-shopvendas.jpg')";
     // }
-    
+
   }
   public buscarAlturaImg(): string {
     if (this.loja == "205" ||
@@ -403,7 +403,7 @@ export class AutenticacaoService {
       this.loja == "208") {
       return "calc(100vh - 53px)";
     }
-    else{
+    else {
       return "calc(100vh - 53px)";
     }
     // if (this.loja == "202" ||
@@ -420,7 +420,7 @@ export class AutenticacaoService {
       this.loja == "208") {
       return "100%";
     }
-    else{
+    else {
       return "100%";
     }
     // if (this.loja == "202" ||

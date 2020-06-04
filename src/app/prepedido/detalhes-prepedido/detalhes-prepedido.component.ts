@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TelaDesktopBaseComponent } from '../../../../src/app/servicos/telaDesktop/telaDesktopBaseComponent';
 import { Location, PlatformLocation } from '@angular/common';
@@ -22,7 +22,7 @@ import { HttpClient } from 'selenium-webdriver/http';
   templateUrl: './detalhes-prepedido.component.html',
   styleUrls: ['./detalhes-prepedido.component.scss']
 })
-export class DetalhesPrepedidoComponent extends TelaDesktopBaseComponent implements OnInit {
+export class DetalhesPrepedidoComponent extends TelaDesktopBaseComponent implements OnInit, AfterViewInit {
 
   constructor(private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
@@ -32,10 +32,10 @@ export class DetalhesPrepedidoComponent extends TelaDesktopBaseComponent impleme
     public readonly pedidoBuscarService: PedidoBuscarService,
     public readonly impressaoService: ImpressaoService,
     public readonly dialog: MatDialog,
-    private readonly autenticacaoService:AutenticacaoService
+    private readonly autenticacaoService: AutenticacaoService
     // public readonly alertaService: AlertaService
   ) {
-    
+
     super(telaDesktopService);
   }
 
@@ -81,9 +81,8 @@ export class DetalhesPrepedidoComponent extends TelaDesktopBaseComponent impleme
       this.emPrepedidos = false;
     }
   }
-
   ngOnInit() {
-
+    this.testeURL = localStorage.getItem('ultima_url');
     this.calcularEmPrepedidos()
 
     if (this.impressaoService.emImpressao()) {
@@ -111,7 +110,7 @@ export class DetalhesPrepedidoComponent extends TelaDesktopBaseComponent impleme
           this.prepedido = r;
           let w: any = window;
           w.prepedido = this.prepedido;
-          if(this.prepedido.St_Orc_Virou_Pedido){
+          if (this.prepedido.St_Orc_Virou_Pedido) {
             this.router.navigate(['/pedido/detalhes', this.prepedido.NumeroPedido]);
           }
         },
@@ -134,10 +133,21 @@ export class DetalhesPrepedidoComponent extends TelaDesktopBaseComponent impleme
     }
   }
 
-  
+  ngAfterViewInit() {
+    localStorage.removeItem('ultima_url');
+  }
+
+  public testeURL: string = "";
   voltar() {
-    
-    this.location.back();
+    //preciso verificar a url anterior para não direcionar para observações 
+    if (this.testeURL) {
+      if (this.testeURL.indexOf('observacoes') >= 0) {
+        this.router.navigate(["/"]);
+      }
+    }
+    else {
+      this.location.back();
+    }
   }
 
 }

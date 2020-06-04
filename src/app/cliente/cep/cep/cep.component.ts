@@ -148,7 +148,6 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
 
   //para acessar a caixa de diálogo
   buscarCep() {
-    debugger;
     
     this.zerarCamposEndEntrega();
 

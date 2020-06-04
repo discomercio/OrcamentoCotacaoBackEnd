@@ -38,10 +38,10 @@
             <!-- colocar condição para não mostrar o delete caso seja a lista de excluidos -->
             <ng-container matColumnDef="Remover">
                 <th mat-header-cell *matHeaderCellDef> </th>
-                <td mat-cell *matCellDef="let element"><button 
+                <td mat-cell *matCellDef="let element"><button
                         *ngIf="(element.Status.toLowerCase().indexOf('com pedido') == -1) && element.Status != 'Excluído'"
                         mat-button (click)="removerPrepedido(element.NumeroPrepedido)">
-                        <mat-icon class="icone-lixeira" title="Remover pré-pedido" >delete</mat-icon>
+                        <mat-icon class="icone-lixeira" title="Remover pré-pedido">delete</mat-icon>
                     </button></td>
             </ng-container>
 
@@ -65,7 +65,8 @@
             </ng-container>
 
             <ng-container matColumnDef="NumeroPedido">
-                <th mat-sort-header="NumeroPedido" style="text-align: center;" mat-header-cell *matHeaderCellDef> Número </th>
+                <th mat-sort-header="NumeroPedido" style="text-align: center;" mat-header-cell *matHeaderCellDef> Número
+                </th>
                 <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.NumeroPedido}} </td>
             </ng-container>
 
@@ -90,9 +91,18 @@
         </table>
     </article>
 
-
+    <!-- campos incluídos na tela de celular -->
+    <div style="float: left; text-align: center; padding: 3%" class="textocelnumero"
+        *ngIf="!telaDesktop && emPrepedidos">
+        <span>
+            {{dataFormatarTela(data_FormTela(prepedidoListarService.paramsBuscaPrepedido.dataInicial))}}
+            até
+            {{dataFormatarTela(data_FormTela(prepedidoListarService.paramsBuscaPrepedido.dataFinal))}}
+        </span>
+    </div>
 
     <article id="content" *ngIf="!telaDesktop && emPrepedidos">
+
         <mat-card *ngFor="let option of prepedidos$|async" class="cartao" (click)="cliqueLinha(option)">
             <div class="containercel">
                 <div class=".cellinha">
@@ -148,11 +158,20 @@
         <div style="float: left;" class="textocelnumero">
             Pré-pedidos localizados: {{(prepedidos$|async)?.length}}
         </div>
-        <button mat-raised-button color="accent" *ngIf="!telaDesktop" (click)="voltar()" style="float: right; font-size: 80%;"
+        <button mat-raised-button color="accent" *ngIf="!telaDesktop" (click)="voltar()"
+            style="float: right; font-size: 80%;"
             [ngClass]="{'botaoDesktop': telaDesktop, 'botaoCelular': !telaDesktop}">Nova
             busca</button>
     </footer>
 
+    <div style="float: left; text-align: center; padding: 3%" class="textocelnumero"
+        *ngIf="!telaDesktop && !emPrepedidos">
+        <span>
+            {{dataFormatarTela(pedidoListarService.data_mobile_inicial)}}
+            até
+            {{dataFormatarTela(pedidoListarService.data_mobile_final)}}
+        </span>
+    </div>
     <article id="content" *ngIf="!telaDesktop && !emPrepedidos">
         <mat-card *ngFor="let option of pedidos$|async" class="cartao" (click)="cliqueLinha(option)">
             <div class="containercel">

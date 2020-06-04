@@ -52,9 +52,6 @@ export class NovoPrepedidoDadosService {
     p.St_Orc_Virou_Pedido = false;
     p.NumeroPedido = "";
     p.FormaPagtoCriacao = new FormaPagtoCriacaoDto();
-
   }
-
-
 }
 

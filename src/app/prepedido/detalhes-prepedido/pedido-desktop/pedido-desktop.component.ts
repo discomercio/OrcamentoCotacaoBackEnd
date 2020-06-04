@@ -41,8 +41,7 @@ export class PedidoDesktopComponent extends TelaDesktopBaseComponent implements 
   ngOnInit() {
     this.router.routeReuseStrategy.shouldReuseRoute = function () {
       return false;
-    };    
-    alert("voltar o filtro de pedido depois de testar");
+    };        
   }
 
   formatarEndereco: FormatarEndereco = new FormatarEndereco();
@@ -50,7 +49,6 @@ export class PedidoDesktopComponent extends TelaDesktopBaseComponent implements 
   //cosntantes
   constantes = new Constantes();
   stringUtils = StringUtils;
-
 
   //para formatar as coisas
   dataFormatarTela = DataUtils.formatarTela;
@@ -152,7 +150,6 @@ export class PedidoDesktopComponent extends TelaDesktopBaseComponent implements 
   }
 
   voltar() {
-
     this.location.back();
   }
   //#endregion

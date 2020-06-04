@@ -108,8 +108,6 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     this.obtemPercentualVlPedidoRA();
   }
 
-  //#region formatação de dados para a tela
-
   moedaUtils: MoedaUtils = new MoedaUtils();
 
   cpfCnpj() {
@@ -134,8 +132,6 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
       error: (r) => this.alertaService.mostrarErroInternet(r)
     });
   }
-
-
 
   carregandoProds = true;
   produtoComboDto: ProdutoComboDto;
@@ -170,6 +166,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     //achamos o item
     return item[0];
   }
+
   estoqueExcedido(i: PrepedidoProdutoDtoPrepedido): boolean {
     const item = this.estoqueItem(i);
     //se nao achamos, dizemos que não tem que mostrar a mensagem não...
@@ -181,6 +178,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     }
     return false;
   }
+
   estoqueExistente(i: PrepedidoProdutoDtoPrepedido): number {
     //para imprimir quantos itens tem em estoque
     const item = this.estoqueItem(i);
@@ -221,6 +219,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     }
     return true;
   }
+
   produtoMsgAviso(i: PrepedidoProdutoDtoPrepedido): string {
     const item = this.estoqueItem(i);
     if (!item) {
@@ -229,44 +228,38 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     return item.Alertas;
   }
 
-
-
   totalPedido(): number {
-    return this.prePedidoDto.VlTotalDestePedido =
-      this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + current.TotalItem, 0);
+    return this.prePedidoDto.VlTotalDestePedido = this.moedaUtils.formatarDecimal(
+      this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + this.moedaUtils.formatarDecimal(current.TotalItem), 0));
 
   }
 
   totalPedidoRA(): number {
-    return this.prePedidoDto.ValorTotalDestePedidoComRA = this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + current.Qtde * current.Preco_Lista, 0);
+    //afazer: calcular o total de Preco_Lista para somar apenas o total como é feito no total do pedido
+    return this.prePedidoDto.ValorTotalDestePedidoComRA = this.moedaUtils.formatarDecimal(
+      this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + this.moedaUtils.formatarDecimal(current.TotalItemRA), 0));
   }
-  //#endregion
 
   //componente de forma de pagamento, precisa do static false
   @ViewChild("dadosPagto", { static: false }) dadosPagto: DadosPagtoComponent;
 
   //#region digitacao de numeros
 
-  /*
-  digitouQte: atualiza o vl total a partir do vl venda
-  digitouPreco: atualiza o vl venda a partir do preco e do desc, depois digitouQte
-  digitouDesc: atualiza o vl venda a partir do preco e do desc, depois digitouQte
-  digitouVlVenda: atualiza o desc a partir do preco e do VlVenda, depois digitouQte
-  */
-
   digitouQte(i: PrepedidoProdutoDtoPrepedido) {
-    //necessário trazer e verificar a variavel "qtde_max_permitida" na tabela "T_produto_loja" 
-    //para limitar a qtde de compra para o usuário
-    debugger;
     if (i.Qtde <= 0) {
       i.Qtde = 1;
     }
-    i.TotalItem = i.VlUnitario * i.Qtde; // VlUnitario = Vl Venda na tela
+
+    i.TotalItem = this.moedaUtils.formatarDecimal(i.VlUnitario * i.Qtde); // VlUnitario = Vl Venda na tela
     this.dadosPagto.prepedidoAlterado();
-    //incluir função total do pedido aqui
     this.totalPedido();
-    //afazer= colocar uma variavel para alterar o valor total do pedido sempre que tiver alterção
+
+    if (this.prePedidoDto.PermiteRAStatus == 1) {
+      i.TotalItemRA = this.moedaUtils.formatarDecimal(i.Preco_Lista * i.Qtde);
+      this.totalPedidoRA();
+    }
   }
+
   digitouPreco(e: Event, i: PrepedidoProdutoDtoPrepedido) {
     let valor = ((e.target) as HTMLInputElement).value;
     let v: any = valor.replace(/\D/g, '');
@@ -278,11 +271,10 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
 
     i.Preco = Number.parseFloat(v);
     if (i.Desconto) {
-      i.VlUnitario = i.Preco * (1 - i.Desconto / 100);
-      i.VlUnitario = Number.parseFloat(i.VlUnitario.toFixed(2));
+      i.VlUnitario = this.moedaUtils.formatarDecimal(i.Preco * (1 - i.Desconto / 100));
     }
     else {
-      i.VlUnitario = i.Preco;
+      i.VlUnitario = this.moedaUtils.formatarDecimal(i.Preco);
     }
 
     this.digitouQte(i);
@@ -291,21 +283,18 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
   digitouPreco_Lista(e: Event, i: PrepedidoProdutoDtoPrepedido) {
     let valor = ((e.target) as HTMLInputElement).value;
     let v: any = valor.replace(/\D/g, '');
-    v = (v / 100).toFixed(2) + '';
+    v = Number.parseFloat((v / 100).toFixed(2) + '');
 
-
-    if (Number.parseFloat(i.VlLista.toFixed(2)) === Number.parseFloat(v)) {
+    if (Number.parseFloat(i.VlLista.toFixed(2)) === v) {
       i.AlterouValorRa = false;
     }
     else {
       i.AlterouValorRa = true;
     }
 
-    i.Preco_Lista = Number.parseFloat(v);
+    i.Preco_Lista = this.moedaUtils.formatarDecimal(v);
 
     this.somarRA();
-
-
 
     this.digitouQte(i);
   }
@@ -318,13 +307,20 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     i.Preco_Lista = v;
   }
 
-  somaRA: number;
-  somarRA(): number {
+  somaRA: string;
+  somarRA(): string {
     let total = this.totalPedido();
     let totalRa = this.totalPedidoRA();
-    return this.somaRA = totalRa - total;
-  }
+    // vou formatar  aqui antes de passar para a tela
+    let valor_ra = this.moedaUtils.formatarDecimal(totalRa - total);
 
+    if (valor_ra > 0)
+      this.somaRA = this.moedaUtils.formatarMoedaSemPrefixo(valor_ra);
+    else
+      this.somaRA = this.moedaUtils.formatarValorDuasCasaReturnZero(valor_ra);
+
+    return this.somaRA;
+  }
 
   formataVlVenda(e: Event, i: PrepedidoProdutoDtoPrepedido) {
     let valor = ((e.target) as HTMLInputElement).value;
@@ -338,20 +334,13 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     let valor = ((e.target) as HTMLInputElement).value;
     let v: any = valor.replace(/\D/g, '');
     v = (v / 100).toFixed(2) + '';
-    // //se não alteraram nada, ignoramos
-    // if (i.VlUnitario.toFixed(2) === v)
-    //   return;
-
-    //Gabriel apenas teste, pois os valores estão se acumulando e iremos alterar aqui
+    
     i.TotalItem = i.Qtde * i.VlLista;
     i.VlTotalItem = i.Qtde * i.VlLista;
 
-    // i.VlUnitario = Number.parseFloat(v);
-    //teste de calculo
     i.Desconto = 100 * (i.VlLista - v) / i.VlLista;
     //calcula o desconto
-    // i.Desconto = 100 * (i.Preco - i.VlUnitario) / i.Preco;
-    i.Desconto = Number.parseFloat(i.Desconto.toFixed(2));
+    i.Desconto = this.moedaUtils.formatarDecimal(i.Desconto);
 
     if (i.VlLista == i.VlUnitario) {
       i.AlterouVlVenda = false;
@@ -359,14 +348,13 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
       i.AlterouVlVenda = true;
     }
 
-    // i.AlterouVlVenda = true;
-
     this.digitouQte(i);
   }
+
   digitouDesc(e: Event, i: PrepedidoProdutoDtoPrepedido) {
+    
     let valor = ((e.target) as HTMLInputElement).value;
-    let v: any = valor.replace(/\D/g, '');
-    //tem 1 casa
+    let v: any = valor.replace(/,/g, '');
     v = (v / 100).toFixed(2) + '';
 
     //se o desconto for digitado estamos alterando o valor de venda e não devemos mais alterar esse valor
@@ -381,16 +369,23 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
 
   formatarDesc(e: Event, i: PrepedidoProdutoDtoPrepedido) {
     let valor = ((e.target) as HTMLInputElement).value;
-    let v: any = valor.replace(/\D/g, '');
-    v = (v / 100).toFixed(2) + '';
-
-    i.Desconto = v;
+    let v: any = valor.replace(/,/g, '');
+    if (!isNaN(v)) {
+      v = (v / 100).toFixed(2) + '';
+      i.Desconto = v;
+    }
   }
 
   digitouDescValor(i: PrepedidoProdutoDtoPrepedido, v: string) {
+    
     //se não alteraram nada, ignoramos
-    if (i.Desconto === Number.parseFloat(v))
+    if (i.Desconto === Number.parseFloat(v)){
+      if(i.Desconto == 0){
+        i.Desconto = 0;
+      }
       return;
+    }
+      
 
     i.Desconto = Number.parseFloat(v);
     //não deixa números negativos e nem maior que 100
@@ -438,6 +433,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     // this.dadosPagto.atribuirFormaPagtoParaDto();
     this.location.back();
   }
+
   continuar() {
 
     //verificar se tem produtos com qtde maior que o permitido
@@ -461,7 +457,9 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
       if (this.percentualVlPedidoRA != 0 && this.percentualVlPedidoRA != undefined) {
 
         let vlAux = (this.percentualVlPedidoRA / 100) * this.totalPedido();
-        if (this.somaRA > vlAux) {
+        let totalRA = (this.totalPedido() - this.totalPedidoRA());
+
+        if (totalRA > vlAux) {
           this.alertaService.mostrarMensagem("O valor total de RA excede o limite permitido!");
           return;
         }
@@ -493,7 +491,6 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
       data: `Remover este item do pré-pedido?`
     });
 
-
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.prePedidoDto.ListaProdutos = this.prePedidoDto.ListaProdutos.filter(function (value, index, arr) {
@@ -507,20 +504,16 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
 
 
   public clicouAddProd: boolean = false;
-
   verificarCargaProdutos(): boolean {
     if (this.carregandoProds) {
       //ainda não carregou, vamos esperar....
-      //this.alertaService.mostrarMensagem("Lista de produtos ainda sendo carregada. Por favor, tente novamente em alguns instantes.");
       return false;
     }
     return true;
   }
 
-  //Gabriel
   //criaremos uma lista para armazenar os itens pelo item principal, independente se é produto composto
   public lstProdutoAdd: PrepedidoProdutoDtoPrepedido[] = [];
-
   mostrarProdutos(linha: PrepedidoProdutoDtoPrepedido) {
 
     if (!this.verificarCargaProdutos()) {
@@ -695,7 +688,6 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     return registros[0].Filhos;
   }
 
-
   buscarPaideFilho(item: string) {
     let pai = "";
     const registro = this.produtoComboDto.ProdutoCompostoDto.filter(x => x.Filhos.filter(y => y.Produto == item));
@@ -711,7 +703,6 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
 
     return pai;
   }
-
 
   //consolidamos produtos repetidos
   arrumarProdsRepetidos() {

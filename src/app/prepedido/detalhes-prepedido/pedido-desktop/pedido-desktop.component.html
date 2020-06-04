@@ -360,11 +360,12 @@
                                         <td class="MTBE" align="left" nowrap><span class="PLTe">&nbsp;RA
                                                 Bruto</span>
                                         </td>
-                                        <td class="MTBD" align="right"><input name="c_total_RA" id="c_total_RA"
-                                                class="PLLd" style="width:70px;"
+                                        <td class="MTBD" align="right">
+                                            <input name="c_total_RA" id="c_total_RA" class="PLLd" style="width:70px;"
                                                 [ngStyle]="{'color': pedido.TotalFamiliaParcelaRA >= 0 ? 'green':'red'}"
                                                 value='{{moedaUtils.formatarValorDuasCasaReturnZero(pedido.TotalFamiliaParcelaRA)}}'
-                                                readonly tabindex=-1></td>
+                                                readonly tabindex=-1>
+                                        </td>
                                     </tr>
                                 </table>
                             </td>
@@ -417,7 +418,8 @@
                 <td class="MB" colspan="7" align="left">
                     <p class="Rf">Constar na NF</p>
                     <textarea name="c_nf_texto" id="c_nf_texto" class="PLLe notPrint"
-                        rows="{{constantes.MAX_LINHAS_NF_TEXTO_CONSTAR}}" style="width:641px;margin-left:2pt;resize: none;" readonly
+                        rows="{{constantes.MAX_LINHAS_NF_TEXTO_CONSTAR}}"
+                        style="width:641px;margin-left:2pt;resize: none;" readonly
                         tabindex=-1>{{pedido?.DetalhesNF.ConstaNaNF}} &nbsp;</textarea>
                     <span class="PLLe notVisible">{{pedido?.DetalhesNF.ConstaNaNF}} &nbsp;</span>
                 </td>
@@ -495,8 +497,8 @@
                 <td class="MC" align="left">
                     <p class="Rf">Informações Sobre Análise de Crédito</p>
                     <textarea name="c_forma_pagto" id="c_forma_pagto" class="PLLe notPrint"
-                        rows="{{constantes.MAX_LINHAS_FORMA_PAGTO}}" style="width:642px;margin-left:2pt;resize: none;" readonly
-                        tabindex=-1>{{pedido.DetalhesFormaPagto.InfosAnaliseCredito}}</textarea>
+                        rows="{{constantes.MAX_LINHAS_FORMA_PAGTO}}" style="width:642px;margin-left:2pt;resize: none;"
+                        readonly tabindex=-1>{{pedido.DetalhesFormaPagto.InfosAnaliseCredito}}</textarea>
                     <span class="PLLe notVisible">{{pedido.DetalhesFormaPagto.InfosAnaliseCredito}}</span>
                 </td>
             </tr>
@@ -694,7 +696,7 @@
                                 </tr>
                                 <tr>
                                     <td class="C MB" width="100%" align="left" valign="top"><span class="Rf"
-                                            style="margin-left:0px;">OCORRÊNCIA:</span>&nbsp;{{ocorrencia.Tipo_Ocorrencia}}
+                                            style="margin-left:0px;">OCORRÊNCIA:</span>&nbsp;{{ocorrencia.Texto_Ocorrencia}}
                                     </td>
                                 </tr>
                             </table>

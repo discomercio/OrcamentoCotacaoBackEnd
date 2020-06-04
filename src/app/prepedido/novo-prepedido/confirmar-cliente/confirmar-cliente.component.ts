@@ -12,6 +12,7 @@ import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
 import { EnderecoEntregaDtoClienteCadastro } from 'src/app/dto/ClienteCadastro/EnderecoEntregaDTOClienteCadastro';
 import { NovoPrepedidoDadosService } from '../novo-prepedido-dados.service';
 import { ConfirmarEnderecoComponent } from '../confirmar-endereco/confirmar-endereco.component';
+import { Constantes } from 'src/app/dto/Constantes';
 
 @Component({
   selector: 'app-confirmar-cliente',
@@ -136,6 +137,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
   private dadosClienteCadastroDtoIe: string;
   private dadosClienteCadastroDtoProdutorRural: number;
   private dadosClienteCadastroDtoContribuinte_Icms_Status: number;
+  public constantes = new Constantes();
   salvarAtivo(): boolean {
     //diz se o botão de salvar está ligado
     if (!this.dadosClienteCadastroDto) {
@@ -161,6 +163,14 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     if (this.dadosClienteCadastroDtoContribuinte_Icms_Status !== this.dadosClienteCadastroDto.Contribuinte_Icms_Status) {
       return true;
     }
+
+    //vamos fazer essa validação aqui para garantir que o cliente esta 
+    //sendo validado todas as vezes, mesmo que não tenha alterações
+    // if ((this.dadosClienteCadastroDto.ProdutorRural === this.constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM) &&
+    //     (this.dadosClienteCadastroDto.Contribuinte_Icms_Status !== this.constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)) {
+    //     return true;
+    //   }
+
     return false;
   }
 

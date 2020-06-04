@@ -7,6 +7,9 @@ import { Constantes } from 'src/app/dto/Constantes';
 import { ProdutosCalculados } from './tipo-forma-pagto';
 import { MoedaUtils } from 'src/app/utils/moedaUtils';
 import { getMatTooltipInvalidPositionError } from '@angular/material';
+import { ProdutoTela } from '../selec-prod-dialog/produto-tela';
+import { PrepedidoProdutoDtoPrepedido } from 'src/app/dto/Prepedido/DetalhesPrepedido/PrepedidoProdutoDtoPrepedido';
+import { debug } from 'util';
 
 export class RecalcularComCoeficiente {
 
@@ -16,13 +19,6 @@ export class RecalcularComCoeficiente {
 
   dadosPagto: DadosPagtoComponent;
   lstCoeficientesFornecdores: any[] = new Array();
-  //vamos montar a lista de parcelamentos
-  //irá retornar uma lista de string com a qtde de pareclas e o valor total
-  public montarListaParcelamento() {
-
-
-  }
-
 
 
   buscarCoeficienteFornecedores(callback: (coefciente: CoeficienteDto[][]) => void): void {
@@ -64,12 +60,10 @@ export class RecalcularComCoeficiente {
     let lstCoeficiente = coeficienteDtoNovo;
     let lstProdutos = this.novoPrepedidoDadosService.prePedidoDto.ListaProdutos;
     let alterouValorRA: boolean = false;
-
     let totalProduto = 0;
-
     let coeficienteFornec: CoeficienteDto[];
-    //vamos calcular os produtos com os respectivos coeficientes e atribuir a uma variavel de total do prepedido
 
+    //vamos calcular os produtos com os respectivos coeficientes e atribuir a uma variavel de total do prepedido
     let cont = 0;
     if (lstProdutos.length > 0) {
       lstCoeficiente.forEach(element => {
@@ -77,41 +71,13 @@ export class RecalcularComCoeficiente {
 
           if (!!tipoFormaPagto && !!enumFP) {
 
-            //precisamos verificar se o valor de ra foi alterado para calcular as parcelas com base no valor digitado
-
-
             //A vista
             if (tipoFormaPagto == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA &&
               enumFP.toString() == this.constantes.COD_FORMA_PAGTO_A_VISTA) {
               coeficienteFornec = element.filter(x => x.Fabricante == p.Fabricante);
               if (!!coeficienteFornec[0]) {
                 if (coeficienteFornec[0].Fabricante == p.Fabricante) {
-                  this.ProdutosCalculados = new ProdutosCalculados();
-
-                  if (!!this.novoPrepedidoDadosService.prePedidoDto.PermiteRAStatus &&
-                    this.novoPrepedidoDadosService.prePedidoDto.PermiteRAStatus == 1) {
-                    p.VlTotalItem = p.AlterouValorRa && p.AlterouValorRa != undefined ? p.Preco_Lista * p.Qtde : p.Preco * p.Qtde;
-                    this.ProdutosCalculados.QtdeParcela = 1;
-                    this.ProdutosCalculados.Valor = p.VlTotalItem;
-                    this.lstProdutosCalculados.push(this.ProdutosCalculados);
-                  } else {
-                    if (p.Desconto > 0) {
-                      let totalproduto = p.Preco;
-                      let desconto = (totalproduto - p.VlUnitario) * 100 / p.Preco;
-                      p.VlTotalItem = (totalproduto - ((totalproduto * desconto) / 100)) * p.Qtde;
-                      this.ProdutosCalculados.QtdeParcela = 1;
-                      this.ProdutosCalculados.Valor = p.VlTotalItem;
-                      this.lstProdutosCalculados.push(this.ProdutosCalculados);
-                    } else {
-                      p.VlTotalItem = p.Preco * p.Qtde;
-                      this.ProdutosCalculados.QtdeParcela = 1;
-                      this.ProdutosCalculados.Valor = p.VlTotalItem;
-                      this.lstProdutosCalculados.push(this.ProdutosCalculados);
-                    }
-                  }
-
-                  return;
-
+                  this.calcularTotalProdutoAvistaParcelamento(p);
                 }
               }
             }
@@ -122,39 +88,13 @@ export class RecalcularComCoeficiente {
               totalProduto = (p.Preco * p.Qtde) * (1 - p.Desconto / 100);
 
               coeficienteFornec = element.filter(x => x.Fabricante == p.Fabricante &&
-                x.TipoParcela == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA);
+                x.TipoParcela == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA &&
+                x.QtdeParcelas == 1);
 
               if (!!coeficienteFornec[0]) {
                 if (coeficienteFornec[0].Fabricante == p.Fabricante) {
-                  this.ProdutosCalculados = new ProdutosCalculados();
-                  if (!!this.novoPrepedidoDadosService.prePedidoDto.PermiteRAStatus &&
-                    this.novoPrepedidoDadosService.prePedidoDto.PermiteRAStatus == 1) {
-                    p.VlTotalItem = p.AlterouValorRa && p.AlterouValorRa != undefined ?
-                      (p.Preco_Lista * p.Qtde) : (p.Preco * coeficienteFornec[0].Coeficiente) * p.Qtde;
-                    this.ProdutosCalculados.QtdeParcela = coeficienteFornec[0].QtdeParcelas;
-                    this.ProdutosCalculados.Valor = p.VlTotalItem;
-                    this.lstProdutosCalculados.push(this.ProdutosCalculados);
-                  }
-                  else {
-                    if (p.Desconto > 0) {
-                      let totalproduto = p.Preco * coeficienteFornec[0].Coeficiente;
-                      let desconto = (totalproduto - p.VlUnitario) * 100 /
-                        (p.Preco * coeficienteFornec[0].Coeficiente);
-                      p.VlTotalItem = (totalproduto - ((totalproduto * desconto) / 100)) * p.Qtde;
-                      this.ProdutosCalculados.QtdeParcela = coeficienteFornec[0].QtdeParcelas;
-                      this.ProdutosCalculados.Valor = p.VlTotalItem;
-                      this.lstProdutosCalculados.push(this.ProdutosCalculados);
-                    }
-                    else {
-                      p.VlTotalItem = (p.Preco * coeficienteFornec[0].Coeficiente) * p.Qtde;
-                      this.ProdutosCalculados.QtdeParcela = coeficienteFornec[0].QtdeParcelas;
-                      this.ProdutosCalculados.Valor = p.VlTotalItem;
-                      this.lstProdutosCalculados.push(this.ProdutosCalculados);
-
-                    }
-                  }
-
-                  return;
+                  //chamar aqui o novo metodo
+                  this.calcularTotalProduto_ParcelaUnica(p, coeficienteFornec[0]);
                 }
               }
             }
@@ -172,35 +112,8 @@ export class RecalcularComCoeficiente {
                   x.TipoParcela == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA);
 
                 coeficienteFornec.forEach(x => {
-                  this.ProdutosCalculados = new ProdutosCalculados();
-                  if (!!this.novoPrepedidoDadosService.prePedidoDto.PermiteRAStatus &&
-                    this.novoPrepedidoDadosService.prePedidoDto.PermiteRAStatus == 1) {
-
-                    p.VlTotalItem = p.AlterouValorRa && p.AlterouValorRa != undefined ? (p.Preco_Lista * p.Qtde) :
-                      (p.Preco * x.Coeficiente) * p.Qtde;
-                    this.ProdutosCalculados.QtdeParcela = x.QtdeParcelas;
-                    this.ProdutosCalculados.Valor = p.VlTotalItem;
-                    this.lstProdutosCalculados.push(this.ProdutosCalculados);
-                  } else {
-                    if (p.Desconto > 0) {
-                      let totalproduto = p.Preco * x.Coeficiente;
-                      let desconto = (totalproduto - p.VlUnitario) * 100 /
-                        (p.Preco * x.Coeficiente);
-                      p.VlTotalItem = (totalproduto - ((totalproduto * desconto) / 100)) * p.Qtde;
-                      this.ProdutosCalculados.QtdeParcela = x.QtdeParcelas;
-                      this.ProdutosCalculados.Valor = p.VlTotalItem;
-                      this.lstProdutosCalculados.push(this.ProdutosCalculados);
-                    }
-                    else {
-                      p.VlTotalItem = (p.Preco * x.Coeficiente) * p.Qtde;
-                      this.ProdutosCalculados.QtdeParcela = x.QtdeParcelas;
-                      this.ProdutosCalculados.Valor = p.VlTotalItem;
-                      this.lstProdutosCalculados.push(this.ProdutosCalculados);
-
-                    }
-                  }
-
-
+                  //chamar novo metodo aqui
+                  this.calcularTotalProduto_Parcela_Com_Entrada(p, x);
                 });
               }
             }
@@ -214,35 +127,8 @@ export class RecalcularComCoeficiente {
                 x.TipoParcela == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA);
 
               coeficienteFornec.forEach(x => {
-                this.ProdutosCalculados = new ProdutosCalculados();
-
-                if (!!this.novoPrepedidoDadosService.prePedidoDto.PermiteRAStatus &&
-                  this.novoPrepedidoDadosService.prePedidoDto.PermiteRAStatus == 1) {
-                  p.VlTotalItem = p.AlterouValorRa && p.AlterouValorRa != undefined ? (p.Preco_Lista * p.Qtde) :
-                    (p.Preco * x.Coeficiente) * p.Qtde;
-                  this.ProdutosCalculados.QtdeParcela = x.QtdeParcelas;
-                  this.ProdutosCalculados.Valor = p.VlTotalItem;
-                  this.lstProdutosCalculados.push(this.ProdutosCalculados);
-                } else {
-                  if (p.Desconto > 0) {
-                    let totalproduto = p.Preco * x.Coeficiente;
-                    let desconto = (totalproduto - p.VlUnitario) * 100 /
-                      (p.Preco * x.Coeficiente);
-                    p.VlTotalItem = (totalproduto - ((totalproduto * desconto) / 100)) * p.Qtde;
-                    this.ProdutosCalculados.QtdeParcela = x.QtdeParcelas;
-                    this.ProdutosCalculados.Valor = p.VlTotalItem;
-                    this.lstProdutosCalculados.push(this.ProdutosCalculados);
-                  }
-                  else {
-                    p.VlTotalItem = (p.Preco * x.Coeficiente) * p.Qtde;
-                    this.ProdutosCalculados.QtdeParcela = x.QtdeParcelas;
-                    this.ProdutosCalculados.Valor = p.VlTotalItem;
-                    this.lstProdutosCalculados.push(this.ProdutosCalculados);
-
-                  }
-                }
-
-
+                //chamar metodo nov aqui
+                this.calcularTotalProduto_Cartao_Maquineta_Parcelamento(p, x);
               });
             }
           }
@@ -250,7 +136,8 @@ export class RecalcularComCoeficiente {
         })
         //vamos verificar se é avista para sair do foreach do coeficiente que não é utilizado para este tipo
         if (!!enumFP)
-          if (enumFP.toString() == this.constantes.COD_FORMA_PAGTO_A_VISTA) {
+          if (enumFP.toString() == this.constantes.COD_FORMA_PAGTO_A_VISTA ||
+            enumFP.toString() == this.constantes.COD_FORMA_PAGTO_PARCELA_UNICA) {
             return false;
           }
 
@@ -268,8 +155,8 @@ export class RecalcularComCoeficiente {
 
   //valor de entrada
   vlEntrada: number;
-
   moedaUtils = new MoedaUtils();
+  //monta a lista de parcelamento
   CalcularTotalOrcamento(qtdeParcVisa: number, enumFP: number): string[] {
     let lstMsg: string[] = new Array();
     if (!!enumFP) {
@@ -286,7 +173,7 @@ export class RecalcularComCoeficiente {
           for (let i = 0; i <= qtdeParcVisa; i++) {
             let filtrarParcela = this.lstProdutosCalculados.filter(x => x.QtdeParcela == i);
 
-            let valorTotalParc = filtrarParcela.reduce((sum, prod) => sum + prod.Valor, 0);
+            let valorTotalParc = filtrarParcela.reduce((sum, prod) => sum + this.moedaUtils.formatarDecimal(prod.Valor), 0);
 
             if (!!valorTotalParc) {
               if (enumFP.toString() == this.constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA) {
@@ -299,7 +186,7 @@ export class RecalcularComCoeficiente {
                     return;
                   }
                   else {
-                    valorTotalParc = valorTotalParc - this.vlEntrada;
+                    valorTotalParc = this.moedaUtils.formatarDecimal(valorTotalParc - this.vlEntrada);
                   }
                 }
               }
@@ -314,7 +201,7 @@ export class RecalcularComCoeficiente {
     return lstMsg;
   }
 
-  //vamos alterar os valores dos produtos que estão no serviço
+  //alterar os valores dos produtos que estão no serviço
   RecalcularListaProdutos(enumFP: number, coeficienteDtoNovo: CoeficienteDto[][],
     tipoFormaPagto: string, qtdeParc: number): void {
 
@@ -330,23 +217,23 @@ export class RecalcularComCoeficiente {
             //vamos verificar se é pagto á vista
             if (enumFP.toString() == this.constantes.COD_FORMA_PAGTO_A_VISTA &&
               tipoFormaPagto == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA) {
-
               if (produto.AlterouVlVenda) {
                 //devemos alterar o valor de desconto
                 //valor com coeficiente - valor venda * 100 / valor com coeficiente
-                produto.Desconto = (produto.Preco - produto.VlUnitario) * 100 / produto.Preco;
-                produto.TotalItem = (produto.Preco * produto.Qtde) * (1 - produto.Desconto / 100);
-                produto.VlTotalItem = (produto.Preco * produto.Qtde) * (1 - produto.Desconto / 100);
-                produto.VlLista = produto.Preco;//só altera se calcular coeficiente
+                produto.Desconto = this.moedaUtils.formatarDecimal((produto.Preco - produto.VlUnitario) * 100 / produto.Preco);
+                produto.TotalItem = this.moedaUtils.formatarDecimal((produto.VlUnitario * produto.Qtde));
+                produto.VlTotalItem = this.moedaUtils.formatarDecimal((produto.VlUnitario * produto.Qtde));
+                produto.VlLista = this.moedaUtils.formatarDecimal(produto.Preco);//só altera se calcular coeficiente
 
               } else {
-                produto.VlUnitario = produto.Preco;
-                produto.VlTotalItem = (produto.Preco * produto.Qtde);
-                produto.VlLista = produto.Preco;//só altera se calcular coeficiente
-                produto.TotalItem = (produto.Preco * produto.Qtde);
+                produto.VlUnitario = this.moedaUtils.formatarDecimal(produto.Preco);
+                produto.VlTotalItem = this.moedaUtils.formatarDecimal((produto.Preco * produto.Qtde));
+                produto.VlLista = this.moedaUtils.formatarDecimal(produto.Preco);//só altera se calcular coeficiente
+                produto.TotalItem = this.moedaUtils.formatarDecimal((produto.Preco * produto.Qtde));
               }
               if (!produto.AlterouValorRa || produto.AlterouValorRa == undefined) {
-                produto.Preco_Lista = produto.Preco;
+                produto.Preco_Lista = this.moedaUtils.formatarDecimal(produto.Preco);
+                produto.TotalItemRA = this.moedaUtils.formatarDecimal((produto.Preco * produto.Qtde));
               }
             }
 
@@ -361,19 +248,20 @@ export class RecalcularComCoeficiente {
               coeficiente.forEach(x => {
                 if (produto.AlterouVlVenda) {
 
-                  produto.Desconto = ((produto.Preco * x.Coeficiente) - produto.VlUnitario) * 100 /
-                    (produto.Preco * x.Coeficiente);
-                  produto.TotalItem = produto.VlUnitario * produto.Qtde;
-                  produto.VlLista = (produto.Preco * x.Coeficiente);//só altera se calcular coeficiente
+                  produto.Desconto = this.moedaUtils.formatarDecimal(((produto.Preco * x.Coeficiente) - produto.VlUnitario) * 100 /
+                    (produto.Preco * x.Coeficiente));
+                  produto.TotalItem = this.moedaUtils.formatarDecimal(produto.VlUnitario * produto.Qtde);
+                  produto.VlLista = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));//só altera se calcular coeficiente
                 }
                 else {
-                  produto.VlUnitario = (produto.Preco * x.Coeficiente);
-                  produto.VlTotalItem = (produto.Preco * x.Coeficiente);
-                  produto.VlLista = (produto.Preco * x.Coeficiente);//só altera se calcular coeficiente
-                  produto.TotalItem = ((produto.Preco * produto.Qtde) * x.Coeficiente);
+                  produto.VlUnitario = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
+                  produto.VlTotalItem = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
+                  produto.VlLista = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));//só altera se calcular coeficiente
+                  produto.TotalItem = this.moedaUtils.formatarDecimal(((produto.Preco * produto.Qtde) * x.Coeficiente));
                 }
                 if (!produto.AlterouValorRa || produto.AlterouValorRa == undefined) {
-                  produto.Preco_Lista = (produto.Preco * x.Coeficiente);
+                  produto.Preco_Lista = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
+                  produto.TotalItemRA = this.moedaUtils.formatarDecimal(((produto.Preco * produto.Qtde) * x.Coeficiente));
                 }
 
               });
@@ -389,19 +277,20 @@ export class RecalcularComCoeficiente {
               coeficiente.forEach(x => {
                 if (produto.AlterouVlVenda) {
 
-                  produto.Desconto = ((produto.Preco * x.Coeficiente) - produto.VlUnitario) * 100 /
-                    (produto.Preco * x.Coeficiente);
-                  produto.TotalItem = produto.VlUnitario * produto.Qtde;
-                  produto.VlLista = (produto.Preco * x.Coeficiente);//só altera se calcular coeficiente
+                  produto.Desconto = this.moedaUtils.formatarDecimal(((produto.Preco * x.Coeficiente) - produto.VlUnitario) * 100 /
+                    (produto.Preco * x.Coeficiente));
+                  produto.TotalItem = this.moedaUtils.formatarDecimal(produto.VlUnitario * produto.Qtde);
+                  produto.VlLista = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));//só altera se calcular coeficiente
                 }
                 else {
-                  produto.VlUnitario = (produto.Preco * x.Coeficiente);
-                  produto.VlTotalItem = (produto.Preco * x.Coeficiente);
-                  produto.VlLista = (produto.Preco * x.Coeficiente);//só altera se calcular coeficiente
-                  produto.TotalItem = ((produto.Preco * produto.Qtde) * x.Coeficiente);
+                  produto.VlUnitario = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
+                  produto.VlTotalItem = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
+                  produto.VlLista = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));//só altera se calcular coeficiente
+                  produto.TotalItem = this.moedaUtils.formatarDecimal(((produto.Preco * produto.Qtde) * x.Coeficiente));
                 }
                 if (!produto.AlterouValorRa || produto.AlterouValorRa == undefined) {
-                  produto.Preco_Lista = (produto.Preco * x.Coeficiente);
+                  produto.Preco_Lista = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
+                  produto.TotalItemRA = this.moedaUtils.formatarDecimal(((produto.Preco * produto.Qtde) * x.Coeficiente));
                 }
 
               });
@@ -412,28 +301,28 @@ export class RecalcularComCoeficiente {
               enumFP.toString() == this.constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA) &&
               tipoFormaPagto == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA) {
 
-
-              //preciso pegar a qtde de parcelas que foi selecionado
-
               coeficiente = coef.filter(x => x.Fabricante == produto.Fabricante &&
                 x.TipoParcela == tipoFormaPagto && x.QtdeParcelas == qtdeParc);
 
               coeficiente.forEach(x => {
                 if (produto.AlterouVlVenda) {
 
-                  produto.Desconto = ((produto.Preco * x.Coeficiente) - produto.VlUnitario) * 100 /
-                    (produto.Preco * x.Coeficiente);
-                  produto.TotalItem = produto.VlUnitario * produto.Qtde;
-                  produto.VlLista = (produto.Preco * x.Coeficiente);//só altera se calcular coeficiente
+                  produto.Desconto = this.moedaUtils.formatarDecimal(((produto.Preco * x.Coeficiente) - produto.VlUnitario) * 100 /
+                    (produto.Preco * x.Coeficiente));
+                  produto.TotalItem = this.moedaUtils.formatarDecimal(produto.VlUnitario * produto.Qtde);
+                  produto.VlLista = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));//só altera se calcular coeficiente
                 }
                 else {
-                  produto.VlUnitario = (produto.Preco * x.Coeficiente);
-                  produto.VlTotalItem = (produto.Preco * x.Coeficiente);
-                  produto.VlLista = (produto.Preco * x.Coeficiente);//só altera se calcular coeficiente
-                  produto.TotalItem = ((produto.Preco * produto.Qtde) * x.Coeficiente);
+                  produto.VlUnitario = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
+                  produto.VlTotalItem = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
+                  produto.VlLista = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));//só altera se calcular coeficiente
+                  let total_com_coeficiente = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
+                  produto.TotalItem = this.moedaUtils.formatarDecimal(total_com_coeficiente * produto.Qtde);
                 }
                 if (!produto.AlterouValorRa || produto.AlterouValorRa == undefined) {
-                  produto.Preco_Lista = (produto.Preco * x.Coeficiente);
+                  produto.Preco_Lista = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
+                  let total_com_coeficiente = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
+                  produto.TotalItemRA = this.moedaUtils.formatarDecimal(total_com_coeficiente * produto.Qtde);
                 }
 
               });
@@ -444,4 +333,104 @@ export class RecalcularComCoeficiente {
     }
   }
 
+  //calculo para montar a lista que vai no parcelamento a vista
+  calcularTotalProdutoAvistaParcelamento(p: PrepedidoProdutoDtoPrepedido): void {
+    this.ProdutosCalculados = new ProdutosCalculados();
+
+    if (!!this.novoPrepedidoDadosService.prePedidoDto.PermiteRAStatus &&
+      this.novoPrepedidoDadosService.prePedidoDto.PermiteRAStatus == 1) {
+      if (p.AlterouValorRa && p.AlterouValorRa != undefined) {
+        p.VlTotalItem = this.moedaUtils.formatarDecimal(p.Preco_Lista * p.Qtde);
+      }
+      else{
+        p.VlTotalItem = this.moedaUtils.formatarDecimal(p.Preco * p.Qtde);
+      }
+    }
+    else {
+      p.VlTotalItem = this.moedaUtils.formatarDecimal(p.Preco * p.Qtde);
+    }
+
+    this.ProdutosCalculados.QtdeParcela = 1;
+    this.ProdutosCalculados.Valor = p.VlTotalItem;
+    this.lstProdutosCalculados.push(this.ProdutosCalculados);
+  }
+
+  //calculo para montar a lista que vai no parcelamento cartão e maquineta
+  calcularTotalProduto_Cartao_Maquineta_Parcelamento(p: PrepedidoProdutoDtoPrepedido, x: CoeficienteDto): void {
+    this.ProdutosCalculados = new ProdutosCalculados();
+
+    let total_com_coeficiente: number = 0;
+
+    if (!!this.novoPrepedidoDadosService.prePedidoDto.PermiteRAStatus &&
+      this.novoPrepedidoDadosService.prePedidoDto.PermiteRAStatus == 1) {
+      if (p.AlterouValorRa && p.AlterouValorRa != undefined) {
+        total_com_coeficiente = this.moedaUtils.formatarDecimal(p.Preco_Lista);
+      }
+      else {
+        total_com_coeficiente = this.moedaUtils.formatarDecimal(p.Preco * x.Coeficiente);
+      }
+
+      p.VlTotalItem = this.moedaUtils.formatarDecimal(total_com_coeficiente * p.Qtde);
+    }
+    else {
+      total_com_coeficiente = this.moedaUtils.formatarDecimal(p.Preco * x.Coeficiente);
+      p.VlTotalItem = this.moedaUtils.formatarDecimal(total_com_coeficiente * p.Qtde);
+    }
+    this.ProdutosCalculados.QtdeParcela = x.QtdeParcelas;
+    this.ProdutosCalculados.Valor = p.VlTotalItem;
+    this.lstProdutosCalculados.push(this.ProdutosCalculados);
+  }
+
+  //calculo para montar a lista que vai no parcelamento de parcela única
+  calcularTotalProduto_ParcelaUnica(p: PrepedidoProdutoDtoPrepedido, x: CoeficienteDto): void {
+    this.ProdutosCalculados = new ProdutosCalculados();
+
+    let total_com_coeficiente: number = 0;
+
+    if (!!this.novoPrepedidoDadosService.prePedidoDto.PermiteRAStatus &&
+      this.novoPrepedidoDadosService.prePedidoDto.PermiteRAStatus == 1) {
+      if (p.AlterouValorRa && p.AlterouValorRa != undefined) {
+        total_com_coeficiente = this.moedaUtils.formatarDecimal(p.Preco_Lista);
+      }
+      else {
+        total_com_coeficiente = this.moedaUtils.formatarDecimal(p.Preco * x.Coeficiente);
+      }
+
+      p.VlTotalItem = this.moedaUtils.formatarDecimal(total_com_coeficiente * p.Qtde);
+    }
+    else {
+      total_com_coeficiente = this.moedaUtils.formatarDecimal(p.Preco * x.Coeficiente);
+      p.VlTotalItem = this.moedaUtils.formatarDecimal(total_com_coeficiente * p.Qtde);
+    }
+    this.ProdutosCalculados.QtdeParcela = x.QtdeParcelas;
+    this.ProdutosCalculados.Valor = p.VlTotalItem;
+    this.lstProdutosCalculados.push(this.ProdutosCalculados);
+  }
+
+  //calculo para montar a lista que vai no parcelamento com entrada
+  calcularTotalProduto_Parcela_Com_Entrada(p: PrepedidoProdutoDtoPrepedido, x: CoeficienteDto): void {
+    this.ProdutosCalculados = new ProdutosCalculados();
+
+    let total_com_coeficiente: number = 0;
+
+    if (!!this.novoPrepedidoDadosService.prePedidoDto.PermiteRAStatus &&
+      this.novoPrepedidoDadosService.prePedidoDto.PermiteRAStatus == 1) {
+
+      if (p.AlterouValorRa && p.AlterouValorRa != undefined) {
+        total_com_coeficiente = this.moedaUtils.formatarDecimal(p.Preco_Lista);
+      }
+      else {
+        total_com_coeficiente = this.moedaUtils.formatarDecimal(p.Preco * x.Coeficiente);
+      }
+
+      p.VlTotalItem = this.moedaUtils.formatarDecimal(total_com_coeficiente * p.Qtde);
+    }
+    else {
+      total_com_coeficiente = this.moedaUtils.formatarDecimal(p.Preco * x.Coeficiente);
+      p.VlTotalItem = this.moedaUtils.formatarDecimal(total_com_coeficiente * p.Qtde);
+    }
+    this.ProdutosCalculados.QtdeParcela = x.QtdeParcelas;
+    this.ProdutosCalculados.Valor = p.VlTotalItem;
+    this.lstProdutosCalculados.push(this.ProdutosCalculados);
+  }
 }

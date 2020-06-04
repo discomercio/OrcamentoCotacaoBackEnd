@@ -285,20 +285,21 @@
                             <tr>
                                 <td width="45%" align="left">&nbsp;</td>
                                 <td align="right" *ngIf="this.prepedidoDto?.PermiteRAStatus == '1'">
-                                    <table cellspacing="0" cellpadding="0" style="margin-right: 10%;">
+                                    <table cellspacing="0" cellpadding="0">
                                         <tr>
                                             <td class="MTBE" align="left" nowrap><span class="PLTe">&nbsp;RA</span>
                                             </td>
                                             <td class="MTBD" align="right">
                                                 <input name="c_perc_RT" id="c_perc_RT"
                                                     [ngStyle]="{'color':verificaValor()?'green':'red'}" class="PLLd"
-                                                    style="width:95%;"
+                                                    style="width:90%;"
                                                     value='{{moedaUtils.formatarValorDuasCasaReturnZero(this.prepedidoDto.TotalFamiliaParcelaRA)}}'
                                                     readonly tabindex=-1>
                                             </td>
                                         </tr>
                                     </table>
                                 </td>
+                                <td style="width: 1%"></td>
                                 <td align="right">
                                     <table cellspacing="0" cellpadding="0" align="center">
                                         <tr>

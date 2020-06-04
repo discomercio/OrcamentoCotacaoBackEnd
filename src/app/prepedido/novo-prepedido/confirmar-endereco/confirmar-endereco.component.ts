@@ -49,6 +49,7 @@ export class ConfirmarEnderecoComponent implements OnInit {
   //precisa do static: false porque está dentro de um ngif
   @ViewChild("componenteCep", { static: false }) componenteCep: CepComponent;
   public podeAvancar(): boolean {
+    
     return !this.componenteCep.carregando;
   }
   public prepararAvancar(): void {

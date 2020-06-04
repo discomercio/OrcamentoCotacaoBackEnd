@@ -50,9 +50,9 @@
             </div>
             <div class="item item-4" [ngClass]="{'margemdesktop': telaDesktop}">
                 <mat-form-field [class]="telaDesktop? 'campoTextoDesktop': 'campoTextoCel'">
-                    <input *ngIf="emPrepedidos" matInput type="date" placeholder="até"
+                    <input *ngIf="emPrepedidos" matInput type="date" placeholder="até" 
                         [(ngModel)]="prepedidoListarService.paramsBuscaPrepedido.dataFinal" name="dataFinal">
-                    <input *ngIf="!emPrepedidos" matInput type="date" placeholder="até"
+                    <input *ngIf="!emPrepedidos" matInput type="date" placeholder="até" 
                         [(ngModel)]="pedidoListarService.paramsBuscaPedido.dataFinal" name="dataFinal">
                 </mat-form-field>
             </div>

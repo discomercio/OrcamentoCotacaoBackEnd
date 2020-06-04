@@ -96,7 +96,6 @@ export class PrepedidoDesktopComponent extends TelaDesktopBaseComponent implemen
   }
 
   verificaValor() {
-    debugger;
     if (this.prepedidoDto.TotalFamiliaParcelaRA >= 0)
       return true
     else

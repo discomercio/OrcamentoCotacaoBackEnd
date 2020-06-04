@@ -1,10 +1,11 @@
 import createNumberMask from 'text-mask-addons/dist/createNumberMask'
 
 export class MoedaUtils {
-    formatter = new Intl.NumberFormat(undefined, {
+    //
+    formatter = new Intl.NumberFormat('pt-br', {
         style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2
     });
-    formatter1casa = new Intl.NumberFormat(undefined, {
+    formatter1casa = new Intl.NumberFormat('pt-br', {
         style: 'decimal', minimumFractionDigits: 1, maximumFractionDigits: 1
     });
 
@@ -24,7 +25,7 @@ export class MoedaUtils {
         if (!!!nro)
             return "";
         // return this.formatter1casa.format(nro);
-        let teste = this.formatter.format(nro); 
+        let teste = this.formatter.format(nro);
         return teste;
     }
 
@@ -37,6 +38,10 @@ export class MoedaUtils {
         if (!!!nro)
             return "0,00";
         return this.formatter.format(nro);
+    }
+
+    public formatarDecimal(valor: number): number {
+        return Number.parseFloat(valor.toFixed(2));
     }
     //máscara digitar valores
     //usando o angular2-text-mask

@@ -43,21 +43,22 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
     public readonly impressaoService: ImpressaoService,
     public readonly novoPrepedidoDadosService: NovoPrepedidoDadosService,
     public readonly prepedidoBuscarService: PrepedidoBuscarService,
-    private readonly autenticacaoService:AutenticacaoService,
-        public readonly dialog: MatDialog) {
+    private readonly autenticacaoService: AutenticacaoService,
+    public readonly dialog: MatDialog) {
     super(telaDesktopService);
 
   }
 
   //para formatar as coisas
+  data_FormTela = DataUtils.formata_formulario_date;
   dataFormatarTela = DataUtils.formatarTela;
   moedaUtils: MoedaUtils = new MoedaUtils();
 
   prepedidos$: Observable<PrepedidosCadastradosDtoPrepedido[]>;
   pedidos$: Observable<PedidoDtoPedido[]>;
 
-  maxDate = DataUtils.formataParaFormulario(new Date());
-  minDate = DataUtils.formataParaFormulario(DataUtils.somarDias(new Date(), -60));
+  // maxDate = DataUtils.formataParaFormulario(new Date());
+  // minDate = DataUtils.formataParaFormulario(DataUtils.somarDias(new Date(), -60));
   ngOnInit() {
     this.jaDeuErro = false;
     /*
@@ -110,9 +111,9 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
     if (this.jaDeuErro) return;
     this.jaDeuErro = true;
 
-    
+
     let alertaService = new AlertaService(this.dialog, this.router, this.autenticacaoService);
-    
+
     alertaService.mostrarErroInternet(r);
     // const dialogRef = this.dialog.open(AlertDialogComponent, {
     //   width: '350px',
@@ -155,7 +156,7 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
               snack.open(msg, undefined, {
                 duration: environment.esperaErros
               });
-              
+
               prepedidoListarService.atualizar();
             },
             error() {
@@ -171,7 +172,6 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
   }
   cliqueLinha(linha: any) {
     //temos que ignorar se tiver clicado sobre a lata de lixo!
-    debugger;
     if (this.emRemoverPrepedido)
       return;
     if (linha.NumeroPedido) {

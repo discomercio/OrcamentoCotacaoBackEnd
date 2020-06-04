@@ -20,6 +20,8 @@ a classe principal
 */
 export class DataUtils {
     public static formataParaFormulario(data: Date): string {
+        if (typeof data.toISOString != "function")
+            data = new Date(data);
         //queremos o formato yyy-mm-dd, é o que o input date precisa
         //https://stackoverflow.com/questions/3552461/how-to-format-a-javascript-date
         return data.toISOString().slice(0, 10);
@@ -32,6 +34,14 @@ export class DataUtils {
         return new Date(ms);
     }
 
+    public static dataLocal(data: Date): string {
+        let dia = data.getDate().toString(),
+            diaF = (dia.length == 1) ? '0' + dia : dia,
+            mes = (data.getMonth() + 1).toString(), //+1 pois no getMonth Janeiro começa com zero.
+            mesF = (mes.length == 1) ? '0' + mes : mes,
+            anoF = data.getFullYear();
+        return diaF + "/" + mesF + "/" + anoF;
+    }
 
     public static formatarTela(data: Date | string): string {
         //para imprimir na tela
@@ -42,13 +52,14 @@ export class DataUtils {
         if (data.toString() === "0001-01-01T00:00:00") {
             return "";
         }
+        //temos um problema com a data de busca, pois esta ao fazer 
         const aux = Date.parse(data.toString());
         if (!aux)
             return "";
         const aux2 = new Date(aux);
         if (!aux2)
             return "";
-        return aux2.toLocaleDateString();
+        return DataUtils.dataLocal(aux2);
     }
 
     public static formatarTelaHora(data: Date | string): string {
@@ -66,7 +77,7 @@ export class DataUtils {
         const aux2 = new Date(aux);
         if (!aux2)
             return "";
-        return aux2.toLocaleDateString();
+        return DataUtils.dataLocal(aux2);
     }
 
     public static formatarTelaHoraSemSegundos(data: Date | string): string {
@@ -84,14 +95,14 @@ export class DataUtils {
         const aux2 = new Date(aux);
         if (!aux2)
             return "";
-        const ret = aux2.toLocaleTimeString();
+        const ret = DataUtils.dataLocal(aux2);
         return ret.substr(0, ret.length - 3);
     }
 
     public static formatarTelaHoraComSegundos(data: Date | string): string {
         //para imprimir na tela
         //está vindo como string do c#!
-        
+
         if (!data) {
             return "";
         }
@@ -104,7 +115,7 @@ export class DataUtils {
         const aux2 = new Date(aux);
         if (!aux2)
             return "";
-        const ret = aux2.toLocaleTimeString();
+        const ret = DataUtils.dataLocal(aux2);
         return ret;
     }
 
@@ -220,5 +231,20 @@ export class DataUtils {
 
         decodifica_hora.sucesso = true;
         return decodifica_hora;
+    }
+
+    public static formata_formulario_date(data: string): Date {
+        if (!data)
+            return;
+
+        const aux = new Date();
+        const hhmmss = " 00:00:00";
+        const dt = new Date(data = data + hhmmss);
+        dt.setHours(aux.getHours());
+        dt.setMinutes(aux.getMinutes());
+        dt.setSeconds(aux.getSeconds());
+
+        return dt;
+
     }
 }

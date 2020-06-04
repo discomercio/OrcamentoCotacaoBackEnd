@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, DebugElement } from '@angular/core';
+import { Component, OnInit, Input, DebugElement, AfterViewInit } from '@angular/core';
 import { PrepedidoComboNumeroService } from '../../../../src/app/servicos/prepedido/prepedido-combo-numero.service';
 import { PrepedidoComboCpfcnpjService } from '../../../../src/app/servicos/prepedido/prepedido-combo-cpfcnpj.service';
 import { Observable } from 'rxjs';
@@ -55,12 +55,14 @@ export class ConsultaBaseComponent extends TelaDesktopBaseComponent implements O
   }
 
   ngOnInit() {
-
   }
-  maxDate = DataUtils.formataParaFormulario(new Date());
-  minDate = DataUtils.formataParaFormulario(DataUtils.somarDias(new Date(), -60));
+
+  //problema na comparação na linha 86
+  public maxDate = new Date();
+  public minDate = DataUtils.somarDias(new Date(), -60);
 
   buscar() {
+
     if (this.emPrepedidos) {
       //nenhuma busca, ligamos os dois
       if (!this.prepedidoListarService.paramsBuscaPrepedido.tipoBuscaAndamento &&
@@ -80,7 +82,11 @@ export class ConsultaBaseComponent extends TelaDesktopBaseComponent implements O
         this.prepedidoListarService.paramsBuscaPrepedido.tipoBuscaAndamento = false;
         this.prepedidoListarService.paramsBuscaPrepedido.tipoBuscaPedido = false;
       }
-      if (this.prepedidoListarService.paramsBuscaPrepedido.dataInicial < this.minDate) {
+
+      let dataInicial = DataUtils.formata_formulario_date(this.prepedidoListarService.paramsBuscaPrepedido.dataInicial);
+
+
+      if (dataInicial < this.minDate) {
         this._snackBar.open("É permitido realizar a busca dentro de um periodo de 60 dias atrás da Data atual", "", {
           duration: environment.esperaAvisos
         });
@@ -90,7 +96,8 @@ export class ConsultaBaseComponent extends TelaDesktopBaseComponent implements O
     }
     else {
       //nenhuma busca, ligamos os dois
-      if (!this.pedidoListarService.paramsBuscaPedido.tipoBuscaEmAndamento && !this.pedidoListarService.paramsBuscaPedido.tipoBuscaEncerrado) {
+      if (!this.pedidoListarService.paramsBuscaPedido.tipoBuscaEmAndamento &&
+        !this.pedidoListarService.paramsBuscaPedido.tipoBuscaEncerrado) {
         this.pedidoListarService.paramsBuscaPedido.tipoBuscaEmAndamento = true;
         this.pedidoListarService.paramsBuscaPedido.tipoBuscaEncerrado = true;
 
@@ -98,7 +105,10 @@ export class ConsultaBaseComponent extends TelaDesktopBaseComponent implements O
           duration: environment.esperaAvisos
         });
       }
-      if (this.pedidoListarService.paramsBuscaPedido.dataInicial < this.minDate) {
+
+      let dataInicial = DataUtils.formata_formulario_date(this.pedidoListarService.paramsBuscaPedido.dataInicial);
+
+      if (dataInicial < this.minDate) {
         this._snackBar.open("É permitido realizar a busca dentro de um periodo de 60 dias atrás da Data atual", "", {
           duration: environment.esperaAvisos
         });

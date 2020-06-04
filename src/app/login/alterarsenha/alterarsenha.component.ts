@@ -36,101 +36,105 @@ export class AlterarsenhaComponent extends TelaDesktopBaseComponent implements O
   senhaExpirada: boolean = false;
 
   alterarSenha(): void {
-
     let msg: string = "";
+    let senha_nova = this.senhaNova.toUpperCase().trim();
+    let senha_nova_confirma = this.senhaNovaConfirma.toUpperCase().trim();
+    let senha_atual = this.senha.toUpperCase().trim();
 
-    if (!!this.senha) {
-      if (!!this.senhaNova && !!this.senhaNovaConfirma) {
-
-        if (this.senhaNova.length < 5) {
-          msg = "A nova senha deve possuir no mínimo 5 caracteres.";
-          this._snackBar.open("Erro ao alterar senha: " + msg, undefined, {
-            duration: environment.esperaErros
-          });
-          return;
-          // this.alertaService.mostrarMensagem("A nova senha deve possuir no mínimo 5 caracteres.");
-        }
-        if (this.senhaNovaConfirma.length < 5) {
-          msg = "A confirmação da nova senha deve possuir no mínimo 5 caracteres.";
-          this._snackBar.open("Erro ao alterar senha: " + msg, undefined, {
-            duration: environment.esperaErros
-          });
-          return;
-          // this.alertaService.mostrarMensagem("A confirmação da nova senha deve possuir no mínimo 5 caracteres.");
-        }
-        if (this.senhaNova != this.senhaNovaConfirma) {
-          msg = "A confirmação da nova senha está incorreta.";
-          this._snackBar.open("Erro ao alterar senha: " + msg, undefined, {
-            duration: environment.esperaErros
-          });
-          return;
-          // this.alertaService.mostrarMensagem("A confirmação da nova senha está incorreta.");
-        }
-        if (this.senha == this.senhaNova) {
-          msg = "A nova senha deve ser diferente da senha atual.";
-          this._snackBar.open("Erro ao alterar senha: " + msg, undefined, {
-            duration: environment.esperaErros
-          });
-          return;
-          // this.alertaService.mostrarMensagem("A nova senha deve ser diferente da senha atual.");
-        }
-        
-        if (this.senhaNova == this.senhaNovaConfirma) {
-          //vamos codificar as senhas com elas em maiusculas
-          var key = this.autenticacaoService.gerarChave();
-          let senha = this.autenticacaoService.CodificaSenha(this.senha.toUpperCase(), key);
-          let senha_nova = this.autenticacaoService.CodificaSenha(this.senhaNova.toUpperCase(), key);
-          let senha_nova_confirma = this.autenticacaoService.CodificaSenha(this.senhaNovaConfirma.toUpperCase(), key);
-
-          //as senhas serão passadas codificadas em maiusculas
-          //preciso guardar o nome de usuario          
-          this.autenticacaoService.alterarSenha(this.autenticacaoService.usuarioApelidoParaAlterarSenha, senha,
-            senha_nova, senha_nova_confirma).subscribe({
-              next: (e) => {
-                //fazer a chamada para realizar o login, passando a senha nova e o apelido
-                if (e == "" || e == null) {
-                  this._snackBar.open("Alteração de senha realizada com sucesso!", undefined, {
-                    duration: environment.esperaErros
-                  });
-                  this.autenticacaoService.senhaExpirada = false;
-                  debugger;
-                  // this.alertaService.mostrarMensagem("Alteração de senha realizada com sucesso!");
-                  this.autenticacaoService.authLogin(this.autenticacaoService.usuarioApelidoParaAlterarSenha, this.senhaNova.toUpperCase(),
-                    this.autenticacaoService.lembrarSenhaParaAlterarSenha, () => { }, this._snackBar, this.router, this.appComponent)
-                }
-                //retornando erro
-                if (e != "" && e != null) {
-                  msg = e.toString();
-                  
-                  this._snackBar.open("Erro ao alterar senha: " + msg, undefined, {
-                    duration: environment.esperaErros
-                  });
-
-                  //Qualquer problema, podemos verificar se a msg é "Usuário bloqueado" e 
-                  //podemos redirecionar ele para a tela de login, pois ele ainda não esta logado
-                  //No momento estamos deixando ele na tela de alterar senha
-
-                  return;
-                }
-
-              },
-              error: (e) => {
-                msg = "" + ((e && e.message) ? e.message : e.toString());
-                if (e && e.status === 400)
-                  msg = "usuário e senha inválidos."
-                if (e && e.status === 0)
-                  msg = "servidor de autenticação não disponível."
-                if (e && e.status === 500)
-                  msg = "erro interno no servidor de autenticação."
-
-
-                this._snackBar.open("Erro ao alterar senha: " + msg, undefined, {
-                  duration: environment.esperaErros
-                });
-              }
-            });
-        }
-      }
+    if (senha_atual.length < 5) {
+      msg = "A senha atual deve possuir no mínimo 5 caracteres.";
+      this._snackBar.open("Erro ao alterar senha: " + msg, undefined, {
+        duration: environment.esperaErros
+      });
+      return;
     }
+
+    if (senha_nova.length < 5) {
+      msg = "A nova senha deve possuir no mínimo 5 caracteres.";
+      this._snackBar.open("Erro ao alterar senha: " + msg, undefined, {
+        duration: environment.esperaErros
+      });
+      return;
+    }
+    if (senha_nova_confirma.length < 5) {
+      msg = "A confirmação da nova senha deve possuir no mínimo 5 caracteres.";
+      this._snackBar.open("Erro ao alterar senha: " + msg, undefined, {
+        duration: environment.esperaErros
+      });
+      return;
+    }
+    if (senha_nova != senha_nova_confirma) {
+      msg = "A confirmação da nova senha está incorreta.";
+      this._snackBar.open("Erro ao alterar senha: " + msg, undefined, {
+        duration: environment.esperaErros
+      });
+      return;
+    }
+    if (senha_atual == senha_nova) {
+      msg = "A nova senha deve ser diferente da senha atual.";
+      this._snackBar.open("Erro ao alterar senha: " + msg, undefined, {
+        duration: environment.esperaErros
+      });
+      return;
+    }
+    if (senha_nova == this.autenticacaoService.usuarioApelidoParaAlterarSenha.toUpperCase().trim()) {
+      msg = "A nova senha não pode ser igual ao identificador do usuário!";
+      this._snackBar.open("Erro ao alterar senha: " + msg, undefined, {
+        duration: environment.esperaErros
+      });
+      return;
+    }
+
+    //vamos codificar as senhas com elas em maiusculas
+    var key = this.autenticacaoService.gerarChave();
+    let senha_cod = this.autenticacaoService.CodificaSenha(senha_atual, key);
+    let senha_nova_cod = this.autenticacaoService.CodificaSenha(senha_nova, key);
+    let senha_nova_confirma_cod = this.autenticacaoService.CodificaSenha(senha_nova_confirma, key);
+
+    //as senhas serão passadas codificadas em maiusculas
+    //preciso guardar o nome de usuario          
+    this.autenticacaoService.alterarSenha(this.autenticacaoService.usuarioApelidoParaAlterarSenha, senha_cod,
+      senha_nova_cod, senha_nova_confirma_cod).subscribe({
+        next: (e) => {
+          //fazer a chamada para realizar o login, passando a senha nova e o apelido
+          if (e == "" || e == null) {
+            this._snackBar.open("Alteração de senha realizada com sucesso!", undefined, {
+              duration: environment.esperaErros
+            });
+            this.autenticacaoService.senhaExpirada = false;
+
+            // this.alertaService.mostrarMensagem("Alteração de senha realizada com sucesso!");
+            this.autenticacaoService.authLogin(this.autenticacaoService.usuarioApelidoParaAlterarSenha, senha_nova,
+              this.autenticacaoService.lembrarSenhaParaAlterarSenha, () => { }, this._snackBar, this.router, this.appComponent);
+            return;
+
+          }
+          //retornando erro
+          msg = e.toString();
+
+          this._snackBar.open("Erro ao alterar senha: " + msg, undefined, {
+            duration: environment.esperaErros
+          });
+
+          //Qualquer problema, podemos verificar se a msg é "Usuário bloqueado" e 
+          //podemos redirecionar ele para a tela de login, pois ele ainda não esta logado
+          //No momento estamos deixando ele na tela de alterar senha
+        },
+        error: (e) => {
+          msg = "" + ((e && e.message) ? e.message : e.toString());
+          if (e && e.status === 400)
+            msg = "usuário e senha inválidos."
+          if (e && e.status === 0)
+            msg = "servidor de autenticação não disponível."
+          if (e && e.status === 500)
+            msg = "erro interno no servidor de autenticação."
+
+
+          this._snackBar.open("Erro ao alterar senha: " + msg, undefined, {
+            duration: environment.esperaErros
+          });
+        }
+      });
   }
 }
+

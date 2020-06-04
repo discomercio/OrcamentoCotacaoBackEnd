@@ -137,14 +137,12 @@ export class SelecProdDialogComponent extends TelaDesktopBaseComponent implement
   }
 
   mais() {
-    debugger;
     var atual = this.qtde;
     var novo = atual - (-1); //Evitando Concatenacoes
     this.qtde = novo;
   }
 
   public menos() {
-    debugger;
     var atual = this.qtde;
     if (atual > 0) { //evita números negativos
       var novo = atual - 1;

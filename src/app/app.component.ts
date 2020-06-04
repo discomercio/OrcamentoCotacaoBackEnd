@@ -6,6 +6,11 @@ import { ImpressaoService } from './utils/impressao.service';
 import { DOCUMENT } from '@angular/common';
 import * as jtw_decode from 'jwt-decode';
 import { AlertaService } from './utils/alert-dialog/alerta.service';
+import { ConsultaBaseComponent } from './prepedido/consulta-base/consulta-base.component';
+import { PedidoBuscarService } from './servicos/pedido/pedido-buscar.service';
+import { PrepedidoBuscarService } from './servicos/prepedido/prepedido-buscar.service';
+import { PedidoListarService } from './servicos/pedido/pedido-listar.service';
+import { PrepedidoListarService } from './servicos/prepedido/prepedido-listar.service';
 
 @Component({
   selector: 'app-root',
@@ -14,13 +19,16 @@ import { AlertaService } from './utils/alert-dialog/alerta.service';
 })
 export class AppComponent implements OnInit {
   telaDesktop = true;
+  
 
   constructor(private readonly telaDesktopService: TelaDesktopService,
     public readonly autenticacaoService: AutenticacaoService,
     public readonly impressaoService: ImpressaoService,
-    private readonly router: Router) {
+    private readonly router: Router,
+    private readonly pedidoListarService: PedidoListarService,
+    private readonly prepedidoListarService: PrepedidoListarService) {
     telaDesktopService.telaAtual$.subscribe(r => this.telaDesktop = r);
-    
+
   }
   public logo: string = null;
 
@@ -96,18 +104,15 @@ export class AppComponent implements OnInit {
 
     this.carregarEstilo(false);
 
-    // setTimeout(() => {
-    //   //TEM QUE SER por timeout para evitar o erro
-    //   //ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value: 'mat-form-field-should-float: false'. Current value: 'mat-form-field-should-float: true'.
-    //   this.logo = null;
-    //   this.carregarEstilo(false);
-    // }, 1);
-    
     AlertaService.mostrandoErroNaoAutorizado = false;
     this.router.navigateByUrl("/login");
 
-    // location.reload();
-  }       
+    //vamos criar uma método que irá chamar os métodos que serão criados dentro 
+    //de todos os serviços para que seja limpo todos as variaveis
+    //AFAZER: NÃO SEI SE FAZ A CHAMADA DO METODO AQUI
+    this.pedidoListarService.limpar(true);
+    this.prepedidoListarService.limpar(true);
+  }
 
   title = 'Sistema de pré-pedidos';
 }

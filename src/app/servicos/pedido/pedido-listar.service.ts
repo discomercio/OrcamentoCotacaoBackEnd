@@ -15,22 +15,62 @@ export class PedidoListarService {
   //a tela da busca edita diretamente as variáveis aqui dentro
   public paramsBuscaPedido: ParamsBuscaPedido = new ParamsBuscaPedido();
 
+
   constructor(private readonly http: HttpClient) {
-    //incializa as datas
+    this.limpar(false);
+  }
+
+  limpar(limpar:boolean) {
+
+    let data_inicial = "";
+    let data_final = "";
+
+    if(limpar){
+      sessionStorage.removeItem('data_inicial_pedido');
+      sessionStorage.removeItem('data_final_pedido');
+    }else{
+      data_inicial = sessionStorage.getItem('data_inicial_pedido');
+      data_final = sessionStorage.getItem('data_final_pedido');
+    }
+
+    if (!data_inicial && !data_final) {
+      this.paramsBuscaPedido = new ParamsBuscaPedido();
     this.paramsBuscaPedido.dataFinal = DataUtils.formataParaFormulario(new Date());
     this.paramsBuscaPedido.dataInicial = DataUtils.formataParaFormulario(DataUtils.somarDias(new Date(), -60));
+    }
+    else {
+      this.paramsBuscaPedido.dataInicial = sessionStorage.getItem('data_inicial_pedido');
+      this.paramsBuscaPedido.dataFinal = sessionStorage.getItem('data_final_pedido');
+    }
+  }
 
+  salvarBuscaPedido(): void {
+    sessionStorage.setItem('data_inicial_pedido', this.paramsBuscaPedido.dataInicial);
+    sessionStorage.setItem('data_final_pedido', this.paramsBuscaPedido.dataFinal);
   }
 
   public carregando: boolean = false;
   pedidos$: BehaviorSubject<PedidoDtoPedido[]> = new BehaviorSubject(new Array());
   errosPedidos$: BehaviorSubject<any> = new BehaviorSubject(null);
 
+  //afazer:criei essa variavel para fazer a conversão corretamente ao formatar a data
+  public formato_hh_mm_ss: string = "00:00:00";
+  //variaveis para mostrar as datas de buscas n atela mobile
+  public data_mobile_inicial: string = "";
+  public data_mobile_final: string = "";
+
   public atualizar(): void {
-    let minDate = DataUtils.formataParaFormulario(DataUtils.somarDias(new Date(), -60));
-    if (this.paramsBuscaPedido.dataInicial < minDate) {
-      this.paramsBuscaPedido.dataInicial = minDate;
+debugger;
+    let dtInicial: Date = DataUtils.formata_formulario_date(this.paramsBuscaPedido.dataInicial);
+    let dtFinal: Date = DataUtils.formata_formulario_date(this.paramsBuscaPedido.dataFinal);
+
+    let minDate = DataUtils.somarDias(new Date(), -60);
+
+    if (dtInicial < minDate) {
+      this.paramsBuscaPedido.dataInicial = DataUtils.formataParaFormulario(minDate);
     }
+
+    this.salvarBuscaPedido();
 
     // Initialize Params Object
     let params = new HttpParams();
@@ -39,8 +79,8 @@ export class PedidoListarService {
     //os nomes são todos iguais, devia ter um jeito de fazer isso automaticamente...
     params = params.append('clienteBusca', StringUtils.retorna_so_digitos(this.paramsBuscaPedido.clienteBusca));
     params = params.append('numPedido', this.paramsBuscaPedido.numeroPedido);
-    params = params.append('dataInicial', this.paramsBuscaPedido.dataInicial);
-    params = params.append('dataFinal', this.paramsBuscaPedido.dataFinal);
+    params = params.append('dataInicial', DataUtils.formataParaFormulario(dtInicial));
+    params = params.append('dataFinal', DataUtils.formataParaFormulario(dtFinal));
     /*
   //tipo de busca:
   tipoBusca:

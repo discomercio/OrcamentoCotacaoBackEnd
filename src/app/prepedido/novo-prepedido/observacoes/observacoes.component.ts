@@ -10,6 +10,9 @@ import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { take } from 'rxjs/operators';
 import { Constantes } from 'src/app/dto/Constantes';
 import { PrepedidoBuscarService } from 'src/app/servicos/prepedido/prepedido-buscar.service';
+import { parse } from 'path';
+import { DataUtils } from 'src/app/utils/dataUtils';
+import { RepositionScrollStrategy } from '@angular/cdk/overlay';
 
 
 @Component({
@@ -45,13 +48,17 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
       .subscribe(() => this.autosize.resizeToFitContent(true));
   }
 
+  public etg_imediata: boolean = false;
+
   //#region navegação
   voltar() {
     this.dadosParaModelo();
     this.location.back();
   }
   continuar() {
-    this.dadosParaModelo();
+    debugger;
+    if (!this.dadosParaModelo())
+      return false;
     this.prepedidoBuscarService.cadastrarPrepedido(this.novoPrepedidoDadosService.prePedidoDto).subscribe({
       next: (r) => {
 
@@ -68,6 +75,7 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
           else {
 
             this.alertaService.mostrarMensagem("Pré-Pedido criado com sucesso.");
+            localStorage.setItem('ultima_url', document.URL);
             this.router.navigate(["prepedido/detalhes/" + r[0]]);
           }
         }
@@ -110,11 +118,32 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
     //   this.GarantiaIndicador = true;
     // }
   }
+
+  public PrevisaoEntrega: string = "";
   dadosParaModelo() {
-    this.prePedidoDto.DetalhesPrepedido.EntregaImediata = this.constantes.COD_ETG_IMEDIATA_NAO.toString();
-    if (this.EntregaImediata) {
-      this.prePedidoDto.DetalhesPrepedido.EntregaImediata = this.constantes.COD_ETG_IMEDIATA_SIM.toString();
-    }
+    // this.prePedidoDto.DetalhesPrepedido.EntregaImediata = this.constantes.COD_ETG_IMEDIATA_SIM.toString();
+    // if (!this.EntregaImediata) {
+    //   this.prePedidoDto.DetalhesPrepedido.EntregaImediata = this.constantes.COD_ETG_IMEDIATA_NAO.toString();
+    //   //vamos validar a data de entrega imediata 
+    //   debugger;
+    //   if (!!this.PrevisaoEntrega) {
+    //     if (DataUtils.formata_formulario_date(this.PrevisaoEntrega) <= new Date()) {
+    //       this.PrevisaoEntrega = "";
+    //       this.alertaService.mostrarMensagem("A data para entrega deve ser posterior a data atual!");
+    //       return false;
+    //     }
+    //     else {
+    //       this.prePedidoDto.DetalhesPrepedido.EntregaImediataData = this.PrevisaoEntrega;
+    //     }
+    //   }
+    //   else {
+    //     this.alertaService.mostrarMensagem("Favor informar a data para entrega.");
+    //     return false;
+    //   }
+    // }
+
+    if (!this.verificaEntregaImediata())
+      return false;
 
     this.prePedidoDto.DetalhesPrepedido.BemDeUso_Consumo = this.constantes.COD_ST_BEM_USO_CONSUMO_NAO.toString();
     if (this.BemDeUso_Consumo) {
@@ -130,10 +159,40 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
     // if (this.GarantiaIndicador) {
     //   this.prePedidoDto.DetalhesPrepedido.GarantiaIndicador = this.constantes.COD_GARANTIA_INDICADOR_STATUS__SIM.toString();
     // }
+    return true;
   }
   public contador: number = 0;
   public contarCaracter(): void {
     this.contador = this.prePedidoDto.DetalhesPrepedido.Observacoes.length;
+  }
+
+  public verificaEntregaImediata(): boolean {
+    let retorno: boolean = true;
+
+    if (this.EntregaImediata) {
+      this.PrevisaoEntrega = "";
+    }
+    this.prePedidoDto.DetalhesPrepedido.EntregaImediata = this.constantes.COD_ETG_IMEDIATA_SIM.toString();
+    if (!this.EntregaImediata) {
+      this.prePedidoDto.DetalhesPrepedido.EntregaImediata = this.constantes.COD_ETG_IMEDIATA_NAO.toString();
+      //vamos validar a data de entrega imediata 
+      debugger;
+      if (!!this.PrevisaoEntrega) {
+        if (DataUtils.formata_formulario_date(this.PrevisaoEntrega) <= new Date()) {
+          this.PrevisaoEntrega = "";
+          this.alertaService.mostrarMensagem("A data para entrega deve ser posterior a data atual!");
+          retorno = false;
+        }
+        else {
+          this.prePedidoDto.DetalhesPrepedido.EntregaImediataData = this.PrevisaoEntrega;
+        }
+      }
+      else {
+        this.alertaService.mostrarMensagem("Favor informar a data para entrega.");
+        retorno = false;
+      }
+    }
+    return retorno;
   }
 
 }

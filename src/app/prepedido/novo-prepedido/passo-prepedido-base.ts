@@ -53,10 +53,13 @@ export class PassoPrepedidoBase extends TelaDesktopBaseComponent {
     }
 
     totalPedido(): number {
-        if (this.prePedidoDto.PermiteRAStatus == 1)
-            return this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + current.Preco_Lista, 0);
-        else
-            return this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + current.TotalItem, 0);
+        if (this.prePedidoDto.PermiteRAStatus == 1) {
+            return this.prePedidoDto.ValorTotalDestePedidoComRA = this.moedaUtils.formatarDecimal(
+                this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + this.moedaUtils.formatarDecimal(current.TotalItemRA), 0));
+        } else {
+            return this.prePedidoDto.VlTotalDestePedido = this.moedaUtils.formatarDecimal(
+                this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + this.moedaUtils.formatarDecimal(current.TotalItem), 0));
+        }
     }
     //#endregion
 
