@@ -11,6 +11,7 @@ import { PedidoBuscarService } from './servicos/pedido/pedido-buscar.service';
 import { PrepedidoBuscarService } from './servicos/prepedido/prepedido-buscar.service';
 import { PedidoListarService } from './servicos/pedido/pedido-listar.service';
 import { PrepedidoListarService } from './servicos/prepedido/prepedido-listar.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -34,6 +35,11 @@ export class AppComponent implements OnInit {
 
 
   ngOnInit(): void {
+
+    //proteção para não publicar se a verificação da versão da API não estiver correta
+    if (environment.production && (environment.versaoApi == 'DEBUG' || environment.versaoApi == 'SUBSTITUIR_VERSAO_API')) {
+      alert("Ocorreu algum erro no processo de compilação. Por favor, avise o suporte técnico.")
+    }
 
     this.carregarEstilo(false);
 

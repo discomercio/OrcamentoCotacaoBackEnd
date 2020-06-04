@@ -61,7 +61,7 @@ export class AlertaService {
       if (error.status == 0) {
         //erro 500
         this.mostrarMensagemComLargura(
-          "Favor verifique sua conexão com a internet!",
+          "Favor verificar sua conexão com a internet!",
           "250px", null);
 
         return;
@@ -75,6 +75,10 @@ export class AlertaService {
 
         return;
       }
+
+      //412, erro de versão
+      if (this.mostrarErro412(error))
+        return;
 
       //erro inesperado Favor entrar em contato com o suporte técnico + status.
       this.mostrarMensagemComLargura(
@@ -96,9 +100,22 @@ export class AlertaService {
   }
 
 
-
-
-
+  public mostrarErro412(error: HttpErrorResponse): boolean {
+    if (error.status == 412) {
+      let versao = error.headers.get("X-API-Version");
+      if (versao == null) {
+        versao = "";
+      }
+      if (versao.trim() != "") {
+        versao = " (" + versao + ")";
+      }
+      this.mostrarMensagemComLargura("Uma nova versão do sistema está disponível" + versao + ". Clique em OK para carregar a nova versão.", "250px", () => {
+        window.location.reload();
+      });
+      return true;
+    }
+    return false;
+  }
 }
 
 

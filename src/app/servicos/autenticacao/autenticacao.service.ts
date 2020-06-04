@@ -11,6 +11,7 @@ import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { AppComponent } from 'src/app/app.component';
 import { query } from '@angular/animations';
+import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
 
 /*
 precisa instalar:
@@ -23,7 +24,8 @@ npm i jwt-decode --save
 })
 export class AutenticacaoService {
 
-  constructor(private readonly http: HttpClient, private readonly location: Location) {
+  constructor(private readonly http: HttpClient, private readonly location: Location,
+    private readonly alertaService: AlertaService) {
     this.carregarLayout();
   }
 
@@ -95,6 +97,8 @@ export class AutenticacaoService {
         ,
         error: (e) => {
           desligarFazendoLogin();
+          if (this.alertaService.mostrarErro412(e))
+            return;
           msg = "" + ((e && e.message) ? e.message : e.toString());
           if (e && e.status === 400)
             msg = "usuário e senha inválidos."
@@ -132,13 +136,19 @@ export class AutenticacaoService {
     sessionStorage.removeItem('data_final_prepedido');
     sessionStorage.removeItem('data_inicial_pedido');
     sessionStorage.removeItem('data_final_pedido');
+    sessionStorage.removeItem('token');
+    localStorage.removeItem('token');
   }
 
   public setarToken(token: string): void {
-    if (this.salvar)
+    if (this.salvar) {
       localStorage.setItem("token", token);
-    else
+      sessionStorage.setItem('token', "");
+    }
+    else {
       sessionStorage.setItem("token", token);
+      localStorage.setItem('token', "");
+    }
 
     this.carregarLayout();
   }
@@ -213,10 +223,13 @@ export class AutenticacaoService {
     return ret;
   }
   private obterTokenInterno(): string {
-    //tentamos nos dois lugares
+    //tentamos nos dois lugares, primeiro na local
     var ret = localStorage.getItem("token");
-    if (ret)
+    if (ret && ret.trim() != "") {
+      //precisamos definir onde guardamos quando vier a renovação do token
+      this.salvar = true;
       return ret;
+    }
     return sessionStorage.getItem("token");
   }
 
@@ -272,18 +285,22 @@ export class AutenticacaoService {
   }
   private renovarToken(): void {
     this.renovacaoPendnete = true;
-    this.http.get(environment.apiUrl + 'acesso/RenovarToken').subscribe(
+    this.http.get(environment.apiUrl + 'acesso/RenovarToken', { responseType: 'text' }).subscribe(
       {
         next: (e) => {
           this.setarToken(e as string);
-          this.renovacaoPendnete = false;
+          this.desligarRenovacaoPendente();
         },
-        error: () => { this.renovacaoPendnete = false; },
-        complete: () => { this.renovacaoPendnete = false; }
+        error: () => { this.desligarRenovacaoPendente(); },
+        complete: () => { this.desligarRenovacaoPendente(); }
       }
     );
   }
 
+  private desligarRenovacaoPendente() {
+    //desligamos com timeou tpoque a solicitação da renovação do token também pode disparar outra renovação do token
+    setTimeout(() => { this.renovacaoPendnete = false; }, 500);
+  }
 
 
   //Gabriel criar metodo para carregar o css
@@ -364,20 +381,7 @@ export class AutenticacaoService {
     favicon.href = 'assets/icones/ico-bonshop.ico';//alterar
     head.appendChild(favicon);
   }
-  /*
-  nao queremos expor este desnecessaruiamente
-  na API, devemos usar o ID de usuário do token e não como um parametro extra
-  e no cliente não devemos precisar...
-  get authIdUsuario(): number {
-    if (!this.authEstaLogado())
-      return 0;
 
-    const token = this.oauthService.getAccessToken();
-    const user = jtw_decode(token);
-    let ret: number = (user && user.sub) ? user.sub : 0;
-    return ret;
-  }
-  */
   public BuscarImgFundo(): string {
     if (this.loja == "205" ||
       this.loja == "206" ||
