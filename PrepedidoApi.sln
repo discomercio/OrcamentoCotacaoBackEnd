@@ -16,11 +16,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bats", "Bats", "{A0F97C04-F675-4875-85EC-9D198181884E}"
 	ProjectSection(SolutionItems) = preProject
 		AtualizarSonar.bat = AtualizarSonar.bat
+		CompilarPrepedidoApi.bat = CompilarPrepedidoApi.bat
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testes", "Testes", "{3CBAB939-3AA5-4ECA-83B4-E937DA21BF4C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testes.Labs", "Testes.Labs\Testes.Labs.csproj", "{E28B0099-453E-47E5-B648-A2AF147C82E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testes.Labs", "Testes.Labs\Testes.Labs.csproj", "{E28B0099-453E-47E5-B648-A2AF147C82E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
