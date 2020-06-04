@@ -26,7 +26,7 @@ namespace InfraBanco.Modelos
         [MaxLength(3)]
         public string Loja { get; set; }
 
-        public Tproduto Tproduto{ get; set; }
+        public Tproduto Tproduto { get; set; }
 
         [Column("preco_lista", TypeName = "money(19,4)")]
         public decimal? Preco_Lista { get; set; }
@@ -46,21 +46,5 @@ namespace InfraBanco.Modelos
 
         [Column("qtde_max_venda")]
         public short? Qtde_Max_Venda { get; set; }
-
-        //[Column("cor")]
-        //[MaxLength(10)]
-        //public string Cor { get; set; }
-
-        //[Column("dt_cadastro")]
-        //[Required]
-        //public DateTime Dt_Cadastro { get; set; }
-
-        //[Column("dt_ult_atualizacao")]
-        //[Required]
-        //public DateTime Dt_Ult_Atualizacao { get; set; }
-
-        //[Column("excluido_status")]
-        //public short? Excluido_Status { get; set; }
-
     }
 }

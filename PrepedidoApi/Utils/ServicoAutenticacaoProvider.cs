@@ -23,8 +23,7 @@ namespace PrepedidoApi.Utils
         public async Task<InfraIdentity.UsuarioLogin> ObterUsuario(string apelido, string senha)
         {
             //trabalhamos sempre com maiúsuculas
-            apelido = apelido.ToUpperInvariant();
-            //senha= senha.ToUpperInvariant();
+            apelido = apelido.ToUpper().Trim();
 
             int idErro;
 

@@ -19,31 +19,8 @@ namespace InfraBanco.Modelos
         [Required]
         public int Campo_inteiro { get; set; }
 
-        //[Column("campo_monetario", TypeName = "money(19,4)")]
-        //[Required]
-        //public decimal Campo_monetario { get; set; }
-
-        //[Column("campo_real")]
-        //[Required]
-        //public float Campo_real { get; set; }
-
-        //[Column("campo_data")]
-        //public DateTime? Campo_data { get; set; }
-
-        //[Column("campo_texto")]
-        //[MaxLength(1024)]
-        //public string Campo_texto { get; set; }
-
-        //[Column("dt_hr_ult_atualizacao")]
-        //[Required]
-        //public DateTime Dt_hr_ult_atualizacao { get; set; }
-
-        //[Column("usuario_ult_atualizacao")]
-        //[MaxLength(10)]
-        //public string Usuario_ult_atualizacao { get; set; }
-
-        //[Column("obs")]
-        //[MaxLength(1000)]
-        //public string Obs { get; set; }
+        [Column("campo_real")]
+        [Required]
+        public float Campo_Real { get; set; }
     }
 }

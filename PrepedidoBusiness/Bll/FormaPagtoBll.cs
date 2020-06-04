@@ -18,7 +18,7 @@ namespace PrepedidoBusiness.Bll
         {
             this.contextoProvider = contextoProvider;
         }
-        
+
         public async Task<FormaPagtoDto> ObterFormaPagto(string apelido, string tipo_pessoa)
         {
             FormaPagtoDto formaPagto = new FormaPagtoDto();
@@ -31,11 +31,6 @@ namespace PrepedidoBusiness.Bll
             formaPagto.ParcCartaoMaquineta = await ObterFlagParcCartaoMaquineta(apelido, tipo_pessoa);
             formaPagto.ListaParcComEntrada = (await ObterFormaPagtoParcComEntrada(apelido, tipo_pessoa)).ToList();
             formaPagto.ListaParcComEntPrestacao = (await ObterFormaPagtoParcComEntPrestacao(apelido, tipo_pessoa)).ToList();
-
-            //formaPagto.ListaParcSemEntPrimPrest = (await ObterFormaPagtoParcSemEntPrimPrest(apelido, tipo_pessoa)).ToList();
-            //formaPagto.ListaParcSemEntPrestacao = (await ObterFormaPagtoParcSemEntPrestacao(apelido, tipo_pessoa)).ToList();
-            
-
 
             return formaPagto;
         }
@@ -140,7 +135,7 @@ namespace PrepedidoBusiness.Bll
                                  where c.Hab_entrada == 1 &&
                                        !(from d in db.torcamentistaEIndicadorRestricaoFormaPagtos
                                          where (d.Id_orcamentista_e_indicador == apelido.ToUpper() ||
-                                               d.Id_orcamentista_e_indicador == 
+                                               d.Id_orcamentista_e_indicador ==
                                                Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS) &&
                                                d.Tipo_cliente == tipo_pessoa &&
                                                d.St_restricao_ativa != 0
@@ -185,8 +180,6 @@ namespace PrepedidoBusiness.Bll
 
         private async Task<IEnumerable<ParcSemEntradaPrimPrestDto>> ObterFormaPagtoParcSemEntPrimPrest(string apelido, string tipo_pessoa)
         {
-            //COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA
-            //COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA
             var db = contextoProvider.GetContextoLeitura();
 
             var formaPagtoTask = from c in db.TformaPagtos

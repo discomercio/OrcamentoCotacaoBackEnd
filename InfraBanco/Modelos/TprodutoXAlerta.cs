@@ -24,26 +24,14 @@ namespace InfraBanco.Modelos
 
         [Column("id_alerta")]
         [Required]
-        [MaxLength(12)]        
+        [MaxLength(12)]
         public string Id_Alerta { get; set; }
 
         [ForeignKey("Id_Alerta")]
         public TalertaProduto TalertaProduto { get; set; }
 
-        //[Column("excluido_status")]
-        //[Required]
-        //public short Excluido_Status { get; set; }
-
         [Column("dt_cadastro")]
         [Required]
         public DateTime Dt_Cadastro { get; set; }
-
-        //[Column("usuario_cadastro")]
-        //[Required]
-        //[MaxLength(10)]
-        //public string Usuario_Cadastro { get; set; }
-        
-        
-
     }
 }

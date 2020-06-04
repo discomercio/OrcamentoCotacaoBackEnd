@@ -30,25 +30,25 @@ ou
         using (var dbContextTransaction = context.Database.BeginTransaction())
 */
 
-  /*          
-                        //ExecutionStrategyExtensions código gera exceçõa quando tentamos gravar e ler ao mesmo tempo:
-                        //PlatformNotSupportedException: This platform does not support distributed transactions.
+            /*          
+                                  //ExecutionStrategyExtensions código gera exceçõa quando tentamos gravar e ler ao mesmo tempo:
+                                  //PlatformNotSupportedException: This platform does not support distributed transactions.
 
-                        {
-                            using (TransactionScope trans = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-                            {
-                                var dbGravacao = contextos.ContextoNovo();
-                                var taskGravacao = InserirRegistro(dbGravacao);
+                                  {
+                                      using (TransactionScope trans = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                                      {
+                                          var dbGravacao = contextos.ContextoNovo();
+                                          var taskGravacao = InserirRegistro(dbGravacao);
 
-                                var db1 = contextos.ContextoNovo();
-                                var db2 = db1;
-                                await LeituraEmParalelo(db1, db2, log);
-                                await LeituraSequencial(db1, db2, log);
+                                          var db1 = contextos.ContextoNovo();
+                                          var db2 = db1;
+                                          await LeituraEmParalelo(db1, db2, log);
+                                          await LeituraSequencial(db1, db2, log);
 
-                                taskGravacao.Wait();
-                            }
-                        }
-                        */
+                                          taskGravacao.Wait();
+                                      }
+                                  }
+                                  */
 
 
             /*
@@ -87,16 +87,10 @@ ou
                         await LeituraEmParalelo(db1, db2, log);
                         await LeituraSequencial(db1, db2, log);
 
-                        //também tem que dar certo se usarmos o mesmo contexto!
-                        //await LeituraEmParalelo(dbgravacao, dbgravacao, log);
-                        //await LeituraSequencial(dbgravacao, dbgravacao, log);
-
-
-
                         taskGravacao.Wait();
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     //sim, ignoramos, vai dar mesmo....
                     if (!e.ToString().Contains(@"iolation of PRIMARY KEY constraint 'PK_t_CLIENTE'"))
@@ -115,44 +109,16 @@ ou
                 Dt_Cadastro = DateTime.Now,
                 Usuario_Cadastrado = "Apagar",
                 Indicador = "Apagar",
-                //Cnpj_Cpf = clienteDto.Cnpj_Cpf.Replace(".", "").Replace("/", "").Replace("-", ""),
-                //Tipo = clienteDto.Tipo.ToUpper(),
-                //Ie = clienteDto.Ie,
-                //Rg = clienteDto.Rg,
                 Nome = "Apagar, registro de teste",
-                //Sexo = clienteDto.Sexo.ToUpper(),
-                //Contribuinte_Icms_Status = clienteDto.Contribuinte_Icms_Status,
                 Contribuinte_Icms_Data = DateTime.Now,
                 Contribuinte_Icms_Data_Hora = DateTime.Now,
-                //Contribuinte_Icms_Usuario = apelido.ToUpper(),
-                //Produtor_Rural_Status = clienteDto.ProdutorRural,
                 Produtor_Rural_Data = DateTime.Now,
                 Produtor_Rural_Data_Hora = DateTime.Now,
-                //Produtor_Rural_Usuario = apelido.ToUpper(),
-                //Endereco = clienteDto.Endereco.ToUpper(),
-                //Endereco_Numero = clienteDto.Numero,
-                //Endereco_Complemento = clienteDto.Complemento,
-                //Bairro = clienteDto.Bairro.ToUpper(),
-                //Cidade = clienteDto.Cidade.ToUpper(),
-                //Cep = clienteDto.Cep.Replace("-", ""),
-                //Uf = clienteDto.Uf.ToUpper(),
-                //Ddd_Res = clienteDto.DddResidencial,
-                //Tel_Res = clienteDto.TelefoneResidencial,
-                //Ddd_Com = clienteDto.DddComercial,
-                //Tel_Com = clienteDto.TelComercial,
-                //Ramal_Com = clienteDto.Ramal,
-                //Contato = clienteDto.Contato.ToUpper(),
-                //Ddd_Com_2 = clienteDto.DddComercial2,
-                //Tel_Com_2 = clienteDto.TelComercial2,
-                //Ramal_Com_2 = clienteDto.Ramal2,
-                //Dt_Nasc = clienteDto.Nascimento,
-                //Filiacao = clienteDto.Observacao_Filiacao.ToUpper(),
                 Obs_crediticias = "",
                 Midia = "",
                 Email = "Apagar, registro de teste",
                 Email_Xml = "Apagar, registro de teste",
                 Dt_Ult_Atualizacao = DateTime.Now
-                //Usuario_Ult_Atualizacao = apelido.ToUpper()
             };
 
             bd1.Add(tCliente);

@@ -15,31 +15,8 @@ namespace InfraBanco.Modelos
         [MaxLength(12)]
         public string Tipo { get; set; }
 
-        //[Column("descricao")]
-        //[MaxLength(60)]
-        //[Required]
-        //public string Descricao { get; set; }
-
         [Column("qtde_parcelas")]
         [Required]
         public short Qtde_parcelas { get; set; }
-
-        //[Column("vl_min_parcela", TypeName = "money(19,4)")]
-        //[Required]
-        //public decimal Vl_min_parcela { get; set; }
-
-        //[Column("atualizacao_data")]
-        //public DateTime? Atualizacao_data { get; set; }
-
-        //[Column("atualizacao_hora")]
-        //[MaxLength(6)]
-        //public string Atualizacao_hora { get; set; }
-
-        //[Column("atualizacao_usuario")]
-        //[MaxLength(10)]
-        //public string Atualizacao_usuario { get; set; }
-
-        //[Column("timestamp")]
-        //public byte? Timestamp { get; }
     }
 }

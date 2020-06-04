@@ -23,121 +23,10 @@ namespace PrepedidoBusiness.Bll
         {
             this.contextoProvider = contextoProvider;
         }
-        #region
-        //public async Task<IEnumerable<ProdutoDto>> BuscarProduto(string codProduto, string loja, string apelido, List<string> lstErros)
-        //{
-        //    //paraTeste
-        //    //apelido = "MARISARJ";
-        //    //codProduto = "003000";
-        //    //loja = "202";
-        //    int qtde = 0;
-        //    bool lojaHabilitada = false;
-        //    decimal vlProdCompostoPrecoListaLoja = 0;
-        //    ProdutoDto produtoDto = new ProdutoDto();
-
-        //    List<ProdutoDto> lstProduto = new List<ProdutoDto>();
-
-        //    var db = contextoProvider.GetContextoLeitura();
-
-        //    if (string.IsNullOrEmpty(codProduto))
-        //        return null;
-        //    else if (string.IsNullOrEmpty(loja))
-        //        return null;
-
-        //    if (Util.LojaHabilitadaProdutosECommerce(loja))
-        //    {
-        //        var prodCompostoTask = from c in db.TecProdutoCompostos
-        //                               where c.Produto_Composto == codProduto
-        //                               select c;
-
-        //        string parada = "";
-
-        //        var prodComposto = prodCompostoTask.FirstOrDefault();
-
-        //        if (prodComposto.Produto_Composto != null)
-        //        {
-        //            var prodCompostoItensTask = from c in db.TecProdutoCompostoItems
-        //                                        where c.Fabricante_composto == prodComposto.Fabricante_Composto &&
-        //                                              c.Produto_composto == prodComposto.Produto_Composto &&
-        //                                              c.Excluido_status == 0
-        //                                        orderby c.Sequencia
-        //                                        select c;
-        //            var prodCompostoItens = prodCompostoItensTask.ToList();
-
-        //            if (prodCompostoItens.Count > 0)
-        //            {
-        //                foreach (var pi in prodCompostoItens)
-        //                {
-        //                    var produtoTask = from c in db.Tprodutos.Include(r => r.TprodutoLoja)
-        //                                      where c.TprodutoLoja.Fabricante == pi.Fabricante_item &&
-        //                                            c.TprodutoLoja.Produto == pi.Produto_item &&
-        //                                            c.TprodutoLoja.Loja == loja
-        //                                      select c;
-
-        //                    var produto = await produtoTask.FirstOrDefaultAsync();
-
-        //                    if (string.IsNullOrEmpty(produto.Produto))
-        //                        lstErros.Add("O produto(" + pi.Fabricante_item + ")" + pi.Produto_item + " não está disponível para a loja " + loja + "!");
-        //                    else
-        //                    {
-        //                        produtoDto = new ProdutoDto
-        //                        {
-        //                            Fabricante = pi.Fabricante_item,
-        //                            Produto = pi.Produto_item,
-        //                            Qtde = pi.Qtde,
-        //                            ValorLista = produto.TprodutoLoja.Preco_Lista,
-        //                            Descricao = produto.Descricao
-        //                        };
-        //                    }
-        //                }
-        //            }
-
-        //        }
-        //        else
-        //        {
-        //            var produtoTask = from c in db.Tprodutos.Include(r => r.TprodutoLoja)
-        //                              where c.TprodutoLoja.Produto == codProduto &&
-        //                                    c.TprodutoLoja.Loja == loja
-        //                              select c;
-
-        //            var produto = await produtoTask.FirstOrDefaultAsync();
-
-        //            if (string.IsNullOrEmpty(produto.Produto))
-        //                lstErros.Add("Produto '" + codProduto + "' não foi encontrado para a loja " + loja + "!");
-        //            else
-        //            {
-        //                produtoDto = new ProdutoDto
-        //                {
-        //                    Fabricante = produto.Fabricante,
-        //                    Produto = produto.Produto,
-        //                    Qtde = qtde,
-        //                    ValorLista = produto.TprodutoLoja.Preco_Lista,
-        //                    Descricao = produto.Descricao
-        //                };
-        //            }
-        //        }
-        //    }
-
-
-
-        //    return lstProduto;
-        //}
-
-        //public async Task<ProdutoDto> ListarProdutosCombo(string loja)
-        //{
-        //    //Necessario buscar os dados do Orcamentista para verificação abaixo
-        //    if (Util.LojaHabilitadaProdutosECommerce(loja))
-        //    {
-
-        //    }
-        //}
-        #endregion
-
+        
         public async Task<ProdutoComboDto> ListaProdutosCombo(string apelido, string loja, string id_cliente)
         {
             ProdutoComboDto retorno = new ProdutoComboDto();
-            //string loja = "202";
-            //string id_cliente = "000000605954";
 
             var db = contextoProvider.GetContextoLeitura();
             //Buscar dados do cliente
@@ -153,7 +42,7 @@ namespace PrepedidoBusiness.Bll
 
             var cliente = await clienteTask;
 
-            ////obtém  a sigla para regra
+            //obtém  a sigla para regra
             string cliente_regra = Util.MultiCdRegraDeterminaPessoa(cliente.tipo_cliente, cliente.contribuite_icms_status,
                 cliente.produtor_rural_status);
 
@@ -165,8 +54,7 @@ namespace PrepedidoBusiness.Bll
 
             List<string> lstErros = new List<string>();
             await Util.ObterCtrlEstoqueProdutoRegra_Teste(lstErros, lst_cliente_regra, cliente.uf, cliente_regra, contextoProvider);
-
-
+            
             Util.ObterDisponibilidadeEstoque(lst_cliente_regra, lstTodosProdutos, lstErros, contextoProvider);
 
             //retorna as qtdes disponiveis
@@ -177,15 +65,9 @@ namespace PrepedidoBusiness.Bll
             Tparametro tparametro = await Util.BuscarRegistroParametro(Constantes.ID_PARAMETRO_Flag_Orcamento_ConsisteDisponibilidadeEstoqueGlobal, contextoProvider);
             //atribui a qtde de estoque para o produto
             IncluirEstoqueProduto(lst_cliente_regra, lstTodosProdutos, tparametro);
-
-
+            
             await ExisteMensagensAlertaProdutos(lstTodosProdutos);
-
-            if (lstErros.Count > 0)
-            {
-                //chama o metodo verificar regras
-            }
-
+            
             retorno.ProdutoCompostoDto = (await lstProdutosCompostos).ToList();
             retorno.ProdutoDto = lstTodosProdutos;
             return retorno;
@@ -194,8 +76,7 @@ namespace PrepedidoBusiness.Bll
         private async Task ExisteMensagensAlertaProdutos(List<ProdutoDto> lst_produtos)
         {
             var db = contextoProvider.GetContextoLeitura();
-
-
+            
             var alertasTask = from c in db.TprodutoXAlertas
                               where c.TalertaProduto.Ativo == "S"
                               orderby c.Dt_Cadastro, c.Id_Alerta
@@ -238,8 +119,6 @@ namespace PrepedidoBusiness.Bll
 
         public async Task<IEnumerable<ProdutoCompostoDto>> BuscarProdutosCompostos(string loja)
         {
-
-            //loja = "202";
             var db = contextoProvider.GetContextoLeitura();
 
             var produtosCompostosSemGrupo = await (from d in (from c in db.Tprodutos
@@ -289,8 +168,6 @@ namespace PrepedidoBusiness.Bll
 
         public async Task<IEnumerable<ProdutoDto>> BuscarTodosProdutos(string loja)
         {
-            //loja = "202";
-
             var db = contextoProvider.GetContextoLeitura();
 
             var todosProdutosTask = from c in db.Tprodutos
@@ -356,7 +233,6 @@ namespace PrepedidoBusiness.Bll
                     {
                         if (qtde_estoque_total_disponivel_global == 0)
                         {
-                            //p.Qtde_estoque_total_disponivel = 0;
                             p.Estoque = 0;
                         }
                         else
@@ -366,7 +242,6 @@ namespace PrepedidoBusiness.Bll
                     }
                     else
                     {
-                        //p.Qtde_estoque_total_disponivel = (short?)qtde_estoque_total_disponivel;
                         p.Estoque = qtde_estoque_total_disponivel;
                     }
                 }
@@ -375,94 +250,6 @@ namespace PrepedidoBusiness.Bll
             }
 
         }
-
-        //public async Task ObterCtrlEstoqueProdutoRegra_Teste(List<string> lstErros,
-        //    List<RegrasBll> lstRegrasCrtlEstoque, string uf, string cliente_regra)
-        //{
-        //    //o cliente esta sendo passado como dynamic
-        //    //string uf = cliente.uf;
-        //    //string tipo = cliente.tipo_cliente;
-
-
-        //    var db = contextoProvider.GetContextoLeitura();
-
-        //    var dbTwmsRegraCdXUfXPessoaXCds = (from c in db.TwmsRegraCdXUfXPessoaXCds
-        //                                       join nfe in db.TnfEmitentes on c.Id_nfe_emitente equals nfe.Id
-        //                                       select c).ToList();
-
-        //    //essa query esta copiando o id do produto 
-        //    var testeRegras = from c in db.TprodutoXwmsRegraCds
-        //                      join r1 in db.TwmsRegraCds on c.Id_wms_regra_cd equals r1.Id
-        //                      join r2 in db.TwmsRegraCdXUfs on r1.Id equals r2.Id_wms_regra_cd
-        //                      join r3 in db.TwmsRegraCdXUfPessoas on r2.Id equals r3.Id_wms_regra_cd_x_uf
-        //                      where r2.Uf == uf &&
-        //                            r3.Tipo_pessoa == cliente_regra
-        //                      orderby c.Produto
-        //                      select new
-        //                      {
-        //                          prod_x_reg = c,
-        //                          regra1 = r1,
-        //                          regra2 = r2,
-        //                          regra3 = r3,
-        //                          regra4 = dbTwmsRegraCdXUfXPessoaXCds.Where(r => r.Id_wms_regra_cd_x_uf_x_pessoa == r3.Id).ToList(),
-        //                      };
-        //    var lista = await testeRegras.ToListAsync();
-
-        //    RegrasBll itemRegra = new RegrasBll();
-
-        //    foreach (var item in lstRegrasCrtlEstoque)
-        //    {
-        //        foreach (var r in lista)
-        //        {
-        //            if (r.prod_x_reg.Produto == item.Produto)
-        //            {
-        //                item.St_Regra = true;
-        //                item.TwmsRegraCd = new t_WMS_REGRA_CD
-        //                {
-        //                    Id = r.regra1.Id,
-        //                    Apelido = r.regra1.Apelido,
-        //                    Descricao = r.regra1.Descricao,
-        //                    St_inativo = r.regra1.St_inativo
-
-        //                };
-        //                item.TwmsRegraCdXUf = new t_WMS_REGRA_CD_X_UF
-        //                {
-        //                    Id = r.regra2.Id,
-        //                    Id_wms_regra_cd = r.regra2.Id_wms_regra_cd,
-        //                    Uf = r.regra2.Uf,
-        //                    St_inativo = r.regra2.St_inativo
-        //                };
-        //                item.TwmsRegraCdXUfXPessoa = new t_WMS_REGRA_CD_X_UF_X_PESSOA
-        //                {
-        //                    Id = r.regra3.Id,
-        //                    Id_wms_regra_cd_x_uf = r.regra3.Id_wms_regra_cd_x_uf,
-        //                    Tipo_pessoa = r.regra3.Tipo_pessoa,
-        //                    St_inativo = r.regra3.St_inativo,
-        //                    Spe_id_nfe_emitente = r.regra3.Spe_id_nfe_emitente
-        //                };
-        //                item.TwmsCdXUfXPessoaXCd = new List<t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD>();
-
-        //                foreach (var r4 in r.regra4)
-        //                {
-        //                    t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD item_cd_uf_pess_cd = new t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD
-        //                    {
-        //                        Id = r4.Id,
-        //                        Id_wms_regra_cd_x_uf_x_pessoa = r4.Id_wms_regra_cd_x_uf_x_pessoa,
-        //                        Id_nfe_emitente = r4.Id_nfe_emitente,
-        //                        Ordem_prioridade = r4.Ordem_prioridade,
-        //                        St_inativo = r4.St_inativo
-        //                    };
-        //                    item.TwmsCdXUfXPessoaXCd.Add(item_cd_uf_pess_cd);
-        //                }
-
-
-        //            }
-        //        }
-        //    }
-
-        //    //return lstRegrasCrtlEstoque;
-        //}
-
 
         public static void VerificarRegrasAssociadasAosProdutos(List<RegrasBll> lstRegras, List<string> lstErros, DadosClienteCadastroDto cliente)
         {
@@ -514,6 +301,5 @@ namespace PrepedidoBusiness.Bll
                 }
             }
         }
-
     }
 }

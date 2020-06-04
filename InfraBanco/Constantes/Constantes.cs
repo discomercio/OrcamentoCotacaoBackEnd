@@ -58,6 +58,7 @@ namespace InfraBanco.Constantes
         //'	Percentual de deságio para RA Líquida
 
         public const int PERC_DESAGIO_RA_LIQUIDA = 25;
+        public const string ID_PARAMETRO_PERC_DESAGIO_RA_LIQUIDA = "PERC_DESAGIO_RA_LIQUIDA";
 
 
         //'	PARÂMETRO DE FUNCIONAMENTO DO SITE (ARTVEN3 = BONSHOP; ARTVEN = FABRICANTE)
@@ -2625,5 +2626,10 @@ namespace InfraBanco.Constantes
         public const string NUMERO_LOJA_MARCELO_ARTVEN = "305";
         public const string NUMERO_LOJA_TRANSFERENCIA = "01";
         public const string NUMERO_LOJA_KITS = "02";
+
+        //CÓDIGOS QUE IDENTIFICAM A UNIDADE DE NEGÓCIO A QUE A LOJA PERTENCE
+        public const string COD_UNIDADE_NEGOCIO_LOJA__VRF = "VRF";
+        public const string COD_UNIDADE_NEGOCIO_LOJA__BS = "BS";
+        public const string COD_UNIDADE_NEGOCIO_LOJA__AC = "AC";
     }
 }

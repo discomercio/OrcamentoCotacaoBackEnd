@@ -22,12 +22,12 @@ namespace PrepedidoBusiness.Bll
 
         public async Task<string> ValidarUsuario(string apelido, string senha_digitada_datastamp, bool somenteValidar)
         {
-            //apelido = "SALOMÃO";
+            apelido = apelido.ToUpper().Trim();
 
             var db = contextoProvider.GetContextoLeitura();
             //Validar o dados no bd
             var dados = from c in db.TorcamentistaEindicadors
-                        where c.Apelido == apelido.ToUpper()
+                        where c.Apelido == apelido
                         select new
                         {
                             c.Razao_Social_Nome,
@@ -57,24 +57,14 @@ namespace PrepedidoBusiness.Bll
             if (!somenteValidar)
             {
                 //validar a senha
-                //SLM112233 - SALOMÃO
-                //var senhaCodificada = DecodificaSenha(senha).ToUpper();
                 var senha_digitada_decod = Util.decodificaDado(senha_digitada_datastamp, Constantes.FATOR_CRIPTO);
 
                 //para garantir que sempre a as senhas são maiusculas iremos decodificar o datastamp 
-                //que veio da base e codificar novamente antes de fazer a comparação entre as senhas
+                //e comparar os 2 convertido para maiusculas
                 var senha_banco_datastamp_decod = Util.decodificaDado(t.Datastamp, Constantes.FATOR_CRIPTO);
-                //codifica o datastamp decodificado
-                var senha_banco_datastamp_codificada = Util.codificaDado(senha_banco_datastamp_decod.ToUpper(), false);
-                //decodifica a senha datastamp em maiuscula
-                senha_banco_datastamp_decod = Util.decodificaDado(senha_banco_datastamp_codificada, Constantes.FATOR_CRIPTO);
 
-                if (senha_digitada_datastamp != senha_banco_datastamp_codificada)
-                {
-                    return await Task.FromResult(retorno);
-                }
-                if (senha_digitada_decod != senha_banco_datastamp_decod)
-                    return await Task.FromResult(retorno);
+                if (senha_digitada_decod.ToUpper().Trim() != senha_banco_datastamp_decod.ToUpper().Trim())
+                    return await Task.FromResult(retorno);//retorna null
 
                 //Fazer Update no bd
                 using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
@@ -111,9 +101,6 @@ namespace PrepedidoBusiness.Bll
 
         public async Task GravarSessaoComTransacao(string ip, string apelido, string userAgent)
         {
-            //afazer: realizar a validação do usuário antes de gravar a sessão na tabela
-
-
             string loja = await BuscarLojaUsuario(apelido);
 
             //inserir na t_SESSAO_HISTORICO
@@ -162,27 +149,6 @@ namespace PrepedidoBusiness.Bll
         {
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
             {
-
-                //O orcamentista não é salvo nessa tabela
-                //o Usuario é o usuario_cadastro da tabela t_ORCAMENTISTA_E_INDICADOR
-                //CAMILA IRÁ VERIFICAR COM O HAMILTON
-
-                //Tusuario usuario = db.Tusuarios.
-                //    Where(r => r.Usuario == apelido)
-                //    .Single();
-                ////atualiza a tabela t_USUARIO
-                //usuario.SessionCtrlTicket = null;
-                //usuario.SessionCtrlLoja = null;
-                //usuario.SessionCtrlModulo = null;
-                //usuario.SessionCtrlDtHrLogon = null;
-
-                //atualiza a tabela t_SESSAO_HISTORICO
-                //TsessaoHistorico sessaoHist = dbgravacao.TsessaoHistoricos
-                //    .Where(r => r.Usuario == apelido
-                //             && r.DtHrInicio >= DateTime.Now.AddHours(-1))
-                //    .SingleOrDefault();
-                //sessaoHist.DtHrTermino = DateTime.Now;
-
                 var sessaoHistTask = (from c in dbgravacao.TsessaoHistoricos
                                       where c.Usuario == apelido
                                       orderby c.DtHrInicio descending
@@ -191,7 +157,6 @@ namespace PrepedidoBusiness.Bll
                 sessaoHist.DtHrTermino = DateTime.Now;
 
                 dbgravacao.TsessaoHistoricos.Add(sessaoHist);
-                //dbgravacao.TsessaoHistoricos.Update(sessaoHist);
                 await dbgravacao.SaveChangesAsync();
                 dbgravacao.transacao.Commit();
             }
@@ -206,9 +171,10 @@ namespace PrepedidoBusiness.Bll
             if (!string.IsNullOrEmpty(alterarSenhaDto.Senha) && !string.IsNullOrEmpty(alterarSenhaDto.SenhaNova) &&
                 !string.IsNullOrEmpty(alterarSenhaDto.SenhaNovaConfirma))
             {
-                string senha = Util.decodificaDado(alterarSenhaDto.Senha, Constantes.FATOR_CRIPTO);
-                string senha_nova = Util.decodificaDado(alterarSenhaDto.SenhaNova, Constantes.FATOR_CRIPTO);
-                string senha_nova_confirma = Util.decodificaDado(alterarSenhaDto.SenhaNovaConfirma, Constantes.FATOR_CRIPTO);
+                string senha = Util.decodificaDado(alterarSenhaDto.Senha, Constantes.FATOR_CRIPTO).ToUpper().Trim();
+                string senha_nova = Util.decodificaDado(alterarSenhaDto.SenhaNova, Constantes.FATOR_CRIPTO).ToUpper().Trim();
+                string senha_nova_confirma = Util.decodificaDado(alterarSenhaDto.SenhaNovaConfirma,
+                    Constantes.FATOR_CRIPTO).ToUpper().Trim();
 
                 if (senha_nova.Length < 5)
                 {
@@ -226,71 +192,56 @@ namespace PrepedidoBusiness.Bll
                 {
                     return retorno = "A nova senha deve ser diferente da senha atual.";
                 }
-
-                if (senha_nova.Length < 5)
+                if (senha_nova == alterarSenhaDto.Apelido.ToUpper().Trim())
                 {
-                    return retorno = "A nova senha deve possuir no mínimo 5 caracteres.";
+                    return retorno = "A nova senha não pode ser igual ao identificador do usuário!";
                 }
-                if (senha_nova_confirma.Length < 5)
-                {
-                    return retorno = "A confirmação da nova senha deve possuir no mínimo 5 caracteres.";
-                }
-                if (senha_nova != senha_nova_confirma)
-                {
-                    return retorno = "A confirmação da nova senha está incorreta.";
-                }
-                if (senha == senha_nova)
-                {
-                    return retorno = "A nova senha deve ser diferente da senha atual.";
-                }
-
                 //valida as credenciais
-                //string validou = ValidarUsuario(alterarSenhaDto.Apelido, CodificaSenha(alterarSenhaDto.Senha), false).Result;
-                string validou = ValidarUsuario(alterarSenhaDto.Apelido, Util.codificaDado(senha, false), false).Result;
+                string validou = await ValidarUsuario(alterarSenhaDto.Apelido, Util.codificaDado(senha, false), false);
+
+                if (validou == Constantes.ERR_IDENTIFICACAO_LOJA)
+                {
+                    return retorno = "Erro na identificação da loja.";
+                }
+
                 if (validou == Constantes.ERR_USUARIO_BLOQUEADO)
                 {
                     return retorno = "Usuário bloqueado.";
                 }
 
-                if(validou == null)
+                if (validou == null)
                 {
-                    return retorno = "Senha atual incorreta."; 
+                    return retorno = "Senha atual incorreta.";
                 }
 
                 //vamos alterar a senha na base de dados
                 using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
                 {
                     TorcamentistaEindicador orcamentista = await (from c in dbgravacao.TorcamentistaEindicadors
-                                                                  where c.Apelido == alterarSenhaDto.Apelido
+                                                                  where c.Apelido == alterarSenhaDto.Apelido.ToUpper().Trim()
                                                                   select c).FirstOrDefaultAsync();
 
+                    senha_aleatoria = Util.GerarSenhaAleatoria();
 
-                    //se retornar codigo 7 é pq esta bloqueado
+                    string senha_codificada = Util.codificaDado(senha_nova, false);
 
-                    //não esta bloqueado, apenas com a senha expirada e estamos alterando a senha nesse momento
+                    if (string.IsNullOrEmpty(senha_codificada))
+                        throw new ArgumentException("Falha na codificação de senha.");
 
-                    //vamos validar se a senha esta correta antes de alterar a senha
-
-
-
-                    senha_aleatoria = Utils.Util.GerarSenhaAleatoria();
-
-                    //orcamentista.Datastamp = CodificaSenha(alterarSenhaDto.SenhaNova);
-                    orcamentista.Datastamp = Util.codificaDado(senha_nova, false);
+                    orcamentista.Datastamp = senha_codificada;
                     orcamentista.Dt_Ult_Alteracao_Senha = DateTime.Now.Date;
                     orcamentista.Dt_Ult_Atualizacao = DateTime.Now;
                     orcamentista.Senha = senha_aleatoria;
 
                     //vamos gravar o log
-                    if (Utils.Util.GravaLog(dbgravacao, alterarSenhaDto.Apelido, orcamentista.Loja, "", "", Constantes.OP_LOG_SENHA_ALTERACAO, "SENHA ALTERADA PELO ORÇAMENTISTA"))
+                    if (Util.GravaLog(dbgravacao, alterarSenhaDto.Apelido, orcamentista.Loja, "", "",
+                        Constantes.OP_LOG_SENHA_ALTERACAO, "SENHA ALTERADA PELO ORÇAMENTISTA"))
                     {
                         dbgravacao.Update(orcamentista);
                         await dbgravacao.SaveChangesAsync();
 
                         dbgravacao.transacao.Commit();
                     }
-
-
                 }
             }
 
