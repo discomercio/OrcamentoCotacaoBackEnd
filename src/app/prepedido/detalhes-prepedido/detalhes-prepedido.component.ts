@@ -55,7 +55,7 @@ export class DetalhesPrepedidoComponent extends TelaDesktopBaseComponent impleme
     if (this.jaDeuErro) return;
     this.jaDeuErro = true;
 
-    let alertaService = new AlertaService(this.dialog, this.router, this.autenticacaoService);
+    let alertaService = new AlertaService(this.dialog, this.router);
 
     alertaService.mostrarErroInternet(r);
     // const dialogRef = this.dialog.open(AlertDialogComponent, {

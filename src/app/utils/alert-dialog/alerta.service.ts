@@ -13,8 +13,7 @@ import { $ } from 'protractor';
 export class AlertaService {
 
   constructor(public readonly dialog: MatDialog,
-    public readonly router: Router,
-    private readonly autenticacaoService: AutenticacaoService) {
+    public readonly router: Router) {
   }
 
   public mostrarMensagemComLargura(msg: string, largura: string, aposOk: () => void): void {
