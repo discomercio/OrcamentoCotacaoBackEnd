@@ -20,28 +20,5 @@ namespace InfraBanco.Modelos
         [MaxLength(8)]
         [Required]
         public string Produto_Composto { get; set; }
-
-        //[Column("descricao")]
-        //[MaxLength(80)]
-        //public string Descricao { get; set; }
-
-        //[Column("dt_cadastro")]
-        //public DateTime Dt_Cadastro { get; set; }
-
-        //[Column("usuario_cadastro")]
-        //[MaxLength(10)]
-        //[Required]
-        //public string Usuario_Cadastro { get; set; }
-
-        //[Column("dt_ult_atualizacao")]
-        //public DateTime Dt_Ult_Atualizacao { get; set; }
-
-        //[Column("usuario_ult_atualizacao")]
-        //[MaxLength(10)]
-        //[Required]
-        //public string Usuario_Ult_Atualizacao { get; set; }
-
-        //public Tproduto Tproduto { get; set; }
-        //public TecProdutoCompostoItem TecProdutoCompostoItem { get; set; }
     }
 }

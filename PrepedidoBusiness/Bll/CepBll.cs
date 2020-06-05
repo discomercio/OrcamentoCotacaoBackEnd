@@ -162,9 +162,6 @@ namespace PrepedidoBusiness.Bll
 
         public async Task<IEnumerable<CepDto>> BuscarCepPorEndereco(string endereco, string cidade, string uf)
         {
-
-            //var db = contextoCepProvider.GetContextoLeitura();
-
             List<CepDto> cepdto = new List<CepDto>();
             using (var db = contextoCepProvider.GetContextoLeitura())
             {
@@ -200,7 +197,6 @@ namespace PrepedidoBusiness.Bll
                         command.Parameters.Add(paramCidade);
                     }
 
-                    //command.CommandText = "select * from LOG_LOGRADOURO";
                     string sql = "SELECT TOP 100 'LOGRADOURO' AS tabela_origem," +
                                         "LOG_LOGRADOURO.CEP_DIG AS cep," +
                                         "LOG_LOGRADOURO.UFE_SG AS uf," +
@@ -294,45 +290,7 @@ namespace PrepedidoBusiness.Bll
                         }
                     }
                 }
-            }
-            #region query Linq que precisa ser revista
-            //var lstPorUfTask = ((from c in db.LogLogradouros
-            //                     join d in db.LogBairros on c.Bai_nu_sequencial_ini equals d.Bai_nu_sequencial
-            //                     join e in db.LogLocalidades on c.Loc_nu_sequencial equals e.Loc_nu_sequencial
-            //                     where (c.Log_no.Contains(logradouro)) 
-            //                     select new CepDto
-            //                     {
-            //                         Cep = c.Cep_dig,
-            //                         Uf = c.Ufe_sg,
-            //                         Cidade = e.Loc_nosub,
-            //                         Bairro = d.Bai_no,
-            //                         Endereco = c.Log_tipo_logradouro + " " + c.Log_no,
-            //                         LogradouroComplemento = c.Log_complemento
-            //                     })
-            //                .Union(from c in db.LogLocalidades
-            //                       where c.Loc_nosub.Contains(logradouro) &&
-            //                             c.Cep_dig.Length > 0
-            //                       select new CepDto
-            //                       {
-            //                           Cep = c.Cep_dig,
-            //                           Uf = c.Ufe_sg,
-            //                           Cidade = c.Loc_nosub
-            //                       })
-            //                .Union(from c in db.TcepLogradouros
-            //                       where  c.Nome_local.Contains(logradouro)
-            //                       orderby c.Uf_log, c.Nome_local, c.Extenso_bai, c.Nome_log
-            //                       select new CepDto
-            //                       {
-            //                           Cep = c.Cep8_log,
-            //                           Uf = c.Uf_log,
-            //                           Cidade = c.Nome_local,
-            //                           Bairro = c.Extenso_bai,
-            //                           Endereco = c.Abrev_tipo + " " + c.Nome_log,
-            //                           LogradouroComplemento = c.Comple_log
-            //                       }));
-
-            //var lstPorUf = await lstPorUfTask.ToListAsync();
-            #endregion
+            }            
 
             return cepdto;
         }

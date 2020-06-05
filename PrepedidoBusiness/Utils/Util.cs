@@ -474,8 +474,8 @@ namespace PrepedidoBusiness.Utils
             if (strOrigem.Trim().Length == 0) return strDestino;
 
             // Senha excede tamanho
-            if (strOrigem.Trim().Length > ((Constantes.TAMANHO_SENHA_FORMATADA -
-                Constantes.PREFIXO_SENHA_FORMATADA.Length) - Constantes.TAMANHO_CAMPO_COMPRIMENTO_SENHA) / 2) return strDestino;
+            if (strOrigem.Trim().Length > (Constantes.TAMANHO_SENHA_FORMATADA -
+                Constantes.PREFIXO_SENHA_FORMATADA.Length) / 2) return strDestino;
 
             // Gera chave de criptografia
             chave = "";
@@ -542,7 +542,16 @@ namespace PrepedidoBusiness.Utils
                 s = "00";
             }
 
-            s_destino = Constantes.PREFIXO_SENHA_FORMATADA + s + s_destino;
+            //vou incluir uma verificação para saber se esta correto a qtde de caracteres da senha codificada
+            if ((Constantes.PREFIXO_SENHA_FORMATADA + s_destino).Length < 32)
+            {
+                s_destino = Constantes.PREFIXO_SENHA_FORMATADA + s + s_destino;
+            }
+            else
+            {
+                s_destino = Constantes.PREFIXO_SENHA_FORMATADA + s_destino;
+            }
+
             strDestino = s_destino.ToLower();
             return strDestino;
         }
@@ -610,17 +619,6 @@ namespace PrepedidoBusiness.Utils
                             endEntregaMesmo = true;
                             log = log + campo_atual + "; ";
                         }
-
-                        //vamos verificar se existe endereço de entrega
-                        //if (tratarEndEtg && indiceDoCampo == 0 && coluna == "EndEtg_cep")
-                        //{
-                        //    var valor = (c.GetValue(obj, null));
-
-                        //    if (valor == null)
-                        //    {
-                        //        log = log + "Endereço entrega = mesmo do cadastro; ";
-                        //    }
-                        //}
 
                         if (campo_atual == coluna)
                         {
@@ -777,7 +775,6 @@ namespace PrepedidoBusiness.Utils
                             controle.Dt_Ult_Atualizacao = DateTime.Now;
                             if (!String.IsNullOrEmpty(controle.Ano_Letra_Seq))
                             {
-                                //Precisa revisar essa parte, pois lendo a doc do BD e analisando os dados na base não bate
                                 asc = int.Parse(controle.Ano_Letra_Seq) + controle.Ano_Letra_Step;
                                 chr = (char)asc;
                             }
@@ -817,32 +814,54 @@ namespace PrepedidoBusiness.Utils
             return retorno;
         }
 
-        public static bool LojaHabilitadaProdutosECommerce(string loja)
+        public static async Task<bool> LojaHabilitadaProdutosECommerce(string loja, ContextoBdProvider contextoProvider)
         {
             bool retorno = false;
 
             if (loja == Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE)
                 retorno = true;
-            if (loja == Constantes.NUMERO_LOJA_BONSHOP)
+            if (await IsLojaBonshop(loja, contextoProvider))
                 retorno = true;
-            if (IsLojaVrf(loja))
+            if (await IsLojaVrf(loja, contextoProvider))
                 retorno = true;
             if (loja == Constantes.NUMERO_LOJA_MARCELO_ARTVEN)
                 retorno = true;
-            if (loja == Constantes.NUMERO_LOJA_BONSHOP_LAB)
+            
+            return retorno;
+        }
+
+        //afazer: alterar o método para buscar no banco de dados e comparar, nã será mais feito a verificação nas constantes
+        //verificar melhor como sera feito a comparação pois a variavel "loja" é um número e o retorno do banco 
+        //será uma sigla Ex: "AC / BS / VRF"
+        private static async Task<bool> IsLojaVrf(string loja, ContextoBdProvider contextoProvider)
+        {
+            bool retorno = false;
+
+            var db = contextoProvider.GetContextoLeitura();
+
+            Tloja tLoja = await (from c in db.Tlojas
+                                 where c.Loja == loja &&
+                                       c.Unidade_Negocio == Constantes.COD_UNIDADE_NEGOCIO_LOJA__VRF
+                                 select c).FirstOrDefaultAsync();
+
+            if (tLoja != null)
                 retorno = true;
 
             return retorno;
         }
 
-        private static bool IsLojaVrf(string loja)
+        private static async Task<bool> IsLojaBonshop(string loja, ContextoBdProvider contextoProvider)
         {
             bool retorno = false;
 
-            if (loja == Constantes.NUMERO_LOJA_VRF ||
-                loja == Constantes.NUMERO_LOJA_VRF2 ||
-                loja == Constantes.NUMERO_LOJA_VRF3 ||
-                loja == Constantes.NUMERO_LOJA_VRF4)
+            var db = contextoProvider.GetContextoLeitura();
+
+            Tloja tLoja = await (from c in db.Tlojas
+                                 where c.Loja == loja &&
+                                       c.Unidade_Negocio == Constantes.COD_UNIDADE_NEGOCIO_LOJA__BS
+                                 select c).FirstOrDefaultAsync();
+
+            if (tLoja != null)
                 retorno = true;
 
             return retorno;
@@ -945,7 +964,6 @@ namespace PrepedidoBusiness.Utils
                                   regra1 = r1,
                                   regra2 = r2,
                                   regra3 = r3
-                                  //regra4 = lstRegra.Where(r => r.Id_wms_regra_cd_x_uf_x_pessoa == r3.Id).ToList(),
                               };
             var lista = await testeRegras.ToListAsync();
 
@@ -998,40 +1016,10 @@ namespace PrepedidoBusiness.Utils
                                 item.TwmsCdXUfXPessoaXCd.Add(item_cd_uf_pess_cd);
                             }
                         }
-
-
                     }
                 }
             }
         }
-
-        #region EstoqueVerificaDisponibilidadeIntegralV2
-        //public static bool EstoqueVerificaDisponibilidadeIntegralV2(t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD regra, ContextoProvider contextoProvider)
-        //{
-        //    bool retorno = false;
-
-        //    var lst1 = BuscarListaQtdeEstoque(contextoProvider);
-        //    var lst2 = BuscarListaQtdeEstoqueComSubquery(contextoProvider);
-
-        //    foreach (var p1 in lst1.Result)
-        //    {
-        //        foreach(var r in regra)
-        //        {
-        //            if(p1.Id_nfe_emitente != 0)
-        //            {
-
-        //            }
-        //        }
-        //    }
-
-        //    if (regra.Id_nfe_emitente != 0)
-        //    {
-
-        //    }
-
-        //    return retorno;
-        //}
-        #endregion
 
         public static async Task VerificarEstoque(List<RegrasBll> lst_cliente_regra, ContextoBdProvider contextoProvider)
         {
@@ -1241,6 +1229,21 @@ namespace PrepedidoBusiness.Utils
 
             return parametro;
 
+        }
+
+        public static async Task<float> VerificarSemDesagioRA(ContextoBdProvider contextoProvider)
+        {//busca o percentual de RA sem desagio ID_PARAM_PERC_LIMITE_RA_SEM_DESAGIO            
+            Tparametro tparametro = await BuscarRegistroParametro(
+                Constantes.ID_PARAMETRO_PERC_DESAGIO_RA_LIQUIDA, contextoProvider);
+
+            float retorno = 0;
+
+            if (tparametro != null)
+            {
+                retorno = tparametro.Campo_Real;
+            }
+
+            return retorno;
         }
 
         public static DateTime LimiteDataBuscas()

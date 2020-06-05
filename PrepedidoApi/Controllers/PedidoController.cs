@@ -30,7 +30,7 @@ namespace PrepedidoApi.Controllers
         {
             //para testar: http://localhost:60877/api/pedido/listarNumerosPedidosCombo
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            //string apelido = "SALOMÃO";
+
             var ret = await pedidoBll.ListarNumerosPedidoCombo(apelido.Trim());
 
             return Ok(ret);

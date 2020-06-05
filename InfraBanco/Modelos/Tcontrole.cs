@@ -26,10 +26,6 @@ namespace InfraBanco.Modelos
         [Column("dt_ult_atualizacao")]
         public DateTime Dt_Ult_Atualizacao { get; set; }
 
-        //[Column("timestamp")]
-        //[MaxLength]
-        //public byte[] Timestamp { get; set; }//verificar
-
         [Column("ano_letra_seq")]
         [MaxLength(1)]
         public string Ano_Letra_Seq { get; set; }

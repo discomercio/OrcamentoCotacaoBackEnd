@@ -16,8 +16,6 @@ namespace InfraBanco.Modelos
         [MaxLength(9)]
         public string Orcamento { get; set; }
 
-        //public Torcamento Torcamento { get; set; }
-
         [Key]
         [Column("fabricante")]
         [Required]
@@ -72,7 +70,7 @@ namespace InfraBanco.Modelos
         public string Ean { get; set; }
 
         [Column("grupo")]
-        [MaxLength(2)]
+        [MaxLength(4)]
         public string Grupo { get; set; }
 
         [Column("peso")]
@@ -137,6 +135,8 @@ namespace InfraBanco.Modelos
         [MaxLength(1)]
         public string Descontinuado { get; set; }
 
-
+        [Column("subgrupo")]
+        [MaxLength(10)]
+        public string Subgrupo { get; set; }
     }
 }

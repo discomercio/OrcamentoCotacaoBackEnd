@@ -29,10 +29,9 @@ namespace PrepedidoApi.Controllers
         {
             //para testar: http://localhost:60877/api/produto/buscarProduto
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            //string apelido = "SALOMÃO";
+            
             var ret = await produtoBll.ListaProdutosCombo(apelido.Trim(), loja, id_cliente);
-            //produtoBll.BuscarProdutosCompostos(loja);
-
+            
             return Ok(ret);
         }
     }

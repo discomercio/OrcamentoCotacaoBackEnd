@@ -139,7 +139,6 @@ namespace PrepedidoApi.Controllers
             return Ok(ret);
         }
 
-        //CadastrarPrepedido
 #if DEBUG
         [AllowAnonymous]
 #endif
@@ -154,8 +153,6 @@ namespace PrepedidoApi.Controllers
             return Ok(ret);
         }
 
-
-        //Para teste
 #if DEBUG
         [AllowAnonymous]
 #endif
@@ -180,8 +177,6 @@ namespace PrepedidoApi.Controllers
             //para testar: http://localhost:60877/api/prepedido/buscarFormasPagto
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            //apelido = "MARISARJ";
-
             var ret = await formaPagtoBll.ObterFormaPagto(apelido.Trim(), tipo_pessoa);
 
             return Ok(ret);
@@ -197,8 +192,6 @@ namespace PrepedidoApi.Controllers
             //para testar: http://localhost:60877/api/prepedido/buscarCoeficiente
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            //apelido = "MARISARJ";
-
             var ret = await coeficienteBll.BuscarListaCoeficientes(lstProdutos);
 
             return Ok(ret);
@@ -212,8 +205,6 @@ namespace PrepedidoApi.Controllers
         {
             //para testar: http://localhost:60877/api/prepedido/buscarCoeficiente
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-
-            //apelido = "MARISARJ";
 
             var ret = await coeficienteBll.BuscarListaCoeficientesFornecedores(lstFornecedores);
 

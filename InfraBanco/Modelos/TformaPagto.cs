@@ -31,25 +31,6 @@ namespace InfraBanco.Modelos
         [Column("ordenacao")]
         public int? Ordenacao { get; set; }
 
-        //[Column("dt_cadastro")]
-        //[Required]
-        //public DateTime Dt_cadastro { get; set; }
-
-        //[Column("usuario_cadastro")]
-        //[MaxLength(10)]
-        //public string Usuario_cadastro { get; set; }
-
-        //[Column("dt_ult_atualizacao")]
-        //[Required]
-        //public DateTime Dt_ult_atualizacao { get; set; }
-
-        //[Column("usuario_ult_atualizacao")]
-        //[MaxLength(10)]
-        //public string Usuario_ult_atualizacao { get; set; }
-
-        //[Column("timestamp")]
-        //public byte? Timestamp { get; set; }
-
         [Column("hab_parcela_unica")]
         [Required]
         public short Hab_parcela_unica { get; set; }

@@ -26,33 +26,5 @@ namespace InfraBanco.Modelos
         [Column("descricao")]
         [MaxLength(800)]
         public string Descricao { get; set; }
-
-        //[Column("usuario_cadastro")]
-        //[MaxLength(10)]
-        //[Required]
-        //public string Usuario_cadastro { get; set; }
-
-        //[Column("dt_cadastro")]
-        //[Required]
-        //public DateTime Dt_cadastro { get; set; }
-
-        //[Column("dt_hr_cadastro")]
-        //[Required]
-        //public DateTime Dt_hr_cadastro { get; set; }
-
-        //[Column("usuario_ult_atualizacao")]
-        //[MaxLength(10)]
-        //[Required]
-        //public string Usuario_ult_atualizacao { get; set; }
-
-        //[Column("dt_ult_atualizacao")]
-        //[Required]
-        //public DateTime Dt_ult_atualizacao { get; set; }
-
-        //[Column("dt_hr_ult_atualizacao")]
-        //[Required]
-        //public DateTime Dt_hr_ult_atualizacao { get; set; }
-
-
     }
 }

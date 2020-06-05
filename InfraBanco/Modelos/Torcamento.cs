@@ -78,26 +78,11 @@ namespace InfraBanco.Modelos
         [MaxLength(1)]
         public string St_Fechamento { get; set; }
 
-        //[Column("fechamento_data")]
-        //public DateTime? Fechamento_Data { get; set; }
-
-        //[Column("fechamento_usuario")]
-        //[MaxLength(10)]
-        //public string Fechamento_Usuario { get; set; }
-
-        //[Column("loja_indicou")]
-        //[MaxLength(3)]
-        //public string Loja_Indicou { get; set; }
-
         [Column("comissao_loja_indicou")]
         public float? Comissao_Loja_Indicou { get; set; }
 
         [Column("venda_externa")]
         public short? Venda_Externa { get; set; }
-
-        //[Column("timestamp")]
-        //[Timestamp]
-        //public byte[] Timestamp { get; set; }
 
         [Column("tipo_parcelamento")]
         [Required]
@@ -192,11 +177,6 @@ namespace InfraBanco.Modelos
         [Column("st_orc_virou_pedido")]
         public short? St_Orc_Virou_Pedido { get; set; }
 
-        //[Column("pedido")]
-        //[MaxLength(9)]
-        //[ForeignKey("Tpedido")]
-        //public string Pedido { get; set; }
-
         [Column("st_end_entrega")]
         [Required]
         public short St_End_Entrega { get; set; }
@@ -282,27 +262,6 @@ namespace InfraBanco.Modelos
         [Required]
         public short Permite_RA_Status { get; set; }
 
-        //[Column("st_violado_permite_RA_status")]
-        //[Required]
-        //public short St_Violado_Permite_RA_Status { get; set; }
-
-        //[Column("dt_hr_violado_permite_RA_status")]
-        //public DateTime? Dt_Hr_Violado_Permite_RA_Status { get; set; }
-
-        //[Column("usuario_violado_permite_RA_status")]
-        //[MaxLength(20)]
-        //public string Usuario_Violado_Permite_RA_Status { get; set; }
-
-        //[Column("numero_loja")]
-        //public short? Numero_Loja { get; }
-
-        //[Column("data_hora")]
-        //public DateTime? Data_Hora { get; }
-
-        //[Column("EndEtg_obs")]
-        //[MaxLength(100)]
-        //public string EndEtg_Obs { get; set; }
-
         [Column("EndEtg_cod_justificativa")]
         [MaxLength(3)]
         public string EndEtg_Cod_Justificativa { get; set; }
@@ -315,11 +274,8 @@ namespace InfraBanco.Modelos
         [Required]
         public decimal Pc_Maquineta_Valor_Parcela { get; set; }
 
-        //propriedades
         public Tcliente Tcliente { get; set; }
-        //public Tpedido Tpedido { get; set; }
 
-        //novos campos
         [Column("sistema_responsavel_cadastro")]
         [Required]
         public int Sistema_responsavel_cadastro { get; set; }
@@ -328,7 +284,14 @@ namespace InfraBanco.Modelos
         [Required]
         public int Sistema_responsavel_atualizacao { get; set; }
 
+        [Column("PrevisaoEntregaData")]
+        public DateTime? PrevisaoEntregaData { get; set; }
 
+        [Column("PrevisaoEntregaUsuarioUltAtualiz")]
+        [MaxLength(20)]
+        public string PrevisaoEntregaUsuarioUltAtualiz { get; set; }
 
+        [Column("PrevisaoEntregaDtHrUltAtualiz")]
+        public DateTime? PrevisaoEntregaDtHrUltAtualiz { get; set; }
     }
 }

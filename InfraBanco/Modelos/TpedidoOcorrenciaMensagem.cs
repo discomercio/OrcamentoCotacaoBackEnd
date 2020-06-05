@@ -25,10 +25,6 @@ namespace InfraBanco.Modelos
         [MaxLength(10)]
         public string Usuario_Cadastro { get; set; }
 
-        //[Column("dt_cadastro")]
-        //[Required]
-        //public DateTime Dt_Cadastro { get; set; }
-
         [Column("dt_hr_cadastro")]
         [Required]
         public DateTime Dt_Hr_Cadastro { get; set; }
