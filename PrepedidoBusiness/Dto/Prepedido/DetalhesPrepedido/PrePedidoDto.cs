@@ -1,4 +1,5 @@
-﻿using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
+﻿using PrepedidoBusiness.Dto.ClienteCadastro;
+using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using PrepedidoBusiness.Dtos.ClienteCadastro;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace PrepedidoBusiness.Dtos.Prepedido.DetalhesPrepedido
         public string DataHoraPedido { get; set; }
         public string Hora_Prepedido { get; set; }
         public DadosClienteCadastroDto DadosCliente { get; set; }
+        public EnderecoCadastroClientePrepedidoDto EnderecoCadastroClientePrepedido { get; set; }
         public EnderecoEntregaDtoClienteCadastro EnderecoEntrega { get; set; }
         public List<PrepedidoProdutoDtoPrepedido> ListaProdutos { get; set; }
         public decimal TotalFamiliaParcelaRA { get; set; }

@@ -51,7 +51,15 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
             if (await ValidacoesClienteUnisBll.ValidarOrcamentista(prePedidoUnis.DadosCliente.Indicador_Orcamentista,
                 prePedidoUnis.DadosCliente.Loja, contextoProvider))
             {
-
+                /*
+                 * Precisa ser incluido a validação dos novos campos de memorização de endereço
+                 * pois, precisamos verificar se teve alteração no cadastro do cliente quando ele gerou um novo prepedido
+                 * antes de passar os dados para o dto do prepedido da Arclube, talvez necessite de alguma validação
+                 * 
+                 * Será necessário incluir essas rotinas na criação de um novo Prepedido
+                 * 
+                 * OBS: analisar bem o que devemos validar antes de mandar para a rotina de cadastro do Prepedido da Arclube
+                 */
             }
             else
             {
