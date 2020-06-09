@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="UnisBll\" />
+    <Folder Include="UnisDto\ClienteUnisDto\" />
+    <Folder Include="UnisDto\PrepedidoUnisDto\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\InfraBanco\InfraBanco.csproj" />
+    <ProjectReference Include="..\PrepedidoBusiness\PrepedidoBusiness.csproj" />
+  </ItemGroup>
+
+</Project>
