@@ -693,11 +693,8 @@ namespace PrepedidoBusiness.Bll
                                 prePedido.DadosCliente.ProdutorRural);
                             string descricao = Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo);
 
-                            List<RegrasBll> regraCrtlEstoque = new List<RegrasBll>();
-
-                            await Util.ObterCtrlEstoqueProdutoRegra_Teste(lstErros, regraCrtlEstoque, prePedido.DadosCliente.Uf, tipoPessoa, contextoProvider);
-
-
+                            List<RegrasBll> regraCrtlEstoque = (await ObterCtrlEstoqueProdutoRegra(prePedido, lstErros)).ToList();
+                            
                             ProdutoBll.VerificarRegrasAssociadasAosProdutos(regraCrtlEstoque, lstErros, prePedido.DadosCliente);
                             //obtendo qtde disponivel
                             await Util.VerificarEstoque(regraCrtlEstoque, contextoProvider);

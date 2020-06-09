@@ -45,6 +45,10 @@ namespace PrepedidoBusiness.Utils
 
         }
 
+        public static string Telefone_SoDigito(string tel)
+        {
+            return tel.Replace("-", "");
+        }
         public static string FormatarTelefones(string telefone)
         {
             return telefone.Insert(telefone.Length - 4, "-");

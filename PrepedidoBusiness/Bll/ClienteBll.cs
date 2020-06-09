@@ -563,6 +563,19 @@ namespace PrepedidoBusiness.Bll
 
             List<string> lstErros = new List<string>();
 
+            /* FIZ UM ARQUIVO EM SEPARADO QUE REALIZA A VALIDAÇÃO DO CLIENTE DE 
+             * UMA FORMA MELHOR, MAIS CLARA E MAIS FACÍL PARA MANUTENÇÃO
+             * 
+             * OBS: Irei passar a nova forma de fazer a validação do cadastro do cliente
+             * Para isso é necessário realizar as alterações com muito ciodado para não prejudicar 
+             * o que já sendo feito com sucesso
+             * 
+             * => MANTER A FORMA ANTIGA E DEIXAR COMENTADO A NOVA FORMA DE VALIDAÇÃO
+             * 
+             * 
+             * Acho que é válido fazer uma reestruturação das classes e separar o que é validação, pois as BLL's estão muito grande
+             * e de dificil compreensão
+             */
             //Na validação do cadastro é feito a consistencia de Municipio
             await ValidarDadosClientesCadastro(clienteDto.DadosCliente, lstErros);
             ValidarRefBancaria(clienteDto.RefBancaria, lstErros);
