@@ -9,6 +9,8 @@ using PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto;
 
 namespace PrepedidoAPIUnis.Controllers
 {
+    [Route("api/prepedidoUnis")]
+    [ApiController]
     public class PrepedidoUnisController : Controller
     {
         private readonly PrePedidoUnisBll prepedidoUnisBll;
@@ -17,12 +19,14 @@ namespace PrepedidoAPIUnis.Controllers
             this.prepedidoUnisBll = prepedidoUnisBll;
         }
 
-#if DEBUG
         [AllowAnonymous]
-#endif
         [HttpPost("cadastrarPrepedido")]
-        public async Task<IActionResult> CadastrarPrepedido(PrePedidoUnisDto prePedido)
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public async Task<ActionResult<PrePedidoResultadoUnisDto>> CadastrarPrepedido(PrePedidoUnisDto prePedido)
         {
+            //todo: validar o token
+            PrePedidoResultadoUnisDto retorno;
+            //todo: retornar a estrutura certa
             var ret = await prepedidoUnisBll.CadastrarPrepedidoUnis(prePedido);
 
             return Ok(ret);

@@ -10,7 +10,7 @@ using PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto;
 
 namespace PrepedidoAPIUnis.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/clienteUnis")]
     [ApiController]
     public class ClienteUnisController : Controller
     {
@@ -21,15 +21,17 @@ namespace PrepedidoAPIUnis.Controllers
             this.clienteUnisBll = clienteUnisBll;
         }
 
-#if DEBUG
         [AllowAnonymous]
-#endif
         [HttpPost("cadastrarCliente")]
-        public async Task<IActionResult> CadastrarCliente(ClienteCadastroUnisDto clienteDto)
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public async Task<ActionResult<ClienteCadastroResultadoUnisDto>> CadastrarCliente(ClienteCadastroUnisDto clienteDto)
         {
-            var retorno = await clienteUnisBll.CadastrarClienteUnis(clienteDto);
+            //todo: validar o token
+            ClienteCadastroResultadoUnisDto retorno;
+            //todo: retornar a estrutura certa
+            var ret = await clienteUnisBll.CadastrarClienteUnis(clienteDto);
 
-            return Ok(retorno);
+            return Ok(ret);
         }
 
     }

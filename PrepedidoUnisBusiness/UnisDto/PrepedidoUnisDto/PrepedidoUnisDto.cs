@@ -8,6 +8,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
 {
     public class PrePedidoUnisDto
     {
+        public string TokenAcesso { get; set; }
         public DadosClienteCadastroUnisDto DadosCliente { get; set; }
         public EnderecoCadastroClientePrepedidoUnisDto EnderecoCadastroClienteNovo { get; set; }
         public EnderecoEntregaClienteCadastroUnisDto EnderecoEntrega { get; set; }

@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <Folder Include="UnisBll\" />
-    <Folder Include="UnisDto\PrepedidoUnisDto\" />
   </ItemGroup>
 
   <ItemGroup>
