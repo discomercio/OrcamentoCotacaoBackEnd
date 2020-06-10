@@ -26,10 +26,11 @@ namespace PrepedidoAPIUnis.Controllers
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<ActionResult<LoginResultadoUnisDto>> FazerLogin(LoginUnisDto login)
         {
+            LoginResultadoUnisDto ret = new LoginResultadoUnisDto();
+            ret.ListaErros = new List<string>();
+            ret.ListaErros.Add("Erro: ainda não implementado");
             //todo: afazer
-            string token = "nao implementado";
-            //todo: retornar a estrutura certa
-            return Ok(1);
+            return Ok(ret);
         }
 
         [AllowAnonymous]
@@ -37,9 +38,11 @@ namespace PrepedidoAPIUnis.Controllers
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<ActionResult<LogoutResultadoUnisDto>> FazerLogout(LogoutUnisDto logout)
         {
+            LogoutResultadoUnisDto ret = new LogoutResultadoUnisDto();
+            ret.ListaErros = new List<string>();
+            ret.ListaErros.Add("Erro: ainda não implementado");
             //todo: afazer
-            //todo: retornar a estrutura certa
-            return Ok();
+            return Ok(ret);
         }
 
     }
