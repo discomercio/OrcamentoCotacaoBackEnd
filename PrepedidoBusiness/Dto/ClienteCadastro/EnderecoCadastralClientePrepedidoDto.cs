@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PrepedidoUnisBusiness.UnisDto.ClienteUnisDto
+namespace PrepedidoBusiness.Dto.ClienteCadastro
 {
-    public class EnderecoCadastroClientePrepedidoUnisDto
+    public class EnderecoCadastralClientePrepedidoDto
     {
         public string Endereco_logradouro { get; set; }
         public string Endereco_numero { get; set; }
@@ -32,6 +32,6 @@ namespace PrepedidoUnisBusiness.UnisDto.ClienteUnisDto
         public byte Endereco_produtor_rural_status { get; set; }
         public string Endereco_ie { get; set; }
         public string Endereco_rg { get; set; }
-        public string Endereco_contato { get; set; }        
+        public string Endereco_contato { get; set; }
     }
 }

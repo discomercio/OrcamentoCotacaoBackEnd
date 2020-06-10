@@ -7,6 +7,7 @@ namespace PrepedidoBusiness.Dtos.ClienteCadastro
 {
     public class EnderecoEntregaDtoClienteCadastro
     {
+        public bool OutroEndereco { get; set; }
         public string EndEtg_endereco { get; set; }
         public string EndEtg_endereco_numero { get; set; }
         public string EndEtg_endereco_complemento { get; set; }
@@ -19,7 +20,6 @@ namespace PrepedidoBusiness.Dtos.ClienteCadastro
         //descrição da justificativa, preenchdio para mostrar (da api para o spa)
         public string EndEtg_descricao_justificativa { get; set; }
         //se foi selecionado um endereco diferente para a entrega (do spa para a api)
-        public bool OutroEndereco { get; set; }
 
         //Novos campos
         public string EndEtg_email { get; set; }

@@ -615,6 +615,9 @@ namespace PrepedidoBusiness.Bll
                     }
                     else
                     {
+                        //afazer: ver com o Edu, pq isso esta me cheirando a coisa errada, pois me parece
+                        //que o angular espera retornar uma lista vazia no caso de sucesso.
+                        //não faz sentido no caso de erro ao gerar o Id do cliente devolver o id do cliente
                         lstErros.Add(id_cliente);
                     }
                 }

@@ -10,7 +10,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
     {
         public string TokenAcesso { get; set; }
         public DadosClienteCadastroUnisDto DadosCliente { get; set; }
-        public EnderecoCadastroClientePrepedidoUnisDto EnderecoCadastroClienteNovo { get; set; }
+        public EnderecoCadastralClientePrepedidoUnisDto EnderecoCadastroClienteNovo { get; set; }
         public EnderecoEntregaClienteCadastroUnisDto EnderecoEntrega { get; set; }
         public List<PrePedidoProdutoPrePedidoUnisDto> ListaProdutos { get; set; }
         public short PermiteRAStatus { get; set; }

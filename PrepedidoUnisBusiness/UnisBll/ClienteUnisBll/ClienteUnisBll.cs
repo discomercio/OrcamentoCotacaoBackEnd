@@ -9,6 +9,7 @@ using PrepedidoBusiness.Bll;
 using PrepedidoBusiness.Dto.ClienteCadastro;
 using PrepedidoBusiness.Dtos.ClienteCadastro;
 using PrepedidoBusiness.Dto.ClienteCadastro.Referencias;
+using Microsoft.EntityFrameworkCore;
 
 namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
 {
@@ -24,25 +25,17 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
             this.contextoCepProvider = contextoCepProvider;
         }
 
-        /*
-         * AINDA ESTA FALTANDO INCLUIR OS NOVOS CAMPOS NO CADASTRO DO CLIENTE E 
-         * AS REGRAS QUE DE VALIDAÇÕES PARA OS NOVOS CAMPOS
-         */
-        public async Task<IEnumerable<string>> CadastrarClienteUnis(ClienteCadastroUnisDto clienteUnis)
+
+        public async Task<ClienteCadastroResultadoUnisDto> CadastrarClienteUnis(ClienteCadastroUnisDto clienteUnis)
         {
             List<string> lstErros = new List<string>();
-
-            var db = contextoProvider.GetContextoLeitura();
+            ClienteCadastroResultadoUnisDto retorno = new ClienteCadastroResultadoUnisDto();
 
             //vamos verificar se orcamentista do cadastro existe
             if (await ValidacoesClienteUnisBll.ValidarOrcamentista(clienteUnis.DadosCliente.Indicador_Orcamentista,
                 clienteUnis.DadosCliente.Loja, contextoProvider))
             {
                 ClienteBll clienteArclubeBll = new ClienteBll(contextoProvider, contextoCepProvider);
-
-                //busca o cliente para saber se ele já esta cadastrado
-                ClienteCadastroDto clienteExiste = await clienteArclubeBll.
-                    BuscarCliente(clienteUnis.DadosCliente.Cnpj_Cpf, clienteUnis.DadosCliente.Indicador_Orcamentista);
 
                 if (clienteUnis != null)
                 {
@@ -53,16 +46,22 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
                      * se estiver vazia foi cadastrado com sucesso
                      * se estiver com itens na lista, ocorreu erro na validação
                      */
-                    lstErros = (await clienteArclubeBll.CadastrarCliente(clienteArclube,
+                    retorno.ListaErros = (await clienteArclubeBll.CadastrarCliente(clienteArclube,
                         clienteArclube.DadosCliente.Indicador_Orcamentista)).ToList();
+
+                    if (retorno.ListaErros.Count <= 0)
+                    {
+                        //não teve erros ao cadastrar o novo cliente, então vamos buscar o Id do cliente para devolver
+                        retorno.IdClienteCadastrado = await BuscarIdCliente(clienteArclube.DadosCliente.Cnpj_Cpf);
+                    }
                 }
             }
             else
             {
-                lstErros.Add("O Orçamentista não existe!");
+                retorno.ListaErros.Add("O Orçamentista não existe!");
             }
 
-            return lstErros;
+            return retorno;
         }
 
         private static ClienteCadastroDto Inicializar_ClienteCadastroDto_Arclube(ClienteCadastroUnisDto clienteUnis)
@@ -128,7 +127,6 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
             {
                 refBancariaArclube.Agencia = x.Agencia;
                 refBancariaArclube.Banco = x.Banco;
-                refBancariaArclube.BancoDescricao = x.BancoDescricao;
                 refBancariaArclube.Conta = x.Conta;
                 refBancariaArclube.Contato = x.Contato;
                 refBancariaArclube.Ddd = x.Ddd;
@@ -158,6 +156,19 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
             });
 
             return lstRefComercialArclube;
+        }
+
+        private async Task<string> BuscarIdCliente(string cpf_cnpj)
+        {
+            string retorno = "";
+
+            var db = contextoProvider.GetContextoLeitura();
+
+            retorno = await (from c in db.Tclientes
+                             where c.Cnpj_Cpf == cpf_cnpj
+                             select c.Id).FirstOrDefaultAsync();
+
+            return retorno;
         }
     }
 }

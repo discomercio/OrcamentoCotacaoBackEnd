@@ -663,9 +663,21 @@ namespace PrepedidoBusiness.Bll
                 return lstErros;
             }
 
+
+            //afazer: Verificar se teve alteração no cadastro do cliente para ser incluído
+            //nos campos de Torcamento
+
+
             if (await Util.LojaHabilitadaProdutosECommerce(prePedido.DadosCliente.Loja, contextoProvider))
             {
+                //Fazer a validação dos dados do cliente, pois agora será permitido realizar alterações em todo o cadastro
+                //do cliente para realizar um novo Prepedido, mas esses dados de cadastro que poderão ser alterados, não serão 
+                //alterados na tabela de cliente. Apenas será incluído para salvar o Prepedido.
+                // Esses dados serão incluídos no novo Dto que foi criado "EnderecoCadastralClientePrepedidoDto", então
+                //precisamos fazer uma nova rotina que irá fazer a validação de dados que foram inseridos no Dto, seguindo a 
+                //validação existente no ASP
 
+                //Afazer: incluir a validação dos novo campos de endereço de entrega
                 //Validar endereço de entraga
                 if (ValidarEndecoEntrega(prePedido.EnderecoEntrega, lstErros))
                 {

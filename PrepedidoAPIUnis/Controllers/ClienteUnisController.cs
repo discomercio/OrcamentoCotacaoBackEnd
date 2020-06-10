@@ -29,9 +29,9 @@ namespace PrepedidoAPIUnis.Controllers
             //todo: validar o token
             ClienteCadastroResultadoUnisDto retorno;
             //todo: retornar a estrutura certa
-            var ret = await clienteUnisBll.CadastrarClienteUnis(clienteDto);
+            retorno = await clienteUnisBll.CadastrarClienteUnis(clienteDto);
 
-            return Ok(ret);
+            return Ok(retorno);
         }
 
     }
