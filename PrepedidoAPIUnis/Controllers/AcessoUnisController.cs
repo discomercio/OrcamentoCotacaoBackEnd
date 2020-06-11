@@ -29,6 +29,7 @@ namespace PrepedidoAPIUnis.Controllers
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<ActionResult<LoginResultadoUnisDto>> FazerLogin(LoginUnisDto login)
         {
+            //throw new Exception( "erro");
             LoginResultadoUnisDto ret = new LoginResultadoUnisDto();
             ret.ListaErros = new List<string>();
             ret.ListaErros.Add("Erro: ainda não implementado");

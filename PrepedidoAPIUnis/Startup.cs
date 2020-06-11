@@ -53,8 +53,17 @@ namespace PrepedidoAPIUnis
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILogger<Startup> logger)
         {
+            // Route all unknown requests to app root
+            app.Use(async (context, next) =>
+            {
+                //log das requisicoes
+                logger.LogWarning("Log da requisição");
+                await next();
+            });
+
+
             app.UseCors(x => x
                 .AllowAnyOrigin()
                 .AllowAnyMethod()

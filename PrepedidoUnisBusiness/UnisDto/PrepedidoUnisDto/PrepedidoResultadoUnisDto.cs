@@ -9,6 +9,6 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
     public class PrePedidoResultadoUnisDto
     {
         public string IdPrePedidoCadastrado { get; set; }
-        public List<string> ListaErros { get; set; }
+        public List<string> ListaErros { get; set; } = new List<string>();
     }
 }
