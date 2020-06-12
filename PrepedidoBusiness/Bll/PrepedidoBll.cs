@@ -354,14 +354,16 @@ namespace PrepedidoBusiness.Bll
             {
                 Observacoes = torcamento.Obs_1,
                 NumeroNF = torcamento.Obs_2,
-                EntregaImediata = Convert.ToString(torcamento.St_Etg_Imediata) == Constantes.COD_ETG_IMEDIATA_NAO ?
+                EntregaImediata = torcamento.St_Etg_Imediata ==
+                (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
                 "NÃO (" + torcamento.Etg_Imediata_Usuario +
                 " em " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" :
                 "SIM (" + torcamento.Etg_Imediata_Usuario +
                 " em " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")",
-                BemDeUso_Consumo = Convert.ToString(torcamento.StBemUsoConsumo) == Constantes.COD_ST_BEM_USO_CONSUMO_NAO ?
+                BemDeUso_Consumo = torcamento.StBemUsoConsumo == (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_NAO ?
                 "NÃO" : "SIM",
-                InstaladorInstala = Convert.ToString(torcamento.InstaladorInstalaStatus) == Constantes.COD_INSTALADOR_INSTALA_NAO ?
+                InstaladorInstala = torcamento.InstaladorInstalaStatus ==
+                (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_NAO ?
                 "NÃO" : "SIM",
                 GarantiaIndicador = Convert.ToString(torcamento.GarantiaIndicadorStatus) ==
                 Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO ?
@@ -379,11 +381,11 @@ namespace PrepedidoBusiness.Bll
             switch (Convert.ToString(torcamento.Tipo_Parcelamento))
             {
                 case Constantes.COD_FORMA_PAGTO_A_VISTA:
-                    lista.Add("À Vista (" + Util.OpcaoFormaPagto(Convert.ToString(torcamento.Av_Forma_Pagto)) + ")");
+                    lista.Add("À Vista (" + Util.OpcaoFormaPagto(torcamento.Av_Forma_Pagto) + ")");
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELA_UNICA:
                     lista.Add(String.Format("Parcela Única: " + " {0:c2} (" +
-                        Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pu_Forma_Pagto)) +
+                        Util.OpcaoFormaPagto(torcamento.Pu_Forma_Pagto) +
                         ") vencendo após " + torcamento.Pu_Vencto_Apos, torcamento.Pu_Valor) + " dias");
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO:
@@ -396,27 +398,29 @@ namespace PrepedidoBusiness.Bll
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA:
                     lista.Add(String.Format("Entrada: " + "{0:c2} (" +
-                        Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pce_Forma_Pagto_Entrada)) + ")", torcamento.Pce_Entrada_Valor));
+                        Util.OpcaoFormaPagto(torcamento.Pce_Forma_Pagto_Entrada) + ")", torcamento.Pce_Entrada_Valor));
                     if (torcamento.Pce_Forma_Pagto_Prestacao != 5 && torcamento.Pce_Forma_Pagto_Prestacao != 7)
                     {
                         lista.Add(String.Format("Prestações: " + torcamento.Pce_Prestacao_Qtde + " x " + " {0:c2}" +
-                            " (" + Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pce_Forma_Pagto_Prestacao)) +
+                            " (" + Util.OpcaoFormaPagto(torcamento.Pce_Forma_Pagto_Prestacao) +
                             ") vencendo a cada " +
                             torcamento.Pce_Prestacao_Periodo + " dias", torcamento.Pce_Prestacao_Valor));
                     }
                     else
                     {
                         lista.Add(String.Format("Prestações: " + torcamento.Pce_Prestacao_Qtde + " x " + " {0:c2}" +
-                            " (" + Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pce_Forma_Pagto_Prestacao)) + ")", torcamento.Pce_Prestacao_Valor));
+                            " (" + Util.OpcaoFormaPagto(torcamento.Pce_Forma_Pagto_Prestacao) + ")",
+                            torcamento.Pce_Prestacao_Valor));
                     }
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA:
                     lista.Add(String.Format("1ª Prestação: " + " {0:c2} (" +
-                        Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pse_Forma_Pagto_Prim_Prest)) +
+                        Util.OpcaoFormaPagto(torcamento.Pse_Forma_Pagto_Prim_Prest) +
                         ") vencendo após " + torcamento.Pse_Prim_Prest_Apos + " dias", torcamento.Pse_Prim_Prest_Valor));
                     lista.Add(String.Format("Prestações: " + torcamento.Pse_Demais_Prest_Qtde + " x " +
-                        " {0:c2} (" + Util.OpcaoFormaPagto(Convert.ToString(torcamento.Pse_Forma_Pagto_Demais_Prest)) +
-                        ") vencendo a cada " + torcamento.Pse_Demais_Prest_Periodo + " dias", torcamento.Pse_Demais_Prest_Valor));
+                        " {0:c2} (" + Util.OpcaoFormaPagto(torcamento.Pse_Forma_Pagto_Demais_Prest) +
+                        ") vencendo a cada " + torcamento.Pse_Demais_Prest_Periodo + " dias", 
+                        torcamento.Pse_Demais_Prest_Valor));
                     break;
             }
 
@@ -706,7 +710,7 @@ namespace PrepedidoBusiness.Bll
                             string descricao = Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo);
 
                             List<RegrasBll> regraCrtlEstoque = (await ObterCtrlEstoqueProdutoRegra(prePedido, lstErros)).ToList();
-                            
+
                             ProdutoBll.VerificarRegrasAssociadasAosProdutos(regraCrtlEstoque, lstErros, prePedido.DadosCliente);
                             //obtendo qtde disponivel
                             await Util.VerificarEstoque(regraCrtlEstoque, contextoProvider);
@@ -901,11 +905,16 @@ namespace PrepedidoBusiness.Bll
             torcamento.Vl_Total_NF = CalcularVl_Total_NF(prepedido);
             torcamento.Vl_Total_RA = CalcularVl_Total_NF(prepedido) - Calcular_Vl_Total(prepedido);
             torcamento.Perc_RT = 0;
-            torcamento.StBemUsoConsumo = prepedido.DetalhesPrepedido.BemDeUso_Consumo != "0" ?
-                short.Parse(Constantes.COD_ST_BEM_USO_CONSUMO_SIM) : short.Parse(Constantes.COD_ST_BEM_USO_CONSUMO_NAO);
 
-            torcamento.InstaladorInstalaStatus = prepedido.DetalhesPrepedido.InstaladorInstala == "2" ?
-                short.Parse(Constantes.COD_INSTALADOR_INSTALA_SIM) : short.Parse(Constantes.COD_INSTALADOR_INSTALA_NAO);
+            torcamento.StBemUsoConsumo = prepedido.DetalhesPrepedido.BemDeUso_Consumo !=
+                Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_NAO.ToString() ?
+                (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_SIM : (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_NAO;
+
+            torcamento.InstaladorInstalaStatus = prepedido.DetalhesPrepedido.InstaladorInstala ==
+                Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_SIM.ToString() ?
+                (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_SIM :
+                (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_NAO;
+
             torcamento.InstaladorInstalaUsuarioUltAtualiz = orcamentista.Apelido;
             torcamento.InstaladorInstalaDtHrUltAtualiz = DateTime.Now;
             torcamento.Perc_Desagio_RA_Liquida = perc_limite_RA_sem_desagio;
@@ -937,10 +946,10 @@ namespace PrepedidoBusiness.Bll
             //não apagar: esperando o cliente informar se alteramos a forma que iremos salvar os campos de entrega imediata
             //no caso de não ser entrega imediata
             //NECESSÁRIO VERIFICAR A REGRA PARA ESSE CAMPO
-            if (prepedido.DetalhesPrepedido.EntregaImediata == Constantes.COD_ETG_IMEDIATA_NAO)
+            if (prepedido.DetalhesPrepedido.EntregaImediata == Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO.ToString())
             {
                 //verificar se a data esta correta
-                torcamento.St_Etg_Imediata = short.Parse(Constantes.COD_ETG_IMEDIATA_NAO);
+                torcamento.St_Etg_Imediata = (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO;
                 //montar a data
                 //estou montando a data, pois comparando com a data que esta sendo salvo na base 
                 //preciso montar a data com no formato "yyyy-MM-dd hh:mm:ss.ms"
@@ -963,7 +972,7 @@ namespace PrepedidoBusiness.Bll
             }
             else
             {
-                torcamento.St_Etg_Imediata = short.Parse(Constantes.COD_ETG_IMEDIATA_SIM);
+                torcamento.St_Etg_Imediata = (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_SIM;
                 torcamento.Etg_Imediata_Data = DateTime.Now;
                 torcamento.Etg_Imediata_Usuario = orcamentista.Apelido;
 
@@ -1579,6 +1588,12 @@ namespace PrepedidoBusiness.Bll
 
             if (endEtg.OutroEndereco)
             {
+                if(string.IsNullOrEmpty(endEtg.EndEtg_cod_justificativa))
+                {
+                    lstErros.Add("SELECIONE A JUSTIFICATIVA DO ENDEREÇO DE ENTREGA!");
+                    retorno = false;
+                }
+                
                 if (string.IsNullOrEmpty(endEtg.EndEtg_endereco))
                 {
                     lstErros.Add("PREENCHA O ENDEREÇO DE ENTREGA.");
