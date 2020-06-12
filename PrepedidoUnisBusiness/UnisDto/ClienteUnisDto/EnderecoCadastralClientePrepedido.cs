@@ -67,24 +67,15 @@ namespace PrepedidoUnisBusiness.UnisDto.ClienteUnisDto
         [MaxLength(4)]
         public string Endereco_ramal_com_2 { get; set; }
 
-        /// <summary>
-        /// Endereco_tipo_pessoa = "PF", "PJ"
-        /// </summary>
         [MaxLength(2)]
         public string Endereco_tipo_pessoa { get; set; }
 
         [MaxLength(14)]
         public string Endereco_cnpj_cpf { get; set; }
 
-        /// <summary>
-        /// Endereco_contribuinte_icms_status: INICIAL = 0, NAO = 1, SIM = 2, ISENTO = 3
-        /// </summary>
         [Required]
         public byte Endereco_contribuinte_icms_status { get; set; }
 
-        /// <summary>
-        /// Endereco_produtor_rural_status: COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL = 0, COD_ST_CLIENTE_PRODUTOR_RURAL_NAO = 1, COD_ST_CLIENTE_PRODUTOR_RURAL_SIM = 2
-        /// </summary>
         [Required]
         public byte Endereco_produtor_rural_status { get; set; }
 

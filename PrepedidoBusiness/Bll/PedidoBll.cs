@@ -484,9 +484,9 @@ namespace PrepedidoBusiness.Bll
             string dataFormatada = "";
             //varificar a variavel st_etg_imediata para saber se é sim ou não pela constante 
             //caso não atenda nenhuma das condições o retorno fica como vazio.
-            if (p.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO)
+            if (p.St_Etg_Imediata == short.Parse(Constantes.COD_ETG_IMEDIATA_NAO))
                 retorno = "NÃO";
-            else if (p.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_SIM)
+            else if (p.St_Etg_Imediata == short.Parse(Constantes.COD_ETG_IMEDIATA_SIM))
                 retorno = "SIM";
             //formatar a data da variavel etg_imediata_data
             if (retorno != "")
@@ -1157,11 +1157,11 @@ namespace PrepedidoBusiness.Bll
             switch (parcelamento)
             {
                 case Constantes.COD_FORMA_PAGTO_A_VISTA:
-                    lista.Add("À Vista (" + Util.OpcaoFormaPagto(pedido.Av_Forma_Pagto) + ")");
+                    lista.Add("À Vista (" + Util.OpcaoFormaPagto(pedido.Av_Forma_Pagto.ToString()) + ")");
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELA_UNICA:
                     lista.Add(String.Format("Parcela Única: " + "{0:c2} (" +
-                        Util.OpcaoFormaPagto(pedido.Pu_Forma_Pagto) +
+                        Util.OpcaoFormaPagto(Convert.ToString(pedido.Pu_Forma_Pagto)) +
                         ") vencendo após " + pedido.Pu_Vencto_Apos, pedido.Pu_Valor) + " dias");
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO:
@@ -1174,26 +1174,26 @@ namespace PrepedidoBusiness.Bll
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA:
                     lista.Add(String.Format("Entrada: " + "{0:c2} (" +
-                        Util.OpcaoFormaPagto(pedido.Pce_Forma_Pagto_Entrada) + ")", pedido.Pce_Entrada_Valor));
+                        Util.OpcaoFormaPagto(Convert.ToString(pedido.Pce_Forma_Pagto_Entrada)) + ")", pedido.Pce_Entrada_Valor));
                     if (pedido.Pce_Forma_Pagto_Prestacao != 5 && pedido.Pce_Forma_Pagto_Prestacao != 7)
                     {
                         lista.Add(String.Format("Prestações: " + pedido.Pce_Prestacao_Qtde + " x " + " {0:c2}" +
-                            " (" + Util.OpcaoFormaPagto(pedido.Pce_Forma_Pagto_Prestacao) +
+                            " (" + Util.OpcaoFormaPagto(Convert.ToString(pedido.Pce_Forma_Pagto_Prestacao)) +
                             ") vencendo a cada " +
                             pedido.Pce_Prestacao_Periodo + " dias", pedido.Pce_Prestacao_Valor));
                     }
                     else
                     {
                         lista.Add(String.Format("Prestações: " + pedido.Pce_Prestacao_Qtde + " x " + " {0:c2}" +
-                            " (" + Util.OpcaoFormaPagto(pedido.Pce_Forma_Pagto_Prestacao) + ")", pedido.Pce_Prestacao_Valor));
+                            " (" + Util.OpcaoFormaPagto(Convert.ToString(pedido.Pce_Forma_Pagto_Prestacao)) + ")", pedido.Pce_Prestacao_Valor));
                     }
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA:
                     lista.Add(String.Format("1ª Prestação: " + " {0:c2} (" +
-                        Util.OpcaoFormaPagto(pedido.Pse_Forma_Pagto_Prim_Prest) +
+                        Util.OpcaoFormaPagto(Convert.ToString(pedido.Pse_Forma_Pagto_Prim_Prest)) +
                         ") vencendo após " + pedido.Pse_Prim_Prest_Apos + " dias", pedido.Pse_Prim_Prest_Valor));
                     lista.Add(String.Format("Prestações: " + pedido.Pse_Demais_Prest_Qtde + " x " +
-                        " {0:c2} (" + Util.OpcaoFormaPagto(pedido.Pse_Forma_Pagto_Demais_Prest) +
+                        " {0:c2} (" + Util.OpcaoFormaPagto(Convert.ToString(pedido.Pse_Forma_Pagto_Demais_Prest)) +
                         ") vencendo a cada " + pedido.Pse_Demais_Prest_Periodo + " dias", pedido.Pse_Demais_Prest_Valor));
                     break;
             }

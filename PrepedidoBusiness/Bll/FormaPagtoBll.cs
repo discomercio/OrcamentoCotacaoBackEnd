@@ -93,7 +93,7 @@ namespace PrepedidoBusiness.Bll
 
             var flagTask = from c in db.torcamentistaEIndicadorRestricaoFormaPagtos
                            where c.Id_orcamentista_e_indicador == apelido &&
-                                 c.Id_forma_pagto == (short)Constantes.FormaPagto.ID_FORMA_PAGTO_CARTAO &&
+                                 c.Id_forma_pagto == short.Parse(Constantes.ID_FORMA_PAGTO_CARTAO) &&
                                  c.Tipo_cliente == tipo_pessoa &&
                                  c.St_restricao_ativa != 0
                            select c;
@@ -114,7 +114,7 @@ namespace PrepedidoBusiness.Bll
 
             var flagTask = from c in db.torcamentistaEIndicadorRestricaoFormaPagtos
                            where c.Id_orcamentista_e_indicador == apelido &&
-                                 c.Id_forma_pagto == (short)Constantes.FormaPagto.ID_FORMA_PAGTO_CARTAO_MAQUINETA &&
+                                 c.Id_forma_pagto == short.Parse(Constantes.ID_FORMA_PAGTO_CARTAO_MAQUINETA) &&
                                  c.Tipo_cliente == tipo_pessoa &&
                                  c.St_restricao_ativa != 0
                            select c;
