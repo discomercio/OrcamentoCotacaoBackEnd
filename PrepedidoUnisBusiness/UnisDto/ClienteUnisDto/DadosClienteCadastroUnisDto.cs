@@ -30,6 +30,12 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
         [MaxLength(20)]
         public string Ie { get; set; }
 
+        /// <summary>
+        /// COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL = "0";
+        /// COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO = "1";
+        /// COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM = "2";
+        /// COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO = "3";
+        /// </summary>
         [Required]
         public byte Contribuinte_Icms_Status { get; set; }
 

@@ -17,17 +17,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bats", "Bats", "{A0F97C04-F
 	ProjectSection(SolutionItems) = preProject
 		AtualizarSonar.bat = AtualizarSonar.bat
 		CompilarPrepedidoApi.bat = CompilarPrepedidoApi.bat
+		CompilarPrepedidoApiUnis.bat = CompilarPrepedidoApiUnis.bat
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testes", "Testes", "{3CBAB939-3AA5-4ECA-83B4-E937DA21BF4C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testes.Labs", "Testes.Labs\Testes.Labs.csproj", "{E28B0099-453E-47E5-B648-A2AF147C82E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrepedidoAPIUnis", "PrepedidoAPIUnis\PrepedidoAPIUnis.csproj", "{4D32AD67-9794-47D0-8021-91472FDA9E09}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrepedidoAPIUnis", "PrepedidoAPIUnis\PrepedidoAPIUnis.csproj", "{4D32AD67-9794-47D0-8021-91472FDA9E09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrepedidoUnisBusiness", "PrepedidoUnisBusiness\PrepedidoUnisBusiness.csproj", "{37BD9E1F-4C78-4E93-AD2E-ADBF5FDEB72D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrepedidoUnisBusiness", "PrepedidoUnisBusiness\PrepedidoUnisBusiness.csproj", "{37BD9E1F-4C78-4E93-AD2E-ADBF5FDEB72D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASPs", "ASPs\ASPs.csproj", "{DCB53684-ADEC-4A89-A7DF-DC1E28E9518D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASPs", "ASPs\ASPs.csproj", "{DCB53684-ADEC-4A89-A7DF-DC1E28E9518D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

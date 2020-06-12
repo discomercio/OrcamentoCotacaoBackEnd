@@ -14,13 +14,16 @@ namespace PrepedidoAPIUnis.Controllers
 {
     [Route("api/acessoUnis")]
     [ApiController]
-    public class AcessoController : Controller
+    public class AcessoUnisController : Controller
     {
-        public AcessoController()
+        public AcessoUnisController()
         {
         }
 
 
+        /// <summary>
+        /// Obtém um token de acesso
+        /// </summary>
         [AllowAnonymous]
         [HttpPost("fazerLogin")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
