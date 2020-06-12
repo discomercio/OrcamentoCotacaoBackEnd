@@ -380,19 +380,19 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
             //verificar se validaremos qtde de caracteres
 
             if (string.IsNullOrEmpty(dadosCliente.Ie) &&
-                Convert.ToString(dadosCliente.Contribuinte_Icms_Status) ==
-                Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
+                dadosCliente.Contribuinte_Icms_Status ==
+                (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
             {
                 lstErros.Add("PREENCHA A INSCRIÇÃO ESTADUAL.");
                 retorno = false;
             }
             if (dadosCliente.Tipo == Constantes.ID_PF)
             {
-                if (Convert.ToString(dadosCliente.ProdutorRural) == Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
+                if (dadosCliente.ProdutorRural == (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
                 {
                     if (dadosCliente.Ie == "" &&
-                    Convert.ToString(dadosCliente.Contribuinte_Icms_Status) ==
-                    Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
+                    dadosCliente.Contribuinte_Icms_Status ==
+                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
                         lstErros.Add("Para ser cadastrado como Produtor Rural e contribuinte do ICMS" +
                             "é necessário possuir nº de IE");
                     retorno = false;
@@ -401,8 +401,8 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
             if (dadosCliente.Tipo == Constantes.ID_PJ)
             {
                 if (dadosCliente.Ie == "" &&
-                    Convert.ToString(dadosCliente.Contribuinte_Icms_Status) ==
-                    Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
+                    dadosCliente.Contribuinte_Icms_Status ==
+                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
                 {
                     lstErros.Add("Para ser cadastrado como contribuinte do ICMS , " +
                             "é necessário possuir nº de IE");
