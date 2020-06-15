@@ -956,8 +956,7 @@ namespace PrepedidoBusiness.Bll
         private async Task ValidarDadosClientesCadastro(DadosClienteCadastroDto cliente, List<string> listaErros)
         {
             string cpf_cnpjSoDig = Utils.Util.SoDigitosCpf_Cnpj(cliente.Cnpj_Cpf);
-
-
+            
             if (cliente.Cnpj_Cpf == "")
                 listaErros.Add("CNPJ / CPF NÃO FORNECIDO.");
 

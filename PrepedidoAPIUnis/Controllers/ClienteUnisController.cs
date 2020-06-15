@@ -21,6 +21,12 @@ namespace PrepedidoAPIUnis.Controllers
             this.clienteUnisBll = clienteUnisBll;
         }
 
+
+        /// <summary>
+        /// Rotina para cadastrar um novo cliente
+        /// </summary>
+        /// <param name="clienteDto">ClienteCadastroUnisDto</param>
+        /// <returns>ClienteCadastroResultadoUnisDto</returns>
         [AllowAnonymous]
         [HttpPost("cadastrarCliente")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]

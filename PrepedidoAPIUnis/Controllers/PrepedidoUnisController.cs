@@ -19,6 +19,12 @@ namespace PrepedidoAPIUnis.Controllers
             this.prepedidoUnisBll = prepedidoUnisBll;
         }
 
+
+        /// <summary>
+        /// Rotina para cadastrar Pré-Pedido
+        /// </summary>
+        /// <param name="prePedido">PrePedidoUnisDto</param>
+        /// <returns>Retona classe PrePedidoResultadoUnisDto</returns>
         [AllowAnonymous]
         [HttpPost("cadastrarPrepedido")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
@@ -31,6 +37,5 @@ namespace PrepedidoAPIUnis.Controllers
 
             return Ok(ret);
         }
-
     }
 }
