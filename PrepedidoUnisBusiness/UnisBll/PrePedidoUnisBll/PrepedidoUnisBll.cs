@@ -1,5 +1,6 @@
 ﻿using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
 using PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto;
+using PrepedidoBusiness.Dtos.Prepedido.DetalhesPrepedido;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,10 +11,12 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
     public class PrePedidoUnisBll
     {
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
+        private readonly PrepedidoBusiness.Bll.PrepedidoBll prepedidoBll;
 
-        public PrePedidoUnisBll(InfraBanco.ContextoBdProvider contextoProvider)
+        public PrePedidoUnisBll(InfraBanco.ContextoBdProvider contextoProvider, PrepedidoBusiness.Bll.PrepedidoBll prepedidoBll)
         {
             this.contextoProvider = contextoProvider;
+            this.prepedidoBll = prepedidoBll;
         }
 
 
@@ -98,6 +101,30 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
             //}
 
             return lstErros;
+        }
+
+        
+        public async Task DeletarOrcamentoExisteComTransacao(string orcamentista, string numeroPrepedido)
+        {
+            PrePedidoDto prePedido = new PrePedidoDto();
+            //vamos buscar o prepedido
+            prePedido.NumeroPrePedido = numeroPrepedido.Trim();
+
+            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+            {
+                await prepedidoBll.DeletarOrcamentoExiste(dbgravacao, prePedido, orcamentista);
+                dbgravacao.transacao.Commit();
+            }
+        }
+
+        public async Task<short> Obter_Permite_RA_Status(string apelido)
+        {
+            return 0;
+        }
+
+        public async Task<decimal> ObtemPercentualVlPedidoRA()
+        {
+            return 0M;
         }
     }
 }

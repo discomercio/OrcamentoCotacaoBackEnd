@@ -170,5 +170,12 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
 
             return retorno;
         }
+
+        public async Task<ClienteCadastroUnisDto> BuscarCliente(string cpf_cnpj, string apelido)
+        {
+            ClienteCadastroUnisDto retorno = new ClienteCadastroUnisDto();
+
+            return retorno;
+        }
     }
 }

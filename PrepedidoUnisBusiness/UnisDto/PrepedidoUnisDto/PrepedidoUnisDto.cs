@@ -9,9 +9,11 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
 {
     public class PrePedidoUnisDto
     {
+        [Required]
         public string TokenAcesso { get; set; }
 
         [MaxLength(14)]
+        [Required]
         public string Cnpj_Cpf { get; set; }
 
         [Required]

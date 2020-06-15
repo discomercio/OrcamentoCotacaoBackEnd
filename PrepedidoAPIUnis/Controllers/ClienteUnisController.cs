@@ -40,5 +40,26 @@ namespace PrepedidoAPIUnis.Controllers
             return Ok(retorno);
         }
 
+        /// <summary>
+        /// Rotina para buscar dados do cliente por CPF ou CNPJ
+        /// </summary>
+        /// <param name="tokenAcesso"></param>
+        /// <param name="cnpj_cpf"></param>
+        /// <param name="orcamentista"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpGet("buscarCliente")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public async Task<IActionResult> BuscarCliente(string tokenAcesso, string cnpj_cpf, string orcamentista)
+        {
+            
+            var dadosCliente = await clienteUnisBll.BuscarCliente(cnpj_cpf, orcamentista.Trim());
+
+            if (dadosCliente == null)
+                return NoContent();
+            return Ok(dadosCliente);
+
+        }
+
     }
 }
