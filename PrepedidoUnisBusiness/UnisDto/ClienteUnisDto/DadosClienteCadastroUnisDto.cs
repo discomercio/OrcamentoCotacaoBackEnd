@@ -17,9 +17,12 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
         [MaxLength(10)]
         public string Vendedor { get; set; }
 
+        /// <summary>
+        /// Id: deixar em branco para cadastrar
+        /// </summary>
         [Required]
         [MaxLength(12)]
-        public string Id { get; set; }
+        public string Id { get;}
 
         [MaxLength(14)]
         public string Cnpj_Cpf { get; set; }

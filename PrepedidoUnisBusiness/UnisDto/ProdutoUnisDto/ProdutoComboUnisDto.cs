@@ -4,9 +4,9 @@ using System.Text;
 
 namespace PrepedidoUnisBusiness.UnisDto.ProdutoUnisDto
 {
-    public class ProdutoComboUnisDto : PrepedidoBusiness.Dto.Produto.ProdutoComboDto
+    public class ProdutoComboUnisDto
     {
-        public List<ProdutoUnisDto> ProdutoDto { get; set; }
-        public List<ProdutoCompostoUnisDto> ProdutoCompostoDto { get; set; }
+        public List<ProdutoUnisDto> ProdutoUnisDto { get; set; }
+        public List<ProdutoCompostoUnisDto> ProdutoCompostoUnisDto { get; set; }
     }
 }
