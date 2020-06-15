@@ -117,9 +117,9 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
             }
         }
 
-        public async Task<short> Obter_Permite_RA_Status(string apelido)
+        public async Task<bool> Obter_Permite_RA_Status(string apelido)
         {
-            return 0;
+            return false;
         }
 
         public async Task<decimal> ObtemPercentualVlPedidoRA()

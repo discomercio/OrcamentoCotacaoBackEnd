@@ -8,7 +8,7 @@ namespace PrepedidoUnisBusiness.UnisBll.ProdutoUnisBll
 {
     public class ProdutoUnisBll
     {
-        public async Task<ProdutoComboUnisDto> ListaProdutosCombo(string loja, string id_cliente)
+        public async Task<ProdutoComboUnisDto> ListaProdutosCombo(string loja, string cpf_cnpj)
         {
             ProdutoComboUnisDto produtoComboUnisDto = new ProdutoComboUnisDto();
 

@@ -25,7 +25,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         public EnderecoCadastralClientePrepedidoUnisDto EnderecoCadastralCliente { get; set; }
         public EnderecoEntregaClienteCadastroUnisDto EnderecoEntrega { get; set; }
         public List<PrePedidoProdutoPrePedidoUnisDto> ListaProdutos { get; set; }
-        public short PermiteRAStatus { get; set; }
+        public bool PermiteRAStatus { get; set; }
         public decimal? ValorTotalDestePedidoComRA { get; set; }
         public decimal? VlTotalDestePedido { get; set; }
         public DetalhesPrePedidoUnisDto DetalhesPrepedido { get; set; }

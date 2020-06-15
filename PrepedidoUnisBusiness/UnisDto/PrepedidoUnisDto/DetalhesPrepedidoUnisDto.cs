@@ -11,8 +11,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         /// EntregaImediata: 
         ///     COD_ETG_IMEDIATA_ST_INICIAL = 0,
         ///     COD_ETG_IMEDIATA_NAO = 1,
-        ///     COD_ETG_IMEDIATA_SIM = 2,
-        ///     COD_ETG_IMEDIATA_NAO_DEFINIDO = 10
+        ///     COD_ETG_IMEDIATA_SIM = 2
         /// </summary>
         [Required]
         [MaxLength(1)]
@@ -21,7 +20,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         public DateTime? EntregaImediataData { get; set; }
 
         /// <summary>
-        /// BemDeUso_Consumo : COD_ST_BEM_USO_CONSUMO_NAO = 0, COD_ST_BEM_USO_CONSUMO_SIM = 1, COD_ST_BEM_USO_CONSUMO_NAO_DEFINIDO = 10
+        /// BemDeUso_Consumo : COD_ST_BEM_USO_CONSUMO_NAO = 0, COD_ST_BEM_USO_CONSUMO_SIM = 1
         /// </summary>
         [Required]
         [MaxLength(1)]

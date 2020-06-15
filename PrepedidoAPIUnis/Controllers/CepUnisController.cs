@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PrepedidoUnisBusiness.UnisDto.CepUnisDto;
 
 namespace PrepedidoAPIUnis.Controllers
 {
@@ -25,7 +26,7 @@ namespace PrepedidoAPIUnis.Controllers
         [AllowAnonymous]
         [HttpGet("buscarCep")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<IActionResult> BuscarCep(string tokenAcesso, string cep)
+        public async Task<ActionResult<CepUnisDto>> BuscarCep(string tokenAcesso, string cep)
         {
             //todo: validar token
             //para buscar apenas por cep

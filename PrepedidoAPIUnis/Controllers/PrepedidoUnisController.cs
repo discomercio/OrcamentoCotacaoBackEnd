@@ -134,9 +134,9 @@ namespace PrepedidoAPIUnis.Controllers
         /// <param name="orcamentista"></param>
         /// <returns></returns>
         [AllowAnonymous]
-        [HttpGet("obter_permite_ra_status")]
+        [HttpGet("obterPermiteRaStatus")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<ActionResult<short>> Obter_Permite_RA_Status(string tokenAcesso, string orcamentista)
+        public async Task<ActionResult<bool>> Obter_Permite_RA_Status(string tokenAcesso, string orcamentista)
         {
             //todo: validar token
 

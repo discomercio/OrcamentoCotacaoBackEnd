@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using PrepedidoApiUnisBusiness;
 using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
 using PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto;
+using PrepedidoUnisBusiness.UnisDto.ClienteUnisDto;
 
 namespace PrepedidoAPIUnis.Controllers
 {
@@ -50,9 +51,10 @@ namespace PrepedidoAPIUnis.Controllers
         [AllowAnonymous]
         [HttpGet("buscarCliente")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<IActionResult> BuscarCliente(string tokenAcesso, string cnpj_cpf, string orcamentista)
+        public async Task<ActionResult<ClienteBuscaRetornoUnisDto>> BuscarCliente(string tokenAcesso, string cnpj_cpf, string orcamentista)
         {
-            
+            //todo: validar o token
+
             var dadosCliente = await clienteUnisBll.BuscarCliente(cnpj_cpf, orcamentista.Trim());
 
             if (dadosCliente == null)

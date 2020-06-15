@@ -17,7 +17,7 @@ namespace PrepedidoUnisBusiness.UnisBll.CepUnisBll
             this.contextoCepProvider = contextoCepProvider;
         }
 
-        public async Task<IEnumerable<CepUnisDto>> BuscarCep(string cep)
+        public async Task<CepUnisDto> BuscarCep(string cep)
         {
             PrepedidoBusiness.Bll.CepBll cepArcluebBll = new PrepedidoBusiness.Bll.CepBll(contextoCepProvider);
 
@@ -27,21 +27,19 @@ namespace PrepedidoUnisBusiness.UnisBll.CepUnisBll
 
             if (lstCepArclubeDto.Count > 0)
             {
-                lstCepArclubeDto.ForEach(x =>
-                {
-                    CepUnisDto cepUnis = new CepUnisDto();
-                    cepUnis.Cep = x.Cep;
-                    cepUnis.Uf = x.Uf;
-                    cepUnis.Cidade = x.Cidade;
-                    cepUnis.Bairro = x.Bairro;
-                    cepUnis.Endereco = x.Endereco;
-                    cepUnis.LogradouroComplemento = x.LogradouroComplemento;
+                var x = lstCepArclubeDto[0];
+                CepUnisDto cepUnis = new CepUnisDto();
+                cepUnis.Cep = x.Cep;
+                cepUnis.Uf = x.Uf;
+                cepUnis.Cidade = x.Cidade;
+                cepUnis.Bairro = x.Bairro;
+                cepUnis.Endereco = x.Endereco;
+                cepUnis.LogradouroComplemento = x.LogradouroComplemento;
 
-                    lst_cepUnisDto.Add(cepUnis);
-                });
+                return cepUnis;
             }
 
-            return lst_cepUnisDto;
+            return null;
         }
     }
 }

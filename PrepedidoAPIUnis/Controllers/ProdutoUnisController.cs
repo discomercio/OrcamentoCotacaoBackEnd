@@ -22,16 +22,17 @@ namespace PrepedidoAPIUnis.Controllers
         /// </summary>
         /// <param name="tokenAcesso"></param>
         /// <param name="loja"></param>
-        /// <param name="id_cliente"></param>
+        /// <param name="cpf_cnpj"></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpGet("buscarProduto")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<ActionResult<ProdutoComboUnisDto>> BuscarProduto(string tokenAcesso, string loja, string id_cliente)
+        public async Task<ActionResult<ProdutoComboUnisDto>> BuscarProduto(string tokenAcesso, string loja, 
+            string cpf_cnpj)
         {
             //todo: validar token
             
-            var retorno = await produtoUnisBll.ListaProdutosCombo(loja, id_cliente);
+            var retorno = await produtoUnisBll.ListaProdutosCombo(loja, cpf_cnpj);
 
             return Ok(retorno);
         }
