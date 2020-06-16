@@ -35,6 +35,11 @@ namespace PrepedidoAPIUnis.Controllers
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<ActionResult<LoginResultadoUnisDto>> FazerLogin(LoginUnisDto login)
         {
+            return Ok(await FazerLoginInterno(login));
+        }
+
+        private async Task<LoginResultadoUnisDto> FazerLoginInterno(LoginUnisDto login)
+        {
             LoginResultadoUnisDto ret = new LoginResultadoUnisDto();
             ret.ListaErros = new List<string>();
 
@@ -44,16 +49,17 @@ namespace PrepedidoAPIUnis.Controllers
                 Utils.AutenticacaoApiUnis.RoleAcesso, new ServicoAutenticacaoProviderApiUnis());
 
             //todo: login
-/*            string ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
-            string userAgent = Request.Headers["User-agent"];
+            /*            string ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+                        string userAgent = Request.Headers["User-agent"];
 
-            if (!string.IsNullOrEmpty(token))
-                await acessoBll.GravarSessaoComTransacao(ip, apelido, userAgent);
+                        if (!string.IsNullOrEmpty(token))
+                            await acessoBll.GravarSessaoComTransacao(ip, apelido, userAgent);
 
-            if (token == null)
-                return BadRequest(new { message = "Usuário ou senha incorreta." });
-                */
-            return Ok(tokenClasse.Token);
+                        if (token == null)
+                            return BadRequest(new { message = "Usuário ou senha incorreta." });
+                            */
+            ret.TokenAcesso = tokenClasse.Token;
+            return ret;
         }
 
         [AllowAnonymous]
@@ -61,11 +67,16 @@ namespace PrepedidoAPIUnis.Controllers
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<ActionResult<LogoutResultadoUnisDto>> FazerLogout(LogoutUnisDto logout)
         {
+            return Ok(await FazerLogoutInterno(logout));
+
+        }
+        private async Task<LogoutResultadoUnisDto> FazerLogoutInterno(LogoutUnisDto logout)
+        {
             LogoutResultadoUnisDto ret = new LogoutResultadoUnisDto();
             ret.ListaErros = new List<string>();
             ret.ListaErros.Add("Erro: ainda não implementado");
             //todo: afazer
-            return Ok(ret);
+            return ret;
         }
 
     }
