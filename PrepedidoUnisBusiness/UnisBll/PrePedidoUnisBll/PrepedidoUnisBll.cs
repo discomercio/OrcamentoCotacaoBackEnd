@@ -51,14 +51,12 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
             var clienteArclube = await clienteArclubeBll.BuscarCliente(prePedidoUnis.Cnpj_Cpf,
                 prePedidoUnis.Indicador_Orcamentista);
 
-            DadosClienteCadastroUnisDto clienteUnis = new DadosClienteCadastroUnisDto();
-
-            if (clienteArclube != null)
+            if(clienteArclube == null)
             {
-                clienteUnis.Loja = clienteArclube.DadosCliente.Loja;
-                clienteUnis.Indicador_Orcamentista = clienteArclube.DadosCliente.Indicador_Orcamentista;
-                clienteUnis.Tipo = clienteArclube.DadosCliente.Tipo;
+                lstErros.Add("Cliente não localizado");
+                return lstErros;
             }
+            DadosClienteCadastroUnisDto clienteUnis = DadosClienteCadastroUnisDto.DadosClienteCadastroUnisDtoDeDadosClienteCadastroDto(clienteArclube.DadosCliente);
 
             //a)	Validar se o Orçamentista enviado existe
             if (await ValidacoesClienteUnisBll.ValidarOrcamentista(clienteUnis.Indicador_Orcamentista,
