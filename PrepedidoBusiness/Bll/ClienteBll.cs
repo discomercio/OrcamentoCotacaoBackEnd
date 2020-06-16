@@ -33,7 +33,7 @@ namespace PrepedidoBusiness.Bll
             bool ie_diferente = false;
             bool produtor_diferente = false;
 
-            if (dados.ProdutorRural == byte.Parse(Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO))
+            if (dados.ProdutorRural == (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO)
             {
                 if (dados.ProdutorRural != cli.Produtor_Rural_Status)
                 {
@@ -41,8 +41,8 @@ namespace PrepedidoBusiness.Bll
                     cli.Ie = "";
 
                     log += "contribuinte_icms_status: " + cli.Contribuinte_Icms_Status + " => " +
-                        Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL + "; ";
-                    cli.Contribuinte_Icms_Status = byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL);
+                        Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL + "; ";
+                    cli.Contribuinte_Icms_Status = (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL;
 
                     log += "contribuinte_icms_data: " + cli.Contribuinte_Icms_Data + " => " + DateTime.Now + "; ";
                     cli.Contribuinte_Icms_Data = DateTime.Now;
@@ -58,8 +58,8 @@ namespace PrepedidoBusiness.Bll
                     }
 
                     log += "produtor_rural_status: " + cli.Produtor_Rural_Status + " => " +
-                        Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO + "; ";
-                    cli.Produtor_Rural_Status = byte.Parse(Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO);
+                        Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO + "; ";
+                    cli.Produtor_Rural_Status = (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO;
 
                     log += "produtor_rural_data: " + cli.Produtor_Rural_Data + " => " + DateTime.Now + "; ";
                     cli.Produtor_Rural_Data = DateTime.Now;
@@ -77,7 +77,7 @@ namespace PrepedidoBusiness.Bll
 
             }
 
-            if (dados.ProdutorRural == byte.Parse(Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM))
+            if (dados.ProdutorRural == (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
             {
                 if (dados.Contribuinte_Icms_Status != cli.Contribuinte_Icms_Status)
                 {
@@ -117,26 +117,26 @@ namespace PrepedidoBusiness.Bll
 
             if (contribuinte_diferente)
             {
-                if (dados.Contribuinte_Icms_Status == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM))
+                if (dados.Contribuinte_Icms_Status == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
                 {
                     log += "contribuinte_icms_status: " + cli.Contribuinte_Icms_Status + " => " +
-                                    Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM + "; ";
+                                    Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM + "; ";
                     cli.Contribuinte_Icms_Status =
-                        byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM);
+                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM;
                 }
-                if (dados.Contribuinte_Icms_Status == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO))
+                if (dados.Contribuinte_Icms_Status == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO)
                 {
                     log += "contribuinte_icms_status: " + cli.Contribuinte_Icms_Status + " => " +
-                                    Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO + "; ";
+                                    Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO + "; ";
                     cli.Contribuinte_Icms_Status =
-                        byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO);
+                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO;
                 }
-                if (dados.Contribuinte_Icms_Status == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO))
+                if (dados.Contribuinte_Icms_Status == (short)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO)
                 {
                     log += "contribuinte_icms_status: " + cli.Contribuinte_Icms_Status + " => " +
-                                    Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO + "; ";
+                                    Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO + "; ";
                     cli.Contribuinte_Icms_Status =
-                        byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO);
+                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO;
                 }
 
                 log += "contribuinte_icms_data: " + cli.Contribuinte_Icms_Data + " => " + DateTime.Now + "; ";
@@ -158,8 +158,8 @@ namespace PrepedidoBusiness.Bll
             if (produtor_diferente)
             {
                 log += "produtor_rural_status: " + cli.Produtor_Rural_Status + " => " +
-                            Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM + "; ";
-                cli.Produtor_Rural_Status = byte.Parse(Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM);
+                            Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM + "; ";
+                cli.Produtor_Rural_Status = (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM;
 
                 if (cli.Produtor_Rural_Data == null)
                 {
@@ -218,7 +218,7 @@ namespace PrepedidoBusiness.Bll
 
             if (dados.Contribuinte_Icms_Status != cli.Contribuinte_Icms_Status)
             {
-                if (dados.Contribuinte_Icms_Status == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM))
+                if (dados.Contribuinte_Icms_Status == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
                 {
                     if (cli.Ie != dados.Ie)
                     {
@@ -235,13 +235,13 @@ namespace PrepedidoBusiness.Bll
                     }
 
                     log += "contribuinte_icms_status: " + cli.Contribuinte_Icms_Status + " => " +
-                                    Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM + "; ";
-                    cli.Contribuinte_Icms_Status = byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM);
+                                    Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM + "; ";
+                    cli.Contribuinte_Icms_Status = (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM;
 
                     alterou = true;
                 }
 
-                if (dados.Contribuinte_Icms_Status == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO))
+                if (dados.Contribuinte_Icms_Status == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO)
                 {
                     if (cli.Ie != dados.Ie)
                     {
@@ -259,21 +259,21 @@ namespace PrepedidoBusiness.Bll
                     }
 
                     log += "contribuinte_icms_status: " + cli.Contribuinte_Icms_Status + " => " +
-                        Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO + "; ";
-                    cli.Contribuinte_Icms_Status = byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO);
+                        Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO + "; ";
+                    cli.Contribuinte_Icms_Status = (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO;
 
                     alterou = true;
                 }
 
-                if (dados.Contribuinte_Icms_Status == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO))
+                if (dados.Contribuinte_Icms_Status == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO)
                 {
                     log += "ie: " + cli.Ie + " => \"\"; ";
                     //não pode ter IE
                     cli.Ie = "";
 
                     log += "contribuinte_icms_status: " + cli.Contribuinte_Icms_Status + " => " +
-                        Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO + "; ";
-                    cli.Contribuinte_Icms_Status = byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO);
+                        Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO + "; ";
+                    cli.Contribuinte_Icms_Status = (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO;
 
                     alterou = true;
                 }
@@ -291,7 +291,7 @@ namespace PrepedidoBusiness.Bll
             }
             if (dados.Contribuinte_Icms_Status == cli.Contribuinte_Icms_Status)
             {
-                if (dados.Contribuinte_Icms_Status == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO))
+                if (dados.Contribuinte_Icms_Status == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO)
                 {
                     if (cli.Ie != dados.Ie)
                     {
@@ -956,8 +956,7 @@ namespace PrepedidoBusiness.Bll
         private async Task ValidarDadosClientesCadastro(DadosClienteCadastroDto cliente, List<string> listaErros)
         {
             string cpf_cnpjSoDig = Utils.Util.SoDigitosCpf_Cnpj(cliente.Cnpj_Cpf);
-
-
+            
             if (cliente.Cnpj_Cpf == "")
                 listaErros.Add("CNPJ / CPF NÃO FORNECIDO.");
 
@@ -1033,11 +1032,11 @@ namespace PrepedidoBusiness.Bll
 
 
             if (cliente.Ie == "" &&
-                Convert.ToString(cliente.Contribuinte_Icms_Status) == Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
+                cliente.Contribuinte_Icms_Status == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
                 listaErros.Add("PREENCHA A INSCRIÇÃO ESTADUAL.");
-            if (Convert.ToString(cliente.ProdutorRural) == Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
+            if (cliente.ProdutorRural == (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
                 if (cliente.Ie == "" &&
-                Convert.ToString(cliente.Contribuinte_Icms_Status) == Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
+                cliente.Contribuinte_Icms_Status == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
                     listaErros.Add("Para ser cadastrado como Produtor Rural, " +
                         "é necessário ser contribuinte do ICMS e possuir nº de IE");
 

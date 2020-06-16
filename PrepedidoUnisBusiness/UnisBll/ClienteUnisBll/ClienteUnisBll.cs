@@ -10,6 +10,7 @@ using PrepedidoBusiness.Dto.ClienteCadastro;
 using PrepedidoBusiness.Dtos.ClienteCadastro;
 using PrepedidoBusiness.Dto.ClienteCadastro.Referencias;
 using Microsoft.EntityFrameworkCore;
+using PrepedidoUnisBusiness.UnisDto.ClienteUnisDto;
 
 namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
 {
@@ -167,6 +168,13 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
             retorno = await (from c in db.Tclientes
                              where c.Cnpj_Cpf == cpf_cnpj
                              select c.Id).FirstOrDefaultAsync();
+
+            return retorno;
+        }
+
+        public async Task<ClienteBuscaRetornoUnisDto> BuscarCliente(string cpf_cnpj, string apelido)
+        {
+            ClienteBuscaRetornoUnisDto retorno = new ClienteBuscaRetornoUnisDto();
 
             return retorno;
         }

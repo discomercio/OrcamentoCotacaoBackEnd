@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace PrepedidoBusiness.Dto.Produto
+namespace PrepedidoUnisBusiness.UnisDto.ProdutoUnisDto
 {
-    public class ProdutoDto
+    public class ProdutoUnisDto
     {
         [MaxLength(4)]
         public string Fabricante { get; set; }
@@ -28,11 +28,3 @@ namespace PrepedidoBusiness.Dto.Produto
         public short? Qtde_Max_Venda { get; set; }
     }
 }
-        
-        
-
-    
-
-    
-
-    

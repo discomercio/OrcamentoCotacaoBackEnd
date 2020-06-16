@@ -17,9 +17,12 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
         [MaxLength(10)]
         public string Vendedor { get; set; }
 
+        /// <summary>
+        /// Id: deixar em branco para cadastrar
+        /// </summary>
         [Required]
         [MaxLength(12)]
-        public string Id { get; set; }
+        public string Id { get;}
 
         [MaxLength(14)]
         public string Cnpj_Cpf { get; set; }
@@ -31,23 +34,25 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
         public string Ie { get; set; }
 
         /// <summary>
-        /// COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL = "0";
-        /// COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO = "1";
-        /// COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM = "2";
-        /// COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO = "3";
+        /// Contribuinte_Icms_Status: INICIAL = 0, NAO = 1, SIM = 2, ISENTO = 3
         /// </summary>
         [Required]
         public byte Contribuinte_Icms_Status { get; set; }
 
+        /// <summary>
+        /// Tipo = "PF", "PJ"
+        /// </summary>
         [MaxLength(2)]
         public string Tipo { get; set; }
 
         [MaxLength(60)]
         public string Observacao_Filiacao { get; set; }
 
-
         public DateTime? Nascimento { get; set; }
 
+        /// <summary>
+        /// Sexo = "M", "F"
+        /// </summary>
         [MaxLength(1)]
         public string Sexo { get; set; }
 
@@ -55,9 +60,12 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
         [Required]
         public string Nome { get; set; }
 
+        /// <summary>
+        /// ProdutorRural: COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL = 0, COD_ST_CLIENTE_PRODUTOR_RURAL_NAO = 1, COD_ST_CLIENTE_PRODUTOR_RURAL_SIM = 2
+        /// </summary>
         [Required]
         public byte ProdutorRural { get; set; }
-
+        
         [MaxLength(80)]
         public string Endereco { get; set; }
 
@@ -119,10 +127,10 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
         public string Contato { get; set; }
 
         //verificar se iremos salvar com o código da ITS, pq nós que iremos cadastrar o cliente
-        [Required]
-        public int Sistema_responsavel_cadastro { get; set; }
+        //[Required]
+        //public int Sistema_responsavel_cadastro { get; set; }
 
-        [Required]
-        public int Sistema_responsavel_atualizacao { get; set; }
+        //[Required]
+        //public int Sistema_responsavel_atualizacao { get; set; }
     }
 }

@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
+using PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll;
 
 namespace PrepedidoAPIUnis
 {
@@ -50,6 +52,12 @@ namespace PrepedidoAPIUnis
                 xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath); 
             });
+
+            services.AddTransient<ClienteUnisBll, ClienteUnisBll>();
+            services.AddTransient<PrePedidoUnisBll, PrePedidoUnisBll>();
+            
+            services.AddTransient<PrepedidoBusiness.Bll.CepBll, PrepedidoBusiness.Bll.CepBll>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

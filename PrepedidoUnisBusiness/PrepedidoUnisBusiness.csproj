@@ -15,10 +15,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="UnisBll\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\InfraBanco\InfraBanco.csproj" />
     <ProjectReference Include="..\PrepedidoBusiness\PrepedidoBusiness.csproj" />
   </ItemGroup>

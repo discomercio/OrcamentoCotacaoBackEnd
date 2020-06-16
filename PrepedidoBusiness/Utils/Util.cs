@@ -131,31 +131,31 @@ namespace PrepedidoBusiness.Utils
             return result;
         }
 
-        public static string OpcaoFormaPagto(string codigo)
+        public static string OpcaoFormaPagto(short codigo)
         {
             string retorno = "";
 
             switch (codigo)
             {
-                case Constantes.ID_FORMA_PAGTO_DINHEIRO:
+                case (short)Constantes.FormaPagto.ID_FORMA_PAGTO_DINHEIRO:
                     retorno = "Dinheiro";
                     break;
-                case Constantes.ID_FORMA_PAGTO_DEPOSITO:
+                case (short)Constantes.FormaPagto.ID_FORMA_PAGTO_DEPOSITO:
                     retorno = "Depósito";
                     break;
-                case Constantes.ID_FORMA_PAGTO_CHEQUE:
+                case (short)Constantes.FormaPagto.ID_FORMA_PAGTO_CHEQUE:
                     retorno = "Cheque";
                     break;
-                case Constantes.ID_FORMA_PAGTO_BOLETO:
+                case (short)Constantes.FormaPagto.ID_FORMA_PAGTO_BOLETO:
                     retorno = "Boleto";
                     break;
-                case Constantes.ID_FORMA_PAGTO_CARTAO:
+                case (short)Constantes.FormaPagto.ID_FORMA_PAGTO_CARTAO:
                     retorno = "Cartão (internet)";
                     break;
-                case Constantes.ID_FORMA_PAGTO_CARTAO_MAQUINETA:
+                case (short)Constantes.FormaPagto.ID_FORMA_PAGTO_CARTAO_MAQUINETA:
                     retorno = "Cartão (maquineta)";
                     break;
-                case Constantes.ID_FORMA_PAGTO_BOLETO_AV:
+                case (short)Constantes.FormaPagto.ID_FORMA_PAGTO_BOLETO_AV:
                     retorno = "Boleto AV";
                     break;
             };
@@ -877,18 +877,18 @@ namespace PrepedidoBusiness.Utils
 
             if (tipoCliente == Constantes.ID_PF)
             {
-                if (produtoRuralStatus == byte.Parse(Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM))
+                if (produtoRuralStatus == (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
                     tipoPessoa = Constantes.COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PRODUTOR_RURAL;
-                else if (produtoRuralStatus == byte.Parse(Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO))
+                else if (produtoRuralStatus == (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO)
                     tipoPessoa = Constantes.COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PESSOA_FISICA;
             }
             else if (tipoCliente == Constantes.ID_PJ)
             {
-                if (contribuinteIcmsStatus == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM))
+                if (contribuinteIcmsStatus == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
                     tipoPessoa = Constantes.COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PESSOA_JURIDICA_CONTRIBUINTE;
-                else if (contribuinteIcmsStatus == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO))
+                else if (contribuinteIcmsStatus == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO)
                     tipoPessoa = Constantes.COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PESSOA_JURIDICA_NAO_CONTRIBUINTE;
-                else if (contribuinteIcmsStatus == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO))
+                else if (contribuinteIcmsStatus == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO)
                     tipoPessoa = Constantes.COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PESSOA_JURIDICA_ISENTO;
             }
 

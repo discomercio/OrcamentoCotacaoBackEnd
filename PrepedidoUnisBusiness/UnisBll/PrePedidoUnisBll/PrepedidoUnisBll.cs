@@ -1,5 +1,6 @@
 ﻿using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
 using PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto;
+using PrepedidoBusiness.Dtos.Prepedido.DetalhesPrepedido;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,10 +11,12 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
     public class PrePedidoUnisBll
     {
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
+        private readonly PrepedidoBusiness.Bll.PrepedidoBll prepedidoBll;
 
-        public PrePedidoUnisBll(InfraBanco.ContextoBdProvider contextoProvider)
+        public PrePedidoUnisBll(InfraBanco.ContextoBdProvider contextoProvider, PrepedidoBusiness.Bll.PrepedidoBll prepedidoBll)
         {
             this.contextoProvider = contextoProvider;
+            this.prepedidoBll = prepedidoBll;
         }
 
 
@@ -38,10 +41,13 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
 
             var db = contextoProvider.GetContextoLeitura();
 
+            //BUSCAR DADOS DO CLIENTE para incluir no dto de dados do cliente
+            //prePedidoUnis.DetalhesPrepedido = 
+
             //a)	Validar se o Orçamentista enviado existe
-            if (await ValidacoesClienteUnisBll.ValidarOrcamentista(prePedidoUnis.DadosCliente.Indicador_Orcamentista,
-                prePedidoUnis.DadosCliente.Loja, contextoProvider))
-            {
+            //if (await ValidacoesClienteUnisBll.ValidarOrcamentista(prePedidoUnis.DadosCliente.Indicador_Orcamentista,
+            //    prePedidoUnis.DadosCliente.Loja, contextoProvider))
+            //{
                 /*
                  * Precisa ser incluido a validação dos novos campos de memorização de endereço
                  * pois, precisamos verificar se teve alteração no cadastro do cliente quando ele gerou um novo prepedido
@@ -88,13 +94,37 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
                 //ii) Para todos os casos será necessário verificar se tem desconto aplicado em cada produto para fazer a comparação de valores e somar o total
                 //iii)	Se permite RA, devemos somar a variável Preco_Lista para comparar o total
 
-            }
-            else
-            {
-                lstErros.Add("O Orçamentista não existe!");
-            }
+            //}
+            //else
+            //{
+            //    lstErros.Add("O Orçamentista não existe!");
+            //}
 
             return lstErros;
+        }
+
+        
+        public async Task DeletarOrcamentoExisteComTransacao(string orcamentista, string numeroPrepedido)
+        {
+            PrePedidoDto prePedido = new PrePedidoDto();
+            //vamos buscar o prepedido
+            prePedido.NumeroPrePedido = numeroPrepedido.Trim();
+
+            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+            {
+                await prepedidoBll.DeletarOrcamentoExiste(dbgravacao, prePedido, orcamentista);
+                dbgravacao.transacao.Commit();
+            }
+        }
+
+        public async Task<bool> Obter_Permite_RA_Status(string apelido)
+        {
+            return false;
+        }
+
+        public async Task<decimal> ObtemPercentualVlPedidoRA()
+        {
+            return 0M;
         }
     }
 }

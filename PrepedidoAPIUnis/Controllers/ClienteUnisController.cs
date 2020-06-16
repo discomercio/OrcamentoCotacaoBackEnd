@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using PrepedidoApiUnisBusiness;
 using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
 using PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto;
+using PrepedidoUnisBusiness.UnisDto.ClienteUnisDto;
 
 namespace PrepedidoAPIUnis.Controllers
 {
@@ -21,6 +22,12 @@ namespace PrepedidoAPIUnis.Controllers
             this.clienteUnisBll = clienteUnisBll;
         }
 
+
+        /// <summary>
+        /// Rotina para cadastrar um novo cliente
+        /// </summary>
+        /// <param name="clienteDto">ClienteCadastroUnisDto</param>
+        /// <returns>ClienteCadastroResultadoUnisDto</returns>
         [AllowAnonymous]
         [HttpPost("cadastrarCliente")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
@@ -32,6 +39,28 @@ namespace PrepedidoAPIUnis.Controllers
             retorno = await clienteUnisBll.CadastrarClienteUnis(clienteDto);
 
             return Ok(retorno);
+        }
+
+        /// <summary>
+        /// Rotina para buscar dados do cliente por CPF ou CNPJ
+        /// </summary>
+        /// <param name="tokenAcesso"></param>
+        /// <param name="cnpj_cpf"></param>
+        /// <param name="orcamentista"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpGet("buscarCliente")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public async Task<ActionResult<ClienteBuscaRetornoUnisDto>> BuscarCliente(string tokenAcesso, string cnpj_cpf, string orcamentista)
+        {
+            //todo: validar o token
+
+            var dadosCliente = await clienteUnisBll.BuscarCliente(cnpj_cpf, orcamentista.Trim());
+
+            if (dadosCliente == null)
+                return NoContent();
+            return Ok(dadosCliente);
+
         }
 
     }

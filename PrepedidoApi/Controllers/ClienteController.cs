@@ -86,6 +86,8 @@ namespace PrepedidoApi.Controllers
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
             var retorno = await clienteBll.CadastrarCliente(clienteDto, apelido.Trim());
 
+
+            
             return Ok(retorno);
         }
 

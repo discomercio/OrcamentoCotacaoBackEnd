@@ -29,8 +29,16 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         [Required]
         public decimal VlUnitario { get; set; }
 
+        [Required]
         public decimal? VlTotalItem { get; set; }
+
+        [Required]
         public decimal? TotalItemRA { get; set; }
+
+        [Required]
         public decimal? TotalItem { get; set; }
+
+        [Required]
+        public float CustoFinancFornecCoeficiente { get; set; }
     }
 }
