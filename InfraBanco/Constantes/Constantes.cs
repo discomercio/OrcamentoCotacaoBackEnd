@@ -2079,7 +2079,7 @@ namespace InfraBanco.Constantes
 
         public const int OP_CEN_REL_TRANSACOES_CIELO_ANDAMENTO = 25400;
 
-        public const int OP_CEN_FRETE_ADICIONAL_LEITURA = 00000;//TODO
+        public const int OP_CEN_FRETE_ADICIONAL_LEITURA = 00000;//' TODO
 
         public const int OP_CEN_FRETE_ADICIONAL_CADASTRAMENTO = 00000; //' TODO
 

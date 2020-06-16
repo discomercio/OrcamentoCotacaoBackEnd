@@ -6,6 +6,6 @@ namespace PrepedidoApiUnisBusiness.UnisDto.AcessoDto
 {
     public class LogoutResultadoUnisDto
     {
-        public List<string> ListaErros { get; set; }
+        public List<string> ListaErros { get; set; } = new List<string>();
     }
 }
