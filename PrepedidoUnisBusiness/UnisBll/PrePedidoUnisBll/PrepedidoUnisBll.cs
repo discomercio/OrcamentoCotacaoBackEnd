@@ -1,6 +1,8 @@
 ﻿using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
+using PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto;
 using PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto;
 using PrepedidoBusiness.Dtos.Prepedido.DetalhesPrepedido;
+using PrepedidoUnisBusiness.UnisBll.PrePedidoUnisBll;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,11 +13,14 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
     public class PrePedidoUnisBll
     {
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
+        private readonly InfraBanco.ContextoCepProvider contextoCepProvider;
         private readonly PrepedidoBusiness.Bll.PrepedidoBll prepedidoBll;
 
-        public PrePedidoUnisBll(InfraBanco.ContextoBdProvider contextoProvider, PrepedidoBusiness.Bll.PrepedidoBll prepedidoBll)
+        public PrePedidoUnisBll(InfraBanco.ContextoBdProvider contextoProvider,
+            InfraBanco.ContextoCepProvider contextoCepProvider, PrepedidoBusiness.Bll.PrepedidoBll prepedidoBll)
         {
             this.contextoProvider = contextoProvider;
+            this.contextoCepProvider = contextoCepProvider;
             this.prepedidoBll = prepedidoBll;
         }
 
@@ -41,13 +46,24 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
 
             var db = contextoProvider.GetContextoLeitura();
 
+            PrepedidoBusiness.Bll.ClienteBll clienteArclubeBll = new PrepedidoBusiness.Bll.ClienteBll(contextoProvider, contextoCepProvider);
             //BUSCAR DADOS DO CLIENTE para incluir no dto de dados do cliente
-            //prePedidoUnis.DetalhesPrepedido = 
+            var clienteArclube = await clienteArclubeBll.BuscarCliente(prePedidoUnis.Cnpj_Cpf,
+                prePedidoUnis.Indicador_Orcamentista);
+
+            DadosClienteCadastroUnisDto clienteUnis = new DadosClienteCadastroUnisDto();
+
+            if (clienteArclube != null)
+            {
+                clienteUnis.Loja = clienteArclube.DadosCliente.Loja;
+                clienteUnis.Indicador_Orcamentista = clienteArclube.DadosCliente.Indicador_Orcamentista;
+                clienteUnis.Tipo = clienteArclube.DadosCliente.Tipo;
+            }
 
             //a)	Validar se o Orçamentista enviado existe
-            //if (await ValidacoesClienteUnisBll.ValidarOrcamentista(prePedidoUnis.DadosCliente.Indicador_Orcamentista,
-            //    prePedidoUnis.DadosCliente.Loja, contextoProvider))
-            //{
+            if (await ValidacoesClienteUnisBll.ValidarOrcamentista(clienteUnis.Indicador_Orcamentista,
+                clienteUnis.Loja, contextoProvider))
+            {
                 /*
                  * Precisa ser incluido a validação dos novos campos de memorização de endereço
                  * pois, precisamos verificar se teve alteração no cadastro do cliente quando ele gerou um novo prepedido
@@ -58,6 +74,11 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
                  * OBS: analisar bem o que devemos validar antes de mandar para a rotina de cadastro do Prepedido da Arclube
                  */
 
+                if (await ValidacoesPrePedidoUnisBll.ValidarDadosPrePedidoUnis(prePedidoUnis,
+                    clienteUnis.Indicador_Orcamentista, clienteUnis.Tipo, lstErros, contextoProvider))
+                {
+
+                }
 
                 /* b)	Validar dados do cliente
                  *  Na validação do cadastro do cliente precisamos verificar se teve alteração nos dados do cliente,
@@ -73,8 +94,8 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
 
                 //g)	Validar Forma de pagamento
                 //i)	Validar se tipo da opção de pagamento esta correta
-                //h)	Validar a quantidade de parcelas
-                //i)	Validar a quantidade de produtos na lista: 
+                //h)	Validar a quantidade de parcelas: verificar se esta dentro do permitido.
+                //i)	Validar a quantidade de produtos na lista: verificar se esta dentro do permitido 
                 //i)	Fazer a busca de todos os produtos
                 //ii)	Buscar os coeficientes para calcular os produtos conforme o 
                 //        tipo da forma de pagamento e quantidade de parcelas
@@ -90,20 +111,22 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
 
 
                 //l)	Validar total do Pré-Pedido:
-                //i)	Para casos que permitem RA será necessário verificar se o Preco_Lista esta diferente do valor total calculado com coeficiente para depois verificar se o valor de RA esta correto e se é permitido o valor de RA que foi enviado.
+                //i)	Para casos que permitem RA será necessário verificar se o Preco_Lista 
+                //  esta diferente do valor total calculado com coeficiente para depois verificar 
+                //  se o valor de RA esta correto e se é permitido o valor de RA que foi enviado.
                 //ii) Para todos os casos será necessário verificar se tem desconto aplicado em cada produto para fazer a comparação de valores e somar o total
                 //iii)	Se permite RA, devemos somar a variável Preco_Lista para comparar o total
 
-            //}
-            //else
-            //{
-            //    lstErros.Add("O Orçamentista não existe!");
-            //}
+            }
+            else
+            {
+                lstErros.Add("O Orçamentista não existe!");
+            }
 
             return lstErros;
         }
 
-        
+
         public async Task DeletarOrcamentoExisteComTransacao(string orcamentista, string numeroPrepedido)
         {
             PrePedidoDto prePedido = new PrePedidoDto();

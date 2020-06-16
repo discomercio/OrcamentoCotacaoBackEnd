@@ -20,7 +20,6 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
         /// <summary>
         /// Id: deixar em branco para cadastrar
         /// </summary>
-        [Required]
         [MaxLength(12)]
         public string Id { get;}
 

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -14,6 +15,10 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
 using PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll;
+using PrepedidoBusiness.Bll;
+using PrepedidoUnisBusiness.UnisBll.CepUnisBll;
+using PrepedidoUnisBusiness.UnisBll.FormaPagtoUnisBll;
+using PrepedidoUnisBusiness.UnisBll.ProdutoUnisBll;
 
 namespace PrepedidoAPIUnis
 {
@@ -55,9 +60,28 @@ namespace PrepedidoAPIUnis
 
             services.AddTransient<ClienteUnisBll, ClienteUnisBll>();
             services.AddTransient<PrePedidoUnisBll, PrePedidoUnisBll>();
-            
+            services.AddTransient<CepUnisBll, CepUnisBll>();
+            services.AddTransient<CoeficienteBll, CoeficienteBll>();
+            services.AddTransient<FormaPagtoUnisBll, FormaPagtoUnisBll>();
+            services.AddTransient<ProdutoUnisBll, ProdutoUnisBll>();
+
             services.AddTransient<PrepedidoBusiness.Bll.CepBll, PrepedidoBusiness.Bll.CepBll>();
-            
+
+            services.AddTransient<InfraBanco.ContextoBdProvider, InfraBanco.ContextoBdProvider>();
+            services.AddTransient<InfraBanco.ContextoCepProvider, InfraBanco.ContextoCepProvider>();
+
+            string conexaoBasica = Configuration.GetConnectionString("conexao");
+            services.AddDbContext<InfraBanco.ContextoBdBasico>(options =>
+            {
+                //options.UseSqlServer(Configuration.GetConnectionString("conexaoLocal"));
+                options.UseSqlServer(conexaoBasica);
+            });
+
+            services.AddDbContext<InfraBanco.ContextoCepBd>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("conexaoCep"));
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
