@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PrepedidoBusiness.Dto.Produto;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -26,5 +27,21 @@ namespace PrepedidoUnisBusiness.UnisDto.ProdutoUnisDto
         [MaxLength(2000)]
         public string Alertas { get; set; }
         public short? Qtde_Max_Venda { get; set; }
+
+        public static ProdutoUnisDto ProdutoUnisDtoDeProdutoDto(ProdutoDto produtoDto)
+        {
+            var ret = new ProdutoUnisDto()
+            {
+                Fabricante = produtoDto.Fabricante,
+                Fabricante_Nome = produtoDto.Fabricante_Nome,
+                Produto = produtoDto.Produto,
+                Descricao_html = produtoDto.Descricao_html,
+                Preco_lista = produtoDto.Preco_lista,
+                Estoque = produtoDto.Estoque,
+                Alertas = produtoDto.Alertas,
+                Qtde_Max_Venda = produtoDto.Qtde_Max_Venda
+            };
+            return ret;
+        }
     }
 }
