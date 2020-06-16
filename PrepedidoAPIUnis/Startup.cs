@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using InfraIdentity.ApiUnis;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -11,7 +14,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using PrepedidoAPIUnis.Utils;
 using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
 using PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll;
 
@@ -37,6 +42,11 @@ namespace PrepedidoAPIUnis
                 .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver());
 
 
+            // configure strongly typed settings objects
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<ConfiguracaoApiUnis>(appSettingsSection);
+
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Unis V1", Version = "v1" });
@@ -57,7 +67,36 @@ namespace PrepedidoAPIUnis
             services.AddTransient<PrePedidoUnisBll, PrePedidoUnisBll>();
             
             services.AddTransient<PrepedidoBusiness.Bll.CepBll, PrepedidoBusiness.Bll.CepBll>();
-            
+
+            services.AddTransient<IServicoAutenticacaoApiUnis, ServicoAutenticacaoApiUnis>();
+
+            // configure jwt authentication
+            var appSettings = appSettingsSection.Get<ConfiguracaoApiUnis>();
+            var key = Encoding.ASCII.GetBytes(appSettings.SegredoToken);
+
+            //isto deveria ser passado para o SetupAutenticacao
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+
+                x.SecurityTokenValidators.Clear();
+
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+
+            new InfraIdentity.SetupAutenticacao().ConfigurarToken(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

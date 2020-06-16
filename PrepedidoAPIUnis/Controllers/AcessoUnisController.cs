@@ -1,5 +1,4 @@
-﻿using InfraIdentity;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -9,6 +8,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Serialization;
 using PrepedidoApiUnisBusiness.UnisDto.AcessoDto;
+using InfraIdentity.ApiUnis;
+using PrepedidoAPIUnis.Utils;
 
 namespace PrepedidoAPIUnis.Controllers
 {
@@ -16,8 +17,13 @@ namespace PrepedidoAPIUnis.Controllers
     [ApiController]
     public class AcessoUnisController : Controller
     {
-        public AcessoUnisController()
+        private readonly IConfiguration configuration;
+        private readonly IServicoAutenticacaoApiUnis servicoAutenticacaoApiUnis;
+
+        public AcessoUnisController(IConfiguration configuration, IServicoAutenticacaoApiUnis servicoAutenticacaoApiUnis)
         {
+            this.configuration = configuration;
+            this.servicoAutenticacaoApiUnis = servicoAutenticacaoApiUnis;
         }
 
 
@@ -29,12 +35,25 @@ namespace PrepedidoAPIUnis.Controllers
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<ActionResult<LoginResultadoUnisDto>> FazerLogin(LoginUnisDto login)
         {
-            //throw new Exception( "erro");
             LoginResultadoUnisDto ret = new LoginResultadoUnisDto();
             ret.ListaErros = new List<string>();
-            ret.ListaErros.Add("Erro: ainda não implementado");
-            //todo: afazer
-            return Ok(ret);
+
+            var appSettingsSection = configuration.GetSection("AppSettings");
+            var appSettings = appSettingsSection.Get<Utils.ConfiguracaoApiUnis>();
+            var tokenClasse = await servicoAutenticacaoApiUnis.ObterTokenAutenticacaoApiUnis(login.Usuario, login.Senha, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos, 
+                Utils.AutenticacaoApiUnis.RoleAcesso, new ServicoAutenticacaoProviderApiUnis());
+
+            //todo: login
+/*            string ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+            string userAgent = Request.Headers["User-agent"];
+
+            if (!string.IsNullOrEmpty(token))
+                await acessoBll.GravarSessaoComTransacao(ip, apelido, userAgent);
+
+            if (token == null)
+                return BadRequest(new { message = "Usuário ou senha incorreta." });
+                */
+            return Ok(tokenClasse.Token);
         }
 
         [AllowAnonymous]
