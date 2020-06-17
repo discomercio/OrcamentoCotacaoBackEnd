@@ -31,6 +31,22 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
 
         public int Ordem { get; set; }
 
+        public static RefBancariaClienteUnisDto RefBancariaClienteUnisDtoDeRefBancariaClienteDto(RefBancariaDtoCliente refBancariaArclube)
+        {
+            var ret = new RefBancariaClienteUnisDto()
+            {
+                Agencia = refBancariaArclube.Agencia,
+                Banco = refBancariaArclube.Banco,
+                Conta = refBancariaArclube.Conta,
+                Contato = refBancariaArclube.Contato,
+                Ddd = refBancariaArclube.Ddd,
+                Telefone = refBancariaArclube.Telefone,
+                Ordem = refBancariaArclube.Ordem
+            };
+
+            return ret;
+        }
+
         public static RefBancariaDtoCliente RefBancariaClienteDtoDeRefBancariaClienteUnisDto(RefBancariaClienteUnisDto refBancariaUnis)
         {
             var ret = new RefBancariaDtoCliente()

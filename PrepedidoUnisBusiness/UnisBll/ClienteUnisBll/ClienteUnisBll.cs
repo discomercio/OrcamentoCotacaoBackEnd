@@ -46,7 +46,7 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
                 {
                     string loja = orcamentista.Loja;
                     //precisamos passar os dados para o DTO de ClienteCadastroDto da ArClube
-                    ClienteCadastroDto clienteArclube = Inicializar_ClienteCadastroDto_Arclube(clienteUnis, loja);
+                    ClienteCadastroDto clienteArclube = ClienteCadastroUnisDto.ClienteCadastroDtoDeClienteCadastroUnisDto(clienteUnis, loja);
 
                     /*VERIFICAR SE É RETORNA VAZIO MESMO
                      * vamos fazer a validação e retornar uma lista de erros, 
@@ -70,33 +70,7 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
 
             return retorno;
         }
-
-        private static ClienteCadastroDto Inicializar_ClienteCadastroDto_Arclube(ClienteCadastroUnisDto clienteUnis, string loja)
-        {
-            ClienteCadastroDto clienteArclube = new ClienteCadastroDto();
-
-            clienteArclube.DadosCliente = new DadosClienteCadastroDto();
-            clienteArclube.DadosCliente =
-                DadosClienteCadastroUnisDto.DadosClienteCadastroDtoDeDadosClienteCadastroUnisDto(clienteUnis.DadosCliente, loja);
-
-            clienteArclube.RefBancaria = new List<RefBancariaDtoCliente>();
-            clienteUnis.RefBancaria.ForEach(x =>
-            {
-                clienteArclube.RefBancaria.Add(
-                    RefBancariaClienteUnisDto.RefBancariaClienteDtoDeRefBancariaClienteUnisDto(x));
-            });
-           
-
-            clienteArclube.RefComercial = new List<RefComercialDtoCliente>();
-            clienteUnis.RefComercial.ForEach(x =>
-            {
-                clienteArclube.RefComercial.Add(
-                    RefComercialClienteUnisDto.RefComercialDtoClienteDeRefComercialClienteUnisDto(x));
-            });
-
-            return clienteArclube;
-        }
-
+        
         private async Task<string> BuscarIdCliente(string cpf_cnpj)
         {
             string retorno = "";
@@ -113,6 +87,12 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
         public async Task<ClienteBuscaRetornoUnisDto> BuscarCliente(string cpf_cnpj, string apelido)
         {
             ClienteBuscaRetornoUnisDto retorno = new ClienteBuscaRetornoUnisDto();
+
+            //vamos buscar o cliente
+            ClienteBll clienteArclubeBll = new ClienteBll(contextoProvider, contextoCepProvider);
+
+            retorno = ClienteBuscaRetornoUnisDto.ClienteCadastroUnisDtoDeClienteCadastroDto(
+                await clienteArclubeBll.BuscarCliente(cpf_cnpj, apelido));
 
             return retorno;
         }

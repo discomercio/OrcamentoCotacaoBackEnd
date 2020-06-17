@@ -463,6 +463,7 @@ namespace PrepedidoBusiness.Bll
             DadosClienteCadastroDto dados = new DadosClienteCadastroDto
             {
                 Id = cli.Id,
+                Indicador_Orcamentista = cli.Usuario_Cadastrado,
                 Cnpj_Cpf = cli.Cnpj_Cpf,
                 Rg = cli.Rg,
                 Ie = cli.Ie,

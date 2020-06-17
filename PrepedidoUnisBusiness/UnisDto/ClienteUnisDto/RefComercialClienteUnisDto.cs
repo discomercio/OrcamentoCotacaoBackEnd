@@ -14,15 +14,29 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
         public int Ordem { get; set; }
 
 
-        public static RefComercialDtoCliente RefComercialDtoClienteDeRefComercialClienteUnisDto(RefComercialClienteUnisDto refCoemrcial)
+        public static RefComercialDtoCliente RefComercialDtoClienteDeRefComercialClienteUnisDto(RefComercialClienteUnisDto refComercial)
         {
             var ret = new RefComercialDtoCliente()
             {
-                Contato = refCoemrcial.Contato,
-                Ddd = refCoemrcial.Ddd,
-                Telefone = refCoemrcial.Telefone,
-                Nome_Empresa = refCoemrcial.Nome_Empresa,
-                Ordem = refCoemrcial.Ordem
+                Contato = refComercial.Contato,
+                Ddd = refComercial.Ddd,
+                Telefone = refComercial.Telefone,
+                Nome_Empresa = refComercial.Nome_Empresa,
+                Ordem = refComercial.Ordem
+            };
+
+            return ret;
+        }
+
+        public static RefComercialClienteUnisDto RefComercialClienteUnisDtoDeRefComercialDtoCliente(RefComercialDtoCliente refComercial)
+        {
+            var ret = new RefComercialClienteUnisDto()
+            {
+                Contato = refComercial.Contato,
+                Ddd = refComercial.Ddd,
+                Telefone = refComercial.Telefone,
+                Nome_Empresa = refComercial.Nome_Empresa,
+                Ordem = refComercial.Ordem
             };
 
             return ret;

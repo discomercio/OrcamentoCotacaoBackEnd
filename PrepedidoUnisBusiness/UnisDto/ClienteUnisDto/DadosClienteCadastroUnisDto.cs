@@ -135,6 +135,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
             var ret = new DadosClienteCadastroUnisDto()
             {
                 Indicador_Orcamentista = clienteCadastroDto.Indicador_Orcamentista,
+                UsuarioCadastro = clienteCadastroDto.Indicador_Orcamentista,
                 Id = clienteCadastroDto.Id,
                 Cnpj_Cpf = clienteCadastroDto.Cnpj_Cpf,
                 Rg = clienteCadastroDto.Rg,
