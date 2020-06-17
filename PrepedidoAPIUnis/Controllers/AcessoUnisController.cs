@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using PrepedidoApiUnisBusiness.UnisDto.AcessoDto;
-using PrepedidoUnisBusiness.UnisBll;
+using PrepedidoUnisBusiness.UnisBll.AcessoBll;
 
 namespace PrepedidoAPIUnis.Controllers
 {
@@ -12,10 +12,12 @@ namespace PrepedidoAPIUnis.Controllers
     public class AcessoUnisController : Controller
     {
         private readonly AcessoUnisBll acessoUnisBll;
+        private readonly IServicoValidarTokenApiUnis servicoValidarTokenApiUnis;
 
-        public AcessoUnisController(PrepedidoUnisBusiness.UnisBll.AcessoUnisBll acessoUnisBll)
+        public AcessoUnisController(AcessoUnisBll acessoUnisBll, IServicoValidarTokenApiUnis servicoValidarTokenApiUnis)
         {
             this.acessoUnisBll = acessoUnisBll;
+            this.servicoValidarTokenApiUnis = servicoValidarTokenApiUnis;
         }
 
 
@@ -33,14 +35,15 @@ namespace PrepedidoAPIUnis.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("fazerLogout")]
+        [HttpPost("fazerLogout")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<ActionResult<LogoutResultadoUnisDto>> FazerLogout(LogoutUnisDto logout)
         {
-            return Ok(await FazerLogoutInterno(logout));
-
+            if (!servicoValidarTokenApiUnis.ValidarToken(logout.TokenAcesso, out string usuario))
+                return Unauthorized();
+            return Ok(await FazerLogoutInterno(logout, usuario));
         }
-        private async Task<LogoutResultadoUnisDto> FazerLogoutInterno(LogoutUnisDto logout)
+        private async Task<LogoutResultadoUnisDto> FazerLogoutInterno(LogoutUnisDto logout, string usuario)
         {
             LogoutResultadoUnisDto ret = new LogoutResultadoUnisDto();
             ret.ListaErros = new List<string>();

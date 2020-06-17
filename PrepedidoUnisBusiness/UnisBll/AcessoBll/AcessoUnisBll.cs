@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PrepedidoUnisBusiness.UnisBll
+namespace PrepedidoUnisBusiness.UnisBll.AcessoBll
 {
     public class AcessoUnisBll
     {
@@ -28,7 +28,7 @@ namespace PrepedidoUnisBusiness.UnisBll
             var appSettings = appSettingsSection.Get<ConfiguracaoApiUnis>();
             var autentica = await servicoAutenticacaoApiUnis.ObterTokenAutenticacaoApiUnis(login.Usuario, login.Senha, 
                 appSettings.SegredoToken, appSettings.ValidadeTokenMinutos,
-                Utils.AutenticacaoApiUnis.RoleAcesso, new ServicoAutenticacaoProviderApiUnis(contextoProvider),
+                AutenticacaoApiUnis.RoleAcesso, new ServicoAutenticacaoProviderApiUnis(contextoProvider),
                 ip, userAgent);
 			var retorno = new LoginResultadoUnisDto()
 			{

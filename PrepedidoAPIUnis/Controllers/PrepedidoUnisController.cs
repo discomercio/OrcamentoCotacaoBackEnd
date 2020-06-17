@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
 using PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll;
 using PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto;
+using PrepedidoUnisBusiness.UnisBll.AcessoBll;
 using PrepedidoUnisBusiness.UnisBll.CoeficienteUnisBll;
 using PrepedidoUnisBusiness.UnisBll.FormaPagtoUnisBll;
 using PrepedidoUnisBusiness.UnisDto.CoeficienteUnisDto;
@@ -22,12 +23,15 @@ namespace PrepedidoAPIUnis.Controllers
         private readonly PrePedidoUnisBll prepedidoUnisBll;
         private readonly FormaPagtoUnisBll formaPagtoUnisBll;
         private readonly CoeficienteUnisBll coeficienteUnisBll;
+        private readonly IServicoValidarTokenApiUnis servicoValidarTokenApiUnis;
+
         public PrepedidoUnisController(PrePedidoUnisBll prepedidoUnisBll, FormaPagtoUnisBll formaPagtoUnisBll,
-            CoeficienteUnisBll coeficienteUnisBll)
+            CoeficienteUnisBll coeficienteUnisBll, IServicoValidarTokenApiUnis servicoValidarTokenApiUnis)
         {
             this.prepedidoUnisBll = prepedidoUnisBll;
             this.formaPagtoUnisBll = formaPagtoUnisBll;
             this.coeficienteUnisBll = coeficienteUnisBll;
+            this.servicoValidarTokenApiUnis = servicoValidarTokenApiUnis;
         }
 
 
@@ -41,7 +45,9 @@ namespace PrepedidoAPIUnis.Controllers
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<ActionResult<PrePedidoResultadoUnisDto>> CadastrarPrepedido(PrePedidoUnisDto prePedido)
         {
-            //todo: validar o token
+            if (!servicoValidarTokenApiUnis.ValidarToken(prePedido.TokenAcesso, out string usuario))
+                return Unauthorized();
+
             PrePedidoResultadoUnisDto retorno;
             //todo: retornar a estrutura certa
             var ret = await prepedidoUnisBll.CadastrarPrepedidoUnis(prePedido);
@@ -58,8 +64,8 @@ namespace PrepedidoAPIUnis.Controllers
         [HttpPost("deletarPrepedido")]
         public async Task<IActionResult> DeletarPrePedido(DeletarPrepedidoUnisDto deletarPrepedido)
         {
-            //todo: validar o token
-            //deletarPrepedido.TokenAcesso
+            if (!servicoValidarTokenApiUnis.ValidarToken(deletarPrepedido.TokenAcesso, out string usuario))
+                return Unauthorized();
 
             //validar Orçamentista
             //validar numero de prepedido
@@ -84,7 +90,8 @@ namespace PrepedidoAPIUnis.Controllers
         public async Task<ActionResult<FormaPagtoUnisDto>> BuscarFormasPagto(string tokenAcesso,
             string tipo_pessoa, string orcamentista)
         {
-            //todo: validar token
+            if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out string usuario))
+                return Unauthorized();
 
             FormaPagtoUnisDto retorno = await formaPagtoUnisBll.ObterFormaPagto(orcamentista.Trim(), tipo_pessoa);
 
@@ -102,7 +109,8 @@ namespace PrepedidoAPIUnis.Controllers
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<ActionResult<int>> BuscarQtdeParcCartaoVisa(string tokenAcesso)
         {
-            //todo: validar token
+            if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out string usuario))
+                return Unauthorized();
 
             int retorno = await formaPagtoUnisBll.BuscarQtdeParcCartaoVisa();
 
@@ -120,7 +128,8 @@ namespace PrepedidoAPIUnis.Controllers
         public async Task<ActionResult<List<List<CoeficienteUnisDto>>>> BuscarCoeficienteFornecedores(string tokenAcesso,
             List<string> lstFornecedores)
         {
-            //todo: validar token
+            if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out string usuario))
+                return Unauthorized();
 
             var ret = await coeficienteUnisBll.BuscarListaCoeficientesFornecedores(lstFornecedores);
 
@@ -138,7 +147,8 @@ namespace PrepedidoAPIUnis.Controllers
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<ActionResult<bool>> Obter_Permite_RA_Status(string tokenAcesso, string orcamentista)
         {
-            //todo: validar token
+            if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out string usuario))
+                return Unauthorized();
 
             var ret = await prepedidoUnisBll.Obter_Permite_RA_Status(orcamentista);
 
@@ -155,7 +165,8 @@ namespace PrepedidoAPIUnis.Controllers
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<ActionResult<decimal>> ObtemPercentualVlPedidoRA(string tokenAcesso)
         {
-            //todo: validar token
+            if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out string usuario))
+                return Unauthorized();
 
             var ret = await prepedidoUnisBll.ObtemPercentualVlPedidoRA();
 

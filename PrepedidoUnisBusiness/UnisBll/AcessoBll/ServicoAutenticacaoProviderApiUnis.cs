@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PrepedidoUnisBusiness.Utils
+namespace PrepedidoUnisBusiness.UnisBll.AcessoBll
 {
     /*
      * efetivamente faz o lofgin; quer dizer, efetivamente verifica a senha
@@ -177,5 +177,32 @@ namespace PrepedidoUnisBusiness.Utils
             dbgravacao.Update(tusuario);
             dbgravacao.SaveChanges();
         }
+
+        public async void FazerLogout(string tokenAcesso)
+        {
+            //todo: login afazer 
+
+            /*
+                        strSQL = "UPDATE t_USUARIO SET" & _
+                                    " SessionCtrlTicket = NULL," & _
+                                    " SessionCtrlLoja = NULL," & _
+                                    " SessionCtrlModulo = NULL," & _
+                                    " SessionCtrlDtHrLogon = NULL," & _
+                                    " SessionTokenModuloCentral = NULL," & _
+                                    " DtHrSessionTokenModuloCentral = NULL" & _
+                                " WHERE" & _
+                                    " usuario = '" & QuotedStr(Trim(Session("usuario_atual"))) & "'"
+                        cn.Execute(strSQL)
+
+                        strSQL = "UPDATE t_SESSAO_HISTORICO SET" & _
+                                    " DtHrTermino = " & bd_formata_data_hora(Now) & _
+                                 " WHERE" & _
+                                    " usuario = '" & QuotedStr(Trim("" & Session("usuario_atual"))) & "'" & _
+                                    " AND DtHrInicio >= " & bd_formata_data_hora(Now-1) & _
+                                    " AND SessionCtrlTicket = '" & Trim(Session("SessionCtrlTicket")) & "'"
+                        cn.Execute(strSQL)
+            */
+        }
+
     }
 }

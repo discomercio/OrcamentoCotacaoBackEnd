@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using PrepedidoApiUnisBusiness;
 using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
 using PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto;
+using PrepedidoUnisBusiness.UnisBll.AcessoBll;
 using PrepedidoUnisBusiness.UnisDto.ClienteUnisDto;
 
 namespace PrepedidoAPIUnis.Controllers
@@ -15,11 +16,13 @@ namespace PrepedidoAPIUnis.Controllers
     [ApiController]
     public class ClienteUnisController : Controller
     {
-        private readonly ClienteUnisBll clienteUnisBll;        
+        private readonly ClienteUnisBll clienteUnisBll;
+        private readonly IServicoValidarTokenApiUnis servicoValidarTokenApiUnis;
 
-        public ClienteUnisController(ClienteUnisBll clienteUnisBll)
+        public ClienteUnisController(ClienteUnisBll clienteUnisBll, IServicoValidarTokenApiUnis servicoValidarTokenApiUnis)
         {
             this.clienteUnisBll = clienteUnisBll;
+            this.servicoValidarTokenApiUnis = servicoValidarTokenApiUnis;
         }
 
 
@@ -33,7 +36,9 @@ namespace PrepedidoAPIUnis.Controllers
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<ActionResult<ClienteCadastroResultadoUnisDto>> CadastrarCliente(ClienteCadastroUnisDto clienteDto)
         {
-            //todo: validar o token
+            if (!servicoValidarTokenApiUnis.ValidarToken(clienteDto.TokenAcesso, out string usuario))
+                return Unauthorized();
+
             ClienteCadastroResultadoUnisDto retorno;
             //todo: retornar a estrutura certa
             retorno = await clienteUnisBll.CadastrarClienteUnis(clienteDto);
@@ -53,7 +58,8 @@ namespace PrepedidoAPIUnis.Controllers
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<ActionResult<ClienteBuscaRetornoUnisDto>> BuscarCliente(string tokenAcesso, string cnpj_cpf, string orcamentista)
         {
-            //todo: validar o token
+            if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out string usuario))
+                return Unauthorized();
 
             var dadosCliente = await clienteUnisBll.BuscarCliente(cnpj_cpf, orcamentista.Trim());
 

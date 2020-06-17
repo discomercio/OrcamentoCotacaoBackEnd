@@ -16,7 +16,6 @@ namespace InfraIdentity.ApiUnis
 
             // configure DI for application services
             services.AddScoped<InfraIdentity.ApiUnis.IServicoAutenticacaoApiUnis, InfraIdentity.ApiUnis.ServicoAutenticacaoApiUnis>();
-            services.AddScoped<InfraIdentity.ApiUnis.IServicoDecodificarTokenApiUnis, InfraIdentity.ApiUnis.ServicoDecodificarTokenApiUnis>();
         }
     }
 }

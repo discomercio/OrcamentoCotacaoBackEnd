@@ -14,7 +14,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
 using PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll;
-using PrepedidoUnisBusiness.UnisBll;
+using PrepedidoUnisBusiness.UnisBll.AcessoBll;
+using PrepedidoUnisBusiness.UnisBll.CepUnisBll;
 
 namespace PrepedidoAPIUnis
 {
@@ -62,10 +63,13 @@ namespace PrepedidoAPIUnis
             services.AddTransient<ClienteUnisBll, ClienteUnisBll>();
             services.AddTransient<PrePedidoUnisBll, PrePedidoUnisBll>();
             services.AddTransient<AcessoUnisBll, AcessoUnisBll>();
-            
+            services.AddTransient<CepUnisBll, CepUnisBll>();
+
             services.AddTransient<PrepedidoBusiness.Bll.CepBll, PrepedidoBusiness.Bll.CepBll>();
 
             services.AddTransient<IServicoAutenticacaoApiUnis, ServicoAutenticacaoApiUnis>();
+            //como singleton para melhorar a performance
+            services.AddSingleton<IServicoValidarTokenApiUnis, ServicoValidarTokenApiUnis>();
 
             //ContextoProvider
             services.AddTransient<InfraBanco.ContextoBdProvider, InfraBanco.ContextoBdProvider>();
@@ -110,7 +114,7 @@ namespace PrepedidoAPIUnis
                 };
             });
 
-            new InfraIdentity.SetupAutenticacao().ConfigurarToken(services);
+            new InfraIdentity.ApiUnis.SetupAutenticacaoApiUnis().ConfigurarTokenApiUnis(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
