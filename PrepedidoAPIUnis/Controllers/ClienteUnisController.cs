@@ -67,7 +67,6 @@ namespace PrepedidoAPIUnis.Controllers
             if (dadosCliente == null)
                 return NoContent();
             return Ok(dadosCliente);
-
         }
 
     }

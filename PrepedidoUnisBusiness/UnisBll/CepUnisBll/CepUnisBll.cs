@@ -28,13 +28,7 @@ namespace PrepedidoUnisBusiness.UnisBll.CepUnisBll
             if (lstCepArclubeDto.Count > 0)
             {
                 var x = lstCepArclubeDto[0];
-                CepUnisDto cepUnis = new CepUnisDto();
-                cepUnis.Cep = x.Cep;
-                cepUnis.Uf = x.Uf;
-                cepUnis.Cidade = x.Cidade;
-                cepUnis.Bairro = x.Bairro;
-                cepUnis.Endereco = x.Endereco;
-                cepUnis.LogradouroComplemento = x.LogradouroComplemento;
+                CepUnisDto cepUnis = CepUnisDto.CepUnisDtoDeCepDto(lstCepArclubeDto[0]);
 
                 return cepUnis;
             }

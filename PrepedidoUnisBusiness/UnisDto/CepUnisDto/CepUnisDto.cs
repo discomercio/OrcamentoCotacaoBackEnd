@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PrepedidoBusiness.Dto.Cep;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -24,5 +25,20 @@ namespace PrepedidoUnisBusiness.UnisDto.CepUnisDto
 
         [MaxLength(100)]
         public string LogradouroComplemento { get; set; }
+
+        public static CepUnisDto CepUnisDtoDeCepDto(CepDto cepDto)
+        {
+            CepUnisDto cepUnis = new CepUnisDto()
+            {
+                Cep = cepDto.Cep,
+                Uf = cepDto.Uf,
+                Cidade = cepDto.Cidade,
+                Bairro = cepDto.Bairro,
+                Endereco = cepDto.Endereco,
+                LogradouroComplemento = cepDto.LogradouroComplemento
+            };
+
+            return cepUnis;
+        }
     }
 }
