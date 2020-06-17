@@ -4,6 +4,7 @@ using InfraBanco.Modelos;
 using InfraIdentity;
 using InfraIdentity.ApiUnis;
 using Microsoft.EntityFrameworkCore;
+using PrepedidoApiUnisBusiness.UnisDto.AcessoDto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -103,7 +104,7 @@ namespace PrepedidoUnisBusiness.UnisBll.AcessoBll
 
 
             //verificar com HAmilton se este formato está OK
-            var strSessionCtrlTicket = $"{usuarioMaisuculas} - {DateTime.Now.ToString("yyyy/dd/MM HH:mm:ss.fff")}";
+            var strSessionCtrlTicket = $"{usuarioMaisuculas} - {DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff")}";
             //strSessionCtrlTicket = PrepedidoBusiness.Utils.Util.codificaDado(strSessionCtrlTicket, true);
 
 
@@ -178,30 +179,43 @@ namespace PrepedidoUnisBusiness.UnisBll.AcessoBll
             dbgravacao.SaveChanges();
         }
 
-        public async void FazerLogout(string tokenAcesso)
+        public async Task FazerLogout(string usuario, LogoutResultadoUnisDto logoutResultadoUnisDto)
         {
-            //todo: login afazer 
+            logoutResultadoUnisDto.ListaErros.RemoveAll(r=>true);
 
-            /*
-                        strSQL = "UPDATE t_USUARIO SET" & _
-                                    " SessionCtrlTicket = NULL," & _
-                                    " SessionCtrlLoja = NULL," & _
-                                    " SessionCtrlModulo = NULL," & _
-                                    " SessionCtrlDtHrLogon = NULL," & _
-                                    " SessionTokenModuloCentral = NULL," & _
-                                    " DtHrSessionTokenModuloCentral = NULL" & _
-                                " WHERE" & _
-                                    " usuario = '" & QuotedStr(Trim(Session("usuario_atual"))) & "'"
-                        cn.Execute(strSQL)
+            //atualizar dados
+            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+            {
+                var tusuario = await (from u in dbgravacao.Tusuarios
+                               where u.Usuario.ToUpper() == usuario.ToUpper()
+                               select u).FirstOrDefaultAsync();
+                if(tusuario == null)
+                {
+                    logoutResultadoUnisDto.ListaErros.Add($"Usuário não encontrado: {usuario}");
+                    return;
+                }
 
-                        strSQL = "UPDATE t_SESSAO_HISTORICO SET" & _
-                                    " DtHrTermino = " & bd_formata_data_hora(Now) & _
-                                 " WHERE" & _
-                                    " usuario = '" & QuotedStr(Trim("" & Session("usuario_atual"))) & "'" & _
-                                    " AND DtHrInicio >= " & bd_formata_data_hora(Now-1) & _
-                                    " AND SessionCtrlTicket = '" & Trim(Session("SessionCtrlTicket")) & "'"
-                        cn.Execute(strSQL)
-            */
+                var sessionCtrlTicketAnterior = tusuario.SessionCtrlTicket;
+                tusuario.SessionCtrlTicket = null;
+                tusuario.SessionCtrlLoja = null;
+                tusuario.SessionCtrlModulo = null;
+                tusuario.SessionCtrlDtHrLogon = null;
+                dbgravacao.Update(tusuario);
+
+                var tsessaoHistorico = await (from h in dbgravacao.TsessaoHistoricos
+                                              where h.Usuario.ToUpper() == usuario.ToUpper()
+                                              && h.DtHrInicio >= DateTime.Now.AddDays(-1)
+                                              && h.SessionCtrlTicket == sessionCtrlTicketAnterior
+                                              select h).FirstOrDefaultAsync();
+                if(tsessaoHistorico != null)
+                {
+                    tsessaoHistorico.DtHrTermino = DateTime.Now;
+                    dbgravacao.Update(tsessaoHistorico);
+                }
+
+                dbgravacao.SaveChanges();
+                dbgravacao.transacao.Commit();
+            }
         }
 
     }

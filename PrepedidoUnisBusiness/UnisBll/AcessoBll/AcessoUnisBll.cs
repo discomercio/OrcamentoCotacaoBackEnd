@@ -38,5 +38,13 @@ namespace PrepedidoUnisBusiness.UnisBll.AcessoBll
 
             return retorno;
         }
+
+        public async Task<LogoutResultadoUnisDto> FazerLogout(LogoutUnisDto logout, string usuario)
+        {
+            LogoutResultadoUnisDto ret = new LogoutResultadoUnisDto();
+            ret.ListaErros = new List<string>();
+            await (new ServicoAutenticacaoProviderApiUnis(contextoProvider).FazerLogout(usuario, ret));
+            return ret;
+        }
     }
 }

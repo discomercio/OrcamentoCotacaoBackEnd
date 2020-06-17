@@ -41,16 +41,7 @@ namespace PrepedidoAPIUnis.Controllers
         {
             if (!servicoValidarTokenApiUnis.ValidarToken(logout.TokenAcesso, out string usuario))
                 return Unauthorized();
-            return Ok(await FazerLogoutInterno(logout, usuario));
+            return Ok(await acessoUnisBll.FazerLogout(logout, usuario));
         }
-        private async Task<LogoutResultadoUnisDto> FazerLogoutInterno(LogoutUnisDto logout, string usuario)
-        {
-            LogoutResultadoUnisDto ret = new LogoutResultadoUnisDto();
-            ret.ListaErros = new List<string>();
-            ret.ListaErros.Add("Erro: ainda não implementado");
-            //todo: login afazer 
-            return ret;
-        }
-
     }
 }
