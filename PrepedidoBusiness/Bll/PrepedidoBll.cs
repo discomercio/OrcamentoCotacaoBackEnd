@@ -899,7 +899,7 @@ namespace PrepedidoBusiness.Bll
             torcamento.St_Orcamento = "";
             torcamento.St_Fechamento = "";
             torcamento.St_Orc_Virou_Pedido = 0;
-            torcamento.CustoFinancFornecParcelamento = prepedido.FormaPagtoCriacao.Rb_forma_pagto;
+            torcamento.CustoFinancFornecTipoParcelamento = prepedido.FormaPagtoCriacao.Rb_forma_pagto;
             torcamento.CustoFinancFornecQtdeParcelas = (short)ObterQtdeParcelasFormaPagto(prepedido);
             torcamento.Vl_Total = Calcular_Vl_Total(prepedido);
             torcamento.Vl_Total_NF = CalcularVl_Total_NF(prepedido);
@@ -982,14 +982,9 @@ namespace PrepedidoBusiness.Bll
                 torcamento.St_Etg_Imediata = (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_SIM;
                 torcamento.Etg_Imediata_Data = DateTime.Now;
                 torcamento.Etg_Imediata_Usuario = orcamentista.Apelido;
-
-                //novos campos:Vamos esperar o Hamilton dar ok para inclusão desses novos campos
-                torcamento.PrevisaoEntregaData = DateTime.Now;
-                torcamento.PrevisaoEntregaUsuarioUltAtualiz = orcamentista.Apelido;
-                torcamento.PrevisaoEntregaDtHrUltAtualiz = DateTime.Now;
             }
 
-            torcamento.CustoFinancFornecParcelamento = siglaPagto;//sigla pagto
+            torcamento.CustoFinancFornecTipoParcelamento = siglaPagto;//sigla pagto
             torcamento.GarantiaIndicadorStatus = prepedido.DetalhesPrepedido.GarantiaIndicador == null ? byte.Parse(Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO) : byte.Parse(Constantes.COD_GARANTIA_INDICADOR_STATUS__SIM);
             torcamento.GarantiaIndicadorUsuarioUltAtualiz = orcamentista.Apelido;
             torcamento.GarantiaInidicadorDtHrUltAtualiz = DateTime.Now;

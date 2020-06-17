@@ -8,26 +8,21 @@ using Microsoft.EntityFrameworkCore;
 using PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto;
 using InfraBanco.Constantes;
 using PrepedidoBusiness.Utils;
+using InfraBanco.Modelos;
 
 namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
 {
     public class ValidacoesClienteUnisBll
     {
-        public static async Task<bool> ValidarOrcamentista(string apelido, string loja, ContextoBdProvider contexto)
+        public static async Task<TorcamentistaEindicador> ValidarBuscarOrcamentista(string apelido, ContextoBdProvider contexto)
         {
-            bool retorno = false;
-
             var db = contexto.GetContextoLeitura();
 
-            string orcamentista = await (from c in db.TorcamentistaEindicadors
-                                         where c.Apelido == apelido &&
-                                               c.Loja == loja
-                                         select c.Apelido).FirstOrDefaultAsync();
+            TorcamentistaEindicador orcamentista = await (from c in db.TorcamentistaEindicadors
+                                                          where c.Apelido == apelido
+                                                          select c).FirstOrDefaultAsync();
 
-            if (orcamentista != null)
-                retorno = true;
-
-            return retorno;
+            return orcamentista;
         }
 
         public static bool ValidarDadosCliente(ClienteCadastroUnisDto cliente, List<string> lstErros)

@@ -32,20 +32,20 @@ namespace PrepedidoUnisBusiness.UnisBll.FormaPagtoUnisBll
             FormaPagtoDto tiposFormasPagto = await formaPagtoArclube.ObterFormaPagto(apelido, tipo_pessoa);
 
             //vamos verificar as opções de pagto conforme o tipo de pagto escolhido
-            if (formaPagto.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_A_VISTA)
-                ValidarOpcoesPagtoAvista(short.Parse(formaPagto.Op_av_forma_pagto), tiposFormasPagto.ListaAvista,
-                    lstErros);
-            else if (formaPagto.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELA_UNICA)
-                ValidarOpcoesPagtoParcUnica(short.Parse(formaPagto.Op_av_forma_pagto),
-                    tiposFormasPagto.ListaParcUnica, lstErros);
-            else if (formaPagto.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO)
-                ValidarOpcoesPagtoParcCartao(tiposFormasPagto.ParcCartaoInternet, lstErros);
-            else if (formaPagto.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA)
-                ValidarOpcoesPagtoParcCartaoMaquineta(tiposFormasPagto.ParcCartaoMaquineta, lstErros);
-            else if (formaPagto.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA)
-                ValidarOpcoesPagtoComEntrada(short.Parse(formaPagto.Op_pce_entrada_forma_pagto),
-                    short.Parse(formaPagto.Op_pce_prestacao_forma_pagto), tiposFormasPagto.ListaParcComEntrada, 
-                    tiposFormasPagto.ListaParcComEntPrestacao, lstErros);
+            //if (formaPagto.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_A_VISTA)
+            //    ValidarOpcoesPagtoAvista(short.Parse(formaPagto.Op_av_forma_pagto), tiposFormasPagto.ListaAvista,
+            //        lstErros);
+            //else if (formaPagto.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELA_UNICA)
+            //    ValidarOpcoesPagtoParcUnica(short.Parse(formaPagto.Op_av_forma_pagto),
+            //        tiposFormasPagto.ListaParcUnica, lstErros);
+            //else if (formaPagto.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO)
+            //    ValidarOpcoesPagtoParcCartao(tiposFormasPagto.ParcCartaoInternet, lstErros);
+            //else if (formaPagto.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA)
+            //    ValidarOpcoesPagtoParcCartaoMaquineta(tiposFormasPagto.ParcCartaoMaquineta, lstErros);
+            //else if (formaPagto.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA)
+            //    ValidarOpcoesPagtoComEntrada(short.Parse(formaPagto.Op_pce_entrada_forma_pagto),
+            //        short.Parse(formaPagto.Op_pce_prestacao_forma_pagto), tiposFormasPagto.ListaParcComEntrada, 
+            //        tiposFormasPagto.ListaParcComEntPrestacao, lstErros);
         }
 
         private static void ValidarOpcoesPagtoAvista(short opcaoAVista, List<AvistaDto> lstOpcoes,

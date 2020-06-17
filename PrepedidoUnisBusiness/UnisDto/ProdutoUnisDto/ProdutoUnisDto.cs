@@ -20,6 +20,9 @@ namespace PrepedidoUnisBusiness.UnisDto.ProdutoUnisDto
         [MaxLength(4000)]
         public string Descricao_html { get; set; }
 
+        [MaxLength(120)]
+        public string Descricao { get; set; }
+
         public decimal? Preco_lista { get; set; }
 
         public int Estoque { get; set; }
@@ -43,5 +46,7 @@ namespace PrepedidoUnisBusiness.UnisDto.ProdutoUnisDto
             };
             return ret;
         }
+
+        public float? Desc_Max { get; set; }
     }
 }

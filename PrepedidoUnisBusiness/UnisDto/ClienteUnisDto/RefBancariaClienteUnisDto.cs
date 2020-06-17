@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PrepedidoBusiness.Dto.ClienteCadastro.Referencias;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -29,5 +30,37 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
         public string Contato { get; set; }
 
         public int Ordem { get; set; }
+
+        public static RefBancariaClienteUnisDto RefBancariaClienteUnisDtoDeRefBancariaClienteDto(RefBancariaDtoCliente refBancariaArclube)
+        {
+            var ret = new RefBancariaClienteUnisDto()
+            {
+                Agencia = refBancariaArclube.Agencia,
+                Banco = refBancariaArclube.Banco,
+                Conta = refBancariaArclube.Conta,
+                Contato = refBancariaArclube.Contato,
+                Ddd = refBancariaArclube.Ddd,
+                Telefone = refBancariaArclube.Telefone,
+                Ordem = refBancariaArclube.Ordem
+            };
+
+            return ret;
+        }
+
+        public static RefBancariaDtoCliente RefBancariaClienteDtoDeRefBancariaClienteUnisDto(RefBancariaClienteUnisDto refBancariaUnis)
+        {
+            var ret = new RefBancariaDtoCliente()
+            {
+                Agencia = refBancariaUnis.Agencia,
+                Banco = refBancariaUnis.Banco,
+                Conta = refBancariaUnis.Conta,
+                Contato = refBancariaUnis.Contato,
+                Ddd = refBancariaUnis.Ddd,
+                Telefone = refBancariaUnis.Telefone,
+                Ordem = refBancariaUnis.Ordem
+            };
+
+            return ret;
+        }
     }
 }

@@ -15,33 +15,35 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         ///     COD_ETG_IMEDIATA_SIM = 2
         /// </summary>
         [Required]
-        [MaxLength(1)]
-        public string EntregaImediata { get; set; }
+        public short St_Entrega_Imediata { get; set; }
         
-        public DateTime? EntregaImediataData { get; set; }
+        public DateTime? PrevisaoEntregaData { get; set; }
 
         /// <summary>
         /// BemDeUso_Consumo : COD_ST_BEM_USO_CONSUMO_NAO = 0, COD_ST_BEM_USO_CONSUMO_SIM = 1
         /// </summary>
         [Required]
-        [MaxLength(1)]
-        public string BemDeUso_Consumo { get; set; }
+        public short BemDeUso_Consumo { get; set; }
 
         /// <summary>
         /// InstaladorInstala: COD_INSTALADOR_INSTALA_NAO_DEFINIDO = 0, COD_INSTALADOR_INSTALA_NAO = 1, COD_INSTALADOR_INSTALA_SIM = 2
         /// </summary>
         [Required]
         [MaxLength(1)]
-        public string InstaladorInstala { get; set; }
+        public short InstaladorInstala { get; set; }
+
+        [MaxLength(500)]
+        public string Obs_1 { get; set; }
 
         public static DetalhesPrePedidoUnisDto DetalhesPrePedidoUnisDtoDeDetalhesPrePedidoDto(DetalhesDtoPrepedido detalhesPrePedidoDto)
         {
             var ret = new DetalhesPrePedidoUnisDto()
             {
-                EntregaImediata = detalhesPrePedidoDto.EntregaImediata,
-                EntregaImediataData = detalhesPrePedidoDto.EntregaImediataData,
-                BemDeUso_Consumo = detalhesPrePedidoDto.BemDeUso_Consumo,
-                InstaladorInstala = detalhesPrePedidoDto.InstaladorInstala
+                St_Entrega_Imediata = short.Parse(detalhesPrePedidoDto.EntregaImediata),
+                PrevisaoEntregaData = detalhesPrePedidoDto.EntregaImediataData,
+                BemDeUso_Consumo = short.Parse(detalhesPrePedidoDto.BemDeUso_Consumo),
+                InstaladorInstala = short.Parse(detalhesPrePedidoDto.InstaladorInstala),
+                Obs_1 = detalhesPrePedidoDto.Observacoes
             };
             return ret;
         }
@@ -50,10 +52,11 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         {
             var ret = new DetalhesDtoPrepedido()
             {
-                EntregaImediata = detalhesPrePedidoUnisDto.EntregaImediata,
-                EntregaImediataData = detalhesPrePedidoUnisDto.EntregaImediataData,
-                BemDeUso_Consumo = detalhesPrePedidoUnisDto.BemDeUso_Consumo,
-                InstaladorInstala = detalhesPrePedidoUnisDto.InstaladorInstala
+                EntregaImediata = detalhesPrePedidoUnisDto.St_Entrega_Imediata.ToString(),
+                EntregaImediataData = detalhesPrePedidoUnisDto.PrevisaoEntregaData,
+                BemDeUso_Consumo = detalhesPrePedidoUnisDto.BemDeUso_Consumo.ToString(),
+                InstaladorInstala = detalhesPrePedidoUnisDto.InstaladorInstala.ToString(),
+                Observacoes = detalhesPrePedidoUnisDto.Obs_1
             };
             return ret;
         }

@@ -8,15 +8,12 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
 {
     public class DadosClienteCadastroUnisDto
     {
-
-        public string Loja { get; set; }
-
         [Required]
         [MaxLength(20)]
         public string Indicador_Orcamentista { get; set; }
 
         [MaxLength(10)]
-        public string Vendedor { get; set; }
+        public string UsuarioCadastro { get; set; }
 
         /// <summary>
         /// Id: deixar em branco para cadastrar
@@ -137,9 +134,8 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
         {
             var ret = new DadosClienteCadastroUnisDto()
             {
-                Loja = clienteCadastroDto.Loja,
                 Indicador_Orcamentista = clienteCadastroDto.Indicador_Orcamentista,
-                Vendedor = clienteCadastroDto.Vendedor,
+                UsuarioCadastro = clienteCadastroDto.Indicador_Orcamentista,
                 Id = clienteCadastroDto.Id,
                 Cnpj_Cpf = clienteCadastroDto.Cnpj_Cpf,
                 Rg = clienteCadastroDto.Rg,
@@ -174,6 +170,45 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
             };
             return ret;
         }
+
+        public static DadosClienteCadastroDto DadosClienteCadastroDtoDeDadosClienteCadastroUnisDto(DadosClienteCadastroUnisDto dadosClienteUnis, string loja)
+        {
+            var ret = new DadosClienteCadastroDto()
+            {
+                Indicador_Orcamentista = dadosClienteUnis.Indicador_Orcamentista,
+                Loja = loja,
+                Nome = dadosClienteUnis.Nome,
+                Cnpj_Cpf = dadosClienteUnis.Cnpj_Cpf,
+                Tipo = dadosClienteUnis.Tipo,
+                Sexo = dadosClienteUnis.Sexo,
+                Rg = dadosClienteUnis.Rg,
+                Nascimento = dadosClienteUnis.Nascimento,
+                DddCelular = dadosClienteUnis.DddCelular,
+                Celular = dadosClienteUnis.Celular,
+                DddResidencial = dadosClienteUnis.DddResidencial,
+                TelefoneResidencial = dadosClienteUnis.TelefoneResidencial,
+                DddComercial = dadosClienteUnis.DddComercial,
+                TelComercial = dadosClienteUnis.TelComercial,
+                Ramal = dadosClienteUnis.Ramal,
+                DddComercial2 = dadosClienteUnis.DddComercial2,
+                TelComercial2 = dadosClienteUnis.TelComercial2,
+                Ramal2 = dadosClienteUnis.Ramal2,
+                Ie = dadosClienteUnis.Ie,
+                ProdutorRural = dadosClienteUnis.ProdutorRural,
+                Contribuinte_Icms_Status = dadosClienteUnis.Contribuinte_Icms_Status,
+                Email = dadosClienteUnis.Email,
+                EmailXml = dadosClienteUnis.EmailXml,
+                Vendedor = "",// esse campo não é utilizado em TCliente
+                Cep = dadosClienteUnis.Cep,
+                Endereco = dadosClienteUnis.Endereco,
+                Numero = dadosClienteUnis.Numero,
+                Bairro = dadosClienteUnis.Bairro,
+                Cidade = dadosClienteUnis.Cidade,
+                Uf = dadosClienteUnis.Uf,
+                Complemento = dadosClienteUnis.Complemento
+            };
+            
+            return ret;
+        }
     }
 }
-
