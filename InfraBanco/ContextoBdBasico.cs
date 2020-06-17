@@ -61,6 +61,15 @@ namespace InfraBanco
                     o.SessaoSeguinteModulo
                 });
 
+            modelBuilder.Entity<TsessaoHistorico>()
+                .HasKey(o => new
+                {
+                    o.Usuario,
+                    o.SessionCtrlTicket,
+                    //o.DtHrInicio,
+                    o.Modulo
+                });
+
             modelBuilder.Entity<TperfilUsuario>()
                 .HasKey(x => new { x.Usuario, x.Id_perfil });
             modelBuilder.Entity<Tperfil>()

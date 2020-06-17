@@ -88,7 +88,7 @@ namespace PrepedidoUnisBusiness.UnisBll.AcessoBll
 				" WHERE (t_PERFIL_X_USUARIO.usuario='" & usuario & "')" & _
 				" AND (t_OPERACAO.modulo='" & COD_OP_MODULO_CENTRAL & "')"
 							*/
-            var perfil = await (from p in contextoProvider.GetContextoLeitura().Tperfils.Include(r => r.TperfilUsuario)
+            var perfil = await (from p in contextoProvider.GetContextoLeitura().Tperfils
                                 where p.Apelido == "APIUNIS" && p.TperfilUsuario.Usuario.ToUpper() == usuarioMaisuculas && p.St_inativo == 0
                                 select p.Id).FirstOrDefaultAsync();
             if (perfil == null)
@@ -201,19 +201,21 @@ namespace PrepedidoUnisBusiness.UnisBll.AcessoBll
                 tusuario.SessionCtrlModulo = null;
                 tusuario.SessionCtrlDtHrLogon = null;
                 dbgravacao.Update(tusuario);
+                dbgravacao.SaveChanges();
 
                 var tsessaoHistorico = await (from h in dbgravacao.TsessaoHistoricos
                                               where h.Usuario.ToUpper() == usuario.ToUpper()
                                               && h.DtHrInicio >= DateTime.Now.AddDays(-1)
                                               && h.SessionCtrlTicket == sessionCtrlTicketAnterior
+                                              orderby h.DtHrInicio descending
                                               select h).FirstOrDefaultAsync();
                 if(tsessaoHistorico != null)
                 {
                     tsessaoHistorico.DtHrTermino = DateTime.Now;
                     dbgravacao.Update(tsessaoHistorico);
+                    dbgravacao.SaveChanges();
                 }
 
-                dbgravacao.SaveChanges();
                 dbgravacao.transacao.Commit();
             }
         }
