@@ -201,19 +201,21 @@ namespace PrepedidoUnisBusiness.UnisBll.AcessoBll
                 tusuario.SessionCtrlModulo = null;
                 tusuario.SessionCtrlDtHrLogon = null;
                 dbgravacao.Update(tusuario);
+                dbgravacao.SaveChanges();
 
                 var tsessaoHistorico = await (from h in dbgravacao.TsessaoHistoricos
                                               where h.Usuario.ToUpper() == usuario.ToUpper()
                                               && h.DtHrInicio >= DateTime.Now.AddDays(-1)
                                               && h.SessionCtrlTicket == sessionCtrlTicketAnterior
+                                              orderby h.DtHrInicio descending
                                               select h).FirstOrDefaultAsync();
                 if(tsessaoHistorico != null)
                 {
                     tsessaoHistorico.DtHrTermino = DateTime.Now;
                     dbgravacao.Update(tsessaoHistorico);
+                    dbgravacao.SaveChanges();
                 }
 
-                dbgravacao.SaveChanges();
                 dbgravacao.transacao.Commit();
             }
         }
