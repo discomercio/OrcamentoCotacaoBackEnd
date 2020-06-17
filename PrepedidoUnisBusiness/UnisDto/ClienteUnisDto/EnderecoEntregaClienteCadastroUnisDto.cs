@@ -6,9 +6,7 @@ using System.Text;
 namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
 {
     public class EnderecoEntregaClienteCadastroUnisDto
-    {
-        [Required]
-        public bool OutroEndereco { get; set; }
+    {        
 
         [MaxLength(80)]
         public string EndEtg_endereco { get; set; }

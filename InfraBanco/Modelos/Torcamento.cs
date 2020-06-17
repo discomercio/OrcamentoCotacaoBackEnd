@@ -218,7 +218,7 @@ namespace InfraBanco.Modelos
 
         [Column("custoFinancFornecTipoParcelamento")]
         [MaxLength(2)]
-        public string CustoFinancFornecParcelamento { get; set; }
+        public string CustoFinancFornecTipoParcelamento { get; set; }
 
         [Column("custoFinancFornecQtdeParcelas")]
         [Required]

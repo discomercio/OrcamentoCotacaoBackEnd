@@ -79,13 +79,11 @@ namespace PrepedidoUnisBusiness.UnisDto.ClienteUnisDto
         /// <summary>
         /// Endereco_contribuinte_icms_status: INICIAL = 0, NAO = 1, SIM = 2, ISENTO = 3
         /// </summary>
-        [Required]
         public byte Endereco_contribuinte_icms_status { get; set; }
 
         /// <summary>
         /// Endereco_produtor_rural_status: COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL = 0, COD_ST_CLIENTE_PRODUTOR_RURAL_NAO = 1, COD_ST_CLIENTE_PRODUTOR_RURAL_SIM = 2
         /// </summary>
-        [Required]
         public byte Endereco_produtor_rural_status { get; set; }
 
         [MaxLength(20)]

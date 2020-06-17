@@ -7,8 +7,6 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
 {
     public class FormaPagtoCriacaoUnisDto
     {
-        public int Qtde_Parcelas { get; set; }
-        
         /// <summary>
         /// Rb_forma_pagto:
         ///     COD_FORMA_PAGTO_A_VISTA = "1",
@@ -18,8 +16,9 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         ///     COD_FORMA_PAGTO_PARCELA_UNICA = "5",
         ///     COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA = "6";
         /// </summary>
+        [Required]
         [MaxLength(1)]
-        public string Rb_forma_pagto { get; set; }//Tipo da forma de pagto
+        public short Tipo_Parcelamento { get; set; }//Tipo da forma de pagto
 
         /// <summary>
         /// Id retornado por /api/prepedidoUnis/buscarFormasPagto
@@ -81,6 +80,10 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         ///     COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA = "SE",
         ///     COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA = "AV"
         /// </summary>
-        public string Tipo_parcelamento { get; set; }//informa o tipo de parcelamento que foi escolhido
+        [MaxLength(2)]
+        public string CustoFinancFornecTipoParcelamento { get; set; }
+
+        [Required]
+        public short CustoFinancFornecQtdeParcelas { get; set; }
     }
 }

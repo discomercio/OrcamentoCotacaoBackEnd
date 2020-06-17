@@ -11,6 +11,7 @@ using PrepedidoBusiness.Dtos.ClienteCadastro;
 using PrepedidoBusiness.Dto.ClienteCadastro.Referencias;
 using Microsoft.EntityFrameworkCore;
 using PrepedidoUnisBusiness.UnisDto.ClienteUnisDto;
+using InfraBanco.Modelos;
 
 namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
 {
@@ -32,23 +33,28 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
             List<string> lstErros = new List<string>();
             ClienteCadastroResultadoUnisDto retorno = new ClienteCadastroResultadoUnisDto();
 
-            //vamos verificar se orcamentista do cadastro existe
-            if (await ValidacoesClienteUnisBll.ValidarOrcamentista(clienteUnis.DadosCliente.Indicador_Orcamentista,
-                clienteUnis.DadosCliente.Loja, contextoProvider))
+            //vamos verificar se orcamentista do cadastro existe para 
+            TorcamentistaEindicador orcamentista =
+                await ValidacoesClienteUnisBll.ValidarBuscarOrcamentista(clienteUnis.DadosCliente.Indicador_Orcamentista,
+                contextoProvider);
+
+            if (orcamentista != null)
             {
                 ClienteBll clienteArclubeBll = new ClienteBll(contextoProvider, contextoCepProvider);
 
                 if (clienteUnis != null)
                 {
+                    string loja = orcamentista.Loja;
                     //precisamos passar os dados para o DTO de ClienteCadastroDto da ArClube
-                    ClienteCadastroDto clienteArclube = Inicializar_ClienteCadastroDto_Arclube(clienteUnis);
+                    ClienteCadastroDto clienteArclube = Inicializar_ClienteCadastroDto_Arclube(clienteUnis, loja);
 
-                    /*vamos fazer a validação e retornar uma lista de erros, 
+                    /*VERIFICAR SE É RETORNA VAZIO MESMO
+                     * vamos fazer a validação e retornar uma lista de erros, 
                      * se estiver vazia foi cadastrado com sucesso
                      * se estiver com itens na lista, ocorreu erro na validação
                      */
                     retorno.ListaErros = (await clienteArclubeBll.CadastrarCliente(clienteArclube,
-                        clienteArclube.DadosCliente.Indicador_Orcamentista)).ToList();
+                        orcamentista.Apelido, clienteUnis.DadosCliente.UsuarioCadastro)).ToList();
 
                     if (retorno.ListaErros.Count <= 0)
                     {
@@ -65,98 +71,30 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
             return retorno;
         }
 
-        private static ClienteCadastroDto Inicializar_ClienteCadastroDto_Arclube(ClienteCadastroUnisDto clienteUnis)
+        private static ClienteCadastroDto Inicializar_ClienteCadastroDto_Arclube(ClienteCadastroUnisDto clienteUnis, string loja)
         {
             ClienteCadastroDto clienteArclube = new ClienteCadastroDto();
 
             clienteArclube.DadosCliente = new DadosClienteCadastroDto();
-            clienteArclube.DadosCliente = Ini_DadosCliente_Arclube(clienteUnis.DadosCliente);
+            clienteArclube.DadosCliente =
+                DadosClienteCadastroUnisDto.DadosClienteCadastroDtoDeDadosClienteCadastroUnisDto(clienteUnis.DadosCliente, loja);
 
             clienteArclube.RefBancaria = new List<RefBancariaDtoCliente>();
-            clienteArclube.RefBancaria = Ini_RefBancaria_Arclube(clienteUnis.RefBancaria);
+            clienteUnis.RefBancaria.ForEach(x =>
+            {
+                clienteArclube.RefBancaria.Add(
+                    RefBancariaClienteUnisDto.RefBancariaClienteDtoDeRefBancariaClienteUnisDto(x));
+            });
+           
 
             clienteArclube.RefComercial = new List<RefComercialDtoCliente>();
-            clienteArclube.RefComercial = Ini_RefComercial_Arclube(clienteUnis.RefComercial);
+            clienteUnis.RefComercial.ForEach(x =>
+            {
+                clienteArclube.RefComercial.Add(
+                    RefComercialClienteUnisDto.RefComercialDtoClienteDeRefComercialClienteUnisDto(x));
+            });
 
             return clienteArclube;
-        }
-
-        private static DadosClienteCadastroDto Ini_DadosCliente_Arclube(DadosClienteCadastroUnisDto dadosClienteUnis)
-        {
-            DadosClienteCadastroDto dadosClienteArclube = new DadosClienteCadastroDto();
-            dadosClienteArclube.Indicador_Orcamentista = dadosClienteUnis.Indicador_Orcamentista;
-            dadosClienteArclube.Loja = dadosClienteUnis.Loja;
-            dadosClienteArclube.Nome = dadosClienteUnis.Nome;
-            dadosClienteArclube.Cnpj_Cpf = dadosClienteUnis.Cnpj_Cpf;
-            dadosClienteArclube.Tipo = dadosClienteUnis.Tipo;
-            dadosClienteArclube.Sexo = dadosClienteUnis.Sexo;
-            dadosClienteArclube.Rg = dadosClienteUnis.Rg;
-            dadosClienteArclube.Nascimento = dadosClienteUnis.Nascimento;
-            dadosClienteArclube.DddCelular = dadosClienteUnis.DddCelular;
-            dadosClienteArclube.Celular = dadosClienteUnis.Celular;
-            dadosClienteArclube.DddResidencial = dadosClienteUnis.DddResidencial;
-            dadosClienteArclube.TelefoneResidencial = dadosClienteUnis.TelefoneResidencial;
-            dadosClienteArclube.DddComercial = dadosClienteUnis.DddComercial;
-            dadosClienteArclube.TelComercial = dadosClienteUnis.TelComercial;
-            dadosClienteArclube.Ramal = dadosClienteUnis.Ramal;
-            dadosClienteArclube.DddComercial2 = dadosClienteUnis.DddComercial2;
-            dadosClienteArclube.TelComercial2 = dadosClienteUnis.TelComercial2;
-            dadosClienteArclube.Ramal2 = dadosClienteUnis.Ramal2;
-            dadosClienteArclube.Ie = dadosClienteUnis.Ie;
-            dadosClienteArclube.ProdutorRural = dadosClienteUnis.ProdutorRural;
-            dadosClienteArclube.Contribuinte_Icms_Status = dadosClienteUnis.Contribuinte_Icms_Status;
-            dadosClienteArclube.Email = dadosClienteUnis.Email;
-            dadosClienteArclube.EmailXml = dadosClienteUnis.EmailXml;
-            dadosClienteArclube.Vendedor = dadosClienteUnis.Vendedor;
-            dadosClienteArclube.Cep = dadosClienteUnis.Cep;
-            dadosClienteArclube.Endereco = dadosClienteUnis.Endereco;
-            dadosClienteArclube.Numero = dadosClienteUnis.Numero;
-            dadosClienteArclube.Bairro = dadosClienteUnis.Bairro;
-            dadosClienteArclube.Cidade = dadosClienteUnis.Cidade;
-            dadosClienteArclube.Uf = dadosClienteUnis.Uf;
-            dadosClienteArclube.Complemento = dadosClienteUnis.Complemento;
-
-            return dadosClienteArclube;
-        }
-
-        private static List<RefBancariaDtoCliente> Ini_RefBancaria_Arclube(List<RefBancariaClienteUnisDto> lstRefBancariaUnis)
-        {
-            RefBancariaDtoCliente refBancariaArclube = new RefBancariaDtoCliente();
-            List<RefBancariaDtoCliente> lstRefBancariaArclube = new List<RefBancariaDtoCliente>();
-
-            lstRefBancariaUnis.ForEach(x =>
-            {
-                refBancariaArclube.Agencia = x.Agencia;
-                refBancariaArclube.Banco = x.Banco;
-                refBancariaArclube.Conta = x.Conta;
-                refBancariaArclube.Contato = x.Contato;
-                refBancariaArclube.Ddd = x.Ddd;
-                refBancariaArclube.Telefone = x.Telefone;
-                refBancariaArclube.Ordem = x.Ordem;
-
-                lstRefBancariaArclube.Add(refBancariaArclube);
-            });
-
-            return lstRefBancariaArclube;
-        }
-
-        private static List<RefComercialDtoCliente> Ini_RefComercial_Arclube(List<RefComercialClienteUnisDto> lstRefComercialUnis)
-        {
-            RefComercialDtoCliente refComercialArclube = new RefComercialDtoCliente();
-            List<RefComercialDtoCliente> lstRefComercialArclube = new List<RefComercialDtoCliente>();
-
-            lstRefComercialUnis.ForEach(x =>
-            {
-                refComercialArclube.Contato = x.Contato;
-                refComercialArclube.Ddd = x.Ddd;
-                refComercialArclube.Telefone = x.Telefone;
-                refComercialArclube.Nome_Empresa = x.Nome_Empresa;
-                refComercialArclube.Ordem = x.Ordem;
-
-                lstRefComercialArclube.Add(refComercialArclube);
-            });
-
-            return lstRefComercialArclube;
         }
 
         private async Task<string> BuscarIdCliente(string cpf_cnpj)

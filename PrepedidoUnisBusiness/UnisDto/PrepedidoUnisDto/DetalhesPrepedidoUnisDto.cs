@@ -14,23 +14,23 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         ///     COD_ETG_IMEDIATA_SIM = 2
         /// </summary>
         [Required]
-        [MaxLength(1)]
-        public string EntregaImediata { get; set; }
+        public short St_Entrega_Imediata { get; set; }
         
-        public DateTime? EntregaImediataData { get; set; }
+        public DateTime? PrevisaoEntregaData { get; set; }
 
         /// <summary>
         /// BemDeUso_Consumo : COD_ST_BEM_USO_CONSUMO_NAO = 0, COD_ST_BEM_USO_CONSUMO_SIM = 1
         /// </summary>
         [Required]
-        [MaxLength(1)]
-        public string BemDeUso_Consumo { get; set; }
+        public short BemDeUso_Consumo { get; set; }
 
         /// <summary>
         /// InstaladorInstala: COD_INSTALADOR_INSTALA_NAO_DEFINIDO = 0, COD_INSTALADOR_INSTALA_NAO = 1, COD_INSTALADOR_INSTALA_SIM = 2
         /// </summary>
         [Required]
-        [MaxLength(1)]
-        public string InstaladorInstala { get; set; }
+        public short InstaladorInstala { get; set; }
+
+        [MaxLength(500)]
+        public string Obs_1 { get; set; }
     }
 }

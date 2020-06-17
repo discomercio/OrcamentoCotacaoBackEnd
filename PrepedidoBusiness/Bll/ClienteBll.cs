@@ -552,7 +552,12 @@ namespace PrepedidoBusiness.Bll
             return lstRefComercial;
         }
 
-        public async Task<IEnumerable<string>> CadastrarCliente(ClienteCadastroDto clienteDto, string apelido)
+        /*
+         * Incluímos a var "string usuarioCadastro" para permitir que a ApiUnis possa cadastrar outro
+         * usuário ao invés do Orçamentista
+         */
+        public async Task<IEnumerable<string>> CadastrarCliente(ClienteCadastroDto clienteDto, string apelido,
+            string usuarioCadastro)
         {
             string id_cliente = "";
 
@@ -592,7 +597,7 @@ namespace PrepedidoBusiness.Bll
 
                     DadosClienteCadastroDto cliente = clienteDto.DadosCliente;
                     Tcliente clienteCadastrado = new Tcliente();
-                    id_cliente = await CadastrarDadosClienteDto(dbgravacao, cliente, apelido, log, cliente.Loja, clienteCadastrado);
+                    id_cliente = await CadastrarDadosClienteDto(dbgravacao, cliente, apelido, clienteCadastrado, usuarioCadastro);
 
                     //Por padrão o id do cliente tem 12 caracteres, caso não seja 12 caracteres esta errado
                     if (id_cliente.Length == 12)
@@ -626,7 +631,7 @@ namespace PrepedidoBusiness.Bll
         }
 
         private async Task<string> CadastrarDadosClienteDto(InfraBanco.ContextoBdGravacao dbgravacao,
-            DadosClienteCadastroDto clienteDto, string apelido, string log, string loja, Tcliente tCliente)
+            DadosClienteCadastroDto clienteDto, string apelido, Tcliente tCliente, string usuarioCadastro)
         {
             string retorno = "";
             List<string> lstRetorno = new List<string>();
@@ -640,7 +645,8 @@ namespace PrepedidoBusiness.Bll
             {
                 tCliente.Id = id_cliente;
                 tCliente.Dt_Cadastro = DateTime.Now;
-                tCliente.Usuario_Cadastrado = apelido.ToUpper();
+                tCliente.Usuario_Cadastrado = !string.IsNullOrEmpty(usuarioCadastro) ? usuarioCadastro.ToUpper() :
+                    apelido.ToUpper();
                 tCliente.Indicador = apelido.ToUpper();
                 tCliente.Cnpj_Cpf = clienteDto.Cnpj_Cpf.Replace(".", "").Replace("/", "").Replace("-", "");
                 tCliente.Tipo = clienteDto.Tipo.ToUpper();
@@ -956,7 +962,7 @@ namespace PrepedidoBusiness.Bll
         private async Task ValidarDadosClientesCadastro(DadosClienteCadastroDto cliente, List<string> listaErros)
         {
             string cpf_cnpjSoDig = Utils.Util.SoDigitosCpf_Cnpj(cliente.Cnpj_Cpf);
-            
+
             if (cliente.Cnpj_Cpf == "")
                 listaErros.Add("CNPJ / CPF NÃO FORNECIDO.");
 

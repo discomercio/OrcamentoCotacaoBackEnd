@@ -1,4 +1,5 @@
-﻿using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
+﻿using InfraBanco.Modelos;
+using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
 using PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto;
 using PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto;
 using PrepedidoBusiness.Dtos.Prepedido.DetalhesPrepedido;
@@ -55,14 +56,17 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
 
             if (clienteArclube != null)
             {
-                clienteUnis.Loja = clienteArclube.DadosCliente.Loja;
+                //clienteUnis.Loja = clienteArclube.DadosCliente.Loja;
                 clienteUnis.Indicador_Orcamentista = clienteArclube.DadosCliente.Indicador_Orcamentista;
                 clienteUnis.Tipo = clienteArclube.DadosCliente.Tipo;
             }
 
             //a)	Validar se o Orçamentista enviado existe
-            if (await ValidacoesClienteUnisBll.ValidarOrcamentista(clienteUnis.Indicador_Orcamentista,
-                clienteUnis.Loja, contextoProvider))
+            TorcamentistaEindicador orcamentista =
+                await ValidacoesClienteUnisBll.ValidarBuscarOrcamentista(clienteUnis.Indicador_Orcamentista,
+                contextoProvider);
+
+            if (orcamentista != null)
             {
                 /*
                  * Precisa ser incluido a validação dos novos campos de memorização de endereço

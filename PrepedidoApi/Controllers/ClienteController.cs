@@ -84,7 +84,15 @@ namespace PrepedidoApi.Controllers
         {
             //para testar: http://localhost:60877/api/cliente/cadastrarCliente
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            var retorno = await clienteBll.CadastrarCliente(clienteDto, apelido.Trim());
+
+            //var para poder receber o usuario que esta cadastrando 
+            //estamos incluindo essa var para poder receber um usuário cadastro diferente do orçamentista
+            //pois sempre é o orçamentista, mas como a Unis poderá mandar outro usuário para cadastrar
+            //estamos criando essa variavel aqui para sempre que o Angular chamar esse controle, irá 
+            //passar uma string vazia para gravar o Orçamentista
+            string usuarioCadastro = "";
+
+            var retorno = await clienteBll.CadastrarCliente(clienteDto, apelido.Trim(), usuarioCadastro);
 
 
             
