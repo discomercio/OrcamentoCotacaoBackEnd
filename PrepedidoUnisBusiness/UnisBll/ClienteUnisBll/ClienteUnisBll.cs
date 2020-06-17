@@ -19,15 +19,17 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
     {
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
         private readonly InfraBanco.ContextoCepProvider contextoCepProvider;
+        private readonly ClienteBll clienteArclubeBll;
 
         public ClienteUnisBll(InfraBanco.ContextoBdProvider contextoProvider,
-            InfraBanco.ContextoCepProvider contextoCepProvider)
+            InfraBanco.ContextoCepProvider contextoCepProvider, ClienteBll clienteArclubeBll)
         {
             this.contextoProvider = contextoProvider;
             this.contextoCepProvider = contextoCepProvider;
+            this.clienteArclubeBll = clienteArclubeBll;
         }
 
-
+        //TODO
         public async Task<ClienteCadastroResultadoUnisDto> CadastrarClienteUnis(ClienteCadastroUnisDto clienteUnis)
         {
             List<string> lstErros = new List<string>();
@@ -40,8 +42,6 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
 
             if (orcamentista != null)
             {
-                ClienteBll clienteArclubeBll = new ClienteBll(contextoProvider, contextoCepProvider);
-
                 if (clienteUnis != null)
                 {
                     string loja = orcamentista.Loja;
@@ -54,7 +54,7 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
                      * se estiver com itens na lista, ocorreu erro na validação
                      */
                     retorno.ListaErros = (await clienteArclubeBll.CadastrarCliente(clienteArclube,
-                        orcamentista.Apelido, clienteUnis.DadosCliente.UsuarioCadastro)).ToList();
+                        orcamentista.Apelido)).ToList();
 
                     if (retorno.ListaErros.Count <= 0)
                     {
@@ -89,8 +89,6 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
             ClienteBuscaRetornoUnisDto retorno = new ClienteBuscaRetornoUnisDto();
 
             //vamos buscar o cliente
-            ClienteBll clienteArclubeBll = new ClienteBll(contextoProvider, contextoCepProvider);
-
             retorno = ClienteBuscaRetornoUnisDto.ClienteCadastroUnisDtoDeClienteCadastroDto(
                 await clienteArclubeBll.BuscarCliente(cpf_cnpj, apelido));
 

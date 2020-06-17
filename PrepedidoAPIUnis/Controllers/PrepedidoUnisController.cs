@@ -93,7 +93,7 @@ namespace PrepedidoAPIUnis.Controllers
             if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out string usuario))
                 return Unauthorized();
 
-            FormaPagtoUnisDto retorno = await formaPagtoUnisBll.ObterFormaPagto(orcamentista.Trim(), tipo_pessoa);
+            FormaPagtoUnisDto retorno = await formaPagtoUnisBll.ObterFormaPagto(orcamentista.Trim().ToUpper(), tipo_pessoa.Trim().ToUpper());
 
             return Ok(retorno);
         }

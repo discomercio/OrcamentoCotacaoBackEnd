@@ -12,8 +12,8 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
         [MaxLength(20)]
         public string Indicador_Orcamentista { get; set; }
 
-        [MaxLength(10)]
-        public string UsuarioCadastro { get; set; }
+        //[MaxLength(10)]
+        //public string UsuarioCadastro { get; set; }
 
         /// <summary>
         /// Id: deixar em branco para cadastrar
@@ -135,7 +135,6 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
             var ret = new DadosClienteCadastroUnisDto()
             {
                 Indicador_Orcamentista = clienteCadastroDto.Indicador_Orcamentista,
-                UsuarioCadastro = clienteCadastroDto.Indicador_Orcamentista,
                 Id = clienteCadastroDto.Id,
                 Cnpj_Cpf = clienteCadastroDto.Cnpj_Cpf,
                 Rg = clienteCadastroDto.Rg,

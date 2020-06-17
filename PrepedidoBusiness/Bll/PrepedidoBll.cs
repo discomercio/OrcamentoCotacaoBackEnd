@@ -1970,7 +1970,7 @@ namespace PrepedidoBusiness.Bll
             return lstOrcamentoItem;
         }
 
-        private async Task<bool> ValidarOrcamentistaIndicador(string apelido)
+        public async Task<bool> ValidarOrcamentistaIndicador(string apelido)
         {
             bool retorno = false;
 
@@ -1980,7 +1980,7 @@ namespace PrepedidoBusiness.Bll
                                           where c.Apelido == apelido
                                           select c.Apelido).FirstOrDefaultAsync();
             if (orcamentistaTask == apelido)
-                retorno = true;
+                return retorno = true;
 
             return retorno;
         }
