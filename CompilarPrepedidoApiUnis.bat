@@ -16,6 +16,9 @@ RD .CompilarPrepedidoApiUnisResultado /s /q >nul 2> nul
 %aux_msbuild% PrepedidoAPIUnis/PrepedidoAPIUnis.csproj -t:Rebuild -p:DeployOnBuild=true -p:PublishProfile=CompilarPrepedidoApiUnis /p:Configuration=Release
 
 echo %date% %time% >> ".CompilarPrepedidoApiUnisResultado\publish\DataCompilacao.txt"
+del .CompilarPrepedidoApiUnisResultado\publish\appsettings.json
+del .CompilarPrepedidoApiUnisResultado\publish\appsettings.Development.json
+del .CompilarPrepedidoApiUnisResultado\publish\nlog.config
 
 IF "%~1" NEQ "sem_pausa" pause
 

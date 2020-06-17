@@ -14,6 +14,9 @@ timeout /t 1 >nul
 RD .CompilarPrepedidoApiResultado /s /q >nul 2> nul
 
 %aux_msbuild% PrepedidoApi/PrepedidoApi.csproj -t:Rebuild -p:DeployOnBuild=true -p:PublishProfile=CompilarPrepedidoApi /p:Configuration=Release
+del .CompilarPrepedidoApiResultado\publish\appsettings.json
+del .CompilarPrepedidoApiResultado\publish\appsettings.Development.json
+del .CompilarPrepedidoApiResultado\publish\nlog.config
 
 IF "%~1" NEQ "sem_pausa" pause
 

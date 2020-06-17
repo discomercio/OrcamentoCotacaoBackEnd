@@ -81,10 +81,12 @@ namespace PrepedidoAPIUnis
             {
                 //options.UseSqlServer(Configuration.GetConnectionString("conexaoLocal"));
                 options.UseSqlServer(conexaoBasica);
+                options.EnableSensitiveDataLogging();
             });
             services.AddDbContext<InfraBanco.ContextoCepBd>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("conexaoCep"));
+                options.EnableSensitiveDataLogging();
             });
 
 
