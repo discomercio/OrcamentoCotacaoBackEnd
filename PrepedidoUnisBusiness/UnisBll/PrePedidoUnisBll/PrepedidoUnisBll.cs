@@ -52,7 +52,7 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
             var clienteArclube = await clienteArclubeBll.BuscarCliente(prePedidoUnis.Cnpj_Cpf,
                 prePedidoUnis.Indicador_Orcamentista);
 
-            if(clienteArclube == null)
+            if (clienteArclube == null)
             {
                 lstErros.Add("Cliente não localizado");
                 return lstErros;
@@ -129,17 +129,39 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
         }
 
 
-        public async Task DeletarOrcamentoExisteComTransacao(string orcamentista, string numeroPrepedido)
+        //public async Task DeletarOrcamentoExisteComTransacao(string orcamentista, string numeroPrepedido)
+        //{
+        //    PrePedidoDto prePedido = new PrePedidoDto();
+        //    //vamos buscar o prepedido
+
+        //    if (await prepedidoBll.ValidarOrcamentistaIndicador(orcamentista))
+        //    {
+        //        prePedido.NumeroPrePedido = numeroPrepedido.Trim();
+
+        //        using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+        //        {
+        //            await prepedidoBll.DeletarOrcamentoExiste(dbgravacao, prePedido, orcamentista);
+        //            dbgravacao.transacao.Commit();
+        //        }
+        //    }
+        //}
+
+        public async Task<bool> CancelarPrePedido(string orcamentista, string numeroPrepedido)
         {
+            bool retorno = false;
+
             PrePedidoDto prePedido = new PrePedidoDto();
             //vamos buscar o prepedido
-            prePedido.NumeroPrePedido = numeroPrepedido.Trim();
 
-            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+            if (await prepedidoBll.ValidarOrcamentistaIndicador(orcamentista))
             {
-                await prepedidoBll.DeletarOrcamentoExiste(dbgravacao, prePedido, orcamentista);
-                dbgravacao.transacao.Commit();
+                prePedido.NumeroPrePedido = numeroPrepedido.Trim();
+                {
+                    retorno = await prepedidoBll.RemoverPrePedido(numeroPrepedido, orcamentista);                    
+                }
             }
+
+            return retorno;
         }
 
         public async Task<bool> Obter_Permite_RA_Status(string apelido)

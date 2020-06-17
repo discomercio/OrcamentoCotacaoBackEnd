@@ -10,6 +10,8 @@ using PrepedidoUnisBusiness.UnisDto.ProdutoUnisDto;
 
 namespace PrepedidoAPIUnis.Controllers
 {
+    [Route("api/prepedidoUnis")]
+    [ApiController]
     public class ProdutoUnisController : Controller
     {
         private readonly ProdutoUnisBll produtoUnisBll;

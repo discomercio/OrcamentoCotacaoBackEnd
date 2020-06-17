@@ -554,7 +554,7 @@ namespace PrepedidoBusiness.Bll
 
 
 
-        private async Task<string> PrepedidoJaCadastrado(PrePedidoDto prePedido)
+        public async Task<string> PrepedidoJaCadastrado(PrePedidoDto prePedido)
         {
             /*
              * critério:

@@ -60,21 +60,40 @@ namespace PrepedidoAPIUnis.Controllers
         /// </summary>
         /// <param name="deletarPrepedido"></param>
         /// <returns></returns>
+        //[AllowAnonymous]
+        //[HttpPost("deletarPrepedido")]
+        //public async Task<IActionResult> DeletarPrePedido(DeletarPrepedidoUnisDto deletarPrepedido)
+        //{
+        //    if (!servicoValidarTokenApiUnis.ValidarToken(deletarPrepedido.TokenAcesso, out string usuario))
+        //        return Unauthorized();
+
+        //    //chamar bll para deletar
+        //    await prepedidoUnisBll.DeletarOrcamentoExisteComTransacao(deletarPrepedido.Indicador_Orcamentista.ToUpper(),
+        //    deletarPrepedido.NumeroPrepedido);
+
+        //    return Ok();
+        //}
+
+        /// <summary>
+        /// Rotina para cancelar Pré-Pedido
+        /// </summary>
+        /// <param name="cancelarPrepedido"></param>
+        /// <returns></returns>
         [AllowAnonymous]
-        [HttpPost("deletarPrepedido")]
-        public async Task<IActionResult> DeletarPrePedido(DeletarPrepedidoUnisDto deletarPrepedido)
+        [HttpPost("cancelarPrepedido")]
+        public async Task<IActionResult> CancelarPrePedido(CancelarPrepedidoUnisDto cancelarPrepedido)
         {
-            if (!servicoValidarTokenApiUnis.ValidarToken(deletarPrepedido.TokenAcesso, out string usuario))
+            if (!servicoValidarTokenApiUnis.ValidarToken(cancelarPrepedido.TokenAcesso, out string usuario))
                 return Unauthorized();
 
-            //validar Orçamentista
-            //validar numero de prepedido
-
             //chamar bll para deletar
-            await prepedidoUnisBll.DeletarOrcamentoExisteComTransacao(deletarPrepedido.Indicador_Orcamentista,
-            deletarPrepedido.NumeroPrepedido);
+            var ret = await prepedidoUnisBll.CancelarPrePedido(cancelarPrepedido.Indicador_Orcamentista.ToUpper(),
+            cancelarPrepedido.NumeroPrepedido);
 
-            return Ok();
+            if (ret == true)
+                return Ok();
+            else
+                return NotFound();
         }
 
         /// <summary>

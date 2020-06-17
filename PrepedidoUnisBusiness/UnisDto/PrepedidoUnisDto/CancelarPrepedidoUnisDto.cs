@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PrepedidoUnisBusiness.UnisDto.PrepedidoUnisDto
 {
-    public class DeletarPrepedidoUnisDto
+    public class CancelarPrepedidoUnisDto
     {
         [Required]
         public string TokenAcesso { get; set; }

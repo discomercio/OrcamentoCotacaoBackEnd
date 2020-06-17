@@ -9,6 +9,8 @@ using PrepedidoUnisBusiness.UnisDto.CepUnisDto;
 
 namespace PrepedidoAPIUnis.Controllers
 {
+    [Route("api/prepedidoUnis")]
+    [ApiController]
     public class CepUnisController : Controller
     {
         private readonly PrepedidoUnisBusiness.UnisBll.CepUnisBll.CepUnisBll cepUnisBll;
