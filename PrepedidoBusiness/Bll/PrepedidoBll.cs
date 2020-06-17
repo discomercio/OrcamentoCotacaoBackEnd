@@ -954,21 +954,28 @@ namespace PrepedidoBusiness.Bll
                 //estou montando a data, pois comparando com a data que esta sendo salvo na base 
                 //preciso montar a data com no formato "yyyy-MM-dd hh:mm:ss.ms"
                 //a data que vem da tela esta com o horário zerado
-                int dd = prepedido.DetalhesPrepedido.EntregaImediataData.Day;
-                int MM = prepedido.DetalhesPrepedido.EntregaImediataData.Month;
-                int yyyy = prepedido.DetalhesPrepedido.EntregaImediataData.Year;
-                int hh = DateTime.Now.Hour;
-                int mm = DateTime.Now.Minute;
-                int ss = DateTime.Now.Second;
-                int ms = DateTime.Now.Millisecond;
+                if (!prepedido.DetalhesPrepedido.EntregaImediataData.HasValue)
+                {
 
-                torcamento.Etg_Imediata_Data = new DateTime(yyyy, MM, dd, hh, mm, ss, ms);
-                torcamento.Etg_Imediata_Usuario = orcamentista.Apelido;
+                }
+                else
+                {
+                    int dd = prepedido.DetalhesPrepedido.EntregaImediataData.Value.Day;
+                    int MM = prepedido.DetalhesPrepedido.EntregaImediataData.Value.Month;
+                    int yyyy = prepedido.DetalhesPrepedido.EntregaImediataData.Value.Year;
+                    int hh = DateTime.Now.Hour;
+                    int mm = DateTime.Now.Minute;
+                    int ss = DateTime.Now.Second;
+                    int ms = DateTime.Now.Millisecond;
 
-                //novos campos:Vamos esperar o Hamilton dar ok para inclusão desses novos campos
-                torcamento.PrevisaoEntregaData = new DateTime(yyyy, MM, dd, hh, mm, ss, ms);
-                torcamento.PrevisaoEntregaUsuarioUltAtualiz = orcamentista.Apelido;
-                torcamento.PrevisaoEntregaDtHrUltAtualiz = new DateTime(yyyy, MM, dd, hh, mm, ss, ms);
+                    torcamento.Etg_Imediata_Data = new DateTime(yyyy, MM, dd, hh, mm, ss, ms);
+                    torcamento.Etg_Imediata_Usuario = orcamentista.Apelido;
+
+                    //novos campos:Vamos esperar o Hamilton dar ok para inclusão desses novos campos
+                    torcamento.PrevisaoEntregaData = new DateTime(yyyy, MM, dd, hh, mm, ss, ms);
+                    torcamento.PrevisaoEntregaUsuarioUltAtualiz = orcamentista.Apelido;
+                    torcamento.PrevisaoEntregaDtHrUltAtualiz = new DateTime(yyyy, MM, dd, hh, mm, ss, ms);
+                }
             }
             else
             {

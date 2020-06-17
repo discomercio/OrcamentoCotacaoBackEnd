@@ -2637,5 +2637,10 @@ namespace InfraBanco.Constantes
         public const string COD_UNIDADE_NEGOCIO_LOJA__VRF = "VRF";
         public const string COD_UNIDADE_NEGOCIO_LOJA__BS = "BS";
         public const string COD_UNIDADE_NEGOCIO_LOJA__AC = "AC";
+
+        public const string SESSION_CTRL_MODULO_CENTRAL = "CENTR";
+        public const string SESSION_CTRL_MODULO_LOJA = "LOJA";
+        public const string SESSION_CTRL_MODULO_ORCAMENTO = "ORCTO";
+        public const string SESSION_CTRL_MODULO_APIUNIS = "APIUN";
     }
 }

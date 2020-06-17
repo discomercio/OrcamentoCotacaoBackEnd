@@ -47,6 +47,29 @@ namespace InfraBanco
 
             modelBuilder.Entity<TsessaoHistorico>()
                 .HasKey(x => new { x.Usuario, x.DtHrInicio });
+
+            //não tem chave no banco, mas é obrigatória para o entity. campos NULL não podem fazer parte.
+            modelBuilder.Entity<TsessaoAbandonada>()
+                .HasKey(o => new
+                {
+                    o.Usuario,
+                    o.SessaoAbandonadaDtHrInicio,
+                    //o.SessaoAbandonadaLoja, 
+                    o.SessaoAbandonadaModulo,
+                    o.SessaoSeguinteDtHrInicio,
+                    //o.SessaoSeguinteLoja ,
+                    o.SessaoSeguinteModulo
+                });
+
+            modelBuilder.Entity<TperfilUsuario>()
+                .HasKey(x => new { x.Usuario, x.Id_perfil });
+            modelBuilder.Entity<Tperfil>()
+                .HasKey(x => x.Id);
+            modelBuilder.Entity<Toperacao>()
+                .HasKey(x => x.Id);
+            modelBuilder.Entity<TperfilItem>()
+                .HasKey(x => new { x.Id });
+
         }
 
         public DbSet<Tcliente> Tclientes { get; set; }
@@ -93,5 +116,9 @@ namespace InfraBanco
         public DbSet<TorcamentistaEIndicadorRestricaoFormaPagto> torcamentistaEIndicadorRestricaoFormaPagtos { get; set; }
         public DbSet<TprazoPagtoVisanet> TprazoPagtoVisanets { get; set; }
         public DbSet<TprodutoSubgrupo> TprodutoSubgrupos { get; set; }
+        public DbSet<Tusuario> Tusuarios { get; set; }
+        public DbSet<TsessaoAbandonada> TsessaoAbandonadas { get; set; }
+        public DbSet<Tperfil> Tperfils { get; set; }
+        public DbSet<TperfilUsuario> TperfilUsuarios { get; set; }
     }
 }
