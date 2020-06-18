@@ -790,7 +790,7 @@ namespace PrepedidoBusiness.Bll
 
             if (lstErros.Count == 0)
             {
-                lst_nfeMunicipios = (await BuscarSiglaUf(uf, municipio)).ToList();
+                lst_nfeMunicipios = (await BuscarSiglaUf(uf, municipio, false)).ToList();
 
                 if (!lst_nfeMunicipios.Any())
                 {
@@ -799,7 +799,7 @@ namespace PrepedidoBusiness.Bll
             }
         }
 
-        public async Task<IEnumerable<NfeMunicipio>> BuscarSiglaUf(string uf, string municipio)
+        public async Task<IEnumerable<NfeMunicipio>> BuscarSiglaUf(string uf, string municipio, bool buscaParcial)
         {
             List<NfeMunicipio> lstNfeMunicipio = new List<NfeMunicipio>();
 
@@ -885,7 +885,7 @@ namespace PrepedidoBusiness.Bll
                                     lstNfeMunicipio.Add(nfeMunicipio);
                                 }
                             }
-                            else
+                            else if(buscaParcial)
                             {
                                 command.Connection.Close();
 
@@ -924,6 +924,10 @@ namespace PrepedidoBusiness.Bll
                                     }
                                 }
 
+                                command.Connection.Close();
+                            }
+                            else
+                            {
                                 command.Connection.Close();
                             }
                         }
