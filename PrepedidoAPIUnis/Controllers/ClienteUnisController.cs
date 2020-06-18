@@ -51,20 +51,17 @@ namespace PrepedidoAPIUnis.Controllers
         /// </summary>
         /// <param name="tokenAcesso"></param>
         /// <param name="cnpj_cpf_cliente">CPF ou CNPJ, somente dígitos</param>
-        /// <param name="orcamentista"></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpGet("buscarCliente")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<ActionResult<ClienteBuscaRetornoUnisDto>> BuscarCliente(string tokenAcesso, 
-            string cnpj_cpf_cliente, string orcamentista)
+            string cnpj_cpf_cliente)
         {
             if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out string usuario))
                 return Unauthorized();
 
-            if (orcamentista == null)
-                orcamentista = "";
-            var dadosCliente = await clienteUnisBll.BuscarCliente(cnpj_cpf_cliente, orcamentista.Trim());
+            var dadosCliente = await clienteUnisBll.BuscarCliente(cnpj_cpf_cliente, "");
 
             if (dadosCliente == null)
                 return NoContent();
