@@ -16,6 +16,11 @@ namespace InfraBanco.Modelos
         [MaxLength(12)]
         public string Id_estoque { get; set; }
 
+        [Required]
+        [Column("fabricante")]
+        [MaxLength(4)]
+        public string Fabricante { get; set; }
+
         [Column("produto")]
         [Required]
         [MaxLength(8)]
