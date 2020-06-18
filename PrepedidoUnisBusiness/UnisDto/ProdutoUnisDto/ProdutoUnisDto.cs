@@ -31,6 +31,9 @@ namespace PrepedidoUnisBusiness.UnisDto.ProdutoUnisDto
         public string Alertas { get; set; }
         public short? Qtde_Max_Venda { get; set; }
 
+        public float? Desc_Max { get; set; }
+
+        //TODO:  incluir Descricao e Desc_Max na busca de produtos da Bll da arclube
         public static ProdutoUnisDto ProdutoUnisDtoDeProdutoDto(ProdutoDto produtoDto)
         {
             var ret = new ProdutoUnisDto()
@@ -38,7 +41,7 @@ namespace PrepedidoUnisBusiness.UnisDto.ProdutoUnisDto
                 Fabricante = produtoDto.Fabricante,
                 Fabricante_Nome = produtoDto.Fabricante_Nome,
                 Produto = produtoDto.Produto,
-                Descricao_html = produtoDto.Descricao_html,
+                Descricao_html = produtoDto.Descricao_html,                
                 Preco_lista = produtoDto.Preco_lista,
                 Estoque = produtoDto.Estoque,
                 Alertas = produtoDto.Alertas,
@@ -47,6 +50,6 @@ namespace PrepedidoUnisBusiness.UnisDto.ProdutoUnisDto
             return ret;
         }
 
-        public float? Desc_Max { get; set; }
+        
     }
 }
