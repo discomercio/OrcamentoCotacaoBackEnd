@@ -50,9 +50,7 @@ namespace PrepedidoUnisBusiness.UnisBll.FormaPagtoUnisBll
 
         public async Task<int> BuscarQtdeParcCartaoVisa()
         {
-
-
-            return 0;
+            return await formaPagtoBll.BuscarQtdeParcCartaoVisa();
         }
     }
 }
