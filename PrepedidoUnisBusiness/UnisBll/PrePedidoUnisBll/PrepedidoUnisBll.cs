@@ -157,7 +157,7 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
             {
                 prePedido.NumeroPrePedido = numeroPrepedido.Trim();
                 {
-                    retorno = await prepedidoBll.RemoverPrePedido(numeroPrepedido, orcamentista);                    
+                    retorno = await prepedidoBll.RemoverPrePedido(numeroPrepedido, orcamentista);
                 }
             }
 
@@ -166,12 +166,17 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
 
         public async Task<bool> Obter_Permite_RA_Status(string apelido)
         {
-            return false;
+            bool retorno = false;
+
+            if (await prepedidoBll.ValidarOrcamentistaIndicador(apelido))
+                retorno = Convert.ToBoolean(await prepedidoBll.Obter_Permite_RA_Status(apelido));
+
+            return retorno;
         }
 
         public async Task<decimal> ObtemPercentualVlPedidoRA()
         {
-            return 0M;
+            return await prepedidoBll.ObtemPercentualVlPedidoRA();
         }
     }
 }

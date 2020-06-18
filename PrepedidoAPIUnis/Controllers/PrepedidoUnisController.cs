@@ -169,7 +169,7 @@ namespace PrepedidoAPIUnis.Controllers
             if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out string usuario))
                 return Unauthorized();
 
-            var ret = await prepedidoUnisBll.Obter_Permite_RA_Status(orcamentista);
+            var ret = await prepedidoUnisBll.Obter_Permite_RA_Status(orcamentista.ToUpper());
 
             return Ok(ret);
         }
