@@ -48,18 +48,16 @@ namespace PrepedidoAPIUnis.Controllers
             if (!servicoValidarTokenApiUnis.ValidarToken(prePedido.TokenAcesso, out string usuario))
                 return Unauthorized();
 
-            PrePedidoResultadoUnisDto retorno;
-            //todo: retornar a estrutura certa
             var ret = await prepedidoUnisBll.CadastrarPrepedidoUnis(prePedido);
 
             return Ok(ret);
         }
 
-        /// <summary>
-        /// Rotina para deletar Pré-Pedido
-        /// </summary>
-        /// <param name="deletarPrepedido"></param>
-        /// <returns></returns>
+        ///// <summary>
+        ///// Rotina para deletar Pré-Pedido
+        ///// </summary>
+        ///// <param name="deletarPrepedido"></param>
+        ///// <returns></returns>
         //[AllowAnonymous]
         //[HttpPost("deletarPrepedido")]
         //public async Task<IActionResult> DeletarPrePedido(DeletarPrepedidoUnisDto deletarPrepedido)

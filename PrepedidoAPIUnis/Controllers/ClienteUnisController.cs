@@ -50,7 +50,7 @@ namespace PrepedidoAPIUnis.Controllers
         /// Rotina para buscar dados do cliente por CPF ou CNPJ
         /// </summary>
         /// <param name="tokenAcesso"></param>
-        /// <param name="cnpj_cpf_cliente"></param>
+        /// <param name="cnpj_cpf_cliente">CPF ou CNPJ, somente dígitos</param>
         /// <param name="orcamentista"></param>
         /// <returns></returns>
         [AllowAnonymous]
@@ -62,6 +62,8 @@ namespace PrepedidoAPIUnis.Controllers
             if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out string usuario))
                 return Unauthorized();
 
+            if (orcamentista == null)
+                orcamentista = "";
             var dadosCliente = await clienteUnisBll.BuscarCliente(cnpj_cpf_cliente, orcamentista.Trim());
 
             if (dadosCliente == null)

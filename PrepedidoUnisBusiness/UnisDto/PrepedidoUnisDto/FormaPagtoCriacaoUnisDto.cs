@@ -17,7 +17,6 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         ///     COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA = "6";
         /// </summary>
         [Required]
-        [MaxLength(1)]
         public short Tipo_Parcelamento { get; set; }//Tipo da forma de pagto
 
         /// <summary>

@@ -70,7 +70,7 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
 
             return retorno;
         }
-        
+
         private async Task<string> BuscarIdCliente(string cpf_cnpj)
         {
             string retorno = "";
@@ -86,11 +86,10 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
 
         public async Task<ClienteBuscaRetornoUnisDto> BuscarCliente(string cpf_cnpj, string apelido)
         {
-            ClienteBuscaRetornoUnisDto retorno = new ClienteBuscaRetornoUnisDto();
-
-            //vamos buscar o cliente
-            retorno = ClienteBuscaRetornoUnisDto.ClienteCadastroUnisDtoDeClienteCadastroDto(
-                await clienteArclubeBll.BuscarCliente(cpf_cnpj, apelido));
+            var cliente = await clienteArclubeBll.BuscarCliente(cpf_cnpj, apelido);
+            if (cliente == null)
+                return null;
+            ClienteBuscaRetornoUnisDto retorno = ClienteBuscaRetornoUnisDto.ClienteCadastroUnisDtoDeClienteCadastroDto(cliente);
 
             return retorno;
         }
