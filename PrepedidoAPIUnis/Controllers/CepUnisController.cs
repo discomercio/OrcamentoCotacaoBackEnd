@@ -28,6 +28,7 @@ namespace PrepedidoAPIUnis.Controllers
         /// <param name="tokenAcesso">utilizado para autenticar usuário</param>
         /// <param name="cep"></param>
         /// <returns></returns>
+        /// <response code="204">Sem informações para o CEP especificado</response>
         [AllowAnonymous]
         [HttpGet("buscarCep")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]

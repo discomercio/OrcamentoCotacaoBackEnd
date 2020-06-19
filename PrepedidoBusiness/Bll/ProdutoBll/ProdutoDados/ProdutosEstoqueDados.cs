@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PrepedidoBusiness.Dto.Produto
+namespace PrepedidoBusiness.Bll.ProdutoBll.ProdutoDados
 {
-    public class ProdutosEstoqueDto
+    public class ProdutosEstoqueDados
     {
         public string Fabricante { get; set; }
         public string Produto { get; set; }

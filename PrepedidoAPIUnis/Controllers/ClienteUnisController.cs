@@ -50,19 +50,18 @@ namespace PrepedidoAPIUnis.Controllers
         /// Rotina para buscar dados do cliente por CPF ou CNPJ
         /// </summary>
         /// <param name="tokenAcesso"></param>
-        /// <param name="cnpj_cpf_cliente"></param>
-        /// <param name="orcamentista"></param>
+        /// <param name="cnpj_cpf_cliente">CPF ou CNPJ, somente dígitos</param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpGet("buscarCliente")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<ActionResult<ClienteBuscaRetornoUnisDto>> BuscarCliente(string tokenAcesso, 
-            string cnpj_cpf_cliente, string orcamentista)
+            string cnpj_cpf_cliente)
         {
             if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out string usuario))
                 return Unauthorized();
 
-            var dadosCliente = await clienteUnisBll.BuscarCliente(cnpj_cpf_cliente, orcamentista.Trim());
+            var dadosCliente = await clienteUnisBll.BuscarCliente(cnpj_cpf_cliente, "");
 
             if (dadosCliente == null)
                 return NoContent();

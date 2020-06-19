@@ -1,37 +1,42 @@
 ﻿using InfraBanco.Constantes;
 using PrepedidoBusiness.Dto.Produto;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using InfraBanco.Modelos;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using PrepedidoBusiness.Utils;
-using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using PrepedidoBusiness.Bll.Regras;
 using PrepedidoBusiness.Dto.ClienteCadastro;
 using PrepedidoBusiness.Dto.Prepedido;
+using PrepedidoBusiness.Bll.ProdutoBll.ProdutoDados;
 
-namespace PrepedidoBusiness.Bll
+namespace PrepedidoBusiness.Bll.ProdutoBll
 {
-    public class ProdutoBll
+    public class ProdutoGeralBll
     {
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
 
-        public ProdutoBll(InfraBanco.ContextoBdProvider contextoProvider)
+        public ProdutoGeralBll(InfraBanco.ContextoBdProvider contextoProvider)
         {
             this.contextoProvider = contextoProvider;
         }
-        
-        public async Task<ProdutoComboDto> ListaProdutosCombo(string apelido, string loja, string id_cliente)
+
+        public async Task<PrepedidoBusiness.Dto.Produto.ProdutoComboDto> ListaProdutosComboApiArclube(string loja, string id_cliente)
         {
-            ProdutoComboDto retorno = new ProdutoComboDto();
+            var aux = await ListaProdutosComboDados(loja, id_cliente, null);
+            return PrepedidoBusiness.Dto.Produto.ProdutoComboDto.ProdutoComboDtoDeProdutoComboDados(aux);
+        }
+
+
+        public async Task<ProdutoComboDados> ListaProdutosComboDados(string loja, string id_cliente, string cpf_cnpj)
+        {
+            ProdutoComboDados retorno = new ProdutoComboDados();
 
             var db = contextoProvider.GetContextoLeitura();
             //Buscar dados do cliente
             var clienteTask = (from c in db.Tclientes
-                               where c.Id == id_cliente
+                               where (c.Id == id_cliente || id_cliente == null) && (c.Cnpj_Cpf == cpf_cnpj || cpf_cnpj == null)
                                select new
                                {
                                    tipo_cliente = c.Tipo,
@@ -47,14 +52,14 @@ namespace PrepedidoBusiness.Bll
                 cliente.produtor_rural_status);
 
             var lstProdutosCompostos = BuscarProdutosCompostos(loja);
-            List<ProdutoDto> lstTodosProdutos = (await BuscarTodosProdutos(loja)).ToList();
+            List<ProdutoDados.ProdutoDados> lstTodosProdutos = (await BuscarTodosProdutos(loja)).ToList();
 
             List<RegrasBll> lst_cliente_regra = new List<RegrasBll>();
             MontaListaRegras(lstTodosProdutos, lst_cliente_regra);
 
             List<string> lstErros = new List<string>();
             await Util.ObterCtrlEstoqueProdutoRegra_Teste(lstErros, lst_cliente_regra, cliente.uf, cliente_regra, contextoProvider);
-            
+
             Util.ObterDisponibilidadeEstoque(lst_cliente_regra, lstTodosProdutos, lstErros, contextoProvider);
 
             //retorna as qtdes disponiveis
@@ -65,18 +70,18 @@ namespace PrepedidoBusiness.Bll
             Tparametro tparametro = await Util.BuscarRegistroParametro(Constantes.ID_PARAMETRO_Flag_Orcamento_ConsisteDisponibilidadeEstoqueGlobal, contextoProvider);
             //atribui a qtde de estoque para o produto
             IncluirEstoqueProduto(lst_cliente_regra, lstTodosProdutos, tparametro);
-            
+
             await ExisteMensagensAlertaProdutos(lstTodosProdutos);
-            
-            retorno.ProdutoCompostoDto = (await lstProdutosCompostos).ToList();
-            retorno.ProdutoDto = lstTodosProdutos;
+
+            retorno.ProdutoCompostoDados = (await lstProdutosCompostos).ToList();
+            retorno.ProdutoDados = lstTodosProdutos;
             return retorno;
         }
 
-        private async Task ExisteMensagensAlertaProdutos(List<ProdutoDto> lst_produtos)
+        private async Task ExisteMensagensAlertaProdutos(List<ProdutoDados.ProdutoDados> lst_produtos)
         {
             var db = contextoProvider.GetContextoLeitura();
-            
+
             var alertasTask = from c in db.TprodutoXAlertas
                               where c.TalertaProduto.Ativo == "S"
                               orderby c.Dt_Cadastro, c.Id_Alerta
@@ -105,7 +110,7 @@ namespace PrepedidoBusiness.Bll
             }
         }
 
-        public void MontaListaRegras(List<ProdutoDto> lst_produtos, List<RegrasBll> lst_cliente_regra)
+        private void MontaListaRegras(List<ProdutoDados.ProdutoDados> lst_produtos, List<RegrasBll> lst_cliente_regra)
         {
             foreach (var p in lst_produtos)
             {
@@ -117,7 +122,7 @@ namespace PrepedidoBusiness.Bll
             }
         }
 
-        public async Task<IEnumerable<ProdutoCompostoDto>> BuscarProdutosCompostos(string loja)
+        private async Task<IEnumerable<ProdutoCompostoDados>> BuscarProdutosCompostos(string loja)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -137,7 +142,7 @@ namespace PrepedidoBusiness.Bll
                                                                   produto_pai = c.Produto,
                                                                   valor = (decimal)pl.Preco_Lista,
                                                                   qtde = (int)pci.Qtde,
-                                                                  produtosFilhos = new ProdutoFilhoDto
+                                                                  produtosFilhos = new ProdutoFilhoDados
                                                                   {
                                                                       Fabricante = c.Fabricante,
                                                                       Fabricante_Nome = fab.Nome,
@@ -151,7 +156,7 @@ namespace PrepedidoBusiness.Bll
                                          group d by d.produto_pai into g
                                          select g;
             var produtosCompostosLista = from g in produtosCompostosGrupo
-                                         select new ProdutoCompostoDto
+                                         select new ProdutoCompostoDados
                                          {
                                              PaiFabricante = g.OrderBy(r => r.fabricante_pai).Select(r => r.fabricante_pai).FirstOrDefault(),
                                              PaiFabricanteNome = g.OrderBy(r => r.fabricante_pai_nome).Select(r => r.fabricante_pai_nome).FirstOrDefault(),
@@ -160,13 +165,13 @@ namespace PrepedidoBusiness.Bll
                                              Filhos = g.Select(r => r.produtosFilhos).ToList()
                                          };
 
-            List<ProdutoCompostoDto> produto = produtosCompostosLista.ToList();
+            List<ProdutoCompostoDados> produto = produtosCompostosLista.ToList();
 
             return produto;
         }
 
 
-        public async Task<IEnumerable<ProdutoDto>> BuscarTodosProdutos(string loja)
+        private async Task<IEnumerable<ProdutoDados.ProdutoDados>> BuscarTodosProdutos(string loja)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -175,17 +180,19 @@ namespace PrepedidoBusiness.Bll
                                     join fab in db.Tfabricantes on c.Fabricante equals fab.Fabricante
                                     where pl.Vendavel == "S" &&
                                           pl.Loja == loja
-                                    select new ProdutoDto
+                                    select new ProdutoDados.ProdutoDados
                                     {
                                         Fabricante = c.Fabricante,
                                         Fabricante_Nome = fab.Nome,
                                         Produto = pl.Produto,
                                         Descricao_html = c.Descricao_Html,
+                                        Descricao = c.Descricao,
                                         Preco_lista = pl.Preco_Lista,
-                                        Qtde_Max_Venda = pl.Qtde_Max_Venda
+                                        Qtde_Max_Venda = pl.Qtde_Max_Venda,
+                                        Desc_Max = pl.Desc_Max
                                     };
 
-            List<ProdutoDto> lstTodosProdutos = await todosProdutosTask.ToListAsync();
+            List<ProdutoDados.ProdutoDados> lstTodosProdutos = await todosProdutosTask.ToListAsync();
 
             return lstTodosProdutos;
         }
@@ -194,14 +201,14 @@ namespace PrepedidoBusiness.Bll
          * pois estamos realizando a busca apenas em produtos que 
          * a subtração entre qtde e qtde_utilizada seja maior que 0
          */
-        private void IncluirEstoqueProduto(List<RegrasBll> lstRegras, List<ProdutoDto> lst_produtos, Tparametro parametro)
+        private void IncluirEstoqueProduto(List<RegrasBll> lstRegras, List<ProdutoDados.ProdutoDados> lst_produtos, Tparametro parametro)
         {
             int qtde_estoque_total_disponivel = 0;
             int qtde_estoque_total_disponivel_global = 0;
 
             foreach (var p in lst_produtos)
             {
-                if (!string.IsNullOrEmpty(p.Produto))
+                if (!string.IsNullOrEmpty(p.Produto) && !string.IsNullOrEmpty(p.Fabricante))
                 {
                     foreach (var regra in lstRegras)
                     {

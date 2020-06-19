@@ -465,7 +465,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return retorno;
         }
 
-        private static async Task<IEnumerable<NfeMunicipio>> ConsisteMunicipioIBGE(string municipio, string uf,
+        public static async Task<IEnumerable<NfeMunicipio>> ConsisteMunicipioIBGE(string municipio, string uf,
             List<string> lstErros, ContextoBdProvider contextoProvider)
         {
             var db = contextoProvider.GetContextoLeitura();

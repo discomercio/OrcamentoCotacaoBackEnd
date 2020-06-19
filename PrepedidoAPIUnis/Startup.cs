@@ -18,6 +18,7 @@ using PrepedidoUnisBusiness.UnisBll.AcessoBll;
 using PrepedidoUnisBusiness.UnisBll.CepUnisBll;
 using PrepedidoUnisBusiness.UnisBll.CoeficienteUnisBll;
 using PrepedidoUnisBusiness.UnisBll.FormaPagtoUnisBll;
+using PrepedidoUnisBusiness.UnisBll.ProdutoUnisBll;
 
 namespace PrepedidoAPIUnis
 {
@@ -64,6 +65,7 @@ namespace PrepedidoAPIUnis
 
             services.AddTransient<ClienteUnisBll, ClienteUnisBll>();
             services.AddTransient<PrePedidoUnisBll, PrePedidoUnisBll>();
+            services.AddTransient<ProdutoUnisBll, ProdutoUnisBll>();
             services.AddTransient<AcessoUnisBll, AcessoUnisBll>();
             services.AddTransient<CepUnisBll, CepUnisBll>();
             services.AddTransient<FormaPagtoUnisBll, FormaPagtoUnisBll>();
@@ -75,6 +77,7 @@ namespace PrepedidoAPIUnis
             services.AddTransient<PrepedidoBusiness.Bll.ClienteBll.ClienteBll, PrepedidoBusiness.Bll.ClienteBll.ClienteBll>();
             services.AddTransient<PrepedidoBusiness.Bll.FormaPagtoBll, PrepedidoBusiness.Bll.FormaPagtoBll>();
             services.AddTransient<PrepedidoBusiness.Bll.CoeficienteBll, PrepedidoBusiness.Bll.CoeficienteBll>();
+            services.AddTransient<PrepedidoBusiness.Bll.ProdutoBll.ProdutoGeralBll, PrepedidoBusiness.Bll.ProdutoBll.ProdutoGeralBll>();
 
 
             services.AddTransient<IServicoAutenticacaoApiUnis, ServicoAutenticacaoApiUnis>();

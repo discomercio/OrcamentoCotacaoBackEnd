@@ -28,18 +28,18 @@ namespace PrepedidoAPIUnis.Controllers
         /// </summary>
         /// <param name="tokenAcesso"></param>
         /// <param name="loja"></param>
-        /// <param name="cpf_cnpj"></param>
+        /// <param name="cnpj_cpf_cliente">CPF ou CNPJ, somente dígitos</param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpGet("buscarProduto")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<ActionResult<ProdutoComboUnisDto>> BuscarProduto(string tokenAcesso, string loja,
-            string cpf_cnpj)
+            string cnpj_cpf_cliente)
         {
             if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out string usuario))
                 return Unauthorized();
 
-            var retorno = await produtoUnisBll.ListaProdutosCombo(loja, cpf_cnpj);
+            var retorno = await produtoUnisBll.ListaProdutosCombo(loja, cnpj_cpf_cliente);
 
             return Ok(retorno);
         }

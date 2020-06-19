@@ -978,7 +978,8 @@ namespace PrepedidoBusiness.Utils
             {
                 foreach (var r in lista)
                 {
-                    if (r.prod_x_reg.Produto == item.Produto)
+                    if (r.prod_x_reg.Produto == item.Produto && 
+                        r.prod_x_reg.Fabricante == item.Fabricante)
                     {
                         item.St_Regra = true;
                         item.TwmsRegraCd = new t_WMS_REGRA_CD
@@ -1042,7 +1043,7 @@ namespace PrepedidoBusiness.Utils
                             if (r.Id_nfe_emitente != 0)
                             {
 
-                                if (regra.Produto == p1.Produto)
+                                if (regra.Produto == p1.Produto && regra.Fabricante == p1.Fabricante)
                                 {
                                     //verificar se é inativo
                                     if (r.St_inativo == 0)
@@ -1073,7 +1074,7 @@ namespace PrepedidoBusiness.Utils
                         {
                             foreach (var p2 in lst2)
                             {
-                                if (regra.Produto == p2.Produto)
+                                if (regra.Produto == p2.Produto && regra.Fabricante == p2.Fabricante)
                                 {
                                     //valor subtraido
                                     if (!r.Estoque_Qtde_Estoque_Global.HasValue)
@@ -1096,6 +1097,7 @@ namespace PrepedidoBusiness.Utils
                                                c.TestoqueItem.Qtde_utilizada.HasValue
                                          select new ProdutosEstoqueDto
                                          {
+                                             Fabricante = c.TestoqueItem.Fabricante,
                                              Produto = c.TestoqueItem.Produto,
                                              Qtde = (int)c.TestoqueItem.Qtde,
                                              Qtde_Utilizada = (int)c.TestoqueItem.Qtde_utilizada,
@@ -1121,6 +1123,7 @@ namespace PrepedidoBusiness.Utils
                                                            .Contains(c.Id_nfe_emitente))
                                                     select new ProdutosEstoqueDto
                                                     {
+                                                        Fabricante = c.TestoqueItem.Fabricante,
                                                         Produto = c.TestoqueItem.Produto,
                                                         Qtde = (int)c.TestoqueItem.Qtde,
                                                         Qtde_Utilizada = (int)c.TestoqueItem.Qtde_utilizada,
@@ -1140,11 +1143,11 @@ namespace PrepedidoBusiness.Utils
 
             foreach (var p in prepedido.ListaProdutos)
             {
-                if (!string.IsNullOrEmpty(p.NumProduto))
+                if (!string.IsNullOrEmpty(p.NumProduto) && !string.IsNullOrEmpty(p.Fabricante))
                 {
                     foreach (var regra in lstRegras)
                     {
-                        if (!string.IsNullOrEmpty(regra.Produto))
+                        if (!string.IsNullOrEmpty(regra.Produto) && !string.IsNullOrEmpty(regra.Fabricante))
                         {
                             foreach (var r in regra.TwmsCdXUfXPessoaXCd)
                             {
@@ -1182,12 +1185,12 @@ namespace PrepedidoBusiness.Utils
 
         }
 
-        public static void ObterDisponibilidadeEstoque(List<RegrasBll> lstRegrasCrtlEstoque, List<ProdutoDto> lst_produtos,
+        public static void ObterDisponibilidadeEstoque(List<RegrasBll> lstRegrasCrtlEstoque, List<Bll.ProdutoBll.ProdutoDados.ProdutoDados> lst_produtos,
             List<string> lstErros, ContextoBdProvider contextoProvider)
         {
             foreach (var r in lstRegrasCrtlEstoque)
             {
-                if (!string.IsNullOrEmpty(r.Produto))
+                if (!string.IsNullOrEmpty(r.Produto) && !string.IsNullOrEmpty(r.Fabricante))
                 {
                     if (r.TwmsRegraCd != null)
                     {
@@ -1207,11 +1210,7 @@ namespace PrepedidoBusiness.Utils
                                             //p.Estoque_Qtde_Solicitado = essa variavel não deve ser utilizada, a qtde só sera solicitada 
                                             //quando o usuario inserir a qtde 
                                             p.Estoque_Qtde = 0;
-                                            //if (!Util.EstoqueVerificaDisponibilidadeIntegralV2(p, contextoProvider))
-                                            //{
-                                            //    lstErros.Add("Falha ao tentar consultar disponibilidade no estoque do produto (" +
-                                            //        r.Fabricante + ")" + r.Produto);
-                                            //}
+                                            
                                         }
                                     }
 
