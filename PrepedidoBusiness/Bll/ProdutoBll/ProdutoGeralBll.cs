@@ -258,7 +258,7 @@ namespace PrepedidoBusiness.Bll.ProdutoBll
 
         }
 
-        public static void VerificarRegrasAssociadasAosProdutos(List<RegrasBll> lstRegras, List<string> lstErros, DadosClienteCadastroDto cliente)
+        public static void VerificarRegrasAssociadasAosProdutos(List<RegrasBll> lstRegras, List<string> lstErros, Dtos.ClienteCadastro.DadosClienteCadastroDto cliente)
         {
             foreach (var r in lstRegras)
             {

@@ -856,9 +856,8 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             if (!string.IsNullOrEmpty(cliente.Ie))
             {
 
-                //string uf = VerificarInscricaoEstadualValida(cliente.Ie, cliente.Uf, listaErros);
-                //List<NfeMunicipio> lstNfeMunicipio = new List<NfeMunicipio>();
-                //lstNfeMunicipio = (await ConsisteMunicipioIBGE(cliente.Cidade, cliente.Uf, listaErros)).ToList();
+                string uf = VerificarInscricaoEstadualValida(cliente.Ie, cliente.Uf, listaErros);
+                await ConsisteMunicipioIBGE(cliente.Cidade, cliente.Uf, listaErros);
 
             }
             //vamos verificar novamente o endereço, pois o usuário pode buscar o cep e 
