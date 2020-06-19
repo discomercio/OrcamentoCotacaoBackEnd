@@ -201,7 +201,7 @@ namespace PrepedidoBusiness.Bll
 
             foreach (var p in lst_produtos)
             {
-                if (!string.IsNullOrEmpty(p.Produto))
+                if (!string.IsNullOrEmpty(p.Produto) && !string.IsNullOrEmpty(p.Fabricante))
                 {
                     foreach (var regra in lstRegras)
                     {

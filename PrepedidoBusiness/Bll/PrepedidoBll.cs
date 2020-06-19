@@ -22,11 +22,13 @@ namespace PrepedidoBusiness.Bll
 {
     public class PrepedidoBll
     {
-        private readonly InfraBanco.ContextoBdProvider contextoProvider;
+        private readonly ContextoBdProvider contextoProvider;
+        private readonly ClienteBll clienteBll;
 
-        public PrepedidoBll(InfraBanco.ContextoBdProvider contextoProvider)
+        public PrepedidoBll(InfraBanco.ContextoBdProvider contextoProvider, ClienteBll clienteBll)
         {
             this.contextoProvider = contextoProvider;
+            this.clienteBll = clienteBll;
         }
 
         public async Task<IEnumerable<string>> ListarNumerosPrepedidosCombo(string orcamentista)
@@ -683,7 +685,7 @@ namespace PrepedidoBusiness.Bll
 
                 //Afazer: incluir a validação dos novo campos de endereço de entrega
                 //Validar endereço de entraga
-                if (ValidarEndecoEntrega(prePedido.EnderecoEntrega, lstErros))
+                if (await ValidarEndecoEntrega(prePedido.EnderecoEntrega, lstErros))
                 {
                     if (ValidarFormaPagto(prePedido, lstErros))
                     {
@@ -709,7 +711,10 @@ namespace PrepedidoBusiness.Bll
                                 prePedido.DadosCliente.ProdutorRural);
                             string descricao = Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo);
 
+                            //List<RegrasBll> regraCrtlEstoque = new List<RegrasBll>();
                             List<RegrasBll> regraCrtlEstoque = (await ObterCtrlEstoqueProdutoRegra(prePedido, lstErros)).ToList();
+                            await Util.ObterCtrlEstoqueProdutoRegra_Teste(lstErros, regraCrtlEstoque, prePedido.DadosCliente.Uf, tipoPessoa, contextoProvider);
+
 
                             ProdutoBll.VerificarRegrasAssociadasAosProdutos(regraCrtlEstoque, lstErros, prePedido.DadosCliente);
                             //obtendo qtde disponivel
@@ -1381,10 +1386,10 @@ namespace PrepedidoBusiness.Bll
 
             foreach (var p in prepedido.ListaProdutos)
             {
-                if (!string.IsNullOrEmpty(p.NumProduto))
+                if (!string.IsNullOrEmpty(p.NumProduto) && !string.IsNullOrEmpty(p.Fabricante))
                 {
                     var produtoTask = (from c in db.Tprodutos
-                                       where c.Produto == p.NumProduto
+                                       where c.Produto == p.NumProduto && c.Fabricante == p.Fabricante
                                        select c.Descontinuado).FirstOrDefaultAsync();
                     var produto = await produtoTask;
 
@@ -1439,7 +1444,7 @@ namespace PrepedidoBusiness.Bll
                     {
                         if (qtde_a_alocar == 0)
                             break;
-                        if (!string.IsNullOrEmpty(regra.Produto))
+                        if (!string.IsNullOrEmpty(regra.Produto) && !string.IsNullOrEmpty(regra.Fabricante))
                         {
                             foreach (var re in regra.TwmsCdXUfXPessoaXCd)
                             {
@@ -1474,7 +1479,7 @@ namespace PrepedidoBusiness.Bll
                         {
                             if (qtde_a_alocar == 0)
                                 break;
-                            if (regra.Produto == p.NumProduto)
+                            if (regra.Produto == p.NumProduto && regra.Fabricante == p.Fabricante)
                             {
                                 foreach (var re in regra.TwmsCdXUfXPessoaXCd)
                                 {
@@ -1584,7 +1589,7 @@ namespace PrepedidoBusiness.Bll
             }
         }
 
-        private bool ValidarEndecoEntrega(EnderecoEntregaDtoClienteCadastro endEtg, List<string> lstErros)
+        private async Task<bool> ValidarEndecoEntrega(EnderecoEntregaDtoClienteCadastro endEtg, List<string> lstErros)
         {
             bool retorno = true;
 
@@ -1632,6 +1637,8 @@ namespace PrepedidoBusiness.Bll
                     lstErros.Add("CEP INVÁLIDO NO ENDEREÇO DE ENTREGA.");
                     retorno = false;
                 }
+
+                await clienteBll.ConsisteMunicipioIBGE(endEtg.EndEtg_cidade, endEtg.EndEtg_uf, lstErros);
             }
 
             return retorno;

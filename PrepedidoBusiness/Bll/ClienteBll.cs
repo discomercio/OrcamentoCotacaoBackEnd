@@ -791,7 +791,7 @@ namespace PrepedidoBusiness.Bll
             return lstErros;
         }
 
-        private async Task<IEnumerable<NfeMunicipio>> ConsisteMunicipioIBGE(string municipio, string uf, List<string> lstErros)
+        public async Task ConsisteMunicipioIBGE(string municipio, string uf, List<string> lstErros)
         {
             var db = contextoProvider.GetContextoLeitura();
             List<NfeMunicipio> lst_nfeMunicipios = new List<NfeMunicipio>();
@@ -818,8 +818,6 @@ namespace PrepedidoBusiness.Bll
                     lstErros.Add("Município '" + municipio + "' não consta na relação de municípios do IBGE para a UF de '" + uf + "'!");
                 }
             }
-
-            return lst_nfeMunicipios;
         }
 
         public async Task<IEnumerable<NfeMunicipio>> BuscarSiglaUf(string uf, string municipio, bool buscaParcial)
@@ -1053,8 +1051,7 @@ namespace PrepedidoBusiness.Bll
             {
 
                 string uf = VerificarInscricaoEstadualValida(cliente.Ie, cliente.Uf, listaErros);
-                List<NfeMunicipio> lstNfeMunicipio = new List<NfeMunicipio>();
-                lstNfeMunicipio = (await ConsisteMunicipioIBGE(cliente.Cidade, cliente.Uf, listaErros)).ToList();
+                await ConsisteMunicipioIBGE(cliente.Cidade, cliente.Uf, listaErros);
 
             }
             //vamos verificar novamente o endereço, pois o usuário pode buscar o cep e 
