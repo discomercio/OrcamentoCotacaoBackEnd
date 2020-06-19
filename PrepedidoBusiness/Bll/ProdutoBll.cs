@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using PrepedidoBusiness.Utils;
 using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using PrepedidoBusiness.Bll.Regras;
-using PrepedidoBusiness.Dtos.ClienteCadastro;
+using PrepedidoBusiness.Dto.ClienteCadastro;
 using PrepedidoBusiness.Dto.Prepedido;
 
 namespace PrepedidoBusiness.Bll

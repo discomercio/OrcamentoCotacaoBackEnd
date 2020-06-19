@@ -1,4 +1,4 @@
-﻿using PrepedidoBusiness.Dtos.ClienteCadastro;
+﻿using PrepedidoBusiness.Dto.ClienteCadastro;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -21,7 +21,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
         [MaxLength(12)]
         public string Id { get; private set; }
 
-        [MaxLength(14)]
+        [MaxLength(18)]
         public string Cnpj_Cpf { get; set; }
 
         [MaxLength(20)]
@@ -136,7 +136,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
             {
                 Indicador_Orcamentista = clienteCadastroDto.Indicador_Orcamentista,
                 Id = clienteCadastroDto.Id,
-                Cnpj_Cpf = clienteCadastroDto.Cnpj_Cpf,
+                Cnpj_Cpf = clienteCadastroDto.Cnpj_Cpf.Trim(),
                 Rg = clienteCadastroDto.Rg,
                 Ie = clienteCadastroDto.Ie,
                 Contribuinte_Icms_Status = clienteCadastroDto.Contribuinte_Icms_Status,
@@ -177,15 +177,15 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
                 Indicador_Orcamentista = dadosClienteUnis.Indicador_Orcamentista,
                 Loja = loja,
                 Nome = dadosClienteUnis.Nome,
-                Cnpj_Cpf = dadosClienteUnis.Cnpj_Cpf,
+                Cnpj_Cpf = PrepedidoBusiness.Utils.Util.SoDigitosCpf_Cnpj(dadosClienteUnis.Cnpj_Cpf.Trim()),
                 Tipo = dadosClienteUnis.Tipo,
-                Sexo = dadosClienteUnis.Sexo,
-                Rg = dadosClienteUnis.Rg,
+                Sexo = dadosClienteUnis.Sexo == null ? "" : dadosClienteUnis.Sexo,
+                Rg = dadosClienteUnis.Rg == null ? "" : dadosClienteUnis.Rg,
                 Nascimento = dadosClienteUnis.Nascimento,
                 DddCelular = dadosClienteUnis.DddCelular,
                 Celular = dadosClienteUnis.Celular,
-                DddResidencial = dadosClienteUnis.DddResidencial,
-                TelefoneResidencial = dadosClienteUnis.TelefoneResidencial,
+                DddResidencial = dadosClienteUnis.DddResidencial == null ? "" : dadosClienteUnis.DddResidencial,
+                TelefoneResidencial = dadosClienteUnis.TelefoneResidencial == null ? "" : dadosClienteUnis.TelefoneResidencial,
                 DddComercial = dadosClienteUnis.DddComercial,
                 TelComercial = dadosClienteUnis.TelComercial,
                 Ramal = dadosClienteUnis.Ramal,
@@ -204,7 +204,8 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
                 Bairro = dadosClienteUnis.Bairro,
                 Cidade = dadosClienteUnis.Cidade,
                 Uf = dadosClienteUnis.Uf,
-                Complemento = dadosClienteUnis.Complemento
+                Complemento = dadosClienteUnis.Complemento,
+                Contato = dadosClienteUnis.Contato
             };
             
             return ret;

@@ -1,4 +1,4 @@
-﻿using PrepedidoBusiness.Dtos.ClienteCadastro;
+﻿using PrepedidoBusiness.Dto.ClienteCadastro;
 using System;
 using System.Collections.Generic;
 using System.Text;

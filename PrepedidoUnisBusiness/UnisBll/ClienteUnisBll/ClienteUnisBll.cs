@@ -1,17 +1,12 @@
 ﻿using PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
-using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
-using PrepedidoBusiness.Bll;
 using PrepedidoBusiness.Dto.ClienteCadastro;
-using PrepedidoBusiness.Dtos.ClienteCadastro;
-using PrepedidoBusiness.Dto.ClienteCadastro.Referencias;
 using Microsoft.EntityFrameworkCore;
 using PrepedidoUnisBusiness.UnisDto.ClienteUnisDto;
 using InfraBanco.Modelos;
+using PrepedidoBusiness.Bll.ClienteBll;
 
 namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
 {
@@ -76,6 +71,8 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
             string retorno = "";
 
             var db = contextoProvider.GetContextoLeitura();
+
+            cpf_cnpj = PrepedidoBusiness.Utils.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
 
             retorno = await (from c in db.Tclientes
                              where c.Cnpj_Cpf == cpf_cnpj

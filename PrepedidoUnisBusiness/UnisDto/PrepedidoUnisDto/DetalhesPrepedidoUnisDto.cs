@@ -1,4 +1,4 @@
-﻿using PrepedidoBusiness.Dtos.Prepedido.DetalhesPrepedido;
+﻿using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -29,7 +29,6 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         /// InstaladorInstala: COD_INSTALADOR_INSTALA_NAO_DEFINIDO = 0, COD_INSTALADOR_INSTALA_NAO = 1, COD_INSTALADOR_INSTALA_SIM = 2
         /// </summary>
         [Required]
-        [MaxLength(1)]
         public short InstaladorInstala { get; set; }
 
         [MaxLength(500)]

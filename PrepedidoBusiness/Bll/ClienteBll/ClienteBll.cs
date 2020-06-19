@@ -3,27 +3,26 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
-using PrepedidoBusiness.Dtos.ClienteCadastro;
+using PrepedidoBusiness.Dto.ClienteCadastro;
 using PrepedidoBusiness.Dto.ClienteCadastro.Referencias;
 using Microsoft.EntityFrameworkCore;
-using PrepedidoBusiness.Dto.ClienteCadastro;
 using InfraBanco.Constantes;
-using System.Reflection;
 using PrepedidoBusiness.Dto.Cep;
-using System.Data.SqlClient;
 
-namespace PrepedidoBusiness.Bll
+namespace PrepedidoBusiness.Bll.ClienteBll
 {
     public class ClienteBll
     {
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
         private readonly InfraBanco.ContextoCepProvider contextoCepProvider;
+        private readonly CepBll cepBll;
 
         public ClienteBll(InfraBanco.ContextoBdProvider contextoProvider,
-            InfraBanco.ContextoCepProvider contextoCepProvider)
+                    InfraBanco.ContextoCepProvider contextoCepProvider, CepBll cepBll)
         {
             this.contextoProvider = contextoProvider;
             this.contextoCepProvider = contextoCepProvider;
+            this.cepBll = cepBll;
         }
 
         public string Verificar_AletrouDadosPF(Tcliente cli, DadosClienteCadastroDto dados, string apelido)
@@ -339,41 +338,49 @@ namespace PrepedidoBusiness.Bll
             string log = "";
 
             List<string> lstErros = new List<string>();
-            await ValidarDadosClientesCadastro(dadosClienteCadastroDto, lstErros);
 
-            var dados = from c in db.Tclientes
-                        where c.Id == dadosClienteCadastroDto.Id
-                        select c;
-            var cli = await dados.FirstOrDefaultAsync();
+            //vamos passar a lista de cepDto para verificar se o endereço envidao no 
+            //cadastro não foi alterado
+            string cepSoDigito = dadosClienteCadastroDto.Cep.Replace(".", "").Replace("-", "");
+            List<CepDto> lstCepDto = (await cepBll.BuscarPorCep(cepSoDigito)).ToList();
 
-            if (cli != null)
+            if (await ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDto, null, null, lstErros, 
+                contextoProvider, lstCepDto))
             {
-                if (lstErros.Count == 0)
+                var dados = from c in db.Tclientes
+                            where c.Id == dadosClienteCadastroDto.Id
+                            select c;
+                var cli = await dados.FirstOrDefaultAsync();
+
+                if (cli != null)
                 {
-                    //comparar os log em todos os casos de PF
-                    if (dadosClienteCadastroDto.Tipo == Constantes.ID_PF)
+                    if (lstErros.Count == 0)
                     {
-                        log = Verificar_AletrouDadosPF(cli, dadosClienteCadastroDto, apelido);
-                    }
-                    if (dadosClienteCadastroDto.Tipo == Constantes.ID_PJ)
-                    {
-                        log = Verificar_AlterouDadosPJ(cli, dadosClienteCadastroDto, apelido);
-                    }
-
-                    if (!string.IsNullOrEmpty(log))
-                    {
-                        using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+                        //comparar os log em todos os casos de PF
+                        if (dadosClienteCadastroDto.Tipo == Constantes.ID_PF)
                         {
-                            cli.Dt_Ult_Atualizacao = DateTime.Now;
-                            cli.Usuario_Ult_Atualizacao = apelido;
+                            log = Verificar_AletrouDadosPF(cli, dadosClienteCadastroDto, apelido);
+                        }
+                        if (dadosClienteCadastroDto.Tipo == Constantes.ID_PJ)
+                        {
+                            log = Verificar_AlterouDadosPJ(cli, dadosClienteCadastroDto, apelido);
+                        }
 
-                            dbgravacao.Update(cli);
-                            dbgravacao.SaveChanges();
+                        if (!string.IsNullOrEmpty(log))
+                        {
+                            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+                            {
+                                cli.Dt_Ult_Atualizacao = DateTime.Now;
+                                cli.Usuario_Ult_Atualizacao = apelido;
 
-                            bool salvouLog = Utils.Util.GravaLog(dbgravacao, apelido, dadosClienteCadastroDto.Loja, "", dadosClienteCadastroDto.Id,
-                                Constantes.OP_LOG_CLIENTE_ALTERACAO, log);
-                            if (salvouLog)
-                                dbgravacao.transacao.Commit();
+                                dbgravacao.Update(cli);
+                                dbgravacao.SaveChanges();
+
+                                bool salvouLog = Utils.Util.GravaLog(dbgravacao, apelido, dadosClienteCadastroDto.Loja, "", dadosClienteCadastroDto.Id,
+                                    Constantes.OP_LOG_CLIENTE_ALTERACAO, log);
+                                if (salvouLog)
+                                    dbgravacao.transacao.Commit();
+                            }
                         }
                     }
                 }
@@ -563,70 +570,65 @@ namespace PrepedidoBusiness.Bll
 
             var db = contextoProvider.GetContextoLeitura();
             var verifica = await (from c in db.Tclientes
-                                  where c.Id == clienteDto.DadosCliente.Id
+                                  where c.Cnpj_Cpf == clienteDto.DadosCliente.Cnpj_Cpf
                                   select c.Id).FirstOrDefaultAsync();
 
             List<string> lstErros = new List<string>();
-
-            /* FIZ UM ARQUIVO EM SEPARADO QUE REALIZA A VALIDAÇÃO DO CLIENTE DE 
-             * UMA FORMA MELHOR, MAIS CLARA E MAIS FACÍL PARA MANUTENÇÃO
-             * 
-             * OBS: Irei passar a nova forma de fazer a validação do cadastro do cliente
-             * Para isso é necessário realizar as alterações com muito ciodado para não prejudicar 
-             * o que já sendo feito com sucesso
-             * 
-             * => MANTER A FORMA ANTIGA E DEIXAR COMENTADO A NOVA FORMA DE VALIDAÇÃO
-             * 
-             * 
-             * Acho que é válido fazer uma reestruturação das classes e separar o que é validação, pois as BLL's estão muito grande
-             * e de dificil compreensão
-             */
-            //Na validação do cadastro é feito a consistencia de Municipio
-            await ValidarDadosClientesCadastro(clienteDto.DadosCliente, lstErros);
-            ValidarRefBancaria(clienteDto.RefBancaria, lstErros);
-            ValidarRefComercial(clienteDto.RefComercial, lstErros);
-
+            
             if (verifica != null)
-                lstErros.Add("REGISTRO COM ID=" + clienteDto.DadosCliente.Id + " JÁ EXISTE.");
-
-            if (lstErros.Count <= 0)
             {
-                using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+                lstErros.Add("REGISTRO COM ID = " + clienteDto.DadosCliente.Id + " JÁ EXISTE.");
+                return lstErros;
+            }
+
+            //vamos passar a lista de cepDto para verificar se o endereço envidao no 
+            //cadastro não foi alterado
+            string cepSoDigito = clienteDto.DadosCliente.Cep.Replace(".", "").Replace("-", "");
+            List<CepDto> lstCepDto = (await cepBll.BuscarPorCep(cepSoDigito)).ToList();
+
+            if (await ValidacoesClienteBll.ValidarDadosCliente(clienteDto.DadosCliente, clienteDto.RefBancaria,
+                clienteDto.RefComercial, lstErros, contextoProvider, lstCepDto))
+            {
+                if (lstErros.Count <= 0)
                 {
-                    string log = "";
-
-                    DadosClienteCadastroDto cliente = clienteDto.DadosCliente;
-                    Tcliente clienteCadastrado = new Tcliente();
-                    id_cliente = await CadastrarDadosClienteDto(dbgravacao, cliente, apelido, clienteCadastrado);
-
-                    //Por padrão o id do cliente tem 12 caracteres, caso não seja 12 caracteres esta errado
-                    if (id_cliente.Length == 12)
+                    using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
                     {
-                        string campos_a_omitir = "dt_cadastro|usuario_cadastro|dt_ult_atualizacao|usuario_ult_atualizacao";
+                        string log = "";
 
-                        log = Utils.Util.MontaLog(clienteCadastrado, log, campos_a_omitir);
+                        DadosClienteCadastroDto cliente = clienteDto.DadosCliente;
+                        Tcliente clienteCadastrado = new Tcliente();
+                        id_cliente = await CadastrarDadosClienteDto(dbgravacao, cliente, apelido, clienteCadastrado);
 
-                        if (clienteDto.DadosCliente.Tipo == Constantes.ID_PJ)
+                        //Por padrão o id do cliente tem 12 caracteres, caso não seja 12 caracteres esta errado
+                        if (id_cliente.Length == 12)
                         {
-                            log = await CadastrarRefBancaria(dbgravacao, clienteDto.RefBancaria, apelido, id_cliente, log);
-                            log = await CadastrarRefComercial(dbgravacao, clienteDto.RefComercial, apelido, id_cliente, log);
+                            string campos_a_omitir = "dt_cadastro|usuario_cadastro|dt_ult_atualizacao|usuario_ult_atualizacao";
+
+                            log = Utils.Util.MontaLog(clienteCadastrado, log, campos_a_omitir);
+
+                            if (clienteDto.DadosCliente.Tipo == Constantes.ID_PJ)
+                            {
+                                log = await CadastrarRefBancaria(dbgravacao, clienteDto.RefBancaria, apelido, id_cliente, log);
+                                log = await CadastrarRefComercial(dbgravacao, clienteDto.RefComercial, apelido, id_cliente, log);
+                            }
+
+                            bool gravouLog = Utils.Util.GravaLog(dbgravacao, apelido, cliente.Loja, "", id_cliente,
+                                    Constantes.OP_LOG_CLIENTE_INCLUSAO, log);
+                            if (gravouLog)
+                                dbgravacao.transacao.Commit();
+
                         }
-
-                        bool gravouLog = Utils.Util.GravaLog(dbgravacao, apelido, cliente.Loja, "", id_cliente,
-                                Constantes.OP_LOG_CLIENTE_INCLUSAO, log);
-                        if (gravouLog)
-                            dbgravacao.transacao.Commit();
-
-                    }
-                    else
-                    {
-                        //afazer: ver com o Edu, pq isso esta me cheirando a coisa errada, pois me parece
-                        //que o angular espera retornar uma lista vazia no caso de sucesso.
-                        //não faz sentido no caso de erro ao gerar o Id do cliente devolver o id do cliente
-                        lstErros.Add(id_cliente);
+                        else
+                        {
+                            //afazer: ver com o Edu, pq isso esta me cheirando a coisa errada, pois me parece
+                            //que o angular espera retornar uma lista vazia no caso de sucesso.
+                            //não faz sentido no caso de erro ao gerar o Id do cliente devolver o id do cliente
+                            lstErros.Add(id_cliente);
+                        }
                     }
                 }
             }
+
             return lstErros;
         }
 
@@ -673,14 +675,14 @@ namespace PrepedidoBusiness.Bll
                 tCliente.Ddd_Com = clienteDto.DddComercial;
                 tCliente.Tel_Com = clienteDto.TelComercial;
                 tCliente.Ramal_Com = clienteDto.Ramal;
-                tCliente.Contato = clienteDto.Contato;
+                tCliente.Contato = clienteDto.Contato == null ? "" : clienteDto.Contato;
                 tCliente.Ddd_Com_2 = clienteDto.DddComercial2;
                 tCliente.Tel_Com_2 = clienteDto.TelComercial2;
                 tCliente.Ramal_Com_2 = clienteDto.Ramal2;
                 tCliente.Ddd_Cel = clienteDto.DddCelular;
                 tCliente.Tel_Cel = clienteDto.Celular;
                 tCliente.Dt_Nasc = clienteDto.Nascimento;
-                tCliente.Filiacao = clienteDto.Observacao_Filiacao;
+                tCliente.Filiacao = clienteDto.Observacao_Filiacao == null ? "" : clienteDto.Observacao_Filiacao;
                 tCliente.Obs_crediticias = "";
                 tCliente.Midia = "";
                 tCliente.Email = clienteDto.Email;
@@ -763,200 +765,6 @@ namespace PrepedidoBusiness.Bll
             await dbgravacao.SaveChangesAsync();
             return log;
         }
-
-        private List<string> ValidarRefBancaria(List<RefBancariaDtoCliente> lstRefBancaria, List<string> lstErros)
-        {
-            for (int i = 0; i < lstRefBancaria.Count; i++)
-            {
-                if (string.IsNullOrEmpty(lstRefBancaria[i].Banco))
-                    lstErros.Add("Ref Bancária (" + lstRefBancaria[i].Ordem.ToString() + "): informe o banco.");
-                if (string.IsNullOrEmpty(lstRefBancaria[i].Agencia))
-                    lstErros.Add("Ref Bancária (" + lstRefBancaria[i].Ordem.ToString() + "): informe o agência.");
-                if (string.IsNullOrEmpty(lstRefBancaria[i].Conta))
-                    lstErros.Add("Ref Bancária (" + lstRefBancaria[i].Ordem.ToString() + "): informe o número da conta.");
-            }
-
-            return lstErros;
-        }
-
-        private List<string> ValidarRefComercial(List<RefComercialDtoCliente> lstRefComercial, List<string> lstErros)
-        {
-            for (int i = 0; i < lstRefComercial.Count; i++)
-            {
-                lstRefComercial[i].Ordem = i;
-                if (string.IsNullOrEmpty(lstRefComercial[i].Nome_Empresa))
-                    lstErros.Add("Ref Comercial (" + lstRefComercial[i].Ordem + "): informe o nome da empresa.");
-            }
-
-            return lstErros;
-        }
-
-        private async Task<IEnumerable<NfeMunicipio>> ConsisteMunicipioIBGE(string municipio, string uf, List<string> lstErros)
-        {
-            var db = contextoProvider.GetContextoLeitura();
-            List<NfeMunicipio> lst_nfeMunicipios = new List<NfeMunicipio>();
-
-            if (string.IsNullOrEmpty(municipio))
-                lstErros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
-                    "nenhum município foi informado!");
-            if (string.IsNullOrEmpty(uf))
-                lstErros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
-                    "a UF não foi informada!");
-            else
-            {
-                if (uf.Length > 2)
-                    lstErros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
-                        "a UF é inválida (" + uf + ")!");
-            }
-
-            if (lstErros.Count == 0)
-            {
-                lst_nfeMunicipios = (await BuscarSiglaUf(uf, municipio)).ToList();
-
-                if (!lst_nfeMunicipios.Any())
-                {
-                    lstErros.Add("Município '" + municipio + "' não consta na relação de municípios do IBGE para a UF de '" + uf + "'!");
-                }
-            }
-
-            return lst_nfeMunicipios;
-        }
-
-        public async Task<IEnumerable<NfeMunicipio>> BuscarSiglaUf(string uf, string municipio)
-        {
-            List<NfeMunicipio> lstNfeMunicipio = new List<NfeMunicipio>();
-
-            var db = contextoProvider.GetContextoLeitura();
-
-            //buscando os dados para se conectar no servidor de banco de dados
-            TnfEmitente nova_conexao = await (from c in db.TnfEmitentes
-                                              where c.NFe_st_emitente_padrao == 1
-                                              select new TnfEmitente
-                                              {
-                                                  NFe_T1_nome_BD = c.NFe_T1_nome_BD,
-                                                  NFe_T1_servidor_BD = c.NFe_T1_servidor_BD,
-                                                  NFe_T1_usuario_BD = c.NFe_T1_usuario_BD,
-                                                  NFe_T1_senha_BD = c.NFe_T1_senha_BD
-                                              }).FirstOrDefaultAsync();
-
-            SqlConnectionStringBuilder sqlBuilder = new SqlConnectionStringBuilder();
-            sqlBuilder.DataSource = nova_conexao.NFe_T1_servidor_BD;
-            sqlBuilder.InitialCatalog = nova_conexao.NFe_T1_nome_BD;
-            sqlBuilder.UserID = nova_conexao.NFe_T1_usuario_BD;
-
-            sqlBuilder.Password = Utils.Util.decodificaDado(nova_conexao.NFe_T1_senha_BD, Constantes.FATOR_BD);
-
-
-            string providerString = sqlBuilder.ToString();
-
-            using (SqlConnection sql = new SqlConnection(providerString))
-            {
-
-                SqlParameter param = new SqlParameter();
-                param.Value = uf.ToUpper();
-                param.ParameterName = "@UF";
-
-                string query = "SELECT *  FROM NFE_UF WHERE (SiglaUF = @UF)";
-
-                SqlCommand command = new SqlCommand(query, sql);
-                command.Parameters.Add(param);
-
-                command.Connection.Open();
-
-                using (var result = await command.ExecuteReaderAsync())
-                {
-                    if (result != null)
-                    {
-                        NfeUf nfeUF = new NfeUf();
-                        while (result.Read())
-                        {
-                            nfeUF.CodUF = result["CodUF"].ToString();
-                            nfeUF.SiglaUF = result["SiglaUf"].ToString();
-                        };
-
-                        command.Connection.Close();
-
-                        query = "SELECT * FROM NFE_MUNICIPIO WHERE (CodMunic LIKE @nfeUF_CodUF) AND " +
-                            "(Descricao = @municipio COLLATE Latin1_General_CI_AI)";
-
-                        command = new SqlCommand(query, sql);
-
-                        param = new SqlParameter();
-                        param.Value = nfeUF.CodUF + Constantes.BD_CURINGA_TODOS;
-                        param.ParameterName = "@nfeUF_CodUF";
-                        command.Parameters.Add(param);
-
-                        SqlParameter param2 = new SqlParameter();
-                        param2.Value = municipio;
-                        param2.ParameterName = "@municipio";
-                        command.Parameters.Add(param2);
-
-                        command.Connection.Open();
-
-                        using (var result2 = await command.ExecuteReaderAsync())
-                        {
-                            if (result2 != null)
-                            {
-                                while (result2.Read())
-                                {
-                                    NfeMunicipio nfeMunicipio = new NfeMunicipio
-                                    {
-                                        CodMunic = result2["CodMunic"].ToString(),
-                                        Descricao = result2["Descricao"].ToString()
-                                    };
-
-                                    lstNfeMunicipio.Add(nfeMunicipio);
-                                }
-                            }
-                            else
-                            {
-                                command.Connection.Close();
-
-                                query = "SELECT * FROM NFE_MUNICIPIO WHERE (CodMunic LIKE @nfeUF_CodUF) AND " +
-                                    "(Descricao LIKE @municipio COLLATE Latin1_General_CI_AI)";
-
-                                command = new SqlCommand(query, sql);
-
-                                param = new SqlParameter();
-                                param.Value = nfeUF.CodUF + Constantes.BD_CURINGA_TODOS;
-                                param.ParameterName = "@nfeUF_CodUF";
-                                command.Parameters.Add(param);
-
-                                param2 = new SqlParameter();
-                                param2.Value = municipio.Substring(municipio.Length - 1, 1) + Constantes.BD_CURINGA_TODOS;
-                                param2.ParameterName = "@municipio";
-                                command.Parameters.Add(param2);
-
-
-                                command.Connection.Open();
-
-                                using (var result3 = await command.ExecuteReaderAsync())
-                                {
-                                    if (result3 != null)
-                                    {
-                                        while (result3.Read())
-                                        {
-                                            NfeMunicipio nfeMunicipio = new NfeMunicipio
-                                            {
-                                                CodMunic = result3["CodMunic"].ToString(),
-                                                Descricao = result3["Descricao"].ToString()
-                                            };
-
-                                            lstNfeMunicipio.Add(nfeMunicipio);
-                                        }
-                                    }
-                                }
-
-                                command.Connection.Close();
-                            }
-                        }
-                    }
-                }
-            }
-
-            return lstNfeMunicipio;
-        }
-
 
         private async Task ValidarDadosClientesCadastro(DadosClienteCadastroDto cliente, List<string> listaErros)
         {
@@ -1048,9 +856,9 @@ namespace PrepedidoBusiness.Bll
             if (!string.IsNullOrEmpty(cliente.Ie))
             {
 
-                string uf = VerificarInscricaoEstadualValida(cliente.Ie, cliente.Uf, listaErros);
-                List<NfeMunicipio> lstNfeMunicipio = new List<NfeMunicipio>();
-                lstNfeMunicipio = (await ConsisteMunicipioIBGE(cliente.Cidade, cliente.Uf, listaErros)).ToList();
+                //string uf = VerificarInscricaoEstadualValida(cliente.Ie, cliente.Uf, listaErros);
+                //List<NfeMunicipio> lstNfeMunicipio = new List<NfeMunicipio>();
+                //lstNfeMunicipio = (await ConsisteMunicipioIBGE(cliente.Cidade, cliente.Uf, listaErros)).ToList();
 
             }
             //vamos verificar novamente o endereço, pois o usuário pode buscar o cep e 
@@ -1081,68 +889,9 @@ namespace PrepedidoBusiness.Bll
             }
         }
 
-        private string VerificarInscricaoEstadualValida(string ie, string uf, List<string> listaErros)
-        {
-            string c = "";
-            int qtdeDig = 0;
-            int num;
-            string retorno = "";
-            bool blnResultado = false;
-
-            if (ie != "ISENTO")
-            {
-                for (int i = 0; i < ie.Length; i++)
-                {
-                    c = ie.Substring(i, 1);
-                    if (!int.TryParse(c, out num) && c != "." && c != "-" && c != "/")
-                        blnResultado = false;
-                    if (int.TryParse(c, out num))
-                        qtdeDig += 1;
-                }
-                if (qtdeDig < 2 && qtdeDig > 14)
-                    retorno = "Preencha a IE (Inscrição Estadual) com um número válido! " +
-                            "Certifique-se de que a UF informada corresponde à UF responsável pelo registro da IE.";
-                else
-                    retorno = ie;
-            }
-            else
-            {
-                retorno = ie;
-            }
-
-            blnResultado = isInscricaoEstadualOkCom(ie, uf, listaErros);
-            if (!blnResultado)
-            {
-                listaErros.Add("Preencha a IE (Inscrição Estadual) com um número válido! " +
-                            "Certifique-se de que a UF informada corresponde à UF responsável pelo registro da IE.");
-            }
-
-            return retorno;
-        }
-
-        private bool isInscricaoEstadualOkCom(string ie, string uf, List<string> listaErros)
-        {
-            var ReflectionUtilsMemberAccess =
-          BindingFlags.Public | BindingFlags.NonPublic |
-          BindingFlags.Static | BindingFlags.Instance | BindingFlags.IgnoreCase;
-
-            ie = ie.Replace(".", "").Replace("-", "");
-            // this works with both .NET 4.5+ and .NET Core 2.0+
-
-            string progId = "ComPlusWrapper_DllInscE32.ComPlusWrapper_DllInscE32";
-            Type type = Type.GetTypeFromProgID(progId);
-            object inst = Activator.CreateInstance(type);
 
 
-            bool result = (bool)inst.GetType().InvokeMember("isInscricaoEstadualOk",
-                ReflectionUtilsMemberAccess | BindingFlags.InvokeMethod, null, inst,
-                new object[2]
-                {
-                    ie, uf
-                });
 
-            return result;
-        }
 
         private async Task<string> GerarIdCliente(InfraBanco.ContextoBdGravacao dbgravacao, string id_nsu)
         {

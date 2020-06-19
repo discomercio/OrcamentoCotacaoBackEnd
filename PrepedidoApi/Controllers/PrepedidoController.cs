@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PrepedidoBusiness.Dtos.Prepedido.DetalhesPrepedido;
+using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 
 namespace PrepedidoApi.Controllers
 {

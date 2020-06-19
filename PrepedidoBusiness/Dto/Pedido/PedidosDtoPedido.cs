@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace PrepedidoBusiness.Dtos.Pedido
+namespace PrepedidoBusiness.Dto.Pedido
 {
     public class PedidoDtoPedido
     {

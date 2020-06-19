@@ -56,25 +56,6 @@ namespace PrepedidoAPIUnis.Controllers
         }
 
         /// <summary>
-        /// Rotina para deletar Pré-Pedido
-        /// </summary>
-        /// <param name="deletarPrepedido"></param>
-        /// <returns></returns>
-        //[AllowAnonymous]
-        //[HttpPost("deletarPrepedido")]
-        //public async Task<IActionResult> DeletarPrePedido(DeletarPrepedidoUnisDto deletarPrepedido)
-        //{
-        //    if (!servicoValidarTokenApiUnis.ValidarToken(deletarPrepedido.TokenAcesso, out string usuario))
-        //        return Unauthorized();
-
-        //    //chamar bll para deletar
-        //    await prepedidoUnisBll.DeletarOrcamentoExisteComTransacao(deletarPrepedido.Indicador_Orcamentista.ToUpper(),
-        //    deletarPrepedido.NumeroPrepedido);
-
-        //    return Ok();
-        //}
-
-        /// <summary>
         /// Rotina para cancelar Pré-Pedido
         /// </summary>
         /// <param name="cancelarPrepedido"></param>

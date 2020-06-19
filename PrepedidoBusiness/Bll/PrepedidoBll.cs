@@ -1,19 +1,15 @@
-﻿using PrepedidoBusiness;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using InfraBanco.Modelos;
 using PrepedidoBusiness.Utils;
-using PrepedidoBusiness.Dtos.Prepedido;
-using PrepedidoBusiness.Dtos.Prepedido.DetalhesPrepedido;
-using PrepedidoBusiness.Dtos.ClienteCadastro;
-using InfraBanco.Constantes;
+using PrepedidoBusiness.Dto.Prepedido;
 using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
+using PrepedidoBusiness.Dto.ClienteCadastro;
+using InfraBanco.Constantes;
 using PrepedidoBusiness.Bll.Regras;
-using System.Transactions;
 using InfraBanco;
 using System.Reflection;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -1384,7 +1380,7 @@ namespace PrepedidoBusiness.Bll
                 if (!string.IsNullOrEmpty(p.NumProduto))
                 {
                     var produtoTask = (from c in db.Tprodutos
-                                       where c.Produto == p.NumProduto
+                                       where c.Produto == p.NumProduto && c.Fabricante == p.Fabricante
                                        select c.Descontinuado).FirstOrDefaultAsync();
                     var produto = await produtoTask;
 
@@ -1633,6 +1629,11 @@ namespace PrepedidoBusiness.Bll
                     retorno = false;
                 }
             }
+
+            //fazer a consistência de cep pelo consiste que é feito no consiste
+            //string uf = VerificarInscricaoEstadualValida(dadosCliente.Ie, dadosCliente.Uf, lstErros);
+            //List<NfeMunicipio> lstNfeMunicipio = new List<NfeMunicipio>();
+            //lstNfeMunicipio = (await ConsisteMunicipioIBGE(dadosCliente.Cidade, dadosCliente.Uf, lstErros)).ToList();
 
             return retorno;
         }

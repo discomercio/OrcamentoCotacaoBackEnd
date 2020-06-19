@@ -2,7 +2,7 @@
 using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
 using PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto;
 using PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto;
-using PrepedidoBusiness.Dtos.Prepedido.DetalhesPrepedido;
+using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using PrepedidoUnisBusiness.UnisBll.PrePedidoUnisBll;
 using System;
 using System.Collections.Generic;
@@ -16,13 +16,16 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
         private readonly InfraBanco.ContextoCepProvider contextoCepProvider;
         private readonly PrepedidoBusiness.Bll.PrepedidoBll prepedidoBll;
+        private readonly PrepedidoBusiness.Bll.ClienteBll.ClienteBll clienteBll;
 
         public PrePedidoUnisBll(InfraBanco.ContextoBdProvider contextoProvider,
-            InfraBanco.ContextoCepProvider contextoCepProvider, PrepedidoBusiness.Bll.PrepedidoBll prepedidoBll)
+            InfraBanco.ContextoCepProvider contextoCepProvider, PrepedidoBusiness.Bll.PrepedidoBll prepedidoBll,
+            PrepedidoBusiness.Bll.ClienteBll.ClienteBll clienteBll)
         {
             this.contextoProvider = contextoProvider;
             this.contextoCepProvider = contextoCepProvider;
             this.prepedidoBll = prepedidoBll;
+            this.clienteBll = clienteBll;
         }
 
 
@@ -47,9 +50,8 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
 
             var db = contextoProvider.GetContextoLeitura();
 
-            PrepedidoBusiness.Bll.ClienteBll clienteArclubeBll = new PrepedidoBusiness.Bll.ClienteBll(contextoProvider, contextoCepProvider);
             //BUSCAR DADOS DO CLIENTE para incluir no dto de dados do cliente
-            var clienteArclube = await clienteArclubeBll.BuscarCliente(prePedidoUnis.Cnpj_Cpf,
+            var clienteArclube = await clienteBll.BuscarCliente(prePedidoUnis.Cnpj_Cpf,
                 prePedidoUnis.Indicador_Orcamentista);
 
             if (clienteArclube == null)
