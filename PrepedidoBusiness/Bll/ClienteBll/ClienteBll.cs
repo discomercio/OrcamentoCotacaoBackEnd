@@ -856,8 +856,8 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             if (!string.IsNullOrEmpty(cliente.Ie))
             {
 
-                string uf = VerificarInscricaoEstadualValida(cliente.Ie, cliente.Uf, listaErros);
-                await ConsisteMunicipioIBGE(cliente.Cidade, cliente.Uf, listaErros);
+                ValidacoesClienteBll.VerificarInscricaoEstadualValida(cliente.Ie, cliente.Uf, listaErros);
+                await ValidacoesClienteBll.ConsisteMunicipioIBGE(cliente.Cidade, cliente.Uf, listaErros, contextoProvider);
 
             }
             //vamos verificar novamente o endereço, pois o usuário pode buscar o cep e 

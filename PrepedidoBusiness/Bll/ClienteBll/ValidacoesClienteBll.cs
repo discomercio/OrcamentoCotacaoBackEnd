@@ -359,7 +359,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     }
                 }
                 //vamos buscar o cep e comparar os endereços 
-                if(!VerificarEndereco(dadosCliente, lstCepDto, lstErros))
+                if (!VerificarEndereco(dadosCliente, lstCepDto, lstErros))
                 {
                     retorno = false;
                 }
@@ -410,13 +410,12 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
             if (!string.IsNullOrEmpty(dadosCliente.Ie))
             {
-
-                string uf = VerificarInscricaoEstadualValida(dadosCliente.Ie, dadosCliente.Uf, lstErros);
-                List<NfeMunicipio> lstNfeMunicipio = new List<NfeMunicipio>();
-                lstNfeMunicipio = (await ConsisteMunicipioIBGE(dadosCliente.Cidade, dadosCliente.Uf, lstErros,
-                    contextoProvider)).ToList();
-
+                VerificarInscricaoEstadualValida(dadosCliente.Ie, dadosCliente.Uf, lstErros);
             }
+
+            List<NfeMunicipio> lstNfeMunicipio = new List<NfeMunicipio>();
+            lstNfeMunicipio = (await ConsisteMunicipioIBGE(dadosCliente.Cidade, dadosCliente.Uf, lstErros,
+                contextoProvider)).ToList();
 
             return retorno;
         }
@@ -497,34 +496,31 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return lst_nfeMunicipios;
         }
 
-        private static string VerificarInscricaoEstadualValida(string ie, string uf, List<string> listaErros)
+        public static void VerificarInscricaoEstadualValida(string ie, string uf, List<string> listaErros)
         {
-            string c = "";
+            string c;
             int qtdeDig = 0;
             int num;
-            string retorno = "";
-            bool blnResultado = false;
 
             if (ie != "ISENTO")
             {
                 for (int i = 0; i < ie.Length; i++)
                 {
                     c = ie.Substring(i, 1);
-                    if (!int.TryParse(c, out num) && c != "." && c != "-" && c != "/")
-                        blnResultado = false;
+
                     if (int.TryParse(c, out num))
                         qtdeDig += 1;
                 }
                 if (qtdeDig < 2 && qtdeDig > 14)
-                    retorno = "Preencha a IE (Inscrição Estadual) com um número válido! " +
-                            "Certifique-se de que a UF informada corresponde à UF responsável pelo registro da IE.";
-                else
-                    retorno = ie;
+                {
+                    listaErros.Add("Preencha a IE (Inscrição Estadual) com um número válido! " +
+                            "Certifique-se de que a UF informada corresponde à UF responsável pelo registro da IE.");
+                    return;
+                }
+
             }
-            else
-            {
-                retorno = ie;
-            }
+
+            bool blnResultado;
 
             blnResultado = isInscricaoEstadualOkCom(ie, uf, listaErros);
             if (!blnResultado)
@@ -532,8 +528,6 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 listaErros.Add("Preencha a IE (Inscrição Estadual) com um número válido! " +
                             "Certifique-se de que a UF informada corresponde à UF responsável pelo registro da IE.");
             }
-
-            return retorno;
         }
 
         private static bool isInscricaoEstadualOkCom(string ie, string uf, List<string> listaErros)
@@ -581,25 +575,25 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                             listaErros.Add("Número do Cep não confere!");
                             retorno = false;
                         }
-                        if (Util.RemoverAcentuacao(c.Endereco).ToUpper() != 
+                        if (Util.RemoverAcentuacao(c.Endereco).ToUpper() !=
                             Util.RemoverAcentuacao(cliente.Endereco).ToUpper())
                         {
                             listaErros.Add("Endereço não confere!");
                             retorno = false;
                         }
-                        if(Util.RemoverAcentuacao(c.Bairro).ToUpper() != 
+                        if (Util.RemoverAcentuacao(c.Bairro).ToUpper() !=
                             Util.RemoverAcentuacao(cliente.Bairro).ToUpper())
                         {
                             listaErros.Add("Bairro não confere!");
                             retorno = false;
                         }
-                        if(Util.RemoverAcentuacao(c.Cidade).ToUpper() != 
+                        if (Util.RemoverAcentuacao(c.Cidade).ToUpper() !=
                             Util.RemoverAcentuacao(cliente.Cidade).ToUpper())
                         {
                             listaErros.Add("Cidade não confere!");
                             retorno = false;
                         }
-                        if(c.Uf.ToUpper() != cliente.Uf.ToUpper())
+                        if (c.Uf.ToUpper() != cliente.Uf.ToUpper())
                         {
                             listaErros.Add("Estado não confere!");
                             retorno = false;
