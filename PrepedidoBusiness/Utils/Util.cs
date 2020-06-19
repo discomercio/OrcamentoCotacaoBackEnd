@@ -1183,7 +1183,7 @@ namespace PrepedidoBusiness.Utils
 
         }
 
-        public static void ObterDisponibilidadeEstoque(List<RegrasBll> lstRegrasCrtlEstoque, List<ProdutoDto> lst_produtos,
+        public static void ObterDisponibilidadeEstoque(List<RegrasBll> lstRegrasCrtlEstoque, List<Bll.ProdutoBll.ProdutoDados.ProdutoDados> lst_produtos,
             List<string> lstErros, ContextoBdProvider contextoProvider)
         {
             foreach (var r in lstRegrasCrtlEstoque)

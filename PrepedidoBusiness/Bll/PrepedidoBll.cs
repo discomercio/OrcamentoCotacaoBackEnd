@@ -17,6 +17,7 @@ using System.Transactions;
 using InfraBanco;
 using System.Reflection;
 using System.ComponentModel.DataAnnotations.Schema;
+using PrepedidoBusiness.Bll.ProdutoBll;
 
 namespace PrepedidoBusiness.Bll
 {
@@ -716,7 +717,7 @@ namespace PrepedidoBusiness.Bll
                             await Util.ObterCtrlEstoqueProdutoRegra_Teste(lstErros, regraCrtlEstoque, prePedido.DadosCliente.Uf, tipoPessoa, contextoProvider);
 
 
-                            ProdutoBll.VerificarRegrasAssociadasAosProdutos(regraCrtlEstoque, lstErros, prePedido.DadosCliente);
+                            ProdutoGeralBll.VerificarRegrasAssociadasAosProdutos(regraCrtlEstoque, lstErros, prePedido.DadosCliente);
                             //obtendo qtde disponivel
                             await Util.VerificarEstoque(regraCrtlEstoque, contextoProvider);
 

@@ -1,4 +1,5 @@
-﻿using PrepedidoBusiness.Dto.Produto;
+﻿using PrepedidoBusiness.Bll.ProdutoBll.ProdutoDados;
+using PrepedidoBusiness.Dto.Produto;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -33,23 +34,22 @@ namespace PrepedidoUnisBusiness.UnisDto.ProdutoUnisDto
 
         public float? Desc_Max { get; set; }
 
-        //TODO:  incluir Descricao e Desc_Max na busca de produtos da Bll da arclube
-        public static ProdutoUnisDto ProdutoUnisDtoDeProdutoDto(ProdutoDto produtoDto)
+        internal static ProdutoUnisDto ProdutoUnisDtoDeProdutoDados(ProdutoDados produtoDados)
         {
             var ret = new ProdutoUnisDto()
             {
-                Fabricante = produtoDto.Fabricante,
-                Fabricante_Nome = produtoDto.Fabricante_Nome,
-                Produto = produtoDto.Produto,
-                Descricao_html = produtoDto.Descricao_html,                
-                Preco_lista = produtoDto.Preco_lista,
-                Estoque = produtoDto.Estoque,
-                Alertas = produtoDto.Alertas,
-                Qtde_Max_Venda = produtoDto.Qtde_Max_Venda
+                Fabricante = produtoDados.Fabricante,
+                Fabricante_Nome = produtoDados.Fabricante_Nome,
+                Produto = produtoDados.Produto,
+                Descricao_html = produtoDados.Descricao_html,
+                Descricao = produtoDados.Descricao,
+                Preco_lista = produtoDados.Preco_lista,
+                Estoque = produtoDados.Estoque,
+                Alertas = produtoDados.Alertas,
+                Qtde_Max_Venda = produtoDados.Qtde_Max_Venda,
+                Desc_Max = produtoDados.Desc_Max
             };
             return ret;
         }
-
-        
     }
 }
