@@ -8,8 +8,7 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
         public string CorHeader { get; set; }
         public string TextoHeader { get; set; }
         public string CanceladoData { get; set; }
-        public string NumeroPrePedido { get; set; }
-        
+        public string NumeroPrePedido { get; set; }        
         public string DataHoraPedido { get; set; }
         public string Hora_Prepedido { get; set; }
         public DadosClienteCadastroDto DadosCliente { get; set; }

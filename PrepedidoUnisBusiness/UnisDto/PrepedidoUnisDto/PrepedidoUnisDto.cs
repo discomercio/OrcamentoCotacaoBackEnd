@@ -1,4 +1,6 @@
 ﻿using PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto;
+using PrepedidoBusiness.Dto.ClienteCadastro;
+using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using PrepedidoUnisBusiness.UnisDto.ClienteUnisDto;
 using System;
 using System.Collections.Generic;
@@ -34,5 +36,30 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
 
         [Required]
         public float Perc_Desagio_RA_Liquida { get; set; }
+
+
+        public static PrePedidoDto PrePedidoDtoDePrePedidoUnisDto(PrePedidoUnisDto prepedidoUnis,
+            DadosClienteCadastroDto dadosClienteArclube, List<PrepedidoProdutoDtoPrepedido> lstProdutosArclube)
+        {
+            var ret = new PrePedidoDto()
+            {
+                DadosCliente = dadosClienteArclube,
+                EnderecoEntrega = EnderecoEntregaClienteCadastroUnisDto.
+                    EnderecoEntregaDtoClienteCadastroDeEnderecoEntregaClienteCadastroUnisDto(
+                    prepedidoUnis.EnderecoEntrega, prepedidoUnis.OutroEndereco),
+                ListaProdutos = lstProdutosArclube,
+                PermiteRAStatus = Convert.ToInt16(prepedidoUnis.PermiteRAStatus),
+                ValorTotalDestePedidoComRA = prepedidoUnis.ValorTotalDestePedidoComRA,
+                VlTotalDestePedido = prepedidoUnis.VlTotalDestePedido,
+                DetalhesPrepedido = DetalhesPrePedidoUnisDto.
+                    DetalhesPrePedidoDtoDeDetalhesPrePedidoUnisDto(prepedidoUnis.DetalhesPrepedido),
+                FormaPagtoCriacao = FormaPagtoCriacaoUnisDto.FormaPagtoCriacaoDtoDeFormaPagtoCriacaoUnisDto(
+                    prepedidoUnis.FormaPagtoCriacao),
+            };
+
+            return ret;
+        }
+
+
     }
 }

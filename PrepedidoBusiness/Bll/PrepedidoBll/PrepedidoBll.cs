@@ -16,17 +16,22 @@ using System.ComponentModel.DataAnnotations.Schema;
 using PrepedidoBusiness.Bll.ProdutoBll;
 using PrepedidoBusiness.Bll.ClienteBll;
 
-namespace PrepedidoBusiness.Bll
+namespace PrepedidoBusiness.Bll.PrepedidoBll
 {
     public class PrepedidoBll
     {
         private readonly ContextoBdProvider contextoProvider;
         private readonly ClienteBll.ClienteBll clienteBll;
+        private readonly ValidacoesPrepedidoBll validacoesPrepedidoBll;
+        private readonly CepBll cepBll;
 
-        public PrepedidoBll(ContextoBdProvider contextoProvider, ClienteBll.ClienteBll clienteBll)
+        public PrepedidoBll(ContextoBdProvider contextoProvider, ClienteBll.ClienteBll clienteBll, 
+            ValidacoesPrepedidoBll validacoesPrepedidoBll, CepBll cepBll)
         {
             this.contextoProvider = contextoProvider;
             this.clienteBll = clienteBll;
+            this.validacoesPrepedidoBll = validacoesPrepedidoBll;
+            this.cepBll = cepBll;
         }
 
         public async Task<IEnumerable<string>> ListarNumerosPrepedidosCombo(string orcamentista)
@@ -419,7 +424,7 @@ namespace PrepedidoBusiness.Bll
                         ") vencendo após " + torcamento.Pse_Prim_Prest_Apos + " dias", torcamento.Pse_Prim_Prest_Valor));
                     lista.Add(String.Format("Prestações: " + torcamento.Pse_Demais_Prest_Qtde + " x " +
                         " {0:c2} (" + Util.OpcaoFormaPagto(torcamento.Pse_Forma_Pagto_Demais_Prest) +
-                        ") vencendo a cada " + torcamento.Pse_Demais_Prest_Periodo + " dias", 
+                        ") vencendo a cada " + torcamento.Pse_Demais_Prest_Periodo + " dias",
                         torcamento.Pse_Demais_Prest_Valor));
                     break;
             }
@@ -643,6 +648,13 @@ namespace PrepedidoBusiness.Bll
             if (tOrcamentista.Apelido != apelido)
                 lstErros.Add("Falha ao recuperar os dados cadastrais!");
 
+            //vamos validar os dados do cliente
+            await ValidacoesClienteBll.ValidarDadosCliente(prePedido.DadosCliente, null, null, 
+                lstErros, contextoProvider, cepBll);
+
+            if (lstErros.Count > 0)
+                return lstErros;
+
             //verifica se o prepedio já foi gravado
             var prepedidoJaCadastradoNumero = await PrepedidoJaCadastrado(prePedido);
             if (!String.IsNullOrEmpty(prepedidoJaCadastradoNumero))
@@ -652,7 +664,8 @@ namespace PrepedidoBusiness.Bll
             }
 
             //verificar como esta sendo salvo
-            if (prePedido.DetalhesPrepedido.EntregaImediata == "1")//Não
+            if (prePedido.DetalhesPrepedido.EntregaImediata ==
+                Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO.ToString())//Não
             {
                 if (prePedido.DetalhesPrepedido.EntregaImediataData <= DateTime.Now)
                 {
@@ -666,11 +679,6 @@ namespace PrepedidoBusiness.Bll
                 lstErros.Add("É permitido apenas 12 itens por Pré-Pedido!");
                 return lstErros;
             }
-
-
-            //afazer: Verificar se teve alteração no cadastro do cliente para ser incluído
-            //nos campos de Torcamento
-
 
             if (await Util.LojaHabilitadaProdutosECommerce(prePedido.DadosCliente.Loja, contextoProvider))
             {
@@ -687,13 +695,17 @@ namespace PrepedidoBusiness.Bll
                 {
                     if (ValidarFormaPagto(prePedido, lstErros))
                     {
-
                         //Esta sendo verificado qual o tipo de pagamento que esta sendo feito e retornando a quantidade de parcelas
                         int c_custoFinancFornecQtdeParcelas = ObterQtdeParcelasFormaPagto(prePedido);
 
                         //varificar o numero para saber o tipo de pagamento
                         string c_custoFinancFornecTipoParcelamento = ObterSiglaFormaPagto(prePedido);
 
+                        //AQUI CHAMAR FUNÇÃO PARA VALIDAR OS ITENS =============
+                        await validacoesPrepedidoBll.MontarProdutosParaComparacao(prePedido.ListaProdutos,
+                            c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas, prePedido.DadosCliente.Loja, lstErros);
+                        if (lstErros.Count > 0)
+                            return lstErros;
 
                         if (Util.ValidarTipoCustoFinanceiroFornecedor(lstErros, c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas))
                         {
@@ -712,8 +724,7 @@ namespace PrepedidoBusiness.Bll
                             //List<RegrasBll> regraCrtlEstoque = new List<RegrasBll>();
                             List<RegrasBll> regraCrtlEstoque = (await ObterCtrlEstoqueProdutoRegra(prePedido, lstErros)).ToList();
                             await Util.ObterCtrlEstoqueProdutoRegra_Teste(lstErros, regraCrtlEstoque, prePedido.DadosCliente.Uf, tipoPessoa, contextoProvider);
-
-
+                            
                             ProdutoGeralBll.VerificarRegrasAssociadasAosProdutos(regraCrtlEstoque, lstErros, prePedido.DadosCliente);
                             //obtendo qtde disponivel
                             await Util.VerificarEstoque(regraCrtlEstoque, contextoProvider);
@@ -1593,12 +1604,12 @@ namespace PrepedidoBusiness.Bll
 
             if (endEtg.OutroEndereco)
             {
-                if(string.IsNullOrEmpty(endEtg.EndEtg_cod_justificativa))
+                if (string.IsNullOrEmpty(endEtg.EndEtg_cod_justificativa))
                 {
                     lstErros.Add("SELECIONE A JUSTIFICATIVA DO ENDEREÇO DE ENTREGA!");
                     retorno = false;
                 }
-                
+
                 if (string.IsNullOrEmpty(endEtg.EndEtg_endereco))
                 {
                     lstErros.Add("PREENCHA O ENDEREÇO DE ENTREGA.");
@@ -1636,7 +1647,7 @@ namespace PrepedidoBusiness.Bll
                     retorno = false;
                 }
 
-                
+
                 List<NfeMunicipio> lstNfeMunicipio = (await ValidacoesClienteBll.ConsisteMunicipioIBGE(
                     endEtg.EndEtg_cidade, endEtg.EndEtg_uf, lstErros, contextoProvider)).ToList();
             }

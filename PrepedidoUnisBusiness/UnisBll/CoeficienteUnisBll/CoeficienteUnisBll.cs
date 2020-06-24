@@ -23,7 +23,6 @@ namespace PrepedidoUnisBusiness.UnisBll.CoeficienteUnisBll
 
             List<List<CoeficienteDto>> lstCoeficienteDtoArclube = new List<List<CoeficienteDto>>();
             List<CoeficienteDto> coefDtoArclube = new List<CoeficienteDto>();
-            CoeficienteDto coef = new CoeficienteDto();
 
             var lstCoeficienteDtoArclubeTask = coeficienteBll.BuscarListaCoeficientesFornecedores(lstFornecedores);
             

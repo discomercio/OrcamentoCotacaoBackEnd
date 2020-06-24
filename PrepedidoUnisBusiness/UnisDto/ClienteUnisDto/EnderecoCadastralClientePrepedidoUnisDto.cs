@@ -94,5 +94,7 @@ namespace PrepedidoUnisBusiness.UnisDto.ClienteUnisDto
 
         [MaxLength(30)]
         public string Endereco_contato { get; set; }
+
+
     }
 }

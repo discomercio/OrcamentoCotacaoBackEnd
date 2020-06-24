@@ -339,13 +339,8 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
             List<string> lstErros = new List<string>();
 
-            //vamos passar a lista de cepDto para verificar se o endereço envidao no 
-            //cadastro não foi alterado
-            string cepSoDigito = dadosClienteCadastroDto.Cep.Replace(".", "").Replace("-", "");
-            List<CepDto> lstCepDto = (await cepBll.BuscarPorCep(cepSoDigito)).ToList();
-
-            if (await ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDto, null, null, lstErros, 
-                contextoProvider, lstCepDto))
+            if (await ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDto, null, null, lstErros,
+                contextoProvider, cepBll))
             {
                 var dados = from c in db.Tclientes
                             where c.Id == dadosClienteCadastroDto.Id
@@ -574,20 +569,15 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                                   select c.Id).FirstOrDefaultAsync();
 
             List<string> lstErros = new List<string>();
-            
+
             if (verifica != null)
             {
                 lstErros.Add("REGISTRO COM ID = " + clienteDto.DadosCliente.Id + " JÁ EXISTE.");
                 return lstErros;
             }
 
-            //vamos passar a lista de cepDto para verificar se o endereço envidao no 
-            //cadastro não foi alterado
-            string cepSoDigito = clienteDto.DadosCliente.Cep.Replace(".", "").Replace("-", "");
-            List<CepDto> lstCepDto = (await cepBll.BuscarPorCep(cepSoDigito)).ToList();
-
             if (await ValidacoesClienteBll.ValidarDadosCliente(clienteDto.DadosCliente, clienteDto.RefBancaria,
-                clienteDto.RefComercial, lstErros, contextoProvider, lstCepDto))
+                clienteDto.RefComercial, lstErros, contextoProvider, cepBll))
             {
                 if (lstErros.Count <= 0)
                 {
@@ -887,10 +877,6 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     listaErros.Add("Os dados informados estão divergindo da base de dados!");
             }
         }
-
-
-
-
 
         private async Task<string> GerarIdCliente(InfraBanco.ContextoBdGravacao dbgravacao, string id_nsu)
         {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PrepedidoBusiness.Dto.ClienteCadastro;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Text;
 namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
 {
     public class EnderecoEntregaClienteCadastroUnisDto
-    {        
+    {
 
         [MaxLength(80)]
         public string EndEtg_endereco { get; set; }
@@ -43,7 +44,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
         /// </summary>
         [MaxLength(3)]
         public string EndEtg_cod_justificativa { get; set; }
-        
+
         //Novo campos
 
         [MaxLength(60)]
@@ -111,5 +112,79 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
 
         [MaxLength(20)]
         public string EndEtg_rg { get; set; }
+
+        public static EnderecoEntregaDtoClienteCadastro EnderecoEntregaDtoClienteCadastroDeEnderecoEntregaClienteCadastroUnisDto(EnderecoEntregaClienteCadastroUnisDto endEtg, bool outroEnd)
+        {
+            EnderecoEntregaDtoClienteCadastro ret = new EnderecoEntregaDtoClienteCadastro();
+            ret.OutroEndereco = outroEnd;
+
+            if (outroEnd)
+            {
+                ret.EndEtg_endereco = endEtg.EndEtg_endereco;
+                ret.EndEtg_endereco_numero = endEtg.EndEtg_endereco_numero;
+                ret.EndEtg_endereco_complemento = endEtg.EndEtg_endereco_complemento;
+                ret.EndEtg_bairro = endEtg.EndEtg_bairro;
+                ret.EndEtg_cidade = endEtg.EndEtg_cidade;
+                ret.EndEtg_uf = endEtg.EndEtg_uf;
+                ret.EndEtg_cep = endEtg.EndEtg_cep;
+                ret.EndEtg_cod_justificativa = endEtg.EndEtg_cod_justificativa;
+                ret.EndEtg_email = endEtg.EndEtg_email;
+                ret.EndEtg_email_xml = endEtg.EndEtg_email_xml;
+                ret.EndEtg_nome = endEtg.EndEtg_nome;
+                ret.EndEtg_ddd_res = endEtg.EndEtg_ddd_res;
+                ret.EndEtg_tel_res = endEtg.EndEtg_tel_res;
+                ret.EndEtg_ddd_com = endEtg.EndEtg_ddd_com;
+                ret.EndEtg_tel_com = endEtg.EndEtg_tel_com;
+                ret.EndEtg_ramal_com = endEtg.EndEtg_ramal_com;
+                ret.EndEtg_ddd_cel = endEtg.EndEtg_ddd_cel;
+                ret.EndEtg_tel_cel = endEtg.EndEtg_tel_cel;
+                ret.EndEtg_ddd_com_2 = endEtg.EndEtg_ddd_com_2;
+                ret.EndEtg_tel_com_2 = endEtg.EndEtg_tel_com_2;
+                ret.EndEtg_ramal_com_2 = endEtg.EndEtg_ramal_com_2;
+                ret.EndEtg_tipo_pessoa = endEtg.EndEtg_tipo_pessoa;
+                ret.EndEtg_cnpj_cpf = endEtg.EndEtg_cnpj_cpf;
+                ret.EndEtg_contribuinte_icms_status = endEtg.EndEtg_contribuinte_icms_status;
+                ret.EndEtg_produtor_rural_status = endEtg.EndEtg_produtor_rural_status;
+                ret.EndEtg_ie = endEtg.EndEtg_ie;
+                ret.EndEtg_rg = endEtg.EndEtg_rg;
+            }
+
+            return ret;
+        }
+
+        public static EnderecoEntregaClienteCadastroUnisDto EnderecoEntregaClienteCadastroUnisDtoDeEnderecoEntregaDtoClienteCadastro(EnderecoEntregaDtoClienteCadastro endEtg)
+        {
+            var ret = new EnderecoEntregaClienteCadastroUnisDto()
+            {
+                EndEtg_endereco = endEtg.EndEtg_endereco,
+                EndEtg_endereco_numero = endEtg.EndEtg_endereco_numero,
+                EndEtg_endereco_complemento = endEtg.EndEtg_endereco_complemento,
+                EndEtg_bairro = endEtg.EndEtg_bairro,
+                EndEtg_cidade = endEtg.EndEtg_cidade,
+                EndEtg_uf = endEtg.EndEtg_uf,
+                EndEtg_cep = endEtg.EndEtg_cep,
+                EndEtg_cod_justificativa = endEtg.EndEtg_cod_justificativa,
+                EndEtg_email = endEtg.EndEtg_email,
+                EndEtg_email_xml = endEtg.EndEtg_email_xml,
+                EndEtg_nome = endEtg.EndEtg_nome,
+                EndEtg_ddd_res = endEtg.EndEtg_ddd_res,
+                EndEtg_tel_res = endEtg.EndEtg_tel_res,
+                EndEtg_ddd_com = endEtg.EndEtg_ddd_com,
+                EndEtg_tel_com = endEtg.EndEtg_tel_com,
+                EndEtg_ramal_com = endEtg.EndEtg_ramal_com,
+                EndEtg_ddd_cel = endEtg.EndEtg_ddd_cel,
+                EndEtg_tel_cel = endEtg.EndEtg_tel_cel,
+                EndEtg_ddd_com_2 = endEtg.EndEtg_ddd_com_2,
+                EndEtg_tel_com_2 = endEtg.EndEtg_tel_com_2,
+                EndEtg_ramal_com_2 = endEtg.EndEtg_ramal_com_2,
+                EndEtg_tipo_pessoa = endEtg.EndEtg_tipo_pessoa,
+                EndEtg_cnpj_cpf = endEtg.EndEtg_cnpj_cpf,
+                EndEtg_contribuinte_icms_status = endEtg.EndEtg_contribuinte_icms_status,
+                EndEtg_produtor_rural_status = endEtg.EndEtg_produtor_rural_status,
+                EndEtg_ie = endEtg.EndEtg_ie,
+                EndEtg_rg = endEtg.EndEtg_rg,
+            };
+            return ret;
+        }
     }
 }

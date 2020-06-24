@@ -19,9 +19,9 @@ namespace PrepedidoBusiness.Bll.ClienteBll
     {
         public static async Task<bool> ValidarDadosCliente(DadosClienteCadastroDto dadosCliente,
             List<RefBancariaDtoCliente> lstRefBancaria, List<RefComercialDtoCliente> lstRefComercial,
-            List<string> lstErros, ContextoBdProvider contextoProvider, List<CepDto> lstCepDto)
+            List<string> lstErros, ContextoBdProvider contextoProvider, CepBll cepBll)
         {
-            bool retorno = false;
+            bool retorno = false;            
 
             if (dadosCliente != null)
             {
@@ -43,7 +43,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     }
 
                     //validar endereço do cadastro                    
-                    retorno = ValidarEnderecoCadastroClienteUnis(dadosCliente, lstErros, lstCepDto);
+                    retorno = await ValidarEnderecoCadastroClienteUnis(dadosCliente, lstErros, cepBll);
 
                     //vamos verificar o IE dos clientes
                     retorno = await ValidarIE_Cliente(dadosCliente, lstErros, contextoProvider);
@@ -60,18 +60,6 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
         private static bool ValidarDadosCliente_PF(DadosClienteCadastroDto dadosCliente, List<string> lstErros)
         {
-            /*
-            -Para CPF:
-            *-Verificar se tem nome do cliente; OK
-            *-Validar CPF;
-            *-Verificar se Sexo tem 1 caracteres e validar o tipo Sexo => M ou F;
-            *-Verificar Telefones:
-            *-Verificar se tem dados em todos os campos de telefone(Residencial, Comercial), 
-                *pois é obrigatório um número de telefone;
-            *-Verificar se DDD tem 2 caracteres dos telefones enviados;
-            *-Verificar se a quantidade de caracteres dos telefones estão dentro do permitido;
-            * */
-
             bool retorno = true;
 
             if (string.IsNullOrEmpty(dadosCliente.Nome))
@@ -297,9 +285,12 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return retorno;
         }
 
-        private static bool ValidarEnderecoCadastroClienteUnis(DadosClienteCadastroDto dadosCliente,
-            List<string> lstErros, List<CepDto> lstCepDto)
+        private static async Task<bool> ValidarEnderecoCadastroClienteUnis(DadosClienteCadastroDto dadosCliente,
+            List<string> lstErros, CepBll cepBll)
         {
+            string cepSoDigito = dadosCliente.Cep.Replace(".", "").Replace("-", "");
+            List<CepDto> lstCepDto = (await cepBll.BuscarPorCep(cepSoDigito)).ToList();
+
             bool retorno = true;
 
             if (string.IsNullOrEmpty(dadosCliente.Endereco))
