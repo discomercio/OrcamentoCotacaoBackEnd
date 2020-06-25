@@ -14,12 +14,12 @@ namespace PrepedidoApi.Controllers
     [Authorize(Roles = Utils.Autenticacao.RoleAcesso)]
     public class PrepedidoController : ControllerBase
     {
-        private readonly PrepedidoBusiness.Bll.PrepedidoBll prepedidoBll;
+        private readonly PrepedidoBusiness.Bll.PrepedidoBll.PrepedidoBll prepedidoBll;
         private readonly InfraIdentity.IServicoDecodificarToken servicoDecodificarToken;
         private readonly PrepedidoBusiness.Bll.FormaPagtoBll formaPagtoBll;
         private readonly PrepedidoBusiness.Bll.CoeficienteBll coeficienteBll;
 
-        public PrepedidoController(PrepedidoBusiness.Bll.PrepedidoBll prepedidoBll, 
+        public PrepedidoController(PrepedidoBusiness.Bll.PrepedidoBll.PrepedidoBll prepedidoBll, 
             InfraIdentity.IServicoDecodificarToken servicoDecodificarToken,
             PrepedidoBusiness.Bll.FormaPagtoBll formaPagtoBll, 
             PrepedidoBusiness.Bll.CoeficienteBll coeficienteBll)
@@ -69,7 +69,7 @@ namespace PrepedidoApi.Controllers
             //para testar: http://localhost:60877/api/prepedido/listarPrePedidos
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
             var lista = await prepedidoBll.ListarPrePedidos(apelido,
-                (PrepedidoBusiness.Bll.PrepedidoBll.TipoBuscaPrepedido)tipoBusca,
+                (PrepedidoBusiness.Bll.PrepedidoBll.PrepedidoBll.TipoBuscaPrepedido)tipoBusca,
                 clienteBusca, numeroPrePedido, dataInicial, dataFinal);
             return Ok(lista);
         }
