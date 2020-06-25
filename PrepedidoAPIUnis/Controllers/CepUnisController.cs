@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PrepedidoBusiness.Dto.Cep;
 using PrepedidoUnisBusiness.UnisBll.AcessoBll;
 using PrepedidoUnisBusiness.UnisDto.CepUnisDto;
 
@@ -39,6 +40,25 @@ namespace PrepedidoAPIUnis.Controllers
 
             //para buscar apenas por cep
             var ret = await cepUnisBll.BuscarCep(cep);
+
+            return Ok(ret);
+        }
+
+
+        /// <summary>
+        /// Rotina para buscar UF's
+        /// </summary>
+        /// <param name="tokenAcesso"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpGet("buscarUfs")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public async Task<ActionResult<List<UFeMunicipiosUnisDto>>> BuscarUfs(string tokenAcesso)
+        {
+            if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out string usuario))
+                return Unauthorized();
+
+            var ret = await cepUnisBll.BuscarUfs();
 
             return Ok(ret);
         }

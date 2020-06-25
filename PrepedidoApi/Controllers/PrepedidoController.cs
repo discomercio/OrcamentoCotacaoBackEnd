@@ -16,12 +16,12 @@ namespace PrepedidoApi.Controllers
     {
         private readonly PrepedidoBusiness.Bll.PrepedidoBll.PrepedidoBll prepedidoBll;
         private readonly InfraIdentity.IServicoDecodificarToken servicoDecodificarToken;
-        private readonly PrepedidoBusiness.Bll.FormaPagtoBll formaPagtoBll;
+        private readonly PrepedidoBusiness.Bll.FormaPagtoBll.FormaPagtoBll formaPagtoBll;
         private readonly PrepedidoBusiness.Bll.CoeficienteBll coeficienteBll;
 
         public PrepedidoController(PrepedidoBusiness.Bll.PrepedidoBll.PrepedidoBll prepedidoBll, 
             InfraIdentity.IServicoDecodificarToken servicoDecodificarToken,
-            PrepedidoBusiness.Bll.FormaPagtoBll formaPagtoBll, 
+            PrepedidoBusiness.Bll.FormaPagtoBll.FormaPagtoBll formaPagtoBll, 
             PrepedidoBusiness.Bll.CoeficienteBll coeficienteBll)
         {
             this.prepedidoBll = prepedidoBll;

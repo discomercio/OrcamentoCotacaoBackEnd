@@ -15,6 +15,7 @@ using System.Reflection;
 using System.ComponentModel.DataAnnotations.Schema;
 using PrepedidoBusiness.Bll.ProdutoBll;
 using PrepedidoBusiness.Bll.ClienteBll;
+using PrepedidoBusiness.Bll.FormaPagtoBll;
 
 namespace PrepedidoBusiness.Bll.PrepedidoBll
 {
@@ -24,14 +25,17 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         private readonly ClienteBll.ClienteBll clienteBll;
         private readonly ValidacoesPrepedidoBll validacoesPrepedidoBll;
         private readonly CepBll cepBll;
+        private readonly ValidacoesFormaPagtoBll validacoesFormaPagtoBll;
 
         public PrepedidoBll(ContextoBdProvider contextoProvider, ClienteBll.ClienteBll clienteBll, 
-            ValidacoesPrepedidoBll validacoesPrepedidoBll, CepBll cepBll)
+            ValidacoesPrepedidoBll validacoesPrepedidoBll, CepBll cepBll, 
+            ValidacoesFormaPagtoBll validacoesFormaPagtoBll)
         {
             this.contextoProvider = contextoProvider;
             this.clienteBll = clienteBll;
             this.validacoesPrepedidoBll = validacoesPrepedidoBll;
             this.cepBll = cepBll;
+            this.validacoesFormaPagtoBll = validacoesFormaPagtoBll;
         }
 
         public async Task<IEnumerable<string>> ListarNumerosPrepedidosCombo(string orcamentista)
@@ -664,14 +668,9 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             }
 
             //verificar como esta sendo salvo
-            if (prePedido.DetalhesPrepedido.EntregaImediata ==
-                Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO.ToString())//Não
+            if(!validacoesPrepedidoBll.ValidarDetalhesPrepedido(prePedido.DetalhesPrepedido, lstErros))
             {
-                if (prePedido.DetalhesPrepedido.EntregaImediataData <= DateTime.Now)
-                {
-                    lstErros.Add("Favor informar a data de 'Entrega Imediata' posterior a data atual!");
-                    return lstErros;
-                }
+                return lstErros;
             }
 
             if (prePedido.ListaProdutos.Count > 12)
@@ -682,18 +681,10 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
 
             if (await Util.LojaHabilitadaProdutosECommerce(prePedido.DadosCliente.Loja, contextoProvider))
             {
-                //Fazer a validação dos dados do cliente, pois agora será permitido realizar alterações em todo o cadastro
-                //do cliente para realizar um novo Prepedido, mas esses dados de cadastro que poderão ser alterados, não serão 
-                //alterados na tabela de cliente. Apenas será incluído para salvar o Prepedido.
-                // Esses dados serão incluídos no novo Dto que foi criado "EnderecoCadastralClientePrepedidoDto", então
-                //precisamos fazer uma nova rotina que irá fazer a validação de dados que foram inseridos no Dto, seguindo a 
-                //validação existente no ASP
-
-                //Afazer: incluir a validação dos novo campos de endereço de entrega
                 //Validar endereço de entraga
-                if (await ValidarEndecoEntrega(prePedido.EnderecoEntrega, lstErros))
+                if (await validacoesPrepedidoBll.ValidarEnderecoEntrega(prePedido, lstErros))
                 {
-                    if (ValidarFormaPagto(prePedido, lstErros))
+                    if (validacoesFormaPagtoBll.ValidarFormaPagto(prePedido, lstErros))
                     {
                         //Esta sendo verificado qual o tipo de pagamento que esta sendo feito e retornando a quantidade de parcelas
                         int c_custoFinancFornecQtdeParcelas = ObterQtdeParcelasFormaPagto(prePedido);
@@ -749,7 +740,6 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                             {
                                 using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
                                 {
-
                                     //Se orcamento existir, fazer o delete das informações
                                     if (!string.IsNullOrEmpty(prePedido.NumeroPrePedido))
                                     {
@@ -1220,145 +1210,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
 
             return qtdeParcelas;
         }
-
-        private bool ValidarFormaPagto(PrePedidoDto prepedido, List<string> lstErros)
-        {
-            bool retorno = false;
-
-            decimal vlTotalFormaPagto = 0M;
-
-            if (prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_A_VISTA)
-            {
-                if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.Op_av_forma_pagto))
-                    lstErros.Add("Indique a forma de pagamento (à vista).");
-                if (!CalculaItens(prepedido, out vlTotalFormaPagto))
-                    lstErros.Add("Há divergência entre o valor total do pré-pedido (" + Constantes.SIMBOLO_MONETARIO + " " +
-                        prepedido.VlTotalDestePedido + ") e o valor total descrito através da forma de pagamento (" + Constantes.SIMBOLO_MONETARIO + " " +
-                        Math.Abs((decimal)prepedido.VlTotalDestePedido - vlTotalFormaPagto) + ")!");
-            }
-            else if (prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELA_UNICA)
-            {
-                if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.Op_pu_forma_pagto))
-                    lstErros.Add("Indique a forma de pagamento da parcela única.");
-                else if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.C_pu_valor.ToString()))
-                    lstErros.Add("Indique o valor da parcela única.");
-                else if (prepedido.FormaPagtoCriacao.C_pu_valor <= 0)
-                    lstErros.Add("Valor da parcela única é inválido.");
-                else if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.C_pu_vencto_apos.ToString()))
-                    lstErros.Add("Indique o intervalo de vencimento da parcela única.");
-                else if (prepedido.FormaPagtoCriacao.C_pu_vencto_apos <= 0)
-                    lstErros.Add("Intervalo de vencimento da parcela única é inválido.");
-            }
-            else if (prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO)
-            {
-                if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.C_pc_qtde.ToString()))
-                    lstErros.Add("Indique a quantidade de parcelas (parcelado no cartão [internet]).");
-                else if (prepedido.FormaPagtoCriacao.C_pc_qtde < 1)
-                    lstErros.Add("Quantidade de parcelas inválida (parcelado no cartão [internet]).");
-                else if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.C_pc_valor.ToString()))
-                    lstErros.Add("Indique o valor da parcela (parcelado no cartão [internet]).");
-                else if (prepedido.FormaPagtoCriacao.C_pc_valor <= 0)
-                    lstErros.Add("Valor de parcela inválido (parcelado no cartão [internet]).");
-            }
-            else if (prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA)
-            {
-                if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.C_pc_maquineta_qtde.ToString()))
-                    lstErros.Add("Indique a quantidade de parcelas (parcelado no cartão [maquineta]).");
-                else if (prepedido.FormaPagtoCriacao.C_pc_maquineta_qtde < 1)
-                    lstErros.Add("Quantidade de parcelas inválida (parcelado no cartão [maquineta]).");
-                else if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.C_pc_maquineta_valor.ToString()))
-                    lstErros.Add("Indique o valor da parcela (parcelado no cartão [maquineta]).");
-                else if (prepedido.FormaPagtoCriacao.C_pc_maquineta_valor <= 0)
-                    lstErros.Add("Valor de parcela inválido (parcelado no cartão [maquineta]).");
-            }
-            else if (prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA)
-            {
-                if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.Op_pce_entrada_forma_pagto.ToString()))
-                    lstErros.Add("Indique a forma de pagamento da entrada (parcelado com entrada).");
-                else if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.C_pce_entrada_valor.ToString()))
-                    lstErros.Add("Indique o valor da entrada (parcelado com entrada).");
-                else if (prepedido.FormaPagtoCriacao.C_pce_entrada_valor <= 0)
-                    lstErros.Add("Valor da entrada inválido (parcelado com entrada).");
-                else if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto))
-                    lstErros.Add("Indique a forma de pagamento das prestações (parcelado com entrada).");
-                else if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.C_pce_prestacao_qtde.ToString()))
-                    lstErros.Add("Indique a quantidade de prestações (parcelado com entrada).");
-                else if (prepedido.FormaPagtoCriacao.C_pce_prestacao_qtde <= 0)
-                    lstErros.Add("Quantidade de prestações inválida (parcelado com entrada).");
-                else if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.C_pce_prestacao_valor.ToString()))
-                    lstErros.Add("Indique o valor da prestação (parcelado com entrada).");
-                else if (prepedido.FormaPagtoCriacao.C_pce_prestacao_valor <= 0)
-                    lstErros.Add("Valor de prestação inválido (parcelado com entrada).");
-                else if (prepedido.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto != "7" &&
-                    prepedido.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto != "5")
-                {
-                    if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.C_pce_prestacao_periodo.ToString()))
-                        lstErros.Add("Indique o intervalo de vencimento entre as parcelas (parcelado com entrada).");
-                }
-                else if (prepedido.FormaPagtoCriacao.C_pce_prestacao_periodo <= 0)
-                    lstErros.Add("Intervalo de vencimento inválido (parcelado com entrada).");
-            }
-            else if (prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA)
-            {
-                if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.Op_pse_prim_prest_forma_pagto))
-                    lstErros.Add("Indique a forma de pagamento da 1ª prestação (parcelado sem entrada).");
-                else if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.C_pse_prim_prest_valor.ToString()))
-                    lstErros.Add("Indique o valor da 1ª prestação (parcelado sem entrada).");
-                else if (prepedido.FormaPagtoCriacao.C_pse_prim_prest_valor <= 0)
-                    lstErros.Add("Valor da 1ª prestação inválido (parcelado sem entrada).");
-                else if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.C_pse_prim_prest_apos.ToString()))
-                    lstErros.Add("Indique o intervalo de vencimento da 1ª parcela (parcelado sem entrada).");
-                else if (prepedido.FormaPagtoCriacao.C_pse_prim_prest_apos <= 0)
-                    lstErros.Add("Intervalo de vencimento da 1ª parcela é inválido (parcelado sem entrada).");
-                else if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.Op_pse_demais_prest_forma_pagto))
-                    lstErros.Add("Indique a forma de pagamento das demais prestações (parcelado sem entrada).");
-                else if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.C_pse_demais_prest_qtde.ToString()))
-                    lstErros.Add("Indique a quantidade das demais prestações (parcelado sem entrada).");
-                else if (prepedido.FormaPagtoCriacao.C_pse_demais_prest_qtde <= 0)
-                    lstErros.Add("Quantidade de prestações inválida (parcelado sem entrada).");
-                else if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.C_pse_demais_prest_valor.ToString()))
-                    lstErros.Add("Indique o valor das demais prestações (parcelado sem entrada).");
-                else if (prepedido.FormaPagtoCriacao.C_pse_demais_prest_valor <= 0)
-                    lstErros.Add("Valor de prestação inválido (parcelado sem entrada).");
-                else if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.C_pse_demais_prest_periodo.ToString()))
-                    lstErros.Add("Indique o intervalo de vencimento entre as parcelas (parcelado sem entrada).");
-                else if (prepedido.FormaPagtoCriacao.C_pse_demais_prest_periodo < 0)
-                    lstErros.Add("Intervalo de vencimento inválido (parcelado sem entrada).");
-            }
-            else
-            {
-                lstErros.Add("É obrigatório especificar a forma de pagamento");
-            }
-
-            if (lstErros.Count == 0)
-                retorno = true;
-
-            return retorno;
-        }
-
-
-        private bool CalculaItens(PrePedidoDto prePedido, out decimal vlTotalFormaPagto)
-        {
-            bool retorno = true;
-            decimal vl_total_NF = 0;
-            decimal vl_total = 0;
-
-
-            foreach (var p in prePedido.ListaProdutos)
-            {
-                if (!string.IsNullOrEmpty(p.NumProduto))
-                {
-                    vl_total += (decimal)(p.Qtde * p.VlUnitario);
-                    vl_total_NF += (decimal)(p.Qtde * p.Preco);
-                }
-            }
-            vlTotalFormaPagto = vl_total_NF;
-            if (Math.Abs(vlTotalFormaPagto - vl_total_NF) > 0.1M)
-                retorno = false;
-
-            return retorno;
-        }
-
+        
         private decimal Calcular_Vl_Total(PrePedidoDto prepedido)
         {
             decimal vl_total = 0M;
@@ -1597,69 +1449,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 }
             }
         }
-
-        private async Task<bool> ValidarEndecoEntrega(EnderecoEntregaDtoClienteCadastro endEtg, List<string> lstErros)
-        {
-            bool retorno = true;
-
-            if (endEtg.OutroEndereco)
-            {
-                if (string.IsNullOrEmpty(endEtg.EndEtg_cod_justificativa))
-                {
-                    lstErros.Add("SELECIONE A JUSTIFICATIVA DO ENDEREÇO DE ENTREGA!");
-                    retorno = false;
-                }
-
-                if (string.IsNullOrEmpty(endEtg.EndEtg_endereco))
-                {
-                    lstErros.Add("PREENCHA O ENDEREÇO DE ENTREGA.");
-                    retorno = false;
-                }
-                if (endEtg.EndEtg_endereco.Length > Constantes.MAX_TAMANHO_CAMPO_ENDERECO)
-                {
-                    lstErros.Add("ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: " + endEtg.EndEtg_endereco.Length +
-                        " CARACTERES<br>TAMANHO MÁXIMO: " + Constantes.MAX_TAMANHO_CAMPO_ENDERECO + " CARACTERES");
-                    retorno = false;
-                }
-                if (string.IsNullOrEmpty(endEtg.EndEtg_endereco_numero))
-                {
-                    lstErros.Add("PREENCHA O NÚMERO DO ENDEREÇO DE ENTREGA.");
-                    retorno = false;
-                }
-                if (string.IsNullOrEmpty(endEtg.EndEtg_bairro))
-                {
-                    lstErros.Add("PREENCHA O BAIRRO DO ENDEREÇO DE ENTREGA.");
-                    retorno = false;
-                }
-                if (string.IsNullOrEmpty(endEtg.EndEtg_cidade))
-                {
-                    lstErros.Add("PREENCHA A CIDADE DO ENDEREÇO DE ENTREGA.");
-                    retorno = false;
-                }
-                if (string.IsNullOrEmpty(endEtg.EndEtg_uf) || !Util.VerificaUf(endEtg.EndEtg_uf))
-                {
-                    lstErros.Add("UF INVÁLIDA NO ENDEREÇO DE ENTREGA.");
-                    retorno = false;
-                }
-                if (!Util.VerificaCep(endEtg.EndEtg_cep))
-                {
-                    lstErros.Add("CEP INVÁLIDO NO ENDEREÇO DE ENTREGA.");
-                    retorno = false;
-                }
-
-
-                List<NfeMunicipio> lstNfeMunicipio = (await ValidacoesClienteBll.ConsisteMunicipioIBGE(
-                    endEtg.EndEtg_cidade, endEtg.EndEtg_uf, lstErros, contextoProvider)).ToList();
-            }
-
-            //fazer a consistência de cep pelo consiste que é feito no consiste
-            //string uf = VerificarInscricaoEstadualValida(dadosCliente.Ie, dadosCliente.Uf, lstErros);
-            //List<NfeMunicipio> lstNfeMunicipio = new List<NfeMunicipio>();
-            //lstNfeMunicipio = (await ConsisteMunicipioIBGE(dadosCliente.Cidade, dadosCliente.Uf, lstErros)).ToList();
-
-            return retorno;
-        }
-
+        
         public async Task<IEnumerable<TpercentualCustoFinanceiroFornecedor>> BuscarCoeficientePercentualCustoFinanFornec(PrePedidoDto prePedido, short qtdeParcelas, string siglaPagto, List<string> lstErros)
         {
             List<TpercentualCustoFinanceiroFornecedor> lstPercentualCustoFinanFornec =

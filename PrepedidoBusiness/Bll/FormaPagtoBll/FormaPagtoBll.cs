@@ -8,7 +8,7 @@ using System.Linq;
 using InfraBanco.Constantes;
 using InfraBanco;
 
-namespace PrepedidoBusiness.Bll
+namespace PrepedidoBusiness.Bll.FormaPagtoBll
 {
     public class FormaPagtoBll
     {

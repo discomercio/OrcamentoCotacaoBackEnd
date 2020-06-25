@@ -14,6 +14,7 @@ using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using PrepedidoBusiness.Dto.Produto;
 using System.Globalization;
 using System.Data.SqlClient;
+using PrepedidoBusiness.Dto.Cep;
 
 namespace PrepedidoBusiness.Utils
 {
@@ -831,7 +832,7 @@ namespace PrepedidoBusiness.Utils
                 retorno = true;
             if (loja == Constantes.NUMERO_LOJA_MARCELO_ARTVEN)
                 retorno = true;
-            
+
             return retorno;
         }
 
@@ -978,7 +979,7 @@ namespace PrepedidoBusiness.Utils
             {
                 foreach (var r in lista)
                 {
-                    if (r.prod_x_reg.Produto == item.Produto && 
+                    if (r.prod_x_reg.Produto == item.Produto &&
                         r.prod_x_reg.Fabricante == item.Fabricante)
                     {
                         item.St_Regra = true;
@@ -1210,7 +1211,7 @@ namespace PrepedidoBusiness.Utils
                                             //p.Estoque_Qtde_Solicitado = essa variavel não deve ser utilizada, a qtde só sera solicitada 
                                             //quando o usuario inserir a qtde 
                                             p.Estoque_Qtde = 0;
-                                            
+
                                         }
                                     }
 
@@ -1258,11 +1259,8 @@ namespace PrepedidoBusiness.Utils
             return data;
         }
 
-        public static async Task<IEnumerable<NfeMunicipio>> BuscarSiglaUf(string uf, string municipio, bool buscaParcial, 
-            ContextoBdProvider contextoProvider)
+        public static async Task<string> MontarProviderStringParaNFeMunicipio(ContextoBdProvider contextoProvider)
         {
-            List<NfeMunicipio> lstNfeMunicipio = new List<NfeMunicipio>();
-
             var db = contextoProvider.GetContextoLeitura();
 
             //buscando os dados para se conectar no servidor de banco de dados
@@ -1281,14 +1279,23 @@ namespace PrepedidoBusiness.Utils
             sqlBuilder.InitialCatalog = nova_conexao.NFe_T1_nome_BD;
             sqlBuilder.UserID = nova_conexao.NFe_T1_usuario_BD;
 
-            sqlBuilder.Password = Utils.Util.decodificaDado(nova_conexao.NFe_T1_senha_BD, Constantes.FATOR_BD);
+            sqlBuilder.Password = decodificaDado(nova_conexao.NFe_T1_senha_BD, Constantes.FATOR_BD);
 
 
             string providerString = sqlBuilder.ToString();
 
+            return providerString;
+        }
+
+        public static async Task<IEnumerable<NfeMunicipio>> BuscarSiglaUf(string uf, string municipio, bool buscaParcial,
+            ContextoBdProvider contextoProvider)
+        {
+            List<NfeMunicipio> lstNfeMunicipio = new List<NfeMunicipio>();
+
+            string providerString = await MontarProviderStringParaNFeMunicipio(contextoProvider);
+
             using (SqlConnection sql = new SqlConnection(providerString))
             {
-
                 SqlParameter param = new SqlParameter();
                 param.Value = uf.ToUpper();
                 param.ParameterName = "@UF";
@@ -1398,5 +1405,89 @@ namespace PrepedidoBusiness.Utils
             return lstNfeMunicipio;
         }
 
+        public static async Task<IEnumerable<UFeMunicipiosDto>> BuscarSiglaTodosUf(ContextoBdProvider contextoProvider)
+        {
+            List<UFeMunicipiosDto> lstUF_Municipio = new List<UFeMunicipiosDto>();
+            List<MunicipioDto> lstMunicipios = new List<MunicipioDto>();
+
+            string providerString = await MontarProviderStringParaNFeMunicipio(contextoProvider);
+
+
+            using (SqlConnection sql = new SqlConnection(providerString))
+            {
+                string query = "SELECT *  FROM NFE_UF";
+
+                SqlCommand command = new SqlCommand(query, sql);
+
+                command.Connection.Open();
+
+                using (var result = await command.ExecuteReaderAsync())
+                {
+                    if (result != null)
+                    {
+                        
+                        while (result.Read())
+                        {
+                            UFeMunicipiosDto ufMinicipio = new UFeMunicipiosDto();
+                            ufMinicipio.Codigo = result["CodUF"].ToString();
+                            ufMinicipio.Descricao = result["Descricao"].ToString();
+                            ufMinicipio.SiglaUF = result["SiglaUf"].ToString();
+                            ufMinicipio.ListaMunicipio = new List<MunicipioDto>();
+
+                            lstUF_Municipio.Add(ufMinicipio);
+                        };
+
+                        command.Connection.Close();
+
+                        query = "SELECT * FROM NFE_MUNICIPIO";
+
+                        command = new SqlCommand(query, sql);
+
+                        command.Connection.Open();
+
+                        using (var result2 = await command.ExecuteReaderAsync())
+                        {
+                            if (result2 != null)
+                            {
+                                
+                                while (result2.Read())
+                                {
+                                    MunicipioDto municipio = new MunicipioDto();
+                                    municipio.Codigo = result2["CodMunic"].ToString();
+                                    municipio.Descricao = result2["Descricao"].ToString();
+                                    municipio.DescricaoSemAcento = result2["DescricaoSemAcento"].ToString();
+
+                                    lstMunicipios.Add(municipio);
+                                }
+                            }
+                            else
+                            {
+                                command.Connection.Close();
+                            }
+                        }
+
+                        lstUF_Municipio.ForEach(x =>
+                        {
+                            lstMunicipios.ForEach(y =>
+                            {
+                                string substr = y.Codigo.Substring(0, 2);
+
+                                if (x.Codigo == substr)
+                                {
+                                    x.ListaMunicipio.Add(new MunicipioDto()
+                                    {
+                                        Codigo = y.Codigo,
+                                        Descricao = y.Descricao,
+                                        DescricaoSemAcento = y.DescricaoSemAcento
+                                    });
+                                }
+                            });
+                        });
+                    }
+                }
+            }
+
+            return lstUF_Municipio;
+        }
     }
 }

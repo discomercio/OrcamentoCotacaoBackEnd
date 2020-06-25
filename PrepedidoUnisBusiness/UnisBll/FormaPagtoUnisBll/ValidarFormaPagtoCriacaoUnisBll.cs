@@ -2,6 +2,7 @@
 using InfraBanco.Constantes;
 using PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto;
 using PrepedidoBusiness.Bll;
+using PrepedidoBusiness.Bll.FormaPagtoBll;
 using PrepedidoBusiness.Dto.FormaPagto;
 using System;
 using System.Collections.Generic;

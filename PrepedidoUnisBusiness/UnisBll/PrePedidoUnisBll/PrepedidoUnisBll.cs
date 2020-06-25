@@ -32,22 +32,6 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
             this.clienteBll = clienteBll;
         }
 
-
-
-        //c)	Validar se Pré-Pedido já existe
-        //d)	Validar Detalhes do Pré-Pedido:
-        //i)	Entrega Imediata não: verificar se a foi informado a Data para entrega
-        //ii)	Bem de uso comum: verificar se o valor esta correto conforme já é feito
-        //iii)	Instalador instala
-        //e)	Validar se a loja esta habilitada para produtos e-commerce
-        //f)	Validar Endereço de entrega(Incluir validação dos novos campos no endereço de entrega)
-
-
-
-
-        //m)	Retorna lista de string:
-        //i)	Sucesso: número do Pré-Pedido
-        //ii)	Falha: lista com erros
         public async Task<PrePedidoResultadoUnisDto> CadastrarPrepedidoUnis(PrePedidoUnisDto prePedidoUnis)
         {
             PrePedidoResultadoUnisDto retorno = new PrePedidoResultadoUnisDto();
@@ -117,24 +101,6 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
 
             return retorno;
         }
-
-
-        //public async Task DeletarOrcamentoExisteComTransacao(string orcamentista, string numeroPrepedido)
-        //{
-        //    PrePedidoDto prePedido = new PrePedidoDto();
-        //    //vamos buscar o prepedido
-
-        //    if (await prepedidoBll.ValidarOrcamentistaIndicador(orcamentista))
-        //    {
-        //        prePedido.NumeroPrePedido = numeroPrepedido.Trim();
-
-        //        using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
-        //        {
-        //            await prepedidoBll.DeletarOrcamentoExiste(dbgravacao, prePedido, orcamentista);
-        //            dbgravacao.transacao.Commit();
-        //        }
-        //    }
-        //}
 
         public async Task<bool> CancelarPrePedido(string orcamentista, string numeroPrepedido)
         {
