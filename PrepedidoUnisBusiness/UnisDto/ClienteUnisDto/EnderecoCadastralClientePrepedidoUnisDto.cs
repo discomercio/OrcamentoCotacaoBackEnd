@@ -100,37 +100,63 @@ namespace PrepedidoUnisBusiness.UnisDto.ClienteUnisDto
 
         public static EnderecoCadastralClientePrepedidoDto EnderecoCadastralClientePrepedidoDtoDeEnderecoCadastralClientePrepedidoUnisDto(EnderecoCadastralClientePrepedidoUnisDto endCadastral)
         {
-            var ret = new EnderecoCadastralClientePrepedidoDto()
+            EnderecoCadastralClientePrepedidoDto ret = new EnderecoCadastralClientePrepedidoDto();
+            ret.Endereco_logradouro = endCadastral.Endereco_logradouro;
+            ret.Endereco_numero = endCadastral.Endereco_numero;
+            ret.Endereco_complemento = endCadastral.Endereco_complemento;
+            ret.Endereco_bairro = endCadastral.Endereco_bairro;
+            ret.Endereco_cidade = endCadastral.Endereco_cidade;
+            ret.Endereco_uf = endCadastral.Endereco_uf;
+            ret.Endereco_cep = endCadastral.Endereco_cep;
+            ret.Endereco_email = endCadastral.Endereco_email;
+            ret.Endereco_email_xml = endCadastral.Endereco_email_xml;
+            ret.Endereco_nome = endCadastral.Endereco_nome;
+            ret.Endereco_ddd_res = endCadastral.Endereco_ddd_res == null ? "" : endCadastral.Endereco_ddd_res;
+            ret.Endereco_tel_res = endCadastral.Endereco_tel_res == null ? "" : endCadastral.Endereco_tel_res;
+            ret.Endereco_ddd_com = endCadastral.Endereco_ddd_com;
+            ret.Endereco_tel_com = endCadastral.Endereco_tel_com;
+            ret.Endereco_ramal_com = endCadastral.Endereco_ramal_com;
+            ret.Endereco_ddd_cel = endCadastral.Endereco_ddd_cel;
+            ret.Endereco_tel_cel = endCadastral.Endereco_tel_cel;
+            ret.Endereco_ddd_com_2 = endCadastral.Endereco_ddd_com_2;
+            ret.Endereco_tel_com_2 = endCadastral.Endereco_tel_com_2;
+            ret.Endereco_ramal_com_2 = endCadastral.Endereco_ramal_com_2;
+            ret.Endereco_tipo_pessoa = endCadastral.Endereco_tipo_pessoa;
+            ret.Endereco_cnpj_cpf = Util.SoDigitosCpf_Cnpj(endCadastral.Endereco_cnpj_cpf.Trim());
+
+            if(endCadastral.Endereco_tipo_pessoa == Constantes.ID_PF && 
+                endCadastral.Endereco_produtor_rural_status !=
+                (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
             {
-                Endereco_logradouro = endCadastral.Endereco_logradouro,
-                Endereco_numero = endCadastral.Endereco_numero,
-                Endereco_complemento = endCadastral.Endereco_complemento,
-                Endereco_bairro = endCadastral.Endereco_bairro,
-                Endereco_cidade = endCadastral.Endereco_cidade,
-                Endereco_uf = endCadastral.Endereco_uf,
-                Endereco_cep = endCadastral.Endereco_cep,
-                Endereco_email = endCadastral.Endereco_email,
-                Endereco_email_xml = endCadastral.Endereco_email_xml,
-                Endereco_nome = endCadastral.Endereco_nome,
-                Endereco_ddd_res = endCadastral.Endereco_ddd_res == null ? "" : endCadastral.Endereco_ddd_res,
-                Endereco_tel_res = endCadastral.Endereco_tel_res == null ? "" : endCadastral.Endereco_tel_res,
-                Endereco_ddd_com = endCadastral.Endereco_ddd_com,
-                Endereco_tel_com = endCadastral.Endereco_tel_com,
-                Endereco_ramal_com = endCadastral.Endereco_ramal_com,
-                Endereco_ddd_cel = endCadastral.Endereco_ddd_cel,
-                Endereco_tel_cel = endCadastral.Endereco_tel_cel,
-                Endereco_ddd_com_2 = endCadastral.Endereco_ddd_com_2,
-                Endereco_tel_com_2 = endCadastral.Endereco_tel_com_2,
-                Endereco_ramal_com_2 = endCadastral.Endereco_ramal_com_2,
-                Endereco_tipo_pessoa = endCadastral.Endereco_tipo_pessoa,
-                Endereco_cnpj_cpf = Util.SoDigitosCpf_Cnpj(endCadastral.Endereco_cnpj_cpf.Trim()),
-                Endereco_contribuinte_icms_status = endCadastral.Endereco_contribuinte_icms_status,
-                Endereco_produtor_rural_status = endCadastral.Endereco_tipo_pessoa == Constantes.ID_PJ ?
-                    (byte)0 : endCadastral.Endereco_produtor_rural_status,
-                Endereco_ie = endCadastral.Endereco_ie,
-                Endereco_rg = endCadastral.Endereco_rg == null ? "" : endCadastral.Endereco_rg,
-                Endereco_contato = endCadastral.Endereco_contato
-            };
+                ret.Endereco_contribuinte_icms_status = (byte)0;
+            }
+            else
+            {
+                ret.Endereco_contribuinte_icms_status = endCadastral.Endereco_contribuinte_icms_status;
+            }
+            
+            if(endCadastral.Endereco_tipo_pessoa == Constantes.ID_PJ)
+            {
+                ret.Endereco_produtor_rural_status = 0;
+            }
+            else
+            {
+                ret.Endereco_produtor_rural_status = endCadastral.Endereco_produtor_rural_status;
+            }
+
+            if(endCadastral.Endereco_produtor_rural_status !=
+                (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM &&
+                endCadastral.Endereco_tipo_pessoa == Constantes.ID_PF)
+            {
+                ret.Endereco_ie = "";
+            }
+            else
+            {
+                ret.Endereco_ie = endCadastral.Endereco_ie;
+            }
+            
+            ret.Endereco_rg = endCadastral.Endereco_rg == null ? "" : endCadastral.Endereco_rg;
+            ret.Endereco_contato = endCadastral.Endereco_contato;
 
             return ret;
         }

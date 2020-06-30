@@ -402,18 +402,34 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             {
                 if (dadosCliente.ProdutorRural == (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
                 {
-                    if (dadosCliente.Ie == "" &&
-                    dadosCliente.Contribuinte_Icms_Status ==
-                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
+                    if (string.IsNullOrEmpty(dadosCliente.Ie) &&
+                        dadosCliente.Contribuinte_Icms_Status ==
+                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
                     {
                         lstErros.Add("Para ser cadastrado como Produtor Rural e contribuinte do ICMS" +
                             "é necessário possuir nº de IE");
+                        retorno = false;
+                    }
+
+                    if(!string.IsNullOrEmpty(dadosCliente.Ie) &&
+                        dadosCliente.Contribuinte_Icms_Status ==
+                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO)
+                    {
+                        lstErros.Add("Se o Contribuinte ICMS é isento, o campo IE deve ser vazio!");
                         retorno = false;
                     }
                 }
             }
             if (dadosCliente.Tipo == Constantes.ID_PJ)
             {
+                if (!string.IsNullOrEmpty(dadosCliente.Ie) && 
+                    dadosCliente.Contribuinte_Icms_Status ==
+                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO)
+                {
+                    lstErros.Add("Se o Contribuinte ICMS é isento, o campo IE deve ser vazio!");
+                    retorno = false;
+                }
+
                 if (dadosCliente.Ie == "" &&
                     dadosCliente.Contribuinte_Icms_Status ==
                     (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)

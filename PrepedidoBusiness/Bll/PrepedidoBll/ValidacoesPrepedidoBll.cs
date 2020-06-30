@@ -103,7 +103,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             var db = contextoProvider.GetContextoLeitura();
             List<PrepedidoProdutoDtoPrepedido> lsProdutosCompare = new List<PrepedidoProdutoDtoPrepedido>();
 
-            foreach(var x in lstProdutos)
+            foreach (var x in lstProdutos)
             {
                 PrepedidoProdutoDtoPrepedido produto = await (from c in db.TprodutoLojas
                                                               where c.Produto == x.NumProduto &&
@@ -188,7 +188,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             if (Math.Abs((decimal)(totalCompare - prepedido.VlTotalDestePedido)) > limite)
                 lstErros.Add("Os valores totais estão divergindo!");
 
-            if(prepedido.PermiteRAStatus == 1)
+            if (prepedido.PermiteRAStatus == 1)
             {
                 if (Math.Abs((decimal)(totalRaCompare - prepedido.ValorTotalDestePedidoComRA)) > limite)
                     lstErros.Add("Os valores totais de RA estão divergindo!");
@@ -268,7 +268,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 if (!Util.VerificaCep(prePedido.EnderecoEntrega.EndEtg_cep))
                     lstErros.Add("CEP INVÁLIDO NO ENDEREÇO DE ENTREGA.");
 
-                if(lstErros.Count == 0)
+                if (lstErros.Count == 0)
                 {
                     List<NfeMunicipio> lstNfeMunicipio = (await ValidacoesClienteBll.ConsisteMunicipioIBGE(
                     prePedido.EnderecoEntrega.EndEtg_cidade, prePedido.EnderecoEntrega.EndEtg_uf, lstErros, contextoProvider)).ToList();
@@ -277,7 +277,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                     string cepSoDigito = prePedido.EnderecoEntrega.EndEtg_cep.Replace(".", "").Replace("-", "");
                     List<CepDto> lstCepDto = (await cepBll.BuscarPorCep(cepSoDigito)).ToList();
 
-                    if(lstCepDto.Count == 0)
+                    if (lstCepDto.Count == 0)
                     {
                         lstErros.Add("Endereço Entrega: cep inválido!");
                     }
@@ -392,28 +392,36 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             }
         }
 
-        private void ValidarDadosPessoaEnderecoEntrega_PJ_Tel(EnderecoEntregaDtoClienteCadastro endEtd, List<string> lstErros)
+        private void ValidarDadosPessoaEnderecoEntrega_PJ_Tel(EnderecoEntregaDtoClienteCadastro endEtg, List<string> lstErros)
         {
-            if (!string.IsNullOrEmpty(endEtd.EndEtg_tel_com))
+            if (!string.IsNullOrEmpty(endEtg.EndEtg_tel_com) || !string.IsNullOrEmpty(endEtg.EndEtg_ddd_com))
             {
-                if (Util.Telefone_SoDigito(endEtd.EndEtg_tel_com).Length < 6)
+                if (Util.Telefone_SoDigito(endEtg.EndEtg_tel_com).Length < 6)
                     lstErros.Add("Endereço de entrega: telefone comercial inválido!");
 
-                if (!string.IsNullOrEmpty(endEtd.EndEtg_ddd_com))
+                if (string.IsNullOrEmpty(endEtg.EndEtg_ddd_com))
                 {
-                    if (endEtd.EndEtg_ddd_com.Length != 2)
+                    lstErros.Add("Endereço de entrega: preencha o ddd do telefone comercial!");
+                }
+                else
+                {
+                    if (endEtg.EndEtg_ddd_com.Length != 2)
                         lstErros.Add("Endereço de entrega: ddd do telefone comercial inválido!");
                 }
             }
 
-            if (!string.IsNullOrEmpty(endEtd.EndEtg_tel_com_2))
+            if (!string.IsNullOrEmpty(endEtg.EndEtg_tel_com_2) || !string.IsNullOrEmpty(endEtg.EndEtg_ddd_com_2))
             {
-                if (Util.Telefone_SoDigito(endEtd.EndEtg_tel_com_2).Length < 6)
+                if (Util.Telefone_SoDigito(endEtg.EndEtg_tel_com_2).Length < 6)
                     lstErros.Add("Endereço de entrega: telefone comercial 2 inválido!");
 
-                if (!string.IsNullOrEmpty(endEtd.EndEtg_ddd_com_2))
+                if (string.IsNullOrEmpty(endEtg.EndEtg_ddd_com_2))
                 {
-                    if (endEtd.EndEtg_ddd_com_2.Length != 2)
+                    lstErros.Add("Endereço de entrega: preencha o ddd do telefone comercial 2!");
+                }
+                else
+                {
+                    if (endEtg.EndEtg_ddd_com_2.Length != 2)
                         lstErros.Add("Endereço de entrega: ddd do telefone comercial 2 inválido!");
                 }
             }
@@ -432,7 +440,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                     lstErros.Add("Endereço de entrega: informe se o cliente é produtor rural ou não!");
 
                 if (endEtg.EndEtg_produtor_rural_status !=
-                    (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO && 
+                    (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO &&
                     endEtg.EndEtg_tipo_pessoa == Constantes.ID_PF)
                 {
                     if (endEtg.EndEtg_contribuinte_icms_status !=
@@ -477,24 +485,40 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             }
         }
 
-        private void ValidarDadosPessoaEnderecoEntrega_PF_Tel(EnderecoEntregaDtoClienteCadastro endEtd, List<string> lstErros)
+        private void ValidarDadosPessoaEnderecoEntrega_PF_Tel(EnderecoEntregaDtoClienteCadastro endEtg, List<string> lstErros)
         {
-            if (!string.IsNullOrEmpty(endEtd.EndEtg_tel_res))
+            if (!string.IsNullOrEmpty(endEtg.EndEtg_tel_res) || !string.IsNullOrEmpty(endEtg.EndEtg_ddd_res))
             {
-                if (Util.Telefone_SoDigito(endEtd.EndEtg_tel_res).Length < 6)
+                if (Util.Telefone_SoDigito(endEtg.EndEtg_tel_res).Length < 6)
                     lstErros.Add("Endereço de entrega: telefone residencial inválido.");
 
-                if (endEtd.EndEtg_ddd_res.Length != 2)
-                    lstErros.Add("ddd residencial inválido.");
+                if (string.IsNullOrEmpty(endEtg.EndEtg_ddd_res))
+                {
+                    lstErros.Add("Endereço de entrega: preencha o ddd residencial.");
+                }
+                else
+                {
+                    if (endEtg.EndEtg_ddd_res.Length != 2)
+                        lstErros.Add("Endereço de entrega: ddd residencial inválido.");
+                }
+
             }
 
-            if (!string.IsNullOrEmpty(endEtd.EndEtg_ddd_cel))
+            if (!string.IsNullOrEmpty(endEtg.EndEtg_ddd_cel) || !string.IsNullOrEmpty(endEtg.EndEtg_tel_cel))
             {
-                if (Util.Telefone_SoDigito(endEtd.EndEtg_tel_cel).Length < 6)
+                if (Util.Telefone_SoDigito(endEtg.EndEtg_tel_cel).Length < 6)
                     lstErros.Add("Endereço de entrega: telefone celular inválido.");
 
-                if (endEtd.EndEtg_ddd_cel.Length != 2)
-                    lstErros.Add("ddd do celular inválido.");
+                if (string.IsNullOrEmpty(endEtg.EndEtg_ddd_cel))
+                {
+                    lstErros.Add("Endereço de entrega: preencha o ddd do celular.");
+                }
+                else
+                {
+                    if (endEtg.EndEtg_ddd_cel.Length != 2)
+                        lstErros.Add("Endereço de entrega: ddd do celular inválido.");
+                }
+                
             }
         }
     }
