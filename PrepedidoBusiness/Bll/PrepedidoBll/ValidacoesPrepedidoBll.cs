@@ -277,17 +277,23 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                     string cepSoDigito = prePedido.EnderecoEntrega.EndEtg_cep.Replace(".", "").Replace("-", "");
                     List<CepDto> lstCepDto = (await cepBll.BuscarPorCep(cepSoDigito)).ToList();
 
-                    CepDto cep = new CepDto()
+                    if(lstCepDto.Count == 0)
                     {
-                        Cep = prePedido.EnderecoEntrega.EndEtg_cep,
-                        Endereco = prePedido.EnderecoEntrega.EndEtg_endereco,
-                        Bairro = prePedido.EnderecoEntrega.EndEtg_bairro,
-                        Cidade = prePedido.EnderecoEntrega.EndEtg_cidade,
-                        Uf = prePedido.EnderecoEntrega.EndEtg_uf
-                    };
-                    ValidacoesClienteBll.VerificarEndereco(cep, lstCepDto, lstErros);
+                        lstErros.Add("Endereço Entrega: cep inválido!");
+                    }
+                    else
+                    {
+                        CepDto cep = new CepDto()
+                        {
+                            Cep = prePedido.EnderecoEntrega.EndEtg_cep,
+                            Endereco = prePedido.EnderecoEntrega.EndEtg_endereco,
+                            Bairro = prePedido.EnderecoEntrega.EndEtg_bairro,
+                            Cidade = prePedido.EnderecoEntrega.EndEtg_cidade,
+                            Uf = prePedido.EnderecoEntrega.EndEtg_uf
+                        };
+                        ValidacoesClienteBll.VerificarEndereco(cep, lstCepDto, lstErros);
+                    }
                 }
-                
             }
         }
 

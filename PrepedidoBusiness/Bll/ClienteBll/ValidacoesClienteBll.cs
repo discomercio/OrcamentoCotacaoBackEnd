@@ -21,7 +21,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             List<RefBancariaDtoCliente> lstRefBancaria, List<RefComercialDtoCliente> lstRefComercial,
             List<string> lstErros, ContextoBdProvider contextoProvider, CepBll cepBll)
         {
-            bool retorno = false;            
+            bool retorno = false;
 
             if (dadosCliente != null)
             {
@@ -250,6 +250,11 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                             retorno = false;
                         }
                     }
+                    else
+                    {
+                        lstErros.Add("PREENCHA O DDD DO TELEFONE COMERCIAL.");
+                        retorno = false;
+                    }
                 }
                 if (!string.IsNullOrEmpty(dadosCliente.DddComercial) &&
                     string.IsNullOrEmpty(dadosCliente.TelComercial))
@@ -267,11 +272,16 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     }
                     if (!string.IsNullOrEmpty(dadosCliente.DddComercial2))
                     {
-                        if (dadosCliente.DddComercial.Length != 2)
+                        if (dadosCliente.DddComercial2.Length != 2)
                         {
                             lstErros.Add("DDD DO TELEFONE COMERCIAL2 INVÁLIDO.");
                             retorno = false;
                         }
+                    }
+                    else
+                    {
+                        lstErros.Add("PREENCHA O DDD DO TELEFONE COMERCIAL2.");
+                        retorno = false;
                     }
                 }
                 if (!string.IsNullOrEmpty(dadosCliente.DddComercial2) &&
@@ -292,6 +302,13 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             List<CepDto> lstCepDto = (await cepBll.BuscarPorCep(cepSoDigito)).ToList();
 
             bool retorno = true;
+
+            if (lstCepDto.Count == 0)
+            {
+                lstErros.Add("Cep não existe!");
+                return false;
+            }
+
 
             if (string.IsNullOrEmpty(dadosCliente.Endereco))
             {
@@ -405,11 +422,36 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                             "é necessário possuir nº de IE");
                     retorno = false;
                 }
+                if (string.IsNullOrEmpty(dadosCliente.Ie) &&
+                    dadosCliente.Contribuinte_Icms_Status ==
+                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO)
+                {
+                    lstErros.Add("Se o cliente é não contribuinte do ICMS a inscrição estadual deve ser preenchida!");
+                }
+                if (dadosCliente.Contribuinte_Icms_Status ==
+                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL)
+                {
+                    lstErros.Add("Preencha o contribuinte do ICMS corretamente.");
+                    retorno = false;
+                }
             }
 
             if (!string.IsNullOrEmpty(dadosCliente.Ie))
             {
-                VerificarInscricaoEstadualValida(dadosCliente.Ie, dadosCliente.Uf, lstErros);
+                if (dadosCliente.Contribuinte_Icms_Status ==
+                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO &&
+                    dadosCliente.Ie.ToUpper().IndexOf("ISEN") > -1)
+                    lstErros.Add("Se cliente é não contribuinte do ICMS, " +
+                        "não pode ter o valor ISENTO no campo de Inscrição Estadual!");
+
+                if (dadosCliente.Contribuinte_Icms_Status ==
+                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM &&
+                    dadosCliente.Ie.ToUpper().IndexOf("ISEN") > -1)
+                    lstErros.Add("Se cliente é contribuinte do ICMS, " +
+                        "não pode ter o valor ISENTO no campo de Inscrição Estadual!");
+
+                if (lstErros.Count == 0)
+                    VerificarInscricaoEstadualValida(dadosCliente.Ie, dadosCliente.Uf, lstErros);
             }
 
             List<NfeMunicipio> lstNfeMunicipio = new List<NfeMunicipio>();
@@ -501,7 +543,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             int qtdeDig = 0;
             int num;
 
-            if (ie != "ISENTO")
+            if (ie.ToUpper() != "ISENTO")
             {
                 for (int i = 0; i < ie.Length; i++)
                 {

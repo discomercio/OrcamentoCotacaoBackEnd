@@ -1,4 +1,5 @@
-﻿using PrepedidoBusiness.Dto.ClienteCadastro;
+﻿using InfraBanco.Constantes;
+using PrepedidoBusiness.Dto.ClienteCadastro;
 using PrepedidoBusiness.Utils;
 using System;
 using System.Collections.Generic;
@@ -124,7 +125,8 @@ namespace PrepedidoUnisBusiness.UnisDto.ClienteUnisDto
                 Endereco_tipo_pessoa = endCadastral.Endereco_tipo_pessoa,
                 Endereco_cnpj_cpf = Util.SoDigitosCpf_Cnpj(endCadastral.Endereco_cnpj_cpf.Trim()),
                 Endereco_contribuinte_icms_status = endCadastral.Endereco_contribuinte_icms_status,
-                Endereco_produtor_rural_status = endCadastral.Endereco_produtor_rural_status,
+                Endereco_produtor_rural_status = endCadastral.Endereco_tipo_pessoa == Constantes.ID_PJ ?
+                    (byte)0 : endCadastral.Endereco_produtor_rural_status,
                 Endereco_ie = endCadastral.Endereco_ie,
                 Endereco_rg = endCadastral.Endereco_rg == null ? "" : endCadastral.Endereco_rg,
                 Endereco_contato = endCadastral.Endereco_contato

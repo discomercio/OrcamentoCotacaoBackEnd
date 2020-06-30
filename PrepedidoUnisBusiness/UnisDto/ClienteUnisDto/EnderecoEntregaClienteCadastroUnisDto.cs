@@ -1,4 +1,5 @@
-﻿using PrepedidoBusiness.Dto.ClienteCadastro;
+﻿using InfraBanco.Constantes;
+using PrepedidoBusiness.Dto.ClienteCadastro;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -144,7 +145,8 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
                 ret.EndEtg_tipo_pessoa = endEtg.EndEtg_tipo_pessoa;
                 ret.EndEtg_cnpj_cpf = endEtg.EndEtg_cnpj_cpf;
                 ret.EndEtg_contribuinte_icms_status = endEtg.EndEtg_contribuinte_icms_status;
-                ret.EndEtg_produtor_rural_status = endEtg.EndEtg_produtor_rural_status;
+                ret.EndEtg_produtor_rural_status = endEtg.EndEtg_tipo_pessoa == Constantes.ID_PJ ?
+                    (byte)0 : endEtg.EndEtg_produtor_rural_status;
                 ret.EndEtg_ie = endEtg.EndEtg_ie;
                 ret.EndEtg_rg = endEtg.EndEtg_rg;
             }
