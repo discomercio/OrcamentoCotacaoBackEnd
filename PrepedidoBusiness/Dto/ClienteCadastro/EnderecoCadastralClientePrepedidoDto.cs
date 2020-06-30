@@ -6,6 +6,7 @@ namespace PrepedidoBusiness.Dto.ClienteCadastro
 {
     public class EnderecoCadastralClientePrepedidoDto
     {
+        public bool St_memorizacao_completa_enderecos { get; set; }
         public string Endereco_logradouro { get; set; }
         public string Endereco_numero { get; set; }
         public string Endereco_complemento { get; set; }

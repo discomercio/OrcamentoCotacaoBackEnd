@@ -39,11 +39,11 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
 
 
         public static PrePedidoDto PrePedidoDtoDePrePedidoUnisDto(PrePedidoUnisDto prepedidoUnis,
-            DadosClienteCadastroDto dadosClienteArclube, List<PrepedidoProdutoDtoPrepedido> lstProdutosArclube)
+            EnderecoCadastralClientePrepedidoDto endCadastraArclube, List<PrepedidoProdutoDtoPrepedido> lstProdutosArclube)
         {
             var ret = new PrePedidoDto()
             {
-                DadosCliente = dadosClienteArclube,
+                EnderecoCadastroClientePrepedido = endCadastraArclube,
                 EnderecoEntrega = EnderecoEntregaClienteCadastroUnisDto.
                     EnderecoEntregaDtoClienteCadastroDeEnderecoEntregaClienteCadastroUnisDto(
                     prepedidoUnis.EnderecoEntrega, prepedidoUnis.OutroEndereco),

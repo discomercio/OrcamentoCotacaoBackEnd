@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PrepedidoBusiness.Dto.ClienteCadastro;
+using PrepedidoBusiness.Utils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -95,6 +97,40 @@ namespace PrepedidoUnisBusiness.UnisDto.ClienteUnisDto
         [MaxLength(30)]
         public string Endereco_contato { get; set; }
 
+        public static EnderecoCadastralClientePrepedidoDto EnderecoCadastralClientePrepedidoDtoDeEnderecoCadastralClientePrepedidoUnisDto(EnderecoCadastralClientePrepedidoUnisDto endCadastral)
+        {
+            var ret = new EnderecoCadastralClientePrepedidoDto()
+            {
+                Endereco_logradouro = endCadastral.Endereco_logradouro,
+                Endereco_numero = endCadastral.Endereco_numero,
+                Endereco_complemento = endCadastral.Endereco_complemento,
+                Endereco_bairro = endCadastral.Endereco_bairro,
+                Endereco_cidade = endCadastral.Endereco_cidade,
+                Endereco_uf = endCadastral.Endereco_uf,
+                Endereco_cep = endCadastral.Endereco_cep,
+                Endereco_email = endCadastral.Endereco_email,
+                Endereco_email_xml = endCadastral.Endereco_email_xml,
+                Endereco_nome = endCadastral.Endereco_nome,
+                Endereco_ddd_res = endCadastral.Endereco_ddd_res == null ? "" : endCadastral.Endereco_ddd_res,
+                Endereco_tel_res = endCadastral.Endereco_tel_res == null ? "" : endCadastral.Endereco_tel_res,
+                Endereco_ddd_com = endCadastral.Endereco_ddd_com,
+                Endereco_tel_com = endCadastral.Endereco_tel_com,
+                Endereco_ramal_com = endCadastral.Endereco_ramal_com,
+                Endereco_ddd_cel = endCadastral.Endereco_ddd_cel,
+                Endereco_tel_cel = endCadastral.Endereco_tel_cel,
+                Endereco_ddd_com_2 = endCadastral.Endereco_ddd_com_2,
+                Endereco_tel_com_2 = endCadastral.Endereco_tel_com_2,
+                Endereco_ramal_com_2 = endCadastral.Endereco_ramal_com_2,
+                Endereco_tipo_pessoa = endCadastral.Endereco_tipo_pessoa,
+                Endereco_cnpj_cpf = Util.SoDigitosCpf_Cnpj(endCadastral.Endereco_cnpj_cpf.Trim()),
+                Endereco_contribuinte_icms_status = endCadastral.Endereco_contribuinte_icms_status,
+                Endereco_produtor_rural_status = endCadastral.Endereco_produtor_rural_status,
+                Endereco_ie = endCadastral.Endereco_ie,
+                Endereco_rg = endCadastral.Endereco_rg == null ? "" : endCadastral.Endereco_rg,
+                Endereco_contato = endCadastral.Endereco_contato
+            };
 
+            return ret;
+        }
     }
 }

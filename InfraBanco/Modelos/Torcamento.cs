@@ -285,9 +285,9 @@ namespace InfraBanco.Modelos
         public int Sistema_responsavel_atualizacao { get; set; }
 
         /*Novos campos para memorização de endereço*/
-        //[Column("st_memorizacao_completa_enderecos")] => TALVEZ NÃO SERÁ UTILIZADO
-        //[Required]
-        //public byte St_memorizacao_completa_enderecos { get; set; }
+        [Column("st_memorizacao_completa_enderecos")]
+        [Required]
+        public byte St_memorizacao_completa_enderecos { get; set; }
 
         [Column("endereco_logradouro")]
         [MaxLength(80)]
@@ -436,7 +436,7 @@ namespace InfraBanco.Modelos
         [Column("EndEtg_tel_cel")]
         [MaxLength(9)]
         public string EndEtg_tel_cel { get; set; }
-        
+
         [Column("EndEtg_ddd_com_2")]
         [MaxLength(2)]
         public string EndEtg_ddd_com_2 { get; set; }

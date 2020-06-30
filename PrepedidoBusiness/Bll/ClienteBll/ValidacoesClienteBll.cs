@@ -350,7 +350,15 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     }
                 }
                 //vamos buscar o cep e comparar os endereços 
-                if (!VerificarEndereco(dadosCliente, lstCepDto, lstErros))
+                CepDto cepCliente = new CepDto()
+                {
+                    Cep = dadosCliente.Cep,
+                    Endereco = dadosCliente.Endereco,
+                    Bairro = dadosCliente.Bairro,
+                    Cidade = dadosCliente.Cidade,
+                    Uf = dadosCliente.Uf
+                };
+                if (!VerificarEndereco(cepCliente, lstCepDto, lstErros))
                 {
                     retorno = false;
                 }
@@ -545,12 +553,12 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return result;
         }
 
-        private static bool VerificarEndereco(DadosClienteCadastroDto cliente, List<CepDto> lstCepDto,
+        public static bool VerificarEndereco(CepDto cepCliente, List<CepDto> lstCepDto,
             List<string> listaErros)
         {
             bool retorno = true;
 
-            string cepSoDigito = cliente.Cep.Replace(".", "").Replace("-", "");
+            string cepSoDigito = cepCliente.Cep.Replace(".", "").Replace("-", "");
 
             if (lstCepDto != null && lstCepDto.Count > 0)
             {
@@ -567,24 +575,24 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                             retorno = false;
                         }
                         if (Util.RemoverAcentuacao(c.Endereco).ToUpper() !=
-                            Util.RemoverAcentuacao(cliente.Endereco).ToUpper())
+                            Util.RemoverAcentuacao(cepCliente.Endereco).ToUpper())
                         {
                             listaErros.Add("Endereço não confere!");
                             retorno = false;
                         }
                         if (Util.RemoverAcentuacao(c.Bairro).ToUpper() !=
-                            Util.RemoverAcentuacao(cliente.Bairro).ToUpper())
+                            Util.RemoverAcentuacao(cepCliente.Bairro).ToUpper())
                         {
                             listaErros.Add("Bairro não confere!");
                             retorno = false;
                         }
                         if (Util.RemoverAcentuacao(c.Cidade).ToUpper() !=
-                            Util.RemoverAcentuacao(cliente.Cidade).ToUpper())
+                            Util.RemoverAcentuacao(cepCliente.Cidade).ToUpper())
                         {
                             listaErros.Add("Cidade não confere!");
                             retorno = false;
                         }
-                        if (c.Uf.ToUpper() != cliente.Uf.ToUpper())
+                        if (c.Uf.ToUpper() != cepCliente.Uf.ToUpper())
                         {
                             listaErros.Add("Estado não confere!");
                             retorno = false;
@@ -598,12 +606,12 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                             retorno = false;
                         }
                         if (Util.RemoverAcentuacao(c.Cidade.ToUpper()) !=
-                            Util.RemoverAcentuacao(cliente.Cidade.ToUpper()))
+                            Util.RemoverAcentuacao(cepCliente.Cidade.ToUpper()))
                         {
                             listaErros.Add("Cidade não confere!");
                             retorno = false;
                         }
-                        if (c.Uf.ToUpper() != cliente.Uf.ToUpper())
+                        if (c.Uf.ToUpper() != cepCliente.Uf.ToUpper())
                         {
                             listaErros.Add("Estado não confere!");
                             retorno = false;

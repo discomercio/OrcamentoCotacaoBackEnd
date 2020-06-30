@@ -620,7 +620,7 @@ namespace PrepedidoBusiness.Utils
                         {
                             log = campo_atual + "; ";
                         }
-                        if (campo_atual.IndexOf("Endereço entrega=mesmo do cadastro") >= 0 && !endEntregaMesmo)
+                        if (campo_atual.IndexOf("Endereço entrega") >= 0 && !endEntregaMesmo)
                         {
                             endEntregaMesmo = true;
                             log = log + campo_atual + "; ";

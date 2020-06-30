@@ -11,6 +11,7 @@ using InfraBanco.Constantes;
 using PrepedidoBusiness.Utils;
 using InfraBanco.Modelos;
 using PrepedidoBusiness.Bll.ClienteBll;
+using PrepedidoBusiness.Dto.Cep;
 
 namespace PrepedidoBusiness.Bll.PrepedidoBll
 {
@@ -19,30 +20,35 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         private readonly CoeficienteBll coeficienteBll;
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
         private readonly ClienteBll.ClienteBll clienteBll;
+        private readonly CepBll cepBll;
 
 
         public ValidacoesPrepedidoBll(CoeficienteBll coeficienteBll, InfraBanco.ContextoBdProvider contextoProvider,
-            ClienteBll.ClienteBll clienteBll)
+            ClienteBll.ClienteBll clienteBll, CepBll cepBll)
         {
             this.coeficienteBll = coeficienteBll;
             this.contextoProvider = contextoProvider;
             this.clienteBll = clienteBll;
+            this.cepBll = cepBll;
         }
 
         //vamos validar os produtos que foram enviados
-        public async Task MontarProdutosParaComparacao(List<PrepedidoProdutoDtoPrepedido> lstProdutos,
-                    string siglaFormaPagto, int qtdeParcelas, string loja, List<string> lstErros)
+        public async Task MontarProdutosParaComparacao(PrePedidoDto prepedido,
+                    string siglaFormaPagto, int qtdeParcelas, string loja, List<string> lstErros, float perc_limite_RA)
         {
             List<PrepedidoProdutoDtoPrepedido> lstProdutosParaComparacao = new List<PrepedidoProdutoDtoPrepedido>();
             List<List<CoeficienteDto>> lstCoeficienteDtoArclube = new List<List<CoeficienteDto>>();
             List<CoeficienteDto> coefDtoArclube = new List<CoeficienteDto>();
 
             List<string> lstFornec = new List<string>();
-            lstFornec = lstProdutos.Select(x => x.Fabricante).Distinct().ToList();
+            lstFornec = prepedido.ListaProdutos.Select(x => x.Fabricante).Distinct().ToList();
 
             //buscar coeficiente 
-            List<CoeficienteDto> lstCoeficiente = (await BuscarListaCoeficientesFornecedores(lstFornec, qtdeParcelas, siglaFormaPagto)).ToList();
-            List<PrepedidoProdutoDtoPrepedido> lstProdutosCompare = (await BuscarProdutos(lstProdutos, loja)).ToList();
+            List<CoeficienteDto> lstCoeficiente =
+                (await BuscarListaCoeficientesFornecedores(lstFornec, qtdeParcelas, siglaFormaPagto)).ToList();
+
+            List<PrepedidoProdutoDtoPrepedido> lstProdutosCompare =
+                (await BuscarProdutos(prepedido.ListaProdutos, loja)).ToList();
 
             lstCoeficiente.ForEach(x =>
             {
@@ -53,11 +59,14 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                         //vamos calcular o preco_lista com o coeficiente
                         y.VlLista = Math.Round(((decimal)y.Preco * (decimal)x.Coeficiente), 2);
                         y.VlUnitario = Math.Round(y.VlLista * (decimal)(1 - y.Desconto / 100), 2);
+                        y.TotalItem = Math.Round((decimal)(y.VlUnitario * y.Qtde), 2);
+                        y.TotalItemRA = Math.Round((decimal)(y.VlLista * y.Qtde), 2);
                     }
                 });
             });
 
-            ConfrontarProdutos(lstProdutos, lstProdutosCompare, lstErros);
+            ConfrontarProdutos(prepedido, lstProdutosCompare, lstErros);
+            ConfrontarTotaisEPercentualMaxRA(prepedido, lstProdutosCompare, lstErros, perc_limite_RA);
         }
 
         private async Task<IEnumerable<CoeficienteDto>> BuscarListaCoeficientesFornecedores(List<string> lstFornecedores, int qtdeParcelas, string siglaFP)
@@ -94,7 +103,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             var db = contextoProvider.GetContextoLeitura();
             List<PrepedidoProdutoDtoPrepedido> lsProdutosCompare = new List<PrepedidoProdutoDtoPrepedido>();
 
-            lstProdutos.ForEach(async x =>
+            foreach(var x in lstProdutos)
             {
                 PrepedidoProdutoDtoPrepedido produto = await (from c in db.TprodutoLojas
                                                               where c.Produto == x.NumProduto &&
@@ -106,26 +115,29 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                                                                   Fabricante = c.Fabricante,
                                                                   NumProduto = c.Produto,
                                                                   Preco = c.Preco_Lista,
-                                                                  Desconto = x.Desconto
+                                                                  Desconto = x.Desconto,
+                                                                  Qtde = x.Qtde
                                                               }).FirstOrDefaultAsync();
 
                 if (produto != null)
                 {
                     lsProdutosCompare.Add(produto);
                 }
-            });
+            }
 
-            return await Task.FromResult(lsProdutosCompare);
+            return lsProdutosCompare;
         }
 
-        private void ConfrontarProdutos(List<PrepedidoProdutoDtoPrepedido> lstProdutos,
+        private void ConfrontarProdutos(PrePedidoDto prepedido,
             List<PrepedidoProdutoDtoPrepedido> lstProdutosCompare, List<string> lstErros)
         {
             decimal diffVlLista = 0;
             decimal diffVlUnitario = 0;
             decimal limite = 0.01M;
+            decimal diffTotalItem = 0;
+            decimal diffTotalItemRa = 0;
 
-            lstProdutos.ForEach(x =>
+            prepedido.ListaProdutos.ForEach(x =>
             {
                 lstProdutosCompare.ForEach(y =>
                {
@@ -135,13 +147,60 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                        diffVlUnitario = Math.Abs((x.VlUnitario - y.VlUnitario));
 
                        //afazer: pegar o valor do appsettings
-                       if (diffVlLista < limite && diffVlUnitario < limite)
+                       if (diffVlLista > limite || diffVlUnitario > limite)
                        {
                            lstErros.Add("O valor do Produto (cód.)" + x.NumProduto + " está divergindo!");
+                       }
+                       else
+                       {
+                           diffTotalItem = Math.Abs((decimal)(x.TotalItem - y.TotalItem));
+                           diffTotalItemRa = Math.Abs((decimal)(x.TotalItemRA - y.TotalItemRA));
+
+                           if (diffTotalItem > limite || diffTotalItemRa > limite)
+                               lstErros.Add("O valor total do Produto (cód.)" + x.NumProduto +
+                                   " está divergindo!");
                        }
                    }
                });
             });
+
+
+
+
+            //vamos verificar se o percentual de RA é maior que o máximo permitido
+
+        }
+
+        private void ConfrontarTotaisEPercentualMaxRA(PrePedidoDto prepedido,
+            List<PrepedidoProdutoDtoPrepedido> lstProdutosCompare, List<string> lstErros, float perc_limite_RA)
+        {
+            //PAREI VAIDANDO OS VALORES DE PRODUTOS E TOTAIS
+            decimal totalCompare = 0;
+            decimal totalRaCompare = 0;
+            decimal limite = 0.01M;
+
+            lstProdutosCompare.ForEach(x =>
+            {
+                totalCompare += Math.Round((decimal)(x.TotalItem), 2);
+                totalRaCompare += Math.Round((decimal)(x.TotalItemRA), 2);
+            });
+
+            if (Math.Abs((decimal)(totalCompare - prepedido.VlTotalDestePedido)) > limite)
+                lstErros.Add("Os valores totais estão divergindo!");
+
+            if(prepedido.PermiteRAStatus == 1)
+            {
+                if (Math.Abs((decimal)(totalRaCompare - prepedido.ValorTotalDestePedidoComRA)) > limite)
+                    lstErros.Add("Os valores totais de RA estão divergindo!");
+
+                //vamos verificar o valor de RA
+                decimal ra = totalRaCompare - totalCompare;
+                decimal perc = Math.Round((decimal)(perc_limite_RA / 100), 2);
+                decimal percentual = Math.Round(perc * (decimal)prepedido.VlTotalDestePedido, 2);
+
+                if (ra > percentual)
+                    lstErros.Add("O valor total de RA excede o limite permitido!");
+            }
         }
 
         public bool CalculaItens(PrePedidoDto prePedido, out decimal vlTotalFormaPagto)
@@ -169,8 +228,8 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         public async Task<bool> ValidarEnderecoEntrega(PrePedidoDto prepedido, List<string> lstErros)
         {
             bool retorno = true;
-            
-            await ValidarDadosEnderecoEntrega(prepedido.EnderecoEntrega, lstErros);
+
+            await ValidarDadosEnderecoEntrega(prepedido, lstErros);
 
             await ValidarDadosPessoaEnderecoEntrega(prepedido, lstErros);
 
@@ -179,39 +238,56 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
 
             return retorno;
         }
-        private async Task ValidarDadosEnderecoEntrega(EnderecoEntregaDtoClienteCadastro endEtg, List<string> lstErros)
+        private async Task ValidarDadosEnderecoEntrega(PrePedidoDto prePedido, List<string> lstErros)
         {
 
-            if (endEtg.OutroEndereco)
+            if (prePedido.EnderecoEntrega.OutroEndereco)
             {
-                if (string.IsNullOrEmpty(endEtg.EndEtg_cod_justificativa))
+                if (string.IsNullOrEmpty(prePedido.EnderecoEntrega.EndEtg_cod_justificativa))
                     lstErros.Add("SELECIONE A JUSTIFICATIVA DO ENDEREÇO DE ENTREGA!");
 
-                if (string.IsNullOrEmpty(endEtg.EndEtg_endereco))
+                if (string.IsNullOrEmpty(prePedido.EnderecoEntrega.EndEtg_endereco))
                     lstErros.Add("PREENCHA O ENDEREÇO DE ENTREGA.");
 
-                if (endEtg.EndEtg_endereco.Length > Constantes.MAX_TAMANHO_CAMPO_ENDERECO)
-                    lstErros.Add("ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: " + endEtg.EndEtg_endereco.Length +
+                if (prePedido.EnderecoEntrega.EndEtg_endereco.Length > Constantes.MAX_TAMANHO_CAMPO_ENDERECO)
+                    lstErros.Add("ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: " + prePedido.EnderecoEntrega.EndEtg_endereco.Length +
                         " CARACTERES<br>TAMANHO MÁXIMO: " + Constantes.MAX_TAMANHO_CAMPO_ENDERECO + " CARACTERES");
 
-                if (string.IsNullOrEmpty(endEtg.EndEtg_endereco_numero))
+                if (string.IsNullOrEmpty(prePedido.EnderecoEntrega.EndEtg_endereco_numero))
                     lstErros.Add("PREENCHA O NÚMERO DO ENDEREÇO DE ENTREGA.");
 
-                if (string.IsNullOrEmpty(endEtg.EndEtg_bairro))
+                if (string.IsNullOrEmpty(prePedido.EnderecoEntrega.EndEtg_bairro))
                     lstErros.Add("PREENCHA O BAIRRO DO ENDEREÇO DE ENTREGA.");
 
-                if (string.IsNullOrEmpty(endEtg.EndEtg_cidade))
+                if (string.IsNullOrEmpty(prePedido.EnderecoEntrega.EndEtg_cidade))
                     lstErros.Add("PREENCHA A CIDADE DO ENDEREÇO DE ENTREGA.");
 
-                if (string.IsNullOrEmpty(endEtg.EndEtg_uf) || !Util.VerificaUf(endEtg.EndEtg_uf))
+                if (string.IsNullOrEmpty(prePedido.EnderecoEntrega.EndEtg_uf) || !Util.VerificaUf(prePedido.EnderecoEntrega.EndEtg_uf))
                     lstErros.Add("UF INVÁLIDA NO ENDEREÇO DE ENTREGA.");
 
-                if (!Util.VerificaCep(endEtg.EndEtg_cep))
+                if (!Util.VerificaCep(prePedido.EnderecoEntrega.EndEtg_cep))
                     lstErros.Add("CEP INVÁLIDO NO ENDEREÇO DE ENTREGA.");
 
+                if(lstErros.Count == 0)
+                {
+                    List<NfeMunicipio> lstNfeMunicipio = (await ValidacoesClienteBll.ConsisteMunicipioIBGE(
+                    prePedido.EnderecoEntrega.EndEtg_cidade, prePedido.EnderecoEntrega.EndEtg_uf, lstErros, contextoProvider)).ToList();
 
-                List<NfeMunicipio> lstNfeMunicipio = (await ValidacoesClienteBll.ConsisteMunicipioIBGE(
-                    endEtg.EndEtg_cidade, endEtg.EndEtg_uf, lstErros, contextoProvider)).ToList();
+                    //vamos comparar endereço
+                    string cepSoDigito = prePedido.EnderecoEntrega.EndEtg_cep.Replace(".", "").Replace("-", "");
+                    List<CepDto> lstCepDto = (await cepBll.BuscarPorCep(cepSoDigito)).ToList();
+
+                    CepDto cep = new CepDto()
+                    {
+                        Cep = prePedido.EnderecoEntrega.EndEtg_cep,
+                        Endereco = prePedido.EnderecoEntrega.EndEtg_endereco,
+                        Bairro = prePedido.EnderecoEntrega.EndEtg_bairro,
+                        Cidade = prePedido.EnderecoEntrega.EndEtg_cidade,
+                        Uf = prePedido.EnderecoEntrega.EndEtg_uf
+                    };
+                    ValidacoesClienteBll.VerificarEndereco(cep, lstCepDto, lstErros);
+                }
+                
             }
         }
 
@@ -263,13 +339,13 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                     }
                 }
 
-                if(lstErros.Count == 0)
+                if (lstErros.Count == 0)
                 {
                     if (!string.IsNullOrEmpty(prePedido.EnderecoEntrega.EndEtg_ie))
                     {
                         ValidacoesClienteBll.VerificarInscricaoEstadualValida(
                             prePedido.EnderecoEntrega.EndEtg_ie, prePedido.EnderecoEntrega.EndEtg_uf, lstErros);
-                    }                    
+                    }
                 }
 
             }
@@ -312,38 +388,30 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
 
         private void ValidarDadosPessoaEnderecoEntrega_PJ_Tel(EnderecoEntregaDtoClienteCadastro endEtd, List<string> lstErros)
         {
-            if (endEtd.EndEtg_tipo_pessoa == Constantes.ID_PJ && !string.IsNullOrEmpty(endEtd.EndEtg_tel_com) &&
-                !string.IsNullOrEmpty(endEtd.EndEtg_tel_com_2))
+            if (!string.IsNullOrEmpty(endEtd.EndEtg_tel_com))
             {
-                if (!string.IsNullOrEmpty(endEtd.EndEtg_tel_com))
+                if (Util.Telefone_SoDigito(endEtd.EndEtg_tel_com).Length < 6)
+                    lstErros.Add("Endereço de entrega: telefone comercial inválido!");
+
+                if (!string.IsNullOrEmpty(endEtd.EndEtg_ddd_com))
                 {
-                    if (Util.Telefone_SoDigito(endEtd.EndEtg_tel_com).Length < 6)
-                        lstErros.Add("Endereço de entrega: telefone comercial inválido!");
-
-                    if (!string.IsNullOrEmpty(endEtd.EndEtg_ddd_com))
-                    {
-                        if (endEtd.EndEtg_ddd_com.Length != 2)
-                            lstErros.Add("Endereço de entrega: ddd do telefone comercial inválido!");
-                    }
+                    if (endEtd.EndEtg_ddd_com.Length != 2)
+                        lstErros.Add("Endereço de entrega: ddd do telefone comercial inválido!");
                 }
-
-                if (!string.IsNullOrEmpty(endEtd.EndEtg_tel_com_2))
-                {
-                    if (Util.Telefone_SoDigito(endEtd.EndEtg_tel_com_2).Length < 6)
-                        lstErros.Add("Endereço de entrega: telefone comercial 2 inválido!");
-
-                    if (!string.IsNullOrEmpty(endEtd.EndEtg_ddd_com_2))
-                    {
-                        if (endEtd.EndEtg_ddd_com_2.Length != 2)
-                            lstErros.Add("Endereço de entrega: ddd do telefone comercial 2 inválido!");
-                    }
-                }
-
             }
-            else
+
+            if (!string.IsNullOrEmpty(endEtd.EndEtg_tel_com_2))
             {
-                lstErros.Add("Endereço de entrega: preencha ao menos um telefone!");
+                if (Util.Telefone_SoDigito(endEtd.EndEtg_tel_com_2).Length < 6)
+                    lstErros.Add("Endereço de entrega: telefone comercial 2 inválido!");
+
+                if (!string.IsNullOrEmpty(endEtd.EndEtg_ddd_com_2))
+                {
+                    if (endEtd.EndEtg_ddd_com_2.Length != 2)
+                        lstErros.Add("Endereço de entrega: ddd do telefone comercial 2 inválido!");
+                }
             }
+
         }
 
         private void ValidarDadosPessoaEnderecoEntrega_PF(EnderecoEntregaDtoClienteCadastro endEtg, List<string> lstErros)
@@ -358,7 +426,8 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                     lstErros.Add("Endereço de entrega: informe se o cliente é produtor rural ou não!");
 
                 if (endEtg.EndEtg_produtor_rural_status !=
-                    (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO)
+                    (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO && 
+                    endEtg.EndEtg_tipo_pessoa == Constantes.ID_PF)
                 {
                     if (endEtg.EndEtg_contribuinte_icms_status !=
                         (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
@@ -392,36 +461,34 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                         !string.IsNullOrEmpty(endEtg.EndEtg_ie))
                         lstErros.Add("Endereço de entrega: se o Contribuinte ICMS é isento, " +
                             "o campo IE deve ser vazio!");
+
+                    if (endEtg.EndEtg_contribuinte_icms_status ==
+                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM &&
+                        endEtg.EndEtg_produtor_rural_status != (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
+                        lstErros.Add("Endereço de entrega: se cliente é contribuinte do ICMS, ele dever ser Produtor Rural!");
+
                 }
             }
         }
 
         private void ValidarDadosPessoaEnderecoEntrega_PF_Tel(EnderecoEntregaDtoClienteCadastro endEtd, List<string> lstErros)
         {
-            if(endEtd.EndEtg_tipo_pessoa == Constantes.ID_PF && !string.IsNullOrEmpty(endEtd.EndEtg_tel_res) && 
-                !string.IsNullOrEmpty(endEtd.EndEtg_ddd_cel) && !string.IsNullOrEmpty(endEtd.EndEtg_ddd_com))
+            if (!string.IsNullOrEmpty(endEtd.EndEtg_tel_res))
             {
-                if (!string.IsNullOrEmpty(endEtd.EndEtg_tel_res))
-                {
-                    if (Util.Telefone_SoDigito(endEtd.EndEtg_tel_res).Length < 6)
-                        lstErros.Add("Endereço de entrega: telefone residencial inválido.");
+                if (Util.Telefone_SoDigito(endEtd.EndEtg_tel_res).Length < 6)
+                    lstErros.Add("Endereço de entrega: telefone residencial inválido.");
 
-                    if (endEtd.EndEtg_ddd_res.Length != 2)
-                        lstErros.Add("ddd residencial inválido.");
-                }
-
-                if (!string.IsNullOrEmpty(endEtd.EndEtg_ddd_cel))
-                {
-                    if (Util.Telefone_SoDigito(endEtd.EndEtg_tel_cel).Length < 6)
-                        lstErros.Add("Endereço de entrega: telefone celular inválido.");
-
-                    if (endEtd.EndEtg_ddd_cel.Length != 2)
-                        lstErros.Add("ddd do celular inválido.");
-                }
+                if (endEtd.EndEtg_ddd_res.Length != 2)
+                    lstErros.Add("ddd residencial inválido.");
             }
-            else
+
+            if (!string.IsNullOrEmpty(endEtd.EndEtg_ddd_cel))
             {
-                lstErros.Add("Endereço de entrega: preencha ao menos um telefone!");
+                if (Util.Telefone_SoDigito(endEtd.EndEtg_tel_cel).Length < 6)
+                    lstErros.Add("Endereço de entrega: telefone celular inválido.");
+
+                if (endEtd.EndEtg_ddd_cel.Length != 2)
+                    lstErros.Add("ddd do celular inválido.");
             }
         }
     }

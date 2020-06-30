@@ -70,7 +70,9 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
                 Preco_Lista = produtoDto.CustoFinancFornecPrecoListaBase,
                 VlLista = produtoDto.Preco_Lista,
                 Desconto = produtoDto.Desc_Dado,
-                VlUnitario = produtoDto.Preco_Venda
+                VlUnitario = produtoDto.Preco_Venda,
+                TotalItem = Math.Round((decimal)(produtoDto.Preco_Venda * produtoDto.Qtde), 2),
+                TotalItemRA = Math.Round((decimal)(produtoDto.Preco_Lista * produtoDto.Qtde), 2)
             };
 
             return ret;
