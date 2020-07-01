@@ -34,6 +34,9 @@ namespace PrepedidoAPIUnis.Controllers
             return Ok(await acessoUnisBll.FazerLogin(login, ip, userAgent));
         }
 
+        /// <summary>
+        /// Registra o fim da sessão
+        /// </summary>
         [AllowAnonymous]
         [HttpPost("fazerLogout")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
@@ -43,5 +46,17 @@ namespace PrepedidoAPIUnis.Controllers
                 return Unauthorized();
             return Ok(await acessoUnisBll.FazerLogout(logout, usuario));
         }
+
+        /// <summary>
+        /// Obtém informações da versão da API
+        /// </summary>
+        [AllowAnonymous]
+        [HttpPost("versaoApi")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public async Task<ActionResult<VersaoApiUnisDto>> VersaoApi()
+        {
+            return Ok(await acessoUnisBll.VersaoApi());
+        }
+
     }
 }

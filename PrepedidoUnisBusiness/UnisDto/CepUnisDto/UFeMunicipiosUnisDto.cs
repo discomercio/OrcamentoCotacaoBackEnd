@@ -36,7 +36,7 @@ namespace PrepedidoUnisBusiness.UnisDto.CepUnisDto
                     {
                         Codigo = y.Codigo,
                         Descricao = y.Descricao,
-                        DescricaoSemAcento = y.Descricao
+                        DescricaoSemAcento = y.DescricaoSemAcento
                     });
                 });
 
