@@ -11,8 +11,6 @@ using PrepedidoBusiness.Dto.ClienteCadastro;
 using InfraBanco.Constantes;
 using PrepedidoBusiness.Bll.Regras;
 using InfraBanco;
-using System.Reflection;
-using System.ComponentModel.DataAnnotations.Schema;
 using PrepedidoBusiness.Bll.ProdutoBll;
 using PrepedidoBusiness.Bll.ClienteBll;
 using PrepedidoBusiness.Bll.FormaPagtoBll;
@@ -562,77 +560,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return await raStatus;
         }
 
-        public async Task<string> PrepedidoJaCadastrado(PrePedidoDto prePedido)
-        {
-            /*
-             * critério:
-             * - se já existe algum prepedido do mesmo cliente, criado com a mesma data e há menos de 10 minutos
-             * - com a mesma loja e o mesmo orcamentista
-             * - onde todos os produtos sejam iguais (fabricante, produto, qtde e preco_venda)
-             * - a ordem dos produtos no pedido não precisa ser igual (no sistema em ASP exigia a mesma ordem para considerar igual)
-             * - consequencia: se a forma de pagamento for diferente, o valor será diferente e o prepedido será considerado diferente
-             * */
-            /*
-
-            '	VERIFICA SE ESTE ORÇAMENTO JÁ FOI GRAVADO!
-                dim orcamento_a, vjg
-                s = "SELECT t_ORCAMENTO.orcamento, fabricante, produto, qtde, preco_venda FROM t_ORCAMENTO INNER JOIN t_ORCAMENTO_ITEM ON (t_ORCAMENTO.orcamento=t_ORCAMENTO_ITEM.orcamento)" & _
-                    " WHERE (id_cliente='" & cliente_selecionado & "') AND (data=" & bd_formata_data(Date) & ")" & _
-                    " AND (loja='" & loja & "') AND (orcamentista='" & usuario & "')" & _
-                    " AND (hora>='" & formata_hora_hhnnss(Now-converte_min_to_dec(10))& "')" & _
-                    " ORDER BY t_ORCAMENTO_ITEM.orcamento, sequencia"
-                    */
-
-            var banco = contextoProvider.GetContextoLeitura();
-            var hora = Util.HoraParaBanco(DateTime.Now.AddMinutes(-10)); //no máxio há 10 minutos
-            var prepedidosExistentes = await (from prepedidoBanco in banco.Torcamentos
-                                              join item in banco.TorcamentoItems on prepedidoBanco.Orcamento equals item.Orcamento
-                                              where prepedidoBanco.Id_Cliente == prePedido.DadosCliente.Id
-                                                 && (prepedidoBanco.Data.HasValue && prepedidoBanco.Data.Value.Date == DateTime.Now.Date)
-                                                 && hora.CompareTo(prepedidoBanco.Hora) <= 0
-                                                 && prepedidoBanco.Loja == prePedido.DadosCliente.Loja
-                                                 && prepedidoBanco.Orcamentista == prePedido.DadosCliente.Indicador_Orcamentista
-                                              select new { prepedidoBanco.Orcamento, item.Fabricante, item.Produto, item.Qtde, item.Preco_Venda, item.Sequencia }).ToListAsync();
-
-            //agora já está na memória, as operações são rápidas
-            var orcamentosExistentes = (from prepedido in prepedidosExistentes select prepedido.Orcamento).Distinct();
-
-            foreach (var orcamentoExistente in orcamentosExistentes)
-            {
-                var itensDestePrepedido = (from item in prepedidosExistentes
-                                           where item.Orcamento == orcamentoExistente
-                                           orderby item.Fabricante, item.Produto, item.Qtde
-                                           select item).ToList();
-                //todos estes itens devem ser iguais aos do prepedido sendo criado para que o prepedido já exista
-                var itensParaCriar = (from item in prePedido.ListaProdutos
-                                      orderby item.Fabricante, item.NumProduto, item.Qtde
-                                      select new { item.Fabricante, Produto = item.NumProduto, item.Qtde, Preco_Venda = Math.Round(item.VlUnitario, 2) }).ToList();
-
-                if (itensDestePrepedido.Count() == itensParaCriar.Count() && itensDestePrepedido.Count() > 0)
-                {
-                    bool algumDiferente = false;
-                    for (int i = 0; i < itensDestePrepedido.Count(); i++)
-                    {
-                        var um = itensDestePrepedido[i];
-                        var dois = itensParaCriar[i];
-                        //nao comparamos a sequencia
-                        if (!(um.Fabricante == dois.Fabricante && um.Produto == dois.Produto && um.Qtde == dois.Qtde && um.Preco_Venda == dois.Preco_Venda))
-                        {
-                            algumDiferente = true;
-                            break;
-                        }
-                    }
-
-                    if (!algumDiferente)
-                        return itensDestePrepedido[0].Orcamento;
-                }
-
-            }
-
-            return null;
-        }
-
-        public async Task<IEnumerable<string>> CadastrarPrepedido(PrePedidoDto prePedido, string apelido)
+        public async Task<IEnumerable<string>> CadastrarPrepedido(PrePedidoDto prePedido, string apelido, decimal limiteArredondamento)
         {
             List<string> lstErros = new List<string>();
 
@@ -655,15 +583,15 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             {
                 var cliente = await clienteBll.BuscarCliente(
                     prePedido.EnderecoCadastroClientePrepedido.Endereco_cnpj_cpf, tOrcamentista.Apelido.ToUpper());
-            
-                if(cliente != null)
+
+                if (cliente != null)
                 {
                     prePedido.DadosCliente.Id = cliente.DadosCliente.Id;
                     prePedido.DadosCliente.Sexo = cliente.DadosCliente.Sexo;
                     prePedido.DadosCliente.Nascimento = cliente.DadosCliente.Nascimento;
                 }
             }
-                
+
 
             //antes de validar vamos passar o EnderecoCadastral para dadoscliente
             prePedido.DadosCliente =
@@ -679,7 +607,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 return lstErros;
 
             //verifica se o prepedio já foi gravado
-            var prepedidoJaCadastradoNumero = await PrepedidoJaCadastrado(prePedido);
+            var prepedidoJaCadastradoNumero = await new PrepedidoRepetidoBll(contextoProvider).PrepedidoJaCadastrado(prePedido);
             if (!String.IsNullOrEmpty(prepedidoJaCadastradoNumero))
             {
                 lstErros.Add($"Este pré-pedido já foi gravado com o número {prepedidoJaCadastradoNumero}");
@@ -703,7 +631,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 //Validar endereço de entraga
                 if (await validacoesPrepedidoBll.ValidarEnderecoEntrega(prePedido, lstErros))
                 {
-                    if (validacoesFormaPagtoBll.ValidarFormaPagto(prePedido, lstErros))
+                    if (validacoesFormaPagtoBll.ValidarFormaPagto(prePedido, lstErros, limiteArredondamento))
                     {
                         //Esta sendo verificado qual o tipo de pagamento que esta sendo feito e retornando a quantidade de parcelas
                         int c_custoFinancFornecQtdeParcelas = ObterQtdeParcelasFormaPagto(prePedido);
@@ -715,8 +643,8 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
 
                         //Vamos conforntar os valores de cada item, total do prepedido e o percentual máximo de RA
                         await validacoesPrepedidoBll.MontarProdutosParaComparacao(prePedido,
-                            c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas, 
-                            prePedido.DadosCliente.Loja, lstErros, perc_limite_RA_sem_desagio);
+                            c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas,
+                            prePedido.DadosCliente.Loja, lstErros, perc_limite_RA_sem_desagio, limiteArredondamento);
 
                         if (lstErros.Count > 0)
                             return lstErros;

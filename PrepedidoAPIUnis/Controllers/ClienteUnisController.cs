@@ -40,7 +40,6 @@ namespace PrepedidoAPIUnis.Controllers
                 return Unauthorized();
 
             ClienteCadastroResultadoUnisDto retorno;
-            //todo: retornar a estrutura certa
             retorno = await clienteUnisBll.CadastrarClienteUnis(clienteDto);
 
             return Ok(retorno);

@@ -27,7 +27,8 @@ namespace PrepedidoUnisBusiness.UnisBll.AcessoBll
         private static string Erro_ERR_IDENTIFICACAO = "OS DADOS INFORMADOS NA IDENTIFICAÇÃO ESTÃO INCORRETOS.";
 
         //retorna null se nao exisitr (ou se a senha estiver errada)
-        public async Task<UsuarioLoginApiUnis> ObterUsuarioApiUnis(string usuarioOriginal, string senha, string ip, string userAgent)
+        public async Task<UsuarioLoginApiUnis> ObterUsuarioApiUnis(string usuarioOriginal, string senha, string ip, string userAgent,
+            string ApelidoPerfilLiberaAcessoApiUnis)
         {
             var ret = new UsuarioLoginApiUnis();
 
@@ -80,7 +81,7 @@ namespace PrepedidoUnisBusiness.UnisBll.AcessoBll
             }
 
 
-            //TODO: verificar com o Hamilton como fazer. PROVISÓRIO: verificamos se tem o perfil APIUNIS
+            //Verificamos se tem o perfil APIUNIS
             /*
 			s = "SELECT Count(*) AS qtde FROM t_PERFIL_X_USUARIO INNER JOIN t_PERFIL ON t_PERFIL_X_USUARIO.id_perfil=t_PERFIL.id" & _
 				" INNER JOIN t_PERFIL_ITEM ON t_PERFIL.id=t_PERFIL_ITEM.id_perfil" & _
@@ -89,7 +90,7 @@ namespace PrepedidoUnisBusiness.UnisBll.AcessoBll
 				" AND (t_OPERACAO.modulo='" & COD_OP_MODULO_CENTRAL & "')"
 							*/
             var perfil = await (from p in contextoProvider.GetContextoLeitura().Tperfils
-                                where p.Apelido == "APIUNIS" && p.TperfilUsuario.Usuario.ToUpper() == usuarioMaisuculas && p.St_inativo == 0
+                                where p.Apelido.ToUpper() == ApelidoPerfilLiberaAcessoApiUnis.ToUpper() && p.TperfilUsuario.Usuario.ToUpper() == usuarioMaisuculas && p.St_inativo == 0
                                 select p.Id).FirstOrDefaultAsync();
             if (perfil == null)
             {

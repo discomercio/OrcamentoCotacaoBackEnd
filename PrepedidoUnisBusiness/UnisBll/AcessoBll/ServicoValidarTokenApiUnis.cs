@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using PrepedidoUnisBusiness.Utils;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -20,11 +21,9 @@ namespace PrepedidoUnisBusiness.UnisBll.AcessoBll
         private byte[] key;
         private readonly ILogger<ServicoValidarTokenApiUnis> logger;
 
-        public ServicoValidarTokenApiUnis(IConfiguration configuration, ILogger<ServicoValidarTokenApiUnis> logger)
+        public ServicoValidarTokenApiUnis(ConfiguracaoApiUnis configuracaoApiUnis, ILogger<ServicoValidarTokenApiUnis> logger)
         {
-            var appSettingsSection = configuration.GetSection("AppSettings");
-            var appSettings = appSettingsSection.Get<PrepedidoUnisBusiness.Utils.ConfiguracaoApiUnis>();
-            key = Encoding.ASCII.GetBytes(appSettings.SegredoToken);
+            key = Encoding.ASCII.GetBytes(configuracaoApiUnis.SegredoToken);
             this.logger = logger;
         }
 

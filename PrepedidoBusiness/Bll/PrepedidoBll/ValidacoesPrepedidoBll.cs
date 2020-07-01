@@ -34,7 +34,8 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
 
         //vamos validar os produtos que foram enviados
         public async Task MontarProdutosParaComparacao(PrePedidoDto prepedido,
-                    string siglaFormaPagto, int qtdeParcelas, string loja, List<string> lstErros, float perc_limite_RA)
+                    string siglaFormaPagto, int qtdeParcelas, string loja, List<string> lstErros, float perc_limite_RA,
+                    decimal limiteArredondamento)
         {
             List<PrepedidoProdutoDtoPrepedido> lstProdutosParaComparacao = new List<PrepedidoProdutoDtoPrepedido>();
             List<List<CoeficienteDto>> lstCoeficienteDtoArclube = new List<List<CoeficienteDto>>();
@@ -65,8 +66,8 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 });
             });
 
-            ConfrontarProdutos(prepedido, lstProdutosCompare, lstErros);
-            ConfrontarTotaisEPercentualMaxRA(prepedido, lstProdutosCompare, lstErros, perc_limite_RA);
+            ConfrontarProdutos(prepedido, lstProdutosCompare, lstErros, limiteArredondamento);
+            ConfrontarTotaisEPercentualMaxRA(prepedido, lstProdutosCompare, lstErros, perc_limite_RA, limiteArredondamento);
         }
 
         private async Task<IEnumerable<CoeficienteDto>> BuscarListaCoeficientesFornecedores(List<string> lstFornecedores, int qtdeParcelas, string siglaFP)
@@ -129,11 +130,11 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         }
 
         private void ConfrontarProdutos(PrePedidoDto prepedido,
-            List<PrepedidoProdutoDtoPrepedido> lstProdutosCompare, List<string> lstErros)
+            List<PrepedidoProdutoDtoPrepedido> lstProdutosCompare, List<string> lstErros,
+            decimal limiteArredondamento)
         {
             decimal diffVlLista = 0;
             decimal diffVlUnitario = 0;
-            decimal limite = 0.01M;
             decimal diffTotalItem = 0;
             decimal diffTotalItemRa = 0;
 
@@ -146,18 +147,17 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                        diffVlLista = Math.Abs(x.VlLista - y.VlLista);
                        diffVlUnitario = Math.Abs((x.VlUnitario - y.VlUnitario));
 
-                       //afazer: pegar o valor do appsettings
-                       if (diffVlLista > limite || diffVlUnitario > limite)
+                       if (diffVlLista > limiteArredondamento || diffVlUnitario > limiteArredondamento)
                        {
-                           lstErros.Add("O valor do Produto (cód.)" + x.NumProduto + " está divergindo!");
+                           lstErros.Add("O valor do Produto (cód.) " + x.NumProduto + " está divergindo!");
                        }
                        else
                        {
                            diffTotalItem = Math.Abs((decimal)(x.TotalItem - y.TotalItem));
                            diffTotalItemRa = Math.Abs((decimal)(x.TotalItemRA - y.TotalItemRA));
 
-                           if (diffTotalItem > limite || diffTotalItemRa > limite)
-                               lstErros.Add("O valor total do Produto (cód.)" + x.NumProduto +
+                           if (diffTotalItem > limiteArredondamento || diffTotalItemRa > limiteArredondamento)
+                               lstErros.Add("O valor total do Produto (cód.) " + x.NumProduto +
                                    " está divergindo!");
                        }
                    }
@@ -172,12 +172,12 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         }
 
         private void ConfrontarTotaisEPercentualMaxRA(PrePedidoDto prepedido,
-            List<PrepedidoProdutoDtoPrepedido> lstProdutosCompare, List<string> lstErros, float perc_limite_RA)
+            List<PrepedidoProdutoDtoPrepedido> lstProdutosCompare, List<string> lstErros, float perc_limite_RA,
+            decimal limiteArredondamento)
         {
             //PAREI VAIDANDO OS VALORES DE PRODUTOS E TOTAIS
             decimal totalCompare = 0;
             decimal totalRaCompare = 0;
-            decimal limite = 0.01M;
 
             lstProdutosCompare.ForEach(x =>
             {
@@ -185,12 +185,12 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 totalRaCompare += Math.Round((decimal)(x.TotalItemRA), 2);
             });
 
-            if (Math.Abs((decimal)(totalCompare - prepedido.VlTotalDestePedido)) > limite)
+            if (Math.Abs((decimal)(totalCompare - prepedido.VlTotalDestePedido)) > limiteArredondamento)
                 lstErros.Add("Os valores totais estão divergindo!");
 
             if (prepedido.PermiteRAStatus == 1)
             {
-                if (Math.Abs((decimal)(totalRaCompare - prepedido.ValorTotalDestePedidoComRA)) > limite)
+                if (Math.Abs((decimal)(totalRaCompare - prepedido.ValorTotalDestePedidoComRA)) > limiteArredondamento)
                     lstErros.Add("Os valores totais de RA estão divergindo!");
 
                 //vamos verificar o valor de RA
@@ -203,8 +203,9 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             }
         }
 
-        public bool CalculaItens(PrePedidoDto prePedido, out decimal vlTotalFormaPagto)
+        public bool CalculaItens(PrePedidoDto prePedido, out decimal vlTotalFormaPagto, decimal limiteArredondamento)
         {
+            //TODO: provavelmente remover esta rotina
             bool retorno = true;
             decimal vl_total_NF = 0;
             decimal vl_total = 0;
@@ -219,7 +220,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 }
             }
             vlTotalFormaPagto = vl_total_NF;
-            if (Math.Abs(vlTotalFormaPagto - vl_total_NF) > 0.1M)
+            if (Math.Abs(vlTotalFormaPagto - vl_total_NF) > limiteArredondamento)
                 retorno = false;
 
             return retorno;
@@ -518,7 +519,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                     if (endEtg.EndEtg_ddd_cel.Length != 2)
                         lstErros.Add("Endereço de entrega: ddd do celular inválido.");
                 }
-                
+
             }
         }
     }

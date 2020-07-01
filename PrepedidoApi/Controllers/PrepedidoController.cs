@@ -19,9 +19,9 @@ namespace PrepedidoApi.Controllers
         private readonly PrepedidoBusiness.Bll.FormaPagtoBll.FormaPagtoBll formaPagtoBll;
         private readonly PrepedidoBusiness.Bll.CoeficienteBll coeficienteBll;
 
-        public PrepedidoController(PrepedidoBusiness.Bll.PrepedidoBll.PrepedidoBll prepedidoBll, 
+        public PrepedidoController(PrepedidoBusiness.Bll.PrepedidoBll.PrepedidoBll prepedidoBll,
             InfraIdentity.IServicoDecodificarToken servicoDecodificarToken,
-            PrepedidoBusiness.Bll.FormaPagtoBll.FormaPagtoBll formaPagtoBll, 
+            PrepedidoBusiness.Bll.FormaPagtoBll.FormaPagtoBll formaPagtoBll,
             PrepedidoBusiness.Bll.CoeficienteBll coeficienteBll)
         {
             this.prepedidoBll = prepedidoBll;
@@ -148,7 +148,8 @@ namespace PrepedidoApi.Controllers
             //para testar: http://localhost:60877/api/prepedido/cadastrarPrepedido
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            var ret = await prepedidoBll.CadastrarPrepedido(prePedido, apelido.Trim());
+            //TODO: ler do appsettings
+            var ret = await prepedidoBll.CadastrarPrepedido(prePedido, apelido.Trim(), 0.01M);
 
             return Ok(ret);
         }

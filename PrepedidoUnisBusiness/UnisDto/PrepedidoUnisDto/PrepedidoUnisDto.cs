@@ -54,7 +54,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
                 DetalhesPrepedido = DetalhesPrePedidoUnisDto.
                     DetalhesPrePedidoDtoDeDetalhesPrePedidoUnisDto(prepedidoUnis.DetalhesPrepedido),
                 FormaPagtoCriacao = FormaPagtoCriacaoUnisDto.FormaPagtoCriacaoDtoDeFormaPagtoCriacaoUnisDto(
-                    prepedidoUnis.FormaPagtoCriacao),
+                    prepedidoUnis.FormaPagtoCriacao)
             };
 
             return ret;

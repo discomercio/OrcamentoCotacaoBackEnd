@@ -1,32 +1,32 @@
 ﻿using InfraBanco.Constantes;
 using InfraBanco.Modelos;
 using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
-using PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto;
 using PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto;
 using PrepedidoBusiness.Bll.ClienteBll;
 using PrepedidoBusiness.Bll.PrepedidoBll;
 using PrepedidoBusiness.Dto.ClienteCadastro;
 using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
-using PrepedidoUnisBusiness.UnisBll.PrePedidoUnisBll;
 using PrepedidoUnisBusiness.UnisDto.ClienteUnisDto;
+using PrepedidoUnisBusiness.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
 {
     public class PrePedidoUnisBll
     {
+        private readonly ConfiguracaoApiUnis configuracaoApiUnis;
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
         private readonly InfraBanco.ContextoCepProvider contextoCepProvider;
         private readonly PrepedidoBll prepedidoBll;
         private readonly ClienteBll clienteBll;
 
-        public PrePedidoUnisBll(InfraBanco.ContextoBdProvider contextoProvider,
+        public PrePedidoUnisBll(ConfiguracaoApiUnis configuracaoApiUnis, InfraBanco.ContextoBdProvider contextoProvider,
             InfraBanco.ContextoCepProvider contextoCepProvider, PrepedidoBll prepedidoBll, ClienteBll clienteBll)
         {
+            this.configuracaoApiUnis = configuracaoApiUnis;
             this.contextoProvider = contextoProvider;
             this.contextoCepProvider = contextoCepProvider;
             this.prepedidoBll = prepedidoBll;
@@ -75,28 +75,38 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
                 lstProdutosArclube.Add(ret);
             });
 
+            //usar o formato padrão da BLL
+            PrePedidoDto prePedidoDto = PrePedidoUnisDto.PrePedidoDtoDePrePedidoUnisDto(prePedidoUnis, endCadastralArclube, lstProdutosArclube);
+
+            //verifica se já existe (ou se está no limite de repetições)
+            string prepedidosRepetidos = await PrepedidosRepetidos(prePedidoDto);
+            if (!string.IsNullOrEmpty(prepedidosRepetidos))
+            {
+                retorno.ListaErros.Add(prepedidosRepetidos);
+                return retorno;
+            }
 
             //vamos cadastrar
             //A validação dos dados será feita no cadastro do prepedido
-            List<string> lstRet = (await prepedidoBll.CadastrarPrepedido(PrePedidoUnisDto.
-                PrePedidoDtoDePrePedidoUnisDto(prePedidoUnis, endCadastralArclube, lstProdutosArclube),
-                prePedidoUnis.Indicador_Orcamentista.ToUpper())).ToList();
+            List<string> lstRet = (await prepedidoBll.CadastrarPrepedido(prePedidoDto,
+                prePedidoUnis.Indicador_Orcamentista.ToUpper(),
+                Convert.ToDecimal(configuracaoApiUnis.LimiteArredondamentoPrecoVendaOrcamentoItem))).ToList();
 
-            if(lstRet.Count > 0)
+            if (lstRet.Count > 0)
             {
                 if (lstRet.Count > 1)
                 {
                     retorno.ListaErros = lstRet;
                     return retorno;
                 }
-                if(lstRet[0].Length > Constantes.TAM_MAX_ID_ORCAMENTO)
+                if (lstRet[0].Length > Constantes.TAM_MAX_ID_ORCAMENTO)
                 {
                     retorno.ListaErros = lstRet;
                     return retorno;
                 }
-                retorno.IdPrePedidoCadastrado = lstRet[0];    
+                retorno.IdPrePedidoCadastrado = lstRet[0];
             }
-           
+
 
             return retorno;
         }
@@ -132,6 +142,29 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
         public async Task<decimal> ObtemPercentualVlPedidoRA()
         {
             return await prepedidoBll.ObtemPercentualVlPedidoRA();
+        }
+
+        public async Task<string> PrepedidosRepetidos(PrePedidoDto prePedidoDto)
+        {
+            PrepedidoRepetidoBll prepedidoRepetidoBll = new PrepedidoBusiness.Bll.PrepedidoBll.PrepedidoRepetidoBll(contextoProvider);
+
+            //repetição totalmente igual
+            var repetidos = await prepedidoRepetidoBll.PrepedidoJaCadastradoDesdeData(prePedidoDto, DateTime.Now.AddSeconds(-1 * configuracaoApiUnis.LimitePrepedidos.LimitePrepedidosExatamenteIguais_TempoSegundos));
+            if (repetidos.Count > configuracaoApiUnis.LimitePrepedidos.LimitePrepedidosExatamenteIguais_Numero)
+            {
+                return $"Pré-pedido já foi cadastrado com os mesmos dados Há menos de {configuracaoApiUnis.LimitePrepedidos.LimitePrepedidosExatamenteIguais_TempoSegundos} segundos. " +
+                    "Pré-pedidos existentes: " + String.Join(", ", repetidos);
+            }
+
+            //repetição por ID do cliente (CPF/CNPJ)
+            repetidos = await prepedidoRepetidoBll.PrepedidoPorIdCLiente(prePedidoDto.DadosCliente.Id, DateTime.Now.AddSeconds(-1 * configuracaoApiUnis.LimitePrepedidos.LimitePrepedidosMesmoCpfCnpj_TempoSegundos));
+            if (repetidos.Count > configuracaoApiUnis.LimitePrepedidos.LimitePrepedidosExatamenteIguais_Numero)
+            {
+                return $"Limite de pré-pedidos por CPF/CNPJ excedido, muitos pré-pedidos há menos de {configuracaoApiUnis.LimitePrepedidos.LimitePrepedidosMesmoCpfCnpj_TempoSegundos} segundos. " +
+                    "Pré-pedidos para o mesmo CPF/CNPJ: " + String.Join(", ", repetidos);
+            }
+
+            return null;
         }
     }
 }

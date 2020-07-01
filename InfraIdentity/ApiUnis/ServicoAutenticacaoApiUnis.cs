@@ -17,22 +17,22 @@ namespace InfraIdentity.ApiUnis
     public interface IServicoAutenticacaoApiUnis
     {
         Task<RetornoObterTokenAutenticacaoApiUnis> ObterTokenAutenticacaoApiUnis(string usuario, string senha, string segredoToken, int validadeTokenMinutos, string role, IServicoAutenticacaoProviderApiUnis servicoAutenticacaoProviderApiUnis,
-            string ip, string userAgent);
+            string ip, string userAgent, string ApelidoPerfilLiberaAcessoApiUnis);
     }
 
     public interface IServicoAutenticacaoProviderApiUnis
     {
-        Task<InfraIdentity.ApiUnis.UsuarioLoginApiUnis> ObterUsuarioApiUnis(string usuario, string senha, string ip, string userAgent);
+        Task<InfraIdentity.ApiUnis.UsuarioLoginApiUnis> ObterUsuarioApiUnis(string usuario, string senha, string ip, string userAgent, string ApelidoPerfilLiberaAcessoApiUnis);
     }
 
     public class ServicoAutenticacaoApiUnis : IServicoAutenticacaoApiUnis
     {
         public async Task<RetornoObterTokenAutenticacaoApiUnis> ObterTokenAutenticacaoApiUnis(string usuario, string senha, string segredoToken, int validadeTokenMinutos,
             string role, IServicoAutenticacaoProviderApiUnis servicoAutenticacaoProviderApiUnis,
-            string ip, string userAgent)
+            string ip, string userAgent, string ApelidoPerfilLiberaAcessoApiUnis)
         {
             var ret = new RetornoObterTokenAutenticacaoApiUnis();
-            var user = await servicoAutenticacaoProviderApiUnis.ObterUsuarioApiUnis(usuario, senha, ip, userAgent);
+            var user = await servicoAutenticacaoProviderApiUnis.ObterUsuarioApiUnis(usuario, senha, ip, userAgent, ApelidoPerfilLiberaAcessoApiUnis);
             // retorna null se não tiver usuário
             if (user == null)
                 return null;

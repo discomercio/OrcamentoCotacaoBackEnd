@@ -10,6 +10,8 @@ namespace PrepedidoUnisBusiness.Utils
         public string SegredoToken { get; set; }
         public int ValidadeTokenMinutos { get; set; }
 
+        public string ApelidoPerfilLiberaAcessoApiUnis { get; set; }
+
         public class VersaoApiUnis
         {
             public string VersaoApi { get; set; }

@@ -17,20 +17,18 @@ namespace PrepedidoUnisBusiness.UnisBll.AcessoBll
         private readonly IServicoAutenticacaoApiUnis servicoAutenticacaoApiUnis;
         private readonly ContextoBdProvider contextoProvider;
 
-        public AcessoUnisBll(IConfiguration configuration, IServicoAutenticacaoApiUnis servicoAutenticacaoApiUnis, InfraBanco.ContextoBdProvider contextoProvider)
+        public AcessoUnisBll(ConfiguracaoApiUnis configuracaoApiUnis, IServicoAutenticacaoApiUnis servicoAutenticacaoApiUnis, InfraBanco.ContextoBdProvider contextoProvider)
         {
+            this.configuracaoApiUnis = configuracaoApiUnis;
             this.servicoAutenticacaoApiUnis = servicoAutenticacaoApiUnis;
             this.contextoProvider = contextoProvider;
-
-            var appSettingsSection = configuration.GetSection("AppSettings");
-            configuracaoApiUnis = appSettingsSection.Get<ConfiguracaoApiUnis>();
         }
         public async Task<LoginResultadoUnisDto> FazerLogin(LoginUnisDto login, string ip, string userAgent)
         {
             var autentica = await servicoAutenticacaoApiUnis.ObterTokenAutenticacaoApiUnis(login.Usuario, login.Senha,
                 configuracaoApiUnis.SegredoToken, configuracaoApiUnis.ValidadeTokenMinutos,
                 AutenticacaoApiUnis.RoleAcesso, new ServicoAutenticacaoProviderApiUnis(contextoProvider),
-                ip, userAgent);
+                ip, userAgent, configuracaoApiUnis.ApelidoPerfilLiberaAcessoApiUnis);
             var retorno = new LoginResultadoUnisDto()
             {
                 TokenAcesso = autentica.TokenAcesso,

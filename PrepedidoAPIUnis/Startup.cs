@@ -19,6 +19,7 @@ using PrepedidoUnisBusiness.UnisBll.CepUnisBll;
 using PrepedidoUnisBusiness.UnisBll.CoeficienteUnisBll;
 using PrepedidoUnisBusiness.UnisBll.FormaPagtoUnisBll;
 using PrepedidoUnisBusiness.UnisBll.ProdutoUnisBll;
+using PrepedidoUnisBusiness.Utils;
 
 namespace PrepedidoAPIUnis
 {
@@ -70,6 +71,14 @@ namespace PrepedidoAPIUnis
             services.AddTransient<CepUnisBll, CepUnisBll>();
             services.AddTransient<FormaPagtoUnisBll, FormaPagtoUnisBll>();
             services.AddTransient<CoeficienteUnisBll, CoeficienteUnisBll>();
+
+            services.AddSingleton<ConfiguracaoApiUnis>(c =>
+            {
+                IConfiguration configuration = c.GetService<IConfiguration>();
+                var appSettingsSectionSingleton = configuration.GetSection("AppSettings");
+                var configuracaoApiUnis = appSettingsSectionSingleton.Get<ConfiguracaoApiUnis>();
+                return configuracaoApiUnis;
+            });
 
             //Bll's da Arclube
             services.AddTransient<PrepedidoBusiness.Bll.CepBll, PrepedidoBusiness.Bll.CepBll>();
