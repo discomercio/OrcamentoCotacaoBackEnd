@@ -76,7 +76,7 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
             });
 
             //usar o formato padrão da BLL
-            PrePedidoDto prePedidoDto = PrePedidoUnisDto.PrePedidoDtoDePrePedidoUnisDto(prePedidoUnis, endCadastralArclube, lstProdutosArclube);
+            PrePedidoDto prePedidoDto = PrePedidoUnisDto.PrePedidoDtoDePrePedidoUnisDto(prePedidoUnis, endCadastralArclube, lstProdutosArclube, clienteArclube.DadosCliente);
 
             //verifica se já existe (ou se está no limite de repetições)
             string prepedidosRepetidos = await PrepedidosRepetidos(prePedidoDto);
@@ -90,7 +90,7 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
             //A validação dos dados será feita no cadastro do prepedido
             List<string> lstRet = (await prepedidoBll.CadastrarPrepedido(prePedidoDto,
                 prePedidoUnis.Indicador_Orcamentista.ToUpper(),
-                Convert.ToDecimal(configuracaoApiUnis.LimiteArredondamentoPrecoVendaOrcamentoItem))).ToList();
+                Convert.ToDecimal(configuracaoApiUnis.LimiteArredondamentoPrecoVendaOrcamentoItem), false)).ToList();
 
             if (lstRet.Count > 0)
             {
@@ -150,17 +150,17 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
 
             //repetição totalmente igual
             var repetidos = await prepedidoRepetidoBll.PrepedidoJaCadastradoDesdeData(prePedidoDto, DateTime.Now.AddSeconds(-1 * configuracaoApiUnis.LimitePrepedidos.LimitePrepedidosExatamenteIguais_TempoSegundos));
-            if (repetidos.Count > configuracaoApiUnis.LimitePrepedidos.LimitePrepedidosExatamenteIguais_Numero)
+            if (repetidos.Count >= configuracaoApiUnis.LimitePrepedidos.LimitePrepedidosExatamenteIguais_Numero)
             {
-                return $"Pré-pedido já foi cadastrado com os mesmos dados Há menos de {configuracaoApiUnis.LimitePrepedidos.LimitePrepedidosExatamenteIguais_TempoSegundos} segundos. " +
+                return $"Pré-pedido já foi cadastrado com os mesmos dados há menos de {configuracaoApiUnis.LimitePrepedidos.LimitePrepedidosExatamenteIguais_TempoSegundos} segundos. " +
                     "Pré-pedidos existentes: " + String.Join(", ", repetidos);
             }
 
             //repetição por ID do cliente (CPF/CNPJ)
             repetidos = await prepedidoRepetidoBll.PrepedidoPorIdCLiente(prePedidoDto.DadosCliente.Id, DateTime.Now.AddSeconds(-1 * configuracaoApiUnis.LimitePrepedidos.LimitePrepedidosMesmoCpfCnpj_TempoSegundos));
-            if (repetidos.Count > configuracaoApiUnis.LimitePrepedidos.LimitePrepedidosExatamenteIguais_Numero)
+            if (repetidos.Count >= configuracaoApiUnis.LimitePrepedidos.LimitePrepedidosMesmoCpfCnpj_Numero)
             {
-                return $"Limite de pré-pedidos por CPF/CNPJ excedido, muitos pré-pedidos há menos de {configuracaoApiUnis.LimitePrepedidos.LimitePrepedidosMesmoCpfCnpj_TempoSegundos} segundos. " +
+                return $"Limite de pré-pedidos por CPF/CNPJ excedido, existem {configuracaoApiUnis.LimitePrepedidos.LimitePrepedidosMesmoCpfCnpj_Numero} pré-pedidos há menos de {configuracaoApiUnis.LimitePrepedidos.LimitePrepedidosMesmoCpfCnpj_TempoSegundos} segundos. " +
                     "Pré-pedidos para o mesmo CPF/CNPJ: " + String.Join(", ", repetidos);
             }
 

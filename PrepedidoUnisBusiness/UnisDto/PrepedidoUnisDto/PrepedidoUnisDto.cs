@@ -39,7 +39,8 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
 
 
         public static PrePedidoDto PrePedidoDtoDePrePedidoUnisDto(PrePedidoUnisDto prepedidoUnis,
-            EnderecoCadastralClientePrepedidoDto endCadastraArclube, List<PrepedidoProdutoDtoPrepedido> lstProdutosArclube)
+            EnderecoCadastralClientePrepedidoDto endCadastraArclube, List<PrepedidoProdutoDtoPrepedido> lstProdutosArclube,
+            DadosClienteCadastroDto dadosClienteCadastroDto)
         {
             var ret = new PrePedidoDto()
             {
@@ -54,7 +55,8 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
                 DetalhesPrepedido = DetalhesPrePedidoUnisDto.
                     DetalhesPrePedidoDtoDeDetalhesPrePedidoUnisDto(prepedidoUnis.DetalhesPrepedido),
                 FormaPagtoCriacao = FormaPagtoCriacaoUnisDto.FormaPagtoCriacaoDtoDeFormaPagtoCriacaoUnisDto(
-                    prepedidoUnis.FormaPagtoCriacao)
+                    prepedidoUnis.FormaPagtoCriacao),
+                DadosCliente = dadosClienteCadastroDto
             };
 
             return ret;

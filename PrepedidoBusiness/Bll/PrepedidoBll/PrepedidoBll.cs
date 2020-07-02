@@ -560,7 +560,8 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return await raStatus;
         }
 
-        public async Task<IEnumerable<string>> CadastrarPrepedido(PrePedidoDto prePedido, string apelido, decimal limiteArredondamento)
+        public async Task<IEnumerable<string>> CadastrarPrepedido(PrePedidoDto prePedido, string apelido, decimal limiteArredondamento,
+            bool verificarPrepedidoRepetido)
         {
             List<string> lstErros = new List<string>();
 
@@ -607,11 +608,14 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 return lstErros;
 
             //verifica se o prepedio já foi gravado
-            var prepedidoJaCadastradoNumero = await new PrepedidoRepetidoBll(contextoProvider).PrepedidoJaCadastrado(prePedido);
-            if (!String.IsNullOrEmpty(prepedidoJaCadastradoNumero))
+            if (verificarPrepedidoRepetido)
             {
-                lstErros.Add($"Este pré-pedido já foi gravado com o número {prepedidoJaCadastradoNumero}");
-                return lstErros;
+                var prepedidoJaCadastradoNumero = await new PrepedidoRepetidoBll(contextoProvider).PrepedidoJaCadastradoCriterioSiteColors(prePedido);
+                if (!String.IsNullOrEmpty(prepedidoJaCadastradoNumero))
+                {
+                    lstErros.Add($"Este pré-pedido já foi gravado com o número {prepedidoJaCadastradoNumero}");
+                    return lstErros;
+                }
             }
 
             //verificar como esta sendo salvo

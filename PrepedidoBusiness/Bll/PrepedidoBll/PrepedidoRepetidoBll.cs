@@ -18,7 +18,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             this.contextoProvider = contextoProvider;
         }
 
-        public async Task<string> PrepedidoJaCadastrado(PrePedidoDto prePedido)
+        public async Task<string> PrepedidoJaCadastradoCriterioSiteColors(PrePedidoDto prePedido)
         {
             var ret = await PrepedidoJaCadastradoDesdeData(prePedido, DateTime.Now.AddMinutes(-10)); //no máxio há 10 minutos
             if (ret.Count == 0)

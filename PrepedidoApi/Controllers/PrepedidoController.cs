@@ -149,7 +149,7 @@ namespace PrepedidoApi.Controllers
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
             //TODO: ler do appsettings
-            var ret = await prepedidoBll.CadastrarPrepedido(prePedido, apelido.Trim(), 0.01M);
+            var ret = await prepedidoBll.CadastrarPrepedido(prePedido, apelido.Trim(), 0.01M, true);
 
             return Ok(ret);
         }
