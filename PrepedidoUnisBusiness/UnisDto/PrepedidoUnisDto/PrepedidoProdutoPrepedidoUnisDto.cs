@@ -21,19 +21,32 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
 
         public float? Desc_Dado { get; set; }// = Desconto
 
+        /// <summary>
+        /// Preco_Venda = (Preco_Fabricante * CustoFinancFornecCoeficiente) * (1 - Desc_Dado / 100)
+        /// </summary>
         [Required]
         public decimal Preco_Venda { get; set; }// = VlUnitario
 
         public decimal? Preco_Fabricante { get; set; }
 
+        /// <summary>
+        /// Essa variável permite que o valor seja alterado
+        /// Preco_Lista = Preco_Fabricante * CustoFinancFornecCoeficiente
+        /// </summary>
         [Required]
         public decimal Preco_Lista { get; set; }// = VlLista
 
+        /// <summary>
+        /// Preco_NF = PrePedidoUnisDto.PermiteRAStatus == true ? Preco_Lista : Preco_Venda
+        /// </summary>
         public decimal? Preco_NF { get; set; } // se permite RA = Preco_Lista / senão VlUnitario
 
         [Required]
         public float CustoFinancFornecCoeficiente { get; set; }
 
+        /// <summary>
+        /// CustoFinancFornecPrecoListaBase = Preco_Fabricante * CustoFinancFornecCoeficiente
+        /// </summary>
         public decimal CustoFinancFornecPrecoListaBase { get; set; } //recebe Preco_Lista
 
         public static PrePedidoProdutoPrePedidoUnisDto PrePedidoProdutoPrePedidoUnisDtoDePrepedidoProdutoDtoPrepedido(PrepedidoProdutoDtoPrepedido produtoDto,
