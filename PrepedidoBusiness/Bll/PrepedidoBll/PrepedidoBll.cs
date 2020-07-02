@@ -723,7 +723,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                                     bool gravouLog = Util.GravaLog(dbgravacao, apelido, prePedido.DadosCliente.Loja, prePedido.NumeroPrePedido,
                                         prePedido.DadosCliente.Id, Constantes.OP_LOG_ORCAMENTO_NOVO, log);
 
-                                    //dbgravacao.transacao.Commit();
+                                    dbgravacao.transacao.Commit();
                                     lstErros.Add(prePedido.NumeroPrePedido);
                                 }
                             }
