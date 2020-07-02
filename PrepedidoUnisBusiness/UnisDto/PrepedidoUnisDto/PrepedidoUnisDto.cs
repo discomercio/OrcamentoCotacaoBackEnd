@@ -56,8 +56,9 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
                     DetalhesPrePedidoDtoDeDetalhesPrePedidoUnisDto(prepedidoUnis.DetalhesPrepedido),
                 FormaPagtoCriacao = FormaPagtoCriacaoUnisDto.FormaPagtoCriacaoDtoDeFormaPagtoCriacaoUnisDto(
                     prepedidoUnis.FormaPagtoCriacao),
-                DadosCliente = dadosClienteCadastroDto
+                DadosCliente = dadosClienteCadastroDto,
             };
+            ret.DadosCliente.Indicador_Orcamentista = prepedidoUnis.Indicador_Orcamentista;
 
             return ret;
         }
