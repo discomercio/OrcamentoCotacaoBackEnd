@@ -20,7 +20,9 @@ namespace Testes.Labs.InfraBancoLab
             this.filtroClientes = filtroClientes;
         }
 
+#pragma warning disable IDE0060 // Remove unused parameter
         public async Task Executar(bool log = true)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
 
             /*
@@ -138,6 +140,7 @@ ou
                 ImprimirTempos(enfileiradas, "async uma depois da outra");
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0059:Unnecessary assignment of a value", Justification = "<Pending>")]
         private async Task LeituraEmParalelo(InfraBanco.ContextoBd bd1, InfraBanco.ContextoBd bd2, bool log)
         {
             Stopwatch enfileiradas = new Stopwatch();

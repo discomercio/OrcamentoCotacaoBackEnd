@@ -166,7 +166,6 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             List<PrepedidoProdutoDtoPrepedido> lstProdutosCompare, List<string> lstErros, float perc_limite_RA,
             decimal limiteArredondamento)
         {
-            //PAREI VAIDANDO OS VALORES DE PRODUTOS E TOTAIS
             decimal totalCompare = 0;
             decimal totalRaCompare = 0;
 
@@ -194,28 +193,6 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             }
         }
 
-        public bool CalculaItens(PrePedidoDto prePedido, out decimal vlTotalFormaPagto, decimal limiteArredondamento)
-        {
-            //TODO: provavelmente remover esta rotina
-            bool retorno = true;
-            decimal vl_total_NF = 0;
-            decimal vl_total = 0;
-
-
-            foreach (var p in prePedido.ListaProdutos)
-            {
-                if (!string.IsNullOrEmpty(p.NumProduto))
-                {
-                    vl_total += (decimal)(p.Qtde * p.VlUnitario);
-                    vl_total_NF += (decimal)(p.Qtde * p.Preco);
-                }
-            }
-            vlTotalFormaPagto = vl_total_NF;
-            if (Math.Abs(vlTotalFormaPagto - vl_total_NF) > limiteArredondamento)
-                retorno = false;
-
-            return retorno;
-        }
 
         public async Task<bool> ValidarEnderecoEntrega(PrePedidoDto prepedido, List<string> lstErros)
         {

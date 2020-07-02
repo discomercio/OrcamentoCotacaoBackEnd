@@ -23,7 +23,7 @@ namespace Testes.Labs.InfraBancoLab
             return new ContextoBdProvider(optionsBuilder.Options).GetContextoGravacaoParaUsing();
         }
 
-        private InfraBanco.ContextoBd contexto;
+        private readonly InfraBanco.ContextoBd contexto;
         private Microsoft.EntityFrameworkCore.DbContextOptionsBuilder<InfraBanco.ContextoBdBasico> optionsBuilder;
         public Contextos()
         {

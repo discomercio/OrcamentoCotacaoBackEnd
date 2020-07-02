@@ -17,6 +17,13 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 {
     public class ValidacoesClienteBll
     {
+        public static class MensagensErro
+        {
+            public static string Cep_nao_existe = "Cep não existe!";
+            public static string Estado_nao_confere = "Estado não confere!";
+        }
+
+
         public static async Task<bool> ValidarDadosCliente(DadosClienteCadastroDto dadosCliente,
             List<RefBancariaDtoCliente> lstRefBancaria, List<RefComercialDtoCliente> lstRefComercial,
             List<string> lstErros, ContextoBdProvider contextoProvider, CepBll cepBll)
@@ -305,7 +312,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
             if (lstCepDto.Count == 0)
             {
-                lstErros.Add("Cep não existe!");
+                lstErros.Add(MensagensErro.Cep_nao_existe);
                 return false;
             }
 
@@ -411,7 +418,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                         retorno = false;
                     }
 
-                    if(!string.IsNullOrEmpty(dadosCliente.Ie) &&
+                    if (!string.IsNullOrEmpty(dadosCliente.Ie) &&
                         dadosCliente.Contribuinte_Icms_Status ==
                         (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO)
                     {
@@ -422,7 +429,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             }
             if (dadosCliente.Tipo == Constantes.ID_PJ)
             {
-                if (!string.IsNullOrEmpty(dadosCliente.Ie) && 
+                if (!string.IsNullOrEmpty(dadosCliente.Ie) &&
                     dadosCliente.Contribuinte_Icms_Status ==
                     (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO)
                 {
@@ -622,58 +629,34 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             {
                 foreach (var c in lstCepDto)
                 {
+                    //não verificamos a cidade porque ela deve estar no cadastro da NFE (IBGE) e não necessariamente igual à do CEP
+
                     //vamos verificar se tem endereco e bairro para verificar se foi alterado os dados de cep
-                    if (!string.IsNullOrEmpty(c.Cep) && !string.IsNullOrEmpty(c.Endereco) &&
-                        !string.IsNullOrEmpty(c.Bairro) && !string.IsNullOrEmpty(c.Cidade) &&
-                        !string.IsNullOrEmpty(c.Uf))
+                    if (!string.IsNullOrEmpty(c.Cep) && c.Cep != cepSoDigito)
                     {
-                        if (c.Cep != cepSoDigito)
-                        {
-                            listaErros.Add("Número do Cep não confere!");
-                            retorno = false;
-                        }
-                        if (Util.RemoverAcentuacao(c.Endereco).ToUpper() !=
-                            Util.RemoverAcentuacao(cepCliente.Endereco).ToUpper())
-                        {
-                            listaErros.Add("Endereço não confere!");
-                            retorno = false;
-                        }
-                        if (Util.RemoverAcentuacao(c.Bairro).ToUpper() !=
-                            Util.RemoverAcentuacao(cepCliente.Bairro).ToUpper())
-                        {
-                            listaErros.Add("Bairro não confere!");
-                            retorno = false;
-                        }
-                        if (Util.RemoverAcentuacao(c.Cidade).ToUpper() !=
-                            Util.RemoverAcentuacao(cepCliente.Cidade).ToUpper())
-                        {
-                            listaErros.Add("Cidade não confere!");
-                            retorno = false;
-                        }
-                        if (c.Uf.ToUpper() != cepCliente.Uf.ToUpper())
-                        {
-                            listaErros.Add("Estado não confere!");
-                            retorno = false;
-                        }
+                        listaErros.Add("Número do Cep não confere!");
+                        retorno = false;
                     }
-                    else
+
+                    if (!string.IsNullOrEmpty(c.Endereco) &&
+                        Util.RemoverAcentuacao(c.Endereco).ToUpper() !=
+                        Util.RemoverAcentuacao(cepCliente.Endereco).ToUpper())
                     {
-                        if (c.Cep != cepSoDigito)
-                        {
-                            listaErros.Add("Número do Cep diferente!");
-                            retorno = false;
-                        }
-                        if (Util.RemoverAcentuacao(c.Cidade.ToUpper()) !=
-                            Util.RemoverAcentuacao(cepCliente.Cidade.ToUpper()))
-                        {
-                            listaErros.Add("Cidade não confere!");
-                            retorno = false;
-                        }
-                        if (c.Uf.ToUpper() != cepCliente.Uf.ToUpper())
-                        {
-                            listaErros.Add("Estado não confere!");
-                            retorno = false;
-                        }
+                        listaErros.Add("Endereço não confere!");
+                        retorno = false;
+                    }
+
+                    if (!string.IsNullOrEmpty(c.Bairro) && Util.RemoverAcentuacao(c.Bairro).ToUpper() !=
+                        Util.RemoverAcentuacao(cepCliente.Bairro).ToUpper())
+                    {
+                        listaErros.Add("Bairro não confere!");
+                        retorno = false;
+                    }
+
+                    if (!string.IsNullOrEmpty(c.Uf) && c.Uf.ToUpper() != cepCliente.Uf.ToUpper())
+                    {
+                        listaErros.Add(MensagensErro.Estado_nao_confere);
+                        retorno = false;
                     }
                 }
             }

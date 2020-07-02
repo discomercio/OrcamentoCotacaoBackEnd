@@ -17,6 +17,11 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
 {
     public class PrePedidoUnisBll
     {
+        public static class MensagensErro
+        {
+            public static string Orcamentista_nao_existe = "O Orçamentista não existe!";
+        }
+
         private readonly ConfiguracaoApiUnis configuracaoApiUnis;
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
         private readonly InfraBanco.ContextoCepProvider contextoCepProvider;
@@ -56,7 +61,7 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
 
             if (orcamentista == null)
             {
-                retorno.ListaErros.Add("O Orçamentista não existe!");
+                retorno.ListaErros.Add(MensagensErro.Orcamentista_nao_existe);
                 return retorno;
             }
 
@@ -90,7 +95,7 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
             //A validação dos dados será feita no cadastro do prepedido
             List<string> lstRet = (await prepedidoBll.CadastrarPrepedido(prePedidoDto,
                 prePedidoUnis.Indicador_Orcamentista.ToUpper(),
-                Convert.ToDecimal(configuracaoApiUnis.LimiteArredondamentoPrecoVendaOrcamentoItem), false, 
+                Convert.ToDecimal(configuracaoApiUnis.LimiteArredondamentoPrecoVendaOrcamentoItem), false,
                 (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS)).ToList();
 
             if (lstRet.Count > 0)

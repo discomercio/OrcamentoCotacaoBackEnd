@@ -57,14 +57,8 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
 
         private void ValidarFormaPagtoAVista(PrePedidoDto prepedido, List<string> lstErros, decimal limiteArredondamento)
         {
-            decimal vlTotalFormaPagto = 0M;
-
             if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.Op_av_forma_pagto))
                 lstErros.Add("Indique a forma de pagamento (à vista).");
-            if (!validacoesPrepedidoBll.CalculaItens(prepedido, out vlTotalFormaPagto, limiteArredondamento))
-                lstErros.Add("Há divergência entre o valor total do pré-pedido (" + Constantes.SIMBOLO_MONETARIO + " " +
-                    prepedido.VlTotalDestePedido + ") e o valor total descrito através da forma de pagamento (" + Constantes.SIMBOLO_MONETARIO + " " +
-                    Math.Abs((decimal)prepedido.VlTotalDestePedido - vlTotalFormaPagto) + ")!");
         }
 
         private void ValidarFormaPagtoParcelaUnica(PrePedidoDto prepedido, List<string> lstErros)
