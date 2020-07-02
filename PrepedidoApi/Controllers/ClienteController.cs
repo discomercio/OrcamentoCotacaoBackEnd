@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using PrepedidoBusiness.Dto.ClienteCadastro;
+using InfraBanco.Constantes;
 
 namespace PrepedidoApi.Controllers
 {
@@ -85,7 +86,8 @@ namespace PrepedidoApi.Controllers
             //para testar: http://localhost:60877/api/cliente/cadastrarCliente
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            var retorno = await clienteBll.CadastrarCliente(clienteDto, apelido.Trim());
+            var retorno = await clienteBll.CadastrarCliente(clienteDto, apelido.Trim(), 
+                (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS);
 
             return Ok(retorno);
         }

@@ -561,7 +561,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         }
 
         public async Task<IEnumerable<string>> CadastrarPrepedido(PrePedidoDto prePedido, string apelido, decimal limiteArredondamento,
-            bool verificarPrepedidoRepetido)
+            bool verificarPrepedidoRepetido, int sistemaResponsavelCadastro)
         {
             List<string> lstErros = new List<string>();
 
@@ -710,7 +710,8 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
 
                                     //Cadastrar dados do Orcamento e endereço de entrega 
                                     string log = await EfetivarCadastroPrepedido(dbgravacao,
-                                        prePedido, tOrcamentista, c_custoFinancFornecTipoParcelamento, perc_limite_RA_sem_desagio);
+                                        prePedido, tOrcamentista, c_custoFinancFornecTipoParcelamento,
+                                        sistemaResponsavelCadastro, perc_limite_RA_sem_desagio);
                                     //Cadastrar orcamento itens
                                     List<TorcamentoItem> lstOrcamentoItem = MontaListaOrcamentoItem(prePedido);
 
@@ -723,7 +724,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                                     bool gravouLog = Util.GravaLog(dbgravacao, apelido, prePedido.DadosCliente.Loja, prePedido.NumeroPrePedido,
                                         prePedido.DadosCliente.Id, Constantes.OP_LOG_ORCAMENTO_NOVO, log);
 
-                                    //dbgravacao.transacao.Commit();
+                                    dbgravacao.transacao.Commit();
                                     lstErros.Add(prePedido.NumeroPrePedido);
                                 }
                             }
@@ -779,7 +780,8 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         }
 
         private async Task<string> EfetivarCadastroPrepedido(ContextoBdGravacao dbgravacao, PrePedidoDto prepedido,
-            TorcamentistaEindicador orcamentista, string siglaPagto, float perc_limite_RA_sem_desagio = 0)
+            TorcamentistaEindicador orcamentista, string siglaPagto, int sistemaResponsavelCadastro,
+            float perc_limite_RA_sem_desagio = 0)
         {
             //vamos buscar a midia do cliente para cadastrar no orçamento
             string midia = await (from c in dbgravacao.Tclientes
@@ -811,8 +813,8 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             torcamento.Permite_RA_Status = orcamentista.Permite_RA_Status;
             torcamento.St_End_Entrega = prepedido.EnderecoEntrega.OutroEndereco == true ? (short)1 : (short)0;
             torcamento.CustoFinancFornecTipoParcelamento = siglaPagto;//sigla pagto
-            torcamento.Sistema_responsavel_cadastro = Constantes.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS;
-            torcamento.Sistema_responsavel_atualizacao = Constantes.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS;
+            torcamento.Sistema_responsavel_cadastro = sistemaResponsavelCadastro;
+            torcamento.Sistema_responsavel_atualizacao = sistemaResponsavelCadastro;
 
             //inclui os campos de endereço cadastral no Torccamento
             IncluirDadosClienteParaTorcamento(prepedido, torcamento);
@@ -975,7 +977,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             torcamento.InstaladorInstalaUsuarioUltAtualiz = orcamentista;
             torcamento.InstaladorInstalaDtHrUltAtualiz = DateTime.Now;
 
-            if (prepedido.DetalhesPrepedido.EntregaImediata == Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO.ToString())
+            if (byte.Parse(prepedido.DetalhesPrepedido.EntregaImediata) == (byte)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO)
             {
                 //verificar se a data esta correta
                 torcamento.St_Etg_Imediata = (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO;
@@ -983,28 +985,23 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 //estou montando a data, pois comparando com a data que esta sendo salvo na base 
                 //preciso montar a data com no formato "yyyy-MM-dd hh:mm:ss.ms"
                 //a data que vem da tela esta com o horário zerado
-                if (!prepedido.DetalhesPrepedido.EntregaImediataData.HasValue)
-                {
 
-                }
-                else
-                {
-                    int dd = prepedido.DetalhesPrepedido.EntregaImediataData.Value.Day;
-                    int MM = prepedido.DetalhesPrepedido.EntregaImediataData.Value.Month;
-                    int yyyy = prepedido.DetalhesPrepedido.EntregaImediataData.Value.Year;
-                    int hh = DateTime.Now.Hour;
-                    int mm = DateTime.Now.Minute;
-                    int ss = DateTime.Now.Second;
-                    int ms = DateTime.Now.Millisecond;
+                int dd = prepedido.DetalhesPrepedido.EntregaImediataData.Value.Day;
+                int MM = prepedido.DetalhesPrepedido.EntregaImediataData.Value.Month;
+                int yyyy = prepedido.DetalhesPrepedido.EntregaImediataData.Value.Year;
+                int hh = DateTime.Now.Hour;
+                int mm = DateTime.Now.Minute;
+                int ss = DateTime.Now.Second;
+                int ms = DateTime.Now.Millisecond;
 
-                    torcamento.Etg_Imediata_Data = new DateTime(yyyy, MM, dd, hh, mm, ss, ms);
-                    torcamento.Etg_Imediata_Usuario = orcamentista;
+                torcamento.Etg_Imediata_Data = new DateTime(yyyy, MM, dd, hh, mm, ss, ms);
+                torcamento.Etg_Imediata_Usuario = orcamentista;
 
-                    //novos campos:Vamos esperar o Hamilton dar ok para inclusão desses novos campos
-                    torcamento.PrevisaoEntregaData = new DateTime(yyyy, MM, dd, hh, mm, ss, ms);
-                    torcamento.PrevisaoEntregaUsuarioUltAtualiz = orcamentista;
-                    torcamento.PrevisaoEntregaDtHrUltAtualiz = new DateTime(yyyy, MM, dd, hh, mm, ss, ms);
-                }
+                //novos campos:Vamos esperar o Hamilton dar ok para inclusão desses novos campos
+                torcamento.PrevisaoEntregaData = new DateTime(yyyy, MM, dd, hh, mm, ss, ms);
+                torcamento.PrevisaoEntregaUsuarioUltAtualiz = orcamentista;
+                torcamento.PrevisaoEntregaDtHrUltAtualiz = new DateTime(yyyy, MM, dd, hh, mm, ss, ms);
+
             }
             else
             {

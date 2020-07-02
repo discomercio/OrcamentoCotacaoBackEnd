@@ -11,9 +11,13 @@ namespace InfraBanco.Constantes
         public static String PREFIXO_SENHA_FORMATADA = "0x";
         public static int TAMANHO_CAMPO_COMPRIMENTO_SENHA = 2;
 
-        public const int COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP = 1;
-        public const int COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS = 2;
-        public const int COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS = 3;
+        public enum CodSistemaResponsavel
+        {
+            COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP = 1,
+            COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS = 2,
+            COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS = 3,
+        };
+        
 
         public const int FATOR_BD = 1209;
 

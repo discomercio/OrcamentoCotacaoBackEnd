@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using InfraBanco.Constantes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -149,7 +150,8 @@ namespace PrepedidoApi.Controllers
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
             //TODO: ler do appsettings
-            var ret = await prepedidoBll.CadastrarPrepedido(prePedido, apelido.Trim(), 0.01M, true);
+            var ret = await prepedidoBll.CadastrarPrepedido(prePedido, apelido.Trim(), 0.01M, true, 
+                (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS);
 
             return Ok(ret);
         }

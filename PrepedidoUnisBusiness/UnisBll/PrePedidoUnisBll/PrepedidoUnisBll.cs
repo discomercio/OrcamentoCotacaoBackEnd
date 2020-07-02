@@ -90,7 +90,8 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
             //A validação dos dados será feita no cadastro do prepedido
             List<string> lstRet = (await prepedidoBll.CadastrarPrepedido(prePedidoDto,
                 prePedidoUnis.Indicador_Orcamentista.ToUpper(),
-                Convert.ToDecimal(configuracaoApiUnis.LimiteArredondamentoPrecoVendaOrcamentoItem), false)).ToList();
+                Convert.ToDecimal(configuracaoApiUnis.LimiteArredondamentoPrecoVendaOrcamentoItem), false, 
+                (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS)).ToList();
 
             if (lstRet.Count > 0)
             {

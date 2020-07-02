@@ -151,15 +151,6 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                        {
                            lstErros.Add("O valor do Produto (cód.) " + x.NumProduto + " está divergindo!");
                        }
-                       else
-                       {
-                           diffTotalItem = Math.Abs((decimal)(x.TotalItem - y.TotalItem));
-                           diffTotalItemRa = Math.Abs((decimal)(x.TotalItemRA - y.TotalItemRA));
-
-                           if (diffTotalItem > limiteArredondamento || diffTotalItemRa > limiteArredondamento)
-                               lstErros.Add("O valor total do Produto (cód.) " + x.NumProduto +
-                                   " está divergindo!");
-                       }
                    }
                });
             });
@@ -179,18 +170,18 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             decimal totalCompare = 0;
             decimal totalRaCompare = 0;
 
-            lstProdutosCompare.ForEach(x =>
+            prepedido.ListaProdutos.ForEach(x =>
             {
-                totalCompare += Math.Round((decimal)(x.TotalItem), 2);
-                totalRaCompare += Math.Round((decimal)(x.TotalItemRA), 2);
+                totalCompare += Math.Round((decimal)(x.VlUnitario * x.Qtde), 2);
+                totalRaCompare += Math.Round((decimal)(x.VlLista * x.Qtde), 2);
             });
 
-            if (Math.Abs((decimal)(totalCompare - prepedido.VlTotalDestePedido)) > limiteArredondamento)
+            if (totalCompare != (decimal)prepedido.VlTotalDestePedido)
                 lstErros.Add("Os valores totais estão divergindo!");
 
             if (prepedido.PermiteRAStatus == 1)
             {
-                if (Math.Abs((decimal)(totalRaCompare - prepedido.ValorTotalDestePedidoComRA)) > limiteArredondamento)
+                if (totalRaCompare != (decimal)prepedido.ValorTotalDestePedidoComRA)
                     lstErros.Add("Os valores totais de RA estão divergindo!");
 
                 //vamos verificar o valor de RA
@@ -302,10 +293,10 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         {
             bool retorno = true;
 
-            if (detalhesPrepedido.EntregaImediata ==
-                Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO.ToString())//Não
+            if (byte.Parse(detalhesPrepedido.EntregaImediata) ==
+                (byte)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO)//Não
             {
-                if (detalhesPrepedido.EntregaImediataData <= DateTime.Now)
+                if (detalhesPrepedido.EntregaImediataData.Value.Date <= DateTime.Now.Date)
                 {
                     lstErros.Add("Favor informar a data de 'Entrega Imediata' posterior a data atual!");
                     retorno = false;

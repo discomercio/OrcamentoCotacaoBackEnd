@@ -198,12 +198,12 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 }
             }
 
-            if (cli.Sistema_responsavel_atualizacao != Constantes.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS)
+            if (cli.Sistema_responsavel_atualizacao != (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS)
             {
                 log += "sistema_responsavel_atualizacao: " + cli.Sistema_responsavel_atualizacao + " => " +
-                    Constantes.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS + "; ";
-                cli.Sistema_responsavel_atualizacao = Constantes.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS;
-                cli.Sistema_responsavel_cadastro = Constantes.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS;
+                    Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS + "; ";
+                cli.Sistema_responsavel_atualizacao = (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS;
+                cli.Sistema_responsavel_cadastro = (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS;
             }
 
             return log;
@@ -312,13 +312,13 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
                 if (alterou)
                 {
-                    if (cli.Sistema_responsavel_atualizacao != Constantes.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS)
+                    if (cli.Sistema_responsavel_atualizacao != (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS)
                     {
                         log += "sistema_responsavel_atualizacao: " + cli.Sistema_responsavel_atualizacao + " => " +
-                            Constantes.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS + "; ";
+                            Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS + "; ";
 
-                        cli.Sistema_responsavel_atualizacao = Constantes.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS;
-                        cli.Sistema_responsavel_cadastro = Constantes.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS;
+                        cli.Sistema_responsavel_atualizacao = (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS;
+                        cli.Sistema_responsavel_cadastro = (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS;
                     }
                 }
             }
@@ -559,7 +559,8 @@ namespace PrepedidoBusiness.Bll.ClienteBll
          * Incluímos a var "string usuarioCadastro" para permitir que a ApiUnis possa cadastrar outro
          * usuário ao invés do Orçamentista
          */
-        public async Task<IEnumerable<string>> CadastrarCliente(ClienteCadastroDto clienteDto, string apelido)
+        public async Task<IEnumerable<string>> CadastrarCliente(ClienteCadastroDto clienteDto, string apelido, 
+            int sistemaResponsavelCadastro)
         {
             string id_cliente = "";
 
@@ -587,7 +588,8 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
                         DadosClienteCadastroDto cliente = clienteDto.DadosCliente;
                         Tcliente clienteCadastrado = new Tcliente();
-                        id_cliente = await CadastrarDadosClienteDto(dbgravacao, cliente, apelido, clienteCadastrado);
+                        id_cliente = await CadastrarDadosClienteDto(dbgravacao, cliente, apelido, clienteCadastrado,
+                            sistemaResponsavelCadastro);
 
                         //Por padrão o id do cliente tem 12 caracteres, caso não seja 12 caracteres esta errado
                         if (id_cliente.Length == 12)
@@ -623,7 +625,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
         }
 
         private async Task<string> CadastrarDadosClienteDto(InfraBanco.ContextoBdGravacao dbgravacao,
-            DadosClienteCadastroDto clienteDto, string apelido, Tcliente tCliente)
+            DadosClienteCadastroDto clienteDto, string apelido, Tcliente tCliente, int sistemaResponsavelCadastro)
         {
             string retorno = "";
             List<string> lstRetorno = new List<string>();
@@ -679,8 +681,8 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 tCliente.Email_Xml = clienteDto.EmailXml;
                 tCliente.Dt_Ult_Atualizacao = DateTime.Now;
                 tCliente.Usuario_Ult_Atualizacao = apelido.ToUpper();
-                tCliente.Sistema_responsavel_cadastro = Constantes.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS;
-                tCliente.Sistema_responsavel_atualizacao = Constantes.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS;
+                tCliente.Sistema_responsavel_cadastro = sistemaResponsavelCadastro;
+                tCliente.Sistema_responsavel_atualizacao = sistemaResponsavelCadastro;
             };
 
             dbgravacao.Add(tCliente);
@@ -870,7 +872,6 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
                 if (c.Cep != cepSoDigito)
                     listaErros.Add("Número do Cep diferente!");
-
 
                 if (Utils.Util.RemoverAcentuacao(c.Cidade.ToUpper()) != Utils.Util.RemoverAcentuacao(cliente.Cidade.ToUpper()) ||
                     c.Uf.ToUpper() != cliente.Uf.ToUpper())

@@ -604,6 +604,7 @@ namespace PrepedidoBusiness.Utils
             string[] campos = campos_a_inserir2.Split('|');
             int indiceDoCampo = 0;
             bool endEntregaMesmo = false;
+            bool dataEntregaImediata = false;
             foreach (var campo_atual in campos)
             {
                 foreach (var c in property)
@@ -623,6 +624,11 @@ namespace PrepedidoBusiness.Utils
                         if (campo_atual.IndexOf("Endereço entrega") >= 0 && !endEntregaMesmo)
                         {
                             endEntregaMesmo = true;
+                            log = log + campo_atual + "; ";
+                        }
+                        if(campo_atual.IndexOf("previsão de entrega") >= 0 && !dataEntregaImediata)
+                        {
+                            dataEntregaImediata = true;
                             log = log + campo_atual + "; ";
                         }
 
@@ -1280,8 +1286,7 @@ namespace PrepedidoBusiness.Utils
             sqlBuilder.UserID = nova_conexao.NFe_T1_usuario_BD;
 
             sqlBuilder.Password = decodificaDado(nova_conexao.NFe_T1_senha_BD, Constantes.FATOR_BD);
-
-
+            
             string providerString = sqlBuilder.ToString();
 
             return providerString;

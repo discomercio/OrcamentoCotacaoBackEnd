@@ -63,6 +63,10 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             {
                 campos_a_inserir += "st_etg_imediata|";
             }
+            if(orcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO)
+            {
+                campos_a_inserir += "(previsão de entrega: " + orcamento.PrevisaoEntregaData.ToString() + ")|";
+            }
             if (orcamento.StBemUsoConsumo.ToString() != "")
             {
                 campos_a_inserir += "StBemUsoConsumo|";

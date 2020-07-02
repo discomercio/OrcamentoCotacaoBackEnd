@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using PrepedidoUnisBusiness.UnisDto.ClienteUnisDto;
 using InfraBanco.Modelos;
 using PrepedidoBusiness.Bll.ClienteBll;
+using InfraBanco.Constantes;
 
 namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
 {
@@ -49,7 +50,8 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
                      * se estiver com itens na lista, ocorreu erro na validação
                      */
                     retorno.ListaErros = (await clienteArclubeBll.CadastrarCliente(clienteArclube,
-                        orcamentista.Apelido)).ToList();
+                        orcamentista.Apelido, 
+                        (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS)).ToList();
 
                     if (retorno.ListaErros.Count <= 0)
                     {
