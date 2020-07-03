@@ -94,7 +94,7 @@ namespace PrepedidoBusiness.Utils
 
         public static string SoDigitosCpf_Cnpj(string cpf_cnpj)
         {
-            string retorno = "";
+            string retorno;
 
             if (cpf_cnpj.Length > 11)
             {

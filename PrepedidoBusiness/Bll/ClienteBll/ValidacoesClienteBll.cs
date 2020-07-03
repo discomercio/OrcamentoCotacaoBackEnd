@@ -30,7 +30,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             List<RefBancariaDtoCliente> lstRefBancaria, List<RefComercialDtoCliente> lstRefComercial,
             List<string> lstErros, ContextoBdProvider contextoProvider, CepBll cepBll, IBancoNFeMunicipio bancoNFeMunicipio)
         {
-            bool retorno = false;
+            bool retorno;
 
             if (dadosCliente != null)
             {
@@ -56,6 +56,11 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
                     //vamos verificar o IE dos clientes
                     retorno = await ValidarIE_Cliente(dadosCliente, lstErros, contextoProvider, bancoNFeMunicipio);
+                }
+                else
+                {
+                    lstErros.Add("INFORME SE O CLIENTE É PF OU PJ!");
+                    retorno = false;
                 }
             }
             else
@@ -479,9 +484,8 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     VerificarInscricaoEstadualValida(dadosCliente.Ie, dadosCliente.Uf, lstErros);
             }
 
-            List<NfeMunicipio> lstNfeMunicipio = new List<NfeMunicipio>();
-            lstNfeMunicipio = (await ConsisteMunicipioIBGE(dadosCliente.Cidade, dadosCliente.Uf, lstErros,
-                contextoProvider, bancoNFeMunicipio)).ToList();
+            await ConsisteMunicipioIBGE(dadosCliente.Cidade, dadosCliente.Uf, lstErros, contextoProvider, 
+                bancoNFeMunicipio);
 
             return retorno;
         }
@@ -530,11 +534,10 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return retorno;
         }
 
-        public static async Task<IEnumerable<NfeMunicipio>> ConsisteMunicipioIBGE(string municipio, string uf,
+        public static async Task ConsisteMunicipioIBGE(string municipio, string uf,
             List<string> lstErros, ContextoBdProvider contextoProvider, IBancoNFeMunicipio bancoNFeMunicipio)
         {
-            var db = contextoProvider.GetContextoLeitura();
-            List<NfeMunicipio> lst_nfeMunicipios = new List<NfeMunicipio>();
+            var db = contextoProvider.GetContextoLeitura();            
 
             if (string.IsNullOrEmpty(municipio))
                 lstErros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
@@ -551,15 +554,13 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
             if (lstErros.Count == 0)
             {
-                lst_nfeMunicipios = (await bancoNFeMunicipio.BuscarSiglaUf(uf, municipio, false, contextoProvider)).ToList();
+                List<NfeMunicipio> lst_nfeMunicipios = (await bancoNFeMunicipio.BuscarSiglaUf(uf, municipio, false, contextoProvider)).ToList();
 
                 if (!lst_nfeMunicipios.Any())
                 {
                     lstErros.Add("Município '" + municipio + "' não consta na relação de municípios do IBGE para a UF de '" + uf + "'!");
                 }
             }
-
-            return lst_nfeMunicipios;
         }
 
         public static void VerificarInscricaoEstadualValida(string ie, string uf, List<string> listaErros)
@@ -587,14 +588,14 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
             bool blnResultado;
 
-            blnResultado = isInscricaoEstadualOkCom(ie, uf, listaErros);
+            blnResultado = isInscricaoEstadualOkCom(ie, uf);
             if (!blnResultado)
             {
                 listaErros.Add(MensagensErro.Preencha_a_IE_Inscricao_Estadual);
             }
         }
 
-        private static bool isInscricaoEstadualOkCom(string ie, string uf, List<string> listaErros)
+        private static bool isInscricaoEstadualOkCom(string ie, string uf)
         {
             var ReflectionUtilsMemberAccess =
           BindingFlags.Public | BindingFlags.NonPublic |

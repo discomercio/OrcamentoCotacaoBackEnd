@@ -213,7 +213,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return log;
         }
 
-        public string Verificar_AlterouDadosPJ(Tcliente cli, DadosClienteCadastroDto dados, string apelido)
+        public string Verificar_AlterouDadosPJ(Tcliente cli, DadosClienteCadastroDto dados)
         {
             string log = "";
 
@@ -362,7 +362,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                         }
                         if (dadosClienteCadastroDto.Tipo == Constantes.ID_PJ)
                         {
-                            log = Verificar_AlterouDadosPJ(cli, dadosClienteCadastroDto, apelido);
+                            log = Verificar_AlterouDadosPJ(cli, dadosClienteCadastroDto);
                         }
 
                         if (!string.IsNullOrEmpty(log))
@@ -631,7 +631,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
         private async Task<string> CadastrarDadosClienteDto(InfraBanco.ContextoBdGravacao dbgravacao,
             DadosClienteCadastroDto clienteDto, string apelido, Tcliente tCliente, int sistemaResponsavelCadastro)
         {
-            string retorno = "";
+            string retorno;
             List<string> lstRetorno = new List<string>();
             string id_cliente = await GerarIdCliente(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES);
 

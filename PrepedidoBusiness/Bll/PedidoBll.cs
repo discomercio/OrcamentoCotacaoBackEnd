@@ -508,11 +508,11 @@ namespace PrepedidoBusiness.Bll
                 "|XV|XVI|XVII|XVIII|XIX|XX|XXI|XXII|XXIII|S/A|S/C|AC|AL|AM|AP|BA|CE|DF|ES|GO" +
                 "|MA|MG|MS|MT|PA|PB|PE|PI|PR|RJ|RN|RO|RR|RS|SC|SE|SP|TO|ME|EPP|";
 
-            string letra = "";
+            string letra;
             string palavra = "";
             string frase = "";
-            string s = "";
-            bool blnAltera = false;
+            string s;
+            bool blnAltera;
 
             string[] teste = text.Split(' ');
 
