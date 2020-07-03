@@ -21,12 +21,14 @@ namespace PrepedidoBusiness.Bll.ClienteBll
         {
             public static string Cep_nao_existe = "Cep não existe!";
             public static string Estado_nao_confere = "Estado não confere!";
+            public static string Preencha_a_IE_Inscricao_Estadual = "Preencha a IE (Inscrição Estadual) com um número válido! " +
+                            "Certifique-se de que a UF informada corresponde à UF responsável pelo registro da IE.";
         }
 
 
         public static async Task<bool> ValidarDadosCliente(DadosClienteCadastroDto dadosCliente,
             List<RefBancariaDtoCliente> lstRefBancaria, List<RefComercialDtoCliente> lstRefComercial,
-            List<string> lstErros, ContextoBdProvider contextoProvider, CepBll cepBll)
+            List<string> lstErros, ContextoBdProvider contextoProvider, CepBll cepBll, IBancoNFeMunicipio bancoNFeMunicipio)
         {
             bool retorno = false;
 
@@ -53,7 +55,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     retorno = await ValidarEnderecoCadastroClienteUnis(dadosCliente, lstErros, cepBll);
 
                     //vamos verificar o IE dos clientes
-                    retorno = await ValidarIE_Cliente(dadosCliente, lstErros, contextoProvider);
+                    retorno = await ValidarIE_Cliente(dadosCliente, lstErros, contextoProvider, bancoNFeMunicipio);
                 }
             }
             else
@@ -392,7 +394,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
         }
 
         private static async Task<bool> ValidarIE_Cliente(DadosClienteCadastroDto dadosCliente, List<string> lstErros,
-            ContextoBdProvider contextoProvider)
+            ContextoBdProvider contextoProvider, IBancoNFeMunicipio bancoNFeMunicipio)
         {
             bool retorno = true;
 
@@ -479,7 +481,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
             List<NfeMunicipio> lstNfeMunicipio = new List<NfeMunicipio>();
             lstNfeMunicipio = (await ConsisteMunicipioIBGE(dadosCliente.Cidade, dadosCliente.Uf, lstErros,
-                contextoProvider)).ToList();
+                contextoProvider, bancoNFeMunicipio)).ToList();
 
             return retorno;
         }
@@ -529,7 +531,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
         }
 
         public static async Task<IEnumerable<NfeMunicipio>> ConsisteMunicipioIBGE(string municipio, string uf,
-            List<string> lstErros, ContextoBdProvider contextoProvider)
+            List<string> lstErros, ContextoBdProvider contextoProvider, IBancoNFeMunicipio bancoNFeMunicipio)
         {
             var db = contextoProvider.GetContextoLeitura();
             List<NfeMunicipio> lst_nfeMunicipios = new List<NfeMunicipio>();
@@ -549,7 +551,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
             if (lstErros.Count == 0)
             {
-                lst_nfeMunicipios = (await Util.BuscarSiglaUf(uf, municipio, false, contextoProvider)).ToList();
+                lst_nfeMunicipios = (await bancoNFeMunicipio.BuscarSiglaUf(uf, municipio, false, contextoProvider)).ToList();
 
                 if (!lst_nfeMunicipios.Any())
                 {
@@ -577,8 +579,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 }
                 if (qtdeDig < 2 && qtdeDig > 14)
                 {
-                    listaErros.Add("Preencha a IE (Inscrição Estadual) com um número válido! " +
-                            "Certifique-se de que a UF informada corresponde à UF responsável pelo registro da IE.");
+                    listaErros.Add(MensagensErro.Preencha_a_IE_Inscricao_Estadual);
                     return;
                 }
 
@@ -589,8 +590,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             blnResultado = isInscricaoEstadualOkCom(ie, uf, listaErros);
             if (!blnResultado)
             {
-                listaErros.Add("Preencha a IE (Inscrição Estadual) com um número válido! " +
-                            "Certifique-se de que a UF informada corresponde à UF responsável pelo registro da IE.");
+                listaErros.Add(MensagensErro.Preencha_a_IE_Inscricao_Estadual);
             }
         }
 

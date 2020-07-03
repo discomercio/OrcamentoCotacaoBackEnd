@@ -25,7 +25,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
 
         /*
          * TODO: terminar testes
-
+         */
         [Fact]
         public void CadastrarClienteUnis_Sucesso()
         {
@@ -41,12 +41,30 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
         }
 
         [Fact]
-        public void CadastrarClienteUnis_IE()
+        public void CadastrarClienteUnis_IE_ICMS()
         {
-            TestarCadastro(c => c.DadosCliente.Ie = "112233",
-                "inscriçãoe stdual errada");
+            //if (qtdeDig < 2 && qtdeDig > 14)
+            TestarCadastro(c => c.DadosCliente.Ie = "1",
+                PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual);
+
+            TestarCadastro(c => c.DadosCliente.Ie = "11223344",
+                PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual);
+
+            //se nao for produtor rural, não pode ter IE
+            TestarCadastro(c => c.DadosCliente.ProdutorRural = 1,
+                PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual);
+
+            //se produtor rural, precisa de ICMS
+            TestarCadastro(c => c.DadosCliente.Contribuinte_Icms_Status = 1,
+                PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual);
+            TestarCadastro(c => c.DadosCliente.Contribuinte_Icms_Status = 3,
+                PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual);
+
+            //agora validado, não pode ter o erro
+            TestarCadastro(c => c.DadosCliente.Ie = c.DadosCliente.Ie,
+                PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual,
+                false);
         }
-        */
 
 
         [Fact]
@@ -71,7 +89,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
 
 
         private delegate void DeixarDtoErrado(ClienteCadastroUnisDto clienteDto);
-        private void TestarCadastro(DeixarDtoErrado deixarDtoErrado, string mensagemErro)
+        private void TestarCadastro(DeixarDtoErrado deixarDtoErrado, string mensagemErro, bool incluirEsteErro = true)
         {
             ClienteCadastroUnisDto clienteDto = InicializarClienteDados.ClienteNaoCadastrado();
             deixarDtoErrado(clienteDto);
@@ -79,10 +97,18 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             ClienteCadastroResultadoUnisDto res;
             res = clienteUnisBll.CadastrarClienteUnis(clienteDto).Result;
 
-            if (!res.ListaErros.Contains(mensagemErro))
-                output.WriteLine(JsonConvert.SerializeObject(res));
-
-            Assert.Contains(mensagemErro, res.ListaErros);
+            if (incluirEsteErro)
+            {
+                if (!res.ListaErros.Contains(mensagemErro))
+                    output.WriteLine(JsonConvert.SerializeObject(res));
+                Assert.Contains(mensagemErro, res.ListaErros);
+            }
+            else
+            {
+                if (res.ListaErros.Contains(mensagemErro))
+                    output.WriteLine(JsonConvert.SerializeObject(res));
+                Assert.DoesNotContain(mensagemErro, res.ListaErros);
+            }
         }
     }
 }

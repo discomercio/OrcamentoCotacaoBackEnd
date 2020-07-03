@@ -8,6 +8,7 @@ using PrepedidoBusiness.Dto.ClienteCadastro.Referencias;
 using Microsoft.EntityFrameworkCore;
 using InfraBanco.Constantes;
 using PrepedidoBusiness.Dto.Cep;
+using PrepedidoBusiness.Utils;
 
 namespace PrepedidoBusiness.Bll.ClienteBll
 {
@@ -16,13 +17,16 @@ namespace PrepedidoBusiness.Bll.ClienteBll
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
         private readonly InfraBanco.ContextoCepProvider contextoCepProvider;
         private readonly CepBll cepBll;
+        private readonly IBancoNFeMunicipio bancoNFeMunicipio;
 
         public ClienteBll(InfraBanco.ContextoBdProvider contextoProvider,
-                    InfraBanco.ContextoCepProvider contextoCepProvider, CepBll cepBll)
+                    InfraBanco.ContextoCepProvider contextoCepProvider, CepBll cepBll,
+                    IBancoNFeMunicipio bancoNFeMunicipio)
         {
             this.contextoProvider = contextoProvider;
             this.contextoCepProvider = contextoCepProvider;
             this.cepBll = cepBll;
+            this.bancoNFeMunicipio = bancoNFeMunicipio;
         }
 
         public string Verificar_AletrouDadosPF(Tcliente cli, DadosClienteCadastroDto dados, string apelido)
@@ -340,7 +344,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             List<string> lstErros = new List<string>();
 
             if (await ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDto, null, null, lstErros,
-                contextoProvider, cepBll))
+                contextoProvider, cepBll, bancoNFeMunicipio))
             {
                 var dados = from c in db.Tclientes
                             where c.Id == dadosClienteCadastroDto.Id
@@ -559,7 +563,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
          * Incluímos a var "string usuarioCadastro" para permitir que a ApiUnis possa cadastrar outro
          * usuário ao invés do Orçamentista
          */
-        public async Task<IEnumerable<string>> CadastrarCliente(ClienteCadastroDto clienteDto, string apelido, 
+        public async Task<IEnumerable<string>> CadastrarCliente(ClienteCadastroDto clienteDto, string apelido,
             int sistemaResponsavelCadastro)
         {
             string id_cliente = "";
@@ -578,7 +582,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             }
 
             if (await ValidacoesClienteBll.ValidarDadosCliente(clienteDto.DadosCliente, clienteDto.RefBancaria,
-                clienteDto.RefComercial, lstErros, contextoProvider, cepBll))
+                clienteDto.RefComercial, lstErros, contextoProvider, cepBll, bancoNFeMunicipio))
             {
                 if (lstErros.Count <= 0)
                 {
@@ -849,7 +853,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             {
 
                 ValidacoesClienteBll.VerificarInscricaoEstadualValida(cliente.Ie, cliente.Uf, listaErros);
-                await ValidacoesClienteBll.ConsisteMunicipioIBGE(cliente.Cidade, cliente.Uf, listaErros, contextoProvider);
+                await ValidacoesClienteBll.ConsisteMunicipioIBGE(cliente.Cidade, cliente.Uf, listaErros, contextoProvider, bancoNFeMunicipio);
 
             }
             //vamos verificar novamente o endereço, pois o usuário pode buscar o cep e 

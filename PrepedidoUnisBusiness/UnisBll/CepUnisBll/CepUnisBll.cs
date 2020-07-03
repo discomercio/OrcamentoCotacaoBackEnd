@@ -13,12 +13,14 @@ namespace PrepedidoUnisBusiness.UnisBll.CepUnisBll
     public class CepUnisBll
     {
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
+        private readonly IBancoNFeMunicipio bancoNFeMunicipio;
         private readonly CepBll cepArclueBll;
 
-        public CepUnisBll(CepBll cepArclueBll, InfraBanco.ContextoBdProvider contextoProvider)
+        public CepUnisBll(CepBll cepArclueBll, InfraBanco.ContextoBdProvider contextoProvider, IBancoNFeMunicipio bancoNFeMunicipio)
         {
             this.cepArclueBll = cepArclueBll;
             this.contextoProvider = contextoProvider;
+            this.bancoNFeMunicipio = bancoNFeMunicipio;
         }
 
         public async Task<CepUnisDto> BuscarCep(string cep)
@@ -41,7 +43,7 @@ namespace PrepedidoUnisBusiness.UnisBll.CepUnisBll
         public async Task<IEnumerable<UFeMunicipiosUnisDto>> BuscarUfs()
         {            
             //vamos buscar todos os estados
-            List<UFeMunicipiosDto> lstUF_Municipio = (await Util.BuscarSiglaTodosUf(contextoProvider)).ToList();
+            List<UFeMunicipiosDto> lstUF_Municipio = (await bancoNFeMunicipio.BuscarSiglaTodosUf(contextoProvider)).ToList();
 
             List<UFeMunicipiosUnisDto> lstUnisUF_Municipio =
                 UFeMunicipiosUnisDto.UFeMunicipiosUnisDtoDeUFeMunicipiosDto(lstUF_Municipio);

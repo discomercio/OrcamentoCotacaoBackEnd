@@ -25,10 +25,12 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         private readonly CepBll cepBll;
         private readonly ValidacoesFormaPagtoBll validacoesFormaPagtoBll;
         private readonly MontarLogPrepedidoBll montarLogPrepedidoBll;
+        private readonly IBancoNFeMunicipio bancoNFeMunicipio;
 
         public PrepedidoBll(ContextoBdProvider contextoProvider, ClienteBll.ClienteBll clienteBll,
             ValidacoesPrepedidoBll validacoesPrepedidoBll, CepBll cepBll,
-            ValidacoesFormaPagtoBll validacoesFormaPagtoBll, MontarLogPrepedidoBll montarLogPrepedidoBll)
+            ValidacoesFormaPagtoBll validacoesFormaPagtoBll, MontarLogPrepedidoBll montarLogPrepedidoBll,
+            IBancoNFeMunicipio bancoNFeMunicipio)
         {
             this.contextoProvider = contextoProvider;
             this.clienteBll = clienteBll;
@@ -36,6 +38,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             this.cepBll = cepBll;
             this.validacoesFormaPagtoBll = validacoesFormaPagtoBll;
             this.montarLogPrepedidoBll = montarLogPrepedidoBll;
+            this.bancoNFeMunicipio = bancoNFeMunicipio;
         }
 
         public async Task<IEnumerable<string>> ListarNumerosPrepedidosCombo(string orcamentista)
@@ -602,7 +605,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
 
             //vamos validar os dados do cliente
             await ValidacoesClienteBll.ValidarDadosCliente(prePedido.DadosCliente, null, null,
-                lstErros, contextoProvider, cepBll);
+                lstErros, contextoProvider, cepBll, bancoNFeMunicipio);
 
             if (lstErros.Count > 0)
                 return lstErros;

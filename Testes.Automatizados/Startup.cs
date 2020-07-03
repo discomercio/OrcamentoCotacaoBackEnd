@@ -39,6 +39,9 @@ namespace Testes.Automatizados
             services.AddTransient<PrepedidoBusiness.Bll.CepBll, PrepedidoBusiness.Bll.CepBll>();
             services.AddTransient<PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll.ClienteUnisBll, PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll.ClienteUnisBll>();
             services.AddTransient<CepUnisBll, CepUnisBll>();
+
+            services.AddTransient<PrepedidoBusiness.Utils.IBancoNFeMunicipio, Utils.TestesBancoNFeMunicipio>();
+
         }
 
         protected override IHostBuilder CreateHostBuilder(AssemblyName assemblyName) =>

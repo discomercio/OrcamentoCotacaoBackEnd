@@ -21,15 +21,16 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
         private readonly ClienteBll.ClienteBll clienteBll;
         private readonly CepBll cepBll;
-
+        private readonly IBancoNFeMunicipio bancoNFeMunicipio;
 
         public ValidacoesPrepedidoBll(CoeficienteBll coeficienteBll, InfraBanco.ContextoBdProvider contextoProvider,
-            ClienteBll.ClienteBll clienteBll, CepBll cepBll)
+            ClienteBll.ClienteBll clienteBll, CepBll cepBll, IBancoNFeMunicipio bancoNFeMunicipio)
         {
             this.coeficienteBll = coeficienteBll;
             this.contextoProvider = contextoProvider;
             this.clienteBll = clienteBll;
             this.cepBll = cepBll;
+            this.bancoNFeMunicipio = bancoNFeMunicipio;
         }
 
         //vamos validar os produtos que foram enviados
@@ -240,7 +241,8 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 if (lstErros.Count == 0)
                 {
                     List<NfeMunicipio> lstNfeMunicipio = (await ValidacoesClienteBll.ConsisteMunicipioIBGE(
-                    prePedido.EnderecoEntrega.EndEtg_cidade, prePedido.EnderecoEntrega.EndEtg_uf, lstErros, contextoProvider)).ToList();
+                    prePedido.EnderecoEntrega.EndEtg_cidade, prePedido.EnderecoEntrega.EndEtg_uf, lstErros, contextoProvider,
+                    bancoNFeMunicipio)).ToList();
 
                     //vamos comparar endereço
                     string cepSoDigito = prePedido.EnderecoEntrega.EndEtg_cep.Replace(".", "").Replace("-", "");
