@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Testes.Automatizados.InicializarBanco;
 
 namespace Testes.Automatizados.Utils
 {
@@ -15,6 +16,15 @@ namespace Testes.Automatizados.Utils
         {
             //nao fazemos nada...
             var ret = new List<UFeMunicipiosDto>();
+
+            ret.Add(new UFeMunicipiosDto()
+            {
+                SiglaUF = InicializarClienteDados.ClienteNaoCadastradoPJ().DadosCliente.Uf,
+                ListaMunicipio = new List<MunicipioDto>() { new MunicipioDto() {
+                    Descricao = InicializarClienteDados.ClienteNaoCadastradoPJ().DadosCliente.Cidade,
+                    DescricaoSemAcento=InicializarClienteDados.ClienteNaoCadastradoPJ().DadosCliente.Cidade
+                } }
+            });
             return Task.FromResult(ret.AsEnumerable());
         }
 
@@ -22,6 +32,8 @@ namespace Testes.Automatizados.Utils
         {
             //nao fazemos nada...
             var ret = new List<NfeMunicipio>();
+            if (municipio == InicializarClienteDados.ClienteNaoCadastradoPJ().DadosCliente.Cidade)
+                ret.Add(new NfeMunicipio() { Descricao = InicializarClienteDados.ClienteNaoCadastradoPJ().DadosCliente.Cidade });
             return Task.FromResult(ret.AsEnumerable());
         }
 

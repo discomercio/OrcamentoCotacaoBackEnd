@@ -23,6 +23,10 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             public static string Estado_nao_confere = "Estado não confere!";
             public static string Preencha_a_IE_Inscricao_Estadual = "Preencha a IE (Inscrição Estadual) com um número válido! " +
                             "Certifique-se de que a UF informada corresponde à UF responsável pelo registro da IE.";
+            public static string  Municipio_nao_consta_na_relacao_IBGE(string municipio, string uf)
+            {
+                return "Município '" + municipio + "' não consta na relação de municípios do IBGE para a UF de '" + uf + "'!";
+            }
         }
 
 
@@ -37,19 +41,25 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 //existe dados
                 if (!string.IsNullOrEmpty(dadosCliente.Tipo))
                 {
+                    bool tipoDesconhecido = true;
                     //é cliente PF
                     if (dadosCliente.Tipo == Constantes.ID_PF)
                     {
+                        tipoDesconhecido = false;
                         //vamos verificar e validar os dados referente ao cliente PF
                         retorno = ValidarDadosCliente_PF(dadosCliente, lstErros);
                     }
                     if (dadosCliente.Tipo == Constantes.ID_PJ)
                     {
+                        tipoDesconhecido = false;
                         retorno = ValidarDadosCliente_PJ(dadosCliente, lstErros);
                         //vamos validar as referências
                         retorno = ValidarReferencias_Bancarias_Comerciais(lstRefBancaria, lstRefComercial,
                             lstErros);
                     }
+
+                    if (tipoDesconhecido)
+                        lstErros.Add("Tipo de cliente não é PF nem PJ.");
 
                     //validar endereço do cadastro                    
                     retorno = await ValidarEnderecoCadastroClienteUnis(dadosCliente, lstErros, cepBll);
@@ -555,7 +565,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
                 if (!lst_nfeMunicipios.Any())
                 {
-                    lstErros.Add("Município '" + municipio + "' não consta na relação de municípios do IBGE para a UF de '" + uf + "'!");
+                    lstErros.Add(MensagensErro.Municipio_nao_consta_na_relacao_IBGE(municipio, uf));
                 }
             }
 

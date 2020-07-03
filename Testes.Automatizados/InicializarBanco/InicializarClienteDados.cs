@@ -8,13 +8,22 @@ namespace Testes.Automatizados.InicializarBanco
 {
     public static class InicializarClienteDados
     {
-        public static ClienteCadastroUnisDto ClienteNaoCadastrado()
+        public static ClienteCadastroUnisDto ClienteNaoCadastradoPJ()
         {
-            var ret = JsonConvert.DeserializeObject<ClienteCadastroUnisDto>(ClienteNaoCadastradoJson);
+            var ret = JsonConvert.DeserializeObject<ClienteCadastroUnisDto>(ClienteNaoCadastradoPJJson);
             return ret;
         }
 
-        private static string ClienteNaoCadastradoJson = @"
+        public static ClienteCadastroUnisDto ClienteNaoCadastradoPF()
+        {
+            var ret = JsonConvert.DeserializeObject<ClienteCadastroUnisDto>(ClienteNaoCadastradoPJJson);
+            ret.DadosCliente.Tipo = "PF";
+            ret.DadosCliente.Cnpj_Cpf = "479.378.150-00";
+            ret.DadosCliente.Sexo = "M";
+            return ret;
+        }
+
+        private static string ClienteNaoCadastradoPJJson = @"
 {
   ""TokenAcesso"": ""eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJzdXBvcnRlIDEiLCJ1bmlxdWVfbmFtZSI6IkdVSUxIRVJNRSBHT01FUyBQSUVEQURFIC0gUyIsInJvbGUiOiJBcGlVbmlzIiwibmJmIjoxNTkzMDI5NzE5LCJleHAiOjE3NTA3MDk3MTksImlhdCI6MTU5MzAyOTcxOX0.Ofc7DSEKIDPSErYyaIGe-3VEsh9gE8nfuJwY8lCjN28"",
   ""DadosCliente"": {
@@ -33,7 +42,7 @@ namespace Testes.Automatizados.InicializarBanco
     ""Numero"": ""97"",
     ""Complemento"": """",
     ""Bairro"": ""teste"",
-    ""Cidade"": ""Abacate da Pedreira"",
+    ""Cidade"": ""Amapá"",
     ""Uf"": ""AP"",
     ""Cep"": ""68912350"",
     ""DddResidencial"": null,

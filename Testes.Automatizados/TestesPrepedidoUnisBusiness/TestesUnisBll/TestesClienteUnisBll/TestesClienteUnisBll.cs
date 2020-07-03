@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using InfraBanco.Constantes;
+using Newtonsoft.Json;
 using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
 using PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto;
 using System;
@@ -23,14 +24,11 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             this.inicializarBanco = inicializarBanco;
         }
 
-        /*
-         * TODO: terminar testes
-         */
         [Fact]
-        public void CadastrarClienteUnis_Sucesso()
+        public void CadastrarClienteUnis_Sucesso_PJ()
         {
             //este é o que deve dar certo
-            ClienteCadastroUnisDto clienteDto = InicializarClienteDados.ClienteNaoCadastrado();
+            ClienteCadastroUnisDto clienteDto = InicializarClienteDados.ClienteNaoCadastradoPJ();
             ClienteCadastroResultadoUnisDto res;
             res = clienteUnisBll.CadastrarClienteUnis(clienteDto).Result;
 
@@ -38,6 +36,26 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
                 output.WriteLine(JsonConvert.SerializeObject(res));
 
             Assert.Empty(res.ListaErros);
+
+            //e apaga o registro
+            inicializarBanco.TclientesApagar();
+        }
+
+        [Fact]
+        public void CadastrarClienteUnis_Sucesso_PF()
+        {
+            //este é o que deve dar certo
+            ClienteCadastroUnisDto clienteDto = InicializarClienteDados.ClienteNaoCadastradoPF();
+            ClienteCadastroResultadoUnisDto res;
+            res = clienteUnisBll.CadastrarClienteUnis(clienteDto).Result;
+
+            if (res.ListaErros.Count > 0)
+                output.WriteLine(JsonConvert.SerializeObject(res));
+
+            Assert.Empty(res.ListaErros);
+
+            //e apaga o registro
+            inicializarBanco.TclientesApagar();
         }
 
         [Fact]
@@ -46,19 +64,15 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             //if (qtdeDig < 2 && qtdeDig > 14)
             TestarCadastro(c => c.DadosCliente.Ie = "1",
                 PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual);
+            TestarCadastro(c => c.DadosCliente.Ie = "1",
+                PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual,
+                tipoPessoa: TipoPessoa.PF);
 
             TestarCadastro(c => c.DadosCliente.Ie = "11223344",
                 PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual);
-
-            //se nao for produtor rural, não pode ter IE
-            TestarCadastro(c => c.DadosCliente.ProdutorRural = 1,
-                PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual);
-
-            //se produtor rural, precisa de ICMS
-            TestarCadastro(c => c.DadosCliente.Contribuinte_Icms_Status = 1,
-                PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual);
-            TestarCadastro(c => c.DadosCliente.Contribuinte_Icms_Status = 3,
-                PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual);
+            TestarCadastro(c => c.DadosCliente.Ie = "11223344",
+                PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual,
+                tipoPessoa: TipoPessoa.PF);
 
             //agora validado, não pode ter o erro
             TestarCadastro(c => c.DadosCliente.Ie = c.DadosCliente.Ie,
@@ -66,6 +80,13 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
                 false);
         }
 
+
+        [Fact]
+        public void CadastrarClienteUnis_Cidade_Nfe()
+        {
+            TestarCadastro(c => c.DadosCliente.Cidade = "Abacate da Pedreira",
+                PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.MensagensErro.Municipio_nao_consta_na_relacao_IBGE("Abacate da Pedreira", InicializarClienteDados.ClienteNaoCadastradoPJ().DadosCliente.Uf));
+        }
 
         [Fact]
         public void CadastrarClienteUnis_Orcamentista()
@@ -89,13 +110,19 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
 
 
         private delegate void DeixarDtoErrado(ClienteCadastroUnisDto clienteDto);
-        private void TestarCadastro(DeixarDtoErrado deixarDtoErrado, string mensagemErro, bool incluirEsteErro = true)
+        private enum TipoPessoa { PF, PJ };
+        private void TestarCadastro(DeixarDtoErrado deixarDtoErrado, string mensagemErro, bool incluirEsteErro = true, TipoPessoa tipoPessoa = TipoPessoa.PJ)
         {
-            ClienteCadastroUnisDto clienteDto = InicializarClienteDados.ClienteNaoCadastrado();
+            ClienteCadastroUnisDto clienteDto = InicializarClienteDados.ClienteNaoCadastradoPJ();
+            if (tipoPessoa == TipoPessoa.PF)
+                clienteDto = InicializarClienteDados.ClienteNaoCadastradoPF();
             deixarDtoErrado(clienteDto);
 
             ClienteCadastroResultadoUnisDto res;
             res = clienteUnisBll.CadastrarClienteUnis(clienteDto).Result;
+
+            //sempre apaga o regsitro
+            inicializarBanco.TclientesApagar();
 
             if (incluirEsteErro)
             {
@@ -109,6 +136,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
                     output.WriteLine(JsonConvert.SerializeObject(res));
                 Assert.DoesNotContain(mensagemErro, res.ListaErros);
             }
+
         }
     }
 }

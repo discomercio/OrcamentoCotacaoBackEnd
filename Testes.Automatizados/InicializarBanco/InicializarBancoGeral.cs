@@ -1,4 +1,5 @@
 ﻿using InfraBanco;
+using InfraBanco.Constantes;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,14 +23,28 @@ namespace Testes.Automatizados.InicializarBanco
             }
         }
 
+        public void TclientesApagar()
+        {
+            using (var db = contextoBdProvider.GetContextoGravacaoParaUsing())
+            {
+                foreach (var c in db.Tclientes)
+                    db.Tclientes.Remove(c);
+
+                db.SaveChanges();
+            }
+        }
 
         private void Inicalizar()
         {
             using (var db = contextoBdProvider.GetContextoGravacaoParaUsing())
             {
-                db.TorcamentistaEindicadors.Add(new InfraBanco.Modelos.TorcamentistaEindicador() {
+                db.TorcamentistaEindicadors.Add(new InfraBanco.Modelos.TorcamentistaEindicador()
+                {
                     Apelido = Dados.Orcamentista.Apelido
                 });
+
+                db.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.NSU_CADASTRO_CLIENTES, Nsu = "000000645506" });
+
                 db.SaveChanges();
             }
         }
