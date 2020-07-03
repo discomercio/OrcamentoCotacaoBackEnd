@@ -68,7 +68,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             });
 
             ConfrontarProdutos(prepedido, lstProdutosCompare, lstErros, limiteArredondamento);
-            ConfrontarTotaisEPercentualMaxRA(prepedido, lstProdutosCompare, lstErros, perc_limite_RA, limiteArredondamento);
+            ConfrontarTotaisEPercentualMaxRA(prepedido, lstErros, perc_limite_RA);
         }
 
         private async Task<IEnumerable<CoeficienteDto>> BuscarListaCoeficientesFornecedores(List<string> lstFornecedores, int qtdeParcelas, string siglaFP)
@@ -136,8 +136,6 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         {
             decimal diffVlLista = 0;
             decimal diffVlUnitario = 0;
-            decimal diffTotalItem = 0;
-            decimal diffTotalItemRa = 0;
 
             prepedido.ListaProdutos.ForEach(x =>
             {
@@ -155,17 +153,10 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                    }
                });
             });
-
-
-
-
-            //vamos verificar se o percentual de RA é maior que o máximo permitido
-
         }
 
-        private void ConfrontarTotaisEPercentualMaxRA(PrePedidoDto prepedido,
-            List<PrepedidoProdutoDtoPrepedido> lstProdutosCompare, List<string> lstErros, float perc_limite_RA,
-            decimal limiteArredondamento)
+        private void ConfrontarTotaisEPercentualMaxRA(PrePedidoDto prepedido, List<string> lstErros, 
+            float perc_limite_RA)
         {
             decimal totalCompare = 0;
             decimal totalRaCompare = 0;
@@ -240,9 +231,8 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
 
                 if (lstErros.Count == 0)
                 {
-                    List<NfeMunicipio> lstNfeMunicipio = (await ValidacoesClienteBll.ConsisteMunicipioIBGE(
-                    prePedido.EnderecoEntrega.EndEtg_cidade, prePedido.EnderecoEntrega.EndEtg_uf, lstErros, contextoProvider,
-                    bancoNFeMunicipio)).ToList();
+                    await ValidacoesClienteBll.ConsisteMunicipioIBGE(prePedido.EnderecoEntrega.EndEtg_cidade, 
+                        prePedido.EnderecoEntrega.EndEtg_uf, lstErros, contextoProvider, bancoNFeMunicipio);
 
                     //vamos comparar endereço
                     string cepSoDigito = prePedido.EnderecoEntrega.EndEtg_cep.Replace(".", "").Replace("-", "");
