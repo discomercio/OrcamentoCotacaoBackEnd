@@ -1,10 +1,11 @@
-﻿using InfraBanco.Constantes;
+﻿using InfraBanco;
+using InfraBanco.Constantes;
 using Newtonsoft.Json;
 using PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto;
 using PrepedidoBusiness.Bll.ClienteBll;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using Testes.Automatizados.InicializarBanco;
 using Xunit;
 using Xunit.Abstractions;
@@ -19,22 +20,27 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
         private readonly ITestOutputHelper output;
         private readonly PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll.ClienteUnisBll clienteUnisBll;
         private readonly InicializarBancoGeral inicializarBanco;
+        private readonly ContextoBdProvider contextoProvider;
 
-        public Pf(TestesClienteUnisBll testesClienteUnisBll, ITestOutputHelper output, PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll.ClienteUnisBll clienteUnisBll,
-            InicializarBanco.InicializarBancoGeral inicializarBanco)
+        public Pf(TestesClienteUnisBll testesClienteUnisBll, ITestOutputHelper output,
+            PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll.ClienteUnisBll clienteUnisBll,
+            InicializarBanco.InicializarBancoGeral inicializarBanco,
+            InfraBanco.ContextoBdProvider contextoProvider)
         {
             this.testesClienteUnisBll = testesClienteUnisBll;
             this.output = output;
             this.clienteUnisBll = clienteUnisBll;
             this.inicializarBanco = inicializarBanco;
+            this.contextoProvider = contextoProvider;
             this.testesClienteUnisBll.Output = output;
         }
 
         [Fact]
         public void RefBancaria()
         {
+            inicializarBanco.TclientesApagar();
+
             //nao pode ter
-            ClienteCadastroUnisDto clienteDto = InicializarClienteDados.ClienteNaoCadastradoPJ();
             testesClienteUnisBll.TestarCadastro(c => c.RefBancaria.Add(new RefBancariaClienteUnisDto()),
                 PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll.PrePedidoUnisBll.MensagensErro.Orcamentista_nao_existe,
                 TipoPessoa.PF);
@@ -43,8 +49,9 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
         [Fact]
         public void RefComercial()
         {
+            inicializarBanco.TclientesApagar();
+
             //nao pode ter
-            ClienteCadastroUnisDto clienteDto = InicializarClienteDados.ClienteNaoCadastradoPJ();
             testesClienteUnisBll.TestarCadastro(c => c.RefComercial.Add(new RefComercialClienteUnisDto()),
                 PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll.PrePedidoUnisBll.MensagensErro.Orcamentista_nao_existe,
                 TipoPessoa.PF);
@@ -54,6 +61,8 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
         [Fact]
         public void Indicador_Orcamentista()
         {
+            inicializarBanco.TclientesApagar();
+
             testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Indicador_Orcamentista = InicializarBancoGeral.Dados.Orcamentista.ApelidoNaoExiste,
                 PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll.PrePedidoUnisBll.MensagensErro.Orcamentista_nao_existe,
                 TipoPessoa.PF);
@@ -61,6 +70,8 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
         [Fact]
         public void Cnpj_Cpf()
         {
+            inicializarBanco.TclientesApagar();
+
             //vazio
             testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Cnpj_Cpf = "",
                 ValidacoesClienteBll.MensagensErro.CPF_NAO_FORNECIDO,
@@ -85,6 +96,8 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
         [Fact]
         public void Tipo()
         {
+            inicializarBanco.TclientesApagar();
+
             testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Tipo = "",
                 ValidacoesClienteBll.MensagensErro.INFORME_SE_O_CLIENTE_E_PF_OU_PJ,
                 TipoPessoa.PF);
@@ -99,6 +112,12 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
         [Fact]
         public void ProdutorRural_Contribuinte_Icms_Status_codigos_invalidos()
         {
+            inicializarBanco.TclientesApagar();
+
+            testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.ProdutorRural = (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL,
+                "preencher o produtor rural",
+                    TipoPessoa.PF);
+
             testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Contribuinte_Icms_Status = 99,
                 PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual,
                     TipoPessoa.PF);
@@ -111,6 +130,9 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
         [Fact]
         public void ProdutorRural_Contribuinte_Icms_zerar_campos()
         {
+            inicializarBanco.TclientesApagar();
+
+
             /*
 	if (s_produtor_rural = COD_ST_CLIENTE_PRODUTOR_RURAL_NAO) Then
 		s_contribuinte_icms=COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL
@@ -118,13 +140,12 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
 		end if
 */
 
-            //este é o que deve dar certo
+            //cadastra
             ClienteCadastroUnisDto clienteDto = InicializarClienteDados.ClienteNaoCadastradoPF();
             ClienteCadastroResultadoUnisDto res;
             var c = clienteDto;
             c.DadosCliente.ProdutorRural = (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO;
             c.DadosCliente.Contribuinte_Icms_Status = (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM;
-            c.DadosCliente.Ie = InicializarClienteDados.ClienteNaoCadastradoPF().DadosCliente.Ie;
 
             res = clienteUnisBll.CadastrarClienteUnis(clienteDto).Result;
 
@@ -133,8 +154,13 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
 
             Assert.Empty(res.ListaErros);
 
-            //todo: verificar se salvou com os valores corretos
-            Assert.True(false);
+            //verificar se salvou com os valores corretos
+            var cadastrado = (from cliente in contextoProvider.GetContextoLeitura().Tclientes
+                              where cliente.Cnpj_Cpf == PrepedidoBusiness.Utils.Util.SoDigitosCpf_Cnpj(InicializarClienteDados.ClienteNaoCadastradoPF().DadosCliente.Cnpj_Cpf)
+                              select cliente).First();
+
+            Assert.Equal((byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL, cadastrado.Contribuinte_Icms_Status);
+            Assert.Equal("", cadastrado.Ie);
 
             //e apaga o registro
             inicializarBanco.TclientesApagar();
@@ -143,6 +169,8 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
         [Fact]
         public void ProdutorRural_Contribuinte_Icms_Status()
         {
+            inicializarBanco.TclientesApagar();
+
 
             /*
                     if (s_produtor_rural = COD_ST_CLIENTE_PRODUTOR_RURAL_SIM) Then
@@ -155,6 +183,15 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             {
                 c.DadosCliente.ProdutorRural = (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM;
                 c.DadosCliente.Contribuinte_Icms_Status = (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO;
+                c.DadosCliente.Ie = InicializarClienteDados.ClienteNaoCadastradoPF().DadosCliente.Ie;
+            },
+                PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual,
+                TipoPessoa.PF);
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.ProdutorRural = (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM;
+                c.DadosCliente.Contribuinte_Icms_Status = (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO;
                 c.DadosCliente.Ie = InicializarClienteDados.ClienteNaoCadastradoPF().DadosCliente.Ie;
             },
                 PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual,
@@ -200,89 +237,200 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
         }
 
 
-        /*
-         * todo: testes
-         *         public DadosClienteCadastroUnisDto DadosCliente { get; set; }        
-         *         
-         *         
+        [Fact]
+        public void Sexo()
+        {
+            inicializarBanco.TclientesApagar();
+
+            testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Sexo = "",
+                "GÊNERO DO CLIENTE NÃO INFORMADO!.",
+                    TipoPessoa.PF);
+            testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Sexo = "X",
+                "INDIQUE QUAL O SEXO.",
+                    TipoPessoa.PF);
+        }
 
 
-        /// <summary>
-        /// Sexo = "M", "F"
-        /// </summary>
-        [MaxLength(1)]
-        public string Sexo { get; set; }
 
-        [MaxLength(60)]
-        [Required]
-        public string Nome { get; set; }
-
-        [MaxLength(80)]
-        public string Endereco { get; set; }
-
-        [MaxLength(20)]
-        public string Numero { get; set; }
-
-        [MaxLength(60)]
-        public string Complemento { get; set; }
-
-        [MaxLength(72)]
-        public string Bairro { get; set; }
-
-        [MaxLength(60)]
-        public string Cidade { get; set; }
-
-        [MaxLength(2)]
-        public string Uf { get; set; }
-
-        [MaxLength(8)]
-        public string Cep { get; set; }
-
-        [MaxLength(4)]
-        public string DddResidencial { get; set; }
-
-        [MaxLength(11)]
-        public string TelefoneResidencial { get; set; }
-
-        [MaxLength(4)]
-        public string DddComercial { get; set; }
-
-        [MaxLength(11)]
-        public string TelComercial { get; set; }
-
-        [MaxLength(4)]
-        public string Ramal { get; set; }
-
-        [MaxLength(2)]
-        public string DddCelular { get; set; }
-
-        [MaxLength(9)]
-        public string Celular { get; set; }
-
-        [MaxLength(9)]
-        public string TelComercial2 { get; set; }
-
-        [MaxLength(2)]
-        public string DddComercial2 { get; set; }
-
-        [MaxLength(4)]
-        public string Ramal2 { get; set; }
-
-        [MaxLength(60)]
-        public string Email { get; set; }
-
-        [MaxLength(60)]
-        public string EmailXml { get; set; }
-
-        [MaxLength(30)]
-        public string Contato { get; set; }
+        [Fact]
+        public void Nome()
+        {
+            inicializarBanco.TclientesApagar();
 
 
-    * 
-    * 
-    * 
-    * *         
-    */
+            testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Nome = "",
+                "PREENCHA O NOME DO CLIENTE.",
+                    TipoPessoa.PF);
+        }
+
+        [Fact]
+        public void Email_EmailXml()
+        {
+            inicializarBanco.TclientesApagar();
+
+
+            /*
+		if s_email <> "" then
+		'	CONSISTÊNCIA DESATIVADA TEMPORARIAMENTE
+'			if Not email_AF_ok(s_email, s_cnpj_cpf, msg_erro_aux) then
+'				alerta=texto_add_br(alerta)
+'				alerta=alerta & "Endereço de email (" & s_email & ") não é válido!!<br />" & msg_erro_aux
+'				end if
+			end if
+		end if
+
+*/
+        }
+
+
+        [Fact]
+        public void Telefones_vazios()
+        {
+            inicializarBanco.TclientesApagar();
+
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.DddResidencial = "";
+                c.DadosCliente.TelefoneResidencial = "";
+                c.DadosCliente.DddComercial = "";
+                c.DadosCliente.TelComercial = "";
+                c.DadosCliente.Ramal = "";
+                c.DadosCliente.DddCelular = "";
+                c.DadosCliente.Celular = "";
+            },
+                "PREENCHA PELO MENOS UM TELEFONE.",
+                    TipoPessoa.PF);
+        }
+
+
+        [Fact]
+        public void Telefones_repetidos()
+        {
+            inicializarBanco.TclientesApagar();
+
+
+            //se cadastrarmos mais de 5 vzes, deve dizer que o telefone está repetido
+
+
+            /*
+                elseif verifica_telefones_repetidos(s_ddd_cel, s_tel_cel, s_cnpj_cpf) > NUM_MAXIMO_TELEFONES_REPETIDOS_CAD_CLIENTES then
+alerta="TELEFONE CELULAR (" & s_ddd_cel & ") " & s_tel_cel & " JÁ ESTÁ SENDO UTILIZADO NO CADASTRO DE OUTROS CLIENTES. <br>Não foi possível concluir o cadastro."
+*/
+            //precisamos de ums lista de CPFs
+            var listaCpfs = new List<string>();
+            listaCpfs.Add("43131718005");
+            listaCpfs.Add("75215195900");
+            listaCpfs.Add("25176423898");
+            listaCpfs.Add("18587605852");
+            listaCpfs.Add("30369720059");
+            listaCpfs.Add("01986026000");
+            listaCpfs.Add("67405762700");
+
+            for (int i = 0; i < Constantes.NUM_MAXIMO_TELEFONES_REPETIDOS_CAD_CLIENTES; i++)
+            {
+                //este é o que deve dar certo
+                ClienteCadastroUnisDto clienteDto = InicializarClienteDados.ClienteNaoCadastradoPF();
+
+                //se nao tivermos CPFs suficentes, vai dar exceção. Isto significa que precisamos cadastar mais CPFs
+                clienteDto.DadosCliente.Cnpj_Cpf = listaCpfs[i];
+
+                ClienteCadastroResultadoUnisDto res;
+                res = clienteUnisBll.CadastrarClienteUnis(clienteDto).Result;
+
+                if (res.ListaErros.Count > 0)
+                    output.WriteLine(JsonConvert.SerializeObject(res));
+                Assert.Empty(res.ListaErros);
+            }
+
+
+            //agora tem que dar o erro
+            testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Nome = listaCpfs[Constantes.NUM_MAXIMO_TELEFONES_REPETIDOS_CAD_CLIENTES + 1],
+                "TELEFONE JÁ ESTÁ SENDO UTILIZADO NO CADASTRO DE OUTROS CLIENTES. <br>Não foi possível concluir o cadastro.",
+                TipoPessoa.PF);
+        }
+
+
+
+        [Fact]
+        public void Telefones_incompletos()
+        {
+            inicializarBanco.TclientesApagar();
+
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.DddResidencial = "";
+                c.DadosCliente.TelefoneResidencial = "12345678";
+            },
+                "PREENCHA O DDD.",
+                    TipoPessoa.PF);
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.DddComercial = "12";
+                c.DadosCliente.TelComercial = "";
+                c.DadosCliente.Ramal = "";
+            },
+                "PREENCHA O TELEFONE COMERCIAL.",
+                    TipoPessoa.PF);
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.DddComercial = "";
+                c.DadosCliente.TelComercial = "";
+                c.DadosCliente.Ramal = "12";
+                c.DadosCliente.DddCelular = "";
+                c.DadosCliente.Celular = "";
+            },
+                "PREENCHA PELO MENOS UM TELEFONE.",
+                    TipoPessoa.PF);
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.DddCelular = "";
+                c.DadosCliente.Celular = "12345678";
+            },
+                "PREENCHA O DDD.",
+                    TipoPessoa.PF);
+        }
+
+
+        [Fact]
+        public void Telefones_nao_aceitos()
+        {
+            inicializarBanco.TclientesApagar();
+
+
+            //nao pode salvar o telefone comercial 2
+            //cadastra
+            ClienteCadastroUnisDto clienteDto = InicializarClienteDados.ClienteNaoCadastradoPF();
+            ClienteCadastroResultadoUnisDto res;
+            var c = clienteDto;
+            c.DadosCliente.TelComercial2 = "11";
+            c.DadosCliente.DddComercial2 = "12345678";
+            c.DadosCliente.Ramal2 = "12";
+
+            res = clienteUnisBll.CadastrarClienteUnis(clienteDto).Result;
+
+            if (res.ListaErros.Count > 0)
+                output.WriteLine(JsonConvert.SerializeObject(res));
+
+            Assert.Empty(res.ListaErros);
+
+            //verificar se salvou com os valores corretos
+            var cadastrado = (from cliente in contextoProvider.GetContextoLeitura().Tclientes
+                              where cliente.Cnpj_Cpf == PrepedidoBusiness.Utils.Util.SoDigitosCpf_Cnpj(InicializarClienteDados.ClienteNaoCadastradoPF().DadosCliente.Cnpj_Cpf)
+                              select cliente).First();
+
+            Assert.Equal("", cadastrado.Ddd_Com_2);
+            Assert.Equal("", cadastrado.Tel_Com_2);
+            Assert.Equal("", cadastrado.Ramal_Com_2);
+
+            //e apaga o registro
+            inicializarBanco.TclientesApagar();
+        }
+
 
     }
 }
