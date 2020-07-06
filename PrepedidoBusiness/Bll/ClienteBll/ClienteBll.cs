@@ -14,6 +14,12 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 {
     public class ClienteBll
     {
+        public static class MensagensErro
+        {
+            public static string REGISTRO_COM_ID_JA_EXISTE(string clienteDtoDadosClienteId) { return "REGISTRO COM ID = " + clienteDtoDadosClienteId + " JÁ EXISTE."; }
+        }
+
+
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
         private readonly InfraBanco.ContextoCepProvider contextoCepProvider;
         private readonly CepBll cepBll;
@@ -577,7 +583,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
             if (verifica != null)
             {
-                lstErros.Add("REGISTRO COM ID = " + clienteDto.DadosCliente.Id + " JÁ EXISTE.");
+                lstErros.Add(MensagensErro.REGISTRO_COM_ID_JA_EXISTE(clienteDto.DadosCliente.Id));
                 return lstErros;
             }
 

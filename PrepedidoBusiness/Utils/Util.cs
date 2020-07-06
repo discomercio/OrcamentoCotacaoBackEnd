@@ -1116,7 +1116,6 @@ namespace PrepedidoBusiness.Utils
             return produtosEstoqueDtos;
         }
 
-        //TODO: INCLUIR O FABRICANTE PARA FAZER COMPARAÇÃO
         private static async Task<IEnumerable<ProdutosEstoqueDto>> BuscarListaQtdeEstoqueComSubquery(ContextoBdProvider contextoProvider)
         {
             var db = contextoProvider.GetContextoLeitura();

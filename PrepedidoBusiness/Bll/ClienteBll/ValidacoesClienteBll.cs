@@ -23,7 +23,14 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             public static string Estado_nao_confere = "Estado não confere!";
             public static string Preencha_a_IE_Inscricao_Estadual = "Preencha a IE (Inscrição Estadual) com um número válido! " +
                             "Certifique-se de que a UF informada corresponde à UF responsável pelo registro da IE.";
-            public static string  Municipio_nao_consta_na_relacao_IBGE(string municipio, string uf)
+            public static string CPF_INVALIDO = "CPF INVÁLIDO.";
+            public static string CPF_NAO_FORNECIDO = "CPF NÃO FORNECIDO.";
+            public static string GENERO_DO_CLIENTE_NAO_INFORMADO = "GÊNERO DO CLIENTE NÃO INFORMADO!.";
+            public static string INFORME_SE_O_CLIENTE_E_PF_OU_PJ = "INFORME SE O CLIENTE É PF OU PJ!";
+            public static string Tipo_de_cliente_nao_e_PF_nem_PJ = "Tipo de cliente não é PF nem PJ.";
+            public static string CNPJ_INVALIDO = "CNPJ INVÁLIDO.";
+
+            public static string Municipio_nao_consta_na_relacao_IBGE(string municipio, string uf)
             {
                 return "Município '" + municipio + "' não consta na relação de municípios do IBGE para a UF de '" + uf + "'!";
             }
@@ -59,7 +66,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     }
 
                     if (tipoDesconhecido)
-                        lstErros.Add("Tipo de cliente não é PF nem PJ.");
+                        lstErros.Add(MensagensErro.Tipo_de_cliente_nao_e_PF_nem_PJ);
 
                     //validar endereço do cadastro                    
                     retorno = await ValidarEnderecoCadastroClienteUnis(dadosCliente, lstErros, cepBll);
@@ -69,7 +76,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 }
                 else
                 {
-                    lstErros.Add("INFORME SE O CLIENTE É PF OU PJ!");
+                    lstErros.Add(MensagensErro.INFORME_SE_O_CLIENTE_E_PF_OU_PJ);
                     retorno = false;
                 }
             }
@@ -93,7 +100,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             }
             if (string.IsNullOrEmpty(dadosCliente.Cnpj_Cpf))
             {
-                lstErros.Add("CPF NÃO FORNECIDO.");
+                lstErros.Add(MensagensErro.CPF_NAO_FORNECIDO);
                 retorno = false;
             }
             else
@@ -102,7 +109,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 string cpf_cnpjSoDig = Util.SoDigitosCpf_Cnpj(dadosCliente.Cnpj_Cpf);
                 if (!Util.ValidaCPF(cpf_cnpjSoDig))
                 {
-                    lstErros.Add("CPF INVÁLIDO.");
+                    lstErros.Add(MensagensErro.CPF_INVALIDO);
                     retorno = false;
                 }
                 else
@@ -110,7 +117,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     //vamos validar o gênero do cliente
                     if (string.IsNullOrEmpty(dadosCliente.Sexo))
                     {
-                        lstErros.Add("GÊNERO DO CLIENTE NÃO INFORMADO!.");
+                        lstErros.Add(MensagensErro.GENERO_DO_CLIENTE_NAO_INFORMADO);
                         retorno = false;
                     }
                     else
@@ -223,7 +230,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 string cpf_cnpjSoDig = Util.SoDigitosCpf_Cnpj(dadosCliente.Cnpj_Cpf);
                 if (!Util.ValidaCNPJ(cpf_cnpjSoDig))
                 {
-                    lstErros.Add("CNPJ INVÁLIDO.");
+                    lstErros.Add(MensagensErro.CNPJ_INVALIDO);
                     retorno = false;
                 }
                 else
@@ -494,7 +501,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     VerificarInscricaoEstadualValida(dadosCliente.Ie, dadosCliente.Uf, lstErros);
             }
 
-            await ConsisteMunicipioIBGE(dadosCliente.Cidade, dadosCliente.Uf, lstErros, contextoProvider, 
+            await ConsisteMunicipioIBGE(dadosCliente.Cidade, dadosCliente.Uf, lstErros, contextoProvider,
                 bancoNFeMunicipio);
 
             return retorno;
@@ -547,7 +554,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
         public static async Task ConsisteMunicipioIBGE(string municipio, string uf,
             List<string> lstErros, ContextoBdProvider contextoProvider, IBancoNFeMunicipio bancoNFeMunicipio)
         {
-            var db = contextoProvider.GetContextoLeitura();            
+            var db = contextoProvider.GetContextoLeitura();
 
             if (string.IsNullOrEmpty(municipio))
                 lstErros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +

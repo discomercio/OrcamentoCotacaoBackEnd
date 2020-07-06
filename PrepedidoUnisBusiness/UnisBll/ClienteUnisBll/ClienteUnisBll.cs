@@ -25,7 +25,6 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
             this.clienteArclubeBll = clienteArclubeBll;
         }
 
-        //TODO
         public async Task<ClienteCadastroResultadoUnisDto> CadastrarClienteUnis(ClienteCadastroUnisDto clienteUnis)
         {
             List<string> lstErros = new List<string>();
