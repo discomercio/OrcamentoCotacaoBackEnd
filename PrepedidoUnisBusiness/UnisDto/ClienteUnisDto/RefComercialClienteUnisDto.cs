@@ -11,7 +11,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
         public string Contato { get; set; }
         public string Ddd { get; set; }
         public string Telefone { get; set; }
-        public int Ordem { get; set; }
+        public int Ordem { get; private set; }
 
 
         public static RefComercialDtoCliente RefComercialDtoClienteDeRefComercialClienteUnisDto(RefComercialClienteUnisDto refComercial)

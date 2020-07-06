@@ -571,7 +571,6 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             TorcamentistaEindicador tOrcamentista = await BuscarTorcamentista(apelido);
 
             //complementar os dados Cadastrais do cliente
-            prePedido.DadosCliente = new DadosClienteCadastroDto();
             prePedido.DadosCliente.Indicador_Orcamentista = tOrcamentista.Apelido.ToUpper();
             prePedido.DadosCliente.Loja = tOrcamentista.Loja;
             prePedido.DadosCliente.Vendedor = tOrcamentista.Vendedor.ToUpper();
@@ -590,13 +589,20 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
 
                 if (cliente != null)
                 {
+                    if(cliente.DadosCliente.Tipo == Constantes.ID_PF)
+                    {
+                        if(cliente.DadosCliente.Nome.ToUpper() != prePedido.DadosCliente.Nome.ToUpper())
+                        {
+                            lstErros.Add("Nome do cliente diferente do nome cadastrado!");
+                        }
+                    }
+
                     prePedido.DadosCliente.Id = cliente.DadosCliente.Id;
                     prePedido.DadosCliente.Sexo = cliente.DadosCliente.Sexo;
                     prePedido.DadosCliente.Nascimento = cliente.DadosCliente.Nascimento;
                 }
             }
-
-
+            
             //antes de validar vamos passar o EnderecoCadastral para dadoscliente
             prePedido.DadosCliente =
                 DadosClienteCadastroDto.DadosClienteCadastroDtoDeEnderecoCadastralClientePrepedidoDto(
@@ -624,7 +630,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             //verificar como esta sendo salvo
             if (!validacoesPrepedidoBll.ValidarDetalhesPrepedido(prePedido.DetalhesPrepedido, lstErros))
             {
-                return lstErros;
+                return lstErros;                                                                                            
             }
 
             if (prePedido.ListaProdutos.Count > 12)
@@ -810,7 +816,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             torcamento.CustoFinancFornecQtdeParcelas = (short)ObterQtdeParcelasFormaPagto(prepedido);
             torcamento.Vl_Total = Calcular_Vl_Total(prepedido);
             torcamento.Vl_Total_NF = CalcularVl_Total_NF(prepedido);
-            torcamento.Vl_Total_RA = CalcularVl_Total_NF(prepedido) - Calcular_Vl_Total(prepedido);
+            torcamento.Vl_Total_RA = prepedido.PermiteRAStatus == 1 ? CalcularVl_Total_NF(prepedido) - Calcular_Vl_Total(prepedido) : 0M;
             torcamento.Perc_RT = 0;
             torcamento.Perc_Desagio_RA_Liquida = perc_limite_RA_sem_desagio;
             torcamento.Permite_RA_Status = orcamentista.Permite_RA_Status;

@@ -29,7 +29,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
         [MaxLength(40)]
         public string Contato { get; set; }
 
-        public int Ordem { get; set; }
+        public int Ordem { get; private set; }
 
         public static RefBancariaClienteUnisDto RefBancariaClienteUnisDtoDeRefBancariaClienteDto(RefBancariaDtoCliente refBancariaArclube)
         {

@@ -23,12 +23,11 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             public static string Estado_nao_confere = "Estado não confere!";
             public static string Preencha_a_IE_Inscricao_Estadual = "Preencha a IE (Inscrição Estadual) com um número válido! " +
                             "Certifique-se de que a UF informada corresponde à UF responsável pelo registro da IE.";
-            public static string  Municipio_nao_consta_na_relacao_IBGE(string municipio, string uf)
+            public static string Municipio_nao_consta_na_relacao_IBGE(string municipio, string uf)
             {
                 return "Município '" + municipio + "' não consta na relação de municípios do IBGE para a UF de '" + uf + "'!";
             }
         }
-
 
         public static async Task<bool> ValidarDadosCliente(DadosClienteCadastroDto dadosCliente,
             List<RefBancariaDtoCliente> lstRefBancaria, List<RefComercialDtoCliente> lstRefComercial,
@@ -45,6 +44,24 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     //é cliente PF
                     if (dadosCliente.Tipo == Constantes.ID_PF)
                     {
+                        if (lstRefBancaria != null)
+                        {
+                            if (lstRefBancaria.Count != 0)
+                            {
+                                lstErros.Add("Se cliente tipo PF, não deve constar referência bancária!");
+                                return false;
+                            }
+                        }
+
+                        if (lstRefComercial != null)
+                        {
+                            if (lstRefComercial.Count != 0)
+                            {
+                                lstErros.Add("Se cliente tipo PF, não deve constar referência comercial!");
+                                return false;
+                            }
+                        }
+
                         tipoDesconhecido = false;
                         //vamos verificar e validar os dados referente ao cliente PF
                         retorno = ValidarDadosCliente_PF(dadosCliente, lstErros);
@@ -55,14 +72,15 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                         retorno = ValidarDadosCliente_PJ(dadosCliente, lstErros);
                         //vamos validar as referências
                         retorno = ValidarReferencias_Bancarias_Comerciais(lstRefBancaria, lstRefComercial,
-                            lstErros);
+                            lstErros, dadosCliente.Tipo);
                     }
 
                     if (tipoDesconhecido)
                         lstErros.Add("Tipo de cliente não é PF nem PJ.");
 
                     //validar endereço do cadastro                    
-                    retorno = await ValidarEnderecoCadastroClienteUnis(dadosCliente, lstErros, cepBll);
+                    retorno = await ValidarEnderecoCadastroCliente(dadosCliente, lstErros, cepBll, contextoProvider,
+                        bancoNFeMunicipio);
 
                     //vamos verificar o IE dos clientes
                     retorno = await ValidarIE_Cliente(dadosCliente, lstErros, contextoProvider, bancoNFeMunicipio);
@@ -91,6 +109,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 lstErros.Add("PREENCHA O NOME DO CLIENTE.");
                 retorno = false;
             }
+
             if (string.IsNullOrEmpty(dadosCliente.Cnpj_Cpf))
             {
                 lstErros.Add("CPF NÃO FORNECIDO.");
@@ -127,6 +146,11 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                         }
 
                         retorno = ValidarTelefones_PF(dadosCliente, lstErros);
+
+                        if (!string.IsNullOrEmpty(dadosCliente.Email))
+                        {
+                            retorno = Util.ValidarEmail(dadosCliente.Email, lstErros);
+                        }
                     }
                 }
             }
@@ -137,20 +161,55 @@ namespace PrepedidoBusiness.Bll.ClienteBll
         {
             bool retorno = true;
 
+            if (dadosCliente.Tipo == Constantes.ID_PF)
+            {
+                if (!string.IsNullOrEmpty(dadosCliente.TelComercial2) || !string.IsNullOrEmpty(dadosCliente.DddComercial2))
+                {
+                    lstErros.Add("Se cliente é tipo PF, não pode ter os campos de Telefone e DDD comercial 2 preenchidos!");
+                    retorno = false;
+                }
+            }
+
             if (dadosCliente.Tipo == Constantes.ID_PF && string.IsNullOrEmpty(dadosCliente.TelefoneResidencial) &&
                 string.IsNullOrEmpty(dadosCliente.TelComercial) && string.IsNullOrEmpty(dadosCliente.Celular))
             {
                 lstErros.Add("PREENCHA PELO MENOS UM TELEFONE.");
                 retorno = false;
             }
-            if (dadosCliente.DddResidencial.Length != 2 &&
-                !string.IsNullOrEmpty(dadosCliente.DddResidencial))
+            //CELULAR
+            if (!string.IsNullOrEmpty(dadosCliente.DddCelular) &&
+                dadosCliente.DddCelular.Length != 2)
             {
-                lstErros.Add("DDD INVÁLIDO.");
+                lstErros.Add("DDD CELULAR INVÁLIDO.");
                 retorno = false;
             }
-            if (dadosCliente.TelefoneResidencial.Length < 6 &&
-                !string.IsNullOrEmpty(dadosCliente.TelefoneResidencial))
+            if (!string.IsNullOrEmpty(dadosCliente.Celular) &&
+                dadosCliente.Celular.Length < 6)
+            {
+                lstErros.Add("TELEFONE CELULAR INVÁLIDO.");
+                retorno = false;
+            }
+            if (string.IsNullOrEmpty(dadosCliente.DddCelular) &&
+               !string.IsNullOrEmpty(dadosCliente.Celular))
+            {
+                lstErros.Add("PREENCHA O DDD CELULAR.");
+                retorno = false;
+            }
+            if (!string.IsNullOrEmpty(dadosCliente.DddCelular) &&
+                string.IsNullOrEmpty(dadosCliente.Celular))
+            {
+                lstErros.Add("PREENCHA O TELEFONE CELULAR.");
+                retorno = false;
+            }
+            //RESIDENCIAL
+            if (!string.IsNullOrEmpty(dadosCliente.DddResidencial) &&
+                dadosCliente.DddResidencial.Length != 2)
+            {
+                lstErros.Add("DDD RESIDENCIAL INVÁLIDO.");
+                retorno = false;
+            }
+            if (!string.IsNullOrEmpty(dadosCliente.TelefoneResidencial) &&
+                dadosCliente.TelefoneResidencial.Length < 6)
             {
                 lstErros.Add("TELEFONE RESIDENCIAL INVÁLIDO.");
                 retorno = false;
@@ -161,12 +220,13 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 lstErros.Add("PREENCHA O TELEFONE RESIDENCIAL.");
                 retorno = false;
             }
-            if (string.IsNullOrEmpty(dadosCliente.DddResidencial) &&
-                !string.IsNullOrEmpty(dadosCliente.TelefoneResidencial))
+            if (!string.IsNullOrEmpty(dadosCliente.TelefoneResidencial) &&
+                string.IsNullOrEmpty(dadosCliente.DddResidencial))
             {
-                lstErros.Add("PREENCHA O DDD.");
+                lstErros.Add("PREENCHA O DDD RESIDENCIAL.");
                 retorno = false;
             }
+            //COMERCIAL
             if (!string.IsNullOrEmpty(dadosCliente.TelComercial) &&
                 string.IsNullOrEmpty(dadosCliente.DddComercial))
             {
@@ -206,6 +266,12 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             *-Verificar se tem Ref.Comercial e validar caso exista;
             * */
 
+            if (dadosCliente.ProdutorRural != (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL)
+            {
+                lstErros.Add("Se cliente é tipo PJ, não pode ser Produtor Rural");
+                return false;
+            }
+
             bool retorno = true;
 
             if (string.IsNullOrEmpty(dadosCliente.Nome))
@@ -239,6 +305,10 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                         lstErros.Add("É OBRIGATÓRIO INFORMAR UM ENDEREÇO DE E-MAIL!");
                         retorno = false;
                     }
+                    if (!string.IsNullOrEmpty(dadosCliente.Email))
+                    {
+                        retorno = Util.ValidarEmail(dadosCliente.Email, lstErros);
+                    }
                     //vamos validar os telefones
                     retorno = ValidarTelefones_PJ(dadosCliente, lstErros);
                 }
@@ -259,6 +329,18 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             }
             else
             {
+                if (!string.IsNullOrEmpty(dadosCliente.DddResidencial) || !string.IsNullOrEmpty(dadosCliente.TelefoneResidencial))
+                {
+                    lstErros.Add("Se cliente é tipo PJ, não pode ter os campos de Telefone e DDD residencial preenchidos! ");
+                    retorno = false;
+                }
+
+                if (!string.IsNullOrEmpty(dadosCliente.DddCelular) || !string.IsNullOrEmpty(dadosCliente.Celular))
+                {
+                    lstErros.Add("Se cliente é tipo PJ, não pode ter os campos de Telefone e DDD celular preenchidos! ");
+                    retorno = false;
+                }
+
                 if (!string.IsNullOrEmpty(dadosCliente.TelComercial))
                 {
                     if (Util.Telefone_SoDigito(dadosCliente.TelComercial).Length < 6)
@@ -319,8 +401,8 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return retorno;
         }
 
-        private static async Task<bool> ValidarEnderecoCadastroClienteUnis(DadosClienteCadastroDto dadosCliente,
-            List<string> lstErros, CepBll cepBll)
+        private static async Task<bool> ValidarEnderecoCadastroCliente(DadosClienteCadastroDto dadosCliente,
+            List<string> lstErros, CepBll cepBll, ContextoBdProvider contextoProvider, IBancoNFeMunicipio bancoNFeMunicipio)
         {
             string cepSoDigito = dadosCliente.Cep.Replace(".", "").Replace("-", "");
             List<CepDto> lstCepDto = (await cepBll.BuscarPorCep(cepSoDigito)).ToList();
@@ -364,6 +446,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     lstErros.Add("PREENCHA A CIDADE.");
                     retorno = false;
                 }
+
                 if (string.IsNullOrEmpty(dadosCliente.Uf))
                 {
                     lstErros.Add("INFORME O UF.");
@@ -399,7 +482,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     Cidade = dadosCliente.Cidade,
                     Uf = dadosCliente.Uf
                 };
-                if (!VerificarEndereco(cepCliente, lstCepDto, lstErros))
+                if (!await VerificarEndereco(cepCliente, lstCepDto, lstErros, contextoProvider, bancoNFeMunicipio))
                 {
                     retorno = false;
                 }
@@ -424,8 +507,29 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             }
             if (dadosCliente.Tipo == Constantes.ID_PF)
             {
+                if (dadosCliente.ProdutorRural != (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM &&
+                   dadosCliente.ProdutorRural != (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO &&
+                   dadosCliente.ProdutorRural != (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL)
+                {
+                    lstErros.Add("Produtor Rural inválido!");
+                    return false;
+                }
+
                 if (dadosCliente.ProdutorRural == (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
                 {
+                    if (dadosCliente.Contribuinte_Icms_Status ==
+                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM &&
+                        dadosCliente.Contribuinte_Icms_Status ==
+                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO &&
+                        dadosCliente.Contribuinte_Icms_Status ==
+                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO &&
+                        dadosCliente.Contribuinte_Icms_Status ==
+                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL)
+                    {
+                        lstErros.Add("Contribuinte do ICMS inválido");
+                        return false;
+                    }
+
                     if (string.IsNullOrEmpty(dadosCliente.Ie) &&
                         dadosCliente.Contribuinte_Icms_Status ==
                         (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
@@ -494,19 +598,27 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     VerificarInscricaoEstadualValida(dadosCliente.Ie, dadosCliente.Uf, lstErros);
             }
 
-            await ConsisteMunicipioIBGE(dadosCliente.Cidade, dadosCliente.Uf, lstErros, contextoProvider, 
-                bancoNFeMunicipio);
+            await ConsisteMunicipioIBGE(dadosCliente.Cidade, dadosCliente.Uf, lstErros, contextoProvider,
+                bancoNFeMunicipio, true);
 
             return retorno;
         }
 
         private static bool ValidarReferencias_Bancarias_Comerciais(List<RefBancariaDtoCliente> lstRefBancaria,
-            List<RefComercialDtoCliente> lstRefComercial, List<string> lstErros)
+            List<RefComercialDtoCliente> lstRefComercial, List<string> lstErros, string tipoPessoa)
         {
             bool retorno = true;
-
             if (lstRefBancaria != null && lstRefBancaria.Count > 0)
             {
+                if (tipoPessoa == Constantes.ID_PJ)
+                {
+                    if (lstRefBancaria.Count > Constantes.MAX_REF_BANCARIA_CLIENTE_PJ)
+                    {
+                        lstErros.Add("É permitido apenas " + Constantes.MAX_REF_BANCARIA_CLIENTE_PJ + " referência bancária!");
+                        retorno = false;
+                    }
+                }
+
                 lstRefBancaria.ForEach(x =>
                 {
                     if (string.IsNullOrEmpty(x.Banco))
@@ -527,39 +639,77 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 });
             }
 
-            if (lstRefComercial != null && lstRefComercial.Count > 0)
+            if (retorno)
             {
-                int i = 0;
-                lstRefComercial.ForEach(x =>
+                if (lstRefComercial != null && lstRefComercial.Count > 0)
                 {
-                    x.Ordem = i++;
-                    if (string.IsNullOrEmpty(x.Nome_Empresa))
+                    if (lstRefComercial.Count > Constantes.MAX_REF_COMERCIAL_CLIENTE_PJ)
                     {
-                        lstErros.Add("Ref Comercial (" + x.Ordem + "): informe o nome da empresa.");
+                        lstErros.Add("É permitido apenas " + Constantes.MAX_REF_COMERCIAL_CLIENTE_PJ + " referências comerciais!");
                         retorno = false;
                     }
-                });
+
+                    var lsteRefComercialRepetido = lstRefComercial.GroupBy(o => o.Nome_Empresa)
+                        .Where(g => g.Count() > 1)
+                        .Select(y => new { Nome_Emprea = y.Key, Qtde = y.Count() })
+                        .ToList();
+
+                    if (lsteRefComercialRepetido.Count > 0)
+                    {
+                        lstErros.Add("Referência comercial: " + lsteRefComercialRepetido[0].Nome_Emprea +
+                            " está duplicada " + lsteRefComercialRepetido[0].Qtde + " vezes!");
+                        retorno = false;
+                    }
+
+                    int i = 0;
+                    lstRefComercial.ForEach(x =>
+                    {
+                        x.Ordem = i++;
+                        if (string.IsNullOrEmpty(x.Nome_Empresa))
+                        {
+                            lstErros.Add("Ref Comercial (" + x.Ordem + "): informe o nome da empresa.");
+                            retorno = false;
+                        }
+                    });
+                }
             }
+
 
             return retorno;
         }
 
-        public static async Task ConsisteMunicipioIBGE(string municipio, string uf,
-            List<string> lstErros, ContextoBdProvider contextoProvider, IBancoNFeMunicipio bancoNFeMunicipio)
+        public static async Task<bool> ConsisteMunicipioIBGE(string municipio, string uf,
+            List<string> lstErros, ContextoBdProvider contextoProvider, IBancoNFeMunicipio bancoNFeMunicipio,
+            bool mostrarMensagemErro)
         {
-            var db = contextoProvider.GetContextoLeitura();            
+            var db = contextoProvider.GetContextoLeitura();
 
             if (string.IsNullOrEmpty(municipio))
-                lstErros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
-                    "nenhum município foi informado!");
+            {
+                if (mostrarMensagemErro)
+                    lstErros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
+                        "nenhum município foi informado!");
+                return false;
+            }
+
             if (string.IsNullOrEmpty(uf))
-                lstErros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
-                    "a UF não foi informada!");
+            {
+                if (mostrarMensagemErro)
+                    lstErros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
+                        "a UF não foi informada!");
+                return false;
+            }
+
             else
             {
                 if (uf.Length > 2)
-                    lstErros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
+                {
+                    if (mostrarMensagemErro)
+                        lstErros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
                         "a UF é inválida (" + uf + ")!");
+                    return false;
+                }
+
             }
 
             if (lstErros.Count == 0)
@@ -568,9 +718,14 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
                 if (!lst_nfeMunicipios.Any())
                 {
-                    lstErros.Add(MensagensErro.Municipio_nao_consta_na_relacao_IBGE(municipio, uf));
+                    if (mostrarMensagemErro)
+                        lstErros.Add(MensagensErro.Municipio_nao_consta_na_relacao_IBGE(municipio, uf));
+
+                    return false;
                 }
             }
+
+            return true;
         }
 
         public static void VerificarInscricaoEstadualValida(string ie, string uf, List<string> listaErros)
@@ -629,8 +784,8 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return result;
         }
 
-        public static bool VerificarEndereco(CepDto cepCliente, List<CepDto> lstCepDto,
-            List<string> listaErros)
+        public static async Task<bool> VerificarEndereco(CepDto cepCliente, List<CepDto> lstCepDto,
+            List<string> lstErros, ContextoBdProvider contextoProvider, IBancoNFeMunicipio bancoNFeMunicipio)
         {
             bool retorno = true;
 
@@ -645,7 +800,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     //vamos verificar se tem endereco e bairro para verificar se foi alterado os dados de cep
                     if (!string.IsNullOrEmpty(c.Cep) && c.Cep != cepSoDigito)
                     {
-                        listaErros.Add("Número do Cep não confere!");
+                        lstErros.Add("Número do Cep não confere!");
                         retorno = false;
                     }
 
@@ -653,20 +808,33 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                         Util.RemoverAcentuacao(c.Endereco).ToUpper() !=
                         Util.RemoverAcentuacao(cepCliente.Endereco).ToUpper())
                     {
-                        listaErros.Add("Endereço não confere!");
+                        lstErros.Add("Endereço não confere!");
                         retorno = false;
                     }
 
                     if (!string.IsNullOrEmpty(c.Bairro) && Util.RemoverAcentuacao(c.Bairro).ToUpper() !=
                         Util.RemoverAcentuacao(cepCliente.Bairro).ToUpper())
                     {
-                        listaErros.Add("Bairro não confere!");
+                        lstErros.Add("Bairro não confere!");
                         retorno = false;
+                    }
+
+                    //vamos verificar se a cidade da lista de cep existe no IBGE para validar
+                    if (!string.IsNullOrEmpty(cepCliente.Cidade))
+                    {
+                        if (await ConsisteMunicipioIBGE(cepCliente.Cidade, cepCliente.Uf, lstErros,
+                            contextoProvider, bancoNFeMunicipio, false))
+                        {
+                            if (!string.IsNullOrEmpty(c.Cidade) && c.Cidade.ToUpper() != cepCliente.Cidade.ToUpper())
+                            {
+                                lstErros.Add("Cidade não confere");
+                            }
+                        }
                     }
 
                     if (!string.IsNullOrEmpty(c.Uf) && c.Uf.ToUpper() != cepCliente.Uf.ToUpper())
                     {
-                        listaErros.Add(MensagensErro.Estado_nao_confere);
+                        lstErros.Add(MensagensErro.Estado_nao_confere);
                         retorno = false;
                     }
                 }

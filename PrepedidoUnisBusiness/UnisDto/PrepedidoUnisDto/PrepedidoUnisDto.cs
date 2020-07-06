@@ -34,9 +34,6 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         public DetalhesPrePedidoUnisDto DetalhesPrepedido { get; set; }
         public FormaPagtoCriacaoUnisDto FormaPagtoCriacao { get; set; }
 
-        [Required]
-        public float Perc_Desagio_RA_Liquida { get; set; }
-
 
         public static PrePedidoDto PrePedidoDtoDePrePedidoUnisDto(PrePedidoUnisDto prepedidoUnis,
             EnderecoCadastralClientePrepedidoDto endCadastraArclube, List<PrepedidoProdutoDtoPrepedido> lstProdutosArclube,

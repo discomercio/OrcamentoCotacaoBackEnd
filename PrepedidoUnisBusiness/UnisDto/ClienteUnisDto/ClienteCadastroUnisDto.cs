@@ -25,6 +25,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
                 clienteArclube.RefBancaria.Add(
                     RefBancariaClienteUnisDto.RefBancariaClienteDtoDeRefBancariaClienteUnisDto(x));
             });
+
             clienteArclube.RefComercial = new List<RefComercialDtoCliente>();
             clienteUnis.RefComercial.ForEach(x =>
             {

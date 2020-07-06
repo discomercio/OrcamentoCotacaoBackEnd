@@ -15,6 +15,7 @@ using PrepedidoBusiness.Dto.Produto;
 using System.Globalization;
 using System.Data.SqlClient;
 using PrepedidoBusiness.Dto.Cep;
+using System.ComponentModel.DataAnnotations;
 
 namespace PrepedidoBusiness.Utils
 {
@@ -56,40 +57,116 @@ namespace PrepedidoBusiness.Utils
             return telefone.Insert(telefone.Length - 4, "-");
         }
 
-        public static bool ValidaCPF(string cpf_cnpj)
+        public static bool ValidaCPF(string cpf)
         {
-            bool retorno = false;
+            string valor = cpf.Replace(".", "").Replace("/", "").Replace("-", "");
 
-            cpf_cnpj = cpf_cnpj.Replace(".", "").Replace("/", "").Replace("-", "");
+            valor = valor.Replace("-", "");
 
-            if (cpf_cnpj.Length > 11)
+            if (valor.Length != 11) return false;
+
+            bool igual = true;
+
+            for (int i = 1; i < 11 && igual; i++)
             {
-                retorno = false;
-            }
-            if (cpf_cnpj.Length == 11)
-            {
-                retorno = true;
+                if (valor[i] != valor[0])
+                    igual = false;
             }
 
-            return retorno;
+            if (igual || valor == "12345678909")
+                return false;
+
+            int[] numeros = new int[11];
+
+            for (int i = 0; i < 11; i++)
+            {
+                numeros[i] = int.Parse(valor[i].ToString());
+            }
+
+            int soma = 0;
+
+            for (int i = 0; i < 9; i++)
+            {
+                soma += (10 - i) * numeros[i];
+            }
+
+            int resultado = soma % 11;
+
+            if (resultado == 1 || resultado == 0)
+            {
+                if (numeros[9] != 0)
+                    return false;
+            }
+
+            else if (numeros[9] != 11 - resultado)
+                return false;
+
+            soma = 0;
+
+            for (int i = 0; i < 10; i++)
+            {
+                soma += (11 - i) * numeros[i];
+            }
+
+            resultado = soma % 11;
+
+            if (resultado == 1 || resultado == 0)
+            {
+                if (numeros[10] != 0)
+                    return false;
+            }
+            else
+            {
+                if (numeros[10] != 11 - resultado)
+                    return false;
+            }
+            
+            return true;            
         }
 
-        public static bool ValidaCNPJ(string cpf_cnpj)
+        public static bool ValidaCNPJ(string cnpj)
         {
-            bool retorno = false;
+            string p1 = "543298765432";
+            string p2 = "6543298765432";
 
-            cpf_cnpj = cpf_cnpj.Replace(".", "").Replace("/", "").Replace("-", "");
+            cnpj = cnpj.Replace(".", "").Replace("/", "").Replace("-", "");
+            if (cnpj == "") return true;
+            if (cnpj.Length != 14) return false;
 
-            if (cpf_cnpj.Length == 14)
+            // DÍGITOS TODOS IGUAIS?
+            bool tudo_igual = true;
+            for (int i = 0; i < (cnpj.Length - 1); i++)
+                if (cnpj.Substring(i, i + 1) != cnpj.Substring(i + 1, i + 2))
+                {
+                    tudo_igual = false;
+                    break;
+                }
+
+            if (tudo_igual) return false;
+
+            // VERIFICA O PRIMEIRO CHECK DIGIT
+            long d = 0;
+
+            for (int i = 0; i < 12; i++)
             {
-                retorno = true;
-            }
-            if (cpf_cnpj.Length < 11)
-            {
-                retorno = false;
+                d = d + (Convert.ToInt64(p1.Substring(i, 1)) * Convert.ToInt64(cnpj.Substring(i, 1)));
             }
 
-            return retorno;
+
+            d = 11 - (d % 11);
+            if (d > 9) d = 0;
+            if (d != Convert.ToInt64(cnpj.Substring(12, 1))) return false;
+
+            // VERIFICA O SEGUNDO CHECK DIGIT
+            d = 0;
+            for (int i = 0; i < 13; i++)
+                d = d + Convert.ToInt64(p2.Substring(i, 1)) * Convert.ToInt64(cnpj.Substring(i, 1));
+
+            d = 11 - (d % 11);
+            if (d > 9) d = 0;
+            if (d != Convert.ToInt32(cnpj.Substring(13, 1))) return false;
+
+            return true;
         }
 
         public static string SoDigitosCpf_Cnpj(string cpf_cnpj)
@@ -626,7 +703,7 @@ namespace PrepedidoBusiness.Utils
                             endEntregaMesmo = true;
                             log = log + campo_atual + "; ";
                         }
-                        if(campo_atual.IndexOf("previsão de entrega") >= 0 && !dataEntregaImediata)
+                        if (campo_atual.IndexOf("previsão de entrega") >= 0 && !dataEntregaImediata)
                         {
                             dataEntregaImediata = true;
                             log = log + campo_atual + "; ";
@@ -1264,5 +1341,18 @@ namespace PrepedidoBusiness.Utils
             data = DateTime.Now.AddDays(-60);
             return data;
         }
+
+        public static bool ValidarEmail(string email, List<string> lstErros)
+        {
+            bool retorno;
+            retorno = new EmailAddressAttribute().IsValid(email);
+
+            if (!retorno)
+                lstErros.Add("E-mail inválido!");
+
+            return retorno;
+        }
+
+
     }
 }

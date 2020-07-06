@@ -12,6 +12,7 @@ using PrepedidoBusiness.Utils;
 using InfraBanco.Modelos;
 using PrepedidoBusiness.Bll.ClienteBll;
 using PrepedidoBusiness.Dto.Cep;
+using InfraBanco;
 
 namespace PrepedidoBusiness.Bll.PrepedidoBll
 {
@@ -164,7 +165,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             prepedido.ListaProdutos.ForEach(x =>
             {
                 totalCompare += Math.Round((decimal)(x.VlUnitario * x.Qtde), 2);
-                totalRaCompare += Math.Round((decimal)(x.VlLista * x.Qtde), 2);
+                totalRaCompare += Math.Round((decimal)(x.Preco_Lista * x.Qtde), 2);
             });
 
             if (totalCompare != (decimal)prepedido.VlTotalDestePedido)
@@ -190,7 +191,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         {
             bool retorno = true;
 
-            await ValidarDadosEnderecoEntrega(prepedido, lstErros);
+            await ValidarDadosEnderecoEntrega(prepedido, lstErros, contextoProvider);
 
             await ValidarDadosPessoaEnderecoEntrega(prepedido, lstErros);
 
@@ -199,7 +200,9 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
 
             return retorno;
         }
-        private async Task ValidarDadosEnderecoEntrega(PrePedidoDto prePedido, List<string> lstErros)
+
+        private async Task ValidarDadosEnderecoEntrega(PrePedidoDto prePedido, List<string> lstErros, 
+            ContextoBdProvider contextoProvider)
         {
 
             if (prePedido.EnderecoEntrega.OutroEndereco)
@@ -231,9 +234,6 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
 
                 if (lstErros.Count == 0)
                 {
-                    await ValidacoesClienteBll.ConsisteMunicipioIBGE(prePedido.EnderecoEntrega.EndEtg_cidade, 
-                        prePedido.EnderecoEntrega.EndEtg_uf, lstErros, contextoProvider, bancoNFeMunicipio);
-
                     //vamos comparar endereço
                     string cepSoDigito = prePedido.EnderecoEntrega.EndEtg_cep.Replace(".", "").Replace("-", "");
                     List<CepDto> lstCepDto = (await cepBll.BuscarPorCep(cepSoDigito)).ToList();
@@ -252,8 +252,12 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                             Cidade = prePedido.EnderecoEntrega.EndEtg_cidade,
                             Uf = prePedido.EnderecoEntrega.EndEtg_uf
                         };
-                        ValidacoesClienteBll.VerificarEndereco(cep, lstCepDto, lstErros);
+                        await ValidacoesClienteBll.VerificarEndereco(cep, lstCepDto, lstErros, contextoProvider, 
+                            bancoNFeMunicipio);
                     }
+
+                    await ValidacoesClienteBll.ConsisteMunicipioIBGE(prePedido.EnderecoEntrega.EndEtg_cidade,
+                        prePedido.EnderecoEntrega.EndEtg_uf, lstErros, contextoProvider, bancoNFeMunicipio, true);
                 }
             }
         }

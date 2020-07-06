@@ -17,6 +17,7 @@ namespace PrepedidoUnisBusiness.UnisDto.ClienteUnisDto
             ClienteBuscaRetornoUnisDto clienteUnis = new ClienteBuscaRetornoUnisDto();
             clienteUnis.DadosCliente = DadosClienteCadastroUnisDto.DadosClienteCadastroUnisDtoDeDadosClienteCadastroDto(clienteArclube.DadosCliente);
             clienteUnis.RefBancaria = new List<RefBancariaClienteUnisDto>();
+            clienteUnis.RefComercial = new List<RefComercialClienteUnisDto>();
             clienteArclube.RefBancaria.ForEach(x =>
             {
                 clienteUnis.RefBancaria.Add(
