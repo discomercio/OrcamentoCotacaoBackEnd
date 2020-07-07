@@ -581,9 +581,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                         dadosCliente.Contribuinte_Icms_Status !=
                         (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO &&
                         dadosCliente.Contribuinte_Icms_Status !=
-                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO &&
-                        dadosCliente.Contribuinte_Icms_Status !=
-                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL)
+                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO)
                 {
                     lstErros.Add("Contribuinte do ICMS inválido");
                     return false;
