@@ -570,6 +570,12 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             }
             if (dadosCliente.Tipo == Constantes.ID_PJ)
             {
+                if(dadosCliente.ProdutorRural != (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL)
+                {
+                    lstErros.Add("Se tipo cliente PJ, o valor de Produtor Rural tem quer ser inicial!");
+                    return false;
+                }
+
                 if (dadosCliente.Contribuinte_Icms_Status !=
                         (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM &&
                         dadosCliente.Contribuinte_Icms_Status !=
