@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using InfraBanco.Constantes;
+using Newtonsoft.Json;
 using PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto;
 using PrepedidoBusiness.Dto.ClienteCadastro.Referencias;
 using System;
@@ -21,6 +22,8 @@ namespace Testes.Automatizados.InicializarBanco
             ret.DadosCliente.Tipo = "PF";
             ret.DadosCliente.Cnpj_Cpf = "479.378.150-00";
             ret.DadosCliente.Sexo = "M";
+            ret.DadosCliente.ProdutorRural = (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO;
+            ret.DadosCliente.Contribuinte_Icms_Status = (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL;
             ret.RefBancaria = new List<RefBancariaClienteUnisDto>();
             ret.RefComercial = new List<RefComercialClienteUnisDto>();
             return ret;

@@ -274,13 +274,13 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             *-Verificar se tem Ref.Comercial e validar caso exista;
             * */
 
+            bool retorno = true;
             if (dadosCliente.ProdutorRural != (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL)
             {
                 lstErros.Add("Se cliente é tipo PJ, não pode ser Produtor Rural");
-                return false;
+                retorno = false;
             }
 
-            bool retorno = true;
 
             if (string.IsNullOrEmpty(dadosCliente.Nome))
             {

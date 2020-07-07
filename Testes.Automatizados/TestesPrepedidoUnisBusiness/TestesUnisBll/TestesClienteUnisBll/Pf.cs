@@ -105,7 +105,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
                 ValidacoesClienteBll.MensagensErro.Tipo_de_cliente_nao_e_PF_nem_PJ,
                 TipoPessoa.PF);
             testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Tipo = "PJ",
-                ValidacoesClienteBll.MensagensErro.CNPJ_INVALIDO,
+                "Se cliente é tipo PJ, não pode ser Produtor Rural",
                 TipoPessoa.PF);
         }
 
@@ -115,14 +115,14 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             inicializarBanco.TclientesApagar();
 
             testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.ProdutorRural = (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL,
-                "preencher o produtor rural",
+                "Produtor Rural inválido!",
                     TipoPessoa.PF);
 
             testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Contribuinte_Icms_Status = 99,
-                PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual,
+                "Se cliente é não Produtor Rural, contribuinte do ICMS tem que ter valor inicial!",
                     TipoPessoa.PF);
             testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.ProdutorRural = 99,
-                PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual,
+                "Produtor Rural inválido!",
                     TipoPessoa.PF);
         }
 
