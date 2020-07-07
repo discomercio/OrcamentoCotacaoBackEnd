@@ -6,6 +6,7 @@ using PrepedidoBusiness.Bll.ClienteBll;
 using PrepedidoBusiness.Bll.PrepedidoBll;
 using PrepedidoBusiness.Dto.ClienteCadastro;
 using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
+using PrepedidoBusiness.Dto.Produto;
 using PrepedidoUnisBusiness.UnisDto.ClienteUnisDto;
 using PrepedidoUnisBusiness.Utils;
 using System;
@@ -27,15 +28,18 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
         private readonly InfraBanco.ContextoCepProvider contextoCepProvider;
         private readonly PrepedidoBll prepedidoBll;
         private readonly ClienteBll clienteBll;
+        private readonly ValidacoesPrepedidoBll validacoesPrepedidoBll;
 
         public PrePedidoUnisBll(ConfiguracaoApiUnis configuracaoApiUnis, InfraBanco.ContextoBdProvider contextoProvider,
-            InfraBanco.ContextoCepProvider contextoCepProvider, PrepedidoBll prepedidoBll, ClienteBll clienteBll)
+            InfraBanco.ContextoCepProvider contextoCepProvider, PrepedidoBll prepedidoBll, ClienteBll clienteBll,
+            ValidacoesPrepedidoBll validacoesPrepedidoBll)
         {
             this.configuracaoApiUnis = configuracaoApiUnis;
             this.contextoProvider = contextoProvider;
             this.contextoCepProvider = contextoCepProvider;
             this.prepedidoBll = prepedidoBll;
             this.clienteBll = clienteBll;
+            this.validacoesPrepedidoBll = validacoesPrepedidoBll;
         }
 
         public async Task<PrePedidoResultadoUnisDto> CadastrarPrepedidoUnis(PrePedidoUnisDto prePedidoUnis)

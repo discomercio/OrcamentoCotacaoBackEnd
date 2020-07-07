@@ -59,6 +59,11 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
         {
             if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.Op_av_forma_pagto))
                 lstErros.Add("Indique a forma de pagamento (à vista).");
+
+            if(prepedido.FormaPagtoCriacao.Qtde_Parcelas != 1)
+            {
+                lstErros.Add("Quantidade da parcela esta divergente!");
+            }
         }
 
         private void ValidarFormaPagtoParcelaUnica(PrePedidoDto prepedido, List<string> lstErros)
@@ -73,6 +78,23 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
                 lstErros.Add("Indique o intervalo de vencimento da parcela única.");
             else if (prepedido.FormaPagtoCriacao.C_pu_vencto_apos <= 0)
                 lstErros.Add("Intervalo de vencimento da parcela única é inválido.");
+
+            if (lstErros.Count == 0)
+            {
+                if (prepedido.FormaPagtoCriacao.Qtde_Parcelas != 1)
+                    lstErros.Add("Quantidade da parcela esta divergente!");
+
+                if (prepedido.PermiteRAStatus == 1)
+                {
+                    if (prepedido.ValorTotalDestePedidoComRA != prepedido.FormaPagtoCriacao.C_pu_valor)
+                        lstErros.Add("Valor total da forma de pagamento diferente do valor total!");
+                }
+                else
+                {
+                    if (prepedido.VlTotalDestePedido != prepedido.FormaPagtoCriacao.C_pu_valor)
+                        lstErros.Add("Valor total da forma de pagamento diferente do valor total!");
+                }
+            }
         }
 
         private void ValidarFormaPagtoParceladoCartao(PrePedidoDto prepedido, List<string> lstErros)
@@ -85,6 +107,27 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
                 lstErros.Add("Indique o valor da parcela (parcelado no cartão [internet]).");
             else if (prepedido.FormaPagtoCriacao.C_pc_valor <= 0)
                 lstErros.Add("Valor de parcela inválido (parcelado no cartão [internet]).");
+
+            if (lstErros.Count == 0)
+            {
+                if(prepedido.FormaPagtoCriacao.C_pc_qtde != prepedido.FormaPagtoCriacao.Qtde_Parcelas)
+                {
+                    lstErros.Add("Quantidade de parcelas esta divergente!");
+                }
+
+                //afazer: validar o valor da forma de pagto com o valor total do pedido
+                decimal vlTotal = (decimal)(prepedido.FormaPagtoCriacao.C_pc_valor * prepedido.FormaPagtoCriacao.C_pc_qtde);
+                if (prepedido.PermiteRAStatus == 1)
+                {
+                    if (prepedido.ValorTotalDestePedidoComRA != vlTotal)
+                        lstErros.Add("Valor total da forma de pagamento diferente do valor total!");
+                }
+                else
+                {
+                    if (prepedido.VlTotalDestePedido != vlTotal)
+                        lstErros.Add("Valor total da forma de pagamento diferente do valor total!");
+                }
+            }
         }
 
         private void ValidarFormaPagtoParceladoCartaoMaquineta(PrePedidoDto prepedido, List<string> lstErros)
@@ -97,6 +140,28 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
                 lstErros.Add("Indique o valor da parcela (parcelado no cartão [maquineta]).");
             else if (prepedido.FormaPagtoCriacao.C_pc_maquineta_valor <= 0)
                 lstErros.Add("Valor de parcela inválido (parcelado no cartão [maquineta]).");
+
+            //afazer: validar o valor da forma de pagto com o valor total do pedido
+            if (lstErros.Count == 0)
+            {
+                if (prepedido.FormaPagtoCriacao.C_pc_maquineta_qtde != prepedido.FormaPagtoCriacao.Qtde_Parcelas)
+                {
+                    lstErros.Add("Quantidade de parcelas esta divergente!");
+                }
+
+                decimal vlTotal = (decimal)(prepedido.FormaPagtoCriacao.C_pc_maquineta_valor *
+                prepedido.FormaPagtoCriacao.C_pc_maquineta_qtde);
+                if (prepedido.PermiteRAStatus == 1)
+                {
+                    if (prepedido.ValorTotalDestePedidoComRA != vlTotal)
+                        lstErros.Add("Valor total da forma de pagamento diferente do valor total!");
+                }
+                else
+                {
+                    if (prepedido.VlTotalDestePedido != vlTotal)
+                        lstErros.Add("Valor total da forma de pagamento diferente do valor total!");
+                }
+            }
         }
 
         private void ValidarFormaPagtoComEntreda(PrePedidoDto prepedido, List<string> lstErros)
@@ -125,6 +190,30 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
             }
             else if (prepedido.FormaPagtoCriacao.C_pce_prestacao_periodo <= 0)
                 lstErros.Add("Intervalo de vencimento inválido (parcelado com entrada).");
+
+            //afazer: validar o valor da forma de pagto com o valor total do pedido
+            if (lstErros.Count == 0)
+            {
+                if ((prepedido.FormaPagtoCriacao.C_pce_prestacao_qtde + 1) != prepedido.FormaPagtoCriacao.Qtde_Parcelas)
+                {
+                    lstErros.Add("Quantidade de parcelas esta divergente!");
+                }
+
+                decimal vlTotal = (decimal)(prepedido.FormaPagtoCriacao.C_pce_entrada_valor +
+                    (prepedido.FormaPagtoCriacao.C_pce_prestacao_valor *
+                    prepedido.FormaPagtoCriacao.C_pce_prestacao_qtde));
+
+                if (prepedido.PermiteRAStatus == 1)
+                {
+                    if (prepedido.ValorTotalDestePedidoComRA != vlTotal)
+                        lstErros.Add("Valor total da forma de pagamento diferente do valor total!");
+                }
+                else
+                {
+                    if (prepedido.VlTotalDestePedido != vlTotal)
+                        lstErros.Add("Valor total da forma de pagamento diferente do valor total!");
+                }
+            }
         }
 
         private void ValidarFormaPagtoSemEntrada(PrePedidoDto prepedido, List<string> lstErros)
@@ -153,6 +242,30 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
                 lstErros.Add("Indique o intervalo de vencimento entre as parcelas (parcelado sem entrada).");
             else if (prepedido.FormaPagtoCriacao.C_pse_demais_prest_periodo < 0)
                 lstErros.Add("Intervalo de vencimento inválido (parcelado sem entrada).");
+
+            //afazer: validar o valor da forma de pagto com o valor total do pedido
+            if (lstErros.Count == 0)
+            {
+                if ((prepedido.FormaPagtoCriacao.C_pse_demais_prest_qtde + 1) != prepedido.FormaPagtoCriacao.Qtde_Parcelas)
+                {
+                    lstErros.Add("Quantidade de parcelas esta divergente!");
+                }
+
+                decimal vlTotal = (decimal)(prepedido.FormaPagtoCriacao.C_pse_prim_prest_valor +
+                    (prepedido.FormaPagtoCriacao.C_pse_demais_prest_valor * 
+                    prepedido.FormaPagtoCriacao.C_pse_demais_prest_qtde));
+
+                if (prepedido.PermiteRAStatus == 1)
+                {
+                    if (prepedido.ValorTotalDestePedidoComRA != vlTotal)
+                        lstErros.Add("Valor total da forma de pagamento diferente do valor total!");
+                }
+                else
+                {
+                    if (prepedido.VlTotalDestePedido != vlTotal)
+                        lstErros.Add("Valor total da forma de pagamento diferente do valor total!");
+                }
+            }
         }
     }
 }

@@ -85,7 +85,8 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
                 Desconto = produtoDto.Desc_Dado,
                 VlUnitario = produtoDto.Preco_Venda,
                 TotalItem = Math.Round((decimal)(produtoDto.Preco_Venda * produtoDto.Qtde), 2),
-                TotalItemRA = Math.Round((decimal)(produtoDto.Preco_Lista * produtoDto.Qtde), 2)
+                TotalItemRA = Math.Round((decimal)(produtoDto.Preco_Lista * produtoDto.Qtde), 2),
+                CustoFinancFornecCoeficiente = produtoDto.CustoFinancFornecCoeficiente
             };
 
             return ret;

@@ -24,5 +24,6 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
         public decimal? TotalItemRA { get; set; }
         public decimal? TotalItem { get; set; }
         public short? Qtde_estoque_total_disponivel { get; set; }
+        public float CustoFinancFornecCoeficiente { get; set; }//coeficiente do fabricante
     }
 }

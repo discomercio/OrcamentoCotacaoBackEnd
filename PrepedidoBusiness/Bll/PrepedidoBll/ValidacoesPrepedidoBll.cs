@@ -50,29 +50,49 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             List<CoeficienteDto> lstCoeficiente =
                 (await BuscarListaCoeficientesFornecedores(lstFornec, qtdeParcelas, siglaFormaPagto)).ToList();
 
-            List<PrepedidoProdutoDtoPrepedido> lstProdutosCompare =
+            //validar se os coeficientes estão ok
+            ValidarCustoFinancFornecCoeficiente(prepedido.ListaProdutos, lstCoeficiente, lstErros);
+
+            if (lstErros.Count == 0)
+            {
+                List<PrepedidoProdutoDtoPrepedido> lstProdutosCompare =
                 (await BuscarProdutos(prepedido.ListaProdutos, loja)).ToList();
 
-            lstCoeficiente.ForEach(x =>
-            {
-                lstProdutosCompare.ForEach(y =>
+                lstCoeficiente.ForEach(x =>
                 {
-                    if (x.Fabricante == y.Fabricante)
+                    lstProdutosCompare.ForEach(y =>
                     {
-                        //vamos calcular o preco_lista com o coeficiente
-                        y.VlLista = Math.Round(((decimal)y.Preco * (decimal)x.Coeficiente), 2);
-                        y.VlUnitario = Math.Round(y.VlLista * (decimal)(1 - y.Desconto / 100), 2);
-                        y.TotalItem = Math.Round((decimal)(y.VlUnitario * y.Qtde), 2);
-                        y.TotalItemRA = Math.Round((decimal)(y.VlLista * y.Qtde), 2);
-                    }
+                        if (x.Fabricante == y.Fabricante)
+                        {
+                            //vamos calcular o preco_lista com o coeficiente
+                            y.Preco = y.Preco;
+                            y.VlLista = Math.Round(((decimal)y.Preco * (decimal)x.Coeficiente), 2);
+                            y.VlUnitario = Math.Round(y.VlLista * (decimal)(1 - y.Desconto / 100), 2);
+                            y.TotalItem = Math.Round((decimal)(y.VlUnitario * y.Qtde), 2);
+                            y.TotalItemRA = Math.Round((decimal)(y.VlLista * y.Qtde), 2);
+                        }
+                    });
                 });
-            });
 
-            ConfrontarProdutos(prepedido, lstProdutosCompare, lstErros, limiteArredondamento);
-            ConfrontarTotaisEPercentualMaxRA(prepedido, lstErros, perc_limite_RA);
+                ConfrontarProdutos(prepedido, lstProdutosCompare, lstErros, limiteArredondamento);
+                ConfrontarTotaisEPercentualMaxRA(prepedido, lstErros, perc_limite_RA);
+            }
         }
 
-        private async Task<IEnumerable<CoeficienteDto>> BuscarListaCoeficientesFornecedores(List<string> lstFornecedores, int qtdeParcelas, string siglaFP)
+        public void ValidarCustoFinancFornecCoeficiente(List<PrepedidoProdutoDtoPrepedido> lstProdutos,
+            List<CoeficienteDto> lstCoeficiente, List<string> lstErros)
+        {
+            lstProdutos.ForEach(x =>
+            {
+                lstCoeficiente.ForEach(y =>
+                {
+                    if (y.Fabricante == x.Fabricante && y.Coeficiente != x.CustoFinancFornecCoeficiente)
+                        lstErros.Add("Coeficiente do fabricante (" + x.Fabricante + ") esta incorreto!");
+                });
+            });
+        }
+
+        public async Task<IEnumerable<CoeficienteDto>> BuscarListaCoeficientesFornecedores(List<string> lstFornecedores, int qtdeParcelas, string siglaFP)
         {
             List<CoeficienteDto> lstcoefDto = new List<CoeficienteDto>();
 
@@ -144,6 +164,20 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                {
                    if (x.NumProduto == y.NumProduto && x.Fabricante == y.Fabricante)
                    {
+                       //vamos confrontar os valores
+                       if (x.Preco != y.Preco)
+                           lstErros.Add("Preço do fabricante (" + x.Preco + ") esta incorreto!");
+
+                       if (x.BlnTemRa)
+                       {
+                           if (x.VlLista != y.VlLista)
+                               lstErros.Add("Preço do fabricante (" + x.Preco + ") esta incorreto!");
+                       }
+
+                       if (x.VlUnitario != y.VlUnitario)
+                           lstErros.Add("Preço do fabricante (" + x.Preco + ") esta incorreto!");
+
+
                        diffVlLista = Math.Abs(x.VlLista - y.VlLista);
                        diffVlUnitario = Math.Abs((x.VlUnitario - y.VlUnitario));
 
@@ -156,7 +190,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             });
         }
 
-        private void ConfrontarTotaisEPercentualMaxRA(PrePedidoDto prepedido, List<string> lstErros, 
+        private void ConfrontarTotaisEPercentualMaxRA(PrePedidoDto prepedido, List<string> lstErros,
             float perc_limite_RA)
         {
             decimal totalCompare = 0;
@@ -201,7 +235,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return retorno;
         }
 
-        private async Task ValidarDadosEnderecoEntrega(PrePedidoDto prePedido, List<string> lstErros, 
+        private async Task ValidarDadosEnderecoEntrega(PrePedidoDto prePedido, List<string> lstErros,
             ContextoBdProvider contextoProvider)
         {
 
@@ -252,7 +286,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                             Cidade = prePedido.EnderecoEntrega.EndEtg_cidade,
                             Uf = prePedido.EnderecoEntrega.EndEtg_uf
                         };
-                        await ValidacoesClienteBll.VerificarEndereco(cep, lstCepDto, lstErros, contextoProvider, 
+                        await ValidacoesClienteBll.VerificarEndereco(cep, lstCepDto, lstErros, contextoProvider,
                             bancoNFeMunicipio);
                     }
 
