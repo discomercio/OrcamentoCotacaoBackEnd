@@ -34,8 +34,13 @@ namespace Testes.Automatizados.InicializarBanco
         {
             var db = contextoCepProvider.GetContextoLeitura();
 
-            //veja o Testes.Automatizados.InicializarBanco.ClienteNaoCadastradoJson
-            db.LogLocalidades.Add(new InfraBanco.Modelos.LogLocalidade() { Cep_dig = "68912350", Ufe_sg = "AP", Loc_nosub = "", Loc_nu_sequencial = 1 });
+            db.LogLocalidades.Add(new InfraBanco.Modelos.LogLocalidade()
+            {
+                Cep_dig = Testes.Automatizados.InicializarBanco.InicializarClienteDados.ClienteNaoCadastradoPJ().DadosCliente.Cep,
+                Ufe_sg = Testes.Automatizados.InicializarBanco.InicializarClienteDados.ClienteNaoCadastradoPJ().DadosCliente.Uf,
+                Loc_nosub = "",
+                Loc_nu_sequencial = 1
+            });
 
             db.LogLocalidades.Add(new InfraBanco.Modelos.LogLocalidade() { Cep_dig = DadosCep.Cep, Ufe_sg = DadosCep.Ufe_sg, Loc_nosub = "", Loc_nu_sequencial = 2 });
             db.SaveChanges();

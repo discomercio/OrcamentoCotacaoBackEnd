@@ -7,6 +7,7 @@ using Xunit;
 
 namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesCepUnisBll
 {
+    [Collection("Testes não multithread porque o banco é unico")]
     public class TestesCepUnisBll
     {
         private readonly CepUnisBll cepUnisBll;
@@ -18,17 +19,12 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             this.inicializarCep = inicializarCep;
         }
 
-        /*
-         * TODO: terminar testes
-
         [Fact]
         public void BuscarUfs()
         {
             IEnumerable<PrepedidoUnisBusiness.UnisDto.CepUnisDto.UFeMunicipiosUnisDto> res = cepUnisBll.BuscarUfs().Result;
             Assert.NotEmpty(res);
         }
-
-    */
 
         [Fact]
         public void BuscarCep()
