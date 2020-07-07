@@ -516,8 +516,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             if (dadosCliente.Tipo == Constantes.ID_PF)
             {
                 if (dadosCliente.ProdutorRural != (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM &&
-                   dadosCliente.ProdutorRural != (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO &&
-                   dadosCliente.ProdutorRural != (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL)
+                   dadosCliente.ProdutorRural != (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO)
                 {
                     lstErros.Add("Produtor Rural inválido!");
                     return false;
