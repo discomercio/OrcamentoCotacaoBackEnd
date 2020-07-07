@@ -21,6 +21,8 @@ namespace Testes.Automatizados.InicializarBanco
             ret.DadosCliente.Tipo = "PF";
             ret.DadosCliente.Cnpj_Cpf = "479.378.150-00";
             ret.DadosCliente.Sexo = "M";
+            ret.RefBancaria = new List<RefBancariaClienteUnisDto>();
+            ret.RefComercial = new List<RefComercialClienteUnisDto>();
             return ret;
         }
 
