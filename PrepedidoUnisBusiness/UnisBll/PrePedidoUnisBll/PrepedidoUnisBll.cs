@@ -63,6 +63,12 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
                 await ValidacoesClienteUnisBll.ValidarBuscarOrcamentista(prePedidoUnis.Indicador_Orcamentista,
                 contextoProvider);
 
+            if(orcamentista.Permite_RA_Status != Convert.ToInt16(prePedidoUnis.PermiteRAStatus))
+            {
+                retorno.ListaErros.Add("Permite RA status divergente do cadastro do indicador/orçamentista!");
+                return retorno;
+            }
+
             if (orcamentista == null)
             {
                 retorno.ListaErros.Add(MensagensErro.Orcamentista_nao_existe);

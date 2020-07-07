@@ -522,9 +522,9 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     return false;
                 }
 
-                if(dadosCliente.ProdutorRural == (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO)
+                if (dadosCliente.ProdutorRural == (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO)
                 {
-                    if(dadosCliente.Contribuinte_Icms_Status != (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL)
+                    if (dadosCliente.Contribuinte_Icms_Status != (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL)
                     {
                         lstErros.Add("Se cliente é não Produtor Rural, contribuinte do ICMS tem que ter valor inicial!");
                     }
@@ -548,7 +548,15 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     {
                         lstErros.Add("Contribuinte do ICMS inválido");
                         return false;
-                    }                    
+                    }
+
+                    if (dadosCliente.Contribuinte_Icms_Status !=
+                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
+                    {
+                        lstErros.Add("Para ser cadastrado como Produtor Rural, " + 
+                            "é necessário ser contribuinte do ICMS e possuir nº de IE");
+                        retorno = false;
+                    }
 
                     if (string.IsNullOrEmpty(dadosCliente.Ie) &&
                         dadosCliente.Contribuinte_Icms_Status ==
@@ -570,7 +578,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             }
             if (dadosCliente.Tipo == Constantes.ID_PJ)
             {
-                if(dadosCliente.ProdutorRural != (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL)
+                if (dadosCliente.ProdutorRural != (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL)
                 {
                     lstErros.Add("Se tipo cliente PJ, o valor de Produtor Rural tem quer ser inicial!");
                     return false;
