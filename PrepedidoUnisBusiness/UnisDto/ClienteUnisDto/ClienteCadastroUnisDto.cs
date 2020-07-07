@@ -11,8 +11,14 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
     {
         [Required]
         public string TokenAcesso { get; set; }
-        public DadosClienteCadastroUnisDto DadosCliente { get; set; }        
+        public DadosClienteCadastroUnisDto DadosCliente { get; set; }
+        /// <summary>
+        /// RefBancaria: somente para PJ, máximo 1
+        /// </summary>
         public List<RefBancariaClienteUnisDto> RefBancaria { get; set; }
+        /// <summary>
+        /// RefComercial: somente para PJ, máximo 3
+        /// </summary>
         public List<RefComercialClienteUnisDto> RefComercial { get; set; }
 
         public static ClienteCadastroDto ClienteCadastroDtoDeClienteCadastroUnisDto(ClienteCadastroUnisDto clienteUnis, string loja)

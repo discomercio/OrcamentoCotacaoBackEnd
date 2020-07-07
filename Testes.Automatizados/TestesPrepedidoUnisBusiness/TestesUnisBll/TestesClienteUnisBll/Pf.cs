@@ -42,7 +42,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
 
             //nao pode ter
             testesClienteUnisBll.TestarCadastro(c => c.RefBancaria.Add(new RefBancariaClienteUnisDto()),
-                PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll.PrePedidoUnisBll.MensagensErro.Orcamentista_nao_existe,
+                "Se cliente tipo PF, não deve constar referência bancária!",
                 TipoPessoa.PF);
         }
 
@@ -53,7 +53,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
 
             //nao pode ter
             testesClienteUnisBll.TestarCadastro(c => c.RefComercial.Add(new RefComercialClienteUnisDto()),
-                PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll.PrePedidoUnisBll.MensagensErro.Orcamentista_nao_existe,
+                "Se cliente tipo PF, não deve constar referência comercial!",
                 TipoPessoa.PF);
         }
 
@@ -363,7 +363,15 @@ alerta="TELEFONE CELULAR (" & s_ddd_cel & ") " & s_tel_cel & " JÁ ESTÁ SENDO U
                 c.DadosCliente.DddResidencial = "";
                 c.DadosCliente.TelefoneResidencial = "12345678";
             },
-                "PREENCHA O DDD.",
+                "PREENCHA O DDD RESIDENCIAL.",
+                    TipoPessoa.PF);
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.DddResidencial = "1";
+                c.DadosCliente.TelefoneResidencial = "12345678";
+            },
+                "DDD RESIDENCIAL INVÁLIDO.",
                     TipoPessoa.PF);
 
             testesClienteUnisBll.TestarCadastro(c =>
@@ -391,7 +399,7 @@ alerta="TELEFONE CELULAR (" & s_ddd_cel & ") " & s_tel_cel & " JÁ ESTÁ SENDO U
                 c.DadosCliente.DddCelular = "";
                 c.DadosCliente.Celular = "12345678";
             },
-                "PREENCHA O DDD.",
+                "PREENCHA O DDD CELULAR.",
                     TipoPessoa.PF);
         }
 
@@ -401,34 +409,15 @@ alerta="TELEFONE CELULAR (" & s_ddd_cel & ") " & s_tel_cel & " JÁ ESTÁ SENDO U
         {
             inicializarBanco.TclientesApagar();
 
-
-            //nao pode salvar o telefone comercial 2
-            //cadastra
-            ClienteCadastroUnisDto clienteDto = InicializarClienteDados.ClienteNaoCadastradoPF();
-            ClienteCadastroResultadoUnisDto res;
-            var c = clienteDto;
-            c.DadosCliente.TelComercial2 = "11";
-            c.DadosCliente.DddComercial2 = "12345678";
-            c.DadosCliente.Ramal2 = "12";
-
-            res = clienteUnisBll.CadastrarClienteUnis(clienteDto).Result;
-
-            if (res.ListaErros.Count > 0)
-                output.WriteLine(JsonConvert.SerializeObject(res));
-
-            Assert.Empty(res.ListaErros);
-
-            //verificar se salvou com os valores corretos
-            var cadastrado = (from cliente in contextoProvider.GetContextoLeitura().Tclientes
-                              where cliente.Cnpj_Cpf == PrepedidoBusiness.Utils.Util.SoDigitosCpf_Cnpj(InicializarClienteDados.ClienteNaoCadastradoPF().DadosCliente.Cnpj_Cpf)
-                              select cliente).First();
-
-            Assert.Equal("", cadastrado.Ddd_Com_2);
-            Assert.Equal("", cadastrado.Tel_Com_2);
-            Assert.Equal("", cadastrado.Ramal_Com_2);
-
-            //e apaga o registro
-            inicializarBanco.TclientesApagar();
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.TelComercial2 = "11";
+                c.DadosCliente.DddComercial2 = "12345678";
+                c.DadosCliente.Ramal2 = "12";
+                c.DadosCliente.TelefoneResidencial = "12345678";
+            },
+            "Se cliente é tipo PF, não pode ter os campos de Telefone e DDD comercial 2 preenchidos!",
+                    TipoPessoa.PF);
         }
 
 
