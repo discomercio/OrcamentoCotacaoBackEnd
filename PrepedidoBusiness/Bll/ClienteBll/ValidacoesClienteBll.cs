@@ -533,25 +533,30 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
                 if (dadosCliente.ProdutorRural == (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
                 {
+                    if (dadosCliente.Contribuinte_Icms_Status ==
+                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL)
+                    {
+                        lstErros.Add("Para ser cadastrado como Produtor Rural o contribuinte do ICMS não pode ter valor inicial!");
+                        retorno = false;
+                    }
+
                     if (dadosCliente.Contribuinte_Icms_Status !=
                         (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM &&
                         dadosCliente.Contribuinte_Icms_Status !=
                         (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO &&
                         dadosCliente.Contribuinte_Icms_Status !=
-                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO &&
-                        dadosCliente.Contribuinte_Icms_Status !=
-                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL)
+                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO)
                     {
                         lstErros.Add("Contribuinte do ICMS inválido");
                         return false;
-                    }
+                    }                    
 
                     if (string.IsNullOrEmpty(dadosCliente.Ie) &&
                         dadosCliente.Contribuinte_Icms_Status ==
                         (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
                     {
                         lstErros.Add("Para ser cadastrado como Produtor Rural e contribuinte do ICMS" +
-                            "é necessário possuir nº de IE");
+                            " é necessário possuir nº de IE");
                         retorno = false;
                     }
 
