@@ -217,6 +217,7 @@ export class RecalcularComCoeficiente {
             //vamos verificar se é pagto á vista
             if (enumFP.toString() == this.constantes.COD_FORMA_PAGTO_A_VISTA &&
               tipoFormaPagto == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA) {
+                
               if (produto.AlterouVlVenda) {
                 //devemos alterar o valor de desconto
                 //valor com coeficiente - valor venda * 100 / valor com coeficiente
@@ -336,7 +337,7 @@ export class RecalcularComCoeficiente {
   //calculo para montar a lista que vai no parcelamento a vista
   calcularTotalProdutoAvistaParcelamento(p: PrepedidoProdutoDtoPrepedido): void {
     this.ProdutosCalculados = new ProdutosCalculados();
-
+debugger;
     if (!!this.novoPrepedidoDadosService.prePedidoDto.PermiteRAStatus &&
       this.novoPrepedidoDadosService.prePedidoDto.PermiteRAStatus == 1) {
       if (p.AlterouValorRa && p.AlterouValorRa != undefined) {
@@ -347,7 +348,7 @@ export class RecalcularComCoeficiente {
       }
     }
     else {
-      p.VlTotalItem = this.moedaUtils.formatarDecimal(p.Preco * p.Qtde);
+      p.VlTotalItem = this.moedaUtils.formatarDecimal(p.VlUnitario * p.Qtde);
     }
 
     this.ProdutosCalculados.QtdeParcela = 1;
@@ -357,6 +358,7 @@ export class RecalcularComCoeficiente {
 
   //calculo para montar a lista que vai no parcelamento cartão e maquineta
   calcularTotalProduto_Cartao_Maquineta_Parcelamento(p: PrepedidoProdutoDtoPrepedido, x: CoeficienteDto): void {
+    
     this.ProdutosCalculados = new ProdutosCalculados();
 
     let total_com_coeficiente: number = 0;
@@ -373,12 +375,14 @@ export class RecalcularComCoeficiente {
       p.VlTotalItem = this.moedaUtils.formatarDecimal(total_com_coeficiente * p.Qtde);
     }
     else {
-      total_com_coeficiente = this.moedaUtils.formatarDecimal(p.Preco * x.Coeficiente);
-      p.VlTotalItem = this.moedaUtils.formatarDecimal(total_com_coeficiente * p.Qtde);
+      
+      total_com_coeficiente = this.moedaUtils.formatarDecimal(p.VlUnitario * p.Qtde);
+      p.VlTotalItem = this.moedaUtils.formatarDecimal(total_com_coeficiente);
     }
     this.ProdutosCalculados.QtdeParcela = x.QtdeParcelas;
     this.ProdutosCalculados.Valor = p.VlTotalItem;
     this.lstProdutosCalculados.push(this.ProdutosCalculados);
+
   }
 
   //calculo para montar a lista que vai no parcelamento de parcela única
@@ -399,8 +403,8 @@ export class RecalcularComCoeficiente {
       p.VlTotalItem = this.moedaUtils.formatarDecimal(total_com_coeficiente * p.Qtde);
     }
     else {
-      total_com_coeficiente = this.moedaUtils.formatarDecimal(p.Preco * x.Coeficiente);
-      p.VlTotalItem = this.moedaUtils.formatarDecimal(total_com_coeficiente * p.Qtde);
+      total_com_coeficiente = this.moedaUtils.formatarDecimal(p.VlUnitario * p.Qtde);
+      p.VlTotalItem = this.moedaUtils.formatarDecimal(total_com_coeficiente);
     }
     this.ProdutosCalculados.QtdeParcela = x.QtdeParcelas;
     this.ProdutosCalculados.Valor = p.VlTotalItem;
@@ -426,8 +430,8 @@ export class RecalcularComCoeficiente {
       p.VlTotalItem = this.moedaUtils.formatarDecimal(total_com_coeficiente * p.Qtde);
     }
     else {
-      total_com_coeficiente = this.moedaUtils.formatarDecimal(p.Preco * x.Coeficiente);
-      p.VlTotalItem = this.moedaUtils.formatarDecimal(total_com_coeficiente * p.Qtde);
+      total_com_coeficiente = this.moedaUtils.formatarDecimal(p.VlUnitario * p.Qtde);
+      p.VlTotalItem = this.moedaUtils.formatarDecimal(total_com_coeficiente);
     }
     this.ProdutosCalculados.QtdeParcela = x.QtdeParcelas;
     this.ProdutosCalculados.Valor = p.VlTotalItem;

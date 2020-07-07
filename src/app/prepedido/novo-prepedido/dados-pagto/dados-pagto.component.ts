@@ -104,8 +104,8 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
     this.alertaService);
 
   atribuirFormaPagtoParaDto() {
+    debugger;
     this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento = this.enumFormaPagto;
-    this.prePedidoDto.VlTotalDestePedido = this.totalPedido();
     if (this.enumFormaPagto == 1) {
       //A vista      
       this.prePedidoDto.FormaPagtoCriacao.Rb_forma_pagto = this.enumFormaPagto.toString();
@@ -395,7 +395,6 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
       //aisamos que está carregando...
       this.lstMsg = new Array();
       this.lstMsg.push("Carregando dados....");
-
       this.buscarNovoCoeficiente((coefciente: CoeficienteDto[][]) => {
         this.coeficienteDtoNovo = coefciente;
         this.lstMsg = new Array();

@@ -457,7 +457,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
       if (this.percentualVlPedidoRA != 0 && this.percentualVlPedidoRA != undefined) {
 
         let vlAux = (this.percentualVlPedidoRA / 100) * this.totalPedido();
-        let totalRA = (this.totalPedido() - this.totalPedidoRA());
+        let totalRA = (this.totalPedidoRA() - this.totalPedido());
 
         if (totalRA > vlAux) {
           this.alertaService.mostrarMensagem("O valor total de RA excede o limite permitido!");

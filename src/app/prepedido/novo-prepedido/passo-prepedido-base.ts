@@ -51,17 +51,4 @@ export class PassoPrepedidoBase extends TelaDesktopBaseComponent {
         ret = "";
         return ret + CpfCnpjUtils.cnpj_cpf_formata(this.prePedidoDto.DadosCliente.Cnpj_Cpf);
     }
-
-    totalPedido(): number {
-        if (this.prePedidoDto.PermiteRAStatus == 1) {
-            return this.prePedidoDto.ValorTotalDestePedidoComRA = this.moedaUtils.formatarDecimal(
-                this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + this.moedaUtils.formatarDecimal(current.TotalItemRA), 0));
-        } else {
-            return this.prePedidoDto.VlTotalDestePedido = this.moedaUtils.formatarDecimal(
-                this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + this.moedaUtils.formatarDecimal(current.TotalItem), 0));
-        }
-    }
-    //#endregion
-
-
 }
