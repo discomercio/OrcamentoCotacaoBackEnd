@@ -655,8 +655,8 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
                 lstRefBancaria.ForEach(x =>
                 {
-                    var codigoBanco = lstBanco.Where(y => y.Codigo == x.Banco).Select(y => y.Codigo);
-                    if (codigoBanco != null)
+                    var codigoBanco = lstBanco.Where(y => y.Codigo == x.Banco).Select(y => y.Codigo).FirstOrDefault();
+                    if (codigoBanco == null)
                     {
                         lstErros.Add("Ref Bancária: código do banco inválido");
                     }

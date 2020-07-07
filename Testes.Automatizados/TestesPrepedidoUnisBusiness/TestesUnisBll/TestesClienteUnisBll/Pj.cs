@@ -53,10 +53,24 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             testesClienteUnisBll.TestarCadastro(c =>
             {
                 c.DadosCliente.DddCelular = "11";
-                c.DadosCliente.Celular= "12345678";
+                c.DadosCliente.Celular = "12345678";
             },
             "Se cliente é tipo PJ, não pode ter os campos de Telefone e DDD celular preenchidos! ",
                     TipoPessoa.PJ);
+        }
+
+        [Fact]
+        public void RefBancaria_banco_invalido()
+        {
+            inicializarBanco.TclientesApagar();
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.RefBancaria[0].Banco = "987";
+            },
+            "Ref Bancária: código do banco inválido",
+                    TipoPessoa.PJ);
+
         }
 
 

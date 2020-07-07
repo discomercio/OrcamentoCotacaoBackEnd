@@ -140,30 +140,14 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
 		end if
 */
 
-            //cadastra
-            ClienteCadastroUnisDto clienteDto = InicializarClienteDados.ClienteNaoCadastradoPF();
-            ClienteCadastroResultadoUnisDto res;
-            var c = clienteDto;
-            c.DadosCliente.ProdutorRural = (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO;
-            c.DadosCliente.Contribuinte_Icms_Status = (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM;
-
-            res = clienteUnisBll.CadastrarClienteUnis(clienteDto).Result;
-
-            if (res.ListaErros.Count > 0)
-                output.WriteLine(JsonConvert.SerializeObject(res));
-
-            Assert.Empty(res.ListaErros);
-
-            //verificar se salvou com os valores corretos
-            var cadastrado = (from cliente in contextoProvider.GetContextoLeitura().Tclientes
-                              where cliente.Cnpj_Cpf == PrepedidoBusiness.Utils.Util.SoDigitosCpf_Cnpj(InicializarClienteDados.ClienteNaoCadastradoPF().DadosCliente.Cnpj_Cpf)
-                              select cliente).First();
-
-            Assert.Equal((byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL, cadastrado.Contribuinte_Icms_Status);
-            Assert.Equal("", cadastrado.Ie);
-
-            //e apaga o registro
-            inicializarBanco.TclientesApagar();
+            //fizemos um pouco diferente: não aceitamos o cadastro
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.ProdutorRural = (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO;
+                c.DadosCliente.Contribuinte_Icms_Status = (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM;
+            },
+                "Se cliente é não Produtor Rural, contribuinte do ICMS tem que ter valor inicial!",
+                    TipoPessoa.PF);
         }
 
         [Fact]
