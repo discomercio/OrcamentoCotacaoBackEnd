@@ -38,7 +38,8 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
         public static async Task<bool> ValidarDadosCliente(DadosClienteCadastroDto dadosCliente,
             List<RefBancariaDtoCliente> lstRefBancaria, List<RefComercialDtoCliente> lstRefComercial,
-            List<string> lstErros, ContextoBdProvider contextoProvider, CepBll cepBll, IBancoNFeMunicipio bancoNFeMunicipio)
+            List<string> lstErros, ContextoBdProvider contextoProvider, CepBll cepBll, IBancoNFeMunicipio bancoNFeMunicipio,
+            List<ListaBancoDto> lstBanco)
         {
             bool retorno;
 
@@ -79,7 +80,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                         retorno = ValidarDadosCliente_PJ(dadosCliente, lstErros);
                         //vamos validar as referências
                         retorno = ValidarReferencias_Bancarias_Comerciais(lstRefBancaria, lstRefComercial,
-                            lstErros, dadosCliente.Tipo);
+                            lstErros, dadosCliente.Tipo, lstBanco);
                     }
 
                     if (tipoDesconhecido)
@@ -522,15 +523,23 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     return false;
                 }
 
+                if(dadosCliente.ProdutorRural == (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO)
+                {
+                    if(dadosCliente.Contribuinte_Icms_Status != (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL)
+                    {
+                        lstErros.Add("Se cliente é não Produtor Rural, contribuinte do ICMS tem que ter valor inicial!");
+                    }
+                }
+
                 if (dadosCliente.ProdutorRural == (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
                 {
-                    if (dadosCliente.Contribuinte_Icms_Status ==
+                    if (dadosCliente.Contribuinte_Icms_Status !=
                         (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM &&
-                        dadosCliente.Contribuinte_Icms_Status ==
+                        dadosCliente.Contribuinte_Icms_Status !=
                         (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO &&
-                        dadosCliente.Contribuinte_Icms_Status ==
+                        dadosCliente.Contribuinte_Icms_Status !=
                         (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO &&
-                        dadosCliente.Contribuinte_Icms_Status ==
+                        dadosCliente.Contribuinte_Icms_Status !=
                         (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL)
                     {
                         lstErros.Add("Contribuinte do ICMS inválido");
@@ -557,6 +566,19 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             }
             if (dadosCliente.Tipo == Constantes.ID_PJ)
             {
+                if (dadosCliente.Contribuinte_Icms_Status !=
+                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM &&
+                        dadosCliente.Contribuinte_Icms_Status !=
+                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO &&
+                        dadosCliente.Contribuinte_Icms_Status !=
+                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO &&
+                        dadosCliente.Contribuinte_Icms_Status !=
+                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL)
+                {
+                    lstErros.Add("Contribuinte do ICMS inválido");
+                    return false;
+                }
+
                 if (!string.IsNullOrEmpty(dadosCliente.Ie) &&
                     dadosCliente.Contribuinte_Icms_Status ==
                     (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO)
@@ -612,7 +634,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
         }
 
         private static bool ValidarReferencias_Bancarias_Comerciais(List<RefBancariaDtoCliente> lstRefBancaria,
-            List<RefComercialDtoCliente> lstRefComercial, List<string> lstErros, string tipoPessoa)
+            List<RefComercialDtoCliente> lstRefComercial, List<string> lstErros, string tipoPessoa, List<ListaBancoDto> lstBanco)
         {
             bool retorno = true;
             if (lstRefBancaria != null && lstRefBancaria.Count > 0)
@@ -628,6 +650,12 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
                 lstRefBancaria.ForEach(x =>
                 {
+                    var codigoBanco = lstBanco.Where(y => y.Codigo == x.Banco).Select(y => y.Codigo);
+                    if (codigoBanco != null)
+                    {
+                        lstErros.Add("Ref Bancária: código do banco inválido");
+                    }
+
                     if (string.IsNullOrEmpty(x.Banco))
                     {
                         lstErros.Add("Ref Bancária (" + x.Ordem.ToString() + "): informe o banco.");
@@ -644,6 +672,9 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                         retorno = false;
                     }
                 });
+
+
+
             }
 
             if (retorno)

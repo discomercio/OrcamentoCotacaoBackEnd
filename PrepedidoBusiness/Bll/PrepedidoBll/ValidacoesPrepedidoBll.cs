@@ -241,6 +241,8 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
 
             if (prePedido.EnderecoEntrega.OutroEndereco)
             {
+
+
                 if (string.IsNullOrEmpty(prePedido.EnderecoEntrega.EndEtg_cod_justificativa))
                     lstErros.Add("SELECIONE A JUSTIFICATIVA DO ENDEREÇO DE ENTREGA!");
 
@@ -299,6 +301,19 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         public bool ValidarDetalhesPrepedido(DetalhesDtoPrepedido detalhesPrepedido, List<string> lstErros)
         {
             bool retorno = true;
+            
+            if(byte.Parse(detalhesPrepedido.EntregaImediata) != 
+                (byte)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO &&
+                byte.Parse(detalhesPrepedido.EntregaImediata) !=
+                (byte)Constantes.EntregaImediata.COD_ETG_IMEDIATA_SIM &&
+                byte.Parse(detalhesPrepedido.EntregaImediata) !=
+                (byte)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO_DEFINIDO &&
+                byte.Parse(detalhesPrepedido.EntregaImediata) !=
+                (byte)Constantes.EntregaImediata.COD_ETG_IMEDIATA_ST_INICIAL)
+            {
+                lstErros.Add("Valor de Entrega Imediata inválida!");
+                retorno = false;
+            }
 
             if (byte.Parse(detalhesPrepedido.EntregaImediata) ==
                 (byte)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO)//Não
@@ -360,6 +375,27 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         {
             if (endEtg.EndEtg_tipo_pessoa == Constantes.ID_PJ)
             {
+                if (endEtg.EndEtg_produtor_rural_status == 1)
+                {
+                    lstErros.Add("Endereço de entrega: Se tipo pessoa é PJ, não pode ser Produtor Rural!");
+                }
+
+                if (endEtg.EndEtg_contribuinte_icms_status !=
+                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM &&
+                    endEtg.EndEtg_contribuinte_icms_status !=
+                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO &&
+                    endEtg.EndEtg_contribuinte_icms_status !=
+                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO)
+                {
+                    lstErros.Add("Endereço de entrega: valor de contribuinte do ICMS inválido!");
+                }
+
+                if (endEtg.EndEtg_contribuinte_icms_status ==
+                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL)
+                {
+                    lstErros.Add("Endereço de entrega: valor de contribuinte do ICMS inválido!");
+                }
+
                 if (string.IsNullOrEmpty(endEtg.EndEtg_cnpj_cpf) ||
                     !Util.ValidaCNPJ(endEtg.EndEtg_cnpj_cpf))
                     lstErros.Add("Endereço de entrega: CNPJ inválido!");
@@ -425,12 +461,25 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 }
             }
 
+            if (!string.IsNullOrEmpty(endEtg.EndEtg_ddd_res) || !string.IsNullOrEmpty(endEtg.EndEtg_tel_res))
+                lstErros.Add("Endereço de entrega: se tipo pessoa PJ, não pode conter telefone residencial!");
+
+            if (!string.IsNullOrEmpty(endEtg.EndEtg_ddd_cel) || !string.IsNullOrEmpty(endEtg.EndEtg_tel_cel))
+                lstErros.Add("Endereço de entrega: se tipo pessoa PJ, não pode conter telefone celular!");
         }
 
         private void ValidarDadosPessoaEnderecoEntrega_PF(EnderecoEntregaDtoClienteCadastro endEtg, List<string> lstErros)
         {
             if (endEtg.EndEtg_tipo_pessoa == Constantes.ID_PF)
             {
+                if (endEtg.EndEtg_produtor_rural_status !=
+                    (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO &&
+                    endEtg.EndEtg_produtor_rural_status !=
+                    (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
+                {
+                    lstErros.Add("Endereço de entrega: valor de produtor rural inválido!");
+                }
+
                 if (string.IsNullOrEmpty(endEtg.EndEtg_cnpj_cpf) ||
                     !Util.ValidaCPF(endEtg.EndEtg_cnpj_cpf))
                     lstErros.Add("Endereço de entrega: CPF inválido!");
@@ -442,6 +491,14 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                     (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO &&
                     endEtg.EndEtg_tipo_pessoa == Constantes.ID_PF)
                 {
+                    if (endEtg.EndEtg_contribuinte_icms_status !=
+                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM &&
+                        endEtg.EndEtg_contribuinte_icms_status !=
+                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO)
+                    {
+                        lstErros.Add("Endereço de entrega: valor de contribuinte do ICMS inválido!");
+                    }
+
                     if (endEtg.EndEtg_contribuinte_icms_status !=
                         (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
                         lstErros.Add("Endereço de entrega: para ser cadastrado como Produtor Rural, " +
@@ -517,7 +574,11 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                     if (endEtg.EndEtg_ddd_cel.Length != 2)
                         lstErros.Add("Endereço de entrega: ddd do celular inválido.");
                 }
+            }
 
+            if (!string.IsNullOrEmpty(endEtg.EndEtg_ddd_com_2) || !string.IsNullOrEmpty(endEtg.EndEtg_tel_com_2))
+            {
+                lstErros.Add("Endereço de entrega: se tipo pessoa PF, não pode conter telefone comercial 2.");
             }
         }
     }
