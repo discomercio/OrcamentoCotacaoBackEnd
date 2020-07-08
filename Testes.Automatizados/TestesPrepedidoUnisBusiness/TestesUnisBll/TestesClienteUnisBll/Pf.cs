@@ -283,7 +283,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
                 c.DadosCliente.DddCelular = "";
                 c.DadosCliente.Celular = "";
             },
-                "PREENCHA PELO MENOS UM TELEFONE.",
+                "PREENCHA PELO MENOS UM TELEFONE (RESIDENCIAL, COMERCIAL OU CELULAR).",
                     TipoPessoa.PF);
         }
 
@@ -375,7 +375,7 @@ alerta="TELEFONE CELULAR (" & s_ddd_cel & ") " & s_tel_cel & " JÁ ESTÁ SENDO U
                 c.DadosCliente.DddCelular = "";
                 c.DadosCliente.Celular = "";
             },
-                "PREENCHA PELO MENOS UM TELEFONE.",
+                "PREENCHA PELO MENOS UM TELEFONE (RESIDENCIAL, COMERCIAL OU CELULAR).",
                     TipoPessoa.PF);
 
             testesClienteUnisBll.TestarCadastro(c =>

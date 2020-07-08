@@ -181,7 +181,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             if (dadosCliente.Tipo == Constantes.ID_PF && string.IsNullOrEmpty(dadosCliente.TelefoneResidencial) &&
                 string.IsNullOrEmpty(dadosCliente.TelComercial) && string.IsNullOrEmpty(dadosCliente.Celular))
             {
-                lstErros.Add("PREENCHA PELO MENOS UM TELEFONE.");
+                lstErros.Add("PREENCHA PELO MENOS UM TELEFONE (RESIDENCIAL, COMERCIAL OU CELULAR).");
                 retorno = false;
             }
             //CELULAR
@@ -332,78 +332,77 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             if (dadosCliente.Tipo == Constantes.ID_PJ && string.IsNullOrEmpty(dadosCliente.TelComercial) &&
                 string.IsNullOrEmpty(dadosCliente.TelComercial2))
             {
-                lstErros.Add("PREENCHA AO MENOS UM TELEFONE!");
+                lstErros.Add("PREENCHA AO MENOS UM TELEFONE (COMERCIAL OU COMERCIAL 2)!");
                 retorno = false;
             }
-            else
+
+            if (!string.IsNullOrEmpty(dadosCliente.DddResidencial) || !string.IsNullOrEmpty(dadosCliente.TelefoneResidencial))
             {
-                if (!string.IsNullOrEmpty(dadosCliente.DddResidencial) || !string.IsNullOrEmpty(dadosCliente.TelefoneResidencial))
-                {
-                    lstErros.Add("Se cliente é tipo PJ, não pode ter os campos de Telefone e DDD residencial preenchidos! ");
-                    retorno = false;
-                }
+                lstErros.Add("Se cliente é tipo PJ, não pode ter os campos de Telefone e DDD residencial preenchidos! ");
+                retorno = false;
+            }
 
-                if (!string.IsNullOrEmpty(dadosCliente.DddCelular) || !string.IsNullOrEmpty(dadosCliente.Celular))
-                {
-                    lstErros.Add("Se cliente é tipo PJ, não pode ter os campos de Telefone e DDD celular preenchidos! ");
-                    retorno = false;
-                }
+            if (!string.IsNullOrEmpty(dadosCliente.DddCelular) || !string.IsNullOrEmpty(dadosCliente.Celular))
+            {
+                lstErros.Add("Se cliente é tipo PJ, não pode ter os campos de Telefone e DDD celular preenchidos! ");
+                retorno = false;
+            }
 
-                if (!string.IsNullOrEmpty(dadosCliente.TelComercial))
+            if (!string.IsNullOrEmpty(dadosCliente.TelComercial))
+            {
+                if (Util.Telefone_SoDigito(dadosCliente.TelComercial).Length < 6)
                 {
-                    if (Util.Telefone_SoDigito(dadosCliente.TelComercial).Length < 6)
-                    {
-                        lstErros.Add("TELEFONE COMERCIAL INVÁLIDO.");
-                        retorno = false;
-                    }
-                    if (!string.IsNullOrEmpty(dadosCliente.DddComercial))
-                    {
-                        if (dadosCliente.DddComercial.Length != 2)
-                        {
-                            lstErros.Add("DDD DO TELEFONE COMERCIAL INVÁLIDO.");
-                            retorno = false;
-                        }
-                    }
-                    else
-                    {
-                        lstErros.Add("PREENCHA O DDD DO TELEFONE COMERCIAL.");
-                        retorno = false;
-                    }
-                }
-                if (!string.IsNullOrEmpty(dadosCliente.DddComercial) &&
-                    string.IsNullOrEmpty(dadosCliente.TelComercial))
-                {
-                    lstErros.Add("PREENCHA O TELEFONE COMERCIAL.");
+                    lstErros.Add("TELEFONE COMERCIAL INVÁLIDO.");
                     retorno = false;
                 }
+                if (!string.IsNullOrEmpty(dadosCliente.DddComercial))
+                {
+                    if (dadosCliente.DddComercial.Length != 2)
+                    {
+                        lstErros.Add("DDD DO TELEFONE COMERCIAL INVÁLIDO.");
+                        retorno = false;
+                    }
+                }
+                else
+                {
+                    lstErros.Add("PREENCHA O DDD DO TELEFONE COMERCIAL.");
+                    retorno = false;
+                }
+            }
 
-                if (!string.IsNullOrEmpty(dadosCliente.TelComercial2))
+            if (!string.IsNullOrEmpty(dadosCliente.DddComercial) &&
+                string.IsNullOrEmpty(dadosCliente.TelComercial))
+            {
+                lstErros.Add("PREENCHA O TELEFONE COMERCIAL.");
+                retorno = false;
+            }
+
+            if (!string.IsNullOrEmpty(dadosCliente.TelComercial2))
+            {
+                if (Util.Telefone_SoDigito(dadosCliente.TelComercial2).Length < 6)
                 {
-                    if (Util.Telefone_SoDigito(dadosCliente.TelComercial2).Length < 6)
-                    {
-                        lstErros.Add("TELEFONE COMERCIAL2 INVÁLIDO.");
-                        retorno = false;
-                    }
-                    if (!string.IsNullOrEmpty(dadosCliente.DddComercial2))
-                    {
-                        if (dadosCliente.DddComercial2.Length != 2)
-                        {
-                            lstErros.Add("DDD DO TELEFONE COMERCIAL2 INVÁLIDO.");
-                            retorno = false;
-                        }
-                    }
-                    else
-                    {
-                        lstErros.Add("PREENCHA O DDD DO TELEFONE COMERCIAL2.");
-                        retorno = false;
-                    }
-                }
-                if (!string.IsNullOrEmpty(dadosCliente.DddComercial2) &&
-                    string.IsNullOrEmpty(dadosCliente.TelComercial2))
-                {
-                    lstErros.Add("PREENCHA O TELEFONE COMERCIAL.");
+                    lstErros.Add("TELEFONE COMERCIAL2 INVÁLIDO.");
                     retorno = false;
                 }
+                if (!string.IsNullOrEmpty(dadosCliente.DddComercial2))
+                {
+                    if (dadosCliente.DddComercial2.Length != 2)
+                    {
+                        lstErros.Add("DDD DO TELEFONE COMERCIAL2 INVÁLIDO.");
+                        retorno = false;
+                    }
+                }
+                else
+                {
+                    lstErros.Add("PREENCHA O DDD DO TELEFONE COMERCIAL2.");
+                    retorno = false;
+                }
+            }
+            if (!string.IsNullOrEmpty(dadosCliente.DddComercial2) &&
+                string.IsNullOrEmpty(dadosCliente.TelComercial2))
+            {
+                lstErros.Add("PREENCHA O TELEFONE COMERCIAL 2.");
+                retorno = false;
             }
 
             return retorno;
@@ -553,7 +552,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     if (dadosCliente.Contribuinte_Icms_Status !=
                         (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
                     {
-                        lstErros.Add("Para ser cadastrado como Produtor Rural, " + 
+                        lstErros.Add("Para ser cadastrado como Produtor Rural, " +
                             "é necessário ser contribuinte do ICMS e possuir nº de IE");
                         retorno = false;
                     }

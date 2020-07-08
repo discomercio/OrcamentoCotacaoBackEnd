@@ -17,9 +17,11 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         [MaxLength(8)]
         public string Produto { get; set; } //  = NumProduto
 
-        public short? Qtde { get; set; }
+        [Required]
+        public short Qtde { get; set; }
 
-        public float? Desc_Dado { get; set; }// = Desconto
+        [Required]
+        public float Desc_Dado { get; set; }// = Desconto
 
         /// <summary>
         /// Preco_Venda = (Preco_Fabricante * CustoFinancFornecCoeficiente) * (1 - Desc_Dado / 100)
@@ -27,7 +29,8 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         [Required]
         public decimal Preco_Venda { get; set; }// = VlUnitario
 
-        public decimal? Preco_Fabricante { get; set; }
+        [Required]
+        public decimal Preco_Fabricante { get; set; }
 
         /// <summary>
         /// Essa variável permite que o valor seja alterado
@@ -39,7 +42,8 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         /// <summary>
         /// Preco_NF = PrePedidoUnisDto.PermiteRAStatus == true ? Preco_Lista : Preco_Venda
         /// </summary>
-        public decimal? Preco_NF { get; set; } // se permite RA = Preco_Lista / senão VlUnitario
+        [Required]
+        public decimal Preco_NF { get; set; } // se permite RA = Preco_Lista / senão VlUnitario
 
         [Required]
         public float CustoFinancFornecCoeficiente { get; set; }
@@ -47,6 +51,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         /// <summary>
         /// CustoFinancFornecPrecoListaBase = Preco_Fabricante * CustoFinancFornecCoeficiente
         /// </summary>
+        [Required]
         public decimal CustoFinancFornecPrecoListaBase { get; set; } //recebe Preco_Lista
 
         public static PrePedidoProdutoPrePedidoUnisDto PrePedidoProdutoPrePedidoUnisDtoDePrepedidoProdutoDtoPrepedido(PrepedidoProdutoDtoPrepedido produtoDto,
@@ -56,12 +61,12 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
             {
                 Fabricante = produtoDto.Fabricante,
                 Produto = produtoDto.NumProduto,
-                Qtde = produtoDto.Qtde,
-                Desc_Dado = produtoDto.Desconto,
+                Qtde = produtoDto.Qtde.HasValue ? produtoDto.Qtde.Value : (short)1,
+                Desc_Dado = produtoDto.Desconto.HasValue ? produtoDto.Desconto.Value : 0,
                 Preco_Venda = produtoDto.VlUnitario,
-                Preco_Fabricante = produtoDto.Preco,
+                Preco_Fabricante = produtoDto.Preco.HasValue ? produtoDto.Preco.Value : 0,
                 Preco_Lista = produtoDto.VlLista,
-                Preco_NF = produtoDto.Permite_Ra_Status == 1 ? produtoDto.Preco_Lista : produtoDto.VlUnitario,
+                Preco_NF = produtoDto.Permite_Ra_Status == 1 ? (produtoDto.Preco_Lista.HasValue ? produtoDto.Preco_Lista.Value : 0) : produtoDto.VlUnitario,
                 CustoFinancFornecCoeficiente = CustoFinancFornecCoeficiente,
                 CustoFinancFornecPrecoListaBase = (decimal)produtoDto.Preco_Lista
             };

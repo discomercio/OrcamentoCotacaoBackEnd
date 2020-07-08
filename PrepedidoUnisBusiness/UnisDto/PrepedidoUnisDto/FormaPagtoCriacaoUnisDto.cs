@@ -71,6 +71,9 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         public decimal? C_pse_demais_prest_valor { get; set; }
         public int? C_pse_demais_prest_periodo { get; set; }
 
+        /// <summary>
+        /// Descrição da forma de pagamento
+        /// </summary>
         [MaxLength(250)]
         public string C_forma_pagto { get; set; }//Descrição da forma de pagto
 
