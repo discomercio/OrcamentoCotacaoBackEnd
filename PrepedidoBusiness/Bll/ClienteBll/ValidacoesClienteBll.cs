@@ -48,6 +48,13 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 //existe dados
                 if (!string.IsNullOrEmpty(dadosCliente.Tipo))
                 {
+                    var db = contextoProvider.GetContextoLeitura();
+
+                    Tcliente cliente = await (from c in db.Tclientes
+                                              where c.Cnpj_Cpf == dadosCliente.Cnpj_Cpf &&
+                                                    c.Tipo == dadosCliente.Tipo
+                                              select c).FirstOrDefaultAsync();
+
                     bool tipoDesconhecido = true;
                     //é cliente PF
                     if (dadosCliente.Tipo == Constantes.ID_PF)
@@ -72,12 +79,12 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
                         tipoDesconhecido = false;
                         //vamos verificar e validar os dados referente ao cliente PF
-                        retorno = ValidarDadosCliente_PF(dadosCliente, lstErros);
+                        retorno = await ValidarDadosCliente_PF(dadosCliente, cliente, lstErros, contextoProvider);
                     }
                     if (dadosCliente.Tipo == Constantes.ID_PJ)
                     {
                         tipoDesconhecido = false;
-                        retorno = ValidarDadosCliente_PJ(dadosCliente, lstErros);
+                        retorno = await ValidarDadosCliente_PJ(dadosCliente, cliente, lstErros, contextoProvider);
                         //vamos validar as referências
                         retorno = ValidarReferencias_Bancarias_Comerciais(lstRefBancaria, lstRefComercial,
                             lstErros, dadosCliente.Tipo, lstBanco);
@@ -108,7 +115,8 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return retorno;
         }
 
-        private static bool ValidarDadosCliente_PF(DadosClienteCadastroDto dadosCliente, List<string> lstErros)
+        private static async Task<bool> ValidarDadosCliente_PF(DadosClienteCadastroDto dadosCliente, Tcliente cliente,
+            List<string> lstErros, ContextoBdProvider contextoProvider)
         {
             bool retorno = true;
 
@@ -153,7 +161,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                             retorno = false;
                         }
 
-                        retorno = ValidarTelefones_PF(dadosCliente, lstErros);
+                        retorno = await ValidarTelefones_PF(dadosCliente, cliente, lstErros, contextoProvider);
 
                         if (!string.IsNullOrEmpty(dadosCliente.Email))
                         {
@@ -165,7 +173,8 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return retorno;
         }
 
-        private static bool ValidarTelefones_PF(DadosClienteCadastroDto dadosCliente, List<string> lstErros)
+        private static async Task<bool> ValidarTelefones_PF(DadosClienteCadastroDto dadosCliente, Tcliente cliente,
+            List<string> lstErros, ContextoBdProvider contextoProvider)
         {
             bool retorno = true;
 
@@ -184,32 +193,24 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 lstErros.Add("PREENCHA PELO MENOS UM TELEFONE.");
                 retorno = false;
             }
+
+
             //CELULAR
-            if (!string.IsNullOrEmpty(dadosCliente.DddCelular) &&
-                dadosCliente.DddCelular.Length != 2)
-            {
-                lstErros.Add("DDD CELULAR INVÁLIDO.");
-                retorno = false;
-            }
-            if (!string.IsNullOrEmpty(dadosCliente.Celular) &&
-                dadosCliente.Celular.Length < 6)
-            {
-                lstErros.Add("TELEFONE CELULAR INVÁLIDO.");
-                retorno = false;
-            }
-            if (string.IsNullOrEmpty(dadosCliente.DddCelular) &&
-               !string.IsNullOrEmpty(dadosCliente.Celular))
-            {
-                lstErros.Add("PREENCHA O DDD CELULAR.");
-                retorno = false;
-            }
-            if (!string.IsNullOrEmpty(dadosCliente.DddCelular) &&
-                string.IsNullOrEmpty(dadosCliente.Celular))
-            {
-                lstErros.Add("PREENCHA O TELEFONE CELULAR.");
-                retorno = false;
-            }
+            //passar tcliente
+            retorno = await ValidarCelular(dadosCliente, cliente, lstErros, contextoProvider);
             //RESIDENCIAL
+            retorno = await ValidarTelResidencial(dadosCliente, cliente, lstErros, contextoProvider);
+            //COMERCIAL
+            retorno = await ValidarTelCom(dadosCliente, cliente, lstErros, contextoProvider);
+
+            return retorno;
+        }
+
+        private static async Task<bool> ValidarTelResidencial(DadosClienteCadastroDto dadosCliente, Tcliente cliente,
+            List<string> lstErros, ContextoBdProvider contextoProvider)
+        {
+            bool retorno = true;
+
             if (!string.IsNullOrEmpty(dadosCliente.DddResidencial) &&
                 dadosCliente.DddResidencial.Length != 2)
             {
@@ -234,7 +235,64 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 lstErros.Add("PREENCHA O DDD RESIDENCIAL.");
                 retorno = false;
             }
-            //COMERCIAL
+
+            if (lstErros.Count == 0)
+            {
+                if (!await ConfrontarTelefones(dadosCliente.DddResidencial, dadosCliente.TelefoneResidencial,
+                    cliente?.Ddd_Res, cliente?.Tel_Res, dadosCliente.Cnpj_Cpf, dadosCliente.Tipo, lstErros, contextoProvider))
+                    lstErros.Add("TELEFONE RESIDENCIAL (" + dadosCliente.DddResidencial + ") " + Util.FormatarTelefones(dadosCliente.TelefoneResidencial) +
+                        " JÁ ESTÁ SENDO UTILIZADO NO CADASTRO DE OUTROS CLIENTES. Não foi possível concluir o cadastro.");
+            }
+
+            return retorno;
+        }
+
+        private static async Task<bool> ValidarCelular(DadosClienteCadastroDto dadosCliente, Tcliente cliente,
+            List<string> lstErros, ContextoBdProvider contextoProvider)
+        {
+            bool retorno = true;
+
+            if (!string.IsNullOrEmpty(dadosCliente.DddCelular) &&
+                dadosCliente.DddCelular.Length != 2)
+            {
+                lstErros.Add("DDD CELULAR INVÁLIDO.");
+                retorno = false;
+            }
+            if (!string.IsNullOrEmpty(dadosCliente.Celular) &&
+                dadosCliente.Celular.Length < 6)
+            {
+                lstErros.Add("TELEFONE CELULAR INVÁLIDO.");
+                retorno = false;
+            }
+            if (string.IsNullOrEmpty(dadosCliente.DddCelular) &&
+               !string.IsNullOrEmpty(dadosCliente.Celular))
+            {
+                lstErros.Add("PREENCHA O DDD CELULAR.");
+                retorno = false;
+            }
+            if (!string.IsNullOrEmpty(dadosCliente.DddCelular) &&
+                string.IsNullOrEmpty(dadosCliente.Celular))
+            {
+                lstErros.Add("PREENCHA O TELEFONE CELULAR.");
+                retorno = false;
+            }
+
+            if (lstErros.Count == 0)
+            {
+                if (!await ConfrontarTelefones(dadosCliente.DddCelular, dadosCliente.Celular,
+                    cliente?.Ddd_Cel, cliente?.Tel_Cel, dadosCliente.Cnpj_Cpf, dadosCliente.Tipo, lstErros, contextoProvider))
+                    lstErros.Add("TELEFONE CELULAR (" + dadosCliente.DddCelular + ") " + Util.FormatarTelefones(dadosCliente.Celular) +
+                        " JÁ ESTÁ SENDO UTILIZADO NO CADASTRO DE OUTROS CLIENTES. Não foi possível concluir o cadastro.");
+            }
+
+            return retorno;
+        }
+
+        private static async Task<bool> ValidarTelCom(DadosClienteCadastroDto dadosCliente, Tcliente cliente,
+            List<string> lstErros, ContextoBdProvider contextoProvider)
+        {
+            bool retorno = true;
+
             if (!string.IsNullOrEmpty(dadosCliente.TelComercial) &&
                 string.IsNullOrEmpty(dadosCliente.DddComercial))
             {
@@ -253,10 +311,101 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 lstErros.Add("TELEFONE COMERCIAL INVÁLIDO.");
                 retorno = false;
             }
+
+            if (lstErros.Count == 0)
+            {
+                if (!await ConfrontarTelefones(dadosCliente.DddComercial, dadosCliente.TelComercial,
+                    cliente?.Ddd_Com, cliente?.Tel_Com, dadosCliente.Cnpj_Cpf, dadosCliente.Tipo, lstErros, contextoProvider))
+                    lstErros.Add("TELEFONE COMERCIAL (" + dadosCliente.DddComercial + ") " + Util.FormatarTelefones(dadosCliente.TelComercial) +
+                        " JÁ ESTÁ SENDO UTILIZADO NO CADASTRO DE OUTROS CLIENTES. Não foi possível concluir o cadastro.");
+            }
+
             return retorno;
         }
 
-        private static bool ValidarDadosCliente_PJ(DadosClienteCadastroDto dadosCliente, List<string> lstErros)
+        private static async Task<bool> ValidarTelCom2(DadosClienteCadastroDto dadosCliente, Tcliente cliente,
+            List<string> lstErros, ContextoBdProvider contextoProvider)
+        {
+            bool retorno = true;
+
+            if (!string.IsNullOrEmpty(dadosCliente.TelComercial2))
+            {
+                if (Util.Telefone_SoDigito(dadosCliente.TelComercial2).Length < 6)
+                {
+                    lstErros.Add("TELEFONE COMERCIAL2 INVÁLIDO.");
+                    retorno = false;
+                }
+                if (!string.IsNullOrEmpty(dadosCliente.DddComercial2))
+                {
+                    if (dadosCliente.DddComercial2.Length != 2)
+                    {
+                        lstErros.Add("DDD DO TELEFONE COMERCIAL2 INVÁLIDO.");
+                        retorno = false;
+                    }
+                }
+                else
+                {
+                    lstErros.Add("PREENCHA O DDD DO TELEFONE COMERCIAL2.");
+                    retorno = false;
+                }
+            }
+            if (!string.IsNullOrEmpty(dadosCliente.DddComercial2) &&
+                string.IsNullOrEmpty(dadosCliente.TelComercial2))
+            {
+                lstErros.Add("PREENCHA O TELEFONE COMERCIAL.");
+                retorno = false;
+            }
+
+            if (lstErros.Count == 0)
+            {
+                if (!await ConfrontarTelefones(dadosCliente.DddComercial2, dadosCliente.TelComercial2,
+                    cliente?.Ddd_Com_2, cliente?.Tel_Com_2, dadosCliente.Cnpj_Cpf, dadosCliente.Tipo, lstErros, contextoProvider))
+                    lstErros.Add("TELEFONE COMERCIAL (" + dadosCliente.DddComercial2 + ") " + Util.FormatarTelefones(dadosCliente.TelComercial2) +
+                        " JÁ ESTÁ SENDO UTILIZADO NO CADASTRO DE OUTROS CLIENTES. Não foi possível concluir o cadastro.");
+            }
+
+            return retorno;
+        }
+
+        private static async Task<bool> ConfrontarTelefones(string dddPrepedido, string telPrepedido, string dddCadastrado,
+            string telCadastrado, string cpf_cnpj, string tipoCpf_Cnpj, List<string> lstErros,
+            ContextoBdProvider contextoProvider)
+        {
+            if (dddPrepedido != dddCadastrado || telPrepedido != telCadastrado)
+            {
+                telPrepedido = Util.Telefone_SoDigito(telPrepedido);
+                //se for cliente novo vamos passar o valor vazio para fazer a comparação dos dados
+                telCadastrado = !string.IsNullOrWhiteSpace(telCadastrado)? Util.Telefone_SoDigito(telCadastrado): "";
+                dddCadastrado = !string.IsNullOrWhiteSpace(dddCadastrado) ? dddCadastrado : "";
+
+                if (dddPrepedido != dddCadastrado || telPrepedido != telCadastrado)
+                {
+                    //vamos verificar
+                    if (dddPrepedido + telPrepedido == Constantes.TEL_BONSHOP_1 ||
+                        dddPrepedido + telPrepedido == Constantes.TEL_BONSHOP_2 ||
+                        dddPrepedido + telPrepedido == Constantes.TEL_BONSHOP_3)
+                    {
+                        lstErros.Add("NÃO É PERMITIDO UTILIZAR TELEFONES DA BONSHOP NO CADASTRO DE CLIENTES.");
+                        return false;
+                    }
+
+                    //vamos confrontar com os cadastros NUM_MAXIMO_TELEFONES_REPETIDOS_CAD_CLIENTES
+                    //entrada => ddd/tel/cpf_cnpj
+                    int? qtdeRepetidos = await Util.VerificarTelefoneRepetidos
+                        (dddPrepedido, telPrepedido, cpf_cnpj, tipoCpf_Cnpj, contextoProvider, lstErros);
+
+                    if (qtdeRepetidos != null)
+                    {
+                        if (qtdeRepetidos > Constantes.NUM_MAXIMO_TELEFONES_REPETIDOS_CAD_CLIENTES) return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        private static async Task<bool> ValidarDadosCliente_PJ(DadosClienteCadastroDto dadosCliente, Tcliente cliente,
+            List<string> lstErros, ContextoBdProvider contextoProvider)
         {
             /*
             -Para CNPJ:
@@ -318,16 +467,29 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                         retorno = Util.ValidarEmail(dadosCliente.Email, lstErros);
                     }
                     //vamos validar os telefones
-                    retorno = ValidarTelefones_PJ(dadosCliente, lstErros);
+                    retorno = await ValidarTelefones_PJ(dadosCliente, cliente, lstErros, contextoProvider);
                 }
             }
 
             return retorno;
         }
 
-        private static bool ValidarTelefones_PJ(DadosClienteCadastroDto dadosCliente, List<string> lstErros)
+        private static async Task<bool> ValidarTelefones_PJ(DadosClienteCadastroDto dadosCliente, Tcliente cliente, List<string> lstErros,
+            ContextoBdProvider contextoProvider)
         {
             bool retorno = true;
+
+            if (!string.IsNullOrEmpty(dadosCliente.DddResidencial) || !string.IsNullOrEmpty(dadosCliente.TelefoneResidencial))
+            {
+                lstErros.Add("Se cliente é tipo PJ, não pode ter os campos de Telefone e DDD residencial preenchidos! ");
+                retorno = false;
+            }
+
+            if (!string.IsNullOrEmpty(dadosCliente.DddCelular) || !string.IsNullOrEmpty(dadosCliente.Celular))
+            {
+                lstErros.Add("Se cliente é tipo PJ, não pode ter os campos de Telefone e DDD celular preenchidos! ");
+                retorno = false;
+            }
 
             if (dadosCliente.Tipo == Constantes.ID_PJ && string.IsNullOrEmpty(dadosCliente.TelComercial) &&
                 string.IsNullOrEmpty(dadosCliente.TelComercial2))
@@ -337,73 +499,11 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             }
             else
             {
-                if (!string.IsNullOrEmpty(dadosCliente.DddResidencial) || !string.IsNullOrEmpty(dadosCliente.TelefoneResidencial))
-                {
-                    lstErros.Add("Se cliente é tipo PJ, não pode ter os campos de Telefone e DDD residencial preenchidos! ");
-                    retorno = false;
-                }
+                //com
+                retorno = await ValidarTelCom(dadosCliente, cliente, lstErros, contextoProvider);
 
-                if (!string.IsNullOrEmpty(dadosCliente.DddCelular) || !string.IsNullOrEmpty(dadosCliente.Celular))
-                {
-                    lstErros.Add("Se cliente é tipo PJ, não pode ter os campos de Telefone e DDD celular preenchidos! ");
-                    retorno = false;
-                }
-
-                if (!string.IsNullOrEmpty(dadosCliente.TelComercial))
-                {
-                    if (Util.Telefone_SoDigito(dadosCliente.TelComercial).Length < 6)
-                    {
-                        lstErros.Add("TELEFONE COMERCIAL INVÁLIDO.");
-                        retorno = false;
-                    }
-                    if (!string.IsNullOrEmpty(dadosCliente.DddComercial))
-                    {
-                        if (dadosCliente.DddComercial.Length != 2)
-                        {
-                            lstErros.Add("DDD DO TELEFONE COMERCIAL INVÁLIDO.");
-                            retorno = false;
-                        }
-                    }
-                    else
-                    {
-                        lstErros.Add("PREENCHA O DDD DO TELEFONE COMERCIAL.");
-                        retorno = false;
-                    }
-                }
-                if (!string.IsNullOrEmpty(dadosCliente.DddComercial) &&
-                    string.IsNullOrEmpty(dadosCliente.TelComercial))
-                {
-                    lstErros.Add("PREENCHA O TELEFONE COMERCIAL.");
-                    retorno = false;
-                }
-
-                if (!string.IsNullOrEmpty(dadosCliente.TelComercial2))
-                {
-                    if (Util.Telefone_SoDigito(dadosCliente.TelComercial2).Length < 6)
-                    {
-                        lstErros.Add("TELEFONE COMERCIAL2 INVÁLIDO.");
-                        retorno = false;
-                    }
-                    if (!string.IsNullOrEmpty(dadosCliente.DddComercial2))
-                    {
-                        if (dadosCliente.DddComercial2.Length != 2)
-                        {
-                            lstErros.Add("DDD DO TELEFONE COMERCIAL2 INVÁLIDO.");
-                            retorno = false;
-                        }
-                    }
-                    else
-                    {
-                        lstErros.Add("PREENCHA O DDD DO TELEFONE COMERCIAL2.");
-                        retorno = false;
-                    }
-                }
-                if (!string.IsNullOrEmpty(dadosCliente.DddComercial2) &&
-                    string.IsNullOrEmpty(dadosCliente.TelComercial2))
-                {
-                    lstErros.Add("PREENCHA O TELEFONE COMERCIAL.");
-                    retorno = false;
-                }
+                //com 2
+                retorno = await ValidarTelCom2(dadosCliente, cliente, lstErros, contextoProvider);
             }
 
             return retorno;
@@ -553,7 +653,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     if (dadosCliente.Contribuinte_Icms_Status !=
                         (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
                     {
-                        lstErros.Add("Para ser cadastrado como Produtor Rural, " + 
+                        lstErros.Add("Para ser cadastrado como Produtor Rural, " +
                             "é necessário ser contribuinte do ICMS e possuir nº de IE");
                         retorno = false;
                     }

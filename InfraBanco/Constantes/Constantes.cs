@@ -11,6 +11,10 @@ namespace InfraBanco.Constantes
         public static String PREFIXO_SENHA_FORMATADA = "0x";
         public static int TAMANHO_CAMPO_COMPRIMENTO_SENHA = 2;
 
+        public static string TEL_BONSHOP_1 = "1139344400";
+        public static string TEL_BONSHOP_2 = "1139344420";
+        public static string TEL_BONSHOP_3 = "1139344411";
+
         public enum CodSistemaResponsavel
         {
             COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP = 1,
