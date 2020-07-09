@@ -3,6 +3,7 @@ using InfraBanco.Constantes;
 using Newtonsoft.Json;
 using PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto;
 using PrepedidoBusiness.Bll.ClienteBll;
+using PrepedidoBusiness.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -311,7 +312,8 @@ alerta="TELEFONE CELULAR (" & s_ddd_cel & ") " & s_tel_cel & " JÁ ESTÁ SENDO U
             listaCpfs.Add("01986026000");
             listaCpfs.Add("67405762700");
 
-            for (int i = 0; i < Constantes.NUM_MAXIMO_TELEFONES_REPETIDOS_CAD_CLIENTES; i++)
+
+            for (int i = 0; i < listaCpfs.Count; i++)
             {
                 //este é o que deve dar certo
                 ClienteCadastroUnisDto clienteDto = InicializarClienteDados.ClienteNaoCadastradoPF();
@@ -322,15 +324,20 @@ alerta="TELEFONE CELULAR (" & s_ddd_cel & ") " & s_tel_cel & " JÁ ESTÁ SENDO U
                 ClienteCadastroResultadoUnisDto res;
                 res = clienteUnisBll.CadastrarClienteUnis(clienteDto).Result;
 
-                if (res.ListaErros.Count > 0)
-                    output.WriteLine(JsonConvert.SerializeObject(res));
-                Assert.Empty(res.ListaErros);
+                //if (res.ListaErros.Count > 0)
+                //    output.WriteLine(JsonConvert.SerializeObject(res));
+                //Assert.Empty(res.ListaErros);
             }
 
 
             //agora tem que dar o erro
-            testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Nome = listaCpfs[Constantes.NUM_MAXIMO_TELEFONES_REPETIDOS_CAD_CLIENTES + 1],
-                "TELEFONE JÁ ESTÁ SENDO UTILIZADO NO CADASTRO DE OUTROS CLIENTES. <br>Não foi possível concluir o cadastro.",
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.Nome = listaCpfs[Constantes.NUM_MAXIMO_TELEFONES_REPETIDOS_CAD_CLIENTES + 1];
+            },
+                "TELEFONE RESIDENCIAL (11) " +
+                Util.FormatarTelefones("25321634") +
+                " JÁ ESTÁ SENDO UTILIZADO NO CADASTRO DE OUTROS CLIENTES. Não foi possível concluir o cadastro.",
                 TipoPessoa.PF);
         }
 

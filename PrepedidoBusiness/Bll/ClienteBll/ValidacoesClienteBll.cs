@@ -479,6 +479,18 @@ namespace PrepedidoBusiness.Bll.ClienteBll
         {
             bool retorno = true;
 
+            if (!string.IsNullOrEmpty(dadosCliente.DddResidencial) || !string.IsNullOrEmpty(dadosCliente.TelefoneResidencial))
+            {
+                lstErros.Add("Se cliente é tipo PJ, não pode ter os campos de Telefone e DDD residencial preenchidos! ");
+                retorno = false;
+            }
+
+            if (!string.IsNullOrEmpty(dadosCliente.DddCelular) || !string.IsNullOrEmpty(dadosCliente.Celular))
+            {
+                lstErros.Add("Se cliente é tipo PJ, não pode ter os campos de Telefone e DDD celular preenchidos! ");
+                retorno = false;
+            }
+
             if (dadosCliente.Tipo == Constantes.ID_PJ && string.IsNullOrEmpty(dadosCliente.TelComercial) &&
                 string.IsNullOrEmpty(dadosCliente.TelComercial2))
             {
@@ -488,6 +500,12 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
             if (!string.IsNullOrEmpty(dadosCliente.DddResidencial) || !string.IsNullOrEmpty(dadosCliente.TelefoneResidencial))
             {
+                //com
+                retorno = await ValidarTelCom(dadosCliente, cliente, lstErros, contextoProvider);
+
+                //com 2
+                retorno = await ValidarTelCom2(dadosCliente, cliente, lstErros, contextoProvider);
+
                 lstErros.Add("Se cliente é tipo PJ, não pode ter os campos de Telefone e DDD residencial preenchidos! ");
                 retorno = false;
             }
@@ -526,20 +544,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 lstErros.Add("PREENCHA O TELEFONE COMERCIAL.");
                 retorno = false;
             }
-            if (dadosCliente.Tipo == Constantes.ID_PJ && string.IsNullOrEmpty(dadosCliente.TelComercial) &&
-                string.IsNullOrEmpty(dadosCliente.TelComercial2))
-            {
-                lstErros.Add("PREENCHA AO MENOS UM TELEFONE!");
-                retorno = false;
-            }
-            else
-            {
-                //com
-                retorno = await ValidarTelCom(dadosCliente, cliente, lstErros, contextoProvider);
 
-                //com 2
-                retorno = await ValidarTelCom2(dadosCliente, cliente, lstErros, contextoProvider);
-            }
             if (!string.IsNullOrEmpty(dadosCliente.TelComercial2))
             {
                 if (Util.Telefone_SoDigito(dadosCliente.TelComercial2).Length < 6)
