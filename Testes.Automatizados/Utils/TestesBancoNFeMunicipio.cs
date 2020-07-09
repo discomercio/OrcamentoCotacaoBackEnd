@@ -12,6 +12,8 @@ namespace Testes.Automatizados.Utils
 {
     class TestesBancoNFeMunicipio : PrepedidoBusiness.Utils.IBancoNFeMunicipio
     {
+        public static string Cidade_somente_no_IBGE = "Cidade somente no IBGE";
+
         Task<IEnumerable<UFeMunicipiosDto>> IBancoNFeMunicipio.BuscarSiglaTodosUf(ContextoBdProvider contextoProvider)
         {
             //nao fazemos nada...
@@ -25,6 +27,14 @@ namespace Testes.Automatizados.Utils
                     DescricaoSemAcento=InicializarClienteDados.ClienteNaoCadastradoPJ().DadosCliente.Cidade
                 } }
             });
+            ret.Add(new UFeMunicipiosDto()
+            {
+                SiglaUF = InicializarClienteDados.ClienteNaoCadastradoPJ().DadosCliente.Uf,
+                ListaMunicipio = new List<MunicipioDto>() { new MunicipioDto() {
+                    Descricao = Cidade_somente_no_IBGE,
+                    DescricaoSemAcento=Cidade_somente_no_IBGE
+                } }
+            });
             return Task.FromResult(ret.AsEnumerable());
         }
 
@@ -34,6 +44,8 @@ namespace Testes.Automatizados.Utils
             var ret = new List<NfeMunicipio>();
             if (municipio == InicializarClienteDados.ClienteNaoCadastradoPJ().DadosCliente.Cidade)
                 ret.Add(new NfeMunicipio() { Descricao = InicializarClienteDados.ClienteNaoCadastradoPJ().DadosCliente.Cidade });
+            if (municipio == Cidade_somente_no_IBGE)
+                ret.Add(new NfeMunicipio() { Descricao = Cidade_somente_no_IBGE });
             return Task.FromResult(ret.AsEnumerable());
         }
 

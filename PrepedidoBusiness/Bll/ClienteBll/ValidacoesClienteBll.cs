@@ -873,12 +873,11 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     }
 
                     //vamos verificar se a cidade da lista de cep existe no IBGE para validar
-                    if (!string.IsNullOrEmpty(cepCliente.Cidade))
+                    if (!string.IsNullOrEmpty(cepCliente.Cidade) && !string.IsNullOrEmpty(c.Cidade))
                     {
-                        if (await ConsisteMunicipioIBGE(cepCliente.Cidade, cepCliente.Uf, lstErros,
-                            contextoProvider, bancoNFeMunicipio, false))
+                        if (await ConsisteMunicipioIBGE(c.Cidade, c.Uf, lstErros, contextoProvider, bancoNFeMunicipio, false))
                         {
-                            if (!string.IsNullOrEmpty(c.Cidade) && c.Cidade.ToUpper() != cepCliente.Cidade.ToUpper())
+                            if (Util.RemoverAcentuacao(c.Cidade.ToUpper()) != Util.RemoverAcentuacao(cepCliente.Cidade.ToUpper()))
                             {
                                 lstErros.Add("Cidade não confere");
                             }

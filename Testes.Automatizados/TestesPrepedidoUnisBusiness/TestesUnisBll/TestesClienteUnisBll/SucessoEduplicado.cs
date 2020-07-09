@@ -1,9 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿using InfraBanco;
+using InfraBanco.Constantes;
+using Newtonsoft.Json;
 using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
 using PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using Testes.Automatizados.InicializarBanco;
 using Xunit;
 using Xunit.Abstractions;
@@ -18,14 +20,16 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
         private readonly ITestOutputHelper output;
         private readonly InicializarBancoGeral inicializarBanco;
         private readonly TestesClienteUnisBll testesClienteUnisBll;
+        private readonly ContextoBdProvider contextoProvider;
 
         public SucessoEduplicado(ClienteUnisBll clienteUnisBll, ITestOutputHelper output, InicializarBanco.InicializarBancoGeral inicializarBanco,
-            TestesClienteUnisBll testesClienteUnisBll)
+            TestesClienteUnisBll testesClienteUnisBll, ContextoBdProvider contextoProvider)
         {
             this.clienteUnisBll = clienteUnisBll;
             this.output = output;
             this.inicializarBanco = inicializarBanco;
             this.testesClienteUnisBll = testesClienteUnisBll;
+            this.contextoProvider = contextoProvider;
             testesClienteUnisBll.Output = output;
         }
 
@@ -45,7 +49,9 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
 
             //se cadastrar de novo, tem que dar erro
             testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Cnpj_Cpf = c.DadosCliente.Cnpj_Cpf,
-                PrepedidoBusiness.Bll.ClienteBll.ClienteBll.MensagensErro.REGISTRO_COM_ID_JA_EXISTE(""),
+                PrepedidoBusiness.Bll.ClienteBll.ClienteBll.MensagensErro.REGISTRO_COM_ID_JA_EXISTE(
+                    (from n in contextoProvider.GetContextoLeitura().Tcontroles where n.Id_Nsu == Constantes.NSU_CADASTRO_CLIENTES select n.Nsu).First()
+                    ),
                 TipoPessoa.PJ);
 
             //e apaga o registro
@@ -67,7 +73,9 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
 
             //se cadastrar de novo, tem que dar erro
             testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Cnpj_Cpf = c.DadosCliente.Cnpj_Cpf,
-                PrepedidoBusiness.Bll.ClienteBll.ClienteBll.MensagensErro.REGISTRO_COM_ID_JA_EXISTE(""),
+                PrepedidoBusiness.Bll.ClienteBll.ClienteBll.MensagensErro.REGISTRO_COM_ID_JA_EXISTE(
+                    (from n in contextoProvider.GetContextoLeitura().Tcontroles where n.Id_Nsu == Constantes.NSU_CADASTRO_CLIENTES select n.Nsu).First()
+                    ),
                 TipoPessoa.PF);
 
             //e apaga o registro

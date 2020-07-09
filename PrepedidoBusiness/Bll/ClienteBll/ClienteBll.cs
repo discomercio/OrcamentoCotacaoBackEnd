@@ -584,7 +584,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
             if (verifica != null)
             {
-                lstErros.Add(MensagensErro.REGISTRO_COM_ID_JA_EXISTE(clienteDto.DadosCliente.Id));
+                lstErros.Add(MensagensErro.REGISTRO_COM_ID_JA_EXISTE(verifica));
                 return lstErros;
             }
 
