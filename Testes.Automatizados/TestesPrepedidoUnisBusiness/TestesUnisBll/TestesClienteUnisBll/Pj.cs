@@ -36,6 +36,53 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             this.testesClienteUnisBll.Output = output;
         }
 
+
+        [Fact]
+        public void Telefones_incompletos()
+        {
+            inicializarBanco.TclientesApagar();
+
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.DddComercial = "12";
+                c.DadosCliente.TelComercial = "";
+                c.DadosCliente.Ramal = "";
+            },
+                "PREENCHA O TELEFONE COMERCIAL.",
+                    TipoPessoa.PJ);
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.DddComercial = "";
+                c.DadosCliente.TelComercial = "";
+                c.DadosCliente.Ramal = "12";
+            },
+                "PREENCHA AO MENOS UM TELEFONE (COMERCIAL OU COMERCIAL 2)!",
+                    TipoPessoa.PJ);
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.DddComercial = "";
+                c.DadosCliente.TelComercial = "";
+                c.DadosCliente.Ramal = "";
+                c.DadosCliente.DddComercial2 = "";
+                c.DadosCliente.TelComercial2 = "";
+                c.DadosCliente.Ramal2 = "";
+            },
+                "PREENCHA AO MENOS UM TELEFONE (COMERCIAL OU COMERCIAL 2)!",
+                    TipoPessoa.PJ);
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.DddComercial2 = "";
+                c.DadosCliente.TelComercial2 = "";
+                c.DadosCliente.Ramal2 = "12";
+            },
+                "PREENCHA AO MENOS UM TELEFONE (COMERCIAL OU COMERCIAL 2)!",
+                    TipoPessoa.PJ);
+        }
+
         [Fact]
         public void Telefones_nao_aceitos()
         {
