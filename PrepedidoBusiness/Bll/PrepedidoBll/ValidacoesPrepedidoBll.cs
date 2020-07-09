@@ -155,9 +155,6 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             List<PrepedidoProdutoDtoPrepedido> lstProdutosCompare, List<string> lstErros,
             decimal limiteArredondamento)
         {
-            decimal diffVlLista = 0;
-            decimal diffVlUnitario = 0;
-
             prepedido.ListaProdutos.ForEach(x =>
             {
                 lstProdutosCompare.ForEach(y =>
@@ -165,26 +162,21 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                    if (x.NumProduto == y.NumProduto && x.Fabricante == y.Fabricante)
                    {
                        //vamos confrontar os valores
-                       if (x.Preco != y.Preco)
-                           lstErros.Add("Preço do fabricante (" + x.Preco + ") esta incorreto!");
+                       if (x.Preco.HasValue && y.Preco.HasValue && Math.Abs(x.Preco.Value - y.Preco.Value) > limiteArredondamento)
+                           lstErros.Add($"Preço do fabricante (Preco_Fabricante {x.Preco} x {y.Preco}) está incorreto!");
 
+                       /*
+                        * verificando se é necessário
                        if (x.BlnTemRa)
                        {
-                           if (x.VlLista != y.VlLista)
-                               lstErros.Add("Preço do fabricante (" + x.Preco + ") esta incorreto!");
+                           if (Math.Abs(x.VlLista - y.VlLista) > limiteArredondamento)
+                               lstErros.Add($"Preço do fabricante (Preco_Lista {x.VlLista} x {y.VlLista}) está incorreto!");
                        }
-
-                       if (x.VlUnitario != y.VlUnitario)
-                           lstErros.Add("Preço do fabricante (" + x.Preco + ") esta incorreto!");
+                       */
 
 
-                       diffVlLista = Math.Abs(x.VlLista - y.VlLista);
-                       diffVlUnitario = Math.Abs((x.VlUnitario - y.VlUnitario));
-
-                       if (diffVlLista > limiteArredondamento || diffVlUnitario > limiteArredondamento)
-                       {
-                           lstErros.Add("O valor do Produto (cód.) " + x.NumProduto + " está divergindo!");
-                       }
+                       if (Math.Abs(x.VlUnitario - y.VlUnitario) > limiteArredondamento)
+                           lstErros.Add($"Preço do fabricante (Preco_Venda {x.VlUnitario} x {y.VlUnitario}) está incorreto!");
                    }
                });
             });
@@ -315,7 +307,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 else
                 {
                     lstErros.Add("Código da justficativa inválida!");
-                }                                 
+                }
             }
         }
 
