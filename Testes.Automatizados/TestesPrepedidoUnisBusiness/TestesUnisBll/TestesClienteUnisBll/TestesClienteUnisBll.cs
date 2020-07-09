@@ -8,6 +8,7 @@ using System.Text;
 using Testes.Automatizados.InicializarBanco;
 using Xunit;
 using Xunit.Abstractions;
+using static Testes.Automatizados.InicializarBanco.InicializarBancoCep;
 
 namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesClienteUnisBll
 {
@@ -148,10 +149,46 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
         {
             inicializarBanco.TclientesApagar();
 
-            TestarCadastro(c => c.DadosCliente.Cidade = "Abacate da Pedreira",
-                PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.MensagensErro.Municipio_nao_consta_na_relacao_IBGE("Abacate da Pedreira",
+            TestarCadastro(c =>
+            {
+                c.DadosCliente.Cidade = DadosCep.Cidade;
+                c.DadosCliente.Cep = DadosCep.Cep;
+            },
+                PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.MensagensErro.Municipio_nao_consta_na_relacao_IBGE(DadosCep.Cidade,
                 InicializarClienteDados.ClienteNaoCadastradoPJ().DadosCliente.Uf), TipoPessoa.PJ);
         }
+
+
+        [Fact]
+        public void Cidade_cep_existe_ibge()
+        {
+            inicializarBanco.TclientesApagar();
+
+            //a cidade do CEp existe no IGBE
+            TestarCadastro(c =>
+            {
+                c.DadosCliente.Cidade = Testes.Automatizados.Utils.TestesBancoNFeMunicipio.Cidade_somente_no_IBGE;
+            },
+            "Cidade não confere",
+                    TipoPessoa.PJ);
+        }
+
+        [Fact]
+        public void Cidade_cep_nao_existe_ibge()
+        {
+            ClienteCadastroUnisDto clienteDto = InicializarClienteDados.ClienteNaoCadastradoPF();
+
+            clienteDto.DadosCliente.Cep = DadosCep.Cep;
+            clienteDto.DadosCliente.Cidade = Testes.Automatizados.Utils.TestesBancoNFeMunicipio.Cidade_somente_no_IBGE;
+
+            ClienteCadastroResultadoUnisDto res;
+            res = clienteUnisBll.CadastrarClienteUnis(clienteDto).Result;
+
+            if (res.ListaErros.Count > 0)
+                output.WriteLine(JsonConvert.SerializeObject(res));
+            Assert.Empty(res.ListaErros);
+        }
+
 
         [Fact]
         public void CadastrarClienteUnis_Cep()
