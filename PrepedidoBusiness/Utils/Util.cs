@@ -120,8 +120,8 @@ namespace PrepedidoBusiness.Utils
                 if (numeros[10] != 11 - resultado)
                     return false;
             }
-            
-            return true;            
+
+            return true;
         }
 
         public static bool ValidaCNPJ(string cnpj)
@@ -1352,6 +1352,50 @@ namespace PrepedidoBusiness.Utils
             return retorno;
         }
 
+        public static async Task<int?> VerificarTelefoneRepetidos(string ddd, string tel, string cpf_cnpj, string tipoCliente,
+            ContextoBdProvider contextoProvider, List<string> lstErros)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+
+            string listaBranca = "|(11)32683471|";
+            string concatenaTel = "|(" + ddd.Trim() + ")" + tel.Trim() + "|";
+
+            if (listaBranca.IndexOf(concatenaTel) != -1) return null;
+
+            string[] cpf_cnpjConsulta = new string[] { ddd, "0" + ddd };
+            var lstClienteTask = await (from c in db.Tclientes
+                                        where cpf_cnpjConsulta.Contains(c.Ddd_Res) && c.Tel_Res == tel ||
+                                              cpf_cnpjConsulta.Contains(c.Ddd_Com) && c.Tel_Com == tel ||
+                                              cpf_cnpjConsulta.Contains(c.Ddd_Cel) && c.Tel_Cel == tel ||
+                                              cpf_cnpjConsulta.Contains(c.Ddd_Com_2) && c.Tel_Com_2 == tel
+                                        select c).ToListAsync();
+
+            var lstOrcamentista = await (from c in db.TorcamentistaEindicadors
+                                         where cpf_cnpjConsulta.Contains(c.Ddd) && c.Telefone == tel &&
+                                               cpf_cnpjConsulta.Contains(c.Ddd_cel) && c.Tel_cel == tel
+                                         select c).ToListAsync();
+
+            int qtdCliente = 0;
+            int qtdOrcamentista = 0;
+            if (tipoCliente == Constantes.ID_PF)
+            {
+                qtdCliente = lstClienteTask.Where(x => x.Cnpj_Cpf != cpf_cnpj).Count();
+                qtdOrcamentista = lstOrcamentista.Where(x => x.Cnpj_cpf != cpf_cnpj).Count();
+            }
+            else
+            {
+                qtdCliente = lstClienteTask
+                    .Where(x => x.Cnpj_Cpf.Length == 14 &&
+                           x.Cnpj_Cpf.Substring(0, 8) != cpf_cnpj.Substring(0, 8))
+                    .Count();
+                qtdOrcamentista = lstOrcamentista
+                    .Where(x => x.Cnpj_cpf.Length == 14 &&
+                           x.Cnpj_cpf.Substring(0, 8) != cpf_cnpj.Substring(0, 8))
+                    .Count();
+            }
+
+            return qtdCliente + qtdOrcamentista;
+        }
 
     }
 }

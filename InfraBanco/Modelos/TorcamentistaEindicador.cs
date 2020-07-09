@@ -13,6 +13,10 @@ namespace InfraBanco.Modelos
         [Required]
         public string Apelido { get; set; }
 
+        [Column("cnpj_cpf")]
+        [MaxLength(14)]
+        public string Cnpj_cpf { get; set; }
+
         [Column("razao_social_nome")]
         [MaxLength(60)]
         [Required]
@@ -53,5 +57,21 @@ namespace InfraBanco.Modelos
         [Column("permite_RA_status")]
         [Required]
         public short Permite_RA_Status { get; set; }
+
+        [Column("ddd")]
+        [MaxLength(4)]
+        public string Ddd { get; set; }
+
+        [Column("telefone")]
+        [MaxLength(11)]
+        public string Telefone { get; set; }
+
+        [Column("ddd_cel")]
+        [MaxLength(4)]
+        public string Ddd_cel { get; set; }
+
+        [Column("tel_cel")]
+        [MaxLength(11)]
+        public string Tel_cel { get; set; }
     }
 }
