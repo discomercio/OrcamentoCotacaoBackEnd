@@ -50,13 +50,15 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             List<CoeficienteDto> lstCoeficiente =
                 (await BuscarListaCoeficientesFornecedores(lstFornec, qtdeParcelas, siglaFormaPagto)).ToList();
 
+
             //validar se os coeficientes estão ok
             ValidarCustoFinancFornecCoeficiente(prepedido.ListaProdutos, lstCoeficiente, lstErros);
 
             if (lstErros.Count == 0)
             {
+                //estamos verificando se o produto é composto
                 List<PrepedidoProdutoDtoPrepedido> lstProdutosCompare =
-                (await BuscarProdutos(prepedido.ListaProdutos, loja)).ToList();
+                (await BuscarProdutos(prepedido.ListaProdutos, loja, lstErros)).ToList();
 
                 lstCoeficiente.ForEach(x =>
                 {
@@ -84,11 +86,19 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         {
             lstProdutos.ForEach(x =>
             {
-                lstCoeficiente.ForEach(y =>
+                if(lstCoeficiente.Any(l => l.Fabricante == x.Fabricante))
                 {
-                    if (y.Fabricante == x.Fabricante && y.Coeficiente != x.CustoFinancFornecCoeficiente)
-                        lstErros.Add("Coeficiente do fabricante (" + x.Fabricante + ") esta incorreto!");
-                });
+                    lstCoeficiente.ForEach(y =>
+                    {
+                        if (y.Fabricante == x.Fabricante && y.Coeficiente != x.CustoFinancFornecCoeficiente)
+                            lstErros.Add("Coeficiente do fabricante (" + x.Fabricante + ") esta incorreto!");
+
+                    });
+                }
+                else
+                {
+                    lstErros.Add("Fabricante cód.(" + x.Fabricante + ") não existe!");
+                }
             });
         }
 
@@ -121,36 +131,67 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return lstcoefDto;
         }
 
-        private async Task<IEnumerable<PrepedidoProdutoDtoPrepedido>> BuscarProdutos(List<PrepedidoProdutoDtoPrepedido> lstProdutos, string loja)
+        private async Task<IEnumerable<PrepedidoProdutoDtoPrepedido>> BuscarProdutos(List<PrepedidoProdutoDtoPrepedido> lstProdutos, 
+            string loja, List<string> lstErros)
         {
+            
+
             var db = contextoProvider.GetContextoLeitura();
             List<PrepedidoProdutoDtoPrepedido> lsProdutosCompare = new List<PrepedidoProdutoDtoPrepedido>();
 
             foreach (var x in lstProdutos)
             {
-                PrepedidoProdutoDtoPrepedido produto = await (from c in db.TprodutoLojas
-                                                              where c.Produto == x.NumProduto &&
-                                                                    c.Fabricante == x.Fabricante &&
-                                                                    c.Vendavel == "S" &&
-                                                                    c.Loja == loja
-                                                              select new PrepedidoProdutoDtoPrepedido
-                                                              {
-                                                                  Fabricante = c.Fabricante,
-                                                                  NumProduto = c.Produto,
-                                                                  Preco = c.Preco_Lista,
-                                                                  Desconto = x.Desconto,
-                                                                  Qtde = x.Qtde
-                                                              }).FirstOrDefaultAsync();
-
-                if (produto != null)
+                //vamos verificar se o cód do produto é composto
+                if(await VerificarProdutoComposto(x, loja, lstErros))
                 {
-                    lsProdutosCompare.Add(produto);
-                }
+                    PrepedidoProdutoDtoPrepedido produto = await (from c in db.TprodutoLojas
+                                                                  where c.Produto == x.NumProduto &&
+                                                                        c.Fabricante == x.Fabricante &&
+                                                                        c.Vendavel == "S" &&
+                                                                        c.Loja == loja
+                                                                  select new PrepedidoProdutoDtoPrepedido
+                                                                  {
+                                                                      Fabricante = c.Fabricante,
+                                                                      NumProduto = c.Produto,
+                                                                      Preco = c.Preco_Lista,
+                                                                      Desconto = x.Desconto,
+                                                                      Qtde = x.Qtde
+                                                                  }).FirstOrDefaultAsync();
+
+                    if (produto != null)
+                    {
+                        lsProdutosCompare.Add(produto);
+                    }
+                    else
+                    {
+                        lstErros.Add("Produto cód.(" + x.NumProduto + ") do fabricante cód.(" + x.Fabricante + ") não existe!");
+                    }
+                }                
             }
 
             return lsProdutosCompare;
         }
 
+        private async Task<bool> VerificarProdutoComposto(PrepedidoProdutoDtoPrepedido produto, string loja, List<string> lstErros)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+
+
+            var prodCompostoTask = await (from c in db.TecProdutoCompostos
+                                          where c.Produto_Composto == produto.NumProduto &&
+                                          c.Fabricante_Composto == produto.Fabricante
+                                          select c).FirstOrDefaultAsync();
+
+            if(prodCompostoTask != null)
+            {
+                lstErros.Add("Produto cód.(" + produto.NumProduto + ") do fabricante cód.(" + produto.Fabricante + ") " +
+                    "é um produto composto. Para cadastrar produtos compostos é necessário enviar os produtos individualmente!");
+
+                return false;
+            }
+
+            return true;
+        }
         private void ConfrontarProdutos(PrePedidoDto prepedido,
             List<PrepedidoProdutoDtoPrepedido> lstProdutosCompare, List<string> lstErros,
             decimal limiteArredondamento)
@@ -249,7 +290,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                     }
                 });
 
-                if (!achouJustifivcativa)
+                if (achouJustifivcativa)
                 {
                     if (string.IsNullOrEmpty(prePedido.EnderecoEntrega.EndEtg_cod_justificativa))
                         lstErros.Add("SELECIONE A JUSTIFICATIVA DO ENDEREÇO DE ENTREGA!");
