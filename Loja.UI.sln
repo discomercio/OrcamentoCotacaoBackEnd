@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loja.Data", "Loja.Data\Loja
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASPs", "ASPs\ASPs.csproj", "{CE863059-738F-4C19-96E7-0749D717EAF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loja.Testes.Automatizados", "Loja.Testes.Automatizados\Loja.Testes.Automatizados.csproj", "{22D95C1E-FA96-488C-821B-80B292C8652A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loja.Testes.Automatizados", "Loja.Testes.Automatizados\Loja.Testes.Automatizados.csproj", "{22D95C1E-FA96-488C-821B-80B292C8652A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,7 +38,6 @@ Global
 		{EAAC4D4C-E47E-48F7-8728-51C0C22C0E0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EAAC4D4C-E47E-48F7-8728-51C0C22C0E0F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CE863059-738F-4C19-96E7-0749D717EAF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CE863059-738F-4C19-96E7-0749D717EAF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE863059-738F-4C19-96E7-0749D717EAF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE863059-738F-4C19-96E7-0749D717EAF2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{22D95C1E-FA96-488C-821B-80B292C8652A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
