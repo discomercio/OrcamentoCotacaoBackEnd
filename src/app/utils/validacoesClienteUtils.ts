@@ -160,15 +160,18 @@ export class ValidacoesClienteUtils {
             ret.push('CNPJ/CPF inválido!');
         }
 
-        if (!dadosClienteCadastroDto.Email || (dadosClienteCadastroDto.Email !== "") &&
-            (!ValidacoesUtils.email_ok(dadosClienteCadastroDto.Email) && ehObrigatorio)) {
-            ret.push('E-mail inválido!');
+        if (ehObrigatorio) {
+            if (!dadosClienteCadastroDto.Email || (dadosClienteCadastroDto.Email !== "") &&
+                !ValidacoesUtils.email_ok(dadosClienteCadastroDto.Email)) {
+                ret.push('E-mail inválido!');
+            }
+
+            if (!dadosClienteCadastroDto.EmailXml || (dadosClienteCadastroDto.EmailXml !== "") &&
+                !ValidacoesUtils.email_ok(dadosClienteCadastroDto.EmailXml)) {
+                ret.push('E-mail (XML) inválido!');
+            }
         }
 
-        if (!dadosClienteCadastroDto.EmailXml || (dadosClienteCadastroDto.EmailXml !== "") &&
-            (!ValidacoesUtils.email_ok(dadosClienteCadastroDto.EmailXml) && ehObrigatorio)) {
-            ret.push('E-mail (XML) inválido!');
-        }
         return ret;
     }
 

@@ -271,6 +271,9 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
   }
 
   public atualizarDadosEnderecoCadastralClienteTela(enderecoCadastralClientePrepedidoDto: EnderecoCadastralClientePrepedidoDto): void {
+    debugger;
+    this.enderecoCadastralClientePrepedidoDto = this.desconverterTelefonesEnderecoDadosCadastrais(enderecoCadastralClientePrepedidoDto);
+
     return;
     this.enderecoCadastralClientePrepedidoDto = enderecoCadastralClientePrepedidoDto;
     const src = this.componenteCepDadosCadastrais;
@@ -283,7 +286,44 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
     src.Complemento = this.enderecoCadastralClientePrepedidoDto.Endereco_complemento;
 
     //fazer a conversão de telefones para mostrar na tela "(xx) xxxx-xxxx"
+  }
 
+  public converterTelefones(endCadastralClientePrepedidoDto: EnderecoCadastralClientePrepedidoDto): EnderecoCadastralClientePrepedidoDto {
+
+    let s = FormatarTelefone.SepararTelefone(endCadastralClientePrepedidoDto.Endereco_tel_res);
+    endCadastralClientePrepedidoDto.Endereco_tel_res = s.Telefone;
+    endCadastralClientePrepedidoDto.Endereco_ddd_res = s.Ddd;
+
+    s = FormatarTelefone.SepararTelefone(endCadastralClientePrepedidoDto.Endereco_tel_cel);
+    endCadastralClientePrepedidoDto.Endereco_tel_cel = s.Telefone;
+    endCadastralClientePrepedidoDto.Endereco_ddd_cel = s.Ddd;
+
+    s = FormatarTelefone.SepararTelefone(endCadastralClientePrepedidoDto.Endereco_tel_com);
+    endCadastralClientePrepedidoDto.Endereco_tel_com = s.Telefone;
+    endCadastralClientePrepedidoDto.Endereco_ddd_com = s.Ddd;
+
+    s = FormatarTelefone.SepararTelefone(endCadastralClientePrepedidoDto.Endereco_tel_com_2);
+    endCadastralClientePrepedidoDto.Endereco_tel_com_2 = s.Telefone;
+    endCadastralClientePrepedidoDto.Endereco_ddd_com_2 = s.Ddd;
+
+    return endCadastralClientePrepedidoDto;
+  }
+
+  public desconverterTelefonesEnderecoDadosCadastrais(endCadastralClientePrepedidoDto: EnderecoCadastralClientePrepedidoDto): EnderecoCadastralClientePrepedidoDto {
+
+    endCadastralClientePrepedidoDto.Endereco_tel_res = endCadastralClientePrepedidoDto.Endereco_ddd_res +
+      endCadastralClientePrepedidoDto.Endereco_tel_res;
+
+    endCadastralClientePrepedidoDto.Endereco_tel_cel = endCadastralClientePrepedidoDto.Endereco_ddd_cel +
+      endCadastralClientePrepedidoDto.Endereco_tel_cel;
+
+    endCadastralClientePrepedidoDto.Endereco_tel_com = endCadastralClientePrepedidoDto.Endereco_ddd_com +
+      endCadastralClientePrepedidoDto.Endereco_tel_com;
+
+    endCadastralClientePrepedidoDto.Endereco_tel_com_2 = endCadastralClientePrepedidoDto.Endereco_ddd_com_2 +
+      endCadastralClientePrepedidoDto.Endereco_tel_com_2;
+
+    return endCadastralClientePrepedidoDto;
   }
 
   //#region referencia coemrial e bancária

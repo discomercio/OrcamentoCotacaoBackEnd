@@ -119,6 +119,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
           this.confirmarEndereco.atualizarDadosEnderecoTela(this.enderecoEntregaDtoClienteCadastro);
           //afazer chamar atualizarDadosEnderecoCadastral
           debugger;
+          
           this.clienteCorpo.atualizarDadosEnderecoCadastralClienteTela(this.endCadastralClientePrepedidoDto);
         }
         return;
@@ -273,8 +274,8 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
 
     debugger;
     //afazer: não consigo pegar os dados do cep que foi alterado em dados cadastrais
-     this.clienteCorpo.prepararAvancarEnderecoCadastralClientePrepedidoDto();
-    
+    this.clienteCorpo.prepararAvancarEnderecoCadastralClientePrepedidoDto();
+
     //avisamos para o corpo do cliente que vamos avançar
     if (this.confirmarEndereco) {
       this.confirmarEndereco.prepararAvancar();
@@ -294,18 +295,19 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     if (this.fase2 || this.fase1e2juntas) {
       //vamos validar o endereço
       let validacoes: string[] = new Array();
-      
+
       if (!this.endCadastralClientePrepedidoDto.Endereco_tipo_pessoa) {
         this.alertaService.mostrarMensagem("É necessário preencher os dados cadastrais!");
         return;
       }
       else {
-        this.endCadastralClientePrepedidoDto = this.converterTelefones(this.endCadastralClientePrepedidoDto);
-        validacoes = ValidacoesClienteUtils.validarEnderecoCadastralClientePrepedidoDto(this.endCadastralClientePrepedidoDto);       
+        this.endCadastralClientePrepedidoDto = this.clienteCorpo.converterTelefones(this.endCadastralClientePrepedidoDto);
+        validacoes = ValidacoesClienteUtils.validarEnderecoCadastralClientePrepedidoDto(this.endCadastralClientePrepedidoDto);
 
-        if (this.enderecoEntregaDtoClienteCadastro.OutroEndereco)
+        if (this.enderecoEntregaDtoClienteCadastro.OutroEndereco) {
+          this.enderecoEntregaDtoClienteCadastro = this.confirmarEndereco.converterTelefones(this.enderecoEntregaDtoClienteCadastro);
           validacoes = ValidacoesClienteUtils.validarEnderecoEntregaDtoClienteCadastro(this.enderecoEntregaDtoClienteCadastro);
-
+        }
       }
 
       if (validacoes.length > 0) {
@@ -314,7 +316,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
       }
       //salvar no serviço
       //afazer: incluir a passagem de EnderecoCadastralClientePrepedidoDto para salavar no serviço
-      this.novoPrepedidoDadosService.setarDTosParciais(this.dadosClienteCadastroDto, this.enderecoEntregaDtoClienteCadastro, 
+      this.novoPrepedidoDadosService.setarDTosParciais(this.dadosClienteCadastroDto, this.enderecoEntregaDtoClienteCadastro,
         this.endCadastralClientePrepedidoDto);
 
       //continuamos
@@ -323,27 +325,6 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     }
     this.fase2 = true;
     this.fase1 = false;
-  }
-
-public converterTelefones(endCadastralClientePrepedidoDto: EnderecoCadastralClientePrepedidoDto): EnderecoCadastralClientePrepedidoDto {
-
-        let s = FormatarTelefone.SepararTelefone(endCadastralClientePrepedidoDto.Endereco_tel_res);
-        endCadastralClientePrepedidoDto.Endereco_tel_res = s.Telefone;
-        endCadastralClientePrepedidoDto.Endereco_ddd_res = s.Ddd;
-
-        s = FormatarTelefone.SepararTelefone(endCadastralClientePrepedidoDto.Endereco_tel_cel);
-        endCadastralClientePrepedidoDto.Endereco_tel_cel = s.Telefone;
-        endCadastralClientePrepedidoDto.Endereco_ddd_cel = s.Ddd;
-
-        s = FormatarTelefone.SepararTelefone(endCadastralClientePrepedidoDto.Endereco_tel_com);
-        endCadastralClientePrepedidoDto.Endereco_tel_com = s.Telefone;
-        endCadastralClientePrepedidoDto.Endereco_ddd_com = s.Ddd;
-
-        s = FormatarTelefone.SepararTelefone(endCadastralClientePrepedidoDto.Endereco_tel_com_2);
-        endCadastralClientePrepedidoDto.Endereco_tel_com_2 = s.Telefone;
-        endCadastralClientePrepedidoDto.Endereco_ddd_com_2 = s.Ddd;
-
-        return endCadastralClientePrepedidoDto;
-    }
+  }  
 }
 

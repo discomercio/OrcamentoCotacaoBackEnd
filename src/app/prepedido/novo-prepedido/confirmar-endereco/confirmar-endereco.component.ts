@@ -45,9 +45,11 @@ export class ConfirmarEnderecoComponent implements OnInit {
     src.Cep = this.enderecoEntregaDtoClienteCadastro.EndEtg_cep;
     enderecoEntregaDtoClienteCadastro.EndEtg_cod_justificativa = this.enderecoEntregaDtoClienteCadastro.EndEtg_cod_justificativa;
     this.tipoPessoaEntrega = this.enderecoEntregaDtoClienteCadastro.EndEtg_tipo_pessoa == this.constantes.ID_PJ ? true : false;
+
+    this.enderecoEntregaDtoClienteCadastro = this.desconverterTelefonesEnderecoEntrega(enderecoEntregaDtoClienteCadastro);
   }
 
-  
+
 
   //dados
   @Input() enderecoEntregaDtoClienteCadastro = new EnderecoEntregaDtoClienteCadastro();
@@ -129,5 +131,39 @@ export class ConfirmarEnderecoComponent implements OnInit {
     this.enderecoEntregaDtoClienteCadastro.EndEtg_cnpj_cpf = "";
     this.tipoPessoaEntrega = true;
     this.enderecoEntregaDtoClienteCadastro.EndEtg_tipo_pessoa = this.constantes.ID_PJ;
+  }
+
+  public converterTelefones(enderecoEntrega: EnderecoEntregaDtoClienteCadastro): EnderecoEntregaDtoClienteCadastro {
+
+    let s = FormatarTelefone.SepararTelefone(enderecoEntrega.EndEtg_tel_res);
+    enderecoEntrega.EndEtg_tel_res = s.Telefone;
+    enderecoEntrega.EndEtg_ddd_res = s.Ddd;
+
+    s = FormatarTelefone.SepararTelefone(enderecoEntrega.EndEtg_tel_cel);
+    enderecoEntrega.EndEtg_tel_cel = s.Telefone;
+    enderecoEntrega.EndEtg_ddd_cel = s.Ddd;
+
+    s = FormatarTelefone.SepararTelefone(enderecoEntrega.EndEtg_tel_com);
+    enderecoEntrega.EndEtg_tel_com = s.Telefone;
+    enderecoEntrega.EndEtg_ddd_com = s.Ddd;
+
+    s = FormatarTelefone.SepararTelefone(enderecoEntrega.EndEtg_tel_com_2);
+    enderecoEntrega.EndEtg_tel_com_2 = s.Telefone;
+    enderecoEntrega.EndEtg_ddd_com_2 = s.Ddd;
+
+    return enderecoEntrega;
+  }
+
+  public desconverterTelefonesEnderecoEntrega(enderecoEntrega: EnderecoEntregaDtoClienteCadastro): EnderecoEntregaDtoClienteCadastro {
+
+    enderecoEntrega.EndEtg_tel_res = enderecoEntrega.EndEtg_ddd_res + enderecoEntrega.EndEtg_tel_res;
+
+    enderecoEntrega.EndEtg_tel_cel = enderecoEntrega.EndEtg_ddd_cel + enderecoEntrega.EndEtg_tel_cel;
+
+    enderecoEntrega.EndEtg_tel_com = enderecoEntrega.EndEtg_ddd_com + enderecoEntrega.EndEtg_tel_com;
+
+    enderecoEntrega.EndEtg_tel_com_2 = enderecoEntrega.EndEtg_ddd_com_2 + enderecoEntrega.EndEtg_tel_com_2;
+
+    return enderecoEntrega;
   }
 }
