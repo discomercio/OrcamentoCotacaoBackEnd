@@ -286,9 +286,9 @@ namespace InfraBanco.Modelos
         public Tcliente Tcliente { get; set; }
 
         /*Novos campos de memorização de endereço */
-        //[Column("st_memorizacao_completa_enderecos")] => TALVEZ NÃO SERÁ UTILIZADO
-        //[Required]
-        //public byte St_memorizacao_completa_enderecos { get; set; }
+        [Column("st_memorizacao_completa_enderecos")]
+        [Required]
+        public byte St_memorizacao_completa_enderecos { get; set; }
 
         [Column("endereco_email")]
         [MaxLength(60)]
@@ -369,6 +369,39 @@ namespace InfraBanco.Modelos
         [Column("endereco_contato")]
         [MaxLength(30)]
         public string Endereco_contato { get; set; }
+
+        [Column("endereco_memorizado_status")]
+        [Required]
+        public byte Endereco_memorizado_status { get; set; }
+
+        [Column("endereco_logradouro")]
+        [MaxLength(80)]
+        public string Endereco_logradouro { get; set; }
+
+        [Column("endereco_bairro")]
+        [MaxLength(72)]
+        public string Endereco_bairro { get; set; }
+
+        [Column("endereco_cidade")]
+        [MaxLength(60)]
+        public string Endereco_cidade { get; set; }
+
+        [Column("endereco_uf")]
+        [MaxLength(2)]
+        public string Endereco_uf { get; set; }
+
+        [Column("endereco_cep")]
+        [MaxLength(8)]
+        public string Endereco_cep { get; set; }
+
+        [Column("endereco_numero")]
+        [MaxLength(20)]
+        public string Endereco_numero { get; set; }
+
+        [Column("endereco_complemento")]
+        [MaxLength(60)]
+        public string Endereco_complemento { get; set; }
+
 
         [Column("EndEtg_email")]
         [MaxLength(60)]

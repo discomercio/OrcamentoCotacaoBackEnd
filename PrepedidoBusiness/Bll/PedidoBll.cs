@@ -178,17 +178,17 @@ namespace PrepedidoBusiness.Bll
             return cpfCnpjFormat;
         }
 
-        private async Task<DadosClienteCadastroDto> ObterDadosCliente(string loja, string indicador_orcamentista, string vendedor, string idCliente)
+        private async Task<DadosClienteCadastroDto> ObterDadosCliente(Tpedido pedido)
         {
             var dadosCliente = from c in contextoProvider.GetContextoLeitura().Tclientes
-                               where c.Id == idCliente
+                               where c.Id == pedido.Id_Cliente
                                select c;
             var cli = await dadosCliente.FirstOrDefaultAsync();
             DadosClienteCadastroDto cadastroCliente = new DadosClienteCadastroDto
             {
-                Loja = await ObterRazaoSocial_Nome_Loja(loja),
-                Indicador_Orcamentista = indicador_orcamentista,
-                Vendedor = vendedor,
+                Loja = await ObterRazaoSocial_Nome_Loja(pedido.Loja),
+                Indicador_Orcamentista = pedido.Orcamentista,
+                Vendedor = pedido.Vendedor,
                 Id = cli.Id,
                 Cnpj_Cpf = Util.FormatCpf_Cnpj_Ie(cli.Cnpj_Cpf),
                 Rg = cli.Rg,
@@ -220,6 +220,52 @@ namespace PrepedidoBusiness.Bll
                 Uf = cli.Uf,
                 Cep = cli.Cep,
                 Contato = cli.Contato
+            };
+            return cadastroCliente;
+        }
+
+        private async Task<DadosClienteCadastroDto> ObterDadosClientePedido(Tpedido pedido)
+        {
+            var dadosCliente = from c in contextoProvider.GetContextoLeitura().Tclientes
+                               where c.Id == pedido.Id_Cliente
+                               select c;
+            var cli = await dadosCliente.FirstOrDefaultAsync();
+            DadosClienteCadastroDto cadastroCliente = new DadosClienteCadastroDto
+            {
+                Loja = await ObterRazaoSocial_Nome_Loja(pedido.Loja),
+                Indicador_Orcamentista = pedido.Orcamentista,
+                Vendedor = pedido.Vendedor,
+                Id = cli.Id,
+                Cnpj_Cpf = Util.FormatCpf_Cnpj_Ie(pedido.Endereco_cnpj_cpf),
+                Rg = pedido.Endereco_rg,
+                Ie = Util.FormatCpf_Cnpj_Ie(pedido.Endereco_ie),
+                Contribuinte_Icms_Status = pedido.Endereco_contribuinte_icms_status,
+                Tipo = cli.Tipo,
+                Observacao_Filiacao = cli.Filiacao,
+                Nascimento = cli.Dt_Nasc,
+                Sexo = cli.Sexo,
+                Nome = pedido.Endereco_nome,
+                ProdutorRural = pedido.Endereco_produtor_rural_status,
+                DddResidencial = pedido.Endereco_ddd_res,
+                TelefoneResidencial = pedido.Endereco_tel_res,
+                DddComercial = pedido.Endereco_ddd_com,
+                TelComercial = pedido.Endereco_tel_com,
+                Ramal = pedido.Endereco_ramal_com,
+                DddCelular = pedido.Endereco_ddd_cel,
+                Celular = pedido.Endereco_tel_cel,
+                TelComercial2 = pedido.Endereco_tel_com_2,
+                DddComercial2 = pedido.Endereco_ddd_com_2,
+                Ramal2 = pedido.Endereco_ramal_com_2,
+                Email = pedido.Endereco_email,
+                EmailXml = pedido.Endereco_email_xml,
+                Endereco = pedido.Endereco_logradouro,
+                Complemento = pedido.Endereco_complemento,
+                Numero = pedido.Endereco_numero,
+                Bairro = pedido.Endereco_bairro,
+                Cidade = pedido.Endereco_cidade,
+                Uf = pedido.Endereco_uf,
+                Cep = pedido.Endereco_cep,
+                Contato = pedido.Endereco_contato
             };
             return cadastroCliente;
         }
@@ -343,8 +389,16 @@ namespace PrepedidoBusiness.Bll
 
             if (p == null)
                 return null;
-
-            var cadastroClienteTask = ObterDadosCliente(p.Loja, p.Indicador, p.Vendedor, p.Id_Cliente);
+            DadosClienteCadastroDto dadosCliente = new DadosClienteCadastroDto();
+            if (p.St_memorizacao_completa_enderecos == 0)
+            {
+                dadosCliente = await ObterDadosCliente(p);
+            }
+            else
+            {
+                dadosCliente = await ObterDadosClientePedido(p);
+            }
+            
             var enderecoEntregaTask = ObterEnderecoEntrega(p);
             var lstProdutoTask = ObterProdutos(numPedido);
 
@@ -445,7 +499,7 @@ namespace PrepedidoBusiness.Bll
                 Lista_NumeroPedidoFilhote = lstPorLinha,
                 DataHoraPedido = p.Data,
                 StatusHoraPedido = await MontarDtoStatuPedido(p),
-                DadosCliente = await cadastroClienteTask,
+                DadosCliente = dadosCliente,
                 ListaProdutos = (await ObterProdutos(numPedido)).ToList(),
                 TotalFamiliaParcelaRA = await vlFamiliaParcelaRATask,
                 PermiteRAStatus = p.Permite_RA_Status,

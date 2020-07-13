@@ -16,7 +16,7 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
             this.validacoesPrepedidoBll = validacoesPrepedidoBll;
         }
 
-        public bool ValidarFormaPagto(PrePedidoDto prepedido, List<string> lstErros, decimal limiteArredondamento)
+        public bool ValidarFormaPagto(PrePedidoDto prepedido, List<string> lstErros, decimal limiteArredondamento, decimal maxErroArredondamento)
         {
             bool retorno = false;
 
@@ -26,23 +26,23 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
             }
             else if (prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELA_UNICA)
             {
-                ValidarFormaPagtoParcelaUnica(prepedido, lstErros);
+                ValidarFormaPagtoParcelaUnica(prepedido, lstErros, maxErroArredondamento);
             }
             else if (prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO)
             {
-                ValidarFormaPagtoParceladoCartao(prepedido, lstErros);
+                ValidarFormaPagtoParceladoCartao(prepedido, lstErros, maxErroArredondamento);
             }
             else if (prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA)
             {
-                ValidarFormaPagtoParceladoCartaoMaquineta(prepedido, lstErros);
+                ValidarFormaPagtoParceladoCartaoMaquineta(prepedido, lstErros, maxErroArredondamento);
             }
             else if (prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA)
             {
-                ValidarFormaPagtoComEntreda(prepedido, lstErros);
+                ValidarFormaPagtoComEntreda(prepedido, lstErros, maxErroArredondamento);
             }
             else if (prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA)
             {
-                ValidarFormaPagtoSemEntrada(prepedido, lstErros);
+                ValidarFormaPagtoSemEntrada(prepedido, lstErros, maxErroArredondamento);
             }
             else
             {
@@ -66,7 +66,7 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
             }
         }
 
-        private void ValidarFormaPagtoParcelaUnica(PrePedidoDto prepedido, List<string> lstErros)
+        private void ValidarFormaPagtoParcelaUnica(PrePedidoDto prepedido, List<string> lstErros, decimal maxErroArredondamento)
         {
             if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.Op_pu_forma_pagto))
                 lstErros.Add("Indique a forma de pagamento da parcela única.");
@@ -86,18 +86,18 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
 
                 if (prepedido.PermiteRAStatus == 1)
                 {
-                    if (prepedido.ValorTotalDestePedidoComRA != prepedido.FormaPagtoCriacao.C_pu_valor)
+                    if (Math.Abs((decimal)(prepedido.ValorTotalDestePedidoComRA - prepedido.FormaPagtoCriacao.C_pu_valor)) > maxErroArredondamento)
                         lstErros.Add("Valor total da forma de pagamento diferente do valor total!");
                 }
                 else
                 {
-                    if (prepedido.VlTotalDestePedido != prepedido.FormaPagtoCriacao.C_pu_valor)
+                    if (Math.Abs((decimal)(prepedido.VlTotalDestePedido - prepedido.FormaPagtoCriacao.C_pu_valor)) > maxErroArredondamento)
                         lstErros.Add("Valor total da forma de pagamento diferente do valor total!");
                 }
             }
         }
 
-        private void ValidarFormaPagtoParceladoCartao(PrePedidoDto prepedido, List<string> lstErros)
+        private void ValidarFormaPagtoParceladoCartao(PrePedidoDto prepedido, List<string> lstErros, decimal maxErroArredondamento)
         {
             if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.C_pc_qtde.ToString()))
                 lstErros.Add("Indique a quantidade de parcelas (parcelado no cartão [internet]).");
@@ -119,18 +119,18 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
                 decimal vlTotal = (decimal)(prepedido.FormaPagtoCriacao.C_pc_valor * prepedido.FormaPagtoCriacao.C_pc_qtde);
                 if (prepedido.PermiteRAStatus == 1)
                 {
-                    if (prepedido.ValorTotalDestePedidoComRA != vlTotal)
+                    if (Math.Abs((decimal)(prepedido.ValorTotalDestePedidoComRA - vlTotal)) > maxErroArredondamento)
                         lstErros.Add("Valor total da forma de pagamento diferente do valor total!");
                 }
                 else
                 {
-                    if (prepedido.VlTotalDestePedido != vlTotal)
+                    if (Math.Abs((decimal)(prepedido.VlTotalDestePedido - vlTotal)) > maxErroArredondamento)
                         lstErros.Add("Valor total da forma de pagamento diferente do valor total!");
                 }
             }
         }
 
-        private void ValidarFormaPagtoParceladoCartaoMaquineta(PrePedidoDto prepedido, List<string> lstErros)
+        private void ValidarFormaPagtoParceladoCartaoMaquineta(PrePedidoDto prepedido, List<string> lstErros, decimal maxErroArredondamento)
         {
             if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.C_pc_maquineta_qtde.ToString()))
                 lstErros.Add("Indique a quantidade de parcelas (parcelado no cartão [maquineta]).");
@@ -153,18 +153,18 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
                 prepedido.FormaPagtoCriacao.C_pc_maquineta_qtde);
                 if (prepedido.PermiteRAStatus == 1)
                 {
-                    if (prepedido.ValorTotalDestePedidoComRA != vlTotal)
+                    if (Math.Abs((decimal)(prepedido.ValorTotalDestePedidoComRA - vlTotal)) > maxErroArredondamento)
                         lstErros.Add("Valor total da forma de pagamento diferente do valor total!");
                 }
                 else
                 {
-                    if (prepedido.VlTotalDestePedido != vlTotal)
+                    if (Math.Abs((decimal)(prepedido.VlTotalDestePedido - vlTotal)) > maxErroArredondamento)
                         lstErros.Add("Valor total da forma de pagamento diferente do valor total!");
                 }
             }
         }
 
-        private void ValidarFormaPagtoComEntreda(PrePedidoDto prepedido, List<string> lstErros)
+        private void ValidarFormaPagtoComEntreda(PrePedidoDto prepedido, List<string> lstErros, decimal maxErroArredondamento)
         {
             if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.Op_pce_entrada_forma_pagto.ToString()))
                 lstErros.Add("Indique a forma de pagamento da entrada (parcelado com entrada).");
@@ -205,18 +205,18 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
 
                 if (prepedido.PermiteRAStatus == 1)
                 {
-                    if (prepedido.ValorTotalDestePedidoComRA != vlTotal)
+                    if (Math.Abs((decimal)(prepedido.ValorTotalDestePedidoComRA - vlTotal)) > maxErroArredondamento)
                         lstErros.Add("Valor total da forma de pagamento diferente do valor total!");
                 }
                 else
                 {
-                    if (prepedido.VlTotalDestePedido != vlTotal)
+                    if (Math.Abs((decimal)(prepedido.VlTotalDestePedido - vlTotal)) > maxErroArredondamento)
                         lstErros.Add("Valor total da forma de pagamento diferente do valor total!");
                 }
             }
         }
 
-        private void ValidarFormaPagtoSemEntrada(PrePedidoDto prepedido, List<string> lstErros)
+        private void ValidarFormaPagtoSemEntrada(PrePedidoDto prepedido, List<string> lstErros, decimal maxErroArredondamento)
         {
             if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.Op_pse_prim_prest_forma_pagto))
                 lstErros.Add("Indique a forma de pagamento da 1ª prestação (parcelado sem entrada).");
@@ -257,12 +257,12 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
 
                 if (prepedido.PermiteRAStatus == 1)
                 {
-                    if (prepedido.ValorTotalDestePedidoComRA != vlTotal)
+                    if (Math.Abs((decimal)(prepedido.ValorTotalDestePedidoComRA - vlTotal)) > maxErroArredondamento)
                         lstErros.Add("Valor total da forma de pagamento diferente do valor total!");
                 }
                 else
                 {
-                    if (prepedido.VlTotalDestePedido != vlTotal)
+                    if (Math.Abs((decimal)(prepedido.VlTotalDestePedido - vlTotal)) > maxErroArredondamento)
                         lstErros.Add("Valor total da forma de pagamento diferente do valor total!");
                 }
             }

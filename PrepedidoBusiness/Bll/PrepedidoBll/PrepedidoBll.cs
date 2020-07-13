@@ -246,7 +246,16 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 return prepedidoPedido;
             }
 
-            var cadastroClienteTask = ObterDadosCliente(t.Razao_Social, pp.Orcamentista, pp.Vendedor, pp.Id_Cliente);
+            DadosClienteCadastroDto cadastroCliente = new DadosClienteCadastroDto();
+            if (pp.St_memorizacao_completa_enderecos == 0)
+            {
+                cadastroCliente = await ObterDadosCliente(t.Razao_Social, pp.Orcamentista, pp.Vendedor, pp.Id_Cliente);
+            }
+            else
+            {
+                //vamos preencher os dados do cliente com o prepedido
+                cadastroCliente = await ObterDadosClientePrepedido(pp, t.Razao_Social);
+            }
             var enderecoEntregaTask = ObterEnderecoEntrega(pp);
             var lstProdutoTask = await ObterProdutos(pp);
 
@@ -263,7 +272,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 NumeroPrePedido = pp.Orcamento,
                 DataHoraPedido = Convert.ToString(pp.Data?.ToString("dd/MM/yyyy")),
                 Hora_Prepedido = Util.FormataHora(pp.Hora),
-                DadosCliente = await cadastroClienteTask,
+                DadosCliente = cadastroCliente,
                 EnderecoEntrega = await enderecoEntregaTask,
                 ListaProdutos = lstProdutoTask.ToList(),
                 TotalFamiliaParcelaRA = vltotalRa,
@@ -482,8 +491,58 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return await Task.FromResult(listaProduto);
         }
 
+        private async Task<DadosClienteCadastroDto> ObterDadosClientePrepedido(Torcamento orcamento, string loja)
+        {
+            var dadosCliente = from c in contextoProvider.GetContextoLeitura().Tclientes
+                               where c.Id == orcamento.Id_Cliente
+                               select c;
+            var cli = await dadosCliente.FirstOrDefaultAsync();
+
+            DadosClienteCadastroDto cadastroCliente = new DadosClienteCadastroDto
+            {
+                Loja = loja,
+                Indicador_Orcamentista = orcamento.Orcamentista,
+                Vendedor = orcamento.Vendedor,
+                Id = cli.Id,
+                Cnpj_Cpf = Util.FormatCpf_Cnpj_Ie(orcamento.Endereco_cnpj_cpf),
+                Rg = orcamento.Endereco_rg,
+                Ie = Util.FormatCpf_Cnpj_Ie(orcamento.Endereco_ie),
+                Contribuinte_Icms_Status = orcamento.Endereco_contribuinte_icms_status,
+                Tipo = cli.Tipo,
+                Observacao_Filiacao = cli.Filiacao,
+                Nascimento = cli.Dt_Nasc,
+                Sexo = cli.Sexo,
+                Nome = cli.Nome,
+                ProdutorRural = orcamento.Endereco_produtor_rural_status,
+                DddResidencial = orcamento.Endereco_ddd_res,
+                TelefoneResidencial = orcamento.Endereco_tel_res,
+                DddComercial = orcamento.Endereco_ddd_com,
+                TelComercial = orcamento.Endereco_tel_com,
+                Ramal = orcamento.Endereco_ramal_com,
+                DddCelular = orcamento.Endereco_ddd_cel,
+                Celular = orcamento.Endereco_ddd_cel,
+                TelComercial2 = orcamento.Endereco_tel_com_2,
+                DddComercial2 = orcamento.Endereco_ddd_com_2,
+                Ramal2 = orcamento.Endereco_ramal_com_2,
+                Email = orcamento.Endereco_email,
+                EmailXml = orcamento.Endereco_email_xml,
+                Endereco = orcamento.Endereco_logradouro,
+                Complemento = orcamento.Endereco_complemento,
+                Numero = orcamento.Endereco_numero,
+                Bairro = orcamento.Endereco_bairro,
+                Cidade = orcamento.Endereco_cidade,
+                Uf = orcamento.Endereco_uf,
+                Cep = orcamento.Endereco_cep,
+                Contato = orcamento.Endereco_contato
+            };
+
+            return cadastroCliente;
+        }
+
         private async Task<DadosClienteCadastroDto> ObterDadosCliente(string loja, string indicador_orcamentista, string vendedor, string idCliente)
         {
+            //afazer: criar a condição para preencher os dados do cliente que estão salvos no t_ORCAMENTO ou no t_CLIENTE
+
             var dadosCliente = from c in contextoProvider.GetContextoLeitura().Tclientes
                                where c.Id == idCliente
                                select c;
@@ -589,9 +648,9 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
 
                 if (cliente != null)
                 {
-                    if(cliente.DadosCliente.Tipo == Constantes.ID_PF)
+                    if (cliente.DadosCliente.Tipo == Constantes.ID_PF)
                     {
-                        if(cliente.DadosCliente.Nome.ToUpper() != prePedido.DadosCliente.Nome.ToUpper())
+                        if (cliente.DadosCliente.Nome.ToUpper() != prePedido.DadosCliente.Nome.ToUpper())
                         {
                             lstErros.Add("Nome do cliente diferente do nome cadastrado!");
                         }
@@ -602,7 +661,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                     prePedido.DadosCliente.Nascimento = cliente.DadosCliente.Nascimento;
                 }
             }
-            
+
             //antes de validar vamos passar o EnderecoCadastral para dadoscliente
             prePedido.DadosCliente =
                 DadosClienteCadastroDto.DadosClienteCadastroDtoDeEnderecoCadastralClientePrepedidoDto(
@@ -631,7 +690,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             //verificar como esta sendo salvo
             if (!validacoesPrepedidoBll.ValidarDetalhesPrepedido(prePedido.DetalhesPrepedido, lstErros))
             {
-                return lstErros;                                                                                            
+                return lstErros;
             }
 
             if (prePedido.ListaProdutos.Count > 12)
@@ -645,7 +704,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 //Validar endereço de entraga
                 if (await validacoesPrepedidoBll.ValidarEnderecoEntrega(prePedido, lstErros))
                 {
-                    if (validacoesFormaPagtoBll.ValidarFormaPagto(prePedido, lstErros, limiteArredondamento))
+                    if (validacoesFormaPagtoBll.ValidarFormaPagto(prePedido, lstErros, limiteArredondamento, 0.1M))
                     {
                         //Esta sendo verificado qual o tipo de pagamento que esta sendo feito e retornando a quantidade de parcelas
                         int c_custoFinancFornecQtdeParcelas = ObterQtdeParcelasFormaPagto(prePedido);
@@ -965,6 +1024,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 torcamento.Pce_Entrada_Valor = torcamento.Pce_Entrada_Valor.HasValue ? torcamento.Pce_Entrada_Valor : 0.0M;
                 torcamento.Pce_Prestacao_Valor = torcamento.Pce_Prestacao_Valor.HasValue ? torcamento.Pce_Prestacao_Valor : 0.0M;
                 torcamento.Pse_Prim_Prest_Valor = torcamento.Pse_Prim_Prest_Valor.HasValue ? torcamento.Pse_Prim_Prest_Valor : 0.0M;
+
             }
         }
 

@@ -81,7 +81,7 @@ namespace PrepedidoBusiness.Dto.ClienteCadastro
                 Email = endCadastral.Endereco_email,
                 EmailXml = endCadastral.Endereco_email_xml,
                 Vendedor = "",// esse campo não é utilizado em TCliente
-                Cep = endCadastral.Endereco_cep,
+                Cep = endCadastral.Endereco_cep.Replace("-", ""),
                 Endereco = endCadastral.Endereco_logradouro,
                 Numero = endCadastral.Endereco_numero,
                 Bairro = endCadastral.Endereco_bairro,
