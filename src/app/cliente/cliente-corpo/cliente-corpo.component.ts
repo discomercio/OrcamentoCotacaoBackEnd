@@ -35,6 +35,7 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
 
 
   ngOnInit() {
+    this.jaFezAfterViewInit = false;
 
     this.criarElementos();
     this.initEhPf();
@@ -54,18 +55,19 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
           this.alertaService.mostrarErroInternet(r);
         });
     }
+
     //isso foi incluido para que funcione corretamente no  browser "EDGE"
-
-
 
     //   let selectProdutorRural:any = document.querySelector("#selectProdutorRural .mat-form-field-flex");      
     //   selectProdutorRural.style.display = "block";
 
     setTimeout(() => {
       let selectProdutorRural: any = document.querySelector("#selectProdutorRural .mat-form-field-flex");
-      selectProdutorRural.style.display = "block";
+      if (selectProdutorRural)
+        selectProdutorRural.style.display = "block";
     }, 800);
   }
+
 
 
   public ignorarProximoEnter = false;
@@ -270,22 +272,23 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
 
   }
 
+  //somente podemos fazer a inicialização da variável depois do AfterViewInit
+  private jaFezAfterViewInit = false;
+  ngAfterViewInit(): void {
+    this.jaFezAfterViewInit = true;
+    if (this.atualizarDadosEnderecoCadastralClienteTela_Dados != null)
+      this.atualizarDadosEnderecoCadastralClienteTela_Executar();
+  }
+
+  private atualizarDadosEnderecoCadastralClienteTela_Dados: EnderecoCadastralClientePrepedidoDto = null;
   public atualizarDadosEnderecoCadastralClienteTela(enderecoCadastralClientePrepedidoDto: EnderecoCadastralClientePrepedidoDto): void {
-    debugger;
+    this.atualizarDadosEnderecoCadastralClienteTela_Dados = enderecoCadastralClientePrepedidoDto;
+    if (this.jaFezAfterViewInit)
+      this.atualizarDadosEnderecoCadastralClienteTela_Executar();
+
     this.enderecoCadastralClientePrepedidoDto = this.desconverterTelefonesEnderecoDadosCadastrais(enderecoCadastralClientePrepedidoDto);
 
     return;
-    this.enderecoCadastralClientePrepedidoDto = enderecoCadastralClientePrepedidoDto;
-    const src = this.componenteCepDadosCadastrais;
-    src.Cep = this.enderecoCadastralClientePrepedidoDto.Endereco_cep;
-    src.Endereco = this.enderecoCadastralClientePrepedidoDto.Endereco_logradouro;
-    src.Numero = this.enderecoCadastralClientePrepedidoDto.Endereco_numero;
-    src.Bairro = this.enderecoCadastralClientePrepedidoDto.Endereco_bairro;
-    src.Cidade = this.enderecoCadastralClientePrepedidoDto.Endereco_cidade;
-    src.Uf = this.enderecoCadastralClientePrepedidoDto.Endereco_uf;
-    src.Complemento = this.enderecoCadastralClientePrepedidoDto.Endereco_complemento;
-
-    //fazer a conversão de telefones para mostrar na tela "(xx) xxxx-xxxx"
   }
 
   public converterTelefones(endCadastralClientePrepedidoDto: EnderecoCadastralClientePrepedidoDto): EnderecoCadastralClientePrepedidoDto {
@@ -324,6 +327,26 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
       endCadastralClientePrepedidoDto.Endereco_tel_com_2;
 
     return endCadastralClientePrepedidoDto;
+  }
+  private atualizarDadosEnderecoCadastralClienteTela_Executar(): void {
+    setTimeout(() => {
+
+      this.enderecoCadastralClientePrepedidoDto = this.atualizarDadosEnderecoCadastralClienteTela_Dados;
+      const src = this.componenteCepDadosCadastrais;
+      src.Cep = this.enderecoCadastralClientePrepedidoDto.Endereco_cep;
+      src.Endereco = this.enderecoCadastralClientePrepedidoDto.Endereco_logradouro;
+      src.Numero = this.enderecoCadastralClientePrepedidoDto.Endereco_numero;
+      src.Bairro = this.enderecoCadastralClientePrepedidoDto.Endereco_bairro;
+      src.Cidade = this.enderecoCadastralClientePrepedidoDto.Endereco_cidade;
+      src.Uf = this.enderecoCadastralClientePrepedidoDto.Endereco_uf;
+      src.Complemento = this.enderecoCadastralClientePrepedidoDto.Endereco_complemento;
+
+      //fazer a conversão de telefones para mostrar na tela "(xx) xxxx-xxxx"
+
+
+      //nao está mais pendente
+      this.atualizarDadosEnderecoCadastralClienteTela_Dados = null;
+    }, 0);
   }
 
   //#region referencia coemrial e bancária
