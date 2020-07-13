@@ -5,6 +5,8 @@ import { EnderecoEntregaDtoClienteCadastro } from 'src/app/dto/ClienteCadastro/E
 import { DetalhesDtoPrepedido } from 'src/app/dto/Prepedido/DetalhesPrepedido/DetalhesDtoPrepedido';
 import { ClienteCadastroDto } from 'src/app/dto/ClienteCadastro/ClienteCadastroDto';
 import { FormaPagtoCriacaoDto } from 'src/app/dto/Prepedido/DetalhesPrepedido/FormaPagtoCriacaoDto';
+import { MoedaUtils } from 'src/app/utils/moedaUtils';
+import { EnderecoCadastralClientePrepedidoDto } from 'src/app/dto/Prepedido/EnderecoCadastralClientePrepedidoDto';
 
 @Injectable({
   providedIn: 'root'
@@ -24,20 +26,24 @@ export class NovoPrepedidoDadosService {
 
   //somente setar dados do cliente
   public setarDTosParciais(clienteCadastroDto: DadosClienteCadastroDto,
-    enderecoEntregaDtoClienteCadastro: EnderecoEntregaDtoClienteCadastro) {
+    enderecoEntregaDtoClienteCadastro: EnderecoEntregaDtoClienteCadastro, 
+    endCadastralClientePrepedidoDto: EnderecoCadastralClientePrepedidoDto) {
     let p = this.prePedidoDto;
     p.DadosCliente = clienteCadastroDto;
     p.EnderecoEntrega = enderecoEntregaDtoClienteCadastro;
+    p.EnderecoCadastroClientePrepedido = endCadastralClientePrepedidoDto;
   }
 
   public criarNovo(clienteCadastroDto: DadosClienteCadastroDto,
-    enderecoEntregaDtoClienteCadastro: EnderecoEntregaDtoClienteCadastro) {
+    enderecoEntregaDtoClienteCadastro: EnderecoEntregaDtoClienteCadastro, 
+    endCadastralClientePrepedidoDto : EnderecoCadastralClientePrepedidoDto) {
     this.prePedidoDto = new PrePedidoDto();
     let p = this.prePedidoDto;
     //temos que criar os objetos...
     p.NumeroPrePedido = "";
     p.DataHoraPedido = "";
     p.DadosCliente = clienteCadastroDto;
+    p.EnderecoCadastroClientePrepedido = endCadastralClientePrepedidoDto;
     p.EnderecoEntrega = enderecoEntregaDtoClienteCadastro;
     p.ListaProdutos = new Array();
     p.TotalFamiliaParcelaRA = 0;
@@ -52,6 +58,20 @@ export class NovoPrepedidoDadosService {
     p.St_Orc_Virou_Pedido = false;
     p.NumeroPedido = "";
     p.FormaPagtoCriacao = new FormaPagtoCriacaoDto();
+  }
+
+
+  public moedaUtils : MoedaUtils = new MoedaUtils();
+  public totalPedido(): number {
+    return this.prePedidoDto.VlTotalDestePedido = this.moedaUtils.formatarDecimal(
+      this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + this.moedaUtils.formatarDecimal(current.TotalItem), 0));
+
+  }
+
+  public totalPedidoRA(): number {
+    //afazer: calcular o total de Preco_Lista para somar apenas o total como é feito no total do pedido
+    return this.prePedidoDto.ValorTotalDestePedidoComRA = this.moedaUtils.formatarDecimal(
+      this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + this.moedaUtils.formatarDecimal(current.TotalItemRA), 0));
   }
 }
 

@@ -13,6 +13,7 @@ import { PrepedidoBuscarService } from 'src/app/servicos/prepedido/prepedido-bus
 import { parse } from 'path';
 import { DataUtils } from 'src/app/utils/dataUtils';
 import { RepositionScrollStrategy } from '@angular/cdk/overlay';
+import { ItensComponent } from '../itens/itens.component';
 
 
 @Component({
@@ -50,13 +51,13 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
 
   public etg_imediata: boolean = false;
 
+
   //#region navegação
   voltar() {
     this.dadosParaModelo();
     this.location.back();
   }
   continuar() {
-    debugger;
     if (!this.dadosParaModelo())
       return false;
     this.prepedidoBuscarService.cadastrarPrepedido(this.novoPrepedidoDadosService.prePedidoDto).subscribe({
@@ -113,35 +114,10 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
       this.prePedidoDto.DetalhesPrepedido.InstaladorInstala == undefined) {
       this.InstaladorInstala = true;
     }
-    // this.GarantiaIndicador = false;
-    // if (!!this.prePedidoDto.DetalhesPrepedido.GarantiaIndicador && this.prePedidoDto.DetalhesPrepedido.GarantiaIndicador == "SIM") {
-    //   this.GarantiaIndicador = true;
-    // }
   }
 
   public PrevisaoEntrega: string = "";
   dadosParaModelo() {
-    // this.prePedidoDto.DetalhesPrepedido.EntregaImediata = this.constantes.COD_ETG_IMEDIATA_SIM.toString();
-    // if (!this.EntregaImediata) {
-    //   this.prePedidoDto.DetalhesPrepedido.EntregaImediata = this.constantes.COD_ETG_IMEDIATA_NAO.toString();
-    //   //vamos validar a data de entrega imediata 
-    //   debugger;
-    //   if (!!this.PrevisaoEntrega) {
-    //     if (DataUtils.formata_formulario_date(this.PrevisaoEntrega) <= new Date()) {
-    //       this.PrevisaoEntrega = "";
-    //       this.alertaService.mostrarMensagem("A data para entrega deve ser posterior a data atual!");
-    //       return false;
-    //     }
-    //     else {
-    //       this.prePedidoDto.DetalhesPrepedido.EntregaImediataData = this.PrevisaoEntrega;
-    //     }
-    //   }
-    //   else {
-    //     this.alertaService.mostrarMensagem("Favor informar a data para entrega.");
-    //     return false;
-    //   }
-    // }
-
     if (!this.verificaEntregaImediata())
       return false;
 
@@ -176,7 +152,7 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
     if (!this.EntregaImediata) {
       this.prePedidoDto.DetalhesPrepedido.EntregaImediata = this.constantes.COD_ETG_IMEDIATA_NAO.toString();
       //vamos validar a data de entrega imediata 
-      debugger;
+
       if (!!this.PrevisaoEntrega) {
         if (DataUtils.formata_formulario_date(this.PrevisaoEntrega) <= new Date()) {
           this.PrevisaoEntrega = "";

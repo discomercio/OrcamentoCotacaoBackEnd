@@ -50,5 +50,5 @@ export class PassoPrepedidoBase extends TelaDesktopBaseComponent {
         //fica melhor sem nada na frente:
         ret = "";
         return ret + CpfCnpjUtils.cnpj_cpf_formata(this.prePedidoDto.DadosCliente.Cnpj_Cpf);
-    }
+    }    
 }

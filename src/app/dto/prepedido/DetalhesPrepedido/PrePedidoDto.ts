@@ -1,8 +1,9 @@
 ﻿import { PrepedidoProdutoDtoPrepedido } from './PrepedidoProdutoDtoPrepedido';
-import { DadosClienteCadastroDto } from '../../ClienteCadastro/DadosClienteCadastroDto';
-import { EnderecoEntregaDtoClienteCadastro } from '../../ClienteCadastro/EnderecoEntregaDTOClienteCadastro';
 import { DetalhesDtoPrepedido } from './DetalhesDtoPrepedido';
 import { FormaPagtoCriacaoDto } from './FormaPagtoCriacaoDto';
+import { EnderecoCadastralClientePrepedidoDto } from '../EnderecoCadastralClientePrepedidoDto';
+import { DadosClienteCadastroDto } from '../../ClienteCadastro/DadosClienteCadastroDto';
+import { EnderecoEntregaDtoClienteCadastro } from '../../ClienteCadastro/EnderecoEntregaDTOClienteCadastro';
 
 export class PrePedidoDto {
     CorHeader:string;
@@ -14,6 +15,7 @@ export class PrePedidoDto {
     Hora_Prepedido:string;
     prepedidoDto:string;
     DadosCliente: DadosClienteCadastroDto;
+    EnderecoCadastroClientePrepedido: EnderecoCadastralClientePrepedidoDto;
     EnderecoEntrega: EnderecoEntregaDtoClienteCadastro;
     ListaProdutos: PrepedidoProdutoDtoPrepedido[];
     TotalFamiliaParcelaRA: number;

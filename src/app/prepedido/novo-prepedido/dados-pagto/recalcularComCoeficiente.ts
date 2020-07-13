@@ -253,16 +253,19 @@ export class RecalcularComCoeficiente {
                     (produto.Preco * x.Coeficiente));
                   produto.TotalItem = this.moedaUtils.formatarDecimal(produto.VlUnitario * produto.Qtde);
                   produto.VlLista = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));//só altera se calcular coeficiente
+                  produto.CustoFinancFornecCoeficiente = x.Coeficiente;
                 }
                 else {
                   produto.VlUnitario = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
                   produto.VlTotalItem = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
                   produto.VlLista = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));//só altera se calcular coeficiente
                   produto.TotalItem = this.moedaUtils.formatarDecimal(((produto.Preco * produto.Qtde) * x.Coeficiente));
+                  produto.CustoFinancFornecCoeficiente = x.Coeficiente;
                 }
                 if (!produto.AlterouValorRa || produto.AlterouValorRa == undefined) {
                   produto.Preco_Lista = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
                   produto.TotalItemRA = this.moedaUtils.formatarDecimal(((produto.Preco * produto.Qtde) * x.Coeficiente));
+                  produto.CustoFinancFornecCoeficiente = x.Coeficiente;
                 }
 
               });
@@ -282,16 +285,19 @@ export class RecalcularComCoeficiente {
                     (produto.Preco * x.Coeficiente));
                   produto.TotalItem = this.moedaUtils.formatarDecimal(produto.VlUnitario * produto.Qtde);
                   produto.VlLista = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));//só altera se calcular coeficiente
+                  produto.CustoFinancFornecCoeficiente = x.Coeficiente;
                 }
                 else {
                   produto.VlUnitario = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
                   produto.VlTotalItem = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
                   produto.VlLista = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));//só altera se calcular coeficiente
                   produto.TotalItem = this.moedaUtils.formatarDecimal(((produto.Preco * produto.Qtde) * x.Coeficiente));
+                  produto.CustoFinancFornecCoeficiente = x.Coeficiente;
                 }
                 if (!produto.AlterouValorRa || produto.AlterouValorRa == undefined) {
                   produto.Preco_Lista = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
                   produto.TotalItemRA = this.moedaUtils.formatarDecimal(((produto.Preco * produto.Qtde) * x.Coeficiente));
+                  produto.CustoFinancFornecCoeficiente = x.Coeficiente;
                 }
 
               });
@@ -312,6 +318,7 @@ export class RecalcularComCoeficiente {
                     (produto.Preco * x.Coeficiente));
                   produto.TotalItem = this.moedaUtils.formatarDecimal(produto.VlUnitario * produto.Qtde);
                   produto.VlLista = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));//só altera se calcular coeficiente
+                  produto.CustoFinancFornecCoeficiente = x.Coeficiente;
                 }
                 else {
                   produto.VlUnitario = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
@@ -319,11 +326,13 @@ export class RecalcularComCoeficiente {
                   produto.VlLista = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));//só altera se calcular coeficiente
                   let total_com_coeficiente = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
                   produto.TotalItem = this.moedaUtils.formatarDecimal(total_com_coeficiente * produto.Qtde);
+                  produto.CustoFinancFornecCoeficiente = x.Coeficiente;
                 }
                 if (!produto.AlterouValorRa || produto.AlterouValorRa == undefined) {
                   produto.Preco_Lista = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
                   let total_com_coeficiente = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
                   produto.TotalItemRA = this.moedaUtils.formatarDecimal(total_com_coeficiente * produto.Qtde);
+                  produto.CustoFinancFornecCoeficiente = x.Coeficiente;
                 }
 
               });
@@ -337,7 +346,6 @@ export class RecalcularComCoeficiente {
   //calculo para montar a lista que vai no parcelamento a vista
   calcularTotalProdutoAvistaParcelamento(p: PrepedidoProdutoDtoPrepedido): void {
     this.ProdutosCalculados = new ProdutosCalculados();
-debugger;
     if (!!this.novoPrepedidoDadosService.prePedidoDto.PermiteRAStatus &&
       this.novoPrepedidoDadosService.prePedidoDto.PermiteRAStatus == 1) {
       if (p.AlterouValorRa && p.AlterouValorRa != undefined) {

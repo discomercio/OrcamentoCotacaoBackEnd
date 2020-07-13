@@ -7,12 +7,16 @@ import { TelaDesktopBaseComponent } from 'src/app/servicos/telaDesktop/telaDeskt
 import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material';
 import { ClienteCadastroDto } from 'src/app/dto/ClienteCadastro/ClienteCadastroDto';
-import { ClienteCadastroUtils } from 'src/app/dto/AngularClienteCadastroUtils/ClienteCadastroUtils';
+import { ClienteCadastroUtils } from 'src/app/utils/ClienteCadastroUtils';
 import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
 import { EnderecoEntregaDtoClienteCadastro } from 'src/app/dto/ClienteCadastro/EnderecoEntregaDTOClienteCadastro';
 import { NovoPrepedidoDadosService } from '../novo-prepedido-dados.service';
 import { ConfirmarEnderecoComponent } from '../confirmar-endereco/confirmar-endereco.component';
 import { Constantes } from 'src/app/dto/Constantes';
+import { ValidacoesClienteUtils } from 'src/app/utils/validacoesClienteUtils';
+import { EnderecoCadastralClientePrepedidoDto } from 'src/app/dto/Prepedido/EnderecoCadastralClientePrepedidoDto';
+import { ClienteCorpoComponent } from 'src/app/cliente/cliente-corpo/cliente-corpo.component';
+import { FormatarTelefone } from 'src/app/utils/formatarTelefone';
 
 @Component({
   selector: 'app-confirmar-cliente',
@@ -25,8 +29,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
   dadosClienteCadastroDto = new DadosClienteCadastroDto();
   clienteCadastroDto = new ClienteCadastroDto();
   enderecoEntregaDtoClienteCadastro = new EnderecoEntregaDtoClienteCadastro();
-
-
+  public endCadastralClientePrepedidoDto = new EnderecoCadastralClientePrepedidoDto();
 
   constructor(private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
@@ -40,7 +43,6 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
   }
 
   ngOnInit() {
-
     this.dadosClienteCadastroDto = null;
     if (this.router.getCurrentNavigation()) {
       let clienteCadastroDto: ClienteCadastroDto = (this.router.getCurrentNavigation().extras.state) as ClienteCadastroDto;
@@ -50,6 +52,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
 
         setTimeout(() => {
           this.dadosClienteCadastroDto = clienteCadastroDto.DadosCliente;
+
           this.verificarCriarNovoPrepedido();
         }, 0);
         return;
@@ -111,19 +114,25 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
         //nao criamos! usamos o que já está no serviço
         this.dadosClienteCadastroDto = this.novoPrepedidoDadosService.prePedidoDto.DadosCliente;
         this.enderecoEntregaDtoClienteCadastro = this.novoPrepedidoDadosService.prePedidoDto.EnderecoEntrega;
+        this.endCadastralClientePrepedidoDto = this.novoPrepedidoDadosService.prePedidoDto.EnderecoCadastroClientePrepedido;
         if (this.telaDesktop) {
           this.confirmarEndereco.atualizarDadosEnderecoTela(this.enderecoEntregaDtoClienteCadastro);
+          //afazer chamar atualizarDadosEnderecoCadastral
+          debugger;
+          this.clienteCorpo.atualizarDadosEnderecoCadastralClienteTela(this.endCadastralClientePrepedidoDto);
         }
         return;
       }
     }
 
     ///vamos criar um novo
-    this.novoPrepedidoDadosService.criarNovo(this.dadosClienteCadastroDto, this.enderecoEntregaDtoClienteCadastro);
+    this.novoPrepedidoDadosService.criarNovo(this.dadosClienteCadastroDto, this.enderecoEntregaDtoClienteCadastro,
+      this.endCadastralClientePrepedidoDto);
     //quando a tela é para celular o "this.confirmarEndereco" esta "undefined" e já da problema
     //comentei para teste
     if (this.telaDesktop) {
       this.confirmarEndereco.atualizarDadosEnderecoTela(this.enderecoEntregaDtoClienteCadastro);
+      //vamos atualizar o end cadastral
     }
   }
 
@@ -156,7 +165,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
       pois nesse momento estamos apenas verificando se o cliente teve alteração no cadastro dele, sendo assim, 
       iremos verificar se Produtor Rural é igual a "0"      
      */
-    if (this.dadosClienteCadastroDtoProdutorRural !== this.dadosClienteCadastroDto.ProdutorRural || 
+    if (this.dadosClienteCadastroDtoProdutorRural !== this.dadosClienteCadastroDto.ProdutorRural ||
       this.dadosClienteCadastroDtoProdutorRural == 0) {
       return true;
     }
@@ -176,12 +185,13 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
 
   //vamos salvar as alterações
   salvar(continuar: boolean): void {
-    //as validações
+    //as validações  
     let mensagem = new ClienteCadastroUtils().validarInscricaoestadualIcms(this.dadosClienteCadastroDto);
     if (mensagem && mensagem.trim() !== "") {
       this.mostrarMensagem(mensagem);
       return;
     }
+
     //estamos removendo os dados antes de salvar
     this.dadosClienteCadastroDto = new ClienteCadastroUtils().validarProdutorRural(this.dadosClienteCadastroDto);
     //tudo validado!
@@ -214,6 +224,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
   mostrarMensagem(msg: string): void {
     this.alertaService.mostrarMensagem(msg);
   }
+
   //#endregion
 
   //#region fase
@@ -248,6 +259,10 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
   //precisa do static: false porque está dentro de um ngif
   @ViewChild("confirmarEndereco", { static: false }) confirmarEndereco: ConfirmarEnderecoComponent;
 
+  //esta como undefined
+  @ViewChild("clienteCorpo", { static: false }) clienteCorpo: ClienteCorpoComponent;
+
+
   continuar(): void {
     //primeiro, vamos ver o CEP que está dentro do cliente
     //somente se o confirmarEndereco estiver atribuído. Se não estiver, é porque não estamos na tela em que precisamos testar ele
@@ -256,6 +271,10 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
       return;
     }
 
+    debugger;
+    //afazer: não consigo pegar os dados do cep que foi alterado em dados cadastrais
+     this.clienteCorpo.prepararAvancarEnderecoCadastralClientePrepedidoDto();
+    
     //avisamos para o corpo do cliente que vamos avançar
     if (this.confirmarEndereco) {
       this.confirmarEndereco.prepararAvancar();
@@ -265,6 +284,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
       this.salvar(true);
       return;
     }
+
     this.continuarEfetivo();
   }
   continuarEfetivo(): void {
@@ -273,15 +293,29 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
 
     if (this.fase2 || this.fase1e2juntas) {
       //vamos validar o endereço
-      // só a jsutificativa, número e complemento. O resto vai ser validado pelo CEP
-
-      //iremos validar os campos
-      if (!this.validarEnderecoEntrega(this.enderecoEntregaDtoClienteCadastro)) {
+      let validacoes: string[] = new Array();
+      
+      if (!this.endCadastralClientePrepedidoDto.Endereco_tipo_pessoa) {
+        this.alertaService.mostrarMensagem("É necessário preencher os dados cadastrais!");
         return;
       }
+      else {
+        this.endCadastralClientePrepedidoDto = this.converterTelefones(this.endCadastralClientePrepedidoDto);
+        validacoes = ValidacoesClienteUtils.validarEnderecoCadastralClientePrepedidoDto(this.endCadastralClientePrepedidoDto);       
 
+        if (this.enderecoEntregaDtoClienteCadastro.OutroEndereco)
+          validacoes = ValidacoesClienteUtils.validarEnderecoEntregaDtoClienteCadastro(this.enderecoEntregaDtoClienteCadastro);
+
+      }
+
+      if (validacoes.length > 0) {
+        this.alertaService.mostrarMensagem("Campos inválidos. Preencha os campos marcados como obrigatórios. \nLista de erros: \n" + validacoes.join("\n"));
+        return;
+      }
       //salvar no serviço
-      this.novoPrepedidoDadosService.setarDTosParciais(this.dadosClienteCadastroDto, this.enderecoEntregaDtoClienteCadastro);
+      //afazer: incluir a passagem de EnderecoCadastralClientePrepedidoDto para salavar no serviço
+      this.novoPrepedidoDadosService.setarDTosParciais(this.dadosClienteCadastroDto, this.enderecoEntregaDtoClienteCadastro, 
+        this.endCadastralClientePrepedidoDto);
 
       //continuamos
       this.router.navigate(['novo-prepedido/itens']);
@@ -291,31 +325,25 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     this.fase1 = false;
   }
 
-  public validarEnderecoEntrega(end: EnderecoEntregaDtoClienteCadastro): boolean {
-    let retorno = true;
-    if (end.OutroEndereco) {
-      if (!end.EndEtg_cep || end.EndEtg_cep.trim() === "" ||
-        !end.EndEtg_uf || end.EndEtg_uf.trim() === "" ||
-        !end.EndEtg_cidade || end.EndEtg_cidade.trim() === "") {
-        this.mostrarMensagem("Caso seja selecionado outro endereço, informe um CEP válido!");
-        return retorno = false;
-      }
-      if (!end.EndEtg_endereco || end.EndEtg_endereco.trim() === "") {
-        this.mostrarMensagem("Caso seja selecionado outro endereço, informe um endereço!");
-        return retorno = false;
-      }
-      if (!end.EndEtg_cod_justificativa || end.EndEtg_cod_justificativa.trim() === "") {
-        this.mostrarMensagem("Caso seja selecionado outro endereço, selecione a justificativa do endereço de entrega!")
-        return retorno = false;;
-      }
-      //somente número, o resto é feito pelo CEP
-      if (!end.EndEtg_endereco_numero || end.EndEtg_endereco_numero.trim() === "") {
-        this.mostrarMensagem("Caso seja selecionado outro endereço, preencha o número do endereço de entrega!")
-        return retorno = false;;
-      }
-    }
-    return retorno;
-  }
+public converterTelefones(endCadastralClientePrepedidoDto: EnderecoCadastralClientePrepedidoDto): EnderecoCadastralClientePrepedidoDto {
 
+        let s = FormatarTelefone.SepararTelefone(endCadastralClientePrepedidoDto.Endereco_tel_res);
+        endCadastralClientePrepedidoDto.Endereco_tel_res = s.Telefone;
+        endCadastralClientePrepedidoDto.Endereco_ddd_res = s.Ddd;
+
+        s = FormatarTelefone.SepararTelefone(endCadastralClientePrepedidoDto.Endereco_tel_cel);
+        endCadastralClientePrepedidoDto.Endereco_tel_cel = s.Telefone;
+        endCadastralClientePrepedidoDto.Endereco_ddd_cel = s.Ddd;
+
+        s = FormatarTelefone.SepararTelefone(endCadastralClientePrepedidoDto.Endereco_tel_com);
+        endCadastralClientePrepedidoDto.Endereco_tel_com = s.Telefone;
+        endCadastralClientePrepedidoDto.Endereco_ddd_com = s.Ddd;
+
+        s = FormatarTelefone.SepararTelefone(endCadastralClientePrepedidoDto.Endereco_tel_com_2);
+        endCadastralClientePrepedidoDto.Endereco_tel_com_2 = s.Telefone;
+        endCadastralClientePrepedidoDto.Endereco_ddd_com_2 = s.Ddd;
+
+        return endCadastralClientePrepedidoDto;
+    }
 }
 

@@ -6,7 +6,7 @@ import { TelaDesktopService } from 'src/app/servicos/telaDesktop/telaDesktop.ser
 import { ClienteCadastroDto } from 'src/app/dto/ClienteCadastro/ClienteCadastroDto';
 import { StringUtils } from 'src/app/utils/stringUtils';
 import { Location, registerLocaleData } from '@angular/common';
-import { ClienteCadastroUtils } from 'src/app/dto/AngularClienteCadastroUtils/ClienteCadastroUtils';
+import { ClienteCadastroUtils } from 'src/app/utils/ClienteCadastroUtils';
 import { ValidacoesUtils } from 'src/app/utils/validacoesUtils';
 import { CpfCnpjUtils } from 'src/app/utils/cpfCnpjUtils';
 import { RefBancariaDtoCliente } from 'src/app/dto/ClienteCadastro/Referencias/RefBancariaDtoCliente';
@@ -20,6 +20,7 @@ import { ClienteCorpoComponent } from 'src/app/cliente/cliente-corpo/cliente-cor
 import { MatSelect } from '@angular/material';
 import { nextTick } from 'q';
 import { HtmlAstPath } from '@angular/compiler';
+import { ValidacoesClienteUtils } from 'src/app/utils/validacoesClienteUtils';
 
 
 @Component({
@@ -56,13 +57,12 @@ export class CadastrarClienteComponent extends TelaDesktopBaseComponent implemen
                 if (lista[i2] == document.getElementById("nasc")) {
                   mySelect2.mySelectSexo.focus();
                   //ele não perde o foco
-                  
+
                 }
                 else if (lista[i2] == document.getElementById("cep")) {
                   (lista[i2 + 2] as HTMLInputElement).focus();
                 }
-                else if(lista[i2] == document.getElementById("emailXml"))
-                {
+                else if (lista[i2] == document.getElementById("emailXml")) {
                   mySelect2.mySelectProdutor.focus();
                 }
                 else {
@@ -118,7 +118,7 @@ export class CadastrarClienteComponent extends TelaDesktopBaseComponent implemen
 
 
   continuar() {
-
+debugger;
     //primeiro, vamos ver o CEP que está dentro do cliente
     if (!this.clienteCorpo.podeAvancar()) {
       this.alertaService.mostrarMensagem("Aguarde o carregamento do endereço antes de continuar.");
@@ -127,8 +127,6 @@ export class CadastrarClienteComponent extends TelaDesktopBaseComponent implemen
     //avisamos para o corpo do cliente que vamos avançar
     this.clienteCorpo.prepararAvancar();
 
-    //validações
-    let validacoes: string[] = new Array();
 
     let constantes = new Constantes();
     if (this.ehPf()) {
@@ -140,72 +138,7 @@ export class CadastrarClienteComponent extends TelaDesktopBaseComponent implemen
 
     this.converterTelefones();
 
-    /*
-    campos obrigatórios para PF:
-    CPF
-    sexo
-    produtor rural
-    ENDEREÇO
-    nro
-    BAIRRO
-    CIDADE
-    UF
-    CEP
-    algum telefone
-
-    campos obrigatórios para PJ:
-    CNPJ
-    CONTRIBUINTE ICMS
-    RAZÃO SOCIAL
-    TELEFONE
-    NOME DA PESSOA PARA CONTATO NA EMPRESA
-    ENDEREÇO
-    nro
-    BAIRRO
-    CIDADE
-    UF
-    CEP
-
-    */
-
-    //um MONTE de validações....
-    validacoes = validacoes.concat(this.validarGeral());
-
-    //validações específicas para PF e PJ
-    if (this.ehPf()) {
-      validacoes = validacoes.concat(this.validarGeralPf());
-    }
-    else {
-      validacoes = validacoes.concat(this.validarGeralPj());
-    }
-
-    //endereço
-    validacoes = validacoes.concat(this.validarEndereco());
-
-    //inscricao estadual
-    let mensagem = new ClienteCadastroUtils().validarInscricaoestadualIcms(this.dadosClienteCadastroDto);
-    if (mensagem && mensagem.trim() !== "") {
-      validacoes.push(mensagem);
-    }
-
-
-    //validar telefone
-    validacoes = validacoes.concat(this.validarTelefones());
-
-    //validar referências bancárias
-    //não exigimos um número de referências, mas as que foram criadas devem estar preenchidas
-    for (let i = 0; i < this.clienteCadastroDto.RefBancaria.length; i++) {
-      let este = this.clienteCadastroDto.RefBancaria[i];
-      validacoes = validacoes.concat(this.validarRefBancaria(este));
-    }
-
-    //validar referências comerciais
-    //não exigimos um número de referências, mas as que foram criadas devem estar preenchidas
-    for (let i = 0; i < this.clienteCadastroDto.RefComercial.length; i++) {
-      let este = this.clienteCadastroDto.RefComercial[i];
-      validacoes = validacoes.concat(this.validarRefComerial(este));
-    }
-
+    let validacoes: string[] = ValidacoesClienteUtils.ValidarDadosClienteCadastroDto(this.dadosClienteCadastroDto, this.clienteCadastroDto, this.ehPf());
     //mostrar as mensagens
     if (validacoes.length > 0) {
       this.desconverterTelefones();
@@ -286,6 +219,8 @@ TelComercial2
 
 
   }
+
+
   desconverterTelefones() {
     {
       this.dadosClienteCadastroDto.TelefoneResidencial = this.dadosClienteCadastroDto.DddResidencial + this.dadosClienteCadastroDto.TelefoneResidencial;
@@ -311,204 +246,15 @@ TelComercial2
 
   }
 
-  validarGeral(): string[] {
-    let ret: string[] = new Array();
-
-    if ((this.dadosClienteCadastroDto.Cnpj_Cpf.trim() === "") || (!CpfCnpjUtils.cnpj_cpf_ok(this.dadosClienteCadastroDto.Cnpj_Cpf))) {
-      ret.push('CNPJ/CPF inválido!');
-    }
-
-    if ((this.dadosClienteCadastroDto.Email !== "") && (!ValidacoesUtils.email_ok(this.dadosClienteCadastroDto.Email))) {
-      ret.push('E-mail inválido!');
-    }
-
-    if ((this.dadosClienteCadastroDto.EmailXml !== "") && (!ValidacoesUtils.email_ok(this.dadosClienteCadastroDto.EmailXml))) {
-      ret.push('E-mail (XML) inválido!');
-    }
-    return ret;
-  }
-
-  validarGeralPj(): string[] {
-    let ret: string[] = new Array();
-
-    let s = this.dadosClienteCadastroDto.Contato.trim();
-    if (s === "") {
-      ret.push('Informe o nome da pessoa para contato!');
-    }
-
-    if (this.dadosClienteCadastroDto.Nome.trim() == "") {
-      ret.push('Preencha o nome!');
-    }
-
-    return ret;
-  }
-
-  validarGeralPf(): string[] {
-    let ret: string[] = new Array();
-
-    let s = this.dadosClienteCadastroDto.Sexo;
-    if ((s == "") || (!ValidacoesUtils.sexo_ok(s))) {
-      ret.push('Indique qual o sexo!');
-    }
-    //nao validamos a data dessa forma, ela já é uma data no formulário: if (!isDate(f.dt_nasc)) {
-    //e ela é opcional, então não validamos nada!
-    return ret;
-  }
-
-  validarRefBancaria(ref: RefBancariaDtoCliente): string[] {
-    let ret: string[] = new Array();
-
-    if (ref.Banco.trim() === "") {
-      ret.push('Informe o banco no cadastro de Referência Bancária!');
-    }
-    if (ref.Agencia.trim() === "") {
-      ret.push('Informe a agência no cadastro de Referência Bancária!');
-    }
-    if (ref.Conta.trim() === "") {
-      ret.push('Informe o número da conta no cadastro de Referência Bancária!');
-    }
-    return ret;
-  }
-
-  validarRefComerial(ref: RefComercialDtoCliente): string[] {
-    let ret: string[] = new Array();
-
-    if (ref.Nome_Empresa.trim() == "") {
-      ret.push('Informe o nome da empresa no cadastro de Referência Comercial!');
-    }
-
-    return ret;
-  }
-
-  validarTelefones(): string[] {
-    let ret: string[] = new Array();
-
-    if (this.ehPf()) {
-      if (!FormatarTelefone.ddd_ok(this.dadosClienteCadastroDto.DddResidencial)) {
-        ret.push('DDD residencial inválido!');
-      }
-      if (!FormatarTelefone.telefone_ok(this.dadosClienteCadastroDto.TelefoneResidencial)) {
-        ret.push('Telefone residencial inválido!');
-      }
-      if ((this.dadosClienteCadastroDto.DddResidencial.trim() !== "") || (this.dadosClienteCadastroDto.TelefoneResidencial.trim() != "")) {
-        if (this.dadosClienteCadastroDto.DddResidencial.trim() === "") {
-          ret.push('Preencha o DDD residencial!');
-        }
-        if (this.dadosClienteCadastroDto.TelefoneResidencial.trim() === "") {
-          ret.push('Preencha o telefone residencial!');
-        }
-      }
-    }
-
-    if (!FormatarTelefone.ddd_ok(this.dadosClienteCadastroDto.DddComercial)) {
-      ret.push('DDD comercial inválido!');
-    }
-
-    if (!FormatarTelefone.telefone_ok(this.dadosClienteCadastroDto.TelComercial)) {
-      ret.push('Telefone comercial inválido!');
-    }
-
-    if ((this.dadosClienteCadastroDto.DddComercial.trim() !== "") || (this.dadosClienteCadastroDto.TelComercial.trim() !== "")) {
-      if (this.dadosClienteCadastroDto.DddComercial.trim() === "") {
-        ret.push('Preencha o DDD comercial!');
-      }
-      if (this.dadosClienteCadastroDto.TelComercial.trim() === "") {
-        ret.push('Preencha o telefone comercial!');
-      }
-    }
-
-    if (this.ehPf()) {
-      if ((this.dadosClienteCadastroDto.TelefoneResidencial.trim() === "")
-        && (this.dadosClienteCadastroDto.TelComercial.trim() === "")
-        && (this.dadosClienteCadastroDto.Celular.trim() === "")) {
-        ret.push('Preencha pelo menos um telefone!');
-      }
-    }
-    else {
-
-      //PJ, telefone 1 é obrigatório
-      if (this.dadosClienteCadastroDto.TelComercial.trim() === "") {
-        ret.push('Preencha o telefone comercial!');
-      }
 
 
-      if (this.dadosClienteCadastroDto.TelComercial2.trim() !== "") {
-        if (this.dadosClienteCadastroDto.DddComercial2.trim() === "") {
-          ret.push('Preencha o DDD comercial 2!');
-        }
-        if (this.dadosClienteCadastroDto.TelComercial2.trim() === "") {
-          ret.push('Preencha o telefone comercial 2!');
-        }
-      }
 
-    }
-    if (this.ehPf()) {
-      if (!FormatarTelefone.ddd_ok(this.dadosClienteCadastroDto.DddCelular)) {
-        ret.push('DDD celular inválido!');
-      }
-      if (!FormatarTelefone.telefone_ok(this.dadosClienteCadastroDto.Celular)) {
-        ret.push('Telefone celular inválido!');
-      }
-      if ((this.dadosClienteCadastroDto.DddCelular.trim() === "") && (this.dadosClienteCadastroDto.Celular.trim() !== "")) {
-        ret.push('Preencha o DDD do celular.');
-      }
-      if ((this.dadosClienteCadastroDto.Celular.trim() === "") && (this.dadosClienteCadastroDto.DddCelular.trim() !== "")) {
-        ret.push('Preencha o número do celular.');
-      }
-    }
-    if (!this.ehPf()) {
-      if (!FormatarTelefone.ddd_ok(this.dadosClienteCadastroDto.DddComercial2)) {
-        ret.push('DDD comercial 2 inválido!');
-      }
-      if (!FormatarTelefone.telefone_ok(this.dadosClienteCadastroDto.TelComercial2)) {
-        ret.push('Telefone comercial 2 inválido!');
-      }
-      if ((this.dadosClienteCadastroDto.DddComercial2.trim() === "") && (this.dadosClienteCadastroDto.TelComercial2.trim() !== "")) {
-        ret.push('Preencha o DDD do telefone comercial 2.');
-      }
-      if ((this.dadosClienteCadastroDto.TelComercial2.trim() === "") && (this.dadosClienteCadastroDto.DddComercial2.trim() != "")) {
-        ret.push('Preencha o telefone comercial 2.');
-      }
 
-    }
 
-    return ret;
-  }
 
-  validarEndereco(): string[] {
-    let ret: string[] = new Array();
 
-    if (this.dadosClienteCadastroDto.Endereco.trim() === "") {
-      ret.push('Preencha o endereço!');
-    }
 
-    if (this.dadosClienteCadastroDto.Numero.trim() === "") {
-      ret.push('Preencha o número do endereço!');
-    }
 
-    if (this.dadosClienteCadastroDto.Bairro.trim() === "") {
-      ret.push('Preencha o bairro!');
-    }
-
-    if (this.dadosClienteCadastroDto.Cidade.trim() === "") {
-      ret.push('Preencha a cidade!');
-    }
-
-    let s = this.dadosClienteCadastroDto.Uf.trim();
-    if ((s === "") || (!ValidacoesUtils.uf_ok(s))) {
-      ret.push('UF inválida!');
-    }
-
-    if (this.dadosClienteCadastroDto.Cep.toString().trim() === "") {
-      ret.push('Informe o CEP!');
-    }
-
-    if (!new FormatarEndereco().cep_ok(this.dadosClienteCadastroDto.Cep.toString())) {
-      ret.push('CEP inválido!');
-    }
-
-    return ret;
-  }
 }
 
 

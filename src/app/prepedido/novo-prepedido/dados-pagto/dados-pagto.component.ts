@@ -15,6 +15,7 @@ import { CoeficienteDto } from 'src/app/dto/Produto/CoeficienteDto';
 import { EnumTipoPagto } from './tipo-forma-pagto';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { RecalcularComCoeficiente } from './recalcularComCoeficiente';
+import { FormaPagtoCriacaoDto } from 'src/app/dto/Prepedido/DetalhesPrepedido/FormaPagtoCriacaoDto';
 
 
 @Component({
@@ -104,7 +105,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
     this.alertaService);
 
   atribuirFormaPagtoParaDto() {
-    debugger;
+    // this.prePedidoDto.FormaPagtoCriacao = new FormaPagtoCriacaoDto(); 
     this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento = this.enumFormaPagto;
     if (this.enumFormaPagto == 1) {
       //A vista      

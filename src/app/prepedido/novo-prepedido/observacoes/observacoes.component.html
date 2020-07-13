@@ -10,7 +10,7 @@
                 {{prePedidoDto.DadosCliente.Nome}}</div>
 
             <div>
-                <strong>Total do pedido: {{moedaUtils.formatarMoedaSemPrefixo(totalPedido())}}</strong>
+                <strong>Total do pedido: {{moedaUtils.formatarMoedaSemPrefixo(novoPrepedidoDadosService.totalPedido())}}</strong>
             </div>
             <div>
                 <br>
@@ -18,7 +18,7 @@
             </div>
             <div>
                 <!-- ************   OBSERVAÇÕES   ************  -->
-                <!-- <mat-form-field class="edicao-endereco" floatLabel="floatLabel()" style="width: 25ch;">
+                <mat-form-field class="edicao-endereco" floatLabel="floatLabel()" style="width: 25ch;">
                     <textarea matInput type="text" placeholder="Observações adicionais do Pré-Pedido" (keyup) = "contarCaracter()"
                         [ngModelOptions]="{standalone: true}" [(ngModel)]="prePedidoDto.DetalhesPrepedido.Observacoes"
                         #autosize="cdkTextareaAutosize" maxlength="500" cdkTextareaAutosize cdkAutosizeMinRows="5"
@@ -27,7 +27,7 @@
                 <div style="font-size: x-small; color:rgba(0, 0, 0, 0.54); margin-left: 18%; margin-top: -1%">
                     
                     <span>Limite de caracteres {{this.contador}} / 500</span>
-                </div>-->
+                </div>
 
                 <div class="umgrupoopcoes">
                     <mat-slide-toggle [(ngModel)]="EntregaImediata" [ngModelOptions]="{standalone: true}"> Entrega

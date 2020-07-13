@@ -60,7 +60,6 @@ export class PedidoListarService {
   public data_mobile_final: string = "";
 
   public atualizar(): void {
-debugger;
     let dtInicial: Date = DataUtils.formata_formulario_date(this.paramsBuscaPedido.dataInicial);
     let dtFinal: Date = DataUtils.formata_formulario_date(this.paramsBuscaPedido.dataFinal);
 

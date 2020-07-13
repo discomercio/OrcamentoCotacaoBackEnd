@@ -163,5 +163,13 @@ export class CpfCnpjUtils {
         return s_cpf;
     }
 
+    static mascaraCpf(cpf: string) {
+        return [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/];
 
+    }
+
+    static mascaraCnpj(cnpj: string) {
+            return [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/];
+
+    }
 }

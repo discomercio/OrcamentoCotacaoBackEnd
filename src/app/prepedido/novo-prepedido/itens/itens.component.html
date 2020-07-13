@@ -175,14 +175,14 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 						<td *ngIf="!permite_RA_Status" align="right"></td>
 						<td align="right" *ngIf="permite_RA_Status">
 							<strong
-								style="margin-left: 2em;">{{moedaUtils.formatarMoedaSemPrefixo(totalPedidoRA())}}</strong>
+								style="margin-left: 2em;">{{moedaUtils.formatarMoedaSemPrefixo(novoPrepedidoDadosService.totalPedidoRA())}}</strong>
 						</td>
 						<td align="right"> </td>
 						<td align="right"> </td>
 						<td align="right"> </td>
 
 						<td align="right">
-							<strong>{{moedaUtils.formatarMoedaSemPrefixo(totalPedido())}}</strong>
+							<strong>{{moedaUtils.formatarMoedaSemPrefixo(novoPrepedidoDadosService.totalPedido())}}</strong>
 						</td>
 						<td align="right"> </td>
 					</tr>

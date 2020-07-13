@@ -228,17 +228,17 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     return item.Alertas;
   }
 
-  totalPedido(): number {
-    return this.prePedidoDto.VlTotalDestePedido = this.moedaUtils.formatarDecimal(
-      this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + this.moedaUtils.formatarDecimal(current.TotalItem), 0));
+  // totalPedido(): number {
+  //   return this.prePedidoDto.VlTotalDestePedido = this.moedaUtils.formatarDecimal(
+  //     this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + this.moedaUtils.formatarDecimal(current.TotalItem), 0));
 
-  }
+  // }
 
-  totalPedidoRA(): number {
-    //afazer: calcular o total de Preco_Lista para somar apenas o total como é feito no total do pedido
-    return this.prePedidoDto.ValorTotalDestePedidoComRA = this.moedaUtils.formatarDecimal(
-      this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + this.moedaUtils.formatarDecimal(current.TotalItemRA), 0));
-  }
+  // totalPedidoRA(): number {
+  //   //afazer: calcular o total de Preco_Lista para somar apenas o total como é feito no total do pedido
+  //   return this.prePedidoDto.ValorTotalDestePedidoComRA = this.moedaUtils.formatarDecimal(
+  //     this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + this.moedaUtils.formatarDecimal(current.TotalItemRA), 0));
+  // }
 
   //componente de forma de pagamento, precisa do static false
   @ViewChild("dadosPagto", { static: false }) dadosPagto: DadosPagtoComponent;
@@ -252,11 +252,11 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
 
     i.TotalItem = this.moedaUtils.formatarDecimal(i.VlUnitario * i.Qtde); // VlUnitario = Vl Venda na tela
     this.dadosPagto.prepedidoAlterado();
-    this.totalPedido();
+    this.novoPrepedidoDadosService.totalPedido();
 
     if (this.prePedidoDto.PermiteRAStatus == 1) {
       i.TotalItemRA = this.moedaUtils.formatarDecimal(i.Preco_Lista * i.Qtde);
-      this.totalPedidoRA();
+      this.novoPrepedidoDadosService.totalPedidoRA();
     }
   }
 
@@ -309,8 +309,8 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
 
   somaRA: string;
   somarRA(): string {
-    let total = this.totalPedido();
-    let totalRa = this.totalPedidoRA();
+    let total = this.novoPrepedidoDadosService.totalPedido();
+    let totalRa = this.novoPrepedidoDadosService.totalPedidoRA();
     // vou formatar  aqui antes de passar para a tela
     let valor_ra = this.moedaUtils.formatarDecimal(totalRa - total);
 
@@ -456,8 +456,8 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     if (this.prePedidoDto.PermiteRAStatus == 1) {
       if (this.percentualVlPedidoRA != 0 && this.percentualVlPedidoRA != undefined) {
 
-        let vlAux = (this.percentualVlPedidoRA / 100) * this.totalPedido();
-        let totalRA = (this.totalPedidoRA() - this.totalPedido());
+        let vlAux = (this.percentualVlPedidoRA / 100) * this.novoPrepedidoDadosService.totalPedido();
+        let totalRA = (this.novoPrepedidoDadosService.totalPedidoRA() - this.novoPrepedidoDadosService.totalPedido());
 
         if (totalRA > vlAux) {
           this.alertaService.mostrarMensagem("O valor total de RA excede o limite permitido!");

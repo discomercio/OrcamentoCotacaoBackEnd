@@ -22,4 +22,5 @@
     //verificar a necessidade dessa variavel
     Qtde_estoque_total_disponivel: number | null;
     ProdutoPai: string
+    CustoFinancFornecCoeficiente : number |null;
 }

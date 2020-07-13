@@ -1,4 +1,5 @@
 import { StringUtils } from './stringUtils';
+import { DadosClienteCadastroDto } from '../dto/ClienteCadastro/DadosClienteCadastroDto';
 
 export class ValidacoesUtils {
     public static email_ok(email: string): boolean {
@@ -36,4 +37,5 @@ export class ValidacoesUtils {
         if ((s_cep.length == 0) || (s_cep.length == 5) || (s_cep.length == 8)) return true;
         return false;
     }
+    
 }

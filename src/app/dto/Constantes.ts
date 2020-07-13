@@ -67,5 +67,10 @@ export class Constantes {
 	public ERR_SENHA_EXPIRADA = "4";
 
 	public COD_ST_PEDIDO_RECEBIDO_SIM = "1";
+
+	//Referências
+	public MAX_REF_BANCARIA_CLIENTE_PJ = 1;
+	public MAX_REF_COMERCIAL_CLIENTE_PJ = 3;
+
 }
 
