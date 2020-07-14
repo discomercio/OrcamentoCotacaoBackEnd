@@ -255,17 +255,18 @@ namespace PrepedidoBusiness.Utils
 
         public static bool VerificaCep(string cep)
         {
-            bool retorno = false;
-            string cepFormat = "";
+            string cepFormat;
 
             if (cep != "")
             {
                 cepFormat = cep.Replace("-", "");
+                if (cepFormat.Length == 5)
+                    return true;
                 if (cepFormat.Length == 8)
-                    retorno = true;
+                    return true;
             }
 
-            return retorno;
+            return false;
         }
 
         public static bool gera_chave_codificacao(Int32 fator, ref String chave_gerada)
@@ -1319,6 +1320,17 @@ namespace PrepedidoBusiness.Utils
 
         }
 
+        public static async Task<bool> IsActivatedFlagPedidoUsarMemorizacaoCompletaEnderecos(ContextoBdProvider contextoProvider)
+        {
+            Tparametro param = await BuscarRegistroParametro(Constantes.ID_PARAMETRO_Flag_Pedido_MemorizacaoCompletaEnderecos,
+                contextoProvider);
+
+            if (param.Campo_inteiro == 1)
+                return true;
+
+            return false;
+        }
+
         public static async Task<float> VerificarSemDesagioRA(ContextoBdProvider contextoProvider)
         {//busca o percentual de RA sem desagio ID_PARAM_PERC_LIMITE_RA_SEM_DESAGIO            
             Tparametro tparametro = await BuscarRegistroParametro(
@@ -1397,5 +1409,38 @@ namespace PrepedidoBusiness.Utils
             return qtdCliente + qtdOrcamentista;
         }
 
+        public static string FormatarEndereco(string endereco, string numero, string complemento,
+            string bairro, string cidade, string uf, string cep)
+        {
+            
+            string retorno = "";
+            if (!string.IsNullOrEmpty(endereco))
+                retorno = endereco.Trim();
+            if (!string.IsNullOrEmpty(numero))
+                retorno += ", " + numero.Trim();
+            if (!string.IsNullOrEmpty(complemento))
+                retorno += " " + complemento.Trim();
+            if (!string.IsNullOrEmpty(bairro))
+                retorno += " - " + bairro.Trim();
+            if (!string.IsNullOrEmpty(cidade))
+                retorno += " - " + cidade.Trim();
+            if (!string.IsNullOrEmpty(uf))
+                retorno += " - " + uf.Trim();
+            if (!string.IsNullOrEmpty(cep))
+                retorno += " - " + FormatarCep(cep.Trim());
+
+            return retorno;
+        }
+
+        public static string FormatarCep(string cep)
+        {
+            string sCep = cep.Replace("-", "");
+            if (!Util.VerificaCep(sCep))
+                return "";
+
+            cep = sCep.Substring(0, 4) + " - " + sCep.Substring(5, 3);
+            
+            return cep;
+        }
     }
 }

@@ -592,6 +592,8 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             EnderecoEntregaDtoClienteCadastro enderecoEntrega = new EnderecoEntregaDtoClienteCadastro();
             enderecoEntrega.OutroEndereco = Convert.ToBoolean(p.St_End_Entrega);
 
+            //afazer: criar método para pegar todos os dados de endereço com os campos novos
+
             if (p.St_End_Entrega == 1)
             {
                 enderecoEntrega.EndEtg_endereco = p.EndEtg_Endereco;
@@ -604,8 +606,27 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 enderecoEntrega.EndEtg_cod_justificativa = p.EndEtg_Cod_Justificativa;
                 enderecoEntrega.EndEtg_descricao_justificativa = await Util.ObterDescricao_Cod(
                     Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA, p.EndEtg_Cod_Justificativa, contextoProvider);
+                enderecoEntrega.EndEtg_email = p.EndEtg_email;
+                enderecoEntrega.EndEtg_email_xml = p.EndEtg_email_xml;
+                enderecoEntrega.EndEtg_nome = p.EndEtg_nome;
+                enderecoEntrega.EndEtg_ddd_res = p.EndEtg_ddd_res;
+                enderecoEntrega.EndEtg_tel_res = p.EndEtg_tel_res;
+                enderecoEntrega.EndEtg_ddd_com = p.EndEtg_ddd_com;
+                enderecoEntrega.EndEtg_tel_com = p.EndEtg_tel_com;
+                enderecoEntrega.EndEtg_ramal_com = p.EndEtg_ramal_com;
+                enderecoEntrega.EndEtg_ddd_cel = p.EndEtg_ddd_cel;
+                enderecoEntrega.EndEtg_tel_cel = p.EndEtg_tel_cel;
+                enderecoEntrega.EndEtg_ddd_com_2 = p.EndEtg_ddd_com_2;
+                enderecoEntrega.EndEtg_tel_com_2 = p.EndEtg_tel_com_2;
+                enderecoEntrega.EndEtg_ramal_com_2 = p.EndEtg_ramal_com_2;
+                enderecoEntrega.EndEtg_tipo_pessoa = p.EndEtg_tipo_pessoa;
+                enderecoEntrega.EndEtg_cnpj_cpf = p.EndEtg_cnpj_cpf;
+                enderecoEntrega.EndEtg_contribuinte_icms_status = p.EndEtg_contribuinte_icms_status;
+                enderecoEntrega.EndEtg_produtor_rural_status = p.EndEtg_produtor_rural_status;
+                enderecoEntrega.EndEtg_ie = p.EndEtg_ie;
+                enderecoEntrega.EndEtg_rg = p.EndEtg_rg;
+                enderecoEntrega.St_memorizacao_completa_enderecos = p.St_memorizacao_completa_enderecos;
             }
-
 
             return enderecoEntrega;
         }
