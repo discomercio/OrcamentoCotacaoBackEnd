@@ -1,0 +1,48 @@
+@import "../../../variaveis.scss";
+
+.corpohome {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  align-content: center;
+  text-align: center;
+  min-height: 70vh;
+  padding: 2em;
+}
+
+.corpohomeDesktop {
+  text-align: center;
+}
+
+.corpohomeCelular {
+  text-align: center;
+}
+
+.containerDesktop {
+  text-align: center;
+}
+.containerCelular {
+  text-align: center;
+}
+
+.campoTexto {
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
+.divCampos {
+  margin: 0.5rem;
+}
+
+.botaoTela {
+  text-align: center;
+  width: 200px;
+  margin-top: 15px;
+}
+.spanTela {
+  flex: 1;
+  flex-grow: 0.1;
+  flex-shrink: 0.2;
+  flex-basis: auto;
+  align-items: center;
+}
