@@ -1,0 +1,103 @@
+<div *ngIf="!impressaoService.emImpressao() && !impressaoService.forcarImpressao"
+  style="display: flex; flex-direction: row; justify-content: center; height: 100vh; width: 100vw">
+  <div style="display: flex; flex-direction: column; justify-content: center; height: 100vh;">
+    <!-- pós login -->
+    <div *ngIf="autenticacaoService.authEstaLogado()" style="flex-grow: 0; flex-shrink: 0; ">
+      <mat-toolbar class="cabecalho larguramaxima" [routerLink]="['']" title="Home" style="cursor: pointer">
+        <span style="float: left; font-size: 0.7em">
+          <button class='px-0' type="submit" mat-button style="padding: 0%;" title="Home">
+            <mat-icon class="iconelogout">home</mat-icon>
+          </button>
+        </span>
+        <div class="limiteclicavel larguramaxima">
+          <img [src]="logo" height="30" style="padding-top: 10px; padding-left: 10px;" />
+        </div>
+        <span style="float: right; font-size: 0.7em" *ngIf="autenticacaoService.authEstaLogado() && telaDesktop">
+          Olá {{autenticacaoService.authNomeUsuario}}
+        </span>
+        <button class='px-0' type="submit" mat-button style="padding: 0%;" title="Logout" (click)="logout()"
+          *ngIf="autenticacaoService.authEstaLogado()" style="font-size: 40%" id="btnSair" >
+          <mat-icon class="iconelogout">exit_to_app</mat-icon>
+          SAIR
+        </button>
+        
+      </mat-toolbar>
+    </div>
+    <!-- para login -->
+    <div *ngIf="!autenticacaoService.authEstaLogado()" style="flex-grow: 0; flex-shrink: 0; ">
+        <mat-toolbar class="cabecalho larguramaxima" [routerLink]="['']" title="Home" style="cursor: pointer"
+        style="cursor: pointer;background-color: #464646;">
+          <span style="float: left; font-size: 0.7em">
+            <button class='px-0' type="submit" mat-button style="padding: 0%;" title="Home">
+              <mat-icon class="iconelogout" style="color: white">home</mat-icon>
+            </button>
+          </span>
+          <div class="limiteclicavel larguramaxima">
+              <span style="color: white;font-size:75%; margin-left:-10%">CENTRAL DE PEDIDOS</span>
+          </div>
+          <span style="float: right; font-size: 0.7em">
+           
+          </span>
+          <!-- <button class='px-0' type="submit" mat-button style="padding: 0%;" title="Logout" (click)="logout()"
+            *ngIf="autenticacaoService.authEstaLogado()">
+            <mat-icon class="iconelogout">exit_to_app</mat-icon>
+          </button> -->
+        </mat-toolbar>
+      </div>
+    <!-- <div *ngIf="!autenticacaoService.authEstaLogado()" style="flex-grow: 0; flex-shrink: 0;">
+      <mat-toolbar class="cabecalho larguramaxima" [routerLink]="['']" title="Home"
+        style="cursor: pointer;background-color: #464646;">
+        <span style="float: left; font-size: 0.7em">
+          <button class='px-0' type="submit" mat-button style="padding: 0%;" title="Home">
+            <mat-icon class="iconelogout" style="color: white">home</mat-icon>
+          </button>
+        </span>
+        <div class="limiteclicavel larguramaxima;">
+          <span style="color: white;font-size:75%;">CENTRAL DE PEDIDOS</span>
+        </div>
+        <span style="float: right;">
+          nada
+        </span>
+      </mat-toolbar>
+    </div> -->
+    <div style="flex-grow: 1; flex-shrink: 1; overflow: auto; max-width: 100vw;">
+      <div style="display: flex; flex-direction: column; justify-content: center; " class="bordadocorpo">
+        <mat-sidenav-container class="larguramaxima" *ngIf="telaDesktop">
+          <mat-sidenav mode="side" opened class="menudaesquerda alturamaxima"
+            *ngIf="autenticacaoService.authEstaLogado()">
+            <app-home [menuDesktop]="true"></app-home>
+          </mat-sidenav>
+          <div class="alturamaxima fundoprincipal">
+
+            <!-- este cara PRECISA do *ngIf="telaDesktop"
+            sem ele, dá um problema:
+            //está um pouco instável quando chaveia
+            //as vezes ele não consegue carregar o ponto de navegaçãoc corretamente
+            //então recarregamos a página toda. unico inconveniente: perdemos o que tiver sido digitado nos campos de busca.
+            /*
+            para simular o erro:
+            como dekstop:
+            http://localhost:4200/
+            http://localhost:4200/pedido/consulta
+            http://localhost:4200/pedido/detalhes/127936N
+            chavear para celular e voltar para desktop
+            clicar no menu, ele fica na mesma página
+            
+            uma solução horrível para isso no TelaDesktopService:
+            if (this.jaLido && this.telaDesktopAnterior != this.telaDesktop) {
+              window.location.reload();
+            }
+         */
+     -->
+
+            <router-outlet *ngIf="telaDesktop"></router-outlet>
+          </div>
+        </mat-sidenav-container>
+      </div>
+
+      <router-outlet *ngIf="!telaDesktop"></router-outlet>
+    </div>
+  </div>
+</div>
+<!-- versao para impressão -->
+<router-outlet *ngIf="!(!impressaoService.emImpressao() && !impressaoService.forcarImpressao)"></router-outlet>

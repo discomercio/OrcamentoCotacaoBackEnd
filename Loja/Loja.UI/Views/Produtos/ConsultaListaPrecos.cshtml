@@ -1,0 +1,42 @@
+﻿
+
+@{
+    ViewData["Title"] = "ConsultaListaPrecos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h5>Lista de Preços</h5>
+
+
+@section ScriptsDiretos{
+    <link rel="stylesheet" type="text/css" href="~/lib/datatables/datatables.min.css" />
+    <script type="text/javascript" src="~/lib/datatables/datatables.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="~/lib/datatables-materialize/dataTables.materialize.css" />
+    <script type="text/javascript" src="~/lib/datatables-materialize/dataTables.materialize.js"></script>
+}
+
+
+@using (Html.BeginForm("BuscaListaProdutosFabricante", "Produtos", FormMethod.Get))
+{
+    <div class="row" style="margin-left:7%">
+        <div class="row col xl12 l12 m12 s12">
+            <div class="input-field col s9">
+                <label for="fabricante">Fabricante</label>
+                <input id="fabricante" name="fabricante" type="text" class="validate" />
+
+            </div>
+
+            <button class="waves-effect waves-light btn-small"
+                    type="submit"
+                    style="margin-top:2.5%">
+                Pesquisar
+            </button>
+        </div>
+    </div>
+}
+<partial name="~/Views/Produtos/BuscaListaProdutosFabricante.cshtml" />
+
+
+
+
+

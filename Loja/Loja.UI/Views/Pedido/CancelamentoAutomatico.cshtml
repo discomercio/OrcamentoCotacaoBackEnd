@@ -1,0 +1,108 @@
+﻿@model Loja.UI.Models.Pedido.CancelamentoAutomaticoViewModel
+@{
+    ViewData["Title"] = "Cancelamento Automático";
+}
+
+
+@section ScriptsDiretos{
+    <link rel="stylesheet" type="text/css" href="~/lib/datatables/datatables.min.css" />
+    <script type="text/javascript" src="~/lib/datatables/datatables.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="~/lib/datatables-materialize/dataTables.materialize.css" />
+    <script type="text/javascript" src="~/lib/datatables-materialize/dataTables.materialize.js"></script>
+}
+
+<partial name="~/Views/Shared/Datatables.cshtml" />
+
+<script>
+    $(document).ready(function () {
+        intiDatatables('#tabeladados', {
+            columnDefs: [
+                { type: "databr", targets: 1 }
+            ]
+        });
+    });
+
+</script>
+
+<h5>Cancelamento Automático de Pedidos</h5>
+
+<div>
+    @if (Model.ListaLojasViewModel.MostrarLoja)
+    {
+        Model.ListaLojasViewModel.NomeTabelaHtml = "tabeladados";
+        Model.ListaLojasViewModel.NumeroColunaDaLoja = 3;
+        <partial name="~/Views/Comuns/ListaLojas.cshtml" for="ListaLojasViewModel" />
+    }
+
+    @if (Model.CancelamentoAutomaticoItems.Count < 1)
+    {
+        <span>
+            NENHUM PEDIDO.
+        </span>
+    }
+    else
+    {
+        <table id="tabeladados" style="display: none;">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>
+                        Data final
+                    </th>
+                    <th>
+                        Pedido
+                    </th>
+                    @if (Model.ListaLojasViewModel.MostrarLoja)
+                    {
+                        <th>
+                            Loja
+                        </th>
+                    }
+                    <th>
+                        Vendedor
+                    </th>
+                    <th>
+                        Nome do cliente
+                    </th>
+                    <th>
+                        Análise de crédito
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var c in Model.CancelamentoAutomaticoItems)
+                {
+                    <tr>
+                        <td style="text-align: right">
+                            @c.NumeroLinha
+                        </td>
+                        <td>
+                            @c.DataFinal?.ToShortDateString()
+                        </td>
+                        <td>
+                            @c.Pedido
+                        </td>
+                        @if (Model.ListaLojasViewModel.MostrarLoja)
+                        {
+                            <td>
+                                @c.LojaNome
+                            </td>
+                        }
+                        <td>
+                            @c.Vendedor
+                        </td>
+                        <td>
+                            @c.NomeDoCliente
+                        </td>
+                        <td>
+                            @c.Analise_credito_descricao
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+

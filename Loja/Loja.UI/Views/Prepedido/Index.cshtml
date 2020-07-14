@@ -1,0 +1,160 @@
+﻿@model Loja.UI.Models.Prepedido.PrepedidoIndexViewModel
+@{
+    ViewData["Title"] = "Lista de pré-pedidos";
+}
+
+
+@section ScriptsDiretos{
+    <link rel="stylesheet" type="text/css" href="~/lib/datatables/datatables.min.css" />
+    <script type="text/javascript" src="~/lib/datatables/datatables.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="~/lib/datatables-materialize/dataTables.materialize.css" />
+    <script type="text/javascript" src="~/lib/datatables-materialize/dataTables.materialize.js"></script>
+}
+
+<partial name="~/Views/Shared/Datatables.cshtml" />
+
+<h5>@ViewData["Title"]</h5>
+
+<div>
+
+    @if (Model.ListaLojasViewModel.MostrarLoja)
+    {
+        Model.ListaLojasViewModel.NomeTabelaHtml = "tabeladados";
+        Model.ListaLojasViewModel.NumeroColunaDaLoja = 0;
+        <partial name="~/Views/Comuns/ListaLojas.cshtml" for="ListaLojasViewModel" />
+    }
+
+    @if (Model.ResumoPrepedidoListaDto.Itens.Count < 1)
+    {
+        <span>
+            <br />
+            <br />
+            NENHUM PRÉ-PEDIDO.
+        </span>
+    }
+    else
+    {
+        <table id="tabeladados" style="display: none;">
+            <thead>
+                <tr>
+                    @if (Model.ListaLojasViewModel.MostrarLoja)
+                    {
+                        <th>
+                            Loja
+                        </th>
+                    }
+                    <th>
+                        Orçamentista
+                    </th>
+                    <th>
+                        Pré-Pedido
+                    </th>
+                    <th>
+                        Data
+                    </th>
+                    <th>
+                        Cliente
+                    </th>
+                    <th class="right-align">
+                        VL Total
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var c in Model.ResumoPrepedidoListaDto.Itens)
+                {
+                    <tr>
+                        @if (Model.ListaLojasViewModel.MostrarLoja)
+                        {
+                            <td>
+                                @Model.ListaLojasViewModel.LojasDisponiveis.Where(r => r.Id == c.LojaId).FirstOrDefault()?.Nome
+                            </td>
+                        }
+                        <td>
+                            @c.Orcamentista
+                        </td>
+                        <td>
+                            @c.Prepedido
+                        </td>
+                        <td>
+                            @(c.Data?.ToShortDateString())
+                        </td>
+                        <td>
+                            @c.Cliente
+                        </td>
+                        <td class="right-align">
+                            @Loja.Bll.Util.Util.FormataMoeda(c.VlTotal)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+@{
+    //as colunas são variáveis...
+    var colunaMoeda = 5;
+    var colunaData = 3;
+    if (!Model.ListaLojasViewModel.MostrarLoja)
+    {
+        colunaMoeda--;
+        colunaData--;
+    }
+}
+
+<script>
+    function carregouScript() {
+        var tabeladados;
+        $(document).ready(function () {
+            tabeladados = intiDatatables('#tabeladados', {
+                @* agrupamos por loja e Orçamentista, se forem exibidos *@
+                @if (Model.ListaLojasViewModel.MostrarLoja)
+                {
+                    <text>
+                    orderFixed: [[0, 'asc'], [1, 'asc']],
+                    rowGroup: {
+                        dataSrc: [0, 1],
+                        startRender: function(rows, group) {
+                            let row0 = rows.data()[0];
+                            if (tabeladados)
+                                rows = tabeladados.data().rows();
+                            var total = rows
+                                .data();
+                            total = total.filter(function(row) {
+                                //se agrupando pela loja, não testa o orçamentista
+                                if (group == row0[0])
+                                    return row[0] == row0[0];
+                                return row[0] == row0[0] && row[1] == row0[1];
+                            });
+                            let totalRegistros = total.length;
+                            total = total
+                                .pluck(@colunaMoeda)
+                                .reduce(function(a, b) {
+                                return a + b.replace(/[^\d]/g, '') * 1;
+                            }, 0);
+                            total = total / 100;
+                            total = window.formatarMoedaSemPrefixo(total);
+
+                            return $('<tr/>')
+                                .append('<td colspan=6>' + group + " (" + totalRegistros + " pré-pedidos, valor total: " + total + ')</td>');
+                        }
+                    },
+                    </text>
+                }
+                columnDefs: [
+                    { type: "databr", targets: @colunaData },
+                    { type: "moeda", targets: @colunaMoeda }
+                ]
+            }
+            );
+
+            tabeladados.draw();
+        });
+    }
+    requirejs(["Views/Prepedido/Index"], function (util) {
+        carregouScript();
+    });
+</script>

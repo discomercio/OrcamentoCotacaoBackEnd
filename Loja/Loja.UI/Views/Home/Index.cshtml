@@ -1,0 +1,22 @@
+﻿@model Loja.UI.Models.Home.HomeViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div>
+    Olá @User?.Identity?.Name
+
+    <br />
+    <br />
+    <br />
+    Loja ativa: @(string.IsNullOrWhiteSpace(Model.LojaAtivaNome) ? "nenhuma" : Model.LojaAtivaNome)
+    @if (Model.ErroChavearLoja)
+    {
+        <br />
+        <br />
+        <br />
+        <span class="materialize-red-text">
+            Erro: não foi possível chavear para a loja @(Model.LojaTentandoChavearId). Verifique com o administrador que você possui permissão.
+        </span>
+    }
+</div>

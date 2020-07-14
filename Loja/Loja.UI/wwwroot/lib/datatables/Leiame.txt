@@ -1,0 +1,28 @@
+﻿Baixado de https://datatables.net/download/
+
+Step 1. Choose a styling framework
+DataTables
+
+Step 2. Select packages
+DataTables
+
+Extensions
+ HTML5 export
+ JSZip
+ pdfmake
+
+ ColReorder
+ FixedHeader
+ RowGroup
+ SearchPanes
+
+Step 3. Pick a download method
+ Minify
+ Concatenate
+
+Clicar em Download files
+
+Para usar:
+<link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css"/>
+<script type="text/javascript" src="DataTables/datatables.min.js"></script>
+
