@@ -1,0 +1,25 @@
+﻿@model Loja.UI.Models.Acesso.LoginViewModel
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject Loja.Bll.ClienteBll.ClienteBll clienteBll
+@inject Loja.Bll.Bll.AcessoBll.UsuarioAcessoBll usuarioAcessoBll
+@inject Loja.Bll.Util.Configuracao configuracao
+@{
+    ViewData["Title"] = "Login";
+    ViewBag.PaginaDeLogin = true;
+}
+
+
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<div class="row">
+    <div class="col">
+        Login efetuado com sucesso mas você deve alterar sua senha agora.
+        <br />
+        <br />
+        Não será possível usar o sistema enquanto você não trocar a senha e fizer o login com a nova senha.
+    </div>
+</div>

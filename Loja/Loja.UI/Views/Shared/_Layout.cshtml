@@ -1,0 +1,125 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject Loja.Bll.ClienteBll.ClienteBll clienteBll
+@inject Loja.Bll.Bll.AcessoBll.UsuarioAcessoBll usuarioAcessoBll
+@inject Loja.Bll.Util.Configuracao configuracao
+@inject Microsoft.Extensions.Logging.ILogger<Loja.Bll.Bll.AcessoBll.UsuarioLogado> loggerUsuarioLogado
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Loja.UI</title>
+    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/site.css" />*@
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/materialize.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/css/materialize.css" />
+    </environment>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="~/css/personalizado.css?rnd=6" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    @*<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>*@
+    <script src="~/js/initiComponentesMat.js"></script>
+    <script src="~/js/materialize.js"></script>
+    <script src="~/js/Util.js"></script>
+    @RenderSection("ScriptsDiretos", required: false)
+
+    <script src="~/lib/require.js"></script>
+    @{
+        string baseurl = "/scriptsJsMin";
+#if DEBUG
+        baseurl = "/scriptsJs";
+#endif
+    }
+    <script>
+        requirejs.config({
+            //baseUrl: '/jsts',
+            //baseUrl: '/jstsmin',
+            baseUrl: "@baseurl",
+            paths: {
+                jquery: '/lib/jquery/dist/jquery.min'
+            }
+        });
+        //requirejs(['app'], function (app) { });
+    </script>
+    @RenderSection("Scripts", required: false)
+</head>
+
+@{
+    var usuarioLogado = new Loja.Bll.Bll.AcessoBll.UsuarioLogado(loggerUsuarioLogado, User, HttpContextAccessor.HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
+    var pathLogin = "/Acesso/Login";
+    if (!usuarioLogado.SessaoAtiva)
+    {
+        var pathAtual = HttpContextAccessor?.HttpContext?.Request?.Path.Value?.ToLower() ?? "";
+        if (!pathAtual.ToLower().Contains(pathLogin.ToLower()))
+        {
+            //vamos para o login e acabou!
+            HttpContextAccessor.HttpContext.Response.Redirect(pathLogin);
+        }
+    }
+}
+
+<body>
+
+    <div style="display: flex; flex-direction: row; height: 100%; width: 100%;">
+        @if (usuarioLogado.SessaoAtiva)
+        {
+            <ul id="slide-out" class="sidenav sidenav-fixed" style="flex-grow: 0; flex-shrink: 0; width: 300px;">
+                <partial name="~/Views/Shared/Menu.cshtml" model="usuarioLogado" />
+            </ul>
+        }
+
+        <div style="flex-grow: 1; flex-shrink: 1; ">
+            <div style="display: flex; flex-direction: column; height: 100vh; width: 100vw;">
+                <div style="flex-grow: 0; flex-shrink: 0; ">
+                    @{
+                        //para a página de login não pode ter o padding
+                        var estilo = "";
+                        if (!usuarioLogado.SessaoAtiva)
+                        {
+                            estilo = "padding-left: 300px;";
+                        }
+                    }
+                    <header style="@estilo">
+                        <div class="navbar navbar-fixed alturaheader">
+                            <nav class="navbar">
+                                @if (usuarioLogado.SessaoAtiva)
+                                {
+                                    <a href="#" data-target="slide-out" class="sidenav-trigger" title="Menu"><i class="material-icons">menu</i></a>
+                                }
+
+                                <partial name="~/Views/Shared/Cabecalho.cshtml" model="usuarioLogado" />
+                            </nav>
+                        </div>
+                    </header>
+                </div>
+
+
+                <div style="flex-grow: 1; flex-shrink: 1; overflow: auto; ">
+                    @{
+                        //para a página de login não pode ter o padding
+                        estilo = "";
+                        if (!usuarioLogado.SessaoAtiva)
+                        {
+                            estilo = "padding-left: 38px;";
+                        }
+                    }
+                    <main role="main" class="container corpo" style="max-width: initial; width: 100%; @estilo">
+                        @RenderBody()
+                    </main>
+                </div>
+                <div style="flex-grow: 0; flex-shrink: 0; ">
+                    @RenderSection("RodapePagina", required: false)
+                </div>
+            </div>
+        </div>
+    </div>
+    <partial name="~/Views/Shared/Error.cshtml" />
+
+</body>
+</html>
