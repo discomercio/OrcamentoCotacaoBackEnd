@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h5>Novo Pedido</h5>
+
+<div class="row">
+    @using (Html.BeginForm("ValidarCliente", "Cliente", FormMethod.Post))
+    {
+        <div class="row col s12" style="margin-top:2rem!important">
+            <div class="input-field col s5">
+                <input id="cpf_cnpj" name="cpf_cnpj" type="text" class="validate" />
+                <label for="cpf_cnpj" style="margin-top:auto">CPF / CNPJ</label>
+
+            </div>
+            <div class="input-field">
+                <button class="waves-effect waves-light btn-small"
+                        type="submit"
+                        style="margin-top:-1rem">
+                    Pesquisar
+                </button>
+            </div>
+        </div>
+    }
+</div>

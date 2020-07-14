@@ -1,0 +1,627 @@
+﻿@model Loja.UI.Models.Pedido.ProdutosFormaPagtoViewModel
+@{
+    ViewData["Title"] = "IniciarNovoPedido";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@* Esta tela irá mostrar a lista de produtos selecionados pelo cliente e a forma de pagamento*@
+
+<h5>Criar Novo Pedido</h5>
+
+
+
+<div class="col s12 sectionDesktop" style="margin-left:5%">
+    @using (Html.BeginForm("", "", FormMethod.Post))
+    {
+        <article class="indicadorlinha">
+            <div class="row">
+                <div class="col s12">
+                    <span class="caixa">
+                        <span class="rotulo">Cliente:</span>
+                        <span class="dado" name="nome" id="nome"> @Model.NomeCliente</span>
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <div class="input-field col s2">
+                        <button class="waves-effect waves-light btn-small"
+                                type="button" onclick="testeModal()"
+                                style="margin-top:2%;">
+                            <i class="material-icons left">add</i>Adicionar produto
+                        </button>
+                    </div>
+                </div>
+            </div>
+            @* Produtos adicionados *@
+            <div class="row">
+                <div class="col s12">
+                    <table class="col s12 tabelaitens destaquelinha" style="white-space:nowrap">
+                        <thead>
+                            <tr>
+                                <th style="width: auto;" scope="col" align="left" valign="bottom">
+                                    <span class="PLTe">Produto</span>
+                                </th>
+                                <th scope="col" class="hquantidade" align="right" valign="bottom">
+                                    <span class="PLTd">Qtde</span>
+                                </th>
+                                <th scope="col" class="preco" align="right" valign="bottom">
+                                    <span class="PLTd">Preço</span>
+                                </th>
+                                <th scope="col" class="hpreco" align="right" valign="bottom">
+                                    <span class="PLTd">VL Lista</span>
+                                </th>
+                                <th scope="col" class="hdesconto" align="right" valign="bottom">
+                                    <span class="PLTd">
+                                        Desc%
+                                        &nbsp;&nbsp;
+                                    </span>
+                                </th>
+                                <th scope="col" class="hpreco" align="right" valign="bottom">
+                                    <span class="PLTd">VL Venda</span>
+                                </th>
+                                <th scope="col" class="hpreco" align="right" valign="bottom">
+                                    <span class="PLTd">VL Total</span>
+                                </th>
+                                <th scope="col" style="width: 2em;">
+                                    <!-- excluir  -->
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @* Aqui vai o produto selecionado *@
+                            @* Verificar com o Edu como passar os valores para cá *@
+                            <tr>
+                                <td align="left" style="cursor:pointer;" onclick="mostrarProdutos(i)">
+                                    @* aqui no span vai o Fabricante/NumProduto - Descricao do produto *@
+                                    <span id="detProduto"></span>
+                                </td>
+                                @*<td align="left" style="cursor: pointer;" (click)="mostrarProdutos(i)">
+                                        {{i.Fabricante}}/{{i.NumProduto}} -
+                                        <span [innerHTML]="i.Descricao"></span>
+                                    </td>*@
+
+                                <td align="right">
+                                    <div class="input-field quantidade">
+                                        <input type="number" id="qtdeProd" onkeyup="digitouQtde(i)" onchange="digitouQtde(i)" />
+                                    </div>
+                                </td>
+                                @*<td align="right">
+                                        <mat-form-field class="quantidade">
+                                            <input matInput [ngModelOptions]="{standalone: true}" type="number" required
+                                                   [(ngModel)]="i.Qtde" (keyup)="digitouQte(i)" (change)="digitouQte(i)">
+                                        </mat-form-field>
+                                    </td>*@
+
+                                @if (Model.Permite_RA_Status == 1)
+                                {
+                                    <td *ngIf="permite_RA_Status" align="right">
+                                        <!-- <input name="c_vl_NF" id="c_vl_NF" class="PLLd" style="width:62px;" value='{{i.Preco}}' /> -->
+                                        <mat-form-field class="preco">
+                                            <input matInput type="text" required
+                                                   [value]="moedaUtils.formatarMoedaSemPrefixo(i.Preco)"
+                                                   (change)="digitouPreco($event,i)" (keyup)="digitouPreco($event,i)">
+                                        </mat-form-field>
+                                    </td>
+                                }
+
+                                <td align="right">
+                                    {{moedaUtils.formatarMoedaSemPrefixo(i.VlLista)}}
+                                </td>
+
+
+                                <!-- no original somente isLojaHabilitadaProdCompostoECommerce podia digitar o desconto,
+                                mas todo mundo podia digitar o c_vl_unitario
+                                mudamos para deixar todo mundo digitar o desconto -->
+                                <td align="right">
+                                    <!-- <input name="c_desc" id="c_desc" class="PLLd" style="width:36px;" value="{{i.Desconto}}" /> -->
+                                    <mat-form-field class="desconto">
+                                        <input matInput type="text"
+                                               [value]="moedaUtils.formatarPorcentagemUmaCasa(i.Desconto)"
+                                               (change)="digitouDesc($event,i)" (keyup)="digitouDesc($event,i)">
+                                    </mat-form-field>%
+                                </td>
+                                <td align="right">
+                                    <!-- <input name="c_vl_unitario" id="c_vl_unitario" class="PLLd" style="width:62px;"
+                                    value='{{i.VlUnitario}}' /> -->
+                                    <mat-form-field class="preco">
+                                        <input matInput type="text" required
+                                               [value]="moedaUtils.formatarMoedaSemPrefixo(i.VlUnitario)"
+                                               (change)="digitouVlVenda($event,i)" (keyup)="digitouVlVenda($event,i)">
+                                    </mat-form-field>
+                                </td>
+
+
+                                <td align="right">
+                                    <!-- input name="c_vl_total" id="c_vl_total" class="PLLd" style="width:70px;" -->
+                                    {{moedaUtils.formatarMoedaSemPrefixo(i.TotalItem)}}
+                                </td>
+
+                                <td style="padding: 0; min-width: auto; max-width: 32px;">
+                                    <button mat-button (click)="removerLinha(i)"
+                                            style="padding: 0; min-width: auto; max-width: 32px;">
+                                        <mat-icon class="icone-lixeira" style="padding: 0;" title="Remover linha">
+                                            delete
+                                        </mat-icon>
+                                    </button>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            @* Aqui vai a parte de Forma de Pagamento *@
+            @* preciso saber se da para passar uma variavel para esse drop para poder saber se
+                o valor corresponde a qual forma de pagamento para que possa se tornar visivel*@
+
+            <div class="row">
+                <div class="input-field col s3">
+                    @Html.DropDownList("FormaPagto", new SelectList(Model.EnumFormaPagto, "Value", "Text",
+                   Model.EnumFormaPagto), new { @id = "enumPagto" })
+                    <label>Forma de Pagamento *</label>
+                </div>
+            </div>
+
+            @* aqui vai a condição para mostrar a div A vista *@
+            @if (Model.FormaPagto.ListaAvista != null)
+            {
+                <div class="row col s12" id="Avista" style="display:none">
+                    @* Parcelamento *@
+                    <div class="input-field col s3">
+                        <select name="">
+                            <option value="0">Selecione</option>
+                            @* Aqui vai o select com os valores calculados *@
+                            @*@foreach ()
+                                {
+
+                                }*@
+                        </select>
+                        <label>Parcelamento</label>
+                    </div>
+                    @* Meio de pagamento *@
+                    <div class="input-field col s3">
+                        <select name="">
+                            <option value="0">Selecione</option>
+                            @foreach (var i in Model.FormaPagto.ListaAvista)
+                            {
+                                <option value="@i.Id">@i.Descricao</option>
+                            }
+                        </select>
+                        <label>Meio de Pagamento</label>
+                    </div>
+                </div>
+            }
+
+            @* aqui vai a condição para mostrar a div Parcela Unica *@
+            @if (Model.FormaPagto.ListaParcUnica != null)
+            {
+                <div class="row col s12" id="ParcUnica" style="display:none">
+                    @* Parcelamento *@
+                    <div class="input-field col s3">
+                        <select name="">
+                            <option value="0">Selecione</option>
+                            @* Aqui vai o select com os valores calculados *@
+                            @*@foreach ()
+                                {
+
+                                }*@
+                        </select>
+                        <label>Parcelamento</label>
+                    </div>
+                    @* Meio de pagamento *@
+                    <div class="input-field col s3">
+                        <select name="">
+                            <option value="0">Selecione</option>
+                            @foreach (var i in Model.FormaPagto.ListaParcUnica)
+                            {
+                                <option value="@i.Id">@i.Descricao</option>
+                            }
+                        </select>
+                        <label>Meio de Pagamento</label>
+                    </div>
+                    @* Dias para vencimento *@
+                    <div class="input-field col s2">
+                        <input type="text" id="diasVencParcUnica" />
+                        <label>Dias para vencimento</label>
+                    </div>
+                </div>
+            }
+
+            @* aqui vai a condição para mostrar a div Parcela com entrada *@
+            @if (Model.FormaPagto.ListaParcComEntrada != null)
+            {
+                <div id="ParcComEntrada" style="display:none">
+                    <div class="row col s12">
+                        @* Valor da entrada *@
+                        <div class="input-field col s3">
+                            <input id="vlEntrada" type="text" />
+                            <label>Valor Entrada</label>
+                        </div>
+                        @* meio de pagamento Entrada *@
+                        <div class="input-field col s3">
+                            <select name="">
+                                <option value="0">Selecione</option>
+                                @foreach (var v in Model.FormaPagto.ListaParcComEntrada)
+                                {
+                                    <option value="@v.Id">@v.Descricao</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row col s12">
+                        @* Parcelamento  *@
+                        <div class="input-field col s3">
+                            <select name="">
+                                <option value="0">Selecione</option>
+                                @* Aqui vai o select com os valores calculados *@
+                                @*@foreach ()
+                                    {
+
+                                    }*@
+                            </select>
+                            <label>Parcelamento</label>
+                        </div>
+                        @* Meio de pagamento parcela prestação *@
+                        <div class="input-field col s3">
+                            @* Meio de pagamento *@
+                            <select name="">
+                                <option value="0">Selecione</option>
+                                @foreach (var i in Model.FormaPagto.ListaParcComEntPrestacao)
+                                {
+                                    <option value="@i.Id">@i.Descricao</option>
+                                }
+                            </select>
+                            <label>Meio de Pagamento</label>
+                        </div>
+                        @* dias para vencimento *@
+                        @* fazer a condição aqui para saber se é diferente de cartões *@
+                        <div class="input-field col s2">
+                            <input type="text" id="diasVenc" />
+                            <label>Dias para vencimento Prest</label>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @* aqui vai a condição para mostrar a div Pagamento com Cartão Internet *@
+            @if (Model.FormaPagto.ParcCartaoInternet)
+            {
+                <div class="row col s12" id="PagtoCartaoInternet" style="display:none">
+                    @* Parcelamento  *@
+                    <div class="input-field col s3">
+                        <select name="">
+                            <option value="0">Selecione</option>
+                            @* Aqui vai o select com os valores calculados *@
+                            @*@foreach ()
+                                {
+
+                                }*@
+                        </select>
+                        <label>Parcelamento</label>
+                    </div>
+                </div>
+            }
+
+            @* aqui vai a condição para mostrar a div Pagamento com Cartão Maquineta *@
+            @if (Model.FormaPagto.ParcCartaoMaquineta)
+            {
+                <div class="row col s12" id="PagtoCartaoMaquineta" style="display:none">
+                    @* Parcelamento  *@
+                    <div class="input-field col s3">
+                        <select name="">
+                            <option value="0">Selecione</option>
+                            @* Aqui vai o select com os valores calculados *@
+                            @*@foreach ()
+                                {
+
+                                }*@
+                        </select>
+                        <label>Parcelamento</label>
+                    </div>
+
+                </div>
+            }
+        </article>
+    }
+</div>
+<style>
+    .modal {
+        width: 70% !important;
+    }
+</style>
+
+<div id="modal1" class="modal">
+    <div class="modal-content">
+        <section>
+            <article class="fixo">
+                <div class="row col s12">
+                    <div class="input-field col s8">
+                        @* ao digitar o produto, teremos que fazer uma busca na lista de produtos para
+                            trazer o registro informado*@
+                        <input name="buscaproduto" id="buscaproduto" type="text" />
+                        <label id="lblbuscaproduto" for="buscaproduto">Produto (código) </label>
+                    </div>
+                    <div class="input-field col s3">
+                        <input name="qtde" id="qtde" type="number" placeholder="Quantidade" required />
+                    </div>
+                </div>
+                <div style="max-height:80% !important" class="listaprods">
+                    <div class="row col s12 center" id="msg"></div>
+                    <table class="destaquelinha tabela_endereco"
+                           style="max-height:50%;">
+                        <tbody>
+                            @foreach (var i in Model.ProdutoCombo.ProdutoDto)
+                            {
+                                if (i.Preco_lista > 0)
+                                {
+                                    <tr class="prod">
+                                        <td>
+                                            <label>
+                                                <input class="with-gap check" type="radio" value="@i.Produto" />
+                                                <span style="color:black !important;">@i.Produto</span>
+                                            </label>
+                                        </td>
+                                        @*<td> @i.Produto</td>*@
+                                        <td> @Html.Raw(i.Descricao_html)</td>
+                                        <td class="tdtabela preco">@string.Format("{0:c2}", i.Preco_lista)</td>
+                                    </tr>
+                                    {
+                                        var filhosDiretos = Model.ProdutoCombo.ProdutoCompostoDto.Where(el => el.PaiFabricante == i.Fabricante && el.PaiProduto == i.Produto);
+                                        foreach (var filho in filhosDiretos)
+                                        {
+                                            foreach (var filhote in filho.Filhos)
+                                            {
+                                                var dadofilhote = Model.ProdutoCombo.ProdutoDto.Where(el => el.Fabricante == filhote.Fabricante && el.Produto == filhote.Produto);
+                                                foreach (var filhotetela in dadofilhote)
+                                                {
+                                                    <tr class="prod trfilho">
+                                                        <td class="itemfilho">
+                                                            <span style="padding-left:40px !important;">
+                                                                @filhote.Qtde x
+                                                                @filhote.Fabricante/@filhote.Fabricante_Nome/
+                                                                @filhotetela.Produto
+                                                            </span>
+                                                        </td>
+                                                        <td class="tdtabela">
+                                                            @Html.Raw(filhotetela.Descricao_html)
+                                                        </td>
+                                                        <td class="tdtabela preco">@string.Format("{0:c2}", filhotetela.Preco_lista)</td>
+                                                    </tr>
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+            <div class="modal-footer col s12" id="footer">
+                <div class="container">
+                    <button type="button" href="#!" class="modal-close waves-effect waves-green btn">Cancelar</button>
+                    <button type="button" id="btnModificar" href="#!" class="modal-close waves-effect waves-green btn">
+                        Modificar
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+
+<script>
+
+    function testeModal() {
+        let Modalelem = document.querySelector('.modal');
+        let instanceModal = M.Modal.init(Modalelem);
+        instanceModal.open();
+    };
+
+
+</script>
+<style>
+    .listaprods {
+        flex: 1 1 auto;
+        /*overflow-y: auto;*/
+    }
+
+    .destaquelinha :hover {
+        background-color: #d1d1d1 !important;
+    }
+
+    .modal {
+        max-height: 80% !important;
+        overflow-y: inherit !important;
+        border-radius: 4px !important;
+    }
+
+    .tabela_endereco tbody td {
+        white-space: initial;
+        line-height: initial;
+        border: 1px solid white;
+        border-spacing: 2px;
+        width: 25% !important;
+    }
+
+    .tabela_endereco {
+        border: 1px solid #ccc;
+        border-collapse: collapse;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    .itemfilho {
+        padding-left: 3em;
+        padding-right: 0;
+        padding-bottom: 6px;
+    }
+
+    .trfilho {
+        font-size: 80%;
+    }
+
+    .tdtabela {
+        padding-left: 0;
+        padding-right: 0;
+        padding-bottom: 6px;
+        /*border:1px solid white;*/
+    }
+
+    .prod {
+        padding: 0.5em;
+        background-color: #fbfbfb !important;
+        /*border: 1px solid white;*/
+        text-align: left !important;
+    }
+
+        .prod td {
+            padding: 0px !important;
+            padding-right: 10px !important;
+        }
+
+    .sectionDesktop .tabelaitens {
+        border: 1px solid #ccc;
+        border-collapse: collapse;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    tbody {
+        display: block;
+        height: auto;
+        max-height: 300px;
+        overflow: auto;
+    }
+
+    #footer {
+        text-align: center;
+        padding: 1em;
+        flex-grow: 0;
+        flex-shrink: 0;
+    }
+
+    thead, tbody tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+
+
+    .quantidade {
+        width: 6ch;
+        text-align: right;
+    }
+
+    .preco {
+        width: 10ch;
+        text-align: right;
+    }
+
+    .desconto {
+        width: 6ch;
+        text-align: right;
+        padding-right: 0 !important;
+    }
+
+
+    .hquantidade {
+        min-width: 6ch;
+        width: 6ch;
+        text-align: right;
+    }
+
+    .hpreco {
+        min-width: 12ch;
+        width: 12ch;
+        text-align: right;
+    }
+
+    .hdesconto {
+        min-width: 11ch;
+        width: 11ch;
+        text-align: right;
+    }
+    /*.sectionDesktop .tabelaitens caption {
+            font-size: 1.5em;
+            margin: 0.5em 0 0.75em;
+        }
+
+        .sectionDesktop .tabelaitens tr {
+            background-color: #fbfbfb;
+            border: 1px solid #ddd;
+            padding: 0.35em;
+        }
+
+        .sectionDesktop .tabelaitens th,
+        .sectionDesktop .tabelaitens td {
+            padding: 0.625em;
+            padding-left: 0.4em;
+            padding-right: 0.4em;
+            //text-align: center;
+        }
+
+        .sectionDesktop .tabelaitens th {
+            font-size: 0.85em;
+            letter-spacing: 0.1em;
+        }
+
+        .sectionDesktop .tabelaitens .input-field {
+            padding: 0em;
+            padding-left: 0.4em;
+            padding-right: 0.4em;
+        }*/
+
+    /*.trfilho {
+            font-size: 80%;
+        }
+
+        .tdtabela {
+            padding-left: 0;
+            padding-right: 0;
+            padding-bottom: 6px;
+        }*/
+</style>
+
+<script>
+    //montar lista de parcelamento
+    //$('#enumPagto').change(function () {
+    //    var f = new FormaPagto();
+    //    f.montarListaParcelamento($('#enumPagto'))
+    //});
+
+    //var itens = new Itens;
+    //var coe = new DtoCoeficiente;
+
+
+
+
+@*
+@foreach (var coef in Model.ListaCoeficiente)
+{
+    //apenas um  exemplo de como passar valores da model para javascript e corrigir a escrita
+    <text>
+    lstCoeficiente.push( @Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(coef., true)) );
+    </text>
+
+
+}
+    console.log(lstCoeficiente);*@
+
+
+
+</script>
+<script src="C:\Users\gabriel.teodoro\source\repos\Loja.UI\Loja.UI\FuncoesTs\Itens\Itens.js"></script>
+<script src="~/scriptsJs/UtilTs/Constantes/Constantes.js"></script>
+<script src="~/scriptsJs/DtosTs/DtoCoeficiente/DtoCoeficiente.js"></script>
+<script src="~/scriptsJs/DtosTs/DtoPedido/DtoPedidoProdutosPedido.js"></script>
+<script src="~/scriptsJs/Views/Pedido/FormaPagto.js"></script>
+<script src="~/scriptsJs/UtilTs/MoedaUtils/moedaUtils.js"></script>
+<script src="~/scriptsJs/Views/Pedido/IniciarNovoPedido.js"></script>
