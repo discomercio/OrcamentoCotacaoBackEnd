@@ -8,7 +8,6 @@ import { FormatarEndereco } from 'src/app/utils/formatarEndereco';
 import { FormatarTelefone } from 'src/app/utils/formatarTelefone';
 import { Location } from '@angular/common';
 import { ImpressaoService } from 'src/app/utils/impressao.service';
-import { ClienteCadastroUtils } from 'src/app/dto/AngularClienteCadastroUtils/ClienteCadastroUtils';
 import { StringUtils } from 'src/app/utils/stringUtils';
 import { PedidoProdutosDtoPedido } from 'src/app/dto/pedido/detalhesPedido/PedidoProdutosDtoPedido';
 import { TelaDesktopBaseComponent } from 'src/app/servicos/telaDesktop/telaDesktopBaseComponent';
@@ -18,6 +17,8 @@ import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
 import { MatDialog } from '@angular/material';
 import { AutenticacaoService } from 'src/app/servicos/autenticacao/autenticacao.service';
 import { HttpParams } from '@angular/common/http';
+import { EnderecoEntregaDtoClienteCadastro } from 'src/app/dto/ClienteCadastro/EnderecoEntregaDTOClienteCadastro';
+import { ClienteCadastroUtils } from 'src/app/utils/ClienteCadastroUtils';
 
 @Component({
   selector: 'app-pedido-desktop',
@@ -75,6 +76,49 @@ export class PedidoDesktopComponent extends TelaDesktopBaseComponent implements 
 
     //       return false;
 
+  }
+
+  public enderecoEntregaFormatado: string;
+  public qtdeLinhaEndereco: number;
+  montarEnderecoEntrega(enderecoEntregaDto: EnderecoEntregaDtoClienteCadastro) {
+
+    if (enderecoEntregaDto.OutroEndereco) {
+      let retorno: string = "";
+      let sEndereco: string;
+      let split: string[];
+      //vamos formatar conforme é feito no asp
+      sEndereco = this.formatarEndereco.formata_endereco(enderecoEntregaDto.EndEtg_endereco,
+        enderecoEntregaDto.EndEtg_endereco_numero, enderecoEntregaDto.EndEtg_endereco_complemento,
+        enderecoEntregaDto.EndEtg_bairro, enderecoEntregaDto.EndEtg_cidade, enderecoEntregaDto.EndEtg_uf,
+        enderecoEntregaDto.EndEtg_cep);
+
+      //vamos verificar se esta ativo a memorização de endereço completa
+      //se a memorização não estiver ativa ou o registro foi criado no formato antigo, paramos por aqui
+
+      if (enderecoEntregaDto.St_memorizacao_completa_enderecos == 0) {
+        this.enderecoEntregaFormatado = sEndereco + "\n" + enderecoEntregaDto.EndEtg_descricao_justificativa;
+        return;
+      }
+      else {
+        if (this.pedido.DadosCliente.Tipo == this.constantes.ID_PF) {
+          this.enderecoEntregaFormatado = sEndereco + "\n" + enderecoEntregaDto.EndEtg_descricao_justificativa;
+          return;
+        }
+      }
+      
+      //memorização ativa, colocamos os campos adicionais
+      if (enderecoEntregaDto.EndEtg_tipo_pessoa == this.constantes.ID_PF) {
+        this.enderecoEntregaFormatado = this.formatarEndereco.montarEnderecoEntregaPF(this.pedido.EnderecoEntrega, sEndereco);
+
+        split = this.enderecoEntregaFormatado.split('\n');
+        this.qtdeLinhaEndereco = split.length;
+        return;
+      }
+      //se chegar aqui é PJ
+      this.enderecoEntregaFormatado = this.formatarEndereco.montarEnderecoEntregaPJ(this.pedido.EnderecoEntrega, sEndereco);
+      split = this.enderecoEntregaFormatado.split('\n');
+      this.qtdeLinhaEndereco = split.length;
+    }
   }
 
   //para dizer se é PF ou PJ

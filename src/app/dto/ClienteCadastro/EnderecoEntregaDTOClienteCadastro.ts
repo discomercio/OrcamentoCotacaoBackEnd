@@ -33,5 +33,6 @@
     EndEtg_produtor_rural_status: number;
     EndEtg_ie: string;
     EndEtg_rg: string;
+    St_memorizacao_completa_enderecos:number;
 
 }

@@ -250,42 +250,13 @@
                     <!-- <p class="C">{{formata_endereco_entrega()}} &nbsp;</p> -->
                 </td>
             </tr>
-
-            <!-- <tr *ngIf="pedido?.EnderecoEntrega?.EndEtg_descricao_justificativa?.trim() != ''">
-                <td align="left" style="word-wrap:break-word">
-                    <p class="C">{{pedido?.EnderecoEntrega?.EndEtg_descricao_justificativa}} &nbsp;</p>
-                </td>
-            </tr> -->
-
             <tr *ngIf="pedido?.EnderecoEntrega?.EndEtg_descricao_justificativa?.trim() != ''">
                 <td align="left" style="word-wrap:break-word">
 
-                    <p class="C" style="display: inline-block">
-                        {{pedido?.EnderecoEntrega?.EndEtg_endereco}},
-                    </p>
-                    <p class="C" style="display: inline-block">
-                        {{pedido?.EnderecoEntrega?.EndEtg_endereco_numero}} -
-                    </p>
-                    <p class="C" style="display: inline-block"
-                        *ngIf="pedido?.EnderecoEntrega?.EndEtg_endereco_complemento">
-                        {{pedido?.EnderecoEntrega?.EndEtg_endereco_complemento}} -
-                    </p>
-                    <p class="C" style="display: inline-block">
-                        {{pedido?.EnderecoEntrega?.EndEtg_bairro}} -
-                    </p>
-                    <p class="C" style="display: inline-block">
-                        {{pedido?.EnderecoEntrega?.EndEtg_cidade}} -
-                    </p>
-                    <p class="C" style="display: inline-block">
-                        {{pedido?.EnderecoEntrega?.EndEtg_uf}} -
-                    </p>
-                    <p class="C" style="display: inline-block">
-                        {{formatarEndereco.cep_formata(pedido?.EnderecoEntrega?.EndEtg_cep)}}
-                    </p>
-                    <p class="C">
-                        {{pedido?.EnderecoEntrega?.EndEtg_descricao_justificativa}}
-                    </p>
-
+                    <textarea name="c_obs1" id="c_obs1" class="PLLe" rows="{{qtdeLinhaEndereco}}"
+                        style="width:99%;margin-left:2pt; resize: auto; overflow: hidden;" readonly tabindex=-1
+                        [innerHTML]="enderecoEntregaFormatado">
+                    </textarea>                    
                 </td>
             </tr>
 

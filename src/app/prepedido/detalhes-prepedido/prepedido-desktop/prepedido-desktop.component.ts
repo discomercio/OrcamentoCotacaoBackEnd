@@ -7,9 +7,10 @@ import { DetalhesPrepedidoComponent } from '../detalhes-prepedido.component';
 import { MoedaUtils } from 'src/app/utils/moedaUtils';
 import { Constantes } from 'src/app/dto/Constantes';
 import { StringUtils } from 'src/app/utils/stringUtils';
-import { ClienteCadastroUtils } from 'src/app/dto/AngularClienteCadastroUtils/ClienteCadastroUtils';
 import { ImpressaoService } from 'src/app/utils/impressao.service';
 import { FormatarEndereco } from 'src/app/utils/formatarEndereco';
+import { ClienteCadastroUtils } from 'src/app/utils/ClienteCadastroUtils';
+import { EnderecoEntregaDtoClienteCadastro } from 'src/app/dto/ClienteCadastro/EnderecoEntregaDTOClienteCadastro';
 
 @Component({
   selector: 'app-prepedido-desktop',
@@ -35,6 +36,53 @@ export class PrepedidoDesktopComponent extends TelaDesktopBaseComponent implemen
   stringUtils = StringUtils;
 
   ngOnInit() {
+    this.montarEnderecoEntrega(this.prepedidoDto.EnderecoEntrega);
+    console.log(this.enderecoEntregaFormatado);
+  }
+
+  public enderecoEntregaFormatado: string;
+  public qtdeLinhaEndereco: number;
+  montarEnderecoEntrega(enderecoEntregaDto: EnderecoEntregaDtoClienteCadastro) {
+
+    if (enderecoEntregaDto.OutroEndereco) {
+      let retorno: string = "";
+      let sEndereco: string;
+      let split: string[];
+      //vamos formatar conforme é feito no asp
+      sEndereco = this.formatarEndereco.formata_endereco(enderecoEntregaDto.EndEtg_endereco,
+        enderecoEntregaDto.EndEtg_endereco_numero, enderecoEntregaDto.EndEtg_endereco_complemento,
+        enderecoEntregaDto.EndEtg_bairro, enderecoEntregaDto.EndEtg_cidade, enderecoEntregaDto.EndEtg_uf,
+        enderecoEntregaDto.EndEtg_cep);
+
+      //vamos verificar se esta ativo a memorização de endereço completa
+      //se a memorização não estiver ativa ou o registro foi criado no formato antigo, paramos por aqui
+
+      if (enderecoEntregaDto.St_memorizacao_completa_enderecos == 0) {
+        this.enderecoEntregaFormatado = sEndereco + "\n" + enderecoEntregaDto.EndEtg_descricao_justificativa;
+        return;
+      }
+      else {
+        if (this.prepedidoDto.DadosCliente.Tipo == this.constantes.ID_PF) {
+          this.enderecoEntregaFormatado = sEndereco + "\n" + enderecoEntregaDto.EndEtg_descricao_justificativa;
+          return;
+        }
+      }
+      
+      //memorização ativa, colocamos os campos adicionais
+      if (enderecoEntregaDto.EndEtg_tipo_pessoa == this.constantes.ID_PF) {
+        this.enderecoEntregaFormatado = this.formatarEndereco.montarEnderecoEntregaPF(this.prepedidoDto.EnderecoEntrega, sEndereco);
+
+        split = this.enderecoEntregaFormatado.split('\n');
+        this.qtdeLinhaEndereco = split.length;
+        return;
+      }
+      //se chegar aqui é PJ
+      this.enderecoEntregaFormatado = this.formatarEndereco.montarEnderecoEntregaPJ(this.prepedidoDto.EnderecoEntrega, sEndereco);
+      split = this.enderecoEntregaFormatado.split('\n');
+      this.qtdeLinhaEndereco = split.length;
+    }
+
+
   }
 
   //para dizer se é PF ou PJ

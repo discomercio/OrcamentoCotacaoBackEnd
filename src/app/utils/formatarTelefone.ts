@@ -73,6 +73,19 @@ export class FormatarTelefone {
         return ret;
     }
 
+    public static formatarDDDTelRamal(ddd: string, tel: string, ramal: string): string {
+        let retorno: string;
+
+        let aux:string = StringUtils.retorna_so_digitos(tel);
+        aux = this.telefone_formata(aux);
+
+        //FORMATA AGRUPANDO O DDD E O RAMAL
+        retorno = "(" + ddd.trim() + ") " + aux;
+        if (!ramal && ramal != "")
+            retorno += " (R. " + ramal.trim() + ")";
+
+        return retorno;
+    }
 
 }
 

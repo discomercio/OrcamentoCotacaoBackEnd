@@ -172,37 +172,16 @@
                         <!-- <p class="C">{{formata_endereco_entrega()}} &nbsp;</p> -->
                     </td>
                 </tr>
-
+                <!-- afazer: alterar o modo como mostramos os dados de endereço de entrega -->
                 <tr *ngIf="this.prepedidoDto?.EnderecoEntrega?.EndEtg_descricao_justificativa?.trim() != ''">
                     <td align="left" *ngIf="this.prepedidoDto?.EnderecoEntrega?.OutroEndereco"
                         style="word-wrap:break-word">
 
-                        <p class="C" style="display: inline-block">
-                            {{this.prepedidoDto?.EnderecoEntrega?.EndEtg_endereco}},
-                        </p>
-                        <p class="C" style="display: inline-block">
-                            {{this.prepedidoDto?.EnderecoEntrega?.EndEtg_endereco_numero}} -
-                        </p>
-                        <p class="C" style="display: inline-block"
-                            *ngIf="this.prepedidoDto?.EnderecoEntrega?.EndEtg_endereco_complemento">
-                            {{this.prepedidoDto?.EnderecoEntrega?.EndEtg_endereco_complemento}} -
-                        </p>
-                        <p class="C" style="display: inline-block">
-                            {{this.prepedidoDto?.EnderecoEntrega?.EndEtg_bairro}} -
-                        </p>
-                        <p class="C" style="display: inline-block">
-                            {{this.prepedidoDto?.EnderecoEntrega?.EndEtg_cidade}} -
-                        </p>
-                        <p class="C" style="display: inline-block">
-                            {{this.prepedidoDto?.EnderecoEntrega?.EndEtg_uf}} -
-                        </p>
-                        <p class="C" style="display: inline-block">
-                            {{formatarEndereco.cep_formata(prepedidoDto?.EnderecoEntrega?.EndEtg_cep)}}
-                        </p>
-                        <p class="C">
-                            {{this.prepedidoDto?.EnderecoEntrega?.EndEtg_descricao_justificativa}}
-                        </p>
-
+                        <!-- alterando a forma como mostramos o endereço d entrega por conta dos novos campos -->
+                        <textarea name="c_obs1" id="c_obs1" class="PLLe" rows="{{qtdeLinhaEndereco}}"
+                            style="width:99%;margin-left:2pt; resize: auto; overflow: hidden;" readonly tabindex=-1
+                            [innerHTML]="enderecoEntregaFormatado">                            
+                        </textarea>
                     </td>
                 </tr>
 
@@ -401,9 +380,9 @@
                 <tr>
                     <td align="left"><span class="Rf">Descrição da Forma de Pagamento</span></td>
                 </tr>
-                <tr>                    
+                <tr>
                     <td align="left">
-                            <textarea name="c_obs1" id="c_obs1" class="PLLe" rows="{{constantes.MAX_LINHAS_FORMA_PAGTO}}"
+                        <textarea name="c_obs1" id="c_obs1" class="PLLe" rows="{{constantes.MAX_LINHAS_FORMA_PAGTO}}"
                             style="width:99%;margin-left:2pt; resize: none;" readonly tabindex=-1>{{this.prepedidoDto?.DetalhesPrepedido.DescricaoFormaPagamento}} &nbsp;
                         </textarea>
                         <!-- <span align="left" class="C">{{this.prepedidoDto.DetalhesPrepedido.DescricaoFormaPagamento}}
