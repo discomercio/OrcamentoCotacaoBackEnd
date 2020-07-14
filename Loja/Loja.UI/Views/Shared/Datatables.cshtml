@@ -1,0 +1,247 @@
+﻿
+<style>
+
+    @* apra deixar as setas de ordenação antes dos nomes das colunas
+        na lista de produtos tem uma coluna muito grande e fica estrannho no fim dela
+        *@
+    table.dataTable thead .sorting_asc {
+        background: url("http://cdn.datatables.net/1.10.0/images/sort_asc.png") no-repeat center left;
+    }
+
+    table.dataTable thead .sorting_desc {
+        background: url("http://cdn.datatables.net/1.10.0/images/sort_desc.png") no-repeat center left;
+    }
+
+    table.dataTable thead .sorting {
+        background: url("http://cdn.datatables.net/1.10.0/images/sort_both.png") no-repeat center left;
+    }
+    @* diversos*@
+    .dataTables_length select {
+        display: inline-block;
+        height: auto;
+        width: auto;
+    }
+
+    /*botoes ficam à direita*/
+    div.dt-buttons {
+        display: inline;
+        float: right;
+        padding-top: 0.75em;
+        padding-left: 10px;
+    }
+
+    /* cores dos botoes de paginacao */
+    .dataTables_paginate .pagination li a {
+        color: #fff;
+    }
+
+    .dataTables_paginate .pagination li.active a {
+        color: #444;
+    }
+
+    /* espaçamento dos botoes */
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        padding: 0.5em 0.4em;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .first,
+    .dataTables_wrapper .dataTables_paginate .previous,
+    .dataTables_wrapper .dataTables_paginate .next,
+    .dataTables_wrapper .dataTables_paginate .last {
+        width: 85px;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .previous {
+        margin-right: 10px;
+    }
+
+    /*usando waves-effect waves-light btn-small
+        deixamos duplicado para não piscar, mas a que vale mesmo está na rotina de incializacao
+    */
+    .dataTables_paginate a {
+        /*btn-small*/
+        text-decoration: none;
+        color: #fff;
+        background-color: #26a69a;
+        text-align: center;
+        letter-spacing: .5px;
+        -webkit-transition: background-color .2s ease-out;
+        transition: background-color .2s ease-out;
+        cursor: pointer;
+        /*waves-effect*/
+        position: relative;
+        cursor: pointer;
+        display: inline-block;
+        overflow: hidden;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        vertical-align: middle;
+        z-index: 1;
+        -webkit-transition: .3s ease-out;
+        transition: .3s ease-out;
+    }
+
+        .dataTables_paginate a:hover {
+            background-color: #2bbbad;
+            -webkit-box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 1px 7px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -1px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 1px 7px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -1px rgba(0, 0, 0, 0.2);
+        }
+
+        .dataTables_paginate a:focus {
+            background-color: #1d7d74;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:active {
+        background: white;
+        box-shadow: none;
+    }
+
+    .dataTables_paginate .disabled a {
+        color: #c5c5c5 !important;
+    }
+
+    .dataTables_paginate .pagination li.active {
+        background-color: white !important;
+    }
+
+    .dataTables_paginate .paginate_button:hover {
+        background: white !important;
+        border: 1px solid white !important;
+    }
+
+    .dataTables_paginate .pagination li a {
+        font-size: 13px; /*1.0em;*/
+    }
+
+    .dataTables_length {
+        float: right !important;
+        margin-left: 30px;
+    }
+</style>
+<script>
+    var DataTables_language = {
+        "sEmptyTable": "Nenhum registro encontrado",
+        "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+        "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+        "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+        "sInfoPostFix": "",
+        "sInfoThousands": ".",
+        "sLengthMenu": "Exibir _MENU_ resultados por página",
+        "sLoadingRecords": "Carregando...",
+        "sProcessing": "Processando...",
+        "sZeroRecords": "Nenhum registro encontrado",
+        "sSearch": "Pesquisar",
+        "oPaginate": {
+            "sNext": "Próximo",
+            "sPrevious": "Anterior",
+            "sFirst": "Primeiro",
+            "sLast": "Último"
+        },
+        "oAria": {
+            "sSortAscending": ": Ordenar colunas de forma ascendente",
+            "sSortDescending": ": Ordenar colunas de forma descendente"
+        },
+        "select": {
+            "rows": {
+                "_": "Selecionado %d linhas",
+                "0": "Nenhuma linha selecionada",
+                "1": "Selecionado 1 linha"
+            }
+        }
+    };
+
+jQuery.extend( jQuery.fn.dataTableExt.oSort, {
+    "moeda-pre": function (a) {
+        a = (a === "-") ? 0 : a.replace(/[^\d\-]/g, "");
+        console.log(parseFloat( a ));
+        return parseFloat( a );
+    },
+
+    "moeda-asc": function ( a, b ) {
+        return a - b;
+    },
+
+    "moeda-desc": function ( a, b ) {
+        return b - a;
+    }
+});
+
+jQuery.extend( jQuery.fn.dataTableExt.oSort, {
+    "databr-pre": function (a) {
+        //order por datas, em dd/mm/aa
+        let partes = a.toString().split('/');
+        let ret = 0;
+        if (partes.length > 0)
+            ret += parseInt(partes[0]);
+        if (partes.length > 1)
+            ret += parseInt(partes[1])*32;
+        if (partes.length > 2)
+            ret += parseInt(partes[2])*380;
+        return ret;
+    },
+
+    "databr-asc": function ( a, b ) {
+        return a - b;
+    },
+
+    "databr-desc": function ( a, b ) {
+        return b - a;
+    }
+});
+
+
+    var DataTables_dom_botoes = 'lfrtiBp';
+    var DataTables_dom = 'lfrtip';
+    var DataTables_buttons = [
+        @*
+        //botao copiar, nao temos como traduzir a mensagem...
+        {
+            extend: 'copy', text: 'Copiar',
+            fnComplete: function (nButton, oConfig, oFlash, sFlash) {
+                alert('Button action complete');
+            }
+        },
+            *@
+        {
+            extend: 'excel', text: 'Exportar para Excel'
+        },
+        {
+            extend: 'pdf', text: 'Exportar para PDF'
+        }
+    ];
+
+    var DataTables_lengthMenu = [[10, 25, 50, -1], [10, 25, 50, "Todos"]];
+
+    function intiDatatables(seletor, config) {
+
+        //queremos estas classes
+        $(seletor).addClass("striped destaquelincol");
+
+        config.sPaginationType = "full_numbers";
+        config.lengthMenu= DataTables_lengthMenu;
+        config.language= DataTables_language;
+        config.dom= DataTables_dom_botoes;
+        config.buttons= DataTables_buttons;
+
+        //nao funciona!
+        //digo, funciona, mas precisa redesenhar as classes. 
+        //$.fn.dataTable.ext.classes.sPageButton = "paginate_button waves-effect waves-light btn-small";
+
+        let ret = $(seletor).DataTable(config);
+
+        $(".dt-buttons button").addClass("waves-effect waves-light btn-small");
+        $(".dt-buttons button").removeClass("dt-button");
+        $(".dataTables_paginate a").addClass("waves-effect waves-light btn-small");
+        $(seletor).on(  'draw.dt', function () {
+            $(".dataTables_paginate a").addClass("waves-effect waves-light btn-small");
+        });
+
+        $(seletor).show();
+        return ret;
+    }
+
+
+</script>

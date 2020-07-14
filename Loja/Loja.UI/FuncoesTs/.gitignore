@@ -1,0 +1,5 @@
+
+#compilados pelo typescript
+*.js
+*.map
+
