@@ -60,7 +60,7 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
             if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.Op_av_forma_pagto))
                 lstErros.Add("Indique a forma de pagamento (à vista).");
 
-            if(prepedido.FormaPagtoCriacao.Qtde_Parcelas != 1)
+            if (prepedido.FormaPagtoCriacao.Qtde_Parcelas != 1)
             {
                 lstErros.Add("Quantidade da parcela esta divergente!");
             }
@@ -110,21 +110,20 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
 
             if (lstErros.Count == 0)
             {
-                if(prepedido.FormaPagtoCriacao.C_pc_qtde != prepedido.FormaPagtoCriacao.Qtde_Parcelas)
+                if (prepedido.FormaPagtoCriacao.C_pc_qtde != prepedido.FormaPagtoCriacao.Qtde_Parcelas)
                 {
                     lstErros.Add("Quantidade de parcelas esta divergente!");
                 }
 
-                //afazer: validar o valor da forma de pagto com o valor total do pedido
                 decimal vlTotal = (decimal)(prepedido.FormaPagtoCriacao.C_pc_valor * prepedido.FormaPagtoCriacao.C_pc_qtde);
                 if (prepedido.PermiteRAStatus == 1)
                 {
-                    if (Math.Abs((decimal)(prepedido.ValorTotalDestePedidoComRA - vlTotal)) > maxErroArredondamento)
+                    if (Math.Abs((decimal)(prepedido.ValorTotalDestePedidoComRA - vlTotal)) > maxErroArredondamento * prepedido.FormaPagtoCriacao.C_pc_qtde)
                         lstErros.Add("Valor total da forma de pagamento diferente do valor total!");
                 }
                 else
                 {
-                    if (Math.Abs((decimal)(prepedido.VlTotalDestePedido - vlTotal)) > maxErroArredondamento)
+                    if (Math.Abs((decimal)(prepedido.VlTotalDestePedido - vlTotal)) > maxErroArredondamento * prepedido.FormaPagtoCriacao.C_pc_qtde)
                         lstErros.Add("Valor total da forma de pagamento diferente do valor total!");
                 }
             }
@@ -153,12 +152,12 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
                 prepedido.FormaPagtoCriacao.C_pc_maquineta_qtde);
                 if (prepedido.PermiteRAStatus == 1)
                 {
-                    if (Math.Abs((decimal)(prepedido.ValorTotalDestePedidoComRA - vlTotal)) > maxErroArredondamento)
+                    if (Math.Abs((decimal)(prepedido.ValorTotalDestePedidoComRA - vlTotal)) > maxErroArredondamento * prepedido.FormaPagtoCriacao.C_pc_maquineta_qtde)
                         lstErros.Add("Valor total da forma de pagamento diferente do valor total!");
                 }
                 else
                 {
-                    if (Math.Abs((decimal)(prepedido.VlTotalDestePedido - vlTotal)) > maxErroArredondamento)
+                    if (Math.Abs((decimal)(prepedido.VlTotalDestePedido - vlTotal)) > maxErroArredondamento * prepedido.FormaPagtoCriacao.C_pc_maquineta_qtde)
                         lstErros.Add("Valor total da forma de pagamento diferente do valor total!");
                 }
             }
@@ -205,12 +204,12 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
 
                 if (prepedido.PermiteRAStatus == 1)
                 {
-                    if (Math.Abs((decimal)(prepedido.ValorTotalDestePedidoComRA - vlTotal)) > maxErroArredondamento)
+                    if (Math.Abs((decimal)(prepedido.ValorTotalDestePedidoComRA - vlTotal)) > maxErroArredondamento * prepedido.FormaPagtoCriacao.C_pce_prestacao_qtde)
                         lstErros.Add("Valor total da forma de pagamento diferente do valor total!");
                 }
                 else
                 {
-                    if (Math.Abs((decimal)(prepedido.VlTotalDestePedido - vlTotal)) > maxErroArredondamento)
+                    if (Math.Abs((decimal)(prepedido.VlTotalDestePedido - vlTotal)) > maxErroArredondamento * prepedido.FormaPagtoCriacao.C_pce_prestacao_qtde)
                         lstErros.Add("Valor total da forma de pagamento diferente do valor total!");
                 }
             }
@@ -252,17 +251,17 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
                 }
 
                 decimal vlTotal = (decimal)(prepedido.FormaPagtoCriacao.C_pse_prim_prest_valor +
-                    (prepedido.FormaPagtoCriacao.C_pse_demais_prest_valor * 
+                    (prepedido.FormaPagtoCriacao.C_pse_demais_prest_valor *
                     prepedido.FormaPagtoCriacao.C_pse_demais_prest_qtde));
 
                 if (prepedido.PermiteRAStatus == 1)
                 {
-                    if (Math.Abs((decimal)(prepedido.ValorTotalDestePedidoComRA - vlTotal)) > maxErroArredondamento)
+                    if (Math.Abs((decimal)(prepedido.ValorTotalDestePedidoComRA - vlTotal)) > maxErroArredondamento * prepedido.FormaPagtoCriacao.C_pse_demais_prest_qtde)
                         lstErros.Add("Valor total da forma de pagamento diferente do valor total!");
                 }
                 else
                 {
-                    if (Math.Abs((decimal)(prepedido.VlTotalDestePedido - vlTotal)) > maxErroArredondamento)
+                    if (Math.Abs((decimal)(prepedido.VlTotalDestePedido - vlTotal)) > maxErroArredondamento * prepedido.FormaPagtoCriacao.C_pse_demais_prest_qtde)
                         lstErros.Add("Valor total da forma de pagamento diferente do valor total!");
                 }
             }
