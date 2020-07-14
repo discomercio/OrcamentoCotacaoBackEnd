@@ -463,7 +463,8 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             {
                 EnderecoEntregaJustificativaDto jus = new EnderecoEntregaJustificativaDto
                 {
-                    EndEtg_cod_justificativa = r.Codigo,
+                    EndEtg_cod_justificativa = !string.IsNullOrEmpty(r.Codigo) && r.Codigo.Length == 1 && r.Codigo != "0" ?
+                    "00" + r.Codigo : r.Codigo,
                     EndEtg_descricao_justificativa = r.Descricao
                 };
                 lst.Add(jus);

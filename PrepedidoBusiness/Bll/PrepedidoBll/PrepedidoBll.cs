@@ -596,6 +596,8 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
 
             if (p.St_End_Entrega == 1)
             {
+
+
                 enderecoEntrega.EndEtg_endereco = p.EndEtg_Endereco;
                 enderecoEntrega.EndEtg_endereco_numero = p.EndEtg_Endereco_Numero;
                 enderecoEntrega.EndEtg_endereco_complemento = p.EndEtg_Endereco_Complemento;
@@ -604,6 +606,8 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 enderecoEntrega.EndEtg_uf = p.EndEtg_UF;
                 enderecoEntrega.EndEtg_cep = p.EndEtg_CEP;
                 enderecoEntrega.EndEtg_cod_justificativa = p.EndEtg_Cod_Justificativa;
+                if (p.EndEtg_Cod_Justificativa.Length == 1 && p.EndEtg_Cod_Justificativa != "0")
+                    p.EndEtg_Cod_Justificativa = "00" + p.EndEtg_Cod_Justificativa;
                 enderecoEntrega.EndEtg_descricao_justificativa = await Util.ObterDescricao_Cod(
                     Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA, p.EndEtg_Cod_Justificativa, contextoProvider);
                 enderecoEntrega.EndEtg_email = p.EndEtg_email;

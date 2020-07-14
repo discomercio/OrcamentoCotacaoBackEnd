@@ -293,24 +293,42 @@ namespace PrepedidoBusiness.Bll
 
         private async Task<EnderecoEntregaDtoClienteCadastro> ObterEnderecoEntrega(Tpedido p)
         {
-            EnderecoEntregaDtoClienteCadastro enderecoEntrega = new EnderecoEntregaDtoClienteCadastro
-            {
-                EndEtg_endereco = p.EndEtg_Endereco,
-                EndEtg_endereco_numero = p.EndEtg_Endereco_Numero,
-                EndEtg_endereco_complemento = p.EndEtg_Endereco_Complemento,
-                EndEtg_bairro = p.EndEtg_Bairro,
-                EndEtg_cidade = p.EndEtg_Cidade,
-                EndEtg_uf = p.EndEtg_UF,
-                EndEtg_cep = p.EndEtg_Cep
-            };
+            EnderecoEntregaDtoClienteCadastro enderecoEntrega = new EnderecoEntregaDtoClienteCadastro();
 
-            //obtemos a descricao somente se o codigo existir
-            enderecoEntrega.EndEtg_descricao_justificativa = "";
-            if (!String.IsNullOrEmpty(p.EndEtg_Cod_Justificativa))
-                enderecoEntrega.EndEtg_descricao_justificativa = await Util.ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
-                    p.EndEtg_Cod_Justificativa, contextoProvider);
+            //afazer: criar método para pegar todos os dados de endereço com os campos novos
 
-            return await Task.FromResult(enderecoEntrega);
+            enderecoEntrega.EndEtg_endereco = p.EndEtg_Endereco;
+            enderecoEntrega.EndEtg_endereco_numero = p.EndEtg_Endereco_Numero;
+            enderecoEntrega.EndEtg_endereco_complemento = p.EndEtg_Endereco_Complemento;
+            enderecoEntrega.EndEtg_bairro = p.EndEtg_Bairro;
+            enderecoEntrega.EndEtg_cidade = p.EndEtg_Cidade;
+            enderecoEntrega.EndEtg_uf = p.EndEtg_UF;
+            enderecoEntrega.EndEtg_cep = p.EndEtg_Cep;
+            enderecoEntrega.EndEtg_cod_justificativa = p.EndEtg_Cod_Justificativa;
+            enderecoEntrega.EndEtg_descricao_justificativa = await Util.ObterDescricao_Cod(
+                Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA, p.EndEtg_Cod_Justificativa, contextoProvider);
+            enderecoEntrega.EndEtg_email = p.EndEtg_email;
+            enderecoEntrega.EndEtg_email_xml = p.EndEtg_email_xml;
+            enderecoEntrega.EndEtg_nome = p.EndEtg_nome;
+            enderecoEntrega.EndEtg_ddd_res = p.EndEtg_ddd_res;
+            enderecoEntrega.EndEtg_tel_res = p.EndEtg_tel_res;
+            enderecoEntrega.EndEtg_ddd_com = p.EndEtg_ddd_com;
+            enderecoEntrega.EndEtg_tel_com = p.EndEtg_tel_com;
+            enderecoEntrega.EndEtg_ramal_com = p.EndEtg_ramal_com;
+            enderecoEntrega.EndEtg_ddd_cel = p.EndEtg_ddd_cel;
+            enderecoEntrega.EndEtg_tel_cel = p.EndEtg_tel_cel;
+            enderecoEntrega.EndEtg_ddd_com_2 = p.EndEtg_ddd_com_2;
+            enderecoEntrega.EndEtg_tel_com_2 = p.EndEtg_tel_com_2;
+            enderecoEntrega.EndEtg_ramal_com_2 = p.EndEtg_ramal_com_2;
+            enderecoEntrega.EndEtg_tipo_pessoa = p.EndEtg_tipo_pessoa;
+            enderecoEntrega.EndEtg_cnpj_cpf = p.EndEtg_cnpj_cpf;
+            enderecoEntrega.EndEtg_contribuinte_icms_status = p.EndEtg_contribuinte_icms_status;
+            enderecoEntrega.EndEtg_produtor_rural_status = p.EndEtg_produtor_rural_status;
+            enderecoEntrega.EndEtg_ie = p.EndEtg_ie;
+            enderecoEntrega.EndEtg_rg = p.EndEtg_rg;
+            enderecoEntrega.St_memorizacao_completa_enderecos = p.St_memorizacao_completa_enderecos;
+
+            return enderecoEntrega;
         }
 
         private async Task<IEnumerable<PedidoProdutosDtoPedido>> ObterProdutos(string numPedido)
@@ -398,7 +416,7 @@ namespace PrepedidoBusiness.Bll
             {
                 dadosCliente = await ObterDadosClientePedido(p);
             }
-            
+
             var enderecoEntregaTask = ObterEnderecoEntrega(p);
             var lstProdutoTask = ObterProdutos(numPedido);
 
@@ -419,8 +437,6 @@ namespace PrepedidoBusiness.Bll
             if (garantiaIndicadorStatus == Constantes.COD_GARANTIA_INDICADOR_STATUS__SIM)
                 garantiaIndicadorStatus = "SIM";
 
-
-
             DetalhesNFPedidoDtoPedido detalhesNf = new DetalhesNFPedidoDtoPedido();
             detalhesNf.Observacoes = p.Obs_1;
             detalhesNf.ConstaNaNF = p.Nfe_Texto_Constar;
@@ -431,7 +447,6 @@ namespace PrepedidoBusiness.Bll
             detalhesNf.StBemUsoConsumo = p.StBemUsoConsumo;
             detalhesNf.InstaladorInstala = tPedidoPai.InstaladorInstalaStatus;
             detalhesNf.GarantiaIndicadorStatus = garantiaIndicadorStatus;//esse campo não esta mais sendo utilizado
-
 
             //verifica o status da entrega
             DateTime? dataEntrega = new DateTime();
@@ -780,7 +795,7 @@ namespace PrepedidoBusiness.Bll
                     cor = "blue";
                     break;
                 case Constantes.ST_ENTREGA_ENTREGUE:
-                    cor = "green";                    
+                    cor = "green";
                     if (countItemDevolvido > 0)
                         cor = "red";
                     break;
