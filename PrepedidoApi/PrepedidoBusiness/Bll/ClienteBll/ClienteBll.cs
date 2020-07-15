@@ -3,27 +3,36 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
-using PrepedidoBusiness.Dtos.ClienteCadastro;
+using PrepedidoBusiness.Dto.ClienteCadastro;
 using PrepedidoBusiness.Dto.ClienteCadastro.Referencias;
 using Microsoft.EntityFrameworkCore;
-using PrepedidoBusiness.Dto.ClienteCadastro;
 using InfraBanco.Constantes;
-using System.Reflection;
 using PrepedidoBusiness.Dto.Cep;
-using System.Data.SqlClient;
+using PrepedidoBusiness.Utils;
 
-namespace PrepedidoBusiness.Bll
+namespace PrepedidoBusiness.Bll.ClienteBll
 {
     public class ClienteBll
     {
+        public static class MensagensErro
+        {
+            public static string REGISTRO_COM_ID_JA_EXISTE(string clienteDtoDadosClienteId) { return "REGISTRO COM ID = " + clienteDtoDadosClienteId + " JÁ EXISTE."; }
+        }
+
+
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
         private readonly InfraBanco.ContextoCepProvider contextoCepProvider;
+        private readonly CepBll cepBll;
+        private readonly IBancoNFeMunicipio bancoNFeMunicipio;
 
         public ClienteBll(InfraBanco.ContextoBdProvider contextoProvider,
-            InfraBanco.ContextoCepProvider contextoCepProvider)
+                    InfraBanco.ContextoCepProvider contextoCepProvider, CepBll cepBll,
+                    IBancoNFeMunicipio bancoNFeMunicipio)
         {
             this.contextoProvider = contextoProvider;
             this.contextoCepProvider = contextoCepProvider;
+            this.cepBll = cepBll;
+            this.bancoNFeMunicipio = bancoNFeMunicipio;
         }
 
         public string Verificar_AletrouDadosPF(Tcliente cli, DadosClienteCadastroDto dados, string apelido)
@@ -33,7 +42,7 @@ namespace PrepedidoBusiness.Bll
             bool ie_diferente = false;
             bool produtor_diferente = false;
 
-            if (dados.ProdutorRural == byte.Parse(Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO))
+            if (dados.ProdutorRural == (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO)
             {
                 if (dados.ProdutorRural != cli.Produtor_Rural_Status)
                 {
@@ -41,8 +50,8 @@ namespace PrepedidoBusiness.Bll
                     cli.Ie = "";
 
                     log += "contribuinte_icms_status: " + cli.Contribuinte_Icms_Status + " => " +
-                        Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL + "; ";
-                    cli.Contribuinte_Icms_Status = byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL);
+                        Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL + "; ";
+                    cli.Contribuinte_Icms_Status = (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL;
 
                     log += "contribuinte_icms_data: " + cli.Contribuinte_Icms_Data + " => " + DateTime.Now + "; ";
                     cli.Contribuinte_Icms_Data = DateTime.Now;
@@ -58,8 +67,8 @@ namespace PrepedidoBusiness.Bll
                     }
 
                     log += "produtor_rural_status: " + cli.Produtor_Rural_Status + " => " +
-                        Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO + "; ";
-                    cli.Produtor_Rural_Status = byte.Parse(Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO);
+                        Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO + "; ";
+                    cli.Produtor_Rural_Status = (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO;
 
                     log += "produtor_rural_data: " + cli.Produtor_Rural_Data + " => " + DateTime.Now + "; ";
                     cli.Produtor_Rural_Data = DateTime.Now;
@@ -77,7 +86,7 @@ namespace PrepedidoBusiness.Bll
 
             }
 
-            if (dados.ProdutorRural == byte.Parse(Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM))
+            if (dados.ProdutorRural == (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
             {
                 if (dados.Contribuinte_Icms_Status != cli.Contribuinte_Icms_Status)
                 {
@@ -117,26 +126,26 @@ namespace PrepedidoBusiness.Bll
 
             if (contribuinte_diferente)
             {
-                if (dados.Contribuinte_Icms_Status == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM))
+                if (dados.Contribuinte_Icms_Status == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
                 {
                     log += "contribuinte_icms_status: " + cli.Contribuinte_Icms_Status + " => " +
-                                    Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM + "; ";
+                                    Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM + "; ";
                     cli.Contribuinte_Icms_Status =
-                        byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM);
+                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM;
                 }
-                if (dados.Contribuinte_Icms_Status == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO))
+                if (dados.Contribuinte_Icms_Status == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO)
                 {
                     log += "contribuinte_icms_status: " + cli.Contribuinte_Icms_Status + " => " +
-                                    Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO + "; ";
+                                    Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO + "; ";
                     cli.Contribuinte_Icms_Status =
-                        byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO);
+                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO;
                 }
-                if (dados.Contribuinte_Icms_Status == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO))
+                if (dados.Contribuinte_Icms_Status == (short)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO)
                 {
                     log += "contribuinte_icms_status: " + cli.Contribuinte_Icms_Status + " => " +
-                                    Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO + "; ";
+                                    Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO + "; ";
                     cli.Contribuinte_Icms_Status =
-                        byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO);
+                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO;
                 }
 
                 log += "contribuinte_icms_data: " + cli.Contribuinte_Icms_Data + " => " + DateTime.Now + "; ";
@@ -158,8 +167,8 @@ namespace PrepedidoBusiness.Bll
             if (produtor_diferente)
             {
                 log += "produtor_rural_status: " + cli.Produtor_Rural_Status + " => " +
-                            Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM + "; ";
-                cli.Produtor_Rural_Status = byte.Parse(Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM);
+                            Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM + "; ";
+                cli.Produtor_Rural_Status = (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM;
 
                 if (cli.Produtor_Rural_Data == null)
                 {
@@ -199,18 +208,18 @@ namespace PrepedidoBusiness.Bll
                 }
             }
 
-            if (cli.Sistema_responsavel_atualizacao != Constantes.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS)
+            if (cli.Sistema_responsavel_atualizacao != (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS)
             {
                 log += "sistema_responsavel_atualizacao: " + cli.Sistema_responsavel_atualizacao + " => " +
-                    Constantes.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS + "; ";
-                cli.Sistema_responsavel_atualizacao = Constantes.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS;
-                cli.Sistema_responsavel_cadastro = Constantes.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS;
+                    Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS + "; ";
+                cli.Sistema_responsavel_atualizacao = (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS;
+                cli.Sistema_responsavel_cadastro = (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS;
             }
 
             return log;
         }
 
-        public string Verificar_AlterouDadosPJ(Tcliente cli, DadosClienteCadastroDto dados, string apelido)
+        public string Verificar_AlterouDadosPJ(Tcliente cli, DadosClienteCadastroDto dados)
         {
             string log = "";
 
@@ -218,7 +227,7 @@ namespace PrepedidoBusiness.Bll
 
             if (dados.Contribuinte_Icms_Status != cli.Contribuinte_Icms_Status)
             {
-                if (dados.Contribuinte_Icms_Status == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM))
+                if (dados.Contribuinte_Icms_Status == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
                 {
                     if (cli.Ie != dados.Ie)
                     {
@@ -235,13 +244,13 @@ namespace PrepedidoBusiness.Bll
                     }
 
                     log += "contribuinte_icms_status: " + cli.Contribuinte_Icms_Status + " => " +
-                                    Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM + "; ";
-                    cli.Contribuinte_Icms_Status = byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM);
+                                    Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM + "; ";
+                    cli.Contribuinte_Icms_Status = (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM;
 
                     alterou = true;
                 }
 
-                if (dados.Contribuinte_Icms_Status == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO))
+                if (dados.Contribuinte_Icms_Status == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO)
                 {
                     if (cli.Ie != dados.Ie)
                     {
@@ -259,21 +268,21 @@ namespace PrepedidoBusiness.Bll
                     }
 
                     log += "contribuinte_icms_status: " + cli.Contribuinte_Icms_Status + " => " +
-                        Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO + "; ";
-                    cli.Contribuinte_Icms_Status = byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO);
+                        Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO + "; ";
+                    cli.Contribuinte_Icms_Status = (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO;
 
                     alterou = true;
                 }
 
-                if (dados.Contribuinte_Icms_Status == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO))
+                if (dados.Contribuinte_Icms_Status == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO)
                 {
                     log += "ie: " + cli.Ie + " => \"\"; ";
                     //não pode ter IE
                     cli.Ie = "";
 
                     log += "contribuinte_icms_status: " + cli.Contribuinte_Icms_Status + " => " +
-                        Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO + "; ";
-                    cli.Contribuinte_Icms_Status = byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO);
+                        Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO + "; ";
+                    cli.Contribuinte_Icms_Status = (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO;
 
                     alterou = true;
                 }
@@ -291,7 +300,7 @@ namespace PrepedidoBusiness.Bll
             }
             if (dados.Contribuinte_Icms_Status == cli.Contribuinte_Icms_Status)
             {
-                if (dados.Contribuinte_Icms_Status == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO))
+                if (dados.Contribuinte_Icms_Status == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO)
                 {
                     if (cli.Ie != dados.Ie)
                     {
@@ -313,13 +322,13 @@ namespace PrepedidoBusiness.Bll
 
                 if (alterou)
                 {
-                    if (cli.Sistema_responsavel_atualizacao != Constantes.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS)
+                    if (cli.Sistema_responsavel_atualizacao != (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS)
                     {
                         log += "sistema_responsavel_atualizacao: " + cli.Sistema_responsavel_atualizacao + " => " +
-                            Constantes.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS + "; ";
+                            Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS + "; ";
 
-                        cli.Sistema_responsavel_atualizacao = Constantes.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS;
-                        cli.Sistema_responsavel_cadastro = Constantes.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS;
+                        cli.Sistema_responsavel_atualizacao = (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS;
+                        cli.Sistema_responsavel_cadastro = (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS;
                     }
                 }
             }
@@ -339,41 +348,45 @@ namespace PrepedidoBusiness.Bll
             string log = "";
 
             List<string> lstErros = new List<string>();
-            await ValidarDadosClientesCadastro(dadosClienteCadastroDto, lstErros);
+            List<ListaBancoDto> lstBanco = (await ListarBancosCombo()).ToList();
 
-            var dados = from c in db.Tclientes
-                        where c.Id == dadosClienteCadastroDto.Id
-                        select c;
-            var cli = await dados.FirstOrDefaultAsync();
-
-            if (cli != null)
+            if (await ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDto, null, null, lstErros,
+                contextoProvider, cepBll, bancoNFeMunicipio, lstBanco))
             {
-                if (lstErros.Count == 0)
+                var dados = from c in db.Tclientes
+                            where c.Id == dadosClienteCadastroDto.Id
+                            select c;
+                var cli = await dados.FirstOrDefaultAsync();
+
+                if (cli != null)
                 {
-                    //comparar os log em todos os casos de PF
-                    if (dadosClienteCadastroDto.Tipo == Constantes.ID_PF)
+                    if (lstErros.Count == 0)
                     {
-                        log = Verificar_AletrouDadosPF(cli, dadosClienteCadastroDto, apelido);
-                    }
-                    if (dadosClienteCadastroDto.Tipo == Constantes.ID_PJ)
-                    {
-                        log = Verificar_AlterouDadosPJ(cli, dadosClienteCadastroDto, apelido);
-                    }
-
-                    if (!string.IsNullOrEmpty(log))
-                    {
-                        using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+                        //comparar os log em todos os casos de PF
+                        if (dadosClienteCadastroDto.Tipo == Constantes.ID_PF)
                         {
-                            cli.Dt_Ult_Atualizacao = DateTime.Now;
-                            cli.Usuario_Ult_Atualizacao = apelido;
+                            log = Verificar_AletrouDadosPF(cli, dadosClienteCadastroDto, apelido);
+                        }
+                        if (dadosClienteCadastroDto.Tipo == Constantes.ID_PJ)
+                        {
+                            log = Verificar_AlterouDadosPJ(cli, dadosClienteCadastroDto);
+                        }
 
-                            dbgravacao.Update(cli);
-                            dbgravacao.SaveChanges();
+                        if (!string.IsNullOrEmpty(log))
+                        {
+                            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+                            {
+                                cli.Dt_Ult_Atualizacao = DateTime.Now;
+                                cli.Usuario_Ult_Atualizacao = apelido;
 
-                            bool salvouLog = Utils.Util.GravaLog(dbgravacao, apelido, dadosClienteCadastroDto.Loja, "", dadosClienteCadastroDto.Id,
-                                Constantes.OP_LOG_CLIENTE_ALTERACAO, log);
-                            if (salvouLog)
-                                dbgravacao.transacao.Commit();
+                                dbgravacao.Update(cli);
+                                dbgravacao.SaveChanges();
+
+                                bool salvouLog = Utils.Util.GravaLog(dbgravacao, apelido, dadosClienteCadastroDto.Loja, "", dadosClienteCadastroDto.Id,
+                                    Constantes.OP_LOG_CLIENTE_ALTERACAO, log);
+                                if (salvouLog)
+                                    dbgravacao.transacao.Commit();
+                            }
                         }
                     }
                 }
@@ -450,7 +463,8 @@ namespace PrepedidoBusiness.Bll
             {
                 EnderecoEntregaJustificativaDto jus = new EnderecoEntregaJustificativaDto
                 {
-                    EndEtg_cod_justificativa = r.Codigo,
+                    EndEtg_cod_justificativa = !string.IsNullOrEmpty(r.Codigo) && r.Codigo.Length == 1 && r.Codigo != "0" ?
+                    "00" + r.Codigo : r.Codigo,
                     EndEtg_descricao_justificativa = r.Descricao
                 };
                 lst.Add(jus);
@@ -463,6 +477,7 @@ namespace PrepedidoBusiness.Bll
             DadosClienteCadastroDto dados = new DadosClienteCadastroDto
             {
                 Id = cli.Id,
+                Indicador_Orcamentista = cli.Usuario_Cadastrado,
                 Cnpj_Cpf = cli.Cnpj_Cpf,
                 Rg = cli.Rg,
                 Ie = cli.Ie,
@@ -552,67 +567,82 @@ namespace PrepedidoBusiness.Bll
             return lstRefComercial;
         }
 
-        public async Task<IEnumerable<string>> CadastrarCliente(ClienteCadastroDto clienteDto, string apelido)
+        /*
+         * Incluímos a var "string usuarioCadastro" para permitir que a ApiUnis possa cadastrar outro
+         * usuário ao invés do Orçamentista
+         */
+        public async Task<IEnumerable<string>> CadastrarCliente(ClienteCadastroDto clienteDto, string apelido,
+            int sistemaResponsavelCadastro)
         {
             string id_cliente = "";
 
             var db = contextoProvider.GetContextoLeitura();
             var verifica = await (from c in db.Tclientes
-                                  where c.Id == clienteDto.DadosCliente.Id
+                                  where c.Cnpj_Cpf == clienteDto.DadosCliente.Cnpj_Cpf
                                   select c.Id).FirstOrDefaultAsync();
 
             List<string> lstErros = new List<string>();
 
-            //Na validação do cadastro é feito a consistencia de Municipio
-            await ValidarDadosClientesCadastro(clienteDto.DadosCliente, lstErros);
-            ValidarRefBancaria(clienteDto.RefBancaria, lstErros);
-            ValidarRefComercial(clienteDto.RefComercial, lstErros);
-
             if (verifica != null)
-                lstErros.Add("REGISTRO COM ID=" + clienteDto.DadosCliente.Id + " JÁ EXISTE.");
-
-            if (lstErros.Count <= 0)
             {
-                using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+                lstErros.Add(MensagensErro.REGISTRO_COM_ID_JA_EXISTE(verifica));
+                return lstErros;
+            }
+
+
+            //passar lista de bancos para validar
+            List<ListaBancoDto> lstBanco = (await ListarBancosCombo()).ToList();
+            if (await ValidacoesClienteBll.ValidarDadosCliente(clienteDto.DadosCliente, clienteDto.RefBancaria,
+                clienteDto.RefComercial, lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco))
+            {
+                if (lstErros.Count <= 0)
                 {
-                    string log = "";
-
-                    DadosClienteCadastroDto cliente = clienteDto.DadosCliente;
-                    Tcliente clienteCadastrado = new Tcliente();
-                    id_cliente = await CadastrarDadosClienteDto(dbgravacao, cliente, apelido, log, cliente.Loja, clienteCadastrado);
-
-                    //Por padrão o id do cliente tem 12 caracteres, caso não seja 12 caracteres esta errado
-                    if (id_cliente.Length == 12)
+                    using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
                     {
-                        string campos_a_omitir = "dt_cadastro|usuario_cadastro|dt_ult_atualizacao|usuario_ult_atualizacao";
+                        string log = "";
 
-                        log = Utils.Util.MontaLog(clienteCadastrado, log, campos_a_omitir);
+                        DadosClienteCadastroDto cliente = clienteDto.DadosCliente;
+                        Tcliente clienteCadastrado = new Tcliente();
+                        id_cliente = await CadastrarDadosClienteDto(dbgravacao, cliente, apelido, clienteCadastrado,
+                            sistemaResponsavelCadastro);
 
-                        if (clienteDto.DadosCliente.Tipo == Constantes.ID_PJ)
+                        //Por padrão o id do cliente tem 12 caracteres, caso não seja 12 caracteres esta errado
+                        if (id_cliente.Length == 12)
                         {
-                            log = await CadastrarRefBancaria(dbgravacao, clienteDto.RefBancaria, apelido, id_cliente, log);
-                            log = await CadastrarRefComercial(dbgravacao, clienteDto.RefComercial, apelido, id_cliente, log);
+                            string campos_a_omitir = "dt_cadastro|usuario_cadastro|dt_ult_atualizacao|usuario_ult_atualizacao";
+
+                            log = Utils.Util.MontaLog(clienteCadastrado, log, campos_a_omitir);
+
+                            if (clienteDto.DadosCliente.Tipo == Constantes.ID_PJ)
+                            {
+                                log = await CadastrarRefBancaria(dbgravacao, clienteDto.RefBancaria, apelido, id_cliente, log);
+                                log = await CadastrarRefComercial(dbgravacao, clienteDto.RefComercial, apelido, id_cliente, log);
+                            }
+
+                            bool gravouLog = Utils.Util.GravaLog(dbgravacao, apelido, cliente.Loja, "", id_cliente,
+                                    Constantes.OP_LOG_CLIENTE_INCLUSAO, log);
+                            if (gravouLog)
+                                dbgravacao.transacao.Commit();
+
                         }
-
-                        bool gravouLog = Utils.Util.GravaLog(dbgravacao, apelido, cliente.Loja, "", id_cliente,
-                                Constantes.OP_LOG_CLIENTE_INCLUSAO, log);
-                        if (gravouLog)
-                            dbgravacao.transacao.Commit();
-
-                    }
-                    else
-                    {
-                        lstErros.Add(id_cliente);
+                        else
+                        {
+                            //afazer: ver com o Edu, pq isso esta me cheirando a coisa errada, pois me parece
+                            //que o angular espera retornar uma lista vazia no caso de sucesso.
+                            //não faz sentido no caso de erro ao gerar o Id do cliente devolver o id do cliente
+                            lstErros.Add(id_cliente);
+                        }
                     }
                 }
             }
+
             return lstErros;
         }
 
         private async Task<string> CadastrarDadosClienteDto(InfraBanco.ContextoBdGravacao dbgravacao,
-            DadosClienteCadastroDto clienteDto, string apelido, string log, string loja, Tcliente tCliente)
+            DadosClienteCadastroDto clienteDto, string apelido, Tcliente tCliente, int sistemaResponsavelCadastro)
         {
-            string retorno = "";
+            string retorno;
             List<string> lstRetorno = new List<string>();
             string id_cliente = await GerarIdCliente(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES);
 
@@ -652,22 +682,22 @@ namespace PrepedidoBusiness.Bll
                 tCliente.Ddd_Com = clienteDto.DddComercial;
                 tCliente.Tel_Com = clienteDto.TelComercial;
                 tCliente.Ramal_Com = clienteDto.Ramal;
-                tCliente.Contato = clienteDto.Contato;
+                tCliente.Contato = clienteDto.Contato == null ? "" : clienteDto.Contato;
                 tCliente.Ddd_Com_2 = clienteDto.DddComercial2;
                 tCliente.Tel_Com_2 = clienteDto.TelComercial2;
                 tCliente.Ramal_Com_2 = clienteDto.Ramal2;
                 tCliente.Ddd_Cel = clienteDto.DddCelular;
                 tCliente.Tel_Cel = clienteDto.Celular;
                 tCliente.Dt_Nasc = clienteDto.Nascimento;
-                tCliente.Filiacao = clienteDto.Observacao_Filiacao;
+                tCliente.Filiacao = clienteDto.Observacao_Filiacao == null ? "" : clienteDto.Observacao_Filiacao;
                 tCliente.Obs_crediticias = "";
                 tCliente.Midia = "";
                 tCliente.Email = clienteDto.Email;
                 tCliente.Email_Xml = clienteDto.EmailXml;
                 tCliente.Dt_Ult_Atualizacao = DateTime.Now;
                 tCliente.Usuario_Ult_Atualizacao = apelido.ToUpper();
-                tCliente.Sistema_responsavel_cadastro = Constantes.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS;
-                tCliente.Sistema_responsavel_atualizacao = Constantes.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS;
+                tCliente.Sistema_responsavel_cadastro = sistemaResponsavelCadastro;
+                tCliente.Sistema_responsavel_atualizacao = sistemaResponsavelCadastro;
             };
 
             dbgravacao.Add(tCliente);
@@ -743,388 +773,6 @@ namespace PrepedidoBusiness.Bll
             return log;
         }
 
-        private List<string> ValidarRefBancaria(List<RefBancariaDtoCliente> lstRefBancaria, List<string> lstErros)
-        {
-            for (int i = 0; i < lstRefBancaria.Count; i++)
-            {
-                if (string.IsNullOrEmpty(lstRefBancaria[i].Banco))
-                    lstErros.Add("Ref Bancária (" + lstRefBancaria[i].Ordem.ToString() + "): informe o banco.");
-                if (string.IsNullOrEmpty(lstRefBancaria[i].Agencia))
-                    lstErros.Add("Ref Bancária (" + lstRefBancaria[i].Ordem.ToString() + "): informe o agência.");
-                if (string.IsNullOrEmpty(lstRefBancaria[i].Conta))
-                    lstErros.Add("Ref Bancária (" + lstRefBancaria[i].Ordem.ToString() + "): informe o número da conta.");
-            }
-
-            return lstErros;
-        }
-
-        private List<string> ValidarRefComercial(List<RefComercialDtoCliente> lstRefComercial, List<string> lstErros)
-        {
-            for (int i = 0; i < lstRefComercial.Count; i++)
-            {
-                lstRefComercial[i].Ordem = i;
-                if (string.IsNullOrEmpty(lstRefComercial[i].Nome_Empresa))
-                    lstErros.Add("Ref Comercial (" + lstRefComercial[i].Ordem + "): informe o nome da empresa.");
-            }
-
-            return lstErros;
-        }
-
-        public async Task ConsisteMunicipioIBGE(string municipio, string uf, List<string> lstErros)
-        {
-            var db = contextoProvider.GetContextoLeitura();
-            List<NfeMunicipio> lst_nfeMunicipios = new List<NfeMunicipio>();
-
-            if (string.IsNullOrEmpty(municipio))
-                lstErros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
-                    "nenhum município foi informado!");
-            if (string.IsNullOrEmpty(uf))
-                lstErros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
-                    "a UF não foi informada!");
-            else
-            {
-                if (uf.Length > 2)
-                    lstErros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
-                        "a UF é inválida (" + uf + ")!");
-            }
-
-            if (lstErros.Count == 0)
-            {
-                lst_nfeMunicipios = (await BuscarSiglaUf(uf, municipio, false)).ToList();
-
-                if (!lst_nfeMunicipios.Any())
-                {
-                    lstErros.Add("Município '" + municipio + "' não consta na relação de municípios do IBGE para a UF de '" + uf + "'!");
-                }
-            }
-        }
-
-        public async Task<IEnumerable<NfeMunicipio>> BuscarSiglaUf(string uf, string municipio, bool buscaParcial)
-        {
-            List<NfeMunicipio> lstNfeMunicipio = new List<NfeMunicipio>();
-
-            var db = contextoProvider.GetContextoLeitura();
-
-            //buscando os dados para se conectar no servidor de banco de dados
-            TnfEmitente nova_conexao = await (from c in db.TnfEmitentes
-                                              where c.NFe_st_emitente_padrao == 1
-                                              select new TnfEmitente
-                                              {
-                                                  NFe_T1_nome_BD = c.NFe_T1_nome_BD,
-                                                  NFe_T1_servidor_BD = c.NFe_T1_servidor_BD,
-                                                  NFe_T1_usuario_BD = c.NFe_T1_usuario_BD,
-                                                  NFe_T1_senha_BD = c.NFe_T1_senha_BD
-                                              }).FirstOrDefaultAsync();
-
-            SqlConnectionStringBuilder sqlBuilder = new SqlConnectionStringBuilder();
-            sqlBuilder.DataSource = nova_conexao.NFe_T1_servidor_BD;
-            sqlBuilder.InitialCatalog = nova_conexao.NFe_T1_nome_BD;
-            sqlBuilder.UserID = nova_conexao.NFe_T1_usuario_BD;
-
-            sqlBuilder.Password = Utils.Util.decodificaDado(nova_conexao.NFe_T1_senha_BD, Constantes.FATOR_BD);
-
-
-            string providerString = sqlBuilder.ToString();
-
-            using (SqlConnection sql = new SqlConnection(providerString))
-            {
-
-                SqlParameter param = new SqlParameter();
-                param.Value = uf.ToUpper();
-                param.ParameterName = "@UF";
-
-                string query = "SELECT *  FROM NFE_UF WHERE (SiglaUF = @UF)";
-
-                SqlCommand command = new SqlCommand(query, sql);
-                command.Parameters.Add(param);
-
-                command.Connection.Open();
-
-                using (var result = await command.ExecuteReaderAsync())
-                {
-                    if (result != null)
-                    {
-                        NfeUf nfeUF = new NfeUf();
-                        while (result.Read())
-                        {
-                            nfeUF.CodUF = result["CodUF"].ToString();
-                            nfeUF.SiglaUF = result["SiglaUf"].ToString();
-                        };
-
-                        command.Connection.Close();
-
-                        query = "SELECT * FROM NFE_MUNICIPIO WHERE (CodMunic LIKE @nfeUF_CodUF) AND " +
-                            "(Descricao = @municipio COLLATE Latin1_General_CI_AI)";
-
-                        command = new SqlCommand(query, sql);
-
-                        param = new SqlParameter();
-                        param.Value = nfeUF.CodUF + Constantes.BD_CURINGA_TODOS;
-                        param.ParameterName = "@nfeUF_CodUF";
-                        command.Parameters.Add(param);
-
-                        SqlParameter param2 = new SqlParameter();
-                        param2.Value = municipio;
-                        param2.ParameterName = "@municipio";
-                        command.Parameters.Add(param2);
-
-                        command.Connection.Open();
-
-                        using (var result2 = await command.ExecuteReaderAsync())
-                        {
-                            if (result2 != null)
-                            {
-                                while (result2.Read())
-                                {
-                                    NfeMunicipio nfeMunicipio = new NfeMunicipio
-                                    {
-                                        CodMunic = result2["CodMunic"].ToString(),
-                                        Descricao = result2["Descricao"].ToString()
-                                    };
-
-                                    lstNfeMunicipio.Add(nfeMunicipio);
-                                }
-                            }
-                            else if(buscaParcial)
-                            {
-                                command.Connection.Close();
-
-                                query = "SELECT * FROM NFE_MUNICIPIO WHERE (CodMunic LIKE @nfeUF_CodUF) AND " +
-                                    "(Descricao LIKE @municipio COLLATE Latin1_General_CI_AI)";
-
-                                command = new SqlCommand(query, sql);
-
-                                param = new SqlParameter();
-                                param.Value = nfeUF.CodUF + Constantes.BD_CURINGA_TODOS;
-                                param.ParameterName = "@nfeUF_CodUF";
-                                command.Parameters.Add(param);
-
-                                param2 = new SqlParameter();
-                                param2.Value = municipio.Substring(municipio.Length - 1, 1) + Constantes.BD_CURINGA_TODOS;
-                                param2.ParameterName = "@municipio";
-                                command.Parameters.Add(param2);
-
-
-                                command.Connection.Open();
-
-                                using (var result3 = await command.ExecuteReaderAsync())
-                                {
-                                    if (result3 != null)
-                                    {
-                                        while (result3.Read())
-                                        {
-                                            NfeMunicipio nfeMunicipio = new NfeMunicipio
-                                            {
-                                                CodMunic = result3["CodMunic"].ToString(),
-                                                Descricao = result3["Descricao"].ToString()
-                                            };
-
-                                            lstNfeMunicipio.Add(nfeMunicipio);
-                                        }
-                                    }
-                                }
-
-                                command.Connection.Close();
-                            }
-                            else
-                            {
-                                command.Connection.Close();
-                            }
-                        }
-                    }
-                }
-            }
-
-            return lstNfeMunicipio;
-        }
-
-
-        private async Task ValidarDadosClientesCadastro(DadosClienteCadastroDto cliente, List<string> listaErros)
-        {
-            string cpf_cnpjSoDig = Utils.Util.SoDigitosCpf_Cnpj(cliente.Cnpj_Cpf);
-
-
-            if (cliente.Cnpj_Cpf == "")
-                listaErros.Add("CNPJ / CPF NÃO FORNECIDO.");
-
-            if (Utils.Util.ValidaCPF(cpf_cnpjSoDig))
-            {
-                if (cliente.Sexo != "M" && cliente.Sexo != "F")
-                    listaErros.Add("INDIQUE QUAL O SEXO.");
-                if (cliente.Nome == "")
-                {
-                    if (cliente.Tipo == Constantes.ID_PF)
-                        listaErros.Add("PREENCHA O NOME DO CLIENTE.");
-                }
-
-                if (cliente.Tipo == Constantes.ID_PF &&
-                cliente.TelefoneResidencial == "" &&
-                cliente.TelComercial == "" &&
-                cliente.Celular == "")
-                    listaErros.Add("PREENCHA PELO MENOS UM TELEFONE.");
-                else if (cliente.DddResidencial.Length != 2 && cliente.DddResidencial != "")
-                    listaErros.Add("DDD INVÁLIDO.");
-                else if (cliente.TelefoneResidencial.Length < 6 && cliente.TelefoneResidencial != "")
-                    listaErros.Add("TELEFONE RESIDENCIAL INVÁLIDO.");
-                else if (cliente.DddResidencial != "" && cliente.TelefoneResidencial == "")
-                    listaErros.Add("PREENCHA O TELEFONE RESIDENCIAL.");
-                else if (cliente.DddResidencial == "" && cliente.TelefoneResidencial != "")
-                    listaErros.Add("PREENCHA O DDD.");
-                else if (cliente.TelComercial != "" && cliente.DddComercial == "")
-                    listaErros.Add("PREENCHA O DDD COMERCIAL.");
-                else if (cliente.DddComercial != "" && cliente.TelComercial == "")
-                    listaErros.Add("PREENCHA O TELEFONE COMERCIAL.");
-            }
-            if (Utils.Util.ValidaCNPJ(cpf_cnpjSoDig))
-            {
-                if (cliente.Tipo == Constantes.ID_PJ)
-                {
-                    if (cliente.Nome == "")
-                        listaErros.Add("PREENCHA A RAZÃO SOCIAL DO CLIENTE.");
-                    if (cliente.TelComercial == "" && cliente.TelComercial2 == "")
-                        listaErros.Add("PREENCHA O TELEFONE.");
-                    if (cliente.DddComercial.Length != 2 && cliente.DddComercial != "")
-                        listaErros.Add("DDD INVÁLIDO.");
-                    else if (cliente.TelComercial.Length < 6 && cliente.TelComercial != "")
-                        listaErros.Add("TELEFONE COMERCIAL INVÁLIDO.");
-                    else if (cliente.DddComercial != "" && cliente.TelComercial == "")
-                        listaErros.Add("PREENCHA O TELEFONE COMERCIAL.");
-                    else if (cliente.DddComercial == "" && cliente.TelComercial != "")
-                        listaErros.Add("PREENCHA O DDD.");
-                    if (string.IsNullOrEmpty(cliente.Contato))
-                        listaErros.Add("Informe o nome da pessoa para contato!");
-                    if (string.IsNullOrEmpty(cliente.Email))
-                        listaErros.Add("É obrigatório informar um endereço de e-mail!");
-                }
-            }
-
-            if (cliente.Endereco == "")
-                listaErros.Add("PREENCHA O ENDEREÇO.");
-            if (cliente.Endereco.Length > Constantes.MAX_TAMANHO_CAMPO_ENDERECO)
-                listaErros.Add("ENDEREÇO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: " +
-                    cliente.Endereco.Length + " CARACTERES<br>TAMANHO MÁXIMO: " +
-                    Constantes.MAX_TAMANHO_CAMPO_ENDERECO + " CARACTERES");
-            if (cliente.Endereco == "")
-                listaErros.Add("PREENCHA O NÚMERO DO ENDEREÇO.");
-            if (cliente.Bairro == "")
-                listaErros.Add("PREENCHA O BAIRRO.");
-            if (cliente.Cidade == "")
-                listaErros.Add("PREENCHA A CIDADE.");
-            if (!Utils.Util.VerificaUf(cliente.Uf))
-                listaErros.Add("UF INVÁLIDA.");
-            if (cliente.Cep == "")
-                listaErros.Add("INFORME O CEP.");
-            if (!Utils.Util.VerificaCep(cliente.Cep))
-                listaErros.Add("CEP INVÁLIDO.");
-
-
-            if (cliente.Ie == "" &&
-                Convert.ToString(cliente.Contribuinte_Icms_Status) == Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
-                listaErros.Add("PREENCHA A INSCRIÇÃO ESTADUAL.");
-            if (Convert.ToString(cliente.ProdutorRural) == Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
-                if (cliente.Ie == "" &&
-                Convert.ToString(cliente.Contribuinte_Icms_Status) == Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
-                    listaErros.Add("Para ser cadastrado como Produtor Rural, " +
-                        "é necessário ser contribuinte do ICMS e possuir nº de IE");
-
-            if (!string.IsNullOrEmpty(cliente.Ie))
-            {
-
-                string uf = VerificarInscricaoEstadualValida(cliente.Ie, cliente.Uf, listaErros);
-                await ConsisteMunicipioIBGE(cliente.Cidade, cliente.Uf, listaErros);
-
-            }
-            //vamos verificar novamente o endereço, pois o usuário pode buscar o cep e 
-            //depois alterar o nome da rua, UF, cidade, bairro
-            await VerificarEndereco(cliente, listaErros);
-
-        }
-
-        private async Task VerificarEndereco(DadosClienteCadastroDto cliente, List<string> listaErros)
-        {
-            CepBll cep = new CepBll(contextoCepProvider);
-            List<CepDto> cepDto = new List<CepDto>();
-            string cepSoDigito = cliente.Cep.Replace(".", "").Replace("-", "");
-            cepDto = (await cep.BuscarPorCep(cepSoDigito)).ToList();
-            foreach (var c in cepDto)
-            {
-                /*
-                 * Só podemos verificar se o cep, pois pode ser que o cep não tem endereço
-                 */
-
-                if (c.Cep != cepSoDigito)
-                    listaErros.Add("Número do Cep diferente!");
-
-
-                if (Utils.Util.RemoverAcentuacao(c.Cidade.ToUpper()) != Utils.Util.RemoverAcentuacao(cliente.Cidade.ToUpper()) ||
-                    c.Uf.ToUpper() != cliente.Uf.ToUpper())
-                    listaErros.Add("Os dados informados estão divergindo da base de dados!");
-            }
-        }
-
-        private string VerificarInscricaoEstadualValida(string ie, string uf, List<string> listaErros)
-        {
-            string c = "";
-            int qtdeDig = 0;
-            int num;
-            string retorno = "";
-            bool blnResultado = false;
-
-            if (ie != "ISENTO")
-            {
-                for (int i = 0; i < ie.Length; i++)
-                {
-                    c = ie.Substring(i, 1);
-                    if (!int.TryParse(c, out num) && c != "." && c != "-" && c != "/")
-                        blnResultado = false;
-                    if (int.TryParse(c, out num))
-                        qtdeDig += 1;
-                }
-                if (qtdeDig < 2 && qtdeDig > 14)
-                    retorno = "Preencha a IE (Inscrição Estadual) com um número válido! " +
-                            "Certifique-se de que a UF informada corresponde à UF responsável pelo registro da IE.";
-                else
-                    retorno = ie;
-            }
-            else
-            {
-                retorno = ie;
-            }
-
-            blnResultado = isInscricaoEstadualOkCom(ie, uf, listaErros);
-            if (!blnResultado)
-            {
-                listaErros.Add("Preencha a IE (Inscrição Estadual) com um número válido! " +
-                            "Certifique-se de que a UF informada corresponde à UF responsável pelo registro da IE.");
-            }
-
-            return retorno;
-        }
-
-        private bool isInscricaoEstadualOkCom(string ie, string uf, List<string> listaErros)
-        {
-            var ReflectionUtilsMemberAccess =
-          BindingFlags.Public | BindingFlags.NonPublic |
-          BindingFlags.Static | BindingFlags.Instance | BindingFlags.IgnoreCase;
-
-            ie = ie.Replace(".", "").Replace("-", "");
-            // this works with both .NET 4.5+ and .NET Core 2.0+
-
-            string progId = "ComPlusWrapper_DllInscE32.ComPlusWrapper_DllInscE32";
-            Type type = Type.GetTypeFromProgID(progId);
-            object inst = Activator.CreateInstance(type);
-
-
-            bool result = (bool)inst.GetType().InvokeMember("isInscricaoEstadualOk",
-                ReflectionUtilsMemberAccess | BindingFlags.InvokeMethod, null, inst,
-                new object[2]
-                {
-                    ie, uf
-                });
-
-            return result;
-        }
-
         private async Task<string> GerarIdCliente(InfraBanco.ContextoBdGravacao dbgravacao, string id_nsu)
         {
             string retorno = "";
@@ -1194,7 +842,20 @@ namespace PrepedidoBusiness.Bll
             return retorno;
         }
 
+        public async Task<string> BuscarIdCliente(string cpf_cnpj)
+        {
+            string retorno = "";
 
+            var db = contextoProvider.GetContextoLeitura();
+
+            cpf_cnpj = PrepedidoBusiness.Utils.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
+
+            retorno = await (from c in db.Tclientes
+                             where c.Cnpj_Cpf == cpf_cnpj
+                             select c.Id).FirstOrDefaultAsync();
+
+            return retorno;
+        }
 
     }
 }
