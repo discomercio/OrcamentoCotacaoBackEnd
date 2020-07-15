@@ -79,7 +79,15 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
                 c.DadosCliente.TelComercial2 = "";
                 c.DadosCliente.Ramal2 = "12";
             },
-                "PREENCHA AO MENOS UM TELEFONE (COMERCIAL OU COMERCIAL 2)!",
+                "Ramal comercial 2 preenchido sem telefone!",
+                    TipoPessoa.PJ);
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.DddComercial = "";
+                c.DadosCliente.TelComercial = "";
+                c.DadosCliente.Ramal = "12";
+            },
+                "Ramal comercial preenchido sem telefone!",
                     TipoPessoa.PJ);
         }
 

@@ -386,18 +386,7 @@ alerta="TELEFONE CELULAR (" & s_ddd_cel & ") " & s_tel_cel & " JÁ ESTÁ SENDO U
                 c.DadosCliente.DddCelular = "12";
                 c.DadosCliente.Celular = "12345678";
             },
-                "ramal incorreto",
-                    TipoPessoa.PF);
-
-            testesClienteUnisBll.TestarCadastro(c =>
-            {
-                c.DadosCliente.DddComercial = "";
-                c.DadosCliente.TelComercial = "";
-                c.DadosCliente.Ramal = "12";
-                c.DadosCliente.DddCelular = "12";
-                c.DadosCliente.Celular = "12345678";
-            },
-                "ramal incorreto",
+                "Ramal comercial preenchido sem telefone!",
                     TipoPessoa.PF);
 
             testesClienteUnisBll.TestarCadastro(c =>
@@ -406,16 +395,7 @@ alerta="TELEFONE CELULAR (" & s_ddd_cel & ") " & s_tel_cel & " JÁ ESTÁ SENDO U
                 c.DadosCliente.TelComercial2 = "12345678";
                 c.DadosCliente.Ramal = "";
             },
-                "pf semcomercial 2",
-                    TipoPessoa.PF);
-
-            testesClienteUnisBll.TestarCadastro(c =>
-            {
-                c.DadosCliente.DddComercial2 = "";
-                c.DadosCliente.TelComercial2 = "";
-                c.DadosCliente.Ramal2 = "12";
-            },
-                "ramal2 deve ser varzio (ou alguma mensagem de erro)",
+                "Se cliente é tipo PF, não pode ter os campos de Telefone e DDD comercial 2 preenchidos!",
                     TipoPessoa.PF);
 
             testesClienteUnisBll.TestarCadastro(c =>

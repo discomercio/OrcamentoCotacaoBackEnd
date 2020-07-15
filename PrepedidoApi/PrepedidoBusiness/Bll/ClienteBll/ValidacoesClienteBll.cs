@@ -320,6 +320,12 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 retorno = false;
             }
 
+            if (!string.IsNullOrEmpty(dadosCliente.Ramal) && string.IsNullOrEmpty(dadosCliente.TelComercial))
+            {
+                lstErros.Add("Ramal comercial preenchido sem telefone!");
+                retorno = false;
+            }
+
             if (lstErros.Count == 0)
             {
                 if (!string.IsNullOrEmpty(dadosCliente.DddComercial) &&
@@ -368,6 +374,12 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 retorno = false;
             }
 
+            if (!string.IsNullOrEmpty(dadosCliente.Ramal2) && string.IsNullOrEmpty(dadosCliente.TelComercial2))
+            {
+                lstErros.Add("Ramal comercial 2 preenchido sem telefone!");
+                retorno = false;
+            }
+
             if (lstErros.Count == 0)
             {
                 if (!string.IsNullOrEmpty(dadosCliente.DddComercial2) &&
@@ -377,7 +389,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     cliente?.Ddd_Com_2, cliente?.Tel_Com_2, dadosCliente.Cnpj_Cpf, dadosCliente.Tipo, lstErros, contextoProvider))
                         lstErros.Add("TELEFONE COMERCIAL (" + dadosCliente.DddComercial2 + ") " + Util.FormatarTelefones(dadosCliente.TelComercial2) +
                             " JÁ ESTÁ SENDO UTILIZADO NO CADASTRO DE OUTROS CLIENTES. Não foi possível concluir o cadastro.");
-                }                    
+                }
             }
 
             return retorno;
@@ -514,23 +526,11 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 retorno = false;
             }
 
-            if (!string.IsNullOrEmpty(dadosCliente.DddResidencial) || !string.IsNullOrEmpty(dadosCliente.TelefoneResidencial))
-            {
-                //com
-                retorno = await ValidarTelCom(dadosCliente, cliente, lstErros, contextoProvider);
+            //com
+            retorno = await ValidarTelCom(dadosCliente, cliente, lstErros, contextoProvider);
 
-                //com 2
-                retorno = await ValidarTelCom2(dadosCliente, cliente, lstErros, contextoProvider);
-
-                lstErros.Add("Se cliente é tipo PJ, não pode ter os campos de Telefone e DDD residencial preenchidos! ");
-                retorno = false;
-            }
-
-            if (!string.IsNullOrEmpty(dadosCliente.DddCelular) || !string.IsNullOrEmpty(dadosCliente.Celular))
-            {
-                lstErros.Add("Se cliente é tipo PJ, não pode ter os campos de Telefone e DDD celular preenchidos! ");
-                retorno = false;
-            }
+            //com 2
+            retorno = await ValidarTelCom2(dadosCliente, cliente, lstErros, contextoProvider);
 
             if (!string.IsNullOrEmpty(dadosCliente.TelComercial))
             {
