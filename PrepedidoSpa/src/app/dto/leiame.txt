@@ -1,0 +1,4 @@
+Este diretórioc contém os DTOs (Data Transfer Object) que são usados apra comunicar entre o SPA e a API.
+
+Os nomes das classes e a estrutura de diretórios é igual à do C#, exceto os diretórios comecando por Angular.
+

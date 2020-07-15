@@ -1,0 +1,11 @@
+﻿configuração do Typescript Build
+
+version: ECMAScript56
+JSX compilation: none
+Module System: AMD
+Compile on save: true
+Allow impicit any: false
+
+Output:
+Redirect typescript: 
+

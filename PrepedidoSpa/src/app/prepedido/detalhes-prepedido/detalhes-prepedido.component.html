@@ -1,0 +1,51 @@
+<section class="contgrande"
+    [ngClass]="{'carregando': prepedidoBuscarService.carregando && pedidoBuscarService.carregando}"
+    [class]="telaDesktop? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'"
+    *ngIf="!impressaoService.emImpressao() && (prepedidoBuscarService.carregando || pedidoBuscarService.carregando)">
+    <!-- somente enquanto está carregando -->
+    <header id="header" *ngIf="emPrepedidos">
+        <div class="titulopagina"> Detalhes do Pré-Pedido {{numeroPrepedido}}</div>
+    </header>
+    <header id="header" *ngIf="!emPrepedidos">
+        <div class="titulopagina"> Detalhes do Pedido {{numeroPedido}}</div>
+    </header>
+
+    <article id="content">
+        <!-- forçamos a altura para que o botão de voltar fique no mesmo lugar -->
+        Carregando dados, aguarde...
+    </article>
+    <footer>
+        <button mat-raised-button color="accent" (click)="voltar()">
+            <mat-icon>arrow_back</mat-icon> Voltar
+        </button>
+    </footer>
+
+</section>
+<section class="contgrande"
+    [ngClass]="{'carregando': prepedidoBuscarService.carregando && pedidoBuscarService.carregando}"
+    [class]="telaDesktop? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'"
+    *ngIf="!impressaoService.emImpressao() && (!(prepedidoBuscarService.carregando || pedidoBuscarService.carregando))">
+
+    <header id="header" style="height: 0px; margin: 0;">
+        <div>&nbsp;</div>
+    </header>
+    <article id="content" *ngIf="emPrepedidos" style="display: flex; justify-content: center;">
+        <app-prepedido-desktop *ngIf="telaDesktop"></app-prepedido-desktop>
+        <app-prepedido-celular *ngIf="!telaDesktop"></app-prepedido-celular>
+    </article>
+    <article id="content" *ngIf="!emPrepedidos " style="display: flex; justify-content: center;">
+        <app-pedido-desktop [pedido]="pedido" *ngIf="telaDesktop"></app-pedido-desktop>
+        <app-pedido-celular [pedido]="pedido" *ngIf="!telaDesktop"></app-pedido-celular>
+    </article>
+    <footer>
+        <button mat-raised-button color="accent" (click)="voltar()" style="font-size: 80%">
+            <mat-icon style="font-size: 180%; margin-left: -15%">arrow_back</mat-icon> Voltar
+        </button>
+    </footer>
+</section>
+<div *ngIf="impressaoService.emImpressao() && !emPrepedidos">
+    <app-pedido-desktop [pedido]="pedido"></app-pedido-desktop>
+</div>
+<div *ngIf="impressaoService.emImpressao() && emPrepedidos">
+    <app-prepedido-desktop></app-prepedido-desktop>
+</div>

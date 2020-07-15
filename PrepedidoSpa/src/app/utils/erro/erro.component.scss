@@ -1,0 +1,27 @@
+:host
+{
+    padding-top: 40px;
+    padding: 2em;
+    display: flex;
+    flex-direction: column;
+    text-align:center;
+
+    align-content: center;
+
+    .divPai
+    {
+        align-self: center;
+        padding: 1rem .1rem;
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;    
+        text-align: center;
+    }
+    
+    footer{
+        padding: 2rem;  
+    }  
+}
+
+
+
