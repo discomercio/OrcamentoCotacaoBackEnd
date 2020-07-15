@@ -35,12 +35,19 @@ namespace PrepedidoAPIUnis
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<IISServerOptions>(options =>
+            {
+                options.AllowSynchronousIO = true;
+            });
+
+
             services.AddCors();
 
-            services.AddMvc().
-                SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+            services.AddMvc(option => option.EnableEndpointRouting = false).
+                SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 //nao usamos camelcase nos dados gerados
-                .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver());
+                .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver())
+                .AddJsonOptions(opt => opt.JsonSerializerOptions.PropertyNamingPolicy = null);
 
 
             // configure strongly typed settings objects
@@ -145,7 +152,9 @@ namespace PrepedidoAPIUnis
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+#pragma warning disable CS0618 // Type or member is obsolete
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILogger<Startup> logger)
+#pragma warning restore CS0618 // Type or member is obsolete
         {
             // Route all unknown requests to app root
             app.Use(async (context, next) =>

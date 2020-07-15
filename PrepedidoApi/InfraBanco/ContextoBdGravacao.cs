@@ -49,7 +49,7 @@ namespace InfraBanco
         public EntityEntry Remove(object entity) => contexto.Remove(entity);
         public EntityEntry Add(object entity) => contexto.Add(entity);
         public EntityEntry Update(object entity) => contexto.Update(entity);
-        public Task<int> SaveChangesAsync() => contexto.SaveChangesAsync();
+        public async Task<int> SaveChangesAsync() { return await contexto.SaveChangesAsync(); }
         public int SaveChanges() => contexto.SaveChanges();
 
         //acesso às tabelas

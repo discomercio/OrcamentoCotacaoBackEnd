@@ -26,12 +26,17 @@ namespace PrepedidoApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<IISServerOptions>(options =>
+            {
+                options.AllowSynchronousIO = true;
+            });
+
             services.AddCors();
 
-            services.AddMvc().
-                SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+            services.AddMvc(option => option.EnableEndpointRouting = false).
+                SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 //nao usamos camelcase nos dados gerados
-                .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
+                .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
             // configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection("AppSettings");
@@ -111,7 +116,9 @@ namespace PrepedidoApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+#pragma warning disable CS0618 // Type or member is obsolete
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+#pragma warning restore CS0618 // Type or member is obsolete
         {
             IConfigurationBuilder configurationBuilderVersaoApi = new ConfigurationBuilder();
             configurationBuilderVersaoApi.AddJsonFile("versaoapi.json");

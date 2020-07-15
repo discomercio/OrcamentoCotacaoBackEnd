@@ -30,7 +30,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrepedidoUnisBusiness", "Pr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASPs", "ASPs\ASPs.csproj", "{DCB53684-ADEC-4A89-A7DF-DC1E28E9518D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testes.Automatizados", "Testes.Automatizados\Testes.Automatizados.csproj", "{2AAED823-B5CF-41A3-B770-9A0BD7926F2F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testes.Automatizados", "Testes.Automatizados\Testes.Automatizados.csproj", "{2AAED823-B5CF-41A3-B770-9A0BD7926F2F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,9 +67,7 @@ Global
 		{37BD9E1F-4C78-4E93-AD2E-ADBF5FDEB72D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37BD9E1F-4C78-4E93-AD2E-ADBF5FDEB72D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DCB53684-ADEC-4A89-A7DF-DC1E28E9518D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DCB53684-ADEC-4A89-A7DF-DC1E28E9518D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCB53684-ADEC-4A89-A7DF-DC1E28E9518D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DCB53684-ADEC-4A89-A7DF-DC1E28E9518D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2AAED823-B5CF-41A3-B770-9A0BD7926F2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2AAED823-B5CF-41A3-B770-9A0BD7926F2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2AAED823-B5CF-41A3-B770-9A0BD7926F2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
