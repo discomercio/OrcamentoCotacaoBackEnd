@@ -26,7 +26,7 @@ export class ConfirmarPrepedidoComponent extends PassoPrepedidoBase implements O
     private readonly activatedRoute: ActivatedRoute,
     private readonly location: Location,
     router: Router,
-    novoPrepedidoDadosService: NovoPrepedidoDadosService,
+    public novoPrepedidoDadosService: NovoPrepedidoDadosService,
     public readonly alertaService: AlertaService,
     public readonly dialog: MatDialog,
     telaDesktopService: TelaDesktopService,

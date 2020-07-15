@@ -375,16 +375,15 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             {
                 Observacoes = torcamento.Obs_1,
                 NumeroNF = torcamento.Obs_2,
-                EntregaImediata = torcamento.St_Etg_Imediata ==
-                (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
-                "NÃO (" + torcamento.Etg_Imediata_Usuario +
-                " em " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" :
-                "SIM (" + torcamento.Etg_Imediata_Usuario +
-                " em " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")",
+                PrevisaoEntrega = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
+                torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + " (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) + 
+                " em " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" : null,
+                EntregaImediata = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
+                "NÃO (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) + " em " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" :
+                "SIM (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) + " em " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")",
                 BemDeUso_Consumo = torcamento.StBemUsoConsumo == (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_NAO ?
                 "NÃO" : "SIM",
-                InstaladorInstala = torcamento.InstaladorInstalaStatus ==
-                (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_NAO ?
+                InstaladorInstala = torcamento.InstaladorInstalaStatus == (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_NAO ?
                 "NÃO" : "SIM",
                 GarantiaIndicador = Convert.ToString(torcamento.GarantiaIndicadorStatus) ==
                 Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO ?
@@ -807,11 +806,12 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                                         prePedido, tOrcamentista, c_custoFinancFornecTipoParcelamento,
                                         sistemaResponsavelCadastro, perc_limite_RA_sem_desagio);
                                     //Cadastrar orcamento itens
-                                    List<TorcamentoItem> lstOrcamentoItem = MontaListaOrcamentoItem(prePedido);
+                                    List<TorcamentoItem> lstOrcamentoItem = (await MontaListaOrcamentoItem(prePedido,
+                                        lstPercentualCustoFinanFornec, dbgravacao)).ToList();
 
                                     //vamos passar o coeficiente que foi criado na linha 596 e passar como param para cadastrar nos itens
-                                    await ComplementarInfosOrcamentoItem(dbgravacao, lstOrcamentoItem,
-                                        prePedido.DadosCliente.Loja, lstPercentualCustoFinanFornec);
+                                    //await ComplementarInfosOrcamentoItem(dbgravacao, lstOrcamentoItem,
+                                    //    prePedido.DadosCliente.Loja);
 
                                     log = await CadastrarOrctoItens(dbgravacao, lstOrcamentoItem, log);
 
@@ -1682,61 +1682,54 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return lstRegrasCrtlEstoque;
         }
 
-        private async Task ComplementarInfosOrcamentoItem(ContextoBdGravacao dbgravacao, List<TorcamentoItem> lstOrcamentoItem,
-            string loja, List<TpercentualCustoFinanceiroFornecedor> lstPercentualCustoFinanFornec)
+        private async Task ComplementarInfosOrcamentoItem(ContextoBdGravacao dbgravacao,
+            List<TorcamentoItem> lstOrcamentoItem, string loja)
         {
             int indiceItem = 0;
 
             TorcamentoItem orcItem = new TorcamentoItem();
-            foreach (var percCustoFinanFornec in lstPercentualCustoFinanFornec)
+
+            foreach (TorcamentoItem item in lstOrcamentoItem)
             {
-                foreach (TorcamentoItem item in lstOrcamentoItem)
+                var prodLista = from c in dbgravacao.TprodutoLojas.Include(x => x.Tproduto).Include(x => x.Tproduto.Tfabricante)
+                                where c.Tproduto.Tfabricante.Fabricante == item.Fabricante &&
+                                      c.Loja == loja &&
+                                      c.Tproduto.Produto == item.Produto
+                                select c;
+
+                var prod = await prodLista.FirstOrDefaultAsync();
+
+                if (prod != null)
                 {
-                    if (percCustoFinanFornec.Fabricante == item.Fabricante)
-                    {
-                        var prodLista = from c in dbgravacao.TprodutoLojas.Include(x => x.Tproduto).Include(x => x.Tproduto.Tfabricante)
-                                        where c.Tproduto.Tfabricante.Fabricante == item.Fabricante &&
-                                              c.Loja == loja &&
-                                              c.Tproduto.Produto == item.Produto
-                                        select c;
+                    //montagem das informações do produto                    
+                    item.Margem = prod.Margem;
+                    item.Desc_Max = prod.Desc_Max;
+                    item.Comissao = prod.Comissao;
+                    item.Preco_Fabricante = prod.Tproduto.Preco_Fabricante;
+                    item.Vl_Custo2 = prod.Tproduto.Vl_Custo2;
+                    item.Descricao = prod.Tproduto.Descricao;
+                    item.Descricao_Html = prod.Tproduto.Descricao_Html;
+                    item.Ean = prod.Tproduto.Ean;
+                    item.Grupo = prod.Tproduto.Grupo;
+                    item.Peso = prod.Tproduto.Peso;
+                    item.Qtde_Volumes = prod.Tproduto.Qtde_Volumes;
+                    item.Markup_Fabricante = prod.Tproduto.Tfabricante.Markup;
+                    item.Cubagem = prod.Tproduto.Cubagem;
+                    item.Ncm = prod.Tproduto.Ncm;
+                    item.Cst = prod.Tproduto.Cst;
+                    item.Descontinuado = prod.Tproduto.Descontinuado;
+                    item.CustoFinancFornecPrecoListaBase = Math.Round((decimal)prod.Preco_Lista, 2);
+                    item.Qtde_Spe = 0; //essa quantidade não esta sendo alterada
+                    item.Abaixo_Min_Status = 0; //sempre recebe 0 aqui
+                    item.Abaixo_Min_Autorizacao = "";//sempre esta vazio no modulo orcamento
+                    item.Abaixo_Min_Autorizador = "";//sempre esta vazio no modulo orcamento
+                    item.Abaixo_Min_Superv_Autorizador = "";//sempre esta vazio no modulo orcamento
+                    item.Sequencia = (short?)RenumeraComBase1(indiceItem);
+                    item.Subgrupo = prod.Tproduto.Subgrupo;
 
-                        var prod = await prodLista.FirstOrDefaultAsync();
-
-                        if (prod != null)
-                        {
-                            //montagem das informações do produto                    
-                            item.Margem = prod.Margem;
-                            item.Desc_Max = prod.Desc_Max;
-                            item.Comissao = prod.Comissao;
-                            item.Preco_Fabricante = prod.Tproduto.Preco_Fabricante;
-                            item.Vl_Custo2 = prod.Tproduto.Vl_Custo2;
-                            item.Descricao = prod.Tproduto.Descricao;
-                            item.Descricao_Html = prod.Tproduto.Descricao_Html;
-                            item.Ean = prod.Tproduto.Ean;
-                            item.Grupo = prod.Tproduto.Grupo;
-                            item.Peso = prod.Tproduto.Peso;
-                            item.Qtde_Volumes = prod.Tproduto.Qtde_Volumes;
-                            item.Markup_Fabricante = prod.Tproduto.Tfabricante.Markup;
-                            item.Cubagem = prod.Tproduto.Cubagem;
-                            item.Ncm = prod.Tproduto.Ncm;
-                            item.Cst = prod.Tproduto.Cst;
-                            item.Descontinuado = prod.Tproduto.Descontinuado;
-                            item.CustoFinancFornecPrecoListaBase = Math.Round((decimal)prod.Preco_Lista, 2);
-                            item.CustoFinancFornecCoeficiente = percCustoFinanFornec.Coeficiente;
-                            item.Qtde_Spe = 0; //essa quantidade não esta sendo alterada
-                            item.Abaixo_Min_Status = 0; //sempre recebe 0 aqui
-                            item.Abaixo_Min_Autorizacao = "";//sempre esta vazio no modulo orcamento
-                            item.Abaixo_Min_Autorizador = "";//sempre esta vazio no modulo orcamento
-                            item.Abaixo_Min_Superv_Autorizador = "";//sempre esta vazio no modulo orcamento
-                            item.Sequencia = (short?)RenumeraComBase1(indiceItem);
-                            item.Subgrupo = prod.Tproduto.Subgrupo;
-
-                            indiceItem++;
-                        }
-                    }
+                    indiceItem++;
                 }
             }
-
         }
 
         /*
@@ -1750,7 +1743,27 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return retorno;
         }
 
-        private List<TorcamentoItem> MontaListaOrcamentoItem(PrePedidoDto prepedido)
+        private async Task<IEnumerable<TorcamentoItem>> MontaListaOrcamentoItem(PrePedidoDto prepedido,
+            List<TpercentualCustoFinanceiroFornecedor> lstPercentualCustoFinanFornec, ContextoBdGravacao dbgravacao)
+        {
+            List<TorcamentoItem> lstOrcamentoItem = new List<TorcamentoItem>();
+
+            if (prepedido.FormaPagtoCriacao.Rb_forma_pagto != Constantes.COD_FORMA_PAGTO_A_VISTA)
+            {
+                lstOrcamentoItem = MontaListaOrcamentoItemComCoeficiente(prepedido, lstPercentualCustoFinanFornec);
+            }
+            else
+            {
+                lstOrcamentoItem = MontaListaOrcamentoItemSemCoeficiente(prepedido);
+            }
+
+            //incluir a montagem dos outros campos
+            await ComplementarInfosOrcamentoItem(dbgravacao, lstOrcamentoItem, prepedido.DadosCliente.Loja);
+
+            return lstOrcamentoItem;
+        }
+
+        private List<TorcamentoItem> MontaListaOrcamentoItemSemCoeficiente(PrePedidoDto prepedido)
         {
             List<TorcamentoItem> lstOrcamentoItem = new List<TorcamentoItem>();
 
@@ -1766,9 +1779,39 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                     Preco_NF = prepedido.PermiteRAStatus == 1 ? Math.Round((decimal)p.Preco_Lista, 2) : Math.Round(p.VlUnitario, 2),
                     Obs = p.Obs == null ? "" : p.Obs,
                     Desc_Dado = p.Desconto,
-                    Preco_Lista = Math.Round(p.VlLista, 2)
+                    Preco_Lista = Math.Round(p.VlLista, 2),
+                    CustoFinancFornecCoeficiente = 1
                 };
                 lstOrcamentoItem.Add(item);
+            }
+
+            return lstOrcamentoItem;
+        }
+
+        private List<TorcamentoItem> MontaListaOrcamentoItemComCoeficiente(PrePedidoDto prepedido,
+            List<TpercentualCustoFinanceiroFornecedor> lstPercentualCustoFinanFornec)
+        {
+            List<TorcamentoItem> lstOrcamentoItem = new List<TorcamentoItem>();
+
+            foreach (var percCustoFinanFornec in lstPercentualCustoFinanFornec)
+            {
+                foreach (PrepedidoProdutoDtoPrepedido p in prepedido.ListaProdutos)
+                {
+                    TorcamentoItem item = new TorcamentoItem
+                    {
+                        Orcamento = prepedido.NumeroPrePedido,
+                        Produto = p.NumProduto,
+                        Fabricante = Utils.Util.Normaliza_Codigo(p.Fabricante, Constantes.TAM_MIN_FABRICANTE),
+                        Qtde = p.Qtde,
+                        Preco_Venda = Math.Round(p.VlUnitario, 2),
+                        Preco_NF = prepedido.PermiteRAStatus == 1 ? Math.Round((decimal)p.Preco_Lista, 2) : Math.Round(p.VlUnitario, 2),
+                        Obs = p.Obs == null ? "" : p.Obs,
+                        Desc_Dado = p.Desconto,
+                        Preco_Lista = Math.Round(p.VlLista, 2),
+                        CustoFinancFornecCoeficiente = percCustoFinanFornec.Coeficiente
+                    };
+                    lstOrcamentoItem.Add(item);
+                }
             }
 
             return lstOrcamentoItem;

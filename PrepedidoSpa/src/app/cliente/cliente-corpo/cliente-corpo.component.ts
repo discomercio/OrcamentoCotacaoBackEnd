@@ -389,8 +389,11 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
   public podeAvancar(): boolean {
     if (this.componenteCep.carregando)
       return false;
-    if (this.componenteCepDadosCadastrais.carregando)
-      return false;
+    if (!!this.componenteCepDadosCadastrais) {
+      if (this.componenteCepDadosCadastrais.carregando)
+        return false;
+    }
+
 
     return true;
   }

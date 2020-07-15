@@ -118,7 +118,6 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
         if (this.telaDesktop) {
           this.confirmarEndereco.atualizarDadosEnderecoTela(this.enderecoEntregaDtoClienteCadastro);
           //afazer chamar atualizarDadosEnderecoCadastral
-          debugger;
           
           this.clienteCorpo.atualizarDadosEnderecoCadastralClienteTela(this.endCadastralClientePrepedidoDto);
         }
@@ -271,8 +270,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
       this.alertaService.mostrarMensagem("Aguarde o carregamento do endereço antes de continuar.");
       return;
     }
-
-    debugger;
+    
     //afazer: não consigo pegar os dados do cep que foi alterado em dados cadastrais
     this.clienteCorpo.prepararAvancarEnderecoCadastralClientePrepedidoDto();
 
@@ -306,7 +304,8 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
 
         if (this.enderecoEntregaDtoClienteCadastro.OutroEndereco) {
           this.enderecoEntregaDtoClienteCadastro = this.confirmarEndereco.converterTelefones(this.enderecoEntregaDtoClienteCadastro);
-          validacoes = ValidacoesClienteUtils.validarEnderecoEntregaDtoClienteCadastro(this.enderecoEntregaDtoClienteCadastro);
+          validacoes = ValidacoesClienteUtils.validarEnderecoEntregaDtoClienteCadastro(this.enderecoEntregaDtoClienteCadastro,
+            this.endCadastralClientePrepedidoDto.Endereco_tipo_pessoa);
         }
       }
 

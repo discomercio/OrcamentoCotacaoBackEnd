@@ -42,7 +42,9 @@ export class PedidoDesktopComponent extends TelaDesktopBaseComponent implements 
   ngOnInit() {
     this.router.routeReuseStrategy.shouldReuseRoute = function () {
       return false;
-    };        
+    };      
+    
+    this.montarEnderecoEntrega(this.pedido.EnderecoEntrega);
   }
 
   formatarEndereco: FormatarEndereco = new FormatarEndereco();
@@ -81,7 +83,7 @@ export class PedidoDesktopComponent extends TelaDesktopBaseComponent implements 
   public enderecoEntregaFormatado: string;
   public qtdeLinhaEndereco: number;
   montarEnderecoEntrega(enderecoEntregaDto: EnderecoEntregaDtoClienteCadastro) {
-
+debugger;
     if (enderecoEntregaDto.OutroEndereco) {
       let retorno: string = "";
       let sEndereco: string;

@@ -32,11 +32,11 @@
         <div>
             <mat-radio-group aria-labelledby="endereco-radio-group-label" style="display: inline-flex"
                 [(ngModel)]="tipoPessoaEntrega">
-                <mat-radio-button class="enderecoradio" [value]="true" (click)="PJ()">Pessoa Jurídica
+                <mat-radio-button class="enderecoradio" [value]="pessoaEntregaEhPJ" (click)="PJ()">Pessoa Jurídica
                     &nbsp;
                 </mat-radio-button>
 
-                <mat-radio-button class="enderecoradio" [value]="false" (click)="PF()">Pessoa Física </mat-radio-button>
+                <mat-radio-button class="enderecoradio" [value]="pessoaEntregaEhPJ" (click)="PF()">Pessoa Física </mat-radio-button>
             </mat-radio-group>
             <br /><br />
             <!-- NOME / RAZÃO SOCIAL -->
@@ -116,7 +116,7 @@
                 <span>
                     <div>
                         <!-- se está confirando, precisa de um espaço maior em cima -->
-                        <div *ngIf="!cadastrando" style="padding-top: 1.5em;"></div>
+                        <div style="padding-top: 1.5em;"></div>
                         <mat-form-field floatLabel="floatLabel()" id="selectProdutorRural">
                             <mat-label>PRODUTOR RURAL</mat-label>
                             <!-- produtor rural sempre é editável -->
@@ -176,7 +176,7 @@
                     <!-- IE sempre é editável -->
                     <!-- [disabled]="dadosClienteCadastroDto?.Contribuinte_Icms_Status != 2" -->
                     <mat-form-field floatLabel="floatLabel()" style="width: 25ch;"
-                        [ngStyle]="{'padding':!cadastrando?'0em':''}">
+                    >
                         <input matInput type="text" placeholder="IE"
                             [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_ie" maxlength="20"
                             [disabled]="enderecoEntregaDtoClienteCadastro?.EndEtg_contribuinte_icms_status == 3">

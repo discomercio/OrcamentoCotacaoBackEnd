@@ -118,7 +118,6 @@ export class CadastrarClienteComponent extends TelaDesktopBaseComponent implemen
 
 
   continuar() {
-debugger;
     //primeiro, vamos ver o CEP que está dentro do cliente
     if (!this.clienteCorpo.podeAvancar()) {
       this.alertaService.mostrarMensagem("Aguarde o carregamento do endereço antes de continuar.");

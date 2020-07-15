@@ -9,6 +9,7 @@ import { ClienteCorpoComponent } from 'src/app/cliente/cliente-corpo/cliente-cor
 import { Constantes } from 'src/app/dto/Constantes';
 import { FormatarTelefone } from 'src/app/utils/formatarTelefone';
 import { CpfCnpjUtils } from 'src/app/utils/cpfCnpjUtils';
+import { MatSelect } from '@angular/material';
 
 @Component({
   selector: 'app-confirmar-endereco',
@@ -30,6 +31,20 @@ export class ConfirmarEnderecoComponent implements OnInit {
 
     this.buscarClienteServiceJustificativaEndEntregaComboTemporario = this.buscarClienteService.JustificativaEndEntregaComboTemporario();
 
+  }
+
+  @ViewChild('mySelectProdutor', { static: false }) mySelectProdutor: MatSelect;
+  public ignorarProximoEnter = false;
+  keydownSelectProdutor(event: KeyboardEvent): void {
+    if (event.which == 13) {
+      event.cancelBubble = true;
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+
+      this.mySelectProdutor.toggle();
+      this.ignorarProximoEnter = true;
+      document.getElementById("avancar").focus();
+    }
   }
 
   atualizarDadosEnderecoTela(enderecoEntregaDtoClienteCadastro: EnderecoEntregaDtoClienteCadastro) {
@@ -120,16 +135,18 @@ export class ConfirmarEnderecoComponent implements OnInit {
     enderecoEntrega.EndEtg_ie = "";
     enderecoEntrega.EndEtg_tipo_pessoa = "";
   }
-
+  pessoaEntregaEhPJ:boolean;
   PF() {
     this.enderecoEntregaDtoClienteCadastro.EndEtg_cnpj_cpf = "";
     this.tipoPessoaEntrega = false;
+    this.pessoaEntregaEhPJ = false;
     this.enderecoEntregaDtoClienteCadastro.EndEtg_tipo_pessoa = this.constantes.ID_PF;
   }
 
   PJ() {
     this.enderecoEntregaDtoClienteCadastro.EndEtg_cnpj_cpf = "";
     this.tipoPessoaEntrega = true;
+    this.pessoaEntregaEhPJ = true;
     this.enderecoEntregaDtoClienteCadastro.EndEtg_tipo_pessoa = this.constantes.ID_PJ;
   }
 

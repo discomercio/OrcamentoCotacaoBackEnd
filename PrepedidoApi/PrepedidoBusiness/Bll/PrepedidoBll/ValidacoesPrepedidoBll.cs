@@ -46,13 +46,17 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             List<string> lstFornec = new List<string>();
             lstFornec = prepedido.ListaProdutos.Select(x => x.Fabricante).Distinct().ToList();
 
-            //buscar coeficiente 
-            List<CoeficienteDto> lstCoeficiente =
-                (await BuscarListaCoeficientesFornecedores(lstFornec, qtdeParcelas, siglaFormaPagto)).ToList();
+            List<CoeficienteDto> lstCoeficiente = new List<CoeficienteDto>();
+            //precisa verificar se a forma de pagto é diferente de av para não dar erro na validação
+            if (prepedido.FormaPagtoCriacao.Rb_forma_pagto != Constantes.COD_FORMA_PAGTO_A_VISTA)
+            {
+                //buscar coeficiente 
+                lstCoeficiente =
+                    (await BuscarListaCoeficientesFornecedores(lstFornec, qtdeParcelas, siglaFormaPagto)).ToList();
 
-
-            //validar se os coeficientes estão ok
-            ValidarCustoFinancFornecCoeficiente(prepedido.ListaProdutos, lstCoeficiente, lstErros);
+                //validar se os coeficientes estão ok
+                ValidarCustoFinancFornecCoeficiente(prepedido.ListaProdutos, lstCoeficiente, lstErros);
+            }
 
             if (lstErros.Count == 0)
             {
@@ -60,25 +64,47 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 List<PrepedidoProdutoDtoPrepedido> lstProdutosCompare =
                 (await BuscarProdutos(prepedido.ListaProdutos, loja, lstErros)).ToList();
 
-                lstCoeficiente.ForEach(x =>
-                {
-                    lstProdutosCompare.ForEach(y =>
-                    {
-                        if (x.Fabricante == y.Fabricante)
-                        {
-                            //vamos calcular o preco_lista com o coeficiente
-                            y.Preco = y.Preco;
-                            y.VlLista = Math.Round(((decimal)y.Preco * (decimal)x.Coeficiente), 2);
-                            y.VlUnitario = Math.Round(y.VlLista * (decimal)(1 - y.Desconto / 100), 2);
-                            y.TotalItem = Math.Round((decimal)(y.VlUnitario * y.Qtde), 2);
-                            y.TotalItemRA = Math.Round((decimal)(y.VlLista * y.Qtde), 2);
-                        }
-                    });
-                });
+                //vamos montar calcular a lista de produtos
+                if (prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_A_VISTA)
+                    CalcularProdutoSemCoeficiente(lstProdutosCompare);
+                else
+                    CalcularProdutoComCoeficiente(lstProdutosCompare, lstCoeficiente);
 
                 ConfrontarProdutos(prepedido, lstProdutosCompare, lstErros, limiteArredondamento);
                 ConfrontarTotaisEPercentualMaxRA(prepedido, lstErros, perc_limite_RA);
             }
+        }
+
+        private void CalcularProdutoSemCoeficiente(List<PrepedidoProdutoDtoPrepedido> lstProdutos)
+        {
+            lstProdutos.ForEach(y =>
+                {
+                    //vamos calcular o preco_lista com o coeficiente
+                    y.Preco = y.Preco;
+                    y.VlLista = (decimal)y.Preco;
+                    y.VlUnitario = Math.Round(y.VlLista * (decimal)(1 - y.Desconto / 100), 2);
+                    y.TotalItem = Math.Round((decimal)(y.VlUnitario * y.Qtde), 2);
+                    y.TotalItemRA = Math.Round((decimal)(y.VlLista * y.Qtde), 2);
+                });
+        }
+
+        private void CalcularProdutoComCoeficiente(List<PrepedidoProdutoDtoPrepedido> lstProdutos, List<CoeficienteDto> lstCoeficiente)
+        {
+            lstCoeficiente.ForEach(x =>
+            {
+                lstProdutos.ForEach(y =>
+                {
+                    if (x.Fabricante == y.Fabricante)
+                    {
+                        //vamos calcular o preco_lista com o coeficiente
+                        y.Preco = y.Preco;
+                        y.VlLista = Math.Round(((decimal)y.Preco * (decimal)x.Coeficiente), 2);
+                        y.VlUnitario = Math.Round(y.VlLista * (decimal)(1 - y.Desconto / 100), 2);
+                        y.TotalItem = Math.Round((decimal)(y.VlUnitario * y.Qtde), 2);
+                        y.TotalItemRA = Math.Round((decimal)(y.VlLista * y.Qtde), 2);
+                    }
+                });
+            });
         }
 
         public void ValidarCustoFinancFornecCoeficiente(List<PrepedidoProdutoDtoPrepedido> lstProdutos,
@@ -86,7 +112,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         {
             lstProdutos.ForEach(x =>
             {
-                if(lstCoeficiente.Any(l => l.Fabricante == x.Fabricante))
+                if (lstCoeficiente.Any(l => l.Fabricante == x.Fabricante))
                 {
                     lstCoeficiente.ForEach(y =>
                     {
@@ -131,10 +157,10 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return lstcoefDto;
         }
 
-        private async Task<IEnumerable<PrepedidoProdutoDtoPrepedido>> BuscarProdutos(List<PrepedidoProdutoDtoPrepedido> lstProdutos, 
+        private async Task<IEnumerable<PrepedidoProdutoDtoPrepedido>> BuscarProdutos(List<PrepedidoProdutoDtoPrepedido> lstProdutos,
             string loja, List<string> lstErros)
         {
-            
+
 
             var db = contextoProvider.GetContextoLeitura();
             List<PrepedidoProdutoDtoPrepedido> lsProdutosCompare = new List<PrepedidoProdutoDtoPrepedido>();
@@ -142,7 +168,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             foreach (var x in lstProdutos)
             {
                 //vamos verificar se o cód do produto é composto
-                if(await VerificarProdutoComposto(x, loja, lstErros))
+                if (await VerificarProdutoComposto(x, loja, lstErros))
                 {
                     PrepedidoProdutoDtoPrepedido produto = await (from c in db.TprodutoLojas
                                                                   where c.Produto == x.NumProduto &&
@@ -166,7 +192,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                     {
                         lstErros.Add("Produto cód.(" + x.NumProduto + ") do fabricante cód.(" + x.Fabricante + ") não existe!");
                     }
-                }                
+                }
             }
 
             return lsProdutosCompare;
@@ -182,7 +208,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                                           c.Fabricante_Composto == produto.Fabricante
                                           select c).FirstOrDefaultAsync();
 
-            if(prodCompostoTask != null)
+            if (prodCompostoTask != null)
             {
                 lstErros.Add("Produto cód.(" + produto.NumProduto + ") do fabricante cód.(" + produto.Fabricante + ") " +
                     "é um produto composto. Para cadastrar produtos compostos é necessário enviar os produtos individualmente!");
@@ -262,7 +288,8 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             {
                 await ValidarDadosEnderecoEntrega(prepedido, lstErros, contextoProvider);
 
-                await ValidarDadosPessoaEnderecoEntrega(prepedido, lstErros);
+                if (prepedido.DadosCliente.Tipo == Constantes.ID_PJ)
+                    await ValidarDadosPessoaEnderecoEntrega(prepedido, lstErros);
 
                 if (lstErros.Count != 0)
                     retorno = false;

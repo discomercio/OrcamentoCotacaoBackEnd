@@ -81,7 +81,7 @@ export class ValidacoesClienteUtils {
         let validacoes: string[] = new Array();
 
         let ehPf = dadosClienteCadastroDto.Tipo == this.constantes.ID_PF ? true : false;
-
+        debugger;
         validacoes = validacoes.concat(validacoes = validacoes.concat(this.validarGeral(dadosClienteCadastroDto, true)));
 
         //converter telefones para separar os dados
@@ -109,11 +109,11 @@ export class ValidacoesClienteUtils {
         return msgErrosEndEtg;
     }
     //valida dados da pessoa da entrega
-    public static validarEnderecoEntregaDtoClienteCadastro(endEtg: EnderecoEntregaDtoClienteCadastro): string[] {
+    public static validarEnderecoEntregaDtoClienteCadastro(endEtg: EnderecoEntregaDtoClienteCadastro, tipoCliente: string): string[] {
 
         let validacoes: string[] = new Array();
 
-        validacoes = validacoes.concat(this.validarEnderecoEntrega(endEtg));
+        validacoes = validacoes.concat(this.validarEnderecoEntrega(endEtg, tipoCliente));
 
         //vamos converter para
         let dadosClienteCadastroDto = DadosClienteCadastroDto.DadosClienteCadastroDtoDeEnderecoEntregaDtoClienteCadastro(endEtg);
@@ -122,16 +122,19 @@ export class ValidacoesClienteUtils {
         dadosClienteCadastroDto = this.converterTelefones(dadosClienteCadastroDto);
 
         //valida cpf, cnpj, email e emailxml
-        validacoes = validacoes.concat(this.validarGeral(dadosClienteCadastroDto, false));
+        if (tipoCliente == this.constantes.ID_PJ)
+            validacoes = validacoes.concat(this.validarGeral(dadosClienteCadastroDto, false));
 
         //valida contribuinteICMS e IE
-        let mensagem = new ClienteCadastroUtils().validarInscricaoestadualIcms(dadosClienteCadastroDto);
-        if (mensagem && mensagem.trim() !== "") {
-            validacoes.push(mensagem);
-        }
+        if (tipoCliente == this.constantes.ID_PJ) {
+            let mensagem = new ClienteCadastroUtils().validarInscricaoestadualIcms(dadosClienteCadastroDto);
+            if (mensagem && mensagem.trim() !== "") {
+                validacoes.push(mensagem);
+            }
 
-        //se produtor rural = não altera o valor de contribuinte e Ie
-        this.validarProdutorRural(dadosClienteCadastroDto);
+            //se produtor rural = não altera o valor de contribuinte e Ie
+            this.validarProdutorRural(dadosClienteCadastroDto);
+        }
 
         let ehPf: boolean = dadosClienteCadastroDto.Tipo == this.constantes.ID_PF ? true : false;
 
@@ -161,14 +164,16 @@ export class ValidacoesClienteUtils {
         }
 
         if (ehObrigatorio) {
-            if (!dadosClienteCadastroDto.Email || (dadosClienteCadastroDto.Email !== "") &&
-                !ValidacoesUtils.email_ok(dadosClienteCadastroDto.Email)) {
+            if (!dadosClienteCadastroDto.Email || (dadosClienteCadastroDto.Email !== "" &&
+                !ValidacoesUtils.email_ok(dadosClienteCadastroDto.Email))) {
                 ret.push('E-mail inválido!');
             }
 
-            if (!dadosClienteCadastroDto.EmailXml || (dadosClienteCadastroDto.EmailXml !== "") &&
-                !ValidacoesUtils.email_ok(dadosClienteCadastroDto.EmailXml)) {
-                ret.push('E-mail (XML) inválido!');
+            if (!!dadosClienteCadastroDto.EmailXml) {
+                if (dadosClienteCadastroDto.EmailXml !== "" &&
+                    !ValidacoesUtils.email_ok(dadosClienteCadastroDto.EmailXml)) {
+                    ret.push('E-mail (XML) inválido!');
+                }
             }
         }
 
@@ -423,24 +428,26 @@ export class ValidacoesClienteUtils {
         return ret;
     }
 
-    private static validarEnderecoEntrega(end: EnderecoEntregaDtoClienteCadastro): string[] {
+    private static validarEnderecoEntrega(end: EnderecoEntregaDtoClienteCadastro, tipoCliente: string): string[] {
         let ret: string[] = new Array();
         let retorno = true;
         if (end.OutroEndereco) {
-            if (!end.EndEtg_tipo_pessoa || end.EndEtg_tipo_pessoa.trim() === "" ||
-                end.EndEtg_tipo_pessoa != this.constantes.ID_PF && end.EndEtg_tipo_pessoa != this.constantes.ID_PJ) {
-                ret.push("Necessário escolher Pessoa Jurídica ou Pessoa Física!");
-                return ret;
-            }
-
             if (!end.EndEtg_cod_justificativa || end.EndEtg_cod_justificativa.trim() === "") {
                 ret.push("Caso seja selecionado outro endereço, selecione a justificativa do endereço!");
                 return ret;
             }
-            if (!end.EndEtg_tipo_pessoa || end.EndEtg_tipo_pessoa.trim() === "" ||
-                end.EndEtg_tipo_pessoa != this.constantes.ID_PF && end.EndEtg_tipo_pessoa != this.constantes.ID_PJ) {
-                ret.push("Necessário escolher Pessoa Jurídica ou Pessoa Física!")
-                return ret;
+            if (tipoCliente == this.constantes.ID_PJ) {
+                if (!end.EndEtg_tipo_pessoa || end.EndEtg_tipo_pessoa.trim() === "" ||
+                    end.EndEtg_tipo_pessoa != this.constantes.ID_PF && end.EndEtg_tipo_pessoa != this.constantes.ID_PJ) {
+                    ret.push("Necessário escolher Pessoa Jurídica ou Pessoa Física!");
+                    return ret;
+                }
+
+                if (!end.EndEtg_tipo_pessoa || end.EndEtg_tipo_pessoa.trim() === "" ||
+                    end.EndEtg_tipo_pessoa != this.constantes.ID_PF && end.EndEtg_tipo_pessoa != this.constantes.ID_PJ) {
+                    ret.push("Necessário escolher Pessoa Jurídica ou Pessoa Física!")
+                    return ret;
+                }
             }
 
             if (!end.EndEtg_nome || end.EndEtg_nome)

@@ -51,7 +51,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     private readonly activatedRoute: ActivatedRoute,
     private readonly location: Location,
     private readonly router: Router,
-    private readonly novoPrepedidoDadosService: NovoPrepedidoDadosService,
+    public readonly novoPrepedidoDadosService: NovoPrepedidoDadosService,
     public readonly prepedidoBuscarService: PrepedidoBuscarService,
     public readonly alertaService: AlertaService,
     public readonly produtoService: ProdutoService,

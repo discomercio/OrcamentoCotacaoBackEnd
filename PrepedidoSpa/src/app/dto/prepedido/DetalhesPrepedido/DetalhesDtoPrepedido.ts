@@ -10,4 +10,5 @@ export class DetalhesDtoPrepedido {
     GarantiaIndicador: string;
     FormaDePagamento: string;
     DescricaoFormaPagamento: string;
+    PrevisaoEntrega: string;
 }

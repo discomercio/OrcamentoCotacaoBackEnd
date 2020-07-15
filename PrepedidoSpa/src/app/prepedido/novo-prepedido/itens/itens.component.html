@@ -282,12 +282,12 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 				</div>
 				<div style="text-align: left; padding-right: 1em;">
 					<span *ngIf="permite_RA_Status">
-						<strong>Total Preço: {{moedaUtils.formatarMoedaSemPrefixo(totalPedidoRA())}}</strong>
+						<strong>Total Preço: {{moedaUtils.formatarMoedaSemPrefixo(novoPrepedidoDadosService.totalPedidoRA())}}</strong>
 					</span>
 				</div>
 				<div style="text-align: left; padding-right: 1em;">
 					<span>
-						<strong>Total VL Venda : {{moedaUtils.formatarMoedaSemPrefixo(totalPedido())}}</strong>
+						<strong>Total VL Venda : {{moedaUtils.formatarMoedaSemPrefixo(novoPrepedidoDadosService.totalPedido())}}</strong>
 					</span>
 				</div>
 			</div>

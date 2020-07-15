@@ -296,7 +296,7 @@ namespace PrepedidoBusiness.Bll
             EnderecoEntregaDtoClienteCadastro enderecoEntrega = new EnderecoEntregaDtoClienteCadastro();
 
             //afazer: criar método para pegar todos os dados de endereço com os campos novos
-
+            enderecoEntrega.OutroEndereco = p.EndEtg_Cod_Justificativa != "" ? true : false;
             enderecoEntrega.EndEtg_endereco = p.EndEtg_Endereco;
             enderecoEntrega.EndEtg_endereco_numero = p.EndEtg_Endereco_Numero;
             enderecoEntrega.EndEtg_endereco_complemento = p.EndEtg_Endereco_Complemento;
@@ -443,6 +443,13 @@ namespace PrepedidoBusiness.Bll
             detalhesNf.XPed = p.Nfe_XPed;
             detalhesNf.NumeroNF = tPedidoPai.Obs_2;//consta somente no pai
             detalhesNf.NFSimples = tPedidoPai.Obs_3;
+
+            detalhesNf.PrevisaoEntrega = tPedidoPai.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
+                tPedidoPai.PrevisaoEntregaData?.ToString("dd/MM/yyyy") + " ("
+                + Texto.iniciaisEmMaiusculas(tPedidoPai.PrevisaoEntregaUsuarioUltAtualiz) +
+                " - " + tPedidoPai.PrevisaoEntregaData?.ToString("dd/MM/yyyy") + " "
+                + tPedidoPai.PrevisaoEntregaDtHrUltAtualiz?.ToString("HH:mm") + ")" : null;
+
             detalhesNf.EntregaImediata = ObterEntregaImediata(p);
             detalhesNf.StBemUsoConsumo = p.StBemUsoConsumo;
             detalhesNf.InstaladorInstala = tPedidoPai.InstaladorInstalaStatus;
@@ -464,17 +471,19 @@ namespace PrepedidoBusiness.Bll
             var lstOcorrenciaTask = ObterOcorrencias(pedido_pai);
             var lstBlocNotasDevolucaoTask = BuscarPedidoBlocoNotasDevolucao(pedido_pai);
             var vlPagoTask = CalcularValorPago(pedido_pai);
+            var vlTotalFamiliaPrecoNf = await CalcularVltotalFamiliPrecoNF(pedido_pai);
 
             var saldo_a_pagar = await saldo_a_pagarTask;
             if (tPedidoPai.St_Entrega == Constantes.ST_PAGTO_PAGO && saldo_a_pagar > 0)
                 saldo_a_pagar = 0;
 
             DetalhesFormaPagamentos detalhesFormaPagto = new DetalhesFormaPagamentos();
+
             detalhesFormaPagto.FormaPagto = (await lstFormaPgtoTask).ToList();
             detalhesFormaPagto.InfosAnaliseCredito = p.Forma_Pagto;
             detalhesFormaPagto.StatusPagto = StatusPagto(tPedidoPai.St_Pagto).ToUpper();
             detalhesFormaPagto.CorStatusPagto = corStatusPagto;
-            detalhesFormaPagto.VlTotalFamilia = tPedidoPai.Vl_Total_Familia;
+            detalhesFormaPagto.VlTotalFamilia = vlTotalFamiliaPrecoNf;
             detalhesFormaPagto.VlPago = await vlPagoTask;
             detalhesFormaPagto.VlDevolucao = await vl_TotalFamiliaDevolucaoPrecoNFTask;
             detalhesFormaPagto.VlPerdas = TotalPerda;
@@ -533,6 +542,24 @@ namespace PrepedidoBusiness.Bll
             };
 
             return await Task.FromResult(DtoPedido);
+        }
+
+        private async Task<decimal> CalcularVltotalFamiliPrecoNF(string numPedido)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+            var familiaTask = from c in db.TpedidoItems.Include(x => x.Tpedido)
+                              where c.Tpedido.St_Entrega != Constantes.ST_ENTREGA_CANCELADO &&
+                                    c.Tpedido.Pedido.Contains(numPedido)
+                              select new
+                              {
+                                  total = c.Qtde * c.Preco_Venda,
+                                  totalNf = c.Qtde * c.Preco_NF
+                              };
+
+            decimal total = (decimal)(await familiaTask.SumAsync(x => x.total));
+            decimal totalNf = (decimal)(await familiaTask.SumAsync(x => x.totalNf));
+
+            return totalNf;
         }
 
         private async Task<decimal> CalcularValorPago(string numPedido)

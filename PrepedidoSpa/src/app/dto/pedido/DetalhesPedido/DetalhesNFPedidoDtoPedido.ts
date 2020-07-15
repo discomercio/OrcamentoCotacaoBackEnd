@@ -8,4 +8,5 @@
     StBemUsoConsumo: number;
     InstaladorInstala: number;
     GarantiaIndicadorStatus: string;
+    PrevisaoEntrega: string;
 }

@@ -16,5 +16,6 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
         public string GarantiaIndicador { get; set; }
         public string FormaDePagamento { get; set; }
         public string DescricaoFormaPagamento { get; set; }
+        public string PrevisaoEntrega { get; set; }//para mostrar finalizado na tela
     }
 }

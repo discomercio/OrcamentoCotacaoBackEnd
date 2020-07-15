@@ -41,8 +41,8 @@
                 <!-- NÃO APAGAR, POIS ESTAMOS ESPERANDO O CLIENTE CONFIRMAR QUE ESSE CAMPO SERÁ ALTERADO -->
                 <div class="umgrupoopcoes" [ngClass]="{'desab':EntregaImediata}">
                     <mat-form-field style="width: 10em;">
-                        <input matInput [readonly]="EntregaImediata" type="date" placeholder="Previsão de Entrega"
-                        [ngModelOptions]="{standalone: true}" [(ngModel)]="PrevisaoEntrega" id="entregaImediataData" required
+                        <input matInput [readonly]="EntregaImediata" type="date" placeholder="Previsão de Entrega" required
+                        [ngModelOptions]="{standalone: true}" [(ngModel)]="PrevisaoEntrega" id="entregaImediataData"
                         (blur)="verificaEntregaImediata();">
                     </mat-form-field>
                 </div>

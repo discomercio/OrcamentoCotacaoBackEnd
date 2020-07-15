@@ -157,6 +157,7 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
         if (DataUtils.formata_formulario_date(this.PrevisaoEntrega) <= new Date()) {
           this.PrevisaoEntrega = "";
           this.alertaService.mostrarMensagem("A data para entrega deve ser posterior a data atual!");
+          
           retorno = false;
         }
         else {
