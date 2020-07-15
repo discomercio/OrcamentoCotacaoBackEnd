@@ -31,6 +31,6 @@ namespace PrepedidoUnisBusiness.Utils
             public int LimitePrepedidosMesmoCpfCnpj_TempoSegundos { get; set; } = 3600;
         }
 
-        public LimitePrepedidosUnis LimitePrepedidos { get; set; }
+        public LimitePrepedidosUnis LimitePrepedidos { get; set; } = new LimitePrepedidosUnis();
     }
 }

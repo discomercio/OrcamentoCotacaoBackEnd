@@ -653,6 +653,11 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             List<string> lstErros = new List<string>();
 
             TorcamentistaEindicador tOrcamentista = await BuscarTorcamentista(apelido);
+            if (tOrcamentista == null)
+            {
+                lstErros.Add("O Orçamentista não existe!");
+                return lstErros;
+            }
 
             //complementar os dados Cadastrais do cliente
             prePedido.DadosCliente.Indicador_Orcamentista = tOrcamentista.Apelido.ToUpper();

@@ -8,13 +8,13 @@ using Xunit;
 using Xunit.Abstractions;
 using Xunit.DependencyInjection;
 
-[assembly: TestFramework("Testes.Automatizados.Startup", "Testes.Automatizados")]
+[assembly: TestFramework("Testes.Automatizados.StartupTestes", "Testes.Automatizados")]
 
 namespace Testes.Automatizados
 {
-    public class Startup : DependencyInjectionTestFramework
+    public class StartupTestes : DependencyInjectionTestFramework
     {
-        public Startup(IMessageSink messageSink) : base(messageSink) { }
+        public StartupTestes(IMessageSink messageSink) : base(messageSink) { }
 
         protected void ConfigureServices(IServiceCollection services)
         {
@@ -39,11 +39,22 @@ namespace Testes.Automatizados
             services.AddTransient<PrepedidoBusiness.Bll.CepBll, PrepedidoBusiness.Bll.CepBll>();
             services.AddTransient<PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll.ClienteUnisBll, PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll.ClienteUnisBll>();
             services.AddTransient<CepUnisBll, CepUnisBll>();
+            services.AddTransient<PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll.PrePedidoUnisBll, PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll.PrePedidoUnisBll>();
+            services.AddTransient<PrepedidoBusiness.Bll.PrepedidoBll.PrepedidoBll, PrepedidoBusiness.Bll.PrepedidoBll.PrepedidoBll>();
+            services.AddTransient<PrepedidoBusiness.Bll.PrepedidoBll.ValidacoesPrepedidoBll, PrepedidoBusiness.Bll.PrepedidoBll.ValidacoesPrepedidoBll>();
+            services.AddTransient<PrepedidoBusiness.Bll.CoeficienteBll, PrepedidoBusiness.Bll.CoeficienteBll>();
+            services.AddTransient<PrepedidoBusiness.Bll.FormaPagtoBll.ValidacoesFormaPagtoBll, PrepedidoBusiness.Bll.FormaPagtoBll.ValidacoesFormaPagtoBll>();
+            services.AddTransient<PrepedidoBusiness.Bll.PrepedidoBll.MontarLogPrepedidoBll, PrepedidoBusiness.Bll.PrepedidoBll.MontarLogPrepedidoBll>();
 
             services.AddTransient<PrepedidoBusiness.Utils.IBancoNFeMunicipio, Utils.TestesBancoNFeMunicipio>();
 
             services.AddTransient<TestesPrepedidoUnisBusiness.TestesUnisBll.TestesClienteUnisBll.TestesClienteUnisBll, TestesPrepedidoUnisBusiness.TestesUnisBll.TestesClienteUnisBll.TestesClienteUnisBll>();
-            
+
+            services.AddSingleton<PrepedidoUnisBusiness.Utils.ConfiguracaoApiUnis>(c =>
+            {
+                var ret = new PrepedidoUnisBusiness.Utils.ConfiguracaoApiUnis();
+                return ret;
+            });
         }
 
         protected override IHostBuilder CreateHostBuilder(AssemblyName assemblyName) =>
