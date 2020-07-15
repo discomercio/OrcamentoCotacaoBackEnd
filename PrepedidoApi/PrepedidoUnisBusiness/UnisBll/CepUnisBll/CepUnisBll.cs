@@ -40,10 +40,10 @@ namespace PrepedidoUnisBusiness.UnisBll.CepUnisBll
             return null;
         }
 
-        public async Task<IEnumerable<UFeMunicipiosUnisDto>> BuscarUfs()
+        public async Task<IEnumerable<UFeMunicipiosUnisDto>> BuscarUfs(string uf, string municipioParcial)
         {            
             //vamos buscar todos os estados
-            List<UFeMunicipiosDto> lstUF_Municipio = (await bancoNFeMunicipio.BuscarSiglaTodosUf(contextoProvider)).ToList();
+            List<UFeMunicipiosDto> lstUF_Municipio = (await bancoNFeMunicipio.BuscarSiglaTodosUf(contextoProvider, uf, municipioParcial)).ToList();
 
             List<UFeMunicipiosUnisDto> lstUnisUF_Municipio =
                 UFeMunicipiosUnisDto.UFeMunicipiosUnisDtoDeUFeMunicipiosDto(lstUF_Municipio);

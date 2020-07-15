@@ -49,7 +49,7 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
                      * se estiver com itens na lista, ocorreu erro na validação
                      */
                     retorno.ListaErros = (await clienteArclubeBll.CadastrarCliente(clienteArclube,
-                        orcamentista.Apelido, 
+                        orcamentista.Apelido,
                         (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS)).ToList();
 
                     if (retorno.ListaErros.Count <= 0)
@@ -90,6 +90,17 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
             ClienteBuscaRetornoUnisDto retorno = ClienteBuscaRetornoUnisDto.ClienteCadastroUnisDtoDeClienteCadastroDto(cliente);
 
             return retorno;
+        }
+
+        public async Task<VerificarInscricaoEstadualValidaRetornoUnisDto> VerificarInscricaoEstadualValida(string inscricaoEstadual, string uf)
+        {
+            var erros = new List<string>();
+            PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.VerificarInscricaoEstadualValida(inscricaoEstadual, uf, erros);
+            var retorno = new VerificarInscricaoEstadualValidaRetornoUnisDto
+            {
+                InscricaoEstadualValida = (erros.Count == 0)
+            };
+            return await Task.FromResult(retorno);
         }
     }
 }

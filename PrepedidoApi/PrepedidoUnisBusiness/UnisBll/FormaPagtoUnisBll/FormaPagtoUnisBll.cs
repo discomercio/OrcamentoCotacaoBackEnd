@@ -4,6 +4,7 @@ using PrepedidoBusiness.Bll;
 using PrepedidoBusiness.Bll.FormaPagtoBll;
 using PrepedidoBusiness.Bll.PrepedidoBll;
 using PrepedidoUnisBusiness.UnisDto.FormaPagtoUnisDto;
+using PrepedidoUnisBusiness.UnisDto.PrepedidoUnisDto;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -39,8 +40,8 @@ namespace PrepedidoUnisBusiness.UnisBll.FormaPagtoUnisBll
             if (await prepedidoBll.ValidarOrcamentistaIndicador(apelido) &&
                 (tipo_pessoa == Constantes.ID_PF || tipo_pessoa == Constantes.ID_PJ))
             {
-                 retorno = FormaPagtoUnisDto.FormaPagtoUnisDtoDeFormaPagtoDto(
-                    await formaPagtoBll.ObterFormaPagto(apelido, tipo_pessoa));
+                retorno = FormaPagtoUnisDto.FormaPagtoUnisDtoDeFormaPagtoDto(
+                   await formaPagtoBll.ObterFormaPagto(apelido, tipo_pessoa));
             }
             else
             {
@@ -50,9 +51,11 @@ namespace PrepedidoUnisBusiness.UnisBll.FormaPagtoUnisBll
             return retorno;
         }
 
-        public async Task<int> BuscarQtdeParcCartaoVisa()
+        public async Task<QtdeParcCartaoVisaResultadoUnisDto> BuscarQtdeParcCartaoVisa()
         {
-            return await formaPagtoBll.BuscarQtdeParcCartaoVisa();
+            var ret = new QtdeParcCartaoVisaResultadoUnisDto();
+            ret.QtdeParcCartaoVisa = await formaPagtoBll.BuscarQtdeParcCartaoVisa();
+            return ret;
         }
     }
 }

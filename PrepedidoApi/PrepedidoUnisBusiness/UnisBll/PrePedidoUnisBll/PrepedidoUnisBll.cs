@@ -8,6 +8,7 @@ using PrepedidoBusiness.Dto.ClienteCadastro;
 using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using PrepedidoBusiness.Dto.Produto;
 using PrepedidoUnisBusiness.UnisDto.ClienteUnisDto;
+using PrepedidoUnisBusiness.UnisDto.PrepedidoUnisDto;
 using PrepedidoUnisBusiness.Utils;
 using System;
 using System.Collections.Generic;
@@ -63,15 +64,15 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
                 await ValidacoesClienteUnisBll.ValidarBuscarOrcamentista(prePedidoUnis.Indicador_Orcamentista,
                 contextoProvider);
 
-            if(orcamentista.Permite_RA_Status != Convert.ToInt16(prePedidoUnis.PermiteRAStatus))
-            {
-                retorno.ListaErros.Add("Permite RA status divergente do cadastro do indicador/orçamentista!");
-                return retorno;
-            }
-
             if (orcamentista == null)
             {
                 retorno.ListaErros.Add(MensagensErro.Orcamentista_nao_existe);
+                return retorno;
+            }
+
+            if (orcamentista.Permite_RA_Status != Convert.ToInt16(prePedidoUnis.PermiteRAStatus))
+            {
+                retorno.ListaErros.Add("Permite RA status divergente do cadastro do indicador/orçamentista!");
                 return retorno;
             }
 
@@ -145,19 +146,24 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
             return retorno;
         }
 
-        public async Task<bool> Obter_Permite_RA_Status(string apelido)
+        public async Task<PermiteRaStatusResultadoUnisDto> Obter_Permite_RA_Status(string apelido)
         {
-            bool retorno = false;
+            if (!await prepedidoBll.ValidarOrcamentistaIndicador(apelido))
+                return null;
 
-            if (await prepedidoBll.ValidarOrcamentistaIndicador(apelido))
-                retorno = Convert.ToBoolean(await prepedidoBll.Obter_Permite_RA_Status(apelido));
-
-            return retorno;
+            bool retorno = Convert.ToBoolean(await prepedidoBll.Obter_Permite_RA_Status(apelido));
+            var ret = new PermiteRaStatusResultadoUnisDto()
+            {
+                PermiteRaStatus = retorno
+            };
+            return ret;
         }
 
-        public async Task<decimal> ObtemPercentualVlPedidoRA()
+        public async Task<PercentualVlPedidoRAResultadoUnisDto> ObtemPercentualVlPedidoRA()
         {
-            return await prepedidoBll.ObtemPercentualVlPedidoRA();
+            var ret = new PercentualVlPedidoRAResultadoUnisDto();
+            ret.PercentualVlPedidoRA = await prepedidoBll.ObtemPercentualVlPedidoRA();
+            return ret;
         }
 
         public async Task<string> PrepedidosRepetidos(PrePedidoDto prePedidoDto)

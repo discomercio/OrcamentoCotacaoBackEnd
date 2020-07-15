@@ -3,6 +3,7 @@ using InfraBanco.Constantes;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesPrepedidoUnisBll;
 
 namespace Testes.Automatizados.InicializarBanco
 {
@@ -40,7 +41,18 @@ namespace Testes.Automatizados.InicializarBanco
             {
                 db.TorcamentistaEindicadors.Add(new InfraBanco.Modelos.TorcamentistaEindicador()
                 {
-                    Apelido = Dados.Orcamentista.Apelido
+                    Apelido = Dados.Orcamentista.Apelido,
+                    Permite_RA_Status = 1
+                });
+                db.TorcamentistaEindicadors.Add(new InfraBanco.Modelos.TorcamentistaEindicador()
+                {
+                    Apelido = Dados.Orcamentista.Apelido_com_ra,
+                    Permite_RA_Status = 1
+                });
+                db.TorcamentistaEindicadors.Add(new InfraBanco.Modelos.TorcamentistaEindicador()
+                {
+                    Apelido = Dados.Orcamentista.Apelido_sem_ra,
+                    Permite_RA_Status = 0
                 });
 
                 db.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.NSU_CADASTRO_CLIENTES, Nsu = "000000645506" });
@@ -56,6 +68,8 @@ namespace Testes.Automatizados.InicializarBanco
             static public class Orcamentista
             {
                 public static string Apelido = "Konar";
+                public static string Apelido_com_ra = "Apelido_com_ra";
+                public static string Apelido_sem_ra = "Apelido_sem_ra ";
                 public static string ApelidoNaoExiste = "XXX";
             }
         }

@@ -14,7 +14,7 @@ namespace PrepedidoBusiness.Utils
 {
     public interface IBancoNFeMunicipio
     {
-        Task<IEnumerable<UFeMunicipiosDto>> BuscarSiglaTodosUf(ContextoBdProvider contextoProvider);
+        Task<IEnumerable<UFeMunicipiosDto>> BuscarSiglaTodosUf(ContextoBdProvider contextoProvider, string uf, string municipioParcial);
         Task<IEnumerable<NfeMunicipio>> BuscarSiglaUf(string uf, string municipio, bool buscaParcial, ContextoBdProvider contextoProvider);
         Task<string> MontarProviderStringParaNFeMunicipio(ContextoBdProvider contextoProvider);
     }
@@ -166,7 +166,7 @@ namespace PrepedidoBusiness.Utils
             return providerString;
         }
 
-        public async Task<IEnumerable<UFeMunicipiosDto>> BuscarSiglaTodosUf(ContextoBdProvider contextoProvider)
+        public async Task<IEnumerable<UFeMunicipiosDto>> BuscarSiglaTodosUf(ContextoBdProvider contextoProvider, string uf, string municipioParcial)
         {
             List<UFeMunicipiosDto> lstUF_Municipio = new List<UFeMunicipiosDto>();
             List<MunicipioDto> lstMunicipios = new List<MunicipioDto>();
@@ -176,9 +176,21 @@ namespace PrepedidoBusiness.Utils
 
             using (SqlConnection sql = new SqlConnection(providerString))
             {
-                string query = "SELECT *  FROM NFE_UF";
+
+                string query = "SELECT *  FROM NFE_UF ";
+                if (!String.IsNullOrEmpty(uf))
+                {
+                    query += " WHERE(SiglaUF = @UF)";
+                }
 
                 SqlCommand command = new SqlCommand(query, sql);
+                if (!String.IsNullOrEmpty(uf))
+                {
+                    SqlParameter param = new SqlParameter();
+                    param.Value = uf.ToUpper();
+                    param.ParameterName = "@UF";
+                    command.Parameters.Add(param);
+                }
 
                 command.Connection.Open();
 
@@ -200,9 +212,21 @@ namespace PrepedidoBusiness.Utils
 
                         command.Connection.Close();
 
-                        query = "SELECT * FROM NFE_MUNICIPIO";
-
+                        query = "SELECT * FROM NFE_MUNICIPIO ";
+                        if (!String.IsNullOrEmpty(municipioParcial))
+                        {
+                            query += " WHERE (Descricao LIKE @municipio COLLATE Latin1_General_CI_AI)";
+                        }
                         command = new SqlCommand(query, sql);
+
+                        if (!String.IsNullOrEmpty(municipioParcial))
+                        {
+                            SqlParameter param2 = new SqlParameter();
+                            param2.Value = Constantes.BD_CURINGA_TODOS + municipioParcial + Constantes.BD_CURINGA_TODOS;
+                            param2.ParameterName = "@municipio";
+                            command.Parameters.Add(param2);
+                        }
+
 
                         command.Connection.Open();
 
@@ -244,6 +268,13 @@ namespace PrepedidoBusiness.Utils
                                 }
                             });
                         });
+
+                        //removemos estados que não tenham nenhuma cidade
+                        if (!String.IsNullOrEmpty(municipioParcial))
+                        {
+                            lstUF_Municipio = lstUF_Municipio.Where(r => r.ListaMunicipio.Any()).ToList();
+                        }
+
                     }
                 }
             }
