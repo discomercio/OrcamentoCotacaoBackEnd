@@ -45,7 +45,7 @@ namespace PrepedidoAPIUnis.Controllers
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<ActionResult<PrePedidoResultadoUnisDto>> CadastrarPrepedido(PrePedidoUnisDto prePedido)
         {
-            if (!servicoValidarTokenApiUnis.ValidarToken(prePedido.TokenAcesso, out string usuario))
+            if (!servicoValidarTokenApiUnis.ValidarToken(prePedido.TokenAcesso, out _))
                 return Unauthorized();
 
             var ret = await prepedidoUnisBll.CadastrarPrepedidoUnis(prePedido);
@@ -88,7 +88,7 @@ namespace PrepedidoAPIUnis.Controllers
         public async Task<ActionResult<FormaPagtoUnisDto>> BuscarFormasPagto(string tokenAcesso,
             string tipo_pessoa, string orcamentista)
         {
-            if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out string usuario))
+            if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out _))
                 return Unauthorized();
 
             FormaPagtoUnisDto retorno = await formaPagtoUnisBll.ObterFormaPagto(orcamentista.Trim().ToUpper(), tipo_pessoa.Trim().ToUpper());
@@ -105,12 +105,12 @@ namespace PrepedidoAPIUnis.Controllers
         [AllowAnonymous]
         [HttpGet("buscarQtdeParcCartaoVisa")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<ActionResult<int>> BuscarQtdeParcCartaoVisa(string tokenAcesso)
+        public async Task<ActionResult<QtdeParcCartaoVisaResultadoUnisDto>> BuscarQtdeParcCartaoVisa(string tokenAcesso)
         {
-            if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out string usuario))
+            if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out _))
                 return Unauthorized();
 
-            int retorno = await formaPagtoUnisBll.BuscarQtdeParcCartaoVisa();
+            var retorno = await formaPagtoUnisBll.BuscarQtdeParcCartaoVisa();
 
             return Ok(retorno);
         }
@@ -119,7 +119,7 @@ namespace PrepedidoAPIUnis.Controllers
         /// Rotina para buscar lista de coeficiente para calcular produtos
         /// </summary>
         /// <param name="tokenAcesso"></param>
-        /// <param name="lstFornecedores"></param>
+        /// <param name="lstFornecedores">Lista de fabricantes. Exemplo: "001", "002".</param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("buscarCoeficienteFornecedores")]
@@ -143,12 +143,14 @@ namespace PrepedidoAPIUnis.Controllers
         [AllowAnonymous]
         [HttpGet("obterPermiteRaStatus")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<ActionResult<bool>> Obter_Permite_RA_Status(string tokenAcesso, string orcamentista)
+        public async Task<ActionResult<PermiteRaStatusResultadoUnisDto>> Obter_Permite_RA_Status(string tokenAcesso, string orcamentista)
         {
             if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out string usuario))
                 return Unauthorized();
 
             var ret = await prepedidoUnisBll.Obter_Permite_RA_Status(orcamentista.ToUpper());
+            if (ret == null)
+                return NotFound("Orcamentista não localizado");
 
             return Ok(ret);
         }
@@ -161,9 +163,9 @@ namespace PrepedidoAPIUnis.Controllers
         [AllowAnonymous]
         [HttpGet("obtemPercentualVlPedidoRA")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<ActionResult<decimal>> ObtemPercentualVlPedidoRA(string tokenAcesso)
+        public async Task<ActionResult<PercentualVlPedidoRAResultadoUnisDto>> ObtemPercentualVlPedidoRA(string tokenAcesso)
         {
-            if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out string usuario))
+            if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out _))
                 return Unauthorized();
 
             var ret = await prepedidoUnisBll.ObtemPercentualVlPedidoRA();

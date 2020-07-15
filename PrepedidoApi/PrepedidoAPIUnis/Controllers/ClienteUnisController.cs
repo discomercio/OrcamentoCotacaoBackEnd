@@ -36,7 +36,7 @@ namespace PrepedidoAPIUnis.Controllers
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<ActionResult<ClienteCadastroResultadoUnisDto>> CadastrarCliente(ClienteCadastroUnisDto clienteDto)
         {
-            if (!servicoValidarTokenApiUnis.ValidarToken(clienteDto.TokenAcesso, out string usuario))
+            if (!servicoValidarTokenApiUnis.ValidarToken(clienteDto.TokenAcesso, out _))
                 return Unauthorized();
 
             ClienteCadastroResultadoUnisDto retorno;
@@ -54,10 +54,10 @@ namespace PrepedidoAPIUnis.Controllers
         [AllowAnonymous]
         [HttpGet("buscarCliente")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<ActionResult<ClienteBuscaRetornoUnisDto>> BuscarCliente(string tokenAcesso, 
+        public async Task<ActionResult<ClienteBuscaRetornoUnisDto>> BuscarCliente(string tokenAcesso,
             string cnpj_cpf_cliente)
         {
-            if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out string usuario))
+            if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out _))
                 return Unauthorized();
 
             var dadosCliente = await clienteUnisBll.BuscarCliente(cnpj_cpf_cliente, "");
@@ -67,5 +67,24 @@ namespace PrepedidoAPIUnis.Controllers
             return Ok(dadosCliente);
         }
 
+        /// <summary>
+        /// Rotina para validar uma inscrição estadual
+        /// </summary>
+        /// <param name="tokenAcesso"></param>
+        /// <param name="inscricaoEstadual"></param>
+        /// <param name="uf">Estado para validar</param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpGet("verificarInscricaoEstadualValida")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public async Task<ActionResult<VerificarInscricaoEstadualValidaRetornoUnisDto>> VerificarInscricaoEstadualValida(string tokenAcesso,
+            string inscricaoEstadual, string uf)
+        {
+            if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out _))
+                return Unauthorized();
+
+            var retorno = await clienteUnisBll.VerificarInscricaoEstadualValida(inscricaoEstadual, uf);
+            return Ok(retorno);
+        }
     }
 }

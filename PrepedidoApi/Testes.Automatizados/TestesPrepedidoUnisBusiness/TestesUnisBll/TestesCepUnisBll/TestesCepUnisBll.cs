@@ -22,7 +22,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
         [Fact]
         public void BuscarUfs()
         {
-            IEnumerable<PrepedidoUnisBusiness.UnisDto.CepUnisDto.UFeMunicipiosUnisDto> res = cepUnisBll.BuscarUfs().Result;
+            IEnumerable<PrepedidoUnisBusiness.UnisDto.CepUnisDto.UFeMunicipiosUnisDto> res = cepUnisBll.BuscarUfs("", "").Result;
             Assert.NotEmpty(res);
         }
 

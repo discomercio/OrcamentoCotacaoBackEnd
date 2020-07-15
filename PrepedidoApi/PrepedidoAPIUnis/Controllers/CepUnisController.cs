@@ -35,7 +35,7 @@ namespace PrepedidoAPIUnis.Controllers
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<ActionResult<CepUnisDto>> BuscarCep(string tokenAcesso, string cep)
         {
-            if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out string usuario))
+            if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out _))
                 return Unauthorized();
 
             //para buscar apenas por cep
@@ -49,16 +49,18 @@ namespace PrepedidoAPIUnis.Controllers
         /// Rotina para buscar UF's
         /// </summary>
         /// <param name="tokenAcesso"></param>
+        /// <param name="uf">Estado, opcional.</param>
+        /// <param name="municipioParcial">Opcional. Retorna todas as cidades que contenha esse texto.</param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpGet("buscarUfs")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<ActionResult<List<UFeMunicipiosUnisDto>>> BuscarUfs(string tokenAcesso)
+        public async Task<ActionResult<List<UFeMunicipiosUnisDto>>> BuscarUfs(string tokenAcesso, string uf, string municipioParcial)
         {
-            if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out string usuario))
+            if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out _))
                 return Unauthorized();
 
-            var ret = await cepUnisBll.BuscarUfs();
+            var ret = await cepUnisBll.BuscarUfs(uf, municipioParcial);
 
             return Ok(ret);
         }

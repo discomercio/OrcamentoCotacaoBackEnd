@@ -967,6 +967,17 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
         public static void VerificarInscricaoEstadualValida(string ie, string uf, List<string> listaErros)
         {
+            if (string.IsNullOrEmpty(ie))
+            {
+                listaErros.Add("IE (Inscrição Estadual) vazia! ");
+                return;
+            }
+            if (string.IsNullOrEmpty(uf))
+            {
+                listaErros.Add("UF (estado) vazio! ");
+                return;
+            }
+
             string c;
             int qtdeDig = 0;
             int num;

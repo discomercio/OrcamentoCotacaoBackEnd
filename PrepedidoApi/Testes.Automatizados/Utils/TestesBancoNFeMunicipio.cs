@@ -14,7 +14,7 @@ namespace Testes.Automatizados.Utils
     {
         public static string Cidade_somente_no_IBGE = "Cidade somente no IBGE";
 
-        Task<IEnumerable<UFeMunicipiosDto>> IBancoNFeMunicipio.BuscarSiglaTodosUf(ContextoBdProvider contextoProvider)
+        public Task<IEnumerable<UFeMunicipiosDto>> BuscarSiglaTodosUf(ContextoBdProvider contextoProvider, string uf, string municipioParcial)
         {
             //nao fazemos nada...
             var ret = new List<UFeMunicipiosDto>();
