@@ -218,7 +218,7 @@ namespace InfraBanco.Modelos
 
         [Column("custoFinancFornecTipoParcelamento")]
         [MaxLength(2)]
-        public string CustoFinancFornecParcelamento { get; set; }
+        public string CustoFinancFornecTipoParcelamento { get; set; }
 
         [Column("custoFinancFornecQtdeParcelas")]
         [Required]
@@ -283,6 +283,195 @@ namespace InfraBanco.Modelos
         [Column("sistema_responsavel_atualizacao")]
         [Required]
         public int Sistema_responsavel_atualizacao { get; set; }
+
+        /*Novos campos para memorização de endereço*/
+        [Column("st_memorizacao_completa_enderecos")]
+        [Required]
+        public byte St_memorizacao_completa_enderecos { get; set; }
+
+        [Column("endereco_logradouro")]
+        [MaxLength(80)]
+        public string Endereco_logradouro { get; set; }
+
+        [Column("endereco_numero")]
+        [MaxLength(20)]
+        public string Endereco_numero { get; set; }
+
+        [Column("endereco_complemento")]
+        [MaxLength(60)]
+        public string Endereco_complemento { get; set; }
+
+        [Column("endereco_bairro")]
+        [MaxLength(72)]
+        public string Endereco_bairro { get; set; }
+
+        [Column("endereco_cidade")]
+        [MaxLength(60)]
+        public string Endereco_cidade { get; set; }
+
+        [Column("endereco_uf")]
+        [MaxLength(2)]
+        public string Endereco_uf { get; set; }
+
+        [Column("endereco_cep")]
+        [MaxLength(8)]
+        public string Endereco_cep { get; set; }
+
+        [Column("endereco_email")]
+        [MaxLength(60)]
+        public string Endereco_email { get; set; }
+
+        [Column("endereco_email_xml")]
+        [MaxLength(60)]
+        public string Endereco_email_xml { get; set; }
+
+        [Column("endereco_nome")]
+        [MaxLength(60)]
+        public string Endereco_nome { get; set; }
+
+        [Column("endereco_ddd_res")]
+        [MaxLength(4)]
+        public string Endereco_ddd_res { get; set; }
+
+        [Column("endereco_tel_res")]
+        [MaxLength(11)]
+        public string Endereco_tel_res { get; set; }
+
+        [Column("endereco_ddd_com")]
+        [MaxLength(4)]
+        public string Endereco_ddd_com { get; set; }
+
+        [Column("endereco_tel_com")]
+        [MaxLength(11)]
+        public string Endereco_tel_com { get; set; }
+
+        [Column("endereco_ramal_com")]
+        [MaxLength(4)]
+        public string Endereco_ramal_com { get; set; }
+
+        [Column("endereco_ddd_cel")]
+        [MaxLength(2)]
+        public string Endereco_ddd_cel { get; set; }
+
+        [Column("endereco_tel_cel")]
+        [MaxLength(9)]
+        public string Endereco_tel_cel { get; set; }
+
+        [Column("endereco_ddd_com_2")]
+        [MaxLength(2)]
+        public string Endereco_ddd_com_2 { get; set; }
+
+        [Column("endereco_tel_com_2")]
+        [MaxLength(9)]
+        public string Endereco_tel_com_2 { get; set; }
+
+        [Column("endereco_ramal_com_2")]
+        [MaxLength(4)]
+        public string Endereco_ramal_com_2 { get; set; }
+
+        [Column("endereco_tipo_pessoa")]
+        [MaxLength(2)]
+        public string Endereco_tipo_pessoa { get; set; }
+
+        [Column("endereco_cnpj_cpf")]
+        [MaxLength(14)]
+        public string Endereco_cnpj_cpf { get; set; }
+
+        [Column("endereco_contribuinte_icms_status")]
+        [Required]
+        public byte Endereco_contribuinte_icms_status { get; set; }
+
+        [Column("endereco_produtor_rural_status")]
+        [Required]
+        public byte Endereco_produtor_rural_status { get; set; }
+
+        [Column("endereco_ie")]
+        [MaxLength(20)]
+        public string Endereco_ie { get; set; }
+
+        [Column("endereco_rg")]
+        [MaxLength(20)]
+        public string Endereco_rg { get; set; }
+
+        [Column("endereco_contato")]
+        [MaxLength(30)]
+        public string Endereco_contato { get; set; }
+
+        [Column("EndEtg_email")]
+        [MaxLength(60)]
+        public string EndEtg_email { get; set; }
+
+        [Column("EndEtg_email_xml")]
+        [MaxLength(60)]
+        public string EndEtg_email_xml { get; set; }
+
+        [Column("EndEtg_nome")]
+        [MaxLength(60)]
+        public string EndEtg_nome { get; set; }
+
+        [Column("EndEtg_ddd_res")]
+        [MaxLength(4)]
+        public string EndEtg_ddd_res { get; set; }
+
+        [Column("EndEtg_tel_res")]
+        [MaxLength(11)]
+        public string EndEtg_tel_res { get; set; }
+
+        [Column("EndEtg_ddd_com")]
+        [MaxLength(4)]
+        public string EndEtg_ddd_com { get; set; }
+
+        [Column("EndEtg_tel_com")]
+        [MaxLength(11)]
+        public string EndEtg_tel_com { get; set; }
+
+        [Column("EndEtg_ramal_com")]
+        [MaxLength(4)]
+        public string EndEtg_ramal_com { get; set; }
+
+        [Column("EndEtg_ddd_cel")]
+        [MaxLength(2)]
+        public string EndEtg_ddd_cel { get; set; }
+
+        [Column("EndEtg_tel_cel")]
+        [MaxLength(9)]
+        public string EndEtg_tel_cel { get; set; }
+
+        [Column("EndEtg_ddd_com_2")]
+        [MaxLength(2)]
+        public string EndEtg_ddd_com_2 { get; set; }
+
+        [Column("EndEtg_tel_com_2")]
+        [MaxLength(9)]
+        public string EndEtg_tel_com_2 { get; set; }
+
+        [Column("EndEtg_ramal_com_2")]
+        [MaxLength(4)]
+        public string EndEtg_ramal_com_2 { get; set; }
+
+        [Column("EndEtg_tipo_pessoa")]
+        [MaxLength(2)]
+        public string EndEtg_tipo_pessoa { get; set; }
+
+        [Column("EndEtg_cnpj_cpf")]
+        [MaxLength(14)]
+        public string EndEtg_cnpj_cpf { get; set; }
+
+        [Column("EndEtg_contribuinte_icms_status")]
+        [Required]
+        public byte EndEtg_contribuinte_icms_status { get; set; }
+
+        [Column("EndEtg_produtor_rural_status")]
+        [Required]
+        public byte EndEtg_produtor_rural_status { get; set; }
+
+        [Column("EndEtg_ie")]
+        [MaxLength(20)]
+        public string EndEtg_ie { get; set; }
+
+        [Column("EndEtg_rg")]
+        [MaxLength(20)]
+        public string EndEtg_rg { get; set; }
 
         [Column("PrevisaoEntregaData")]
         public DateTime? PrevisaoEntregaData { get; set; }

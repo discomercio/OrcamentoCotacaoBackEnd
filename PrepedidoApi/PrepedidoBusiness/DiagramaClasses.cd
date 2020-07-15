@@ -21,21 +21,21 @@
       <FileName>Bll\PrepedidoBll.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PrepedidoBusiness.Dtos.ClienteCadastro.ClienteCadastroDto">
+  <Class Name="PrepedidoBusiness.Dto.ClienteCadastro.ClienteCadastroDto">
     <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAQAAAA=</HashCode>
       <FileName>Dto\ClienteCadastro\ClienteCadastroDto.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PrepedidoBusiness.Dtos.ClienteCadastro.DadosClienteCadastroDto">
+  <Class Name="PrepedidoBusiness.Dto.ClienteCadastro.DadosClienteCadastroDto">
     <Position X="4.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>CAACAAIAACAAACgEgCAAQAOAAgAAAAAAAQBCgAkBEAA=</HashCode>
       <FileName>Dto\ClienteCadastro\DadosClienteCadastroDto.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PrepedidoBusiness.Dtos.ClienteCadastro.EnderecoEntregaDtoClienteCadastro" Collapsed="true">
+  <Class Name="PrepedidoBusiness.Dto.ClienteCadastro.EnderecoEntregaDtoClienteCadastro" Collapsed="true">
     <Position X="2.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAIACBAAAAAAAABIAAEAgCAAAAAAAAAAAAAAA=</HashCode>
@@ -49,42 +49,42 @@
       <FileName>Dto\Pedido\PedidosEncerradosDtoPedido.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PrepedidoBusiness.Dtos.Prepedido.DadosClienteDtoPrepedido" Collapsed="true">
+  <Class Name="PrepedidoBusiness.Dto.Prepedido.DadosClienteDtoPrepedido" Collapsed="true">
     <Position X="2.75" Y="4" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAABAAAACAAAAAAAAAABAIAAAEAAAAAAQBgAAkAEAA=</HashCode>
       <FileName>Dto\Prepedido\DadosClienteDtoPrepedido.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PrepedidoBusiness.Dtos.Prepedido.DetalhesDtoPrepedido" Collapsed="true">
+  <Class Name="PrepedidoBusiness.Dto.Prepedido.DetalhesDtoPrepedido" Collapsed="true">
     <Position X="8.75" Y="0.5" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AABAAAAAAIAAAAAAAAAAEAAAAAAAEAQAAABAAAAAAEA=</HashCode>
       <FileName>Dto\Prepedido\DetalhesDtoPrepedido.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PrepedidoBusiness.Dtos.Prepedido.PrePedidoClienteDto">
+  <Class Name="PrepedidoBusiness.Dto.Prepedido.PrePedidoClienteDto">
     <Position X="6.5" Y="0.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAQAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Dto\Prepedido\PrePedidoClienteDto.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PrepedidoBusiness.Dtos.Prepedido.PrepedidoQueViraramPedidoDtoPedido" Collapsed="true">
+  <Class Name="PrepedidoBusiness.Dto.Prepedido.PrepedidoQueViraramPedidoDtoPedido" Collapsed="true">
     <Position X="8.25" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AQAAAAgAAABAAAAAFAAAAAAAAAAACAAQAAAAAAAAAAA=</HashCode>
       <FileName>Dto\Prepedido\PrepedidoQueViraramPedidoDtoPedido.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PrepedidoBusiness.Dtos.Prepedido.PrepedidosCadastradosDtoPrepedido">
+  <Class Name="PrepedidoBusiness.Dto.Prepedido.PrepedidosCadastradosDtoPrepedido">
     <Position X="0.75" Y="4" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AQAAAAAEAAAQAAAAAAAAAAAAAAAIAAIAAAAAAAAAAAA=</HashCode>
       <FileName>Dto\Prepedido\PrepedidosCadastradosDtoPrepedido.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PrepedidoBusiness.Dtos.Prepedido.ProdutoComboDtoPrepedido" Collapsed="true">
+  <Class Name="PrepedidoBusiness.Dto.Prepedido.ProdutoComboDtoPrepedido" Collapsed="true">
     <Position X="6.25" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAABAIAAAAAJBAAAAAAQAAAAAAQAAAAAAAE=</HashCode>

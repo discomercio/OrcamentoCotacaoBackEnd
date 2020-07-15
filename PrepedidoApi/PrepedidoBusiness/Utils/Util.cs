@@ -10,9 +10,12 @@ using InfraBanco.Modelos;
 using System.Reflection;
 using System.ComponentModel.DataAnnotations.Schema;
 using PrepedidoBusiness.Bll.Regras;
-using PrepedidoBusiness.Dtos.Prepedido.DetalhesPrepedido;
+using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using PrepedidoBusiness.Dto.Produto;
 using System.Globalization;
+using System.Data.SqlClient;
+using PrepedidoBusiness.Dto.Cep;
+using System.ComponentModel.DataAnnotations;
 
 namespace PrepedidoBusiness.Utils
 {
@@ -45,50 +48,130 @@ namespace PrepedidoBusiness.Utils
 
         }
 
+        public static string Telefone_SoDigito(string tel)
+        {
+            return tel.Replace("-", "");
+        }
         public static string FormatarTelefones(string telefone)
         {
             return telefone.Insert(telefone.Length - 4, "-");
         }
 
-        public static bool ValidaCPF(string cpf_cnpj)
+        public static bool ValidaCPF(string cpf)
         {
-            bool retorno = false;
+            string valor = cpf.Replace(".", "").Replace("/", "").Replace("-", "");
 
-            cpf_cnpj = cpf_cnpj.Replace(".", "").Replace("/", "").Replace("-", "");
+            valor = valor.Replace("-", "");
 
-            if (cpf_cnpj.Length > 11)
+            if (valor.Length != 11) return false;
+
+            bool igual = true;
+
+            for (int i = 1; i < 11 && igual; i++)
             {
-                retorno = false;
-            }
-            if (cpf_cnpj.Length == 11)
-            {
-                retorno = true;
+                if (valor[i] != valor[0])
+                    igual = false;
             }
 
-            return retorno;
+            if (igual || valor == "12345678909")
+                return false;
+
+            int[] numeros = new int[11];
+
+            for (int i = 0; i < 11; i++)
+            {
+                numeros[i] = int.Parse(valor[i].ToString());
+            }
+
+            int soma = 0;
+
+            for (int i = 0; i < 9; i++)
+            {
+                soma += (10 - i) * numeros[i];
+            }
+
+            int resultado = soma % 11;
+
+            if (resultado == 1 || resultado == 0)
+            {
+                if (numeros[9] != 0)
+                    return false;
+            }
+
+            else if (numeros[9] != 11 - resultado)
+                return false;
+
+            soma = 0;
+
+            for (int i = 0; i < 10; i++)
+            {
+                soma += (11 - i) * numeros[i];
+            }
+
+            resultado = soma % 11;
+
+            if (resultado == 1 || resultado == 0)
+            {
+                if (numeros[10] != 0)
+                    return false;
+            }
+            else
+            {
+                if (numeros[10] != 11 - resultado)
+                    return false;
+            }
+
+            return true;
         }
 
-        public static bool ValidaCNPJ(string cpf_cnpj)
+        public static bool ValidaCNPJ(string cnpj)
         {
-            bool retorno = false;
+            string p1 = "543298765432";
+            string p2 = "6543298765432";
 
-            cpf_cnpj = cpf_cnpj.Replace(".", "").Replace("/", "").Replace("-", "");
+            cnpj = cnpj.Replace(".", "").Replace("/", "").Replace("-", "");
+            if (cnpj == "") return true;
+            if (cnpj.Length != 14) return false;
 
-            if (cpf_cnpj.Length == 14)
+            // DÍGITOS TODOS IGUAIS?
+            bool tudo_igual = true;
+            for (int i = 0; i < (cnpj.Length - 1); i++)
+                if (cnpj.Substring(i, i + 1) != cnpj.Substring(i + 1, i + 2))
+                {
+                    tudo_igual = false;
+                    break;
+                }
+
+            if (tudo_igual) return false;
+
+            // VERIFICA O PRIMEIRO CHECK DIGIT
+            long d = 0;
+
+            for (int i = 0; i < 12; i++)
             {
-                retorno = true;
-            }
-            if (cpf_cnpj.Length < 11)
-            {
-                retorno = false;
+                d = d + (Convert.ToInt64(p1.Substring(i, 1)) * Convert.ToInt64(cnpj.Substring(i, 1)));
             }
 
-            return retorno;
+
+            d = 11 - (d % 11);
+            if (d > 9) d = 0;
+            if (d != Convert.ToInt64(cnpj.Substring(12, 1))) return false;
+
+            // VERIFICA O SEGUNDO CHECK DIGIT
+            d = 0;
+            for (int i = 0; i < 13; i++)
+                d = d + Convert.ToInt64(p2.Substring(i, 1)) * Convert.ToInt64(cnpj.Substring(i, 1));
+
+            d = 11 - (d % 11);
+            if (d > 9) d = 0;
+            if (d != Convert.ToInt32(cnpj.Substring(13, 1))) return false;
+
+            return true;
         }
 
         public static string SoDigitosCpf_Cnpj(string cpf_cnpj)
         {
-            string retorno = "";
+            string retorno;
 
             if (cpf_cnpj.Length > 11)
             {
@@ -127,31 +210,31 @@ namespace PrepedidoBusiness.Utils
             return result;
         }
 
-        public static string OpcaoFormaPagto(string codigo)
+        public static string OpcaoFormaPagto(short codigo)
         {
             string retorno = "";
 
             switch (codigo)
             {
-                case Constantes.ID_FORMA_PAGTO_DINHEIRO:
+                case (short)Constantes.FormaPagto.ID_FORMA_PAGTO_DINHEIRO:
                     retorno = "Dinheiro";
                     break;
-                case Constantes.ID_FORMA_PAGTO_DEPOSITO:
+                case (short)Constantes.FormaPagto.ID_FORMA_PAGTO_DEPOSITO:
                     retorno = "Depósito";
                     break;
-                case Constantes.ID_FORMA_PAGTO_CHEQUE:
+                case (short)Constantes.FormaPagto.ID_FORMA_PAGTO_CHEQUE:
                     retorno = "Cheque";
                     break;
-                case Constantes.ID_FORMA_PAGTO_BOLETO:
+                case (short)Constantes.FormaPagto.ID_FORMA_PAGTO_BOLETO:
                     retorno = "Boleto";
                     break;
-                case Constantes.ID_FORMA_PAGTO_CARTAO:
+                case (short)Constantes.FormaPagto.ID_FORMA_PAGTO_CARTAO:
                     retorno = "Cartão (internet)";
                     break;
-                case Constantes.ID_FORMA_PAGTO_CARTAO_MAQUINETA:
+                case (short)Constantes.FormaPagto.ID_FORMA_PAGTO_CARTAO_MAQUINETA:
                     retorno = "Cartão (maquineta)";
                     break;
-                case Constantes.ID_FORMA_PAGTO_BOLETO_AV:
+                case (short)Constantes.FormaPagto.ID_FORMA_PAGTO_BOLETO_AV:
                     retorno = "Boleto AV";
                     break;
             };
@@ -172,17 +255,18 @@ namespace PrepedidoBusiness.Utils
 
         public static bool VerificaCep(string cep)
         {
-            bool retorno = false;
-            string cepFormat = "";
+            string cepFormat;
 
             if (cep != "")
             {
                 cepFormat = cep.Replace("-", "");
+                if (cepFormat.Length == 5)
+                    return true;
                 if (cepFormat.Length == 8)
-                    retorno = true;
+                    return true;
             }
 
-            return retorno;
+            return false;
         }
 
         public static bool gera_chave_codificacao(Int32 fator, ref String chave_gerada)
@@ -598,6 +682,7 @@ namespace PrepedidoBusiness.Utils
             string[] campos = campos_a_inserir2.Split('|');
             int indiceDoCampo = 0;
             bool endEntregaMesmo = false;
+            bool dataEntregaImediata = false;
             foreach (var campo_atual in campos)
             {
                 foreach (var c in property)
@@ -614,9 +699,14 @@ namespace PrepedidoBusiness.Utils
                         {
                             log = campo_atual + "; ";
                         }
-                        if (campo_atual.IndexOf("Endereço entrega=mesmo do cadastro") >= 0 && !endEntregaMesmo)
+                        if (campo_atual.IndexOf("Endereço entrega") >= 0 && !endEntregaMesmo)
                         {
                             endEntregaMesmo = true;
+                            log = log + campo_atual + "; ";
+                        }
+                        if (campo_atual.IndexOf("previsão de entrega") >= 0 && !dataEntregaImediata)
+                        {
+                            dataEntregaImediata = true;
                             log = log + campo_atual + "; ";
                         }
 
@@ -826,7 +916,7 @@ namespace PrepedidoBusiness.Utils
                 retorno = true;
             if (loja == Constantes.NUMERO_LOJA_MARCELO_ARTVEN)
                 retorno = true;
-            
+
             return retorno;
         }
 
@@ -873,18 +963,18 @@ namespace PrepedidoBusiness.Utils
 
             if (tipoCliente == Constantes.ID_PF)
             {
-                if (produtoRuralStatus == byte.Parse(Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM))
+                if (produtoRuralStatus == (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
                     tipoPessoa = Constantes.COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PRODUTOR_RURAL;
-                else if (produtoRuralStatus == byte.Parse(Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO))
+                else if (produtoRuralStatus == (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO)
                     tipoPessoa = Constantes.COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PESSOA_FISICA;
             }
             else if (tipoCliente == Constantes.ID_PJ)
             {
-                if (contribuinteIcmsStatus == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM))
+                if (contribuinteIcmsStatus == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
                     tipoPessoa = Constantes.COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PESSOA_JURIDICA_CONTRIBUINTE;
-                else if (contribuinteIcmsStatus == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO))
+                else if (contribuinteIcmsStatus == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO)
                     tipoPessoa = Constantes.COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PESSOA_JURIDICA_NAO_CONTRIBUINTE;
-                else if (contribuinteIcmsStatus == byte.Parse(Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO))
+                else if (contribuinteIcmsStatus == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO)
                     tipoPessoa = Constantes.COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PESSOA_JURIDICA_ISENTO;
             }
 
@@ -973,7 +1063,7 @@ namespace PrepedidoBusiness.Utils
             {
                 foreach (var r in lista)
                 {
-                    if (r.prod_x_reg.Produto == item.Produto && 
+                    if (r.prod_x_reg.Produto == item.Produto &&
                         r.prod_x_reg.Fabricante == item.Fabricante)
                     {
                         item.St_Regra = true;
@@ -1179,7 +1269,7 @@ namespace PrepedidoBusiness.Utils
 
         }
 
-        public static void ObterDisponibilidadeEstoque(List<RegrasBll> lstRegrasCrtlEstoque, List<ProdutoDto> lst_produtos,
+        public static void ObterDisponibilidadeEstoque(List<RegrasBll> lstRegrasCrtlEstoque, List<Bll.ProdutoBll.ProdutoDados.ProdutoDados> lst_produtos,
             List<string> lstErros, ContextoBdProvider contextoProvider)
         {
             foreach (var r in lstRegrasCrtlEstoque)
@@ -1204,7 +1294,7 @@ namespace PrepedidoBusiness.Utils
                                             //p.Estoque_Qtde_Solicitado = essa variavel não deve ser utilizada, a qtde só sera solicitada 
                                             //quando o usuario inserir a qtde 
                                             p.Estoque_Qtde = 0;
-                                            
+
                                         }
                                     }
 
@@ -1230,6 +1320,17 @@ namespace PrepedidoBusiness.Utils
 
         }
 
+        public static async Task<bool> IsActivatedFlagPedidoUsarMemorizacaoCompletaEnderecos(ContextoBdProvider contextoProvider)
+        {
+            Tparametro param = await BuscarRegistroParametro(Constantes.ID_PARAMETRO_Flag_Pedido_MemorizacaoCompletaEnderecos,
+                contextoProvider);
+
+            if (param.Campo_inteiro == 1)
+                return true;
+
+            return false;
+        }
+
         public static async Task<float> VerificarSemDesagioRA(ContextoBdProvider contextoProvider)
         {//busca o percentual de RA sem desagio ID_PARAM_PERC_LIMITE_RA_SEM_DESAGIO            
             Tparametro tparametro = await BuscarRegistroParametro(
@@ -1252,5 +1353,94 @@ namespace PrepedidoBusiness.Utils
             return data;
         }
 
+        public static bool ValidarEmail(string email, List<string> lstErros)
+        {
+            bool retorno;
+            retorno = new EmailAddressAttribute().IsValid(email);
+
+            if (!retorno)
+                lstErros.Add("E-mail inválido!");
+
+            return retorno;
+        }
+
+        public static async Task<int?> VerificarTelefoneRepetidos(string ddd, string tel, string cpf_cnpj, string tipoCliente,
+            ContextoBdProvider contextoProvider, List<string> lstErros)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+
+            string listaBranca = "|(11)32683471|";
+            string concatenaTel = "|(" + ddd.Trim() + ")" + tel.Trim() + "|";
+
+            if (listaBranca.IndexOf(concatenaTel) != -1) return null;
+
+            string[] cpf_cnpjConsulta = new string[] { ddd, "0" + ddd };
+            var lstClienteTask = await (from c in db.Tclientes
+                                        where cpf_cnpjConsulta.Contains(c.Ddd_Res) && c.Tel_Res == tel ||
+                                              cpf_cnpjConsulta.Contains(c.Ddd_Com) && c.Tel_Com == tel ||
+                                              cpf_cnpjConsulta.Contains(c.Ddd_Cel) && c.Tel_Cel == tel ||
+                                              cpf_cnpjConsulta.Contains(c.Ddd_Com_2) && c.Tel_Com_2 == tel
+                                        select c).ToListAsync();
+
+            var lstOrcamentista = await (from c in db.TorcamentistaEindicadors
+                                         where cpf_cnpjConsulta.Contains(c.Ddd) && c.Telefone == tel &&
+                                               cpf_cnpjConsulta.Contains(c.Ddd_cel) && c.Tel_cel == tel
+                                         select c).ToListAsync();
+
+            int qtdCliente = 0;
+            int qtdOrcamentista = 0;
+            if (tipoCliente == Constantes.ID_PF)
+            {
+                qtdCliente = lstClienteTask.Where(x => x.Cnpj_Cpf != cpf_cnpj).Count();
+                qtdOrcamentista = lstOrcamentista.Where(x => x.Cnpj_cpf != cpf_cnpj).Count();
+            }
+            else
+            {
+                qtdCliente = lstClienteTask
+                    .Where(x => x.Cnpj_Cpf.Length == 14 &&
+                           x.Cnpj_Cpf.Substring(0, 8) != cpf_cnpj.Substring(0, 8))
+                    .Count();
+                qtdOrcamentista = lstOrcamentista
+                    .Where(x => x.Cnpj_cpf.Length == 14 &&
+                           x.Cnpj_cpf.Substring(0, 8) != cpf_cnpj.Substring(0, 8))
+                    .Count();
+            }
+
+            return qtdCliente + qtdOrcamentista;
+        }
+
+        public static string FormatarEndereco(string endereco, string numero, string complemento,
+            string bairro, string cidade, string uf, string cep)
+        {
+            
+            string retorno = "";
+            if (!string.IsNullOrEmpty(endereco))
+                retorno = endereco.Trim();
+            if (!string.IsNullOrEmpty(numero))
+                retorno += ", " + numero.Trim();
+            if (!string.IsNullOrEmpty(complemento))
+                retorno += " " + complemento.Trim();
+            if (!string.IsNullOrEmpty(bairro))
+                retorno += " - " + bairro.Trim();
+            if (!string.IsNullOrEmpty(cidade))
+                retorno += " - " + cidade.Trim();
+            if (!string.IsNullOrEmpty(uf))
+                retorno += " - " + uf.Trim();
+            if (!string.IsNullOrEmpty(cep))
+                retorno += " - " + FormatarCep(cep.Trim());
+
+            return retorno;
+        }
+
+        public static string FormatarCep(string cep)
+        {
+            string sCep = cep.Replace("-", "");
+            if (!Util.VerificaCep(sCep))
+                return "";
+
+            cep = sCep.Substring(0, 4) + " - " + sCep.Substring(5, 3);
+            
+            return cep;
+        }
     }
 }

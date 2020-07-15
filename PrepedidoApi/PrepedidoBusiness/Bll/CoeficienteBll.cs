@@ -62,17 +62,19 @@ namespace PrepedidoBusiness.Bll
 
             foreach (var f in lstFornecedores)
             {
-                var lstCoeficienteTask = from c in db.TpercentualCustoFinanceiroFornecedors
-                                         where c.Fabricante == f
-                                         select new CoeficienteDto
-                                         {
-                                             Fabricante = c.Fabricante,
-                                             TipoParcela = c.Tipo_Parcelamento,
-                                             QtdeParcelas = c.Qtde_Parcelas,
-                                             Coeficiente = c.Coeficiente
-                                         };
-
-                lstRetorno.Add(await lstCoeficienteTask.ToListAsync());
+                List<CoeficienteDto> lstCoeficienteTask = await (from c in db.TpercentualCustoFinanceiroFornecedors
+                                                                 where c.Fabricante == f
+                                                                 select new CoeficienteDto
+                                                                 {
+                                                                     Fabricante = c.Fabricante,
+                                                                     TipoParcela = c.Tipo_Parcelamento,
+                                                                     QtdeParcelas = c.Qtde_Parcelas,
+                                                                     Coeficiente = c.Coeficiente
+                                                                 }).ToListAsync();
+                if (lstCoeficienteTask.Count > 0)
+                {
+                    lstRetorno.Add(lstCoeficienteTask);
+                }
             }
 
             return lstRetorno;

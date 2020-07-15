@@ -29,7 +29,7 @@ namespace PrepedidoApi
                  * 
                  * para acessar diretamente do debug
                  * 
-
+                  
                 {
                     IConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
                     configurationBuilder.AddJsonFile("AppSettings.json");
@@ -40,7 +40,7 @@ namespace PrepedidoApi
                     var res = bll.BuscarTodosProdutos("teste");
                     var res2 = res.Result;
                 }
-                 * */
+                * */
 
 
                 app.Run();

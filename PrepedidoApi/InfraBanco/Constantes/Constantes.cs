@@ -11,9 +11,17 @@ namespace InfraBanco.Constantes
         public static String PREFIXO_SENHA_FORMATADA = "0x";
         public static int TAMANHO_CAMPO_COMPRIMENTO_SENHA = 2;
 
-        public const int COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP = 1;
-        public const int COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS = 2;
-        public const int COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS = 3;
+        public static string TEL_BONSHOP_1 = "1139344400";
+        public static string TEL_BONSHOP_2 = "1139344420";
+        public static string TEL_BONSHOP_3 = "1139344411";
+
+        public enum CodSistemaResponsavel
+        {
+            COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP = 1,
+            COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS = 2,
+            COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS = 3,
+        };
+        
 
         public const int FATOR_BD = 1209;
 
@@ -568,11 +576,14 @@ namespace InfraBanco.Constantes
 
         //'	CÓDIGOS PARA O CAMPO "INSTALADOR INSTALA";
 
-        public const string COD_INSTALADOR_INSTALA_NAO_DEFINIDO = "0";
+        public enum Instalador_Instala
+        {
+            COD_INSTALADOR_INSTALA_NAO_DEFINIDO = 0,
+            COD_INSTALADOR_INSTALA_NAO = 1,
+            COD_INSTALADOR_INSTALA_SIM = 2
+        }
 
-        public const string COD_INSTALADOR_INSTALA_NAO = "1";
 
-        public const string COD_INSTALADOR_INSTALA_SIM = "2";
 
         //'   STATUS DE RECEBIMENTO DO PEDIDO POR PARTE DO CLIENTE
 
@@ -693,21 +704,24 @@ namespace InfraBanco.Constantes
 
         //' CÓDIGOS P/ ENTREGA IMEDIATA
 
-        public const string COD_ETG_IMEDIATA_ST_INICIAL = "0";
+        public enum EntregaImediata
+        {
+            COD_ETG_IMEDIATA_ST_INICIAL = 0,
+            COD_ETG_IMEDIATA_NAO = 1,
+            COD_ETG_IMEDIATA_SIM = 2,
+            COD_ETG_IMEDIATA_NAO_DEFINIDO = 10 //' PEDIDOS ANTIGOS QUE JÁ ESTAVAM NA BASE
+        }
 
-        public const string COD_ETG_IMEDIATA_NAO = "1";
-
-        public const string COD_ETG_IMEDIATA_SIM = "2";
-
-        public const string COD_ETG_IMEDIATA_NAO_DEFINIDO = "10";//' PEDIDOS ANTIGOS QUE JÁ ESTAVAM NA BASE
 
         //' CÓDIGOS P/ FLAG "BEM DE USO/CONSUMO";
 
-        public const string COD_ST_BEM_USO_CONSUMO_NAO = "0";
+        public enum Bem_DeUsoComum
+        {
+            COD_ST_BEM_USO_CONSUMO_NAO = 0,
+            COD_ST_BEM_USO_CONSUMO_SIM = 1,
+            COD_ST_BEM_USO_CONSUMO_NAO_DEFINIDO = 10 //' PEDIDOS ANTIGOS QUE JÁ ESTAVAM NA BASE
+        }
 
-        public const string COD_ST_BEM_USO_CONSUMO_SIM = "1";
-
-        public const string COD_ST_BEM_USO_CONSUMO_NAO_DEFINIDO = "10";//' PEDIDOS ANTIGOS QUE JÁ ESTAVAM NA BASE
 
         //' CÓDIGOS P/ INDICAR SE A COMISSÃO FOI PAGA OU NÃO
 
@@ -793,19 +807,17 @@ namespace InfraBanco.Constantes
         public const string COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA = "6";
 
 
-        public const string ID_FORMA_PAGTO_DINHEIRO = "1";
+        public enum FormaPagto
+        {
+            ID_FORMA_PAGTO_DINHEIRO = 1,
+            ID_FORMA_PAGTO_DEPOSITO = 2,
+            ID_FORMA_PAGTO_CHEQUE = 3,
+            ID_FORMA_PAGTO_BOLETO = 4,
+            ID_FORMA_PAGTO_CARTAO = 5,
+            ID_FORMA_PAGTO_BOLETO_AV = 6,
+            ID_FORMA_PAGTO_CARTAO_MAQUINETA = 7
+        }
 
-        public const string ID_FORMA_PAGTO_DEPOSITO = "2";
-
-        public const string ID_FORMA_PAGTO_CHEQUE = "3";
-
-        public const string ID_FORMA_PAGTO_BOLETO = "4";
-
-        public const string ID_FORMA_PAGTO_CARTAO = "5";
-
-        public const string ID_FORMA_PAGTO_BOLETO_AV = "6";
-
-        public const string ID_FORMA_PAGTO_CARTAO_MAQUINETA = "7";
 
 
         public const string CTRL_PAGTO_MODULO__BOLETO = "1";
@@ -853,21 +865,23 @@ namespace InfraBanco.Constantes
 
         //' CÓDIGOS P/ STATUS QUE INDICA SE CLIENTE É OU NÃO CONTRIBUINTE DO ICMS
 
-        public const string COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL = "0";
+        public enum ContribuinteICMS
+        {
+            COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL = 0,
+            COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO = 1,
+            COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM = 2,
+            COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO = 3
+        }
 
-        public const string COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO = "1";
-
-        public const string COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM = "2";
-
-        public const string COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO = "3";
 
         //' CÓDIGOS P/ STATUS QUE INDICA SE CLIENTE É OU NÃO PRODUTOR RURAL
+        public enum ProdutorRual
+        {
+            COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL = 0,
+            COD_ST_CLIENTE_PRODUTOR_RURAL_NAO = 1,
+            COD_ST_CLIENTE_PRODUTOR_RURAL_SIM = 2
+        }
 
-        public const string COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL = "0";
-
-        public const string COD_ST_CLIENTE_PRODUTOR_RURAL_NAO = "1";
-
-        public const string COD_ST_CLIENTE_PRODUTOR_RURAL_SIM = "2";
 
         //'   CÓDIGOS DE STATUS DE DEVOLUÇÃO EM PEDIDO
         public const string COD_ST_PEDIDO_DEVOLUCAO__CADASTRADA = "1";
@@ -2073,7 +2087,7 @@ namespace InfraBanco.Constantes
 
         public const int OP_CEN_REL_TRANSACOES_CIELO_ANDAMENTO = 25400;
 
-        public const int OP_CEN_FRETE_ADICIONAL_LEITURA = 00000;//TODO
+        public const int OP_CEN_FRETE_ADICIONAL_LEITURA = 00000;//' TODO
 
         public const int OP_CEN_FRETE_ADICIONAL_CADASTRAMENTO = 00000; //' TODO
 
@@ -2631,5 +2645,10 @@ namespace InfraBanco.Constantes
         public const string COD_UNIDADE_NEGOCIO_LOJA__VRF = "VRF";
         public const string COD_UNIDADE_NEGOCIO_LOJA__BS = "BS";
         public const string COD_UNIDADE_NEGOCIO_LOJA__AC = "AC";
+
+        public const string SESSION_CTRL_MODULO_CENTRAL = "CENTR";
+        public const string SESSION_CTRL_MODULO_LOJA = "LOJA";
+        public const string SESSION_CTRL_MODULO_ORCAMENTO = "ORCTO";
+        public const string SESSION_CTRL_MODULO_APIUNIS = "APIUN";
     }
 }

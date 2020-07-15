@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using PrepedidoBusiness.Dtos.ClienteCadastro;
+using PrepedidoBusiness.Dto.ClienteCadastro;
+using InfraBanco.Constantes;
 
 namespace PrepedidoApi.Controllers
 {
@@ -14,10 +15,10 @@ namespace PrepedidoApi.Controllers
     [Authorize(Roles = Utils.Autenticacao.RoleAcesso)]
     public class ClienteController : ControllerBase
     {
-        private readonly PrepedidoBusiness.Bll.ClienteBll clienteBll;
+        private readonly PrepedidoBusiness.Bll.ClienteBll.ClienteBll clienteBll;
         private readonly InfraIdentity.IServicoDecodificarToken servicoDecodificarToken;
 
-        public ClienteController(PrepedidoBusiness.Bll.ClienteBll clienteBll, InfraIdentity.IServicoDecodificarToken servicoDecodificarToken)
+        public ClienteController(PrepedidoBusiness.Bll.ClienteBll.ClienteBll clienteBll, InfraIdentity.IServicoDecodificarToken servicoDecodificarToken)
         {
             this.clienteBll = clienteBll;
             this.servicoDecodificarToken = servicoDecodificarToken;
@@ -84,7 +85,9 @@ namespace PrepedidoApi.Controllers
         {
             //para testar: http://localhost:60877/api/cliente/cadastrarCliente
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            var retorno = await clienteBll.CadastrarCliente(clienteDto, apelido.Trim());
+
+            var retorno = await clienteBll.CadastrarCliente(clienteDto, apelido.Trim(), 
+                (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS);
 
             return Ok(retorno);
         }

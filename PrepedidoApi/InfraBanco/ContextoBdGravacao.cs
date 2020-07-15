@@ -59,6 +59,9 @@ namespace InfraBanco
         public DbSet<Tcontrole> Tcontroles { get => contexto.Tcontroles; }
         public DbSet<TprodutoLoja> TprodutoLojas { get => contexto.TprodutoLojas; }
         public DbSet<TorcamentistaEindicador> TorcamentistaEindicadors { get => contexto.TorcamentistaEindicadors; }
+        public DbSet<TsessaoAbandonada> TsessaoAbandonadas { get => contexto.TsessaoAbandonadas; }
+        public DbSet<Tusuario> Tusuarios { get => contexto.Tusuarios; }
+        public DbSet<Tbanco> Tbancos { get => contexto.Tbancos; }
 
     }
 }

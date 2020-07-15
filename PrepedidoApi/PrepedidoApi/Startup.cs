@@ -38,36 +38,35 @@ namespace PrepedidoApi
             services.Configure<Configuracao>(appSettingsSection);
 
             //bll
-            services.AddTransient<PrepedidoBusiness.Bll.PrepedidoBll, PrepedidoBusiness.Bll.PrepedidoBll>();
-            services.AddTransient<PrepedidoBusiness.Bll.ClienteBll, PrepedidoBusiness.Bll.ClienteBll>();
+            services.AddTransient<PrepedidoBusiness.Bll.PrepedidoBll.PrepedidoBll, PrepedidoBusiness.Bll.PrepedidoBll.PrepedidoBll>();
+            services.AddTransient<PrepedidoBusiness.Bll.ClienteBll.ClienteBll, PrepedidoBusiness.Bll.ClienteBll.ClienteBll>();
             services.AddTransient<PrepedidoBusiness.Bll.PedidoBll, PrepedidoBusiness.Bll.PedidoBll>();
             services.AddTransient<PrepedidoBusiness.Bll.AcessoBll, PrepedidoBusiness.Bll.AcessoBll>();
-            services.AddTransient<PrepedidoBusiness.Bll.ProdutoBll, PrepedidoBusiness.Bll.ProdutoBll>();
+            services.AddTransient<PrepedidoBusiness.Bll.ProdutoBll.ProdutoGeralBll, PrepedidoBusiness.Bll.ProdutoBll.ProdutoGeralBll>();
             services.AddTransient<PrepedidoBusiness.Bll.CepBll, PrepedidoBusiness.Bll.CepBll>();
-            services.AddTransient<PrepedidoBusiness.Bll.FormaPagtoBll, PrepedidoBusiness.Bll.FormaPagtoBll>();
+            services.AddTransient<PrepedidoBusiness.Bll.FormaPagtoBll.FormaPagtoBll, PrepedidoBusiness.Bll.FormaPagtoBll.FormaPagtoBll>();
+            services.AddTransient<PrepedidoBusiness.Bll.FormaPagtoBll.ValidacoesFormaPagtoBll, PrepedidoBusiness.Bll.FormaPagtoBll.ValidacoesFormaPagtoBll>();
             services.AddTransient<PrepedidoBusiness.Bll.CoeficienteBll, PrepedidoBusiness.Bll.CoeficienteBll>();
+            services.AddTransient<PrepedidoBusiness.Bll.PrepedidoBll.ValidacoesPrepedidoBll, PrepedidoBusiness.Bll.PrepedidoBll.ValidacoesPrepedidoBll>();
+            services.AddTransient<PrepedidoBusiness.Bll.PrepedidoBll.MontarLogPrepedidoBll, PrepedidoBusiness.Bll.PrepedidoBll.MontarLogPrepedidoBll>();
+            services.AddTransient<PrepedidoBusiness.Bll.PrepedidoBll.MontarLogPrepedidoBll, PrepedidoBusiness.Bll.PrepedidoBll.MontarLogPrepedidoBll>();
+            services.AddTransient<PrepedidoBusiness.Utils.IBancoNFeMunicipio, PrepedidoBusiness.Utils.BancoNFeMunicipio>();
+            
 
             //ContextoProvider
             services.AddTransient<InfraBanco.ContextoBdProvider, InfraBanco.ContextoBdProvider>();
             services.AddTransient<InfraBanco.ContextoCepProvider, InfraBanco.ContextoCepProvider>();
-            //services.AddTransient<InfraBanco.ContextoNFeProvider, InfraBanco.ContextoNFeProvider>();
 
             //banco de dados
             string conexaoBasica = Configuration.GetConnectionString("conexao");
             services.AddDbContext<InfraBanco.ContextoBdBasico>(options =>
             {
-                //options.UseSqlServer(Configuration.GetConnectionString("conexaoLocal"));
                 options.UseSqlServer(conexaoBasica);
             });
             services.AddDbContext<InfraBanco.ContextoCepBd>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("conexaoCep"));
             });
-            //services.AddDbContext<InfraBanco.ContextoNFeBd>(options =>
-            //{
-            //    options.UseSqlServer(Configuration.GetConnectionString("conexaoNfe"));
-            //});
-
 
             // configure jwt authentication
             var appSettings = appSettingsSection.Get<Configuracao>();

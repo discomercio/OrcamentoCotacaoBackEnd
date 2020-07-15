@@ -13,8 +13,8 @@ namespace PrepedidoApi.Controllers
     public class ProdutoController : Controller
     {
         private readonly InfraIdentity.IServicoDecodificarToken servicoDecodificarToken;
-        private readonly PrepedidoBusiness.Bll.ProdutoBll produtoBll;
-        public ProdutoController(PrepedidoBusiness.Bll.ProdutoBll produtoBll, InfraIdentity.IServicoDecodificarToken servicoDecodificarToken)
+        private readonly PrepedidoBusiness.Bll.ProdutoBll.ProdutoGeralBll produtoBll;
+        public ProdutoController(PrepedidoBusiness.Bll.ProdutoBll.ProdutoGeralBll produtoBll, InfraIdentity.IServicoDecodificarToken servicoDecodificarToken)
         {
             this.produtoBll = produtoBll;
             this.servicoDecodificarToken = servicoDecodificarToken;
@@ -29,8 +29,9 @@ namespace PrepedidoApi.Controllers
         {
             //para testar: http://localhost:60877/api/produto/buscarProduto
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            
-            var ret = await produtoBll.ListaProdutosCombo(apelido.Trim(), loja, id_cliente);
+            //nao usamos o apelido
+
+            var ret = await produtoBll.ListaProdutosComboApiArclube(loja, id_cliente);
             
             return Ok(ret);
         }

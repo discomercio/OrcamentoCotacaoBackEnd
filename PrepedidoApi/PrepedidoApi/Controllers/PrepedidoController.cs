@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using InfraBanco.Constantes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PrepedidoBusiness.Dtos.Prepedido.DetalhesPrepedido;
+using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 
 namespace PrepedidoApi.Controllers
 {
@@ -14,14 +15,14 @@ namespace PrepedidoApi.Controllers
     [Authorize(Roles = Utils.Autenticacao.RoleAcesso)]
     public class PrepedidoController : ControllerBase
     {
-        private readonly PrepedidoBusiness.Bll.PrepedidoBll prepedidoBll;
+        private readonly PrepedidoBusiness.Bll.PrepedidoBll.PrepedidoBll prepedidoBll;
         private readonly InfraIdentity.IServicoDecodificarToken servicoDecodificarToken;
-        private readonly PrepedidoBusiness.Bll.FormaPagtoBll formaPagtoBll;
+        private readonly PrepedidoBusiness.Bll.FormaPagtoBll.FormaPagtoBll formaPagtoBll;
         private readonly PrepedidoBusiness.Bll.CoeficienteBll coeficienteBll;
 
-        public PrepedidoController(PrepedidoBusiness.Bll.PrepedidoBll prepedidoBll, 
+        public PrepedidoController(PrepedidoBusiness.Bll.PrepedidoBll.PrepedidoBll prepedidoBll,
             InfraIdentity.IServicoDecodificarToken servicoDecodificarToken,
-            PrepedidoBusiness.Bll.FormaPagtoBll formaPagtoBll, 
+            PrepedidoBusiness.Bll.FormaPagtoBll.FormaPagtoBll formaPagtoBll,
             PrepedidoBusiness.Bll.CoeficienteBll coeficienteBll)
         {
             this.prepedidoBll = prepedidoBll;
@@ -69,7 +70,7 @@ namespace PrepedidoApi.Controllers
             //para testar: http://localhost:60877/api/prepedido/listarPrePedidos
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
             var lista = await prepedidoBll.ListarPrePedidos(apelido,
-                (PrepedidoBusiness.Bll.PrepedidoBll.TipoBuscaPrepedido)tipoBusca,
+                (PrepedidoBusiness.Bll.PrepedidoBll.PrepedidoBll.TipoBuscaPrepedido)tipoBusca,
                 clienteBusca, numeroPrePedido, dataInicial, dataFinal);
             return Ok(lista);
         }
@@ -148,7 +149,9 @@ namespace PrepedidoApi.Controllers
             //para testar: http://localhost:60877/api/prepedido/cadastrarPrepedido
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            var ret = await prepedidoBll.CadastrarPrepedido(prePedido, apelido.Trim());
+            //TODO: ler LIMITE_ARREDONDAMENTO_PRECO_VENDA_ORCAMENTO_ITEM do appsettings
+            var ret = await prepedidoBll.CadastrarPrepedido(prePedido, apelido.Trim(), 0.01M, true, 
+                (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS);
 
             return Ok(ret);
         }
@@ -223,6 +226,7 @@ namespace PrepedidoApi.Controllers
             var ret = await formaPagtoBll.BuscarQtdeParcCartaoVisa();
 
             return Ok(ret);
+            //
         }
     }
 }

@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System;
-using PrepedidoBusiness.Dtos.Pedido;
+using PrepedidoBusiness.Dto.Pedido;
 using PrepedidoBusiness.Utils;
-using PrepedidoBusiness.Dtos.ClienteCadastro;
+using PrepedidoBusiness.Dto.ClienteCadastro;
 using InfraBanco.Modelos;
 using PrepedidoBusiness.Dto.Pedido.DetalhesPedido;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -178,17 +178,17 @@ namespace PrepedidoBusiness.Bll
             return cpfCnpjFormat;
         }
 
-        private async Task<DadosClienteCadastroDto> ObterDadosCliente(string loja, string indicador_orcamentista, string vendedor, string idCliente)
+        private async Task<DadosClienteCadastroDto> ObterDadosCliente(Tpedido pedido)
         {
             var dadosCliente = from c in contextoProvider.GetContextoLeitura().Tclientes
-                               where c.Id == idCliente
+                               where c.Id == pedido.Id_Cliente
                                select c;
             var cli = await dadosCliente.FirstOrDefaultAsync();
             DadosClienteCadastroDto cadastroCliente = new DadosClienteCadastroDto
             {
-                Loja = await ObterRazaoSocial_Nome_Loja(loja),
-                Indicador_Orcamentista = indicador_orcamentista,
-                Vendedor = vendedor,
+                Loja = await ObterRazaoSocial_Nome_Loja(pedido.Loja),
+                Indicador_Orcamentista = pedido.Orcamentista,
+                Vendedor = pedido.Vendedor,
                 Id = cli.Id,
                 Cnpj_Cpf = Util.FormatCpf_Cnpj_Ie(cli.Cnpj_Cpf),
                 Rg = cli.Rg,
@@ -224,6 +224,52 @@ namespace PrepedidoBusiness.Bll
             return cadastroCliente;
         }
 
+        private async Task<DadosClienteCadastroDto> ObterDadosClientePedido(Tpedido pedido)
+        {
+            var dadosCliente = from c in contextoProvider.GetContextoLeitura().Tclientes
+                               where c.Id == pedido.Id_Cliente
+                               select c;
+            var cli = await dadosCliente.FirstOrDefaultAsync();
+            DadosClienteCadastroDto cadastroCliente = new DadosClienteCadastroDto
+            {
+                Loja = await ObterRazaoSocial_Nome_Loja(pedido.Loja),
+                Indicador_Orcamentista = pedido.Orcamentista,
+                Vendedor = pedido.Vendedor,
+                Id = cli.Id,
+                Cnpj_Cpf = Util.FormatCpf_Cnpj_Ie(pedido.Endereco_cnpj_cpf),
+                Rg = pedido.Endereco_rg,
+                Ie = Util.FormatCpf_Cnpj_Ie(pedido.Endereco_ie),
+                Contribuinte_Icms_Status = pedido.Endereco_contribuinte_icms_status,
+                Tipo = cli.Tipo,
+                Observacao_Filiacao = cli.Filiacao,
+                Nascimento = cli.Dt_Nasc,
+                Sexo = cli.Sexo,
+                Nome = pedido.Endereco_nome,
+                ProdutorRural = pedido.Endereco_produtor_rural_status,
+                DddResidencial = pedido.Endereco_ddd_res,
+                TelefoneResidencial = pedido.Endereco_tel_res,
+                DddComercial = pedido.Endereco_ddd_com,
+                TelComercial = pedido.Endereco_tel_com,
+                Ramal = pedido.Endereco_ramal_com,
+                DddCelular = pedido.Endereco_ddd_cel,
+                Celular = pedido.Endereco_tel_cel,
+                TelComercial2 = pedido.Endereco_tel_com_2,
+                DddComercial2 = pedido.Endereco_ddd_com_2,
+                Ramal2 = pedido.Endereco_ramal_com_2,
+                Email = pedido.Endereco_email,
+                EmailXml = pedido.Endereco_email_xml,
+                Endereco = pedido.Endereco_logradouro,
+                Complemento = pedido.Endereco_complemento,
+                Numero = pedido.Endereco_numero,
+                Bairro = pedido.Endereco_bairro,
+                Cidade = pedido.Endereco_cidade,
+                Uf = pedido.Endereco_uf,
+                Cep = pedido.Endereco_cep,
+                Contato = pedido.Endereco_contato
+            };
+            return cadastroCliente;
+        }
+
         private async Task<string> ObterRazaoSocial_Nome_Loja(string loja)
         {
             var db = contextoProvider.GetContextoLeitura();
@@ -247,24 +293,42 @@ namespace PrepedidoBusiness.Bll
 
         private async Task<EnderecoEntregaDtoClienteCadastro> ObterEnderecoEntrega(Tpedido p)
         {
-            EnderecoEntregaDtoClienteCadastro enderecoEntrega = new EnderecoEntregaDtoClienteCadastro
-            {
-                EndEtg_endereco = p.EndEtg_Endereco,
-                EndEtg_endereco_numero = p.EndEtg_Endereco_Numero,
-                EndEtg_endereco_complemento = p.EndEtg_Endereco_Complemento,
-                EndEtg_bairro = p.EndEtg_Bairro,
-                EndEtg_cidade = p.EndEtg_Cidade,
-                EndEtg_uf = p.EndEtg_UF,
-                EndEtg_cep = p.EndEtg_Cep
-            };
+            EnderecoEntregaDtoClienteCadastro enderecoEntrega = new EnderecoEntregaDtoClienteCadastro();
 
-            //obtemos a descricao somente se o codigo existir
-            enderecoEntrega.EndEtg_descricao_justificativa = "";
-            if (!String.IsNullOrEmpty(p.EndEtg_Cod_Justificativa))
-                enderecoEntrega.EndEtg_descricao_justificativa = await Util.ObterDescricao_Cod(Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
-                    p.EndEtg_Cod_Justificativa, contextoProvider);
+            //afazer: criar método para pegar todos os dados de endereço com os campos novos
 
-            return await Task.FromResult(enderecoEntrega);
+            enderecoEntrega.EndEtg_endereco = p.EndEtg_Endereco;
+            enderecoEntrega.EndEtg_endereco_numero = p.EndEtg_Endereco_Numero;
+            enderecoEntrega.EndEtg_endereco_complemento = p.EndEtg_Endereco_Complemento;
+            enderecoEntrega.EndEtg_bairro = p.EndEtg_Bairro;
+            enderecoEntrega.EndEtg_cidade = p.EndEtg_Cidade;
+            enderecoEntrega.EndEtg_uf = p.EndEtg_UF;
+            enderecoEntrega.EndEtg_cep = p.EndEtg_Cep;
+            enderecoEntrega.EndEtg_cod_justificativa = p.EndEtg_Cod_Justificativa;
+            enderecoEntrega.EndEtg_descricao_justificativa = await Util.ObterDescricao_Cod(
+                Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA, p.EndEtg_Cod_Justificativa, contextoProvider);
+            enderecoEntrega.EndEtg_email = p.EndEtg_email;
+            enderecoEntrega.EndEtg_email_xml = p.EndEtg_email_xml;
+            enderecoEntrega.EndEtg_nome = p.EndEtg_nome;
+            enderecoEntrega.EndEtg_ddd_res = p.EndEtg_ddd_res;
+            enderecoEntrega.EndEtg_tel_res = p.EndEtg_tel_res;
+            enderecoEntrega.EndEtg_ddd_com = p.EndEtg_ddd_com;
+            enderecoEntrega.EndEtg_tel_com = p.EndEtg_tel_com;
+            enderecoEntrega.EndEtg_ramal_com = p.EndEtg_ramal_com;
+            enderecoEntrega.EndEtg_ddd_cel = p.EndEtg_ddd_cel;
+            enderecoEntrega.EndEtg_tel_cel = p.EndEtg_tel_cel;
+            enderecoEntrega.EndEtg_ddd_com_2 = p.EndEtg_ddd_com_2;
+            enderecoEntrega.EndEtg_tel_com_2 = p.EndEtg_tel_com_2;
+            enderecoEntrega.EndEtg_ramal_com_2 = p.EndEtg_ramal_com_2;
+            enderecoEntrega.EndEtg_tipo_pessoa = p.EndEtg_tipo_pessoa;
+            enderecoEntrega.EndEtg_cnpj_cpf = p.EndEtg_cnpj_cpf;
+            enderecoEntrega.EndEtg_contribuinte_icms_status = p.EndEtg_contribuinte_icms_status;
+            enderecoEntrega.EndEtg_produtor_rural_status = p.EndEtg_produtor_rural_status;
+            enderecoEntrega.EndEtg_ie = p.EndEtg_ie;
+            enderecoEntrega.EndEtg_rg = p.EndEtg_rg;
+            enderecoEntrega.St_memorizacao_completa_enderecos = p.St_memorizacao_completa_enderecos;
+
+            return enderecoEntrega;
         }
 
         private async Task<IEnumerable<PedidoProdutosDtoPedido>> ObterProdutos(string numPedido)
@@ -343,8 +407,16 @@ namespace PrepedidoBusiness.Bll
 
             if (p == null)
                 return null;
+            DadosClienteCadastroDto dadosCliente = new DadosClienteCadastroDto();
+            if (p.St_memorizacao_completa_enderecos == 0)
+            {
+                dadosCliente = await ObterDadosCliente(p);
+            }
+            else
+            {
+                dadosCliente = await ObterDadosClientePedido(p);
+            }
 
-            var cadastroClienteTask = ObterDadosCliente(p.Loja, p.Indicador, p.Vendedor, p.Id_Cliente);
             var enderecoEntregaTask = ObterEnderecoEntrega(p);
             var lstProdutoTask = ObterProdutos(numPedido);
 
@@ -365,8 +437,6 @@ namespace PrepedidoBusiness.Bll
             if (garantiaIndicadorStatus == Constantes.COD_GARANTIA_INDICADOR_STATUS__SIM)
                 garantiaIndicadorStatus = "SIM";
 
-
-
             DetalhesNFPedidoDtoPedido detalhesNf = new DetalhesNFPedidoDtoPedido();
             detalhesNf.Observacoes = p.Obs_1;
             detalhesNf.ConstaNaNF = p.Nfe_Texto_Constar;
@@ -377,7 +447,6 @@ namespace PrepedidoBusiness.Bll
             detalhesNf.StBemUsoConsumo = p.StBemUsoConsumo;
             detalhesNf.InstaladorInstala = tPedidoPai.InstaladorInstalaStatus;
             detalhesNf.GarantiaIndicadorStatus = garantiaIndicadorStatus;//esse campo não esta mais sendo utilizado
-
 
             //verifica o status da entrega
             DateTime? dataEntrega = new DateTime();
@@ -445,7 +514,7 @@ namespace PrepedidoBusiness.Bll
                 Lista_NumeroPedidoFilhote = lstPorLinha,
                 DataHoraPedido = p.Data,
                 StatusHoraPedido = await MontarDtoStatuPedido(p),
-                DadosCliente = await cadastroClienteTask,
+                DadosCliente = dadosCliente,
                 ListaProdutos = (await ObterProdutos(numPedido)).ToList(),
                 TotalFamiliaParcelaRA = await vlFamiliaParcelaRATask,
                 PermiteRAStatus = p.Permite_RA_Status,
@@ -484,9 +553,9 @@ namespace PrepedidoBusiness.Bll
             string dataFormatada = "";
             //varificar a variavel st_etg_imediata para saber se é sim ou não pela constante 
             //caso não atenda nenhuma das condições o retorno fica como vazio.
-            if (p.St_Etg_Imediata == short.Parse(Constantes.COD_ETG_IMEDIATA_NAO))
+            if (p.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO)
                 retorno = "NÃO";
-            else if (p.St_Etg_Imediata == short.Parse(Constantes.COD_ETG_IMEDIATA_SIM))
+            else if (p.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_SIM)
                 retorno = "SIM";
             //formatar a data da variavel etg_imediata_data
             if (retorno != "")
@@ -508,11 +577,11 @@ namespace PrepedidoBusiness.Bll
                 "|XV|XVI|XVII|XVIII|XIX|XX|XXI|XXII|XXIII|S/A|S/C|AC|AL|AM|AP|BA|CE|DF|ES|GO" +
                 "|MA|MG|MS|MT|PA|PB|PE|PI|PR|RJ|RN|RO|RR|RS|SC|SE|SP|TO|ME|EPP|";
 
-            string letra = "";
+            string letra;
             string palavra = "";
             string frase = "";
-            string s = "";
-            bool blnAltera = false;
+            string s;
+            bool blnAltera;
 
             string[] teste = text.Split(' ');
 
@@ -726,7 +795,7 @@ namespace PrepedidoBusiness.Bll
                     cor = "blue";
                     break;
                 case Constantes.ST_ENTREGA_ENTREGUE:
-                    cor = "green";                    
+                    cor = "green";
                     if (countItemDevolvido > 0)
                         cor = "red";
                     break;
@@ -1157,11 +1226,11 @@ namespace PrepedidoBusiness.Bll
             switch (parcelamento)
             {
                 case Constantes.COD_FORMA_PAGTO_A_VISTA:
-                    lista.Add("À Vista (" + Util.OpcaoFormaPagto(pedido.Av_Forma_Pagto.ToString()) + ")");
+                    lista.Add("À Vista (" + Util.OpcaoFormaPagto(pedido.Av_Forma_Pagto) + ")");
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELA_UNICA:
                     lista.Add(String.Format("Parcela Única: " + "{0:c2} (" +
-                        Util.OpcaoFormaPagto(Convert.ToString(pedido.Pu_Forma_Pagto)) +
+                        Util.OpcaoFormaPagto(pedido.Pu_Forma_Pagto) +
                         ") vencendo após " + pedido.Pu_Vencto_Apos, pedido.Pu_Valor) + " dias");
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO:
@@ -1174,26 +1243,26 @@ namespace PrepedidoBusiness.Bll
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA:
                     lista.Add(String.Format("Entrada: " + "{0:c2} (" +
-                        Util.OpcaoFormaPagto(Convert.ToString(pedido.Pce_Forma_Pagto_Entrada)) + ")", pedido.Pce_Entrada_Valor));
+                        Util.OpcaoFormaPagto(pedido.Pce_Forma_Pagto_Entrada) + ")", pedido.Pce_Entrada_Valor));
                     if (pedido.Pce_Forma_Pagto_Prestacao != 5 && pedido.Pce_Forma_Pagto_Prestacao != 7)
                     {
                         lista.Add(String.Format("Prestações: " + pedido.Pce_Prestacao_Qtde + " x " + " {0:c2}" +
-                            " (" + Util.OpcaoFormaPagto(Convert.ToString(pedido.Pce_Forma_Pagto_Prestacao)) +
+                            " (" + Util.OpcaoFormaPagto(pedido.Pce_Forma_Pagto_Prestacao) +
                             ") vencendo a cada " +
                             pedido.Pce_Prestacao_Periodo + " dias", pedido.Pce_Prestacao_Valor));
                     }
                     else
                     {
                         lista.Add(String.Format("Prestações: " + pedido.Pce_Prestacao_Qtde + " x " + " {0:c2}" +
-                            " (" + Util.OpcaoFormaPagto(Convert.ToString(pedido.Pce_Forma_Pagto_Prestacao)) + ")", pedido.Pce_Prestacao_Valor));
+                            " (" + Util.OpcaoFormaPagto(pedido.Pce_Forma_Pagto_Prestacao) + ")", pedido.Pce_Prestacao_Valor));
                     }
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA:
                     lista.Add(String.Format("1ª Prestação: " + " {0:c2} (" +
-                        Util.OpcaoFormaPagto(Convert.ToString(pedido.Pse_Forma_Pagto_Prim_Prest)) +
+                        Util.OpcaoFormaPagto(pedido.Pse_Forma_Pagto_Prim_Prest) +
                         ") vencendo após " + pedido.Pse_Prim_Prest_Apos + " dias", pedido.Pse_Prim_Prest_Valor));
                     lista.Add(String.Format("Prestações: " + pedido.Pse_Demais_Prest_Qtde + " x " +
-                        " {0:c2} (" + Util.OpcaoFormaPagto(Convert.ToString(pedido.Pse_Forma_Pagto_Demais_Prest)) +
+                        " {0:c2} (" + Util.OpcaoFormaPagto(pedido.Pse_Forma_Pagto_Demais_Prest) +
                         ") vencendo a cada " + pedido.Pse_Demais_Prest_Periodo + " dias", pedido.Pse_Demais_Prest_Valor));
                     break;
             }
