@@ -31,6 +31,7 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
             ClienteCadastroResultadoUnisDto retorno = new ClienteCadastroResultadoUnisDto();
 
             //vamos verificar se orcamentista do cadastro existe para 
+            clienteUnis.DadosCliente.Indicador_Orcamentista = clienteUnis.DadosCliente.Indicador_Orcamentista?.ToUpper();
             TorcamentistaEindicador orcamentista =
                 await ValidacoesClienteUnisBll.ValidarBuscarOrcamentista(clienteUnis.DadosCliente.Indicador_Orcamentista,
                 contextoProvider);

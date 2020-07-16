@@ -123,7 +123,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 }
                 else
                 {
-                    lstErros.Add("Fabricante cód.(" + x.Fabricante + ") não existe!");
+                    lstErros.Add("Fabricante cód.(" + x.Fabricante + ") não possui cadastro de coeficiente!");
                 }
             });
         }

@@ -38,10 +38,15 @@ VlTotalDestePedido	number($double)
 
 
         [Fact]
+        public void Sucesso()
+        {
+            TestarSucesso(c => { });
+        }
+        [Fact]
         public void ValorTotalDestePedidoComRA()
         {
-            Teste(c => c.ValorTotalDestePedidoComRA = 1, "ainda fazendo");
-            Teste(c => c.VlTotalDestePedido = 1, "ainda fazendo");
+            Teste(c => c.ValorTotalDestePedidoComRA = 1, "Valor total da forma de pagamento diferente do valor total!");
+            Teste(c => c.VlTotalDestePedido = 1, "Os valores totais estão divergindo!");
         }
         [Fact]
         public void Indicador_Orcamentista()
@@ -51,6 +56,15 @@ VlTotalDestePedido	number($double)
 
             Teste(c => c.Indicador_Orcamentista = Dados.Orcamentista.Apelido_com_ra, "Permite RA status divergente do cadastro do indicador/orçamentista!", false);
             Teste(c => c.Indicador_Orcamentista = Dados.Orcamentista.Apelido_sem_ra, "Permite RA status divergente do cadastro do indicador/orçamentista!");
+
+            Teste(c => c.Indicador_Orcamentista = Dados.Orcamentista.Apelido_sem_loja, "Loja não habilitada para e-commerce: loja nao e-commerce");
+
+
+            Teste(c =>
+            {
+                c.Indicador_Orcamentista = Dados.Orcamentista.Apelido_sem_vendedor;
+                c.PermiteRAStatus = false;
+            }, "NÃO HÁ NENHUM VENDEDOR DEFINIDO PARA ATENDÊ-LO");
 
             Teste(c =>
             {

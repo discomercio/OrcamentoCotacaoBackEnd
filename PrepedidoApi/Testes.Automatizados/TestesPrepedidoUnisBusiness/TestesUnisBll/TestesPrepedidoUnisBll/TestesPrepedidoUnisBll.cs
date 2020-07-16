@@ -59,6 +59,20 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
 
         }
 
+        //testa se consegue cadastrar
+        internal void TestarSucesso(DeixarDtoErrado deixarDtoErrado)
+        {
+            PrePedidoUnisDto prePedido = DadosPrepedidoUnisBll.PrepedidoParceladoCartao1vez();
+            deixarDtoErrado(prePedido);
+
+            var res = prepedidoUnisBll.CadastrarPrepedidoUnis(prePedido).Result;
+
+            if (res.ListaErros.Count > 0)
+                if (output != null)
+                    output.WriteLine(JsonConvert.SerializeObject(res));
+            Assert.Empty(res.ListaErros);
+        }
+
         public void Dispose()
         {
             inicializarBanco.TclientesApagar();

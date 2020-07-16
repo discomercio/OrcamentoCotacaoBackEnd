@@ -33,8 +33,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         public decimal Preco_Fabricante { get; set; }
 
         /// <summary>
-        /// Essa variável permite que o valor seja alterado
-        /// Preco_Lista = Preco_Fabricante * CustoFinancFornecCoeficiente
+        /// Caso Preco_Lista seja igual a Preco_Venda, o RA será zero. Caso seja maior gerará um valor de RA (até o limite máximo de RA permitido).
         /// </summary>
         [Required]
         public decimal Preco_Lista { get; set; }// = VlLista
@@ -45,6 +44,9 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         [Required]
         public decimal Preco_NF { get; set; } // se permite RA = Preco_Lista / senão VlUnitario
 
+        /// <summary>
+        /// Caso seja pagamento a vista, deve ser 1. Caso contrário, o coeficiente do fabricante para a quantidade de parcelas e forma de pagamento.
+        /// </summary>
         [Required]
         public float CustoFinancFornecCoeficiente { get; set; }
 

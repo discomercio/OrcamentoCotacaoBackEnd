@@ -376,7 +376,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 Observacoes = torcamento.Obs_1,
                 NumeroNF = torcamento.Obs_2,
                 PrevisaoEntrega = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
-                torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + " (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) + 
+                torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + " (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) +
                 " em " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" : null,
                 EntregaImediata = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
                 "NÃO (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) + " em " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" :
@@ -661,7 +661,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             //complementar os dados Cadastrais do cliente
             prePedido.DadosCliente.Indicador_Orcamentista = tOrcamentista.Apelido.ToUpper();
             prePedido.DadosCliente.Loja = tOrcamentista.Loja;
-            prePedido.DadosCliente.Vendedor = tOrcamentista.Vendedor.ToUpper();
+            prePedido.DadosCliente.Vendedor = tOrcamentista.Vendedor?.ToUpper();
 
             if (string.IsNullOrEmpty(tOrcamentista.Vendedor))
                 lstErros.Add("NÃO HÁ NENHUM VENDEDOR DEFINIDO PARA ATENDÊ-LO");
@@ -727,111 +727,116 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 lstErros.Add("É permitido apenas 12 itens por Pré-Pedido!");
                 return lstErros;
             }
-
-            if (await Util.LojaHabilitadaProdutosECommerce(prePedido.DadosCliente.Loja, contextoProvider))
+            if (!await Util.LojaHabilitadaProdutosECommerce(prePedido.DadosCliente.Loja, contextoProvider))
             {
-                //Validar endereço de entraga
-                if (await validacoesPrepedidoBll.ValidarEnderecoEntrega(prePedido, lstErros))
+                lstErros.Add($"Loja não habilitada para e-commerce: {prePedido.DadosCliente.Loja}");
+                return lstErros;
+            }
+
+
+
+            //Validar endereço de entraga
+            if (await validacoesPrepedidoBll.ValidarEnderecoEntrega(prePedido, lstErros))
+            {
+                if (validacoesFormaPagtoBll.ValidarFormaPagto(prePedido, lstErros, limiteArredondamento, 0.1M))
                 {
-                    if (validacoesFormaPagtoBll.ValidarFormaPagto(prePedido, lstErros, limiteArredondamento, 0.1M))
+                    //Esta sendo verificado qual o tipo de pagamento que esta sendo feito e retornando a quantidade de parcelas
+                    int c_custoFinancFornecQtdeParcelas = ObterQtdeParcelasFormaPagto(prePedido);
+
+                    //varificar o numero para saber o tipo de pagamento
+                    string c_custoFinancFornecTipoParcelamento = ObterSiglaFormaPagto(prePedido);
+
+                    float perc_limite_RA_sem_desagio = await Util.VerificarSemDesagioRA(contextoProvider);
+
+                    //Vamos conforntar os valores de cada item, total do prepedido e o percentual máximo de RA
+                    await validacoesPrepedidoBll.MontarProdutosParaComparacao(prePedido,
+                        c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas,
+                        prePedido.DadosCliente.Loja, lstErros, perc_limite_RA_sem_desagio, limiteArredondamento);
+
+                    if (lstErros.Count > 0)
+                        return lstErros;
+
+                    if (Util.ValidarTipoCustoFinanceiroFornecedor(lstErros, c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas))
                     {
-                        //Esta sendo verificado qual o tipo de pagamento que esta sendo feito e retornando a quantidade de parcelas
-                        int c_custoFinancFornecQtdeParcelas = ObterQtdeParcelasFormaPagto(prePedido);
+                        //Calculamos os produtos com o coeficiente e retornamos uma lista de coeficientes dos fabricantes
+                        List<TpercentualCustoFinanceiroFornecedor> lstPercentualCustoFinanFornec =
+                        (await BuscarCoeficientePercentualCustoFinanFornec(prePedido,
+                            (short)c_custoFinancFornecQtdeParcelas, c_custoFinancFornecTipoParcelamento, lstErros)).ToList();
 
-                        //varificar o numero para saber o tipo de pagamento
-                        string c_custoFinancFornecTipoParcelamento = ObterSiglaFormaPagto(prePedido);
+                        Tparametro parametroRegra = await Util.BuscarRegistroParametro(Constantes.ID_PARAMETRO_Flag_Orcamento_ConsisteDisponibilidadeEstoqueGlobal,
+                            contextoProvider);
+                        //esse metodo tb tras a sigla da pessoa
+                        string tipoPessoa = Util.MultiCdRegraDeterminaPessoa(prePedido.DadosCliente.Tipo, prePedido.DadosCliente.Contribuinte_Icms_Status,
+                            prePedido.DadosCliente.ProdutorRural);
+                        string descricao = Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo);
 
-                        float perc_limite_RA_sem_desagio = await Util.VerificarSemDesagioRA(contextoProvider);
+                        //List<RegrasBll> regraCrtlEstoque = new List<RegrasBll>();
+                        List<RegrasBll> regraCrtlEstoque = (await ObterCtrlEstoqueProdutoRegra(prePedido, lstErros)).ToList();
+                        await Util.ObterCtrlEstoqueProdutoRegra_Teste(lstErros, regraCrtlEstoque, prePedido.DadosCliente.Uf, tipoPessoa, contextoProvider);
 
-                        //Vamos conforntar os valores de cada item, total do prepedido e o percentual máximo de RA
-                        await validacoesPrepedidoBll.MontarProdutosParaComparacao(prePedido,
-                            c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas,
-                            prePedido.DadosCliente.Loja, lstErros, perc_limite_RA_sem_desagio, limiteArredondamento);
+                        ProdutoGeralBll.VerificarRegrasAssociadasAosProdutos(regraCrtlEstoque, lstErros, prePedido.DadosCliente);
+                        //obtendo qtde disponivel
+                        await Util.VerificarEstoque(regraCrtlEstoque, contextoProvider);
 
-                        if (lstErros.Count > 0)
-                            return lstErros;
+                        ObterDisponibilidadeEstoque(regraCrtlEstoque, prePedido, parametroRegra, lstErros);
 
-                        if (Util.ValidarTipoCustoFinanceiroFornecedor(lstErros, c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas))
+                        VerificarEstoqueInsuficiente(regraCrtlEstoque, prePedido, parametroRegra);
+
+                        //realiza a análise da quantidade de pedidos necessária(auto-split)
+                        VerificarQtdePedidosAutoSplit(regraCrtlEstoque, lstErros, prePedido);
+
+                        //contagem de empresas que serão usadas no auto-split, ou seja, a quantidade de pedidos que será cadastrada, 
+                        //já que cada pedido se refere ao estoque de uma empresa
+                        List<int> lst_empresa_selecionada = ContagemEmpresasUsadasAutoSplit(regraCrtlEstoque, prePedido);
+
+                        //há algum produto descontinuado?
+                        await ExisteProdutoDescontinuado(prePedido, lstErros);
+
+                        if (lstErros.Count <= 0)
                         {
-                            //Calculamos os produtos com o coeficiente e retornamos uma lista de coeficientes dos fabricantes
-                            List<TpercentualCustoFinanceiroFornecedor> lstPercentualCustoFinanFornec =
-                            (await BuscarCoeficientePercentualCustoFinanFornec(prePedido,
-                                (short)c_custoFinancFornecQtdeParcelas, c_custoFinancFornecTipoParcelamento, lstErros)).ToList();
-
-                            Tparametro parametroRegra = await Util.BuscarRegistroParametro(Constantes.ID_PARAMETRO_Flag_Orcamento_ConsisteDisponibilidadeEstoqueGlobal,
-                                contextoProvider);
-                            //esse metodo tb tras a sigla da pessoa
-                            string tipoPessoa = Util.MultiCdRegraDeterminaPessoa(prePedido.DadosCliente.Tipo, prePedido.DadosCliente.Contribuinte_Icms_Status,
-                                prePedido.DadosCliente.ProdutorRural);
-                            string descricao = Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo);
-
-                            //List<RegrasBll> regraCrtlEstoque = new List<RegrasBll>();
-                            List<RegrasBll> regraCrtlEstoque = (await ObterCtrlEstoqueProdutoRegra(prePedido, lstErros)).ToList();
-                            await Util.ObterCtrlEstoqueProdutoRegra_Teste(lstErros, regraCrtlEstoque, prePedido.DadosCliente.Uf, tipoPessoa, contextoProvider);
-
-                            ProdutoGeralBll.VerificarRegrasAssociadasAosProdutos(regraCrtlEstoque, lstErros, prePedido.DadosCliente);
-                            //obtendo qtde disponivel
-                            await Util.VerificarEstoque(regraCrtlEstoque, contextoProvider);
-
-                            ObterDisponibilidadeEstoque(regraCrtlEstoque, prePedido, parametroRegra, lstErros);
-
-                            VerificarEstoqueInsuficiente(regraCrtlEstoque, prePedido, parametroRegra);
-
-                            //realiza a análise da quantidade de pedidos necessária(auto-split)
-                            VerificarQtdePedidosAutoSplit(regraCrtlEstoque, lstErros, prePedido);
-
-                            //contagem de empresas que serão usadas no auto-split, ou seja, a quantidade de pedidos que será cadastrada, 
-                            //já que cada pedido se refere ao estoque de uma empresa
-                            List<int> lst_empresa_selecionada = ContagemEmpresasUsadasAutoSplit(regraCrtlEstoque, prePedido);
-
-                            //há algum produto descontinuado?
-                            await ExisteProdutoDescontinuado(prePedido, lstErros);
-
-                            if (lstErros.Count <= 0)
+                            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
                             {
-                                using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+                                //Se orcamento existir, fazer o delete das informações
+                                if (!string.IsNullOrEmpty(prePedido.NumeroPrePedido))
                                 {
-                                    //Se orcamento existir, fazer o delete das informações
-                                    if (!string.IsNullOrEmpty(prePedido.NumeroPrePedido))
-                                    {
-                                        await DeletarOrcamentoExiste(dbgravacao, prePedido, apelido);
-                                    }
-
-                                    if (string.IsNullOrEmpty(prePedido.NumeroPrePedido))
-                                    {
-                                        //gerar o numero de orçamento
-                                        await GerarNumeroOrcamento(dbgravacao, prePedido);
-                                    }
-
-                                    if (string.IsNullOrEmpty(prePedido.NumeroPrePedido))
-                                        lstErros.Add("FALHA NA OPERAÇÃO COM O BANCO DE DADOS AO TENTAR GERAR NSU.");
-
-                                    //Cadastrar dados do Orcamento e endereço de entrega 
-                                    string log = await EfetivarCadastroPrepedido(dbgravacao,
-                                        prePedido, tOrcamentista, c_custoFinancFornecTipoParcelamento,
-                                        sistemaResponsavelCadastro, perc_limite_RA_sem_desagio);
-                                    //Cadastrar orcamento itens
-                                    List<TorcamentoItem> lstOrcamentoItem = (await MontaListaOrcamentoItem(prePedido,
-                                        lstPercentualCustoFinanFornec, dbgravacao)).ToList();
-
-                                    //vamos passar o coeficiente que foi criado na linha 596 e passar como param para cadastrar nos itens
-                                    //await ComplementarInfosOrcamentoItem(dbgravacao, lstOrcamentoItem,
-                                    //    prePedido.DadosCliente.Loja);
-
-                                    log = await CadastrarOrctoItens(dbgravacao, lstOrcamentoItem, log);
-
-                                    bool gravouLog = Util.GravaLog(dbgravacao, apelido, prePedido.DadosCliente.Loja, prePedido.NumeroPrePedido,
-                                        prePedido.DadosCliente.Id, Constantes.OP_LOG_ORCAMENTO_NOVO, log);
-
-                                    dbgravacao.transacao.Commit();
-                                    lstErros.Add(prePedido.NumeroPrePedido);
+                                    await DeletarOrcamentoExiste(dbgravacao, prePedido, apelido);
                                 }
+
+                                if (string.IsNullOrEmpty(prePedido.NumeroPrePedido))
+                                {
+                                    //gerar o numero de orçamento
+                                    await GerarNumeroOrcamento(dbgravacao, prePedido);
+                                }
+
+                                if (string.IsNullOrEmpty(prePedido.NumeroPrePedido))
+                                    lstErros.Add("FALHA NA OPERAÇÃO COM O BANCO DE DADOS AO TENTAR GERAR NSU.");
+
+                                //Cadastrar dados do Orcamento e endereço de entrega 
+                                string log = await EfetivarCadastroPrepedido(dbgravacao,
+                                    prePedido, tOrcamentista, c_custoFinancFornecTipoParcelamento,
+                                    sistemaResponsavelCadastro, perc_limite_RA_sem_desagio);
+                                //Cadastrar orcamento itens
+                                List<TorcamentoItem> lstOrcamentoItem = (await MontaListaOrcamentoItem(prePedido,
+                                    lstPercentualCustoFinanFornec, dbgravacao)).ToList();
+
+                                //vamos passar o coeficiente que foi criado na linha 596 e passar como param para cadastrar nos itens
+                                //await ComplementarInfosOrcamentoItem(dbgravacao, lstOrcamentoItem,
+                                //    prePedido.DadosCliente.Loja);
+
+                                log = await CadastrarOrctoItens(dbgravacao, lstOrcamentoItem, log);
+
+                                bool gravouLog = Util.GravaLog(dbgravacao, apelido, prePedido.DadosCliente.Loja, prePedido.NumeroPrePedido,
+                                    prePedido.DadosCliente.Id, Constantes.OP_LOG_ORCAMENTO_NOVO, log);
+
+                                dbgravacao.transacao.Commit();
+                                lstErros.Add(prePedido.NumeroPrePedido);
                             }
                         }
                     }
                 }
-
             }
+
+
             return lstErros;
         }
 
@@ -1251,7 +1256,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                                        select c.Descontinuado).FirstOrDefaultAsync();
                     var produto = await produtoTask;
 
-                    if (produto.ToUpper() == "S")
+                    if (produto != null && produto.ToUpper() == "S")
                     {
                         if (p.Qtde > p.Qtde_estoque_total_disponivel)
                             lstErros.Add("Produto (" + p.Fabricante + ")" + p.NumProduto +
