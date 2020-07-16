@@ -45,6 +45,10 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
 
         public async Task<PrePedidoResultadoUnisDto> CadastrarPrepedidoUnis(PrePedidoUnisDto prePedidoUnis)
         {
+            //orcamentista sempre está em maiusculas
+            prePedidoUnis.Indicador_Orcamentista = prePedidoUnis.Indicador_Orcamentista?.ToUpper();
+
+
             PrePedidoResultadoUnisDto retorno = new PrePedidoResultadoUnisDto();
 
             var db = contextoProvider.GetContextoLeitura();
