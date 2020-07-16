@@ -35,6 +35,15 @@ namespace Testes.Automatizados.Utils
                     DescricaoSemAcento=Cidade_somente_no_IBGE
                 } }
             });
+            //para o prepedido
+            ret.Add(new UFeMunicipiosDto()
+            {
+                SiglaUF = "SP",
+                ListaMunicipio = new List<MunicipioDto>() { new MunicipioDto() {
+                    Descricao = "São Paulo",
+                    DescricaoSemAcento="São Paulo"
+                } }
+            });
             return Task.FromResult(ret.AsEnumerable());
         }
 
@@ -46,6 +55,11 @@ namespace Testes.Automatizados.Utils
                 ret.Add(new NfeMunicipio() { Descricao = InicializarClienteDados.ClienteNaoCadastradoPJ().DadosCliente.Cidade });
             if (municipio == Cidade_somente_no_IBGE)
                 ret.Add(new NfeMunicipio() { Descricao = Cidade_somente_no_IBGE });
+
+            //para o prepedido
+            if (municipio == "São Paulo")
+                ret.Add(new NfeMunicipio() { Descricao = "São Paulo" });
+
             return Task.FromResult(ret.AsEnumerable());
         }
 

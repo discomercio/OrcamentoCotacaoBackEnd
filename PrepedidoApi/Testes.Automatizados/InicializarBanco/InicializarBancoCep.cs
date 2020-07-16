@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesPrepedidoUnisBll;
 
 namespace Testes.Automatizados.InicializarBanco
 {
@@ -36,15 +37,26 @@ namespace Testes.Automatizados.InicializarBanco
         {
             var db = contextoCepProvider.GetContextoLeitura();
 
+            var Loc_nu_sequencial = 1;
             db.LogLocalidades.Add(new InfraBanco.Modelos.LogLocalidade()
             {
                 Cep_dig = Testes.Automatizados.InicializarBanco.InicializarClienteDados.ClienteNaoCadastradoPJ().DadosCliente.Cep,
                 Ufe_sg = Testes.Automatizados.InicializarBanco.InicializarClienteDados.ClienteNaoCadastradoPJ().DadosCliente.Uf,
                 Loc_nosub = Testes.Automatizados.InicializarBanco.InicializarClienteDados.ClienteNaoCadastradoPJ().DadosCliente.Cidade,
-                Loc_nu_sequencial = 1
+                Loc_nu_sequencial = Loc_nu_sequencial++
             });
 
-            db.LogLocalidades.Add(new InfraBanco.Modelos.LogLocalidade() { Cep_dig = DadosCep.Cep, Ufe_sg = DadosCep.Ufe_sg, Loc_nosub = DadosCep.Cidade, Loc_nu_sequencial = 2 });
+            db.LogLocalidades.Add(new InfraBanco.Modelos.LogLocalidade() { Cep_dig = DadosCep.Cep, Ufe_sg = DadosCep.Ufe_sg, Loc_nosub = DadosCep.Cidade, Loc_nu_sequencial = Loc_nu_sequencial++ });
+
+            db.LogLocalidades.Add(new InfraBanco.Modelos.LogLocalidade()
+            {
+                Cep_dig = DadosPrepedidoUnisBll.PrepedidoParceladoCartao1vez().EnderecoCadastralCliente.Endereco_cep,
+                Ufe_sg = DadosPrepedidoUnisBll.PrepedidoParceladoCartao1vez().EnderecoCadastralCliente.Endereco_uf,
+                Loc_nosub = DadosPrepedidoUnisBll.PrepedidoParceladoCartao1vez().EnderecoCadastralCliente.Endereco_cidade,
+                Loc_nu_sequencial = Loc_nu_sequencial++
+            });
+
+
             db.SaveChanges();
         }
 

@@ -53,6 +53,8 @@ namespace Testes.Automatizados
             services.AddSingleton<PrepedidoUnisBusiness.Utils.ConfiguracaoApiUnis>(c =>
             {
                 var ret = new PrepedidoUnisBusiness.Utils.ConfiguracaoApiUnis();
+                //para nao dar erro...
+                ret.LimitePrepedidos.LimitePrepedidosExatamenteIguais_Numero = 1000;
                 return ret;
             });
         }

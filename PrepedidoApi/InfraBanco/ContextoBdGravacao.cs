@@ -62,6 +62,16 @@ namespace InfraBanco
         public DbSet<TsessaoAbandonada> TsessaoAbandonadas { get => contexto.TsessaoAbandonadas; }
         public DbSet<Tusuario> Tusuarios { get => contexto.Tusuarios; }
         public DbSet<Tbanco> Tbancos { get => contexto.Tbancos; }
+        public DbSet<Tfabricante> Tfabricantes { get => contexto.Tfabricantes; }
+        public DbSet<Tproduto> Tprodutos { get => contexto.Tprodutos; }
+        public DbSet<TpercentualCustoFinanceiroFornecedor> TpercentualCustoFinanceiroFornecedors { get => contexto.TpercentualCustoFinanceiroFornecedors; }
+        public DbSet<Tparametro> Tparametros { get => contexto.Tparametros; }
+        public DbSet<TprodutoXwmsRegraCd> TprodutoXwmsRegraCds { get => contexto.TprodutoXwmsRegraCds; }
+        public DbSet<TwmsRegraCd> TwmsRegraCds { get => contexto.TwmsRegraCds; }
+        public DbSet<TwmsRegraCdXUf> TwmsRegraCdXUfs { get => contexto.TwmsRegraCdXUfs; }
+        public DbSet<TwmsRegraCdXUfPessoa> TwmsRegraCdXUfPessoas { get => contexto.TwmsRegraCdXUfPessoas; }
+        public DbSet<TnfEmitente> TnfEmitentes { get => contexto.TnfEmitentes; }
+        public DbSet<TwmsRegraCdXUfXPessoaXCd> TwmsRegraCdXUfXPessoaXCds { get => contexto.TwmsRegraCdXUfXPessoaXCds; }
 
     }
 }
