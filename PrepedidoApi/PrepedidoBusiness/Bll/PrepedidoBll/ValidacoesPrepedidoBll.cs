@@ -48,15 +48,16 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
 
             List<CoeficienteDto> lstCoeficiente = new List<CoeficienteDto>();
             //precisa verificar se a forma de pagto é diferente de av para não dar erro na validação
-            if (prepedido.FormaPagtoCriacao.Rb_forma_pagto != Constantes.COD_FORMA_PAGTO_A_VISTA)
-            {
-                //buscar coeficiente 
-                lstCoeficiente =
-                    (await BuscarListaCoeficientesFornecedores(lstFornec, qtdeParcelas, siglaFormaPagto)).ToList();
 
-                //validar se os coeficientes estão ok
-                ValidarCustoFinancFornecCoeficiente(prepedido.ListaProdutos, lstCoeficiente, lstErros);
-            }
+            //buscar coeficiente 
+            //vamos alterar para montar uma lista de coeficiente para avista
+            lstCoeficiente = (await MontarListaCoeficiente(lstFornec, qtdeParcelas, siglaFormaPagto)).ToList();
+            //lstCoeficiente =
+            //    (await BuscarListaCoeficientesFornecedores(lstFornec, qtdeParcelas, siglaFormaPagto)).ToList();
+
+            //validar se os coeficientes estão ok
+            ValidarCustoFinancFornecCoeficiente(prepedido.ListaProdutos, lstCoeficiente, lstErros);
+
 
             if (lstErros.Count == 0)
             {
@@ -75,20 +76,42 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             }
         }
 
+        private async Task<IEnumerable<CoeficienteDto>> MontarListaCoeficiente(List<string> lstFornec,
+            int qtdeParcelas, string siglaFormaPagto)
+        {
+            List<CoeficienteDto> lstcoefDto = new List<CoeficienteDto>();
+
+            if (siglaFormaPagto == Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA)
+            {
+                //vamos montar com o coeficiente = 1
+                lstcoefDto = BuscarListaCoeficientesFornecedoresAVista(lstFornec, qtdeParcelas);
+            }
+            else
+            {
+                //vamos montar normalmente
+                lstcoefDto =
+                    (await BuscarListaCoeficientesFornecedores(lstFornec, qtdeParcelas, siglaFormaPagto)).ToList();
+            }
+
+            return lstcoefDto;
+        }
+
         private void CalcularProdutoSemCoeficiente(List<PrepedidoProdutoDtoPrepedido> lstProdutos)
         {
             lstProdutos.ForEach(y =>
                 {
                     //vamos calcular o preco_lista com o coeficiente
                     y.Preco = y.Preco;
-                    y.VlLista = (decimal)y.Preco;
+                    y.VlLista = Math.Round((decimal)y.Preco * 1, 2);
                     y.VlUnitario = Math.Round(y.VlLista * (decimal)(1 - y.Desconto / 100), 2);
                     y.TotalItem = Math.Round((decimal)(y.VlUnitario * y.Qtde), 2);
                     y.TotalItemRA = Math.Round((decimal)(y.VlLista * y.Qtde), 2);
+                    y.CustoFinancFornecCoeficiente = 1;
                 });
         }
 
-        private void CalcularProdutoComCoeficiente(List<PrepedidoProdutoDtoPrepedido> lstProdutos, List<CoeficienteDto> lstCoeficiente)
+        private void CalcularProdutoComCoeficiente(List<PrepedidoProdutoDtoPrepedido> lstProdutos,
+            List<CoeficienteDto> lstCoeficiente)
         {
             lstCoeficiente.ForEach(x =>
             {
@@ -102,6 +125,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                         y.VlUnitario = Math.Round(y.VlLista * (decimal)(1 - y.Desconto / 100), 2);
                         y.TotalItem = Math.Round((decimal)(y.VlUnitario * y.Qtde), 2);
                         y.TotalItemRA = Math.Round((decimal)(y.VlLista * y.Qtde), 2);
+                        y.CustoFinancFornecCoeficiente = x.Coeficiente;
                     }
                 });
             });
@@ -118,7 +142,6 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                     {
                         if (y.Fabricante == x.Fabricante && y.Coeficiente != x.CustoFinancFornecCoeficiente)
                             lstErros.Add("Coeficiente do fabricante (" + x.Fabricante + ") esta incorreto!");
-
                     });
                 }
                 else
@@ -150,6 +173,30 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                                 Coeficiente = y.Coeficiente
                             });
                         }
+                    }
+                }
+            }
+
+            return lstcoefDto;
+        }
+
+        public List<CoeficienteDto> BuscarListaCoeficientesFornecedoresAVista(List<string> lstFornecedores, int qtdeParcelas)
+        {
+            List<CoeficienteDto> lstcoefDto = new List<CoeficienteDto>();
+
+            if (lstFornecedores != null)
+            {
+                foreach (var i in lstFornecedores)
+                {
+                    lstcoefDto = new List<CoeficienteDto>();
+                    {
+                        lstcoefDto.Add(new CoeficienteDto()
+                        {
+                            Fabricante = i,
+                            TipoParcela = Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA,
+                            QtdeParcelas = 1,
+                            Coeficiente = 1
+                        });
                     }
                 }
             }
@@ -232,15 +279,26 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                        if (x.Preco.HasValue && y.Preco.HasValue && Math.Abs(x.Preco.Value - y.Preco.Value) > limiteArredondamento)
                            lstErros.Add($"Preço do fabricante (Preco_Fabricante {x.Preco} x {y.Preco}) está incorreto!");
 
-                       /*
-                        * verificando se é necessário
-                       if (x.BlnTemRa)
-                       {
-                           if (Math.Abs(x.VlLista - y.VlLista) > limiteArredondamento)
-                               lstErros.Add($"Preço do fabricante (Preco_Lista {x.VlLista} x {y.VlLista}) está incorreto!");
-                       }
-                       */
+                       if (x.VlLista != y.VlLista)
+                           lstErros.Add($"Custo financeiro preço lista base (CustoFinancFornecPrecoListaBase " +
+                               $"{string.Format("{0:c}", x.VlLista)} x {string.Format("{0:c}", y.VlLista)}) esta incorreto!");
 
+                       //veio da Unis e vamos validar
+                       if (x.Preco_NF != null)
+                       {
+                           //validar se permite RA
+                           if (prepedido.PermiteRAStatus == 1)
+                           {
+                               if (x.Preco_NF != x.Preco_Lista)
+                                   lstErros.Add($"Preço de nota fiscal (Preco_NF {string.Format("{0:c}", x.Preco_NF)} x {string.Format("{0:c}", x.Preco_Lista)}) está incorreto!");
+                           }
+                           else
+                           {
+                               if (x.Preco_NF != x.VlUnitario)
+                                   lstErros.Add($"Preço de nota fiscal (Preco_NF {string.Format("{0:c}", x.Preco_NF)} x {x.VlUnitario}) está incorreto!");
+                           }
+
+                       }
 
                        if (Math.Abs(x.VlUnitario - y.VlUnitario) > limiteArredondamento)
                            lstErros.Add($"Preço do fabricante (Preco_Venda {x.VlUnitario} x {y.VlUnitario}) está incorreto!");

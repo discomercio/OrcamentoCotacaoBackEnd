@@ -376,11 +376,11 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 Observacoes = torcamento.Obs_1,
                 NumeroNF = torcamento.Obs_2,
                 PrevisaoEntrega = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
-                torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + " (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) +
-                " em " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" : null,
+                torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + " (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) + 
+                " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" : null,
                 EntregaImediata = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
-                "NÃO (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) + " em " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" :
-                "SIM (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) + " em " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")",
+                "NÃO (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" :
+                "SIM (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")",
                 BemDeUso_Consumo = torcamento.StBemUsoConsumo == (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_NAO ?
                 "NÃO" : "SIM",
                 InstaladorInstala = torcamento.InstaladorInstalaStatus == (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_NAO ?
@@ -519,7 +519,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 TelComercial = orcamento.Endereco_tel_com,
                 Ramal = orcamento.Endereco_ramal_com,
                 DddCelular = orcamento.Endereco_ddd_cel,
-                Celular = orcamento.Endereco_ddd_cel,
+                Celular = orcamento.Endereco_tel_cel,
                 TelComercial2 = orcamento.Endereco_tel_com_2,
                 DddComercial2 = orcamento.Endereco_ddd_com_2,
                 Ramal2 = orcamento.Endereco_ramal_com_2,

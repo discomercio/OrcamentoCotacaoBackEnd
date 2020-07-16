@@ -25,5 +25,7 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
         public decimal? TotalItem { get; set; }
         public short? Qtde_estoque_total_disponivel { get; set; }
         public float CustoFinancFornecCoeficiente { get; set; }//coeficiente do fabricante
+        //incluimos esse campos apenas para validar o que esta sendo enviado pela API da Unis
+        public decimal? Preco_NF { get; set; } 
     }
 }
