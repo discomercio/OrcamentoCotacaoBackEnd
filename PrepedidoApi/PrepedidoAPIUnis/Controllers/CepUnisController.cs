@@ -46,7 +46,7 @@ namespace PrepedidoAPIUnis.Controllers
 
 
         /// <summary>
-        /// Rotina para buscar UF's
+        /// Rotina para buscar estados e municípios do IBGE
         /// </summary>
         /// <param name="tokenAcesso"></param>
         /// <param name="uf">Estado, opcional.</param>
