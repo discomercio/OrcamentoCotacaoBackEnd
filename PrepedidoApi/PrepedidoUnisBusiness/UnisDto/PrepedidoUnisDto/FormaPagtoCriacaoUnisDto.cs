@@ -151,9 +151,8 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
                 C_pse_demais_prest_qtde = fpCriacaoUnis.C_pse_demais_prest_qtde,
                 C_pse_demais_prest_valor = fpCriacaoUnis.C_pse_demais_prest_valor,
                 C_pse_demais_prest_periodo = fpCriacaoUnis.C_pse_demais_prest_periodo,
-                C_forma_pagto = fpCriacaoUnis.C_forma_pagto
-                //CustoFinancFornecTipoParcelamento
-                //CustoFinancFornecQtdeParcelas
+                C_forma_pagto = fpCriacaoUnis.C_forma_pagto,
+                CustoFinancFornecTipoParcelamento = fpCriacaoUnis.CustoFinancFornecTipoParcelamento
             };
 
             return ret;

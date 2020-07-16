@@ -733,14 +733,15 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 //Validar endereço de entraga
                 if (await validacoesPrepedidoBll.ValidarEnderecoEntrega(prePedido, lstErros))
                 {
-                    if (validacoesFormaPagtoBll.ValidarFormaPagto(prePedido, lstErros, limiteArredondamento, 0.1M))
+                    //busca a sigla do tipo de pagamento pelo código enviado
+                    string c_custoFinancFornecTipoParcelamento = ObterSiglaFormaPagto(prePedido);
+
+                    if (validacoesFormaPagtoBll.ValidarFormaPagto(prePedido, lstErros, limiteArredondamento, 
+                        0.1M, c_custoFinancFornecTipoParcelamento))
                     {
                         //Esta sendo verificado qual o tipo de pagamento que esta sendo feito e retornando a quantidade de parcelas
                         int c_custoFinancFornecQtdeParcelas = ObterQtdeParcelasFormaPagto(prePedido);
-
-                        //varificar o numero para saber o tipo de pagamento
-                        string c_custoFinancFornecTipoParcelamento = ObterSiglaFormaPagto(prePedido);
-
+                        
                         float perc_limite_RA_sem_desagio = await Util.VerificarSemDesagioRA(contextoProvider);
 
                         //Vamos conforntar os valores de cada item, total do prepedido e o percentual máximo de RA
@@ -835,7 +836,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return lstErros;
         }
 
-        private string ObterSiglaFormaPagto(PrePedidoDto prePedido)
+        public string ObterSiglaFormaPagto(PrePedidoDto prePedido)
         {
             FormaPagtoCriacaoDto formaPagto = prePedido.FormaPagtoCriacao;
             string retorno = "";

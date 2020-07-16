@@ -16,9 +16,30 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
             this.validacoesPrepedidoBll = validacoesPrepedidoBll;
         }
 
-        public bool ValidarFormaPagto(PrePedidoDto prepedido, List<string> lstErros, decimal limiteArredondamento, decimal maxErroArredondamento)
+        private void ValidarSiglaFormaPagto(PrePedidoDto prepedido, string c_custoFinancFornecTipoParcelamento,
+            List<string> lstErros)
+        {
+            if (!string.IsNullOrEmpty(c_custoFinancFornecTipoParcelamento))
+            {
+                if (c_custoFinancFornecTipoParcelamento != prepedido.FormaPagtoCriacao.CustoFinancFornecTipoParcelamento)
+                    lstErros.Add($"Tipo do parcelamento (CustoFinancFornecTipoParcelamento '" +
+                        $"{prepedido.FormaPagtoCriacao.CustoFinancFornecTipoParcelamento}') está incorreto!");
+            }
+            else
+            {
+                lstErros.Add("Tipo do parcelamento inválido");
+            }
+        }
+
+        public bool ValidarFormaPagto(PrePedidoDto prepedido, List<string> lstErros, 
+            decimal limiteArredondamento, decimal maxErroArredondamento, string c_custoFinancFornecTipoParcelamento)
         {
             bool retorno = false;
+
+            if (!string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.CustoFinancFornecTipoParcelamento))
+            {
+                ValidarSiglaFormaPagto(prepedido, c_custoFinancFornecTipoParcelamento, lstErros);
+            }
 
             if (prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_A_VISTA)
             {

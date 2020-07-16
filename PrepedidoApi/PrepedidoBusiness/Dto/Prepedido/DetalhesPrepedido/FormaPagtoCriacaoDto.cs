@@ -33,5 +33,8 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
         public string Descricao_meio_pagto { get; set; }//para mostrar 
         public short Tipo_parcelamento { get; set; }//informa o tipo de parcelamento que foi escolhido
 
+        //incluimos esse campo apenas para validar o que esta sendo enviado pela API Unis
+        public string CustoFinancFornecTipoParcelamento { get; set; }
+
     }
 }
