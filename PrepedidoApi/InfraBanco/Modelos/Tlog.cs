@@ -11,6 +11,7 @@ namespace InfraBanco.Modelos
     {
         [Column("data")]
         [Required]
+        [Key]
         public DateTime Data { get; set; }
 
         [Column("usuario")]
@@ -27,7 +28,6 @@ namespace InfraBanco.Modelos
 
         [Column("id_cliente")]
         [MaxLength(12)]
-        [Key]
         public string Id_Cliente { get; set; }
 
         [Column("operacao")]

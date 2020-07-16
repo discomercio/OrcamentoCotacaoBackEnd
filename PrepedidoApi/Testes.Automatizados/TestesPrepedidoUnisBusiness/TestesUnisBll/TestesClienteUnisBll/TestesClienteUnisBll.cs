@@ -100,6 +100,8 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
 
             TestarCadastro(c => c.DadosCliente.Endereco = "",
                 "PREENCHA O ENDEREÇO.", TipoPessoa.PJ);
+            TestarCadastro(c => c.DadosCliente.Endereco = "nao existe no cep",
+                "PREENCHA O ENDEREÇO.", TipoPessoa.PJ);
         }
 
         [Fact]
@@ -117,6 +119,8 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
 
             TestarCadastro(c => c.DadosCliente.Bairro = "",
                 "PREENCHA O BAIRRO.", TipoPessoa.PJ);
+            TestarCadastro(c => c.DadosCliente.Bairro = "bairro que não existe",
+                "PREENCHA O BAIRRO.", TipoPessoa.PJ);
         }
         [Fact]
         public void Endereco_Cidade()
@@ -125,6 +129,8 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
 
             TestarCadastro(c => c.DadosCliente.Cidade = "",
                 "PREENCHA A CIDADE.", TipoPessoa.PJ);
+            TestarCadastro(c => c.DadosCliente.Cidade = "cidade que nao existe",
+                "PREENCHA A CIDADE.", TipoPessoa.PJ);
         }
         [Fact]
         public void Endereco_Uf()
@@ -132,6 +138,8 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             inicializarBanco.TclientesApagar();
 
             TestarCadastro(c => c.DadosCliente.Uf = "",
+                "INFORME O UF.", TipoPessoa.PJ);
+            TestarCadastro(c => c.DadosCliente.Uf = "XX",
                 "INFORME O UF.", TipoPessoa.PJ);
         }
         [Fact]

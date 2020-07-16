@@ -79,6 +79,7 @@ namespace Testes.Automatizados.InicializarBanco
                 db.Tparametros.Add(new InfraBanco.Modelos.Tparametro() { Id = Constantes.ID_PARAMETRO_Flag_Orcamento_ConsisteDisponibilidadeEstoqueGlobal, Campo_inteiro = 1 });
 
                 db.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.NSU_CADASTRO_CLIENTES, Nsu = "000000645506" });
+                db.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.NSU_ORCAMENTO, Nsu = "000000000006" });
 
                 db.Tbancos.Add(new InfraBanco.Modelos.Tbanco() { Codigo = Testes.Automatizados.InicializarBanco.InicializarClienteDados.ClienteNaoCadastradoPJ().RefBancaria[0].Banco });
 
@@ -190,15 +191,17 @@ namespace Testes.Automatizados.InicializarBanco
         {
             db.TwmsRegraCdXUfPessoas.Add(new InfraBanco.Modelos.TwmsRegraCdXUfPessoa()
             {
-                Id= Id_wms_regra_cd_x_uf_x_pessoa,
+                Id = Id_wms_regra_cd_x_uf_x_pessoa,
                 Tipo_pessoa = Tipo_pessoa,
                 Id_wms_regra_cd_x_uf = Id_wms_regra_cd_x_uf,
                 Spe_id_nfe_emitente = Spe_id_nfe_emitente,
                 St_inativo = 0
             });
 
-            db.TwmsRegraCdXUfXPessoaXCds.Add(new InfraBanco.Modelos.TwmsRegraCdXUfXPessoaXCd() {
-                Id_wms_regra_cd_x_uf_x_pessoa= Id_wms_regra_cd_x_uf_x_pessoa
+            db.TwmsRegraCdXUfXPessoaXCds.Add(new InfraBanco.Modelos.TwmsRegraCdXUfXPessoaXCd()
+            {
+                Id_wms_regra_cd_x_uf_x_pessoa = Id_wms_regra_cd_x_uf_x_pessoa,
+                Id_nfe_emitente = Spe_id_nfe_emitente
             });
 
             Id_wms_regra_cd_x_uf_x_pessoa++;
