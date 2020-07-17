@@ -37,6 +37,15 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
         internal void Teste(DeixarDtoErrado deixarDtoErrado, string mensagemErro, bool incluirEsteErro = true)
         {
             PrePedidoUnisDto prePedido = DadosPrepedidoUnisBll.PrepedidoParceladoCartao1vez();
+            TesteInterno(prePedido, deixarDtoErrado, mensagemErro, incluirEsteErro);
+        }
+        internal void TesteAvista(DeixarDtoErrado deixarDtoErrado, string mensagemErro, bool incluirEsteErro = true)
+        {
+            PrePedidoUnisDto prePedido = DadosPrepedidoUnisBll.PrepedidoParceladoAvista();
+            TesteInterno(prePedido, deixarDtoErrado, mensagemErro, incluirEsteErro);
+        }
+        private void TesteInterno(PrePedidoUnisDto prePedido, DeixarDtoErrado deixarDtoErrado, string mensagemErro, bool incluirEsteErro = true)
+        {
             deixarDtoErrado(prePedido);
 
             var res = prepedidoUnisBll.CadastrarPrepedidoUnis(prePedido).Result;
@@ -59,10 +68,19 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
 
         }
 
-        //testa se consegue cadastrar
         internal void TestarSucesso(DeixarDtoErrado deixarDtoErrado)
         {
             PrePedidoUnisDto prePedido = DadosPrepedidoUnisBll.PrepedidoParceladoCartao1vez();
+            TestarSucessoInterno(prePedido, deixarDtoErrado);
+        }
+        internal void TestarSucessoAvista(DeixarDtoErrado deixarDtoErrado)
+        {
+            PrePedidoUnisDto prePedido = DadosPrepedidoUnisBll.PrepedidoParceladoAvista();
+            TestarSucessoInterno(prePedido, deixarDtoErrado);
+        }
+        //testa se consegue cadastrar
+        private void TestarSucessoInterno(PrePedidoUnisDto prePedido, DeixarDtoErrado deixarDtoErrado)
+        {
             deixarDtoErrado(prePedido);
 
             var res = prepedidoUnisBll.CadastrarPrepedidoUnis(prePedido).Result;

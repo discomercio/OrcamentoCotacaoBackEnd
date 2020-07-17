@@ -376,7 +376,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 Observacoes = torcamento.Obs_1,
                 NumeroNF = torcamento.Obs_2,
                 PrevisaoEntrega = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
-                torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + " (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) + 
+                torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + " (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) +
                 " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" : null,
                 EntregaImediata = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
                 "NÃO (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" :
@@ -733,20 +733,20 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 return lstErros;
             }
 
-            {
-                //Validar endereço de entraga
-                if (await validacoesPrepedidoBll.ValidarEnderecoEntrega(prePedido, lstErros))
-                {
-                    //busca a sigla do tipo de pagamento pelo código enviado
-                    string c_custoFinancFornecTipoParcelamento = ObterSiglaFormaPagto(prePedido);
 
-                    if (validacoesFormaPagtoBll.ValidarFormaPagto(prePedido, lstErros, limiteArredondamento, 
-                        0.1M, c_custoFinancFornecTipoParcelamento))
-                    {
-                        //Esta sendo verificado qual o tipo de pagamento que esta sendo feito e retornando a quantidade de parcelas
-                        int c_custoFinancFornecQtdeParcelas = ObterQtdeParcelasFormaPagto(prePedido);
-                        
-                        float perc_limite_RA_sem_desagio = await Util.VerificarSemDesagioRA(contextoProvider);
+            //Validar endereço de entraga
+            if (await validacoesPrepedidoBll.ValidarEnderecoEntrega(prePedido, lstErros))
+            {
+                //busca a sigla do tipo de pagamento pelo código enviado
+                string c_custoFinancFornecTipoParcelamento = ObterSiglaFormaPagto(prePedido);
+
+                if (validacoesFormaPagtoBll.ValidarFormaPagto(prePedido, lstErros, limiteArredondamento,
+                    0.1M, c_custoFinancFornecTipoParcelamento))
+                {
+                    //Esta sendo verificado qual o tipo de pagamento que esta sendo feito e retornando a quantidade de parcelas
+                    int c_custoFinancFornecQtdeParcelas = ObterQtdeParcelasFormaPagto(prePedido);
+
+                    float perc_limite_RA_sem_desagio = await Util.VerificarSemDesagioRA(contextoProvider);
 
                     //Vamos conforntar os valores de cada item, total do prepedido e o percentual máximo de RA
                     await validacoesPrepedidoBll.MontarProdutosParaComparacao(prePedido,

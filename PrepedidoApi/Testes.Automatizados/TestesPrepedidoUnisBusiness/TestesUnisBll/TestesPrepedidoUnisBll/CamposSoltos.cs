@@ -43,6 +43,11 @@ VlTotalDestePedido	number($double)
             TestarSucesso(c => { });
         }
         [Fact]
+        public void SucessoAvista()
+        {
+            TestarSucessoAvista(c => { });
+        }
+        [Fact]
         public void ValorTotalDestePedidoComRA()
         {
             Teste(c => c.ValorTotalDestePedidoComRA = 1, "Valor total da forma de pagamento diferente do valor total!");
@@ -80,7 +85,7 @@ VlTotalDestePedido	number($double)
         }
 
         /*
-         * todo:
+         * todo: testar o resto das estruturas
          * 
         EnderecoCadastralCliente	EnderecoCadastralClientePrepedidoUnisDto{...}
         OutroEndereco*	boolean
@@ -93,6 +98,42 @@ VlTotalDestePedido	number($double)
         FormaPagtoCriacao	FormaPagtoCriacaoUnisDto{...}
         */
 
+        //testamos estes 4 campos em separado porque a validação foi implementada depois
+        /*
+        validar:
+        "Preco_NF": 221000.00,
+        "CustoFinancFornecCoeficiente": 1.0527,
+        "CustoFinancFornecPrecoListaBase": 221041.07
+        CustoFinancFornecCoeficiente deve ser 1 se for pagamento a vista
+        */
+        [Fact]
+        public void Parcial_CustoFinancFornecTipoParcelamento()
+        {
+            Teste(c => c.FormaPagtoCriacao.CustoFinancFornecTipoParcelamento = "xx", "Tipo do parcelamento (CustoFinancFornecTipoParcelamento 'xx') está incorreto!");
+            Teste(c => c.FormaPagtoCriacao.Tipo_Parcelamento = 99, "Tipo do parcelamento inválido");
+            //a base de teste é parcelado
+            Teste(c => c.FormaPagtoCriacao.Tipo_Parcelamento = 1, "Tipo do parcelamento (CustoFinancFornecTipoParcelamento 'SE') está incorreto!");
+        }
+        [Fact]
+        public void Parcial_Preco_NF()
+        {
+            Teste(c => c.ListaProdutos[0].Preco_NF = 11, "Preço de nota fiscal (Preco_NF R$ 11,00 x R$ 694,05) está incorreto!");
+        }
+        [Fact]
+        public void Parcial_CustoFinancFornecCoeficiente()
+        {
+            Teste(c => c.ListaProdutos[0].CustoFinancFornecCoeficiente = 11, "Coeficiente do fabricante (003) esta incorreto!");
+        }
+        [Fact]
+        public void Parcial_CustoFinancFornecCoeficiente_Avista()
+        {
+            TesteAvista(c => c.ListaProdutos[0].CustoFinancFornecCoeficiente= 2, "Coeficiente do fabricante (003) esta incorreto!");
+        }
+        [Fact]
+        public void Parcial_CustoFinancFornecPrecoListaBase()
+        {
+            Teste(c => c.ListaProdutos[0].CustoFinancFornecPrecoListaBase = 11, "Custo financeiro preço lista base (CustoFinancFornecPrecoListaBase R$ 11,00 x R$ 694,05) esta incorreto!");
+        }
 
     }
 }

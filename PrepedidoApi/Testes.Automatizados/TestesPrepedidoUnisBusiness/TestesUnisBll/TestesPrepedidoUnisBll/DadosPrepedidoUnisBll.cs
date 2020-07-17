@@ -13,6 +13,26 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
             var ret = JsonConvert.DeserializeObject<PrePedidoUnisDto>(PrepedidoBaseParceladoCartao1vez);
             return ret;
         }
+        public static PrePedidoUnisDto PrepedidoParceladoAvista()
+        {
+            var ret = PrepedidoParceladoCartao1vez();
+            ret.FormaPagtoCriacao.CustoFinancFornecTipoParcelamento = "AV";
+            ret.FormaPagtoCriacao.Tipo_Parcelamento = 1;
+            ret.FormaPagtoCriacao.Op_av_forma_pagto = "1";
+
+            ret.ListaProdutos[0].CustoFinancFornecCoeficiente = 1;
+            ret.ListaProdutos[0].CustoFinancFornecPrecoListaBase = 659.30m;
+            ret.ListaProdutos[0].Preco_Venda = 652.71m;
+
+            ret.ListaProdutos[1].CustoFinancFornecCoeficiente = 1;
+            ret.ListaProdutos[1].CustoFinancFornecPrecoListaBase = 988.95m;
+            ret.ListaProdutos[1].Preco_Venda = 979.06m;
+
+            ret.VlTotalDestePedido = ret.ListaProdutos[0].Preco_Venda * ret.ListaProdutos[0].Qtde;
+            ret.VlTotalDestePedido += ret.ListaProdutos[1].Preco_Venda * ret.ListaProdutos[1].Qtde;
+
+            return ret;
+        }
         private static string PrepedidoBaseParceladoCartao1vez = @"
 {
   ""TokenAcesso"": ""eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJzdXBvcnRlIDEiLCJ1bmlxdWVfbmFtZSI6IkdVSUxIRVJNRSBHT01FUyBQSUVEQURFIC0gUyIsInJvbGUiOiJBcGlVbmlzIiwibmJmIjoxNTkzMDI5NzE5LCJleHAiOjE3NTA3MDk3MTksImlhdCI6MTU5MzAyOTcxOX0.Ofc7DSEKIDPSErYyaIGe-3VEsh9gE8nfuJwY8lCjN28"",
