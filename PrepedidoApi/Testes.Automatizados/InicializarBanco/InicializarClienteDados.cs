@@ -44,7 +44,7 @@ namespace Testes.Automatizados.InicializarBanco
     ""Sexo"": null,
     ""Nome"": ""Teste Cadastro Empresa Unis 4"",
     ""ProdutorRural"": 0,
-    ""Endereco"": ""teste"",
+    ""Endereco"": ""teste de teste"",
     ""Numero"": ""97"",
     ""Complemento"": """",
     ""Bairro"": ""teste"",
