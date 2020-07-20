@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Loja.Testes.Automatizados.Especificacao.Pedido
+namespace EspecificacaoPedido.Especificacao
 {
     using TechTalk.SpecFlow;
     using System;
@@ -31,7 +31,7 @@ namespace Loja.Testes.Automatizados.Especificacao.Pedido
 #line 1 "FluxoCriacaoPedido.feature"
 #line hidden
         
-        public FluxoDaCriacaoDoPedidoFeature(FluxoDaCriacaoDoPedidoFeature.FixtureData fixtureData, Loja_Testes_Automatizados_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public FluxoDaCriacaoDoPedidoFeature(FluxoDaCriacaoDoPedidoFeature.FixtureData fixtureData, EspecificacaoPedido_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,12 +42,15 @@ namespace Loja.Testes.Automatizados.Especificacao.Pedido
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Fluxo da criação do pedido", @"---
 Fluxo no ERP/loja:
-1 - Escolher cliente já cadastrado
-2 - Confirmar (ou editar) dados cadastrais e informar endereço de entrega
-3 - Escolher produtos, quantidades
-4 - Escolher indicador e RA
-5 - Alterar valores e forma de pagamento e observações (entrega imediata, instalador instala, etc) 
-6 - Salvar o pedido
+1 - Escolher cliente já cadastrado (em ""loja/resumo.asp"")
+	envia para ClientePesquisa.asp
+	se existe somente um cliente, envia para clienteedita.asp com OP_CONSULTA
+2 - Confirmar (ou editar) dados cadastrais e informar endereço de entrega (em ""loja/clienteedita.asp"")
+	AFAZER: TODO: PAREI VERIFICANDO O loja/clienteedita.asp, TEM COISA DO MAGENTO
+3 - Escolher produtos, quantidades (em ""loja/PedidoNovoProdCompostoMask.asp"")
+4 - Escolher indicador e RA (em ""loja/PedidoNovo.asp"")
+5 - Alterar valores e forma de pagamento e observações (entrega imediata, instalador instala, etc) (em ""loja/PedidoNovoConsiste.asp"")
+6 - Salvar o pedido (finaliza em ""loja/pedido.asp"")
 --- 
 Fluxo no módulo loja:
 1 - Escolher cliente já cadastrado
@@ -99,15 +102,15 @@ Salvar o pedido
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Cadastrar Pedido com o mínimo de informação possível")]
+        [Xunit.SkippableFactAttribute(DisplayName="Cadastrar o pedido com o mínimo de informação possível")]
         [Xunit.TraitAttribute("FeatureTitle", "Fluxo da criação do pedido")]
-        [Xunit.TraitAttribute("Description", "Cadastrar Pedido com o mínimo de informação possível")]
-        public virtual void CadastrarPedidoComOMinimoDeInformacaoPossivel()
+        [Xunit.TraitAttribute("Description", "Cadastrar o pedido com o mínimo de informação possível")]
+        public virtual void CadastrarOPedidoComOMinimoDeInformacaoPossivel()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cadastrar Pedido com o mínimo de informação possível", null, tagsOfScenario, argumentsOfScenario);
-#line 23
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cadastrar o pedido com o mínimo de informação possível", null, tagsOfScenario, argumentsOfScenario);
+#line 26
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);

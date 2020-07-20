@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Loja.Testes.Automatizados.Especificacao.Pedido.SalvarPedido
+namespace EspecificacaoPedido.Especificacao
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,7 +19,7 @@ namespace Loja.Testes.Automatizados.Especificacao.Pedido.SalvarPedido
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class PedidoMinimoFeature : object, Xunit.IClassFixture<PedidoMinimoFeature.FixtureData>, System.IDisposable
+    public partial class CaminhoFelizDaCriacaoDoPedidoPelaAPIFeature : object, Xunit.IClassFixture<CaminhoFelizDaCriacaoDoPedidoPelaAPIFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -28,10 +28,10 @@ namespace Loja.Testes.Automatizados.Especificacao.Pedido.SalvarPedido
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "PedidoMinimo.feature"
+#line 1 "CaminhoFelizApi.feature"
 #line hidden
         
-        public PedidoMinimoFeature(PedidoMinimoFeature.FixtureData fixtureData, Loja_Testes_Automatizados_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public CaminhoFelizDaCriacaoDoPedidoPelaAPIFeature(CaminhoFelizDaCriacaoDoPedidoPelaAPIFeature.FixtureData fixtureData, EspecificacaoPedido_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -40,8 +40,8 @@ namespace Loja.Testes.Automatizados.Especificacao.Pedido.SalvarPedido
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "PedidoMinimo", "O mínimo que um pedido precisa para ser cadastrado\r\nLevantado a partir do ERP/loj" +
-                    "a/PedidoNovoConfirma.asp", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Caminho feliz da criação do pedido pela API", "O mínimo que um pedido precisa para ser cadastrado pela API\r\nLevantado a partir d" +
+                    "o ERP/loja/PedidoNovoConfirma.asp", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -81,14 +81,14 @@ namespace Loja.Testes.Automatizados.Especificacao.Pedido.SalvarPedido
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Cadastrar Pedido com o mínimo de informação possível")]
-        [Xunit.TraitAttribute("FeatureTitle", "PedidoMinimo")]
-        [Xunit.TraitAttribute("Description", "Cadastrar Pedido com o mínimo de informação possível")]
-        public virtual void CadastrarPedidoComOMinimoDeInformacaoPossivel()
+        [Xunit.SkippableFactAttribute(DisplayName="Cadastrar um pedido com o mínimo de informação possível")]
+        [Xunit.TraitAttribute("FeatureTitle", "Caminho feliz da criação do pedido pela API")]
+        [Xunit.TraitAttribute("Description", "Cadastrar um pedido com o mínimo de informação possível")]
+        public virtual void CadastrarUmPedidoComOMinimoDeInformacaoPossivel()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cadastrar Pedido com o mínimo de informação possível", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cadastrar um pedido com o mínimo de informação possível", null, tagsOfScenario, argumentsOfScenario);
 #line 5
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -202,6 +202,9 @@ this.ScenarioInitialize(scenarioInfo);
 #line 52
  testRunner.Then("O pedido é criado", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
+#line 53
+ testRunner.And("Campo \"av_forma_pagto\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
             }
             this.ScenarioCleanup();
         }
@@ -213,12 +216,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                PedidoMinimoFeature.FeatureSetup();
+                CaminhoFelizDaCriacaoDoPedidoPelaAPIFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                PedidoMinimoFeature.FeatureTearDown();
+                CaminhoFelizDaCriacaoDoPedidoPelaAPIFeature.FeatureTearDown();
             }
         }
     }

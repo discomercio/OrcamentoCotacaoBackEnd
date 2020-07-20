@@ -18,6 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bats", "Bats", "{A0F97C04-F
 		AtualizarSonar.bat = AtualizarSonar.bat
 		CompilarPrepedidoApi.bat = CompilarPrepedidoApi.bat
 		CompilarPrepedidoApiUnis.bat = CompilarPrepedidoApiUnis.bat
+		Testes.Automatizados\ExecutarOpenCoverParaTela.bat = Testes.Automatizados\ExecutarOpenCoverParaTela.bat
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testes", "Testes", "{3CBAB939-3AA5-4ECA-83B4-E937DA21BF4C}"
