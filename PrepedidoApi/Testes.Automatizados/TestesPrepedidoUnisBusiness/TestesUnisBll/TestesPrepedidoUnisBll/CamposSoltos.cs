@@ -84,20 +84,6 @@ VlTotalDestePedido	number($double)
             , "Permite RA status divergente do cadastro do indicador/orçamentista!");
         }
 
-        /*
-         * todo: testar o resto das estruturas
-         * 
-        EnderecoCadastralCliente	EnderecoCadastralClientePrepedidoUnisDto{...}
-        OutroEndereco*	boolean
-        EnderecoEntrega	EnderecoEntregaClienteCadastroUnisDto{...}
-        ListaProdutos	[...]
-        PermiteRAStatus	boolean
-        ValorTotalDestePedidoComRA	number($double)
-        VlTotalDestePedido	number($double)
-        DetalhesPrepedido	DetalhesPrePedidoUnisDto{...}
-        FormaPagtoCriacao	FormaPagtoCriacaoUnisDto{...}
-        */
-
         //testamos estes 4 campos em separado porque a validação foi implementada depois
         /*
         validar:
@@ -127,13 +113,28 @@ VlTotalDestePedido	number($double)
         [Fact]
         public void Parcial_CustoFinancFornecCoeficiente_Avista()
         {
-            TesteAvista(c => c.ListaProdutos[0].CustoFinancFornecCoeficiente= 2, "Coeficiente do fabricante (003) esta incorreto!");
+            TesteAvista(c => c.ListaProdutos[0].CustoFinancFornecCoeficiente = 2, "Coeficiente do fabricante (003) esta incorreto!");
         }
         [Fact]
         public void Parcial_CustoFinancFornecPrecoListaBase()
         {
             Teste(c => c.ListaProdutos[0].CustoFinancFornecPrecoListaBase = 11, "Custo financeiro preço lista base (CustoFinancFornecPrecoListaBase R$ 11,00 x R$ 694,05) esta incorreto!");
         }
+
+
+        /*
+         * todo: testar o resto das estruturas
+         * 
+        EnderecoCadastralCliente	EnderecoCadastralClientePrepedidoUnisDto{...}
+        OutroEndereco*	boolean
+        EnderecoEntrega	EnderecoEntregaClienteCadastroUnisDto{...}
+        ListaProdutos	[...]
+        PermiteRAStatus	boolean
+        ValorTotalDestePedidoComRA	number($double)
+        VlTotalDestePedido	number($double)
+        DetalhesPrepedido	DetalhesPrePedidoUnisDto{...}
+        FormaPagtoCriacao	FormaPagtoCriacaoUnisDto{...}
+        */
 
     }
 }

@@ -21,5 +21,6 @@ Salvar o pedido
 	Enviar todos os dados para cadastrar o pedido
 
 Scenario: Cadastrar Pedido com o mínimo de informação possível
-	Given Existe "login" = "usuario_sistema"
-	And Existe "loja" = "202"
+# documentado em PedidoMinimo.feature 
+
+

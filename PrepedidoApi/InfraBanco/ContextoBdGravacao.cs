@@ -61,6 +61,8 @@ namespace InfraBanco
         public DbSet<TorcamentistaEindicador> TorcamentistaEindicadors { get => contexto.TorcamentistaEindicadors; }
         public DbSet<TsessaoAbandonada> TsessaoAbandonadas { get => contexto.TsessaoAbandonadas; }
         public DbSet<Tusuario> Tusuarios { get => contexto.Tusuarios; }
+
+        //todo: daqui para a frente só é necessário para os testes automatizados, tirar do projeto normal
         public DbSet<Tbanco> Tbancos { get => contexto.Tbancos; }
         public DbSet<Tfabricante> Tfabricantes { get => contexto.Tfabricantes; }
         public DbSet<Tproduto> Tprodutos { get => contexto.Tprodutos; }
