@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PedidoBll
+namespace Pedido
 {
     public class Class1
     {

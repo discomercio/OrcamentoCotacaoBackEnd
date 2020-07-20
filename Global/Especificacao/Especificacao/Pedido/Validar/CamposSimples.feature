@@ -1,4 +1,5 @@
-﻿Feature: Validar campos simples
+﻿@Validar/CamposSimples
+Feature: Validar campos simples
 
 Scenario: Validar CPF
 em loja/resumo.asp:

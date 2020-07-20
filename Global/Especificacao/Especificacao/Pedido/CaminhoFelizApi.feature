@@ -1,4 +1,6 @@
-﻿Feature: Caminho feliz da criação do pedido pela API
+﻿@CaminhoFelizApi
+Feature: CaminhoFelizApi
+Caminho feliz da criação do pedido pela API
 O mínimo que um pedido precisa para ser cadastrado pela API
 Levantado a partir do ERP/loja/PedidoNovoConfirma.asp
 

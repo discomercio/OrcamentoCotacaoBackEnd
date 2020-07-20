@@ -1,11 +1,13 @@
-﻿Feature: Caminho feliz da criação do pedido na loja (ASP)
+﻿@CaminhoFelizAsp @SemTestes
+Feature: CaminhoFelizAsp
+	Caminho feliz da criação do pedido na loja (ASP)
 	Operações mínimas para cadastar um pedido
 	Está aqui somente por documentação, não é efetivamente testado
 
 Scenario: Cadastar um pedido na loja
 	Given Fiz login 
 	And Estou na página "loja/resumo.asp"
-	When No bloco "NOVO PEDIDO" digito o CPF/CNPJ "" e clico em "EXECUTAR CONSULTA"
+	When No bloco "NOVO PEDIDO" digito o CPF/CNPJ "089.617.758/04" e clico em "EXECUTAR CONSULTA"
 	Then Vou para página "loja/clienteedita.asp?cliente_selecionado=000000246890"
 	When Seleciono a opção "O mesmo endereço do cadastro" e clico em "PEDIDO"
 	Then Vou para página "loja/PedidoNovoProdCompostoMask.asp"

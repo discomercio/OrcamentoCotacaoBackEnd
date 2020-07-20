@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace EspecificacaoPedido.Especificacao.Validar
+namespace Especificacao.Especificacao.Pedido
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,7 +19,7 @@ namespace EspecificacaoPedido.Especificacao.Validar
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class ValidarPermissoesFeature : object, Xunit.IClassFixture<ValidarPermissoesFeature.FixtureData>, System.IDisposable
+    public partial class FluxoDaCriacaoDoPedidoFeature : object, Xunit.IClassFixture<FluxoDaCriacaoDoPedidoFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -28,10 +28,10 @@ namespace EspecificacaoPedido.Especificacao.Validar
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "Permissoes.feature"
+#line 1 "FluxoCriacaoPedido.feature"
 #line hidden
         
-        public ValidarPermissoesFeature(ValidarPermissoesFeature.FixtureData fixtureData, EspecificacaoPedido_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public FluxoDaCriacaoDoPedidoFeature(FluxoDaCriacaoDoPedidoFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -40,7 +40,29 @@ namespace EspecificacaoPedido.Especificacao.Validar
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Validar permissões", null, ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Fluxo da criação do pedido", @"---
+Fluxo no ERP/loja:
+1 - Escolher cliente já cadastrado (em ""loja/resumo.asp"")
+	envia para ClientePesquisa.asp
+	se existe somente um cliente, envia para clienteedita.asp com OP_CONSULTA
+2 - Confirmar (ou editar) dados cadastrais e informar endereço de entrega (em ""loja/clienteedita.asp"")
+	AFAZER: TODO: PAREI VERIFICANDO O loja/clienteedita.asp, TEM COISA DO MAGENTO
+3 - Escolher produtos, quantidades (em ""loja/PedidoNovoProdCompostoMask.asp"")
+4 - Escolher indicador e RA (em ""loja/PedidoNovo.asp"")
+5 - Alterar valores e forma de pagamento e observações (entrega imediata, instalador instala, etc) (em ""loja/PedidoNovoConsiste.asp"")
+6 - Salvar o pedido (finaliza em ""loja/pedido.asp"")
+--- 
+Fluxo no módulo loja:
+1 - Escolher cliente já cadastrado
+2 - Confirmar (ou editar) dados cadastrais e informar endereço de entrega
+3 - Escolher indicador e RA e Modo de Seleção do CD 
+4 - Escolher produtos, quantidades e alterar valores e forma de pagamento
+5 - Informar observações (entrega imediata, instalador instala, etc) 
+6 - Salvar o pedido
+--- 
+Fluxo na API:
+Salvar o pedido
+	Enviar todos os dados para cadastrar o pedido", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -80,17 +102,15 @@ namespace EspecificacaoPedido.Especificacao.Validar
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validar permissão de criação")]
-        [Xunit.TraitAttribute("FeatureTitle", "Validar permissões")]
-        [Xunit.TraitAttribute("Description", "Validar permissão de criação")]
-        public virtual void ValidarPermissaoDeCriacao()
+        [Xunit.SkippableFactAttribute(DisplayName="Cadastrar o pedido com o mínimo de informação possível")]
+        [Xunit.TraitAttribute("FeatureTitle", "Fluxo da criação do pedido")]
+        [Xunit.TraitAttribute("Description", "Cadastrar o pedido com o mínimo de informação possível")]
+        public virtual void CadastrarOPedidoComOMinimoDeInformacaoPossivel()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar permissão de criação", "em loja/resumo.asp:\r\nif operacao_permitida(OP_LJA_CADASTRA_NOVO_PEDIDO, s_lista_o" +
-                    "peracoes_permitidas) then\r\n\r\nem loja/ClienteEdita.asp\r\n<% if operacao_permitida(" +
-                    "OP_LJA_CADASTRA_NOVO_PEDIDO, s_lista_operacoes_permitidas) then %>", tagsOfScenario, argumentsOfScenario);
-#line 3
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cadastrar o pedido com o mínimo de informação possível", null, tagsOfScenario, argumentsOfScenario);
+#line 26
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -110,15 +130,6 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 9
- testRunner.Given("Não possuo a permissão \"OP_LJA_CADASTRA_NOVO_PEDIDO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 10
- testRunner.When("Crio um pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 11
- testRunner.Then("Erro \"verificar mensagem de erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
             }
             this.ScenarioCleanup();
         }
@@ -130,12 +141,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                ValidarPermissoesFeature.FeatureSetup();
+                FluxoDaCriacaoDoPedidoFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                ValidarPermissoesFeature.FeatureTearDown();
+                FluxoDaCriacaoDoPedidoFeature.FeatureTearDown();
             }
         }
     }

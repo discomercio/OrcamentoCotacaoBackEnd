@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace EspecificacaoPedido.Especificacao
+namespace Especificacao.Especificacao.Pedido
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,19 +19,23 @@ namespace EspecificacaoPedido.Especificacao
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class CaminhoFelizDaCriacaoDoPedidoNaLojaASPFeature : object, Xunit.IClassFixture<CaminhoFelizDaCriacaoDoPedidoNaLojaASPFeature.FixtureData>, System.IDisposable
+    [Xunit.TraitAttribute("Category", "CaminhoFelizAsp")]
+    [Xunit.TraitAttribute("Category", "SemTestes")]
+    public partial class CaminhoFelizAspFeature : object, Xunit.IClassFixture<CaminhoFelizAspFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private string[] _featureTags = ((string[])(null));
+        private string[] _featureTags = new string[] {
+                "CaminhoFelizAsp",
+                "SemTestes"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
 #line 1 "CaminhoFelizAsp.feature"
 #line hidden
         
-        public CaminhoFelizDaCriacaoDoPedidoNaLojaASPFeature(CaminhoFelizDaCriacaoDoPedidoNaLojaASPFeature.FixtureData fixtureData, EspecificacaoPedido_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public CaminhoFelizAspFeature(CaminhoFelizAspFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -40,8 +44,10 @@ namespace EspecificacaoPedido.Especificacao
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Caminho feliz da criação do pedido na loja (ASP)", "\tOperações mínimas para cadastar um pedido\r\n\tEstá aqui somente por documentação, " +
-                    "não é efetivamente testado", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "CaminhoFelizAsp", "\tCaminho feliz da criação do pedido na loja (ASP)\r\n\tOperações mínimas para cadast" +
+                    "ar um pedido\r\n\tEstá aqui somente por documentação, não é efetivamente testado", ProgrammingLanguage.CSharp, new string[] {
+                        "CaminhoFelizAsp",
+                        "SemTestes"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -82,14 +88,14 @@ namespace EspecificacaoPedido.Especificacao
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="Cadastar um pedido na loja")]
-        [Xunit.TraitAttribute("FeatureTitle", "Caminho feliz da criação do pedido na loja (ASP)")]
+        [Xunit.TraitAttribute("FeatureTitle", "CaminhoFelizAsp")]
         [Xunit.TraitAttribute("Description", "Cadastar um pedido na loja")]
         public virtual void CadastarUmPedidoNaLoja()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cadastar um pedido na loja", null, tagsOfScenario, argumentsOfScenario);
-#line 5
+#line 7
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -109,55 +115,56 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 6
+#line 8
  testRunner.Given("Fiz login", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 7
+#line 9
  testRunner.And("Estou na página \"loja/resumo.asp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 8
- testRunner.When("No bloco \"NOVO PEDIDO\" digito o CPF/CNPJ \"\" e clico em \"EXECUTAR CONSULTA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 9
- testRunner.Then("Vou para página \"loja/clienteedita.asp?cliente_selecionado=000000246890\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
 #line 10
- testRunner.When("Seleciono a opção \"O mesmo endereço do cadastro\" e clico em \"PEDIDO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("No bloco \"NOVO PEDIDO\" digito o CPF/CNPJ \"089.617.758/04\" e clico em \"EXECUTAR CO" +
+                        "NSULTA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 11
- testRunner.Then("Vou para página \"loja/PedidoNovoProdCompostoMask.asp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Vou para página \"loja/clienteedita.asp?cliente_selecionado=000000246890\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 12
- testRunner.When("Seleciono o produto \"003243\" e quantidade \"1\" e clico em \"PRÓXIMO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Seleciono a opção \"O mesmo endereço do cadastro\" e clico em \"PEDIDO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 13
- testRunner.Then("Vou para página \"loja/PedidoNovo.asp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Vou para página \"loja/PedidoNovoProdCompostoMask.asp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 14
- testRunner.When("Seleciono a opção \"Sem Indicação\" e clico em \"PRÓXIMO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Seleciono o produto \"003243\" e quantidade \"1\" e clico em \"PRÓXIMO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 15
- testRunner.Then("Vou para página \"loja/PedidoNovoConsiste.asp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Vou para página \"loja/PedidoNovo.asp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 16
- testRunner.When("Seleciono a opção \"Entrega Imediata\" como \"Sim\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Seleciono a opção \"Sem Indicação\" e clico em \"PRÓXIMO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 17
- testRunner.And("Seleciono a opção \"Bem de Uso/Consumo\" como \"Sim\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("Vou para página \"loja/PedidoNovoConsiste.asp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 18
- testRunner.And("Seleciono a opção \"Instalador Instala\" como \"Sim\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("Seleciono a opção \"Entrega Imediata\" como \"Sim\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 19
- testRunner.And("Seleciono a opção \"À Vista\" como \"Dinheiro\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Seleciono a opção \"Bem de Uso/Consumo\" como \"Sim\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 20
- testRunner.And("Clico em \"CONFIRMAR\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Seleciono a opção \"Instalador Instala\" como \"Sim\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 21
- testRunner.Then("O pedido é criado", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("Seleciono a opção \"À Vista\" como \"Dinheiro\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 22
+ testRunner.And("Clico em \"CONFIRMAR\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 23
+ testRunner.Then("O pedido é criado", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 24
  testRunner.And("Vou para página \"loja/pedido.asp?pedido_selecionado=176324N\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -171,12 +178,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                CaminhoFelizDaCriacaoDoPedidoNaLojaASPFeature.FeatureSetup();
+                CaminhoFelizAspFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                CaminhoFelizDaCriacaoDoPedidoNaLojaASPFeature.FeatureTearDown();
+                CaminhoFelizAspFeature.FeatureTearDown();
             }
         }
     }

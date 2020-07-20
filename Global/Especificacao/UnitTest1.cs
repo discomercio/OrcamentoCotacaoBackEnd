@@ -1,7 +1,7 @@
 using System;
 using Xunit;
 
-namespace EspecificacaoPedido
+namespace Especificacao
 {
     public class UnitTest1
     {
