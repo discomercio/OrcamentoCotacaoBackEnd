@@ -18,7 +18,8 @@
 
     <mat-form-field floatLabel="floatLabel()" style="width: 25ch;">
         <mat-label>JUSTIFIQUE O ENDEREÇO</mat-label>
-        <mat-select required [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_cod_justificativa">
+        <mat-select [required]="enderecoEntregaDtoClienteCadastro.OutroEndereco"
+            [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_cod_justificativa">
             <mat-option>Selecione</mat-option>
             <mat-option *ngFor="let i of buscarClienteServiceJustificativaEndEntregaComboTemporario"
                 style="white-space: pre-line; height: auto;" [(value)]="i.EndEtg_cod_justificativa">
@@ -36,7 +37,8 @@
                     &nbsp;
                 </mat-radio-button>
 
-                <mat-radio-button class="enderecoradio" [value]="pessoaEntregaEhPJ" (click)="PF()">Pessoa Física </mat-radio-button>
+                <mat-radio-button class="enderecoradio" [value]="pessoaEntregaEhPJ" (click)="PF()">Pessoa Física
+                </mat-radio-button>
             </mat-radio-group>
             <br /><br />
             <!-- NOME / RAZÃO SOCIAL -->
@@ -44,13 +46,15 @@
                 <mat-form-field floatLabel="floatLabel()" class="largura-maxima-campo-formulario"
                     *ngIf="!tipoPessoaEntrega">
                     <input matInput type="text" placeholder="NOME"
-                        [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_nome" required maxlength="60">
+                        [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_nome"
+                        [required]="enderecoEntregaDtoClienteCadastro.OutroEndereco" maxlength="60">
                 </mat-form-field>
 
                 <mat-form-field floatLabel="floatLabel()" class="largura-maxima-campo-formulario"
                     *ngIf="tipoPessoaEntrega">
                     <input matInput type="text" placeholder="RAZÃO SOCIAL"
-                        [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_nome" required maxlength="60">
+                        [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_nome"
+                        [required]="enderecoEntregaDtoClienteCadastro.OutroEndereco" maxlength="60">
                 </mat-form-field>
             </div>
             <!-- CPF / CNPJ -->
@@ -58,14 +62,16 @@
                 <!-- CPF e CNPJ não estão ligados ao model pq não são editados -->
                 <mat-form-field floatLabel="floatLabel()" style="width: 22ch;" class="edicao-telefone"
                     *ngIf="tipoPessoaEntrega">
-                    <input matInput type="text" placeholder="CNPJ" [textMask]="{mask: mascaraCnpj}" maxlength="19" size="19"
-                        [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_cnpj_cpf" required>
+                    <input matInput type="text" placeholder="CNPJ" [textMask]="{mask: mascaraCnpj}" maxlength="19"
+                        size="19" [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_cnpj_cpf"
+                        [required]="enderecoEntregaDtoClienteCadastro.OutroEndereco">
                 </mat-form-field>
 
                 <mat-form-field floatLabel="floatLabel()" style="width: 22ch;" class="edicao-telefone"
                     *ngIf="!tipoPessoaEntrega">
-                    <input matInput type="text" placeholder="CPF" [textMask]="{mask: mascaraCpf}" maxlength="15" size="15"
-                    [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_cnpj_cpf" required >
+                    <input matInput type="text" placeholder="CPF" [textMask]="{mask: mascaraCpf}" maxlength="15"
+                        size="15" [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_cnpj_cpf"
+                        [required]="enderecoEntregaDtoClienteCadastro.OutroEndereco">
                 </mat-form-field>
             </span>
 
@@ -90,7 +96,8 @@
                 <mat-form-field floatLabel="floatLabel()" class="edicao-telefone">
                     <input [textMask]="{mask: mascaraTelefone}"
                         [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_tel_com" type="text" matInput
-                        placeholder="TELEFONE 1" required maxlength="16" size="16" />
+                        placeholder="TELEFONE 1" [required]="enderecoEntregaDtoClienteCadastro.OutroEndereco"
+                        maxlength="16" size="16" />
                 </mat-form-field>
                 <mat-form-field floatLabel="floatLabel()" class="edicao-ramal">
                     <input matInput type="text" placeholder="RAMAL"
@@ -120,7 +127,8 @@
                         <mat-form-field floatLabel="floatLabel()" id="selectProdutorRural">
                             <mat-label>PRODUTOR RURAL</mat-label>
                             <!-- produtor rural sempre é editável -->
-                            <mat-select (keydown)="keydownSelectProdutor($event);" #mySelectProdutor required
+                            <mat-select (keydown)="keydownSelectProdutor($event);" #mySelectProdutor
+                                [required]="enderecoEntregaDtoClienteCadastro.OutroEndereco"
                                 [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_produtor_rural_status">
                                 <mat-option>Selecione</mat-option>
                                 <mat-option [(value)]="constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO">Não</mat-option>
@@ -132,7 +140,8 @@
                             *ngIf="enderecoEntregaDtoClienteCadastro.EndEtg_produtor_rural_status == constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM"
                             style="width: 22ch;">
                             <mat-label>CONTRIBUINTE ICMS</mat-label>
-                            <mat-select [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_contribuinte_icms_status">
+                            <mat-select [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_contribuinte_icms_status"
+                            [required]="enderecoEntregaDtoClienteCadastro.OutroEndereco">
                                 <mat-option>Selecione</mat-option>
                                 <mat-option [(value)]="constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO">Não</mat-option>
                                 <mat-option [(value)]="constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM">Sim</mat-option>
@@ -161,7 +170,7 @@
 
                     <mat-form-field floatLabel="floatLabel()" style="width: 22ch;">
                         <mat-label>CONTRIBUINTE ICMS </mat-label>
-                        <mat-select required
+                        <mat-select [required]="enderecoEntregaDtoClienteCadastro.OutroEndereco"
                             [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_contribuinte_icms_status">
                             <mat-option>Selecione</mat-option>
                             <mat-option [(value)]="constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO">Não
@@ -175,8 +184,7 @@
 
                     <!-- IE sempre é editável -->
                     <!-- [disabled]="dadosClienteCadastroDto?.Contribuinte_Icms_Status != 2" -->
-                    <mat-form-field floatLabel="floatLabel()" style="width: 25ch;"
-                    >
+                    <mat-form-field floatLabel="floatLabel()" style="width: 25ch;">
                         <input matInput type="text" placeholder="IE"
                             [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_ie" maxlength="20"
                             [disabled]="enderecoEntregaDtoClienteCadastro?.EndEtg_contribuinte_icms_status == 3">

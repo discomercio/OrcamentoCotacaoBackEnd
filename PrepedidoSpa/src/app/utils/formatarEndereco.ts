@@ -89,26 +89,28 @@ export class FormatarEndereco {
 
         sCabecalho += "\n";
 
+        
+
         //fomatar telefones
         //tel residencial e celular
         let telRes: string = "";
         let telCel: string = "";
-        if (!enderecoEntrega.EndEtg_tel_res && enderecoEntrega.EndEtg_tel_res != "")
+        if (!!enderecoEntrega.EndEtg_tel_res && enderecoEntrega.EndEtg_tel_res != "")
             telRes = FormatarTelefone.formatarDDDTelRamal(enderecoEntrega.EndEtg_ddd_res, enderecoEntrega.EndEtg_tel_res, "");
-        if (!enderecoEntrega.EndEtg_tel_cel && enderecoEntrega.EndEtg_tel_cel != "")
+        if (!!enderecoEntrega.EndEtg_tel_cel && enderecoEntrega.EndEtg_tel_cel != "")
             telCel = FormatarTelefone.formatarDDDTelRamal(enderecoEntrega.EndEtg_ddd_cel, enderecoEntrega.EndEtg_tel_cel, "");
 
         sTelefones = "";
-        if ((!telRes && telRes != "") || (!telCel && telCel != ""))
+        if ((!!telRes && telRes != "") || (!!telCel && telCel != ""))
             sTelefones = "\n";
 
-        if (!telRes && telRes != "") {
+        if (!!telRes && telRes != "") {
             sTelefones += "Telefone " + telRes;
-            if (!telCel && telCel != "")
+            if (!!telCel && telCel != "")
                 sTelefones += " - ";
         }
 
-        if (!telCel && telCel != "")
+        if (!!telCel && telCel != "")
             sTelefones += "Celular " + telCel;
 
         retorno = sCabecalho + sEndereco + sTelefones + "\n" + enderecoEntrega.EndEtg_descricao_justificativa;
@@ -138,24 +140,24 @@ export class FormatarEndereco {
 
         let telCom: string = "";
         let telCom2: string = "";
-        if (!enderecoEntrega.EndEtg_tel_com && enderecoEntrega.EndEtg_tel_com != "")
+        if (!!enderecoEntrega.EndEtg_tel_com && enderecoEntrega.EndEtg_tel_com != "")
             telCom = FormatarTelefone.formatarDDDTelRamal(enderecoEntrega.EndEtg_ddd_com, enderecoEntrega.EndEtg_tel_com,
                 enderecoEntrega.EndEtg_ramal_com);
-        if (!enderecoEntrega.EndEtg_tel_com_2 && enderecoEntrega.EndEtg_tel_com_2 != "")
+        if (!!enderecoEntrega.EndEtg_tel_com_2 && enderecoEntrega.EndEtg_tel_com_2 != "")
             telCom2 = FormatarTelefone.formatarDDDTelRamal(enderecoEntrega.EndEtg_ddd_com_2, enderecoEntrega.EndEtg_tel_com_2,
                 enderecoEntrega.EndEtg_ramal_com_2);
 
         sTelefones = "";
-        if ((!telCom && telCom != "") || (!telCom2 && telCom2 != ""))
+        if ((!!telCom && telCom != "") || (!!telCom2 && telCom2 != ""))
             sTelefones = "<br>Telefone ";
 
-        if (!telCom && telCom != "") {
+        if (!!telCom && telCom != "") {
             sTelefones += telCom;
-            if (!telCom2 && telCom2 != "")
+            if (!!telCom2 && telCom2 != "")
                 sTelefones += " - ";
         }
 
-        if (!telCom2 && telCom2 != "")
+        if (!!telCom2 && telCom2 != "")
             sTelefones += telCom2;
 
         retorno = sCabecalho + sEndereco + sTelefones + "\n" + enderecoEntrega.EndEtg_descricao_justificativa;

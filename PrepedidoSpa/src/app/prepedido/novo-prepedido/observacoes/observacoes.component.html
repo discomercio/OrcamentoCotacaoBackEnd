@@ -1,4 +1,5 @@
-<section [ngClass]="{'sectionDesktop': telaDesktop, 'sectionCelular': !telaDesktop}">
+<section [ngClass]="{'sectionDesktop': telaDesktop, 'sectionCelular': !telaDesktop, 'carregando': salvando}">
+        <!-- [ngClass]="{'carregando': carregandoDto || carregandoProds}" -->
     <form style="display: contents;" *ngIf="prePedidoDto">
         <header>
             <ng-container *ngIf="criando; else tituloEditando">Criar Pré-Pedido</ng-container>
@@ -41,7 +42,8 @@
                 <!-- NÃO APAGAR, POIS ESTAMOS ESPERANDO O CLIENTE CONFIRMAR QUE ESSE CAMPO SERÁ ALTERADO -->
                 <div class="umgrupoopcoes" [ngClass]="{'desab':EntregaImediata}">
                     <mat-form-field style="width: 10em;">
-                        <input matInput [readonly]="EntregaImediata" type="date" placeholder="Previsão de Entrega" required
+                        <input matInput [readonly]="EntregaImediata" type="date" placeholder="Previsão de Entrega" 
+                        [required]="!EntregaImediata"
                         [ngModelOptions]="{standalone: true}" [(ngModel)]="PrevisaoEntrega" id="entregaImediataData"
                         (blur)="verificaEntregaImediata();">
                     </mat-form-field>

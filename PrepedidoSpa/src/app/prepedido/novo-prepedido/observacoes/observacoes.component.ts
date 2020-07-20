@@ -41,7 +41,7 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
     this.verificarEmProcesso();
     this.dadosDoModelo();
   }
-
+  
   @ViewChild('autosize', { static: true }) autosize: CdkTextareaAutosize;
   triggerResize() {
     // Wait for changes to be applied, then trigger textarea resize.
@@ -57,7 +57,10 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
     this.dadosParaModelo();
     this.location.back();
   }
+
+  salvando:boolean;
   continuar() {
+    this.salvando = true;
     if (!this.dadosParaModelo())
       return false;
     this.prepedidoBuscarService.cadastrarPrepedido(this.novoPrepedidoDadosService.prePedidoDto).subscribe({
@@ -71,10 +74,11 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
           //se tiver 1 item e nenhum espaço, é o numero do prepedido criado
           if (r[0].length > 9 || r.length != 1 || r[0].indexOf(" ") >= 0) {
             this.alertaService.mostrarMensagem("Erros ao salvar. \nLista de erros: \n" + r.join("\n"));
+            this.salvando = false;
             return;
           }
           else {
-
+            this.salvando = false;
             this.alertaService.mostrarMensagem("Pré-Pedido criado com sucesso.");
             localStorage.setItem('ultima_url', document.URL);
             this.router.navigate(["prepedido/detalhes/" + r[0]]);
@@ -142,6 +146,7 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
     this.contador = this.prePedidoDto.DetalhesPrepedido.Observacoes.length;
   }
 
+required:boolean;
   public verificaEntregaImediata(): boolean {
     let retorno: boolean = true;
 

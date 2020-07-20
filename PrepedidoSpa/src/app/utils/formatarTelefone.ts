@@ -90,7 +90,7 @@ export class FormatarTelefone {
 }
 
 
-class TelefoneSeparado {
+export class TelefoneSeparado {
     public Ddd: string;
     public Telefone: string;
 }
