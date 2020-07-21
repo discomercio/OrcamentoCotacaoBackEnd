@@ -1,4 +1,5 @@
-﻿Feature: Validar permissões
+﻿@ignore
+Feature: Validar permissões
 
 Scenario: Validar permissão de criação
 em loja/resumo.asp:
