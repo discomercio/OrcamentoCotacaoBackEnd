@@ -101,13 +101,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             TestarCadastro(c => c.DadosCliente.Endereco = "",
                 "PREENCHA O ENDEREÇO.", TipoPessoa.PJ);
         }
-        [Fact]
-        public void Endereco_endereco_Errado()
-        {
-            inicializarBanco.TclientesApagar();
-            TestarCadastro(c => c.DadosCliente.Endereco = "nao existe no cep",
-                "Endereço não confere!", TipoPessoa.PJ);
-        }
+        
 
         [Fact]
         public void Endereco_Numero()
@@ -125,13 +119,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             TestarCadastro(c => c.DadosCliente.Bairro = "",
                 "PREENCHA O BAIRRO.", TipoPessoa.PJ);
         }
-        [Fact]
-        public void Endereco_Bairro_Errado()
-        {
-            inicializarBanco.TclientesApagar();
-            TestarCadastro(c => c.DadosCliente.Bairro = "bairro que não existe",
-                "Bairro não confere!", TipoPessoa.PJ);
-        }
+        
         [Fact]
         public void Endereco_Cidade()
         {

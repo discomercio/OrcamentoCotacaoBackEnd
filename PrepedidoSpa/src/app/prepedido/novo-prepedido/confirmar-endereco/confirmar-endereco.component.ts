@@ -103,6 +103,7 @@ export class ConfirmarEnderecoComponent implements OnInit {
   public voltarFoco(): void {
     let article = document.getElementById("article-confirmar-cliente");
     article.scrollTop = 0;
+    
   }
 
   public mascaraTelefone = FormatarTelefone.mascaraTelefone;

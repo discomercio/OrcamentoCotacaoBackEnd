@@ -1052,20 +1052,13 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                         retorno = false;
                     }
 
-                    if (!string.IsNullOrEmpty(c.Endereco) &&
-                        Util.RemoverAcentuacao(c.Endereco).ToUpper() !=
-                        Util.RemoverAcentuacao(cepCliente.Endereco).ToUpper())
-                    {
-                        lstErros.Add("Endereço não confere!");
-                        retorno = false;
-                    }
-
-                    if (!string.IsNullOrEmpty(c.Bairro) && Util.RemoverAcentuacao(c.Bairro).ToUpper() !=
-                        Util.RemoverAcentuacao(cepCliente.Bairro).ToUpper())
-                    {
-                        lstErros.Add("Bairro não confere!");
-                        retorno = false;
-                    }
+                    /* REUNIÃO 21/07/2020 com HAMILTON => solicitado remoção da confrontação de endereço e bairro
+                     * 
+                     *  cadastros de clientes que estão com nome da rua diferente da tabela de cep 
+                     *  ex: cliente "01.824.328/0001-95", contém "AV" no cadastro, na tabela de cep retorna "Avenida" 
+                     *  e isso difere na confrontação de endereço
+                     */
+                    
 
                     //vamos verificar se a cidade da lista de cep existe no IBGE para validar
                     if (!string.IsNullOrEmpty(cepCliente.Cidade) && !string.IsNullOrEmpty(c.Cidade))

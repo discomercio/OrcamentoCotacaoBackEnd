@@ -37,7 +37,7 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
 
   }
 
-
+  required: boolean;
   //indicador que estamos esperando dados
   public carregando = false;
 
@@ -86,7 +86,7 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
   public temUf: boolean = true;
   //saiu do campo de CEP, vamos carregar o endereco
   saiuCep() {
-    
+
     //se vazio, não damos nenhuma mensagem
     if (this.Cep == "" || this.Cep == 'undefined') {
       //nao avisamos
@@ -140,15 +140,15 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
 
   enterCep(event: Event) {
     document.getElementById("numero").focus();
-      event.cancelBubble = true;
-      event.preventDefault();
-      // event.srcElement
-      
+    event.cancelBubble = true;
+    event.preventDefault();
+    // event.srcElement
+
   }
 
   //para acessar a caixa de diálogo
   buscarCep() {
-    
+
     this.zerarCamposEndEntrega();
 
     let options: any = {
@@ -200,6 +200,6 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
       }
     });
   }
-  
+
 
 }
