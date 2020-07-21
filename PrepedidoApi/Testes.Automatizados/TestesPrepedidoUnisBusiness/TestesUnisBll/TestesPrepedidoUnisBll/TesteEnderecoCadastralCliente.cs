@@ -18,7 +18,17 @@ public    class TesteEnderecoCadastralCliente : TestesPrepedidoUnisBll
 
         }
 
-        
+        //testar o         EnderecoCadastralCliente	EnderecoCadastralClientePrepedidoUnisDto{...}
+        [Fact]
+        public void Endereco_logradouro()
+        {
+            Teste(c => c.EnderecoCadastralCliente.Endereco_logradouro = "nao existe", "Endereço não confere!", false);
+        }
+        [Fact]
+        public void Endereco_bairro()
+        {
+            Teste(c => c.EnderecoCadastralCliente.Endereco_bairro = "nao existe", "Bairro não confere!", false);
+        }
         [Fact]
         public void Endereco_cidade()
         {
