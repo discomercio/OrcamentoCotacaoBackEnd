@@ -1,0 +1,25 @@
+﻿Sobre o 
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.6" />
+
+Não atualizar para:
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.6" />
+porque existem mudanças incomátiveis e teríamos que recriar todas as chaves.
+
+Exemplo de SQL que é gerado de forma diferente:
+
+SELECT TOP(1) [x].[fabricante], [x].[produto], [x].[loja], [x].[comissao], [x].[desc_max], [x].[margem], [x].[preco_lista], [x].[qtde_max_venda], [x].[vendavel], [x.Tproduto].[fabricante], [x.Tproduto].[produto], [x.Tproduto].[cst], [x.Tproduto].[cubagem], [x.Tproduto].[descontinuado], [x.Tproduto].[descricao], [x.Tproduto].[descricao_html], [x.Tproduto].[ean], [x.Tproduto].[grupo], [x.Tproduto].[ncm], [x.Tproduto].[peso], [x.Tproduto].[preco_fabricante], [x.Tproduto].[qtde_volumes], [x.Tproduto].[subgrupo], [x.Tproduto].[vl_custo2], [x.Tproduto.Tfabricante].[fabricante], [x.Tproduto.Tfabricante].[markup], [x.Tproduto.Tfabricante].[nome]
+FROM [t_PRODUTO_LOJA] AS [x]
+INNER JOIN [t_PRODUTO] AS [x.Tproduto] ON ([x].[fabricante] = [x.Tproduto].[fabricante]) AND ([x].[produto] = [x.Tproduto].[produto])
+INNER JOIN [t_FABRICANTE] AS [x.Tproduto.Tfabricante] ON [x.Tproduto].[fabricante] = [x.Tproduto.Tfabricante].[fabricante]
+WHERE (([x.Tproduto.Tfabricante].[fabricante] = @__item_Fabricante_0) AND ([x].[loja] = @__8__locals1_loja_1)) AND ([x.Tproduto].[produto] = @__item_Produto_2)
+
+Contra:
+
+SELECT TOP(1) [t].[fabricante], [t].[produto], [t].[loja], [t].[comissao], [t].[desc_max], [t].[margem], [t].[preco_lista], [t].[qtde_max_venda], [t].[TprodutoFabricante], [t].[TprodutoProduto], [t].[vendavel], [t0].[fabricante], [t0].[produto], [t0].[cst], [t0].[cubagem], [t0].[descontinuado], [t0].[descricao], [t0].[descricao_html], [t0].[ean], [t0].[grupo], [t0].[ncm], [t0].[peso], [t0].[preco_fabricante], [t0].[qtde_volumes], [t0].[subgrupo], [t0].[vl_custo2], [t1].[fabricante], [t1].[markup], [t1].[nome]
+FROM [t_PRODUTO_LOJA] AS [t]
+LEFT JOIN [t_PRODUTO] AS [t0] ON ([t].[TprodutoFabricante] = [t0].[fabricante]) AND ([t].[TprodutoProduto] = [t0].[produto])
+LEFT JOIN [t_FABRICANTE] AS [t1] ON [t0].[fabricante] = [t1].[fabricante]
+WHERE (([t1].[fabricante] = @__item_Fabricante_0) AND ([t].[loja] = @__8__locals1_loja_1)) AND ([t0].[produto] = @__item_Produto_2)
+

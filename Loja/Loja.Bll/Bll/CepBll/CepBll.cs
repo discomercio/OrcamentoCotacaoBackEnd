@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Data.SqlClient;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Loja.Bll.Dto.CepDto;
 using Loja.Data;
 using Microsoft.EntityFrameworkCore;
-
+using System.Data.SqlClient;
 
 namespace Loja.Bll.CepBll
 {

@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Loja.Testes.Automatizados.Especificacao.Pedido.SalvarPedido
+namespace Especificacao.Especificacao.Pedido
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,19 +19,23 @@ namespace Loja.Testes.Automatizados.Especificacao.Pedido.SalvarPedido
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class PedidoMinimoFeature : object, Xunit.IClassFixture<PedidoMinimoFeature.FixtureData>, System.IDisposable
+    [Xunit.TraitAttribute("Category", "ignore")]
+    [Xunit.TraitAttribute("Category", "CaminhoFelizApi")]
+    public partial class CaminhoFelizApiFeature : object, Xunit.IClassFixture<CaminhoFelizApiFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private string[] _featureTags = ((string[])(null));
+        private string[] _featureTags = new string[] {
+                "ignore",
+                "CaminhoFelizApi"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "PedidoMinimo.feature"
+#line 1 "CaminhoFelizApi.feature"
 #line hidden
         
-        public PedidoMinimoFeature(PedidoMinimoFeature.FixtureData fixtureData, Loja_Testes_Automatizados_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public CaminhoFelizApiFeature(CaminhoFelizApiFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -40,8 +44,10 @@ namespace Loja.Testes.Automatizados.Especificacao.Pedido.SalvarPedido
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "PedidoMinimo", "O mínimo que um pedido precisa para ser cadastrado\r\nLevantado a partir do ERP/loj" +
-                    "a/PedidoNovoConfirma.asp", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "CaminhoFelizApi", "Caminho feliz da criação do pedido pela API\r\nO mínimo que um pedido precisa para " +
+                    "ser cadastrado pela API\r\nLevantado a partir do ERP/loja/PedidoNovoConfirma.asp", ProgrammingLanguage.CSharp, new string[] {
+                        "ignore",
+                        "CaminhoFelizApi"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -81,15 +87,15 @@ namespace Loja.Testes.Automatizados.Especificacao.Pedido.SalvarPedido
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Cadastrar Pedido com o mínimo de informação possível")]
-        [Xunit.TraitAttribute("FeatureTitle", "PedidoMinimo")]
-        [Xunit.TraitAttribute("Description", "Cadastrar Pedido com o mínimo de informação possível")]
-        public virtual void CadastrarPedidoComOMinimoDeInformacaoPossivel()
+        [Xunit.SkippableFactAttribute(DisplayName="Cadastrar um pedido com o mínimo de informação possível")]
+        [Xunit.TraitAttribute("FeatureTitle", "CaminhoFelizApi")]
+        [Xunit.TraitAttribute("Description", "Cadastrar um pedido com o mínimo de informação possível")]
+        public virtual void CadastrarUmPedidoComOMinimoDeInformacaoPossivel()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cadastrar Pedido com o mínimo de informação possível", null, tagsOfScenario, argumentsOfScenario);
-#line 5
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cadastrar um pedido com o mínimo de informação possível", null, tagsOfScenario, argumentsOfScenario);
+#line 8
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -109,98 +115,101 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 6
+#line 9
  testRunner.Given("Existe \"login\" = \"usuario_sistema\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 7
+#line 10
  testRunner.And("Existe \"loja\" = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 8
+#line 11
  testRunner.And("Existe cliente \"cliente_id\" = \"000000000001\" como PF", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 9
+#line 12
  testRunner.And("Existe produto \"Fabricante\" = \"001\", \"Produto\" = \"001001\", \"Preco\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 12
+#line 15
  testRunner.When("Fiz login como \"usuario_sistema\" e escolhi a loja \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 13
+#line 16
  testRunner.And("Informo \"cliente_selecionado\" = \"000000000001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 14
+#line 17
  testRunner.And("Informo \"indicacao\" = \"não\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 15
+#line 18
  testRunner.And("Informo \"SelecaoCd\" = \"AUTOMATICO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 16
+#line 19
  testRunner.And("Informo \"OutroEndereco\" = \"não\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 19
+#line 22
  testRunner.And("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 21
+#line 24
  testRunner.And("Informo \"FormaPagtoCriacao.Op_av_forma_pagto\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 22
+#line 25
  testRunner.And("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"AV\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 23
+#line 26
  testRunner.And("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 26
+#line 29
  testRunner.And("Informo \"ListaProdutos.Fabricante\" = \"0001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 27
+#line 30
  testRunner.And("Informo \"ListaProdutos.Produto\" = \"001001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 28
+#line 31
  testRunner.And("Informo \"ListaProdutos.Qtde\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 29
+#line 32
  testRunner.And("Informo \"ListaProdutos.Desc_Dado\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 30
+#line 33
  testRunner.And("Informo \"ListaProdutos.Preco_Venda\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 31
+#line 34
  testRunner.And("Informo \"ListaProdutos.Preco_Fabricante\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 32
+#line 35
  testRunner.And("Informo \"ListaProdutos.Preco_Lista\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 33
+#line 36
  testRunner.And("Informo \"ListaProdutos.Preco_NF\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 34
+#line 37
  testRunner.And("Informo \"ListaProdutos.CustoFinancFornecCoeficiente\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 35
+#line 38
  testRunner.And("Informo \"ListaProdutos.CustoFinancFornecPrecoListaBase\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 38
+#line 41
  testRunner.And("Informo \"PermiteRAStatus\" = \"não\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 39
+#line 42
  testRunner.And("Informo \"ValorTotalDestePedidoComRA\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 40
+#line 43
  testRunner.And("Informo \"VlTotalDestePedido\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 44
+#line 47
  testRunner.And("Informo \"DetalhesPrepedido.St_Entrega_Imediata\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 46
+#line 49
  testRunner.And("Informo \"DetalhesPrepedido.BemDeUso_Consumo\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 48
+#line 51
  testRunner.And("Informo \"DetalhesPrepedido.InstaladorInstala\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 51
+#line 54
  testRunner.And("Salvo o pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 52
+#line 55
  testRunner.Then("O pedido é criado", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 56
+ testRunner.And("Campo \"av_forma_pagto\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -213,12 +222,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                PedidoMinimoFeature.FeatureSetup();
+                CaminhoFelizApiFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                PedidoMinimoFeature.FeatureTearDown();
+                CaminhoFelizApiFeature.FeatureTearDown();
             }
         }
     }

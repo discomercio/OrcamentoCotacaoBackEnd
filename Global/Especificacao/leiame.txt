@@ -1,0 +1,8 @@
+﻿Aqui temos toda a especificação e todo o teste automatizado.
+
+Esta estrutura de diretórios foi usada porque, por exemplo, parte da validação do pedido é feita pelo cliente.
+Mais específico: para validar o "Produtor rural" na memorização de endereço do pedido, usamos uma rotina que está no cliente.
+E para reaproveitar o teste do "Produtor rural" é necessário que ele esteja no mesmo projeto.
+Caso estivesse em outro projeto, ao executar o teste do pedido ele não teria como garantir que o teste do "Produtor rural" tenha sido feito sobre os dados do pedido.
+
+
