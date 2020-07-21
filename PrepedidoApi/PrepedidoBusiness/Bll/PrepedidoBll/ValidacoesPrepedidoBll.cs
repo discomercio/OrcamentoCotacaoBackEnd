@@ -160,7 +160,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             {
                 foreach (var i in await lstcoeficientesTask)
                 {
-                    lstcoefDto = new List<CoeficienteDto>();
+                    //lstcoefDto = new List<CoeficienteDto>();
                     foreach (var y in i)
                     {
                         if (y.TipoParcela == siglaFP && y.QtdeParcelas == qtdeParcelas)
@@ -188,16 +188,13 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             {
                 foreach (var i in lstFornecedores)
                 {
-                    lstcoefDto = new List<CoeficienteDto>();
+                    lstcoefDto.Add(new CoeficienteDto()
                     {
-                        lstcoefDto.Add(new CoeficienteDto()
-                        {
-                            Fabricante = i,
-                            TipoParcela = Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA,
-                            QtdeParcelas = 1,
-                            Coeficiente = 1
-                        });
-                    }
+                        Fabricante = i,
+                        TipoParcela = Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA,
+                        QtdeParcelas = 1,
+                        Coeficiente = 1
+                    });
                 }
             }
 

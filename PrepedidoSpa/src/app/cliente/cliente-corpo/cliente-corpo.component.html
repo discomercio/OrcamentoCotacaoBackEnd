@@ -600,10 +600,10 @@ para não dar erro no console
             <span class="rotulo">
                 Dados Cadastrais
             </span>
-            <button mat-raised-button color="accent" (click)="copiarDadosClienteCadastro()" 
+            <a mat-raised-button color="accent" (click)="copiarDadosClienteCadastro()"
                 style="font-size: 80%; float: right; padding-left: 0.9em;padding-right: 0.9em;">
                 <mat-icon style="font-size: 180%; margin-left: -15%">content_copy</mat-icon> Dados Cadastrais
-            </button>
+            </a>
         </span>
 
         <div *ngIf="!cadastrando">
@@ -621,23 +621,25 @@ para não dar erro no console
             <!-- editamos na variável telefone e quem chamar precisa separar o DDD -->
             <div *ngIf="ehPf()">
                 <mat-form-field floatLabel="floatLabel()" class="edicao-telefone">
-                    <input [textMask]="{mask: mascaraTelefone}" [(ngModel)]="enderecoCadastralClientePrepedidoDto.Endereco_tel_res" 
-                    
-                        type="text" matInput placeholder="FONE RESIDENCIAL" maxlength="16" size="16" />
+                    <input [textMask]="{mask: mascaraTelefone}"
+                        [(ngModel)]="enderecoCadastralClientePrepedidoDto.Endereco_tel_res" required type="text"
+                        matInput placeholder="FONE RESIDENCIAL" maxlength="16" size="16" />
                 </mat-form-field>
 
                 <mat-form-field floatLabel="floatLabel()" class="edicao-telefone">
-                    <input [textMask]="{mask: mascaraTelefone}" [(ngModel)]="enderecoCadastralClientePrepedidoDto.Endereco_tel_cel"
-                     type="text" matInput placeholder="CELULAR" maxlength="16" size="16" />
+                    <input [textMask]="{mask: mascaraTelefone}"
+                        [(ngModel)]="enderecoCadastralClientePrepedidoDto.Endereco_tel_cel" required type="text"
+                        matInput placeholder="CELULAR" maxlength="16" size="16" />
                 </mat-form-field>
 
                 <mat-form-field floatLabel="floatLabel()" class="edicao-telefone">
-                    <input [textMask]="{mask: mascaraTelefone}" [(ngModel)]="enderecoCadastralClientePrepedidoDto.Endereco_tel_com"
-                     type="text" matInput placeholder="FONE COMERCIAL" maxlength="16" size="16" />
+                    <input [textMask]="{mask: mascaraTelefone}"
+                        [(ngModel)]="enderecoCadastralClientePrepedidoDto.Endereco_tel_com" required type="text"
+                        matInput placeholder="FONE COMERCIAL" maxlength="16" size="16" />
                 </mat-form-field>
                 <mat-form-field floatLabel="floatLabel()" class="edicao-ramal">
-                    <input matInput type="text" placeholder="RAMAL"
-                     [(ngModel)]="enderecoCadastralClientePrepedidoDto.Endereco_ramal_com" maxlength="4" size="6">
+                    <input matInput type="text" placeholder="RAMAL" required
+                        [(ngModel)]="enderecoCadastralClientePrepedidoDto.Endereco_ramal_com" maxlength="4" size="6">
                 </mat-form-field>
 
             </div>
@@ -646,17 +648,18 @@ para não dar erro no console
             <div *ngIf="!ehPf()">
                 <!-- editamos na variável telefone e quem chamar precisa separar o DDD -->
                 <mat-form-field floatLabel="floatLabel()" class="edicao-telefone">
-                    <input [textMask]="{mask: mascaraTelefone}" [(ngModel)]="enderecoCadastralClientePrepedidoDto.Endereco_tel_com"
-                        type="text" matInput placeholder="TELEFONE 1"  maxlength="16" size="16" />
+                    <input [textMask]="{mask: mascaraTelefone}"
+                        [(ngModel)]="enderecoCadastralClientePrepedidoDto.Endereco_tel_com" type="text" matInput
+                        placeholder="TELEFONE 1" required maxlength="16" size="16" />
                 </mat-form-field>
                 <mat-form-field floatLabel="floatLabel()" class="edicao-ramal">
                     <input matInput type="text" placeholder="RAMAL"
-                     [(ngModel)]="enderecoCadastralClientePrepedidoDto.Endereco_ramal_com" maxlength="4" size="6">
+                        [(ngModel)]="enderecoCadastralClientePrepedidoDto.Endereco_ramal_com" maxlength="4" size="6">
                 </mat-form-field>
 
 
                 <mat-form-field floatLabel="floatLabel()" class="edicao-telefone">
-                    <input [textMask]="{mask: mascaraTelefone}" 
+                    <input [textMask]="{mask: mascaraTelefone}"
                         [(ngModel)]="enderecoCadastralClientePrepedidoDto.Endereco_tel_com_2" type="text" matInput
                         placeholder="TELEFONE 2" maxlength="16" size="16" />
                 </mat-form-field>
@@ -677,15 +680,15 @@ para não dar erro no console
         </span>
         <span *ngIf="!cadastrando">
             <mat-form-field floatLabel="floatLabel()" class="largura-maxima-campo-formulario">
-                <input matInput type="text" placeholder="E-MAIL" [(ngModel)]="enderecoCadastralClientePrepedidoDto.Endereco_email"
-                    maxlength="60">
+                <input matInput type="text" placeholder="E-MAIL"
+                    [(ngModel)]="enderecoCadastralClientePrepedidoDto.Endereco_email" maxlength="60">
             </mat-form-field>
         </span>
 
         <!-- ************   E-MAIL (XML)  ************  -->
         <span *ngIf="!cadastrando">
             <mat-form-field floatLabel="floatLabel()" class="largura-maxima-campo-formulario">
-                <input matInput type="text" placeholder="E-MAIL (XML)" 
+                <input matInput type="text" placeholder="E-MAIL (XML)"
                     [(ngModel)]="enderecoCadastralClientePrepedidoDto.Endereco_email_xml" id="emailXml" maxlength="60">
             </mat-form-field>
         </span>
@@ -696,7 +699,8 @@ para não dar erro no console
 
                 <mat-form-field floatLabel="floatLabel()" style="width: 22ch;">
                     <mat-label>CONTRIBUINTE ICMS </mat-label>
-                    <mat-select required [(ngModel)]="enderecoCadastralClientePrepedidoDto.Endereco_contribuinte_icms_status">
+                    <mat-select required
+                        [(ngModel)]="enderecoCadastralClientePrepedidoDto.Endereco_contribuinte_icms_status">
                         <mat-option>Selecione</mat-option>
                         <mat-option [(value)]="constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO">Não
                         </mat-option>
@@ -711,8 +715,8 @@ para não dar erro no console
                 <!-- [disabled]="dadosClienteCadastroDto?.Contribuinte_Icms_Status != 2" -->
                 <mat-form-field floatLabel="floatLabel()" style="width: 25ch;"
                     [ngStyle]="{'padding':!cadastrando?'0em':''}">
-                    <input matInput type="text" placeholder="IE" [(ngModel)]="enderecoCadastralClientePrepedidoDto.Endereco_ie"
-                        maxlength="20">
+                    <input matInput type="text" placeholder="IE"
+                        [(ngModel)]="enderecoCadastralClientePrepedidoDto.Endereco_ie" maxlength="20">
                 </mat-form-field>
 
             </span>

@@ -27,7 +27,7 @@
     <!-- Fim novos campos -->
     
     <mat-form-field floatLabel="floatLabel()" class="edicao-cep">
-        <input matInput type="text" placeholder="CEP" [(ngModel)]="Cep" required maxlength="10" size="11" id="cep"
+        <input matInput type="text" placeholder="CEP" [(ngModel)]="Cep" [required]="required" maxlength="10" size="11" id="cep"
             (blur)="saiuCep()" [textMask]="{mask: mascaraCep}" (keydown.enter)="enterCep($event)">
     </mat-form-field>
     <button mat-raised-button color="accent" (click)="buscarCep()" id="naoSeiCep" style="font-size:80%;">
@@ -39,13 +39,13 @@
 
     <!-- ************   ENDEREÇO   ************  -->
     <mat-form-field floatLabel="floatLabel()" class="edicao-endereco">
-        <input matInput [readonly]="temEndereco" type="text" placeholder="ENDEREÇO" [(ngModel)]="Endereco" required
+        <input matInput [readonly]="temEndereco" type="text" placeholder="ENDEREÇO" [(ngModel)]="Endereco" [required]="required"
             maxlength="60" size="85">
     </mat-form-field>
 
     <!-- ************ Nº/COMPLEMENTO ************  -->
     <mat-form-field floatLabel="floatLabel()" class="edicao-numero">
-        <input matInput type="text" placeholder="Nº" [(ngModel)]="Numero" id="numero" required maxlength="20" size="10">
+        <input matInput type="text" placeholder="Nº" [(ngModel)]="Numero" id="numero" [required]="required" maxlength="20" size="10">
     </mat-form-field>
     <mat-form-field floatLabel="floatLabel()" class="edicao-compl">
         <input matInput type="text" placeholder="COMPLEMENTO" [(ngModel)]="Complemento" maxlength="60" size="10">
@@ -54,19 +54,19 @@
 
     <!-- ************ BAIRRO/CIDADE ************  -->
     <mat-form-field floatLabel="floatLabel()" class="edicao-bairro">
-        <input matInput [readonly]="temBairro" type="text" placeholder="BAIRRO" [(ngModel)]="Bairro" required
+        <input matInput [readonly]="temBairro" type="text" placeholder="BAIRRO" [(ngModel)]="Bairro" [required]="required"
             maxlength="72">
     </mat-form-field>
 
     <mat-form-field floatLabel="floatLabel()" class="edicao-cidade">
-        <input matInput [readonly]="temCidade" type="text" placeholder="CIDADE" [(ngModel)]="Cidade" required
+        <input matInput [readonly]="temCidade" type="text" placeholder="CIDADE" [(ngModel)]="Cidade" [required]="required"
             maxlength="60">
     </mat-form-field>
 
 
     <!-- ************ UF/CEP ************  -->
     <mat-form-field floatLabel="floatLabel()" class="edicao-uf">
-        <input matInput [readonly]="temUf" type="text" placeholder="UF" [(ngModel)]="Uf" required maxlength="2"
+        <input matInput [readonly]="temUf" type="text" placeholder="UF" [(ngModel)]="Uf" [required]="required" maxlength="2"
             size="3">
     </mat-form-field>
 

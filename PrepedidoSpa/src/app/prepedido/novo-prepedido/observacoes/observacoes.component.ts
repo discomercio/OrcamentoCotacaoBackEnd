@@ -41,7 +41,7 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
     this.verificarEmProcesso();
     this.dadosDoModelo();
   }
-  
+
   @ViewChild('autosize', { static: true }) autosize: CdkTextareaAutosize;
   triggerResize() {
     // Wait for changes to be applied, then trigger textarea resize.
@@ -58,11 +58,13 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
     this.location.back();
   }
 
-  salvando:boolean;
+  salvando: boolean;
   continuar() {
     this.salvando = true;
-    if (!this.dadosParaModelo())
+    if (!this.dadosParaModelo()) {
+      this.salvando = false;
       return false;
+    }
     this.prepedidoBuscarService.cadastrarPrepedido(this.novoPrepedidoDadosService.prePedidoDto).subscribe({
       next: (r) => {
 
@@ -86,7 +88,7 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
         }
 
       },
-      error: (r) => this.alertaService.mostrarErroInternet(r)
+      error: (r) => { this.alertaService.mostrarErroInternet(r); this.salvando = false; }
     });
     // this.dadosParaModelo();
 
@@ -146,7 +148,7 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
     this.contador = this.prePedidoDto.DetalhesPrepedido.Observacoes.length;
   }
 
-required:boolean;
+  required: boolean;
   public verificaEntregaImediata(): boolean {
     let retorno: boolean = true;
 
@@ -162,7 +164,7 @@ required:boolean;
         if (DataUtils.formata_formulario_date(this.PrevisaoEntrega) <= new Date()) {
           this.PrevisaoEntrega = "";
           this.alertaService.mostrarMensagem("A data para entrega deve ser posterior a data atual!");
-          
+
           retorno = false;
         }
         else {

@@ -36,13 +36,29 @@ export class PrepedidoDesktopComponent extends TelaDesktopBaseComponent implemen
   stringUtils = StringUtils;
 
   ngOnInit() {
-    this.montarEnderecoEntrega(this.prepedidoDto.EnderecoEntrega);
-    console.log(this.enderecoEntregaFormatado);
+    //this.prepedidoDto esta chegando null se for muito rápido
+
+    
+  }
+
+  async ngAfterViewInit() {
+    let endFormatado = async (): Promise<string> => {
+      await this.detalhesPrepedido.prepedido;
+      const response = await this.montarEnderecoEntrega(this.prepedidoDto.EnderecoEntrega);
+      return response
+    }
+
+    await this.enderecoEntregaFormatado;
+    this.enderecoEntregaFormatado = endFormatado.toString();
+    // setTimeout(() => {
+
+    // }, 3000);
+
   }
 
   public enderecoEntregaFormatado: string;
   public qtdeLinhaEndereco: number;
-  montarEnderecoEntrega(enderecoEntregaDto: EnderecoEntregaDtoClienteCadastro) {
+  montarEnderecoEntrega(enderecoEntregaDto: EnderecoEntregaDtoClienteCadastro): string {
 
     if (enderecoEntregaDto.OutroEndereco) {
       let retorno: string = "";
@@ -58,23 +74,23 @@ export class PrepedidoDesktopComponent extends TelaDesktopBaseComponent implemen
       //se a memorização não estiver ativa ou o registro foi criado no formato antigo, paramos por aqui
 
       if (enderecoEntregaDto.St_memorizacao_completa_enderecos == 0) {
-        this.enderecoEntregaFormatado = sEndereco + "\n" + enderecoEntregaDto.EndEtg_descricao_justificativa;
-        return;
+        return this.enderecoEntregaFormatado = sEndereco + "\n" + enderecoEntregaDto.EndEtg_descricao_justificativa;
+        // return;
       }
       else {
         if (this.prepedidoDto.DadosCliente.Tipo == this.constantes.ID_PF) {
-          this.enderecoEntregaFormatado = sEndereco + "\n" + enderecoEntregaDto.EndEtg_descricao_justificativa;
-          return;
+          return this.enderecoEntregaFormatado = sEndereco + "\n" + enderecoEntregaDto.EndEtg_descricao_justificativa;
+          // return;
         }
       }
-      
+
       //memorização ativa, colocamos os campos adicionais
       if (enderecoEntregaDto.EndEtg_tipo_pessoa == this.constantes.ID_PF) {
         this.enderecoEntregaFormatado = this.formatarEndereco.montarEnderecoEntregaPF(this.prepedidoDto.EnderecoEntrega, sEndereco);
 
         split = this.enderecoEntregaFormatado.split('\n');
         this.qtdeLinhaEndereco = split.length;
-        return;
+        return this.enderecoEntregaFormatado;
       }
       //se chegar aqui é PJ
       this.enderecoEntregaFormatado = this.formatarEndereco.montarEnderecoEntregaPJ(this.prepedidoDto.EnderecoEntrega, sEndereco);
@@ -82,7 +98,7 @@ export class PrepedidoDesktopComponent extends TelaDesktopBaseComponent implemen
       this.qtdeLinhaEndereco = split.length;
     }
 
-
+    return;
   }
 
   //para dizer se é PF ou PJ
@@ -93,12 +109,13 @@ export class PrepedidoDesktopComponent extends TelaDesktopBaseComponent implemen
     return true;
   }
 
-  imprimir(): void {
+  async imprimir(): Promise<void> {
     //versão para impressão somente com o pedido
     // this.router.navigate(['/prepedido/imprimir', this.prepedidoDto.NumeroPrePedido]);
-
+    await this.prepedidoDto;
     this.impressaoService.forcarImpressao = true;
     setTimeout(() => {
+      
       window.print();
       this.impressaoService.forcarImpressao = false;
     }

@@ -281,6 +281,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     //somente se o confirmarEndereco estiver atribuído. Se não estiver, é porque não estamos na tela em que precisamos testar ele
     if (this.confirmarEndereco && !this.confirmarEndereco.podeAvancar()) {
       this.alertaService.mostrarMensagem("Aguarde o carregamento do endereço antes de continuar.");
+      
       return;
     }
 
@@ -321,6 +322,13 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
         this.alertaService.mostrarMensagem("Campos inválidos. Preencha os campos marcados como obrigatórios. \nLista de erros: \n" + validacoes.join("\n"));
         this.clienteCorpo.desconverterTelefonesEnderecoDadosCadastrais(this.endCadastralClientePrepedidoDto);
         this.confirmarEndereco.desconverterTelefonesEnderecoEntrega(this.enderecoEntregaDtoClienteCadastro);
+        
+        if(this.confirmarEndereco.enderecoEntregaDtoClienteCadastro.OutroEndereco)
+        {
+          this.confirmarEndereco.required = true;
+          this.confirmarEndereco.componenteCep.required = true;
+        }        
+        this.clienteCorpo.componenteCepDadosCadastrais.required = true;
         return;
       }
       //salvar no serviço
