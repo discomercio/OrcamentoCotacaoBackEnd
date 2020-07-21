@@ -1724,7 +1724,7 @@ namespace Loja.Bll.PedidoBll
                             //grava log 
                             //commit
                             await dbgravacao.SaveChangesAsync();
-                            await dbgravacao.transacao.CommitAsync();
+                            dbgravacao.transacao.Commit();
                         }
                     }
                 }
