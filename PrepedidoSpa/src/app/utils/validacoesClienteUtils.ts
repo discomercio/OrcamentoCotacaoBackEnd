@@ -81,7 +81,7 @@ export class ValidacoesClienteUtils {
         let validacoes: string[] = new Array();
 
         let ehPf = dadosClienteCadastroDto.Tipo == this.constantes.ID_PF ? true : false;
-        debugger;
+        
         validacoes = validacoes.concat(validacoes = validacoes.concat(this.validarGeral(dadosClienteCadastroDto, true)));
 
         //converter telefones para separar os dados

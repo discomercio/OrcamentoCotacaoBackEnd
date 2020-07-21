@@ -7,7 +7,7 @@ import { CpfCnpjUtils } from 'src/app/utils/cpfCnpjUtils';
 import { DataUtils } from 'src/app/utils/dataUtils';
 import { ClienteCadastroUtils } from 'src/app/utils/ClienteCadastroUtils';
 import { ClienteCadastroDto } from 'src/app/dto/ClienteCadastro/ClienteCadastroDto';
-import { FormatarTelefone } from 'src/app/utils/formatarTelefone';
+import { FormatarTelefone, TelefoneSeparado } from 'src/app/utils/formatarTelefone';
 import { RefBancariaDtoCliente } from 'src/app/dto/ClienteCadastro/Referencias/RefBancariaDtoCliente';
 import { ListaBancoDto } from 'src/app/dto/ClienteCadastro/ListaBancoDto';
 import { BuscarClienteService } from 'src/app/servicos/cliente/buscar-cliente.service';
@@ -293,38 +293,55 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
 
   public converterTelefones(endCadastralClientePrepedidoDto: EnderecoCadastralClientePrepedidoDto): EnderecoCadastralClientePrepedidoDto {
 
-    let s = FormatarTelefone.SepararTelefone(endCadastralClientePrepedidoDto.Endereco_tel_res);
-    endCadastralClientePrepedidoDto.Endereco_tel_res = s.Telefone;
-    endCadastralClientePrepedidoDto.Endereco_ddd_res = s.Ddd;
+    let s: TelefoneSeparado = new TelefoneSeparado();
+    if (!!endCadastralClientePrepedidoDto.Endereco_tel_res) {
+      s = FormatarTelefone.SepararTelefone(endCadastralClientePrepedidoDto.Endereco_tel_res);
+      endCadastralClientePrepedidoDto.Endereco_tel_res = s.Telefone;
+      endCadastralClientePrepedidoDto.Endereco_ddd_res = s.Ddd;
+    }
 
-    s = FormatarTelefone.SepararTelefone(endCadastralClientePrepedidoDto.Endereco_tel_cel);
-    endCadastralClientePrepedidoDto.Endereco_tel_cel = s.Telefone;
-    endCadastralClientePrepedidoDto.Endereco_ddd_cel = s.Ddd;
+    if (!!endCadastralClientePrepedidoDto.Endereco_tel_cel) {
+      s = FormatarTelefone.SepararTelefone(endCadastralClientePrepedidoDto.Endereco_tel_cel);
+      endCadastralClientePrepedidoDto.Endereco_tel_cel = s.Telefone;
+      endCadastralClientePrepedidoDto.Endereco_ddd_cel = s.Ddd;
+    }
 
-    s = FormatarTelefone.SepararTelefone(endCadastralClientePrepedidoDto.Endereco_tel_com);
-    endCadastralClientePrepedidoDto.Endereco_tel_com = s.Telefone;
-    endCadastralClientePrepedidoDto.Endereco_ddd_com = s.Ddd;
+    if (!!endCadastralClientePrepedidoDto.Endereco_tel_com) {
+      s = FormatarTelefone.SepararTelefone(endCadastralClientePrepedidoDto.Endereco_tel_com);
+      endCadastralClientePrepedidoDto.Endereco_tel_com = s.Telefone;
+      endCadastralClientePrepedidoDto.Endereco_ddd_com = s.Ddd;
+    }
 
-    s = FormatarTelefone.SepararTelefone(endCadastralClientePrepedidoDto.Endereco_tel_com_2);
-    endCadastralClientePrepedidoDto.Endereco_tel_com_2 = s.Telefone;
-    endCadastralClientePrepedidoDto.Endereco_ddd_com_2 = s.Ddd;
+    if (!!endCadastralClientePrepedidoDto.Endereco_tel_com_2) {
+      s = FormatarTelefone.SepararTelefone(endCadastralClientePrepedidoDto.Endereco_tel_com_2);
+      endCadastralClientePrepedidoDto.Endereco_tel_com_2 = s.Telefone;
+      endCadastralClientePrepedidoDto.Endereco_ddd_com_2 = s.Ddd;
+    }
 
     return endCadastralClientePrepedidoDto;
   }
 
   public desconverterTelefonesEnderecoDadosCadastrais(endCadastralClientePrepedidoDto: EnderecoCadastralClientePrepedidoDto): EnderecoCadastralClientePrepedidoDto {
 
-    endCadastralClientePrepedidoDto.Endereco_tel_res = endCadastralClientePrepedidoDto.Endereco_ddd_res +
-      endCadastralClientePrepedidoDto.Endereco_tel_res;
+    if (!!endCadastralClientePrepedidoDto.Endereco_ddd_res && !!endCadastralClientePrepedidoDto.Endereco_tel_res) {
+      endCadastralClientePrepedidoDto.Endereco_tel_res = endCadastralClientePrepedidoDto.Endereco_ddd_res +
+        endCadastralClientePrepedidoDto.Endereco_tel_res;
+    }
 
-    endCadastralClientePrepedidoDto.Endereco_tel_cel = endCadastralClientePrepedidoDto.Endereco_ddd_cel +
-      endCadastralClientePrepedidoDto.Endereco_tel_cel;
+    if (!!endCadastralClientePrepedidoDto.Endereco_ddd_cel && !!endCadastralClientePrepedidoDto.Endereco_tel_cel) {
+      endCadastralClientePrepedidoDto.Endereco_tel_cel = endCadastralClientePrepedidoDto.Endereco_ddd_cel +
+        endCadastralClientePrepedidoDto.Endereco_tel_cel;
+    }
 
-    endCadastralClientePrepedidoDto.Endereco_tel_com = endCadastralClientePrepedidoDto.Endereco_ddd_com +
-      endCadastralClientePrepedidoDto.Endereco_tel_com;
+    if (!!endCadastralClientePrepedidoDto.Endereco_ddd_com && !!endCadastralClientePrepedidoDto.Endereco_tel_com) {
+      endCadastralClientePrepedidoDto.Endereco_tel_com = endCadastralClientePrepedidoDto.Endereco_ddd_com +
+        endCadastralClientePrepedidoDto.Endereco_tel_com;
+    }
 
-    endCadastralClientePrepedidoDto.Endereco_tel_com_2 = endCadastralClientePrepedidoDto.Endereco_ddd_com_2 +
-      endCadastralClientePrepedidoDto.Endereco_tel_com_2;
+    if (!!endCadastralClientePrepedidoDto.Endereco_ddd_com_2 && !!endCadastralClientePrepedidoDto.Endereco_tel_com_2) {
+      endCadastralClientePrepedidoDto.Endereco_tel_com_2 = endCadastralClientePrepedidoDto.Endereco_ddd_com_2 +
+        endCadastralClientePrepedidoDto.Endereco_tel_com_2;
+    }
 
     return endCadastralClientePrepedidoDto;
   }

@@ -47,6 +47,7 @@ export class ConfirmarEnderecoComponent implements OnInit {
     }
   }
 
+  required:boolean;
   atualizarDadosEnderecoTela(enderecoEntregaDtoClienteCadastro: EnderecoEntregaDtoClienteCadastro) {
 
     this.enderecoEntregaDtoClienteCadastro = enderecoEntregaDtoClienteCadastro;
