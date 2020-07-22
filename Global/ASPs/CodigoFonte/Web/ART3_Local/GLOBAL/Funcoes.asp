@@ -3762,6 +3762,97 @@ end function
 
 
 ' ------------------------------------------------------------------------
+'   FORMATA ENDERECO DE ENTREGA DE UM PEDIDO
+'   Formata os campos do endereço em um texto formatado.
+function pedido_formata_endereco_entrega(r_pedido, r_cliente)
+dim s_cabecalho, s_aux, s_tel_aux_1, s_tel_aux_2, s_telefones, s_endereco
+    with r_pedido
+		s_endereco = formata_endereco(.EndEtg_endereco, .EndEtg_endereco_numero, .EndEtg_endereco_complemento, .EndEtg_bairro, .EndEtg_cidade, .EndEtg_uf, .EndEtg_cep)
+		end with
+	
+    pedido_formata_endereco_entrega=s_endereco
+
+    'tem endereço de entrega diferente?
+    if r_pedido.st_end_entrega = 0 then exit function
+
+    'se a memorização não estiver ativa ou o registro foi criado no formato antigo, paramos por aqui
+    if not isActivatedFlagPedidoUsarMemorizacaoCompletaEnderecos or r_pedido.st_memorizacao_completa_enderecos = 0 then exit function
+
+    'PF, sem campos adicionais
+    if r_cliente.tipo = ID_PF then exit function
+
+    'memorização ativa, colocamos os campos adicionais
+    if r_pedido.EndEtg_tipo_pessoa = ID_PF then
+        'Nome, CPF, Produto rural, ICMS, IE
+        'Exemplo: Teste de Nome Para Entrega - CPF: 089.617.758/04 - Produtor rural: Sim (IE: 244.355.757.113)
+        s_cabecalho = r_pedido.EndEtg_nome + "<br>CPF: " + cnpj_cpf_formata(r_pedido.EndEtg_cnpj_cpf)
+        s_aux = ""
+        if r_pedido.EndEtg_produtor_rural_status = converte_numero(COD_ST_CLIENTE_PRODUTOR_RURAL_SIM) then
+                if r_pedido.EndEtg_contribuinte_icms_status = converte_numero(COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO) then
+                    s_aux = "Sim (Não contribuinte)"
+                elseif r_pedido.EndEtg_contribuinte_icms_status = converte_numero(COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM) then
+                    s_aux = "Sim (IE: " & r_pedido.EndEtg_ie & ")"
+                elseif r_pedido.EndEtg_contribuinte_icms_status = converte_numero(COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO) then
+                    s_aux = "Sim (Isento)"
+                end if
+            elseif r_pedido.EndEtg_produtor_rural_status = converte_numero(COD_ST_CLIENTE_PRODUTOR_RURAL_NAO) then
+                s_aux = "Não"
+            end if
+        if s_aux <> "" then s_cabecalho = s_cabecalho  + " - Produtor rural: " + s_aux 
+        s_cabecalho = s_cabecalho  + "<br>"
+
+        'telefones, formato: 
+        'Telefone (11) 1234-1234 - Celular (99) 90090-0099 
+        s_tel_aux_1 = formata_ddd_telefone_ramal(r_pedido.EndEtg_ddd_res, r_pedido.EndEtg_tel_res, "")
+        s_tel_aux_2 = formata_ddd_telefone_ramal(r_pedido.EndEtg_ddd_cel, r_pedido.EndEtg_tel_cel, "")
+
+        s_telefones = ""
+        if s_tel_aux_1 <> "" or s_tel_aux_2 <> "" then s_telefones = "<br>"
+        if s_tel_aux_1 <> "" then 
+            s_telefones = s_telefones + "Telefone " + s_tel_aux_1
+            if s_tel_aux_2 <> "" then s_telefones = s_telefones + " - "
+            end if
+        
+        if s_tel_aux_2 <> "" then s_telefones = s_telefones + "Celular " + s_tel_aux_2
+    	
+        pedido_formata_endereco_entrega = s_cabecalho + s_endereco + s_telefones
+        exit function
+        end if
+
+    'o endereço de entrega é de PJ
+    'Nome, CNPJ, ICMS, IE
+    'Nome de teste de outra empresa - CNPJ: 01.051.970/0001-89 - Contribuinte ICMS: Sim (IE: 244.355.757.113)
+    s_cabecalho = r_pedido.EndEtg_nome + "<br>CNPJ: " + cnpj_cpf_formata(r_pedido.EndEtg_cnpj_cpf)
+    s_aux = ""
+    if r_pedido.EndEtg_contribuinte_icms_status = converte_numero(COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO) then
+        s_aux = "Não"
+    elseif r_pedido.EndEtg_contribuinte_icms_status = converte_numero(COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM) then
+        s_aux = "Sim (IE: " & r_pedido.EndEtg_ie & ")"
+    elseif r_pedido.EndEtg_contribuinte_icms_status = converte_numero(COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO) then
+        s_aux = "Isento"
+    end if
+    if s_aux <> "" then s_cabecalho = s_cabecalho  + " - Contribuinte ICMS: " + s_aux 
+    s_cabecalho = s_cabecalho  + "<br>"
+
+    'Telefone (11) 1234-1234 - Celular (99) 90090-0099 
+    s_tel_aux_1 = formata_ddd_telefone_ramal(r_pedido.EndEtg_ddd_com, r_pedido.EndEtg_tel_com, r_pedido.EndEtg_ramal_com)
+    s_tel_aux_2 = formata_ddd_telefone_ramal(r_pedido.EndEtg_ddd_com_2, r_pedido.EndEtg_tel_com_2, r_pedido.EndEtg_ramal_com_2)
+
+    s_telefones = ""
+    if s_tel_aux_1 <> "" or s_tel_aux_2 <> "" then s_telefones = "<br>Telefone "
+    if s_tel_aux_1 <> "" then 
+        s_telefones = s_telefones + s_tel_aux_1
+        if s_tel_aux_2 <> "" then s_telefones = s_telefones + " - "
+        end if
+        
+    if s_tel_aux_2 <> "" then s_telefones = s_telefones + s_tel_aux_2
+
+    pedido_formata_endereco_entrega = s_cabecalho + s_endereco + s_telefones
+
+end function
+
+
+' ------------------------------------------------------------------------
 '   FORMATA DDD TELEFONE RAMAL
 '   Formata os campos de telefone.
 function formata_ddd_telefone_ramal(ddd, telefone, ramal)
@@ -4593,12 +4684,48 @@ dim s_resp, intIdNFeEmitente
 		s_resp = DIR_TARGET_ONE_PDF_DANFE_EMITENTE__DIS_01
 	elseif intIdNFeEmitente = ID_NFE_EMITENTE__DIS_03 then
 		s_resp = DIR_TARGET_ONE_PDF_DANFE_EMITENTE__DIS_03
+	elseif intIdNFeEmitente = ID_NFE_EMITENTE__DIS_903 then
+		s_resp = DIR_TARGET_ONE_PDF_DANFE_EMITENTE__DIS_903
 	else
 		s_resp = ""
 		end if
 		
 	obtem_path_pdf_danfe=s_resp
 end function
+
+
+
+' ------------------------------------------------------------------------
+'   OBTEM PATH XML NFE
+'   Retorna o path do diretório onde estão os arquivos XML das NFe's
+'	do referido emitente.
+function obtem_path_xml_nfe(byval idNFeEmitente)
+dim s_resp, intIdNFeEmitente
+
+	obtem_path_xml_nfe = ""
+	
+	if Not IsNumeric(idNFeEmitente) then exit function
+	intIdNFeEmitente= CInt(idNFeEmitente)
+	
+	if intIdNFeEmitente = ID_NFE_EMITENTE__OLD01_01 then
+		s_resp = DIR_TARGET_ONE_XML_NFE_EMITENTE__OLD01_01
+	elseif intIdNFeEmitente = ID_NFE_EMITENTE__OLD03_01 then
+		s_resp = DIR_TARGET_ONE_XML_NFE_EMITENTE__OLD03_01
+	elseif intIdNFeEmitente = ID_NFE_EMITENTE__OLD02_02 then
+		s_resp = DIR_TARGET_ONE_XML_NFE_EMITENTE__OLD02_02
+	elseif intIdNFeEmitente = ID_NFE_EMITENTE__DIS_01 then
+		s_resp = DIR_TARGET_ONE_XML_NFE_EMITENTE__DIS_01
+	elseif intIdNFeEmitente = ID_NFE_EMITENTE__DIS_03 then
+		s_resp = DIR_TARGET_ONE_XML_NFE_EMITENTE__DIS_03
+	elseif intIdNFeEmitente = ID_NFE_EMITENTE__DIS_903 then
+		s_resp = DIR_TARGET_ONE_XML_NFE_EMITENTE__DIS_903
+	else
+		s_resp = ""
+		end if
+		
+	obtem_path_xml_nfe=s_resp
+end function
+
 
 
 ' ------------------------------------------------------------------------
@@ -5049,6 +5176,8 @@ dim s_resp
 		s_resp = "Amex"
 	elseif bandeira = "elo" then
 		s_resp = "Elo"
+	elseif bandeira = "hipercard" then
+		s_resp = "Hipercard"
 	elseif bandeira = "diners" then
 		s_resp = "Diners"
 	elseif bandeira = "discover" then
@@ -5083,6 +5212,8 @@ dim s_resp
 		s_resp = COD_AMEX_PRAZO_PAGTO_LOJA
 	elseif bandeira = Ucase(CIELO_BANDEIRA__ELO) then
 		s_resp = COD_ELO_PRAZO_PAGTO_LOJA
+	elseif bandeira = Ucase(CIELO_BANDEIRA__HIPERCARD) then
+		s_resp = COD_HIPERCARD_PRAZO_PAGTO_LOJA
 	elseif bandeira = Ucase(CIELO_BANDEIRA__DINERS) then
 		s_resp = COD_DINERS_PRAZO_PAGTO_LOJA
 	elseif bandeira = Ucase(CIELO_BANDEIRA__DISCOVER) then
@@ -5115,6 +5246,8 @@ dim s_resp
 		s_resp = COD_AMEX_PRAZO_PAGTO_EMISSOR
 	elseif bandeira = Ucase(CIELO_BANDEIRA__ELO) then
 		s_resp = COD_ELO_PRAZO_PAGTO_EMISSOR
+	elseif bandeira = Ucase(CIELO_BANDEIRA__HIPERCARD) then
+		s_resp = COD_HIPERCARD_PRAZO_PAGTO_EMISSOR
 	elseif bandeira = Ucase(CIELO_BANDEIRA__DINERS) then
 		s_resp = COD_DINERS_PRAZO_PAGTO_EMISSOR
 	elseif bandeira = Ucase(CIELO_BANDEIRA__DISCOVER) then
@@ -5146,6 +5279,8 @@ dim s_resp
 		s_resp = "Amex.gif"
 	elseif bandeira = Ucase(CIELO_BANDEIRA__ELO) then
 		s_resp = "Elo.gif"
+	elseif bandeira = Ucase(CIELO_BANDEIRA__HIPERCARD) then
+		s_resp = "Hipercard.gif"
 	elseif bandeira = Ucase(CIELO_BANDEIRA__DINERS) then
 		s_resp = "Diners.gif"
 	elseif bandeira = Ucase(CIELO_BANDEIRA__DISCOVER) then
@@ -5191,6 +5326,7 @@ function CieloArrayBandeiras
 							CIELO_BANDEIRA__MASTERCARD, _
 							CIELO_BANDEIRA__AMEX, _
 							CIELO_BANDEIRA__ELO, _
+							CIELO_BANDEIRA__HIPERCARD, _
 							CIELO_BANDEIRA__DINERS, _
 							CIELO_BANDEIRA__DISCOVER, _
 							CIELO_BANDEIRA__AURA, _
@@ -5582,30 +5718,6 @@ dim stmANSI
 	End If
 	On error Goto 0
 End Function
-
-
-' ------------------------------------------------------------------------
-'   isLojaHabilitadaProdCompostoECommerce
-'
-function isLojaHabilitadaProdCompostoECommerce(byval loja)
-dim blnLojaHabilitada
-	isLojaHabilitadaProdCompostoECommerce = False
-	loja = Trim("" & loja)
-	blnLojaHabilitada = False
-	if loja = NUMERO_LOJA_ECOMMERCE_AR_CLUBE then
-		blnLojaHabilitada = True
-	elseif loja = NUMERO_LOJA_BONSHOP then
-		blnLojaHabilitada = True
-	elseif isLojaVrf(loja) then
-		blnLojaHabilitada = True
-	elseif loja = NUMERO_LOJA_MARCELO_ARTVEN then
-		blnLojaHabilitada = True
-	elseif loja = NUMERO_LOJA_BONSHOP_LAB then
-		blnLojaHabilitada = True
-		end if
-
-	if blnLojaHabilitada = True then isLojaHabilitadaProdCompostoECommerce = True
-end function
 
 
 ' ------------------------------------------------------------------------
@@ -6117,21 +6229,5 @@ dim s_descricao, s_cor
     end select
     st_devolucao_descricao = s_descricao
     st_devolucao_cor = s_cor
-end function
-
-
-' ___________________________________
-' isLojaVrf
-'
-function isLojaVrf(byval loja)
-	
-	isLojaVrf = False
-
-	loja  = Trim("" & loja)
-	
-	if (loja = NUMERO_LOJA_VRF) Or (loja = NUMERO_LOJA_VRF2) Or (loja = NUMERO_LOJA_VRF3) Or (loja = NUMERO_LOJA_VRF4) then
-		isLojaVrf = True
-		end if
-
 end function
 %>

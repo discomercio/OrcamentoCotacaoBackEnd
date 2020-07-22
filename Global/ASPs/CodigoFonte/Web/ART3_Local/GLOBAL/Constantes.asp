@@ -40,7 +40,7 @@
 	Const URL_FILE__JQUERY_MY_PLUGIN = "../Global/jquery-my-plugin.js?v=002"
 	Const URL_FILE__JQUERY_UI_MY_PLUGIN = "../Global/jquery-ui-my-plugin.js?v=002"
 	Const URL_FILE__JQUERY_MASKMONEY = "../Global/jquery.maskMoney.min.js?v=001"
-	Const URL_FILE__GLOBAL_JS = "../Global/global.js?v=064"
+	Const URL_FILE__GLOBAL_JS = "../Global/global.js?v=065"
 	Const URL_FILE__SSL_JS = "../Global/SSL.js?v=004"
 	Const URL_FILE__CONST_JS = "../Global/const.js?v=001"
 	Const URL_FILE__CONSTXL_JS = "../Global/constXL.js?v=001"
@@ -56,6 +56,12 @@
 '	ATENÇÃO: SE HOUVER NECESSIDADE DE ALTERAR O CSS, CRIAR UM NOVO ARQUIVO E INCREMENTAR O NÚMERO DA VERSÃO QUE FAZ PARTE DA COMPOSIÇÃO DO NOME
 '	======== ISSO É NECESSÁRIO PORQUE O HTML DO RECIBO É ARMAZENADO NO BD P/ PERMITIR POSTERIOR REIMPRESSÃO E O CSS VINCULADO DEVE ESTAR PRESERVADO!
 	Const URL_FILE__BRASPAG_CARTAO_RECIBO_CSS = "../Global/eBraspagCartaoRecibo_v001.css"
+
+'	CÓDIGOS QUE IDENTIFICAM A UNIDADE DE NEGÓCIO A QUE A LOJA PERTENCE
+	Const COD_UNIDADE_NEGOCIO_LOJA__BS = "BS"
+	Const COD_UNIDADE_NEGOCIO_LOJA__AC = "AC"
+	Const COD_UNIDADE_NEGOCIO_LOJA__VRF = "VRF"
+	Const COD_UNIDADE_NEGOCIO_LOJA__GARANTIA = "GAR"
 
 '	SIGLAS DE UF
 	Const SIGLA_UF__SP = "SP"
@@ -140,15 +146,13 @@
 	Const MAX_TAMANHO_ID_ORCAMENTISTA_E_INDICADOR = 20
 	Const MAX_TAMANHO_SENHA = 16
 	Const MAX_TAMANHO_LOJA = 3
-	
-'	Percentual de deságio para RA Líquida
-	Const PERC_DESAGIO_RA_LIQUIDA = 20
 
 '	Criptografia em SessionCtrl (tratamento da sessão expirada)
 	Const FATOR_CRIPTO_SESSION_CTRL = "1329"
 	Const SESSION_CTRL_MODULO_CENTRAL = "CENTR"
 	Const SESSION_CTRL_MODULO_LOJA = "LOJA"
 	Const SESSION_CTRL_MODULO_ORCAMENTO = "ORCTO"
+    Const SESSION_CTRL_MODULO_APIUNIS = "APIUN"
 '	Tempo de timeout (em minutos) para a sessão expirar por estar inativa.
 '	Este valor é usado pela rotina implementada p/ recriar automaticamente
 '	a sessão expirada no IIS.
@@ -189,6 +193,7 @@
 	Const CIELO_BANDEIRA__MASTERCARD = "mastercard"
 	Const CIELO_BANDEIRA__AMEX = "amex"
 	Const CIELO_BANDEIRA__ELO = "elo"
+	Const CIELO_BANDEIRA__HIPERCARD = "hipercard"
 	Const CIELO_BANDEIRA__DINERS = "diners"
 	Const CIELO_BANDEIRA__DISCOVER = "discover"
 	Const CIELO_BANDEIRA__AURA = "aura"
@@ -303,6 +308,7 @@
 	Const BRASPAG_BANDEIRA__MASTERCARD = "mastercard"
 	Const BRASPAG_BANDEIRA__AMEX = "amex"
 	Const BRASPAG_BANDEIRA__ELO = "elo"
+	Const BRASPAG_BANDEIRA__HIPERCARD = "hipercard"
 	Const BRASPAG_BANDEIRA__DINERS = "diners"
 	Const BRASPAG_BANDEIRA__DISCOVER = "discover"
 	Const BRASPAG_BANDEIRA__AURA = "aura"
@@ -355,6 +361,9 @@
 	Const COD_ELO_PRAZO_PAGTO_LOJA = "EloPrazoLj"
 	Const COD_ELO_PRAZO_PAGTO_EMISSOR = "EloPrazoCar"
 	
+	Const COD_HIPERCARD_PRAZO_PAGTO_LOJA = "HipePrazoLj"
+	Const COD_HIPERCARD_PRAZO_PAGTO_EMISSOR = "HipePrazoCar"
+
 	Const COD_DINERS_PRAZO_PAGTO_LOJA = "DnrsPrazoLj"
 	Const COD_DINERS_PRAZO_PAGTO_EMISSOR = "DnrsPrazoCar"
 	
@@ -488,6 +497,10 @@
 
 	Const COD_PLATAFORMA_ORIGEM_PEDIDO__ERP = 0
 	Const COD_PLATAFORMA_ORIGEM_PEDIDO__MAGENTO = 1
+
+	Const COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP = 1
+	Const COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS = 2
+	Const COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS = 3
 
   ' CÓDIGOS PARA NÍVEL DOS USUÁRIOS
 	Const ID_VENDEDOR		= "V"
@@ -674,11 +687,6 @@
     Const COD_FLUXO_MENSAGEM_CHAMADOS_EM_PEDIDOS__TX = "TX"
     Const COD_FLUXO_MENSAGEM_CHAMADOS_EM_PEDIDOS__RX = "RX"
 
-'   EMAIL REMETENTE DE ENVIO DE NOTIFICAÇÃO
-    Const EMAILSNDSVC_REMETENTE__CHAMADOS_EM_PEDIDOS = "modulo_chamados@tropikal.com.br"
-    Const EMAILSNDSVC_REMETENTE__PEDIDO_DEVOLUCAO = "modulo_devolucao@tropikal.com.br"
-	Const EMAILSNDSVC_REMETENTE__SENTINELA_SISTEMA = "sentinela_sistema@tropikal.com.br"
-
 
 '	GRUPOS DE CÓDIGOS ARMAZENADOS EM T_CODIGO_DESCRICAO
 	Const GRUPO_T_CODIGO_DESCRICAO__OCORRENCIAS_EM_PEDIDOS__TIPO_OCORRENCIA = "OcorrenciasEmPedidos_TipoOcorrencia"
@@ -849,8 +857,31 @@
 	Const ID_PARAMETRO_Flag_Pedido_MemorizacaoCompletaEnderecos = "Flag_Pedido_MemorizacaoCompletaEnderecos"
 	Const ID_PARAMETRO_MagentoPedidoComIndicadorListaLojaErp = "MagentoPedidoComIndicadorListaLojaErp"
 	Const ID_PARAMETRO_EmailDestinatarioAlertaEdicaoCadastroClienteComPedidoCreditoOkEntregaPendente = "EmailDestinatarioAlertaEdicaoCadastroClienteComPedidoCreditoOkEntregaPendente"
-	
-	
+	Const ID_PARAMETRO_CtrlRelatorio_RelControleImpostos_TimeoutLockEmMinutos = "CtrlRelatorio_RelControleImpostos_TimeoutLockEmMinutos"
+    Const ID_PARAMETRO_CtrlRelatorio_RelControleImpostos_MaxQtdeResultadoPorConsulta = "CtrlRelatorio_RelControleImpostos_MaxQtdeResultadoPorConsulta"
+	Const ID_PARAMETRO_SSW_Rastreamento_Lista_Transportadoras = "SSW_Rastreamento_Lista_Transportadoras"
+	Const ID_PARAMETRO_PERC_DESAGIO_RA_LIQUIDA = "PERC_DESAGIO_RA_LIQUIDA"
+	Const ID_PARAMETRO_PRAZO_ACESSO_REL_PEDIDOS_INDICADORES_LOJA = "PRAZO_ACESSO_REL_PEDIDOS_INDICADORES_LOJA"
+	Const ID_PARAMETRO_EMAILSNDSVC_REMETENTE__MENSAGEM_SISTEMA = "EMAILSNDSVC_REMETENTE__MENSAGEM_SISTEMA"
+	Const ID_PARAMETRO_EMAILSNDSVC_REMETENTE__CHAMADOS_EM_PEDIDOS = "EMAILSNDSVC_REMETENTE__CHAMADOS_EM_PEDIDOS"
+	Const ID_PARAMETRO_EMAILSNDSVC_REMETENTE__PEDIDO_DEVOLUCAO = "EMAILSNDSVC_REMETENTE__PEDIDO_DEVOLUCAO"
+	Const ID_PARAMETRO_EMAILSNDSVC_REMETENTE__SENTINELA_SISTEMA = "EMAILSNDSVC_REMETENTE__SENTINELA_SISTEMA"
+
+
+'   CONSTANTES QUE IDENTIFICAM REGISTROS ARMAZENADOS NA TABELA "t_CTRL_RELATORIO"
+    Const ID_CTRL_RELATORIO_RelControleImpostos = 1
+
+'   CONSTANTES COM O CÓDIGO DO MOTIVO DO LOCK TER SIDO LIBERADO NO CONTROLE DE RELATÓRIO
+    Const CTRL_RELATORIO_CodMotivoLockReleased_OperacaoFinalizada = 1
+    Const CTRL_RELATORIO_CodMotivoLockReleased_AcessadaTelaResultado = 100
+    Const CTRL_RELATORIO_CodMotivoLockReleased_AcessadaTelaFiltro = 200
+    Const CTRL_RELATORIO_CodMotivoLockReleased_AcessadaTelaInicialCentral = 301
+    Const CTRL_RELATORIO_CodMotivoLockReleased_AcessadaTelaInicialLoja = 302
+    Const CTRL_RELATORIO_CodMotivoLockReleased_SessaoEncerradaCentral = 901
+    Const CTRL_RELATORIO_CodMotivoLockReleased_SessaoEncerradaLoja = 902
+    Const CTRL_RELATORIO_CodMotivoLockReleased_ConflitoAcessoConcorrente = 999
+
+
   ' CONSTANTES PARA USAR COM O BANCO DE DADOS
 	Const BD_DATA_NULA = "DEC 30 1899"
 	Const BD_CURINGA_TODOS = "%"
@@ -1400,8 +1431,6 @@
 
 
   ' LOJA
-'	Const PRAZO_ACESSO_REL_PEDIDOS_INDICADORES_LOJA     = 5
-	Const PRAZO_ACESSO_REL_PEDIDOS_INDICADORES_LOJA     = 8
 	Const OP_LJA_CADASTRA_NOVO_PEDIDO					= 50100
 	Const OP_LJA_CADASTRA_NOVO_ORCAMENTO				= 50200
 	Const OP_LJA_CONSULTA_PEDIDO						= 50300
@@ -2039,6 +2068,9 @@
 		dim EndEtg_produtor_rural_status
 		dim EndEtg_ie
 		dim EndEtg_rg
+		dim PrevisaoEntregaData
+		dim PrevisaoEntregaUsuarioUltAtualiz
+		dim PrevisaoEntregaDtHrUltAtualiz
 		end class
 
 	class cl_ITEM_PEDIDO
@@ -2058,6 +2090,7 @@
 		dim descricao_html
 		dim ean
 		dim grupo
+        dim subgrupo
 		dim peso
 		dim qtde_volumes
 		dim abaixo_min_status
@@ -2092,6 +2125,7 @@
 		dim descricao_html
 		dim ean
 		dim grupo
+        dim subgrupo
 		dim peso
 		dim qtde_volumes
 		dim abaixo_min_status
@@ -2223,6 +2257,40 @@
         dim perc_agio
 		end class
 
+    class cl_ESTOQUE_TRANSFERENCIA_ITEM
+        dim fabricante
+        dim produto
+        dim qtde
+        dim aliq_ipi
+        dim aliq_icms
+        dim vl_ipi
+        end class
+
+    class cl_ESTOQUE_TRANSFERENCIA_ITEM_SUB
+        dim documento
+        dim id_estoque_origem
+        dim entrada_tipo
+        dim fabricante
+        dim produto
+        dim descricao_html
+        dim qtde
+        dim preco_fabricante
+        dim vl_custo2
+        dim vl_BC_ICMS_ST
+        dim vl_ICMS_ST
+        dim ncm
+        dim cst
+        dim st_ncm_cst_herdado_tabela_produto
+        dim ean
+        dim aliq_ipi
+        dim aliq_icms
+        dim vl_ipi
+        dim preco_origem
+        dim produto_xml
+        dim nfe_entrada_numero
+        dim nfe_entrada_serie
+        end class
+
 	class cl_ITEM_ESTOQUE
 		dim id_estoque
 		dim fabricante
@@ -2278,6 +2346,7 @@
         dim aliq_ipi
         dim aliq_icms
         dim vl_ipi
+        dim vl_frete
 		end class
 
     class cl_ITEM_ESTOQUE_XML
@@ -2288,10 +2357,17 @@
         dim xml_prod__qCom
         dim xml_prod__vUnCom
         dim xml_prod__vProd
+        dim xml_prod__vFrete
         dim xml_imposto__pICMS
         dim xml_imposto__pIPI
         dim xml_imposto__vIPI
         end class
+
+	class cl_ITEM_TRANSF_ENTRE_CD
+		dim fabricante
+		dim produto
+		dim qtde
+		end class
 
 	class cl_AGRUPA_KIT_POR_PRECO
 		dim id_estoque
@@ -2329,6 +2405,7 @@
 		dim descricao_html
 		dim ean
 		dim grupo
+        dim subgrupo
 		dim peso
 		dim qtde_volumes
 		dim abaixo_min_status
@@ -2465,6 +2542,7 @@
 		dim endereco_produtor_rural_status
 		dim endereco_ie
 		dim endereco_rg
+		dim endereco_contato
 		dim EndEtg_email
 		dim EndEtg_email_xml
 		dim EndEtg_nome
@@ -2484,6 +2562,9 @@
 		dim EndEtg_produtor_rural_status
 		dim EndEtg_ie
 		dim EndEtg_rg
+		dim PrevisaoEntregaData
+		dim PrevisaoEntregaUsuarioUltAtualiz
+		dim PrevisaoEntregaDtHrUltAtualiz
 		end class
 
 	class cl_ITEM_ORCAMENTO
@@ -2505,6 +2586,7 @@
 		dim obs
 		dim ean
 		dim grupo
+        dim subgrupo
 		dim peso
 		dim qtde_volumes
 		dim abaixo_min_status
@@ -2541,6 +2623,7 @@
 		dim obs
 		dim ean
 		dim grupo
+        dim subgrupo
 		dim peso
 		dim qtde_volumes
 		dim abaixo_min_status
@@ -2991,4 +3074,38 @@
         dim nome_fantasia
         dim razao_social_nome_iniciais_em_maiusculas
         end class
+
+	class cl_USUARIO
+		dim usuario
+		dim nivel
+		dim loja
+		dim senha
+		dim nome
+		dim datastamp
+		dim bloqueado
+		dim dt_cadastro
+		dim dt_ult_atualizacao
+		dim dt_ult_alteracao_senha
+		dim dt_ult_acesso
+		dim vendedor_externo
+		dim vendedor_loja
+		dim SessionCtrlTicket
+		dim SessionCtrlLoja
+		dim SessionCtrlModulo
+		dim SessionCtrlDtHrLogon
+		dim fin_email_remetente
+		dim fin_servidor_smtp
+		dim fin_usuario_smtp
+		dim fin_senha_smtp
+		dim fin_display_name_remetente
+		dim nome_iniciais_em_maiusculas
+		dim fin_servidor_smtp_porta
+		dim email
+		dim SessionTokenModuloCentral
+		dim DtHrSessionTokenModuloCentral
+		dim SessionTokenModuloLoja
+		dim DtHrSessionTokenModuloLoja
+		dim nivel_acesso_bloco_notas_pedido
+		dim nivel_acesso_chamado
+		end class
 %>

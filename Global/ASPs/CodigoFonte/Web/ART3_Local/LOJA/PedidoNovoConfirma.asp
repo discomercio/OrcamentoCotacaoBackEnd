@@ -301,16 +301,16 @@
 	EndEtg_email = Trim(Request.Form("EndEtg_email"))
 	EndEtg_email_xml = Trim(Request.Form("EndEtg_email_xml"))
 	EndEtg_nome = Trim(Request.Form("EndEtg_nome"))
-	EndEtg_ddd_res = Trim(Request.Form("EndEtg_ddd_res"))
-	EndEtg_tel_res = Trim(Request.Form("EndEtg_tel_res"))
-	EndEtg_ddd_com = Trim(Request.Form("EndEtg_ddd_com"))
-	EndEtg_tel_com = Trim(Request.Form("EndEtg_tel_com"))
-	EndEtg_ramal_com = Trim(Request.Form("EndEtg_ramal_com"))
-	EndEtg_ddd_cel = Trim(Request.Form("EndEtg_ddd_cel"))
-	EndEtg_tel_cel = Trim(Request.Form("EndEtg_tel_cel"))
-	EndEtg_ddd_com_2 = Trim(Request.Form("EndEtg_ddd_com_2"))
-	EndEtg_tel_com_2 = Trim(Request.Form("EndEtg_tel_com_2"))
-	EndEtg_ramal_com_2 = Trim(Request.Form("EndEtg_ramal_com_2"))
+	EndEtg_ddd_res = retorna_so_digitos(Trim(Request.Form("EndEtg_ddd_res")))
+	EndEtg_tel_res = retorna_so_digitos(Trim(Request.Form("EndEtg_tel_res")))
+	EndEtg_ddd_com = retorna_so_digitos(Trim(Request.Form("EndEtg_ddd_com")))
+	EndEtg_tel_com = retorna_so_digitos(Trim(Request.Form("EndEtg_tel_com")))
+	EndEtg_ramal_com = retorna_so_digitos(Trim(Request.Form("EndEtg_ramal_com")))
+	EndEtg_ddd_cel = retorna_so_digitos(Trim(Request.Form("EndEtg_ddd_cel")))
+	EndEtg_tel_cel = retorna_so_digitos(Trim(Request.Form("EndEtg_tel_cel")))
+	EndEtg_ddd_com_2 = retorna_so_digitos(Trim(Request.Form("EndEtg_ddd_com_2")))
+	EndEtg_tel_com_2 = retorna_so_digitos(Trim(Request.Form("EndEtg_tel_com_2")))
+	EndEtg_ramal_com_2 = retorna_so_digitos(Trim(Request.Form("EndEtg_ramal_com_2")))
 	EndEtg_tipo_pessoa = Trim(Request.Form("EndEtg_tipo_pessoa"))
 	EndEtg_cnpj_cpf = Trim(Request.Form("EndEtg_cnpj_cpf"))
 	EndEtg_contribuinte_icms_status = Trim(Request.Form("EndEtg_contribuinte_icms_status"))
@@ -329,7 +329,7 @@
 
 	opcao_venda_sem_estoque = Trim(request("opcao_venda_sem_estoque"))
 	
-	dim s_forma_pagto, s_obs1, s_obs2, s_recebido, s_etg_imediata, s_bem_uso_consumo, s_pedido_ac, s_numero_mktplace, s_origem_pedido
+	dim s_forma_pagto, s_obs1, s_obs2, s_recebido, s_etg_imediata, s_bem_uso_consumo, s_pedido_ac, s_numero_mktplace, s_origem_pedido, c_data_previsao_entrega
     dim s_nf_texto, s_num_pedido_compra
 	s_obs1=Trim(request("c_obs1"))
 	s_obs2=Trim(request("c_obs2"))
@@ -338,6 +338,7 @@
     s_origem_pedido = Trim(Request("c_origem_pedido"))
 	s_recebido=Trim(request("rb_recebido"))
 	s_etg_imediata=Trim(request("rb_etg_imediata"))
+	c_data_previsao_entrega = Trim(Request("c_data_previsao_entrega"))
 	s_bem_uso_consumo=Trim(request("rb_bem_uso_consumo"))
 	s_forma_pagto=Trim(request("c_forma_pagto"))
     s_nf_texto = Trim(request("c_nf_texto"))
@@ -712,6 +713,21 @@
 		end if
 	
 	
+'	CONSISTÊNCIA PARA VALOR ZERADO
+	if alerta="" then
+		for i=Lbound(v_item) to Ubound(v_item)
+			with v_item(i)
+				if .preco_venda <= 0 then
+					alerta=texto_add_br(alerta)
+					alerta=alerta & "Produto '" & .produto & "' está com valor de venda zerado!"
+				elseif ((rb_RA = "S") And (permite_RA_status = 1)) And (.preco_NF <= 0) then
+					alerta=texto_add_br(alerta)
+					alerta=alerta & "Produto '" & .produto & "' está com preço zerado!"
+					end if
+				end with
+			next
+		end if
+
 '	VERIFICA CADA UM DOS PRODUTOS SELECIONADOS
 	dim desc_dado_arredondado
 	if alerta="" then
@@ -743,6 +759,7 @@
 					.descricao_html = Trim("" & rs("descricao_html"))
 					.ean = Trim("" & rs("ean"))
 					.grupo = Trim("" & rs("grupo"))
+                    .subgrupo = Trim("" & rs("subgrupo"))
 					.peso = rs("peso")
 					.qtde_volumes = rs("qtde_volumes")
 					.markup_fabricante = rs("markup")
@@ -1341,6 +1358,19 @@
 		if s_etg_imediata = "" then
 			alerta = "É necessário selecionar uma opção para o campo 'Entrega Imediata'."
 			end if
+
+		if CLng(s_etg_imediata) = CLng(COD_ETG_IMEDIATA_NAO) then
+			if c_data_previsao_entrega = "" then
+				alerta=texto_add_br(alerta)
+				alerta=alerta & "É necessário informar a data de previsão de entrega"
+			elseif Not IsDate(c_data_previsao_entrega) then
+				alerta=texto_add_br(alerta)
+				alerta=alerta & "Data de previsão de entrega informada é inválida"
+			elseif StrToDate(c_data_previsao_entrega) <= Date then
+				alerta=texto_add_br(alerta)
+				alerta=alerta & "Data de previsão de entrega deve ser uma data futura"
+				end if
+			end if
 		end if
 
 	if alerta = "" then
@@ -1420,7 +1450,7 @@
 		end if
 	
 	'TRATAMENTO PARA CADASTRAMENTO DE PEDIDOS DO SITE MAGENTO DA BONSHOP
-	if (loja = NUMERO_LOJA_BONSHOP) And (operacao_origem = OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO) then
+	if isLojaBonshop(loja) And (operacao_origem = OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO) then
 		if alerta = "" then
 			if s_pedido_ac = "" then
 				alerta=texto_add_br(alerta)
@@ -1515,11 +1545,11 @@
 					end if 'if Not rs.Eof
 				end if 'if s_pedido_ac <> "" then
 			end if 'if alerta = "" then
-		end if 'if (loja = NUMERO_LOJA_BONSHOP) And (operacao_origem = OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO)
+		end if 'if isLojaBonshop(loja) And (operacao_origem = OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO)
 
 	'TRATAMENTO PARA CADASTRAMENTO DE PEDIDOS DO SITE MAGENTO DO ARCLUBE
-	dim blnPedidoECommerceOrigemMarketplaceCreditoOkAutomatico
-	blnPedidoECommerceOrigemMarketplaceCreditoOkAutomatico = False
+	dim blnPedidoECommerceCreditoOkAutomatico
+	blnPedidoECommerceCreditoOkAutomatico = False
 	if loja = NUMERO_LOJA_ECOMMERCE_AR_CLUBE then
 		if alerta = "" then
 			if s_origem_pedido = "" then
@@ -1528,8 +1558,10 @@
 			end if
 		
 		if alerta = "" then
-		'	SOMENTE PEDIDO ORIGINADO PELO TELEVENDAS DO ARCLUBE PODE FICAR SEM O Nº PEDIDO MAGENTO
-			if Trim(s_origem_pedido) <> "002" then
+		'	PARA PEDIDOS DO ARCLUBE, É PERMITIDO FICAR SEM O Nº MAGENTO SOMENTE NOS SEGUINTES CASOS:
+		'		1) PEDIDO ORIGINADO PELO TELEVENDAS
+		'		2) PEDIDO GERADO CONTRA A TRANSPORTADORA (EM CASOS QUE A TRANSPORTADORA SE RESPONSABILIZA PELA REPOSIÇÃO DE MERCADORIA EXTRAVIADA)
+			if (Trim(s_origem_pedido) <> "002") And (Trim(s_origem_pedido) <> "019") then
 				if s_pedido_ac = "" then
 					alerta=texto_add_br(alerta)
 					alerta=alerta & "Informe o nº Magento"
@@ -1569,7 +1601,7 @@
 				'	OBTÉM O PERCENTUAL DE COMISSÃO DO MARKETPLACE
 					perc_RT = rs2("parametro_campo_real")
 				'	DEVE COLOCAR AUTOMATICAMENTE COM 'CRÉDITO OK'?
-					if rs2("parametro_1_campo_flag") = 1 then blnPedidoECommerceOrigemMarketplaceCreditoOkAutomatico = True
+					if rs2("parametro_1_campo_flag") = 1 then blnPedidoECommerceCreditoOkAutomatico = True
 				'	Nº PEDIDO MARKETPLACE É OBRIGATÓRIO?
 					if rs2("parametro_2_campo_flag") = 1 then
 						if s_numero_mktplace = "" then
@@ -1813,11 +1845,16 @@
 						end if
 					rs("forma_pagto")=s_forma_pagto
 					rs("vl_total_familia")=vl_total
-					if blnPedidoECommerceOrigemMarketplaceCreditoOkAutomatico then
+					if blnPedidoECommerceCreditoOkAutomatico then
 						rs("analise_credito")=Clng(COD_AN_CREDITO_OK)
 						rs("analise_credito_data")=Now
 						rs("analise_credito_usuario")="AUTOMÁTICO"
 					elseif vl_total <= vl_aprov_auto_analise_credito then
+						rs("analise_credito")=Clng(COD_AN_CREDITO_OK)
+						rs("analise_credito_data")=Now
+						rs("analise_credito_usuario")="AUTOMÁTICO"
+					elseif (Cstr(loja) = Cstr(NUMERO_LOJA_TRANSFERENCIA)) Or (Cstr(loja) = Cstr(NUMERO_LOJA_KITS)) Or isLojaGarantia(loja) then
+						'Lojas usadas para pedidos de operações internas
 						rs("analise_credito")=Clng(COD_AN_CREDITO_OK)
 						rs("analise_credito_data")=Now
 						rs("analise_credito_usuario")="AUTOMÁTICO"
@@ -1832,11 +1869,6 @@
 						rs("analise_credito_usuario")="AUTOMÁTICO"
 					elseif (rb_forma_pagto = COD_FORMA_PAGTO_A_VISTA) And ( (CStr(op_av_forma_pagto) = CStr(ID_FORMA_PAGTO_DEPOSITO)) Or (CStr(op_av_forma_pagto) = Cstr(ID_FORMA_PAGTO_BOLETO_AV)) ) then
 						rs("analise_credito")=Clng(COD_AN_CREDITO_OK_AGUARDANDO_DEPOSITO)
-						rs("analise_credito_data")=Now
-						rs("analise_credito_usuario")="AUTOMÁTICO"
-					elseif (Cstr(loja) = Cstr(NUMERO_LOJA_TRANSFERENCIA)) Or (Cstr(loja) = Cstr(NUMERO_LOJA_KITS)) then
-						'Lojas usadas para pedidos de operações internas
-						rs("analise_credito")=Clng(COD_AN_CREDITO_OK)
 						rs("analise_credito_data")=Now
 						rs("analise_credito_usuario")="AUTOMÁTICO"
 					elseif (rb_forma_pagto = COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA) then
@@ -1887,6 +1919,11 @@
 					rs("st_etg_imediata")=CLng(s_etg_imediata)
 					rs("etg_imediata_data")=Now
 					rs("etg_imediata_usuario")=usuario
+					end if
+				if CLng(s_etg_imediata) = CLng(COD_ETG_IMEDIATA_NAO) then
+					rs("PrevisaoEntregaData") = StrToDate(c_data_previsao_entrega)
+					rs("PrevisaoEntregaUsuarioUltAtualiz") = usuario
+					rs("PrevisaoEntregaDtHrUltAtualiz") = Now
 					end if
 				if s_bem_uso_consumo <> "" then 
 					rs("StBemUsoConsumo")=CLng(s_bem_uso_consumo)
@@ -1957,7 +1994,7 @@
 					end if
 		
 				'01/02/2018: os pedidos do Arclube usam o RA para incluir o valor do frete e, portanto, não devem ter deságio do RA
-				if (Cstr(loja) <> Cstr(NUMERO_LOJA_ECOMMERCE_AR_CLUBE)) And (Not blnMagentoPedidoComIndicador) then rs("perc_desagio_RA_liquida") = PERC_DESAGIO_RA_LIQUIDA
+				if (Cstr(loja) <> Cstr(NUMERO_LOJA_ECOMMERCE_AR_CLUBE)) And (Not blnMagentoPedidoComIndicador) then rs("perc_desagio_RA_liquida") = getParametroPercDesagioRALiquida
 
 				if (operacao_origem = OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO) And blnMagentoPedidoComIndicador then
 					rs("magento_installer_commission_value") = percCommissionValue
@@ -2003,6 +2040,7 @@
 					rs("endereco_produtor_rural_status") = t_CLIENTE("produtor_rural_status")
 					rs("endereco_ie") = Trim("" & t_CLIENTE("ie"))
 					rs("endereco_rg") = Trim("" & t_CLIENTE("rg"))
+					rs("endereco_contato") = Trim("" & t_CLIENTE("contato"))
 					end if
 
 				if (operacao_origem = OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO) OR ( (Cstr(loja) = Cstr(NUMERO_LOJA_ECOMMERCE_AR_CLUBE)) And (Trim(s_pedido_ac) <> "") ) then
@@ -2010,6 +2048,9 @@
 				else
 					rs("plataforma_origem_pedido") = COD_PLATAFORMA_ORIGEM_PEDIDO__ERP
 					end if
+
+				rs("sistema_responsavel_cadastro") = COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP
+				rs("sistema_responsavel_atualizacao") = COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP
 
 				rs("id_nfe_emitente") = vEmpresaAutoSplit(iv)
 
@@ -2064,6 +2105,7 @@
 										rs("descricao_html") = .descricao_html
 										rs("ean") = .ean
 										rs("grupo") = .grupo
+                                        rs("subgrupo") = .subgrupo
 										rs("peso") = .peso
 										rs("qtde_volumes") = .qtde_volumes
 										rs("abaixo_min_status") = .abaixo_min_status
@@ -2245,6 +2287,7 @@
 					'	ENDEREÇO DO CADASTRO
 					'	====================
 					'	1) VERIFICA SE O ENDEREÇO USADO É O DO PARCEIRO
+					'	  estamos verificando contra o endereço da t_CLIENTE porque o pedido acabou de ser criado com esses dados
 						if c_indicador <> "" then
 							if isEnderecoIgual(Trim("" & t_CLIENTE("endereco")), Trim("" & t_CLIENTE("endereco_numero")), Trim("" & t_CLIENTE("cep")), r_orcamentista_e_indicador.endereco, r_orcamentista_e_indicador.endereco_numero, r_orcamentista_e_indicador.cep) then
 								blnAnEnderecoCadClienteUsaEndParceiro = True
@@ -2308,27 +2351,9 @@
 							set vAnEndConfrontacao(Ubound(vAnEndConfrontacao)) = new cl_ANALISE_ENDERECO_CONFRONTACAO
 							intQtdeTotalPedidosAnEndereco = 0
 				
+                            'em 2020-04-16 não temos mais registros com endereco_memorizado_status = 0
 							s = "SELECT DISTINCT * FROM " & _
 									"(" & _
-										"SELECT" & _
-											" '" & COD_PEDIDO_AN_ENDERECO__CAD_CLIENTE & "' AS tipo_endereco," & _
-											" p.pedido," & _
-											" p.data_hora," & _
-											" p.id_cliente," & _
-											" c.endereco AS endereco_logradouro," & _
-											" c.endereco_numero," & _
-											" c.endereco_complemento," & _
-											" c.bairro AS endereco_bairro," & _
-											" c.cidade AS endereco_cidade," & _
-											" c.uf AS endereco_uf," & _
-											" c.cep AS endereco_cep" & _
-										" FROM t_PEDIDO p" & _
-											" INNER JOIN t_CLIENTE c ON (p.id_cliente = c.id)" & _
-										" WHERE" & _
-											" (endereco_memorizado_status = 0)" & _
-											" AND (c.id <> '" & cliente_selecionado & "')" & _
-											" AND (c.cep = '" & retorna_so_digitos(Trim("" & t_CLIENTE("cep"))) & "')" & _
-										" UNION " & _
 										"SELECT" & _
 											" '" & COD_PEDIDO_AN_ENDERECO__CAD_CLIENTE_MEMORIZADO & "' AS tipo_endereco," & _
 											" pedido," & _
@@ -2343,8 +2368,7 @@
 											" endereco_cep" & _
 										" FROM t_PEDIDO" & _
 										" WHERE" & _
-											" (endereco_memorizado_status = 1)" & _
-											" AND (id_cliente <> '" & cliente_selecionado & "')" & _
+											" (id_cliente <> '" & cliente_selecionado & "')" & _
 											" AND (endereco_cep = '" & retorna_so_digitos(Trim("" & t_CLIENTE("cep"))) & "')" & _
 										" UNION " & _
 										"SELECT" & _
@@ -2524,27 +2548,9 @@
 									set vAnEndConfrontacao(Ubound(vAnEndConfrontacao)) = new cl_ANALISE_ENDERECO_CONFRONTACAO
 									intQtdeTotalPedidosAnEndereco = 0
 						
+                                    'em 2020-04-16 não temos mais registros com endereco_memorizado_status = 0
 									s = "SELECT DISTINCT * FROM " & _
 											"(" & _
-												"SELECT" & _
-													" '" & COD_PEDIDO_AN_ENDERECO__CAD_CLIENTE & "' AS tipo_endereco," & _
-													" p.pedido," & _
-													" p.data_hora," & _
-													" p.id_cliente," & _
-													" c.endereco AS endereco_logradouro," & _
-													" c.endereco_numero," & _
-													" c.endereco_complemento," & _
-													" c.bairro AS endereco_bairro," & _
-													" c.cidade AS endereco_cidade," & _
-													" c.uf AS endereco_uf," & _
-													" c.cep AS endereco_cep" & _
-												" FROM t_PEDIDO p" & _
-													" INNER JOIN t_CLIENTE c ON (p.id_cliente = c.id)" & _
-												" WHERE" & _
-													" (endereco_memorizado_status = 0)" & _
-													" AND (c.id <> '" & cliente_selecionado & "')" & _
-													" AND (c.cep = '" & retorna_so_digitos(EndEtg_cep) & "')" & _
-												" UNION " & _
 												"SELECT" & _
 													" '" & COD_PEDIDO_AN_ENDERECO__CAD_CLIENTE_MEMORIZADO & "' AS tipo_endereco," & _
 													" pedido," & _
@@ -2559,8 +2565,7 @@
 													" endereco_cep" & _
 												" FROM t_PEDIDO" & _
 												" WHERE" & _
-													" (endereco_memorizado_status = 1)" & _
-													" AND (id_cliente <> '" & cliente_selecionado & "')" & _
+													" (id_cliente <> '" & cliente_selecionado & "')" & _
 													" AND (endereco_cep = '" & retorna_so_digitos(EndEtg_cep) & "')" & _
 												" UNION " & _
 												"SELECT" & _
@@ -2704,6 +2709,7 @@
 				if (Trim("" & rs("vl_servicos"))<>"") And (Trim("" & rs("vl_servicos"))<>"0") then s_log = s_log & "; vl_servicos=" & formata_texto_log(rs("vl_servicos")) 
 				if Trim("" & rs("st_recebido"))<>"" then s_log = s_log & "; st_recebido=" & formata_texto_log(rs("st_recebido")) 
 				if Trim("" & rs("st_etg_imediata"))<> "" then s_log = s_log & "; st_etg_imediata=" & formata_texto_log(rs("st_etg_imediata")) 
+				if Trim("" & rs("st_etg_imediata")) = Trim(COD_ETG_IMEDIATA_NAO) then s_log = s_log & " (previsão de entrega: " & formata_data(rs("PrevisaoEntregaData")) & ")"
 				if Trim("" & rs("StBemUsoConsumo"))<> "" then s_log = s_log & "; StBemUsoConsumo=" & formata_texto_log(rs("StBemUsoConsumo")) 
 				if Trim("" & rs("InstaladorInstalaStatus"))<> "" then s_log = s_log & "; InstaladorInstalaStatus=" & formata_texto_log(rs("InstaladorInstalaStatus")) 
 				if Trim("" & rs("obs_1"))<>"" then s_log = s_log & "; obs_1=" & formata_texto_log(rs("obs_1"))
@@ -2779,6 +2785,7 @@
 							", produtor_rural_status=" & t_CLIENTE("produtor_rural_status") & _
 							", ie=" & Trim("" & t_CLIENTE("ie")) & _
 							", rg=" & Trim("" & t_CLIENTE("rg")) & _
+							", contato=" & Trim("" & t_CLIENTE("contato")) & _
 							")"
 					end if
 
