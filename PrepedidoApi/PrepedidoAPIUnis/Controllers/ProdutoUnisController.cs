@@ -30,13 +30,14 @@ namespace PrepedidoAPIUnis.Controllers
         /// <param name="loja"></param>
         /// <param name="cnpj_cpf_cliente">CPF ou CNPJ, somente dígitos</param>
         /// <returns></returns>
+        /// <response code="204">Loja não existe ou cliente não cadastrado</response>
         [AllowAnonymous]
         [HttpGet("buscarProduto")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<ActionResult<ProdutoComboUnisDto>> BuscarProduto(string tokenAcesso, string loja,
             string cnpj_cpf_cliente)
         {
-            if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out string usuario))
+            if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out _))
                 return Unauthorized();
 
             var retorno = await produtoUnisBll.ListaProdutosCombo(loja, cnpj_cpf_cliente);

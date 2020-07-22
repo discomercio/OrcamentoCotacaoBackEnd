@@ -46,7 +46,11 @@ namespace InfraBanco
                 .HasKey(x => x.Apelido);
 
             modelBuilder.Entity<TsessaoHistorico>()
-                .HasKey(x => new { x.Usuario, x.DtHrInicio});
+                .HasKey(x => new { x.Usuario, x.DtHrInicio });
+            //vira e mexe dá  Database operation expected to affect 1 row(s) but actually affected 0 row(s).
+            //porque o entity lê a data e quando faz o update com essa mesma data l SQL não afeta nenhum registro
+            modelBuilder.Entity<TsessaoHistorico>()
+                .Property(f => f.DtHrInicio).HasColumnType("datetime");
 
             //não tem chave no banco, mas é obrigatória para o entity. campos NULL não podem fazer parte.
             modelBuilder.Entity<TsessaoAbandonada>()
@@ -61,14 +65,6 @@ namespace InfraBanco
                     o.SessaoSeguinteModulo
                 });
 
-            //modelBuilder.Entity<TsessaoHistorico>()
-            //    .HasKey(o => new
-            //    {
-            //        o.Usuario,
-            //        o.SessionCtrlTicket,
-            //        o.DtHrInicio,
-            //        o.Modulo
-            //    });
 
             modelBuilder.Entity<TperfilUsuario>()
                 .HasKey(x => new { x.Usuario, x.Id_perfil });

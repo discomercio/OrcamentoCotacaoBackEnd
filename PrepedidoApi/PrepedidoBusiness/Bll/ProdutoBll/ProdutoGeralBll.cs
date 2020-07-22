@@ -46,6 +46,8 @@ namespace PrepedidoBusiness.Bll.ProdutoBll
                                }).FirstOrDefaultAsync();
 
             var cliente = await clienteTask;
+            if (cliente == null)
+                return null;
 
             //obtém  a sigla para regra
             string cliente_regra = Util.MultiCdRegraDeterminaPessoa(cliente.tipo_cliente, cliente.contribuite_icms_status,

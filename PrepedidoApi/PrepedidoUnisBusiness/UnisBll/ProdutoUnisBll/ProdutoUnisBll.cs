@@ -17,7 +17,13 @@ namespace PrepedidoUnisBusiness.UnisBll.ProdutoUnisBll
         }
         public async Task<ProdutoComboUnisDto> ListaProdutosCombo(string loja, string cpf_cnpj)
         {
+            if (loja == null)
+                return null;
+            if (cpf_cnpj == null)
+                return null;
             var ret = await produtoBll.ListaProdutosComboDados(loja, null, cpf_cnpj);
+            if (ret == null)
+                return null;
 
             ProdutoComboUnisDto produtoComboUnisDto = ProdutoComboUnisDto.ProdutoComboUnisDtoDeProdutoComboDados(ret);
             return produtoComboUnisDto;
