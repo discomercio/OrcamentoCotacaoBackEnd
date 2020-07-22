@@ -20,18 +20,15 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
         private readonly ITestOutputHelper output;
         private readonly PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll.ClienteUnisBll clienteUnisBll;
         private readonly InicializarBancoGeral inicializarBanco;
-        private readonly ContextoBdProvider contextoProvider;
 
         public Pf(TestesClienteUnisBll testesClienteUnisBll, ITestOutputHelper output,
             PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll.ClienteUnisBll clienteUnisBll,
-            InicializarBanco.InicializarBancoGeral inicializarBanco,
-            InfraBanco.ContextoBdProvider contextoProvider)
+            InicializarBanco.InicializarBancoGeral inicializarBanco)
         {
             this.testesClienteUnisBll = testesClienteUnisBll;
             this.output = output;
             this.clienteUnisBll = clienteUnisBll;
             this.inicializarBanco = inicializarBanco;
-            this.contextoProvider = contextoProvider;
             this.testesClienteUnisBll.Output = output;
         }
 
