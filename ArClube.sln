@@ -55,6 +55,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pedido", "Global\Pedido\Ped
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASPs", "Global\ASPs\ASPs.csproj", "{AF5FEC61-87B2-4AFA-8F37-31A76DEC9367}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cliente", "Global\Cliente\Cliente.csproj", "{6F56B117-FCC4-471A-83A9-906533F58B03}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -123,6 +125,10 @@ Global
 		{77A6D933-415D-42CD-9C5D-6C5C08300491}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AF5FEC61-87B2-4AFA-8F37-31A76DEC9367}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AF5FEC61-87B2-4AFA-8F37-31A76DEC9367}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F56B117-FCC4-471A-83A9-906533F58B03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F56B117-FCC4-471A-83A9-906533F58B03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F56B117-FCC4-471A-83A9-906533F58B03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F56B117-FCC4-471A-83A9-906533F58B03}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -147,6 +153,7 @@ Global
 		{D30D71EA-5D17-4CF0-BE73-02BD1C1ACD9D} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
 		{77A6D933-415D-42CD-9C5D-6C5C08300491} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
 		{AF5FEC61-87B2-4AFA-8F37-31A76DEC9367} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
+		{6F56B117-FCC4-471A-83A9-906533F58B03} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {139E9C0D-48C6-4635-9645-BF9C5AA65398}

@@ -19,12 +19,14 @@ namespace Especificacao.Especificacao.Pedido
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    [Xunit.TraitAttribute("Category", "Pedido")]
     public partial class FluxoDaCriacaoDoPedidoFeature : object, Xunit.IClassFixture<FluxoDaCriacaoDoPedidoFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private string[] _featureTags = ((string[])(null));
+        private string[] _featureTags = new string[] {
+                "Pedido"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -46,10 +48,11 @@ Fluxo no ERP/loja:
 	envia para ClientePesquisa.asp
 	se existe somente um cliente, envia para clienteedita.asp com OP_CONSULTA
 2 - Confirmar (ou editar) dados cadastrais e informar endereço de entrega (em ""loja/clienteedita.asp"")
-	AFAZER: TODO: PAREI VERIFICANDO O loja/clienteedita.asp, TEM COISA DO MAGENTO
+	envia para PedidoNovoProdCompostoMask.asp ou pedidonovo.asp
 3 - Escolher produtos, quantidades (em ""loja/PedidoNovoProdCompostoMask.asp"")
 4 - Escolher indicador e RA (em ""loja/PedidoNovo.asp"")
 5 - Alterar valores e forma de pagamento e observações (entrega imediata, instalador instala, etc) (em ""loja/PedidoNovoConsiste.asp"")
+	envia para PedidoNovoConfirma.asp
 6 - Salvar o pedido (finaliza em ""loja/pedido.asp"")
 --- 
 Fluxo no módulo loja:
@@ -62,7 +65,8 @@ Fluxo no módulo loja:
 --- 
 Fluxo na API:
 Salvar o pedido
-	Enviar todos os dados para cadastrar o pedido", ProgrammingLanguage.CSharp, ((string[])(null)));
+	Enviar todos os dados para cadastrar o pedido", ProgrammingLanguage.CSharp, new string[] {
+                        "Pedido"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -110,7 +114,7 @@ Salvar o pedido
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cadastrar o pedido com o mínimo de informação possível", null, tagsOfScenario, argumentsOfScenario);
-#line 26
+#line 28
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);

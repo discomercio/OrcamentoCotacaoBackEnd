@@ -13,6 +13,7 @@ Scenario: Cadastrar um pedido com o mínimo de informação possível
 	#
 	# Iniciar o pedido
 	When Fiz login como "usuario_sistema" e escolhi a loja "202"
+	And Pedido vazio
 	And Informo "cliente_selecionado" = "000000000001"
 	And Informo "indicacao" = "não"
 	And Informo "SelecaoCd" = "AUTOMATICO"
