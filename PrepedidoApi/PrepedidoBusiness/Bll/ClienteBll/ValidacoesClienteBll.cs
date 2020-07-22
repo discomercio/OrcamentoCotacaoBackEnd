@@ -794,12 +794,12 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                             "é necessário possuir nº de IE");
                     retorno = false;
                 }
-                if (string.IsNullOrEmpty(dadosCliente.Ie) &&
-                    dadosCliente.Contribuinte_Icms_Status ==
-                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO)
-                {
-                    lstErros.Add("Se o cliente é não contribuinte do ICMS a inscrição estadual deve ser preenchida!");
-                }
+                //if (!string.IsNullOrEmpty(dadosCliente.Ie) &&
+                //    dadosCliente.Contribuinte_Icms_Status ==
+                //    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO)
+                //{
+                //    lstErros.Add("Se o cliente é não contribuinte do ICMS a inscrição estadual deve ser preenchida!");
+                //}
                 if (dadosCliente.Contribuinte_Icms_Status ==
                     (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL)
                 {

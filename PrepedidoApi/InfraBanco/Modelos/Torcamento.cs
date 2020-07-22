@@ -27,6 +27,9 @@ namespace InfraBanco.Modelos
         [MaxLength(6)]
         public string Hora { get; set; }
 
+        [Column("data_hora")]
+        public DateTime? Data_hora { get;}
+
         [Column("id_cliente")]
         [MaxLength(12)]
         [ForeignKey("Tcliente")]

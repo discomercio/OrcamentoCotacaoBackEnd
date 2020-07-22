@@ -31,6 +31,7 @@ export class ConfirmarEnderecoComponent implements OnInit {
 
     this.buscarClienteServiceJustificativaEndEntregaComboTemporario = this.buscarClienteService.JustificativaEndEntregaComboTemporario();
 
+
   }
 
   @ViewChild('mySelectProdutor', { static: false }) mySelectProdutor: MatSelect;
@@ -47,7 +48,7 @@ export class ConfirmarEnderecoComponent implements OnInit {
     }
   }
 
-  required:boolean;
+  required: boolean;
   atualizarDadosEnderecoTela(enderecoEntregaDtoClienteCadastro: EnderecoEntregaDtoClienteCadastro) {
 
     this.enderecoEntregaDtoClienteCadastro = enderecoEntregaDtoClienteCadastro;
@@ -60,8 +61,10 @@ export class ConfirmarEnderecoComponent implements OnInit {
     src.Uf = this.enderecoEntregaDtoClienteCadastro.EndEtg_uf;
     src.Cep = this.enderecoEntregaDtoClienteCadastro.EndEtg_cep;
     enderecoEntregaDtoClienteCadastro.EndEtg_cod_justificativa = this.enderecoEntregaDtoClienteCadastro.EndEtg_cod_justificativa;
-    this.tipoPessoaEntrega = this.enderecoEntregaDtoClienteCadastro.EndEtg_tipo_pessoa == this.constantes.ID_PJ ? true : false;
-
+    this.pessoaEntregaEhPJ = this.enderecoEntregaDtoClienteCadastro.EndEtg_tipo_pessoa == this.constantes.ID_PJ ? true : false;
+    this.pessoaEntregaEhPF = this.enderecoEntregaDtoClienteCadastro.EndEtg_tipo_pessoa == this.constantes.ID_PF ? true : false;
+    debugger;
+    this.RbTipoPessoa = true;
     this.enderecoEntregaDtoClienteCadastro = this.desconverterTelefonesEnderecoEntrega(enderecoEntregaDtoClienteCadastro);
   }
 
@@ -103,14 +106,13 @@ export class ConfirmarEnderecoComponent implements OnInit {
   public voltarFoco(): void {
     let article = document.getElementById("article-confirmar-cliente");
     article.scrollTop = 0;
-    
+
   }
 
   public mascaraTelefone = FormatarTelefone.mascaraTelefone;
   public mascaraCpf = CpfCnpjUtils.mascaraCpf;
   public mascaraCnpj = CpfCnpjUtils.mascaraCnpj;
   constantes: Constantes = new Constantes();
-  tipoPessoaEntrega: boolean;
 
   inicializarCamposEndereco(enderecoEntrega: EnderecoEntregaDtoClienteCadastro) {
     if (!enderecoEntrega) return;
@@ -137,18 +139,20 @@ export class ConfirmarEnderecoComponent implements OnInit {
     enderecoEntrega.EndEtg_ie = "";
     enderecoEntrega.EndEtg_tipo_pessoa = "";
   }
-  pessoaEntregaEhPJ:boolean;
+  pessoaEntregaEhPJ: boolean;
+  pessoaEntregaEhPF: boolean;
+  RbTipoPessoa: boolean;
   PF() {
     this.enderecoEntregaDtoClienteCadastro.EndEtg_cnpj_cpf = "";
-    this.tipoPessoaEntrega = false;
+    this.pessoaEntregaEhPF = true;
     this.pessoaEntregaEhPJ = false;
     this.enderecoEntregaDtoClienteCadastro.EndEtg_tipo_pessoa = this.constantes.ID_PF;
   }
 
   PJ() {
     this.enderecoEntregaDtoClienteCadastro.EndEtg_cnpj_cpf = "";
-    this.tipoPessoaEntrega = true;
     this.pessoaEntregaEhPJ = true;
+    this.pessoaEntregaEhPF = false;
     this.enderecoEntregaDtoClienteCadastro.EndEtg_tipo_pessoa = this.constantes.ID_PJ;
   }
 
