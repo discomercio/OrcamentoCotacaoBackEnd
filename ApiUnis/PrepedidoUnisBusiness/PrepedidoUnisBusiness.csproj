@@ -15,7 +15,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\PrepedidoApi\InfraBanco\InfraBanco.csproj" />
     <ProjectReference Include="..\..\PrepedidoApi\PrepedidoBusiness\PrepedidoBusiness.csproj" />
   </ItemGroup>
 
