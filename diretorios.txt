@@ -1,0 +1,4 @@
+Existe um diretório para cada entregável.
+Para compilar, veja o diretório GeradorPacotes
+O código comum entre pojetos está em Global
+

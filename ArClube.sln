@@ -29,12 +29,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testes.Labs", "PrepedidoApi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASPs", "Loja\ASPs\ASPs.csproj", "{CE3536B5-D0D1-4992-8822-05628902B7ED}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bats", "Bats", "{DE89B737-FCFF-4E00-88C6-785451E5D18F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Etc", "Etc", "{DE89B737-FCFF-4E00-88C6-785451E5D18F}"
 	ProjectSection(SolutionItems) = preProject
 		PrepedidoApi\AtualizarSonar.bat = PrepedidoApi\AtualizarSonar.bat
-		PrepedidoApi\CompilarPrepedidoApi.bat = PrepedidoApi\CompilarPrepedidoApi.bat
-		PrepedidoApi\CompilarPrepedidoApiUnis.bat = PrepedidoApi\CompilarPrepedidoApiUnis.bat
-		PrepedidoApi\Testes.Automatizados\ExecutarOpenCoverParaTela.bat = PrepedidoApi\Testes.Automatizados\ExecutarOpenCoverParaTela.bat
+		diretorios.txt = diretorios.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infra", "Infra", "{7267E515-4E22-42C8-A2F8-88A600B24F7A}"

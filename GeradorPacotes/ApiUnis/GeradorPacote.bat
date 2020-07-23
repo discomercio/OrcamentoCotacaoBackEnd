@@ -8,17 +8,18 @@ set /p aux_msbuild="Caminho do MSBuild [%aux_msbuild%]: "
 :msbuild_encontrado
 
 
-del .CompilarPrepedidoApiUnisResultado\*.* /s /q >nul 2> nul
+del PacoteApiUnis\*.* /s /q >nul 2> nul
 rem waiting to avoid errors
 timeout /t 1 >nul
-RD .CompilarPrepedidoApiUnisResultado /s /q >nul 2> nul
+RD PacoteApiUnis /s /q >nul 2> nul
 
-%aux_msbuild% PrepedidoAPIUnis/PrepedidoAPIUnis.csproj -t:Rebuild -p:DeployOnBuild=true -p:PublishProfile=CompilarPrepedidoApiUnis /p:Configuration=Release
+%aux_msbuild% ../../ApiUnis/PrepedidoAPIUnis/PrepedidoAPIUnis.csproj -t:Rebuild -p:DeployOnBuild=true -p:PublishProfile=CompilarPrepedidoApiUnis /p:Configuration=Release
 
-echo %date% %time% >> ".CompilarPrepedidoApiUnisResultado\publish\DataCompilacao.txt"
-del .CompilarPrepedidoApiUnisResultado\publish\appsettings.json
-del .CompilarPrepedidoApiUnisResultado\publish\appsettings.Development.json
-del .CompilarPrepedidoApiUnisResultado\publish\nlog.config
+echo %date% %time% >> "PacoteApiUnis\publish\DataCompilacao.txt"
+del PacoteApiUnis\publish\appsettings.json
+del PacoteApiUnis\publish\appsettings.Development.json
+del PacoteApiUnis\publish\nlog.config
 
+echo pacote gerado em PacoteApiUnis
 IF "%~1" NEQ "sem_pausa" pause
 
