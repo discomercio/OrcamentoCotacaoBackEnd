@@ -7,7 +7,7 @@ namespace Especificacao.Testes.Pedido
 	Está aqui somente por documentação, não é efetivamente testado
      * */
 
-    [Binding, Scope(Tag = "CaminhoFelizAsp"), Scope(Tag = "SemTestes")]
+    [Binding, Scope(Tag = "CaminhoFelizAsp")]
     public class CaminhoFelizAspSteps
     {
         [Given(@"Fiz login")]
