@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\InfraIdentity\InfraIdentity.csproj" />
     <ProjectReference Include="..\PrepedidoBusiness\PrepedidoBusiness.csproj" />
   </ItemGroup>
 
