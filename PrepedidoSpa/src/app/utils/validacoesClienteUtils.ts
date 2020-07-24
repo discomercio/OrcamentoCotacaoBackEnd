@@ -81,7 +81,7 @@ export class ValidacoesClienteUtils {
         let validacoes: string[] = new Array();
 
         let ehPf = dadosClienteCadastroDto.Tipo == this.constantes.ID_PF ? true : false;
-        
+
         validacoes = validacoes.concat(validacoes = validacoes.concat(this.validarGeral(dadosClienteCadastroDto, true)));
 
         //converter telefones para separar os dados
@@ -163,7 +163,7 @@ export class ValidacoesClienteUtils {
             ret.push('CNPJ/CPF inválido!');
         }
 
-        if (ehObrigatorio) {
+        if (ehObrigatorio && dadosClienteCadastroDto.Tipo == this.constantes.ID_PJ) {
             if (!dadosClienteCadastroDto.Email || (dadosClienteCadastroDto.Email !== "" &&
                 !ValidacoesUtils.email_ok(dadosClienteCadastroDto.Email))) {
                 ret.push('E-mail inválido!');

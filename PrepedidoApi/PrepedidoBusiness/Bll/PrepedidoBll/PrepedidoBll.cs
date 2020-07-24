@@ -148,11 +148,12 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             if (dataFinal.HasValue)
                 lst = lst.Where(r => r.Data <= dataFinal.Value);
 
-
+            //lst.OrderByDescending(r => r.Data_hora);
             List<PrepedidosCadastradosDtoPrepedido> lstdto = new List<PrepedidosCadastradosDtoPrepedido>();
             //COLOCAR O STATUS DO PEDIDO PARA PREPEDIDOS QUE VIRARAM PEDIDOS
             if (tipoBusca != TipoBuscaPrepedido.Excluidos)
-            {
+            {               
+
                 lstdto = lst.Select(r => new PrepedidosCadastradosDtoPrepedido
                 {
 
@@ -161,7 +162,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                     NumeroPrepedido = r.Orcamento,
                     NomeCliente = r.Tcliente.Nome,
                     ValoTotal = r.Permite_RA_Status == 1 ? r.Vl_Total_NF : r.Vl_Total
-                }).OrderByDescending(r => r.DataPrePedido).ToList();
+                }).OrderByDescending(r => r.NumeroPrepedido).ToList();
             }
             if (tipoBusca == TipoBuscaPrepedido.Excluidos)
             {
@@ -172,7 +173,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                     NumeroPrepedido = r.Orcamento,
                     NomeCliente = r.Tcliente.Nome,
                     ValoTotal = r.Permite_RA_Status == 1 && r.Permite_RA_Status != 0 ? r.Vl_Total_NF : r.Vl_Total
-                }).OrderByDescending(r => r.DataPrePedido).ToList();
+                }).OrderByDescending(r => r.NumeroPrepedido).ToList();
             }
 
             return await Task.FromResult(lstdto);
@@ -1169,7 +1170,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 torcamento.EndEtg_tipo_pessoa = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_tipo_pessoa) ?
                     "" : prepedido.EnderecoEntrega.EndEtg_tipo_pessoa;
                 torcamento.EndEtg_cnpj_cpf = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_cnpj_cpf) ?
-                    "" : prepedido.EnderecoEntrega.EndEtg_cnpj_cpf;
+                    "" : Util.SoDigitosCpf_Cnpj(prepedido.EnderecoEntrega.EndEtg_cnpj_cpf);
                 torcamento.EndEtg_contribuinte_icms_status = prepedido.EnderecoEntrega.EndEtg_contribuinte_icms_status;
                 torcamento.EndEtg_produtor_rural_status = prepedido.EnderecoEntrega.EndEtg_produtor_rural_status;
                 torcamento.EndEtg_ie = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_ie) ?

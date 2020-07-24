@@ -124,8 +124,8 @@ export class FormatarEndereco {
         let sTelefones: string = "";
         let retorno: string = "";
 
-        sCabecalho = enderecoEntrega.EndEtg_nome + "<br>CNPJ: " + CpfCnpjUtils.cnpj_cpf_formata(enderecoEntrega.EndEtg_cnpj_cpf);
-
+        sCabecalho = enderecoEntrega.EndEtg_nome + "\nCNPJ: " + CpfCnpjUtils.cnpj_cpf_formata(enderecoEntrega.EndEtg_cnpj_cpf);
+debugger;
         if (enderecoEntrega.EndEtg_contribuinte_icms_status == this.constante.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO)
             aux = "Não";
         if (enderecoEntrega.EndEtg_contribuinte_icms_status == this.constante.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
@@ -133,10 +133,10 @@ export class FormatarEndereco {
         if (enderecoEntrega.EndEtg_contribuinte_icms_status == this.constante.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO)
             aux = "Isento";
 
-        if (!aux)
+        if (!!aux)
             sCabecalho += " - Contribuinte ICMS: " + aux;
 
-        sCabecalho += "<br>";
+        sCabecalho += "\n";
 
         let telCom: string = "";
         let telCom2: string = "";
@@ -149,7 +149,7 @@ export class FormatarEndereco {
 
         sTelefones = "";
         if ((!!telCom && telCom != "") || (!!telCom2 && telCom2 != ""))
-            sTelefones = "<br>Telefone ";
+            sTelefones = "\rTelefone ";
 
         if (!!telCom && telCom != "") {
             sTelefones += telCom;

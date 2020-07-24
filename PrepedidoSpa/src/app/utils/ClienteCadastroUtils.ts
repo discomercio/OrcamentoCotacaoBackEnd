@@ -148,10 +148,10 @@ export class ClienteCadastroUtils {
         && (dadosClienteCadastroDto.ProdutorRural !== constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO)) {
         return 'Informe se o cliente é produtor rural ou não!';
       }
-      // if ((dadosClienteCadastroDto.ProdutorRural === constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM) &&
-      //   (dadosClienteCadastroDto.Contribuinte_Icms_Status !== constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)) {
-      //   return 'Para ser cadastrado como Produtor Rural, é necessário ser contribuinte do ICMS e possuir nº de IE';
-      // }
+      if ((dadosClienteCadastroDto.ProdutorRural === constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM) &&
+        (dadosClienteCadastroDto.Contribuinte_Icms_Status !== constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)) {
+        return 'Para ser cadastrado como Produtor Rural, é necessário ser contribuinte do ICMS e possuir nº de IE';
+      }
       if (dadosClienteCadastroDto.ProdutorRural == constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM) {
         if ((dadosClienteCadastroDto.Contribuinte_Icms_Status !== constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO)
           && (dadosClienteCadastroDto.Contribuinte_Icms_Status !== constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
