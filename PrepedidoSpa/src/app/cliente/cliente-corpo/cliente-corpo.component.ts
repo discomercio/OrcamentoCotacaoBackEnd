@@ -360,6 +360,16 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
 
       //fazer a conversão de telefones para mostrar na tela "(xx) xxxx-xxxx"
 
+     src.cepService.buscarCep(src.Cep, null, null, null).toPromise()
+      .then((r) => {
+        //recebemos um endereço
+        const end = r[0];
+        src.temBairro = end.Bairro == "" || !end.Bairro ? false : true;
+        src.temCidade = end.Cidade == "" || !end.Cidade ? false : true;
+        src.temEndereco = end.Endereco == "" || !end.Endereco? false : true;
+      }).catch((r) => {
+        // não fazemos nada
+      });
 
       //nao está mais pendente
       this.atualizarDadosEnderecoCadastralClienteTela_Dados = null;

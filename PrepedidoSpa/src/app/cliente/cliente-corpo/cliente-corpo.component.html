@@ -628,17 +628,17 @@ para não dar erro no console
 
                 <mat-form-field floatLabel="floatLabel()" class="edicao-telefone">
                     <input [textMask]="{mask: mascaraTelefone}"
-                        [(ngModel)]="enderecoCadastralClientePrepedidoDto.Endereco_tel_cel" required type="text"
+                        [(ngModel)]="enderecoCadastralClientePrepedidoDto.Endereco_tel_cel" type="text"
                         matInput placeholder="CELULAR" maxlength="16" size="16" />
                 </mat-form-field>
 
                 <mat-form-field floatLabel="floatLabel()" class="edicao-telefone">
                     <input [textMask]="{mask: mascaraTelefone}"
-                        [(ngModel)]="enderecoCadastralClientePrepedidoDto.Endereco_tel_com" required type="text"
-                        matInput placeholder="FONE COMERCIAL" maxlength="16" size="16" />
+                        [(ngModel)]="enderecoCadastralClientePrepedidoDto.Endereco_tel_com" type="text" matInput
+                        placeholder="FONE COMERCIAL" maxlength="16" size="16" />
                 </mat-form-field>
                 <mat-form-field floatLabel="floatLabel()" class="edicao-ramal">
-                    <input matInput type="text" placeholder="RAMAL" required
+                    <input matInput type="text" placeholder="RAMAL"
                         [(ngModel)]="enderecoCadastralClientePrepedidoDto.Endereco_ramal_com" maxlength="4" size="6">
                 </mat-form-field>
 
