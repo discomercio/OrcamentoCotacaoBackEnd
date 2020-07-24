@@ -37,29 +37,14 @@ export class PrepedidoDesktopComponent extends TelaDesktopBaseComponent implemen
 
   ngOnInit() {
     //this.prepedidoDto esta chegando null se for muito rápido
-
-    
-  }
-
-  async ngAfterViewInit() {
-    let endFormatado = async (): Promise<string> => {
-      await this.detalhesPrepedido.prepedido;
-      const response = await this.montarEnderecoEntrega(this.prepedidoDto.EnderecoEntrega);
-      return response
-    }
-
-    await this.enderecoEntregaFormatado;
-    this.enderecoEntregaFormatado = endFormatado.toString();
-    // setTimeout(() => {
-
-    // }, 3000);
+    this.montarEnderecoEntrega(this.prepedidoDto.EnderecoEntrega);
 
   }
 
   public enderecoEntregaFormatado: string;
   public qtdeLinhaEndereco: number;
-  montarEnderecoEntrega(enderecoEntregaDto: EnderecoEntregaDtoClienteCadastro): string {
-
+  montarEnderecoEntrega(enderecoEntregaDto: EnderecoEntregaDtoClienteCadastro):void {
+    debugger;
     if (enderecoEntregaDto.OutroEndereco) {
       let retorno: string = "";
       let sEndereco: string;
@@ -74,12 +59,14 @@ export class PrepedidoDesktopComponent extends TelaDesktopBaseComponent implemen
       //se a memorização não estiver ativa ou o registro foi criado no formato antigo, paramos por aqui
 
       if (enderecoEntregaDto.St_memorizacao_completa_enderecos == 0) {
-        return this.enderecoEntregaFormatado = sEndereco + "\n" + enderecoEntregaDto.EndEtg_descricao_justificativa;
+        this.enderecoEntregaFormatado = sEndereco + "\n" + enderecoEntregaDto.EndEtg_descricao_justificativa;
+        return;
         // return;
       }
       else {
         if (this.prepedidoDto.DadosCliente.Tipo == this.constantes.ID_PF) {
-          return this.enderecoEntregaFormatado = sEndereco + "\n" + enderecoEntregaDto.EndEtg_descricao_justificativa;
+          this.enderecoEntregaFormatado = sEndereco + "\n" + enderecoEntregaDto.EndEtg_descricao_justificativa;
+          return;
           // return;
         }
       }
@@ -90,7 +77,7 @@ export class PrepedidoDesktopComponent extends TelaDesktopBaseComponent implemen
 
         split = this.enderecoEntregaFormatado.split('\n');
         this.qtdeLinhaEndereco = split.length;
-        return this.enderecoEntregaFormatado;
+        return;
       }
       //se chegar aqui é PJ
       this.enderecoEntregaFormatado = this.formatarEndereco.montarEnderecoEntregaPJ(this.prepedidoDto.EnderecoEntrega, sEndereco);
@@ -115,7 +102,7 @@ export class PrepedidoDesktopComponent extends TelaDesktopBaseComponent implemen
     await this.prepedidoDto;
     this.impressaoService.forcarImpressao = true;
     setTimeout(() => {
-      
+
       window.print();
       this.impressaoService.forcarImpressao = false;
     }

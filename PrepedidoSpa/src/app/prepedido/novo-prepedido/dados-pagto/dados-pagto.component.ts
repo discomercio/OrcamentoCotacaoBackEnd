@@ -44,7 +44,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
   }
 
   mascaraNum() {
-    return [/\d/, /\d/, /\d/];
+    return [/\d/, /\d/];
   }
 
   ngOnInit() {

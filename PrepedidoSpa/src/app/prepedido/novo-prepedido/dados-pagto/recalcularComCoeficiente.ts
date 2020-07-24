@@ -264,12 +264,15 @@ export class RecalcularComCoeficiente {
                   produto.VlUnitario = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
                   produto.VlTotalItem = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
                   produto.VlLista = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));//só altera se calcular coeficiente
-                  produto.TotalItem = this.moedaUtils.formatarDecimal(((produto.Preco * produto.Qtde) * x.Coeficiente));
+                  produto.TotalItem = this.moedaUtils.formatarDecimal(produto.VlUnitario * produto.Qtde);
                   produto.CustoFinancFornecCoeficiente = x.Coeficiente;
                 }
                 if (!produto.AlterouValorRa || produto.AlterouValorRa == undefined) {
                   produto.Preco_Lista = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
-                  produto.TotalItemRA = this.moedaUtils.formatarDecimal(((produto.Preco * produto.Qtde) * x.Coeficiente));
+                  let total_com_coeficiente = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
+                  produto.TotalItemRA = this.moedaUtils.formatarDecimal(total_com_coeficiente * produto.Qtde);
+                  // produto.Preco_Lista = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
+                  // produto.TotalItemRA = this.moedaUtils.formatarDecimal(((produto.Preco * produto.Qtde) * x.Coeficiente));
                   produto.CustoFinancFornecCoeficiente = x.Coeficiente;
                 }
 

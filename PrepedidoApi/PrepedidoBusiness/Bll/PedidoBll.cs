@@ -154,7 +154,7 @@ namespace PrepedidoBusiness.Bll
                 if (pedido.Status == "CAN")
                     pedido.Status = "Cancelado";
             }
-            return await Task.FromResult(listaComStatus.OrderByDescending(x => x.DataPedido));
+            return await Task.FromResult(listaComStatus.OrderByDescending(x => x.NumeroPedido));
         }
 
         public async Task<IEnumerable<string>> ListarCpfCnpjPedidosCombo(string apelido)

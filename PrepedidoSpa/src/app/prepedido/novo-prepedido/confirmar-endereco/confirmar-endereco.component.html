@@ -35,26 +35,26 @@
     <div *ngIf="!tipoPf">
         <div>
             <mat-radio-group required aria-labelledby="endereco-radio-group-label" style="display: inline-flex"
-                [(ngModel)]="tipoPessoaEntrega">
+                [(ngModel)]="RbTipoPessoa">
                 <mat-radio-button class="enderecoradio" [value]="pessoaEntregaEhPJ" (click)="PJ()">Pessoa Jurídica
                     &nbsp;
                 </mat-radio-button>
 
-                <mat-radio-button class="enderecoradio" [value]="pessoaEntregaEhPJ" (click)="PF()">Pessoa Física
+                <mat-radio-button class="enderecoradio" [value]="pessoaEntregaEhPF" (click)="PF()">Pessoa Física
                 </mat-radio-button>
             </mat-radio-group>
             <br /><br />
             <!-- NOME / RAZÃO SOCIAL -->
             <div>
                 <mat-form-field floatLabel="floatLabel()" class="largura-maxima-campo-formulario"
-                    *ngIf="!tipoPessoaEntrega">
+                    *ngIf="!pessoaEntregaEhPJ">
                     <input matInput type="text" placeholder="NOME"
                         [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_nome" [required]="required"
                         maxlength="60">
                 </mat-form-field>
 
                 <mat-form-field floatLabel="floatLabel()" class="largura-maxima-campo-formulario"
-                    *ngIf="tipoPessoaEntrega">
+                    *ngIf="pessoaEntregaEhPJ">
                     <input matInput type="text" placeholder="RAZÃO SOCIAL"
                         [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_nome" [required]="required"
                         maxlength="60">
@@ -64,22 +64,22 @@
             <span>
                 <!-- CPF e CNPJ não estão ligados ao model pq não são editados -->
                 <mat-form-field floatLabel="floatLabel()" style="width: 22ch;" class="edicao-telefone"
-                    *ngIf="tipoPessoaEntrega">
+                    *ngIf="pessoaEntregaEhPJ">
                     <input matInput type="text" placeholder="CNPJ" [textMask]="{mask: mascaraCnpj}" maxlength="19"
                         size="19" [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_cnpj_cpf" [required]="required">
                 </mat-form-field>
 
                 <mat-form-field floatLabel="floatLabel()" style="width: 22ch;" class="edicao-telefone"
-                    *ngIf="!tipoPessoaEntrega">
+                    *ngIf="!pessoaEntregaEhPJ">
                     <input matInput type="text" placeholder="CPF" [textMask]="{mask: mascaraCpf}" maxlength="15"
                         size="15" [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_cnpj_cpf" [required]="required">
                 </mat-form-field>
             </span>
 
             <!-- telefones PF -->
-            <div *ngIf="!tipoPessoaEntrega">
+            <div *ngIf="!pessoaEntregaEhPJ">
                 <mat-form-field floatLabel="floatLabel()" class="edicao-telefone">
-                    <input [textMask]="{mask: mascaraTelefone}" [required]="required"
+                    <input [textMask]="{mask: mascaraTelefone}" 
                         [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_tel_res" type="text" matInput
                         placeholder="FONE RESIDENCIAL" maxlength="16" size="16" />
                 </mat-form-field>
@@ -92,12 +92,12 @@
             </div>
 
             <!-- telefones PJ -->
-            <div *ngIf="tipoPessoaEntrega">
+            <div *ngIf="pessoaEntregaEhPJ">
                 <!-- editamos na variável telefone e quem chamar precisa separar o DDD -->
                 <mat-form-field floatLabel="floatLabel()" class="edicao-telefone">
                     <input [textMask]="{mask: mascaraTelefone}"
                         [(ngModel)]="enderecoEntregaDtoClienteCadastro.EndEtg_tel_com" type="text" matInput
-                        placeholder="TELEFONE 1" [required]="required" maxlength="16" size="16" />
+                        placeholder="TELEFONE 1" maxlength="16" size="16" />
                 </mat-form-field>
                 <mat-form-field floatLabel="floatLabel()" class="edicao-ramal">
                     <input matInput type="text" placeholder="RAMAL"
@@ -119,7 +119,7 @@
 
 
             <!-- ************   PRODUTOR RURAL / CONTRIBUINTE ICMS / IE ************  -->
-            <span *ngIf="!tipoPessoaEntrega">
+            <span *ngIf="!pessoaEntregaEhPJ">
                 <span>
                     <div>
                         <!-- se está confirando, precisa de um espaço maior em cima -->
@@ -164,7 +164,7 @@
 
             </span>
 
-            <span *ngIf="tipoPessoaEntrega">
+            <span *ngIf="pessoaEntregaEhPJ">
                 <span>
                     <!-- se está confirando, precisa de um espaço maior em cima -->
                     <div style="padding-top: 1.5em;"></div>
