@@ -1,11 +1,21 @@
 using System;
 using Xunit;
 
+/*
+ * só para registrar o status
+ * 
+ * 
+ * Pedido: 
+ *      feito loja/resumo.asp
+ *      feito loja/ClienteEdita.asp
+ *      
+ * 
+ * */
+
 namespace Especificacao
 {
-    public class UnitTest1
+    public class Status
     {
-        [Fact]
         public void Test1()
         {
 
@@ -15,6 +25,8 @@ namespace Especificacao
 
 
 /*
+ * todo: renomear os passos com a ordem da loja e acertar a ordem da loja com aquela tela a mais
+ * 
  * todo: faltando validar:
  * 
  	AFAZER: TODO: PAREI começando o loja/PedidoNovoProdCompostoMask.asp

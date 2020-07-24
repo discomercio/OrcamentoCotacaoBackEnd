@@ -11,4 +11,4 @@ em loja/ClienteEdita.asp
 	Given Pedido base
 	And Não possuo a permissão "OP_LJA_CADASTRA_NOVO_PEDIDO"
 	When Crio um pedido
-	Then Erro "verificar mensagem de erro
+	Then Erro "usuário não tem permissão"

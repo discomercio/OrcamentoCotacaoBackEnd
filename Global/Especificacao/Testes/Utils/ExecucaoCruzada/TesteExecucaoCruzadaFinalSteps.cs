@@ -15,7 +15,9 @@ namespace Especificacao.Testes.Utils.TesteExecucaoCruzada
     [Binding, Scope(Tag = "TesteExecucaoCruzada")]
     public class TesteExecucaoCruzadaFinalSteps
     {
+#pragma warning disable IDE0052 // Remove unread private members
         private readonly ScenarioContext scenarioContext;
+#pragma warning restore IDE0052 // Remove unread private members
 
         public TesteExecucaoCruzadaFinalSteps(ScenarioContext scenarioContext)
         {
