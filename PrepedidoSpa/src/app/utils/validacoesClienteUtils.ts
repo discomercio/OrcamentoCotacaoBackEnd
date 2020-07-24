@@ -11,6 +11,7 @@ import { FormatarEndereco } from './formatarEndereco';
 import { EnderecoEntregaDtoClienteCadastro } from '../dto/ClienteCadastro/EnderecoEntregaDTOClienteCadastro';
 import { DadosPagtoComponent } from '../prepedido/novo-prepedido/dados-pagto/dados-pagto.component';
 import { EnderecoCadastralClientePrepedidoDto } from '../dto/Prepedido/EnderecoCadastralClientePrepedidoDto';
+import { StringUtils } from './stringUtils';
 
 export class ValidacoesClienteUtils {
 
@@ -158,20 +159,45 @@ export class ValidacoesClienteUtils {
         if (!dadosClienteCadastroDto.Nome || dadosClienteCadastroDto.Nome.trim() == "") {
             ret.push('Preencha o nome!');
         }
-        if (!dadosClienteCadastroDto.Cnpj_Cpf || (dadosClienteCadastroDto.Cnpj_Cpf.trim() === "") ||
-            (!CpfCnpjUtils.cnpj_cpf_ok(dadosClienteCadastroDto.Cnpj_Cpf))) {
-            ret.push('CNPJ/CPF inválido!');
+        if (!!dadosClienteCadastroDto.Cnpj_Cpf || (dadosClienteCadastroDto.Cnpj_Cpf.trim() !== "")) {
+            if (CpfCnpjUtils.cnpj_cpf_ok(dadosClienteCadastroDto.Cnpj_Cpf)) {
+                let cpf_cnpj = StringUtils.retorna_so_digitos(dadosClienteCadastroDto.Cnpj_Cpf);
+                if (dadosClienteCadastroDto.Tipo == this.constantes.ID_PF &&
+                    cpf_cnpj.length > 11) {
+                    ret.push('CPF inválido!');
+                }
+                if (dadosClienteCadastroDto.Tipo == this.constantes.ID_PJ) {
+                    if (cpf_cnpj.length > 14 || cpf_cnpj.length < 14) {
+                        ret.push('CNPJ inválido!');
+                    }
+                }
+            }
+            else {
+                ret.push('CNPJ/CPF inválido!');
+            }
+        } else {
+            ret.push('PREENCHA CNPJ/CPF');
         }
 
-        if (ehObrigatorio && dadosClienteCadastroDto.Tipo == this.constantes.ID_PJ) {
-            if (!dadosClienteCadastroDto.Email || (dadosClienteCadastroDto.Email !== "" &&
-                !ValidacoesUtils.email_ok(dadosClienteCadastroDto.Email))) {
-                ret.push('E-mail inválido!');
+        if (ehObrigatorio) {
+            debugger;
+            //se for PJ é obrigatório
+            if (dadosClienteCadastroDto.Tipo == this.constantes.ID_PJ) {
+                //se estiver vazio
+                if (!ValidacoesUtils.email_ok(dadosClienteCadastroDto.Email)) {
+                    ret.push('E-mail inválido!');
+                }
+            }
+            if (dadosClienteCadastroDto.Tipo == this.constantes.ID_PF) {
+                if (!!dadosClienteCadastroDto.Email || dadosClienteCadastroDto.Email !== "") {
+                    if (!ValidacoesUtils.email_ok(dadosClienteCadastroDto.Email)) {
+                        ret.push('E-mail inválido!');
+                    }
+                }
             }
 
-            if (!!dadosClienteCadastroDto.EmailXml) {
-                if (dadosClienteCadastroDto.EmailXml !== "" &&
-                    !ValidacoesUtils.email_ok(dadosClienteCadastroDto.EmailXml)) {
+            if (!!dadosClienteCadastroDto.EmailXml || dadosClienteCadastroDto.EmailXml !== "") {
+                if (!ValidacoesUtils.email_ok(dadosClienteCadastroDto.EmailXml)) {
                     ret.push('E-mail (XML) inválido!');
                 }
             }

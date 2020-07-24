@@ -44,7 +44,6 @@ export class PrepedidoDesktopComponent extends TelaDesktopBaseComponent implemen
   public enderecoEntregaFormatado: string;
   public qtdeLinhaEndereco: number;
   montarEnderecoEntrega(enderecoEntregaDto: EnderecoEntregaDtoClienteCadastro):void {
-    debugger;
     if (enderecoEntregaDto.OutroEndereco) {
       let retorno: string = "";
       let sEndereco: string;

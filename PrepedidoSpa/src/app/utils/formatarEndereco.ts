@@ -125,7 +125,7 @@ export class FormatarEndereco {
         let retorno: string = "";
 
         sCabecalho = enderecoEntrega.EndEtg_nome + "\nCNPJ: " + CpfCnpjUtils.cnpj_cpf_formata(enderecoEntrega.EndEtg_cnpj_cpf);
-debugger;
+
         if (enderecoEntrega.EndEtg_contribuinte_icms_status == this.constante.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO)
             aux = "Não";
         if (enderecoEntrega.EndEtg_contribuinte_icms_status == this.constante.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)

@@ -347,7 +347,9 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                     await ValidarDadosPessoaEnderecoEntrega(prepedido, lstErros);
 
                 if (lstErros.Count != 0)
+                {
                     retorno = false;
+                }                    
             }
 
             return retorno;
@@ -475,11 +477,11 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             if (prePedido.EnderecoEntrega.EndEtg_tipo_pessoa != Constantes.ID_PJ &&
                 prePedido.EnderecoEntrega.EndEtg_tipo_pessoa != Constantes.ID_PF)
             {
-                lstErros.Add("Necessário escolher Pessoa Jurídica ou Pessoa Física no Endereço de entrega!");
+                lstErros.Add("Endereço de Entrega: Necessário escolher Pessoa Jurídica ou Pessoa Física no Endereço de entrega!");
             }
             else if (string.IsNullOrEmpty(prePedido.EnderecoEntrega.EndEtg_nome))
             {
-                lstErros.Add("Preencha o nome/razão social no endereço de entrega!");
+                lstErros.Add("Endereço de Entrega: Preencha o nome/razão social no endereço de entrega!");
             }
             else
             {

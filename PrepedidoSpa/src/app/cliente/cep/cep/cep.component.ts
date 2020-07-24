@@ -19,7 +19,7 @@ import { $ } from 'protractor';
 export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
 
   constructor(private readonly alertaService: AlertaService,
-    private readonly cepService: CepService,
+    public readonly cepService: CepService,
     public readonly dialog: MatDialog,
     telaDesktopService: TelaDesktopService
   ) {
@@ -27,7 +27,7 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
   }
 
   ngOnInit() {
-
+        
   }
 
 
@@ -80,10 +80,10 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
     this.temUf = false;
   }
 
-  public temEndereco: boolean = true;
-  public temBairro: boolean = true;
-  public temCidade: boolean = true;
-  public temUf: boolean = true;
+  public temEndereco: boolean;
+  public temBairro: boolean;
+  public temCidade: boolean;
+  public temUf: boolean;
   //saiu do campo de CEP, vamos carregar o endereco
   saiuCep() {
 
@@ -100,7 +100,6 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
     }
 
     this.zerarCamposEndEntrega();
-
     //vamos fazer a busca
     this.carregando = true;
     this.cepService.buscarCep(this.Cep, null, null, null).toPromise()
