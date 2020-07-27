@@ -72,9 +72,8 @@ export class ConfirmarEnderecoComponent implements OnInit {
       .then((r) => {
         //recebemos um endereço
         const end = r[0];
-        src.temBairro = end.Bairro == "" || !end.Bairro ? false : true;
+        
         src.temCidade = end.Cidade == "" || !end.Cidade ? false : true;
-        src.temEndereco = end.Endereco == "" || !end.Endereco ? false : true;
       }).catch((r) => {
         // não fazemos nada
       });

@@ -363,10 +363,9 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
      src.cepService.buscarCep(src.Cep, null, null, null).toPromise()
       .then((r) => {
         //recebemos um endereço
-        const end = r[0];
-        src.temBairro = end.Bairro == "" || !end.Bairro ? false : true;
+        const end = r[0];        
         src.temCidade = end.Cidade == "" || !end.Cidade ? false : true;
-        src.temEndereco = end.Endereco == "" || !end.Endereco? false : true;
+        
       }).catch((r) => {
         // não fazemos nada
       });

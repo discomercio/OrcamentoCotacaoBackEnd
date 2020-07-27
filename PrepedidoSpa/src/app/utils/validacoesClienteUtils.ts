@@ -493,6 +493,14 @@ export class ValidacoesClienteUtils {
                 ret.push("Caso seja selecionado outro endereço, preencha o número do endereço!")
                 return ret;
             }
+            if(!end.EndEtg_bairro || end.EndEtg_bairro.trim() === ""){
+                ret.push("Caso seja selecionado outro endereço, informe um bairro!");
+                return ret;
+            }
+            if(!end.EndEtg_cidade || end.EndEtg_cidade.trim() === ""){
+                ret.push("Caso seja selecionado outro endereço, informe uma cidade!");
+                return ret;
+            }
         }
         return ret;
     }
