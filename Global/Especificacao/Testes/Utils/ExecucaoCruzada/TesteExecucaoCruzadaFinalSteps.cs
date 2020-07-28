@@ -12,7 +12,7 @@ namespace Especificacao.Testes.Utils.TesteExecucaoCruzada
         }
         internal static int instanciacoes = 0;
     }
-    [Binding, Scope(Tag = "TesteExecucaoCruzada")]
+    [Binding, Scope(Tag = "Implementacao/TesteExecucaoCruzada")]
     public class TesteExecucaoCruzadaFinalSteps
     {
 #pragma warning disable IDE0052 // Remove unread private members

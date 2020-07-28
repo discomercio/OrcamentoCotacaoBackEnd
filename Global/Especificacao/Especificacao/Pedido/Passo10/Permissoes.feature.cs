@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Testes.Utils.ExecucaoCruzada
+namespace Especificacao.Especificacao.Pedido.Passo10
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,21 +19,23 @@ namespace Especificacao.Testes.Utils.ExecucaoCruzada
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "Implementacao/TesteExecucaoCruzada")]
-    public partial class TesteExecucaoCruzadaFinal_Parte2_QueDeveSerExecutadaDepoisVerificarQueExecutouFeature : object, Xunit.IClassFixture<TesteExecucaoCruzadaFinal_Parte2_QueDeveSerExecutadaDepoisVerificarQueExecutouFeature.FixtureData>, System.IDisposable
+    [Xunit.TraitAttribute("Category", "ignore")]
+    [Xunit.TraitAttribute("Category", "Especificacao/Pedido")]
+    public partial class ValidarPermissoesFeature : object, Xunit.IClassFixture<ValidarPermissoesFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "Implementacao/TesteExecucaoCruzada"};
+                "ignore",
+                "Especificacao/Pedido"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "TesteExecucaoCruzadaFinal.feature"
+#line 1 "Permissoes.feature"
 #line hidden
         
-        public TesteExecucaoCruzadaFinal_Parte2_QueDeveSerExecutadaDepoisVerificarQueExecutouFeature(TesteExecucaoCruzadaFinal_Parte2_QueDeveSerExecutadaDepoisVerificarQueExecutouFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public ValidarPermissoesFeature(ValidarPermissoesFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,11 +44,9 @@ namespace Especificacao.Testes.Utils.ExecucaoCruzada
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TesteExecucaoCruzada final - parte 2 - que deve ser executada depois VerificarQue" +
-                    "Executou", "Descrição em TesteExecucaoCruzadaInicial\r\n\r\nIMPORTANTE: o nome desta fetuare PREC" +
-                    "ISA ter o texto VerificarQueExecutou no nome. Isso garante que ela seja executad" +
-                    "a na ordem certa.", ProgrammingLanguage.CSharp, new string[] {
-                        "Implementacao/TesteExecucaoCruzada"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Validar permissões", null, ProgrammingLanguage.CSharp, new string[] {
+                        "ignore",
+                        "Especificacao/Pedido"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -86,16 +86,17 @@ namespace Especificacao.Testes.Utils.ExecucaoCruzada
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Garantir que executou")]
-        [Xunit.TraitAttribute("FeatureTitle", "TesteExecucaoCruzada final - parte 2 - que deve ser executada depois VerificarQue" +
-            "Executou")]
-        [Xunit.TraitAttribute("Description", "Garantir que executou")]
-        public virtual void GarantirQueExecutou()
+        [Xunit.SkippableFactAttribute(DisplayName="Validar permissão de criação")]
+        [Xunit.TraitAttribute("FeatureTitle", "Validar permissões")]
+        [Xunit.TraitAttribute("Description", "Validar permissão de criação")]
+        public virtual void ValidarPermissaoDeCriacao()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Garantir que executou", null, tagsOfScenario, argumentsOfScenario);
-#line 8
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar permissão de criação", "em loja/resumo.asp:\r\nif operacao_permitida(OP_LJA_CADASTRA_NOVO_PEDIDO, s_lista_o" +
+                    "peracoes_permitidas) then\r\n\r\nem loja/ClienteEdita.asp\r\n<% if operacao_permitida(" +
+                    "OP_LJA_CADASTRA_NOVO_PEDIDO, s_lista_operacoes_permitidas) then %>", tagsOfScenario, argumentsOfScenario);
+#line 5
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -115,8 +116,17 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 9
- testRunner.Then("Garantir que executou", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 11
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 12
+ testRunner.And("Não possuo a permissão \"OP_LJA_CADASTRA_NOVO_PEDIDO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 13
+ testRunner.When("Crio um pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 14
+ testRunner.Then("Erro \"usuário não tem permissão\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -129,12 +139,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                TesteExecucaoCruzadaFinal_Parte2_QueDeveSerExecutadaDepoisVerificarQueExecutouFeature.FeatureSetup();
+                ValidarPermissoesFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                TesteExecucaoCruzadaFinal_Parte2_QueDeveSerExecutadaDepoisVerificarQueExecutouFeature.FeatureTearDown();
+                ValidarPermissoesFeature.FeatureTearDown();
             }
         }
     }

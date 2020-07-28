@@ -1,5 +1,6 @@
 ﻿@ignore
-@Pedido
+@Especificacao/Pedido
+@Ambiente/PrepedidoBusiness
 Feature: Pedido de cliente PJ com endereço de entrega
 
 Scenario: Validar tipo de pessoa 1

@@ -1,4 +1,4 @@
-﻿@Pedido
+﻿@Especificacao/Pedido
 Feature: Fluxo da criação do pedido
 ---
 Fluxo no ERP/loja:
@@ -15,14 +15,14 @@ Fluxo no ERP/loja:
 6 - Salvar o pedido (finaliza em "loja/pedido.asp")
 --- 
 Fluxo no módulo loja:
-1 - Escolher cliente já cadastrado
+1 - Passo10: Escolher cliente já cadastrado
 	Se o cliente não existir, ele deve ser cadastrado primeiro. (arquivo CLiente/FLuxoCadastroCliente - criar esse arquivo)
-2 - Confirmar (ou editar) dados cadastrais e informar endereço de entrega
+2 - Passo20: Confirmar (ou editar) dados cadastrais e informar endereço de entrega
 	se editar dados cadastrais, salva na t_cliente
-3 - Escolher indicador e RA e Modo de Seleção do CD 
-4 - Escolher produtos, quantidades e alterar valores e forma de pagamento
-5 - Informar observações (entrega imediata, instalador instala, etc) 
-6 - Salvar o pedido
+3 - Passo30: Escolher indicador e RA e Modo de Seleção do CD 
+4 - Passo40: Escolher produtos, quantidades e alterar valores e forma de pagamento
+5 - Passo50: Informar observações (entrega imediata, instalador instala, etc) 
+6 - Passo60: Salvar o pedido
 --- 
 Fluxo na API:
 Salvar o pedido

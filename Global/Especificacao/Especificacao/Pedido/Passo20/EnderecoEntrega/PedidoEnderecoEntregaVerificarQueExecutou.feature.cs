@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Testes.Utils.ExecucaoCruzada
+namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,21 +19,23 @@ namespace Especificacao.Testes.Utils.ExecucaoCruzada
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "Implementacao/TesteExecucaoCruzada")]
-    public partial class TesteExecucaoCruzadaFinal_Parte2_QueDeveSerExecutadaDepoisVerificarQueExecutouFeature : object, Xunit.IClassFixture<TesteExecucaoCruzadaFinal_Parte2_QueDeveSerExecutadaDepoisVerificarQueExecutouFeature.FixtureData>, System.IDisposable
+    [Xunit.TraitAttribute("Category", "Especificacao/Pedido")]
+    [Xunit.TraitAttribute("Category", "ignore")]
+    public partial class PedidoEnderecoEntregaVerificarQueExecutou_VerificarQueExecutouFeature : object, Xunit.IClassFixture<PedidoEnderecoEntregaVerificarQueExecutou_VerificarQueExecutouFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "Implementacao/TesteExecucaoCruzada"};
+                "Especificacao/Pedido",
+                "ignore"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "TesteExecucaoCruzadaFinal.feature"
+#line 1 "PedidoEnderecoEntregaVerificarQueExecutou.feature"
 #line hidden
         
-        public TesteExecucaoCruzadaFinal_Parte2_QueDeveSerExecutadaDepoisVerificarQueExecutouFeature(TesteExecucaoCruzadaFinal_Parte2_QueDeveSerExecutadaDepoisVerificarQueExecutouFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public PedidoEnderecoEntregaVerificarQueExecutou_VerificarQueExecutouFeature(PedidoEnderecoEntregaVerificarQueExecutou_VerificarQueExecutouFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,11 +44,10 @@ namespace Especificacao.Testes.Utils.ExecucaoCruzada
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TesteExecucaoCruzada final - parte 2 - que deve ser executada depois VerificarQue" +
-                    "Executou", "Descrição em TesteExecucaoCruzadaInicial\r\n\r\nIMPORTANTE: o nome desta fetuare PREC" +
-                    "ISA ter o texto VerificarQueExecutou no nome. Isso garante que ela seja executad" +
-                    "a na ordem certa.", ProgrammingLanguage.CSharp, new string[] {
-                        "Implementacao/TesteExecucaoCruzada"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "PedidoEnderecoEntregaVerificarQueExecutou - VerificarQueExecutou", "Como ainda não temos a verificação do pedido, registramos aqui que não estamos ex" +
+                    "ecutando ainda", ProgrammingLanguage.CSharp, new string[] {
+                        "Especificacao/Pedido",
+                        "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -86,16 +87,15 @@ namespace Especificacao.Testes.Utils.ExecucaoCruzada
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Garantir que executou")]
-        [Xunit.TraitAttribute("FeatureTitle", "TesteExecucaoCruzada final - parte 2 - que deve ser executada depois VerificarQue" +
-            "Executou")]
-        [Xunit.TraitAttribute("Description", "Garantir que executou")]
-        public virtual void GarantirQueExecutou()
+        [Xunit.SkippableFactAttribute(DisplayName="VerificarQueExecutou")]
+        [Xunit.TraitAttribute("FeatureTitle", "PedidoEnderecoEntregaVerificarQueExecutou - VerificarQueExecutou")]
+        [Xunit.TraitAttribute("Description", "VerificarQueExecutou")]
+        public virtual void VerificarQueExecutou()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Garantir que executou", null, tagsOfScenario, argumentsOfScenario);
-#line 8
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("VerificarQueExecutou", null, tagsOfScenario, argumentsOfScenario);
+#line 6
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -115,8 +115,8 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 9
- testRunner.Then("Garantir que executou", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 7
+ testRunner.Then("Pedido\\Passo20\\EnderecoEntrega\\PedidoEnderecoEntregaVerificarQueExecutou", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -129,12 +129,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                TesteExecucaoCruzadaFinal_Parte2_QueDeveSerExecutadaDepoisVerificarQueExecutouFeature.FeatureSetup();
+                PedidoEnderecoEntregaVerificarQueExecutou_VerificarQueExecutouFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                TesteExecucaoCruzadaFinal_Parte2_QueDeveSerExecutadaDepoisVerificarQueExecutouFeature.FeatureTearDown();
+                PedidoEnderecoEntregaVerificarQueExecutou_VerificarQueExecutouFeature.FeatureTearDown();
             }
         }
     }

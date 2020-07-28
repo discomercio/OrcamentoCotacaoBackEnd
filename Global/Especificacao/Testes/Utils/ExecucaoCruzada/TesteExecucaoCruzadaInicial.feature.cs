@@ -19,14 +19,14 @@ namespace Especificacao.Testes.Utils.ExecucaoCruzada
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "TesteExecucaoCruzada")]
+    [Xunit.TraitAttribute("Category", "Implementacao/TesteExecucaoCruzada")]
     public partial class TesteExecucaoCruzadaParte1QueDeveSerExecutadaPrimeiroFeature : object, Xunit.IClassFixture<TesteExecucaoCruzadaParte1QueDeveSerExecutadaPrimeiroFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "TesteExecucaoCruzada"};
+                "Implementacao/TesteExecucaoCruzada"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -52,7 +52,7 @@ através do pedido.
 
 Explicando de novo: na implementação dos passos do pedido, testamos tanto o pedido quanto o prepedido. E na implementação do prepedido somente
 garantimos que tenha sido executada no pedido.", ProgrammingLanguage.CSharp, new string[] {
-                        "TesteExecucaoCruzada"});
+                        "Implementacao/TesteExecucaoCruzada"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

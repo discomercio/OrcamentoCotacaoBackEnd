@@ -1,4 +1,4 @@
-﻿@TesteExecucaoCruzada
+﻿@Implementacao/TesteExecucaoCruzada
 Feature: TesteExecucaoCruzada parte 1 que deve ser executada primeiro
 Usamos isto para garantir que um teste seja executado em dois ambientes.
 Exemplo: o endereço cadastrarl deve ser validado no pedido e no prepedido.

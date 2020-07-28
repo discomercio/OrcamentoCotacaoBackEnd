@@ -3,7 +3,7 @@ using TechTalk.SpecFlow;
 
 namespace Especificacao.Testes.Utils.ExecucaoCruzada
 {
-    [Binding, Scope(Tag = "TesteExecucaoCruzada")]
+    [Binding, Scope(Tag = "Implementacao/TesteExecucaoCruzada")]
     public class TesteExecucaoCruzadaInicialSteps
     {
 #pragma warning disable IDE0052 // Remove unread private members

@@ -7,16 +7,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Testes\Pedido\Validar\**" />
+    <EmbeddedResource Remove="Testes\Pedido\Validar\**" />
+    <None Remove="Testes\Pedido\Validar\**" />
+    <SpecFlowFeatureFiles Remove="Testes\Pedido\Validar\**" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Testes\Pedido\Validar\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Testes\Utils\BancoTestes\Dados\Tcliente.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\TorcamentistaEindicador.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\CaminhoFelizApi.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\CaminhoFelizAsp.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\FluxoCriacaoPedido.feature.cs" />
-    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Validar\CamposSimples.feature.cs" />
-    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Validar\EnderecoEntrega\ClientePj\CampoEndEtg_tipo_pessoa - Copy.feature.cs" />
-    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Validar\EnderecoEntrega\ClientePj\CamposSimples.feature.cs" />
-    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Validar\EnderecoEntrega\ClientePj\EntregaPj - Copy.feature.cs" />
-    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Validar\EnderecoEntrega\ClientePj\EntregaPjTelefones - Copy.feature.cs" />
-    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Validar\EnderecoEntrega\ClientePj\EntregaPjTelefonesPj - Copy.feature.cs" />
-    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Validar\Permissoes.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo20\EnderecoEntrega\ClientePj\CampoEndEtg_tipo_pessoa - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo20\EnderecoEntrega\ClientePj\CamposSimples.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo20\EnderecoEntrega\ClientePj\EntregaPj - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo20\EnderecoEntrega\ClientePj\EntregaPjTelefones - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo20\EnderecoEntrega\ClientePj\EntregaPjTelefonesPj - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\TesteExecucaoCruzadaPedido - Copy.feature.cs" />
   </ItemGroup>
 
@@ -48,13 +59,13 @@
     <Compile Update="Especificacao\Pedido\FluxoCriacaoPedido.feature.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
-    <Compile Update="Especificacao\Pedido\Validar\CamposSimples.feature.cs">
+    <Compile Update="Especificacao\Pedido\Passo10\CamposSimples.feature.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
-    <Compile Update="Especificacao\Pedido\Validar\EnderecoEntrega\ClientePj\CampoEndEtg_tipo_pessoa.feature.cs">
+    <Compile Update="Especificacao\Pedido\Passo20\EnderecoEntrega\ClientePj\CampoEndEtg_tipo_pessoa.feature.cs">
       <DependentUpon>CampoEndEtg_tipo_pessoa.feature</DependentUpon>
     </Compile>
-    <Compile Update="Especificacao\Pedido\Validar\Permissoes.feature.cs">
+    <Compile Update="Especificacao\Pedido\Passo10\Permissoes.feature.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -72,31 +83,39 @@
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
-    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Validar\CamposSimples.feature">
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo10\CamposSimples.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
-    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Validar\EnderecoEntrega\ClientePj\EntregaPf.feature">
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo10\PedidoDadosCadastraisVerificarQueExecutou.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
-    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Validar\EnderecoEntrega\ClientePj\EntregaPfTelefones.feature">
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo20\EnderecoEntrega\ClientePj\EntregaPf.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
-    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Validar\EnderecoEntrega\ClientePj\EntregaPjTelefones.feature">
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo20\EnderecoEntrega\ClientePj\EntregaPfTelefones.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
-    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Validar\EnderecoEntrega\ClientePj\EntregaPj.feature">
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo20\EnderecoEntrega\ClientePj\EntregaPjTelefones.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
-    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Validar\EnderecoEntrega\ClientePj\CampoEndEtg_tipo_pessoa.feature">
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo20\EnderecoEntrega\ClientePj\EntregaPj.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
-    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Validar\Permissoes.feature">
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo20\EnderecoEntrega\ClientePj\CampoEndEtg_tipo_pessoa.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo10\Permissoes.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Especificacao\Prepedido\PrepedidoEnderecoEntregaVerificarQueExecutou.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
@@ -107,11 +126,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Testes\Pedido\Validar\" />
+    <ProjectReference Include="..\..\PrepedidoApi\PrepedidoBusiness\PrepedidoBusiness.csproj" />
+    <ProjectReference Include="..\Infra\InfraBanco\InfraBanco.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Infra\InfraBanco\InfraBanco.csproj" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TorcamentistaEindicador.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tcliente.json" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,5 @@
 ﻿@ignore
-@Pedido
+@Especificacao/Pedido
 Feature: Validar campos simples
 
 Scenario: Validar CPF

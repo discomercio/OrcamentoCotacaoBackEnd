@@ -3,7 +3,7 @@ using TechTalk.SpecFlow;
 
 namespace Especificacao.Testes.Pedido
 {
-    [Binding, Scope(Tag = "CaminhoFelizApi")]
+    [Binding, Scope(Tag = "Especificacao/Pedido/CaminhoFelizApi")]
     public class CaminhoFelizApiSteps
     {
         private readonly ScenarioContext scenarioContext;

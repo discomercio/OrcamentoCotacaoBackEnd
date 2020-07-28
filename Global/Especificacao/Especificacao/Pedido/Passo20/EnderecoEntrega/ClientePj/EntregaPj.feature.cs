@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Especificacao.Pedido.Validar.EnderecoEntrega.ClientePj
+namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj
 {
     using TechTalk.SpecFlow;
     using System;
@@ -20,7 +20,7 @@ namespace Especificacao.Especificacao.Pedido.Validar.EnderecoEntrega.ClientePj
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "ignore")]
-    [Xunit.TraitAttribute("Category", "Pedido")]
+    [Xunit.TraitAttribute("Category", "Especificacao/Pedido")]
     public partial class PedidoDeClientePJComEnderecoDeEntregaPJFeature : object, Xunit.IClassFixture<PedidoDeClientePJComEnderecoDeEntregaPJFeature.FixtureData>, System.IDisposable
     {
         
@@ -28,7 +28,7 @@ namespace Especificacao.Especificacao.Pedido.Validar.EnderecoEntrega.ClientePj
         
         private string[] _featureTags = new string[] {
                 "ignore",
-                "Pedido"};
+                "Especificacao/Pedido"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -47,7 +47,7 @@ namespace Especificacao.Especificacao.Pedido.Validar.EnderecoEntrega.ClientePj
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Pedido de cliente PJ com endereço de entrega PJ", "em loja/ClienteEdita.asp:\r\nvar EndEtg_tipo_pessoa = $(\'input[name=\"EndEtg_tipo_pe" +
                     "ssoa\"]:checked\').val();\r\ne linhas para baixo", ProgrammingLanguage.CSharp, new string[] {
                         "ignore",
-                        "Pedido"});
+                        "Especificacao/Pedido"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

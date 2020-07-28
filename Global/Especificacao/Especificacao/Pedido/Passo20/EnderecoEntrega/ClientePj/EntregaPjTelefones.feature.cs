@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Especificacao.Pedido.Validar.EnderecoEntrega.ClientePj
+namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj
 {
     using TechTalk.SpecFlow;
     using System;
@@ -20,7 +20,7 @@ namespace Especificacao.Especificacao.Pedido.Validar.EnderecoEntrega.ClientePj
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "ignore")]
-    [Xunit.TraitAttribute("Category", "Pedido")]
+    [Xunit.TraitAttribute("Category", "Especificacao/Pedido")]
     public partial class PedidoDeClientePJComEnderecoDeEntregaPJ_ValidacaoDeTelefonesFeature : object, Xunit.IClassFixture<PedidoDeClientePJComEnderecoDeEntregaPJ_ValidacaoDeTelefonesFeature.FixtureData>, System.IDisposable
     {
         
@@ -28,7 +28,7 @@ namespace Especificacao.Especificacao.Pedido.Validar.EnderecoEntrega.ClientePj
         
         private string[] _featureTags = new string[] {
                 "ignore",
-                "Pedido"};
+                "Especificacao/Pedido"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -55,7 +55,7 @@ namespace Especificacao.Especificacao.Pedido.Validar.EnderecoEntrega.ClientePj
                 EndEtg_ramal_com_2
 */", ProgrammingLanguage.CSharp, new string[] {
                         "ignore",
-                        "Pedido"});
+                        "Especificacao/Pedido"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

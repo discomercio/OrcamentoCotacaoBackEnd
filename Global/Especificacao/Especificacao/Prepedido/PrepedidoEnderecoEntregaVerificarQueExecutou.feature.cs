@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Especificacao.Pedido.Validar
+namespace Especificacao.Especificacao.Prepedido
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,23 +19,23 @@ namespace Especificacao.Especificacao.Pedido.Validar
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    [Xunit.TraitAttribute("Category", "Especificacao/Prepedido")]
     [Xunit.TraitAttribute("Category", "ignore")]
-    [Xunit.TraitAttribute("Category", "Pedido")]
-    public partial class ValidarPermissoesFeature : object, Xunit.IClassFixture<ValidarPermissoesFeature.FixtureData>, System.IDisposable
+    public partial class PrepedidoEnderecoEntregaVerificarQueExecutou_VerificarQueExecutouFeature : object, Xunit.IClassFixture<PrepedidoEnderecoEntregaVerificarQueExecutou_VerificarQueExecutouFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "ignore",
-                "Pedido"};
+                "Especificacao/Prepedido",
+                "ignore"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "Permissoes.feature"
+#line 1 "PrepedidoEnderecoEntregaVerificarQueExecutou.feature"
 #line hidden
         
-        public ValidarPermissoesFeature(ValidarPermissoesFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public PrepedidoEnderecoEntregaVerificarQueExecutou_VerificarQueExecutouFeature(PrepedidoEnderecoEntregaVerificarQueExecutou_VerificarQueExecutouFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -44,9 +44,10 @@ namespace Especificacao.Especificacao.Pedido.Validar
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Validar permissões", null, ProgrammingLanguage.CSharp, new string[] {
-                        "ignore",
-                        "Pedido"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "PrepedidoEnderecoEntregaVerificarQueExecutou - VerificarQueExecutou", "A descrição completa está em Especificacao\\Pedido\\Passo20\\EnderecoEntrega\r\nPrecis" +
+                    "amos verificar que executou.", ProgrammingLanguage.CSharp, new string[] {
+                        "Especificacao/Prepedido",
+                        "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -86,17 +87,15 @@ namespace Especificacao.Especificacao.Pedido.Validar
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validar permissão de criação")]
-        [Xunit.TraitAttribute("FeatureTitle", "Validar permissões")]
-        [Xunit.TraitAttribute("Description", "Validar permissão de criação")]
-        public virtual void ValidarPermissaoDeCriacao()
+        [Xunit.SkippableFactAttribute(DisplayName="VerificarQueExecutou")]
+        [Xunit.TraitAttribute("FeatureTitle", "PrepedidoEnderecoEntregaVerificarQueExecutou - VerificarQueExecutou")]
+        [Xunit.TraitAttribute("Description", "VerificarQueExecutou")]
+        public virtual void VerificarQueExecutou()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar permissão de criação", "em loja/resumo.asp:\r\nif operacao_permitida(OP_LJA_CADASTRA_NOVO_PEDIDO, s_lista_o" +
-                    "peracoes_permitidas) then\r\n\r\nem loja/ClienteEdita.asp\r\n<% if operacao_permitida(" +
-                    "OP_LJA_CADASTRA_NOVO_PEDIDO, s_lista_operacoes_permitidas) then %>", tagsOfScenario, argumentsOfScenario);
-#line 5
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("VerificarQueExecutou", null, tagsOfScenario, argumentsOfScenario);
+#line 8
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -116,17 +115,26 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
+#line 9
+ testRunner.Then("Prepedido\\PrepedidoEnderecoEntregaVerificarQueExecutou EnderecoEntrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 10
+ testRunner.Then("Prepedido\\PrepedidoEnderecoEntregaVerificarQueExecutou ClientePj\\CampoEndEtg_tipo" +
+                        "_pessoa", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
 #line 11
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Then("Prepedido\\PrepedidoEnderecoEntregaVerificarQueExecutou ClientePj\\EntregaPf", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 12
- testRunner.And("Não possuo a permissão \"OP_LJA_CADASTRA_NOVO_PEDIDO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("Prepedido\\PrepedidoEnderecoEntregaVerificarQueExecutou ClientePj\\EntregaPfTelefon" +
+                        "es", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 13
- testRunner.When("Crio um pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("Prepedido\\PrepedidoEnderecoEntregaVerificarQueExecutou ClientePj\\EntregaPj", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 14
- testRunner.Then("Erro \"usuário não tem permissão\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Prepedido\\PrepedidoEnderecoEntregaVerificarQueExecutou ClientePj\\EntregaPjTelefon" +
+                        "es", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -139,12 +147,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                ValidarPermissoesFeature.FeatureSetup();
+                PrepedidoEnderecoEntregaVerificarQueExecutou_VerificarQueExecutouFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                ValidarPermissoesFeature.FeatureTearDown();
+                PrepedidoEnderecoEntregaVerificarQueExecutou_VerificarQueExecutouFeature.FeatureTearDown();
             }
         }
     }

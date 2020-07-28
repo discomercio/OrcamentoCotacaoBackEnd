@@ -1,8 +1,13 @@
 ﻿@ignore
-@Pedido
+@Especificacao/Pedido
+@Especificacao/Prepedido
+@Ambiente/PrepedidoUnisBusiness
+@Ambiente/APIUnis
+@Ambiente/PrepedidoBusiness
+@Ambiente/PrepedidoApi
 Feature: Validar endereco de entrega
 
-Background: Pedido base com endereço de entrega
+Background: Pedido base com endereço de entrega (pedido e prepedido)
 	Given Pedido base com endereço de entrega
 
 Scenario: Informado

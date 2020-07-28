@@ -1,5 +1,5 @@
 ﻿@ignore
-@Pedido
+@Especificacao/Pedido
 Feature: Pedido de cliente PJ com endereço de entrega PJ - validação de telefones
 em loja/ClienteEdita.asp:
                 /*

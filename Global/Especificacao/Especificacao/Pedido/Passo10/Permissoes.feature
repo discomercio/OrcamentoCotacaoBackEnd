@@ -1,5 +1,5 @@
 ﻿@ignore
-@Pedido
+@Especificacao/Pedido
 Feature: Validar permissões
 
 Scenario: Validar permissão de criação

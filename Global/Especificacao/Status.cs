@@ -25,9 +25,9 @@ namespace Especificacao
 
 
 /*
- * todo: renomear os passos com a ordem da loja e acertar a ordem da loja com aquela tela a mais
+ * todo: fazer o fluxo na criação do prepedido
  * 
- * todo: faltando validar:
+ * todo: faltando validar no fluxo do pedido:
  * 
  	AFAZER: TODO: PAREI começando o loja/PedidoNovoProdCompostoMask.asp
     depois: loja/PedidoNovo.asp

@@ -1,4 +1,4 @@
-﻿@TesteExecucaoCruzada
+﻿@Implementacao/TesteExecucaoCruzada
 Feature: TesteExecucaoCruzada final - parte 2 - que deve ser executada depois VerificarQueExecutou
 Descrição em TesteExecucaoCruzadaInicial
 
