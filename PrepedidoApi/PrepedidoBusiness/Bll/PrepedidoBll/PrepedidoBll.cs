@@ -701,7 +701,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             List<ListaBancoDto> lstBanco = (await clienteBll.ListarBancosCombo()).ToList();
             //vamos validar os dados do cliente
             await ValidacoesClienteBll.ValidarDadosCliente(prePedido.DadosCliente, null, null,
-                lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco);
+                lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, false);
 
             if (lstErros.Count > 0)
                 return lstErros;

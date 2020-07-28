@@ -423,7 +423,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
     if (!this.validarFormaPagto(false)) {
       return false;
     }
-    debugger;
+    
     this.lstNovoCoeficiente.RecalcularListaProdutos(this.formaPagtoNum, this.coeficienteDtoNovo, this.tipoFormaPagto,
       this.qtde);
   }

@@ -39,7 +39,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
         public static async Task<bool> ValidarDadosCliente(DadosClienteCadastroDto dadosCliente,
             List<RefBancariaDtoCliente> lstRefBancaria, List<RefComercialDtoCliente> lstRefComercial,
             List<string> lstErros, ContextoBdProvider contextoProvider, CepBll cepBll, IBancoNFeMunicipio bancoNFeMunicipio,
-            List<ListaBancoDto> lstBanco)
+            List<ListaBancoDto> lstBanco, bool cadastrandoCliente)
         {
             bool retorno;
 
@@ -54,6 +54,12 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                                               where c.Cnpj_Cpf == dadosCliente.Cnpj_Cpf &&
                                                     c.Tipo == dadosCliente.Tipo
                                               select c).FirstOrDefaultAsync();
+
+                    if(cliente == null)
+                    {
+                        lstErros.Add("Cliente não encontrado! Verifique se o CPF/CNPJ está correto!");
+                        return false;
+                    }
 
                     bool tipoDesconhecido = true;
                     //é cliente PF
@@ -98,7 +104,9 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                         bancoNFeMunicipio);
 
                     //vamos verificar o IE dos clientes
-                    retorno = await ValidarIE_Cliente(dadosCliente, lstErros, contextoProvider, bancoNFeMunicipio);
+                    if (dadosCliente.Tipo == Constantes.ID_PJ ||
+                        dadosCliente.Tipo == Constantes.ID_PF && cadastrandoCliente)
+                        retorno = await ValidarIE_Cliente(dadosCliente, lstErros, contextoProvider, bancoNFeMunicipio);
                 }
                 else
                 {
@@ -133,8 +141,17 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             }
             else
             {
+                //vamos confrontar o cpf 
+                string cpfCliente = Util.SoDigitosCpf_Cnpj(cliente.Cnpj_Cpf);
+
                 //vamos validar o cpf
                 string cpf_cnpjSoDig = Util.SoDigitosCpf_Cnpj(dadosCliente.Cnpj_Cpf);
+                if(cpfCliente != cpf_cnpjSoDig)
+                {
+                    lstErros.Add("O CPF do cliente esta divergindo do cadastro!");
+                    return false;
+                }
+
                 if (!Util.ValidaCPF(cpf_cnpjSoDig))
                 {
                     lstErros.Add(MensagensErro.CPF_INVALIDO);
@@ -471,7 +488,16 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             }
             else
             {
+                //vamos confrontar o cnpj
+                string cnpjCliente = Util.SoDigitosCpf_Cnpj(cliente.Cnpj_Cpf);
+
                 string cpf_cnpjSoDig = Util.SoDigitosCpf_Cnpj(dadosCliente.Cnpj_Cpf);
+                if(cnpjCliente != cpf_cnpjSoDig)
+                {
+                    lstErros.Add("O CNPJ do cliente esta divergindo do cadastro!");
+                    return false;
+                }
+
                 if (!Util.ValidaCNPJ(cpf_cnpjSoDig))
                 {
                     lstErros.Add(MensagensErro.CNPJ_INVALIDO);
@@ -1001,6 +1027,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
             bool blnResultado;
 
+            //se o cliente for PF e tiver iE não podemos validar
             blnResultado = isInscricaoEstadualOkCom(ie, uf);
             if (!blnResultado)
             {
@@ -1058,7 +1085,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                      *  ex: cliente "01.824.328/0001-95", contém "AV" no cadastro, na tabela de cep retorna "Avenida" 
                      *  e isso difere na confrontação de endereço
                      */
-                    
+
 
                     //vamos verificar se a cidade da lista de cep existe no IBGE para validar
                     if (!string.IsNullOrEmpty(cepCliente.Cidade) && !string.IsNullOrEmpty(c.Cidade))

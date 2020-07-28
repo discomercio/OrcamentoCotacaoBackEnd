@@ -351,7 +351,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             List<ListaBancoDto> lstBanco = (await ListarBancosCombo()).ToList();
 
             if (await ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDto, null, null, lstErros,
-                contextoProvider, cepBll, bancoNFeMunicipio, lstBanco))
+                contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, false))
             {
                 var dados = from c in db.Tclientes
                             where c.Id == dadosClienteCadastroDto.Id
@@ -593,7 +593,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             //passar lista de bancos para validar
             List<ListaBancoDto> lstBanco = (await ListarBancosCombo()).ToList();
             if (await ValidacoesClienteBll.ValidarDadosCliente(clienteDto.DadosCliente, clienteDto.RefBancaria,
-                clienteDto.RefComercial, lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco))
+                clienteDto.RefComercial, lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, true))
             {
                 if (lstErros.Count <= 0)
                 {

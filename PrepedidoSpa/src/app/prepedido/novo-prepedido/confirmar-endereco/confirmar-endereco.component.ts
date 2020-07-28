@@ -50,6 +50,7 @@ export class ConfirmarEnderecoComponent implements OnInit {
 
   required: boolean;
   atualizarDadosEnderecoTela(enderecoEntregaDtoClienteCadastro: EnderecoEntregaDtoClienteCadastro) {
+    //precisamos fazer a busca de cep para saber se tem endereço bairro e cidade para bloquear ou não
 
     this.enderecoEntregaDtoClienteCadastro = enderecoEntregaDtoClienteCadastro;
     const src = this.componenteCep;
@@ -63,9 +64,19 @@ export class ConfirmarEnderecoComponent implements OnInit {
     enderecoEntregaDtoClienteCadastro.EndEtg_cod_justificativa = this.enderecoEntregaDtoClienteCadastro.EndEtg_cod_justificativa;
     this.pessoaEntregaEhPJ = this.enderecoEntregaDtoClienteCadastro.EndEtg_tipo_pessoa == this.constantes.ID_PJ ? true : false;
     this.pessoaEntregaEhPF = this.enderecoEntregaDtoClienteCadastro.EndEtg_tipo_pessoa == this.constantes.ID_PF ? true : false;
-    debugger;
+
     this.RbTipoPessoa = true;
     this.enderecoEntregaDtoClienteCadastro = this.desconverterTelefonesEnderecoEntrega(enderecoEntregaDtoClienteCadastro);
+
+    this.componenteCep.cepService.buscarCep(src.Cep, null, null, null).toPromise()
+      .then((r) => {
+        //recebemos um endereço
+        const end = r[0];
+        
+        src.temCidade = end.Cidade == "" || !end.Cidade ? false : true;
+      }).catch((r) => {
+        // não fazemos nada
+      });
   }
 
 

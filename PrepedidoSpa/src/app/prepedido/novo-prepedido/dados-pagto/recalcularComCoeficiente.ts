@@ -190,7 +190,7 @@ export class RecalcularComCoeficiente {
                   }
                 }
               }
-              debugger;
+
               lstMsg.push(i + " X " +
                 this.moedaUtils.formatarMoedaComPrefixo(valorTotalParc / i));
             }
@@ -409,7 +409,7 @@ export class RecalcularComCoeficiente {
       p.VlTotalItem = this.moedaUtils.formatarDecimal(total_com_coeficiente * p.Qtde);
     }
     else {
-      debugger;
+      
       if (p.AlterouVlVenda) {
         precoBase = this.moedaUtils.formatarDecimal(p.Preco * x.Coeficiente);
         vlUnitario = this.moedaUtils.formatarDecimal(p.VlUnitario);

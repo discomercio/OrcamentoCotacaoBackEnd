@@ -19,7 +19,7 @@ import { $ } from 'protractor';
 export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
 
   constructor(private readonly alertaService: AlertaService,
-    private readonly cepService: CepService,
+    public readonly cepService: CepService,
     public readonly dialog: MatDialog,
     telaDesktopService: TelaDesktopService
   ) {
@@ -27,7 +27,7 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
   }
 
   ngOnInit() {
-
+        
   }
 
 
@@ -74,16 +74,13 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
     this.Complemento = "";
     this.Numero = "";
 
-    this.temCidade = false;
-    this.temBairro = false;
-    this.temEndereco = false;
+    this.temCidade = false;    
     this.temUf = false;
   }
 
-  public temEndereco: boolean = true;
-  public temBairro: boolean = true;
-  public temCidade: boolean = true;
-  public temUf: boolean = true;
+  
+  public temCidade: boolean;
+  public temUf: boolean;
   //saiu do campo de CEP, vamos carregar o endereco
   saiuCep() {
 
@@ -100,7 +97,6 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
     }
 
     this.zerarCamposEndEntrega();
-
     //vamos fazer a busca
     this.carregando = true;
     this.cepService.buscarCep(this.Cep, null, null, null).toPromise()
@@ -115,7 +111,6 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
         const end = r[0];
         if (!!end.Bairro) {
           this.Bairro = end.Bairro;
-          this.temBairro = true;
         }
         if (!!end.Cidade) {
           this.Cidade = end.Cidade;
@@ -123,7 +118,6 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
         }
         if (!!end.Endereco) {
           this.Endereco = end.Endereco;
-          this.temEndereco = true;
         }
         if (!!end.Uf) {
           this.Uf = end.Uf;
@@ -170,24 +164,11 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         let end: CepDto = dialogRef.componentInstance.lstEnderecos[dialogRef.componentInstance.endereco_selecionado];
-        if (!!end.Endereco.trim()) {
-          this.Endereco = end.Endereco;
-          this.temEndereco = true;
-        }
-        else {
-          this.temEndereco = false;
-        }
+        
         if (!!end.Uf) {
           this.Uf = end.Uf;
           this.temUf = true;
-        }
-        if (!!end.Bairro.trim()) {
-          this.Bairro = end.Bairro;
-          this.temBairro = true;
-        }
-        else {
-          this.temBairro = false;
-        }
+        }        
         if (!!end.Cidade.trim()) {
           this.Cidade = end.Cidade;
           this.temCidade = true;

@@ -87,9 +87,11 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
           this.endCadastralClientePrepedidoDto.Endereco_cnpj_cpf = this.dadosClienteCadastroDto.Cnpj_Cpf;
           this.endCadastralClientePrepedidoDto.Endereco_produtor_rural_status = this.dadosClienteCadastroDto.Tipo == this.constantes.ID_PF ?
             this.dadosClienteCadastroDto.ProdutorRural : 0;
-          debugger;
-          this.endCadastralClientePrepedidoDto.Endereco_contribuinte_icms_status = this.dadosClienteCadastroDto.Contribuinte_Icms_Status;
-          this.endCadastralClientePrepedidoDto.Endereco_ie = this.dadosClienteCadastroDto.Ie;
+
+          this.endCadastralClientePrepedidoDto.Endereco_contribuinte_icms_status = 
+          this.dadosClienteCadastroDto.Tipo == this.constantes.ID_PF ? this.dadosClienteCadastroDto.Contribuinte_Icms_Status : 0
+          this.endCadastralClientePrepedidoDto.Endereco_ie = this.dadosClienteCadastroDto.Tipo == this.constantes.ID_PF ?
+           this.dadosClienteCadastroDto.Ie : "";
 
           this.verificarCriarNovoPrepedido();
           this.salvarAtivoInicializar();
@@ -281,7 +283,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     //somente se o confirmarEndereco estiver atribuído. Se não estiver, é porque não estamos na tela em que precisamos testar ele
     if (this.confirmarEndereco && !this.confirmarEndereco.podeAvancar()) {
       this.alertaService.mostrarMensagem("Aguarde o carregamento do endereço antes de continuar.");
-      
+
       return;
     }
 
@@ -304,30 +306,28 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
   continuarEfetivo(): void {
     //se estamos na fase 2, cotninua
     //caso contrário, volta para a fase 1
-
     if (this.fase2 || this.fase1e2juntas) {
       //vamos validar o endereço
       let validacoes: string[] = new Array();
-      debugger;
+      
       this.endCadastralClientePrepedidoDto = this.clienteCorpo.converterTelefones(this.endCadastralClientePrepedidoDto);
       validacoes = ValidacoesClienteUtils.validarEnderecoCadastralClientePrepedidoDto(this.endCadastralClientePrepedidoDto);
 
       if (this.enderecoEntregaDtoClienteCadastro.OutroEndereco) {
         this.enderecoEntregaDtoClienteCadastro = this.confirmarEndereco.converterTelefones(this.enderecoEntregaDtoClienteCadastro);
-        validacoes = ValidacoesClienteUtils.validarEnderecoEntregaDtoClienteCadastro(this.enderecoEntregaDtoClienteCadastro,
-          this.endCadastralClientePrepedidoDto.Endereco_tipo_pessoa);
+        validacoes = validacoes.concat(ValidacoesClienteUtils.validarEnderecoEntregaDtoClienteCadastro(this.enderecoEntregaDtoClienteCadastro,
+          this.endCadastralClientePrepedidoDto.Endereco_tipo_pessoa));
       }
 
       if (validacoes.length > 0) {
         this.alertaService.mostrarMensagem("Campos inválidos. Preencha os campos marcados como obrigatórios. \nLista de erros: \n" + validacoes.join("\n"));
         this.clienteCorpo.desconverterTelefonesEnderecoDadosCadastrais(this.endCadastralClientePrepedidoDto);
         this.confirmarEndereco.desconverterTelefonesEnderecoEntrega(this.enderecoEntregaDtoClienteCadastro);
-        
-        if(this.confirmarEndereco.enderecoEntregaDtoClienteCadastro.OutroEndereco)
-        {
+
+        if (this.confirmarEndereco.enderecoEntregaDtoClienteCadastro.OutroEndereco) {
           this.confirmarEndereco.required = true;
           this.confirmarEndereco.componenteCep.required = true;
-        }        
+        }
         this.clienteCorpo.componenteCepDadosCadastrais.required = true;
         return;
       }
