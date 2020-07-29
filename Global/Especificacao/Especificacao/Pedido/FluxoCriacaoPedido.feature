@@ -28,7 +28,8 @@ Fluxo na API:
 Salvar o pedido
 	Enviar todos os dados para cadastrar o pedido
 
-Scenario: Cadastrar o pedido com o mínimo de informação possível
-# documentado em CaminhoFelizAsp.feature
+Scenario: Fluxo da criação do pedido
+	# documentado em CaminhoFelizAsp.feature
+	When Tudo certo, só para aparecer na lista
 
 

@@ -1,6 +1,7 @@
 ﻿@ignore
 @Especificacao/Pedido
-@Ambiente/PrepedidoBusiness
+@Ambiente/PrepedidoApi
+@Ambiente/ApiUnis
 Feature: Pedido de cliente PJ com endereço de entrega
 
 Scenario: Validar tipo de pessoa 1

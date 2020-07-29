@@ -16,12 +16,10 @@ Implementacao/XXXX
 Os ambientes são:
 
     Relativos ao Angular: 
-        PrepedidoBusiness
         PrepedidoApi
 
     Relativos à ApiUnis:
         APIUnis
-        PrepedidoUnisBusiness
 
     Relativos à ApiMagento:
         ApiMagento

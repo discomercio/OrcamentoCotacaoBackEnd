@@ -109,14 +109,14 @@ Salvar o pedido
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Cadastrar o pedido com o mínimo de informação possível")]
+        [Xunit.SkippableFactAttribute(DisplayName="Fluxo da criação do pedido")]
         [Xunit.TraitAttribute("FeatureTitle", "Fluxo da criação do pedido")]
-        [Xunit.TraitAttribute("Description", "Cadastrar o pedido com o mínimo de informação possível")]
-        public virtual void CadastrarOPedidoComOMinimoDeInformacaoPossivel()
+        [Xunit.TraitAttribute("Description", "Fluxo da criação do pedido")]
+        public virtual void FluxoDaCriacaoDoPedido()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cadastrar o pedido com o mínimo de informação possível", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fluxo da criação do pedido", null, tagsOfScenario, argumentsOfScenario);
 #line 31
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -137,6 +137,9 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
+#line 33
+ testRunner.When("Tudo certo, só para aparecer na lista", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
             }
             this.ScenarioCleanup();
         }

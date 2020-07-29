@@ -13,7 +13,7 @@ namespace Especificacao.Testes.Utils
                 _singleton = new LogTestes();
             return _singleton;
         }
-        public static LogTestes _singleton = null;
+        public static LogTestes? _singleton = null;
 
         private LogTestes()
         {
@@ -23,7 +23,7 @@ namespace Especificacao.Testes.Utils
         }
         private static readonly string CaminhoLog = @"log.txt";
         private static readonly string DiretorioLog = @"c:\temp\arclube_testes_log";
-        private StreamWriter Writer;
+        private readonly StreamWriter Writer;
 
         public void Log(string msg)
         {

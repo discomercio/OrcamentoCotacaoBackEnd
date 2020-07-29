@@ -16,7 +16,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
     public class InicializarBancoGeral
     {
         //nao deveria precisar poruqe os testes são mono-thread, mas não custa colocar
-        private static object _lockObject = new object();
+        private static readonly object _lockObject = new object();
         private static bool _inicialziado = false;
         private readonly ContextoBdProvider contextoBdProvider;
         private readonly LogTestes logTestes = LogTestes.GetInstance();
@@ -60,16 +60,15 @@ namespace Especificacao.Testes.Utils.BancoTestes
 
         private void InicializarTabela<TipoDados>(string nomeTabela, ContextoBdGravacao db)
         {
-            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Especificacao.Testes.Utils.BancoTestes.Dados." + nomeTabela + ".json"))
-            using (StreamReader reader = new StreamReader(stream))
-            {
-                var texto = reader.ReadToEnd();
-                var clientes = JsonConvert.DeserializeObject<List<TipoDados>>(texto);
+            using Stream? stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Especificacao.Testes.Utils.BancoTestes.Dados." + nomeTabela + ".json");
+            if (stream == null)
+                throw new NullReferenceException("InicializarTabela Especificacao.Testes.Utils.BancoTestes.Dados." + nomeTabela + ".json");
+            using StreamReader reader = new StreamReader(stream);
+            var texto = reader.ReadToEnd();
+            var clientes = JsonConvert.DeserializeObject<List<TipoDados>>(texto);
 
-                foreach (var cliente in clientes)
-                    db.Add(cliente);
-            }
-
+            foreach (var cliente in clientes)
+                db.Add(cliente);
         }
 
         static public class Dados
@@ -86,37 +85,35 @@ namespace Especificacao.Testes.Utils.BancoTestes
 
         private void Inicalizar_TorcamentistaEindicador()
         {
-            using (var db = contextoBdProvider.GetContextoGravacaoParaUsing())
+            using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+            db.TorcamentistaEindicadors.Add(new InfraBanco.Modelos.TorcamentistaEindicador()
             {
-                db.TorcamentistaEindicadors.Add(new InfraBanco.Modelos.TorcamentistaEindicador()
-                {
-                    Apelido = Dados.Orcamentista.Apelido_com_ra.ToUpper(),
-                    Vendedor = Dados.Orcamentista.Apelido_com_ra.ToUpper(),
-                    Loja = Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE,
-                    Permite_RA_Status = 1
-                });
-                db.TorcamentistaEindicadors.Add(new InfraBanco.Modelos.TorcamentistaEindicador()
-                {
-                    Apelido = Dados.Orcamentista.Apelido_sem_ra.ToUpper(),
-                    Vendedor = Dados.Orcamentista.Apelido_sem_ra.ToUpper(),
-                    Loja = Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE,
-                    Permite_RA_Status = 0
-                });
-                db.TorcamentistaEindicadors.Add(new InfraBanco.Modelos.TorcamentistaEindicador()
-                {
-                    Apelido = Dados.Orcamentista.Apelido_sem_vendedor.ToUpper(),
-                    Loja = Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE,
-                    Permite_RA_Status = 0
-                });
-                db.TorcamentistaEindicadors.Add(new InfraBanco.Modelos.TorcamentistaEindicador()
-                {
-                    Apelido = Dados.Orcamentista.Apelido_sem_loja.ToUpper(),
-                    Vendedor = Dados.Orcamentista.Apelido_sem_loja.ToUpper(),
-                    Loja = "loja nao e-commerce",
-                    Permite_RA_Status = 1
-                });
-                db.SaveChanges();
-            }
+                Apelido = Dados.Orcamentista.Apelido_com_ra.ToUpper(),
+                Vendedor = Dados.Orcamentista.Apelido_com_ra.ToUpper(),
+                Loja = Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE,
+                Permite_RA_Status = 1
+            });
+            db.TorcamentistaEindicadors.Add(new InfraBanco.Modelos.TorcamentistaEindicador()
+            {
+                Apelido = Dados.Orcamentista.Apelido_sem_ra.ToUpper(),
+                Vendedor = Dados.Orcamentista.Apelido_sem_ra.ToUpper(),
+                Loja = Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE,
+                Permite_RA_Status = 0
+            });
+            db.TorcamentistaEindicadors.Add(new InfraBanco.Modelos.TorcamentistaEindicador()
+            {
+                Apelido = Dados.Orcamentista.Apelido_sem_vendedor.ToUpper(),
+                Loja = Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE,
+                Permite_RA_Status = 0
+            });
+            db.TorcamentistaEindicadors.Add(new InfraBanco.Modelos.TorcamentistaEindicador()
+            {
+                Apelido = Dados.Orcamentista.Apelido_sem_loja.ToUpper(),
+                Vendedor = Dados.Orcamentista.Apelido_sem_loja.ToUpper(),
+                Loja = "loja nao e-commerce",
+                Permite_RA_Status = 1
+            });
+            db.SaveChanges();
         }
         /*
                         private void Inicalizar()
