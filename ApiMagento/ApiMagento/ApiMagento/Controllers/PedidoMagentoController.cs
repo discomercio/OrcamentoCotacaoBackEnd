@@ -1,0 +1,43 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using MagentoBusiness.MagentoBll.AcessoBll;
+using MagentoBusiness.MagentoBll.PedidoMagentoBll;
+using MagentoBusiness.MagentoDto.PedidoMagentoDto;
+
+namespace ApiMagento.Controllers
+{
+    [Route("api/pedidoMagento")]
+    [ApiController]
+    public class PedidoMagentoController : Controller
+    {
+        private readonly IServicoValidarTokenApiMagento servicoValidarTokenApiMagento;
+        private readonly PedidoMagentoBll pedidoMagentoBll;
+
+        public PedidoMagentoController(IServicoValidarTokenApiMagento servicoValidarTokenApiMagento, 
+            PedidoMagentoBll pedidoMagentoBll)
+        {
+            this.servicoValidarTokenApiMagento = servicoValidarTokenApiMagento;
+            this.pedidoMagentoBll = pedidoMagentoBll;
+        }
+
+        /// <summary>
+        /// Rotina para cadastrar Pedido Magento
+        /// </summary>
+        /// <param name="pedido">PedidoMagentoDto</param>
+        /// <returns>Não retorna dados</returns>
+        [AllowAnonymous]
+        [HttpPost("cadastrarPedido")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public void CadastrarPrepedido(PedidoMagentoDto pedido)
+        {
+            if (servicoValidarTokenApiMagento.ValidarToken(pedido.TokenAcesso, out _))
+            {
+                pedidoMagentoBll.CadastrarPedidoMagento(pedido);
+            }
+        }
+    }
+}

@@ -34,8 +34,8 @@ VlTotalDestePedido	number($double)
             Teste(c => c.Cnpj_Cpf = "123", "Cliente não localizado");
             Teste(c => c.Cnpj_Cpf = "12349535078", "Cliente não localizado");
             Teste(c => c.Cnpj_Cpf = DadosPrepedidoUnisBll.PrepedidoParceladoCartao1vez().Cnpj_Cpf, "Cliente não localizado", false);
+            Teste(c => c.EnderecoCadastralCliente.Endereco_cnpj_cpf = "96077309095", "O CPF/CNPJ do cliente está divergindo do cadastro!");
         }
-
 
         [Fact]
         public void Sucesso()
