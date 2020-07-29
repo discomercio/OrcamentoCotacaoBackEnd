@@ -55,12 +55,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                                                     c.Tipo == dadosCliente.Tipo
                                               select c).FirstOrDefaultAsync();
 
-                    if(cliente == null)
-                    {
-                        lstErros.Add("Cliente não encontrado! Verifique se o CPF/CNPJ está correto!");
-                        return false;
-                    }
-
+                    
                     bool tipoDesconhecido = true;
                     //é cliente PF
                     if (dadosCliente.Tipo == Constantes.ID_PF)
@@ -141,16 +136,21 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             }
             else
             {
-                //vamos confrontar o cpf 
-                string cpfCliente = Util.SoDigitosCpf_Cnpj(cliente.Cnpj_Cpf);
-
-                //vamos validar o cpf
                 string cpf_cnpjSoDig = Util.SoDigitosCpf_Cnpj(dadosCliente.Cnpj_Cpf);
-                if(cpfCliente != cpf_cnpjSoDig)
+
+                if (cliente != null)
                 {
-                    lstErros.Add("O CPF do cliente esta divergindo do cadastro!");
-                    return false;
-                }
+                    //vamos confrontar o cpf 
+                    string cpfCliente = Util.SoDigitosCpf_Cnpj(cliente.Cnpj_Cpf);
+
+                    //vamos validar o cpf
+
+                    if (cpfCliente != cpf_cnpjSoDig)
+                    {
+                        lstErros.Add("O CPF do cliente esta divergindo do cadastro!");
+                        return false;
+                    }
+                }                
 
                 if (!Util.ValidaCPF(cpf_cnpjSoDig))
                 {
@@ -488,15 +488,19 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             }
             else
             {
-                //vamos confrontar o cnpj
-                string cnpjCliente = Util.SoDigitosCpf_Cnpj(cliente.Cnpj_Cpf);
-
                 string cpf_cnpjSoDig = Util.SoDigitosCpf_Cnpj(dadosCliente.Cnpj_Cpf);
-                if(cnpjCliente != cpf_cnpjSoDig)
+
+                if(cliente != null)
                 {
-                    lstErros.Add("O CNPJ do cliente esta divergindo do cadastro!");
-                    return false;
-                }
+                    //vamos confrontar o cnpj
+                    string cnpjCliente = Util.SoDigitosCpf_Cnpj(cliente.Cnpj_Cpf);
+                    
+                    if (cnpjCliente != cpf_cnpjSoDig)
+                    {
+                        lstErros.Add("O CNPJ do cliente esta divergindo do cadastro!");
+                        return false;
+                    }
+                }                
 
                 if (!Util.ValidaCNPJ(cpf_cnpjSoDig))
                 {

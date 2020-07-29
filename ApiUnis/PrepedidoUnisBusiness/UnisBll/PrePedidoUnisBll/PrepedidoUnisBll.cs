@@ -45,14 +45,13 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
 
         public async Task<PrePedidoResultadoUnisDto> CadastrarPrepedidoUnis(PrePedidoUnisDto prePedidoUnis)
         {
-            //orcamentista sempre está em maiusculas
-            prePedidoUnis.Indicador_Orcamentista = prePedidoUnis.Indicador_Orcamentista?.ToUpper();
-
-
             PrePedidoResultadoUnisDto retorno = new PrePedidoResultadoUnisDto();
 
             var db = contextoProvider.GetContextoLeitura();
 
+            //orcamentista sempre está em maiusculas
+            prePedidoUnis.Indicador_Orcamentista = prePedidoUnis.Indicador_Orcamentista?.ToUpper();
+            
             //BUSCAR DADOS DO CLIENTE para incluir no dto de dados do cliente
             var clienteArclube = await clienteBll.BuscarCliente(prePedidoUnis.Cnpj_Cpf,
                 prePedidoUnis.Indicador_Orcamentista);
@@ -61,6 +60,17 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
             {
                 retorno.ListaErros.Add("Cliente não localizado");
                 return retorno;
+            }
+
+            if (!string.IsNullOrEmpty(prePedidoUnis.Cnpj_Cpf))
+            {
+                //vamos comparar os campos para saber se o cliente é o mesmo de dados cadastrais
+                if (PrepedidoBusiness.Utils.Util.SoDigitosCpf_Cnpj(prePedidoUnis.Cnpj_Cpf) !=
+                    PrepedidoBusiness.Utils.Util.SoDigitosCpf_Cnpj(prePedidoUnis.EnderecoCadastralCliente.Endereco_cnpj_cpf))
+                {
+                    retorno.ListaErros.Add("O CPF/CNPJ do cliente está divergindo do cadastro!");
+                    return retorno;
+                }
             }
 
             //a)	Validar se o Orçamentista enviado existe
