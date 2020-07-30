@@ -714,7 +714,10 @@ namespace PrepedidoBusiness.Utils
                         {
                             //pegando o valor coluna
                             var value = (c.GetValue(obj, null));
-                            log = log + coluna + "=" + value + "; ";
+                            if (string.IsNullOrEmpty(value.ToString()))
+                                log = log + coluna + "=" + "\"\"" + "; ";
+                            else
+                                log = log + coluna + "=" + value + "; ";
                         }
                     }
                 }
@@ -1412,7 +1415,7 @@ namespace PrepedidoBusiness.Utils
         public static string FormatarEndereco(string endereco, string numero, string complemento,
             string bairro, string cidade, string uf, string cep)
         {
-            
+
             string retorno = "";
             if (!string.IsNullOrEmpty(endereco))
                 retorno = endereco.Trim();
@@ -1439,7 +1442,7 @@ namespace PrepedidoBusiness.Utils
                 return "";
 
             cep = sCep.Substring(0, 4) + " - " + sCep.Substring(5, 3);
-            
+
             return cep;
         }
     }

@@ -27,7 +27,7 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
   }
 
   ngOnInit() {
-        
+
   }
 
 
@@ -74,11 +74,11 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
     this.Complemento = "";
     this.Numero = "";
 
-    this.temCidade = false;    
+    this.temCidade = false;
     this.temUf = false;
   }
 
-  
+
   public temCidade: boolean;
   public temUf: boolean;
   //saiu do campo de CEP, vamos carregar o endereco
@@ -169,7 +169,7 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
         if (!!end.Uf) {
           this.Uf = end.Uf;
           this.temUf = true;
-        }        
+        }
         if (!!end.Cidade.trim()) {
           this.Cidade = end.Cidade;
           this.temCidade = true;
@@ -177,10 +177,10 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
         if (!!end.LogradouroComplemento) {
           this.Complemento = end.LogradouroComplemento;
         }
-        if(!!end.Bairro){
+        if (!!end.Bairro) {
           this.Bairro = end.Bairro;
         }
-        if(!!end.Endereco){
+        if (!!end.Endereco) {
           this.Endereco = end.Endereco;
         }
 

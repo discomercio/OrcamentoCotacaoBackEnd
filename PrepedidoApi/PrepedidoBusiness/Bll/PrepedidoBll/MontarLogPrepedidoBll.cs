@@ -63,7 +63,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             {
                 campos_a_inserir += "st_etg_imediata|";
             }
-            if(orcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO)
+            if (orcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO)
             {
                 campos_a_inserir += "(previsão de entrega: " + orcamento.PrevisaoEntregaData.ToString() + ")|";
             }
@@ -224,7 +224,10 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
 
                         //pegando o valor coluna
                         var value = (c.GetValue(item, null));
-                        log = log + coluna + "=" + value + "; ";
+                        if (string.IsNullOrEmpty(value.ToString()))
+                            log = log + coluna + "=" + "\"\"" + "; ";
+                        else
+                            log = log + coluna + "=" + value + "; ";
                     }
                 }
             }

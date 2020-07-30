@@ -55,7 +55,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                                                     c.Tipo == dadosCliente.Tipo
                                               select c).FirstOrDefaultAsync();
 
-                    
+
                     bool tipoDesconhecido = true;
                     //é cliente PF
                     if (dadosCliente.Tipo == Constantes.ID_PF)
@@ -150,7 +150,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                         lstErros.Add("O CPF do cliente esta divergindo do cadastro!");
                         return false;
                     }
-                }                
+                }
 
                 if (!Util.ValidaCPF(cpf_cnpjSoDig))
                 {
@@ -208,17 +208,26 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 string.IsNullOrEmpty(dadosCliente.TelComercial) && string.IsNullOrEmpty(dadosCliente.Celular))
             {
                 lstErros.Add("PREENCHA PELO MENOS UM TELEFONE (RESIDENCIAL, COMERCIAL OU CELULAR).");
-                retorno = false;
+                return false;
             }
 
 
             //CELULAR
-            //passar tcliente
-            retorno = await ValidarCelular(dadosCliente, cliente, lstErros, contextoProvider);
+            if (!string.IsNullOrEmpty(dadosCliente.Celular) || !string.IsNullOrEmpty(dadosCliente.DddCelular))
+            {
+                retorno = await ValidarCelular(dadosCliente, cliente, lstErros, contextoProvider);
+            }
             //RESIDENCIAL
-            retorno = await ValidarTelResidencial(dadosCliente, cliente, lstErros, contextoProvider);
-            //COMERCIAL
-            retorno = await ValidarTelCom(dadosCliente, cliente, lstErros, contextoProvider);
+            if (!string.IsNullOrEmpty(dadosCliente.TelefoneResidencial) || !string.IsNullOrEmpty(dadosCliente.DddResidencial))
+            {
+                retorno = await ValidarTelResidencial(dadosCliente, cliente, lstErros, contextoProvider);
+            }
+            //COMERCIA
+            if (!string.IsNullOrEmpty(dadosCliente.TelComercial) || !string.IsNullOrEmpty(dadosCliente.DddComercial))
+            {
+                retorno = await ValidarTelCom(dadosCliente, cliente, lstErros, contextoProvider);
+            }
+
 
             return retorno;
         }
@@ -324,6 +333,13 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 lstErros.Add("PREENCHA O DDD COMERCIAL.");
                 retorno = false;
             }
+            if (!string.IsNullOrEmpty(dadosCliente.DddComercial) && 
+                dadosCliente.DddComercial.Length != 2)
+            {
+                lstErros.Add("DDD DO TELEFONE COMERCIAL INVÁLIDO.");
+                retorno = false;
+            }
+
             if (!string.IsNullOrEmpty(dadosCliente.DddComercial) &&
                 string.IsNullOrEmpty(dadosCliente.TelComercial))
             {
@@ -384,10 +400,18 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     retorno = false;
                 }
             }
+
             if (!string.IsNullOrEmpty(dadosCliente.DddComercial2) &&
                 string.IsNullOrEmpty(dadosCliente.TelComercial2))
             {
                 lstErros.Add("PREENCHA O TELEFONE COMERCIAL.");
+                retorno = false;
+            }
+
+            if (!string.IsNullOrEmpty(dadosCliente.DddComercial2) && 
+                dadosCliente.DddComercial2.Length != 2)
+            {
+                lstErros.Add("DDD DO TELEFONE COMERCIAL2 INVÁLIDO.");
                 retorno = false;
             }
 
@@ -490,17 +514,17 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             {
                 string cpf_cnpjSoDig = Util.SoDigitosCpf_Cnpj(dadosCliente.Cnpj_Cpf);
 
-                if(cliente != null)
+                if (cliente != null)
                 {
                     //vamos confrontar o cnpj
                     string cnpjCliente = Util.SoDigitosCpf_Cnpj(cliente.Cnpj_Cpf);
-                    
+
                     if (cnpjCliente != cpf_cnpjSoDig)
                     {
                         lstErros.Add("O CNPJ do cliente esta divergindo do cadastro!");
                         return false;
                     }
-                }                
+                }
 
                 if (!Util.ValidaCNPJ(cpf_cnpjSoDig))
                 {
@@ -553,70 +577,19 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 string.IsNullOrEmpty(dadosCliente.TelComercial2))
             {
                 lstErros.Add("PREENCHA AO MENOS UM TELEFONE (COMERCIAL OU COMERCIAL 2)!");
-                retorno = false;
+                 return false;
             }
 
             //com
-            retorno = await ValidarTelCom(dadosCliente, cliente, lstErros, contextoProvider);
+            if (!string.IsNullOrEmpty(dadosCliente.TelComercial) || !string.IsNullOrEmpty(dadosCliente.DddComercial))
+            {
+                retorno = await ValidarTelCom(dadosCliente, cliente, lstErros, contextoProvider);
+            }
 
             //com 2
-            retorno = await ValidarTelCom2(dadosCliente, cliente, lstErros, contextoProvider);
-
-            if (!string.IsNullOrEmpty(dadosCliente.TelComercial))
+            if (!string.IsNullOrEmpty(dadosCliente.TelComercial2) || !string.IsNullOrEmpty(dadosCliente.DddComercial2))
             {
-                if (Util.Telefone_SoDigito(dadosCliente.TelComercial).Length < 6)
-                {
-                    lstErros.Add("TELEFONE COMERCIAL INVÁLIDO.");
-                    retorno = false;
-                }
-                if (!string.IsNullOrEmpty(dadosCliente.DddComercial))
-                {
-                    if (dadosCliente.DddComercial.Length != 2)
-                    {
-                        lstErros.Add("DDD DO TELEFONE COMERCIAL INVÁLIDO.");
-                        retorno = false;
-                    }
-                }
-                else
-                {
-                    lstErros.Add("PREENCHA O DDD DO TELEFONE COMERCIAL.");
-                    retorno = false;
-                }
-            }
-
-            if (!string.IsNullOrEmpty(dadosCliente.DddComercial) &&
-                string.IsNullOrEmpty(dadosCliente.TelComercial))
-            {
-                lstErros.Add("PREENCHA O TELEFONE COMERCIAL.");
-                retorno = false;
-            }
-
-            if (!string.IsNullOrEmpty(dadosCliente.TelComercial2))
-            {
-                if (Util.Telefone_SoDigito(dadosCliente.TelComercial2).Length < 6)
-                {
-                    lstErros.Add("TELEFONE COMERCIAL2 INVÁLIDO.");
-                    retorno = false;
-                }
-                if (!string.IsNullOrEmpty(dadosCliente.DddComercial2))
-                {
-                    if (dadosCliente.DddComercial2.Length != 2)
-                    {
-                        lstErros.Add("DDD DO TELEFONE COMERCIAL2 INVÁLIDO.");
-                        retorno = false;
-                    }
-                }
-                else
-                {
-                    lstErros.Add("PREENCHA O DDD DO TELEFONE COMERCIAL2.");
-                    retorno = false;
-                }
-            }
-            if (!string.IsNullOrEmpty(dadosCliente.DddComercial2) &&
-                string.IsNullOrEmpty(dadosCliente.TelComercial2))
-            {
-                lstErros.Add("PREENCHA O TELEFONE COMERCIAL 2.");
-                retorno = false;
+                retorno = await ValidarTelCom2(dadosCliente, cliente, lstErros, contextoProvider);
             }
 
             return retorno;

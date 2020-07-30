@@ -1736,7 +1736,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                     item.Abaixo_Min_Autorizador = "";//sempre esta vazio no modulo orcamento
                     item.Abaixo_Min_Superv_Autorizador = "";//sempre esta vazio no modulo orcamento
                     item.Sequencia = (short?)RenumeraComBase1(indiceItem);
-                    item.Subgrupo = prod.Tproduto.Subgrupo;
+                    item.Subgrupo = !string.IsNullOrEmpty(prod.Tproduto.Subgrupo)? prod.Tproduto.Subgrupo: "";
 
                     indiceItem++;
                 }
