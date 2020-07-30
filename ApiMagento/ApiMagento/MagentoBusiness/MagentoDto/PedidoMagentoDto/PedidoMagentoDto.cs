@@ -15,6 +15,9 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         [Required]
         public string Cnpj_Cpf { get; set; }
         
+        /// <summary>
+        /// Usuário do sistema
+        /// </summary>
         [Required]
         [MaxLength(20)]
         public string Indicador_Orcamentista { get; set; }
@@ -38,15 +41,22 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         //public int CDSelecionado { get; set; }
         //[Required]
         //public bool CDManual { get; set; }
+        /// <summary>
+        /// Percentual de comissão
+        /// </summary>
         public float? PercRT { get; set; }
         public bool OpcaoVendaSemEstoque { get; set; }
 
         //verificar se esse campo pode ser bool pq ele recebe "S" ou "N"
         //obs:esse campo não é salvo na base, é utilizado para saber se é com RA ou sem RA, talvez mudar para bool
         /// <summary>
-        /// Verificar com Hamilton se há necessidade desse campo 
+        /// Verificar com Hamilton se há necessidade desse campo.
+        /// Armazena a opção com ou sem RA, é habilitado dependendo do Indicador selecionado para o Pedido
         /// </summary>
         public string OpcaoPossuiRA { get; set; }
+        /// <summary>
+        /// Indicador selecionado para o Pedido
+        /// </summary>
         public string NomeIndicador { get; set; }
     }
 }
