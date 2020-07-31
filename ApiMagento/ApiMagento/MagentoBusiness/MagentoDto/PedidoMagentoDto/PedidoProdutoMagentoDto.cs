@@ -18,47 +18,23 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         [Required]
         public short Qtde { get; set; }
 
-        [Required]
-        public float Desc_Dado { get; set; }// = Desconto
-
         /// <summary>
-        /// Preco_Venda = (Preco_Fabricante * CustoFinancFornecCoeficiente) * (1 - Desc_Dado / 100)
+        /// Preço de venda do item sem o rateio do frete
         /// <hr />
         /// </summary>
         [Required]
         public decimal Preco_Venda { get; set; }// = VlUnitario
 
-        [Required]
-        public decimal Preco_Fabricante { get; set; }
-
         /// <summary>
-        /// Caso Preco_Lista seja igual a Preco_Venda, o RA será zero. Caso seja maior gerará um valor de RA (até o limite máximo de RA permitido).
-        /// <hr />
-        /// </summary>
-        [Required]
-        public decimal Preco_Lista { get; set; }// = VlLista
-
-        /// <summary>
-        /// Preco_NF = PrePedidoUnisDto.PermiteRAStatus == true ? Preco_Lista : Preco_Venda
+        /// Preco_NF preço que será impresso na nota fiscal, inclui o rateio do frete
         /// <hr />
         /// </summary>
         [Required]
         public decimal Preco_NF { get; set; } // se permite RA = Preco_Lista / senão VlUnitario
 
-        /// <summary>
-        /// Verificar com Hamilton se há necessidade desses campos e dos campos que são afetados pelo RA.
-        /// <br />
-        /// Caso seja pagamento a vista, deve ser 1. Caso contrário, o coeficiente do fabricante para a quantidade de parcelas e forma de pagamento.
-        /// <hr />
-        /// </summary>
-        [Required]
-        public float CustoFinancFornecCoeficiente { get; set; }
-
-        /// <summary>
-        /// CustoFinancFornecPrecoListaBase = Preco_Fabricante * CustoFinancFornecCoeficiente
-        /// <hr />
-        /// </summary>
-        [Required]
-        public decimal CustoFinancFornecPrecoListaBase { get; set; } //recebe Preco_Lista
+        /*
+         * Os campos Preco_Fabricante, CustoFinancFornecCoeficiente, CustoFinancFornecPrecoListaBase e Preco_Fabricante vamos ler das tabelas
+         * Os campos Preco_Lista e Desc_Dado serão preenchidos por nós e devemos calcular de forma que fiquem consistentes.
+        */
     }
 }

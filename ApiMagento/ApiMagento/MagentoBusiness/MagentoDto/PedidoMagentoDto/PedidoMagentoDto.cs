@@ -11,6 +11,11 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         [Required]
         public string TokenAcesso { get; set; }
 
+        //Orcamentista = "FRETE" (vamos ler do appsettings)
+        //Loja = "201" (vamos ler do appsettings)
+        //Vendedor = usuário que fez o login (ler do token)
+
+
         [MaxLength(14)]
         [Required]
         public string Cnpj_Cpf { get; set; }
@@ -33,49 +38,26 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         [Required]
         public List<PedidoProdutoMagentoDto> ListaProdutos { get; set; }
 
-        //acho que essa flag não precisa, pois ao escolher indicador pode ser que o indicador selecionado 
-        //permita ou não RA e caso permita pode ser escolhido com RA
-        /// <summary>
-        /// Verificar com Hamilton se há necessidade desse campo 
-        /// <hr />
-        /// </summary>
-        [Required]
-        public bool PermiteRAStatus { get; set; }
+        //PermiteRAStatus = true, sempre
 
         [Required]
-        public decimal? ValorTotalDestePedidoComRA { get; set; }
-        [Required]
-        public decimal? VlTotalDestePedido { get; set; }
-        [Required]
-        public DetalhesPedidoMagentoDto DetalhesPrepedido { get; set; }
+        public decimal VlTotalDestePedido { get; set; }
+
+        //nao existe o DetalhesPedidoMagentoDto. Os valores a usar são:
+        //St_Entrega_Imediata: se for PF, sim. Se for PJ, não
+        // PrevisaoEntregaData = null
+        // BemDeUso_Consumo = COD_ST_BEM_USO_CONSUMO_SIM
+        //InstaladorInstala = COD_INSTALADOR_INSTALA_NAO
+
+
         [Required]
         public FormaPagtoCriacaoMagentoDto FormaPagtoCriacao { get; set; }
 
-        //public int CDSelecionado { get; set; }
-        //[Required]
-        //public bool CDManual { get; set; }
-        /// <summary>
-        /// Percentual de comissão
-        /// <hr />
-        /// </summary>
-        public float? PercRT { get; set; }
+        //CDManual = false
+        //PercRT = calculado automaticamente{ get; set; }
+        //OpcaoPossuiRA = sim
 
-        /// <summary>
-        /// Verificar com Hamilton se há necessidade desse campo 
-        /// <hr />
-        /// </summary>
-        [Required]
-        public bool OpcaoVendaSemEstoque { get; set; }
-
-        //verificar se esse campo pode ser bool pq ele recebe "S" ou "N"
-        //obs:esse campo não é salvo na base, é utilizado para saber se é com RA ou sem RA, talvez mudar para bool
-        /// <summary>
-        /// Verificar com Hamilton se há necessidade desse campo.
-        /// <br />
-        /// Armazena a opção com ou sem RA, é habilitado dependendo do Indicador selecionado para o Pedido
-        /// <hr />
-        /// </summary>
-        [Required]
-        public string OpcaoPossuiRA { get; set; }
+        [MaxLength(500)]
+        public string Obs_1 { get; set; }
     }
 }

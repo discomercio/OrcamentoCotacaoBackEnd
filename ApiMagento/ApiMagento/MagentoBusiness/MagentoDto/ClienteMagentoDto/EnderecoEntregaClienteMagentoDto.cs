@@ -28,24 +28,6 @@ namespace MagentoBusiness.MagentoDto.ClienteMagentoDto
         [MaxLength(8)]
         public string EndEtg_cep { get; set; }
 
-        /// <summary>
-        /// EndEtg_cod_justificativa: 
-        ///     Casa de Veraneio = 1,
-        ///     Doação = 2,
-        ///     Nova Unidade da Empresa/filial = 3,
-        ///     Parente do Proprietário (Pais, Filhos e Irmãos) = 4,
-        ///     Residência do Proprietário = 5,
-        ///     Endereço Comercial do Proprietário = 6,
-        ///     Endereço da Obra = 8,
-        ///     Endereço Novo Cliente = 9,
-        ///     Acerto Interno = 10        
-        /// <hr />
-        /// </summary>
-        [MaxLength(3)]
-        public string EndEtg_cod_justificativa { get; set; }
-
-        //Novo campos
-
         [MaxLength(60)]
         public string EndEtg_email { get; set; }
 
@@ -95,17 +77,14 @@ namespace MagentoBusiness.MagentoDto.ClienteMagentoDto
         [MaxLength(14)]
         public string EndEtg_cnpj_cpf { get; set; }
 
-        /// <summary>
-        /// EndEtg_contribuinte_icms_status = 0, NAO = 1, SIM = 2, ISENTO = 3
-        /// <hr />
-        /// </summary>
+        /*
+         * 
+estes 4 campos não são enviados pelo magento
+se o cliente for PJ, o pedido terá st_etg_imediata = não e esses campos serão alimetnados manualemtne de alguma forma
+se o clinte for PF, estes campos são desnecessários 
         [Required]
         public byte EndEtg_contribuinte_icms_status { get; set; }
 
-        /// <summary>
-        /// EndEtg_produtor_rural_status: COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL = 0, COD_ST_CLIENTE_PRODUTOR_RURAL_NAO = 1, COD_ST_CLIENTE_PRODUTOR_RURAL_SIM = 2
-        /// <hr />
-        /// </summary>
         [Required]
         public byte EndEtg_produtor_rural_status { get; set; }
 
@@ -114,5 +93,7 @@ namespace MagentoBusiness.MagentoDto.ClienteMagentoDto
 
         [MaxLength(20)]
         public string EndEtg_rg { get; set; }
+        */
+
     }
 }
