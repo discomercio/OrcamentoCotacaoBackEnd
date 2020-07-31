@@ -143,8 +143,10 @@ export class ConfirmarEnderecoComponent implements OnInit {
     enderecoEntrega.EndEtg_tel_res = "";
     enderecoEntrega.EndEtg_ddd_com = "";
     enderecoEntrega.EndEtg_tel_com = "";
+    enderecoEntrega.EndEtg_ramal_com = "";
     enderecoEntrega.EndEtg_ddd_com_2 = "";
     enderecoEntrega.EndEtg_tel_com_2 = "";
+    enderecoEntrega.EndEtg_ramal_com_2 = "";
     enderecoEntrega.EndEtg_produtor_rural_status = 0;
     enderecoEntrega.EndEtg_contribuinte_icms_status = 0;
     enderecoEntrega.EndEtg_ie = "";
