@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MagentoBusiness.MagentoDto.ClienteMagentoDto
 {
-    public class EnderecoEntregaClienteCadastroMagentoDto
+    public class EnderecoEntregaClienteMagentoDto
     {
         [MaxLength(80)]
         public string EndEtg_endereco { get; set; }
@@ -39,6 +39,7 @@ namespace MagentoBusiness.MagentoDto.ClienteMagentoDto
         ///     Endereço da Obra = 8,
         ///     Endereço Novo Cliente = 9,
         ///     Acerto Interno = 10        
+        /// <hr />
         /// </summary>
         [MaxLength(3)]
         public string EndEtg_cod_justificativa { get; set; }
@@ -86,6 +87,7 @@ namespace MagentoBusiness.MagentoDto.ClienteMagentoDto
 
         /// <summary>
         /// EndEtg_tipo_pessoa = "PF", "PJ"
+        /// <hr />
         /// </summary>
         [MaxLength(2)]
         public string EndEtg_tipo_pessoa { get; set; }
@@ -95,12 +97,14 @@ namespace MagentoBusiness.MagentoDto.ClienteMagentoDto
 
         /// <summary>
         /// EndEtg_contribuinte_icms_status = 0, NAO = 1, SIM = 2, ISENTO = 3
+        /// <hr />
         /// </summary>
         [Required]
         public byte EndEtg_contribuinte_icms_status { get; set; }
 
         /// <summary>
         /// EndEtg_produtor_rural_status: COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL = 0, COD_ST_CLIENTE_PRODUTOR_RURAL_NAO = 1, COD_ST_CLIENTE_PRODUTOR_RURAL_SIM = 2
+        /// <hr />
         /// </summary>
         [Required]
         public byte EndEtg_produtor_rural_status { get; set; }

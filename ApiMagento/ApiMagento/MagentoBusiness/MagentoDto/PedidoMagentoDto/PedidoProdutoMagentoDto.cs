@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 {
-    public class PrePedidoProdutoPrePedidoMagentoDto
+    public class PedidoProdutoMagentoDto
     {
         [Required]
         [MaxLength(4)]
@@ -23,6 +23,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 
         /// <summary>
         /// Preco_Venda = (Preco_Fabricante * CustoFinancFornecCoeficiente) * (1 - Desc_Dado / 100)
+        /// <hr />
         /// </summary>
         [Required]
         public decimal Preco_Venda { get; set; }// = VlUnitario
@@ -32,24 +33,30 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 
         /// <summary>
         /// Caso Preco_Lista seja igual a Preco_Venda, o RA será zero. Caso seja maior gerará um valor de RA (até o limite máximo de RA permitido).
+        /// <hr />
         /// </summary>
         [Required]
         public decimal Preco_Lista { get; set; }// = VlLista
 
         /// <summary>
         /// Preco_NF = PrePedidoUnisDto.PermiteRAStatus == true ? Preco_Lista : Preco_Venda
+        /// <hr />
         /// </summary>
         [Required]
         public decimal Preco_NF { get; set; } // se permite RA = Preco_Lista / senão VlUnitario
 
         /// <summary>
+        /// Verificar com Hamilton se há necessidade desses campos e dos campos que são afetados pelo RA.
+        /// <br />
         /// Caso seja pagamento a vista, deve ser 1. Caso contrário, o coeficiente do fabricante para a quantidade de parcelas e forma de pagamento.
+        /// <hr />
         /// </summary>
         [Required]
         public float CustoFinancFornecCoeficiente { get; set; }
 
         /// <summary>
         /// CustoFinancFornecPrecoListaBase = Preco_Fabricante * CustoFinancFornecCoeficiente
+        /// <hr />
         /// </summary>
         [Required]
         public decimal CustoFinancFornecPrecoListaBase { get; set; } //recebe Preco_Lista
