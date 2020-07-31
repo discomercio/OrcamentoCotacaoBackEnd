@@ -36,11 +36,7 @@
   </ItemGroup>
 
 
-  <ItemGroup>
-    <Reference Include="InfraBanco">
-      <HintPath>..\..\..\Global\Infra\InfraBanco\bin\Debug\netcoreapp3.1\InfraBanco.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+  
 
 
 </Project>
