@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MagentoBusiness.MagentoDto.ClienteMagentoDto
 {
-    public class EnderecoCadastralClientePrepedidoMagentoDto
+    public class EnderecoCadastralClienteMagentoDto
     {
         [MaxLength(80)]
         public string Endereco_logradouro { get; set; }
@@ -69,6 +69,7 @@ namespace MagentoBusiness.MagentoDto.ClienteMagentoDto
 
         /// <summary>
         /// Endereco_tipo_pessoa = "PF", "PJ"
+        /// <hr />
         /// </summary>
         [MaxLength(2)]
         public string Endereco_tipo_pessoa { get; set; }
@@ -78,11 +79,13 @@ namespace MagentoBusiness.MagentoDto.ClienteMagentoDto
 
         /// <summary>
         /// Endereco_contribuinte_icms_status: INICIAL = 0, NAO = 1, SIM = 2, ISENTO = 3
+        /// <hr />
         /// </summary>
         public byte Endereco_contribuinte_icms_status { get; set; }
 
         /// <summary>
         /// Endereco_produtor_rural_status: COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL = 0, COD_ST_CLIENTE_PRODUTOR_RURAL_NAO = 1, COD_ST_CLIENTE_PRODUTOR_RURAL_SIM = 2
+        /// <hr />
         /// </summary>
         public byte Endereco_produtor_rural_status { get; set; }
 

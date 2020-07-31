@@ -5,13 +5,14 @@ using System.Text;
 
 namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 {
-    public class DetalhesPrePedidoMagentoDto
+    public class DetalhesPedidoMagentoDto
     {
         /// <summary>
         /// EntregaImediata: 
         ///     COD_ETG_IMEDIATA_ST_INICIAL = 0,
         ///     COD_ETG_IMEDIATA_NAO = 1,
         ///     COD_ETG_IMEDIATA_SIM = 2
+        /// <hr />
         /// </summary>
         [Required]
         public short St_Entrega_Imediata { get; set; }
@@ -20,12 +21,14 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 
         /// <summary>
         /// BemDeUso_Consumo : COD_ST_BEM_USO_CONSUMO_NAO = 0, COD_ST_BEM_USO_CONSUMO_SIM = 1
+        /// <hr />
         /// </summary>
         [Required]
         public short BemDeUso_Consumo { get; set; }
 
         /// <summary>
         /// InstaladorInstala: COD_INSTALADOR_INSTALA_NAO_DEFINIDO = 0, COD_INSTALADOR_INSTALA_NAO = 1, COD_INSTALADOR_INSTALA_SIM = 2
+        /// <hr />
         /// </summary>
         [Required]
         public short InstaladorInstala { get; set; }
