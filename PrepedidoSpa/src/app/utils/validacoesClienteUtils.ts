@@ -338,6 +338,8 @@ export class ValidacoesClienteUtils {
             dadosClienteCadastroDto.DddComercial != "") {
             ret.push('Preencha o telefone comercial!');
         }
+
+        debugger;
         if (dadosClienteCadastroDto.TelComercial == "" &&
             dadosClienteCadastroDto.Ramal != "") {
             ret.push("Ramal comercial preenchido sem telefone!");
@@ -405,12 +407,12 @@ export class ValidacoesClienteUtils {
             dadosClienteCadastroDto.DddComercial2.trim() == "") {
             ret.push('Preencha o DDD comercial 2 !');
         }
-
+        
         if (dadosClienteCadastroDto.TelComercial == "" &&
             dadosClienteCadastroDto.Ramal != "") {
             ret.push("Ramal comercial preenchido sem telefone!");
         }
-
+       
         if (dadosClienteCadastroDto.TelComercial2 == "" &&
             dadosClienteCadastroDto.Ramal2 != "") {
             ret.push("Ramal comercial 2 preenchido sem telefone!");
