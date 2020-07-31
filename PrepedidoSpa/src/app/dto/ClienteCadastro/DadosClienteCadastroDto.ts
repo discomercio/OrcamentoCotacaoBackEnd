@@ -74,7 +74,7 @@ export class DadosClienteCadastroDto {
         dados.ProdutorRural = end.Endereco_produtor_rural_status;
         dados.DddResidencial = end.Endereco_ddd_res != null ? end.Endereco_ddd_res : "";
         dados.TelefoneResidencial = end.Endereco_tel_res != null ? end.Endereco_tel_res : "";
-        dados.DddComercial = end.Endereco_tel_res != null ? end.Endereco_tel_res : "";
+        dados.DddComercial = end.Endereco_ddd_com != null ? end.Endereco_ddd_com : "";
         dados.TelComercial = end.Endereco_tel_com != null ? end.Endereco_tel_com : "";
         dados.Ramal = end.Endereco_ramal_com != null ? end.Endereco_ramal_com : "";
         dados.DddCelular = end.Endereco_ddd_cel != null ? end.Endereco_ddd_cel : "";

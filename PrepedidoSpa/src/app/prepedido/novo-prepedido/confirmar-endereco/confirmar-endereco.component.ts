@@ -154,17 +154,21 @@ export class ConfirmarEnderecoComponent implements OnInit {
   pessoaEntregaEhPF: boolean;
   RbTipoPessoa: boolean;
   PF() {
-    this.enderecoEntregaDtoClienteCadastro.EndEtg_cnpj_cpf = "";
+    this.inicializarCamposEndereco(this.enderecoEntregaDtoClienteCadastro);
+    this.componenteCep.zerarCamposEndEntrega();
+    this.componenteCep.Cep = "";
     this.pessoaEntregaEhPF = true;
     this.pessoaEntregaEhPJ = false;
     this.enderecoEntregaDtoClienteCadastro.EndEtg_tipo_pessoa = this.constantes.ID_PF;
   }
 
   PJ() {
-    this.enderecoEntregaDtoClienteCadastro.EndEtg_cnpj_cpf = "";
+    this.inicializarCamposEndereco(this.enderecoEntregaDtoClienteCadastro);
+    this.componenteCep.zerarCamposEndEntrega();
+    this.componenteCep.Cep = "";
     this.pessoaEntregaEhPJ = true;
     this.pessoaEntregaEhPF = false;
-    this.enderecoEntregaDtoClienteCadastro.EndEtg_tipo_pessoa = this.constantes.ID_PJ;
+    this.enderecoEntregaDtoClienteCadastro.EndEtg_tipo_pessoa = this.constantes.ID_PJ;    
   }
 
   public converterTelefones(enderecoEntrega: EnderecoEntregaDtoClienteCadastro): EnderecoEntregaDtoClienteCadastro {
