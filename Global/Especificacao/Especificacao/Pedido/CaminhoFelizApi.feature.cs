@@ -137,7 +137,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("Pedido vazio", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 18
- testRunner.And("Informo \"cliente_selecionado\" = \"000000000001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Informo \"Cnpj_Cpf\" = \"687.307.550-77\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 19
  testRunner.And("Informo \"indicacao\" = \"não\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");

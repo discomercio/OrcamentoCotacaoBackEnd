@@ -1,6 +1,8 @@
 ﻿@ignore
 @Especificacao/Pedido
 Feature: Validar campos simples
+Background: 
+	Given Implementando em "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido"
 
 Scenario: Validar CPF
 em loja/resumo.asp:

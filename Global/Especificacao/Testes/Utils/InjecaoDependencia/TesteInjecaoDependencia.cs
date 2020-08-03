@@ -10,15 +10,15 @@ namespace Especificacao.Testes.Utils.InjecaoDependencia
         public string UmValorQualquer { get; set; } = "UmValorQualquer";
     }
 
-    public class TesteInjecaoDependencia : ProvedorServicos
+    public class TesteInjecaoDependencia 
     {
         private readonly ClasseInjetada classeInjetada;
         private readonly InfraBanco.ContextoBdProvider contextoBdProvider;
 
         public TesteInjecaoDependencia()
         {
-            this.classeInjetada = Servicos.GetRequiredService<ClasseInjetada>();
-            this.contextoBdProvider = Servicos.GetRequiredService<InfraBanco.ContextoBdProvider>();
+            this.classeInjetada = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos().GetRequiredService<ClasseInjetada>();
+            this.contextoBdProvider = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos().GetRequiredService<InfraBanco.ContextoBdProvider>();
         }
 
         [Fact]

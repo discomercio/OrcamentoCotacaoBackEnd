@@ -1,10 +1,7 @@
 ﻿@ignore
-@Especificacao/Pedido
-@Especificacao/Prepedido
-@Ambiente/PrepedidoUnisBusiness
-@Ambiente/APIUnis
-@Ambiente/PrepedidoBusiness
-@Ambiente/PrepedidoApi
+@Especificacao.Pedido
+@Especificacao.Prepedido
+@Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
 Feature: Validar endereco de entrega
 
 Background: Pedido base com endereço de entrega (pedido e prepedido)

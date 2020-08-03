@@ -24,6 +24,11 @@ Fluxo no módulo loja:
 5 - Passo50: Informar observações (entrega imediata, instalador instala, etc) 
 6 - Passo60: Salvar o pedido
 --- 
+Fluxo na ApaiMagento:
+1 - Validar o pedido
+2 - se o cliente não existir, cadastrar o cliente
+3 - salvar o pedido
+--- 
 Fluxo na API:
 Salvar o pedido
 	Enviar todos os dados para cadastrar o pedido

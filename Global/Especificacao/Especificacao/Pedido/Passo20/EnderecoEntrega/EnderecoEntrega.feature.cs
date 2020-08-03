@@ -20,12 +20,9 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "ignore")]
-    [Xunit.TraitAttribute("Category", "Especificacao/Pedido")]
-    [Xunit.TraitAttribute("Category", "Especificacao/Prepedido")]
-    [Xunit.TraitAttribute("Category", "Ambiente/PrepedidoUnisBusiness")]
-    [Xunit.TraitAttribute("Category", "Ambiente/APIUnis")]
-    [Xunit.TraitAttribute("Category", "Ambiente/PrepedidoBusiness")]
-    [Xunit.TraitAttribute("Category", "Ambiente/PrepedidoApi")]
+    [Xunit.TraitAttribute("Category", "Especificacao.Pedido")]
+    [Xunit.TraitAttribute("Category", "Especificacao.Prepedido")]
+    [Xunit.TraitAttribute("Category", "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido")]
     public partial class ValidarEnderecoDeEntregaFeature : object, Xunit.IClassFixture<ValidarEnderecoDeEntregaFeature.FixtureData>, System.IDisposable
     {
         
@@ -33,12 +30,9 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega
         
         private string[] _featureTags = new string[] {
                 "ignore",
-                "Especificacao/Pedido",
-                "Especificacao/Prepedido",
-                "Ambiente/PrepedidoUnisBusiness",
-                "Ambiente/APIUnis",
-                "Ambiente/PrepedidoBusiness",
-                "Ambiente/PrepedidoApi"};
+                "Especificacao.Pedido",
+                "Especificacao.Prepedido",
+                "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -56,12 +50,9 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Validar endereco de entrega", null, ProgrammingLanguage.CSharp, new string[] {
                         "ignore",
-                        "Especificacao/Pedido",
-                        "Especificacao/Prepedido",
-                        "Ambiente/PrepedidoUnisBusiness",
-                        "Ambiente/APIUnis",
-                        "Ambiente/PrepedidoBusiness",
-                        "Ambiente/PrepedidoApi"});
+                        "Especificacao.Pedido",
+                        "Especificacao.Prepedido",
+                        "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -98,9 +89,9 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega
         
         public virtual void FeatureBackground()
         {
-#line 10
+#line 7
 #line hidden
-#line 11
+#line 8
  testRunner.Given("Pedido base com endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
         }
@@ -118,7 +109,7 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Informado", "loja/ClienteEdita.asp \r\nrotina fNEWConcluir", tagsOfScenario, argumentsOfScenario);
-#line 13
+#line 10
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -138,26 +129,26 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 10
+#line 7
 this.FeatureBackground();
 #line hidden
-#line 16
+#line 13
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 14
+ testRunner.When("Informo \"OutroEndereco\" = \"XX\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 15
+ testRunner.Then("Erro \"Informe se o endereço de entrega será o mesmo endereço do cadastro ou não!!" +
+                        "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 16
+ testRunner.Given("Pedido base com endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 17
  testRunner.When("Informo \"OutroEndereco\" = \"XX\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 18
- testRunner.Then("Erro \"Informe se o endereço de entrega será o mesmo endereço do cadastro ou não!!" +
-                        "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 19
- testRunner.Given("Pedido base com endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 20
- testRunner.When("Informo \"OutroEndereco\" = \"XX\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 21
  testRunner.Then("Erro \"Informe se o endereço de entrega será o mesmo endereço do cadastro ou não!!" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -179,7 +170,7 @@ mensagens:
                 alert('Preencha o número do endereço de entrega!!');
 ...até...
                 alert('CEP inválido no endereço de entrega!!');", tagsOfScenario, argumentsOfScenario);
-#line 23
+#line 20
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -199,7 +190,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 10
+#line 7
 this.FeatureBackground();
 #line hidden
             }
@@ -214,7 +205,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Endereço", null, tagsOfScenario, argumentsOfScenario);
-#line 32
+#line 29
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -234,13 +225,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 10
+#line 7
 this.FeatureBackground();
 #line hidden
-#line 33
+#line 30
  testRunner.When("Informo \"EndEtg_endereco\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 34
+#line 31
  testRunner.Then("Erro \"Preencha o endereço de entrega!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -255,7 +246,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_endereco_numero", null, tagsOfScenario, argumentsOfScenario);
-#line 36
+#line 33
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -275,13 +266,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 10
+#line 7
 this.FeatureBackground();
 #line hidden
-#line 37
+#line 34
  testRunner.When("Informo \"EndEtg_endereco_numero\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 38
+#line 35
  testRunner.Then("Erro \"Preencha o número do endereço de entrega!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -296,7 +287,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_bairro", null, tagsOfScenario, argumentsOfScenario);
-#line 40
+#line 37
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -316,13 +307,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 10
+#line 7
 this.FeatureBackground();
 #line hidden
-#line 41
+#line 38
  testRunner.When("Informo \"EndEtg_bairro\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 42
+#line 39
  testRunner.Then("Erro \"Preencha o bairro do endereço de entrega!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -337,7 +328,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_cidade", null, tagsOfScenario, argumentsOfScenario);
-#line 44
+#line 41
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -357,13 +348,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 10
+#line 7
 this.FeatureBackground();
 #line hidden
-#line 45
+#line 42
  testRunner.When("Informo \"EndEtg_cidade\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 46
+#line 43
  testRunner.Then("Erro \"Preencha a cidade do endereço de entrega!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -380,7 +371,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Justificativa", "loja/ClienteEdita.asp \r\n            if (trim(f.EndEtg_obs.value) == \"\") {\r\n      " +
                     "          alert(\'Selecione a justificativa do endereço de entrega!!\');\r\n        " +
                     "        f.EndEtg_obs.focus();\r\n                return;", tagsOfScenario, argumentsOfScenario);
-#line 48
+#line 45
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -400,13 +391,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 10
+#line 7
 this.FeatureBackground();
 #line hidden
-#line 54
+#line 51
  testRunner.When("Informo \"EndEtg_obs\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 55
+#line 52
  testRunner.Then("Erro \"Selecione a justificativa do endereço de entrega!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -421,6 +412,47 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_uf", null, tagsOfScenario, argumentsOfScenario);
+#line 54
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 7
+this.FeatureBackground();
+#line hidden
+#line 55
+ testRunner.When("Informo \"EndEtg_uf\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 56
+ testRunner.Then("Erro \"UF inválida no endereço de entrega!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="EndEtg_uf 2")]
+        [Xunit.TraitAttribute("FeatureTitle", "Validar endereco de entrega")]
+        [Xunit.TraitAttribute("Description", "EndEtg_uf 2")]
+        public virtual void EndEtg_Uf2()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_uf 2", null, tagsOfScenario, argumentsOfScenario);
 #line 57
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -441,11 +473,11 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 10
+#line 7
 this.FeatureBackground();
 #line hidden
 #line 58
- testRunner.When("Informo \"EndEtg_uf\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"EndEtg_uf\" = \"XX\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 59
  testRunner.Then("Erro \"UF inválida no endereço de entrega!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -454,14 +486,14 @@ this.FeatureBackground();
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="EndEtg_uf 2")]
+        [Xunit.SkippableFactAttribute(DisplayName="EndEtg_uf 3")]
         [Xunit.TraitAttribute("FeatureTitle", "Validar endereco de entrega")]
-        [Xunit.TraitAttribute("Description", "EndEtg_uf 2")]
-        public virtual void EndEtg_Uf2()
+        [Xunit.TraitAttribute("Description", "EndEtg_uf 3")]
+        public virtual void EndEtg_Uf3()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_uf 2", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_uf 3", null, tagsOfScenario, argumentsOfScenario);
 #line 60
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -482,11 +514,11 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 10
+#line 7
 this.FeatureBackground();
 #line hidden
 #line 61
- testRunner.When("Informo \"EndEtg_uf\" = \"XX\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"EndEtg_uf\" = \"SS\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 62
  testRunner.Then("Erro \"UF inválida no endereço de entrega!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -495,14 +527,14 @@ this.FeatureBackground();
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="EndEtg_uf 3")]
+        [Xunit.SkippableFactAttribute(DisplayName="EndEtg_uf 4")]
         [Xunit.TraitAttribute("FeatureTitle", "Validar endereco de entrega")]
-        [Xunit.TraitAttribute("Description", "EndEtg_uf 3")]
-        public virtual void EndEtg_Uf3()
+        [Xunit.TraitAttribute("Description", "EndEtg_uf 4")]
+        public virtual void EndEtg_Uf4()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_uf 3", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_uf 4", null, tagsOfScenario, argumentsOfScenario);
 #line 63
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -523,54 +555,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 10
+#line 7
 this.FeatureBackground();
 #line hidden
 #line 64
- testRunner.When("Informo \"EndEtg_uf\" = \"SS\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 65
- testRunner.Then("Erro \"UF inválida no endereço de entrega!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="EndEtg_uf 4")]
-        [Xunit.TraitAttribute("FeatureTitle", "Validar endereco de entrega")]
-        [Xunit.TraitAttribute("Description", "EndEtg_uf 4")]
-        public virtual void EndEtg_Uf4()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_uf 4", null, tagsOfScenario, argumentsOfScenario);
-#line 66
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 10
-this.FeatureBackground();
-#line hidden
-#line 67
  testRunner.When("Informo \"EndEtg_uf\" = \"SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 68
+#line 65
  testRunner.Then("Sem erro \"UF inválida no endereço de entrega!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -585,7 +576,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_cep", null, tagsOfScenario, argumentsOfScenario);
-#line 70
+#line 67
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -605,13 +596,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 10
+#line 7
 this.FeatureBackground();
 #line hidden
-#line 71
+#line 68
  testRunner.When("Informo \"EndEtg_cep\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 72
+#line 69
  testRunner.Then("Erro \"Informe o CEP do endereço de entrega!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -626,7 +617,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_cep cep_ok", null, tagsOfScenario, argumentsOfScenario);
-#line 74
+#line 71
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -646,13 +637,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 10
+#line 7
 this.FeatureBackground();
 #line hidden
-#line 76
+#line 73
  testRunner.When("Informo \"EndEtg_cep\" = \"1234\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 77
+#line 74
  testRunner.Then("Erro \"CEP inválido no endereço de entrega!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -667,6 +658,47 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_cep cep_ok 2", null, tagsOfScenario, argumentsOfScenario);
+#line 75
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 7
+this.FeatureBackground();
+#line hidden
+#line 76
+ testRunner.When("Informo \"EndEtg_cep\" = \"123456\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 77
+ testRunner.Then("Erro \"CEP inválido no endereço de entrega!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="EndEtg_cep cep_ok 3")]
+        [Xunit.TraitAttribute("FeatureTitle", "Validar endereco de entrega")]
+        [Xunit.TraitAttribute("Description", "EndEtg_cep cep_ok 3")]
+        public virtual void EndEtg_CepCep_Ok3()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_cep cep_ok 3", null, tagsOfScenario, argumentsOfScenario);
 #line 78
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -687,11 +719,11 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 10
+#line 7
 this.FeatureBackground();
 #line hidden
 #line 79
- testRunner.When("Informo \"EndEtg_cep\" = \"123456\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"EndEtg_cep\" = \"123456789\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 80
  testRunner.Then("Erro \"CEP inválido no endereço de entrega!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -700,14 +732,14 @@ this.FeatureBackground();
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="EndEtg_cep cep_ok 3")]
+        [Xunit.SkippableFactAttribute(DisplayName="EndEtg_cep cep_ok 4")]
         [Xunit.TraitAttribute("FeatureTitle", "Validar endereco de entrega")]
-        [Xunit.TraitAttribute("Description", "EndEtg_cep cep_ok 3")]
-        public virtual void EndEtg_CepCep_Ok3()
+        [Xunit.TraitAttribute("Description", "EndEtg_cep cep_ok 4")]
+        public virtual void EndEtg_CepCep_Ok4()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_cep cep_ok 3", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_cep cep_ok 4", null, tagsOfScenario, argumentsOfScenario);
 #line 81
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -728,54 +760,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 10
+#line 7
 this.FeatureBackground();
 #line hidden
 #line 82
- testRunner.When("Informo \"EndEtg_cep\" = \"123456789\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 83
- testRunner.Then("Erro \"CEP inválido no endereço de entrega!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="EndEtg_cep cep_ok 4")]
-        [Xunit.TraitAttribute("FeatureTitle", "Validar endereco de entrega")]
-        [Xunit.TraitAttribute("Description", "EndEtg_cep cep_ok 4")]
-        public virtual void EndEtg_CepCep_Ok4()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_cep cep_ok 4", null, tagsOfScenario, argumentsOfScenario);
-#line 84
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 10
-this.FeatureBackground();
-#line hidden
-#line 85
  testRunner.When("Informo \"EndEtg_cep\" = \"12345678\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 86
+#line 83
  testRunner.Then("Sem erro \"CEP inválido no endereço de entrega!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -790,7 +781,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_uf errado", null, tagsOfScenario, argumentsOfScenario);
-#line 89
+#line 86
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -810,13 +801,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 10
+#line 7
 this.FeatureBackground();
 #line hidden
-#line 90
+#line 87
  testRunner.When("Informo \"EndEtg_uf\" = \"BA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 91
+#line 88
  testRunner.Then("Erro \"UF inconsistente com o CEP  (acertar a mensagem)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -831,7 +822,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_cep errado", null, tagsOfScenario, argumentsOfScenario);
-#line 93
+#line 90
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -851,13 +842,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 10
+#line 7
 this.FeatureBackground();
 #line hidden
-#line 94
+#line 91
  testRunner.When("Informo \"EndEtg_cep\" = \"12345678\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 95
+#line 92
  testRunner.Then("Erro \"CEP não existe (acertar a mensagem)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -872,7 +863,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_cidade errado", null, tagsOfScenario, argumentsOfScenario);
-#line 97
+#line 94
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -892,13 +883,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 10
+#line 7
 this.FeatureBackground();
 #line hidden
-#line 98
+#line 95
  testRunner.When("Informo \"EndEtg_cidade\" = \"12345678\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 99
+#line 96
  testRunner.Then("Erro \"EndEtg_cidade não existe (acertar a mensagem)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

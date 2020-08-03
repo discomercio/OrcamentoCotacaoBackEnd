@@ -9,7 +9,17 @@ namespace Especificacao.Testes.Utils.InjecaoDependencia
 {
     public class ProvedorServicos
     {
-        public ProvedorServicos()
+        //esquema de singleton para ter certeza que inicializa sempre
+        private static ProvedorServicos? provedorServicos = null;
+        public static ServiceProvider ObterServicos()
+        {
+            if (provedorServicos == null)
+                provedorServicos = new ProvedorServicos();
+            return provedorServicos.Servicos;
+        }
+
+        private ServiceProvider Servicos { get; set; }
+        private ProvedorServicos()
         {
             var logTestes = LogTestes.GetInstance();
             logTestes.Log("ProvedorServicos inicio");
@@ -32,7 +42,7 @@ namespace Especificacao.Testes.Utils.InjecaoDependencia
             services.AddTransient<InfraBanco.ContextoCepProvider, InfraBanco.ContextoCepProvider>();
             services.AddTransient<Testes.Utils.InjecaoDependencia.ClasseInjetada, Testes.Utils.InjecaoDependencia.ClasseInjetada>();
 
-            services.AddTransient<PrepedidoBusiness.Bll.PrepedidoBll.PrepedidoBll, PrepedidoBusiness.Bll.PrepedidoBll.PrepedidoBll>();
+            Ambiente.ApiUnis.InjecaoDependencias.ConfigurarDependencias(services);
 
             Servicos = services.BuildServiceProvider();
 
@@ -41,8 +51,10 @@ namespace Especificacao.Testes.Utils.InjecaoDependencia
             var bd = new Testes.Utils.BancoTestes.InicializarBancoGeral(Servicos.GetRequiredService<InfraBanco.ContextoBdProvider>());
             bd.Inicializar();
 
+            //inicializa os tokens na ApiUnis
+            Ambiente.ApiUnis.InjecaoDependencias.InicializarDados(Servicos);
+
             logTestes.Log("ProvedorServicos fim");
         }
-        public ServiceProvider Servicos { get; private set; }
     }
 }

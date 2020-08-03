@@ -13,6 +13,7 @@ namespace Especificacao.Testes.Pedido
             this.scenarioContext = scenarioContext;
         }
         [Given(@"Existe ""(.*)"" = ""(.*)""")]
+#pragma warning disable IDE0060 //unused parameter
         public void GivenExiste(string p0, string p1)
         {
             scenarioContext.Pending();

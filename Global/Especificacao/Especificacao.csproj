@@ -17,6 +17,9 @@
   <ItemGroup>
     <None Remove="Testes\Utils\BancoTestes\Dados\Tcliente.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\TorcamentistaEindicador.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\Tperfil.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\TperfilUsuario.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\Tusuario.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -126,11 +129,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\ApiUnis\PrepedidoAPIUnis\PrepedidoAPIUnis.csproj" />
+    <ProjectReference Include="..\..\ApiUnis\PrepedidoUnisBusiness\PrepedidoUnisBusiness.csproj" />
     <ProjectReference Include="..\..\PrepedidoApi\PrepedidoBusiness\PrepedidoBusiness.csproj" />
     <ProjectReference Include="..\Infra\InfraBanco\InfraBanco.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TperfilUsuario.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tperfil.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tusuario.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TorcamentistaEindicador.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tcliente.json" />
   </ItemGroup>
