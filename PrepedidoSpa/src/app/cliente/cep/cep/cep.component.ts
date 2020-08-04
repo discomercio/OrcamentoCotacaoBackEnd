@@ -109,7 +109,7 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
         }
         //recebemos um endereço
         const end = r[0];
-        debugger;
+
         if (!!end.Bairro) {
           this.Bairro = end.Bairro;
         }
@@ -165,7 +165,7 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         let end: CepDto = dialogRef.componentInstance.lstEnderecos[dialogRef.componentInstance.endereco_selecionado];
-        debugger;
+        
         if (!!end.Uf) {
           this.Uf = end.Uf;
           this.temUf = true;

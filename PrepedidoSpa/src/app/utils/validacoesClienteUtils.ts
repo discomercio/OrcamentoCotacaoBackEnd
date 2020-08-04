@@ -320,7 +320,7 @@ export class ValidacoesClienteUtils {
         //     ret.push('DDD Residencial inválido.')
         // }
 
-        debugger;
+        
         if (dadosClienteCadastroDto.Celular != "" &&
             dadosClienteCadastroDto.DddCelular == "") {
             ret.push('Preencha o DDD do celular.');
@@ -339,7 +339,7 @@ export class ValidacoesClienteUtils {
             ret.push('Preencha o telefone comercial!');
         }
 
-        debugger;
+        
         if (dadosClienteCadastroDto.TelComercial == "" &&
             dadosClienteCadastroDto.Ramal != "") {
             ret.push("Ramal comercial preenchido sem telefone!");

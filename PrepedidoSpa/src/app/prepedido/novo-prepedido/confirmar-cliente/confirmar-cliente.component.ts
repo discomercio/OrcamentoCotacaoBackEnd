@@ -309,7 +309,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     if (this.fase2 || this.fase1e2juntas) {
       //vamos validar o endereço
       let validacoes: string[] = new Array();
-      debugger;
+     
       this.endCadastralClientePrepedidoDto = this.clienteCorpo.converterTelefones(this.endCadastralClientePrepedidoDto);
       validacoes = ValidacoesClienteUtils.validarEnderecoCadastralClientePrepedidoDto(this.endCadastralClientePrepedidoDto);
       
