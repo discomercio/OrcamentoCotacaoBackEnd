@@ -502,7 +502,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 if (!string.IsNullOrEmpty(prePedido.EnderecoEntrega.EndEtg_ie))
                 {
                     ValidacoesClienteBll.VerificarInscricaoEstadualValida(
-                        prePedido.EnderecoEntrega.EndEtg_ie, prePedido.EnderecoEntrega.EndEtg_uf, lstErros);
+                        prePedido.EnderecoEntrega.EndEtg_ie, prePedido.EnderecoEntrega.EndEtg_uf, lstErros, true);
                 }
             }
 
@@ -566,7 +566,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
 
                 if (!string.IsNullOrEmpty(endEtg.EndEtg_ie))
                     ValidacoesClienteBll.VerificarInscricaoEstadualValida(endEtg.EndEtg_ie,
-                        endEtg.EndEtg_uf, lstErros);
+                        endEtg.EndEtg_uf, lstErros, true);
             }
         }
 

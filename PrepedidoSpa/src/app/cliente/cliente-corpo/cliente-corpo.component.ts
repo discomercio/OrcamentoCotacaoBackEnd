@@ -95,9 +95,9 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
     }
   }
 
-  alterarProdutorContribuinteIE(produtor:number){
+  alterarProdutorContribuinteIE(produtor: number) {
     debugger;
-    if(produtor == this.constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO){
+    if (produtor == this.constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO) {
       this.dadosClienteCadastroDto.Contribuinte_Icms_Status = 0;
       this.dadosClienteCadastroDto.Ie = "";
     }
@@ -217,7 +217,7 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
   }
 
   copiarDadosClienteCadastro(): void {
-    
+
     this.componenteCepDadosCadastrais.Cep = this.dadosClienteCadastroDto.Cep
     this.componenteCepDadosCadastrais.Endereco = this.dadosClienteCadastroDto.Endereco;
     this.componenteCepDadosCadastrais.Numero = this.dadosClienteCadastroDto.Numero;
@@ -331,26 +331,26 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
 
     if (!!endCadastralClientePrepedidoDto.Endereco_ddd_res && !!endCadastralClientePrepedidoDto.Endereco_tel_res) {
       endCadastralClientePrepedidoDto.Endereco_tel_res = endCadastralClientePrepedidoDto.Endereco_ddd_res +
-      endCadastralClientePrepedidoDto.Endereco_tel_res;
-      
+        endCadastralClientePrepedidoDto.Endereco_tel_res;
+
     }
 
     if (!!endCadastralClientePrepedidoDto.Endereco_ddd_cel && !!endCadastralClientePrepedidoDto.Endereco_tel_cel) {
       endCadastralClientePrepedidoDto.Endereco_tel_cel = endCadastralClientePrepedidoDto.Endereco_ddd_cel +
-      endCadastralClientePrepedidoDto.Endereco_tel_cel;
-      
+        endCadastralClientePrepedidoDto.Endereco_tel_cel;
+
     }
 
     if (!!endCadastralClientePrepedidoDto.Endereco_ddd_com && !!endCadastralClientePrepedidoDto.Endereco_tel_com) {
       endCadastralClientePrepedidoDto.Endereco_tel_com = endCadastralClientePrepedidoDto.Endereco_ddd_com +
-      endCadastralClientePrepedidoDto.Endereco_tel_com;
-      
+        endCadastralClientePrepedidoDto.Endereco_tel_com;
+
     }
 
-    if (!!endCadastralClientePrepedidoDto.Endereco_ddd_com_2 && !!endCadastralClientePrepedidoDto.Endereco_tel_com_2) {      
+    if (!!endCadastralClientePrepedidoDto.Endereco_ddd_com_2 && !!endCadastralClientePrepedidoDto.Endereco_tel_com_2) {
       endCadastralClientePrepedidoDto.Endereco_tel_com_2 = endCadastralClientePrepedidoDto.Endereco_ddd_com_2 +
         endCadastralClientePrepedidoDto.Endereco_tel_com_2;
-        
+
     }
 
     endCadastralClientePrepedidoDto.Endereco_ddd_res = "";
@@ -375,15 +375,15 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
 
       //fazer a conversão de telefones para mostrar na tela "(xx) xxxx-xxxx"
 
-     src.cepService.buscarCep(src.Cep, null, null, null).toPromise()
-      .then((r) => {
-        //recebemos um endereço
-        const end = r[0];        
-        src.temCidade = end.Cidade == "" || !end.Cidade ? false : true;
-        
-      }).catch((r) => {
-        // não fazemos nada
-      });
+      src.cepService.buscarCep(src.Cep, null, null, null).toPromise()
+        .then((r) => {
+          //recebemos um endereço
+          const end = r[0];
+          src.temCidade = end.Cidade == "" || !end.Cidade ? false : true;
+
+        }).catch((r) => {
+          // não fazemos nada
+        });
 
       //nao está mais pendente
       this.atualizarDadosEnderecoCadastralClienteTela_Dados = null;

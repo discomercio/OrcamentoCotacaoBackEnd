@@ -700,8 +700,11 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
 
             List<ListaBancoDto> lstBanco = (await clienteBll.ListarBancosCombo()).ToList();
             //vamos validar os dados do cliente
+            //vamos passar uma flag para mostrar a msg 
+            //"Inscrição estadual inválida pra esse estado. Caso o cliente esteja em outro estado,
+            //entre em contato com o suporte para alterar o cadastro do cliente.
             await ValidacoesClienteBll.ValidarDadosCliente(prePedido.DadosCliente, null, null,
-                lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, false);
+                lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, true);
 
             if (lstErros.Count > 0)
                 return lstErros;

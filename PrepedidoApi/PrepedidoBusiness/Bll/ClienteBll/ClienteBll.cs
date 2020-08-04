@@ -593,7 +593,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             //passar lista de bancos para validar
             List<ListaBancoDto> lstBanco = (await ListarBancosCombo()).ToList();
             if (await ValidacoesClienteBll.ValidarDadosCliente(clienteDto.DadosCliente, clienteDto.RefBancaria,
-                clienteDto.RefComercial, lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, true))
+                clienteDto.RefComercial, lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, false))
             {
                 if (lstErros.Count <= 0)
                 {

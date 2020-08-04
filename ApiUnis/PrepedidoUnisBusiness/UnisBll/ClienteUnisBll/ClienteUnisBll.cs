@@ -96,7 +96,7 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
         public async Task<VerificarInscricaoEstadualValidaRetornoUnisDto> VerificarInscricaoEstadualValida(string inscricaoEstadual, string uf)
         {
             var erros = new List<string>();
-            PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.VerificarInscricaoEstadualValida(inscricaoEstadual, uf, erros);
+            PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.VerificarInscricaoEstadualValida(inscricaoEstadual, uf, erros, false);
             var retorno = new VerificarInscricaoEstadualValidaRetornoUnisDto
             {
                 InscricaoEstadualValida = (erros.Count == 0)
