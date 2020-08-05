@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MagentoBusiness.MagentoDto.ClienteMagentoDto
 {
-    public class EnderecoCadastralClientePrepedidoMagentoDto
+    public class EnderecoCadastralClienteMagentoDto
     {
         [MaxLength(80)]
         public string Endereco_logradouro { get; set; }
@@ -69,6 +69,7 @@ namespace MagentoBusiness.MagentoDto.ClienteMagentoDto
 
         /// <summary>
         /// Endereco_tipo_pessoa = "PF", "PJ"
+        /// <hr />
         /// </summary>
         [MaxLength(2)]
         public string Endereco_tipo_pessoa { get; set; }
@@ -76,14 +77,16 @@ namespace MagentoBusiness.MagentoDto.ClienteMagentoDto
         [MaxLength(14)]
         public string Endereco_cnpj_cpf { get; set; }
 
-        /// <summary>
-        /// Endereco_contribuinte_icms_status: INICIAL = 0, NAO = 1, SIM = 2, ISENTO = 3
-        /// </summary>
+        /*
+         * 
+Ao chegar um pedido, se o cliente não exisditr, cadstramos ele imediatamente.
+Ao cadastrar o cliente:
+- se for PF, assumimos Endereco_produtor_rural_status = COD_ST_CLIENTE_PRODUTOR_RURAL_NAO e Endereco_contribuinte_icms_status = NAO
+- se for PJ, deixar o pedido st_etg_imediata = 1 (não)
+	e colocar Endereco_contribuinte_icms_status = inicial, Endereco_ie = vazio
+
         public byte Endereco_contribuinte_icms_status { get; set; }
 
-        /// <summary>
-        /// Endereco_produtor_rural_status: COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL = 0, COD_ST_CLIENTE_PRODUTOR_RURAL_NAO = 1, COD_ST_CLIENTE_PRODUTOR_RURAL_SIM = 2
-        /// </summary>
         public byte Endereco_produtor_rural_status { get; set; }
 
         [MaxLength(20)]
@@ -91,6 +94,7 @@ namespace MagentoBusiness.MagentoDto.ClienteMagentoDto
 
         [MaxLength(20)]
         public string Endereco_rg { get; set; }
+*/
 
         [MaxLength(30)]
         public string Endereco_contato { get; set; }

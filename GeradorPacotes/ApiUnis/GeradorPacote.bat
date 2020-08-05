@@ -1,5 +1,4 @@
-rem compilar o porjeto da API
-rem para a compilacao total, usar o PrepedidoSpa\CompilarPrepedidoSpaApi.bat, no projeto do SPA
+rem compilar o projeto da ApiUnis
 set aux_msbuild="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild.exe"
 
 IF EXIST %aux_msbuild% goto msbuild_encontrado

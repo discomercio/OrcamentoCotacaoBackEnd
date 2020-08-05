@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfraIdentity", "..\..\Glob
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MagentoBusiness", "MagentoBusiness\MagentoBusiness.csproj", "{CE07271E-39F3-4771-A270-B187608009DC}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrepedidoBusiness", "..\..\PrepedidoApi\PrepedidoBusiness\PrepedidoBusiness.csproj", "{39987557-EB98-4A86-A9B5-64279F01BEF1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{CE07271E-39F3-4771-A270-B187608009DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE07271E-39F3-4771-A270-B187608009DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE07271E-39F3-4771-A270-B187608009DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39987557-EB98-4A86-A9B5-64279F01BEF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39987557-EB98-4A86-A9B5-64279F01BEF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39987557-EB98-4A86-A9B5-64279F01BEF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39987557-EB98-4A86-A9B5-64279F01BEF1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

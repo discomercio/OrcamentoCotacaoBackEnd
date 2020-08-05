@@ -65,7 +65,7 @@ namespace ApiMagento
                 c.IncludeXmlComments(xmlPath);
 
                 //agora os DTOs
-                xmlFile = $"ApiMagento.XML";
+                xmlFile = $"MagentoBusiness.XML";
                 xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
