@@ -88,10 +88,10 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
           this.endCadastralClientePrepedidoDto.Endereco_produtor_rural_status = this.dadosClienteCadastroDto.Tipo == this.constantes.ID_PF ?
             this.dadosClienteCadastroDto.ProdutorRural : 0;
 
-          this.endCadastralClientePrepedidoDto.Endereco_contribuinte_icms_status = 
-          this.dadosClienteCadastroDto.Tipo == this.constantes.ID_PF ? this.dadosClienteCadastroDto.Contribuinte_Icms_Status : 0
+          this.endCadastralClientePrepedidoDto.Endereco_contribuinte_icms_status =
+            this.dadosClienteCadastroDto.Tipo == this.constantes.ID_PF ? this.dadosClienteCadastroDto.Contribuinte_Icms_Status : 0
           this.endCadastralClientePrepedidoDto.Endereco_ie = this.dadosClienteCadastroDto.Tipo == this.constantes.ID_PF ?
-           this.dadosClienteCadastroDto.Ie : "";
+            this.dadosClienteCadastroDto.Ie : "";
 
           this.verificarCriarNovoPrepedido();
           this.salvarAtivoInicializar();
@@ -287,7 +287,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
       return;
     }
 
-    //afazer: não consigo pegar os dados do cep que foi alterado em dados cadastrais
+
     this.clienteCorpo.prepararAvancarEnderecoCadastralClientePrepedidoDto();
 
     //avisamos para o corpo do cliente que vamos avançar
@@ -309,7 +309,23 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     if (this.fase2 || this.fase1e2juntas) {
       //vamos validar o endereço
       let validacoes: string[] = new Array();
-      
+
+      //vamos verificar se o cliente é PF, pois temos um caso que se cliente for PF e ser Produtor que seja contribuinte do ICMS
+      //e tenha IE, irmeos verificar se o Estado que foi inserido no Dados Castral esta diferente do que esta no cadastro, pois 
+      //terá uma inconsistência e para não mostrar essa msg apenas quando for salvar o Prepedido estamos verificando antes
+      if (this.dadosClienteCadastroDto.Tipo == this.constantes.ID_PF) {
+        if (this.dadosClienteCadastroDto.Contribuinte_Icms_Status == this.constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM) {
+          if (this.dadosClienteCadastroDto.Ie != "") {
+            if (this.dadosClienteCadastroDto.Uf.trim().toUpperCase() !=
+              this.endCadastralClientePrepedidoDto.Endereco_uf.trim().toUpperCase()) {
+              this.alertaService.mostrarMensagem("Dados cadastrais: Inscrição estadual inválida pra esse estado (" + this.endCadastralClientePrepedidoDto.Endereco_uf.trim().toUpperCase() + "). " +
+                "Caso o cliente esteja em outro estado, entre em contato com o suporte para alterar o cadastro do cliente.");
+              return;
+            }
+          }
+        }
+      }
+
       this.endCadastralClientePrepedidoDto = this.clienteCorpo.converterTelefones(this.endCadastralClientePrepedidoDto);
       validacoes = ValidacoesClienteUtils.validarEnderecoCadastralClientePrepedidoDto(this.endCadastralClientePrepedidoDto);
 

@@ -39,7 +39,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
         public static async Task<bool> ValidarDadosCliente(DadosClienteCadastroDto dadosCliente,
             List<RefBancariaDtoCliente> lstRefBancaria, List<RefComercialDtoCliente> lstRefComercial,
             List<string> lstErros, ContextoBdProvider contextoProvider, CepBll cepBll, IBancoNFeMunicipio bancoNFeMunicipio,
-            List<ListaBancoDto> lstBanco, bool cadastrandoCliente)
+            List<ListaBancoDto> lstBanco, bool flagMsg_IE_CadastroPrepedido)
         {
             bool retorno;
 
@@ -55,7 +55,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                                                     c.Tipo == dadosCliente.Tipo
                                               select c).FirstOrDefaultAsync();
 
-                    
+
                     bool tipoDesconhecido = true;
                     //é cliente PF
                     if (dadosCliente.Tipo == Constantes.ID_PF)
@@ -100,8 +100,9 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
                     //vamos verificar o IE dos clientes
                     if (dadosCliente.Tipo == Constantes.ID_PJ ||
-                        dadosCliente.Tipo == Constantes.ID_PF && cadastrandoCliente)
-                        retorno = await ValidarIE_Cliente(dadosCliente, lstErros, contextoProvider, bancoNFeMunicipio);
+                        dadosCliente.Tipo == Constantes.ID_PF)
+                        retorno = await ValidarIE_Cliente(dadosCliente, lstErros, contextoProvider, 
+                            bancoNFeMunicipio, flagMsg_IE_CadastroPrepedido);
                 }
                 else
                 {
@@ -150,7 +151,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                         lstErros.Add("O CPF do cliente esta divergindo do cadastro!");
                         return false;
                     }
-                }                
+                }
 
                 if (!Util.ValidaCPF(cpf_cnpjSoDig))
                 {
@@ -208,17 +209,26 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 string.IsNullOrEmpty(dadosCliente.TelComercial) && string.IsNullOrEmpty(dadosCliente.Celular))
             {
                 lstErros.Add("PREENCHA PELO MENOS UM TELEFONE (RESIDENCIAL, COMERCIAL OU CELULAR).");
-                retorno = false;
+                return false;
             }
 
 
             //CELULAR
-            //passar tcliente
-            retorno = await ValidarCelular(dadosCliente, cliente, lstErros, contextoProvider);
+            if (!string.IsNullOrEmpty(dadosCliente.Celular) || !string.IsNullOrEmpty(dadosCliente.DddCelular))
+            {
+                retorno = await ValidarCelular(dadosCliente, cliente, lstErros, contextoProvider);
+            }
             //RESIDENCIAL
-            retorno = await ValidarTelResidencial(dadosCliente, cliente, lstErros, contextoProvider);
-            //COMERCIAL
-            retorno = await ValidarTelCom(dadosCliente, cliente, lstErros, contextoProvider);
+            if (!string.IsNullOrEmpty(dadosCliente.TelefoneResidencial) || !string.IsNullOrEmpty(dadosCliente.DddResidencial))
+            {
+                retorno = await ValidarTelResidencial(dadosCliente, cliente, lstErros, contextoProvider);
+            }
+            //COMERCIA
+            if (!string.IsNullOrEmpty(dadosCliente.TelComercial) || !string.IsNullOrEmpty(dadosCliente.DddComercial))
+            {
+                retorno = await ValidarTelCom(dadosCliente, cliente, lstErros, contextoProvider);
+            }
+
 
             return retorno;
         }
@@ -325,6 +335,13 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 retorno = false;
             }
             if (!string.IsNullOrEmpty(dadosCliente.DddComercial) &&
+                dadosCliente.DddComercial.Length != 2)
+            {
+                lstErros.Add("DDD DO TELEFONE COMERCIAL INVÁLIDO.");
+                retorno = false;
+            }
+
+            if (!string.IsNullOrEmpty(dadosCliente.DddComercial) &&
                 string.IsNullOrEmpty(dadosCliente.TelComercial))
             {
                 lstErros.Add("PREENCHA O TELEFONE COMERCIAL.");
@@ -384,10 +401,18 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     retorno = false;
                 }
             }
+
             if (!string.IsNullOrEmpty(dadosCliente.DddComercial2) &&
                 string.IsNullOrEmpty(dadosCliente.TelComercial2))
             {
                 lstErros.Add("PREENCHA O TELEFONE COMERCIAL.");
+                retorno = false;
+            }
+
+            if (!string.IsNullOrEmpty(dadosCliente.DddComercial2) &&
+                dadosCliente.DddComercial2.Length != 2)
+            {
+                lstErros.Add("DDD DO TELEFONE COMERCIAL2 INVÁLIDO.");
                 retorno = false;
             }
 
@@ -490,17 +515,17 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             {
                 string cpf_cnpjSoDig = Util.SoDigitosCpf_Cnpj(dadosCliente.Cnpj_Cpf);
 
-                if(cliente != null)
+                if (cliente != null)
                 {
                     //vamos confrontar o cnpj
                     string cnpjCliente = Util.SoDigitosCpf_Cnpj(cliente.Cnpj_Cpf);
-                    
+
                     if (cnpjCliente != cpf_cnpjSoDig)
                     {
                         lstErros.Add("O CNPJ do cliente esta divergindo do cadastro!");
                         return false;
                     }
-                }                
+                }
 
                 if (!Util.ValidaCNPJ(cpf_cnpjSoDig))
                 {
@@ -553,70 +578,19 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 string.IsNullOrEmpty(dadosCliente.TelComercial2))
             {
                 lstErros.Add("PREENCHA AO MENOS UM TELEFONE (COMERCIAL OU COMERCIAL 2)!");
-                retorno = false;
+                return false;
             }
 
             //com
-            retorno = await ValidarTelCom(dadosCliente, cliente, lstErros, contextoProvider);
+            if (!string.IsNullOrEmpty(dadosCliente.TelComercial) || !string.IsNullOrEmpty(dadosCliente.DddComercial))
+            {
+                retorno = await ValidarTelCom(dadosCliente, cliente, lstErros, contextoProvider);
+            }
 
             //com 2
-            retorno = await ValidarTelCom2(dadosCliente, cliente, lstErros, contextoProvider);
-
-            if (!string.IsNullOrEmpty(dadosCliente.TelComercial))
+            if (!string.IsNullOrEmpty(dadosCliente.TelComercial2) || !string.IsNullOrEmpty(dadosCliente.DddComercial2))
             {
-                if (Util.Telefone_SoDigito(dadosCliente.TelComercial).Length < 6)
-                {
-                    lstErros.Add("TELEFONE COMERCIAL INVÁLIDO.");
-                    retorno = false;
-                }
-                if (!string.IsNullOrEmpty(dadosCliente.DddComercial))
-                {
-                    if (dadosCliente.DddComercial.Length != 2)
-                    {
-                        lstErros.Add("DDD DO TELEFONE COMERCIAL INVÁLIDO.");
-                        retorno = false;
-                    }
-                }
-                else
-                {
-                    lstErros.Add("PREENCHA O DDD DO TELEFONE COMERCIAL.");
-                    retorno = false;
-                }
-            }
-
-            if (!string.IsNullOrEmpty(dadosCliente.DddComercial) &&
-                string.IsNullOrEmpty(dadosCliente.TelComercial))
-            {
-                lstErros.Add("PREENCHA O TELEFONE COMERCIAL.");
-                retorno = false;
-            }
-
-            if (!string.IsNullOrEmpty(dadosCliente.TelComercial2))
-            {
-                if (Util.Telefone_SoDigito(dadosCliente.TelComercial2).Length < 6)
-                {
-                    lstErros.Add("TELEFONE COMERCIAL2 INVÁLIDO.");
-                    retorno = false;
-                }
-                if (!string.IsNullOrEmpty(dadosCliente.DddComercial2))
-                {
-                    if (dadosCliente.DddComercial2.Length != 2)
-                    {
-                        lstErros.Add("DDD DO TELEFONE COMERCIAL2 INVÁLIDO.");
-                        retorno = false;
-                    }
-                }
-                else
-                {
-                    lstErros.Add("PREENCHA O DDD DO TELEFONE COMERCIAL2.");
-                    retorno = false;
-                }
-            }
-            if (!string.IsNullOrEmpty(dadosCliente.DddComercial2) &&
-                string.IsNullOrEmpty(dadosCliente.TelComercial2))
-            {
-                lstErros.Add("PREENCHA O TELEFONE COMERCIAL 2.");
-                retorno = false;
+                retorno = await ValidarTelCom2(dadosCliente, cliente, lstErros, contextoProvider);
             }
 
             return retorno;
@@ -713,7 +687,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
         }
 
         private static async Task<bool> ValidarIE_Cliente(DadosClienteCadastroDto dadosCliente, List<string> lstErros,
-            ContextoBdProvider contextoProvider, IBancoNFeMunicipio bancoNFeMunicipio)
+            ContextoBdProvider contextoProvider, IBancoNFeMunicipio bancoNFeMunicipio, bool flagMsg_IE_CadastroPrepedido)
         {
             bool retorno = true;
 
@@ -853,11 +827,11 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                         "não pode ter o valor ISENTO no campo de Inscrição Estadual!");
 
                 if (lstErros.Count == 0)
-                    VerificarInscricaoEstadualValida(dadosCliente.Ie, dadosCliente.Uf, lstErros);
+                    VerificarInscricaoEstadualValida(dadosCliente.Ie, dadosCliente.Uf, lstErros, flagMsg_IE_CadastroPrepedido);
             }
 
             await ConsisteMunicipioIBGE(dadosCliente.Cidade, dadosCliente.Uf, lstErros, contextoProvider,
-                bancoNFeMunicipio, true);
+                bancoNFeMunicipio, flagMsg_IE_CadastroPrepedido);
 
             return retorno;
         }
@@ -995,7 +969,8 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return true;
         }
 
-        public static void VerificarInscricaoEstadualValida(string ie, string uf, List<string> listaErros)
+        public static void VerificarInscricaoEstadualValida(string ie, string uf, List<string> listaErros,
+            bool flagMsg_IE_CadastroPrepedido)
         {
             if (string.IsNullOrEmpty(ie))
             {
@@ -1023,8 +998,21 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 }
                 if (qtdeDig < 2 && qtdeDig > 14)
                 {
-                    listaErros.Add(MensagensErro.Preencha_a_IE_Inscricao_Estadual);
-                    return;
+                    //vamos usar a flag para mostrar a msg correta no momento certo
+                    if (!flagMsg_IE_CadastroPrepedido)
+                    {
+                        listaErros.Add(MensagensErro.Preencha_a_IE_Inscricao_Estadual);
+                        return;
+                    }
+                    else {
+                        listaErros.Add("Inscrição Estadual inválida pra esse estado (" + uf.ToUpper() + "). " + 
+                            "Caso o cliente esteja em outro estado, entre em contato com o suporte " +
+                            "para alterar o cadastro do cliente");
+
+                        return;
+                    }
+
+
                 }
 
             }
@@ -1035,7 +1023,19 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             blnResultado = isInscricaoEstadualOkCom(ie, uf);
             if (!blnResultado)
             {
-                listaErros.Add(MensagensErro.Preencha_a_IE_Inscricao_Estadual);
+                if (!flagMsg_IE_CadastroPrepedido)
+                {
+                    listaErros.Add(MensagensErro.Preencha_a_IE_Inscricao_Estadual);
+                    return;
+                }
+                else
+                {
+                    listaErros.Add("Inscrição Estadual inválida pra esse estado (" + uf.ToUpper() + "). " +
+                        "Caso o cliente esteja em outro estado, entre em contato com o suporte " +
+                        "para alterar o cadastro do cliente");
+
+                    return;
+                }
             }
         }
 

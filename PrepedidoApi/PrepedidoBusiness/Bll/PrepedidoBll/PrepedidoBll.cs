@@ -700,8 +700,11 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
 
             List<ListaBancoDto> lstBanco = (await clienteBll.ListarBancosCombo()).ToList();
             //vamos validar os dados do cliente
+            //vamos passar uma flag para mostrar a msg 
+            //"Inscrição estadual inválida pra esse estado. Caso o cliente esteja em outro estado,
+            //entre em contato com o suporte para alterar o cadastro do cliente.
             await ValidacoesClienteBll.ValidarDadosCliente(prePedido.DadosCliente, null, null,
-                lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, false);
+                lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, true);
 
             if (lstErros.Count > 0)
                 return lstErros;
@@ -1736,7 +1739,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                     item.Abaixo_Min_Autorizador = "";//sempre esta vazio no modulo orcamento
                     item.Abaixo_Min_Superv_Autorizador = "";//sempre esta vazio no modulo orcamento
                     item.Sequencia = (short?)RenumeraComBase1(indiceItem);
-                    item.Subgrupo = prod.Tproduto.Subgrupo;
+                    item.Subgrupo = !string.IsNullOrEmpty(prod.Tproduto.Subgrupo)? prod.Tproduto.Subgrupo: "";
 
                     indiceItem++;
                 }

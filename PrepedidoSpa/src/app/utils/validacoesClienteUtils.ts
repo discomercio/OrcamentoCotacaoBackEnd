@@ -86,7 +86,7 @@ export class ValidacoesClienteUtils {
         validacoes = validacoes.concat(validacoes = validacoes.concat(this.validarGeral(dadosClienteCadastroDto, true)));
 
         //converter telefones para separar os dados
-        dadosClienteCadastroDto = this.converterTelefones(dadosClienteCadastroDto);
+        //dadosClienteCadastroDto = this.converterTelefones(dadosClienteCadastroDto);
 
         if (dadosClienteCadastroDto.Tipo == this.constantes.ID_PJ)
             validacoes = validacoes.concat(this.validarGeralPj(dadosClienteCadastroDto, true));
@@ -120,7 +120,7 @@ export class ValidacoesClienteUtils {
         let dadosClienteCadastroDto = DadosClienteCadastroDto.DadosClienteCadastroDtoDeEnderecoEntregaDtoClienteCadastro(endEtg);
 
         //converter telefones para separar os dados
-        dadosClienteCadastroDto = this.converterTelefones(dadosClienteCadastroDto);
+        // dadosClienteCadastroDto = this.converterTelefones(dadosClienteCadastroDto);
 
         //valida cpf, cnpj, email e emailxml
         if (tipoCliente == this.constantes.ID_PJ)
@@ -180,7 +180,6 @@ export class ValidacoesClienteUtils {
         }
 
         if (ehObrigatorio) {
-            debugger;
             //se for PJ é obrigatório
             if (dadosClienteCadastroDto.Tipo == this.constantes.ID_PJ) {
                 //se estiver vazio
@@ -312,8 +311,16 @@ export class ValidacoesClienteUtils {
             dadosClienteCadastroDto.DddResidencial != "") {
             ret.push('Preencha o telefone residencial!');
         }
+        // if (!!dadosClienteCadastroDto.TelefoneResidencial.trim() &&
+        //     dadosClienteCadastroDto.TelefoneResidencial.trim().length < 6) {
+        //     ret.push('Telefone Residencial inválido.')
+        // }
+        // if (!!dadosClienteCadastroDto.DddResidencial.trim() &&
+        //     dadosClienteCadastroDto.DddResidencial.trim().length != 2) {
+        //     ret.push('DDD Residencial inválido.')
+        // }
 
-
+        
         if (dadosClienteCadastroDto.Celular != "" &&
             dadosClienteCadastroDto.DddCelular == "") {
             ret.push('Preencha o DDD do celular.');
@@ -330,6 +337,12 @@ export class ValidacoesClienteUtils {
         if (dadosClienteCadastroDto.TelComercial == "" &&
             dadosClienteCadastroDto.DddComercial != "") {
             ret.push('Preencha o telefone comercial!');
+        }
+
+        
+        if (dadosClienteCadastroDto.TelComercial == "" &&
+            dadosClienteCadastroDto.Ramal != "") {
+            ret.push("Ramal comercial preenchido sem telefone!");
         }
 
         //vamos validar
@@ -367,11 +380,10 @@ export class ValidacoesClienteUtils {
     }
 
     private static validarTelefonesPJ(dadosClienteCadastroDto: DadosClienteCadastroDto, ehObrigatorio: boolean): string[] {
-
         let ret: string[] = new Array();
 
         if (ehObrigatorio) {
-            if (dadosClienteCadastroDto.TelComercial.trim() == "" && dadosClienteCadastroDto.DddComercial2.trim() == "" &&
+            if (dadosClienteCadastroDto.TelComercial.trim() == "" && dadosClienteCadastroDto.DddComercial.trim() == "" &&
                 dadosClienteCadastroDto.TelComercial2.trim() == "" && dadosClienteCadastroDto.DddComercial2.trim() == "") {
                 ret.push('Preencha ao menos um telefone!');
                 return ret;
@@ -395,9 +407,20 @@ export class ValidacoesClienteUtils {
             dadosClienteCadastroDto.DddComercial2.trim() == "") {
             ret.push('Preencha o DDD comercial 2 !');
         }
+        
+        if (dadosClienteCadastroDto.TelComercial == "" &&
+            dadosClienteCadastroDto.Ramal != "") {
+            ret.push("Ramal comercial preenchido sem telefone!");
+        }
+       
+        if (dadosClienteCadastroDto.TelComercial2 == "" &&
+            dadosClienteCadastroDto.Ramal2 != "") {
+            ret.push("Ramal comercial 2 preenchido sem telefone!");
+        }
 
         //vamos verificar se os tel comerciais estão ok
-        if (dadosClienteCadastroDto.DddComercial != "" && dadosClienteCadastroDto.TelComercial) {
+        if (dadosClienteCadastroDto.DddComercial != "" &&
+            dadosClienteCadastroDto.TelComercial != "") {
             if (!FormatarTelefone.ddd_ok(dadosClienteCadastroDto.DddComercial)) {
                 ret.push('DDD comercial inválido!');
             }
@@ -407,7 +430,8 @@ export class ValidacoesClienteUtils {
             }
         }
 
-        if (dadosClienteCadastroDto.DddComercial2 != "" && dadosClienteCadastroDto.TelComercial2) {
+        if (dadosClienteCadastroDto.DddComercial2 != "" &&
+            dadosClienteCadastroDto.TelComercial2 != "") {
             if (!FormatarTelefone.ddd_ok(dadosClienteCadastroDto.DddComercial2)) {
                 ret.push('DDD comercial 2 inválido!');
             }
@@ -493,11 +517,11 @@ export class ValidacoesClienteUtils {
                 ret.push("Caso seja selecionado outro endereço, preencha o número do endereço!")
                 return ret;
             }
-            if(!end.EndEtg_bairro || end.EndEtg_bairro.trim() === ""){
+            if (!end.EndEtg_bairro || end.EndEtg_bairro.trim() === "") {
                 ret.push("Caso seja selecionado outro endereço, informe um bairro!");
                 return ret;
             }
-            if(!end.EndEtg_cidade || end.EndEtg_cidade.trim() === ""){
+            if (!end.EndEtg_cidade || end.EndEtg_cidade.trim() === "") {
                 ret.push("Caso seja selecionado outro endereço, informe uma cidade!");
                 return ret;
             }

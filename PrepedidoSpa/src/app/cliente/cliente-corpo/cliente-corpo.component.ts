@@ -95,6 +95,14 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
     }
   }
 
+  alterarProdutorContribuinteIE(produtor: number) {
+    debugger;
+    if (produtor == this.constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO) {
+      this.dadosClienteCadastroDto.Contribuinte_Icms_Status = 0;
+      this.dadosClienteCadastroDto.Ie = "";
+    }
+  }
+
   //o dado sendo editado
   @Input() dadosClienteCadastroDto = new DadosClienteCadastroDto();
   //é o mesmo dado, mas passamos separadamente para ficar mais fácil de construir esta tela
@@ -209,6 +217,7 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
   }
 
   copiarDadosClienteCadastro(): void {
+
     this.componenteCepDadosCadastrais.Cep = this.dadosClienteCadastroDto.Cep
     this.componenteCepDadosCadastrais.Endereco = this.dadosClienteCadastroDto.Endereco;
     this.componenteCepDadosCadastrais.Numero = this.dadosClienteCadastroDto.Numero;
@@ -229,25 +238,22 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
     this.enderecoCadastralClientePrepedidoDto.Endereco_rg = this.dadosClienteCadastroDto.Rg;
     this.enderecoCadastralClientePrepedidoDto.Endereco_tipo_pessoa = this.dadosClienteCadastroDto.Tipo;
 
-    this.enderecoCadastralClientePrepedidoDto.Endereco_ddd_cel = this.dadosClienteCadastroDto.Tipo == this.constantes.ID_PF ?
-      this.dadosClienteCadastroDto.DddCelular : "";
+    this.enderecoCadastralClientePrepedidoDto.Endereco_ddd_cel = "";
 
     this.enderecoCadastralClientePrepedidoDto.Endereco_tel_cel = this.dadosClienteCadastroDto.Tipo == this.constantes.ID_PF ?
       this.dadosClienteCadastroDto.DddCelular + this.dadosClienteCadastroDto.Celular : "";
 
-    this.enderecoCadastralClientePrepedidoDto.Endereco_ddd_res = this.dadosClienteCadastroDto.Tipo == this.constantes.ID_PF ?
-      this.dadosClienteCadastroDto.DddResidencial : "";
+    this.enderecoCadastralClientePrepedidoDto.Endereco_ddd_res = "";
 
     this.enderecoCadastralClientePrepedidoDto.Endereco_tel_res = this.dadosClienteCadastroDto.Tipo == this.constantes.ID_PF ?
       this.dadosClienteCadastroDto.DddResidencial + this.dadosClienteCadastroDto.TelefoneResidencial : "";
 
-    this.enderecoCadastralClientePrepedidoDto.Endereco_ddd_com = this.dadosClienteCadastroDto.DddComercial;
+    this.enderecoCadastralClientePrepedidoDto.Endereco_ddd_com = "";
 
     this.enderecoCadastralClientePrepedidoDto.Endereco_tel_com = this.dadosClienteCadastroDto.DddComercial + this.dadosClienteCadastroDto.TelComercial;
     this.enderecoCadastralClientePrepedidoDto.Endereco_ramal_com = this.dadosClienteCadastroDto.Ramal;
 
-    this.enderecoCadastralClientePrepedidoDto.Endereco_ddd_com_2 = this.dadosClienteCadastroDto.Tipo == this.constantes.ID_PJ ?
-      this.dadosClienteCadastroDto.DddComercial2 : "";
+    this.enderecoCadastralClientePrepedidoDto.Endereco_ddd_com_2 = "";
 
     this.enderecoCadastralClientePrepedidoDto.Endereco_tel_com_2 =
       this.dadosClienteCadastroDto.Tipo == this.constantes.ID_PJ && this.dadosClienteCadastroDto.DddComercial2 != null ?
@@ -326,22 +332,31 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
     if (!!endCadastralClientePrepedidoDto.Endereco_ddd_res && !!endCadastralClientePrepedidoDto.Endereco_tel_res) {
       endCadastralClientePrepedidoDto.Endereco_tel_res = endCadastralClientePrepedidoDto.Endereco_ddd_res +
         endCadastralClientePrepedidoDto.Endereco_tel_res;
+
     }
 
     if (!!endCadastralClientePrepedidoDto.Endereco_ddd_cel && !!endCadastralClientePrepedidoDto.Endereco_tel_cel) {
       endCadastralClientePrepedidoDto.Endereco_tel_cel = endCadastralClientePrepedidoDto.Endereco_ddd_cel +
         endCadastralClientePrepedidoDto.Endereco_tel_cel;
+
     }
 
     if (!!endCadastralClientePrepedidoDto.Endereco_ddd_com && !!endCadastralClientePrepedidoDto.Endereco_tel_com) {
       endCadastralClientePrepedidoDto.Endereco_tel_com = endCadastralClientePrepedidoDto.Endereco_ddd_com +
         endCadastralClientePrepedidoDto.Endereco_tel_com;
+
     }
 
     if (!!endCadastralClientePrepedidoDto.Endereco_ddd_com_2 && !!endCadastralClientePrepedidoDto.Endereco_tel_com_2) {
       endCadastralClientePrepedidoDto.Endereco_tel_com_2 = endCadastralClientePrepedidoDto.Endereco_ddd_com_2 +
         endCadastralClientePrepedidoDto.Endereco_tel_com_2;
+
     }
+
+    endCadastralClientePrepedidoDto.Endereco_ddd_res = "";
+    endCadastralClientePrepedidoDto.Endereco_ddd_cel = "";
+    endCadastralClientePrepedidoDto.Endereco_ddd_com = "";
+    endCadastralClientePrepedidoDto.Endereco_ddd_com_2 = "";
 
     return endCadastralClientePrepedidoDto;
   }
@@ -360,15 +375,15 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
 
       //fazer a conversão de telefones para mostrar na tela "(xx) xxxx-xxxx"
 
-     src.cepService.buscarCep(src.Cep, null, null, null).toPromise()
-      .then((r) => {
-        //recebemos um endereço
-        const end = r[0];        
-        src.temCidade = end.Cidade == "" || !end.Cidade ? false : true;
-        
-      }).catch((r) => {
-        // não fazemos nada
-      });
+      src.cepService.buscarCep(src.Cep, null, null, null).toPromise()
+        .then((r) => {
+          //recebemos um endereço
+          const end = r[0];
+          src.temCidade = end.Cidade == "" || !end.Cidade ? false : true;
+
+        }).catch((r) => {
+          // não fazemos nada
+        });
 
       //nao está mais pendente
       this.atualizarDadosEnderecoCadastralClienteTela_Dados = null;

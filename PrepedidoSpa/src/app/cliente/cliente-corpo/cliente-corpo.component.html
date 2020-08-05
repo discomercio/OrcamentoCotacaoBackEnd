@@ -258,8 +258,8 @@ para não dar erro no console
                 <mat-form-field floatLabel="floatLabel()" id="selectProdutorRural">
                     <mat-label>PRODUTOR RURAL</mat-label>
                     <!-- produtor rural sempre é editável -->
-                    <mat-select (keydown)="keydownSelectProdutor($event);" #mySelectProdutor required
-                        [(ngModel)]="dadosClienteCadastroDto.ProdutorRural">
+                    <mat-select (keydown)="keydownSelectProdutor($event);" (ngModelChange)="alterarProdutorContribuinteIE($event)" 
+                    #mySelectProdutor required [(ngModel)]="dadosClienteCadastroDto.ProdutorRural">
                         <mat-option>Selecione</mat-option>
                         <mat-option [(value)]="constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO">Não</mat-option>
                         <mat-option [(value)]="constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM">Sim</mat-option>

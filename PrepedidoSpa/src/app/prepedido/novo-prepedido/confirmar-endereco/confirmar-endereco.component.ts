@@ -143,8 +143,10 @@ export class ConfirmarEnderecoComponent implements OnInit {
     enderecoEntrega.EndEtg_tel_res = "";
     enderecoEntrega.EndEtg_ddd_com = "";
     enderecoEntrega.EndEtg_tel_com = "";
+    enderecoEntrega.EndEtg_ramal_com = "";
     enderecoEntrega.EndEtg_ddd_com_2 = "";
     enderecoEntrega.EndEtg_tel_com_2 = "";
+    enderecoEntrega.EndEtg_ramal_com_2 = "";
     enderecoEntrega.EndEtg_produtor_rural_status = 0;
     enderecoEntrega.EndEtg_contribuinte_icms_status = 0;
     enderecoEntrega.EndEtg_ie = "";
@@ -154,17 +156,21 @@ export class ConfirmarEnderecoComponent implements OnInit {
   pessoaEntregaEhPF: boolean;
   RbTipoPessoa: boolean;
   PF() {
-    this.enderecoEntregaDtoClienteCadastro.EndEtg_cnpj_cpf = "";
+    this.inicializarCamposEndereco(this.enderecoEntregaDtoClienteCadastro);
+    this.componenteCep.zerarCamposEndEntrega();
+    this.componenteCep.Cep = "";
     this.pessoaEntregaEhPF = true;
     this.pessoaEntregaEhPJ = false;
     this.enderecoEntregaDtoClienteCadastro.EndEtg_tipo_pessoa = this.constantes.ID_PF;
   }
 
   PJ() {
-    this.enderecoEntregaDtoClienteCadastro.EndEtg_cnpj_cpf = "";
+    this.inicializarCamposEndereco(this.enderecoEntregaDtoClienteCadastro);
+    this.componenteCep.zerarCamposEndEntrega();
+    this.componenteCep.Cep = "";
     this.pessoaEntregaEhPJ = true;
     this.pessoaEntregaEhPF = false;
-    this.enderecoEntregaDtoClienteCadastro.EndEtg_tipo_pessoa = this.constantes.ID_PJ;
+    this.enderecoEntregaDtoClienteCadastro.EndEtg_tipo_pessoa = this.constantes.ID_PJ;    
   }
 
   public converterTelefones(enderecoEntrega: EnderecoEntregaDtoClienteCadastro): EnderecoEntregaDtoClienteCadastro {
