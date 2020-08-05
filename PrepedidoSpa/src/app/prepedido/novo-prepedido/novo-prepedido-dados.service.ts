@@ -21,6 +21,7 @@ export class NovoPrepedidoDadosService {
   constructor() { }
 
   public setar(prePedidoDto: PrePedidoDto) {
+    
     this.prePedidoDto = prePedidoDto;
   }
 

@@ -35,6 +35,7 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
 
 
   ngOnInit() {
+
     this.jaFezAfterViewInit = false;
 
     this.criarElementos();
@@ -206,14 +207,17 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
 
   public prepararAvancarEnderecoCadastralClientePrepedidoDto(): void {
     //transferimos os dados do CEP para cá
-    const src = this.componenteCepDadosCadastrais;
-    this.enderecoCadastralClientePrepedidoDto.Endereco_logradouro = src.Endereco ? src.Endereco : "";
-    this.enderecoCadastralClientePrepedidoDto.Endereco_numero = src.Numero ? src.Numero : "";
-    this.enderecoCadastralClientePrepedidoDto.Endereco_complemento = src.Complemento ? src.Complemento : "";
-    this.enderecoCadastralClientePrepedidoDto.Endereco_bairro = src.Bairro ? src.Bairro : "";
-    this.enderecoCadastralClientePrepedidoDto.Endereco_cidade = src.Cidade ? src.Cidade : "";
-    this.enderecoCadastralClientePrepedidoDto.Endereco_uf = src.Uf ? src.Uf : "";
-    this.enderecoCadastralClientePrepedidoDto.Endereco_cep = src.Cep ? src.Cep : "";
+    if (this.componenteCepDadosCadastrais != null) {
+      const src = this.componenteCepDadosCadastrais;
+      this.enderecoCadastralClientePrepedidoDto.Endereco_logradouro = src.Endereco ? src.Endereco : "";
+      this.enderecoCadastralClientePrepedidoDto.Endereco_numero = src.Numero ? src.Numero : "";
+      this.enderecoCadastralClientePrepedidoDto.Endereco_complemento = src.Complemento ? src.Complemento : "";
+      this.enderecoCadastralClientePrepedidoDto.Endereco_bairro = src.Bairro ? src.Bairro : "";
+      this.enderecoCadastralClientePrepedidoDto.Endereco_cidade = src.Cidade ? src.Cidade : "";
+      this.enderecoCadastralClientePrepedidoDto.Endereco_uf = src.Uf ? src.Uf : "";
+      this.enderecoCadastralClientePrepedidoDto.Endereco_cep = src.Cep ? src.Cep : "";
+    }
+
   }
 
   copiarDadosClienteCadastro(): void {
@@ -282,6 +286,7 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
   private jaFezAfterViewInit = false;
   ngAfterViewInit(): void {
     this.jaFezAfterViewInit = true;
+
     if (this.atualizarDadosEnderecoCadastralClienteTela_Dados != null)
       this.atualizarDadosEnderecoCadastralClienteTela_Executar();
   }
@@ -289,10 +294,15 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
   private atualizarDadosEnderecoCadastralClienteTela_Dados: EnderecoCadastralClientePrepedidoDto = null;
   public atualizarDadosEnderecoCadastralClienteTela(enderecoCadastralClientePrepedidoDto: EnderecoCadastralClientePrepedidoDto): void {
     this.atualizarDadosEnderecoCadastralClienteTela_Dados = enderecoCadastralClientePrepedidoDto;
-    if (this.jaFezAfterViewInit)
-      this.atualizarDadosEnderecoCadastralClienteTela_Executar();
 
-    this.enderecoCadastralClientePrepedidoDto = this.desconverterTelefonesEnderecoDadosCadastrais(enderecoCadastralClientePrepedidoDto);
+    debugger;
+    if (this.jaFezAfterViewInit) {
+      if (this.atualizarDadosEnderecoCadastralClienteTela_Dados != null) {
+        this.atualizarDadosEnderecoCadastralClienteTela_Executar();
+        this.enderecoCadastralClientePrepedidoDto = this.desconverterTelefonesEnderecoDadosCadastrais(enderecoCadastralClientePrepedidoDto);
+      }
+    }
+
 
     return;
   }
@@ -362,7 +372,7 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
   }
   private atualizarDadosEnderecoCadastralClienteTela_Executar(): void {
     setTimeout(() => {
-
+debugger;
       this.enderecoCadastralClientePrepedidoDto = this.atualizarDadosEnderecoCadastralClienteTela_Dados;
       const src = this.componenteCepDadosCadastrais;
       src.Cep = this.enderecoCadastralClientePrepedidoDto.Endereco_cep;

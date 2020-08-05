@@ -63,7 +63,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
 
   carregandoDto = true;
   ngOnInit() {
-
+debugger;
     //se tem um parâmetro no link, colocamos ele no serviço
     let numeroPrepedido = this.activatedRoute.snapshot.params.numeroPrepedido;
     if (!!numeroPrepedido) {

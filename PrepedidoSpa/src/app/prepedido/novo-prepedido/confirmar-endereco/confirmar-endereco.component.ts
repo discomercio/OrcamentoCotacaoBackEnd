@@ -51,7 +51,6 @@ export class ConfirmarEnderecoComponent implements OnInit {
   required: boolean;
   atualizarDadosEnderecoTela(enderecoEntregaDtoClienteCadastro: EnderecoEntregaDtoClienteCadastro) {
     //precisamos fazer a busca de cep para saber se tem endereço bairro e cidade para bloquear ou não
-
     this.enderecoEntregaDtoClienteCadastro = enderecoEntregaDtoClienteCadastro;
     const src = this.componenteCep;
     src.Endereco = this.enderecoEntregaDtoClienteCadastro.EndEtg_endereco;
@@ -66,6 +65,8 @@ export class ConfirmarEnderecoComponent implements OnInit {
     this.pessoaEntregaEhPF = this.enderecoEntregaDtoClienteCadastro.EndEtg_tipo_pessoa == this.constantes.ID_PF ? true : false;
 
     this.RbTipoPessoa = true;
+
+    debugger;
     this.enderecoEntregaDtoClienteCadastro = this.desconverterTelefonesEnderecoEntrega(enderecoEntregaDtoClienteCadastro);
 
     this.componenteCep.cepService.buscarCep(src.Cep, null, null, null).toPromise()
@@ -196,13 +197,16 @@ export class ConfirmarEnderecoComponent implements OnInit {
 
   public desconverterTelefonesEnderecoEntrega(enderecoEntrega: EnderecoEntregaDtoClienteCadastro): EnderecoEntregaDtoClienteCadastro {
 
-    enderecoEntrega.EndEtg_tel_res = enderecoEntrega.EndEtg_ddd_res + enderecoEntrega.EndEtg_tel_res;
+    if(enderecoEntrega.EndEtg_cod_justificativa != undefined){
+      enderecoEntrega.EndEtg_tel_res = enderecoEntrega.EndEtg_ddd_res + enderecoEntrega.EndEtg_tel_res;
 
-    enderecoEntrega.EndEtg_tel_cel = enderecoEntrega.EndEtg_ddd_cel + enderecoEntrega.EndEtg_tel_cel;
-
-    enderecoEntrega.EndEtg_tel_com = enderecoEntrega.EndEtg_ddd_com + enderecoEntrega.EndEtg_tel_com;
-
-    enderecoEntrega.EndEtg_tel_com_2 = enderecoEntrega.EndEtg_ddd_com_2 + enderecoEntrega.EndEtg_tel_com_2;
+      enderecoEntrega.EndEtg_tel_cel = enderecoEntrega.EndEtg_ddd_cel + enderecoEntrega.EndEtg_tel_cel;
+  
+      enderecoEntrega.EndEtg_tel_com = enderecoEntrega.EndEtg_ddd_com + enderecoEntrega.EndEtg_tel_com;
+  
+      enderecoEntrega.EndEtg_tel_com_2 = enderecoEntrega.EndEtg_ddd_com_2 + enderecoEntrega.EndEtg_tel_com_2;
+    }
+    
 
     return enderecoEntrega;
   }

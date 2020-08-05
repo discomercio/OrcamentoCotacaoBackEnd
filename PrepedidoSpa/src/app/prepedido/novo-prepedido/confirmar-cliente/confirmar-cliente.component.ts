@@ -43,6 +43,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
   }
 
   ngOnInit() {
+    debugger;
     this.endCadastralClientePrepedidoDto = new EnderecoCadastralClientePrepedidoDto();
     this.dadosClienteCadastroDto = null;
     if (this.router.getCurrentNavigation()) {
@@ -69,6 +70,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
 
       this.buscarClienteService.buscar(clienteBusca).toPromise()
         .then((r) => {
+
           if (r === null) {
 
             //erro, voltamos para a tela anterior
@@ -78,6 +80,10 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
           //cliente já existe
           //quando para nesse ponto, já fomos direcionado para a tela "home"
 
+          //se tiver prepedido é pq veio de DetalhesPrepedido e precisamos passar para o serviço, 
+          //pois a loja do dadoscliente esta com o nome e não o código da loja e teremos problemas para buscar os produtos
+          if (this.novoPrepedidoDadosService.prePedidoDto != null)
+            this.novoPrepedidoDadosService.prePedidoDto.DadosCliente = r.DadosCliente;
           this.dadosClienteCadastroDto = r.DadosCliente;
           this.clienteCadastroDto = r;
 
@@ -123,7 +129,9 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
 
 
   verificarCriarNovoPrepedido() {
+
     if (!!this.novoPrepedidoDadosService.prePedidoDto) {
+
       let existente = this.novoPrepedidoDadosService.prePedidoDto.DadosCliente.Id;
       if (existente == this.dadosClienteCadastroDto.Id) {
         //nao criamos! usamos o que já está no serviço
@@ -131,6 +139,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
         this.enderecoEntregaDtoClienteCadastro = this.novoPrepedidoDadosService.prePedidoDto.EnderecoEntrega;
         this.endCadastralClientePrepedidoDto = this.novoPrepedidoDadosService.prePedidoDto.EnderecoCadastroClientePrepedido;
         if (this.telaDesktop) {
+
           this.confirmarEndereco.atualizarDadosEnderecoTela(this.enderecoEntregaDtoClienteCadastro);
           //afazer chamar atualizarDadosEnderecoCadastral
 
@@ -139,7 +148,6 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
         return;
       }
     }
-
     ///vamos criar um novo
     this.novoPrepedidoDadosService.criarNovo(this.dadosClienteCadastroDto, this.enderecoEntregaDtoClienteCadastro,
       this.endCadastralClientePrepedidoDto);
