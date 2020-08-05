@@ -5,14 +5,15 @@ using Xunit;
 
 namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
 {
-    public class Autenticacao : Testes.Utils.ExecucaoCruzada.ListaEspecificacoes, Testes.Comuns.Api.IAutenticacaoSteps
+    public class Pedido : Testes.Utils.ExecucaoCruzada.ListaEspecificacoes, Testes.Pedido.IPedidoSteps
     {
         private readonly CadastrarPrepedido cadastrarPrepedido = new CadastrarPrepedido();
         private static readonly List<string> especificacoes = new List<string>();
-
-        public Autenticacao(string especificacao) : base(especificacao)
+        private string ambiente;
+        public Pedido(string especificacao, string ambiente) : base(especificacao)
         {
             especificacoes.Add(especificacao);
+            this.ambiente = ambiente;
         }
         public static void ThenVerificarQueExecutou(string especificacao)
         {
@@ -26,14 +27,24 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
             cadastrarPrepedido.WhenInformo(p0, p1);
         }
 
-        public void ThenErroStatusCode(int p0)
-        {
-            cadastrarPrepedido.ThenErroStatusCode(p0);
-        }
 
-        public void GivenDadoBase()
+        public void WhenPedidoBase()
         {
             cadastrarPrepedido.GivenPrepedidoBase();
+        }
+
+        public void ThenNoAmbienteErro(string ambiente, string erro)
+        {
+            if (this.ambiente != ambiente)
+                return;
+            cadastrarPrepedido.ThenErro(erro);
+        }
+
+        public void ThenNoAmbienteSemErro(string ambiente, string erro)
+        {
+            if (this.ambiente != ambiente)
+                return;
+            cadastrarPrepedido.ThenSemErro(erro);
         }
     }
 }

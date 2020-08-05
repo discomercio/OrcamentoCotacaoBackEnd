@@ -83,7 +83,7 @@ namespace Especificacao.Especificacao.Comuns.Api
 #line 5
 #line hidden
 #line 6
- testRunner.Given("Implementando em \"Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Implementado em \"Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
         }
         

@@ -19,11 +19,13 @@ namespace Especificacao.Testes.Utils.BancoTestes
         private static readonly object _lockObject = new object();
         private static bool _inicialziado = false;
         private readonly ContextoBdProvider contextoBdProvider;
+        private readonly ContextoCepProvider contextoCepProvider;
         private readonly LogTestes logTestes = LogTestes.GetInstance();
 
-        public InicializarBancoGeral(InfraBanco.ContextoBdProvider contextoBdProvider)
+        public InicializarBancoGeral(InfraBanco.ContextoBdProvider contextoBdProvider, InfraBanco.ContextoCepProvider contextoCepProvider)
         {
             this.contextoBdProvider = contextoBdProvider;
+            this.contextoCepProvider = contextoCepProvider;
             Inicializar();
         }
 
@@ -36,6 +38,8 @@ namespace Especificacao.Testes.Utils.BancoTestes
                     _inicialziado = true;
                     logTestes.Log("InicializarBancoGeral Inicalizar inicio");
                     InicalizarInterno();
+                    logTestes.Log("InicializarBancoGeral CEP inicio");
+                    new InicializarBancoCep(contextoCepProvider).Inicializar();
                     logTestes.Log("InicializarBancoGeral Inicalizar fim");
                 }
             }

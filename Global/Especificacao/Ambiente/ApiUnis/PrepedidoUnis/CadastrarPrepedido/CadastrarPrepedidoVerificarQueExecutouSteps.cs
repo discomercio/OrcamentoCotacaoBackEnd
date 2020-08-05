@@ -14,9 +14,11 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
                 case "Especificacao.Comuns.Api.Autenticacao":
                     Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.Autenticacao.ThenVerificarQueExecutou(especificacao);
                     break;
+                case "Especificacao.Pedido":
+                    Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.Pedido.ThenVerificarQueExecutou(especificacao);
+                    break;
                 default:
                     throw new ArgumentException($"especificacao {especificacao} desconhecida");
-
             }
         }
     }

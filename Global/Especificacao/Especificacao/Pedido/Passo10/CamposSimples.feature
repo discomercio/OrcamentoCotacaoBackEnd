@@ -1,8 +1,10 @@
-﻿@ignore
-@Especificacao/Pedido
+﻿@Especificacao.Pedido
+@ignore
 Feature: Validar campos simples
 Background: 
-	Given Implementando em "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido"
+	Given Implementado em "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido"
+	#na ApiUnis, ele exige que o cliente já esteja cadastrado, então não valida o CPF/CNPJ
+	And No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido" erro "CNPJ/CPF inválido!!" é "Cliente não localizado"
 
 Scenario: Validar CPF
 em loja/resumo.asp:

@@ -1,6 +1,6 @@
 ﻿@ignore
-@Especificacao/Pedido
-@Implementacao/CaminhoFelizApi
+@Especificacao.Pedido
+@Implementacao.CaminhoFelizApi
 Feature: CaminhoFelizApi
 Caminho feliz da criação do pedido pela API
 O mínimo que um pedido precisa para ser cadastrado pela API

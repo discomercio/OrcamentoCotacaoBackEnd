@@ -20,8 +20,8 @@ namespace Especificacao.Especificacao.Pedido
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "ignore")]
-    [Xunit.TraitAttribute("Category", "Especificacao/Pedido")]
-    [Xunit.TraitAttribute("Category", "Implementacao/CaminhoFelizApi")]
+    [Xunit.TraitAttribute("Category", "Especificacao.Pedido")]
+    [Xunit.TraitAttribute("Category", "Implementacao.CaminhoFelizApi")]
     public partial class CaminhoFelizApiFeature : object, Xunit.IClassFixture<CaminhoFelizApiFeature.FixtureData>, System.IDisposable
     {
         
@@ -29,8 +29,8 @@ namespace Especificacao.Especificacao.Pedido
         
         private string[] _featureTags = new string[] {
                 "ignore",
-                "Especificacao/Pedido",
-                "Implementacao/CaminhoFelizApi"};
+                "Especificacao.Pedido",
+                "Implementacao.CaminhoFelizApi"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -49,8 +49,8 @@ namespace Especificacao.Especificacao.Pedido
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "CaminhoFelizApi", "Caminho feliz da criação do pedido pela API\r\nO mínimo que um pedido precisa para " +
                     "ser cadastrado pela API\r\nLevantado a partir do ERP/loja/PedidoNovoConfirma.asp", ProgrammingLanguage.CSharp, new string[] {
                         "ignore",
-                        "Especificacao/Pedido",
-                        "Implementacao/CaminhoFelizApi"});
+                        "Especificacao.Pedido",
+                        "Implementacao.CaminhoFelizApi"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

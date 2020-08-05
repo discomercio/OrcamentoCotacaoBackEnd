@@ -3,7 +3,7 @@ Feature: Autenticacao
 	Verificar a autenticação
 
 Background: Testar em:
-	Given Implementando em "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido"
+	Given Implementado em "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido"
 	
 
 Scenario: Autenticação inválida

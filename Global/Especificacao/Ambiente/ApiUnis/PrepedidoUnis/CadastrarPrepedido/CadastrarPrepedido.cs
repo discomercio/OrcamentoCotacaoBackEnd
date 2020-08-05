@@ -21,13 +21,15 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
             prePedidoUnisDto = CadastrarPrepedidoDados.PrepedidoBase();
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0066:Convert switch statement to expression", Justification = "<Prefiro assim...>")]
         public void WhenInformo(string p0, string p1)
         {
             switch (p0)
             {
                 case "TokenAcesso":
                     prePedidoUnisDto.TokenAcesso = p1;
+                    break;
+                case "CPF/CNPJ":
+                    prePedidoUnisDto.Cnpj_Cpf = p1;
                     break;
                 default:
                     throw new ArgumentException($"{p0} desconhecido");
@@ -52,6 +54,33 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
                 default:
                     throw new ArgumentException($"{statusCode} desconhecido");
             }
+        }
+
+        public void ThenErro(string p0)
+        {
+            ThenErro(p0, true);
+        }
+        public void ThenSemErro(string p0)
+        {
+            ThenErro(p0, false);
+        }
+
+        public void ThenErro(string erro, bool erroDeveExistir)
+        {
+            Microsoft.AspNetCore.Mvc.ActionResult<PrePedidoResultadoUnisDto> ret = prepedidoUnisController.CadastrarPrepedido(prePedidoUnisDto).Result;
+            Microsoft.AspNetCore.Mvc.ActionResult res = ret.Result;
+
+            //deve ter retornado 200
+            if (res.GetType() != typeof(Microsoft.AspNetCore.Mvc.OkObjectResult))
+                Assert.Equal("", "Tipo não é OkObjectResult");
+
+            PrePedidoResultadoUnisDto prePedidoResultadoUnisDto = (PrePedidoResultadoUnisDto)((Microsoft.AspNetCore.Mvc.OkObjectResult)res).Value;
+
+            if (erroDeveExistir)
+                Assert.Contains(erro, prePedidoResultadoUnisDto.ListaErros);
+            else
+                Assert.DoesNotContain(erro, prePedidoResultadoUnisDto.ListaErros);
+
         }
     }
 }
