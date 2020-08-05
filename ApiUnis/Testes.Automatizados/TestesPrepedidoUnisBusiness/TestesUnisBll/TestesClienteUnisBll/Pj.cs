@@ -49,6 +49,19 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
                 c.DadosCliente.TelComercial = "";
                 c.DadosCliente.Ramal = "";
             },
+                //"PREENCHA O TELEFONE COMERCIAL.",
+                "PREENCHA AO MENOS UM TELEFONE (COMERCIAL OU COMERCIAL 2)!",
+                    TipoPessoa.PJ);
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.DddComercial = "12";
+                c.DadosCliente.TelComercial = "";
+                c.DadosCliente.Ramal = "";
+                c.DadosCliente.DddComercial2 = "12";
+                c.DadosCliente.TelComercial2 = "123456";
+                c.DadosCliente.Ramal2 = "12";
+            },
                 "PREENCHA O TELEFONE COMERCIAL.",
                     TipoPessoa.PJ);
 
