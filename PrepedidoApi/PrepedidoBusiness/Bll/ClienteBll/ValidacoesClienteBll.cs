@@ -224,7 +224,9 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 retorno = await ValidarTelResidencial(dadosCliente, cliente, lstErros, contextoProvider);
             }
             //COMERCIA
-            if (!string.IsNullOrEmpty(dadosCliente.TelComercial) || !string.IsNullOrEmpty(dadosCliente.DddComercial))
+            if (!string.IsNullOrEmpty(dadosCliente.TelComercial) || 
+                !string.IsNullOrEmpty(dadosCliente.DddComercial) || 
+                !string.IsNullOrEmpty(dadosCliente.Ramal))
             {
                 retorno = await ValidarTelCom(dadosCliente, cliente, lstErros, contextoProvider);
             }
@@ -582,13 +584,17 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             }
 
             //com
-            if (!string.IsNullOrEmpty(dadosCliente.TelComercial) || !string.IsNullOrEmpty(dadosCliente.DddComercial))
+            if (!string.IsNullOrEmpty(dadosCliente.TelComercial) || 
+                !string.IsNullOrEmpty(dadosCliente.DddComercial) || 
+                !string.IsNullOrEmpty(dadosCliente.Ramal))
             {
                 retorno = await ValidarTelCom(dadosCliente, cliente, lstErros, contextoProvider);
             }
 
             //com 2
-            if (!string.IsNullOrEmpty(dadosCliente.TelComercial2) || !string.IsNullOrEmpty(dadosCliente.DddComercial2))
+            if (!string.IsNullOrEmpty(dadosCliente.TelComercial2) || 
+                !string.IsNullOrEmpty(dadosCliente.DddComercial2) || 
+                !string.IsNullOrEmpty(dadosCliente.Ramal2))
             {
                 retorno = await ValidarTelCom2(dadosCliente, cliente, lstErros, contextoProvider);
             }
@@ -1094,7 +1100,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     //vamos verificar se a cidade da lista de cep existe no IBGE para validar
                     if (!string.IsNullOrEmpty(cepCliente.Cidade) && !string.IsNullOrEmpty(c.Cidade))
                     {
-                        if (await ConsisteMunicipioIBGE(c.Cidade, c.Uf, lstErros, contextoProvider, bancoNFeMunicipio, false))
+                        if (await ConsisteMunicipioIBGE(c.Cidade, c.Uf, lstErros, contextoProvider, bancoNFeMunicipio, true))
                         {
                             if (Util.RemoverAcentuacao(c.Cidade.ToUpper()) != Util.RemoverAcentuacao(cepCliente.Cidade.ToUpper()))
                             {
