@@ -108,7 +108,9 @@ VlTotalDestePedido	number($double)
         [Fact]
         public void Parcial_CustoFinancFornecCoeficiente()
         {
-            Teste(c => c.ListaProdutos[0].CustoFinancFornecCoeficiente = 11, "Coeficiente do fabricante (003) esta incorreto!");
+            Teste(c => 
+                c.ListaProdutos[0].CustoFinancFornecCoeficiente = 11
+            , "Coeficiente do fabricante (003) esta incorreto!");
         }
         [Fact]
         public void Parcial_CustoFinancFornecCoeficiente_Avista()

@@ -24,6 +24,7 @@ namespace Testes.Automatizados.InicializarBanco
             ret.DadosCliente.Sexo = "M";
             ret.DadosCliente.ProdutorRural = (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO;
             ret.DadosCliente.Contribuinte_Icms_Status = (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL;
+            ret.DadosCliente.Ie = "";
             ret.RefBancaria = new List<RefBancariaClienteUnisDto>();
             ret.RefComercial = new List<RefComercialClienteUnisDto>();
             return ret;

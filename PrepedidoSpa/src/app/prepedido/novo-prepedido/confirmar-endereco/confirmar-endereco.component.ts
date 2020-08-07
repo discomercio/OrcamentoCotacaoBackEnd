@@ -7,7 +7,7 @@ import { EnderecoEntregaJustificativaDto } from 'src/app/dto/ClienteCadastro/End
 import { CepComponent } from 'src/app/cliente/cep/cep/cep.component';
 import { ClienteCorpoComponent } from 'src/app/cliente/cliente-corpo/cliente-corpo.component';
 import { Constantes } from 'src/app/dto/Constantes';
-import { FormatarTelefone } from 'src/app/utils/formatarTelefone';
+import { FormatarTelefone, TelefoneSeparado } from 'src/app/utils/formatarTelefone';
 import { CpfCnpjUtils } from 'src/app/utils/cpfCnpjUtils';
 import { MatSelect } from '@angular/material';
 
@@ -66,14 +66,13 @@ export class ConfirmarEnderecoComponent implements OnInit {
 
     this.RbTipoPessoa = true;
 
-    debugger;
     this.enderecoEntregaDtoClienteCadastro = this.desconverterTelefonesEnderecoEntrega(enderecoEntregaDtoClienteCadastro);
 
     this.componenteCep.cepService.buscarCep(src.Cep, null, null, null).toPromise()
       .then((r) => {
         //recebemos um endereço
         const end = r[0];
-        
+
         src.temCidade = end.Cidade == "" || !end.Cidade ? false : true;
       }).catch((r) => {
         // não fazemos nada
@@ -171,42 +170,52 @@ export class ConfirmarEnderecoComponent implements OnInit {
     this.componenteCep.Cep = "";
     this.pessoaEntregaEhPJ = true;
     this.pessoaEntregaEhPF = false;
-    this.enderecoEntregaDtoClienteCadastro.EndEtg_tipo_pessoa = this.constantes.ID_PJ;    
+    this.enderecoEntregaDtoClienteCadastro.EndEtg_tipo_pessoa = this.constantes.ID_PJ;
   }
 
   public converterTelefones(enderecoEntrega: EnderecoEntregaDtoClienteCadastro): EnderecoEntregaDtoClienteCadastro {
 
-    let s = FormatarTelefone.SepararTelefone(enderecoEntrega.EndEtg_tel_res);
-    enderecoEntrega.EndEtg_tel_res = s.Telefone;
-    enderecoEntrega.EndEtg_ddd_res = s.Ddd;
+    let s: TelefoneSeparado = new TelefoneSeparado();
 
-    s = FormatarTelefone.SepararTelefone(enderecoEntrega.EndEtg_tel_cel);
-    enderecoEntrega.EndEtg_tel_cel = s.Telefone;
-    enderecoEntrega.EndEtg_ddd_cel = s.Ddd;
+    if (!!enderecoEntrega.EndEtg_tel_res) {
+      s = FormatarTelefone.SepararTelefone(enderecoEntrega.EndEtg_tel_res);
+      enderecoEntrega.EndEtg_tel_res = s.Telefone;
+      enderecoEntrega.EndEtg_ddd_res = s.Ddd;
+    }
 
-    s = FormatarTelefone.SepararTelefone(enderecoEntrega.EndEtg_tel_com);
-    enderecoEntrega.EndEtg_tel_com = s.Telefone;
-    enderecoEntrega.EndEtg_ddd_com = s.Ddd;
+    if (!!enderecoEntrega.EndEtg_tel_cel) {
+      s = FormatarTelefone.SepararTelefone(enderecoEntrega.EndEtg_tel_cel);
+      enderecoEntrega.EndEtg_tel_cel = s.Telefone;
+      enderecoEntrega.EndEtg_ddd_cel = s.Ddd;
+    }
 
-    s = FormatarTelefone.SepararTelefone(enderecoEntrega.EndEtg_tel_com_2);
-    enderecoEntrega.EndEtg_tel_com_2 = s.Telefone;
-    enderecoEntrega.EndEtg_ddd_com_2 = s.Ddd;
+    if (!!enderecoEntrega.EndEtg_tel_com) {
+      s = FormatarTelefone.SepararTelefone(enderecoEntrega.EndEtg_tel_com);
+      enderecoEntrega.EndEtg_tel_com = s.Telefone;
+      enderecoEntrega.EndEtg_ddd_com = s.Ddd;
+    }
+
+    if (!!enderecoEntrega.EndEtg_tel_com_2) {
+      s = FormatarTelefone.SepararTelefone(enderecoEntrega.EndEtg_tel_com_2);
+      enderecoEntrega.EndEtg_tel_com_2 = s.Telefone;
+      enderecoEntrega.EndEtg_ddd_com_2 = s.Ddd;
+    }
 
     return enderecoEntrega;
   }
 
   public desconverterTelefonesEnderecoEntrega(enderecoEntrega: EnderecoEntregaDtoClienteCadastro): EnderecoEntregaDtoClienteCadastro {
 
-    if(enderecoEntrega.EndEtg_cod_justificativa != undefined){
+    if (enderecoEntrega.EndEtg_cod_justificativa != undefined) {
       enderecoEntrega.EndEtg_tel_res = enderecoEntrega.EndEtg_ddd_res + enderecoEntrega.EndEtg_tel_res;
 
       enderecoEntrega.EndEtg_tel_cel = enderecoEntrega.EndEtg_ddd_cel + enderecoEntrega.EndEtg_tel_cel;
-  
+
       enderecoEntrega.EndEtg_tel_com = enderecoEntrega.EndEtg_ddd_com + enderecoEntrega.EndEtg_tel_com;
-  
+
       enderecoEntrega.EndEtg_tel_com_2 = enderecoEntrega.EndEtg_ddd_com_2 + enderecoEntrega.EndEtg_tel_com_2;
     }
-    
+
 
     return enderecoEntrega;
   }

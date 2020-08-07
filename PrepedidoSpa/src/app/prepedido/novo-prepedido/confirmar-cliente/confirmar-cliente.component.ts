@@ -43,7 +43,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
   }
 
   ngOnInit() {
-    debugger;
+    
     this.endCadastralClientePrepedidoDto = new EnderecoCadastralClientePrepedidoDto();
     this.dadosClienteCadastroDto = null;
     if (this.router.getCurrentNavigation()) {
@@ -321,21 +321,35 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
       //vamos verificar se o cliente é PF, pois temos um caso que se cliente for PF e ser Produtor que seja contribuinte do ICMS
       //e tenha IE, irmeos verificar se o Estado que foi inserido no Dados Castral esta diferente do que esta no cadastro, pois 
       //terá uma inconsistência e para não mostrar essa msg apenas quando for salvar o Prepedido estamos verificando antes
+      // if (this.dadosClienteCadastroDto.Tipo == this.constantes.ID_PF) {
+      //   if (this.dadosClienteCadastroDto.Contribuinte_Icms_Status == this.constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM) {
+      //     if (this.dadosClienteCadastroDto.Ie != "") {
+      //       if (this.dadosClienteCadastroDto.Uf.trim().toUpperCase() !=
+      //         this.endCadastralClientePrepedidoDto.Endereco_uf.trim().toUpperCase()) {
+      //         this.alertaService.mostrarMensagem("Dados cadastrais: Inscrição estadual inválida pra esse estado (" + this.endCadastralClientePrepedidoDto.Endereco_uf.trim().toUpperCase() + "). " +
+      //           "Caso o cliente esteja em outro estado, entre em contato com o suporte para alterar o cadastro do cliente.");
+      //         return;
+      //       }
+      //     }
+      //   }
+      // }
+debugger;
+      this.endCadastralClientePrepedidoDto = this.clienteCorpo.converterTelefones(this.endCadastralClientePrepedidoDto);
+      validacoes = ValidacoesClienteUtils.validarEnderecoCadastralClientePrepedidoDto(this.endCadastralClientePrepedidoDto);
+
+      if(validacoes.length == 0)
       if (this.dadosClienteCadastroDto.Tipo == this.constantes.ID_PF) {
         if (this.dadosClienteCadastroDto.Contribuinte_Icms_Status == this.constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM) {
           if (this.dadosClienteCadastroDto.Ie != "") {
             if (this.dadosClienteCadastroDto.Uf.trim().toUpperCase() !=
               this.endCadastralClientePrepedidoDto.Endereco_uf.trim().toUpperCase()) {
-              this.alertaService.mostrarMensagem("Dados cadastrais: Inscrição estadual inválida pra esse estado (" + this.endCadastralClientePrepedidoDto.Endereco_uf.trim().toUpperCase() + "). " +
+              validacoes = validacoes.concat("Dados cadastrais: Inscrição estadual inválida pra esse estado (" + this.endCadastralClientePrepedidoDto.Endereco_uf.trim().toUpperCase() + "). " +
                 "Caso o cliente esteja em outro estado, entre em contato com o suporte para alterar o cadastro do cliente.");
-              return;
+              
             }
           }
         }
       }
-
-      this.endCadastralClientePrepedidoDto = this.clienteCorpo.converterTelefones(this.endCadastralClientePrepedidoDto);
-      validacoes = ValidacoesClienteUtils.validarEnderecoCadastralClientePrepedidoDto(this.endCadastralClientePrepedidoDto);
 
       if (this.enderecoEntregaDtoClienteCadastro.OutroEndereco) {
         this.enderecoEntregaDtoClienteCadastro = this.confirmarEndereco.converterTelefones(this.enderecoEntregaDtoClienteCadastro);
