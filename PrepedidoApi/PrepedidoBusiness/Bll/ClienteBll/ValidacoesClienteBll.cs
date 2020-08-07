@@ -101,8 +101,11 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     //vamos verificar o IE dos clientes
                     if (dadosCliente.Tipo == Constantes.ID_PJ ||
                         dadosCliente.Tipo == Constantes.ID_PF)
-                        retorno = await ValidarIE_Cliente(dadosCliente, lstErros, contextoProvider, 
+                        retorno = ValidarIE_Cliente(dadosCliente, lstErros, contextoProvider,
                             bancoNFeMunicipio, flagMsg_IE_CadastroPrepedido);
+
+                    await ConsisteMunicipioIBGE(dadosCliente.Cidade, dadosCliente.Uf, lstErros, contextoProvider,
+                        bancoNFeMunicipio, true);
                 }
                 else
                 {
@@ -198,9 +201,11 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
             if (dadosCliente.Tipo == Constantes.ID_PF)
             {
-                if (!string.IsNullOrEmpty(dadosCliente.TelComercial2) || !string.IsNullOrEmpty(dadosCliente.DddComercial2))
+                if (!string.IsNullOrEmpty(dadosCliente.TelComercial2) ||
+                    !string.IsNullOrEmpty(dadosCliente.DddComercial2) ||
+                    !string.IsNullOrEmpty(dadosCliente.Ramal2))
                 {
-                    lstErros.Add("Se cliente é tipo PF, não pode ter os campos de Telefone e DDD comercial 2 preenchidos!");
+                    lstErros.Add("Se cliente é tipo PF, não pode ter os campos de Telefone, DDD e ramal comercial 2 preenchidos!");
                     retorno = false;
                 }
             }
@@ -224,7 +229,9 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 retorno = await ValidarTelResidencial(dadosCliente, cliente, lstErros, contextoProvider);
             }
             //COMERCIA
-            if (!string.IsNullOrEmpty(dadosCliente.TelComercial) || !string.IsNullOrEmpty(dadosCliente.DddComercial))
+            if (!string.IsNullOrEmpty(dadosCliente.TelComercial) ||
+                !string.IsNullOrEmpty(dadosCliente.DddComercial) ||
+                !string.IsNullOrEmpty(dadosCliente.Ramal))
             {
                 retorno = await ValidarTelCom(dadosCliente, cliente, lstErros, contextoProvider);
             }
@@ -582,13 +589,17 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             }
 
             //com
-            if (!string.IsNullOrEmpty(dadosCliente.TelComercial) || !string.IsNullOrEmpty(dadosCliente.DddComercial))
+            if (!string.IsNullOrEmpty(dadosCliente.TelComercial) ||
+                !string.IsNullOrEmpty(dadosCliente.DddComercial) ||
+                !string.IsNullOrEmpty(dadosCliente.Ramal))
             {
                 retorno = await ValidarTelCom(dadosCliente, cliente, lstErros, contextoProvider);
             }
 
             //com 2
-            if (!string.IsNullOrEmpty(dadosCliente.TelComercial2) || !string.IsNullOrEmpty(dadosCliente.DddComercial2))
+            if (!string.IsNullOrEmpty(dadosCliente.TelComercial2) ||
+                !string.IsNullOrEmpty(dadosCliente.DddComercial2) ||
+                !string.IsNullOrEmpty(dadosCliente.Ramal2))
             {
                 retorno = await ValidarTelCom2(dadosCliente, cliente, lstErros, contextoProvider);
             }
@@ -686,7 +697,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return retorno;
         }
 
-        private static async Task<bool> ValidarIE_Cliente(DadosClienteCadastroDto dadosCliente, List<string> lstErros,
+        private static bool ValidarIE_Cliente(DadosClienteCadastroDto dadosCliente, List<string> lstErros,
             ContextoBdProvider contextoProvider, IBancoNFeMunicipio bancoNFeMunicipio, bool flagMsg_IE_CadastroPrepedido)
         {
             bool retorno = true;
@@ -714,6 +725,11 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     if (dadosCliente.Contribuinte_Icms_Status != (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL)
                     {
                         lstErros.Add("Se cliente é não Produtor Rural, contribuinte do ICMS tem que ter valor inicial!");
+                    }
+                    // causa erros nos testes essa validação
+                    if (!string.IsNullOrEmpty(dadosCliente.Ie))
+                    {
+                        lstErros.Add("Se o cliente é não Produtor Rural, o IE não deve ser preenchido!");
                     }
                 }
 
@@ -826,12 +842,9 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     lstErros.Add("Se cliente é contribuinte do ICMS, " +
                         "não pode ter o valor ISENTO no campo de Inscrição Estadual!");
 
-                if (lstErros.Count == 0)
-                    VerificarInscricaoEstadualValida(dadosCliente.Ie, dadosCliente.Uf, lstErros, flagMsg_IE_CadastroPrepedido);
+                //if (lstErros.Count == 0)
+                VerificarInscricaoEstadualValida(dadosCliente.Ie, dadosCliente.Uf, lstErros, flagMsg_IE_CadastroPrepedido);
             }
-
-            await ConsisteMunicipioIBGE(dadosCliente.Cidade, dadosCliente.Uf, lstErros, contextoProvider,
-                bancoNFeMunicipio, flagMsg_IE_CadastroPrepedido);
 
             return retorno;
         }
@@ -914,7 +927,6 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     });
                 }
             }
-
 
             return retorno;
         }
@@ -1004,8 +1016,9 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                         listaErros.Add(MensagensErro.Preencha_a_IE_Inscricao_Estadual);
                         return;
                     }
-                    else {
-                        listaErros.Add("Inscrição Estadual inválida pra esse estado (" + uf.ToUpper() + "). " + 
+                    else
+                    {
+                        listaErros.Add("Inscrição Estadual inválida pra esse estado (" + uf.ToUpper() + "). " +
                             "Caso o cliente esteja em outro estado, entre em contato com o suporte " +
                             "para alterar o cadastro do cliente");
 
@@ -1099,6 +1112,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                             if (Util.RemoverAcentuacao(c.Cidade.ToUpper()) != Util.RemoverAcentuacao(cepCliente.Cidade.ToUpper()))
                             {
                                 lstErros.Add("Cidade não confere");
+
                             }
                         }
                     }

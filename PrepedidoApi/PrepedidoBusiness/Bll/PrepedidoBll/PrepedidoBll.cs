@@ -152,7 +152,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             List<PrepedidosCadastradosDtoPrepedido> lstdto = new List<PrepedidosCadastradosDtoPrepedido>();
             //COLOCAR O STATUS DO PEDIDO PARA PREPEDIDOS QUE VIRARAM PEDIDOS
             if (tipoBusca != TipoBuscaPrepedido.Excluidos)
-            {               
+            {
 
                 lstdto = lst.Select(r => new PrepedidosCadastradosDtoPrepedido
                 {
@@ -512,7 +512,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 Observacao_Filiacao = cli.Filiacao,
                 Nascimento = cli.Dt_Nasc,
                 Sexo = cli.Sexo,
-                Nome = cli.Nome,
+                Nome = orcamento.Endereco_nome,
                 ProdutorRural = orcamento.Endereco_produtor_rural_status,
                 DddResidencial = orcamento.Endereco_ddd_res,
                 TelefoneResidencial = orcamento.Endereco_tel_res,
@@ -673,24 +673,29 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
 
             if (string.IsNullOrEmpty(prePedido.DadosCliente.Id))
             {
-                var cliente = await clienteBll.BuscarCliente(
-                    prePedido.EnderecoCadastroClientePrepedido.Endereco_cnpj_cpf, tOrcamentista.Apelido.ToUpper());
-
-                if (cliente != null)
-                {
-                    if (cliente.DadosCliente.Tipo == Constantes.ID_PF)
-                    {
-                        if (cliente.DadosCliente.Nome.ToUpper() != prePedido.DadosCliente.Nome.ToUpper())
-                        {
-                            lstErros.Add("Nome do cliente diferente do nome cadastrado!");
-                        }
-                    }
-
-                    prePedido.DadosCliente.Id = cliente.DadosCliente.Id;
-                    prePedido.DadosCliente.Sexo = cliente.DadosCliente.Sexo;
-                    prePedido.DadosCliente.Nascimento = cliente.DadosCliente.Nascimento;
-                }
+                lstErros.Add("Id do cliente não informado.");
             }
+
+            //verificamos se tem ID para saber que o cliente existe
+            var cliente = await clienteBll.BuscarCliente(
+                prePedido.EnderecoCadastroClientePrepedido.Endereco_cnpj_cpf, tOrcamentista.Apelido.ToUpper());
+
+            if (cliente != null)
+            {
+                if (cliente.DadosCliente.Tipo == Constantes.ID_PF)
+                {
+                    if (prePedido.EnderecoCadastroClientePrepedido.Endereco_nome.ToUpper() !=
+                        cliente.DadosCliente.Nome.ToUpper())
+                    {
+                        lstErros.Add("Nome do cliente diferente do nome cadastrado!");
+                    }
+                }
+
+                prePedido.DadosCliente.Id = cliente.DadosCliente.Id;
+                prePedido.DadosCliente.Sexo = cliente.DadosCliente.Sexo;
+                prePedido.DadosCliente.Nascimento = cliente.DadosCliente.Nascimento;
+            }
+
 
             //antes de validar vamos passar o EnderecoCadastral para dadoscliente
             prePedido.DadosCliente =
@@ -700,14 +705,11 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
 
             List<ListaBancoDto> lstBanco = (await clienteBll.ListarBancosCombo()).ToList();
             //vamos validar os dados do cliente
-            //vamos passar uma flag para mostrar a msg 
-            //"Inscrição estadual inválida pra esse estado. Caso o cliente esteja em outro estado,
-            //entre em contato com o suporte para alterar o cadastro do cliente.
             await ValidacoesClienteBll.ValidarDadosCliente(prePedido.DadosCliente, null, null,
                 lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, true);
 
-            if (lstErros.Count > 0)
-                return lstErros;
+            //if (lstErros.Count > 0)
+            //    return lstErros;
 
             //verifica se o prepedio já foi gravado
             if (verificarPrepedidoRepetido)
@@ -757,8 +759,8 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                         c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas,
                         prePedido.DadosCliente.Loja, lstErros, perc_limite_RA_sem_desagio, limiteArredondamento);
 
-                    if (lstErros.Count > 0)
-                        return lstErros;
+                    //if (lstErros.Count > 0)
+                    //    return lstErros;
 
                     if (Util.ValidarTipoCustoFinanceiroFornecedor(lstErros, c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas))
                     {
@@ -1739,7 +1741,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                     item.Abaixo_Min_Autorizador = "";//sempre esta vazio no modulo orcamento
                     item.Abaixo_Min_Superv_Autorizador = "";//sempre esta vazio no modulo orcamento
                     item.Sequencia = (short?)RenumeraComBase1(indiceItem);
-                    item.Subgrupo = !string.IsNullOrEmpty(prod.Tproduto.Subgrupo)? prod.Tproduto.Subgrupo: "";
+                    item.Subgrupo = !string.IsNullOrEmpty(prod.Tproduto.Subgrupo) ? prod.Tproduto.Subgrupo : "";
 
                     indiceItem++;
                 }
@@ -1811,7 +1813,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             {
                 foreach (PrepedidoProdutoDtoPrepedido p in prepedido.ListaProdutos)
                 {
-                    if(percCustoFinanFornec.Fabricante == p.Fabricante)
+                    if (percCustoFinanFornec.Fabricante == p.Fabricante)
                     {
                         TorcamentoItem item = new TorcamentoItem
                         {
@@ -1827,7 +1829,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                             CustoFinancFornecCoeficiente = percCustoFinanFornec.Coeficiente
                         };
                         lstOrcamentoItem.Add(item);
-                    }                    
+                    }
                 }
             }
 

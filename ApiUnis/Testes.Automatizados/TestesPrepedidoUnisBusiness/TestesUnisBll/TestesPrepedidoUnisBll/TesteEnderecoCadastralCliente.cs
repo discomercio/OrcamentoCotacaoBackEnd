@@ -46,5 +46,12 @@ public    class TesteEnderecoCadastralCliente : TestesPrepedidoUnisBll
         }
         //todo: terminar o teste do EnderecoCadastralCliente, mas reaproveitar o código de teste
 
+        
+        [Fact]
+        public void TesteConfrontarNomeClientePF()
+        {
+            Teste(c => c.EnderecoCadastralCliente.Endereco_nome = "Gabriel Teste",
+                "Nome do cliente diferente do nome cadastrado!");
+        }
     }
 }

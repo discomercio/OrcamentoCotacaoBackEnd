@@ -72,6 +72,7 @@ export class DetalhesPrepedidoComponent extends TelaDesktopBaseComponent impleme
   //verifica se vamos mostrar um pedido ou um prepedio
   calcularEmPrepedidos() {
     //agora acessa o dado que vamos mostrar
+    
     this.numeroPrepedido = this.activatedRoute.snapshot.params.numeroPrepedido;
     this.numeroPedido = this.activatedRoute.snapshot.params.numeroPedido;
     if (!!this.numeroPrepedido) {
@@ -81,6 +82,7 @@ export class DetalhesPrepedidoComponent extends TelaDesktopBaseComponent impleme
       this.emPrepedidos = false;
     }
   }
+  
   ngOnInit() {
     this.testeURL = localStorage.getItem('ultima_url');
     this.calcularEmPrepedidos()
@@ -93,7 +95,7 @@ export class DetalhesPrepedidoComponent extends TelaDesktopBaseComponent impleme
       return;
     }
 
-
+     
     //para mostrar a espera enquanto carrega (senão, ele mostra os dados do pedido anterior)
     this.prepedido = null;
     this.pedido = null;
@@ -101,6 +103,7 @@ export class DetalhesPrepedidoComponent extends TelaDesktopBaseComponent impleme
     this.jaDeuErro = false;
     //agora acessa o dado que vamos mostrar
     if (this.emPrepedidos) {
+     
       this.prepedidoBuscarService.buscar(this.numeroPrepedido).subscribe({
         next: (r) => {
           if (r == null) {

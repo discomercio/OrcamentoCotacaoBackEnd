@@ -173,7 +173,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             {
                 c.DadosCliente.ProdutorRural = (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM;
                 c.DadosCliente.Contribuinte_Icms_Status = (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO;
-                c.DadosCliente.Ie = InicializarClienteDados.ClienteNaoCadastradoPF().DadosCliente.Ie;
+                c.DadosCliente.Ie = "11112222";
             },
                 "Se o Contribuinte ICMS é isento, o campo IE deve ser vazio!",
                 TipoPessoa.PF);
@@ -213,6 +213,14 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
                 c.DadosCliente.Ie = "11112222";
             },
                 PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual,
+                TipoPessoa.PF);
+
+            
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.Ie = "11112222";
+            },
+                "Se o cliente é não Produtor Rural, o IE não deve ser preenchido!",
                 TipoPessoa.PF);
 
         }
@@ -391,7 +399,7 @@ alerta="TELEFONE CELULAR (" & s_ddd_cel & ") " & s_tel_cel & " JÁ ESTÁ SENDO U
                 c.DadosCliente.Ramal = "";
             },
                 "PREENCHA PELO MENOS UM TELEFONE (RESIDENCIAL, COMERCIAL OU CELULAR).",
-                //"PREENCHA O TELEFONE COMERCIAL.",
+                    //"PREENCHA O TELEFONE COMERCIAL.",
                     TipoPessoa.PF);
 
             testesClienteUnisBll.TestarCadastro(c =>
@@ -422,7 +430,7 @@ alerta="TELEFONE CELULAR (" & s_ddd_cel & ") " & s_tel_cel & " JÁ ESTÁ SENDO U
                 c.DadosCliente.TelComercial2 = "12345678";
                 c.DadosCliente.Ramal = "";
             },
-                "Se cliente é tipo PF, não pode ter os campos de Telefone e DDD comercial 2 preenchidos!",
+                "Se cliente é tipo PF, não pode ter os campos de Telefone, DDD e ramal comercial 2 preenchidos!",
                     TipoPessoa.PF);
 
             testesClienteUnisBll.TestarCadastro(c =>
@@ -447,7 +455,7 @@ alerta="TELEFONE CELULAR (" & s_ddd_cel & ") " & s_tel_cel & " JÁ ESTÁ SENDO U
                 c.DadosCliente.Ramal2 = "12";
                 c.DadosCliente.TelefoneResidencial = "12345678";
             },
-            "Se cliente é tipo PF, não pode ter os campos de Telefone e DDD comercial 2 preenchidos!",
+            "Se cliente é tipo PF, não pode ter os campos de Telefone, DDD e ramal comercial 2 preenchidos!",
                     TipoPessoa.PF);
         }
 

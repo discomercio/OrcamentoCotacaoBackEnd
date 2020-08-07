@@ -139,7 +139,8 @@ export class ValidacoesClienteUtils {
 
         let ehPf: boolean = dadosClienteCadastroDto.Tipo == this.constantes.ID_PF ? true : false;
 
-        validacoes = validacoes.concat(this.validarTelefones(dadosClienteCadastroDto, ehPf, false));
+        if (tipoCliente == this.constantes.ID_PJ)
+            validacoes = validacoes.concat(this.validarTelefones(dadosClienteCadastroDto, ehPf, false));
 
         let msgErrosEndEtg: string[] = new Array();
         if (validacoes.length > 0) {
@@ -320,7 +321,7 @@ export class ValidacoesClienteUtils {
         //     ret.push('DDD Residencial inválido.')
         // }
 
-        
+
         if (dadosClienteCadastroDto.Celular != "" &&
             dadosClienteCadastroDto.DddCelular == "") {
             ret.push('Preencha o DDD do celular.');
@@ -339,7 +340,7 @@ export class ValidacoesClienteUtils {
             ret.push('Preencha o telefone comercial!');
         }
 
-        
+
         if (dadosClienteCadastroDto.TelComercial == "" &&
             dadosClienteCadastroDto.Ramal != "") {
             ret.push("Ramal comercial preenchido sem telefone!");
@@ -407,12 +408,12 @@ export class ValidacoesClienteUtils {
             dadosClienteCadastroDto.DddComercial2.trim() == "") {
             ret.push('Preencha o DDD comercial 2 !');
         }
-        
+
         if (dadosClienteCadastroDto.TelComercial == "" &&
             dadosClienteCadastroDto.Ramal != "") {
             ret.push("Ramal comercial preenchido sem telefone!");
         }
-       
+
         if (dadosClienteCadastroDto.TelComercial2 == "" &&
             dadosClienteCadastroDto.Ramal2 != "") {
             ret.push("Ramal comercial 2 preenchido sem telefone!");

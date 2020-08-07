@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { TelaDesktopBaseComponent } from 'src/app/servicos/telaDesktop/telaDesktopBaseComponent';
 import { TelaDesktopService } from 'src/app/servicos/telaDesktop/telaDesktop.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,6 +11,11 @@ import { ImpressaoService } from 'src/app/utils/impressao.service';
 import { FormatarEndereco } from 'src/app/utils/formatarEndereco';
 import { ClienteCadastroUtils } from 'src/app/utils/ClienteCadastroUtils';
 import { EnderecoEntregaDtoClienteCadastro } from 'src/app/dto/ClienteCadastro/EnderecoEntregaDTOClienteCadastro';
+import { EnderecoCadastralClientePrepedidoDto } from 'src/app/dto/Prepedido/EnderecoCadastralClientePrepedidoDto';
+import { ClienteCorpoComponent } from 'src/app/cliente/cliente-corpo/cliente-corpo.component';
+import { PrePedidoDto } from 'src/app/dto/Prepedido/DetalhesPrepedido/PrePedidoDto';
+import { NovoPrepedidoDadosService } from '../../novo-prepedido/novo-prepedido-dados.service';
+import { DetalhesDtoPrepedido } from 'src/app/dto/Prepedido/DetalhesPrepedido/DetalhesDtoPrepedido';
 
 @Component({
   selector: 'app-prepedido-desktop',
@@ -26,7 +31,8 @@ export class PrepedidoDesktopComponent extends TelaDesktopBaseComponent implemen
     private readonly router: Router,
     public readonly prepedidoBuscarService: PrepedidoBuscarService,
     public readonly detalhesPrepedido: DetalhesPrepedidoComponent,
-    public readonly impressaoService: ImpressaoService
+    public readonly impressaoService: ImpressaoService,
+    private readonly novoPrepedidoDadosService: NovoPrepedidoDadosService
   ) { super(telaDesktopService) }
 
   moedaUtils = new MoedaUtils();
@@ -43,7 +49,7 @@ export class PrepedidoDesktopComponent extends TelaDesktopBaseComponent implemen
 
   public enderecoEntregaFormatado: string;
   public qtdeLinhaEndereco: number;
-  montarEnderecoEntrega(enderecoEntregaDto: EnderecoEntregaDtoClienteCadastro):void {
+  montarEnderecoEntrega(enderecoEntregaDto: EnderecoEntregaDtoClienteCadastro): void {
     if (enderecoEntregaDto.OutroEndereco) {
       let retorno: string = "";
       let sEndereco: string;
@@ -141,7 +147,14 @@ export class PrepedidoDesktopComponent extends TelaDesktopBaseComponent implemen
     return this.prepedidoDto.DetalhesPrepedido.EntregaImediata;
   }
 
+
   editar() {
+    debugger;
+    this.prepedidoDto.EnderecoCadastroClientePrepedido = new EnderecoCadastralClientePrepedidoDto();
+    this.prepedidoDto.EnderecoEntrega = new EnderecoEntregaDtoClienteCadastro();
+    this.novoPrepedidoDadosService.criarNovo(this.prepedidoDto.DadosCliente,
+      this.prepedidoDto.EnderecoEntrega, this.prepedidoDto.EnderecoCadastroClientePrepedido);
+
     this.router.navigate(['/novo-prepedido/confirmar-cliente',
       this.stringUtils.retorna_so_digitos(this.prepedidoDto.DadosCliente.Cnpj_Cpf)]);
   }
