@@ -105,6 +105,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
         public void Endereco_endereco_Errado()
         {
             inicializarBanco.TclientesApagar();
+            //endereço nã exigimos que seja igual ao do CEP
             TestarCadastro(c => c.DadosCliente.Endereco = "nao existe no cep",
                 "Endereço não confere!", TipoPessoa.PJ, false);
         }
@@ -129,6 +130,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
         public void Endereco_Bairro_Errado()
         {
             inicializarBanco.TclientesApagar();
+            //bairro nã exigimos que seja igual ao do CEP
             TestarCadastro(c => c.DadosCliente.Bairro = "bairro que não existe",
                 "Bairro não confere!", TipoPessoa.PJ, false);
         }

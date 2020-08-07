@@ -308,7 +308,7 @@ alerta="TELEFONE CELULAR (" & s_ddd_cel & ") " & s_tel_cel & " JÁ ESTÁ SENDO U
             listaCpfs.Add("01986026000");
             listaCpfs.Add("67405762700");
 
-            for (int i = 0; i < Constantes.NUM_MAXIMO_TELEFONES_REPETIDOS_CAD_CLIENTES+1; i++)
+            for (int i = 0; i < Constantes.NUM_MAXIMO_TELEFONES_REPETIDOS_CAD_CLIENTES + 1; i++)
             {
                 //este é o que deve dar certo
                 ClienteCadastroUnisDto clienteDto = InicializarClienteDados.ClienteNaoCadastradoPF();
@@ -360,8 +360,29 @@ alerta="TELEFONE CELULAR (" & s_ddd_cel & ") " & s_tel_cel & " JÁ ESTÁ SENDO U
                 c.DadosCliente.DddComercial = "12";
                 c.DadosCliente.TelComercial = "";
                 c.DadosCliente.Ramal = "";
+                c.DadosCliente.DddResidencial = "12";
+                c.DadosCliente.TelefoneResidencial = "12345678";
             },
                 "PREENCHA O TELEFONE COMERCIAL.",
+                    TipoPessoa.PF);
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.DddComercial = "12";
+                c.DadosCliente.TelComercial = "12";
+                c.DadosCliente.Ramal = "";
+            },
+                "TELEFONE COMERCIAL INVÁLIDO.",
+                    TipoPessoa.PF);
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.DddComercial = "12";
+                c.DadosCliente.TelComercial = "";
+                c.DadosCliente.Ramal = "";
+            },
+                "PREENCHA PELO MENOS UM TELEFONE (RESIDENCIAL, COMERCIAL OU CELULAR).",
+                //"PREENCHA O TELEFONE COMERCIAL.",
                     TipoPessoa.PF);
 
             testesClienteUnisBll.TestarCadastro(c =>
