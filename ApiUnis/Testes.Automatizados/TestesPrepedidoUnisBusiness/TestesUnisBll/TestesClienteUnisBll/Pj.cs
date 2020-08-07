@@ -102,7 +102,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
                 c.DadosCliente.TelComercial = "";
                 c.DadosCliente.Ramal = "12";
             },
-                "Raamal comercial preenchido sem telefone!",
+                "Ramal comercial preenchido sem telefone!",
                     TipoPessoa.PJ);
         }
 

@@ -52,6 +52,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 InicializarTabela<Tcliente>("Tcliente", db);
                 InicializarTabela<TorcamentistaEindicador>("TorcamentistaEindicador", db);
                 InicializarTabela<Tusuario>("Tusuario", db);
+                InicializarTabela<Tparametro>("Tparametro", db);
                 InicializarTabela<Tperfil>("Tperfil", db);
                 InicializarTabela<TperfilUsuario>("TperfilUsuario", db);
                 db.SaveChanges();
