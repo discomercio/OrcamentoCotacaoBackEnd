@@ -3,9 +3,18 @@ using TechTalk.SpecFlow;
 
 namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
 {
-    [Binding, Scope(Tag = "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido")]
+    [Binding /*, Scope(Tag = "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido") */]
     public class CadastrarPrepedidoVerificarQueExecutouSteps
     {
+        private readonly FeatureContext featureContext;
+        private readonly ScenarioContext scenarioContext;
+
+        public CadastrarPrepedidoVerificarQueExecutouSteps(FeatureContext featureContext, ScenarioContext scenarioContext)
+        {
+            this.featureContext = featureContext;
+            this.scenarioContext = scenarioContext;
+        }
+
         [Then(@"Verificar que executou ""(.*)""")]
         public void ThenVerificarQueExecutou(string especificacao)
         {

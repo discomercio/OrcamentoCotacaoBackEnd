@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiUnis\PrepedidoUnis\CadastrarPrepedido\CadastrarPrepedidoVerificarQueExecutou - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\CaminhoFelizApi.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\CaminhoFelizAsp.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\FluxoCriacaoPedido.feature.cs" />

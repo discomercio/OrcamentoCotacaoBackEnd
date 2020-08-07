@@ -44,3 +44,4 @@ Scenario: Validar CNPJ
 	When Pedido base
 	And  Informo "CPF/CNPJ" = "12.584.718/0001-51"
 	Then Sem erro "CNPJ/CPF inválido!!"
+

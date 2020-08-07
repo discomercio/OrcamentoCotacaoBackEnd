@@ -29,8 +29,8 @@ namespace Especificacao
  * 
  * todo: faltando validar no fluxo do pedido:
  * 
- 	AFAZER: TODO: PAREI começando o loja/PedidoNovoProdCompostoMask.asp
-    depois: loja/PedidoNovo.asp
+ 	AFAZER: TODO: 
+    depois: loja/PedidoNovo.asp linha 712
     depois: loja/PedidoNovoConsiste.asp
     onde salva: PedidoNovoConfirma.asp
     fazer validação dos dados cadastrais na API (no ERP, estas mensagens devem estar separadas pq vamos falar para o usuário editar o cliente antes de continuar)

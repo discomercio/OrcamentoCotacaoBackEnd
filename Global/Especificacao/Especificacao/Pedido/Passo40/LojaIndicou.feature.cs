@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Especificacao.Pedido.Passo30
+namespace Especificacao.Especificacao.Pedido.Passo40
 {
     using TechTalk.SpecFlow;
     using System;
@@ -20,7 +20,7 @@ namespace Especificacao.Especificacao.Pedido.Passo30
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "ignore")]
-    public partial class ValidacaoDoCDFeature : object, Xunit.IClassFixture<ValidacaoDoCDFeature.FixtureData>, System.IDisposable
+    public partial class LojaIndicouFeature : object, Xunit.IClassFixture<LojaIndicouFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -30,10 +30,10 @@ namespace Especificacao.Especificacao.Pedido.Passo30
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "CD.feature"
+#line 1 "LojaIndicou.feature"
 #line hidden
         
-        public ValidacaoDoCDFeature(ValidacaoDoCDFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public LojaIndicouFeature(LojaIndicouFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,7 +42,7 @@ namespace Especificacao.Especificacao.Pedido.Passo30
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Validação do CD", "todo: terminar Validação do CD", ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "LojaIndicou", null, ProgrammingLanguage.CSharp, new string[] {
                         "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -78,20 +78,56 @@ namespace Especificacao.Especificacao.Pedido.Passo30
             testRunner.CollectScenarioErrors();
         }
         
+        public virtual void FeatureBackground()
+        {
+#line 4
+#line hidden
+#line 6
+ testRunner.Given("Limpar tabela \"t_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 8
+ testRunner.And("Novo registro em \"t_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 9
+ testRunner.And("Novo registro \"loja\" = \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 10
+ testRunner.And("Novo registro \"comissao_indicacao\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 11
+ testRunner.And("Gravar registro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 13
+ testRunner.And("Novo registro em \"t_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 14
+ testRunner.And("Novo registro \"loja\" = \"200\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 15
+ testRunner.And("Novo registro \"comissao_indicacao\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 16
+ testRunner.And("Gravar registro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 18
+ testRunner.And("reinicializar banco após teste", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+        }
+        
         void System.IDisposable.Dispose()
         {
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Lista de CDs disponíveis")]
-        [Xunit.TraitAttribute("FeatureTitle", "Validação do CD")]
-        [Xunit.TraitAttribute("Description", "Lista de CDs disponíveis")]
-        public virtual void ListaDeCDsDisponiveis()
+        [Xunit.SkippableFactAttribute(DisplayName="Seomnte pode existir se for vendedor externo")]
+        [Xunit.TraitAttribute("FeatureTitle", "LojaIndicou")]
+        [Xunit.TraitAttribute("Description", "Seomnte pode existir se for vendedor externo")]
+        public virtual void SeomntePodeExistirSeForVendedorExterno()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Lista de CDs disponíveis", null, tagsOfScenario, argumentsOfScenario);
-#line 5
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Seomnte pode existir se for vendedor externo", null, tagsOfScenario, argumentsOfScenario);
+#line 20
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -111,22 +147,46 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 6
-testRunner.Given("afazer todo: terminar de fazer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 4
+this.FeatureBackground();
+#line hidden
+#line 21
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 22
+ testRunner.When("Usuario logado \"vendedor_externo\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 23
+ testRunner.And("Informo \"loja_indicou\" = \"xx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 24
+ testRunner.Then("Erro \"loja_indicou permitidio somente para vendedores externos\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 26
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 27
+ testRunner.When("Usuario logado \"vendedor_externo\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 28
+ testRunner.And("Informo \"loja_indicou\" = \"200\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 29
+ testRunner.Then("Erro \"loja_indicou permitidio somente para vendedores externos\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validar permissão de CD")]
-        [Xunit.TraitAttribute("FeatureTitle", "Validação do CD")]
-        [Xunit.TraitAttribute("Description", "Validar permissão de CD")]
-        public virtual void ValidarPermissaoDeCD()
+        [Xunit.SkippableFactAttribute(DisplayName="Vendedor externo")]
+        [Xunit.TraitAttribute("FeatureTitle", "LojaIndicou")]
+        [Xunit.TraitAttribute("Description", "Vendedor externo")]
+        public virtual void VendedorExterno()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar permissão de CD", null, tagsOfScenario, argumentsOfScenario);
-#line 8
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Vendedor externo", null, tagsOfScenario, argumentsOfScenario);
+#line 31
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -146,31 +206,58 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 9
+#line 4
+this.FeatureBackground();
+#line hidden
+#line 32
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 10
- testRunner.And("Usuário sem permissão OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 33
+ testRunner.When("Usuario logado \"vendedor_externo\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 11
- testRunner.When("Informo \"c_id_nfe_emitente_selecao_manual\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 34
+ testRunner.And("Informo \"loja_indicou\" = \"xx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 12
- testRunner.Then("Erro \"Usuário não tem permissão de especificar o CD", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 35
+ testRunner.Then("Erro \"loja_indicou não existe\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 37
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 38
+ testRunner.When("Usuario logado \"vendedor_externo\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 39
+ testRunner.And("Informo \"loja_indicou\" = \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 40
+ testRunner.Then("Erro \"loja_indicou não existe\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 42
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 43
+ testRunner.When("Usuario logado \"vendedor_externo\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 44
+ testRunner.And("Informo \"loja_indicou\" = \"200\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 45
+ testRunner.Then("Sem erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validar CD escolhido caso manual")]
-        [Xunit.TraitAttribute("FeatureTitle", "Validação do CD")]
-        [Xunit.TraitAttribute("Description", "Validar CD escolhido caso manual")]
-        public virtual void ValidarCDEscolhidoCasoManual()
+        [Xunit.SkippableFactAttribute(DisplayName="Vendedor externo sem loja")]
+        [Xunit.TraitAttribute("FeatureTitle", "LojaIndicou")]
+        [Xunit.TraitAttribute("Description", "Vendedor externo sem loja")]
+        public virtual void VendedorExternoSemLoja()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar CD escolhido caso manual", null, tagsOfScenario, argumentsOfScenario);
-#line 14
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Vendedor externo sem loja", null, tagsOfScenario, argumentsOfScenario);
+#line 47
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -190,17 +277,20 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 15
+#line 4
+this.FeatureBackground();
+#line hidden
+#line 48
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 16
- testRunner.And("Usuário com permissão OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 49
+ testRunner.When("Usuario logado \"vendedor_externo\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 17
- testRunner.When("Informo \"c_id_nfe_emitente_selecao_manual\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 50
+ testRunner.And("Informo \"loja_indicou\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 18
- testRunner.Then("Erro \"Usuário não tem permissão de especificar o CD", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 51
+ testRunner.Then("Sem erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -213,12 +303,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                ValidacaoDoCDFeature.FeatureSetup();
+                LojaIndicouFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                ValidacaoDoCDFeature.FeatureTearDown();
+                LojaIndicouFeature.FeatureTearDown();
             }
         }
     }

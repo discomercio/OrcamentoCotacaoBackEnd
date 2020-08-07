@@ -360,6 +360,15 @@ alerta="TELEFONE CELULAR (" & s_ddd_cel & ") " & s_tel_cel & " JÁ ESTÁ SENDO U
                 c.DadosCliente.DddComercial = "12";
                 c.DadosCliente.TelComercial = "";
                 c.DadosCliente.Ramal = "";
+            },
+                "PREENCHA PELO MENOS UM TELEFONE (RESIDENCIAL, COMERCIAL OU CELULAR).",
+                    TipoPessoa.PF);
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.DddComercial = "12";
+                c.DadosCliente.TelComercial = "";
+                c.DadosCliente.Ramal = "";
                 c.DadosCliente.DddResidencial = "12";
                 c.DadosCliente.TelefoneResidencial = "12345678";
             },

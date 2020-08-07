@@ -3,7 +3,7 @@
 Feature: PrepedidoEnderecoEntregaVerificarQueExecutou - VerificarQueExecutou
 A descrição completa está em Especificacao\Pedido\Passo20\EnderecoEntrega
 Precisamos verificar que executou.
-
+afazer todo: vamos mudar o esquema de VerificarQueExecutou
 
 Scenario: VerificarQueExecutou
 	Then Prepedido\PrepedidoEnderecoEntregaVerificarQueExecutou EnderecoEntrega

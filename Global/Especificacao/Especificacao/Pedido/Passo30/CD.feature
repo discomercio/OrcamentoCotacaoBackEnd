@@ -3,7 +3,7 @@ Feature: Validação do CD
 todo: terminar Validação do CD
 
 Scenario: Lista de CDs disponíveis
-	afazer todo: terminar de fazer
+Given afazer todo: terminar de fazer
 
 Scenario: Validar permissão de CD
 	Given Pedido base

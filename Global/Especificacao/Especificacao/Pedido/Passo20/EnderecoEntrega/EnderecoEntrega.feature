@@ -92,3 +92,4 @@ Scenario: EndEtg_cep errado
 Scenario: EndEtg_cidade errado
 	When Informo "EndEtg_cidade" = "12345678"
 	Then Erro "EndEtg_cidade não existe (acertar a mensagem)"
+

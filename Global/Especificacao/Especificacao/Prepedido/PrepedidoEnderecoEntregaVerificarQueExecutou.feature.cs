@@ -45,7 +45,8 @@ namespace Especificacao.Especificacao.Prepedido
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "PrepedidoEnderecoEntregaVerificarQueExecutou - VerificarQueExecutou", "A descrição completa está em Especificacao\\Pedido\\Passo20\\EnderecoEntrega\r\nPrecis" +
-                    "amos verificar que executou.", ProgrammingLanguage.CSharp, new string[] {
+                    "amos verificar que executou.\r\nafazer todo: vamos mudar o esquema de VerificarQue" +
+                    "Executou", ProgrammingLanguage.CSharp, new string[] {
                         "Especificacao/Prepedido",
                         "ignore"});
             testRunner.OnFeatureStart(featureInfo);

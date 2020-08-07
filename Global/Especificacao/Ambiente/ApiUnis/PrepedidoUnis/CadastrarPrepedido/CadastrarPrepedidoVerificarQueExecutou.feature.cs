@@ -86,14 +86,14 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Verificar que executou")]
+        [Xunit.SkippableFactAttribute(DisplayName="Lista de verificações feitas")]
         [Xunit.TraitAttribute("FeatureTitle", "CadastrarPrepedidoVerificarQueExecutou")]
-        [Xunit.TraitAttribute("Description", "Verificar que executou")]
-        public virtual void VerificarQueExecutou()
+        [Xunit.TraitAttribute("Description", "Lista de verificações feitas")]
+        public virtual void ListaDeVerificacoesFeitas()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verificar que executou", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Lista de verificações feitas", null, tagsOfScenario, argumentsOfScenario);
 #line 6
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
