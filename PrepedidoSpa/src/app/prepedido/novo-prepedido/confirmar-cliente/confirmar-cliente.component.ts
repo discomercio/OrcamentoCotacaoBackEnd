@@ -43,7 +43,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
   }
 
   ngOnInit() {
-    
+
     this.endCadastralClientePrepedidoDto = new EnderecoCadastralClientePrepedidoDto();
     this.dadosClienteCadastroDto = null;
     if (this.router.getCurrentNavigation()) {
@@ -217,6 +217,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
 
     //estamos removendo os dados antes de salvar
     this.dadosClienteCadastroDto = new ClienteCadastroUtils().validarProdutorRural(this.dadosClienteCadastroDto);
+
     //tudo validado!
     this.buscarClienteService.atualizarCliente(this.dadosClienteCadastroDto).subscribe(
       {
@@ -225,6 +226,14 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
           if (r.length == 0) {
             this.salvarAtivoInicializar();
             if (continuar) {
+
+              //já que os dados de cadastro do cliente foram alterados, vamos alterar de forma automática o cliente PF
+              if(this.dadosClienteCadastroDto.Tipo == this.constantes.ID_PF){
+                this.endCadastralClientePrepedidoDto.Endereco_produtor_rural_status = this.dadosClienteCadastroDto.ProdutorRural;
+                this.endCadastralClientePrepedidoDto.Endereco_contribuinte_icms_status = this.dadosClienteCadastroDto.Contribuinte_Icms_Status;
+                this.endCadastralClientePrepedidoDto.Endereco_ie = this.dadosClienteCadastroDto.Ie;
+              }              
+
               //salvamento automático? então já clicamos no continuar
               this.continuarEfetivo();
               return;
@@ -303,7 +312,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
       this.confirmarEndereco.prepararAvancar();
     }
     //salvamos automaticamente
-
+    debugger;
     if (this.salvarAtivo()) {
       this.salvar(true);
       return;
@@ -333,23 +342,23 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
       //     }
       //   }
       // }
-debugger;
+      debugger;
       this.endCadastralClientePrepedidoDto = this.clienteCorpo.converterTelefones(this.endCadastralClientePrepedidoDto);
       validacoes = ValidacoesClienteUtils.validarEnderecoCadastralClientePrepedidoDto(this.endCadastralClientePrepedidoDto);
 
-      if(validacoes.length == 0)
-      if (this.dadosClienteCadastroDto.Tipo == this.constantes.ID_PF) {
-        if (this.dadosClienteCadastroDto.Contribuinte_Icms_Status == this.constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM) {
-          if (this.dadosClienteCadastroDto.Ie != "") {
-            if (this.dadosClienteCadastroDto.Uf.trim().toUpperCase() !=
-              this.endCadastralClientePrepedidoDto.Endereco_uf.trim().toUpperCase()) {
-              validacoes = validacoes.concat("Dados cadastrais: Inscrição estadual inválida pra esse estado (" + this.endCadastralClientePrepedidoDto.Endereco_uf.trim().toUpperCase() + "). " +
-                "Caso o cliente esteja em outro estado, entre em contato com o suporte para alterar o cadastro do cliente.");
-              
+      if (validacoes.length == 0)
+        if (this.dadosClienteCadastroDto.Tipo == this.constantes.ID_PF) {
+          if (this.dadosClienteCadastroDto.Contribuinte_Icms_Status == this.constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM) {
+            if (this.dadosClienteCadastroDto.Ie != "") {
+              if (this.dadosClienteCadastroDto.Uf.trim().toUpperCase() !=
+                this.endCadastralClientePrepedidoDto.Endereco_uf.trim().toUpperCase()) {
+                validacoes = validacoes.concat("Dados cadastrais: Inscrição estadual inválida pra esse estado (" + this.endCadastralClientePrepedidoDto.Endereco_uf.trim().toUpperCase() + "). " +
+                  "Caso o cliente esteja em outro estado, entre em contato com o suporte para alterar o cadastro do cliente.");
+
+              }
             }
           }
         }
-      }
 
       if (this.enderecoEntregaDtoClienteCadastro.OutroEndereco) {
         this.enderecoEntregaDtoClienteCadastro = this.confirmarEndereco.converterTelefones(this.enderecoEntregaDtoClienteCadastro);

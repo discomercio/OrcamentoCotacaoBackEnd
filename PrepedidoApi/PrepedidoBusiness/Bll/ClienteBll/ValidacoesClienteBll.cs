@@ -506,6 +506,22 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 lstErros.Add("Se cliente é tipo PJ, não pode ser Produtor Rural");
                 retorno = false;
             }
+            //verificar de criar esses testes
+            if (!string.IsNullOrEmpty(dadosCliente.Sexo))
+            {
+                lstErros.Add("Se cliente é tipo PJ, o sexo não deve ser preenchido.");
+                retorno = false;
+            }
+            if (!string.IsNullOrEmpty(dadosCliente.Rg))
+            {
+                lstErros.Add("Se cliente é tipo PJ, o RG não deve ser preenchido.");
+                retorno = false;
+            }
+            if(dadosCliente.Nascimento != null)
+            {
+                lstErros.Add("Se cliente é tipo PJ, o Nascimento não deve ser preenchido.");
+                retorno = false;
+            }
 
 
             if (string.IsNullOrEmpty(dadosCliente.Nome))
