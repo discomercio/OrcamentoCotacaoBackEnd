@@ -11,13 +11,11 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
 {
     public class ValidacoesFormaPagtoBll
     {
-        private readonly ValidacoesPrepedidoBll validacoesPrepedidoBll;
-        private readonly FormaPagtoBll formaPagtoBll;
+        
 
-        public ValidacoesFormaPagtoBll(ValidacoesPrepedidoBll validacoesPrepedidoBll, FormaPagtoBll formaPagtoBll)
+        public ValidacoesFormaPagtoBll()
         {
-            this.validacoesPrepedidoBll = validacoesPrepedidoBll;
-            this.formaPagtoBll = formaPagtoBll;
+            
         }
 
         private void ValidarSiglaFormaPagto(PrePedidoDto prepedido, string c_custoFinancFornecTipoParcelamento,
@@ -35,12 +33,12 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
             }
         }
 
-        public async Task<bool> ValidarFormaPagto(PrePedidoDto prepedido, List<string> lstErros,
-            decimal limiteArredondamento, decimal maxErroArredondamento, string c_custoFinancFornecTipoParcelamento,
-            string orcamentista)
+        public bool ValidarFormaPagto(PrePedidoDto prepedido, List<string> lstErros,
+            decimal limiteArredondamento, decimal maxErroArredondamento, string c_custoFinancFornecTipoParcelamento, 
+            FormaPagtoDto formaPagtoDto)
         {
-            //vamos verificar a forma de pagamento com base no orçamentista que esta sendo enviado
-            FormaPagtoDto formasPagto = await formaPagtoBll.ObterFormaPagto(orcamentista, prepedido.DadosCliente.Tipo);
+            ////vamos verificar a forma de pagamento com base no orçamentista que esta sendo enviado
+            //FormaPagtoDto formasPagto = await formaPagtoBll.ObterFormaPagto(orcamentista, prepedido.DadosCliente.Tipo);
 
             bool retorno = false;
 
@@ -53,38 +51,38 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
 
             if (prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_A_VISTA)
             {
-                if (formasPagto.ListaAvista?.Count > 0)
+                if (formaPagtoDto.ListaAvista?.Count > 0)
                     ValidarFormaPagtoAVista(prepedido, lstErros, limiteArredondamento);
                 else lstErros.Add(msgNegarFormaPagto);
             }
 
             else if (prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELA_UNICA)
             {
-                if (formasPagto.ListaParcUnica?.Count > 0)
+                if (formaPagtoDto.ListaParcUnica?.Count > 0)
                     ValidarFormaPagtoParcelaUnica(prepedido, lstErros, maxErroArredondamento);
                 else lstErros.Add(msgNegarFormaPagto);
             }
             else if (prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO)
             {
-                if (formasPagto.ParcCartaoInternet)
+                if (formaPagtoDto.ParcCartaoInternet)
                     ValidarFormaPagtoParceladoCartao(prepedido, lstErros, maxErroArredondamento);
                 else lstErros.Add(msgNegarFormaPagto);
             }
             else if (prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA)
             {
-                if (formasPagto.ParcCartaoMaquineta)
+                if (formaPagtoDto.ParcCartaoMaquineta)
                     ValidarFormaPagtoParceladoCartaoMaquineta(prepedido, lstErros, maxErroArredondamento);
                 else lstErros.Add(msgNegarFormaPagto);
             }
             else if (prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA)
             {
-                if (formasPagto.ListaParcComEntrada?.Count > 0 && formasPagto.ListaParcComEntPrestacao?.Count > 0)
+                if (formaPagtoDto.ListaParcComEntrada?.Count > 0 && formaPagtoDto.ListaParcComEntPrestacao?.Count > 0)
                     ValidarFormaPagtoComEntreda(prepedido, lstErros, maxErroArredondamento);
                 else lstErros.Add(msgNegarFormaPagto);
             }
             else if (prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA)
             {
-                if (formasPagto.ListaParcSemEntPrestacao?.Count > 0 && formasPagto.ListaParcSemEntPrimPrest?.Count > 0)
+                if (formaPagtoDto.ListaParcSemEntPrestacao?.Count > 0 && formaPagtoDto.ListaParcSemEntPrimPrest?.Count > 0)
                     ValidarFormaPagtoSemEntrada(prepedido, lstErros, maxErroArredondamento);
                 else lstErros.Add(msgNegarFormaPagto);
             }

@@ -14,6 +14,7 @@ using InfraBanco;
 using PrepedidoBusiness.Bll.ProdutoBll;
 using PrepedidoBusiness.Bll.ClienteBll;
 using PrepedidoBusiness.Bll.FormaPagtoBll;
+using PrepedidoBusiness.Dto.FormaPagto;
 
 namespace PrepedidoBusiness.Bll.PrepedidoBll
 {
@@ -26,11 +27,12 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         private readonly ValidacoesFormaPagtoBll validacoesFormaPagtoBll;
         private readonly MontarLogPrepedidoBll montarLogPrepedidoBll;
         private readonly IBancoNFeMunicipio bancoNFeMunicipio;
+        private readonly FormaPagtoBll.FormaPagtoBll formaPagtoBll;
 
         public PrepedidoBll(ContextoBdProvider contextoProvider, ClienteBll.ClienteBll clienteBll,
             ValidacoesPrepedidoBll validacoesPrepedidoBll, CepBll cepBll,
             ValidacoesFormaPagtoBll validacoesFormaPagtoBll, MontarLogPrepedidoBll montarLogPrepedidoBll,
-            IBancoNFeMunicipio bancoNFeMunicipio)
+            IBancoNFeMunicipio bancoNFeMunicipio, FormaPagtoBll.FormaPagtoBll formaPagtoBll)
         {
             this.contextoProvider = contextoProvider;
             this.clienteBll = clienteBll;
@@ -39,6 +41,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             this.validacoesFormaPagtoBll = validacoesFormaPagtoBll;
             this.montarLogPrepedidoBll = montarLogPrepedidoBll;
             this.bancoNFeMunicipio = bancoNFeMunicipio;
+            this.formaPagtoBll = formaPagtoBll;
         }
 
         public async Task<IEnumerable<string>> ListarNumerosPrepedidosCombo(string orcamentista)
@@ -747,8 +750,9 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 string c_custoFinancFornecTipoParcelamento = ObterSiglaFormaPagto(prePedido);
 
                 //precisa incluir uma validação de forma de pagamento com base no orçamentista enviado
-                if (await validacoesFormaPagtoBll.ValidarFormaPagto(prePedido, lstErros, limiteArredondamento,
-                    0.1M, c_custoFinancFornecTipoParcelamento, tOrcamentista.Apelido))
+                FormaPagtoDto formasPagto = await formaPagtoBll.ObterFormaPagto(tOrcamentista.Apelido, prePedido.DadosCliente.Tipo);
+                if (validacoesFormaPagtoBll.ValidarFormaPagto(prePedido, lstErros, limiteArredondamento,
+                    0.1M, c_custoFinancFornecTipoParcelamento, formasPagto))
                 {
                     //Esta sendo verificado qual o tipo de pagamento que esta sendo feito e retornando a quantidade de parcelas
                     int c_custoFinancFornecQtdeParcelas = ObterQtdeParcelasFormaPagto(prePedido);
