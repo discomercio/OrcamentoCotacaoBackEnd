@@ -83,6 +83,26 @@ namespace Testes.Automatizados.InicializarBanco
 
                 db.Tbancos.Add(new InfraBanco.Modelos.Tbanco() { Codigo = Testes.Automatizados.InicializarBanco.InicializarClienteDados.ClienteNaoCadastradoPJ().RefBancaria[0].Banco });
 
+                //permitr pagamento a vista para todos
+                short idPagamentoAvista = 1;
+                db.TformaPagtos.Add(new InfraBanco.Modelos.TformaPagto() { Hab_a_vista = 1, Id = idPagamentoAvista });
+                /*
+                 * sem restrições
+                db.torcamentistaEIndicadorRestricaoFormaPagtos.Add(new InfraBanco.Modelos.TorcamentistaEIndicadorRestricaoFormaPagto()
+                {
+                    Id_orcamentista_e_indicador = Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS,
+                    Tipo_cliente = "PJ",
+                    St_restricao_ativa = 1,
+                    Id_forma_pagto = idPagamentoAvista
+                });
+                db.torcamentistaEIndicadorRestricaoFormaPagtos.Add(new InfraBanco.Modelos.TorcamentistaEIndicadorRestricaoFormaPagto()
+                {
+                    Id_orcamentista_e_indicador = Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS,
+                    Tipo_cliente = "PF",
+                    St_restricao_ativa = 1,
+                    Id_forma_pagto = idPagamentoAvista
+                });
+                */
 
                 InicalizarProdutos(db);
 

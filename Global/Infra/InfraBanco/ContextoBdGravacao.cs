@@ -74,6 +74,8 @@ namespace InfraBanco
         public DbSet<TwmsRegraCdXUfPessoa> TwmsRegraCdXUfPessoas { get => contexto.TwmsRegraCdXUfPessoas; }
         public DbSet<TnfEmitente> TnfEmitentes { get => contexto.TnfEmitentes; }
         public DbSet<TwmsRegraCdXUfXPessoaXCd> TwmsRegraCdXUfXPessoaXCds { get => contexto.TwmsRegraCdXUfXPessoaXCds; }
+        public DbSet<TformaPagto> TformaPagtos { get => contexto.TformaPagtos; }
+        public DbSet<TorcamentistaEIndicadorRestricaoFormaPagto> torcamentistaEIndicadorRestricaoFormaPagtos { get => contexto.torcamentistaEIndicadorRestricaoFormaPagtos; }
 
     }
 }
