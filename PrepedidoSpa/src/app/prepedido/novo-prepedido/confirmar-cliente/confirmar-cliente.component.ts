@@ -362,11 +362,11 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
 
       if (this.enderecoEntregaDtoClienteCadastro.OutroEndereco) {
         this.enderecoEntregaDtoClienteCadastro = this.confirmarEndereco.converterTelefones(this.enderecoEntregaDtoClienteCadastro);
-        validacoes = validacoes.concat(ValidacoesClienteUtils.validarEnderecoEntregaDtoClienteCadastro(this.enderecoEntregaDtoClienteCadastro,
-          this.endCadastralClientePrepedidoDto.Endereco_tipo_pessoa));
+        validacoes = validacoes.concat(ValidacoesClienteUtils.validarEnderecoEntregaDtoClienteCadastro(this.enderecoEntregaDtoClienteCadastro, 
+          this.endCadastralClientePrepedidoDto));
       }
 
-      if (validacoes.length > 0) {
+      if (validacoes.length > 0) { 
         this.alertaService.mostrarMensagem("Campos inválidos. Preencha os campos marcados como obrigatórios. \nLista de erros: \n" + validacoes.join("\n"));
         this.clienteCorpo.desconverterTelefonesEnderecoDadosCadastrais(this.endCadastralClientePrepedidoDto);
         this.confirmarEndereco.desconverterTelefonesEnderecoEntrega(this.enderecoEntregaDtoClienteCadastro);

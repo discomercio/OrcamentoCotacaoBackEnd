@@ -61,7 +61,6 @@ export class ClienteCadastroUtils {
     return s2;
   }
   telefone2(p: DadosClienteCadastroDto): string {
-    debugger;
     if (!p) {
       return "";
     }

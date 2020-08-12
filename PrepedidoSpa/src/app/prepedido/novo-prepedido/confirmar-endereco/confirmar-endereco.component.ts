@@ -97,7 +97,7 @@ export class ConfirmarEnderecoComponent implements OnInit {
   public prepararAvancar(): void {
     //transferimos os dados do CEP para cá
     const src = this.componenteCep;
-
+debugger;
     this.enderecoEntregaDtoClienteCadastro.OutroEndereco;
 
     this.enderecoEntregaDtoClienteCadastro.EndEtg_endereco = src.Endereco ? src.Endereco : "";

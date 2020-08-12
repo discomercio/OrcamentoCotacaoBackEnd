@@ -97,7 +97,6 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
   }
 
   alterarProdutorContribuinteIE(produtor: number) {
-    debugger;
     if (produtor == this.constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO) {
       this.dadosClienteCadastroDto.Contribuinte_Icms_Status = 0;
       this.dadosClienteCadastroDto.Ie = "";

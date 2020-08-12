@@ -110,12 +110,28 @@ export class ValidacoesClienteUtils {
         return msgErrosEndEtg;
     }
     //valida dados da pessoa da entrega
-    public static validarEnderecoEntregaDtoClienteCadastro(endEtg: EnderecoEntregaDtoClienteCadastro, tipoCliente: string): string[] {
+    public static validarEnderecoEntregaDtoClienteCadastro(endEtg: EnderecoEntregaDtoClienteCadastro, endCadastral: EnderecoCadastralClientePrepedidoDto): string[] {
 
         let validacoes: string[] = new Array();
 
-        validacoes = validacoes.concat(this.validarEnderecoEntrega(endEtg, tipoCliente));
-
+        validacoes = validacoes.concat(this.validarEnderecoEntrega(endEtg, endCadastral.Endereco_tipo_pessoa));
+        
+        if (endCadastral.Endereco_tipo_pessoa == this.constantes.ID_PF) {
+            //vamos passar automático
+            endEtg.EndEtg_tipo_pessoa = endCadastral.Endereco_tipo_pessoa;
+            endEtg.EndEtg_nome = endCadastral.Endereco_nome;
+            endEtg.EndEtg_cnpj_cpf = endCadastral.Endereco_cnpj_cpf;
+            endEtg.EndEtg_rg = endCadastral.Endereco_rg;
+            endEtg.EndEtg_email = endCadastral.Endereco_email;
+            endEtg.EndEtg_email_xml = endCadastral.Endereco_email_xml;
+            endEtg.EndEtg_produtor_rural_status = endCadastral.Endereco_produtor_rural_status;
+            endEtg.EndEtg_contribuinte_icms_status = endCadastral.Endereco_contribuinte_icms_status;
+            endEtg.EndEtg_ie = endCadastral.Endereco_ie;
+        }
+        if(endCadastral.Endereco_tipo_pessoa == this.constantes.ID_PJ){
+            endEtg.EndEtg_email = endCadastral.Endereco_email;
+            endEtg.EndEtg_email_xml = endCadastral.Endereco_email_xml;
+        }
         //vamos converter para
         let dadosClienteCadastroDto = DadosClienteCadastroDto.DadosClienteCadastroDtoDeEnderecoEntregaDtoClienteCadastro(endEtg);
 
@@ -123,11 +139,11 @@ export class ValidacoesClienteUtils {
         // dadosClienteCadastroDto = this.converterTelefones(dadosClienteCadastroDto);
 
         //valida cpf, cnpj, email e emailxml
-        if (tipoCliente == this.constantes.ID_PJ)
+        if (endCadastral.Endereco_tipo_pessoa == this.constantes.ID_PJ)
             validacoes = validacoes.concat(this.validarGeral(dadosClienteCadastroDto, false));
 
         //valida contribuinteICMS e IE
-        if (tipoCliente == this.constantes.ID_PJ) {
+        if (endCadastral.Endereco_tipo_pessoa == this.constantes.ID_PJ) {
             let mensagem = new ClienteCadastroUtils().validarInscricaoestadualIcms(dadosClienteCadastroDto);
             if (mensagem && mensagem.trim() !== "") {
                 validacoes.push(mensagem);
@@ -139,7 +155,7 @@ export class ValidacoesClienteUtils {
 
         let ehPf: boolean = dadosClienteCadastroDto.Tipo == this.constantes.ID_PF ? true : false;
 
-        if (tipoCliente == this.constantes.ID_PJ)
+        if (endCadastral.Endereco_tipo_pessoa == this.constantes.ID_PJ)
             validacoes = validacoes.concat(this.validarTelefones(dadosClienteCadastroDto, ehPf, false));
 
         let msgErrosEndEtg: string[] = new Array();
