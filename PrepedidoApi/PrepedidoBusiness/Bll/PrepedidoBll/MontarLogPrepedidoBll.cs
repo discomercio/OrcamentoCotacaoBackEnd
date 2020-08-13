@@ -29,7 +29,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             campos_a_inserir += prepedido.EnderecoEntrega.OutroEndereco ?
                 MontaCamposAInserirEnderecoEntrega(prepedido.EnderecoEntrega) : " Endereço entrega=mesmo do cadastro|";
 
-            campos_a_inserir += "InstaladorInstalaStatus|GarantiaIndicadorStatus|perc_desagio_RA_liquida";
+            campos_a_inserir += "|InstaladorInstalaStatus|GarantiaIndicadorStatus|perc_desagio_RA_liquida";
 
             return campos_a_inserir;
         }
@@ -129,25 +129,25 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             {
                 campos_a_inserir = " Endereço entrega = " + FormatarEnderecoEntregaParaLog(end) +
                     " [EndEtg_cod_justificativa=" + end.EndEtg_cod_justificativa + "]";
-                campos_a_inserir += "(email=" + end.EndEtg_email + ", ";
-                campos_a_inserir += "email_xml=" + end.EndEtg_email_xml + ", ";
-                campos_a_inserir += "nome=" + end.EndEtg_nome + ", ";
-                campos_a_inserir += "ddd_res=" + end.EndEtg_ddd_res + ", ";
-                campos_a_inserir += "tel_res=" + end.EndEtg_tel_res + ", ";
-                campos_a_inserir += "ddd_com=" + end.EndEtg_ddd_com + ", ";
-                campos_a_inserir += "tel_com=" + end.EndEtg_tel_com + ", ";
-                campos_a_inserir += "ramal_com=" + end.EndEtg_ramal_com + ", ";
-                campos_a_inserir += "ddd_cel=" + end.EndEtg_ddd_cel + ", ";
-                campos_a_inserir += "tel_cel=" + end.EndEtg_tel_cel + ", ";
-                campos_a_inserir += "ddd_com_2=" + end.EndEtg_ddd_com_2 + ", ";
-                campos_a_inserir += "tel_com_2=" + end.EndEtg_tel_com_2 + ", ";
-                campos_a_inserir += "ramal_com_2=" + end.EndEtg_ramal_com_2 + ", ";
-                campos_a_inserir += "tipo_pessoa=" + end.EndEtg_tipo_pessoa + ", ";
-                campos_a_inserir += "cnpj_cpf=" + end.EndEtg_cnpj_cpf + ", ";
+                campos_a_inserir += "(email=" + (string.IsNullOrEmpty(end.EndEtg_email) ? "\"\"" : end.EndEtg_email) + ", ";
+                campos_a_inserir += "email_xml=" + (string.IsNullOrEmpty(end.EndEtg_email_xml) ? "\"\"": end.EndEtg_email_xml)  + ", ";
+                campos_a_inserir += "nome=" + (string.IsNullOrEmpty(end.EndEtg_nome) ? "\"\"" : end.EndEtg_nome) + ", ";
+                campos_a_inserir += "ddd_res=" + (string.IsNullOrEmpty(end.EndEtg_ddd_res) ? "\"\"" : end.EndEtg_ddd_res) + ", ";
+                campos_a_inserir += "tel_res=" + (string.IsNullOrEmpty(end.EndEtg_tel_res) ? "\"\"" : end.EndEtg_tel_res) + ", ";
+                campos_a_inserir += "ddd_com=" + (string.IsNullOrEmpty(end.EndEtg_ddd_com) ? "\"\"" : end.EndEtg_ddd_com) + ", ";
+                campos_a_inserir += "tel_com=" + (string.IsNullOrEmpty(end.EndEtg_tel_com) ? "\"\"" : end.EndEtg_tel_com) + ", ";
+                campos_a_inserir += "ramal_com=" + (string.IsNullOrEmpty(end.EndEtg_ramal_com) ? "\"\"" : end.EndEtg_ramal_com) + ", ";
+                campos_a_inserir += "ddd_cel=" + (string.IsNullOrEmpty(end.EndEtg_ddd_cel) ? "\"\"" : end.EndEtg_ddd_cel) + ", ";
+                campos_a_inserir += "tel_cel=" + (string.IsNullOrEmpty(end.EndEtg_tel_cel) ? "\"\"" : end.EndEtg_tel_cel) + ", ";
+                campos_a_inserir += "ddd_com_2=" + (string.IsNullOrEmpty(end.EndEtg_ddd_com_2) ? "\"\"" : end.EndEtg_ddd_com_2) + ", ";
+                campos_a_inserir += "tel_com_2=" + (string.IsNullOrEmpty(end.EndEtg_tel_com_2) ? "\"\"" : end.EndEtg_tel_com_2) + ", ";
+                campos_a_inserir += "ramal_com_2=" + (string.IsNullOrEmpty(end.EndEtg_ramal_com_2) ? "\"\"" : end.EndEtg_ramal_com_2) + ", ";
+                campos_a_inserir += "tipo_pessoa=" + (string.IsNullOrEmpty(end.EndEtg_tipo_pessoa) ? "\"\"" : end.EndEtg_tipo_pessoa) + ", ";
+                campos_a_inserir += "cnpj_cpf=" + (string.IsNullOrEmpty(end.EndEtg_cnpj_cpf) ? "\"\"" : end.EndEtg_cnpj_cpf) + ", ";
                 campos_a_inserir += "contribuinte_icms_status=" + end.EndEtg_contribuinte_icms_status + ", ";
                 campos_a_inserir += "produtor_rural_status=" + end.EndEtg_produtor_rural_status + ", ";
-                campos_a_inserir += "ie=" + end.EndEtg_ie + ", ";
-                campos_a_inserir += "rg=" + end.EndEtg_rg + "); ";
+                campos_a_inserir += "ie=" + (string.IsNullOrEmpty(end.EndEtg_ie) ? "\"\"" : end.EndEtg_ie) + ", ";
+                campos_a_inserir += "rg=" + (string.IsNullOrEmpty(end.EndEtg_rg) ? "\"\"" : end.EndEtg_rg) + ")";
             }
 
             return campos_a_inserir;

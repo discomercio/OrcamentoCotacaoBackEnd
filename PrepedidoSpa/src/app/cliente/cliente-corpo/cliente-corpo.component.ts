@@ -115,6 +115,7 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
 
   @Input() enderecoCadastralClientePrepedidoDto = new EnderecoCadastralClientePrepedidoDto();
 
+  @Input() dadosCadastrais = true;
 
   criarElementos() {
     //cria os elementos vazios

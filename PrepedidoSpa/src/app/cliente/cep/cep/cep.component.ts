@@ -10,6 +10,7 @@ import { EnderecoEntregaDtoClienteCadastro } from 'src/app/dto/ClienteCadastro/E
 import { ConfirmarEnderecoComponent } from 'src/app/prepedido/novo-prepedido/confirmar-endereco/confirmar-endereco.component';
 import { $ } from 'protractor';
 import { StringUtils } from 'src/app/utils/stringUtils';
+import { debugOutputAstAsTypeScript } from '@angular/compiler';
 
 
 @Component({
@@ -99,7 +100,7 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
       return false;
     }
     
-
+debugger;
     if (this.cep_retorno != undefined) {
       if (StringUtils.retorna_so_digitos(this.cep_retorno) == StringUtils.retorna_so_digitos(this.Cep)) {
         return;
@@ -115,6 +116,7 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
           this.carregando = false;
   
           if (!r || r.length !== 1) {
+            this.cep_retorno = "";
             this.mostrarCepNaoEncontrado();
             return;
           }
@@ -147,6 +149,7 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
         }).catch((r) => {
           //deu erro na busca
           //ou não achou nada...
+          
           this.carregando = false;
           this.alertaService.mostrarErroInternet(r);
         });

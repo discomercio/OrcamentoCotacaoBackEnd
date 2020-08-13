@@ -11,6 +11,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
         public static PrePedidoUnisDto PrepedidoParceladoCartao1vez()
         {
             var ret = JsonConvert.DeserializeObject<PrePedidoUnisDto>(PrepedidoBaseParceladoCartao1vez);
+            ret.EnderecoCadastralCliente.Endereco_contato = "";
             return ret;
         }
         public static PrePedidoUnisDto PrepedidoParceladoAvista()

@@ -159,6 +159,7 @@ export class ConfirmarEnderecoComponent implements OnInit {
   PF() {
     this.inicializarCamposEndereco(this.enderecoEntregaDtoClienteCadastro);
     this.componenteCep.zerarCamposEndEntrega();
+    this.componenteCep.cep_retorno = "";
     this.componenteCep.Cep = "";
     this.pessoaEntregaEhPF = true;
     this.pessoaEntregaEhPJ = false;
@@ -168,6 +169,7 @@ export class ConfirmarEnderecoComponent implements OnInit {
   PJ() {
     this.inicializarCamposEndereco(this.enderecoEntregaDtoClienteCadastro);
     this.componenteCep.zerarCamposEndEntrega();
+    this.componenteCep.cep_retorno = "";
     this.componenteCep.Cep = "";
     this.pessoaEntregaEhPJ = true;
     this.pessoaEntregaEhPF = false;

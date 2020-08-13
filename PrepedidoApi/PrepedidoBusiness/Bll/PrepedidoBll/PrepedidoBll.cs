@@ -699,6 +699,20 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 prePedido.DadosCliente.Nascimento = cliente.DadosCliente.Nascimento;
             }
 
+            if(cliente.DadosCliente.Tipo == Constantes.ID_PF)
+            {
+                if(prePedido.EnderecoCadastroClientePrepedido.Endereco_tipo_pessoa != Constantes.ID_PF)
+                {
+                    lstErros.Add("Se cliente é tipo PF, o tipo da pessoa de endereço cadastral deve ser PF.");
+                }
+            }
+            if (cliente.DadosCliente.Tipo == Constantes.ID_PJ)
+            {
+                if (prePedido.EnderecoCadastroClientePrepedido.Endereco_tipo_pessoa != Constantes.ID_PJ)
+                {
+                    lstErros.Add("Se cliente é tipo PJ, o tipo da pessoa de endereço cadastral deve ser PJ.");
+                }
+            }
 
             //antes de validar vamos passar o EnderecoCadastral para dadoscliente
             prePedido.DadosCliente =
@@ -709,7 +723,8 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             List<ListaBancoDto> lstBanco = (await clienteBll.ListarBancosCombo()).ToList();
             //vamos validar os dados do cliente
             await ValidacoesClienteBll.ValidarDadosCliente(prePedido.DadosCliente, null, null,
-                lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, true);
+                lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco,
+                prePedido.DadosCliente.Tipo == Constantes.ID_PF ? true : false);
 
             //if (lstErros.Count > 0)
             //    return lstErros;
@@ -1136,7 +1151,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         {
             if (torcamento != null)
             {
-                 if(prepedido.EnderecoEntrega.EndEtg_cod_justificativa != null) 
+                if (prepedido.EnderecoEntrega.EndEtg_cod_justificativa != null)
                 {
                     torcamento.EndEtg_Endereco = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_endereco) ?
                         "" : prepedido.EnderecoEntrega.EndEtg_endereco;
@@ -1190,10 +1205,10 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                         "" : prepedido.EnderecoEntrega.EndEtg_ie;
                     torcamento.EndEtg_rg = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_rg) ?
                         "" : prepedido.EnderecoEntrega.EndEtg_rg;
-                }                
+                }
             }
         }
-        
+
         private async Task<string> CadastrarOrctoItens(ContextoBdGravacao dbgravacao,
             List<TorcamentoItem> lstOrcItens, string log)
         {

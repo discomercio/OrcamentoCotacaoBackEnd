@@ -27,6 +27,7 @@ namespace Testes.Automatizados.InicializarBanco
             ret.DadosCliente.Ie = "";
             ret.RefBancaria = new List<RefBancariaClienteUnisDto>();
             ret.RefComercial = new List<RefComercialClienteUnisDto>();
+            ret.DadosCliente.Contato = "";
             return ret;
         }
 

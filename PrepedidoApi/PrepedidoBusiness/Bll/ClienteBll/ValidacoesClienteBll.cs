@@ -39,7 +39,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
         public static async Task<bool> ValidarDadosCliente(DadosClienteCadastroDto dadosCliente,
             List<RefBancariaDtoCliente> lstRefBancaria, List<RefComercialDtoCliente> lstRefComercial,
             List<string> lstErros, ContextoBdProvider contextoProvider, CepBll cepBll, IBancoNFeMunicipio bancoNFeMunicipio,
-            List<ListaBancoDto> lstBanco, bool flagMsg_IE_CadastroPrepedido)
+            List<ListaBancoDto> lstBanco, bool flagMsg_IE_Cadastro_PF)
         {
             bool retorno;
 
@@ -102,7 +102,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     if (dadosCliente.Tipo == Constantes.ID_PJ ||
                         dadosCliente.Tipo == Constantes.ID_PF)
                         retorno = ValidarIE_Cliente(dadosCliente, lstErros, contextoProvider,
-                            bancoNFeMunicipio, flagMsg_IE_CadastroPrepedido);
+                            bancoNFeMunicipio, flagMsg_IE_Cadastro_PF);
 
                     await ConsisteMunicipioIBGE(dadosCliente.Cidade, dadosCliente.Uf, lstErros, contextoProvider,
                         bancoNFeMunicipio, true);
@@ -190,6 +190,12 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                         }
                     }
                 }
+
+                //vamos verificar os campos que não pertence ao tipo PF
+                if (!string.IsNullOrEmpty(dadosCliente.Contato))
+                {
+                    lstErros.Add("Se cliente é tipo PF não deve ter o campo contato preenchido.");
+                }
             }
             return retorno;
         }
@@ -236,6 +242,13 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 retorno = await ValidarTelCom(dadosCliente, cliente, lstErros, contextoProvider);
             }
 
+            if (!string.IsNullOrEmpty(dadosCliente.TelComercial2) ||
+                !string.IsNullOrEmpty(dadosCliente.DddComercial2) ||
+                !string.IsNullOrEmpty(dadosCliente.Ramal2))
+            {
+                lstErros.Add("Se cliente é tipo PF, não deve ter DDD comercial 2, " +
+                    "telefone comercial 2 e ramal comercial 2 preenchidos.");
+            }
 
             return retorno;
         }
@@ -359,13 +372,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             {
                 lstErros.Add("TELEFONE COMERCIAL INVÁLIDO.");
                 retorno = false;
-            }
-
-            if (!string.IsNullOrEmpty(dadosCliente.Ramal) && string.IsNullOrEmpty(dadosCliente.TelComercial))
-            {
-                lstErros.Add("Ramal comercial preenchido sem telefone!");
-                retorno = false;
-            }
+            }            
 
             if (lstErros.Count == 0)
             {
@@ -377,6 +384,14 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                         lstErros.Add("TELEFONE COMERCIAL (" + dadosCliente.DddComercial + ") " + Util.FormatarTelefones(dadosCliente.TelComercial) +
                             " JÁ ESTÁ SENDO UTILIZADO NO CADASTRO DE OUTROS CLIENTES. Não foi possível concluir o cadastro.");
                 }
+            }
+
+            if (!string.IsNullOrEmpty(dadosCliente.Ramal) &&
+                (string.IsNullOrEmpty(dadosCliente.TelComercial) ||
+                 string.IsNullOrEmpty(dadosCliente.DddComercial)))
+            {
+                lstErros.Add("Ramal comercial preenchido sem telefone!");
+                retorno = false;
             }
 
             return retorno;
@@ -422,13 +437,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 lstErros.Add("DDD DO TELEFONE COMERCIAL2 INVÁLIDO.");
                 retorno = false;
             }
-
-            if (!string.IsNullOrEmpty(dadosCliente.Ramal2) && string.IsNullOrEmpty(dadosCliente.TelComercial2))
-            {
-                lstErros.Add("Ramal comercial 2 preenchido sem telefone!");
-                retorno = false;
-            }
-
+            
             if (lstErros.Count == 0)
             {
                 if (!string.IsNullOrEmpty(dadosCliente.DddComercial2) &&
@@ -439,6 +448,14 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                         lstErros.Add("TELEFONE COMERCIAL (" + dadosCliente.DddComercial2 + ") " + Util.FormatarTelefones(dadosCliente.TelComercial2) +
                             " JÁ ESTÁ SENDO UTILIZADO NO CADASTRO DE OUTROS CLIENTES. Não foi possível concluir o cadastro.");
                 }
+            }
+
+            if (!string.IsNullOrEmpty(dadosCliente.Ramal2) &&
+                (string.IsNullOrEmpty(dadosCliente.TelComercial2) ||
+                 string.IsNullOrEmpty(dadosCliente.DddComercial2)))
+            {
+                lstErros.Add("Ramal comercial 2 preenchido sem telefone!");
+                retorno = false;
             }
 
             return retorno;
@@ -517,7 +534,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 lstErros.Add("Se cliente é tipo PJ, o RG não deve ser preenchido.");
                 retorno = false;
             }
-            if(dadosCliente.Nascimento != null)
+            if (dadosCliente.Nascimento != null)
             {
                 lstErros.Add("Se cliente é tipo PJ, o Nascimento não deve ser preenchido.");
                 retorno = false;
@@ -585,13 +602,15 @@ namespace PrepedidoBusiness.Bll.ClienteBll
         {
             bool retorno = true;
 
-            if (!string.IsNullOrEmpty(dadosCliente.DddResidencial) || !string.IsNullOrEmpty(dadosCliente.TelefoneResidencial))
+            if (!string.IsNullOrEmpty(dadosCliente.DddResidencial) || 
+                !string.IsNullOrEmpty(dadosCliente.TelefoneResidencial))
             {
                 lstErros.Add("Se cliente é tipo PJ, não pode ter os campos de Telefone e DDD residencial preenchidos! ");
                 retorno = false;
             }
 
-            if (!string.IsNullOrEmpty(dadosCliente.DddCelular) || !string.IsNullOrEmpty(dadosCliente.Celular))
+            if (!string.IsNullOrEmpty(dadosCliente.DddCelular) || 
+                !string.IsNullOrEmpty(dadosCliente.Celular))
             {
                 lstErros.Add("Se cliente é tipo PJ, não pode ter os campos de Telefone e DDD celular preenchidos! ");
                 retorno = false;
@@ -714,7 +733,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
         }
 
         private static bool ValidarIE_Cliente(DadosClienteCadastroDto dadosCliente, List<string> lstErros,
-            ContextoBdProvider contextoProvider, IBancoNFeMunicipio bancoNFeMunicipio, bool flagMsg_IE_CadastroPrepedido)
+            ContextoBdProvider contextoProvider, IBancoNFeMunicipio bancoNFeMunicipio, bool flagMsg_IE_Cadastro_PF)
         {
             bool retorno = true;
 
@@ -859,7 +878,8 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                         "não pode ter o valor ISENTO no campo de Inscrição Estadual!");
 
                 //if (lstErros.Count == 0)
-                VerificarInscricaoEstadualValida(dadosCliente.Ie, dadosCliente.Uf, lstErros, flagMsg_IE_CadastroPrepedido);
+                VerificarInscricaoEstadualValida(dadosCliente.Ie, dadosCliente.Uf, lstErros,
+                    flagMsg_IE_Cadastro_PF);
             }
 
             return retorno;
@@ -998,7 +1018,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
         }
 
         public static void VerificarInscricaoEstadualValida(string ie, string uf, List<string> listaErros,
-            bool flagMsg_IE_CadastroPrepedido_PF)
+            bool flagMsg_IE_Cadastro_PF)
         {
             if (string.IsNullOrEmpty(ie))
             {
@@ -1027,7 +1047,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 if (qtdeDig < 2 && qtdeDig > 14)
                 {
                     listaErros.Add(MensagensErro.Preencha_a_IE_Inscricao_Estadual);
-                    return;                    
+                    return;
                 }
 
             }
@@ -1038,7 +1058,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             blnResultado = isInscricaoEstadualOkCom(ie, uf);
             if (!blnResultado)
             {
-                if (!flagMsg_IE_CadastroPrepedido_PF)
+                if (!flagMsg_IE_Cadastro_PF)
                 {
                     //essa deve aparecer quando for cadastro de pepedido PJ e cadastro novo de cliente  
                     listaErros.Add(MensagensErro.Preencha_a_IE_Inscricao_Estadual);
@@ -1046,7 +1066,11 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 }
                 else
                 {
-                    //essa msg só deve aparecer quando é cadastro de prepedido PF ou atualização de cadastro
+                    //só iremos entrar aqui se for atualização de cadastro pelo angular
+                    //essa msg só deve aparecer quando é cadastro de prepedido PF que vem da Unis
+                    //ou atualização de cadastro
+                    //Não tem possibilidade do pedido PF entrar aqui, pois se ele alterar o IE,  
+                    //na validação da atualização do cadastro ele vai entrar aqui
                     listaErros.Add("Inscrição Estadual inválida pra esse estado (" + uf.ToUpper() + "). " +
                         "Caso o cliente esteja em outro estado, entre em contato com o suporte " +
                         "para alterar o cadastro do cliente");

@@ -144,37 +144,44 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
                 ret.EndEtg_ramal_com_2 = endEtg.EndEtg_ramal_com_2;
                 ret.EndEtg_tipo_pessoa = endEtg.EndEtg_tipo_pessoa;
                 ret.EndEtg_cnpj_cpf = endEtg.EndEtg_cnpj_cpf;
-                if(endEtg.EndEtg_produtor_rural_status != 
-                    (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM &&
-                    endEtg.EndEtg_tipo_pessoa == Constantes.ID_PF)
-                {
-                    ret.EndEtg_contribuinte_icms_status = (byte)0;
-                }
-                else
-                {
-                    ret.EndEtg_contribuinte_icms_status = endEtg.EndEtg_contribuinte_icms_status;
-                }
-
-                if(endEtg.EndEtg_tipo_pessoa == Constantes.ID_PJ)
-                {
-                    ret.EndEtg_produtor_rural_status = (byte)0;
-                }
-                else
-                {
-                    ret.EndEtg_produtor_rural_status = endEtg.EndEtg_produtor_rural_status;
-                }
-                if (endEtg.EndEtg_produtor_rural_status !=
-                    (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM &&
-                    endEtg.EndEtg_tipo_pessoa == Constantes.ID_PF)
-                {
-                    ret.EndEtg_ie = "";
-                }
-                else
-                {
-                    ret.EndEtg_ie = endEtg.EndEtg_ie;
-                }
-                    
                 ret.EndEtg_rg = endEtg.EndEtg_rg;
+
+                //teste para cair na validação
+                ret.EndEtg_contribuinte_icms_status = endEtg.EndEtg_contribuinte_icms_status;
+                ret.EndEtg_produtor_rural_status = endEtg.EndEtg_produtor_rural_status;
+                ret.EndEtg_ie = endEtg.EndEtg_ie;
+
+                //if (endEtg.EndEtg_produtor_rural_status != 
+                //    (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM &&
+                //    endEtg.EndEtg_tipo_pessoa == Constantes.ID_PF)
+                //{
+                //    ret.EndEtg_contribuinte_icms_status = (byte)0;
+                //}
+                //else
+                //{
+                //    ret.EndEtg_contribuinte_icms_status = endEtg.EndEtg_contribuinte_icms_status;
+                //}
+
+                //if(endEtg.EndEtg_tipo_pessoa == Constantes.ID_PJ)
+                //{
+                //    ret.EndEtg_produtor_rural_status = (byte)0;
+                //}
+                //else
+                //{
+                //    ret.EndEtg_produtor_rural_status = endEtg.EndEtg_produtor_rural_status;
+                //}
+                //if (endEtg.EndEtg_produtor_rural_status !=
+                //    (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM &&
+                //    endEtg.EndEtg_tipo_pessoa == Constantes.ID_PF)
+                //{
+                //    ret.EndEtg_ie = "";
+                //}
+                //else
+                //{
+                //    ret.EndEtg_ie = endEtg.EndEtg_ie;
+                //}
+                    
+                
             }
 
             return ret;

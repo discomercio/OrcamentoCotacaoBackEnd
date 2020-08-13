@@ -709,7 +709,7 @@ namespace PrepedidoBusiness.Utils
                             dataEntregaImediata = true;
                             log = log + campo_atual + "; ";
                         }
-
+                        
                         if (campo_atual == coluna)
                         {
                             //pegando o valor coluna
