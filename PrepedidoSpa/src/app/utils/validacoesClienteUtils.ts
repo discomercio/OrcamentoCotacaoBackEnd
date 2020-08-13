@@ -19,7 +19,7 @@ export class ValidacoesClienteUtils {
 
     //valida somente cadastro novo de cliente
     public static ValidarDadosClienteCadastroDto(dadosClienteCadastroDto: DadosClienteCadastroDto,
-        clienteCadastroDto: ClienteCadastroDto, ehPf: boolean): string[] {
+        clienteCadastroDto: ClienteCadastroDto, ehPf: boolean, lstCidadesIBGE: string[]): string[] {
         //
         //validações
         let validacoes: string[] = new Array();
@@ -44,7 +44,7 @@ export class ValidacoesClienteUtils {
         }
 
         //endereço
-        validacoes = validacoes.concat(this.validarEndereco(dadosClienteCadastroDto));
+        validacoes = validacoes.concat(this.validarEndereco(dadosClienteCadastroDto, lstCidadesIBGE));
 
         //inscricao estadual
         let mensagem = new ClienteCadastroUtils().validarInscricaoestadualIcms(dadosClienteCadastroDto);
@@ -76,7 +76,8 @@ export class ValidacoesClienteUtils {
     }
 
     //valida dados cadastrais
-    public static validarEnderecoCadastralClientePrepedidoDto(endCadastralClientePrepedidoDto: EnderecoCadastralClientePrepedidoDto): string[] {
+    public static validarEnderecoCadastralClientePrepedidoDto(endCadastralClientePrepedidoDto: EnderecoCadastralClientePrepedidoDto,
+        lstCidadesIBGE: string[]): string[] {
         let dadosClienteCadastroDto =
             DadosClienteCadastroDto.DadosClienteCadastroDtoDeEnderecoCadastralClientePrepedidoDto(endCadastralClientePrepedidoDto);
         let validacoes: string[] = new Array();
@@ -91,7 +92,7 @@ export class ValidacoesClienteUtils {
         if (dadosClienteCadastroDto.Tipo == this.constantes.ID_PJ)
             validacoes = validacoes.concat(this.validarGeralPj(dadosClienteCadastroDto, true));
 
-        validacoes = validacoes.concat(this.validarEndereco(dadosClienteCadastroDto));
+        validacoes = validacoes.concat(this.validarEndereco(dadosClienteCadastroDto, lstCidadesIBGE));
 
         let mensagem = new ClienteCadastroUtils().validarInscricaoestadualIcms(dadosClienteCadastroDto);
         if (mensagem && mensagem.trim() !== "") {
@@ -110,12 +111,13 @@ export class ValidacoesClienteUtils {
         return msgErrosEndEtg;
     }
     //valida dados da pessoa da entrega
-    public static validarEnderecoEntregaDtoClienteCadastro(endEtg: EnderecoEntregaDtoClienteCadastro, endCadastral: EnderecoCadastralClientePrepedidoDto): string[] {
+    public static validarEnderecoEntregaDtoClienteCadastro(endEtg: EnderecoEntregaDtoClienteCadastro,
+        endCadastral: EnderecoCadastralClientePrepedidoDto, lstCidadeIBGE: string[]): string[] {
 
         let validacoes: string[] = new Array();
 
-        validacoes = validacoes.concat(this.validarEnderecoEntrega(endEtg, endCadastral.Endereco_tipo_pessoa));
-        
+        validacoes = validacoes.concat(this.validarEnderecoEntrega(endEtg, endCadastral.Endereco_tipo_pessoa, lstCidadeIBGE));
+
         if (endCadastral.Endereco_tipo_pessoa == this.constantes.ID_PF) {
             //vamos passar automático
             endEtg.EndEtg_tipo_pessoa = endCadastral.Endereco_tipo_pessoa;
@@ -128,7 +130,7 @@ export class ValidacoesClienteUtils {
             endEtg.EndEtg_contribuinte_icms_status = endCadastral.Endereco_contribuinte_icms_status;
             endEtg.EndEtg_ie = endCadastral.Endereco_ie;
         }
-        if(endCadastral.Endereco_tipo_pessoa == this.constantes.ID_PJ){
+        if (endCadastral.Endereco_tipo_pessoa == this.constantes.ID_PJ) {
             endEtg.EndEtg_email = endCadastral.Endereco_email;
             endEtg.EndEtg_email_xml = endCadastral.Endereco_email_xml;
         }
@@ -460,7 +462,7 @@ export class ValidacoesClienteUtils {
         return ret;
     }
 
-    private static validarEndereco(dadosClienteCadastroDto: DadosClienteCadastroDto): string[] {
+    private static validarEndereco(dadosClienteCadastroDto: DadosClienteCadastroDto, lstCidadesIBGE: string[]): string[] {
         let ret: string[] = new Array();
 
         if (dadosClienteCadastroDto.Endereco.trim() === "") {
@@ -492,10 +494,21 @@ export class ValidacoesClienteUtils {
             ret.push('CEP inválido!');
         }
 
+        //vamos verificar se tem lista de cidades do IBGE, se tiver é pq a cidade do cep não existe no IBGE
+        if (!!lstCidadesIBGE && lstCidadesIBGE.length > 0) {
+            //a cidade do cep não consta no cadastro do IBGE e deve ter sido alterada, então vamos comparar
+            if (dadosClienteCadastroDto.Cidade.trim() !== "") {
+                if (lstCidadesIBGE.indexOf(dadosClienteCadastroDto.Cidade) == -1) {
+                    //não existe a cidade
+                    ret.push("A cidade informada não consta no cadastro do IBGE para esse estado.");
+                }
+            }
+        }
+
         return ret;
     }
 
-    private static validarEnderecoEntrega(end: EnderecoEntregaDtoClienteCadastro, tipoCliente: string): string[] {
+    private static validarEnderecoEntrega(end: EnderecoEntregaDtoClienteCadastro, tipoCliente: string, lstCidadesIBGE: string[]): string[] {
         let ret: string[] = new Array();
         let retorno = true;
         if (end.OutroEndereco) {
@@ -517,14 +530,16 @@ export class ValidacoesClienteUtils {
                 }
             }
 
-            if (!end.EndEtg_nome || end.EndEtg_nome)
+            // if (!end.EndEtg_nome || end.EndEtg_nome)
 
-                if (!end.EndEtg_cep || end.EndEtg_cep.trim() === "" ||
-                    !end.EndEtg_uf || end.EndEtg_uf.trim() === "" ||
-                    !end.EndEtg_cidade || end.EndEtg_cidade.trim() === "") {
-                    ret.push("Caso seja selecionado outro endereço, informe um CEP válido!");
-                    return ret;
-                }
+            //     if (!end.EndEtg_cep || end.EndEtg_cep.trim() === "" ||
+            //         !end.EndEtg_uf || end.EndEtg_uf.trim() === "" ||
+            //         !end.EndEtg_cidade || end.EndEtg_cidade.trim() === "") {
+            //         ret.push("Caso seja selecionado outro endereço, informe um CEP válido!");
+            //         return ret;
+            //     }
+
+
             if (!end.EndEtg_endereco || end.EndEtg_endereco.trim() === "") {
                 ret.push("Caso seja selecionado outro endereço, informe um endereço!");
                 return ret;
@@ -541,6 +556,17 @@ export class ValidacoesClienteUtils {
             if (!end.EndEtg_cidade || end.EndEtg_cidade.trim() === "") {
                 ret.push("Caso seja selecionado outro endereço, informe uma cidade!");
                 return ret;
+            }
+
+            //vamos verificar se tem lista de cidades do IBGE, se tiver é pq a cidade do cep não existe no IBGE
+            if (!!lstCidadesIBGE && lstCidadesIBGE.length > 0) {
+                //a cidade do cep não consta no cadastro do IBGE e deve ter sido alterada, então vamos comparar
+                if (end.EndEtg_cidade.trim() !== "") {
+                    if (lstCidadesIBGE.indexOf(end.EndEtg_cidade) == -1) {
+                        //não existe a cidade
+                        ret.push("A cidade informada não consta no cadastro do IBGE para esse estado.");
+                    }
+                }
             }
         }
         return ret;

@@ -9,6 +9,7 @@ import { CepDto } from 'src/app/dto/Cep/CepDto';
 import { EnderecoEntregaDtoClienteCadastro } from 'src/app/dto/ClienteCadastro/EnderecoEntregaDTOClienteCadastro';
 import { ConfirmarEnderecoComponent } from 'src/app/prepedido/novo-prepedido/confirmar-endereco/confirmar-endereco.component';
 import { $ } from 'protractor';
+import { StringUtils } from 'src/app/utils/stringUtils';
 
 
 @Component({
@@ -78,9 +79,11 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
     this.temUf = false;
   }
 
-
+  public lstCidadeIBGE: string[];
   public temCidade: boolean;
   public temUf: boolean;
+  public cep_retorno: string;
+
   //saiu do campo de CEP, vamos carregar o endereco
   saiuCep() {
 
@@ -95,42 +98,64 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
       this.Uf = "";
       return false;
     }
+    
 
-    this.zerarCamposEndEntrega();
-    //vamos fazer a busca
-    this.carregando = true;
-    this.cepService.buscarCep(this.Cep, null, null, null).toPromise()
-      .then((r) => {
-        this.carregando = false;
+    if (this.cep_retorno != undefined) {
+      if (StringUtils.retorna_so_digitos(this.cep_retorno) == StringUtils.retorna_so_digitos(this.Cep)) {
+        return;
+      }
+    }
+    if(this.Cep != undefined && this.Cep != ""){
+      this.zerarCamposEndEntrega();
+      //vamos fazer a busca
+      this.carregando = true;
+  
+      this.cepService.buscarCep(this.Cep, null, null, null).toPromise()
+        .then((r) => {
+          this.carregando = false;
+  
+          if (!r || r.length !== 1) {
+            this.mostrarCepNaoEncontrado();
+            return;
+          }
+          //recebemos um endereço
+          const end = r[0];
+  
+          this.cep_retorno = this.Cep;
+          if (!!end.Bairro) {
+            this.Bairro = end.Bairro;
+          }
+          if (!!end.Cidade) {
+            if (!!end.ListaCidadeIBGE && end.ListaCidadeIBGE.length > 0) {
+              this.temCidade = false;
+              this.lstCidadeIBGE = end.ListaCidadeIBGE;
+            }
+            else {
+              this.Cidade = end.Cidade;
+              this.temCidade = true;
+            }
+  
+          }
+          if (!!end.Endereco) {
+            this.Endereco = end.Endereco;
+          }
+          if (!!end.Uf) {
+            this.Uf = end.Uf;
+            this.temUf = true;
+          }
+  
+        }).catch((r) => {
+          //deu erro na busca
+          //ou não achou nada...
+          this.carregando = false;
+          this.alertaService.mostrarErroInternet(r);
+        });
+    }
+    
 
-        if (!r || r.length !== 1) {
-          this.mostrarCepNaoEncontrado();
-          return;
-        }
-        //recebemos um endereço
-        const end = r[0];
 
-        if (!!end.Bairro) {
-          this.Bairro = end.Bairro;
-        }
-        if (!!end.Cidade) {
-          this.Cidade = end.Cidade;
-          this.temCidade = true;
-        }
-        if (!!end.Endereco) {
-          this.Endereco = end.Endereco;
-        }
-        if (!!end.Uf) {
-          this.Uf = end.Uf;
-          this.temUf = true;
-        }
 
-      }).catch((r) => {
-        //deu erro na busca
-        //ou não achou nada...
-        this.carregando = false;
-        this.alertaService.mostrarErroInternet(r);
-      });
+
   }
 
   enterCep(event: Event) {
@@ -165,14 +190,21 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         let end: CepDto = dialogRef.componentInstance.lstEnderecos[dialogRef.componentInstance.endereco_selecionado];
-        
+        debugger;
         if (!!end.Uf) {
           this.Uf = end.Uf;
           this.temUf = true;
         }
-        if (!!end.Cidade.trim()) {
-          this.Cidade = end.Cidade;
-          this.temCidade = true;
+        if (!!end.Cidade) {
+          if (!!end.ListaCidadeIBGE && end.ListaCidadeIBGE.length > 0) {
+            this.temCidade = false;
+            this.lstCidadeIBGE = end.ListaCidadeIBGE;
+          }
+          else {
+            this.Cidade = end.Cidade;
+            this.temCidade = true;
+          }
+
         }
         if (!!end.LogradouroComplemento) {
           this.Complemento = end.LogradouroComplemento;

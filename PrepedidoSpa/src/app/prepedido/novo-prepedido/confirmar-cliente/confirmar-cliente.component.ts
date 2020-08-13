@@ -228,11 +228,11 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
             if (continuar) {
 
               //já que os dados de cadastro do cliente foram alterados, vamos alterar de forma automática o cliente PF
-              if(this.dadosClienteCadastroDto.Tipo == this.constantes.ID_PF){
+              if (this.dadosClienteCadastroDto.Tipo == this.constantes.ID_PF) {
                 this.endCadastralClientePrepedidoDto.Endereco_produtor_rural_status = this.dadosClienteCadastroDto.ProdutorRural;
                 this.endCadastralClientePrepedidoDto.Endereco_contribuinte_icms_status = this.dadosClienteCadastroDto.Contribuinte_Icms_Status;
                 this.endCadastralClientePrepedidoDto.Endereco_ie = this.dadosClienteCadastroDto.Ie;
-              }              
+              }
 
               //salvamento automático? então já clicamos no continuar
               this.continuarEfetivo();
@@ -344,7 +344,8 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
       // }
       debugger;
       this.endCadastralClientePrepedidoDto = this.clienteCorpo.converterTelefones(this.endCadastralClientePrepedidoDto);
-      validacoes = ValidacoesClienteUtils.validarEnderecoCadastralClientePrepedidoDto(this.endCadastralClientePrepedidoDto);
+      validacoes = ValidacoesClienteUtils.validarEnderecoCadastralClientePrepedidoDto(this.endCadastralClientePrepedidoDto,
+        this.clienteCorpo.componenteCepDadosCadastrais.lstCidadeIBGE);
 
       if (validacoes.length == 0)
         if (this.dadosClienteCadastroDto.Tipo == this.constantes.ID_PF) {
@@ -362,11 +363,11 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
 
       if (this.enderecoEntregaDtoClienteCadastro.OutroEndereco) {
         this.enderecoEntregaDtoClienteCadastro = this.confirmarEndereco.converterTelefones(this.enderecoEntregaDtoClienteCadastro);
-        validacoes = validacoes.concat(ValidacoesClienteUtils.validarEnderecoEntregaDtoClienteCadastro(this.enderecoEntregaDtoClienteCadastro, 
-          this.endCadastralClientePrepedidoDto));
+        validacoes = validacoes.concat(ValidacoesClienteUtils.validarEnderecoEntregaDtoClienteCadastro(this.enderecoEntregaDtoClienteCadastro,
+          this.endCadastralClientePrepedidoDto, this.confirmarEndereco.componenteCep.lstCidadeIBGE));
       }
 
-      if (validacoes.length > 0) { 
+      if (validacoes.length > 0) {
         this.alertaService.mostrarMensagem("Campos inválidos. Preencha os campos marcados como obrigatórios. \nLista de erros: \n" + validacoes.join("\n"));
         this.clienteCorpo.desconverterTelefonesEnderecoDadosCadastrais(this.endCadastralClientePrepedidoDto);
         this.confirmarEndereco.desconverterTelefonesEnderecoEntrega(this.enderecoEntregaDtoClienteCadastro);

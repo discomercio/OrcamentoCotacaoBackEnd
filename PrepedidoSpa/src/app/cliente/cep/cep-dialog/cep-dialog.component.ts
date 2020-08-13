@@ -66,7 +66,7 @@ export class CepDialogComponent extends TelaDesktopBaseComponent implements OnIn
   public lstCidades: string[] = [];
 
   buscarLocalidades(): void {
-
+    
     this.lstEnderecos = [];
     this.lstCidades = new Array();
     if (!this.uf) {
@@ -121,6 +121,7 @@ export class CepDialogComponent extends TelaDesktopBaseComponent implements OnIn
               this.carregando = false;
               if (!!r) {
                 if (r.length > 0) {
+                  debugger;
                   this.lstEnderecos = r;
                   // this.lstCidades = [];
                   // this.localidade = "";

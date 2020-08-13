@@ -998,7 +998,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
         }
 
         public static void VerificarInscricaoEstadualValida(string ie, string uf, List<string> listaErros,
-            bool flagMsg_IE_CadastroPrepedido)
+            bool flagMsg_IE_CadastroPrepedido_PF)
         {
             if (string.IsNullOrEmpty(ie))
             {
@@ -1026,22 +1026,8 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 }
                 if (qtdeDig < 2 && qtdeDig > 14)
                 {
-                    //vamos usar a flag para mostrar a msg correta no momento certo
-                    if (!flagMsg_IE_CadastroPrepedido)
-                    {
-                        listaErros.Add(MensagensErro.Preencha_a_IE_Inscricao_Estadual);
-                        return;
-                    }
-                    else
-                    {
-                        listaErros.Add("Inscrição Estadual inválida pra esse estado (" + uf.ToUpper() + "). " +
-                            "Caso o cliente esteja em outro estado, entre em contato com o suporte " +
-                            "para alterar o cadastro do cliente");
-
-                        return;
-                    }
-
-
+                    listaErros.Add(MensagensErro.Preencha_a_IE_Inscricao_Estadual);
+                    return;                    
                 }
 
             }
@@ -1052,13 +1038,15 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             blnResultado = isInscricaoEstadualOkCom(ie, uf);
             if (!blnResultado)
             {
-                if (!flagMsg_IE_CadastroPrepedido)
+                if (!flagMsg_IE_CadastroPrepedido_PF)
                 {
+                    //essa deve aparecer quando for cadastro de pepedido PJ e cadastro novo de cliente  
                     listaErros.Add(MensagensErro.Preencha_a_IE_Inscricao_Estadual);
                     return;
                 }
                 else
                 {
+                    //essa msg só deve aparecer quando é cadastro de prepedido PF ou atualização de cadastro
                     listaErros.Add("Inscrição Estadual inválida pra esse estado (" + uf.ToUpper() + "). " +
                         "Caso o cliente esteja em outro estado, entre em contato com o suporte " +
                         "para alterar o cadastro do cliente");

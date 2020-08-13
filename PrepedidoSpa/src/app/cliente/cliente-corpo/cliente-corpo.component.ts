@@ -207,6 +207,7 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
   public prepararAvancarEnderecoCadastralClientePrepedidoDto(): void {
     //transferimos os dados do CEP para cá
     if (this.componenteCepDadosCadastrais != null) {
+      debugger;
       const src = this.componenteCepDadosCadastrais;
       this.enderecoCadastralClientePrepedidoDto.Endereco_logradouro = src.Endereco ? src.Endereco : "";
       this.enderecoCadastralClientePrepedidoDto.Endereco_numero = src.Numero ? src.Numero : "";
@@ -228,6 +229,7 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
     this.componenteCepDadosCadastrais.Cidade = this.dadosClienteCadastroDto.Cidade;
     this.componenteCepDadosCadastrais.Uf = this.dadosClienteCadastroDto.Uf;
     this.componenteCepDadosCadastrais.Complemento = this.dadosClienteCadastroDto.Complemento;
+    this.componenteCepDadosCadastrais.cep_retorno = this.dadosClienteCadastroDto.Cep;
 
     this.enderecoCadastralClientePrepedidoDto.Endereco_cep = this.dadosClienteCadastroDto.Cep;
     this.enderecoCadastralClientePrepedidoDto.Endereco_logradouro = this.dadosClienteCadastroDto.Endereco;
@@ -374,6 +376,7 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
 debugger;
       this.enderecoCadastralClientePrepedidoDto = this.atualizarDadosEnderecoCadastralClienteTela_Dados;
       const src = this.componenteCepDadosCadastrais;
+      src.cep_retorno = this.enderecoCadastralClientePrepedidoDto.Endereco_cep;
       src.Cep = this.enderecoCadastralClientePrepedidoDto.Endereco_cep;
       src.Endereco = this.enderecoCadastralClientePrepedidoDto.Endereco_logradouro;
       src.Numero = this.enderecoCadastralClientePrepedidoDto.Endereco_numero;

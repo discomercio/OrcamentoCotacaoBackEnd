@@ -595,6 +595,7 @@ para não dar erro no console
 
     <!--  novos campos Gabriel -->
     <br>
+    <!-- incluir mais uma flag para não mostrar quando é apenas consulta de cadastro -->
     <div *ngIf="!cadastrando && enderecoCadastralClientePrepedidoDto != null">
         <span class="caixa largura-maxima-campo-formulario">
             <span class="rotulo">
@@ -678,9 +679,15 @@ para não dar erro no console
                 </mat-form-field>
             </span>
         </span>
-        <span *ngIf="!cadastrando">
+        <span *ngIf="!cadastrando && ehPf()">
             <mat-form-field floatLabel="floatLabel()" class="largura-maxima-campo-formulario">
                 <input matInput type="text" placeholder="E-MAIL"
+                    [(ngModel)]="enderecoCadastralClientePrepedidoDto.Endereco_email" maxlength="60">
+            </mat-form-field>
+        </span>
+        <span *ngIf="!cadastrando && !ehPf()">
+            <mat-form-field floatLabel="floatLabel()" class="largura-maxima-campo-formulario">
+                <input matInput type="text" placeholder="E-MAIL" required
                     [(ngModel)]="enderecoCadastralClientePrepedidoDto.Endereco_email" maxlength="60">
             </mat-form-field>
         </span>
