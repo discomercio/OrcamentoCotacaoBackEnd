@@ -52,9 +52,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             //buscar coeficiente 
             //vamos alterar para montar uma lista de coeficiente para avista
             lstCoeficiente = (await MontarListaCoeficiente(lstFornec, qtdeParcelas, siglaFormaPagto)).ToList();
-            //lstCoeficiente =
-            //    (await BuscarListaCoeficientesFornecedores(lstFornec, qtdeParcelas, siglaFormaPagto)).ToList();
-
+            
             //validar se os coeficientes estão ok
             ValidarCustoFinancFornecCoeficiente(prepedido.ListaProdutos, lstCoeficiente, lstErros);
 
@@ -343,21 +341,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             {
                 await ValidarDadosEnderecoEntrega(prepedido, lstErros, contextoProvider);
 
-                await ValidarDadosPessoaEnderecoEntrega(prepedido, lstErros, false);
-
-                //if (prepedido.DadosCliente.Tipo == Constantes.ID_PJ)
-                //    await ValidarDadosPessoaEnderecoEntrega(prepedido, lstErros, false);
-                //if (prepedido.DadosCliente.Tipo == Constantes.ID_PF)
-                //    await ValidarDadosPessoaEnderecoEntrega(prepedido, lstErros, true);
-
-                //if(prepedido.DadosCliente.Tipo == Constantes.ID_PF)
-                //{
-                //    //vamos confrontar o IE de endereço de entrega, pois não deve ser diferente do DadosCadastrais
-                //    if (!string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_ie))
-                //    {
-                //        if()
-                //    }
-                //}
+                ValidarDadosPessoaEnderecoEntrega(prepedido, lstErros, false);
 
                 if (lstErros.Count != 0)
                 {
@@ -479,15 +463,9 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return retorno;
         }
 
-        private async Task ValidarDadosPessoaEnderecoEntrega(PrePedidoDto prePedido, List<string> lstErros,
+        private void ValidarDadosPessoaEnderecoEntrega(PrePedidoDto prePedido, List<string> lstErros,
             bool flagMsg_IE_Cadastro_PF)
         {
-            var cliente = await clienteBll.BuscarCliente(prePedido.DadosCliente.Cnpj_Cpf,
-                prePedido.DadosCliente.Indicador_Orcamentista);
-
-            //incluir a flag blnUsarMemorizacaoCompletaEnderecos
-            //incluir verificação para saber se o tipo da pessoa é PF ou PJ para validar corretamente
-
             if (prePedido.EnderecoEntrega.EndEtg_tipo_pessoa != Constantes.ID_PJ &&
                 prePedido.EnderecoEntrega.EndEtg_tipo_pessoa != Constantes.ID_PF)
             {
@@ -496,14 +474,6 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             else if (string.IsNullOrEmpty(prePedido.EnderecoEntrega.EndEtg_nome))
             {
                 lstErros.Add("Endereço de Entrega: Preencha o nome/razão social no endereço de entrega!");
-            }
-            else if (prePedido.DadosCliente.Tipo == Constantes.ID_PF)
-            {
-                if (prePedido.EnderecoEntrega.EndEtg_tipo_pessoa != Constantes.ID_PF)
-                {
-                    lstErros.Add("Endereço de Entrega: se cliente é tipo PF, o tipo de pessoa do endereço de " +
-                        "entrega deve ser PF.");
-                }
             }
             else
             {
@@ -519,12 +489,26 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 }
             }
 
+            if (prePedido.DadosCliente.Tipo == Constantes.ID_PF)
+            {
+                if (prePedido.EnderecoEntrega.EndEtg_tipo_pessoa != Constantes.ID_PF)
+                {
+                    lstErros.Add("Endereço de Entrega: se cliente é tipo PF, o tipo de pessoa do endereço de " +
+                        "entrega deve ser PF.");
+                }
+            }
+
             if (lstErros.Count == 0)
             {
-                if (!string.IsNullOrEmpty(prePedido.EnderecoEntrega.EndEtg_ie))
+                //só validamos o IE se o cliente for PJ
+                //Cliente PF aceita IE com estado do endereço de endereço de entrega diferente
+                if (prePedido.DadosCliente.Tipo == Constantes.ID_PJ)
                 {
-                    ValidacoesClienteBll.VerificarInscricaoEstadualValida(
-                        prePedido.EnderecoEntrega.EndEtg_ie, prePedido.EnderecoEntrega.EndEtg_uf, lstErros, flagMsg_IE_Cadastro_PF);
+                    if (!string.IsNullOrEmpty(prePedido.EnderecoEntrega.EndEtg_ie))
+                    {
+                        ValidacoesClienteBll.VerificarInscricaoEstadualValida(
+                            prePedido.EnderecoEntrega.EndEtg_ie, prePedido.EnderecoEntrega.EndEtg_uf, lstErros, flagMsg_IE_Cadastro_PF);
+                    }
                 }
             }
         }
@@ -582,12 +566,6 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                     endEtg.EndEtg_ie.IndexOf("ISEN") > -1)
                     lstErros.Add("Endereço de entrega: se cliente é contribuinte do ICMS, " +
                         "não pode ter o valor ISENTO no campo de Inscrição Estadual!");
-
-                //if (!string.IsNullOrEmpty(endEtg.EndEtg_ie))
-                //    ValidacoesClienteBll.VerificarInscricaoEstadualValida(endEtg.EndEtg_ie,
-                //        endEtg.EndEtg_uf, lstErros, true);
-
-
             }
         }
 
