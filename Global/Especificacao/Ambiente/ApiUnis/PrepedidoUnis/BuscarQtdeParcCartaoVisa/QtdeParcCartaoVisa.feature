@@ -1,4 +1,5 @@
-﻿Feature: BuscarQtdeParcCartaoVisa
+﻿@ignore
+Feature: BuscarQtdeParcCartaoVisa
 
 Background:
 	Given Nome deste item "Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.QtdeParcCartaoVisa"

@@ -20,22 +20,20 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "ignore")]
-    [Xunit.TraitAttribute("Category", "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido")]
-    public partial class CadastrarPrepedidoVerificarQueExecutouFeature : object, Xunit.IClassFixture<CadastrarPrepedidoVerificarQueExecutouFeature.FixtureData>, System.IDisposable
+    public partial class ListaExecucaoFeature : object, Xunit.IClassFixture<ListaExecucaoFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "ignore",
-                "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido"};
+                "ignore"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
 #line 1 "ListaExecucao.feature"
 #line hidden
         
-        public CadastrarPrepedidoVerificarQueExecutouFeature(CadastrarPrepedidoVerificarQueExecutouFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public ListaExecucaoFeature(ListaExecucaoFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -44,9 +42,8 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "CadastrarPrepedidoVerificarQueExecutou", "\tOs testes feitos ao cadastrar o prepedido", ProgrammingLanguage.CSharp, new string[] {
-                        "ignore",
-                        "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ListaExecucao", "\tOs testes feitos ao cadastrar o prepedido", ProgrammingLanguage.CSharp, new string[] {
+                        "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -87,14 +84,14 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="Lista de verificações feitas")]
-        [Xunit.TraitAttribute("FeatureTitle", "CadastrarPrepedidoVerificarQueExecutou")]
+        [Xunit.TraitAttribute("FeatureTitle", "ListaExecucao")]
         [Xunit.TraitAttribute("Description", "Lista de verificações feitas")]
         public virtual void ListaDeVerificacoesFeitas()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Lista de verificações feitas", null, tagsOfScenario, argumentsOfScenario);
-#line 6
+#line 5
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -114,8 +111,15 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
+#line 7
+ testRunner.Given("Nome deste item \"Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.ListaExecucao\"" +
+                        "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
 #line 8
- testRunner.Then("Especificado em \"Especificacao.Comuns.Api.Autenticacao\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("Especificado em \"Especificacao.Comuns.Api.Autenticacao\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 9
+ testRunner.And("Especificado em \"falta especificar o prepedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -128,12 +132,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                CadastrarPrepedidoVerificarQueExecutouFeature.FeatureSetup();
+                ListaExecucaoFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                CadastrarPrepedidoVerificarQueExecutouFeature.FeatureTearDown();
+                ListaExecucaoFeature.FeatureTearDown();
             }
         }
     }

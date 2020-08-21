@@ -1,4 +1,5 @@
-﻿@Especificacao.Comuns.Api.Autenticacao
+﻿@ignore
+@Especificacao.Comuns.Api.Autenticacao
 Feature: Autenticacao
 	Verificar a autenticação
 

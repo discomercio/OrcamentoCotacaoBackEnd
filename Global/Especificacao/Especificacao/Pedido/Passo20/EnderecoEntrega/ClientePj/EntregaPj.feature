@@ -52,7 +52,7 @@ Scenario: EndEtg_contribuinte_icms_status_PJ COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NA
 	And Informo "EndEtg_ie_PJ" = "ISEN"
 	Then Erro "Endereço de entrega: se cliente é não contribuinte do ICMS, não pode ter o valor ISENTO no campo de Inscrição Estadual!!"
 
-Scenario: EndEtg_contribuinte_icms_status_PJ COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO
+Scenario: EndEtg_contribuinte_icms_status_PJ COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO 2
 	When Informo "EndEtg_contribuinte_icms_status_PJ" = "COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO"
 	#IE de são paulo
 	And Informo "EndEtg_ie_PJ" = "715255502973"
