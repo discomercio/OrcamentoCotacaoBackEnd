@@ -462,8 +462,11 @@
                 end if
 
             if r_orcamento.st_memorizacao_completa_enderecos <> 0 and blnUsarMemorizacaoCompletaEnderecos then
+				if (EndEtg_email<>"") Or (EndEtg_email_xml<>"") then
+					blnEndEtgComDados = true
+					end if
+
                 if not eh_cpf then
-                    'EndEtg_email e EndEtg_email_xml não entram na verificação porque sempre são preenchidos
 			        if (EndEtg_ddd_res<>"") Or (EndEtg_tel_res<>"") Or (EndEtg_ddd_com<>"") Or (EndEtg_tel_com<>"") Or (EndEtg_ramal_com<>"") then
                         blnEndEtgComDados = true
                         end if
@@ -474,11 +477,6 @@
                         blnEndEtgComDados = true
                         end if
 
-                    'limpamos os campos que devem ser removidos (PJ)
-                    if not blnEndEtgComDados then
-                        EndEtg_email = ""
-                        EndEtg_email_xml = ""
-                        end if
                     end if
 
                 if eh_cpf and not blnEndEtgComDados then
@@ -504,6 +502,17 @@
                     EndEtg_email_xml = ""
                     EndEtg_nome = ""
                     end if
+
+				'limpeza de campos EndEtg
+				if blnEndEtgComDados and EndEtg_tipo_pessoa = "PJ" then
+					EndEtg_produtor_rural_status = converte_numero(COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL)
+					end if
+				if blnEndEtgComDados and EndEtg_tipo_pessoa <> "PJ" then
+					if converte_numero(EndEtg_produtor_rural_status) = converte_numero(COD_ST_CLIENTE_PRODUTOR_RURAL_NAO) then
+						EndEtg_contribuinte_icms_status = COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL
+						EndEtg_ie = ""
+						end if
+					end if
 
                 end if
 

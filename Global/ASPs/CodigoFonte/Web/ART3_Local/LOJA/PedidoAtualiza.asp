@@ -809,8 +809,12 @@
                 blnEndEtgComDados = true
                 end if
             if r_pedido.st_memorizacao_completa_enderecos <> 0 and blnUsarMemorizacaoCompletaEnderecos then
+
+				if (EndEtg_email<>"") Or (EndEtg_email_xml<>"") then
+					blnEndEtgComDados = true
+					end if
+
                 if not eh_cpf then
-                    'EndEtg_email e EndEtg_email_xml não entram na verificação porque sempre são preenchidos
 			        if (EndEtg_ddd_res<>"") Or (EndEtg_tel_res<>"") Or (EndEtg_ddd_com<>"") Or (EndEtg_tel_com<>"") Or (EndEtg_ramal_com<>"") then
                         blnEndEtgComDados = true
                         end if
@@ -819,12 +823,6 @@
                         end if
 			        if (EndEtg_cnpj_cpf<>"") Or (EndEtg_contribuinte_icms_status<>"") Or (EndEtg_produtor_rural_status<>"") Or (EndEtg_ie<>"") Or (EndEtg_rg<>"") then
                         blnEndEtgComDados = true
-                        end if
-
-                    'limpamos os campos que devem ser removidos (PJ)
-                    if not blnEndEtgComDados then
-                        EndEtg_email = ""
-                        EndEtg_email_xml = ""
                         end if
                     end if
 
@@ -851,6 +849,17 @@
                     EndEtg_email_xml = ""
                     EndEtg_nome = ""
                     end if
+
+				'limpeza de campos EndEtg
+				if blnEndEtgComDados and EndEtg_tipo_pessoa = "PJ" then
+					EndEtg_produtor_rural_status = converte_numero(COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL)
+					end if
+				if blnEndEtgComDados and EndEtg_tipo_pessoa <> "PJ" then
+					if converte_numero(EndEtg_produtor_rural_status) = converte_numero(COD_ST_CLIENTE_PRODUTOR_RURAL_NAO) then
+						EndEtg_contribuinte_icms_status = COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL
+						EndEtg_ie = ""
+						end if
+					end if
 
                 end if
 
@@ -1648,13 +1657,14 @@
 					end if
 
 				'Guardar informações de endereço presentes no pedido (consistência para verificar se mudou de endereço)
-				dim st_end_entrega_anterior, EndEtg_cep_anterior
+				dim st_end_entrega_anterior, EndEtg_cep_anterior, blnEndereco_cep_alterado
 				st_end_entrega_anterior = rs("st_end_entrega")
 				EndEtg_cep_anterior = rs("EndEtg_cep")
-
+                blnEndereco_cep_alterado = False
 
 
 				if r_pedido.st_memorizacao_completa_enderecos = 1 or r_pedido.st_memorizacao_completa_enderecos = 9 then
+					if rs("endereco_cep") <> endereco__cep then blnEndereco_cep_alterado = True
 					rs("st_memorizacao_completa_enderecos") = 1
 					rs("endereco_bairro") = endereco__bairro
 					rs("endereco_numero") = endereco__numero
@@ -1739,6 +1749,9 @@
 						'	OBS: ALTERAÇÕES NO ENDEREÇO DO CADASTRO SÃO PROCESSADAS NA PÁGINA CLIENTEATUALIZA.ASP
 						'	HÁ ENDEREÇO DE ENTREGA: O CEP MUDOU?
 							if Trim("" & EndEtg_cep_anterior) <> Trim("" & rs("EndEtg_cep")) then blnProcessaSelecaoAutoTransp = True
+						else
+							'   Se teve alteração no endereco_cep vamos recalcular a transportadora
+							if blnEndereco_cep_alterado then blnProcessaSelecaoAutoTransp = True
 							end if
 						end if
 					end if
@@ -1752,8 +1765,8 @@
 						iTranspSelAutoTipoEndereco = TRANSPORTADORA_SELECAO_AUTO_TIPO_ENDERECO_ENTREGA
 						iTranspSelAutoStatus = TRANSPORTADORA_SELECAO_AUTO_STATUS_FLAG_S
 					else
-						if r_cliente.cep <> "" then sTranspSelAutoTransportadoraId = obtem_transportadora_pelo_cep(retorna_so_digitos(r_cliente.cep))
-						sTranspSelAutoCep = retorna_so_digitos(r_cliente.cep)
+						if endereco__cep <> "" then sTranspSelAutoTransportadoraId = obtem_transportadora_pelo_cep(retorna_so_digitos(endereco__cep))
+						sTranspSelAutoCep = retorna_so_digitos(endereco__cep)
 						iTranspSelAutoTipoEndereco = TRANSPORTADORA_SELECAO_AUTO_TIPO_ENDERECO_CLIENTE
 						iTranspSelAutoStatus = TRANSPORTADORA_SELECAO_AUTO_STATUS_FLAG_S
 						end if

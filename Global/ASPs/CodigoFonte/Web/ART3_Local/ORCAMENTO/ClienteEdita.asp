@@ -474,6 +474,13 @@ var eh_cpf;
                     f.EndEtg_ie_PJ.focus();
                     return;
                 }
+                if (f.EndEtg_contribuinte_icms_status_PJ[2].checked) {
+                    if (f.EndEtg_ie_PJ.value != "") {
+                        alert("Endereço de entrega: se o Contribuinte ICMS é isento, o campo IE deve ser vazio!");
+                        f.EndEtg_ie_PF.focus();
+                        return;
+                    }
+                }
 
                 if (trim(f.EndEtg_nome.value) == "") {
                     alert('Preencha a razão social no endereço de entrega!!');
@@ -511,6 +518,11 @@ var eh_cpf;
                     f.EndEtg_tel_com.focus();
                     return;
                 }
+                if (trim(f.EndEtg_ddd_com.value) == "" && trim(f.EndEtg_ramal_com.value) != "") {
+                    alert('Endereço de entrega: DDD comercial inválido!!');
+                    f.EndEtg_ddd_com.focus();
+                    return;
+                }
 
 
                 if (!ddd_ok(f.EndEtg_ddd_com_2.value)) {
@@ -531,6 +543,11 @@ var eh_cpf;
                 if ((f.EndEtg_tel_com_2.value == "") && (f.EndEtg_ddd_com_2.value != "")) {
                     alert('Endereço de entrega: preencha o telefone.');
                     f.EndEtg_tel_com_2.focus();
+                    return;
+                }
+                if (trim(f.EndEtg_ddd_com_2.value) == "" && trim(f.EndEtg_ramal_com_2.value) != "") {
+                    alert('Endereço de entrega: DDD comercial 2 inválido!!');
+                    f.EndEtg_ddd_com_2.focus();
                     return;
                 }
 
@@ -969,6 +986,11 @@ var blnCadRefBancaria, blnCadSocioMaj, blnCadRefComercial, blnCadRefProfissional
 			return;
 			}
 		}
+    if (trim(f.ddd_com.value) == "" && trim(f.ramal_com.value) != "") {
+        alert('DDD comercial inválido!!');
+        f.ddd_com.focus();
+        return;
+    }
 	
 	if (eh_cpf) {
 		if ((trim(f.tel_res.value)=="")&&(trim(f.tel_com.value)=="")&&(trim(f.tel_cel.value)=="")) {
@@ -989,8 +1011,13 @@ var blnCadRefBancaria, blnCadSocioMaj, blnCadRefComercial, blnCadRefProfissional
 		            return;
 		        }
 		    }
+			if (trim(f.ddd_com_2.value) == "" && trim(f.ramal_com_2.value) != "") {
+				alert('DDD comercial 2 inválido!!');
+                f.ddd_com_2.focus();
+				return;
+			}
 
-}
+		}
 if (eh_cpf) {
     if (!ddd_ok(f.ddd_cel.value)) {
         alert('DDD inválido!!');
@@ -1221,6 +1248,17 @@ function ValidarDadosCadastrais() {
 	eh_cpf=false;
 	if (s.length==11) eh_cpf=true;
 	
+    if (eh_cpf) {
+        if ((f.orcamento_endereco_contribuinte_icms_status.value == "2") && (trim(f.orcamento_endereco_ie.value) != "")) {
+            // Vamos verificar se a UF esta diferente do cadastro do cliente orcamento_endereco_uf        
+            if (f.orcamento_endereco_uf.value.trim().toUpperCase() != fCAD.uf.value.trim().toUpperCase()) {
+                alert('Dados cadastrais: Inscrição estadual inválida pra esse estado (' + f.orcamento_endereco_uf.value.toUpperCase() + '). ' +
+                    'Caso o cliente esteja em outro estado, entre em contato com o suporte para alterar o cadastro do cliente.');
+                return;
+            }
+        }        
+    }
+
 	if (!eh_cpf) {
 		s=trim(f.orcamento_endereco_contato.value);
 		if (s=="") {
@@ -1359,6 +1397,11 @@ function ValidarDadosCadastrais() {
 			return;
 			}
 		}
+    if (trim(f.orcamento_endereco_ddd_com.value) == "" && trim(f.orcamento_endereco_ramal_com.value) != "") {
+        alert('Dados cadastrais: DDD comercial inválido!!');
+        f.orcamento_endereco_ddd_com.focus();
+        return;
+    }
 	
 	if (eh_cpf) {
 		if ((trim(f.orcamento_endereco_tel_res.value)=="")&&(trim(f.orcamento_endereco_tel_com.value)=="")&&(trim(f.orcamento_endereco_tel_cel.value)=="")) {
@@ -1379,6 +1422,11 @@ function ValidarDadosCadastrais() {
 		            return;
 		        }
 		    }
+			if (trim(f.orcamento_endereco_ddd_com_2.value) == "" && trim(f.orcamento_endereco_ramal_com_2.value) != "") {
+				alert('Dados cadastrais: DDD comercial 2 inválido!!');
+                f.orcamento_endereco_ddd_com_2.focus();
+				return;
+			}
 
 }
 if (eh_cpf) {

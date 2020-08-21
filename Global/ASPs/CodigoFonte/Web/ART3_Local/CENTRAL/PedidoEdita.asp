@@ -302,11 +302,28 @@
 		call le_orcamentista_e_indicador(r_pedido.indicador, r_orcamentista_e_indicador, msg_erro)
 		end if
 	
+'	CRITÉRIO PARA EDITAR O ENDEREÇO DE ENTREGA E OS DADOS CADASTRAIS
 	dim blnEndEntregaEdicaoLiberada
 	blnEndEntregaEdicaoLiberada = False
 	if operacao_permitida(OP_CEN_EDITA_PEDIDO, s_lista_operacoes_permitidas) then
 		if r_pedido.obs_2 = "" then blnEndEntregaEdicaoLiberada = True
 		end if
+
+	dim blnDadosCadastraisEdicaoLiberada
+	blnDadosCadastraisEdicaoLiberada = blnEndEntregaEdicaoLiberada
+
+	dim strAtributosDadosCadastrais
+	strAtributosDadosCadastrais = ""
+	if not blnDadosCadastraisEdicaoLiberada then
+		strAtributosDadosCadastrais = " readonly tabindex=-1 "
+		end if
+	dim strAtributosRadioboxDadosCadastrais
+	strAtributosRadioboxDadosCadastrais = ""
+	if not blnDadosCadastraisEdicaoLiberada then
+		strAtributosRadioboxDadosCadastrais = " disabled "
+		end if
+
+
 
 	dim blnTransportadoraEdicaoLiberada
 	blnTransportadoraEdicaoLiberada = False
@@ -1509,6 +1526,11 @@ function LimparCamposEndEtg( f ) {
 	f.EndEtg_cep.value="";
 	f.EndEtg_obs.selectedIndex = 0;
 
+    <%if blnUsarMemorizacaoCompletaEnderecos then %>
+        f.EndEtg_email.value = "";
+	    f.EndEtg_email_xml.value = "";
+    <% end if%>
+
     <%if blnUsarMemorizacaoCompletaEnderecos and not eh_cpf then %>
         f.EndEtg_tipo_pessoa[0].checked = false;
         f.EndEtg_tipo_pessoa[1].checked = false;
@@ -1615,6 +1637,11 @@ var NUMERO_LOJA_ECOMMERCE_AR_CLUBE = "<%=NUMERO_LOJA_ECOMMERCE_AR_CLUBE%>";
 		if (trim(f.EndEtg_uf.value)!="") blnTemEndEntrega=true;
 		if (trim(f.EndEtg_cep.value)!="") blnTemEndEntrega=true;
 		if (trim(f.EndEtg_obs.value)!="") blnTemEndEntrega=true;
+
+<%if blnUsarMemorizacaoCompletaEnderecos then %>
+        if (trim(f.EndEtg_email.value) != "") blnTemEndEntrega = true;
+        if (trim(f.EndEtg_email_xml.value) != "") blnTemEndEntrega = true;
+<% end if%>
 
 <%if blnUsarMemorizacaoCompletaEnderecos and not eh_cpf then %>
 
@@ -1990,6 +2017,13 @@ var NUMERO_LOJA_ECOMMERCE_AR_CLUBE = "<%=NUMERO_LOJA_ECOMMERCE_AR_CLUBE%>";
                     f.EndEtg_ie_PJ.focus();
                     return;
                 }
+                if (f.EndEtg_contribuinte_icms_status_PJ[2].checked) {
+                    if (f.EndEtg_ie_PJ.value != "") {
+                        alert("Endereço de entrega: se o Contribuinte ICMS é isento, o campo IE deve ser vazio!");
+                        f.EndEtg_ie_PF.focus();
+                        return;
+                    }
+                }
 
                 if (trim(f.EndEtg_nome.value) == "") {
                     alert('Preencha a razão social no endereço de entrega!!');
@@ -2027,6 +2061,11 @@ var NUMERO_LOJA_ECOMMERCE_AR_CLUBE = "<%=NUMERO_LOJA_ECOMMERCE_AR_CLUBE%>";
                     f.EndEtg_tel_com.focus();
                     return;
                 }
+                if (trim(f.EndEtg_ddd_com.value) == "" && trim(f.EndEtg_ramal_com.value) != "") {
+                    alert('Endereço de entrega: DDD comercial inválido!!');
+                    f.EndEtg_ddd_com.focus();
+                    return;
+                }
 
 
                 if (!ddd_ok(f.EndEtg_ddd_com_2.value)) {
@@ -2047,6 +2086,11 @@ var NUMERO_LOJA_ECOMMERCE_AR_CLUBE = "<%=NUMERO_LOJA_ECOMMERCE_AR_CLUBE%>";
                 if ((f.EndEtg_tel_com_2.value == "") && (f.EndEtg_ddd_com_2.value != "")) {
                     alert('Endereço de entrega: preencha o telefone.');
                     f.EndEtg_tel_com_2.focus();
+                    return;
+                }
+                if (trim(f.EndEtg_ddd_com_2.value) == "" && trim(f.EndEtg_ramal_com_2.value) != "") {
+                    alert('Endereço de entrega: DDD comercial 2 inválido!!');
+                    f.EndEtg_ddd_com_2.focus();
                     return;
                 }
 
@@ -2161,6 +2205,21 @@ var NUMERO_LOJA_ECOMMERCE_AR_CLUBE = "<%=NUMERO_LOJA_ECOMMERCE_AR_CLUBE%>";
 
 <%end if%>
 
+<%if blnUsarMemorizacaoCompletaEnderecos then %>
+			//validar enderecos de email
+			if ((trim(f.EndEtg_email.value) != "") && (!email_ok(f.EndEtg_email.value))) {
+                alert('Endereço de entrega: e-mail inválido!!');
+                f.EndEtg_email.focus();
+                return;
+            }
+
+            if ((trim(f.EndEtg_email_xml.value) != "") && (!email_ok(f.EndEtg_email_xml.value))) {
+                alert('Endereço de entrega: e-mail (XML) inválido!!');
+                f.EndEtg_email_xml.focus();
+                return;
+            }
+<% end if%>
+
 			}
 		}
 
@@ -2268,7 +2327,7 @@ var NUMERO_LOJA_ECOMMERCE_AR_CLUBE = "<%=NUMERO_LOJA_ECOMMERCE_AR_CLUBE%>";
 }
 
 function transferirCamposEndEtg(fNEW) {
-<%if blnUsarMemorizacaoCompletaEnderecos and Not eh_cpf then%>
+<%if blnUsarMemorizacaoCompletaEnderecos and Not eh_cpf and blnEndEntregaEdicaoLiberada then%>
     //Transferimos os dados do endereço de entrega dos campos certos. 
     //Temos dois conjuntos de campos (para PF e PJ) porque o layout é muito diferente.
     var pj = $('input[name="EndEtg_tipo_pessoa"]:checked').val() == "PJ";
@@ -2486,7 +2545,7 @@ function setarValorRadio(array, valor)
 <!-- ********************************************************** -->
 <!-- **********  PÁGINA PARA EDITAR ITENS DO PEDIDO  ********** -->
 <!-- ********************************************************** -->
-<body id="corpoPagina" onload="processaFormaPagtoDefault();trataProdutorRural();">
+<body id="corpoPagina" onload="processaFormaPagtoDefault();">
 <center>
 
 
@@ -2715,7 +2774,7 @@ function setarValorRadio(array, valor)
 		if cliente__tipo = ID_PF then s = Trim(cliente__rg) else s = Trim(cliente__ie)
 			if cliente__tipo = ID_PF then 
 		%>
-	<td align="left"><p class="Rf">RG</p><input id="cliente__rg" name="cliente__rg" class="TA" maxlength="72" style="width:310px;" value="<%=s%>"></td>
+	<td align="left"><p class="Rf">RG</p><input id="cliente__rg" name="cliente__rg" class="TA" maxlength="72" style="width:310px;" value="<%=s%>" <%=strAtributosDadosCadastrais%> ></td>
 	</tr>
 	</table>
 
@@ -2726,41 +2785,51 @@ function setarValorRadio(array, valor)
 				<%s=cliente__produtor_rural_status%>
 				<%if s = converte_numero(COD_ST_CLIENTE_PRODUTOR_RURAL_NAO) then s_aux="checked" else s_aux=""%>
 				
-				<input type="radio" id="rb_produtor_rural_nao" name="rb_produtor_rural" value="<%=COD_ST_CLIENTE_PRODUTOR_RURAL_NAO%>" <%=s_aux%> onclick="trataProdutorRural();"><span class="C" style="cursor:default" onclick="fPED.rb_produtor_rural[0].click();">Não</span>
+				<input type="radio" id="rb_produtor_rural_nao" name="rb_produtor_rural" value="<%=COD_ST_CLIENTE_PRODUTOR_RURAL_NAO%>" <%=s_aux%> onclick="trataProdutorRural();" <%=strAtributosRadioboxDadosCadastrais%> ><span class="C" style="cursor:default" onclick="fPED.rb_produtor_rural[0].click();">Não</span>
 				<%if s = converte_numero(COD_ST_CLIENTE_PRODUTOR_RURAL_SIM) then s_aux="checked" else s_aux=""%>
 				
-				<input type="radio" id="rb_produtor_rural_sim" name="rb_produtor_rural" value="<%=COD_ST_CLIENTE_PRODUTOR_RURAL_SIM%>" <%=s_aux%> onclick="trataProdutorRural();"><span class="C" style="cursor:default" onclick="fPED.rb_produtor_rural[1].click();">Sim</span></p>
+				<input type="radio" id="rb_produtor_rural_sim" name="rb_produtor_rural" value="<%=COD_ST_CLIENTE_PRODUTOR_RURAL_SIM%>" <%=s_aux%> onclick="trataProdutorRural();" <%=strAtributosRadioboxDadosCadastrais%> ><span class="C" style="cursor:default" onclick="fPED.rb_produtor_rural[1].click();">Sim</span></p>
+				
+				<% if not blnDadosCadastraisEdicaoLiberada then %>
+					<input type="hidden" name="rb_produtor_rural" value="<%=cliente__produtor_rural_status%>" />
+				<% end if %>
 			</td>
 		</tr>
 	</table>
-
+	<script type="text/javascript">
+		$(function () { trataProdutorRural(); });
+	</script>
 
 	
 
-	<table width="649" class="QS" cellspacing="0" id="t_contribuinte_icms" onload="trataProdutorRural();">
+	<table width="649" class="QS" cellspacing="0" id="t_contribuinte_icms">
 		<tr>
 			<%s=cliente__ie%>
 			<td width="210" class="MD" align="left"><p class="R">IE</p><p class="C">
-				<input id="cliente__ie" name="cliente__ie" class="TA" maxlength="72" style="width:310px;" value="<%=s%>" /></p>
+				<input id="cliente__ie" name="cliente__ie" class="TA" maxlength="72" style="width:310px;" value="<%=s%>"  <%=strAtributosDadosCadastrais%> /></p>
 			</td>
 			<td align="left"><p class="R">CONTRIBUINTE ICMS</p><p class="C">
 				<%s=cliente__icms%>
 				<%if s = converte_numero(COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO) then s_aux="checked" else s_aux=""%>
 				<% intIdx = 0 %>
-				<input type="radio" id="rb_contribuinte_icms_nao" name="rb_contribuinte_icms" value="<%=COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO%>" <%=s_aux%>><span class="C" style="cursor:default" onclick="fPED.rb_contribuinte_icms[<%=Cstr(intIdx)%>].click();">Não</span>
+				<input type="radio" id="rb_contribuinte_icms_nao" name="rb_contribuinte_icms" value="<%=COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO%>" <%=s_aux%>  <%=strAtributosRadioboxDadosCadastrais%> ><span class="C" style="cursor:default" onclick="fPED.rb_contribuinte_icms[<%=Cstr(intIdx)%>].click();">Não</span>
 				<%if s = converte_numero(COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM) then s_aux="checked" else s_aux=""%>
 				<% intIdx = intIdx + 1 %>
-				<input type="radio" id="rb_contribuinte_icms_sim" name="rb_contribuinte_icms" value="<%=COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM%>" <%=s_aux%>><span class="C" style="cursor:default" onclick="fPED.rb_contribuinte_icms[<%=Cstr(intIdx)%>].click();">Sim</span>
+				<input type="radio" id="rb_contribuinte_icms_sim" name="rb_contribuinte_icms" value="<%=COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM%>" <%=s_aux%>  <%=strAtributosRadioboxDadosCadastrais%> ><span class="C" style="cursor:default" onclick="fPED.rb_contribuinte_icms[<%=Cstr(intIdx)%>].click();">Sim</span>
 				<%if s = converte_numero(COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO) then s_aux="checked" else s_aux=""%>
 				<% intIdx = intIdx + 1 %>
-				<input type="radio" id="rb_contribuinte_icms_isento" name="rb_contribuinte_icms" value="<%=COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO%>" <%=s_aux%>><span class="C" style="cursor:default" onclick="fPED.rb_contribuinte_icms[<%=Cstr(intIdx)%>].click();">Isento</span></p>
+				<input type="radio" id="rb_contribuinte_icms_isento" name="rb_contribuinte_icms" value="<%=COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO%>" <%=s_aux%>  <%=strAtributosRadioboxDadosCadastrais%> ><span class="C" style="cursor:default" onclick="fPED.rb_contribuinte_icms[<%=Cstr(intIdx)%>].click();">Isento</span></p>
+
+				<% if not blnDadosCadastraisEdicaoLiberada then %>
+					<input type="hidden" name="rb_contribuinte_icms" value="<%=cliente__icms%>" />
+				<% end if %>
 			</td>
 		</tr>
 	</table>
 	
 
 <% else %>
-	<td width="215"  align="left"><p class="Rf">IE</p><input id="cliente__ie" name="cliente__ie" class="TA" maxlength="72" style="width:310px;" value="<%=s%>"></td>
+	<td width="215" align="left"><p class="Rf">IE</p><input id="cliente__ie" name="cliente__ie" class="TA" maxlength="72" style="width:310px;" value="<%=s%>"  <%=strAtributosDadosCadastrais%> ></td>
 	</tr>
 	<tr>
 		<td class="MC" align="left" colspan="2"><p class="R">CONTRIBUINTE ICMS</p><p class="C">
@@ -2772,22 +2841,25 @@ function setarValorRadio(array, valor)
                     end if
                 %>
 			
-			<input type="radio" id="rb_contribuinte_icms_nao" name="rb_contribuinte_icms" value="<%=COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO%>" <%=s%>><span class="C" style="cursor:default" onclick="fPED.rb_contribuinte_icms[1].click();">Não</span>
+			<input type="radio" id="rb_contribuinte_icms_nao" name="rb_contribuinte_icms" value="<%=COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO%>" <%=s%>  <%=strAtributosRadioboxDadosCadastrais%> ><span class="C" style="cursor:default" onclick="fPED.rb_contribuinte_icms[0].click();">Não</span>
 				<%
                     s = " "
                     if cliente__icms = converte_numero(COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM) then
                         s = " checked "
                     end if
                 %>
-			<input type="radio" id="rb_contribuinte_icms_sim" name="rb_contribuinte_icms" value="<%=COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM%>" <%=s%>><span class="C" style="cursor:default" onclick="fPED.rb_contribuinte_icms[2].click();">Sim</span>
+			<input type="radio" id="rb_contribuinte_icms_sim" name="rb_contribuinte_icms" value="<%=COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM%>" <%=s%>  <%=strAtributosRadioboxDadosCadastrais%> ><span class="C" style="cursor:default" onclick="fPED.rb_contribuinte_icms[1].click();">Sim</span>
 				<%
                     s = " "
                     if cliente__icms = converte_numero(COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO) then
                         s = " checked "
                     end if
                 %>
-			<input type="radio" id="rb_contribuinte_icms_isento" name="rb_contribuinte_icms" value="<%=COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO%>" <%=s%>><span class="C" style="cursor:default" onclick="fPED.rb_contribuinte_icms[3].click();">Isento</span></p>
+			<input type="radio" id="rb_contribuinte_icms_isento" name="rb_contribuinte_icms" value="<%=COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO%>" <%=s%>  <%=strAtributosRadioboxDadosCadastrais%> ><span class="C" style="cursor:default" onclick="fPED.rb_contribuinte_icms[2].click();">Isento</span></p>
 			
+			<% if not blnDadosCadastraisEdicaoLiberada then %>
+				<input type="hidden" name="rb_contribuinte_icms" value="<%=r_pedido.endereco_contribuinte_icms_status%>" />
+			<% end if %>
 		</td>
 	</tr>
 	</table>
@@ -2805,10 +2877,10 @@ function setarValorRadio(array, valor)
 	if cliente__tipo = ID_PF then s_aux="NOME DO CLIENTE" else s_aux="RAZÃO SOCIAL DO CLIENTE"
 %>
     <tr>
-	<td class="MD" align="left" colspan="2"><p class="Rf"><%=s_aux%></p>
+	<td align="left" colspan="2"><p class="Rf"><%=s_aux%></p>
 	
 		
-		<input id="cliente__nome" name="cliente__nome" class="TA" value="<%=s%>" maxlength="60" style="width:635px;" />
+		<input id="cliente__nome" name="cliente__nome" class="TA" value="<%=s%>" maxlength="60" style="width:635px;"  <%=strAtributosDadosCadastrais%> />
 				
 	
 		</td>
@@ -2818,32 +2890,32 @@ function setarValorRadio(array, valor)
 	<!--  ENDEREÇO DO CLIENTE  -->
 	<table width="649" class="QS" cellspacing="0">
 	    <tr>           
-		    <td colspan="2" class="MB" align="left"><p class="Rf">ENDEREÇO</p><input id="endereco__endereco" name="endereco__endereco" class="TA" maxlength="60" style="width:635px;" onkeypress="if (digitou_enter(true) && tem_info(this.value)) fPED.EndEtg_endereco_numero.focus(); filtra_nome_identificador();" value="<%=cliente__endereco%>"></td>
+		    <td colspan="2" class="MB" align="left"><p class="Rf">ENDEREÇO</p><input id="endereco__endereco" name="endereco__endereco" class="TA" maxlength="60" style="width:635px;" onkeypress="if (digitou_enter(true) && tem_info(this.value)) fPED.EndEtg_endereco_numero.focus(); filtra_nome_identificador();" value="<%=cliente__endereco%>" <%=strAtributosDadosCadastrais%> ></td>
 	    </tr>
 	    <tr>
-		    <td class="MDB" align="left"><p class="Rf">Nº</p><input id="endereco__numero" name="endereco__numero" class="TA" maxlength="20" style="width:310px;" onkeypress="if (digitou_enter(true) && tem_info(this.value)) fPED.EndEtg_endereco_complemento.focus(); filtra_nome_identificador();" value="<%=cliente__endereco_numero%>"></td>
-		    <td class="MB" align="left"><p class="Rf">COMPLEMENTO</p><input id="endereco__complemento" name="endereco__complemento" class="TA" maxlength="60" style="width:310px;" onkeypress="if (digitou_enter(true) && tem_info(this.value)) fPED.EndEtg_bairro.focus(); filtra_nome_identificador();" value="<%=cliente__endereco_complemento%>"></td>
+		    <td class="MDB" align="left"><p class="Rf">Nº</p><input id="endereco__numero" name="endereco__numero" class="TA" maxlength="20" style="width:310px;" onkeypress="if (digitou_enter(true) && tem_info(this.value)) fPED.EndEtg_endereco_complemento.focus(); filtra_nome_identificador();" value="<%=cliente__endereco_numero%>" <%=strAtributosDadosCadastrais%> ></td>
+		    <td class="MB" align="left"><p class="Rf">COMPLEMENTO</p><input id="endereco__complemento" name="endereco__complemento" class="TA" maxlength="60" style="width:310px;" onkeypress="if (digitou_enter(true) && tem_info(this.value)) fPED.EndEtg_bairro.focus(); filtra_nome_identificador();" value="<%=cliente__endereco_complemento%>" <%=strAtributosDadosCadastrais%> ></td>
 	    </tr>
 	    <tr>
-		    <td class="MDB" align="left"><p class="Rf">BAIRRO</p><input id="endereco__bairro" name="endereco__bairro" class="TA" maxlength="72" style="width:310px;" onkeypress="if (digitou_enter(true) && tem_info(this.value)) fPED.EndEtg_cidade.focus(); filtra_nome_identificador();" value="<%=cliente__bairro%>"></td>
-		    <td class="MB" align="left"><p class="Rf">CIDADE</p><input id="endereco__cidade" name="endereco__cidade" class="TA" maxlength="60" style="width:310px;" onkeypress="if (digitou_enter(true) && tem_info(this.value)) fPED.EndEtg_uf.focus(); filtra_nome_identificador();" value="<%=cliente__cidade%>"></td>
+		    <td class="MDB" align="left"><p class="Rf">BAIRRO</p><input id="endereco__bairro" name="endereco__bairro" class="TA" maxlength="72" style="width:310px;" onkeypress="if (digitou_enter(true) && tem_info(this.value)) fPED.EndEtg_cidade.focus(); filtra_nome_identificador();" value="<%=cliente__bairro%>" <%=strAtributosDadosCadastrais%> ></td>
+		    <td class="MB" align="left"><p class="Rf">CIDADE</p><input id="endereco__cidade" name="endereco__cidade" class="TA" maxlength="60" style="width:310px;" onkeypress="if (digitou_enter(true) && tem_info(this.value)) fPED.EndEtg_uf.focus(); filtra_nome_identificador();" value="<%=cliente__cidade%>" <%=strAtributosDadosCadastrais%> ></td>
 	    </tr>
 	    <tr>
-		    <td width="50%" class="MD" align="left"><p class="Rf">UF</p><input id="endereco__uf" name="endereco__uf" class="TA" maxlength="2" size="3" onkeypress="if (digitou_enter(true) && tem_info(this.value) && uf_ok(this.value)) fPED.EndEtg_cep.focus();" onblur="this.value=trim(this.value); if (!uf_ok(this.value)) {alert('UF inválida!!');this.focus();} else this.value=ucase(this.value);" value="<%=cliente__uf%>"></td>
+		    <td width="50%" class="MD" align="left"><p class="Rf">UF</p><input id="endereco__uf" name="endereco__uf" class="TA" maxlength="2" size="3" onkeypress="if (digitou_enter(true) && tem_info(this.value) && uf_ok(this.value)) fPED.EndEtg_cep.focus();" onblur="this.value=trim(this.value); if (!uf_ok(this.value)) {alert('UF inválida!!');this.focus();} else this.value=ucase(this.value);" value="<%=cliente__uf%>" <%=strAtributosDadosCadastrais%> "></td>
 		    <td>
 			    <table width="100%" cellspacing="0" cellpadding="0">
 			    <tr>
-			    <td width="50%" align="left"><p class="Rf">CEP</p><input id="endereco__cep" name="endereco__cep" readonly tabindex=-1 class="TA" maxlength="9" size="11" onkeypress="if (digitou_enter(true) && cep_ok(this.value)) filtra_cep();" onblur="if (!cep_ok(this.value)) {alert('CEP inválido!!');this.focus();} else this.value=cep_formata(this.value);" value='<%=cep_formata(cliente__cep)%>'></td>
+			    <td width="50%" align="left"><p class="Rf">CEP</p><input id="endereco__cep" name="endereco__cep" readonly tabindex=-1 class="TA" maxlength="9" size="11" onkeypress="if (digitou_enter(true) && cep_ok(this.value)) filtra_cep();" onblur="if (!cep_ok(this.value)) {alert('CEP inválido!!');this.focus();} else this.value=cep_formata(this.value);" value='<%=cep_formata(cliente__cep)%>' <%=strAtributosDadosCadastrais%> ></td>
 			    <td align="center">
-				    <% if blnPesquisaCEPAntiga then %>
-				    <button type="button" name="bPesqCepEndEtg" id="bPesqCepEndEtg" style='width:130px;font-size:10pt;' class="Botao" onclick="AbrePesquisaCepEndEtg();">Pesquisar CEP</button>
-				    <% end if %>
-				    <% if blnPesquisaCEPAntiga and blnPesquisaCEPNova then Response.Write "&nbsp;" %>
-				    <% if blnPesquisaCEPNova then %>
-				    <button type="button" name="bPesqCepEndEtg" id="bPesqCepEndEtg" style='width:130px;font-size:10pt;' class="Botao" onclick="exibeJanelaCEP();">Pesquisar CEP</button>
-				    <% end if %>
-				    <a name="bLimparEndEtg" id="bLimparEndEtg" href="javascript:LimparCamposEndEtg(fPED)" title="limpa o endereço de entrega">
-					    <img src="../botao/botao_x_red.gif" style="vertical-align:bottom;margin-bottom:1px;" width="20" height="20" border="0"></a>
+					<% if blnDadosCadastraisEdicaoLiberada then %>
+						<% if blnPesquisaCEPAntiga then %>
+						<button type="button" name="bPesqCepEndEtg" id="bPesqCepEndEtg" style='width:130px;font-size:10pt;' class="Botao" onclick="AbrePesquisaCepEndEtg();">Pesquisar CEP</button>
+						<% end if %>
+						<% if blnPesquisaCEPAntiga and blnPesquisaCEPNova then Response.Write "&nbsp;" %>
+						<% if blnPesquisaCEPNova then %>
+						<button type="button" name="bPesqCepEndEtg" id="bPesqCepEndEtg" style='width:130px;font-size:10pt;' class="Botao" onclick="exibeJanelaCEP();">Pesquisar CEP</button>
+						<% end if %>
+					<% end if %>
 			    </td>
 			    </tr>
 			    </table>
@@ -2856,30 +2928,30 @@ function setarValorRadio(array, valor)
 			<table width="649" class="QS" cellspacing="0">
 	            <tr>
 					<td class="MD" width="20%" align="left"><p class="R">DDD</p><p class="C">
-						<input id="cliente__ddd_res" name="cliente__ddd_res" class="TA" value="<%=cliente__ddd_res%>" maxlength="4" size="5" onkeypress="if (digitou_enter(true) && ddd_ok(this.value)) fPED.EndEtg_tel_res.focus(); filtra_numerico();" onblur="if (!ddd_ok(this.value)) {alert('DDD inválido!!');this.focus();}"></p>
+						<input id="cliente__ddd_res" name="cliente__ddd_res" class="TA" value="<%=cliente__ddd_res%>" maxlength="4" size="5" <%=strAtributosDadosCadastrais%> onkeypress="if (digitou_enter(true) && ddd_ok(this.value)) fPED.cliente__tel_res.focus(); filtra_numerico();" onblur="if (!ddd_ok(this.value)) {alert('DDD inválido!!');this.focus();}"></p>
 					</td>
-					<td class="MD" align="left"><p class="R">TELEFONE RESIDENCIAL</p><p class="C">
-						<input id="cliente__tel_res" name="cliente__tel_res" class="TA" value="<%=telefone_formata(cliente__tel_res)%>" maxlength="11" size="12" onkeypress="if (digitou_enter(true) && telefone_ok(this.value)) fPED.EndEtg_ddd_cel.focus(); filtra_numerico();" onblur="if (!telefone_ok(this.value)) {alert('Telefone inválido!!');this.focus();} else this.value=telefone_formata(this.value);"></p>
+					<td align="left"><p class="R">TELEFONE RESIDENCIAL</p><p class="C">
+						<input id="cliente__tel_res" name="cliente__tel_res" class="TA" value="<%=telefone_formata(cliente__tel_res)%>" maxlength="11" size="12" <%=strAtributosDadosCadastrais%> onkeypress="if (digitou_enter(true) && telefone_ok(this.value)) fPED.cliente__ddd_cel.focus(); filtra_numerico();" onblur="if (!telefone_ok(this.value)) {alert('Telefone inválido!!');this.focus();} else this.value=telefone_formata(this.value);"></p>
 					</td>
 	            </tr>
 			</table>
 			<table width="649" class="QS" cellspacing="0">
 				<tr>
 					<td class="MD" width="20%" align="left"><p class="R">DDD</p><p class="C">
-						<input id="cliente__ddd_cel" name="cliente__ddd_cel" class="TA" value="<%=cliente__ddd_cel%>" maxlength="4" size="5" onkeypress="if (digitou_enter(true) && ddd_ok(this.value)) fPED.EndEtg_tel_cel.focus(); filtra_numerico();" onblur="if (!ddd_ok(this.value)) {alert('DDD inválido!!');this.focus();}"></p>
+						<input id="cliente__ddd_cel" name="cliente__ddd_cel" class="TA" value="<%=cliente__ddd_cel%>" maxlength="4" size="5" <%=strAtributosDadosCadastrais%> onkeypress="if (digitou_enter(true) && ddd_ok(this.value)) fPED.cliente__tel_cel.focus(); filtra_numerico();" onblur="if (!ddd_ok(this.value)) {alert('DDD inválido!!');this.focus();}"></p>
 					</td>
-					<td align="left" class="MD"><p class="R">CELULAR</p><p class="C">
-						<input id="cliente__tel_cel" name="cliente__tel_cel" class="TA" value="<%=telefone_formata(cliente__tel_cel)%>" maxlength="9" size="12" onkeypress="if (digitou_enter(true) && telefone_ok(this.value)) fPED.EndEtg_obs.focus(); filtra_numerico();" onblur="if (!telefone_ok(this.value)) {alert('Número de celular inválido!!');this.focus();} else this.value=telefone_formata(this.value);"></p>
+					<td align="left"><p class="R">CELULAR</p><p class="C">
+						<input id="cliente__tel_cel" name="cliente__tel_cel" class="TA" value="<%=telefone_formata(cliente__tel_cel)%>" maxlength="9" size="12" <%=strAtributosDadosCadastrais%> onkeypress="if (digitou_enter(true) && telefone_ok(this.value)) fPED.cliente__ddd_com.focus(); filtra_numerico();" onblur="if (!telefone_ok(this.value)) {alert('Número de celular inválido!!');this.focus();} else this.value=telefone_formata(this.value);"></p>
 					</td>
 	            </tr>
 			</table>
 			<table width="649" class="QS" cellspacing="0">
 	            <tr>
 					<td class="MD" width="20%" align="left"><p class="R">DDD</p><p class="C">
-						<input id="cliente__ddd_com" name="cliente__ddd_com" class="TA" value="<%=cliente__ddd_com%>" maxlength="4" size="5" onkeypress="if (digitou_enter(true) && ddd_ok(this.value)) fPED.EndEtg_tel_cel.focus(); filtra_numerico();" onblur="if (!ddd_ok(this.value)) {alert('DDD inválido!!');this.focus();}"></p>
+						<input id="cliente__ddd_com" name="cliente__ddd_com" class="TA" value="<%=cliente__ddd_com%>" maxlength="4" size="5" <%=strAtributosDadosCadastrais%> onkeypress="if (digitou_enter(true) && ddd_ok(this.value)) fPED.cliente__tel_com.focus(); filtra_numerico();" onblur="if (!ddd_ok(this.value)) {alert('DDD inválido!!');this.focus();}"></p>
 					</td>
 					<td class="MD" align="left"><p class="R">COMERCIAL</p><p class="C">
-						<input id="cliente__tel_com" name="cliente__tel_com" class="TA" value="<%=telefone_formata(cliente__tel_com)%>" maxlength="9" size="12" onkeypress="if (digitou_enter(true) && telefone_ok(this.value)) fPED.EndEtg_obs.focus(); filtra_numerico();" onblur="if (!telefone_ok(this.value)) {alert('Número de telefone comercial inválido!!');this.focus();} else this.value=telefone_formata(this.value);"></p>
+						<input id="cliente__tel_com" name="cliente__tel_com" class="TA" value="<%=telefone_formata(cliente__tel_com)%>" maxlength="9" size="12" <%=strAtributosDadosCadastrais%> onkeypress="if (digitou_enter(true) && telefone_ok(this.value)) fPED.cliente__ramal_com.focus(); filtra_numerico();" onblur="if (!telefone_ok(this.value)) {alert('Número de telefone comercial inválido!!');this.focus();} else this.value=telefone_formata(this.value);"></p>
 					</td>
 					<td align="left"><p class="R">RAMAL</p><p class="C">
 						<input id="cliente__ramal_com" name="cliente__ramal_com" class="TA" value="<%=cliente__ramal_com%>" maxlength="4" size="6" onkeypress="if (digitou_enter(true)) fPED.EndEtg_ddd_com_2.focus(); filtra_numerico();"></p>
@@ -2893,22 +2965,22 @@ function setarValorRadio(array, valor)
 			<table width="649" class="QS" cellspacing="0">
 	            <tr>
 					<td class="MD" width="20%" align="left"><p class="R">DDD</p><p class="C">
-						<input id="cliente__ddd_com" name="cliente__ddd_com" class="TA" value="<%=cliente__ddd_com%>" maxlength="4" size="5" onkeypress="if (digitou_enter(true) && ddd_ok(this.value)) fPED.EndEtg_tel_com.focus(); filtra_numerico();" onblur="if (!ddd_ok(this.value)) {alert('DDD inválido!!');this.focus();}"></p></td>
+						<input id="cliente__ddd_com" name="cliente__ddd_com" class="TA" value="<%=cliente__ddd_com%>" maxlength="4" size="5" <%=strAtributosDadosCadastrais%> onkeypress="if (digitou_enter(true) && ddd_ok(this.value)) fPED.cliente__tel_com.focus(); filtra_numerico();" onblur="if (!ddd_ok(this.value)) {alert('DDD inválido!!');this.focus();}"></p></td>
 					<td class="MD" align="left"><p class="R">TELEFONE </p><p class="C">
-						<input id="cliente__tel_com" name="cliente__tel_com" class="TA" value="<%=telefone_formata(cliente__tel_com)%>" maxlength="11" size="12" onkeypress="if (digitou_enter(true) && telefone_ok(this.value)) fPED.EndEtg_ramal_com.focus(); filtra_numerico();" onblur="if (!telefone_ok(this.value)) {alert('Telefone inválido!!');this.focus();} else this.value=telefone_formata(this.value);"></p></td>
+						<input id="cliente__tel_com" name="cliente__tel_com" class="TA" value="<%=telefone_formata(cliente__tel_com)%>" maxlength="11" size="12" <%=strAtributosDadosCadastrais%> onkeypress="if (digitou_enter(true) && telefone_ok(this.value)) fPED.cliente__ramal_com.focus(); filtra_numerico();" onblur="if (!telefone_ok(this.value)) {alert('Telefone inválido!!');this.focus();} else this.value=telefone_formata(this.value);"></p></td>
 					<td align="left"><p class="R">RAMAL</p><p class="C">
-						<input id="cliente__ramal_com" name="cliente__ramal_com" class="TA" value="<%=cliente__ramal_com%>" maxlength="4" size="6" onkeypress="if (digitou_enter(true)) fPED.EndEtg_ddd_com_2.focus(); filtra_numerico();"></p>
+						<input id="cliente__ramal_com" name="cliente__ramal_com" class="TA" value="<%=cliente__ramal_com%>" maxlength="4" size="6" <%=strAtributosDadosCadastrais%> onkeypress="if (digitou_enter(true)) fPED.cliente__ddd_com_2.focus(); filtra_numerico();"></p>
 					</td>
 	            </tr>
 	            <tr>
 	                <td class="MD MC" width="20%" align="left"><p class="R">DDD</p><p class="C">
-						<input id="cliente__ddd_com_2" name="cliente__ddd_com_2" class="TA" value="<%=cliente__ddd_com_2%>" maxlength="4" size="5" onkeypress="if (digitou_enter(true) && ddd_ok(this.value)) fPED.EndEtg_tel_com_2.focus(); filtra_numerico();" onblur="if (!ddd_ok(this.value)) {alert('DDD inválido!!!');this.focus();}" /></p>  
+						<input id="cliente__ddd_com_2" name="cliente__ddd_com_2" class="TA" value="<%=cliente__ddd_com_2%>" maxlength="4" size="5" <%=strAtributosDadosCadastrais%> onkeypress="if (digitou_enter(true) && ddd_ok(this.value)) fPED.cliente__tel_com_2.focus(); filtra_numerico();" onblur="if (!ddd_ok(this.value)) {alert('DDD inválido!!!');this.focus();}" /></p>  
 	                </td>
 	                <td class="MD MC" align="left"><p class="R">TELEFONE</p><p class="C">
-						<input id="cliente__tel_com_2" name="cliente__tel_com_2" class="TA" value="<%=telefone_formata(cliente__tel_com_2)%>" maxlength="9" size="12" onkeypress="if (digitou_enter(true) && telefone_ok(this.value)) fPED.EndEtg_ramal_com_2.focus(); filtra_numerico();" onblur="if (!telefone_ok(this.value)) {alert('Telefone inválido!!');this.focus();} else this.value=telefone_formata(this.value);"></p>
+						<input id="cliente__tel_com_2" name="cliente__tel_com_2" class="TA" value="<%=telefone_formata(cliente__tel_com_2)%>" maxlength="9" size="12" <%=strAtributosDadosCadastrais%> onkeypress="if (digitou_enter(true) && telefone_ok(this.value)) fPED.cliente__ramal_com_2.focus(); filtra_numerico();" onblur="if (!telefone_ok(this.value)) {alert('Telefone inválido!!');this.focus();} else this.value=telefone_formata(this.value);"></p>
 	                </td>
 	                <td align="left" class="MC"><p class="R">RAMAL</p><p class="C">
-						<input id="cliente__ramal_com_2" name="cliente__ramal_com_2" class="TA" value="<%=cliente__ramal_com_2%>" maxlength="4" size="6" onkeypress="if (digitou_enter(true)) fPED.EndEtg_obs.focus(); filtra_numerico();" /></p>
+						<input id="cliente__ramal_com_2" name="cliente__ramal_com_2" class="TA" value="<%=cliente__ramal_com_2%>" maxlength="4" size="6" <%=strAtributosDadosCadastrais%> onkeypress="if (digitou_enter(true)) fPED.cliente__email.focus(); filtra_numerico();" /></p>
 	                </td>
 	            </tr>
             </table>
@@ -2918,7 +2990,7 @@ function setarValorRadio(array, valor)
 	<table width="649" class="QS" cellspacing="0">
 		 <tr>           
 		    <td colspan="2" class="Rf" align="left"><p class="Rf">E-MAIL</p>
-				<input id="cliente__email" name="cliente__email" class="TA" maxlength="60" style="width:635px;" value="<%=cliente__email%>" onkeypress="Sfiltra_email();" />
+				<input id="cliente__email" name="cliente__email" class="TA" maxlength="60" style="width:635px;" value="<%=cliente__email%>" <%=strAtributosDadosCadastrais%> onkeypress="if (digitou_enter(true)) fPED.cliente__email_xml.focus(); filtra_email();" />
 
 		    </td>
 	    </tr>
@@ -2928,7 +3000,7 @@ function setarValorRadio(array, valor)
     <table width="649" class="QS" cellspacing="0">
 	    <tr>
 	    <td width="100%" align="left"><p class="R">E-MAIL (XML)</p><p class="C">
-		    <input id="cliente__email_xml" name="cliente__email_xml" value="<%=cliente__email_xml%>" class="TA" maxlength="60" size="74" onkeypress="if (digitou_enter(true)) fPED.rb_end_entrega_nao.focus(); filtra_email();"></p></td>
+			<input id="cliente__email_xml" name="cliente__email_xml" value="<%=cliente__email_xml%>" class="TA" maxlength="60" size="74" <%=strAtributosDadosCadastrais%> onkeypress="filtra_email();"></p></td>
 	    </tr>
     </table>
 
@@ -2937,13 +3009,21 @@ function setarValorRadio(array, valor)
 
 
 
+<br>
+<%
+	dim estilo_superior_entrega 
+	estilo_superior_entrega = "Q"
+%>
 
 <% if Not blnEndEntregaEdicaoLiberada then %>
 <!--  ENDEREÇO DE ENTREGA  -->
 <%	
 	s = pedido_formata_endereco_entrega(r_pedido, r_cliente)
 %>		
-<table width="649" class="QS" cellspacing="0" style="table-layout:fixed">
+<table width="649" class="<%=estilo_superior_entrega%>" cellspacing="0" style="table-layout:fixed">
+	<%
+		estilo_superior_entrega = "QS"
+	%>
 	<tr>
 		<td align="left"><p class="Rf">ENDEREÇO DE ENTREGA</p><p class="C"><%=s%>&nbsp;</p></td>
 	</tr>
@@ -2960,20 +3040,21 @@ function setarValorRadio(array, valor)
 
         <%if eh_cpf then%>
             <!-- ************   ENDEREÇO DE ENTREGA PARA CLIENTE PF   ************ -->
-            <!-- Pegamos todos os atuais. Sem campos editáveis. Pegamos os atuais do cadastro do cliente, não do pedido em si. -->
-            <input type="hidden" id="EndEtg_tipo_pessoa" name="EndEtg_tipo_pessoa" value="PF"/>
-            <input type="hidden" id="EndEtg_cnpj_cpf" name="EndEtg_cnpj_cpf" value="<%=r_cliente.cnpj_cpf%>"/>
-            <input type="hidden" id="EndEtg_ie" name="EndEtg_ie" value="<%=r_cliente.ie%>"/>
-            <input type="hidden" id="EndEtg_contribuinte_icms_status" name="EndEtg_contribuinte_icms_status" value="<%=r_cliente.contribuinte_icms_status%>"/>
-            <input type="hidden" id="EndEtg_rg" name="EndEtg_rg" value="<%=r_cliente.rg%>"/>
-            <input type="hidden" id="EndEtg_produtor_rural_status" name="EndEtg_produtor_rural_status" value="<%=r_cliente.produtor_rural_status%>"/>
-            <input type="hidden" id="EndEtg_email" name="EndEtg_email" value="<%=r_cliente.email%>"/>
-            <input type="hidden" id="EndEtg_email_xml" name="EndEtg_email_xml" value="<%=r_cliente.email_xml%>"/>
-            <input type="hidden" id="EndEtg_nome" name="EndEtg_nome" value="<%=r_cliente.nome%>"/>
-
+			<!-- Pegamos todos os atuais. Sem campos editáveis. Pegamos os atuais dos dados cadastrais do cliente, não do campo em si. -->
+			<!-- Como não são editáveis, sempre vão ser iguais aos cadastrais. E se removermos o endereço de entrega e informarmos novamente, eles devem ser preenchidos. -->
+			<input type="hidden" id="EndEtg_tipo_pessoa" name="EndEtg_tipo_pessoa" value="PF"/>
+			<input type="hidden" id="EndEtg_cnpj_cpf" name="EndEtg_cnpj_cpf" value="<%=cliente__cnpj_cpf%>"/>
+			<input type="hidden" id="EndEtg_ie" name="EndEtg_ie" value="<%=cliente__ie%>"/>
+			<input type="hidden" id="EndEtg_contribuinte_icms_status" name="EndEtg_contribuinte_icms_status" value="<%=cliente__icms%>"/>
+			<input type="hidden" id="EndEtg_rg" name="EndEtg_rg" value="<%=cliente__rg%>"/>
+			<input type="hidden" id="EndEtg_produtor_rural_status" name="EndEtg_produtor_rural_status" value="<%=cliente__produtor_rural_status%>"/>
+			<input type="hidden" id="EndEtg_nome" name="EndEtg_nome" value="<%=cliente__nome%>"/>
 
         <%else%>
-            <table width="649" class="QS Habilitar_EndEtg_outroendereco" cellspacing="0">
+            <table width="649" class="<%=estilo_superior_entrega%> Habilitar_EndEtg_outroendereco" cellspacing="0">
+				<%
+					estilo_superior_entrega = "QS"
+				%>
 	            <tr>
 		            <td align="left">
 		            <p class="R">ENDEREÇO DE ENTREGA</p><p class="C">
@@ -2999,19 +3080,14 @@ function setarValorRadio(array, valor)
 	            </tr>
             </table>
 
-                    <!-- ************   PJ: CNPJ/CONTRIBUINTE ICMS/IE - DO ENDEREÇO DE ENTREGA DE PJ ************ -->
-                    <!-- ************   PF: CPF/PRODUTOR RURAL/CONTRIBUINTE ICMS/IE - DO ENDEREÇO DE ENTREGA DE PJ  ************ -->
-                    <!-- fizemos dois conjuntos diferentes de campos porque a ordem é muito diferente -->
-                    <!-- EndEtg_rg EndEtg_email e EndEtg_email_xml vem diretamente do t_CLIENTE -->
-
-            <input type="hidden" id="EndEtg_cnpj_cpf" name="EndEtg_cnpj_cpf" />
-            <input type="hidden" id="EndEtg_ie" name="EndEtg_ie" />
-            <input type="hidden" id="EndEtg_contribuinte_icms_status" name="EndEtg_contribuinte_icms_status" />
-            <input type="hidden" id="EndEtg_rg" name="EndEtg_rg" value="<%=r_cliente.rg%>"/>
-            <input type="hidden" id="EndEtg_produtor_rural_status" name="EndEtg_produtor_rural_status" />
-            <input type="hidden" id="EndEtg_email" name="EndEtg_email" value="<%=r_cliente.email%>"/>
-            <input type="hidden" id="EndEtg_email_xml" name="EndEtg_email_xml" value="<%=r_cliente.email_xml%>"/>
-
+			<!-- ************   PJ: CNPJ/CONTRIBUINTE ICMS/IE - DO ENDEREÇO DE ENTREGA DE PJ ************ -->
+			<!-- ************   PF: CPF/PRODUTOR RURAL/CONTRIBUINTE ICMS/IE - DO ENDEREÇO DE ENTREGA DE PJ  ************ -->
+			<!-- fizemos dois conjuntos diferentes de campos porque a ordem é muito diferente -->
+			<input type="hidden" id="EndEtg_cnpj_cpf" name="EndEtg_cnpj_cpf" />
+			<input type="hidden" id="EndEtg_ie" name="EndEtg_ie" />
+			<input type="hidden" id="EndEtg_contribuinte_icms_status" name="EndEtg_contribuinte_icms_status" />
+			<input type="hidden" id="EndEtg_rg" name="EndEtg_rg" value="<%=cliente__rg%>"/>
+			<input type="hidden" id="EndEtg_produtor_rural_status" name="EndEtg_produtor_rural_status" />
 
             <table width="649" class="QS Habilitar_EndEtg_outroendereco Mostrar_EndEtg_pj" cellspacing="0">
 	            <tr>
@@ -3115,7 +3191,10 @@ function setarValorRadio(array, valor)
 
 
 
-    <table width="649" class="QS" cellspacing="0">
+    <table width="649" class="<%=estilo_superior_entrega%>" cellspacing="0">
+		<%
+			estilo_superior_entrega = "QS"
+		%>
 	    <tr>
             <%
                 s = "ENDEREÇO"
@@ -3161,17 +3240,17 @@ function setarValorRadio(array, valor)
         <%if eh_cpf then%>
 
             <!-- ************   ENDEREÇO DE ENTREGA PARA PF: TELEFONES   ************ -->
-            <!-- Pegamos todos os atuais. Sem campos editáveis. Pegamos os atuais do cadastro do cliente, não do pedido em si. -->
-            <input type="hidden" id="EndEtg_ddd_res" name="EndEtg_ddd_res" value="<%=r_cliente.ddd_res%>"/>
-            <input type="hidden" id="EndEtg_tel_res" name="EndEtg_tel_res" value="<%=r_cliente.tel_res%>"/>
-            <input type="hidden" id="EndEtg_ddd_cel" name="EndEtg_ddd_cel" value="<%=r_cliente.ddd_cel%>"/>
-            <input type="hidden" id="EndEtg_tel_cel" name="EndEtg_tel_cel" value="<%=r_cliente.tel_cel%>"/>
-            <input type="hidden" id="EndEtg_ddd_com" name="EndEtg_ddd_com" value="<%=r_cliente.ddd_com%>"/>
-            <input type="hidden" id="EndEtg_tel_com" name="EndEtg_tel_com" value="<%=r_cliente.tel_com%>"/>
-            <input type="hidden" id="EndEtg_ramal_com" name="EndEtg_ramal_com" value="<%=r_cliente.ramal_com%>"/>
-            <input type="hidden" id="EndEtg_ddd_com_2" name="EndEtg_ddd_com_2" value="<%=r_cliente.ddd_com_2%>"/>
-            <input type="hidden" id="EndEtg_tel_com_2" name="EndEtg_tel_com_2" value="<%=r_cliente.tel_com_2%>"/>
-            <input type="hidden" id="EndEtg_ramal_com_2" name="EndEtg_ramal_com_2" value="<%=r_cliente.ramal_com_2%>"/>
+			<!-- Pegamos todos os atuais. Sem campos editáveis. -->
+            <input type="hidden" id="EndEtg_ddd_res" name="EndEtg_ddd_res" value="<%=r_pedido.EndEtg_ddd_res%>"/>
+            <input type="hidden" id="EndEtg_tel_res" name="EndEtg_tel_res" value="<%=r_pedido.EndEtg_tel_res%>"/>
+            <input type="hidden" id="EndEtg_ddd_cel" name="EndEtg_ddd_cel" value="<%=r_pedido.EndEtg_ddd_cel%>"/>
+            <input type="hidden" id="EndEtg_tel_cel" name="EndEtg_tel_cel" value="<%=r_pedido.EndEtg_tel_cel%>"/>
+            <input type="hidden" id="EndEtg_ddd_com" name="EndEtg_ddd_com" value="<%=r_pedido.EndEtg_ddd_com%>"/>
+            <input type="hidden" id="EndEtg_tel_com" name="EndEtg_tel_com" value="<%=r_pedido.EndEtg_tel_com%>"/>
+            <input type="hidden" id="EndEtg_ramal_com" name="EndEtg_ramal_com" value="<%=r_pedido.EndEtg_ramal_com%>"/>
+            <input type="hidden" id="EndEtg_ddd_com_2" name="EndEtg_ddd_com_2" value="<%=r_pedido.EndEtg_ddd_com_2%>"/>
+            <input type="hidden" id="EndEtg_tel_com_2" name="EndEtg_tel_com_2" value="<%=r_pedido.EndEtg_tel_com_2%>"/>
+            <input type="hidden" id="EndEtg_ramal_com_2" name="EndEtg_ramal_com_2" value="<%=r_pedido.EndEtg_ramal_com_2%>"/>
 
         <%else%>
         
@@ -3187,7 +3266,7 @@ function setarValorRadio(array, valor)
 	            <td class="MD MC" width="20%" align="left"><p class="R">DDD</p><p class="C">
 		            <input id="EndEtg_ddd_cel" name="EndEtg_ddd_cel" class="TA" value="<%=r_pedido.EndEtg_ddd_cel%>" maxlength="4" size="5" onkeypress="if (digitou_enter(true) && ddd_ok(this.value)) fPED.EndEtg_tel_cel.focus(); filtra_numerico();" onblur="if (!ddd_ok(this.value)) {alert('DDD inválido!!');this.focus();}"></p></td>
 	            <td align="left" class="MC"><p class="R">CELULAR</p><p class="C">
-		            <input id="EndEtg_tel_cel" name="EndEtg_tel_cel" class="TA" value="<%=r_pedido.EndEtg_tel_cel%>" maxlength="9" size="12" onkeypress="if (digitou_enter(true) && telefone_ok(this.value)) fPED.EndEtg_obs.focus(); filtra_numerico();" onblur="if (!telefone_ok(this.value)) {alert('Número de celular inválido!!');this.focus();} else this.value=telefone_formata(this.value);"></p></td>
+		            <input id="EndEtg_tel_cel" name="EndEtg_tel_cel" class="TA" value="<%=r_pedido.EndEtg_tel_cel%>" maxlength="9" size="12" onkeypress="if (digitou_enter(true) && telefone_ok(this.value)) fPED.EndEtg_email.focus(); filtra_numerico();" onblur="if (!telefone_ok(this.value)) {alert('Número de celular inválido!!');this.focus();} else this.value=telefone_formata(this.value);"></p></td>
 	            </tr>
             </table>
 	
@@ -3209,12 +3288,31 @@ function setarValorRadio(array, valor)
 	                <input id="EndEtg_tel_com_2" name="EndEtg_tel_com_2" class="TA" value="<%=r_pedido.EndEtg_tel_com_2%>" maxlength="9" size="12" onkeypress="if (digitou_enter(true) && telefone_ok(this.value)) fPED.EndEtg_ramal_com_2.focus(); filtra_numerico();" onblur="if (!telefone_ok(this.value)) {alert('Telefone inválido!!');this.focus();} else this.value=telefone_formata(this.value);"></p>
 	                </td>
 	                <td align="left" class="MC"><p class="R">RAMAL</p><p class="C">
-	                <input id="EndEtg_ramal_com_2" name="EndEtg_ramal_com_2" class="TA" value="<%=r_pedido.EndEtg_ramal_com_2%>" maxlength="4" size="6" onkeypress="if (digitou_enter(true)) fPED.EndEtg_obs.focus(); filtra_numerico();" /></p>
+	                <input id="EndEtg_ramal_com_2" name="EndEtg_ramal_com_2" class="TA" value="<%=r_pedido.EndEtg_ramal_com_2%>" maxlength="4" size="6" onkeypress="if (digitou_enter(true)) fPED.EndEtg_email.focus(); filtra_numerico();" /></p>
 	                </td>
 	            </tr>
             </table>
 
         <% end if %>
+
+
+		<!-- ************   E-MAIL   ************ -->
+		<table width="649" class="QS" cellspacing="0">
+			<tr>
+			<td width="100%" align="left"><p class="R">E-MAIL</p><p class="C">
+				<input id="EndEtg_email" name="EndEtg_email" class="TA" value="<%=r_pedido.EndEtg_email%>" maxlength="60" size="74" onkeypress="if (digitou_enter(true)) fPED.EndEtg_email_xml.focus(); filtra_email();"></p></td>
+			</tr>
+		</table>
+
+		<!-- ************   E-MAIL (XML)  ************ -->
+		<table width="649" class="QS" cellspacing="0">
+			<tr>
+			<td width="100%" align="left"><p class="R">E-MAIL (XML)</p><p class="C">
+				<input id="EndEtg_email_xml" name="EndEtg_email_xml" class="TA" value="<%=r_pedido.EndEtg_email_xml%>" maxlength="60" size="74" onkeypress="if (digitou_enter(true)) fPED.EndEtg_obs.focus(); filtra_email();"></p></td>
+			</tr>
+		</table>
+
+
     <%end if%> <% 'blnUsarMemorizacaoCompletaEnderecos %>
 
 
