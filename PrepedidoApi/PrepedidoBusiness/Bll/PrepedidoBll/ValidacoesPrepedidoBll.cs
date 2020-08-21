@@ -52,9 +52,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             //buscar coeficiente 
             //vamos alterar para montar uma lista de coeficiente para avista
             lstCoeficiente = (await MontarListaCoeficiente(lstFornec, qtdeParcelas, siglaFormaPagto)).ToList();
-            //lstCoeficiente =
-            //    (await BuscarListaCoeficientesFornecedores(lstFornec, qtdeParcelas, siglaFormaPagto)).ToList();
-
+            
             //validar se os coeficientes estão ok
             ValidarCustoFinancFornecCoeficiente(prepedido.ListaProdutos, lstCoeficiente, lstErros);
 
@@ -343,13 +341,12 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             {
                 await ValidarDadosEnderecoEntrega(prepedido, lstErros, contextoProvider);
 
-                if (prepedido.DadosCliente.Tipo == Constantes.ID_PJ)
-                    await ValidarDadosPessoaEnderecoEntrega(prepedido, lstErros);
+                ValidarDadosPessoaEnderecoEntrega(prepedido, lstErros, false);
 
                 if (lstErros.Count != 0)
                 {
                     retorno = false;
-                }                    
+                }
             }
 
             return retorno;
@@ -466,14 +463,9 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return retorno;
         }
 
-        private async Task ValidarDadosPessoaEnderecoEntrega(PrePedidoDto prePedido, List<string> lstErros)
+        private void ValidarDadosPessoaEnderecoEntrega(PrePedidoDto prePedido, List<string> lstErros,
+            bool flagMsg_IE_Cadastro_PF)
         {
-            var cliente = await clienteBll.BuscarCliente(prePedido.DadosCliente.Cnpj_Cpf,
-                prePedido.DadosCliente.Indicador_Orcamentista);
-
-            //incluir a flag blnUsarMemorizacaoCompletaEnderecos
-            //incluir verificação para saber se o tipo da pessoa é PF ou PJ para validar corretamente
-
             if (prePedido.EnderecoEntrega.EndEtg_tipo_pessoa != Constantes.ID_PJ &&
                 prePedido.EnderecoEntrega.EndEtg_tipo_pessoa != Constantes.ID_PF)
             {
@@ -497,30 +489,45 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 }
             }
 
-            if (lstErros.Count == 0)
+            if (prePedido.DadosCliente.Tipo == Constantes.ID_PF)
             {
-                if (!string.IsNullOrEmpty(prePedido.EnderecoEntrega.EndEtg_ie))
+                if (prePedido.EnderecoEntrega.EndEtg_tipo_pessoa != Constantes.ID_PF)
                 {
-                    ValidacoesClienteBll.VerificarInscricaoEstadualValida(
-                        prePedido.EnderecoEntrega.EndEtg_ie, prePedido.EnderecoEntrega.EndEtg_uf, lstErros, true);
+                    lstErros.Add("Endereço de Entrega: se cliente é tipo PF, o tipo de pessoa do endereço de " +
+                        "entrega deve ser PF.");
                 }
             }
 
-
+            if (lstErros.Count == 0)
+            {
+                //só validamos o IE se o cliente for PJ
+                //Cliente PF aceita IE com estado do endereço de endereço de entrega diferente
+                if (prePedido.DadosCliente.Tipo == Constantes.ID_PJ)
+                {
+                    if (!string.IsNullOrEmpty(prePedido.EnderecoEntrega.EndEtg_ie))
+                    {
+                        ValidacoesClienteBll.VerificarInscricaoEstadualValida(
+                            prePedido.EnderecoEntrega.EndEtg_ie, prePedido.EnderecoEntrega.EndEtg_uf, lstErros, flagMsg_IE_Cadastro_PF);
+                    }
+                }
+            }
         }
 
         private void ValidarDadosPessoaEnderecoEntrega_PJ(EnderecoEntregaDtoClienteCadastro endEtg, List<string> lstErros)
         {
             if (endEtg.EndEtg_tipo_pessoa == Constantes.ID_PJ)
             {
-                if (!Util.ValidaCNPJ(endEtg.EndEtg_cnpj_cpf))
-                {
+                if (string.IsNullOrEmpty(endEtg.EndEtg_cnpj_cpf) ||
+                    !Util.ValidaCNPJ(endEtg.EndEtg_cnpj_cpf))
                     lstErros.Add("Endereço de entrega: CNPJ inválido!");
-                }
 
                 if (endEtg.EndEtg_produtor_rural_status == 1)
                 {
                     lstErros.Add("Endereço de entrega: Se tipo pessoa é PJ, não pode ser Produtor Rural!");
+                }
+                if (!string.IsNullOrEmpty(endEtg.EndEtg_rg))
+                {
+                    lstErros.Add("Endereço de entrega: Se tipo pessoa é PJ, não pode ter RG preenchido!");
                 }
 
                 if (endEtg.EndEtg_contribuinte_icms_status !=
@@ -538,10 +545,6 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 {
                     lstErros.Add("Endereço de entrega: valor de contribuinte do ICMS inválido!");
                 }
-
-                if (string.IsNullOrEmpty(endEtg.EndEtg_cnpj_cpf) ||
-                    !Util.ValidaCNPJ(endEtg.EndEtg_cnpj_cpf))
-                    lstErros.Add("Endereço de entrega: CNPJ inválido!");
 
                 if (string.IsNullOrEmpty(endEtg.EndEtg_contribuinte_icms_status.ToString()))
                     lstErros.Add("Endereço de entrega: selecione o tipo de contribuinte de ICMS!");
@@ -563,52 +566,84 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                     endEtg.EndEtg_ie.IndexOf("ISEN") > -1)
                     lstErros.Add("Endereço de entrega: se cliente é contribuinte do ICMS, " +
                         "não pode ter o valor ISENTO no campo de Inscrição Estadual!");
-
-                if (!string.IsNullOrEmpty(endEtg.EndEtg_ie))
-                    ValidacoesClienteBll.VerificarInscricaoEstadualValida(endEtg.EndEtg_ie,
-                        endEtg.EndEtg_uf, lstErros, true);
             }
         }
 
         private void ValidarDadosPessoaEnderecoEntrega_PJ_Tel(EnderecoEntregaDtoClienteCadastro endEtg, List<string> lstErros)
         {
-            if (!string.IsNullOrEmpty(endEtg.EndEtg_tel_com) || !string.IsNullOrEmpty(endEtg.EndEtg_ddd_com))
+            if (!string.IsNullOrEmpty(endEtg.EndEtg_tel_com) ||
+                !string.IsNullOrEmpty(endEtg.EndEtg_ddd_com) ||
+                !string.IsNullOrEmpty(endEtg.EndEtg_ramal_com))
             {
-                if (Util.Telefone_SoDigito(endEtg.EndEtg_tel_com).Length < 6)
-                    lstErros.Add("Endereço de entrega: telefone comercial inválido!");
-
-                if (string.IsNullOrEmpty(endEtg.EndEtg_ddd_com))
+                if (!string.IsNullOrEmpty(endEtg.EndEtg_tel_com) &&
+                    string.IsNullOrEmpty(endEtg.EndEtg_ddd_com))
                 {
                     lstErros.Add("Endereço de entrega: preencha o ddd do telefone comercial!");
                 }
-                else
+                if (string.IsNullOrEmpty(endEtg.EndEtg_tel_com) &&
+                    !string.IsNullOrEmpty(endEtg.EndEtg_ddd_com))
                 {
+                    lstErros.Add("Endereço de entrega: preencha o telefone comercial!");
+                }
+                if (string.IsNullOrEmpty(endEtg.EndEtg_tel_com) &&
+                    string.IsNullOrEmpty(endEtg.EndEtg_ddd_com) &&
+                    !string.IsNullOrEmpty(endEtg.EndEtg_ramal_com))
+                {
+                    lstErros.Add("Endereço de entrega: Ramal do telefone comercial preenchido " +
+                        "sem telefone comercial");
+                }
+
+                if (!string.IsNullOrEmpty(endEtg.EndEtg_tel_com) &&
+                    !string.IsNullOrEmpty(endEtg.EndEtg_ddd_com))
+                {
+                    if (Util.Telefone_SoDigito(endEtg.EndEtg_tel_com).Length < 6)
+                        lstErros.Add("Endereço de entrega: telefone comercial inválido!");
+
                     if (endEtg.EndEtg_ddd_com.Length != 2)
                         lstErros.Add("Endereço de entrega: ddd do telefone comercial inválido!");
                 }
             }
 
-            if (!string.IsNullOrEmpty(endEtg.EndEtg_tel_com_2) || !string.IsNullOrEmpty(endEtg.EndEtg_ddd_com_2))
+            if (!string.IsNullOrEmpty(endEtg.EndEtg_tel_com_2) ||
+                !string.IsNullOrEmpty(endEtg.EndEtg_ddd_com_2) ||
+                !string.IsNullOrEmpty(endEtg.EndEtg_ramal_com_2))
             {
-                if (Util.Telefone_SoDigito(endEtg.EndEtg_tel_com_2).Length < 6)
-                    lstErros.Add("Endereço de entrega: telefone comercial 2 inválido!");
-
-                if (string.IsNullOrEmpty(endEtg.EndEtg_ddd_com_2))
+                if (!string.IsNullOrEmpty(endEtg.EndEtg_tel_com_2) &&
+                    string.IsNullOrEmpty(endEtg.EndEtg_ddd_com_2))
                 {
                     lstErros.Add("Endereço de entrega: preencha o ddd do telefone comercial 2!");
                 }
-                else
+                if (string.IsNullOrEmpty(endEtg.EndEtg_tel_com_2) &&
+                    !string.IsNullOrEmpty(endEtg.EndEtg_ddd_com_2))
                 {
+                    lstErros.Add("Endereço de entrega: preencha o telefone comercial 2!");
+                }
+                if (string.IsNullOrEmpty(endEtg.EndEtg_tel_com_2) &&
+                    string.IsNullOrEmpty(endEtg.EndEtg_ddd_com_2) &&
+                    !string.IsNullOrEmpty(endEtg.EndEtg_ramal_com_2))
+                {
+                    lstErros.Add("Endereço de entrega: Ramal do telefone comercial 2 preenchido " +
+                        "sem telefone comercial 2");
+                }
+
+                if (!string.IsNullOrEmpty(endEtg.EndEtg_tel_com_2) &&
+                    !string.IsNullOrEmpty(endEtg.EndEtg_ddd_com_2))
+                {
+                    if (Util.Telefone_SoDigito(endEtg.EndEtg_tel_com_2).Length < 6)
+                        lstErros.Add("Endereço de entrega: telefone comercial 2 inválido!");
+
                     if (endEtg.EndEtg_ddd_com_2.Length != 2)
                         lstErros.Add("Endereço de entrega: ddd do telefone comercial 2 inválido!");
                 }
             }
 
-            if (!string.IsNullOrEmpty(endEtg.EndEtg_ddd_res) || !string.IsNullOrEmpty(endEtg.EndEtg_tel_res))
-                lstErros.Add("Endereço de entrega: se tipo pessoa PJ, não pode conter telefone residencial!");
+            if (!string.IsNullOrEmpty(endEtg.EndEtg_ddd_res) ||
+                !string.IsNullOrEmpty(endEtg.EndEtg_tel_res))
+                lstErros.Add("Endereço de entrega: se tipo pessoa PJ, não pode conter DDD residencial e telefone residencial!");
 
-            if (!string.IsNullOrEmpty(endEtg.EndEtg_ddd_cel) || !string.IsNullOrEmpty(endEtg.EndEtg_tel_cel))
-                lstErros.Add("Endereço de entrega: se tipo pessoa PJ, não pode conter telefone celular!");
+            if (!string.IsNullOrEmpty(endEtg.EndEtg_ddd_cel) ||
+                !string.IsNullOrEmpty(endEtg.EndEtg_tel_cel))
+                lstErros.Add("Endereço de entrega: se tipo pessoa PJ, não pode conter DDD celular e telefone celular!");
         }
 
         private void ValidarDadosPessoaEnderecoEntrega_PF(EnderecoEntregaDtoClienteCadastro endEtg, List<string> lstErros)
@@ -679,7 +714,23 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                         (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM &&
                         endEtg.EndEtg_produtor_rural_status != (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
                         lstErros.Add("Endereço de entrega: se cliente é contribuinte do ICMS, ele dever ser Produtor Rural!");
+                }
 
+                if (endEtg.EndEtg_produtor_rural_status ==
+                    (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO &&
+                    endEtg.EndEtg_tipo_pessoa == Constantes.ID_PF)
+                {
+                    if (endEtg.EndEtg_contribuinte_icms_status !=
+                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL)
+                    {
+                        lstErros.Add("Endereço de entrega: se cliente é não produtor rural, contribuinte do " +
+                            "ICMS deve ter o valor inicial!");
+                    }
+                    if (!string.IsNullOrEmpty(endEtg.EndEtg_ie))
+                    {
+                        lstErros.Add("Endereço de entrega: se cliente é não produtor rural, o IE " +
+                            "deve ser preenchido!");
+                    }
                 }
             }
         }
@@ -719,7 +770,15 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 }
             }
 
-            if (!string.IsNullOrEmpty(endEtg.EndEtg_ddd_com_2) || !string.IsNullOrEmpty(endEtg.EndEtg_tel_com_2))
+            if (!string.IsNullOrEmpty(endEtg.EndEtg_ddd_com) ||
+                !string.IsNullOrEmpty(endEtg.EndEtg_tel_com) ||
+                !string.IsNullOrEmpty(endEtg.EndEtg_ramal_com))
+            {
+                lstErros.Add("Endereço de entrega: se tipo pessoa PF, não pode conter telefone comercial.");
+            }
+            if (!string.IsNullOrEmpty(endEtg.EndEtg_ddd_com_2) ||
+                !string.IsNullOrEmpty(endEtg.EndEtg_tel_com_2) ||
+                !string.IsNullOrEmpty(endEtg.EndEtg_ramal_com_2))
             {
                 lstErros.Add("Endereço de entrega: se tipo pessoa PF, não pode conter telefone comercial 2.");
             }

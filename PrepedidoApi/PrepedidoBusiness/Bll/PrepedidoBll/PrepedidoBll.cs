@@ -14,6 +14,7 @@ using InfraBanco;
 using PrepedidoBusiness.Bll.ProdutoBll;
 using PrepedidoBusiness.Bll.ClienteBll;
 using PrepedidoBusiness.Bll.FormaPagtoBll;
+using PrepedidoBusiness.Dto.FormaPagto;
 
 namespace PrepedidoBusiness.Bll.PrepedidoBll
 {
@@ -26,11 +27,12 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         private readonly ValidacoesFormaPagtoBll validacoesFormaPagtoBll;
         private readonly MontarLogPrepedidoBll montarLogPrepedidoBll;
         private readonly IBancoNFeMunicipio bancoNFeMunicipio;
+        private readonly FormaPagtoBll.FormaPagtoBll formaPagtoBll;
 
         public PrepedidoBll(ContextoBdProvider contextoProvider, ClienteBll.ClienteBll clienteBll,
             ValidacoesPrepedidoBll validacoesPrepedidoBll, CepBll cepBll,
             ValidacoesFormaPagtoBll validacoesFormaPagtoBll, MontarLogPrepedidoBll montarLogPrepedidoBll,
-            IBancoNFeMunicipio bancoNFeMunicipio)
+            IBancoNFeMunicipio bancoNFeMunicipio, FormaPagtoBll.FormaPagtoBll formaPagtoBll)
         {
             this.contextoProvider = contextoProvider;
             this.clienteBll = clienteBll;
@@ -39,6 +41,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             this.validacoesFormaPagtoBll = validacoesFormaPagtoBll;
             this.montarLogPrepedidoBll = montarLogPrepedidoBll;
             this.bancoNFeMunicipio = bancoNFeMunicipio;
+            this.formaPagtoBll = formaPagtoBll;
         }
 
         public async Task<IEnumerable<string>> ListarNumerosPrepedidosCombo(string orcamentista)
@@ -696,6 +699,20 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 prePedido.DadosCliente.Nascimento = cliente.DadosCliente.Nascimento;
             }
 
+            if(cliente.DadosCliente.Tipo == Constantes.ID_PF)
+            {
+                if(prePedido.EnderecoCadastroClientePrepedido.Endereco_tipo_pessoa != Constantes.ID_PF)
+                {
+                    lstErros.Add("Se cliente é tipo PF, o tipo da pessoa de endereço cadastral deve ser PF.");
+                }
+            }
+            if (cliente.DadosCliente.Tipo == Constantes.ID_PJ)
+            {
+                if (prePedido.EnderecoCadastroClientePrepedido.Endereco_tipo_pessoa != Constantes.ID_PJ)
+                {
+                    lstErros.Add("Se cliente é tipo PJ, o tipo da pessoa de endereço cadastral deve ser PJ.");
+                }
+            }
 
             //antes de validar vamos passar o EnderecoCadastral para dadoscliente
             prePedido.DadosCliente =
@@ -706,7 +723,8 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             List<ListaBancoDto> lstBanco = (await clienteBll.ListarBancosCombo()).ToList();
             //vamos validar os dados do cliente
             await ValidacoesClienteBll.ValidarDadosCliente(prePedido.DadosCliente, null, null,
-                lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, true);
+                lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco,
+                prePedido.DadosCliente.Tipo == Constantes.ID_PF ? true : false);
 
             //if (lstErros.Count > 0)
             //    return lstErros;
@@ -746,8 +764,10 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 //busca a sigla do tipo de pagamento pelo código enviado
                 string c_custoFinancFornecTipoParcelamento = ObterSiglaFormaPagto(prePedido);
 
+                //precisa incluir uma validação de forma de pagamento com base no orçamentista enviado
+                FormaPagtoDto formasPagto = await formaPagtoBll.ObterFormaPagto(tOrcamentista.Apelido, prePedido.DadosCliente.Tipo);
                 if (validacoesFormaPagtoBll.ValidarFormaPagto(prePedido, lstErros, limiteArredondamento,
-                    0.1M, c_custoFinancFornecTipoParcelamento))
+                    0.1M, c_custoFinancFornecTipoParcelamento, formasPagto))
                 {
                     //Esta sendo verificado qual o tipo de pagamento que esta sendo feito e retornando a quantidade de parcelas
                     int c_custoFinancFornecQtdeParcelas = ObterQtdeParcelasFormaPagto(prePedido);
@@ -968,7 +988,8 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 torcamento.Endereco_numero = prePedido.DadosCliente.Numero;
                 torcamento.Endereco_complemento = !string.IsNullOrEmpty(prePedido.DadosCliente.Complemento) ?
                     prePedido.DadosCliente.Complemento : "";
-                torcamento.Endereco_email = prePedido.DadosCliente.Email;
+                torcamento.Endereco_email = !string.IsNullOrEmpty(prePedido.DadosCliente.Email) ?
+                    prePedido.DadosCliente.Email : "";
                 torcamento.Endereco_email_xml = !string.IsNullOrEmpty(prePedido.DadosCliente.EmailXml) ?
                     prePedido.DadosCliente.EmailXml : "";
                 torcamento.Endereco_nome = prePedido.DadosCliente.Nome;
@@ -1130,58 +1151,61 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         {
             if (torcamento != null)
             {
-                torcamento.EndEtg_Endereco = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_endereco) ?
-                    "" : prepedido.EnderecoEntrega.EndEtg_endereco;
-                torcamento.EndEtg_Endereco_Numero = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_endereco_numero) ?
-                    "" : prepedido.EnderecoEntrega.EndEtg_endereco_numero;
-                torcamento.EndEtg_Endereco_Complemento = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_endereco_complemento) ?
-                    "" : prepedido.EnderecoEntrega.EndEtg_endereco_complemento;
-                torcamento.EndEtg_Bairro = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_bairro) ?
-                    "" : prepedido.EnderecoEntrega.EndEtg_bairro;
-                torcamento.EndEtg_Cidade = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_cidade) ?
-                    "" : prepedido.EnderecoEntrega.EndEtg_cidade;
-                torcamento.EndEtg_UF = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_uf) ?
-                    "" : prepedido.EnderecoEntrega.EndEtg_uf;
-                torcamento.EndEtg_CEP = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_cep) ?
-                    "" : prepedido.EnderecoEntrega.EndEtg_cep.Replace("-", "");
-                torcamento.EndEtg_Cod_Justificativa = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_cod_justificativa) ?
-                    "" : prepedido.EnderecoEntrega.EndEtg_cod_justificativa;
-                torcamento.EndEtg_email = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_email) ?
-                    "" : prepedido.EnderecoEntrega.EndEtg_email;
-                torcamento.EndEtg_email_xml = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_email_xml) ?
-                    "" : prepedido.EnderecoEntrega.EndEtg_email_xml;
-                torcamento.EndEtg_nome = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_nome) ?
-                    "" : prepedido.EnderecoEntrega.EndEtg_nome;
-                torcamento.EndEtg_ddd_res = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_ddd_res) ?
-                    "" : prepedido.EnderecoEntrega.EndEtg_ddd_res;
-                torcamento.EndEtg_tel_res = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_tel_res) ?
-                    "" : prepedido.EnderecoEntrega.EndEtg_tel_res;
-                torcamento.EndEtg_ddd_com = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_ddd_com) ?
-                    "" : prepedido.EnderecoEntrega.EndEtg_ddd_com;
-                torcamento.EndEtg_tel_com = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_tel_com) ?
-                    "" : prepedido.EnderecoEntrega.EndEtg_tel_com;
-                torcamento.EndEtg_ramal_com = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_ramal_com) ?
-                    "" : prepedido.EnderecoEntrega.EndEtg_ramal_com;
-                torcamento.EndEtg_ddd_cel = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_ddd_cel) ?
-                    "" : prepedido.EnderecoEntrega.EndEtg_ddd_cel;
-                torcamento.EndEtg_tel_cel = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_tel_cel) ?
-                    "" : prepedido.EnderecoEntrega.EndEtg_tel_cel;
-                torcamento.EndEtg_ddd_com_2 = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_ddd_com_2) ?
-                    "" : prepedido.EnderecoEntrega.EndEtg_ddd_com_2;
-                torcamento.EndEtg_tel_com_2 = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_tel_com_2) ?
-                    "" : prepedido.EnderecoEntrega.EndEtg_tel_com_2;
-                torcamento.EndEtg_ramal_com_2 = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_ramal_com_2) ?
-                    "" : prepedido.EnderecoEntrega.EndEtg_ramal_com_2;
-                torcamento.EndEtg_tipo_pessoa = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_tipo_pessoa) ?
-                    "" : prepedido.EnderecoEntrega.EndEtg_tipo_pessoa;
-                torcamento.EndEtg_cnpj_cpf = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_cnpj_cpf) ?
-                    "" : Util.SoDigitosCpf_Cnpj(prepedido.EnderecoEntrega.EndEtg_cnpj_cpf);
-                torcamento.EndEtg_contribuinte_icms_status = prepedido.EnderecoEntrega.EndEtg_contribuinte_icms_status;
-                torcamento.EndEtg_produtor_rural_status = prepedido.EnderecoEntrega.EndEtg_produtor_rural_status;
-                torcamento.EndEtg_ie = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_ie) ?
-                    "" : prepedido.EnderecoEntrega.EndEtg_ie;
-                torcamento.EndEtg_rg = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_rg) ?
-                    "" : prepedido.EnderecoEntrega.EndEtg_rg;
+                if (prepedido.EnderecoEntrega.EndEtg_cod_justificativa != null)
+                {
+                    torcamento.EndEtg_Endereco = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_endereco) ?
+                        "" : prepedido.EnderecoEntrega.EndEtg_endereco;
+                    torcamento.EndEtg_Endereco_Numero = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_endereco_numero) ?
+                        "" : prepedido.EnderecoEntrega.EndEtg_endereco_numero;
+                    torcamento.EndEtg_Endereco_Complemento = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_endereco_complemento) ?
+                        "" : prepedido.EnderecoEntrega.EndEtg_endereco_complemento;
+                    torcamento.EndEtg_Bairro = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_bairro) ?
+                        "" : prepedido.EnderecoEntrega.EndEtg_bairro;
+                    torcamento.EndEtg_Cidade = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_cidade) ?
+                        "" : prepedido.EnderecoEntrega.EndEtg_cidade;
+                    torcamento.EndEtg_UF = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_uf) ?
+                        "" : prepedido.EnderecoEntrega.EndEtg_uf;
+                    torcamento.EndEtg_CEP = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_cep) ?
+                        "" : prepedido.EnderecoEntrega.EndEtg_cep.Replace("-", "");
+                    torcamento.EndEtg_Cod_Justificativa = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_cod_justificativa) ?
+                        "" : prepedido.EnderecoEntrega.EndEtg_cod_justificativa;
+                    torcamento.EndEtg_email = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_email) ?
+                        "" : prepedido.EnderecoEntrega.EndEtg_email;
+                    torcamento.EndEtg_email_xml = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_email_xml) ?
+                        "" : prepedido.EnderecoEntrega.EndEtg_email_xml;
+                    torcamento.EndEtg_nome = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_nome) ?
+                        "" : prepedido.EnderecoEntrega.EndEtg_nome;
+                    torcamento.EndEtg_ddd_res = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_ddd_res) ?
+                        "" : prepedido.EnderecoEntrega.EndEtg_ddd_res;
+                    torcamento.EndEtg_tel_res = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_tel_res) ?
+                        "" : prepedido.EnderecoEntrega.EndEtg_tel_res;
+                    torcamento.EndEtg_ddd_com = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_ddd_com) ?
+                        "" : prepedido.EnderecoEntrega.EndEtg_ddd_com;
+                    torcamento.EndEtg_tel_com = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_tel_com) ?
+                        "" : prepedido.EnderecoEntrega.EndEtg_tel_com;
+                    torcamento.EndEtg_ramal_com = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_ramal_com) ?
+                        "" : prepedido.EnderecoEntrega.EndEtg_ramal_com;
+                    torcamento.EndEtg_ddd_cel = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_ddd_cel) ?
+                        "" : prepedido.EnderecoEntrega.EndEtg_ddd_cel;
+                    torcamento.EndEtg_tel_cel = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_tel_cel) ?
+                        "" : prepedido.EnderecoEntrega.EndEtg_tel_cel;
+                    torcamento.EndEtg_ddd_com_2 = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_ddd_com_2) ?
+                        "" : prepedido.EnderecoEntrega.EndEtg_ddd_com_2;
+                    torcamento.EndEtg_tel_com_2 = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_tel_com_2) ?
+                        "" : prepedido.EnderecoEntrega.EndEtg_tel_com_2;
+                    torcamento.EndEtg_ramal_com_2 = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_ramal_com_2) ?
+                        "" : prepedido.EnderecoEntrega.EndEtg_ramal_com_2;
+                    torcamento.EndEtg_tipo_pessoa = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_tipo_pessoa) ?
+                        "" : prepedido.EnderecoEntrega.EndEtg_tipo_pessoa;
+                    torcamento.EndEtg_cnpj_cpf = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_cnpj_cpf) ?
+                        "" : Util.SoDigitosCpf_Cnpj(prepedido.EnderecoEntrega.EndEtg_cnpj_cpf);
+                    torcamento.EndEtg_contribuinte_icms_status = prepedido.EnderecoEntrega.EndEtg_contribuinte_icms_status;
+                    torcamento.EndEtg_produtor_rural_status = prepedido.EnderecoEntrega.EndEtg_produtor_rural_status;
+                    torcamento.EndEtg_ie = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_ie) ?
+                        "" : prepedido.EnderecoEntrega.EndEtg_ie;
+                    torcamento.EndEtg_rg = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_rg) ?
+                        "" : prepedido.EnderecoEntrega.EndEtg_rg;
+                }
             }
         }
 

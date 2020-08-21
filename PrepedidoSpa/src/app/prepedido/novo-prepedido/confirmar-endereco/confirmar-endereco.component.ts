@@ -53,6 +53,7 @@ export class ConfirmarEnderecoComponent implements OnInit {
     //precisamos fazer a busca de cep para saber se tem endereço bairro e cidade para bloquear ou não
     this.enderecoEntregaDtoClienteCadastro = enderecoEntregaDtoClienteCadastro;
     const src = this.componenteCep;
+    src.cep_retorno = this.enderecoEntregaDtoClienteCadastro.EndEtg_cep;
     src.Endereco = this.enderecoEntregaDtoClienteCadastro.EndEtg_endereco;
     src.Numero = this.enderecoEntregaDtoClienteCadastro.EndEtg_endereco_numero;
     src.Complemento = this.enderecoEntregaDtoClienteCadastro.EndEtg_endereco_complemento;
@@ -158,6 +159,7 @@ export class ConfirmarEnderecoComponent implements OnInit {
   PF() {
     this.inicializarCamposEndereco(this.enderecoEntregaDtoClienteCadastro);
     this.componenteCep.zerarCamposEndEntrega();
+    this.componenteCep.cep_retorno = "";
     this.componenteCep.Cep = "";
     this.pessoaEntregaEhPF = true;
     this.pessoaEntregaEhPJ = false;
@@ -167,6 +169,7 @@ export class ConfirmarEnderecoComponent implements OnInit {
   PJ() {
     this.inicializarCamposEndereco(this.enderecoEntregaDtoClienteCadastro);
     this.componenteCep.zerarCamposEndEntrega();
+    this.componenteCep.cep_retorno = "";
     this.componenteCep.Cep = "";
     this.pessoaEntregaEhPJ = true;
     this.pessoaEntregaEhPF = false;

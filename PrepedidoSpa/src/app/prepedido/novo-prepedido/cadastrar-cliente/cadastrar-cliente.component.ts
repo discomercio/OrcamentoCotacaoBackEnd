@@ -136,8 +136,11 @@ export class CadastrarClienteComponent extends TelaDesktopBaseComponent implemen
     }
 
     this.converterTelefones();
+    if (this.clienteCorpo.cadastrando)
+      this.clienteCorpo.componenteCep.required = true;
 
-    let validacoes: string[] = ValidacoesClienteUtils.ValidarDadosClienteCadastroDto(this.dadosClienteCadastroDto, this.clienteCadastroDto, this.ehPf());
+    let validacoes: string[] = ValidacoesClienteUtils.ValidarDadosClienteCadastroDto(this.dadosClienteCadastroDto,
+      this.clienteCadastroDto, this.ehPf(), this.clienteCorpo.componenteCep.lstCidadeIBGE);
     //mostrar as mensagens
     if (validacoes.length > 0) {
       this.desconverterTelefones();

@@ -258,7 +258,8 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
                 Cidade = dadosClienteUnis.Cidade,
                 Uf = dadosClienteUnis.Uf,
                 Complemento = dadosClienteUnis.Complemento,
-                Contato = dadosClienteUnis.Contato
+                Contato = dadosClienteUnis.Contato,
+                Observacao_Filiacao = dadosClienteUnis.Observacao_Filiacao
             };
 
             return ret;

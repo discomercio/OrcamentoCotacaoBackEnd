@@ -7,4 +7,5 @@
     Numero: string;
     Complemento: string;
     LogradouroComplemento: string;
+    ListaCidadeIBGE: string[];
 }

@@ -215,7 +215,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
                 PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual,
                 TipoPessoa.PF);
 
-            
+
             testesClienteUnisBll.TestarCadastro(c =>
             {
                 c.DadosCliente.Ie = "11112222";
@@ -381,6 +381,15 @@ alerta="TELEFONE CELULAR (" & s_ddd_cel & ") " & s_tel_cel & " JÁ ESTÁ SENDO U
                 c.DadosCliente.TelefoneResidencial = "12345678";
             },
                 "PREENCHA O TELEFONE COMERCIAL.",
+                    TipoPessoa.PF);
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.DddComercial = "12";
+                c.DadosCliente.TelComercial = "";
+                c.DadosCliente.Ramal = "";
+            },
+                "PREENCHA PELO MENOS UM TELEFONE (RESIDENCIAL, COMERCIAL OU CELULAR).",
                     TipoPessoa.PF);
 
             testesClienteUnisBll.TestarCadastro(c =>

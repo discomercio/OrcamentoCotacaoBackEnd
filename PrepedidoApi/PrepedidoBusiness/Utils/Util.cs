@@ -709,12 +709,14 @@ namespace PrepedidoBusiness.Utils
                             dataEntregaImediata = true;
                             log = log + campo_atual + "; ";
                         }
-
+                        
                         if (campo_atual == coluna)
                         {
                             //pegando o valor coluna
                             var value = (c.GetValue(obj, null));
-                            if (string.IsNullOrEmpty(value.ToString()))
+                            if (value == null)
+                                log = log + coluna + "=" + "\"\"" + "; ";
+                            else if (string.IsNullOrEmpty(value.ToString()))
                                 log = log + coluna + "=" + "\"\"" + "; ";
                             else
                                 log = log + coluna + "=" + value + "; ";

@@ -6,16 +6,25 @@ using System.Linq;
 using PrepedidoBusiness.Dto.Cep;
 using Microsoft.EntityFrameworkCore;
 using System.Data.SqlClient;
+using PrepedidoBusiness.Utils;
+using PrepedidoBusiness.Bll.ClienteBll;
+using InfraBanco;
+using InfraBanco.Modelos;
 
 namespace PrepedidoBusiness.Bll
 {
     public class CepBll
     {
         private readonly InfraBanco.ContextoCepProvider contextoCepProvider;
+        private readonly IBancoNFeMunicipio bancoNFeMunicipio;
+        private readonly ContextoBdProvider contextoProvider;
 
-        public CepBll(InfraBanco.ContextoCepProvider contextoCepProvider)
+        public CepBll(InfraBanco.ContextoCepProvider contextoCepProvider, IBancoNFeMunicipio bancoNFeMunicipio, 
+            ContextoBdProvider contextoProvider)
         {
             this.contextoCepProvider = contextoCepProvider;
+            this.bancoNFeMunicipio = bancoNFeMunicipio;
+            this.contextoProvider = contextoProvider;
         }
 
         public async Task<IEnumerable<CepDto>> BuscarCep(string cep, string endereco, string uf, string cidade)
@@ -28,7 +37,7 @@ namespace PrepedidoBusiness.Bll
 
                 if (cep.Length == 8)
                 {
-                    cepDto = (await BuscarPorCep(cep)).ToList();
+                    cepDto = (await BuscarPorCep(cep)).ToList();                    
                 }
             }
             else if (!string.IsNullOrEmpty(endereco) && !string.IsNullOrEmpty(uf) && !string.IsNullOrEmpty(cidade))
@@ -36,6 +45,34 @@ namespace PrepedidoBusiness.Bll
                 endereco = endereco.Replace("Rua", "").Replace("R", "").Replace(":", "").Replace("Av", "").Replace("Avenida", "").Replace(".", "").Trim();
 
                 cepDto = (await BuscarPorEndereco(endereco, uf, cidade)).ToList();
+            }
+
+            if (cepDto.Count > 0)
+            {
+                //vamos validar para saber se a cidade existe no IBGE
+                List<string> lstErros = new List<string>();
+                //se não consistir vamos busca a lista de Cidades com base na UF
+                if (!await ValidacoesClienteBll.ConsisteMunicipioIBGE(cepDto[0].Cidade, cepDto[0].Uf, lstErros,
+                    contextoProvider, bancoNFeMunicipio, false))
+                {
+                    //vamos busca a lista de cidades com base na UF
+                    List<UFeMunicipiosDto> lstMunicipio = (await bancoNFeMunicipio.BuscarSiglaTodosUf(contextoProvider, cepDto[0].Uf, "")).ToList();
+                    cepDto[0].ListaCidadeIBGE = new List<string>();
+                    //vamos atribuir para a classe de cep uma Lista com todas as cidades do estado
+                    if (lstMunicipio.Count > 0)
+                    {
+                        lstMunicipio.ForEach(x =>
+                        {
+                            if (x.ListaMunicipio.Count > 0)
+                            {
+                                x.ListaMunicipio.ForEach(y =>
+                                {
+                                    cepDto[0].ListaCidadeIBGE.Add(y.Descricao);
+                                });
+                            }
+                        });
+                    }
+                }
             }
 
             return cepDto;
@@ -284,13 +321,41 @@ namespace PrepedidoBusiness.Bll
                                 Uf = result["uf"].ToString(),
                                 Cidade = result["localidade"].ToString(),
                                 Bairro = result["bairro_extenso"].ToString(),
-                                Endereco = result["logradouro_tipo"].ToString() + " " + result["logradouro_nome"].ToString(),//c.Log_tipo_logradouro + " " + c.Log_no
+                                Endereco = (result["logradouro_tipo"].ToString() + " " + result["logradouro_nome"].ToString()).Trim(),//c.Log_tipo_logradouro + " " + c.Log_no
                                 LogradouroComplemento = result["logradouro_complemento"].ToString()
                             });
                         }
                     }
                 }
-            }            
+            }
+
+            if (cepdto.Count > 0)
+            {
+                //vamos validar para saber se a cidade existe no IBGE
+                List<string> lstErros = new List<string>();
+                //se não consistir vamos busca a lista de Cidades com base na UF
+                if (!await ValidacoesClienteBll.ConsisteMunicipioIBGE(cepdto[0].Cidade, cepdto[0].Uf, lstErros,
+                    contextoProvider, bancoNFeMunicipio, false))
+                {
+                    //vamos busca a lista de cidades com base na UF
+                    List<UFeMunicipiosDto> lstMunicipio = (await bancoNFeMunicipio.BuscarSiglaTodosUf(contextoProvider, cepdto[0].Uf, "")).ToList();
+                    cepdto[0].ListaCidadeIBGE = new List<string>();
+                    //vamos atribuir para a classe de cep uma Lista com todas as cidades do estado
+                    if (lstMunicipio.Count > 0)
+                    {
+                        lstMunicipio.ForEach(x =>
+                        {
+                            if (x.ListaMunicipio.Count > 0)
+                            {
+                                x.ListaMunicipio.ForEach(y =>
+                                {
+                                    cepdto[0].ListaCidadeIBGE.Add(y.Descricao);
+                                });
+                            }
+                        });
+                    }
+                }
+            }
 
             return cepdto;
         }

@@ -14,5 +14,6 @@ namespace PrepedidoBusiness.Dto.Cep
         public string Numero { get; set; }
         public string Complemento { get; set; }
         public string LogradouroComplemento { get; set; }
+        public List<string> ListaCidadeIBGE { get; set; }
     }
 }
