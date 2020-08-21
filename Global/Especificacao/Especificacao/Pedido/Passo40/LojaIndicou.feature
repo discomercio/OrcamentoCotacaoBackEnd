@@ -15,7 +15,7 @@ Background: Configurar lojas para teste
 	And Novo registro "comissao_indicacao" = "1"
 	And Gravar registro 
 
-	And reinicializar banco após teste
+    And Reiniciar banco quando terminar o teste
 
 Scenario: Seomnte pode existir se for vendedor externo
 	Given Pedido base

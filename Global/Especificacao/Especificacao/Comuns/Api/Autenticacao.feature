@@ -3,8 +3,9 @@ Feature: Autenticacao
 	Verificar a autenticação
 
 Background: Testar em:
-	Given Implementado em "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido"
-	
+	Given Nome deste item "Especificacao.Comuns.Api.Autenticacao"
+	And Implementado em "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.ListaExecucao"
+	And Implementado em "Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.ListaExecucao"	
 
 Scenario: Autenticação inválida
 	Given Dado base

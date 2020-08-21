@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiUnis\PrepedidoUnis\BuscarQtdeParcCartaoVisa\ListaExecucao.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiUnis\PrepedidoUnis\CadastrarPrepedido\CadastrarPrepedidoVerificarQueExecutou - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\CaminhoFelizApi.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\CaminhoFelizAsp.feature.cs" />
@@ -55,6 +56,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Ambiente\ApiUnis\PrepedidoUnis\BuscarQtdeParcCartaoVisa\ListaExecucao.feature.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
     <Compile Update="Especificacao\Pedido\CaminhoFelizApi.feature.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
@@ -76,6 +80,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <SpecFlowFeatureFiles Update="Ambiente\ApiUnis\PrepedidoUnis\BuscarQtdeParcCartaoVisa\ListaExecucao.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
     <SpecFlowFeatureFiles Update="Especificacao\Pedido\CaminhoFelizApi.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>

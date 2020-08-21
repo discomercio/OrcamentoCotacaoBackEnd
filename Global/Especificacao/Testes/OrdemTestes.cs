@@ -13,7 +13,8 @@ namespace Especificacao.Testes
     class OrdemTestesCollection : Xunit.ITestCollectionOrderer
     {
         //todos os features que devam ser executados no fim do processo devem ter isto no nome do Feature: 
-        private static readonly string NomeFeatureExecutadaNoFim = "VerificarQueExecutou";
+        private static readonly string NomeFeatureExecutadaNoFim1 = "VerificarQueExecutou";
+        private static readonly string NomeFeatureExecutadaNoFim2 = "ListaExecucao";
 
         public IEnumerable<Xunit.Abstractions.ITestCollection> OrderTestCollections(IEnumerable<Xunit.Abstractions.ITestCollection> testCollections)
         {
@@ -29,7 +30,8 @@ namespace Especificacao.Testes
             */
 
             //quem tem NomeFeatureExecutadaNoFim vai para o fim
-            var ret = testCollections.OrderBy(collection => collection.DisplayName.Contains(NomeFeatureExecutadaNoFim));
+            var ret = testCollections.OrderBy(collection =>
+                collection.DisplayName.Contains(NomeFeatureExecutadaNoFim1) || collection.DisplayName.Contains(NomeFeatureExecutadaNoFim2));
             return ret;
         }
     }
