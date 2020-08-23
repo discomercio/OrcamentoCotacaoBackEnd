@@ -22,7 +22,7 @@ namespace Especificacao.Testes.Utils.InjecaoDependencia
         private ProvedorServicos()
         {
             var logTestes = LogTestes.GetInstance();
-            logTestes.Log("ProvedorServicos inicio");
+            logTestes.LogMensagem("ProvedorServicos inicio");
 
             var services = new ServiceCollection();
 
@@ -49,12 +49,9 @@ namespace Especificacao.Testes.Utils.InjecaoDependencia
 
             //inicializa o banco de dados
             var bd = new Testes.Utils.BancoTestes.InicializarBancoGeral(Servicos.GetRequiredService<InfraBanco.ContextoBdProvider>(), Servicos.GetRequiredService<InfraBanco.ContextoCepProvider>());
-            bd.Inicializar();
+            bd.Inicializar(false);
 
-            //inicializa os tokens na ApiUnis
-            Ambiente.ApiUnis.InjecaoDependencias.InicializarDados(Servicos);
-
-            logTestes.Log("ProvedorServicos fim");
+            logTestes.LogMensagem("ProvedorServicos fim");
         }
     }
 }

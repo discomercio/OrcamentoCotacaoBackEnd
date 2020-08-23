@@ -25,11 +25,25 @@ namespace Especificacao.Testes.Utils
         private static readonly string DiretorioLog = @"c:\temp\arclube_testes_log";
         private readonly StreamWriter Writer;
 
-        public void Log(string msg)
+        public static void Log(string? msg)
+        {
+            msg = msg ?? "vazio";
+            GetInstance().LogMensagem(msg);
+        }
+
+        public void LogMensagem(string msg)
         {
             string msglog = DateTime.Now.ToString("yyyy.MM.dd HH:mm:ss:ffff") + " - " + msg;
             Writer.WriteLine(msglog);
             Writer.Flush();
+        }
+
+        public static void Stack()
+        {
+            var este = GetInstance();
+            string msglog = DateTime.Now.ToString("yyyy.MM.dd HH:mm:ss:ffff") + " - " + $"StackTrace: '{Environment.StackTrace}'";
+            este.Writer.WriteLine(msglog);
+            este.Writer.Flush();
         }
 
         #region IDisposable Support

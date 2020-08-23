@@ -83,14 +83,14 @@ namespace Especificacao.Especificacao.Pedido.Passo30
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Lista de CDs disponíveis")]
+        [Xunit.SkippableFactAttribute(DisplayName="Configuração")]
         [Xunit.TraitAttribute("FeatureTitle", "Validação do CD")]
-        [Xunit.TraitAttribute("Description", "Lista de CDs disponíveis")]
-        public virtual void ListaDeCDsDisponiveis()
+        [Xunit.TraitAttribute("Description", "Configuração")]
+        public virtual void Configuracao()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Lista de CDs disponíveis", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Configuração", null, tagsOfScenario, argumentsOfScenario);
 #line 5
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -112,6 +112,47 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 6
+ testRunner.Given("Nome deste item \"Especificacao.Pedido.Passo30.CD\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 7
+ testRunner.Given("Implementado em \"Especificacao.Pedido.Pedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 8
+ testRunner.And("Fim da configuração", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Lista de CDs disponíveis")]
+        [Xunit.TraitAttribute("FeatureTitle", "Validação do CD")]
+        [Xunit.TraitAttribute("Description", "Lista de CDs disponíveis")]
+        public virtual void ListaDeCDsDisponiveis()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Lista de CDs disponíveis", null, tagsOfScenario, argumentsOfScenario);
+#line 10
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 11
 testRunner.Given("afazer todo: terminar de fazer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }
@@ -126,7 +167,7 @@ testRunner.Given("afazer todo: terminar de fazer", ((string)(null)), ((TechTalk.
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar permissão de CD", null, tagsOfScenario, argumentsOfScenario);
-#line 8
+#line 13
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -146,16 +187,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 9
+#line 14
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 10
+#line 15
  testRunner.And("Usuário sem permissão OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 11
+#line 16
  testRunner.When("Informo \"c_id_nfe_emitente_selecao_manual\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 12
+#line 17
  testRunner.Then("Erro \"Usuário não tem permissão de especificar o CD", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -170,7 +211,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar CD escolhido caso manual", null, tagsOfScenario, argumentsOfScenario);
-#line 14
+#line 19
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -190,16 +231,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 15
+#line 20
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 16
+#line 21
  testRunner.And("Usuário com permissão OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 17
+#line 22
  testRunner.When("Informo \"c_id_nfe_emitente_selecao_manual\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 18
+#line 23
  testRunner.Then("Erro \"Usuário não tem permissão de especificar o CD", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

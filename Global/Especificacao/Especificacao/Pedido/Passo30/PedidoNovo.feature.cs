@@ -89,28 +89,14 @@ namespace Especificacao.Especificacao.Pedido.Passo30
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validar CEP")]
+        [Xunit.SkippableFactAttribute(DisplayName="Configuração")]
         [Xunit.TraitAttribute("FeatureTitle", "Endereco")]
-        [Xunit.TraitAttribute("Description", "Validar CEP")]
-        public virtual void ValidarCEP()
+        [Xunit.TraitAttribute("Description", "Configuração")]
+        public virtual void Configuracao()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar CEP", @"	if Trim("""" & r_cliente.cep) <> """" then
-		if Len(retorna_so_digitos(Trim("""" & r_cliente.cep))) < 8 then
-			alerta=texto_add_br(alerta)
-			alerta=alerta & ""O CEP do cadastro do cliente está incompleto (CEP: "" & Trim("""" & r_cliente.cep) & "")""
-			end if
-		end if
-
-	if rb_end_entrega = ""S"" then
-		if EndEtg_cep <> """" then
-			if Len(retorna_so_digitos(EndEtg_cep)) < 8 then
-				alerta=texto_add_br(alerta)
-				alerta=alerta & ""O CEP do endereço de entrega está incompleto (CEP: "" & EndEtg_cep & "")""
-				end if
-			end if
-		end if", tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Configuração", null, tagsOfScenario, argumentsOfScenario);
 #line 5
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -134,7 +120,65 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 21
+#line 6
+ testRunner.Given("Nome deste item \"Especificacao.Pedido.Passo30.PedidoNovo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 7
+ testRunner.Given("Implementado em \"Especificacao.Pedido.Pedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 8
+ testRunner.And("Fim da configuração", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Validar CEP")]
+        [Xunit.TraitAttribute("FeatureTitle", "Endereco")]
+        [Xunit.TraitAttribute("Description", "Validar CEP")]
+        public virtual void ValidarCEP()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar CEP", @"	if Trim("""" & r_cliente.cep) <> """" then
+		if Len(retorna_so_digitos(Trim("""" & r_cliente.cep))) < 8 then
+			alerta=texto_add_br(alerta)
+			alerta=alerta & ""O CEP do cadastro do cliente está incompleto (CEP: "" & Trim("""" & r_cliente.cep) & "")""
+			end if
+		end if
+
+	if rb_end_entrega = ""S"" then
+		if EndEtg_cep <> """" then
+			if Len(retorna_so_digitos(EndEtg_cep)) < 8 then
+				alerta=texto_add_br(alerta)
+				alerta=alerta & ""O CEP do endereço de entrega está incompleto (CEP: "" & EndEtg_cep & "")""
+				end if
+			end if
+		end if", tagsOfScenario, argumentsOfScenario);
+#line 11
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 3
+this.FeatureBackground();
+#line hidden
+#line 27
 testRunner.Given("fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }
@@ -151,7 +195,7 @@ testRunner.Given("fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ddd_res", "\t\'\tDDD VÁLIDO?\r\n\t\tif Not ddd_ok(r_cliente.ddd_res) then\r\n\t\t\tif alerta <> \"\" then " +
                     "alerta = alerta & \"<br><br>\" & String(80,\"=\") & \"<br><br>\"\r\n\t\t\talerta = alerta &" +
                     " \"DDD do telefone residencial é inválido!!\"\r\n\t\t\tend if", tagsOfScenario, argumentsOfScenario);
-#line 24
+#line 30
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -174,31 +218,31 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 30
+#line 36
  testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 31
+#line 37
  testRunner.And("Informo \"ddd_res\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 32
- testRunner.Then("Erro \"DDD do telefone residencial é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 34
- testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 35
- testRunner.And("Informo \"ddd_res\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 36
- testRunner.Then("Erro \"DDD do telefone residencial é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
 #line 38
- testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 39
- testRunner.And("Informo \"ddd_res\" = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("Erro \"DDD do telefone residencial é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 40
+ testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 41
+ testRunner.And("Informo \"ddd_res\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 42
+ testRunner.Then("Erro \"DDD do telefone residencial é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 44
+ testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 45
+ testRunner.And("Informo \"ddd_res\" = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 46
  testRunner.Then("Sem erro \"DDD do telefone residencial é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -215,7 +259,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ddd_com", "\t\tif Not ddd_ok(r_cliente.ddd_com) then\r\n\t\t\tif alerta <> \"\" then alerta = alerta " +
                     "& \"<br><br>\" & String(80,\"=\") & \"<br><br>\"\r\n\t\t\talerta = alerta & \"DDD do telefon" +
                     "e comercial é inválido!!\"\r\n\t\t\tend if", tagsOfScenario, argumentsOfScenario);
-#line 42
+#line 48
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -238,31 +282,31 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 48
+#line 54
  testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 49
+#line 55
  testRunner.And("Informo \"ddd_com\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 50
- testRunner.Then("Erro \"DDD do telefone comercial é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 52
- testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 53
- testRunner.And("Informo \"ddd_com\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 54
- testRunner.Then("Erro \"DDD do telefone comercial é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
 #line 56
- testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 57
- testRunner.And("Informo \"ddd_com\" = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("Erro \"DDD do telefone comercial é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 58
+ testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 59
+ testRunner.And("Informo \"ddd_com\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 60
+ testRunner.Then("Erro \"DDD do telefone comercial é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 62
+ testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 63
+ testRunner.And("Informo \"ddd_com\" = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 64
  testRunner.Then("Sem erro \"DDD do telefone comercial é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -283,7 +327,7 @@ this.FeatureBackground();
 						""<br>"" & ""Certifique-se de que a UF informada corresponde à UF responsável pelo registro da IE.""
 				end if
 			end if", tagsOfScenario, argumentsOfScenario);
-#line 60
+#line 66
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -306,7 +350,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 68
+#line 74
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
@@ -322,7 +366,7 @@ this.FeatureBackground();
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("MUNICÍPIO DE ACORDO C/ TABELA DO IBGE?", "\t\tif Not consiste_municipio_IBGE_ok(r_cliente.cidade, r_cliente.uf, s_lista_suger" +
                     "ida_municipios, msg_erro) then", tagsOfScenario, argumentsOfScenario);
-#line 70
+#line 76
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -345,7 +389,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 72
+#line 78
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
@@ -362,46 +406,6 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("MUNICÍPIO DE ENTREGA DE ACORDO C/ TABELA DO IBGE?", "\t\tif rb_end_entrega = \"S\" then\r\n\t\t\'\tMUNICÍPIO DE ACORDO C/ TABELA DO IBGE?\r\n\t\t\tif" +
                     " Not consiste_municipio_IBGE_ok(EndEtg_cidade, EndEtg_uf, s_lista_sugerida_munic" +
                     "ipios, msg_erro) then", tagsOfScenario, argumentsOfScenario);
-#line 75
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 3
-this.FeatureBackground();
-#line hidden
-#line 79
- testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="\'VERIFICA SE O MESMO CÓDIGO FOI DIGITADO REPETIDO EM VÁRIAS LINHAS")]
-        [Xunit.TraitAttribute("FeatureTitle", "Endereco")]
-        [Xunit.TraitAttribute("Description", "\'VERIFICA SE O MESMO CÓDIGO FOI DIGITADO REPETIDO EM VÁRIAS LINHAS")]
-        public virtual void VERIFICASEOMESMOCODIGOFOIDIGITADOREPETIDOEMVARIASLINHAS()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("\'VERIFICA SE O MESMO CÓDIGO FOI DIGITADO REPETIDO EM VÁRIAS LINHAS", "alerta=alerta & \"Produto \" & vDuplic(i).produto & \" do fabricante \" & vDuplic(i)." +
-                    "fabricante & \": linha \" & renumera_com_base1(LBound(vDuplic),i) & \" repete o mes" +
-                    "mo produto da linha \" & renumera_com_base1(LBound(vDuplic),j)", tagsOfScenario, argumentsOfScenario);
 #line 81
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -425,7 +429,47 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 83
+#line 85
+ testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="\'VERIFICA SE O MESMO CÓDIGO FOI DIGITADO REPETIDO EM VÁRIAS LINHAS")]
+        [Xunit.TraitAttribute("FeatureTitle", "Endereco")]
+        [Xunit.TraitAttribute("Description", "\'VERIFICA SE O MESMO CÓDIGO FOI DIGITADO REPETIDO EM VÁRIAS LINHAS")]
+        public virtual void VERIFICASEOMESMOCODIGOFOIDIGITADOREPETIDOEMVARIASLINHAS()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("\'VERIFICA SE O MESMO CÓDIGO FOI DIGITADO REPETIDO EM VÁRIAS LINHAS", "alerta=alerta & \"Produto \" & vDuplic(i).produto & \" do fabricante \" & vDuplic(i)." +
+                    "fabricante & \": linha \" & renumera_com_base1(LBound(vDuplic),i) & \" repete o mes" +
+                    "mo produto da linha \" & renumera_com_base1(LBound(vDuplic),j)", tagsOfScenario, argumentsOfScenario);
+#line 87
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 3
+this.FeatureBackground();
+#line hidden
+#line 89
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }

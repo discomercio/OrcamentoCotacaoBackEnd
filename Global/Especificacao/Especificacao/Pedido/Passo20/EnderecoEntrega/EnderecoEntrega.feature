@@ -2,8 +2,14 @@
 @Especificacao.Pedido
 Feature: Validar endereco de entrega
 
+
 Background: Pedido base com endereço de entrega (pedido e prepedido)
 	Given Pedido base com endereço de entrega
+
+Scenario: Configuração
+	Given Nome deste item "Especificacao.Pedido.Passo20.EnderecoEntrega.EnderecoEntrega"
+	Given Implementado em "Especificacao.Pedido.Pedido"
+	And Fim da configuração
 
 Scenario: Informado
 loja/ClienteEdita.asp 
@@ -92,4 +98,20 @@ Scenario: EndEtg_cep errado
 Scenario: EndEtg_cidade errado
 	When Informo "EndEtg_cidade" = "12345678"
 	Then Erro "EndEtg_cidade não existe (acertar a mensagem)"
+
+#validação da cidade que não está no IBGE
+Scenario: EndEtg_cidade não no IBGE
+	When Informo "EndEtg_cep" = "68912350"
+	When Informo "EndEtg_cidade" = "Abacate da Pedreira"
+	Then Erro "Cidade não está no IBGE (acertar a mensagem)"
+
+	When Informo "EndEtg_cep" = "68912350"
+	When Informo "EndEtg_cidade" = "Amapá"
+	Then Sem nenhum erro
+
+#se a cidade existir no OBGE, deve ser a mesma do CEP
+Scenario: EndEtg_cidade não no IBGE 2
+	When Informo "EndEtg_cep" = "04321001"
+	When Informo "EndEtg_cidade" = "Santo André"
+	Then Erro "Cidade inconsistente"
 

@@ -56,13 +56,14 @@ namespace Especificacao.Especificacao.Pedido
                     "\r\n\tSe o cliente não existir, ele deve ser cadastrado primeiro. (arquivo CLiente/" +
                     "FLuxoCadastroCliente - criar esse arquivo)\r\n2 - Passo20: Confirmar (ou editar) d" +
                     "ados cadastrais e informar endereço de entrega\r\n\tse editar dados cadastrais, sal" +
-                    "va na t_cliente\r\n3 - Passo30: Escolher indicador e RA e Modo de Seleção do CD \r\n" +
-                    "4 - Passo40: Escolher produtos, quantidades e alterar valores e forma de pagamen" +
-                    "to\r\n5 - Passo50: Informar observações (entrega imediata, instalador instala, etc" +
-                    ") \r\n6 - Passo60: Salvar o pedido\r\n--- \r\nFluxo na ApaiMagento:\r\n1 - Validar o ped" +
-                    "ido\r\n2 - se o cliente não existir, cadastrar o cliente\r\n3 - salvar o pedido\r\n---" +
-                    " \r\nFluxo na API:\r\nSalvar o pedido\r\n\tEnviar todos os dados para cadastrar o pedid" +
-                    "o", ProgrammingLanguage.CSharp, new string[] {
+                    "va na t_cliente\r\n2.5 - Passo 25: somente na API. Validar dados cadastrais. Não e" +
+                    "xiste na tela porque sempre se usa o atual do cliente.\r\n3 - Passo30: Escolher in" +
+                    "dicador e RA e Modo de Seleção do CD \r\n4 - Passo40: Escolher produtos, quantidad" +
+                    "es e alterar valores e forma de pagamento\r\n5 - Passo50: Informar observações (en" +
+                    "trega imediata, instalador instala, etc) \r\n6 - Passo60: Salvar o pedido\r\n--- \r\nF" +
+                    "luxo na ApaiMagento:\r\n1 - Validar o pedido\r\n2 - se o cliente não existir, cadast" +
+                    "rar o cliente\r\n3 - salvar o pedido\r\n--- \r\nFluxo na API:\r\nSalvar o pedido\r\n\tEnvia" +
+                    "r todos os dados para cadastrar o pedido", ProgrammingLanguage.CSharp, new string[] {
                         "Especificacao.Pedido"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -111,7 +112,7 @@ namespace Especificacao.Especificacao.Pedido
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fluxo da criação do pedido", null, tagsOfScenario, argumentsOfScenario);
-#line 36
+#line 37
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -131,7 +132,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 38
+#line 39
  testRunner.When("Tudo certo, só para aparecer na lista", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }

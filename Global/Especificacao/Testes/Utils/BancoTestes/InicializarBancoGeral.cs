@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
+using Xunit;
 
 namespace Especificacao.Testes.Utils.BancoTestes
 {
@@ -26,51 +27,99 @@ namespace Especificacao.Testes.Utils.BancoTestes
         {
             this.contextoBdProvider = contextoBdProvider;
             this.contextoCepProvider = contextoCepProvider;
-            Inicializar();
+            Inicializar(false);
         }
 
-        public void Inicializar()
+        public void InicializarForcado()
+        {
+            _inicialziado = false;
+            Inicializar(true);
+        }
+        public void Inicializar(bool apagarDadosExistentes)
         {
             if (!_inicialziado)
             {
+                logTestes.LogMensagem("InicializarBancoGeral Inicializar inicio");
                 lock (_lockObject)
                 {
                     _inicialziado = true;
-                    logTestes.Log("InicializarBancoGeral Inicalizar inicio");
-                    InicalizarInterno();
-                    logTestes.Log("InicializarBancoGeral CEP inicio");
-                    new InicializarBancoCep(contextoCepProvider).Inicializar();
-                    logTestes.Log("InicializarBancoGeral Inicalizar fim");
+                    logTestes.LogMensagem("InicializarBancoGeral Inicalizar inicio");
+                    InicalizarInterno(apagarDadosExistentes);
+                    logTestes.LogMensagem("InicializarBancoGeral CEP inicio");
+                    new InicializarBancoCep(contextoCepProvider).Inicializar(apagarDadosExistentes);
+                    logTestes.LogMensagem("InicializarBancoGeral Inicalizar fim");
                 }
+                logTestes.LogMensagem("InicializarBancoGeral Inicializar fim");
             }
         }
 
-        private void InicalizarInterno()
+        private void InicalizarInterno(bool apagarDadosExistentes)
         {
             using (var db = contextoBdProvider.GetContextoGravacaoParaUsing())
             {
+                if (apagarDadosExistentes)
+                {
+                    foreach (var c in db.Tclientes)
+                        db.Tclientes.Remove(c);
+                }
                 InicializarTabela<Tcliente>("Tcliente", db);
+
+                if (apagarDadosExistentes)
+                {
+                    foreach (var c in db.TorcamentistaEindicadors)
+                        db.TorcamentistaEindicadors.Remove(c);
+                }
                 InicializarTabela<TorcamentistaEindicador>("TorcamentistaEindicador", db);
+
+                if (apagarDadosExistentes)
+                {
+                    foreach (var c in db.Tusuarios)
+                        db.Tusuarios.Remove(c);
+                }
                 InicializarTabela<Tusuario>("Tusuario", db);
+
+                if (apagarDadosExistentes)
+                {
+                    foreach (var c in db.Tparametros)
+                        db.Tparametros.Remove(c);
+                }
                 InicializarTabela<Tparametro>("Tparametro", db);
+
+                if (apagarDadosExistentes)
+                {
+                    foreach (var c in db.Tperfils)
+                        db.Tperfils.Remove(c);
+                }
                 InicializarTabela<Tperfil>("Tperfil", db);
+
+                if (apagarDadosExistentes)
+                {
+                    foreach (var c in db.TperfilUsuarios)
+                        db.TperfilUsuarios.Remove(c);
+                }
                 InicializarTabela<TperfilUsuario>("TperfilUsuario", db);
                 db.SaveChanges();
             }
 
             Inicalizar_TorcamentistaEindicador();
 
+            /*
             var x = from c in contextoBdProvider.GetContextoLeitura().Tclientes select c;
             var xc = x.Count();
             var y = from c in contextoBdProvider.GetContextoLeitura().TorcamentistaEindicadors select c;
             var yc = y.Count();
+            */
         }
 
         private void InicializarTabela<TipoDados>(string nomeTabela, ContextoBdGravacao db)
         {
-            using Stream? stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Especificacao.Testes.Utils.BancoTestes.Dados." + nomeTabela + ".json");
+            var nomeArquivo = "Especificacao.Testes.Utils.BancoTestes.Dados." + nomeTabela + ".json";
+            using Stream? stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(nomeArquivo);
             if (stream == null)
-                throw new NullReferenceException("InicializarTabela Especificacao.Testes.Utils.BancoTestes.Dados." + nomeTabela + ".json");
+            {
+                Assert.Equal("", nomeArquivo + $"StackTrace: '{Environment.StackTrace}'");
+                throw new NullReferenceException(nomeArquivo);
+            }
             using StreamReader reader = new StreamReader(stream);
             var texto = reader.ReadToEnd();
             var clientes = JsonConvert.DeserializeObject<List<TipoDados>>(texto);

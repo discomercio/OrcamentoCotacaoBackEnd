@@ -3,26 +3,18 @@ using PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Xunit;
 
 namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
 {
     static class CadastrarPrepedidoDados
     {
         public static PrePedidoUnisDto PrepedidoBase() => PrepedidoParceladoCartao1vez();
-        public static string TokenAcesso = "";
 
         public static PrePedidoUnisDto PrepedidoParceladoCartao1vez()
         {
-            if (String.IsNullOrEmpty(TokenAcesso))
-            {
-                //inicializar o banco
-                Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos();
-            }
-            if (String.IsNullOrEmpty(TokenAcesso))
-                throw new NullReferenceException($"TokenAcesso não configurado");
-
             var ret = JsonConvert.DeserializeObject<PrePedidoUnisDto>(PrepedidoBaseParceladoCartao1vez);
-            ret.TokenAcesso = TokenAcesso;
+            ret.TokenAcesso = Ambiente.ApiUnis.InjecaoDependencias.TokenAcessoApiUnis();
             return ret;
         }
         public static PrePedidoUnisDto PrepedidoParceladoAvista()

@@ -4,6 +4,11 @@
 @Ambiente/ApiUnis
 Feature: Pedido de cliente PJ com endereço de entrega
 
+Scenario: Configuração
+	Given Nome deste item "Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj.CampoEndEtg_tipo_pessoa"
+	Given Implementado em "Especificacao.Pedido.Pedido"
+	And Fim da configuração
+
 Scenario: Validar tipo de pessoa 1
 em loja/ClienteEdita.asp:
 var EndEtg_tipo_pessoa = $('input[name="EndEtg_tipo_pessoa"]:checked').val();

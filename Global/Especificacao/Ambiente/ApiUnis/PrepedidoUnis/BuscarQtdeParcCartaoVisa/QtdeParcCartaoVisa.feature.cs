@@ -19,21 +19,21 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "ignore")]
-    public partial class BuscarQtdeParcCartaoVisaFeature : object, Xunit.IClassFixture<BuscarQtdeParcCartaoVisaFeature.FixtureData>, System.IDisposable
+    [Xunit.TraitAttribute("Category", "Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.QtdeParcCartaoVisa")]
+    public partial class QtdeParcCartaoVisaFeature : object, Xunit.IClassFixture<QtdeParcCartaoVisaFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "ignore"};
+                "Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.QtdeParcCartaoVisa"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
 #line 1 "QtdeParcCartaoVisa.feature"
 #line hidden
         
-        public BuscarQtdeParcCartaoVisaFeature(BuscarQtdeParcCartaoVisaFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public QtdeParcCartaoVisaFeature(QtdeParcCartaoVisaFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,8 +42,8 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "BuscarQtdeParcCartaoVisa", null, ProgrammingLanguage.CSharp, new string[] {
-                        "ignore"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "QtdeParcCartaoVisa", null, ProgrammingLanguage.CSharp, new string[] {
+                        "Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.QtdeParcCartaoVisa"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -78,30 +78,13 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa
             testRunner.CollectScenarioErrors();
         }
         
-        public virtual void FeatureBackground()
-        {
-#line 4
-#line hidden
-#line 5
- testRunner.Given("Nome deste item \"Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.QtdeParc" +
-                    "CartaoVisa\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 6
- testRunner.And("Implementado em \"Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.ListaExe" +
-                    "cucao\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 7
-    testRunner.And("Reiniciar banco quando terminar o teste", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-        }
-        
         void System.IDisposable.Dispose()
         {
             this.TestTearDown();
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="retorna o que existe")]
-        [Xunit.TraitAttribute("FeatureTitle", "BuscarQtdeParcCartaoVisa")]
+        [Xunit.TraitAttribute("FeatureTitle", "QtdeParcCartaoVisa")]
         [Xunit.TraitAttribute("Description", "retorna o que existe")]
         public virtual void RetornaOQueExiste()
         {
@@ -111,7 +94,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa
                            where c.Tipo == Constantes.COD_VISANET_PRAZO_PAGTO_LOJA
                            select c.Qtde_parcelas;
             int qtde = Convert.ToInt32(await qtdeTask.FirstOrDefaultAsync());", tagsOfScenario, argumentsOfScenario);
-#line 9
+#line 4
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -131,40 +114,37 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 4
-this.FeatureBackground();
-#line hidden
-#line 14
+#line 9
     testRunner.Given("Limpar tabela \"t_PRAZO_PAGTO_VISANET\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 15
+#line 10
  testRunner.And("Novo registro em \"t_PRAZO_PAGTO_VISANET\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 16
+#line 11
  testRunner.And("Novo registro \"tipo\" = \"Constantes.COD_VISANET_PRAZO_PAGTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 17
+#line 12
  testRunner.And("Novo registro \"qtde_parcelas\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 18
+#line 13
  testRunner.And("Gravar registro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 19
-    testRunner.Then("Resposta \"QtdeParcCartaoVisa\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 14
+    testRunner.Then("Resposta \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="retorna o que existe 2")]
-        [Xunit.TraitAttribute("FeatureTitle", "BuscarQtdeParcCartaoVisa")]
+        [Xunit.TraitAttribute("FeatureTitle", "QtdeParcCartaoVisa")]
         [Xunit.TraitAttribute("Description", "retorna o que existe 2")]
         public virtual void RetornaOQueExiste2()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("retorna o que existe 2", null, tagsOfScenario, argumentsOfScenario);
-#line 21
+#line 16
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -184,40 +164,37 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 4
-this.FeatureBackground();
-#line hidden
-#line 22
+#line 17
     testRunner.Given("Limpar tabela \"t_PRAZO_PAGTO_VISANET\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 23
+#line 18
  testRunner.And("Novo registro em \"t_PRAZO_PAGTO_VISANET\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 24
+#line 19
  testRunner.And("Novo registro \"tipo\" = \"Constantes.COD_VISANET_PRAZO_PAGTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 25
+#line 20
  testRunner.And("Novo registro \"qtde_parcelas\" = \"321\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 26
+#line 21
  testRunner.And("Gravar registro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 27
-    testRunner.Then("Resposta \"QtdeParcCartaoVisa\" = \"321\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 22
+    testRunner.Then("Resposta \"321\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="não existe")]
-        [Xunit.TraitAttribute("FeatureTitle", "BuscarQtdeParcCartaoVisa")]
+        [Xunit.TraitAttribute("FeatureTitle", "QtdeParcCartaoVisa")]
         [Xunit.TraitAttribute("Description", "não existe")]
         public virtual void NaoExiste()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("não existe", null, tagsOfScenario, argumentsOfScenario);
-#line 29
+#line 24
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -237,14 +214,11 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 4
-this.FeatureBackground();
-#line hidden
-#line 31
+#line 26
     testRunner.Given("Limpar tabela \"t_PRAZO_PAGTO_VISANET\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 33
- testRunner.Then("Erro status code \"401\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 29
+    testRunner.Then("Resposta \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -257,12 +231,12 @@ this.FeatureBackground();
             
             public FixtureData()
             {
-                BuscarQtdeParcCartaoVisaFeature.FeatureSetup();
+                QtdeParcCartaoVisaFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                BuscarQtdeParcCartaoVisaFeature.FeatureTearDown();
+                QtdeParcCartaoVisaFeature.FeatureTearDown();
             }
         }
     }

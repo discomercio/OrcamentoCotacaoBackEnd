@@ -19,6 +19,7 @@ Fluxo no módulo loja:
 	Se o cliente não existir, ele deve ser cadastrado primeiro. (arquivo CLiente/FLuxoCadastroCliente - criar esse arquivo)
 2 - Passo20: Confirmar (ou editar) dados cadastrais e informar endereço de entrega
 	se editar dados cadastrais, salva na t_cliente
+2.5 - Passo 25: somente na API. Validar dados cadastrais. Não existe na tela porque sempre se usa o atual do cliente.
 3 - Passo30: Escolher indicador e RA e Modo de Seleção do CD 
 4 - Passo40: Escolher produtos, quantidades e alterar valores e forma de pagamento
 5 - Passo50: Informar observações (entrega imediata, instalador instala, etc) 

@@ -1,6 +1,12 @@
 ﻿@ignore
 Feature: Produtos
 
+Scenario: Configuração
+	Given Nome deste item "Especificacao.Pedido.Passo40.Produtos"
+	Given Implementado em "Especificacao.Pedido.Pedido"
+	And Fim da configuração
+
+
 Scenario: Sem quantidade zero
 	When Lista de itens "0" informo "qtde" = 0
 	Then Erro "Item está com quatidade inválida"
