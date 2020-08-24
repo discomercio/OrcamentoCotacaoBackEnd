@@ -59,5 +59,8 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 
         [MaxLength(500)]
         public string Obs_1 { get; set; }
+
+        public string PontoReferencia { get; set; }
+        public int Frete { get; set; }
     }
 }
