@@ -72,10 +72,7 @@ namespace PrepedidoBusiness.Utils
                 if (valor[i] != valor[0])
                     igual = false;
             }
-
-            if (igual || valor == "12345678909")
-                return false;
-
+            
             int[] numeros = new int[11];
 
             for (int i = 0; i < 11; i++)
