@@ -72,7 +72,9 @@ namespace PrepedidoBusiness.Utils
                 if (valor[i] != valor[0])
                     igual = false;
             }
-            
+
+            if (igual) return false;
+
             int[] numeros = new int[11];
 
             for (int i = 0; i < 11; i++)
@@ -706,7 +708,7 @@ namespace PrepedidoBusiness.Utils
                             dataEntregaImediata = true;
                             log = log + campo_atual + "; ";
                         }
-                        
+
                         if (campo_atual == coluna)
                         {
                             //pegando o valor coluna
