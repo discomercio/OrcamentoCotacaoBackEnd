@@ -2650,5 +2650,6 @@ namespace InfraBanco.Constantes
         public const string SESSION_CTRL_MODULO_LOJA = "LOJA";
         public const string SESSION_CTRL_MODULO_ORCAMENTO = "ORCTO";
         public const string SESSION_CTRL_MODULO_APIUNIS = "APIUN";
+        public const string SESSION_CTRL_MODULO_APIMAGENTO = "APIMA";
     }
 }

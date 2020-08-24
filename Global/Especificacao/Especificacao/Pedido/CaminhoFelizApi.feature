@@ -1,5 +1,6 @@
 ﻿@ignore
-@CaminhoFelizApi
+@Especificacao.Pedido
+@Implementacao.CaminhoFelizApi
 Feature: CaminhoFelizApi
 Caminho feliz da criação do pedido pela API
 O mínimo que um pedido precisa para ser cadastrado pela API
@@ -13,7 +14,8 @@ Scenario: Cadastrar um pedido com o mínimo de informação possível
 	#
 	# Iniciar o pedido
 	When Fiz login como "usuario_sistema" e escolhi a loja "202"
-	And Informo "cliente_selecionado" = "000000000001"
+	And Pedido vazio
+	And Informo "Cnpj_Cpf" = "687.307.550-77"
 	And Informo "indicacao" = "não"
 	And Informo "SelecaoCd" = "AUTOMATICO"
 	And Informo "OutroEndereco" = "não"

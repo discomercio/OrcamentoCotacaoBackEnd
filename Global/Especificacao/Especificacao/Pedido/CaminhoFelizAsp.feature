@@ -1,5 +1,5 @@
-﻿@ignore
-@CaminhoFelizAsp @SemTestes
+﻿@Especificacao.Pedido
+@Implementacao.PedidoCaminhoFelizAsp 
 Feature: CaminhoFelizAsp
 	Caminho feliz da criação do pedido na loja (ASP)
 	Operações mínimas para cadastar um pedido

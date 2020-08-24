@@ -17,7 +17,7 @@ namespace ApiMagento.Controllers
         private readonly IServicoValidarTokenApiMagento servicoValidarTokenApiMagento;
         private readonly PedidoMagentoBll pedidoMagentoBll;
 
-        public PedidoMagentoController(IServicoValidarTokenApiMagento servicoValidarTokenApiMagento, 
+        public PedidoMagentoController(IServicoValidarTokenApiMagento servicoValidarTokenApiMagento,
             PedidoMagentoBll pedidoMagentoBll)
         {
             this.servicoValidarTokenApiMagento = servicoValidarTokenApiMagento;
@@ -32,12 +32,17 @@ namespace ApiMagento.Controllers
         [AllowAnonymous]
         [HttpPost("cadastrarPedido")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public void CadastrarPrepedido(PedidoMagentoDto pedido)
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        public async Task<ActionResult<PedidoResultadoMagentoDto>> CadastrarPrepedido(PedidoMagentoDto pedido)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            if (servicoValidarTokenApiMagento.ValidarToken(pedido.TokenAcesso, out _))
-            {
-                pedidoMagentoBll.CadastrarPedidoMagento(pedido);
-            }
+            if (!servicoValidarTokenApiMagento.ValidarToken(pedido.TokenAcesso, out _))
+                return Unauthorized();
+
+            pedidoMagentoBll.CadastrarPedidoMagento(pedido);
+            var ret = new PedidoResultadoMagentoDto();
+            ret.ListaErros.Add("Ainda não implementado");
+            return Ok(ret);
         }
     }
 }

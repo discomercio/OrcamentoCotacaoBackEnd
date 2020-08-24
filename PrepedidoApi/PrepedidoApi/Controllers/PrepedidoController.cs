@@ -149,7 +149,7 @@ namespace PrepedidoApi.Controllers
             //para testar: http://localhost:60877/api/prepedido/cadastrarPrepedido
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            //TODO: ler LIMITE_ARREDONDAMENTO_PRECO_VENDA_ORCAMENTO_ITEM do appsettings
+            //LIMITE_ARREDONDAMENTO_PRECO_VENDA_ORCAMENTO_ITEM fixo em 1 centavo
             var ret = await prepedidoBll.CadastrarPrepedido(prePedido, apelido.Trim(), 0.01M, true, 
                 (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS);
 

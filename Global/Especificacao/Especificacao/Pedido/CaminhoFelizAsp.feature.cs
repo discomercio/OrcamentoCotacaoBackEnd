@@ -19,18 +19,16 @@ namespace Especificacao.Especificacao.Pedido
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "ignore")]
-    [Xunit.TraitAttribute("Category", "CaminhoFelizAsp")]
-    [Xunit.TraitAttribute("Category", "SemTestes")]
+    [Xunit.TraitAttribute("Category", "Especificacao.Pedido")]
+    [Xunit.TraitAttribute("Category", "Implementacao.PedidoCaminhoFelizAsp")]
     public partial class CaminhoFelizAspFeature : object, Xunit.IClassFixture<CaminhoFelizAspFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "ignore",
-                "CaminhoFelizAsp",
-                "SemTestes"};
+                "Especificacao.Pedido",
+                "Implementacao.PedidoCaminhoFelizAsp"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -48,9 +46,8 @@ namespace Especificacao.Especificacao.Pedido
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "CaminhoFelizAsp", "\tCaminho feliz da criação do pedido na loja (ASP)\r\n\tOperações mínimas para cadast" +
                     "ar um pedido\r\n\tEstá aqui somente por documentação, não é efetivamente testado", ProgrammingLanguage.CSharp, new string[] {
-                        "ignore",
-                        "CaminhoFelizAsp",
-                        "SemTestes"});
+                        "Especificacao.Pedido",
+                        "Implementacao.PedidoCaminhoFelizAsp"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

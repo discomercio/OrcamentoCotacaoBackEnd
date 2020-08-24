@@ -1,0 +1,15 @@
+﻿@Especificacao/Prepedido
+@ignore
+Feature: PrepedidoEnderecoEntregaVerificarQueExecutou - VerificarQueExecutou
+A descrição completa está em Especificacao\Pedido\Passo20\EnderecoEntrega
+Precisamos verificar que executou.
+afazer todo: vamos mudar o esquema de VerificarQueExecutou
+
+Scenario: VerificarQueExecutou
+	Then Prepedido\PrepedidoEnderecoEntregaVerificarQueExecutou EnderecoEntrega
+	Then Prepedido\PrepedidoEnderecoEntregaVerificarQueExecutou ClientePj\CampoEndEtg_tipo_pessoa
+	Then Prepedido\PrepedidoEnderecoEntregaVerificarQueExecutou ClientePj\EntregaPf
+	Then Prepedido\PrepedidoEnderecoEntregaVerificarQueExecutou ClientePj\EntregaPfTelefones
+	Then Prepedido\PrepedidoEnderecoEntregaVerificarQueExecutou ClientePj\EntregaPj
+	Then Prepedido\PrepedidoEnderecoEntregaVerificarQueExecutou ClientePj\EntregaPjTelefones
+

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MagentoBusiness.MagentoBll.AcessoBll
 {
-    public class ServicoAutenticacaoProviderApiMagento: IServicoAutenticacaoProviderApiMagento
+    public class ServicoAutenticacaoProviderApiMagento : IServicoAutenticacaoProviderApiMagento
     {
         private readonly ContextoBdProvider contextoProvider;
 
@@ -24,8 +24,8 @@ namespace MagentoBusiness.MagentoBll.AcessoBll
         private static string Erro_ERR_IDENTIFICACAO = "OS DADOS INFORMADOS NA IDENTIFICAÇÃO ESTÃO INCORRETOS.";
 
         //retorna null se nao exisitr (ou se a senha estiver errada)
-        public async Task<UsuarioLoginApiMagento> ObterUsuarioApiUnis(string usuarioOriginal, string senha, string ip, string userAgent,
-            string ApelidoPerfilLiberaAcessoApiUnis)
+        public async Task<UsuarioLoginApiMagento> ObterUsuarioApiMagento(string usuarioOriginal, string senha, string ip, string userAgent,
+            string ApelidoPerfilLiberaAcessoApiMagento)
         {
             var ret = new UsuarioLoginApiMagento();
 
@@ -87,11 +87,12 @@ namespace MagentoBusiness.MagentoBll.AcessoBll
 				" AND (t_OPERACAO.modulo='" & COD_OP_MODULO_CENTRAL & "')"
 							*/
             var perfil = await (from p in contextoProvider.GetContextoLeitura().Tperfils
-                                where p.Apelido.ToUpper() == ApelidoPerfilLiberaAcessoApiUnis.ToUpper() && p.TperfilUsuario.Usuario.ToUpper() == usuarioMaisuculas && p.St_inativo == 0
+                                where p.Apelido.ToUpper() == ApelidoPerfilLiberaAcessoApiMagento.ToUpper() &&
+                                      p.TperfilUsuario.Usuario.ToUpper() == usuarioMaisuculas && p.St_inativo == 0
                                 select p.Id).FirstOrDefaultAsync();
             if (perfil == null)
             {
-                ret.ListaErros.Add("USUÁRIO NÃO TEM ACESSO AO PERFIL APIUNIS");
+                ret.ListaErros.Add("USUÁRIO NÃO TEM ACESSO AO PERFIL APIMAGENTO");
                 return ret;
             }
 
@@ -126,7 +127,7 @@ namespace MagentoBusiness.MagentoBll.AcessoBll
                         SessaoAbandonadaModulo = usuario.SessionCtrlModulo,
                         SessaoSeguinteDtHrInicio = DateTime.Now,
                         SessaoSeguinteLoja = "",
-                        SessaoSeguinteModulo = Constantes.SESSION_CTRL_MODULO_APIUNIS
+                        SessaoSeguinteModulo = Constantes.SESSION_CTRL_MODULO_APIMAGENTO
                     };
                     dbgravacao.TsessaoAbandonadas.Add(sessaoAbandonada);
                     await dbgravacao.SaveChangesAsync();
@@ -151,7 +152,7 @@ namespace MagentoBusiness.MagentoBll.AcessoBll
                 DtHrInicio = DateTime.Now,
                 DtHrTermino = null,
                 Loja = "",
-                Modulo = Constantes.SESSION_CTRL_MODULO_APIUNIS,
+                Modulo = Constantes.SESSION_CTRL_MODULO_APIMAGENTO,
                 IP = ip,
                 UserAgent = userAgent
             };
@@ -167,7 +168,7 @@ namespace MagentoBusiness.MagentoBll.AcessoBll
                             select u).FirstOrDefault();
             tusuario.Dt_Ult_Acesso = DateTime.Now;
             tusuario.SessionCtrlDtHrLogon = DateTime.Now;
-            tusuario.SessionCtrlModulo = Constantes.SESSION_CTRL_MODULO_APIUNIS;
+            tusuario.SessionCtrlModulo = Constantes.SESSION_CTRL_MODULO_APIMAGENTO;
             tusuario.SessionCtrlLoja = null;
             tusuario.SessionCtrlTicket = strSessionCtrlTicket;
             tusuario.SessionTokenModuloCentral = null;
@@ -216,11 +217,6 @@ namespace MagentoBusiness.MagentoBll.AcessoBll
 
                 dbgravacao.transacao.Commit();
             }
-        }
-
-        public Task<UsuarioLoginApiMagento> ObterUsuarioApiMagento(string usuario, string senha, string ip, string userAgent, string ApelidoPerfilLiberaAcessoApiMagento)
-        {
-            throw new NotImplementedException();
         }
     }
 }

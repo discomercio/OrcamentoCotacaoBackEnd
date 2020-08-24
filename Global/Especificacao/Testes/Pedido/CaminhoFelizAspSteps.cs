@@ -7,7 +7,7 @@ namespace Especificacao.Testes.Pedido
 	Está aqui somente por documentação, não é efetivamente testado
      * */
 
-    [Binding, Scope(Tag = "CaminhoFelizAsp"), Scope(Tag = "SemTestes")]
+    [Binding, Scope(Tag = "Implementacao.PedidoCaminhoFelizAsp")]
     public class CaminhoFelizAspSteps
     {
         [Given(@"Fiz login")]
@@ -26,12 +26,16 @@ namespace Especificacao.Testes.Pedido
         }
 
         [When(@"Seleciono o produto ""(.*)"" e quantidade ""(.*)"" e clico em ""(.*)""")]
+#pragma warning disable IDE0060 // Remove unused parameter
         public void WhenSelecionoOProdutoEQuantidadeEClicoEm(int p0, int p1, string p2)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
         }
 
         [When(@"Seleciono a opção ""(.*)"" como ""(.*)""")]
+#pragma warning disable IDE0060 // Remove unused parameter
         public void WhenSelecionoAOpcaoComo(string p0, string p1)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
         }
 
@@ -41,7 +45,9 @@ namespace Especificacao.Testes.Pedido
         }
 
         [Then(@"Vou para página ""(.*)""")]
+#pragma warning disable IDE0060 // Remove unused parameter
         public void ThenVouParaPagina(string p0)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
         }
 

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -7,18 +7,16 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Global\Infra\InfraBanco\InfraBanco.csproj" />
     <ProjectReference Include="..\..\..\Global\Infra\InfraIdentity\InfraIdentity.csproj" />
+    <ProjectReference Include="..\..\..\PrepedidoApi\PrepedidoBusiness\PrepedidoBusiness.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="PrepedidoBusiness">
-      <HintPath>..\..\..\PrepedidoApi\PrepedidoBusiness\bin\Debug\netcoreapp3.1\PrepedidoBusiness.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netcoreapp2.2\MagentoBusiness.xml</DocumentationFile>
+    <NoWarn>1701;1702;1591</NoWarn>
+  </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="MagentoDto\FormaPagtoMagentoDto\" />
-    <Folder Include="MagentoDto\CoeficienteMagentoDto\" />
-    <Folder Include="MagentoDto\CepMagentoDto\" />
-  </ItemGroup>
-
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netcoreapp2.2\MagentoBusiness.xml</DocumentationFile>
+    <NoWarn>1701;1702;1591</NoWarn>
+  </PropertyGroup>
 </Project>
