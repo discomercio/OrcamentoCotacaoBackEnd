@@ -39,17 +39,15 @@ namespace Especificacao.Testes.Utils.BancoTestes
         {
             if (!_inicialziado)
             {
-                logTestes.LogMensagem("InicializarBancoGeral Inicializar inicio");
                 lock (_lockObject)
                 {
                     _inicialziado = true;
-                    logTestes.LogMensagem("InicializarBancoGeral Inicalizar inicio");
+                    logTestes.LogMensagem("InicializarBancoGeral Inicializar inicio");
                     InicalizarInterno(apagarDadosExistentes);
                     logTestes.LogMensagem("InicializarBancoGeral CEP inicio");
                     new InicializarBancoCep(contextoCepProvider).Inicializar(apagarDadosExistentes);
-                    logTestes.LogMensagem("InicializarBancoGeral Inicalizar fim");
+                    logTestes.LogMensagem("InicializarBancoGeral Inicializar fim");
                 }
-                logTestes.LogMensagem("InicializarBancoGeral Inicializar fim");
             }
         }
 

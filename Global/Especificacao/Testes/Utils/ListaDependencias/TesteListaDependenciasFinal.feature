@@ -1,4 +1,4 @@
-﻿@Testes.TesteListaDependencias
+﻿@Testes.TesteListaDependencias.Final
 Feature: TesteListaDependencias final - parte 2 - que deve ser executada depois ListaDependencias
 Descrição em TesteExecucaoCruzadaInicial
 

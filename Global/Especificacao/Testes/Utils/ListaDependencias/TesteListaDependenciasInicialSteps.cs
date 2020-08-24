@@ -4,7 +4,7 @@ using TechTalk.SpecFlow;
 
 namespace Especificacao.Testes.Utils.ListaDependencias
 {
-    [Binding, Scope(Tag = "Testes.TesteListaDependencias")]
+    [Binding, Scope(Tag = "Testes.TesteListaDependencias.Inicial")]
     public class TesteListaDependenciasInicialSteps
     {
 #pragma warning disable IDE0052 // Remove unread private members

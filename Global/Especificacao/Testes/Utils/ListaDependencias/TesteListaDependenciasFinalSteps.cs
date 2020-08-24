@@ -14,7 +14,7 @@ namespace Especificacao.Testes.Utils.TesteListaDependencias
         }
         internal static int instanciacoes = 0;
     }
-    [Binding, Scope(Tag = "Testes.TesteListaDependencias")]
+    [Binding, Scope(Tag = "Testes.TesteListaDependencias.Final")]
     public class TesteListaDependenciasFinalSteps
     {
 #pragma warning disable IDE0052 // Remove unread private members

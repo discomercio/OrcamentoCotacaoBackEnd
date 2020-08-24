@@ -19,14 +19,14 @@ namespace Especificacao.Testes.Utils.ListaDependencias
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "Testes.TesteListaDependencias")]
+    [Xunit.TraitAttribute("Category", "Testes.TesteListaDependencias.Final")]
     public partial class TesteListaDependenciasFinal_Parte2_QueDeveSerExecutadaDepoisListaDependenciasFeature : object, Xunit.IClassFixture<TesteListaDependenciasFinal_Parte2_QueDeveSerExecutadaDepoisListaDependenciasFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "Testes.TesteListaDependencias"};
+                "Testes.TesteListaDependencias.Final"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -46,7 +46,7 @@ namespace Especificacao.Testes.Utils.ListaDependencias
                     "dencias", "Descrição em TesteExecucaoCruzadaInicial\r\n\r\nIMPORTANTE: o nome desta fetuare PREC" +
                     "ISA ter o texto ListaDependencias no nome. Isso garante que ela seja executada n" +
                     "a ordem certa.", ProgrammingLanguage.CSharp, new string[] {
-                        "Testes.TesteListaDependencias"});
+                        "Testes.TesteListaDependencias.Final"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
