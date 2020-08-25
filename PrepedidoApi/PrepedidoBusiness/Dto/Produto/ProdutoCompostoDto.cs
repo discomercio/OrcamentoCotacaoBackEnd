@@ -1,5 +1,5 @@
-﻿using PrepedidoBusiness.Bll.ProdutoBll.ProdutoDados;
-using PrepedidoBusiness.Dto.Prepedido;
+﻿using PrepedidoBusiness.Dto.Prepedido;
+using Produto.ProdutoDados;
 using System;
 using System.Collections.Generic;
 using System.Text;

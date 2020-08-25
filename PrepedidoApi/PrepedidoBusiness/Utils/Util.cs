@@ -9,7 +9,6 @@ using InfraBanco.Constantes;
 using InfraBanco.Modelos;
 using System.Reflection;
 using System.ComponentModel.DataAnnotations.Schema;
-using PrepedidoBusiness.Bll.Regras;
 using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using PrepedidoBusiness.Dto.Produto;
 using System.Globalization;
@@ -17,6 +16,7 @@ using System.Data.SqlClient;
 using PrepedidoBusiness.Dto.Cep;
 using System.ComponentModel.DataAnnotations;
 using Utils;
+using Produto.RegrasCrtlEstoque;
 
 namespace PrepedidoBusiness.Utils
 {
@@ -1274,7 +1274,7 @@ namespace PrepedidoBusiness.Utils
 
         }
 
-        public static void ObterDisponibilidadeEstoque(List<RegrasBll> lstRegrasCrtlEstoque, List<Bll.ProdutoBll.ProdutoDados.ProdutoDados> lst_produtos,
+        public static void ObterDisponibilidadeEstoque(List<RegrasBll> lstRegrasCrtlEstoque, List<Produto.ProdutoDados.ProdutoDados> lst_produtos,
             List<string> lstErros, ContextoBdProvider contextoProvider)
         {
             foreach (var r in lstRegrasCrtlEstoque)

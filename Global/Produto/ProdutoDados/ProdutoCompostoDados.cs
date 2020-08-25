@@ -1,9 +1,8 @@
-﻿using PrepedidoBusiness.Dto.Prepedido;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PrepedidoBusiness.Bll.ProdutoBll.ProdutoDados
+namespace Produto.ProdutoDados
 {
     public class ProdutoCompostoDados
     {

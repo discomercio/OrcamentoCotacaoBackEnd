@@ -1,15 +1,13 @@
 ﻿using InfraBanco.Constantes;
-using PrepedidoBusiness.Dto.Produto;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using InfraBanco.Modelos;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using PrepedidoBusiness.Utils;
-using PrepedidoBusiness.Bll.Regras;
 using PrepedidoBusiness.Dto.ClienteCadastro;
-using PrepedidoBusiness.Dto.Prepedido;
-using PrepedidoBusiness.Bll.ProdutoBll.ProdutoDados;
+using Produto.RegrasCrtlEstoque;
+using Produto.ProdutoDados;
 
 namespace PrepedidoBusiness.Bll.ProdutoBll
 {
@@ -54,7 +52,7 @@ namespace PrepedidoBusiness.Bll.ProdutoBll
                 cliente.produtor_rural_status);
 
             var lstProdutosCompostos = BuscarProdutosCompostos(loja);
-            List<ProdutoDados.ProdutoDados> lstTodosProdutos = (await BuscarTodosProdutos(loja)).ToList();
+            List<ProdutoDados> lstTodosProdutos = (await BuscarTodosProdutos(loja)).ToList();
 
             List<RegrasBll> lst_cliente_regra = new List<RegrasBll>();
             MontaListaRegras(lstTodosProdutos, lst_cliente_regra);
@@ -80,7 +78,7 @@ namespace PrepedidoBusiness.Bll.ProdutoBll
             return retorno;
         }
 
-        private async Task ExisteMensagensAlertaProdutos(List<ProdutoDados.ProdutoDados> lst_produtos)
+        private async Task ExisteMensagensAlertaProdutos(List<ProdutoDados> lst_produtos)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -112,7 +110,7 @@ namespace PrepedidoBusiness.Bll.ProdutoBll
             }
         }
 
-        private void MontaListaRegras(List<ProdutoDados.ProdutoDados> lst_produtos, List<RegrasBll> lst_cliente_regra)
+        private void MontaListaRegras(List<ProdutoDados> lst_produtos, List<RegrasBll> lst_cliente_regra)
         {
             foreach (var p in lst_produtos)
             {
@@ -173,7 +171,7 @@ namespace PrepedidoBusiness.Bll.ProdutoBll
         }
 
 
-        private async Task<IEnumerable<ProdutoDados.ProdutoDados>> BuscarTodosProdutos(string loja)
+        private async Task<IEnumerable<ProdutoDados>> BuscarTodosProdutos(string loja)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -182,7 +180,7 @@ namespace PrepedidoBusiness.Bll.ProdutoBll
                                     join fab in db.Tfabricantes on c.Fabricante equals fab.Fabricante
                                     where pl.Vendavel == "S" &&
                                           pl.Loja == loja
-                                    select new ProdutoDados.ProdutoDados
+                                    select new ProdutoDados
                                     {
                                         Fabricante = c.Fabricante,
                                         Fabricante_Nome = fab.Nome,
@@ -194,7 +192,7 @@ namespace PrepedidoBusiness.Bll.ProdutoBll
                                         Desc_Max = pl.Desc_Max
                                     };
 
-            List<ProdutoDados.ProdutoDados> lstTodosProdutos = await todosProdutosTask.ToListAsync();
+            List<ProdutoDados> lstTodosProdutos = await todosProdutosTask.ToListAsync();
 
             return lstTodosProdutos;
         }
@@ -203,7 +201,7 @@ namespace PrepedidoBusiness.Bll.ProdutoBll
          * pois estamos realizando a busca apenas em produtos que 
          * a subtração entre qtde e qtde_utilizada seja maior que 0
          */
-        private void IncluirEstoqueProduto(List<RegrasBll> lstRegras, List<ProdutoDados.ProdutoDados> lst_produtos, Tparametro parametro)
+        private void IncluirEstoqueProduto(List<RegrasBll> lstRegras, List<ProdutoDados> lst_produtos, Tparametro parametro)
         {
             int qtde_estoque_total_disponivel = 0;
             int qtde_estoque_total_disponivel_global = 0;
@@ -260,7 +258,7 @@ namespace PrepedidoBusiness.Bll.ProdutoBll
 
         }
 
-        public static void VerificarRegrasAssociadasAosProdutos(List<RegrasBll> lstRegras, List<string> lstErros, DadosClienteCadastroDto cliente)
+        public static void VerificarRegrasAssociadasAosProdutos(List<RegrasBll> lstRegras, List<string> lstErros, string clienteUf, string clienteTipo)
         {
             foreach (var r in lstRegras)
             {
@@ -276,18 +274,18 @@ namespace PrepedidoBusiness.Bll.ProdutoBll
                     else if (r.TwmsRegraCdXUf.St_inativo == 1)
                     {
                         lstErros.Add("Regra de consumo do estoque '" + r.TwmsRegraCd.Apelido + "' associada ao produto (" +
-                            r.Fabricante + ")" + r.Produto + " está bloqueada para a UF '" + cliente.Uf + "'");
+                            r.Fabricante + ")" + r.Produto + " está bloqueada para a UF '" + clienteUf + "'");
                     }
                     else if (r.TwmsRegraCdXUfXPessoa != null && r.TwmsRegraCdXUfXPessoa.St_inativo == 1)
                     {
                         lstErros.Add("Regra de consumo do estoque '" + r.TwmsRegraCd.Apelido + "' associada ao produto (" +
-                            r.Fabricante + ")" + r.Produto + " está bloqueada para clientes '" + cliente.Tipo + "' da UF '" + cliente.Uf + "'");
+                            r.Fabricante + ")" + r.Produto + " está bloqueada para clientes '" + clienteTipo + "' da UF '" + clienteUf + "'");
                     }
                     else if (r.TwmsRegraCdXUfXPessoa != null && r.TwmsRegraCdXUfXPessoa.Spe_id_nfe_emitente == 0)
                     {
                         lstErros.Add("Regra de consumo do estoque '" + r.TwmsRegraCd.Apelido + "' associada ao produto (" +
                             r.Fabricante + ")" + r.Produto + " não especifica nenhum CD para aguardar produtos sem presença no estoque para clientes '" +
-                            cliente.Tipo + "' da UF '" + cliente.Uf + "'");
+                            clienteTipo + "' da UF '" + clienteUf + "'");
                     }
                     int verificaErros = 0;
                     if (r.TwmsCdXUfXPessoaXCd != null)
@@ -305,7 +303,7 @@ namespace PrepedidoBusiness.Bll.ProdutoBll
                     {
                         lstErros.Add("Regra de consumo do estoque '" + r.TwmsRegraCd.Apelido + "' associada ao produto (" +
                             r.Fabricante + ")" + r.Produto + " não especifica nenhum CD ativo para clientes '" +
-                            cliente.Tipo + "' da UF '" + cliente.Uf + "'");
+                            clienteTipo + "' da UF '" + clienteUf + "'");
                     }
                 }
             }

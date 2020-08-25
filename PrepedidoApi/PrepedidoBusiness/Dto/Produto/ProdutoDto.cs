@@ -1,4 +1,4 @@
-﻿using PrepedidoBusiness.Bll.ProdutoBll.ProdutoDados;
+﻿using Produto.ProdutoDados;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

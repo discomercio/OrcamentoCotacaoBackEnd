@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PrepedidoBusiness.Bll.ProdutoBll.ProdutoDados
+namespace Produto.ProdutoDados
 {
     public class ProdutosEstoqueDados
     {

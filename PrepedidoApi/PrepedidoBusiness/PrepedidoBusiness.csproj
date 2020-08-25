@@ -12,6 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Global\Infra\InfraBanco\InfraBanco.csproj" />
     <ProjectReference Include="..\..\Global\Infra\InfraIdentity\InfraIdentity.csproj" />
+    <ProjectReference Include="..\..\Global\Produto\Produto.csproj" />
     <ProjectReference Include="..\..\Global\Utils\Utils.csproj" />
   </ItemGroup>
 

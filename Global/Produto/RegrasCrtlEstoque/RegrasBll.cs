@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PrepedidoBusiness.Bll.Regras
+namespace Produto.RegrasCrtlEstoque
 {
     public class RegrasBll
     {

@@ -9,13 +9,13 @@ using PrepedidoBusiness.Dto.Prepedido;
 using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using PrepedidoBusiness.Dto.ClienteCadastro;
 using InfraBanco.Constantes;
-using PrepedidoBusiness.Bll.Regras;
 using InfraBanco;
 using PrepedidoBusiness.Bll.ProdutoBll;
 using PrepedidoBusiness.Bll.ClienteBll;
 using PrepedidoBusiness.Bll.FormaPagtoBll;
 using PrepedidoBusiness.Dto.FormaPagto;
 using Utils;
+using Produto.RegrasCrtlEstoque;
 
 namespace PrepedidoBusiness.Bll.PrepedidoBll
 {
@@ -801,7 +801,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                         List<RegrasBll> regraCrtlEstoque = (await ObterCtrlEstoqueProdutoRegra(prePedido, lstErros)).ToList();
                         await Util.ObterCtrlEstoqueProdutoRegra_Teste(lstErros, regraCrtlEstoque, prePedido.DadosCliente.Uf, tipoPessoa, contextoProvider);
 
-                        ProdutoGeralBll.VerificarRegrasAssociadasAosProdutos(regraCrtlEstoque, lstErros, prePedido.DadosCliente);
+                        ProdutoGeralBll.VerificarRegrasAssociadasAosProdutos(regraCrtlEstoque, lstErros, prePedido.DadosCliente.Uf, prePedido.DadosCliente.Tipo);
                         //obtendo qtde disponivel
                         await Util.VerificarEstoque(regraCrtlEstoque, contextoProvider);
 
@@ -1570,7 +1570,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                             itemRegra.Fabricante = item.Fabricante;
                             itemRegra.Produto = item.NumProduto;
 
-                            itemRegra.TwmsRegraCd = new Regras.t_WMS_REGRA_CD
+                            itemRegra.TwmsRegraCd = new Produto.RegrasCrtlEstoque.t_WMS_REGRA_CD
                             {
                                 Id = wmsRegra.Id,
                                 Apelido = wmsRegra.Apelido,
@@ -1593,7 +1593,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                             }
                             else
                             {
-                                itemRegra.TwmsRegraCdXUf = new Regras.t_WMS_REGRA_CD_X_UF
+                                itemRegra.TwmsRegraCdXUf = new Produto.RegrasCrtlEstoque.t_WMS_REGRA_CD_X_UF
                                 {
                                     Id = wmsRegraCdXUf.Id,
                                     Id_wms_regra_cd = wmsRegraCdXUf.Id_wms_regra_cd,
@@ -1621,7 +1621,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                                 }
                                 else
                                 {
-                                    itemRegra.TwmsRegraCdXUfXPessoa = new Regras.t_WMS_REGRA_CD_X_UF_X_PESSOA
+                                    itemRegra.TwmsRegraCdXUfXPessoa = new Produto.RegrasCrtlEstoque.t_WMS_REGRA_CD_X_UF_X_PESSOA
                                     {
                                         Id = wmsRegraCdXUfXPessoa.Id,
                                         Id_wms_regra_cd_x_uf = wmsRegraCdXUfXPessoa.Id_wms_regra_cd_x_uf,
@@ -1673,7 +1673,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                                             itemRegra.TwmsCdXUfXPessoaXCd = new List<t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD>();
                                             foreach (var i in wmsRegraCdXUfXPessoaXcd)
                                             {
-                                                Regras.t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD item_cd_uf_pess_cd = new Regras.t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD
+                                                Produto.RegrasCrtlEstoque.t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD item_cd_uf_pess_cd = new Produto.RegrasCrtlEstoque.t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD
                                                 {
                                                     Id = i.Id,
                                                     Id_wms_regra_cd_x_uf_x_pessoa = i.Id_wms_regra_cd_x_uf_x_pessoa,
