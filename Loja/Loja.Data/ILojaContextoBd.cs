@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Loja.Data
 {
-    public interface IContextoBd
+    public interface ILojaContextoBd
     {
         IQueryable<TalertaProduto> TalertaProdutos { get; }
         IQueryable<Tbanco> Tbancos { get; }

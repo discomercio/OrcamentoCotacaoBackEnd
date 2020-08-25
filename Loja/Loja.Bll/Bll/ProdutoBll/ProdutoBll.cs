@@ -15,9 +15,9 @@ namespace Loja.Bll.ProdutoBll
 {
     public class ProdutoBll
     {
-        private readonly ContextoBdProvider contextoProvider;
+        private readonly LojaContextoBdProvider contextoProvider;
 
-        public ProdutoBll(ContextoBdProvider contextoProvider)
+        public ProdutoBll(LojaContextoBdProvider contextoProvider)
         {
             this.contextoProvider = contextoProvider;
         }
@@ -238,7 +238,7 @@ namespace Loja.Bll.ProdutoBll
 
         //parateste
         public static async Task<IEnumerable<RegrasBll>> ObterCtrlEstoqueProdutoRegraParaUMProduto(PedidoProdutosDtoPedido produto,
-            Tcliente tcliente, List<string> lstErros, IContextoBd contextoBd)
+            Tcliente tcliente, List<string> lstErros, ILojaContextoBd contextoBd)
         {
             List<RegrasBll> lstRegrasCrtlEstoque = new List<RegrasBll>();
 
@@ -525,7 +525,7 @@ namespace Loja.Bll.ProdutoBll
         }
 
         public static async Task ObterDisponibilidadeEstoque(List<RegrasBll> lstRegrasCrtlEstoque, PedidoProdutosDtoPedido produto,
-            List<string> lstErros, int id_nfe_emitente_selecao_manual, IContextoBd contextoBd)
+            List<string> lstErros, int id_nfe_emitente_selecao_manual, ILojaContextoBd contextoBd)
         {
             //int id_nfe_emitente_selecao_manual = 0;
 
@@ -1304,7 +1304,7 @@ namespace Loja.Bll.ProdutoBll
 
         //Caso seleção do CD Manual
         public static async Task VerificarCDHabilitadoTodasRegras(List<RegrasBll> lstRegras, 
-            int id_nfe_emitente_selecao_manual, List<string> lstErros, IContextoBd contextoBd)
+            int id_nfe_emitente_selecao_manual, List<string> lstErros, ILojaContextoBd contextoBd)
         {
             //id_nfe_emitente_selecao_manual = 0;//esse é a seleção do checkebox 
             bool desativado = false;

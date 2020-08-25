@@ -10,9 +10,9 @@ namespace Loja.Bll.CepBll
 {
     public class CepBll
     {
-        private readonly ContextoCepProvider contextoCepProvider;
+        private readonly LojaContextoCepProvider contextoCepProvider;
 
-        public CepBll(ContextoCepProvider contextoCepProvider)
+        public CepBll(LojaContextoCepProvider contextoCepProvider)
         {
             this.contextoCepProvider = contextoCepProvider;
         }

@@ -13,11 +13,11 @@ namespace Loja.Bll.Bll.PrepedidoBll
 {
     public class PrepedidoBll
     {
-        private readonly ContextoBdProvider contextoProvider;
+        private readonly LojaContextoBdProvider contextoProvider;
         private readonly ProdutoBll.ProdutoBll produtoBll;
         private readonly ClienteBll.ClienteBll clienteBll;
 
-        public PrepedidoBll(ContextoBdProvider contextoProvider, ProdutoBll.ProdutoBll produtoBll, ClienteBll.ClienteBll clienteBll)
+        public PrepedidoBll(LojaContextoBdProvider contextoProvider, ProdutoBll.ProdutoBll produtoBll, ClienteBll.ClienteBll clienteBll)
         {
             this.contextoProvider = contextoProvider;
             this.produtoBll = produtoBll;

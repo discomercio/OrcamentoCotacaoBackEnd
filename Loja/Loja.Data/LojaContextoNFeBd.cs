@@ -6,9 +6,9 @@ using System.Text;
 
 namespace Loja.Data
 {
-    public class ContextoNFeBd: DbContext
+    public class LojaContextoNFeBd : DbContext
     {
-        public ContextoNFeBd(DbContextOptions<ContextoNFeBd> opt) : base(opt)
+        public LojaContextoNFeBd (DbContextOptions<LojaContextoNFeBd > opt) : base(opt)
         {
 
         }

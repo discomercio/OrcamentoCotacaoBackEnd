@@ -15,12 +15,12 @@ namespace Loja.Bll.Bll.AcessoBll
 {
     public class UsuarioAcessoBll
     {
-        private readonly ContextoBdProvider contextoProvider;
+        private readonly LojaContextoBdProvider contextoProvider;
         private readonly ClienteBll.ClienteBll clienteBll;
         private readonly ILogger<UsuarioAcessoBll> logger;
         private readonly ILogger<UsuarioLogado> loggerUsuarioLogado;
 
-        public UsuarioAcessoBll(ContextoBdProvider contextoProvider, ClienteBll.ClienteBll clienteBll, ILogger<UsuarioAcessoBll> logger,
+        public UsuarioAcessoBll(LojaContextoBdProvider contextoProvider, ClienteBll.ClienteBll clienteBll, ILogger<UsuarioAcessoBll> logger,
             ILogger<UsuarioLogado> loggerUsuarioLogado)
         {
             this.contextoProvider = contextoProvider;

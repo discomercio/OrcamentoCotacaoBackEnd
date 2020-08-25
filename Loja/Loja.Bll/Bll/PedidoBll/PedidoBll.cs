@@ -25,15 +25,15 @@ namespace Loja.Bll.PedidoBll
 {
     public class PedidoBll
     {
-        private readonly ContextoBdProvider contextoProvider;
-        private readonly ContextoCepProvider contextoCepProvider;
-        private readonly ContextoNFeProvider contextoNFeProvider;
+        private readonly LojaContextoBdProvider contextoProvider;
+        private readonly LojaContextoCepProvider contextoCepProvider;
+        private readonly LojaContextoNFeProvider contextoNFeProvider;
         private readonly Loja.Bll.ProdutoBll.ProdutoBll produtoBll;
         private readonly Loja.Bll.ClienteBll.ClienteBll clienteBll;
         //private readonly Loja.Bll.Bll.PedidoBll.EfetivaPedido.EfetivaPedido efetivarPedido;
 
-        public PedidoBll(ContextoBdProvider contextoProvider, ContextoCepProvider contextoCepProvider,
-            ContextoNFeProvider contextoNFeProvider, ProdutoBll.ProdutoBll produtoBll, ClienteBll.ClienteBll clienteBll)
+        public PedidoBll(LojaContextoBdProvider contextoProvider, LojaContextoCepProvider contextoCepProvider,
+            LojaContextoNFeProvider contextoNFeProvider, ProdutoBll.ProdutoBll produtoBll, ClienteBll.ClienteBll clienteBll)
         {
             this.contextoProvider = contextoProvider;
             this.contextoCepProvider = contextoCepProvider;
@@ -1319,8 +1319,8 @@ namespace Loja.Bll.PedidoBll
                     }
 
                     //fazer a verificação se tem RA
-                    float strPercLimiteRASemDesagio = 0;
-                    float strPercDesagio = 0;
+                    //float strPercLimiteRASemDesagio = 0;
+                    //float strPercDesagio = 0;
 
                     //if (comRA == 1)
                     //{
@@ -1847,12 +1847,12 @@ namespace Loja.Bll.PedidoBll
         }
 
         
-        public async Task<int> Fin_gera_nsu(string id_nsu, List<string> lstErros, ContextoBdGravacao dbgravacao)
+        public async Task<int> Fin_gera_nsu(string id_nsu, List<string> lstErros, LojaContextoBdGravacao dbgravacao)
         {
             int intRetorno = 0;
-            int intRecordsAffected = 0;
-            int intQtdeTentativas, intNsuUltimo, intNsuNovo;
-            bool blnSucesso = true;
+            //int intRecordsAffected = 0;
+            //int intQtdeTentativas, intNsuUltimo, intNsuNovo;
+            //bool blnSucesso = true;
             int nsu = 0;
 
 
@@ -2062,7 +2062,7 @@ namespace Loja.Bll.PedidoBll
 
         }
 
-        public async Task<decimal> CalculaTotalRALiquidoBD(string id_pedido, ContextoBdGravacao dbGravacao, List<string> lstErros)
+        public async Task<decimal> CalculaTotalRALiquidoBD(string id_pedido, LojaContextoBdGravacao dbGravacao, List<string> lstErros)
         {
             float percentual_desagio_RA_liquido = 0;
             decimal vl_total = 0;
@@ -2221,7 +2221,7 @@ namespace Loja.Bll.PedidoBll
         //Estamos gerando o id_estoque, id_estoque_movimento, gravando e gravando o Log
         public async Task<bool> EstoqueProdutoSaidaV2(string id_usuario, string id_pedido, short id_nfe_emitente,
             string id_fabricante, string id_produto, int qtde_a_sair, int qtde_autorizada_sem_presenca,
-            short[] qtde_estoque_aux, List<string> lstErros, ContextoBdGravacao contexto)
+            short[] qtde_estoque_aux, List<string> lstErros, LojaContextoBdGravacao contexto)
         {
             //essas variveis tem que retornar
             int qtde_disponivel = 0;
@@ -2437,7 +2437,7 @@ namespace Loja.Bll.PedidoBll
         }
 
 
-        public async Task<string> GeraIdEstoqueMovto(List<string> lstErros, ContextoBdGravacao contexto)
+        public async Task<string> GeraIdEstoqueMovto(List<string> lstErros, LojaContextoBdGravacao contexto)
         {
             string retorno = "";
             retorno = await Util.Util.GerarNsu(contexto, Constantes.Constantes.NSU_ID_ESTOQUE_MOVTO);
@@ -2445,7 +2445,7 @@ namespace Loja.Bll.PedidoBll
             return retorno;
         }
 
-        public async Task<string> GeraIdEstoque(ContextoBdGravacao contexto, List<string> lstErros)
+        public async Task<string> GeraIdEstoque(LojaContextoBdGravacao contexto, List<string> lstErros)
         {
             string retorno = "";
 
@@ -2478,7 +2478,7 @@ namespace Loja.Bll.PedidoBll
             return lstIndicadorDto;
         }
 
-        public async Task<string> GerarNumeroPedido(List<string> lstErros, ContextoBdGravacao contextoBdGravacao)
+        public async Task<string> GerarNumeroPedido(List<string> lstErros, LojaContextoBdGravacao contextoBdGravacao)
         {
             string numPedido = "";
             string s_num = "";
@@ -2523,7 +2523,7 @@ namespace Loja.Bll.PedidoBll
             return numPedido;
         }
 
-        public async Task<string> GerarNumeroPedidoTemporario(List<string> lstErros, ContextoBdGravacao contextoBdGravacao)
+        public async Task<string> GerarNumeroPedidoTemporario(List<string> lstErros, LojaContextoBdGravacao contextoBdGravacao)
         {
             string numPedido = "";
             string s_num = "";

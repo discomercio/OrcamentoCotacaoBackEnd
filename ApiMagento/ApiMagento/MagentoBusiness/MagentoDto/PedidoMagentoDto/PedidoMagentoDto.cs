@@ -61,6 +61,6 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         public string Obs_1 { get; set; }
 
         public string PontoReferencia { get; set; }
-        public int Frete { get; set; }
+        public decimal? Frete { get; set; }
     }
 }

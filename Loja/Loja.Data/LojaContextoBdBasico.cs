@@ -8,9 +8,9 @@ using System.Text;
 
 namespace Loja.Data
 {
-    public class ContextoBdBasico : DbContext
+    public class LojaContextoBdBasico : DbContext
     {
-        public ContextoBdBasico(DbContextOptions<ContextoBdBasico> opt) : base(opt)
+        public LojaContextoBdBasico(DbContextOptions<LojaContextoBdBasico> opt) : base(opt)
         {
         }
 

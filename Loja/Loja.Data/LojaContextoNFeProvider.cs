@@ -5,19 +5,19 @@ using System.Text;
 
 namespace Loja.Data
 {
-    public class ContextoNFeProvider
+    public class LojaContextoNFeProvider
     {
-        public ContextoNFeProvider(DbContextOptions<ContextoNFeBd> opt)
+        public LojaContextoNFeProvider(DbContextOptions<LojaContextoNFeBd > opt)
         {
             Opt = opt;
         }
 
-        public DbContextOptions<ContextoNFeBd> Opt { get; }
+        public DbContextOptions<LojaContextoNFeBd > Opt { get; }
 
-        public ContextoNFeBd GetContextoLeitura()
+        public LojaContextoNFeBd  GetContextoLeitura()
         {
             //para leitura, cada leitura com uma conexao nova
-            return new ContextoNFeBd(Opt);
+            return new LojaContextoNFeBd (Opt);
         }
     }
 }

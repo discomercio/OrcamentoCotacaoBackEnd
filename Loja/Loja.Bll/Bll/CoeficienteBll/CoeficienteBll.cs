@@ -12,9 +12,9 @@ namespace Loja.Bll.CoeficienteBll
 {
     public class CoeficienteBll
     {
-        private readonly ContextoBdProvider contextoBdProvider;
+        private readonly LojaContextoBdProvider contextoBdProvider;
 
-        public CoeficienteBll(ContextoBdProvider contextoBdProvider)
+        public CoeficienteBll(LojaContextoBdProvider contextoBdProvider)
         {
             this.contextoBdProvider = contextoBdProvider;
         }

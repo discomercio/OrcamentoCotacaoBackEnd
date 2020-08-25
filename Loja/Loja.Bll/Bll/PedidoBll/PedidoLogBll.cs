@@ -17,9 +17,9 @@ namespace Loja.Bll.PedidoBll
 
         //afazer: passar o ContextoBd para ContextoBdGravacao
         //o contextoBdProvider é o provider normal mesmo
-        public async Task<string> PedidoLogInclusao(ContextoBd contextoBd, string id_pedido_base, string apelido,
+        public async Task<string> PedidoLogInclusao(LojaContextoBd contextoBd, string id_pedido_base, string apelido,
             Loja.Bll.PedidoBll.PedidoBll pedidoBll, string rb_forma_pagto, bool usar_rb_end_entrega,
-            string operacao_origem, ContextoBdProvider contextoBdProvider, string c_numero_magento,
+            string operacao_origem, LojaContextoBdProvider contextoBdProvider, string c_numero_magento,
             string id_magento_api_pedido_xml, string s_log_cliente_indicador)
         {
             //PedidoNovoConfirma.asp

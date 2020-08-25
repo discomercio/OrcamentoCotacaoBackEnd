@@ -8,10 +8,10 @@ using System.Text;
 
 namespace Loja.Data
 {
-    public class ContextoBd : IContextoBd
+    public class LojaContextoBd : ILojaContextoBd
     {
-        private readonly ContextoBdBasico contexto;
-        internal ContextoBd(ContextoBdBasico contexto)
+        private readonly LojaContextoBdBasico contexto;
+        internal LojaContextoBd(LojaContextoBdBasico contexto)
         {
             this.contexto = contexto;
             //sem nenhum rastreamento de mudanças na conexao (a rigor, com isto não precisamos dos AsNoTracking)
@@ -19,7 +19,7 @@ namespace Loja.Data
         }
 
         //necessário apra poder mandar comandos SQL diretamente
-        public ContextoBdBasico GetContextoBdBasicoParaSql()
+        public LojaContextoBdBasico GetContextoBdBasicoParaSql()
         {
             return contexto;
         }

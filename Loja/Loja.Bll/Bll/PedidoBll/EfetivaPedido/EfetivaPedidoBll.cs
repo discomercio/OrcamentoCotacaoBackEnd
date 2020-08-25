@@ -17,14 +17,14 @@ namespace Loja.Bll.Bll.PedidoBll.EfetivaPedido
 {
     public class EfetivaPedidoBll
     {
-        private readonly ContextoBdProvider contextoProvider;
+        private readonly LojaContextoBdProvider contextoProvider;
         ////private readonly ContextoCepProvider contextoCepProvider;
         ////private readonly ContextoNFeProvider contextoNFeProvider;
         ////private readonly Loja.Bll.ProdutoBll.ProdutoBll produtoBll;
         ////private readonly Loja.Bll.ClienteBll.ClienteBll clienteBll;
         private readonly Loja.Bll.PedidoBll.PedidoBll pedidoBll;
 
-        public EfetivaPedidoBll(Loja.Bll.PedidoBll.PedidoBll pedidoBll, ContextoBdProvider contextoProvider)
+        public EfetivaPedidoBll(Loja.Bll.PedidoBll.PedidoBll pedidoBll, LojaContextoBdProvider contextoProvider)
         {
             this.contextoProvider = contextoProvider;
             //this.contextoCepProvider = contextoCepProvider;
@@ -39,7 +39,7 @@ namespace Loja.Bll.Bll.PedidoBll.EfetivaPedido
             List<cl_ITEM_PEDIDO_NOVO> v_item, List<cl_CTRL_ESTOQUE_PEDIDO_ITEM_NOVO> v_spe, List<string> v_desconto,
             List<RegrasBll> lstRegras, float perc_limite_RA_sem_desagio,
             string loja_atual, float perc_desagio_RA, Tcliente cliente, bool vendedor_externo, string c_ped_bonshop,
-            List<string> lstErros, ContextoBdGravacao dbGravacao)
+            List<string> lstErros, LojaContextoBdGravacao dbGravacao)
         {
             bool blnUsarMemorizacaoCompletaEnderecos =
                 await Util.Util.IsActivatedFlagPedidoUsarMemorizacaoCompletaEnderecos(dbGravacao);
@@ -222,13 +222,13 @@ namespace Loja.Bll.Bll.PedidoBll.EfetivaPedido
         private async Task Novo_MontarItens(List<RegrasBll> lstRegras, List<cl_ITEM_PEDIDO_NOVO> v_item, string id_pedido_temp,
             Tpedido pedidonovoTrocaId, int empresa, int indice_pedido, string usuario_atual, List<string> lstErros,
             Tpedido pedidonovo, PedidoDto pedidoDto, List<string> v_desconto, string opercao_origem, PedidoDto pedido,
-            Tcliente cliente, ContextoBdGravacao dbGravacao)
+            Tcliente cliente, LojaContextoBdGravacao dbGravacao)
         {
             //já temos a sequencia de itens
             MovimentoEstoqueDto movimentoEstoque = new MovimentoEstoqueDto();
             //Tpedido pedidonovoTrocaId = new Tpedido();
 
-            string s_log_item_autosplit = "";
+            //string s_log_item_autosplit = "";
             int indice_item = 0;
             int sequencia = 0;
 
@@ -369,7 +369,7 @@ namespace Loja.Bll.Bll.PedidoBll.EfetivaPedido
         }
 
         private async Task AlterarIdPedido(string idPedidoBase_temporario, string idPedidoBase,
-            Tpedido pedidonovo, Tpedido pedidonovoTrocaId, ContextoBdGravacao dbGravacao)
+            Tpedido pedidonovo, Tpedido pedidonovoTrocaId, LojaContextoBdGravacao dbGravacao)
         {
             List<TpedidoItem> tpedidoItemset = await (from c in dbGravacao.TpedidoItems
                                                       where c.Pedido == idPedidoBase_temporario
@@ -676,7 +676,7 @@ namespace Loja.Bll.Bll.PedidoBll.EfetivaPedido
             pedidonovo.Endereco_Complemento = cliente.Endereco_Complemento == null ? "" :
                 cliente.Endereco_Complemento;
         }
-        
+
         private void MontarDetalhesPedido(Tpedido pedidonovo, PedidoDto pedido, Tcliente cliente,
             string usuario_atual, bool vendedor_externo, string c_ped_bonshop)
         {
@@ -740,7 +740,7 @@ namespace Loja.Bll.Bll.PedidoBll.EfetivaPedido
             pedidonovo.Opcao_Possui_RA = pedido.PermiteRAStatus == 1 ? "S" : "-";
         }
 
-        private async Task<string> GerarNumeroPedidoTemporario(List<string> lstErros, ContextoBdGravacao contextoBdGravacao)
+        private async Task<string> GerarNumeroPedidoTemporario(List<string> lstErros, LojaContextoBdGravacao contextoBdGravacao)
         {
             string numPedido = "";
             string s_num = "";
@@ -783,11 +783,11 @@ namespace Loja.Bll.Bll.PedidoBll.EfetivaPedido
 
             return numPedido;
         }
-        
+
         //Estamos gerando o id_estoque, id_estoque_movimento, gravando e gravando o Log
         public async Task<bool> EstoqueProdutoSaidaV2(string id_usuario, string id_pedido, short id_nfe_emitente,
             string id_fabricante, string id_produto, int qtde_a_sair, int qtde_autorizada_sem_presenca,
-            short[] qtde_estoque_aux, List<string> lstErros, ContextoBdGravacao dbGravacao)
+            short[] qtde_estoque_aux, List<string> lstErros, LojaContextoBdGravacao dbGravacao)
         {
             //essas variveis tem que retornar
             int qtde_disponivel = 0;
@@ -1002,7 +1002,7 @@ namespace Loja.Bll.Bll.PedidoBll.EfetivaPedido
             return retorno;
         }
 
-        private async Task<string> GerarNumeroPedido(List<string> lstErros, ContextoBdGravacao contextoBdGravacao)
+        private async Task<string> GerarNumeroPedido(List<string> lstErros, LojaContextoBdGravacao contextoBdGravacao)
         {
             string numPedido = "";
             string s_num = "";
@@ -1066,7 +1066,7 @@ namespace Loja.Bll.Bll.PedidoBll.EfetivaPedido
             return gera_letra_pedido_filhote;
         }
 
-        private async Task<decimal> CalculaTotalRALiquidoBD(string id_pedido, ContextoBdGravacao dbGravacao, List<string> lstErros)
+        private async Task<decimal> CalculaTotalRALiquidoBD(string id_pedido, LojaContextoBdGravacao dbGravacao, List<string> lstErros)
         {
             float percentual_desagio_RA_liquido = 0;
             decimal vl_total = 0;
@@ -1256,7 +1256,7 @@ namespace Loja.Bll.Bll.PedidoBll.EfetivaPedido
 
         }
 
-        public async Task<string> GeraIdEstoqueMovto(List<string> lstErros, ContextoBdGravacao contexto)
+        public async Task<string> GeraIdEstoqueMovto(List<string> lstErros, LojaContextoBdGravacao contexto)
         {
             string retorno = "";
             retorno = await Util.Util.GerarNsu(contexto, Constantes.Constantes.NSU_ID_ESTOQUE_MOVTO);
@@ -1264,7 +1264,7 @@ namespace Loja.Bll.Bll.PedidoBll.EfetivaPedido
             return retorno;
         }
 
-        public async Task<string> GeraIdEstoque(ContextoBdGravacao contexto, List<string> lstErros)
+        public async Task<string> GeraIdEstoque(LojaContextoBdGravacao contexto, List<string> lstErros)
         {
             string retorno = "";
 
@@ -1331,10 +1331,10 @@ namespace Loja.Bll.Bll.PedidoBll.EfetivaPedido
                 retorno += Constantes.Constantes.COD_SEPARADOR_FILHOTE + s_filhote;
 
             return retorno;
-        }        
+        }
 
         private void CadastrarIndicador(PedidoDto pedido, Tpedido pedidonovo, Tpedido pedidonovoTrocaId,
-            ContextoBdGravacao dbGravacao, ref string s_log_cliente_indicador)
+            LojaContextoBdGravacao dbGravacao, ref string s_log_cliente_indicador)
         {
             if (pedido.ComIndicador == 1)
             {
@@ -1353,7 +1353,7 @@ namespace Loja.Bll.Bll.PedidoBll.EfetivaPedido
         }
 
         private async Task AlterarStatusPedidoCadastrado(Tpedido pedidonovoTrocaId, Tpedido pedidonovo, PedidoDto pedido,
-            string idPedidoBase, int indicePedido, ContextoBdGravacao dbGravacao, decimal vl_total_RA_liquido)
+            string idPedidoBase, int indicePedido, LojaContextoBdGravacao dbGravacao, decimal vl_total_RA_liquido)
         {
 
             //RA
@@ -1375,7 +1375,7 @@ namespace Loja.Bll.Bll.PedidoBll.EfetivaPedido
         }
 
         private async Task VerificarSenhaDescontoSuperior(List<string> vdesconto, string usuario_atual,
-            bool blnMagentoPedidoComIndicador, string opercao_origem, ContextoBdGravacao dbGravacao, List<string> lstErros)
+            bool blnMagentoPedidoComIndicador, string opercao_origem, LojaContextoBdGravacao dbGravacao, List<string> lstErros)
         {
             foreach (var d in vdesconto)
             {
@@ -1414,7 +1414,7 @@ namespace Loja.Bll.Bll.PedidoBll.EfetivaPedido
         }
 
         private string VerificarStatusEntrega(Tpedido pedidonovoTrocaId, decimal total_estoque_vendido,
-            decimal total_estoque_sem_presenca, ContextoBdGravacao dbGravacao)
+            decimal total_estoque_sem_presenca, LojaContextoBdGravacao dbGravacao)
         {
             string status_entrega = "";
 
@@ -1434,7 +1434,7 @@ namespace Loja.Bll.Bll.PedidoBll.EfetivaPedido
         }
 
         private async Task AnalisarEndereco(PedidoDto pedido, Tpedido pedidonovoTrocaId, Tpedido pedidonovo, Tcliente cliente,
-            string idPedidoBase, string usuario_atual, List<string> lstErros, ContextoBdGravacao dbGravacao)
+            string idPedidoBase, string usuario_atual, List<string> lstErros, LojaContextoBdGravacao dbGravacao)
         {
             bool blnAnalisarEndereco = false;
 
@@ -1459,7 +1459,7 @@ namespace Loja.Bll.Bll.PedidoBll.EfetivaPedido
                         (await MontarListaEnderecoParaConfrotacaoEndParceiro(cliente, pedidonovo, dbGravacao)).ToList();
 
                     MontarListaParaConfrontacao(cliente, lstTpedidoEndConfrontacao, vAnEndConfrontacao);
-                    
+
                     foreach (var tPedidoEndConfrontacao in lstTpedidoEndConfrontacao)
                     {
                         if (CompararEnderecoParceiro(cliente.Endereco,
@@ -1523,7 +1523,7 @@ namespace Loja.Bll.Bll.PedidoBll.EfetivaPedido
         }
 
         private async Task<bool> CompararEndereco_Cadastro_Parceiro_Cadastrar(PedidoDto pedido, Tpedido pedidonovoTrocaId, Tpedido pedidonovo,
-            string idPedidoBase, List<string> lstErros, ContextoBdGravacao dbGravacao)
+            string idPedidoBase, List<string> lstErros, LojaContextoBdGravacao dbGravacao)
         {
             bool blnAnalisaEndereco_ComUsaEndParcrceiro = false;
             int intNsuPai = 0;
@@ -1581,7 +1581,7 @@ namespace Loja.Bll.Bll.PedidoBll.EfetivaPedido
         }
 
         private async Task<IEnumerable<TpedidoEnderecoConfrontacaoDto>> MontarListaEnderecoParaConfrotacaoEndParceiro(
-            Tcliente cliente, Tpedido pedidonovo, ContextoBdGravacao dbGravacao)
+            Tcliente cliente, Tpedido pedidonovo, LojaContextoBdGravacao dbGravacao)
         {
 
             var tpedidoCli_St_0Task = await (from c in dbGravacao.Tpedidos.Include(x => x.Tcliente)
@@ -1667,7 +1667,7 @@ namespace Loja.Bll.Bll.PedidoBll.EfetivaPedido
         }
 
         private async Task<bool> CadastrarAnaliseEndereco(List<cl_ANALISE_ENDERECO_CONFRONTACAO> vAnEndConfrontacao,
-            Tpedido pedidonovo, Tcliente cliente, string usuario_atual, List<string> lstErros, ContextoBdGravacao dbGravacao)
+            Tpedido pedidonovo, Tcliente cliente, string usuario_atual, List<string> lstErros, LojaContextoBdGravacao dbGravacao)
         {
             //vamos retornar essa variavel
             bool blnAnalisarEndereco = false;
@@ -1753,7 +1753,7 @@ namespace Loja.Bll.Bll.PedidoBll.EfetivaPedido
         }
 
         private async Task<bool> CompararEndereco_Entrega_Parceiro(Tpedido pedidonovoTrocaId, Tpedido pedidonovo,
-            string idPedidoBase, string usuario_atual, List<string> lstErros, ContextoBdGravacao dbGravacao)
+            string idPedidoBase, string usuario_atual, List<string> lstErros, LojaContextoBdGravacao dbGravacao)
         {
             bool blnAnalisarEndereco = false;
             int intNsuPai = 0;
@@ -1841,7 +1841,7 @@ namespace Loja.Bll.Bll.PedidoBll.EfetivaPedido
         }
 
         private async Task<bool> CompararEndereco_Entrega_Parceiro_OutrosClientes(Tpedido pedidonovoTrocaId, Tcliente cliente,
-            Tpedido pedidonovo, string idPedidoBase, string usuario_atual, List<string> lstErros, ContextoBdGravacao dbGravacao)
+            Tpedido pedidonovo, string idPedidoBase, string usuario_atual, List<string> lstErros, LojaContextoBdGravacao dbGravacao)
         {
             //vou retornar essa var
             bool blnAnalisarEndereco = false;
@@ -1880,17 +1880,17 @@ namespace Loja.Bll.Bll.PedidoBll.EfetivaPedido
             return blnAnalisarEndereco;
         }
 
-        
+
         private async Task<MovimentoEstoqueDto> Novo_VerificarListaRegras(TpedidoItem t_pedido_item,
             t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD regra_UF_Pessoa_CD, cl_ITEM_PEDIDO_NOVO item, int vEmpresaAutoSplit,
             string usuario_atual,
-            string id_pedido_temp, List<string> lstErros, ContextoBdGravacao dbGravacao)
+            string id_pedido_temp, List<string> lstErros, LojaContextoBdGravacao dbGravacao)
         {
             MovimentoEstoqueDto movtoEstoque = new MovimentoEstoqueDto();
             short qtde_estoque_vendido_aux = 0;
             short qtde_estoque_sem_presenca_aux = 0;
             //montar um objeto com esses 2 parametros
-            short[] qtde_estoque_aux = new short[2] { qtde_estoque_vendido_aux = 0, qtde_estoque_sem_presenca_aux = 0 };
+            short[] qtde_estoque_aux = new short[2] { qtde_estoque_vendido_aux, qtde_estoque_sem_presenca_aux };
 
             short qtde_spe = 0;
 
@@ -1935,7 +1935,7 @@ namespace Loja.Bll.Bll.PedidoBll.EfetivaPedido
         }
 
         private async Task<TpedidoItem> MontarTpedidoItemParaCadastrar(cl_ITEM_PEDIDO_NOVO v_item, string id_pedido_temp,
-            TpedidoItem tpedidoItem, ContextoBdGravacao dbGravacao)
+            TpedidoItem tpedidoItem, LojaContextoBdGravacao dbGravacao)
         {
 
             tpedidoItem.Pedido = id_pedido_temp;

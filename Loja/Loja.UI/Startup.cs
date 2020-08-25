@@ -88,22 +88,22 @@ namespace Loja.UI
 
 
             //ContextoProvider
-            services.AddTransient<Data.ContextoBdProvider, Data.ContextoBdProvider>();
-            services.AddTransient<Data.ContextoCepProvider, Data.ContextoCepProvider>();
-            services.AddTransient<Data.ContextoNFeProvider, Data.ContextoNFeProvider>();
+            services.AddTransient<Data.LojaContextoBdProvider, Data.LojaContextoBdProvider>();
+            services.AddTransient<Data.LojaContextoCepProvider, Data.LojaContextoCepProvider>();
+            services.AddTransient<Data.LojaContextoNFeProvider, Data.LojaContextoNFeProvider>();
 
             //banco de dados
-            services.AddDbContext<Loja.Data.ContextoBdBasico>(options =>
+            services.AddDbContext<Loja.Data.LojaContextoBdBasico>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("conexaohomologa"));
                 options.EnableSensitiveDataLogging();
             });
-            services.AddDbContext<Loja.Data.ContextoCepBd>(options =>
+            services.AddDbContext<Loja.Data.LojaContextoCepBd>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("conexaoCep"));
                 options.EnableSensitiveDataLogging();
             });
-            services.AddDbContext<Loja.Data.ContextoNFeBd>(options =>
+            services.AddDbContext<Loja.Data.LojaContextoNFeBd >(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("conexaoNfe"));
                 options.EnableSensitiveDataLogging();

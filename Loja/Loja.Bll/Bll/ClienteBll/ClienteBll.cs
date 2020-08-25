@@ -16,11 +16,11 @@ namespace Loja.Bll.ClienteBll
 {
     public class ClienteBll
     {
-        private readonly ContextoBdProvider contextoProvider;
-        private readonly ContextoCepProvider contextoCepProvider;
-        private readonly ContextoNFeProvider contextoNFeProvider;
+        private readonly LojaContextoBdProvider contextoProvider;
+        private readonly LojaContextoCepProvider contextoCepProvider;
+        private readonly LojaContextoNFeProvider contextoNFeProvider;
 
-        public ClienteBll(ContextoBdProvider contextoProvider, ContextoCepProvider contextoCepProvider, ContextoNFeProvider contextoNFeProvider)
+        public ClienteBll(LojaContextoBdProvider contextoProvider, LojaContextoCepProvider contextoCepProvider, LojaContextoNFeProvider contextoNFeProvider)
         {
             this.contextoProvider = contextoProvider;
             this.contextoCepProvider = contextoCepProvider;
@@ -371,7 +371,7 @@ namespace Loja.Bll.ClienteBll
             }
             return lstErros;
         }
-        public async Task AtualizarCadastroCliente(ContextoBdGravacao dbgravacao,
+        public async Task AtualizarCadastroCliente(LojaContextoBdGravacao dbgravacao,
             DadosClienteCadastroDto dadosCliente, string apelido, string loja)
         {
             List<string> lstRetorno = new List<string>();
@@ -727,7 +727,7 @@ namespace Loja.Bll.ClienteBll
 
             return lstErros;
         }
-        private async Task<string> GerarIdCliente(ContextoBdGravacao dbgravacao, string id_nsu)
+        private async Task<string> GerarIdCliente(LojaContextoBdGravacao dbgravacao, string id_nsu)
         {
             string retorno = "";
             int n_nsu = -1;
@@ -797,7 +797,7 @@ namespace Loja.Bll.ClienteBll
             return retorno;
         }
 
-        private async Task<string> CadastrarDadosClienteDto(ContextoBdGravacao dbgravacao, DadosClienteCadastroDto clienteDto, string apelido, string log)
+        private async Task<string> CadastrarDadosClienteDto(LojaContextoBdGravacao dbgravacao, DadosClienteCadastroDto clienteDto, string apelido, string log)
         {
             string retorno = "";
             List<string> lstRetorno = new List<string>();
@@ -870,7 +870,7 @@ namespace Loja.Bll.ClienteBll
             return retorno;
         }
 
-        private async Task AtualizarRefBancaria(ContextoBdGravacao dbgravacao, string id_cliente, string loja,
+        private async Task AtualizarRefBancaria(LojaContextoBdGravacao dbgravacao, string id_cliente, string loja,
             List<RefBancariaDtoCliente> lstRefBancaria, string apelido)
         {
             int qtdeRef = 1;
@@ -983,7 +983,7 @@ namespace Loja.Bll.ClienteBll
             await dbgravacao.SaveChangesAsync();
         }
 
-        private async Task<string> CadastrarRefBancaria(ContextoBdGravacao dbgravacao, List<RefBancariaDtoCliente> lstRefBancaria, string apelido, string id_cliente, string log)
+        private async Task<string> CadastrarRefBancaria(LojaContextoBdGravacao dbgravacao, List<RefBancariaDtoCliente> lstRefBancaria, string apelido, string id_cliente, string log)
         {
             int qtdeRef = 1;
             string campos_a_omitir_ref_bancaria = "id_cliente|ordem|excluido_status|dt_cadastro|usuario_cadastro";
@@ -1018,7 +1018,7 @@ namespace Loja.Bll.ClienteBll
             return log;
         }
 
-        private async Task AtualizarRefComercial(ContextoBdGravacao dbgravacao, string id_cliente, string loja,
+        private async Task AtualizarRefComercial(LojaContextoBdGravacao dbgravacao, string id_cliente, string loja,
             List<RefComercialDtoCliente> lstRefComercial, string apelido)
         {
             int qtdeRef = 1;
@@ -1121,7 +1121,7 @@ namespace Loja.Bll.ClienteBll
             await dbgravacao.SaveChangesAsync();
         }
 
-        private async Task<string> CadastrarRefComercial(ContextoBdGravacao dbgravacao, List<RefComercialDtoCliente> lstRefComercial, string apelido, string id_cliente, string log)
+        private async Task<string> CadastrarRefComercial(LojaContextoBdGravacao dbgravacao, List<RefComercialDtoCliente> lstRefComercial, string apelido, string id_cliente, string log)
         {
             int qtdeRef = 1;
 

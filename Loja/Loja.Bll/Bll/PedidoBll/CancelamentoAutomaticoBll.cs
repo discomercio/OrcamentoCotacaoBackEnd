@@ -12,11 +12,11 @@ namespace Loja.Bll.Bll.pedidoBll
 {
     public class CancelamentoAutomaticoBll
     {
-        private readonly ContextoBdProvider contextoProvider;
+        private readonly LojaContextoBdProvider contextoProvider;
         private readonly PedidoLogBll pedidoLogBll;
         private readonly Loja.Bll.PedidoBll.PedidoBll pedidoBll;
 
-        public CancelamentoAutomaticoBll(ContextoBdProvider contextoProvider, Loja.Bll.PedidoBll.PedidoLogBll pedidoLogBll,
+        public CancelamentoAutomaticoBll(LojaContextoBdProvider contextoProvider, Loja.Bll.PedidoBll.PedidoLogBll pedidoLogBll,
             Loja.Bll.PedidoBll.PedidoBll pedidoBll)
         {
             this.contextoProvider = contextoProvider;

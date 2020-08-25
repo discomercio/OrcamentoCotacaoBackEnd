@@ -5,19 +5,19 @@ using System.Text;
 
 namespace Loja.Data
 {
-    public class ContextoCepProvider
+    public class LojaContextoCepProvider
     {
-        public ContextoCepProvider(DbContextOptions<ContextoCepBd> opt)
+        public LojaContextoCepProvider(DbContextOptions<LojaContextoCepBd> opt)
         {
             Opt = opt;
         }
 
-        public DbContextOptions<ContextoCepBd> Opt { get; }
+        public DbContextOptions<LojaContextoCepBd> Opt { get; }
 
-        public ContextoCepBd GetContextoLeitura()
+        public LojaContextoCepBd GetContextoLeitura()
         {
             //para leitura, cada leitura com uma conexao nova
-            return new ContextoCepBd(Opt);
+            return new LojaContextoCepBd(Opt);
         }
 
     }

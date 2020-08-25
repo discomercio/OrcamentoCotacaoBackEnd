@@ -5,25 +5,25 @@ using System.Text;
 
 namespace Loja.Data
 {
-    public class ContextoBdProvider
+    public class LojaContextoBdProvider
     {
-        public ContextoBdProvider(DbContextOptions<ContextoBdBasico> opt)
+        public LojaContextoBdProvider(DbContextOptions<LojaContextoBdBasico> opt)
         {
             Opt = opt;
         }
 
-        public DbContextOptions<ContextoBdBasico> Opt { get; }
+        public DbContextOptions<LojaContextoBdBasico> Opt { get; }
 
-        public ContextoBd GetContextoLeitura()
+        public LojaContextoBd GetContextoLeitura()
         {
             //para leitura, cada leitura com uma conexao nova
-            return new ContextoBd(new ContextoBdBasico(Opt));
+            return new LojaContextoBd(new LojaContextoBdBasico(Opt));
         }
-        public ContextoBdGravacao GetContextoGravacaoParaUsing()
+        public LojaContextoBdGravacao GetContextoGravacaoParaUsing()
         {
             //para gravacao, todos compartilham a mesma coenxao (todos nesta instancia)
             //mas todos precisam estar dentro da transação!
-            return new ContextoBdGravacao(new ContextoBdBasico(Opt));
+            return new LojaContextoBdGravacao(new LojaContextoBdBasico(Opt));
         }
     }
 }
