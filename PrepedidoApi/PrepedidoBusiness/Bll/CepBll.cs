@@ -19,7 +19,7 @@ namespace PrepedidoBusiness.Bll
         private readonly IBancoNFeMunicipio bancoNFeMunicipio;
         private readonly ContextoBdProvider contextoProvider;
 
-        public CepBll(InfraBanco.ContextoCepProvider contextoCepProvider, IBancoNFeMunicipio bancoNFeMunicipio, 
+        public CepBll(InfraBanco.ContextoCepProvider contextoCepProvider, IBancoNFeMunicipio bancoNFeMunicipio,
             ContextoBdProvider contextoProvider)
         {
             this.contextoCepProvider = contextoCepProvider;
@@ -37,7 +37,7 @@ namespace PrepedidoBusiness.Bll
 
                 if (cep.Length == 8)
                 {
-                    cepDto = (await BuscarPorCep(cep)).ToList();                    
+                    cepDto = (await BuscarPorCep(cep)).ToList();
                 }
             }
             else if (!string.IsNullOrEmpty(endereco) && !string.IsNullOrEmpty(uf) && !string.IsNullOrEmpty(cidade))
@@ -117,7 +117,7 @@ namespace PrepedidoBusiness.Bll
                                              LogradouroComplemento = c.Comple_log
                                          }).ToListAsync();
 
-            var cepDto = lista1.Union(lista2).Union(lista3);
+            var cepDto = lista1.Union(lista2).Union(lista3).OrderBy(x => new { x.Bairro, x.Endereco, x.Cep});
 
             return cepDto;
         }
@@ -140,7 +140,7 @@ namespace PrepedidoBusiness.Bll
                                              Bairro = d.Bai_no,
                                              Endereco = c.Log_tipo_logradouro + " " + c.Log_no,
                                              LogradouroComplemento = c.Log_complemento
-                                         }).Take(300).ToListAsync();
+                                         }).OrderBy(x => x.Endereco).Take(300).ToListAsync();
 
             List<CepDto> lista2 = await (from c in db.LogLocalidades
                                          where c.Ufe_sg == uf &&
@@ -151,7 +151,7 @@ namespace PrepedidoBusiness.Bll
                                              Cep = c.Cep_dig,
                                              Uf = c.Ufe_sg,
                                              Cidade = c.Loc_nosub
-                                         }).Take(300).ToListAsync();
+                                         }).OrderBy(x => x.Cep).Take(300).ToListAsync();
 
             List<CepDto> lista3 = await (from c in db.TcepLogradouros
                                          where c.Uf_log == uf &&
@@ -165,9 +165,9 @@ namespace PrepedidoBusiness.Bll
                                              Bairro = c.Extenso_bai,
                                              Endereco = c.Abrev_tipo + " " + c.Nome_log,
                                              LogradouroComplemento = c.Comple_log
-                                         }).Take(300).ToListAsync();
+                                         }).OrderBy(x => x.Endereco).Take(300).ToListAsync();
 
-            var cepDto = lista1.Union(lista2).Union(lista3);
+            var cepDto = lista1.Union(lista2).Union(lista3).OrderBy(x => x.Cep);
 
             return cepDto;
         }
@@ -200,6 +200,13 @@ namespace PrepedidoBusiness.Bll
         public async Task<IEnumerable<CepDto>> BuscarCepPorEndereco(string endereco, string cidade, string uf)
         {
             List<CepDto> cepdto = new List<CepDto>();
+
+            if (string.IsNullOrEmpty(endereco)) endereco = "";
+            else endereco = endereco.Replace("Rua", "").Replace("R. ", "").Replace("R ", "")
+                    .Replace("Avenida", "").Replace("Av. ", "").Replace("Av ", "")
+                    .Replace("Travessa", "").Replace("T. ", "").Replace("T ", "")
+                    .Replace(".", "").Replace(":", "").Trim();
+
             using (var db = contextoCepProvider.GetContextoLeitura())
             {
                 using (var command = db.Database.GetDbConnection().CreateCommand())
@@ -321,38 +328,10 @@ namespace PrepedidoBusiness.Bll
                                 Uf = result["uf"].ToString(),
                                 Cidade = result["localidade"].ToString(),
                                 Bairro = result["bairro_extenso"].ToString(),
-                                Endereco = (result["logradouro_tipo"].ToString() + " " + result["logradouro_nome"].ToString()).Trim(),//c.Log_tipo_logradouro + " " + c.Log_no
+                                Endereco = result["logradouro_tipo"].ToString() + " " + result["logradouro_nome"].ToString(),//c.Log_tipo_logradouro + " " + c.Log_no
                                 LogradouroComplemento = result["logradouro_complemento"].ToString()
                             });
                         }
-                    }
-                }
-            }
-
-            if (cepdto.Count > 0)
-            {
-                //vamos validar para saber se a cidade existe no IBGE
-                List<string> lstErros = new List<string>();
-                //se não consistir vamos busca a lista de Cidades com base na UF
-                if (!await ValidacoesClienteBll.ConsisteMunicipioIBGE(cepdto[0].Cidade, cepdto[0].Uf, lstErros,
-                    contextoProvider, bancoNFeMunicipio, false))
-                {
-                    //vamos busca a lista de cidades com base na UF
-                    List<UFeMunicipiosDto> lstMunicipio = (await bancoNFeMunicipio.BuscarSiglaTodosUf(contextoProvider, cepdto[0].Uf, "")).ToList();
-                    cepdto[0].ListaCidadeIBGE = new List<string>();
-                    //vamos atribuir para a classe de cep uma Lista com todas as cidades do estado
-                    if (lstMunicipio.Count > 0)
-                    {
-                        lstMunicipio.ForEach(x =>
-                        {
-                            if (x.ListaMunicipio.Count > 0)
-                            {
-                                x.ListaMunicipio.ForEach(y =>
-                                {
-                                    cepdto[0].ListaCidadeIBGE.Add(y.Descricao);
-                                });
-                            }
-                        });
                     }
                 }
             }

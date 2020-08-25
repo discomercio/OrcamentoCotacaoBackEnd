@@ -149,7 +149,6 @@ export class PrepedidoDesktopComponent extends TelaDesktopBaseComponent implemen
 
 
   editar() {
-    debugger;
     this.prepedidoDto.EnderecoCadastroClientePrepedido = new EnderecoCadastralClientePrepedidoDto();
     this.prepedidoDto.EnderecoEntrega = new EnderecoEntregaDtoClienteCadastro();
     this.novoPrepedidoDadosService.criarNovo(this.prepedidoDto.DadosCliente,
