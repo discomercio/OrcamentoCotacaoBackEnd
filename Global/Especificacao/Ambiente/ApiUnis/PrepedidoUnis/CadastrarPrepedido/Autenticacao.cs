@@ -5,21 +5,9 @@ using Xunit;
 
 namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
 {
-    public class Autenticacao : Testes.Utils.ExecucaoCruzada.ListaEspecificacoes, Testes.Comuns.Api.IAutenticacaoSteps
+    public class Autenticacao : Comuns.Api.Autenticacao.IAutenticacaoSteps
     {
         private readonly CadastrarPrepedido cadastrarPrepedido = new CadastrarPrepedido();
-        private static readonly List<string> especificacoes = new List<string>();
-
-        public Autenticacao(string especificacao) : base(especificacao)
-        {
-            especificacoes.Add(especificacao);
-        }
-        public static void ThenVerificarQueExecutou(string especificacao)
-        {
-            //este teste somente passa se executar todos os testes
-            Assert.Contains(especificacao, especificacoes);
-            VerificarQueExecutou(especificacao);
-        }
 
         public void WhenInformo(string p0, string p1)
         {

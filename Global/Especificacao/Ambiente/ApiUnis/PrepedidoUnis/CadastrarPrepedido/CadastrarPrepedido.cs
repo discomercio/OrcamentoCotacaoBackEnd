@@ -32,28 +32,15 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
                     prePedidoUnisDto.Cnpj_Cpf = p1;
                     break;
                 default:
-                    throw new ArgumentException($"{p0} desconhecido");
+                    Assert.Equal("", $"{p0} desconhecido");
+                    break;
             }
         }
         public void ThenErroStatusCode(int statusCode)
         {
             Microsoft.AspNetCore.Mvc.ActionResult<PrePedidoResultadoUnisDto> ret = prepedidoUnisController.CadastrarPrepedido(prePedidoUnisDto).Result;
             Microsoft.AspNetCore.Mvc.ActionResult res = ret.Result;
-            switch (statusCode)
-            {
-                case 200:
-                    if (res.GetType() != typeof(Microsoft.AspNetCore.Mvc.OkObjectResult))
-                        Assert.Equal("", "Tipo não é OkObjectResult");
-                    break;
-
-                case 401:
-                    if (res.GetType() != typeof(Microsoft.AspNetCore.Mvc.UnauthorizedResult))
-                        Assert.Equal("", "Tipo não é UnauthorizedResult");
-                    break;
-
-                default:
-                    throw new ArgumentException($"{statusCode} desconhecido");
-            }
+            Testes.Utils.StatusCodes.TestarStatusCode(statusCode, res);
         }
 
         public void ThenErro(string p0)

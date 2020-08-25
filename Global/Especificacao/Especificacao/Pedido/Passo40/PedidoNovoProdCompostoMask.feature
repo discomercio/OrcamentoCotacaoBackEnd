@@ -1,8 +1,13 @@
 ﻿@ignore
 Feature: Endereco
-Background: Validações do PedidoNovoProdCompostoMask
+Validações do PedidoNovoProdCompostoMask
 #no ASP, em loja/PedidoNovoProdCompostoMask.asp
-	Given Executar em especificação "Especificacao.Pedido"
+
+Scenario: Configuração
+	Given Nome deste item "Especificacao.Pedido.Passo40.PedidoNovoProdCompostoMask"
+	Given Implementado em "Especificacao.Pedido.Pedido"
+	And Fim da configuração
+
 
 Scenario: Número preenchido
 loja/PedidoNovoProdCompostoMask.asp linha 62

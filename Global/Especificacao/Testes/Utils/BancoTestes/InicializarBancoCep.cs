@@ -14,9 +14,20 @@ namespace Especificacao.Testes.Utils.BancoTestes
             this.contextoCepProvider = contextoCepProvider;
         }
 
-        public void Inicializar()
+        public void Inicializar(bool apagarDadosExistentes)
         {
             ContextoCepBd db = contextoCepProvider.GetContextoLeitura();
+
+            if (apagarDadosExistentes)
+            {
+                foreach (var c in db.LogBairros)
+                    db.LogBairros.Remove(c);
+                foreach (var c in db.LogLocalidades)
+                    db.LogLocalidades.Remove(c);
+                foreach (var c in db.LogLogradouros)
+                    db.LogLogradouros.Remove(c);
+                db.SaveChanges();
+            }
 
             int Bai_nu_sequencial_ini = 1;
             int Loc_nu_sequencial = 1;

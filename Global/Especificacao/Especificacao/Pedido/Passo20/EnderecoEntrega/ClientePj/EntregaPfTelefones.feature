@@ -13,6 +13,11 @@ em loja/ClienteEdita.asp:
 Background: Pedido base
 	Given Pedido base cliente PJ com endereço de entrega PF
 
+Scenario: Configuração
+	Given Nome deste item "Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj.EntregaPfTelefones"
+	Given Implementado em "Especificacao.Pedido.Pedido"
+	And Fim da configuração
+
 
 #-------------------------------------------------------------
 #-------------------------------------------------------------

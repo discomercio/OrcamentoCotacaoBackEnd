@@ -26,6 +26,7 @@
   <ItemGroup>
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiUnis\PrepedidoUnis\BuscarQtdeParcCartaoVisa\ListaExecucao.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiUnis\PrepedidoUnis\CadastrarPrepedido\CadastrarPrepedidoVerificarQueExecutou - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Comuns\Api\Autenticacao\Autenticacao - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\CaminhoFelizApi.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\CaminhoFelizAsp.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\FluxoCriacaoPedido.feature.cs" />
@@ -34,6 +35,7 @@
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo20\EnderecoEntrega\ClientePj\EntregaPj - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo20\EnderecoEntrega\ClientePj\EntregaPjTelefones - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo20\EnderecoEntrega\ClientePj\EntregaPjTelefonesPj - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Prepedido\Pedido.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\TesteExecucaoCruzadaPedido - Copy.feature.cs" />
   </ItemGroup>
 
@@ -56,8 +58,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Ambiente\ApiUnis\PrepedidoUnis\BuscarQtdeParcCartaoVisa\ListaExecucao.feature.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
+    <Compile Update="Ambiente\ApiUnis\PrepedidoUnis\BuscarQtdeParcCartaoVisa\ListaDependencias.feature.cs">
+      <DependentUpon>ListaDependencias.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Especificacao\Comuns\Api\Autenticacao\AutenticacaoListaDependencias.feature.cs">
+      <DependentUpon>AutenticacaoListaDependencias.feature</DependentUpon>
     </Compile>
     <Compile Update="Especificacao\Pedido\CaminhoFelizApi.feature.cs">
       <DependentUpon>%(Filename)</DependentUpon>
@@ -77,10 +82,17 @@
     <Compile Update="Especificacao\Pedido\Passo10\Permissoes.feature.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
+    <Compile Update="Especificacao\Prepedido\Prepedido.feature.cs">
+      <DependentUpon>Prepedido.feature</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <SpecFlowFeatureFiles Update="Ambiente\ApiUnis\PrepedidoUnis\BuscarQtdeParcCartaoVisa\ListaExecucao.feature">
+    <SpecFlowFeatureFiles Update="Ambiente\ApiUnis\PrepedidoUnis\BuscarQtdeParcCartaoVisa\ListaDependencias.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Especificacao\Comuns\Api\Autenticacao\AutenticacaoListaDependencias.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
@@ -100,7 +112,7 @@
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
-    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo10\PedidoDadosCadastraisVerificarQueExecutou.feature">
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo25\DadosCadastrais.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
@@ -128,11 +140,15 @@
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Especificacao\Prepedido\Prepedido.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
     <SpecFlowFeatureFiles Update="Especificacao\Prepedido\PrepedidoEnderecoEntregaVerificarQueExecutou.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
-    <SpecFlowFeatureFiles Update="Testes\Utils\ExecucaoCruzada\TesteExecucaoCruzadaFinal.feature">
+    <SpecFlowFeatureFiles Update="Testes\Utils\ListaDependencias\TesteListaDependenciasFinal.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
@@ -152,6 +168,10 @@
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tusuario.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TorcamentistaEindicador.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tcliente.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Testes\Comuns\Api\" />
   </ItemGroup>
 
 </Project>

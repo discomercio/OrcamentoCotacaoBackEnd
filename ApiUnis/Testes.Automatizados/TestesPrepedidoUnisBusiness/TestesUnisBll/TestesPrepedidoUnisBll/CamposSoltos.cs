@@ -1,5 +1,7 @@
 ﻿using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
 using PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll;
+using PrepedidoBusiness.Bll.ClienteBll;
+using PrepedidoBusiness.Bll.PrepedidoBll;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,8 +15,8 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
     public class CamposSoltos : TestesPrepedidoUnisBll
     {
         public CamposSoltos(InicializarBanco.InicializarBancoGeral inicializarBanco, ITestOutputHelper Output, PrePedidoUnisBll prepedidoUnisBll,
-            ClienteUnisBll clienteUnisBll) :
-            base(inicializarBanco, Output, prepedidoUnisBll, clienteUnisBll)
+            ClienteUnisBll clienteUnisBll, PrepedidoBll prepedidoBll, ClienteBll clienteBll) :
+            base(inicializarBanco, Output, prepedidoUnisBll, clienteUnisBll, prepedidoBll, clienteBll)
         {
 
         }
@@ -30,11 +32,11 @@ VlTotalDestePedido	number($double)
         [Fact]
         public void Cnpj_Cpf()
         {
-            Teste(c => c.Cnpj_Cpf = "", "Cliente não localizado");
-            Teste(c => c.Cnpj_Cpf = "123", "Cliente não localizado");
-            Teste(c => c.Cnpj_Cpf = "12349535078", "Cliente não localizado");
-            Teste(c => c.Cnpj_Cpf = DadosPrepedidoUnisBll.PrepedidoParceladoCartao1vez().Cnpj_Cpf, "Cliente não localizado", false);
-            Teste(c => c.EnderecoCadastralCliente.Endereco_cnpj_cpf = "96077309095", "O CPF/CNPJ do cliente está divergindo do cadastro!");
+            Teste(c => c.Cnpj_Cpf = "", "Cliente não localizado", true, false);
+            Teste(c => c.Cnpj_Cpf = "123", "Cliente não localizado", true, false);
+            Teste(c => c.Cnpj_Cpf = "12349535078", "Cliente não localizado", true, false);
+            Teste(c => c.Cnpj_Cpf = DadosPrepedidoUnisBll.PrepedidoParceladoCartao1vez().Cnpj_Cpf, "Cliente não localizado", false, false);
+            Teste(c => c.EnderecoCadastralCliente.Endereco_cnpj_cpf = "96077309095", "O CPF/CNPJ do cliente está divergindo do cadastro!", true, false);
         }
 
         [Fact]
@@ -57,32 +59,32 @@ VlTotalDestePedido	number($double)
         [Fact]
         public void Indicador_Orcamentista()
         {
-            Teste(c => c.Indicador_Orcamentista = "um que nao existe", "O Orçamentista não existe!");
-            Teste(c => c.Indicador_Orcamentista = "", "O Orçamentista não existe!");
+            Teste(c => c.Indicador_Orcamentista = "um que nao existe", "O Orçamentista não existe!", true, false);
+            Teste(c => c.Indicador_Orcamentista = "", "O Orçamentista não existe!", true, false);
 
             Teste(c => c.Indicador_Orcamentista = Dados.Orcamentista.Apelido_com_ra, "Permite RA status divergente do cadastro do indicador/orçamentista!", false);
-            Teste(c => c.Indicador_Orcamentista = Dados.Orcamentista.Apelido_sem_ra, "Permite RA status divergente do cadastro do indicador/orçamentista!");
+            Teste(c => c.Indicador_Orcamentista = Dados.Orcamentista.Apelido_sem_ra, "Permite RA status divergente do cadastro do indicador/orçamentista!", true, false);
 
-            Teste(c => c.Indicador_Orcamentista = Dados.Orcamentista.Apelido_sem_loja, "Loja não habilitada para e-commerce: loja nao e-commerce");
+            Teste(c => c.Indicador_Orcamentista = Dados.Orcamentista.Apelido_sem_loja, "Loja não habilitada para e-commerce: loja nao e-commerce", true, false);
 
 
             Teste(c =>
             {
                 c.Indicador_Orcamentista = Dados.Orcamentista.Apelido_sem_vendedor;
                 c.PermiteRAStatus = false;
-            }, "NÃO HÁ NENHUM VENDEDOR DEFINIDO PARA ATENDÊ-LO");
+            }, "NÃO HÁ NENHUM VENDEDOR DEFINIDO PARA ATENDÊ-LO", true, false);
 
             Teste(c =>
             {
                 c.Indicador_Orcamentista = Dados.Orcamentista.Apelido_com_ra;
                 c.PermiteRAStatus = false;
-            }, "Permite RA status divergente do cadastro do indicador/orçamentista!");
+            }, "Permite RA status divergente do cadastro do indicador/orçamentista!", true, false);
             Teste(c =>
             {
                 c.Indicador_Orcamentista = Dados.Orcamentista.Apelido_sem_ra;
                 c.PermiteRAStatus = true;
             }
-            , "Permite RA status divergente do cadastro do indicador/orçamentista!");
+            , "Permite RA status divergente do cadastro do indicador/orçamentista!", true, false);
         }
 
         //testamos estes 4 campos em separado porque a validação foi implementada depois

@@ -11,18 +11,24 @@ namespace Especificacao.Ambiente.ApiUnis
 {
     internal static class InjecaoDependencias
     {
-        public static void InicializarDados(ServiceProvider Servicos)
+        private static string? tokenAcessoApiUni_cache = null;
+        public static string TokenAcessoApiUnis()
         {
-            //geramos um token de acesso válido
-            var acessoUnisBll = Servicos.GetRequiredService<PrepedidoUnisBusiness.UnisBll.AcessoBll.AcessoUnisBll>();
-            PrepedidoApiUnisBusiness.UnisDto.AcessoDto.LoginResultadoUnisDto loginResultadoUnisDto = acessoUnisBll.FazerLogin(new PrepedidoApiUnisBusiness.UnisDto.AcessoDto.LoginUnisDto()
+            if (tokenAcessoApiUni_cache == null)
             {
-                Usuario = "UsuarioApiUnis",
-                Senha = "123456"
-            }, "local", "testes").Result;
-            Assert.Empty(loginResultadoUnisDto.ListaErros);
-            Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedidoDados.TokenAcesso = loginResultadoUnisDto.TokenAcesso;
+                //geramos um token de acesso válido
+                var acessoUnisBll = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos().GetRequiredService<PrepedidoUnisBusiness.UnisBll.AcessoBll.AcessoUnisBll>();
+                PrepedidoApiUnisBusiness.UnisDto.AcessoDto.LoginResultadoUnisDto loginResultadoUnisDto = acessoUnisBll.FazerLogin(new PrepedidoApiUnisBusiness.UnisDto.AcessoDto.LoginUnisDto()
+                {
+                    Usuario = "UsuarioApiUnis",
+                    Senha = "123456"
+                }, "local", "testes").Result;
+                Assert.Empty(loginResultadoUnisDto.ListaErros);
+                tokenAcessoApiUni_cache = loginResultadoUnisDto.TokenAcesso;
+            }
+            return tokenAcessoApiUni_cache;
         }
+
         public static void ConfigurarDependencias(IServiceCollection services)
         {
             services.AddTransient<PrepedidoBusiness.Bll.PrepedidoBll.PrepedidoBll, PrepedidoBusiness.Bll.PrepedidoBll.PrepedidoBll>();

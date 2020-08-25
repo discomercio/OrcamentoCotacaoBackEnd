@@ -83,14 +83,14 @@ namespace Especificacao.Especificacao.Pedido.Passo40
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Sem quantidade zero")]
+        [Xunit.SkippableFactAttribute(DisplayName="Configuração")]
         [Xunit.TraitAttribute("FeatureTitle", "Produtos")]
-        [Xunit.TraitAttribute("Description", "Sem quantidade zero")]
-        public virtual void SemQuantidadeZero()
+        [Xunit.TraitAttribute("Description", "Configuração")]
+        public virtual void Configuracao()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sem quantidade zero", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Configuração", null, tagsOfScenario, argumentsOfScenario);
 #line 4
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -112,27 +112,27 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 5
- testRunner.When("Lista de itens \"0\" informo \"qtde\" = 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Nome deste item \"Especificacao.Pedido.Passo40.Produtos\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 6
- testRunner.Then("Erro \"Item está com quatidade inválida\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("Implementado em \"Especificacao.Pedido.Pedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 7
+ testRunner.And("Fim da configuração", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Sem produtos compostos")]
+        [Xunit.SkippableFactAttribute(DisplayName="Sem quantidade zero")]
         [Xunit.TraitAttribute("FeatureTitle", "Produtos")]
-        [Xunit.TraitAttribute("Description", "Sem produtos compostos")]
-        public virtual void SemProdutosCompostos()
+        [Xunit.TraitAttribute("Description", "Sem quantidade zero")]
+        public virtual void SemQuantidadeZero()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sem produtos compostos", "\t\'\tVERIFICA SE É PRODUTO COMPOSTO\r\n\t\tstrSql = \"SELECT \" & _\r\n\t\t\t\t\t\"*\" & _\r\n\t\t\t\t\" " +
-                    "FROM t_EC_PRODUTO_COMPOSTO t_EC_PC\" & _\r\n\t\t\t\t\" WHERE\" & _\r\n\t\t\t\t\t\" (fabricante_co" +
-                    "mposto = \'\" & s_fabricante & \"\')\" & _\r\n\t\t\t\t\t\" AND (produto_composto = \'\" & s_pro" +
-                    "duto & \"\')\"", tagsOfScenario, argumentsOfScenario);
-#line 8
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sem quantidade zero", null, tagsOfScenario, argumentsOfScenario);
+#line 10
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -152,7 +152,48 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 16
+#line 11
+ testRunner.When("Lista de itens \"0\" informo \"qtde\" = 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 12
+ testRunner.Then("Erro \"Item está com quatidade inválida\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Sem produtos compostos")]
+        [Xunit.TraitAttribute("FeatureTitle", "Produtos")]
+        [Xunit.TraitAttribute("Description", "Sem produtos compostos")]
+        public virtual void SemProdutosCompostos()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sem produtos compostos", "\t\'\tVERIFICA SE É PRODUTO COMPOSTO\r\n\t\tstrSql = \"SELECT \" & _\r\n\t\t\t\t\t\"*\" & _\r\n\t\t\t\t\" " +
+                    "FROM t_EC_PRODUTO_COMPOSTO t_EC_PC\" & _\r\n\t\t\t\t\" WHERE\" & _\r\n\t\t\t\t\t\" (fabricante_co" +
+                    "mposto = \'\" & s_fabricante & \"\')\" & _\r\n\t\t\t\t\t\" AND (produto_composto = \'\" & s_pro" +
+                    "duto & \"\')\"", tagsOfScenario, argumentsOfScenario);
+#line 14
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 22
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
@@ -178,7 +219,7 @@ rs.Open strSql, cn
 if rs.Eof then
 	alerta=texto_add_br(alerta)
 	alerta=alerta & ""Produto '"" & s_produto & ""' não foi encontrado para a loja "" & loja & ""!!""", tagsOfScenario, argumentsOfScenario);
-#line 18
+#line 24
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -198,7 +239,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 31
+#line 37
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
@@ -214,7 +255,7 @@ this.ScenarioInitialize(scenarioInfo);
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Máximo de itens por pedido", "alerta=alerta & \"O número de itens que está sendo cadastrado (\" & CStr(n) & \") ex" +
                     "cede o máximo permitido por pedido (\" & CStr(MAX_ITENS) & \")!!\"", tagsOfScenario, argumentsOfScenario);
-#line 33
+#line 39
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -234,7 +275,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 35
+#line 41
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }

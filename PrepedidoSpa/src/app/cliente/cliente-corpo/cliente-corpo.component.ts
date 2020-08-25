@@ -208,7 +208,7 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
   public prepararAvancarEnderecoCadastralClientePrepedidoDto(): void {
     //transferimos os dados do CEP para cá
     if (this.componenteCepDadosCadastrais != null) {
-      debugger;
+      
       const src = this.componenteCepDadosCadastrais;
       this.enderecoCadastralClientePrepedidoDto.Endereco_logradouro = src.Endereco ? src.Endereco : "";
       this.enderecoCadastralClientePrepedidoDto.Endereco_numero = src.Numero ? src.Numero : "";
@@ -297,7 +297,7 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
   public atualizarDadosEnderecoCadastralClienteTela(enderecoCadastralClientePrepedidoDto: EnderecoCadastralClientePrepedidoDto): void {
     this.atualizarDadosEnderecoCadastralClienteTela_Dados = enderecoCadastralClientePrepedidoDto;
 
-    debugger;
+    
     if (this.jaFezAfterViewInit) {
       if (this.atualizarDadosEnderecoCadastralClienteTela_Dados != null) {
         this.atualizarDadosEnderecoCadastralClienteTela_Executar();
@@ -374,7 +374,7 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
   }
   private atualizarDadosEnderecoCadastralClienteTela_Executar(): void {
     setTimeout(() => {
-debugger;
+
       this.enderecoCadastralClientePrepedidoDto = this.atualizarDadosEnderecoCadastralClienteTela_Dados;
       const src = this.componenteCepDadosCadastrais;
       src.cep_retorno = this.enderecoCadastralClientePrepedidoDto.Endereco_cep;

@@ -1,10 +1,5 @@
-﻿@ignore
-Feature: BuscarQtdeParcCartaoVisa
-
-Background:
-	Given Nome deste item "Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.QtdeParcCartaoVisa"
-	And Implementado em "Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.ListaExecucao"	
-    And Reiniciar banco quando terminar o teste
+﻿@Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.QtdeParcCartaoVisa
+Feature: QtdeParcCartaoVisa
 
 Scenario: retorna o que existe
             var qtdeTask = from c in db.TprazoPagtoVisanets
@@ -16,7 +11,7 @@ Scenario: retorna o que existe
 	And Novo registro "tipo" = "Constantes.COD_VISANET_PRAZO_PAGTO_LOJA"
 	And Novo registro "qtde_parcelas" = "123"
 	And Gravar registro 
-    Then Resposta "QtdeParcCartaoVisa" = "123"
+    Then Resposta "123"
 
 Scenario: retorna o que existe 2
     Given Limpar tabela "t_PRAZO_PAGTO_VISANET"
@@ -24,11 +19,12 @@ Scenario: retorna o que existe 2
 	And Novo registro "tipo" = "Constantes.COD_VISANET_PRAZO_PAGTO_LOJA"
 	And Novo registro "qtde_parcelas" = "321"
 	And Gravar registro 
-    Then Resposta "QtdeParcCartaoVisa" = "321"
+    Then Resposta "321"
 
 Scenario: não existe 
 #talvez a gente desse retornar 0... mas erro parece razoável.
     Given Limpar tabela "t_PRAZO_PAGTO_VISANET"
-    #Then Resposta "QtdeParcCartaoVisa" = "0"
-	Then Erro status code "401"
+    #na primeira versão retornava erro...
+	#Then Erro status code "401"
+    Then Resposta "0"
 

@@ -335,9 +335,9 @@ namespace PrepedidoBusiness.Bll
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var produtosItens = from c in db.TpedidoItems
-                                where c.Pedido == numPedido
-                                select c;
+            List<TpedidoItem> produtosItens = await (from c in db.TpedidoItems
+                                                     where c.Pedido == numPedido
+                                                     select c).ToListAsync();
 
             List<PedidoProdutosDtoPedido> lstProduto = new List<PedidoProdutosDtoPedido>();
 
@@ -547,7 +547,7 @@ namespace PrepedidoBusiness.Bll
         private async Task<decimal> CalcularVltotalFamiliPrecoNF(string numPedido)
         {
             var db = contextoProvider.GetContextoLeitura();
-            var familiaTask = from c in db.TpedidoItems.Include(x => x.Tpedido)
+            var familiaTask = from c in db.TpedidoItems
                               where c.Tpedido.St_Entrega != Constantes.ST_ENTREGA_CANCELADO &&
                                     c.Tpedido.Pedido.Contains(numPedido)
                               select new

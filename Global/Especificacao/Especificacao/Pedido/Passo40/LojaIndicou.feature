@@ -17,6 +17,11 @@ Background: Configurar lojas para teste
 
     And Reiniciar banco quando terminar o teste
 
+Scenario: Configuração
+	Given Nome deste item "Especificacao.Pedido.Passo40.LojaIndicou"
+	Given Implementado em "Especificacao.Pedido.Pedido"
+	And Fim da configuração
+
 Scenario: Seomnte pode existir se for vendedor externo
 	Given Pedido base
 	When Usuario logado "vendedor_externo" = "0"
