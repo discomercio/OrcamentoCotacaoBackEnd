@@ -117,7 +117,7 @@ namespace PrepedidoBusiness.Bll
                                              LogradouroComplemento = c.Comple_log
                                          }).ToListAsync();
 
-            var cepDto = lista1.Union(lista2).Union(lista3).OrderBy(x => new { x.Bairro, x.Endereco, x.Cep});
+            var cepDto = lista1.Union(lista2).Union(lista3).OrderBy(x => x.Cep);
 
             return cepDto;
         }

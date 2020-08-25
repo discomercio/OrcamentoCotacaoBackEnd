@@ -11,6 +11,7 @@ using PrepedidoBusiness.Dto.Pedido.DetalhesPedido;
 using Microsoft.EntityFrameworkCore.Internal;
 using InfraBanco.Constantes;
 using System.Collections;
+using Utils;
 
 namespace PrepedidoBusiness.Bll
 {

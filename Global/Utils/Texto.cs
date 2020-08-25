@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 
-namespace PrepedidoBusiness.Utils
+namespace Utils
 {
     public class Texto
     {

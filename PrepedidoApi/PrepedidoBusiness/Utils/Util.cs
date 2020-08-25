@@ -16,6 +16,7 @@ using System.Globalization;
 using System.Data.SqlClient;
 using PrepedidoBusiness.Dto.Cep;
 using System.ComponentModel.DataAnnotations;
+using Utils;
 
 namespace PrepedidoBusiness.Utils
 {

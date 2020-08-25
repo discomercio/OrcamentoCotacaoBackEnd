@@ -15,6 +15,7 @@ using PrepedidoBusiness.Bll.ProdutoBll;
 using PrepedidoBusiness.Bll.ClienteBll;
 using PrepedidoBusiness.Bll.FormaPagtoBll;
 using PrepedidoBusiness.Dto.FormaPagto;
+using Utils;
 
 namespace PrepedidoBusiness.Bll.PrepedidoBll
 {
