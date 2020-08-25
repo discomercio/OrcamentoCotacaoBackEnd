@@ -2,8 +2,14 @@
 using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
 using PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll;
 using PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto;
+using PrepedidoBusiness.Bll.ClienteBll;
+using PrepedidoBusiness.Bll.PrepedidoBll;
+using PrepedidoBusiness.Dto.ClienteCadastro;
+using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
+using PrepedidoUnisBusiness.UnisDto.ClienteUnisDto;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Testes.Automatizados.InicializarBanco;
 using Xunit;
@@ -17,14 +23,18 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
         private readonly ITestOutputHelper output;
         private readonly PrePedidoUnisBll prepedidoUnisBll;
         private readonly ClienteUnisBll clienteUnisBll;
+        private readonly PrepedidoBll prepedidoBll;
+        private readonly ClienteBll clienteBll;
 
         public TestesPrepedidoUnisBll(InicializarBanco.InicializarBancoGeral inicializarBanco, ITestOutputHelper Output, PrePedidoUnisBll prepedidoUnisBll,
-            ClienteUnisBll clienteUnisBll)
+            ClienteUnisBll clienteUnisBll, PrepedidoBll prepedidoBll, ClienteBll clienteBll)
         {
             this.inicializarBanco = inicializarBanco;
             output = Output;
             this.prepedidoUnisBll = prepedidoUnisBll;
             this.clienteUnisBll = clienteUnisBll;
+            this.prepedidoBll = prepedidoBll;
+            this.clienteBll = clienteBll;
 
             //cadastar o nosso cliente
             var cliente = InicializarClienteDados.ClienteNaoCadastradoPF();
@@ -34,17 +44,17 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
         }
 
         internal delegate void DeixarDtoErrado(PrePedidoUnisDto clienteDto);
-        internal void Teste(DeixarDtoErrado deixarDtoErrado, string mensagemErro, bool incluirEsteErro = true)
+        internal void Teste(DeixarDtoErrado deixarDtoErrado, string mensagemErro, bool incluirEsteErro = true, bool testarPrepedidoBll = true)
         {
             PrePedidoUnisDto prePedido = DadosPrepedidoUnisBll.PrepedidoParceladoCartao1vez();
-            TesteInterno(prePedido, deixarDtoErrado, mensagemErro, incluirEsteErro);
+            TesteInterno(prePedido, deixarDtoErrado, mensagemErro, incluirEsteErro, testarPrepedidoBll);
         }
-        internal void TesteAvista(DeixarDtoErrado deixarDtoErrado, string mensagemErro, bool incluirEsteErro = true)
+        internal void TesteAvista(DeixarDtoErrado deixarDtoErrado, string mensagemErro, bool incluirEsteErro = true, bool testarPrepedidoBll = true)
         {
             PrePedidoUnisDto prePedido = DadosPrepedidoUnisBll.PrepedidoParceladoAvista();
-            TesteInterno(prePedido, deixarDtoErrado, mensagemErro, incluirEsteErro);
+            TesteInterno(prePedido, deixarDtoErrado, mensagemErro, incluirEsteErro, testarPrepedidoBll);
         }
-        private void TesteInterno(PrePedidoUnisDto prePedido, DeixarDtoErrado deixarDtoErrado, string mensagemErro, bool incluirEsteErro = true)
+        private void TesteInterno(PrePedidoUnisDto prePedido, DeixarDtoErrado deixarDtoErrado, string mensagemErro, bool incluirEsteErro = true, bool testarPrepedidoBll = true)
         {
             deixarDtoErrado(prePedido);
 
@@ -66,6 +76,51 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
                 Assert.DoesNotContain(mensagemErro, res.ListaErros);
             }
 
+            if (testarPrepedidoBll)
+                TesteInternoPrepedidoBll(prePedido, mensagemErro, incluirEsteErro);
+        }
+
+        private void TesteInternoPrepedidoBll(PrePedidoUnisDto prePedidoUnis, string mensagemErro, bool incluirEsteErro)
+        {
+            //agora no prepedidoapi
+
+            EnderecoCadastralClientePrepedidoDto endCadastralArclube =
+                EnderecoCadastralClientePrepedidoUnisDto.EnderecoCadastralClientePrepedidoDtoDeEnderecoCadastralClientePrepedidoUnisDto(
+                    prePedidoUnis.EnderecoCadastralCliente);
+
+            List<PrepedidoProdutoDtoPrepedido> lstProdutosArclube = new List<PrepedidoProdutoDtoPrepedido>();
+            prePedidoUnis.ListaProdutos.ForEach(x =>
+            {
+                var ret = PrePedidoProdutoPrePedidoUnisDto.
+                PrepedidoProdutoDtoPrepedidoDePrePedidoProdutoPrePedidoUnisDto(x,
+                Convert.ToInt16(prePedidoUnis.PermiteRAStatus));
+
+                lstProdutosArclube.Add(ret);
+            });
+
+            var clienteArclube = clienteBll.BuscarCliente(prePedidoUnis.Cnpj_Cpf,
+                prePedidoUnis.Indicador_Orcamentista).Result;
+
+
+            var prePedidoDto = PrePedidoUnisDto.PrePedidoDtoDePrePedidoUnisDto(prePedidoUnis, endCadastralArclube, lstProdutosArclube, clienteArclube.DadosCliente);
+            string apelido = "KONAR";
+            IEnumerable<string> resi = prepedidoBll.CadastrarPrepedido(prePedidoDto, apelido.Trim(), 0.01M, false /* permitimos repetidos */,
+                (int)InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS).Result;
+            var res = resi.ToList();
+            if (incluirEsteErro)
+            {
+                if (!res.Contains(mensagemErro))
+                    if (output != null)
+                        output.WriteLine(JsonConvert.SerializeObject(res));
+                Assert.Contains(mensagemErro, res);
+            }
+            else
+            {
+                if (res.Contains(mensagemErro))
+                    if (output != null)
+                        output.WriteLine(JsonConvert.SerializeObject(res));
+                Assert.DoesNotContain(mensagemErro, res);
+            }
         }
 
         internal void TestarSucesso(DeixarDtoErrado deixarDtoErrado)
