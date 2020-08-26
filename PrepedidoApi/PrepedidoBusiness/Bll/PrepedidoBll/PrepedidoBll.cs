@@ -10,12 +10,12 @@ using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using PrepedidoBusiness.Dto.ClienteCadastro;
 using InfraBanco.Constantes;
 using InfraBanco;
-using PrepedidoBusiness.Bll.ProdutoBll;
 using PrepedidoBusiness.Bll.ClienteBll;
 using PrepedidoBusiness.Bll.FormaPagtoBll;
 using PrepedidoBusiness.Dto.FormaPagto;
 using Utils;
 using Produto.RegrasCrtlEstoque;
+using Produto;
 
 namespace PrepedidoBusiness.Bll.PrepedidoBll
 {
@@ -793,17 +793,17 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                         Tparametro parametroRegra = await Util.BuscarRegistroParametro(Constantes.ID_PARAMETRO_Flag_Orcamento_ConsisteDisponibilidadeEstoqueGlobal,
                             contextoProvider);
                         //esse metodo tb tras a sigla da pessoa
-                        string tipoPessoa = Util.MultiCdRegraDeterminaPessoa(prePedido.DadosCliente.Tipo, prePedido.DadosCliente.Contribuinte_Icms_Status,
+                        string tipoPessoa = UtilsProduto.MultiCdRegraDeterminaPessoa(prePedido.DadosCliente.Tipo, prePedido.DadosCliente.Contribuinte_Icms_Status,
                             prePedido.DadosCliente.ProdutorRural);
                         string descricao = Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo);
 
                         //List<RegrasBll> regraCrtlEstoque = new List<RegrasBll>();
                         List<RegrasBll> regraCrtlEstoque = (await ObterCtrlEstoqueProdutoRegra(prePedido, lstErros)).ToList();
-                        await Util.ObterCtrlEstoqueProdutoRegra_Teste(lstErros, regraCrtlEstoque, prePedido.DadosCliente.Uf, tipoPessoa, contextoProvider);
+                        await UtilsProduto.ObterCtrlEstoqueProdutoRegra_Teste(lstErros, regraCrtlEstoque, prePedido.DadosCliente.Uf, tipoPessoa, contextoProvider);
 
-                        ProdutoGeralBll.VerificarRegrasAssociadasAosProdutos(regraCrtlEstoque, lstErros, prePedido.DadosCliente.Uf, prePedido.DadosCliente.Tipo);
+                        Produto.ProdutoGeralBll.VerificarRegrasAssociadasAosProdutos(regraCrtlEstoque, lstErros, prePedido.DadosCliente.Uf, prePedido.DadosCliente.Tipo);
                         //obtendo qtde disponivel
-                        await Util.VerificarEstoque(regraCrtlEstoque, contextoProvider);
+                        await UtilsProduto.VerificarEstoque(regraCrtlEstoque, contextoProvider);
 
                         ObterDisponibilidadeEstoque(regraCrtlEstoque, prePedido, parametroRegra, lstErros);
 
@@ -1602,7 +1602,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                                 };
 
                                 //buscar a sigla tipo pessoa
-                                var tipo_pessoa = Util.MultiCdRegraDeterminaPessoa(prePedido.DadosCliente.Tipo,
+                                var tipo_pessoa = UtilsProduto.MultiCdRegraDeterminaPessoa(prePedido.DadosCliente.Tipo,
                                     prePedido.DadosCliente.Contribuinte_Icms_Status, prePedido.DadosCliente.ProdutorRural);
 
                                 var wmsRegraCdXUfXPessoaTask = from c in db.TwmsRegraCdXUfPessoas

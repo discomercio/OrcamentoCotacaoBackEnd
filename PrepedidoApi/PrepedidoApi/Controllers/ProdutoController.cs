@@ -13,8 +13,8 @@ namespace PrepedidoApi.Controllers
     public class ProdutoController : Controller
     {
         private readonly InfraIdentity.IServicoDecodificarToken servicoDecodificarToken;
-        private readonly PrepedidoBusiness.Bll.ProdutoBll.ProdutoGeralBll produtoBll;
-        public ProdutoController(PrepedidoBusiness.Bll.ProdutoBll.ProdutoGeralBll produtoBll, InfraIdentity.IServicoDecodificarToken servicoDecodificarToken)
+        private readonly PrepedidoBusiness.Bll.ProdutoPrepedidoBll produtoBll;
+        public ProdutoController(PrepedidoBusiness.Bll.ProdutoPrepedidoBll produtoBll, InfraIdentity.IServicoDecodificarToken servicoDecodificarToken)
         {
             this.produtoBll = produtoBll;
             this.servicoDecodificarToken = servicoDecodificarToken;

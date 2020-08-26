@@ -1,5 +1,5 @@
-﻿using PrepedidoBusiness.Bll.ProdutoBll;
-using PrepedidoUnisBusiness.UnisDto.ProdutoUnisDto;
+﻿using PrepedidoUnisBusiness.UnisDto.ProdutoUnisDto;
+using Produto;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,7 +11,7 @@ namespace PrepedidoUnisBusiness.UnisBll.ProdutoUnisBll
     {
         private readonly ProdutoGeralBll produtoBll;
 
-        public ProdutoUnisBll(PrepedidoBusiness.Bll.ProdutoBll.ProdutoGeralBll produtoBll)
+        public ProdutoUnisBll(ProdutoGeralBll produtoBll)
         {
             this.produtoBll = produtoBll;
         }

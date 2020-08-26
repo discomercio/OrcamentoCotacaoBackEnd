@@ -4,12 +4,10 @@ using System.Threading.Tasks;
 using InfraBanco.Modelos;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using PrepedidoBusiness.Utils;
-using PrepedidoBusiness.Dto.ClienteCadastro;
 using Produto.RegrasCrtlEstoque;
 using Produto.ProdutoDados;
 
-namespace PrepedidoBusiness.Bll.ProdutoBll
+namespace Produto
 {
     public class ProdutoGeralBll
     {
@@ -19,13 +17,6 @@ namespace PrepedidoBusiness.Bll.ProdutoBll
         {
             this.contextoProvider = contextoProvider;
         }
-
-        public async Task<PrepedidoBusiness.Dto.Produto.ProdutoComboDto> ListaProdutosComboApiArclube(string loja, string id_cliente)
-        {
-            var aux = await ListaProdutosComboDados(loja, id_cliente, null);
-            return PrepedidoBusiness.Dto.Produto.ProdutoComboDto.ProdutoComboDtoDeProdutoComboDados(aux);
-        }
-
 
         public async Task<ProdutoComboDados> ListaProdutosComboDados(string loja, string id_cliente, string cpf_cnpj)
         {
@@ -48,26 +39,26 @@ namespace PrepedidoBusiness.Bll.ProdutoBll
                 return null;
 
             //obtém  a sigla para regra
-            string cliente_regra = Util.MultiCdRegraDeterminaPessoa(cliente.tipo_cliente, cliente.contribuite_icms_status,
+            string cliente_regra = UtilsProduto.MultiCdRegraDeterminaPessoa(cliente.tipo_cliente, cliente.contribuite_icms_status,
                 cliente.produtor_rural_status);
 
             var lstProdutosCompostos = BuscarProdutosCompostos(loja);
-            List<ProdutoDados> lstTodosProdutos = (await BuscarTodosProdutos(loja)).ToList();
+            List<ProdutoDados.ProdutoDados> lstTodosProdutos = (await BuscarTodosProdutos(loja)).ToList();
 
             List<RegrasBll> lst_cliente_regra = new List<RegrasBll>();
             MontaListaRegras(lstTodosProdutos, lst_cliente_regra);
 
             List<string> lstErros = new List<string>();
-            await Util.ObterCtrlEstoqueProdutoRegra_Teste(lstErros, lst_cliente_regra, cliente.uf, cliente_regra, contextoProvider);
+            await UtilsProduto.ObterCtrlEstoqueProdutoRegra_Teste(lstErros, lst_cliente_regra, cliente.uf, cliente_regra, contextoProvider);
 
-            Util.ObterDisponibilidadeEstoque(lst_cliente_regra, lstTodosProdutos, lstErros, contextoProvider);
+            UtilsProduto.ObterDisponibilidadeEstoque(lst_cliente_regra, lstTodosProdutos, lstErros, contextoProvider);
 
             //retorna as qtdes disponiveis
-            await Util.VerificarEstoque(lst_cliente_regra, contextoProvider);
-            await Util.VerificarEstoqueComSubQuery(lst_cliente_regra, contextoProvider);
+            await UtilsProduto.VerificarEstoque(lst_cliente_regra, contextoProvider);
+            await UtilsProduto.VerificarEstoqueComSubQuery(lst_cliente_regra, contextoProvider);
 
             //buscar o parametro produto 001020 indice 12
-            Tparametro tparametro = await Util.BuscarRegistroParametro(Constantes.ID_PARAMETRO_Flag_Orcamento_ConsisteDisponibilidadeEstoqueGlobal, contextoProvider);
+            Tparametro tparametro = await UtilsProduto.BuscarRegistroParametro(Constantes.ID_PARAMETRO_Flag_Orcamento_ConsisteDisponibilidadeEstoqueGlobal, contextoProvider);
             //atribui a qtde de estoque para o produto
             IncluirEstoqueProduto(lst_cliente_regra, lstTodosProdutos, tparametro);
 
@@ -78,7 +69,7 @@ namespace PrepedidoBusiness.Bll.ProdutoBll
             return retorno;
         }
 
-        private async Task ExisteMensagensAlertaProdutos(List<ProdutoDados> lst_produtos)
+        private async Task ExisteMensagensAlertaProdutos(List<ProdutoDados.ProdutoDados> lst_produtos)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -110,7 +101,7 @@ namespace PrepedidoBusiness.Bll.ProdutoBll
             }
         }
 
-        private void MontaListaRegras(List<ProdutoDados> lst_produtos, List<RegrasBll> lst_cliente_regra)
+        private void MontaListaRegras(List<ProdutoDados.ProdutoDados> lst_produtos, List<RegrasBll> lst_cliente_regra)
         {
             foreach (var p in lst_produtos)
             {
@@ -171,7 +162,7 @@ namespace PrepedidoBusiness.Bll.ProdutoBll
         }
 
 
-        private async Task<IEnumerable<ProdutoDados>> BuscarTodosProdutos(string loja)
+        private async Task<IEnumerable<ProdutoDados.ProdutoDados>> BuscarTodosProdutos(string loja)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -180,7 +171,7 @@ namespace PrepedidoBusiness.Bll.ProdutoBll
                                     join fab in db.Tfabricantes on c.Fabricante equals fab.Fabricante
                                     where pl.Vendavel == "S" &&
                                           pl.Loja == loja
-                                    select new ProdutoDados
+                                    select new ProdutoDados.ProdutoDados
                                     {
                                         Fabricante = c.Fabricante,
                                         Fabricante_Nome = fab.Nome,
@@ -192,7 +183,7 @@ namespace PrepedidoBusiness.Bll.ProdutoBll
                                         Desc_Max = pl.Desc_Max
                                     };
 
-            List<ProdutoDados> lstTodosProdutos = await todosProdutosTask.ToListAsync();
+            List<ProdutoDados.ProdutoDados> lstTodosProdutos = await todosProdutosTask.ToListAsync();
 
             return lstTodosProdutos;
         }
@@ -201,7 +192,7 @@ namespace PrepedidoBusiness.Bll.ProdutoBll
          * pois estamos realizando a busca apenas em produtos que 
          * a subtração entre qtde e qtde_utilizada seja maior que 0
          */
-        private void IncluirEstoqueProduto(List<RegrasBll> lstRegras, List<ProdutoDados> lst_produtos, Tparametro parametro)
+        private void IncluirEstoqueProduto(List<RegrasBll> lstRegras, List<ProdutoDados.ProdutoDados> lst_produtos, Tparametro parametro)
         {
             int qtde_estoque_total_disponivel = 0;
             int qtde_estoque_total_disponivel_global = 0;
