@@ -43,7 +43,7 @@ namespace Especificacao.Ambiente.ApiUnis
             services.AddTransient<PrepedidoUnisBusiness.UnisBll.CoeficienteUnisBll.CoeficienteUnisBll, PrepedidoUnisBusiness.UnisBll.CoeficienteUnisBll.CoeficienteUnisBll>();
 
             //Bll's da Arclube
-            services.AddTransient<PrepedidoBusiness.Bll.CepBll, PrepedidoBusiness.Bll.CepBll>();
+            services.AddTransient<Cep.CepBll, Cep.CepBll>();
             services.AddTransient<PrepedidoBusiness.Bll.CepPrepedidoBll, PrepedidoBusiness.Bll.CepPrepedidoBll>();
             services.AddTransient<PrepedidoBusiness.Bll.PrepedidoBll.PrepedidoBll, PrepedidoBusiness.Bll.PrepedidoBll.PrepedidoBll>();
             services.AddTransient<PrepedidoBusiness.Bll.ClienteBll.ClienteBll, PrepedidoBusiness.Bll.ClienteBll.ClienteBll>();
@@ -55,7 +55,7 @@ namespace Especificacao.Ambiente.ApiUnis
             services.AddTransient<PrepedidoBusiness.Bll.PrepedidoBll.ValidacoesPrepedidoBll, PrepedidoBusiness.Bll.PrepedidoBll.ValidacoesPrepedidoBll>();
             services.AddTransient<PrepedidoBusiness.Bll.PrepedidoBll.MontarLogPrepedidoBll, PrepedidoBusiness.Bll.PrepedidoBll.MontarLogPrepedidoBll>();
 
-            services.AddTransient<PrepedidoBusiness.UtilsNfe.IBancoNFeMunicipio, Testes.Utils.BancoTestes.TestesBancoNFeMunicipio>();
+            services.AddTransient<Cep.IBancoNFeMunicipio, Testes.Utils.BancoTestes.TestesBancoNFeMunicipio>();
 
             services.AddTransient<InfraIdentity.ApiUnis.IServicoAutenticacaoApiUnis, InfraIdentity.ApiUnis.ServicoAutenticacaoApiUnis>();
             //como singleton para melhorar a performance

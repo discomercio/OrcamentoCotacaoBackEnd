@@ -8,4 +8,9 @@
     <Folder Include="Dados\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Infra\InfraBanco\InfraBanco.csproj" />
+    <ProjectReference Include="..\Utils\UtilsGlobais.csproj" />
+  </ItemGroup>
+
 </Project>

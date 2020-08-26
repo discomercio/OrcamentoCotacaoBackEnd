@@ -14,8 +14,8 @@ using PrepedidoBusiness.Bll.FormaPagtoBll;
 using PrepedidoBusiness.Dto.FormaPagto;
 using Produto.RegrasCrtlEstoque;
 using Produto;
-using PrepedidoBusiness.UtilsNfe;
 using UtilsGlobais;
+using Cep;
 
 namespace PrepedidoBusiness.Bll.PrepedidoBll
 {

@@ -11,8 +11,8 @@ using PrepedidoBusiness.Dto.ClienteCadastro;
 using PrepedidoBusiness.Dto.ClienteCadastro.Referencias;
 using System.Reflection;
 using PrepedidoBusiness.Dto.Cep;
-using PrepedidoBusiness.UtilsNfe;
 using UtilsGlobais;
+using Cep;
 
 namespace PrepedidoBusiness.Bll.ClienteBll
 {

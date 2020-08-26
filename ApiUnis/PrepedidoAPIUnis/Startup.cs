@@ -88,7 +88,7 @@ namespace PrepedidoAPIUnis
             });
 
             //Bll's da Arclube
-            services.AddTransient<PrepedidoBusiness.Bll.CepBll, PrepedidoBusiness.Bll.CepBll>();
+            services.AddTransient<Cep.CepBll, Cep.CepBll>();
             services.AddTransient<PrepedidoBusiness.Bll.CepPrepedidoBll, PrepedidoBusiness.Bll.CepPrepedidoBll>();
             services.AddTransient<PrepedidoBusiness.Bll.PrepedidoBll.PrepedidoBll, PrepedidoBusiness.Bll.PrepedidoBll.PrepedidoBll>();
             services.AddTransient<PrepedidoBusiness.Bll.ClienteBll.ClienteBll, PrepedidoBusiness.Bll.ClienteBll.ClienteBll>();
@@ -99,7 +99,7 @@ namespace PrepedidoAPIUnis
             services.AddTransient<PrepedidoBusiness.Bll.ProdutoPrepedidoBll, PrepedidoBusiness.Bll.ProdutoPrepedidoBll>();
             services.AddTransient<PrepedidoBusiness.Bll.PrepedidoBll.ValidacoesPrepedidoBll, PrepedidoBusiness.Bll.PrepedidoBll.ValidacoesPrepedidoBll>();
             services.AddTransient<PrepedidoBusiness.Bll.PrepedidoBll.MontarLogPrepedidoBll, PrepedidoBusiness.Bll.PrepedidoBll.MontarLogPrepedidoBll>();
-            services.AddTransient<PrepedidoBusiness.UtilsNfe.IBancoNFeMunicipio, PrepedidoBusiness.UtilsNfe.BancoNFeMunicipio>();
+            services.AddTransient<Cep.IBancoNFeMunicipio, Cep.BancoNFeMunicipio>();
 
             services.AddTransient<IServicoAutenticacaoApiUnis, ServicoAutenticacaoApiUnis>();
             //como singleton para melhorar a performance

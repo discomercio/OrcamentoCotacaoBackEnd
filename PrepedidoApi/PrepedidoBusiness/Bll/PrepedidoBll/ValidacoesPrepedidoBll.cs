@@ -10,10 +10,9 @@ using PrepedidoBusiness.Dto.ClienteCadastro;
 using InfraBanco.Constantes;
 using InfraBanco.Modelos;
 using PrepedidoBusiness.Bll.ClienteBll;
-using PrepedidoBusiness.Dto.Cep;
 using InfraBanco;
-using PrepedidoBusiness.UtilsNfe;
 using UtilsGlobais;
+using Cep;
 
 namespace PrepedidoBusiness.Bll.PrepedidoBll
 {

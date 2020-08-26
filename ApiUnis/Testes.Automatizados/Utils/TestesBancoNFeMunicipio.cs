@@ -1,9 +1,7 @@
-﻿using Cep.Dados;
+﻿using Cep;
+using Cep.Dados;
 using InfraBanco;
 using InfraBanco.Modelos;
-using PrepedidoBusiness.Dto.Cep;
-using PrepedidoBusiness.UtilsNfe;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Cep;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PrepedidoBusiness.Bll;
@@ -18,7 +19,7 @@ namespace PrepedidoApi.Controllers
         private readonly CepBll cepBll;
         private readonly InfraIdentity.IServicoDecodificarToken servicoDecodificarToken;
 
-        public CepController(PrepedidoBusiness.Bll.CepPrepedidoBll cepPrepedidoBll, PrepedidoBusiness.Bll.CepBll cepBll, InfraIdentity.IServicoDecodificarToken servicoDecodificarToken)
+        public CepController(PrepedidoBusiness.Bll.CepPrepedidoBll cepPrepedidoBll, Cep.CepBll cepBll, InfraIdentity.IServicoDecodificarToken servicoDecodificarToken)
         {
             this.cepPrepedidoBll = cepPrepedidoBll;
             this.cepBll = cepBll;

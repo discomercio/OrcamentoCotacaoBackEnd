@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cep;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ namespace PrepedidoBusiness.Bll
     {
         private readonly CepBll cepBll;
 
-        public CepPrepedidoBll(PrepedidoBusiness.Bll.CepBll cepBll)
+        public CepPrepedidoBll(Cep.CepBll cepBll)
         {
             this.cepBll = cepBll;
         }

@@ -7,7 +7,7 @@ using PrepedidoBusiness.Dto.ClienteCadastro;
 using PrepedidoBusiness.Dto.ClienteCadastro.Referencias;
 using Microsoft.EntityFrameworkCore;
 using InfraBanco.Constantes;
-using PrepedidoBusiness.UtilsNfe;
+using Cep;
 
 namespace PrepedidoBusiness.Bll.ClienteBll
 {
