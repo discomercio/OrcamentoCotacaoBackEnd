@@ -41,6 +41,9 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
             cliente.DadosCliente.Cnpj_Cpf = DadosPrepedidoUnisBll.PrepedidoParceladoCartao1vez().Cnpj_Cpf;
             clienteUnisBll.CadastrarClienteUnis(cliente).Wait();
 
+            var clientePJ = InicializarClienteDados.ClienteNaoCadastradoPJ();
+            clientePJ.DadosCliente.Cnpj_Cpf = DadosPrepedidoUnisBll.PrepedidoParcelaUnica().Cnpj_Cpf;
+            clienteUnisBll.CadastrarClienteUnis(clientePJ).Wait();
         }
 
         internal delegate void DeixarDtoErrado(PrePedidoUnisDto clienteDto);
@@ -54,6 +57,36 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
             PrePedidoUnisDto prePedido = DadosPrepedidoUnisBll.PrepedidoParceladoAvista();
             TesteInterno(prePedido, deixarDtoErrado, mensagemErro, incluirEsteErro, testarPrepedidoBll);
         }
+        internal void TesteEnderecoEntrega(DeixarDtoErrado deixarDtoErrado, string mensagemErro, bool incluirEsteErro = true, bool testarPrepedidoBll = true)
+        {
+            PrePedidoUnisDto prePedido = DadosPrepedidoUnisBll.PrepedidoEnderecoEntregaCompleto();
+            TesteInterno(prePedido, deixarDtoErrado, mensagemErro, incluirEsteErro, testarPrepedidoBll);
+        }
+
+        internal void TesteParcUnica(DeixarDtoErrado deixarDtoErrado, string mensagemErro, bool incluirEsteErro = true, bool testarPrepedidoBll = true)
+        {
+            PrePedidoUnisDto prePedido = DadosPrepedidoUnisBll.PrepedidoParcelaUnica();
+            TesteInterno(prePedido, deixarDtoErrado, mensagemErro, incluirEsteErro, testarPrepedidoBll);
+        }
+
+        internal void TesteParcCartao(DeixarDtoErrado deixarDtoErrado, string mensagemErro, bool incluirEsteErro = true, bool testarPrepedidoBll = true)
+        {
+            PrePedidoUnisDto prePedido = DadosPrepedidoUnisBll.PrepedidoParcelaCartao();
+            TesteInterno(prePedido, deixarDtoErrado, mensagemErro, incluirEsteErro, testarPrepedidoBll);
+        }
+
+        internal void TesteParcCartaoMaquineta(DeixarDtoErrado deixarDtoErrado, string mensagemErro, bool incluirEsteErro = true, bool testarPrepedidoBll = true)
+        {
+            PrePedidoUnisDto prePedido = DadosPrepedidoUnisBll.PrepedidoParcelaCartaoMaquineta();
+            TesteInterno(prePedido, deixarDtoErrado, mensagemErro, incluirEsteErro, testarPrepedidoBll);
+        }
+
+        internal void TestePagamentoComEntrada(DeixarDtoErrado deixarDtoErrado, string mensagemErro, bool incluirEsteErro = true, bool testarPrepedidoBll = true)
+        {
+            PrePedidoUnisDto prePedido = DadosPrepedidoUnisBll.PrepedidoPagtoComEntrada();
+            TesteInterno(prePedido, deixarDtoErrado, mensagemErro, incluirEsteErro, testarPrepedidoBll);
+        }
+
         private void TesteInterno(PrePedidoUnisDto prePedido, DeixarDtoErrado deixarDtoErrado, string mensagemErro, bool incluirEsteErro = true, bool testarPrepedidoBll = true)
         {
             deixarDtoErrado(prePedido);

@@ -144,5 +144,194 @@ VlTotalDestePedido	number($double)
         FormaPagtoCriacao	FormaPagtoCriacaoUnisDto{...}
         */
 
+        [Fact]
+        public void TesteParcelaUnica()
+        {
+            TesteParcUnica(c =>
+            {
+                c.FormaPagtoCriacao.Op_pu_forma_pagto = "";
+            }, "Indique a forma de pagamento da parcela única.", true);
+
+            TesteParcUnica(c =>
+            {
+                c.FormaPagtoCriacao.C_pu_valor = null;
+            }, "Indique o valor da parcela única.", true);
+
+            TesteParcUnica(c =>
+            {
+                c.FormaPagtoCriacao.C_pu_valor = 0;
+            }, "Valor da parcela única é inválido.", true);
+
+            TesteParcUnica(c =>
+            {
+                c.FormaPagtoCriacao.C_pu_vencto_apos = null;
+            }, "Indique o intervalo de vencimento da parcela única.", true);
+
+            TesteParcUnica(c =>
+            {
+                c.FormaPagtoCriacao.C_pu_vencto_apos = 0;
+            }, "Intervalo de vencimento da parcela única é inválido.", true);
+
+            TesteParcUnica(c =>
+            {
+                c.FormaPagtoCriacao.CustoFinancFornecQtdeParcelas = 2;
+            }, "Quantidade da parcela esta divergente!", true);
+
+            TesteParcUnica(c =>
+            {
+                c.FormaPagtoCriacao.C_pc_qtde = 0;
+                c.FormaPagtoCriacao.C_pc_valor = 0;
+                c.FormaPagtoCriacao.C_pu_valor = 3460.04m;
+            }, "Valor total da forma de pagamento diferente do valor total!", true);
+
+            TesteParcUnica(c =>
+            {
+                c.FormaPagtoCriacao.C_pc_qtde = 0;
+                c.FormaPagtoCriacao.C_pc_valor = 0;
+                c.Indicador_Orcamentista = "Apelido_sem_ra";
+                c.PermiteRAStatus = false;
+            }, "Valor total da forma de pagamento diferente do valor total!", true);
+        }
+
+        [Fact]
+        public void TesteParceladoCartao()
+        {
+            TesteParcCartao(c =>
+            {
+                c.FormaPagtoCriacao.C_pc_qtde = null;
+            }, "Indique a quantidade de parcelas (parcelado no cartão [internet]).", true);
+
+            TesteParcCartao(c =>
+            {
+                c.FormaPagtoCriacao.C_pc_qtde = 0;
+            }, "Quantidade de parcelas inválida (parcelado no cartão [internet]).", true);
+
+            TesteParcCartao(c =>
+            {
+                c.FormaPagtoCriacao.C_pc_valor = null;
+            }, "Indique o valor da parcela (parcelado no cartão [internet]).", true);
+
+            TesteParcCartao(c =>
+            {
+                c.FormaPagtoCriacao.C_pc_valor = 0m;
+            }, "Valor de parcela inválido (parcelado no cartão [internet]).", true);
+
+            TesteParcCartao(c =>
+            {
+                c.FormaPagtoCriacao.C_pc_qtde = 2;
+            }, "Quantidade de parcelas esta divergente!", true);
+
+            TesteParcCartao(c =>
+            {
+            }, "Valor total da forma de pagamento diferente do valor total!", true);
+
+            TesteParcCartao(c =>
+            {
+                c.Indicador_Orcamentista = "Apelido_sem_ra";
+                c.PermiteRAStatus = false;
+            }, "Valor total da forma de pagamento diferente do valor total!", true);
+
+        }
+
+        [Fact]
+        public void TesteParceladoCartaoMaquineta()
+        {
+            TesteParcCartaoMaquineta(c =>
+            {
+                c.FormaPagtoCriacao.C_pc_maquineta_qtde = null;
+            }, "Indique a quantidade de parcelas (parcelado no cartão [maquineta]).", true);
+
+            TesteParcCartaoMaquineta(c =>
+            {
+                c.FormaPagtoCriacao.C_pc_maquineta_qtde = 0;
+            }, "Quantidade de parcelas inválida (parcelado no cartão [maquineta]).", true);
+
+            TesteParcCartaoMaquineta(c =>
+            {
+                c.FormaPagtoCriacao.C_pc_maquineta_valor = null;
+            }, "Indique o valor da parcela (parcelado no cartão [maquineta]).", true);
+
+            TesteParcCartaoMaquineta(c =>
+            {
+                c.FormaPagtoCriacao.C_pc_maquineta_valor = 0m;
+            }, "Valor de parcela inválido (parcelado no cartão [maquineta]).", true);
+
+            TesteParcCartaoMaquineta(c =>
+            {
+                c.FormaPagtoCriacao.C_pc_maquineta_qtde = 2;
+            }, "Quantidade de parcelas esta divergente!", true);
+
+            TesteParcCartaoMaquineta(c => { }, "Valor total da forma de pagamento diferente do valor total!", true);
+
+            TesteParcCartaoMaquineta(c =>
+            {
+                c.Indicador_Orcamentista = "Apelido_sem_ra";
+                c.PermiteRAStatus = false;
+            }, "Valor total da forma de pagamento diferente do valor total!", true);
+        }
+
+        [Fact]
+        public void TesteComEntrada()
+        {
+            TestePagamentoComEntrada(c=>{
+                c.FormaPagtoCriacao.Op_pce_entrada_forma_pagto = "";
+            }, "Indique a forma de pagamento da entrada (parcelado com entrada).", true);
+
+            TestePagamentoComEntrada(c =>
+            {
+                c.FormaPagtoCriacao.C_pce_entrada_valor = null;
+            }, "Indique o valor da entrada (parcelado com entrada).", true);
+
+            TestePagamentoComEntrada(c =>
+            {
+                c.FormaPagtoCriacao.C_pce_entrada_valor = 0;
+            }, "Valor da entrada inválido (parcelado com entrada).", true);
+
+            TestePagamentoComEntrada(c =>
+            {
+                c.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto = "";
+            }, "Indique a forma de pagamento das prestações (parcelado com entrada).", true);
+
+            TestePagamentoComEntrada(c =>
+            {
+                c.FormaPagtoCriacao.C_pce_prestacao_qtde = null;
+            }, "Indique a quantidade de prestações (parcelado com entrada).", true);
+
+            TestePagamentoComEntrada(c =>
+            {
+                c.FormaPagtoCriacao.C_pce_prestacao_qtde = 0;
+            }, "Quantidade de prestações inválida (parcelado com entrada).", true);
+
+            TestePagamentoComEntrada(c =>
+            {
+                c.FormaPagtoCriacao.C_pce_prestacao_valor = null;
+            }, "Indique o valor da prestação (parcelado com entrada).", true);
+
+            TestePagamentoComEntrada(c =>
+            {
+                c.FormaPagtoCriacao.C_pce_prestacao_valor = 0;
+            }, "Valor de prestação inválido (parcelado com entrada).", true);
+
+            TestePagamentoComEntrada(c =>
+            {
+                c.FormaPagtoCriacao.C_pce_prestacao_periodo = null;
+            }, "Indique o intervalo de vencimento entre as parcelas (parcelado com entrada).", true);
+
+            TestePagamentoComEntrada(c =>
+            {
+                c.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto = "7";
+                c.FormaPagtoCriacao.C_pce_prestacao_periodo = 0;
+            }, "Intervalo de vencimento inválido (parcelado com entrada).", true);
+
+            TestePagamentoComEntrada(c => { }, "Quantidade de parcelas esta divergente!", true);
+
+            TestePagamentoComEntrada(c =>
+            {
+                c.Indicador_Orcamentista = "Apelido_sem_ra";
+                c.PermiteRAStatus = false;
+            }, "Valor total da forma de pagamento diferente do valor total!", true);
+
+            TestePagamentoComEntrada(c => { }, "Valor total da forma de pagamento diferente do valor total!", true);
+        }
     }
 }

@@ -100,6 +100,32 @@ namespace Testes.Automatizados.InicializarBanco
             Bai_nu_sequencial_ini++;
             Loc_nu_sequencial++;
 
+            db.LogBairros.Add(new InfraBanco.Modelos.LogBairro()
+            {
+                Bai_nu_sequencial = Bai_nu_sequencial_ini,
+                Bai_no = DadosPrepedidoUnisBll.PrepedidoEnderecoEntregaCompleto().EnderecoEntrega.EndEtg_bairro
+            });
+            db.LogLocalidades.Add(new InfraBanco.Modelos.LogLocalidade()
+            {
+                Cep_dig = DadosPrepedidoUnisBll.PrepedidoEnderecoEntregaCompleto().EnderecoEntrega.EndEtg_cep,
+                Loc_nu_sequencial = Loc_nu_sequencial,
+                Loc_nosub = DadosPrepedidoUnisBll.PrepedidoParceladoCartao1vez().EnderecoEntrega.EndEtg_cidade
+            });
+
+            Log_no_array = DadosPrepedidoUnisBll.PrepedidoEnderecoEntregaCompleto().EnderecoEntrega.EndEtg_endereco.Split(' ');
+            Log_no = string.Join(' ', new List<string>(Log_no_array).Skip(1));
+            db.LogLogradouros.Add(new InfraBanco.Modelos.LogLogradouro()
+            {
+                Bai_nu_sequencial_ini = Bai_nu_sequencial_ini,
+                Loc_nu_sequencial = Loc_nu_sequencial,
+                Cep_dig = DadosPrepedidoUnisBll.PrepedidoEnderecoEntregaCompleto().EnderecoEntrega.EndEtg_cep,
+                Ufe_sg = DadosPrepedidoUnisBll.PrepedidoEnderecoEntregaCompleto().EnderecoEntrega.EndEtg_uf,
+                Log_tipo_logradouro = Log_no_array[0],
+                Log_no = Log_no,
+            });
+
+            Bai_nu_sequencial_ini++;
+            Loc_nu_sequencial++;
             db.LogLocalidades.Add(new InfraBanco.Modelos.LogLocalidade() { Cep_dig = DadosCep.Cep, Ufe_sg = DadosCep.Ufe_sg, Loc_nosub = DadosCep.Cidade, Loc_nu_sequencial = Loc_nu_sequencial });
 
             db.SaveChanges();

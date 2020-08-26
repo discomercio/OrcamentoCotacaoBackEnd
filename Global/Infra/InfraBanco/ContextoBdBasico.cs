@@ -74,7 +74,8 @@ namespace InfraBanco
                 .HasKey(x => x.Id);
             modelBuilder.Entity<TperfilItem>()
                 .HasKey(x => new { x.Id });
-
+            modelBuilder.Entity<TcodigoDescricao>()
+                .HasKey(x => new { x.Grupo, x.Codigo });
         }
 
         public DbSet<Tcliente> Tclientes { get; set; }

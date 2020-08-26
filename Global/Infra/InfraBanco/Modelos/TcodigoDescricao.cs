@@ -9,7 +9,6 @@ namespace InfraBanco.Modelos
     [Table("t_CODIGO_DESCRICAO")]
     public class TcodigoDescricao
     {
-        [Key]
         [Required]
         [MaxLength(60)]
         [Column("grupo")]
