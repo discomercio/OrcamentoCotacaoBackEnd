@@ -1,4 +1,5 @@
-﻿using PrepedidoBusiness.Dto.ClienteCadastro;
+﻿using InfraBanco.Constantes;
+using PrepedidoBusiness.Dto.ClienteCadastro;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,9 +9,9 @@ namespace PrepedidoBusiness.Bll
 {
     public class ClientePrepedidoBll
     {
-        private readonly ClienteBll.ClienteBll clienteBll;
+        private readonly Cliente.ClienteBll clienteBll;
 
-        public ClientePrepedidoBll(PrepedidoBusiness.Bll.ClienteBll.ClienteBll clienteBll)
+        public ClientePrepedidoBll(Cliente.ClienteBll clienteBll)
         {
             this.clienteBll = clienteBll;
         }
@@ -32,5 +33,17 @@ namespace PrepedidoBusiness.Bll
             List<string> retorno = await clienteBll.AtualizarClienteParcial(apelido.Trim(), DadosClienteCadastroDto.DadosClienteCadastroDados_De_DadosClienteCadastroDto(dadosClienteCadastroDto));
             return retorno;
         }
+        public async Task<ClienteCadastroDto> BuscarCliente(string cpf_cnpj, string apelido)
+        {
+            ClienteCadastroDto dadosCliente = ClienteCadastroDto.ClienteCadastroDto_De_ClienteCadastroDados(await clienteBll.BuscarCliente(cpf_cnpj, apelido.Trim()));
+            return dadosCliente;
+        }
+        public async Task<IEnumerable<string>> CadastrarCliente(ClienteCadastroDto clienteDto, string apelido)
+        {
+            IEnumerable<string> retorno = await clienteBll.CadastrarCliente(ClienteCadastroDto.ClienteCadastroDados_De_ClienteCadastroDto(clienteDto), apelido.Trim(),
+                (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS);
+            return retorno;
+        }
+
     }
 }

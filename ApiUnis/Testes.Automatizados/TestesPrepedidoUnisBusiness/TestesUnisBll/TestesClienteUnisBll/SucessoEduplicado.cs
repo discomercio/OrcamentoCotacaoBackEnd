@@ -49,7 +49,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
 
             //se cadastrar de novo, tem que dar erro
             testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Cnpj_Cpf = c.DadosCliente.Cnpj_Cpf,
-                PrepedidoBusiness.Bll.ClienteBll.ClienteBll.MensagensErro.REGISTRO_COM_ID_JA_EXISTE(
+                Cliente.ClienteBll.MensagensErro.REGISTRO_COM_ID_JA_EXISTE(
                     (from n in contextoProvider.GetContextoLeitura().Tcontroles where n.Id_Nsu == Constantes.NSU_CADASTRO_CLIENTES select n.Nsu).First()
                     ),
                 TipoPessoa.PJ);
@@ -73,7 +73,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
 
             //se cadastrar de novo, tem que dar erro
             testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Cnpj_Cpf = c.DadosCliente.Cnpj_Cpf,
-                PrepedidoBusiness.Bll.ClienteBll.ClienteBll.MensagensErro.REGISTRO_COM_ID_JA_EXISTE(
+                Cliente.ClienteBll.MensagensErro.REGISTRO_COM_ID_JA_EXISTE(
                     (from n in contextoProvider.GetContextoLeitura().Tcontroles where n.Id_Nsu == Constantes.NSU_CADASTRO_CLIENTES select n.Nsu).First()
                     ),
                 TipoPessoa.PF);

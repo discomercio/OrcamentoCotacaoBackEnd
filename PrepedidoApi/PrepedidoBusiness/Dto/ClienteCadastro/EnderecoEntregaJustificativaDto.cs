@@ -17,8 +17,9 @@ namespace PrepedidoBusiness.Dto.ClienteCadastro
         public static List<EnderecoEntregaJustificativaDto> EnderecoEntregaJustificativaDtoDeEnderecoEntregaJustificativaDadosLista(IEnumerable<Cliente.Dados.EnderecoEntregaJustificativaDados> enderecoEntregaJustificativaDados)
         {
             var ret = new List<EnderecoEntregaJustificativaDto>();
-            foreach (var p in enderecoEntregaJustificativaDados)
-                ret.Add(EnderecoEntregaJustificativaDtoDeEnderecoEntregaJustificativaDados(p));
+            if (enderecoEntregaJustificativaDados != null)
+                foreach (var p in enderecoEntregaJustificativaDados)
+                    ret.Add(EnderecoEntregaJustificativaDtoDeEnderecoEntregaJustificativaDados(p));
             return ret;
         }
 

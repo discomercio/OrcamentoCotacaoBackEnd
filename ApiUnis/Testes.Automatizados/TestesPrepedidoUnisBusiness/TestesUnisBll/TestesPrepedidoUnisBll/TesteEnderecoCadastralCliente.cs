@@ -1,6 +1,5 @@
 ﻿using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
 using PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll;
-using PrepedidoBusiness.Bll.ClienteBll;
 using PrepedidoBusiness.Bll.PrepedidoBll;
 using System;
 using System.Collections.Generic;
@@ -14,7 +13,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
 public    class TesteEnderecoCadastralCliente : TestesPrepedidoUnisBll
     {
         public TesteEnderecoCadastralCliente(InicializarBanco.InicializarBancoGeral inicializarBanco, ITestOutputHelper Output, PrePedidoUnisBll prepedidoUnisBll,
-            ClienteUnisBll clienteUnisBll, PrepedidoBll prepedidoBll, ClienteBll clienteBll) :
+            ClienteUnisBll clienteUnisBll, PrepedidoBll prepedidoBll, Cliente.ClienteBll clienteBll) :
             base(inicializarBanco, Output, prepedidoUnisBll, clienteUnisBll, prepedidoBll, clienteBll)
         {
 

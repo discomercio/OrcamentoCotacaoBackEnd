@@ -9,7 +9,6 @@ using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using PrepedidoBusiness.Dto.ClienteCadastro;
 using InfraBanco.Constantes;
 using InfraBanco;
-using PrepedidoBusiness.Bll.ClienteBll;
 using PrepedidoBusiness.Bll.FormaPagtoBll;
 using PrepedidoBusiness.Dto.FormaPagto;
 using Produto.RegrasCrtlEstoque;
@@ -22,7 +21,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
     public class PrepedidoBll
     {
         private readonly ContextoBdProvider contextoProvider;
-        private readonly ClienteBll.ClienteBll clienteBll;
+        private readonly Cliente.ClienteBll clienteBll;
         private readonly ValidacoesPrepedidoBll validacoesPrepedidoBll;
         private readonly CepBll cepBll;
         private readonly ValidacoesFormaPagtoBll validacoesFormaPagtoBll;
@@ -30,7 +29,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         private readonly IBancoNFeMunicipio bancoNFeMunicipio;
         private readonly FormaPagtoBll.FormaPagtoBll formaPagtoBll;
 
-        public PrepedidoBll(ContextoBdProvider contextoProvider, ClienteBll.ClienteBll clienteBll,
+        public PrepedidoBll(ContextoBdProvider contextoProvider, Cliente.ClienteBll clienteBll,
             ValidacoesPrepedidoBll validacoesPrepedidoBll, CepBll cepBll,
             ValidacoesFormaPagtoBll validacoesFormaPagtoBll, MontarLogPrepedidoBll montarLogPrepedidoBll,
             IBancoNFeMunicipio bancoNFeMunicipio, FormaPagtoBll.FormaPagtoBll formaPagtoBll)
@@ -681,8 +680,8 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             }
 
             //verificamos se tem ID para saber que o cliente existe
-            var cliente = await clienteBll.BuscarCliente(
-                prePedido.EnderecoCadastroClientePrepedido.Endereco_cnpj_cpf, tOrcamentista.Apelido.ToUpper());
+            ClienteCadastroDto cliente = ClienteCadastroDto.ClienteCadastroDto_De_ClienteCadastroDados(await clienteBll.BuscarCliente(
+                prePedido.EnderecoCadastroClientePrepedido.Endereco_cnpj_cpf, tOrcamentista.Apelido.ToUpper()));
 
             if (cliente != null)
             {

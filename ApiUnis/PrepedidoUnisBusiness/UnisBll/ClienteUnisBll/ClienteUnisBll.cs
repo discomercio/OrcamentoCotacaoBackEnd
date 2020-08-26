@@ -6,8 +6,8 @@ using PrepedidoBusiness.Dto.ClienteCadastro;
 using Microsoft.EntityFrameworkCore;
 using PrepedidoUnisBusiness.UnisDto.ClienteUnisDto;
 using InfraBanco.Modelos;
-using PrepedidoBusiness.Bll.ClienteBll;
 using InfraBanco.Constantes;
+using Cliente;
 
 namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
 {
@@ -49,7 +49,7 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
                      * se estiver vazia foi cadastrado com sucesso
                      * se estiver com itens na lista, ocorreu erro na validação
                      */
-                    retorno.ListaErros = (await clienteArclubeBll.CadastrarCliente(clienteArclube,
+                    retorno.ListaErros = (await clienteArclubeBll.CadastrarCliente(ClienteCadastroDto.ClienteCadastroDados_De_ClienteCadastroDto(clienteArclube),
                         orcamentista.Apelido,
                         (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS)).ToList();
 
@@ -85,7 +85,7 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
 
         public async Task<ClienteBuscaRetornoUnisDto> BuscarCliente(string cpf_cnpj, string apelido)
         {
-            var cliente = await clienteArclubeBll.BuscarCliente(cpf_cnpj, apelido);
+            ClienteCadastroDto cliente = ClienteCadastroDto.ClienteCadastroDto_De_ClienteCadastroDados(await clienteArclubeBll.BuscarCliente(cpf_cnpj, apelido));
             if (cliente == null)
                 return null;
             ClienteBuscaRetornoUnisDto retorno = ClienteBuscaRetornoUnisDto.ClienteCadastroUnisDtoDeClienteCadastroDto(cliente);

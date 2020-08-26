@@ -16,14 +16,12 @@ namespace PrepedidoApi.Controllers
     [Authorize(Roles = Utils.Autenticacao.RoleAcesso)]
     public class ClienteController : ControllerBase
     {
-        private readonly PrepedidoBusiness.Bll.ClienteBll.ClienteBll clienteBll;
         private readonly InfraIdentity.IServicoDecodificarToken servicoDecodificarToken;
         private readonly ClientePrepedidoBll clientePrepedidoBll;
 
-        public ClienteController(PrepedidoBusiness.Bll.ClienteBll.ClienteBll clienteBll, InfraIdentity.IServicoDecodificarToken servicoDecodificarToken,
+        public ClienteController(InfraIdentity.IServicoDecodificarToken servicoDecodificarToken,
             ClientePrepedidoBll clientePrepedidoBll)
         {
-            this.clienteBll = clienteBll;
             this.servicoDecodificarToken = servicoDecodificarToken;
             this.clientePrepedidoBll = clientePrepedidoBll;
         }
@@ -37,7 +35,7 @@ namespace PrepedidoApi.Controllers
         {
             //para testar: http://localhost:60877/api/cliente/buscarCliente/{cnpj_cpf}
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            ClienteCadastroDto dadosCliente = await clienteBll.BuscarCliente(cnpj_cpf, apelido.Trim());
+            ClienteCadastroDto dadosCliente = await clientePrepedidoBll.BuscarCliente(cnpj_cpf, apelido.Trim());
 
             if (dadosCliente == null)
                 return NoContent();
@@ -90,8 +88,7 @@ namespace PrepedidoApi.Controllers
             //para testar: http://localhost:60877/api/cliente/cadastrarCliente
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            IEnumerable<string> retorno = await clienteBll.CadastrarCliente(clienteDto, apelido.Trim(), 
-                (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS);
+            IEnumerable<string> retorno = await clientePrepedidoBll.CadastrarCliente(clienteDto, apelido.Trim());
 
             return Ok(retorno);
         }

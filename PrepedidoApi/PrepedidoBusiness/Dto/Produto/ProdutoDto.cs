@@ -31,8 +31,9 @@ namespace PrepedidoBusiness.Dto.Produto
         internal static List<ProdutoDto> ProdutoDtoListaDeProdutoDados(List<ProdutoDados> produtoDados)
         {
             var ret = new List<ProdutoDto>();
-            foreach (var p in produtoDados)
-                ret.Add(ProdutoDtoDeProdutoDados(p));
+            if (produtoDados != null)
+                foreach (var p in produtoDados)
+                    ret.Add(ProdutoDtoDeProdutoDados(p));
             return ret;
         }
 

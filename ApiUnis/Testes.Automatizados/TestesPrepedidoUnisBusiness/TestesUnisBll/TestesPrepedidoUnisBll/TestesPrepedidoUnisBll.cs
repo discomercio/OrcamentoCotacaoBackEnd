@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using Cliente;
+using Newtonsoft.Json;
 using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
 using PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll;
 using PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto;
-using PrepedidoBusiness.Bll.ClienteBll;
 using PrepedidoBusiness.Bll.PrepedidoBll;
 using PrepedidoBusiness.Dto.ClienteCadastro;
 using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
@@ -98,8 +98,8 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
                 lstProdutosArclube.Add(ret);
             });
 
-            var clienteArclube = clienteBll.BuscarCliente(prePedidoUnis.Cnpj_Cpf,
-                prePedidoUnis.Indicador_Orcamentista).Result;
+            ClienteCadastroDto clienteArclube = ClienteCadastroDto.ClienteCadastroDto_De_ClienteCadastroDados(clienteBll.BuscarCliente(prePedidoUnis.Cnpj_Cpf,
+                prePedidoUnis.Indicador_Orcamentista).Result);
 
 
             var prePedidoDto = PrePedidoUnisDto.PrePedidoDtoDePrePedidoUnisDto(prePedidoUnis, endCadastralArclube, lstProdutosArclube, clienteArclube.DadosCliente);

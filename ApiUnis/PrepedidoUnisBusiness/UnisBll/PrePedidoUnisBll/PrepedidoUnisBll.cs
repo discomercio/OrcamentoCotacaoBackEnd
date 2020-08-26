@@ -1,8 +1,8 @@
-﻿using InfraBanco.Constantes;
+﻿using Cliente;
+using InfraBanco.Constantes;
 using InfraBanco.Modelos;
 using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
 using PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto;
-using PrepedidoBusiness.Bll.ClienteBll;
 using PrepedidoBusiness.Bll.PrepedidoBll;
 using PrepedidoBusiness.Dto.ClienteCadastro;
 using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
@@ -51,16 +51,16 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
 
             //orcamentista sempre está em maiusculas
             prePedidoUnis.Indicador_Orcamentista = prePedidoUnis.Indicador_Orcamentista?.ToUpper();
-            
-            //BUSCAR DADOS DO CLIENTE para incluir no dto de dados do cliente
-            var clienteArclube = await clienteBll.BuscarCliente(prePedidoUnis.Cnpj_Cpf,
-                prePedidoUnis.Indicador_Orcamentista);
 
-            if (clienteArclube == null)
+            //BUSCAR DADOS DO CLIENTE para incluir no dto de dados do cliente
+            Cliente.Dados.ClienteCadastroDados clienteCadastroDados = await clienteBll.BuscarCliente(prePedidoUnis.Cnpj_Cpf, prePedidoUnis.Indicador_Orcamentista);
+            if (clienteCadastroDados == null)
             {
                 retorno.ListaErros.Add("Cliente não localizado");
                 return retorno;
             }
+            ClienteCadastroDto clienteArclube = ClienteCadastroDto.ClienteCadastroDto_De_ClienteCadastroDados(clienteCadastroDados);
+
 
             if (!string.IsNullOrEmpty(prePedidoUnis.Cnpj_Cpf))
             {

@@ -1,10 +1,4 @@
 ﻿using InfraBanco;
-using InfraBanco.Constantes;
-using Newtonsoft.Json;
-using PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto;
-using PrepedidoBusiness.Bll.ClienteBll;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using Testes.Automatizados.InicializarBanco;
 using Xunit;

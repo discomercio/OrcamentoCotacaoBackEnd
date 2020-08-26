@@ -18,8 +18,9 @@ namespace PrepedidoBusiness.Dto.ClienteCadastro.Referencias
         public static List<RefBancariaDtoCliente> ListaRefBancariaDtoCliente_De_RefBancariaClienteDados(IEnumerable<Cliente.Dados.Referencias.RefBancariaClienteDados> refBancariaClienteDados)
         {
             var ret = new List<RefBancariaDtoCliente>();
-            foreach (var p in refBancariaClienteDados)
-                ret.Add(RefBancariaDtoCliente_De_RefBancariaClienteDados(p));
+            if (refBancariaClienteDados != null)
+                foreach (var p in refBancariaClienteDados)
+                    ret.Add(RefBancariaDtoCliente_De_RefBancariaClienteDados(p));
             return ret;
         }
 
@@ -42,8 +43,9 @@ namespace PrepedidoBusiness.Dto.ClienteCadastro.Referencias
         public static List<Cliente.Dados.Referencias.RefBancariaClienteDados> ListaRefBancariaClienteDados_De_RefBancariaDtoCliente(IEnumerable<RefBancariaDtoCliente> refBancariaClienteDados)
         {
             var ret = new List<Cliente.Dados.Referencias.RefBancariaClienteDados>();
-            foreach (var p in refBancariaClienteDados)
-                ret.Add(RefBancariaClienteDados_De_RefBancariaDtoCliente(p));
+            if (refBancariaClienteDados != null)
+                foreach (var p in refBancariaClienteDados)
+                    ret.Add(RefBancariaClienteDados_De_RefBancariaDtoCliente(p));
             return ret;
         }
 

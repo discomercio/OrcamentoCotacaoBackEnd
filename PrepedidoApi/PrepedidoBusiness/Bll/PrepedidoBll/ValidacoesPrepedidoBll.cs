@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using PrepedidoBusiness.Dto.ClienteCadastro;
 using InfraBanco.Constantes;
 using InfraBanco.Modelos;
-using PrepedidoBusiness.Bll.ClienteBll;
 using InfraBanco;
 using UtilsGlobais;
 using Cep;
@@ -20,12 +19,12 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
     {
         private readonly CoeficienteBll coeficienteBll;
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
-        private readonly ClienteBll.ClienteBll clienteBll;
+        private readonly Cliente.ClienteBll clienteBll;
         private readonly CepBll cepBll;
         private readonly IBancoNFeMunicipio bancoNFeMunicipio;
 
         public ValidacoesPrepedidoBll(CoeficienteBll coeficienteBll, InfraBanco.ContextoBdProvider contextoProvider,
-            ClienteBll.ClienteBll clienteBll, CepBll cepBll, IBancoNFeMunicipio bancoNFeMunicipio)
+            Cliente.ClienteBll clienteBll, CepBll cepBll, IBancoNFeMunicipio bancoNFeMunicipio)
         {
             this.coeficienteBll = coeficienteBll;
             this.contextoProvider = contextoProvider;

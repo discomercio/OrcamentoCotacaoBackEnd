@@ -36,8 +36,9 @@ namespace PrepedidoBusiness.Dto.Cep
         public static List<CepDto> CepDtoListaDeCepDados(IEnumerable<global::Cep.Dados.CepDados> cepDados)
         {
             var ret = new List<CepDto>();
-            foreach (var p in cepDados)
-                ret.Add(CepDtoDeCepDados(p));
+            if (cepDados != null)
+                foreach (var p in cepDados)
+                    ret.Add(CepDtoDeCepDados(p));
             return ret;
         }
 

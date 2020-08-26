@@ -22,8 +22,9 @@ namespace PrepedidoUnisBusiness.UnisDto.ProdutoUnisDto
         internal static List<ProdutoUnisDto> ProdutoUnisDtoListaDeProdutoDados(List<ProdutoDados> produtoDados)
         {
             var ret = new List<ProdutoUnisDto>();
-            foreach (var p in produtoDados)
-                ret.Add(PrepedidoUnisBusiness.UnisDto.ProdutoUnisDto.ProdutoUnisDto.ProdutoUnisDtoDeProdutoDados(p));
+            if (produtoDados != null)
+                foreach (var p in produtoDados)
+                    ret.Add(PrepedidoUnisBusiness.UnisDto.ProdutoUnisDto.ProdutoUnisDto.ProdutoUnisDtoDeProdutoDados(p));
             return ret;
         }
     }

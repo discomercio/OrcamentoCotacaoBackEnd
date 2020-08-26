@@ -3,19 +3,17 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
-using PrepedidoBusiness.Dto.ClienteCadastro;
-using PrepedidoBusiness.Dto.ClienteCadastro.Referencias;
 using Microsoft.EntityFrameworkCore;
 using InfraBanco.Constantes;
 using Cep;
 
-namespace PrepedidoBusiness.Bll.ClienteBll
+namespace Cliente
 {
     public class ClienteBll
     {
         public static class MensagensErro
         {
-            public static string REGISTRO_COM_ID_JA_EXISTE(string clienteDtoDadosClienteId) { return "REGISTRO COM ID = " + clienteDtoDadosClienteId + " JÁ EXISTE."; }
+            public static string REGISTRO_COM_ID_JA_EXISTE(string clienteDadosClienteId) { return "REGISTRO COM ID = " + clienteDadosClienteId + " JÁ EXISTE."; }
         }
 
 
@@ -335,7 +333,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return log;
         }
 
-        public async Task<List<string>> AtualizarClienteParcial(string apelido, Cliente.Dados.DadosClienteCadastroDados dadosClienteCadastroDto)
+        public async Task<List<string>> AtualizarClienteParcial(string apelido, Cliente.Dados.DadosClienteCadastroDados dadosClienteCadastroDados)
         {
             /*
              * somente os seguintes campos serão atualizados:
@@ -349,11 +347,11 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             List<string> lstErros = new List<string>();
             List<Cliente.Dados.ListaBancoDados> lstBanco = (await ListarBancosCombo()).ToList();
 
-            if (await Cliente.ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDto, null, null, lstErros,
+            if (await Cliente.ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDados, null, null, lstErros,
                 contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, true))
             {
                 var dados = from c in db.Tclientes
-                            where c.Id == dadosClienteCadastroDto.Id
+                            where c.Id == dadosClienteCadastroDados.Id
                             select c;
                 var cli = await dados.FirstOrDefaultAsync();
 
@@ -362,13 +360,13 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     if (lstErros.Count == 0)
                     {
                         //comparar os log em todos os casos de PF
-                        if (dadosClienteCadastroDto.Tipo == Constantes.ID_PF)
+                        if (dadosClienteCadastroDados.Tipo == Constantes.ID_PF)
                         {
-                            log = Verificar_AletrouDadosPF(cli, dadosClienteCadastroDto, apelido);
+                            log = Verificar_AletrouDadosPF(cli, dadosClienteCadastroDados, apelido);
                         }
-                        if (dadosClienteCadastroDto.Tipo == Constantes.ID_PJ)
+                        if (dadosClienteCadastroDados.Tipo == Constantes.ID_PJ)
                         {
-                            log = Verificar_AlterouDadosPJ(cli, dadosClienteCadastroDto);
+                            log = Verificar_AlterouDadosPJ(cli, dadosClienteCadastroDados);
                         }
 
                         if (!string.IsNullOrEmpty(log))
@@ -381,7 +379,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                                 dbgravacao.Update(cli);
                                 dbgravacao.SaveChanges();
 
-                                bool salvouLog = UtilsGlobais.Util.GravaLog(dbgravacao, apelido, dadosClienteCadastroDto.Loja, "", dadosClienteCadastroDto.Id,
+                                bool salvouLog = UtilsGlobais.Util.GravaLog(dbgravacao, apelido, dadosClienteCadastroDados.Loja, "", dadosClienteCadastroDados.Id,
                                     Constantes.OP_LOG_CLIENTE_ALTERACAO, log);
                                 if (salvouLog)
                                     dbgravacao.transacao.Commit();
@@ -398,7 +396,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return lstErros;
         }
 
-        public async Task<ClienteCadastroDto> BuscarCliente(string cpf_cnpj, string apelido)
+        public async Task<Cliente.Dados.ClienteCadastroDados> BuscarCliente(string cpf_cnpj, string apelido)
         {
 
             var db = contextoProvider.GetContextoLeitura();
@@ -417,11 +415,11 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             var refBancariaTask = ObterReferenciaBancaria(dadosCliente);
             var refComercialTask = ObterReferenciaComercial(dadosCliente);
 
-            ClienteCadastroDto cliente = new ClienteCadastroDto
+            Cliente.Dados.ClienteCadastroDados cliente = new Cliente.Dados.ClienteCadastroDados
             {
-                DadosCliente = DadosClienteCadastroDto.DadosClienteCadastroDto_De_DadosClienteCadastroDados(dadosClienteTask),
-                RefBancaria = RefBancariaDtoCliente.ListaRefBancariaDtoCliente_De_RefBancariaClienteDados((await refBancariaTask).ToList()),
-                RefComercial = RefComercialDtoCliente.ListaRefComercialDtoCliente_De_RefComercialClienteDados((await refComercialTask).ToList())
+                DadosCliente = dadosClienteTask,
+                RefBancaria = (await refBancariaTask).ToList(),
+                RefComercial = (await refComercialTask).ToList()
             };
 
             return await Task.FromResult(cliente);
@@ -573,14 +571,14 @@ namespace PrepedidoBusiness.Bll.ClienteBll
          * Incluímos a var "string usuarioCadastro" para permitir que a ApiUnis possa cadastrar outro
          * usuário ao invés do Orçamentista
          */
-        public async Task<IEnumerable<string>> CadastrarCliente(ClienteCadastroDto clienteDto, string apelido,
+        public async Task<IEnumerable<string>> CadastrarCliente(Cliente.Dados.ClienteCadastroDados clienteCadastroDados, string apelido,
             int sistemaResponsavelCadastro)
         {
             string id_cliente = "";
 
             var db = contextoProvider.GetContextoLeitura();
             var verifica = await (from c in db.Tclientes
-                                  where c.Cnpj_Cpf == clienteDto.DadosCliente.Cnpj_Cpf
+                                  where c.Cnpj_Cpf == clienteCadastroDados.DadosCliente.Cnpj_Cpf
                                   select c.Id).FirstOrDefaultAsync();
 
             List<string> lstErros = new List<string>();
@@ -594,9 +592,9 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
             //passar lista de bancos para validar
             List<Cliente.Dados.ListaBancoDados> lstBanco = (await ListarBancosCombo()).ToList();
-            if (await Cliente.ValidacoesClienteBll.ValidarDadosCliente(DadosClienteCadastroDto.DadosClienteCadastroDados_De_DadosClienteCadastroDto(clienteDto.DadosCliente),
-                RefBancariaDtoCliente.ListaRefBancariaClienteDados_De_RefBancariaDtoCliente(clienteDto.RefBancaria),
-                RefComercialDtoCliente.ListaRefComercialClienteDadosDeRefComercialDtoCliente(clienteDto.RefComercial),
+            if (await Cliente.ValidacoesClienteBll.ValidarDadosCliente(clienteCadastroDados.DadosCliente,
+                clienteCadastroDados.RefBancaria,
+                clienteCadastroDados.RefComercial,
                 lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, false))
             {
                 if (lstErros.Count <= 0)
@@ -605,9 +603,9 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     {
                         string log = "";
 
-                        Cliente.Dados.DadosClienteCadastroDados cliente = DadosClienteCadastroDto.DadosClienteCadastroDados_De_DadosClienteCadastroDto(clienteDto.DadosCliente);
+                        Cliente.Dados.DadosClienteCadastroDados cliente = clienteCadastroDados.DadosCliente;
                         Tcliente clienteCadastrado = new Tcliente();
-                        id_cliente = await CadastrarDadosClienteDto(dbgravacao, cliente, apelido, clienteCadastrado,
+                        id_cliente = await CadastrarDadosClienteDados(dbgravacao, cliente, apelido, clienteCadastrado,
                             sistemaResponsavelCadastro);
 
                         //Por padrão o id do cliente tem 12 caracteres, caso não seja 12 caracteres esta errado
@@ -617,10 +615,10 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
                             log = UtilsGlobais.Util.MontaLog(clienteCadastrado, log, campos_a_omitir);
 
-                            if (clienteDto.DadosCliente.Tipo == Constantes.ID_PJ)
+                            if (clienteCadastroDados.DadosCliente.Tipo == Constantes.ID_PJ)
                             {
-                                log = await CadastrarRefBancaria(dbgravacao, RefBancariaDtoCliente.ListaRefBancariaClienteDados_De_RefBancariaDtoCliente(clienteDto.RefBancaria), apelido, id_cliente, log);
-                                log = await CadastrarRefComercial(dbgravacao, RefComercialDtoCliente.ListaRefComercialClienteDadosDeRefComercialDtoCliente(clienteDto.RefComercial), apelido, id_cliente, log);
+                                log = await CadastrarRefBancaria(dbgravacao, clienteCadastroDados.RefBancaria, apelido, id_cliente, log);
+                                log = await CadastrarRefComercial(dbgravacao, clienteCadastroDados.RefComercial, apelido, id_cliente, log);
                             }
 
                             bool gravouLog = UtilsGlobais.Util.GravaLog(dbgravacao, apelido, cliente.Loja, "", id_cliente,
@@ -643,8 +641,8 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return lstErros;
         }
 
-        private async Task<string> CadastrarDadosClienteDto(InfraBanco.ContextoBdGravacao dbgravacao,
-            Cliente.Dados.DadosClienteCadastroDados clienteDto, string apelido, Tcliente tCliente, int sistemaResponsavelCadastro)
+        private async Task<string> CadastrarDadosClienteDados(InfraBanco.ContextoBdGravacao dbgravacao,
+            Cliente.Dados.DadosClienteCadastroDados clienteDados, string apelido, Tcliente tCliente, int sistemaResponsavelCadastro)
         {
             string retorno;
             List<string> lstRetorno = new List<string>();
@@ -660,44 +658,44 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 tCliente.Dt_Cadastro = DateTime.Now;
                 tCliente.Usuario_Cadastrado = apelido.ToUpper();
                 tCliente.Indicador = apelido.ToUpper();
-                tCliente.Cnpj_Cpf = clienteDto.Cnpj_Cpf.Replace(".", "").Replace("/", "").Replace("-", "");
-                tCliente.Tipo = clienteDto.Tipo.ToUpper();
-                tCliente.Ie = clienteDto.Ie;
-                tCliente.Rg = clienteDto.Rg;
-                tCliente.Nome = clienteDto.Nome;
-                tCliente.Sexo = clienteDto.Sexo;
-                tCliente.Contribuinte_Icms_Status = clienteDto.Contribuinte_Icms_Status;
+                tCliente.Cnpj_Cpf = clienteDados.Cnpj_Cpf.Replace(".", "").Replace("/", "").Replace("-", "");
+                tCliente.Tipo = clienteDados.Tipo.ToUpper();
+                tCliente.Ie = clienteDados.Ie;
+                tCliente.Rg = clienteDados.Rg;
+                tCliente.Nome = clienteDados.Nome;
+                tCliente.Sexo = clienteDados.Sexo;
+                tCliente.Contribuinte_Icms_Status = clienteDados.Contribuinte_Icms_Status;
                 tCliente.Contribuinte_Icms_Data = DateTime.Now;
                 tCliente.Contribuinte_Icms_Data_Hora = DateTime.Now;
                 tCliente.Contribuinte_Icms_Usuario = apelido.ToUpper();
-                tCliente.Produtor_Rural_Status = clienteDto.ProdutorRural;
+                tCliente.Produtor_Rural_Status = clienteDados.ProdutorRural;
                 tCliente.Produtor_Rural_Data = DateTime.Now;
                 tCliente.Produtor_Rural_Data_Hora = DateTime.Now;
                 tCliente.Produtor_Rural_Usuario = apelido.ToUpper();
-                tCliente.Endereco = clienteDto.Endereco;
-                tCliente.Endereco_Numero = clienteDto.Numero;
-                tCliente.Endereco_Complemento = clienteDto.Complemento;
-                tCliente.Bairro = clienteDto.Bairro;
-                tCliente.Cidade = clienteDto.Cidade;
-                tCliente.Cep = clienteDto.Cep.Replace("-", "");
-                tCliente.Uf = clienteDto.Uf;
-                tCliente.Ddd_Res = clienteDto.DddResidencial;
-                tCliente.Tel_Res = clienteDto.TelefoneResidencial;
-                tCliente.Ddd_Com = clienteDto.DddComercial;
-                tCliente.Tel_Com = clienteDto.TelComercial;
-                tCliente.Ramal_Com = clienteDto.Ramal;
-                tCliente.Contato = clienteDto.Contato == null ? "" : clienteDto.Contato;
-                tCliente.Ddd_Com_2 = clienteDto.DddComercial2;
-                tCliente.Tel_Com_2 = clienteDto.TelComercial2;
-                tCliente.Ramal_Com_2 = clienteDto.Ramal2;
-                tCliente.Ddd_Cel = clienteDto.DddCelular;
-                tCliente.Tel_Cel = clienteDto.Celular;
-                tCliente.Dt_Nasc = clienteDto.Nascimento;
-                tCliente.Filiacao = clienteDto.Observacao_Filiacao == null ? "" : clienteDto.Observacao_Filiacao;
+                tCliente.Endereco = clienteDados.Endereco;
+                tCliente.Endereco_Numero = clienteDados.Numero;
+                tCliente.Endereco_Complemento = clienteDados.Complemento;
+                tCliente.Bairro = clienteDados.Bairro;
+                tCliente.Cidade = clienteDados.Cidade;
+                tCliente.Cep = clienteDados.Cep.Replace("-", "");
+                tCliente.Uf = clienteDados.Uf;
+                tCliente.Ddd_Res = clienteDados.DddResidencial;
+                tCliente.Tel_Res = clienteDados.TelefoneResidencial;
+                tCliente.Ddd_Com = clienteDados.DddComercial;
+                tCliente.Tel_Com = clienteDados.TelComercial;
+                tCliente.Ramal_Com = clienteDados.Ramal;
+                tCliente.Contato = clienteDados.Contato == null ? "" : clienteDados.Contato;
+                tCliente.Ddd_Com_2 = clienteDados.DddComercial2;
+                tCliente.Tel_Com_2 = clienteDados.TelComercial2;
+                tCliente.Ramal_Com_2 = clienteDados.Ramal2;
+                tCliente.Ddd_Cel = clienteDados.DddCelular;
+                tCliente.Tel_Cel = clienteDados.Celular;
+                tCliente.Dt_Nasc = clienteDados.Nascimento;
+                tCliente.Filiacao = clienteDados.Observacao_Filiacao == null ? "" : clienteDados.Observacao_Filiacao;
                 tCliente.Obs_crediticias = "";
                 tCliente.Midia = "";
-                tCliente.Email = clienteDto.Email;
-                tCliente.Email_Xml = clienteDto.EmailXml;
+                tCliente.Email = clienteDados.Email;
+                tCliente.Email_Xml = clienteDados.EmailXml;
                 tCliente.Dt_Ult_Atualizacao = DateTime.Now;
                 tCliente.Usuario_Ult_Atualizacao = apelido.ToUpper();
                 tCliente.Sistema_responsavel_cadastro = sistemaResponsavelCadastro;

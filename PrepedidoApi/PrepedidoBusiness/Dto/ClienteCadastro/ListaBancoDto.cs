@@ -14,8 +14,9 @@ namespace PrepedidoBusiness.Dto.ClienteCadastro
         public static List<ListaBancoDto> ListaBancoDtoDeBancoDadosLista(IEnumerable<Cliente.Dados.ListaBancoDados> listaBancoDados)
         {
             var ret = new List<ListaBancoDto>();
-            foreach (var p in listaBancoDados)
-                ret.Add(ListaBancoDtoDeBancoDados(p));
+            if (listaBancoDados != null)
+                foreach (var p in listaBancoDados)
+                    ret.Add(ListaBancoDtoDeBancoDados(p));
             return ret;
         }
 

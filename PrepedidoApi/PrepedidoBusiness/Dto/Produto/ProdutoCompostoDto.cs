@@ -17,8 +17,9 @@ namespace PrepedidoBusiness.Dto.Produto
         internal static List<ProdutoCompostoDto> ProdutoCompostoDtoListaDeProdutoCompostoDados(List<ProdutoCompostoDados> produtoCompostoDados)
         {
             var ret = new List<ProdutoCompostoDto>();
-            foreach (var p in produtoCompostoDados)
-                ret.Add(ProdutoCompostoDtoDeProdutoCompostoDados(p));
+            if (produtoCompostoDados != null)
+                foreach (var p in produtoCompostoDados)
+                    ret.Add(ProdutoCompostoDtoDeProdutoCompostoDados(p));
             return ret;
         }
 
