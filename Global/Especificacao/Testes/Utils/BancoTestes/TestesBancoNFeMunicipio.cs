@@ -1,4 +1,5 @@
-﻿using InfraBanco;
+﻿using Cep.Dados;
+using InfraBanco;
 using InfraBanco.Modelos;
 using PrepedidoBusiness.Dto.Cep;
 using System;

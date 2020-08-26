@@ -10,6 +10,7 @@ using PrepedidoBusiness.Bll.ClienteBll;
 using InfraBanco;
 using InfraBanco.Modelos;
 using PrepedidoBusiness.UtilsNfe;
+using Cep.Dados;
 
 namespace PrepedidoBusiness.Bll
 {

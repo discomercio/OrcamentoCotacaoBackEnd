@@ -17,7 +17,7 @@ namespace PrepedidoBusiness.Dto.Cep
         public string LogradouroComplemento { get; set; }
         public List<string> ListaCidadeIBGE { get; set; }
 
-        public static CepDto CepDtoDeCepDados(CepDados cepDados)
+        public static CepDto CepDtoDeCepDados(global::Cep.Dados.CepDados cepDados)
         {
             return new CepDto()
             {
@@ -33,7 +33,7 @@ namespace PrepedidoBusiness.Dto.Cep
             };
         }
 
-        public static List<CepDto> CepDtoListaDeCepDados(IEnumerable<CepDados> cepDados)
+        public static List<CepDto> CepDtoListaDeCepDados(IEnumerable<global::Cep.Dados.CepDados> cepDados)
         {
             var ret = new List<CepDto>();
             foreach (var p in cepDados)

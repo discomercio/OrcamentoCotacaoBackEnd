@@ -642,7 +642,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             List<string> lstErros, CepBll cepBll, ContextoBdProvider contextoProvider, IBancoNFeMunicipio bancoNFeMunicipio)
         {
             string cepSoDigito = dadosCliente.Cep.Replace(".", "").Replace("-", "");
-            List<CepDados> lstCepDto = (await cepBll.BuscarPorCep(cepSoDigito)).ToList();
+            List<Cep.Dados.CepDados> lstCepDto = (await cepBll.BuscarPorCep(cepSoDigito)).ToList();
 
             bool retorno = true;
 
@@ -711,7 +711,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     }
                 }
                 //vamos buscar o cep e comparar os endereços 
-                CepDados cepCliente = new CepDados()
+                Cep.Dados.CepDados cepCliente = new Cep.Dados.CepDados()
                 {
                     Cep = dadosCliente.Cep,
                     Endereco = dadosCliente.Endereco,
@@ -1050,7 +1050,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return result;
         }
 
-        public static async Task<bool> VerificarEndereco(CepDados cepCliente, List<CepDados> lstCepDto,
+        public static async Task<bool> VerificarEndereco(Cep.Dados.CepDados cepCliente, List<Cep.Dados.CepDados> lstCepDto,
             List<string> lstErros, ContextoBdProvider contextoProvider, IBancoNFeMunicipio bancoNFeMunicipio)
         {
             bool retorno = true;

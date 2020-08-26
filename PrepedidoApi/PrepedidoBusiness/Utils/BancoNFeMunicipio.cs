@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using InfraBanco.Constantes;
 using PrepedidoBusiness.Dto.Cep;
+using Cep.Dados;
 
 namespace PrepedidoBusiness.UtilsNfe
 {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace PrepedidoBusiness.Dto.Cep
+namespace Cep.Dados
 {
     public class UFeMunicipiosDados
     {

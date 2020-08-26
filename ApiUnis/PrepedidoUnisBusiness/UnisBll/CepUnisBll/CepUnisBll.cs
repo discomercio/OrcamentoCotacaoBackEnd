@@ -25,7 +25,7 @@ namespace PrepedidoUnisBusiness.UnisBll.CepUnisBll
 
         public async Task<CepUnisDto> BuscarCep(string cep)
         {
-            List<CepDados> lstCepArclubeDto = (await cepArclueBll.BuscarCep(cep, "", "", "")).ToList();
+            List<Cep.Dados.CepDados> lstCepArclubeDto = (await cepArclueBll.BuscarCep(cep, "", "", "")).ToList();
 
             List<CepUnisDto> lst_cepUnisDto = new List<CepUnisDto>();
 
@@ -41,7 +41,7 @@ namespace PrepedidoUnisBusiness.UnisBll.CepUnisBll
         public async Task<IEnumerable<UFeMunicipiosUnisDto>> BuscarUfs(string uf, string municipioParcial)
         {            
             //vamos buscar todos os estados
-            List<UFeMunicipiosDados> lstUF_Municipio = (await bancoNFeMunicipio.BuscarSiglaTodosUf(contextoProvider, uf, municipioParcial)).ToList();
+            List<Cep.Dados.UFeMunicipiosDados> lstUF_Municipio = (await bancoNFeMunicipio.BuscarSiglaTodosUf(contextoProvider, uf, municipioParcial)).ToList();
 
             List<UFeMunicipiosUnisDto> lstUnisUF_Municipio =
                 UFeMunicipiosUnisDto.UFeMunicipiosUnisDtoDeUFeMunicipiosDados(lstUF_Municipio);

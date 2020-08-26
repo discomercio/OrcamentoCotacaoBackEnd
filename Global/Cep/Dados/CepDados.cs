@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PrepedidoBusiness.Dto.Cep
+namespace Cep.Dados
 {
     public class CepDados
     {

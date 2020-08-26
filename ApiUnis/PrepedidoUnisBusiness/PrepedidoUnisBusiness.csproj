@@ -15,6 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Global\Cep\Cep.csproj" />
     <ProjectReference Include="..\..\PrepedidoApi\PrepedidoBusiness\PrepedidoBusiness.csproj" />
   </ItemGroup>
 
