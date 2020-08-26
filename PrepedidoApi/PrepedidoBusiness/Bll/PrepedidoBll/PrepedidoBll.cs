@@ -721,7 +721,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                     prePedido.EnderecoCadastroClientePrepedido, tOrcamentista.Apelido.ToUpper(), tOrcamentista.Loja,
                     prePedido.DadosCliente.Sexo, prePedido.DadosCliente.Nascimento, prePedido.DadosCliente.Id);
 
-            List<ListaBancoDto> lstBanco = (await clienteBll.ListarBancosCombo()).ToList();
+            List<Cliente.Dados.ListaBancoDados> lstBanco = (await clienteBll.ListarBancosCombo()).ToList();
             //vamos validar os dados do cliente
             await ValidacoesClienteBll.ValidarDadosCliente(prePedido.DadosCliente, null, null,
                 lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco,

@@ -60,7 +60,7 @@ namespace PrepedidoAPIUnis.Controllers
             if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out _))
                 return Unauthorized();
 
-            var dadosCliente = await clienteUnisBll.BuscarCliente(cnpj_cpf_cliente, "");
+            ClienteBuscaRetornoUnisDto dadosCliente = await clienteUnisBll.BuscarCliente(cnpj_cpf_cliente, "");
 
             if (dadosCliente == null)
                 return NoContent();
@@ -83,7 +83,7 @@ namespace PrepedidoAPIUnis.Controllers
             if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out _))
                 return Unauthorized();
 
-            var retorno = await clienteUnisBll.VerificarInscricaoEstadualValida(inscricaoEstadual, uf);
+            VerificarInscricaoEstadualValidaRetornoUnisDto retorno = await clienteUnisBll.VerificarInscricaoEstadualValida(inscricaoEstadual, uf);
             return Ok(retorno);
         }
     }

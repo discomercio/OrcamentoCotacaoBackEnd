@@ -359,7 +359,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             if (prePedido.EnderecoEntrega.OutroEndereco)
             {
                 //verificar se a justificativa esta correta "ListarComboJustificaEndereco"
-                List<EnderecoEntregaJustificativaDto> lstJustificativas =
+                List<Cliente.Dados.EnderecoEntregaJustificativaDados> lstJustificativas =
                     (await clienteBll.ListarComboJustificaEndereco(prePedido.DadosCliente.Indicador_Orcamentista)).ToList();
 
                 bool achouJustifivcativa = false;

@@ -40,7 +40,7 @@ namespace PrepedidoAPIUnis.Controllers
             if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out _))
                 return Unauthorized();
 
-            var retorno = await produtoUnisBll.ListaProdutosCombo(loja, cnpj_cpf_cliente);
+            ProdutoComboUnisDto retorno = await produtoUnisBll.ListaProdutosCombo(loja, cnpj_cpf_cliente);
 
             return Ok(retorno);
         }

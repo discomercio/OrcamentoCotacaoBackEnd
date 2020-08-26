@@ -39,7 +39,7 @@ namespace PrepedidoAPIUnis.Controllers
                 return Unauthorized();
 
             //para buscar apenas por cep
-            var ret = await cepUnisBll.BuscarCep(cep);
+            CepUnisDto ret = await cepUnisBll.BuscarCep(cep);
 
             return Ok(ret);
         }
@@ -60,7 +60,7 @@ namespace PrepedidoAPIUnis.Controllers
             if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out _))
                 return Unauthorized();
 
-            var ret = await cepUnisBll.BuscarUfs(uf, municipioParcial);
+            IEnumerable<UFeMunicipiosUnisDto> ret = await cepUnisBll.BuscarUfs(uf, municipioParcial);
 
             return Ok(ret);
         }

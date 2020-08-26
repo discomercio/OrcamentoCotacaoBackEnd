@@ -347,7 +347,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             string log = "";
 
             List<string> lstErros = new List<string>();
-            List<ListaBancoDto> lstBanco = (await ListarBancosCombo()).ToList();
+            List<Cliente.Dados.ListaBancoDados> lstBanco = (await ListarBancosCombo()).ToList();
 
             if (await ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDto, null, null, lstErros,
                 contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, true))
@@ -427,13 +427,13 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return await Task.FromResult(cliente);
         }
 
-        public async Task<IEnumerable<ListaBancoDto>> ListarBancosCombo()
+        public async Task<IEnumerable<Cliente.Dados.ListaBancoDados>> ListarBancosCombo()
         {
             var db = contextoProvider.GetContextoLeitura();
 
             var bancos = from c in db.Tbancos
                          orderby c.Codigo
-                         select new ListaBancoDto
+                         select new Cliente.Dados.ListaBancoDados
                          {
                              Codigo = c.Codigo,
                              Descricao = c.Descricao
@@ -442,7 +442,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return await bancos.ToListAsync();
         }
 
-        public async Task<IEnumerable<EnderecoEntregaJustificativaDto>> ListarComboJustificaEndereco(string apelido)
+        public async Task<IEnumerable<Cliente.Dados.EnderecoEntregaJustificativaDados>> ListarComboJustificaEndereco(string apelido)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -456,11 +456,11 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                           (c.St_Inativo == 0 || c.Codigo == "")
                           select new { c.Codigo, c.Descricao };
 
-            List<EnderecoEntregaJustificativaDto> lst = new List<EnderecoEntregaJustificativaDto>();
+            List<Cliente.Dados.EnderecoEntregaJustificativaDados> lst = new List<Cliente.Dados.EnderecoEntregaJustificativaDados>();
 
             foreach (var r in await retorno.ToListAsync())
             {
-                EnderecoEntregaJustificativaDto jus = new EnderecoEntregaJustificativaDto
+                Cliente.Dados.EnderecoEntregaJustificativaDados jus = new Cliente.Dados.EnderecoEntregaJustificativaDados
                 {
                     EndEtg_cod_justificativa = !string.IsNullOrEmpty(r.Codigo) && r.Codigo.Length == 1 && r.Codigo != "0" ?
                     "00" + r.Codigo : r.Codigo,
@@ -593,7 +593,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
 
             //passar lista de bancos para validar
-            List<ListaBancoDto> lstBanco = (await ListarBancosCombo()).ToList();
+            List<Cliente.Dados.ListaBancoDados> lstBanco = (await ListarBancosCombo()).ToList();
             if (await ValidacoesClienteBll.ValidarDadosCliente(clienteDto.DadosCliente, clienteDto.RefBancaria,
                 clienteDto.RefComercial, lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, false))
             {

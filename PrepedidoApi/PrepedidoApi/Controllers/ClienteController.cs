@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using PrepedidoBusiness.Dto.ClienteCadastro;
 using InfraBanco.Constantes;
+using PrepedidoBusiness.Bll;
 
 namespace PrepedidoApi.Controllers
 {
@@ -17,11 +18,14 @@ namespace PrepedidoApi.Controllers
     {
         private readonly PrepedidoBusiness.Bll.ClienteBll.ClienteBll clienteBll;
         private readonly InfraIdentity.IServicoDecodificarToken servicoDecodificarToken;
+        private readonly ClientePrepedidoBll clientePrepedidoBll;
 
-        public ClienteController(PrepedidoBusiness.Bll.ClienteBll.ClienteBll clienteBll, InfraIdentity.IServicoDecodificarToken servicoDecodificarToken)
+        public ClienteController(PrepedidoBusiness.Bll.ClienteBll.ClienteBll clienteBll, InfraIdentity.IServicoDecodificarToken servicoDecodificarToken,
+            ClientePrepedidoBll clientePrepedidoBll)
         {
             this.clienteBll = clienteBll;
             this.servicoDecodificarToken = servicoDecodificarToken;
+            this.clientePrepedidoBll = clientePrepedidoBll;
         }
 
 #if DEBUG
@@ -69,7 +73,7 @@ namespace PrepedidoApi.Controllers
         public async Task<IActionResult> ListaBancosCombo()
         {
             //para testar: http://localhost:60877/api/cliente/listarBancosCombo
-            IEnumerable<ListaBancoDto> listaBancos = await clienteBll.ListarBancosCombo();
+            IEnumerable<ListaBancoDto> listaBancos = await clientePrepedidoBll.ListarBancosCombo();
 
             if (listaBancos == null)
                 return BadRequest();
@@ -101,7 +105,7 @@ namespace PrepedidoApi.Controllers
         {
             //para testar: http://localhost:60877/api/cliente/listarComboJustificaEndereco
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            IEnumerable<EnderecoEntregaJustificativaDto> retorno = await clienteBll.ListarComboJustificaEndereco(apelido.Trim());
+            IEnumerable<EnderecoEntregaJustificativaDto> retorno = await clientePrepedidoBll.ListarComboJustificaEndereco(apelido.Trim());
 
             return Ok(retorno);
 

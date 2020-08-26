@@ -35,7 +35,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
         public static async Task<bool> ValidarDadosCliente(DadosClienteCadastroDto dadosCliente,
             List<RefBancariaDtoCliente> lstRefBancaria, List<RefComercialDtoCliente> lstRefComercial,
             List<string> lstErros, ContextoBdProvider contextoProvider, CepBll cepBll, IBancoNFeMunicipio bancoNFeMunicipio,
-            List<ListaBancoDto> lstBanco, bool flagMsg_IE_Cadastro_PF)
+            List<Cliente.Dados.ListaBancoDados> lstBanco, bool flagMsg_IE_Cadastro_PF)
         {
             bool retorno;
 
@@ -882,7 +882,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
         }
 
         private static bool ValidarReferencias_Bancarias_Comerciais(List<RefBancariaDtoCliente> lstRefBancaria,
-            List<RefComercialDtoCliente> lstRefComercial, List<string> lstErros, string tipoPessoa, List<ListaBancoDto> lstBanco)
+            List<RefComercialDtoCliente> lstRefComercial, List<string> lstErros, string tipoPessoa, List<Cliente.Dados.ListaBancoDados> lstBanco)
         {
             bool retorno = true;
             if (lstRefBancaria != null && lstRefBancaria.Count > 0)

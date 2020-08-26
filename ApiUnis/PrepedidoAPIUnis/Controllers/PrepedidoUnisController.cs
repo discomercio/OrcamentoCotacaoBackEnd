@@ -48,7 +48,7 @@ namespace PrepedidoAPIUnis.Controllers
             if (!servicoValidarTokenApiUnis.ValidarToken(prePedido.TokenAcesso, out _))
                 return Unauthorized();
 
-            var ret = await prepedidoUnisBll.CadastrarPrepedidoUnis(prePedido);
+            PrePedidoResultadoUnisDto ret = await prepedidoUnisBll.CadastrarPrepedidoUnis(prePedido);
 
             return Ok(ret);
         }
@@ -66,7 +66,7 @@ namespace PrepedidoAPIUnis.Controllers
                 return Unauthorized();
 
             //chamar bll para deletar
-            var ret = await prepedidoUnisBll.CancelarPrePedido(cancelarPrepedido.Indicador_Orcamentista.ToUpper(),
+            bool ret = await prepedidoUnisBll.CancelarPrePedido(cancelarPrepedido.Indicador_Orcamentista.ToUpper(),
             cancelarPrepedido.NumeroPrepedido);
 
             if (ret == true)
@@ -110,7 +110,7 @@ namespace PrepedidoAPIUnis.Controllers
             if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out _))
                 return Unauthorized();
 
-            var retorno = await formaPagtoUnisBll.BuscarQtdeParcCartaoVisa();
+            QtdeParcCartaoVisaResultadoUnisDto retorno = await formaPagtoUnisBll.BuscarQtdeParcCartaoVisa();
 
             return Ok(retorno);
         }
@@ -129,7 +129,7 @@ namespace PrepedidoAPIUnis.Controllers
             if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out string usuario))
                 return Unauthorized();
 
-            var ret = await coeficienteUnisBll.BuscarListaCoeficientesFornecedores(lstFornecedores);
+            IEnumerable<IEnumerable<CoeficienteUnisDto>> ret = await coeficienteUnisBll.BuscarListaCoeficientesFornecedores(lstFornecedores);
 
             return Ok(ret);
         }
@@ -148,7 +148,7 @@ namespace PrepedidoAPIUnis.Controllers
             if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out string usuario))
                 return Unauthorized();
 
-            var ret = await prepedidoUnisBll.Obter_Permite_RA_Status(orcamentista.ToUpper());
+            PermiteRaStatusResultadoUnisDto ret = await prepedidoUnisBll.Obter_Permite_RA_Status(orcamentista.ToUpper());
             if (ret == null)
                 return NotFound("Orcamentista não localizado");
 
@@ -168,7 +168,7 @@ namespace PrepedidoAPIUnis.Controllers
             if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out _))
                 return Unauthorized();
 
-            var ret = await prepedidoUnisBll.ObtemPercentualVlPedidoRA();
+            PercentualVlPedidoRAResultadoUnisDto ret = await prepedidoUnisBll.ObtemPercentualVlPedidoRA();
 
             return Ok(ret);
         }
