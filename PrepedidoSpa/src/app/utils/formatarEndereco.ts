@@ -149,7 +149,7 @@ export class FormatarEndereco {
 
         sTelefones = "";
         if ((!!telCom && telCom != "") || (!!telCom2 && telCom2 != ""))
-            sTelefones = "\rTelefone ";
+            sTelefones = "\nTelefone ";
 
         if (!!telCom && telCom != "") {
             sTelefones += telCom;

@@ -100,7 +100,6 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
       return false;
     }
     
-debugger;
     if (this.cep_retorno != undefined) {
       if (StringUtils.retorna_so_digitos(this.cep_retorno) == StringUtils.retorna_so_digitos(this.Cep)) {
         return;
@@ -193,7 +192,7 @@ debugger;
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         let end: CepDto = dialogRef.componentInstance.lstEnderecos[dialogRef.componentInstance.endereco_selecionado];
-        debugger;
+        
         if (!!end.Uf) {
           this.Uf = end.Uf;
           this.temUf = true;
@@ -220,6 +219,7 @@ debugger;
         }
 
         this.Cep = end.Cep;
+        this.cep_retorno = end.Cep;
       }
     });
   }
