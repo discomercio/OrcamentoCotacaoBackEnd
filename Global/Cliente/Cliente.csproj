@@ -4,4 +4,10 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Cep\Cep.csproj" />
+    <ProjectReference Include="..\Infra\InfraBanco\InfraBanco.csproj" />
+    <ProjectReference Include="..\Utils\UtilsGlobais.csproj" />
+  </ItemGroup>
+
 </Project>

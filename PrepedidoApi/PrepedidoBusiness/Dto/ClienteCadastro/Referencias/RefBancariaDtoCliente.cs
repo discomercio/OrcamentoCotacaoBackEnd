@@ -14,5 +14,54 @@ namespace PrepedidoBusiness.Dto.ClienteCadastro.Referencias
         public string Telefone { get; set; }
         public string Contato { get; set; }
         public int Ordem { get; set; }
+
+        public static List<RefBancariaDtoCliente> ListaRefBancariaDtoCliente_De_RefBancariaClienteDados(IEnumerable<Cliente.Dados.Referencias.RefBancariaClienteDados> refBancariaClienteDados)
+        {
+            var ret = new List<RefBancariaDtoCliente>();
+            foreach (var p in refBancariaClienteDados)
+                ret.Add(RefBancariaDtoCliente_De_RefBancariaClienteDados(p));
+            return ret;
+        }
+
+        public static RefBancariaDtoCliente RefBancariaDtoCliente_De_RefBancariaClienteDados(Cliente.Dados.Referencias.RefBancariaClienteDados refBancariaClienteDados)
+        {
+            var ret = new RefBancariaDtoCliente()
+            {
+                Banco = refBancariaClienteDados.Banco,
+                BancoDescricao = refBancariaClienteDados.BancoDescricao,
+                Agencia = refBancariaClienteDados.Agencia,
+                Conta = refBancariaClienteDados.Conta,
+                Ddd = refBancariaClienteDados.Ddd,
+                Telefone = refBancariaClienteDados.Telefone,
+                Contato = refBancariaClienteDados.Contato,
+                Ordem = refBancariaClienteDados.Ordem
+            };
+            return ret;
+        }
+
+        public static List<Cliente.Dados.Referencias.RefBancariaClienteDados> ListaRefBancariaClienteDados_De_RefBancariaDtoCliente(IEnumerable<RefBancariaDtoCliente> refBancariaClienteDados)
+        {
+            var ret = new List<Cliente.Dados.Referencias.RefBancariaClienteDados>();
+            foreach (var p in refBancariaClienteDados)
+                ret.Add(RefBancariaClienteDados_De_RefBancariaDtoCliente(p));
+            return ret;
+        }
+
+        public static Cliente.Dados.Referencias.RefBancariaClienteDados RefBancariaClienteDados_De_RefBancariaDtoCliente(RefBancariaDtoCliente refBancariaClienteDados)
+        {
+            var ret = new Cliente.Dados.Referencias.RefBancariaClienteDados()
+            {
+                Banco = refBancariaClienteDados.Banco,
+                BancoDescricao = refBancariaClienteDados.BancoDescricao,
+                Agencia = refBancariaClienteDados.Agencia,
+                Conta = refBancariaClienteDados.Conta,
+                Ddd = refBancariaClienteDados.Ddd,
+                Telefone = refBancariaClienteDados.Telefone,
+                Contato = refBancariaClienteDados.Contato,
+                Ordem = refBancariaClienteDados.Ordem
+            };
+            return ret;
+        }
+
     }
 }

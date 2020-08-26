@@ -34,7 +34,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             this.bancoNFeMunicipio = bancoNFeMunicipio;
         }
 
-        public string Verificar_AletrouDadosPF(Tcliente cli, DadosClienteCadastroDto dados, string apelido)
+        public string Verificar_AletrouDadosPF(Tcliente cli, Cliente.Dados.DadosClienteCadastroDados dados, string apelido)
         {
             string log = "";
             bool contribuinte_diferente = false;
@@ -218,7 +218,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return log;
         }
 
-        public string Verificar_AlterouDadosPJ(Tcliente cli, DadosClienteCadastroDto dados)
+        public string Verificar_AlterouDadosPJ(Tcliente cli, Cliente.Dados.DadosClienteCadastroDados dados)
         {
             string log = "";
 
@@ -335,7 +335,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return log;
         }
 
-        public async Task<List<string>> AtualizarClienteParcial(string apelido, DadosClienteCadastroDto dadosClienteCadastroDto)
+        public async Task<List<string>> AtualizarClienteParcial(string apelido, Cliente.Dados.DadosClienteCadastroDados dadosClienteCadastroDto)
         {
             /*
              * somente os seguintes campos serão atualizados:
@@ -349,7 +349,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             List<string> lstErros = new List<string>();
             List<Cliente.Dados.ListaBancoDados> lstBanco = (await ListarBancosCombo()).ToList();
 
-            if (await ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDto, null, null, lstErros,
+            if (await Cliente.ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDto, null, null, lstErros,
                 contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, true))
             {
                 var dados = from c in db.Tclientes
@@ -419,9 +419,9 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
             ClienteCadastroDto cliente = new ClienteCadastroDto
             {
-                DadosCliente = dadosClienteTask,
-                RefBancaria = (await refBancariaTask).ToList(),
-                RefComercial = (await refComercialTask).ToList()
+                DadosCliente = DadosClienteCadastroDto.DadosClienteCadastroDto_De_DadosClienteCadastroDados(dadosClienteTask),
+                RefBancaria = RefBancariaDtoCliente.ListaRefBancariaDtoCliente_De_RefBancariaClienteDados((await refBancariaTask).ToList()),
+                RefComercial = RefComercialDtoCliente.ListaRefComercialDtoCliente_De_RefComercialClienteDados((await refComercialTask).ToList())
             };
 
             return await Task.FromResult(cliente);
@@ -471,9 +471,9 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return lst;
         }
 
-        public DadosClienteCadastroDto ObterDadosClienteCadastro(Tcliente cli, string loja)
+        public Cliente.Dados.DadosClienteCadastroDados ObterDadosClienteCadastro(Tcliente cli, string loja)
         {
-            DadosClienteCadastroDto dados = new DadosClienteCadastroDto
+            Cliente.Dados.DadosClienteCadastroDados dados = new Cliente.Dados.DadosClienteCadastroDados
             {
                 Id = cli.Id,
                 Indicador_Orcamentista = cli.Usuario_Cadastrado,
@@ -513,9 +513,9 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return dados;
         }
 
-        private async Task<IEnumerable<RefBancariaDtoCliente>> ObterReferenciaBancaria(Tcliente cli)
+        private async Task<IEnumerable<Cliente.Dados.Referencias.RefBancariaClienteDados>> ObterReferenciaBancaria(Tcliente cli)
         {
-            List<RefBancariaDtoCliente> lstRef = new List<RefBancariaDtoCliente>();
+            List<Cliente.Dados.Referencias.RefBancariaClienteDados> lstRef = new List<Cliente.Dados.Referencias.RefBancariaClienteDados>();
             var db = contextoProvider.GetContextoLeitura();
 
             //selecionamos as referências bancárias já incluindo a descrição do banco
@@ -527,7 +527,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
             foreach (var i in await rBanco.ToListAsync())
             {
-                RefBancariaDtoCliente refBanco = new RefBancariaDtoCliente
+                Cliente.Dados.Referencias.RefBancariaClienteDados refBanco = new Cliente.Dados.Referencias.RefBancariaClienteDados
                 {
                     Banco = i.Banco,
                     BancoDescricao = i.Descricao,
@@ -543,9 +543,9 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return lstRef;
         }
 
-        private async Task<IEnumerable<RefComercialDtoCliente>> ObterReferenciaComercial(Tcliente cli)
+        private async Task<IEnumerable<Cliente.Dados.Referencias.RefComercialClienteDados>> ObterReferenciaComercial(Tcliente cli)
         {
-            List<RefComercialDtoCliente> lstRefComercial = new List<RefComercialDtoCliente>();
+            List<Cliente.Dados.Referencias.RefComercialClienteDados> lstRefComercial = new List<Cliente.Dados.Referencias.RefComercialClienteDados>();
             var db = contextoProvider.GetContextoLeitura();
 
             var rComercial = from c in db.TclienteRefComercials
@@ -555,7 +555,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
             foreach (var i in await rComercial.ToListAsync())
             {
-                RefComercialDtoCliente rCom = new RefComercialDtoCliente
+                Cliente.Dados.Referencias.RefComercialClienteDados rCom = new Cliente.Dados.Referencias.RefComercialClienteDados
                 {
                     Nome_Empresa = i.Nome_Empresa,
                     Contato = i.Contato,
@@ -594,8 +594,10 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
             //passar lista de bancos para validar
             List<Cliente.Dados.ListaBancoDados> lstBanco = (await ListarBancosCombo()).ToList();
-            if (await ValidacoesClienteBll.ValidarDadosCliente(clienteDto.DadosCliente, clienteDto.RefBancaria,
-                clienteDto.RefComercial, lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, false))
+            if (await Cliente.ValidacoesClienteBll.ValidarDadosCliente(DadosClienteCadastroDto.DadosClienteCadastroDados_De_DadosClienteCadastroDto(clienteDto.DadosCliente),
+                RefBancariaDtoCliente.ListaRefBancariaClienteDados_De_RefBancariaDtoCliente(clienteDto.RefBancaria),
+                RefComercialDtoCliente.ListaRefComercialClienteDadosDeRefComercialDtoCliente(clienteDto.RefComercial),
+                lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, false))
             {
                 if (lstErros.Count <= 0)
                 {
@@ -603,7 +605,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     {
                         string log = "";
 
-                        DadosClienteCadastroDto cliente = clienteDto.DadosCliente;
+                        Cliente.Dados.DadosClienteCadastroDados cliente = DadosClienteCadastroDto.DadosClienteCadastroDados_De_DadosClienteCadastroDto(clienteDto.DadosCliente);
                         Tcliente clienteCadastrado = new Tcliente();
                         id_cliente = await CadastrarDadosClienteDto(dbgravacao, cliente, apelido, clienteCadastrado,
                             sistemaResponsavelCadastro);
@@ -617,8 +619,8 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
                             if (clienteDto.DadosCliente.Tipo == Constantes.ID_PJ)
                             {
-                                log = await CadastrarRefBancaria(dbgravacao, clienteDto.RefBancaria, apelido, id_cliente, log);
-                                log = await CadastrarRefComercial(dbgravacao, clienteDto.RefComercial, apelido, id_cliente, log);
+                                log = await CadastrarRefBancaria(dbgravacao, RefBancariaDtoCliente.ListaRefBancariaClienteDados_De_RefBancariaDtoCliente(clienteDto.RefBancaria), apelido, id_cliente, log);
+                                log = await CadastrarRefComercial(dbgravacao, RefComercialDtoCliente.ListaRefComercialClienteDadosDeRefComercialDtoCliente(clienteDto.RefComercial), apelido, id_cliente, log);
                             }
 
                             bool gravouLog = UtilsGlobais.Util.GravaLog(dbgravacao, apelido, cliente.Loja, "", id_cliente,
@@ -642,7 +644,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
         }
 
         private async Task<string> CadastrarDadosClienteDto(InfraBanco.ContextoBdGravacao dbgravacao,
-            DadosClienteCadastroDto clienteDto, string apelido, Tcliente tCliente, int sistemaResponsavelCadastro)
+            Cliente.Dados.DadosClienteCadastroDados clienteDto, string apelido, Tcliente tCliente, int sistemaResponsavelCadastro)
         {
             string retorno;
             List<string> lstRetorno = new List<string>();
@@ -709,14 +711,14 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return retorno;
         }
 
-        private async Task<string> CadastrarRefBancaria(InfraBanco.ContextoBdGravacao dbgravacao, List<RefBancariaDtoCliente> lstRefBancaria, string apelido, string id_cliente, string log)
+        private async Task<string> CadastrarRefBancaria(InfraBanco.ContextoBdGravacao dbgravacao, List<Cliente.Dados.Referencias.RefBancariaClienteDados> lstRefBancaria, string apelido, string id_cliente, string log)
         {
             int qtdeRef = 1;
             string campos_a_omitir_ref_bancaria = "id_cliente|ordem|excluido_status|dt_cadastro|usuario_cadastro";
 
             log = log + "Ref Bancária incluída: ";
 
-            foreach (RefBancariaDtoCliente r in lstRefBancaria)
+            foreach (Cliente.Dados.Referencias.RefBancariaClienteDados r in lstRefBancaria)
             {
 
                 TclienteRefBancaria cliRefBancaria = new TclienteRefBancaria
@@ -744,7 +746,8 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return log;
         }
 
-        private async Task<string> CadastrarRefComercial(InfraBanco.ContextoBdGravacao dbgravacao, List<RefComercialDtoCliente> lstRefComercial, string apelido, string id_cliente, string log)
+        private async Task<string> CadastrarRefComercial(InfraBanco.ContextoBdGravacao dbgravacao,
+            List<Cliente.Dados.Referencias.RefComercialClienteDados> lstRefComercial, string apelido, string id_cliente, string log)
         {
             int qtdeRef = 1;
 
@@ -752,7 +755,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
             log = log + "Ref Comercial incluída: ";
 
-            foreach (RefComercialDtoCliente r in lstRefComercial)
+            foreach (Cliente.Dados.Referencias.RefComercialClienteDados r in lstRefComercial)
             {
                 TclienteRefComercial c = new TclienteRefComercial
                 {

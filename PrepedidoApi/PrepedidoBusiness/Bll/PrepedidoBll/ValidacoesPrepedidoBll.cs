@@ -52,7 +52,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             //buscar coeficiente 
             //vamos alterar para montar uma lista de coeficiente para avista
             lstCoeficiente = (await MontarListaCoeficiente(lstFornec, qtdeParcelas, siglaFormaPagto)).ToList();
-            
+
             //validar se os coeficientes estão ok
             ValidarCustoFinancFornecCoeficiente(prepedido.ListaProdutos, lstCoeficiente, lstErros);
 
@@ -418,7 +418,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                                 Cidade = prePedido.EnderecoEntrega.EndEtg_cidade,
                                 Uf = prePedido.EnderecoEntrega.EndEtg_uf
                             };
-                            await ValidacoesClienteBll.VerificarEndereco(cep, lstCepDto, lstErros, contextoProvider,
+                            await Cliente.ValidacoesClienteBll.VerificarEndereco(cep, lstCepDto, lstErros, contextoProvider,
                                 bancoNFeMunicipio);
                         }
 
@@ -479,13 +479,13 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             {
                 if (prePedido.EnderecoEntrega.EndEtg_tipo_pessoa == Constantes.ID_PJ)
                 {
-                    ValidarDadosPessoaEnderecoEntrega_PJ(prePedido.EnderecoEntrega, lstErros);
-                    ValidarDadosPessoaEnderecoEntrega_PJ_Tel(prePedido.EnderecoEntrega, lstErros);
+                    ValidarDadosPessoaEnderecoEntrega_PJ(EnderecoEntregaDtoClienteCadastro.EnderecoEntregaClienteCadastroDados_De_EnderecoEntregaDtoClienteCadastro(prePedido.EnderecoEntrega), lstErros);
+                    ValidarDadosPessoaEnderecoEntrega_PJ_Tel(EnderecoEntregaDtoClienteCadastro.EnderecoEntregaClienteCadastroDados_De_EnderecoEntregaDtoClienteCadastro(prePedido.EnderecoEntrega), lstErros);
                 }
                 if (prePedido.EnderecoEntrega.EndEtg_tipo_pessoa == Constantes.ID_PF)
                 {
-                    ValidarDadosPessoaEnderecoEntrega_PF(prePedido.EnderecoEntrega, lstErros);
-                    ValidarDadosPessoaEnderecoEntrega_PF_Tel(prePedido.EnderecoEntrega, lstErros);
+                    ValidarDadosPessoaEnderecoEntrega_PF(EnderecoEntregaDtoClienteCadastro.EnderecoEntregaClienteCadastroDados_De_EnderecoEntregaDtoClienteCadastro(prePedido.EnderecoEntrega), lstErros);
+                    ValidarDadosPessoaEnderecoEntrega_PF_Tel(EnderecoEntregaDtoClienteCadastro.EnderecoEntregaClienteCadastroDados_De_EnderecoEntregaDtoClienteCadastro(prePedido.EnderecoEntrega), lstErros);
                 }
             }
 
@@ -506,14 +506,14 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 {
                     if (!string.IsNullOrEmpty(prePedido.EnderecoEntrega.EndEtg_ie))
                     {
-                        ValidacoesClienteBll.VerificarInscricaoEstadualValida(
+                        Cliente.ValidacoesClienteBll.VerificarInscricaoEstadualValida(
                             prePedido.EnderecoEntrega.EndEtg_ie, prePedido.EnderecoEntrega.EndEtg_uf, lstErros, flagMsg_IE_Cadastro_PF);
                     }
                 }
             }
         }
 
-        private void ValidarDadosPessoaEnderecoEntrega_PJ(EnderecoEntregaDtoClienteCadastro endEtg, List<string> lstErros)
+        private void ValidarDadosPessoaEnderecoEntrega_PJ(Cliente.Dados.EnderecoEntregaClienteCadastroDados endEtg, List<string> lstErros)
         {
             if (endEtg.EndEtg_tipo_pessoa == Constantes.ID_PJ)
             {
@@ -569,7 +569,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             }
         }
 
-        private void ValidarDadosPessoaEnderecoEntrega_PJ_Tel(EnderecoEntregaDtoClienteCadastro endEtg, List<string> lstErros)
+        private void ValidarDadosPessoaEnderecoEntrega_PJ_Tel(Cliente.Dados.EnderecoEntregaClienteCadastroDados endEtg, List<string> lstErros)
         {
             if (!string.IsNullOrEmpty(endEtg.EndEtg_tel_com) ||
                 !string.IsNullOrEmpty(endEtg.EndEtg_ddd_com) ||
@@ -646,7 +646,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 lstErros.Add("Endereço de entrega: se tipo pessoa PJ, não pode conter DDD celular e telefone celular!");
         }
 
-        private void ValidarDadosPessoaEnderecoEntrega_PF(EnderecoEntregaDtoClienteCadastro endEtg, List<string> lstErros)
+        private void ValidarDadosPessoaEnderecoEntrega_PF(Cliente.Dados.EnderecoEntregaClienteCadastroDados endEtg, List<string> lstErros)
         {
             if (endEtg.EndEtg_tipo_pessoa == Constantes.ID_PF)
             {
@@ -735,7 +735,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             }
         }
 
-        private void ValidarDadosPessoaEnderecoEntrega_PF_Tel(EnderecoEntregaDtoClienteCadastro endEtg, List<string> lstErros)
+        private void ValidarDadosPessoaEnderecoEntrega_PF_Tel(Cliente.Dados.EnderecoEntregaClienteCadastroDados endEtg, List<string> lstErros)
         {
             if (!string.IsNullOrEmpty(endEtg.EndEtg_tel_res) || !string.IsNullOrEmpty(endEtg.EndEtg_ddd_res))
             {

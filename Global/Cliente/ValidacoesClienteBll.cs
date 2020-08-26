@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using InfraBanco;
-using Microsoft.EntityFrameworkCore;
 using InfraBanco.Constantes;
 using InfraBanco.Modelos;
-using PrepedidoBusiness.Dto.ClienteCadastro;
-using PrepedidoBusiness.Dto.ClienteCadastro.Referencias;
 using System.Reflection;
-using PrepedidoBusiness.Dto.Cep;
 using UtilsGlobais;
 using Cep;
+using Microsoft.EntityFrameworkCore;
 
-namespace PrepedidoBusiness.Bll.ClienteBll
+namespace Cliente
 {
     public class ValidacoesClienteBll
     {
@@ -32,8 +28,9 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             public static string CNPJ_INVALIDO = "CNPJ INVÁLIDO.";
         }
 
-        public static async Task<bool> ValidarDadosCliente(DadosClienteCadastroDto dadosCliente,
-            List<RefBancariaDtoCliente> lstRefBancaria, List<RefComercialDtoCliente> lstRefComercial,
+        public static async Task<bool> ValidarDadosCliente(Cliente.Dados.DadosClienteCadastroDados dadosCliente,
+            List<Cliente.Dados.Referencias.RefBancariaClienteDados> lstRefBancaria, 
+            List<Cliente.Dados.Referencias.RefComercialClienteDados> lstRefComercial,
             List<string> lstErros, ContextoBdProvider contextoProvider, CepBll cepBll, IBancoNFeMunicipio bancoNFeMunicipio,
             List<Cliente.Dados.ListaBancoDados> lstBanco, bool flagMsg_IE_Cadastro_PF)
         {
@@ -118,7 +115,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return retorno;
         }
 
-        private static async Task<bool> ValidarDadosCliente_PF(DadosClienteCadastroDto dadosCliente, Tcliente cliente,
+        private static async Task<bool> ValidarDadosCliente_PF(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente,
             List<string> lstErros, ContextoBdProvider contextoProvider)
         {
             bool retorno = true;
@@ -196,7 +193,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return retorno;
         }
 
-        private static async Task<bool> ValidarTelefones_PF(DadosClienteCadastroDto dadosCliente, Tcliente cliente,
+        private static async Task<bool> ValidarTelefones_PF(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente,
             List<string> lstErros, ContextoBdProvider contextoProvider)
         {
             bool retorno = true;
@@ -249,7 +246,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return retorno;
         }
 
-        private static async Task<bool> ValidarTelResidencial(DadosClienteCadastroDto dadosCliente, Tcliente cliente,
+        private static async Task<bool> ValidarTelResidencial(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente,
             List<string> lstErros, ContextoBdProvider contextoProvider)
         {
             bool retorno = true;
@@ -294,7 +291,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return retorno;
         }
 
-        private static async Task<bool> ValidarCelular(DadosClienteCadastroDto dadosCliente, Tcliente cliente,
+        private static async Task<bool> ValidarCelular(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente,
             List<string> lstErros, ContextoBdProvider contextoProvider)
         {
             bool retorno = true;
@@ -339,7 +336,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return retorno;
         }
 
-        private static async Task<bool> ValidarTelCom(DadosClienteCadastroDto dadosCliente, Tcliente cliente,
+        private static async Task<bool> ValidarTelCom(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente,
             List<string> lstErros, ContextoBdProvider contextoProvider)
         {
             bool retorno = true;
@@ -393,7 +390,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return retorno;
         }
 
-        private static async Task<bool> ValidarTelCom2(DadosClienteCadastroDto dadosCliente, Tcliente cliente,
+        private static async Task<bool> ValidarTelCom2(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente,
             List<string> lstErros, ContextoBdProvider contextoProvider)
         {
             bool retorno = true;
@@ -494,7 +491,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return true;
         }
 
-        private static async Task<bool> ValidarDadosCliente_PJ(DadosClienteCadastroDto dadosCliente, Tcliente cliente,
+        private static async Task<bool> ValidarDadosCliente_PJ(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente,
             List<string> lstErros, ContextoBdProvider contextoProvider)
         {
             /*
@@ -593,7 +590,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return retorno;
         }
 
-        private static async Task<bool> ValidarTelefones_PJ(DadosClienteCadastroDto dadosCliente, Tcliente cliente, List<string> lstErros,
+        private static async Task<bool> ValidarTelefones_PJ(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente, List<string> lstErros,
             ContextoBdProvider contextoProvider)
         {
             bool retorno = true;
@@ -638,15 +635,15 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return retorno;
         }
 
-        private static async Task<bool> ValidarEnderecoCadastroCliente(DadosClienteCadastroDto dadosCliente,
+        private static async Task<bool> ValidarEnderecoCadastroCliente(Cliente.Dados.DadosClienteCadastroDados dadosCliente,
             List<string> lstErros, CepBll cepBll, ContextoBdProvider contextoProvider, IBancoNFeMunicipio bancoNFeMunicipio)
         {
             string cepSoDigito = dadosCliente.Cep.Replace(".", "").Replace("-", "");
-            List<Cep.Dados.CepDados> lstCepDto = (await cepBll.BuscarPorCep(cepSoDigito)).ToList();
+            List<Cep.Dados.CepDados> lstCepDados = (await cepBll.BuscarPorCep(cepSoDigito)).ToList();
 
             bool retorno = true;
 
-            if (lstCepDto.Count == 0)
+            if (lstCepDados.Count == 0)
             {
                 lstErros.Add(MensagensErro.Cep_nao_existe);
                 return false;
@@ -719,7 +716,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     Cidade = dadosCliente.Cidade,
                     Uf = dadosCliente.Uf
                 };
-                if (!await VerificarEndereco(cepCliente, lstCepDto, lstErros, contextoProvider, bancoNFeMunicipio))
+                if (!await VerificarEndereco(cepCliente, lstCepDados, lstErros, contextoProvider, bancoNFeMunicipio))
                 {
                     retorno = false;
                 }
@@ -728,7 +725,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return retorno;
         }
 
-        private static bool ValidarIE_Cliente(DadosClienteCadastroDto dadosCliente, List<string> lstErros,
+        private static bool ValidarIE_Cliente(Cliente.Dados.DadosClienteCadastroDados dadosCliente, List<string> lstErros,
             ContextoBdProvider contextoProvider, IBancoNFeMunicipio bancoNFeMunicipio, bool flagMsg_IE_Cadastro_PF)
         {
             bool retorno = true;
@@ -881,8 +878,9 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return retorno;
         }
 
-        private static bool ValidarReferencias_Bancarias_Comerciais(List<RefBancariaDtoCliente> lstRefBancaria,
-            List<RefComercialDtoCliente> lstRefComercial, List<string> lstErros, string tipoPessoa, List<Cliente.Dados.ListaBancoDados> lstBanco)
+        private static bool ValidarReferencias_Bancarias_Comerciais(List<Cliente.Dados.Referencias.RefBancariaClienteDados> lstRefBancaria,
+            List<Cliente.Dados.Referencias.RefComercialClienteDados> lstRefComercial, 
+            List<string> lstErros, string tipoPessoa, List<Cliente.Dados.ListaBancoDados> lstBanco)
         {
             bool retorno = true;
             if (lstRefBancaria != null && lstRefBancaria.Count > 0)
@@ -1050,16 +1048,16 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return result;
         }
 
-        public static async Task<bool> VerificarEndereco(Cep.Dados.CepDados cepCliente, List<Cep.Dados.CepDados> lstCepDto,
+        public static async Task<bool> VerificarEndereco(Cep.Dados.CepDados cepCliente, List<Cep.Dados.CepDados> lstCepDados,
             List<string> lstErros, ContextoBdProvider contextoProvider, IBancoNFeMunicipio bancoNFeMunicipio)
         {
             bool retorno = true;
 
             string cepSoDigito = cepCliente.Cep.Replace(".", "").Replace("-", "");
 
-            if (lstCepDto != null && lstCepDto.Count > 0)
+            if (lstCepDados != null && lstCepDados.Count > 0)
             {
-                foreach (var c in lstCepDto)
+                foreach (var c in lstCepDados)
                 {
                     //não verificamos a cidade porque ela deve estar no cadastro da NFE (IBGE) e não necessariamente igual à do CEP
 

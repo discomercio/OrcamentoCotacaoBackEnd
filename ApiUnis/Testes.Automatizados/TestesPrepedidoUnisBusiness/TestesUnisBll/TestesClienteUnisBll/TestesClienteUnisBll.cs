@@ -37,17 +37,17 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
 
             //if (qtdeDig < 2 && qtdeDig > 14)
             TestarCadastro(c => c.DadosCliente.Ie = "1",
-                PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual,
+                Cliente.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual,
                 TipoPessoa.PJ);
             TestarCadastro(c => c.DadosCliente.Ie = "1",
-                PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual,
+                Cliente.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual,
                 tipoPessoa: TipoPessoa.PF);
 
             TestarCadastro(c => c.DadosCliente.Ie = "11223344",
-                PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual,
+                Cliente.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual,
                 TipoPessoa.PJ);
             TestarCadastro(c => c.DadosCliente.Ie = "11223344",
-                PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual,
+                Cliente.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual,
                 tipoPessoa: TipoPessoa.PF);
 
             /*
@@ -88,7 +88,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
 
             //agora validado, não pode ter o erro
             TestarCadastro(c => c.DadosCliente.Ie = c.DadosCliente.Ie,
-                PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual,
+                Cliente.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual,
                 TipoPessoa.PJ,
                 false);
         }
@@ -228,7 +228,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             inicializarBanco.TclientesApagar();
 
             TestarCadastro(c => c.DadosCliente.Cep = InicializarBancoCep.DadosCep.CepNaoExiste,
-                PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.MensagensErro.Cep_nao_existe,
+                Cliente.ValidacoesClienteBll.MensagensErro.Cep_nao_existe,
                 TipoPessoa.PJ);
         }
         [Fact]
@@ -237,7 +237,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             inicializarBanco.TclientesApagar();
 
             TestarCadastro(c => c.DadosCliente.Uf = InicializarBancoCep.DadosCep.Ufe_sgNaoExiste,
-                PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.MensagensErro.Estado_nao_confere,
+                Cliente.ValidacoesClienteBll.MensagensErro.Estado_nao_confere,
                 TipoPessoa.PJ);
         }
 

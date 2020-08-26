@@ -251,7 +251,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 return prepedidoPedido;
             }
 
-            DadosClienteCadastroDto cadastroCliente = new DadosClienteCadastroDto();
+            Cliente.Dados.DadosClienteCadastroDados cadastroCliente = new Cliente.Dados.DadosClienteCadastroDados();
             if (pp.St_memorizacao_completa_enderecos == 0)
             {
                 cadastroCliente = await ObterDadosCliente(t.Razao_Social, pp.Orcamentista, pp.Vendedor, pp.Id_Cliente);
@@ -277,8 +277,8 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 NumeroPrePedido = pp.Orcamento,
                 DataHoraPedido = Convert.ToString(pp.Data?.ToString("dd/MM/yyyy")),
                 Hora_Prepedido = Util.FormataHora(pp.Hora),
-                DadosCliente = cadastroCliente,
-                EnderecoEntrega = await enderecoEntregaTask,
+                DadosCliente = DadosClienteCadastroDto.DadosClienteCadastroDto_De_DadosClienteCadastroDados(cadastroCliente),
+                EnderecoEntrega = EnderecoEntregaDtoClienteCadastro.EnderecoEntregaDtoClienteCadastro_De_EnderecoEntregaClienteCadastroDados(await enderecoEntregaTask),
                 ListaProdutos = lstProdutoTask.ToList(),
                 TotalFamiliaParcelaRA = vltotalRa,
                 PermiteRAStatus = pp.Permite_RA_Status,
@@ -495,14 +495,14 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return await Task.FromResult(listaProduto);
         }
 
-        private async Task<DadosClienteCadastroDto> ObterDadosClientePrepedido(Torcamento orcamento, string loja)
+        private async Task<Cliente.Dados.DadosClienteCadastroDados> ObterDadosClientePrepedido(Torcamento orcamento, string loja)
         {
             var dadosCliente = from c in contextoProvider.GetContextoLeitura().Tclientes
                                where c.Id == orcamento.Id_Cliente
                                select c;
             var cli = await dadosCliente.FirstOrDefaultAsync();
 
-            DadosClienteCadastroDto cadastroCliente = new DadosClienteCadastroDto
+            Cliente.Dados.DadosClienteCadastroDados cadastroCliente = new Cliente.Dados.DadosClienteCadastroDados
             {
                 Loja = loja,
                 Indicador_Orcamentista = orcamento.Orcamentista,
@@ -543,7 +543,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return cadastroCliente;
         }
 
-        private async Task<DadosClienteCadastroDto> ObterDadosCliente(string loja, string indicador_orcamentista, string vendedor, string idCliente)
+        private async Task<Cliente.Dados.DadosClienteCadastroDados> ObterDadosCliente(string loja, string indicador_orcamentista, string vendedor, string idCliente)
         {
             //afazer: criar a condição para preencher os dados do cliente que estão salvos no t_ORCAMENTO ou no t_CLIENTE
 
@@ -551,7 +551,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                                where c.Id == idCliente
                                select c;
             var cli = await dadosCliente.FirstOrDefaultAsync();
-            DadosClienteCadastroDto cadastroCliente = new DadosClienteCadastroDto
+            Cliente.Dados.DadosClienteCadastroDados cadastroCliente = new Cliente.Dados.DadosClienteCadastroDados
             {
                 Loja = loja,
                 Indicador_Orcamentista = indicador_orcamentista,
@@ -591,9 +591,9 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return cadastroCliente;
         }
 
-        private async Task<EnderecoEntregaDtoClienteCadastro> ObterEnderecoEntrega(Torcamento p)
+        private async Task<Cliente.Dados.EnderecoEntregaClienteCadastroDados> ObterEnderecoEntrega(Torcamento p)
         {
-            EnderecoEntregaDtoClienteCadastro enderecoEntrega = new EnderecoEntregaDtoClienteCadastro();
+            Cliente.Dados.EnderecoEntregaClienteCadastroDados enderecoEntrega = new Cliente.Dados.EnderecoEntregaClienteCadastroDados();
             enderecoEntrega.OutroEndereco = Convert.ToBoolean(p.St_End_Entrega);
 
             //afazer: criar método para pegar todos os dados de endereço com os campos novos
@@ -700,9 +700,9 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 prePedido.DadosCliente.Nascimento = cliente.DadosCliente.Nascimento;
             }
 
-            if(cliente.DadosCliente.Tipo == Constantes.ID_PF)
+            if (cliente.DadosCliente.Tipo == Constantes.ID_PF)
             {
-                if(prePedido.EnderecoCadastroClientePrepedido.Endereco_tipo_pessoa != Constantes.ID_PF)
+                if (prePedido.EnderecoCadastroClientePrepedido.Endereco_tipo_pessoa != Constantes.ID_PF)
                 {
                     lstErros.Add("Se cliente é tipo PF, o tipo da pessoa de endereço cadastral deve ser PF.");
                 }
@@ -723,7 +723,8 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
 
             List<Cliente.Dados.ListaBancoDados> lstBanco = (await clienteBll.ListarBancosCombo()).ToList();
             //vamos validar os dados do cliente
-            await ValidacoesClienteBll.ValidarDadosCliente(prePedido.DadosCliente, null, null,
+            await Cliente.ValidacoesClienteBll.ValidarDadosCliente(DadosClienteCadastroDto.DadosClienteCadastroDados_De_DadosClienteCadastroDto(prePedido.DadosCliente),
+                null, null,
                 lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco,
                 prePedido.DadosCliente.Tipo == Constantes.ID_PF ? true : false);
 

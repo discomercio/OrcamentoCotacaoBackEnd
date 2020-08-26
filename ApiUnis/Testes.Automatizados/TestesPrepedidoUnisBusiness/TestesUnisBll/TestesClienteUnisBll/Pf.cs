@@ -71,22 +71,22 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
 
             //vazio
             testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Cnpj_Cpf = "",
-                ValidacoesClienteBll.MensagensErro.CPF_NAO_FORNECIDO,
+                Cliente.ValidacoesClienteBll.MensagensErro.CPF_NAO_FORNECIDO,
                 TipoPessoa.PF);
 
             //qq coisa
             testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Cnpj_Cpf = "1122",
-                ValidacoesClienteBll.MensagensErro.CPF_INVALIDO,
+                Cliente.ValidacoesClienteBll.MensagensErro.CPF_INVALIDO,
                 TipoPessoa.PF);
 
             //cnpj
             testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Cnpj_Cpf = "25.326.265/0001-05",
-                ValidacoesClienteBll.MensagensErro.CPF_INVALIDO,
+                Cliente.ValidacoesClienteBll.MensagensErro.CPF_INVALIDO,
                 TipoPessoa.PF);
 
             //cpf com digito inválido
             testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Cnpj_Cpf = "479.378.150-01",
-                ValidacoesClienteBll.MensagensErro.CPF_INVALIDO,
+                Cliente.ValidacoesClienteBll.MensagensErro.CPF_INVALIDO,
                 TipoPessoa.PF);
         }
 
@@ -96,10 +96,10 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             inicializarBanco.TclientesApagar();
 
             testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Tipo = "",
-                ValidacoesClienteBll.MensagensErro.INFORME_SE_O_CLIENTE_E_PF_OU_PJ,
+                Cliente.ValidacoesClienteBll.MensagensErro.INFORME_SE_O_CLIENTE_E_PF_OU_PJ,
                 TipoPessoa.PF);
             testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Tipo = "XX",
-                ValidacoesClienteBll.MensagensErro.Tipo_de_cliente_nao_e_PF_nem_PJ,
+                Cliente.ValidacoesClienteBll.MensagensErro.Tipo_de_cliente_nao_e_PF_nem_PJ,
                 TipoPessoa.PF);
             testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Tipo = "PJ",
                 "Se cliente é tipo PJ, não pode ser Produtor Rural",
@@ -212,7 +212,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             {
                 c.DadosCliente.Ie = "11112222";
             },
-                PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual,
+                Cliente.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual,
                 TipoPessoa.PF);
 
 

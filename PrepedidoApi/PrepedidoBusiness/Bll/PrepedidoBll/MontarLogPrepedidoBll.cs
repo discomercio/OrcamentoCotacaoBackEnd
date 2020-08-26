@@ -27,7 +27,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
 
             //montamos os campos de endereço de entrega se existir
             campos_a_inserir += prepedido.EnderecoEntrega.OutroEndereco ?
-                MontaCamposAInserirEnderecoEntrega(prepedido.EnderecoEntrega) : " Endereço entrega=mesmo do cadastro|";
+                MontaCamposAInserirEnderecoEntrega(EnderecoEntregaDtoClienteCadastro.EnderecoEntregaClienteCadastroDados_De_EnderecoEntregaDtoClienteCadastro(prepedido.EnderecoEntrega)) : " Endereço entrega=mesmo do cadastro|";
 
             campos_a_inserir += "|InstaladorInstalaStatus|GarantiaIndicadorStatus|perc_desagio_RA_liquida";
 
@@ -121,7 +121,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return campos_a_inserir;
         }
 
-        private string MontaCamposAInserirEnderecoEntrega(EnderecoEntregaDtoClienteCadastro end)
+        private string MontaCamposAInserirEnderecoEntrega(Cliente.Dados.EnderecoEntregaClienteCadastroDados end)
         {
             string campos_a_inserir = "";
 
@@ -130,7 +130,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 campos_a_inserir = " Endereço entrega = " + FormatarEnderecoEntregaParaLog(end) +
                     " [EndEtg_cod_justificativa=" + end.EndEtg_cod_justificativa + "]";
                 campos_a_inserir += "(email=" + (string.IsNullOrEmpty(end.EndEtg_email) ? "\"\"" : end.EndEtg_email) + ", ";
-                campos_a_inserir += "email_xml=" + (string.IsNullOrEmpty(end.EndEtg_email_xml) ? "\"\"": end.EndEtg_email_xml)  + ", ";
+                campos_a_inserir += "email_xml=" + (string.IsNullOrEmpty(end.EndEtg_email_xml) ? "\"\"" : end.EndEtg_email_xml) + ", ";
                 campos_a_inserir += "nome=" + (string.IsNullOrEmpty(end.EndEtg_nome) ? "\"\"" : end.EndEtg_nome) + ", ";
                 campos_a_inserir += "ddd_res=" + (string.IsNullOrEmpty(end.EndEtg_ddd_res) ? "\"\"" : end.EndEtg_ddd_res) + ", ";
                 campos_a_inserir += "tel_res=" + (string.IsNullOrEmpty(end.EndEtg_tel_res) ? "\"\"" : end.EndEtg_tel_res) + ", ";
@@ -153,7 +153,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return campos_a_inserir;
         }
 
-        private string FormatarEnderecoEntregaParaLog(EnderecoEntregaDtoClienteCadastro end)
+        private string FormatarEnderecoEntregaParaLog(Cliente.Dados.EnderecoEntregaClienteCadastroDados end)
         {
             return end.EndEtg_endereco + ", " + end.EndEtg_endereco_numero + " " + end.EndEtg_endereco_complemento +
                 " - " + end.EndEtg_bairro + " - " + end.EndEtg_cidade + " - " + end.EndEtg_uf + " - "
