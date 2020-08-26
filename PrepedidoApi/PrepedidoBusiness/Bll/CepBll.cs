@@ -35,9 +35,9 @@ namespace PrepedidoBusiness.Bll
             this.contextoProvider = contextoProvider;
         }
 
-        public async Task<IEnumerable<CepDto>> BuscarCep(string cep, string endereco, string uf, string cidade)
+        public async Task<IEnumerable<CepDados>> BuscarCep(string cep, string endereco, string uf, string cidade)
         {
-            List<CepDto> cepDto = new List<CepDto>();
+            List<CepDados> cepDto = new List<CepDados>();
 
             if (!string.IsNullOrEmpty(cep))
             {
@@ -64,7 +64,7 @@ namespace PrepedidoBusiness.Bll
                     contextoProvider, bancoNFeMunicipio, false))
                 {
                     //vamos busca a lista de cidades com base na UF
-                    List<UFeMunicipiosDto> lstMunicipio = (await bancoNFeMunicipio.BuscarSiglaTodosUf(contextoProvider, cepDto[0].Uf, "")).ToList();
+                    List<UFeMunicipiosDados> lstMunicipio = (await bancoNFeMunicipio.BuscarSiglaTodosUf(contextoProvider, cepDto[0].Uf, "")).ToList();
                     cepDto[0].ListaCidadeIBGE = new List<string>();
                     //vamos atribuir para a classe de cep uma Lista com todas as cidades do estado
                     if (lstMunicipio.Count > 0)
@@ -86,15 +86,15 @@ namespace PrepedidoBusiness.Bll
             return cepDto;
         }
 
-        public async Task<IEnumerable<CepDto>> BuscarPorCep(string cep)
+        public async Task<IEnumerable<CepDados>> BuscarPorCep(string cep)
         {
             var db = contextoCepProvider.GetContextoLeitura();
 
-            List<CepDto> lista1 = await (from c in db.LogLogradouros
+            List<CepDados> lista1 = await (from c in db.LogLogradouros
                                          join d in db.LogBairros on c.Bai_nu_sequencial_ini equals d.Bai_nu_sequencial
                                          join e in db.LogLocalidades on c.Loc_nu_sequencial equals e.Loc_nu_sequencial
                                          where c.Cep_dig.EndsWith(cep)
-                                         select new CepDto
+                                         select new CepDados
                                          {
                                              Cep = c.Cep_dig,
                                              Uf = c.Ufe_sg,
@@ -104,18 +104,18 @@ namespace PrepedidoBusiness.Bll
                                              LogradouroComplemento = c.Log_complemento
                                          }).ToListAsync();
 
-            List<CepDto> lista2 = await (from c in db.LogLocalidades
+            List<CepDados> lista2 = await (from c in db.LogLocalidades
                                          where c.Cep_dig.EndsWith(cep)
-                                         select new CepDto
+                                         select new CepDados
                                          {
                                              Cep = c.Cep_dig,
                                              Uf = c.Ufe_sg,
                                              Cidade = c.Loc_nosub
                                          }).ToListAsync();
 
-            List<CepDto> lista3 = await (from c in db.TcepLogradouros
+            List<CepDados> lista3 = await (from c in db.TcepLogradouros
                                          where c.Cep8_log.EndsWith(cep)
-                                         select new CepDto
+                                         select new CepDados
                                          {
                                              Cep = c.Cep8_log,
                                              Uf = c.Uf_log,
@@ -130,17 +130,17 @@ namespace PrepedidoBusiness.Bll
             return cepDto;
         }
 
-        public async Task<IEnumerable<CepDto>> BuscarPorEndereco(string endereco, string uf, string cidade)
+        public async Task<IEnumerable<CepDados>> BuscarPorEndereco(string endereco, string uf, string cidade)
         {
             var db = contextoCepProvider.GetContextoLeitura();
 
-            List<CepDto> lista1 = await (from c in db.LogLogradouros
+            List<CepDados> lista1 = await (from c in db.LogLogradouros
                                          join d in db.LogBairros on c.Bai_nu_sequencial_ini equals d.Bai_nu_sequencial
                                          join e in db.LogLocalidades on c.Loc_nu_sequencial equals e.Loc_nu_sequencial
                                          where (c.Ufe_sg == uf) &&
                                                (e.Loc_nosub == cidade) &&
                                                (c.Log_no.Contains(endereco))
-                                         select new CepDto
+                                         select new CepDados
                                          {
                                              Cep = c.Cep_dig,
                                              Uf = c.Ufe_sg,
@@ -150,22 +150,22 @@ namespace PrepedidoBusiness.Bll
                                              LogradouroComplemento = c.Log_complemento
                                          }).OrderBy(x => x.Endereco).Take(300).ToListAsync();
 
-            List<CepDto> lista2 = await (from c in db.LogLocalidades
+            List<CepDados> lista2 = await (from c in db.LogLocalidades
                                          where c.Ufe_sg == uf &&
                                                c.Loc_nosub == endereco &&
                                                c.Cep_dig.Length > 0
-                                         select new CepDto
+                                         select new CepDados
                                          {
                                              Cep = c.Cep_dig,
                                              Uf = c.Ufe_sg,
                                              Cidade = c.Loc_nosub
                                          }).OrderBy(x => x.Cep).Take(300).ToListAsync();
 
-            List<CepDto> lista3 = await (from c in db.TcepLogradouros
+            List<CepDados> lista3 = await (from c in db.TcepLogradouros
                                          where c.Uf_log == uf &&
                                                c.Nome_local == endereco
                                          orderby c.Uf_log, c.Nome_local, c.Extenso_bai, c.Nome_log
-                                         select new CepDto
+                                         select new CepDados
                                          {
                                              Cep = c.Cep8_log,
                                              Uf = c.Uf_log,
@@ -205,9 +205,9 @@ namespace PrepedidoBusiness.Bll
             return lstLocalidades;
         }
 
-        public async Task<IEnumerable<CepDto>> BuscarCepPorEndereco(string endereco, string cidade, string uf)
+        public async Task<IEnumerable<CepDados>> BuscarCepPorEndereco(string endereco, string cidade, string uf)
         {
-            List<CepDto> cepdto = new List<CepDto>();
+            List<CepDados> cepdto = new List<CepDados>();
 
             if (string.IsNullOrEmpty(endereco)) endereco = "";
             else endereco = endereco.Replace("Rua", "").Replace("R. ", "").Replace("R ", "")
@@ -330,7 +330,7 @@ namespace PrepedidoBusiness.Bll
                     {
                         while (result.Read())
                         {
-                            cepdto.Add(new CepDto
+                            cepdto.Add(new CepDados
                             {
                                 Cep = result["cep"].ToString(),
                                 Uf = result["uf"].ToString(),

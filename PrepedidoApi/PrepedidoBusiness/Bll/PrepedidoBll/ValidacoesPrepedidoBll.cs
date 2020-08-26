@@ -403,7 +403,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                     {
                         //vamos comparar endereço
                         string cepSoDigito = prePedido.EnderecoEntrega.EndEtg_cep.Replace(".", "").Replace("-", "");
-                        List<CepDto> lstCepDto = (await cepBll.BuscarPorCep(cepSoDigito)).ToList();
+                        List<CepDados> lstCepDto = (await cepBll.BuscarPorCep(cepSoDigito)).ToList();
 
                         if (lstCepDto.Count == 0)
                         {
@@ -411,7 +411,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                         }
                         else
                         {
-                            CepDto cep = new CepDto()
+                            CepDados cep = new CepDados()
                             {
                                 Cep = prePedido.EnderecoEntrega.EndEtg_cep,
                                 Endereco = prePedido.EnderecoEntrega.EndEtg_endereco,

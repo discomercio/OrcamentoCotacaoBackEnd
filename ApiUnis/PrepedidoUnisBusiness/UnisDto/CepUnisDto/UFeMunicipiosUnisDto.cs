@@ -19,7 +19,7 @@ namespace PrepedidoUnisBusiness.UnisDto.CepUnisDto
 
         public List<MunicipioUnisDto> ListaMunicipio { get; set; }
 
-        public static List<UFeMunicipiosUnisDto> UFeMunicipiosUnisDtoDeUFeMunicipiosDto(List<UFeMunicipiosDto> lstUfeMunicipio)
+        public static List<UFeMunicipiosUnisDto> UFeMunicipiosUnisDtoDeUFeMunicipiosDados(List<UFeMunicipiosDados> lstUfeMunicipio)
         {
             List<UFeMunicipiosUnisDto> lstRet = new List<UFeMunicipiosUnisDto>();
 

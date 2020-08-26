@@ -26,7 +26,7 @@ namespace PrepedidoUnisBusiness.UnisDto.CepUnisDto
         [MaxLength(100)]
         public string LogradouroComplemento { get; set; }
 
-        public static CepUnisDto CepUnisDtoDeCepDto(CepDto cepDto)
+        public static CepUnisDto CepUnisDtoDeCepDados(CepDados cepDto)
         {
             CepUnisDto cepUnis = new CepUnisDto()
             {

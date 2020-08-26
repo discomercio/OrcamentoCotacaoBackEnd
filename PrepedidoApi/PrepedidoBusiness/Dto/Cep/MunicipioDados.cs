@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PrepedidoBusiness.Dto.Cep
 {
-    public class MunicipioDto
+    public class MunicipioDados
     {
         [MaxLength(7)]
         public string Codigo { get; set; }

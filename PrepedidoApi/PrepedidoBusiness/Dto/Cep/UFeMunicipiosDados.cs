@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PrepedidoBusiness.Dto.Cep
 {
-    public class UFeMunicipiosDto
+    public class UFeMunicipiosDados
     {
         [MaxLength(2)]
         public string Codigo { get; set; }
@@ -16,6 +16,6 @@ namespace PrepedidoBusiness.Dto.Cep
         [MaxLength(50)]
         public string Descricao { get; set; }
 
-        public List<MunicipioDto> ListaMunicipio { get; set; }
+        public List<MunicipioDados> ListaMunicipio { get; set; }
     }
 }

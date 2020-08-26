@@ -12,16 +12,16 @@ namespace Especificacao.Testes.Utils.BancoTestes
     {
         public static string Cidade_somente_no_IBGE = "Cidade somente no IBGE";
 
-        public Task<IEnumerable<UFeMunicipiosDto>> BuscarSiglaTodosUf(ContextoBdProvider contextoProvider, string uf, string municipioParcial)
+        public Task<IEnumerable<UFeMunicipiosDados>> BuscarSiglaTodosUf(ContextoBdProvider contextoProvider, string uf, string municipioParcial)
         {
             //nao fazemos nada...
-            var ret = new List<UFeMunicipiosDto>();
+            var ret = new List<UFeMunicipiosDados>();
 
             //para o prepedido
-            ret.Add(new UFeMunicipiosDto()
+            ret.Add(new UFeMunicipiosDados()
             {
                 SiglaUF = "SP",
-                ListaMunicipio = new List<MunicipioDto>() { new MunicipioDto() {
+                ListaMunicipio = new List<MunicipioDados>() { new MunicipioDados() {
                     Descricao = "São Paulo",
                     DescricaoSemAcento="São Paulo"
                 } }

@@ -14,7 +14,7 @@ namespace PrepedidoBusiness.UtilsNfe
 {
     public interface IBancoNFeMunicipio
     {
-        Task<IEnumerable<UFeMunicipiosDto>> BuscarSiglaTodosUf(ContextoBdProvider contextoProvider, string uf, string municipioParcial);
+        Task<IEnumerable<UFeMunicipiosDados>> BuscarSiglaTodosUf(ContextoBdProvider contextoProvider, string uf, string municipioParcial);
         Task<IEnumerable<NfeMunicipio>> BuscarSiglaUf(string uf, string municipio, bool buscaParcial, ContextoBdProvider contextoProvider);
         Task<string> MontarProviderStringParaNFeMunicipio(ContextoBdProvider contextoProvider);
     }
@@ -166,10 +166,10 @@ namespace PrepedidoBusiness.UtilsNfe
             return providerString;
         }
 
-        public async Task<IEnumerable<UFeMunicipiosDto>> BuscarSiglaTodosUf(ContextoBdProvider contextoProvider, string uf, string municipioParcial)
+        public async Task<IEnumerable<UFeMunicipiosDados>> BuscarSiglaTodosUf(ContextoBdProvider contextoProvider, string uf, string municipioParcial)
         {
-            List<UFeMunicipiosDto> lstUF_Municipio = new List<UFeMunicipiosDto>();
-            List<MunicipioDto> lstMunicipios = new List<MunicipioDto>();
+            List<UFeMunicipiosDados> lstUF_Municipio = new List<UFeMunicipiosDados>();
+            List<MunicipioDados> lstMunicipios = new List<MunicipioDados>();
 
             string providerString = await MontarProviderStringParaNFeMunicipio(contextoProvider);
 
@@ -201,11 +201,11 @@ namespace PrepedidoBusiness.UtilsNfe
 
                         while (result.Read())
                         {
-                            UFeMunicipiosDto ufMinicipio = new UFeMunicipiosDto();
+                            UFeMunicipiosDados ufMinicipio = new UFeMunicipiosDados();
                             ufMinicipio.Codigo = result["CodUF"].ToString();
                             ufMinicipio.Descricao = result["Descricao"].ToString();
                             ufMinicipio.SiglaUF = result["SiglaUf"].ToString();
-                            ufMinicipio.ListaMunicipio = new List<MunicipioDto>();
+                            ufMinicipio.ListaMunicipio = new List<MunicipioDados>();
 
                             lstUF_Municipio.Add(ufMinicipio);
                         };
@@ -237,7 +237,7 @@ namespace PrepedidoBusiness.UtilsNfe
 
                                 while (result2.Read())
                                 {
-                                    MunicipioDto municipio = new MunicipioDto();
+                                    MunicipioDados municipio = new MunicipioDados();
                                     municipio.Codigo = result2["CodMunic"].ToString();
                                     municipio.Descricao = result2["Descricao"].ToString();
                                     municipio.DescricaoSemAcento = result2["DescricaoSemAcento"].ToString();
@@ -259,7 +259,7 @@ namespace PrepedidoBusiness.UtilsNfe
 
                                 if (x.Codigo == substr)
                                 {
-                                    x.ListaMunicipio.Add(new MunicipioDto()
+                                    x.ListaMunicipio.Add(new MunicipioDados()
                                     {
                                         Codigo = y.Codigo,
                                         Descricao = y.Descricao,

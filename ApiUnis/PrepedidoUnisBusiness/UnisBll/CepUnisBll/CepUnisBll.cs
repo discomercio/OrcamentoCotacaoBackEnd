@@ -25,15 +25,13 @@ namespace PrepedidoUnisBusiness.UnisBll.CepUnisBll
 
         public async Task<CepUnisDto> BuscarCep(string cep)
         {
-            List<CepDto> lstCepArclubeDto = (await cepArclueBll.BuscarCep(cep, "", "", "")).ToList();
+            List<CepDados> lstCepArclubeDto = (await cepArclueBll.BuscarCep(cep, "", "", "")).ToList();
 
             List<CepUnisDto> lst_cepUnisDto = new List<CepUnisDto>();
 
             if (lstCepArclubeDto.Count > 0)
             {
-                var x = lstCepArclubeDto[0];
-                CepUnisDto cepUnis = CepUnisDto.CepUnisDtoDeCepDto(lstCepArclubeDto[0]);
-
+                CepUnisDto cepUnis = CepUnisDto.CepUnisDtoDeCepDados(lstCepArclubeDto[0]);
                 return cepUnis;
             }
 
@@ -43,10 +41,10 @@ namespace PrepedidoUnisBusiness.UnisBll.CepUnisBll
         public async Task<IEnumerable<UFeMunicipiosUnisDto>> BuscarUfs(string uf, string municipioParcial)
         {            
             //vamos buscar todos os estados
-            List<UFeMunicipiosDto> lstUF_Municipio = (await bancoNFeMunicipio.BuscarSiglaTodosUf(contextoProvider, uf, municipioParcial)).ToList();
+            List<UFeMunicipiosDados> lstUF_Municipio = (await bancoNFeMunicipio.BuscarSiglaTodosUf(contextoProvider, uf, municipioParcial)).ToList();
 
             List<UFeMunicipiosUnisDto> lstUnisUF_Municipio =
-                UFeMunicipiosUnisDto.UFeMunicipiosUnisDtoDeUFeMunicipiosDto(lstUF_Municipio);
+                UFeMunicipiosUnisDto.UFeMunicipiosUnisDtoDeUFeMunicipiosDados(lstUF_Municipio);
 
             return lstUnisUF_Municipio;
         }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PrepedidoBusiness.Bll;
 using PrepedidoBusiness.Dto.Cep;
 
 namespace PrepedidoApi.Controllers
@@ -13,11 +14,13 @@ namespace PrepedidoApi.Controllers
     [Authorize(Roles = Utils.Autenticacao.RoleAcesso)]
     public class CepController : Controller
     {
-        private readonly PrepedidoBusiness.Bll.CepBll cepBll;
+        private readonly PrepedidoBusiness.Bll.CepPrepedidoBll cepPrepedidoBll;
+        private readonly CepBll cepBll;
         private readonly InfraIdentity.IServicoDecodificarToken servicoDecodificarToken;
 
-        public CepController(PrepedidoBusiness.Bll.CepBll cepBll, InfraIdentity.IServicoDecodificarToken servicoDecodificarToken)
+        public CepController(PrepedidoBusiness.Bll.CepPrepedidoBll cepPrepedidoBll, PrepedidoBusiness.Bll.CepBll cepBll, InfraIdentity.IServicoDecodificarToken servicoDecodificarToken)
         {
+            this.cepPrepedidoBll = cepPrepedidoBll;
             this.cepBll = cepBll;
             this.servicoDecodificarToken = servicoDecodificarToken;
         }
@@ -31,7 +34,7 @@ namespace PrepedidoApi.Controllers
         {
             //para testar: http://localhost:60877/api/cep/buscarCep
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            IEnumerable<CepDto> ret = await cepBll.BuscarCep(cep, endereco, uf, cidade);
+            IEnumerable<CepDto> ret = await cepPrepedidoBll.BuscarCep(cep, endereco, uf, cidade);
 
             return Ok(ret);
         }
@@ -61,7 +64,7 @@ namespace PrepedidoApi.Controllers
             //string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
             //esse metodo esta buscando apenas 300 itens
-            IEnumerable<CepDto> ret = await cepBll.BuscarCepPorEndereco(endereco, localidade, uf);
+            IEnumerable<CepDto> ret = await cepPrepedidoBll.BuscarCepPorEndereco(endereco, localidade, uf);
 
             return Ok(ret);
         }
