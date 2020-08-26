@@ -47,7 +47,7 @@ namespace Testes.Automatizados
             services.AddTransient<PrepedidoBusiness.Bll.PrepedidoBll.MontarLogPrepedidoBll, PrepedidoBusiness.Bll.PrepedidoBll.MontarLogPrepedidoBll>();
             services.AddTransient<PrepedidoBusiness.Bll.FormaPagtoBll.FormaPagtoBll, PrepedidoBusiness.Bll.FormaPagtoBll.FormaPagtoBll>();
 
-            services.AddTransient<PrepedidoBusiness.Utils.IBancoNFeMunicipio, Utils.TestesBancoNFeMunicipio>();
+            services.AddTransient<PrepedidoBusiness.UtilsNfe.IBancoNFeMunicipio, Utils.TestesBancoNFeMunicipio>();
 
             services.AddTransient<TestesPrepedidoUnisBusiness.TestesUnisBll.TestesClienteUnisBll.TestesClienteUnisBll, TestesPrepedidoUnisBusiness.TestesUnisBll.TestesClienteUnisBll.TestesClienteUnisBll>();
 

@@ -56,7 +56,7 @@ namespace PrepedidoApi
             services.AddTransient<PrepedidoBusiness.Bll.PrepedidoBll.ValidacoesPrepedidoBll, PrepedidoBusiness.Bll.PrepedidoBll.ValidacoesPrepedidoBll>();
             services.AddTransient<PrepedidoBusiness.Bll.PrepedidoBll.MontarLogPrepedidoBll, PrepedidoBusiness.Bll.PrepedidoBll.MontarLogPrepedidoBll>();
             services.AddTransient<PrepedidoBusiness.Bll.PrepedidoBll.MontarLogPrepedidoBll, PrepedidoBusiness.Bll.PrepedidoBll.MontarLogPrepedidoBll>();
-            services.AddTransient<PrepedidoBusiness.Utils.IBancoNFeMunicipio, PrepedidoBusiness.Utils.BancoNFeMunicipio>();
+            services.AddTransient<PrepedidoBusiness.UtilsNfe.IBancoNFeMunicipio, PrepedidoBusiness.UtilsNfe.BancoNFeMunicipio>();
             
 
             //ContextoProvider

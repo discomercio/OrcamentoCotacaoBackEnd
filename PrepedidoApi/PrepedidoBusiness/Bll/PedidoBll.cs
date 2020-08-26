@@ -4,14 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System;
 using PrepedidoBusiness.Dto.Pedido;
-using PrepedidoBusiness.Utils;
 using PrepedidoBusiness.Dto.ClienteCadastro;
 using InfraBanco.Modelos;
 using PrepedidoBusiness.Dto.Pedido.DetalhesPedido;
 using Microsoft.EntityFrameworkCore.Internal;
 using InfraBanco.Constantes;
-using System.Collections;
-using Utils;
+using UtilsGlobais;
 
 namespace PrepedidoBusiness.Bll
 {

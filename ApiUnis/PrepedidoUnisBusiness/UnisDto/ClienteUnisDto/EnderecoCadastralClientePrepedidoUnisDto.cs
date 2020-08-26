@@ -1,10 +1,10 @@
 ﻿using InfraBanco.Constantes;
 using PrepedidoBusiness.Dto.ClienteCadastro;
-using PrepedidoBusiness.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using UtilsGlobais;
 
 namespace PrepedidoUnisBusiness.UnisDto.ClienteUnisDto
 {

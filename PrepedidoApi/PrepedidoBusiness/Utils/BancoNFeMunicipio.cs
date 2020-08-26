@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using InfraBanco.Constantes;
 using PrepedidoBusiness.Dto.Cep;
 
-namespace PrepedidoBusiness.Utils
+namespace PrepedidoBusiness.UtilsNfe
 {
     public interface IBancoNFeMunicipio
     {
@@ -159,7 +159,7 @@ namespace PrepedidoBusiness.Utils
             sqlBuilder.InitialCatalog = nova_conexao.NFe_T1_nome_BD;
             sqlBuilder.UserID = nova_conexao.NFe_T1_usuario_BD;
 
-            sqlBuilder.Password = PrepedidoBusiness.Utils.Util.decodificaDado(nova_conexao.NFe_T1_senha_BD, Constantes.FATOR_BD);
+            sqlBuilder.Password = UtilsGlobais.Util.decodificaDado(nova_conexao.NFe_T1_senha_BD, Constantes.FATOR_BD);
 
             string providerString = sqlBuilder.ToString();
 

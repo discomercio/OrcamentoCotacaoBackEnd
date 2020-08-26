@@ -6,12 +6,13 @@ using System.Linq;
 using InfraBanco;
 using Microsoft.EntityFrameworkCore;
 using InfraBanco.Constantes;
-using PrepedidoBusiness.Utils;
 using InfraBanco.Modelos;
 using PrepedidoBusiness.Dto.ClienteCadastro;
 using PrepedidoBusiness.Dto.ClienteCadastro.Referencias;
 using System.Reflection;
 using PrepedidoBusiness.Dto.Cep;
+using PrepedidoBusiness.UtilsNfe;
+using UtilsGlobais;
 
 namespace PrepedidoBusiness.Bll.ClienteBll
 {

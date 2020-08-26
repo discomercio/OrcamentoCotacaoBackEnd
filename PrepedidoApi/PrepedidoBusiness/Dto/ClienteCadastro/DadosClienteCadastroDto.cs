@@ -60,7 +60,7 @@ namespace PrepedidoBusiness.Dto.ClienteCadastro
                 Indicador_Orcamentista = indicadorOrcamentista.ToUpper(),
                 Loja = loja,
                 Nome = endCadastral.Endereco_nome,
-                Cnpj_Cpf = PrepedidoBusiness.Utils.Util.SoDigitosCpf_Cnpj(endCadastral.Endereco_cnpj_cpf.Trim()),
+                Cnpj_Cpf = UtilsGlobais.Util.SoDigitosCpf_Cnpj(endCadastral.Endereco_cnpj_cpf.Trim()),
                 Tipo = endCadastral.Endereco_tipo_pessoa,
                 Sexo = sexo == null ? "" : sexo,
                 Rg = endCadastral.Endereco_rg == null ? "" : endCadastral.Endereco_rg,

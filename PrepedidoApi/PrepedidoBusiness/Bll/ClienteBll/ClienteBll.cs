@@ -7,8 +7,7 @@ using PrepedidoBusiness.Dto.ClienteCadastro;
 using PrepedidoBusiness.Dto.ClienteCadastro.Referencias;
 using Microsoft.EntityFrameworkCore;
 using InfraBanco.Constantes;
-using PrepedidoBusiness.Dto.Cep;
-using PrepedidoBusiness.Utils;
+using PrepedidoBusiness.UtilsNfe;
 
 namespace PrepedidoBusiness.Bll.ClienteBll
 {
@@ -382,7 +381,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                                 dbgravacao.Update(cli);
                                 dbgravacao.SaveChanges();
 
-                                bool salvouLog = Utils.Util.GravaLog(dbgravacao, apelido, dadosClienteCadastroDto.Loja, "", dadosClienteCadastroDto.Id,
+                                bool salvouLog = UtilsGlobais.Util.GravaLog(dbgravacao, apelido, dadosClienteCadastroDto.Loja, "", dadosClienteCadastroDto.Id,
                                     Constantes.OP_LOG_CLIENTE_ALTERACAO, log);
                                 if (salvouLog)
                                     dbgravacao.transacao.Commit();
@@ -614,7 +613,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                         {
                             string campos_a_omitir = "dt_cadastro|usuario_cadastro|dt_ult_atualizacao|usuario_ult_atualizacao";
 
-                            log = Utils.Util.MontaLog(clienteCadastrado, log, campos_a_omitir);
+                            log = UtilsGlobais.Util.MontaLog(clienteCadastrado, log, campos_a_omitir);
 
                             if (clienteDto.DadosCliente.Tipo == Constantes.ID_PJ)
                             {
@@ -622,7 +621,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                                 log = await CadastrarRefComercial(dbgravacao, clienteDto.RefComercial, apelido, id_cliente, log);
                             }
 
-                            bool gravouLog = Utils.Util.GravaLog(dbgravacao, apelido, cliente.Loja, "", id_cliente,
+                            bool gravouLog = UtilsGlobais.Util.GravaLog(dbgravacao, apelido, cliente.Loja, "", id_cliente,
                                     Constantes.OP_LOG_CLIENTE_INCLUSAO, log);
                             if (gravouLog)
                                 dbgravacao.transacao.Commit();
@@ -738,7 +737,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 qtdeRef++;
 
                 //Busca os nomes reais das colunas da tabela SQL
-                log = Utils.Util.MontaLog(cliRefBancaria, log, campos_a_omitir_ref_bancaria);
+                log = UtilsGlobais.Util.MontaLog(cliRefBancaria, log, campos_a_omitir_ref_bancaria);
             }
 
             await dbgravacao.SaveChangesAsync();
@@ -769,7 +768,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 };
                 dbgravacao.Add(c);
                 qtdeRef++;
-                log = Utils.Util.MontaLog(c, log, campos_a_omitir_ref_comercial);
+                log = UtilsGlobais.Util.MontaLog(c, log, campos_a_omitir_ref_comercial);
             }
 
             await dbgravacao.SaveChangesAsync();
@@ -802,7 +801,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     {
                         if (DateTime.Now.Year > controle.Dt_Ult_Atualizacao.Year)
                         {
-                            s = Utils.Util.Normaliza_Codigo(s, Constantes.TAM_MAX_NSU);
+                            s = UtilsGlobais.Util.Normaliza_Codigo(s, Constantes.TAM_MAX_NSU);
                             controle.Dt_Ult_Atualizacao = DateTime.Now;
                             if (!String.IsNullOrEmpty(controle.Ano_Letra_Seq))
                             {
@@ -819,7 +818,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 }
                 n_nsu += 1;
                 s = Convert.ToString(n_nsu);
-                s = Utils.Util.Normaliza_Codigo(s, Constantes.TAM_MAX_NSU);
+                s = UtilsGlobais.Util.Normaliza_Codigo(s, Constantes.TAM_MAX_NSU);
                 if (s.Length == 12)
                 {
                     i = 101;
@@ -851,7 +850,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
 
             var db = contextoProvider.GetContextoLeitura();
 
-            cpf_cnpj = PrepedidoBusiness.Utils.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
+            cpf_cnpj = UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
 
             retorno = await (from c in db.Tclientes
                              where c.Cnpj_Cpf == cpf_cnpj

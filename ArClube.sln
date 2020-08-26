@@ -63,7 +63,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiMagento", "ApiMagento\Ap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MagentoBusiness", "ApiMagento\ApiMagento\MagentoBusiness\MagentoBusiness.csproj", "{7CF1221F-6228-441C-9F72-622C81EC80A5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utils", "Global\Utils\Utils.csproj", "{7F731331-9F65-440E-A20B-8469A037ED24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UtilsGlobais", "Global\Utils\UtilsGlobais.csproj", "{7F731331-9F65-440E-A20B-8469A037ED24}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Produto", "Global\Produto\Produto.csproj", "{D5242FC6-0C2F-4904-8F38-10D4B482FC2F}"
 EndProject

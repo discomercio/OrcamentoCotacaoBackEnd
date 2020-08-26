@@ -98,7 +98,7 @@ namespace PrepedidoAPIUnis
             services.AddTransient<PrepedidoBusiness.Bll.ProdutoPrepedidoBll, PrepedidoBusiness.Bll.ProdutoPrepedidoBll>();
             services.AddTransient<PrepedidoBusiness.Bll.PrepedidoBll.ValidacoesPrepedidoBll, PrepedidoBusiness.Bll.PrepedidoBll.ValidacoesPrepedidoBll>();
             services.AddTransient<PrepedidoBusiness.Bll.PrepedidoBll.MontarLogPrepedidoBll, PrepedidoBusiness.Bll.PrepedidoBll.MontarLogPrepedidoBll>();
-            services.AddTransient<PrepedidoBusiness.Utils.IBancoNFeMunicipio, PrepedidoBusiness.Utils.BancoNFeMunicipio>();
+            services.AddTransient<PrepedidoBusiness.UtilsNfe.IBancoNFeMunicipio, PrepedidoBusiness.UtilsNfe.BancoNFeMunicipio>();
 
             services.AddTransient<IServicoAutenticacaoApiUnis, ServicoAutenticacaoApiUnis>();
             //como singleton para melhorar a performance

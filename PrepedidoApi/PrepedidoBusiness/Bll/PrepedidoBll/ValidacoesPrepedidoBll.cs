@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using PrepedidoBusiness.Dto.ClienteCadastro;
 using InfraBanco.Constantes;
-using PrepedidoBusiness.Utils;
 using InfraBanco.Modelos;
 using PrepedidoBusiness.Bll.ClienteBll;
 using PrepedidoBusiness.Dto.Cep;
 using InfraBanco;
+using PrepedidoBusiness.UtilsNfe;
+using UtilsGlobais;
 
 namespace PrepedidoBusiness.Bll.PrepedidoBll
 {

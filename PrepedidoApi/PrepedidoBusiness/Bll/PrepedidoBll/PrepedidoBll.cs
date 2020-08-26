@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using InfraBanco.Modelos;
-using PrepedidoBusiness.Utils;
 using PrepedidoBusiness.Dto.Prepedido;
 using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using PrepedidoBusiness.Dto.ClienteCadastro;
@@ -13,9 +12,10 @@ using InfraBanco;
 using PrepedidoBusiness.Bll.ClienteBll;
 using PrepedidoBusiness.Bll.FormaPagtoBll;
 using PrepedidoBusiness.Dto.FormaPagto;
-using Utils;
 using Produto.RegrasCrtlEstoque;
 using Produto;
+using PrepedidoBusiness.UtilsNfe;
+using UtilsGlobais;
 
 namespace PrepedidoBusiness.Bll.PrepedidoBll
 {
@@ -1814,7 +1814,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 {
                     Orcamento = prepedido.NumeroPrePedido,
                     Produto = p.NumProduto,
-                    Fabricante = Utils.Util.Normaliza_Codigo(p.Fabricante, Constantes.TAM_MIN_FABRICANTE),
+                    Fabricante = UtilsGlobais.Util.Normaliza_Codigo(p.Fabricante, Constantes.TAM_MIN_FABRICANTE),
                     Qtde = p.Qtde,
                     Preco_Venda = Math.Round(p.VlUnitario, 2),
                     Preco_NF = prepedido.PermiteRAStatus == 1 ? Math.Round((decimal)p.Preco_Lista, 2) : Math.Round(p.VlUnitario, 2),
@@ -1844,7 +1844,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                         {
                             Orcamento = prepedido.NumeroPrePedido,
                             Produto = p.NumProduto,
-                            Fabricante = Utils.Util.Normaliza_Codigo(p.Fabricante, Constantes.TAM_MIN_FABRICANTE),
+                            Fabricante = UtilsGlobais.Util.Normaliza_Codigo(p.Fabricante, Constantes.TAM_MIN_FABRICANTE),
                             Qtde = p.Qtde,
                             Preco_Venda = Math.Round(p.VlUnitario, 2),
                             Preco_NF = prepedido.PermiteRAStatus == 1 ? Math.Round((decimal)p.Preco_Lista, 2) : Math.Round(p.VlUnitario, 2),

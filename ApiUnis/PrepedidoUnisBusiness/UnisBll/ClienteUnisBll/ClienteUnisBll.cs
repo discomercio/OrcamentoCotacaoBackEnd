@@ -74,7 +74,7 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
 
             var db = contextoProvider.GetContextoLeitura();
 
-            cpf_cnpj = PrepedidoBusiness.Utils.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
+            cpf_cnpj = UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
 
             retorno = await (from c in db.Tclientes
                              where c.Cnpj_Cpf == cpf_cnpj

@@ -1,7 +1,6 @@
 ﻿using InfraBanco;
 using InfraBanco.Modelos;
 using PrepedidoBusiness.Dto.Cep;
-using PrepedidoBusiness.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Especificacao.Testes.Utils.BancoTestes
 {
-    class TestesBancoNFeMunicipio : PrepedidoBusiness.Utils.IBancoNFeMunicipio
+    class TestesBancoNFeMunicipio : PrepedidoBusiness.UtilsNfe.IBancoNFeMunicipio
     {
         public static string Cidade_somente_no_IBGE = "Cidade somente no IBGE";
 
@@ -30,7 +29,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             return Task.FromResult(ret.AsEnumerable());
         }
 
-        Task<IEnumerable<NfeMunicipio>> IBancoNFeMunicipio.BuscarSiglaUf(string uf, string municipio, bool buscaParcial, ContextoBdProvider contextoProvider)
+        Task<IEnumerable<NfeMunicipio>> PrepedidoBusiness.UtilsNfe.IBancoNFeMunicipio.BuscarSiglaUf(string uf, string municipio, bool buscaParcial, ContextoBdProvider contextoProvider)
         {
             //nao fazemos nada...
             var ret = new List<NfeMunicipio>();
@@ -44,7 +43,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             return Task.FromResult(ret.AsEnumerable());
         }
 
-        Task<string> IBancoNFeMunicipio.MontarProviderStringParaNFeMunicipio(ContextoBdProvider contextoProvider)
+        Task<string> PrepedidoBusiness.UtilsNfe.IBancoNFeMunicipio.MontarProviderStringParaNFeMunicipio(ContextoBdProvider contextoProvider)
         {
             var ret = "vazia";
             return Task.FromResult(ret);

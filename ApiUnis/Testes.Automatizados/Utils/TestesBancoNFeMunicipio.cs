@@ -1,7 +1,7 @@
 ﻿using InfraBanco;
 using InfraBanco.Modelos;
 using PrepedidoBusiness.Dto.Cep;
-using PrepedidoBusiness.Utils;
+using PrepedidoBusiness.UtilsNfe;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ using Testes.Automatizados.InicializarBanco;
 
 namespace Testes.Automatizados.Utils
 {
-    class TestesBancoNFeMunicipio : PrepedidoBusiness.Utils.IBancoNFeMunicipio
+    class TestesBancoNFeMunicipio : IBancoNFeMunicipio
     {
         public static string Cidade_somente_no_IBGE = "Cidade somente no IBGE";
 

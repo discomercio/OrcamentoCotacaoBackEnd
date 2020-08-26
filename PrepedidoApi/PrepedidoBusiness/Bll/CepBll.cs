@@ -6,10 +6,10 @@ using System.Linq;
 using PrepedidoBusiness.Dto.Cep;
 using Microsoft.EntityFrameworkCore;
 using System.Data.SqlClient;
-using PrepedidoBusiness.Utils;
 using PrepedidoBusiness.Bll.ClienteBll;
 using InfraBanco;
 using InfraBanco.Modelos;
+using PrepedidoBusiness.UtilsNfe;
 
 namespace PrepedidoBusiness.Bll
 {

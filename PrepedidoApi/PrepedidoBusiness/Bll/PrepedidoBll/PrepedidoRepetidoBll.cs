@@ -1,11 +1,11 @@
 ﻿using InfraBanco;
 using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
-using PrepedidoBusiness.Utils;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using UtilsGlobais;
 
 namespace PrepedidoBusiness.Bll.PrepedidoBll
 {

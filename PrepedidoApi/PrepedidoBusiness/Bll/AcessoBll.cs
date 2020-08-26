@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using InfraBanco.Constantes;
 using PrepedidoBusiness.Dto.Acesso;
-using PrepedidoBusiness.Utils;
+using UtilsGlobais;
 
 namespace PrepedidoBusiness.Bll
 {

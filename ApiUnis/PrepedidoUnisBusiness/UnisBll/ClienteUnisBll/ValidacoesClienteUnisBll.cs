@@ -7,7 +7,6 @@ using InfraBanco;
 using Microsoft.EntityFrameworkCore;
 using PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto;
 using InfraBanco.Constantes;
-using PrepedidoBusiness.Utils;
 using InfraBanco.Modelos;
 
 namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll

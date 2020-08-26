@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Utils
+namespace UtilsGlobais
 {
     public class Texto
     {

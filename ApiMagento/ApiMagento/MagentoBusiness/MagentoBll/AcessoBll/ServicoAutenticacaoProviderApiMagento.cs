@@ -70,7 +70,7 @@ namespace MagentoBusiness.MagentoBll.AcessoBll
 
 
             //verificar a senha
-            var senha_banco_datastamp_decod = PrepedidoBusiness.Utils.Util.decodificaDado(usuario.Datastamp, Constantes.FATOR_CRIPTO);
+            var senha_banco_datastamp_decod = UtilsGlobais.Util.decodificaDado(usuario.Datastamp, Constantes.FATOR_CRIPTO);
             if (senha_banco_datastamp_decod.ToUpper() != senha.ToUpper())
             {
                 ret.ListaErros.Add(Erro_ERR_IDENTIFICACAO + " (senha)");

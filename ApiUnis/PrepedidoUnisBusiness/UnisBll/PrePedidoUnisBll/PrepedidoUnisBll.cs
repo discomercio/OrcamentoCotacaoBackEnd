@@ -65,8 +65,8 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
             if (!string.IsNullOrEmpty(prePedidoUnis.Cnpj_Cpf))
             {
                 //vamos comparar os campos para saber se o cliente é o mesmo de dados cadastrais
-                if (PrepedidoBusiness.Utils.Util.SoDigitosCpf_Cnpj(prePedidoUnis.Cnpj_Cpf) !=
-                    PrepedidoBusiness.Utils.Util.SoDigitosCpf_Cnpj(prePedidoUnis.EnderecoCadastralCliente.Endereco_cnpj_cpf))
+                if (UtilsGlobais.Util.SoDigitosCpf_Cnpj(prePedidoUnis.Cnpj_Cpf) !=
+                    UtilsGlobais.Util.SoDigitosCpf_Cnpj(prePedidoUnis.EnderecoCadastralCliente.Endereco_cnpj_cpf))
                 {
                     retorno.ListaErros.Add("O CPF/CNPJ do cliente está divergindo do cadastro!");
                     return retorno;

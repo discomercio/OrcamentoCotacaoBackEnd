@@ -1,6 +1,6 @@
 ﻿using PrepedidoBusiness.Bll;
 using PrepedidoBusiness.Dto.Cep;
-using PrepedidoBusiness.Utils;
+using PrepedidoBusiness.UtilsNfe;
 using PrepedidoUnisBusiness.UnisDto.CepUnisDto;
 using System;
 using System.Collections.Generic;

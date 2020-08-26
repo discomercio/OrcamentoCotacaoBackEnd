@@ -3,22 +3,16 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using InfraBanco;
-using InfraBanco.Constantes;
-using InfraBanco.Modelos;
 using System.Reflection;
 using System.ComponentModel.DataAnnotations.Schema;
-using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
-using PrepedidoBusiness.Dto.Produto;
 using System.Globalization;
-using System.Data.SqlClient;
-using PrepedidoBusiness.Dto.Cep;
 using System.ComponentModel.DataAnnotations;
-using Utils;
-using Produto.RegrasCrtlEstoque;
+using InfraBanco;
+using InfraBanco.Constantes;
+using Microsoft.EntityFrameworkCore;
+using InfraBanco.Modelos;
 
-namespace PrepedidoBusiness.Utils
+namespace UtilsGlobais
 {
     public class Util
     {
@@ -866,7 +860,7 @@ namespace PrepedidoBusiness.Utils
                     {
                         if (DateTime.Now.Year > controle.Dt_Ult_Atualizacao.Year)
                         {
-                            s = Utils.Util.Normaliza_Codigo(s, Constantes.TAM_MAX_NSU);
+                            s = Normaliza_Codigo(s, Constantes.TAM_MAX_NSU);
                             controle.Dt_Ult_Atualizacao = DateTime.Now;
                             if (!String.IsNullOrEmpty(controle.Ano_Letra_Seq))
                             {
@@ -883,7 +877,7 @@ namespace PrepedidoBusiness.Utils
                 }
                 n_nsu += 1;
                 s = Convert.ToString(n_nsu);
-                s = Utils.Util.Normaliza_Codigo(s, Constantes.TAM_MAX_NSU);
+                s = Normaliza_Codigo(s, Constantes.TAM_MAX_NSU);
                 if (s.Length == 12)
                 {
                     i = 101;
