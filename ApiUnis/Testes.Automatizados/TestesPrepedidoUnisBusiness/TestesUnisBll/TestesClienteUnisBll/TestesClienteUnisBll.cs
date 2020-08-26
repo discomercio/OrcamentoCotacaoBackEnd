@@ -186,7 +186,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
                 c.DadosCliente.Cidade = DadosCep.Cidade;
                 c.DadosCliente.Cep = DadosCep.Cep;
             },
-                PrepedidoBusiness.Bll.ClienteBll.ValidacoesClienteBll.MensagensErro.Municipio_nao_consta_na_relacao_IBGE(DadosCep.Cidade,
+                PrepedidoBusiness.Bll.CepBll.MensagensErro.Municipio_nao_consta_na_relacao_IBGE(DadosCep.Cidade,
                 InicializarClienteDados.ClienteNaoCadastradoPJ().DadosCliente.Uf), TipoPessoa.PJ);
         }
 

@@ -33,7 +33,7 @@ namespace PrepedidoApi.Controllers
         {
             //para testar: http://localhost:60877/api/cliente/buscarCliente/{cnpj_cpf}
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            var dadosCliente = await clienteBll.BuscarCliente(cnpj_cpf, apelido.Trim());
+            ClienteCadastroDto dadosCliente = await clienteBll.BuscarCliente(cnpj_cpf, apelido.Trim());
 
             if (dadosCliente == null)
                 return NoContent();
@@ -54,7 +54,7 @@ namespace PrepedidoApi.Controllers
              * tipo de contibuinte ICMS
              * */
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            var retorno = await clienteBll.AtualizarClienteParcial(apelido.Trim(), dadosClienteCadastroDto);
+            List<string> retorno = await clienteBll.AtualizarClienteParcial(apelido.Trim(), dadosClienteCadastroDto);
             if (retorno == null)
                 return NoContent();
             return Ok(retorno);
@@ -69,7 +69,7 @@ namespace PrepedidoApi.Controllers
         public async Task<IActionResult> ListaBancosCombo()
         {
             //para testar: http://localhost:60877/api/cliente/listarBancosCombo
-            var listaBancos = await clienteBll.ListarBancosCombo();
+            IEnumerable<ListaBancoDto> listaBancos = await clienteBll.ListarBancosCombo();
 
             if (listaBancos == null)
                 return BadRequest();
@@ -86,7 +86,7 @@ namespace PrepedidoApi.Controllers
             //para testar: http://localhost:60877/api/cliente/cadastrarCliente
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            var retorno = await clienteBll.CadastrarCliente(clienteDto, apelido.Trim(), 
+            IEnumerable<string> retorno = await clienteBll.CadastrarCliente(clienteDto, apelido.Trim(), 
                 (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS);
 
             return Ok(retorno);
@@ -101,7 +101,7 @@ namespace PrepedidoApi.Controllers
         {
             //para testar: http://localhost:60877/api/cliente/listarComboJustificaEndereco
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            var retorno = await clienteBll.ListarComboJustificaEndereco(apelido.Trim());
+            IEnumerable<EnderecoEntregaJustificativaDto> retorno = await clienteBll.ListarComboJustificaEndereco(apelido.Trim());
 
             return Ok(retorno);
 

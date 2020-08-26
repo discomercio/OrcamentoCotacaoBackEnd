@@ -30,11 +30,6 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             public static string INFORME_SE_O_CLIENTE_E_PF_OU_PJ = "INFORME SE O CLIENTE É PF OU PJ!";
             public static string Tipo_de_cliente_nao_e_PF_nem_PJ = "Tipo de cliente não é PF nem PJ.";
             public static string CNPJ_INVALIDO = "CNPJ INVÁLIDO.";
-
-            public static string Municipio_nao_consta_na_relacao_IBGE(string municipio, string uf)
-            {
-                return "Município '" + municipio + "' não consta na relação de municípios do IBGE para a UF de '" + uf + "'!";
-            }
         }
 
         public static async Task<bool> ValidarDadosCliente(DadosClienteCadastroDto dadosCliente,
@@ -105,7 +100,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                         retorno = ValidarIE_Cliente(dadosCliente, lstErros, contextoProvider,
                             bancoNFeMunicipio, flagMsg_IE_Cadastro_PF);
 
-                    await ConsisteMunicipioIBGE(dadosCliente.Cidade, dadosCliente.Uf, lstErros, contextoProvider,
+                    await CepBll.ConsisteMunicipioIBGE(dadosCliente.Cidade, dadosCliente.Uf, lstErros, contextoProvider,
                         bancoNFeMunicipio, true);
                 }
                 else
@@ -968,56 +963,6 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             return retorno;
         }
 
-        public static async Task<bool> ConsisteMunicipioIBGE(string municipio, string uf,
-            List<string> lstErros, ContextoBdProvider contextoProvider, IBancoNFeMunicipio bancoNFeMunicipio,
-            bool mostrarMensagemErro)
-        {
-            var db = contextoProvider.GetContextoLeitura();
-
-            if (string.IsNullOrEmpty(municipio))
-            {
-                if (mostrarMensagemErro)
-                    lstErros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
-                        "nenhum município foi informado!");
-                return false;
-            }
-
-            if (string.IsNullOrEmpty(uf))
-            {
-                if (mostrarMensagemErro)
-                    lstErros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
-                        "a UF não foi informada!");
-                return false;
-            }
-
-            else
-            {
-                if (uf.Length > 2)
-                {
-                    if (mostrarMensagemErro)
-                        lstErros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
-                        "a UF é inválida (" + uf + ")!");
-                    return false;
-                }
-
-            }
-
-            if (lstErros.Count == 0)
-            {
-                List<NfeMunicipio> lst_nfeMunicipios = (await bancoNFeMunicipio.BuscarSiglaUf(uf, municipio, false, contextoProvider)).ToList();
-
-                if (!lst_nfeMunicipios.Any())
-                {
-                    if (mostrarMensagemErro)
-                        lstErros.Add(MensagensErro.Municipio_nao_consta_na_relacao_IBGE(municipio, uf));
-
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
         public static void VerificarInscricaoEstadualValida(string ie, string uf, List<string> listaErros,
             bool flagMsg_IE_Cadastro_PF)
         {
@@ -1136,7 +1081,7 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                     //vamos verificar se a cidade da lista de cep existe no IBGE para validar
                     if (!string.IsNullOrEmpty(cepCliente.Cidade) && !string.IsNullOrEmpty(c.Cidade))
                     {
-                        if (await ConsisteMunicipioIBGE(c.Cidade, c.Uf, lstErros, contextoProvider, bancoNFeMunicipio, false))
+                        if (await CepBll.ConsisteMunicipioIBGE(c.Cidade, c.Uf, lstErros, contextoProvider, bancoNFeMunicipio, false))
                         {
                             if (Util.RemoverAcentuacao(c.Cidade.ToUpper()) != Util.RemoverAcentuacao(cepCliente.Cidade.ToUpper()))
                             {

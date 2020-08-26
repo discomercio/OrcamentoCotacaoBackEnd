@@ -65,7 +65,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MagentoBusiness", "ApiMagen
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UtilsGlobais", "Global\Utils\UtilsGlobais.csproj", "{7F731331-9F65-440E-A20B-8469A037ED24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Produto", "Global\Produto\Produto.csproj", "{D5242FC6-0C2F-4904-8F38-10D4B482FC2F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Produto", "Global\Produto\Produto.csproj", "{D5242FC6-0C2F-4904-8F38-10D4B482FC2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prepedido", "Global\Prepedido\Prepedido.csproj", "{56DC54B5-692A-4AD5-BDFC-3BBF08C04B24}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -155,6 +157,10 @@ Global
 		{D5242FC6-0C2F-4904-8F38-10D4B482FC2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5242FC6-0C2F-4904-8F38-10D4B482FC2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5242FC6-0C2F-4904-8F38-10D4B482FC2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56DC54B5-692A-4AD5-BDFC-3BBF08C04B24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56DC54B5-692A-4AD5-BDFC-3BBF08C04B24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56DC54B5-692A-4AD5-BDFC-3BBF08C04B24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56DC54B5-692A-4AD5-BDFC-3BBF08C04B24}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -184,6 +190,7 @@ Global
 		{7CF1221F-6228-441C-9F72-622C81EC80A5} = {3BF738D4-C951-4E7D-9690-F126D75D6AFE}
 		{7F731331-9F65-440E-A20B-8469A037ED24} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
 		{D5242FC6-0C2F-4904-8F38-10D4B482FC2F} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
+		{56DC54B5-692A-4AD5-BDFC-3BBF08C04B24} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {139E9C0D-48C6-4635-9645-BF9C5AA65398}

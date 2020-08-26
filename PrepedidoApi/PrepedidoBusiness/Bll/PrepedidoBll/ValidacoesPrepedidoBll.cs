@@ -423,7 +423,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                                 bancoNFeMunicipio);
                         }
 
-                        await ValidacoesClienteBll.ConsisteMunicipioIBGE(prePedido.EnderecoEntrega.EndEtg_cidade,
+                        await CepBll.ConsisteMunicipioIBGE(prePedido.EnderecoEntrega.EndEtg_cidade,
                             prePedido.EnderecoEntrega.EndEtg_uf, lstErros, contextoProvider, bancoNFeMunicipio, true);
                     }
                 }

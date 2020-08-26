@@ -41,7 +41,7 @@ namespace PrepedidoApi.Controllers
         {
             //para testar: http://localhost:60877/api/prepedido/listarNumerosPrepedidosCombo
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            var ret = await prepedidoBll.ListarNumerosPrepedidosCombo(apelido);
+            IEnumerable<string> ret = await prepedidoBll.ListarNumerosPrepedidosCombo(apelido);
             return Ok(ret);
         }
 
@@ -54,7 +54,7 @@ namespace PrepedidoApi.Controllers
         {
             //para testar :http://localhost:60877/api/prepedido/listarCpfCnpjPrepedidosCombo
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            var lista = await prepedidoBll.ListarCpfCnpjPrepedidosCombo(apelido);
+            IEnumerable<string> lista = await prepedidoBll.ListarCpfCnpjPrepedidosCombo(apelido);
 
             return Ok(lista);
         }
@@ -69,7 +69,7 @@ namespace PrepedidoApi.Controllers
         {
             //para testar: http://localhost:60877/api/prepedido/listarPrePedidos
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            var lista = await prepedidoBll.ListarPrePedidos(apelido,
+            IEnumerable<PrepedidoBusiness.Dto.Prepedido.PrepedidosCadastradosDtoPrepedido> lista = await prepedidoBll.ListarPrePedidos(apelido,
                 (PrepedidoBusiness.Bll.PrepedidoBll.PrepedidoBll.TipoBuscaPrepedido)tipoBusca,
                 clienteBusca, numeroPrePedido, dataInicial, dataFinal);
             return Ok(lista);
@@ -88,7 +88,7 @@ namespace PrepedidoApi.Controllers
                 return NotFound();
             }
 
-            var ret = await prepedidoBll.RemoverPrePedido(numeroPrePedido, apelido);
+            bool ret = await prepedidoBll.RemoverPrePedido(numeroPrePedido, apelido);
 
             if (ret == true)
                 return Ok();
@@ -106,7 +106,7 @@ namespace PrepedidoApi.Controllers
             //para testar: http://localhost:60877/api/prepedido/buscarPrepedido
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            var ret = await prepedidoBll.BuscarPrePedido(apelido, numPrepedido);
+            PrePedidoDto ret = await prepedidoBll.BuscarPrePedido(apelido, numPrepedido);
 
             return Ok(ret);
         }
@@ -120,7 +120,7 @@ namespace PrepedidoApi.Controllers
         {
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            var ret = await prepedidoBll.ObtemPercentualVlPedidoRA();
+            decimal ret = await prepedidoBll.ObtemPercentualVlPedidoRA();
 
             return Ok(ret);
         }
@@ -135,7 +135,7 @@ namespace PrepedidoApi.Controllers
             //para testar: http://localhost:60877/api/prepedido/obter_permite_ra_status
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            var ret = await prepedidoBll.Obter_Permite_RA_Status(apelido);
+            short ret = await prepedidoBll.Obter_Permite_RA_Status(apelido);
 
             return Ok(ret);
         }
@@ -150,7 +150,7 @@ namespace PrepedidoApi.Controllers
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
             //LIMITE_ARREDONDAMENTO_PRECO_VENDA_ORCAMENTO_ITEM fixo em 1 centavo
-            var ret = await prepedidoBll.CadastrarPrepedido(prePedido, apelido.Trim(), 0.01M, true, 
+            IEnumerable<string> ret = await prepedidoBll.CadastrarPrepedido(prePedido, apelido.Trim(), 0.01M, true, 
                 (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS);
 
             return Ok(ret);
@@ -180,7 +180,7 @@ namespace PrepedidoApi.Controllers
             //para testar: http://localhost:60877/api/prepedido/buscarFormasPagto
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            var ret = await formaPagtoBll.ObterFormaPagto(apelido.Trim(), tipo_pessoa);
+            PrepedidoBusiness.Dto.FormaPagto.FormaPagtoDto ret = await formaPagtoBll.ObterFormaPagto(apelido.Trim(), tipo_pessoa);
 
             return Ok(ret);
         }
@@ -195,7 +195,7 @@ namespace PrepedidoApi.Controllers
             //para testar: http://localhost:60877/api/prepedido/buscarCoeficiente
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            var ret = await coeficienteBll.BuscarListaCoeficientes(lstProdutos);
+            IEnumerable<PrepedidoBusiness.Dto.Produto.CoeficienteDto> ret = await coeficienteBll.BuscarListaCoeficientes(lstProdutos);
 
             return Ok(ret);
         }
@@ -209,7 +209,7 @@ namespace PrepedidoApi.Controllers
             //para testar: http://localhost:60877/api/prepedido/buscarCoeficiente
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            var ret = await coeficienteBll.BuscarListaCoeficientesFornecedores(lstFornecedores);
+            IEnumerable<IEnumerable<PrepedidoBusiness.Dto.Produto.CoeficienteDto>> ret = await coeficienteBll.BuscarListaCoeficientesFornecedores(lstFornecedores);
 
             return Ok(ret);
         }
@@ -223,7 +223,7 @@ namespace PrepedidoApi.Controllers
         {
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            var ret = await formaPagtoBll.BuscarQtdeParcCartaoVisa();
+            int ret = await formaPagtoBll.BuscarQtdeParcCartaoVisa();
 
             return Ok(ret);
             //

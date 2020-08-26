@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PrepedidoBusiness.Dto.Cep;
 
 namespace PrepedidoApi.Controllers
 {
@@ -26,11 +27,11 @@ namespace PrepedidoApi.Controllers
 #endif
         [HttpGet("buscarCep")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<IActionResult> BuscarCep(string cep, string endereco, string uf, string cidade)
+        public async Task<ActionResult<IEnumerable<CepDto>>> BuscarCep(string cep, string endereco, string uf, string cidade)
         {
             //para testar: http://localhost:60877/api/cep/buscarCep
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            var ret = await cepBll.BuscarCep(cep, endereco, uf, cidade);
+            IEnumerable<CepDto> ret = await cepBll.BuscarCep(cep, endereco, uf, cidade);
 
             return Ok(ret);
         }
@@ -40,11 +41,11 @@ namespace PrepedidoApi.Controllers
 #endif
         [HttpGet("buscarUfs")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<IActionResult> BuscarUfs()
+        public async Task<ActionResult<IEnumerable<string>>> BuscarUfs()
         {
             //para testar: http://localhost:60877/api/cep/buscarUfs
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            var ret = await cepBll.BuscarUfs();
+            IEnumerable<string> ret = await cepBll.BuscarUfs();
 
             return Ok(ret);
         }
@@ -54,13 +55,13 @@ namespace PrepedidoApi.Controllers
 #endif
         [HttpGet("buscarCepPorEndereco")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<IActionResult> BuscarCepPorEndereco(string endereco, string localidade, string uf)
+        public async Task<ActionResult<IEnumerable<CepDto>>> BuscarCepPorEndereco(string endereco, string localidade, string uf)
         {
             //para testar: http://localhost:60877/api/cep/buscarCepPorEndereco
             //string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
             //esse metodo esta buscando apenas 300 itens
-            var ret = await cepBll.BuscarCepPorEndereco(endereco, localidade, uf);
+            IEnumerable<CepDto> ret = await cepBll.BuscarCepPorEndereco(endereco, localidade, uf);
 
             return Ok(ret);
         }
@@ -70,11 +71,11 @@ namespace PrepedidoApi.Controllers
 #endif
         [HttpGet("buscarLocalidades")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<ActionResult> BuscarLocalidades(string uf)
+        public async Task<ActionResult<IEnumerable<string>>> BuscarLocalidades(string uf)
         {
             //para testar: http://localhost:60877/api/cep/buscarCidades
 
-            var ret = await cepBll.BuscarLocalidades(uf);
+            IEnumerable<string> ret = await cepBll.BuscarLocalidades(uf);
 
             return Ok(ret);
         }

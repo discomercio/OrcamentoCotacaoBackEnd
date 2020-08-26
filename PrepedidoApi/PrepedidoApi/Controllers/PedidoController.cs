@@ -31,7 +31,7 @@ namespace PrepedidoApi.Controllers
             //para testar: http://localhost:60877/api/pedido/listarNumerosPedidosCombo
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            var ret = await pedidoBll.ListarNumerosPedidoCombo(apelido.Trim());
+            IEnumerable<string> ret = await pedidoBll.ListarNumerosPedidoCombo(apelido.Trim());
 
             return Ok(ret);
         }
@@ -46,7 +46,7 @@ namespace PrepedidoApi.Controllers
         {
             //para testar: http://localhost:60877/api/pedido/listarPedidos
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            var ret = await pedidoBll.ListarPedidos(apelido.Trim(),
+            IEnumerable<PrepedidoBusiness.Dto.Pedido.PedidoDtoPedido> ret = await pedidoBll.ListarPedidos(apelido.Trim(),
                 (PrepedidoBusiness.Bll.PedidoBll.TipoBuscaPedido)tipoBusca, clienteBusca,
                 numPedido, dataInicial, dataFinal);
 
@@ -63,7 +63,7 @@ namespace PrepedidoApi.Controllers
             //para testar: http://localhost:60877/api/pedido/listarCpfCnpjPedidosCombo
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            var ret = await pedidoBll.ListarCpfCnpjPedidosCombo(apelido.Trim());
+            IEnumerable<string> ret = await pedidoBll.ListarCpfCnpjPedidosCombo(apelido.Trim());
 
             return Ok(ret);
         }
@@ -78,7 +78,7 @@ namespace PrepedidoApi.Controllers
             //para testar: http://localhost:60877/api/pedido/buscarPedido
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            var ret = await pedidoBll.BuscarPedido(apelido.Trim(), numPedido);
+            PrepedidoBusiness.Dto.Pedido.DetalhesPedido.PedidoDto ret = await pedidoBll.BuscarPedido(apelido.Trim(), numPedido);
 
             return Ok(ret);
         }

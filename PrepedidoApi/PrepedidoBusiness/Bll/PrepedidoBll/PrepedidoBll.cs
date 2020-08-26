@@ -1407,11 +1407,11 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
 
             foreach (var p in prepedido.ListaProdutos)
             {
-                if (!string.IsNullOrEmpty(p.NumProduto))
+                if (!string.IsNullOrEmpty(p.NumProduto) && !string.IsNullOrEmpty(p.Fabricante))
                 {
                     foreach (var regra in lstRegras)
                     {
-                        if (!string.IsNullOrEmpty(regra.Produto))
+                        if (!string.IsNullOrEmpty(regra.Produto) && !string.IsNullOrEmpty(regra.Fabricante))
                         {
                             foreach (var r in regra.TwmsCdXUfXPessoaXCd)
                             {

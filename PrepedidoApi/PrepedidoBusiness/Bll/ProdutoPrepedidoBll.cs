@@ -23,55 +23,6 @@ namespace PrepedidoBusiness.Bll
             return PrepedidoBusiness.Dto.Produto.ProdutoComboDto.ProdutoComboDtoDeProdutoComboDados(aux);
         }
 
-        public static bool VerificarEstoqueInsuficiente(List<RegrasBll> lstRegras, PrePedidoDto prepedido, Tparametro parametro)
-        {
-            bool retorno = false;
-            int qtde_estoque_total_disponivel = 0;
-            int qtde_estoque_total_disponivel_global = 0;
-
-            foreach (var p in prepedido.ListaProdutos)
-            {
-                if (!string.IsNullOrEmpty(p.NumProduto) && !string.IsNullOrEmpty(p.Fabricante))
-                {
-                    foreach (var regra in lstRegras)
-                    {
-                        if (!string.IsNullOrEmpty(regra.Produto) && !string.IsNullOrEmpty(regra.Fabricante))
-                        {
-                            foreach (var r in regra.TwmsCdXUfXPessoaXCd)
-                            {
-                                if (r.Id_nfe_emitente > 0)
-                                {
-                                    if (r.St_inativo == 0)
-                                    {
-                                        if (regra.Fabricante == p.Fabricante && regra.Produto == p.NumProduto)
-                                        {
-                                            qtde_estoque_total_disponivel += r.Estoque_Qtde;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    if (parametro.Campo_inteiro == 1)
-                    {
-                        if (qtde_estoque_total_disponivel_global == 0)
-                        {
-                            p.Qtde_estoque_total_disponivel = 0;
-
-                        }
-                    }
-                    else
-                    {
-                        p.Qtde_estoque_total_disponivel = (short?)qtde_estoque_total_disponivel;
-                    }
-                    if (p.Qtde > p.Qtde_estoque_total_disponivel)
-                        retorno = true;
-                }
-            }
-            return retorno;
-
-        }
-
+       
     }
 }

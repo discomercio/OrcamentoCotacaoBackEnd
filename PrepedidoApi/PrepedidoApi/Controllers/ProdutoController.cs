@@ -31,7 +31,7 @@ namespace PrepedidoApi.Controllers
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
             //nao usamos o apelido
 
-            var ret = await produtoBll.ListaProdutosComboApiArclube(loja, id_cliente);
+            PrepedidoBusiness.Dto.Produto.ProdutoComboDto ret = await produtoBll.ListaProdutosComboApiArclube(loja, id_cliente);
             
             return Ok(ret);
         }

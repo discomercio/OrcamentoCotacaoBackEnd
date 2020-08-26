@@ -15,6 +15,14 @@ namespace PrepedidoBusiness.Bll
 {
     public class CepBll
     {
+        public static class MensagensErro
+        {
+            public static string Municipio_nao_consta_na_relacao_IBGE(string municipio, string uf)
+            {
+                return "Município '" + municipio + "' não consta na relação de municípios do IBGE para a UF de '" + uf + "'!";
+            }
+        }
+        
         private readonly InfraBanco.ContextoCepProvider contextoCepProvider;
         private readonly IBancoNFeMunicipio bancoNFeMunicipio;
         private readonly ContextoBdProvider contextoProvider;
@@ -52,7 +60,7 @@ namespace PrepedidoBusiness.Bll
                 //vamos validar para saber se a cidade existe no IBGE
                 List<string> lstErros = new List<string>();
                 //se não consistir vamos busca a lista de Cidades com base na UF
-                if (!await ValidacoesClienteBll.ConsisteMunicipioIBGE(cepDto[0].Cidade, cepDto[0].Uf, lstErros,
+                if (!await ConsisteMunicipioIBGE(cepDto[0].Cidade, cepDto[0].Uf, lstErros,
                     contextoProvider, bancoNFeMunicipio, false))
                 {
                     //vamos busca a lista de cidades com base na UF
@@ -337,6 +345,56 @@ namespace PrepedidoBusiness.Bll
             }
 
             return cepdto;
+        }
+
+        public static async Task<bool> ConsisteMunicipioIBGE(string municipio, string uf,
+            List<string> lstErros, ContextoBdProvider contextoProvider, IBancoNFeMunicipio bancoNFeMunicipio,
+            bool mostrarMensagemErro)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+
+            if (string.IsNullOrEmpty(municipio))
+            {
+                if (mostrarMensagemErro)
+                    lstErros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
+                        "nenhum município foi informado!");
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(uf))
+            {
+                if (mostrarMensagemErro)
+                    lstErros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
+                        "a UF não foi informada!");
+                return false;
+            }
+
+            else
+            {
+                if (uf.Length > 2)
+                {
+                    if (mostrarMensagemErro)
+                        lstErros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
+                        "a UF é inválida (" + uf + ")!");
+                    return false;
+                }
+
+            }
+
+            if (lstErros.Count == 0)
+            {
+                List<NfeMunicipio> lst_nfeMunicipios = (await bancoNFeMunicipio.BuscarSiglaUf(uf, municipio, false, contextoProvider)).ToList();
+
+                if (!lst_nfeMunicipios.Any())
+                {
+                    if (mostrarMensagemErro)
+                        lstErros.Add(MensagensErro.Municipio_nao_consta_na_relacao_IBGE(municipio, uf));
+
+                    return false;
+                }
+            }
+
+            return true;
         }
 
     }
