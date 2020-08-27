@@ -15,6 +15,7 @@ using Produto.RegrasCrtlEstoque;
 using Produto;
 using UtilsGlobais;
 using Cep;
+using Prepedido.Dados.FormaPagto;
 
 namespace PrepedidoBusiness.Bll.PrepedidoBll
 {
@@ -27,12 +28,12 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         private readonly ValidacoesFormaPagtoBll validacoesFormaPagtoBll;
         private readonly MontarLogPrepedidoBll montarLogPrepedidoBll;
         private readonly IBancoNFeMunicipio bancoNFeMunicipio;
-        private readonly FormaPagtoBll.FormaPagtoBll formaPagtoBll;
+        private readonly Prepedido.FormaPagto.FormaPagtoBll formaPagtoBll;
 
         public PrepedidoBll(ContextoBdProvider contextoProvider, Cliente.ClienteBll clienteBll,
             ValidacoesPrepedidoBll validacoesPrepedidoBll, CepBll cepBll,
             ValidacoesFormaPagtoBll validacoesFormaPagtoBll, MontarLogPrepedidoBll montarLogPrepedidoBll,
-            IBancoNFeMunicipio bancoNFeMunicipio, FormaPagtoBll.FormaPagtoBll formaPagtoBll)
+            IBancoNFeMunicipio bancoNFeMunicipio, Prepedido.FormaPagto.FormaPagtoBll formaPagtoBll)
         {
             this.contextoProvider = contextoProvider;
             this.clienteBll = clienteBll;
@@ -766,7 +767,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 string c_custoFinancFornecTipoParcelamento = ObterSiglaFormaPagto(prePedido);
 
                 //precisa incluir uma validação de forma de pagamento com base no orçamentista enviado
-                FormaPagtoDto formasPagto = await formaPagtoBll.ObterFormaPagto(tOrcamentista.Apelido, prePedido.DadosCliente.Tipo);
+                FormaPagtoDados formasPagto = await formaPagtoBll.ObterFormaPagto(tOrcamentista.Apelido, prePedido.DadosCliente.Tipo);
                 if (validacoesFormaPagtoBll.ValidarFormaPagto(prePedido, lstErros, limiteArredondamento,
                     0.1M, c_custoFinancFornecTipoParcelamento, formasPagto))
                 {

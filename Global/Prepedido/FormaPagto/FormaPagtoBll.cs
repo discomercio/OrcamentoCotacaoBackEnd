@@ -1,5 +1,4 @@
-﻿using PrepedidoBusiness.Dto.FormaPagto;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,8 +6,9 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using InfraBanco.Constantes;
 using InfraBanco;
+using Prepedido.Dados.FormaPagto;
 
-namespace PrepedidoBusiness.Bll.FormaPagtoBll
+namespace Prepedido.FormaPagto
 {
     public class FormaPagtoBll
     {
@@ -19,9 +19,9 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
             this.contextoProvider = contextoProvider;
         }
 
-        public async Task<FormaPagtoDto> ObterFormaPagto(string apelido, string tipo_pessoa)
+        public async Task<FormaPagtoDados> ObterFormaPagto(string apelido, string tipo_pessoa)
         {
-            FormaPagtoDto formaPagto = new FormaPagtoDto();
+            FormaPagtoDados formaPagto = new FormaPagtoDados();
 
             //implementar as buscas
             formaPagto.ListaAvista = (await ObterFormaPagtoAVista(apelido, tipo_pessoa)).ToList();
@@ -35,7 +35,7 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
             return formaPagto;
         }
 
-        private async Task<IEnumerable<AvistaDto>> ObterFormaPagtoAVista(string apelido, string tipo_pessoa)
+        private async Task<IEnumerable<AvistaDados>> ObterFormaPagtoAVista(string apelido, string tipo_pessoa)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -48,7 +48,7 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
                                                d.St_restricao_ativa != 0
                                          select d.Id_forma_pagto).Contains(c.Id)
                                  orderby c.Ordenacao
-                                 select new AvistaDto
+                                 select new AvistaDados
                                  {
                                      Id = c.Id,
                                      Descricao = c.Descricao,
@@ -60,7 +60,7 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
             return formaPagto;
         }
 
-        private async Task<IEnumerable<ParcUnicaDto>> ObterFormaPagtoParcUnica(string apelido, string tipo_pessoa)
+        private async Task<IEnumerable<ParcUnicaDados>> ObterFormaPagtoParcUnica(string apelido, string tipo_pessoa)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -73,7 +73,7 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
                                                d.St_restricao_ativa != 0
                                          select d.Id_forma_pagto).Contains(c.Id)
                                  orderby c.Ordenacao
-                                 select new ParcUnicaDto
+                                 select new ParcUnicaDados
                                  {
                                      Id = c.Id,
                                      Descricao = c.Descricao,
@@ -127,7 +127,7 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
             return retorno;
         }
 
-        private async Task<IEnumerable<ParcComEntradaDto>> ObterFormaPagtoParcComEntrada(string apelido, string tipo_pessoa)
+        private async Task<IEnumerable<ParcComEntradaDados>> ObterFormaPagtoParcComEntrada(string apelido, string tipo_pessoa)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -141,7 +141,7 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
                                                d.St_restricao_ativa != 0
                                          select d.Id_forma_pagto).Contains(c.Id)
                                  orderby c.Ordenacao
-                                 select new ParcComEntradaDto
+                                 select new ParcComEntradaDados
                                  {
                                      Id = c.Id,
                                      Descricao = c.Descricao,
@@ -153,7 +153,7 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
             return formaPagto;
         }
 
-        private async Task<IEnumerable<ParcComEntPrestacaoDto>> ObterFormaPagtoParcComEntPrestacao(string apelido, string tipo_pessoa)
+        private async Task<IEnumerable<ParcComEntPrestacaoDados>> ObterFormaPagtoParcComEntPrestacao(string apelido, string tipo_pessoa)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -166,7 +166,7 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
                                                d.St_restricao_ativa != 0
                                          select d.Id_forma_pagto).Contains(c.Id)
                                  orderby c.Ordenacao
-                                 select new ParcComEntPrestacaoDto
+                                 select new ParcComEntPrestacaoDados
                                  {
                                      Id = c.Id,
                                      Descricao = c.Descricao,
@@ -178,7 +178,7 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
             return formaPagto;
         }
 
-        private async Task<IEnumerable<ParcSemEntradaPrimPrestDto>> ObterFormaPagtoParcSemEntPrimPrest(string apelido, string tipo_pessoa)
+        private async Task<IEnumerable<ParcSemEntradaPrimPrestDados>> ObterFormaPagtoParcSemEntPrimPrest(string apelido, string tipo_pessoa)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -191,7 +191,7 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
                                                d.St_restricao_ativa != 0
                                          select d.Id_forma_pagto).Contains(c.Id)
                                  orderby c.Ordenacao
-                                 select new ParcSemEntradaPrimPrestDto
+                                 select new ParcSemEntradaPrimPrestDados
                                  {
                                      Id = c.Id,
                                      Descricao = c.Descricao,
@@ -203,7 +203,7 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
             return formaPagto;
         }
 
-        private async Task<IEnumerable<ParcSemEntPrestacaoDto>> ObterFormaPagtoParcSemEntPrestacao(string apelido, string tipo_pessoa)
+        private async Task<IEnumerable<ParcSemEntPrestacaoDados>> ObterFormaPagtoParcSemEntPrestacao(string apelido, string tipo_pessoa)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -216,7 +216,7 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
                                                d.St_restricao_ativa != 0
                                          select d.Id_forma_pagto).Contains(c.Id)
                                  orderby c.Ordenacao
-                                 select new ParcSemEntPrestacaoDto
+                                 select new ParcSemEntPrestacaoDados
                                  {
                                      Id = c.Id,
                                      Descricao = c.Descricao,

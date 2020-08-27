@@ -1,11 +1,7 @@
 ﻿using InfraBanco.Constantes;
-using PrepedidoBusiness.Bll.PrepedidoBll;
-using PrepedidoBusiness.Dto.FormaPagto;
 using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PrepedidoBusiness.Bll.FormaPagtoBll
 {
@@ -34,8 +30,8 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
         }
 
         public bool ValidarFormaPagto(PrePedidoDto prepedido, List<string> lstErros,
-            decimal limiteArredondamento, decimal maxErroArredondamento, string c_custoFinancFornecTipoParcelamento, 
-            FormaPagtoDto formaPagtoDto)
+            decimal limiteArredondamento, decimal maxErroArredondamento, string c_custoFinancFornecTipoParcelamento,
+            Prepedido.Dados.FormaPagto.FormaPagtoDados formaPagtoDto)
         {
             ////vamos verificar a forma de pagamento com base no orçamentista que esta sendo enviado
             //FormaPagtoDto formasPagto = await formaPagtoBll.ObterFormaPagto(orcamentista, prepedido.DadosCliente.Tipo);

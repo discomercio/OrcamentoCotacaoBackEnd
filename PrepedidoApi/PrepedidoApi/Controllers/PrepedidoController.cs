@@ -6,6 +6,7 @@ using InfraBanco.Constantes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PrepedidoBusiness.Bll;
 using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 
 namespace PrepedidoApi.Controllers
@@ -17,18 +18,21 @@ namespace PrepedidoApi.Controllers
     {
         private readonly PrepedidoBusiness.Bll.PrepedidoBll.PrepedidoBll prepedidoBll;
         private readonly InfraIdentity.IServicoDecodificarToken servicoDecodificarToken;
-        private readonly PrepedidoBusiness.Bll.FormaPagtoBll.FormaPagtoBll formaPagtoBll;
-        private readonly PrepedidoBusiness.Bll.CoeficienteBll coeficienteBll;
+        private readonly Prepedido.FormaPagto.FormaPagtoBll formaPagtoBll;
+        private readonly FormaPagtoPrepedidoBll formaPagtoPrepedidoBll;
+        private readonly CoeficientePrepedidoBll coeficientePrepedidoBll;
 
         public PrepedidoController(PrepedidoBusiness.Bll.PrepedidoBll.PrepedidoBll prepedidoBll,
             InfraIdentity.IServicoDecodificarToken servicoDecodificarToken,
-            PrepedidoBusiness.Bll.FormaPagtoBll.FormaPagtoBll formaPagtoBll,
-            PrepedidoBusiness.Bll.CoeficienteBll coeficienteBll)
+            Prepedido.FormaPagto.FormaPagtoBll formaPagtoBll,
+            PrepedidoBusiness.Bll.FormaPagtoPrepedidoBll formaPagtoPrepedidoBll,
+            PrepedidoBusiness.Bll.CoeficientePrepedidoBll coeficientePrepedidoBll)
         {
             this.prepedidoBll = prepedidoBll;
             this.servicoDecodificarToken = servicoDecodificarToken;
             this.formaPagtoBll = formaPagtoBll;
-            this.coeficienteBll = coeficienteBll;
+            this.formaPagtoPrepedidoBll = formaPagtoPrepedidoBll;
+            this.coeficientePrepedidoBll = coeficientePrepedidoBll;
         }
 
         //para teste, anonimo
@@ -150,7 +154,7 @@ namespace PrepedidoApi.Controllers
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
             //LIMITE_ARREDONDAMENTO_PRECO_VENDA_ORCAMENTO_ITEM fixo em 1 centavo
-            IEnumerable<string> ret = await prepedidoBll.CadastrarPrepedido(prePedido, apelido.Trim(), 0.01M, true, 
+            IEnumerable<string> ret = await prepedidoBll.CadastrarPrepedido(prePedido, apelido.Trim(), 0.01M, true,
                 (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS);
 
             return Ok(ret);
@@ -180,7 +184,7 @@ namespace PrepedidoApi.Controllers
             //para testar: http://localhost:60877/api/prepedido/buscarFormasPagto
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            PrepedidoBusiness.Dto.FormaPagto.FormaPagtoDto ret = await formaPagtoBll.ObterFormaPagto(apelido.Trim(), tipo_pessoa);
+            PrepedidoBusiness.Dto.FormaPagto.FormaPagtoDto ret = await formaPagtoPrepedidoBll.ObterFormaPagto(apelido.Trim(), tipo_pessoa);
 
             return Ok(ret);
         }
@@ -195,7 +199,7 @@ namespace PrepedidoApi.Controllers
             //para testar: http://localhost:60877/api/prepedido/buscarCoeficiente
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            IEnumerable<PrepedidoBusiness.Dto.Produto.CoeficienteDto> ret = await coeficienteBll.BuscarListaCoeficientes(lstProdutos);
+            IEnumerable<PrepedidoBusiness.Dto.Produto.CoeficienteDto> ret = await coeficientePrepedidoBll.BuscarListaCoeficientes(lstProdutos);
 
             return Ok(ret);
         }
@@ -209,7 +213,7 @@ namespace PrepedidoApi.Controllers
             //para testar: http://localhost:60877/api/prepedido/buscarCoeficiente
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            IEnumerable<IEnumerable<PrepedidoBusiness.Dto.Produto.CoeficienteDto>> ret = await coeficienteBll.BuscarListaCoeficientesFornecedores(lstFornecedores);
+            IEnumerable<IEnumerable<PrepedidoBusiness.Dto.Produto.CoeficienteDto>> ret = await coeficientePrepedidoBll.BuscarListaCoeficientesFornecedores(lstFornecedores);
 
             return Ok(ret);
         }

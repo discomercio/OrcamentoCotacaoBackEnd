@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
-using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
-using PrepedidoBusiness.Dto.Produto;
 using Microsoft.EntityFrameworkCore;
+using Produto.Dados;
 
-namespace PrepedidoBusiness.Bll
+namespace Produto
 {
     public class CoeficienteBll
     {
@@ -18,19 +17,16 @@ namespace PrepedidoBusiness.Bll
             this.contextoProvider = contextoProvider;
         }
 
-        public async Task<IEnumerable<CoeficienteDto>> BuscarListaCoeficientes(List<PrepedidoProdutoDtoPrepedido> produtos)
+        public async Task<IEnumerable<CoeficienteDados>> BuscarListaCoeficientesFabricantesDistinct(List<string> fabricantesDistinct)
         {
-            List<CoeficienteDto> lstRetorno = new List<CoeficienteDto>();
-
-            List<string> fabricantesDistinct = (from c in produtos
-                                                select c.Fabricante).Distinct().ToList();
+            List<CoeficienteDados> lstRetorno = new List<CoeficienteDados>();
             if (fabricantesDistinct.Any())
             {
                 var db = contextoProvider.GetContextoLeitura();
 
                 //trazendo toda lista
                 var lstCoeficienteTask = from c in db.TpercentualCustoFinanceiroFornecedors
-                                         select new CoeficienteDto
+                                         select new CoeficienteDados
                                          {
                                              Fabricante = c.Fabricante,
                                              TipoParcela = c.Tipo_Parcelamento,
@@ -54,17 +50,17 @@ namespace PrepedidoBusiness.Bll
             return lstRetorno;
         }
 
-        public async Task<IEnumerable<IEnumerable<CoeficienteDto>>> BuscarListaCoeficientesFornecedores(List<string> lstFornecedores)
+        public async Task<IEnumerable<IEnumerable<CoeficienteDados>>> BuscarListaCoeficientesFornecedores(List<string> lstFornecedores)
         {
-            List<List<CoeficienteDto>> lstRetorno = new List<List<CoeficienteDto>>();
+            List<List<CoeficienteDados>> lstRetorno = new List<List<CoeficienteDados>>();
 
             var db = contextoProvider.GetContextoLeitura();
 
             foreach (var f in lstFornecedores)
             {
-                List<CoeficienteDto> lstCoeficienteTask = await (from c in db.TpercentualCustoFinanceiroFornecedors
+                List<CoeficienteDados> lstCoeficienteTask = await (from c in db.TpercentualCustoFinanceiroFornecedors
                                                                  where c.Fabricante == f
-                                                                 select new CoeficienteDto
+                                                                 select new CoeficienteDados
                                                                  {
                                                                      Fabricante = c.Fabricante,
                                                                      TipoParcela = c.Tipo_Parcelamento,

@@ -3,6 +3,7 @@ using InfraBanco.Constantes;
 using PrepedidoBusiness.Bll;
 using PrepedidoBusiness.Bll.FormaPagtoBll;
 using PrepedidoBusiness.Bll.PrepedidoBll;
+using PrepedidoBusiness.Dto.FormaPagto;
 using PrepedidoUnisBusiness.UnisDto.FormaPagtoUnisDto;
 using PrepedidoUnisBusiness.UnisDto.PrepedidoUnisDto;
 using System;
@@ -16,10 +17,10 @@ namespace PrepedidoUnisBusiness.UnisBll.FormaPagtoUnisBll
     {
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
         private readonly PrepedidoBll prepedidoBll;
-        private readonly FormaPagtoBll formaPagtoBll;
+        private readonly Prepedido.FormaPagto.FormaPagtoBll formaPagtoBll;
 
         public FormaPagtoUnisBll(InfraBanco.ContextoBdProvider contextoProvider, PrepedidoBll prepedidoBll,
-            FormaPagtoBll formaPagtoBll)
+            Prepedido.FormaPagto.FormaPagtoBll formaPagtoBll)
         {
             this.contextoProvider = contextoProvider;
             this.prepedidoBll = prepedidoBll;
@@ -41,7 +42,8 @@ namespace PrepedidoUnisBusiness.UnisBll.FormaPagtoUnisBll
                 (tipo_pessoa == Constantes.ID_PF || tipo_pessoa == Constantes.ID_PJ))
             {
                 retorno = FormaPagtoUnisDto.FormaPagtoUnisDtoDeFormaPagtoDto(
-                   await formaPagtoBll.ObterFormaPagto(apelido, tipo_pessoa));
+                    FormaPagtoDto.FormaPagtoDto_De_FormaPagtoDados(
+                       await formaPagtoBll.ObterFormaPagto(apelido, tipo_pessoa)));
             }
             else
             {

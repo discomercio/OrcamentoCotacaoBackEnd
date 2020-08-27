@@ -12,6 +12,7 @@ using InfraBanco.Modelos;
 using InfraBanco;
 using UtilsGlobais;
 using Cep;
+using Produto;
 
 namespace PrepedidoBusiness.Bll.PrepedidoBll
 {
