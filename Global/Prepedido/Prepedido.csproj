@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Cliente\Cliente.csproj" />
     <ProjectReference Include="..\Infra\InfraBanco\InfraBanco.csproj" />
+    <ProjectReference Include="..\Produto\Produto.csproj" />
   </ItemGroup>
 
 </Project>
