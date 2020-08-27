@@ -1,20 +1,13 @@
 ﻿using InfraBanco.Constantes;
-using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
+using Prepedido.Dados.DetalhesPrepedido;
 using System;
 using System.Collections.Generic;
 
-namespace PrepedidoBusiness.Bll.FormaPagtoBll
+namespace Prepedido.FormaPagto
 {
     public class ValidacoesFormaPagtoBll
     {
-        
-
-        public ValidacoesFormaPagtoBll()
-        {
-            
-        }
-
-        private void ValidarSiglaFormaPagto(PrePedidoDto prepedido, string c_custoFinancFornecTipoParcelamento,
+        private void ValidarSiglaFormaPagto(PrePedidoDados prepedido, string c_custoFinancFornecTipoParcelamento,
             List<string> lstErros)
         {
             if (!string.IsNullOrEmpty(c_custoFinancFornecTipoParcelamento))
@@ -29,9 +22,9 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
             }
         }
 
-        public bool ValidarFormaPagto(PrePedidoDto prepedido, List<string> lstErros,
+        public bool ValidarFormaPagto(PrePedidoDados prepedido, List<string> lstErros,
             decimal limiteArredondamento, decimal maxErroArredondamento, string c_custoFinancFornecTipoParcelamento,
-            Prepedido.Dados.FormaPagto.FormaPagtoDados formaPagtoDto)
+            Prepedido.Dados.FormaPagto.FormaPagtoDados formaPagtoDados)
         {
             ////vamos verificar a forma de pagamento com base no orçamentista que esta sendo enviado
             //FormaPagtoDto formasPagto = await formaPagtoBll.ObterFormaPagto(orcamentista, prepedido.DadosCliente.Tipo);
@@ -47,38 +40,38 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
 
             if (prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_A_VISTA)
             {
-                if (formaPagtoDto.ListaAvista?.Count > 0)
+                if (formaPagtoDados.ListaAvista?.Count > 0)
                     ValidarFormaPagtoAVista(prepedido, lstErros, limiteArredondamento);
                 else lstErros.Add(msgNegarFormaPagto);
             }
 
             else if (prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELA_UNICA)
             {
-                if (formaPagtoDto.ListaParcUnica?.Count > 0)
+                if (formaPagtoDados.ListaParcUnica?.Count > 0)
                     ValidarFormaPagtoParcelaUnica(prepedido, lstErros, maxErroArredondamento);
                 else lstErros.Add(msgNegarFormaPagto);
             }
             else if (prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO)
             {
-                if (formaPagtoDto.ParcCartaoInternet)
+                if (formaPagtoDados.ParcCartaoInternet)
                     ValidarFormaPagtoParceladoCartao(prepedido, lstErros, maxErroArredondamento);
                 else lstErros.Add(msgNegarFormaPagto);
             }
             else if (prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA)
             {
-                if (formaPagtoDto.ParcCartaoMaquineta)
+                if (formaPagtoDados.ParcCartaoMaquineta)
                     ValidarFormaPagtoParceladoCartaoMaquineta(prepedido, lstErros, maxErroArredondamento);
                 else lstErros.Add(msgNegarFormaPagto);
             }
             else if (prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA)
             {
-                if (formaPagtoDto.ListaParcComEntrada?.Count > 0 && formaPagtoDto.ListaParcComEntPrestacao?.Count > 0)
+                if (formaPagtoDados.ListaParcComEntrada?.Count > 0 && formaPagtoDados.ListaParcComEntPrestacao?.Count > 0)
                     ValidarFormaPagtoComEntreda(prepedido, lstErros, maxErroArredondamento);
                 else lstErros.Add(msgNegarFormaPagto);
             }
             else if (prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA)
             {
-                if (formaPagtoDto.ListaParcSemEntPrestacao?.Count > 0 && formaPagtoDto.ListaParcSemEntPrimPrest?.Count > 0)
+                if (formaPagtoDados.ListaParcSemEntPrestacao?.Count > 0 && formaPagtoDados.ListaParcSemEntPrimPrest?.Count > 0)
                     ValidarFormaPagtoSemEntrada(prepedido, lstErros, maxErroArredondamento);
                 else lstErros.Add(msgNegarFormaPagto);
             }
@@ -93,7 +86,7 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
             return retorno;
         }
 
-        private void ValidarFormaPagtoAVista(PrePedidoDto prepedido, List<string> lstErros, decimal limiteArredondamento)
+        private void ValidarFormaPagtoAVista(PrePedidoDados prepedido, List<string> lstErros, decimal limiteArredondamento)
         {
             if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.Op_av_forma_pagto))
                 lstErros.Add("Indique a forma de pagamento (à vista).");
@@ -104,7 +97,7 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
             }
         }
 
-        private void ValidarFormaPagtoParcelaUnica(PrePedidoDto prepedido, List<string> lstErros, decimal maxErroArredondamento)
+        private void ValidarFormaPagtoParcelaUnica(PrePedidoDados prepedido, List<string> lstErros, decimal maxErroArredondamento)
         {
             if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.Op_pu_forma_pagto))
                 lstErros.Add("Indique a forma de pagamento da parcela única.");
@@ -135,7 +128,7 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
             }
         }
 
-        private void ValidarFormaPagtoParceladoCartao(PrePedidoDto prepedido, List<string> lstErros, decimal maxErroArredondamento)
+        private void ValidarFormaPagtoParceladoCartao(PrePedidoDados prepedido, List<string> lstErros, decimal maxErroArredondamento)
         {
             if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.C_pc_qtde.ToString()))
                 lstErros.Add("Indique a quantidade de parcelas (parcelado no cartão [internet]).");
@@ -167,7 +160,7 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
             }
         }
 
-        private void ValidarFormaPagtoParceladoCartaoMaquineta(PrePedidoDto prepedido, List<string> lstErros, decimal maxErroArredondamento)
+        private void ValidarFormaPagtoParceladoCartaoMaquineta(PrePedidoDados prepedido, List<string> lstErros, decimal maxErroArredondamento)
         {
             if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.C_pc_maquineta_qtde.ToString()))
                 lstErros.Add("Indique a quantidade de parcelas (parcelado no cartão [maquineta]).");
@@ -201,7 +194,7 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
             }
         }
 
-        private void ValidarFormaPagtoComEntreda(PrePedidoDto prepedido, List<string> lstErros, decimal maxErroArredondamento)
+        private void ValidarFormaPagtoComEntreda(PrePedidoDados prepedido, List<string> lstErros, decimal maxErroArredondamento)
         {
             if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.Op_pce_entrada_forma_pagto.ToString()))
                 lstErros.Add("Indique a forma de pagamento da entrada (parcelado com entrada).");
@@ -253,7 +246,7 @@ namespace PrepedidoBusiness.Bll.FormaPagtoBll
             }
         }
 
-        private void ValidarFormaPagtoSemEntrada(PrePedidoDto prepedido, List<string> lstErros, decimal maxErroArredondamento)
+        private void ValidarFormaPagtoSemEntrada(PrePedidoDados prepedido, List<string> lstErros, decimal maxErroArredondamento)
         {
             if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.Op_pse_prim_prest_forma_pagto))
                 lstErros.Add("Indique a forma de pagamento da 1ª prestação (parcelado sem entrada).");

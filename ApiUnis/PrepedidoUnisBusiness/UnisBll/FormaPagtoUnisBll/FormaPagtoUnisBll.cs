@@ -1,14 +1,8 @@
 ﻿
 using InfraBanco.Constantes;
-using PrepedidoBusiness.Bll;
-using PrepedidoBusiness.Bll.FormaPagtoBll;
 using PrepedidoBusiness.Bll.PrepedidoBll;
 using PrepedidoBusiness.Dto.FormaPagto;
 using PrepedidoUnisBusiness.UnisDto.FormaPagtoUnisDto;
-using PrepedidoUnisBusiness.UnisDto.PrepedidoUnisDto;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace PrepedidoUnisBusiness.UnisBll.FormaPagtoUnisBll

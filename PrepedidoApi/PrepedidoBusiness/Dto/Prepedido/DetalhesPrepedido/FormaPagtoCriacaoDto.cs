@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Prepedido.Dados.DetalhesPrepedido;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -36,5 +37,73 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
         //incluimos esse campo apenas para validar o que esta sendo enviado pela API Unis
         public string CustoFinancFornecTipoParcelamento { get; set; }
 
+        public static FormaPagtoCriacaoDto FormaPagtoCriacaoDto_De_FormaPagtoCriacaoDados(FormaPagtoCriacaoDados origem)
+        {
+            if (origem == null) return null;
+            return new FormaPagtoCriacaoDto()
+            {
+                Qtde_Parcelas = origem.Qtde_Parcelas,
+                Rb_forma_pagto = origem.Rb_forma_pagto,
+                Op_av_forma_pagto = origem.Op_av_forma_pagto,
+                Op_pu_forma_pagto = origem.Op_pu_forma_pagto,
+                C_pu_valor = origem.C_pu_valor,
+                C_pu_vencto_apos = origem.C_pu_vencto_apos,
+                C_pc_qtde = origem.C_pc_qtde,
+                C_pc_valor = origem.C_pc_valor,
+                C_pc_maquineta_qtde = origem.C_pc_maquineta_qtde,
+                C_pc_maquineta_valor = origem.C_pc_maquineta_valor,
+                Op_pce_entrada_forma_pagto = origem.Op_pce_entrada_forma_pagto,
+                C_pce_entrada_valor = origem.C_pce_entrada_valor,
+                Op_pce_prestacao_forma_pagto = origem.Op_pce_prestacao_forma_pagto,
+                C_pce_prestacao_qtde = origem.C_pce_prestacao_qtde,
+                C_pce_prestacao_valor = origem.C_pce_prestacao_valor,
+                C_pce_prestacao_periodo = origem.C_pce_prestacao_periodo,
+                Op_pse_prim_prest_forma_pagto = origem.Op_pse_prim_prest_forma_pagto,
+                C_pse_prim_prest_valor = origem.C_pse_prim_prest_valor,
+                C_pse_prim_prest_apos = origem.C_pse_prim_prest_apos,
+                Op_pse_demais_prest_forma_pagto = origem.Op_pse_demais_prest_forma_pagto,
+                C_pse_demais_prest_qtde = origem.C_pse_demais_prest_qtde,
+                C_pse_demais_prest_valor = origem.C_pse_demais_prest_valor,
+                C_pse_demais_prest_periodo = origem.C_pse_demais_prest_periodo,
+                C_forma_pagto = origem.C_forma_pagto,
+                Descricao_meio_pagto = origem.Descricao_meio_pagto,
+                Tipo_parcelamento = origem.Tipo_parcelamento,
+                CustoFinancFornecTipoParcelamento = origem.CustoFinancFornecTipoParcelamento,
+            };
+        }
+        public static FormaPagtoCriacaoDados FormaPagtoCriacaoDados_De_FormaPagtoCriacaoDto(FormaPagtoCriacaoDto origem)
+        {
+            if (origem == null) return null;
+            return new FormaPagtoCriacaoDados()
+            {
+                Qtde_Parcelas = origem.Qtde_Parcelas,
+                Rb_forma_pagto = origem.Rb_forma_pagto,
+                Op_av_forma_pagto = origem.Op_av_forma_pagto,
+                Op_pu_forma_pagto = origem.Op_pu_forma_pagto,
+                C_pu_valor = origem.C_pu_valor,
+                C_pu_vencto_apos = origem.C_pu_vencto_apos,
+                C_pc_qtde = origem.C_pc_qtde,
+                C_pc_valor = origem.C_pc_valor,
+                C_pc_maquineta_qtde = origem.C_pc_maquineta_qtde,
+                C_pc_maquineta_valor = origem.C_pc_maquineta_valor,
+                Op_pce_entrada_forma_pagto = origem.Op_pce_entrada_forma_pagto,
+                C_pce_entrada_valor = origem.C_pce_entrada_valor,
+                Op_pce_prestacao_forma_pagto = origem.Op_pce_prestacao_forma_pagto,
+                C_pce_prestacao_qtde = origem.C_pce_prestacao_qtde,
+                C_pce_prestacao_valor = origem.C_pce_prestacao_valor,
+                C_pce_prestacao_periodo = origem.C_pce_prestacao_periodo,
+                Op_pse_prim_prest_forma_pagto = origem.Op_pse_prim_prest_forma_pagto,
+                C_pse_prim_prest_valor = origem.C_pse_prim_prest_valor,
+                C_pse_prim_prest_apos = origem.C_pse_prim_prest_apos,
+                Op_pse_demais_prest_forma_pagto = origem.Op_pse_demais_prest_forma_pagto,
+                C_pse_demais_prest_qtde = origem.C_pse_demais_prest_qtde,
+                C_pse_demais_prest_valor = origem.C_pse_demais_prest_valor,
+                C_pse_demais_prest_periodo = origem.C_pse_demais_prest_periodo,
+                C_forma_pagto = origem.C_forma_pagto,
+                Descricao_meio_pagto = origem.Descricao_meio_pagto,
+                Tipo_parcelamento = origem.Tipo_parcelamento,
+                CustoFinancFornecTipoParcelamento = origem.CustoFinancFornecTipoParcelamento,
+            };
+        }
     }
 }

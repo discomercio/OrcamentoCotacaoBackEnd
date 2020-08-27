@@ -9,13 +9,12 @@ using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using PrepedidoBusiness.Dto.ClienteCadastro;
 using InfraBanco.Constantes;
 using InfraBanco;
-using PrepedidoBusiness.Bll.FormaPagtoBll;
-using PrepedidoBusiness.Dto.FormaPagto;
 using Produto.RegrasCrtlEstoque;
 using Produto;
 using UtilsGlobais;
 using Cep;
 using Prepedido.Dados.FormaPagto;
+using Prepedido.FormaPagto;
 
 namespace PrepedidoBusiness.Bll.PrepedidoBll
 {
@@ -768,7 +767,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
 
                 //precisa incluir uma validação de forma de pagamento com base no orçamentista enviado
                 FormaPagtoDados formasPagto = await formaPagtoBll.ObterFormaPagto(tOrcamentista.Apelido, prePedido.DadosCliente.Tipo);
-                if (validacoesFormaPagtoBll.ValidarFormaPagto(prePedido, lstErros, limiteArredondamento,
+                if (validacoesFormaPagtoBll.ValidarFormaPagto(PrePedidoDto.PrePedidoDados_De_PrePedidoDto(prePedido), lstErros, limiteArredondamento,
                     0.1M, c_custoFinancFornecTipoParcelamento, formasPagto))
                 {
                     //Esta sendo verificado qual o tipo de pagamento que esta sendo feito e retornando a quantidade de parcelas

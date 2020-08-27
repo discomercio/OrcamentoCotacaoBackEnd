@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Cliente\Cliente.csproj" />
     <ProjectReference Include="..\Infra\InfraBanco\InfraBanco.csproj" />
   </ItemGroup>
 
