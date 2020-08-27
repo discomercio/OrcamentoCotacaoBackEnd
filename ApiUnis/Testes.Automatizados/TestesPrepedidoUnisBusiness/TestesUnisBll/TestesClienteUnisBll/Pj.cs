@@ -38,6 +38,40 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
 
 
         [Fact]
+        public void TesteClientePJ()
+        {
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.Rg = "123456";
+            }, "Se cliente é tipo PJ, o RG não deve ser preenchido.", TipoPessoa.PJ);
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.Nascimento = new DateTime(1984, 06, 19);
+            }, "Se cliente é tipo PJ, o Nascimento não deve ser preenchido.", TipoPessoa.PJ);
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.Nome = "";
+            }, "PREENCHA A RAZÃO SOCIAL DO CLIENTE.", TipoPessoa.PJ);
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.Cnpj_Cpf = "";
+            }, "CNPJ NÃO FORNECIDO.", TipoPessoa.PJ);
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.Contato = "";
+            }, "INFORME O NOME DA PESSOA PARA CONTATO!", TipoPessoa.PJ);
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.Email = "";
+            }, "É OBRIGATÓRIO INFORMAR UM ENDEREÇO DE E-MAIL!", TipoPessoa.PJ);
+        }
+
+        [Fact]
         public void Telefones_incompletos()
         {
             inicializarBanco.TclientesApagar();
@@ -113,6 +147,33 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             },
                 "Ramal comercial preenchido sem telefone!",
                     TipoPessoa.PJ);
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.TelComercial2 = "12345";
+            }, "TELEFONE COMERCIAL2 INVÁLIDO.", TipoPessoa.PJ);
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.DddComercial2 = "1";
+            }, "DDD DO TELEFONE COMERCIAL2 INVÁLIDO.", TipoPessoa.PJ);
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.DddComercial2 = "";
+                c.DadosCliente.TelComercial2 = "123456";
+            }, "PREENCHA O DDD DO TELEFONE COMERCIAL2.", TipoPessoa.PJ);
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.DddComercial2 = "11";
+                c.DadosCliente.TelComercial2 = "";
+            }, "PREENCHA O TELEFONE COMERCIAL.", TipoPessoa.PJ);
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.DddComercial2 = "1";
+            }, "DDD DO TELEFONE COMERCIAL2 INVÁLIDO.", TipoPessoa.PJ);
         }
 
         [Fact]

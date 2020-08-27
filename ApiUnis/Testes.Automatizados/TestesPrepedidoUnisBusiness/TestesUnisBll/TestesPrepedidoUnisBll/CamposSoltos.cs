@@ -145,6 +145,15 @@ VlTotalDestePedido	number($double)
         */
 
         [Fact]
+        public void TestePagtoAvista()
+        {
+            TesteAvista(c =>
+            {
+                c.FormaPagtoCriacao.CustoFinancFornecQtdeParcelas = 2;
+            }, "Quantidade da parcela esta divergente!", true);
+        }
+
+        [Fact]
         public void TesteParcelaUnica()
         {
             TesteParcUnica(c =>
@@ -273,7 +282,8 @@ VlTotalDestePedido	number($double)
         [Fact]
         public void TesteComEntrada()
         {
-            TestePagamentoComEntrada(c=>{
+            TestePagamentoComEntrada(c =>
+            {
                 c.FormaPagtoCriacao.Op_pce_entrada_forma_pagto = "";
             }, "Indique a forma de pagamento da entrada (parcelado com entrada).", true);
 
