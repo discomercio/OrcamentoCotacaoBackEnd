@@ -1,9 +1,9 @@
 ﻿using Cliente;
 using Newtonsoft.Json;
+using Prepedido;
 using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
 using PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll;
 using PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto;
-using PrepedidoBusiness.Bll.PrepedidoBll;
 using PrepedidoBusiness.Dto.ClienteCadastro;
 using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using PrepedidoUnisBusiness.UnisDto.ClienteUnisDto;
@@ -104,7 +104,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
 
             var prePedidoDto = PrePedidoUnisDto.PrePedidoDtoDePrePedidoUnisDto(prePedidoUnis, endCadastralArclube, lstProdutosArclube, clienteArclube.DadosCliente);
             string apelido = "KONAR";
-            IEnumerable<string> resi = prepedidoBll.CadastrarPrepedido(prePedidoDto, apelido.Trim(), 0.01M, false /* permitimos repetidos */,
+            IEnumerable<string> resi = prepedidoBll.CadastrarPrepedido(PrePedidoDto.PrePedidoDados_De_PrePedidoDto(prePedidoDto), apelido.Trim(), 0.01M, false /* permitimos repetidos */,
                 (int)InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS).Result;
             var res = resi.ToList();
             if (incluirEsteErro)

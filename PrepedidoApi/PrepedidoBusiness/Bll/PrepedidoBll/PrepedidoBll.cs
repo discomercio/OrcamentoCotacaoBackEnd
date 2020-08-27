@@ -4,9 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using InfraBanco.Modelos;
-using PrepedidoBusiness.Dto.Prepedido;
-using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
-using PrepedidoBusiness.Dto.ClienteCadastro;
 using InfraBanco.Constantes;
 using InfraBanco;
 using Produto.RegrasCrtlEstoque;
@@ -15,23 +12,26 @@ using UtilsGlobais;
 using Cep;
 using Prepedido.Dados.FormaPagto;
 using Prepedido.FormaPagto;
+using Prepedido.Dados;
+using Prepedido.Dados.DetalhesPrepedido;
+using Cliente.Dados;
 
-namespace PrepedidoBusiness.Bll.PrepedidoBll
+namespace Prepedido
 {
     public class PrepedidoBll
     {
         private readonly ContextoBdProvider contextoProvider;
         private readonly Cliente.ClienteBll clienteBll;
-        private readonly ValidacoesPrepedidoBll validacoesPrepedidoBll;
+        private readonly Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll;
         private readonly CepBll cepBll;
         private readonly ValidacoesFormaPagtoBll validacoesFormaPagtoBll;
-        private readonly MontarLogPrepedidoBll montarLogPrepedidoBll;
+        private readonly Prepedido.MontarLogPrepedidoBll montarLogPrepedidoBll;
         private readonly IBancoNFeMunicipio bancoNFeMunicipio;
         private readonly Prepedido.FormaPagto.FormaPagtoBll formaPagtoBll;
 
         public PrepedidoBll(ContextoBdProvider contextoProvider, Cliente.ClienteBll clienteBll,
-            ValidacoesPrepedidoBll validacoesPrepedidoBll, CepBll cepBll,
-            ValidacoesFormaPagtoBll validacoesFormaPagtoBll, MontarLogPrepedidoBll montarLogPrepedidoBll,
+            Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll, CepBll cepBll,
+            ValidacoesFormaPagtoBll validacoesFormaPagtoBll, Prepedido.MontarLogPrepedidoBll montarLogPrepedidoBll,
             IBancoNFeMunicipio bancoNFeMunicipio, Prepedido.FormaPagto.FormaPagtoBll formaPagtoBll)
         {
             this.contextoProvider = contextoProvider;
@@ -84,7 +84,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         {
             Todos = 0, NaoViraramPedido = 1, SomenteViraramPedido = 2, Excluidos = 3
         }
-        public async Task<IEnumerable<PrepedidosCadastradosDtoPrepedido>> ListarPrePedidos(string apelido, TipoBuscaPrepedido tipoBusca,
+        public async Task<IEnumerable<PrepedidosCadastradosPrepedidoDados>> ListarPrePedidos(string apelido, TipoBuscaPrepedido tipoBusca,
             string clienteBusca, string numeroPrePedido, DateTime? dataInicial, DateTime? dataFinal)
         {
             if (dataInicial < Util.LimiteDataBuscas())
@@ -117,7 +117,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         }
 
         //a busca sem malabarismos para econtrar algum registro
-        public async Task<IEnumerable<PrepedidosCadastradosDtoPrepedido>> ListarPrePedidosFiltroEstrito(string apelido, TipoBuscaPrepedido tipoBusca,
+        public async Task<IEnumerable<PrepedidosCadastradosPrepedidoDados>> ListarPrePedidosFiltroEstrito(string apelido, TipoBuscaPrepedido tipoBusca,
                 string clienteBusca, string numeroPrePedido, DateTime? dataInicial, DateTime? dataFinal)
         {
 
@@ -152,12 +152,12 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 lst = lst.Where(r => r.Data <= dataFinal.Value);
 
             //lst.OrderByDescending(r => r.Data_hora);
-            List<PrepedidosCadastradosDtoPrepedido> lstdto = new List<PrepedidosCadastradosDtoPrepedido>();
+            List<PrepedidosCadastradosPrepedidoDados> lstdados = new List<PrepedidosCadastradosPrepedidoDados>();
             //COLOCAR O STATUS DO PEDIDO PARA PREPEDIDOS QUE VIRARAM PEDIDOS
             if (tipoBusca != TipoBuscaPrepedido.Excluidos)
             {
 
-                lstdto = lst.Select(r => new PrepedidosCadastradosDtoPrepedido
+                lstdados = lst.Select(r => new PrepedidosCadastradosPrepedidoDados
                 {
 
                     Status = r.St_Orc_Virou_Pedido == 1 ? "Pré-Pedido - Com Pedido" : "Pré-Pedido - Sem Pedido",
@@ -169,7 +169,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             }
             if (tipoBusca == TipoBuscaPrepedido.Excluidos)
             {
-                lstdto = lst.Select(r => new PrepedidosCadastradosDtoPrepedido
+                lstdados = lst.Select(r => new PrepedidosCadastradosPrepedidoDados
                 {
                     Status = "Excluído",
                     DataPrePedido = r.Data,
@@ -179,7 +179,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 }).OrderByDescending(r => r.NumeroPrepedido).ToList();
             }
 
-            return await Task.FromResult(lstdto);
+            return await Task.FromResult(lstdados);
         }
 
         public async Task<bool> RemoverPrePedido(string numeroPrePedido, string apelido)
@@ -207,7 +207,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return await Task.FromResult(false);
         }
 
-        public async Task<PrePedidoDto> BuscarPrePedido(string apelido, string numPrePedido)
+        public async Task<PrePedidoDados> BuscarPrePedido(string apelido, string numPrePedido)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -242,7 +242,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                              where c.Orcamento == numPrePedido
                              select c.Pedido;
 
-                PrePedidoDto prepedidoPedido = new PrePedidoDto
+                PrePedidoDados prepedidoPedido = new PrePedidoDados
                 {
                     St_Orc_Virou_Pedido = true,
                     NumeroPedido = pedido.Select(r => r.ToString()).FirstOrDefault()
@@ -268,7 +268,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             var totalDestePedido = lstProdutoTask.Select(r => r.TotalItem).Sum();
 
 
-            PrePedidoDto prepedidoDto = new PrePedidoDto
+            PrePedidoDados prepedidoDados = new PrePedidoDados
             {
                 CorHeader = corHeader,
                 TextoHeader = textoHeader,
@@ -276,8 +276,8 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 NumeroPrePedido = pp.Orcamento,
                 DataHoraPedido = Convert.ToString(pp.Data?.ToString("dd/MM/yyyy")),
                 Hora_Prepedido = Util.FormataHora(pp.Hora),
-                DadosCliente = DadosClienteCadastroDto.DadosClienteCadastroDto_De_DadosClienteCadastroDados(cadastroCliente),
-                EnderecoEntrega = EnderecoEntregaDtoClienteCadastro.EnderecoEntregaDtoClienteCadastro_De_EnderecoEntregaClienteCadastroDados(await enderecoEntregaTask),
+                DadosCliente = cadastroCliente,
+                EnderecoEntrega = await enderecoEntregaTask,
                 ListaProdutos = lstProdutoTask.ToList(),
                 TotalFamiliaParcelaRA = vltotalRa,
                 PermiteRAStatus = pp.Permite_RA_Status,
@@ -290,7 +290,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 FormaPagtoCriacao = await ObterFormaPagtoPrePedido(pp)
             };
 
-            return await Task.FromResult(prepedidoDto);
+            return await Task.FromResult(prepedidoDados);
         }
 
         public async Task<decimal> ObtemPercentualVlPedidoRA()
@@ -318,9 +318,9 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return tipo;
         }
 
-        public async Task<FormaPagtoCriacaoDto> ObterFormaPagtoPrePedido(Torcamento torcamento)
+        public async Task<FormaPagtoCriacaoDados> ObterFormaPagtoPrePedido(Torcamento torcamento)
         {
-            FormaPagtoCriacaoDto pagto = new FormaPagtoCriacaoDto();
+            FormaPagtoCriacaoDados pagto = new FormaPagtoCriacaoDados();
 
             //descrição d meio de pagto
             pagto.Descricao_meio_pagto = await ObterDescricaoFormaPagto(torcamento.Av_Forma_Pagto);
@@ -373,9 +373,9 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return pagto;
         }
 
-        private DetalhesDtoPrepedido ObterDetalhesPrePedido(Torcamento torcamento, string apelido)
+        private DetalhesPrepedidoDados ObterDetalhesPrePedido(Torcamento torcamento, string apelido)
         {
-            DetalhesDtoPrepedido detail = new DetalhesDtoPrepedido
+            DetalhesPrepedidoDados detail = new DetalhesPrepedidoDados
             {
                 Observacoes = torcamento.Obs_1,
                 NumeroNF = torcamento.Obs_2,
@@ -452,7 +452,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         }
 
         //Obtem produtos do orçamento
-        private async Task<IEnumerable<PrepedidoProdutoDtoPrepedido>> ObterProdutos(Torcamento orc)
+        private async Task<IEnumerable<PrepedidoProdutoPrepedidoDados>> ObterProdutos(Torcamento orc)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -461,11 +461,11 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                            orderby c.Sequencia
                            select c;
 
-            List<PrepedidoProdutoDtoPrepedido> listaProduto = new List<PrepedidoProdutoDtoPrepedido>();
+            List<PrepedidoProdutoPrepedidoDados> listaProduto = new List<PrepedidoProdutoPrepedidoDados>();
 
             foreach (var p in produtos)
             {
-                PrepedidoProdutoDtoPrepedido produtoPrepedido = new PrepedidoProdutoDtoPrepedido
+                PrepedidoProdutoPrepedidoDados produtoPrepedido = new PrepedidoProdutoPrepedidoDados
                 {
                     Fabricante = p.Fabricante,
                     NumProduto = p.Produto,
@@ -650,7 +650,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return await raStatus;
         }
 
-        public async Task<IEnumerable<string>> CadastrarPrepedido(PrePedidoDto prePedido, string apelido, decimal limiteArredondamento,
+        public async Task<IEnumerable<string>> CadastrarPrepedido(PrePedidoDados prePedido, string apelido, decimal limiteArredondamento,
             bool verificarPrepedidoRepetido, int sistemaResponsavelCadastro)
         {
             List<string> lstErros = new List<string>();
@@ -680,7 +680,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             }
 
             //verificamos se tem ID para saber que o cliente existe
-            ClienteCadastroDto cliente = ClienteCadastroDto.ClienteCadastroDto_De_ClienteCadastroDados(await clienteBll.BuscarCliente(
+            ClienteCadastroDados cliente = (await clienteBll.BuscarCliente(
                 prePedido.EnderecoCadastroClientePrepedido.Endereco_cnpj_cpf, tOrcamentista.Apelido.ToUpper()));
 
             if (cliente != null)
@@ -716,13 +716,13 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
 
             //antes de validar vamos passar o EnderecoCadastral para dadoscliente
             prePedido.DadosCliente =
-                DadosClienteCadastroDto.DadosClienteCadastroDtoDeEnderecoCadastralClientePrepedidoDto(
+                DadosClienteCadastroDados.DadosClienteCadastroDadosDeEnderecoCadastralClientePrepedidoDados(
                     prePedido.EnderecoCadastroClientePrepedido, tOrcamentista.Apelido.ToUpper(), tOrcamentista.Loja,
                     prePedido.DadosCliente.Sexo, prePedido.DadosCliente.Nascimento, prePedido.DadosCliente.Id);
 
             List<Cliente.Dados.ListaBancoDados> lstBanco = (await clienteBll.ListarBancosCombo()).ToList();
             //vamos validar os dados do cliente
-            await Cliente.ValidacoesClienteBll.ValidarDadosCliente(DadosClienteCadastroDto.DadosClienteCadastroDados_De_DadosClienteCadastroDto(prePedido.DadosCliente),
+            await Cliente.ValidacoesClienteBll.ValidarDadosCliente(prePedido.DadosCliente,
                 null, null,
                 lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco,
                 prePedido.DadosCliente.Tipo == Constantes.ID_PF ? true : false);
@@ -733,7 +733,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             //verifica se o prepedio já foi gravado
             if (verificarPrepedidoRepetido)
             {
-                var prepedidoJaCadastradoNumero = await new PrepedidoRepetidoBll(contextoProvider).PrepedidoJaCadastradoCriterioSiteColors(prePedido);
+                var prepedidoJaCadastradoNumero = await new Prepedido.PrepedidoRepetidoBll(contextoProvider).PrepedidoJaCadastradoCriterioSiteColors(prePedido);
                 if (!String.IsNullOrEmpty(prepedidoJaCadastradoNumero))
                 {
                     lstErros.Add($"Este pré-pedido já foi gravado com o número {prepedidoJaCadastradoNumero}");
@@ -767,7 +767,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
 
                 //precisa incluir uma validação de forma de pagamento com base no orçamentista enviado
                 FormaPagtoDados formasPagto = await formaPagtoBll.ObterFormaPagto(tOrcamentista.Apelido, prePedido.DadosCliente.Tipo);
-                if (validacoesFormaPagtoBll.ValidarFormaPagto(PrePedidoDto.PrePedidoDados_De_PrePedidoDto(prePedido), lstErros, limiteArredondamento,
+                if (validacoesFormaPagtoBll.ValidarFormaPagto(prePedido, lstErros, limiteArredondamento,
                     0.1M, c_custoFinancFornecTipoParcelamento, formasPagto))
                 {
                     //Esta sendo verificado qual o tipo de pagamento que esta sendo feito e retornando a quantidade de parcelas
@@ -867,9 +867,9 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return lstErros;
         }
 
-        public string ObterSiglaFormaPagto(PrePedidoDto prePedido)
+        public string ObterSiglaFormaPagto(PrePedidoDados prePedido)
         {
-            FormaPagtoCriacaoDto formaPagto = prePedido.FormaPagtoCriacao;
+            FormaPagtoCriacaoDados formaPagto = prePedido.FormaPagtoCriacao;
             string retorno = "";
 
             if (formaPagto.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_A_VISTA)
@@ -888,7 +888,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return retorno;
         }
 
-        public async Task DeletarOrcamentoExiste(ContextoBdGravacao dbgravacao, PrePedidoDto prePedido, string apelido)
+        public async Task DeletarOrcamentoExiste(ContextoBdGravacao dbgravacao, PrePedidoDados prePedido, string apelido)
         {
             var orcamentoTask = from c in dbgravacao.Torcamentos.Include(r => r.TorcamentoItem)
                                 where c.Orcamento == prePedido.NumeroPrePedido &&
@@ -901,7 +901,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             await dbgravacao.SaveChangesAsync();
         }
 
-        public async Task DeletarOrcamentoExisteComTransacao(PrePedidoDto prePedido, string apelido)
+        public async Task DeletarOrcamentoExisteComTransacao(PrePedidoDados prePedido, string apelido)
         {
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
             {
@@ -910,7 +910,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             }
         }
 
-        private async Task<string> EfetivarCadastroPrepedido(ContextoBdGravacao dbgravacao, PrePedidoDto prepedido,
+        private async Task<string> EfetivarCadastroPrepedido(ContextoBdGravacao dbgravacao, PrePedidoDados prepedido,
             TorcamentistaEindicador orcamentista, string siglaPagto, int sistemaResponsavelCadastro,
             float perc_limite_RA_sem_desagio = 0)
         {
@@ -958,7 +958,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
 
             if (prepedido.EnderecoEntrega == null)
             {
-                prepedido.EnderecoEntrega = new EnderecoEntregaDtoClienteCadastro();
+                prepedido.EnderecoEntrega = new EnderecoEntregaClienteCadastroDados();
             }
             //vamos incluir os campos de endereço de entrega
             IncluirEnderecoEntregaParaTorcamento(prepedido, torcamento);
@@ -975,7 +975,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return log;
         }
 
-        private void IncluirDadosClienteParaTorcamento(PrePedidoDto prePedido, Torcamento torcamento)
+        private void IncluirDadosClienteParaTorcamento(PrePedidoDados prePedido, Torcamento torcamento)
         {
             //aqui vamos passar os 
             if (torcamento != null)
@@ -1028,7 +1028,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             }
         }
 
-        private void IncluirFormaPagtoParaTorcamento(PrePedidoDto prepedido, Torcamento torcamento)
+        private void IncluirFormaPagtoParaTorcamento(PrePedidoDados prepedido, Torcamento torcamento)
         {
             if (torcamento != null)
             {
@@ -1091,7 +1091,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             }
         }
 
-        private void IncluirDetalhesPrepedidoParaTorcamento(PrePedidoDto prepedido, Torcamento torcamento, string orcamentista)
+        private void IncluirDetalhesPrepedidoParaTorcamento(PrePedidoDados prepedido, Torcamento torcamento, string orcamentista)
         {
 
             torcamento.Obs_1 = prepedido.DetalhesPrepedido.Observacoes == null ?
@@ -1148,7 +1148,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             torcamento.GarantiaInidicadorDtHrUltAtualiz = DateTime.Now;
         }
 
-        private void IncluirEnderecoEntregaParaTorcamento(PrePedidoDto prepedido, Torcamento torcamento)
+        private void IncluirEnderecoEntregaParaTorcamento(PrePedidoDados prepedido, Torcamento torcamento)
         {
             if (torcamento != null)
             {
@@ -1223,9 +1223,9 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return log;
         }
 
-        private int ObterQtdeParcelasFormaPagto(PrePedidoDto prepedido)
+        private int ObterQtdeParcelasFormaPagto(PrePedidoDados prepedido)
         {
-            FormaPagtoCriacaoDto formaPagto = prepedido.FormaPagtoCriacao;
+            FormaPagtoCriacaoDados formaPagto = prepedido.FormaPagtoCriacao;
             int qtdeParcelas = 0;
 
             if (formaPagto.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_A_VISTA)
@@ -1244,7 +1244,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return qtdeParcelas;
         }
 
-        private decimal Calcular_Vl_Total(PrePedidoDto prepedido)
+        private decimal Calcular_Vl_Total(PrePedidoDados prepedido)
         {
             decimal vl_total = 0M;
 
@@ -1259,7 +1259,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return Math.Round(vl_total, 2);
         }
 
-        private decimal CalcularVl_Total_NF(PrePedidoDto prepedido)
+        private decimal CalcularVl_Total_NF(PrePedidoDados prepedido)
         {
             decimal vl_total_NF = 0M;
 
@@ -1274,7 +1274,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return Math.Round(vl_total_NF, 2);
         }
 
-        private async Task ExisteProdutoDescontinuado(PrePedidoDto prepedido, List<string> lstErros)
+        private async Task ExisteProdutoDescontinuado(PrePedidoDados prepedido, List<string> lstErros)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -1297,7 +1297,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             }
         }
 
-        private List<int> ContagemEmpresasUsadasAutoSplit(List<RegrasBll> lstRegras, PrePedidoDto prepedido)
+        private List<int> ContagemEmpresasUsadasAutoSplit(List<RegrasBll> lstRegras, PrePedidoDados prepedido)
         {
             int qtde_empresa_selecionada = 0;
             List<int> lista_empresa_selecionada = new List<int>();
@@ -1324,7 +1324,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         }
 
         //Metodo que verifica a qtde solicitada e estoque
-        private void VerificarQtdePedidosAutoSplit(List<RegrasBll> lstRegras, List<string> lstErros, PrePedidoDto prepedido)
+        private void VerificarQtdePedidosAutoSplit(List<RegrasBll> lstRegras, List<string> lstErros, PrePedidoDados prepedido)
         {
             int qtde_a_alocar = 0;
 
@@ -1399,7 +1399,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         }
 
         //se estoque for insuficiente, retorna true
-        private bool VerificarEstoqueInsuficiente(List<RegrasBll> lstRegras, PrePedidoDto prepedido, Tparametro parametro)
+        private bool VerificarEstoqueInsuficiente(List<RegrasBll> lstRegras, PrePedidoDados prepedido, Tparametro parametro)
         {
             bool retorno = false;
             int qtde_estoque_total_disponivel = 0;
@@ -1450,7 +1450,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         }
 
         //qtde_estoque_total_global_disponivel é uma variavel que esta global no deles
-        private void ObterDisponibilidadeEstoque(List<RegrasBll> lstRegras, PrePedidoDto prepedido, Tparametro parametroRegra, List<string> lstErros)
+        private void ObterDisponibilidadeEstoque(List<RegrasBll> lstRegras, PrePedidoDados prepedido, Tparametro parametroRegra, List<string> lstErros)
         {
             int id_nfe_emitente_selecao_manual = 0;
 
@@ -1483,7 +1483,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             }
         }
 
-        public async Task<IEnumerable<TpercentualCustoFinanceiroFornecedor>> BuscarCoeficientePercentualCustoFinanFornec(PrePedidoDto prePedido, short qtdeParcelas, string siglaPagto, List<string> lstErros)
+        public async Task<IEnumerable<TpercentualCustoFinanceiroFornecedor>> BuscarCoeficientePercentualCustoFinanFornec(PrePedidoDados prePedido, short qtdeParcelas, string siglaPagto, List<string> lstErros)
         {
             List<TpercentualCustoFinanceiroFornecedor> lstPercentualCustoFinanFornec =
                 new List<TpercentualCustoFinanceiroFornecedor>();
@@ -1526,7 +1526,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return lstPercentualCustoFinanFornec;
         }
 
-        private async Task<IEnumerable<RegrasBll>> ObterCtrlEstoqueProdutoRegra(PrePedidoDto prePedido, List<string> lstErros)
+        private async Task<IEnumerable<RegrasBll>> ObterCtrlEstoqueProdutoRegra(PrePedidoDados prePedido, List<string> lstErros)
         {
             List<RegrasBll> lstRegrasCrtlEstoque = new List<RegrasBll>();
 
@@ -1784,7 +1784,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return retorno;
         }
 
-        private async Task<IEnumerable<TorcamentoItem>> MontaListaOrcamentoItem(PrePedidoDto prepedido,
+        private async Task<IEnumerable<TorcamentoItem>> MontaListaOrcamentoItem(PrePedidoDados prepedido,
             List<TpercentualCustoFinanceiroFornecedor> lstPercentualCustoFinanFornec, ContextoBdGravacao dbgravacao)
         {
             List<TorcamentoItem> lstOrcamentoItem = new List<TorcamentoItem>();
@@ -1804,11 +1804,11 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return lstOrcamentoItem;
         }
 
-        private List<TorcamentoItem> MontaListaOrcamentoItemSemCoeficiente(PrePedidoDto prepedido)
+        private List<TorcamentoItem> MontaListaOrcamentoItemSemCoeficiente(PrePedidoDados prepedido)
         {
             List<TorcamentoItem> lstOrcamentoItem = new List<TorcamentoItem>();
 
-            foreach (PrepedidoProdutoDtoPrepedido p in prepedido.ListaProdutos)
+            foreach (PrepedidoProdutoPrepedidoDados p in prepedido.ListaProdutos)
             {
                 TorcamentoItem item = new TorcamentoItem
                 {
@@ -1829,14 +1829,14 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return lstOrcamentoItem;
         }
 
-        private List<TorcamentoItem> MontaListaOrcamentoItemComCoeficiente(PrePedidoDto prepedido,
+        private List<TorcamentoItem> MontaListaOrcamentoItemComCoeficiente(PrePedidoDados prepedido,
             List<TpercentualCustoFinanceiroFornecedor> lstPercentualCustoFinanFornec)
         {
             List<TorcamentoItem> lstOrcamentoItem = new List<TorcamentoItem>();
 
             foreach (var percCustoFinanFornec in lstPercentualCustoFinanFornec)
             {
-                foreach (PrepedidoProdutoDtoPrepedido p in prepedido.ListaProdutos)
+                foreach (PrepedidoProdutoPrepedidoDados p in prepedido.ListaProdutos)
                 {
                     if (percCustoFinanFornec.Fabricante == p.Fabricante)
                     {
@@ -1900,7 +1900,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return tOrcamentista;
         }
 
-        public async Task GerarNumeroOrcamento(ContextoBdGravacao dbgravacao, PrePedidoDto prepedido)
+        public async Task GerarNumeroOrcamento(ContextoBdGravacao dbgravacao, PrePedidoDados prepedido)
         {
             string sufixoIdOrcamento = Constantes.SUFIXO_ID_ORCAMENTO;
 

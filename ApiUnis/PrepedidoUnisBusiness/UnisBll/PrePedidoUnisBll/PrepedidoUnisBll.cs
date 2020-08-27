@@ -1,12 +1,12 @@
 ﻿using Cliente;
 using InfraBanco.Constantes;
 using InfraBanco.Modelos;
+using Prepedido;
+using Prepedido.Dados.DetalhesPrepedido;
 using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
 using PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto;
-using PrepedidoBusiness.Bll.PrepedidoBll;
 using PrepedidoBusiness.Dto.ClienteCadastro;
 using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
-using PrepedidoBusiness.Dto.Produto;
 using PrepedidoUnisBusiness.UnisDto.ClienteUnisDto;
 using PrepedidoUnisBusiness.UnisDto.PrepedidoUnisDto;
 using PrepedidoUnisBusiness.Utils;
@@ -29,11 +29,11 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
         private readonly InfraBanco.ContextoCepProvider contextoCepProvider;
         private readonly PrepedidoBll prepedidoBll;
         private readonly ClienteBll clienteBll;
-        private readonly ValidacoesPrepedidoBll validacoesPrepedidoBll;
+        private readonly Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll;
 
         public PrePedidoUnisBll(ConfiguracaoApiUnis configuracaoApiUnis, InfraBanco.ContextoBdProvider contextoProvider,
             InfraBanco.ContextoCepProvider contextoCepProvider, PrepedidoBll prepedidoBll, ClienteBll clienteBll,
-            ValidacoesPrepedidoBll validacoesPrepedidoBll)
+            Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll)
         {
             this.configuracaoApiUnis = configuracaoApiUnis;
             this.contextoProvider = contextoProvider;
@@ -118,7 +118,8 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
 
             //vamos cadastrar
             //A validação dos dados será feita no cadastro do prepedido
-            List<string> lstRet = (await prepedidoBll.CadastrarPrepedido(prePedidoDto,
+            PrePedidoDados prePedidoDados = PrePedidoDto.PrePedidoDados_De_PrePedidoDto(prePedidoDto);
+            List<string> lstRet = (await prepedidoBll.CadastrarPrepedido(prePedidoDados,
                 prePedidoUnis.Indicador_Orcamentista.ToUpper(),
                 Convert.ToDecimal(configuracaoApiUnis.LimiteArredondamentoPrecoVendaOrcamentoItem), false,
                 (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS)).ToList();
@@ -182,10 +183,10 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
 
         public async Task<string> PrepedidosRepetidos(PrePedidoDto prePedidoDto)
         {
-            PrepedidoRepetidoBll prepedidoRepetidoBll = new PrepedidoBusiness.Bll.PrepedidoBll.PrepedidoRepetidoBll(contextoProvider);
+            Prepedido.PrepedidoRepetidoBll prepedidoRepetidoBll = new Prepedido.PrepedidoRepetidoBll(contextoProvider);
 
             //repetição totalmente igual
-            var repetidos = await prepedidoRepetidoBll.PrepedidoJaCadastradoDesdeData(prePedidoDto, DateTime.Now.AddSeconds(-1 * configuracaoApiUnis.LimitePrepedidos.LimitePrepedidosExatamenteIguais_TempoSegundos));
+            var repetidos = await prepedidoRepetidoBll.PrepedidoJaCadastradoDesdeData(PrePedidoDto.PrePedidoDados_De_PrePedidoDto(prePedidoDto), DateTime.Now.AddSeconds(-1 * configuracaoApiUnis.LimitePrepedidos.LimitePrepedidosExatamenteIguais_TempoSegundos));
             if (repetidos.Count >= configuracaoApiUnis.LimitePrepedidos.LimitePrepedidosExatamenteIguais_Numero)
             {
                 return $"Pré-pedido já foi cadastrado com os mesmos dados há menos de {configuracaoApiUnis.LimitePrepedidos.LimitePrepedidosExatamenteIguais_TempoSegundos} segundos. " +

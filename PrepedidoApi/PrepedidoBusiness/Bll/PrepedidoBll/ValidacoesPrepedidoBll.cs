@@ -1,20 +1,19 @@
-﻿using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
-using PrepedidoBusiness.Dto.Produto;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using PrepedidoBusiness.Dto.ClienteCadastro;
 using InfraBanco.Constantes;
 using InfraBanco.Modelos;
 using InfraBanco;
 using UtilsGlobais;
 using Cep;
 using Produto;
+using Prepedido.Dados.DetalhesPrepedido;
+using Produto.Dados;
 
-namespace PrepedidoBusiness.Bll.PrepedidoBll
+namespace Prepedido
 {
     public class ValidacoesPrepedidoBll
     {
@@ -35,18 +34,18 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         }
 
         //vamos validar os produtos que foram enviados
-        public async Task MontarProdutosParaComparacao(PrePedidoDto prepedido,
+        public async Task MontarProdutosParaComparacao(PrePedidoDados prepedido,
                     string siglaFormaPagto, int qtdeParcelas, string loja, List<string> lstErros, float perc_limite_RA,
                     decimal limiteArredondamento)
         {
-            List<PrepedidoProdutoDtoPrepedido> lstProdutosParaComparacao = new List<PrepedidoProdutoDtoPrepedido>();
-            List<List<CoeficienteDto>> lstCoeficienteDtoArclube = new List<List<CoeficienteDto>>();
-            List<CoeficienteDto> coefDtoArclube = new List<CoeficienteDto>();
+            List<PrepedidoProdutoPrepedidoDados> lstProdutosParaComparacao = new List<PrepedidoProdutoPrepedidoDados>();
+            List<List<CoeficienteDados>> lstCoeficienteDadosArclube = new List<List<CoeficienteDados>>();
+            List<CoeficienteDados> coefDadosArclube = new List<CoeficienteDados>();
 
             List<string> lstFornec = new List<string>();
             lstFornec = prepedido.ListaProdutos.Select(x => x.Fabricante).Distinct().ToList();
 
-            List<CoeficienteDto> lstCoeficiente = new List<CoeficienteDto>();
+            List<CoeficienteDados> lstCoeficiente = new List<CoeficienteDados>();
             //precisa verificar se a forma de pagto é diferente de av para não dar erro na validação
 
             //buscar coeficiente 
@@ -60,7 +59,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             if (lstErros.Count == 0)
             {
                 //estamos verificando se o produto é composto
-                List<PrepedidoProdutoDtoPrepedido> lstProdutosCompare =
+                List<PrepedidoProdutoPrepedidoDados> lstProdutosCompare =
                 (await BuscarProdutos(prepedido.ListaProdutos, loja, lstErros)).ToList();
 
                 //vamos montar calcular a lista de produtos
@@ -74,27 +73,27 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             }
         }
 
-        private async Task<IEnumerable<CoeficienteDto>> MontarListaCoeficiente(List<string> lstFornec,
+        private async Task<IEnumerable<CoeficienteDados>> MontarListaCoeficiente(List<string> lstFornec,
             int qtdeParcelas, string siglaFormaPagto)
         {
-            List<CoeficienteDto> lstcoefDto = new List<CoeficienteDto>();
+            List<CoeficienteDados> lstcoefDados = new List<CoeficienteDados>();
 
             if (siglaFormaPagto == Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA)
             {
                 //vamos montar com o coeficiente = 1
-                lstcoefDto = BuscarListaCoeficientesFornecedoresAVista(lstFornec, qtdeParcelas);
+                lstcoefDados = BuscarListaCoeficientesFornecedoresAVista(lstFornec, qtdeParcelas);
             }
             else
             {
                 //vamos montar normalmente
-                lstcoefDto =
+                lstcoefDados =
                     (await BuscarListaCoeficientesFornecedores(lstFornec, qtdeParcelas, siglaFormaPagto)).ToList();
             }
 
-            return lstcoefDto;
+            return lstcoefDados;
         }
 
-        private void CalcularProdutoSemCoeficiente(List<PrepedidoProdutoDtoPrepedido> lstProdutos)
+        private void CalcularProdutoSemCoeficiente(List<PrepedidoProdutoPrepedidoDados> lstProdutos)
         {
             lstProdutos.ForEach(y =>
                 {
@@ -108,8 +107,8 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 });
         }
 
-        private void CalcularProdutoComCoeficiente(List<PrepedidoProdutoDtoPrepedido> lstProdutos,
-            List<CoeficienteDto> lstCoeficiente)
+        private void CalcularProdutoComCoeficiente(List<PrepedidoProdutoPrepedidoDados> lstProdutos,
+            List<CoeficienteDados> lstCoeficiente)
         {
             lstCoeficiente.ForEach(x =>
             {
@@ -129,8 +128,8 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             });
         }
 
-        public void ValidarCustoFinancFornecCoeficiente(List<PrepedidoProdutoDtoPrepedido> lstProdutos,
-            List<CoeficienteDto> lstCoeficiente, List<string> lstErros)
+        public void ValidarCustoFinancFornecCoeficiente(List<PrepedidoProdutoPrepedidoDados> lstProdutos,
+            List<CoeficienteDados> lstCoeficiente, List<string> lstErros)
         {
             lstProdutos.ForEach(x =>
             {
@@ -149,21 +148,21 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             });
         }
 
-        public async Task<IEnumerable<CoeficienteDto>> BuscarListaCoeficientesFornecedores(List<string> lstFornecedores, int qtdeParcelas, string siglaFP)
+        public async Task<IEnumerable<CoeficienteDados>> BuscarListaCoeficientesFornecedores(List<string> lstFornecedores, int qtdeParcelas, string siglaFP)
         {
-            List<CoeficienteDto> lstcoefDto = new List<CoeficienteDto>();
+            List<CoeficienteDados> lstcoefDados = new List<CoeficienteDados>();
 
             var lstcoeficientesTask = coeficienteBll.BuscarListaCoeficientesFornecedores(lstFornecedores);
             if (lstcoeficientesTask != null)
             {
                 foreach (var i in await lstcoeficientesTask)
                 {
-                    //lstcoefDto = new List<CoeficienteDto>();
+                    //lstcoefDados = new List<CoeficienteDados>();
                     foreach (var y in i)
                     {
                         if (y.TipoParcela == siglaFP && y.QtdeParcelas == qtdeParcelas)
                         {
-                            lstcoefDto.Add(new CoeficienteDto()
+                            lstcoefDados.Add(new CoeficienteDados()
                             {
                                 Fabricante = y.Fabricante,
                                 TipoParcela = y.TipoParcela,
@@ -175,18 +174,18 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 }
             }
 
-            return lstcoefDto;
+            return lstcoefDados;
         }
 
-        public List<CoeficienteDto> BuscarListaCoeficientesFornecedoresAVista(List<string> lstFornecedores, int qtdeParcelas)
+        public List<CoeficienteDados> BuscarListaCoeficientesFornecedoresAVista(List<string> lstFornecedores, int qtdeParcelas)
         {
-            List<CoeficienteDto> lstcoefDto = new List<CoeficienteDto>();
+            List<CoeficienteDados> lstcoefDados = new List<CoeficienteDados>();
 
             if (lstFornecedores != null)
             {
                 foreach (var i in lstFornecedores)
                 {
-                    lstcoefDto.Add(new CoeficienteDto()
+                    lstcoefDados.Add(new CoeficienteDados()
                     {
                         Fabricante = i,
                         TipoParcela = Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA,
@@ -196,28 +195,28 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                 }
             }
 
-            return lstcoefDto;
+            return lstcoefDados;
         }
 
-        private async Task<IEnumerable<PrepedidoProdutoDtoPrepedido>> BuscarProdutos(List<PrepedidoProdutoDtoPrepedido> lstProdutos,
+        private async Task<IEnumerable<PrepedidoProdutoPrepedidoDados>> BuscarProdutos(List<PrepedidoProdutoPrepedidoDados> lstProdutos,
             string loja, List<string> lstErros)
         {
 
 
             var db = contextoProvider.GetContextoLeitura();
-            List<PrepedidoProdutoDtoPrepedido> lsProdutosCompare = new List<PrepedidoProdutoDtoPrepedido>();
+            List<PrepedidoProdutoPrepedidoDados> lsProdutosCompare = new List<PrepedidoProdutoPrepedidoDados>();
 
             foreach (var x in lstProdutos)
             {
                 //vamos verificar se o cód do produto é composto
                 if (await VerificarProdutoComposto(x, loja, lstErros))
                 {
-                    PrepedidoProdutoDtoPrepedido produto = await (from c in db.TprodutoLojas
+                    PrepedidoProdutoPrepedidoDados produto = await (from c in db.TprodutoLojas
                                                                   where c.Produto == x.NumProduto &&
                                                                         c.Fabricante == x.Fabricante &&
                                                                         c.Vendavel == "S" &&
                                                                         c.Loja == loja
-                                                                  select new PrepedidoProdutoDtoPrepedido
+                                                                  select new PrepedidoProdutoPrepedidoDados
                                                                   {
                                                                       Fabricante = c.Fabricante,
                                                                       NumProduto = c.Produto,
@@ -240,7 +239,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return lsProdutosCompare;
         }
 
-        private async Task<bool> VerificarProdutoComposto(PrepedidoProdutoDtoPrepedido produto, string loja, List<string> lstErros)
+        private async Task<bool> VerificarProdutoComposto(PrepedidoProdutoPrepedidoDados produto, string loja, List<string> lstErros)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -260,8 +259,8 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
 
             return true;
         }
-        private void ConfrontarProdutos(PrePedidoDto prepedido,
-            List<PrepedidoProdutoDtoPrepedido> lstProdutosCompare, List<string> lstErros,
+        private void ConfrontarProdutos(PrePedidoDados prepedido,
+            List<PrepedidoProdutoPrepedidoDados> lstProdutosCompare, List<string> lstErros,
             decimal limiteArredondamento)
         {
             prepedido.ListaProdutos.ForEach(x =>
@@ -302,7 +301,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             });
         }
 
-        private void ConfrontarTotaisEPercentualMaxRA(PrePedidoDto prepedido, List<string> lstErros,
+        private void ConfrontarTotaisEPercentualMaxRA(PrePedidoDados prepedido, List<string> lstErros,
             float perc_limite_RA)
         {
             decimal totalCompare = 0;
@@ -333,7 +332,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         }
 
 
-        public async Task<bool> ValidarEnderecoEntrega(PrePedidoDto prepedido, List<string> lstErros)
+        public async Task<bool> ValidarEnderecoEntrega(PrePedidoDados prepedido, List<string> lstErros)
         {
             bool retorno = true;
 
@@ -352,7 +351,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return retorno;
         }
 
-        private async Task ValidarDadosEnderecoEntrega(PrePedidoDto prePedido, List<string> lstErros,
+        private async Task ValidarDadosEnderecoEntrega(PrePedidoDados prePedido, List<string> lstErros,
             ContextoBdProvider contextoProvider)
         {
 
@@ -402,9 +401,9 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                     {
                         //vamos comparar endereço
                         string cepSoDigito = prePedido.EnderecoEntrega.EndEtg_cep.Replace(".", "").Replace("-", "");
-                        List<Cep.Dados.CepDados> lstCepDto = (await cepBll.BuscarPorCep(cepSoDigito)).ToList();
+                        List<Cep.Dados.CepDados> lstCepDados = (await cepBll.BuscarPorCep(cepSoDigito)).ToList();
 
-                        if (lstCepDto.Count == 0)
+                        if (lstCepDados.Count == 0)
                         {
                             lstErros.Add("Endereço Entrega: cep inválido!");
                         }
@@ -418,7 +417,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
                                 Cidade = prePedido.EnderecoEntrega.EndEtg_cidade,
                                 Uf = prePedido.EnderecoEntrega.EndEtg_uf
                             };
-                            await Cliente.ValidacoesClienteBll.VerificarEndereco(cep, lstCepDto, lstErros, contextoProvider,
+                            await Cliente.ValidacoesClienteBll.VerificarEndereco(cep, lstCepDados, lstErros, contextoProvider,
                                 bancoNFeMunicipio);
                         }
 
@@ -433,7 +432,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             }
         }
 
-        public bool ValidarDetalhesPrepedido(DetalhesDtoPrepedido detalhesPrepedido, List<string> lstErros)
+        public bool ValidarDetalhesPrepedido(DetalhesPrepedidoDados detalhesPrepedido, List<string> lstErros)
         {
             bool retorno = true;
 
@@ -463,7 +462,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return retorno;
         }
 
-        private void ValidarDadosPessoaEnderecoEntrega(PrePedidoDto prePedido, List<string> lstErros,
+        private void ValidarDadosPessoaEnderecoEntrega(PrePedidoDados prePedido, List<string> lstErros,
             bool flagMsg_IE_Cadastro_PF)
         {
             if (prePedido.EnderecoEntrega.EndEtg_tipo_pessoa != Constantes.ID_PJ &&
@@ -479,13 +478,13 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             {
                 if (prePedido.EnderecoEntrega.EndEtg_tipo_pessoa == Constantes.ID_PJ)
                 {
-                    ValidarDadosPessoaEnderecoEntrega_PJ(EnderecoEntregaDtoClienteCadastro.EnderecoEntregaClienteCadastroDados_De_EnderecoEntregaDtoClienteCadastro(prePedido.EnderecoEntrega), lstErros);
-                    ValidarDadosPessoaEnderecoEntrega_PJ_Tel(EnderecoEntregaDtoClienteCadastro.EnderecoEntregaClienteCadastroDados_De_EnderecoEntregaDtoClienteCadastro(prePedido.EnderecoEntrega), lstErros);
+                    ValidarDadosPessoaEnderecoEntrega_PJ(prePedido.EnderecoEntrega, lstErros);
+                    ValidarDadosPessoaEnderecoEntrega_PJ_Tel(prePedido.EnderecoEntrega, lstErros);
                 }
                 if (prePedido.EnderecoEntrega.EndEtg_tipo_pessoa == Constantes.ID_PF)
                 {
-                    ValidarDadosPessoaEnderecoEntrega_PF(EnderecoEntregaDtoClienteCadastro.EnderecoEntregaClienteCadastroDados_De_EnderecoEntregaDtoClienteCadastro(prePedido.EnderecoEntrega), lstErros);
-                    ValidarDadosPessoaEnderecoEntrega_PF_Tel(EnderecoEntregaDtoClienteCadastro.EnderecoEntregaClienteCadastroDados_De_EnderecoEntregaDtoClienteCadastro(prePedido.EnderecoEntrega), lstErros);
+                    ValidarDadosPessoaEnderecoEntrega_PF(prePedido.EnderecoEntrega, lstErros);
+                    ValidarDadosPessoaEnderecoEntrega_PF_Tel(prePedido.EnderecoEntrega, lstErros);
                 }
             }
 

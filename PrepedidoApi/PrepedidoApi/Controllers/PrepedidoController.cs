@@ -16,19 +16,22 @@ namespace PrepedidoApi.Controllers
     [Authorize(Roles = Utils.Autenticacao.RoleAcesso)]
     public class PrepedidoController : ControllerBase
     {
-        private readonly PrepedidoBusiness.Bll.PrepedidoBll.PrepedidoBll prepedidoBll;
+        private readonly Prepedido.PrepedidoBll prepedidoBll;
+        private readonly PrepedidoApiBll prepedidoApiBll;
         private readonly InfraIdentity.IServicoDecodificarToken servicoDecodificarToken;
         private readonly Prepedido.FormaPagto.FormaPagtoBll formaPagtoBll;
         private readonly FormaPagtoPrepedidoBll formaPagtoPrepedidoBll;
         private readonly CoeficientePrepedidoBll coeficientePrepedidoBll;
 
-        public PrepedidoController(PrepedidoBusiness.Bll.PrepedidoBll.PrepedidoBll prepedidoBll,
+        public PrepedidoController(Prepedido.PrepedidoBll prepedidoBll,
+            PrepedidoBusiness.Bll.PrepedidoApiBll prepedidoApiBll,
             InfraIdentity.IServicoDecodificarToken servicoDecodificarToken,
             Prepedido.FormaPagto.FormaPagtoBll formaPagtoBll,
             PrepedidoBusiness.Bll.FormaPagtoPrepedidoBll formaPagtoPrepedidoBll,
             PrepedidoBusiness.Bll.CoeficientePrepedidoBll coeficientePrepedidoBll)
         {
             this.prepedidoBll = prepedidoBll;
+            this.prepedidoApiBll = prepedidoApiBll;
             this.servicoDecodificarToken = servicoDecodificarToken;
             this.formaPagtoBll = formaPagtoBll;
             this.formaPagtoPrepedidoBll = formaPagtoPrepedidoBll;
@@ -73,8 +76,8 @@ namespace PrepedidoApi.Controllers
         {
             //para testar: http://localhost:60877/api/prepedido/listarPrePedidos
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            IEnumerable<PrepedidoBusiness.Dto.Prepedido.PrepedidosCadastradosDtoPrepedido> lista = await prepedidoBll.ListarPrePedidos(apelido,
-                (PrepedidoBusiness.Bll.PrepedidoBll.PrepedidoBll.TipoBuscaPrepedido)tipoBusca,
+            IEnumerable<PrepedidoBusiness.Dto.Prepedido.PrepedidosCadastradosDtoPrepedido> lista = await prepedidoApiBll.ListarPrePedidos(apelido,
+                (Prepedido.PrepedidoBll.TipoBuscaPrepedido)tipoBusca,
                 clienteBusca, numeroPrePedido, dataInicial, dataFinal);
             return Ok(lista);
         }
@@ -110,7 +113,7 @@ namespace PrepedidoApi.Controllers
             //para testar: http://localhost:60877/api/prepedido/buscarPrepedido
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            PrePedidoDto ret = await prepedidoBll.BuscarPrePedido(apelido, numPrepedido);
+            PrePedidoDto ret = await prepedidoApiBll.BuscarPrePedido(apelido, numPrepedido);
 
             return Ok(ret);
         }
@@ -154,7 +157,7 @@ namespace PrepedidoApi.Controllers
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
             //LIMITE_ARREDONDAMENTO_PRECO_VENDA_ORCAMENTO_ITEM fixo em 1 centavo
-            IEnumerable<string> ret = await prepedidoBll.CadastrarPrepedido(prePedido, apelido.Trim(), 0.01M, true,
+            IEnumerable<string> ret = await prepedidoApiBll.CadastrarPrepedido(prePedido, apelido.Trim(), 0.01M, true,
                 (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS);
 
             return Ok(ret);
@@ -169,7 +172,7 @@ namespace PrepedidoApi.Controllers
             //para testar: http://localhost:60877/api/prepedido/deletarPrepedido
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            await prepedidoBll.DeletarOrcamentoExisteComTransacao(prePedido, apelido.Trim());
+            await prepedidoApiBll.DeletarOrcamentoExisteComTransacao(prePedido, apelido.Trim());
 
             return Ok();
         }

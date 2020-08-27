@@ -40,5 +40,58 @@ namespace Cliente.Dados
         public string Email { get; set; }
         public string EmailXml { get; set; }
         public string Contato { get; set; }
+
+        public static DadosClienteCadastroDados DadosClienteCadastroDadosDeEnderecoCadastralClientePrepedidoDados(
+            EnderecoCadastralClientePrepedidoDados endCadastral, string indicadorOrcamentista, string loja,
+            string sexo, DateTime? nascimento, string idCliente)
+        {
+            if (endCadastral == null) return null;
+            /* Ao criar um novo pré-pedido será permitido que seja alterado os dados do cliente 
+             * sem que altere o cadastro do cliente na base de dados, 
+             * foi incluído esses novos campos do Dto "EnderecoCadastralClientePrepedidoUnisDto", que recebe os dados de
+             * cliente.
+             * Estamos passando para o Dto "DadosClienteCadastroDto" para que seja feita a validação de dados dos novos
+             * dados que poderão ser alterado
+             * 
+             */
+            var ret = new DadosClienteCadastroDados()
+            {
+                Id = idCliente,
+                Indicador_Orcamentista = indicadorOrcamentista.ToUpper(),
+                Loja = loja,
+                Nome = endCadastral.Endereco_nome,
+                Cnpj_Cpf = UtilsGlobais.Util.SoDigitosCpf_Cnpj(endCadastral.Endereco_cnpj_cpf.Trim()),
+                Tipo = endCadastral.Endereco_tipo_pessoa,
+                Sexo = sexo == null ? "" : sexo,
+                Rg = endCadastral.Endereco_rg == null ? "" : endCadastral.Endereco_rg,
+                Nascimento = nascimento,
+                DddCelular = endCadastral.Endereco_ddd_cel,
+                Celular = endCadastral.Endereco_tel_cel,
+                DddResidencial = endCadastral.Endereco_ddd_res == null ? "" : endCadastral.Endereco_ddd_res,
+                TelefoneResidencial = endCadastral.Endereco_tel_res == null ? "" : endCadastral.Endereco_tel_res,
+                DddComercial = endCadastral.Endereco_ddd_com,
+                TelComercial = endCadastral.Endereco_tel_com,
+                Ramal = endCadastral.Endereco_ramal_com,
+                DddComercial2 = endCadastral.Endereco_ddd_com_2,
+                TelComercial2 = endCadastral.Endereco_tel_com_2,
+                Ramal2 = endCadastral.Endereco_ramal_com_2,
+                Ie = endCadastral.Endereco_ie,
+                ProdutorRural = endCadastral.Endereco_produtor_rural_status,
+                Contribuinte_Icms_Status = endCadastral.Endereco_contribuinte_icms_status,
+                Email = endCadastral.Endereco_email,
+                EmailXml = endCadastral.Endereco_email_xml,
+                Vendedor = "",// esse campo não é utilizado em TCliente
+                Cep = endCadastral.Endereco_cep.Replace("-", ""),
+                Endereco = endCadastral.Endereco_logradouro,
+                Numero = endCadastral.Endereco_numero,
+                Bairro = endCadastral.Endereco_bairro,
+                Cidade = endCadastral.Endereco_cidade,
+                Uf = endCadastral.Endereco_uf,
+                Complemento = endCadastral.Endereco_complemento,
+                Contato = endCadastral.Endereco_contato
+            };
+
+            return ret;
+        }
     }
 }

@@ -1,18 +1,17 @@
 ﻿using InfraBanco.Constantes;
 using InfraBanco.Modelos;
-using PrepedidoBusiness.Dto.ClienteCadastro;
-using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
+using Prepedido.Dados.DetalhesPrepedido;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
 using System.Text;
 
-namespace PrepedidoBusiness.Bll.PrepedidoBll
+namespace Prepedido
 {
     public class MontarLogPrepedidoBll
     {
-        public string MontarCamposAInserirPrepedido(Torcamento torcamento, PrePedidoDto prepedido)
+        public string MontarCamposAInserirPrepedido(Torcamento torcamento, PrePedidoDados prepedido)
         {
             //montamos os valores a serem inseridos
             string campos_a_inserir = MontarCamposAInserirValorTotal(torcamento.Vl_Total.ToString());
@@ -27,7 +26,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
 
             //montamos os campos de endereço de entrega se existir
             campos_a_inserir += prepedido.EnderecoEntrega.OutroEndereco ?
-                MontaCamposAInserirEnderecoEntrega(EnderecoEntregaDtoClienteCadastro.EnderecoEntregaClienteCadastroDados_De_EnderecoEntregaDtoClienteCadastro(prepedido.EnderecoEntrega)) : " Endereço entrega=mesmo do cadastro|";
+                MontaCamposAInserirEnderecoEntrega(prepedido.EnderecoEntrega) : " Endereço entrega=mesmo do cadastro|";
 
             campos_a_inserir += "|InstaladorInstalaStatus|GarantiaIndicadorStatus|perc_desagio_RA_liquida";
 
@@ -83,7 +82,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return campos_a_inserir;
         }
 
-        private string MontarCamposAInserirFormaPagto(FormaPagtoCriacaoDto forma_pagto_criacao)
+        private string MontarCamposAInserirFormaPagto(FormaPagtoCriacaoDados forma_pagto_criacao)
         {
             string campos_a_inserir = "";
             campos_a_inserir += "tipo_parcelamento|";

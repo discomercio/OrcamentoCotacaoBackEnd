@@ -1,13 +1,13 @@
 ﻿using InfraBanco;
-using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using UtilsGlobais;
+using Prepedido.Dados.DetalhesPrepedido;
 
-namespace PrepedidoBusiness.Bll.PrepedidoBll
+namespace Prepedido
 {
     public class PrepedidoRepetidoBll
     {
@@ -18,7 +18,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             this.contextoProvider = contextoProvider;
         }
 
-        public async Task<string> PrepedidoJaCadastradoCriterioSiteColors(PrePedidoDto prePedido)
+        public async Task<string> PrepedidoJaCadastradoCriterioSiteColors(PrePedidoDados prePedido)
         {
             var ret = await PrepedidoJaCadastradoDesdeData(prePedido, DateTime.Now.AddMinutes(-10)); //no máxio há 10 minutos
             if (ret.Count == 0)
@@ -26,7 +26,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             return ret[0];
         }
 
-        public async Task<List<string>> PrepedidoJaCadastradoDesdeData(PrePedidoDto prePedido, DateTime dataLimite)
+        public async Task<List<string>> PrepedidoJaCadastradoDesdeData(PrePedidoDados prePedido, DateTime dataLimite)
         {
             List<string> ret = new List<string>();
 
