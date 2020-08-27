@@ -25,6 +25,7 @@ namespace PrepedidoBusiness.Dto.ClienteCadastro.Referencias
 
         public static List<RefComercialDtoCliente> ListaRefComercialDtoCliente_De_RefComercialClienteDados(IEnumerable<Cliente.Dados.Referencias.RefComercialClienteDados> origem)
         {
+            if (origem == null) return null;
             var ret = new List<RefComercialDtoCliente>();
             if (origem != null)
                 foreach (var p in origem)
@@ -34,6 +35,7 @@ namespace PrepedidoBusiness.Dto.ClienteCadastro.Referencias
 
         public static RefComercialDtoCliente RefComercialDtoCliente_De_RefComercialClienteDados(Cliente.Dados.Referencias.RefComercialClienteDados origem)
         {
+            if (origem == null) return null;
             var ret = new RefComercialDtoCliente()
             {
                 Nome_Empresa = origem.Nome_Empresa,
@@ -47,6 +49,7 @@ namespace PrepedidoBusiness.Dto.ClienteCadastro.Referencias
 
         public static List<Cliente.Dados.Referencias.RefComercialClienteDados> ListaRefComercialClienteDados_De_RefComercialDtoCliente(IEnumerable<RefComercialDtoCliente> origem)
         {
+            if (origem == null) return null;
             var ret = new List<Cliente.Dados.Referencias.RefComercialClienteDados>();
             if (origem != null)
                 foreach (var p in origem)
@@ -56,6 +59,7 @@ namespace PrepedidoBusiness.Dto.ClienteCadastro.Referencias
 
         public static Cliente.Dados.Referencias.RefComercialClienteDados RefComercialClienteDados_De_RefComercialDtoCliente(RefComercialDtoCliente origem)
         {
+            if (origem == null) return null;
             var ret = new Cliente.Dados.Referencias.RefComercialClienteDados()
             {
                 Nome_Empresa = origem.Nome_Empresa,

@@ -44,6 +44,7 @@ namespace PrepedidoBusiness.Dto.ClienteCadastro
 
         public static DadosClienteCadastroDto DadosClienteCadastroDto_De_DadosClienteCadastroDados(Cliente.Dados.DadosClienteCadastroDados origem)
         {
+            if (origem == null) return null;
             return new DadosClienteCadastroDto()
             {
                 Loja = origem.Loja,
@@ -85,6 +86,7 @@ namespace PrepedidoBusiness.Dto.ClienteCadastro
 
         public static Cliente.Dados.DadosClienteCadastroDados DadosClienteCadastroDados_De_DadosClienteCadastroDto(DadosClienteCadastroDto origem)
         {
+            if (origem == null) return null;
             return new Cliente.Dados.DadosClienteCadastroDados()
             {
                 Loja = origem.Loja,
@@ -128,6 +130,7 @@ namespace PrepedidoBusiness.Dto.ClienteCadastro
             EnderecoCadastralClientePrepedidoDto endCadastral, string indicadorOrcamentista, string loja,
             string sexo, DateTime? nascimento, string idCliente)
         {
+            if (endCadastral == null) return null;
             /* Ao criar um novo pré-pedido será permitido que seja alterado os dados do cliente 
              * sem que altere o cadastro do cliente na base de dados, 
              * foi incluído esses novos campos do Dto "EnderecoCadastralClientePrepedidoUnisDto", que recebe os dados de

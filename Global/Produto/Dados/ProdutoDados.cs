@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Produto.ProdutoDados
+namespace Produto.Dados
 {
     public class ProdutoDados
     {

@@ -45,6 +45,7 @@ namespace PrepedidoBusiness.Dto.ClienteCadastro
 
         public static EnderecoEntregaDtoClienteCadastro EnderecoEntregaDtoClienteCadastro_De_EnderecoEntregaClienteCadastroDados(Cliente.Dados.EnderecoEntregaClienteCadastroDados origem)
         {
+            if (origem == null) return null;
             var ret = new EnderecoEntregaDtoClienteCadastro()
             {
                 OutroEndereco = origem.OutroEndereco,
@@ -83,6 +84,7 @@ namespace PrepedidoBusiness.Dto.ClienteCadastro
 
         public static Cliente.Dados.EnderecoEntregaClienteCadastroDados EnderecoEntregaClienteCadastroDados_De_EnderecoEntregaDtoClienteCadastro(EnderecoEntregaDtoClienteCadastro  origem)
         {
+            if (origem == null) return null;
             var ret = new Cliente.Dados.EnderecoEntregaClienteCadastroDados()
             {
                 OutroEndereco = origem.OutroEndereco,

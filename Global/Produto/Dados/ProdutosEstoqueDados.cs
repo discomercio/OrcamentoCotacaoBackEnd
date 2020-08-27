@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Produto.ProdutoDados
+namespace Produto.Dados
 {
     public class ProdutosEstoqueDados
     {

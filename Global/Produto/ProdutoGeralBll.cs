@@ -5,7 +5,7 @@ using InfraBanco.Modelos;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Produto.RegrasCrtlEstoque;
-using Produto.ProdutoDados;
+using Produto.Dados;
 
 namespace Produto
 {
@@ -43,7 +43,7 @@ namespace Produto
                 cliente.produtor_rural_status);
 
             var lstProdutosCompostos = BuscarProdutosCompostos(loja);
-            List<ProdutoDados.ProdutoDados> lstTodosProdutos = (await BuscarTodosProdutos(loja)).ToList();
+            List<Produto.Dados.ProdutoDados> lstTodosProdutos = (await BuscarTodosProdutos(loja)).ToList();
 
             List<RegrasBll> lst_cliente_regra = new List<RegrasBll>();
             MontaListaRegras(lstTodosProdutos, lst_cliente_regra);
@@ -69,7 +69,7 @@ namespace Produto
             return retorno;
         }
 
-        private async Task ExisteMensagensAlertaProdutos(List<ProdutoDados.ProdutoDados> lst_produtos)
+        private async Task ExisteMensagensAlertaProdutos(List<Produto.Dados.ProdutoDados> lst_produtos)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -101,7 +101,7 @@ namespace Produto
             }
         }
 
-        private void MontaListaRegras(List<ProdutoDados.ProdutoDados> lst_produtos, List<RegrasBll> lst_cliente_regra)
+        private void MontaListaRegras(List<Produto.Dados.ProdutoDados> lst_produtos, List<RegrasBll> lst_cliente_regra)
         {
             foreach (var p in lst_produtos)
             {
@@ -162,7 +162,7 @@ namespace Produto
         }
 
 
-        private async Task<IEnumerable<ProdutoDados.ProdutoDados>> BuscarTodosProdutos(string loja)
+        private async Task<IEnumerable<Produto.Dados.ProdutoDados>> BuscarTodosProdutos(string loja)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -171,7 +171,7 @@ namespace Produto
                                     join fab in db.Tfabricantes on c.Fabricante equals fab.Fabricante
                                     where pl.Vendavel == "S" &&
                                           pl.Loja == loja
-                                    select new ProdutoDados.ProdutoDados
+                                    select new Produto.Dados.ProdutoDados
                                     {
                                         Fabricante = c.Fabricante,
                                         Fabricante_Nome = fab.Nome,
@@ -183,7 +183,7 @@ namespace Produto
                                         Desc_Max = pl.Desc_Max
                                     };
 
-            List<ProdutoDados.ProdutoDados> lstTodosProdutos = await todosProdutosTask.ToListAsync();
+            List<Produto.Dados.ProdutoDados> lstTodosProdutos = await todosProdutosTask.ToListAsync();
 
             return lstTodosProdutos;
         }
@@ -192,7 +192,7 @@ namespace Produto
          * pois estamos realizando a busca apenas em produtos que 
          * a subtração entre qtde e qtde_utilizada seja maior que 0
          */
-        private void IncluirEstoqueProduto(List<RegrasBll> lstRegras, List<ProdutoDados.ProdutoDados> lst_produtos, Tparametro parametro)
+        private void IncluirEstoqueProduto(List<RegrasBll> lstRegras, List<Produto.Dados.ProdutoDados> lst_produtos, Tparametro parametro)
         {
             int qtde_estoque_total_disponivel = 0;
             int qtde_estoque_total_disponivel_global = 0;

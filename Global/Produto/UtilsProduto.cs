@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using InfraBanco.Constantes;
 using Microsoft.EntityFrameworkCore;
 using Produto.RegrasCrtlEstoque;
-using Produto.ProdutoDados;
+using Produto.Dados;
 
 namespace Produto
 {
@@ -133,7 +133,7 @@ namespace Produto
             return tipoPessoa;
         }
 
-        public static void ObterDisponibilidadeEstoque(List<RegrasBll> lstRegrasCrtlEstoque, List<Produto.ProdutoDados.ProdutoDados> lst_produtos,
+        public static void ObterDisponibilidadeEstoque(List<RegrasBll> lstRegrasCrtlEstoque, List<Produto.Dados.ProdutoDados> lst_produtos,
                   List<string> lstErros, ContextoBdProvider contextoProvider)
         {
             foreach (var r in lstRegrasCrtlEstoque)

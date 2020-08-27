@@ -15,6 +15,7 @@ namespace PrepedidoBusiness.Dto.ClienteCadastro
 
         public static ClienteCadastroDto ClienteCadastroDto_De_ClienteCadastroDados(Cliente.Dados.ClienteCadastroDados origem)
         {
+            if (origem == null) return null;
             return new ClienteCadastroDto()
             {
                 DadosCliente = DadosClienteCadastroDto.DadosClienteCadastroDto_De_DadosClienteCadastroDados(origem.DadosCliente),
@@ -24,6 +25,7 @@ namespace PrepedidoBusiness.Dto.ClienteCadastro
         }
         public static Cliente.Dados.ClienteCadastroDados ClienteCadastroDados_De_ClienteCadastroDto(ClienteCadastroDto origem)
         {
+            if (origem == null) return null;
             return new Cliente.Dados.ClienteCadastroDados()
             {
                 DadosCliente = DadosClienteCadastroDto.DadosClienteCadastroDados_De_DadosClienteCadastroDto(origem.DadosCliente),

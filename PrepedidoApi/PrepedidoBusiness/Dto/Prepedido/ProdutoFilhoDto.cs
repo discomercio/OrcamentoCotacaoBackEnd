@@ -1,4 +1,4 @@
-﻿using Produto.ProdutoDados;
+﻿using Produto.Dados;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,17 +12,19 @@ namespace PrepedidoBusiness.Dto.Prepedido
         public string Produto { get; set; }
         public int Qtde { get; set; }
 
-        internal static List<ProdutoFilhoDto> ProdutoFilhoDtoListaDeProdutoFilhoDados(List<ProdutoFilhoDados> filhos)
+        internal static List<ProdutoFilhoDto> ProdutoFilhoDtoLista_De_ProdutoFilhoDados(List<ProdutoFilhoDados> filhos)
         {
+            if (filhos == null) return null;
             var ret = new List<ProdutoFilhoDto>();
             if (filhos != null)
                 foreach (var p in filhos)
-                    ret.Add(ProdutoFilhoDtoDeProdutoFilhoDados(p));
+                    ret.Add(ProdutoFilhoDto_De_ProdutoFilhoDados(p));
             return ret;
         }
 
-        internal static ProdutoFilhoDto ProdutoFilhoDtoDeProdutoFilhoDados(ProdutoFilhoDados p)
+        internal static ProdutoFilhoDto ProdutoFilhoDto_De_ProdutoFilhoDados(ProdutoFilhoDados p)
         {
+            if (p == null) return null;
             return new ProdutoFilhoDto()
             {
                 Fabricante = p.Fabricante,

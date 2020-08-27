@@ -1,4 +1,4 @@
-﻿using Produto.ProdutoDados;
+﻿using Produto.Dados;
 using System;
 using System.Collections.Generic;
 using System.Text;

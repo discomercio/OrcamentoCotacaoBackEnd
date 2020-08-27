@@ -18,14 +18,14 @@ namespace PrepedidoBusiness.Bll
         public async Task<IEnumerable<ListaBancoDto>> ListarBancosCombo()
         {
             IEnumerable<Cliente.Dados.ListaBancoDados> listaBancosDados = await clienteBll.ListarBancosCombo();
-            IEnumerable<ListaBancoDto> listaBancos = ListaBancoDto.ListaBancoDtoDeBancoDadosLista(listaBancosDados);
+            IEnumerable<ListaBancoDto> listaBancos = ListaBancoDto.ListaBancoDto_De_BancoDadosLista(listaBancosDados);
             return listaBancos;
         }
 
         public async Task<IEnumerable<EnderecoEntregaJustificativaDto>> ListarComboJustificaEndereco(string apelido)
         {
             IEnumerable<Cliente.Dados.EnderecoEntregaJustificativaDados> retorno = await clienteBll.ListarComboJustificaEndereco(apelido.Trim());
-            IEnumerable<EnderecoEntregaJustificativaDto> enderecoEntregaJustificativaDtos = EnderecoEntregaJustificativaDto.EnderecoEntregaJustificativaDtoDeEnderecoEntregaJustificativaDadosLista(retorno);
+            IEnumerable<EnderecoEntregaJustificativaDto> enderecoEntregaJustificativaDtos = EnderecoEntregaJustificativaDto.EnderecoEntregaJustificativaDto_De_EnderecoEntregaJustificativaDadosLista(retorno);
             return enderecoEntregaJustificativaDtos;
         }
         public async Task<List<string>> AtualizarClienteParcial(string apelido, DadosClienteCadastroDto dadosClienteCadastroDto)

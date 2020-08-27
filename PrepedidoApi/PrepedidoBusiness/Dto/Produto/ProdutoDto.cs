@@ -1,4 +1,4 @@
-﻿using Produto.ProdutoDados;
+﻿using Produto.Dados;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -28,17 +28,19 @@ namespace PrepedidoBusiness.Dto.Produto
         public string Alertas { get; set; }
         public short? Qtde_Max_Venda { get; set; }
 
-        internal static List<ProdutoDto> ProdutoDtoListaDeProdutoDados(List<ProdutoDados> produtoDados)
+        internal static List<ProdutoDto> ProdutoDtoLista_De_ProdutoDados(List<ProdutoDados> produtoDados)
         {
+            if (produtoDados == null) return null;
             var ret = new List<ProdutoDto>();
             if (produtoDados != null)
                 foreach (var p in produtoDados)
-                    ret.Add(ProdutoDtoDeProdutoDados(p));
+                    ret.Add(ProdutoDto_De_ProdutoDados(p));
             return ret;
         }
 
-        private static ProdutoDto ProdutoDtoDeProdutoDados(ProdutoDados p)
+        private static ProdutoDto ProdutoDto_De_ProdutoDados(ProdutoDados p)
         {
+            if (p == null) return null;
             return new ProdutoDto()
             {
 

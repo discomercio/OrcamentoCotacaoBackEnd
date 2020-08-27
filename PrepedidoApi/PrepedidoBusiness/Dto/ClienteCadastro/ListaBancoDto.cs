@@ -11,17 +11,19 @@ namespace PrepedidoBusiness.Dto.ClienteCadastro
         public string Descricao { get; set; }
 
 
-        public static List<ListaBancoDto> ListaBancoDtoDeBancoDadosLista(IEnumerable<Cliente.Dados.ListaBancoDados> listaBancoDados)
+        public static List<ListaBancoDto> ListaBancoDto_De_BancoDadosLista(IEnumerable<Cliente.Dados.ListaBancoDados> listaBancoDados)
         {
+            if (listaBancoDados == null) return null;
             var ret = new List<ListaBancoDto>();
             if (listaBancoDados != null)
                 foreach (var p in listaBancoDados)
-                    ret.Add(ListaBancoDtoDeBancoDados(p));
+                    ret.Add(ListaBancoDto_De_BancoDados(p));
             return ret;
         }
 
-        public static ListaBancoDto ListaBancoDtoDeBancoDados(Cliente.Dados.ListaBancoDados listaBancoDados)
+        public static ListaBancoDto ListaBancoDto_De_BancoDados(Cliente.Dados.ListaBancoDados listaBancoDados)
         {
+            if (listaBancoDados == null) return null;
             return new ListaBancoDto()
             {
                 Codigo = listaBancoDados.Codigo,

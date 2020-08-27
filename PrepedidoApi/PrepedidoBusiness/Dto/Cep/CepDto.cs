@@ -19,6 +19,7 @@ namespace PrepedidoBusiness.Dto.Cep
 
         public static CepDto CepDtoDeCepDados(global::Cep.Dados.CepDados cepDados)
         {
+            if (cepDados == null) return null;
             return new CepDto()
             {
                 Cep = cepDados.Cep,
@@ -35,6 +36,7 @@ namespace PrepedidoBusiness.Dto.Cep
 
         public static List<CepDto> CepDtoListaDeCepDados(IEnumerable<global::Cep.Dados.CepDados> cepDados)
         {
+            if (cepDados == null) return null;
             var ret = new List<CepDto>();
             if (cepDados != null)
                 foreach (var p in cepDados)

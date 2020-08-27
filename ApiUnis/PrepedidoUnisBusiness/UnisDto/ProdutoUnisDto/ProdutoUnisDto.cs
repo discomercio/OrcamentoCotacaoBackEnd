@@ -1,5 +1,5 @@
 ﻿using PrepedidoBusiness.Dto.Produto;
-using Produto.ProdutoDados;
+using Produto.Dados;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

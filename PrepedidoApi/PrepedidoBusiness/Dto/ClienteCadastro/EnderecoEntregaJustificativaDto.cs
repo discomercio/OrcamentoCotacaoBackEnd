@@ -14,17 +14,19 @@ namespace PrepedidoBusiness.Dto.ClienteCadastro
         public string EndEtg_descricao_justificativa { get; set; }
 
 
-        public static List<EnderecoEntregaJustificativaDto> EnderecoEntregaJustificativaDtoDeEnderecoEntregaJustificativaDadosLista(IEnumerable<Cliente.Dados.EnderecoEntregaJustificativaDados> enderecoEntregaJustificativaDados)
+        public static List<EnderecoEntregaJustificativaDto> EnderecoEntregaJustificativaDto_De_EnderecoEntregaJustificativaDadosLista(IEnumerable<Cliente.Dados.EnderecoEntregaJustificativaDados> enderecoEntregaJustificativaDados)
         {
+            if (enderecoEntregaJustificativaDados == null) return null;
             var ret = new List<EnderecoEntregaJustificativaDto>();
             if (enderecoEntregaJustificativaDados != null)
                 foreach (var p in enderecoEntregaJustificativaDados)
-                    ret.Add(EnderecoEntregaJustificativaDtoDeEnderecoEntregaJustificativaDados(p));
+                    ret.Add(EnderecoEntregaJustificativaDto_De_EnderecoEntregaJustificativaDados(p));
             return ret;
         }
 
-        public static EnderecoEntregaJustificativaDto EnderecoEntregaJustificativaDtoDeEnderecoEntregaJustificativaDados(Cliente.Dados.EnderecoEntregaJustificativaDados enderecoEntregaJustificativaDados)
+        public static EnderecoEntregaJustificativaDto EnderecoEntregaJustificativaDto_De_EnderecoEntregaJustificativaDados(Cliente.Dados.EnderecoEntregaJustificativaDados enderecoEntregaJustificativaDados)
         {
+            if (enderecoEntregaJustificativaDados == null) return null;
             return new EnderecoEntregaJustificativaDto()
             {
                 EndEtg_cod_justificativa = enderecoEntregaJustificativaDados.EndEtg_cod_justificativa,

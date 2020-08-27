@@ -20,7 +20,7 @@ namespace PrepedidoBusiness.Bll
         public async Task<PrepedidoBusiness.Dto.Produto.ProdutoComboDto> ListaProdutosComboApiArclube(string loja, string id_cliente)
         {
             var aux = await produtoGeralBll.ListaProdutosComboDados(loja, id_cliente, null);
-            return PrepedidoBusiness.Dto.Produto.ProdutoComboDto.ProdutoComboDtoDeProdutoComboDados(aux);
+            return PrepedidoBusiness.Dto.Produto.ProdutoComboDto.ProdutoComboDto_De_ProdutoComboDados(aux);
         }
 
        
