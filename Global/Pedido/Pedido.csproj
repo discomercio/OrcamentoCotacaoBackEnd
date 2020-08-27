@@ -4,4 +4,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Cliente\Cliente.csproj" />
+    <ProjectReference Include="..\Prepedido\Prepedido.csproj" />
+  </ItemGroup>
+
 </Project>

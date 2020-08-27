@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Pedido.Dados.DetalhesPedido;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -21,5 +22,26 @@ namespace PrepedidoBusiness.Dto.Pedido.DetalhesPedido
         public string Transportadora { get; set; }
         public decimal VlFrete { get; set; }
 
+        public static DetalhesFormaPagamentos DetalhesFormaPagamentos_De_DetalhesFormaPagamentosDados(DetalhesFormaPagamentosDados origem)
+        {
+            if (origem == null) return null;
+            return new DetalhesFormaPagamentos()
+            {
+                FormaPagto = origem.FormaPagto,
+                InfosAnaliseCredito = origem.InfosAnaliseCredito,
+                StatusPagto = origem.StatusPagto,
+                CorStatusPagto = origem.CorStatusPagto,
+                VlTotalFamilia = origem.VlTotalFamilia,
+                VlPago = origem.VlPago,
+                VlDevolucao = origem.VlDevolucao,
+                VlPerdas = origem.VlPerdas,
+                SaldoAPagar = origem.SaldoAPagar,
+                AnaliseCredito = origem.AnaliseCredito,
+                CorAnalise = origem.CorAnalise,
+                DataColeta = origem.DataColeta,
+                Transportadora = origem.Transportadora,
+                VlFrete = origem.VlFrete
+            };
+        }
     }
 }

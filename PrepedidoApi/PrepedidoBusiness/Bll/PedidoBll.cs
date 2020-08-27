@@ -10,8 +10,11 @@ using PrepedidoBusiness.Dto.Pedido.DetalhesPedido;
 using Microsoft.EntityFrameworkCore.Internal;
 using InfraBanco.Constantes;
 using UtilsGlobais;
+using Pedido.Dados;
+using Cliente.Dados;
+using Pedido.Dados.DetalhesPedido;
 
-namespace PrepedidoBusiness.Bll
+namespace Pedido
 {
     public class PedidoBll
     {
@@ -44,7 +47,7 @@ namespace PrepedidoBusiness.Bll
         }
 
 
-        public async Task<IEnumerable<PedidoDtoPedido>> ListarPedidos(string apelido, TipoBuscaPedido tipoBusca,
+        public async Task<IEnumerable<PedidosPedidoDados>> ListarPedidos(string apelido, TipoBuscaPedido tipoBusca,
             string clienteBusca, string numeroPedido, DateTime? dataInicial, DateTime? dataFinal)
         {
             if (dataInicial < Util.LimiteDataBuscas())
@@ -76,7 +79,7 @@ namespace PrepedidoBusiness.Bll
         }
 
         //a busca sem malabarismos para econtrar algum registro
-        private async Task<IEnumerable<PedidoDtoPedido>> ListarPedidosFiltroEstrito(string apelido, TipoBuscaPedido tipoBusca,
+        private async Task<IEnumerable<PedidosPedidoDados>> ListarPedidosFiltroEstrito(string apelido, TipoBuscaPedido tipoBusca,
             string clienteBusca, string numeroPedido, DateTime? dataInicial, DateTime? dataFinal)
         {
             var db = contextoProvider.GetContextoLeitura();
@@ -108,7 +111,7 @@ namespace PrepedidoBusiness.Bll
             if (dataFinal.HasValue)
                 lista = lista.Where(r => r.Data <= dataFinal.Value);
 
-            List<PedidoDtoPedido> lst_pedido = new List<PedidoDtoPedido>();
+            List<PedidosPedidoDados> lst_pedido = new List<PedidosPedidoDados>();
 
             //precisa calcular os itens de cada produto referente ao pedido, 
             //para trazer o valor total do pedido e não o total da familia
@@ -124,7 +127,7 @@ namespace PrepedidoBusiness.Bll
                                          where c.Pedido == i.Pedido
                                          select c.Tpedido.Tcliente.Nome_Iniciais_Em_Maiusculas).FirstOrDefaultAsync();
 
-                    lst_pedido.Add(new PedidoDtoPedido
+                    lst_pedido.Add(new PedidosPedidoDados
                     {
                         NomeCliente = nome,
                         NumeroPedido = i.Pedido,
@@ -177,13 +180,13 @@ namespace PrepedidoBusiness.Bll
             return cpfCnpjFormat;
         }
 
-        private async Task<DadosClienteCadastroDto> ObterDadosCliente(Tpedido pedido)
+        private async Task<DadosClienteCadastroDados> ObterDadosCliente(Tpedido pedido)
         {
             var dadosCliente = from c in contextoProvider.GetContextoLeitura().Tclientes
                                where c.Id == pedido.Id_Cliente
                                select c;
             var cli = await dadosCliente.FirstOrDefaultAsync();
-            DadosClienteCadastroDto cadastroCliente = new DadosClienteCadastroDto
+            DadosClienteCadastroDados cadastroCliente = new DadosClienteCadastroDados
             {
                 Loja = await ObterRazaoSocial_Nome_Loja(pedido.Loja),
                 Indicador_Orcamentista = pedido.Orcamentista,
@@ -223,13 +226,13 @@ namespace PrepedidoBusiness.Bll
             return cadastroCliente;
         }
 
-        private async Task<DadosClienteCadastroDto> ObterDadosClientePedido(Tpedido pedido)
+        private async Task<DadosClienteCadastroDados> ObterDadosClientePedido(Tpedido pedido)
         {
             var dadosCliente = from c in contextoProvider.GetContextoLeitura().Tclientes
                                where c.Id == pedido.Id_Cliente
                                select c;
             var cli = await dadosCliente.FirstOrDefaultAsync();
-            DadosClienteCadastroDto cadastroCliente = new DadosClienteCadastroDto
+            DadosClienteCadastroDados cadastroCliente = new DadosClienteCadastroDados
             {
                 Loja = await ObterRazaoSocial_Nome_Loja(pedido.Loja),
                 Indicador_Orcamentista = pedido.Orcamentista,
@@ -290,9 +293,9 @@ namespace PrepedidoBusiness.Bll
             return retorno;
         }
 
-        private async Task<EnderecoEntregaDtoClienteCadastro> ObterEnderecoEntrega(Tpedido p)
+        private async Task<EnderecoEntregaClienteCadastroDados> ObterEnderecoEntrega(Tpedido p)
         {
-            EnderecoEntregaDtoClienteCadastro enderecoEntrega = new EnderecoEntregaDtoClienteCadastro();
+            EnderecoEntregaClienteCadastroDados enderecoEntrega = new EnderecoEntregaClienteCadastroDados();
 
             //afazer: criar método para pegar todos os dados de endereço com os campos novos
             enderecoEntrega.OutroEndereco = p.EndEtg_Cod_Justificativa != "" ? true : false;
@@ -330,7 +333,7 @@ namespace PrepedidoBusiness.Bll
             return enderecoEntrega;
         }
 
-        private async Task<IEnumerable<PedidoProdutosDtoPedido>> ObterProdutos(string numPedido)
+        private async Task<IEnumerable<PedidoProdutosPedidoDados>> ObterProdutos(string numPedido)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -338,7 +341,7 @@ namespace PrepedidoBusiness.Bll
                                                      where c.Pedido == numPedido
                                                      select c).ToListAsync();
 
-            List<PedidoProdutosDtoPedido> lstProduto = new List<PedidoProdutosDtoPedido>();
+            List<PedidoProdutosPedidoDados> lstProduto = new List<PedidoProdutosPedidoDados>();
 
             int qtde_sem_presenca = 0;
             int qtde_vendido = 0;
@@ -352,7 +355,7 @@ namespace PrepedidoBusiness.Bll
                 if (qtde_sem_presenca != 0)
                     faltante = (short)qtde_sem_presenca;
 
-                PedidoProdutosDtoPedido produto = new PedidoProdutosDtoPedido
+                PedidoProdutosPedidoDados produto = new PedidoProdutosPedidoDados
                 {
                     Fabricante = c.Fabricante,
                     NumProduto = c.Produto,
@@ -377,7 +380,7 @@ namespace PrepedidoBusiness.Bll
             return lstProduto;
         }
 
-        public async Task<PedidoDto> BuscarPedido(string apelido, string numPedido)
+        public async Task<PedidoDados> BuscarPedido(string apelido, string numPedido)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -406,7 +409,7 @@ namespace PrepedidoBusiness.Bll
 
             if (p == null)
                 return null;
-            DadosClienteCadastroDto dadosCliente = new DadosClienteCadastroDto();
+            DadosClienteCadastroDados dadosCliente = new DadosClienteCadastroDados();
             if (p.St_memorizacao_completa_enderecos == 0)
             {
                 dadosCliente = await ObterDadosCliente(p);
@@ -436,7 +439,7 @@ namespace PrepedidoBusiness.Bll
             if (garantiaIndicadorStatus == Constantes.COD_GARANTIA_INDICADOR_STATUS__SIM)
                 garantiaIndicadorStatus = "SIM";
 
-            DetalhesNFPedidoDtoPedido detalhesNf = new DetalhesNFPedidoDtoPedido();
+            DetalhesNFPedidoPedidoDados detalhesNf = new DetalhesNFPedidoPedidoDados();
             detalhesNf.Observacoes = p.Obs_1;
             detalhesNf.ConstaNaNF = p.Nfe_Texto_Constar;
             detalhesNf.XPed = p.Nfe_XPed;
@@ -476,7 +479,7 @@ namespace PrepedidoBusiness.Bll
             if (tPedidoPai.St_Entrega == Constantes.ST_PAGTO_PAGO && saldo_a_pagar > 0)
                 saldo_a_pagar = 0;
 
-            DetalhesFormaPagamentos detalhesFormaPagto = new DetalhesFormaPagamentos();
+            DetalhesFormaPagamentosDados detalhesFormaPagto = new DetalhesFormaPagamentosDados();
 
             detalhesFormaPagto.FormaPagto = (await lstFormaPgtoTask).ToList();
             detalhesFormaPagto.InfosAnaliseCredito = p.Forma_Pagto;
@@ -516,7 +519,7 @@ namespace PrepedidoBusiness.Bll
                 }
             }
 
-            PedidoDto DtoPedido = new PedidoDto
+            PedidoDados DtoPedido = new PedidoDados
             {
                 NumeroPedido = numPedido,
                 Lista_NumeroPedidoFilhote = lstPorLinha,
@@ -535,7 +538,7 @@ namespace PrepedidoBusiness.Bll
                 ListaProdutoDevolvido = (await BuscarProdutosDevolvidos(numPedido)).ToList(),
                 ListaPerdas = (await BuscarPerdas(numPedido)).ToList(),
                 ListaBlocoNotas = (await BuscarPedidoBlocoNotas(numPedido)).ToList(),
-                EnderecoEntrega = await enderecoEntregaTask,
+                EnderecoEntrega = (await enderecoEntregaTask),
                 ListaOcorrencia = (await lstOcorrenciaTask).ToList(),
                 ListaBlocoNotasDevolucao = (await lstBlocNotasDevolucaoTask).ToList()
             };
@@ -726,7 +729,7 @@ namespace PrepedidoBusiness.Bll
             return retorno;
         }
 
-        private async Task<StatusPedidoDtoPedido> MontarDtoStatuPedido(Tpedido p)
+        private async Task<StatusPedidoPedidoDados> MontarDtoStatuPedido(Tpedido p)
         {
             /*
              * Buscar o pedido para:
@@ -742,7 +745,7 @@ namespace PrepedidoBusiness.Bll
                             select c;
             int countItemDevolvido = await countTask.CountAsync();
 
-            StatusPedidoDtoPedido status = new StatusPedidoDtoPedido();
+            StatusPedidoPedidoDados status = new StatusPedidoPedidoDados();
 
             if (!String.IsNullOrEmpty(p.Pedido_Bs_X_Marketplace))
             {
@@ -914,7 +917,7 @@ namespace PrepedidoBusiness.Bll
             return retorno;
         }
 
-        private async Task<IEnumerable<OcorrenciasDtoPedido>> ObterOcorrencias(string numPedido)
+        private async Task<IEnumerable<OcorrenciasPedidoDados>> ObterOcorrencias(string numPedido)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -929,12 +932,12 @@ namespace PrepedidoBusiness.Bll
                                 juncao = j
                             }).ToList();
 
-            List<OcorrenciasDtoPedido> lista = new List<OcorrenciasDtoPedido>();
+            List<OcorrenciasPedidoDados> lista = new List<OcorrenciasPedidoDados>();
 
             leftJoin.ForEach(async x =>
             {
                 //objeto para ser adicionado na lista de retorno
-                OcorrenciasDtoPedido ocorre = new OcorrenciasDtoPedido();
+                OcorrenciasPedidoDados ocorre = new OcorrenciasPedidoDados();
                 ocorre.Usuario = x.juncao.Usuario_Cadastro;
                 ocorre.Dt_Hr_Cadastro = x.juncao.Dt_Hr_Cadastro;
                 if (x.juncao.Finalizado_Status != 0)
@@ -968,13 +971,13 @@ namespace PrepedidoBusiness.Bll
             return await Task.FromResult(lista);
         }
 
-        private async Task<IEnumerable<MensagemDtoOcorrenciaPedido>> ObterMensagemOcorrencia(int idOcorrencia)
+        private async Task<IEnumerable<MensagemOcorrenciaPedidoDados>> ObterMensagemOcorrencia(int idOcorrencia)
         {
             var db = contextoProvider.GetContextoLeitura();
 
             var msg = from c in db.TpedidoOcorrenciaMensagems
                       where c.Id_Ocorrencia == idOcorrencia
-                      select new MensagemDtoOcorrenciaPedido
+                      select new MensagemOcorrenciaPedidoDados
                       {
                           Dt_Hr_Cadastro = c.Dt_Hr_Cadastro,
                           Usuario = c.Usuario_Cadastro,
@@ -1086,13 +1089,13 @@ namespace PrepedidoBusiness.Bll
             return await Task.FromResult(result);
         }
 
-        private async Task<IEnumerable<ProdutoDevolvidoDtoPedido>> BuscarProdutosDevolvidos(string numPedido)
+        private async Task<IEnumerable<ProdutoDevolvidoPedidoDados>> BuscarProdutosDevolvidos(string numPedido)
         {
             var db = contextoProvider.GetContextoLeitura();
 
             var lista = from c in db.TpedidoItemDevolvidos
                         where c.Pedido.StartsWith(numPedido)
-                        select new ProdutoDevolvidoDtoPedido
+                        select new ProdutoDevolvidoPedidoDados
                         {
                             Data = c.Devolucao_Data,
                             Hora = c.Devolucao_Hora.Substring(0, 2) + ":" + c.Devolucao_Hora.Substring(2, 2),
@@ -1106,13 +1109,13 @@ namespace PrepedidoBusiness.Bll
             return await Task.FromResult(lista);
         }
 
-        private async Task<IEnumerable<PedidoPerdasDtoPedido>> BuscarPerdas(string numPedido)
+        private async Task<IEnumerable<PedidoPerdasPedidoDados>> BuscarPerdas(string numPedido)
         {
             var db = contextoProvider.GetContextoLeitura();
 
             var lista = from c in db.TpedidoPerdas
                         where c.Pedido == numPedido
-                        select new PedidoPerdasDtoPedido
+                        select new PedidoPerdasPedidoDados
                         {
                             Data = c.Data,
                             Hora = Formata_hhmmss_para_hh_minuto_ss(c.Hora),
@@ -1175,7 +1178,7 @@ namespace PrepedidoBusiness.Bll
             return retorno;
         }
 
-        private async Task<IEnumerable<BlocoNotasDtoPedido>> BuscarPedidoBlocoNotas(string numPedido)
+        private async Task<IEnumerable<BlocoNotasPedidoDados>> BuscarPedidoBlocoNotas(string numPedido)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -1185,11 +1188,11 @@ namespace PrepedidoBusiness.Bll
                            c.Anulado_Status == 0
                      select c;
 
-            List<BlocoNotasDtoPedido> lstBlocoNotas = new List<BlocoNotasDtoPedido>();
+            List<BlocoNotasPedidoDados> lstBlocoNotas = new List<BlocoNotasPedidoDados>();
 
             foreach (var i in bl)
             {
-                BlocoNotasDtoPedido bloco = new BlocoNotasDtoPedido
+                BlocoNotasPedidoDados bloco = new BlocoNotasPedidoDados
                 {
                     Dt_Hora_Cadastro = i.Dt_Hr_Cadastro,
                     Usuario = i.Usuario,
@@ -1203,14 +1206,14 @@ namespace PrepedidoBusiness.Bll
 
         }
 
-        private async Task<IEnumerable<BlocoNotasDevolucaoMercadoriasDtoPedido>> BuscarPedidoBlocoNotasDevolucao(string numPedido)
+        private async Task<IEnumerable<BlocoNotasDevolucaoMercadoriasPedidoDados>> BuscarPedidoBlocoNotasDevolucao(string numPedido)
         {
             var db = contextoProvider.GetContextoLeitura();
 
             var blDevolucao = from c in db.TpedidoItemDevolvidoBlocoNotas
                               where c.TpedidoItemDevolvido.Pedido == numPedido && c.Anulado_Status == 0
                               orderby c.Dt_Hr_Cadastro, c.Id
-                              select new BlocoNotasDevolucaoMercadoriasDtoPedido
+                              select new BlocoNotasDevolucaoMercadoriasPedidoDados
                               {
                                   Dt_Hr_Cadastro = c.Dt_Hr_Cadastro,
                                   Usuario = c.Usuario,
@@ -1219,13 +1222,13 @@ namespace PrepedidoBusiness.Bll
                               };
 
             if (blDevolucao.Count() == 0)
-                return new List<BlocoNotasDevolucaoMercadoriasDtoPedido>();
+                return new List<BlocoNotasDevolucaoMercadoriasPedidoDados>();
 
-            List<BlocoNotasDevolucaoMercadoriasDtoPedido> lista = new List<BlocoNotasDevolucaoMercadoriasDtoPedido>();
+            List<BlocoNotasDevolucaoMercadoriasPedidoDados> lista = new List<BlocoNotasDevolucaoMercadoriasPedidoDados>();
 
             foreach (var b in blDevolucao)
             {
-                lista.Add(new BlocoNotasDevolucaoMercadoriasDtoPedido
+                lista.Add(new BlocoNotasDevolucaoMercadoriasPedidoDados
                 {
                     Dt_Hr_Cadastro = b.Dt_Hr_Cadastro,
                     Usuario = b.Usuario,

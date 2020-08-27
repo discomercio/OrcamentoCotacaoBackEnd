@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Pedido.Dados.DetalhesPedido;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -16,5 +17,33 @@ namespace PrepedidoBusiness.Dto.Pedido.DetalhesPedido
         public DateTime? Finalizado_Data_Hora { get; set; }
         public string Tipo_Ocorrencia { get; set; }//obtem_descricao_tabela_t_codigo_descricao(GRUPO_T_CODIGO_DESCRICAO__OCORRENCIAS_EM_PEDIDOS__TIPO_OCORRENCIA, Trim("" & rs("tipo_ocorrencia")))
         public string Texto_Finalizacao { get; set; }
+
+
+        public static List<OcorrenciasDtoPedido> ListaOcorrenciasDtoPedido_De_OcorrenciasPedidoDados(IEnumerable<OcorrenciasPedidoDados> listaBancoDados)
+        {
+            if (listaBancoDados == null) return null;
+            var ret = new List<OcorrenciasDtoPedido>();
+            if (listaBancoDados != null)
+                foreach (var p in listaBancoDados)
+                    ret.Add(OcorrenciasDtoPedido_De_OcorrenciasPedidoDados(p));
+            return ret;
+        }
+        public static OcorrenciasDtoPedido OcorrenciasDtoPedido_De_OcorrenciasPedidoDados(OcorrenciasPedidoDados origem)
+        {
+            if (origem == null) return null;
+            return new OcorrenciasDtoPedido()
+            {
+                Usuario = origem.Usuario,
+                Dt_Hr_Cadastro = origem.Dt_Hr_Cadastro,
+                Situacao = origem.Situacao,
+                Contato = origem.Contato,
+                Texto_Ocorrencia = origem.Texto_Ocorrencia,
+                mensagemDtoOcorrenciaPedidos = MensagemDtoOcorrenciaPedido.ListaMensagemDtoOcorrenciaPedido_De_MensagemOcorrenciaPedidoDados(origem.mensagemDtoOcorrenciaPedidos),
+                Finalizado_Usuario = origem.Finalizado_Usuario,
+                Finalizado_Data_Hora = origem.Finalizado_Data_Hora,
+                Tipo_Ocorrencia = origem.Tipo_Ocorrencia,
+                Texto_Finalizacao = origem.Texto_Finalizacao
+            };
+        }
     }
 }

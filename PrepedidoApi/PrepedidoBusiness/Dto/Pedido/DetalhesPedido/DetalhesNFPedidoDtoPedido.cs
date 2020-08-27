@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Pedido.Dados.DetalhesPedido;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -16,5 +17,24 @@ namespace PrepedidoBusiness.Dto.Pedido.DetalhesPedido
         public short InstaladorInstala { get; set; }
         public string GarantiaIndicadorStatus { get; set; }
         public string PrevisaoEntrega { get; set; }
+
+        public static DetalhesNFPedidoDtoPedido DetalhesNFPedidoDtoPedido_De_DetalhesNFPedidoPedidoDados(DetalhesNFPedidoPedidoDados origem)
+        {
+            if (origem == null) return null;
+            return new DetalhesNFPedidoDtoPedido()
+            {
+                Observacoes = origem.Observacoes,
+                ConstaNaNF = origem.ConstaNaNF,
+                XPed = origem.XPed,
+                NumeroNF = origem.NumeroNF,
+                NFSimples = origem.NFSimples,
+                EntregaImediata = origem.EntregaImediata,
+                StBemUsoConsumo = origem.StBemUsoConsumo,
+                InstaladorInstala = origem.InstaladorInstala,
+                GarantiaIndicadorStatus = origem.GarantiaIndicadorStatus,
+                PrevisaoEntrega = origem.PrevisaoEntrega
+            };
+        }
     }
+
 }

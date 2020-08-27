@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PrepedidoBusiness.Bll;
 
 namespace PrepedidoApi.Controllers
 {
@@ -12,13 +13,16 @@ namespace PrepedidoApi.Controllers
     [Authorize(Roles = Utils.Autenticacao.RoleAcesso)]
     public class PedidoController : ControllerBase
     {
-        private readonly PrepedidoBusiness.Bll.PedidoBll pedidoBll;
+        private readonly Pedido.PedidoBll pedidoBll;
         private readonly InfraIdentity.IServicoDecodificarToken servicoDecodificarToken;
+        private readonly PedidoPrepedidoApiBll pedidoPrepedidoApiBll;
 
-        public PedidoController(PrepedidoBusiness.Bll.PedidoBll pedidoBll, InfraIdentity.IServicoDecodificarToken servicoDecodificarToken)
+        public PedidoController(Pedido.PedidoBll pedidoBll, InfraIdentity.IServicoDecodificarToken servicoDecodificarToken,
+            PrepedidoBusiness.Bll.PedidoPrepedidoApiBll pedidoPrepedidoApiBll)
         {
             this.pedidoBll = pedidoBll;
             this.servicoDecodificarToken = servicoDecodificarToken;
+            this.pedidoPrepedidoApiBll = pedidoPrepedidoApiBll;
         }
 
 #if DEBUG
@@ -46,8 +50,8 @@ namespace PrepedidoApi.Controllers
         {
             //para testar: http://localhost:60877/api/pedido/listarPedidos
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            IEnumerable<PrepedidoBusiness.Dto.Pedido.PedidoDtoPedido> ret = await pedidoBll.ListarPedidos(apelido.Trim(),
-                (PrepedidoBusiness.Bll.PedidoBll.TipoBuscaPedido)tipoBusca, clienteBusca,
+            IEnumerable<PrepedidoBusiness.Dto.Pedido.PedidoDtoPedido> ret = await pedidoPrepedidoApiBll.ListarPedidos(apelido.Trim(),
+                (Pedido.PedidoBll.TipoBuscaPedido)tipoBusca, clienteBusca,
                 numPedido, dataInicial, dataFinal);
 
             return Ok(ret);
@@ -78,7 +82,7 @@ namespace PrepedidoApi.Controllers
             //para testar: http://localhost:60877/api/pedido/buscarPedido
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            PrepedidoBusiness.Dto.Pedido.DetalhesPedido.PedidoDto ret = await pedidoBll.BuscarPedido(apelido.Trim(), numPedido);
+            PrepedidoBusiness.Dto.Pedido.DetalhesPedido.PedidoDto ret = await pedidoPrepedidoApiBll.BuscarPedido(apelido.Trim(), numPedido);
 
             return Ok(ret);
         }
