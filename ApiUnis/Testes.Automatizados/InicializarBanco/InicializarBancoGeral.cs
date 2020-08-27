@@ -210,6 +210,22 @@ namespace Testes.Automatizados.InicializarBanco
                     Qtde_Parcelas = (short)dado.FormaPagtoCriacao.C_pc_qtde.Value,
                     Coeficiente = produtos.First(lp => lp.Fabricante == f.Fabricante).CustoFinancFornecCoeficiente
                 });
+
+                db.TpercentualCustoFinanceiroFornecedors.Add(new InfraBanco.Modelos.TpercentualCustoFinanceiroFornecedor()
+                {
+                    Fabricante = f.Fabricante,
+                    Tipo_Parcelamento = "SE",
+                    Qtde_Parcelas = 4,
+                    Coeficiente = 1.0527f
+                });
+
+                db.TpercentualCustoFinanceiroFornecedors.Add(new InfraBanco.Modelos.TpercentualCustoFinanceiroFornecedor()
+                {
+                    Fabricante = f.Fabricante,
+                    Tipo_Parcelamento = "CE",
+                    Qtde_Parcelas = 3,
+                    Coeficiente = 1.0527f
+                });
             }
         }
 

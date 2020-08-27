@@ -9,7 +9,6 @@ namespace InfraBanco.Modelos
     [Table("t_PERCENTUAL_CUSTO_FINANCEIRO_FORNECEDOR")]
     public class TpercentualCustoFinanceiroFornecedor
     {
-        [Key]
         [Column("fabricante")]
         [MaxLength(4)]
         [Required]
