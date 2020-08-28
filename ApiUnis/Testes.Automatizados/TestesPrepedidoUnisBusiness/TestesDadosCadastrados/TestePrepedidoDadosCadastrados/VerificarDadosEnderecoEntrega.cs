@@ -44,7 +44,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
             clienteUnisBll.CadastrarClienteUnis(clientePJ).Wait();
         }
 
-        internal delegate void ArrumarDtoErrado(PrePedidoUnisDto clienteDto);
+        internal delegate void ArrumarDtoErrado(PrePedidoUnisDto prePedido);
 
         internal void TesteEnderecoEntregaPF(ArrumarDtoErrado arrumarDtoErrado)
         {
