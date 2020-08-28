@@ -44,9 +44,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
         public void TotalPrepedidoParcelaAvista()
         {
             PrePedidoUnisDto prePedido = DadosPrepedidoUnisBll.PrepedidoParceladoAvista();
-
-
-
+                       
             var res = prepedidoUnisBll.CadastrarPrepedidoUnis(prePedido).Result;
             if (res.ListaErros.Count == 0)
             {
