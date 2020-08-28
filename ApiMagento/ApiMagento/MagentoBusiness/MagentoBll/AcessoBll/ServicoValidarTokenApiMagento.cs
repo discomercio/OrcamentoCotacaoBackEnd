@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using MagentoBusiness.Utils;
+using MagentoBusiness.UtilsMagento;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;

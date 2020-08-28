@@ -8,7 +8,6 @@
     <ProjectReference Include="..\..\..\Global\Infra\InfraBanco\InfraBanco.csproj" />
     <ProjectReference Include="..\..\..\Global\Infra\InfraIdentity\InfraIdentity.csproj" />
     <ProjectReference Include="..\..\..\Global\Utils\UtilsGlobais.csproj" />
-    <ProjectReference Include="..\..\..\PrepedidoApi\PrepedidoBusiness\PrepedidoBusiness.csproj" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

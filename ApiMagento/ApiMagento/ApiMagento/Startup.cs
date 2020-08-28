@@ -19,7 +19,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MagentoBusiness.MagentoBll.AcessoBll;
 using MagentoBusiness.MagentoBll.PedidoMagentoBll;
-using MagentoBusiness.Utils;
+using MagentoBusiness.UtilsMagento;
 
 namespace ApiMagento
 {
@@ -52,7 +52,7 @@ namespace ApiMagento
 
             // configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection("AppSettings");
-            services.Configure<MagentoBusiness.Utils.ConfiguracaoApiMagento>(appSettingsSection);
+            services.Configure<MagentoBusiness.UtilsMagento.ConfiguracaoApiMagento>(appSettingsSection);
 
             services.AddSwaggerGen(c =>
             {
@@ -108,7 +108,7 @@ namespace ApiMagento
             });
 
             // configure jwt authentication
-            var appSettings = appSettingsSection.Get<MagentoBusiness.Utils.ConfiguracaoApiMagento>();
+            var appSettings = appSettingsSection.Get<MagentoBusiness.UtilsMagento.ConfiguracaoApiMagento>();
             var key = Encoding.ASCII.GetBytes(appSettings.SegredoToken);
 
             //isto deveria ser passado para o SetupAutenticacao

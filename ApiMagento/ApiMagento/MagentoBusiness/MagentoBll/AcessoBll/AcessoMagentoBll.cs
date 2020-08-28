@@ -1,7 +1,7 @@
 ﻿using InfraBanco;
 using InfraIdentity.ApiMagento;
 using MagentoBusiness.MagentoDto;
-using MagentoBusiness.Utils;
+using MagentoBusiness.UtilsMagento;
 using System;
 using System.Collections.Generic;
 using System.IO;

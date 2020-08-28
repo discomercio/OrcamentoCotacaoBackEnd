@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MagentoBusiness.Utils
+namespace MagentoBusiness.UtilsMagento
 {
     public class ConfiguracaoApiMagento
     {
