@@ -364,6 +364,17 @@ alerta="TELEFONE CELULAR (" & s_ddd_cel & ") " & s_tel_cel & " JÁ ESTÁ SENDO U
 
             testesClienteUnisBll.TestarCadastro(c =>
             {
+                c.DadosCliente.TelefoneResidencial = "12345";
+            }, "TELEFONE RESIDENCIAL INVÁLIDO.", TipoPessoa.PF);
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.DddResidencial = "12";
+                c.DadosCliente.TelefoneResidencial = "";
+            }, "PREENCHA O TELEFONE RESIDENCIAL.", TipoPessoa.PF);
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
                 c.DadosCliente.DddComercial = "12";
                 c.DadosCliente.TelComercial = "";
                 c.DadosCliente.Ramal = "";
@@ -390,6 +401,18 @@ alerta="TELEFONE CELULAR (" & s_ddd_cel & ") " & s_tel_cel & " JÁ ESTÁ SENDO U
             },
                 "PREENCHA PELO MENOS UM TELEFONE (RESIDENCIAL, COMERCIAL OU CELULAR).",
                     TipoPessoa.PF);
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.DddComercial = "";
+                c.DadosCliente.TelComercial = "123456";
+            }, "PREENCHA O DDD COMERCIAL.", TipoPessoa.PF);
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.DddComercial = "1";
+                c.DadosCliente.TelComercial = "123456";
+            }, "DDD DO TELEFONE COMERCIAL INVÁLIDO.", TipoPessoa.PF);
 
             testesClienteUnisBll.TestarCadastro(c =>
             {
@@ -448,6 +471,17 @@ alerta="TELEFONE CELULAR (" & s_ddd_cel & ") " & s_tel_cel & " JÁ ESTÁ SENDO U
             },
                 "PREENCHA O DDD CELULAR.",
                     TipoPessoa.PF);
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.DddCelular = "1";
+            }, "DDD CELULAR INVÁLIDO.", TipoPessoa.PF);
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.DddCelular = "11";
+                c.DadosCliente.Celular = "";
+            }, "PREENCHA O TELEFONE CELULAR.", TipoPessoa.PF);
         }
 
 

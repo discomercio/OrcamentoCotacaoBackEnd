@@ -54,5 +54,7 @@ public    class TesteEnderecoCadastralCliente : TestesPrepedidoUnisBll
             Teste(c => c.EnderecoCadastralCliente.Endereco_nome = "Gabriel Teste",
                 "Nome do cliente diferente do nome cadastrado!");
         }
+
+        
     }
 }

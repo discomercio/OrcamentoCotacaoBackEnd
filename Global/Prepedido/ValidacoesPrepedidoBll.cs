@@ -622,7 +622,7 @@ namespace Prepedido
                     !string.IsNullOrEmpty(endEtg.EndEtg_ramal_com_2))
                 {
                     lstErros.Add("Endereço de entrega: Ramal do telefone comercial 2 preenchido " +
-                        "sem telefone comercial 2");
+                        "sem telefone comercial 2!");
                 }
 
                 if (!string.IsNullOrEmpty(endEtg.EndEtg_tel_com_2) &&
@@ -709,11 +709,13 @@ namespace Prepedido
                         lstErros.Add("Endereço de entrega: se o Contribuinte ICMS é isento, " +
                             "o campo IE deve ser vazio!");
 
-                    if (endEtg.EndEtg_contribuinte_icms_status ==
+                    
+                }
+
+                if (endEtg.EndEtg_contribuinte_icms_status ==
                         (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM &&
                         endEtg.EndEtg_produtor_rural_status != (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
-                        lstErros.Add("Endereço de entrega: se cliente é contribuinte do ICMS, ele dever ser Produtor Rural!");
-                }
+                    lstErros.Add("Endereço de entrega: se cliente é contribuinte do ICMS, ele dever ser Produtor Rural!");
 
                 if (endEtg.EndEtg_produtor_rural_status ==
                     (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO &&

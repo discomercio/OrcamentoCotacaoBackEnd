@@ -34,6 +34,129 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
 
             return ret;
         }
+
+        public static PrePedidoUnisDto EnderecoCadastralPJ()
+        {
+            var ret = PrepedidoParceladoCartao1vez();
+            ret.Cnpj_Cpf = "00371048000106";
+
+            ret.EnderecoCadastralCliente.Endereco_email = "edsondasso@teste.com.br";
+            ret.EnderecoCadastralCliente.Endereco_email_xml = "contato@teste.com.br";
+            ret.EnderecoCadastralCliente.Endereco_ddd_res = "";
+            ret.EnderecoCadastralCliente.Endereco_tel_res = "";
+            ret.EnderecoCadastralCliente.Endereco_ddd_cel = "";
+            ret.EnderecoCadastralCliente.Endereco_tel_cel = "";
+            ret.EnderecoCadastralCliente.Endereco_ddd_com = "19";
+            ret.EnderecoCadastralCliente.Endereco_tel_com = "983462361";
+            ret.EnderecoCadastralCliente.Endereco_ramal_com = "12";
+            ret.EnderecoCadastralCliente.Endereco_ddd_com_2 = "19";
+            ret.EnderecoCadastralCliente.Endereco_tel_com_2 = "123456578";
+            ret.EnderecoCadastralCliente.Endereco_ramal_com_2 = "12";
+            ret.EnderecoCadastralCliente.Endereco_tipo_pessoa = "PJ";
+            ret.EnderecoCadastralCliente.Endereco_cnpj_cpf = "00371048000106";
+            ret.EnderecoCadastralCliente.Endereco_contribuinte_icms_status = 2;
+            ret.EnderecoCadastralCliente.Endereco_produtor_rural_status = 0;
+            ret.EnderecoCadastralCliente.Endereco_ie = "244.355.757.113";
+            ret.EnderecoCadastralCliente.Endereco_contato = "EDSON";
+
+            ret.FormaPagtoCriacao.C_pc_qtde = 0;
+            ret.FormaPagtoCriacao.C_pc_valor = 0;
+
+            return ret;
+        }
+
+        public static PrePedidoUnisDto PrepedidoParcelaUnica()
+        {
+            var ret = EnderecoCadastralPJ();
+
+            ret.FormaPagtoCriacao.Op_pu_forma_pagto = "1";
+            ret.FormaPagtoCriacao.CustoFinancFornecTipoParcelamento = "SE";
+            ret.FormaPagtoCriacao.Tipo_Parcelamento = 5;
+            ret.FormaPagtoCriacao.C_pu_valor = 3470.24m;
+            ret.FormaPagtoCriacao.C_pu_vencto_apos = 20;
+
+            return ret;
+        }
+
+        public static PrePedidoUnisDto PrepedidoParcelaCartao()
+        {
+            var ret = EnderecoCadastralPJ();
+
+            ret.FormaPagtoCriacao.CustoFinancFornecTipoParcelamento = "SE";
+            ret.FormaPagtoCriacao.Tipo_Parcelamento = 2;
+            ret.FormaPagtoCriacao.C_pc_valor = 433.78m;
+            ret.FormaPagtoCriacao.C_pc_qtde = 4;
+            ret.FormaPagtoCriacao.CustoFinancFornecQtdeParcelas = 4;
+
+            return ret;
+        }
+
+        public static PrePedidoUnisDto PrepedidoParcelaCartaoMaquineta()
+        {
+            var ret = EnderecoCadastralPJ();
+
+            ret.FormaPagtoCriacao.CustoFinancFornecTipoParcelamento = "SE";
+            ret.FormaPagtoCriacao.Tipo_Parcelamento = 6;
+            ret.FormaPagtoCriacao.C_pc_maquineta_valor = 433.78m;
+            ret.FormaPagtoCriacao.C_pc_maquineta_qtde = 4;
+            ret.FormaPagtoCriacao.CustoFinancFornecQtdeParcelas = 4;
+
+            return ret;
+        }
+
+        public static PrePedidoUnisDto PrepedidoPagtoComEntrada()
+        {
+            var ret = EnderecoCadastralPJ();
+
+            ret.FormaPagtoCriacao.CustoFinancFornecTipoParcelamento = "CE";
+            ret.FormaPagtoCriacao.CustoFinancFornecQtdeParcelas = 3;
+            ret.FormaPagtoCriacao.Tipo_Parcelamento = 3;
+            ret.FormaPagtoCriacao.Op_pce_entrada_forma_pagto = "2";
+            ret.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto = "2";
+            ret.FormaPagtoCriacao.C_pce_entrada_valor = 693.78m;
+            ret.FormaPagtoCriacao.C_pce_prestacao_qtde = 3;
+            ret.FormaPagtoCriacao.C_pce_prestacao_periodo = 15;
+            ret.FormaPagtoCriacao.C_pce_prestacao_valor = 347.11m;
+
+            return ret;
+        }
+
+        public static PrePedidoUnisDto PrepedidoEnderecoEntregaCompleto()
+        {
+            var ret = PrepedidoParceladoCartao1vez();
+            ret.OutroEndereco = true;
+
+            ret.EnderecoEntrega.EndEtg_endereco = "Rua Professor Fábio Fanucchi";
+            ret.EnderecoEntrega.EndEtg_endereco_numero = "97";
+            ret.EnderecoEntrega.EndEtg_endereco_complemento = "";
+            ret.EnderecoEntrega.EndEtg_bairro = "Jardim São Paulo(Zona Norte)";
+            ret.EnderecoEntrega.EndEtg_cidade = "São Paulo";
+            ret.EnderecoEntrega.EndEtg_uf = "SP";
+            ret.EnderecoEntrega.EndEtg_cep = "02045080";
+            ret.EnderecoEntrega.EndEtg_cod_justificativa = "003";
+            ret.EnderecoEntrega.EndEtg_email = "testeCad@Gabriel.com";
+            ret.EnderecoEntrega.EndEtg_email_xml = "";
+            ret.EnderecoEntrega.EndEtg_nome = "Vivian";
+            ret.EnderecoEntrega.EndEtg_ddd_res = "11";
+            ret.EnderecoEntrega.EndEtg_tel_res = "11111111";
+            ret.EnderecoEntrega.EndEtg_ddd_com = "11";
+            ret.EnderecoEntrega.EndEtg_tel_com = "25321634";
+            ret.EnderecoEntrega.EndEtg_ramal_com = "32";
+            ret.EnderecoEntrega.EndEtg_ddd_cel = "11";
+            ret.EnderecoEntrega.EndEtg_tel_cel = "981603313";
+            ret.EnderecoEntrega.EndEtg_ddd_com_2 = "11";
+            ret.EnderecoEntrega.EndEtg_tel_com_2 = "85868586";
+            ret.EnderecoEntrega.EndEtg_ramal_com_2 = "11";
+            ret.EnderecoEntrega.EndEtg_tipo_pessoa = "PF";
+            ret.EnderecoEntrega.EndEtg_cnpj_cpf = "29756194804";
+            ret.EnderecoEntrega.EndEtg_contribuinte_icms_status = 2;
+            ret.EnderecoEntrega.EndEtg_produtor_rural_status = 2;
+            ret.EnderecoEntrega.EndEtg_ie = "244.355.757.113";
+            ret.EnderecoEntrega.EndEtg_rg = "11997996-2";
+
+            return ret;
+        }
+
         private static string PrepedidoBaseParceladoCartao1vez = @"
 {
   ""TokenAcesso"": ""eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJzdXBvcnRlIDEiLCJ1bmlxdWVfbmFtZSI6IkdVSUxIRVJNRSBHT01FUyBQSUVEQURFIC0gUyIsInJvbGUiOiJBcGlVbmlzIiwibmJmIjoxNTkzMDI5NzE5LCJleHAiOjE3NTA3MDk3MTksImlhdCI6MTU5MzAyOTcxOX0.Ofc7DSEKIDPSErYyaIGe-3VEsh9gE8nfuJwY8lCjN28"",

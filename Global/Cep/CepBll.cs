@@ -342,6 +342,35 @@ namespace Cep
                 }
             }
 
+            if (cepdto.Count > 0)
+            {
+                //vamos validar para saber se a cidade existe no IBGE
+                List<string> lstErros = new List<string>();
+                //se não consistir vamos busca a lista de Cidades com base na UF
+                if (!await ValidacoesClienteBll.ConsisteMunicipioIBGE(cepdto[0].Cidade, cepdto[0].Uf, lstErros,
+                    contextoProvider, bancoNFeMunicipio, false))
+                {
+                    //vamos busca a lista de cidades com base na UF
+                    List<UFeMunicipiosDto> lstMunicipio = (await bancoNFeMunicipio.BuscarSiglaTodosUf(contextoProvider, cepdto[0].Uf, "")).ToList();
+                    cepdto[0].ListaCidadeIBGE = new List<string>();
+                    //vamos atribuir para a classe de cep uma Lista com todas as cidades do estado
+                    if (lstMunicipio.Count > 0)
+                    {
+                        lstMunicipio.ForEach(x =>
+                        {
+                            if (x.ListaMunicipio.Count > 0)
+                            {
+                                x.ListaMunicipio.ForEach(y =>
+                                {
+                                    cepdto[0].ListaCidadeIBGE.Add(y.Descricao);
+                                });
+                            }
+                        });
+                    }
+                }
+            }
+
+
             return cepdto;
         }
 

@@ -85,7 +85,12 @@ namespace Testes.Automatizados.InicializarBanco
 
                 //permitr pagamento a vista para todos
                 short idPagamentoAvista = 1;
+                short idPagamentoParcUnica = 5;
+                short idPagamentoComEntrada = 3;
                 db.TformaPagtos.Add(new InfraBanco.Modelos.TformaPagto() { Hab_a_vista = 1, Id = idPagamentoAvista });
+                db.TformaPagtos.Add(new InfraBanco.Modelos.TformaPagto() { Hab_parcela_unica = 1, Id = idPagamentoParcUnica });
+                db.TformaPagtos.Add(new InfraBanco.Modelos.TformaPagto() { Hab_prestacao = 1, Hab_entrada = 1, Id = idPagamentoComEntrada });
+
                 /*
                  * sem restrições
                 db.torcamentistaEIndicadorRestricaoFormaPagtos.Add(new InfraBanco.Modelos.TorcamentistaEIndicadorRestricaoFormaPagto()
@@ -104,11 +109,13 @@ namespace Testes.Automatizados.InicializarBanco
                 });
                 */
 
-                InicalizarProdutos(db);
 
+                InicalizarProdutos(db);
+                InicializarListaEnderecoEntregaJustificativa(db);
 
                 db.SaveChanges();
             }
+
         }
 
         private void InicalizarProdutos(ContextoBdGravacao db)
@@ -203,6 +210,22 @@ namespace Testes.Automatizados.InicializarBanco
                     Qtde_Parcelas = (short)dado.FormaPagtoCriacao.C_pc_qtde.Value,
                     Coeficiente = produtos.First(lp => lp.Fabricante == f.Fabricante).CustoFinancFornecCoeficiente
                 });
+
+                db.TpercentualCustoFinanceiroFornecedors.Add(new InfraBanco.Modelos.TpercentualCustoFinanceiroFornecedor()
+                {
+                    Fabricante = f.Fabricante,
+                    Tipo_Parcelamento = "SE",
+                    Qtde_Parcelas = 4,
+                    Coeficiente = 1.0527f
+                });
+
+                db.TpercentualCustoFinanceiroFornecedors.Add(new InfraBanco.Modelos.TpercentualCustoFinanceiroFornecedor()
+                {
+                    Fabricante = f.Fabricante,
+                    Tipo_Parcelamento = "CE",
+                    Qtde_Parcelas = 3,
+                    Coeficiente = 1.0527f
+                });
             }
         }
 
@@ -238,6 +261,93 @@ namespace Testes.Automatizados.InicializarBanco
                 public static string Apelido_sem_loja = "Apelido_sem_loja";
                 public static string ApelidoNaoExiste = "XXX";
             }
+        }
+
+        private static void InicializarListaEnderecoEntregaJustificativa(ContextoBdGravacao db)
+        {
+            db.tcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
+            {
+                Grupo = Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
+                Lojas_Habilitadas = null,
+                St_Inativo = 0,
+                Codigo = "001",
+                Descricao = "Casa de Veraneio"
+            });
+
+            db.tcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
+            {
+                //não posso adicionar o "Grupo" para os outros 
+                Grupo = Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
+                Lojas_Habilitadas = null,
+                St_Inativo = 0,
+                Codigo = "002",
+                Descricao = "Doação"
+            });
+
+            db.tcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
+            {
+                Grupo = Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
+                Lojas_Habilitadas = null,
+                St_Inativo = 0,
+                Codigo = "003",
+                Descricao = "Nova Unidade da Empresa/Filial"
+            });
+            db.tcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
+            {
+                Grupo = Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
+                Lojas_Habilitadas = null,
+                St_Inativo = 0,
+                Codigo = "004",
+                Descricao = "Parente do Proprietário (Pais, Filhos e Irmãos)"
+            });
+            db.tcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
+            {
+                Grupo = Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
+                Lojas_Habilitadas = null,
+                St_Inativo = 0,
+                Codigo = "005",
+                Descricao = "Residência do Proprietário"
+            });
+            db.tcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
+            {
+                Grupo = Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
+                Lojas_Habilitadas = null,
+                St_Inativo = 0,
+                Codigo = "006",
+                Descricao = "Endereço Comercial do Proprietário"
+            });
+            db.tcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
+            {
+                Grupo = Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
+                Lojas_Habilitadas = null,
+                St_Inativo = 0,
+                Codigo = "007",
+                Descricao = "Pedido Arclube"
+            });
+            db.tcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
+            {
+                Grupo = Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
+                Lojas_Habilitadas = null,
+                St_Inativo = 0,
+                Codigo = "008",
+                Descricao = "Endereço da Obra"
+            });
+            db.tcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
+            {
+                Grupo = Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
+                Lojas_Habilitadas = null,
+                St_Inativo = 0,
+                Codigo = "009",
+                Descricao = "Endereço Novo Cliente"
+            });
+            db.tcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
+            {
+                Grupo = Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
+                Lojas_Habilitadas = null,
+                St_Inativo = 0,
+                Codigo = "010",
+                Descricao = "Acerto Interno"
+            });
         }
     }
 }

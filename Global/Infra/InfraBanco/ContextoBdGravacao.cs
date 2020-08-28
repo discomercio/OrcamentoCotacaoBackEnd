@@ -80,5 +80,7 @@ namespace InfraBanco
         public DbSet<Tperfil> Tperfils { get => contexto.Tperfils; }
         public DbSet<TperfilUsuario> TperfilUsuarios { get => contexto.TperfilUsuarios; }
 
+        public DbSet<TcodigoDescricao> tcodigoDescricaos { get => contexto.TcodigoDescricaos; }
+
     }
 }
