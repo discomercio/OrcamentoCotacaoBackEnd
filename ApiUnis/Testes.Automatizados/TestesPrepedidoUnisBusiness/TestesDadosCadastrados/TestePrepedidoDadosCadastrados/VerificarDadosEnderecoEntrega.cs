@@ -2,7 +2,6 @@
 using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
 using PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll;
 using PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto;
-using PrepedidoBusiness.Bll.ClienteBll;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
@@ -10,6 +9,7 @@ using Testes.Automatizados.InicializarBanco;
 using Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesPrepedidoUnisBll;
 using Xunit;
 using Xunit.Abstractions;
+using Cliente;
 
 namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrados.TestePrepedidoDadosCadastrados
 {
