@@ -520,7 +520,7 @@ namespace Prepedido
                     !Util.ValidaCNPJ(endEtg.EndEtg_cnpj_cpf))
                     lstErros.Add("Endereço de entrega: CNPJ inválido!");
 
-                if (endEtg.EndEtg_produtor_rural_status == 1)
+                if (endEtg.EndEtg_produtor_rural_status != 0)
                 {
                     lstErros.Add("Endereço de entrega: Se tipo pessoa é PJ, não pode ser Produtor Rural!");
                 }
