@@ -1,8 +1,8 @@
-﻿using InfraBanco.Constantes;
+﻿using Cliente;
+using InfraBanco.Constantes;
+using Prepedido;
 using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
 using PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll;
-using PrepedidoBusiness.Bll.ClienteBll;
-using PrepedidoBusiness.Bll.PrepedidoBll;
 using System;
 using System.Collections.Generic;
 using System.Text;

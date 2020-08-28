@@ -1,4 +1,5 @@
 ﻿using InfraBanco;
+using System;
 using System.Linq;
 using Testes.Automatizados.InicializarBanco;
 using Xunit;

@@ -347,11 +347,11 @@ namespace Cep
                 //vamos validar para saber se a cidade existe no IBGE
                 List<string> lstErros = new List<string>();
                 //se não consistir vamos busca a lista de Cidades com base na UF
-                if (!await ValidacoesClienteBll.ConsisteMunicipioIBGE(cepdto[0].Cidade, cepdto[0].Uf, lstErros,
+                if (!await ConsisteMunicipioIBGE(cepdto[0].Cidade, cepdto[0].Uf, lstErros,
                     contextoProvider, bancoNFeMunicipio, false))
                 {
                     //vamos busca a lista de cidades com base na UF
-                    List<UFeMunicipiosDto> lstMunicipio = (await bancoNFeMunicipio.BuscarSiglaTodosUf(contextoProvider, cepdto[0].Uf, "")).ToList();
+                    List<UFeMunicipiosDados> lstMunicipio = (await bancoNFeMunicipio.BuscarSiglaTodosUf(contextoProvider, cepdto[0].Uf, "")).ToList();
                     cepdto[0].ListaCidadeIBGE = new List<string>();
                     //vamos atribuir para a classe de cep uma Lista com todas as cidades do estado
                     if (lstMunicipio.Count > 0)

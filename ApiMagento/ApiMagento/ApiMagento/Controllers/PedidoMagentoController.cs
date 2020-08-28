@@ -39,7 +39,7 @@ namespace ApiMagento.Controllers
             if (!servicoValidarTokenApiMagento.ValidarToken(pedido.TokenAcesso, out _))
                 return Unauthorized();
 
-            pedidoMagentoBll.CadastrarPedidoMagento(pedido);
+            await pedidoMagentoBll.CadastrarPedidoMagento(pedido);
             var ret = new PedidoResultadoMagentoDto();
             ret.ListaErros.Add("Ainda não implementado");
             return Ok(ret);

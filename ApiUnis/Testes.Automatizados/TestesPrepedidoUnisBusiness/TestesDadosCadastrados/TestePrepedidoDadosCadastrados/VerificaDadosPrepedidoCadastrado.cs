@@ -9,8 +9,8 @@ using Xunit;
 using System.Linq;
 using Xunit.Abstractions;
 using Newtonsoft.Json;
-using PrepedidoBusiness.Bll.ClienteBll;
 using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
+using Cliente;
 
 namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrados.TestePrepedidoDadosCadastrados
 {

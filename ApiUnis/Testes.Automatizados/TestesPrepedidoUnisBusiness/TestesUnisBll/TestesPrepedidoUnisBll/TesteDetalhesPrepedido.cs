@@ -1,7 +1,7 @@
-﻿using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
+﻿using Cliente;
+using Prepedido;
+using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
 using PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll;
-using PrepedidoBusiness.Bll.ClienteBll;
-using PrepedidoBusiness.Bll.PrepedidoBll;
 using System;
 using System.Collections.Generic;
 using System.Text;
