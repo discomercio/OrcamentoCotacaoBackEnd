@@ -10,7 +10,7 @@ dotnet build "..\..\ApiUnis\Testes.Automatizados\Testes.Automatizados.csproj" /p
 "%HOMEPATH%\.nuget\packages\OpenCover\4.7.922\tools\OpenCover.Console.exe"  ^
  -returntargetcode ^
  -target:"C:/Program Files/dotnet/dotnet.exe" -targetargs:"test \"..\..\ApiUnis\Testes.Automatizados\Testes.Automatizados.csproj\" --configuration Debug --no-build" ^
- -filter:"+[Prepedido*]* +[Infra*]* -[Testes*]* " -oldStyle -register:user -output:"..\Testes.Automatizados.Resultados\UnitTestsResults.trx"
+ -filter:"+[*]* +[Infra*]* -[Testes*]* -[xunit*]* " -oldStyle -register:user -output:"..\Testes.Automatizados.Resultados\UnitTestsResults.trx"
 
 
 if %errorlevel% neq 0 echo echo on

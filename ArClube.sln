@@ -29,6 +29,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Etc", "Etc", "{DE89B737-FCF
 	ProjectSection(SolutionItems) = preProject
 		PrepedidoApi\AtualizarSonar.bat = PrepedidoApi\AtualizarSonar.bat
 		diretorios.txt = diretorios.txt
+		Global\Especificacao\ExecutarOpenCoverParaTela.bat = Global\Especificacao\ExecutarOpenCoverParaTela.bat
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infra", "Infra", "{7267E515-4E22-42C8-A2F8-88A600B24F7A}"
@@ -67,9 +68,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UtilsGlobais", "Global\Util
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Produto", "Global\Produto\Produto.csproj", "{D5242FC6-0C2F-4904-8F38-10D4B482FC2F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prepedido", "Global\Prepedido\Prepedido.csproj", "{56DC54B5-692A-4AD5-BDFC-3BBF08C04B24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Prepedido", "Global\Prepedido\Prepedido.csproj", "{56DC54B5-692A-4AD5-BDFC-3BBF08C04B24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cep", "Global\Cep\Cep.csproj", "{6F5A4E2A-4856-45DC-9B43-DE9E328D2B49}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cep", "Global\Cep\Cep.csproj", "{6F5A4E2A-4856-45DC-9B43-DE9E328D2B49}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
