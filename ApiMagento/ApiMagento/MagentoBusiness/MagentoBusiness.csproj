@@ -5,8 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Global\Cliente\Cliente.csproj" />
     <ProjectReference Include="..\..\..\Global\Infra\InfraBanco\InfraBanco.csproj" />
     <ProjectReference Include="..\..\..\Global\Infra\InfraIdentity\InfraIdentity.csproj" />
+    <ProjectReference Include="..\..\..\Global\Pedido\Pedido.csproj" />
     <ProjectReference Include="..\..\..\Global\Utils\UtilsGlobais.csproj" />
   </ItemGroup>
 

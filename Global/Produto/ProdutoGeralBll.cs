@@ -162,7 +162,7 @@ namespace Produto
         }
 
 
-        private async Task<IEnumerable<Produto.Dados.ProdutoDados>> BuscarTodosProdutos(string loja)
+        public async Task<IEnumerable<Produto.Dados.ProdutoDados>> BuscarTodosProdutos(string loja)
         {
             var db = contextoProvider.GetContextoLeitura();
 

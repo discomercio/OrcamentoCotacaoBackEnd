@@ -73,7 +73,7 @@ namespace Prepedido
             }
         }
 
-        private async Task<IEnumerable<CoeficienteDados>> MontarListaCoeficiente(List<string> lstFornec,
+        public async Task<IEnumerable<CoeficienteDados>> MontarListaCoeficiente(List<string> lstFornec,
             int qtdeParcelas, string siglaFormaPagto)
         {
             List<CoeficienteDados> lstcoefDados = new List<CoeficienteDados>();

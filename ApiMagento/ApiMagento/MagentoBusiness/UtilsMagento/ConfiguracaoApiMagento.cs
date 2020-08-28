@@ -31,5 +31,10 @@ namespace MagentoBusiness.UtilsMagento
         }
 
         public LimitePedidoMagento LimitePrepedidos { get; set; } = new LimitePedidoMagento();
+
+        /* Afazer: criar a classe com dados 
+         * LojaUsuario
+         * Usuario
+         */
     }
 }

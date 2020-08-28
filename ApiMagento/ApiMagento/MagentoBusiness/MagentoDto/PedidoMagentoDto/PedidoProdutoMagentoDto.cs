@@ -36,5 +36,33 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
          * Os campos Preco_Fabricante, CustoFinancFornecCoeficiente, CustoFinancFornecPrecoListaBase e Preco_Fabricante vamos ler das tabelas
          * Os campos Preco_Lista e Desc_Dado serão preenchidos por nós e devemos calcular de forma que fiquem consistentes.
         */
+
+        public static Prepedido.Dados.DetalhesPrepedido.PrepedidoProdutoPrepedidoDados ProdutosDePedidoProdutoMagentoDto(
+            PedidoProdutoMagentoDto produtoDto, Produto.Dados.ProdutoDados produtoDados, float coeficiente)
+        {
+            var ret = new Prepedido.Dados.DetalhesPrepedido.PrepedidoProdutoPrepedidoDados()
+            {
+                /*
+                 * afazer revisar 
+                 * 
+                Fabricante = produtoDto.Fabricante,
+                NumProduto = produtoDto.Produto,
+                Qtde = produtoDto.Qtde,
+                Permite_Ra_Status = 1,//sempre true
+                BlnTemRa = true,
+                Preco_fabricante = produtoDados.Preco_lista,
+                Preco_RA = produtoDto.Preco_NF,
+                Preco_Lista = Math.Round((decimal)(produtoDados.Preco_lista * (decimal)coeficiente), 2),
+                Desconto = 0, //produtoDto.Desc_Dado,
+                Preco_venda = Math.Round((decimal)(produtoDados.Preco_lista * (decimal)coeficiente), 2),
+                TotalItem = Math.Round((decimal)(produtoDto.Preco_Venda * produtoDto.Qtde), 2),
+                TotalItemRA = Math.Round((decimal)(produtoDados.Preco_lista * produtoDto.Qtde), 2),
+                CustoFinancFornecCoeficiente = coeficiente, 
+                Preco_NF = produtoDto.Preco_NF //sempre vai receber Preco_NF, pois do magento sempre permite ra
+                */
+            };
+
+            return ret;
+        }
     }
 }
