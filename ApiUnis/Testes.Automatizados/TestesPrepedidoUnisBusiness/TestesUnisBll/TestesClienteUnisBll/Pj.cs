@@ -156,6 +156,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             testesClienteUnisBll.TestarCadastro(c =>
             {
                 c.DadosCliente.DddComercial2 = "1";
+                c.DadosCliente.TelComercial2 = "123456";
             }, "DDD DO TELEFONE COMERCIAL2 INVÁLIDO.", TipoPessoa.PJ);
 
             testesClienteUnisBll.TestarCadastro(c =>

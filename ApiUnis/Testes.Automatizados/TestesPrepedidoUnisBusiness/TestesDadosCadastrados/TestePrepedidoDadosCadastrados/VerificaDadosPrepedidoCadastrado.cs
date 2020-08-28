@@ -59,6 +59,10 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
                 Assert.Equal((2 * 652.71m) + (2 * 979.06m), ret.Vl_Total);
                 Assert.Equal((2 * 694.05m) + (2 * 1041.07m), ret.Vl_Total_NF);
                 Assert.Equal(((2 * 694.05m) + (2 * 1041.07m)) - ((2 * 652.71m) + (2 * 979.06m)), ret.Vl_Total_RA);
+                Assert.Equal(1, ret.Av_Forma_Pagto);
+                Assert.Equal(1, ret.Tipo_Parcelamento);
+                Assert.Equal("AV", ret.CustoFinancFornecTipoParcelamento);
+                Assert.Equal(0, ret.CustoFinancFornecQtdeParcelas);
             }
             else
             {
@@ -87,6 +91,10 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
                 Assert.Equal((2 * 652.71m) + (2 * 979.06m), ret.Vl_Total);
                 Assert.Equal((2 * 652.71m) + (2 * 979.06m), ret.Vl_Total_NF);
                 Assert.Equal(((2 * 652.71m) + (2 * 979.06m)) - ((2 * 652.71m) + (2 * 979.06m)), ret.Vl_Total_RA);
+                Assert.Equal(1, ret.Av_Forma_Pagto);
+                Assert.Equal(1, ret.Tipo_Parcelamento);
+                Assert.Equal("AV", ret.CustoFinancFornecTipoParcelamento);
+                Assert.Equal(0, ret.CustoFinancFornecQtdeParcelas);
             }
             else
             {
@@ -95,7 +103,6 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
                 Assert.Equal(1, 2);
             }
         }
-
         [Fact]
         public void TotalPrepedidoParcelaCartao()
         {
@@ -120,7 +127,6 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
 
             TestarCadastroFormaPagtoSemRA(prePedido);
         }
-
         [Fact]
         public void TotalPrepedidoParcelaCartaoMaquineta()
         {
@@ -145,7 +151,6 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
 
             TestarCadastroFormaPagtoSemRA(prePedido);
         }
-
         [Fact]
         public void TotalPrepedidoParcelaUnica()
         {
@@ -170,7 +175,6 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
 
             TestarCadastroFormaPagtoSemRA(prePedido);
         }
-
         [Fact]
         public void TotalPrepedidoParcelaComEntrada()
         {
@@ -204,7 +208,6 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
 
             TestarCadastroFormaPagtoSemRA(prePedido);
         }
-
         private void TestarCadastroFormaPagto(PrePedidoUnisDto prePedido)
         {
 
@@ -220,6 +223,8 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
                 Assert.Equal((2 * 687.11m) + (2 * 1030.66m), ret.Vl_Total);
                 Assert.Equal((2 * 694.05m) + (2 * 1041.07m), ret.Vl_Total_NF);
                 Assert.Equal(((2 * 694.05m) + (2 * 1041.07m)) - ((2 * 687.11m) + (2 * 1030.66m)), ret.Vl_Total_RA);
+
+                VerificarFormaPagto(ret);
             }
             else
             {
@@ -228,7 +233,6 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
                 Assert.Equal(1, 2);
             }
         }
-
         private void TestarCadastroFormaPagtoSemRA(PrePedidoUnisDto prePedido)
         {
             var res = prepedidoUnisBll.CadastrarPrepedidoUnis(prePedido).Result;
@@ -250,6 +254,69 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
                     output.WriteLine(JsonConvert.SerializeObject(res));
                 Assert.Equal(1, 2);
             }
+        }
+        private void VerificarFormaPagto(InfraBanco.Modelos.Torcamento orcamento)
+        {
+            //vamos verificar os campos de pagamentos
+            switch (orcamento.Tipo_Parcelamento.ToString())
+            {
+                case InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO:
+                    VerificaParceladoCartao(orcamento);
+                    break;
+                case InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA:
+                    VerificarParcelaComEntrada(orcamento);
+                    break;
+                case InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_PARCELA_UNICA:
+                    VerificarParcelaUnica(orcamento);
+                    break;
+                case InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA:
+                    VerificarParcelaCartaoMaquineta(orcamento);
+                    break;
+            }
+        }
+        private void VerificaParceladoCartao(InfraBanco.Modelos.Torcamento orcamento)
+        {
+            Assert.Equal(4, (short)orcamento.Qtde_Parcelas);
+            Assert.Equal(2, orcamento.Tipo_Parcelamento);
+            Assert.Equal(4, orcamento.Pc_Qtde_Parcelas);
+            if(orcamento.Permite_RA_Status == 1) Assert.Equal(867.56m, orcamento.Pc_Valor_Parcela);
+            if (orcamento.Permite_RA_Status == 0) Assert.Equal(858.89m, orcamento.Pc_Valor_Parcela);
+            Assert.Equal("SE", orcamento.CustoFinancFornecTipoParcelamento);
+            Assert.Equal(4, orcamento.CustoFinancFornecQtdeParcelas);
+        }
+        private void VerificarParcelaComEntrada(InfraBanco.Modelos.Torcamento orcamento)
+        {
+            Assert.Equal(4, (short)orcamento.Qtde_Parcelas);
+            Assert.Equal(3, orcamento.Tipo_Parcelamento);
+            Assert.Equal(100m, orcamento.Pce_Entrada_Valor);
+            Assert.Equal(2, orcamento.Pce_Forma_Pagto_Entrada);
+            if(orcamento.Permite_RA_Status == 1) Assert.Equal(1123.41m, orcamento.Pce_Prestacao_Valor);
+            if(orcamento.Permite_RA_Status == 0) Assert.Equal(1111.85m, orcamento.Pce_Prestacao_Valor);
+            Assert.Equal(2, orcamento.Pce_Forma_Pagto_Prestacao);
+            Assert.Equal(3, orcamento.Pce_Prestacao_Qtde);
+            Assert.Equal(15, orcamento.Pce_Prestacao_Periodo);
+            Assert.Equal("CE", orcamento.CustoFinancFornecTipoParcelamento);
+            Assert.Equal(3, orcamento.CustoFinancFornecQtdeParcelas);
+        }
+        private void VerificarParcelaUnica(InfraBanco.Modelos.Torcamento orcamento)
+        {
+            Assert.Equal(1, (short)orcamento.Qtde_Parcelas);
+            Assert.Equal(5, orcamento.Tipo_Parcelamento);
+            Assert.Equal(1, orcamento.Pu_Forma_Pagto);
+            Assert.Equal(3470.24m, orcamento.Pu_Valor);
+            Assert.Equal(20, orcamento.Pu_Vencto_Apos);
+            Assert.Equal("SE", orcamento.CustoFinancFornecTipoParcelamento);
+            Assert.Equal(1, orcamento.CustoFinancFornecQtdeParcelas);
+        }
+        private void VerificarParcelaCartaoMaquineta(InfraBanco.Modelos.Torcamento orcamento)
+        {
+            Assert.Equal(4, (short)orcamento.Qtde_Parcelas);
+            Assert.Equal(6, orcamento.Tipo_Parcelamento);
+            Assert.Equal(4, orcamento.Pc_Maquineta_Qtde_Parcelas);
+            if (orcamento.Permite_RA_Status == 1) Assert.Equal(867.56m, orcamento.Pc_Maquineta_Valor_Parcela);
+            if (orcamento.Permite_RA_Status == 0) Assert.Equal(858.89m, orcamento.Pc_Maquineta_Valor_Parcela);
+            Assert.Equal("SE", orcamento.CustoFinancFornecTipoParcelamento);
+            Assert.Equal(4, orcamento.CustoFinancFornecQtdeParcelas);
         }
     }
 }
