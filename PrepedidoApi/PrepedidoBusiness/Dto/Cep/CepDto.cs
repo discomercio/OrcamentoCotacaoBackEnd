@@ -30,7 +30,7 @@ namespace PrepedidoBusiness.Dto.Cep
                 Numero = cepDados.Numero,
                 Complemento = cepDados.Complemento,
                 LogradouroComplemento = cepDados.LogradouroComplemento,
-                ListaCidadeIBGE = cepDados.ListaCidadeIBGE.ToList()
+                ListaCidadeIBGE = cepDados.ListaCidadeIBGE?.ToList()
             };
         }
 
