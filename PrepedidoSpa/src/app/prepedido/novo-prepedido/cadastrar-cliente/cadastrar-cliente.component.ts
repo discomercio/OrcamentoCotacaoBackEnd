@@ -21,6 +21,7 @@ import { MatSelect } from '@angular/material';
 import { nextTick } from 'q';
 import { HtmlAstPath } from '@angular/compiler';
 import { ValidacoesClienteUtils } from 'src/app/utils/validacoesClienteUtils';
+import { AutenticacaoService } from 'src/app/servicos/autenticacao/autenticacao.service';
 
 
 @Component({
@@ -85,7 +86,8 @@ export class CadastrarClienteComponent extends TelaDesktopBaseComponent implemen
     private readonly router: Router,
     private readonly location: Location,
     private readonly alertaService: AlertaService,
-    telaDesktopService: TelaDesktopService) {
+    telaDesktopService: TelaDesktopService,
+    private readonly autenticacaoService: AutenticacaoService) {
     super(telaDesktopService);
   }
 
@@ -147,6 +149,9 @@ export class CadastrarClienteComponent extends TelaDesktopBaseComponent implemen
       this.alertaService.mostrarMensagem("Campos inválidos. Preencha os campos marcados como obrigatórios. \nLista de erros: \n" + validacoes.join("\n"));
       return;
     }
+
+    //passar a loja 
+    this.clienteCadastroDto.DadosCliente.Loja = this.autenticacaoService.loja;
 
     //salvar e ir para a tela de confirmação de cliente
     this.carregando = true;
