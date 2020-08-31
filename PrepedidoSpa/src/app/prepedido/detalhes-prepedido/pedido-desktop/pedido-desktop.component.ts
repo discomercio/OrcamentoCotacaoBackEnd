@@ -83,6 +83,7 @@ export class PedidoDesktopComponent extends TelaDesktopBaseComponent implements 
   public enderecoEntregaFormatado: string;
   public qtdeLinhaEndereco: number;
   montarEnderecoEntrega(enderecoEntregaDto: EnderecoEntregaDtoClienteCadastro) {
+    
     if (enderecoEntregaDto.OutroEndereco) {
       let retorno: string = "";
       let sEndereco: string;

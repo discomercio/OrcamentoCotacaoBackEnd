@@ -240,6 +240,7 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
     this.enderecoCadastralClientePrepedidoDto.Endereco_uf = this.dadosClienteCadastroDto.Uf;
     this.enderecoCadastralClientePrepedidoDto.Endereco_complemento = this.dadosClienteCadastroDto.Complemento;
     this.enderecoCadastralClientePrepedidoDto.Endereco_cnpj_cpf = this.dadosClienteCadastroDto.Cnpj_Cpf;
+    
     this.enderecoCadastralClientePrepedidoDto.Endereco_nome = this.dadosClienteCadastroDto.Nome;
     this.enderecoCadastralClientePrepedidoDto.Endereco_rg = this.dadosClienteCadastroDto.Rg;
     this.enderecoCadastralClientePrepedidoDto.Endereco_tipo_pessoa = this.dadosClienteCadastroDto.Tipo;
