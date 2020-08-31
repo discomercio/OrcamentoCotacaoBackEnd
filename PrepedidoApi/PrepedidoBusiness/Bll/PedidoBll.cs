@@ -296,7 +296,7 @@ namespace PrepedidoBusiness.Bll
             EnderecoEntregaDtoClienteCadastro enderecoEntrega = new EnderecoEntregaDtoClienteCadastro();
 
             //afazer: criar método para pegar todos os dados de endereço com os campos novos
-            enderecoEntrega.OutroEndereco = p.EndEtg_Cod_Justificativa != "" ? true : false;
+            enderecoEntrega.OutroEndereco = !string.IsNullOrEmpty(p.EndEtg_Cod_Justificativa) ? true : false;
             enderecoEntrega.EndEtg_endereco = p.EndEtg_Endereco;
             enderecoEntrega.EndEtg_endereco_numero = p.EndEtg_Endereco_Numero;
             enderecoEntrega.EndEtg_endereco_complemento = p.EndEtg_Endereco_Complemento;
