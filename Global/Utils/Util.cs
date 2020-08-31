@@ -705,13 +705,15 @@ namespace UtilsGlobais
                         }
 
                         if (campo_atual == coluna)
-                        {
+                        {                            
                             //pegando o valor coluna
                             var value = (c.GetValue(obj, null));
                             if (value == null)
                                 log = log + coluna + "=" + "\"\"" + "; ";
                             else if (string.IsNullOrEmpty(value.ToString()))
                                 log = log + coluna + "=" + "\"\"" + "; ";
+                            else if (value.GetType().Name == "Decimal")
+                                log = log + coluna + "=" + string.Format("{0:n}", value) + "; ";
                             else
                                 log = log + coluna + "=" + value + "; ";
                         }
@@ -738,6 +740,11 @@ namespace UtilsGlobais
                     {
                         //pegando o valor coluna
                         var value = (c.GetValue(obj, null));
+                        if (value == null)
+                            log = log + coluna + "=" + "\"\"" + "; ";
+                        else if (string.IsNullOrEmpty(value.ToString()))
+                            log = log + coluna + "=" + "\"\"" + "; ";
+                        else
                         log = log + coluna + "=" + value + "; ";
                     }
                 }
