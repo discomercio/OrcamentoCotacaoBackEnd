@@ -10,6 +10,7 @@ using Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesPrepe
 using Xunit;
 using Xunit.Abstractions;
 using Newtonsoft.Json;
+using Cliente;
 
 namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrados.TestePrepedidoDadosCadastrados
 {
