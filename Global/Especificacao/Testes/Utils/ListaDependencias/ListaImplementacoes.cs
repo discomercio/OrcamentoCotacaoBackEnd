@@ -9,7 +9,7 @@ namespace Especificacao.Testes.Utils.ListaDependencias
 
     public class ListaImplementacoes<Implementacao>
     {
-        private List<Implementacao> implementacoes = new List<Implementacao>();
+        protected List<Implementacao> implementacoes = new List<Implementacao>();
         private bool usado = false;
 
         public void AdicionarImplementacao(Implementacao implementacao)

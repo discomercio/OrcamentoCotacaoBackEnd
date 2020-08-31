@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
+namespace Especificacao.Especificacao.Pedido
 {
     using TechTalk.SpecFlow;
     using System;
@@ -30,7 +30,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "ListaDependencias.feature"
+#line 1 "PedidoListaDependencias.feature"
 #line hidden
         
         public ListaDependenciasFeature(ListaDependenciasFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
@@ -42,7 +42,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ListaDependencias", "\tOs testes feitos ao cadastrar o prepedido", ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ListaDependencias", null, ProgrammingLanguage.CSharp, new string[] {
                         "ListaDependencias"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -83,15 +83,15 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Lista de verificações feitas")]
+        [Xunit.SkippableFactAttribute(DisplayName="Lista de dependências")]
         [Xunit.TraitAttribute("FeatureTitle", "ListaDependencias")]
-        [Xunit.TraitAttribute("Description", "Lista de verificações feitas")]
-        public virtual void ListaDeVerificacoesFeitas()
+        [Xunit.TraitAttribute("Description", "Lista de dependências")]
+        public virtual void ListaDeDependencias()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Lista de verificações feitas", null, tagsOfScenario, argumentsOfScenario);
-#line 5
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Lista de dependências", null, tagsOfScenario, argumentsOfScenario);
+#line 4
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -111,14 +111,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 7
- testRunner.Given("Nome deste item \"Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.ListaDependenc" +
-                        "ias\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 8
- testRunner.And("Especificado em \"Especificacao.Comuns.Api.Autenticacao\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 5
+ testRunner.Given("Nome deste item \"Especificacao.Pedido.Pedido.PedidoListaDependencias\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 11
+ testRunner.And("Implementado em \"Especificacao.Prepedido.Prepedido.PrepedidoListaDependencias\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 12
  testRunner.And("Fim da configuração", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }

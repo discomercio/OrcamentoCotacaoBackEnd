@@ -2,7 +2,7 @@
 Feature: ListaDependencias
 
 Scenario: Lista de verificações feitas
-	Given Nome deste item "Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.ListaDependencias"
+	Given Nome deste item "Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.BuscarQtdeParcCartaoVisaListaDependencias"
 #teste da autenticação
 	And Especificado em "Especificacao.Comuns.Api.Autenticacao"
 #o teste em si

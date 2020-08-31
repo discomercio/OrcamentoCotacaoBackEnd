@@ -115,12 +115,12 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Given("Nome deste item \"Especificacao.Comuns.Api.Autenticacao\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 6
- testRunner.And("Implementado em \"Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.ListaDependenc" +
-                        "ias\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Implementado em \"Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepe" +
+                        "didoListaDependencias\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 7
- testRunner.And("Implementado em \"Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.ListaDep" +
-                        "endencias\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Implementado em \"Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.BuscarQt" +
+                        "deParcCartaoVisaListaDependencias\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 8
  testRunner.And("Fim da configuração", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");

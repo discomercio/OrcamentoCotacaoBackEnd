@@ -1,7 +1,6 @@
-﻿@ignore
-Feature: Pedido
+﻿@Especificacao.Prepedido.Prepedido
+Feature: Prepedido
 
-Scenario: Lista de dependências
-	Given Nome deste item "Especificacao.Prepedido.Prepedido"
-	And Especificado em "Especificacao.Pedido.Pedido"
-	And Implementado em "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.ListaExecucao"
+Scenario: Sem nenhum passo
+	Given O prepedido não tem nenhum passo individual, somente passos incluídos pela PedidoListaDependencias
+

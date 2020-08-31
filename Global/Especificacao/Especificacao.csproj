@@ -7,10 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Testes\Comuns\**" />
     <Compile Remove="Testes\Pedido\Validar\**" />
+    <EmbeddedResource Remove="Testes\Comuns\**" />
     <EmbeddedResource Remove="Testes\Pedido\Validar\**" />
+    <None Remove="Testes\Comuns\**" />
     <None Remove="Testes\Pedido\Validar\**" />
+    <SpecFlowFeatureFiles Remove="Testes\Comuns\**" />
     <SpecFlowFeatureFiles Remove="Testes\Pedido\Validar\**" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Testes\Comuns\**" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Testes\Pedido\Validar\**" />
   </ItemGroup>
 
@@ -26,10 +31,12 @@
   <ItemGroup>
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiUnis\PrepedidoUnis\BuscarQtdeParcCartaoVisa\ListaExecucao.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiUnis\PrepedidoUnis\CadastrarPrepedido\CadastrarPrepedidoVerificarQueExecutou - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiUnis\PrepedidoUnis\CadastrarPrepedido\Validacao\CamposSimples.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Comuns\Api\Autenticacao\Autenticacao - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\CaminhoFelizApi.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\CaminhoFelizAsp.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\FluxoCriacaoPedido.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo10\AutenticacaoListaDependencias.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo20\EnderecoEntrega\ClientePj\CampoEndEtg_tipo_pessoa - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo20\EnderecoEntrega\ClientePj\CamposSimples.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo20\EnderecoEntrega\ClientePj\EntregaPj - Copy.feature.cs" />
@@ -58,8 +65,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Ambiente\ApiUnis\PrepedidoUnis\BuscarQtdeParcCartaoVisa\ListaDependencias.feature.cs">
-      <DependentUpon>ListaDependencias.feature</DependentUpon>
+    <Compile Update="Ambiente\ApiUnis\PrepedidoUnis\BuscarQtdeParcCartaoVisa\BuscarQtdeParcCartaoVisaListaDependencias.feature.cs">
+      <DependentUpon>BuscarQtdeParcCartaoVisaListaDependencias.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Ambiente\ApiUnis\PrepedidoUnis\CadastrarPrepedido\Validacao\CpfCnpj.feature.cs">
+      <DependentUpon>CpfCnpj.feature</DependentUpon>
     </Compile>
     <Compile Update="Especificacao\Comuns\Api\Autenticacao\AutenticacaoListaDependencias.feature.cs">
       <DependentUpon>AutenticacaoListaDependencias.feature</DependentUpon>
@@ -73,6 +83,9 @@
     <Compile Update="Especificacao\Pedido\FluxoCriacaoPedido.feature.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
+    <Compile Update="Especificacao\Pedido\Passo10\CamposSimplesListaDependencias.feature.cs">
+      <DependentUpon>CamposSimplesListaDependencias.feature</DependentUpon>
+    </Compile>
     <Compile Update="Especificacao\Pedido\Passo10\CamposSimples.feature.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
@@ -85,10 +98,17 @@
     <Compile Update="Especificacao\Prepedido\Prepedido.feature.cs">
       <DependentUpon>Prepedido.feature</DependentUpon>
     </Compile>
+    <Compile Update="Especificacao\Prepedido\PrepedidoListaDependencias.feature.cs">
+      <DependentUpon>PrepedidoListaDependencias.feature</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <SpecFlowFeatureFiles Update="Ambiente\ApiUnis\PrepedidoUnis\BuscarQtdeParcCartaoVisa\ListaDependencias.feature">
+    <SpecFlowFeatureFiles Update="Ambiente\ApiUnis\PrepedidoUnis\BuscarQtdeParcCartaoVisa\BuscarQtdeParcCartaoVisaListaDependencias.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Ambiente\ApiUnis\PrepedidoUnis\CadastrarPrepedido\Validacao\CpfCnpj.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
@@ -105,6 +125,10 @@
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
     <SpecFlowFeatureFiles Update="Especificacao\Pedido\FluxoCriacaoPedido.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo10\CamposSimplesListaDependencias.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
@@ -144,7 +168,7 @@
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
-    <SpecFlowFeatureFiles Update="Especificacao\Prepedido\PrepedidoEnderecoEntregaVerificarQueExecutou.feature">
+    <SpecFlowFeatureFiles Update="Especificacao\Prepedido\PrepedidoListaDependencias.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
@@ -168,10 +192,6 @@
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tusuario.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TorcamentistaEindicador.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tcliente.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Testes\Comuns\Api\" />
   </ItemGroup>
 
 </Project>
