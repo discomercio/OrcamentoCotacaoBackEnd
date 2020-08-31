@@ -669,9 +669,13 @@ namespace Cliente
                 tCliente.Contribuinte_Icms_Data_Hora = DateTime.Now;
                 tCliente.Contribuinte_Icms_Usuario = apelido.ToUpper();
                 tCliente.Produtor_Rural_Status = clienteDados.ProdutorRural;
-                tCliente.Produtor_Rural_Data = DateTime.Now;
-                tCliente.Produtor_Rural_Data_Hora = DateTime.Now;
-                tCliente.Produtor_Rural_Usuario = apelido.ToUpper();
+                if (clienteDados.ProdutorRural != (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL)
+                {
+                    tCliente.Produtor_Rural_Data = DateTime.Now;
+                    tCliente.Produtor_Rural_Data_Hora = DateTime.Now;
+                    tCliente.Produtor_Rural_Usuario = apelido.ToUpper();
+                }        
+                
                 tCliente.Endereco = clienteDados.Endereco;
                 tCliente.Endereco_Numero = clienteDados.Numero;
                 tCliente.Endereco_Complemento = clienteDados.Complemento;
