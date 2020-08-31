@@ -15,7 +15,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         public string MontarCamposAInserirPrepedido(Torcamento torcamento, PrePedidoDto prepedido)
         {
             //montamos os valores a serem inseridos
-            string campos_a_inserir = MontarCamposAInserirValorTotal(torcamento.Vl_Total.ToString());
+            string campos_a_inserir = MontarCamposAInserirValorTotal(string.Format("{0:n}", torcamento.Vl_Total));
             //montamos alguns detalhes do prepedido
             campos_a_inserir += MontarCamposAInserirDetalhes(torcamento);
             //montamos a forma de pagto selecionada
@@ -38,7 +38,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         {
             string campos_a_inserir = "";
             //estamos recendo esse param de entrada, pois esse campos vl total não tem
-            campos_a_inserir = "vl total=" + vlTotal + "|vl_total_NF|vl_total_RA|qtde_parcelas|perc_RT|midia|";
+            campos_a_inserir = "vl total=" + string.Format("{0:n}", vlTotal) + "|vl_total_NF|vl_total_RA|qtde_parcelas|perc_RT|midia|";
 
             return campos_a_inserir;
         }
@@ -89,7 +89,7 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             campos_a_inserir += "tipo_parcelamento|";
 
             if (forma_pagto_criacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_A_VISTA)
-                campos_a_inserir = "av_forma_pagto|";
+                campos_a_inserir += "av_forma_pagto|";
             else if (forma_pagto_criacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELA_UNICA)
             {
                 campos_a_inserir += "pu_forma_pagto|pu_valor|pu_vencto_apos|";
@@ -112,11 +112,11 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
         private string MontarCamposDadosCadastrais()
         {
             string campos_a_inserir = "endereco_logradouro|endereco_bairro|endereco_cidade|endereco_uf|" +
-                "endereco_cep|endereco_numero|endereco_email|endereco_email_xml|endereco_nome|endereco_ddd_res" +
-                "endereco_tel_res|endereco_ddd_com|endereco_tel_com|endereco_ramal_com|endereco_ddd_cel" +
-                "endereco_tel_cel|endereco_ddd_com_2|endereco_tel_com_2|endereco_ramal_com_2|endereco_tipo_pessoa" +
-                "endereco_cnpj_cpf|endereco_contribuinte_icms_status|endereco_produtor_rural_status|endereco_ie" +
-                "endereco_rg|endereco_contato";
+                "endereco_cep|endereco_numero|endereco_email|endereco_email_xml|endereco_nome|endereco_ddd_res|" +
+                "endereco_tel_res|endereco_ddd_com|endereco_tel_com|endereco_ramal_com|endereco_ddd_cel|" +
+                "endereco_tel_cel|endereco_ddd_com_2|endereco_tel_com_2|endereco_ramal_com_2|endereco_tipo_pessoa|" +
+                "endereco_cnpj_cpf|endereco_contribuinte_icms_status|endereco_produtor_rural_status|endereco_ie|" +
+                "endereco_rg|endereco_contato|";
 
             return campos_a_inserir;
         }
@@ -127,10 +127,10 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
 
             if (end.OutroEndereco)
             {
-                campos_a_inserir = " Endereço entrega = " + FormatarEnderecoEntregaParaLog(end) +
+                campos_a_inserir = " Endereço entrega=" + FormatarEnderecoEntregaParaLog(end) +
                     " [EndEtg_cod_justificativa=" + end.EndEtg_cod_justificativa + "]";
                 campos_a_inserir += "(email=" + (string.IsNullOrEmpty(end.EndEtg_email) ? "\"\"" : end.EndEtg_email) + ", ";
-                campos_a_inserir += "email_xml=" + (string.IsNullOrEmpty(end.EndEtg_email_xml) ? "\"\"": end.EndEtg_email_xml)  + ", ";
+                campos_a_inserir += "email_xml=" + (string.IsNullOrEmpty(end.EndEtg_email_xml) ? "\"\"" : end.EndEtg_email_xml) + ", ";
                 campos_a_inserir += "nome=" + (string.IsNullOrEmpty(end.EndEtg_nome) ? "\"\"" : end.EndEtg_nome) + ", ";
                 campos_a_inserir += "ddd_res=" + (string.IsNullOrEmpty(end.EndEtg_ddd_res) ? "\"\"" : end.EndEtg_ddd_res) + ", ";
                 campos_a_inserir += "tel_res=" + (string.IsNullOrEmpty(end.EndEtg_tel_res) ? "\"\"" : end.EndEtg_tel_res) + ", ";
@@ -206,30 +206,28 @@ namespace PrepedidoBusiness.Bll.PrepedidoBll
             }
 
             PropertyInfo[] property = item.GetType().GetProperties();
-
-            foreach (var c in property)
+            string[] split = campos_a_inserir.Split('|');
+            foreach (var s in split)
             {
-
-                //pegando o real nome da coluna 
-                ColumnAttribute column = (ColumnAttribute)Attribute.GetCustomAttribute(c, typeof(ColumnAttribute));
-                if (column != null)
+                foreach (var c in property)
                 {
-                    string coluna = column.Name;
-                    if (campos_a_inserir.Contains("preco_NF"))
+                    //pegando o real nome da coluna 
+                    ColumnAttribute column = (ColumnAttribute)Attribute.GetCustomAttribute(c, typeof(ColumnAttribute));
+                    if (column != null)
                     {
-
-                    }
-                    if (campos_a_inserir.Contains(coluna))
-                    {
-
-                        //pegando o valor coluna
-                        var value = (c.GetValue(item, null));
-                        if (string.IsNullOrEmpty(value.ToString()))
-                            log = log + coluna + "=" + "\"\"" + "; ";
-                        else
-                            log = log + coluna + "=" + value + "; ";
+                        string coluna = column.Name;
+                        if (s == coluna)
+                        {
+                            //pegando o valor coluna
+                            var value = (c.GetValue(item, null));
+                            if (string.IsNullOrEmpty(value.ToString()))
+                                log = log + coluna + "=" + "\"\"" + "; ";
+                            else
+                                log = log + coluna + "=" + value + "; ";
+                        }
                     }
                 }
+
             }
 
             return log;

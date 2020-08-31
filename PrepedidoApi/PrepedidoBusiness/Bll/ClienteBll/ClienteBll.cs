@@ -670,9 +670,12 @@ namespace PrepedidoBusiness.Bll.ClienteBll
                 tCliente.Contribuinte_Icms_Data_Hora = DateTime.Now;
                 tCliente.Contribuinte_Icms_Usuario = apelido.ToUpper();
                 tCliente.Produtor_Rural_Status = clienteDto.ProdutorRural;
-                tCliente.Produtor_Rural_Data = DateTime.Now;
-                tCliente.Produtor_Rural_Data_Hora = DateTime.Now;
-                tCliente.Produtor_Rural_Usuario = apelido.ToUpper();
+                if (clienteDto.ProdutorRural != (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL)
+                {
+                    tCliente.Produtor_Rural_Data = DateTime.Now;
+                    tCliente.Produtor_Rural_Data_Hora = DateTime.Now;
+                    tCliente.Produtor_Rural_Usuario = apelido.ToUpper();
+                }
                 tCliente.Endereco = clienteDto.Endereco;
                 tCliente.Endereco_Numero = clienteDto.Numero;
                 tCliente.Endereco_Complemento = clienteDto.Complemento;
@@ -715,11 +718,9 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             int qtdeRef = 1;
             string campos_a_omitir_ref_bancaria = "id_cliente|ordem|excluido_status|dt_cadastro|usuario_cadastro";
 
-            log = log + "Ref Bancária incluída: ";
-
             foreach (RefBancariaDtoCliente r in lstRefBancaria)
             {
-
+                log = log + "Ref Bancária incluída: ";
                 TclienteRefBancaria cliRefBancaria = new TclienteRefBancaria
                 {
                     Id_Cliente = id_cliente,
@@ -750,11 +751,10 @@ namespace PrepedidoBusiness.Bll.ClienteBll
             int qtdeRef = 1;
 
             string campos_a_omitir_ref_comercial = "id_cliente|ordem|excluido_status|dt_cadastro|usuario_cadastro";
-
-            log = log + "Ref Comercial incluída: ";
-
+            
             foreach (RefComercialDtoCliente r in lstRefComercial)
             {
+                log = log + "Ref Comercial incluída: ";
                 TclienteRefComercial c = new TclienteRefComercial
                 {
                     Id_Cliente = id_cliente,
