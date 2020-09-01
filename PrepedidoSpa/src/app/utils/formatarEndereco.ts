@@ -6,7 +6,8 @@ import { FormatarTelefone } from './formatarTelefone';
 import { EnderecoEntregaDtoClienteCadastro } from '../dto/ClienteCadastro/EnderecoEntregaDTOClienteCadastro';
 
 export class FormatarEndereco {
-    formata_endereco(endereco: string, endereco_numero: string, endereco_complemento: string, bairro: string, cidade: string, uf: string, cep: string): string {
+    formata_endereco(endereco: string, endereco_numero: string, endereco_complemento: string, bairro: string, cidade: string,
+        uf: string, cep: string): string {
 
         //copiado do sistema em ASP
         let s_aux = "", strResposta = "";
@@ -68,6 +69,7 @@ export class FormatarEndereco {
         let aux: string = "";
         let sTelefones: string = "";
         let retorno: string = "";
+        let emails: string = "";
 
         sCabecalho = enderecoEntrega.EndEtg_nome + " \nCPF: " + CpfCnpjUtils.cnpj_cpf_formata(enderecoEntrega.EndEtg_cnpj_cpf);
         aux = "";
@@ -89,7 +91,7 @@ export class FormatarEndereco {
 
         sCabecalho += "\n";
 
-        
+
 
         //fomatar telefones
         //tel residencial e celular
@@ -113,7 +115,17 @@ export class FormatarEndereco {
         if (!!telCel && telCel != "")
             sTelefones += "Celular " + telCel;
 
-        retorno = sCabecalho + sEndereco + sTelefones + "\n" + enderecoEntrega.EndEtg_descricao_justificativa;
+        if ((!!enderecoEntrega.EndEtg_email && enderecoEntrega.EndEtg_email != "") ||
+            (!!enderecoEntrega.EndEtg_email_xml && enderecoEntrega.EndEtg_email_xml != ""))
+            emails = "\n";
+
+        if (!!enderecoEntrega.EndEtg_email && enderecoEntrega.EndEtg_email != "")
+            emails += "E-mail: " + enderecoEntrega.EndEtg_email + " ";
+
+        if (!!enderecoEntrega.EndEtg_email_xml && enderecoEntrega.EndEtg_email_xml != "")
+            emails += "E-mail (XML): " + enderecoEntrega.EndEtg_email_xml;
+
+        retorno = sCabecalho + sEndereco + sTelefones + emails + "\n" + enderecoEntrega.EndEtg_descricao_justificativa;
 
         return retorno;
     }
@@ -123,6 +135,7 @@ export class FormatarEndereco {
         let aux: string = "";
         let sTelefones: string = "";
         let retorno: string = "";
+        let emails: string = "";
 
         sCabecalho = enderecoEntrega.EndEtg_nome + "\nCNPJ: " + CpfCnpjUtils.cnpj_cpf_formata(enderecoEntrega.EndEtg_cnpj_cpf);
 
@@ -160,7 +173,17 @@ export class FormatarEndereco {
         if (!!telCom2 && telCom2 != "")
             sTelefones += telCom2;
 
-        retorno = sCabecalho + sEndereco + sTelefones + "\n" + enderecoEntrega.EndEtg_descricao_justificativa;
+        if ((!!enderecoEntrega.EndEtg_email && enderecoEntrega.EndEtg_email != "") ||
+            (!!enderecoEntrega.EndEtg_email_xml && enderecoEntrega.EndEtg_email_xml != ""))
+            emails = "\n";
+
+        if (!!enderecoEntrega.EndEtg_email && enderecoEntrega.EndEtg_email != "")
+            emails += "E-mail: " + enderecoEntrega.EndEtg_email + " ";
+
+        if (!!enderecoEntrega.EndEtg_email_xml && enderecoEntrega.EndEtg_email_xml != "")
+            emails += "E-mail (XML): " + enderecoEntrega.EndEtg_email_xml;
+
+        retorno = sCabecalho + sEndereco + sTelefones + emails + "\n" + enderecoEntrega.EndEtg_descricao_justificativa;
 
         return retorno;
     }

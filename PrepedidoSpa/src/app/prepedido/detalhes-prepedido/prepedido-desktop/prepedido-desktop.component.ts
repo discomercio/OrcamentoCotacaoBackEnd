@@ -69,20 +69,24 @@ export class PrepedidoDesktopComponent extends TelaDesktopBaseComponent implemen
         // return;
       }
       else {
+        let emails: string = "";
         if (this.prepedidoDto.DadosCliente.Tipo == this.constantes.ID_PF) {
-          this.enderecoEntregaFormatado = sEndereco + "\n" + enderecoEntregaDto.EndEtg_descricao_justificativa;
+          if ((!enderecoEntregaDto.EndEtg_email && enderecoEntregaDto.EndEtg_email != "") ||
+            (!!enderecoEntregaDto.EndEtg_email_xml && enderecoEntregaDto.EndEtg_email_xml != ""))
+            emails = "\n";
+
+          if (!!enderecoEntregaDto.EndEtg_email && enderecoEntregaDto.EndEtg_email != "")
+            emails += "E-mail: " + enderecoEntregaDto.EndEtg_email + " ";
+
+          if (!!enderecoEntregaDto.EndEtg_email_xml && enderecoEntregaDto.EndEtg_email_xml != "")
+            emails += "E-mail (XML): " + enderecoEntregaDto.EndEtg_email_xml;
+          
+          this.enderecoEntregaFormatado = sEndereco + emails + "\n" + enderecoEntregaDto.EndEtg_descricao_justificativa;
+
+          split = this.enderecoEntregaFormatado.split('\n');
+          this.qtdeLinhaEndereco = split.length;
           return;
-          // return;
         }
-      }
-
-      //memorização ativa, colocamos os campos adicionais
-      if (enderecoEntregaDto.EndEtg_tipo_pessoa == this.constantes.ID_PF) {
-        this.enderecoEntregaFormatado = this.formatarEndereco.montarEnderecoEntregaPF(this.prepedidoDto.EnderecoEntrega, sEndereco);
-
-        split = this.enderecoEntregaFormatado.split('\n');
-        this.qtdeLinhaEndereco = split.length;
-        return;
       }
       //se chegar aqui é PJ
       this.enderecoEntregaFormatado = this.formatarEndereco.montarEnderecoEntregaPJ(this.prepedidoDto.EnderecoEntrega, sEndereco);
