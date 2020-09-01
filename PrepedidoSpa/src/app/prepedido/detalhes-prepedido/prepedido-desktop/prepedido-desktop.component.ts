@@ -88,8 +88,17 @@ export class PrepedidoDesktopComponent extends TelaDesktopBaseComponent implemen
           return;
         }
       }
+
+      //memorização ativa, colocamos os campos adicionais
+      if (enderecoEntregaDto.EndEtg_tipo_pessoa == this.constantes.ID_PF) {
+        this.enderecoEntregaFormatado = this.formatarEndereco.montarEnderecoEntregaPF(enderecoEntregaDto, sEndereco);
+
+        split = this.enderecoEntregaFormatado.split('\n');
+        this.qtdeLinhaEndereco = split.length;
+        return;
+      }
       //se chegar aqui é PJ
-      this.enderecoEntregaFormatado = this.formatarEndereco.montarEnderecoEntregaPJ(this.prepedidoDto.EnderecoEntrega, sEndereco);
+      this.enderecoEntregaFormatado = this.formatarEndereco.montarEnderecoEntregaPJ(enderecoEntregaDto, sEndereco);
       split = this.enderecoEntregaFormatado.split('\n');
       this.qtdeLinhaEndereco = split.length;
     }
