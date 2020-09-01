@@ -101,12 +101,12 @@ export class PedidoDesktopComponent extends TelaDesktopBaseComponent implements 
         this.enderecoEntregaFormatado = sEndereco + "\n" + enderecoEntregaDto.EndEtg_descricao_justificativa;
         return;
       }
-      else {
-        if (this.pedido.DadosCliente.Tipo == this.constantes.ID_PF) {
-          this.enderecoEntregaFormatado = sEndereco + "\n" + enderecoEntregaDto.EndEtg_descricao_justificativa;
-          return;
-        }
-      }
+      // else {
+      //   if (this.pedido.DadosCliente.Tipo == this.constantes.ID_PF) {
+      //     this.enderecoEntregaFormatado = sEndereco + "\n" + enderecoEntregaDto.EndEtg_descricao_justificativa;
+      //     return;
+      //   }
+      // }
       
       //memorização ativa, colocamos os campos adicionais
       if (enderecoEntregaDto.EndEtg_tipo_pessoa == this.constantes.ID_PF) {

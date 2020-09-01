@@ -208,9 +208,6 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
           }
 
         }
-        if (!!end.LogradouroComplemento) {
-          this.Complemento = end.LogradouroComplemento;
-        }
         if (!!end.Bairro) {
           this.Bairro = end.Bairro;
         }

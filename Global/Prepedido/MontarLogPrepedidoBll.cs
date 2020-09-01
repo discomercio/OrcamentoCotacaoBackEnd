@@ -168,7 +168,7 @@ namespace Prepedido
                 string campos_a_inserir = "";
                 campos_a_inserir = MontarCamposAInserirItens(i);
 
-                logItem += "\n";
+                logItem += "\n\r";
 
                 logItem = MontaLogInserirItens(i, campos_a_inserir, logItem);
 
@@ -217,6 +217,8 @@ namespace Prepedido
                         string coluna = column.Name;
                         if (s == coluna)
                         {
+                            if (coluna == "preco_lista")
+                                log = log + "\r";
                             //pegando o valor coluna
                             var value = (c.GetValue(item, null));
                             if (string.IsNullOrEmpty(value.ToString()))
