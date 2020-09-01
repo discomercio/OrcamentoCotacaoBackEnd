@@ -80,23 +80,9 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
 
         }
 
-        //código duplicado!!!!
-        private bool ignorarFeature = false;
+        //não fazemos este teste aqui
         public void GivenIgnorarFeatureNoAmbiente(string p0)
         {
-            var typeFullName = this.GetType().FullName;
-            if (typeFullName == null)
-            {
-                Assert.Equal("", "sem this.GetType().FullName");
-                return;
-            }
-
-            //mal resolvido: temos um Especificacao na frente.... bom, tiramos!
-            typeFullName = typeFullName.Replace("Especificacao.Ambiente.", "Ambiente.");
-            typeFullName = typeFullName.Replace("Especificacao.Especificacao.", "Especificacao.");
-
-            if (typeFullName == p0)
-                ignorarFeature = true;
         }
     }
 }

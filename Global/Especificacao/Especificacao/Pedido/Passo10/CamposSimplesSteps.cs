@@ -8,7 +8,7 @@ namespace Especificacao.Especificacao.Pedido.Passo10
     [Binding, Scope(Tag = "Especificacao.Pedido.Passo10.CamposSimples")]
     public class CamposSimplesSteps : PedidoPassosComuns
     {
-        public CamposSimplesSteps()
+        public CamposSimplesSteps(FeatureContext featureContext)
         {
             base.AdicionarImplementacao(new Especificacao.Pedido.PedidoSteps());
             RegistroDependencias.AdicionarDependencia("Especificacao.Pedido.Pedido.PedidoListaDependencias", "Especificacao.Pedido.Passo10.CamposSimplesListaDependencias");
