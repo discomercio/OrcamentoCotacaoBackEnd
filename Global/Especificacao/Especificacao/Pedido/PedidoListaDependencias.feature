@@ -8,5 +8,6 @@ Scenario: Lista de dependências
 	#And Especificado em "Especificacao.Pedido.Passo25.*"
 	#And Especificado em "Especificacao.Pedido.Passo30.*"
 	#And Especificado em "Especificacao.Pedido.Passo40.*"
+	And Especificado em "Especificacao.Pedido.Passo20.EnderecoEntrega.EnderecoEntregaListaDependencias"
 	And Implementado em "Especificacao.Prepedido.Prepedido.PrepedidoListaDependencias"
 	And Fim da configuração

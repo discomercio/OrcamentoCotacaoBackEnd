@@ -2,10 +2,12 @@
 {
     public interface IPedidoPassosComuns
     {
-        void WhenInformo(string p0, string p1);
+        void GivenPedidoBaseComEnderecoDeEntrega();
         void WhenPedidoBase();
+        void WhenInformo(string p0, string p1);
         void ThenSemErro(string p0);
         void ThenErro(string p0);
         void GivenIgnorarFeatureNoAmbiente(string p0);
+        void ThenSemNenhumErro();
     }
 }

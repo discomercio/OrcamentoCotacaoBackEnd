@@ -22,6 +22,11 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
         {
             prePedidoUnisDto = CadastrarPrepedidoDados.PrepedidoBase();
         }
+        public void GivenPedidoBaseComEnderecoDeEntrega()
+        {
+            prePedidoUnisDto = CadastrarPrepedidoDados.PrepedidoBaseComEnderecoDeEntrega();
+        }
+
         public void WhenPedidoBase()
         {
             GivenPrepedidoBase();
@@ -37,6 +42,30 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
                 case "CPF/CNPJ":
                     prePedidoUnisDto.Cnpj_Cpf = p1;
                     break;
+
+                //endetg
+                case "EndEtg_bairro":
+                    prePedidoUnisDto.EnderecoEntrega.EndEtg_bairro = p1;
+                    break;
+                case "EndEtg_cep":
+                    prePedidoUnisDto.EnderecoEntrega.EndEtg_cep = p1;
+                    break;
+                case "EndEtg_endereco_numero":
+                    prePedidoUnisDto.EnderecoEntrega.EndEtg_endereco_numero = p1;
+                    break;
+                case "EndEtg_uf":
+                    prePedidoUnisDto.EnderecoEntrega.EndEtg_uf = p1;
+                    break;
+                case "EndEtg_endereco":
+                    prePedidoUnisDto.EnderecoEntrega.EndEtg_endereco = p1;
+                    break;
+                case "EndEtg_cidade":
+                    prePedidoUnisDto.EnderecoEntrega.EndEtg_cidade = p1;
+                    break;
+                case "EndEtg_obs":
+                    prePedidoUnisDto.EnderecoEntrega.EndEtg_cod_justificativa = p1;
+                    break;
+
                 default:
                     Assert.Equal("", $"{p0} desconhecido");
                     break;
@@ -58,10 +87,16 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
         {
             ThenErro(p0, false);
         }
-
-        public void ThenErro(string erro, bool erroDeveExistir)
+        public void ThenSemNenhumErro()
         {
-            erro = Testes.Utils.MapeamentoMensagens.MapearMensagem(this.GetType().FullName, erro);
+            ThenErro(null, false);
+        }
+
+        public void ThenErro(string? erro, bool erroDeveExistir)
+        {
+            if (erro != null)
+                erro = Testes.Utils.MapeamentoMensagens.MapearMensagem(this.GetType().FullName, erro);
+
             logTestes.LogMensagem($"prepedidoUnisController.CadastrarPrepedido ThenErro({erro}, {erroDeveExistir})");
 
             Microsoft.AspNetCore.Mvc.ActionResult<PrePedidoResultadoUnisDto> ret = prepedidoUnisController.CadastrarPrepedido(prePedidoUnisDto).Result;
@@ -76,7 +111,12 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
             if (erroDeveExistir)
                 Assert.Contains(erro, prePedidoResultadoUnisDto.ListaErros);
             else
-                Assert.DoesNotContain(erro, prePedidoResultadoUnisDto.ListaErros);
+            {
+                if (erro == null)
+                    Assert.Empty(prePedidoResultadoUnisDto.ListaErros);
+                else
+                    Assert.DoesNotContain(erro, prePedidoResultadoUnisDto.ListaErros);
+            }
 
         }
 
@@ -84,5 +124,6 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
         public void GivenIgnorarFeatureNoAmbiente(string p0)
         {
         }
+
     }
 }

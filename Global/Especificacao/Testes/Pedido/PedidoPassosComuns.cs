@@ -39,6 +39,13 @@ namespace Especificacao.Testes.Pedido
             base.Executar(i => i.ThenErro(mensagem));
         }
 
+        public void ThenSemNenhumErro()
+        {
+            if (ignorarFeature) return;
+            logTestes.LogMensagem($"PedidoPassosComuns {this.GetType().FullName} ThenSemNenhumErro()");
+            base.Executar(i => i.ThenSemNenhumErro());
+        }
+
         private bool ignorarFeature = false;
         public void GivenIgnorarFeatureNoAmbiente(string p0)
         {
@@ -58,5 +65,10 @@ namespace Especificacao.Testes.Pedido
             base.Executar(i => i.GivenIgnorarFeatureNoAmbiente(p0));
         }
 
+        public void GivenPedidoBaseComEnderecoDeEntrega()
+        {
+            if (ignorarFeature) return;
+            base.Executar(i => i.GivenPedidoBaseComEnderecoDeEntrega());
+        }
     }
 }
