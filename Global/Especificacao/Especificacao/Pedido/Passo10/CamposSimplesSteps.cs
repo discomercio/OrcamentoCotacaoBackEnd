@@ -39,9 +39,9 @@ namespace Especificacao.Especificacao.Pedido.Passo10
         }
 
         [Given(@"No ambiente ""(.*)"" erro ""(.*)"" é ""(.*)""")]
-        new public void GivenNoAmbienteErroE(string p0, string p1, string p2)
+        public void GivenNoAmbienteErroE(string p0, string p1, string p2)
         {
-            PedidoPassosComuns.GivenNoAmbienteErroE(p0, p1, p2);
+            Testes.Utils.MapeamentoMensagens.GivenNoAmbienteErroE(p0, p1, p2);
         }
 
         [Given(@"Ignorar feature no ambiente ""(.*)""")]

@@ -61,7 +61,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
 
         public void ThenErro(string erro, bool erroDeveExistir)
         {
-            erro = Testes.Pedido.PedidoPassosComuns.MapearMensagem(this.GetType().FullName, erro);
+            erro = Testes.Utils.MapeamentoMensagens.MapearMensagem(this.GetType().FullName, erro);
             logTestes.LogMensagem($"prepedidoUnisController.CadastrarPrepedido ThenErro({erro}, {erroDeveExistir})");
 
             Microsoft.AspNetCore.Mvc.ActionResult<PrePedidoResultadoUnisDto> ret = prepedidoUnisController.CadastrarPrepedido(prePedidoUnisDto).Result;
