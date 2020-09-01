@@ -718,7 +718,7 @@ namespace Cliente
             int qtdeRef = 1;
             string campos_a_omitir_ref_bancaria = "id_cliente|ordem|excluido_status|dt_cadastro|usuario_cadastro";
 
-            foreach (RefBancariaDtoCliente r in lstRefBancaria)
+            foreach (Cliente.Dados.Referencias.RefBancariaClienteDados r in lstRefBancaria)
             {
                 log = log + "Ref Bancária incluída: ";
                 TclienteRefBancaria cliRefBancaria = new TclienteRefBancaria
@@ -753,7 +753,7 @@ namespace Cliente
 
             string campos_a_omitir_ref_comercial = "id_cliente|ordem|excluido_status|dt_cadastro|usuario_cadastro";
             
-            foreach (RefComercialDtoCliente r in lstRefComercial)
+            foreach (Cliente.Dados.Referencias.RefComercialClienteDados r in lstRefComercial)
             {
                 log = log + "Ref Comercial incluída: ";
                 TclienteRefComercial c = new TclienteRefComercial
