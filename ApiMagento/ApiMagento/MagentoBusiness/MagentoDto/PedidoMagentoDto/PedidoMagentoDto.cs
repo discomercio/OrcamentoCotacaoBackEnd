@@ -71,12 +71,12 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             Pedido.Dados.Criacao.PedidoCriacaoDados pedidoCriacao = new Pedido.Dados.Criacao.PedidoCriacaoDados();
 
             //afazer: realizar a conversão de dados
-            pedidoCriacao.LojaUsuario = "ler do appsettings";
+            pedidoCriacao.LojaUsuario = dadosClienteMagento.Loja;
             //Armazena nome do usuário logado
-            pedidoCriacao.Usuario = "ler do appsettings";
+            pedidoCriacao.Usuario = dadosClienteMagento.Indicador_Orcamentista;
             //Armazena o nome do vendedor externo
             //obs: analisar melhor quando esse campos será preenchido
-            pedidoCriacao.VendedorExterno = "Ler do token ou ler do appsettings";
+            pedidoCriacao.VendedorExterno = dadosClienteMagento.Vendedor;
 
             //Armazena os dados cadastrados do cliente
             pedidoCriacao.DadosCliente = dadosClienteMagento;
@@ -108,6 +108,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             pedidoCriacao.ComIndicador = false;
 
             //Armazena o nome do indicador selecionado
+            //afazer: verificar se passa o orçamentista ou usuário ou null
             pedidoCriacao.NomeIndicador = null;
 
             //Armazena o percentual de comissão para o indicador selecionado
@@ -120,13 +121,16 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             pedidoCriacao.IdNfeSelecionadoManual = 0; //será sempre automático
 
             //Flag para saber se o cliente aceitou finalizar o pedido mesmo com produto sem estoque
+            //afazer: verificar se passa true ou false
             pedidoCriacao.OpcaoVendaSemEstoque = false;
 
             //Armazena o valor total do pedido
+            //afazer: verificar se é feito o cálculo antes de enviar para cadastrar ou se é preenchido ao cadastrar
             pedidoCriacao.VlTotalDestePedido = 0;
 
             //Armazena o valor total de pedido com RA
             //Caso o indicador selecionado permita RA esse campo deve receber o valor total do Pedido com RA
+            //afazer: verificar se é feito o cálculo antes de enviar para cadastrar ou se é preenchido ao cadastrar
             pedidoCriacao.VlTotalDestePedidoComRa = 0;
 
             return pedidoCriacao;

@@ -763,7 +763,7 @@ namespace Prepedido
             if (await validacoesPrepedidoBll.ValidarEnderecoEntrega(prePedido, lstErros))
             {
                 //busca a sigla do tipo de pagamento pelo código enviado
-                string c_custoFinancFornecTipoParcelamento = ObterSiglaFormaPagto(prePedido);
+                string c_custoFinancFornecTipoParcelamento = ObterSiglaFormaPagto(prePedido.FormaPagtoCriacao);
 
                 //precisa incluir uma validação de forma de pagamento com base no orçamentista enviado
                 FormaPagtoDados formasPagto = await formaPagtoBll.ObterFormaPagto(tOrcamentista.Apelido, prePedido.DadosCliente.Tipo);
@@ -771,7 +771,7 @@ namespace Prepedido
                     0.1M, c_custoFinancFornecTipoParcelamento, formasPagto))
                 {
                     //Esta sendo verificado qual o tipo de pagamento que esta sendo feito e retornando a quantidade de parcelas
-                    int c_custoFinancFornecQtdeParcelas = ObterQtdeParcelasFormaPagto(prePedido);
+                    int c_custoFinancFornecQtdeParcelas = ObterQtdeParcelasFormaPagto(prePedido.FormaPagtoCriacao);
 
                     float perc_limite_RA_sem_desagio = await Util.VerificarSemDesagioRA(contextoProvider);
 
@@ -867,9 +867,8 @@ namespace Prepedido
             return lstErros;
         }
 
-        public string ObterSiglaFormaPagto(PrePedidoDados prePedido)
+        public string ObterSiglaFormaPagto(FormaPagtoCriacaoDados formaPagto)
         {
-            FormaPagtoCriacaoDados formaPagto = prePedido.FormaPagtoCriacao;
             string retorno = "";
 
             if (formaPagto.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_A_VISTA)
@@ -935,7 +934,7 @@ namespace Prepedido
             torcamento.St_Orcamento = "";
             torcamento.St_Fechamento = "";
             torcamento.St_Orc_Virou_Pedido = 0;
-            torcamento.CustoFinancFornecQtdeParcelas = (short)ObterQtdeParcelasFormaPagto(prepedido);
+            torcamento.CustoFinancFornecQtdeParcelas = (short)ObterQtdeParcelasFormaPagto(prepedido.FormaPagtoCriacao);
             torcamento.Vl_Total = Calcular_Vl_Total(prepedido);
             torcamento.Vl_Total_NF = CalcularVl_Total_NF(prepedido);
             torcamento.Vl_Total_RA = prepedido.PermiteRAStatus == 1 ? CalcularVl_Total_NF(prepedido) - Calcular_Vl_Total(prepedido) : 0M;
@@ -1223,9 +1222,8 @@ namespace Prepedido
             return log;
         }
 
-        private int ObterQtdeParcelasFormaPagto(PrePedidoDados prepedido)
+        public int ObterQtdeParcelasFormaPagto(FormaPagtoCriacaoDados formaPagto)
         {
-            FormaPagtoCriacaoDados formaPagto = prepedido.FormaPagtoCriacao;
             int qtdeParcelas = 0;
 
             if (formaPagto.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_A_VISTA)
