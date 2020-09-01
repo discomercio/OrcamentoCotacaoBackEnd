@@ -38,14 +38,14 @@ export class AutenticacaoService {
   }
 
   constantes = new Constantes();
-  public usuarioApelidoParaAlterarSenha: string;
+  // public usuarioApelidoParaAlterarSenha: string;
   public lembrarSenhaParaAlterarSenha: boolean;
   public senhaExpirada: boolean = false;
   salvar: boolean = false;
   public authLogin(usuario: string, senha: string, salvar: boolean, desligarFazendoLogin: () => void, _snackBar: MatSnackBar,
     router: Router, appComponent: AppComponent): void {
     this.lembrarSenhaParaAlterarSenha = salvar;
-    this.usuarioApelidoParaAlterarSenha = usuario;
+    // this.usuarioApelidoParaAlterarSenha = usuario; = _NomeUsuario
     var key = this.gerarChave();
     senha = this.CodificaSenha(senha, key);
     this.salvar = salvar;
@@ -257,7 +257,7 @@ export class AutenticacaoService {
     return true;
   }
 
-  private _NomeUsuario: string = null;
+  public _NomeUsuario: string = null;
   get authNomeUsuario(): string {
     if (this._NomeUsuario == null) {
       const token = this.obterToken();
@@ -312,7 +312,7 @@ export class AutenticacaoService {
   }
   private _estilo: string = null;
   private _logo: string = null;
-  private loja: string = null;
+  public loja: string = null;
   private carregarLayout(): void {
     //tentamos obter a loja do token. se nao tiver, fica com null
     // let loja: string = null;

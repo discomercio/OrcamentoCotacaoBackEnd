@@ -77,7 +77,7 @@ export class AlterarsenhaComponent extends TelaDesktopBaseComponent implements O
       });
       return;
     }
-    if (senha_nova == this.autenticacaoService.usuarioApelidoParaAlterarSenha.toUpperCase().trim()) {
+    if (senha_nova == this.autenticacaoService._NomeUsuario.toUpperCase().trim()) {
       msg = "A nova senha não pode ser igual ao identificador do usuário!";
       this._snackBar.open("Erro ao alterar senha: " + msg, undefined, {
         duration: environment.esperaErros
@@ -93,7 +93,7 @@ export class AlterarsenhaComponent extends TelaDesktopBaseComponent implements O
 
     //as senhas serão passadas codificadas em maiusculas
     //preciso guardar o nome de usuario          
-    this.autenticacaoService.alterarSenha(this.autenticacaoService.usuarioApelidoParaAlterarSenha, senha_cod,
+    this.autenticacaoService.alterarSenha(this.autenticacaoService._NomeUsuario, senha_cod,
       senha_nova_cod, senha_nova_confirma_cod).subscribe({
         next: (e) => {
           //fazer a chamada para realizar o login, passando a senha nova e o apelido
@@ -104,7 +104,7 @@ export class AlterarsenhaComponent extends TelaDesktopBaseComponent implements O
             this.autenticacaoService.senhaExpirada = false;
 
             // this.alertaService.mostrarMensagem("Alteração de senha realizada com sucesso!");
-            this.autenticacaoService.authLogin(this.autenticacaoService.usuarioApelidoParaAlterarSenha, senha_nova,
+            this.autenticacaoService.authLogin(this.autenticacaoService._NomeUsuario, senha_nova,
               this.autenticacaoService.lembrarSenhaParaAlterarSenha, () => { }, this._snackBar, this.router, this.appComponent);
             return;
 
