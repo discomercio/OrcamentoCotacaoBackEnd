@@ -171,7 +171,7 @@ namespace Prepedido.FormaPagto
             else if (prepedido.FormaPagtoCriacao.C_pc_maquineta_valor <= 0)
                 lstErros.Add("Valor de parcela inválido (parcelado no cartão [maquineta]).");
 
-            //afazer: validar o valor da forma de pagto com o valor total do pedido
+            
             if (lstErros.Count == 0)
             {
                 if (prepedido.FormaPagtoCriacao.C_pc_maquineta_qtde != prepedido.FormaPagtoCriacao.Qtde_Parcelas)
@@ -221,7 +221,7 @@ namespace Prepedido.FormaPagto
             else if (prepedido.FormaPagtoCriacao.C_pce_prestacao_periodo <= 0)
                 lstErros.Add("Intervalo de vencimento inválido (parcelado com entrada).");
 
-            //afazer: validar o valor da forma de pagto com o valor total do pedido
+            
             if (lstErros.Count == 0)
             {
                 if ((prepedido.FormaPagtoCriacao.C_pce_prestacao_qtde + 1) != prepedido.FormaPagtoCriacao.Qtde_Parcelas)
@@ -273,7 +273,7 @@ namespace Prepedido.FormaPagto
             else if (prepedido.FormaPagtoCriacao.C_pse_demais_prest_periodo < 0)
                 lstErros.Add("Intervalo de vencimento inválido (parcelado sem entrada).");
 
-            //afazer: validar o valor da forma de pagto com o valor total do pedido
+            
             if (lstErros.Count == 0)
             {
                 if ((prepedido.FormaPagtoCriacao.C_pse_demais_prest_qtde + 1) != prepedido.FormaPagtoCriacao.Qtde_Parcelas)

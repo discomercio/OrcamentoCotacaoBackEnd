@@ -725,7 +725,7 @@ namespace Prepedido
             await Cliente.ValidacoesClienteBll.ValidarDadosCliente(prePedido.DadosCliente,
                 null, null,
                 lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco,
-                prePedido.DadosCliente.Tipo == Constantes.ID_PF ? true : false);
+                prePedido.DadosCliente.Tipo == Constantes.ID_PF ? true : false, (byte)sistemaResponsavelCadastro);
 
             //if (lstErros.Count > 0)
             //    return lstErros;
@@ -1886,7 +1886,7 @@ namespace Prepedido
             return retorno;
         }
 
-        private async Task<TorcamentistaEindicador> BuscarTorcamentista(string apelido)
+        public async Task<TorcamentistaEindicador> BuscarTorcamentista(string apelido)
         {
             var db = contextoProvider.GetContextoLeitura();
 

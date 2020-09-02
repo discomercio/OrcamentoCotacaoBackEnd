@@ -915,7 +915,8 @@ namespace UtilsGlobais
             var db = contextoProvider.GetContextoLeitura();
 
             var lstTcodigo = from c in db.TcodigoDescricaos
-                             where c.Grupo == InfraBanco.Constantes.Constantes.GRUPO_T_CODIGO_DESCRICAO__PEDIDOECOMMERCE_ORIGEM
+                             where c.Grupo == InfraBanco.Constantes.Constantes.GRUPO_T_CODIGO_DESCRICAO__PEDIDOECOMMERCE_ORIGEM &&
+                                   c.St_Inativo == 0
                              select c;
 
             return await Task.FromResult(lstTcodigo);
@@ -937,9 +938,7 @@ namespace UtilsGlobais
             return retorno;
         }
 
-        //afazer: alterar o método para buscar no banco de dados e comparar, nã será mais feito a verificação nas constantes
-        //verificar melhor como sera feito a comparação pois a variavel "loja" é um número e o retorno do banco 
-        //será uma sigla Ex: "AC / BS / VRF"
+        
         private static async Task<bool> IsLojaVrf(string loja, ContextoBdProvider contextoProvider)
         {
             bool retorno = false;

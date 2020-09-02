@@ -1307,7 +1307,7 @@ namespace Loja.Bll.Util
             return transportadoraCep;
         }
 
-        //afazer melhorar esse metodo
+        
         public static async Task<IEnumerable<RegrasBll>> Buscar_IdCDselecionado(PedidoProdutosDtoPedido produto, Tcliente cliente,
             int id_nfe_emitente_selecao_manual,
             ProdutoValidadoComEstoqueDto prodValidadoEstoque, ILojaContextoBd contextoBd)

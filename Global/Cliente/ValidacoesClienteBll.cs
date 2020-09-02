@@ -32,7 +32,7 @@ namespace Cliente
             List<Cliente.Dados.Referencias.RefBancariaClienteDados> lstRefBancaria, 
             List<Cliente.Dados.Referencias.RefComercialClienteDados> lstRefComercial,
             List<string> lstErros, ContextoBdProvider contextoProvider, CepBll cepBll, IBancoNFeMunicipio bancoNFeMunicipio,
-            List<Cliente.Dados.ListaBancoDados> lstBanco, bool flagMsg_IE_Cadastro_PF)
+            List<Cliente.Dados.ListaBancoDados> lstBanco, bool flagMsg_IE_Cadastro_PF, byte sistemaResponsavel)
         {
             bool retorno;
 
@@ -73,7 +73,7 @@ namespace Cliente
 
                         tipoDesconhecido = false;
                         //vamos verificar e validar os dados referente ao cliente PF
-                        retorno = await ValidarDadosCliente_PF(dadosCliente, cliente, lstErros, contextoProvider);
+                        retorno = await ValidarDadosCliente_PF(dadosCliente, cliente, lstErros, contextoProvider, sistemaResponsavel);
                     }
                     if (dadosCliente.Tipo == Constantes.ID_PJ)
                     {
@@ -116,7 +116,7 @@ namespace Cliente
         }
 
         private static async Task<bool> ValidarDadosCliente_PF(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente,
-            List<string> lstErros, ContextoBdProvider contextoProvider)
+            List<string> lstErros, ContextoBdProvider contextoProvider, byte sistemaResponsavel)
         {
             bool retorno = true;
 
@@ -156,32 +156,36 @@ namespace Cliente
                 }
                 else
                 {
-                    //vamos validar o gênero do cliente
-                    if (string.IsNullOrEmpty(dadosCliente.Sexo))
+                    if(sistemaResponsavel !=
+                        (byte)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__APIMAGENTO)
                     {
-                        lstErros.Add(MensagensErro.GENERO_DO_CLIENTE_NAO_INFORMADO);
-                        retorno = false;
-                    }
-                    else
-                    {
-                        if (dadosCliente.Sexo.Length > 1)
+                        //vamos validar o gênero do cliente
+                        if (string.IsNullOrEmpty(dadosCliente.Sexo))
                         {
-                            lstErros.Add("FORMATO DO TIPO DE SEXO INVÁLIDO!");
+                            lstErros.Add(MensagensErro.GENERO_DO_CLIENTE_NAO_INFORMADO);
                             retorno = false;
                         }
-                        if (dadosCliente.Sexo != "M" && dadosCliente.Sexo != "F")
+                        else
                         {
-                            lstErros.Add("INDIQUE QUAL O SEXO.");
-                            retorno = false;
-                        }
+                            if (dadosCliente.Sexo.Length > 1)
+                            {
+                                lstErros.Add("FORMATO DO TIPO DE SEXO INVÁLIDO!");
+                                retorno = false;
+                            }
+                            if (dadosCliente.Sexo != "M" && dadosCliente.Sexo != "F")
+                            {
+                                lstErros.Add("INDIQUE QUAL O SEXO.");
+                                retorno = false;
+                            }
 
-                        retorno = await ValidarTelefones_PF(dadosCliente, cliente, lstErros, contextoProvider);
+                            retorno = await ValidarTelefones_PF(dadosCliente, cliente, lstErros, contextoProvider);
 
-                        if (!string.IsNullOrEmpty(dadosCliente.Email))
-                        {
-                            retorno = Util.ValidarEmail(dadosCliente.Email, lstErros);
+                            if (!string.IsNullOrEmpty(dadosCliente.Email))
+                            {
+                                retorno = Util.ValidarEmail(dadosCliente.Email, lstErros);
+                            }
                         }
-                    }
+                    }                    
                 }
 
                 //vamos verificar os campos que não pertence ao tipo PF

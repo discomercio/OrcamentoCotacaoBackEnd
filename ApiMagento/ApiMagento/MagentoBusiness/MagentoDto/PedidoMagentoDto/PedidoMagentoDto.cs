@@ -21,6 +21,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         [Required]
         public string Cnpj_Cpf { get; set; }
 
+
         [Required]
         public InfCriacaoPedidoMagentoDto InfCriacaoPedido { get; set; }
 
@@ -50,7 +51,6 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         // BemDeUso_Consumo = COD_ST_BEM_USO_CONSUMO_SIM
         //InstaladorInstala = COD_INSTALADOR_INSTALA_NAO
 
-
         [Required]
         public FormaPagtoCriacaoMagentoDto FormaPagtoCriacao { get; set; }
 
@@ -70,7 +70,6 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         {
             Pedido.Dados.Criacao.PedidoCriacaoDados pedidoCriacao = new Pedido.Dados.Criacao.PedidoCriacaoDados();
 
-            //afazer: realizar a conversão de dados
             pedidoCriacao.LojaUsuario = dadosClienteMagento.Loja;
             //Armazena nome do usuário logado
             pedidoCriacao.Usuario = dadosClienteMagento.Indicador_Orcamentista;
@@ -88,7 +87,6 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             pedidoCriacao.EnderecoEntrega = enderecoEntregaMagento;
 
             //Armazena os dados dos produtos selecionados
-            //afazer: converter os produtos
             pedidoCriacao.ListaProdutos = lstProdutosMagento;
 
             //Armazena os dados da forma de pagto selecionado
@@ -109,12 +107,11 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             pedidoCriacao.ComIndicador = !string.IsNullOrEmpty(dadosClienteMagento.Vendedor) ? true : false;
 
             //Armazena o nome do indicador selecionado
-            //afazer: verificar se passa o orçamentista ou usuário ou null
             pedidoCriacao.NomeIndicador = !string.IsNullOrEmpty(dadosClienteMagento.Vendedor) ? dadosClienteMagento.Vendedor : null;
 
             //Armazena o percentual de comissão para o indicador selecionado
             //PercRT = calculado automaticamente
-            //não entendi
+            //afazer: não entendi
             pedidoCriacao.PercRT = 0;
 
             //Armazena "S" ou "N" para caso de o indicador selecionado permita RA
@@ -125,7 +122,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 
             //Flag para saber se o cliente aceitou finalizar o pedido mesmo com produto sem estoque
             //afazer: verificar se passa true ou false
-            pedidoCriacao.OpcaoVendaSemEstoque = false;
+            pedidoCriacao.OpcaoVendaSemEstoque = true;
 
             //Armazena o valor total do pedido
             //afazer: verificar se é feito o cálculo antes de enviar para cadastrar ou se é preenchido ao cadastrar
