@@ -36,5 +36,23 @@ namespace MagentoBusiness.UtilsMagento
          * LojaUsuario
          * Usuario
          */
+
+        public class OrcamentistaMagento
+        {
+            public string Orcamentista { get; set; }
+            public string Loja { get; set; }
+            public string Vendedor { get; set; }
+        }
+
+        public OrcamentistaMagento DadosOrcamentista { get; set; }
+
+        public class PagtoMagento
+        {
+            public string Op_pu_forma_pagto { get; set; }
+            public int C_pu_vencto_apos { get; set; }
+            public string Op_av_forma_pagto { get; set; }
+        }
+
+        public PagtoMagento FormaPagto { get; set; }
     }
 }

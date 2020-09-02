@@ -705,7 +705,7 @@ namespace UtilsGlobais
                         }
 
                         if (campo_atual == coluna)
-                        {                            
+                        {
                             //pegando o valor coluna
                             var value = (c.GetValue(obj, null));
                             if (value == null)
@@ -745,7 +745,7 @@ namespace UtilsGlobais
                         else if (string.IsNullOrEmpty(value.ToString()))
                             log = log + coluna + "=" + "\"\"" + "; ";
                         else
-                        log = log + coluna + "=" + value + "; ";
+                            log = log + coluna + "=" + value + "; ";
                     }
                 }
             }
@@ -908,6 +908,17 @@ namespace UtilsGlobais
             }
 
             return retorno;
+        }
+
+        public static async Task<IEnumerable<TcodigoDescricao>> ListarCodigoMarketPlace(ContextoBdProvider contextoProvider)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+
+            var lstTcodigo = from c in db.TcodigoDescricaos
+                             where c.Grupo == InfraBanco.Constantes.Constantes.GRUPO_T_CODIGO_DESCRICAO__PEDIDOECOMMERCE_ORIGEM
+                             select c;
+
+            return await Task.FromResult(lstTcodigo);
         }
 
         public static async Task<bool> LojaHabilitadaProdutosECommerce(string loja, ContextoBdProvider contextoProvider)

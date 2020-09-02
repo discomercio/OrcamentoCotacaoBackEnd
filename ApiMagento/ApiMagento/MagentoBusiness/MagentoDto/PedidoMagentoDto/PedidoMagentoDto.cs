@@ -105,13 +105,16 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             pedidoCriacao.DetalhesPedido.Observacoes = "";
 
             //Flag para saber se tem indicador selecionado 
-            pedidoCriacao.ComIndicador = false;
+            //campo "frete"->se for <> 0, vamos usar o indicador.se for 0, sem indicador
+            pedidoCriacao.ComIndicador = !string.IsNullOrEmpty(dadosClienteMagento.Vendedor) ? true : false;
 
             //Armazena o nome do indicador selecionado
             //afazer: verificar se passa o orçamentista ou usuário ou null
-            pedidoCriacao.NomeIndicador = null;
+            pedidoCriacao.NomeIndicador = !string.IsNullOrEmpty(dadosClienteMagento.Vendedor) ? dadosClienteMagento.Vendedor : null;
 
             //Armazena o percentual de comissão para o indicador selecionado
+            //PercRT = calculado automaticamente
+            //não entendi
             pedidoCriacao.PercRT = 0;
 
             //Armazena "S" ou "N" para caso de o indicador selecionado permita RA

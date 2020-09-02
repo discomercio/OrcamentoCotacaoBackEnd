@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MagentoBusiness.UtilsMagento;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -37,7 +38,8 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         //CustoFinancFornecQtdeParcelas = 1 se Tipo_Parcelamento = COD_FORMA_PAGTO_PARCELA_UNICA
         //CustoFinancFornecQtdeParcelas = C_pc_qtde se Tipo_Parcelamento = COD_FORMA_PAGTO_PARCELADO_CARTAO
 
-        public static Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados FormaPagtoCriacaoDados_De_FormaPagtoCriacaoMagentoDto(FormaPagtoCriacaoMagentoDto formaPagtoCriacaoMagento)
+        public static Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados FormaPagtoCriacaoDados_De_FormaPagtoCriacaoMagentoDto(FormaPagtoCriacaoMagentoDto formaPagtoCriacaoMagento,
+            ConfiguracaoApiMagento configuracaoApiMagento)
         {
             Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados  ret = new Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados();
 
@@ -45,7 +47,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                 InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_A_VISTA)
             {
                 ret.Qtde_Parcelas = 1;
-                ret.Op_av_forma_pagto = "appsetings";//boleto
+                ret.Op_av_forma_pagto = configuracaoApiMagento.FormaPagto.Op_av_forma_pagto;//boleto
                 ret.CustoFinancFornecTipoParcelamento = 
                     InfraBanco.Constantes.Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA;
             }
@@ -54,8 +56,8 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             {
                 ret.Qtde_Parcelas = 1;
                 ret.C_pu_valor = formaPagtoCriacaoMagento.C_pu_valor;
-                ret.Op_pu_forma_pagto = "appsetings"; //Depósito
-                ret.C_pu_vencto_apos = 30;//ler do appsettings = 30 dias
+                ret.Op_pu_forma_pagto = configuracaoApiMagento.FormaPagto.Op_pu_forma_pagto; //Depósito
+                ret.C_pu_vencto_apos = configuracaoApiMagento.FormaPagto.C_pu_vencto_apos;//ler do appsettings = 30 dias
                 ret.CustoFinancFornecTipoParcelamento = 
                     InfraBanco.Constantes.Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA;
             }
