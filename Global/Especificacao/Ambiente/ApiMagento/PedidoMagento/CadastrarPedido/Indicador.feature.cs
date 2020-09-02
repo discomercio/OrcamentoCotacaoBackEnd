@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega
+namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,21 +19,21 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo20.EnderecoEntrega")]
-    public partial class ValidarEnderecoDeEntrega2Feature : object, Xunit.IClassFixture<ValidarEnderecoDeEntrega2Feature.FixtureData>, System.IDisposable
+    [Xunit.TraitAttribute("Category", "ignore")]
+    public partial class ValidacoesDoIndicadorFeature : object, Xunit.IClassFixture<ValidacoesDoIndicadorFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "Especificacao.Pedido.Passo20.EnderecoEntrega"};
+                "ignore"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "EnderecoEntrega_SemPrepedido.feature"
+#line 1 "Indicador.feature"
 #line hidden
         
-        public ValidarEnderecoDeEntrega2Feature(ValidarEnderecoDeEntrega2Feature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public ValidacoesDoIndicadorFeature(ValidacoesDoIndicadorFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,9 +42,8 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Validar endereco de entrega 2", "Estes testes não se aplicam ao prepedido porque o flag já é um bool, não pode rec" +
-                    "eber qualquer valor", ProgrammingLanguage.CSharp, new string[] {
-                        "Especificacao.Pedido.Passo20.EnderecoEntrega"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Validações do Indicador", null, ProgrammingLanguage.CSharp, new string[] {
+                        "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -79,29 +78,20 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega
             testRunner.CollectScenarioErrors();
         }
         
-        public virtual void FeatureBackground()
-        {
-#line 5
-#line hidden
-#line 8
- testRunner.Given("Ignorar feature no ambiente \"Especificacao.Prepedido.PrepedidoSteps\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-        }
-        
         void System.IDisposable.Dispose()
         {
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Informado")]
-        [Xunit.TraitAttribute("FeatureTitle", "Validar endereco de entrega 2")]
-        [Xunit.TraitAttribute("Description", "Informado")]
-        public virtual void Informado()
+        [Xunit.SkippableFactAttribute(DisplayName="Indicador do appsettings precisa existir")]
+        [Xunit.TraitAttribute("FeatureTitle", "Validações do Indicador")]
+        [Xunit.TraitAttribute("Description", "Indicador do appsettings precisa existir")]
+        public virtual void IndicadorDoAppsettingsPrecisaExistir()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Informado", null, tagsOfScenario, argumentsOfScenario);
-#line 10
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Indicador do appsettings precisa existir", null, tagsOfScenario, argumentsOfScenario);
+#line 4
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -121,29 +111,6 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
-this.FeatureBackground();
-#line hidden
-#line 18
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 19
- testRunner.When("Informo \"OutroEndereco\" = \"XX\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 20
- testRunner.Then("Erro \"Informe se o endereço de entrega será o mesmo endereço do cadastro ou não!!" +
-                        "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 21
- testRunner.Given("Pedido base com endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 22
- testRunner.When("Informo \"OutroEndereco\" = \"XX\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 23
- testRunner.Then("Erro \"Informe se o endereço de entrega será o mesmo endereço do cadastro ou não!!" +
-                        "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
             }
             this.ScenarioCleanup();
         }
@@ -155,12 +122,12 @@ this.FeatureBackground();
             
             public FixtureData()
             {
-                ValidarEnderecoDeEntrega2Feature.FeatureSetup();
+                ValidacoesDoIndicadorFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                ValidarEnderecoDeEntrega2Feature.FeatureTearDown();
+                ValidacoesDoIndicadorFeature.FeatureTearDown();
             }
         }
     }

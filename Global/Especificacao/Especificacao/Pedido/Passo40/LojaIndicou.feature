@@ -17,6 +17,29 @@ Background: Configurar lojas para teste
 
     And Reiniciar banco quando terminar o teste
 
+
+	#loja/PedidoNovoConsiste.asp
+	#dim s_loja_indicou, s_nome_loja_indicou
+	#if Session("vendedor_externo") then
+	#	s_loja_indicou=retorna_so_digitos(Trim(request("loja_indicou")))
+	#	s_nome_loja_indicou = ""
+	#	if s_loja_indicou = "" then
+	#		alerta=texto_add_br(alerta)
+	#		alerta = alerta & "Não foi especificada a loja que fez a indicação."
+	#	else
+	#		s = "SELECT * FROM t_LOJA WHERE (loja='" & s_loja_indicou & "')"
+	#		set rs = cn.execute(s)
+	#		if rs.Eof then 
+	#			alerta=texto_add_br(alerta)
+	#			alerta = alerta & "Loja " & s_loja_indicou & " não está cadastrada."
+	#		else
+	#			s_nome_loja_indicou = Trim("" & rs("nome"))
+	#			if s_nome_loja_indicou = "" then s_nome_loja_indicou = Trim("" & rs("razao_social"))
+	#			end if
+	#		if rs.State <> 0 then rs.Close
+	#		end if
+	#	end if
+
 Scenario: Configuração
 	Given Nome deste item "Especificacao.Pedido.Passo40.LojaIndicou"
 	Given Implementado em "Especificacao.Pedido.Pedido"

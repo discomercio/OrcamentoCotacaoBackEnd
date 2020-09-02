@@ -54,7 +54,7 @@ namespace Especificacao.Especificacao.Pedido
             base.ThenErro(p0);
         }
 
-        [Then(@"Sem erro ""(.*)""")]
+        [Then(@"Sem [Ee]rro ""(.*)""")]
         new public void ThenSemErro(string p0)
         {
             base.ThenSemErro(p0);

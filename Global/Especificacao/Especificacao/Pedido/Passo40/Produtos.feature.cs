@@ -169,10 +169,7 @@ this.ScenarioInitialize(scenarioInfo);
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sem produtos compostos", "\t\'\tVERIFICA SE É PRODUTO COMPOSTO\r\n\t\tstrSql = \"SELECT \" & _\r\n\t\t\t\t\t\"*\" & _\r\n\t\t\t\t\" " +
-                    "FROM t_EC_PRODUTO_COMPOSTO t_EC_PC\" & _\r\n\t\t\t\t\" WHERE\" & _\r\n\t\t\t\t\t\" (fabricante_co" +
-                    "mposto = \'\" & s_fabricante & \"\')\" & _\r\n\t\t\t\t\t\" AND (produto_composto = \'\" & s_pro" +
-                    "duto & \"\')\"", tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sem produtos compostos", null, tagsOfScenario, argumentsOfScenario);
 #line 14
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -207,18 +204,7 @@ this.ScenarioInitialize(scenarioInfo);
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Produto disponível para a loja", @"strSql = ""SELECT "" & _
-			""*"" & _
-		"" FROM t_PRODUTO tP"" & _
-			"" INNER JOIN t_PRODUTO_LOJA tPL ON (tP.fabricante = tPL.fabricante) AND (tP.produto = tPL.produto)"" & _
-		"" WHERE"" & _
-			"" (tP.produto = '"" & s_produto & ""')"" & _
-			"" AND (loja = '"" & loja & ""')""
-if rs.State <> 0 then rs.Close
-rs.Open strSql, cn
-if rs.Eof then
-	alerta=texto_add_br(alerta)
-	alerta=alerta & ""Produto '"" & s_produto & ""' não foi encontrado para a loja "" & loja & ""!!""", tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Produto disponível para a loja", null, tagsOfScenario, argumentsOfScenario);
 #line 24
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -253,8 +239,7 @@ this.ScenarioInitialize(scenarioInfo);
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Máximo de itens por pedido", "alerta=alerta & \"O número de itens que está sendo cadastrado (\" & CStr(n) & \") ex" +
-                    "cede o máximo permitido por pedido (\" & CStr(MAX_ITENS) & \")!!\"", tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Máximo de itens por pedido", null, tagsOfScenario, argumentsOfScenario);
 #line 39
 this.ScenarioInitialize(scenarioInfo);
 #line hidden

@@ -16,17 +16,39 @@ Background: Pedido base com endereço de entrega (pedido e prepedido)
 	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "Informe o CEP do endereço de entrega!!" é "CEP INVÁLIDO NO ENDEREÇO DE ENTREGA."
 
 Scenario: Validação do endereço
-loja/ClienteEdita.asp 
-rotina fNEWConcluir
-mensagens:
-                alert('Preencha o endereço de entrega!!');
-                alert('Preencha o número do endereço de entrega!!');
-...até...
-                alert('CEP inválido no endereço de entrega!!');
+#loja/ClienteEdita.asp 
+#rotina fNEWConcluir
+#mensagens:
+#                alert('Preencha o endereço de entrega!!');
+#                alert('Preencha o número do endereço de entrega!!');
+#...até...
+#                alert('CEP inválido no endereço de entrega!!');
+
+#loja/PedidoNovoConsiste.asp
+#			if EndEtg_endereco = "" then
+#				alerta="PREENCHA O ENDEREÇO DE ENTREGA."
+#....até...
+#				        alerta="Endereço de entrega: preencha a IE (Inscrição Estadual) com um número válido!!" & _
+#						        "<br>" & "Certifique-se de que a UF do endereço de entrega corresponde à UF responsável pelo registro da IE."
+
 
 Scenario: Endereço
 	When Informo "EndEtg_endereco" = ""
 	Then Erro "Preencha o endereço de entrega!!"
+
+@ignore
+Scenario: Endereço tamanho
+#elseif Len(EndEtg_endereco) > CLng(MAX_TAMANHO_CAMPO_ENDERECO) then
+#	alerta="ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: " & Cstr(Len(EndEtg_endereco)) & " CARACTERES<br>TAMANHO MÁXIMO: " & Cstr(MAX_TAMANHO_CAMPO_ENDERECO) & " CARACTERES"
+#MAX_TAMANHO_CAMPO_ENDERECO = 60;
+	#                                          10        20        30       40         50        60    
+	When Informo "EndEtg_endereco" = "123456789012345678901234567890123456789012345678901234567890123"
+	Then Erro regex "ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO.*"
+@ignore
+Scenario: Endereço tamanho 2
+	#                                          10        20        30       40         50        60    
+	When Informo "EndEtg_endereco" = "12345678901234567890123456789012345678901234567890123456789"
+	Then Sem Erro regex "ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO.*"
 
 Scenario: EndEtg_endereco_numero
 	When Informo "EndEtg_endereco_numero" = ""
@@ -111,7 +133,7 @@ Scenario: EndEtg_cidade não no IBGE
 
 #se a cidade existir no OBGE, deve ser a mesma do CEP
 @ignore
-#todo: afazer: clocar estes testes. Tewm que ver como inicializa o CEP
+#todo: afazer: colocar estes testes. Tewm que ver como inicializa o CEP
 Scenario: EndEtg_cidade não no IBGE 2
 	When Informo "EndEtg_cep" = "04321001"
 	When Informo "EndEtg_cidade" = "Santo André"

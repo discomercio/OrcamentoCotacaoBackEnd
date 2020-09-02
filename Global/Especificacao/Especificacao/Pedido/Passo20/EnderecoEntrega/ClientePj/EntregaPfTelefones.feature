@@ -1,14 +1,15 @@
 ﻿@ignore
 @Especificacao/Pedido
 Feature: Pedido de cliente PJ com endereço de entrega PF - validação de telefones
-em loja/ClienteEdita.asp:
-                /*
-                telefones PF:
-                EndEtg_ddd_res
-                EndEtg_tel_res
-                EndEtg_ddd_cel
-                EndEtg_tel_cel
-                */
+#em loja/ClienteEdita.asp:
+#                /*
+#                telefones PF:
+#                EndEtg_ddd_res
+#                EndEtg_tel_res
+#                EndEtg_ddd_cel
+#                EndEtg_tel_cel
+#                */
+#também em loja/PedidoNovoConsiste.asp
 
 Background: Pedido base
 	Given Pedido base cliente PJ com endereço de entrega PF

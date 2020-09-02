@@ -8,8 +8,13 @@ Background: Configuração
 	Given Ignorar feature no ambiente "Especificacao.Prepedido.PrepedidoSteps"
 
 Scenario: Informado
-loja/ClienteEdita.asp 
-rotina fNEWConcluir
+#loja/ClienteEdita.asp 
+#rotina fNEWConcluir
+
+#loja/PedidoNovoConsiste.asp
+#if rb_end_entrega = "" then
+#	alerta = "Não foi informado se o endereço de entrega é o mesmo do cadastro ou não."
+
 	Given Pedido base
 	When Informo "OutroEndereco" = "XX"
 	Then Erro "Informe se o endereço de entrega será o mesmo endereço do cadastro ou não!!"
