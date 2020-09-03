@@ -11,7 +11,7 @@ using Xunit;
  *      feito loja/PedidoNovoProdCompostoMask.asp
  *      feito loja/PedidoNovo.asp 
  * 
-  	AFAZER: TODO: loja/PedidoNovoConsiste.asp linha 488
+  	AFAZER: TODO: loja/PedidoNovoConsiste.asp linha 2065
     AFAZER: TODO: onde salva: PedidoNovoConfirma.asp
 * 
  * */

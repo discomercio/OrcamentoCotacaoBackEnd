@@ -16,7 +16,7 @@ Background: Pedido base com endereço de entrega (pedido e prepedido)
 	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "Informe o CEP do endereço de entrega!!" é "CEP INVÁLIDO NO ENDEREÇO DE ENTREGA."
 
 Scenario: Validação do endereço
-#loja/ClienteEdita.asp 
+#loja/ClienteEdita.asp
 #rotina fNEWConcluir
 #mensagens:
 #                alert('Preencha o endereço de entrega!!');
@@ -38,15 +38,15 @@ Scenario: Endereço
 
 @ignore
 Scenario: Endereço tamanho
-#elseif Len(EndEtg_endereco) > CLng(MAX_TAMANHO_CAMPO_ENDERECO) then
-#	alerta="ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: " & Cstr(Len(EndEtg_endereco)) & " CARACTERES<br>TAMANHO MÁXIMO: " & Cstr(MAX_TAMANHO_CAMPO_ENDERECO) & " CARACTERES"
-#MAX_TAMANHO_CAMPO_ENDERECO = 60;
-	#                                          10        20        30       40         50        60    
+	#elseif Len(EndEtg_endereco) > CLng(MAX_TAMANHO_CAMPO_ENDERECO) then
+	#	alerta="ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: " & Cstr(Len(EndEtg_endereco)) & " CARACTERES<br>TAMANHO MÁXIMO: " & Cstr(MAX_TAMANHO_CAMPO_ENDERECO) & " CARACTERES"
+	#MAX_TAMANHO_CAMPO_ENDERECO = 60;
+	#                                          10        20        30       40         50        60
 	When Informo "EndEtg_endereco" = "123456789012345678901234567890123456789012345678901234567890123"
 	Then Erro regex "ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO.*"
 @ignore
 Scenario: Endereço tamanho 2
-	#                                          10        20        30       40         50        60    
+	#                                          10        20        30       40         50        60
 	When Informo "EndEtg_endereco" = "12345678901234567890123456789012345678901234567890123456789"
 	Then Sem Erro regex "ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO.*"
 
@@ -71,7 +71,7 @@ loja/ClienteEdita.asp
 	When Informo "EndEtg_obs" = ""
 	Then Erro "Selecione a justificativa do endereço de entrega!!"
 
-#esta validação não está no ASP
+	#esta validação não está no ASP
 	When Informo "EndEtg_obs" = "987"
 	Then Erro "Código da justficativa inválida!"
 

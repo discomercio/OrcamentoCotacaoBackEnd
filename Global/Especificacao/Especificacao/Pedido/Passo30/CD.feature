@@ -11,7 +11,7 @@ Scenario: Configuração
 	And Fim da configuração
 
 Scenario: Lista de CDs disponíveis
-Given afazer todo: terminar de fazer
+	Given afazer todo: terminar de fazer
 
 Scenario: Validar permissão de CD
 	Given Pedido base
@@ -26,11 +26,11 @@ Scenario: Validar CD escolhido caso manual
 	Then Sem Erro "Usuário não tem permissão de especificar o CD
 
 
-Scenario: Validar que escolheu um CD 
+Scenario: Validar que escolheu um CD
 	When Fazer esta validação
 
 #OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD = c_ExibirCamposModoSelecaoCD
-#	if (f.c_ExibirCamposModoSelecaoCD.value=="S") 
+#	if (f.c_ExibirCamposModoSelecaoCD.value=="S")
 #	{
 #		if ((!f.rb_selecao_cd[0].checked)&&(!f.rb_selecao_cd[1].checked))
 #		{
@@ -57,12 +57,22 @@ Scenario: Validar CD escolhido
 #Se rb_selecao_cd_auto = MODO_SELECAO_CD__AUTOMATICO então não pode escolher c_id_nfe_emitente_selecao_manual
 #Se rb_selecao_cd_manual = MODO_SELECAO_CD__MANUAL então tem que escolher c_id_nfe_emitente_selecao_manual
 #Valores do c_id_nfe_emitente_selecao_manual:
-	#strSql = "SELECT" & _
-	#			" id," & _
-	#			" apelido," & _
-	#			" razao_social" & _
-	#		" FROM t_NFe_EMITENTE" & _
-	#		" WHERE" & _
-	#			" (st_ativo <> 0)" & _
-	#			" AND (st_habilitado_ctrl_estoque <> 0)"
+#strSql = "SELECT" & _
+#			" id," & _
+#			" apelido," & _
+#			" razao_social" & _
+#		" FROM t_NFe_EMITENTE" & _
+#		" WHERE" & _
+#			" (st_ativo <> 0)" & _
+#			" AND (st_habilitado_ctrl_estoque <> 0)"
 
+Scenario: MODO_SELECAO_CD__MANUAL exige c_id_nfe_emitente_selecao_manual
+#loja/PedidoNovoConsiste.asp
+#		if rb_selecao_cd = MODO_SELECAO_CD__MANUAL then
+#			id_nfe_emitente_selecao_manual = converte_numero(c_id_nfe_emitente_selecao_manual)
+#			if id_nfe_emitente_selecao_manual = 0 then
+#				alerta=alerta & "O CD selecionado manualmente é inválido"
+	Given Pedido base
+	When informo "selecao_cd" = "MODO_SELECAO_CD__MANUAL"
+	And informo "id_nfe_emitente_selecao_manual" = "0"
+	Then Erro "O CD selecionado manualmente é inválido"
