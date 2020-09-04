@@ -32,31 +32,33 @@ namespace PrepedidoUnisBusiness.UnisDto.PedidoUnisDto
         public List<BlocoNotasDevolucaoMercadoriasUnisDto> ListaBlocoNotasDevolucao { get; set; }
 
         //iremos receber a parte dadoscliente e endereco entrega
-        public static PedidoUnisDto PedidoUnisDto_De_PedidoDados(PedidoDados origem)
+        public static PedidoUnisDto PedidoUnisDto_De_PedidoDados(PedidoDados origem, 
+            PrepedidoBusiness.Dto.ClienteCadastro.DadosClienteCadastroDto dadosCliente,
+            PrepedidoBusiness.Dto.ClienteCadastro.EnderecoEntregaDtoClienteCadastro enderecoEntrega)
         {
             if (origem == null) return null;
             return new PedidoUnisDto()
             {
-                //NumeroPedido = origem.NumeroPedido,
-                //Lista_NumeroPedidoFilhote = origem.Lista_NumeroPedidoFilhote,
-                //StatusHoraPedido = StatusPedidoUnisDto.StatusPedidoUnisDto_De_StatusPedidoPedidoDados(origem.StatusHoraPedido),
-                //DataHoraPedido = origem.DataHoraPedido,
-                //DadosCliente = DadosClienteCadastroDto.DadosClienteCadastroDto_De_DadosClienteCadastroDados(origem.DadosCliente),
-                //EnderecoEntrega = EnderecoEntregaClienteCadastroUnisDto.EnderecoEntregaClienteCadastroUnisDtoDeEnderecoEntregaDtoClienteCadastro(origem.EnderecoEntrega),
-                //ListaProdutos = PedidoProdutosUnisDto.ListaPedidoProdutosUnisDto_De_PedidoProdutosPedidoDados(origem.ListaProdutos),
-                //TotalFamiliaParcelaRA = origem.TotalFamiliaParcelaRA,
-                //PermiteRAStatus = origem.PermiteRAStatus,
-                //OpcaoPossuiRA = origem.OpcaoPossuiRA,
-                //PercRT = origem.PercRT,
-                //ValorTotalDestePedidoComRA = origem.ValorTotalDestePedidoComRA,
-                //VlTotalDestePedido = origem.VlTotalDestePedido,
-                //DetalhesNF = DetalhesNFPedidoUnisDto.DetalhesNFPedidoUnisDto_De_DetalhesNFPedidoPedidoDados(origem.DetalhesNF),
-                //DetalhesFormaPagto = DetalhesFormaPagamentosUnisDto.DetalhesFormaPagamentosUnisDto_De_DetalhesFormaPagamentosDados(origem.DetalhesFormaPagto),
-                //ListaProdutoDevolvido = ProdutoDevolvidoUnisDto.ListaProdutoDevolvidoUnisDto_De_ProdutoDevolvidoPedidoDados(origem.ListaProdutoDevolvido),
-                //ListaPerdas = PedidoPerdasUnisDto.ListaPedidoPerdasUnisDto_De_PedidoPerdasPedidoDados(origem.ListaPerdas),
-                //ListaOcorrencia = OcorrenciasUnisDto.ListaOcorrenciasUnisDto_De_OcorrenciasPedidoDados(origem.ListaOcorrencia),
-                //ListaBlocoNotas = BlocoNotasUnisDto.ListaBlocoNotasUnisDto_De_BlocoNotasPedidoDados(origem.ListaBlocoNotas),
-                //ListaBlocoNotasDevolucao = BlocoNotasDevolucaoMercadoriasUnisDto.ListaBlocoNotasDevolucaoMercadoriasUnisDto_De_BlocoNotasDevolucaoMercadoriasPedidoDados(origem.ListaBlocoNotasDevolucao)
+                NumeroPedido = origem.NumeroPedido,
+                Lista_NumeroPedidoFilhote = origem.Lista_NumeroPedidoFilhote,
+                StatusHoraPedido = StatusPedidoUnisDto.StatusPedidoUnisDto_De_StatusPedidoPedidoDados(origem.StatusHoraPedido),
+                DataHoraPedido = origem.DataHoraPedido,
+                DadosCliente = DadosClienteCadastroUnisDto.DadosClienteCadastroUnisDtoDeDadosClienteCadastroDto(dadosCliente),
+                EnderecoEntrega = EnderecoEntregaClienteCadastroUnisDto.EnderecoEntregaClienteCadastroUnisDtoDeEnderecoEntregaDtoClienteCadastro(enderecoEntrega),
+                ListaProdutos = PedidoProdutosUnisDto.ListaPedidoProdutosUnisDto_De_PedidoProdutosPedidoDados(origem.ListaProdutos),
+                TotalFamiliaParcelaRA = origem.TotalFamiliaParcelaRA,
+                PermiteRAStatus = origem.PermiteRAStatus,
+                OpcaoPossuiRA = origem.OpcaoPossuiRA,
+                PercRT = origem.PercRT,
+                ValorTotalDestePedidoComRA = origem.ValorTotalDestePedidoComRA,
+                VlTotalDestePedido = origem.VlTotalDestePedido,
+                DetalhesNF = DetalhesNFPedidoUnisDto.DetalhesNFPedidoUnisDto_De_DetalhesNFPedidoPedidoDados(origem.DetalhesNF),
+                DetalhesFormaPagto = DetalhesFormaPagamentosUnisDto.DetalhesFormaPagamentosUnisDto_De_DetalhesFormaPagamentosDados(origem.DetalhesFormaPagto),
+                ListaProdutoDevolvido = ProdutoDevolvidoUnisDto.ListaProdutoDevolvidoUnisDto_De_ProdutoDevolvidoPedidoDados(origem.ListaProdutoDevolvido),
+                ListaPerdas = PedidoPerdasUnisDto.ListaPedidoPerdasUnisDto_De_PedidoPerdasPedidoDados(origem.ListaPerdas),
+                ListaOcorrencia = OcorrenciasUnisDto.ListaOcorrenciasUnisDto_De_OcorrenciasPedidoDados(origem.ListaOcorrencia),
+                ListaBlocoNotas = BlocoNotasUnisDto.ListaBlocoNotasUnisDto_De_BlocoNotasPedidoDados(origem.ListaBlocoNotas),
+                ListaBlocoNotasDevolucao = BlocoNotasDevolucaoMercadoriasUnisDto.ListaBlocoNotasDevolucaoMercadoriasUnisDto_De_BlocoNotasDevolucaoMercadoriasPedidoDados(origem.ListaBlocoNotasDevolucao)
             };
         }
 

@@ -106,6 +106,7 @@ namespace PrepedidoAPIUnis
             services.AddTransient<Prepedido.ValidacoesPrepedidoBll, Prepedido.ValidacoesPrepedidoBll>();
             services.AddTransient<Prepedido.MontarLogPrepedidoBll, Prepedido.MontarLogPrepedidoBll>();
             services.AddTransient<Cep.IBancoNFeMunicipio, Cep.BancoNFeMunicipio>();
+            services.AddTransient<Pedido.PedidoBll, Pedido.PedidoBll>();
 
             services.AddTransient<IServicoAutenticacaoApiUnis, ServicoAutenticacaoApiUnis>();
             //como singleton para melhorar a performance

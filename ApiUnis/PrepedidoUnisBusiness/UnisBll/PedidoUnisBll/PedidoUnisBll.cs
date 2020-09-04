@@ -1,11 +1,7 @@
 ﻿using Pedido;
 using PrepedidoUnisBusiness.UnisDto.PedidoUnisDto;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace PrepedidoUnisBusiness.UnisBll.PedidoUnisBll
 {
@@ -22,7 +18,7 @@ namespace PrepedidoUnisBusiness.UnisBll.PedidoUnisBll
 
         public async Task<PedidoUnisDto> BuscarPedido(string pedido)
         {
-            PedidoUnisDto pedidoUnis = new PedidoUnisDto();
+            //PedidoUnisDto pedidoUnis = new PedidoUnisDto();
 
             //vamos buscar o orcamentista do pedido informado para passar para a busca de montagem do pedido no global
             var db = contextoProvider.GetContextoLeitura();
@@ -31,13 +27,18 @@ namespace PrepedidoUnisBusiness.UnisBll.PedidoUnisBll
                                    where c.Pedido == pedido
                                    select c.Orcamentista).FirstOrDefault();
 
-            Pedido.Dados.DetalhesPedido.PedidoDados ret = await pedidoBll.BuscarPedido(orcamentista.Trim(), pedido);
+            Pedido.Dados.DetalhesPedido.PedidoDados pedidoDados = await pedidoBll.BuscarPedido(orcamentista.Trim(), pedido);
 
+            PrepedidoBusiness.Dto.ClienteCadastro.DadosClienteCadastroDto dadosCliente =
+                PrepedidoBusiness.Dto.ClienteCadastro.DadosClienteCadastroDto
+                .DadosClienteCadastroDto_De_DadosClienteCadastroDados(pedidoDados.DadosCliente);
 
+            PrepedidoBusiness.Dto.ClienteCadastro.EnderecoEntregaDtoClienteCadastro enderecoEntrega =
+                PrepedidoBusiness.Dto.ClienteCadastro.EnderecoEntregaDtoClienteCadastro
+                .EnderecoEntregaDtoClienteCadastro_De_EnderecoEntregaClienteCadastroDados(pedidoDados.EnderecoEntrega);
 
-            //afazer: converter 
-            //afazer: retornar
-
+            PedidoUnisDto pedidoUnis = PedidoUnisDto.PedidoUnisDto_De_PedidoDados(pedidoDados, dadosCliente, enderecoEntrega);
+            
             return await Task.FromResult(pedidoUnis);
         }
     }

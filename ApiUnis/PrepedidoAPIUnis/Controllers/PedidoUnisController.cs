@@ -10,6 +10,8 @@ using PrepedidoUnisBusiness.UnisDto.PedidoUnisDto;
 
 namespace PrepedidoAPIUnis.Controllers
 {
+    [Route("api/pedidoUnis")]
+    [ApiController]
     public class PedidoUnisController : Controller
     {
         private readonly IServicoValidarTokenApiUnis servicoValidarTokenApiUnis;
