@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Especificacao.Pedido.Passo10
+namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.Validacao
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,21 +19,21 @@ namespace Especificacao.Especificacao.Pedido.Passo10
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo10.CamposSimples")]
-    public partial class ValidarCamposSimplesFeature : object, Xunit.IClassFixture<ValidarCamposSimplesFeature.FixtureData>, System.IDisposable
+    [Xunit.TraitAttribute("Category", "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.Validacao.CpfCnpj")]
+    public partial class CpfCnpjFeature : object, Xunit.IClassFixture<CpfCnpjFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "Especificacao.Pedido.Passo10.CamposSimples"};
+                "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.Validacao.CpfCnpj"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "CamposSimples.feature"
+#line 1 "CpfCnpj.feature"
 #line hidden
         
-        public ValidarCamposSimplesFeature(ValidarCamposSimplesFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public CpfCnpjFeature(CpfCnpjFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,8 +42,8 @@ namespace Especificacao.Especificacao.Pedido.Passo10
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Validar campos simples", null, ProgrammingLanguage.CSharp, new string[] {
-                        "Especificacao.Pedido.Passo10.CamposSimples"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "CpfCnpj", null, ProgrammingLanguage.CSharp, new string[] {
+                        "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.Validacao.CpfCnpj"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -78,30 +78,20 @@ namespace Especificacao.Especificacao.Pedido.Passo10
             testRunner.CollectScenarioErrors();
         }
         
-        public virtual void FeatureBackground()
-        {
-#line 4
-#line hidden
-#line 7
- testRunner.Given("Ignorar feature no ambiente \"Especificacao.Prepedido.PrepedidoSteps\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-        }
-        
         void System.IDisposable.Dispose()
         {
             this.TestTearDown();
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="Validar CPF")]
-        [Xunit.TraitAttribute("FeatureTitle", "Validar campos simples")]
+        [Xunit.TraitAttribute("FeatureTitle", "CpfCnpj")]
         [Xunit.TraitAttribute("Description", "Validar CPF")]
         public virtual void ValidarCPF()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar CPF", @"em loja/resumo.asp:
-<input name=""cnpj_cpf_selecionado"" id=""cnpj_cpf_selecionado"" type=""text"" maxlength=""18"" size=""20"" onblur=""if (!cnpj_cpf_ok(this.value)) {alert('CNPJ/CPF inválido!!');this.focus();} else this.value=cnpj_cpf_formata(this.value);"" onkeypress=""if (digitou_enter(true) && tem_info(this.value) && cnpj_cpf_ok(this.value)) {this.value=cnpj_cpf_formata(this.value); fCPConcluir(fCP);} filtra_cnpj_cpf();"">", tagsOfScenario, argumentsOfScenario);
-#line 9
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar CPF", null, tagsOfScenario, argumentsOfScenario);
+#line 4
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -121,58 +111,64 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 4
-this.FeatureBackground();
+#line 5
+ testRunner.When("Prepedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 13
- testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 14
+#line 6
  testRunner.And("Informo \"CPF/CNPJ\" = \"089.617.758/99\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 15
- testRunner.Then("Erro \"CNPJ/CPF inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 7
+ testRunner.Then("Erro \"Cliente não localizado\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 16
- testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 8
+ testRunner.When("Prepedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 17
+#line 9
  testRunner.And("Informo \"CPF/CNPJ\" = \"089.617.758/990\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 18
- testRunner.Then("Erro \"CNPJ/CPF inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 10
+ testRunner.Then("Erro \"Cliente não localizado\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 19
- testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 11
+ testRunner.When("Prepedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 20
+#line 12
  testRunner.And("Informo \"CPF/CNPJ\" = \"089.617.758/00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+#line 13
+ testRunner.Then("Erro \"Cliente não localizado\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 16
+ testRunner.When("Prepedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 17
+ testRunner.And("Informo \"CPF/CNPJ\" = \"352.704.458-24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 18
+ testRunner.Then("Erro \"Cliente não localizado\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 20
+ testRunner.When("Prepedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
 #line 21
- testRunner.Then("Erro \"CNPJ/CPF inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("Informo \"CPF/CNPJ\" = \"35270445824\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 23
- testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 24
- testRunner.And("Informo \"CPF/CNPJ\" = \"089.617.758/04\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 25
- testRunner.Then("Sem erro \"CNPJ/CPF inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 22
+ testRunner.Then("Sem erro \"Cliente não localizado\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="Validar CNPJ")]
-        [Xunit.TraitAttribute("FeatureTitle", "Validar campos simples")]
+        [Xunit.TraitAttribute("FeatureTitle", "CpfCnpj")]
         [Xunit.TraitAttribute("Description", "Validar CNPJ")]
         public virtual void ValidarCNPJ()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar CNPJ", null, tagsOfScenario, argumentsOfScenario);
-#line 27
+#line 24
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -192,62 +188,68 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 4
-this.FeatureBackground();
+#line 25
+ testRunner.When("Prepedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 28
- testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 29
+#line 26
  testRunner.And("Informo \"CPF/CNPJ\" = \"12.584.718/0001-5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 30
- testRunner.Then("Erro \"CNPJ/CPF inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 27
+ testRunner.Then("Erro \"Cliente não localizado\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 31
- testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 28
+ testRunner.When("Prepedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 32
+#line 29
  testRunner.And("Informo \"CPF/CNPJ\" = \"12.584.718/0001-99\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 33
- testRunner.Then("Erro \"CNPJ/CPF inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 30
+ testRunner.Then("Erro \"Cliente não localizado\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 34
- testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 31
+ testRunner.When("Prepedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 35
+#line 32
  testRunner.And("Informo \"CPF/CNPJ\" = \"12.584.718/0001-xx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 36
- testRunner.Then("Erro \"CNPJ/CPF inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 33
+ testRunner.Then("Erro \"Cliente não localizado\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 37
- testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 34
+ testRunner.When("Prepedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 38
+#line 35
  testRunner.And("Informo \"CPF/CNPJ\" = \"12.584.718/0001-11\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 39
- testRunner.Then("Erro \"CNPJ/CPF inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 36
+ testRunner.Then("Erro \"Cliente não localizado\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 40
- testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 37
+ testRunner.When("Prepedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 41
+#line 38
  testRunner.And("Informo \"CPF/CNPJ\" = \"12.584.718/0001-53\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+#line 39
+ testRunner.Then("Erro \"Cliente não localizado\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
 #line 42
- testRunner.Then("Erro \"CNPJ/CPF inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("Prepedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 43
+ testRunner.And("Informo \"CPF/CNPJ\" = \"76.297.703/0001-95\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 44
- testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 45
- testRunner.And("Informo \"CPF/CNPJ\" = \"12.584.718/0001-51\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("Erro \"Cliente não localizado\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 46
- testRunner.Then("Sem erro \"CNPJ/CPF inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("Prepedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 47
+ testRunner.And("Informo \"CPF/CNPJ\" = \"76297703000195\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 48
+ testRunner.Then("Sem erro \"Cliente não localizado\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -260,12 +262,12 @@ this.FeatureBackground();
             
             public FixtureData()
             {
-                ValidarCamposSimplesFeature.FeatureSetup();
+                CpfCnpjFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                ValidarCamposSimplesFeature.FeatureTearDown();
+                CpfCnpjFeature.FeatureTearDown();
             }
         }
     }

@@ -19,14 +19,14 @@ namespace Especificacao.Especificacao.Pedido
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "Especificacao.Pedido")]
+    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.FluxoCriacaoPedido")]
     public partial class FluxoDaCriacaoDoPedidoFeature : object, Xunit.IClassFixture<FluxoDaCriacaoDoPedidoFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "Especificacao.Pedido"};
+                "Especificacao.Pedido.FluxoCriacaoPedido"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -64,7 +64,7 @@ namespace Especificacao.Especificacao.Pedido
                     "luxo na ApaiMagento:\r\n1 - Validar o pedido\r\n2 - se o cliente não existir, cadast" +
                     "rar o cliente\r\n3 - salvar o pedido\r\n--- \r\nFluxo na API:\r\nSalvar o pedido\r\n\tEnvia" +
                     "r todos os dados para cadastrar o pedido", ProgrammingLanguage.CSharp, new string[] {
-                        "Especificacao.Pedido"});
+                        "Especificacao.Pedido.FluxoCriacaoPedido"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

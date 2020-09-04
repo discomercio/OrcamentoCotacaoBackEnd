@@ -24,7 +24,7 @@ namespace Especificacao.Testes.Utils.ListaDependencias
             if (!ambientes.ContainsKey(ambiente))
             {
                 deuErro = true;
-                Assert.Equal("", $"implementacao nunca foi definida: {ambiente}");
+                Assert.Equal("", $"{ambiente}: implementacao nunca foi definida");
             }
 
             //este teste somente passa se executar todos os testes

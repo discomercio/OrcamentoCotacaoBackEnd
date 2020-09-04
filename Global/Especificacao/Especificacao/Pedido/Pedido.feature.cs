@@ -19,14 +19,14 @@ namespace Especificacao.Especificacao.Pedido
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "ignore")]
+    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Pedido")]
     public partial class PedidoFeature : object, Xunit.IClassFixture<PedidoFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "ignore"};
+                "Especificacao.Pedido.Pedido"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -43,7 +43,7 @@ namespace Especificacao.Especificacao.Pedido
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Pedido", null, ProgrammingLanguage.CSharp, new string[] {
-                        "ignore"});
+                        "Especificacao.Pedido.Pedido"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -83,14 +83,14 @@ namespace Especificacao.Especificacao.Pedido
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Lista de dependências")]
+        [Xunit.SkippableFactAttribute(DisplayName="Sem nenhum passo")]
         [Xunit.TraitAttribute("FeatureTitle", "Pedido")]
-        [Xunit.TraitAttribute("Description", "Lista de dependências")]
-        public virtual void ListaDeDependencias()
+        [Xunit.TraitAttribute("Description", "Sem nenhum passo")]
+        public virtual void SemNenhumPasso()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Lista de dependências", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sem nenhum passo", null, tagsOfScenario, argumentsOfScenario);
 #line 4
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -112,28 +112,8 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 5
- testRunner.Given("Nome deste item \"Especificacao.Pedido.Pedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 6
- testRunner.And("Especificado em \"Especificacao.Pedido.Passo10.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 7
- testRunner.And("Especificado em \"Especificacao.Pedido.Passo20.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 8
- testRunner.And("Especificado em \"Especificacao.Pedido.Passo25.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 9
- testRunner.And("Especificado em \"Especificacao.Pedido.Passo30.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 10
- testRunner.And("Especificado em \"Especificacao.Pedido.Passo40.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 11
- testRunner.And("Implementado em \"Especificacao.Prepedido.Prepedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 12
- testRunner.And("Fim da configuração", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("O pedido não tem nenhum passo individual, somente passos incluídos pela PedidoLis" +
+                        "taDependencias", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }
             this.ScenarioCleanup();

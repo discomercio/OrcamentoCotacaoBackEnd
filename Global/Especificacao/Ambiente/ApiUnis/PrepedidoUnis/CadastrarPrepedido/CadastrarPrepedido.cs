@@ -7,9 +7,11 @@ using Xunit;
 
 namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
 {
-    class CadastrarPrepedido
+    class CadastrarPrepedido : Testes.Pedido.IPedidoPassosComuns
     {
         private readonly PrepedidoAPIUnis.Controllers.PrepedidoUnisController prepedidoUnisController;
+        private readonly Testes.Utils.LogTestes logTestes = Testes.Utils.LogTestes.GetInstance();
+
         public CadastrarPrepedido()
         {
             prepedidoUnisController = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos().GetRequiredService<PrepedidoAPIUnis.Controllers.PrepedidoUnisController>();
@@ -19,6 +21,10 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
         public void GivenPrepedidoBase()
         {
             prePedidoUnisDto = CadastrarPrepedidoDados.PrepedidoBase();
+        }
+        public void WhenPedidoBase()
+        {
+            GivenPrepedidoBase();
         }
 
         public void WhenInformo(string p0, string p1)
@@ -38,6 +44,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
         }
         public void ThenErroStatusCode(int statusCode)
         {
+            logTestes.LogMensagem("prepedidoUnisController.CadastrarPrepedido ThenErroStatusCode");
             Microsoft.AspNetCore.Mvc.ActionResult<PrePedidoResultadoUnisDto> ret = prepedidoUnisController.CadastrarPrepedido(prePedidoUnisDto).Result;
             Microsoft.AspNetCore.Mvc.ActionResult res = ret.Result;
             Testes.Utils.StatusCodes.TestarStatusCode(statusCode, res);
@@ -54,6 +61,9 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
 
         public void ThenErro(string erro, bool erroDeveExistir)
         {
+            erro = Testes.Pedido.PedidoPassosComuns.MapearMensagem(this.GetType().FullName, erro);
+            logTestes.LogMensagem($"prepedidoUnisController.CadastrarPrepedido ThenErro({erro}, {erroDeveExistir})");
+
             Microsoft.AspNetCore.Mvc.ActionResult<PrePedidoResultadoUnisDto> ret = prepedidoUnisController.CadastrarPrepedido(prePedidoUnisDto).Result;
             Microsoft.AspNetCore.Mvc.ActionResult res = ret.Result;
 
@@ -68,6 +78,25 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
             else
                 Assert.DoesNotContain(erro, prePedidoResultadoUnisDto.ListaErros);
 
+        }
+
+        //código duplicado!!!!
+        private bool ignorarFeature = false;
+        public void GivenIgnorarFeatureNoAmbiente(string p0)
+        {
+            var typeFullName = this.GetType().FullName;
+            if (typeFullName == null)
+            {
+                Assert.Equal("", "sem this.GetType().FullName");
+                return;
+            }
+
+            //mal resolvido: temos um Especificacao na frente.... bom, tiramos!
+            typeFullName = typeFullName.Replace("Especificacao.Ambiente.", "Ambiente.");
+            typeFullName = typeFullName.Replace("Especificacao.Especificacao.", "Especificacao.");
+
+            if (typeFullName == p0)
+                ignorarFeature = true;
         }
     }
 }

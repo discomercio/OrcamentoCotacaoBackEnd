@@ -1,4 +1,4 @@
-﻿@Especificacao.Pedido
+﻿@Especificacao.Pedido.FluxoCriacaoPedido
 Feature: Fluxo da criação do pedido
 ---
 Fluxo no ERP/loja:

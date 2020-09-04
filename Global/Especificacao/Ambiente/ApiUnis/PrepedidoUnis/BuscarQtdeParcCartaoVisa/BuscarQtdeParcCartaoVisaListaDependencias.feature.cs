@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Especificacao.Prepedido
+namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,21 +19,21 @@ namespace Especificacao.Especificacao.Prepedido
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "Especificacao.Prepedido.Prepedido")]
-    public partial class PrepedidoFeature : object, Xunit.IClassFixture<PrepedidoFeature.FixtureData>, System.IDisposable
+    [Xunit.TraitAttribute("Category", "ListaDependencias")]
+    public partial class ListaDependenciasFeature : object, Xunit.IClassFixture<ListaDependenciasFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "Especificacao.Prepedido.Prepedido"};
+                "ListaDependencias"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "Prepedido.feature"
+#line 1 "BuscarQtdeParcCartaoVisaListaDependencias.feature"
 #line hidden
         
-        public PrepedidoFeature(PrepedidoFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public ListaDependenciasFeature(ListaDependenciasFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,8 +42,8 @@ namespace Especificacao.Especificacao.Prepedido
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Prepedido", null, ProgrammingLanguage.CSharp, new string[] {
-                        "Especificacao.Prepedido.Prepedido"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ListaDependencias", null, ProgrammingLanguage.CSharp, new string[] {
+                        "ListaDependencias"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -83,14 +83,14 @@ namespace Especificacao.Especificacao.Prepedido
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Sem nenhum passo")]
-        [Xunit.TraitAttribute("FeatureTitle", "Prepedido")]
-        [Xunit.TraitAttribute("Description", "Sem nenhum passo")]
-        public virtual void SemNenhumPasso()
+        [Xunit.SkippableFactAttribute(DisplayName="Lista de verificações feitas")]
+        [Xunit.TraitAttribute("FeatureTitle", "ListaDependencias")]
+        [Xunit.TraitAttribute("Description", "Lista de verificações feitas")]
+        public virtual void ListaDeVerificacoesFeitas()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sem nenhum passo", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Lista de verificações feitas", null, tagsOfScenario, argumentsOfScenario);
 #line 4
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -112,8 +112,18 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 5
- testRunner.Given("O prepedido não tem nenhum passo individual, somente passos incluídos pela Pedido" +
-                        "ListaDependencias", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Nome deste item \"Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.BuscarQt" +
+                        "deParcCartaoVisaListaDependencias\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 7
+ testRunner.And("Especificado em \"Especificacao.Comuns.Api.Autenticacao\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 9
+ testRunner.And("Especificado em \"Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.QtdeParc" +
+                        "CartaoVisa\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 10
+ testRunner.And("Fim da configuração", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -126,12 +136,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                PrepedidoFeature.FeatureSetup();
+                ListaDependenciasFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                PrepedidoFeature.FeatureTearDown();
+                ListaDependenciasFeature.FeatureTearDown();
             }
         }
     }

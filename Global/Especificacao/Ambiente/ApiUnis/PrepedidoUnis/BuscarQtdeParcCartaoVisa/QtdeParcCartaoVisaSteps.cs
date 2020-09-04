@@ -14,12 +14,13 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa
     {
         private readonly InfraBanco.ContextoBdProvider contextoBdProvider;
         private readonly PrepedidoAPIUnis.Controllers.PrepedidoUnisController prepedidoUnisController;
+        private readonly Testes.Utils.LogTestes logTestes = Testes.Utils.LogTestes.GetInstance();
 
         public QtdeParcCartaoVisaSteps()
         {
             //este é feito dentro dele mesmo
             RegistroDependencias.AdicionarDependencia(
-                "Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.ListaDependencias",
+                "Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.BuscarQtdeParcCartaoVisaListaDependencias",
                 "Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.QtdeParcCartaoVisa"
                 );
 
@@ -31,24 +32,20 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa
         public void GivenLimparTabela(string p0)
         {
             Assert.Equal("t_PRAZO_PAGTO_VISANET", p0);
-            using (var db = contextoBdProvider.GetContextoGravacaoParaUsing())
-            {
-                foreach (var c in db.TprazoPagtoVisanets)
-                    db.TprazoPagtoVisanets.Remove(c);
+            using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+            foreach (var c in db.TprazoPagtoVisanets)
+                db.TprazoPagtoVisanets.Remove(c);
 
-                db.SaveChanges();
-            }
+            db.SaveChanges();
         }
 
         private InfraBanco.Modelos.TprazoPagtoVisanet tprazoPagtoVisanet = new InfraBanco.Modelos.TprazoPagtoVisanet();
         [Given(@"Gravar registro")]
         public void GivenGravarRegistro()
         {
-            using (var db = contextoBdProvider.GetContextoGravacaoParaUsing())
-            {
-                db.TprazoPagtoVisanets.Add(tprazoPagtoVisanet);
-                db.SaveChanges();
-            }
+            using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+            db.TprazoPagtoVisanets.Add(tprazoPagtoVisanet);
+            db.SaveChanges();
         }
 
         [Given(@"Novo registro em ""(.*)""")]
@@ -86,11 +83,12 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa
             }
         }
 
-        private string tokenAcesso = Ambiente.ApiUnis.InjecaoDependencias.TokenAcessoApiUnis();
+        private readonly string tokenAcesso = Ambiente.ApiUnis.InjecaoDependencias.TokenAcessoApiUnis();
 
         [Then(@"Resposta ""(.*)""")]
         public void ThenResposta(int p0)
         {
+            logTestes.LogMensagem("prepedidoUnisController.BuscarQtdeParcCartaoVisa");
             Microsoft.AspNetCore.Mvc.ActionResult<QtdeParcCartaoVisaResultadoUnisDto> ret = prepedidoUnisController.BuscarQtdeParcCartaoVisa(tokenAcesso).Result;
             Microsoft.AspNetCore.Mvc.ActionResult res = ret.Result;
 
@@ -105,6 +103,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa
         [Then(@"Erro status code ""(.*)""")]
         public void ThenErroStatusCode(int statusCode)
         {
+            logTestes.LogMensagem("prepedidoUnisController.BuscarQtdeParcCartaoVisa");
             Microsoft.AspNetCore.Mvc.ActionResult<QtdeParcCartaoVisaResultadoUnisDto> ret = prepedidoUnisController.BuscarQtdeParcCartaoVisa(tokenAcesso).Result;
             Microsoft.AspNetCore.Mvc.ActionResult res = ret.Result;
             Testes.Utils.StatusCodes.TestarStatusCode(statusCode, res);
