@@ -6,6 +6,39 @@ using System.Text;
 
 namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
 {
+    #region Comentários
+    /// <summary>
+    /// Nos campos Op_av_forma_pagto, Op_pu_forma_pagto, Op_pce_entrada_forma_pagto, 
+    /// Op_pce_prestacao_forma_pagto, Op_pse_prim_prest_forma_pagto, Op_pse_demais_prest_forma_pagto 
+    /// deve ser informado o código do meio de pagamento usado:
+    /// <br/> 
+    /// ID_FORMA_PAGTO_DINHEIRO = "1", ID_FORMA_PAGTO_DEPOSITO = "2", ID_FORMA_PAGTO_CHEQUE = "3", 
+    /// ID_FORMA_PAGTO_BOLETO = "4", ID_FORMA_PAGTO_CARTAO = "5", ID_FORMA_PAGTO_BOLETO_AV = "6", 
+    /// ID_FORMA_PAGTO_CARTAO_MAQUINETA = "7".
+    /// <br/>
+    /// <br/>
+    /// Op_av_forma_pagto => A Vista
+    /// <br/>
+    /// <br/>
+    /// Parcela Única => Op_pu_forma_pagto, C_pu_valor, C_pu_vencto_apos 
+    /// <br/>
+    /// <br/>
+    /// Cartão de crédito (Pagamento via internet) => C_pc_qtde, C_pc_valor  
+    /// <br/>
+    /// <br/>
+    /// Cartão de crédito (Pagamento na maquineta) => C_pc_maquineta_qtde, C_pc_maquineta_valor  
+    /// <br/>
+    /// <br/>
+    /// Parcelado Com Entrada => Op_pce_entrada_forma_pagto, C_pce_entrada_valor, Op_pce_prestacao_forma_pagto, C_pce_prestacao_qtde, 
+    /// C_pce_prestacao_valor, C_pce_prestacao_periodo  
+    /// <br/>
+    /// <br/>
+    /// Parcelado Sem Entrada => Op_pse_prim_prest_forma_pagto, C_pse_prim_prest_valor, C_pse_prim_prest_apos, 
+    /// Op_pse_demais_prest_forma_pagto, C_pse_demais_prest_qtde, C_pse_demais_prest_valor, C_pse_demais_prest_periodo 
+    /// <br/>
+    /// <br/>
+    /// </summary>
+    #endregion
     public class FormaPagtoCriacaoUnisDto
     {
         /// <summary>
@@ -21,54 +54,138 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         public short Tipo_Parcelamento { get; set; }//Tipo da forma de pagto
 
         /// <summary>
+        /// Opção da forma de pagamento para tipo Á Vista
+        /// <br/>
+        /// ex: ID_FORMA_PAGTO_DINHEIRO = "1", ID_FORMA_PAGTO_DEPOSITO = "2"
+        /// <br/>
         /// Id retornado por /api/prepedidoUnis/buscarFormasPagto
         /// </summary>
         [MaxLength(1)]
         public string Op_av_forma_pagto { get; set; }
 
         /// <summary>
+        /// Opção da forma de pagamento para tipo Parcela Única
+        /// <br/>
+        /// ex: ID_FORMA_PAGTO_DINHEIRO = "1", ID_FORMA_PAGTO_DEPOSITO = "2"
+        /// <br/>
         /// Id retornado por /api/prepedidoUnis/buscarFormasPagto
         /// </summary>
         [MaxLength(1)]
         public string Op_pu_forma_pagto { get; set; }
+
+        /// <summary>
+        /// Valor para pagamento para Parcela Única
+        /// </summary>
         public decimal? C_pu_valor { get; set; }
+
+        /// <summary>
+        /// Prazo de vencimento para pagamento Parcela Única
+        /// </summary>
         public int? C_pu_vencto_apos { get; set; }
+
+        /// <summary>
+        /// Quantidade de parcelas para pagamento Cartão de crédito (pagamento via Internet)
+        /// </summary>
         public int? C_pc_qtde { get; set; }
+
+        /// <summary>
+        /// Valor de parcelas para pagamento Cartão de crédito (pagamento via Internet)
+        /// </summary>
         public decimal? C_pc_valor { get; set; }
+
+        /// <summary>
+        /// Quantidade de parcelas para pagamento Cartão de crédito (Pagamento na Maquineta)
+        /// </summary>
         public int? C_pc_maquineta_qtde { get; set; }
+
+        /// <summary>
+        /// Valor de parcelas para pagamento Cartão de crédito (Pagamento na Maquineta)
+        /// </summary>
         public decimal? C_pc_maquineta_valor { get; set; }
 
         /// <summary>
+        /// Opção da forma de pagamento da entrada para tipo Pagamento com Entrada
+        /// <br/>
+        /// ex: ID_FORMA_PAGTO_DINHEIRO = "1", ID_FORMA_PAGTO_DEPOSITO = "2"
+        /// <br/>
         /// Id retornado por /api/prepedidoUnis/buscarFormasPagto
         /// </summary>
         [MaxLength(1)]
         public string Op_pce_entrada_forma_pagto { get; set; }
+
+        /// <summary>
+        /// Valor da entrada para pagamento tipo Pagamento com Entrada 
+        /// </summary>
         public decimal? C_pce_entrada_valor { get; set; }
 
         /// <summary>
+        /// Opção da forma de pagamento da prestação para tipo Pagamento com Entrada
+        /// <br/>
+        /// ex: ID_FORMA_PAGTO_DINHEIRO = "1", ID_FORMA_PAGTO_DEPOSITO = "2"
+        /// <br/>
         /// Id retornado por /api/prepedidoUnis/buscarFormasPagto
         /// </summary>
         [MaxLength(1)]
         public string Op_pce_prestacao_forma_pagto { get; set; }
+
+        /// <summary>
+        /// Quantidade de parcela de prestação para tipo Pagamento com Entrada
+        /// </summary>
         public int? C_pce_prestacao_qtde { get; set; }
+
+        /// <summary>
+        /// Valor da parcela da prestação para tipo Pagamento com Entrada
+        /// </summary>
         public decimal? C_pce_prestacao_valor { get; set; }
+
+        /// <summary>
+        /// Dias para vencimento da parcela da prestação para tipo Pagamento com Entrada
+        /// </summary>
         public int? C_pce_prestacao_periodo { get; set; }
 
         /// <summary>
+        /// Opção da forma de pagamento da primeira prestação para tipo Pagamento sem Entrada
+        /// <br/>
+        /// ex: ID_FORMA_PAGTO_DINHEIRO = "1", ID_FORMA_PAGTO_DEPOSITO = "2"
+        /// <br/>
         /// Id retornado por /api/prepedidoUnis/buscarFormasPagto
         /// </summary>
         [MaxLength(1)]
         public string Op_pse_prim_prest_forma_pagto { get; set; }//Parcelado sem entrada
+
+        /// <summary>
+        /// Valor da primeira prestação para tipo Pagamento sem Entrada
+        /// </summary>
         public decimal? C_pse_prim_prest_valor { get; set; }
+
+        /// <summary>
+        /// Vancimento da primeira prestação para tipo Pagamento sem Entrada
+        /// </summary>
         public int? C_pse_prim_prest_apos { get; set; }
 
         /// <summary>
+        /// Opção da forma de pagamento para demais prestações para tipo Pagamento sem Entrada
+        /// <br/>
+        /// ex: ID_FORMA_PAGTO_DINHEIRO = "1", ID_FORMA_PAGTO_DEPOSITO = "2"
+        /// <br/>
         /// Id retornado por /api/prepedidoUnis/buscarFormasPagto
         /// </summary>
         [MaxLength(1)]
         public string Op_pse_demais_prest_forma_pagto { get; set; }
+
+        /// <summary>
+        /// Quantidade de parcela para demais prestações para tipo Pagamento sem Entrada
+        /// </summary>
         public int? C_pse_demais_prest_qtde { get; set; }
+
+        /// <summary>
+        /// Valor da parcela para demais prestações para tipo Pagamento sem Entrada
+        /// </summary>
         public decimal? C_pse_demais_prest_valor { get; set; }
+
+        /// <summary>
+        /// Vencimento da parcela para demais prestações para tipo Pagamento sem Entrada
+        /// </summary>
         public int? C_pse_demais_prest_periodo { get; set; }
 
         /// <summary>
@@ -86,6 +203,13 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         [MaxLength(2)]
         public string CustoFinancFornecTipoParcelamento { get; set; }
 
+        /// <summary>
+        /// Quantidade de parcelas (sem contar a parcela de entrada). 
+        /// <br/>
+        /// Ex: 5 = (0+5) ou(1+5)
+        /// <br/>
+        /// 0 = somente no caso de ser à vista
+        /// </summary>
         [Required]
         public short CustoFinancFornecQtdeParcelas { get; set; }
 

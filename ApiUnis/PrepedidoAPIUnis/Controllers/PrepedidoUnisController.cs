@@ -10,8 +10,10 @@ using PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto;
 using PrepedidoUnisBusiness.UnisBll.AcessoBll;
 using PrepedidoUnisBusiness.UnisBll.CoeficienteUnisBll;
 using PrepedidoUnisBusiness.UnisBll.FormaPagtoUnisBll;
+using PrepedidoUnisBusiness.UnisBll.PedidoUnisBll;
 using PrepedidoUnisBusiness.UnisDto.CoeficienteUnisDto;
 using PrepedidoUnisBusiness.UnisDto.FormaPagtoUnisDto;
+using PrepedidoUnisBusiness.UnisDto.PedidoUnisDto;
 using PrepedidoUnisBusiness.UnisDto.PrepedidoUnisDto;
 
 namespace PrepedidoAPIUnis.Controllers
@@ -169,6 +171,25 @@ namespace PrepedidoAPIUnis.Controllers
                 return Unauthorized();
 
             PercentualVlPedidoRAResultadoUnisDto ret = await prepedidoUnisBll.ObtemPercentualVlPedidoRA();
+
+            return Ok(ret);
+        }
+
+        /// <summary>
+        /// Rotina para buscar status do Pré-Pedido
+        /// </summary>
+        /// <param name="tokenAcesso"></param>
+        /// <param name="orcamento"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpGet("buscarStatusPrepedido")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public async Task<ActionResult<BuscarStatusPrepedidoRetornoUnisDto>> BuscarStatusPrepedido(string tokenAcesso, string orcamento)
+        {
+            if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out _))
+                return Unauthorized();
+
+            BuscarStatusPrepedidoRetornoUnisDto ret = await prepedidoUnisBll.BuscarStatusPrepedido(orcamento);
 
             return Ok(ret);
         }
