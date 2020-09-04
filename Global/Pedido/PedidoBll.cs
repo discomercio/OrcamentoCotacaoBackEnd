@@ -745,7 +745,9 @@ namespace Pedido
 
             if (!String.IsNullOrEmpty(p.Pedido_Bs_X_Marketplace))
             {
-                status.Descricao_Pedido_Bs_X_Marketplace = Util.ObterDescricao_Cod("PedidoECommerce_Origem", p.Marketplace_codigo_origem, contextoProvider) + ":" + p.Pedido_Bs_X_Marketplace;
+                status.Descricao_Pedido_Bs_X_Marketplace = await Util.ObterDescricao_Cod("PedidoECommerce_Origem", p.Marketplace_codigo_origem, contextoProvider) + ":" + p.Pedido_Bs_X_Marketplace;
+                status.Pedido_Bs_X_Marketplace = p.Pedido_Bs_X_Marketplace;
+                status.Marketplace_Codigo_Origem = p.Marketplace_codigo_origem;
             }
             if (!String.IsNullOrEmpty(p.Pedido_Bs_X_Ac))
             {

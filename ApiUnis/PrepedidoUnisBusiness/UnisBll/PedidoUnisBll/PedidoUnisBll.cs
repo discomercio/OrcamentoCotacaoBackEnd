@@ -27,7 +27,7 @@ namespace PrepedidoUnisBusiness.UnisBll.PedidoUnisBll
                                    where c.Pedido == pedido
                                    select c.Orcamentista).FirstOrDefault();
 
-            Pedido.Dados.DetalhesPedido.PedidoDados pedidoDados = await pedidoBll.BuscarPedido(orcamentista.Trim(), pedido);
+            Pedido.Dados.DetalhesPedido.PedidoDados pedidoDados = await pedidoBll.BuscarPedido(orcamentista?.Trim(), pedido);
 
             PrepedidoBusiness.Dto.ClienteCadastro.DadosClienteCadastroDto dadosCliente =
                 PrepedidoBusiness.Dto.ClienteCadastro.DadosClienteCadastroDto
