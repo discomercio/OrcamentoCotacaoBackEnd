@@ -1913,5 +1913,49 @@ namespace Prepedido
                 prepedido.NumeroPrePedido = nsu.Substring(ndescarte) + sufixoIdOrcamento;
             }
         }
+
+        public async Task<BuscarStatusPrepedidoRetornoDados> BuscarStatusPrepedido(string orcamento)
+        {
+            BuscarStatusPrepedidoRetornoDados ret = new BuscarStatusPrepedidoRetornoDados();
+
+            //vamos buscar o prepedido para verificar se ele virou pedido
+            var db = contextoProvider.GetContextoLeitura();
+
+            var orcamentotask = await (from c in db.Torcamentos
+                                       where c.Orcamento == orcamento
+                                       select c).FirstOrDefaultAsync();
+
+            if (orcamentotask != null)
+            {
+                ret.St_orc_virou_pedido = Convert.ToBoolean(orcamentotask.St_Orc_Virou_Pedido);
+
+                //virou
+                if ((bool)ret.St_orc_virou_pedido)
+                {
+                    Tpedido pedido_pai = (from c in db.Tpedidos
+                                          where c.Orcamento == orcamentotask.Orcamento
+                                          select c).FirstOrDefault();
+
+                    List<Tpedido> lstPedido = await (from c in db.Tpedidos
+                                                     where c.Pedido.Contains(pedido_pai.Pedido)
+                                                     select c).ToListAsync();
+
+                    if (lstPedido.Count > 0)
+                    {
+                        ret.Pedidos = new List<StatusPedidoPrepedidoDados>();
+                        lstPedido.ForEach(x =>
+                        {
+                            ret.Pedidos.Add(new StatusPedidoPrepedidoDados
+                            {
+                                Pedido = x.Pedido,
+                                St_Entrega = x.St_Entrega
+                            });
+                        });
+                    }
+                }
+            }
+
+            return ret;
+        }
     }
 }

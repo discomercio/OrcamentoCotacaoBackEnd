@@ -180,7 +180,7 @@ namespace PrepedidoAPIUnis.Controllers
         /// </summary>
         /// <param name="tokenAcesso"></param>
         /// <param name="orcamento"></param>
-        /// <returns></returns>
+        /// <returns>BuscarStatusPrepedidoRetornoUnisDto</returns>
         [AllowAnonymous]
         [HttpGet("buscarStatusPrepedido")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
@@ -189,9 +189,13 @@ namespace PrepedidoAPIUnis.Controllers
             if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out _))
                 return Unauthorized();
 
-            BuscarStatusPrepedidoRetornoUnisDto ret = await prepedidoUnisBll.BuscarStatusPrepedido(orcamento);
+            if (orcamento != null)
+            {
+                BuscarStatusPrepedidoRetornoUnisDto ret = await prepedidoUnisBll.BuscarStatusPrepedido(orcamento);
 
-            return Ok(ret);
+                return Ok(ret);
+            }
+            return NoContent();
         }
     }
 }
