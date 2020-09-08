@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Especificacao.Pedido.Passo60.Validacao
+namespace Especificacao.Especificacao.Pedido.Passo40
 {
     using TechTalk.SpecFlow;
     using System;
@@ -20,7 +20,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Validacao
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "ignore")]
-    public partial class Origem_PedidoFeature : object, Xunit.IClassFixture<Origem_PedidoFeature.FixtureData>, System.IDisposable
+    public partial class LimiteDescontoFeature : object, Xunit.IClassFixture<LimiteDescontoFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -30,10 +30,10 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Validacao
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "origem_pedido.feature"
+#line 1 "LimiteDesconto.feature"
 #line hidden
         
-        public Origem_PedidoFeature(Origem_PedidoFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public LimiteDescontoFeature(LimiteDescontoFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,7 +42,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Validacao
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "origem_pedido", null, ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "LimiteDesconto", null, ProgrammingLanguage.CSharp, new string[] {
                         "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -83,14 +83,14 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Validacao
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validar origem_pedido")]
-        [Xunit.TraitAttribute("FeatureTitle", "origem_pedido")]
-        [Xunit.TraitAttribute("Description", "Validar origem_pedido")]
-        public virtual void ValidarOrigem_Pedido()
+        [Xunit.SkippableFactAttribute(DisplayName="Percentual de comissão excede o máximo permitido!!")]
+        [Xunit.TraitAttribute("FeatureTitle", "LimiteDesconto")]
+        [Xunit.TraitAttribute("Description", "Percentual de comissão excede o máximo permitido!!")]
+        public virtual void PercentualDeComissaoExcedeOMaximoPermitido()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar origem_pedido", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Percentual de comissão excede o máximo permitido!!", null, tagsOfScenario, argumentsOfScenario);
 #line 4
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -111,22 +111,28 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 14
+#line 17
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 18
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validar origem_pedido2")]
-        [Xunit.TraitAttribute("FeatureTitle", "origem_pedido")]
-        [Xunit.TraitAttribute("Description", "Validar origem_pedido2")]
-        public virtual void ValidarOrigem_Pedido2()
+        [Xunit.SkippableFactAttribute(DisplayName="Verifica se todos os produtos cujo desconto excedem o máximo permitido possuem se" +
+            "nha de desconto disponível")]
+        [Xunit.TraitAttribute("FeatureTitle", "LimiteDesconto")]
+        [Xunit.TraitAttribute("Description", "Verifica se todos os produtos cujo desconto excedem o máximo permitido possuem se" +
+            "nha de desconto disponível")]
+        public virtual void VerificaSeTodosOsProdutosCujoDescontoExcedemOMaximoPermitidoPossuemSenhaDeDescontoDisponivel()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar origem_pedido2", null, tagsOfScenario, argumentsOfScenario);
-#line 16
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verifica se todos os produtos cujo desconto excedem o máximo permitido possuem se" +
+                    "nha de desconto disponível", null, tagsOfScenario, argumentsOfScenario);
+#line 20
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -146,7 +152,10 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 44
+#line 68
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 69
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
@@ -160,12 +169,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                Origem_PedidoFeature.FeatureSetup();
+                LimiteDescontoFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                Origem_PedidoFeature.FeatureTearDown();
+                LimiteDescontoFeature.FeatureTearDown();
             }
         }
     }

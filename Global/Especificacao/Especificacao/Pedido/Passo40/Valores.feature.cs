@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Especificacao.Pedido.Passo60.Validacao
+namespace Especificacao.Especificacao.Pedido.Passo40
 {
     using TechTalk.SpecFlow;
     using System;
@@ -20,7 +20,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Validacao
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "ignore")]
-    public partial class Origem_PedidoFeature : object, Xunit.IClassFixture<Origem_PedidoFeature.FixtureData>, System.IDisposable
+    public partial class ValoresFeature : object, Xunit.IClassFixture<ValoresFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -30,10 +30,10 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Validacao
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "origem_pedido.feature"
+#line 1 "Valores.feature"
 #line hidden
         
-        public Origem_PedidoFeature(Origem_PedidoFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public ValoresFeature(ValoresFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,7 +42,8 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Validacao
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "origem_pedido", null, ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Valores", "\tIn order to avoid silly mistakes\r\n\tAs a math idiot\r\n\tI want to be told the sum o" +
+                    "f two numbers", ProgrammingLanguage.CSharp, new string[] {
                         "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -83,15 +84,15 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Validacao
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validar origem_pedido")]
-        [Xunit.TraitAttribute("FeatureTitle", "origem_pedido")]
-        [Xunit.TraitAttribute("Description", "Validar origem_pedido")]
-        public virtual void ValidarOrigem_Pedido()
+        [Xunit.SkippableFactAttribute(DisplayName="Limita o RA a um percentual do valor do pedido")]
+        [Xunit.TraitAttribute("FeatureTitle", "Valores")]
+        [Xunit.TraitAttribute("Description", "Limita o RA a um percentual do valor do pedido")]
+        public virtual void LimitaORAAUmPercentualDoValorDoPedido()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar origem_pedido", null, tagsOfScenario, argumentsOfScenario);
-#line 4
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Limita o RA a um percentual do valor do pedido", null, tagsOfScenario, argumentsOfScenario);
+#line 7
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -111,42 +112,10 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 14
- testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 19
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="Validar origem_pedido2")]
-        [Xunit.TraitAttribute("FeatureTitle", "origem_pedido")]
-        [Xunit.TraitAttribute("Description", "Validar origem_pedido2")]
-        public virtual void ValidarOrigem_Pedido2()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar origem_pedido2", null, tagsOfScenario, argumentsOfScenario);
-#line 16
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 44
+#line 20
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
@@ -160,12 +129,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                Origem_PedidoFeature.FeatureSetup();
+                ValoresFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                Origem_PedidoFeature.FeatureTearDown();
+                ValoresFeature.FeatureTearDown();
             }
         }
     }

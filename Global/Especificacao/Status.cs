@@ -11,7 +11,7 @@ using Xunit;
  *      feito loja/PedidoNovoProdCompostoMask.asp
  *      feito loja/PedidoNovo.asp 
  * 
-  	AFAZER: TODO: loja/PedidoNovoConsiste.asp linha 2065
+  	AFAZER: TODO: loja/PedidoNovoConsiste.asp linha 3087 - ver quando o coampo não é exibido
     AFAZER: TODO: onde salva: PedidoNovoConfirma.asp
 * 
  * */

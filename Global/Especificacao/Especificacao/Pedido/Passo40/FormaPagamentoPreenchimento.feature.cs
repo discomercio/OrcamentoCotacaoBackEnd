@@ -30,7 +30,7 @@ namespace Especificacao.Especificacao.Pedido.Passo40
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "FormaPagamento.feature"
+#line 1 "FormaPagamentoPreenchimento.feature"
 #line hidden
         
         public FormaPagamentoFeature(FormaPagamentoFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
@@ -256,7 +256,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("op_av_forma_pagto", null, tagsOfScenario, argumentsOfScenario);
-#line 58
+#line 65
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -276,16 +276,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 62
+#line 69
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 63
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_A_VISTA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 70
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_A_VISTA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 64
+#line 71
  testRunner.When("Informo \"op_av_forma_pagto\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 65
+#line 72
  testRunner.Then("Erro \"Indique a forma de pagamento!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -300,7 +300,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_pu_valor", null, tagsOfScenario, argumentsOfScenario);
-#line 69
+#line 76
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -320,16 +320,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 73
+#line 80
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 74
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELA_UNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 81
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELA_UNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 75
+#line 82
  testRunner.When("Informo \"c_pu_valor\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 76
+#line 83
  testRunner.Then("Erro \"Indique o valor da parcela única!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -344,7 +344,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_pu_valor inválido", null, tagsOfScenario, argumentsOfScenario);
-#line 78
+#line 85
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -364,40 +364,40 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 83
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 84
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELA_UNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 85
- testRunner.When("Informo \"c_pu_valor\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 86
- testRunner.Then("Erro \"Valor da parcela única é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 87
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 88
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELA_UNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 89
- testRunner.When("Informo \"c_pu_valor\" = \"-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 90
- testRunner.Then("Erro \"Valor da parcela única é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 91
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELA_UNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 92
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELA_UNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"c_pu_valor\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 93
- testRunner.When("Informo \"c_pu_valor\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("Erro \"Valor da parcela única é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 94
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 95
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELA_UNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 96
+ testRunner.When("Informo \"c_pu_valor\" = \"-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 97
+ testRunner.Then("Erro \"Valor da parcela única é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 98
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 99
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELA_UNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 100
+ testRunner.When("Informo \"c_pu_valor\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 101
  testRunner.Then("Sem Erro \"Valor da parcela única é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -412,7 +412,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_pu_vencto_apos", null, tagsOfScenario, argumentsOfScenario);
-#line 97
+#line 104
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -432,16 +432,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 101
+#line 108
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 102
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELA_UNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 109
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELA_UNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 103
+#line 110
  testRunner.When("Informo \"c_pu_vencto_apos\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 104
+#line 111
  testRunner.Then("Erro \"Indique o intervalo de vencimento da parcela única!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -456,7 +456,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_pu_vencto_apos inválido", null, tagsOfScenario, argumentsOfScenario);
-#line 106
+#line 113
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -476,40 +476,40 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 111
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 112
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELA_UNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 113
- testRunner.When("Informo \"c_pu_vencto_apos\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 114
- testRunner.Then("Erro \"Indique o intervalo de vencimento da parcela única!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 115
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 116
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELA_UNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 117
- testRunner.When("Informo \"c_pu_vencto_apos\" = \"-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 118
- testRunner.Then("Erro \"Indique o intervalo de vencimento da parcela única!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 119
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELA_UNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 120
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELA_UNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"c_pu_vencto_apos\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 121
- testRunner.When("Informo \"c_pu_vencto_apos\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("Erro \"Indique o intervalo de vencimento da parcela única!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 122
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 123
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELA_UNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 124
+ testRunner.When("Informo \"c_pu_vencto_apos\" = \"-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 125
+ testRunner.Then("Erro \"Indique o intervalo de vencimento da parcela única!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 126
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 127
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELA_UNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 128
+ testRunner.When("Informo \"c_pu_vencto_apos\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 129
  testRunner.Then("sem Erro \"Indique o intervalo de vencimento da parcela única!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -524,42 +524,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("divergência entre o valor total do pedido", null, tagsOfScenario, argumentsOfScenario);
-#line 125
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 130
- testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="c_pc_qtde")]
-        [Xunit.TraitAttribute("FeatureTitle", "FormaPagamento")]
-        [Xunit.TraitAttribute("Description", "c_pc_qtde")]
-        public virtual void C_Pc_Qtde()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_pc_qtde", null, tagsOfScenario, argumentsOfScenario);
-#line 133
+#line 132
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -580,15 +545,50 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 137
+ testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="c_pc_qtde")]
+        [Xunit.TraitAttribute("FeatureTitle", "FormaPagamento")]
+        [Xunit.TraitAttribute("Description", "c_pc_qtde")]
+        public virtual void C_Pc_Qtde()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_pc_qtde", null, tagsOfScenario, argumentsOfScenario);
+#line 140
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 144
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 138
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 145
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 139
+#line 146
  testRunner.When("Informo \"c_pc_qtde\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 140
+#line 147
  testRunner.Then("Erro \"Indique a quantidade de parcelas!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -603,7 +603,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_pc_qtde inválida", null, tagsOfScenario, argumentsOfScenario);
-#line 142
+#line 149
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -623,40 +623,40 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 147
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 148
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 149
- testRunner.When("Informo \"c_pc_qtde\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 150
- testRunner.Then("Erro \"Quantidade de parcelas inválida!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 152
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 153
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 154
- testRunner.When("Informo \"c_pc_qtde\" = \"-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 155
- testRunner.Then("Erro \"Quantidade de parcelas inválida!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 156
+ testRunner.When("Informo \"c_pc_qtde\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 157
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 158
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("Erro \"Quantidade de parcelas inválida!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 159
- testRunner.When("Informo \"c_pc_qtde\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 160
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 161
+ testRunner.When("Informo \"c_pc_qtde\" = \"-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 162
+ testRunner.Then("Erro \"Quantidade de parcelas inválida!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 164
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 165
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 166
+ testRunner.When("Informo \"c_pc_qtde\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 167
  testRunner.Then("Sem Erro \"Quantidade de parcelas inválida!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -671,7 +671,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_pc_valor", null, tagsOfScenario, argumentsOfScenario);
-#line 162
+#line 169
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -691,16 +691,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 166
+#line 173
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 167
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 174
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 168
+#line 175
  testRunner.When("Informo \"c_pc_valor\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 169
+#line 176
  testRunner.Then("sem Erro \"Indique o valor da parcela!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -715,7 +715,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_pc_valorinválido", null, tagsOfScenario, argumentsOfScenario);
-#line 171
+#line 178
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -735,40 +735,40 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 176
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 177
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 178
- testRunner.When("Informo \"c_pc_valor\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 179
- testRunner.Then("Erro \"Valor de parcela inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 181
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 182
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 183
- testRunner.When("Informo \"c_pc_valor\" = \"-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 184
- testRunner.Then("Erro \"Valor de parcela inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 185
+ testRunner.When("Informo \"c_pc_valor\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 186
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 187
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("Erro \"Valor de parcela inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 188
- testRunner.When("Informo \"c_pc_valor\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 189
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 190
+ testRunner.When("Informo \"c_pc_valor\" = \"-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 191
+ testRunner.Then("Erro \"Valor de parcela inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 193
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 194
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 195
+ testRunner.When("Informo \"c_pc_valor\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 196
  testRunner.Then("Erro \"Valor de parcela inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -783,7 +783,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Parcelado no cartão (internet) divergência", null, tagsOfScenario, argumentsOfScenario);
-#line 191
+#line 198
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -803,7 +803,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 196
+#line 203
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
@@ -818,7 +818,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_pc_maquineta_qtde", null, tagsOfScenario, argumentsOfScenario);
-#line 201
+#line 208
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -838,16 +838,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 205
+#line 212
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 206
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 213
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 207
+#line 214
  testRunner.When("Informo \"c_pc_maquineta_qtde\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 208
+#line 215
  testRunner.Then("Erro \"Indique a quantidade de parcelas!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -862,7 +862,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_pc_maquineta_qtde inválida", null, tagsOfScenario, argumentsOfScenario);
-#line 210
+#line 217
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -882,40 +882,40 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 215
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 216
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 217
- testRunner.When("Informo \"c_pc_maquineta_qtde\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 218
- testRunner.Then("Erro \"Quantidade de parcelas inválida!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 220
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 221
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 222
- testRunner.When("Informo \"c_pc_maquineta_qtde\" = \"-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 223
- testRunner.Then("Erro \"Quantidade de parcelas inválida!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 224
+ testRunner.When("Informo \"c_pc_maquineta_qtde\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 225
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 226
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("Erro \"Quantidade de parcelas inválida!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 227
- testRunner.When("Informo \"c_pc_maquineta_qtde\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 228
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 229
+ testRunner.When("Informo \"c_pc_maquineta_qtde\" = \"-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 230
+ testRunner.Then("Erro \"Quantidade de parcelas inválida!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 232
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 233
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 234
+ testRunner.When("Informo \"c_pc_maquineta_qtde\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 235
  testRunner.Then("Sem Erro \"Quantidade de parcelas inválida!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -930,7 +930,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_pc_maquineta_valor", null, tagsOfScenario, argumentsOfScenario);
-#line 230
+#line 237
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -950,16 +950,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 234
+#line 241
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 235
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 242
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 236
+#line 243
  testRunner.When("Informo \"c_pc_maquineta_valor\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 237
+#line 244
  testRunner.Then("sem Erro \"Indique o valor da parcela!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -974,7 +974,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_pc_maquineta_valor invalido", null, tagsOfScenario, argumentsOfScenario);
-#line 239
+#line 246
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -994,40 +994,40 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 244
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 245
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 246
- testRunner.When("Informo \"c_pc_maquineta_valor\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 247
- testRunner.Then("Erro \"Valor de parcela inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 249
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 250
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 251
- testRunner.When("Informo \"c_pc_maquineta_valor\" = \"-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 252
- testRunner.Then("Erro \"Valor de parcela inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 253
+ testRunner.When("Informo \"c_pc_maquineta_valor\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 254
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 255
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("Erro \"Valor de parcela inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 256
- testRunner.When("Informo \"c_pc_maquineta_valor\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 257
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 258
+ testRunner.When("Informo \"c_pc_maquineta_valor\" = \"-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 259
+ testRunner.Then("Erro \"Valor de parcela inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 261
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 262
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 263
+ testRunner.When("Informo \"c_pc_maquineta_valor\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 264
  testRunner.Then("Erro \"Valor de parcela inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -1042,42 +1042,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Parcelado no cartão (maquineta) divergência", null, tagsOfScenario, argumentsOfScenario);
-#line 259
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 265
- testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="op_pce_entrada_forma_pagto")]
-        [Xunit.TraitAttribute("FeatureTitle", "FormaPagamento")]
-        [Xunit.TraitAttribute("Description", "op_pce_entrada_forma_pagto")]
-        public virtual void Op_Pce_Entrada_Forma_Pagto()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("op_pce_entrada_forma_pagto", null, tagsOfScenario, argumentsOfScenario);
-#line 268
+#line 266
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1098,15 +1063,50 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 272
+ testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="op_pce_entrada_forma_pagto")]
+        [Xunit.TraitAttribute("FeatureTitle", "FormaPagamento")]
+        [Xunit.TraitAttribute("Description", "op_pce_entrada_forma_pagto")]
+        public virtual void Op_Pce_Entrada_Forma_Pagto()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("op_pce_entrada_forma_pagto", null, tagsOfScenario, argumentsOfScenario);
+#line 275
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 279
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 273
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 280
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 274
+#line 281
  testRunner.When("Informo \"op_pce_entrada_forma_pagto\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 275
+#line 282
  testRunner.Then("Erro \"Indique a forma de pagamento da entrada!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -1121,7 +1121,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_pce_entrada_valor", null, tagsOfScenario, argumentsOfScenario);
-#line 277
+#line 284
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1141,16 +1141,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 281
+#line 288
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 282
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 289
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 283
+#line 290
  testRunner.When("Informo \"c_pce_entrada_valor\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 284
+#line 291
  testRunner.Then("Erro \"Indique o valor da entrada!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -1165,7 +1165,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_pce_entrada_valor inválida", null, tagsOfScenario, argumentsOfScenario);
-#line 286
+#line 293
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1185,40 +1185,40 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 291
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 292
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 293
- testRunner.When("Informo \"c_pce_entrada_valor\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 294
- testRunner.Then("Erro \"Valor da entrada inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 296
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 297
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 298
- testRunner.When("Informo \"c_pce_entrada_valor\" = \"-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 299
- testRunner.Then("Erro \"Valor da entrada inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 300
+ testRunner.When("Informo \"c_pce_entrada_valor\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 301
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 302
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("Erro \"Valor da entrada inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 303
- testRunner.When("Informo \"c_pce_entrada_valor\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 304
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 305
+ testRunner.When("Informo \"c_pce_entrada_valor\" = \"-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 306
+ testRunner.Then("Erro \"Valor da entrada inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 308
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 309
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 310
+ testRunner.When("Informo \"c_pce_entrada_valor\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 311
  testRunner.Then("Sem Erro \"Valor da entrada inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -1233,7 +1233,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("op_pce_prestacao_forma_pagto", null, tagsOfScenario, argumentsOfScenario);
-#line 306
+#line 313
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1253,16 +1253,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 310
+#line 317
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 311
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 318
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 312
+#line 319
  testRunner.When("Informo \"op_pce_prestacao_forma_pagto\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 313
+#line 320
  testRunner.Then("Erro \"Indique a forma de pagamento das prestações!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -1277,7 +1277,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_pce_prestacao_qtde", null, tagsOfScenario, argumentsOfScenario);
-#line 315
+#line 322
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1297,16 +1297,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 319
+#line 326
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 320
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 327
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 321
+#line 328
  testRunner.When("Informo \"c_pce_prestacao_qtde\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 322
+#line 329
  testRunner.Then("Erro \"Indique a quantidade de prestações!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -1321,7 +1321,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_pce_prestacao_qtde inválida", null, tagsOfScenario, argumentsOfScenario);
-#line 324
+#line 331
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1341,40 +1341,40 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 329
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 330
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 331
- testRunner.When("Informo \"c_pce_prestacao_qtde\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 332
- testRunner.Then("Erro \"Quantidade de prestações inválida!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 334
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 335
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 336
- testRunner.When("Informo \"c_pce_prestacao_qtde\" = \"-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 337
- testRunner.Then("Erro \"Quantidade de prestações inválida!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 338
+ testRunner.When("Informo \"c_pce_prestacao_qtde\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 339
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 340
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("Erro \"Quantidade de prestações inválida!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 341
- testRunner.When("Informo \"c_pce_prestacao_qtde\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 342
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 343
+ testRunner.When("Informo \"c_pce_prestacao_qtde\" = \"-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 344
+ testRunner.Then("Erro \"Quantidade de prestações inválida!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 346
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 347
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 348
+ testRunner.When("Informo \"c_pce_prestacao_qtde\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 349
  testRunner.Then("Sem Erro \"Quantidade de prestações inválida!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -1389,7 +1389,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_pce_prestacao_valor", null, tagsOfScenario, argumentsOfScenario);
-#line 344
+#line 351
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1409,16 +1409,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 348
+#line 355
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 349
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 356
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 350
+#line 357
  testRunner.When("Informo \"c_pce_prestacao_valor\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 351
+#line 358
  testRunner.Then("Erro \"Indique o valor da prestação!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -1433,7 +1433,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_pce_prestacao_valor inválida", null, tagsOfScenario, argumentsOfScenario);
-#line 354
+#line 361
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1453,40 +1453,40 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 359
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 360
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 361
- testRunner.When("Informo \"c_pce_prestacao_valor\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 362
- testRunner.Then("Erro \"Valor de prestação inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 364
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 365
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 366
- testRunner.When("Informo \"c_pce_prestacao_valor\" = \"-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 367
- testRunner.Then("Erro \"Valor de prestação inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 368
+ testRunner.When("Informo \"c_pce_prestacao_valor\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 369
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 370
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("Erro \"Valor de prestação inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 371
- testRunner.When("Informo \"c_pce_prestacao_valor\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 372
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 373
+ testRunner.When("Informo \"c_pce_prestacao_valor\" = \"-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 374
+ testRunner.Then("Erro \"Valor de prestação inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 376
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 377
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 378
+ testRunner.When("Informo \"c_pce_prestacao_valor\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 379
  testRunner.Then("Sem Erro \"Valor de prestação inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -1501,7 +1501,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Parcelado com entrada divergência", null, tagsOfScenario, argumentsOfScenario);
-#line 374
+#line 381
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1521,7 +1521,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 380
+#line 387
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
@@ -1536,7 +1536,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_pce_prestacao_periodo", null, tagsOfScenario, argumentsOfScenario);
-#line 382
+#line 389
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1556,16 +1556,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 386
+#line 393
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 387
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 394
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 388
+#line 395
  testRunner.When("Informo \"c_pce_prestacao_periodo\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 389
+#line 396
  testRunner.Then("Erro \"Indique o intervalo de vencimento entre as parcelas!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -1580,7 +1580,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_pce_prestacao_periodo inválida", null, tagsOfScenario, argumentsOfScenario);
-#line 392
+#line 399
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1600,41 +1600,774 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 397
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 398
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 399
- testRunner.When("Informo \"c_pce_prestacao_periodo\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 400
- testRunner.Then("Erro \"Intervalo de vencimento inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 402
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 403
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 404
- testRunner.When("Informo \"c_pce_prestacao_periodo\" = \"-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 405
- testRunner.Then("Erro \"Intervalo de vencimento inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 406
+ testRunner.When("Informo \"c_pce_prestacao_periodo\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 407
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 408
- testRunner.When("Informo \"forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("Erro \"Intervalo de vencimento inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 409
- testRunner.When("Informo \"c_pce_prestacao_periodo\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 410
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 411
+ testRunner.When("Informo \"c_pce_prestacao_periodo\" = \"-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 412
+ testRunner.Then("Erro \"Intervalo de vencimento inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 414
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 415
+ testRunner.When("Informo \"tipo_parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 416
+ testRunner.When("Informo \"c_pce_prestacao_periodo\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 417
  testRunner.Then("Sem Erro \"Intervalo de vencimento inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="op_pse_prim_prest_forma_pagto")]
+        [Xunit.TraitAttribute("FeatureTitle", "FormaPagamento")]
+        [Xunit.TraitAttribute("Description", "op_pse_prim_prest_forma_pagto")]
+        public virtual void Op_Pse_Prim_Prest_Forma_Pagto()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("op_pse_prim_prest_forma_pagto", null, tagsOfScenario, argumentsOfScenario);
+#line 421
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 425
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 426
+ testRunner.When("Informo \"tipo_parcelamento\" = \"#COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 427
+ testRunner.When("Informo \"op_pse_prim_prest_forma_pagto\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 428
+ testRunner.Then("Erro \"Indique a forma de pagamento da 1ª prestação!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="c_pse_prim_prest_valor")]
+        [Xunit.TraitAttribute("FeatureTitle", "FormaPagamento")]
+        [Xunit.TraitAttribute("Description", "c_pse_prim_prest_valor")]
+        public virtual void C_Pse_Prim_Prest_Valor()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_pse_prim_prest_valor", null, tagsOfScenario, argumentsOfScenario);
+#line 430
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 434
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 435
+ testRunner.When("Informo \"tipo_parcelamento\" = \"#COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 436
+ testRunner.When("Informo \"c_pse_prim_prest_valor\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 437
+ testRunner.Then("Erro \"Indique o valor da 1ª prestação!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="c_pse_prim_prest_valor inválida")]
+        [Xunit.TraitAttribute("FeatureTitle", "FormaPagamento")]
+        [Xunit.TraitAttribute("Description", "c_pse_prim_prest_valor inválida")]
+        public virtual void C_Pse_Prim_Prest_ValorInvalida()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_pse_prim_prest_valor inválida", null, tagsOfScenario, argumentsOfScenario);
+#line 439
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 444
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 445
+ testRunner.When("Informo \"tipo_parcelamento\" = \"#COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 446
+ testRunner.When("Informo \"c_pse_prim_prest_valor\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 447
+ testRunner.Then("Erro \"Valor da 1ª prestação inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 449
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 450
+ testRunner.When("Informo \"tipo_parcelamento\" = \"#COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 451
+ testRunner.When("Informo \"c_pse_prim_prest_valor\" = \"-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 452
+ testRunner.Then("Erro \"Valor da 1ª prestação inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 454
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 455
+ testRunner.When("Informo \"tipo_parcelamento\" = \"#COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 456
+ testRunner.When("Informo \"c_pse_prim_prest_valor\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 457
+ testRunner.Then("Sem Erro \"Valor da 1ª prestação inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="c_pse_prim_prest_apos")]
+        [Xunit.TraitAttribute("FeatureTitle", "FormaPagamento")]
+        [Xunit.TraitAttribute("Description", "c_pse_prim_prest_apos")]
+        public virtual void C_Pse_Prim_Prest_Apos()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_pse_prim_prest_apos", null, tagsOfScenario, argumentsOfScenario);
+#line 459
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 463
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 464
+ testRunner.When("Informo \"tipo_parcelamento\" = \"#COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 465
+ testRunner.When("Informo \"c_pse_prim_prest_apos\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 466
+ testRunner.Then("Erro \"Indique o intervalo de vencimento da 1ª parcela!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="c_pse_prim_prest_apos inválida")]
+        [Xunit.TraitAttribute("FeatureTitle", "FormaPagamento")]
+        [Xunit.TraitAttribute("Description", "c_pse_prim_prest_apos inválida")]
+        public virtual void C_Pse_Prim_Prest_AposInvalida()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_pse_prim_prest_apos inválida", null, tagsOfScenario, argumentsOfScenario);
+#line 468
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 473
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 474
+ testRunner.When("Informo \"tipo_parcelamento\" = \"#COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 475
+ testRunner.When("Informo \"c_pse_prim_prest_apos\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 476
+ testRunner.Then("Erro \"Intervalo de vencimento da 1ª parcela é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 478
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 479
+ testRunner.When("Informo \"tipo_parcelamento\" = \"#COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 480
+ testRunner.When("Informo \"c_pse_prim_prest_apos\" = \"-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 481
+ testRunner.Then("Erro \"Intervalo de vencimento da 1ª parcela é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 483
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 484
+ testRunner.When("Informo \"tipo_parcelamento\" = \"#COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 485
+ testRunner.When("Informo \"c_pse_prim_prest_apos\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 486
+ testRunner.Then("Sem Erro \"Intervalo de vencimento da 1ª parcela é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="op_pse_demais_prest_forma_pagto")]
+        [Xunit.TraitAttribute("FeatureTitle", "FormaPagamento")]
+        [Xunit.TraitAttribute("Description", "op_pse_demais_prest_forma_pagto")]
+        public virtual void Op_Pse_Demais_Prest_Forma_Pagto()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("op_pse_demais_prest_forma_pagto", null, tagsOfScenario, argumentsOfScenario);
+#line 488
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 492
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 493
+ testRunner.When("Informo \"tipo_parcelamento\" = \"#COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 494
+ testRunner.When("Informo \"op_pse_demais_prest_forma_pagto\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 495
+ testRunner.Then("Erro \"Indique a forma de pagamento das demais prestações!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="c_pse_demais_prest_qtde")]
+        [Xunit.TraitAttribute("FeatureTitle", "FormaPagamento")]
+        [Xunit.TraitAttribute("Description", "c_pse_demais_prest_qtde")]
+        public virtual void C_Pse_Demais_Prest_Qtde()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_pse_demais_prest_qtde", null, tagsOfScenario, argumentsOfScenario);
+#line 497
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 501
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 502
+ testRunner.When("Informo \"tipo_parcelamento\" = \"#COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 503
+ testRunner.When("Informo \"c_pse_demais_prest_qtde\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 504
+ testRunner.Then("Erro \"Indique a quantidade das demais prestações!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="c_pse_demais_prest_qtde c_pse_demais_prest_qtde")]
+        [Xunit.TraitAttribute("FeatureTitle", "FormaPagamento")]
+        [Xunit.TraitAttribute("Description", "c_pse_demais_prest_qtde c_pse_demais_prest_qtde")]
+        public virtual void C_Pse_Demais_Prest_QtdeC_Pse_Demais_Prest_Qtde()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_pse_demais_prest_qtde c_pse_demais_prest_qtde", null, tagsOfScenario, argumentsOfScenario);
+#line 506
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 511
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 512
+ testRunner.When("Informo \"tipo_parcelamento\" = \"#COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 513
+ testRunner.When("Informo \"c_pse_demais_prest_qtde\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 514
+ testRunner.Then("Erro \"Quantidade de prestações inválida!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 516
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 517
+ testRunner.When("Informo \"tipo_parcelamento\" = \"#COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 518
+ testRunner.When("Informo \"c_pse_demais_prest_qtde\" = \"-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 519
+ testRunner.Then("Erro \"Quantidade de prestações inválida!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 521
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 522
+ testRunner.When("Informo \"tipo_parcelamento\" = \"#COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 523
+ testRunner.When("Informo \"c_pse_demais_prest_qtde\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 524
+ testRunner.Then("Sem Erro \"Quantidade de prestações inválida!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="c_pse_demais_prest_valor")]
+        [Xunit.TraitAttribute("FeatureTitle", "FormaPagamento")]
+        [Xunit.TraitAttribute("Description", "c_pse_demais_prest_valor")]
+        public virtual void C_Pse_Demais_Prest_Valor()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_pse_demais_prest_valor", null, tagsOfScenario, argumentsOfScenario);
+#line 526
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 530
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 531
+ testRunner.When("Informo \"tipo_parcelamento\" = \"#COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 532
+ testRunner.When("Informo \"c_pse_demais_prest_valor\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 533
+ testRunner.Then("Erro \"Indique o valor das demais prestações!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="c_pse_demais_prest_valor inválido")]
+        [Xunit.TraitAttribute("FeatureTitle", "FormaPagamento")]
+        [Xunit.TraitAttribute("Description", "c_pse_demais_prest_valor inválido")]
+        public virtual void C_Pse_Demais_Prest_ValorInvalido()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_pse_demais_prest_valor inválido", null, tagsOfScenario, argumentsOfScenario);
+#line 535
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 540
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 541
+ testRunner.When("Informo \"tipo_parcelamento\" = \"#COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 542
+ testRunner.When("Informo \"c_pse_demais_prest_valor\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 543
+ testRunner.Then("Erro \"Valor de prestação inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 545
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 546
+ testRunner.When("Informo \"tipo_parcelamento\" = \"#COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 547
+ testRunner.When("Informo \"c_pse_demais_prest_valor\" = \"-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 548
+ testRunner.Then("Erro \"Valor de prestação inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 550
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 551
+ testRunner.When("Informo \"tipo_parcelamento\" = \"#COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 552
+ testRunner.When("Informo \"c_pse_demais_prest_valor\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 553
+ testRunner.Then("Sem Erro \"Valor de prestação inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Parcelado sem entrada divergência")]
+        [Xunit.TraitAttribute("FeatureTitle", "FormaPagamento")]
+        [Xunit.TraitAttribute("Description", "Parcelado sem entrada divergência")]
+        public virtual void ParceladoSemEntradaDivergencia()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Parcelado sem entrada divergência", null, tagsOfScenario, argumentsOfScenario);
+#line 555
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 561
+ testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="c_pse_demais_prest_periodo")]
+        [Xunit.TraitAttribute("FeatureTitle", "FormaPagamento")]
+        [Xunit.TraitAttribute("Description", "c_pse_demais_prest_periodo")]
+        public virtual void C_Pse_Demais_Prest_Periodo()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_pse_demais_prest_periodo", null, tagsOfScenario, argumentsOfScenario);
+#line 563
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 567
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 568
+ testRunner.When("Informo \"tipo_parcelamento\" = \"#COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 569
+ testRunner.When("Informo \"c_pse_demais_prest_periodo\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 570
+ testRunner.Then("Erro \"Indique o intervalo de vencimento entre as parcelas!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="c_pse_demais_prest_periodo inválido")]
+        [Xunit.TraitAttribute("FeatureTitle", "FormaPagamento")]
+        [Xunit.TraitAttribute("Description", "c_pse_demais_prest_periodo inválido")]
+        public virtual void C_Pse_Demais_Prest_PeriodoInvalido()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_pse_demais_prest_periodo inválido", null, tagsOfScenario, argumentsOfScenario);
+#line 572
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 577
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 578
+ testRunner.When("Informo \"tipo_parcelamento\" = \"#COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 579
+ testRunner.When("Informo \"c_pse_demais_prest_periodo\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 580
+ testRunner.Then("Erro \"Intervalo de vencimento inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 582
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 583
+ testRunner.When("Informo \"tipo_parcelamento\" = \"#COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 584
+ testRunner.When("Informo \"c_pse_demais_prest_periodo\" = \"-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 585
+ testRunner.Then("Erro \"Intervalo de vencimento inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 587
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 588
+ testRunner.When("Informo \"tipo_parcelamento\" = \"#COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 589
+ testRunner.When("Informo \"c_pse_demais_prest_periodo\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 590
+ testRunner.Then("Sem Erro \"Intervalo de vencimento inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="forma_pagto invalida")]
+        [Xunit.TraitAttribute("FeatureTitle", "FormaPagamento")]
+        [Xunit.TraitAttribute("Description", "forma_pagto invalida")]
+        public virtual void Forma_PagtoInvalida()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("forma_pagto invalida", null, tagsOfScenario, argumentsOfScenario);
+#line 592
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 596
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 597
+ testRunner.When("Informo \"tipo_parcelamento\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 598
+ testRunner.Then("Erro \"Indique a forma de pagamento!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 600
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 601
+ testRunner.When("Informo \"tipo_parcelamento\" = \"XX\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 602
+ testRunner.Then("Erro \"Indique a forma de pagamento!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
