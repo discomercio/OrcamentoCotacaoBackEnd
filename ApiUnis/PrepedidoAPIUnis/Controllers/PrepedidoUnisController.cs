@@ -41,7 +41,7 @@ namespace PrepedidoAPIUnis.Controllers
         /// Rotina para cadastrar Pré-Pedido
         /// </summary>
         /// <param name="prePedido">PrePedidoUnisDto</param>
-        /// <returns>Retona classe PrePedidoResultadoUnisDto</returns>
+        /// <returns>PrePedidoResultadoUnisDto</returns>
         [AllowAnonymous]
         [HttpPost("cadastrarPrepedido")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
@@ -83,7 +83,7 @@ namespace PrepedidoAPIUnis.Controllers
         /// <param name="tokenAcesso"></param>
         /// <param name="tipo_pessoa"></param>
         /// <param name="orcamentista"></param>
-        /// <returns></returns>
+        /// <returns>FormaPagtoUnisDto</returns>
         [AllowAnonymous]
         [HttpGet("buscarFormasPagto")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
@@ -103,7 +103,7 @@ namespace PrepedidoAPIUnis.Controllers
         /// Rotina para buscar a quantidade máxima para parcelamento
         /// </summary>
         /// <param name="tokenAcesso"></param>
-        /// <returns></returns>
+        /// <returns>QtdeParcCartaoVisaResultadoUnisDto</returns>
         [AllowAnonymous]
         [HttpGet("buscarQtdeParcCartaoVisa")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
@@ -141,7 +141,7 @@ namespace PrepedidoAPIUnis.Controllers
         /// </summary>
         /// <param name="tokenAcesso"></param>
         /// <param name="orcamentista"></param>
-        /// <returns></returns>
+        /// <returns>PermiteRaStatusResultadoUnisDto</returns>
         [AllowAnonymous]
         [HttpGet("obterPermiteRaStatus")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
@@ -161,7 +161,7 @@ namespace PrepedidoAPIUnis.Controllers
         /// Rotina para buscar o percentual máximo para Pré-Pedido com RA
         /// </summary>
         /// <param name="tokenAcesso"></param>
-        /// <returns></returns>
+        /// <returns>PercentualVlPedidoRAResultadoUnisDto</returns>
         [AllowAnonymous]
         [HttpGet("obtemPercentualVlPedidoRA")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]

@@ -18,26 +18,33 @@ namespace PrepedidoUnisBusiness.UnisBll.PedidoUnisBll
 
         public async Task<PedidoUnisDto> BuscarPedido(string pedido)
         {
-            //PedidoUnisDto pedidoUnis = new PedidoUnisDto();
+            PedidoUnisDto pedidoUnis = new PedidoUnisDto();
 
             //vamos buscar o orcamentista do pedido informado para passar para a busca de montagem do pedido no global
             var db = contextoProvider.GetContextoLeitura();
 
-            string orcamentista = (from c in db.Tpedidos
-                                   where c.Pedido == pedido
-                                   select c.Orcamentista).FirstOrDefault();
+            if (!string.IsNullOrEmpty(pedido))
+            {
+                string orcamentista = (from c in db.Tpedidos
+                                       where c.Pedido == pedido
+                                       select c.Orcamentista).FirstOrDefault();
 
-            Pedido.Dados.DetalhesPedido.PedidoDados pedidoDados = await pedidoBll.BuscarPedido(orcamentista?.Trim(), pedido);
 
-            PrepedidoBusiness.Dto.ClienteCadastro.DadosClienteCadastroDto dadosCliente =
-                PrepedidoBusiness.Dto.ClienteCadastro.DadosClienteCadastroDto
-                .DadosClienteCadastroDto_De_DadosClienteCadastroDados(pedidoDados.DadosCliente);
+                Pedido.Dados.DetalhesPedido.PedidoDados pedidoDados = await pedidoBll.BuscarPedido(orcamentista?.Trim(), pedido);
 
-            PrepedidoBusiness.Dto.ClienteCadastro.EnderecoEntregaDtoClienteCadastro enderecoEntrega =
-                PrepedidoBusiness.Dto.ClienteCadastro.EnderecoEntregaDtoClienteCadastro
-                .EnderecoEntregaDtoClienteCadastro_De_EnderecoEntregaClienteCadastroDados(pedidoDados.EnderecoEntrega);
+                if (pedidoDados != null)
+                {
+                    PrepedidoBusiness.Dto.ClienteCadastro.DadosClienteCadastroDto dadosCliente =
+                    PrepedidoBusiness.Dto.ClienteCadastro.DadosClienteCadastroDto
+                    .DadosClienteCadastroDto_De_DadosClienteCadastroDados(pedidoDados.DadosCliente);
 
-            PedidoUnisDto pedidoUnis = PedidoUnisDto.PedidoUnisDto_De_PedidoDados(pedidoDados, dadosCliente, enderecoEntrega);
+                    PrepedidoBusiness.Dto.ClienteCadastro.EnderecoEntregaDtoClienteCadastro enderecoEntrega =
+                        PrepedidoBusiness.Dto.ClienteCadastro.EnderecoEntregaDtoClienteCadastro
+                        .EnderecoEntregaDtoClienteCadastro_De_EnderecoEntregaClienteCadastroDados(pedidoDados.EnderecoEntrega);
+
+                    pedidoUnis = PedidoUnisDto.PedidoUnisDto_De_PedidoDados(pedidoDados, dadosCliente, enderecoEntrega);
+                }
+            }
             
             return await Task.FromResult(pedidoUnis);
         }

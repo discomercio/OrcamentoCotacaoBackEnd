@@ -28,7 +28,7 @@ namespace PrepedidoAPIUnis.Controllers
         /// </summary>
         /// <param name="tokenAcesso"></param>
         /// <param name="pedido"></param>
-        /// <returns></returns>
+        /// <returns>PedidoUnisDto</returns>
         [AllowAnonymous]
         [HttpGet("buscarPedido")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
@@ -38,8 +38,10 @@ namespace PrepedidoAPIUnis.Controllers
                 return Unauthorized();
 
             PedidoUnisDto ret = await pedidoUnisBll.BuscarPedido(pedido);
+            if (!string.IsNullOrEmpty(ret.NumeroPedido))
+                return Ok(ret);
 
-            return Ok(ret);
+            return NoContent();
         }
     }
 }
