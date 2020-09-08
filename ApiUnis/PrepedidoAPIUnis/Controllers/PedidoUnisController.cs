@@ -29,6 +29,7 @@ namespace PrepedidoAPIUnis.Controllers
         /// <param name="tokenAcesso"></param>
         /// <param name="pedido"></param>
         /// <returns>PedidoUnisDto</returns>
+        /// <response code="204">Pedido não existe ou número do pedido inválido</response>
         [AllowAnonymous]
         [HttpGet("buscarPedido")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]

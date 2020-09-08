@@ -181,6 +181,7 @@ namespace PrepedidoAPIUnis.Controllers
         /// <param name="tokenAcesso"></param>
         /// <param name="orcamento"></param>
         /// <returns>BuscarStatusPrepedidoRetornoUnisDto</returns>
+        /// <response code="204">Orçamento não existe ou número do orçamento inválido</response>
         [AllowAnonymous]
         [HttpGet("buscarStatusPrepedido")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
@@ -189,12 +190,11 @@ namespace PrepedidoAPIUnis.Controllers
             if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out _))
                 return Unauthorized();
 
-            if (orcamento != null)
-            {
-                BuscarStatusPrepedidoRetornoUnisDto ret = await prepedidoUnisBll.BuscarStatusPrepedido(orcamento);
+            BuscarStatusPrepedidoRetornoUnisDto ret = await prepedidoUnisBll.BuscarStatusPrepedido(orcamento);
 
+            if (ret.St_orc_virou_pedido != null)
                 return Ok(ret);
-            }
+
             return NoContent();
         }
     }
