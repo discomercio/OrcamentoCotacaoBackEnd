@@ -281,16 +281,21 @@ namespace Prepedido
                        if (x.Preco_NF != null)
                        {
                            //validar se permite RA
-                           if (prepedido.PermiteRAStatus == 1)
-                           {
-                               if (x.Preco_NF != x.Preco_Lista)
-                                   lstErros.Add($"Preço de nota fiscal (Preco_NF {string.Format("{0:c}", x.Preco_NF)} x {string.Format("{0:c}", x.Preco_Lista)}) está incorreto!");
-                           }
-                           else
+                           //if (prepedido.PermiteRAStatus == 1)
+                           //{
+                           //    if (x.Preco_NF != x.Preco_Lista)
+                           //        lstErros.Add($"Preço de nota fiscal (Preco_NF {string.Format("{0:c}", x.Preco_NF)} x {string.Format("{0:c}", x.Preco_Lista)}) está incorreto!");
+                           //}
+                           //else
+                           //{
+                           //    if (x.Preco_NF != x.VlUnitario)
+                           //        lstErros.Add($"Preço de nota fiscal (Preco_NF {string.Format("{0:c}", x.Preco_NF)} x {x.VlUnitario}) está incorreto!");
+                           //}
+                           if (prepedido.PermiteRAStatus != 1)
                            {
                                if (x.Preco_NF != x.VlUnitario)
                                    lstErros.Add($"Preço de nota fiscal (Preco_NF {string.Format("{0:c}", x.Preco_NF)} x {x.VlUnitario}) está incorreto!");
-                           }
+                           }                           
 
                        }
 
@@ -310,7 +315,7 @@ namespace Prepedido
             prepedido.ListaProdutos.ForEach(x =>
             {
                 totalCompare += Math.Round((decimal)(x.VlUnitario * x.Qtde), 2);
-                totalRaCompare += Math.Round((decimal)(x.Preco_Lista * x.Qtde), 2);
+                totalRaCompare += Math.Round((decimal)(x.Preco_NF * x.Qtde), 2);
             });
 
             if (totalCompare != (decimal)prepedido.VlTotalDestePedido)

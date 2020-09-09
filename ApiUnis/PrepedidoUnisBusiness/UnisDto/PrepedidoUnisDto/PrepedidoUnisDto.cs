@@ -29,8 +29,8 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         public EnderecoEntregaClienteCadastroUnisDto EnderecoEntrega { get; set; }
         public List<PrePedidoProdutoPrePedidoUnisDto> ListaProdutos { get; set; }
         public bool PermiteRAStatus { get; set; }
-        public decimal? ValorTotalDestePedidoComRA { get; set; }
-        public decimal? VlTotalDestePedido { get; set; }
+        public decimal? NormalizacaoCampos_Vl_total_NF { get; set; }
+        public decimal? NormalizacaoCampos_Vl_total { get; set; }
         public DetalhesPrePedidoUnisDto DetalhesPrepedido { get; set; }
         public FormaPagtoCriacaoUnisDto FormaPagtoCriacao { get; set; }
 
@@ -47,8 +47,8 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
                     prepedidoUnis.EnderecoEntrega, prepedidoUnis.OutroEndereco),
                 ListaProdutos = lstProdutosArclube,
                 PermiteRAStatus = Convert.ToInt16(prepedidoUnis.PermiteRAStatus),
-                ValorTotalDestePedidoComRA = prepedidoUnis.ValorTotalDestePedidoComRA,
-                VlTotalDestePedido = prepedidoUnis.VlTotalDestePedido,
+                ValorTotalDestePedidoComRA = prepedidoUnis.NormalizacaoCampos_Vl_total_NF,
+                VlTotalDestePedido = prepedidoUnis.NormalizacaoCampos_Vl_total,
                 DetalhesPrepedido = DetalhesPrePedidoUnisDto.
                     DetalhesPrePedidoDtoDeDetalhesPrePedidoUnisDto(prepedidoUnis.DetalhesPrepedido),
                 FormaPagtoCriacao = FormaPagtoCriacaoUnisDto.FormaPagtoCriacaoDtoDeFormaPagtoCriacaoUnisDto(

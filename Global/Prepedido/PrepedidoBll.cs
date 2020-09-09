@@ -1265,7 +1265,7 @@ namespace Prepedido
             {
                 if (!string.IsNullOrEmpty(p.NumProduto))
                 {
-                    vl_total_NF += (decimal)(p.Qtde * p.Preco_Lista);
+                    vl_total_NF += (decimal)(p.Qtde * p.Preco_NF);
                 }
             }
 
@@ -1815,7 +1815,7 @@ namespace Prepedido
                     Fabricante = UtilsGlobais.Util.Normaliza_Codigo(p.Fabricante, Constantes.TAM_MIN_FABRICANTE),
                     Qtde = p.Qtde,
                     Preco_Venda = Math.Round(p.VlUnitario, 2),
-                    Preco_NF = prepedido.PermiteRAStatus == 1 ? Math.Round((decimal)p.Preco_Lista, 2) : Math.Round(p.VlUnitario, 2),
+                    Preco_NF = prepedido.PermiteRAStatus == 1 ? Math.Round((decimal)p.Preco_NF, 2) : Math.Round(p.VlUnitario, 2),
                     Obs = p.Obs == null ? "" : p.Obs,
                     Desc_Dado = p.Desconto,
                     Preco_Lista = Math.Round(p.VlLista, 2),
@@ -1845,7 +1845,7 @@ namespace Prepedido
                             Fabricante = UtilsGlobais.Util.Normaliza_Codigo(p.Fabricante, Constantes.TAM_MIN_FABRICANTE),
                             Qtde = p.Qtde,
                             Preco_Venda = Math.Round(p.VlUnitario, 2),
-                            Preco_NF = prepedido.PermiteRAStatus == 1 ? Math.Round((decimal)p.Preco_Lista, 2) : Math.Round(p.VlUnitario, 2),
+                            Preco_NF = prepedido.PermiteRAStatus == 1 ? Math.Round((decimal)p.Preco_NF, 2) : Math.Round(p.VlUnitario, 2),
                             Obs = p.Obs == null ? "" : p.Obs,
                             Desc_Dado = p.Desconto,
                             Preco_Lista = Math.Round(p.VlLista, 2),

@@ -49,8 +49,8 @@ VlTotalDestePedido	number($double)
         [Fact]
         public void ValorTotalDestePedidoComRA()
         {
-            Teste(c => c.ValorTotalDestePedidoComRA = 1, "Valor total da forma de pagamento diferente do valor total!");
-            Teste(c => c.VlTotalDestePedido = 1, "Os valores totais estão divergindo!");
+            Teste(c => c.NormalizacaoCampos_Vl_total_NF = 1, "Valor total da forma de pagamento diferente do valor total!");
+            Teste(c => c.NormalizacaoCampos_Vl_total = 1, "Os valores totais estão divergindo!");
         }
         [Fact]
         public void Indicador_Orcamentista()
@@ -99,11 +99,15 @@ VlTotalDestePedido	number($double)
             //a base de teste é parcelado
             Teste(c => c.FormaPagtoCriacao.Tipo_Parcelamento = 1, "Tipo do parcelamento (CustoFinancFornecTipoParcelamento 'SE') está incorreto!");
         }
-        [Fact]
-        public void Parcial_Preco_NF()
-        {
-            Teste(c => c.ListaProdutos[0].Preco_NF = 11, "Preço de nota fiscal (Preco_NF R$ 11,00 x R$ 694,05) está incorreto!");
-        }
+
+        //Esse teste esta sendo comentado, pois não verificamos mais o preco_nf no caso de PermiteRa = true,
+        //sendo assim essa msg não existe mais
+        //[Fact]
+        //public void Parcial_Preco_NF()
+        //{
+        //    Teste(c => c.ListaProdutos[0].Preco_NF = 11, "Preço de nota fiscal (Preco_NF R$ 11,00 x R$ 694,05) está incorreto!");
+        //}
+
         [Fact]
         public void Parcial_CustoFinancFornecCoeficiente()
         {
@@ -122,7 +126,7 @@ VlTotalDestePedido	number($double)
         [Fact]
         public void Parcial_CustoFinancFornecPrecoListaBase()
         {
-            Teste(c => c.ListaProdutos[0].CustoFinancFornecPrecoListaBase = 11, "Custo financeiro preço lista base (CustoFinancFornecPrecoListaBase R$ 11,00 x R$ 694,05) esta incorreto!");
+            Teste(c => c.ListaProdutos[0].NormalizacaoCampos_Preco_Lista = 11, "Custo financeiro preço lista base (CustoFinancFornecPrecoListaBase R$ 11,00 x R$ 694,05) esta incorreto!");
         }
 
 
