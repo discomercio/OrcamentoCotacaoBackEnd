@@ -73,8 +73,8 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
                     prepedidoUnis.EnderecoEntrega, prepedidoUnis.OutroEndereco),
                 ListaProdutos = lstProdutosDados,
                 PermiteRAStatus = Convert.ToInt16(prepedidoUnis.PermiteRAStatus),
-                ValorTotalDestePedidoComRA = prepedidoUnis.NormalizacaoCampos_Vl_total_NF,
-                VlTotalDestePedido = prepedidoUnis.NormalizacaoCampos_Vl_total,
+                NormalizacaoCampos_Vl_total_NF = prepedidoUnis.NormalizacaoCampos_Vl_total_NF,
+                NormalizacaoCampos_Vl_total = prepedidoUnis.NormalizacaoCampos_Vl_total,
                 DetalhesPrepedido = DetalhesPrePedidoUnisDto.
                     DetalhesPrepedidoDadosDeDetalhesPrePedidoUnisDto(prepedidoUnis.DetalhesPrepedido),
                 FormaPagtoCriacao = FormaPagtoCriacaoUnisDto.FormaPagtoCriacaoDadosDeFormaPagtoCriacaoUnisDto(

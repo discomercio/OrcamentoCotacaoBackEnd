@@ -21,13 +21,13 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         public short Qtde { get; set; }
 
         [Required]
-        public float Desc_Dado { get; set; }// = Desconto
+        public float Desc_Dado { get; set; }// = NormalizacaoCampos_Desc_Dado
 
         /// <summary>
-        /// Preco_Venda = (Preco_Fabricante * CustoFinancFornecCoeficiente) * (1 - Desc_Dado / 100)
+        /// Preco_Venda = (CustoFinancFornecPrecoListaBase * CustoFinancFornecCoeficiente) * (1 - Desc_Dado / 100)
         /// </summary>
         [Required]
-        public decimal Preco_Venda { get; set; }// = VlUnitario
+        public decimal Preco_Venda { get; set; }
 
         [Required]
         public decimal NormalizacaoCampos_CustoFinancFornecPrecoListaBase { get; set; }
@@ -36,7 +36,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         /// Preco_NF = PrePedidoUnisDto.PermiteRAStatus == true ? Preco_NF : Preco_Venda
         /// </summary>
         [Required]
-        public decimal Preco_NF { get; set; } // se permite RA = Preco_NF / senão VlUnitario
+        public decimal Preco_NF { get; set; } // se permite RA = Preco_NF / senão Preco_Venda
 
         /// <summary>
         /// Caso seja pagamento a vista, deve ser 1. Caso contrário, o coeficiente do fabricante para a quantidade de parcelas e forma de pagamento.
@@ -45,7 +45,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         public float CustoFinancFornecCoeficiente { get; set; }
 
         /// <summary>
-        /// CustoFinancFornecPrecoListaBase = Preco_Fabricante * CustoFinancFornecCoeficiente
+        /// CustoFinancFornecPrecoListaBase = CustoFinancFornecPrecoListaBase * CustoFinancFornecCoeficiente
         /// </summary>
         [Required]
         public decimal NormalizacaoCampos_Preco_Lista { get; set; } //recebe Preco_Lista
@@ -86,7 +86,8 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
                 TotalItem = Math.Round((decimal)(produtoDto.Preco_Venda * produtoDto.Qtde), 2),
                 TotalItemRA = Math.Round((decimal)(produtoDto.Preco_NF * produtoDto.Qtde), 2),
                 CustoFinancFornecCoeficiente = produtoDto.CustoFinancFornecCoeficiente,
-                Preco_NF = produtoDto.Preco_NF
+                Preco_NF = produtoDto.Preco_NF,
+                Preco_Lista = produtoDto.Preco_NF,
             };
 
             return ret;
@@ -102,10 +103,10 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
                 Qtde = produtoDto.Qtde,
                 Permite_Ra_Status = permiteRaStatus,
                 BlnTemRa = produtoDto.Preco_NF != produtoDto.Preco_Venda ? true : false,
-                Preco = produtoDto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase,
-                VlLista = produtoDto.NormalizacaoCampos_Preco_Lista,
-                Desconto = produtoDto.Desc_Dado,
-                VlUnitario = produtoDto.Preco_Venda,
+                NormalizacaoCampos_CustoFinancFornecPrecoListaBase = produtoDto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase,
+                NormalizacaoCampos_Preco_Lista = produtoDto.NormalizacaoCampos_Preco_Lista,
+                NormalizacaoCampos_Desc_Dado = produtoDto.Desc_Dado,
+                NormalizacaoCampos_Preco_Venda = produtoDto.Preco_Venda,
                 TotalItem = Math.Round((decimal)(produtoDto.Preco_Venda * produtoDto.Qtde), 2),
                 TotalItemRA = Math.Round((decimal)(produtoDto.Preco_NF * produtoDto.Qtde), 2),
                 CustoFinancFornecCoeficiente = produtoDto.CustoFinancFornecCoeficiente,

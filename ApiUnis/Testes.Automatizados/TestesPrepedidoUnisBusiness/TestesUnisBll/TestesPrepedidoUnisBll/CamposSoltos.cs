@@ -22,8 +22,8 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
 Cnpj_Cpf*	string 
 Indicador_Orcamentista*	string 
 PermiteRAStatus	boolean
-ValorTotalDestePedidoComRA	number($double)
-VlTotalDestePedido	number($double)
+NormalizacaoCampos_Vl_total_NF	number($double)
+NormalizacaoCampos_Vl_total	number($double)
 */
         [Fact]
         public void Cnpj_Cpf()
@@ -100,13 +100,22 @@ VlTotalDestePedido	number($double)
             Teste(c => c.FormaPagtoCriacao.Tipo_Parcelamento = 1, "Tipo do parcelamento (CustoFinancFornecTipoParcelamento 'SE') está incorreto!");
         }
 
-        //Esse teste esta sendo comentado, pois não verificamos mais o preco_nf no caso de PermiteRa = true,
-        //sendo assim essa msg não existe mais
-        //[Fact]
-        //public void Parcial_Preco_NF()
-        //{
-        //    Teste(c => c.ListaProdutos[0].Preco_NF = 11, "Preço de nota fiscal (Preco_NF R$ 11,00 x R$ 694,05) está incorreto!");
-        //}
+
+        //Não consigui fazer dar esse erro ao cadastrar o PrepedidoDto, o teste da Unis passa
+        //É quando chama o segundo teste interno "TesteInternoPrepedidoBll"
+        [Fact]
+        public void Parcial_Preco_NF()
+        {
+            TesteParcCartao(c =>
+            {
+                c.ListaProdutos[0].Preco_NF = 11;
+                c.Indicador_Orcamentista = "Apelido_sem_ra";
+                c.PermiteRAStatus = false;
+                c.ListaProdutos[0].Preco_Venda = 687.11m;
+                c.NormalizacaoCampos_Vl_total = 1735.12M;
+            },
+            "Preço de nota fiscal (Preco_NF R$ 11,00 x 687,11) está incorreto!");
+        }
 
         [Fact]
         public void Parcial_CustoFinancFornecCoeficiente()
@@ -126,7 +135,7 @@ VlTotalDestePedido	number($double)
         [Fact]
         public void Parcial_CustoFinancFornecPrecoListaBase()
         {
-            Teste(c => c.ListaProdutos[0].NormalizacaoCampos_Preco_Lista = 11, "Custo financeiro preço lista base (CustoFinancFornecPrecoListaBase R$ 11,00 x R$ 694,05) esta incorreto!");
+            Teste(c => c.ListaProdutos[0].NormalizacaoCampos_Preco_Lista = 11, "Custo financeiro preço lista base (Preco_Lista R$ 11,00 x R$ 694,05) esta incorreto!");
         }
 
 
@@ -138,8 +147,8 @@ VlTotalDestePedido	number($double)
         EnderecoEntrega	EnderecoEntregaClienteCadastroUnisDto{...}
         ListaProdutos	[...]
         PermiteRAStatus	boolean
-        ValorTotalDestePedidoComRA	number($double)
-        VlTotalDestePedido	number($double)
+        NormalizacaoCampos_Vl_total_NF	number($double)
+        NormalizacaoCampos_Vl_total	number($double)
         DetalhesPrepedido	DetalhesPrePedidoUnisDto{...}
         FormaPagtoCriacao	FormaPagtoCriacaoUnisDto{...}
         */

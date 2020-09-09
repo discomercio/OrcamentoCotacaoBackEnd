@@ -49,8 +49,8 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
                 OpcaoPossuiRA = origem.OpcaoPossuiRA,
                 CorTotalFamiliaRA = origem.CorTotalFamiliaRA,
                 PercRT = origem.PercRT,
-                ValorTotalDestePedidoComRA = origem.ValorTotalDestePedidoComRA,
-                VlTotalDestePedido = origem.VlTotalDestePedido,
+                ValorTotalDestePedidoComRA = origem.NormalizacaoCampos_Vl_total_NF,
+                VlTotalDestePedido = origem.NormalizacaoCampos_Vl_total,
                 DetalhesPrepedido = DetalhesDtoPrepedido.DetalhesDtoPrepedido_De_DetalhesPrepedidoDados(origem.DetalhesPrepedido),
                 FormaPagto = origem.FormaPagto,
                 FormaPagtoCriacao = FormaPagtoCriacaoDto.FormaPagtoCriacaoDto_De_FormaPagtoCriacaoDados(origem.FormaPagtoCriacao),
@@ -63,7 +63,8 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
         public static PrePedidoDados PrePedidoDados_De_PrePedidoDto(PrePedidoDto origem)
         {
             if (origem == null) return null;
-            return new PrePedidoDados()
+
+            PrePedidoDados ret = new PrePedidoDados()
             {
                 CorHeader = origem.CorHeader,
                 TextoHeader = origem.TextoHeader,
@@ -74,20 +75,22 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
                 DadosCliente = DadosClienteCadastroDto.DadosClienteCadastroDados_De_DadosClienteCadastroDto(origem.DadosCliente),
                 EnderecoCadastroClientePrepedido = EnderecoCadastralClientePrepedidoDto.EnderecoCadastralClientePrepedidoDados_De_EnderecoCadastralClientePrepedidoDto(origem.EnderecoCadastroClientePrepedido),
                 EnderecoEntrega = EnderecoEntregaDtoClienteCadastro.EnderecoEntregaClienteCadastroDados_De_EnderecoEntregaDtoClienteCadastro(origem.EnderecoEntrega),
-                ListaProdutos = PrepedidoProdutoDtoPrepedido.ListaPrepedidoProdutoPrepedidoDados_De_PrepedidoProdutoDtoPrepedido(origem.ListaProdutos),
+                ListaProdutos = PrepedidoProdutoDtoPrepedido.ListaPrepedidoProdutoPrepedidoDados_De_PrepedidoProdutoDtoPrepedido(origem.ListaProdutos, origem.PermiteRAStatus),
                 TotalFamiliaParcelaRA = origem.TotalFamiliaParcelaRA,
                 PermiteRAStatus = origem.PermiteRAStatus,
                 OpcaoPossuiRA = origem.OpcaoPossuiRA,
                 CorTotalFamiliaRA = origem.CorTotalFamiliaRA,
                 PercRT = origem.PercRT,
-                ValorTotalDestePedidoComRA = origem.ValorTotalDestePedidoComRA,
-                VlTotalDestePedido = origem.VlTotalDestePedido,
+                NormalizacaoCampos_Vl_total_NF = origem.ValorTotalDestePedidoComRA,
+                NormalizacaoCampos_Vl_total = origem.VlTotalDestePedido,
                 DetalhesPrepedido = DetalhesDtoPrepedido.DetalhesPrepedidoDados_De_DetalhesDtoPrepedido(origem.DetalhesPrepedido),
                 FormaPagto = origem.FormaPagto,
                 FormaPagtoCriacao = FormaPagtoCriacaoDto.FormaPagtoCriacaoDados_De_FormaPagtoCriacaoDto(origem.FormaPagtoCriacao),
                 St_Orc_Virou_Pedido = origem.St_Orc_Virou_Pedido,
                 NumeroPedido = origem.NumeroPedido
             };
+
+            return ret;
         }
     }
 }

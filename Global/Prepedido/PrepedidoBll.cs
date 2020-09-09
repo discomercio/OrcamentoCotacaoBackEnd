@@ -283,8 +283,8 @@ namespace Prepedido
                 PermiteRAStatus = pp.Permite_RA_Status,
                 CorTotalFamiliaRA = vltotalRa > 0 ? "green" : "red",
                 PercRT = pp.Perc_RT,
-                ValorTotalDestePedidoComRA = totalDestePedidoComRa,
-                VlTotalDestePedido = totalDestePedido,
+                NormalizacaoCampos_Vl_total_NF = totalDestePedidoComRa,
+                NormalizacaoCampos_Vl_total = totalDestePedido,
                 DetalhesPrepedido = ObterDetalhesPrePedido(pp, apelido),
                 FormaPagto = ObterFormaPagto(pp).ToList(),
                 FormaPagtoCriacao = await ObterFormaPagtoPrePedido(pp)
@@ -474,12 +474,12 @@ namespace Prepedido
                     Qtde = p.Qtde,
                     Permite_Ra_Status = orc.Permite_RA_Status,
                     BlnTemRa = p.Preco_NF != p.Preco_Venda ? true : false,
-                    //estamos alterando os valores de "Preco" para "p.Preco_Lista" e
-                    //"VlLista" para "p.Preco_NF"
-                    Preco = p.Preco_NF,//essa variavel não pode ter o valor alterado
-                    VlLista = (decimal)p.Preco_Lista,//essa variavel é o valor base para calcular 
-                    Desconto = p.Desc_Dado,
-                    VlUnitario = p.Preco_Venda,
+                    //estamos alterando os valores de "NormalizacaoCampos_CustoFinancFornecPrecoListaBase" para "p.Preco_Lista" e
+                    //"NormalizacaoCampos_Preco_Lista" para "p.Preco_NF"
+                    NormalizacaoCampos_CustoFinancFornecPrecoListaBase = p.Preco_NF,//essa variavel não pode ter o valor alterado
+                    NormalizacaoCampos_Preco_Lista = (decimal)p.Preco_Lista,//essa variavel é o valor base para calcular 
+                    NormalizacaoCampos_Desc_Dado = p.Desc_Dado,
+                    NormalizacaoCampos_Preco_Venda = p.Preco_Venda,
                     VlTotalRA = (decimal)(p.Qtde * (p.Preco_NF - p.Preco_Venda)),
                     Comissao = orc.Perc_RT,
                     TotalItemRA = p.Qtde * p.Preco_NF,
@@ -1250,7 +1250,7 @@ namespace Prepedido
             {
                 if (!string.IsNullOrEmpty(p.NumProduto))
                 {
-                    vl_total += (decimal)(p.Qtde * p.VlUnitario);
+                    vl_total += (decimal)(p.Qtde * p.NormalizacaoCampos_Preco_Venda);
                 }
             }
 
@@ -1509,7 +1509,7 @@ namespace Prepedido
                         {
                             if (percCustoTask != null)
                             {
-                                i.VlLista = (decimal)percCustoTask.Coeficiente * (decimal)i.Preco;
+                                i.NormalizacaoCampos_Preco_Lista = (decimal)percCustoTask.Coeficiente * (decimal)i.NormalizacaoCampos_CustoFinancFornecPrecoListaBase;
                             }
                             else
                             {
@@ -1814,11 +1814,11 @@ namespace Prepedido
                     Produto = p.NumProduto,
                     Fabricante = UtilsGlobais.Util.Normaliza_Codigo(p.Fabricante, Constantes.TAM_MIN_FABRICANTE),
                     Qtde = p.Qtde,
-                    Preco_Venda = Math.Round(p.VlUnitario, 2),
-                    Preco_NF = prepedido.PermiteRAStatus == 1 ? Math.Round((decimal)p.Preco_NF, 2) : Math.Round(p.VlUnitario, 2),
+                    Preco_Venda = Math.Round(p.NormalizacaoCampos_Preco_Venda, 2),
+                    Preco_NF = prepedido.PermiteRAStatus == 1 ? Math.Round((decimal)p.Preco_NF, 2) : Math.Round(p.NormalizacaoCampos_Preco_Venda, 2),
                     Obs = p.Obs == null ? "" : p.Obs,
-                    Desc_Dado = p.Desconto,
-                    Preco_Lista = Math.Round(p.VlLista, 2),
+                    Desc_Dado = p.NormalizacaoCampos_Desc_Dado,
+                    Preco_Lista = Math.Round(p.NormalizacaoCampos_Preco_Lista, 2),
                     CustoFinancFornecCoeficiente = 1
                 };
                 lstOrcamentoItem.Add(item);
@@ -1844,11 +1844,11 @@ namespace Prepedido
                             Produto = p.NumProduto,
                             Fabricante = UtilsGlobais.Util.Normaliza_Codigo(p.Fabricante, Constantes.TAM_MIN_FABRICANTE),
                             Qtde = p.Qtde,
-                            Preco_Venda = Math.Round(p.VlUnitario, 2),
-                            Preco_NF = prepedido.PermiteRAStatus == 1 ? Math.Round((decimal)p.Preco_NF, 2) : Math.Round(p.VlUnitario, 2),
+                            Preco_Venda = Math.Round(p.NormalizacaoCampos_Preco_Venda, 2),
+                            Preco_NF = prepedido.PermiteRAStatus == 1 ? Math.Round((decimal)p.Preco_NF, 2) : Math.Round(p.NormalizacaoCampos_Preco_Venda, 2),
                             Obs = p.Obs == null ? "" : p.Obs,
-                            Desc_Dado = p.Desconto,
-                            Preco_Lista = Math.Round(p.VlLista, 2),
+                            Desc_Dado = p.NormalizacaoCampos_Desc_Dado,
+                            Preco_Lista = Math.Round(p.NormalizacaoCampos_Preco_Lista, 2),
                             CustoFinancFornecCoeficiente = percCustoFinanFornec.Coeficiente
                         };
                         lstOrcamentoItem.Add(item);
