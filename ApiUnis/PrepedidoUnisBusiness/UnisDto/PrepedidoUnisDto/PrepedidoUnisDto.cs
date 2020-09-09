@@ -60,6 +60,30 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
             return ret;
         }
 
+        public static Prepedido.Dados.DetalhesPrepedido.PrePedidoDados PrePedidoDadosDePrePedidoUnisDto(PrePedidoUnisDto prepedidoUnis,
+            Cliente.Dados.EnderecoCadastralClientePrepedidoDados endCadastraDados, 
+            List<Prepedido.Dados.DetalhesPrepedido.PrepedidoProdutoPrepedidoDados> lstProdutosDados,
+            Cliente.Dados.DadosClienteCadastroDados dadosClienteCadastroDados)
+        {
+            var ret = new Prepedido.Dados.DetalhesPrepedido.PrePedidoDados()
+            {
+                EnderecoCadastroClientePrepedido = endCadastraDados,
+                EnderecoEntrega = EnderecoEntregaClienteCadastroUnisDto.
+                    EnderecoEntregaClienteCadastroDadosDeEnderecoEntregaClienteCadastroUnisDto(
+                    prepedidoUnis.EnderecoEntrega, prepedidoUnis.OutroEndereco),
+                ListaProdutos = lstProdutosDados,
+                PermiteRAStatus = Convert.ToInt16(prepedidoUnis.PermiteRAStatus),
+                ValorTotalDestePedidoComRA = prepedidoUnis.NormalizacaoCampos_Vl_total_NF,
+                VlTotalDestePedido = prepedidoUnis.NormalizacaoCampos_Vl_total,
+                DetalhesPrepedido = DetalhesPrePedidoUnisDto.
+                    DetalhesPrepedidoDadosDeDetalhesPrePedidoUnisDto(prepedidoUnis.DetalhesPrepedido),
+                FormaPagtoCriacao = FormaPagtoCriacaoUnisDto.FormaPagtoCriacaoDadosDeFormaPagtoCriacaoUnisDto(
+                    prepedidoUnis.FormaPagtoCriacao),
+                DadosCliente = dadosClienteCadastroDados,
+            };
+            ret.DadosCliente.Indicador_Orcamentista = prepedidoUnis.Indicador_Orcamentista;
 
+            return ret;
+        }
     }
 }

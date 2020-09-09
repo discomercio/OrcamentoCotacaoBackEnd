@@ -59,5 +59,18 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
             };
             return ret;
         }
+
+        public static Prepedido.Dados.DetalhesPrepedido.DetalhesPrepedidoDados DetalhesPrepedidoDadosDeDetalhesPrePedidoUnisDto(DetalhesPrePedidoUnisDto detalhesPrePedidoUnisDto)
+        {
+            var ret = new Prepedido.Dados.DetalhesPrepedido.DetalhesPrepedidoDados()
+            {
+                EntregaImediata = detalhesPrePedidoUnisDto.St_Entrega_Imediata.ToString(),
+                EntregaImediataData = detalhesPrePedidoUnisDto.PrevisaoEntregaData,
+                BemDeUso_Consumo = detalhesPrePedidoUnisDto.BemDeUso_Consumo.ToString(),
+                InstaladorInstala = detalhesPrePedidoUnisDto.InstaladorInstala.ToString(),
+                Observacoes = detalhesPrePedidoUnisDto.Obs_1
+            };
+            return ret;
+        }
     }
 }

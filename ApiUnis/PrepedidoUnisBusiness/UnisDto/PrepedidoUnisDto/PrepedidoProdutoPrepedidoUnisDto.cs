@@ -92,5 +92,27 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
             return ret;
         }
 
+        public static Prepedido.Dados.DetalhesPrepedido.PrepedidoProdutoPrepedidoDados PrepedidoProdutoPrepedidoDadosDePrePedidoProdutoPrePedidoUnisDto(PrePedidoProdutoPrePedidoUnisDto produtoDto,
+            short permiteRaStatus)
+        {
+            var ret = new Prepedido.Dados.DetalhesPrepedido.PrepedidoProdutoPrepedidoDados()
+            {
+                Fabricante = produtoDto.Fabricante,
+                NumProduto = produtoDto.Produto,
+                Qtde = produtoDto.Qtde,
+                Permite_Ra_Status = permiteRaStatus,
+                BlnTemRa = produtoDto.Preco_NF != produtoDto.Preco_Venda ? true : false,
+                Preco = produtoDto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase,
+                VlLista = produtoDto.NormalizacaoCampos_Preco_Lista,
+                Desconto = produtoDto.Desc_Dado,
+                VlUnitario = produtoDto.Preco_Venda,
+                TotalItem = Math.Round((decimal)(produtoDto.Preco_Venda * produtoDto.Qtde), 2),
+                TotalItemRA = Math.Round((decimal)(produtoDto.Preco_NF * produtoDto.Qtde), 2),
+                CustoFinancFornecCoeficiente = produtoDto.CustoFinancFornecCoeficiente,
+                Preco_NF = produtoDto.Preco_NF
+            };
+
+            return ret;
+        }
     }
 }
