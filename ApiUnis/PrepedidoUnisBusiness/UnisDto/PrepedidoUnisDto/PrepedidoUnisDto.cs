@@ -30,9 +30,9 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         public List<PrePedidoProdutoPrePedidoUnisDto> ListaProdutos { get; set; }
         public bool PermiteRAStatus { get; set; }
         [Required]
-        public decimal NormalizacaoCampos_Vl_total_NF { get; set; }
+        public decimal Vl_total_NF { get; set; }
         [Required]
-        public decimal NormalizacaoCampos_Vl_total { get; set; }
+        public decimal Vl_total { get; set; }
         public DetalhesPrePedidoUnisDto DetalhesPrepedido { get; set; }
         public FormaPagtoCriacaoUnisDto FormaPagtoCriacao { get; set; }
 
@@ -49,8 +49,8 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
                     prepedidoUnis.EnderecoEntrega, prepedidoUnis.OutroEndereco),
                 ListaProdutos = lstProdutosArclube,
                 PermiteRAStatus = Convert.ToInt16(prepedidoUnis.PermiteRAStatus),
-                ValorTotalDestePedidoComRA = prepedidoUnis.NormalizacaoCampos_Vl_total_NF,
-                VlTotalDestePedido = prepedidoUnis.NormalizacaoCampos_Vl_total,
+                ValorTotalDestePedidoComRA = prepedidoUnis.Vl_total_NF,
+                VlTotalDestePedido = prepedidoUnis.Vl_total,
                 DetalhesPrepedido = DetalhesPrePedidoUnisDto.
                     DetalhesPrePedidoDtoDeDetalhesPrePedidoUnisDto(prepedidoUnis.DetalhesPrepedido),
                 FormaPagtoCriacao = FormaPagtoCriacaoUnisDto.FormaPagtoCriacaoDtoDeFormaPagtoCriacaoUnisDto(
@@ -75,8 +75,8 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
                     prepedidoUnis.EnderecoEntrega, prepedidoUnis.OutroEndereco),
                 ListaProdutos = lstProdutosDados,
                 PermiteRAStatus = Convert.ToInt16(prepedidoUnis.PermiteRAStatus),
-                NormalizacaoCampos_Vl_total_NF = prepedidoUnis.NormalizacaoCampos_Vl_total_NF,
-                NormalizacaoCampos_Vl_total = prepedidoUnis.NormalizacaoCampos_Vl_total,
+                Vl_total_NF = prepedidoUnis.Vl_total_NF,
+                Vl_total = prepedidoUnis.Vl_total,
                 DetalhesPrepedido = DetalhesPrePedidoUnisDto.
                     DetalhesPrepedidoDadosDeDetalhesPrePedidoUnisDto(prepedidoUnis.DetalhesPrepedido),
                 FormaPagtoCriacao = FormaPagtoCriacaoUnisDto.FormaPagtoCriacaoDadosDeFormaPagtoCriacaoUnisDto(

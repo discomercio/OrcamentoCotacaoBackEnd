@@ -22,15 +22,15 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
             ret.FormaPagtoCriacao.Op_av_forma_pagto = "1";
 
             ret.ListaProdutos[0].CustoFinancFornecCoeficiente = 1;
-            ret.ListaProdutos[0].NormalizacaoCampos_Preco_Lista = 659.30m;
+            ret.ListaProdutos[0].Preco_Lista = 659.30m;
             ret.ListaProdutos[0].Preco_Venda = 652.71m;
 
             ret.ListaProdutos[1].CustoFinancFornecCoeficiente = 1;
-            ret.ListaProdutos[1].NormalizacaoCampos_Preco_Lista = 988.95m;
+            ret.ListaProdutos[1].Preco_Lista = 988.95m;
             ret.ListaProdutos[1].Preco_Venda = 979.06m;
 
-            ret.NormalizacaoCampos_Vl_total = ret.ListaProdutos[0].Preco_Venda * ret.ListaProdutos[0].Qtde;
-            ret.NormalizacaoCampos_Vl_total += ret.ListaProdutos[1].Preco_Venda * ret.ListaProdutos[1].Qtde;
+            ret.Vl_total = ret.ListaProdutos[0].Preco_Venda * ret.ListaProdutos[0].Qtde;
+            ret.Vl_total += ret.ListaProdutos[1].Preco_Venda * ret.ListaProdutos[1].Qtde;
 
             return ret;
         }
@@ -228,11 +228,11 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
       ""Qtde"": 2,
       ""Desc_Dado"": 1,
       ""Preco_Venda"": 687.11,
-      ""NormalizacaoCampos_CustoFinancFornecPrecoListaBase"": 659.3,
+      ""CustoFinancFornecPrecoListaBase"": 659.3,
       ""Preco_Lista"": 694.05,
       ""Preco_NF"": 694.05,
       ""CustoFinancFornecCoeficiente"": 1.0527,
-      ""NormalizacaoCampos_Preco_Lista"": 694.05
+      ""Preco_Lista"": 694.05
     },
     {
       ""Fabricante"": ""003"",
@@ -240,16 +240,16 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
       ""Qtde"": 2,
       ""Desc_Dado"": 1,
       ""Preco_Venda"": 1030.66,
-      ""NormalizacaoCampos_CustoFinancFornecPrecoListaBase"": 988.95,
+      ""CustoFinancFornecPrecoListaBase"": 988.95,
       ""Preco_Lista"": 1041.07,
       ""Preco_NF"": 1041.07,
       ""CustoFinancFornecCoeficiente"": 1.0527,
-      ""NormalizacaoCampos_Preco_Lista"": 1041.07
+      ""Preco_Lista"": 1041.07
     }
   ],
   ""PermiteRAStatus"": true,
-  ""NormalizacaoCampos_Vl_total_NF"": 3470.24,
-  ""NormalizacaoCampos_Vl_total"": 3435.54,
+  ""Vl_total_NF"": 3470.24,
+  ""Vl_total"": 3435.54,
   ""DetalhesPrepedido"": {
     ""St_Entrega_Imediata"": 2,
     ""PrevisaoEntregaData"": null,

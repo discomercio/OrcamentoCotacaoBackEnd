@@ -22,8 +22,8 @@ namespace Prepedido.Dados.DetalhesPrepedido
         public string OpcaoPossuiRA { get; set; }
         public string CorTotalFamiliaRA { get; set; }
         public float? PercRT { get; set; }
-        public decimal NormalizacaoCampos_Vl_total_NF { get; set; }
-        public decimal NormalizacaoCampos_Vl_total { get; set; }
+        public decimal Vl_total_NF { get; set; }
+        public decimal Vl_total { get; set; }
         public DetalhesPrepedidoDados DetalhesPrepedido { get; set; }
         public List<string> FormaPagto { get; set; }
         public FormaPagtoCriacaoDados FormaPagtoCriacao { get; set; }

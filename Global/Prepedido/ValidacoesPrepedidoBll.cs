@@ -98,10 +98,9 @@ namespace Prepedido
             lstProdutos.ForEach(y =>
                 {
                     //vamos calcular o preco_lista com o coeficiente
-                    y.NormalizacaoCampos_CustoFinancFornecPrecoListaBase = y.NormalizacaoCampos_CustoFinancFornecPrecoListaBase;
-                    y.NormalizacaoCampos_Preco_Lista = Math.Round((decimal)y.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * 1, 2);
-                    y.NormalizacaoCampos_Preco_Venda = Math.Round(y.NormalizacaoCampos_Preco_Lista * (decimal)(1 - y.NormalizacaoCampos_Desc_Dado / 100), 2);
-                    y.TotalItem = Math.Round((decimal)(y.NormalizacaoCampos_Preco_Venda * y.Qtde), 2);
+                    y.Preco_Lista = Math.Round((decimal)y.CustoFinancFornecPrecoListaBase * 1, 2);
+                    y.Preco_Venda = Math.Round(y.Preco_Lista * (decimal)(1 - y.Desc_Dado / 100), 2);
+                    y.TotalItem = Math.Round((decimal)(y.Preco_Venda * y.Qtde), 2);
                     y.TotalItemRA = Math.Round((decimal)(y.Preco_NF * y.Qtde), 2);
                     y.CustoFinancFornecCoeficiente = 1;
                 });
@@ -117,10 +116,9 @@ namespace Prepedido
                     if (x.Fabricante == y.Fabricante)
                     {
                         //vamos calcular o preco_lista com o coeficiente
-                        y.NormalizacaoCampos_CustoFinancFornecPrecoListaBase = y.NormalizacaoCampos_CustoFinancFornecPrecoListaBase;
-                        y.NormalizacaoCampos_Preco_Lista = Math.Round(((decimal)y.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * (decimal)x.Coeficiente), 2);
-                        y.NormalizacaoCampos_Preco_Venda = Math.Round(y.NormalizacaoCampos_Preco_Lista * (decimal)(1 - y.NormalizacaoCampos_Desc_Dado / 100), 2);
-                        y.TotalItem = Math.Round((decimal)(y.NormalizacaoCampos_Preco_Venda * y.Qtde), 2);
+                        y.Preco_Lista = Math.Round(((decimal)y.CustoFinancFornecPrecoListaBase * (decimal)x.Coeficiente), 2);
+                        y.Preco_Venda = Math.Round(y.Preco_Lista * (decimal)(1 - y.Desc_Dado / 100), 2);
+                        y.TotalItem = Math.Round((decimal)(y.Preco_Venda * y.Qtde), 2);
                         y.TotalItemRA = Math.Round((decimal)(y.Preco_NF * y.Qtde), 2);
                         y.CustoFinancFornecCoeficiente = x.Coeficiente;
                     }
@@ -220,8 +218,8 @@ namespace Prepedido
                                                                     {
                                                                         Fabricante = c.Fabricante,
                                                                         NumProduto = c.Produto,
-                                                                        NormalizacaoCampos_CustoFinancFornecPrecoListaBase = c.Preco_Lista ?? 0,
-                                                                        NormalizacaoCampos_Desc_Dado = x.NormalizacaoCampos_Desc_Dado,
+                                                                        CustoFinancFornecPrecoListaBase = c.Preco_Lista ?? 0,
+                                                                        Desc_Dado = x.Desc_Dado,
                                                                         Qtde = x.Qtde
                                                                     }).FirstOrDefaultAsync();
 
@@ -270,25 +268,22 @@ namespace Prepedido
                    if (x.NumProduto == y.NumProduto && x.Fabricante == y.Fabricante)
                    {
                        //vamos confrontar os valores
-                       if (Math.Abs(x.NormalizacaoCampos_CustoFinancFornecPrecoListaBase - y.NormalizacaoCampos_CustoFinancFornecPrecoListaBase) > limiteArredondamento)
-                           lstErros.Add($"Preço do fabricante (CustoFinancFornecPrecoListaBase {x.NormalizacaoCampos_CustoFinancFornecPrecoListaBase} x {y.NormalizacaoCampos_CustoFinancFornecPrecoListaBase}) está incorreto!");
+                       if (Math.Abs(x.CustoFinancFornecPrecoListaBase - y.CustoFinancFornecPrecoListaBase) > limiteArredondamento)
+                           lstErros.Add($"Preço do fabricante (CustoFinancFornecPrecoListaBase {x.CustoFinancFornecPrecoListaBase} x {y.CustoFinancFornecPrecoListaBase}) está incorreto!");
 
-                       if (x.NormalizacaoCampos_Preco_Lista != y.NormalizacaoCampos_Preco_Lista)
+                       if (x.Preco_Lista != y.Preco_Lista)
                            lstErros.Add($"Custo financeiro preço lista base (Preco_Lista " +
-                               $"{string.Format("{0:c}", x.NormalizacaoCampos_Preco_Lista)} x {string.Format("{0:c}", y.NormalizacaoCampos_Preco_Lista)}) esta incorreto!");
+                               $"{string.Format("{0:c}", x.Preco_Lista)} x {string.Format("{0:c}", y.Preco_Lista)}) esta incorreto!");
 
-                       //veio da Unis e vamos validar
+                       //validar que Preco_NF não tenha RA
+                       if (prepedido.PermiteRAStatus != 1)
                        {
-                           if (prepedido.PermiteRAStatus != 1)
-                           {
-                               if (x.Preco_NF != x.NormalizacaoCampos_Preco_Venda)
-                                   lstErros.Add($"Preço de nota fiscal (Preco_NF {string.Format("{0:c}", x.Preco_NF)} x {x.NormalizacaoCampos_Preco_Venda}) está incorreto!");
-                           }
-
+                           if (x.Preco_NF != x.Preco_Venda)
+                               lstErros.Add($"Preço de nota fiscal (Preco_NF {string.Format("{0:c}", x.Preco_NF)} x Preco_Venda {x.Preco_Venda}) está incorreto!");
                        }
 
-                       if (Math.Abs(x.NormalizacaoCampos_Preco_Venda - y.NormalizacaoCampos_Preco_Venda) > limiteArredondamento)
-                           lstErros.Add($"Preço do fabricante (Preco_Venda {x.NormalizacaoCampos_Preco_Venda} x {y.NormalizacaoCampos_Preco_Venda}) está incorreto!");
+                       if (Math.Abs(x.Preco_Venda - y.Preco_Venda) > limiteArredondamento)
+                           lstErros.Add($"Preço do fabricante (Preco_Venda {x.Preco_Venda} x {y.Preco_Venda}) está incorreto!");
                    }
                });
             });
@@ -302,22 +297,22 @@ namespace Prepedido
 
             prepedido.ListaProdutos.ForEach(x =>
             {
-                totalCompare += Math.Round((decimal)(x.NormalizacaoCampos_Preco_Venda * x.Qtde), 2);
+                totalCompare += Math.Round((decimal)(x.Preco_Venda * x.Qtde), 2);
                 totalRaCompare += Math.Round((decimal)(x.Preco_NF * x.Qtde), 2);
             });
 
-            if (totalCompare != (decimal)prepedido.NormalizacaoCampos_Vl_total)
+            if (totalCompare != (decimal)prepedido.Vl_total)
                 lstErros.Add("Os valores totais estão divergindo!");
 
             if (prepedido.PermiteRAStatus == 1)
             {
-                if (totalRaCompare != (decimal)prepedido.NormalizacaoCampos_Vl_total_NF)
+                if (totalRaCompare != (decimal)prepedido.Vl_total_NF)
                     lstErros.Add("Os valores totais de RA estão divergindo!");
 
                 //vamos verificar o valor de RA
                 decimal ra = totalRaCompare - totalCompare;
                 decimal perc = Math.Round((decimal)(perc_limite_RA / 100), 2);
-                decimal percentual = Math.Round(perc * (decimal)prepedido.NormalizacaoCampos_Vl_total, 2);
+                decimal percentual = Math.Round(perc * (decimal)prepedido.Vl_total, 2);
 
                 if (ra > percentual)
                     lstErros.Add("O valor total de RA excede o limite permitido!");

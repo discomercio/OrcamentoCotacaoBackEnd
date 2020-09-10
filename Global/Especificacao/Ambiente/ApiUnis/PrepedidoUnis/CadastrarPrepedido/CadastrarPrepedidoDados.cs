@@ -25,15 +25,15 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
             ret.FormaPagtoCriacao.Op_av_forma_pagto = "1";
 
             ret.ListaProdutos[0].CustoFinancFornecCoeficiente = 1;
-            ret.ListaProdutos[0].NormalizacaoCampos_Preco_Lista = 659.30m;
+            ret.ListaProdutos[0].Preco_Lista = 659.30m;
             ret.ListaProdutos[0].Preco_Venda = 652.71m;
 
             ret.ListaProdutos[1].CustoFinancFornecCoeficiente = 1;
-            ret.ListaProdutos[1].NormalizacaoCampos_Preco_Lista = 988.95m;
+            ret.ListaProdutos[1].Preco_Lista = 988.95m;
             ret.ListaProdutos[1].Preco_Venda = 979.06m;
 
-            ret.NormalizacaoCampos_Vl_total = ret.ListaProdutos[0].Preco_Venda * ret.ListaProdutos[0].Qtde;
-            ret.NormalizacaoCampos_Vl_total += ret.ListaProdutos[1].Preco_Venda * ret.ListaProdutos[1].Qtde;
+            ret.Vl_total = ret.ListaProdutos[0].Preco_Venda * ret.ListaProdutos[0].Qtde;
+            ret.Vl_total += ret.ListaProdutos[1].Preco_Venda * ret.ListaProdutos[1].Qtde;
 
             return ret;
         }
@@ -128,8 +128,8 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
     }
   ],
   ""PermiteRAStatus"": true,
-  ""NormalizacaoCampos_Vl_total_NF"": 3470.24,
-  ""NormalizacaoCampos_Vl_total"": 3435.54,
+  ""Vl_total_NF"": 3470.24,
+  ""Vl_total"": 3435.54,
   ""DetalhesPrepedido"": {
     ""St_Entrega_Imediata"": 2,
     ""PrevisaoEntregaData"": null,

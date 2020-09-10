@@ -157,7 +157,7 @@ namespace Testes.Automatizados.InicializarBanco
                         Fabricante = item.Fabricante,
                         Vendavel = "S",
                         Loja = Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE,
-                        Preco_Lista = item.NormalizacaoCampos_CustoFinancFornecPrecoListaBase
+                        Preco_Lista = item.CustoFinancFornecPrecoListaBase
                     });
 
                     {

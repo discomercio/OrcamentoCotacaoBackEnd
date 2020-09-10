@@ -7,6 +7,39 @@ using System.Text;
 
 namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
 {
+    #region Comentários
+    /// <summary>
+    /// preco_venda é o valor de venda efetivamente, esse é o valor que fica p/ a empresa. O RA é um valor adicionado sobre o preco_venda e resulta no preco_nf
+    /// <br/> 
+    /// <br/> 
+    /// preco_fabricante é o valor nominal de custo do produto, não reflete o valor real negociado na compra do fabricante, 
+    /// é como se fosse o valor de tabela do fabricante para os distribuidores
+    /// <br/> 
+    /// <br/> 
+    /// preco_lista é o preço de tabela que vendemos para os nossos clientes. Os descontos são aplicados sobre o valor do preco_lista 
+    /// e resultam no preco_venda. O detalhe é que o preco_lista varia de acordo com a forma de pagamento. 
+    /// O valor cadastrado do preco_lista é somente para venda à vista. Quando se escolhe algum parcelamento, 
+    /// é preciso calcular se é um parcelamento "com entrada" ou "sem entrada". Em seguida, a quantidade de parcelas. 
+    /// Com isso, para cada produto, obtém-se o coeficiente do custo financeiro que deve ser multiplicado por preco_lista para obter 
+    /// o novo preco_lista p/ o parcelamento em questão.
+    /// <br/> 
+    /// A diferença entre Preco_Lista e Preco_Venda representa quanto foi dado de desconto para o cliente.
+    /// <br/> 
+    /// <br/> 
+    /// Preco_NF: é o preço que constará na nota fiscal e é o valor que o cliente irá pagar efetivamente.A diferença entre 
+    /// Preco_NF e Preco_Venda representa o RA, que é um valor repassado para o parceiro.
+    /// <br/> 
+    /// Se PermiteRAStatus = false, Preco_Venda e Preco_NF devem ser iguais.
+    /// <br/> 
+    /// Se PermiteRAStatus = true, Preco_Venda e Preco_NF podem ou não ser iguais (o RA é permitido, mas o parceiro pode ou não fazer uso; 
+    /// caso o pré-pedido não tenha RA, Preco_Venda e Preco_NF serão iguais em todos os itens).
+    /// <br/> 
+    /// <br/> 
+    /// Preco_Lista é considerado basicamente quando se valida o limite máximo de desconto.
+    /// <br/>
+    /// <br/>
+    /// </summary>
+    #endregion
     public class PrePedidoProdutoPrePedidoUnisDto
     {
         [Required]
@@ -21,7 +54,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         public short Qtde { get; set; }
 
         [Required]
-        public float Desc_Dado { get; set; }// = NormalizacaoCampos_Desc_Dado
+        public float Desc_Dado { get; set; }
 
         /// <summary>
         /// Preco_Venda = (CustoFinancFornecPrecoListaBase * CustoFinancFornecCoeficiente) * (1 - Desc_Dado / 100)
@@ -29,8 +62,11 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         [Required]
         public decimal Preco_Venda { get; set; }
 
+        /// <summary>
+        /// Preco_Lista = CustoFinancFornecPrecoListaBase * CustoFinancFornecCoeficiente
+        /// </summary>
         [Required]
-        public decimal NormalizacaoCampos_CustoFinancFornecPrecoListaBase { get; set; }
+        public decimal Preco_Lista { get; set; } //recebe Preco_Lista
 
         /// <summary>
         /// Preco_NF = PrePedidoUnisDto.PermiteRAStatus == true ? Preco_NF : Preco_Venda
@@ -45,29 +81,10 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         public float CustoFinancFornecCoeficiente { get; set; }
 
         /// <summary>
-        /// Preco_Lista = CustoFinancFornecPrecoListaBase * CustoFinancFornecCoeficiente
+        /// CustoFinancFornecPrecoListaBase = o campo Preco_lista da lista de produtos
         /// </summary>
         [Required]
-        public decimal NormalizacaoCampos_Preco_Lista { get; set; } //recebe Preco_Lista
-
-        public static PrePedidoProdutoPrePedidoUnisDto PrePedidoProdutoPrePedidoUnisDtoDePrepedidoProdutoDtoPrepedido(PrepedidoProdutoDtoPrepedido produtoDto,
-            float CustoFinancFornecCoeficiente)
-        {
-            var ret = new PrePedidoProdutoPrePedidoUnisDto()
-            {
-                Fabricante = produtoDto.Fabricante,
-                Produto = produtoDto.NumProduto,
-                Qtde = produtoDto.Qtde.HasValue ? produtoDto.Qtde.Value : (short)1,
-                Desc_Dado = produtoDto.Desconto.HasValue ? produtoDto.Desconto.Value : 0,
-                Preco_Venda = produtoDto.VlUnitario,
-                NormalizacaoCampos_CustoFinancFornecPrecoListaBase = produtoDto.Preco.HasValue ? produtoDto.Preco.Value : 0,
-                Preco_NF = produtoDto.Permite_Ra_Status == 1 ? (produtoDto.Preco_Lista.HasValue ? produtoDto.Preco_Lista.Value : 0) : produtoDto.VlUnitario,
-                CustoFinancFornecCoeficiente = CustoFinancFornecCoeficiente,
-                NormalizacaoCampos_Preco_Lista = produtoDto.VlLista
-            };
-
-            return ret;
-        }
+        public decimal CustoFinancFornecPrecoListaBase { get; set; }
 
         public static PrepedidoProdutoDtoPrepedido PrepedidoProdutoDtoPrepedidoDePrePedidoProdutoPrePedidoUnisDto(PrePedidoProdutoPrePedidoUnisDto produtoDto,
             short permiteRaStatus)
@@ -79,8 +96,8 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
                 Qtde = produtoDto.Qtde,
                 Permite_Ra_Status = permiteRaStatus,
                 BlnTemRa = produtoDto.Preco_NF != produtoDto.Preco_Venda ? true : false,
-                Preco = produtoDto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase,
-                VlLista = produtoDto.NormalizacaoCampos_Preco_Lista,
+                Preco = produtoDto.CustoFinancFornecPrecoListaBase,
+                VlLista = produtoDto.Preco_Lista,
                 Desconto = produtoDto.Desc_Dado,
                 VlUnitario = produtoDto.Preco_Venda,
                 TotalItem = Math.Round((decimal)(produtoDto.Preco_Venda * produtoDto.Qtde), 2),
@@ -103,10 +120,10 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
                 Qtde = produtoDto.Qtde,
                 Permite_Ra_Status = permiteRaStatus,
                 BlnTemRa = produtoDto.Preco_NF != produtoDto.Preco_Venda ? true : false,
-                NormalizacaoCampos_CustoFinancFornecPrecoListaBase = produtoDto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase,
-                NormalizacaoCampos_Preco_Lista = produtoDto.NormalizacaoCampos_Preco_Lista,
-                NormalizacaoCampos_Desc_Dado = produtoDto.Desc_Dado,
-                NormalizacaoCampos_Preco_Venda = produtoDto.Preco_Venda,
+                CustoFinancFornecPrecoListaBase = produtoDto.CustoFinancFornecPrecoListaBase,
+                Preco_Lista = produtoDto.Preco_Lista,
+                Desc_Dado = produtoDto.Desc_Dado,
+                Preco_Venda = produtoDto.Preco_Venda,
                 TotalItem = Math.Round((decimal)(produtoDto.Preco_Venda * produtoDto.Qtde), 2),
                 TotalItemRA = Math.Round((decimal)(produtoDto.Preco_NF * produtoDto.Qtde), 2),
                 CustoFinancFornecCoeficiente = produtoDto.CustoFinancFornecCoeficiente,
