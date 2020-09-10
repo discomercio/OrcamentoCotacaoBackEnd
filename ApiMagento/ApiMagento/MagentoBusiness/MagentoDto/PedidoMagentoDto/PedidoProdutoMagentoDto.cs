@@ -43,7 +43,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             var ret = new Prepedido.Dados.DetalhesPrepedido.PrepedidoProdutoPrepedidoDados()
             {
                 Fabricante = produtoDto.Fabricante,
-                NumProduto = produtoDto.Produto,
+                NormalizacaoCampos_Produto = produtoDto.Produto,
                 Descricao = produtoDados.Descricao,
                 Qtde = produtoDto.Qtde,
                 Permite_Ra_Status = 1,//sempre true

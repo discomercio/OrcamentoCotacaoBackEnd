@@ -55,6 +55,7 @@ export class PrepedidoBuscarService {
   }
 
   public cadastrarPrepedido(prePedidoDto: PrePedidoDto): Observable<string[]> {
+    debugger;
     return this.http.post<string[]>(environment.apiUrl + 'prepedido/cadastrarPrepedido', prePedidoDto);
   }
 

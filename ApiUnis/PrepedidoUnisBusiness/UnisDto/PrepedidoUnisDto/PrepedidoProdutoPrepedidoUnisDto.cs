@@ -56,14 +56,14 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
             var ret = new PrePedidoProdutoPrePedidoUnisDto()
             {
                 Fabricante = produtoDto.Fabricante,
-                Produto = produtoDto.NumProduto,
+                Produto = produtoDto.NormalizacaoCampos_Produto,
                 Qtde = produtoDto.Qtde.HasValue ? produtoDto.Qtde.Value : (short)1,
-                Desc_Dado = produtoDto.Desconto.HasValue ? produtoDto.Desconto.Value : 0,
-                Preco_Venda = produtoDto.VlUnitario,
-                NormalizacaoCampos_CustoFinancFornecPrecoListaBase = produtoDto.Preco.HasValue ? produtoDto.Preco.Value : 0,
-                Preco_NF = produtoDto.Permite_Ra_Status == 1 ? (produtoDto.Preco_Lista.HasValue ? produtoDto.Preco_Lista.Value : 0) : produtoDto.VlUnitario,
+                Desc_Dado = produtoDto.NormalizacaoCampos_Desc_Dado.HasValue ? produtoDto.NormalizacaoCampos_Desc_Dado.Value : 0,
+                Preco_Venda = produtoDto.NormalizacaoCampos_Preco_Venda,
+                NormalizacaoCampos_CustoFinancFornecPrecoListaBase = produtoDto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase.HasValue ? produtoDto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase.Value : 0,
+                Preco_NF = produtoDto.Permite_Ra_Status == 1 ? (produtoDto.NormalizacaoCampos_Preco_NF.HasValue ? produtoDto.NormalizacaoCampos_Preco_NF.Value : 0) : produtoDto.NormalizacaoCampos_Preco_Venda,
                 CustoFinancFornecCoeficiente = CustoFinancFornecCoeficiente,
-                NormalizacaoCampos_Preco_Lista = produtoDto.VlLista
+                NormalizacaoCampos_Preco_Lista = produtoDto.NormalizacaoCampos_Preco_Lista
             };
 
             return ret;
@@ -75,19 +75,18 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
             var ret = new PrepedidoProdutoDtoPrepedido()
             {
                 Fabricante = produtoDto.Fabricante,
-                NumProduto = produtoDto.Produto,
+                NormalizacaoCampos_Produto = produtoDto.Produto,
                 Qtde = produtoDto.Qtde,
                 Permite_Ra_Status = permiteRaStatus,
                 BlnTemRa = produtoDto.Preco_NF != produtoDto.Preco_Venda ? true : false,
-                Preco = produtoDto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase,
-                VlLista = produtoDto.NormalizacaoCampos_Preco_Lista,
-                Desconto = produtoDto.Desc_Dado,
-                VlUnitario = produtoDto.Preco_Venda,
+                NormalizacaoCampos_CustoFinancFornecPrecoListaBase = produtoDto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase,
+                NormalizacaoCampos_Preco_Lista = produtoDto.NormalizacaoCampos_Preco_Lista,
+                NormalizacaoCampos_Desc_Dado = produtoDto.Desc_Dado,
+                NormalizacaoCampos_Preco_Venda = produtoDto.Preco_Venda,
                 TotalItem = Math.Round((decimal)(produtoDto.Preco_Venda * produtoDto.Qtde), 2),
                 TotalItemRA = Math.Round((decimal)(produtoDto.Preco_NF * produtoDto.Qtde), 2),
                 CustoFinancFornecCoeficiente = produtoDto.CustoFinancFornecCoeficiente,
-                Preco_NF = produtoDto.Preco_NF,
-                Preco_Lista = produtoDto.Preco_NF,
+                NormalizacaoCampos_Preco_NF = produtoDto.Preco_NF
             };
 
             return ret;
@@ -99,7 +98,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
             var ret = new Prepedido.Dados.DetalhesPrepedido.PrepedidoProdutoPrepedidoDados()
             {
                 Fabricante = produtoDto.Fabricante,
-                NumProduto = produtoDto.Produto,
+                NormalizacaoCampos_Produto = produtoDto.Produto,
                 Qtde = produtoDto.Qtde,
                 Permite_Ra_Status = permiteRaStatus,
                 BlnTemRa = produtoDto.Preco_NF != produtoDto.Preco_Venda ? true : false,

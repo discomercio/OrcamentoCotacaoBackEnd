@@ -71,8 +71,8 @@ namespace Prepedido
                                            select item).ToList();
                 //todos estes itens devem ser iguais aos do prepedido sendo criado para que o prepedido já exista
                 var itensParaCriar = (from item in prePedido.ListaProdutos
-                                      orderby item.Fabricante, item.NumProduto, item.Qtde
-                                      select new { item.Fabricante, Produto = item.NumProduto, item.Qtde, Preco_Venda = Math.Round(item.NormalizacaoCampos_Preco_Venda, 2) }).ToList();
+                                      orderby item.Fabricante, item.NormalizacaoCampos_Produto, item.Qtde
+                                      select new { item.Fabricante, Produto = item.NormalizacaoCampos_Produto, item.Qtde, Preco_Venda = Math.Round(item.NormalizacaoCampos_Preco_Venda, 2) }).ToList();
 
                 if (itensDestePrepedido.Count() == itensParaCriar.Count() && itensDestePrepedido.Count() > 0)
                 {

@@ -85,7 +85,7 @@ export class RecalcularComCoeficiente {
             //Parcela única
             if (tipoFormaPagto == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA &&
               enumFP.toString() == this.constantes.COD_FORMA_PAGTO_PARCELA_UNICA) {
-              totalProduto = (p.Preco * p.Qtde) * (1 - p.Desconto / 100);
+              totalProduto = (p.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * p.Qtde) * (1 - p.NormalizacaoCampos_Desc_Dado / 100);
 
               coeficienteFornec = element.filter(x => x.Fabricante == p.Fabricante &&
                 x.TipoParcela == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA &&
@@ -106,7 +106,7 @@ export class RecalcularComCoeficiente {
 
                 this.vlEntrada = vlEntrada;
 
-                totalProduto = (p.Preco * p.Qtde) * (1 - p.Desconto / 100);
+                totalProduto = (p.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * p.Qtde) * (1 - p.NormalizacaoCampos_Desc_Dado / 100);
 
                 coeficienteFornec = element.filter(x => x.Fabricante == p.Fabricante &&
                   x.TipoParcela == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA);
@@ -221,23 +221,23 @@ export class RecalcularComCoeficiente {
               if (produto.AlterouVlVenda) {
                 //devemos alterar o valor de desconto
                 //valor com coeficiente - valor venda * 100 / valor com coeficiente
-                produto.Desconto = this.moedaUtils.formatarDecimal((produto.Preco - produto.VlUnitario) * 100 / produto.Preco);
-                produto.VlLista = this.moedaUtils.formatarDecimal(produto.Preco);//só altera se calcular coeficiente
-                produto.VlUnitario = this.moedaUtils.formatarDecimal(produto.VlLista * (1 - produto.Desconto / 100));
-                produto.TotalItem = this.moedaUtils.formatarDecimal((produto.VlUnitario * produto.Qtde));
-                produto.VlTotalItem = this.moedaUtils.formatarDecimal((produto.VlUnitario * produto.Qtde));
+                produto.NormalizacaoCampos_Desc_Dado = this.moedaUtils.formatarDecimal((produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase - produto.NormalizacaoCampos_Preco_Venda) * 100 / produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase);
+                produto.NormalizacaoCampos_Preco_Lista = this.moedaUtils.formatarDecimal(produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase);//só altera se calcular coeficiente
+                produto.NormalizacaoCampos_Preco_Venda = this.moedaUtils.formatarDecimal(produto.NormalizacaoCampos_Preco_Lista * (1 - produto.NormalizacaoCampos_Desc_Dado / 100));
+                produto.TotalItem = this.moedaUtils.formatarDecimal((produto.NormalizacaoCampos_Preco_Venda * produto.Qtde));
+                produto.VlTotalItem = this.moedaUtils.formatarDecimal((produto.NormalizacaoCampos_Preco_Venda * produto.Qtde));
                 produto.CustoFinancFornecCoeficiente = 1;
 
               } else {
-                produto.VlUnitario = this.moedaUtils.formatarDecimal(produto.Preco);
-                produto.VlTotalItem = this.moedaUtils.formatarDecimal((produto.Preco * produto.Qtde));
-                produto.VlLista = this.moedaUtils.formatarDecimal(produto.Preco);//só altera se calcular coeficiente
-                produto.TotalItem = this.moedaUtils.formatarDecimal((produto.Preco * produto.Qtde));
+                produto.NormalizacaoCampos_Preco_Venda = this.moedaUtils.formatarDecimal(produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase);
+                produto.VlTotalItem = this.moedaUtils.formatarDecimal((produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * produto.Qtde));
+                produto.NormalizacaoCampos_Preco_Lista = this.moedaUtils.formatarDecimal(produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase);//só altera se calcular coeficiente
+                produto.TotalItem = this.moedaUtils.formatarDecimal((produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * produto.Qtde));
                 produto.CustoFinancFornecCoeficiente = 1;
               }
               if (!produto.AlterouValorRa || produto.AlterouValorRa == undefined) {
-                produto.Preco_Lista = this.moedaUtils.formatarDecimal(produto.Preco);
-                produto.TotalItemRA = this.moedaUtils.formatarDecimal((produto.Preco * produto.Qtde));
+                produto.NormalizacaoCampos_Preco_NF = this.moedaUtils.formatarDecimal(produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase);
+                produto.TotalItemRA = this.moedaUtils.formatarDecimal((produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * produto.Qtde));
                 produto.CustoFinancFornecCoeficiente = 1;
               }
             }
@@ -253,23 +253,23 @@ export class RecalcularComCoeficiente {
               coeficiente.forEach(x => {
                 if (produto.AlterouVlVenda) {
 
-                  produto.Desconto = this.moedaUtils.formatarDecimal(((produto.Preco * x.Coeficiente) - produto.VlUnitario) * 100 /
-                    (produto.Preco * x.Coeficiente));
-                  produto.VlLista = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));//só altera se calcular coeficiente
-                  produto.VlUnitario = this.moedaUtils.formatarDecimal(produto.VlLista * (1 - produto.Desconto / 100));
-                  produto.TotalItem = this.moedaUtils.formatarDecimal(produto.VlUnitario * produto.Qtde);
+                  produto.NormalizacaoCampos_Desc_Dado = this.moedaUtils.formatarDecimal(((produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente) - produto.NormalizacaoCampos_Preco_Venda) * 100 /
+                    (produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente));
+                  produto.NormalizacaoCampos_Preco_Lista = this.moedaUtils.formatarDecimal((produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente));//só altera se calcular coeficiente
+                  produto.NormalizacaoCampos_Preco_Venda = this.moedaUtils.formatarDecimal(produto.NormalizacaoCampos_Preco_Lista * (1 - produto.NormalizacaoCampos_Desc_Dado / 100));
+                  produto.TotalItem = this.moedaUtils.formatarDecimal(produto.NormalizacaoCampos_Preco_Venda * produto.Qtde);
                   produto.CustoFinancFornecCoeficiente = x.Coeficiente;
                 }
                 else {
-                  produto.VlUnitario = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
-                  produto.VlTotalItem = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
-                  produto.VlLista = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));//só altera se calcular coeficiente
-                  produto.TotalItem = this.moedaUtils.formatarDecimal(produto.VlUnitario * produto.Qtde);
+                  produto.NormalizacaoCampos_Preco_Venda = this.moedaUtils.formatarDecimal((produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente));
+                  produto.VlTotalItem = this.moedaUtils.formatarDecimal((produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente));
+                  produto.NormalizacaoCampos_Preco_Lista = this.moedaUtils.formatarDecimal((produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente));//só altera se calcular coeficiente
+                  produto.TotalItem = this.moedaUtils.formatarDecimal(produto.NormalizacaoCampos_Preco_Venda * produto.Qtde);
                   produto.CustoFinancFornecCoeficiente = x.Coeficiente;
                 }
                 if (!produto.AlterouValorRa || produto.AlterouValorRa == undefined) {
-                  produto.Preco_Lista = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
-                  let total_com_coeficiente = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
+                  produto.NormalizacaoCampos_Preco_NF = this.moedaUtils.formatarDecimal((produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente));
+                  let total_com_coeficiente = this.moedaUtils.formatarDecimal((produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente));
                   produto.TotalItemRA = this.moedaUtils.formatarDecimal(total_com_coeficiente * produto.Qtde);
                   // produto.Preco_Lista = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
                   // produto.TotalItemRA = this.moedaUtils.formatarDecimal(((produto.Preco * produto.Qtde) * x.Coeficiente));
@@ -288,23 +288,23 @@ export class RecalcularComCoeficiente {
 
               coeficiente.forEach(x => {
                 if (produto.AlterouVlVenda) {
-                  produto.Desconto = this.moedaUtils.formatarDecimal(((produto.Preco * x.Coeficiente) - produto.VlUnitario) * 100 /
-                    (produto.Preco * x.Coeficiente));
-                  produto.VlLista = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));//só altera se calcular coeficiente
-                  produto.VlUnitario = this.moedaUtils.formatarDecimal(produto.VlLista * (1 - produto.Desconto / 100));
-                  produto.TotalItem = this.moedaUtils.formatarDecimal(produto.VlUnitario * produto.Qtde);
+                  produto.NormalizacaoCampos_Desc_Dado = this.moedaUtils.formatarDecimal(((produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente) - produto.NormalizacaoCampos_Preco_Venda) * 100 /
+                    (produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente));
+                  produto.NormalizacaoCampos_Preco_Lista = this.moedaUtils.formatarDecimal((produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente));//só altera se calcular coeficiente
+                  produto.NormalizacaoCampos_Preco_Venda = this.moedaUtils.formatarDecimal(produto.NormalizacaoCampos_Preco_Lista * (1 - produto.NormalizacaoCampos_Desc_Dado / 100));
+                  produto.TotalItem = this.moedaUtils.formatarDecimal(produto.NormalizacaoCampos_Preco_Venda * produto.Qtde);
                   produto.CustoFinancFornecCoeficiente = x.Coeficiente;
                 }
                 else {
-                  produto.VlUnitario = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
-                  produto.VlTotalItem = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
-                  produto.VlLista = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));//só altera se calcular coeficiente
-                  produto.TotalItem = this.moedaUtils.formatarDecimal(produto.VlUnitario * produto.Qtde);
+                  produto.NormalizacaoCampos_Preco_Venda = this.moedaUtils.formatarDecimal((produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente));
+                  produto.VlTotalItem = this.moedaUtils.formatarDecimal((produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente));
+                  produto.NormalizacaoCampos_Preco_Lista = this.moedaUtils.formatarDecimal((produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente));//só altera se calcular coeficiente
+                  produto.TotalItem = this.moedaUtils.formatarDecimal(produto.NormalizacaoCampos_Preco_Venda * produto.Qtde);
                   produto.CustoFinancFornecCoeficiente = x.Coeficiente;
                 }
                 if (!produto.AlterouValorRa || produto.AlterouValorRa == undefined) {
-                  produto.Preco_Lista = this.moedaUtils.formatarDecimal(produto.Preco * x.Coeficiente);
-                  produto.TotalItemRA = this.moedaUtils.formatarDecimal(produto.Preco_Lista * produto.Qtde);
+                  produto.NormalizacaoCampos_Preco_NF = this.moedaUtils.formatarDecimal(produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente);
+                  produto.TotalItemRA = this.moedaUtils.formatarDecimal(produto.NormalizacaoCampos_Preco_NF * produto.Qtde);
                   produto.CustoFinancFornecCoeficiente = x.Coeficiente;
                 }
 
@@ -322,24 +322,24 @@ export class RecalcularComCoeficiente {
               coeficiente.forEach(x => {
                 if (produto.AlterouVlVenda) {
 
-                  produto.Desconto = this.moedaUtils.formatarDecimal(((produto.Preco * x.Coeficiente) - produto.VlUnitario) * 100 /
-                    (produto.Preco * x.Coeficiente));
-                  produto.VlLista = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));//só altera se calcular coeficiente
-                  produto.VlUnitario = this.moedaUtils.formatarDecimal(produto.VlLista * (1 - produto.Desconto / 100));
-                  produto.TotalItem = this.moedaUtils.formatarDecimal(produto.VlUnitario * produto.Qtde);
+                  produto.NormalizacaoCampos_Desc_Dado = this.moedaUtils.formatarDecimal(((produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente) - produto.NormalizacaoCampos_Preco_Venda) * 100 /
+                    (produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente));
+                  produto.NormalizacaoCampos_Preco_Lista = this.moedaUtils.formatarDecimal((produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente));//só altera se calcular coeficiente
+                  produto.NormalizacaoCampos_Preco_Venda = this.moedaUtils.formatarDecimal(produto.NormalizacaoCampos_Preco_Lista * (1 - produto.NormalizacaoCampos_Desc_Dado / 100));
+                  produto.TotalItem = this.moedaUtils.formatarDecimal(produto.NormalizacaoCampos_Preco_Venda * produto.Qtde);
                   produto.CustoFinancFornecCoeficiente = x.Coeficiente;
                 }
                 else {
-                  produto.VlUnitario = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
-                  produto.VlTotalItem = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
-                  produto.VlLista = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));//só altera se calcular coeficiente
-                  let total_com_coeficiente = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
+                  produto.NormalizacaoCampos_Preco_Venda = this.moedaUtils.formatarDecimal((produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente));
+                  produto.VlTotalItem = this.moedaUtils.formatarDecimal((produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente));
+                  produto.NormalizacaoCampos_Preco_Lista = this.moedaUtils.formatarDecimal((produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente));//só altera se calcular coeficiente
+                  let total_com_coeficiente = this.moedaUtils.formatarDecimal((produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente));
                   produto.TotalItem = this.moedaUtils.formatarDecimal(total_com_coeficiente * produto.Qtde);
                   produto.CustoFinancFornecCoeficiente = x.Coeficiente;
                 }
                 if (!produto.AlterouValorRa || produto.AlterouValorRa == undefined) {
-                  produto.Preco_Lista = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
-                  let total_com_coeficiente = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
+                  produto.NormalizacaoCampos_Preco_NF = this.moedaUtils.formatarDecimal((produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente));
+                  let total_com_coeficiente = this.moedaUtils.formatarDecimal((produto.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente));
                   produto.TotalItemRA = this.moedaUtils.formatarDecimal(total_com_coeficiente * produto.Qtde);
                   produto.CustoFinancFornecCoeficiente = x.Coeficiente;
                 }
@@ -363,22 +363,22 @@ export class RecalcularComCoeficiente {
     if (!!this.novoPrepedidoDadosService.prePedidoDto.PermiteRAStatus &&
       this.novoPrepedidoDadosService.prePedidoDto.PermiteRAStatus == 1) {
       if (p.AlterouValorRa && p.AlterouValorRa != undefined) {
-        p.VlTotalItem = this.moedaUtils.formatarDecimal(p.Preco_Lista * p.Qtde);
+        p.VlTotalItem = this.moedaUtils.formatarDecimal(p.NormalizacaoCampos_Preco_NF * p.Qtde);
       }
       else {
-        p.VlTotalItem = this.moedaUtils.formatarDecimal(p.Preco * p.Qtde);
+        p.VlTotalItem = this.moedaUtils.formatarDecimal(p.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * p.Qtde);
       }
     }
     else {
       if (p.AlterouVlVenda) {
-        precoBase = this.moedaUtils.formatarDecimal(p.Preco * 1);
-        vlUnitario = this.moedaUtils.formatarDecimal(p.VlUnitario);
+        precoBase = this.moedaUtils.formatarDecimal(p.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * 1);
+        vlUnitario = this.moedaUtils.formatarDecimal(p.NormalizacaoCampos_Preco_Venda);
         desconto = this.moedaUtils.formatarDecimal((precoBase - vlUnitario) * 100 / precoBase);
         total_com_coeficiente = this.moedaUtils.formatarDecimal(precoBase * (1 - desconto / 100));
         p.VlTotalItem = this.moedaUtils.formatarDecimal(total_com_coeficiente * p.Qtde);
       }
       else {
-        precoBase = this.moedaUtils.formatarDecimal(p.Preco * 1);
+        precoBase = this.moedaUtils.formatarDecimal(p.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * 1);
         p.VlTotalItem = this.moedaUtils.formatarDecimal(precoBase * p.Qtde);
       }
     }
@@ -400,10 +400,10 @@ export class RecalcularComCoeficiente {
     if (!!this.novoPrepedidoDadosService.prePedidoDto.PermiteRAStatus &&
       this.novoPrepedidoDadosService.prePedidoDto.PermiteRAStatus == 1) {
       if (p.AlterouValorRa && p.AlterouValorRa != undefined) {
-        total_com_coeficiente = this.moedaUtils.formatarDecimal(p.Preco_Lista);
+        total_com_coeficiente = this.moedaUtils.formatarDecimal(p.NormalizacaoCampos_Preco_NF);
       }
       else {
-        total_com_coeficiente = this.moedaUtils.formatarDecimal(p.Preco * x.Coeficiente);
+        total_com_coeficiente = this.moedaUtils.formatarDecimal(p.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente);
       }
 
       p.VlTotalItem = this.moedaUtils.formatarDecimal(total_com_coeficiente * p.Qtde);
@@ -411,13 +411,13 @@ export class RecalcularComCoeficiente {
     else {
       
       if (p.AlterouVlVenda) {
-        precoBase = this.moedaUtils.formatarDecimal(p.Preco * x.Coeficiente);
-        vlUnitario = this.moedaUtils.formatarDecimal(p.VlUnitario);
+        precoBase = this.moedaUtils.formatarDecimal(p.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente);
+        vlUnitario = this.moedaUtils.formatarDecimal(p.NormalizacaoCampos_Preco_Venda);
         desconto = this.moedaUtils.formatarDecimal((precoBase - vlUnitario) * 100 / precoBase);
         total_com_coeficiente = this.moedaUtils.formatarDecimal(precoBase * (1 - desconto / 100));
         p.VlTotalItem = this.moedaUtils.formatarDecimal(total_com_coeficiente * p.Qtde);
       } else {
-        precoBase = this.moedaUtils.formatarDecimal(p.Preco * x.Coeficiente);
+        precoBase = this.moedaUtils.formatarDecimal(p.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente);
         p.VlTotalItem = this.moedaUtils.formatarDecimal(precoBase * p.Qtde);
       }
 
@@ -441,24 +441,24 @@ export class RecalcularComCoeficiente {
     if (!!this.novoPrepedidoDadosService.prePedidoDto.PermiteRAStatus &&
       this.novoPrepedidoDadosService.prePedidoDto.PermiteRAStatus == 1) {
       if (p.AlterouValorRa && p.AlterouValorRa != undefined) {
-        total_com_coeficiente = this.moedaUtils.formatarDecimal(p.Preco_Lista);
+        total_com_coeficiente = this.moedaUtils.formatarDecimal(p.NormalizacaoCampos_Preco_NF);
       }
       else {
-        total_com_coeficiente = this.moedaUtils.formatarDecimal(p.Preco * x.Coeficiente);
+        total_com_coeficiente = this.moedaUtils.formatarDecimal(p.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente);
       }
 
       p.VlTotalItem = this.moedaUtils.formatarDecimal(total_com_coeficiente * p.Qtde);
     }
     else {
       if (p.AlterouVlVenda) {
-        precoBase = this.moedaUtils.formatarDecimal(p.Preco * x.Coeficiente);
-        vlUnitario = this.moedaUtils.formatarDecimal(p.VlUnitario);
+        precoBase = this.moedaUtils.formatarDecimal(p.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente);
+        vlUnitario = this.moedaUtils.formatarDecimal(p.NormalizacaoCampos_Preco_Venda);
         desconto = this.moedaUtils.formatarDecimal((precoBase - vlUnitario) * 100 / precoBase);
         total_com_coeficiente = this.moedaUtils.formatarDecimal(precoBase * (1 - desconto / 100));
         p.VlTotalItem = this.moedaUtils.formatarDecimal(total_com_coeficiente * p.Qtde);
       }
       else {
-        precoBase = this.moedaUtils.formatarDecimal(p.Preco * x.Coeficiente);
+        precoBase = this.moedaUtils.formatarDecimal(p.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente);
         p.VlTotalItem = this.moedaUtils.formatarDecimal(precoBase * p.Qtde);
       }
     }
@@ -479,24 +479,24 @@ export class RecalcularComCoeficiente {
       this.novoPrepedidoDadosService.prePedidoDto.PermiteRAStatus == 1) {
 
       if (p.AlterouValorRa && p.AlterouValorRa != undefined) {
-        total_com_coeficiente = this.moedaUtils.formatarDecimal(p.Preco_Lista);
+        total_com_coeficiente = this.moedaUtils.formatarDecimal(p.NormalizacaoCampos_Preco_NF);
       }
       else {
-        total_com_coeficiente = this.moedaUtils.formatarDecimal(p.Preco * x.Coeficiente);
+        total_com_coeficiente = this.moedaUtils.formatarDecimal(p.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente);
       }
 
       p.VlTotalItem = this.moedaUtils.formatarDecimal(total_com_coeficiente * p.Qtde);
     }
     else {
       if (p.AlterouVlVenda) {
-        precoBase = this.moedaUtils.formatarDecimal(p.Preco * x.Coeficiente);
-        vlUnitario = this.moedaUtils.formatarDecimal(p.VlUnitario);
+        precoBase = this.moedaUtils.formatarDecimal(p.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente);
+        vlUnitario = this.moedaUtils.formatarDecimal(p.NormalizacaoCampos_Preco_Venda);
         desconto = this.moedaUtils.formatarDecimal((precoBase - vlUnitario) * 100 / precoBase);
         total_com_coeficiente = this.moedaUtils.formatarDecimal(precoBase * (1 - desconto / 100));
         p.VlTotalItem = this.moedaUtils.formatarDecimal(total_com_coeficiente * p.Qtde);
       }
       else {
-        precoBase = this.moedaUtils.formatarDecimal(p.Preco * x.Coeficiente);
+        precoBase = this.moedaUtils.formatarDecimal(p.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * x.Coeficiente);
         p.VlTotalItem = this.moedaUtils.formatarDecimal(precoBase * p.Qtde);
       }
 
