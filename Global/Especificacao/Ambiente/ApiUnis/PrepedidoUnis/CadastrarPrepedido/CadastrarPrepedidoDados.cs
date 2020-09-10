@@ -32,8 +32,8 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
             ret.ListaProdutos[1].Preco_Lista = 988.95m;
             ret.ListaProdutos[1].Preco_Venda = 979.06m;
 
-            ret.Vl_total = ret.ListaProdutos[0].Preco_Venda * ret.ListaProdutos[0].Qtde;
-            ret.Vl_total += ret.ListaProdutos[1].Preco_Venda * ret.ListaProdutos[1].Qtde;
+            ret.VlTotalDestePedido = ret.ListaProdutos[0].Preco_Venda * ret.ListaProdutos[0].Qtde;
+            ret.VlTotalDestePedido += ret.ListaProdutos[1].Preco_Venda * ret.ListaProdutos[1].Qtde;
 
             return ret;
         }
@@ -128,8 +128,8 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
     }
   ],
   ""PermiteRAStatus"": true,
-  ""Vl_total_NF"": 3470.24,
-  ""Vl_total"": 3435.54,
+  ""ValorTotalDestePedidoComRA"": 3470.24,
+  ""VlTotalDestePedido"": 3435.54,
   ""DetalhesPrepedido"": {
     ""St_Entrega_Imediata"": 2,
     ""PrevisaoEntregaData"": null,

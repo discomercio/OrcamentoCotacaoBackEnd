@@ -154,7 +154,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
                 c.ListaProdutos[1].Preco_Venda = 1030.66m;
                 c.ListaProdutos[0].Preco_NF = 687.11m;
                 c.ListaProdutos[1].Preco_NF = 1030.66m;
-                c.Vl_total = (2 * 687.11m) + (2 * 1030.66m);
+                c.VlTotalDestePedido = (2 * 687.11m) + (2 * 1030.66m);
                 c.Indicador_Orcamentista = "Apelido_sem_ra";
                 c.PermiteRAStatus = false;
             });

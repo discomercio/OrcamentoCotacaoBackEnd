@@ -22,8 +22,8 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
 Cnpj_Cpf*	string 
 Indicador_Orcamentista*	string 
 PermiteRAStatus	boolean
-Vl_total_NF	number($double)
-Vl_total	number($double)
+ValorTotalDestePedidoComRA	number($double)
+VlTotalDestePedido	number($double)
 */
         [Fact]
         public void Cnpj_Cpf()
@@ -49,8 +49,8 @@ Vl_total	number($double)
         [Fact]
         public void ValorTotalDestePedidoComRA()
         {
-            Teste(c => c.Vl_total_NF = 1, "Valor total da forma de pagamento diferente do valor total!");
-            Teste(c => c.Vl_total = 1, "Os valores totais estão divergindo!");
+            Teste(c => c.ValorTotalDestePedidoComRA = 1, "Valor total da forma de pagamento diferente do valor total!");
+            Teste(c => c.VlTotalDestePedido = 1, "Os valores totais estão divergindo!");
         }
         [Fact]
         public void Indicador_Orcamentista()
@@ -110,11 +110,11 @@ Vl_total	number($double)
                 c.Indicador_Orcamentista = "Apelido_sem_ra";
                 c.PermiteRAStatus = false;
                 c.ListaProdutos[0].Preco_Venda = 687.11m;
-                c.Vl_total = 1735.12M;
+                c.VlTotalDestePedido = 1735.12M;
 
                 var ret = c;
-                ret.Vl_total = ret.ListaProdutos[0].Preco_NF * ret.ListaProdutos[0].Qtde;
-                ret.Vl_total += ret.ListaProdutos[1].Preco_NF * ret.ListaProdutos[1].Qtde;
+                ret.VlTotalDestePedido = ret.ListaProdutos[0].Preco_NF * ret.ListaProdutos[0].Qtde;
+                ret.VlTotalDestePedido += ret.ListaProdutos[1].Preco_NF * ret.ListaProdutos[1].Qtde;
             },
             "Valor total da forma de pagamento diferente do valor total!");
         }
@@ -128,12 +128,12 @@ Vl_total	number($double)
                 c.Indicador_Orcamentista = "Apelido_sem_ra";
                 c.PermiteRAStatus = false;
                 c.ListaProdutos[0].Preco_Venda = 687.11m;
-                c.Vl_total = 1735.12M;
+                c.VlTotalDestePedido = 1735.12M;
 
                 var ret = c;
-                ret.Vl_total = ret.ListaProdutos[0].Preco_NF * ret.ListaProdutos[0].Qtde;
-                ret.Vl_total += ret.ListaProdutos[1].Preco_NF * ret.ListaProdutos[1].Qtde;
-                ret.FormaPagtoCriacao.C_pc_valor = ret.Vl_total / ret.FormaPagtoCriacao.C_pc_qtde;
+                ret.VlTotalDestePedido = ret.ListaProdutos[0].Preco_NF * ret.ListaProdutos[0].Qtde;
+                ret.VlTotalDestePedido += ret.ListaProdutos[1].Preco_NF * ret.ListaProdutos[1].Qtde;
+                ret.FormaPagtoCriacao.C_pc_valor = ret.VlTotalDestePedido / ret.FormaPagtoCriacao.C_pc_qtde;
             },
             "Preço de nota fiscal (Preco_NF R$ 11,00 x Preco_Venda 687,11) está incorreto!",
             true,

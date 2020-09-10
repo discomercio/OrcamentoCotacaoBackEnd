@@ -119,7 +119,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
             prePedido.ListaProdutos[1].Preco_Venda = 1030.66m;
             prePedido.ListaProdutos[0].Preco_NF = 687.11m;
             prePedido.ListaProdutos[1].Preco_NF = 1030.66m;
-            prePedido.Vl_total = (2 * 687.11m) + (2 * 1030.66m);
+            prePedido.VlTotalDestePedido = (2 * 687.11m) + (2 * 1030.66m);
             prePedido.Indicador_Orcamentista = "Apelido_sem_ra";
             prePedido.PermiteRAStatus = false;
 
@@ -143,7 +143,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
             prePedido.ListaProdutos[1].Preco_Venda = 1030.66m;
             prePedido.ListaProdutos[0].Preco_NF = 687.11m;
             prePedido.ListaProdutos[1].Preco_NF = 1030.66m;
-            prePedido.Vl_total = (2 * 687.11m) + (2 * 1030.66m);
+            prePedido.VlTotalDestePedido = (2 * 687.11m) + (2 * 1030.66m);
             prePedido.Indicador_Orcamentista = "Apelido_sem_ra";
             prePedido.PermiteRAStatus = false;
 
@@ -167,7 +167,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
             prePedido.ListaProdutos[1].Preco_Venda = 1030.66m;
             prePedido.ListaProdutos[0].Preco_NF = 687.11m;
             prePedido.ListaProdutos[1].Preco_NF = 1030.66m;
-            prePedido.Vl_total = (2 * 687.11m) + (2 * 1030.66m);
+            prePedido.VlTotalDestePedido = (2 * 687.11m) + (2 * 1030.66m);
             prePedido.Indicador_Orcamentista = "Apelido_sem_ra";
             prePedido.PermiteRAStatus = false;
 
@@ -195,12 +195,12 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
             prePedido.FormaPagtoCriacao.C_pce_prestacao_valor = 1111.85m;
             prePedido.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto = "2";
             prePedido.FormaPagtoCriacao.CustoFinancFornecQtdeParcelas = 4;
-            prePedido.Vl_total = (2 * 687.11m) + (2 * 1030.66m);
+            prePedido.VlTotalDestePedido = (2 * 687.11m) + (2 * 1030.66m);
             prePedido.ListaProdutos[0].Preco_Venda = 687.11m;
             prePedido.ListaProdutos[1].Preco_Venda = 1030.66m;
             prePedido.ListaProdutos[0].Preco_NF = 687.11m;
             prePedido.ListaProdutos[1].Preco_NF = 1030.66m;
-            prePedido.Vl_total = (2 * 687.11m) + (2 * 1030.66m);
+            prePedido.VlTotalDestePedido = (2 * 687.11m) + (2 * 1030.66m);
             prePedido.Indicador_Orcamentista = "Apelido_sem_ra";
             prePedido.PermiteRAStatus = false;
 
