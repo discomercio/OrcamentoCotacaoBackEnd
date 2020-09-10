@@ -27,10 +27,19 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         [Required]
         public bool OutroEndereco { get; set; }
         public EnderecoEntregaClienteCadastroUnisDto EnderecoEntrega { get; set; }
+        [Required]
         public List<PrePedidoProdutoPrePedidoUnisDto> ListaProdutos { get; set; }
         public bool PermiteRAStatus { get; set; }
+
+        /// <summary>
+        /// ValorTotalDestePedidoComRA = soma de Preco_NF * Qtde
+        /// </summary>
         [Required]
         public decimal ValorTotalDestePedidoComRA { get; set; }
+
+        /// <summary>
+        /// VlTotalDestePedido = soma de Preco_Venda * Qtde
+        /// </summary>
         [Required]
         public decimal VlTotalDestePedido { get; set; }
         public DetalhesPrePedidoUnisDto DetalhesPrepedido { get; set; }

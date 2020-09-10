@@ -69,7 +69,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         public decimal Preco_Lista { get; set; } //recebe Preco_Lista
 
         /// <summary>
-        /// Preco_NF = PrePedidoUnisDto.PermiteRAStatus == true ? Preco_NF : Preco_Venda
+        /// Preco_NF = Se PrePedidoUnisDto.PermiteRAStatus == false, Preco_NF deve ser igual a Preco_Venda. Se PrePedidoUnisDto.PermiteRAStatus == true, valor com RA.
         /// </summary>
         [Required]
         public decimal Preco_NF { get; set; } // Caso RA = False,   "Preco_NF"  deve ser  = "Preco_Venda"
