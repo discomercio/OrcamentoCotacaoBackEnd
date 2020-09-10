@@ -474,17 +474,16 @@ namespace Prepedido
                     Qtde = p.Qtde,
                     Permite_Ra_Status = orc.Permite_RA_Status,
                     BlnTemRa = p.Preco_NF != p.Preco_Venda ? true : false,
-                    //estamos alterando os valores de "NormalizacaoCampos_CustoFinancFornecPrecoListaBase" para "p.Preco_Lista" e
-                    //"NormalizacaoCampos_Preco_Lista" para "p.Preco_NF"
-                    NormalizacaoCampos_CustoFinancFornecPrecoListaBase = p.Preco_NF,//essa variavel não pode ter o valor alterado
+                    Preco_NF = p.Preco_NF ?? 0,
+                    NormalizacaoCampos_CustoFinancFornecPrecoListaBase = p.CustoFinancFornecPrecoListaBase,//essa variavel não pode ter o valor alterado
                     NormalizacaoCampos_Preco_Lista = (decimal)p.Preco_Lista,//essa variavel é o valor base para calcular 
-                    NormalizacaoCampos_Desc_Dado = p.Desc_Dado,
+                    NormalizacaoCampos_Desc_Dado = p.Desc_Dado ?? 0,
                     NormalizacaoCampos_Preco_Venda = p.Preco_Venda,
                     VlTotalRA = (decimal)(p.Qtde * (p.Preco_NF - p.Preco_Venda)),
                     Comissao = orc.Perc_RT,
-                    TotalItemRA = p.Qtde * p.Preco_NF,
-                    TotalItem = p.Qtde * p.Preco_Venda,
-                    VlTotalItem = p.Qtde * p.Preco_Venda
+                    TotalItemRA = (p.Qtde ?? 0) * (p.Preco_NF ?? 0),
+                    TotalItem = (p.Qtde ?? 0) * (p.Preco_Venda),
+                    VlTotalItem = (p.Qtde ?? 0) * (p.Preco_Venda)
 
                 };
 

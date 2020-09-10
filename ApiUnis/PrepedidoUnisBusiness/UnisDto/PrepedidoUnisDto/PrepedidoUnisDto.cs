@@ -29,8 +29,10 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         public EnderecoEntregaClienteCadastroUnisDto EnderecoEntrega { get; set; }
         public List<PrePedidoProdutoPrePedidoUnisDto> ListaProdutos { get; set; }
         public bool PermiteRAStatus { get; set; }
-        public decimal? NormalizacaoCampos_Vl_total_NF { get; set; }
-        public decimal? NormalizacaoCampos_Vl_total { get; set; }
+        [Required]
+        public decimal NormalizacaoCampos_Vl_total_NF { get; set; }
+        [Required]
+        public decimal NormalizacaoCampos_Vl_total { get; set; }
         public DetalhesPrePedidoUnisDto DetalhesPrepedido { get; set; }
         public FormaPagtoCriacaoUnisDto FormaPagtoCriacao { get; set; }
 

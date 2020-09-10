@@ -16,7 +16,7 @@ namespace Prepedido.Dados.DetalhesPrepedido
         public short? Qtde { get; set; }
 
         //preço base 
-        public decimal? NormalizacaoCampos_CustoFinancFornecPrecoListaBase { get; set; }
+        public decimal NormalizacaoCampos_CustoFinancFornecPrecoListaBase { get; set; }
 
         //preço base com coeficiente
         public decimal NormalizacaoCampos_Preco_Lista { get; set; }
@@ -25,16 +25,16 @@ namespace Prepedido.Dados.DetalhesPrepedido
         public decimal NormalizacaoCampos_Preco_Venda { get; set; }
 
         //preço da nota fiscal. Se orçamentista não permite RA, recebe "NormalizacaoCampos_Preco_Venda".
-        public decimal? Preco_NF { get; set; }
+        public decimal Preco_NF { get; set; }
 
         //incluimos esse campos apenas para validar o que esta sendo enviado pela API da Unis
         public float CustoFinancFornecCoeficiente { get; set; }
-        public float? NormalizacaoCampos_Desc_Dado { get; set; }        
-        public decimal? VlTotalItem { get; set; }
+        public float NormalizacaoCampos_Desc_Dado { get; set; }        
+        public decimal VlTotalItem { get; set; }
         public decimal VlTotalRA { get; set; }
         public float? Comissao { get; set; }
-        public decimal? TotalItemRA { get; set; }
-        public decimal? TotalItem { get; set; }
+        public decimal TotalItemRA { get; set; }
+        public decimal TotalItem { get; set; }
         public string Obs { get; set; }
 
         //campos "Permite_Ra_Status" e "BlnTemRa" 

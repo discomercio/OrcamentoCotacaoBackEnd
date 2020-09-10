@@ -29,7 +29,7 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
         //incluimos esse campos apenas para validar o que esta sendo enviado pela API da Unis
         public decimal? Preco_NF { get; set; }
 
-        public static PrepedidoProdutoDtoPrepedido PrepedidoProdutoDtoPrepedido_De_PrepedidoProdutoPrepedidoDados(PrepedidoProdutoPrepedidoDados origem)
+        private static PrepedidoProdutoDtoPrepedido PrepedidoProdutoDtoPrepedido_De_PrepedidoProdutoPrepedidoDados(PrepedidoProdutoPrepedidoDados origem)
         {
             if (origem == null) return null;
             return new PrepedidoProdutoDtoPrepedido()
@@ -56,7 +56,7 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
                 Preco_NF = origem.Preco_NF
             };
         }
-        public static PrepedidoProdutoPrepedidoDados PrepedidoProdutoPrepedidoDados_De_PrepedidoProdutoDtoPrepedido(PrepedidoProdutoDtoPrepedido origem, short permiteRaStatus)
+        private static PrepedidoProdutoPrepedidoDados PrepedidoProdutoPrepedidoDados_De_PrepedidoProdutoDtoPrepedido(PrepedidoProdutoDtoPrepedido origem, short permiteRaStatus)
         {
             if (origem == null) return null;
 
@@ -69,19 +69,19 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
                 Qtde = origem.Qtde,
                 Permite_Ra_Status = origem.Permite_Ra_Status,
                 BlnTemRa = origem.BlnTemRa,
-                NormalizacaoCampos_CustoFinancFornecPrecoListaBase = origem.Preco,
+                NormalizacaoCampos_CustoFinancFornecPrecoListaBase = origem.Preco ?? 0,
                 //Preco_Lista = origem.Preco_NF,
                 NormalizacaoCampos_Preco_Lista = origem.VlLista,
-                NormalizacaoCampos_Desc_Dado = origem.Desconto,
+                NormalizacaoCampos_Desc_Dado = origem.Desconto ?? 0,
                 NormalizacaoCampos_Preco_Venda = origem.VlUnitario,
-                VlTotalItem = origem.VlTotalItem,
+                VlTotalItem = origem.VlTotalItem ?? 0,
                 VlTotalRA = origem.VlTotalRA,
                 Comissao = origem.Comissao,
-                TotalItemRA = origem.TotalItemRA,
-                TotalItem = origem.TotalItem,
+                TotalItemRA = origem.TotalItemRA ?? 0,
+                TotalItem = origem.TotalItem ?? 0,
                 Qtde_estoque_total_disponivel = origem.Qtde_estoque_total_disponivel,
                 CustoFinancFornecCoeficiente = origem.CustoFinancFornecCoeficiente,
-                Preco_NF = permiteRaStatus == 1 ? origem.Preco_Lista : origem.VlUnitario
+                Preco_NF = (permiteRaStatus == 1 ? origem.Preco_Lista : origem.VlUnitario) ?? 0
             };
 
             return ret;

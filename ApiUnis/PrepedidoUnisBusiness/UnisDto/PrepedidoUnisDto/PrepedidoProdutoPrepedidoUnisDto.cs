@@ -36,7 +36,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         /// Preco_NF = PrePedidoUnisDto.PermiteRAStatus == true ? Preco_NF : Preco_Venda
         /// </summary>
         [Required]
-        public decimal Preco_NF { get; set; } // se permite RA = Preco_NF / senão Preco_Venda
+        public decimal Preco_NF { get; set; } // Caso RA = False,   "Preco_NF"  deve ser  = "Preco_Venda"
 
         /// <summary>
         /// Caso seja pagamento a vista, deve ser 1. Caso contrário, o coeficiente do fabricante para a quantidade de parcelas e forma de pagamento.
@@ -45,7 +45,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         public float CustoFinancFornecCoeficiente { get; set; }
 
         /// <summary>
-        /// CustoFinancFornecPrecoListaBase = CustoFinancFornecPrecoListaBase * CustoFinancFornecCoeficiente
+        /// Preco_Lista = CustoFinancFornecPrecoListaBase * CustoFinancFornecCoeficiente
         /// </summary>
         [Required]
         public decimal NormalizacaoCampos_Preco_Lista { get; set; } //recebe Preco_Lista

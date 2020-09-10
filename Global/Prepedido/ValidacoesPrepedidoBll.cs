@@ -102,7 +102,7 @@ namespace Prepedido
                     y.NormalizacaoCampos_Preco_Lista = Math.Round((decimal)y.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * 1, 2);
                     y.NormalizacaoCampos_Preco_Venda = Math.Round(y.NormalizacaoCampos_Preco_Lista * (decimal)(1 - y.NormalizacaoCampos_Desc_Dado / 100), 2);
                     y.TotalItem = Math.Round((decimal)(y.NormalizacaoCampos_Preco_Venda * y.Qtde), 2);
-                    y.TotalItemRA = Math.Round((decimal)(y.NormalizacaoCampos_Preco_Lista * y.Qtde), 2);
+                    y.TotalItemRA = Math.Round((decimal)(y.Preco_NF * y.Qtde), 2);
                     y.CustoFinancFornecCoeficiente = 1;
                 });
         }
@@ -121,7 +121,7 @@ namespace Prepedido
                         y.NormalizacaoCampos_Preco_Lista = Math.Round(((decimal)y.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * (decimal)x.Coeficiente), 2);
                         y.NormalizacaoCampos_Preco_Venda = Math.Round(y.NormalizacaoCampos_Preco_Lista * (decimal)(1 - y.NormalizacaoCampos_Desc_Dado / 100), 2);
                         y.TotalItem = Math.Round((decimal)(y.NormalizacaoCampos_Preco_Venda * y.Qtde), 2);
-                        y.TotalItemRA = Math.Round((decimal)(y.NormalizacaoCampos_Preco_Lista * y.Qtde), 2);
+                        y.TotalItemRA = Math.Round((decimal)(y.Preco_NF * y.Qtde), 2);
                         y.CustoFinancFornecCoeficiente = x.Coeficiente;
                     }
                 });
@@ -212,18 +212,18 @@ namespace Prepedido
                 if (await VerificarProdutoComposto(x, loja, lstErros))
                 {
                     PrepedidoProdutoPrepedidoDados produto = await (from c in db.TprodutoLojas
-                                                                  where c.Produto == x.NumProduto &&
-                                                                        c.Fabricante == x.Fabricante &&
-                                                                        c.Vendavel == "S" &&
-                                                                        c.Loja == loja
-                                                                  select new PrepedidoProdutoPrepedidoDados
-                                                                  {
-                                                                      Fabricante = c.Fabricante,
-                                                                      NumProduto = c.Produto,
-                                                                      NormalizacaoCampos_CustoFinancFornecPrecoListaBase = c.Preco_Lista,
-                                                                      NormalizacaoCampos_Desc_Dado = x.NormalizacaoCampos_Desc_Dado,
-                                                                      Qtde = x.Qtde
-                                                                  }).FirstOrDefaultAsync();
+                                                                    where c.Produto == x.NumProduto &&
+                                                                          c.Fabricante == x.Fabricante &&
+                                                                          c.Vendavel == "S" &&
+                                                                          c.Loja == loja
+                                                                    select new PrepedidoProdutoPrepedidoDados
+                                                                    {
+                                                                        Fabricante = c.Fabricante,
+                                                                        NumProduto = c.Produto,
+                                                                        NormalizacaoCampos_CustoFinancFornecPrecoListaBase = c.Preco_Lista ?? 0,
+                                                                        NormalizacaoCampos_Desc_Dado = x.NormalizacaoCampos_Desc_Dado,
+                                                                        Qtde = x.Qtde
+                                                                    }).FirstOrDefaultAsync();
 
                     if (produto != null)
                     {
@@ -270,7 +270,7 @@ namespace Prepedido
                    if (x.NumProduto == y.NumProduto && x.Fabricante == y.Fabricante)
                    {
                        //vamos confrontar os valores
-                       if (x.NormalizacaoCampos_CustoFinancFornecPrecoListaBase.HasValue && y.NormalizacaoCampos_CustoFinancFornecPrecoListaBase.HasValue && Math.Abs(x.NormalizacaoCampos_CustoFinancFornecPrecoListaBase.Value - y.NormalizacaoCampos_CustoFinancFornecPrecoListaBase.Value) > limiteArredondamento)
+                       if (Math.Abs(x.NormalizacaoCampos_CustoFinancFornecPrecoListaBase - y.NormalizacaoCampos_CustoFinancFornecPrecoListaBase) > limiteArredondamento)
                            lstErros.Add($"Preço do fabricante (CustoFinancFornecPrecoListaBase {x.NormalizacaoCampos_CustoFinancFornecPrecoListaBase} x {y.NormalizacaoCampos_CustoFinancFornecPrecoListaBase}) está incorreto!");
 
                        if (x.NormalizacaoCampos_Preco_Lista != y.NormalizacaoCampos_Preco_Lista)
@@ -278,13 +278,12 @@ namespace Prepedido
                                $"{string.Format("{0:c}", x.NormalizacaoCampos_Preco_Lista)} x {string.Format("{0:c}", y.NormalizacaoCampos_Preco_Lista)}) esta incorreto!");
 
                        //veio da Unis e vamos validar
-                       if (x.Preco_NF != null)
                        {
                            if (prepedido.PermiteRAStatus != 1)
                            {
                                if (x.Preco_NF != x.NormalizacaoCampos_Preco_Venda)
                                    lstErros.Add($"Preço de nota fiscal (Preco_NF {string.Format("{0:c}", x.Preco_NF)} x {x.NormalizacaoCampos_Preco_Venda}) está incorreto!");
-                           }                           
+                           }
 
                        }
 
@@ -703,7 +702,7 @@ namespace Prepedido
                         lstErros.Add("Endereço de entrega: se o Contribuinte ICMS é isento, " +
                             "o campo IE deve ser vazio!");
 
-                    
+
                 }
 
                 if (endEtg.EndEtg_contribuinte_icms_status ==

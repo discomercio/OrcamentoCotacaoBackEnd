@@ -30,7 +30,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         /// <hr />
         /// </summary>
         [Required]
-        public decimal Preco_NF { get; set; } // se permite RA = Preco_Lista / senão NormalizacaoCampos_Preco_Venda
+        public decimal Preco_NF { get; set; } // Caso RA = False,   "Preco_NF"  deve ser  = "Preco_Venda"
 
         /*
          * Os campos Preco_Fabricante, CustoFinancFornecCoeficiente, CustoFinancFornecPrecoListaBase e Preco_Fabricante vamos ler das tabelas
@@ -48,6 +48,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                 Qtde = produtoDto.Qtde,
                 Permite_Ra_Status = 1,//sempre true
                 BlnTemRa = true,
+//todo: revisar estas conversões
                 NormalizacaoCampos_CustoFinancFornecPrecoListaBase = 0m,
                 NormalizacaoCampos_Preco_Lista = Math.Round((decimal)(produtoDados.Preco_lista * (decimal)coeficiente), 2),
                 NormalizacaoCampos_Desc_Dado = 0, //produtoDto.Desc_Dado,
