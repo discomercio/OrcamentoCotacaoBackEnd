@@ -158,7 +158,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     }
 
     //procuramos esse item
-    const item = this.produtoComboDto.ProdutoDto.filter(el => el.Fabricante === i.Fabricante && el.Produto === i.NormalizacaoCampos_Produto);
+    const item = this.produtoComboDto.ProdutoDto.filter(el => el.Fabricante === i.Fabricante && el.Produto === i.Produto);
     if (!item || item.length <= 0) {
       return null;
     }
@@ -249,12 +249,12 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
       i.Qtde = 1;
     }
 
-    i.TotalItem = this.moedaUtils.formatarDecimal(i.NormalizacaoCampos_Preco_Venda * i.Qtde); // VlUnitario = Vl Venda na tela
+    i.TotalItem = this.moedaUtils.formatarDecimal(i.Preco_Venda * i.Qtde); // VlUnitario = Vl Venda na tela
     this.dadosPagto.prepedidoAlterado();
     this.novoPrepedidoDadosService.totalPedido();
 
     if (this.prePedidoDto.PermiteRAStatus == 1) {
-      i.TotalItemRA = this.moedaUtils.formatarDecimal(i.NormalizacaoCampos_Preco_NF * i.Qtde);
+      i.TotalItemRA = this.moedaUtils.formatarDecimal(i.Preco_NF * i.Qtde);
       this.novoPrepedidoDadosService.totalPedidoRA();
     }
   }
@@ -265,15 +265,15 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     v = (v / 100).toFixed(2) + '';
 
     //se não alteraram nada, ignoramos
-    if (i.NormalizacaoCampos_CustoFinancFornecPrecoListaBase === Number.parseFloat(v))
+    if (i.CustoFinancFornecPrecoListaBase === Number.parseFloat(v))
       return;
 
-    i.NormalizacaoCampos_CustoFinancFornecPrecoListaBase = Number.parseFloat(v);
-    if (i.NormalizacaoCampos_Desc_Dado) {
-      i.NormalizacaoCampos_Preco_Venda = this.moedaUtils.formatarDecimal(i.NormalizacaoCampos_CustoFinancFornecPrecoListaBase * (1 - i.NormalizacaoCampos_Desc_Dado / 100));
+    i.CustoFinancFornecPrecoListaBase = Number.parseFloat(v);
+    if (i.Desc_Dado) {
+      i.Preco_Venda = this.moedaUtils.formatarDecimal(i.CustoFinancFornecPrecoListaBase * (1 - i.Desc_Dado / 100));
     }
     else {
-      i.NormalizacaoCampos_Preco_Venda = this.moedaUtils.formatarDecimal(i.NormalizacaoCampos_CustoFinancFornecPrecoListaBase);
+      i.Preco_Venda = this.moedaUtils.formatarDecimal(i.CustoFinancFornecPrecoListaBase);
     }
 
     this.digitouQte(i);
@@ -284,14 +284,14 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     let v: any = valor.replace(/\D/g, '');
     v = Number.parseFloat((v / 100).toFixed(2) + '');
 
-    if (Number.parseFloat(i.NormalizacaoCampos_Preco_Lista.toFixed(2)) === v) {
+    if (Number.parseFloat(i.Preco_Lista.toFixed(2)) === v) {
       i.AlterouValorRa = false;
     }
     else {
       i.AlterouValorRa = true;
     }
 
-    i.NormalizacaoCampos_Preco_NF = this.moedaUtils.formatarDecimal(v);
+    i.Preco_NF = this.moedaUtils.formatarDecimal(v);
 
     this.somarRA();
 
@@ -303,7 +303,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     let v: any = valor.replace(/\D/g, '');
     v = (v / 100).toFixed(2) + '';
 
-    i.NormalizacaoCampos_Preco_NF = v;
+    i.Preco_NF = v;
   }
 
   somaRA: string;
@@ -326,7 +326,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     let v: any = valor.replace(/\D/g, '');
     v = (v / 100).toFixed(2) + '';
 
-    i.NormalizacaoCampos_Preco_Venda = v;
+    i.Preco_Venda = v;
   }
 
   digitouVlVenda(e: Event, i: PrepedidoProdutoDtoPrepedido) {
@@ -334,14 +334,14 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     let v: any = valor.replace(/\D/g, '');
     v = (v / 100).toFixed(2) + '';
     
-    i.TotalItem = i.Qtde * i.NormalizacaoCampos_Preco_Lista;
-    i.VlTotalItem = i.Qtde * i.NormalizacaoCampos_Preco_Lista;
+    i.TotalItem = i.Qtde * i.Preco_Lista;
+    i.VlTotalItem = i.Qtde * i.Preco_Lista;
 
-    i.NormalizacaoCampos_Desc_Dado = 100 * (i.NormalizacaoCampos_Preco_Lista - v) / i.NormalizacaoCampos_Preco_Lista;
+    i.Desc_Dado = 100 * (i.Preco_Lista - v) / i.Preco_Lista;
     //calcula o desconto
-    i.NormalizacaoCampos_Desc_Dado = this.moedaUtils.formatarDecimal(i.NormalizacaoCampos_Desc_Dado);
+    i.Desc_Dado = this.moedaUtils.formatarDecimal(i.Desc_Dado);
 
-    if (i.NormalizacaoCampos_Preco_Lista == i.NormalizacaoCampos_Preco_Venda) {
+    if (i.Preco_Lista == i.Preco_Venda) {
       i.AlterouVlVenda = false;
     } else {
       i.AlterouVlVenda = true;
@@ -357,7 +357,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     v = (v / 100).toFixed(2) + '';
 
     //se o desconto for digitado estamos alterando o valor de venda e não devemos mais alterar esse valor
-    if (i.NormalizacaoCampos_Desc_Dado == 0 || i.NormalizacaoCampos_Desc_Dado.toString() == '') {
+    if (i.Desc_Dado == 0 || i.Desc_Dado.toString() == '') {
       i.AlterouVlVenda = false;
     } else {
       i.AlterouVlVenda = true;
@@ -371,22 +371,22 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     let v: any = valor.replace(/,/g, '');
     if (!isNaN(v)) {
       v = (v / 100).toFixed(2) + '';
-      i.NormalizacaoCampos_Desc_Dado = v;
+      i.Desc_Dado = v;
     }
   }
 
   digitouDescValor(i: PrepedidoProdutoDtoPrepedido, v: string) {
     
     //se não alteraram nada, ignoramos
-    if (i.NormalizacaoCampos_Desc_Dado === Number.parseFloat(v)){
-      if(i.NormalizacaoCampos_Desc_Dado == 0){
-        i.NormalizacaoCampos_Desc_Dado = 0;
+    if (i.Desc_Dado === Number.parseFloat(v)){
+      if(i.Desc_Dado == 0){
+        i.Desc_Dado = 0;
       }
       return;
     }
       
 
-    i.NormalizacaoCampos_Desc_Dado = Number.parseFloat(v);
+    i.Desc_Dado = Number.parseFloat(v);
     //não deixa números negativos e nem maior que 100
     /*
     //pensando bem, deixa negativos sim!
@@ -396,16 +396,16 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     }
     */
 
-    if (i.NormalizacaoCampos_Desc_Dado > 100) {
-      i.NormalizacaoCampos_Desc_Dado = 100;
+    if (i.Desc_Dado > 100) {
+      i.Desc_Dado = 100;
     }
 
-    if (i.NormalizacaoCampos_Desc_Dado) {
-      i.NormalizacaoCampos_Preco_Venda = i.NormalizacaoCampos_Preco_Lista * (1 - i.NormalizacaoCampos_Desc_Dado / 100);
-      i.NormalizacaoCampos_Preco_Venda = Number.parseFloat(i.NormalizacaoCampos_Preco_Venda.toFixed(2));
+    if (i.Desc_Dado) {
+      i.Preco_Venda = i.Preco_Lista * (1 - i.Desc_Dado / 100);
+      i.Preco_Venda = Number.parseFloat(i.Preco_Venda.toFixed(2));
     }
     else {
-      i.NormalizacaoCampos_Preco_Venda = i.NormalizacaoCampos_Preco_Lista;
+      i.Preco_Venda = i.Preco_Lista;
     }
     this.digitouQte(i);
   }
@@ -522,7 +522,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     selecProdInfo.produtoComboDto = this.produtoComboDto;
     selecProdInfo.ClicouOk = false;
     if (linha) {
-      selecProdInfo.Produto = linha.NormalizacaoCampos_Produto;
+      selecProdInfo.Produto = linha.Produto;
       selecProdInfo.Fabricante = linha.Fabricante;
       selecProdInfo.Qte = linha.Qtde;
     }
@@ -551,7 +551,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
         if (linha) {
           //editando
           //se mudou o produto, temos que mdar vários campos
-          if (linha.NormalizacaoCampos_Produto !== selecProdInfo.Produto || linha.Fabricante !== selecProdInfo.Fabricante) {
+          if (linha.Produto !== selecProdInfo.Produto || linha.Fabricante !== selecProdInfo.Fabricante) {
             //mudou o produto, temos que mudar muita coisa!
             const filhosDiretos = this.filhosDeProdutoComposto(selecProdInfo);
             if (!filhosDiretos) {
@@ -585,7 +585,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
             //pegamos 2 item se for repetido
             this.prePedidoDto.ListaProdutos.forEach(x => {
               filhosDiretosNovo.forEach(y => {
-                if (y.Produto == x.NormalizacaoCampos_Produto)
+                if (y.Produto == x.Produto)
                   itemrepetido.push(y);
               })
             });
@@ -599,7 +599,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
           }
           else {
             //pegamos 1 item se for repetido
-            itemrepetido = this.prePedidoDto.ListaProdutos.filter(y => y.NormalizacaoCampos_Produto == selecProdInfo.Produto);
+            itemrepetido = this.prePedidoDto.ListaProdutos.filter(y => y.Produto == selecProdInfo.Produto);
           }
           if (this.prePedidoDto.ListaProdutos.length >= 12 && itemrepetido.length == 0) {
             this.alertaService.mostrarMensagem("É permitido apenas 12 itens por Pré-Pedido!");
@@ -656,21 +656,21 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
       prodInfo = new ProdutoDto();
     }
     linha.Fabricante = fabricante;
-    linha.NormalizacaoCampos_Produto = produto;
+    linha.Produto = produto;
     linha.Descricao = prodInfo.Descricao_html;
     //Obs: string;
     linha.Qtde = qtde;
     //Permite_Ra_Status: number;
     //BlnTemRa: boolean;
-    linha.NormalizacaoCampos_CustoFinancFornecPrecoListaBase = prodInfo.Preco_lista;
-    linha.NormalizacaoCampos_Preco_Lista = prodInfo.Preco_lista;
-    linha.NormalizacaoCampos_Preco_Venda = prodInfo.Preco_lista;
-    linha.NormalizacaoCampos_Preco_NF = prodInfo.Preco_lista;
+    linha.CustoFinancFornecPrecoListaBase = prodInfo.Preco_lista;
+    linha.Preco_Lista = prodInfo.Preco_lista;
+    linha.Preco_Venda = prodInfo.Preco_lista;
+    linha.Preco_NF = prodInfo.Preco_lista;
 
-    if (!linha.NormalizacaoCampos_Desc_Dado) {
-      linha.NormalizacaoCampos_Desc_Dado = 0;
+    if (!linha.Desc_Dado) {
+      linha.Desc_Dado = 0;
     }
-    this.digitouDescValor(linha, linha.NormalizacaoCampos_Desc_Dado.toString());
+    this.digitouDescValor(linha, linha.Desc_Dado.toString());
     this.digitouQte(linha);
   }
 
@@ -715,7 +715,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
         continaurBuscaRepetido = false;
         for (let irepetido = i + 1; irepetido < lp.length; irepetido++) {
           let repetido = lp[irepetido];
-          if (este.Fabricante === repetido.Fabricante && este.NormalizacaoCampos_Produto == repetido.NormalizacaoCampos_Produto) {
+          if (este.Fabricante === repetido.Fabricante && este.Produto == repetido.Produto) {
             //repetido, tem que tirar este!
             continaurBuscaRepetido = true;
             este.Qtde += repetido.Qtde;

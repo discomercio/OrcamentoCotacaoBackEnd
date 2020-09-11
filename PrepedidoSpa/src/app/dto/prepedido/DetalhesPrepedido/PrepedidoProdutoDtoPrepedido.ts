@@ -1,17 +1,17 @@
 ﻿export class PrepedidoProdutoDtoPrepedido {
     Fabricante: string;
     Fabricante_Nome: string;
-    NormalizacaoCampos_Produto: string;
+    Produto: string;
     Descricao: string;
     Obs: string;
     Qtde: number | null;
     Permite_Ra_Status: number;
     BlnTemRa: boolean;
-    NormalizacaoCampos_CustoFinancFornecPrecoListaBase: number | null;
-    NormalizacaoCampos_Preco_NF: number | null;
-    NormalizacaoCampos_Preco_Lista: number;
-    NormalizacaoCampos_Desc_Dado: number | null;
-    NormalizacaoCampos_Preco_Venda: number;
+    CustoFinancFornecPrecoListaBase: number | null;
+    Preco_NF: number | null;
+    Preco_Lista: number;
+    Desc_Dado: number | null;
+    Preco_Venda: number;
     VlTotalItem: number | null;
     VlTotalRA: number;
     Comissao: number | null;

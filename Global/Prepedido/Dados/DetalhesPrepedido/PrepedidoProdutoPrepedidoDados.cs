@@ -11,7 +11,7 @@ namespace Prepedido.Dados.DetalhesPrepedido
          */
 
         public string Fabricante { get; set; }
-        public string NormalizacaoCampos_Produto { get; set; }
+        public string Produto { get; set; }
         public string Descricao { get; set; }
         public short? Qtde { get; set; }
 

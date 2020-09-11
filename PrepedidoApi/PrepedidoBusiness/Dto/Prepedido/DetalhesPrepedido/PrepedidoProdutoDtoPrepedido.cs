@@ -8,17 +8,17 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
     public class PrepedidoProdutoDtoPrepedido
     {
         public string Fabricante { get; set; }
-        public string NormalizacaoCampos_Produto { get; set; }
+        public string Produto { get; set; }
         public string Descricao { get; set; }
         public string Obs { get; set; }
         public short? Qtde { get; set; }
         public short Permite_Ra_Status { get; set; }
         public bool BlnTemRa { get; set; }
-        public decimal? NormalizacaoCampos_CustoFinancFornecPrecoListaBase { get; set; }
+        public decimal? CustoFinancFornecPrecoListaBase { get; set; }
         //public decimal? Preco_Lista { get; set; }
-        public decimal NormalizacaoCampos_Preco_Lista { get; set; }
-        public float? NormalizacaoCampos_Desc_Dado { get; set; }
-        public decimal NormalizacaoCampos_Preco_Venda { get; set; }
+        public decimal Preco_Lista { get; set; }
+        public float? Desc_Dado { get; set; }
+        public decimal Preco_Venda { get; set; }
         public decimal? VlTotalItem { get; set; }
         public decimal VlTotalRA { get; set; }
         public float? Comissao { get; set; }
@@ -27,7 +27,7 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
         public short? Qtde_estoque_total_disponivel { get; set; }
         public float CustoFinancFornecCoeficiente { get; set; }//coeficiente do fabricante
         //incluimos esse campos apenas para validar o que esta sendo enviado pela API da Unis
-        public decimal? NormalizacaoCampos_Preco_NF { get; set; }
+        public decimal? Preco_NF { get; set; }
 
         private static PrepedidoProdutoDtoPrepedido PrepedidoProdutoDtoPrepedido_De_PrepedidoProdutoPrepedidoDados(PrepedidoProdutoPrepedidoDados origem)
         {
@@ -35,16 +35,16 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
             return new PrepedidoProdutoDtoPrepedido()
             {
                 Fabricante = origem.Fabricante,
-                NormalizacaoCampos_Produto = origem.NormalizacaoCampos_Produto,
+                Produto = origem.Produto,
                 Descricao = origem.Descricao,
                 Obs = origem.Obs,
                 Qtde = origem.Qtde,
                 Permite_Ra_Status = origem.Permite_Ra_Status,
                 BlnTemRa = origem.BlnTemRa,
-                NormalizacaoCampos_CustoFinancFornecPrecoListaBase = origem.NormalizacaoCampos_CustoFinancFornecPrecoListaBase,
-                NormalizacaoCampos_Preco_Lista = origem.NormalizacaoCampos_Preco_Lista,
-                NormalizacaoCampos_Desc_Dado = origem.NormalizacaoCampos_Desc_Dado,
-                NormalizacaoCampos_Preco_Venda = origem.NormalizacaoCampos_Preco_Venda,
+                CustoFinancFornecPrecoListaBase = origem.CustoFinancFornecPrecoListaBase,
+                Preco_Lista = origem.Preco_Lista,
+                Desc_Dado = origem.Desc_Dado,
+                Preco_Venda = origem.Preco_Venda,
                 VlTotalItem = origem.VlTotalItem,
                 VlTotalRA = origem.VlTotalRA,
                 Comissao = origem.Comissao,
@@ -52,7 +52,7 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
                 TotalItem = origem.TotalItem,
                 Qtde_estoque_total_disponivel = origem.Qtde_estoque_total_disponivel,
                 CustoFinancFornecCoeficiente = origem.CustoFinancFornecCoeficiente,
-                NormalizacaoCampos_Preco_NF = origem.Preco_NF
+                Preco_NF = origem.Preco_NF
             };
         }
         private static PrepedidoProdutoPrepedidoDados PrepedidoProdutoPrepedidoDados_De_PrepedidoProdutoDtoPrepedido(PrepedidoProdutoDtoPrepedido origem, short permiteRaStatus)
@@ -62,25 +62,24 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
             PrepedidoProdutoPrepedidoDados ret = new PrepedidoProdutoPrepedidoDados()
             {
                 Fabricante = origem.Fabricante,
-                NormalizacaoCampos_Produto = origem.NormalizacaoCampos_Produto,
+                Produto = origem.Produto,
                 Descricao = origem.Descricao,
                 Obs = origem.Obs,
                 Qtde = origem.Qtde,
                 Permite_Ra_Status = origem.Permite_Ra_Status,
                 BlnTemRa = origem.BlnTemRa,
-                NormalizacaoCampos_CustoFinancFornecPrecoListaBase = origem.NormalizacaoCampos_CustoFinancFornecPrecoListaBase,
-                //Preco_Lista = origem.Preco_NF,
-                NormalizacaoCampos_Preco_Lista = origem.NormalizacaoCampos_Preco_Lista,
-                NormalizacaoCampos_Desc_Dado = origem.NormalizacaoCampos_Desc_Dado,
-                NormalizacaoCampos_Preco_Venda = origem.NormalizacaoCampos_Preco_Venda,
-                VlTotalItem = origem.VlTotalItem,
+                CustoFinancFornecPrecoListaBase = origem.CustoFinancFornecPrecoListaBase ?? 0,
+                Preco_Lista = origem.Preco_Lista,
+                Desc_Dado = origem.Desc_Dado ?? 0,
+                Preco_Venda = origem.Preco_Venda,
+                VlTotalItem = origem.VlTotalItem ?? 0,
                 VlTotalRA = origem.VlTotalRA,
                 Comissao = origem.Comissao,
                 TotalItemRA = origem.TotalItemRA ?? 0,
                 TotalItem = origem.TotalItem ?? 0,
                 Qtde_estoque_total_disponivel = origem.Qtde_estoque_total_disponivel,
                 CustoFinancFornecCoeficiente = origem.CustoFinancFornecCoeficiente,
-                Preco_NF = origem.NormalizacaoCampos_Preco_NF
+                Preco_NF = origem.Preco_NF ?? 0
             };
 
             return ret;
