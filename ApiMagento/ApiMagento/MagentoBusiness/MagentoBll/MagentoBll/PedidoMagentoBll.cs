@@ -61,16 +61,16 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
             string loja = configuracaoApiMagento.DadosOrcamentista.Loja;
 
             InfraBanco.Modelos.TorcamentistaEindicador torcamentista = await prepedidoBll.BuscarTorcamentista(orcamentista);
-            if (torcamentista != null)
+            if (torcamentista == null)
             {
                 resultado.ListaErros.Add("O Orçamentista não existe!");
                 return resultado;
             }
 
-            var clienteMagento = clienteBll.BuscarCliente(pedidoMagento?.Cnpj_Cpf, orcamentista);
+            Cliente.Dados.ClienteCadastroDados clienteMagento = await clienteBll.BuscarCliente(pedidoMagento?.Cnpj_Cpf, orcamentista);
 
             Cliente.Dados.DadosClienteCadastroDados dadosCliente = new Cliente.Dados.DadosClienteCadastroDados();
-            if (await clienteMagento == null)
+            if (clienteMagento == null)
             {
                 //vamos seguir o fluxo para cadastrar o cliente e depois fazer o cadastro do pedido
                 Cliente.Dados.ClienteCadastroDados clienteCadastro = new Cliente.Dados.ClienteCadastroDados();
@@ -80,37 +80,59 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
                 clienteCadastro.RefComercial = new List<Cliente.Dados.Referencias.RefComercialClienteDados>();
 
                 //criei o código para sistema_responsavel_cadastro 
-                await clienteBll.CadastrarCliente(clienteCadastro, orcamentista,
-                    (byte)InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__APIMAGENTO);
-            }
+                List<string> lstRet = (await clienteBll.CadastrarCliente(clienteCadastro, orcamentista,
+                    (byte)InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__APIMAGENTO)).ToList();
 
-            /*
-             * olhar Marketplace_codigo_origem para saber se é marketplace ou magento
-             * se não tiver dados nele veio do magento
-             */
-            if (!string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem))
-            {
-                List<InfraBanco.Modelos.TcodigoDescricao> listarCodigo = (await UtilsGlobais.Util.ListarCodigoMarketPlace(contextoProvider)).ToList();
-
-                InfraBanco.Modelos.TcodigoDescricao tcodigo = listarCodigo.Select(x => x)
-                    .Where(x => x.Codigo == pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem)
-                    .FirstOrDefault();
-
-                if (tcodigo == null)
+                if(lstRet.Count == 1)
                 {
-                    resultado.ListaErros.Add("Código Marketplace não encontrado.");
-                    return resultado;
+                    //é o número do pedido
+                    if(lstRet[0].Length == 12)
+                    {
+
+                    }
+                    else
+                    {
+                        //é erro
+                        resultado.ListaErros = lstRet;
+                    }
+                }
+                //é erro
+                if(lstRet.Count > 1)
+                {
+                    resultado.ListaErros = lstRet;
                 }
             }
 
-            Pedido.PedidoCriacao pedidoCriacao = new Pedido.PedidoCriacao();
+            if(resultado.ListaErros.Count == 0)
+            {
+                /*
+             * olhar Marketplace_codigo_origem para saber se é marketplace ou magento
+             * se não tiver dados nele veio do magento
+             */
+                if (!string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem))
+                {
+                    List<InfraBanco.Modelos.TcodigoDescricao> listarCodigo = (await UtilsGlobais.Util.ListarCodigoMarketPlace(contextoProvider)).ToList();
 
-            Pedido.Dados.Criacao.PedidoCriacaoRetornoDados ret =
-                await pedidoCriacao.CadastrarPedido(await CriarPedidoCriacaoDados(pedidoMagento, dadosCliente, orcamentista, loja, vendedor));
+                    InfraBanco.Modelos.TcodigoDescricao tcodigo = listarCodigo.Select(x => x)
+                        .Where(x => x.Codigo == pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem)
+                        .FirstOrDefault();
 
-            resultado.IdPedidoCadastrado = ret.Id;
-            resultado.IdsPedidosFilhotes = ret.ListaIdPedidosFilhotes;
-            resultado.ListaErros = ret.ListaErrosValidacao;
+                    if (tcodigo == null)
+                    {
+                        resultado.ListaErros.Add("Código Marketplace não encontrado.");
+                        return resultado;
+                    }
+                }
+
+                Pedido.PedidoCriacao pedidoCriacao = new Pedido.PedidoCriacao();
+
+                Pedido.Dados.Criacao.PedidoCriacaoRetornoDados ret =
+                    await pedidoCriacao.CadastrarPedido(await CriarPedidoCriacaoDados(pedidoMagento, dadosCliente, orcamentista, loja, vendedor));
+
+                resultado.IdPedidoCadastrado = ret.Id;
+                resultado.IdsPedidosFilhotes = ret.ListaIdPedidosFilhotes;
+                resultado.ListaErros = ret.ListaErrosValidacao;
+            }            
 
             return resultado;
         }
@@ -204,8 +226,8 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
                     (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL :
                     (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO,
                 Contribuinte_Icms_Status = dadosClienteMagento.Endereco_tipo_pessoa == Constantes.ID_PJ ?
-                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL :
-                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO,
+                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO :
+                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL,
                 Email = dadosClienteMagento.Endereco_email,
                 EmailXml = dadosClienteMagento.Endereco_email_xml,
                 Cep = dadosClienteMagento.Endereco_cep,
