@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using MagentoBusiness.MagentoBll.AcessoBll;
 using MagentoBusiness.MagentoBll.PedidoMagentoBll;
 using MagentoBusiness.MagentoDto.PedidoMagentoDto;
+using InfraIdentity.ApiMagento;
+using MagentoBusiness.MagentoDto;
+using MagentoBusiness.MagentoDto.MarketplaceDto;
 
 namespace ApiMagento.Controllers
 {
@@ -16,12 +19,14 @@ namespace ApiMagento.Controllers
     {
         private readonly IServicoValidarTokenApiMagento servicoValidarTokenApiMagento;
         private readonly PedidoMagentoBll pedidoMagentoBll;
+        private readonly IServicoDecodificarTokenApiMagento servicoDecodificarTokenApiMagento;
 
         public PedidoMagentoController(IServicoValidarTokenApiMagento servicoValidarTokenApiMagento,
-            PedidoMagentoBll pedidoMagentoBll)
+            PedidoMagentoBll pedidoMagentoBll, IServicoDecodificarTokenApiMagento servicoDecodificarTokenApiMagento)
         {
             this.servicoValidarTokenApiMagento = servicoValidarTokenApiMagento;
             this.pedidoMagentoBll = pedidoMagentoBll;
+            this.servicoDecodificarTokenApiMagento = servicoDecodificarTokenApiMagento;
         }
 
         /// <summary>
@@ -39,9 +44,33 @@ namespace ApiMagento.Controllers
             if (!servicoValidarTokenApiMagento.ValidarToken(pedido.TokenAcesso, out _))
                 return Unauthorized();
 
-            await pedidoMagentoBll.CadastrarPedidoMagento(pedido);
-            var ret = new PedidoResultadoMagentoDto();
+            string apelido = servicoDecodificarTokenApiMagento.ObterApelidoOrcamentista(User);
+                        
+            var ret = await pedidoMagentoBll.CadastrarPedidoMagento(pedido, apelido);
             ret.ListaErros.Add("Ainda não implementado");
+            return Ok(ret);
+        }
+
+        /// <summary>
+        /// Chamada para informar como obter o código do marketplace a partir dos campos do pedido.
+        /// No nomento da implementação, sujeito a revisão.
+        /// Observar o conteúdo do campo descricao_parametro, ele explica o formato dos dados.
+        /// Lembrar do caso da LEROY_MERLIN, codigo 017, a busca deve ser feita em outro campo.
+        /// </summary>
+        /// <param name="tokenAcesso"></param>
+        /// <returns>MarketplaceResultadoDto</returns>
+        [AllowAnonymous]
+        [HttpPost("obterCodigoMarketplace")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        public async Task<ActionResult<MarketplaceResultadoDto>> ObterCodigoMarketplace(string tokenAcesso)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        {
+            if (!servicoValidarTokenApiMagento.ValidarToken(tokenAcesso, out _))
+                return Unauthorized();
+            
+            var ret = await pedidoMagentoBll.ObterCodigoMarketplace();
+            
             return Ok(ret);
         }
     }

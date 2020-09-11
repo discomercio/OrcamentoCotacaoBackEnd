@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MagentoBusiness.UtilsMagento;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -8,7 +9,12 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
     public class FormaPagtoCriacaoMagentoDto
     {
         /// <summary>
-        /// Verificar com Hamilton como é a forma de pagamento
+        /// Pedido que vier do Markeplace deve ser Tipo_Parcelamento = COD_FORMA_PAGTO_PARCELA_UNICA = "5"  
+        /// e Op_pu_forma_pagto = "2" "Depósito" e C_pu_vencto_apos = 30 dias (Definido no appsettings)
+        /// <br />
+        /// Pedido que vier do Magento deve ser Tipo_Parcelamento = COD_FORMA_PAGTO_A_VISTA = "1" 
+        /// e Op_av_forma_pagto = "6" "Boleto" ou Tipo_Parcelamento = COD_FORMA_PAGTO_PARCELADO_CARTAO = "2" 
+        /// (Definido no appsettings)
         /// <br />
         /// <br />
         /// Tipo_Parcelamento:
@@ -20,11 +26,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         [Required]
         public short Tipo_Parcelamento { get; set; }//Tipo da forma de pagto
 
-        //Op_av_forma_pagto = sempre código de "Transferência" se Tipo_Parcelamento = COD_FORMA_PAGTO_A_VISTA ???? afazer: confirmar com Karina 
-        //Op_pu_forma_pagto = sempre código de "Depósito" se Tipo_Parcelamento = COD_FORMA_PAGTO_PARCELA_UNICA
-
         public decimal? C_pu_valor { get; set; }
-        //C_pu_vencto_apos  = 30 dias (ler do appsettings)
 
         public int? C_pc_qtde { get; set; }
         public decimal? C_pc_valor { get; set; }
@@ -37,32 +39,42 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         //CustoFinancFornecQtdeParcelas = 1 se Tipo_Parcelamento = COD_FORMA_PAGTO_PARCELA_UNICA
         //CustoFinancFornecQtdeParcelas = C_pc_qtde se Tipo_Parcelamento = COD_FORMA_PAGTO_PARCELADO_CARTAO
 
-        public static Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados FormaPagtoCriacaoDados_De_FormaPagtoCriacaoMagentoDto(FormaPagtoCriacaoMagentoDto formaPagtoCriacaoMagento)
+        public static Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados FormaPagtoCriacaoDados_De_FormaPagtoCriacaoMagentoDto(FormaPagtoCriacaoMagentoDto formaPagtoCriacaoMagento,
+            ConfiguracaoApiMagento configuracaoApiMagento, string marketplace_codigo_origem)
         {
             Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados  ret = new Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados();
 
-            if(formaPagtoCriacaoMagento?.Tipo_Parcelamento.ToString() ==
-                InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_A_VISTA)
+            if (formaPagtoCriacaoMagento?.Tipo_Parcelamento.ToString() ==
+                InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_A_VISTA && 
+                string.IsNullOrEmpty(marketplace_codigo_origem))
             {
                 ret.Qtde_Parcelas = 1;
-                ret.Op_av_forma_pagto = "QUAL É O CÓDIGO DE TRANSFERÊNCIA????";
+                ret.Op_av_forma_pagto = configuracaoApiMagento.FormaPagto.Op_av_forma_pagto;//boleto
+                ret.CustoFinancFornecTipoParcelamento = 
+                    InfraBanco.Constantes.Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA;
             }
             if (formaPagtoCriacaoMagento?.Tipo_Parcelamento.ToString() ==
-                InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO)
+                InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_PARCELA_UNICA &&
+                !string.IsNullOrEmpty(marketplace_codigo_origem))
+            {
+                ret.Qtde_Parcelas = 1;
+                ret.C_pu_valor = formaPagtoCriacaoMagento.C_pu_valor;
+                ret.Op_pu_forma_pagto = configuracaoApiMagento.FormaPagto.Op_pu_forma_pagto; //Depósito
+                ret.C_pu_vencto_apos = configuracaoApiMagento.FormaPagto.C_pu_vencto_apos;//ler do appsettings = 30 dias
+                ret.CustoFinancFornecTipoParcelamento = 
+                    InfraBanco.Constantes.Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA;
+            }
+            if (formaPagtoCriacaoMagento?.Tipo_Parcelamento.ToString() ==
+                InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO && 
+                string.IsNullOrEmpty(marketplace_codigo_origem))
             {
                 ret.Qtde_Parcelas = (int)formaPagtoCriacaoMagento.C_pc_qtde;
-                ret.C_pu_valor = formaPagtoCriacaoMagento.C_pu_valor;
-                ret.Op_pu_forma_pagto = "2"; //Depósito
-                ret.C_pu_vencto_apos = 30;//ler do appsettings = 30 dias
-            }
-            if (formaPagtoCriacaoMagento?.Tipo_Parcelamento.ToString() ==
-                InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_PARCELA_UNICA)
-            {
-                ret.Qtde_Parcelas = 1;
                 ret.C_pc_qtde = formaPagtoCriacaoMagento.C_pc_qtde;
                 ret.C_pc_valor = formaPagtoCriacaoMagento.C_pc_valor;
+                ret.CustoFinancFornecTipoParcelamento = 
+                    InfraBanco.Constantes.Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA;
             }
-            
+
             ret.Rb_forma_pagto = formaPagtoCriacaoMagento?.Tipo_Parcelamento.ToString(); //Tipo da forma de pagto
             
             ret.C_pc_maquineta_qtde = 0;
@@ -80,13 +92,10 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             ret.C_pse_demais_prest_qtde = 0;
             ret.C_pse_demais_prest_valor = 0M;
             ret.C_pse_demais_prest_periodo = 0;
-            ret.C_forma_pagto = "";//Descrição da forma de pagto???
+            ret.C_forma_pagto = "";//(deixar em branco)
             ret.Descricao_meio_pagto = "";
             ret.Tipo_parcelamento = formaPagtoCriacaoMagento.Tipo_Parcelamento;//informa o tipo de parcelamento que foi escolhido
 
-            //incluimos esse campo apenas para validar o que esta sendo enviado pela API Unis
-            ret.CustoFinancFornecTipoParcelamento = "";
-            
             return ret;
         }
     }

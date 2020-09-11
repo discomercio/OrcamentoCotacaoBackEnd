@@ -21,6 +21,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         [Required]
         public string Cnpj_Cpf { get; set; }
 
+
         [Required]
         public InfCriacaoPedidoMagentoDto InfCriacaoPedido { get; set; }
 
@@ -50,7 +51,6 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         // BemDeUso_Consumo = COD_ST_BEM_USO_CONSUMO_SIM
         //InstaladorInstala = COD_INSTALADOR_INSTALA_NAO
 
-
         [Required]
         public FormaPagtoCriacaoMagentoDto FormaPagtoCriacao { get; set; }
 
@@ -70,13 +70,12 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         {
             Pedido.Dados.Criacao.PedidoCriacaoDados pedidoCriacao = new Pedido.Dados.Criacao.PedidoCriacaoDados();
 
-            //afazer: realizar a conversão de dados
-            pedidoCriacao.LojaUsuario = "ler do appsettings";
+            pedidoCriacao.LojaUsuario = dadosClienteMagento.Loja;
             //Armazena nome do usuário logado
-            pedidoCriacao.Usuario = "ler do appsettings";
+            pedidoCriacao.Usuario = dadosClienteMagento.Indicador_Orcamentista;
             //Armazena o nome do vendedor externo
             //obs: analisar melhor quando esse campos será preenchido
-            pedidoCriacao.VendedorExterno = "Ler do token ou ler do appsettings";
+            pedidoCriacao.VendedorExterno = dadosClienteMagento.Vendedor;
 
             //Armazena os dados cadastrados do cliente
             pedidoCriacao.DadosCliente = dadosClienteMagento;
@@ -88,7 +87,6 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             pedidoCriacao.EnderecoEntrega = enderecoEntregaMagento;
 
             //Armazena os dados dos produtos selecionados
-            //afazer: converter os produtos
             pedidoCriacao.ListaProdutos = lstProdutosMagento;
 
             //Armazena os dados da forma de pagto selecionado
@@ -105,12 +103,15 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             pedidoCriacao.DetalhesPedido.Observacoes = "";
 
             //Flag para saber se tem indicador selecionado 
-            pedidoCriacao.ComIndicador = false;
+            //campo "frete"->se for <> 0, vamos usar o indicador.se for 0, sem indicador
+            pedidoCriacao.ComIndicador = !string.IsNullOrEmpty(dadosClienteMagento.Vendedor) ? true : false;
 
             //Armazena o nome do indicador selecionado
-            pedidoCriacao.NomeIndicador = null;
+            pedidoCriacao.NomeIndicador = !string.IsNullOrEmpty(dadosClienteMagento.Vendedor) ? dadosClienteMagento.Vendedor : null;
 
             //Armazena o percentual de comissão para o indicador selecionado
+            //PercRT = calculado automaticamente
+            //afazer: não entendi
             pedidoCriacao.PercRT = 0;
 
             //Armazena "S" ou "N" para caso de o indicador selecionado permita RA
@@ -120,13 +121,16 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             pedidoCriacao.IdNfeSelecionadoManual = 0; //será sempre automático
 
             //Flag para saber se o cliente aceitou finalizar o pedido mesmo com produto sem estoque
-            pedidoCriacao.OpcaoVendaSemEstoque = false;
+            //afazer: verificar se passa true ou false
+            pedidoCriacao.OpcaoVendaSemEstoque = true;
 
             //Armazena o valor total do pedido
+            //afazer: verificar se é feito o cálculo antes de enviar para cadastrar ou se é preenchido ao cadastrar
             pedidoCriacao.VlTotalDestePedido = 0;
 
             //Armazena o valor total de pedido com RA
             //Caso o indicador selecionado permita RA esse campo deve receber o valor total do Pedido com RA
+            //afazer: verificar se é feito o cálculo antes de enviar para cadastrar ou se é preenchido ao cadastrar
             pedidoCriacao.VlTotalDestePedidoComRa = 0;
 
             return pedidoCriacao;

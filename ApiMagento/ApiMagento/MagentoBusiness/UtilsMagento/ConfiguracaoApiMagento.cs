@@ -30,11 +30,23 @@ namespace MagentoBusiness.UtilsMagento
             public int LimitePrepedidosMesmoCpfCnpj_TempoSegundos { get; set; } = 3600;
         }
 
-        public LimitePedidoMagento LimitePrepedidos { get; set; } = new LimitePedidoMagento();
+        public LimitePedidoMagento LimitePedidos { get; set; } = new LimitePedidoMagento();
+        
+        public class OrcamentistaMagento
+        {
+            public string Orcamentista { get; set; }
+            public string Loja { get; set; }
+        }
 
-        /* Afazer: criar a classe com dados 
-         * LojaUsuario
-         * Usuario
-         */
+        public OrcamentistaMagento DadosOrcamentista { get; set; }
+
+        public class PagtoMagento
+        {
+            public string Op_pu_forma_pagto { get; set; }
+            public int C_pu_vencto_apos { get; set; }
+            public string Op_av_forma_pagto { get; set; }
+        }
+
+        public PagtoMagento FormaPagto { get; set; }
     }
 }

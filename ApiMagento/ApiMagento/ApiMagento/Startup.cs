@@ -73,10 +73,20 @@ namespace ApiMagento
             //Bll's locais
             services.AddTransient<AcessoMagentoBll, AcessoMagentoBll>();
             services.AddTransient<PedidoMagentoBll, PedidoMagentoBll>();
-            
+            services.AddTransient<Cep.CepBll, Cep.CepBll>();
+            services.AddTransient<Prepedido.PrepedidoBll, Prepedido.PrepedidoBll>();
+            services.AddTransient<Cliente.ClienteBll, Cliente.ClienteBll>();
+            services.AddTransient<Prepedido.FormaPagto.FormaPagtoBll, Prepedido.FormaPagto.FormaPagtoBll>();
+            services.AddTransient<Prepedido.FormaPagto.ValidacoesFormaPagtoBll, Prepedido.FormaPagto.ValidacoesFormaPagtoBll>();
+            services.AddTransient<Produto.CoeficienteBll, Produto.CoeficienteBll>();
+            services.AddTransient<Produto.ProdutoGeralBll, Produto.ProdutoGeralBll>();
+            services.AddTransient<Prepedido.ValidacoesPrepedidoBll, Prepedido.ValidacoesPrepedidoBll>();
+            services.AddTransient<Prepedido.MontarLogPrepedidoBll, Prepedido.MontarLogPrepedidoBll>();
+            services.AddTransient<Cep.IBancoNFeMunicipio, Cep.BancoNFeMunicipio>();
+
             //Bll's Loja
             //afazer: incluir as bll's que serão utilizadas da Loja
-            
+
             services.AddSingleton<ConfiguracaoApiMagento>(c =>
             {
                 IConfiguration configuration = c.GetService<IConfiguration>();
@@ -88,6 +98,7 @@ namespace ApiMagento
             services.AddTransient<IServicoAutenticacaoApiMagento, ServicoAutenticacaoApiMagento>();
             //como singleton para melhorar a performance
             services.AddSingleton<MagentoBusiness.MagentoBll.AcessoBll.IServicoValidarTokenApiMagento, ServicoValidarTokenApiMagento>();
+            services.AddTransient<IServicoDecodificarTokenApiMagento, ServicoDecodificarTokenApiMagento>();
 
             //ContextoProvider
             services.AddTransient<InfraBanco.ContextoBdProvider, InfraBanco.ContextoBdProvider>();

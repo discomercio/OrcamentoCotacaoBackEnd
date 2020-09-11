@@ -29,7 +29,7 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
         //incluimos esse campos apenas para validar o que esta sendo enviado pela API da Unis
         public decimal? Preco_NF { get; set; }
 
-        public static PrepedidoProdutoDtoPrepedido PrepedidoProdutoDtoPrepedido_De_PrepedidoProdutoPrepedidoDados(PrepedidoProdutoPrepedidoDados origem)
+        private static PrepedidoProdutoDtoPrepedido PrepedidoProdutoDtoPrepedido_De_PrepedidoProdutoPrepedidoDados(PrepedidoProdutoPrepedidoDados origem)
         {
             if (origem == null) return null;
             return new PrepedidoProdutoDtoPrepedido()
@@ -41,11 +41,11 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
                 Qtde = origem.Qtde,
                 Permite_Ra_Status = origem.Permite_Ra_Status,
                 BlnTemRa = origem.BlnTemRa,
-                Preco = origem.Preco,
-                Preco_Lista = origem.Preco_Lista,
-                VlLista = origem.VlLista,
-                Desconto = origem.Desconto,
-                VlUnitario = origem.VlUnitario,
+                Preco = origem.CustoFinancFornecPrecoListaBase,
+                Preco_Lista = origem.Preco_NF,
+                VlLista = origem.Preco_Lista,
+                Desconto = origem.Desc_Dado,
+                VlUnitario = origem.Preco_Venda,
                 VlTotalItem = origem.VlTotalItem,
                 VlTotalRA = origem.VlTotalRA,
                 Comissao = origem.Comissao,
@@ -56,10 +56,11 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
                 Preco_NF = origem.Preco_NF
             };
         }
-        public static PrepedidoProdutoPrepedidoDados PrepedidoProdutoPrepedidoDados_De_PrepedidoProdutoDtoPrepedido(PrepedidoProdutoDtoPrepedido origem)
+        private static PrepedidoProdutoPrepedidoDados PrepedidoProdutoPrepedidoDados_De_PrepedidoProdutoDtoPrepedido(PrepedidoProdutoDtoPrepedido origem, short permiteRaStatus)
         {
             if (origem == null) return null;
-            return new PrepedidoProdutoPrepedidoDados()
+
+            PrepedidoProdutoPrepedidoDados ret = new PrepedidoProdutoPrepedidoDados()
             {
                 Fabricante = origem.Fabricante,
                 NumProduto = origem.NumProduto,
@@ -68,20 +69,22 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
                 Qtde = origem.Qtde,
                 Permite_Ra_Status = origem.Permite_Ra_Status,
                 BlnTemRa = origem.BlnTemRa,
-                Preco = origem.Preco,
-                Preco_Lista = origem.Preco_Lista,
-                VlLista = origem.VlLista,
-                Desconto = origem.Desconto,
-                VlUnitario = origem.VlUnitario,
-                VlTotalItem = origem.VlTotalItem,
+                CustoFinancFornecPrecoListaBase = origem.Preco ?? 0,
+                //Preco_Lista = origem.Preco_NF,
+                Preco_Lista = origem.VlLista,
+                Desc_Dado = origem.Desconto ?? 0,
+                Preco_Venda = origem.VlUnitario,
+                VlTotalItem = origem.VlTotalItem ?? 0,
                 VlTotalRA = origem.VlTotalRA,
                 Comissao = origem.Comissao,
-                TotalItemRA = origem.TotalItemRA,
-                TotalItem = origem.TotalItem,
+                TotalItemRA = origem.TotalItemRA ?? 0,
+                TotalItem = origem.TotalItem ?? 0,
                 Qtde_estoque_total_disponivel = origem.Qtde_estoque_total_disponivel,
                 CustoFinancFornecCoeficiente = origem.CustoFinancFornecCoeficiente,
-                Preco_NF = origem.Preco_NF
+                Preco_NF = (permiteRaStatus == 1 ? origem.Preco_Lista : origem.VlUnitario) ?? 0
             };
+
+            return ret;
         }
         public static List<PrepedidoProdutoDtoPrepedido> ListaPrepedidoProdutoDtoPrepedido_De_PrepedidoProdutoPrepedidoDados(IEnumerable<PrepedidoProdutoPrepedidoDados> listaBancoDados)
         {
@@ -92,13 +95,13 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
                     ret.Add(PrepedidoProdutoDtoPrepedido_De_PrepedidoProdutoPrepedidoDados(p));
             return ret;
         }
-        public static List<PrepedidoProdutoPrepedidoDados> ListaPrepedidoProdutoPrepedidoDados_De_PrepedidoProdutoDtoPrepedido(IEnumerable<PrepedidoProdutoDtoPrepedido> listaBancoDados)
+        public static List<PrepedidoProdutoPrepedidoDados> ListaPrepedidoProdutoPrepedidoDados_De_PrepedidoProdutoDtoPrepedido(IEnumerable<PrepedidoProdutoDtoPrepedido> listaBancoDados, short permiteRaStatus)
         {
             if (listaBancoDados == null) return null;
             var ret = new List<PrepedidoProdutoPrepedidoDados>();
             if (listaBancoDados != null)
                 foreach (var p in listaBancoDados)
-                    ret.Add(PrepedidoProdutoPrepedidoDados_De_PrepedidoProdutoDtoPrepedido(p));
+                    ret.Add(PrepedidoProdutoPrepedidoDados_De_PrepedidoProdutoDtoPrepedido(p, permiteRaStatus));
             return ret;
         }
     }

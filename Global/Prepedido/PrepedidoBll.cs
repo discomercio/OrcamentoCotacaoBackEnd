@@ -265,7 +265,7 @@ namespace Prepedido
 
             var vltotalRa = lstProdutoTask.Select(r => r.VlTotalRA).Sum();
             var totalDestePedidoComRa = lstProdutoTask.Select(r => r.TotalItemRA).Sum();
-            var totalDestePedido = lstProdutoTask.Select(r => r.TotalItem).Sum();
+            var totalDestePedido = lstProdutoTask.Select(r => r.VlTotalItem).Sum();
 
 
             PrePedidoDados prepedidoDados = new PrePedidoDados
@@ -283,8 +283,8 @@ namespace Prepedido
                 PermiteRAStatus = pp.Permite_RA_Status,
                 CorTotalFamiliaRA = vltotalRa > 0 ? "green" : "red",
                 PercRT = pp.Perc_RT,
-                ValorTotalDestePedidoComRA = totalDestePedidoComRa,
-                VlTotalDestePedido = totalDestePedido,
+                Vl_total_NF = totalDestePedidoComRa,
+                Vl_total = totalDestePedido,
                 DetalhesPrepedido = ObterDetalhesPrePedido(pp, apelido),
                 FormaPagto = ObterFormaPagto(pp).ToList(),
                 FormaPagtoCriacao = await ObterFormaPagtoPrePedido(pp)
@@ -474,17 +474,16 @@ namespace Prepedido
                     Qtde = p.Qtde,
                     Permite_Ra_Status = orc.Permite_RA_Status,
                     BlnTemRa = p.Preco_NF != p.Preco_Venda ? true : false,
-                    //estamos alterando os valores de "Preco" para "p.Preco_Lista" e
-                    //"VlLista" para "p.Preco_NF"
-                    Preco = p.Preco_NF,//essa variavel não pode ter o valor alterado
-                    VlLista = (decimal)p.Preco_Lista,//essa variavel é o valor base para calcular 
-                    Desconto = p.Desc_Dado,
-                    VlUnitario = p.Preco_Venda,
+                    Preco_NF = p.Preco_NF ?? 0,
+                    CustoFinancFornecPrecoListaBase = p.CustoFinancFornecPrecoListaBase,//essa variavel não pode ter o valor alterado
+                    Preco_Lista = (decimal)p.Preco_Lista,//essa variavel é o valor base para calcular 
+                    Desc_Dado = p.Desc_Dado ?? 0,
+                    Preco_Venda = p.Preco_Venda,
                     VlTotalRA = (decimal)(p.Qtde * (p.Preco_NF - p.Preco_Venda)),
                     Comissao = orc.Perc_RT,
-                    TotalItemRA = p.Qtde * p.Preco_NF,
-                    TotalItem = p.Qtde * p.Preco_Venda,
-                    VlTotalItem = p.Qtde * p.Preco_Venda
+                    TotalItemRA = (p.Qtde ?? 0) * (p.Preco_NF ?? 0),
+                    TotalItem = (p.Qtde ?? 0) * (p.Preco_Venda),
+                    VlTotalItem = (p.Qtde ?? 0) * (p.Preco_Venda)
 
                 };
 
@@ -725,7 +724,7 @@ namespace Prepedido
             await Cliente.ValidacoesClienteBll.ValidarDadosCliente(prePedido.DadosCliente,
                 null, null,
                 lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco,
-                prePedido.DadosCliente.Tipo == Constantes.ID_PF ? true : false);
+                prePedido.DadosCliente.Tipo == Constantes.ID_PF ? true : false, (byte)sistemaResponsavelCadastro);
 
             //if (lstErros.Count > 0)
             //    return lstErros;
@@ -763,7 +762,7 @@ namespace Prepedido
             if (await validacoesPrepedidoBll.ValidarEnderecoEntrega(prePedido, lstErros))
             {
                 //busca a sigla do tipo de pagamento pelo código enviado
-                string c_custoFinancFornecTipoParcelamento = ObterSiglaFormaPagto(prePedido);
+                string c_custoFinancFornecTipoParcelamento = ObterSiglaFormaPagto(prePedido.FormaPagtoCriacao);
 
                 //precisa incluir uma validação de forma de pagamento com base no orçamentista enviado
                 FormaPagtoDados formasPagto = await formaPagtoBll.ObterFormaPagto(tOrcamentista.Apelido, prePedido.DadosCliente.Tipo);
@@ -771,7 +770,7 @@ namespace Prepedido
                     0.1M, c_custoFinancFornecTipoParcelamento, formasPagto))
                 {
                     //Esta sendo verificado qual o tipo de pagamento que esta sendo feito e retornando a quantidade de parcelas
-                    int c_custoFinancFornecQtdeParcelas = ObterQtdeParcelasFormaPagto(prePedido);
+                    int c_custoFinancFornecQtdeParcelas = ObterQtdeParcelasFormaPagto(prePedido.FormaPagtoCriacao);
 
                     float perc_limite_RA_sem_desagio = await Util.VerificarSemDesagioRA(contextoProvider);
 
@@ -867,9 +866,8 @@ namespace Prepedido
             return lstErros;
         }
 
-        public string ObterSiglaFormaPagto(PrePedidoDados prePedido)
+        public string ObterSiglaFormaPagto(FormaPagtoCriacaoDados formaPagto)
         {
-            FormaPagtoCriacaoDados formaPagto = prePedido.FormaPagtoCriacao;
             string retorno = "";
 
             if (formaPagto.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_A_VISTA)
@@ -935,7 +933,7 @@ namespace Prepedido
             torcamento.St_Orcamento = "";
             torcamento.St_Fechamento = "";
             torcamento.St_Orc_Virou_Pedido = 0;
-            torcamento.CustoFinancFornecQtdeParcelas = (short)ObterQtdeParcelasFormaPagto(prepedido);
+            torcamento.CustoFinancFornecQtdeParcelas = (short)ObterQtdeParcelasFormaPagto(prepedido.FormaPagtoCriacao);
             torcamento.Vl_Total = Calcular_Vl_Total(prepedido);
             torcamento.Vl_Total_NF = CalcularVl_Total_NF(prepedido);
             torcamento.Vl_Total_RA = prepedido.PermiteRAStatus == 1 ? CalcularVl_Total_NF(prepedido) - Calcular_Vl_Total(prepedido) : 0M;
@@ -1223,9 +1221,8 @@ namespace Prepedido
             return log;
         }
 
-        private int ObterQtdeParcelasFormaPagto(PrePedidoDados prepedido)
+        public int ObterQtdeParcelasFormaPagto(FormaPagtoCriacaoDados formaPagto)
         {
-            FormaPagtoCriacaoDados formaPagto = prepedido.FormaPagtoCriacao;
             int qtdeParcelas = 0;
 
             if (formaPagto.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_A_VISTA)
@@ -1252,7 +1249,7 @@ namespace Prepedido
             {
                 if (!string.IsNullOrEmpty(p.NumProduto))
                 {
-                    vl_total += (decimal)(p.Qtde * p.VlUnitario);
+                    vl_total += (decimal)(p.Qtde * p.Preco_Venda);
                 }
             }
 
@@ -1267,7 +1264,7 @@ namespace Prepedido
             {
                 if (!string.IsNullOrEmpty(p.NumProduto))
                 {
-                    vl_total_NF += (decimal)(p.Qtde * p.Preco_Lista);
+                    vl_total_NF += (decimal)(p.Qtde * p.Preco_NF);
                 }
             }
 
@@ -1511,7 +1508,7 @@ namespace Prepedido
                         {
                             if (percCustoTask != null)
                             {
-                                i.VlLista = (decimal)percCustoTask.Coeficiente * (decimal)i.Preco;
+                                i.Preco_Lista = (decimal)percCustoTask.Coeficiente * (decimal)i.CustoFinancFornecPrecoListaBase;
                             }
                             else
                             {
@@ -1816,11 +1813,11 @@ namespace Prepedido
                     Produto = p.NumProduto,
                     Fabricante = UtilsGlobais.Util.Normaliza_Codigo(p.Fabricante, Constantes.TAM_MIN_FABRICANTE),
                     Qtde = p.Qtde,
-                    Preco_Venda = Math.Round(p.VlUnitario, 2),
-                    Preco_NF = prepedido.PermiteRAStatus == 1 ? Math.Round((decimal)p.Preco_Lista, 2) : Math.Round(p.VlUnitario, 2),
+                    Preco_Venda = Math.Round(p.Preco_Venda, 2),
+                    Preco_NF = prepedido.PermiteRAStatus == 1 ? Math.Round((decimal)p.Preco_NF, 2) : Math.Round(p.Preco_Venda, 2),
                     Obs = p.Obs == null ? "" : p.Obs,
-                    Desc_Dado = p.Desconto,
-                    Preco_Lista = Math.Round(p.VlLista, 2),
+                    Desc_Dado = p.Desc_Dado,
+                    Preco_Lista = Math.Round(p.Preco_Lista, 2),
                     CustoFinancFornecCoeficiente = 1
                 };
                 lstOrcamentoItem.Add(item);
@@ -1846,11 +1843,11 @@ namespace Prepedido
                             Produto = p.NumProduto,
                             Fabricante = UtilsGlobais.Util.Normaliza_Codigo(p.Fabricante, Constantes.TAM_MIN_FABRICANTE),
                             Qtde = p.Qtde,
-                            Preco_Venda = Math.Round(p.VlUnitario, 2),
-                            Preco_NF = prepedido.PermiteRAStatus == 1 ? Math.Round((decimal)p.Preco_Lista, 2) : Math.Round(p.VlUnitario, 2),
+                            Preco_Venda = Math.Round(p.Preco_Venda, 2),
+                            Preco_NF = prepedido.PermiteRAStatus == 1 ? Math.Round((decimal)p.Preco_NF, 2) : Math.Round(p.Preco_Venda, 2),
                             Obs = p.Obs == null ? "" : p.Obs,
-                            Desc_Dado = p.Desconto,
-                            Preco_Lista = Math.Round(p.VlLista, 2),
+                            Desc_Dado = p.Desc_Dado,
+                            Preco_Lista = Math.Round(p.Preco_Lista, 2),
                             CustoFinancFornecCoeficiente = percCustoFinanFornec.Coeficiente
                         };
                         lstOrcamentoItem.Add(item);
@@ -1888,7 +1885,7 @@ namespace Prepedido
             return retorno;
         }
 
-        private async Task<TorcamentistaEindicador> BuscarTorcamentista(string apelido)
+        public async Task<TorcamentistaEindicador> BuscarTorcamentista(string apelido)
         {
             var db = contextoProvider.GetContextoLeitura();
 

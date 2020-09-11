@@ -59,8 +59,6 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
                 retorno.ListaErros.Add("Cliente não localizado");
                 return retorno;
             }
-            ClienteCadastroDto clienteArclube = ClienteCadastroDto.ClienteCadastroDto_De_ClienteCadastroDados(clienteCadastroDados);
-
 
             if (!string.IsNullOrEmpty(prePedidoUnis.Cnpj_Cpf))
             {
@@ -90,26 +88,24 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
                 return retorno;
             }
 
-            //Vamos passar os dados de "EnderecoCadastralPrepedidoUnisDto" para DadosCadastroClienteDto
-            EnderecoCadastralClientePrepedidoDto endCadastralArclube =
-                EnderecoCadastralClientePrepedidoUnisDto.EnderecoCadastralClientePrepedidoDtoDeEnderecoCadastralClientePrepedidoUnisDto(
-                    prePedidoUnis.EnderecoCadastralCliente);
+            Cliente.Dados.EnderecoCadastralClientePrepedidoDados endCadastralDados = 
+                EnderecoCadastralClientePrepedidoUnisDto
+                .EnderecoCadastralClientePrepedidoDadosDeEnderecoCadastralClientePrepedidoUnisDto(prePedidoUnis.EnderecoCadastralCliente);
 
-            List<PrepedidoProdutoDtoPrepedido> lstProdutosArclube = new List<PrepedidoProdutoDtoPrepedido>();
+            List<PrepedidoProdutoPrepedidoDados> lstProdutosDados = new List<PrepedidoProdutoPrepedidoDados>();
             prePedidoUnis.ListaProdutos.ForEach(x =>
             {
                 var ret = PrePedidoProdutoPrePedidoUnisDto.
-                PrepedidoProdutoDtoPrepedidoDePrePedidoProdutoPrePedidoUnisDto(x,
+                PrepedidoProdutoPrepedidoDadosDePrePedidoProdutoPrePedidoUnisDto(x,
                 Convert.ToInt16(prePedidoUnis.PermiteRAStatus));
 
-                lstProdutosArclube.Add(ret);
+                lstProdutosDados.Add(ret);
             });
 
-            //usar o formato padrão da BLL
-            PrePedidoDto prePedidoDto = PrePedidoUnisDto.PrePedidoDtoDePrePedidoUnisDto(prePedidoUnis, endCadastralArclube, lstProdutosArclube, clienteArclube.DadosCliente);
+            Prepedido.Dados.DetalhesPrepedido.PrePedidoDados prePedidoDados =
+                PrePedidoUnisDto.PrePedidoDadosDePrePedidoUnisDto(prePedidoUnis, endCadastralDados, lstProdutosDados, clienteCadastroDados.DadosCliente);
 
-            //verifica se já existe (ou se está no limite de repetições)
-            string prepedidosRepetidos = await PrepedidosRepetidos(prePedidoDto);
+            string prepedidosRepetidos = await PrepedidosRepetidos(prePedidoDados);
             if (!string.IsNullOrEmpty(prepedidosRepetidos))
             {
                 retorno.ListaErros.Add(prepedidosRepetidos);
@@ -117,8 +113,6 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
             }
 
             //vamos cadastrar
-            //A validação dos dados será feita no cadastro do prepedido
-            PrePedidoDados prePedidoDados = PrePedidoDto.PrePedidoDados_De_PrePedidoDto(prePedidoDto);
             List<string> lstRet = (await prepedidoBll.CadastrarPrepedido(prePedidoDados,
                 prePedidoUnis.Indicador_Orcamentista.ToUpper(),
                 Convert.ToDecimal(configuracaoApiUnis.LimiteArredondamentoPrecoVendaOrcamentoItem), false,
@@ -181,12 +175,12 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
             return ret;
         }
 
-        public async Task<string> PrepedidosRepetidos(PrePedidoDto prePedidoDto)
+        public async Task<string> PrepedidosRepetidos(Prepedido.Dados.DetalhesPrepedido.PrePedidoDados prePedidoDados)
         {
             Prepedido.PrepedidoRepetidoBll prepedidoRepetidoBll = new Prepedido.PrepedidoRepetidoBll(contextoProvider);
 
             //repetição totalmente igual
-            var repetidos = await prepedidoRepetidoBll.PrepedidoJaCadastradoDesdeData(PrePedidoDto.PrePedidoDados_De_PrePedidoDto(prePedidoDto), DateTime.Now.AddSeconds(-1 * configuracaoApiUnis.LimitePrepedidos.LimitePrepedidosExatamenteIguais_TempoSegundos));
+            var repetidos = await prepedidoRepetidoBll.PrepedidoJaCadastradoDesdeData(prePedidoDados, DateTime.Now.AddSeconds(-1 * configuracaoApiUnis.LimitePrepedidos.LimitePrepedidosExatamenteIguais_TempoSegundos));
             if (repetidos.Count >= configuracaoApiUnis.LimitePrepedidos.LimitePrepedidosExatamenteIguais_Numero)
             {
                 return $"Pré-pedido já foi cadastrado com os mesmos dados há menos de {configuracaoApiUnis.LimitePrepedidos.LimitePrepedidosExatamenteIguais_TempoSegundos} segundos. " +
@@ -194,7 +188,7 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
             }
 
             //repetição por ID do cliente (CPF/CNPJ)
-            repetidos = await prepedidoRepetidoBll.PrepedidoPorIdCLiente(prePedidoDto.DadosCliente.Id, DateTime.Now.AddSeconds(-1 * configuracaoApiUnis.LimitePrepedidos.LimitePrepedidosMesmoCpfCnpj_TempoSegundos));
+            repetidos = await prepedidoRepetidoBll.PrepedidoPorIdCLiente(prePedidoDados.DadosCliente.Id, DateTime.Now.AddSeconds(-1 * configuracaoApiUnis.LimitePrepedidos.LimitePrepedidosMesmoCpfCnpj_TempoSegundos));
             if (repetidos.Count >= configuracaoApiUnis.LimitePrepedidos.LimitePrepedidosMesmoCpfCnpj_Numero)
             {
                 return $"Limite de pré-pedidos por CPF/CNPJ excedido, existem {configuracaoApiUnis.LimitePrepedidos.LimitePrepedidosMesmoCpfCnpj_Numero} pré-pedidos há menos de {configuracaoApiUnis.LimitePrepedidos.LimitePrepedidosMesmoCpfCnpj_TempoSegundos} segundos. " +

@@ -27,10 +27,21 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         [Required]
         public bool OutroEndereco { get; set; }
         public EnderecoEntregaClienteCadastroUnisDto EnderecoEntrega { get; set; }
+        [Required]
         public List<PrePedidoProdutoPrePedidoUnisDto> ListaProdutos { get; set; }
         public bool PermiteRAStatus { get; set; }
-        public decimal? ValorTotalDestePedidoComRA { get; set; }
-        public decimal? VlTotalDestePedido { get; set; }
+
+        /// <summary>
+        /// ValorTotalDestePedidoComRA = soma de Preco_NF * Qtde
+        /// </summary>
+        [Required]
+        public decimal ValorTotalDestePedidoComRA { get; set; }
+
+        /// <summary>
+        /// VlTotalDestePedido = soma de Preco_Venda * Qtde
+        /// </summary>
+        [Required]
+        public decimal VlTotalDestePedido { get; set; }
         public DetalhesPrePedidoUnisDto DetalhesPrepedido { get; set; }
         public FormaPagtoCriacaoUnisDto FormaPagtoCriacao { get; set; }
 
@@ -60,6 +71,30 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
             return ret;
         }
 
+        public static Prepedido.Dados.DetalhesPrepedido.PrePedidoDados PrePedidoDadosDePrePedidoUnisDto(PrePedidoUnisDto prepedidoUnis,
+            Cliente.Dados.EnderecoCadastralClientePrepedidoDados endCadastraDados, 
+            List<Prepedido.Dados.DetalhesPrepedido.PrepedidoProdutoPrepedidoDados> lstProdutosDados,
+            Cliente.Dados.DadosClienteCadastroDados dadosClienteCadastroDados)
+        {
+            var ret = new Prepedido.Dados.DetalhesPrepedido.PrePedidoDados()
+            {
+                EnderecoCadastroClientePrepedido = endCadastraDados,
+                EnderecoEntrega = EnderecoEntregaClienteCadastroUnisDto.
+                    EnderecoEntregaClienteCadastroDadosDeEnderecoEntregaClienteCadastroUnisDto(
+                    prepedidoUnis.EnderecoEntrega, prepedidoUnis.OutroEndereco),
+                ListaProdutos = lstProdutosDados,
+                PermiteRAStatus = Convert.ToInt16(prepedidoUnis.PermiteRAStatus),
+                Vl_total_NF = prepedidoUnis.ValorTotalDestePedidoComRA,
+                Vl_total = prepedidoUnis.VlTotalDestePedido,
+                DetalhesPrepedido = DetalhesPrePedidoUnisDto.
+                    DetalhesPrepedidoDadosDeDetalhesPrePedidoUnisDto(prepedidoUnis.DetalhesPrepedido),
+                FormaPagtoCriacao = FormaPagtoCriacaoUnisDto.FormaPagtoCriacaoDadosDeFormaPagtoCriacaoUnisDto(
+                    prepedidoUnis.FormaPagtoCriacao),
+                DadosCliente = dadosClienteCadastroDados,
+            };
+            ret.DadosCliente.Indicador_Orcamentista = prepedidoUnis.Indicador_Orcamentista;
 
+            return ret;
+        }
     }
 }

@@ -99,11 +99,49 @@ VlTotalDestePedido	number($double)
             //a base de teste é parcelado
             Teste(c => c.FormaPagtoCriacao.Tipo_Parcelamento = 1, "Tipo do parcelamento (CustoFinancFornecTipoParcelamento 'SE') está incorreto!");
         }
+
+
         [Fact]
         public void Parcial_Preco_NF()
         {
-            Teste(c => c.ListaProdutos[0].Preco_NF = 11, "Preço de nota fiscal (Preco_NF R$ 11,00 x R$ 694,05) está incorreto!");
+            TesteParcCartao(c =>
+            {
+                c.ListaProdutos[0].Preco_NF = 11;
+                c.Indicador_Orcamentista = "Apelido_sem_ra";
+                c.PermiteRAStatus = false;
+                c.ListaProdutos[0].Preco_Venda = 687.11m;
+                c.VlTotalDestePedido = 1735.12M;
+
+                var ret = c;
+                ret.VlTotalDestePedido = ret.ListaProdutos[0].Preco_NF * ret.ListaProdutos[0].Qtde;
+                ret.VlTotalDestePedido += ret.ListaProdutos[1].Preco_NF * ret.ListaProdutos[1].Qtde;
+            },
+            "Valor total da forma de pagamento diferente do valor total!");
         }
+
+        [Fact]
+        public void Parcial_Preco_NF2()
+        {
+            TesteParcCartao(c =>
+            {
+                c.ListaProdutos[0].Preco_NF = 11;
+                c.Indicador_Orcamentista = "Apelido_sem_ra";
+                c.PermiteRAStatus = false;
+                c.ListaProdutos[0].Preco_Venda = 687.11m;
+                c.VlTotalDestePedido = 1735.12M;
+
+                var ret = c;
+                ret.VlTotalDestePedido = ret.ListaProdutos[0].Preco_NF * ret.ListaProdutos[0].Qtde;
+                ret.VlTotalDestePedido += ret.ListaProdutos[1].Preco_NF * ret.ListaProdutos[1].Qtde;
+                ret.FormaPagtoCriacao.C_pc_valor = ret.VlTotalDestePedido / ret.FormaPagtoCriacao.C_pc_qtde;
+            },
+            "Preço de nota fiscal (Preco_NF R$ 11,00 x Preco_Venda 687,11) está incorreto!",
+            true,
+            //Não consigui fazer dar esse erro ao cadastrar o PrepedidoDto, o teste da Unis passa
+            //É quando chama o segundo teste interno "TesteInternoPrepedidoBll"
+            false);
+        }
+
         [Fact]
         public void Parcial_CustoFinancFornecCoeficiente()
         {
@@ -122,7 +160,7 @@ VlTotalDestePedido	number($double)
         [Fact]
         public void Parcial_CustoFinancFornecPrecoListaBase()
         {
-            Teste(c => c.ListaProdutos[0].CustoFinancFornecPrecoListaBase = 11, "Custo financeiro preço lista base (CustoFinancFornecPrecoListaBase R$ 11,00 x R$ 694,05) esta incorreto!");
+            Teste(c => c.ListaProdutos[0].Preco_Lista = 11, "Custo financeiro preço lista base (Preco_Lista R$ 11,00 x R$ 694,05) esta incorreto!");
         }
 
 
@@ -134,8 +172,8 @@ VlTotalDestePedido	number($double)
         EnderecoEntrega	EnderecoEntregaClienteCadastroUnisDto{...}
         ListaProdutos	[...]
         PermiteRAStatus	boolean
-        ValorTotalDestePedidoComRA	number($double)
-        VlTotalDestePedido	number($double)
+        Vl_total_NF	number($double)
+        Vl_total	number($double)
         DetalhesPrepedido	DetalhesPrePedidoUnisDto{...}
         FormaPagtoCriacao	FormaPagtoCriacaoUnisDto{...}
         */

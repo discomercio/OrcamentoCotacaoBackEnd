@@ -333,7 +333,7 @@ namespace Cliente
             return log;
         }
 
-        public async Task<List<string>> AtualizarClienteParcial(string apelido, Cliente.Dados.DadosClienteCadastroDados dadosClienteCadastroDados)
+        public async Task<List<string>> AtualizarClienteParcial(string apelido, Cliente.Dados.DadosClienteCadastroDados dadosClienteCadastroDados, byte sistemaResponsavel)
         {
             /*
              * somente os seguintes campos serão atualizados:
@@ -348,7 +348,7 @@ namespace Cliente
             List<Cliente.Dados.ListaBancoDados> lstBanco = (await ListarBancosCombo()).ToList();
 
             if (await Cliente.ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDados, null, null, lstErros,
-                contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, true))
+                contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, true, sistemaResponsavel))
             {
                 var dados = from c in db.Tclientes
                             where c.Id == dadosClienteCadastroDados.Id
@@ -589,13 +589,12 @@ namespace Cliente
                 return lstErros;
             }
 
-
             //passar lista de bancos para validar
             List<Cliente.Dados.ListaBancoDados> lstBanco = (await ListarBancosCombo()).ToList();
             if (await Cliente.ValidacoesClienteBll.ValidarDadosCliente(clienteCadastroDados.DadosCliente,
                 clienteCadastroDados.RefBancaria,
                 clienteCadastroDados.RefComercial,
-                lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, false))
+                lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, false, (byte)sistemaResponsavelCadastro))
             {
                 if (lstErros.Count <= 0)
                 {

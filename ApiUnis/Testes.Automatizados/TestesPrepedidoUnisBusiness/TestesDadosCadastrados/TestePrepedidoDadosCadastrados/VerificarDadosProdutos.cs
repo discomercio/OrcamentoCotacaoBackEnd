@@ -166,14 +166,6 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
             TesteProdutos(c =>
             {
                 c.FormaPagtoCriacao.C_pc_valor = 867.56m;
-                //c.ListaProdutos[0].Preco_Venda = prePedido.ListaProdutos[0].Preco_Lista *
-                //    (decimal)(1 - prePedido.ListaProdutos[0].Desc_Dado / 100);
-                //c.ListaProdutos[1].Preco_Venda = 1030.66m;
-                //c.ListaProdutos[0].Preco_NF = 687.11m;
-                //c.ListaProdutos[1].Preco_NF = 1030.66m;
-                //c.VlTotalDestePedido = (2 * 687.11m) + (2 * 1030.66m);
-                //c.Indicador_Orcamentista = "Apelido_sem_ra";
-                //c.PermiteRAStatus = false;
             });
         }
     }
