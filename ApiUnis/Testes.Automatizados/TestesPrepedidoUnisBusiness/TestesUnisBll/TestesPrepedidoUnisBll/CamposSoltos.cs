@@ -22,8 +22,8 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
 Cnpj_Cpf*	string 
 Indicador_Orcamentista*	string 
 PermiteRAStatus	boolean
-NormalizacaoCampos_Vl_total_NF	number($double)
-NormalizacaoCampos_Vl_total	number($double)
+ValorTotalDestePedidoComRA	number($double)
+VlTotalDestePedido	number($double)
 */
         [Fact]
         public void Cnpj_Cpf()
@@ -49,8 +49,8 @@ NormalizacaoCampos_Vl_total	number($double)
         [Fact]
         public void ValorTotalDestePedidoComRA()
         {
-            Teste(c => c.NormalizacaoCampos_Vl_total_NF = 1, "Valor total da forma de pagamento diferente do valor total!");
-            Teste(c => c.NormalizacaoCampos_Vl_total = 1, "Os valores totais estão divergindo!");
+            Teste(c => c.ValorTotalDestePedidoComRA = 1, "Valor total da forma de pagamento diferente do valor total!");
+            Teste(c => c.VlTotalDestePedido = 1, "Os valores totais estão divergindo!");
         }
         [Fact]
         public void Indicador_Orcamentista()
@@ -101,8 +101,6 @@ NormalizacaoCampos_Vl_total	number($double)
         }
 
 
-        //Não consigui fazer dar esse erro ao cadastrar o PrepedidoDto, o teste da Unis passa
-        //É quando chama o segundo teste interno "TesteInternoPrepedidoBll"
         [Fact]
         public void Parcial_Preco_NF()
         {
@@ -112,9 +110,36 @@ NormalizacaoCampos_Vl_total	number($double)
                 c.Indicador_Orcamentista = "Apelido_sem_ra";
                 c.PermiteRAStatus = false;
                 c.ListaProdutos[0].Preco_Venda = 687.11m;
-                c.NormalizacaoCampos_Vl_total = 1735.12M;
+                c.VlTotalDestePedido = 1735.12M;
+
+                var ret = c;
+                ret.VlTotalDestePedido = ret.ListaProdutos[0].Preco_NF * ret.ListaProdutos[0].Qtde;
+                ret.VlTotalDestePedido += ret.ListaProdutos[1].Preco_NF * ret.ListaProdutos[1].Qtde;
             },
-            "Preço de nota fiscal (Preco_NF R$ 11,00 x 687,11) está incorreto!");
+            "Valor total da forma de pagamento diferente do valor total!");
+        }
+
+        [Fact]
+        public void Parcial_Preco_NF2()
+        {
+            TesteParcCartao(c =>
+            {
+                c.ListaProdutos[0].Preco_NF = 11;
+                c.Indicador_Orcamentista = "Apelido_sem_ra";
+                c.PermiteRAStatus = false;
+                c.ListaProdutos[0].Preco_Venda = 687.11m;
+                c.VlTotalDestePedido = 1735.12M;
+
+                var ret = c;
+                ret.VlTotalDestePedido = ret.ListaProdutos[0].Preco_NF * ret.ListaProdutos[0].Qtde;
+                ret.VlTotalDestePedido += ret.ListaProdutos[1].Preco_NF * ret.ListaProdutos[1].Qtde;
+                ret.FormaPagtoCriacao.C_pc_valor = ret.VlTotalDestePedido / ret.FormaPagtoCriacao.C_pc_qtde;
+            },
+            "Preço de nota fiscal (Preco_NF R$ 11,00 x Preco_Venda 687,11) está incorreto!",
+            true,
+            //Não consigui fazer dar esse erro ao cadastrar o PrepedidoDto, o teste da Unis passa
+            //É quando chama o segundo teste interno "TesteInternoPrepedidoBll"
+            false);
         }
 
         [Fact]
@@ -135,7 +160,7 @@ NormalizacaoCampos_Vl_total	number($double)
         [Fact]
         public void Parcial_CustoFinancFornecPrecoListaBase()
         {
-            Teste(c => c.ListaProdutos[0].NormalizacaoCampos_Preco_Lista = 11, "Custo financeiro preço lista base (Preco_Lista R$ 11,00 x R$ 694,05) esta incorreto!");
+            Teste(c => c.ListaProdutos[0].Preco_Lista = 11, "Custo financeiro preço lista base (Preco_Lista R$ 11,00 x R$ 694,05) esta incorreto!");
         }
 
 
@@ -147,8 +172,8 @@ NormalizacaoCampos_Vl_total	number($double)
         EnderecoEntrega	EnderecoEntregaClienteCadastroUnisDto{...}
         ListaProdutos	[...]
         PermiteRAStatus	boolean
-        NormalizacaoCampos_Vl_total_NF	number($double)
-        NormalizacaoCampos_Vl_total	number($double)
+        Vl_total_NF	number($double)
+        Vl_total	number($double)
         DetalhesPrepedido	DetalhesPrePedidoUnisDto{...}
         FormaPagtoCriacao	FormaPagtoCriacaoUnisDto{...}
         */

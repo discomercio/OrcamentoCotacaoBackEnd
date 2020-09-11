@@ -29,7 +29,7 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
         //incluimos esse campos apenas para validar o que esta sendo enviado pela API da Unis
         public decimal? NormalizacaoCampos_Preco_NF { get; set; }
 
-        public static PrepedidoProdutoDtoPrepedido PrepedidoProdutoDtoPrepedido_De_PrepedidoProdutoPrepedidoDados(PrepedidoProdutoPrepedidoDados origem)
+        private static PrepedidoProdutoDtoPrepedido PrepedidoProdutoDtoPrepedido_De_PrepedidoProdutoPrepedidoDados(PrepedidoProdutoPrepedidoDados origem)
         {
             if (origem == null) return null;
             return new PrepedidoProdutoDtoPrepedido()
@@ -55,7 +55,7 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
                 NormalizacaoCampos_Preco_NF = origem.Preco_NF
             };
         }
-        public static PrepedidoProdutoPrepedidoDados PrepedidoProdutoPrepedidoDados_De_PrepedidoProdutoDtoPrepedido(PrepedidoProdutoDtoPrepedido origem, short permiteRaStatus)
+        private static PrepedidoProdutoPrepedidoDados PrepedidoProdutoPrepedidoDados_De_PrepedidoProdutoDtoPrepedido(PrepedidoProdutoDtoPrepedido origem, short permiteRaStatus)
         {
             if (origem == null) return null;
 
@@ -76,8 +76,8 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
                 VlTotalItem = origem.VlTotalItem,
                 VlTotalRA = origem.VlTotalRA,
                 Comissao = origem.Comissao,
-                TotalItemRA = origem.TotalItemRA,
-                TotalItem = origem.TotalItem,
+                TotalItemRA = origem.TotalItemRA ?? 0,
+                TotalItem = origem.TotalItem ?? 0,
                 Qtde_estoque_total_disponivel = origem.Qtde_estoque_total_disponivel,
                 CustoFinancFornecCoeficiente = origem.CustoFinancFornecCoeficiente,
                 Preco_NF = origem.NormalizacaoCampos_Preco_NF

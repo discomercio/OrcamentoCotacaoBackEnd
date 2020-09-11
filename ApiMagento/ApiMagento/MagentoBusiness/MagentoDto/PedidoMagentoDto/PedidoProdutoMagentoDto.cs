@@ -23,14 +23,14 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         /// <hr />
         /// </summary>
         [Required]
-        public decimal Preco_Venda { get; set; }// = NormalizacaoCampos_Preco_Venda
+        public decimal Preco_Venda { get; set; }
 
         /// <summary>
         /// Preco_NF preço que será impresso na nota fiscal, inclui o rateio do frete
         /// <hr />
         /// </summary>
         [Required]
-        public decimal Preco_NF { get; set; } // se permite RA = Preco_Lista / senão NormalizacaoCampos_Preco_Venda
+        public decimal Preco_NF { get; set; } // Caso RA = False,   "Preco_NF"  deve ser  = "Preco_Venda"
 
         /*
          * Os campos Preco_Fabricante, CustoFinancFornecCoeficiente, CustoFinancFornecPrecoListaBase e Preco_Fabricante vamos ler das tabelas
@@ -48,10 +48,11 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                 Qtde = produtoDto.Qtde,
                 Permite_Ra_Status = 1,//sempre true
                 BlnTemRa = true,
-                NormalizacaoCampos_CustoFinancFornecPrecoListaBase = 0m,
-                NormalizacaoCampos_Preco_Lista = Math.Round((decimal)(produtoDados.Preco_lista * (decimal)coeficiente), 2),
-                NormalizacaoCampos_Desc_Dado = 0, //produtoDto.Desc_Dado,
-                NormalizacaoCampos_Preco_Venda = Math.Round((decimal)(produtoDados.Preco_lista * (decimal)coeficiente), 2),
+//todo: revisar estas conversões
+                CustoFinancFornecPrecoListaBase = 0m,
+                Preco_Lista = Math.Round((decimal)(produtoDados.Preco_lista * (decimal)coeficiente), 2),
+                Desc_Dado = 0, //produtoDto.Desc_Dado,
+                Preco_Venda = Math.Round((decimal)(produtoDados.Preco_lista * (decimal)coeficiente), 2),
                 Preco_NF = produtoDto.Preco_NF,
                 TotalItem = Math.Round((produtoDto.Preco_Venda * produtoDto.Qtde), 2),
                 TotalItemRA = Math.Round((produtoDto.Preco_NF * produtoDto.Qtde), 2),

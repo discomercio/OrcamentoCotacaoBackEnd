@@ -105,7 +105,7 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
             Prepedido.Dados.DetalhesPrepedido.PrePedidoDados prePedidoDados =
                 PrePedidoUnisDto.PrePedidoDadosDePrePedidoUnisDto(prePedidoUnis, endCadastralDados, lstProdutosDados, clienteCadastroDados.DadosCliente);
 
-            string prepedidosRepetidos = await PrepedidosRepetidosNovo(prePedidoDados);
+            string prepedidosRepetidos = await PrepedidosRepetidos(prePedidoDados);
             if (!string.IsNullOrEmpty(prepedidosRepetidos))
             {
                 retorno.ListaErros.Add(prepedidosRepetidos);
@@ -175,7 +175,7 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
             return ret;
         }
 
-        public async Task<string> PrepedidosRepetidosNovo(Prepedido.Dados.DetalhesPrepedido.PrePedidoDados prePedidoDados)
+        public async Task<string> PrepedidosRepetidos(Prepedido.Dados.DetalhesPrepedido.PrePedidoDados prePedidoDados)
         {
             Prepedido.PrepedidoRepetidoBll prepedidoRepetidoBll = new Prepedido.PrepedidoRepetidoBll(contextoProvider);
 

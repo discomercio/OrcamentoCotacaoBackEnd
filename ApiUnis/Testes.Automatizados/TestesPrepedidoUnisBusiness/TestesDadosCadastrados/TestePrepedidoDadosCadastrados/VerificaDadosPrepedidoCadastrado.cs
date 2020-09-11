@@ -73,9 +73,9 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
             prePedido.Indicador_Orcamentista = "Apelido_sem_ra";
             prePedido.PermiteRAStatus = false;
             prePedido.ListaProdutos[0].Preco_NF = 652.71m;
-            //prePedido.ListaProdutos[0].NormalizacaoCampos_Preco_Lista = 652.71m;
+            //prePedido.ListaProdutos[0].Preco_Lista = 652.71m;
             prePedido.ListaProdutos[1].Preco_NF = 979.06m;
-            //prePedido.ListaProdutos[1].NormalizacaoCampos_Preco_Lista = 979.06m;
+            //prePedido.ListaProdutos[1].Preco_Lista = 979.06m;
 
             res = prepedidoUnisBll.CadastrarPrepedidoUnis(prePedido).Result;
             if (res.ListaErros.Count == 0)
@@ -106,9 +106,9 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
         {
             PrePedidoUnisDto prePedido = DadosPrepedidoUnisBll.PrepedidoParcelaCartao();
             prePedido.FormaPagtoCriacao.C_pc_valor = 867.56m;
-            prePedido.ListaProdutos[0].Preco_Venda = prePedido.ListaProdutos[0].NormalizacaoCampos_Preco_Lista *
+            prePedido.ListaProdutos[0].Preco_Venda = prePedido.ListaProdutos[0].Preco_Lista *
                 (decimal)(1 - prePedido.ListaProdutos[0].Desc_Dado / 100);
-            prePedido.ListaProdutos[1].Preco_Venda = prePedido.ListaProdutos[1].NormalizacaoCampos_Preco_Lista *
+            prePedido.ListaProdutos[1].Preco_Venda = prePedido.ListaProdutos[1].Preco_Lista *
                 (decimal)(1 - prePedido.ListaProdutos[1].Desc_Dado / 100);
 
             TestarCadastroFormaPagto(prePedido);
@@ -119,7 +119,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
             prePedido.ListaProdutos[1].Preco_Venda = 1030.66m;
             prePedido.ListaProdutos[0].Preco_NF = 687.11m;
             prePedido.ListaProdutos[1].Preco_NF = 1030.66m;
-            prePedido.NormalizacaoCampos_Vl_total = (2 * 687.11m) + (2 * 1030.66m);
+            prePedido.VlTotalDestePedido = (2 * 687.11m) + (2 * 1030.66m);
             prePedido.Indicador_Orcamentista = "Apelido_sem_ra";
             prePedido.PermiteRAStatus = false;
 
@@ -130,9 +130,9 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
         {
             PrePedidoUnisDto prePedido = DadosPrepedidoUnisBll.PrepedidoParcelaCartaoMaquineta();
             prePedido.FormaPagtoCriacao.C_pc_maquineta_valor = 867.56m;
-            prePedido.ListaProdutos[0].Preco_Venda = prePedido.ListaProdutos[0].NormalizacaoCampos_Preco_Lista *
+            prePedido.ListaProdutos[0].Preco_Venda = prePedido.ListaProdutos[0].Preco_Lista *
                 (decimal)(1 - prePedido.ListaProdutos[0].Desc_Dado / 100);
-            prePedido.ListaProdutos[1].Preco_Venda = prePedido.ListaProdutos[1].NormalizacaoCampos_Preco_Lista *
+            prePedido.ListaProdutos[1].Preco_Venda = prePedido.ListaProdutos[1].Preco_Lista *
                 (decimal)(1 - prePedido.ListaProdutos[1].Desc_Dado / 100);
 
             TestarCadastroFormaPagto(prePedido);
@@ -143,7 +143,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
             prePedido.ListaProdutos[1].Preco_Venda = 1030.66m;
             prePedido.ListaProdutos[0].Preco_NF = 687.11m;
             prePedido.ListaProdutos[1].Preco_NF = 1030.66m;
-            prePedido.NormalizacaoCampos_Vl_total = (2 * 687.11m) + (2 * 1030.66m);
+            prePedido.VlTotalDestePedido = (2 * 687.11m) + (2 * 1030.66m);
             prePedido.Indicador_Orcamentista = "Apelido_sem_ra";
             prePedido.PermiteRAStatus = false;
 
@@ -154,9 +154,9 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
         {
             PrePedidoUnisDto prePedido = DadosPrepedidoUnisBll.PrepedidoParcelaUnica();
             prePedido.FormaPagtoCriacao.C_pu_valor = 3470.24m;
-            prePedido.ListaProdutos[0].Preco_Venda = prePedido.ListaProdutos[0].NormalizacaoCampos_Preco_Lista *
+            prePedido.ListaProdutos[0].Preco_Venda = prePedido.ListaProdutos[0].Preco_Lista *
                 (decimal)(1 - prePedido.ListaProdutos[0].Desc_Dado / 100);
-            prePedido.ListaProdutos[1].Preco_Venda = prePedido.ListaProdutos[1].NormalizacaoCampos_Preco_Lista *
+            prePedido.ListaProdutos[1].Preco_Venda = prePedido.ListaProdutos[1].Preco_Lista *
                 (decimal)(1 - prePedido.ListaProdutos[1].Desc_Dado / 100);
 
             TestarCadastroFormaPagto(prePedido);
@@ -167,7 +167,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
             prePedido.ListaProdutos[1].Preco_Venda = 1030.66m;
             prePedido.ListaProdutos[0].Preco_NF = 687.11m;
             prePedido.ListaProdutos[1].Preco_NF = 1030.66m;
-            prePedido.NormalizacaoCampos_Vl_total = (2 * 687.11m) + (2 * 1030.66m);
+            prePedido.VlTotalDestePedido = (2 * 687.11m) + (2 * 1030.66m);
             prePedido.Indicador_Orcamentista = "Apelido_sem_ra";
             prePedido.PermiteRAStatus = false;
 
@@ -182,9 +182,9 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
             prePedido.FormaPagtoCriacao.C_pce_prestacao_valor = 1123.41m;
             prePedido.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto = "2";
             prePedido.FormaPagtoCriacao.CustoFinancFornecQtdeParcelas = 4;
-            prePedido.ListaProdutos[0].Preco_Venda = prePedido.ListaProdutos[0].NormalizacaoCampos_Preco_Lista *
+            prePedido.ListaProdutos[0].Preco_Venda = prePedido.ListaProdutos[0].Preco_Lista *
                 (decimal)(1 - prePedido.ListaProdutos[0].Desc_Dado / 100);
-            prePedido.ListaProdutos[1].Preco_Venda = prePedido.ListaProdutos[1].NormalizacaoCampos_Preco_Lista *
+            prePedido.ListaProdutos[1].Preco_Venda = prePedido.ListaProdutos[1].Preco_Lista *
                 (decimal)(1 - prePedido.ListaProdutos[1].Desc_Dado / 100);
 
             TestarCadastroFormaPagto(prePedido);
@@ -195,12 +195,12 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
             prePedido.FormaPagtoCriacao.C_pce_prestacao_valor = 1111.85m;
             prePedido.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto = "2";
             prePedido.FormaPagtoCriacao.CustoFinancFornecQtdeParcelas = 4;
-            prePedido.NormalizacaoCampos_Vl_total = (2 * 687.11m) + (2 * 1030.66m);
+            prePedido.VlTotalDestePedido = (2 * 687.11m) + (2 * 1030.66m);
             prePedido.ListaProdutos[0].Preco_Venda = 687.11m;
             prePedido.ListaProdutos[1].Preco_Venda = 1030.66m;
             prePedido.ListaProdutos[0].Preco_NF = 687.11m;
             prePedido.ListaProdutos[1].Preco_NF = 1030.66m;
-            prePedido.NormalizacaoCampos_Vl_total = (2 * 687.11m) + (2 * 1030.66m);
+            prePedido.VlTotalDestePedido = (2 * 687.11m) + (2 * 1030.66m);
             prePedido.Indicador_Orcamentista = "Apelido_sem_ra";
             prePedido.PermiteRAStatus = false;
 
