@@ -25,11 +25,11 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
             ret.FormaPagtoCriacao.Op_av_forma_pagto = "1";
 
             ret.ListaProdutos[0].CustoFinancFornecCoeficiente = 1;
-            ret.ListaProdutos[0].CustoFinancFornecPrecoListaBase = 659.30m;
+            ret.ListaProdutos[0].Preco_Lista = 659.30m;
             ret.ListaProdutos[0].Preco_Venda = 652.71m;
 
             ret.ListaProdutos[1].CustoFinancFornecCoeficiente = 1;
-            ret.ListaProdutos[1].CustoFinancFornecPrecoListaBase = 988.95m;
+            ret.ListaProdutos[1].Preco_Lista = 988.95m;
             ret.ListaProdutos[1].Preco_Venda = 979.06m;
 
             ret.VlTotalDestePedido = ret.ListaProdutos[0].Preco_Venda * ret.ListaProdutos[0].Qtde;

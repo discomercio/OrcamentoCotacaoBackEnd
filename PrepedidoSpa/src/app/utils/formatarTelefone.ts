@@ -81,7 +81,7 @@ export class FormatarTelefone {
 
         //FORMATA AGRUPANDO O DDD E O RAMAL
         retorno = "(" + ddd.trim() + ") " + aux;
-        if (!ramal && ramal != "")
+        if (!!ramal && ramal != "")
             retorno += " (R. " + ramal.trim() + ")";
 
         return retorno;
