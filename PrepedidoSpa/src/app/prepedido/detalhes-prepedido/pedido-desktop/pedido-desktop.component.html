@@ -644,8 +644,7 @@
                                             POR:</span>&nbsp;{{ocorrencia.Usuario}}</td>
                                     <td class="C MD MB tdWithPadding" width="33%" align="left" valign="top"><span
                                             class="Rf" style="margin-left:0px;">EM:</span>&nbsp;
-                                        {{dataFormatarTelaHora(ocorrencia.Dt_Hr_Cadastro)}}
-                                        {{dataformatarTelaHoraSemSegundos(ocorrencia.Dt_Hr_Cadastro)}}
+                                            {{dataformatarDataTalvezHoraMin(ocorrencia.Dt_Hr_Cadastro)}}
                                         &nbsp;
                                     </td>
                                     <td class="C MB tdWithPadding" align="left" valign="top"
@@ -699,8 +698,7 @@
                                             <tr>
                                                 <td class="C MD MC tdWithPadding" style="width:60px;" align="center"
                                                     valign="top">
-                                                    {{dataFormatarTelaHora(mensagem.Dt_Hr_Cadastro)}}
-                                                    {{dataformatarTelaHoraSemSegundos(mensagem.Dt_Hr_Cadastro)}}
+                                                    {{dataformatarDataTalvezHoraMin(mensagem.Dt_Hr_Cadastro)}}
                                                 </td>
                                                 <td class="C MD MC tdWithPadding" style="width:80px;" align="center"
                                                     valign="top">
@@ -761,8 +759,7 @@
                                                     </td>
                                                     <td class="C tdWithPadding" width="50%" align="left" valign="top">
                                                         <span class="Rf" style="margin-left:0px;">EM:</span>&nbsp;
-                                                        {{dataFormatarTelaHora(ocorrencia.Finalizado_Data_Hora)}}
-                                                        {{dataformatarTelaHoraSemSegundos(ocorrencia.Finalizado_Data_Hora)}}
+                                                        {{dataformatarDataTalvezHoraMin(ocorrencia.Finalizado_Data_Hora)}}
                                                     </td>
                                                 </tr>
                                             </table>
@@ -817,9 +814,7 @@
                     <ng-container
                         *ngIf="nota.Dt_Hora_Cadastro && nota.Dt_Hora_Cadastro.toString().trim() != '0001-01-01T00:00:00'">
                         <td class="C ME MD MB" style="width:60px;" align="center" valign="top">
-                            {{dataFormatarTela(nota.Dt_Hora_Cadastro)}}
-                            {{dataformatarTelaHoraComSegundos(nota.Dt_Hora_Cadastro)}}
-                            <!-- {{dataformatarTelaDataeHora(nota.Dt_Hora_Cadastro)}} -->
+                            {{dataformatarDataTalvezHoraMinSS(nota.Dt_Hora_Cadastro)}}
                         </td>
                         <td class="C MD MB" style="width:80px;" align="center" valign="top">
                             {{nota.Usuario}} <ng-container *ngIf="nota?.Loja != '' && nota?.Loja != null">(Loja
@@ -860,8 +855,7 @@
                     <!-- {{dev.Dt_Hr_Cadastro}} -->
                     <tr *ngFor="let dev of pedido.ListaBlocoNotasDevolucao">
                         <td class="C ME MD MB" style="width:60px;" align="center" valign="top">
-                            {{dataFormatarTela(dev.Dt_Hr_Cadastro)}}
-                            {{dataformatarTelaHoraSemSegundos(dev.Dt_Hr_Cadastro)}}
+                            {{dataformatarDataTalvezHoraMin(dev.Dt_Hr_Cadastro)}}
                         </td>
                         <td class="C MD MB" style="width:80px;" align="center" valign="top">
                             {{dev.Usuario}} <ng-container *ngIf="dev.Loja">(Loja {{dev.Loja}})

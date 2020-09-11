@@ -228,7 +228,7 @@
                             value='{{linha.Fabricante}}' readonly tabindex=-1></td>
                     <!-- Produto -->
                     <td class="MDB" align="left"><input name="c_produto" class="PLLe" style="width:54px;"
-                            value='{{linha.NumProduto}}' readonly tabindex=-1>
+                            value='{{linha.Produto}}' readonly tabindex=-1>
                     </td>
                     <!-- Descricao -->
                     <td class="MDB" align="left" style="width:253px;">
@@ -243,22 +243,22 @@
                     <!-- Preco RA -->
                     <td class="MDB" align="right" *ngIf="this.prepedidoDto?.PermiteRAStatus == '1'">
                         <input name="c_vl_NF" class="PLLd" style="width:62px;"
-                            value='{{moedaUtils.formatarMoedaSemPrefixo(linha.Preco)}}' readonly tabindex=-1>
+                            value='{{moedaUtils.formatarMoedaSemPrefixo(linha.Preco_NF)}}' readonly tabindex=-1>
                     </td>
                     <!-- VlLista -->
                     <td class="MDB" align="right">
                         <input name="c_preco_lista" class="PLLd" style="width:62px;"
-                            value='{{moedaUtils.formatarMoedaSemPrefixo(linha.VlLista)}}' readonly tabindex=-1>
+                            value='{{moedaUtils.formatarMoedaSemPrefixo(linha.Preco_Lista)}}' readonly tabindex=-1>
                     </td>
                     <!-- Desconto -->
                     <td class="MDB" align="right">
                         <input name="c_desc" class="PLLd" style="width:28px;"
-                            value='{{moedaUtils.formatarPorcentagemUmaCasa(linha.Desconto)}}' readonly tabindex=-1>
+                            value='{{moedaUtils.formatarPorcentagemUmaCasa(linha.Desc_Dado)}}' readonly tabindex=-1>
                     </td>
                     <!-- VLVenda -->
                     <td class="MDB" align="right">
                         <input name="c_vl_unitario" class="PLLd" style="width:62px;"
-                            value='{{moedaUtils.formatarMoedaSemPrefixo(linha.VlUnitario)}}' readonly tabindex=-1>
+                            value='{{moedaUtils.formatarMoedaSemPrefixo(linha.Preco_Venda)}}' readonly tabindex=-1>
                     </td>
                     <!-- VlTotal -->
                     <td class="MDB" align="right"><input name="c_vl_total" class="PLLd" style="width:70px;"

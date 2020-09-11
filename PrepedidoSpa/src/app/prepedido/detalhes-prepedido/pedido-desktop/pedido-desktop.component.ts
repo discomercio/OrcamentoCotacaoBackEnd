@@ -45,6 +45,7 @@ export class PedidoDesktopComponent extends TelaDesktopBaseComponent implements 
     };      
     
     this.montarEnderecoEntrega(this.pedido.EnderecoEntrega);
+
   }
 
   formatarEndereco: FormatarEndereco = new FormatarEndereco();
@@ -59,6 +60,10 @@ export class PedidoDesktopComponent extends TelaDesktopBaseComponent implements 
   dataformatarTelaDataeHora = DataUtils.formatarTelaDataeHora;
   dataformatarTelaHoraSemSegundos = DataUtils.formatarTelaHoraSemSegundos;
   dataformatarTelaHoraComSegundos = DataUtils.formatarTelaHoraComSegundos;
+  dataformatarDataTalvezHoraMin = DataUtils.formata_data_e_talvez_hora_hhmm;
+  dataformatarDataTalvezHoraMinSS = DataUtils.formata_data_e_talvez_hora_hhmmss;
+  
+
   moedaUtils: MoedaUtils = new MoedaUtils();
   clienteCadastroUtils = new ClienteCadastroUtils();
 
