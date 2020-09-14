@@ -8,17 +8,17 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
     public class PrepedidoProdutoDtoPrepedido
     {
         public string Fabricante { get; set; }
-        public string NumProduto { get; set; }
+        public string Produto { get; set; }
         public string Descricao { get; set; }
         public string Obs { get; set; }
         public short? Qtde { get; set; }
         public short Permite_Ra_Status { get; set; }
         public bool BlnTemRa { get; set; }
-        public decimal? Preco { get; set; }
-        public decimal? Preco_Lista { get; set; }
-        public decimal VlLista { get; set; }
-        public float? Desconto { get; set; }
-        public decimal VlUnitario { get; set; }
+        public decimal? CustoFinancFornecPrecoListaBase { get; set; }
+        //public decimal? Preco_Lista { get; set; }
+        public decimal Preco_Lista { get; set; }
+        public float? Desc_Dado { get; set; }
+        public decimal Preco_Venda { get; set; }
         public decimal? VlTotalItem { get; set; }
         public decimal VlTotalRA { get; set; }
         public float? Comissao { get; set; }
@@ -35,17 +35,16 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
             return new PrepedidoProdutoDtoPrepedido()
             {
                 Fabricante = origem.Fabricante,
-                NumProduto = origem.NumProduto,
+                Produto = origem.Produto,
                 Descricao = origem.Descricao,
                 Obs = origem.Obs,
                 Qtde = origem.Qtde,
                 Permite_Ra_Status = origem.Permite_Ra_Status,
                 BlnTemRa = origem.BlnTemRa,
-                Preco = origem.CustoFinancFornecPrecoListaBase,
-                Preco_Lista = origem.Preco_NF,
-                VlLista = origem.Preco_Lista,
-                Desconto = origem.Desc_Dado,
-                VlUnitario = origem.Preco_Venda,
+                CustoFinancFornecPrecoListaBase = origem.CustoFinancFornecPrecoListaBase,
+                Preco_Lista = origem.Preco_Lista,
+                Desc_Dado = origem.Desc_Dado,
+                Preco_Venda = origem.Preco_Venda,
                 VlTotalItem = origem.VlTotalItem,
                 VlTotalRA = origem.VlTotalRA,
                 Comissao = origem.Comissao,
@@ -63,17 +62,16 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
             PrepedidoProdutoPrepedidoDados ret = new PrepedidoProdutoPrepedidoDados()
             {
                 Fabricante = origem.Fabricante,
-                NumProduto = origem.NumProduto,
+                Produto = origem.Produto,
                 Descricao = origem.Descricao,
                 Obs = origem.Obs,
                 Qtde = origem.Qtde,
                 Permite_Ra_Status = origem.Permite_Ra_Status,
                 BlnTemRa = origem.BlnTemRa,
-                CustoFinancFornecPrecoListaBase = origem.Preco ?? 0,
-                //Preco_Lista = origem.Preco_NF,
-                Preco_Lista = origem.VlLista,
-                Desc_Dado = origem.Desconto ?? 0,
-                Preco_Venda = origem.VlUnitario,
+                CustoFinancFornecPrecoListaBase = origem.CustoFinancFornecPrecoListaBase ?? 0,
+                Preco_Lista = origem.Preco_Lista,
+                Desc_Dado = origem.Desc_Dado ?? 0,
+                Preco_Venda = origem.Preco_Venda,
                 VlTotalItem = origem.VlTotalItem ?? 0,
                 VlTotalRA = origem.VlTotalRA,
                 Comissao = origem.Comissao,
@@ -81,7 +79,7 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
                 TotalItem = origem.TotalItem ?? 0,
                 Qtde_estoque_total_disponivel = origem.Qtde_estoque_total_disponivel,
                 CustoFinancFornecCoeficiente = origem.CustoFinancFornecCoeficiente,
-                Preco_NF = (permiteRaStatus == 1 ? origem.Preco_Lista : origem.VlUnitario) ?? 0
+                Preco_NF = origem.Preco_NF ?? 0
             };
 
             return ret;

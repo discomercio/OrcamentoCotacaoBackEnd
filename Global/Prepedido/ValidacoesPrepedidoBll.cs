@@ -210,18 +210,18 @@ namespace Prepedido
                 if (await VerificarProdutoComposto(x, loja, lstErros))
                 {
                     PrepedidoProdutoPrepedidoDados produto = await (from c in db.TprodutoLojas
-                                                                    where c.Produto == x.NumProduto &&
-                                                                          c.Fabricante == x.Fabricante &&
-                                                                          c.Vendavel == "S" &&
-                                                                          c.Loja == loja
-                                                                    select new PrepedidoProdutoPrepedidoDados
-                                                                    {
-                                                                        Fabricante = c.Fabricante,
-                                                                        NumProduto = c.Produto,
-                                                                        CustoFinancFornecPrecoListaBase = c.Preco_Lista ?? 0,
-                                                                        Desc_Dado = x.Desc_Dado,
-                                                                        Qtde = x.Qtde
-                                                                    }).FirstOrDefaultAsync();
+                                                                  where c.Produto == x.Produto &&
+                                                                        c.Fabricante == x.Fabricante &&
+                                                                        c.Vendavel == "S" &&
+                                                                        c.Loja == loja
+                                                                  select new PrepedidoProdutoPrepedidoDados
+                                                                  {
+                                                                      Fabricante = c.Fabricante,
+                                                                      Produto = c.Produto,
+                                                                      CustoFinancFornecPrecoListaBase = c.Preco_Lista ?? 0,
+                                                                      Desc_Dado = x.Desc_Dado,
+                                                                      Qtde = x.Qtde
+                                                                  }).FirstOrDefaultAsync();
 
                     if (produto != null)
                     {
@@ -229,7 +229,7 @@ namespace Prepedido
                     }
                     else
                     {
-                        lstErros.Add("Produto cód.(" + x.NumProduto + ") do fabricante cód.(" + x.Fabricante + ") não existe!");
+                        lstErros.Add("Produto cód.(" + x.Produto + ") do fabricante cód.(" + x.Fabricante + ") não existe!");
                     }
                 }
             }
@@ -243,13 +243,13 @@ namespace Prepedido
 
 
             var prodCompostoTask = await (from c in db.TecProdutoCompostos
-                                          where c.Produto_Composto == produto.NumProduto &&
+                                          where c.Produto_Composto == produto.Produto &&
                                           c.Fabricante_Composto == produto.Fabricante
                                           select c).FirstOrDefaultAsync();
 
             if (prodCompostoTask != null)
             {
-                lstErros.Add("Produto cód.(" + produto.NumProduto + ") do fabricante cód.(" + produto.Fabricante + ") " +
+                lstErros.Add("Produto cód.(" + produto.Produto + ") do fabricante cód.(" + produto.Fabricante + ") " +
                     "é um produto composto. Para cadastrar produtos compostos é necessário enviar os produtos individualmente!");
 
                 return false;
@@ -265,7 +265,7 @@ namespace Prepedido
             {
                 lstProdutosCompare.ForEach(y =>
                {
-                   if (x.NumProduto == y.NumProduto && x.Fabricante == y.Fabricante)
+                   if (x.Produto == y.Produto && x.Fabricante == y.Fabricante)
                    {
                        //vamos confrontar os valores
                        if (Math.Abs(x.CustoFinancFornecPrecoListaBase - y.CustoFinancFornecPrecoListaBase) > limiteArredondamento)

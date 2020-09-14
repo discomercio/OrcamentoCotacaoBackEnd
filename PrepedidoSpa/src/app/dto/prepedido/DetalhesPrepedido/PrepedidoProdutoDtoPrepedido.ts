@@ -1,17 +1,17 @@
 ﻿export class PrepedidoProdutoDtoPrepedido {
     Fabricante: string;
     Fabricante_Nome: string;
-    NumProduto: string;
+    Produto: string;
     Descricao: string;
     Obs: string;
     Qtde: number | null;
     Permite_Ra_Status: number;
     BlnTemRa: boolean;
-    Preco: number | null;
-    Preco_Lista: number | null;
-    VlLista: number;
-    Desconto: number | null;
-    VlUnitario: number;
+    CustoFinancFornecPrecoListaBase: number | null;
+    Preco_NF: number | null;
+    Preco_Lista: number;
+    Desc_Dado: number | null;
+    Preco_Venda: number;
     VlTotalItem: number | null;
     VlTotalRA: number;
     Comissao: number | null;
