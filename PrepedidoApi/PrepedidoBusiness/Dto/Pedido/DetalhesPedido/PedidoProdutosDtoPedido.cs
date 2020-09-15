@@ -13,7 +13,7 @@ namespace PrepedidoBusiness.Dto.Pedido.DetalhesPedido
         public short? Qtde { get; set; }
         public short? Faltando { get; set; }
         public string CorFaltante { get; set; }
-        public decimal? CustoFinancFornecPrecoListaBase { get; set; }
+        public decimal? Preco_NF { get; set; }
         public decimal Preco_Lista { get; set; }
         public float? Desc_Dado { get; set; }
         public decimal Preco_Venda { get; set; }
@@ -42,7 +42,7 @@ namespace PrepedidoBusiness.Dto.Pedido.DetalhesPedido
                 Qtde = origem.Qtde,
                 Faltando = origem.Faltando,
                 CorFaltante = origem.CorFaltante,
-                CustoFinancFornecPrecoListaBase = origem.CustoFinancFornecPrecoListaBase,
+                Preco_NF = origem.Preco_NF,
                 Preco_Lista = origem.Preco_Lista,
                 Desc_Dado = origem.Desc_Dado,
                 Preco_Venda = origem.Preco_Venda ?? 0m,

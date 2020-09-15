@@ -359,7 +359,7 @@ namespace Pedido
                     Qtde = c.Qtde,
                     Faltando = faltante,
                     CorFaltante = ObterCorFaltante((int)c.Qtde, qtde_vendido, qtde_sem_presenca),
-                    CustoFinancFornecPrecoListaBase = c.Preco_NF,
+                    Preco_NF = c.Preco_NF,
                     Preco_Lista = c.Preco_Lista,
                     Desc_Dado = c.Desc_Dado,
                     VlTotalItem = c.Qtde * c.Preco_Venda,

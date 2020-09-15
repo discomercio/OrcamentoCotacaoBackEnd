@@ -12,7 +12,7 @@ namespace Pedido.Dados.DetalhesPedido
         public short? Qtde { get; set; }
         public short? Faltando { get; set; }
         public string CorFaltante { get; set; }
-        public decimal? CustoFinancFornecPrecoListaBase { get; set; }
+        public decimal? Preco_NF { get; set; }
         public decimal Preco_Lista { get; set; }
         public float? Desc_Dado { get; set; }
         public decimal? VlTotalItem { get; set; }
