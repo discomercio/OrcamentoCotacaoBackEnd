@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Global\Produto\Produto.csproj" />
     <ProjectReference Include="..\PrepedidoBusiness\PrepedidoBusiness.csproj" />
   </ItemGroup>
 

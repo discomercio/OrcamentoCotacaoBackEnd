@@ -11,8 +11,7 @@ Temos as seguintes Solution Configuration:
 	Release_ApiMagento
 	Release_PrepedidoApi
 	Release_Loja
-	Release_Especificacao (este não é um pacote entregável, é o ambiente de testes, que normalmente vamos executar em debug)
-	Debug
+	Debug (também usado para exeuctar os testes)
 	
 No InfraBanco, temos as seguintes Project Configuration e o define que cada uma delas define:
 	Release_Banco_Prepedido -> RELEASE_BANCO_PREPEDIDO
@@ -20,7 +19,6 @@ No InfraBanco, temos as seguintes Project Configuration e o define que cada uma 
 	Release_Banco_Loja -> RELEASE_BANCO_LOJA
 	Release_Banco_Central -> RELEASE_BANCO_CENTRAL
 	Debug -> DEBUG_BANCO_DEBUG
-	Release_Banco_Especificacao -> RELEASE_BANCO_ESPECIFICACAO
 
 Os campos que são condicionais estão dentro de um if, tipo:
 #if RELEASE_BANCO_PREPEDIDO

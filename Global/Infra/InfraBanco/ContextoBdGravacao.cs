@@ -62,7 +62,8 @@ namespace InfraBanco
         public DbSet<TsessaoAbandonada> TsessaoAbandonadas { get => contexto.TsessaoAbandonadas; }
         public DbSet<Tusuario> Tusuarios { get => contexto.Tusuarios; }
 
-        //todo: daqui para a frente só é necessário para os testes automatizados, tirar do projeto normal
+        //daqui para a frente só é necessário para os testes automatizados
+#if DEBUG_BANCO_DEBUG
         public DbSet<Tbanco> Tbancos { get => contexto.Tbancos; }
         public DbSet<Tfabricante> Tfabricantes { get => contexto.Tfabricantes; }
         public DbSet<Tproduto> Tprodutos { get => contexto.Tprodutos; }
@@ -79,8 +80,7 @@ namespace InfraBanco
         public DbSet<TprazoPagtoVisanet> TprazoPagtoVisanets { get => contexto.TprazoPagtoVisanets; }
         public DbSet<Tperfil> Tperfils { get => contexto.Tperfils; }
         public DbSet<TperfilUsuario> TperfilUsuarios { get => contexto.TperfilUsuarios; }
-
         public DbSet<TcodigoDescricao> tcodigoDescricaos { get => contexto.TcodigoDescricaos; }
-
+#endif
     }
 }
