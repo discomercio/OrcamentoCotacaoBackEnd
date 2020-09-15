@@ -6,6 +6,8 @@
 
   <ItemGroup>
     <Folder Include="FormaPagto\" />
+    <Folder Include="PedidoVisualizacao\Dados\" />
+    <Folder Include="PedidoVisualizacao\Dados\DetalhesPedido\" />
   </ItemGroup>
 
   <ItemGroup>

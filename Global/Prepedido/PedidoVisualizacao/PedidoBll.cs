@@ -7,11 +7,11 @@ using InfraBanco.Modelos;
 using Microsoft.EntityFrameworkCore.Internal;
 using InfraBanco.Constantes;
 using UtilsGlobais;
-using Pedido.Dados;
 using Cliente.Dados;
-using Pedido.Dados.DetalhesPedido;
+using Prepedido.PedidoVisualizacao.Dados;
+using Prepedido.PedidoVisualizacao.Dados.DetalhesPedido;
 
-namespace Pedido
+namespace Prepedido.PedidoVisualizacao
 {
     public class PedidoBll
     {
