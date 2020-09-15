@@ -22,6 +22,7 @@ export class MoedaUtils {
     }
 
     public formatarPorcentagemUmaCasa(nro: number) {
+        
         if (!!!nro)
             return "";
         // return this.formatter1casa.format(nro);
