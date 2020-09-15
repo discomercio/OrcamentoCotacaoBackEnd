@@ -301,7 +301,7 @@
                         readonly tabindex=-1></td>
                 <td *ngIf="pedido?.OpcaoPossuiRA == 'S'" class="MDB" align="right"><input name="c_vl_NF" class="PLLd"
                         style="width:62px;" [ngStyle]="{'color': corDaLinhaPedido(linha)}"
-                        value='{{moedaUtils.formatarMoedaSemPrefixo(linha.CustoFinancFornecPrecoListaBase)}}' readonly tabindex=-1>
+                        value='{{moedaUtils.formatarMoedaSemPrefixo(linha.Preco_NF)}}' readonly tabindex=-1>
                 </td>
                 <td class="MDB" align="right"><input name="c_preco_lista" class="PLLd" style="width:62px;"
                         [ngStyle]="{'color': corDaLinhaPedido(linha)}"

@@ -5,7 +5,7 @@
     Qtde: number | null;
     Faltando: number | null;
     CorFaltante: string;
-    CustoFinancFornecPrecoListaBase: number | null;
+    Preco_NF: number | null;
     Preco_Lista: number;
     Desc_Dado: number | null;
     Preco_Venda: number;
