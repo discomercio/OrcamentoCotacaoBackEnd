@@ -13,11 +13,11 @@ using Prepedido.PedidoVisualizacao.Dados.DetalhesPedido;
 
 namespace Prepedido.PedidoVisualizacao
 {
-    public class PedidoBll
+    public class PedidoVisualizacaoBll
     {
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
 
-        public PedidoBll(InfraBanco.ContextoBdProvider contextoProvider)
+        public PedidoVisualizacaoBll(InfraBanco.ContextoBdProvider contextoProvider)
         {
             this.contextoProvider = contextoProvider;
         }

@@ -14,11 +14,11 @@ namespace PrepedidoApi.Controllers
     [Authorize(Roles = Utils.Autenticacao.RoleAcesso)]
     public class PedidoController : ControllerBase
     {
-        private readonly PedidoBll pedidoBll;
+        private readonly PedidoVisualizacaoBll pedidoBll;
         private readonly InfraIdentity.IServicoDecodificarToken servicoDecodificarToken;
         private readonly PedidoPrepedidoApiBll pedidoPrepedidoApiBll;
 
-        public PedidoController(PedidoBll pedidoBll, InfraIdentity.IServicoDecodificarToken servicoDecodificarToken,
+        public PedidoController(PedidoVisualizacaoBll pedidoBll, InfraIdentity.IServicoDecodificarToken servicoDecodificarToken,
             PrepedidoBusiness.Bll.PedidoPrepedidoApiBll pedidoPrepedidoApiBll)
         {
             this.pedidoBll = pedidoBll;
@@ -52,7 +52,7 @@ namespace PrepedidoApi.Controllers
             //para testar: http://localhost:60877/api/pedido/listarPedidos
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
             IEnumerable<PrepedidoBusiness.Dto.Pedido.PedidoDtoPedido> ret = await pedidoPrepedidoApiBll.ListarPedidos(apelido.Trim(),
-                (PedidoBll.TipoBuscaPedido)tipoBusca, clienteBusca,
+                (PedidoVisualizacaoBll.TipoBuscaPedido)tipoBusca, clienteBusca,
                 numPedido, dataInicial, dataFinal);
 
             return Ok(ret);

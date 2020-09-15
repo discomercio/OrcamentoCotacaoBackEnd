@@ -4,15 +4,15 @@ using PrepedidoBusiness.Dto.Pedido.DetalhesPedido;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using static Prepedido.PedidoVisualizacao.PedidoBll;
+using static Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll;
 
 namespace PrepedidoBusiness.Bll
 {
     public class PedidoPrepedidoApiBll
     {
-        private readonly PedidoBll pedidoBll;
+        private readonly PedidoVisualizacaoBll pedidoBll;
 
-        public PedidoPrepedidoApiBll(PedidoBll pedidoBll)
+        public PedidoPrepedidoApiBll(PedidoVisualizacaoBll pedidoBll)
         {
             this.pedidoBll = pedidoBll;
         }
