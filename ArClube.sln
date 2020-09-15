@@ -28,7 +28,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Etc", "Etc", "{DE89B737-FCFF-4E00-88C6-785451E5D18F}"
 	ProjectSection(SolutionItems) = preProject
 		PrepedidoApi\AtualizarSonar.bat = PrepedidoApi\AtualizarSonar.bat
-		configuracoes_solucao.txt = configuracoes_solucao.txt
+		Global\Infra\InfraBanco\configuracoes_solucao.txt = Global\Infra\InfraBanco\configuracoes_solucao.txt
 		diretorios.txt = diretorios.txt
 		Global\Especificacao\ExecutarOpenCoverParaTela.bat = Global\Especificacao\ExecutarOpenCoverParaTela.bat
 	EndProjectSection
