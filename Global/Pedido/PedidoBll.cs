@@ -354,19 +354,17 @@ namespace Pedido
                 PedidoProdutosPedidoDados produto = new PedidoProdutosPedidoDados
                 {
                     Fabricante = c.Fabricante,
-                    NumProduto = c.Produto,
+                    Produto = c.Produto,
                     Descricao = c.Descricao_Html,
                     Qtde = c.Qtde,
                     Faltando = faltante,
                     CorFaltante = ObterCorFaltante((int)c.Qtde, qtde_vendido, qtde_sem_presenca),
-                    Preco = c.Preco_NF,
-                    VlLista = c.Preco_Lista,
-                    Desconto = c.Desc_Dado,
-                    VlUnitario = c.Preco_Venda,
+                    CustoFinancFornecPrecoListaBase = c.Preco_NF,
+                    Preco_Lista = c.Preco_Lista,
+                    Desc_Dado = c.Desc_Dado,
                     VlTotalItem = c.Qtde * c.Preco_Venda,
                     VlTotalItemComRA = c.Qtde * c.Preco_NF,
-                    VlVenda = c.Preco_Venda,
-                    VlTotal = c.Qtde * c.Preco_Venda,
+                    Preco_Venda = c.Preco_Venda,
                     Comissao = c.Comissao
                 };
 

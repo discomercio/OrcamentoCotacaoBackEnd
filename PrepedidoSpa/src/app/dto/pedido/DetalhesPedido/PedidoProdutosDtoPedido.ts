@@ -1,17 +1,15 @@
 ﻿export class PedidoProdutosDtoPedido {
     Fabricante: string;
-    NumProduto: string;
+    Produto: string;
     Descricao: string;
     Qtde: number | null;
     Faltando: number | null;
     CorFaltante: string;
-    Preco: number | null;
-    VlLista: number;
-    Desconto: number | null;
-    VlUnitario: number;
+    CustoFinancFornecPrecoListaBase: number | null;
+    Preco_Lista: number;
+    Desc_Dado: number | null;
+    Preco_Venda: number;
     VlTotalItem: number | null;
     VlTotalItemComRA: number | null;
-    VlVenda: number | null;
-    VlTotal: number | null;
     Comissao: number | null;
 }
