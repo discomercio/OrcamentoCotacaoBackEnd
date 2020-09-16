@@ -26,7 +26,7 @@ export class MoedaUtils {
         if (!!!nro)
             return "";
         // return this.formatter1casa.format(nro);
-        let teste = this.formatter.format(nro);
+        let teste = this.formatter1casa.format(nro);
         return teste;
     }
 
