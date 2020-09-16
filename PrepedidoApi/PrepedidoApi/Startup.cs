@@ -47,7 +47,7 @@ namespace PrepedidoApi
             services.AddTransient<Prepedido.PrepedidoBll, Prepedido.PrepedidoBll>();
             services.AddTransient<PrepedidoBusiness.Bll.ClientePrepedidoBll, PrepedidoBusiness.Bll.ClientePrepedidoBll>();
             services.AddTransient<Cliente.ClienteBll, Cliente.ClienteBll>();
-            services.AddTransient<Pedido.PedidoBll, Pedido.PedidoBll>();
+            services.AddTransient<Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll, Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll>();
             services.AddTransient<PrepedidoBusiness.Bll.PedidoPrepedidoApiBll, PrepedidoBusiness.Bll.PedidoPrepedidoApiBll>();
             services.AddTransient<PrepedidoBusiness.Bll.AcessoBll, PrepedidoBusiness.Bll.AcessoBll>();
             services.AddTransient<Produto.ProdutoGeralBll, Produto.ProdutoGeralBll>();

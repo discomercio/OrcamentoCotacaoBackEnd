@@ -287,7 +287,7 @@
                         tabindex=-1></td>
 
                 <td class="MDB" align="left"><input name="c_produto" class="PLLe" style="width:54px;"
-                        [ngStyle]="{'color': corDaLinhaPedido(linha)}" value='{{linha.NumProduto}}' readonly
+                        [ngStyle]="{'color': corDaLinhaPedido(linha)}" value='{{linha.Produto}}' readonly
                         tabindex=-1></td>
                 <td class="MDB" align="left" style="width:253px;">
                     <span class="PLLe" [ngStyle]="{'color': corDaLinhaPedido(linha)}"
@@ -301,20 +301,20 @@
                         readonly tabindex=-1></td>
                 <td *ngIf="pedido?.OpcaoPossuiRA == 'S'" class="MDB" align="right"><input name="c_vl_NF" class="PLLd"
                         style="width:62px;" [ngStyle]="{'color': corDaLinhaPedido(linha)}"
-                        value='{{moedaUtils.formatarMoedaSemPrefixo(linha.Preco)}}' readonly tabindex=-1>
+                        value='{{moedaUtils.formatarMoedaSemPrefixo(linha.Preco_NF)}}' readonly tabindex=-1>
                 </td>
                 <td class="MDB" align="right"><input name="c_preco_lista" class="PLLd" style="width:62px;"
                         [ngStyle]="{'color': corDaLinhaPedido(linha)}"
-                        value='{{moedaUtils.formatarMoedaSemPrefixo(linha.VlLista)}}' readonly tabindex=-1></td>
+                        value='{{moedaUtils.formatarMoedaSemPrefixo(linha.Preco_Lista)}}' readonly tabindex=-1></td>
                 <td class="MDB" align="right"><input name="c_desc" class="PLLd" style="width:28px;"
                         [ngStyle]="{'color': corDaLinhaPedido(linha)}"
-                        value='{{moedaUtils.formatarPorcentagemUmaCasa(linha.Desconto)}}' readonly tabindex=-1></td>
+                        value='{{moedaUtils.formatarPorcentagemUmaCasa(linha.Desc_Dado)}}' readonly tabindex=-1></td>
                 <td class="MDB" align="right"><input name="c_vl_unitario" class="PLLd" style="width:62px;"
                         [ngStyle]="{'color': corDaLinhaPedido(linha)}"
-                        value='{{moedaUtils.formatarMoedaSemPrefixo(linha.VlUnitario)}}' readonly tabindex=-1></td>
+                        value='{{moedaUtils.formatarMoedaSemPrefixo(linha.Preco_Venda)}}' readonly tabindex=-1></td>
                 <td class="MDB" align="right"><input name="c_vl_total" class="PLLd" style="width:70px;"
                         [ngStyle]="{'color': corDaLinhaPedido(linha)}"
-                        value='{{moedaUtils.formatarMoedaSemPrefixo(linha.VlTotal)}}' readonly tabindex=-1></td>
+                        value='{{moedaUtils.formatarMoedaSemPrefixo(linha.VlTotalItem)}}' readonly tabindex=-1></td>
             </tr>
 
 

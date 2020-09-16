@@ -99,7 +99,7 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 								<mat-form-field class="preco">
 									<input matInput type="text" required
 										[value]="moedaUtils.formatarMoedaSemPrefixo(i.Preco_NF)"
-										(keyup)="formatarPreco_Lista($event,i)" (blur)="digitouPreco_Lista($event,i)">
+										(keyup)="formatarPreco_NF($event,i)" (blur)="digitouPreco_NF($event,i)">
 								</mat-form-field>
 							</td>
 
@@ -118,7 +118,7 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 								<mat-form-field class="preco">
 									<input matInput type="text" required
 										[value]="moedaUtils.formatarMoedaSemPrefixo(i.Preco_Venda)"
-										(keyup)="formataVlVenda($event,i)" (blur)="digitouVlVenda($event,i)">
+										(keyup)="formataPreco_Venda($event,i)" (blur)="digitouPreco_Venda($event,i)">
 								</mat-form-field>
 							</td>
 
@@ -216,7 +216,7 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 							<mat-form-field class="preco">
 								<input matInput type="text" required
 									[value]="moedaUtils.formatarMoedaSemPrefixo(i.Preco_NF)"
-									(keyup)="formatarPreco_Lista($event,i)" (blur)="digitouPreco_Lista($event,i)"
+									(keyup)="formatarPreco_NF($event,i)" (blur)="digitouPreco_NF($event,i)"
 									placeholder="Preço">
 							</mat-form-field>
 						</span>
@@ -232,7 +232,7 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 							<mat-form-field class="preco">
 								<input matInput type="text" required
 									[value]="moedaUtils.formatarMoedaSemPrefixo(i.Preco_Venda)"
-									(keyup)="formataVlVenda($event,i)" (blur)="digitouVlVenda($event,i)"
+									(keyup)="formataPreco_Venda($event,i)" (blur)="digitouPreco_Venda($event,i)"
 									placeholder=" VL Venda">
 							</mat-form-field>
 						</span>

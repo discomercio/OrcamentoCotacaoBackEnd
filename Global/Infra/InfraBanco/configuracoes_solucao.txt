@@ -1,0 +1,25 @@
+Temos várias configurações da solução
+
+Problema: o banco que roda no prepedidoapi não pode ter os campos que não necessita. Então o PrepedidoApi precisa de uma versão do InfraBanco que tenha 
+somente os campos e tabelas que o prepedido efetivamente necessita.
+
+Solução: temos uma Solution Configuration para cada ambinete (isto é, uma Solution Configuration para cada pacote que vamos entregar).
+Cada Solution Configuration usa o InfraBanco adequado.
+
+Temos as seguintes Solution Configuration:
+	Release_ApiUnis
+	Release_ApiMagento
+	Release_PrepedidoApi
+	Release_Loja
+	Debug (também usado para exeuctar os testes)
+	
+No InfraBanco, temos as seguintes Project Configuration e o define que cada uma delas define:
+	Release_Banco_Prepedido -> RELEASE_BANCO_PREPEDIDO
+	Release_Banco_Pedido -> RELEASE_BANCO_PEDIDO
+	Release_Banco_Loja -> RELEASE_BANCO_LOJA
+	Release_Banco_Central -> RELEASE_BANCO_CENTRAL
+	Debug -> DEBUG_BANCO_DEBUG
+
+Os campos que são condicionais estão dentro de um if, tipo:
+#if RELEASE_BANCO_PREPEDIDO
+

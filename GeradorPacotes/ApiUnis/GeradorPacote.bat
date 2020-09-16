@@ -12,7 +12,8 @@ rem waiting to avoid errors
 timeout /t 1 >nul
 RD PacoteApiUnis /s /q >nul 2> nul
 
-%aux_msbuild% ../../ApiUnis/PrepedidoAPIUnis/PrepedidoAPIUnis.csproj -t:Rebuild -p:DeployOnBuild=true -p:PublishProfile=CompilarPrepedidoApiUnis /p:Configuration=Release
+rem %aux_msbuild% ../../ApiUnis/PrepedidoAPIUnis/PrepedidoAPIUnis.csproj -t:Rebuild -p:DeployOnBuild=true -p:PublishProfile=CompilarPrepedidoApiUnis /p:Configuration=Release
+%aux_msbuild% ../../ArClube.sln -t:Rebuild -p:DeployOnBuild=true -p:PublishProfile=CompilarPrepedidoApiUnis /p:Configuration=Release_ApiUnis
 
 echo %date% %time% >> "PacoteApiUnis\publish\DataCompilacao.txt"
 del PacoteApiUnis\publish\appsettings.json
