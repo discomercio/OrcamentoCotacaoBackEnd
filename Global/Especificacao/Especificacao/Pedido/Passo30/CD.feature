@@ -66,12 +66,20 @@ Scenario: Validar CD escolhido
 #			" (st_ativo <> 0)" & _
 #			" AND (st_habilitado_ctrl_estoque <> 0)"
 
+
 Scenario: MODO_SELECAO_CD__MANUAL exige c_id_nfe_emitente_selecao_manual
 #loja/PedidoNovoConsiste.asp
 #		if rb_selecao_cd = MODO_SELECAO_CD__MANUAL then
 #			id_nfe_emitente_selecao_manual = converte_numero(c_id_nfe_emitente_selecao_manual)
 #			if id_nfe_emitente_selecao_manual = 0 then
 #				alerta=alerta & "O CD selecionado manualmente é inválido"
+
+#loja/PedidoNovoConfirma.asp
+#if rb_selecao_cd = MODO_SELECAO_CD__MANUAL then
+#	id_nfe_emitente_selecao_manual = converte_numero(c_id_nfe_emitente_selecao_manual)
+#	if id_nfe_emitente_selecao_manual = 0 then
+#		alerta=alerta & "O CD selecionado manualmente é inválido"
+
 	Given Pedido base
 	When informo "selecao_cd" = "MODO_SELECAO_CD__MANUAL"
 	And informo "id_nfe_emitente_selecao_manual" = "0"

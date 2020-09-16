@@ -65,5 +65,34 @@ Scenario: Verifica se todos os produtos cujo desconto excedem o máximo permitid
 	#			} // if (perc_desc != 0)
 	#		} // if (trim(f.c_produto[i].value) != "")
 	#	} // for (laço produtos)
+
+#loja/PedidoNovoConfirma.asp
+					#if desc_dado_arredondado > perc_comissao_e_desconto_a_utilizar then
+					#	if rs.State <> 0 then rs.Close
+					#	s = "SELECT " & _
+					#			"*" & _
+					#		" FROM t_DESCONTO" & _
+					#		" WHERE" & _
+					#			" (usado_status=0)" & _
+					#			" AND (cancelado_status=0)" & _
+					#			" AND (id_cliente='" & cliente_selecionado & "')" & _
+					#			" AND (fabricante='" & .fabricante & "')" & _
+					#			" AND (produto='" & .produto & "')" & _
+					#			" AND (loja='" & loja & "')" & _
+					#			" AND (data >= " & bd_formata_data_hora(Now-converte_min_to_dec(TIMEOUT_DESCONTO_EM_MIN)) & ")" & _
+					#		" ORDER BY" & _
+					#			" data DESC"
+					#	set rs=cn.execute(s)
+					#	if rs.Eof then
+					#		alerta=texto_add_br(alerta)
+					#		alerta=alerta & "Produto " & .produto & " do fabricante " & .fabricante & ": desconto de " & formata_perc_desc(.desc_dado) & "% excede o máximo permitido."
+					#	else
+					#		if .desc_dado > rs("desc_max") then
+					#			alerta=texto_add_br(alerta)
+					#			alerta=alerta & "Produto " & .produto & " do fabricante " & .fabricante & ": desconto de " & formata_perc_desc(.desc_dado) & "% excede o máximo autorizado."
+
+
 	Given Pedido base
 	When Fazer esta validação
+	And Verificar se as duas validam a mesma coisa
+

@@ -16,7 +16,7 @@ Scenario: obs1 tamanho
 
 	Given Pedido base
 	When Informo "obs1" = um texto com "500" caracteres
-	Then Sem Erro regex "Conteúdo de "Observações " excede em .*"
+	Then Sem nenhum erro
 
 Scenario: c_nf_texto tamanho
 	#loja/PedidoNovoConsiste.asp
@@ -29,7 +29,7 @@ Scenario: c_nf_texto tamanho
 
 	Given Pedido base
 	When Informo "nf_texto" = um texto com "400" caracteres
-	Then Sem Erro regex "Conteúdo de "Constar na NF" excede em.*"
+	Then Sem nenhum erro
 
 Scenario: forma_pagto tamanho
 	#loja/PedidoNovoConsiste.asp
@@ -41,8 +41,8 @@ Scenario: forma_pagto tamanho
 	Then Erro regex "Conteúdo de \"Forma de Pagamento\" excede em .*"
 
 	Given Pedido base
-	When Informo "nf_texto" = um texto com "250" caracteres
-	Then Sem Erro regex "Conteúdo de \"Forma de Pagamento\" excede em .*"
+	When Informo "forma_pagto" = um texto com "250" caracteres
+	Then Sem nenhum erro
 
 Scenario: etg_imediata
 	#loja/PedidoNovoConsiste.asp
@@ -73,7 +73,7 @@ Scenario: data_previsao_entrega
 	Given Pedido base
 	When Informo "etg_imediata" = "true"
 	When Informo "data_previsao_entrega" = amanhã
-	Then sem Erro "Data de previsão de entrega deve ser uma data futura!"
+	Then Sem nenhum erro
 
 Scenario: bem_uso_consumo
 	#loja/PedidoNovoConsiste.asp
@@ -89,7 +89,7 @@ Scenario: bem_uso_consumo
 
 	Given Pedido base
 	When Informo "bem_uso_consumo" = "COD_ST_BEM_USO_CONSUMO_NAO"
-	Then Sem Erro "Informe se é "Bem de Uso/Consumo""
+	Then Sem nenhum erro
 
 Scenario: instalador_instala
 	#loja/PedidoNovoConsiste.asp
@@ -104,7 +104,7 @@ Scenario: instalador_instala
 
 	Given Pedido base
 	When Informo "instalador_instala" = "COD_INSTALADOR_INSTALA_NAO"
-	Then Sem Erro "Preencha o campo "Instalador Instala""
+	Then Sem nenhum erro
 
 Scenario: garantia_indicador
 	#loja/PedidoNovoConsiste.asp
@@ -119,5 +119,39 @@ Scenario: garantia_indicador
 
 	Given Pedido base
 	When Informo "garantia_indicador" = "COD_GARANTIA_INDICADOR_STATUS__SIM"
-	Then Sem Erro "Preencha o campo "Garantia Indicador""
+	Then Sem nenhum erro
+
+Scenario: c_indicador c_perc_RT rb_RA garantia_indicador somente se for indicacao
+#loja/PedidoNovoConfirma.asp
+	#if rb_indicacao = "S" then
+	#	c_indicador = Trim(Request.Form("c_indicador"))
+	#	c_perc_RT = Trim(Request.Form("c_perc_RT"))
+	#	rb_RA = Trim(Request.Form("rb_RA"))
+	#	rb_garantia_indicador = Trim(Request.Form("rb_garantia_indicador"))
+	#else
+	#	c_indicador = ""
+	#	c_perc_RT = ""
+	#	rb_RA = ""
+	#	rb_garantia_indicador = COD_GARANTIA_INDICADOR_STATUS__NAO
+	#	end if
+
+	Given Pedido base
+	When Informo "indicador" = "ZEZINHO"
+	And Informo "indicacao" = "N"
+	Then No pedido gravado, "indicador" = ""
+
+	Given Pedido base
+	When Informo "perc_RT" = "123"
+	And Informo "indicacao" = "N"
+	Then No pedido gravado, "perc_RT" = ""
+
+	Given Pedido base
+	When Informo "RA" = "True"
+	And Informo "indicacao" = "N"
+	Then No pedido gravado, "RA" = "false"
+
+	Given Pedido base
+	When Informo "garantia_indicador" = "COD_GARANTIA_INDICADOR_STATUS__SIM"
+	And Informo "indicacao" = "N"
+	Then No pedido gravado, "garantia_indicador" = "COD_GARANTIA_INDICADOR_STATUS__NAO"
 

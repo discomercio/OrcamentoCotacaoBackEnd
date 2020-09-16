@@ -10,10 +10,17 @@ using Xunit;
  *      feito loja/ClienteEdita.asp
  *      feito loja/PedidoNovoProdCompostoMask.asp
  *      feito loja/PedidoNovo.asp 
+ *      feito loja/PedidoNovoConsiste.asp 
  * 
-  	AFAZER: TODO: loja/PedidoNovoConsiste.asp linha 3087 - ver quando o coampo não é exibido
-    AFAZER: TODO: onde salva: PedidoNovoConfirma.asp
-* 
+    AFAZER: TODO: onde salva: loja/PedidoNovoConfirma.asp linha 1747
+
+Validações ao salvar:
+1:
+if Not ESTOQUE_produto_saida_v2(usuario, id_pedido_temp, vEmpresaAutoSplit(iv), .fabricante, .produto, vProdRegra(iRegra).regra.regraUF.regraPessoa.vCD(iCD).estoque.qtde_solicitada, qtde_spe, qtde_estoque_vendido_aux, qtde_estoque_sem_presenca_aux, msg_erro) then
+2:
+								alerta = "Senha de autorização para desconto superior não encontrado."
+
+* * 
  * */
 
 namespace Especificacao
@@ -30,8 +37,6 @@ namespace Especificacao
 
 
 /*
- * todo: fazer o fluxo na criação do prepedido
- * 
  * todo: melhorar as dependencias
 todo: implementar cadastro do prepedidoapi
 

@@ -57,15 +57,20 @@ Scenario: Produto disponível para a loja
 #	alerta=texto_add_br(alerta)
 #	alerta=alerta & "Produto '" & s_produto & "' não foi encontrado para a loja " & loja & "!!"
 
-	#também em loja/PedidoNovoConsiste.asp
-	#					alerta=alerta & "Produto " & .produto & " do fabricante " & .fabricante & " NÃO está cadastrado."
+#também em loja/PedidoNovoConsiste.asp
+#					alerta=alerta & "Produto " & .produto & " do fabricante " & .fabricante & " NÃO está cadastrado."
+
+#loja/PedidoNovoConfirma.asp
+#alerta=alerta & "Produto " & .produto & " do fabricante " & .fabricante & " NÃO está cadastrado para a loja " & loja
+
 	When Fazer esta validação
 
-	#em loja/PedidoNovoConsiste.asp
-	#					if Ucase(Trim("" & rs("vendavel"))) <> "S" then
-	#						alerta=alerta & "Produto " & .produto & " do fabricante " & .fabricante & " NÃO está disponível para venda."
-	#					elseif .qtde > rs("qtde_max_venda") then
-	#						alerta=alerta & "Produto " & .produto & " do fabricante " & .fabricante & ": quantidade " & cstr(.qtde) & " excede o máximo permitido."
+#em loja/PedidoNovoConsiste.asp
+#					if Ucase(Trim("" & rs("vendavel"))) <> "S" then
+#						alerta=alerta & "Produto " & .produto & " do fabricante " & .fabricante & " NÃO está disponível para venda."
+#					elseif .qtde > rs("qtde_max_venda") then
+#						alerta=alerta & "Produto " & .produto & " do fabricante " & .fabricante & ": quantidade " & cstr(.qtde) & " excede o máximo permitido."
+
 	When Fazer esta validação
 
 
@@ -82,30 +87,47 @@ Scenario: Sem produtos repetidos
 
 
 Scenario: // CONSISTÊNCIA PARA VALOR ZERADO
-	#loja/PedidoNovoConsiste.asp
-	#// CONSISTÊNCIA PARA VALOR ZERADO
-	#   strMsgErro = "";
-	#   for (i = 0; i < f.c_produto.length; i++) {
-	#       if (trim(f.c_produto[i].value) != "") {
-	#           vl_preco_venda = converte_numero(f.c_vl_unitario[i].value);
-	#           if (vl_preco_venda <= 0) {
-	#               if (strMsgErro != "") strMsgErro += "\n";
-	#               strMsgErro += "O produto '" + f.c_descricao[i].value + "' está com valor de venda zerado!";
-	#           }
-	#           else if ((f.c_permite_RA_status.value == '1') && (f.rb_RA.value == 'S')) {
-	#               vl_NF = converte_numero(f.c_vl_NF[i].value);
-	#               if (vl_NF <= 0) {
-	#                   if (strMsgErro != "") strMsgErro += "\n";
-	#                   strMsgErro += "O produto '" + f.c_descricao[i].value + "' está com o preço zerado!";
-	#               }
-	#           }
-	#       }
-	#   }
+#loja/PedidoNovoConsiste.asp
+#// CONSISTÊNCIA PARA VALOR ZERADO
+#   strMsgErro = "";
+#   for (i = 0; i < f.c_produto.length; i++) {
+#       if (trim(f.c_produto[i].value) != "") {
+#           vl_preco_venda = converte_numero(f.c_vl_unitario[i].value);
+#           if (vl_preco_venda <= 0) {
+#               if (strMsgErro != "") strMsgErro += "\n";
+#               strMsgErro += "O produto '" + f.c_descricao[i].value + "' está com valor de venda zerado!";
+#           }
+#           else if ((f.c_permite_RA_status.value == '1') && (f.rb_RA.value == 'S')) {
+#               vl_NF = converte_numero(f.c_vl_NF[i].value);
+#               if (vl_NF <= 0) {
+#                   if (strMsgErro != "") strMsgErro += "\n";
+#                   strMsgErro += "O produto '" + f.c_descricao[i].value + "' está com o preço zerado!";
+#               }
+#           }
+#       }
+#   }
+
+#loja/PedidoNovoConfirma.asp
+#'	CONSISTÊNCIA PARA VALOR ZERADO
+#	if alerta="" then
+#		for i=Lbound(v_item) to Ubound(v_item)
+#			with v_item(i)
+#				if .preco_venda <= 0 then
+#					alerta=texto_add_br(alerta)
+#					alerta=alerta & "Produto '" & .produto & "' está com valor de venda zerado!"
+#				elseif ((rb_RA = "S") And (permite_RA_status = 1)) And (.preco_NF <= 0) then
+#					alerta=texto_add_br(alerta)
+#					alerta=alerta & "Produto '" & .produto & "' está com preço zerado!"
+#					end if
+#				end with
+#			next
+#		end if
+
 	When Fazer esta validação
 
 Scenario: // CONSISTÊNCIA PARA VALOR negativos
 	#loja/PedidoNovoConsiste.asp
-		#<input name="c_vl_NF" id="c_vl_NF" class="PLLd" style="width:62px;"
-		#	onkeypress="if (digitou_enter(true)) fPED.c_vl_unitario[<%=Cstr(i-1)%>].focus(); filtra_moeda_positivo();" onblur="this.value=formata_moeda(this.value); trata_edicao_RA(<%=Cstr(i-1)%>); recalcula_RA(); recalcula_RA_Liquido(); recalcula_parcelas();"
-		#Quer dizer, os preços devem ser positivos
+	#<input name="c_vl_NF" id="c_vl_NF" class="PLLd" style="width:62px;"
+	#	onkeypress="if (digitou_enter(true)) fPED.c_vl_unitario[<%=Cstr(i-1)%>].focus(); filtra_moeda_positivo();" onblur="this.value=formata_moeda(this.value); trata_edicao_RA(<%=Cstr(i-1)%>); recalcula_RA(); recalcula_RA_Liquido(); recalcula_parcelas();"
+	#Quer dizer, os preços devem ser positivos
 	When Fazer esta validação

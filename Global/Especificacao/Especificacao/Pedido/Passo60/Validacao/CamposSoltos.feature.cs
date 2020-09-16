@@ -20,7 +20,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Validacao
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "ignore")]
-    public partial class EstoqueFeature : object, Xunit.IClassFixture<EstoqueFeature.FixtureData>, System.IDisposable
+    public partial class PedidoPasso60ValidacaoCamposSoltosFeature : object, Xunit.IClassFixture<PedidoPasso60ValidacaoCamposSoltosFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -30,10 +30,10 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Validacao
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "Estoque.feature"
+#line 1 "CamposSoltos.feature"
 #line hidden
         
-        public EstoqueFeature(EstoqueFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public PedidoPasso60ValidacaoCamposSoltosFeature(PedidoPasso60ValidacaoCamposSoltosFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,7 +42,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Validacao
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Estoque", null, ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Pedido Passo 60 validação CamposSoltos", null, ProgrammingLanguage.CSharp, new string[] {
                         "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -83,14 +83,14 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Validacao
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validar estoque")]
-        [Xunit.TraitAttribute("FeatureTitle", "Estoque")]
-        [Xunit.TraitAttribute("Description", "Validar estoque")]
-        public virtual void ValidarEstoque()
+        [Xunit.SkippableFactAttribute(DisplayName="campos soltos 1")]
+        [Xunit.TraitAttribute("FeatureTitle", "Pedido Passo 60 validação CamposSoltos")]
+        [Xunit.TraitAttribute("Description", "campos soltos 1")]
+        public virtual void CamposSoltos1()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar estoque", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("campos soltos 1", null, tagsOfScenario, argumentsOfScenario);
 #line 4
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -111,23 +111,23 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 126
+#line 18
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validar estoque 2")]
-        [Xunit.TraitAttribute("FeatureTitle", "Estoque")]
-        [Xunit.TraitAttribute("Description", "Validar estoque 2")]
-        public virtual void ValidarEstoque2()
+        [Xunit.SkippableFactAttribute(DisplayName="campos soltos 2")]
+        [Xunit.TraitAttribute("FeatureTitle", "Pedido Passo 60 validação CamposSoltos")]
+        [Xunit.TraitAttribute("Description", "campos soltos 2")]
+        public virtual void CamposSoltos2()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar estoque 2", null, tagsOfScenario, argumentsOfScenario);
-#line 128
-this.ScenarioInitialize(scenarioInfo);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("campos soltos 2", null, tagsOfScenario, argumentsOfScenario);
+#line 20
+ this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
             bool isFeatureIgnored = default(bool);
@@ -146,23 +146,23 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 175
+#line 38
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validar estoque - não implementado")]
-        [Xunit.TraitAttribute("FeatureTitle", "Estoque")]
-        [Xunit.TraitAttribute("Description", "Validar estoque - não implementado")]
-        public virtual void ValidarEstoque_NaoImplementado()
+        [Xunit.SkippableFactAttribute(DisplayName="campos soltos 3")]
+        [Xunit.TraitAttribute("FeatureTitle", "Pedido Passo 60 validação CamposSoltos")]
+        [Xunit.TraitAttribute("Description", "campos soltos 3")]
+        public virtual void CamposSoltos3()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar estoque - não implementado", null, tagsOfScenario, argumentsOfScenario);
-#line 177
-this.ScenarioInitialize(scenarioInfo);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("campos soltos 3", null, tagsOfScenario, argumentsOfScenario);
+#line 40
+  this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
             bool isFeatureIgnored = default(bool);
@@ -181,23 +181,23 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 192
- testRunner.When("Nada a fazer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 60
+ testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="descontinuado")]
-        [Xunit.TraitAttribute("FeatureTitle", "Estoque")]
-        [Xunit.TraitAttribute("Description", "descontinuado")]
-        public virtual void Descontinuado()
+        [Xunit.SkippableFactAttribute(DisplayName="campos soltos 4")]
+        [Xunit.TraitAttribute("FeatureTitle", "Pedido Passo 60 validação CamposSoltos")]
+        [Xunit.TraitAttribute("Description", "campos soltos 4")]
+        public virtual void CamposSoltos4()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("descontinuado", null, tagsOfScenario, argumentsOfScenario);
-#line 195
-this.ScenarioInitialize(scenarioInfo);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("campos soltos 4", null, tagsOfScenario, argumentsOfScenario);
+#line 62
+  this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
             bool isFeatureIgnored = default(bool);
@@ -216,7 +216,42 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 198
+#line 66
+ testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="campos soltos 5")]
+        [Xunit.TraitAttribute("FeatureTitle", "Pedido Passo 60 validação CamposSoltos")]
+        [Xunit.TraitAttribute("Description", "campos soltos 5")]
+        public virtual void CamposSoltos5()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("campos soltos 5", null, tagsOfScenario, argumentsOfScenario);
+#line 68
+  this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 73
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
@@ -230,12 +265,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                EstoqueFeature.FeatureSetup();
+                PedidoPasso60ValidacaoCamposSoltosFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                EstoqueFeature.FeatureTearDown();
+                PedidoPasso60ValidacaoCamposSoltosFeature.FeatureTearDown();
             }
         }
     }

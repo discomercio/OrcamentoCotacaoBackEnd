@@ -127,7 +127,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("Informo \"obs1\" = um texto com \"500\" caracteres", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 19
- testRunner.Then("Sem Erro regex \"Conteúdo de \"Observações \" excede em .*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -177,7 +177,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("Informo \"nf_texto\" = um texto com \"400\" caracteres", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 32
- testRunner.Then("Sem Erro regex \"Conteúdo de \"Constar na NF\" excede em.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -224,10 +224,10 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 44
- testRunner.When("Informo \"nf_texto\" = um texto com \"250\" caracteres", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"forma_pagto\" = um texto com \"250\" caracteres", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 45
- testRunner.Then("Sem Erro regex \"Conteúdo de \\\"Forma de Pagamento\\\" excede em .*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -336,7 +336,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("Informo \"data_previsao_entrega\" = amanhã", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 76
- testRunner.Then("sem Erro \"Data de previsão de entrega deve ser uma data futura!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -395,7 +395,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("Informo \"bem_uso_consumo\" = \"COD_ST_BEM_USO_CONSUMO_NAO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 92
- testRunner.Then("Sem Erro \"Informe se é \"Bem de Uso/Consumo\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -454,7 +454,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("Informo \"instalador_instala\" = \"COD_INSTALADOR_INSTALA_NAO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 107
- testRunner.Then("Sem Erro \"Preencha o campo \"Instalador Instala\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -513,7 +513,87 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("Informo \"garantia_indicador\" = \"COD_GARANTIA_INDICADOR_STATUS__SIM\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 122
- testRunner.Then("Sem Erro \"Preencha o campo \"Garantia Indicador\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="c_indicador c_perc_RT rb_RA garantia_indicador somente se for indicacao")]
+        [Xunit.TraitAttribute("FeatureTitle", "CamposSoltos")]
+        [Xunit.TraitAttribute("Description", "c_indicador c_perc_RT rb_RA garantia_indicador somente se for indicacao")]
+        public virtual void C_IndicadorC_Perc_RTRb_RAGarantia_IndicadorSomenteSeForIndicacao()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_indicador c_perc_RT rb_RA garantia_indicador somente se for indicacao", null, tagsOfScenario, argumentsOfScenario);
+#line 124
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 138
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 139
+ testRunner.When("Informo \"indicador\" = \"ZEZINHO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 140
+ testRunner.And("Informo \"indicacao\" = \"N\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 141
+ testRunner.Then("No pedido gravado, \"indicador\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 143
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 144
+ testRunner.When("Informo \"perc_RT\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 145
+ testRunner.And("Informo \"indicacao\" = \"N\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 146
+ testRunner.Then("No pedido gravado, \"perc_RT\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 148
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 149
+ testRunner.When("Informo \"RA\" = \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 150
+ testRunner.And("Informo \"indicacao\" = \"N\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 151
+ testRunner.Then("No pedido gravado, \"RA\" = \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 153
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 154
+ testRunner.When("Informo \"garantia_indicador\" = \"COD_GARANTIA_INDICADOR_STATUS__SIM\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 155
+ testRunner.And("Informo \"indicacao\" = \"N\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 156
+ testRunner.Then("No pedido gravado, \"garantia_indicador\" = \"COD_GARANTIA_INDICADOR_STATUS__NAO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

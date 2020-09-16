@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Especificacao.Pedido.Passo40
+namespace Especificacao.Especificacao.Pedido.Passo60.Validacao
 {
     using TechTalk.SpecFlow;
     using System;
@@ -20,7 +20,7 @@ namespace Especificacao.Especificacao.Pedido.Passo40
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "ignore")]
-    public partial class LimiteDescontoFeature : object, Xunit.IClassFixture<LimiteDescontoFeature.FixtureData>, System.IDisposable
+    public partial class CustoFinancFornecFeature : object, Xunit.IClassFixture<CustoFinancFornecFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -30,10 +30,10 @@ namespace Especificacao.Especificacao.Pedido.Passo40
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "LimiteDesconto.feature"
+#line 1 "CustoFinancFornec.feature"
 #line hidden
         
-        public LimiteDescontoFeature(LimiteDescontoFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public CustoFinancFornecFeature(CustoFinancFornecFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,7 +42,7 @@ namespace Especificacao.Especificacao.Pedido.Passo40
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "LimiteDesconto", null, ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "CustoFinancFornec", null, ProgrammingLanguage.CSharp, new string[] {
                         "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -83,14 +83,14 @@ namespace Especificacao.Especificacao.Pedido.Passo40
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Percentual de comissão excede o máximo permitido!!")]
-        [Xunit.TraitAttribute("FeatureTitle", "LimiteDesconto")]
-        [Xunit.TraitAttribute("Description", "Percentual de comissão excede o máximo permitido!!")]
-        public virtual void PercentualDeComissaoExcedeOMaximoPermitido()
+        [Xunit.SkippableFactAttribute(DisplayName="A forma de pagamento não foi informada (à vista, com entrada, sem entrada).\"")]
+        [Xunit.TraitAttribute("FeatureTitle", "CustoFinancFornec")]
+        [Xunit.TraitAttribute("Description", "A forma de pagamento não foi informada (à vista, com entrada, sem entrada).\"")]
+        public virtual void AFormaDePagamentoNaoFoiInformadaAVistaComEntradaSemEntrada_()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Percentual de comissão excede o máximo permitido!!", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A forma de pagamento não foi informada (à vista, com entrada, sem entrada).\"", null, tagsOfScenario, argumentsOfScenario);
 #line 4
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -111,28 +111,22 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 17
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 18
+#line 10
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Verifica se todos os produtos cujo desconto excedem o máximo permitido possuem se" +
-            "nha de desconto disponível")]
-        [Xunit.TraitAttribute("FeatureTitle", "LimiteDesconto")]
-        [Xunit.TraitAttribute("Description", "Verifica se todos os produtos cujo desconto excedem o máximo permitido possuem se" +
-            "nha de desconto disponível")]
-        public virtual void VerificaSeTodosOsProdutosCujoDescontoExcedemOMaximoPermitidoPossuemSenhaDeDescontoDisponivel()
+        [Xunit.SkippableFactAttribute(DisplayName="Não foi informada a quantidade de parcelas para a forma de pagamento selecionada")]
+        [Xunit.TraitAttribute("FeatureTitle", "CustoFinancFornec")]
+        [Xunit.TraitAttribute("Description", "Não foi informada a quantidade de parcelas para a forma de pagamento selecionada")]
+        public virtual void NaoFoiInformadaAQuantidadeDeParcelasParaAFormaDePagamentoSelecionada()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verifica se todos os produtos cujo desconto excedem o máximo permitido possuem se" +
-                    "nha de desconto disponível", null, tagsOfScenario, argumentsOfScenario);
-#line 20
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Não foi informada a quantidade de parcelas para a forma de pagamento selecionada", null, tagsOfScenario, argumentsOfScenario);
+#line 12
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -152,14 +146,8 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 95
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 96
+#line 18
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 97
- testRunner.And("Verificar se as duas validam a mesma coisa", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -172,12 +160,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                LimiteDescontoFeature.FeatureSetup();
+                CustoFinancFornecFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                LimiteDescontoFeature.FeatureTearDown();
+                CustoFinancFornecFeature.FeatureTearDown();
             }
         }
     }

@@ -32,6 +32,21 @@ Scenario: Validação do endereço
 #						        "<br>" & "Certifique-se de que a UF do endereço de entrega corresponde à UF responsável pelo registro da IE."
 
 
+#loja/PedidoNovoConfirma.asp
+#if EndEtg_endereco="" then
+#	alerta="PREENCHA O ENDEREÇO DE ENTREGA."
+#elseif Len(EndEtg_endereco) > CLng(MAX_TAMANHO_CAMPO_ENDERECO) then
+#	alerta="ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: " & Cstr(Len(EndEtg_endereco)) & " CARACTERES<br>TAMANHO MÁXIMO: " & Cstr(MAX_TAMANHO_CAMPO_ENDERECO) & " CARACTERES"
+#elseif EndEtg_endereco_numero="" then
+#	alerta="PREENCHA O NÚMERO DO ENDEREÇO DE ENTREGA."
+#elseif EndEtg_cidade="" then
+#	alerta="PREENCHA A CIDADE DO ENDEREÇO DE ENTREGA."
+#elseif EndEtg_uf="" then
+#	alerta="PREENCHA A UF DO ENDEREÇO DE ENTREGA."
+#elseif EndEtg_cep="" then
+#	alerta="PREENCHA O CEP DO ENDEREÇO DE ENTREGA."
+
+
 Scenario: Endereço
 	When Informo "EndEtg_endereco" = ""
 	Then Erro "Preencha o endereço de entrega!!"
@@ -89,6 +104,12 @@ Scenario: EndEtg_uf 4
 	Then Sem erro "UF inválida no endereço de entrega!!"
 
 Scenario: EndEtg_cep
+	#também em 	#loja/PedidoNovoConfirma.asp
+	#'	CEP
+	#	if alerta = "" then
+	#		if rb_end_entrega = "S" then
+	#			if EndEtg_cep = "" then
+	#				alerta = "Informe o CEP do endereço de entrega."
 	When Informo "EndEtg_cep" = ""
 	Then Erro "Informe o CEP do endereço de entrega!!"
 

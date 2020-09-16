@@ -3,6 +3,9 @@ Feature: Estoque
 
 Scenario: Validar estoque
 	#loja/PedidoNovoConsiste.asp
+	#loja/PedidoNovoConfirma.asp
+	#exatamente o mesmo código nas duas (só tem uma mensagem comentada de diferença)
+
 	#	if alerta="" then
 	#		'PREPARA O VETOR PARA RECUPERAR AS REGRAS DE CONSUMO DO ESTOQUE ASSOCIADAS AOS PRODUTOS
 	#		redim vProdRegra(0)
@@ -124,6 +127,9 @@ Scenario: Validar estoque
 
 Scenario: Validar estoque 2
 	#loja/PedidoNovoConsiste.asp
+	#loja/PedidoNovoConfirma.asp
+	#exatamente o mesmo código nas duas 
+
 	#		if alerta="" then
 	#		'OBTÉM DISPONIBILIDADE DO PRODUTO NO ESTOQUE
 	#		for iRegra=LBound(vProdRegra) to UBound(vProdRegra)
@@ -170,6 +176,10 @@ Scenario: Validar estoque 2
 
 Scenario: Validar estoque - não implementado
 	#loja/PedidoNovoConsiste.asp
+	#loja/PedidoNovoConfirma.asp
+	#exatamente o mesmo código nas duas, exceto:
+	#	loja/PedidoNovoConfirma.asp tem um bloco a mais para avisar de estoque que está desabilitado
+
 	#Desde:
 	#'	HÁ PRODUTO C/ ESTOQUE INSUFICIENTE (SOMANDO-SE O ESTOQUE DE TODAS AS EMPRESAS CANDIDATAS)
 	#	erro_produto_indisponivel = False
