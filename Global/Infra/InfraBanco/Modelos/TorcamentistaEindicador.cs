@@ -73,5 +73,14 @@ namespace InfraBanco.Modelos
         [Column("tel_cel")]
         [MaxLength(11)]
         public string Tel_cel { get; set; }
+
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+        [Column("perc_desagio_RA")]
+        public float? Perc_Desagio_RA { get; set; }
+
+        [Column("vl_limite_mensal", TypeName = "money")]
+        [Required]
+        public decimal Vl_Limite_Mensal { get; set; }
+#endif
     }
 }

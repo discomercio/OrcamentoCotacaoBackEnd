@@ -65,5 +65,9 @@ namespace InfraBanco
         public IQueryable<Tperfil> Tperfils { get => contexto.Tperfils.AsNoTracking(); }
         public IQueryable<TperfilUsuario> TperfilUsuarios { get => contexto.TperfilUsuarios.AsNoTracking(); }
 
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+        public IQueryable<Tdesconto> Tdescontos { get => contexto.Tdescontos.AsNoTracking(); }
+#endif
+
     }
 }

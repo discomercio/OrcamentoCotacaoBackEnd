@@ -19,7 +19,7 @@ using Loja.Bll.Dto.LojaDto;
 using Loja.Bll.Dto.IndicadorDto;
 using Loja.Bll.Dto.FormaPagtoDto;
 using Loja.Bll.Bll.PedidoBll.EfetivaPedido;
-
+using Pedido.Dados.Criacao;
 
 namespace Loja.Bll.PedidoBll
 {

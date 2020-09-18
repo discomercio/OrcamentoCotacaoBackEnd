@@ -127,7 +127,8 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
                 }
 
                 Pedido.Dados.Criacao.PedidoCriacaoRetornoDados ret =
-                    await pedidoCriacao.CadastrarPedido(await CriarPedidoCriacaoDados(pedidoMagento, dadosCliente, orcamentista, loja, vendedor));
+                    await pedidoCriacao.CadastrarPedido(await CriarPedidoCriacaoDados(pedidoMagento, dadosCliente, orcamentista, loja, vendedor),
+                    Convert.ToDecimal(configuracaoApiMagento.LimiteArredondamentoPrecoVendaOrcamentoItem), 0.1M);
 
                 resultado.IdPedidoCadastrado = ret.Id;
                 resultado.IdsPedidosFilhotes = ret.ListaIdPedidosFilhotes;

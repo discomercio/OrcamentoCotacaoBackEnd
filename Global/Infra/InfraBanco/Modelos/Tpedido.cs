@@ -289,7 +289,7 @@ namespace InfraBanco.Modelos
         public Tcliente Tcliente { get; set; }
 
         /*Novos campos de memorização de endereço */
-[Column("st_memorizacao_completa_enderecos")]
+        [Column("st_memorizacao_completa_enderecos")]
         [Required]
         public byte St_memorizacao_completa_enderecos { get; set; }
 
@@ -491,5 +491,9 @@ namespace InfraBanco.Modelos
 
         [Column("PrevisaoEntregaDtHrUltAtualiz")]
         public DateTime? PrevisaoEntregaDtHrUltAtualiz { get; set; }
+
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+        public ICollection<TpedidoItemDevolvido> TpedidoItemDevolvido { get; set; }
+#endif
     }
 }

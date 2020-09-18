@@ -160,7 +160,8 @@ namespace Pedido
             //busca produtos , busca percentual custo finananceiro, calcula desconto 716 ate 824
             //desc_dado_arredondado
             //estamos alterando o v_item com descontos verificados e aplicados
-            await VerificarDescontoArredondado(loja, v_item, lstErros, c_custoFinancFornecTipoParcelamento,
+            List<string> vdesconto = new List<string>();
+            await VerificarDescontoArredondado(pedido.LojaUsuario, v_item, pedidoRetorno.ListaErros, c_custoFinancFornecTipoParcelamento,
                 c_custoFinancFornecQtdeParcelas, pedido.DadosCliente.Id, percDescComissaoUtilizar, vdesconto);
 
             /* 12- busca os dados dos produtos do item 6 */
@@ -569,9 +570,9 @@ namespace Pedido
         {
             string retorno = "";
 
-            if (tipoParcelamento == Constantes.Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA)
+            if (tipoParcelamento == Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA)
                 retorno = "0+" + custoFFQtdeParcelas;
-            else if (tipoParcelamento == Constantes.Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA)
+            else if (tipoParcelamento == Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA)
                 retorno = "1+" + custoFFQtdeParcelas;
 
             return retorno;

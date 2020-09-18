@@ -55,5 +55,10 @@ namespace InfraBanco.Modelos
         public string Subgrupo { get; set; }
 
         public Tpedido Tpedido { get; set; }
+
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+        [Column("sequencia")]
+        public short? Sequencia { get; set; }
+#endif
     }
 }

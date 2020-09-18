@@ -78,6 +78,18 @@ namespace InfraBanco
                 .HasKey(x => new { x.Grupo, x.Codigo });
             modelBuilder.Entity<TpercentualCustoFinanceiroFornecedor>()
                 .HasKey(x => new { x.Fabricante, x.Tipo_Parcelamento, x.Qtde_Parcelas });
+
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+            modelBuilder.Entity<TpedidoItemDevolvido>()
+                .HasOne(x => x.Tpedido)
+                .WithMany(x => x.TpedidoItemDevolvido)
+                .HasForeignKey(x => x.Pedido);
+
+            modelBuilder.Entity<TprodutoLoja>()
+                .HasOne(x => x.Tproduto)
+                .WithMany(x => x.TprodutoLoja)
+                .HasForeignKey(x => new { x.Fabricante, x.Produto });
+#endif
         }
 
         public DbSet<Tcliente> Tclientes { get; set; }
@@ -128,5 +140,9 @@ namespace InfraBanco
         public DbSet<TsessaoAbandonada> TsessaoAbandonadas { get; set; }
         public DbSet<Tperfil> Tperfils { get; set; }
         public DbSet<TperfilUsuario> TperfilUsuarios { get; set; }
+
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+        public DbSet<Tdesconto> Tdescontos { get; set; }
+#endif
     }
 }

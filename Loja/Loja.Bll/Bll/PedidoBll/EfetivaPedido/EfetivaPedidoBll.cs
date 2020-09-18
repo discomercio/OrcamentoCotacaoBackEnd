@@ -6,12 +6,14 @@ using Loja.Data;
 using Loja.Modelo;
 using Loja.Modelos;
 using Microsoft.EntityFrameworkCore;
+using Pedido.Dados.Criacao;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+
 
 namespace Loja.Bll.Bll.PedidoBll.EfetivaPedido
 {
