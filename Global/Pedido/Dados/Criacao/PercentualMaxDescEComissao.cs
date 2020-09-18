@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Loja.Bll.Dto.PedidoDto
+namespace Pedido.Dados.Criacao
 {
     public class PercentualMaxDescEComissao
     {

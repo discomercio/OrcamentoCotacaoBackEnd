@@ -759,15 +759,17 @@ namespace Prepedido
 
 
             //Validar endereço de entraga
-            if (await validacoesPrepedidoBll.ValidarEnderecoEntrega(prePedido, lstErros))
+            if (await validacoesPrepedidoBll.ValidarEnderecoEntrega(prePedido.EnderecoEntrega, lstErros, 
+                prePedido.DadosCliente.Indicador_Orcamentista, prePedido.DadosCliente.Tipo))
             {
                 //busca a sigla do tipo de pagamento pelo código enviado
                 string c_custoFinancFornecTipoParcelamento = ObterSiglaFormaPagto(prePedido.FormaPagtoCriacao);
 
                 //precisa incluir uma validação de forma de pagamento com base no orçamentista enviado
                 FormaPagtoDados formasPagto = await formaPagtoBll.ObterFormaPagto(tOrcamentista.Apelido, prePedido.DadosCliente.Tipo);
-                if (validacoesFormaPagtoBll.ValidarFormaPagto(prePedido, lstErros, limiteArredondamento,
-                    0.1M, c_custoFinancFornecTipoParcelamento, formasPagto))
+                if (validacoesFormaPagtoBll.ValidarFormaPagto(prePedido.FormaPagtoCriacao, lstErros, limiteArredondamento,
+                    0.1M, c_custoFinancFornecTipoParcelamento, formasPagto, prePedido.PermiteRAStatus, 
+                    prePedido.Vl_total_NF, prePedido.Vl_total))
                 {
                     //Esta sendo verificado qual o tipo de pagamento que esta sendo feito e retornando a quantidade de parcelas
                     int c_custoFinancFornecQtdeParcelas = ObterQtdeParcelasFormaPagto(prePedido.FormaPagtoCriacao);

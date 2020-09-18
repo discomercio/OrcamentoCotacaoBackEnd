@@ -10,6 +10,7 @@ using UtilsGlobais;
 using Pedido.Dados;
 using Cliente.Dados;
 using Pedido.Dados.DetalhesPedido;
+using Pedido.Dados.Criacao;
 
 namespace Pedido
 {
@@ -1312,6 +1313,25 @@ namespace Pedido
                     break;
             };
             return retorno;
+        }
+
+        // MÉTODOS NOVOS SENDO MOVIDO
+        public async Task<PercentualMaxDescEComissao> ObterPercentualMaxDescEComissao(string loja)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+
+            var ret = from c in db.Tlojas
+                      where c.Loja == loja
+                      select new PercentualMaxDescEComissao
+                      {
+                          PercMaxComissao = c.Perc_Max_Comissao,
+                          PercMaxComissaoEDesc = c.Perc_Max_Comissao_E_Desconto,
+                          PercMaxComissaoEDescNivel2 = c.Perc_Max_Comissao_E_Desconto_Nivel2,
+                          PercMaxComissaoEDescPJ = c.Perc_Max_Comissao_E_Desconto_Pj,
+                          PercMaxComissaoEDescNivel2PJ = c.Perc_Max_Comissao_E_Desconto_Nivel2_Pj
+                      };
+
+            return await ret.FirstOrDefaultAsync();
         }
     }
 }

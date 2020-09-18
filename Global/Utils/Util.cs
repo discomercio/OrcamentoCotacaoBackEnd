@@ -1159,5 +1159,84 @@ namespace UtilsGlobais
 
             return cep;
         }
+
+        public static async Task<float> ObterPercentualDesagioRAIndicador(string indicador, ContextoBdProvider contextoProvider)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+            var percDesagioIndicadorRATask = (from c in db.TorcamentistaEindicadors
+                                              where c.Apelido == indicador
+                                              select c.Perc_Desagio_RA).FirstOrDefaultAsync();
+
+            float percDesagioIndicadorRA = await percDesagioIndicadorRATask ?? 0;
+
+            return percDesagioIndicadorRA;
+        }
+
+        public static async Task<decimal> ObterLimiteMensalComprasDoIndicador(string indicador, ContextoBdProvider contextoProvider)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+            var vlLimiteMensalCompraTask = (from c in db.TorcamentistaEindicadors
+                                            where c.Apelido == indicador
+                                            select c.Vl_Limite_Mensal).FirstOrDefaultAsync();
+
+            decimal vlLimiteMensalCompra = await vlLimiteMensalCompraTask;
+
+            return vlLimiteMensalCompra;
+        }
+
+        public static async Task<decimal> CalcularLimiteMensalConsumidoDoIndicador(string indicador, DateTime data, ContextoBdProvider contextoProvider)
+        {
+            //buscar data por ano-mes-dia]
+            //SELECT ISNULL(SUM(qtde* preco_venda),0) AS vl_total
+            //FROM t_PEDIDO tP INNER JOIN t_PEDIDO_ITEM tPI ON(tP.pedido= tPI.pedido)
+            //WHERE(st_entrega <> 'CAN') AND
+            //     (indicador = 'POLITÉCNIC') AND
+            //     (data >= '2020-02-01') AND
+            //     (data < '2020-03-01')
+
+            var db = contextoProvider.GetContextoLeitura();
+
+            DateTime dataInferior = new DateTime(data.Year, data.Month, 1);
+            DateTime dataSuperior = dataInferior.AddMonths(1);
+
+
+            var vlTotalConsumidoTask = from c in db.TpedidoItems.Include(x => x.Tpedido)
+                                       where c.Tpedido.St_Entrega != "CAN" &&
+                                             c.Tpedido.Indicador == indicador &&
+                                             c.Tpedido.Data.HasValue &&
+                                             c.Tpedido.Data.Value.Date >= dataInferior &&
+                                             c.Tpedido.Data.Value.Date < dataSuperior
+                                       select new
+                                       {
+                                           qtde = c.Qtde,
+                                           precoVenda = c.Preco_Venda
+                                       };
+
+            decimal vlTotalConsumido = await vlTotalConsumidoTask.SumAsync(x => (short)x.qtde * x.precoVenda);
+
+            var vlTotalDevolvidoTask = from c in db.TpedidoItemDevolvidos.Include(x => x.Tpedido)
+                                       where c.Tpedido.Indicador == indicador &&
+                                             c.Tpedido.Data.HasValue &&
+                                             c.Tpedido.Data.Value.Date >= dataInferior &&
+                                             c.Tpedido.Data.Value.Date < dataSuperior
+                                       select new
+                                       {
+                                           qtde = c.Qtde,
+                                           precoVenda = c.Preco_Venda
+                                       };
+            decimal vlTotalDevolvido = await vlTotalDevolvidoTask.SumAsync(x => (short)x.qtde * x.precoVenda);
+
+            decimal vlTotalConsumidoRetorno = vlTotalConsumido - vlTotalDevolvido;
+
+            return vlTotalConsumidoRetorno;
+        }
+
+        public static string TransformaHora_Minutos()
+        {
+            string hora = DateTime.Now.Hour.ToString().PadLeft(2, '0');
+            string minuto = DateTime.Now.AddMinutes(-10).ToString().PadLeft(2, '0');
+
+            return hora + minuto;
+        }
     }
 }

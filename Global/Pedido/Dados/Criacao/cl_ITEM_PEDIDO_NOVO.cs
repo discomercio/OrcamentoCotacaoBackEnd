@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
+namespace Pedido.Dados.Criacao
 {
     public class cl_ITEM_PEDIDO_NOVO
     {

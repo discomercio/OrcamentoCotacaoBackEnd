@@ -22,7 +22,14 @@ namespace InfraBanco.Constantes
             COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS = 3,
             COD_SISTEMA_RESPONSAVEL_CADASTRO__APIMAGENTO = 4
         };
-        
+
+        public const string ID_FORMA_PAGTO_DINHEIRO = "1";  
+        public const string ID_FORMA_PAGTO_DEPOSITO = "2";
+        public const string ID_FORMA_PAGTO_CHEQUE = "3";
+        public const string ID_FORMA_PAGTO_BOLETO = "4";
+        public const string ID_FORMA_PAGTO_CARTAO = "5";
+        public const string ID_FORMA_PAGTO_BOLETO_AV = "6";
+        public const string ID_FORMA_PAGTO_CARTAO_MAQUINETA = "7";
 
         public const int FATOR_BD = 1209;
 

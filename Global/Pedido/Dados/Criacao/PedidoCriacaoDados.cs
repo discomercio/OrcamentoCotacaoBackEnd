@@ -54,11 +54,11 @@ namespace Pedido.Dados.Criacao
         public bool OpcaoVendaSemEstoque { get; set; }
 
         //Armazena o valor total do pedido
-        public decimal VlTotalDestePedido { get; set; }
+        public decimal Vl_total { get; set; }
 
         //Armazena o valor total de pedido com RA
         //Caso o indicador selecionado permita RA esse campo deve receber o valor total do Pedido com RA
-        public decimal VlTotalDestePedidoComRa { get; set; }
+        public decimal Vl_total_NF { get; set; }
 
     }
 }

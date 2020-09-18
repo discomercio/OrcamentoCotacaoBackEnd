@@ -24,12 +24,13 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
         private readonly ValidacoesPrepedidoBll validacoesPrepedidoBll;
         private readonly PrepedidoBll prepedidoBll;
         private readonly ConfiguracaoApiMagento configuracaoApiMagento;
+        private readonly Pedido.PedidoCriacao pedidoCriacao;
 
         public PedidoMagentoBll(InfraBanco.ContextoBdProvider contextoProvider,
             Cliente.ClienteBll clienteBll, Produto.ProdutoGeralBll produtoGeralBll,
             Produto.CoeficienteBll coeficienteBll,
             Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll, PrepedidoBll prepedidoBll,
-            ConfiguracaoApiMagento configuracaoApiMagento)
+            ConfiguracaoApiMagento configuracaoApiMagento, Pedido.PedidoCriacao pedidoCriacao)
         {
             this.contextoProvider = contextoProvider;
             this.clienteBll = clienteBll;
@@ -38,6 +39,7 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
             this.validacoesPrepedidoBll = validacoesPrepedidoBll;
             this.prepedidoBll = prepedidoBll;
             this.configuracaoApiMagento = configuracaoApiMagento;
+            this.pedidoCriacao = pedidoCriacao;
         }
 
         public async Task<PedidoResultadoMagentoDto> CadastrarPedidoMagento(PedidoMagentoDto pedidoMagento, string usuario)
@@ -123,8 +125,6 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
                         return resultado;
                     }
                 }
-
-                Pedido.PedidoCriacao pedidoCriacao = new Pedido.PedidoCriacao();
 
                 Pedido.Dados.Criacao.PedidoCriacaoRetornoDados ret =
                     await pedidoCriacao.CadastrarPedido(await CriarPedidoCriacaoDados(pedidoMagento, dadosCliente, orcamentista, loja, vendedor));

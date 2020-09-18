@@ -126,12 +126,12 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 
             //Armazena o valor total do pedido
             //afazer: verificar se é feito o cálculo antes de enviar para cadastrar ou se é preenchido ao cadastrar
-            pedidoCriacao.VlTotalDestePedido = 0;
+            pedidoCriacao.Vl_total = 0;
 
             //Armazena o valor total de pedido com RA
             //Caso o indicador selecionado permita RA esse campo deve receber o valor total do Pedido com RA
             //afazer: verificar se é feito o cálculo antes de enviar para cadastrar ou se é preenchido ao cadastrar
-            pedidoCriacao.VlTotalDestePedidoComRa = 0;
+            pedidoCriacao.Vl_total_NF = 0;
 
             return pedidoCriacao;
         }

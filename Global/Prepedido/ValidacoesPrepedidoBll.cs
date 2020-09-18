@@ -210,18 +210,18 @@ namespace Prepedido
                 if (await VerificarProdutoComposto(x, loja, lstErros))
                 {
                     PrepedidoProdutoPrepedidoDados produto = await (from c in db.TprodutoLojas
-                                                                  where c.Produto == x.Produto &&
-                                                                        c.Fabricante == x.Fabricante &&
-                                                                        c.Vendavel == "S" &&
-                                                                        c.Loja == loja
-                                                                  select new PrepedidoProdutoPrepedidoDados
-                                                                  {
-                                                                      Fabricante = c.Fabricante,
-                                                                      Produto = c.Produto,
-                                                                      CustoFinancFornecPrecoListaBase = c.Preco_Lista ?? 0,
-                                                                      Desc_Dado = x.Desc_Dado,
-                                                                      Qtde = x.Qtde
-                                                                  }).FirstOrDefaultAsync();
+                                                                    where c.Produto == x.Produto &&
+                                                                          c.Fabricante == x.Fabricante &&
+                                                                          c.Vendavel == "S" &&
+                                                                          c.Loja == loja
+                                                                    select new PrepedidoProdutoPrepedidoDados
+                                                                    {
+                                                                        Fabricante = c.Fabricante,
+                                                                        Produto = c.Produto,
+                                                                        CustoFinancFornecPrecoListaBase = c.Preco_Lista ?? 0,
+                                                                        Desc_Dado = x.Desc_Dado,
+                                                                        Qtde = x.Qtde
+                                                                    }).FirstOrDefaultAsync();
 
                     if (produto != null)
                     {
@@ -320,15 +320,16 @@ namespace Prepedido
         }
 
 
-        public async Task<bool> ValidarEnderecoEntrega(PrePedidoDados prepedido, List<string> lstErros)
+        public async Task<bool> ValidarEnderecoEntrega(Cliente.Dados.EnderecoEntregaClienteCadastroDados endEntrega, 
+            List<string> lstErros, string orcamentista, string tipoCliente)
         {
             bool retorno = true;
 
-            if (prepedido.EnderecoEntrega.OutroEndereco)
+            if (endEntrega.OutroEndereco)
             {
-                await ValidarDadosEnderecoEntrega(prepedido, lstErros, contextoProvider);
+                await ValidarDadosEnderecoEntrega(endEntrega, orcamentista, lstErros, contextoProvider);
 
-                ValidarDadosPessoaEnderecoEntrega(prepedido, lstErros, false);
+                ValidarDadosPessoaEnderecoEntrega(endEntrega, lstErros, false, tipoCliente);
 
                 if (lstErros.Count != 0)
                 {
@@ -339,20 +340,21 @@ namespace Prepedido
             return retorno;
         }
 
-        private async Task ValidarDadosEnderecoEntrega(PrePedidoDados prePedido, List<string> lstErros,
+        private async Task ValidarDadosEnderecoEntrega(Cliente.Dados.EnderecoEntregaClienteCadastroDados endEntrega,
+            string orcamentista, List<string> lstErros,
             ContextoBdProvider contextoProvider)
         {
 
-            if (prePedido.EnderecoEntrega.OutroEndereco)
+            if (endEntrega.OutroEndereco)
             {
                 //verificar se a justificativa esta correta "ListarComboJustificaEndereco"
                 List<Cliente.Dados.EnderecoEntregaJustificativaDados> lstJustificativas =
-                    (await clienteBll.ListarComboJustificaEndereco(prePedido.DadosCliente.Indicador_Orcamentista)).ToList();
+                    (await clienteBll.ListarComboJustificaEndereco(orcamentista)).ToList();
 
                 bool achouJustifivcativa = false;
                 lstJustificativas.ForEach(x =>
                 {
-                    if (prePedido.EnderecoEntrega.EndEtg_cod_justificativa == x.EndEtg_cod_justificativa)
+                    if (endEntrega.EndEtg_cod_justificativa == x.EndEtg_cod_justificativa)
                     {
                         achouJustifivcativa = true;
                     }
@@ -360,35 +362,35 @@ namespace Prepedido
 
                 if (achouJustifivcativa)
                 {
-                    if (string.IsNullOrEmpty(prePedido.EnderecoEntrega.EndEtg_cod_justificativa))
+                    if (string.IsNullOrEmpty(endEntrega.EndEtg_cod_justificativa))
                         lstErros.Add("SELECIONE A JUSTIFICATIVA DO ENDEREÇO DE ENTREGA!");
 
-                    if (string.IsNullOrEmpty(prePedido.EnderecoEntrega.EndEtg_endereco))
+                    if (string.IsNullOrEmpty(endEntrega.EndEtg_endereco))
                         lstErros.Add("PREENCHA O ENDEREÇO DE ENTREGA.");
 
-                    if (prePedido.EnderecoEntrega.EndEtg_endereco.Length > Constantes.MAX_TAMANHO_CAMPO_ENDERECO)
-                        lstErros.Add("ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: " + prePedido.EnderecoEntrega.EndEtg_endereco.Length +
+                    if (endEntrega.EndEtg_endereco.Length > Constantes.MAX_TAMANHO_CAMPO_ENDERECO)
+                        lstErros.Add("ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: " + endEntrega.EndEtg_endereco.Length +
                             " CARACTERES<br>TAMANHO MÁXIMO: " + Constantes.MAX_TAMANHO_CAMPO_ENDERECO + " CARACTERES");
 
-                    if (string.IsNullOrEmpty(prePedido.EnderecoEntrega.EndEtg_endereco_numero))
+                    if (string.IsNullOrEmpty(endEntrega.EndEtg_endereco_numero))
                         lstErros.Add("PREENCHA O NÚMERO DO ENDEREÇO DE ENTREGA.");
 
-                    if (string.IsNullOrEmpty(prePedido.EnderecoEntrega.EndEtg_bairro))
+                    if (string.IsNullOrEmpty(endEntrega.EndEtg_bairro))
                         lstErros.Add("PREENCHA O BAIRRO DO ENDEREÇO DE ENTREGA.");
 
-                    if (string.IsNullOrEmpty(prePedido.EnderecoEntrega.EndEtg_cidade))
+                    if (string.IsNullOrEmpty(endEntrega.EndEtg_cidade))
                         lstErros.Add("PREENCHA A CIDADE DO ENDEREÇO DE ENTREGA.");
 
-                    if (string.IsNullOrEmpty(prePedido.EnderecoEntrega.EndEtg_uf) || !Util.VerificaUf(prePedido.EnderecoEntrega.EndEtg_uf))
+                    if (string.IsNullOrEmpty(endEntrega.EndEtg_uf) || !Util.VerificaUf(endEntrega.EndEtg_uf))
                         lstErros.Add("UF INVÁLIDA NO ENDEREÇO DE ENTREGA.");
 
-                    if (!Util.VerificaCep(prePedido.EnderecoEntrega.EndEtg_cep))
+                    if (!Util.VerificaCep(endEntrega.EndEtg_cep))
                         lstErros.Add("CEP INVÁLIDO NO ENDEREÇO DE ENTREGA.");
 
                     if (lstErros.Count == 0)
                     {
                         //vamos comparar endereço
-                        string cepSoDigito = prePedido.EnderecoEntrega.EndEtg_cep.Replace(".", "").Replace("-", "");
+                        string cepSoDigito = endEntrega.EndEtg_cep.Replace(".", "").Replace("-", "");
                         List<Cep.Dados.CepDados> lstCepDados = (await cepBll.BuscarPorCep(cepSoDigito)).ToList();
 
                         if (lstCepDados.Count == 0)
@@ -399,18 +401,18 @@ namespace Prepedido
                         {
                             Cep.Dados.CepDados cep = new Cep.Dados.CepDados()
                             {
-                                Cep = prePedido.EnderecoEntrega.EndEtg_cep,
-                                Endereco = prePedido.EnderecoEntrega.EndEtg_endereco,
-                                Bairro = prePedido.EnderecoEntrega.EndEtg_bairro,
-                                Cidade = prePedido.EnderecoEntrega.EndEtg_cidade,
-                                Uf = prePedido.EnderecoEntrega.EndEtg_uf
+                                Cep = endEntrega.EndEtg_cep,
+                                Endereco = endEntrega.EndEtg_endereco,
+                                Bairro = endEntrega.EndEtg_bairro,
+                                Cidade = endEntrega.EndEtg_cidade,
+                                Uf = endEntrega.EndEtg_uf
                             };
                             await Cliente.ValidacoesClienteBll.VerificarEndereco(cep, lstCepDados, lstErros, contextoProvider,
                                 bancoNFeMunicipio);
                         }
 
-                        await CepBll.ConsisteMunicipioIBGE(prePedido.EnderecoEntrega.EndEtg_cidade,
-                            prePedido.EnderecoEntrega.EndEtg_uf, lstErros, contextoProvider, bancoNFeMunicipio, true);
+                        await CepBll.ConsisteMunicipioIBGE(endEntrega.EndEtg_cidade,
+                            endEntrega.EndEtg_uf, lstErros, contextoProvider, bancoNFeMunicipio, true);
                     }
                 }
                 else
@@ -450,35 +452,35 @@ namespace Prepedido
             return retorno;
         }
 
-        private void ValidarDadosPessoaEnderecoEntrega(PrePedidoDados prePedido, List<string> lstErros,
-            bool flagMsg_IE_Cadastro_PF)
+        private void ValidarDadosPessoaEnderecoEntrega(Cliente.Dados.EnderecoEntregaClienteCadastroDados endEntrega, List<string> lstErros,
+            bool flagMsg_IE_Cadastro_PF, string tipoCliente)
         {
-            if (prePedido.EnderecoEntrega.EndEtg_tipo_pessoa != Constantes.ID_PJ &&
-                prePedido.EnderecoEntrega.EndEtg_tipo_pessoa != Constantes.ID_PF)
+            if (endEntrega.EndEtg_tipo_pessoa != Constantes.ID_PJ &&
+                endEntrega.EndEtg_tipo_pessoa != Constantes.ID_PF)
             {
                 lstErros.Add("Endereço de Entrega: Necessário escolher Pessoa Jurídica ou Pessoa Física no Endereço de entrega!");
             }
-            else if (string.IsNullOrEmpty(prePedido.EnderecoEntrega.EndEtg_nome))
+            else if (string.IsNullOrEmpty(endEntrega.EndEtg_nome))
             {
                 lstErros.Add("Endereço de Entrega: Preencha o nome/razão social no endereço de entrega!");
             }
             else
             {
-                if (prePedido.EnderecoEntrega.EndEtg_tipo_pessoa == Constantes.ID_PJ)
+                if (endEntrega.EndEtg_tipo_pessoa == Constantes.ID_PJ)
                 {
-                    ValidarDadosPessoaEnderecoEntrega_PJ(prePedido.EnderecoEntrega, lstErros);
-                    ValidarDadosPessoaEnderecoEntrega_PJ_Tel(prePedido.EnderecoEntrega, lstErros);
+                    ValidarDadosPessoaEnderecoEntrega_PJ(endEntrega, lstErros);
+                    ValidarDadosPessoaEnderecoEntrega_PJ_Tel(endEntrega, lstErros);
                 }
-                if (prePedido.EnderecoEntrega.EndEtg_tipo_pessoa == Constantes.ID_PF)
+                if (endEntrega.EndEtg_tipo_pessoa == Constantes.ID_PF)
                 {
-                    ValidarDadosPessoaEnderecoEntrega_PF(prePedido.EnderecoEntrega, lstErros);
-                    ValidarDadosPessoaEnderecoEntrega_PF_Tel(prePedido.EnderecoEntrega, lstErros);
+                    ValidarDadosPessoaEnderecoEntrega_PF(endEntrega, lstErros);
+                    ValidarDadosPessoaEnderecoEntrega_PF_Tel(endEntrega, lstErros);
                 }
             }
 
-            if (prePedido.DadosCliente.Tipo == Constantes.ID_PF)
+            if (tipoCliente == Constantes.ID_PF)
             {
-                if (prePedido.EnderecoEntrega.EndEtg_tipo_pessoa != Constantes.ID_PF)
+                if (endEntrega.EndEtg_tipo_pessoa != Constantes.ID_PF)
                 {
                     lstErros.Add("Endereço de Entrega: se cliente é tipo PF, o tipo de pessoa do endereço de " +
                         "entrega deve ser PF.");
@@ -489,12 +491,12 @@ namespace Prepedido
             {
                 //só validamos o IE se o cliente for PJ
                 //Cliente PF aceita IE com estado do endereço de endereço de entrega diferente
-                if (prePedido.DadosCliente.Tipo == Constantes.ID_PJ)
+                if (tipoCliente == Constantes.ID_PJ)
                 {
-                    if (!string.IsNullOrEmpty(prePedido.EnderecoEntrega.EndEtg_ie))
+                    if (!string.IsNullOrEmpty(endEntrega.EndEtg_ie))
                     {
-                        Cliente.ValidacoesClienteBll.VerificarInscricaoEstadualValida(
-                            prePedido.EnderecoEntrega.EndEtg_ie, prePedido.EnderecoEntrega.EndEtg_uf, lstErros, flagMsg_IE_Cadastro_PF);
+                        Cliente.ValidacoesClienteBll.VerificarInscricaoEstadualValida(endEntrega.EndEtg_ie, 
+                            endEntrega.EndEtg_uf, lstErros, flagMsg_IE_Cadastro_PF);
                     }
                 }
             }
