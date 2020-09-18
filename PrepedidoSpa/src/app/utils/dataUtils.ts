@@ -216,7 +216,7 @@ export class DataUtils {
     // '   DECODIFICA_HORA
     // '   Desmembra a data e retorna os respectivos valores para hora, min e seg.
     public static decodifica_hora(dt1: Date | string): decodifica_hora_retorno {
-debugger;
+
         let decodifica_hora = new decodifica_hora_retorno();
         decodifica_hora.sucesso = false;
         decodifica_hora.hora = "";
