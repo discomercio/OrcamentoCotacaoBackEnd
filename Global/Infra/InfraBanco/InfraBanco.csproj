@@ -22,7 +22,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_Banco_Loja|AnyCPU'">
-    <DefineConstants>TRACE;RELEASE_BANCO_LOJA</DefineConstants>
+    <DefineConstants>TRACE;RELEASE_BANCO_LOJA;RELEASE_BANCO_PEDIDO</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

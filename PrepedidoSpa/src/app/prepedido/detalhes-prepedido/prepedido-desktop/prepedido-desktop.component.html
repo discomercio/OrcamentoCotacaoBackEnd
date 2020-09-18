@@ -243,12 +243,12 @@
                     <!-- Preco RA -->
                     <td class="MDB" align="right" *ngIf="this.prepedidoDto?.PermiteRAStatus == '1'">
                         <input name="c_vl_NF" class="PLLd" style="width:62px;"
-                            value='{{moedaUtils.formatarMoedaSemPrefixo(linha.Preco_NF)}}' readonly tabindex=-1>
+                            value='{{moedaUtils.formatarValorDuasCasaReturnZero(linha.Preco_NF)}}' readonly tabindex=-1>
                     </td>
                     <!-- VlLista -->
                     <td class="MDB" align="right">
                         <input name="c_preco_lista" class="PLLd" style="width:62px;"
-                            value='{{moedaUtils.formatarMoedaSemPrefixo(linha.Preco_Lista)}}' readonly tabindex=-1>
+                            value='{{moedaUtils.formatarValorDuasCasaReturnZero(linha.Preco_Lista)}}' readonly tabindex=-1>
                     </td>
                     <!-- Desconto -->
                     <td class="MDB" align="right">
@@ -258,11 +258,11 @@
                     <!-- VLVenda -->
                     <td class="MDB" align="right">
                         <input name="c_vl_unitario" class="PLLd" style="width:62px;"
-                            value='{{moedaUtils.formatarMoedaSemPrefixo(linha.Preco_Venda)}}' readonly tabindex=-1>
+                            value='{{moedaUtils.formatarValorDuasCasaReturnZero(linha.Preco_Venda)}}' readonly tabindex=-1>
                     </td>
                     <!-- VlTotal -->
                     <td class="MDB" align="right"><input name="c_vl_total" class="PLLd" style="width:70px;"
-                            value='{{moedaUtils.formatarMoedaSemPrefixo(linha.VlTotalItem)}}' readonly tabindex=-1></td>
+                            value='{{moedaUtils.formatarValorDuasCasaReturnZero(linha.VlTotalItem)}}' readonly tabindex=-1></td>
                 </tr>
 
 
