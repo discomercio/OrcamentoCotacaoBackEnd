@@ -34,7 +34,7 @@ namespace Pedido
         //criar uma classe: Global/Pedido/PedidoBll/PedidoCriacao com a rotina CadastrarPrepedido, 
         //quer vai retornar um PedidoCriacaoRetorno com o id do pedido, dos filhotes, 
         //as mensagens de erro e as mensagens de erro da validação dos 
-        //dados cadastrais(quer dizer, duas listas de erro. 
+        //dados cadastrais (quer dizer, duas listas de erro.) 
         //É que na loja o tratamento dos erros dos dados cadastrais vai ser diferente).
         public async Task<PedidoCriacaoRetornoDados> CadastrarPedido(PedidoCriacaoDados pedido, decimal limiteArredondamento,
             decimal maxErroArredondamento)

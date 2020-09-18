@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Pedido.Dados
+namespace Prepedido.PedidoVisualizacao.Dados
 {
     public class PedidosPedidoDados
     {

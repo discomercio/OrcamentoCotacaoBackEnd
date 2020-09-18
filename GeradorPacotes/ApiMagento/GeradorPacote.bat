@@ -12,7 +12,8 @@ rem waiting to avoid errors
 timeout /t 1 >nul
 RD PacoteApiMagento /s /q >nul 2> nul
 
-%aux_msbuild% ../../ApiMagento/ApiMagento/ApiMagento/ApiMagento.csproj -t:Rebuild -p:DeployOnBuild=true -p:PublishProfile=CompilarApiMagento /p:Configuration=Release
+rem %aux_msbuild% ../../ApiMagento/ApiMagento/ApiMagento/ApiMagento.csproj -t:Rebuild -p:DeployOnBuild=true -p:PublishProfile=CompilarApiMagento /p:Configuration=Release
+%aux_msbuild% ../../ArClube.sln -t:Rebuild -p:DeployOnBuild=true -p:PublishProfile=CompilarApiMagento /p:Configuration=Release_ApiMagento
 
 echo %date% %time% >> "PacoteApiMagento/publish/DataCompilacao.txt"
 del PacoteApiMagento\publish\appsettings.json

@@ -249,7 +249,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
       i.Qtde = 1;
     }
 
-    i.TotalItem = this.moedaUtils.formatarDecimal(i.Preco_Venda * i.Qtde); // VlUnitario = Vl Venda na tela
+    i.TotalItem = this.moedaUtils.formatarDecimal(i.Preco_Venda * i.Qtde); // preco_venda = Vl Venda na tela
     this.dadosPagto.prepedidoAlterado();
     this.novoPrepedidoDadosService.totalPedido();
 
@@ -279,7 +279,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     this.digitouQte(i);
   }
 
-  digitouPreco_Lista(e: Event, i: PrepedidoProdutoDtoPrepedido) {
+  digitouPreco_NF(e: Event, i: PrepedidoProdutoDtoPrepedido) {
     let valor = ((e.target) as HTMLInputElement).value;
     let v: any = valor.replace(/\D/g, '');
     v = Number.parseFloat((v / 100).toFixed(2) + '');
@@ -298,7 +298,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     this.digitouQte(i);
   }
 
-  formatarPreco_Lista(e: Event, i: PrepedidoProdutoDtoPrepedido) {
+  formatarPreco_NF(e: Event, i: PrepedidoProdutoDtoPrepedido) {
     let valor = ((e.target) as HTMLInputElement).value;
     let v: any = valor.replace(/\D/g, '');
     v = (v / 100).toFixed(2) + '';
@@ -321,7 +321,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     return this.somaRA;
   }
 
-  formataVlVenda(e: Event, i: PrepedidoProdutoDtoPrepedido) {
+  formataPreco_Venda(e: Event, i: PrepedidoProdutoDtoPrepedido) {
     let valor = ((e.target) as HTMLInputElement).value;
     let v: any = valor.replace(/\D/g, '');
     v = (v / 100).toFixed(2) + '';
@@ -329,7 +329,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     i.Preco_Venda = v;
   }
 
-  digitouVlVenda(e: Event, i: PrepedidoProdutoDtoPrepedido) {
+  digitouPreco_Venda(e: Event, i: PrepedidoProdutoDtoPrepedido) {
     let valor = ((e.target) as HTMLInputElement).value;
     let v: any = valor.replace(/\D/g, '');
     v = (v / 100).toFixed(2) + '';
@@ -342,9 +342,9 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     i.Desc_Dado = this.moedaUtils.formatarDecimal(i.Desc_Dado);
 
     if (i.Preco_Lista == i.Preco_Venda) {
-      i.AlterouVlVenda = false;
+      i.Alterou_Preco_Venda = false;
     } else {
-      i.AlterouVlVenda = true;
+      i.Alterou_Preco_Venda = true;
     }
 
     this.digitouQte(i);
@@ -358,9 +358,9 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
 
     //se o desconto for digitado estamos alterando o valor de venda e não devemos mais alterar esse valor
     if (i.Desc_Dado == 0 || i.Desc_Dado.toString() == '') {
-      i.AlterouVlVenda = false;
+      i.Alterou_Preco_Venda = false;
     } else {
-      i.AlterouVlVenda = true;
+      i.Alterou_Preco_Venda = true;
     }
 
     this.digitouDescValor(i, v);

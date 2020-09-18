@@ -1,26 +1,22 @@
-﻿using Pedido.Dados.DetalhesPedido;
-using System;
+﻿using Prepedido.PedidoVisualizacao.Dados.DetalhesPedido;
 using System.Collections.Generic;
-using System.Text;
 
 namespace PrepedidoBusiness.Dto.Pedido.DetalhesPedido
 {
     public class PedidoProdutosDtoPedido
     {
         public string Fabricante { get; set; }
-        public string NumProduto { get; set; }
+        public string Produto { get; set; }
         public string Descricao { get; set; }
         public short? Qtde { get; set; }
         public short? Faltando { get; set; }
         public string CorFaltante { get; set; }
-        public decimal? Preco { get; set; }
-        public decimal VlLista { get; set; }
-        public float? Desconto { get; set; }
-        public decimal VlUnitario { get; set; }
+        public decimal? Preco_NF { get; set; }
+        public decimal Preco_Lista { get; set; }
+        public float? Desc_Dado { get; set; }
+        public decimal Preco_Venda { get; set; }
         public decimal? VlTotalItem { get; set; }
         public decimal? VlTotalItemComRA { get; set; }
-        public decimal? VlVenda { get; set; }
-        public decimal? VlTotal { get; set; }
         public float? Comissao { get; set; }
 
 
@@ -39,19 +35,17 @@ namespace PrepedidoBusiness.Dto.Pedido.DetalhesPedido
             return new PedidoProdutosDtoPedido()
             {
                 Fabricante = origem.Fabricante,
-                NumProduto = origem.NumProduto,
+                Produto = origem.Produto,
                 Descricao = origem.Descricao,
                 Qtde = origem.Qtde,
                 Faltando = origem.Faltando,
                 CorFaltante = origem.CorFaltante,
-                Preco = origem.Preco,
-                VlLista = origem.VlLista,
-                Desconto = origem.Desconto,
-                VlUnitario = origem.VlUnitario,
+                Preco_NF = origem.Preco_NF,
+                Preco_Lista = origem.Preco_Lista,
+                Desc_Dado = origem.Desc_Dado,
+                Preco_Venda = origem.Preco_Venda ?? 0m,
                 VlTotalItem = origem.VlTotalItem,
                 VlTotalItemComRA = origem.VlTotalItemComRA,
-                VlVenda = origem.VlVenda,
-                VlTotal = origem.VlTotal,
                 Comissao = origem.Comissao
             };
         }

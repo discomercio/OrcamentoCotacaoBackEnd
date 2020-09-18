@@ -1,20 +1,18 @@
-﻿using Pedido;
-using Pedido.Dados;
+﻿using Prepedido.PedidoVisualizacao;
 using PrepedidoBusiness.Dto.Pedido;
 using PrepedidoBusiness.Dto.Pedido.DetalhesPedido;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using static Pedido.PedidoBll;
+using static Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll;
 
 namespace PrepedidoBusiness.Bll
 {
     public class PedidoPrepedidoApiBll
     {
-        private readonly PedidoBll pedidoBll;
+        private readonly PedidoVisualizacaoBll pedidoBll;
 
-        public PedidoPrepedidoApiBll(Pedido.PedidoBll pedidoBll)
+        public PedidoPrepedidoApiBll(PedidoVisualizacaoBll pedidoBll)
         {
             this.pedidoBll = pedidoBll;
         }
@@ -26,7 +24,7 @@ namespace PrepedidoBusiness.Bll
         }
         public async Task<PedidoDto> BuscarPedido(string apelido, string numPedido)
         {
-            Pedido.Dados.DetalhesPedido.PedidoDados ret = await pedidoBll.BuscarPedido(apelido.Trim(), numPedido);
+            Prepedido.PedidoVisualizacao.Dados.DetalhesPedido.PedidoDados ret = await pedidoBll.BuscarPedido(apelido.Trim(), numPedido);
             return PedidoDto.PedidoDto_De_PedidoDados(ret);
         }
     }

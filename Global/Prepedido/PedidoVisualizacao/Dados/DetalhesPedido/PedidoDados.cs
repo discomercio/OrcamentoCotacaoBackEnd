@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Pedido.Dados.DetalhesPedido
+namespace Prepedido.PedidoVisualizacao.Dados.DetalhesPedido
 {
     public class PedidoDados
     {

@@ -218,7 +218,7 @@ export class RecalcularComCoeficiente {
             if (enumFP.toString() == this.constantes.COD_FORMA_PAGTO_A_VISTA &&
               tipoFormaPagto == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA) {
 
-              if (produto.AlterouVlVenda) {
+              if (produto.Alterou_Preco_Venda) {
                 //devemos alterar o valor de desconto
                 //valor com coeficiente - valor venda * 100 / valor com coeficiente
                 produto.Desc_Dado = this.moedaUtils.formatarDecimal((produto.CustoFinancFornecPrecoListaBase - produto.Preco_Venda) * 100 / produto.CustoFinancFornecPrecoListaBase);
@@ -236,7 +236,7 @@ export class RecalcularComCoeficiente {
                 produto.CustoFinancFornecCoeficiente = 1;
               }
               if (!produto.AlterouValorRa || produto.AlterouValorRa == undefined) {
-                produto.Preco_NF = this.moedaUtils.formatarDecimal(produto.CustoFinancFornecPrecoListaBase);
+                produto.Preco_NF = produto.Alterou_Preco_Venda ? produto.Preco_Venda : this.moedaUtils.formatarDecimal((produto.CustoFinancFornecPrecoListaBase));
                 produto.TotalItemRA = this.moedaUtils.formatarDecimal((produto.CustoFinancFornecPrecoListaBase * produto.Qtde));
                 produto.CustoFinancFornecCoeficiente = 1;
               }
@@ -251,7 +251,7 @@ export class RecalcularComCoeficiente {
                 x.TipoParcela == tipoFormaPagto && x.QtdeParcelas == qtdeParc);
 
               coeficiente.forEach(x => {
-                if (produto.AlterouVlVenda) {
+                if (produto.Alterou_Preco_Venda) {
 
                   produto.Desc_Dado = this.moedaUtils.formatarDecimal(((produto.CustoFinancFornecPrecoListaBase * x.Coeficiente) - produto.Preco_Venda) * 100 /
                     (produto.CustoFinancFornecPrecoListaBase * x.Coeficiente));
@@ -268,7 +268,7 @@ export class RecalcularComCoeficiente {
                   produto.CustoFinancFornecCoeficiente = x.Coeficiente;
                 }
                 if (!produto.AlterouValorRa || produto.AlterouValorRa == undefined) {
-                  produto.Preco_NF = this.moedaUtils.formatarDecimal((produto.CustoFinancFornecPrecoListaBase * x.Coeficiente));
+                  produto.Preco_NF = produto.Alterou_Preco_Venda ? produto.Preco_Venda : this.moedaUtils.formatarDecimal((produto.CustoFinancFornecPrecoListaBase * x.Coeficiente));
                   let total_com_coeficiente = this.moedaUtils.formatarDecimal((produto.CustoFinancFornecPrecoListaBase * x.Coeficiente));
                   produto.TotalItemRA = this.moedaUtils.formatarDecimal(total_com_coeficiente * produto.Qtde);
                   // produto.Preco_Lista = this.moedaUtils.formatarDecimal((produto.Preco * x.Coeficiente));
@@ -287,7 +287,7 @@ export class RecalcularComCoeficiente {
                 x.TipoParcela == tipoFormaPagto && x.QtdeParcelas == qtdeParc);
 
               coeficiente.forEach(x => {
-                if (produto.AlterouVlVenda) {
+                if (produto.Alterou_Preco_Venda) {
                   produto.Desc_Dado = this.moedaUtils.formatarDecimal(((produto.CustoFinancFornecPrecoListaBase * x.Coeficiente) - produto.Preco_Venda) * 100 /
                     (produto.CustoFinancFornecPrecoListaBase * x.Coeficiente));
                   produto.Preco_Lista = this.moedaUtils.formatarDecimal((produto.CustoFinancFornecPrecoListaBase * x.Coeficiente));//só altera se calcular coeficiente
@@ -303,7 +303,7 @@ export class RecalcularComCoeficiente {
                   produto.CustoFinancFornecCoeficiente = x.Coeficiente;
                 }
                 if (!produto.AlterouValorRa || produto.AlterouValorRa == undefined) {
-                  produto.Preco_NF = this.moedaUtils.formatarDecimal(produto.CustoFinancFornecPrecoListaBase * x.Coeficiente);
+                  produto.Preco_NF = produto.Alterou_Preco_Venda ? produto.Preco_Venda : this.moedaUtils.formatarDecimal((produto.CustoFinancFornecPrecoListaBase * x.Coeficiente));
                   produto.TotalItemRA = this.moedaUtils.formatarDecimal(produto.Preco_NF * produto.Qtde);
                   produto.CustoFinancFornecCoeficiente = x.Coeficiente;
                 }
@@ -320,7 +320,8 @@ export class RecalcularComCoeficiente {
                 x.TipoParcela == tipoFormaPagto && x.QtdeParcelas == qtdeParc);
 
               coeficiente.forEach(x => {
-                if (produto.AlterouVlVenda) {
+                debugger;
+                if (produto.Alterou_Preco_Venda) {
 
                   produto.Desc_Dado = this.moedaUtils.formatarDecimal(((produto.CustoFinancFornecPrecoListaBase * x.Coeficiente) - produto.Preco_Venda) * 100 /
                     (produto.CustoFinancFornecPrecoListaBase * x.Coeficiente));
@@ -338,7 +339,7 @@ export class RecalcularComCoeficiente {
                   produto.CustoFinancFornecCoeficiente = x.Coeficiente;
                 }
                 if (!produto.AlterouValorRa || produto.AlterouValorRa == undefined) {
-                  produto.Preco_NF = this.moedaUtils.formatarDecimal((produto.CustoFinancFornecPrecoListaBase * x.Coeficiente));
+                  produto.Preco_NF = produto.Alterou_Preco_Venda ? produto.Preco_Venda : this.moedaUtils.formatarDecimal((produto.CustoFinancFornecPrecoListaBase * x.Coeficiente));
                   let total_com_coeficiente = this.moedaUtils.formatarDecimal((produto.CustoFinancFornecPrecoListaBase * x.Coeficiente));
                   produto.TotalItemRA = this.moedaUtils.formatarDecimal(total_com_coeficiente * produto.Qtde);
                   produto.CustoFinancFornecCoeficiente = x.Coeficiente;
@@ -354,7 +355,7 @@ export class RecalcularComCoeficiente {
 
   //calculo para montar a lista que vai no parcelamento a vista
   calcularTotalProdutoAvistaParcelamento(p: PrepedidoProdutoDtoPrepedido): void {
-    let vlUnitario: number = 0;
+    let preco_venda: number = 0;
     let desconto: number = 0;
     let precoBase: number = 0;
     let total_com_coeficiente: number = 0;
@@ -370,10 +371,10 @@ export class RecalcularComCoeficiente {
       }
     }
     else {
-      if (p.AlterouVlVenda) {
+      if (p.Alterou_Preco_Venda) {
         precoBase = this.moedaUtils.formatarDecimal(p.CustoFinancFornecPrecoListaBase * 1);
-        vlUnitario = this.moedaUtils.formatarDecimal(p.Preco_Venda);
-        desconto = this.moedaUtils.formatarDecimal((precoBase - vlUnitario) * 100 / precoBase);
+        preco_venda = this.moedaUtils.formatarDecimal(p.Preco_Venda);
+        desconto = this.moedaUtils.formatarDecimal((precoBase - preco_venda) * 100 / precoBase);
         total_com_coeficiente = this.moedaUtils.formatarDecimal(precoBase * (1 - desconto / 100));
         p.VlTotalItem = this.moedaUtils.formatarDecimal(total_com_coeficiente * p.Qtde);
       }
@@ -392,7 +393,7 @@ export class RecalcularComCoeficiente {
   calcularTotalProduto_Cartao_Maquineta_Parcelamento(p: PrepedidoProdutoDtoPrepedido, x: CoeficienteDto): void {
 
     this.ProdutosCalculados = new ProdutosCalculados();
-    let vlUnitario: number = 0;
+    let preco_venda: number = 0;
     let desconto: number = 0;
     let precoBase: number = 0;
     let total_com_coeficiente: number = 0;
@@ -410,10 +411,10 @@ export class RecalcularComCoeficiente {
     }
     else {
       
-      if (p.AlterouVlVenda) {
+      if (p.Alterou_Preco_Venda) {
         precoBase = this.moedaUtils.formatarDecimal(p.CustoFinancFornecPrecoListaBase * x.Coeficiente);
-        vlUnitario = this.moedaUtils.formatarDecimal(p.Preco_Venda);
-        desconto = this.moedaUtils.formatarDecimal((precoBase - vlUnitario) * 100 / precoBase);
+        preco_venda = this.moedaUtils.formatarDecimal(p.Preco_Venda);
+        desconto = this.moedaUtils.formatarDecimal((precoBase - preco_venda) * 100 / precoBase);
         total_com_coeficiente = this.moedaUtils.formatarDecimal(precoBase * (1 - desconto / 100));
         p.VlTotalItem = this.moedaUtils.formatarDecimal(total_com_coeficiente * p.Qtde);
       } else {
@@ -431,7 +432,7 @@ export class RecalcularComCoeficiente {
   //calculo para montar a lista que vai no parcelamento de parcela única
   calcularTotalProduto_ParcelaUnica(p: PrepedidoProdutoDtoPrepedido, x: CoeficienteDto): void {
 
-    let vlUnitario: number = 0;
+    let preco_venda: number = 0;
     let desconto: number = 0;
     let precoBase: number = 0;
     this.ProdutosCalculados = new ProdutosCalculados();
@@ -450,10 +451,10 @@ export class RecalcularComCoeficiente {
       p.VlTotalItem = this.moedaUtils.formatarDecimal(total_com_coeficiente * p.Qtde);
     }
     else {
-      if (p.AlterouVlVenda) {
+      if (p.Alterou_Preco_Venda) {
         precoBase = this.moedaUtils.formatarDecimal(p.CustoFinancFornecPrecoListaBase * x.Coeficiente);
-        vlUnitario = this.moedaUtils.formatarDecimal(p.Preco_Venda);
-        desconto = this.moedaUtils.formatarDecimal((precoBase - vlUnitario) * 100 / precoBase);
+        preco_venda = this.moedaUtils.formatarDecimal(p.Preco_Venda);
+        desconto = this.moedaUtils.formatarDecimal((precoBase - preco_venda) * 100 / precoBase);
         total_com_coeficiente = this.moedaUtils.formatarDecimal(precoBase * (1 - desconto / 100));
         p.VlTotalItem = this.moedaUtils.formatarDecimal(total_com_coeficiente * p.Qtde);
       }
@@ -470,7 +471,7 @@ export class RecalcularComCoeficiente {
   //calculo para montar a lista que vai no parcelamento com entrada
   calcularTotalProduto_Parcela_Com_Entrada(p: PrepedidoProdutoDtoPrepedido, x: CoeficienteDto): void {
     this.ProdutosCalculados = new ProdutosCalculados();
-    let vlUnitario: number = 0;
+    let preco_venda: number = 0;
     let desconto: number = 0;
     let precoBase: number = 0;
     let total_com_coeficiente: number = 0;
@@ -488,10 +489,10 @@ export class RecalcularComCoeficiente {
       p.VlTotalItem = this.moedaUtils.formatarDecimal(total_com_coeficiente * p.Qtde);
     }
     else {
-      if (p.AlterouVlVenda) {
+      if (p.Alterou_Preco_Venda) {
         precoBase = this.moedaUtils.formatarDecimal(p.CustoFinancFornecPrecoListaBase * x.Coeficiente);
-        vlUnitario = this.moedaUtils.formatarDecimal(p.Preco_Venda);
-        desconto = this.moedaUtils.formatarDecimal((precoBase - vlUnitario) * 100 / precoBase);
+        preco_venda = this.moedaUtils.formatarDecimal(p.Preco_Venda);
+        desconto = this.moedaUtils.formatarDecimal((precoBase - preco_venda) * 100 / precoBase);
         total_com_coeficiente = this.moedaUtils.formatarDecimal(precoBase * (1 - desconto / 100));
         p.VlTotalItem = this.moedaUtils.formatarDecimal(total_com_coeficiente * p.Qtde);
       }

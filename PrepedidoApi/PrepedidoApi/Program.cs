@@ -62,6 +62,13 @@ namespace PrepedidoApi
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>().ConfigureLogging(logging =>
                 {
+                    /*
+                    para remover o |10400|WARN|Microsoft.EntityFrameworkCore.Model.Validation|Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data, this mode should only be enabled during development.|
+                    devemos colocar no nlog.config:
+                    <logger name="Microsoft.EntityFrameworkCore.Model.Validation" minlevel="WARN" writeTo="logrequisicao" final="true" />
+                    como o segundo logger
+                    */
+
                     logging.ClearProviders();
                     logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
 #if DEBUG

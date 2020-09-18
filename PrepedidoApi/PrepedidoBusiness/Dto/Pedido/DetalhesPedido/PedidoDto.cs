@@ -1,5 +1,4 @@
-﻿using Pedido.Dados;
-using Pedido.Dados.DetalhesPedido;
+﻿using Prepedido.PedidoVisualizacao.Dados.DetalhesPedido;
 using PrepedidoBusiness.Dto.ClienteCadastro;
 using System;
 using System.Collections.Generic;

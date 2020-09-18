@@ -6,6 +6,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
+//modelo para colocar campos que sejam somente para o pedido:
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+#endif
 
 namespace InfraBanco.Modelos
 {
@@ -286,7 +289,7 @@ namespace InfraBanco.Modelos
         public Tcliente Tcliente { get; set; }
 
         /*Novos campos de memorização de endereço */
-        [Column("st_memorizacao_completa_enderecos")]
+[Column("st_memorizacao_completa_enderecos")]
         [Required]
         public byte St_memorizacao_completa_enderecos { get; set; }
 
