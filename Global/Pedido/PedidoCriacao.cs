@@ -156,6 +156,7 @@ namespace Pedido
             }
 
 
+
             //busca produtos , busca percentual custo finananceiro, calcula desconto 716 ate 824
             //desc_dado_arredondado
             //estamos alterando o v_item com descontos verificados e aplicados
