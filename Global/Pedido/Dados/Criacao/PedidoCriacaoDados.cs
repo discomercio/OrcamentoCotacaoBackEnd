@@ -22,7 +22,7 @@ namespace Pedido.Dados.Criacao
         public Cliente.Dados.EnderecoEntregaClienteCadastroDados EnderecoEntrega { get; set; }
 
         //Armazena os dados dos produtos selecionados
-        public List<Prepedido.Dados.DetalhesPrepedido.PrepedidoProdutoPrepedidoDados> ListaProdutos { get; set; }
+        public List<Pedido.Dados.Criacao.PedidoProdutoPedidoDados> ListaProdutos { get; set; }
 
         //Armazena os dados da forma de pagto selecionado
         public Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados FormaPagtoCriacao { get; set; }

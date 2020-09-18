@@ -31,5 +31,9 @@ namespace InfraBanco.Modelos
 
         [Column("qtde_utilizada")]
         public short? Qtde_utilizada { get; set; }
+
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+        public Testoque Testoque { get; set; }
+#endif
     }
 }

@@ -138,10 +138,10 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
             return resultado;
         }
 
-        private async Task<IEnumerable<Prepedido.Dados.DetalhesPrepedido.PrepedidoProdutoPrepedidoDados>> ConverterProdutosMagento(PedidoMagentoDto pedidoMagento,
+        private async Task<IEnumerable<Pedido.Dados.Criacao.PedidoProdutoPedidoDados>> ConverterProdutosMagento(PedidoMagentoDto pedidoMagento,
             Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados formaPagtoCriacao, string loja)
         {
-            List<Prepedido.Dados.DetalhesPrepedido.PrepedidoProdutoPrepedidoDados> listaProdutos = new List<Prepedido.Dados.DetalhesPrepedido.PrepedidoProdutoPrepedidoDados>();
+            List<Pedido.Dados.Criacao.PedidoProdutoPedidoDados> listaProdutos = new List<Pedido.Dados.Criacao.PedidoProdutoPedidoDados>();
             List<string> lstFornec = new List<string>();
             lstFornec = pedidoMagento.ListaProdutos.Select(x => x.Fabricante).Distinct().ToList();
 
@@ -172,21 +172,6 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
                     {
                         listaProdutos.Add(PedidoProdutoMagentoDto.ProdutosDePedidoProdutoMagentoDto(y, produto, coeficiente.Coeficiente));
                     }
-
-                    //lstTodosProdutos.ForEach(x =>
-                    //{
-                    //    if (x.Fabricante == y.Fabricante && x.Produto == y.Produto)
-                    //    {
-                    //        lstCoeficiente.ForEach(z =>
-                    //        {
-                    //            if (y.Fabricante == z.Fabricante)
-                    //            {
-                    //                //criar a variável de produtos na entrada do método de conversão
-                    //                listaProdutos.Add(PedidoProdutoMagentoDto.ProdutosDePedidoProdutoMagentoDto(y, x, z.Coeficiente));
-                    //            }
-                    //        });
-                    //    }
-                    //});
 
                 });
             }
@@ -263,7 +248,7 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
                 FormaPagtoCriacaoMagentoDto.FormaPagtoCriacaoDados_De_FormaPagtoCriacaoMagentoDto(pedidoMagento.FormaPagtoCriacao,
                 configuracaoApiMagento, pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem);
 
-            List<Prepedido.Dados.DetalhesPrepedido.PrepedidoProdutoPrepedidoDados> listaProdutos =
+            List<Pedido.Dados.Criacao.PedidoProdutoPedidoDados> listaProdutos =
                 (await ConverterProdutosMagento(pedidoMagento, formaPagtoCriacao, configuracaoApiMagento.DadosOrcamentista.Loja)).ToList();
 
             //Precisamos buscar os produtos para poder incluir os valores para incluir na classe de produto

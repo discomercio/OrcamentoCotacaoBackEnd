@@ -143,6 +143,7 @@ namespace InfraBanco
 
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         public DbSet<Tdesconto> Tdescontos { get; set; }
+        public DbSet<TtransportadoraCep> TtransportadoraCeps { get; set; }
 #endif
     }
 }

@@ -8,6 +8,7 @@ using InfraBanco.Constantes;
 using Microsoft.EntityFrameworkCore;
 using Produto.RegrasCrtlEstoque;
 using Produto.Dados;
+using UtilsGlobais;
 
 namespace Produto
 {

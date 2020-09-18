@@ -67,6 +67,8 @@ namespace InfraBanco
 
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         public IQueryable<Tdesconto> Tdescontos { get => contexto.Tdescontos.AsNoTracking(); }
+
+        public IQueryable<TtransportadoraCep>TtransportadoraCeps { get => contexto.TtransportadoraCeps.AsNoTracking(); }
 #endif
 
     }

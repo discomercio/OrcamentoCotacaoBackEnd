@@ -37,18 +37,15 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
          * Os campos Preco_Lista e Desc_Dado serão preenchidos por nós e devemos calcular de forma que fiquem consistentes.
         */
 
-        public static Prepedido.Dados.DetalhesPrepedido.PrepedidoProdutoPrepedidoDados ProdutosDePedidoProdutoMagentoDto(
+        public static Pedido.Dados.Criacao.PedidoProdutoPedidoDados ProdutosDePedidoProdutoMagentoDto(
             PedidoProdutoMagentoDto produtoDto, Produto.Dados.ProdutoDados produtoDados, float coeficiente)
         {
-            var ret = new Prepedido.Dados.DetalhesPrepedido.PrepedidoProdutoPrepedidoDados()
+            var ret = new Pedido.Dados.Criacao.PedidoProdutoPedidoDados()
             {
                 Fabricante = produtoDto.Fabricante,
                 Produto = produtoDto.Produto,
                 Descricao = produtoDados.Descricao,
                 Qtde = produtoDto.Qtde,
-                Permite_Ra_Status = 1,//sempre true
-                BlnTemRa = true,
-//todo: revisar estas conversões
                 CustoFinancFornecPrecoListaBase = 0m,
                 Preco_Lista = Math.Round((decimal)(produtoDados.Preco_lista * (decimal)coeficiente), 2),
                 Desc_Dado = 0, //produtoDto.Desc_Dado,

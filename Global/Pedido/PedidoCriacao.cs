@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Produto.RegrasCrtlEstoque;
 
 namespace Pedido
 {
@@ -90,16 +91,21 @@ namespace Pedido
                          * 11- valida percentual máximo de comissão */
                         if (pedido.ComIndicador)
                         {
+                            if (string.IsNullOrEmpty(pedido.NomeIndicador))
+                            {
+                                pedidoRetorno.ListaErros.Add("Informe quem é o indicador.");
+                            }
+
                             /* 3- busca o percentual máximo de comissão*/
                             percentualMax = await pedidoBll.ObterPercentualMaxDescEComissao(pedido.LojaUsuario);
-                            
+
                             if (pedido.DadosCliente.Tipo == Constantes.ID_PJ)
                                 percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDescPJ;
                             else
                                 percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDesc;
 
                             if (!string.IsNullOrEmpty(pedido.PercRT.ToString()))
-                                ValidarPercentualRT((float)pedido.PercRT, percentualMax.PercMaxComissao, pedidoRetorno.ListaErros);
+                                pedidoBll.ValidarPercentualRT((float)pedido.PercRT, percentualMax.PercMaxComissao, pedidoRetorno.ListaErros);
 
                             //perc_desagio_RA
                             perc_desagio_RA = await UtilsGlobais.Util.ObterPercentualDesagioRAIndicador(pedido.NomeIndicador, contextoProvider);
@@ -122,7 +128,7 @@ namespace Pedido
             Tparametro tParametro = await UtilsGlobais.Util.BuscarRegistroParametro(
                 Constantes.ID_PARAMETRO_PercMaxComissaoEDesconto_Nivel2_MeiosPagto, contextoProvider);
 
-            percDescComissaoUtilizar = VerificarPagtoPreferencial(tParametro, pedido, percDescComissaoUtilizar,
+            percDescComissaoUtilizar = pedidoBll.VerificarPagtoPreferencial(tParametro, pedido, percDescComissaoUtilizar,
                     percentualMax, pedido.Vl_total);
 
 
@@ -146,9 +152,9 @@ namespace Pedido
                     Qtde_estoque_sem_presenca = 0,
                     Sequencia = sequencia
                 });
-            });            
+            });
 
-            await VerificarSePedidoExite(v_item, pedido, pedido.DadosCliente.Indicador_Orcamentista, pedidoRetorno.ListaErros);
+            await pedidoBll.VerificarSePedidoExite(v_item, pedido, pedido.DadosCliente.Indicador_Orcamentista, pedidoRetorno.ListaErros);
             //se tiver erro vamos retornar
             if (pedidoRetorno.ListaErros.Count > 0)
             {
@@ -161,17 +167,25 @@ namespace Pedido
             //desc_dado_arredondado
             //estamos alterando o v_item com descontos verificados e aplicados
             List<string> vdesconto = new List<string>();
-            await VerificarDescontoArredondado(pedido.LojaUsuario, v_item, pedidoRetorno.ListaErros, c_custoFinancFornecTipoParcelamento,
+            await pedidoBll.VerificarDescontoArredondado(pedido.LojaUsuario, v_item, pedidoRetorno.ListaErros, c_custoFinancFornecTipoParcelamento,
                 c_custoFinancFornecQtdeParcelas, pedido.DadosCliente.Id, percDescComissaoUtilizar, vdesconto);
 
-            /* 12- busca os dados dos produtos do item 6 */
+            /* 15- busca o coeficiente de cada produto do item 6 */
+            //faz a lógica, regras para consumo do estoque 947 ate 1297   
+            //vou buscar a lista de coeficiente para calcular o valor de custoFinacFornec...
+            float coeficiente = await pedidoBll.BuscarCoeficientePercentualCustoFinanFornec(pedido, c_custoFinancFornecQtdeParcelas,
+                c_custoFinancFornecTipoParcelamento, pedidoRetorno.ListaErros);
 
 
+            //Faz a verificação de regra de cada produto
+            //RECUPERA OS PRODUTOS QUE O CLIENTE CONCORDOU EM COMPRAR MESMO SEM PRESENÇA NO ESTOQUE.
+            //v_spe
+            List<cl_CTRL_ESTOQUE_PEDIDO_ITEM_NOVO> v_spe = new List<cl_CTRL_ESTOQUE_PEDIDO_ITEM_NOVO>();
+            //essa lista armazena a qtde de empresas que irá atender um produto
+            List<int> vEmpresaAutoSplit = new List<int>();
 
 
-
-            /* 15- busca o coeficiente de cada produto do item 6
-            * 16- verifica a regra para consumo de estoque
+            /* 16- verifica a regra para consumo de estoque
             * 17- valida o cd, se é manual ou se é automático
             * 18- busca a regra de estoque
             * 19- verifica se tem erro na leitura das regras de estoque
@@ -182,10 +196,102 @@ namespace Pedido
             * 24- verifica a quantidade de cd que irá atender o pedido (aqui é feita a verificação se será splitado o pedido)
             * 25- verifica a qtde de pedidos que será gerado (split)
             * 26- Faz a contagem de pedido que será cadastrado
-            * 27- verifica se tem algum produto descontinuado
-            * 28- verifica o percentual de RA permitido 
+            * 27- verifica se tem algum produto descontinuado*/
+            foreach (var produto in pedido.ListaProdutos)
+            {
+                //COMPARAR SE É EXATAMENTE A MESMA REGRA
+                ProdutoValidadoComEstoqueDados produto_validado_item = new ProdutoValidadoComEstoqueDados();
+
+                //vamos buscar as regras relacionadas ao produto
+                produto_validado_item = await  pedidoBll.VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado(produto,
+                UtilsGlobais.Util.SoDigitosCpf_Cnpj(pedido.DadosCliente.Cnpj_Cpf), pedido.IdNfeSelecionadoManual);
+
+                if (produto_validado_item.ListaErros.Count > 0)
+                {
+                    foreach (var erro in produto_validado_item.ListaErros)
+                    {
+                        if (erro.Contains("PRODUTO SEM PRESENÇA"))
+                        {
+                            v_spe.Add(new cl_CTRL_ESTOQUE_PEDIDO_ITEM_NOVO
+                            {
+                                Produto = produto_validado_item.Produto.Produto,
+                                Fabricante = UtilsGlobais.Util.Normaliza_Codigo(produto.Fabricante, Constantes.TAM_MIN_FABRICANTE),
+                                Qtde_solicitada = (short)produto_validado_item.Produto.QtdeSolicitada,
+                                Qtde_estoque = (short)produto_validado_item.Produto.Estoque
+                            });
+                            pedido.OpcaoVendaSemEstoque = true;
+                            produto_validado_item.Produto.Lst_empresa_selecionada.ForEach(x =>
+                            {
+                                if (!vEmpresaAutoSplit.Contains(x))
+                                    vEmpresaAutoSplit.Add(x);
+                            });
+                            //produto_validado_item.Produto.Lst_empresa_selecionada);
+                        }
+                    }
+                }
+            }
+
+
+
+            /* 12- busca os dados dos produtos do item 6 */
+
+
+            /* 28- verifica o percentual de RA permitido 
             * 29- verifica se tem mensagem de alerta para algum produto
             */
+            //busca valor de limite para aprovação automática da analise de credito 1317 ate 1325
+            string vl_aprov_auto_analise_credito = await pedidoBll.LeParametroControle(
+                Constantes.ID_PARAM_CAD_VL_APROV_AUTO_ANALISE_CREDITO);
+
+            if (!validacoesPrepedidoBll.ValidarDetalhesPrepedido(pedido.DetalhesPedido, pedidoRetorno.ListaErros))
+            {
+                return pedidoRetorno;
+            }
+
+            //obtenção de transportadora que atenda ao cep informado, se houver
+            TtransportadoraCep transportadora = pedido.EnderecoEntrega.OutroEndereco == true &&
+                !string.IsNullOrEmpty(pedido.EnderecoEntrega.EndEtg_cep) ?
+                await pedidoBll.ObterTransportadoraPeloCep(pedido.EnderecoEntrega.EndEtg_cep) :
+                await pedidoBll.ObterTransportadoraPeloCep(pedido.DadosCliente.Cep);
+
+            //estou buscando a regra para passar para o metodo 
+            //verificar se retorna o esperado
+            List<RegrasBll> lstRegras = new List<RegrasBll>();
+            foreach (var produto in pedido.ListaProdutos)
+            {
+                lstRegras = (await pedidoBll.VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado_Teste(
+                    produto, pedido.DadosCliente.Cnpj_Cpf, pedido.IdNfeSelecionadoManual)).ToList();
+            }
+
+            //cadastra o pedido 1734 ate 2016
+            if (pedidoRetorno.ListaErros.Count == 0)
+            {
+                //vamos efetivar o cadastro do pedido
+                //vamos abrir uma nova transaction do contexto que esta sendo utilizado para Using
+
+
+                //OBS => PedBonshop = pedido Pedido_Bs_X_At
+
+                //AFAZER: CRIAR O EFETIVAR PEDIDO
+                using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+                {
+                    //pedidoRetorno.Id = await efetivaPedido.Novo_EfetivarCadastroPedido(pedido, vEmpresaAutoSplit,
+                    //    pedido.Usuario, c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas, transportadora,
+                    //    v_item, v_spe, vdesconto, lstRegras, perc_limite_RA_sem_desagio, pedido.LojaUsuario, perc_desagio_RA,
+                    //    pedido.DadosCliente, pedido.NomeIndicador, pedidoRetorno.ListaErros, dbgravacao);
+
+                    bool efetivou = !string.IsNullOrWhiteSpace(pedidoRetorno.Id);
+                    if (efetivou)
+                    {
+                        //vamos gravar o Log aqui
+                        //monta o log 2691 ate 2881
+                        //grava log 
+                        //commit
+                        await dbgravacao.SaveChangesAsync();
+                        dbgravacao.transacao.Commit();
+                    }
+                }
+            }
 
             /* FLUXO DE CRIAÇÃO DE PEDIDO 2º passo
              * PedidoNovoConfirma.asp
@@ -239,343 +345,6 @@ namespace Pedido
             return await Task.FromResult(pedidoRetorno);
         }
 
-        public void ValidarPercentualRT(float percComissao, float percentualMax, List<string> lstErros)
-        {
-            if (percComissao < 0 || percComissao > 100)
-            {
-                lstErros.Add("Percentual de comissão inválido.");
-            }
-            if (percComissao > percentualMax)
-            {
-                lstErros.Add("O percentual de comissão excede o máximo permitido.");
-            }
-        }
 
-        public async Task VerificarSePedidoExite(List<cl_ITEM_PEDIDO_NOVO> v_item, PedidoCriacaoDados pedido,
-            string usuario, List<string> lstErros)
-        {
-            var db = contextoProvider.GetContextoLeitura();
-
-            //verificar se o pedido existe
-            string hora_atual = UtilsGlobais.Util.TransformaHora_Minutos();
-
-            List<cl_ITEM_PEDIDO_NOVO> lstProdTask = await (from c in db.TpedidoItems
-                                                           where c.Tpedido.Id_Cliente == pedido.DadosCliente.Id &&
-                                                                 c.Tpedido.Data == DateTime.Now.Date &&
-                                                                 c.Tpedido.Loja == pedido.DadosCliente.Loja &&
-                                                                 c.Tpedido.Vendedor == usuario &&
-                                                                 c.Tpedido.Data >= DateTime.Now.Date &&
-                                                                 c.Tpedido.Hora.CompareTo(hora_atual) <= 0 &&
-                                                                 c.Tpedido.St_Entrega != Constantes.ST_ENTREGA_CANCELADO
-                                                           orderby c.Pedido, c.Sequencia
-                                                           select new cl_ITEM_PEDIDO_NOVO
-                                                           {
-                                                               Pedido = c.Pedido,
-                                                               produto = c.Produto,
-                                                               Fabricante = c.Fabricante,
-                                                               Qtde = (short)c.Qtde,
-                                                               Preco_Venda = c.Preco_Venda
-                                                           }).ToListAsync();
-
-            lstProdTask.ForEach(x =>
-            {
-                v_item.ForEach(y =>
-                {
-                    if (x.produto == y.produto &&
-                        x.Fabricante == y.Fabricante &&
-                        x.Qtde == y.Qtde &&
-                        x.Preco_Venda == y.Preco_Venda)
-                    {
-                        lstErros.Add("Este pedido já foi gravado com o número " + x.Pedido);
-                        return;
-                    }
-                });
-            });
-        }
-
-        private float VerificarPagtoPreferencial(Tparametro tParametro, PedidoCriacaoDados pedido,
-            float percDescComissaoUtilizar, PercentualMaxDescEComissao percentualMax, decimal vl_total)
-        {
-            List<string> lstOpcoesPagtoPrefericiais = new List<string>();
-            if (!string.IsNullOrEmpty(tParametro.Id))
-            {
-                //a verificação é feita na linha 380 ate 388
-                lstOpcoesPagtoPrefericiais = tParametro.Campo_texto.Split(',').ToList();
-            }
-
-            string s_pg = "";
-            decimal? vlNivel1 = 0;
-            decimal? vlNivel2 = 0;
-
-            //identifica e verifica se é pagto preferencial e calcula  637 ate 712
-            if (pedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_A_VISTA)
-                s_pg = pedido.FormaPagtoCriacao.Op_av_forma_pagto;
-            if (pedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELA_UNICA)
-                s_pg = pedido.FormaPagtoCriacao.Op_pu_forma_pagto;
-            if (pedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO)
-                s_pg = Constantes.ID_FORMA_PAGTO_CARTAO;
-            if (pedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA)
-                s_pg = Constantes.ID_FORMA_PAGTO_CARTAO_MAQUINETA;
-            if (!string.IsNullOrEmpty(s_pg))
-            {
-                if (lstOpcoesPagtoPrefericiais.Count > 0)
-                {
-                    foreach (var op in lstOpcoesPagtoPrefericiais)
-                    {
-                        if (s_pg == op)
-                        {
-                            if (pedido.DadosCliente.Tipo == Constantes.ID_PJ)
-                                percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDescPJ;
-                            else
-                                percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDesc;
-                        }
-                    }
-                }
-            }
-
-            bool pgtoPreferencial = false;
-            if (pedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA)
-            {
-                s_pg = pedido.FormaPagtoCriacao.Op_pce_entrada_forma_pagto;
-
-                if (!string.IsNullOrEmpty(s_pg))
-                {
-                    if (lstOpcoesPagtoPrefericiais.Count > 0)
-                    {
-                        foreach (var op in lstOpcoesPagtoPrefericiais)
-                        {
-                            if (s_pg == op)
-                                pgtoPreferencial = true;
-                        }
-                    }
-                }
-                //verificamos a entrada
-                if (pgtoPreferencial)
-                    vlNivel2 = pedido.FormaPagtoCriacao.C_pce_entrada_valor;
-                else
-                    vlNivel1 = pedido.FormaPagtoCriacao.C_pce_entrada_valor;
-
-                //Identifica e contabiliza o valor das parcelas
-                pgtoPreferencial = false;
-                s_pg = pedido.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto;
-                if (!string.IsNullOrEmpty(s_pg))
-                {
-                    if (lstOpcoesPagtoPrefericiais.Count > 0)
-                    {
-                        foreach (var op in lstOpcoesPagtoPrefericiais)
-                        {
-                            if (s_pg == op)
-                                pgtoPreferencial = true;
-                        }
-                    }
-                }
-
-                if (pgtoPreferencial)
-                    vlNivel2 = vlNivel2 +
-                        (pedido.FormaPagtoCriacao.C_pce_prestacao_qtde * pedido.FormaPagtoCriacao.C_pce_prestacao_valor);
-                else
-                    vlNivel1 = vlNivel1 +
-                        (pedido.FormaPagtoCriacao.C_pce_prestacao_qtde * pedido.FormaPagtoCriacao.C_pce_prestacao_valor);
-
-                if (vlNivel2 > (vl_total / 2))
-                {
-                    if (pedido.DadosCliente.Tipo == Constantes.ID_PJ)
-                        percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDescPJ;
-                    else
-                        percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDesc;
-                }
-            }
-            if (pedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA)
-            {
-                s_pg = pedido.FormaPagtoCriacao.Op_pse_prim_prest_forma_pagto;
-
-                if (!string.IsNullOrEmpty(s_pg))
-                {
-                    if (lstOpcoesPagtoPrefericiais.Count > 0)
-                    {
-                        foreach (var op in lstOpcoesPagtoPrefericiais)
-                        {
-                            if (s_pg == op)
-                                pgtoPreferencial = true;
-                        }
-                    }
-                }
-                //verificamos a entrada
-                if (pgtoPreferencial)
-                    vlNivel2 = pedido.FormaPagtoCriacao.C_pse_prim_prest_valor;
-                else
-                    vlNivel1 = pedido.FormaPagtoCriacao.C_pse_prim_prest_valor;
-
-                //Identifica e contabiliza o valor das parcelas
-                pgtoPreferencial = false;
-                s_pg = pedido.FormaPagtoCriacao.Op_pse_demais_prest_forma_pagto;
-                if (!string.IsNullOrEmpty(s_pg))
-                {
-                    if (lstOpcoesPagtoPrefericiais.Count > 0)
-                    {
-                        foreach (var op in lstOpcoesPagtoPrefericiais)
-                        {
-                            if (s_pg == op)
-                                pgtoPreferencial = true;
-                        }
-                    }
-                }
-
-                if (pgtoPreferencial)
-                    vlNivel2 = vlNivel2 +
-                        (pedido.FormaPagtoCriacao.C_pse_demais_prest_qtde * pedido.FormaPagtoCriacao.C_pse_demais_prest_valor);
-                else
-                    vlNivel1 = vlNivel1 +
-                        (pedido.FormaPagtoCriacao.C_pse_demais_prest_qtde * pedido.FormaPagtoCriacao.C_pse_demais_prest_valor);
-
-                if (vlNivel2 > (vl_total / 2))
-                {
-                    if (pedido.DadosCliente.Tipo == Constantes.ID_PJ)
-                        percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDescPJ;
-                    else
-                        percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDesc;
-                }
-            }
-            return percDescComissaoUtilizar;
-        }
-
-        private async Task VerificarDescontoArredondado(string loja, List<cl_ITEM_PEDIDO_NOVO> v_item, 
-            List<string> lstErros, string c_custoFinancFornecTipoParcelamento, short c_custoFinancFornecQtdeParcelas, 
-            string id_cliente, float percDescComissaoUtilizar, List<string> vdesconto)
-        {
-            var db = contextoProvider.GetContextoLeitura();
-
-            float coeficiente = 0;
-            float? desc_dado_arredondado = 0;
-
-
-            //aqui estão verificando o v_item e não pedido
-            //vamos vericar cada produto da lista
-            foreach (var item in v_item)
-            {
-                var produtoLojaTask = (from c in db.TprodutoLojas.Include(x => x.Tproduto).Include(x => x.Tfabricante)
-                                       where c.Tproduto.Fabricante == item.Fabricante &&
-                                             c.Tproduto.Produto == item.produto &&
-                                             c.Loja == loja
-                                       select c).FirstOrDefaultAsync();
-
-                if (produtoLojaTask == null)
-                    lstErros.Add("Produto " + item.produto + " do fabricante " + item.Fabricante + "NÃO está " +
-                        "cadastrado para a loja " + loja);
-                else
-                {
-                    TprodutoLoja produtoLoja = await produtoLojaTask;
-                    item.Preco_lista = (decimal)produtoLoja.Preco_Lista;
-                    item.Margem = (float)produtoLoja.Margem;
-                    item.Desc_max = (float)produtoLoja.Desc_Max;
-                    item.Comissao = (float)produtoLoja.Comissao;
-                    item.Preco_fabricante = (decimal)produtoLoja.Tproduto.Preco_Fabricante;
-                    item.Vl_custo2 = produtoLoja.Tproduto.Vl_Custo2;
-                    item.Descricao = produtoLoja.Tproduto.Descricao;
-                    item.Descricao_html = produtoLoja.Tproduto.Descricao_Html;
-                    item.Ean = produtoLoja.Tproduto.Ean;
-                    item.Grupo = produtoLoja.Tproduto.Grupo;
-                    item.Peso = (float)produtoLoja.Tproduto.Peso;
-                    item.Qtde_volumes = (short)produtoLoja.Tproduto.Qtde_Volumes;
-                    item.Markup_fabricante = produtoLoja.Tfabricante.Markup;
-                    item.cubagem = produtoLoja.Tproduto.Cubagem;
-                    item.Ncm = produtoLoja.Tproduto.Ncm;
-                    item.Cst = produtoLoja.Tproduto.Cst;
-                    item.Descontinuado = produtoLoja.Tproduto.Descontinuado;
-
-                    if (c_custoFinancFornecTipoParcelamento ==
-                            Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA)
-                        coeficiente = 1;
-                    else
-                    {
-                        var coeficienteTask = (from c in db.TpercentualCustoFinanceiroFornecedors
-                                               where c.Fabricante == item.Fabricante &&
-                                                     c.Tipo_Parcelamento == c_custoFinancFornecTipoParcelamento &&
-                                                     c.Qtde_Parcelas == c_custoFinancFornecQtdeParcelas
-                                               select c).FirstOrDefaultAsync();
-                        if (await coeficienteTask == null)
-                            lstErros.Add("Opção de parcelamento não disponível para fornecedor " + item.Fabricante +
-                                ": " + DecodificaCustoFinanFornecQtdeParcelas(c_custoFinancFornecTipoParcelamento,
-                                c_custoFinancFornecQtdeParcelas) + " parcela(s)");
-                        else
-                        {
-                            coeficiente = (await coeficienteTask).Coeficiente;
-                            //voltamos a atribuir ao tpedidoItem
-                            item.Preco_lista = Math.Round((decimal)coeficiente * item.Preco_lista, 2);
-                        }
-
-
-                    }
-
-                    item.custoFinancFornecCoeficiente = coeficiente;
-
-                    if (item.Preco_lista == 0)
-                    {
-                        item.Desc_Dado = 0;
-                        desc_dado_arredondado = 0;
-                    }
-                    else
-                    {
-                        item.Desc_Dado = (float)(100 *
-                            (item.Preco_lista - item.Preco_Venda) / item.Preco_lista);
-                        desc_dado_arredondado = item.Desc_Dado;
-                    }
-
-                    if (desc_dado_arredondado > percDescComissaoUtilizar)
-                    {
-                        var tDescontoTask = from c in db.Tdescontos
-                                            where c.Usado_status == 0 &&
-                                                  c.Id_cliente == id_cliente &&
-                                                  c.Fabricante == item.Fabricante &&
-                                                  c.Produto == item.produto &&
-                                                  c.Loja == loja &&
-                                                  c.Data >= DateTime.Now.AddMinutes(-30)
-                                            orderby c.Data descending
-                                            select c;
-
-                        Tdesconto tdesconto = await tDescontoTask.FirstOrDefaultAsync();
-
-                        if (tdesconto == null)
-                        {
-                            lstErros.Add("Produto " + item.produto + " do fabricante " + item.Fabricante +
-                                ": desconto de " + item.Desc_Dado + "% excede o máximo permitido.");
-                        }
-                        else
-                        {
-                            tdesconto = await tDescontoTask.FirstOrDefaultAsync();
-                            if ((decimal)item.Desc_Dado >= tdesconto.Desc_max)
-                                lstErros.Add("Produto " + item.produto + " do fabricante " + item.Fabricante +
-                                    ": desconto de " + item.Desc_Dado + " % excede o máximo autorizado.");
-                            else
-                            {
-                                item.Abaixo_min_status = 1;
-                                item.abaixo_min_autorizacao = tdesconto.Id;
-                                item.Abaixo_min_autorizador = tdesconto.Autorizador;
-                                item.Abaixo_min_superv_autorizador = tdesconto.Supervisor_autorizador;
-
-                                //essa variavel aparentemente apenas sinaliza 
-                                //se existe uma senha de autorização para desconto superior
-                                if (vdesconto.Count > 0)
-                                {
-                                    vdesconto.Add(tdesconto.Id);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        private string DecodificaCustoFinanFornecQtdeParcelas(string tipoParcelamento, short custoFFQtdeParcelas)
-        {
-            string retorno = "";
-
-            if (tipoParcelamento == Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA)
-                retorno = "0+" + custoFFQtdeParcelas;
-            else if (tipoParcelamento == Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA)
-                retorno = "1+" + custoFFQtdeParcelas;
-
-            return retorno;
-        }
     }
 }
