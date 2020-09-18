@@ -65,7 +65,7 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
       this.salvando = false;
       return false;
     }
-    debugger;
+    
     this.prepedidoBuscarService.cadastrarPrepedido(this.novoPrepedidoDadosService.prePedidoDto).subscribe({
       next: (r) => {
 

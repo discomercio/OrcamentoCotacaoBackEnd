@@ -438,6 +438,9 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     //verificar se tem produtos com qtde maior que o permitido
     let q: number = 0;
     this.prePedidoDto.ListaProdutos.forEach(r => {
+      //afazer: recalcular desconto antes de cadastrar
+      r.Desc_Dado = 100 * (r.Preco_Lista - r.Preco_Venda) / r.Preco_Lista;
+
       if (this.qtdeVendaPermitida(r)) {
         q++;
       }
