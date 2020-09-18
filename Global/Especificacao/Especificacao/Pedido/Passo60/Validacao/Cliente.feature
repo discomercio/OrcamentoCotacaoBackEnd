@@ -17,3 +17,9 @@ Scenario: Cliente com CEP
 		#	if Trim("" & t_CLIENTE("cep")) = "" then alerta = "É necessário preencher o CEP no cadastro do cliente."
 	When Fazer esta validação
 
+Scenario: fakltando fazer
+	#Incluir:
+	#	- validar preços (desconto, preco de lista com o preco da tabela, etc, etc. Escrever todos os passos).
+	#	- validar se o tipo de parcelamento é permitido para todos os produtos
+	When Fazer esta validação
+

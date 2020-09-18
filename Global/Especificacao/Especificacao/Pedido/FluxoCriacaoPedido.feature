@@ -24,9 +24,6 @@ Fluxo no módulo loja:
 4 - Passo40: Escolher produtos, quantidades e alterar valores e forma de pagamento
 5 - Passo50: Informar observações (entrega imediata, instalador instala, etc) 
 6 - Passo60: Salvar o pedido
-	Incluir:
-		- validar preços
-		- validar se o tipo de parcelamento é permitido para todos os produtos
 --- 
 Fluxo na ApaiMagento:
 1 - Validar o pedido
@@ -34,7 +31,7 @@ Fluxo na ApaiMagento:
 3 - salvar o pedido
 --- 
 Fluxo na API:
-Salvar o pedido
+Salvar o pedido (Passo60/Gravacao)
 	Enviar todos os dados para cadastrar o pedido
 
 Scenario: Fluxo da criação do pedido

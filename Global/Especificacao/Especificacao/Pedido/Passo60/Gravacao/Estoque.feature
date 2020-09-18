@@ -175,6 +175,9 @@ Scenario: Validar estoque 2
 	When Fazer esta validação
 
 Scenario: Validar estoque - não implementado
+	#Não implementamos porque isso é só para avisar na tela. Atualmente, sempre permite a venda sem estoque
+	#Note que não fazemos o teste da validação, mas esse código faz a atribuição do CD. O que estamos falando aqui é que não testamos as validações porque elas não são necessárias.
+
 	#loja/PedidoNovoConsiste.asp
 	#loja/PedidoNovoConfirma.asp
 	#exatamente o mesmo código nas duas, exceto:
@@ -188,7 +191,6 @@ Scenario: Validar estoque - não implementado
 	#'	CONTAGEM DE EMPRESAS QUE SERÃO USADAS NO AUTO-SPLIT, OU SEJA, A QUANTIDADE DE PEDIDOS QUE SERÁ CADASTRADA, JÁ QUE CADA PEDIDO SE REFERE AO ESTOQUE DE UMA EMPRESA
 	#	dim qtde_empresa_selecionada, lista_empresa_selecionada
 	#(inclusive esse bloco
-	#Não implementamos porque isso é só para avisar na tela. Atualmente, sempre permite a venda sem estoque
 	When Nada a fazer
 
 
