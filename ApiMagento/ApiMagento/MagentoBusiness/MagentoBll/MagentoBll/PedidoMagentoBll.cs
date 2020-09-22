@@ -85,10 +85,10 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
                 List<string> lstRet = (await clienteBll.CadastrarCliente(clienteCadastro, orcamentista,
                     (byte)InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__APIMAGENTO)).ToList();
 
-                if(lstRet.Count == 1)
+                if (lstRet.Count == 1)
                 {
                     //é o número do pedido
-                    if(lstRet[0].Length == 12)
+                    if (lstRet[0].Length == 12)
                     {
 
                     }
@@ -99,13 +99,13 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
                     }
                 }
                 //é erro
-                if(lstRet.Count > 1)
+                if (lstRet.Count > 1)
                 {
                     resultado.ListaErros = lstRet;
                 }
             }
 
-            if(resultado.ListaErros.Count == 0)
+            if (resultado.ListaErros.Count == 0)
             {
                 /*
              * olhar Marketplace_codigo_origem para saber se é marketplace ou magento
@@ -124,6 +124,14 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
                         resultado.ListaErros.Add("Código Marketplace não encontrado.");
                         return resultado;
                     }
+
+                    //afazer: verificar se é para acessar o pedido marketplace para confirmar se o pedido existe????
+                    /*
+                     * Podemos validar acessando a tabela de t_MAGENTO_API_PEDIDO_XML e confirmar os dados 
+                     * ex: 
+                     *      t_MAGENTO_API_PEDIDO_XML.increment_id = t_PEDIDO.pedido_bs_x_ac AND
+                     *      t_MAGENTO_API_PEDIDO_XML.pedido_marketplace_completo = t_PEDIDO.pedido_bs_x_marketplace
+                     */
                 }
 
                 Pedido.Dados.Criacao.PedidoCriacaoRetornoDados ret =
@@ -133,7 +141,7 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
                 resultado.IdPedidoCadastrado = ret.Id;
                 resultado.IdsPedidosFilhotes = ret.ListaIdPedidosFilhotes;
                 resultado.ListaErros = ret.ListaErrosValidacao;
-            }            
+            }
 
             return resultado;
         }
@@ -149,6 +157,7 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
             List<Produto.Dados.CoeficienteDados> lstCoeficiente = new List<Produto.Dados.CoeficienteDados>();
             //preciso obter a qtde de parcelas e a sigla de pagto
             var qtdeParcelas = prepedidoBll.ObterQtdeParcelasFormaPagto(formaPagtoCriacao);
+            var siglaParc = prepedidoBll.ObterSiglaFormaPagto(formaPagtoCriacao);
             lstCoeficiente = (await validacoesPrepedidoBll.MontarListaCoeficiente(lstFornec, qtdeParcelas,
                 prepedidoBll.ObterSiglaFormaPagto(formaPagtoCriacao))).ToList();
 
@@ -162,9 +171,10 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
                     .Where(x => x.Fabricante == y.Fabricante && x.Produto == y.Produto)
                     .FirstOrDefault();
 
-                    Produto.Dados.CoeficienteDados coeficiente = lstCoeficiente.Select(x => x)
-                    .Where(x => x.Fabricante == produto.Fabricante && x.QtdeParcelas == qtdeParcelas)
-                    .FirstOrDefault();
+                    Produto.Dados.CoeficienteDados coeficiente = (from c in lstCoeficiente
+                                                                 where c.Fabricante == produto.Fabricante &&
+                                                                       c.TipoParcela == siglaParc
+                                                                 select c).FirstOrDefault();
 
                     if (y.Fabricante == produto.Fabricante &&
                         y.Fabricante == coeficiente.Fabricante &&
@@ -264,7 +274,7 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
             MarketplaceResultadoDto resultado = new MarketplaceResultadoDto();
             resultado.ListaMarketplace = new List<MarketplaceMagentoDto>();
             resultado.ListaErros = new List<string>();
-            
+
 
             List<InfraBanco.Modelos.TcodigoDescricao> listarCodigo = (await UtilsGlobais.Util.ListarCodigoMarketPlace(contextoProvider)).ToList();
 
@@ -290,7 +300,7 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
                     Parametro_5_campo_flag = x.Parametro_5_campo_flag,
                     Parametro_campo_texto = x.Parametro_campo_texto
                 });
-            });            
+            });
 
             return resultado;
         }

@@ -23,6 +23,9 @@ namespace InfraBanco.Constantes
             COD_SISTEMA_RESPONSAVEL_CADASTRO__APIMAGENTO = 4
         };
 
+        public const string T_PEDIDO_ANALISE_ENDERECO = "T_PEDIDO_ANALISE_ENDERECO";
+        public const string T_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO = "T_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO";
+
         public const string ID_FORMA_PAGTO_DINHEIRO = "1";  
         public const string ID_FORMA_PAGTO_DEPOSITO = "2";
         public const string ID_FORMA_PAGTO_CHEQUE = "3";
@@ -30,6 +33,10 @@ namespace InfraBanco.Constantes
         public const string ID_FORMA_PAGTO_CARTAO = "5";
         public const string ID_FORMA_PAGTO_BOLETO_AV = "6";
         public const string ID_FORMA_PAGTO_CARTAO_MAQUINETA = "7";
+
+        public const string AGUARDANDO_EMISSAO_BOLETO = "006";
+        public const string ANALISE_CREDITO_USUARIO_AUTOMATICO = "AUTOMÁTICO";
+
 
         public const int FATOR_BD = 1209;
 

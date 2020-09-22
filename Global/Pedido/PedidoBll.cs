@@ -10,12 +10,14 @@ using InfraBanco.Constantes;
 using Produto.RegrasCrtlEstoque;
 using UtilsGlobais;
 using Produto;
+using InfraBanco;
 
 namespace Pedido
 {
     public class PedidoBll
     {
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
+        private readonly InfraBanco.ContextoBdGravacao dbGravacao;
 
         public PedidoBll(InfraBanco.ContextoBdProvider contextoProvider)
         {
@@ -1000,13 +1002,14 @@ namespace Pedido
                                         {
                                             re.Estoque_Qtde_Solicitado = re.Estoque_Qtde;
                                             qtde_a_alocar = qtde_a_alocar - re.Estoque_Qtde;
+                                            lstRegras.Add(regra);
                                         }
                                     }
                                 }
                             }
                         }
                     }
-
+                    lstRegras.Add(regra);
                 }
 
                 if (qtde_a_alocar > 0)
@@ -1199,6 +1202,101 @@ namespace Pedido
                                                           select c).FirstOrDefaultAsync();
 
             return transportadoraCep;
+        }
+
+        public async Task<int> Fin_gera_nsu(string id_nsu, List<string> lstErros, ContextoBdGravacao dbgravacao)
+        {
+            int intRetorno = 0;
+            //int intRecordsAffected = 0;
+            //int intQtdeTentativas, intNsuUltimo, intNsuNovo;
+            //bool blnSucesso = true;
+            int nsu = 0;
+
+            //conta a qtde de id
+            var qtdeIdFin = from c in dbgravacao.TfinControles
+                            where c.Id == id_nsu
+                            select c.Id;
+
+
+            if (qtdeIdFin != null)
+            {
+                intRetorno = await qtdeIdFin.CountAsync();
+            }
+
+            //não está cadastrado, então cadastra agora 
+            if (intRetorno == 0)
+            {
+                //criamos um novo para salvar
+                TfinControle tfinControle = new TfinControle();
+
+                tfinControle.Id = id_nsu;
+                tfinControle.Nsu = 0;
+                tfinControle.Dt_hr_ult_atualizacao = DateTime.Now;
+
+                dbgravacao.Add(tfinControle);
+
+            }
+
+            //laço de tentativas para gerar o nsu(devido a acesso concorrente)
+
+
+            //obtém o último nsu usado
+            var tfincontroleEditando = await (from c in dbgravacao.TfinControles
+                                              where c.Id == id_nsu
+                                              select c).FirstOrDefaultAsync();
+
+
+            if (tfincontroleEditando == null)
+            {
+                lstErros.Add("Falha ao localizar o registro para geração de NSU (" + id_nsu + ")!");
+                return nsu;
+            }
+
+
+            tfincontroleEditando.Id = id_nsu;
+            tfincontroleEditando.Nsu++;
+            tfincontroleEditando.Dt_hr_ult_atualizacao = DateTime.Now;
+            //tenta atualizar o banco de dados
+            dbgravacao.Update(tfincontroleEditando);
+
+            await dbgravacao.SaveChangesAsync();
+
+            return tfincontroleEditando.Nsu;
+        }
+
+        public async Task<bool> Grava_log_estoque_v2(string strUsuario, short id_nfe_emitente, string strFabricante,
+            string strProduto, short intQtdeSolicitada, short intQtdeAtendida, string strOperacao,
+            string strCodEstoqueOrigem, string strCodEstoqueDestino, string strLojaEstoqueOrigem,
+            string strLojaEstoqueDestino, string strPedidoEstoqueOrigem, string strPedidoEstoqueDestino,
+            string strDocumento, string strComplemento, string strIdOrdemServico, ContextoBdGravacao contexto)
+        {
+
+            TestoqueLog testoqueLog = new TestoqueLog();
+
+            testoqueLog.data = DateTime.Now.Date;
+            testoqueLog.Data_hora = DateTime.Now;
+            testoqueLog.Usuario = strUsuario;
+            testoqueLog.Id_nfe_emitente = id_nfe_emitente;
+            testoqueLog.Fabricante = strFabricante;
+            testoqueLog.Produto = strProduto;
+            testoqueLog.Qtde_solicitada = intQtdeSolicitada;
+            testoqueLog.Qtde_atendida = intQtdeAtendida;
+            testoqueLog.Operacao = strOperacao;
+            testoqueLog.Cod_estoque_origem = strCodEstoqueOrigem;
+            testoqueLog.Cod_estoque_destino = strCodEstoqueDestino;
+            testoqueLog.Loja_estoque_origem = strLojaEstoqueOrigem;
+            testoqueLog.Loja_estoque_destino = strLojaEstoqueDestino;
+            testoqueLog.Pedido_estoque_origem = strPedidoEstoqueOrigem;
+            testoqueLog.Pedido_estoque_destino = strPedidoEstoqueDestino;
+            testoqueLog.Documento = strDocumento;
+            testoqueLog.Complemento = strComplemento.Length > 80 ? strComplemento.Substring(0, 80) : strComplemento;
+            testoqueLog.Id_ordem_servico = strIdOrdemServico;
+
+            contexto.Add(testoqueLog);
+            await contexto.SaveChangesAsync();
+
+
+            return true;
         }
     }
 }

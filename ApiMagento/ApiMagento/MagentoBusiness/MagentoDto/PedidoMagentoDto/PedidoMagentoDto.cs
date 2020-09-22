@@ -94,11 +94,11 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 
             //Armazena os dados de entrega imediata, obs, instalador instala, bem de uso comum
             pedidoCriacao.DetalhesPedido = new Prepedido.Dados.DetalhesPrepedido.DetalhesPrepedidoDados();
-            pedidoCriacao.DetalhesPedido.BemDeUso_Consumo = Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_SIM.ToString();
-            pedidoCriacao.DetalhesPedido.InstaladorInstala = Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_NAO.ToString();
+            pedidoCriacao.DetalhesPedido.BemDeUso_Consumo = (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_SIM;
+            pedidoCriacao.DetalhesPedido.InstaladorInstala = (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_NAO;
             pedidoCriacao.DetalhesPedido.EntregaImediata = dadosClienteMagento.Tipo == Constantes.ID_PF ?
-                            Constantes.EntregaImediata.COD_ETG_IMEDIATA_SIM.ToString() :
-                            Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO.ToString();
+                            Convert.ToString((byte)Constantes.EntregaImediata.COD_ETG_IMEDIATA_SIM) :
+                            Convert.ToString((byte)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO);
             pedidoCriacao.DetalhesPedido.EntregaImediataData = null;
             pedidoCriacao.DetalhesPedido.Observacoes = "";
 
@@ -116,6 +116,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 
             //Armazena "S" ou "N" para caso de o indicador selecionado permita RA
             pedidoCriacao.OpcaoPossuiRa = true;
+            pedidoCriacao.PermiteRAStatus = 1;
 
             //Armazena o id do centro de distribuição selecionado manualmente
             pedidoCriacao.IdNfeSelecionadoManual = 0; //será sempre automático

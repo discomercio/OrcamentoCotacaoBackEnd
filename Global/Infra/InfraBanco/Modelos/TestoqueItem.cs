@@ -10,7 +10,6 @@ namespace InfraBanco.Modelos
     [Table("t_ESTOQUE_ITEM")]
     public class TestoqueItem
     {
-        [Key]
         [Required]
         [Column("id_estoque")]
         [MaxLength(12)]
@@ -34,6 +33,10 @@ namespace InfraBanco.Modelos
 
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         public Testoque Testoque { get; set; }
+
+        [Column("data_ult_movimento")]
+        [Required]
+        public DateTime Data_ult_movimento { get; set; }
 #endif
     }
 }

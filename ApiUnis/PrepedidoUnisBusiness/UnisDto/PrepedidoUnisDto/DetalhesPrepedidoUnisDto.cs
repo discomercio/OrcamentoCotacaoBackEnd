@@ -40,8 +40,8 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
             {
                 St_Entrega_Imediata = short.Parse(detalhesPrePedidoDto.EntregaImediata),
                 PrevisaoEntregaData = detalhesPrePedidoDto.EntregaImediataData,
-                BemDeUso_Consumo = short.Parse(detalhesPrePedidoDto.BemDeUso_Consumo),
-                InstaladorInstala = short.Parse(detalhesPrePedidoDto.InstaladorInstala),
+                BemDeUso_Consumo = detalhesPrePedidoDto.BemDeUso_Consumo,
+                InstaladorInstala = detalhesPrePedidoDto.InstaladorInstala,
                 Obs_1 = detalhesPrePedidoDto.Observacoes
             };
             return ret;
@@ -53,8 +53,8 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
             {
                 EntregaImediata = detalhesPrePedidoUnisDto.St_Entrega_Imediata.ToString(),
                 EntregaImediataData = detalhesPrePedidoUnisDto.PrevisaoEntregaData,
-                BemDeUso_Consumo = detalhesPrePedidoUnisDto.BemDeUso_Consumo.ToString(),
-                InstaladorInstala = detalhesPrePedidoUnisDto.InstaladorInstala.ToString(),
+                BemDeUso_Consumo = detalhesPrePedidoUnisDto.BemDeUso_Consumo,
+                InstaladorInstala = detalhesPrePedidoUnisDto.InstaladorInstala,
                 Observacoes = detalhesPrePedidoUnisDto.Obs_1
             };
             return ret;
@@ -66,8 +66,8 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
             {
                 EntregaImediata = detalhesPrePedidoUnisDto.St_Entrega_Imediata.ToString(),
                 EntregaImediataData = detalhesPrePedidoUnisDto.PrevisaoEntregaData,
-                BemDeUso_Consumo = detalhesPrePedidoUnisDto.BemDeUso_Consumo.ToString(),
-                InstaladorInstala = detalhesPrePedidoUnisDto.InstaladorInstala.ToString(),
+                BemDeUso_Consumo = detalhesPrePedidoUnisDto.BemDeUso_Consumo,
+                InstaladorInstala = detalhesPrePedidoUnisDto.InstaladorInstala,
                 Observacoes = detalhesPrePedidoUnisDto.Obs_1
             };
             return ret;

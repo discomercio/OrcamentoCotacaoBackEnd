@@ -82,5 +82,17 @@ namespace InfraBanco
         public DbSet<TperfilUsuario> TperfilUsuarios { get => contexto.TperfilUsuarios; }
         public DbSet<TcodigoDescricao> tcodigoDescricaos { get => contexto.TcodigoDescricaos; }
 #endif
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+        public DbSet<Tpedido> Tpedidos { get => contexto.Tpedidos; }
+        public DbSet<TestoqueLog> TestoqueLogs { get => contexto.TestoqueLogs; }
+        public DbSet<TestoqueMovimento> TestoqueMovimentos { get => contexto.TestoqueMovimentos; }
+        public DbSet<TpedidoItem> TpedidoItems { get => contexto.TpedidoItems; }
+        public DbSet<Tdesconto> Tdescontos { get => contexto.Tdescontos; }
+        public DbSet<TfinControle> TfinControles { get => contexto.TfinControles; }
+        public DbSet<TpedidoAnaliseEndereco> TpedidoAnaliseEnderecos { get => contexto.TpedidoAnaliseEnderecos; }
+        public DbSet<TpedidoAnaliseEnderecoConfrontacao> TpedidoAnaliseConfrontacaos { get => contexto.TpedidoAnaliseConfrontacaos; }
+        public DbSet<TestoqueItem> TestoqueItems { get => contexto.TestoqueItems; }
+        public DbSet<Testoque> Testoques { get => contexto.Testoques; }
+#endif
     }
 }

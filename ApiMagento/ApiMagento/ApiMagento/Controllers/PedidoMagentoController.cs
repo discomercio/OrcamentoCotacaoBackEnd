@@ -47,7 +47,7 @@ namespace ApiMagento.Controllers
             string apelido = servicoDecodificarTokenApiMagento.ObterApelidoOrcamentista(User);
                         
             var ret = await pedidoMagentoBll.CadastrarPedidoMagento(pedido, apelido);
-            ret.ListaErros.Add("Ainda não implementado");
+            //ret.ListaErros.Add("Ainda não implementado");
             return Ok(ret);
         }
 

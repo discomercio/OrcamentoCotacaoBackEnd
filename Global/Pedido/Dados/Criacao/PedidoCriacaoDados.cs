@@ -60,5 +60,7 @@ namespace Pedido.Dados.Criacao
         //Caso o indicador selecionado permita RA esse campo deve receber o valor total do Pedido com RA
         public decimal Vl_total_NF { get; set; }
 
+        public short PermiteRAStatus { get; set; }
+
     }
 }

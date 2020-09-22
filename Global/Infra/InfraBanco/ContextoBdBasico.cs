@@ -89,6 +89,17 @@ namespace InfraBanco
                 .HasOne(x => x.Tproduto)
                 .WithMany(x => x.TprodutoLoja)
                 .HasForeignKey(x => new { x.Fabricante, x.Produto });
+
+            modelBuilder.Entity<TestoqueItem>().HasKey(x => new { x.Id_estoque, x.Fabricante, x.Produto });
+
+            modelBuilder.Entity<TestoqueItem>()
+                .HasOne(x => x.Testoque)
+                .WithMany(x => x.TestoqueItem)
+                .HasForeignKey(x => x.Id_estoque);
+
+
+            modelBuilder.Entity<TestoqueLog>()
+               .HasKey(x => new { x.Data_hora, x.Fabricante, x.Produto, x.Qtde_atendida });
 #endif
         }
 
@@ -144,6 +155,10 @@ namespace InfraBanco
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         public DbSet<Tdesconto> Tdescontos { get; set; }
         public DbSet<TtransportadoraCep> TtransportadoraCeps { get; set; }
+        public DbSet<TestoqueLog> TestoqueLogs { get; set; }
+        public DbSet<TfinControle> TfinControles { get; set; }
+        public DbSet<TpedidoAnaliseEndereco> TpedidoAnaliseEnderecos { get; set; }
+        public DbSet<TpedidoAnaliseEnderecoConfrontacao> TpedidoAnaliseConfrontacaos { get; set; }
 #endif
     }
 }

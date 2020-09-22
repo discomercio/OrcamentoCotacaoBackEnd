@@ -841,7 +841,7 @@ namespace UtilsGlobais
             return retorno;
         }
 
-        public static async Task<string> GerarNsu(ContextoBdGravacao dbgravacao, string id_nsu, ContextoBdProvider contextoProvider)
+        public static async Task<string> GerarNsu(ContextoBdGravacao dbgravacao, string id_nsu)
         {
             string retorno = "";
             int n_nsu = -1;
@@ -1237,6 +1237,18 @@ namespace UtilsGlobais
             string minuto = DateTime.Now.AddMinutes(-10).ToString().PadLeft(2, '0');
 
             return hora + minuto;
+        }
+
+        public static string RemoverAcentos(string text)
+        {
+            StringBuilder sbReturn = new StringBuilder();
+            var arrayText = text.Normalize(NormalizationForm.FormD).ToCharArray();
+            foreach (char letter in arrayText)
+            {
+                if (CharUnicodeInfo.GetUnicodeCategory(letter) != UnicodeCategory.NonSpacingMark)
+                    sbReturn.Append(letter);
+            }
+            return sbReturn.ToString();
         }
     }
 }

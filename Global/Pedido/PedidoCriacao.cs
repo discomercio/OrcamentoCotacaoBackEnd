@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Produto.RegrasCrtlEstoque;
+using Cliente.Dados;
+using Cliente;
 
 namespace Pedido
 {
@@ -20,10 +22,13 @@ namespace Pedido
         private readonly Prepedido.PrepedidoBll prepedidoBll;
         private readonly Prepedido.FormaPagto.FormaPagtoBll formaPagtoBll;
         private readonly Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll;
+        private readonly EfetivaPedidoBll efetivaPedidoBll;
+        private readonly ClienteBll clienteBll;
 
         public PedidoCriacao(PedidoBll pedidoBll, InfraBanco.ContextoBdProvider contextoProvider,
             Prepedido.FormaPagto.ValidacoesFormaPagtoBll validacoesFormaPagtoBll, Prepedido.PrepedidoBll prepedidoBll,
-            Prepedido.FormaPagto.FormaPagtoBll formaPagtoBll, Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll)
+            Prepedido.FormaPagto.FormaPagtoBll formaPagtoBll, Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll,
+            EfetivaPedidoBll efetivaPedidoBll, ClienteBll clienteBll)
         {
             this.pedidoBll = pedidoBll;
             this.contextoProvider = contextoProvider;
@@ -31,6 +36,8 @@ namespace Pedido
             this.prepedidoBll = prepedidoBll;
             this.formaPagtoBll = formaPagtoBll;
             this.validacoesPrepedidoBll = validacoesPrepedidoBll;
+            this.efetivaPedidoBll = efetivaPedidoBll;
+            this.clienteBll = clienteBll;
         }
         //criar uma classe: Global/Pedido/PedidoBll/PedidoCriacao com a rotina CadastrarPrepedido, 
         //quer vai retornar um PedidoCriacaoRetorno com o id do pedido, dos filhotes, 
@@ -41,8 +48,9 @@ namespace Pedido
             decimal maxErroArredondamento)
         {
             PedidoCriacaoRetornoDados pedidoRetorno = new PedidoCriacaoRetornoDados();
-            pedidoRetorno.ListaErros.Add("Ainda não implementado");
-
+            pedidoRetorno.ListaErros = new List<string>();
+            //pedidoRetorno.ListaErros.Add("Ainda não implementado");
+            var db = contextoProvider.GetContextoLeitura();
             /* FLUXO DE CRIAÇÃO DE PEDIDO 1ºpasso
              * PedidoNovoConsiste.asp = uma tela antes de finalizar o pedido
              * 1- verificar se a loja esta habilitada para ECommerce
@@ -50,7 +58,8 @@ namespace Pedido
 
 
             /* 2- busca os dados do cliente */
-
+            var tcliente = db.Tclientes.Where(r => r.Cnpj_Cpf == pedido.DadosCliente.Cnpj_Cpf).FirstOrDefault();
+            DadosClienteCadastroDados clienteCadastro = clienteBll.ObterDadosClienteCadastro(tcliente, pedido.LojaUsuario);
 
             /* 7- se tiver "vendedor_externo", busca (nome, razão social) na t_LOJA
             * 8- busca o orçamentista para saber se permite RA */
@@ -203,7 +212,7 @@ namespace Pedido
                 ProdutoValidadoComEstoqueDados produto_validado_item = new ProdutoValidadoComEstoqueDados();
 
                 //vamos buscar as regras relacionadas ao produto
-                produto_validado_item = await  pedidoBll.VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado(produto,
+                produto_validado_item = await pedidoBll.VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado(produto,
                 UtilsGlobais.Util.SoDigitosCpf_Cnpj(pedido.DadosCliente.Cnpj_Cpf), pedido.IdNfeSelecionadoManual);
 
                 if (produto_validado_item.ListaErros.Count > 0)
@@ -228,6 +237,14 @@ namespace Pedido
                             //produto_validado_item.Produto.Lst_empresa_selecionada);
                         }
                     }
+                }
+                else
+                {
+                    produto_validado_item.Produto.Lst_empresa_selecionada.ForEach(x =>
+                    {
+                        if (!vEmpresaAutoSplit.Contains(x))
+                            vEmpresaAutoSplit.Add(x);
+                    });
                 }
             }
 
@@ -259,8 +276,10 @@ namespace Pedido
             List<RegrasBll> lstRegras = new List<RegrasBll>();
             foreach (var produto in pedido.ListaProdutos)
             {
-                lstRegras = (await pedidoBll.VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado_Teste(
+                List<RegrasBll> lstRegrast = new List<RegrasBll>();
+                lstRegrast = (await pedidoBll.VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado_Teste(
                     produto, pedido.DadosCliente.Cnpj_Cpf, pedido.IdNfeSelecionadoManual)).ToList();
+                lstRegras.Add(lstRegrast[0]);
             }
 
             //cadastra o pedido 1734 ate 2016
@@ -271,14 +290,14 @@ namespace Pedido
 
 
                 //OBS => PedBonshop = pedido Pedido_Bs_X_At
-
+                string PedBonshop = "";
                 //AFAZER: CRIAR O EFETIVAR PEDIDO
                 using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
                 {
-                    //pedidoRetorno.Id = await efetivaPedido.Novo_EfetivarCadastroPedido(pedido, vEmpresaAutoSplit,
-                    //    pedido.Usuario, c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas, transportadora,
-                    //    v_item, v_spe, vdesconto, lstRegras, perc_limite_RA_sem_desagio, pedido.LojaUsuario, perc_desagio_RA,
-                    //    pedido.DadosCliente, pedido.NomeIndicador, pedidoRetorno.ListaErros, dbgravacao);
+                    pedidoRetorno.Id = await efetivaPedidoBll.Novo_EfetivarCadastroPedido(pedido, vEmpresaAutoSplit,
+                        pedido.Usuario, c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas, transportadora,
+                        v_item, v_spe, vdesconto, lstRegras, perc_limite_RA_sem_desagio, pedido.LojaUsuario, perc_desagio_RA,
+                        tcliente, !string.IsNullOrEmpty(pedido.VendedorExterno), pedido.NomeIndicador, pedidoRetorno.ListaErros, dbgravacao);
 
                     bool efetivou = !string.IsNullOrWhiteSpace(pedidoRetorno.Id);
                     if (efetivou)

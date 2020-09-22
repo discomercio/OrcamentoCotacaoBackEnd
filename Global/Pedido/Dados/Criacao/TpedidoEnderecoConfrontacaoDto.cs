@@ -1,9 +1,9 @@
-﻿using Loja.Modelos;
+﻿using InfraBanco.Modelos;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
+namespace Pedido.Dados.Criacao
 {
     public class TpedidoEnderecoConfrontacaoDto
     {

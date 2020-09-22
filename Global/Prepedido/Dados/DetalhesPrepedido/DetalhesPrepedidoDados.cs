@@ -10,8 +10,8 @@ namespace Prepedido.Dados.DetalhesPrepedido
         public string NumeroNF { get; set; }
         public string EntregaImediata { get; set; }
         public DateTime? EntregaImediataData { get; set; }
-        public string BemDeUso_Consumo { get; set; }
-        public string InstaladorInstala { get; set; }
+        public short BemDeUso_Consumo { get; set; }
+        public short InstaladorInstala { get; set; }
         public string GarantiaIndicador { get; set; }
         public string FormaDePagamento { get; set; }
         public string DescricaoFormaPagamento { get; set; }

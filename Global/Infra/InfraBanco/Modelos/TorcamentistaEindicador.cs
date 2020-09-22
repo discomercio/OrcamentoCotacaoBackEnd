@@ -81,6 +81,34 @@ namespace InfraBanco.Modelos
         [Column("vl_limite_mensal", TypeName = "money")]
         [Required]
         public decimal Vl_Limite_Mensal { get; set; }
+
+        [Column("endereco")]
+        [MaxLength(80)]
+        public string Endereco { get; set; }
+
+        [Column("endereco_numero")]
+        [MaxLength(20)]
+        public string Endereco_Numero { get; set; }
+
+        [Column("cep")]
+        [MaxLength(8)]
+        public string Cep { get; set; }
+
+        [Column("bairro")]
+        [MaxLength(72)]
+        public string Bairro { get; set; }
+
+        [Column("cidade")]
+        [MaxLength(60)]
+        public string Cidade { get; set; }
+
+        [Column("uf")]
+        [MaxLength(2)]
+        public string Uf { get; set; }
+
+        [Column("endereco_complemento")]
+        [MaxLength(60)]
+        public string Endereco_Complemento { get; set; }
 #endif
     }
 }

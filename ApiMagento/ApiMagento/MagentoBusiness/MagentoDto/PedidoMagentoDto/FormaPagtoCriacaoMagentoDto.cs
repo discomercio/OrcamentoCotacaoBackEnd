@@ -49,7 +49,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                 string.IsNullOrEmpty(marketplace_codigo_origem))
             {
                 ret.Qtde_Parcelas = 1;
-                ret.Op_av_forma_pagto = configuracaoApiMagento.FormaPagto.Op_av_forma_pagto;//boleto
+                ret.Op_av_forma_pagto = configuracaoApiMagento.FormaPagto.Magento.Op_av_forma_pagto;//boleto
                 ret.CustoFinancFornecTipoParcelamento = 
                     InfraBanco.Constantes.Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA;
             }
@@ -59,8 +59,8 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             {
                 ret.Qtde_Parcelas = 1;
                 ret.C_pu_valor = formaPagtoCriacaoMagento.C_pu_valor;
-                ret.Op_pu_forma_pagto = configuracaoApiMagento.FormaPagto.Op_pu_forma_pagto; //Depósito
-                ret.C_pu_vencto_apos = configuracaoApiMagento.FormaPagto.C_pu_vencto_apos;//ler do appsettings = 30 dias
+                ret.Op_pu_forma_pagto = configuracaoApiMagento.FormaPagto.Markeplace.Op_pu_forma_pagto; //Depósito
+                ret.C_pu_vencto_apos = configuracaoApiMagento.FormaPagto.Markeplace.C_pu_vencto_apos;//ler do appsettings = 30 dias
                 ret.CustoFinancFornecTipoParcelamento = 
                     InfraBanco.Constantes.Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA;
             }

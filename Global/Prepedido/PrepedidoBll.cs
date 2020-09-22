@@ -377,22 +377,22 @@ namespace Prepedido
         {
             DetalhesPrepedidoDados detail = new DetalhesPrepedidoDados
             {
-                Observacoes = torcamento.Obs_1,
-                NumeroNF = torcamento.Obs_2,
-                PrevisaoEntrega = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
-                torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + " (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) +
-                " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" : null,
-                EntregaImediata = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
-                "NÃO (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" :
-                "SIM (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")",
-                BemDeUso_Consumo = torcamento.StBemUsoConsumo == (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_NAO ?
-                "NÃO" : "SIM",
-                InstaladorInstala = torcamento.InstaladorInstalaStatus == (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_NAO ?
-                "NÃO" : "SIM",
-                GarantiaIndicador = Convert.ToString(torcamento.GarantiaIndicadorStatus) ==
-                Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO ?
-                "NÃO" : "SIM",
-                DescricaoFormaPagamento = torcamento.Forma_Pagamento
+                //Observacoes = torcamento.Obs_1,
+                //NumeroNF = torcamento.Obs_2,
+                //PrevisaoEntrega = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
+                //torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + " (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) +
+                //" - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" : null,
+                //EntregaImediata = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
+                //"NÃO (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" :
+                //"SIM (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")",
+                //BemDeUso_Consumo = torcamento.StBemUsoConsumo == (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_NAO ?
+                //"NÃO" : "SIM",
+                //InstaladorInstala = torcamento.InstaladorInstalaStatus == (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_NAO ?
+                //"NÃO" : "SIM",
+                //GarantiaIndicador = Convert.ToString(torcamento.GarantiaIndicadorStatus) ==
+                //Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO ?
+                //"NÃO" : "SIM",
+                //DescricaoFormaPagamento = torcamento.Forma_Pagamento
             };
 
             return detail;
@@ -936,9 +936,19 @@ namespace Prepedido
             torcamento.St_Fechamento = "";
             torcamento.St_Orc_Virou_Pedido = 0;
             torcamento.CustoFinancFornecQtdeParcelas = (short)ObterQtdeParcelasFormaPagto(prepedido.FormaPagtoCriacao);
-            torcamento.Vl_Total = Calcular_Vl_Total(prepedido);
-            torcamento.Vl_Total_NF = CalcularVl_Total_NF(prepedido);
-            torcamento.Vl_Total_RA = prepedido.PermiteRAStatus == 1 ? CalcularVl_Total_NF(prepedido) - Calcular_Vl_Total(prepedido) : 0M;
+            decimal vl_total = 0m;
+            prepedido.ListaProdutos.ForEach(x =>
+            {
+                vl_total += Calcular_Vl_Total((short)x.Qtde, x.Preco_Venda);
+            });
+            torcamento.Vl_Total = vl_total;
+            decimal vl_total_nf = 0m;
+            prepedido.ListaProdutos.ForEach(x =>
+            {
+                vl_total_nf += Calcular_Vl_Total((short)x.Qtde, x.Preco_Venda);
+            });
+            torcamento.Vl_Total_NF = vl_total_nf;// CalcularVl_Total_NF(prepedido);
+            torcamento.Vl_Total_RA = prepedido.PermiteRAStatus == 1 ? vl_total_nf - vl_total : 0M;
             torcamento.Perc_RT = 0;
             torcamento.Perc_Desagio_RA_Liquida = perc_limite_RA_sem_desagio;
             torcamento.Permite_RA_Status = orcamentista.Permite_RA_Status;
@@ -1099,11 +1109,11 @@ namespace Prepedido
             torcamento.Obs_2 = prepedido.DetalhesPrepedido.NumeroNF == null ?
                 "" : prepedido.DetalhesPrepedido.NumeroNF;
             torcamento.StBemUsoConsumo = prepedido.DetalhesPrepedido.BemDeUso_Consumo !=
-                Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_NAO.ToString() ?
+                (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_NAO ?
                 (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_SIM : (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_NAO;
 
             torcamento.InstaladorInstalaStatus = prepedido.DetalhesPrepedido.InstaladorInstala ==
-                Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_SIM.ToString() ?
+                (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_SIM ?
                 (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_SIM :
                 (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_NAO;
 
@@ -1243,34 +1253,14 @@ namespace Prepedido
             return qtdeParcelas;
         }
 
-        private decimal Calcular_Vl_Total(PrePedidoDados prepedido)
+        //Calcula totais
+        public decimal Calcular_Vl_Total(short qtde, decimal preco)
         {
-            decimal vl_total = 0M;
+            decimal retorno = 0M;
 
-            foreach (var p in prepedido.ListaProdutos)
-            {
-                if (!string.IsNullOrEmpty(p.Produto))
-                {
-                    vl_total += (decimal)(p.Qtde * p.Preco_Venda);
-                }
-            }
+            retorno += (decimal)(qtde * preco);
 
-            return Math.Round(vl_total, 2);
-        }
-
-        private decimal CalcularVl_Total_NF(PrePedidoDados prepedido)
-        {
-            decimal vl_total_NF = 0M;
-
-            foreach (var p in prepedido.ListaProdutos)
-            {
-                if (!string.IsNullOrEmpty(p.Produto))
-                {
-                    vl_total_NF += (decimal)(p.Qtde * p.Preco_NF);
-                }
-            }
-
-            return Math.Round(vl_total_NF, 2);
+            return Math.Round(retorno, 2);
         }
 
         private async Task ExisteProdutoDescontinuado(PrePedidoDados prepedido, List<string> lstErros)
@@ -1903,7 +1893,7 @@ namespace Prepedido
         {
             string sufixoIdOrcamento = Constantes.SUFIXO_ID_ORCAMENTO;
 
-            var nsuTask = await Util.GerarNsu(dbgravacao, Constantes.NSU_ORCAMENTO, contextoProvider);
+            var nsuTask = await Util.GerarNsu(dbgravacao, Constantes.NSU_ORCAMENTO);
             string nsu = nsuTask.ToString();
 
             int ndescarte = nsu.Length - Constantes.TAM_MIN_NUM_ORCAMENTO;

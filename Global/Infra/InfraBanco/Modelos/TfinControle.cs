@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Loja.Modelo
+namespace InfraBanco.Modelos
 {
     [Table("t_FIN_CONTROLE")]
     public class TfinControle

@@ -235,20 +235,20 @@ namespace Produto
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var lstEstoqueQtdeUtilZero = from c in db.Testoques
-                                         where (c.TestoqueItem.Qtde - c.TestoqueItem.Qtde_utilizada) > 0 &&
-                                               c.TestoqueItem.Qtde_utilizada.HasValue
-                                         select new ProdutosEstoqueDados
-                                         {
-                                             Fabricante = c.TestoqueItem.Fabricante,
-                                             Produto = c.TestoqueItem.Produto,
-                                             Qtde = (int)c.TestoqueItem.Qtde,
-                                             Qtde_Utilizada = (int)c.TestoqueItem.Qtde_utilizada,
-                                             Id_nfe_emitente = c.Id_nfe_emitente
-                                         };
+            //var lstEstoqueQtdeUtilZero = from c in db.Testoques
+            //                             where (c.TestoqueItem.Qtde - c.TestoqueItem.Qtde_utilizada) > 0 &&
+            //                                   c.TestoqueItem.Qtde_utilizada.HasValue
+            //                             select new ProdutosEstoqueDados
+            //                             {
+            //                                 Fabricante = c.TestoqueItem.Fabricante,
+            //                                 Produto = c.TestoqueItem.Produto,
+            //                                 Qtde = (int)c.TestoqueItem.Qtde,
+            //                                 Qtde_Utilizada = (int)c.TestoqueItem.Qtde_utilizada,
+            //                                 Id_nfe_emitente = c.Id_nfe_emitente
+            //                             };
 
-            List<ProdutosEstoqueDados> produtosEstoqueDtos = await lstEstoqueQtdeUtilZero.ToListAsync();
-
+            //List<ProdutosEstoqueDados> produtosEstoqueDtos = await lstEstoqueQtdeUtilZero.ToListAsync();
+            List<ProdutosEstoqueDados> produtosEstoqueDtos = new List<ProdutosEstoqueDados>();
             return produtosEstoqueDtos;
         }
 
@@ -256,24 +256,24 @@ namespace Produto
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var lstEstoqueQtdeUtilZeroComSubQuery = from c in db.Testoques
-                                                    where ((c.TestoqueItem.Qtde - c.TestoqueItem.Qtde_utilizada) > 0) &&
-                                                          ((c.TestoqueItem.Qtde_utilizada.HasValue) ||
-                                                          (from d in db.TnfEmitentes
-                                                           where d.St_Habilitado_Ctrl_Estoque == 1 && d.St_Ativo == 1
-                                                           select d.Id)
-                                                           .Contains(c.Id_nfe_emitente))
-                                                    select new ProdutosEstoqueDados
-                                                    {
-                                                        Fabricante = c.TestoqueItem.Fabricante,
-                                                        Produto = c.TestoqueItem.Produto,
-                                                        Qtde = (int)c.TestoqueItem.Qtde,
-                                                        Qtde_Utilizada = (int)c.TestoqueItem.Qtde_utilizada,
-                                                        Id_nfe_emitente = c.Id_nfe_emitente
-                                                    };
+            //var lstEstoqueQtdeUtilZeroComSubQuery = from c in db.Testoques
+            //                                        where ((c.TestoqueItem.Qtde - c.TestoqueItem.Qtde_utilizada) > 0) &&
+            //                                              ((c.TestoqueItem.Qtde_utilizada.HasValue) ||
+            //                                              (from d in db.TnfEmitentes
+            //                                               where d.St_Habilitado_Ctrl_Estoque == 1 && d.St_Ativo == 1
+            //                                               select d.Id)
+            //                                               .Contains(c.Id_nfe_emitente))
+            //                                        select new ProdutosEstoqueDados
+            //                                        {
+            //                                            Fabricante = c.TestoqueItem.Fabricante,
+            //                                            Produto = c.TestoqueItem.Produto,
+            //                                            Qtde = (int)c.TestoqueItem.Qtde,
+            //                                            Qtde_Utilizada = (int)c.TestoqueItem.Qtde_utilizada,
+            //                                            Id_nfe_emitente = c.Id_nfe_emitente
+            //                                        };
 
-            List<ProdutosEstoqueDados> produtosEstoqueDtos = await lstEstoqueQtdeUtilZeroComSubQuery.ToListAsync();
-
+            //List<ProdutosEstoqueDados> produtosEstoqueDtos = await lstEstoqueQtdeUtilZeroComSubQuery.ToListAsync();
+            List<ProdutosEstoqueDados> produtosEstoqueDtos = new List<ProdutosEstoqueDados>();
             return produtosEstoqueDtos;
         }
 

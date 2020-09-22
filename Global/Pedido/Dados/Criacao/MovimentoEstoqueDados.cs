@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
+namespace Pedido.Dados.Criacao
 {
-    public class MovimentoEstoqueDto
+    public class MovimentoEstoqueDados
     {
         public short total_estoque_vendido { get; set; }
         public short total_estoque_sem_presenca { get; set; }

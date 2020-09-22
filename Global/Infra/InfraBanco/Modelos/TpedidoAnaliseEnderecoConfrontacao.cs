@@ -4,7 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Loja.Modelo
+
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+
+namespace InfraBanco.Modelos
 {
     [Table("t_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO")]
     public class TpedidoAnaliseEnderecoConfrontacao
@@ -66,3 +69,4 @@ namespace Loja.Modelo
 
     }
 }
+#endif

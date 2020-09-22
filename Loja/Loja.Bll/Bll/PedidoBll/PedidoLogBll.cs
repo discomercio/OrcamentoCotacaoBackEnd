@@ -84,7 +84,7 @@ namespace Loja.Bll.PedidoBll
             else
             {
                 log += "; status da análise crédito: " + pedido.Analise_Credito;
-                log += await pedidoBll.ObterAnaliseCredito(Convert.ToString(pedido.Analise_Credito), id_pedido_base, apelido);
+                //log += await pedidoBll.ObterAnaliseCredito(Convert.ToString(pedido.Analise_Credito), id_pedido_base, apelido);
             }
 
 

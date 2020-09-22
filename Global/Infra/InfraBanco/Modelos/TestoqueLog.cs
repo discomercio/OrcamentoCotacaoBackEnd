@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
 
-namespace Loja.Modelo
+namespace InfraBanco.Modelos
 {
     [Table("t_ESTOQUE_LOG")]
     public class TestoqueLog
@@ -87,3 +88,4 @@ namespace Loja.Modelo
 
     }
 }
+#endif
