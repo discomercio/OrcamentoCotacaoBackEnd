@@ -45,17 +45,22 @@ namespace Pedido
         //dados cadastrais (quer dizer, duas listas de erro.) 
         //É que na loja o tratamento dos erros dos dados cadastrais vai ser diferente).
         public async Task<PedidoCriacaoRetornoDados> CadastrarPedido(PedidoCriacaoDados pedido, decimal limiteArredondamento,
-            decimal maxErroArredondamento)
+            decimal maxErroArredondamento, string pedido_bs_x_ac, string marketplace_codigo_origem, string pedido_bs_x_marketplace)
         {
             PedidoCriacaoRetornoDados pedidoRetorno = new PedidoCriacaoRetornoDados();
             pedidoRetorno.ListaErros = new List<string>();
             //pedidoRetorno.ListaErros.Add("Ainda não implementado");
             var db = contextoProvider.GetContextoLeitura();
+
             /* FLUXO DE CRIAÇÃO DE PEDIDO 1ºpasso
              * PedidoNovoConsiste.asp = uma tela antes de finalizar o pedido
              * 1- verificar se a loja esta habilitada para ECommerce
              */
-
+            if (!await UtilsGlobais.Util.LojaHabilitadaProdutosECommerce(pedido.DadosCliente.Loja, contextoProvider))
+            {
+                pedidoRetorno.ListaErros.Add($"Loja não habilitada para e-commerce: {pedido.DadosCliente.Loja}");
+                return pedidoRetorno;
+            }
 
             /* 2- busca os dados do cliente */
             var tcliente = db.Tclientes.Where(r => r.Cnpj_Cpf == pedido.DadosCliente.Cnpj_Cpf).FirstOrDefault();
@@ -103,29 +108,35 @@ namespace Pedido
                             if (string.IsNullOrEmpty(pedido.NomeIndicador))
                             {
                                 pedidoRetorno.ListaErros.Add("Informe quem é o indicador.");
-                            }
-
-                            /* 3- busca o percentual máximo de comissão*/
-                            percentualMax = await pedidoBll.ObterPercentualMaxDescEComissao(pedido.LojaUsuario);
-
-                            if (pedido.DadosCliente.Tipo == Constantes.ID_PJ)
-                                percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDescPJ;
-                            else
-                                percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDesc;
-
-                            if (!string.IsNullOrEmpty(pedido.PercRT.ToString()))
-                                pedidoBll.ValidarPercentualRT((float)pedido.PercRT, percentualMax.PercMaxComissao, pedidoRetorno.ListaErros);
-
-                            //perc_desagio_RA
-                            perc_desagio_RA = await UtilsGlobais.Util.ObterPercentualDesagioRAIndicador(pedido.NomeIndicador, contextoProvider);
-                            perc_limite_RA_sem_desagio = await UtilsGlobais.Util.VerificarSemDesagioRA(contextoProvider);
-                            vl_limite_mensal = await UtilsGlobais.Util.ObterLimiteMensalComprasDoIndicador(pedido.NomeIndicador, contextoProvider);
-                            vl_limite_mensal_consumido = await UtilsGlobais.Util.CalcularLimiteMensalConsumidoDoIndicador(pedido.NomeIndicador, DateTime.Now, contextoProvider);
-                            vl_limite_mensal_disponivel = vl_limite_mensal - vl_limite_mensal_consumido;
+                            }                           
                         }
+
+                        /* 3- busca o percentual máximo de comissão*/
+                        percentualMax = await pedidoBll.ObterPercentualMaxDescEComissao(pedido.LojaUsuario);
+
+                        if (pedido.DadosCliente.Tipo == Constantes.ID_PJ)
+                            percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDescPJ;
+                        else
+                            percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDesc;
+
+                        if (!string.IsNullOrEmpty(pedido.PercRT.ToString()))
+                            pedidoBll.ValidarPercentualRT((float)pedido.PercRT, percentualMax.PercMaxComissao, pedidoRetorno.ListaErros);
+
+                        //perc_desagio_RA
+                        perc_desagio_RA = await UtilsGlobais.Util.ObterPercentualDesagioRAIndicador(pedido.NomeIndicador, contextoProvider);
+                        perc_limite_RA_sem_desagio = await UtilsGlobais.Util.VerificarSemDesagioRA(contextoProvider);
+                        vl_limite_mensal = await UtilsGlobais.Util.ObterLimiteMensalComprasDoIndicador(pedido.NomeIndicador, contextoProvider);
+                        vl_limite_mensal_consumido = await UtilsGlobais.Util.CalcularLimiteMensalConsumidoDoIndicador(pedido.NomeIndicador, DateTime.Now, contextoProvider);
+                        vl_limite_mensal_disponivel = vl_limite_mensal - vl_limite_mensal_consumido;
                     }
                 }
             }
+
+            //validar os produtos
+            Prepedido.Dados.DetalhesPrepedido.PrePedidoDados prepedido = PedidoCriacaoDados.PrePedidoDadosDePedidoCriacaoDados(pedido);
+            await validacoesPrepedidoBll.MontarProdutosParaComparacao(prepedido,
+                        c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas,
+                        pedido.DadosCliente.Loja, pedidoRetorno.ListaErros, perc_limite_RA_sem_desagio, limiteArredondamento);
 
             //se tiver erro vamos retornar
             if (pedidoRetorno.ListaErros.Count > 0)
@@ -169,8 +180,6 @@ namespace Pedido
             {
                 return pedidoRetorno;
             }
-
-
 
             //busca produtos , busca percentual custo finananceiro, calcula desconto 716 ate 824
             //desc_dado_arredondado
@@ -234,7 +243,6 @@ namespace Pedido
                                 if (!vEmpresaAutoSplit.Contains(x))
                                     vEmpresaAutoSplit.Add(x);
                             });
-                            //produto_validado_item.Produto.Lst_empresa_selecionada);
                         }
                     }
                 }
@@ -288,16 +296,14 @@ namespace Pedido
                 //vamos efetivar o cadastro do pedido
                 //vamos abrir uma nova transaction do contexto que esta sendo utilizado para Using
 
-
-                //OBS => PedBonshop = pedido Pedido_Bs_X_At
-                string PedBonshop = "";
                 //AFAZER: CRIAR O EFETIVAR PEDIDO
                 using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
                 {
                     pedidoRetorno.Id = await efetivaPedidoBll.Novo_EfetivarCadastroPedido(pedido, vEmpresaAutoSplit,
                         pedido.Usuario, c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas, transportadora,
                         v_item, v_spe, vdesconto, lstRegras, perc_limite_RA_sem_desagio, pedido.LojaUsuario, perc_desagio_RA,
-                        tcliente, !string.IsNullOrEmpty(pedido.VendedorExterno), pedido.NomeIndicador, pedidoRetorno.ListaErros, dbgravacao);
+                        tcliente, !string.IsNullOrEmpty(pedido.VendedorExterno), pedidoRetorno.ListaErros, dbgravacao, 
+                        pedido_bs_x_ac, pedido_bs_x_marketplace, marketplace_codigo_origem);
 
                     bool efetivou = !string.IsNullOrWhiteSpace(pedidoRetorno.Id);
                     if (efetivou)

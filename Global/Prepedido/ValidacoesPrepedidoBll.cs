@@ -196,7 +196,7 @@ namespace Prepedido
             return lstcoefDados;
         }
 
-        private async Task<IEnumerable<PrepedidoProdutoPrepedidoDados>> BuscarProdutos(List<PrepedidoProdutoPrepedidoDados> lstProdutos,
+        public async Task<IEnumerable<PrepedidoProdutoPrepedidoDados>> BuscarProdutos(List<PrepedidoProdutoPrepedidoDados> lstProdutos,
             string loja, List<string> lstErros)
         {
 

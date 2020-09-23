@@ -62,5 +62,21 @@ namespace Pedido.Dados.Criacao
 
         public short PermiteRAStatus { get; set; }
 
+
+        public static Prepedido.Dados.DetalhesPrepedido.PrePedidoDados PrePedidoDadosDePedidoCriacaoDados(PedidoCriacaoDados pedido)
+        {
+            Prepedido.Dados.DetalhesPrepedido.PrePedidoDados prepedido = new Prepedido.Dados.DetalhesPrepedido.PrePedidoDados();
+            prepedido.DadosCliente = pedido.DadosCliente;
+            prepedido.ListaProdutos = Pedido.Dados.Criacao.PedidoProdutoPedidoDados.PrepedidoProdutoPrepedidoDadosDePedidoProdutoPedidoDados(pedido.ListaProdutos);
+            prepedido.FormaPagtoCriacao = pedido.FormaPagtoCriacao;
+            prepedido.EnderecoEntrega = pedido.EnderecoEntrega;
+            prepedido.EnderecoCadastroClientePrepedido = pedido.EnderecoCadastralCliente;
+            prepedido.DetalhesPrepedido = pedido.DetalhesPedido;
+            prepedido.Vl_total = pedido.Vl_total;
+            prepedido.Vl_total_NF = pedido.Vl_total_NF;
+            prepedido.PermiteRAStatus = pedido.PermiteRAStatus;
+
+            return prepedido;
+        }
     }
 }

@@ -69,6 +69,8 @@ namespace InfraBanco
         public IQueryable<Tdesconto> Tdescontos { get => contexto.Tdescontos.AsNoTracking(); }
 
         public IQueryable<TtransportadoraCep>TtransportadoraCeps { get => contexto.TtransportadoraCeps.AsNoTracking(); }
+
+        public IQueryable<TMagentoApiPedidoXml> TMagentoApiPedidoXmls { get => contexto.TMagentoApiPedidoXmls.AsNoTracking(); }
 #endif
 
     }

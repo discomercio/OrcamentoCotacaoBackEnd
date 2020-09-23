@@ -78,6 +78,11 @@ namespace InfraBanco.Constantes
 
         public const int MAX_TAMANHO_LOJA = 3;
 
+        public const int MAX_TAMANHO_ID_PEDIDO_MAGENTO = 9;
+        public const int MAX_TAMANHO_ID_PEDIDO_MARKETPLACE = 20;
+        public const int MIN_TAMANHO_ID_PEDIDO_MARKETPLACE = 12;
+
+
         //'	Percentual de deságio para RA Líquida
 
         public const int PERC_DESAGIO_RA_LIQUIDA = 25;

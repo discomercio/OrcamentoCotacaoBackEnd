@@ -31,8 +31,8 @@ namespace Pedido
             string c_custoFinancFornecTipoParcelamento, short c_custoFinancFornecQtdeParcelas, TtransportadoraCep transportadora,
             List<cl_ITEM_PEDIDO_NOVO> v_item, List<cl_CTRL_ESTOQUE_PEDIDO_ITEM_NOVO> v_spe, List<string> v_desconto,
             List<RegrasBll> lstRegras, float perc_limite_RA_sem_desagio,
-            string loja_atual, float perc_desagio_RA, Tcliente cliente, bool vendedor_externo, string c_ped_bonshop,
-            List<string> lstErros, InfraBanco.ContextoBdGravacao dbGravacao)
+            string loja_atual, float perc_desagio_RA, Tcliente cliente, bool vendedor_externo, List<string> lstErros, 
+            ContextoBdGravacao dbGravacao, string pedido_bs_x_ac, string marketplace_codigo_origem, string pedido_bs_x_marketplace)
         {
             bool blnUsarMemorizacaoCompletaEnderecos =
                 await UtilsGlobais.Util.IsActivatedFlagPedidoUsarMemorizacaoCompletaEnderecos(contextoProvider);
@@ -54,7 +54,6 @@ namespace Pedido
             //estamos gerando pedidos temporários aqui e não esta sendo alterado depois, 
             //pois é feito a alteração na montagem dos itens
             string id_pedido_temp_base = await GerarNumeroPedidoTemporario(lstErros, dbGravacao);
-
 
             foreach (var empresa in vEmpresaAutoSplit)
             {
@@ -129,7 +128,8 @@ namespace Pedido
 
                     //CAMPOS ARMAZENADOS TANTO NO PEDIDO - PAI QUANTO NO PEDIDO - FILHOTE
                     //aqui também esta sendo salvo alguns campos a mais 
-                    MontarDetalhesPedido(pedidonovo, pedido, cliente, usuario_atual, vendedor_externo, c_ped_bonshop);
+                    MontarDetalhesPedido(pedidonovo, pedido, cliente, usuario_atual, vendedor_externo, pedido_bs_x_ac, 
+                        marketplace_codigo_origem, pedido_bs_x_marketplace);
 
                     //Endereço de entrega
                     if (pedido.EnderecoEntrega.OutroEndereco == true)
@@ -268,13 +268,24 @@ namespace Pedido
                             {
                                 sequencia++;
 
+                                
+                                cl_ITEM_PEDIDO_NOVO item = (from c in v_item
+                                                            where c.Fabricante == regra.Fabricante &&
+                                                                  c.produto == regra.Produto
+                                                            select c).FirstOrDefault();
 
-                                foreach (var item in v_item)
-                                {
-                                    TpedidoItem t_pedido_item = new TpedidoItem();
-                                    movimentoEstoque = await Novo_VerificarListaRegras(t_pedido_item, regra_UF_Pessoa_CD,
-                                        item, empresa, usuario_atual, id_pedido_temp, lstErros, dbGravacao);
-                                }
+                                TpedidoItem t_pedido_item = new TpedidoItem();
+                                movimentoEstoque = await Novo_VerificarListaRegras(t_pedido_item, regra_UF_Pessoa_CD,
+                                    item, empresa, usuario_atual, id_pedido_temp, lstErros, dbGravacao);
+
+                                //aqui esta dando erro pois não devemos fazer isso no foreach e 
+                                //sim conforme a regra que esta sendo utilizada
+                                //foreach (var item in v_item)
+                                //{
+                                //    TpedidoItem t_pedido_item = new TpedidoItem();
+                                //    movimentoEstoque = await Novo_VerificarListaRegras(t_pedido_item, regra_UF_Pessoa_CD,
+                                //        item, empresa, usuario_atual, id_pedido_temp, lstErros, dbGravacao);
+                                //}
                             }
                         }
 
@@ -302,12 +313,13 @@ namespace Pedido
 
             //Log
             //afazer descomentar
-            //vLogAutoSplit.Add(idPedidoBase + " (" + await Util.Util.ObterApelidoEmpresaNfeEmitentes(
+            //vLogAutoSplit.Add(idPedidoBase + " (" + await UtilsGlobais.Util.ObterApelidoEmpresaNfeEmitentes(
             //    item, contextoProvider.GetContextoLeitura()) + ") " + movimentoEstoque.s_log_item_autosplit);
 
             if (idPedidoBase != "")
             {
-                await AlterarIdPedido(id_pedido_temp, idPedidoBase, pedidonovo, pedidonovoTrocaId, dbGravacao);
+                //vamos retornar o pedidonovoTrocaId pq ele foi preenchido aqui dentro mas esta retornando vazio
+                pedidonovoTrocaId = await AlterarIdPedido(id_pedido_temp, idPedidoBase, pedidonovo, pedidonovoTrocaId, dbGravacao);
             }
 
             //Indicador
@@ -371,56 +383,12 @@ namespace Pedido
 
         }
 
-        private async Task AlterarIdPedido(string idPedidoBase_temporario, string idPedidoBase,
+        private async Task<Tpedido> AlterarIdPedido(string idPedidoBase_temporario, string idPedidoBase,
             Tpedido pedidonovo, Tpedido pedidonovoTrocaId, ContextoBdGravacao dbGravacao)
         {
             List<TpedidoItem> tpedidoItemset = await (from c in dbGravacao.TpedidoItems
                                                       where c.Pedido == idPedidoBase_temporario
                                                       select c).ToListAsync();
-            //TpedidoItem tpedidoItemset = new TpedidoItem();
-            //tpedidoItemset.Pedido = idPedidoBase;
-            //tpedidoItemset.Fabricante = v.Fabricante;
-            //Alterando pedido Item Cadastrado
-            foreach (var itemset in tpedidoItemset)
-            {
-                dbGravacao.Remove(itemset);
-                await dbGravacao.SaveChangesAsync();
-            }
-
-            //buscando o item para criar um novo com o Id_Pedido definitivo
-            TestoqueMovimento testoqueMovto = await (from c in dbGravacao.TestoqueMovimentos
-                                                     where c.Pedido == idPedidoBase_temporario
-                                                     select c).FirstOrDefaultAsync();
-            //testoqueMovto.Pedido = idPedidoBase;
-            //Alterando estoque movimento Cadastrado
-            dbGravacao.Remove(testoqueMovto);
-            await dbGravacao.SaveChangesAsync();
-
-            //buscando o item para criar um novo com o Id_Pedido definitivo
-            TestoqueLog testoqueLog = await (from c in dbGravacao.TestoqueLogs
-                                             where c.Pedido_estoque_origem == idPedidoBase_temporario
-                                             select c).FirstOrDefaultAsync();
-            if (testoqueLog != null)
-            {
-                //testoqueLog.Pedido_estoque_origem = idPedidoBase;
-                //alterando estoque log
-                dbGravacao.Remove(testoqueLog);
-                await dbGravacao.SaveChangesAsync();
-            }
-
-            //buscando o item para criar um novo com o Id_Pedido definitivo
-            TestoqueLog testoqueLog2 = await (from c in dbGravacao.TestoqueLogs
-                                              where c.Pedido_estoque_destino == idPedidoBase_temporario
-                                              select c).FirstOrDefaultAsync();
-            if (testoqueLog2 != null)
-            {
-                //testoqueLog2.Pedido_estoque_destino = idPedidoBase;
-                //alterando estoque log
-                dbGravacao.Remove(testoqueLog2);
-                await dbGravacao.SaveChangesAsync();
-            }
-
-            //await dbGravacao.SaveChangesAsync();
 
             //para alterar o valor da chave primária, precisamos excluir o existente e inserir novamente
             //excluimos o pedidonovo com o Id temporario
@@ -431,45 +399,71 @@ namespace Pedido
             //esse objeto esta sendo instanciado fora do foreach, pois iremos salvar no final da rotina                            
             pedidonovoTrocaId = pedidonovo;
             pedidonovoTrocaId.Pedido = idPedidoBase;
+            foreach (var itemset in tpedidoItemset)
+            {
+                //buscando o item para criar um novo com o Id_Pedido definitivo
+                TestoqueMovimento testoqueMovto = await (from c in dbGravacao.TestoqueMovimentos
+                                                         where c.Pedido == idPedidoBase_temporario &&
+                                                               c.Fabricante == itemset.Fabricante &&
+                                                               c.Produto == itemset.Produto
+                                                         select c).FirstOrDefaultAsync();
+                
+                dbGravacao.Remove(testoqueMovto);
+                await dbGravacao.SaveChangesAsync();
+
+                //buscando o item para criar um novo com o Id_Pedido definitivo
+                TestoqueLog testoqueLogOrigem = await (from c in dbGravacao.TestoqueLogs
+                                                       where c.Pedido_estoque_origem == idPedidoBase_temporario &&
+                                                             c.Fabricante == itemset.Fabricante &&
+                                                             c.Produto == itemset.Produto
+                                                       select c).FirstOrDefaultAsync();
+                if (testoqueLogOrigem != null)
+                {
+                    dbGravacao.Remove(testoqueLogOrigem);
+                    await dbGravacao.SaveChangesAsync();
+                }
+
+                //buscando o item para criar um novo com o Id_Pedido definitivo
+                TestoqueLog testoqueLogDestino = await (from c in dbGravacao.TestoqueLogs
+                                                  where c.Pedido_estoque_destino == idPedidoBase_temporario &&
+                                                        c.Fabricante == itemset.Fabricante &&
+                                                        c.Produto == itemset.Produto
+                                                  select c).FirstOrDefaultAsync();
+                if (testoqueLogDestino != null)
+                {
+                    dbGravacao.Remove(testoqueLogDestino);
+                    await dbGravacao.SaveChangesAsync();
+                }
+
+                TpedidoItem itemsetTrocaId = new TpedidoItem();
+                itemsetTrocaId = itemset;
+                itemsetTrocaId.Pedido = idPedidoBase;
+                dbGravacao.Add(itemsetTrocaId);
+
+                TestoqueMovimento testoqueMovtoTrocaId = testoqueMovto;
+                testoqueMovtoTrocaId.Pedido = idPedidoBase;
+                dbGravacao.Add(testoqueMovtoTrocaId);
+
+                if (testoqueLogOrigem != null)
+                {
+                    TestoqueLog testoqueLogTrocaId = testoqueLogOrigem;
+                    testoqueLogTrocaId.Pedido_estoque_origem = idPedidoBase;
+                    dbGravacao.Add(testoqueLogTrocaId);
+                }
+
+                if (testoqueLogDestino != null)
+                {
+                    TestoqueLog testoqueLog2TrocaId = testoqueLogDestino;
+                    testoqueLog2TrocaId.Pedido_estoque_destino = idPedidoBase;
+                    dbGravacao.Add(testoqueLog2TrocaId);
+                }
+            }
 
             //inserimos o pedidonovo com o Id definitivo
             dbGravacao.Add(pedidonovoTrocaId);
             await dbGravacao.SaveChangesAsync();
 
-
-
-            List<TpedidoItem> tpedidoItemTrocaId = new List<TpedidoItem>();
-            tpedidoItemTrocaId = tpedidoItemset;
-            foreach (var i in tpedidoItemset)
-            {
-                i.Pedido = idPedidoBase;
-                dbGravacao.Add(i);
-                await dbGravacao.SaveChangesAsync();
-            }
-
-            TestoqueMovimento testoqueMovtoTrocaId = testoqueMovto; ;
-            testoqueMovtoTrocaId.Pedido = idPedidoBase;
-            dbGravacao.Add(testoqueMovtoTrocaId);
-
-            if (testoqueLog != null)
-            {
-                TestoqueLog testoqueLogTrocaId = testoqueLog; ;
-                testoqueLogTrocaId.Pedido_estoque_origem = idPedidoBase;
-                dbGravacao.Add(testoqueLogTrocaId);
-                await dbGravacao.SaveChangesAsync();
-            }
-
-            if (testoqueLog2 != null)
-            {
-                TestoqueLog testoqueLog2TrocaId = testoqueLog2;
-                testoqueLog2TrocaId.Pedido_estoque_destino = idPedidoBase;
-                dbGravacao.Add(testoqueLog2TrocaId);
-                await dbGravacao.SaveChangesAsync();
-            }
-            //salvando alterações
-            //await dbGravacao.SaveChangesAsync();
-
-
+            return pedidonovoTrocaId;
         }
 
         private void IncluirTransportadoraPedido(Tpedido pedidonovo, TtransportadoraCep transportadoraCep,
@@ -684,10 +678,11 @@ namespace Pedido
         }
 
         private void MontarDetalhesPedido(Tpedido pedidonovo, PedidoCriacaoDados pedido, Tcliente cliente,
-            string usuario_atual, bool vendedor_externo, string c_ped_bonshop)
+            string usuario_atual, bool vendedor_externo, string pedido_bs_x_ac, string marketplace_codigo_origem, 
+            string pedido_bs_x_marketplace)
         {
             //campos armazenados tanto no pedido - pai quanto no pedido - filhote
-            pedidonovo.Id_Cliente = pedido.DadosCliente.Id;
+            pedidonovo.Id_Cliente = cliente.Id;
             pedidonovo.Midia = cliente.Midia;
             pedidonovo.Servicos = "";
 
@@ -695,7 +690,7 @@ namespace Pedido
             pedidonovo.Vendedor = usuario_atual;
             pedidonovo.Usuario_Cadastro = usuario_atual;
             pedidonovo.St_Entrega = "";
-            pedidonovo.Pedido_Bs_X_At = c_ped_bonshop;
+            
             if (pedido.DetalhesPedido.EntregaImediata != "")
             {
                 pedidonovo.St_Etg_Imediata = short.Parse(pedido.DetalhesPedido.EntregaImediata);
@@ -710,9 +705,10 @@ namespace Pedido
 
 
             //referente ao magento
-            pedidonovo.Pedido_Bs_X_Ac = "";  //s_pedido_ac id do pedido magento
-            pedidonovo.Pedido_Bs_X_Marketplace = ""; //s_numero_mktplace
-            pedidonovo.Marketplace_codigo_origem = ""; //s_origem_pedido
+            pedidonovo.Pedido_Bs_X_At = "";
+            pedidonovo.Pedido_Bs_X_Ac = pedido_bs_x_ac;  //s_pedido_ac id do pedido magento
+            pedidonovo.Pedido_Bs_X_Marketplace = pedido_bs_x_marketplace; //num pedido_marketplace
+            pedidonovo.Marketplace_codigo_origem = marketplace_codigo_origem; //s_origem_pedido
 
             //Nota Fiscal
             pedidonovo.Nfe_Texto_Constar = "";
@@ -1101,7 +1097,6 @@ namespace Pedido
             if (vlTotalTask != null)
                 vl_total = (decimal)vlTotalTask.Sum(x => x.vlTotalRA);
 
-            //afazer = vl_total é a soma de preco_lista
             vl_total_RA_liquido = (vl_total - ((decimal)percentual_desagio_RA_liquido / 100) * vl_total);
 
             return vl_total_RA_liquido;
@@ -1736,7 +1731,7 @@ namespace Pedido
                             Id = intNsu,
                             Id_pedido_analise_endereco = intNsuPai,
                             Pedido = i.Pedido,
-                            Id_cliente = i.Id_cliente,
+                            Id_cliente = cliente.Id,
                             Tipo_endereco = InfraBanco.Constantes.Constantes.COD_PEDIDO_AN_ENDERECO__CAD_CLIENTE,
                             Endereco_logradouro = i.Endereco_logradouro,
                             Endereco_bairro = i.Endereco_bairro,

@@ -33,9 +33,6 @@ namespace InfraBanco
             modelBuilder.Entity<TecProdutoComposto>()
                 .HasKey(x => new { x.Fabricante_Composto, x.Produto_Composto });
 
-            modelBuilder.Entity<TpedidoItem>()
-                .HasKey(x => new { x.Pedido, x.Fabricante, x.Produto });
-
             modelBuilder.Entity<TprodutoXAlerta>()
                 .HasKey(x => new { x.Fabricante, x.Produto, x.Id_Alerta });
 
@@ -99,7 +96,7 @@ namespace InfraBanco
 
 
             modelBuilder.Entity<TestoqueLog>()
-               .HasKey(x => new { x.Data_hora, x.Fabricante, x.Produto, x.Qtde_atendida });
+               .HasKey(x => new {x.Pedido_estoque_destino, x.Pedido_estoque_origem, x.Fabricante, x.Produto, x.Qtde_atendida });
 #endif
         }
 
@@ -159,6 +156,7 @@ namespace InfraBanco
         public DbSet<TfinControle> TfinControles { get; set; }
         public DbSet<TpedidoAnaliseEndereco> TpedidoAnaliseEnderecos { get; set; }
         public DbSet<TpedidoAnaliseEnderecoConfrontacao> TpedidoAnaliseConfrontacaos { get; set; }
+        public DbSet<TMagentoApiPedidoXml> TMagentoApiPedidoXmls { get; set; }
 #endif
     }
 }

@@ -3,6 +3,7 @@ using MagentoBusiness.MagentoDto.ClienteMagentoDto;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text;
 
 namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
@@ -66,7 +67,8 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 
         public static Pedido.Dados.Criacao.PedidoCriacaoDados PedidoDadosCriacaoDePedidoMagentoDto(Cliente.Dados.DadosClienteCadastroDados dadosClienteMagento,
             Cliente.Dados.EnderecoCadastralClientePrepedidoDados enderecoCadastralClienteMagento, Cliente.Dados.EnderecoEntregaClienteCadastroDados enderecoEntregaMagento,
-            List<Pedido.Dados.Criacao.PedidoProdutoPedidoDados> lstProdutosMagento, Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados formaPagtoCriacaoMagento)
+            List<Pedido.Dados.Criacao.PedidoProdutoPedidoDados> lstProdutosMagento, Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados formaPagtoCriacaoMagento, 
+            decimal vlTotalDestePedido, PedidoMagentoDto pedidoMagento)
         {
             Pedido.Dados.Criacao.PedidoCriacaoDados pedidoCriacao = new Pedido.Dados.Criacao.PedidoCriacaoDados();
 
@@ -100,7 +102,9 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                             Convert.ToString((byte)Constantes.EntregaImediata.COD_ETG_IMEDIATA_SIM) :
                             Convert.ToString((byte)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO);
             pedidoCriacao.DetalhesPedido.EntregaImediataData = null;
-            pedidoCriacao.DetalhesPedido.Observacoes = "";
+            pedidoCriacao.DetalhesPedido.Observacoes = pedidoMagento.Obs_1;
+            //Ponto de referência é armazenado onde???
+            //Frete é armazenado onde???
 
             //Flag para saber se tem indicador selecionado 
             //campo "frete"->se for <> 0, vamos usar o indicador.se for 0, sem indicador
@@ -126,13 +130,12 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             pedidoCriacao.OpcaoVendaSemEstoque = true;
 
             //Armazena o valor total do pedido
-            //afazer: verificar se é feito o cálculo antes de enviar para cadastrar ou se é preenchido ao cadastrar
-            pedidoCriacao.Vl_total = 0;
+            decimal vl_total = lstProdutosMagento.Select(x => x.TotalItem).Sum();
+            pedidoCriacao.Vl_total = vl_total;
 
             //Armazena o valor total de pedido com RA
             //Caso o indicador selecionado permita RA esse campo deve receber o valor total do Pedido com RA
-            //afazer: verificar se é feito o cálculo antes de enviar para cadastrar ou se é preenchido ao cadastrar
-            pedidoCriacao.Vl_total_NF = 0;
+            pedidoCriacao.Vl_total_NF = vlTotalDestePedido;
 
             return pedidoCriacao;
         }
