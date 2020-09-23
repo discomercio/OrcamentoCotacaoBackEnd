@@ -167,7 +167,7 @@ namespace Pedido
                         //campos do pedido magento á incluir
                     }
 
-                    MontarEnderecoCliente(pedidonovo, cliente);
+                    MontarEnderecoCadastralCliente(pedidonovo, cliente);
 
                     //não existe esses campo em Tpedido quje estão na linha 2004 ate 2025
                     //bool blnUsarMemorizacaoCompletaEnderecos = true;
@@ -664,17 +664,37 @@ namespace Pedido
             pedidonovo.EndEtg_Cod_Justificativa = pedido.EnderecoEntrega.EndEtg_cod_justificativa;
         }
 
-        private void MontarEnderecoCliente(Tpedido pedidonovo, Tcliente cliente)
+        private void MontarEnderecoCadastralCliente(Tpedido pedidonovo, Tcliente cliente)
         {
             pedidonovo.Endereco_memorizado_status = 1;
+            pedidonovo.St_memorizacao_completa_enderecos = 1;
+            pedidonovo.Endereco_tipo_pessoa = cliente.Tipo;
+            pedidonovo.Endereco_cnpj_cpf = cliente.Cnpj_Cpf;
+            pedidonovo.Endereco_nome = cliente.Nome;
+            pedidonovo.Endereco_ie = string.IsNullOrEmpty(cliente.Ie) ? "" : cliente.Ie;
+            pedidonovo.Endereco_rg = string.IsNullOrEmpty(cliente.Rg) ? "" : cliente.Rg;
+            pedidonovo.Endereco_contribuinte_icms_status = cliente.Contribuinte_Icms_Status;
+            pedidonovo.Endereco_produtor_rural_status = cliente.Produtor_Rural_Status;
+            pedidonovo.Endereco_contato = string.IsNullOrEmpty(cliente.Contato) ? "" : cliente.Contato;
+            pedidonovo.Endereco_email = cliente.Email;
+            pedidonovo.Endereco_email_xml = string.IsNullOrEmpty(cliente.Email_Xml) ? "" : cliente.Email_Xml;
+            pedidonovo.Endereco_ddd_res = string.IsNullOrEmpty(cliente.Ddd_Res) ? "" : cliente.Ddd_Res;
+            pedidonovo.Endereco_tel_res = string.IsNullOrEmpty(cliente.Tel_Res) ? "" : cliente.Tel_Res;
+            pedidonovo.Endereco_ddd_com = string.IsNullOrEmpty(cliente.Ddd_Com) ? "" : cliente.Ddd_Com;
+            pedidonovo.Endereco_tel_com = string.IsNullOrEmpty(cliente.Tel_Com) ? "" : cliente.Tel_Com;
+            pedidonovo.Endereco_ramal_com = string.IsNullOrEmpty(cliente.Ramal_Com) ? "" : cliente.Ramal_Com;
+            pedidonovo.Endereco_ddd_cel = string.IsNullOrEmpty(cliente.Ddd_Cel) ? "" : cliente.Ddd_Cel;
+            pedidonovo.Endereco_tel_cel = string.IsNullOrEmpty(cliente.Tel_Cel) ? "" : cliente.Tel_Cel;
+            pedidonovo.Endereco_ddd_com_2 = string.IsNullOrEmpty(cliente.Ddd_Com_2) ? "" : cliente.Ddd_Com_2;
+            pedidonovo.Endereco_tel_com_2 = string.IsNullOrEmpty(cliente.Tel_Com_2) ? "" : cliente.Tel_Com_2;
+            pedidonovo.EndEtg_ramal_com_2 = string.IsNullOrEmpty(cliente.Ramal_Com_2) ? "" : cliente.Ramal_Com_2;
             pedidonovo.Endereco_logradouro = cliente.Endereco;
             pedidonovo.Endereco_bairro = cliente.Bairro;
             pedidonovo.Endereco_cidade = cliente.Cidade;
             pedidonovo.Endereco_uf = cliente.Uf;
             pedidonovo.Endereco_cep = cliente.Cep;
             pedidonovo.Endereco_numero = cliente.Endereco_Numero;
-            pedidonovo.Endereco_complemento = cliente.Endereco_Complemento == null ? "" :
-                cliente.Endereco_Complemento;
+            pedidonovo.Endereco_complemento = cliente.Endereco_Complemento == null ? "" : cliente.Endereco_Complemento;            
         }
 
         private void MontarDetalhesPedido(Tpedido pedidonovo, PedidoCriacaoDados pedido, Tcliente cliente,
@@ -823,10 +843,10 @@ namespace Pedido
             if ((qtde_a_sair - qtde_autorizada_sem_presenca) > qtde_disponivel)
             {
                 //comentado pois utiliza o contexto de Leitura e aqui estamos utilizando o contexto de Gravação
-                //lstErros.Add("Produto " + id_produto + " do fabricante " + id_fabricante + ": faltam " +
-                //    ((qtde_a_sair - qtde_autorizada_sem_presenca) - qtde_disponivel) + " unidades no estoque (" +
-                //    UtilsGlobais.Util.ObterApelidoEmpresaNfeEmitentes(id_nfe_emitente, dbGravacao) +
-                //    ") para poder atender ao pedido.");
+                lstErros.Add("Produto " + id_produto + " do fabricante " + id_fabricante + ": faltam " +
+                    ((qtde_a_sair - qtde_autorizada_sem_presenca) - qtde_disponivel) + " unidades no estoque (" +
+                    UtilsGlobais.Util.ObterApelidoEmpresaNfeEmitentesGravacao(id_nfe_emitente, dbGravacao) +
+                    ") para poder atender ao pedido.");
                 return false;
             }
 
@@ -1891,7 +1911,7 @@ namespace Pedido
 
             short qtde_spe = 0;
 
-            t_pedido_item = await MontarTpedidoItemParaCadastrar(item, id_pedido_temp, t_pedido_item, dbGravacao);
+            await MontarTpedidoItemParaCadastrar(item, id_pedido_temp, t_pedido_item, dbGravacao);
 
             if (regra_UF_Pessoa_CD.Estoque_Qtde_Solicitado > regra_UF_Pessoa_CD.Estoque_Qtde)
             {
@@ -1931,7 +1951,7 @@ namespace Pedido
             return movtoEstoque;
         }
 
-        private async Task<TpedidoItem> MontarTpedidoItemParaCadastrar(cl_ITEM_PEDIDO_NOVO v_item, string id_pedido_temp,
+        private async Task MontarTpedidoItemParaCadastrar(cl_ITEM_PEDIDO_NOVO v_item, string id_pedido_temp,
             TpedidoItem tpedidoItem, ContextoBdGravacao dbGravacao)
         {
 
@@ -1969,9 +1989,6 @@ namespace Pedido
 
             dbGravacao.Add(tpedidoItem);
             dbGravacao.SaveChanges();
-
-
-            return await Task.FromResult(tpedidoItem);
         }
     }
 }

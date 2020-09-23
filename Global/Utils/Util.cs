@@ -1023,6 +1023,28 @@ namespace UtilsGlobais
             return apelidoEmpresa;
         }
 
+        //Afazer: Edu o método "ObterApelidoEmpresaNfeEmitentes" está sendo duplicado porque é utilizado
+        //dentro da transação do cadastro de pedido que utiliza o contexto de gravação, 
+        //não fazia sentido criar uma interface de contexto apenas para um método
+        public static async Task<string> ObterApelidoEmpresaNfeEmitentesGravacao(int id_nfe_emitente, ContextoBdGravacao dbGravacao)
+        {
+            string apelidoEmpresa = "";
+
+            if (id_nfe_emitente == 0)
+            {
+                apelidoEmpresa = "Cliente";
+                return apelidoEmpresa;
+            }
+            
+            var apelidoTask = from c in dbGravacao.TnfEmitentes
+                              where c.Id == id_nfe_emitente
+                              select c.Apelido;
+
+            apelidoEmpresa = await apelidoTask.FirstOrDefaultAsync();
+
+            return apelidoEmpresa;
+        }
+
         public static async Task<Tparametro> BuscarRegistroParametro(string id, ContextoBdProvider contextoProvider)
         {
             var db = contextoProvider.GetContextoLeitura();

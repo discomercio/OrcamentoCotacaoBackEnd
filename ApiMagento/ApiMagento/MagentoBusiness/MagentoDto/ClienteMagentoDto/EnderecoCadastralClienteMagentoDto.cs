@@ -126,13 +126,61 @@ Ao cadastrar o cliente:
             ret.Endereco_tipo_pessoa = endCadastralMagento.Endereco_tipo_pessoa;
             ret.Endereco_cnpj_cpf = UtilsGlobais.Util.SoDigitosCpf_Cnpj(endCadastralMagento.Endereco_cnpj_cpf.Trim());
             ret.Endereco_produtor_rural_status = endCadastralMagento.Endereco_tipo_pessoa == Constantes.ID_PF ?
-                (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO : 
+                (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO :
                 (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL;
             ret.Endereco_contribuinte_icms_status = endCadastralMagento.Endereco_tipo_pessoa == Constantes.ID_PF ?
                 (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO :
                 (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL;
             ret.Endereco_ie = "";
             ret.Endereco_rg = "";
+
+            return ret;
+        }
+
+        public static Cliente.Dados.DadosClienteCadastroDados DadosClienteDeEnderecoCadastralClienteMagentoDto(
+            EnderecoCadastralClienteMagentoDto dadosClienteMagento, string loja, decimal? frete,
+            string vendedor, string orcamentista)
+        {
+            var ret = new Cliente.Dados.DadosClienteCadastroDados()
+            {
+                Indicador_Orcamentista = orcamentista,
+                Loja = loja,
+                Vendedor = frete > 0 ? vendedor : "",//campo "frete"->se for <> 0, vamos usar o indicador.se for 0, sem indicador
+                Nome = dadosClienteMagento.Endereco_nome,
+                Cnpj_Cpf = UtilsGlobais.Util.SoDigitosCpf_Cnpj(dadosClienteMagento.Endereco_cnpj_cpf.Trim()),
+                Tipo = dadosClienteMagento.Endereco_tipo_pessoa,
+                Sexo = "",
+                Rg = "",
+                Nascimento = null,
+                DddCelular = dadosClienteMagento.Endereco_ddd_cel,
+                Celular = dadosClienteMagento.Endereco_tel_cel,
+                DddResidencial = dadosClienteMagento.Endereco_ddd_res == null ? "" : dadosClienteMagento.Endereco_ddd_res,
+                TelefoneResidencial = dadosClienteMagento.Endereco_tel_res == null ? "" : dadosClienteMagento.Endereco_tel_res,
+                DddComercial = dadosClienteMagento.Endereco_ddd_com,
+                TelComercial = dadosClienteMagento.Endereco_tel_com,
+                Ramal = dadosClienteMagento.Endereco_ramal_com,
+                DddComercial2 = dadosClienteMagento.Endereco_ddd_com_2,
+                TelComercial2 = dadosClienteMagento.Endereco_tel_com_2,
+                Ramal2 = dadosClienteMagento.Endereco_ramal_com_2,
+                Ie = "",
+                ProdutorRural = dadosClienteMagento.Endereco_tipo_pessoa == Constantes.ID_PJ ?
+                    (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL :
+                    (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO,
+                Contribuinte_Icms_Status = dadosClienteMagento.Endereco_tipo_pessoa == Constantes.ID_PJ ?
+                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO :
+                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL,
+                Email = dadosClienteMagento.Endereco_email,
+                EmailXml = dadosClienteMagento.Endereco_email_xml,
+                Cep = dadosClienteMagento.Endereco_cep,
+                Endereco = dadosClienteMagento.Endereco_logradouro,
+                Numero = dadosClienteMagento.Endereco_numero,
+                Bairro = dadosClienteMagento.Endereco_bairro,
+                Cidade = dadosClienteMagento.Endereco_cidade,
+                Uf = dadosClienteMagento.Endereco_uf,
+                Complemento = dadosClienteMagento.Endereco_complemento,
+                Contato = dadosClienteMagento.Endereco_contato
+                //Observacao_Filiacao = dadosClienteMagento.Observacao_Filiacao **Verificar se mandamos esse campo
+            };
 
             return ret;
         }
