@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Especificacao.Pedido.Passo60.Validacao
+namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20
 {
     using TechTalk.SpecFlow;
     using System;
@@ -30,7 +30,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Validacao
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "Estoque.feature"
+#line 1 "ValidacaoEstoque.feature"
 #line hidden
         
         public EstoqueFeature(EstoqueFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
@@ -112,7 +112,7 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 126
- testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Feito no FluxoGravacaoPedido.feature", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -147,20 +147,20 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 175
- testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Feito no FluxoGravacaoPedido.feature", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validar estoque - não implementado")]
+        [Xunit.SkippableFactAttribute(DisplayName="Validar estoque 3")]
         [Xunit.TraitAttribute("FeatureTitle", "Estoque")]
-        [Xunit.TraitAttribute("Description", "Validar estoque - não implementado")]
-        public virtual void ValidarEstoque_NaoImplementado()
+        [Xunit.TraitAttribute("Description", "Validar estoque 3")]
+        public virtual void ValidarEstoque3()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar estoque - não implementado", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar estoque 3", null, tagsOfScenario, argumentsOfScenario);
 #line 177
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -181,8 +181,8 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 192
- testRunner.When("Nada a fazer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 191
+ testRunner.When("Feito no FluxoGravacaoPedido.feature", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -196,7 +196,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("descontinuado", null, tagsOfScenario, argumentsOfScenario);
-#line 195
+#line 194
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -216,7 +216,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 198
+#line 197
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }

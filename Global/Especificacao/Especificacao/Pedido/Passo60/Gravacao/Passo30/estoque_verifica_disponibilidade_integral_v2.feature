@@ -1,0 +1,6 @@
+﻿@ignore
+Feature: estoque_verifica_disponibilidade_integral_v2
+
+Scenario: estoque_verifica_disponibilidade_integral_v2
+#testar a rotina estoque_verifica_disponibilidade_integral_v2
+	When Fazer esta validação
