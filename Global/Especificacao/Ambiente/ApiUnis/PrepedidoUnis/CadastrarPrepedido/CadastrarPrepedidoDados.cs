@@ -37,6 +37,15 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
 
             return ret;
         }
+
+        public static PrePedidoUnisDto PrepedidoBaseComEnderecoDeEntrega()
+        {
+            var ret = PrepedidoParceladoCartao1vez();
+            ret.OutroEndereco = true;
+
+            return ret;
+        }
+
         private static readonly string PrepedidoBaseParceladoCartao1vez = @"
 {
   ""TokenAcesso"": ""vai ser calculado dinamicamente"",
@@ -65,11 +74,11 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
     ""Endereco_ramal_com_2"": """",
     ""Endereco_tipo_pessoa"": ""PF"",
     ""Endereco_cnpj_cpf"": ""35270445824"",
-    ""Endereco_contribuinte_icms_status"": 2,
+    ""Endereco_contribuinte_icms_status"": 0,
     ""Endereco_produtor_rural_status"": 1,
-    ""Endereco_ie"": ""645224482116"",
+    ""Endereco_ie"": """",
     ""Endereco_rg"": """",
-    ""Endereco_contato"": ""Gabriel""
+    ""Endereco_contato"": """"
   },
   ""OutroEndereco"": false,
 ""EnderecoEntrega"": {

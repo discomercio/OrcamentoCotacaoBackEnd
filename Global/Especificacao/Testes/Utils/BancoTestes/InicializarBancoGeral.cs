@@ -64,6 +64,13 @@ namespace Especificacao.Testes.Utils.BancoTestes
 
                 if (apagarDadosExistentes)
                 {
+                    foreach (var c in db.tcodigoDescricaos)
+                        db.tcodigoDescricaos.Remove(c);
+                }
+                InicializarTabela<TcodigoDescricao>("TcodigoDescricao", db);
+
+                if (apagarDadosExistentes)
+                {
                     foreach (var c in db.TorcamentistaEindicadors)
                         db.TorcamentistaEindicadors.Remove(c);
                 }

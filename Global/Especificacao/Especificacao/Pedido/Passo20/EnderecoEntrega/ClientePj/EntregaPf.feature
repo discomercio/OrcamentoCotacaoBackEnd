@@ -1,9 +1,10 @@
 ﻿@ignore
 @Especificacao/Pedido
 Feature: Pedido de cliente PJ com endereço de entrega PF
-em loja/ClienteEdita.asp:
-if (f.EndEtg_cnpj_cpf_PF.value == "" || !cpf_ok(f.EndEtg_cnpj_cpf_PF.value)) {
-e linhas para baixo
+#em loja/ClienteEdita.asp:
+#if (f.EndEtg_cnpj_cpf_PF.value == "" || !cpf_ok(f.EndEtg_cnpj_cpf_PF.value)) {
+#e linhas para baixo
+#também em loja/PedidoNovoConsiste.asp
 
 Background: Pedido base
 	Given Pedido base cliente PJ com endereço de entrega PF
