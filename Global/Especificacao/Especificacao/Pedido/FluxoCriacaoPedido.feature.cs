@@ -132,7 +132,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 39
+#line 38
  testRunner.When("Tudo certo, só para aparecer na lista", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
