@@ -114,9 +114,13 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             pedidoCriacao.NomeIndicador = !string.IsNullOrEmpty(dadosClienteMagento.Vendedor) ? dadosClienteMagento.Vendedor : null;
 
             //Armazena o percentual de comissão para o indicador selecionado
-            //PercRT = calculado automaticamente
-            //afazer: não entendi
-            pedidoCriacao.PercRT = 0;
+            //afazer: verificar se esta calculando corretamente
+            float percRT = 0f;
+            lstProdutosMagento.ForEach(x =>
+            {
+                percRT = percRT + (float)((x.Preco_Lista - (x.Preco_Venda + 1)) / x.Preco_Venda * 100);
+            });
+            pedidoCriacao.PercRT = percRT;
 
             //Armazena "S" ou "N" para caso de o indicador selecionado permita RA
             pedidoCriacao.OpcaoPossuiRa = true;
