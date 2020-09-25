@@ -1988,7 +1988,7 @@ namespace Pedido
             tpedidoItem.Descontinuado = v_item.Descontinuado;
 
             dbGravacao.Add(tpedidoItem);
-            dbGravacao.SaveChanges();
+            await dbGravacao.SaveChangesAsync();
         }
     }
 }

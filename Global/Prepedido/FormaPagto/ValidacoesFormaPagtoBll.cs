@@ -200,30 +200,30 @@ namespace Prepedido.FormaPagto
         private void ValidarFormaPagtoComEntrada(FormaPagtoCriacaoDados formaPagtoPrepedido, List<string> lstErros, 
             decimal maxErroArredondamento, short permiteRA, decimal vl_total_nf, decimal vl_total)
         {
-            if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.Op_pce_entrada_forma_pagto))
+            if (string.IsNullOrEmpty(formaPagtoPrepedido.Op_pce_entrada_forma_pagto))
                 lstErros.Add("Indique a forma de pagamento da entrada (parcelado com entrada).");
-            else if (prepedido.FormaPagtoCriacao.C_pce_entrada_valor <= 0)
+            else if (formaPagtoPrepedido.C_pce_entrada_valor <= 0)
                 lstErros.Add("Indique o valor da entrada (parcelado com entrada).");
-            else if (prepedido.FormaPagtoCriacao.C_pce_entrada_valor <= 0 || 
-                prepedido.FormaPagtoCriacao.C_pce_entrada_valor == null)
+            else if (formaPagtoPrepedido.C_pce_entrada_valor <= 0 || 
+                formaPagtoPrepedido.C_pce_entrada_valor == null)
                 lstErros.Add("Valor da entrada inválido (parcelado com entrada).");
             else if (string.IsNullOrEmpty(formaPagtoPrepedido.Op_pce_prestacao_forma_pagto))
                 lstErros.Add("Indique a forma de pagamento das prestações (parcelado com entrada).");
-            else if (prepedido.FormaPagtoCriacao.C_pce_prestacao_qtde <= 0)
+            else if (formaPagtoPrepedido.C_pce_prestacao_qtde <= 0)
                 lstErros.Add("Indique a quantidade de prestações (parcelado com entrada).");
-            else if (prepedido.FormaPagtoCriacao.C_pce_prestacao_qtde <= 0 ||
-                prepedido.FormaPagtoCriacao.C_pce_prestacao_qtde == null)
+            else if (formaPagtoPrepedido.C_pce_prestacao_qtde <= 0 ||
+                formaPagtoPrepedido.C_pce_prestacao_qtde == null)
                 lstErros.Add("Quantidade de prestações inválida (parcelado com entrada).");
-            else if (prepedido.FormaPagtoCriacao.C_pce_prestacao_valor <= 0)
+            else if (formaPagtoPrepedido.C_pce_prestacao_valor <= 0)
                 lstErros.Add("Indique o valor da prestação (parcelado com entrada).");
-            else if (prepedido.FormaPagtoCriacao.C_pce_prestacao_valor <= 0 ||
-                prepedido.FormaPagtoCriacao.C_pce_prestacao_valor == null)
+            else if (formaPagtoPrepedido.C_pce_prestacao_valor <= 0 ||
+                formaPagtoPrepedido.C_pce_prestacao_valor == null)
                 lstErros.Add("Valor de prestação inválido (parcelado com entrada).");
             else if (formaPagtoPrepedido.Op_pce_prestacao_forma_pagto != "7" &&
                 formaPagtoPrepedido.Op_pce_prestacao_forma_pagto != "5")
             {
-                if (prepedido.FormaPagtoCriacao.C_pce_prestacao_periodo <= 0 ||
-                    prepedido.FormaPagtoCriacao.C_pce_prestacao_periodo == null)
+                if (formaPagtoPrepedido.C_pce_prestacao_periodo <= 0 ||
+                    formaPagtoPrepedido.C_pce_prestacao_periodo == null)
                     lstErros.Add("Indique o intervalo de vencimento entre as parcelas (parcelado com entrada).");
             }
             else if (formaPagtoPrepedido.C_pce_prestacao_periodo <= 0)
