@@ -59,6 +59,7 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
             Cliente.Dados.ClienteCadastroDados clienteMagento = await clienteBll.BuscarCliente(pedidoMagento?.Cnpj_Cpf, orcamentista);
 
             Cliente.Dados.DadosClienteCadastroDados dadosCliente = new Cliente.Dados.DadosClienteCadastroDados();
+            //Cadastrar cliente
             if (clienteMagento == null)
             {
                 //vamos seguir o fluxo para cadastrar o cliente e depois fazer o cadastro do pedido
@@ -98,7 +99,8 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
                 Pedido.Dados.Criacao.PedidoCriacaoRetornoDados ret = await pedidoCriacao.CadastrarPedido(pedidoDados,
                     Convert.ToDecimal(configuracaoApiMagento.LimiteArredondamentoPrecoVendaOrcamentoItem), 0.1M,
                     pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac, pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem,
-                    pedidoMagento.InfCriacaoPedido.Pedido_bs_x_marketplace);
+                    pedidoMagento.InfCriacaoPedido.Pedido_bs_x_marketplace, 
+                    (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__APIMAGENTO);
 
                 resultado.IdPedidoCadastrado = ret.Id;
                 resultado.IdsPedidosFilhotes = ret.ListaIdPedidosFilhotes;

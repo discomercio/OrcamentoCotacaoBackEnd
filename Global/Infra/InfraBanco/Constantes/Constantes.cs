@@ -14,7 +14,6 @@ namespace InfraBanco.Constantes
         public static string TEL_BONSHOP_1 = "1139344400";
         public static string TEL_BONSHOP_2 = "1139344420";
         public static string TEL_BONSHOP_3 = "1139344411";
-
         public enum CodSistemaResponsavel
         {
             COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP = 1,
@@ -1127,7 +1126,6 @@ namespace InfraBanco.Constantes
         public const int MAX_SERVER_SCRIPT_TIMEOUT_BRASPAG_EM_SEG = 300;
 
         //' TAMANHO MÁXIMO DO CAMPO ENDEREÇO DEVIDO À RESTRIÇÃO EXISTENTE NA NOTA FISCAL ELETRÔNICA
-
         public const int MAX_TAMANHO_CAMPO_ENDERECO = 60;
 
         //'	ANÁLISE DE ENDEREÇO

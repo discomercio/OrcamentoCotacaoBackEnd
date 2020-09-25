@@ -17,7 +17,6 @@ namespace Pedido
     public class PedidoBll
     {
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
-        private readonly InfraBanco.ContextoBdGravacao dbGravacao;
 
         public PedidoBll(InfraBanco.ContextoBdProvider contextoProvider)
         {
@@ -1138,17 +1137,17 @@ namespace Pedido
             List<RegrasBll> regraCrtlEstoque = (await ObterCtrlEstoqueProdutoRegraParaUMProduto(produto, cliente,
                 prodValidadoEstoque.ListaErros)).ToList();
 
-            await UtilsProduto.ObterCtrlEstoqueProdutoRegra_Teste(prodValidadoEstoque.ListaErros, regraCrtlEstoque, cliente.Uf, 
+            await UtilsProduto.ObterCtrlEstoqueProdutoRegra_Teste(prodValidadoEstoque.ListaErros, regraCrtlEstoque, cliente.Uf,
                 cliente_regra, contextoProvider);
 
-            VerificarRegrasAssociadasParaUMProduto(regraCrtlEstoque, prodValidadoEstoque.ListaErros, cliente, 
+            VerificarRegrasAssociadasParaUMProduto(regraCrtlEstoque, prodValidadoEstoque.ListaErros, cliente,
                 id_nfe_emitente_selecao_manual);
 
             if (id_nfe_emitente_selecao_manual != 0)
-                await VerificarCDHabilitadoTodasRegras(regraCrtlEstoque, id_nfe_emitente_selecao_manual, 
+                await VerificarCDHabilitadoTodasRegras(regraCrtlEstoque, id_nfe_emitente_selecao_manual,
                     prodValidadoEstoque.ListaErros);
 
-            await ObterDisponibilidadeEstoque(regraCrtlEstoque, produto, prodValidadoEstoque.ListaErros, 
+            await ObterDisponibilidadeEstoque(regraCrtlEstoque, produto, prodValidadoEstoque.ListaErros,
                 id_nfe_emitente_selecao_manual);
 
             //meto responsavel por atribuir a qtde de estoque ao produto
@@ -1297,6 +1296,41 @@ namespace Pedido
 
 
             return true;
+        }
+
+        public void VerificarCaracteresInvalidosEnderecoEntregaClienteCadastro(
+            Cliente.Dados.EnderecoEntregaClienteCadastroDados endEtg, List<string> lstErros)
+        {
+            string caracteres = "";
+            if (UtilsGlobais.Util.IsTextoValido(endEtg.EndEtg_endereco, out caracteres).Length > 0)
+                lstErros.Add("O CAMPO 'ENDEREÇO DE ENTREGA' POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
+
+            if (UtilsGlobais.Util.IsTextoValido(endEtg.EndEtg_endereco_numero ?? "", out caracteres).Length > 0)
+                lstErros.Add("O CAMPO NÚMERO DO ENDEREÇO DE ENTREGA POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
+
+            if (UtilsGlobais.Util.IsTextoValido(endEtg.EndEtg_endereco_complemento ?? "", out caracteres).Length > 0)
+                lstErros.Add("O CAMPO COMPLEMENTO DO ENDEREÇO DE ENTREGA POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
+
+            if (UtilsGlobais.Util.IsTextoValido(endEtg.EndEtg_bairro ?? "", out caracteres).Length > 0)
+                lstErros.Add("O CAMPO BAIRRO DO ENDEREÇO DE ENTREGA POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
+
+            if (UtilsGlobais.Util.IsTextoValido(endEtg.EndEtg_cidade ?? "", out caracteres).Length > 0)
+                lstErros.Add("O CAMPO CIDADE DO ENDEREÇO DE ENTREGA POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
+
+            if (UtilsGlobais.Util.IsTextoValido(endEtg.EndEtg_nome ?? "", out caracteres).Length > 0)
+                lstErros.Add("O CAMPO NOME DO ENDEREÇO DE ENTREGA POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
+        }
+
+        public void ConsisteProdutosValorZerados(List<PedidoProdutoPedidoDados> lstProdutos, List<string> lstErros, 
+            bool comIndicacao, short PermiteRaStatus)
+        {
+            lstProdutos.ForEach(x =>
+            {
+                if (x.Preco_Venda <= 0)
+                    lstErros.Add("Produto '" + x.Produto + "' está com valor de venda zerado!");
+                else if(comIndicacao && PermiteRaStatus == 1 && x.Preco_NF <= 0)
+                    lstErros.Add("Produto '" + x.Produto + "' está com preço zerado!");
+            });
         }
     }
 }

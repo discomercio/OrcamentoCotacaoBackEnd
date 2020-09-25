@@ -74,7 +74,12 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 
             pedidoCriacao.LojaUsuario = dadosClienteMagento.Loja;
             //Armazena nome do usuário logado
-            pedidoCriacao.Usuario = dadosClienteMagento.Indicador_Orcamentista;
+            /* AFAZER: Aqui tem que receber o nome do Usuario que no caso do Magento é o SUPORTE 1
+             * O usuário "SUPORTE 1" do Magento esta cadastrado na base de teste da ITS. Estou alterando o 
+             * valor de desse usuário na tabela "t_USUARIO.vendedor_externo" para "1", sendo assim, este usuário passará a ser
+             * "vendedor_externo = 1" 
+             */
+            pedidoCriacao.Usuario = dadosClienteMagento.Vendedor;
             //Armazena o nome do vendedor externo
             //obs: analisar melhor quando esse campos será preenchido
             pedidoCriacao.VendedorExterno = dadosClienteMagento.Vendedor;

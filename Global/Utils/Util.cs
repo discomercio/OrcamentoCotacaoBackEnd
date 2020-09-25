@@ -938,7 +938,7 @@ namespace UtilsGlobais
             return retorno;
         }
 
-        
+
         private static async Task<bool> IsLojaVrf(string loja, ContextoBdProvider contextoProvider)
         {
             bool retorno = false;
@@ -1035,7 +1035,7 @@ namespace UtilsGlobais
                 apelidoEmpresa = "Cliente";
                 return apelidoEmpresa;
             }
-            
+
             var apelidoTask = from c in dbGravacao.TnfEmitentes
                               where c.Id == id_nfe_emitente
                               select c.Apelido;
@@ -1271,6 +1271,29 @@ namespace UtilsGlobais
                     sbReturn.Append(letter);
             }
             return sbReturn.ToString();
+        }        
+
+        public static string IsTextoValido(string texto, out string retorno)
+        {
+#nullable enable
+            string caracterEncontrados = "";
+            string caracteres = "!#$%¨&*()-?:{}][ÄÅÁÂÀÃäáâàãÉÊËÈéêëèÍÎÏÌíîïìÖÓÔÒÕöóôòõÜÚÛüúûùÇç";
+
+            List<string> splitCaracteres = caracteres.Split().ToList();
+
+            List<string> letras = texto.Split().ToList();
+
+            letras.ForEach(x =>
+            {
+                splitCaracteres.ForEach(y =>
+                {
+                    if (x == y)
+                        caracterEncontrados += y + " ";
+                });
+            });
+
+            return retorno = caracterEncontrados;
+#nullable disable
         }
     }
 }

@@ -272,7 +272,7 @@ namespace Loja.UI.Controllers
                 short.Parse(Constantes.COD_INSTALADOR_INSTALA_SIM) :
                 short.Parse(Constantes.COD_INSTALADOR_INSTALA_NAO);
 
-            pedidoDtoSession.DetalhesNF.Observacoes = detalhesPedido.Observacoes;
+            pedidoDtoSession.DetalhesNF.Observacoes = await Task.FromResult(detalhesPedido.Observacoes);
 
             //StBenUsoConsumo é 1 = sim | 0 = não
             pedidoDtoSession.DetalhesNF.StBemUsoConsumo = detalhesPedido.BemConsumo != "0" ?
@@ -310,7 +310,7 @@ namespace Loja.UI.Controllers
 
             PedidoViewModel viewModel = new PedidoViewModel();
 
-            viewModel.PedidoDto = ret;
+            viewModel.PedidoDto = await Task.FromResult(ret);
 
             return View(viewModel);
         }

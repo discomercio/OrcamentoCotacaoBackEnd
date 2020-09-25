@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Produto.RegrasCrtlEstoque;
 using Cliente.Dados;
 using Cliente;
+using Cep;
 
 namespace Pedido
 {
@@ -24,11 +25,13 @@ namespace Pedido
         private readonly Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll;
         private readonly EfetivaPedidoBll efetivaPedidoBll;
         private readonly ClienteBll clienteBll;
+        private readonly CepBll cepBll;
+        private readonly IBancoNFeMunicipio bancoNFeMunicipio;
 
         public PedidoCriacao(PedidoBll pedidoBll, InfraBanco.ContextoBdProvider contextoProvider,
             Prepedido.FormaPagto.ValidacoesFormaPagtoBll validacoesFormaPagtoBll, Prepedido.PrepedidoBll prepedidoBll,
             Prepedido.FormaPagto.FormaPagtoBll formaPagtoBll, Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll,
-            EfetivaPedidoBll efetivaPedidoBll, ClienteBll clienteBll)
+            EfetivaPedidoBll efetivaPedidoBll, ClienteBll clienteBll, CepBll cepBll, IBancoNFeMunicipio bancoNFeMunicipio)
         {
             this.pedidoBll = pedidoBll;
             this.contextoProvider = contextoProvider;
@@ -38,6 +41,8 @@ namespace Pedido
             this.validacoesPrepedidoBll = validacoesPrepedidoBll;
             this.efetivaPedidoBll = efetivaPedidoBll;
             this.clienteBll = clienteBll;
+            this.cepBll = cepBll;
+            this.bancoNFeMunicipio = bancoNFeMunicipio;
         }
         //criar uma classe: Global/Pedido/PedidoBll/PedidoCriacao com a rotina CadastrarPrepedido, 
         //quer vai retornar um PedidoCriacaoRetorno com o id do pedido, dos filhotes, 
@@ -45,7 +50,8 @@ namespace Pedido
         //dados cadastrais (quer dizer, duas listas de erro.) 
         //É que na loja o tratamento dos erros dos dados cadastrais vai ser diferente).
         public async Task<PedidoCriacaoRetornoDados> CadastrarPedido(PedidoCriacaoDados pedido, decimal limiteArredondamento,
-            decimal maxErroArredondamento, string pedido_bs_x_ac, string marketplace_codigo_origem, string pedido_bs_x_marketplace)
+            decimal maxErroArredondamento, string pedido_bs_x_ac, string marketplace_codigo_origem, string pedido_bs_x_marketplace,
+            byte sistemaResponsavelCadastro)
         {
             PedidoCriacaoRetornoDados pedidoRetorno = new PedidoCriacaoRetornoDados();
             pedidoRetorno.ListaErros = new List<string>();
@@ -62,16 +68,55 @@ namespace Pedido
                 return pedidoRetorno;
             }
 
-            /* 2- busca os dados do cliente */
-            var tcliente = db.Tclientes.Where(r => r.Cnpj_Cpf == pedido.DadosCliente.Cnpj_Cpf).FirstOrDefault();
-            DadosClienteCadastroDados clienteCadastro = clienteBll.ObterDadosClienteCadastro(tcliente, pedido.LojaUsuario);
+            //7- se tiver "vendedor_externo", busca (nome, razão social) na t_LOJA
+            //vamos validar o usuario e atribuir alguns valores da base de dados
+            Tusuario tUsuario = db.Tusuarios.Where(x => x.Usuario == pedido.Usuario).FirstOrDefault();
+            if (tUsuario == null)
+            {
+                pedidoRetorno.ListaErros.Add("Usuário não encontrado.");
+                return pedidoRetorno;
+            }
 
-            /* 7- se tiver "vendedor_externo", busca (nome, razão social) na t_LOJA
-            * 8- busca o orçamentista para saber se permite RA */
+            //vamos validar os dados do cliente que esta vindo no pedido
+            List<Cliente.Dados.ListaBancoDados> lstBanco = (await clienteBll.ListarBancosCombo()).ToList();
+            await Cliente.ValidacoesClienteBll.ValidarDadosCliente(pedido.DadosCliente, null, null, pedidoRetorno.ListaErros,
+                contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, pedido.DadosCliente.Tipo == Constantes.ID_PF ? true : false,
+                sistemaResponsavelCadastro);
+
+            if (!validacoesPrepedidoBll.ValidarDetalhesPrepedido(pedido.DetalhesPedido, pedidoRetorno.ListaErros))
+            {
+                return pedidoRetorno;
+            }
+
+            if (pedido.ListaProdutos.Count > 12)
+            {
+                pedidoRetorno.ListaErros.Add("É permitido apenas 12 itens por Pré-Pedido!");
+                return pedidoRetorno;
+            }
+
+
+            //vamos validar o vendedor externo
+            if (tUsuario.Vendedor_Externo != 0)
+            {
+                if (string.IsNullOrEmpty(tUsuario.Loja))
+                {
+                    pedidoRetorno.ListaErros.Add("Não foi especificada a loja que fez a indicação.");
+                    return pedidoRetorno;
+                }
+
+                Tloja tLoja = db.Tlojas.Where(x => x.Loja == tUsuario.Loja).FirstOrDefault();
+                if (tLoja == null)
+                {
+                    pedidoRetorno.ListaErros.Add("Loja " + tUsuario.Loja + " não está cadastrada.");
+                    return pedidoRetorno;
+                }
+            }
+
+            //8- busca o orçamentista para saber se permite RA 
             TorcamentistaEindicador tOrcamentista = await prepedidoBll.BuscarTorcamentista(pedido.DadosCliente.Indicador_Orcamentista);
             if (tOrcamentista == null)
             {
-                pedidoRetorno.ListaErros.Add("O Orçamentista não existe!");
+                pedidoRetorno.ListaErros.Add("Falha ao recuperar os dados do indicador!");
                 return pedidoRetorno;
             }
 
@@ -108,7 +153,14 @@ namespace Pedido
                             if (string.IsNullOrEmpty(pedido.NomeIndicador))
                             {
                                 pedidoRetorno.ListaErros.Add("Informe quem é o indicador.");
-                            }                           
+                            }
+
+                            #region Não estou retornando a mensagem abaixo, pois o campos pedido.OpcaoPossuiRa é bool, 
+                            //sendo assim não tem como ser vazio
+                            //elseif rb_RA = "" then
+                            //    alerta = "Informe se o pedido possui RA ou não."
+                            //end if
+                            #endregion
                         }
 
                         /* 3- busca o percentual máximo de comissão*/
@@ -122,12 +174,15 @@ namespace Pedido
                         if (!string.IsNullOrEmpty(pedido.PercRT.ToString()))
                             pedidoBll.ValidarPercentualRT((float)pedido.PercRT, percentualMax.PercMaxComissao, pedidoRetorno.ListaErros);
 
-                        //perc_desagio_RA
-                        perc_desagio_RA = await UtilsGlobais.Util.ObterPercentualDesagioRAIndicador(pedido.NomeIndicador, contextoProvider);
-                        perc_limite_RA_sem_desagio = await UtilsGlobais.Util.VerificarSemDesagioRA(contextoProvider);
-                        vl_limite_mensal = await UtilsGlobais.Util.ObterLimiteMensalComprasDoIndicador(pedido.NomeIndicador, contextoProvider);
-                        vl_limite_mensal_consumido = await UtilsGlobais.Util.CalcularLimiteMensalConsumidoDoIndicador(pedido.NomeIndicador, DateTime.Now, contextoProvider);
-                        vl_limite_mensal_disponivel = vl_limite_mensal - vl_limite_mensal_consumido;
+                        if (pedido.ComIndicador)
+                        {
+                            //perc_desagio_RA
+                            perc_desagio_RA = await UtilsGlobais.Util.ObterPercentualDesagioRAIndicador(pedido.NomeIndicador, contextoProvider);
+                            perc_limite_RA_sem_desagio = await UtilsGlobais.Util.VerificarSemDesagioRA(contextoProvider);
+                            vl_limite_mensal = await UtilsGlobais.Util.ObterLimiteMensalComprasDoIndicador(pedido.NomeIndicador, contextoProvider);
+                            vl_limite_mensal_consumido = await UtilsGlobais.Util.CalcularLimiteMensalConsumidoDoIndicador(pedido.NomeIndicador, DateTime.Now, contextoProvider);
+                            vl_limite_mensal_disponivel = vl_limite_mensal - vl_limite_mensal_consumido;
+                        }
                     }
                 }
             }
@@ -137,6 +192,18 @@ namespace Pedido
             await validacoesPrepedidoBll.MontarProdutosParaComparacao(prepedido,
                         c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas,
                         pedido.DadosCliente.Loja, pedidoRetorno.ListaErros, perc_limite_RA_sem_desagio, limiteArredondamento);
+
+#nullable enable
+            //vamos verificar os caracteres inválidos no endereço de entrega
+            if (pedido.EnderecoEntrega.OutroEndereco)
+            {
+                pedidoBll.VerificarCaracteresInvalidosEnderecoEntregaClienteCadastro(pedido.EnderecoEntrega, pedidoRetorno.ListaErros);
+                //vamos verificar se o endereço de entrega esta com os valores corretos
+                if (pedido.EnderecoEntrega.EndEtg_endereco.Length > Constantes.MAX_TAMANHO_CAMPO_ENDERECO)
+                    pedidoRetorno.ListaErros.Add("ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br> TAMANHO ATUAL: " +
+                        pedido.EnderecoEntrega.EndEtg_endereco.Length + " CARACTERES <br> TAMANHO MÁXIMO: " +
+                        Constantes.MAX_TAMANHO_CAMPO_ENDERECO + " CARACTERES");
+            }
 
             //se tiver erro vamos retornar
             if (pedidoRetorno.ListaErros.Count > 0)
@@ -151,8 +218,15 @@ namespace Pedido
             percDescComissaoUtilizar = pedidoBll.VerificarPagtoPreferencial(tParametro, pedido, percDescComissaoUtilizar,
                     percentualMax, pedido.Vl_total);
 
+            //CONSISTÊNCIA PARA VALOR ZERADO
+            if (pedido.ListaProdutos.Count() > 0)
+                pedidoBll.ConsisteProdutosValorZerados(pedido.ListaProdutos, pedidoRetorno.ListaErros,
+                    pedido.ComIndicador, pedido.PermiteRAStatus);
 
+            /* 2- busca os dados do cliente */
+            Tcliente tcliente = db.Tclientes.Where(r => r.Cnpj_Cpf == pedido.DadosCliente.Cnpj_Cpf).FirstOrDefault();
             /* 5- recebe o retorno da busca do item 2 => dados do cliente*/
+            DadosClienteCadastroDados clienteCadastro = clienteBll.ObterDadosClienteCadastro(tcliente, pedido.LojaUsuario);
 
             /* 6- instancia v_item = recebe os campos do produto (produtos, fabricante, qtde) */
             List<cl_ITEM_PEDIDO_NOVO> v_item = new List<cl_ITEM_PEDIDO_NOVO>();
@@ -164,7 +238,7 @@ namespace Pedido
                 {
                     produto = x.Produto,
                     Fabricante = x.Fabricante,
-                    Qtde = (short)x.Qtde,
+                    Qtde = (short)(x.Qtde ?? 0),
                     Preco_Venda = x.Preco_Venda,
                     Preco_NF = x.Preco_NF,
                     qtde_estoque_total_disponivel = 0,
@@ -189,11 +263,9 @@ namespace Pedido
                 c_custoFinancFornecQtdeParcelas, pedido.DadosCliente.Id, percDescComissaoUtilizar, vdesconto);
 
             /* 15- busca o coeficiente de cada produto do item 6 */
-            //faz a lógica, regras para consumo do estoque 947 ate 1297   
             //vou buscar a lista de coeficiente para calcular o valor de custoFinacFornec...
             float coeficiente = await pedidoBll.BuscarCoeficientePercentualCustoFinanFornec(pedido, c_custoFinancFornecQtdeParcelas,
                 c_custoFinancFornecTipoParcelamento, pedidoRetorno.ListaErros);
-
 
             //Faz a verificação de regra de cada produto
             //RECUPERA OS PRODUTOS QUE O CLIENTE CONCORDOU EM COMPRAR MESMO SEM PRESENÇA NO ESTOQUE.
@@ -201,8 +273,6 @@ namespace Pedido
             List<cl_CTRL_ESTOQUE_PEDIDO_ITEM_NOVO> v_spe = new List<cl_CTRL_ESTOQUE_PEDIDO_ITEM_NOVO>();
             //essa lista armazena a qtde de empresas que irá atender um produto
             List<int> vEmpresaAutoSplit = new List<int>();
-
-
             /* 16- verifica a regra para consumo de estoque
             * 17- valida o cd, se é manual ou se é automático
             * 18- busca a regra de estoque
@@ -234,7 +304,7 @@ namespace Pedido
                             {
                                 Produto = produto_validado_item.Produto.Produto,
                                 Fabricante = UtilsGlobais.Util.Normaliza_Codigo(produto.Fabricante, Constantes.TAM_MIN_FABRICANTE),
-                                Qtde_solicitada = (short)produto_validado_item.Produto.QtdeSolicitada,
+                                Qtde_solicitada = (short)(produto_validado_item.Produto.QtdeSolicitada ?? 0),
                                 Qtde_estoque = (short)produto_validado_item.Produto.Estoque
                             });
                             pedido.OpcaoVendaSemEstoque = true;
@@ -256,22 +326,13 @@ namespace Pedido
                 }
             }
 
-
-
             /* 12- busca os dados dos produtos do item 6 */
-
-
             /* 28- verifica o percentual de RA permitido 
             * 29- verifica se tem mensagem de alerta para algum produto
             */
             //busca valor de limite para aprovação automática da analise de credito 1317 ate 1325
             string vl_aprov_auto_analise_credito = await pedidoBll.LeParametroControle(
                 Constantes.ID_PARAM_CAD_VL_APROV_AUTO_ANALISE_CREDITO);
-
-            if (!validacoesPrepedidoBll.ValidarDetalhesPrepedido(pedido.DetalhesPedido, pedidoRetorno.ListaErros))
-            {
-                return pedidoRetorno;
-            }
 
             //obtenção de transportadora que atenda ao cep informado, se houver
             TtransportadoraCep transportadora = pedido.EnderecoEntrega.OutroEndereco == true &&
@@ -295,14 +356,12 @@ namespace Pedido
             {
                 //vamos efetivar o cadastro do pedido
                 //vamos abrir uma nova transaction do contexto que esta sendo utilizado para Using
-
-                //AFAZER: CRIAR O EFETIVAR PEDIDO
                 using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
                 {
                     pedidoRetorno.Id = await efetivaPedidoBll.Novo_EfetivarCadastroPedido(pedido, vEmpresaAutoSplit,
                         pedido.Usuario, c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas, transportadora,
                         v_item, v_spe, vdesconto, lstRegras, perc_limite_RA_sem_desagio, pedido.LojaUsuario, perc_desagio_RA,
-                        tcliente, !string.IsNullOrEmpty(pedido.VendedorExterno), pedidoRetorno.ListaErros, dbgravacao, 
+                        tcliente, !string.IsNullOrEmpty(pedido.VendedorExterno), pedidoRetorno.ListaErros, dbgravacao,
                         pedido_bs_x_ac, pedido_bs_x_marketplace, marketplace_codigo_origem);
 
                     bool efetivou = !string.IsNullOrWhiteSpace(pedidoRetorno.Id);

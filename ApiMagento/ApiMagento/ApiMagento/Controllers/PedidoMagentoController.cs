@@ -41,10 +41,11 @@ namespace ApiMagento.Controllers
         public async Task<ActionResult<PedidoResultadoMagentoDto>> CadastrarPrepedido(PedidoMagentoDto pedido)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            if (!servicoValidarTokenApiMagento.ValidarToken(pedido.TokenAcesso, out _))
+            if (!servicoValidarTokenApiMagento.ValidarToken(pedido.TokenAcesso, out string usuario))
                 return Unauthorized();
 
-            string apelido = servicoDecodificarTokenApiMagento.ObterApelidoOrcamentista(User);
+            //string apelido = servicoDecodificarTokenApiMagento.ObterApelidoOrcamentista(User);
+            string apelido = usuario;
                         
             var ret = await pedidoMagentoBll.CadastrarPedidoMagento(pedido, apelido);
             //ret.ListaErros.Add("Ainda não implementado");

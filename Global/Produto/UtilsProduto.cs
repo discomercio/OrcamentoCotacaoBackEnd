@@ -8,7 +8,6 @@ using InfraBanco.Constantes;
 using Microsoft.EntityFrameworkCore;
 using Produto.RegrasCrtlEstoque;
 using Produto.Dados;
-using UtilsGlobais;
 
 namespace Produto
 {
@@ -235,46 +234,61 @@ namespace Produto
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            //var lstEstoqueQtdeUtilZero = from c in db.Testoques
-            //                             where (c.TestoqueItem.Qtde - c.TestoqueItem.Qtde_utilizada) > 0 &&
-            //                                   c.TestoqueItem.Qtde_utilizada.HasValue
-            //                             select new ProdutosEstoqueDados
-            //                             {
-            //                                 Fabricante = c.TestoqueItem.Fabricante,
-            //                                 Produto = c.TestoqueItem.Produto,
-            //                                 Qtde = (int)c.TestoqueItem.Qtde,
-            //                                 Qtde_Utilizada = (int)c.TestoqueItem.Qtde_utilizada,
-            //                                 Id_nfe_emitente = c.Id_nfe_emitente
-            //                             };
+            List<Testoque> lstEtoque = await (from c in db.Testoques
+                                              select c).ToListAsync();
 
-            //List<ProdutosEstoqueDados> produtosEstoqueDtos = await lstEstoqueQtdeUtilZero.ToListAsync();
-            List<ProdutosEstoqueDados> produtosEstoqueDtos = new List<ProdutosEstoqueDados>();
-            return produtosEstoqueDtos;
+            List<ProdutosEstoqueDados> produtoDados = new List<ProdutosEstoqueDados>();
+            if (lstEtoque != null)
+            {
+                lstEtoque.ForEach(x =>
+                {
+                    produtoDados = (from c in x.TestoqueItem
+                                    where (c.Qtde - c.Qtde_utilizada) > 0 &&
+                                           c.Qtde_utilizada.HasValue
+                                    select new ProdutosEstoqueDados
+                                    {
+                                        Fabricante = c.Fabricante,
+                                        Produto = c.Produto,
+                                        Qtde = (int)c.Qtde,
+                                        Qtde_Utilizada = (int)c.Qtde_utilizada,
+                                        Id_nfe_emitente = x.Id_nfe_emitente
+                                    }).ToList();
+                });
+            }
+
+            return produtoDados;
         }
 
         private static async Task<IEnumerable<ProdutosEstoqueDados>> BuscarListaQtdeEstoqueComSubquery(ContextoBdProvider contextoProvider)
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            //var lstEstoqueQtdeUtilZeroComSubQuery = from c in db.Testoques
-            //                                        where ((c.TestoqueItem.Qtde - c.TestoqueItem.Qtde_utilizada) > 0) &&
-            //                                              ((c.TestoqueItem.Qtde_utilizada.HasValue) ||
-            //                                              (from d in db.TnfEmitentes
-            //                                               where d.St_Habilitado_Ctrl_Estoque == 1 && d.St_Ativo == 1
-            //                                               select d.Id)
-            //                                               .Contains(c.Id_nfe_emitente))
-            //                                        select new ProdutosEstoqueDados
-            //                                        {
-            //                                            Fabricante = c.TestoqueItem.Fabricante,
-            //                                            Produto = c.TestoqueItem.Produto,
-            //                                            Qtde = (int)c.TestoqueItem.Qtde,
-            //                                            Qtde_Utilizada = (int)c.TestoqueItem.Qtde_utilizada,
-            //                                            Id_nfe_emitente = c.Id_nfe_emitente
-            //                                        };
+            List<Testoque> lstEtoque = await (from c in db.Testoques
+                                              select c).ToListAsync();
 
-            //List<ProdutosEstoqueDados> produtosEstoqueDtos = await lstEstoqueQtdeUtilZeroComSubQuery.ToListAsync();
-            List<ProdutosEstoqueDados> produtosEstoqueDtos = new List<ProdutosEstoqueDados>();
-            return produtosEstoqueDtos;
+            List<ProdutosEstoqueDados> produtoDados = new List<ProdutosEstoqueDados>();
+            if (lstEtoque != null)
+            {
+                lstEtoque.ForEach(x =>
+                {
+                    produtoDados = (from c in x.TestoqueItem
+                                    where (c.Qtde - c.Qtde_utilizada) > 0 &&
+                                           c.Qtde_utilizada.HasValue ||
+                                           (from d in db.TnfEmitentes
+                                            where d.St_Habilitado_Ctrl_Estoque == 1 && d.St_Ativo == 1
+                                            select d.Id).Contains(x.Id_nfe_emitente)
+                                    select new ProdutosEstoqueDados
+                                    {
+                                        Fabricante = c.Fabricante,
+                                        Produto = c.Produto,
+                                        Qtde = (int)c.Qtde,
+                                        Qtde_Utilizada = (int)c.Qtde_utilizada,
+                                        Id_nfe_emitente = x.Id_nfe_emitente
+                                    }).ToList();
+                });
+            }
+
+            return produtoDados;
         }
 
     }
