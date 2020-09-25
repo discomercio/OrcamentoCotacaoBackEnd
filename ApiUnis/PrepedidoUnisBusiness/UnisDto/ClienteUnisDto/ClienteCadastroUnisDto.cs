@@ -11,6 +11,8 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
     {
         [Required]
         public string TokenAcesso { get; set; }
+
+        [Required]
         public DadosClienteCadastroUnisDto DadosCliente { get; set; }
         /// <summary>
         /// RefBancaria: somente para PJ, máximo 1

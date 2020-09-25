@@ -22,6 +22,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         [MaxLength(20)]
         public string Indicador_Orcamentista { get; set; }
 
+        [Required]
         public EnderecoCadastralClientePrepedidoUnisDto EnderecoCadastralCliente { get; set; }
 
         [Required]
@@ -29,6 +30,8 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         public EnderecoEntregaClienteCadastroUnisDto EnderecoEntrega { get; set; }
         [Required]
         public List<PrePedidoProdutoPrePedidoUnisDto> ListaProdutos { get; set; }
+
+        [Required]
         public bool PermiteRAStatus { get; set; }
 
         /// <summary>
@@ -42,7 +45,11 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         /// </summary>
         [Required]
         public decimal VlTotalDestePedido { get; set; }
+
+        [Required]
         public DetalhesPrePedidoUnisDto DetalhesPrepedido { get; set; }
+
+        [Required]
         public FormaPagtoCriacaoUnisDto FormaPagtoCriacao { get; set; }
 
 
