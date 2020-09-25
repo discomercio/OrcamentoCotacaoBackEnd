@@ -442,7 +442,8 @@ namespace Prepedido
             if (byte.Parse(detalhesPrepedido.EntregaImediata) ==
                 (byte)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO)//Não
             {
-                if (detalhesPrepedido.EntregaImediataData.Value.Date <= DateTime.Now.Date)
+                if (detalhesPrepedido.EntregaImediataData == null || 
+                    detalhesPrepedido.EntregaImediataData.Value.Date <= DateTime.Now.Date)
                 {
                     lstErros.Add("Favor informar a data de 'Entrega Imediata' posterior a data atual!");
                     retorno = false;
@@ -552,9 +553,15 @@ namespace Prepedido
 
                 if (endEtg.EndEtg_contribuinte_icms_status ==
                     (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM &&
+                    !string.IsNullOrEmpty(endEtg.EndEtg_ie))
+                {
+                    if (endEtg.EndEtg_contribuinte_icms_status ==
+                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM &&
                     endEtg.EndEtg_ie.IndexOf("ISEN") > -1)
-                    lstErros.Add("Endereço de entrega: se cliente é contribuinte do ICMS, " +
-                        "não pode ter o valor ISENTO no campo de Inscrição Estadual!");
+                        lstErros.Add("Endereço de entrega: se cliente é contribuinte do ICMS, " +
+                            "não pode ter o valor ISENTO no campo de Inscrição Estadual!");
+                }
+
             }
         }
 
@@ -680,18 +687,20 @@ namespace Prepedido
                         string.IsNullOrEmpty(endEtg.EndEtg_ie))
                         lstErros.Add("Endereço de entrega: se o cliente é contribuinte do ICMS a " +
                             "inscrição estadual deve ser preenchida!");
-
-                    if (endEtg.EndEtg_contribuinte_icms_status ==
+                    if (!string.IsNullOrEmpty(endEtg.EndEtg_ie))
+                    {
+                        if (endEtg.EndEtg_contribuinte_icms_status ==
                         (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO &&
                         endEtg.EndEtg_ie.IndexOf("ISEN") > -1)
-                        lstErros.Add("Endereço de entrega: se cliente é não contribuinte do ICMS, " +
-                            "não pode ter o valor ISENTO no campo de Inscrição Estadual!");
+                            lstErros.Add("Endereço de entrega: se cliente é não contribuinte do ICMS, " +
+                                "não pode ter o valor ISENTO no campo de Inscrição Estadual!");
 
-                    if (endEtg.EndEtg_contribuinte_icms_status ==
-                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM &&
-                        endEtg.EndEtg_ie.IndexOf("ISEN") > -1)
-                        lstErros.Add("Endereço de entrega: se cliente é contribuinte do ICMS, " +
-                            "não pode ter o valor ISENTO no campo de Inscrição Estadual!");
+                        if (endEtg.EndEtg_contribuinte_icms_status ==
+                            (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM &&
+                            endEtg.EndEtg_ie.IndexOf("ISEN") > -1)
+                            lstErros.Add("Endereço de entrega: se cliente é contribuinte do ICMS, " +
+                                "não pode ter o valor ISENTO no campo de Inscrição Estadual!");
+                    }
 
                     if (endEtg.EndEtg_contribuinte_icms_status ==
                         (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO &&
@@ -730,8 +739,11 @@ namespace Prepedido
         {
             if (!string.IsNullOrEmpty(endEtg.EndEtg_tel_res) || !string.IsNullOrEmpty(endEtg.EndEtg_ddd_res))
             {
-                if (Util.Telefone_SoDigito(endEtg.EndEtg_tel_res).Length < 6)
+                if (string.IsNullOrEmpty(endEtg.EndEtg_tel_res))
+                    lstErros.Add("Endereço de entrega: preencha o telfone residencial.");
+                else if (Util.Telefone_SoDigito(endEtg.EndEtg_tel_res).Length < 6)
                     lstErros.Add("Endereço de entrega: telefone residencial inválido.");
+
 
                 if (string.IsNullOrEmpty(endEtg.EndEtg_ddd_res))
                 {
@@ -747,7 +759,9 @@ namespace Prepedido
 
             if (!string.IsNullOrEmpty(endEtg.EndEtg_ddd_cel) || !string.IsNullOrEmpty(endEtg.EndEtg_tel_cel))
             {
-                if (Util.Telefone_SoDigito(endEtg.EndEtg_tel_cel).Length < 6)
+                if (string.IsNullOrEmpty(endEtg.EndEtg_tel_cel))
+                    lstErros.Add("Endereço de entrega: preencha o telefone do celular.");
+                else if (Util.Telefone_SoDigito(endEtg.EndEtg_tel_cel).Length < 6)
                     lstErros.Add("Endereço de entrega: telefone celular inválido.");
 
                 if (string.IsNullOrEmpty(endEtg.EndEtg_ddd_cel))

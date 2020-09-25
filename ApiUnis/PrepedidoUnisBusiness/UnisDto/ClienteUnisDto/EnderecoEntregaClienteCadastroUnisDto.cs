@@ -11,24 +11,30 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
     {
 
         [MaxLength(80)]
+        [Required]
         public string EndEtg_endereco { get; set; }
 
         [MaxLength(20)]
+        [Required]
         public string EndEtg_endereco_numero { get; set; }
 
         [MaxLength(60)]
         public string EndEtg_endereco_complemento { get; set; }
 
         [MaxLength(72)]
+        [Required]
         public string EndEtg_bairro { get; set; }
 
         [MaxLength(60)]
+        [Required]
         public string EndEtg_cidade { get; set; }
 
         [MaxLength(2)]
+        [Required]
         public string EndEtg_uf { get; set; }
 
         [MaxLength(8)]
+        [Required]
         public string EndEtg_cep { get; set; }
 
         /// <summary>
@@ -44,6 +50,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
         ///     Acerto Interno = 10        
         /// </summary>
         [MaxLength(3)]
+        [Required]
         public string EndEtg_cod_justificativa { get; set; }
 
         //Novo campos
@@ -55,6 +62,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
         public string EndEtg_email_xml { get; set; }
 
         [MaxLength(60)]
+        [Required]
         public string EndEtg_nome { get; set; }
 
         [MaxLength(4)]
@@ -91,9 +99,11 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
         /// EndEtg_tipo_pessoa = "PF", "PJ"
         /// </summary>
         [MaxLength(2)]
+        [Required]
         public string EndEtg_tipo_pessoa { get; set; }
 
         [MaxLength(14)]
+        [Required]
         public string EndEtg_cnpj_cpf { get; set; }
 
         /// <summary>

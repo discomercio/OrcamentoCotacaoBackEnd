@@ -175,7 +175,7 @@ namespace Prepedido.FormaPagto
             else if (formaPagtoPrepedido.C_pc_maquineta_valor <= 0)
                 lstErros.Add("Valor de parcela inválido (parcelado no cartão [maquineta]).");
 
-            
+
             if (lstErros.Count == 0)
             {
                 if (formaPagtoPrepedido.C_pc_maquineta_qtde != formaPagtoPrepedido.Qtde_Parcelas)
@@ -200,32 +200,36 @@ namespace Prepedido.FormaPagto
         private void ValidarFormaPagtoComEntrada(FormaPagtoCriacaoDados formaPagtoPrepedido, List<string> lstErros, 
             decimal maxErroArredondamento, short permiteRA, decimal vl_total_nf, decimal vl_total)
         {
-            if (string.IsNullOrEmpty(formaPagtoPrepedido.Op_pce_entrada_forma_pagto.ToString()))
+            if (string.IsNullOrEmpty(prepedido.FormaPagtoCriacao.Op_pce_entrada_forma_pagto))
                 lstErros.Add("Indique a forma de pagamento da entrada (parcelado com entrada).");
-            else if (string.IsNullOrEmpty(formaPagtoPrepedido.C_pce_entrada_valor.ToString()))
+            else if (prepedido.FormaPagtoCriacao.C_pce_entrada_valor <= 0)
                 lstErros.Add("Indique o valor da entrada (parcelado com entrada).");
-            else if (formaPagtoPrepedido.C_pce_entrada_valor <= 0)
+            else if (prepedido.FormaPagtoCriacao.C_pce_entrada_valor <= 0 || 
+                prepedido.FormaPagtoCriacao.C_pce_entrada_valor == null)
                 lstErros.Add("Valor da entrada inválido (parcelado com entrada).");
             else if (string.IsNullOrEmpty(formaPagtoPrepedido.Op_pce_prestacao_forma_pagto))
                 lstErros.Add("Indique a forma de pagamento das prestações (parcelado com entrada).");
-            else if (string.IsNullOrEmpty(formaPagtoPrepedido.C_pce_prestacao_qtde.ToString()))
+            else if (prepedido.FormaPagtoCriacao.C_pce_prestacao_qtde <= 0)
                 lstErros.Add("Indique a quantidade de prestações (parcelado com entrada).");
-            else if (formaPagtoPrepedido.C_pce_prestacao_qtde <= 0)
+            else if (prepedido.FormaPagtoCriacao.C_pce_prestacao_qtde <= 0 ||
+                prepedido.FormaPagtoCriacao.C_pce_prestacao_qtde == null)
                 lstErros.Add("Quantidade de prestações inválida (parcelado com entrada).");
-            else if (string.IsNullOrEmpty(formaPagtoPrepedido.C_pce_prestacao_valor.ToString()))
+            else if (prepedido.FormaPagtoCriacao.C_pce_prestacao_valor <= 0)
                 lstErros.Add("Indique o valor da prestação (parcelado com entrada).");
-            else if (formaPagtoPrepedido.C_pce_prestacao_valor <= 0)
+            else if (prepedido.FormaPagtoCriacao.C_pce_prestacao_valor <= 0 ||
+                prepedido.FormaPagtoCriacao.C_pce_prestacao_valor == null)
                 lstErros.Add("Valor de prestação inválido (parcelado com entrada).");
             else if (formaPagtoPrepedido.Op_pce_prestacao_forma_pagto != "7" &&
                 formaPagtoPrepedido.Op_pce_prestacao_forma_pagto != "5")
             {
-                if (string.IsNullOrEmpty(formaPagtoPrepedido.C_pce_prestacao_periodo.ToString()))
+                if (prepedido.FormaPagtoCriacao.C_pce_prestacao_periodo <= 0 ||
+                    prepedido.FormaPagtoCriacao.C_pce_prestacao_periodo == null)
                     lstErros.Add("Indique o intervalo de vencimento entre as parcelas (parcelado com entrada).");
             }
             else if (formaPagtoPrepedido.C_pce_prestacao_periodo <= 0)
                 lstErros.Add("Intervalo de vencimento inválido (parcelado com entrada).");
 
-            
+
             if (lstErros.Count == 0)
             {
                 if ((formaPagtoPrepedido.C_pce_prestacao_qtde + 1) != formaPagtoPrepedido.Qtde_Parcelas)
@@ -278,7 +282,7 @@ namespace Prepedido.FormaPagto
             else if (formaPagtoPrepedido.C_pse_demais_prest_periodo < 0)
                 lstErros.Add("Intervalo de vencimento inválido (parcelado sem entrada).");
 
-            
+
             if (lstErros.Count == 0)
             {
                 if ((formaPagtoPrepedido.C_pse_demais_prest_qtde + 1) != formaPagtoPrepedido.Qtde_Parcelas)
