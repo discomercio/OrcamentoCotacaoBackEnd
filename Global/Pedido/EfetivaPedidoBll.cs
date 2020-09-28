@@ -31,7 +31,7 @@ namespace Pedido
             string c_custoFinancFornecTipoParcelamento, short c_custoFinancFornecQtdeParcelas, TtransportadoraCep transportadora,
             List<cl_ITEM_PEDIDO_NOVO> v_item, List<cl_CTRL_ESTOQUE_PEDIDO_ITEM_NOVO> v_spe, List<string> v_desconto,
             List<RegrasBll> lstRegras, float perc_limite_RA_sem_desagio,
-            string loja_atual, float perc_desagio_RA, Tcliente cliente, bool vendedor_externo, List<string> lstErros, 
+            string loja_atual, float perc_desagio_RA, Tcliente cliente, bool vendedor_externo, List<string> lstErros,
             ContextoBdGravacao dbGravacao, string pedido_bs_x_ac, string marketplace_codigo_origem, string pedido_bs_x_marketplace)
         {
             bool blnUsarMemorizacaoCompletaEnderecos =
@@ -109,11 +109,11 @@ namespace Pedido
                         pedidonovo.CustoFinancFornecQtdeParcelas = c_custoFinancFornecQtdeParcelas;
                         decimal vl_total_nf = 0m;
                         decimal vl_total = 0m;
-                        pedido.ListaProdutos.ForEach(x =>
+                        foreach (var x in pedido.ListaProdutos)
                         {
                             vl_total_nf += prepedidoBll.Calcular_Vl_Total((short)x.Qtde, x.Preco_NF);
                             vl_total += prepedidoBll.Calcular_Vl_Total((short)x.Qtde, x.Preco_Venda);
-                        });
+                        };
                         pedidonovo.Vl_Total_NF = vl_total_nf;
                         pedidonovo.Vl_Total_RA = vl_total_nf - vl_total;
                         pedidonovo.Perc_RT = pedido.PercRT;
@@ -128,7 +128,7 @@ namespace Pedido
 
                     //CAMPOS ARMAZENADOS TANTO NO PEDIDO - PAI QUANTO NO PEDIDO - FILHOTE
                     //aqui também esta sendo salvo alguns campos a mais 
-                    MontarDetalhesPedido(pedidonovo, pedido, cliente, usuario_atual, vendedor_externo, pedido_bs_x_ac, 
+                    MontarDetalhesPedido(pedidonovo, pedido, cliente, usuario_atual, vendedor_externo, pedido_bs_x_ac,
                         marketplace_codigo_origem, pedido_bs_x_marketplace);
 
                     //Endereço de entrega
@@ -265,7 +265,7 @@ namespace Pedido
                             {
                                 sequencia++;
 
-                                
+
                                 cl_ITEM_PEDIDO_NOVO item = (from c in v_item
                                                             where c.Fabricante == regra.Fabricante &&
                                                                   c.produto == regra.Produto
@@ -400,7 +400,7 @@ namespace Pedido
                                                                c.Fabricante == itemset.Fabricante &&
                                                                c.Produto == itemset.Produto
                                                          select c).FirstOrDefaultAsync();
-                
+
                 dbGravacao.Remove(testoqueMovto);
                 await dbGravacao.SaveChangesAsync();
 
@@ -418,10 +418,10 @@ namespace Pedido
 
                 //buscando o item para criar um novo com o Id_Pedido definitivo
                 TestoqueLog testoqueLogDestino = await (from c in dbGravacao.TestoqueLogs
-                                                  where c.Pedido_estoque_destino == idPedidoBase_temporario &&
-                                                        c.Fabricante == itemset.Fabricante &&
-                                                        c.Produto == itemset.Produto
-                                                  select c).FirstOrDefaultAsync();
+                                                        where c.Pedido_estoque_destino == idPedidoBase_temporario &&
+                                                              c.Fabricante == itemset.Fabricante &&
+                                                              c.Produto == itemset.Produto
+                                                        select c).FirstOrDefaultAsync();
                 if (testoqueLogDestino != null)
                 {
                     dbGravacao.Remove(testoqueLogDestino);
@@ -580,7 +580,8 @@ namespace Pedido
             decimal vl_aprov_auto_analise_credito = decimal.Parse(await pedidoBll.LeParametroControle(InfraBanco.Constantes.Constantes.ID_PARAM_CAD_VL_APROV_AUTO_ANALISE_CREDITO));
 
             decimal vl_total = 0m;
-            pedido.ListaProdutos.ForEach(x => { vl_total += prepedidoBll.Calcular_Vl_Total((short)x.Qtde, x.Preco_Venda); });
+            foreach (var x in pedido.ListaProdutos)
+                vl_total += prepedidoBll.Calcular_Vl_Total((short)x.Qtde, x.Preco_Venda);
 
             if (vl_total <= vl_aprov_auto_analise_credito)
             {
@@ -647,9 +648,9 @@ namespace Pedido
 
         private void MontarEndereçoEntrega(PedidoCriacaoDados pedido, Tpedido pedidonovo)
         {
-            if(pedidonovo != null)
+            if (pedidonovo != null)
             {
-                if(!string.IsNullOrEmpty(pedido.EnderecoEntrega.EndEtg_cod_justificativa))
+                if (!string.IsNullOrEmpty(pedido.EnderecoEntrega.EndEtg_cod_justificativa))
                 {
                     pedidonovo.EndEtg_Endereco = string.IsNullOrEmpty(pedido.EnderecoEntrega.EndEtg_endereco) ?
                         "" : pedido.EnderecoEntrega.EndEtg_endereco;
@@ -737,11 +738,11 @@ namespace Pedido
             pedidonovo.Endereco_uf = cliente.Uf;
             pedidonovo.Endereco_cep = cliente.Cep;
             pedidonovo.Endereco_numero = cliente.Endereco_Numero;
-            pedidonovo.Endereco_complemento = cliente.Endereco_Complemento == null ? "" : cliente.Endereco_Complemento;            
+            pedidonovo.Endereco_complemento = cliente.Endereco_Complemento == null ? "" : cliente.Endereco_Complemento;
         }
 
         private void MontarDetalhesPedido(Tpedido pedidonovo, PedidoCriacaoDados pedido, Tcliente cliente,
-            string usuario_atual, bool vendedor_externo, string pedido_bs_x_ac, string marketplace_codigo_origem, 
+            string usuario_atual, bool vendedor_externo, string pedido_bs_x_ac, string marketplace_codigo_origem,
             string pedido_bs_x_marketplace)
         {
             //campos armazenados tanto no pedido - pai quanto no pedido - filhote
@@ -753,7 +754,7 @@ namespace Pedido
             pedidonovo.Vendedor = usuario_atual;
             pedidonovo.Usuario_Cadastro = usuario_atual;
             pedidonovo.St_Entrega = "";
-            
+
             if (pedido.DetalhesPedido.EntregaImediata != "")
             {
                 pedidonovo.St_Etg_Imediata = short.Parse(pedido.DetalhesPedido.EntregaImediata);

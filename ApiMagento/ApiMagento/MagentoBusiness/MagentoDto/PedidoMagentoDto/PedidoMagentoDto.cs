@@ -121,10 +121,10 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             //Armazena o percentual de comissão para o indicador selecionado
             //afazer: verificar se esta calculando corretamente
             float percRT = 0f;
-            lstProdutosMagento.ForEach(x =>
+            foreach(var x in lstProdutosMagento)
             {
                 percRT = percRT + (float)((x.Preco_Lista - (x.Preco_Venda + 1)) / x.Preco_Venda * 100);
-            });
+            };
             pedidoCriacao.PercRT = percRT;
 
             //Armazena "S" ou "N" para caso de o indicador selecionado permita RA

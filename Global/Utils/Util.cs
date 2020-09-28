@@ -1271,7 +1271,7 @@ namespace UtilsGlobais
                     sbReturn.Append(letter);
             }
             return sbReturn.ToString();
-        }        
+        }
 
         public static string IsTextoValido(string texto, out string retorno)
         {
@@ -1283,14 +1283,11 @@ namespace UtilsGlobais
 
             List<string> letras = texto.Split().ToList();
 
-            letras.ForEach(x =>
-            {
-                splitCaracteres.ForEach(y =>
-                {
+            foreach (var x in letras)
+                foreach (var y in splitCaracteres)
                     if (x == y)
                         caracterEncontrados += y + " ";
-                });
-            });
+
 
             return retorno = caracterEncontrados;
 #nullable disable

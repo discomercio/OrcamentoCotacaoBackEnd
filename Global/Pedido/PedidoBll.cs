@@ -80,9 +80,9 @@ namespace Pedido
                                                                Preco_Venda = c.Preco_Venda
                                                            }).ToListAsync();
 
-            lstProdTask.ForEach(x =>
+            foreach(var x in lstProdTask)
             {
-                v_item.ForEach(y =>
+                foreach(var y in v_item)
                 {
                     if (x.produto == y.produto &&
                         x.Fabricante == y.Fabricante &&
@@ -92,8 +92,8 @@ namespace Pedido
                         lstErros.Add("Este pedido já foi gravado com o número " + x.Pedido);
                         return;
                     }
-                });
-            });
+                };
+            };
         }
 
         public float VerificarPagtoPreferencial(Tparametro tParametro, PedidoCriacaoDados pedido,
@@ -1325,13 +1325,13 @@ namespace Pedido
         public void ConsisteProdutosValorZerados(List<PedidoProdutoPedidoDados> lstProdutos, List<string> lstErros, 
             bool comIndicacao, short PermiteRaStatus)
         {
-            lstProdutos.ForEach(x =>
+            foreach(var x in lstProdutos)
             {
                 if (x.Preco_Venda <= 0)
                     lstErros.Add("Produto '" + x.Produto + "' está com valor de venda zerado!");
                 else if(comIndicacao && PermiteRaStatus == 1 && x.Preco_NF <= 0)
                     lstErros.Add("Produto '" + x.Produto + "' está com preço zerado!");
-            });
+            };
         }
     }
 }

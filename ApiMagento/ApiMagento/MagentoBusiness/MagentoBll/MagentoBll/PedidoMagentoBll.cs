@@ -129,7 +129,7 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
 
             if (lstTodosProdutos?.Count > 0)
             {
-                pedidoMagento.ListaProdutos.ForEach(y =>
+                foreach(var y in pedidoMagento.ListaProdutos)
                 {
                     Produto.Dados.ProdutoDados produto = lstTodosProdutos.Select(x => x)
                     .Where(x => x.Fabricante == y.Fabricante && x.Produto == y.Produto)
@@ -147,7 +147,7 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
                         listaProdutos.Add(PedidoProdutoMagentoDto.ProdutosDePedidoProdutoMagentoDto(y, produto, coeficiente.Coeficiente));
                     }
 
-                });
+                };
             }
 
             return await Task.FromResult(listaProdutos);
@@ -197,7 +197,8 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
                 return resultado;
             }
 
-            listarCodigo.ForEach(x =>
+
+            foreach(var x in listarCodigo)
             {
                 resultado.ListaMarketplace.Add(new MarketplaceMagentoDto()
                 {
@@ -213,7 +214,7 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
                     Parametro_5_campo_flag = x.Parametro_5_campo_flag,
                     Parametro_campo_texto = x.Parametro_campo_texto
                 });
-            });
+            };
 
             return resultado;
         }

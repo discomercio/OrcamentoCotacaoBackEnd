@@ -231,7 +231,7 @@ namespace Pedido
             /* 6- instancia v_item = recebe os campos do produto (produtos, fabricante, qtde) */
             List<cl_ITEM_PEDIDO_NOVO> v_item = new List<cl_ITEM_PEDIDO_NOVO>();
             short sequencia = 0;
-            pedido.ListaProdutos.ForEach(x =>
+            foreach (var x in pedido.ListaProdutos)
             {
                 sequencia++;
                 v_item.Add(new cl_ITEM_PEDIDO_NOVO
@@ -246,7 +246,7 @@ namespace Pedido
                     Qtde_estoque_sem_presenca = 0,
                     Sequencia = sequencia
                 });
-            });
+            };
 
             await pedidoBll.VerificarSePedidoExite(v_item, pedido, pedido.DadosCliente.Indicador_Orcamentista, pedidoRetorno.ListaErros);
             //se tiver erro vamos retornar
@@ -308,21 +308,19 @@ namespace Pedido
                                 Qtde_estoque = (short)produto_validado_item.Produto.Estoque
                             });
                             pedido.OpcaoVendaSemEstoque = true;
-                            produto_validado_item.Produto.Lst_empresa_selecionada.ForEach(x =>
-                            {
+                            foreach (var x in produto_validado_item.Produto.Lst_empresa_selecionada)
                                 if (!vEmpresaAutoSplit.Contains(x))
                                     vEmpresaAutoSplit.Add(x);
-                            });
+
                         }
                     }
                 }
                 else
                 {
-                    produto_validado_item.Produto.Lst_empresa_selecionada.ForEach(x =>
-                    {
+                    foreach (var x in produto_validado_item.Produto.Lst_empresa_selecionada)
                         if (!vEmpresaAutoSplit.Contains(x))
                             vEmpresaAutoSplit.Add(x);
-                    });
+
                 }
             }
 
