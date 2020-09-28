@@ -23,6 +23,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
         public string Id { get; private set; }
 
         [MaxLength(18)]
+        [Required]
         public string Cnpj_Cpf { get; set; }
 
         [MaxLength(20)]
@@ -41,6 +42,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
         /// Tipo = "PF", "PJ"
         /// </summary>
         [MaxLength(2)]
+        [Required]
         public string Tipo { get; set; }
 
         [MaxLength(60)]
@@ -65,24 +67,30 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
         public byte ProdutorRural { get; set; }
 
         [MaxLength(80)]
+        [Required]
         public string Endereco { get; set; }
 
         [MaxLength(20)]
+        [Required]
         public string Numero { get; set; }
 
         [MaxLength(60)]
         public string Complemento { get; set; }
 
         [MaxLength(72)]
+        [Required]
         public string Bairro { get; set; }
 
         [MaxLength(60)]
+        [Required]
         public string Cidade { get; set; }
 
         [MaxLength(2)]
+        [Required]
         public string Uf { get; set; }
 
         [MaxLength(8)]
+        [Required]
         public string Cep { get; set; }
 
         [MaxLength(4)]
@@ -116,6 +124,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
         public string Ramal2 { get; set; }
 
         [MaxLength(60)]
+        [Required]
         public string Email { get; set; }
 
         [MaxLength(60)]

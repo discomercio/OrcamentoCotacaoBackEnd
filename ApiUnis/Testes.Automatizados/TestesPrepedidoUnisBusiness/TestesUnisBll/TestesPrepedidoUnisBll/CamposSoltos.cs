@@ -323,12 +323,12 @@ VlTotalDestePedido	number($double)
 
             TestePagamentoComEntrada(c =>
             {
-                c.FormaPagtoCriacao.C_pce_entrada_valor = null;
+                c.FormaPagtoCriacao.C_pce_entrada_valor = 0;
             }, "Indique o valor da entrada (parcelado com entrada).", true);
 
             TestePagamentoComEntrada(c =>
             {
-                c.FormaPagtoCriacao.C_pce_entrada_valor = 0;
+                c.FormaPagtoCriacao.C_pce_entrada_valor = null;
             }, "Valor da entrada inválido (parcelado com entrada).", true);
 
             TestePagamentoComEntrada(c =>
@@ -338,22 +338,22 @@ VlTotalDestePedido	number($double)
 
             TestePagamentoComEntrada(c =>
             {
-                c.FormaPagtoCriacao.C_pce_prestacao_qtde = null;
+                c.FormaPagtoCriacao.C_pce_prestacao_qtde = 0;
             }, "Indique a quantidade de prestações (parcelado com entrada).", true);
 
             TestePagamentoComEntrada(c =>
             {
-                c.FormaPagtoCriacao.C_pce_prestacao_qtde = 0;
+                c.FormaPagtoCriacao.C_pce_prestacao_qtde = null;
             }, "Quantidade de prestações inválida (parcelado com entrada).", true);
 
             TestePagamentoComEntrada(c =>
             {
-                c.FormaPagtoCriacao.C_pce_prestacao_valor = null;
+                c.FormaPagtoCriacao.C_pce_prestacao_valor = 0;
             }, "Indique o valor da prestação (parcelado com entrada).", true);
 
             TestePagamentoComEntrada(c =>
             {
-                c.FormaPagtoCriacao.C_pce_prestacao_valor = 0;
+                c.FormaPagtoCriacao.C_pce_prestacao_valor = null;
             }, "Valor de prestação inválido (parcelado com entrada).", true);
 
             TestePagamentoComEntrada(c =>

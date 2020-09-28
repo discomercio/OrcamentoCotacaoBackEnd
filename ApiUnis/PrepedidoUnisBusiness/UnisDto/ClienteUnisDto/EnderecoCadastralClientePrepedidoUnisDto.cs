@@ -11,33 +11,41 @@ namespace PrepedidoUnisBusiness.UnisDto.ClienteUnisDto
     public class EnderecoCadastralClientePrepedidoUnisDto
     {
         [MaxLength(80)]
+        [Required]
         public string Endereco_logradouro { get; set; }
 
         [MaxLength(20)]
+        [Required]
         public string Endereco_numero { get; set; }
 
         [MaxLength(60)]
         public string Endereco_complemento { get; set; }
 
         [MaxLength(72)]
+        [Required]
         public string Endereco_bairro { get; set; }
 
         [MaxLength(60)]
+        [Required]
         public string Endereco_cidade { get; set; }
 
         [MaxLength(2)]
+        [Required]
         public string Endereco_uf { get; set; }
 
         [MaxLength(8)]
+        [Required]
         public string Endereco_cep { get; set; }
 
         [MaxLength(60)]
+        [Required]
         public string Endereco_email { get; set; }
 
         [MaxLength(60)]
         public string Endereco_email_xml { get; set; }
 
         [MaxLength(60)]
+        [Required]
         public string Endereco_nome { get; set; }
 
         [MaxLength(4)]
@@ -74,19 +82,23 @@ namespace PrepedidoUnisBusiness.UnisDto.ClienteUnisDto
         /// Endereco_tipo_pessoa = "PF", "PJ"
         /// </summary>
         [MaxLength(2)]
+        [Required]
         public string Endereco_tipo_pessoa { get; set; }
 
         [MaxLength(14)]
+        [Required]
         public string Endereco_cnpj_cpf { get; set; }
 
         /// <summary>
         /// Endereco_contribuinte_icms_status: INICIAL = 0, NAO = 1, SIM = 2, ISENTO = 3
         /// </summary>
+        [Required]
         public byte Endereco_contribuinte_icms_status { get; set; }
 
         /// <summary>
         /// Endereco_produtor_rural_status: COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL = 0, COD_ST_CLIENTE_PRODUTOR_RURAL_NAO = 1, COD_ST_CLIENTE_PRODUTOR_RURAL_SIM = 2
         /// </summary>
+        [Required]
         public byte Endereco_produtor_rural_status { get; set; }
 
         [MaxLength(20)]

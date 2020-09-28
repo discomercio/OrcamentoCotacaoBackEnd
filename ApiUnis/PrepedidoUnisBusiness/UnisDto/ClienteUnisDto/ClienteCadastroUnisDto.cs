@@ -11,6 +11,8 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
     {
         [Required]
         public string TokenAcesso { get; set; }
+
+        [Required]
         public DadosClienteCadastroUnisDto DadosCliente { get; set; }
         /// <summary>
         /// RefBancaria: somente para PJ, máximo 1
@@ -26,14 +28,16 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
             ClienteCadastroDto clienteArclube = new ClienteCadastroDto();
             clienteArclube.DadosCliente = DadosClienteCadastroUnisDto.DadosClienteCadastroDtoDeDadosClienteCadastroUnisDto(clienteUnis.DadosCliente, loja);
             clienteArclube.RefBancaria = new List<RefBancariaDtoCliente>();
-            clienteUnis.RefBancaria.ForEach(x =>
-            {
-                clienteArclube.RefBancaria.Add(
-                    RefBancariaClienteUnisDto.RefBancariaClienteDtoDeRefBancariaClienteUnisDto(x));
-            });
+            if (clienteUnis.RefBancaria != null)
+                clienteUnis.RefBancaria.ForEach(x =>
+                {
+                    clienteArclube.RefBancaria.Add(
+                        RefBancariaClienteUnisDto.RefBancariaClienteDtoDeRefBancariaClienteUnisDto(x));
+                });
 
             clienteArclube.RefComercial = new List<RefComercialDtoCliente>();
-            clienteUnis.RefComercial.ForEach(x =>
+            if (clienteUnis.RefComercial != null)
+                clienteUnis.RefComercial.ForEach(x =>
             {
                 clienteArclube.RefComercial.Add(
                     RefComercialClienteUnisDto.RefComercialDtoClienteDeRefComercialClienteUnisDto(x));
@@ -42,6 +46,6 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
             return clienteArclube;
         }
 
-        
+
     }
 }

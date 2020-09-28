@@ -7,7 +7,7 @@ using System.Text;
 namespace PrepedidoUnisBusiness.UnisDto.ClienteUnisDto
 {
     public class ClienteBuscaRetornoUnisDto
-    {        
+    {
         public DadosClienteCadastroUnisDto DadosCliente { get; set; }
         public List<RefBancariaClienteUnisDto> RefBancaria { get; set; }
         public List<RefComercialClienteUnisDto> RefComercial { get; set; }
@@ -18,12 +18,14 @@ namespace PrepedidoUnisBusiness.UnisDto.ClienteUnisDto
             clienteUnis.DadosCliente = DadosClienteCadastroUnisDto.DadosClienteCadastroUnisDtoDeDadosClienteCadastroDto(clienteArclube.DadosCliente);
             clienteUnis.RefBancaria = new List<RefBancariaClienteUnisDto>();
             clienteUnis.RefComercial = new List<RefComercialClienteUnisDto>();
-            clienteArclube.RefBancaria.ForEach(x =>
-            {
-                clienteUnis.RefBancaria.Add(
-                    RefBancariaClienteUnisDto.RefBancariaClienteUnisDtoDeRefBancariaClienteDto(x));
-            });
-            clienteArclube.RefComercial.ForEach(x =>
+            if (clienteArclube.RefBancaria != null)
+                clienteArclube.RefBancaria.ForEach(x =>
+                {
+                    clienteUnis.RefBancaria.Add(
+                        RefBancariaClienteUnisDto.RefBancariaClienteUnisDtoDeRefBancariaClienteDto(x));
+                });
+            if (clienteArclube.RefComercial != null)
+                clienteArclube.RefComercial.ForEach(x =>
             {
                 clienteUnis.RefComercial.Add(
                     RefComercialClienteUnisDto.RefComercialClienteUnisDtoDeRefComercialDtoCliente(x));
