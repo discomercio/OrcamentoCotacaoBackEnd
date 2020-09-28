@@ -26,6 +26,11 @@ namespace InfraBanco.Modelos
         [Column("data_ult_movimento")]
         [Required]
         public DateTime Data_ult_movimento { get; set; }
+
+        [Column("fabricante")]
+        [MaxLength(4)]
+        [Required]
+        public string Fabricante { get; set; }
     }
 }
 #endif

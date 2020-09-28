@@ -136,11 +136,11 @@ namespace Pedido
                     {
                         //Monta endereço de entrega
                         MontarEndereçoEntrega(pedido, pedidonovo);
-
-                        if (blnUsarMemorizacaoCompletaEnderecos)
-                        {
-                            MontarEndereçoEntrega(pedido, pedidonovo);
-                        }
+                        //como estou verificando cada campos para atribuir ao Tpedido estou comentando essa verificação
+                        //if (blnUsarMemorizacaoCompletaEnderecos)
+                        //{
+                        //    MontarEndereçoEntrega(pedido, pedidonovo);
+                        //}
 
                     }
 
@@ -169,19 +169,16 @@ namespace Pedido
 
                     MontarEnderecoCadastralCliente(pedidonovo, cliente);
 
-                    //não existe esses campo em Tpedido quje estão na linha 2004 ate 2025
-                    //bool blnUsarMemorizacaoCompletaEnderecos = true;
-
                     //referente ao magento
                     string s_pedido_ac = "";
                     if (operacao_origem == InfraBanco.Constantes.Constantes.OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO ||
                         (pedidonovo.Loja) == InfraBanco.Constantes.Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE && s_pedido_ac != "")
                     {
-                        pedidonovo.Plataforma_Origem_Pedido = InfraBanco.Constantes.Constantes.COD_PLATAFORMA_ORIGEM_PEDIDO__MAGENTO;
+                        pedidonovo.Plataforma_Origem_Pedido = (int)InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__APIMAGENTO;
                     }
                     else
                     {
-                        pedidonovo.Plataforma_Origem_Pedido = InfraBanco.Constantes.Constantes.COD_PLATAFORMA_ORIGEM_PEDIDO__MAGENTO;
+                        pedidonovo.Plataforma_Origem_Pedido = (int)InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS;
                     }
 
                     pedidonovo.Id_Nfe_Emitente = (short)empresa;
@@ -345,10 +342,6 @@ namespace Pedido
             {
                 //calcula total ra liquido bd 
                 vl_total_RA_liquido = await CalculaTotalRALiquidoBD(idPedidoBase, dbGravacao, lstErros);
-                if (vl_total_RA_liquido == 0)
-                {
-
-                }
 
                 //alterando status do pedido cadastrado
                 await AlterarStatusPedidoCadastrado(pedidonovoTrocaId, pedidonovo, pedidoDados,
@@ -654,14 +647,64 @@ namespace Pedido
 
         private void MontarEndereçoEntrega(PedidoCriacaoDados pedido, Tpedido pedidonovo)
         {
-            pedidonovo.EndEtg_Endereco = pedido.EnderecoEntrega.EndEtg_endereco;
-            pedidonovo.EndEtg_Endereco_Numero = pedido.EnderecoEntrega.EndEtg_endereco_numero;
-            pedidonovo.EndEtg_Endereco_Complemento = pedido.EnderecoEntrega.EndEtg_endereco_complemento;
-            pedidonovo.EndEtg_Bairro = pedido.EnderecoEntrega.EndEtg_bairro;
-            pedidonovo.EndEtg_Cidade = pedido.EnderecoEntrega.EndEtg_cidade;
-            pedidonovo.EndEtg_UF = pedido.EnderecoEntrega.EndEtg_uf;
-            pedidonovo.EndEtg_Cep = pedido.EnderecoEntrega.EndEtg_cep.Replace("-", "");
-            pedidonovo.EndEtg_Cod_Justificativa = pedido.EnderecoEntrega.EndEtg_cod_justificativa;
+            if(pedidonovo != null)
+            {
+                if(!string.IsNullOrEmpty(pedido.EnderecoEntrega.EndEtg_cod_justificativa))
+                {
+                    pedidonovo.EndEtg_Endereco = string.IsNullOrEmpty(pedido.EnderecoEntrega.EndEtg_endereco) ?
+                        "" : pedido.EnderecoEntrega.EndEtg_endereco;
+                    pedidonovo.EndEtg_Endereco_Numero = string.IsNullOrEmpty(pedido.EnderecoEntrega.EndEtg_endereco_numero) ?
+                        "" : pedido.EnderecoEntrega.EndEtg_endereco_numero;
+                    pedidonovo.EndEtg_Endereco_Complemento = string.IsNullOrEmpty(pedido.EnderecoEntrega.EndEtg_endereco_complemento) ?
+                        "" : pedido.EnderecoEntrega.EndEtg_endereco_complemento;
+                    pedidonovo.EndEtg_Bairro = string.IsNullOrEmpty(pedido.EnderecoEntrega.EndEtg_bairro) ?
+                        "" : pedido.EnderecoEntrega.EndEtg_bairro;
+                    pedidonovo.EndEtg_Cidade = string.IsNullOrEmpty(pedido.EnderecoEntrega.EndEtg_cidade) ?
+                        "" : pedido.EnderecoEntrega.EndEtg_cidade;
+                    pedidonovo.EndEtg_UF = string.IsNullOrEmpty(pedido.EnderecoEntrega.EndEtg_uf) ?
+                        "" : pedido.EnderecoEntrega.EndEtg_uf;
+                    pedidonovo.EndEtg_Cep = string.IsNullOrEmpty(pedido.EnderecoEntrega.EndEtg_cep) ?
+                        "" : pedido.EnderecoEntrega.EndEtg_cep.Replace("-", "");
+                    pedidonovo.EndEtg_Cod_Justificativa = string.IsNullOrEmpty(pedido.EnderecoEntrega.EndEtg_cod_justificativa) ?
+                        "" : pedido.EnderecoEntrega.EndEtg_cod_justificativa;
+                    pedidonovo.EndEtg_email = string.IsNullOrEmpty(pedido.EnderecoEntrega.EndEtg_email) ?
+                        "" : pedido.EnderecoEntrega.EndEtg_email;
+                    pedidonovo.EndEtg_email_xml = string.IsNullOrEmpty(pedido.EnderecoEntrega.EndEtg_email_xml) ?
+                        "" : pedido.EnderecoEntrega.EndEtg_email_xml;
+                    pedidonovo.EndEtg_nome = string.IsNullOrEmpty(pedido.EnderecoEntrega.EndEtg_nome) ?
+                        "" : pedido.EnderecoEntrega.EndEtg_nome;
+                    pedidonovo.EndEtg_ddd_res = string.IsNullOrEmpty(pedido.EnderecoEntrega.EndEtg_ddd_res) ?
+                        "" : pedido.EnderecoEntrega.EndEtg_ddd_res;
+                    pedidonovo.EndEtg_tel_res = string.IsNullOrEmpty(pedido.EnderecoEntrega.EndEtg_tel_res) ?
+                        "" : pedido.EnderecoEntrega.EndEtg_tel_res;
+                    pedidonovo.EndEtg_ddd_com = string.IsNullOrEmpty(pedido.EnderecoEntrega.EndEtg_ddd_com) ?
+                        "" : pedido.EnderecoEntrega.EndEtg_ddd_com;
+                    pedidonovo.EndEtg_tel_com = string.IsNullOrEmpty(pedido.EnderecoEntrega.EndEtg_tel_com) ?
+                        "" : pedido.EnderecoEntrega.EndEtg_tel_com;
+                    pedidonovo.EndEtg_ramal_com = string.IsNullOrEmpty(pedido.EnderecoEntrega.EndEtg_ramal_com) ?
+                        "" : pedido.EnderecoEntrega.EndEtg_ramal_com;
+                    pedidonovo.EndEtg_ddd_cel = string.IsNullOrEmpty(pedido.EnderecoEntrega.EndEtg_ddd_cel) ?
+                        "" : pedido.EnderecoEntrega.EndEtg_ddd_cel;
+                    pedidonovo.EndEtg_tel_cel = string.IsNullOrEmpty(pedido.EnderecoEntrega.EndEtg_tel_cel) ?
+                        "" : pedido.EnderecoEntrega.EndEtg_tel_cel;
+                    pedidonovo.EndEtg_ddd_com_2 = string.IsNullOrEmpty(pedido.EnderecoEntrega.EndEtg_ddd_com_2) ?
+                        "" : pedido.EnderecoEntrega.EndEtg_ddd_com_2;
+                    pedidonovo.EndEtg_tel_com_2 = string.IsNullOrEmpty(pedido.EnderecoEntrega.EndEtg_tel_com_2) ?
+                        "" : pedido.EnderecoEntrega.EndEtg_tel_com_2;
+                    pedidonovo.EndEtg_ramal_com_2 = string.IsNullOrEmpty(pedido.EnderecoEntrega.EndEtg_ramal_com_2) ?
+                        "" : pedido.EnderecoEntrega.EndEtg_ramal_com_2;
+                    pedidonovo.EndEtg_tipo_pessoa = string.IsNullOrEmpty(pedido.EnderecoEntrega.EndEtg_tipo_pessoa) ?
+                        "" : pedido.EnderecoEntrega.EndEtg_tipo_pessoa;
+                    pedidonovo.EndEtg_cnpj_cpf = string.IsNullOrEmpty(pedido.EnderecoEntrega.EndEtg_cnpj_cpf) ?
+                        "" : UtilsGlobais.Util.SoDigitosCpf_Cnpj(pedido.EnderecoEntrega.EndEtg_cnpj_cpf);
+                    pedidonovo.EndEtg_contribuinte_icms_status = pedido.EnderecoEntrega.EndEtg_contribuinte_icms_status;
+                    pedidonovo.EndEtg_produtor_rural_status = pedido.EnderecoEntrega.EndEtg_produtor_rural_status;
+                    pedidonovo.EndEtg_ie = string.IsNullOrEmpty(pedido.EnderecoEntrega.EndEtg_ie) ?
+                        "" : pedido.EnderecoEntrega.EndEtg_ie;
+                    pedidonovo.EndEtg_rg = string.IsNullOrEmpty(pedido.EnderecoEntrega.EndEtg_rg) ?
+                        "" : pedido.EnderecoEntrega.EndEtg_rg;
+                }
+            }
         }
 
         private void MontarEnderecoCadastralCliente(Tpedido pedidonovo, Tcliente cliente)
@@ -842,7 +885,6 @@ namespace Pedido
             //NÃO HÁ PRODUTOS SUFICIENTES NO ESTOQUE!!
             if ((qtde_a_sair - qtde_autorizada_sem_presenca) > qtde_disponivel)
             {
-                //comentado pois utiliza o contexto de Leitura e aqui estamos utilizando o contexto de Gravação
                 lstErros.Add("Produto " + id_produto + " do fabricante " + id_fabricante + ": faltam " +
                     ((qtde_a_sair - qtde_autorizada_sem_presenca) - qtde_disponivel) + " unidades no estoque (" +
                     UtilsGlobais.Util.ObterApelidoEmpresaNfeEmitentesGravacao(id_nfe_emitente, dbGravacao) +

@@ -377,22 +377,20 @@ namespace Prepedido
         {
             DetalhesPrepedidoDados detail = new DetalhesPrepedidoDados
             {
-                //Observacoes = torcamento.Obs_1,
-                //NumeroNF = torcamento.Obs_2,
-                //PrevisaoEntrega = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
-                //torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + " (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) +
-                //" - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" : null,
-                //EntregaImediata = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
-                //"NÃO (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" :
-                //"SIM (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")",
-                //BemDeUso_Consumo = torcamento.StBemUsoConsumo == (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_NAO ?
-                //"NÃO" : "SIM",
-                //InstaladorInstala = torcamento.InstaladorInstalaStatus == (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_NAO ?
-                //"NÃO" : "SIM",
-                //GarantiaIndicador = Convert.ToString(torcamento.GarantiaIndicadorStatus) ==
-                //Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO ?
-                //"NÃO" : "SIM",
-                //DescricaoFormaPagamento = torcamento.Forma_Pagamento
+                Observacoes = torcamento.Obs_1,
+                NumeroNF = torcamento.Obs_2,
+                PrevisaoEntrega = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
+                torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + " (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) +
+                " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" : null,
+                EntregaImediata = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
+                "NÃO (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" :
+                "SIM (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")",
+                BemDeUso_Consumo = torcamento.StBemUsoConsumo,
+                InstaladorInstala = torcamento.InstaladorInstalaStatus,
+                GarantiaIndicador = Convert.ToString(torcamento.GarantiaIndicadorStatus) ==
+                Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO ?
+                "NÃO" : "SIM",
+                DescricaoFormaPagamento = torcamento.Forma_Pagamento
             };
 
             return detail;
@@ -817,7 +815,7 @@ namespace Prepedido
                         Produto.ProdutoGeralBll.VerificarRegrasAssociadasAosProdutos(regraCrtlEstoque, lstErros, prePedido.DadosCliente.Uf, prePedido.DadosCliente.Tipo);
                         //obtendo qtde disponivel
                         await UtilsProduto.VerificarEstoque(regraCrtlEstoque, contextoProvider);
-
+                        
                         ObterDisponibilidadeEstoque(regraCrtlEstoque, prePedido, parametroRegra, lstErros);
 
                         VerificarEstoqueInsuficiente(regraCrtlEstoque, prePedido, parametroRegra);

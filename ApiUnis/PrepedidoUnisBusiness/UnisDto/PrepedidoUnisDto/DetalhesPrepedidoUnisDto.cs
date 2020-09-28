@@ -1,4 +1,5 @@
-﻿using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
+﻿using InfraBanco.Constantes;
+using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,7 +17,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         /// </summary>
         [Required]
         public short St_Entrega_Imediata { get; set; }
-        
+
         public DateTime? PrevisaoEntregaData { get; set; }
 
         /// <summary>
@@ -40,21 +41,23 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
             {
                 St_Entrega_Imediata = short.Parse(detalhesPrePedidoDto.EntregaImediata),
                 PrevisaoEntregaData = detalhesPrePedidoDto.EntregaImediataData,
-                BemDeUso_Consumo = detalhesPrePedidoDto.BemDeUso_Consumo,
-                InstaladorInstala = detalhesPrePedidoDto.InstaladorInstala,
+                BemDeUso_Consumo = short.Parse(detalhesPrePedidoDto.BemDeUso_Consumo),
+                InstaladorInstala = short.Parse(detalhesPrePedidoDto.InstaladorInstala),
                 Obs_1 = detalhesPrePedidoDto.Observacoes
             };
             return ret;
         }
 
-        public static DetalhesDtoPrepedido DetalhesPrePedidoDtoDeDetalhesPrePedidoUnisDto(DetalhesPrePedidoUnisDto  detalhesPrePedidoUnisDto)
+        public static DetalhesDtoPrepedido DetalhesPrePedidoDtoDeDetalhesPrePedidoUnisDto(DetalhesPrePedidoUnisDto detalhesPrePedidoUnisDto)
         {
             var ret = new DetalhesDtoPrepedido()
             {
                 EntregaImediata = detalhesPrePedidoUnisDto.St_Entrega_Imediata.ToString(),
                 EntregaImediataData = detalhesPrePedidoUnisDto.PrevisaoEntregaData,
-                BemDeUso_Consumo = detalhesPrePedidoUnisDto.BemDeUso_Consumo,
-                InstaladorInstala = detalhesPrePedidoUnisDto.InstaladorInstala,
+                BemDeUso_Consumo = detalhesPrePedidoUnisDto.BemDeUso_Consumo ==
+                    (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_NAO ? "NÃO" : "SIM",
+                InstaladorInstala = detalhesPrePedidoUnisDto.InstaladorInstala ==
+                    (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_NAO ? "NÃO" : "SIM",
                 Observacoes = detalhesPrePedidoUnisDto.Obs_1
             };
             return ret;

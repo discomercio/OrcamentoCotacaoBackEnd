@@ -335,6 +335,7 @@ namespace Prepedido.PedidoVisualizacao
 
             List<TpedidoItem> produtosItens = await (from c in db.TpedidoItems
                                                      where c.Pedido == numPedido
+                                                     orderby c.Sequencia
                                                      select c).ToListAsync();
 
             List<PedidoProdutosPedidoDados> lstProduto = new List<PedidoProdutosPedidoDados>();

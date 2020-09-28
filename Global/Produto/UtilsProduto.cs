@@ -169,11 +169,11 @@ namespace Produto
                 }
             }
         }
-        public static async Task VerificarEstoque(List<RegrasBll> lst_cliente_regra, ContextoBdProvider contextoProvider)
+
+        public static async Task VerificarEstoque(List<RegrasBll> lst_cliente_regra,
+            ContextoBdProvider contextoProvider)
         {
             var lst1 = await BuscarListaQtdeEstoque(contextoProvider);
-
-
             foreach (var regra in lst_cliente_regra)
             {
                 if (regra.TwmsRegraCd != null)
@@ -182,17 +182,13 @@ namespace Produto
                     {
                         foreach (var r in regra.TwmsCdXUfXPessoaXCd)
                         {
-                            if (r.Id_nfe_emitente != 0)
+                            if (r.Id_nfe_emitente != 0 && !string.IsNullOrEmpty(regra.Produto) && !string.IsNullOrEmpty(regra.Fabricante))
                             {
-
-                                if (regra.Produto == p1.Produto && regra.Fabricante == p1.Fabricante)
+                                //verificar se é inativo
+                                if (r.St_inativo == 0)
                                 {
-                                    //verificar se é inativo
-                                    if (r.St_inativo == 0)
-                                    {
-                                        //valor subtraido
-                                        r.Estoque_Qtde += (short)(p1.Qtde - p1.Qtde_Utilizada);
-                                    }
+                                    //valor subtraido
+                                    r.Estoque_Qtde += (short)(p1.Qtde - p1.Qtde_Utilizada);
                                 }
                             }
                         }
@@ -201,10 +197,31 @@ namespace Produto
             }
 
         }
-
-        public static async Task VerificarEstoqueComSubQuery(List<RegrasBll> lst_cliente_regra, ContextoBdProvider contextoProvider)
+        private static async Task<IEnumerable<ProdutosEstoqueDados>> BuscarListaQtdeEstoque(ContextoBdProvider contextoProvider)
         {
-            var lst2 = await BuscarListaQtdeEstoqueComSubquery(contextoProvider);
+
+            var db = contextoProvider.GetContextoLeitura();
+
+            var lstEstoqueQtdeUtilZero = from c in db.TestoqueItems.Include(x => x.Testoque)
+                                         where (c.Qtde - c.Qtde_utilizada) > 0 &&
+                                               c.Qtde_utilizada.HasValue
+                                         select new ProdutosEstoqueDados
+                                         {
+                                             Fabricante = c.Fabricante,
+                                             Produto = c.Produto,
+                                             Qtde = (int)c.Qtde,
+                                             Qtde_Utilizada = (int)c.Qtde_utilizada,
+                                             Id_nfe_emitente = c.Testoque.Id_nfe_emitente
+                                         };
+
+            List<ProdutosEstoqueDados> produtosEstoqueDtos = await lstEstoqueQtdeUtilZero.ToListAsync();
+
+            return produtosEstoqueDtos;
+        }
+        
+        public static async Task VerificarEstoqueGlobal(List<RegrasBll> lst_cliente_regra, ContextoBdProvider contextoProvider)
+        {
+            var lst2 = await BuscarListaQtdeEstoqueGlobal(contextoProvider);
 
             foreach (var regra in lst_cliente_regra)
             {
@@ -229,67 +246,29 @@ namespace Produto
                 }
             }
         }
-
-        private static async Task<IEnumerable<ProdutosEstoqueDados>> BuscarListaQtdeEstoque(ContextoBdProvider contextoProvider)
+        private static async Task<IEnumerable<ProdutosEstoqueDados>> BuscarListaQtdeEstoqueGlobal(ContextoBdProvider contextoProvider)
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            List<Testoque> lstEtoque = await (from c in db.Testoques
-                                              select c).ToListAsync();
+            var lstEstoqueQtdeUtilZeroComSubQuery = from c in db.TestoqueItems.Include(x => x.Testoque)
+                                                    where ((c.Qtde - c.Qtde_utilizada) > 0) &&
+                                                          ((c.Qtde_utilizada.HasValue) ||
+                                                          (from d in db.TnfEmitentes
+                                                           where d.St_Habilitado_Ctrl_Estoque == 1 && d.St_Ativo == 1
+                                                           select d.Id)
+                                                           .Contains(c.Testoque.Id_nfe_emitente))
+                                                    select new ProdutosEstoqueDados
+                                                    {
+                                                        Fabricante = c.Fabricante,
+                                                        Produto = c.Produto,
+                                                        Qtde = (int)c.Qtde,
+                                                        Qtde_Utilizada = (int)c.Qtde_utilizada,
+                                                        Id_nfe_emitente = c.Testoque.Id_nfe_emitente
+                                                    };
 
-            List<ProdutosEstoqueDados> produtoDados = new List<ProdutosEstoqueDados>();
-            if (lstEtoque != null)
-            {
-                lstEtoque.ForEach(x =>
-                {
-                    produtoDados = (from c in x.TestoqueItem
-                                    where (c.Qtde - c.Qtde_utilizada) > 0 &&
-                                           c.Qtde_utilizada.HasValue
-                                    select new ProdutosEstoqueDados
-                                    {
-                                        Fabricante = c.Fabricante,
-                                        Produto = c.Produto,
-                                        Qtde = (int)c.Qtde,
-                                        Qtde_Utilizada = (int)c.Qtde_utilizada,
-                                        Id_nfe_emitente = x.Id_nfe_emitente
-                                    }).ToList();
-                });
-            }
+            List<ProdutosEstoqueDados> produtosEstoqueDtos = await lstEstoqueQtdeUtilZeroComSubQuery.ToListAsync();
 
-            return produtoDados;
+            return produtosEstoqueDtos;
         }
-
-        private static async Task<IEnumerable<ProdutosEstoqueDados>> BuscarListaQtdeEstoqueComSubquery(ContextoBdProvider contextoProvider)
-        {
-            var db = contextoProvider.GetContextoLeitura();
-
-            List<Testoque> lstEtoque = await (from c in db.Testoques
-                                              select c).ToListAsync();
-
-            List<ProdutosEstoqueDados> produtoDados = new List<ProdutosEstoqueDados>();
-            if (lstEtoque != null)
-            {
-                lstEtoque.ForEach(x =>
-                {
-                    produtoDados = (from c in x.TestoqueItem
-                                    where (c.Qtde - c.Qtde_utilizada) > 0 &&
-                                           c.Qtde_utilizada.HasValue ||
-                                           (from d in db.TnfEmitentes
-                                            where d.St_Habilitado_Ctrl_Estoque == 1 && d.St_Ativo == 1
-                                            select d.Id).Contains(x.Id_nfe_emitente)
-                                    select new ProdutosEstoqueDados
-                                    {
-                                        Fabricante = c.Fabricante,
-                                        Produto = c.Produto,
-                                        Qtde = (int)c.Qtde,
-                                        Qtde_Utilizada = (int)c.Qtde_utilizada,
-                                        Id_nfe_emitente = x.Id_nfe_emitente
-                                    }).ToList();
-                });
-            }
-
-            return produtoDados;
-        }
-
     }
 }

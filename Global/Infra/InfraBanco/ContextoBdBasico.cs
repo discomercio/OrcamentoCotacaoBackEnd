@@ -76,6 +76,13 @@ namespace InfraBanco
             modelBuilder.Entity<TpercentualCustoFinanceiroFornecedor>()
                 .HasKey(x => new { x.Fabricante, x.Tipo_Parcelamento, x.Qtde_Parcelas });
 
+            modelBuilder.Entity<TestoqueItem>().HasKey(x => new { x.Id_estoque, x.Fabricante, x.Produto });
+
+            modelBuilder.Entity<TestoqueItem>()
+                .HasOne(x => x.Testoque)
+                .WithMany(x => x.TestoqueItem)
+                .HasForeignKey(x => x.Id_estoque);
+
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
             modelBuilder.Entity<TpedidoItemDevolvido>()
                 .HasOne(x => x.Tpedido)
@@ -86,14 +93,6 @@ namespace InfraBanco
                 .HasOne(x => x.Tproduto)
                 .WithMany(x => x.TprodutoLoja)
                 .HasForeignKey(x => new { x.Fabricante, x.Produto });
-
-            modelBuilder.Entity<TestoqueItem>().HasKey(x => new { x.Id_estoque, x.Fabricante, x.Produto });
-
-            modelBuilder.Entity<TestoqueItem>()
-                .HasOne(x => x.Testoque)
-                .WithMany(x => x.TestoqueItem)
-                .HasForeignKey(x => x.Id_estoque);
-
 
             modelBuilder.Entity<TestoqueLog>()
                .HasKey(x => new {x.Pedido_estoque_destino, x.Pedido_estoque_origem, x.Fabricante, x.Produto, x.Qtde_atendida });

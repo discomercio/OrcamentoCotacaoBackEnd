@@ -442,6 +442,7 @@ namespace Pedido
             List<RegrasBll> regraCrtlEstoque = (await ObterCtrlEstoqueProdutoRegraParaUMProduto(produto, cliente,
                 prodValidadoEstoque.ListaErros)).ToList();
 
+            //afazer: verificar se há necessidade de continuar com esse método, pois acima faz a mesma coisa com validação
             await UtilsProduto.ObterCtrlEstoqueProdutoRegra_Teste(prodValidadoEstoque.ListaErros, regraCrtlEstoque, cliente.Uf, cliente_regra, contextoProvider);
 
             VerificarRegrasAssociadasParaUMProduto(regraCrtlEstoque, prodValidadoEstoque.ListaErros, cliente, id_nfe_emitente_selecao_manual);

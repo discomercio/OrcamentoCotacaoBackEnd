@@ -144,10 +144,14 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
           if (this.clicouAddProd)
             this.adicionarProduto();
         } else {
+          this.carregandoProds = false;
           this.alertaService.mostrarMensagem("Erro ao acessar a lista de produtos: nenhum produto retornado. Por favor, entre em contato com o suporte técnico.")
         }
       },
-      error: (r: ProdutoComboDto) => this.alertaService.mostrarErroInternet(r)
+      error: (r: ProdutoComboDto) => {
+        this.carregandoProds = false;
+        this.alertaService.mostrarErroInternet(r);
+      }
     });
   }
 

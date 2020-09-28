@@ -56,9 +56,12 @@ namespace InfraBanco.Modelos
 
         public Tpedido Tpedido { get; set; }
 
-#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+
         [Column("sequencia")]
         public short? Sequencia { get; set; }
+
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+
 
         [Column("preco_fabricante", TypeName = "money")]
         public decimal? Preco_Fabricante { get; set; }
