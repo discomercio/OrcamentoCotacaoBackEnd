@@ -54,12 +54,15 @@ namespace Pedido
                         //pedido pai e vamos montar o log com base nele
                         if (p.Pedido == pedido)
                             log = await MontarCamposPedidoPai(p, pedidoCriacao);
+
+                        //adiciona detalhes sobre o auto-split
                         if (p.Pedido.Contains("-"))
-                            //adiciona detalhes sobre o auto-split
                             log += "criar método que montar o log filhote";
                     }
                 }
             }
+
+            return log;
         }
 
         private async Task<string> MontarCamposPedidoPai(Tpedido pedido, PedidoCriacaoDados pedidoCriacao)
