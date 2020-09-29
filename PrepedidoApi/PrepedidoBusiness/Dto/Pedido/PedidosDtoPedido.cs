@@ -1,8 +1,6 @@
-﻿using Pedido.Dados;
+﻿using Prepedido.PedidoVisualizacao.Dados;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace PrepedidoBusiness.Dto.Pedido
 {

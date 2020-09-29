@@ -1,7 +1,5 @@
-﻿using Pedido.Dados.DetalhesPedido;
-using System;
+﻿using Prepedido.PedidoVisualizacao.Dados.DetalhesPedido;
 using System.Collections.Generic;
-using System.Text;
 
 namespace PrepedidoBusiness.Dto.Pedido.DetalhesPedido
 {
