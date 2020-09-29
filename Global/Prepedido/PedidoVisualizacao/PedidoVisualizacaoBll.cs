@@ -983,40 +983,13 @@ namespace Prepedido.PedidoVisualizacao
             return await Task.FromResult(msg);
         }
 
-        private async Task<string> ObterAnaliseCredito(string codigo, string numPedido, string apelido)
+        public async Task<string> ObterAnaliseCredito(string codigo, string numPedido, string apelido)
         {
+            //estou alterando esse método para poder utilizar o switch no cadastro do pedido
+            //virou método para aproveitar no cadastro do pedido
             string retorno = "";
 
-            switch (codigo)
-            {
-                case Constantes.COD_AN_CREDITO_ST_INICIAL:
-                    retorno = "";
-                    break;
-                case Constantes.COD_AN_CREDITO_PENDENTE:
-                    retorno = "Pendente";
-                    break;
-                case Constantes.COD_AN_CREDITO_PENDENTE_VENDAS:
-                    retorno = "Pendente Vendas";
-                    break;
-                case Constantes.COD_AN_CREDITO_PENDENTE_ENDERECO:
-                    retorno = "Pendente Endereço";
-                    break;
-                case Constantes.COD_AN_CREDITO_OK:
-                    retorno = "Crédito OK";
-                    break;
-                case Constantes.COD_AN_CREDITO_OK_AGUARDANDO_DEPOSITO:
-                    retorno = "Crédito OK (aguardando depósito)";
-                    break;
-                case Constantes.COD_AN_CREDITO_OK_DEPOSITO_AGUARDANDO_DESBLOQUEIO:
-                    retorno = "Crédito OK (depósito aguardando desbloqueio)";
-                    break;
-                case Constantes.COD_AN_CREDITO_NAO_ANALISADO:
-                    retorno = "";
-                    break;
-                case Constantes.COD_AN_CREDITO_PENDENTE_CARTAO:
-                    retorno = "Pendente Cartão de Crédito";
-                    break;
-            }
+            retorno = DescricaoAnaliseCredito(codigo);
 
             if (retorno != "")
             {
@@ -1044,6 +1017,42 @@ namespace Prepedido.PedidoVisualizacao
             }
 
             return await Task.FromResult(retorno);
+        }
+
+        public string DescricaoAnaliseCredito(string codigo)
+        {
+            string retorno = "";
+            switch (codigo)
+            {
+                case Constantes.COD_AN_CREDITO_ST_INICIAL:
+                    retorno = "Aguardando Análise Inicial";
+                    break;
+                case Constantes.COD_AN_CREDITO_PENDENTE:
+                    retorno = "Pendente";
+                    break;
+                case Constantes.COD_AN_CREDITO_PENDENTE_VENDAS:
+                    retorno = "Pendente Vendas";
+                    break;
+                case Constantes.COD_AN_CREDITO_PENDENTE_ENDERECO:
+                    retorno = "Pendente Endereço";
+                    break;
+                case Constantes.COD_AN_CREDITO_OK:
+                    retorno = "Crédito OK";
+                    break;
+                case Constantes.COD_AN_CREDITO_OK_AGUARDANDO_DEPOSITO:
+                    retorno = "Crédito OK (aguardando depósito)";
+                    break;
+                case Constantes.COD_AN_CREDITO_OK_DEPOSITO_AGUARDANDO_DESBLOQUEIO:
+                    retorno = "Crédito OK (depósito aguardando desbloqueio)";
+                    break;
+                case Constantes.COD_AN_CREDITO_NAO_ANALISADO:
+                    retorno = "Pedido Sem Análise de Crédito";
+                    break;
+                case Constantes.COD_AN_CREDITO_PENDENTE_CARTAO:
+                    retorno = "Pendente Cartão de Crédito";
+                    break;
+            }
+            return retorno;
         }
 
         private async Task<decimal> CalculaSaldoAPagar(string numPedido, decimal vlDevNf)

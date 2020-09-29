@@ -19,12 +19,15 @@ namespace Pedido
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
         private readonly PedidoBll pedidoBll;
         private readonly Prepedido.PrepedidoBll prepedidoBll;
+        private readonly MontarLogPedidoBll montarLogPedidoBll;
 
-        public EfetivaPedidoBll(ContextoBdProvider contextoProvider, PedidoBll pedidoBll, Prepedido.PrepedidoBll prepedidoBll)
+        public EfetivaPedidoBll(ContextoBdProvider contextoProvider, PedidoBll pedidoBll, Prepedido.PrepedidoBll prepedidoBll,
+            MontarLogPedidoBll montarLogPedidoBll)
         {
             this.contextoProvider = contextoProvider;
             this.pedidoBll = pedidoBll;
             this.prepedidoBll = prepedidoBll;
+            this.montarLogPedidoBll = montarLogPedidoBll;
         }
 
         public async Task<string> Novo_EfetivarCadastroPedido(PedidoCriacaoDados pedido, List<int> vEmpresaAutoSplit, string usuario_atual,
@@ -199,9 +202,14 @@ namespace Pedido
                     }
 
                     //fazer a montagens dos itens
-                    await Novo_MontarItens(lstRegras, v_item, id_pedido_temp_base, pedidonovoTrocaId, empresa, indicePedido,
+                    string log = "";
+                    log = await Novo_MontarItens(lstRegras, v_item, id_pedido_temp_base, pedidonovoTrocaId, empresa, indicePedido,
                         usuario_atual, lstErros, pedidonovo, pedido, v_desconto, operacao_origem, cliente, dbGravacao);
 
+                    //vamos montar o log do pedido
+                    //verificar o que inserir para a inclusão dos itens
+                    if (indicePedido == 1 && lstErros.Count == 0)
+                         log = await montarLogPedidoBll.MontarLogPedido(pedidonovoTrocaId.Pedido, dbGravacao, pedido) + log;
                 }
             }
 
@@ -213,21 +221,10 @@ namespace Pedido
             //salvando todas alterações
             await dbGravacao.SaveChangesAsync();
 
-            //Vamos criar o log do pedido e dos itens de pedido
-            //Itens do pedido => dentro de um foreach vamos montar da seguinte forma
-            /*1x003243(003) = qtdex / produto / (fabricante)
-             * preco_lista=1523,61;
-             * desc_dado=0;
-             * preco_venda=1523,61;
-             * preco_NF=1523,61;
-             * custoFinancFornecCoeficiente=1;
-             * custoFinancFornecPrecoListaBase=1523,61;
-             */
-             
             return retorno;
         }
 
-        private async Task Novo_MontarItens(List<RegrasBll> lstRegras, List<cl_ITEM_PEDIDO_NOVO> v_item, string id_pedido_temp,
+        private async Task<string> Novo_MontarItens(List<RegrasBll> lstRegras, List<cl_ITEM_PEDIDO_NOVO> v_item, string id_pedido_temp,
             Tpedido pedidonovoTrocaId, int empresa, int indice_pedido, string usuario_atual, List<string> lstErros,
             Tpedido pedidonovo, PedidoCriacaoDados pedidoDados, List<string> v_desconto, string opercao_origem,
             Tcliente cliente, ContextoBdGravacao dbGravacao)
@@ -385,6 +382,19 @@ namespace Pedido
                     usuario_atual, lstErros, dbGravacao);
             }
 
+            //Vamos criar o log do pedido e dos itens de pedido
+            //Itens do pedido => dentro de um foreach vamos montar da seguinte forma
+            /*1x003243(003) = qtdex / produto / (fabricante)
+             * preco_lista=1523,61;
+             * desc_dado=0;
+             * preco_venda=1523,61;
+             * preco_NF=1523,61;
+             * custoFinancFornecCoeficiente=1;
+             * custoFinancFornecPrecoListaBase=1523,61;
+             */
+            string log = "";
+            log = montarLogPedidoBll.MontarCamposAInserirItensPedido(log, v_item, s_log_cliente_indicador);
+            return log;
         }
 
         private async Task<Tpedido> AlterarIdPedido(string idPedidoBase_temporario, string idPedidoBase,

@@ -1333,5 +1333,6 @@ namespace Pedido
                     lstErros.Add("Produto '" + x.Produto + "' está com preço zerado!");
             };
         }
+
     }
 }
