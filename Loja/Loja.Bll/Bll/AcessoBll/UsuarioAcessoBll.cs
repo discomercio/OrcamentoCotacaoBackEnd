@@ -1,6 +1,5 @@
-﻿using Loja.Bll.Util;
-using Loja.Data;
-using Loja.Modelos;
+﻿using InfraBanco.Modelos;
+using Loja.Bll.Util;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -15,12 +14,12 @@ namespace Loja.Bll.Bll.AcessoBll
 {
     public class UsuarioAcessoBll
     {
-        private readonly LojaContextoBdProvider contextoProvider;
+        private readonly InfraBanco.ContextoBdProvider contextoProvider;
         private readonly ClienteBll.ClienteBll clienteBll;
         private readonly ILogger<UsuarioAcessoBll> logger;
         private readonly ILogger<UsuarioLogado> loggerUsuarioLogado;
 
-        public UsuarioAcessoBll(LojaContextoBdProvider contextoProvider, ClienteBll.ClienteBll clienteBll, ILogger<UsuarioAcessoBll> logger,
+        public UsuarioAcessoBll(InfraBanco.ContextoBdProvider contextoProvider, ClienteBll.ClienteBll clienteBll, ILogger<UsuarioAcessoBll> logger,
             ILogger<UsuarioLogado> loggerUsuarioLogado)
         {
             this.contextoProvider = contextoProvider;

@@ -1849,7 +1849,7 @@ namespace Loja.Bll.PedidoBll
         //}
 
         
-        //public async Task<int> Fin_gera_nsu(string id_nsu, List<string> lstErros, LojaContextoBdGravacao dbgravacao)
+        //public async Task<int> Fin_gera_nsu(string id_nsu, List<string> lstErros, InfraBanco.ContextoBdProvider dbgravacao)
         //{
         //    int intRetorno = 0;
         //    //int intRecordsAffected = 0;
@@ -2064,7 +2064,7 @@ namespace Loja.Bll.PedidoBll
 
         //}
 
-        //public async Task<decimal> CalculaTotalRALiquidoBD(string id_pedido, LojaContextoBdGravacao dbGravacao, List<string> lstErros)
+        //public async Task<decimal> CalculaTotalRALiquidoBD(string id_pedido, InfraBanco.ContextoBdProvider dbGravacao, List<string> lstErros)
         //{
         //    float percentual_desagio_RA_liquido = 0;
         //    decimal vl_total = 0;
@@ -2223,7 +2223,7 @@ namespace Loja.Bll.PedidoBll
         ////Estamos gerando o id_estoque, id_estoque_movimento, gravando e gravando o Log
         //public async Task<bool> EstoqueProdutoSaidaV2(string id_usuario, string id_pedido, short id_nfe_emitente,
         //    string id_fabricante, string id_produto, int qtde_a_sair, int qtde_autorizada_sem_presenca,
-        //    short[] qtde_estoque_aux, List<string> lstErros, LojaContextoBdGravacao contexto)
+        //    short[] qtde_estoque_aux, List<string> lstErros, InfraBanco.ContextoBdProvider contexto)
         //{
         //    //essas variveis tem que retornar
         //    int qtde_disponivel = 0;
@@ -2439,7 +2439,7 @@ namespace Loja.Bll.PedidoBll
         //}
 
 
-        //public async Task<string> GeraIdEstoqueMovto(List<string> lstErros, LojaContextoBdGravacao contexto)
+        //public async Task<string> GeraIdEstoqueMovto(List<string> lstErros, InfraBanco.ContextoBdProvider contexto)
         //{
         //    string retorno = "";
         //    retorno = await Util.Util.GerarNsu(contexto, Constantes.Constantes.NSU_ID_ESTOQUE_MOVTO);
@@ -2447,7 +2447,7 @@ namespace Loja.Bll.PedidoBll
         //    return retorno;
         //}
 
-        //public async Task<string> GeraIdEstoque(LojaContextoBdGravacao contexto, List<string> lstErros)
+        //public async Task<string> GeraIdEstoque(InfraBanco.ContextoBdProvider contexto, List<string> lstErros)
         //{
         //    string retorno = "";
 
@@ -2480,7 +2480,7 @@ namespace Loja.Bll.PedidoBll
         //    return lstIndicadorDto;
         //}
 
-        //public async Task<string> GerarNumeroPedido(List<string> lstErros, LojaContextoBdGravacao contextoBdGravacao)
+        //public async Task<string> GerarNumeroPedido(List<string> lstErros, InfraBanco.ContextoBdProvider contextoBdGravacao)
         //{
         //    string numPedido = "";
         //    string s_num = "";
@@ -2525,7 +2525,7 @@ namespace Loja.Bll.PedidoBll
         //    return numPedido;
         //}
 
-        //public async Task<string> GerarNumeroPedidoTemporario(List<string> lstErros, LojaContextoBdGravacao contextoBdGravacao)
+        //public async Task<string> GerarNumeroPedidoTemporario(List<string> lstErros, InfraBanco.ContextoBdProvider contextoBdGravacao)
         //{
         //    string numPedido = "";
         //    string s_num = "";

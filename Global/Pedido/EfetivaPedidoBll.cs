@@ -213,6 +213,17 @@ namespace Pedido
             //salvando todas alterações
             await dbGravacao.SaveChangesAsync();
 
+            //Vamos criar o log do pedido e dos itens de pedido
+            //Itens do pedido => dentro de um foreach vamos montar da seguinte forma
+            /*1x003243(003) = qtdex / produto / (fabricante)
+             * preco_lista=1523,61;
+             * desc_dado=0;
+             * preco_venda=1523,61;
+             * preco_NF=1523,61;
+             * custoFinancFornecCoeficiente=1;
+             * custoFinancFornecPrecoListaBase=1523,61;
+             */
+             
             return retorno;
         }
 

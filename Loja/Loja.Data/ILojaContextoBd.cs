@@ -1,5 +1,5 @@
-﻿using Loja.Modelo;
-using Loja.Modelos;
+﻿using InfraBanco.Modelos;
+
 using System.Linq;
 
 namespace Loja.Data

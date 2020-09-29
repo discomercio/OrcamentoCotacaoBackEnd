@@ -70,6 +70,7 @@ namespace InfraBanco
 
         public IQueryable<TtransportadoraCep>TtransportadoraCeps { get => contexto.TtransportadoraCeps.AsNoTracking(); }
 
+        public IQueryable<TusuarioXLoja> TusuarioXLojas { get => contexto.TusuarioXLojas.AsNoTracking(); }
 #endif
 
     }

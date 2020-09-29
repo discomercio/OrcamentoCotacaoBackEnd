@@ -1,5 +1,4 @@
-﻿using Loja.Modelo;
-using Loja.Modelos;
+﻿using InfraBanco.Modelos;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -99,10 +98,10 @@ namespace Loja.Data
                 .WithMany(x => x.TpedidoItemDevolvido)
                 .HasForeignKey(x => x.Pedido);
 
-            modelBuilder.Entity<Tproduto>()
-                .HasOne(x => x.Tfabricante)
-                .WithMany(x => x.Tproduto)
-                .HasForeignKey(x => x.Fabricante);
+            //modelBuilder.Entity<Tproduto>()
+            //    .HasOne(x => x.Tfabricante)
+            //    .WithMany(x => x.TprodutoLoja)
+            //    .HasForeignKey(x => x.Fabricante);
 
             modelBuilder.Entity<TestoqueItem>()
                 .HasOne(x => x.Testoque)

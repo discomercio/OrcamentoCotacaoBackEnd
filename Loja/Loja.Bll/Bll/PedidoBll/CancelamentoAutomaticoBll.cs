@@ -12,11 +12,11 @@ namespace Loja.Bll.Bll.pedidoBll
 {
     public class CancelamentoAutomaticoBll
     {
-        private readonly LojaContextoBdProvider contextoProvider;
+        private readonly InfraBanco.ContextoBdProvider contextoProvider;
         private readonly PedidoLogBll pedidoLogBll;
         private readonly Loja.Bll.PedidoBll.PedidoBll pedidoBll;
 
-        public CancelamentoAutomaticoBll(LojaContextoBdProvider contextoProvider, Loja.Bll.PedidoBll.PedidoLogBll pedidoLogBll,
+        public CancelamentoAutomaticoBll(InfraBanco.ContextoBdProvider contextoProvider, Loja.Bll.PedidoBll.PedidoLogBll pedidoLogBll,
             Loja.Bll.PedidoBll.PedidoBll pedidoBll)
         {
             this.contextoProvider = contextoProvider;
@@ -186,56 +186,58 @@ namespace Loja.Bll.Bll.pedidoBll
             List<CancelamentoAutomaticoItem> ret = new List<CancelamentoAutomaticoItem>();
 
             int numeroLinha = 0;
-            using (var db = contextoProvider.GetContextoLeitura().GetContextoBdBasicoParaSql())
-            {
-                using (var command = db.Database.GetDbConnection().CreateCommand())
-                {
-                    command.CommandText = strSql;
+            //using (var db = contextoProvider.GetContextoLeitura().GetContextoBdProviderParaSql())
+            //{
+            //    using (var command = db.Database.GetDbConnection().CreateCommand())
+            //    {
+            //        command.CommandText = strSql;
 
-                    db.Database.OpenConnection();
-                    using (var result = await command.ExecuteReaderAsync())
-                    {
-                        while (result.Read())
-                        {
-                            numeroLinha++;
+            //        db.Database.OpenConnection();
+            //        //using (var result = await command.ExecuteReaderAsync())
+            //        //{
+            //        //    while (result.Read())
+            //        //    {
+            //        //        numeroLinha++;
 
-                            DateTime? dataFinal = null;
-                            if (result["analise_credito_data_sem_hora"].GetType() == typeof(DateTime))
-                            {
-                                dataFinal = ((DateTime)result["analise_credito_data_sem_hora"]);
-                                if (dataFinal.HasValue && result["prazo_cancelamento"].GetType() == typeof(int))
-                                {
-                                    dataFinal = dataFinal.Value.AddDays((int)result["prazo_cancelamento"]);
-                                }
-                            }
+            //        //        DateTime? dataFinal = null;
+            //        //        if (result["analise_credito_data_sem_hora"].GetType() == typeof(DateTime))
+            //        //        {
+            //        //            dataFinal = ((DateTime)result["analise_credito_data_sem_hora"]);
+            //        //            if (dataFinal.HasValue && result["prazo_cancelamento"].GetType() == typeof(int))
+            //        //            {
+            //        //                dataFinal = dataFinal.Value.AddDays((int)result["prazo_cancelamento"]);
+            //        //            }
+            //        //        }
 
-                            var nomeLoja = listaLojas.Where(r => r.Id == result["loja"].ToString()).FirstOrDefault()?.Nome;
-                            if (string.IsNullOrWhiteSpace(nomeLoja))
-                                nomeLoja = "Loja código " + result["loja"].ToString();
+            //        //        var nomeLoja = listaLojas.Where(r => r.Id == result["loja"].ToString()).FirstOrDefault()?.Nome;
+            //        //        if (string.IsNullOrWhiteSpace(nomeLoja))
+            //        //            nomeLoja = "Loja código " + result["loja"].ToString();
 
 
-                            ret.Add(new CancelamentoAutomaticoItem
-                            {
-                                NumeroLinha = numeroLinha,
-                                DataFinal = dataFinal,
-                                Pedido = result["pedido"].ToString(),
-                                Vendedor = result["vendedor"].ToString(),
-                                NomeDoCliente = result["nome"].ToString(),
-                                Analise_credito_descricao = result["analise_credito_descricao"].ToString(),
-                                LojaNome = nomeLoja,
-                                LojaId = result["loja"].ToString()
-                            });
-                        }
-                    }
+            //        //        ret.Add(new CancelamentoAutomaticoItem
+            //        //        {
+            //        //            NumeroLinha = numeroLinha,
+            //        //            DataFinal = dataFinal,
+            //        //            Pedido = result["pedido"].ToString(),
+            //        //            Vendedor = result["vendedor"].ToString(),
+            //        //            NomeDoCliente = result["nome"].ToString(),
+            //        //            Analise_credito_descricao = result["analise_credito_descricao"].ToString(),
+            //        //            LojaNome = nomeLoja,
+            //        //            LojaId = result["loja"].ToString()
+            //        //        });
+            //        //    }
+            //        //}
 
-                    //    }
+            //        //    }
 
-                    //ret.AddRange(DadosDeTeste());
-                    //está ordenando por data da análise de crédito, já está ordenado na query
-                    //deixa o cliente verificar se isso é um problema... acho que é o comportamento esperado
-                    return ret;
-                }
-            }
+            //        //ret.AddRange(DadosDeTeste());
+            //        //está ordenando por data da análise de crédito, já está ordenado na query
+            //        //deixa o cliente verificar se isso é um problema... acho que é o comportamento esperado
+
+            //    }
+            //    
+            //}
+            return await Task.FromResult(ret);
         }
     }
 }

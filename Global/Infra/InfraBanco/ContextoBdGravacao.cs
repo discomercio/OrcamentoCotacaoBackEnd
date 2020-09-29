@@ -93,6 +93,9 @@ namespace InfraBanco
         public DbSet<TpedidoAnaliseEnderecoConfrontacao> TpedidoAnaliseConfrontacaos { get => contexto.TpedidoAnaliseConfrontacaos; }
         public DbSet<TestoqueItem> TestoqueItems { get => contexto.TestoqueItems; }
         public DbSet<Testoque> Testoques { get => contexto.Testoques; }
+        public DbSet<TusuarioXLoja> TusuarioXLojas { get => contexto.TusuarioXLojas; }
+        public DbSet<TclienteRefComercial> TclienteRefComercials { get => contexto.TclienteRefComercials; }
+        public DbSet<TclienteRefBancaria> TclienteRefBancarias { get => contexto.TclienteRefBancarias; }
 #endif
     }
 }

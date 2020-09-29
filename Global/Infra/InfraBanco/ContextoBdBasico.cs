@@ -155,6 +155,7 @@ namespace InfraBanco
         public DbSet<TfinControle> TfinControles { get; set; }
         public DbSet<TpedidoAnaliseEndereco> TpedidoAnaliseEnderecos { get; set; }
         public DbSet<TpedidoAnaliseEnderecoConfrontacao> TpedidoAnaliseConfrontacaos { get; set; }
+        public DbSet<TusuarioXLoja> TusuarioXLojas { get; set; }
 #endif
     }
 }

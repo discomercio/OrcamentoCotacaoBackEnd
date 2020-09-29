@@ -12,9 +12,9 @@ namespace Loja.Bll.FormaPagtoBll
 {
     public class FormaPagtoBll
     {
-        private readonly LojaContextoBdProvider contextoProvider;
+        private readonly InfraBanco.ContextoBdProvider contextoProvider;
 
-        public FormaPagtoBll(LojaContextoBdProvider contextoProvider)
+        public FormaPagtoBll(InfraBanco.ContextoBdProvider contextoProvider)
         {
             this.contextoProvider = contextoProvider;
         }

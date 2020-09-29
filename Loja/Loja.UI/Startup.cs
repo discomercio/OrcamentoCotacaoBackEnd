@@ -88,22 +88,27 @@ namespace Loja.UI
 
 
             //ContextoProvider
-            services.AddTransient<Data.LojaContextoBdProvider, Data.LojaContextoBdProvider>();
-            services.AddTransient<Data.LojaContextoCepProvider, Data.LojaContextoCepProvider>();
-            services.AddTransient<Data.LojaContextoNFeProvider, Data.LojaContextoNFeProvider>();
+            services.AddTransient<InfraBanco.ContextoBdProvider, InfraBanco.ContextoBdProvider>();
+            services.AddTransient<InfraBanco.ContextoCepProvider, InfraBanco.ContextoCepProvider>();
+            services.AddTransient<InfraBanco.ContextoNFeProvider, InfraBanco.ContextoNFeProvider>();
+            //services.AddTransient<Data.LojaContextoBdProvider, Data.LojaContextoBdProvider>();
+            //services.AddTransient<Data.LojaContextoCepProvider, Data.LojaContextoCepProvider>();
+            //services.AddTransient<Data.LojaContextoNFeProvider, Data.LojaContextoNFeProvider>();
 
             //banco de dados
-            services.AddDbContext<Loja.Data.LojaContextoBdBasico>(options =>
+            //banco de dados
+            string conexaoBasica = Configuration.GetConnectionString("conexao");
+            services.AddDbContext<InfraBanco.ContextoBdBasico>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("conexaohomologa"));
+                options.UseSqlServer(conexaoBasica);
                 options.EnableSensitiveDataLogging();
             });
-            services.AddDbContext<Loja.Data.LojaContextoCepBd>(options =>
+            services.AddDbContext<InfraBanco.ContextoCepBd>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("conexaoCep"));
                 options.EnableSensitiveDataLogging();
             });
-            services.AddDbContext<Loja.Data.LojaContextoNFeBd >(options =>
+            services.AddDbContext<InfraBanco.ContextoNFeBd>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("conexaoNfe"));
                 options.EnableSensitiveDataLogging();

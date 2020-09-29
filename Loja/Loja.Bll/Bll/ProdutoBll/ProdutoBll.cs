@@ -2,22 +2,21 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using Loja.Data;
 using System.Linq;
-using Loja.Modelos;
 using Loja.Bll.Dto.ProdutoDto;
 using Microsoft.EntityFrameworkCore;
 using Loja.Bll.RegrasCtrlEstoque;
 using Loja.Bll.Dto.PedidoDto.DetalhesPedido;
 using Loja.Bll.Dto.PedidoDto;
+using InfraBanco.Modelos;
 
 namespace Loja.Bll.ProdutoBll
 {
     public class ProdutoBll
     {
-        private readonly LojaContextoBdProvider contextoProvider;
+        private readonly InfraBanco.ContextoBdProvider contextoProvider;
 
-        public ProdutoBll(LojaContextoBdProvider contextoProvider)
+        public ProdutoBll(InfraBanco.ContextoBdProvider contextoProvider)
         {
             this.contextoProvider = contextoProvider;
         }
@@ -52,7 +51,7 @@ namespace Loja.Bll.ProdutoBll
                                       Produto = c.Produto,
                                       Descricao = cc.Descricao,
                                       Preco = c.Preco_Lista,
-                                      Cor = c.Cor,
+                                      //Cor = c.Cor,
                                       Vendavel = c.Vendavel
                                   };
 
@@ -150,16 +149,16 @@ namespace Loja.Bll.ProdutoBll
             //PedidoProdutosDtoPedido produto = new PedidoProdutosDtoPedido();
 
             List<RegrasBll> regraCrtlEstoque = (await ObterCtrlEstoqueProdutoRegraParaUMProduto(produto, cliente,
-                prodValidadoEstoque.ListaErros, contextoProvider.GetContextoLeitura())).ToList();
+                prodValidadoEstoque.ListaErros, contextoProvider)).ToList();
 
             await Util.Util.ObterCtrlEstoqueProdutoRegra_Teste(prodValidadoEstoque.ListaErros, regraCrtlEstoque, cliente.Uf, cliente_regra, contextoProvider.GetContextoLeitura());
 
             VerificarRegrasAssociadasParaUMProduto(regraCrtlEstoque, prodValidadoEstoque.ListaErros, cliente, id_nfe_emitente_selecao_manual);
 
             if (id_nfe_emitente_selecao_manual != 0)
-                await VerificarCDHabilitadoTodasRegras(regraCrtlEstoque, id_nfe_emitente_selecao_manual, prodValidadoEstoque.ListaErros, contextoProvider.GetContextoLeitura());
+                await VerificarCDHabilitadoTodasRegras(regraCrtlEstoque, id_nfe_emitente_selecao_manual, prodValidadoEstoque.ListaErros, contextoProvider);
 
-            await ObterDisponibilidadeEstoque(regraCrtlEstoque, produto, prodValidadoEstoque.ListaErros, id_nfe_emitente_selecao_manual, contextoProvider.GetContextoLeitura());
+            await ObterDisponibilidadeEstoque(regraCrtlEstoque, produto, prodValidadoEstoque.ListaErros, id_nfe_emitente_selecao_manual, contextoProvider);
 
             //meto responsavel por atribuir a qtde de estoque ao produto
             //await Util.Util.VerificarEstoque(regraCrtlEstoque, produto, id_nfe_emitente_selecao_manual, contextoProvider);
@@ -199,16 +198,16 @@ namespace Loja.Bll.ProdutoBll
             //PedidoProdutosDtoPedido produto = new PedidoProdutosDtoPedido();
 
             List<RegrasBll> regraCrtlEstoque = (await ObterCtrlEstoqueProdutoRegraParaUMProduto(produto, cliente, 
-                prodValidadoEstoque.ListaErros, contextoProvider.GetContextoLeitura())).ToList();
+                prodValidadoEstoque.ListaErros, contextoProvider)).ToList();
 
             await Util.Util.ObterCtrlEstoqueProdutoRegra_Teste(prodValidadoEstoque.ListaErros, regraCrtlEstoque, cliente.Uf, cliente_regra, contextoProvider.GetContextoLeitura());
 
             VerificarRegrasAssociadasParaUMProduto(regraCrtlEstoque, prodValidadoEstoque.ListaErros, cliente, id_nfe_emitente_selecao_manual);
 
             if (id_nfe_emitente_selecao_manual != 0)
-                await VerificarCDHabilitadoTodasRegras(regraCrtlEstoque, id_nfe_emitente_selecao_manual, prodValidadoEstoque.ListaErros, contextoProvider.GetContextoLeitura());
+                await VerificarCDHabilitadoTodasRegras(regraCrtlEstoque, id_nfe_emitente_selecao_manual, prodValidadoEstoque.ListaErros, contextoProvider);
 
-            await ObterDisponibilidadeEstoque(regraCrtlEstoque, produto, prodValidadoEstoque.ListaErros, id_nfe_emitente_selecao_manual, contextoProvider.GetContextoLeitura());
+            await ObterDisponibilidadeEstoque(regraCrtlEstoque, produto, prodValidadoEstoque.ListaErros, id_nfe_emitente_selecao_manual, contextoProvider);
 
             //meto responsavel por atribuir a qtde de estoque ao produto
             //await Util.Util.VerificarEstoque(regraCrtlEstoque, produto, id_nfe_emitente_selecao_manual, contextoProvider);
@@ -238,11 +237,11 @@ namespace Loja.Bll.ProdutoBll
 
         //parateste
         public static async Task<IEnumerable<RegrasBll>> ObterCtrlEstoqueProdutoRegraParaUMProduto(PedidoProdutosDtoPedido produto,
-            Tcliente tcliente, List<string> lstErros, ILojaContextoBd contextoBd)
+            Tcliente tcliente, List<string> lstErros, InfraBanco.ContextoBdProvider contextoBd)
         {
             List<RegrasBll> lstRegrasCrtlEstoque = new List<RegrasBll>();
 
-            var db = contextoBd;
+            var db = contextoBd.GetContextoLeitura();
 
             //vamos verificar passando todos os produtos simples da lista de produto que irá para ser selecionado
 
@@ -525,7 +524,7 @@ namespace Loja.Bll.ProdutoBll
         }
 
         public static async Task ObterDisponibilidadeEstoque(List<RegrasBll> lstRegrasCrtlEstoque, PedidoProdutosDtoPedido produto,
-            List<string> lstErros, int id_nfe_emitente_selecao_manual, ILojaContextoBd contextoBd)
+            List<string> lstErros, int id_nfe_emitente_selecao_manual, InfraBanco.ContextoBdProvider contextoBd)
         {
             //int id_nfe_emitente_selecao_manual = 0;
 
@@ -1220,7 +1219,7 @@ namespace Loja.Bll.ProdutoBll
                                                             item.Fabricante + ")" + item.NumProduto + " especifica o CD '" +
                                                             Util.Util.ObterApelidoEmpresaNfeEmitentes(
                                                                 wmsRegraCdXUfXPessoa.Spe_id_nfe_emitente, 
-                                                                contextoProvider.GetContextoLeitura()) +
+                                                                contextoProvider) +
                                                             "' para alocação de produtos sem presença no estoque, sendo que este CD está desativado para " +
                                                             "processar produtos disponíveis (Id=" + regra.Id_wms_regra_cd + ")");
                                                 }
@@ -1304,7 +1303,7 @@ namespace Loja.Bll.ProdutoBll
 
         //Caso seleção do CD Manual
         public static async Task VerificarCDHabilitadoTodasRegras(List<RegrasBll> lstRegras, 
-            int id_nfe_emitente_selecao_manual, List<string> lstErros, ILojaContextoBd contextoBd)
+            int id_nfe_emitente_selecao_manual, List<string> lstErros, InfraBanco.ContextoBdProvider contextoBd)
         {
             //id_nfe_emitente_selecao_manual = 0;//esse é a seleção do checkebox 
             bool desativado = false;
