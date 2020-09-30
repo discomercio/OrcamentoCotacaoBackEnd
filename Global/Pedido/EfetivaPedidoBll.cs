@@ -210,6 +210,10 @@ namespace Pedido
                     //verificar o que inserir para a inclusão dos itens
                     if (indicePedido == 1 && lstErros.Count == 0)
                          log = await montarLogPedidoBll.MontarLogPedido(pedidonovoTrocaId.Pedido, dbGravacao, pedido) + log;
+
+                    if (!UtilsGlobais.Util.GravaLog(dbGravacao, usuario_atual, loja_atual, pedidonovoTrocaId.Pedido,
+                                    pedidonovoTrocaId.Id_Cliente, InfraBanco.Constantes.Constantes.OP_LOG_PEDIDO_NOVO, log))
+                        lstErros.Add("Falha ao gravar log.");
                 }
             }
 

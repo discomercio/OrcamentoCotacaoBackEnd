@@ -362,16 +362,10 @@ namespace Pedido
                         tcliente, !string.IsNullOrEmpty(pedido.VendedorExterno), pedidoRetorno.ListaErros, dbgravacao,
                         pedido_bs_x_ac, pedido_bs_x_marketplace, marketplace_codigo_origem);
 
-                    bool efetivou = !string.IsNullOrWhiteSpace(pedidoRetorno.Id);
-                    if (efetivou)
-                    {
-                        //vamos gravar o Log aqui
-                        //monta o log 2691 ate 2881
-                        //grava log 
-                        //commit
-                        await dbgravacao.SaveChangesAsync();
-                        dbgravacao.transacao.Commit();
-                    }
+
+                    await dbgravacao.SaveChangesAsync();
+                    dbgravacao.transacao.Commit();
+
                 }
             }
 
