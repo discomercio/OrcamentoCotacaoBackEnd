@@ -15,6 +15,8 @@ using Cep;
 
 namespace Pedido
 {
+#nullable enable
+
     public class PedidoCriacao
     {
         private readonly PedidoBll pedidoBll;
@@ -57,7 +59,7 @@ namespace Pedido
             pedidoRetorno.ListaErros = new List<string>();
             //pedidoRetorno.ListaErros.Add("Ainda não implementado");
             var db = contextoProvider.GetContextoLeitura();
-
+            
             /* FLUXO DE CRIAÇÃO DE PEDIDO 1ºpasso
              * PedidoNovoConsiste.asp = uma tela antes de finalizar o pedido
              * 1- verificar se a loja esta habilitada para ECommerce
@@ -76,6 +78,9 @@ namespace Pedido
                 pedidoRetorno.ListaErros.Add("Usuário não encontrado.");
                 return pedidoRetorno;
             }
+
+            //busca a lista de permissões
+            string lista_operacoes_permitidas = await clienteBll.BuscaListaOperacoesPermitidas(tUsuario.Nome);
 
             //vamos validar os dados do cliente que esta vindo no pedido
             List<Cliente.Dados.ListaBancoDados> lstBanco = (await clienteBll.ListarBancosCombo()).ToList();
@@ -112,6 +117,26 @@ namespace Pedido
                 }
             }
 
+            if (tUsuario.Loja == Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE)
+            {
+                if (lista_operacoes_permitidas.Contains(Convert.ToString(Constantes.OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO)))
+                    if (pedido.PercRT != 0)
+                        pedidoRetorno.ListaErros.Add("Usuário não pode editar perc_RT!");
+
+                if (string.IsNullOrEmpty(pedido.NomeIndicador) && pedido.PermiteRAStatus == 1)
+                    pedidoRetorno.ListaErros.Add("Usuário não pode opcao_possui_RA");
+            }
+
+            if (tUsuario.Loja == Constantes.NUMERO_LOJA_BONSHOP)
+            {
+                if (!lista_operacoes_permitidas.Contains(Convert.ToString(Constantes.OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO)))
+                    if (pedido.PercRT != 0)
+                        pedidoRetorno.ListaErros.Add("Usuário não pode editar perc_RT!");
+
+                if (string.IsNullOrEmpty(pedido.NomeIndicador) && pedido.PermiteRAStatus == 1)
+                    pedidoRetorno.ListaErros.Add("Usuário não pode opcao_possui_RA");
+            }
+
             //8- busca o orçamentista para saber se permite RA 
             TorcamentistaEindicador tOrcamentista = await prepedidoBll.BuscarTorcamentista(pedido.DadosCliente.Indicador_Orcamentista);
             if (tOrcamentista == null)
@@ -119,6 +144,8 @@ namespace Pedido
                 pedidoRetorno.ListaErros.Add("Falha ao recuperar os dados do indicador!");
                 return pedidoRetorno;
             }
+
+
 
             float perc_desagio_RA = 0;
             float perc_limite_RA_sem_desagio = 0;
@@ -142,7 +169,14 @@ namespace Pedido
                 limiteArredondamento, maxErroArredondamento, c_custoFinancFornecTipoParcelamento, formasPagto,
                 tOrcamentista.Permite_RA_Status, pedido.Vl_total_NF, pedido.Vl_total))
                 {
+                    //vamos fazer a validação de Especificacao/Especificacao/Pedido/Passo40/FormaPagamentoProdutos.feature
+                    //vamos retornar true ou false
+                    if(await pedidoBll.ValidarProdutosComFormaPagto(pedido, c_custoFinancFornecTipoParcelamento,
+                        c_custoFinancFornecQtdeParcelas, pedidoRetorno.ListaErros))
+
                     /* 9- valida endereço de entrega */
+                    // a Validação do arquivo EnderecoEntrega_SemPrepedido.feature não se aplica em nosso
+                    // o campo "OutroEndereco" é do tipo "bool"
                     if (await validacoesPrepedidoBll.ValidarEnderecoEntrega(pedido.EnderecoEntrega, pedidoRetorno.ListaErros,
                         pedido.DadosCliente.Indicador_Orcamentista, pedido.DadosCliente.Tipo))
                     {
@@ -193,7 +227,6 @@ namespace Pedido
                         c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas,
                         pedido.DadosCliente.Loja, pedidoRetorno.ListaErros, perc_limite_RA_sem_desagio, limiteArredondamento);
 
-#nullable enable
             //vamos verificar os caracteres inválidos no endereço de entrega
             if (pedido.EnderecoEntrega.OutroEndereco)
             {
@@ -206,10 +239,7 @@ namespace Pedido
             }
 
             //se tiver erro vamos retornar
-            if (pedidoRetorno.ListaErros.Count > 0)
-            {
-                return pedidoRetorno;
-            }
+            if (pedidoRetorno.ListaErros.Count > 0) return pedidoRetorno;
 
             /* 4- busca get_registro_t_parametro(ID_PARAMETRO_PercMaxComissaoEDesconto_Nivel2_MeiosPagto) */
             Tparametro tParametro = await UtilsGlobais.Util.BuscarRegistroParametro(
@@ -249,11 +279,9 @@ namespace Pedido
             };
 
             await pedidoBll.VerificarSePedidoExite(v_item, pedido, pedido.DadosCliente.Indicador_Orcamentista, pedidoRetorno.ListaErros);
+
             //se tiver erro vamos retornar
-            if (pedidoRetorno.ListaErros.Count > 0)
-            {
-                return pedidoRetorno;
-            }
+            if (pedidoRetorno.ListaErros.Count > 0) return pedidoRetorno;
 
             //busca produtos , busca percentual custo finananceiro, calcula desconto 716 ate 824
             //desc_dado_arredondado
@@ -285,6 +313,15 @@ namespace Pedido
             * 25- verifica a qtde de pedidos que será gerado (split)
             * 26- Faz a contagem de pedido que será cadastrado
             * 27- verifica se tem algum produto descontinuado*/
+            //antes vamos validar o CD 
+
+            if (pedido.IdNfeSelecionadoManual == 1)
+                if (lista_operacoes_permitidas.Contains(Convert.ToString(Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD)))
+                    pedidoRetorno.ListaErros.Add("Usuário não tem permissão de especificar o CD!");
+
+            //Se tiver erro retorna
+            if (pedidoRetorno.ListaErros.Count != 0) return pedidoRetorno;
+
             foreach (var produto in pedido.ListaProdutos)
             {
                 //COMPARAR SE É EXATAMENTE A MESMA REGRA

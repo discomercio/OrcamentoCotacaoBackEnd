@@ -80,9 +80,9 @@ namespace Pedido
                                                                Preco_Venda = c.Preco_Venda
                                                            }).ToListAsync();
 
-            foreach(var x in lstProdTask)
+            foreach (var x in lstProdTask)
             {
-                foreach(var y in v_item)
+                foreach (var y in v_item)
                 {
                     if (x.produto == y.produto &&
                         x.Fabricante == y.Fabricante &&
@@ -1322,17 +1322,56 @@ namespace Pedido
                 lstErros.Add("O CAMPO NOME DO ENDEREÇO DE ENTREGA POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
         }
 
-        public void ConsisteProdutosValorZerados(List<PedidoProdutoPedidoDados> lstProdutos, List<string> lstErros, 
+        public void ConsisteProdutosValorZerados(List<PedidoProdutoPedidoDados> lstProdutos, List<string> lstErros,
             bool comIndicacao, short PermiteRaStatus)
         {
-            foreach(var x in lstProdutos)
+            foreach (var x in lstProdutos)
             {
                 if (x.Preco_Venda <= 0)
                     lstErros.Add("Produto '" + x.Produto + "' está com valor de venda zerado!");
-                else if(comIndicacao && PermiteRaStatus == 1 && x.Preco_NF <= 0)
+                else if (comIndicacao && PermiteRaStatus == 1 && x.Preco_NF <= 0)
                     lstErros.Add("Produto '" + x.Produto + "' está com preço zerado!");
             };
         }
 
+        public async Task<bool> ValidarProdutosComFormaPagto(PedidoCriacaoDados pedidoCriacao, string siglaCustoFinancFornec,
+            int qtdeParcCustoFinancFornec, List<string> lstErros)
+        {
+            bool retorno = false;
+
+            if (pedidoCriacao.FormaPagtoCriacao.Rb_forma_pagto != Constantes.COD_FORMA_PAGTO_A_VISTA)
+            { 
+                var db = contextoProvider.GetContextoLeitura();
+
+                foreach (var prod in pedidoCriacao.ListaProdutos)
+                {
+                    TpercentualCustoFinanceiroFornecedor custoFinancFornec = await (from c in db.TpercentualCustoFinanceiroFornecedors
+                                                                                    where c.Fabricante == prod.Fabricante &&
+                                                                                        c.Tipo_Parcelamento == siglaCustoFinancFornec &&
+                                                                                        c.Qtde_Parcelas == qtdeParcCustoFinancFornec
+                                                                                    select c).FirstOrDefaultAsync();
+
+                    if (custoFinancFornec == null)
+                        lstErros.Add("Opção de parcelamento não disponível para fornecedor " + prod.Fabricante + ": " +
+                            DecodificaCustoFinanFornecQtdeParcelas(siglaCustoFinancFornec, (short)qtdeParcCustoFinancFornec) + " parcela(s).");
+                    
+
+                    TprodutoLoja prodLoja = await (from c in db.TprodutoLojas.Include(x => x.Tproduto)
+                                                   where c.Tproduto.Produto == prod.Produto &&
+                                                   c.Tproduto.Fabricante == prod.Fabricante &&
+                                                   c.Loja == pedidoCriacao.LojaUsuario
+                                                   select c).FirstOrDefaultAsync();
+
+                    if (prodLoja == null)
+                        lstErros.Add("Produto " + prod.Produto + " não localizado para a loja " + pedidoCriacao.LojaUsuario + ".");
+                    
+                }
+
+            }
+
+            if (lstErros.Count == 0) retorno = true;
+
+            return retorno;
+        }
     }
 }
