@@ -673,8 +673,8 @@ namespace Cliente
                     tCliente.Produtor_Rural_Data = DateTime.Now;
                     tCliente.Produtor_Rural_Data_Hora = DateTime.Now;
                     tCliente.Produtor_Rural_Usuario = apelido.ToUpper();
-                }        
-                
+                }
+
                 tCliente.Endereco = clienteDados.Endereco;
                 tCliente.Endereco_Numero = clienteDados.Numero;
                 tCliente.Endereco_Complemento = clienteDados.Complemento;
@@ -693,7 +693,13 @@ namespace Cliente
                 tCliente.Ramal_Com_2 = clienteDados.Ramal2;
                 tCliente.Ddd_Cel = clienteDados.DddCelular;
                 tCliente.Tel_Cel = clienteDados.Celular;
-                tCliente.Dt_Nasc = clienteDados.Nascimento;
+
+                //definição em 20200930: data de nascimento é somente a data, sem hora
+                if (clienteDados.Nascimento.HasValue)
+                    tCliente.Dt_Nasc = clienteDados.Nascimento.Value.Date;
+                else
+                    tCliente.Dt_Nasc = null;
+
                 tCliente.Filiacao = clienteDados.Observacao_Filiacao == null ? "" : clienteDados.Observacao_Filiacao;
                 tCliente.Obs_crediticias = "";
                 tCliente.Midia = "";
@@ -751,7 +757,7 @@ namespace Cliente
             int qtdeRef = 1;
 
             string campos_a_omitir_ref_comercial = "id_cliente|ordem|excluido_status|dt_cadastro|usuario_cadastro";
-            
+
             foreach (Cliente.Dados.Referencias.RefComercialClienteDados r in lstRefComercial)
             {
                 log = log + "Ref Comercial incluída: ";

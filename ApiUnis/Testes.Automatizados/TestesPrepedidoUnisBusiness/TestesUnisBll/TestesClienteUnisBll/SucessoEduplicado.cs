@@ -35,6 +35,78 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
 
 
         [Fact]
+        public void CadastrarClienteUnis_Sucesso_PJ_SemRefs()
+        {
+            inicializarBanco.TclientesApagar();
+
+            //podemos mandar null ou lista vazia em RefComercial e refBancaria
+            ClienteCadastroUnisDto clienteDto = InicializarClienteDados.ClienteNaoCadastradoPJ();
+            ClienteCadastroResultadoUnisDto res;
+            clienteDto.RefBancaria = new List<RefBancariaClienteUnisDto>();
+            clienteDto.RefComercial = new List<RefComercialClienteUnisDto>();
+            res = clienteUnisBll.CadastrarClienteUnis(clienteDto).Result;
+
+            if (res.ListaErros.Count > 0)
+                output.WriteLine(JsonConvert.SerializeObject(res));
+
+            Assert.Empty(res.ListaErros);
+
+            //e apaga o registro
+            inicializarBanco.TclientesApagar();
+
+
+            //========================
+            //com null
+            clienteDto = InicializarClienteDados.ClienteNaoCadastradoPJ();
+            clienteDto.RefBancaria = null;
+            clienteDto.RefComercial = null;
+            res = clienteUnisBll.CadastrarClienteUnis(clienteDto).Result;
+
+            if (res.ListaErros.Count > 0)
+                output.WriteLine(JsonConvert.SerializeObject(res));
+
+            Assert.Empty(res.ListaErros);
+
+            //e apaga o registro
+            inicializarBanco.TclientesApagar();
+        }
+
+        [Fact]
+        public void CadastrarClienteUnis_Sucesso_PF_SemRefs()
+        {
+            //podemos mandar null ou lista vazia em RefComercial e refBancaria
+            ClienteCadastroUnisDto clienteDto = InicializarClienteDados.ClienteNaoCadastradoPF();
+            ClienteCadastroResultadoUnisDto res;
+            clienteDto.RefBancaria = new List<RefBancariaClienteUnisDto>();
+            clienteDto.RefComercial = new List<RefComercialClienteUnisDto>();
+            res = clienteUnisBll.CadastrarClienteUnis(clienteDto).Result;
+
+            if (res.ListaErros.Count > 0)
+                output.WriteLine(JsonConvert.SerializeObject(res));
+
+            Assert.Empty(res.ListaErros);
+
+            //e apaga o registro
+            inicializarBanco.TclientesApagar();
+
+
+            //========================
+            //com null
+            clienteDto = InicializarClienteDados.ClienteNaoCadastradoPF();
+            clienteDto.RefBancaria = null;
+            clienteDto.RefComercial = null;
+            res = clienteUnisBll.CadastrarClienteUnis(clienteDto).Result;
+
+            if (res.ListaErros.Count > 0)
+                output.WriteLine(JsonConvert.SerializeObject(res));
+
+            Assert.Empty(res.ListaErros);
+
+            //e apaga o registro
+            inicializarBanco.TclientesApagar();
+        }
+
+        [Fact]
         public void CadastrarClienteUnis_Sucesso_PJ()
         {
             //este é o que deve dar certo
