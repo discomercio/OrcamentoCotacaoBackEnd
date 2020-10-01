@@ -440,7 +440,7 @@ namespace Prepedido
             if (byte.Parse(detalhesPrepedido.EntregaImediata) ==
                 (byte)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO)//Não
             {
-                if (detalhesPrepedido.EntregaImediataData == null || 
+                if (detalhesPrepedido.EntregaImediataData == null ||
                     detalhesPrepedido.EntregaImediataData.Value.Date <= DateTime.Now.Date)
                 {
                     lstErros.Add("Favor informar a data de 'Entrega Imediata' posterior a data atual!");
@@ -565,6 +565,8 @@ namespace Prepedido
 
         private void ValidarDadosPessoaEnderecoEntrega_PJ_Tel(Cliente.Dados.EnderecoEntregaClienteCadastroDados endEtg, List<string> lstErros)
         {
+            TelefonesEnderecoEntregaSomenteComDigitos(endEtg);
+
             if (!string.IsNullOrEmpty(endEtg.EndEtg_tel_com) ||
                 !string.IsNullOrEmpty(endEtg.EndEtg_ddd_com) ||
                 !string.IsNullOrEmpty(endEtg.EndEtg_ramal_com))
@@ -733,8 +735,44 @@ namespace Prepedido
             }
         }
 
+        //deixa somente dígitos nos telefones
+        private void TelefonesEnderecoEntregaSomenteComDigitos(Cliente.Dados.EnderecoEntregaClienteCadastroDados endEtg)
+        {
+            if (!string.IsNullOrEmpty(endEtg.EndEtg_ddd_res))
+                endEtg.EndEtg_ddd_res = Util.Telefone_SoDigito(endEtg.EndEtg_ddd_res);
+
+            if (!string.IsNullOrEmpty(endEtg.EndEtg_tel_res))
+                endEtg.EndEtg_tel_res = Util.Telefone_SoDigito(endEtg.EndEtg_tel_res);
+
+            if (!string.IsNullOrEmpty(endEtg.EndEtg_ddd_com))
+                endEtg.EndEtg_ddd_com = Util.Telefone_SoDigito(endEtg.EndEtg_ddd_com);
+
+            if (!string.IsNullOrEmpty(endEtg.EndEtg_tel_com))
+                endEtg.EndEtg_tel_com = Util.Telefone_SoDigito(endEtg.EndEtg_tel_com);
+
+            if (!string.IsNullOrEmpty(endEtg.EndEtg_ramal_com))
+                endEtg.EndEtg_ramal_com = Util.Telefone_SoDigito(endEtg.EndEtg_ramal_com);
+
+            if (!string.IsNullOrEmpty(endEtg.EndEtg_ddd_cel))
+                endEtg.EndEtg_ddd_cel = Util.Telefone_SoDigito(endEtg.EndEtg_ddd_cel);
+
+            if (!string.IsNullOrEmpty(endEtg.EndEtg_tel_cel))
+                endEtg.EndEtg_tel_cel = Util.Telefone_SoDigito(endEtg.EndEtg_tel_cel);
+
+            if (!string.IsNullOrEmpty(endEtg.EndEtg_ddd_com_2))
+                endEtg.EndEtg_ddd_com_2 = Util.Telefone_SoDigito(endEtg.EndEtg_ddd_com_2);
+
+            if (!string.IsNullOrEmpty(endEtg.EndEtg_tel_com_2))
+                endEtg.EndEtg_tel_com_2 = Util.Telefone_SoDigito(endEtg.EndEtg_tel_com_2);
+
+            if (!string.IsNullOrEmpty(endEtg.EndEtg_ramal_com_2))
+                endEtg.EndEtg_ramal_com_2 = Util.Telefone_SoDigito(endEtg.EndEtg_ramal_com_2);
+        }
+
+
         private void ValidarDadosPessoaEnderecoEntrega_PF_Tel(Cliente.Dados.EnderecoEntregaClienteCadastroDados endEtg, List<string> lstErros)
         {
+            TelefonesEnderecoEntregaSomenteComDigitos(endEtg);
             if (!string.IsNullOrEmpty(endEtg.EndEtg_tel_res) || !string.IsNullOrEmpty(endEtg.EndEtg_ddd_res))
             {
                 if (string.IsNullOrEmpty(endEtg.EndEtg_tel_res))

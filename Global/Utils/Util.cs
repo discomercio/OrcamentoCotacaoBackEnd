@@ -45,7 +45,10 @@ namespace UtilsGlobais
 
         public static string Telefone_SoDigito(string tel)
         {
-            return tel.Replace("-", "");
+            if (tel == null)
+                tel = "";
+            tel = System.Text.RegularExpressions.Regex.Replace(tel, @"\D", "");
+            return tel;
         }
         public static string FormatarTelefones(string telefone)
         {
@@ -938,7 +941,7 @@ namespace UtilsGlobais
             return retorno;
         }
 
-        
+
         private static async Task<bool> IsLojaVrf(string loja, ContextoBdProvider contextoProvider)
         {
             bool retorno = false;

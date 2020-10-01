@@ -19,15 +19,18 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
         private readonly ITestOutputHelper output;
         private readonly PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll.ClienteUnisBll clienteUnisBll;
         private readonly InicializarBancoGeral inicializarBanco;
+        private readonly ContextoBdProvider contextoProvider;
 
         public Pf(TestesClienteUnisBll testesClienteUnisBll, ITestOutputHelper output,
             PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll.ClienteUnisBll clienteUnisBll,
-            InicializarBanco.InicializarBancoGeral inicializarBanco)
+            InicializarBanco.InicializarBancoGeral inicializarBanco,
+            InfraBanco.ContextoBdProvider contextoProvider)
         {
             this.testesClienteUnisBll = testesClienteUnisBll;
             this.output = output;
             this.clienteUnisBll = clienteUnisBll;
             this.inicializarBanco = inicializarBanco;
+            this.contextoProvider = contextoProvider;
             this.testesClienteUnisBll.Output = output;
         }
 
@@ -289,6 +292,105 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             },
                 "PREENCHA PELO MENOS UM TELEFONE (RESIDENCIAL, COMERCIAL OU CELULAR).",
                     TipoPessoa.PF);
+        }
+
+        [Fact]
+        public void Telefones_grandes()
+        {
+            //tem que rejeitar pq está grande, mais que 11
+            //na API está com maxlength 11, então nem chega
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.DddResidencial = "12";
+                c.DadosCliente.TelefoneResidencial = "12345678901234567890123456789012345678901234567890123456789";
+            },
+                "TELEFONE RESIDENCIAL INVÁLIDO.",
+                    TipoPessoa.PF);
+        }
+
+
+        [Fact]
+        public void Telefones_sem_separadores()
+        {
+
+
+            //tem que rejeitar pq está pequeno
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.DddResidencial = "12";
+                c.DadosCliente.TelefoneResidencial = "12-------";
+            },
+                "TELEFONE RESIDENCIAL INVÁLIDO.",
+                    TipoPessoa.PF);
+
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.DddResidencial = "12";
+                c.DadosCliente.TelefoneResidencial = "12-.+=,<>";
+            },
+                "TELEFONE RESIDENCIAL INVÁLIDO.",
+                    TipoPessoa.PF);
+
+
+
+            //agora tem que cadastrar tirando o que não for digito
+            ClienteCadastroUnisDto clienteDto = InicializarClienteDados.ClienteNaoCadastradoPF();
+            ClienteCadastroResultadoUnisDto res;
+            clienteDto.DadosCliente.DddResidencial = "12";
+            clienteDto.DadosCliente.TelefoneResidencial = "1234-56789";
+            res = clienteUnisBll.CadastrarClienteUnis(clienteDto).Result;
+
+            if (res.ListaErros.Count > 0)
+                output.WriteLine(JsonConvert.SerializeObject(res));
+
+            Assert.Empty(res.ListaErros);
+
+            //verifica se salvou direito
+            var db = contextoProvider.GetContextoLeitura();
+
+            var ret = (from c in db.Tclientes
+                       where c.Id == res.IdClienteCadastrado
+                       select c).FirstOrDefault();
+
+            Assert.Equal("123456789", ret.Tel_Res);
+
+            //e apaga o registro
+            inicializarBanco.TclientesApagar();
+        }
+
+
+        [Fact]
+        public void DataNascimentoSemHora()
+        {
+            //e apaga o registro
+            inicializarBanco.TclientesApagar();
+
+            //tem que tirar a hora da data de nascimento
+            ClienteCadastroUnisDto clienteDto = InicializarClienteDados.ClienteNaoCadastradoPF();
+            ClienteCadastroResultadoUnisDto res;
+            var ano = 1990;
+            var mes = 11;
+            var dia = 5;
+            clienteDto.DadosCliente.Nascimento = new DateTime(ano, mes, dia, 12, 23, 34);
+            res = clienteUnisBll.CadastrarClienteUnis(clienteDto).Result;
+
+            if (res.ListaErros.Count > 0)
+                output.WriteLine(JsonConvert.SerializeObject(res));
+
+            Assert.Empty(res.ListaErros);
+
+            //verifica se salvou direito
+            var db = contextoProvider.GetContextoLeitura();
+
+            var ret = (from c in db.Tclientes
+                       where c.Id == res.IdClienteCadastrado
+                       select c).FirstOrDefault();
+
+            Assert.Equal(new DateTime(ano, mes, dia), ret.Dt_Nasc);
+
+            //e apaga o registro
+            inicializarBanco.TclientesApagar();
         }
 
 
