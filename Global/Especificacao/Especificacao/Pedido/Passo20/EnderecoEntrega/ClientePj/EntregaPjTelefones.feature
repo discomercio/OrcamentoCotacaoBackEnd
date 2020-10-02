@@ -131,3 +131,6 @@ Scenario: EndEtg_ddd_res
 	And Informo "EndEtg_tel_res" = "12345678"
 	Then Erro "Endereço de entrega: PJ não pode ter EndEtg_ddd_res (acertar a mensagem)"
 
+Scenario: nos telefones, os símbolos devem ser removidos
+	When Fazer esta validação
+

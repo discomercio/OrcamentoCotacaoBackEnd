@@ -1,5 +1,6 @@
 ﻿@Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.Validacao.CpfCnpj
 Feature: CpfCnpj
+#todo: afazer: colocar estas validações em outros pontos que passem o cpf/cnpj como parâmetro.
 
 Scenario: Validar CPF
 	When Prepedido base
@@ -20,6 +21,7 @@ Scenario: Validar CPF
 	When Prepedido base
 	And  Informo "CPF/CNPJ" = "35270445824"
 	Then Sem erro "Cliente não localizado"
+
 
 Scenario: Validar CNPJ
 	When Prepedido base
