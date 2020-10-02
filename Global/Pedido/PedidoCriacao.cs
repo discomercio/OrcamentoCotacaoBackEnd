@@ -108,13 +108,17 @@ namespace Pedido
                     pedidoRetorno.ListaErros.Add("Não foi especificada a loja que fez a indicação.");
                     return pedidoRetorno;
                 }
-
-                Tloja tLoja = db.Tlojas.Where(x => x.Loja == tUsuario.Loja).FirstOrDefault();
-                if (tLoja == null)
+                else
                 {
-                    pedidoRetorno.ListaErros.Add("Loja " + tUsuario.Loja + " não está cadastrada.");
-                    return pedidoRetorno;
+                    Tloja tLoja = db.Tlojas.Where(x => x.Loja == tUsuario.Loja).FirstOrDefault();
+                    if (tLoja == null)
+                    {
+                        pedidoRetorno.ListaErros.Add("Loja " + tUsuario.Loja + " não está cadastrada.");
+                        return pedidoRetorno;
+                    }
+                    //Obs: a condição 
                 }
+                
             }
 
             if (tUsuario.Loja == Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE)
