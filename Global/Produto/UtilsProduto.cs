@@ -184,41 +184,24 @@ namespace Produto
                         {
                             if (r.Id_nfe_emitente != 0 && !string.IsNullOrEmpty(regra.Produto) && !string.IsNullOrEmpty(regra.Fabricante))
                             {
-                                //verificar se é inativo
-                                if (r.St_inativo == 0)
+
+                                if (regra.Produto == p1.Produto && regra.Fabricante == p1.Fabricante)
                                 {
-                                    //valor subtraido
-                                    r.Estoque_Qtde += (short)(p1.Qtde - p1.Qtde_Utilizada);
+                                    //verificar se é inativo
+                                    if (r.St_inativo == 0)
+                                    {
+                                        //valor subtraido
+                                        r.Estoque_Qtde += (short)(p1.Qtde - p1.Qtde_Utilizada);
+                                    }
                                 }
                             }
                         }
                     }
                 }
+
             }
-
         }
-        private static async Task<IEnumerable<ProdutosEstoqueDados>> BuscarListaQtdeEstoque(ContextoBdProvider contextoProvider)
-        {
 
-            var db = contextoProvider.GetContextoLeitura();
-
-            var lstEstoqueQtdeUtilZero = from c in db.TestoqueItems.Include(x => x.Testoque)
-                                         where (c.Qtde - c.Qtde_utilizada) > 0 &&
-                                               c.Qtde_utilizada.HasValue
-                                         select new ProdutosEstoqueDados
-                                         {
-                                             Fabricante = c.Fabricante,
-                                             Produto = c.Produto,
-                                             Qtde = (int)c.Qtde,
-                                             Qtde_Utilizada = (int)c.Qtde_utilizada,
-                                             Id_nfe_emitente = c.Testoque.Id_nfe_emitente
-                                         };
-
-            List<ProdutosEstoqueDados> produtosEstoqueDtos = await lstEstoqueQtdeUtilZero.ToListAsync();
-
-            return produtosEstoqueDtos;
-        }
-        
         public static async Task VerificarEstoqueGlobal(List<RegrasBll> lst_cliente_regra, ContextoBdProvider contextoProvider)
         {
             var lst2 = await BuscarListaQtdeEstoqueGlobal(contextoProvider);
@@ -246,6 +229,7 @@ namespace Produto
                 }
             }
         }
+
         private static async Task<IEnumerable<ProdutosEstoqueDados>> BuscarListaQtdeEstoqueGlobal(ContextoBdProvider contextoProvider)
         {
             var db = contextoProvider.GetContextoLeitura();
@@ -267,6 +251,28 @@ namespace Produto
                                                     };
 
             List<ProdutosEstoqueDados> produtosEstoqueDtos = await lstEstoqueQtdeUtilZeroComSubQuery.ToListAsync();
+
+            return produtosEstoqueDtos;
+        }
+
+        private static async Task<IEnumerable<ProdutosEstoqueDados>> BuscarListaQtdeEstoque(ContextoBdProvider contextoProvider)
+        {
+
+            var db = contextoProvider.GetContextoLeitura();
+
+            var lstEstoqueQtdeUtilZero = from c in db.TestoqueItems.Include(x => x.Testoque)
+                                         where (c.Qtde - c.Qtde_utilizada) > 0 &&
+                                               c.Qtde_utilizada.HasValue
+                                         select new ProdutosEstoqueDados
+                                         {
+                                             Fabricante = c.Fabricante,
+                                             Produto = c.Produto,
+                                             Qtde = (int)c.Qtde,
+                                             Qtde_Utilizada = (int)c.Qtde_utilizada,
+                                             Id_nfe_emitente = c.Testoque.Id_nfe_emitente
+                                         };
+
+            List<ProdutosEstoqueDados> produtosEstoqueDtos = await lstEstoqueQtdeUtilZero.ToListAsync();
 
             return produtosEstoqueDtos;
         }

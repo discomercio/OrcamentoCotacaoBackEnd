@@ -5,8 +5,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 
-#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
-
 namespace InfraBanco.Modelos
 {
     [Table("t_ESTOQUE_MOVIMENTO")]
@@ -68,4 +66,4 @@ namespace InfraBanco.Modelos
         public short Kit { get; set; }
     }
 }
-#endif
+

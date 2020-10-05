@@ -120,7 +120,7 @@ namespace Pedido
                 log += "análise crédito OK (<=" + decimal.Parse(
                     await pedidoBll.LeParametroControle(Constantes.ID_PARAM_CAD_VL_APROV_AUTO_ANALISE_CREDITO)) + "; ";
             else log += "status da análise crédito: " + pedido.Analise_Credito + " - " +
-                    pedidoVisualizacaoBll.DescricaoAnaliseCredito(Convert.ToString(pedido.Analise_Credito)) + "; ";
+                    pedidoVisualizacaoBll.DescricaoAnaliseCreditoCadastroPedido(Convert.ToString(pedido.Analise_Credito)) + "; ";
 
             //Forma de Pagamento(nova versão)
             //montamos os campos para inserir no log

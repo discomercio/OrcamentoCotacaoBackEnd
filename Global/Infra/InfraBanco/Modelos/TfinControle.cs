@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
 namespace InfraBanco.Modelos
 {
     [Table("t_FIN_CONTROLE")]
@@ -24,3 +25,4 @@ namespace InfraBanco.Modelos
         public DateTime Dt_hr_ult_atualizacao { get; set; }
     }
 }
+#endif

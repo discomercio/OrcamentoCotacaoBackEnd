@@ -55,8 +55,8 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
                            select c).FirstOrDefault();
 
                 Assert.Equal((2 * 652.71m) + (2 * 979.06m), ret.Vl_Total);
-                Assert.Equal((2 * 652.71m) + (2 * 979.06m), ret.Vl_Total_NF);
-                Assert.Equal(((2 * 652.71m) + (2 * 979.06m)) - ((2 * 652.71m) + (2 * 979.06m)), ret.Vl_Total_RA);
+                Assert.Equal((2 * 694.05m) + (2 * 1041.07m), ret.Vl_Total_NF);
+                Assert.Equal(((2 * 694.05m) + (2 * 1041.07m)) - ((2 * 652.71m) + (2 * 979.06m)), ret.Vl_Total_RA);
                 Assert.Equal(1, ret.Av_Forma_Pagto);
                 Assert.Equal(1, ret.Tipo_Parcelamento);
                 Assert.Equal("AV", ret.CustoFinancFornecTipoParcelamento);
@@ -219,8 +219,8 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
                            select c).FirstOrDefault();
 
                 Assert.Equal((2 * 687.11m) + (2 * 1030.66m), ret.Vl_Total);
-                Assert.Equal((2 * 687.11m) + (2 * 1030.66m), ret.Vl_Total_NF);
-                Assert.Equal(((2 * 687.11m) + (2 * 1030.66m)) - ((2 * 687.11m) + (2 * 1030.66m)), ret.Vl_Total_RA);
+                Assert.Equal((2 * 694.05m) + (2 * 1041.07m), ret.Vl_Total_NF);
+                Assert.Equal(((2 * 694.05m) + (2 * 1041.07m)) - ((2 * 687.11m) + (2 * 1030.66m)), ret.Vl_Total_RA);
 
                 VerificarFormaPagto(ret);
             }

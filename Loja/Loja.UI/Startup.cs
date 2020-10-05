@@ -84,7 +84,10 @@ namespace Loja.UI
             services.AddTransient<Bll.CoeficienteBll.CoeficienteBll, Bll.CoeficienteBll.CoeficienteBll>();
             services.AddTransient<Loja.Bll.Bll.AcessoBll.UsuarioAcessoBll, Loja.Bll.Bll.AcessoBll.UsuarioAcessoBll>();
             services.AddTransient<Loja.Bll.Bll.AcessoBll.AcessoAuthorizationHandlerBll, Loja.Bll.Bll.AcessoBll.AcessoAuthorizationHandlerBll>();
-            //services.AddTransient<Loja.Bll.Bll.PedidoBll.EfetivaPedido.EfetivaPedidoBll, Loja.Bll.Bll.PedidoBll.EfetivaPedido.EfetivaPedidoBll>();
+            services.AddTransient<Pedido.EfetivaPedidoBll, Pedido.EfetivaPedidoBll>();
+            services.AddTransient<Pedido.MontarLogPedidoBll, Pedido.MontarLogPedidoBll>();
+            services.AddTransient<Pedido.PedidoCriacao, Pedido.PedidoCriacao>();
+            services.AddTransient<Pedido.PedidoBll, Pedido.PedidoBll>();
 
 
             //ContextoProvider

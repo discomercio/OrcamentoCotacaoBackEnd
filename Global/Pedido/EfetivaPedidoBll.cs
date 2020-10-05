@@ -114,8 +114,8 @@ namespace Pedido
                         decimal vl_total = 0m;
                         foreach (var x in pedido.ListaProdutos)
                         {
-                            vl_total_nf += prepedidoBll.Calcular_Vl_Total((short)x.Qtde, x.Preco_NF);
-                            vl_total += prepedidoBll.Calcular_Vl_Total((short)x.Qtde, x.Preco_Venda);
+                            vl_total_nf += Math.Round((short)x.Qtde * x.Preco_NF, 2);
+                            vl_total += Math.Round((short)x.Qtde * x.Preco_Venda, 2);
                         };
                         pedidonovo.Vl_Total_NF = vl_total_nf;
                         pedidonovo.Vl_Total_RA = vl_total_nf - vl_total;
@@ -209,7 +209,7 @@ namespace Pedido
                     //vamos montar o log do pedido
                     //verificar o que inserir para a inclusão dos itens
                     if (indicePedido == 1 && lstErros.Count == 0)
-                         log = await montarLogPedidoBll.MontarLogPedido(pedidonovoTrocaId.Pedido, dbGravacao, pedido) + log;
+                        log = await montarLogPedidoBll.MontarLogPedido(pedidonovoTrocaId.Pedido, dbGravacao, pedido) + log;
 
                     if (!UtilsGlobais.Util.GravaLog(dbGravacao, usuario_atual, loja_atual, pedidonovoTrocaId.Pedido,
                                     pedidonovoTrocaId.Id_Cliente, InfraBanco.Constantes.Constantes.OP_LOG_PEDIDO_NOVO, log))
@@ -606,7 +606,7 @@ namespace Pedido
 
             decimal vl_total = 0m;
             foreach (var x in pedido.ListaProdutos)
-                vl_total += prepedidoBll.Calcular_Vl_Total((short)x.Qtde, x.Preco_Venda);
+                vl_total += Math.Round((short)x.Qtde * x.Preco_Venda, 2);
 
             if (vl_total <= vl_aprov_auto_analise_credito)
             {

@@ -113,7 +113,7 @@ namespace Loja.UI.Controllers
             //busca qtde de parcelas visa
             viewModel.QtdeParcVisa = await formaPagtoBll.BuscarQtdeParcCartaoVisa();
 
-            //viewModel.PercMaxDescEComissao = await pedidoBll.BuscarPercMaxPorLoja(usuarioLogado.Loja_atual_id);
+            viewModel.PercMaxDescEComissao = await pedidoBll.BuscarPercMaxPorLoja(usuarioLogado.Loja_atual_id);
 
             viewModel.PercComissao = usuarioLogado.PedidoDto.PercRT;
 
@@ -123,21 +123,21 @@ namespace Loja.UI.Controllers
             viewModel.ComIndicacao = 0;
 
             //lista de pagto preferenciais preciso mandar para a tela
-            //viewModel.MeiosPagtoPreferenciais = await pedidoBll.BuscarMeiosPagtoPreferenciais();
+            viewModel.MeiosPagtoPreferenciais = await pedidoBll.BuscarMeiosPagtoPreferenciais();
 
             //afazer: buscar lista de PESQUISA OS INDICADORES DA LOJA INFORMADA
             //viewModel.ListaObjetoSenhaDesconto = (await pedidoBll.BuscarSenhaDesconto(usuarioLogado.Cliente_Selecionado.DadosCliente.Id,
             //    usuarioLogado.Loja_atual_id)).ToList();
 
             //Montar o select do PedBonshop
-            //List<string> lstPedidoBonshop = (await clienteBll.BuscarListaPedidosBonshop(cpf_cnpj)).ToList();
-            //List<SelectListItem> lstPed = new List<SelectListItem>();
-            //lstPed.Add(new SelectListItem { Value = "0", Text = "Selecione" });
-            //for (int i = 0; i < lstPedidoBonshop.Count; i++)
-            //{
-            //    lstPed.Add(new SelectListItem { Value = lstPedidoBonshop[i], Text = lstPedidoBonshop[i] });
-            //}
-            //viewModel.PedBonshop = new SelectList(lstCd, "Value", "Text");
+            List<string> lstPedidoBonshop = (await clienteBll.BuscarListaPedidosBonshop(usuarioLogado.Cliente_Selecionado.DadosCliente.Cnpj_Cpf)).ToList();
+            List<SelectListItem> lstPed = new List<SelectListItem>();
+            lstPed.Add(new SelectListItem { Value = "0", Text = "Selecione" });
+            for (int i = 0; i < lstPedidoBonshop.Count; i++)
+            {
+                lstPed.Add(new SelectListItem { Value = lstPedidoBonshop[i], Text = lstPedidoBonshop[i] });
+            }
+            viewModel.PedBonshop = new SelectList(lstPed, "Value", "Text");
 
             return View(viewModel);
         }
@@ -297,7 +297,8 @@ namespace Loja.UI.Controllers
             //}
 
             //se esta tudo ok redirecionamos para a tela de Pedido
-            return RedirectToAction("BuscarPedido", new { numPedido = "Implementando novo cadastro de pedido" });
+            //return RedirectToAction("BuscarPedido", new { numPedido = "Implementando novo cadastro de pedido" });
+            return RedirectToAction("Index", "Cliente", new { numPedido = "--------------------pedido não foi salvo, implementando novo cadastro de pedido" });
         }
 
         public async Task<IActionResult> BuscarPedido(string numPedido)
@@ -376,10 +377,10 @@ namespace Loja.UI.Controllers
                 Util.SoDigitosCpf_Cnpj(usuarioLogado.Cliente_Selecionado.DadosCliente.Cnpj_Cpf)))
             {
                 //vamos validar em outro lugar, pois esta grande
-                //List<string> lstRetorno = (await pedidoBll.ValidarIndicador_SelecaoCD(usuarioLogado.Loja_atual_id, usuarioLogado.PedidoDto.DadosCliente.Id,
-                //    usuarioLogado.Usuario_atual, usuarioLogado.S_lista_operacoes_permitidas,
-                //    Util.SoDigitosCpf_Cnpj(usuarioLogado.Cliente_Selecionado.DadosCliente.Cnpj_Cpf), int.Parse(comIndicacao),
-                //    cdAutomatico, cdManual, ListaCD, percComissao, comRA, indicador)).ToList();
+                List<string> lstRetorno = (await pedidoBll.ValidarIndicador_SelecaoCD(usuarioLogado.Loja_atual_id, usuarioLogado.PedidoDto.DadosCliente.Id,
+                    usuarioLogado.Usuario_atual, usuarioLogado.S_lista_operacoes_permitidas,
+                    Util.SoDigitosCpf_Cnpj(usuarioLogado.Cliente_Selecionado.DadosCliente.Cnpj_Cpf), int.Parse(comIndicacao),
+                    cdAutomatico, cdManual, ListaCD, percComissao, comRA, indicador)).ToList();
 
 
                 if (lstErros.Count > 0)

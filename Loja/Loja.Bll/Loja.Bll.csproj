@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Global\Infra\InfraBanco\InfraBanco.csproj" />
     <ProjectReference Include="..\..\Global\Pedido\Pedido.csproj" />
     <ProjectReference Include="..\Loja.Data\Loja.Data.csproj" />
     <ProjectReference Include="..\Loja.Modelo\Loja.Modelo.csproj" />

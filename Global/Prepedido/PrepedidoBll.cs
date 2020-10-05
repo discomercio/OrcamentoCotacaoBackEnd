@@ -194,7 +194,7 @@ namespace Prepedido
                                 select c;
                 Torcamento prePedido = await prepedido.FirstOrDefaultAsync();
 
-                if (!string.IsNullOrEmpty(prePedido.ToString()))
+                if (prePedido != null)
                 {
                     prePedido.St_Orcamento = "CAN";
                     prePedido.Cancelado_Data = DateTime.Now;
@@ -682,12 +682,12 @@ namespace Prepedido
 
             if (cliente != null)
             {
-               // Foi solicitado pelo Hamilton que removesse a confrontação de nome do cliente para ApiUnis.
-               // Impossibilitava que para cliente tipo PF não poderia ter o nome diferente do cadastro.
-               // Para flexibilizar estamos alterando a validação e iremos salvar para o prepedido
-               // o nome que vier na solicitação de cadastro de prepedido.Caso ocorra alteração no cadastro do cliente
-               // isso impediria de realizar o cadastro de prepedido e acarretaria que, alguém deveria ajustar o cadastro do
-               // cliente pelo ERP para que a ApiUnis pudesse cadastrar um prepedido com o cadastro do cliente alterado
+                // Foi solicitado pelo Hamilton que removesse a confrontação de nome do cliente para ApiUnis.
+                // Impossibilitava que para cliente tipo PF não poderia ter o nome diferente do cadastro.
+                // Para flexibilizar estamos alterando a validação e iremos salvar para o prepedido
+                // o nome que vier na solicitação de cadastro de prepedido.Caso ocorra alteração no cadastro do cliente
+                // isso impediria de realizar o cadastro de prepedido e acarretaria que, alguém deveria ajustar o cadastro do
+                // cliente pelo ERP para que a ApiUnis pudesse cadastrar um prepedido com o cadastro do cliente alterado
 
                 //Somente a ApiUnis poderá inserir um Prepedido com cliente PF com nome diferente do que está cadastrado na base
                 if (sistemaResponsavelCadastro != (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS)
@@ -701,7 +701,7 @@ namespace Prepedido
                         }
                     }
                 }
-                
+
 
                 prePedido.DadosCliente.Id = cliente.DadosCliente.Id;
                 prePedido.DadosCliente.Sexo = cliente.DadosCliente.Sexo;
@@ -769,7 +769,7 @@ namespace Prepedido
 
 
             //Validar endereço de entraga
-            if (await validacoesPrepedidoBll.ValidarEnderecoEntrega(prePedido.EnderecoEntrega, lstErros, 
+            if (await validacoesPrepedidoBll.ValidarEnderecoEntrega(prePedido.EnderecoEntrega, lstErros,
                 prePedido.DadosCliente.Indicador_Orcamentista, prePedido.DadosCliente.Tipo))
             {
                 //busca a sigla do tipo de pagamento pelo código enviado
@@ -778,7 +778,7 @@ namespace Prepedido
                 //precisa incluir uma validação de forma de pagamento com base no orçamentista enviado
                 FormaPagtoDados formasPagto = await formaPagtoBll.ObterFormaPagto(tOrcamentista.Apelido, prePedido.DadosCliente.Tipo);
                 if (validacoesFormaPagtoBll.ValidarFormaPagto(prePedido.FormaPagtoCriacao, lstErros, limiteArredondamento,
-                    0.1M, c_custoFinancFornecTipoParcelamento, formasPagto, prePedido.PermiteRAStatus, 
+                    0.1M, c_custoFinancFornecTipoParcelamento, formasPagto, prePedido.PermiteRAStatus,
                     prePedido.Vl_total_NF, prePedido.Vl_total))
                 {
                     //Esta sendo verificado qual o tipo de pagamento que esta sendo feito e retornando a quantidade de parcelas
@@ -815,7 +815,7 @@ namespace Prepedido
                         Produto.ProdutoGeralBll.VerificarRegrasAssociadasAosProdutos(regraCrtlEstoque, lstErros, prePedido.DadosCliente.Uf, prePedido.DadosCliente.Tipo);
                         //obtendo qtde disponivel
                         await UtilsProduto.VerificarEstoque(regraCrtlEstoque, contextoProvider);
-                        
+
                         ObterDisponibilidadeEstoque(regraCrtlEstoque, prePedido, parametroRegra, lstErros);
 
                         VerificarEstoqueInsuficiente(regraCrtlEstoque, prePedido, parametroRegra);
@@ -946,19 +946,9 @@ namespace Prepedido
             torcamento.St_Fechamento = "";
             torcamento.St_Orc_Virou_Pedido = 0;
             torcamento.CustoFinancFornecQtdeParcelas = (short)ObterQtdeParcelasFormaPagto(prepedido.FormaPagtoCriacao);
-            decimal vl_total = 0m;
-            prepedido.ListaProdutos.ForEach(x =>
-            {
-                vl_total += Calcular_Vl_Total((short)x.Qtde, x.Preco_Venda);
-            });
-            torcamento.Vl_Total = vl_total;
-            decimal vl_total_nf = 0m;
-            prepedido.ListaProdutos.ForEach(x =>
-            {
-                vl_total_nf += Calcular_Vl_Total((short)x.Qtde, x.Preco_Venda);
-            });
-            torcamento.Vl_Total_NF = vl_total_nf;// CalcularVl_Total_NF(prepedido);
-            torcamento.Vl_Total_RA = prepedido.PermiteRAStatus == 1 ? vl_total_nf - vl_total : 0M;
+            torcamento.Vl_Total = Calcular_Vl_Total(prepedido);
+            torcamento.Vl_Total_NF = CalcularVl_Total_NF(prepedido);
+            torcamento.Vl_Total_RA = prepedido.PermiteRAStatus == 1 ? CalcularVl_Total_NF(prepedido) - Calcular_Vl_Total(prepedido) : 0M;
             torcamento.Perc_RT = 0;
             torcamento.Perc_Desagio_RA_Liquida = perc_limite_RA_sem_desagio;
             torcamento.Permite_RA_Status = orcamentista.Permite_RA_Status;
@@ -1263,14 +1253,34 @@ namespace Prepedido
             return qtdeParcelas;
         }
 
-        //Calcula totais
-        public decimal Calcular_Vl_Total(short qtde, decimal preco)
+        private decimal Calcular_Vl_Total(PrePedidoDados prepedido)
         {
-            decimal retorno = 0M;
+            decimal vl_total = 0M;
 
-            retorno += (decimal)(qtde * preco);
+            foreach (var p in prepedido.ListaProdutos)
+            {
+                if (!string.IsNullOrEmpty(p.Produto))
+                {
+                    vl_total += (decimal)(p.Qtde * p.Preco_Venda);
+                }
+            }
 
-            return Math.Round(retorno, 2);
+            return Math.Round(vl_total, 2);
+        }
+
+        private decimal CalcularVl_Total_NF(PrePedidoDados prepedido)
+        {
+            decimal vl_total_NF = 0M;
+
+            foreach (var p in prepedido.ListaProdutos)
+            {
+                if (!string.IsNullOrEmpty(p.Produto))
+                {
+                    vl_total_NF += (decimal)(p.Qtde * p.Preco_NF);
+                }
+            }
+
+            return Math.Round(vl_total_NF, 2);
         }
 
         private async Task ExisteProdutoDescontinuado(PrePedidoDados prepedido, List<string> lstErros)

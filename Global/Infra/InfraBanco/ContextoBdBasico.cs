@@ -111,7 +111,6 @@ namespace InfraBanco
         public DbSet<TpedidoItemDevolvido> TpedidoItemDevolvidos { get; set; }
         public DbSet<TpedidoPerda> TpedidoPerdas { get; set; }
         public DbSet<TpedidoPagamento> TpedidoPagamentos { get; set; }
-        public DbSet<TestoqueMovimento> TestoqueMovimentos { get; set; }
         public DbSet<Ttransportadora> Ttransportadoras { get; set; }
         public DbSet<TpedidoBlocosNotas> TpedidoBlocosNotas { get; set; }
         public DbSet<TcodigoDescricao> TcodigoDescricaos { get; set; }
@@ -135,7 +134,6 @@ namespace InfraBanco
         public DbSet<TwmsRegraCdXUfPessoa> TwmsRegraCdXUfPessoas { get; set; }
         public DbSet<TwmsRegraCdXUfXPessoaXCd> TwmsRegraCdXUfXPessoaXCds { get; set; }
         public DbSet<TecProdutoCompostoItem> TecProdutoCompostoItems { get; set; }
-        public DbSet<Testoque> Testoques { get; set; }
         public DbSet<TestoqueItem> TestoqueItems { get; set; }
         public DbSet<TprodutoXAlerta> TprodutoXAlertas { get; set; }
         public DbSet<TalertaProduto> TalertaProdutos { get; set; }
@@ -147,6 +145,8 @@ namespace InfraBanco
         public DbSet<TsessaoAbandonada> TsessaoAbandonadas { get; set; }
         public DbSet<Tperfil> Tperfils { get; set; }
         public DbSet<TperfilUsuario> TperfilUsuarios { get; set; }
+        public DbSet<Testoque> Testoques { get; set; }
+        public DbSet<TestoqueMovimento> TestoqueMovimentos { get; set; }
 
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         public DbSet<Tdesconto> Tdescontos { get; set; }

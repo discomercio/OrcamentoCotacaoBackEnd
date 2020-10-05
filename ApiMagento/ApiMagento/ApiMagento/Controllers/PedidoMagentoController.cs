@@ -48,7 +48,6 @@ namespace ApiMagento.Controllers
             string apelido = usuario;
                         
             var ret = await pedidoMagentoBll.CadastrarPedidoMagento(pedido, apelido);
-            //ret.ListaErros.Add("Ainda não implementado");
             return Ok(ret);
         }
 

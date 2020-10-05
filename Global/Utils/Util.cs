@@ -1026,6 +1026,7 @@ namespace UtilsGlobais
             return apelidoEmpresa;
         }
 
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         //Afazer: Edu o método "ObterApelidoEmpresaNfeEmitentes" está sendo duplicado porque é utilizado
         //dentro da transação do cadastro de pedido que utiliza o contexto de gravação, 
         //não fazia sentido criar uma interface de contexto apenas para um método
@@ -1047,6 +1048,7 @@ namespace UtilsGlobais
 
             return apelidoEmpresa;
         }
+#endif
 
         public static async Task<Tparametro> BuscarRegistroParametro(string id, ContextoBdProvider contextoProvider)
         {
@@ -1185,6 +1187,7 @@ namespace UtilsGlobais
             return cep;
         }
 
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         public static async Task<float> ObterPercentualDesagioRAIndicador(string indicador, ContextoBdProvider contextoProvider)
         {
             var db = contextoProvider.GetContextoLeitura();
@@ -1255,6 +1258,7 @@ namespace UtilsGlobais
 
             return vlTotalConsumidoRetorno;
         }
+#endif
 
         public static string TransformaHora_Minutos()
         {

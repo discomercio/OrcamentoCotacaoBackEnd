@@ -62,27 +62,8 @@ namespace InfraBanco
         public DbSet<TsessaoAbandonada> TsessaoAbandonadas { get => contexto.TsessaoAbandonadas; }
         public DbSet<Tusuario> Tusuarios { get => contexto.Tusuarios; }
 
-        //daqui para a frente só é necessário para os testes automatizados
-#if DEBUG_BANCO_DEBUG
-        public DbSet<Tbanco> Tbancos { get => contexto.Tbancos; }
-        public DbSet<Tfabricante> Tfabricantes { get => contexto.Tfabricantes; }
-        public DbSet<Tproduto> Tprodutos { get => contexto.Tprodutos; }
-        public DbSet<TpercentualCustoFinanceiroFornecedor> TpercentualCustoFinanceiroFornecedors { get => contexto.TpercentualCustoFinanceiroFornecedors; }
-        public DbSet<Tparametro> Tparametros { get => contexto.Tparametros; }
-        public DbSet<TprodutoXwmsRegraCd> TprodutoXwmsRegraCds { get => contexto.TprodutoXwmsRegraCds; }
-        public DbSet<TwmsRegraCd> TwmsRegraCds { get => contexto.TwmsRegraCds; }
-        public DbSet<TwmsRegraCdXUf> TwmsRegraCdXUfs { get => contexto.TwmsRegraCdXUfs; }
-        public DbSet<TwmsRegraCdXUfPessoa> TwmsRegraCdXUfPessoas { get => contexto.TwmsRegraCdXUfPessoas; }
-        public DbSet<TnfEmitente> TnfEmitentes { get => contexto.TnfEmitentes; }
-        public DbSet<TwmsRegraCdXUfXPessoaXCd> TwmsRegraCdXUfXPessoaXCds { get => contexto.TwmsRegraCdXUfXPessoaXCds; }
-        public DbSet<TformaPagto> TformaPagtos { get => contexto.TformaPagtos; }
-        public DbSet<TorcamentistaEIndicadorRestricaoFormaPagto> torcamentistaEIndicadorRestricaoFormaPagtos { get => contexto.torcamentistaEIndicadorRestricaoFormaPagtos; }
-        public DbSet<TprazoPagtoVisanet> TprazoPagtoVisanets { get => contexto.TprazoPagtoVisanets; }
-        public DbSet<Tperfil> Tperfils { get => contexto.Tperfils; }
-        public DbSet<TperfilUsuario> TperfilUsuarios { get => contexto.TperfilUsuarios; }
-        public DbSet<TcodigoDescricao> tcodigoDescricaos { get => contexto.TcodigoDescricaos; }
-#endif
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+        public DbSet<TnfEmitente> TnfEmitentes { get => contexto.TnfEmitentes; }
         public DbSet<Tpedido> Tpedidos { get => contexto.Tpedidos; }
         public DbSet<TestoqueLog> TestoqueLogs { get => contexto.TestoqueLogs; }
         public DbSet<TestoqueMovimento> TestoqueMovimentos { get => contexto.TestoqueMovimentos; }
@@ -97,5 +78,26 @@ namespace InfraBanco
         public DbSet<TclienteRefComercial> TclienteRefComercials { get => contexto.TclienteRefComercials; }
         public DbSet<TclienteRefBancaria> TclienteRefBancarias { get => contexto.TclienteRefBancarias; }
 #endif
+
+        //daqui para a frente só é necessário para os testes automatizados
+#if DEBUG_BANCO_DEBUG
+        public DbSet<Tbanco> Tbancos { get => contexto.Tbancos; }
+        public DbSet<Tfabricante> Tfabricantes { get => contexto.Tfabricantes; }
+        public DbSet<Tproduto> Tprodutos { get => contexto.Tprodutos; }
+        public DbSet<TpercentualCustoFinanceiroFornecedor> TpercentualCustoFinanceiroFornecedors { get => contexto.TpercentualCustoFinanceiroFornecedors; }
+        public DbSet<Tparametro> Tparametros { get => contexto.Tparametros; }
+        public DbSet<TprodutoXwmsRegraCd> TprodutoXwmsRegraCds { get => contexto.TprodutoXwmsRegraCds; }
+        public DbSet<TwmsRegraCd> TwmsRegraCds { get => contexto.TwmsRegraCds; }
+        public DbSet<TwmsRegraCdXUf> TwmsRegraCdXUfs { get => contexto.TwmsRegraCdXUfs; }
+        public DbSet<TwmsRegraCdXUfPessoa> TwmsRegraCdXUfPessoas { get => contexto.TwmsRegraCdXUfPessoas; }
+        public DbSet<TwmsRegraCdXUfXPessoaXCd> TwmsRegraCdXUfXPessoaXCds { get => contexto.TwmsRegraCdXUfXPessoaXCds; }
+        public DbSet<TformaPagto> TformaPagtos { get => contexto.TformaPagtos; }
+        public DbSet<TorcamentistaEIndicadorRestricaoFormaPagto> torcamentistaEIndicadorRestricaoFormaPagtos { get => contexto.torcamentistaEIndicadorRestricaoFormaPagtos; }
+        public DbSet<TprazoPagtoVisanet> TprazoPagtoVisanets { get => contexto.TprazoPagtoVisanets; }
+        public DbSet<Tperfil> Tperfils { get => contexto.Tperfils; }
+        public DbSet<TperfilUsuario> TperfilUsuarios { get => contexto.TperfilUsuarios; }
+        public DbSet<TcodigoDescricao> tcodigoDescricaos { get => contexto.TcodigoDescricaos; }
+#endif
+
     }
 }

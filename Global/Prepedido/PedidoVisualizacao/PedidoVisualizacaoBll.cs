@@ -460,7 +460,7 @@ namespace Prepedido.PedidoVisualizacao
             var perdas = BuscarPerdas(numPedido);
             var TranspNomeTask = ObterNomeTransportadora(p.Transportadora_Id);
             var lstFormaPgtoTask = ObterFormaPagto(tPedidoPai);
-            var analiseCreditoTask = ObterAnaliseCredito(Convert.ToString(tPedidoPai.Analise_Credito), pedido_pai, apelido);
+            var analiseCreditoTask = ObterAnaliseCreditoVisualizacao(Convert.ToString(tPedidoPai.Analise_Credito), pedido_pai, apelido);
             string corAnalise = CorAnaliseCredito(Convert.ToString(tPedidoPai.Analise_Credito));
             string corStatusPagto = CorSatusPagto(tPedidoPai.St_Pagto);
             var saldo_a_pagarTask = CalculaSaldoAPagar(pedido_pai, await vl_TotalFamiliaDevolucaoPrecoNFTask);
@@ -983,43 +983,7 @@ namespace Prepedido.PedidoVisualizacao
             return await Task.FromResult(msg);
         }
 
-        public async Task<string> ObterAnaliseCredito(string codigo, string numPedido, string apelido)
-        {
-            //estou alterando esse método para poder utilizar o switch no cadastro do pedido
-            //virou método para aproveitar no cadastro do pedido
-            string retorno = "";
-
-            retorno = DescricaoAnaliseCredito(codigo);
-
-            if (retorno != "")
-            {
-                var db = contextoProvider.GetContextoLeitura();
-
-                var ret = from c in db.Tpedidos
-                          where c.Pedido == numPedido && c.Orcamentista == apelido
-                          select new { analise_credito_data = c.Analise_credito_Data, analise_credito_usuario = c.Analise_Credito_Usuario };
-
-                var registro = ret.FirstOrDefault();
-                if (registro != null)
-                {
-                    if (registro.analise_credito_data.HasValue)
-                    {
-                        if (!string.IsNullOrEmpty(registro.analise_credito_usuario))
-                        {
-                            string maiuscula = (Char.ToUpper(registro.analise_credito_usuario[0]) +
-                                registro.analise_credito_usuario.Substring(1).ToLower());
-
-                            retorno = retorno + " (" + registro.analise_credito_data?.ToString("dd/MM/yyyy HH:mm") + " - "
-                                + maiuscula + ")";
-                        }
-                    }
-                }
-            }
-
-            return await Task.FromResult(retorno);
-        }
-
-        public string DescricaoAnaliseCredito(string codigo)
+        public string DescricaoAnaliseCreditoCadastroPedido(string codigo)
         {
             string retorno = "";
             switch (codigo)
@@ -1053,6 +1017,106 @@ namespace Prepedido.PedidoVisualizacao
                     break;
             }
             return retorno;
+        }
+
+        private async Task<string> ObterAnaliseCreditoVisualizacao(string codigo, string numPedido, string apelido)
+        {
+            //duplicado com código acima
+            string retorno = "";
+
+            switch (codigo)
+            {
+                case Constantes.COD_AN_CREDITO_ST_INICIAL:
+                    retorno = "";
+                    break;
+                case Constantes.COD_AN_CREDITO_PENDENTE:
+                    retorno = "Pendente";
+                    break;
+                case Constantes.COD_AN_CREDITO_PENDENTE_VENDAS:
+                    retorno = "Pendente Vendas";
+                    break;
+                case Constantes.COD_AN_CREDITO_PENDENTE_ENDERECO:
+                    retorno = "Pendente Endereço";
+                    break;
+                case Constantes.COD_AN_CREDITO_OK:
+                    retorno = "Crédito OK";
+                    break;
+                case Constantes.COD_AN_CREDITO_OK_AGUARDANDO_DEPOSITO:
+                    retorno = "Crédito OK (aguardando depósito)";
+                    break;
+                case Constantes.COD_AN_CREDITO_OK_DEPOSITO_AGUARDANDO_DESBLOQUEIO:
+                    retorno = "Crédito OK (depósito aguardando desbloqueio)";
+                    break;
+                case Constantes.COD_AN_CREDITO_NAO_ANALISADO:
+                    retorno = "";
+                    break;
+                case Constantes.COD_AN_CREDITO_PENDENTE_CARTAO:
+                    retorno = "Pendente Cartão de Crédito";
+                    break;
+            }
+
+            if (retorno != "")
+            {
+                var db = contextoProvider.GetContextoLeitura();
+
+                var ret = from c in db.Tpedidos
+                          where c.Pedido == numPedido && c.Orcamentista == apelido
+                          select new { analise_credito_data = c.Analise_credito_Data, analise_credito_usuario = c.Analise_Credito_Usuario };
+
+                var registro = ret.FirstOrDefault();
+                if (registro != null)
+                {
+                    if (registro.analise_credito_data.HasValue)
+                    {
+                        if (!string.IsNullOrEmpty(registro.analise_credito_usuario))
+                        {
+                            string maiuscula = (Char.ToUpper(registro.analise_credito_usuario[0]) +
+                                registro.analise_credito_usuario.Substring(1).ToLower());
+
+                            retorno = retorno + " (" + registro.analise_credito_data?.ToString("dd/MM/yyyy HH:mm") + " - "
+                                + maiuscula + ")";
+                        }
+                    }
+                }
+            }
+
+            return await Task.FromResult(retorno);
+        }
+
+        public async Task<string> ObterAnaliseCreditoCadastroPedido(string codigo, string numPedido, string apelido)
+        {
+            //estou alterando esse método para poder utilizar o switch no cadastro do pedido
+            //virou método para aproveitar no cadastro do pedido
+            string retorno = "";
+
+            retorno = DescricaoAnaliseCreditoCadastroPedido(codigo);
+
+            if (retorno != "")
+            {
+                var db = contextoProvider.GetContextoLeitura();
+
+                var ret = from c in db.Tpedidos
+                          where c.Pedido == numPedido && c.Orcamentista == apelido
+                          select new { analise_credito_data = c.Analise_credito_Data, analise_credito_usuario = c.Analise_Credito_Usuario };
+
+                var registro = ret.FirstOrDefault();
+                if (registro != null)
+                {
+                    if (registro.analise_credito_data.HasValue)
+                    {
+                        if (!string.IsNullOrEmpty(registro.analise_credito_usuario))
+                        {
+                            string maiuscula = (Char.ToUpper(registro.analise_credito_usuario[0]) +
+                                registro.analise_credito_usuario.Substring(1).ToLower());
+
+                            retorno = retorno + " (" + registro.analise_credito_data?.ToString("dd/MM/yyyy HH:mm") + " - "
+                                + maiuscula + ")";
+                        }
+                    }
+                }
+            }
+
+            return await Task.FromResult(retorno);
         }
 
         private async Task<decimal> CalculaSaldoAPagar(string numPedido, decimal vlDevNf)

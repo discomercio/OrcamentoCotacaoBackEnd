@@ -1131,78 +1131,78 @@ namespace Loja.Bll.PedidoBll
         //    return await ret.FirstOrDefaultAsync();
         //}
 
-        //public async Task<IEnumerable<string>> ValidarIndicador_SelecaoCD(string loja_atual, string idCliente, string usuario_atual,
-        //    string lstOperacoesPermitidas, string cpf_cnpj, int comIndicacao, int cdAutomatico, int cdManual,
-        //    int cdSelecionado, float percComissao, int comRA, string indicador)
-        //{
-        //    List<string> lstErros = new List<string>();
+        public async Task<IEnumerable<string>> ValidarIndicador_SelecaoCD(string loja_atual, string idCliente, string usuario_atual,
+            string lstOperacoesPermitidas, string cpf_cnpj, int comIndicacao, int cdAutomatico, int cdManual,
+            int cdSelecionado, float percComissao, int comRA, string indicador)
+        {
+            List<string> lstErros = new List<string>();
 
-        //    //vamos validar os dados
-        //    if (comIndicacao == 1)
-        //    {
-        //        TorcamentistaEindicador torcamentista = new TorcamentistaEindicador();
-        //        if (!string.IsNullOrEmpty(indicador) && comIndicacao == 1)
-        //        {
+            //vamos validar os dados
+            if (comIndicacao == 1)
+            {
+                InfraBanco.Modelos.TorcamentistaEindicador torcamentista = new InfraBanco.Modelos.TorcamentistaEindicador();
+                if (!string.IsNullOrEmpty(indicador) && comIndicacao == 1)
+                {
 
-        //            //vamos validar o indicador
-        //            if (!string.IsNullOrEmpty(indicador))
-        //            {
-        //                List<IndicadorDto> lstIndicadores = (await BuscarOrcamentistaEIndicadorListaCompleta(usuario_atual,
-        //                    lstOperacoesPermitidas, loja_atual)).ToList();
+                    //vamos validar o indicador
+                    if (!string.IsNullOrEmpty(indicador))
+                    {
+                        List<IndicadorDto> lstIndicadores = (await BuscarOrcamentistaEIndicadorListaCompleta(usuario_atual,
+                            lstOperacoesPermitidas, loja_atual)).ToList();
 
-        //                IndicadorDto indicadorDto = (from c in lstIndicadores
-        //                                             where c.Apelido == indicador
-        //                                             select new IndicadorDto
-        //                                             {
-        //                                                 Apelido = c.Apelido,
-        //                                                 PermiteRA = c.PermiteRA,
-        //                                                 RazaoSocial = c.RazaoSocial
-        //                                             }).FirstOrDefault();
+                        IndicadorDto indicadorDto = (from c in lstIndicadores
+                                                     where c.Apelido == indicador
+                                                     select new IndicadorDto
+                                                     {
+                                                         Apelido = c.Apelido,
+                                                         PermiteRA = c.PermiteRA,
+                                                         RazaoSocial = c.RazaoSocial
+                                                     }).FirstOrDefault();
 
-        //                //vamos verificar os dados do indicador
-        //                if (indicadorDto != null)
-        //                {
-        //                    if (indicadorDto.Apelido != indicador)
-        //                    {
-        //                        lstErros.Add("O nome do indicador está errado");
-        //                    }
+                        //vamos verificar os dados do indicador
+                        if (indicadorDto != null)
+                        {
+                            if (indicadorDto.Apelido != indicador)
+                            {
+                                lstErros.Add("O nome do indicador está errado");
+                            }
 
-        //                    torcamentista = await ValidaIndicadorOrcamentista(indicador, lstErros);
+                            torcamentista = await ValidaIndicadorOrcamentista(indicador, lstErros);
 
-        //                    if (comRA == 1)
-        //                    {
-        //                        if (indicadorDto.PermiteRA == 0)
-        //                        {
-        //                            lstErros.Add("O Indicador selecionado não permite RA!");
-        //                        }
-        //                    }
+                            if (comRA == 1)
+                            {
+                                if (indicadorDto.PermiteRA == 0)
+                                {
+                                    lstErros.Add("O Indicador selecionado não permite RA!");
+                                }
+                            }
 
-        //                }
+                        }
 
-        //                if (percComissao > 0)
-        //                {
-        //                    PercentualMaximoDto percentualMax = (await BuscarPercMaxPorLoja(loja_atual));
+                        if (percComissao > 0)
+                        {
+                            PercentualMaximoDto percentualMax = (await BuscarPercMaxPorLoja(loja_atual));
 
-        //                    if (percentualMax != null)
-        //                    {
-        //                        ValidarPercentualRT(percComissao, percentualMax.PercMaxComissao, lstErros);
-        //                    }
-        //                }
-        //                //vamos verificar o CD
-        //                if (cdManual == 1)
-        //                {
-        //                    //verificamos se tem cd selecionado
-        //                    if (cdSelecionado > 0)
-        //                    {
-        //                        var lstSelecaoCd = (await produtoBll.WmsApelidoEmpresaNfeEmitenteMontaItensSelect(null)).ToList();
-        //                    }
-        //                }
+                            if (percentualMax != null)
+                            {
+                                ValidarPercentualRT(percComissao, percentualMax.PercMaxComissao, lstErros);
+                            }
+                        }
+                        //vamos verificar o CD
+                        if (cdManual == 1)
+                        {
+                            //verificamos se tem cd selecionado
+                            if (cdSelecionado > 0)
+                            {
+                                var lstSelecaoCd = (await produtoBll.WmsApelidoEmpresaNfeEmitenteMontaItensSelect(null)).ToList();
+                            }
+                        }
 
-        //            }
-        //        }
-        //    }
-        //    return lstErros;
-        //}
+                    }
+                }
+            }
+            return lstErros;
+        }
 
         //public async Task<IEnumerable<string>> PreparaParaCadastrarPedido(string loja, string id_cliente,
         //    string usuario_atual, string listaOpercoesPermitidas, string cpf_cnpj, PedidoDto pedido)
@@ -1796,25 +1796,25 @@ namespace Loja.Bll.PedidoBll
         //    return retorno;
         //}
 
-        //public async Task<PercentualMaximoDto> BuscarPercMaxPorLoja(string loja)
-        //{
+        public async Task<PercentualMaximoDto> BuscarPercMaxPorLoja(string loja)
+        {
 
 
-        //    var db = contextoProvider.GetContextoLeitura();
+            var db = contextoProvider.GetContextoLeitura();
 
-        //    PercentualMaximoDto retorno = await (from c in db.Tlojas
-        //                                         where c.Loja == loja
-        //                                         select new PercentualMaximoDto
-        //                                         {
-        //                                             PercMaxComissao = c.Perc_Max_Comissao,
-        //                                             PercMaxComissaoEDesconto = c.Perc_Max_Comissao_E_Desconto,
-        //                                             PercMaxComissaoEDescontoPJ = c.Perc_Max_Comissao_E_Desconto_Pj,
-        //                                             PercMaxComissaoEDescontoNivel2 = c.Perc_Max_Comissao_E_Desconto_Nivel2,
-        //                                             PercMaxComissaoEDescontoNivel2PJ = c.Perc_Max_Comissao_E_Desconto_Nivel2_Pj
-        //                                         }).FirstOrDefaultAsync();
+            PercentualMaximoDto retorno = await (from c in db.Tlojas
+                                                 where c.Loja == loja
+                                                 select new PercentualMaximoDto
+                                                 {
+                                                     PercMaxComissao = c.Perc_Max_Comissao,
+                                                     PercMaxComissaoEDesconto = c.Perc_Max_Comissao_E_Desconto,
+                                                     PercMaxComissaoEDescontoPJ = c.Perc_Max_Comissao_E_Desconto_Pj,
+                                                     PercMaxComissaoEDescontoNivel2 = c.Perc_Max_Comissao_E_Desconto_Nivel2,
+                                                     PercMaxComissaoEDescontoNivel2PJ = c.Perc_Max_Comissao_E_Desconto_Nivel2_Pj
+                                                 }).FirstOrDefaultAsync();
 
-        //    return retorno;
-        //}
+            return retorno;
+        }
 
 
         ////retorna qtde a separar
@@ -1848,7 +1848,7 @@ namespace Loja.Bll.PedidoBll
         //    return qtde_spe;
         //}
 
-        
+
         //public async Task<int> Fin_gera_nsu(string id_nsu, List<string> lstErros, InfraBanco.ContextoBdProvider dbgravacao)
         //{
         //    int intRetorno = 0;
@@ -2457,28 +2457,28 @@ namespace Loja.Bll.PedidoBll
         //    return retorno;
         //}
 
-        //public async Task<IEnumerable<IndicadorDto>> BuscarOrcamentistaEIndicadorListaCompleta(string usuarioSistema,
-        //   string lstOperacoesPermitidas, string loja)
-        //{
+        public async Task<IEnumerable<IndicadorDto>> BuscarOrcamentistaEIndicadorListaCompleta(string usuarioSistema,
+           string lstOperacoesPermitidas, string loja)
+        {
 
-        //    //vamos trazer a lista de indicadores de um DTO com tudo que precisaremos na tela
-        //    List<TorcamentistaEindicador> lst = (await Util.Util.BuscarOrcamentistaEIndicadorListaCompleta(
-        //        contextoProvider, usuarioSistema, lstOperacoesPermitidas, loja)).ToList();
+            //vamos trazer a lista de indicadores de um DTO com tudo que precisaremos na tela
+            List<InfraBanco.Modelos.TorcamentistaEindicador> lst = (await Util.Util.BuscarOrcamentistaEIndicadorListaCompleta(
+                contextoProvider, usuarioSistema, lstOperacoesPermitidas, loja)).ToList();
 
-        //    List<IndicadorDto> lstIndicadorDto = new List<IndicadorDto>();
+            List<IndicadorDto> lstIndicadorDto = new List<IndicadorDto>();
 
-        //    foreach (var i in lst)
-        //    {
-        //        lstIndicadorDto.Add(new IndicadorDto
-        //        {
-        //            Apelido = i.Apelido,
-        //            RazaoSocial = i.Razao_Social_Nome,
-        //            PermiteRA = i.Permite_RA_Status
-        //        });
-        //    }
+            foreach (var i in lst)
+            {
+                lstIndicadorDto.Add(new IndicadorDto
+                {
+                    Apelido = i.Apelido,
+                    RazaoSocial = i.Razao_Social_Nome,
+                    PermiteRA = i.Permite_RA_Status
+                });
+            }
 
-        //    return lstIndicadorDto;
-        //}
+            return lstIndicadorDto;
+        }
 
         //public async Task<string> GerarNumeroPedido(List<string> lstErros, InfraBanco.ContextoBdProvider contextoBdGravacao)
         //{
@@ -3056,30 +3056,30 @@ namespace Loja.Bll.PedidoBll
         //    return lstProdutosDtoSelecionados;
         //}
 
-        //public async Task<TorcamentistaEindicador> ValidaIndicadorOrcamentista(string indicador, List<string> lstErros)
-        //{
-        //    TorcamentistaEindicador torcamentista = await Util.Util.BuscarOrcamentistaEIndicador(indicador,
-        //        contextoProvider.GetContextoLeitura());
+        public async Task<InfraBanco.Modelos.TorcamentistaEindicador> ValidaIndicadorOrcamentista(string indicador, List<string> lstErros)
+        {
+            InfraBanco.Modelos.TorcamentistaEindicador torcamentista = await Util.Util.BuscarOrcamentistaEIndicador(indicador,
+                contextoProvider.GetContextoLeitura());
 
-        //    if (torcamentista == null)
-        //    {
-        //        lstErros.Add("Informe quem é o indicador.");
-        //    }
+            if (torcamentista == null)
+            {
+                lstErros.Add("Informe quem é o indicador.");
+            }
 
-        //    return torcamentista;
-        //}
+            return torcamentista;
+        }
 
-        //public void ValidarPercentualRT(float percComissao, float percentualMax, List<string> lstErros)
-        //{
-        //    if (percComissao < 0 || percComissao > 100)
-        //    {
-        //        lstErros.Add("Percentual de comissão inválido.");
-        //    }
-        //    if (percComissao > percentualMax)
-        //    {
-        //        lstErros.Add("O percentual de comissão excede o máximo permitido.");
-        //    }
-        //}
+        public void ValidarPercentualRT(float percComissao, float percentualMax, List<string> lstErros)
+        {
+            if (percComissao < 0 || percComissao > 100)
+            {
+                lstErros.Add("Percentual de comissão inválido.");
+            }
+            if (percComissao > percentualMax)
+            {
+                lstErros.Add("O percentual de comissão excede o máximo permitido.");
+            }
+        }
 
         //public async Task<IEnumerable<TprodutoLoja>> VerificarProdutosSelecionados(List<PedidoProdutosDtoPedido> lstProdutos, List<string> lstErros, string loja)
         //{
@@ -3267,23 +3267,23 @@ namespace Loja.Bll.PedidoBll
         //    return retorno;
         //}
 
-        //public async Task<MeioPagtoPreferenciais> BuscarMeiosPagtoPreferenciais()
-        //{
-        //    var tParametro = await Util.Util.BuscarRegistroParametro(Constantes.Constantes.
-        //            ID_PARAMETRO_PercMaxComissaoEDesconto_Nivel2_MeiosPagto, contextoProvider.GetContextoLeitura());
+        public async Task<MeioPagtoPreferenciais> BuscarMeiosPagtoPreferenciais()
+        {
+            var tParametro = await Util.Util.BuscarRegistroParametro(Constantes.Constantes.
+                    ID_PARAMETRO_PercMaxComissaoEDesconto_Nivel2_MeiosPagto, contextoProvider.GetContextoLeitura());
 
-        //    MeioPagtoPreferenciais meioPagtoPreferenciais = new MeioPagtoPreferenciais();
+            MeioPagtoPreferenciais meioPagtoPreferenciais = new MeioPagtoPreferenciais();
 
-        //    meioPagtoPreferenciais.Id = tParametro.Id;
-        //    meioPagtoPreferenciais.Campo_inteiro = tParametro.Campo_inteiro;
-        //    meioPagtoPreferenciais.Campo_monetario = tParametro.Campo_monetario;
-        //    meioPagtoPreferenciais.Campo_real = tParametro.Campo_real;
-        //    meioPagtoPreferenciais.Campo_texto = tParametro.Campo_texto;
-        //    meioPagtoPreferenciais.Dt_hr_ult_atualizacao = tParametro.Dt_hr_ult_atualizacao;
-        //    meioPagtoPreferenciais.Usuario_ult_atualizacao = tParametro.Usuario_ult_atualizacao;
+            meioPagtoPreferenciais.Id = tParametro.Id;
+            meioPagtoPreferenciais.Campo_inteiro = tParametro.Campo_inteiro;
+            //meioPagtoPreferenciais.Campo_monetario = tParametro.Campo_monetario;
+            //meioPagtoPreferenciais.Campo_real = tParametro.Campo_real;
+            meioPagtoPreferenciais.Campo_texto = tParametro.Campo_texto;
+            //meioPagtoPreferenciais.Dt_hr_ult_atualizacao = tParametro.Dt_hr_ult_atualizacao;
+            //meioPagtoPreferenciais.Usuario_ult_atualizacao = tParametro.Usuario_ult_atualizacao;
 
-        //    return meioPagtoPreferenciais;
-        //}
+            return meioPagtoPreferenciais;
+        }
 
         //public async Task<IEnumerable<ObjetoSenhaDesconto>> BuscarSenhaDesconto(string cliente_id, string loja)
         //{
@@ -3313,6 +3313,6 @@ namespace Loja.Bll.PedidoBll
         //    return lstObjetoSenhaDescontos;
 
         //}
-   
+
     }
 }

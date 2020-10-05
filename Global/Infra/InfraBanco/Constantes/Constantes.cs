@@ -22,6 +22,7 @@ namespace InfraBanco.Constantes
             COD_SISTEMA_RESPONSAVEL_CADASTRO__APIMAGENTO = 4
         };
 
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         public const string T_PEDIDO_ANALISE_ENDERECO = "T_PEDIDO_ANALISE_ENDERECO";
         public const string T_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO = "T_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO";
 
@@ -35,6 +36,7 @@ namespace InfraBanco.Constantes
 
         public const string AGUARDANDO_EMISSAO_BOLETO = "006";
         public const string ANALISE_CREDITO_USUARIO_AUTOMATICO = "AUTOMÁTICO";
+#endif
 
 
         public const int FATOR_BD = 1209;
@@ -77,9 +79,11 @@ namespace InfraBanco.Constantes
 
         public const int MAX_TAMANHO_LOJA = 3;
 
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         public const int MAX_TAMANHO_ID_PEDIDO_MAGENTO = 9;
         public const int MAX_TAMANHO_ID_PEDIDO_MARKETPLACE = 20;
         public const int MIN_TAMANHO_ID_PEDIDO_MARKETPLACE = 12;
+#endif
 
 
         //'	Percentual de deságio para RA Líquida

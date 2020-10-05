@@ -162,11 +162,16 @@ Ao cadastrar o cliente:
                 DddComercial2 = dadosClienteMagento.Endereco_ddd_com_2,
                 TelComercial2 = dadosClienteMagento.Endereco_tel_com_2,
                 Ramal2 = dadosClienteMagento.Endereco_ramal_com_2,
+                /*
+                - se for PF, assumimos Endereco_produtor_rural_status = COD_ST_CLIENTE_PRODUTOR_RURAL_NAO e Endereco_contribuinte_icms_status = NAO
+                - se for PJ, deixar o pedido st_etg_imediata = 1 (não)
+                    e colocar Endereco_contribuinte_icms_status = inicial, Endereco_ie = vazio
+                */
                 Ie = "",
-                ProdutorRural = dadosClienteMagento.Endereco_tipo_pessoa == Constantes.ID_PJ ?
-                    (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL :
-                    (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO,
-                Contribuinte_Icms_Status = dadosClienteMagento.Endereco_tipo_pessoa == Constantes.ID_PJ ?
+                ProdutorRural = dadosClienteMagento.Endereco_tipo_pessoa == Constantes.ID_PF ?
+                    (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO :
+                    (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL,
+                Contribuinte_Icms_Status = dadosClienteMagento.Endereco_tipo_pessoa == Constantes.ID_PF ?
                     (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO :
                     (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL,
                 Email = dadosClienteMagento.Endereco_email,
