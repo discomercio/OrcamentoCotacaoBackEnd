@@ -7,17 +7,17 @@ using InfraBanco.Modelos;
 using Microsoft.EntityFrameworkCore.Internal;
 using InfraBanco.Constantes;
 using UtilsGlobais;
-using Pedido.Dados;
 using Cliente.Dados;
-using Pedido.Dados.DetalhesPedido;
+using Prepedido.PedidoVisualizacao.Dados;
+using Prepedido.PedidoVisualizacao.Dados.DetalhesPedido;
 
-namespace Pedido
+namespace Prepedido.PedidoVisualizacao
 {
-    public class PedidoBll
+    public class PedidoVisualizacaoBll
     {
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
 
-        public PedidoBll(InfraBanco.ContextoBdProvider contextoProvider)
+        public PedidoVisualizacaoBll(InfraBanco.ContextoBdProvider contextoProvider)
         {
             this.contextoProvider = contextoProvider;
         }
