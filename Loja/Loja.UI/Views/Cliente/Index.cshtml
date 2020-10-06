@@ -4,24 +4,52 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h5>Novo Pedido</h5>
 
-<div class="row">
-    @using (Html.BeginForm("ValidarCliente", "Cliente", FormMethod.Post))
-    {
-        <div class="row col s12">
-            <div class="input-field col s5">
-                <input id="cpf_cnpj" name="cpf_cnpj" type="text" class="validate" />
-                <label for="cpf_cnpj">CPF / CNPJ</label>
-
+<div class="card" style="min-height: 75vh; max-height:80vh; height:90vh;">
+    <div class="page-header card">
+        <div class="row align-items-end">
+            <div class="col-lg-8">
+                <div class="page-header-title">
+                    <div class="d-inline">
+                        <h5>Novo Pedido</h5>
+                    </div>
+                </div>
             </div>
-            <div class="input-field col s3">
-                <button class="waves-effect waves-light btn-small"
-                        type="submit"
-                        style="margin-top:-1rem">
-                    Pesquisar
-                </button>
+            <div class="col-lg-4">
+                <div class="page-header-breadcrumb">
+                    <ul class=" breadcrumb breadcrumb-title">
+                        <li class="breadcrumb-item">
+                            <a href="@Url.Action("Index", "Home")"><i class="feather icon-home"></i></a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="#!">Novo Pedido</a> </li>
+                    </ul>
+                </div>
             </div>
         </div>
-    }
+    </div>
+    <div class="page-header card">
+        <div class="row align-items-end">
+            <div class="col-lg-12">
+                <div class="page-header-title col-lg-10">
+                    @using (Html.BeginForm("ValidarCliente", "Cliente", FormMethod.Post))
+                    {
+                        <div class="d-inline">
+                            <div class="form-group row">
+                                <label class="col-form-label">CPF / CNPJ</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" name="cpf_cnpj" id="cpf_cnpj" placeholder="Informe CPF/CNPJ">
+                                    <span class="messages"></span>
+                                </div>
+                                <div class="input-field col-2">
+                                    <button class="btn btn-sm btn-primary waves-effect waves-light" type="submit">Pesquisar</button>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
