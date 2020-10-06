@@ -84,26 +84,34 @@ namespace Loja.UI
             services.AddTransient<Bll.CoeficienteBll.CoeficienteBll, Bll.CoeficienteBll.CoeficienteBll>();
             services.AddTransient<Loja.Bll.Bll.AcessoBll.UsuarioAcessoBll, Loja.Bll.Bll.AcessoBll.UsuarioAcessoBll>();
             services.AddTransient<Loja.Bll.Bll.AcessoBll.AcessoAuthorizationHandlerBll, Loja.Bll.Bll.AcessoBll.AcessoAuthorizationHandlerBll>();
-            services.AddTransient<Loja.Bll.Bll.PedidoBll.EfetivaPedido.EfetivaPedidoBll, Loja.Bll.Bll.PedidoBll.EfetivaPedido.EfetivaPedidoBll>();
+            services.AddTransient<Pedido.EfetivaPedidoBll, Pedido.EfetivaPedidoBll>();
+            services.AddTransient<Pedido.MontarLogPedidoBll, Pedido.MontarLogPedidoBll>();
+            services.AddTransient<Pedido.PedidoCriacao, Pedido.PedidoCriacao>();
+            services.AddTransient<Pedido.PedidoBll, Pedido.PedidoBll>();
 
 
             //ContextoProvider
-            services.AddTransient<Data.LojaContextoBdProvider, Data.LojaContextoBdProvider>();
-            services.AddTransient<Data.LojaContextoCepProvider, Data.LojaContextoCepProvider>();
-            services.AddTransient<Data.LojaContextoNFeProvider, Data.LojaContextoNFeProvider>();
+            services.AddTransient<InfraBanco.ContextoBdProvider, InfraBanco.ContextoBdProvider>();
+            services.AddTransient<InfraBanco.ContextoCepProvider, InfraBanco.ContextoCepProvider>();
+            services.AddTransient<InfraBanco.ContextoNFeProvider, InfraBanco.ContextoNFeProvider>();
+            //services.AddTransient<Data.LojaContextoBdProvider, Data.LojaContextoBdProvider>();
+            //services.AddTransient<Data.LojaContextoCepProvider, Data.LojaContextoCepProvider>();
+            //services.AddTransient<Data.LojaContextoNFeProvider, Data.LojaContextoNFeProvider>();
 
             //banco de dados
-            services.AddDbContext<Loja.Data.LojaContextoBdBasico>(options =>
+            //banco de dados
+            string conexaoBasica = Configuration.GetConnectionString("conexao");
+            services.AddDbContext<InfraBanco.ContextoBdBasico>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("conexaohomologa"));
+                options.UseSqlServer(conexaoBasica);
                 options.EnableSensitiveDataLogging();
             });
-            services.AddDbContext<Loja.Data.LojaContextoCepBd>(options =>
+            services.AddDbContext<InfraBanco.ContextoCepBd>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("conexaoCep"));
                 options.EnableSensitiveDataLogging();
             });
-            services.AddDbContext<Loja.Data.LojaContextoNFeBd >(options =>
+            services.AddDbContext<InfraBanco.ContextoNFeBd>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("conexaoNfe"));
                 options.EnableSensitiveDataLogging();

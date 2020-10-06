@@ -31,11 +31,10 @@ Fluxo na ApaiMagento:
 3 - salvar o pedido
 --- 
 Fluxo na API:
-Salvar o pedido
+Salvar o pedido (Passo60/Gravacao)
 	Enviar todos os dados para cadastrar o pedido
 
 Scenario: Fluxo da criação do pedido
-	# documentado em CaminhoFelizAsp.feature
 	When Tudo certo, só para aparecer na lista
 
 

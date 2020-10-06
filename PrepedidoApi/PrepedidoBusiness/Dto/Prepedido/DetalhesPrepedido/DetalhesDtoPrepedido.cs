@@ -1,4 +1,5 @@
-﻿using Prepedido.Dados.DetalhesPrepedido;
+﻿using InfraBanco.Constantes;
+using Prepedido.Dados.DetalhesPrepedido;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,8 +29,8 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
                 NumeroNF = origem.NumeroNF,
                 EntregaImediata = origem.EntregaImediata,
                 EntregaImediataData = origem.EntregaImediataData,
-                BemDeUso_Consumo = origem.BemDeUso_Consumo,
-                InstaladorInstala = origem.InstaladorInstala,
+                BemDeUso_Consumo = origem.BemDeUso_Consumo == (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_NAO ? "NÃO" : "SIM",
+                InstaladorInstala = origem.InstaladorInstala == (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_NAO ? "NÃO" : "SIM",
                 GarantiaIndicador = origem.GarantiaIndicador,
                 FormaDePagamento = origem.FormaDePagamento,
                 DescricaoFormaPagamento = origem.DescricaoFormaPagamento,
@@ -45,8 +46,12 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
                 NumeroNF = origem.NumeroNF,
                 EntregaImediata = origem.EntregaImediata,
                 EntregaImediataData = origem.EntregaImediataData,
-                BemDeUso_Consumo = origem.BemDeUso_Consumo,
-                InstaladorInstala = origem.InstaladorInstala,
+                BemDeUso_Consumo = origem.BemDeUso_Consumo == "SIM" ?
+                    (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_SIM :
+                    (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_NAO,
+                InstaladorInstala = origem.InstaladorInstala == "SIM" ?
+                (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_SIM :
+                (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_NAO,
                 GarantiaIndicador = origem.GarantiaIndicador,
                 FormaDePagamento = origem.FormaDePagamento,
                 DescricaoFormaPagamento = origem.DescricaoFormaPagamento,

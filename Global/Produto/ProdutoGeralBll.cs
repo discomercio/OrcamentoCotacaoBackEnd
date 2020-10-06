@@ -54,8 +54,10 @@ namespace Produto
             UtilsProduto.ObterDisponibilidadeEstoque(lst_cliente_regra, lstTodosProdutos, lstErros, contextoProvider);
 
             //retorna as qtdes disponiveis
+            //Estoque.asp => estoque_verifica_disponibilidade_integral_v2
+            //método que executa essa parte no asp
             await UtilsProduto.VerificarEstoque(lst_cliente_regra, contextoProvider);
-            await UtilsProduto.VerificarEstoqueComSubQuery(lst_cliente_regra, contextoProvider);
+            await UtilsProduto.VerificarEstoqueGlobal(lst_cliente_regra, contextoProvider);
 
             //buscar o parametro produto 001020 indice 12
             Tparametro tparametro = await UtilsProduto.BuscarRegistroParametro(Constantes.ID_PARAMETRO_Flag_Orcamento_ConsisteDisponibilidadeEstoqueGlobal, contextoProvider);

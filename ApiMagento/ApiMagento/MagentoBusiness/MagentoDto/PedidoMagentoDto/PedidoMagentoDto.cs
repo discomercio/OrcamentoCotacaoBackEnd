@@ -3,6 +3,7 @@ using MagentoBusiness.MagentoDto.ClienteMagentoDto;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text;
 
 namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
@@ -66,13 +67,19 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 
         public static Pedido.Dados.Criacao.PedidoCriacaoDados PedidoDadosCriacaoDePedidoMagentoDto(Cliente.Dados.DadosClienteCadastroDados dadosClienteMagento,
             Cliente.Dados.EnderecoCadastralClientePrepedidoDados enderecoCadastralClienteMagento, Cliente.Dados.EnderecoEntregaClienteCadastroDados enderecoEntregaMagento,
-            List<Prepedido.Dados.DetalhesPrepedido.PrepedidoProdutoPrepedidoDados> lstProdutosMagento, Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados formaPagtoCriacaoMagento)
+            List<Pedido.Dados.Criacao.PedidoProdutoPedidoDados> lstProdutosMagento, Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados formaPagtoCriacaoMagento, 
+            decimal vlTotalDestePedido, PedidoMagentoDto pedidoMagento)
         {
             Pedido.Dados.Criacao.PedidoCriacaoDados pedidoCriacao = new Pedido.Dados.Criacao.PedidoCriacaoDados();
 
             pedidoCriacao.LojaUsuario = dadosClienteMagento.Loja;
             //Armazena nome do usuário logado
-            pedidoCriacao.Usuario = dadosClienteMagento.Indicador_Orcamentista;
+            /* AFAZER: Aqui tem que receber o nome do Usuario que no caso do Magento é o SUPORTE 1
+             * O usuário "SUPORTE 1" do Magento esta cadastrado na base de teste da ITS. Estou alterando o 
+             * valor de desse usuário na tabela "t_USUARIO.vendedor_externo" para "1", sendo assim, este usuário passará a ser
+             * "vendedor_externo = 1" 
+             */
+            pedidoCriacao.Usuario = dadosClienteMagento.Vendedor;
             //Armazena o nome do vendedor externo
             //obs: analisar melhor quando esse campos será preenchido
             pedidoCriacao.VendedorExterno = dadosClienteMagento.Vendedor;
@@ -94,13 +101,15 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 
             //Armazena os dados de entrega imediata, obs, instalador instala, bem de uso comum
             pedidoCriacao.DetalhesPedido = new Prepedido.Dados.DetalhesPrepedido.DetalhesPrepedidoDados();
-            pedidoCriacao.DetalhesPedido.BemDeUso_Consumo = Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_SIM.ToString();
-            pedidoCriacao.DetalhesPedido.InstaladorInstala = Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_NAO.ToString();
+            pedidoCriacao.DetalhesPedido.BemDeUso_Consumo = (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_SIM;
+            pedidoCriacao.DetalhesPedido.InstaladorInstala = (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_NAO;
             pedidoCriacao.DetalhesPedido.EntregaImediata = dadosClienteMagento.Tipo == Constantes.ID_PF ?
-                            Constantes.EntregaImediata.COD_ETG_IMEDIATA_SIM.ToString() :
-                            Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO.ToString();
+                            Convert.ToString((byte)Constantes.EntregaImediata.COD_ETG_IMEDIATA_SIM) :
+                            Convert.ToString((byte)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO);
             pedidoCriacao.DetalhesPedido.EntregaImediataData = null;
-            pedidoCriacao.DetalhesPedido.Observacoes = "";
+            pedidoCriacao.DetalhesPedido.Observacoes = pedidoMagento.Obs_1;
+            //Ponto de referência é armazenado onde???
+            //Frete é armazenado onde???
 
             //Flag para saber se tem indicador selecionado 
             //campo "frete"->se for <> 0, vamos usar o indicador.se for 0, sem indicador
@@ -110,12 +119,17 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             pedidoCriacao.NomeIndicador = !string.IsNullOrEmpty(dadosClienteMagento.Vendedor) ? dadosClienteMagento.Vendedor : null;
 
             //Armazena o percentual de comissão para o indicador selecionado
-            //PercRT = calculado automaticamente
-            //afazer: não entendi
-            pedidoCriacao.PercRT = 0;
+            //afazer: verificar se esta calculando corretamente
+            float percRT = 0f;
+            foreach(var x in lstProdutosMagento)
+            {
+                percRT = percRT + (float)((x.Preco_Lista - (x.Preco_Venda + 1)) / x.Preco_Venda * 100);
+            };
+            pedidoCriacao.PercRT = percRT;
 
             //Armazena "S" ou "N" para caso de o indicador selecionado permita RA
             pedidoCriacao.OpcaoPossuiRa = true;
+            pedidoCriacao.PermiteRAStatus = 1;
 
             //Armazena o id do centro de distribuição selecionado manualmente
             pedidoCriacao.IdNfeSelecionadoManual = 0; //será sempre automático
@@ -125,15 +139,15 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             pedidoCriacao.OpcaoVendaSemEstoque = true;
 
             //Armazena o valor total do pedido
-            //afazer: verificar se é feito o cálculo antes de enviar para cadastrar ou se é preenchido ao cadastrar
-            pedidoCriacao.VlTotalDestePedido = 0;
+            decimal vl_total = lstProdutosMagento.Select(x => x.TotalItem).Sum();
+            pedidoCriacao.Vl_total = vl_total;
 
             //Armazena o valor total de pedido com RA
             //Caso o indicador selecionado permita RA esse campo deve receber o valor total do Pedido com RA
-            //afazer: verificar se é feito o cálculo antes de enviar para cadastrar ou se é preenchido ao cadastrar
-            pedidoCriacao.VlTotalDestePedidoComRa = 0;
+            pedidoCriacao.Vl_total_NF = vlTotalDestePedido;
 
             return pedidoCriacao;
         }
+
     }
 }

@@ -12,11 +12,11 @@ namespace Loja.Bll.Bll.pedidoBll
 {
     public class CancelamentoAutomaticoBll
     {
-        private readonly LojaContextoBdProvider contextoProvider;
+        private readonly InfraBanco.ContextoBdProvider contextoProvider;
         private readonly PedidoLogBll pedidoLogBll;
         private readonly Loja.Bll.PedidoBll.PedidoBll pedidoBll;
 
-        public CancelamentoAutomaticoBll(LojaContextoBdProvider contextoProvider, Loja.Bll.PedidoBll.PedidoLogBll pedidoLogBll,
+        public CancelamentoAutomaticoBll(InfraBanco.ContextoBdProvider contextoProvider, Loja.Bll.PedidoBll.PedidoLogBll pedidoLogBll,
             Loja.Bll.PedidoBll.PedidoBll pedidoBll)
         {
             this.contextoProvider = contextoProvider;
@@ -228,18 +228,17 @@ namespace Loja.Bll.Bll.pedidoBll
                         }
                     }
 
-                    //    }
-
-                    //ret.AddRange(DadosDeTeste());
-                    //está ordenando por data da análise de crédito, já está ordenado na query
-                    //deixa o cliente verificar se isso é um problema... acho que é o comportamento esperado
-                    return ret;
                 }
+
+                //ret.AddRange(DadosDeTeste());
+                //está ordenando por data da análise de crédito, já está ordenado na query
+                //    deixa o cliente verificar se isso é um problema... acho que é o comportamento esperado
+
+                return await Task.FromResult(ret);
             }
         }
     }
+
 }
-
-
 
 

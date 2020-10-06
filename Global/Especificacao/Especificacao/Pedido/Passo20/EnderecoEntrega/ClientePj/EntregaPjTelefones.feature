@@ -1,16 +1,18 @@
 ﻿@ignore
 @Especificacao/Pedido
 Feature: Pedido de cliente PJ com endereço de entrega PJ - validação de telefones
-em loja/ClienteEdita.asp:
-                /*
-                telefones PJ:
-                EndEtg_ddd_com
-                EndEtg_tel_com
-                EndEtg_ramal_com
-                EndEtg_ddd_com_2
-                EndEtg_tel_com_2
-                EndEtg_ramal_com_2
-*/
+#em loja/ClienteEdita.asp:
+#                /*
+#                telefones PJ:
+#                EndEtg_ddd_com
+#                EndEtg_tel_com
+#                EndEtg_ramal_com
+#                EndEtg_ddd_com_2
+#                EndEtg_tel_com_2
+#                EndEtg_ramal_com_2
+#*/
+
+#também em loja/PedidoNovoConsiste.asp
 
 Background: Pedido base
 	Given Pedido base cliente PJ com endereço de entrega PJ

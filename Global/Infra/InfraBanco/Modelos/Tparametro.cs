@@ -22,5 +22,11 @@ namespace InfraBanco.Modelos
         [Column("campo_real")]
         [Required]
         public float Campo_Real { get; set; }
+
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+        [Column("campo_texto")]
+        [MaxLength(1024)]
+        public string Campo_texto { get; set; }
+#endif
     }
 }

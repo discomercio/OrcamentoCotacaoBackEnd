@@ -13,13 +13,23 @@ namespace InfraBanco.Modelos
         [Required]
         [Column("id_estoque")]
         [MaxLength(12)]
-        [ForeignKey("TestoqueItem")]
         public string Id_estoque { get; set; }
 
         [Column("id_nfe_emitente")]
         [Required]
         public short Id_nfe_emitente { get; set; }
 
-        public TestoqueItem TestoqueItem { get; set; }
+        public ICollection<TestoqueItem> TestoqueItem { get; set; }
+
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+        [Column("data_ult_movimento")]
+        [Required]
+        public DateTime Data_ult_movimento { get; set; }
+
+        [Column("fabricante")]
+        [MaxLength(4)]
+        [Required]
+        public string Fabricante { get; set; }
+#endif
     }
 }

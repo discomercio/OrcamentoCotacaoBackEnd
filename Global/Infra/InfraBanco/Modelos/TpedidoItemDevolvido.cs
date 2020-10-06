@@ -55,5 +55,13 @@ namespace InfraBanco.Modelos
         [Column("subgrupo")]
         [MaxLength(10)]
         public string Subgrupo { get; set; }
+
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+        public Tpedido Tpedido { get; set; }
+
+        [Column("preco_venda", TypeName = "money")]
+        [Required]
+        public decimal Preco_Venda { get; set; }
+#endif
     }
 }

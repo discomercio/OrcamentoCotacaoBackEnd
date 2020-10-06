@@ -194,7 +194,7 @@ namespace Prepedido
                                 select c;
                 Torcamento prePedido = await prepedido.FirstOrDefaultAsync();
 
-                if (!string.IsNullOrEmpty(prePedido.ToString()))
+                if (prePedido != null)
                 {
                     prePedido.St_Orcamento = "CAN";
                     prePedido.Cancelado_Data = DateTime.Now;
@@ -385,10 +385,8 @@ namespace Prepedido
                 EntregaImediata = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
                 "NÃO (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" :
                 "SIM (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")",
-                BemDeUso_Consumo = torcamento.StBemUsoConsumo == (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_NAO ?
-                "NÃO" : "SIM",
-                InstaladorInstala = torcamento.InstaladorInstalaStatus == (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_NAO ?
-                "NÃO" : "SIM",
+                BemDeUso_Consumo = torcamento.StBemUsoConsumo,
+                InstaladorInstala = torcamento.InstaladorInstalaStatus,
                 GarantiaIndicador = Convert.ToString(torcamento.GarantiaIndicadorStatus) ==
                 Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO ?
                 "NÃO" : "SIM",
@@ -684,12 +682,12 @@ namespace Prepedido
 
             if (cliente != null)
             {
-               // Foi solicitado pelo Hamilton que removesse a confrontação de nome do cliente para ApiUnis.
-               // Impossibilitava que para cliente tipo PF não poderia ter o nome diferente do cadastro.
-               // Para flexibilizar estamos alterando a validação e iremos salvar para o prepedido
-               // o nome que vier na solicitação de cadastro de prepedido.Caso ocorra alteração no cadastro do cliente
-               // isso impediria de realizar o cadastro de prepedido e acarretaria que, alguém deveria ajustar o cadastro do
-               // cliente pelo ERP para que a ApiUnis pudesse cadastrar um prepedido com o cadastro do cliente alterado
+                // Foi solicitado pelo Hamilton que removesse a confrontação de nome do cliente para ApiUnis.
+                // Impossibilitava que para cliente tipo PF não poderia ter o nome diferente do cadastro.
+                // Para flexibilizar estamos alterando a validação e iremos salvar para o prepedido
+                // o nome que vier na solicitação de cadastro de prepedido.Caso ocorra alteração no cadastro do cliente
+                // isso impediria de realizar o cadastro de prepedido e acarretaria que, alguém deveria ajustar o cadastro do
+                // cliente pelo ERP para que a ApiUnis pudesse cadastrar um prepedido com o cadastro do cliente alterado
 
                 //Somente a ApiUnis poderá inserir um Prepedido com cliente PF com nome diferente do que está cadastrado na base
                 if (sistemaResponsavelCadastro != (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS)
@@ -703,7 +701,7 @@ namespace Prepedido
                         }
                     }
                 }
-                
+
 
                 prePedido.DadosCliente.Id = cliente.DadosCliente.Id;
                 prePedido.DadosCliente.Sexo = cliente.DadosCliente.Sexo;
@@ -771,15 +769,17 @@ namespace Prepedido
 
 
             //Validar endereço de entraga
-            if (await validacoesPrepedidoBll.ValidarEnderecoEntrega(prePedido, lstErros))
+            if (await validacoesPrepedidoBll.ValidarEnderecoEntrega(prePedido.EnderecoEntrega, lstErros,
+                prePedido.DadosCliente.Indicador_Orcamentista, prePedido.DadosCliente.Tipo))
             {
                 //busca a sigla do tipo de pagamento pelo código enviado
                 string c_custoFinancFornecTipoParcelamento = ObterSiglaFormaPagto(prePedido.FormaPagtoCriacao);
 
                 //precisa incluir uma validação de forma de pagamento com base no orçamentista enviado
                 FormaPagtoDados formasPagto = await formaPagtoBll.ObterFormaPagto(tOrcamentista.Apelido, prePedido.DadosCliente.Tipo);
-                if (validacoesFormaPagtoBll.ValidarFormaPagto(prePedido, lstErros, limiteArredondamento,
-                    0.1M, c_custoFinancFornecTipoParcelamento, formasPagto))
+                if (validacoesFormaPagtoBll.ValidarFormaPagto(prePedido.FormaPagtoCriacao, lstErros, limiteArredondamento,
+                    0.1M, c_custoFinancFornecTipoParcelamento, formasPagto, prePedido.PermiteRAStatus,
+                    prePedido.Vl_total_NF, prePedido.Vl_total))
                 {
                     //Esta sendo verificado qual o tipo de pagamento que esta sendo feito e retornando a quantidade de parcelas
                     int c_custoFinancFornecQtdeParcelas = ObterQtdeParcelasFormaPagto(prePedido.FormaPagtoCriacao);
@@ -1109,11 +1109,11 @@ namespace Prepedido
             torcamento.Obs_2 = prepedido.DetalhesPrepedido.NumeroNF == null ?
                 "" : prepedido.DetalhesPrepedido.NumeroNF;
             torcamento.StBemUsoConsumo = prepedido.DetalhesPrepedido.BemDeUso_Consumo !=
-                Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_NAO.ToString() ?
+                (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_NAO ?
                 (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_SIM : (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_NAO;
 
             torcamento.InstaladorInstalaStatus = prepedido.DetalhesPrepedido.InstaladorInstala ==
-                Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_SIM.ToString() ?
+                (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_SIM ?
                 (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_SIM :
                 (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_NAO;
 
@@ -1913,7 +1913,7 @@ namespace Prepedido
         {
             string sufixoIdOrcamento = Constantes.SUFIXO_ID_ORCAMENTO;
 
-            var nsuTask = await Util.GerarNsu(dbgravacao, Constantes.NSU_ORCAMENTO, contextoProvider);
+            var nsuTask = await Util.GerarNsu(dbgravacao, Constantes.NSU_ORCAMENTO);
             string nsu = nsuTask.ToString();
 
             int ndescarte = nsu.Length - Constantes.TAM_MIN_NUM_ORCAMENTO;

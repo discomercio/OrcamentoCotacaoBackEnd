@@ -62,8 +62,8 @@ namespace Especificacao.Especificacao.Pedido
                     "es e alterar valores e forma de pagamento\r\n5 - Passo50: Informar observações (en" +
                     "trega imediata, instalador instala, etc) \r\n6 - Passo60: Salvar o pedido\r\n--- \r\nF" +
                     "luxo na ApaiMagento:\r\n1 - Validar o pedido\r\n2 - se o cliente não existir, cadast" +
-                    "rar o cliente\r\n3 - salvar o pedido\r\n--- \r\nFluxo na API:\r\nSalvar o pedido\r\n\tEnvia" +
-                    "r todos os dados para cadastrar o pedido", ProgrammingLanguage.CSharp, new string[] {
+                    "rar o cliente\r\n3 - salvar o pedido\r\n--- \r\nFluxo na API:\r\nSalvar o pedido (Passo6" +
+                    "0/Gravacao)\r\n\tEnviar todos os dados para cadastrar o pedido", ProgrammingLanguage.CSharp, new string[] {
                         "Especificacao.Pedido.FluxoCriacaoPedido"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -132,7 +132,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 39
+#line 38
  testRunner.When("Tudo certo, só para aparecer na lista", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }

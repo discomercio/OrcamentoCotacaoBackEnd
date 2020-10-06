@@ -82,7 +82,12 @@ namespace ApiMagento
             services.AddTransient<Produto.ProdutoGeralBll, Produto.ProdutoGeralBll>();
             services.AddTransient<Prepedido.ValidacoesPrepedidoBll, Prepedido.ValidacoesPrepedidoBll>();
             services.AddTransient<Prepedido.MontarLogPrepedidoBll, Prepedido.MontarLogPrepedidoBll>();
+            services.AddTransient<Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll, Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll>();
             services.AddTransient<Cep.IBancoNFeMunicipio, Cep.BancoNFeMunicipio>();
+            services.AddTransient<Pedido.EfetivaPedidoBll, Pedido.EfetivaPedidoBll>();
+            services.AddTransient<Pedido.MontarLogPedidoBll, Pedido.MontarLogPedidoBll>();
+            services.AddTransient<Pedido.PedidoCriacao, Pedido.PedidoCriacao>();
+            services.AddTransient<Pedido.PedidoBll, Pedido.PedidoBll>();
 
             //Bll's Loja
             //afazer: incluir as bll's que serão utilizadas da Loja
@@ -91,8 +96,8 @@ namespace ApiMagento
             {
                 IConfiguration configuration = c.GetService<IConfiguration>();
                 var appSettingsSectionSingleton = configuration.GetSection("AppSettings");
-                var configuracaoApiUnis = appSettingsSectionSingleton.Get<ConfiguracaoApiMagento>();
-                return configuracaoApiUnis;
+                var configuracaoApiMagento = appSettingsSectionSingleton.Get<ConfiguracaoApiMagento>();
+                return configuracaoApiMagento;
             });
 
             services.AddTransient<IServicoAutenticacaoApiMagento, ServicoAutenticacaoApiMagento>();

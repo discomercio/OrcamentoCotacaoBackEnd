@@ -29,7 +29,7 @@ namespace Cliente
         }
 
         public static async Task<bool> ValidarDadosCliente(Cliente.Dados.DadosClienteCadastroDados dadosCliente,
-            List<Cliente.Dados.Referencias.RefBancariaClienteDados> lstRefBancaria, 
+            List<Cliente.Dados.Referencias.RefBancariaClienteDados> lstRefBancaria,
             List<Cliente.Dados.Referencias.RefComercialClienteDados> lstRefComercial,
             List<string> lstErros, ContextoBdProvider contextoProvider, CepBll cepBll, IBancoNFeMunicipio bancoNFeMunicipio,
             List<Cliente.Dados.ListaBancoDados> lstBanco, bool flagMsg_IE_Cadastro_PF, byte sistemaResponsavel)
@@ -156,36 +156,38 @@ namespace Cliente
                 }
                 else
                 {
-                    if(sistemaResponsavel !=
+                    //vamos validar o gênero do cliente
+                    if (string.IsNullOrEmpty(dadosCliente.Sexo) &&
+                        sistemaResponsavel !=
                         (byte)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__APIMAGENTO)
                     {
-                        //vamos validar o gênero do cliente
-                        if (string.IsNullOrEmpty(dadosCliente.Sexo))
+                        lstErros.Add(MensagensErro.GENERO_DO_CLIENTE_NAO_INFORMADO);
+                        retorno = false;
+                    }
+                    else
+                    {
+                        if (dadosCliente.Sexo.Length > 1 &&
+                            sistemaResponsavel !=
+                            (byte)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__APIMAGENTO)
                         {
-                            lstErros.Add(MensagensErro.GENERO_DO_CLIENTE_NAO_INFORMADO);
+                            lstErros.Add("FORMATO DO TIPO DE SEXO INVÁLIDO!");
                             retorno = false;
                         }
-                        else
+                        if (dadosCliente.Sexo != "M" && dadosCliente.Sexo != "F" &&
+                            sistemaResponsavel !=
+                            (byte)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__APIMAGENTO)
                         {
-                            if (dadosCliente.Sexo.Length > 1)
-                            {
-                                lstErros.Add("FORMATO DO TIPO DE SEXO INVÁLIDO!");
-                                retorno = false;
-                            }
-                            if (dadosCliente.Sexo != "M" && dadosCliente.Sexo != "F")
-                            {
-                                lstErros.Add("INDIQUE QUAL O SEXO.");
-                                retorno = false;
-                            }
+                            lstErros.Add("INDIQUE QUAL O SEXO.");
+                            retorno = false;
+                        }
 
                             retorno = await ValidacoesClienteTelefones.ValidarTelefones_PF(dadosCliente, cliente, lstErros, contextoProvider);
 
-                            if (!string.IsNullOrEmpty(dadosCliente.Email))
-                            {
-                                retorno = Util.ValidarEmail(dadosCliente.Email, lstErros);
-                            }
+                        if (!string.IsNullOrEmpty(dadosCliente.Email))
+                        {
+                            retorno = Util.ValidarEmail(dadosCliente.Email, lstErros);
                         }
-                    }                    
+                    }
                 }
 
                 //vamos verificar os campos que não pertence ao tipo PF
@@ -540,7 +542,7 @@ namespace Cliente
         }
 
         private static bool ValidarReferencias_Bancarias_Comerciais(List<Cliente.Dados.Referencias.RefBancariaClienteDados> lstRefBancaria,
-            List<Cliente.Dados.Referencias.RefComercialClienteDados> lstRefComercial, 
+            List<Cliente.Dados.Referencias.RefComercialClienteDados> lstRefComercial,
             List<string> lstErros, string tipoPessoa, List<Cliente.Dados.ListaBancoDados> lstBanco)
         {
             bool retorno = true;

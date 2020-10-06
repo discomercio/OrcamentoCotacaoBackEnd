@@ -17,14 +17,12 @@ using Loja.Bll.CoeficienteBll;
 using Loja.Bll.Dto.PedidoDto.DetalhesPedido;
 using Loja.Bll.Dto.PrepedidoDto.DetalhesPrepedido;
 using Loja.Bll.Dto.PedidoDto;
-using Loja.Bll.Bll.PedidoBll;
 using Loja.Bll.Constantes;
 using Loja.Bll.Bll.AcessoBll;
 using Loja.Bll.Util;
 using Loja.Bll.Dto.IndicadorDto;
 using Microsoft.Extensions.Logging;
 using Loja.Bll.Dto.LojaDto;
-using Loja.Bll.Bll.PedidoBll.EfetivaPedido;
 using Loja.Bll.Bll.pedidoBll;
 
 //TODO: habilitar nullable no projeto todo
@@ -43,11 +41,10 @@ namespace Loja.UI.Controllers
         private readonly UsuarioAcessoBll usuarioAcessoBll;
         private readonly Configuracao configuracao;
         private readonly ILogger<UsuarioLogado> loggerUsuarioLogado;
-        private readonly Bll.Bll.PedidoBll.EfetivaPedido.EfetivaPedidoBll efetivaPedidoBll;
 
         public PedidoController(PedidoBll pedidoBll, ProdutoBll produtoBll, ClienteBll clienteBll, FormaPagtoBll formaPagtoBll, CoeficienteBll coeficienteBll,
             CancelamentoAutomaticoBll cancelamentoAutomaticoBll, UsuarioAcessoBll usuarioAcessoBll, Configuracao configuracao,
-            ILogger<UsuarioLogado> loggerUsuarioLogado, EfetivaPedidoBll efetivaPedidoBll)
+            ILogger<UsuarioLogado> loggerUsuarioLogado)
         {
             this.pedidoBll = pedidoBll;
             this.produtoBll = produtoBll;
@@ -58,7 +55,6 @@ namespace Loja.UI.Controllers
             this.usuarioAcessoBll = usuarioAcessoBll;
             this.configuracao = configuracao;
             this.loggerUsuarioLogado = loggerUsuarioLogado;
-            this.efetivaPedidoBll = efetivaPedidoBll;
         }
 
         public IActionResult Index()
@@ -130,18 +126,18 @@ namespace Loja.UI.Controllers
             viewModel.MeiosPagtoPreferenciais = await pedidoBll.BuscarMeiosPagtoPreferenciais();
 
             //afazer: buscar lista de PESQUISA OS INDICADORES DA LOJA INFORMADA
-            viewModel.ListaObjetoSenhaDesconto = (await pedidoBll.BuscarSenhaDesconto(usuarioLogado.Cliente_Selecionado.DadosCliente.Id,
-                usuarioLogado.Loja_atual_id)).ToList();
+            //viewModel.ListaObjetoSenhaDesconto = (await pedidoBll.BuscarSenhaDesconto(usuarioLogado.Cliente_Selecionado.DadosCliente.Id,
+            //    usuarioLogado.Loja_atual_id)).ToList();
 
             //Montar o select do PedBonshop
-            //List<string> lstPedidoBonshop = (await clienteBll.BuscarListaPedidosBonshop(cpf_cnpj)).ToList();
-            //List<SelectListItem> lstPed = new List<SelectListItem>();
-            //lstPed.Add(new SelectListItem { Value = "0", Text = "Selecione" });
-            //for (int i = 0; i < lstPedidoBonshop.Count; i++)
-            //{
-            //    lstPed.Add(new SelectListItem { Value = lstPedidoBonshop[i], Text = lstPedidoBonshop[i] });
-            //}
-            //viewModel.PedBonshop = new SelectList(lstCd, "Value", "Text");
+            List<string> lstPedidoBonshop = (await clienteBll.BuscarListaPedidosBonshop(usuarioLogado.Cliente_Selecionado.DadosCliente.Cnpj_Cpf)).ToList();
+            List<SelectListItem> lstPed = new List<SelectListItem>();
+            lstPed.Add(new SelectListItem { Value = "0", Text = "Selecione" });
+            for (int i = 0; i < lstPedidoBonshop.Count; i++)
+            {
+                lstPed.Add(new SelectListItem { Value = lstPedidoBonshop[i], Text = lstPedidoBonshop[i] });
+            }
+            viewModel.PedBonshop = new SelectList(lstPed, "Value", "Text");
 
             return View(viewModel);
         }
@@ -180,11 +176,12 @@ namespace Loja.UI.Controllers
                     pedidoDtoSession.PercRT = percComissao;
                 }
 
-                List<string> lstRetorno = (await pedidoBll.PreparaParaCadastrarPedido(usuarioLogado.Loja_atual_id,
-                    usuarioLogado.Cliente_Selecionado.DadosCliente.Id, usuarioLogado.Usuario_atual,
-                    usuarioLogado.S_lista_operacoes_permitidas, Util.SoDigitosCpf_Cnpj(usuarioLogado.Cliente_Selecionado.DadosCliente.Cnpj_Cpf),
-                    pedidoDtoSession)).ToList();
+                //List<string> lstRetorno = (await pedidoBll.PreparaParaCadastrarPedido(usuarioLogado.Loja_atual_id,
+                //    usuarioLogado.Cliente_Selecionado.DadosCliente.Id, usuarioLogado.Usuario_atual,
+                //    usuarioLogado.S_lista_operacoes_permitidas, Util.SoDigitosCpf_Cnpj(usuarioLogado.Cliente_Selecionado.DadosCliente.Cnpj_Cpf),
+                //    pedidoDtoSession)).ToList();
 
+                List<string> lstRetorno = new List<string>();
                 //vamos colocar o pedidoCriacao na session para poder salvar na base depois
                 if (lstRetorno.Count > 0)
                 {
@@ -275,7 +272,7 @@ namespace Loja.UI.Controllers
                 short.Parse(Constantes.COD_INSTALADOR_INSTALA_SIM) :
                 short.Parse(Constantes.COD_INSTALADOR_INSTALA_NAO);
 
-            pedidoDtoSession.DetalhesNF.Observacoes = detalhesPedido.Observacoes;
+            pedidoDtoSession.DetalhesNF.Observacoes = await Task.FromResult(detalhesPedido.Observacoes);
 
             //StBenUsoConsumo é 1 = sim | 0 = não
             pedidoDtoSession.DetalhesNF.StBemUsoConsumo = detalhesPedido.BemConsumo != "0" ?
@@ -288,17 +285,20 @@ namespace Loja.UI.Controllers
 
             //teremos que passar a session para o metodo na bll para salvar o pedido
             //seguindo os passos da lista abaixo
-            var retorno = (await pedidoBll.CadastrarPedido(pedidoDtoSession, usuarioLogado.Loja_atual_id,
-                Util.SoDigitosCpf_Cnpj(usuarioLogado.Cliente_Selecionado.DadosCliente.Cnpj_Cpf), usuarioLogado.Usuario_atual,
-                pedidoDtoSession.CDSelecionado, usuarioLogado.Vendedor_externo, efetivaPedidoBll));
-            if (retorno.ListaErros.Count() > 0)
-            {
-                //deu erro
+            //var retorno = (await pedidoBll.CadastrarPedido(pedidoDtoSession, usuarioLogado.Loja_atual_id,
+            //    Util.SoDigitosCpf_Cnpj(usuarioLogado.Cliente_Selecionado.DadosCliente.Cnpj_Cpf), usuarioLogado.Usuario_atual,
+            //    pedidoDtoSession.CDSelecionado, usuarioLogado.Vendedor_externo, efetivaPedidoBll));
 
-            }
+
+            //if (retorno.ListaErros.Count() > 0)
+            //{
+            //    //deu erro
+
+            //}
 
             //se esta tudo ok redirecionamos para a tela de Pedido
-            return RedirectToAction("BuscarPedido", new { numPedido = retorno.NumeroPedidoCriado });
+            //return RedirectToAction("BuscarPedido", new { numPedido = "Implementando novo cadastro de pedido" });
+            return RedirectToAction("Index", "Cliente", new { numPedido = "--------------------pedido não foi salvo, implementando novo cadastro de pedido" });
         }
 
         public async Task<IActionResult> BuscarPedido(string numPedido)
@@ -306,11 +306,12 @@ namespace Loja.UI.Controllers
             //pegar usuario e numPedido
             var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
 
-            PedidoDto ret = await pedidoBll.BuscarPedido(usuarioLogado.Usuario_atual.Trim(), numPedido);
+            //PedidoDto ret = await pedidoBll.BuscarPedido(usuarioLogado.Usuario_atual.Trim(), numPedido);
+            PedidoDto ret = new PedidoDto();
 
             PedidoViewModel viewModel = new PedidoViewModel();
 
-            viewModel.PedidoDto = ret;
+            viewModel.PedidoDto = await Task.FromResult(ret);
 
             return View(viewModel);
         }
@@ -333,8 +334,8 @@ namespace Loja.UI.Controllers
             viewModel.LojaAtual = usuarioLogado.Loja_atual_id;
 
             //lista completa de indicadores
-            viewModel.ListaIndicadores = (await pedidoBll.BuscarOrcamentistaEIndicadorListaCompleta(usuarioLogado.Usuario_atual,
-                usuarioLogado.S_lista_operacoes_permitidas, usuarioLogado.Loja_atual_id)).ToList();
+            //viewModel.ListaIndicadores = (await pedidoBll.BuscarOrcamentistaEIndicadorListaCompleta(usuarioLogado.Usuario_atual,
+            //    usuarioLogado.S_lista_operacoes_permitidas, usuarioLogado.Loja_atual_id)).ToList();
 
             //lista de cd's
             var lstSelecaoCd = (await produtoBll.WmsApelidoEmpresaNfeEmitenteMontaItensSelect(null)).ToList();
@@ -348,7 +349,7 @@ namespace Loja.UI.Controllers
 
             viewModel.ListaOperacoesPermitidas = usuarioLogado.S_lista_operacoes_permitidas;
 
-            viewModel.PercMaxPorLoja = await pedidoBll.BuscarPercMaxPorLoja(usuarioLogado.Loja_atual_id);
+            //viewModel.PercMaxPorLoja = await pedidoBll.BuscarPercMaxPorLoja(usuarioLogado.Loja_atual_id);
 
             viewModel.ComIndicacao = 0;
 

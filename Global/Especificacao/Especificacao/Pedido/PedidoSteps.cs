@@ -12,6 +12,8 @@ namespace Especificacao.Especificacao.Pedido
         {
             base.AdicionarImplementacao(new Especificacao.Prepedido.PrepedidoSteps());
             RegistroDependencias.AdicionarDependencia("Especificacao.Prepedido.Prepedido.PrepedidoListaDependencias", "Especificacao.Pedido.Pedido.PedidoListaDependencias");
+
+            //todo: afazer: tesmo que implementar o pedido em algum lugar
         }
         [Given(@"O pedido não tem nenhum passo individual, somente passos incluídos pela PedidoListaDependencias")]
         public void GivenOPedidoNaoTemNenhumPassoIndividualSomentePassosIncluidosPelaPedidoListaDependencias()

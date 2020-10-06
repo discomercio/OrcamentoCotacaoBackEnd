@@ -62,6 +62,23 @@ namespace InfraBanco
         public DbSet<TsessaoAbandonada> TsessaoAbandonadas { get => contexto.TsessaoAbandonadas; }
         public DbSet<Tusuario> Tusuarios { get => contexto.Tusuarios; }
 
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+        public DbSet<TnfEmitente> TnfEmitentes { get => contexto.TnfEmitentes; }
+        public DbSet<Tpedido> Tpedidos { get => contexto.Tpedidos; }
+        public DbSet<TestoqueLog> TestoqueLogs { get => contexto.TestoqueLogs; }
+        public DbSet<TestoqueMovimento> TestoqueMovimentos { get => contexto.TestoqueMovimentos; }
+        public DbSet<TpedidoItem> TpedidoItems { get => contexto.TpedidoItems; }
+        public DbSet<Tdesconto> Tdescontos { get => contexto.Tdescontos; }
+        public DbSet<TfinControle> TfinControles { get => contexto.TfinControles; }
+        public DbSet<TpedidoAnaliseEndereco> TpedidoAnaliseEnderecos { get => contexto.TpedidoAnaliseEnderecos; }
+        public DbSet<TpedidoAnaliseEnderecoConfrontacao> TpedidoAnaliseConfrontacaos { get => contexto.TpedidoAnaliseConfrontacaos; }
+        public DbSet<TestoqueItem> TestoqueItems { get => contexto.TestoqueItems; }
+        public DbSet<Testoque> Testoques { get => contexto.Testoques; }
+        public DbSet<TusuarioXLoja> TusuarioXLojas { get => contexto.TusuarioXLojas; }
+        public DbSet<TclienteRefComercial> TclienteRefComercials { get => contexto.TclienteRefComercials; }
+        public DbSet<TclienteRefBancaria> TclienteRefBancarias { get => contexto.TclienteRefBancarias; }
+#endif
+
         //daqui para a frente só é necessário para os testes automatizados
 #if DEBUG_BANCO_DEBUG
         public DbSet<Tbanco> Tbancos { get => contexto.Tbancos; }
@@ -73,7 +90,6 @@ namespace InfraBanco
         public DbSet<TwmsRegraCd> TwmsRegraCds { get => contexto.TwmsRegraCds; }
         public DbSet<TwmsRegraCdXUf> TwmsRegraCdXUfs { get => contexto.TwmsRegraCdXUfs; }
         public DbSet<TwmsRegraCdXUfPessoa> TwmsRegraCdXUfPessoas { get => contexto.TwmsRegraCdXUfPessoas; }
-        public DbSet<TnfEmitente> TnfEmitentes { get => contexto.TnfEmitentes; }
         public DbSet<TwmsRegraCdXUfXPessoaXCd> TwmsRegraCdXUfXPessoaXCds { get => contexto.TwmsRegraCdXUfXPessoaXCds; }
         public DbSet<TformaPagto> TformaPagtos { get => contexto.TformaPagtos; }
         public DbSet<TorcamentistaEIndicadorRestricaoFormaPagto> torcamentistaEIndicadorRestricaoFormaPagtos { get => contexto.torcamentistaEIndicadorRestricaoFormaPagtos; }
@@ -82,5 +98,6 @@ namespace InfraBanco
         public DbSet<TperfilUsuario> TperfilUsuarios { get => contexto.TperfilUsuarios; }
         public DbSet<TcodigoDescricao> tcodigoDescricaos { get => contexto.TcodigoDescricaos; }
 #endif
+
     }
 }

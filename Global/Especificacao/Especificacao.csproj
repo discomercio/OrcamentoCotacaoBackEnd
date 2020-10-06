@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <None Remove="Testes\Utils\BancoTestes\Dados\Tcliente.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\TcodigoDescricao.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\TorcamentistaEindicador.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\Tparametro.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\Tperfil.json" />
@@ -44,6 +45,8 @@
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo20\EnderecoEntrega\ClientePj\EntregaPj - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo20\EnderecoEntrega\ClientePj\EntregaPjTelefones - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo20\EnderecoEntrega\ClientePj\EntregaPjTelefonesPj - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo20\EnderecoEntrega\EnderecoEntrega - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Validacao\Estoque.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Prepedido\Pedido.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\TesteExecucaoCruzadaPedido - Copy.feature.cs" />
   </ItemGroup>
@@ -97,6 +100,12 @@
     <Compile Update="Especificacao\Pedido\Passo10\Permissoes.feature.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
+    <Compile Update="Especificacao\Pedido\Passo20\EnderecoEntrega\EnderecoEntrega_SemPrepedido.feature.cs">
+      <DependentUpon>EnderecoEntrega_SemPrepedido.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Especificacao\Pedido\Passo20\EnderecoEntrega\EnderecoEntregaListaDependencias.feature.cs">
+      <DependentUpon>EnderecoEntregaListaDependencias.feature</DependentUpon>
+    </Compile>
     <Compile Update="Especificacao\Prepedido\Prepedido.feature.cs">
       <DependentUpon>Prepedido.feature</DependentUpon>
     </Compile>
@@ -135,6 +144,14 @@
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
     <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo10\CamposSimples.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo20\EnderecoEntrega\EnderecoEntrega_SemPrepedido.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo20\EnderecoEntrega\EnderecoEntregaListaDependencias.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
@@ -191,6 +208,7 @@
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TperfilUsuario.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tperfil.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tparametro.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TcodigoDescricao.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tusuario.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TorcamentistaEindicador.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tcliente.json" />

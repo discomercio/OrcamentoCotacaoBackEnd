@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Configuration;
 using Loja.Bll.Util;
-using Loja.Modelos;
 using Microsoft.Extensions.Logging;
 using Loja.Bll.Dto.ClienteDto;
 using Loja.Bll.Dto.PedidoDto.DetalhesPedido;
+using InfraBanco.Modelos;
 
 #nullable enable
 

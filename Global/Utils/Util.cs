@@ -844,7 +844,7 @@ namespace UtilsGlobais
             return retorno;
         }
 
-        public static async Task<string> GerarNsu(ContextoBdGravacao dbgravacao, string id_nsu, ContextoBdProvider contextoProvider)
+        public static async Task<string> GerarNsu(ContextoBdGravacao dbgravacao, string id_nsu)
         {
             string retorno = "";
             int n_nsu = -1;
@@ -1026,6 +1026,30 @@ namespace UtilsGlobais
             return apelidoEmpresa;
         }
 
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+        //Afazer: Edu o método "ObterApelidoEmpresaNfeEmitentes" está sendo duplicado porque é utilizado
+        //dentro da transação do cadastro de pedido que utiliza o contexto de gravação, 
+        //não fazia sentido criar uma interface de contexto apenas para um método
+        public static async Task<string> ObterApelidoEmpresaNfeEmitentesGravacao(int id_nfe_emitente, ContextoBdGravacao dbGravacao)
+        {
+            string apelidoEmpresa = "";
+
+            if (id_nfe_emitente == 0)
+            {
+                apelidoEmpresa = "Cliente";
+                return apelidoEmpresa;
+            }
+
+            var apelidoTask = from c in dbGravacao.TnfEmitentes
+                              where c.Id == id_nfe_emitente
+                              select c.Apelido;
+
+            apelidoEmpresa = await apelidoTask.FirstOrDefaultAsync();
+
+            return apelidoEmpresa;
+        }
+#endif
+
         public static async Task<Tparametro> BuscarRegistroParametro(string id, ContextoBdProvider contextoProvider)
         {
             var db = contextoProvider.GetContextoLeitura();
@@ -1161,6 +1185,119 @@ namespace UtilsGlobais
             cep = sCep.Substring(0, 4) + " - " + sCep.Substring(5, 3);
 
             return cep;
+        }
+
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+        public static async Task<float> ObterPercentualDesagioRAIndicador(string indicador, ContextoBdProvider contextoProvider)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+            var percDesagioIndicadorRATask = (from c in db.TorcamentistaEindicadors
+                                              where c.Apelido == indicador
+                                              select c.Perc_Desagio_RA).FirstOrDefaultAsync();
+
+            float percDesagioIndicadorRA = await percDesagioIndicadorRATask ?? 0;
+
+            return percDesagioIndicadorRA;
+        }
+
+        public static async Task<decimal> ObterLimiteMensalComprasDoIndicador(string indicador, ContextoBdProvider contextoProvider)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+            var vlLimiteMensalCompraTask = (from c in db.TorcamentistaEindicadors
+                                            where c.Apelido == indicador
+                                            select c.Vl_Limite_Mensal).FirstOrDefaultAsync();
+
+            decimal vlLimiteMensalCompra = await vlLimiteMensalCompraTask;
+
+            return vlLimiteMensalCompra;
+        }
+
+        public static async Task<decimal> CalcularLimiteMensalConsumidoDoIndicador(string indicador, DateTime data, ContextoBdProvider contextoProvider)
+        {
+            //buscar data por ano-mes-dia]
+            //SELECT ISNULL(SUM(qtde* preco_venda),0) AS vl_total
+            //FROM t_PEDIDO tP INNER JOIN t_PEDIDO_ITEM tPI ON(tP.pedido= tPI.pedido)
+            //WHERE(st_entrega <> 'CAN') AND
+            //     (indicador = 'POLITÉCNIC') AND
+            //     (data >= '2020-02-01') AND
+            //     (data < '2020-03-01')
+
+            var db = contextoProvider.GetContextoLeitura();
+
+            DateTime dataInferior = new DateTime(data.Year, data.Month, 1);
+            DateTime dataSuperior = dataInferior.AddMonths(1);
+
+
+            var vlTotalConsumidoTask = from c in db.TpedidoItems.Include(x => x.Tpedido)
+                                       where c.Tpedido.St_Entrega != "CAN" &&
+                                             c.Tpedido.Indicador == indicador &&
+                                             c.Tpedido.Data.HasValue &&
+                                             c.Tpedido.Data.Value.Date >= dataInferior &&
+                                             c.Tpedido.Data.Value.Date < dataSuperior
+                                       select new
+                                       {
+                                           qtde = c.Qtde,
+                                           precoVenda = c.Preco_Venda
+                                       };
+
+            decimal vlTotalConsumido = await vlTotalConsumidoTask.SumAsync(x => (short)x.qtde * x.precoVenda);
+
+            var vlTotalDevolvidoTask = from c in db.TpedidoItemDevolvidos.Include(x => x.Tpedido)
+                                       where c.Tpedido.Indicador == indicador &&
+                                             c.Tpedido.Data.HasValue &&
+                                             c.Tpedido.Data.Value.Date >= dataInferior &&
+                                             c.Tpedido.Data.Value.Date < dataSuperior
+                                       select new
+                                       {
+                                           qtde = c.Qtde,
+                                           precoVenda = c.Preco_Venda
+                                       };
+            decimal vlTotalDevolvido = await vlTotalDevolvidoTask.SumAsync(x => (short)x.qtde * x.precoVenda);
+
+            decimal vlTotalConsumidoRetorno = vlTotalConsumido - vlTotalDevolvido;
+
+            return vlTotalConsumidoRetorno;
+        }
+#endif
+
+        public static string TransformaHora_Minutos()
+        {
+            string hora = DateTime.Now.Hour.ToString().PadLeft(2, '0');
+            string minuto = DateTime.Now.AddMinutes(-10).ToString().PadLeft(2, '0');
+
+            return hora + minuto;
+        }
+
+        public static string RemoverAcentos(string text)
+        {
+            StringBuilder sbReturn = new StringBuilder();
+            var arrayText = text.Normalize(NormalizationForm.FormD).ToCharArray();
+            foreach (char letter in arrayText)
+            {
+                if (CharUnicodeInfo.GetUnicodeCategory(letter) != UnicodeCategory.NonSpacingMark)
+                    sbReturn.Append(letter);
+            }
+            return sbReturn.ToString();
+        }
+
+        public static string IsTextoValido(string texto, out string retorno)
+        {
+#nullable enable
+            string caracterEncontrados = "";
+            string caracteres = "!#$%¨&*()-?:{}][ÄÅÁÂÀÃäáâàãÉÊËÈéêëèÍÎÏÌíîïìÖÓÔÒÕöóôòõÜÚÛüúûùÇç";
+
+            List<string> splitCaracteres = caracteres.Split().ToList();
+
+            List<string> letras = texto.Split().ToList();
+
+            foreach (var x in letras)
+                foreach (var y in splitCaracteres)
+                    if (x == y)
+                        caracterEncontrados += y + " ";
+
+
+            return retorno = caracterEncontrados;
+#nullable disable
         }
     }
 }

@@ -40,11 +40,22 @@ namespace MagentoBusiness.UtilsMagento
 
         public OrcamentistaMagento DadosOrcamentista { get; set; }
 
-        public class PagtoMagento
+        public class Magento
+        {
+            public string Op_av_forma_pagto { get; set; }
+        }
+
+        public class Markeplace
         {
             public string Op_pu_forma_pagto { get; set; }
             public int C_pu_vencto_apos { get; set; }
-            public string Op_av_forma_pagto { get; set; }
+        }
+
+        public class PagtoMagento
+        {
+            public Magento Magento { get; set; }
+            public Markeplace Markeplace { get; set; }
+            
         }
 
         public PagtoMagento FormaPagto { get; set; }

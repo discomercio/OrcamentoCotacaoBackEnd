@@ -71,5 +71,9 @@ namespace InfraBanco.Modelos
         [Column("subgrupo")]
         [MaxLength(10)]
         public string Subgrupo { get; set; }
+
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+        public ICollection<TprodutoLoja> TprodutoLoja { get; set; }
+#endif
     }
 }

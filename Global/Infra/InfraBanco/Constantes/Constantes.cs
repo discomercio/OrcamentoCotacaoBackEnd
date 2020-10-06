@@ -14,7 +14,6 @@ namespace InfraBanco.Constantes
         public static string TEL_BONSHOP_1 = "1139344400";
         public static string TEL_BONSHOP_2 = "1139344420";
         public static string TEL_BONSHOP_3 = "1139344411";
-
         public enum CodSistemaResponsavel
         {
             COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP = 1,
@@ -22,7 +21,23 @@ namespace InfraBanco.Constantes
             COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS = 3,
             COD_SISTEMA_RESPONSAVEL_CADASTRO__APIMAGENTO = 4
         };
-        
+
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+        public const string T_PEDIDO_ANALISE_ENDERECO = "T_PEDIDO_ANALISE_ENDERECO";
+        public const string T_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO = "T_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO";
+
+        public const string ID_FORMA_PAGTO_DINHEIRO = "1";  
+        public const string ID_FORMA_PAGTO_DEPOSITO = "2";
+        public const string ID_FORMA_PAGTO_CHEQUE = "3";
+        public const string ID_FORMA_PAGTO_BOLETO = "4";
+        public const string ID_FORMA_PAGTO_CARTAO = "5";
+        public const string ID_FORMA_PAGTO_BOLETO_AV = "6";
+        public const string ID_FORMA_PAGTO_CARTAO_MAQUINETA = "7";
+
+        public const string AGUARDANDO_EMISSAO_BOLETO = "006";
+        public const string ANALISE_CREDITO_USUARIO_AUTOMATICO = "AUTOMÁTICO";
+#endif
+
 
         public const int FATOR_BD = 1209;
 
@@ -63,6 +78,13 @@ namespace InfraBanco.Constantes
         public const int MAX_TAMANHO_SENHA = 16;
 
         public const int MAX_TAMANHO_LOJA = 3;
+
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+        public const int MAX_TAMANHO_ID_PEDIDO_MAGENTO = 9;
+        public const int MAX_TAMANHO_ID_PEDIDO_MARKETPLACE = 20;
+        public const int MIN_TAMANHO_ID_PEDIDO_MARKETPLACE = 12;
+#endif
+
 
         //'	Percentual de deságio para RA Líquida
 
@@ -1108,7 +1130,6 @@ namespace InfraBanco.Constantes
         public const int MAX_SERVER_SCRIPT_TIMEOUT_BRASPAG_EM_SEG = 300;
 
         //' TAMANHO MÁXIMO DO CAMPO ENDEREÇO DEVIDO À RESTRIÇÃO EXISTENTE NA NOTA FISCAL ELETRÔNICA
-
         public const int MAX_TAMANHO_CAMPO_ENDERECO = 60;
 
         //'	ANÁLISE DE ENDEREÇO
