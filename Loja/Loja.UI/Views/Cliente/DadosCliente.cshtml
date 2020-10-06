@@ -4,7 +4,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h5>Novo Pedido</h5>
 
 @section ScriptsDiretos{
     <script src="~/lib/jquery-mask/jquery.mask.js"></script>
@@ -41,7 +40,7 @@
         })
 
         $('#addRefComercial').on('click', function () {
-
+            debugger;
             var index = $('#index').val();
 
             if (index == undefined) {
@@ -49,25 +48,22 @@
                 $('#index').val(index);
             }
 
-            var linha = "<div class='collapsible-body'>";
-            linha += "<div class='row'>";
-            linha += "<div class='input-field col s3'>";
-            linha += "<input name='[" + index + "].Nome_Empresa' id='" + index + "-Nome_Empresa' type='text' class='validate' />";
-            linha += "<label for='Nome_Empresa'>NOME DA EMPRESA</label>";
+            var linha = "<hr /><div class='form-group row'>";
+            linha += "<div class='col-sm-4' style='text-align: initial;'>";
+            linha += "<label class='col-form-label' for='Nome_Empresa'>NOME DA EMPRESA</label>";
+            linha += "<input name='[" + index + "].Nome_Empresa' id='" + index + "-Nome_Empresa' type='text' class='form-control' />";
             linha += "</div>";
-            linha += "<div class='input-field col s2'>";
-            linha += "<input name='[" + index + "].Contato' id='" + index + "-Contato' type='text' class='validate'/>";
-            linha += "<label for='Contato'>CONTATO</label>";
+            linha += "<div class='col-sm-4' style='text-align: initial;'>";
+            linha += "<label class='col-form-label' for='Contato'>CONTATO</label>";
+            linha += "<input name='[" + index + "].Contato' id='" + index + "-Contato' type='text' class='form-control'/>";
             linha += "</div>";
-            linha += "<div class='input-field col s2'>";
-            linha += "<input name='[" + index + "].Telefone' id='" + index + "-Telefone' type='text' class='validate' />";
-            linha += "<label for='Telefone'>TELEFONE</label>";
-            linha += "</div></div></div>";
+            linha += "<div class='col-sm-4' style='text-align: initial;'>";
+            linha += "<label class='col-form-label' for='Telefone'>TELEFONE</label>";
+            linha += "<input name='[" + index + "].Telefone' id='" + index + "-Telefone' type='text' class='form-control' />";
+            linha += "</div></div>";
 
-            $('#collapsibleComercial li').append(linha);
+            $('#collapsible-body-comercial').append(linha);
             $('#' + index + '-Telefone').mask("(00) 0000-0000");
-            $('#collapsibleComercial li').addClass('active');
-            $('#collapsibleComercial').collapsible({ accordion: false });
 
             index++;
             $('#index').val(index);
@@ -91,6 +87,7 @@
         $('#addRefBancaria').on('click', function () {
             if (!$("#RefBancariabody-0").is(":visible")) {
                 $("#RefBancariabody-0").show();
+                $("#RefBancariabody-0").css('display', 'inline-flex');
                 return;
             }
 
@@ -98,18 +95,7 @@
             //alert("Máximo de 3 referências bancárias.");
         });
 
-        if ($('#produtor').val() == "2")
-            $('#ehProdutor').show();
-        else
-            $('#ehProdutor').hide();
 
-        $('#produtor').change(function () {
-
-            if ($('#produtor').val() == "2")
-                $('#ehProdutor').show();
-            else
-                $('#ehProdutor').hide();
-        });
         VerificaCampos();
     });
 
@@ -155,12 +141,12 @@
             $('#outro').val("true");
         }
 
-        if ($('#justificativa').val() != "") {
-            $('#justificativa').formSelect();
-        }
-        if ($('#indicador').val() != "") {
-            $('#indicador').formSelect();
-        }
+        //if ($('#justificativa').val() != "") {
+        //    $('#justificativa').formSelect();
+        //}
+        //if ($('#indicador').val() != "") {
+        //    $('#indicador').formSelect();
+        //}
     }
 
     function ValidarProdutorIcms(cpfCnpj) {
@@ -484,690 +470,799 @@
 
 </script>
 
-<div class="col s12" style="margin-left:5%">
-
-    @using (Html.BeginForm("CadastrarCliente", "Cliente", FormMethod.Post,
+<div class="card" style="min-height: 75vh;">
+    <div class="page-header card">
+        <div class="row align-items-end">
+            <div class="col-lg-8">
+                <div class="page-header-title">
+                    <div class="d-inline">
+                        <h5>Novo Pedido</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="page-header-breadcrumb">
+                    <ul class=" breadcrumb breadcrumb-title">
+                        <li class="breadcrumb-item">
+                            <a href="@Url.Action(" Index", "Home" )"><i class="feather icon-home"></i></a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="@Url.Action(" Index", "Cliente" )">Novo Pedido</a> </li>
+                        <li class="breadcrumb-item"><a href="#!">Cliente</a> </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-header card">
+        @using (Html.BeginForm("CadastrarCliente", "Cliente", FormMethod.Post,
 new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", id = "formulario" }))
-    {
-        <div class="row col s12"></div>
-        //afazer: Será necessário trazer uma flag do servidor para verificar se o usuário pode alterar os dados do cliente
-        <input type="hidden" id="permiteEditar" name="permiteEditar" value="@Model.PermiteEdicao.ToString()" />
-        <input type="hidden" id="tipo" name="tipo" value="@Model.DadosCliente.Tipo" />
-
-        @if (Model.PermiteEdicao)//adicionar uma flag para dizer se é novo
         {
-            //Permite edição PF
-            @if (Model.DadosCliente?.Tipo == "PF")
-            {
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input name="nome" id="nome" type="text" value="@Model.DadosCliente?.Nome" />
-                        <label for="ie">NOME</label>
-                    </div>
-                </div>
-                <div class="row col s12">
-                    <div class="input-field col s3">
-                        <input name="Cnpj_Cpf" id="cpf_cnpj" type="text" value="@Model.DadosCliente?.Cnpj_Cpf" />
-                        <label for="cpf_cnpj">CPF</label>
-                    </div>
-                    <div class="input-field col s3">
-                        <input name="rg" id="rg" type="text" value="@Model.DadosCliente?.Rg" />
-                        <label for="rg">RG</label>
-                    </div>
-                    <div class="input-field col s2">
-                        <input name="nascimento" style="line-height:initial;"
-                               id="nascimento" type="date"
-                               value="@Model.DadosCliente?.Nascimento?.ToString("yyyy-MM-dd")" />
-                        <label for="nascimento">NASCIMENTO</label>
-                    </div>
-                    <div class="input-field col s1">
-                        <input name="sexo" id="sexo" type="text" value="@Model.DadosCliente?.Sexo" />
-                        <label for="sexo">SEXO</label>
-                    </div>
-                </div>
-            }
-            else
-            {
-                <div class="row col s12">
-                    <div class="input-field col s12">
-                        <input name="nome" id="razao" type="text" value="@Model.DadosCliente.Nome" />
-                        <label for="razao">RAZÃO SOCIAL</label>
-                    </div>
-                </div>
-                <div class="row col s12">
-                    <div class="input-field col s3">
-                        <input name="Cnpj_Cpf" id="cpf_cnpj" type="text" value="@Model.DadosCliente.Cnpj_Cpf" />
-                        <label for="cpf_cnpj">CNPJ</label>
-                    </div>
-                </div>
-            }
-            //Endereço
-            <div class="row col s12">
-                <div class="input-field col s2">
-                    @* ao sair do campo chamar o metodo cep/buscarCep/ *@
-                    <input name="cep" type="text" id="cep" class="validate" onblur="DigitouCepCadastro()" value="@Model.DadosCliente?.Cep" />
-                    <label for="cep">CEP</label>
-                </div>
-                <div class="input-field col s4">
-                    <input name="endereco" id="endereco" type="text" value="@Model.DadosCliente?.Endereco" />
-                    <label for="endereco" id="lbEntrega">ENDEREÇO </label>
-                </div>
-                <div class="input-field col s2">
-                    <input name="numero" id="numero" type="text" value="@Model.DadosCliente?.Numero" />
-                    <label for="numero">NÚMERO </label>
-                </div>
-                <div class="input-field col s2">
-                    <input name="complemento" id="complemento" type="text" value="@Model.DadosCliente?.Complemento" />
-                    <label for="complemento" id="lblComplemento">COMPLEMENTO</label>
-                </div>
-            </div>
-            <div class="row col s12">
-                <div class="input-field col s3">
-                    <input name="bairro" id="bairro" type="text" value="@Model.DadosCliente?.Bairro" />
-                    <label for="bairro" id="lblBairro">BAIRRO</label>
-                </div>
-                <div class="input-field col s3">
-                    <input name="cidade" id="cidade" type="text" value="@Model.DadosCliente?.Cidade" />
-                    <label for="cidade" id="lblCidade">CIDADE</label>
-                </div>
-                <div class="input-field col s3">
-                    <input name="uf" id="uf" type="text" value="@Model.DadosCliente?.Uf" />
-                    <label for="uf" id="lblUf">UF</label>
-                </div>
-            </div>
-            //Permite edição PF
-            //Telefones
-            @if (Model.DadosCliente?.Tipo == "PF")
-            {
-                <div class="row col s12">
-                    <div class="input-field col s3">
-                        <input name="TelefoneResidencial" id="telRes" type="tel" value="@Model.DadosCliente?.TelefoneResidencial" />
-                        <label for="telRes">FONE RESIDENCIAL</label>
-                    </div>
-                    <div class="input-field col s3">
-                        <input name="Celular" id="celular" type="tel" value="@Model.DadosCliente?.Celular" />
-                        <label for="celular">CELULAR</label>
-                    </div>
-                    <div class="input-field col s3">
-                        <input name="TelComercial" id="telCom" type="tel" value="@Model.DadosCliente?.TelComercial" />
-                        <label for="telCom">FONE COMERCIAL</label>
-                    </div>
-                    <div class="input-field col s1">
-                        <input name="Ramal" id="ramal" type="tel" value="@Model.DadosCliente?.Ramal" />
-                        <label for="ramal">RAMAL</label>
-                    </div>
-                </div>
-                <div class="row col s12">
-                    <div class="input-field col s12">
-                        <input name="Observacao_Filiacao" id="observacoes" type="text" value="@Model.DadosCliente?.Observacao_Filiacao" />
-                        <label for="observacoes">OBSERVAÇÕES</label>
-                    </div>
-                </div>
-            }
-            else
-            {
-                //aqui vai o PJ
-                <div class="row col s12">
-                    <div class="input-field col s3">
-                        <input name="telComercial" id="telCom" type="tel" class="validate" value="@Model.DadosCliente?.TelComercial" />
-                        <label for="telCom">TELEFONE 1</label>
-                    </div>
-                    <div class="input-field col s1">
-                        <input name="ramal" id="ramal" type="text" class="validate" value="@Model.DadosCliente?.Ramal" />
-                        <label for="ramal">RAMAL</label>
-                    </div>
-                    <div class="input-field col s3">
-                        <input name="telComercial2" id="telCom2" type="tel" class="validate" value="@Model.DadosCliente?.TelComercial2" />
-                        <label for="telCom2">TELEFONE 2</label>
-                    </div>
-                    <div class="input-field col s1">
-                        <input name="ramal2" id="ramal2" type="text" value="@Model.DadosCliente?.Ramal2" />
-                        <label for="ramal2">RAMAL</label>
-                    </div>
-                </div>
-                <div class="row col s12">
-                    <div class="input-field">
-                        <input name="contato" id="contatoNaEmpresa" type="text" value="@Model.DadosCliente?.Contato" />
-                        <label for="contatoNaEmpresa">NOME DA PESSOA NA EMPRESA</label>
-                    </div>
-                </div>
-            }
-            //Email
-            <div class="row col s12">
-                <div class="input-field col s12">
-                    <input name="email" id="email" type="email" value="@Model.DadosCliente?.Email" />
-                    <label for="email">E-MAIL</label>
-                </div>
-            </div>
-            //Email xml
-            <div class="row col s12">
-                <div class="input-field col s12">
-                    <input name="emailXml" id="emailXml" type="email" value="@Model.DadosCliente?.EmailXml" />
-                    <label for="emailXml">E-MAIL (XML)</label>
-                </div>
-            </div>
+            <div class="row col s12"></div>
 
-            @if (Model.DadosCliente?.Tipo == "PF")
+
+            @if (Model.PermiteEdicao)//adicionar uma flag para dizer se é novo
             {
-                <div class="row col s12">
-                    <div class="input-field col s2">
-                        @Html.DropDownList("ProdutorRural",
-new SelectList(Model.LstProdutoRural, "Value", "Text",
-Model.DadosCliente?.ProdutorRural), new { @id = "produtor", @name = "ProdutorRural" })
-                        <label>PRODUTO RURAL</label>
-                    </div>
-                    <div id="ehProdutor">
-                        <div class="input-field col s2">
-                            <input name="ie" id="ie" type="text" value="@Model.DadosCliente?.Ie" />
-                            <label id="lblIe" for="ie">IE</label>
+                //Permite edição PF
+                @if (Model.DadosCliente?.Tipo == "PF")
+                {
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <label class="col-form-label">Nome</label>
+                            <input type="text" class="form-control" name="nome" id="nome"
+                                   placeholder="NOME"
+                                   value="@Model.DadosCliente?.Nome">
+                            <span class="messages"></span>
                         </div>
-                        <div class="input-field col s2">
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <label class="col-form-label">CPF</label>
+                            <input class="form-control" name="Cnpj_Cpf" id="cpf_cnpj" type="text" value="@Model.DadosCliente?.Cnpj_Cpf" />
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <label class="col-form-label">RG</label>
+                            <input class="form-control" name="rg" id="rg" type="text" value="@Model.DadosCliente?.Rg" />
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <label class="col-form-label">NASCIMENTO</label>
+                            <input class="form-control" name="nascimento" id="nascimento" type="text"
+                                   value="@Model.DadosCliente?.Nascimento?.ToString(" yyyy-MM-dd")" />
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <label class="col-form-label">SEXO</label>
+                            <input class="form-control" name="sexo" id="sexo" type="text"
+                                   value="@Model.DadosCliente?.Sexo" />
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <label class="col-form-label">RAZÃO SOCIAL</label>
+                            <input type="text" class="form-control" name="razao" id="razao"
+                                   placeholder="RAZÃO SOCIAL"
+                                   value="@Model.DadosCliente?.Nome">
+                            <span class="messages"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <label class="col-form-label">CNPJ</label>
+                            <input type="text" class="form-control" name="cpf_cnpj" id="cpf_cnpj"
+                                   placeholder="CNPJ"
+                                   value="@Model.DadosCliente?.Cnpj_Cpf">
+                            <span class="messages"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <label class="col-form-label">CNPJ</label>
+                            <input name="Cnpj_Cpf" id="cpf_cnpj" type="text"
+                                   class="form-control" value="@Model.DadosCliente.Cnpj_Cpf" />
+                        </div>
+                    </div>
+                }
+                //Endereço
+
+                <div class="form-group row">
+                    <div class="col-sm-12 col-md-2 col-lg-3">
+                        @* ao sair do campo chamar o metodo cep/buscarCep/ *@
+                        <label class="col-form-label">CEP</label>
+                        <input name="cep" type="text" id="cep" class="form-control" onblur="DigitouCepCadastro()" value="@Model.DadosCliente?.Cep" />
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4">
+                        <label class="col-form-label">ENDEREÇO </label>
+                        <input name="endereco" id="endereco" type="text" class="form-control" value="@Model.DadosCliente?.Endereco" />
+                    </div>
+                    <div class="col-sm-12 col-md-2">
+                        <label class="col-form-label">NÚMERO </label>
+                        <input name="numero" id="numero" type="text" class="form-control" value="@Model.DadosCliente?.Numero" />
+                    </div>
+                    <div class="col-sm-12 col-lg-3">
+                        <label class="col-form-label">COMPLEMENTO</label>
+                        <input name="complemento" id="complemento" type="text"
+                               class="form-control"
+                               value="@Model.DadosCliente?.Complemento" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-4">
+                        <label class="col-form-label">BAIRRO</label>
+                        <input name="bairro" id="bairro" type="text" class="form-control" value="@Model.DadosCliente?.Bairro" />
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="col-form-label">CIDADE</label>
+                        <input name="cidade" id="cidade" type="text" class="form-control" value="@Model.DadosCliente?.Cidade" />
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="col-form-label">UF</label>
+                        <input name="uf" id="uf" type="text" class="form-control" value="@Model.DadosCliente?.Uf" />
+                    </div>
+                </div>
+                //Permite edição PF
+                //Telefones
+                @if (Model.DadosCliente?.Tipo == "PF")
+                {
+                    <div class="form-group row">
+                        <div class="col-sm-3">
+                            <label class="col-form-label">FONE RESIDENCIAL</label>
+                            <input name="TelefoneResidencial" id="telRes" type="tel"
+                                   class="form-control"
+                                   value="@Model.DadosCliente?.TelefoneResidencial" />
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="col-form-label">CELULAR</label>
+                            <input name="Celular" id="celular" type="tel"
+                                   class="form-control"
+                                   value="@Model.DadosCliente?.Celular" />
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="col-form-label">FONE COMERCIAL</label>
+                            <input name="TelComercial" id="telCom" type="tel"
+                                   class="form-control"
+                                   value="@Model.DadosCliente?.TelComercial" />
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="col-form-label">RAMAL</label>
+                            <input name="Ramal" id="ramal" type="tel"
+                                   class="form-control"
+                                   value="@Model.DadosCliente?.Ramal" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <label class="col-form-label">OBSERVAÇÕES</label>
+                            <input name="Observacao_Filiacao" id="observacoes" type="text"
+                                   class="form-control"
+                                   value="@Model.DadosCliente?.Observacao_Filiacao" />
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    //aqui vai o PJ
+                    <div class="form-group row">
+                        <div class="col-sm-3">
+                            <label class="col-form-label">TELEFONE 1</label>
+                            <input name="telComercial" id="telCom" type="tel"
+                                   class="form-control"
+                                   value="@Model.DadosCliente?.TelComercial" />
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="col-form-label">RAMAL</label>
+                            <input name="ramal" id="ramal" type="text"
+                                   class="form-control"
+                                   value="@Model.DadosCliente?.Ramal" />
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="col-form-label">TELEFONE 2</label>
+                            <input name="telComercial2" id="telCom2" type="tel"
+                                   class="form-control"
+                                   value="@Model.DadosCliente?.TelComercial2" />
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="col-form-label">RAMAL</label>
+                            <input name="ramal2" id="ramal2" type="text"
+                                   class="form-control"
+                                   value="@Model.DadosCliente?.Ramal2" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <label class="col-form-label">NOME DA PESSOA NA EMPRESA</label>
+                            <input name="contato" id="contatoNaEmpresa" type="text"
+                                   class="form-control"
+                                   value="@Model.DadosCliente?.Contato" />
+                        </div>
+                    </div>
+                }
+                //Email
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label class="col-form-label">E-MAIL</label>
+                        <input name="email" id="email" type="email"
+                               class="form-control"
+                               value="@Model.DadosCliente?.Email" />
+                    </div>
+                </div>
+                //Email xml
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label class="col-form-label">E-MAIL (XML)</label>
+                        <input name="emailXml" id="emailXml" type="email"
+                               class="form-control"
+                               value="@Model.DadosCliente?.EmailXml" />
+                    </div>
+                </div>
+
+                @if (Model.DadosCliente?.Tipo == "PF")
+                {
+                    <div class="form-group row">
+                        <div class="col-sm-3">
+                            <label class="col-form-label" for="produtor">PRODUTOR RURAL</label>
+                            @Html.DropDownList("ProdutorRural",
+                            new SelectList(Model.LstProdutoRural, "Value", "Text",
+                            Model.DadosCliente?.ProdutorRural), new
+                            {
+                            @id = "produtor",
+                            @name = "ProdutorRural",
+                            @class = "form-control js-example-basic-hide-search"
+                            })
+                        </div>
+
+                        @{
+                            if (Model.DadosCliente.ProdutorRural == 2)
+                            {
+
+                                <div class="col-sm-3">
+                                    <label class="col-form-label">IE</label>
+                                    <input name="ie" id="ie" type="text"
+                                           class="form-control"
+                                           value="@Model.DadosCliente?.Ie" />
+                                </div>
+                                <div class="col-sm-4">
+                                    <label class="col-form-label" for="contribuinte">CONTRIBUINTE ICMS</label>
+                                    @Html.DropDownList("Contribuinte_Icms_Status",
+                                    new SelectList(Model.LstContribuinte, "Value", "Text",
+                                    Model.DadosCliente?.Contribuinte_Icms_Status), new
+                                    {
+                                    @id = "contribuinte",
+                                    @name = "Contribuinte_Icms_Status",
+                                    @class = "form-control js-example-basic-hide-search"
+                                    })
+                                </div>
+                            }
+                        }
+
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group row">
+                        <div class="col-sm-3">
+                            <label class="col-form-label">IE</label>
+                            <input name="ie" id="ie" type="text" class="form-control" value="@Model.DadosCliente?.Ie" />
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="col-form-label" for="contribuinte">CONTRIBUINTE ICMS</label>
                             @Html.DropDownList("Contribuinte_Icms_Status",
-new SelectList(Model.LstContribuinte, "Value", "Text",
-Model.DadosCliente?.Contribuinte_Icms_Status), new { @id = "contribuinte", @name = "Contribuinte_Icms_Status" })
-                            <label>CONTRIBUINTE ICMS</label>
+                            new SelectList(Model.LstContribuinte, "Value", "Text",
+                            Model.DadosCliente?.Contribuinte_Icms_Status),
+                            new
+                                 {
+                            @id = "contribuinte",
+                            @name = "Contribuinte_Icms_Status",
+                            @class = "form-control js-example-basic-hide-search"
+                            })
                         </div>
-                    </div>
-                </div>
-            }
-            else
-            {
-                <div class="row col s12">
-                    <div class="input-field col s3">
-                        <input name="ie" id="ie" type="text" value="@Model.DadosCliente?.Ie" />
-                        <label for="ie">IE</label>
-                    </div>
-                    <div class="input-field col s3">
-                        @Html.DropDownList("Contribuinte_Icms_Status",
-new SelectList(Model.LstContribuinte, "Value", "Text",
-Model.DadosCliente?.Contribuinte_Icms_Status), new { @id = "contribuinte", @name = "Contribuinte_Icms_Status" })
-                        <label>CONTRIBUINTE ICMS</label>
-                    </div>
-                </div>
-                //referencias permite edição
-                <div class="row">
-                    <div class="col s12">
-                        <div class="input-field">
-                            <ul class="collapsible" id="collapsibleBancaria" style="border-radius:4px">
-                                <li>
-                                    <div class="collapsible-header" style="color:black!important;border-radius:4px">
-                                        Referências Bancárias (@Model.RefBancaria?.Count)
 
-                                    </div>
-                                    <div class="collapsible-body">
-                                        @{
-                                            var indice = 0;
-                                            @*@if (Model.RefBancaria.Count > 0)
-                                                {*@
-                                            <div>
-                                                <div class="row">
-                                                    <a class="btn-flat right" id="addRefBancaria" style="color:black !important;">
-                                                        <i class="material-icons right">add</i>
-                                                        Adicionar Referência
-                                                    </a>
+                    </div>
+                    //referencias permite edição
+                    <div class="accordion" id="accordionBancaria">
+                        <div class="card">
+                            @* Cabeçalho do accordion *@
+                            <div class="card-header" id="headingOne">
+                                <h2 class="mb-0">
+                                    <a class="btn btn-link btn-block text-left" data-toggle="collapse" data-target="#collapseOneBancaria" aria-expanded="true" aria-controls="collapseOne">
+                                        Referências Bancárias (@Model.RefBancaria?.Count)
+                                    </a>
+                                </h2>
+                            </div>
+                            @* Item do accordion *@
+                            <div id="collapseOneBancaria" class="panel-collapse collapse in" aria-labelledby="headingOne" data-parent="#accordionBancaria">
+
+                                @{
+                                    var indice = 0;
+
+                                    <div class="card-body form-control-right">
+                                        <hr />
+                                        <a class="btn btn-link btn-block text-right" id="addRefBancaria" style="color:black !important;">
+                                            Adicionar Referência
+                                            <i class="fa fa-plus"></i>
+                                        </a>
+                                        <hr />
+
+
+                                        @while (Model.RefBancaria?.Count < 3)
+                                        {
+                                            Model.RefBancaria.Add(new Loja.Bll.Dto.ClienteDto.RefBancariaDtoCliente());
+                                        }
+
+                                        @foreach (var r in Model.RefBancaria)
+                                        {
+                                            string visible = "display: none;";
+                                            if (!String.IsNullOrWhiteSpace(r.ContaBanco))
+                                            {
+                                                visible = "display: block";
+                                            }
+
+                                            <div class="form-group row" id="RefBancariabody-@indice" style="@visible">
+                                                <div class="col-sm-2">
+                                                    <label class="col-form-label" for="@indice-banco">BANCO</label>
+                                                    @Html.DropDownList("[" + indice + "].Banco",
+                                                   new SelectList(Model.LstComboBanco, "Value", "Text", r.Banco),
+                                                   new
+                                                        {
+                                                       @id = indice + "-banco",
+                                                       @name = "[" + indice + "].BancoDescricao",
+                                                       @class = "form-control js-example-basic-hide-search"
+                                                   })
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <label class="col-form-label">AGÊNCIA</label>
+                                                    <input name="[@indice].Agencia" id="@indice-agencia"
+                                                           type="text"
+                                                           value="@r.Agencia"
+                                                           class="form-control" />
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <label class="col-form-label" for="@indice-conta">CONTA</label>
+                                                    <input name="[@indice].ContaBanco" id="@indice-conta"
+                                                           type="text"
+                                                           value="@r.ContaBanco"
+                                                           class="form-control" />
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <label class="col-form-label" for="@indice-telBanco">TELEFONE</label>
+                                                    <input name="[@indice].TelefoneBanco" id="@indice-telBanco"
+                                                           type="text"
+                                                           value="@r.TelefoneBanco"
+                                                           class="form-control" />
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <label class="col-form-label">CONTATO</label>
+                                                    <input name="[@indice].ContatoBanco" id="@indice-contatoBanco"
+                                                           type="text"
+                                                           value="@r.ContatoBanco"
+                                                           class="form-control" />
                                                 </div>
                                             </div>
-                                            while (Model.RefBancaria?.Count < 3)
-                                            {
-                                                Model.RefBancaria.Add(new Loja.Bll.Dto.ClienteDto.RefBancariaDtoCliente());
-                                            }
-                                            @foreach (var r in Model.RefBancaria)
-                                            {
-                                                string visible = "display: none;";
-                                                if (!String.IsNullOrWhiteSpace(r.ContaBanco))
-                                                {
-                                                    visible = "";
-                                                }
-                                                <div class="row" id="RefBancariabody-@indice" style="@visible">
-                                                    <div class="row">
-                                                        @* aqui vai um select com a lista de bancos *@
-                                                        <div class="input-field col s3">
-                                                            @Html.DropDownList("[" + indice + "].Banco",
-                                new SelectList(Model.LstComboBanco, "Value", "Text",
-                               r.Banco), new { @id = "banco", @name = "[" + indice + "].BancoDescricao" })
-                                                            <label>BANCO</label>
-                                                        </div>
-                                                        @*<div class="input-field col s2">
-                                                                <input name="[@indice].BancoDescricao" id="@indice-banco" type="text"  value="@r.BancoDescricao" />
-                                                                <label for="banco">BANCO</label>
-                                                            </div>*@
-                                                        <div class="input-field col s2">
-                                                            <input name="[@indice].ContaBanco" id="@indice-conta" type="text" value="@r.ContaBanco" />
-                                                            <label for="conta">CONTA</label>
-                                                        </div>
-                                                        <div class="input-field col s2">
-                                                            <input name="[@indice].TelefoneBanco" id="@indice-telBanco" type="text" value="@r.TelefoneBanco" />
-                                                            <label for="telBanco">TELEFONE</label>
-                                                        </div>
-                                                        <div class="input-field col s2">
-                                                            <input name="[@indice].Agencia" id="@indice-agencia" type="text" value="@r.Agencia" />
-                                                            <label for="agencia">AGÊNCIA</label>
-                                                        </div>
-                                                        <div class="input-field col s2">
-                                                            <input name="[@indice].ContatoBanco" id="@indice-contatoBanco" type="text" value="@r.ContatoBanco" />
-                                                            <label for="contatoBanco">CONTATO</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                indice++;
-                                            }
-                                            @*}
-                                                else
-                                                {
-                                                    <div class="collapsible-body" id="collapsible-body">
-                                                        <div class="row">
-                                                            <a class="btn-flat right" id="addRefBancaria" style="color:black !important;">
-                                                                <i class="material-icons right">add</i>
-                                                                Adicionar Referência
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                }*@
-                                            <input type="hidden" id="indice" value="@indice" />
                                         }
                                     </div>
-                                </li>
+                                }
 
-                            </ul>
-                            <ul class="collapsible" id="collapsibleComercial" style="border-radius:4px">
-                                <li>
-                                    <div class="collapsible-header" style="color:black!important">Referências Comerciais (@Model.RefComercial?.Count)</div>
-                                    @{
-                                        var index = 0;
-                                        @if (Model.RefComercial?.Count > 0)
-                                        {
-                                            <div class="collapsible-body" id="collapsible-body">
-                                                <div class="row">
-                                                    <a class="btn-flat right" id="addRefComercial" style="color:black !important;">
-                                                        <i class="material-icons right">add</i>
-                                                        Adicionar Referência
-                                                    </a>
-                                                </div>
-                                            </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion" id="accordionComercial">
+                        <div class="card">
+                            @* Cabeçalho do accordion *@
+                            <div class="card-header" id="headingOne">
+                                <h2 class="mb-0">
+                                    <a class="btn btn-link btn-block text-left" data-toggle="collapse" data-target="#collapseOneComercial" aria-expanded="true" aria-controls="collapseOne">
+                                        Referências Comerciais (@Model.RefComercial?.Count)
+                                    </a>
+                                </h2>
+                            </div>
+                            <div id="collapseOneComercial" class="panel-collapse collapse in" aria-labelledby="headingOne" data-parent="#accordionComercial">
+                                @{
+                                    var index = 0;
+                                    @if (Model.RefComercial?.Count > 0)
+                                    {
+                                        <div class="card-body form-control-right" id="collapsible-body-comercial">
+                                            <hr />
+                                            <a class="btn btn-link btn-block text-right" id="addRefComercial" style="color:black !important;">
+                                                Adicionar Referência
+                                                <i class="fa fa-minus"></i>
+                                            </a>
+                                            <hr />
 
                                             @foreach (var r in Model.RefComercial)
                                             {
-                                                <div class="collapsible-body">
-                                                    <div class="row">
-                                                        <div class="input-field col s3">
-                                                            <input name="[@index].Nome_Empresa" id="@index-Nome_Empresa" type="text" value="@r.Nome_Empresa" />
-                                                            <label for="Nome_Empresa">NOME DA EMPRESA</label>
-                                                        </div>
-                                                        <div class="input-field col s2">
-                                                            <input name="[@index].Contato" id="@index-Contato" type="text" value="@r.Contato" />
-                                                            <label for="Contato">CONTATO</label>
-                                                        </div>
-                                                        <div class="input-field col s2">
-                                                            <input name="[@index].Telefone" id="@index-Telefone" type="text" value="@r.Telefone" />
-                                                            <label for="Telefone">TELEFONE</label>
-                                                        </div>
+                                                <hr />
+                                                <div class="form-group row">
+                                                    <div class="col-sm-4">
+                                                        <label for="Nome_Empresa" class="col-form-label">NOME DA EMPRESA</label>
+                                                        <input name="[@index].Nome_Empresa" id="@index-Nome_Empresa"
+                                                               type="text"
+                                                               value="@r.Nome_Empresa"
+                                                               class="form-control" />
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <label for="Contato" class="col-form-label">CONTATO</label>
+                                                        <input name="[@index].Contato" id="@index-Contato"
+                                                               type="text"
+                                                               value="@r.Contato"
+                                                               class="form-control" />
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <label for="Telefone" class="col-form-label">TELEFONE</label>
+                                                        <input name="[@index].Telefone" id="@index-Telefone"
+                                                               type="text"
+                                                               value="@r.Telefone"
+                                                               class="form-control" />
                                                     </div>
                                                 </div>
-                                                index++;
                                             }
                                             <input type="hidden" id="index" value="@index" />
-                                        }
-                                        else
-                                        {
-                                            <div class="collapsible-body" id="collapsible-body">
-                                                <div class="row">
-                                                    <a class="btn-flat right" id="addRefComercial" style="color:black !important;">
-                                                        <i class="material-icons right">add</i>
-                                                        Adicionar Referência
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        }
+                                        </div>
                                     }
-
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            }
-        }
-        else
-        {
-            @if (Model.DadosCliente.Tipo == "PF")
-            {
-                //Não permite edição PF
-                <div class="row">
-                    <div class="col s12">
-                        <span class="caixa">
-                            <span class="rotulo">Nome:</span>
-                            <span class="dado" name="nome" id="nome"> @Model.DadosCliente.Nome</span>
-                        </span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col s12">
-                        <span class="caixa">
-                            @*<input name="cpf_cnpj" value="@Model.DadosCliente.Cnpj_Cpf"/>*@
-                            <span class="rotulo">CPF:</span>
-                            <span class="dado" id="cpf_cnpj">@Model.DadosCliente.Cnpj_Cpf</span>
-                        </span>
-                        <span class="caixa">
-                            <span class="rotulo">RG:</span>
-                            <span class="dado" name="rg" id="rg">@Model.DadosCliente.Rg</span>
-                        </span>
-                        <span class="caixa">
-                            <span class="rotulo">Nascimento:</span>
-                            <span class="dado" id="nascimento" name="nascimento">@Model.DadosCliente.Nascimento?.ToString("dd/MM/yyyy")</span>
-                        </span>
-                        <span class="caixa">
-                            <span class="rotulo">Sexo:</span>
-                            <span class="dado" id="sexo" name="sexo">@Model.DadosCliente.Sexo</span>
-                        </span>
-                    </div>
-                </div>
-            }
-            else
-            {
-                <div class="row">
-                    <div class="col s12">
-                        <span class="caixa">
-                            <span class="rotulo">Razão Social:</span>
-                            <span class="dado" name="razao" id="nome"> @Model.DadosCliente.Nome</span>
-                        </span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col s12">
-                        <span class="caixa">
-                            <span class="rotulo">CNPJ:</span>
-                            <span class="dado" name="cpf_cnpj" id="cpf_cnpj"> @Model.DadosCliente.Cnpj_Cpf</span>
-                        </span>
-                    </div>
-                </div>
-            }
-            @* Endereço *@
-            <div class="row">
-                <div class="col s12">
-                    <span class="caixa">
-                        <span class="rotulo">Endereço:</span>
-                        <span class="dado" id="endereco" name="endereco">
-                            @Model.DadosCliente?.Endereco,
-                            @Model.DadosCliente?.Numero
-                            @if (!String.IsNullOrEmpty(Model.DadosCliente?.Complemento))
-                                @Model.DadosCliente?.Complemento
-                            - @Model.DadosCliente?.Bairro
-                            - @Model.DadosCliente?.Cidade
-                            - @Model.DadosCliente?.Uf
-                            - @Model.DadosCliente?.Cep
-                        </span>@*formatar o endereço*@
-                    </span>
-                </div>
-            </div>
-
-            @* Telefones *@
-            <div class="row">
-                <div class="col s12">
-                    <span class="caixa">
-                        <span class="rotulo">Telefones:</span>
-                        @if (!String.IsNullOrEmpty(Model.DadosCliente.DddResidencial) &&
-!String.IsNullOrEmpty(Model.DadosCliente.TelefoneResidencial))
-                        {
-                            <span id="dddRes" name="dddRes" style="visibility:hidden">@Model.DadosCliente.DddResidencial</span>
-                            <span class="dado" id="telRes" name="telRes">@Model.DadosCliente.TelefoneResidencial</span>
-                        }
-                        @if (!String.IsNullOrEmpty(Model.DadosCliente.DddCelular) &&
-!String.IsNullOrEmpty(Model.DadosCliente.Celular))
-                        {
-                            <span id="dddCelular" name="dddCel" style="visibility:hidden">@Model.DadosCliente.DddCelular</span>
-                            <span class="dado" name="telCel" id="telCelular">@Model.DadosCliente.Celular</span>
-                        }
-                        @if (!String.IsNullOrEmpty(Model.DadosCliente.DddComercial) &&
-!String.IsNullOrEmpty(Model.DadosCliente.TelComercial))
-                        {
-                            <span id="dddComercial" name="dddCom" style="visibility:hidden">@Model.DadosCliente.DddComercial</span>
-                            <span class="dado" id="telComercial" name="telCom">@Model.DadosCliente.TelComercial</span>
-                        }
-                        @if (!String.IsNullOrEmpty(Model.DadosCliente.DddComercial2) &&
-!String.IsNullOrEmpty(Model.DadosCliente.TelComercial2))
-                        {
-                            <span id="dddComercial2" name="dddCom2" style="visibility:hidden">@Model.DadosCliente.DddComercial2</span>
-                            <span class="dado" id="telComercial2" name="telCom2">@Model.DadosCliente.TelComercial2</span>
-                        }
-                    </span>
-                </div>
-            </div>
-            @if (Model.DadosCliente?.Tipo == "PF")
-            {
-                @* Observações *@
-                <div class="row">
-                    <div class="col s12">
-                        <span class="caixa">
-                            <span class="rotulo">Observações:</span>
-                            <span class="dado" id="observacoes" name="observacoes">@Model.DadosCliente.Observacao_Filiacao</span>
-                        </span>
-                    </div>
-                </div>
-            }
-            else
-            {
-                <div class="row">
-                    <div class="col s12">
-                        <span class="caixa">
-                            <span class="rotulo">Nome da pessoa para contato na empresa:</span>
-                            <span class="dado" id="contatoEmpresa" name="contato">@Model.DadosCliente.Contato</span>
-                        </span>
-                    </div>
-                </div>
-            }
-            @* E-mail *@
-            <div class="row">
-                <div class="col s12">
-                    <span class="caixa">
-                        <span class="rotulo">Email:</span>
-                        <span class="dado" id="email" name="email">@Model.DadosCliente.Email</span>
-                    </span>
-                </div>
-            </div>
-            @* E-mailXml *@
-            <div class="row">
-                <div class="col s12">
-                    <span class="caixa">
-                        <span class="rotulo">Email (xml):</span>
-                        <span class="dado" id="emailXml" name="emailXml">@Model.DadosCliente.EmailXml</span>
-                    </span>
-                </div>
-            </div>
-
-            @if (Model.DadosCliente?.Tipo == "PF")
-            {
-                <div class="row">
-                    <div class="col s12">
-                        <div class="input-field col s2">
-                            @Html.DropDownList("ProdutorRural",
-    new SelectList(Model.LstProdutoRural, "Value", "Text",
-    Model.DadosCliente?.ProdutorRural), new { @id = "produtor" })
-                            <label>PRODUTO RURAL</label>
-                        </div>
-                        <div id="ehProdutor">
-                            <div class="input-field col s2">
-                                <input name="ie" id="ie" type="text" value="@Model.DadosCliente?.Ie" />
-                                <label id="lblIe" for="ie">IE</label>
+                                    else
+                                    {
+                                        <div class="card-body form-control-right" id="collapsible-body-comercial">
+                                            <hr />
+                                            <a class="btn btn-link btn-block text-right" id="addRefComercial"
+                                               style="color:black !important;">
+                                                Adicionar Referência
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                        </div>
+                                    }
+                                }
                             </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                @if (Model.DadosCliente.Tipo == "PF")
+                {
+                    //Não permite edição PF
+                    <div class="row">
+                        <div class="col s12">
+                            <span class="caixa">
+                                <span class="rotulo">Nome:</span>
+                                <span class="dado" name="nome" id="nome"> @Model.DadosCliente.Nome</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            <span class="caixa">
+                                @*<input name="cpf_cnpj" value="@Model.DadosCliente.Cnpj_Cpf" />*@
+                                <span class="rotulo">CPF:</span>
+                                <span class="dado" id="cpf_cnpj">@Model.DadosCliente.Cnpj_Cpf</span>
+                            </span>
+                            <span class="caixa">
+                                <span class="rotulo">RG:</span>
+                                <span class="dado" name="rg" id="rg">@Model.DadosCliente.Rg</span>
+                            </span>
+                            <span class="caixa">
+                                <span class="rotulo">Nascimento:</span>
+                                <span class="dado" id="nascimento" name="nascimento">@Model.DadosCliente.Nascimento?.ToString("dd/MM/yyyy")</span>
+                            </span>
+                            <span class="caixa">
+                                <span class="rotulo">Sexo:</span>
+                                <span class="dado" id="sexo" name="sexo">@Model.DadosCliente.Sexo</span>
+                            </span>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col s12">
+                            <span class="caixa">
+                                <span class="rotulo">Razão Social:</span>
+                                <span class="dado" name="razao" id="nome"> @Model.DadosCliente.Nome</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            <span class="caixa">
+                                <span class="rotulo">CNPJ:</span>
+                                <span class="dado" name="cpf_cnpj" id="cpf_cnpj"> @Model.DadosCliente.Cnpj_Cpf</span>
+                            </span>
+                        </div>
+                    </div>
+                }
+                @* Endereço *@
+                <div class="row">
+                    <div class="col s12">
+                        <span class="caixa">
+                            <span class="rotulo">Endereço:</span>
+                            <span class="dado" id="endereco" name="endereco">
+                                @Model.DadosCliente?.Endereco,
+                                @Model.DadosCliente?.Numero
+                                @if (!String.IsNullOrEmpty(Model.DadosCliente?.Complemento))
+                                    @Model.DadosCliente?.Complemento
+                                - @Model.DadosCliente?.Bairro
+                                - @Model.DadosCliente?.Cidade
+                                - @Model.DadosCliente?.Uf
+                                - @Model.DadosCliente?.Cep
+                            </span>@*formatar o endereço*@
+                        </span>
+                    </div>
+                </div>
+
+                @* Telefones *@
+                <div class="row">
+                    <div class="col s12">
+                        <span class="caixa">
+                            <span class="rotulo">Telefones:</span>
+                            @if (!String.IsNullOrEmpty(Model.DadosCliente.DddResidencial) &&
+!String.IsNullOrEmpty(Model.DadosCliente.TelefoneResidencial))
+                            {
+                                <span id="dddRes" name="dddRes" style="visibility:hidden">@Model.DadosCliente.DddResidencial</span>
+                                <span class="dado" id="telRes" name="telRes">@Model.DadosCliente.TelefoneResidencial</span>
+                            }
+                            @if (!String.IsNullOrEmpty(Model.DadosCliente.DddCelular) &&
+!String.IsNullOrEmpty(Model.DadosCliente.Celular))
+                            {
+                                <span id="dddCelular" name="dddCel" style="visibility:hidden">@Model.DadosCliente.DddCelular</span>
+                                <span class="dado" name="telCel" id="telCelular">@Model.DadosCliente.Celular</span>
+                            }
+                            @if (!String.IsNullOrEmpty(Model.DadosCliente.DddComercial) &&
+!String.IsNullOrEmpty(Model.DadosCliente.TelComercial))
+                            {
+                                <span id="dddComercial" name="dddCom" style="visibility:hidden">@Model.DadosCliente.DddComercial</span>
+                                <span class="dado" id="telComercial" name="telCom">@Model.DadosCliente.TelComercial</span>
+                            }
+                            @if (!String.IsNullOrEmpty(Model.DadosCliente.DddComercial2) &&
+!String.IsNullOrEmpty(Model.DadosCliente.TelComercial2))
+                            {
+                                <span id="dddComercial2" name="dddCom2" style="visibility:hidden">@Model.DadosCliente.DddComercial2</span>
+                                <span class="dado" id="telComercial2" name="telCom2">@Model.DadosCliente.TelComercial2</span>
+                            }
+                        </span>
+                    </div>
+                </div>
+                @if (Model.DadosCliente?.Tipo == "PF")
+                {
+                    @* Observações *@
+                    <div class="row">
+                        <div class="col s12">
+                            <span class="caixa">
+                                <span class="rotulo">Observações:</span>
+                                <span class="dado" id="observacoes" name="observacoes">@Model.DadosCliente.Observacao_Filiacao</span>
+                            </span>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col s12">
+                            <span class="caixa">
+                                <span class="rotulo">Nome da pessoa para contato na empresa:</span>
+                                <span class="dado" id="contatoEmpresa" name="contato">@Model.DadosCliente.Contato</span>
+                            </span>
+                        </div>
+                    </div>
+                }
+                @* E-mail *@
+                <div class="row">
+                    <div class="col s12">
+                        <span class="caixa">
+                            <span class="rotulo">Email:</span>
+                            <span class="dado" id="email" name="email">@Model.DadosCliente.Email</span>
+                        </span>
+                    </div>
+                </div>
+                @* E-mailXml *@
+                <div class="row">
+                    <div class="col s12">
+                        <span class="caixa">
+                            <span class="rotulo">Email (xml):</span>
+                            <span class="dado" id="emailXml" name="emailXml">@Model.DadosCliente.EmailXml</span>
+                        </span>
+                    </div>
+                </div>
+                //Produtor rural contribuinte e IE
+                @if (Model.DadosCliente?.Tipo == "PF")
+                {
+                    <div class="row">
+                        <div class="col s12">
                             <div class="input-field col s2">
+                                @Html.DropDownList("ProdutorRural",
+                                new SelectList(Model.LstProdutoRural, "Value", "Text",
+                                Model.DadosCliente?.ProdutorRural), new { @id = "produtor" })
+                                <label>PRODUTO RURAL</label>
+                            </div>
+                            <div id="ehProdutor">
+                                <div class="input-field col s2">
+                                    <input name="ie" id="ie" type="text" value="@Model.DadosCliente?.Ie" />
+                                    <label id="lblIe" for="ie">IE</label>
+                                </div>
+                                <div class="input-field col s2">
+                                    @Html.DropDownList("Contribuinte_Icms_Status",
+                                    new SelectList(Model.LstContribuinte, "Value", "Text",
+                                    Model.DadosCliente?.Contribuinte_Icms_Status), new { @id = "contribuinte" })
+                                    <label>CONTRIBUINTE ICMS</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col s12">
+                            <span class="caixa">
+                                <span class="rotulo">IE:</span>
+                                <span class="dado" id="ie" name="ie">@Model.DadosCliente.Ie</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="input-field col s4">
                                 @Html.DropDownList("Contribuinte_Icms_Status",
-    new SelectList(Model.LstContribuinte, "Value", "Text",
-    Model.DadosCliente?.Contribuinte_Icms_Status), new { @id = "contribuinte" })
+                                new SelectList(Model.LstContribuinte, "Value", "Text",
+                                Model.DadosCliente.Contribuinte_Icms_Status), new { @id = "contribuinte" })
                                 <label>CONTRIBUINTE ICMS</label>
                             </div>
                         </div>
                     </div>
-                </div>
-            }
-            else
-            {
-                <div class="row">
-                    <div class="col s12">
-                        <span class="caixa">
-                            <span class="rotulo">IE:</span>
-                            <span class="dado" id="ie" name="ie">@Model.DadosCliente.Ie</span>
-                        </span>
+                    <div class="row">
+                        <div class="col s10">
+                            <div class="input-field">
+                                <ul class="collapsible">
+                                    <li>
+                                        <div class="collapsible-header" style="color:black!important">Referências Bancárias (@Model.RefBancaria.Count)</div>
+                                        @foreach (var r in Model.RefBancaria)
+                                        {<div class="collapsible-body">
+                                                <span class="caixa">
+                                                    <span class="rotulo">Banco: </span>
+                                                    <span class="dado">@r.BancoDescricao </span>
+                                                </span>
+                                                <span class="caixa">
+                                                    <span class="rotulo">Agência: </span>
+                                                    <span class="dado">@r.Agencia</span>
+                                                </span>
+                                                <span class="caixa">
+                                                    <span class="rotulo">Conta: </span>
+                                                    <span class="dado">@r.ContaBanco </span>
+                                                </span>
+                                                <span class="caixa">
+                                                    <span class="rotulo">Telefone: </span>
+                                                    <span class="dado">@r.TelefoneBanco</span>
+                                                </span>
+                                            </div>
+                                        }
+                                    </li>
+                                    <li>
+                                        <div class="collapsible-header" style="color:black!important">Referências Comerciais (@Model.RefComercial.Count)</div>
+                                        @foreach (var r in Model.RefComercial)
+                                        {
+                                            <div class="collapsible-body">
+                                                <span class="caixa">
+                                                    <span class="rotulo">Empresa: </span>
+                                                    <span class="dado">@r.Nome_Empresa </span>
+                                                </span>
+                                                <span class="caixa">
+                                                    <span class="rotulo">Contato: </span>
+                                                    <span class="dado">@r.Contato</span>
+                                                </span>
+                                                <span class="caixa">
+                                                    <span class="rotulo">Telefone: </span>
+                                                    <span class="dado">@r.Telefone </span>
+                                                </span>
+                                            </div>
+
+                                        }
+
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
+
+                }
+            }
+            @* Indicadores *@
+            <div class="form-group row">
+                <div class="col-sm-2">
+                    <label class="col-form-label" for="indicador">INDICADORES</label>
+                    @Html.DropDownList("Indicador_Orcamentista",
+                    new SelectList(Model.LstIndicadores, "Value", "Text", Model.DadosCliente?.Indicador_Orcamentista),
+                    new { @id = "indicador", @class = "form-control js-example-basic-hide-search" })
                 </div>
-                <div class="row">
-                    <div class="col s12">
-                        <div class="input-field col s4">
-                            @Html.DropDownList("Contribuinte_Icms_Status",
-    new SelectList(Model.LstContribuinte, "Value", "Text",
-    Model.DadosCliente.Contribuinte_Icms_Status), new { @id = "contribuinte" })
-                            <label>CONTRIBUINTE ICMS</label>
+            </div>
+            @* Opção de endereço de entrega *@
+            <h6>Endereço de Entrega</h6>
+            <div class="row">
+                @{
+                    string marcadoMesmo = "checked";
+                    string marcadoOutro = "checked";
+                    if (Model.EndEntrega == null)
+                    {
+                        marcadoMesmo = "checked";
+                        marcadoOutro = "";
+                    }
+                    else
+                    {
+                        marcadoMesmo = "";
+                        marcadoOutro = "checked";
+                    }
+                }
+
+                @* Radio endereço entrega *@
+                <div class="col-sm-12 col-md-6 col-xl-4 m-b-30">
+                    <div class="form-radio">
+                        <div class="radio radio-inline">
+                            <label>
+                                <input type="radio" id="mesmo" name="mesmo" @marcadoMesmo onclick="fechaDiv('outro_endereco');">
+                                <i class="helper"></i>O mesmo Endereço
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-radio">
+                        <div class="radio radio-inline">
+                            <label>
+                                <input type="radio" id="outro" name="OutroEndereco" @marcadoOutro onclick="mostraDiv('outro_endereco');">
+                                <i class="helper"></i>Outro Endereço
+                            </label>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col s10">
-                        <div class="input-field">
-                            <ul class="collapsible">
-                                <li>
-                                    <div class="collapsible-header" style="color:black!important">Referências Bancárias (@Model.RefBancaria.Count)</div>
-                                    @foreach (var r in Model.RefBancaria)
-                                    {<div class="collapsible-body">
-                                            <span class="caixa">
-                                                <span class="rotulo">Banco: </span>
-                                                <span class="dado">@r.BancoDescricao </span>
-                                            </span>
-                                            <span class="caixa">
-                                                <span class="rotulo">Agência: </span>
-                                                <span class="dado">@r.Agencia</span>
-                                            </span>
-                                            <span class="caixa">
-                                                <span class="rotulo">Conta: </span>
-                                                <span class="dado">@r.ContaBanco </span>
-                                            </span>
-                                            <span class="caixa">
-                                                <span class="rotulo">Telefone: </span>
-                                                <span class="dado">@r.TelefoneBanco</span>
-                                            </span>
-                                        </div>
-                                    }
-                                </li>
-                                <li>
-                                    <div class="collapsible-header" style="color:black!important">Referências Comerciais (@Model.RefComercial.Count)</div>
-                                    @foreach (var r in Model.RefComercial)
-                                    {
-                                        <div class="collapsible-body">
-                                            <span class="caixa">
-                                                <span class="rotulo">Empresa: </span>
-                                                <span class="dado">@r.Nome_Empresa </span>
-                                            </span>
-                                            <span class="caixa">
-                                                <span class="rotulo">Contato: </span>
-                                                <span class="dado">@r.Contato</span>
-                                            </span>
-                                            <span class="caixa">
-                                                <span class="rotulo">Telefone: </span>
-                                                <span class="dado">@r.Telefone </span>
-                                            </span>
-                                        </div>
-
-                                    }
-
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-            }
-        }
-        @* Indicadores *@
-        <div class="row col s12">
-            <div class="input-field col s2">
-                @Html.DropDownList("Indicador_Orcamentista",
-new SelectList(Model.LstIndicadores, "Value", "Text", Model.DadosCliente?.Indicador_Orcamentista),
-new { @id = "indicador" })
-                <label>INDICADORES</label>
             </div>
-        </div>
-        @* Opção de endereço de entrega *@
-        <div class="row col s12">
-            @{
-                string marcadoMesmo = "checked";
-                string marcadoOutro = "checked";
-                if (Model.EndEntrega == null)
-                {
-                    marcadoMesmo = "checked";
-                    marcadoOutro = "";
-                }
-                else
-                {
-                    marcadoMesmo = "";
-                    marcadoOutro = "checked";
-                }
-            }
-            <p class="rotulo">Endereço de Entrega</p>
-
-            <div class="row">
-                <label>
-                    <input class="with-gap" id="mesmo" name="mesmo" type="radio" @marcadoMesmo onclick="fechaDiv('outro_endereco');" />
-                    <span class="dado">O mesmo Endereço</span>
-                </label>
-            </div>
-            <div class="row">
-                <label>
-                    <input class="with-gap" id="outro" name="OutroEndereco" type="radio" @marcadoOutro onclick="mostraDiv('outro_endereco');" />
-                    <span class="dado">Outro Endereço</span>
-                </label>
-            </div>
-        </div>
-        @* outro endereço *@
-        <div id="outro_endereco" name="outro_endereco" style="display:none">
-            <div class="row col s12">
+            @* outro endereço *@
+            <div class="form-group row col-lg-12" id="outro_endereco" name="outro_endereco" style="display:none">
                 @*Justifique o Endereço*@
-                <div class="input-field col s4">
-                    <select id="justificativa" name="EndEtg_cod_justificativa">
-                        <option value="">Selecione</option>
-                        @foreach (var i in Model.EndJustificativa)
-                        {
-                            <option value="@i.EndEtg_cod_justificativa">@i.EndEtg_descricao_justificativa</option>
-                        }
-                    </select>
-                    <label id="lblJustificativa">Justifique o endereço</label>
+                <div class="col-lg-6">
+                    <label class="col-form-label" for="justificativa" id="lblJustificativa">Justifique o endereço</label>
+                @Html.DropDownList("JustificativaEndereco",
+                    new SelectList(Model.EndJustificativa, "Value", "Text", Model.EndEntrega?.EndEtg_cod_justificativa),
+                    new { 
+                        @id = "justificativa",
+                        @name="EndEtg_cod_justificativa", 
+                        @class = "form-control js-example-basic-hide-search" })
                 </div>
+                
+                <partial name="~/Views/Cep/Index.cshtml" model="@Model.Cep" />
             </div>
-            <partial name="~/Views/Cep/Index.cshtml" model="@Model.Cep" />
-        </div>
-
-
-        @* Botões *@
-        @section RodapePagina {
-            <footer class="page-footer">
-                <div class="row col s12">
-                    <div class="col s1"></div>
-                    <div class="input-field col s4 center">
-                        <button class="waves-effect waves-light btn-small"
-                                type="button">
-                            <i class="material-icons left">arrow_back</i>Voltar
-                        </button>
-                    </div>
-                    <div class="col s2"></div>
-                    <div class="input-field col s4 center">
-                        <button class="waves-effect waves-light btn-small"
-                                type="submit" onclick="$('#formulario').submit()">
-                            <i class="material-icons left">arrow_forward</i>Avançar
-                        </button>
-                    </div>
-                    <div class="col s1"></div>
-                </div>
-            </footer>
         }
-    }
+    </div>
 </div>
+@* Botões *@
+@section RodapePagina {
+    <footer class="footer navbar-fixed-bottom">
+        <div class="row col s12">
+            <div class="col s6"></div>
+            <div class="input-field col s4 center">
+                <button class="btn btn-primary waves-effect waves-light"
+                        type="button">
+                    <i class="fa-arrow-left"></i>Voltar
+                </button>
+            </div>
+            <div class="col s2"></div>
+            <div class="input-field col s4 center">
+                <button class="btn btn-primary waves-effect waves-light"
+                        type="submit" onclick="$('#formulario').submit()">
+                    <i class="fa-arrow-right"></i>Avançar
+                </button>
+            </div>
+            <div class="col s1"></div>
+        </div>
+    </footer>
+}
+
+
 @* Modal Erro *@
-<div id="modalErro" class="modal">
-    <div class="modal-content">
-        <p id="teste" style="font-size:15px;color:black;white-space:initial;line-height:initial;"></p>
-    </div>
-    <div class="modal-footer">
-        <button type="button" href="#!" class="modal-close waves-effect waves-green btn">OK</button>
-    </div>
-</div>
+@*<div id="modalErro" class="modal">
+        <div class="modal-content">
+            <p id="teste" style="font-size:15px;color:black;white-space:initial;line-height:initial;"></p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" href="#!" class="modal-close waves-effect waves-green btn">OK</button>
+        </div>
+    </div>*@
 
 <style>
     .collapsible-header {
@@ -1207,7 +1302,7 @@ new { @id = "indicador" })
         padding-top: 1em;
     }
 
-    .page-footer {
+    .footer {
         background-color: transparent;
     }
 </style>

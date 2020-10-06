@@ -137,14 +137,26 @@ namespace Loja.UI.Controllers
             };
             cliente.LstContribuinte = new SelectList(lstContrICMS, "Value", "Text");
 
-            cliente.EndJustificativa = (await clienteBll.ListarComboJustificaEndereco(usuarioLogado.Usuario_atual)).ToList();
+            var lstJustificativas = (await clienteBll.ListarComboJustificaEndereco(usuarioLogado.Usuario_atual)).ToList();
+            List<SelectListItem> lstSelect = new List<SelectListItem>();
+            lstSelect.Add(new SelectListItem { Value = "", Text = "Selecione" });
+            foreach (var i in lstJustificativas)
+            {
+                lstSelect.Add(new SelectListItem { Value = i.EndEtg_cod_justificativa, Text = i.EndEtg_descricao_justificativa });
+            }
+
+            cliente.EndJustificativa = new SelectList(lstSelect, "Value", "Text");
 
             var lstBancos = (await clienteBll.ListarBancosCombo()).ToList();
             List<SelectListItem> lstbancos = new List<SelectListItem>();
             lstbancos.Add(new SelectListItem { Value = "", Text = "Selecione" });
             for (int i = 0; i < lstBancos.Count; i++)
             {
-                lstbancos.Add(new SelectListItem { Value = lstBancos[i].Codigo, Text = lstBancos[i].Descricao });
+                lstbancos.Add(new SelectListItem
+                {
+                    Value = lstBancos[i].Codigo,
+                    Text = lstBancos[i].Descricao
+                });
             }
             cliente.LstComboBanco = new SelectList(lstbancos, "Value", "Text");
 

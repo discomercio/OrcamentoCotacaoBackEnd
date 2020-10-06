@@ -6,47 +6,45 @@
 
 
 
-<div class="row col s12" id="container_cep">
+<div class="row" id="container_cep" style="align-items:flex-end">
     @if (Model != null)
         @Model.ListaCep[0].Endereco
-    <div class="input-field col s2">
+    <div class="col-xl-3 col-md-3 col-sm-6">
         @* ao sair do campo chamar o metodo cep/buscarCep/ *@
-        <input name="EndEtg_cep" type="text" id="cepEntrega" onblur="buscarCep()" />
-        <label for="cepEntrega" id="lblcep">CEP</label>
+        <label class="col-form-label" for="cepEntrega" id="lblcep">CEP</label>
+        <input class="form-control" name="EndEtg_cep" type="text" id="cepEntrega" onblur="buscarCep()" />
     </div>
-    <div class="input-field col s2">
-        <button class="waves-effect waves-light btn-small"
+        
+        <button class="btn btn-sm btn-primary waves-effect waves-light col-xl-2 col-md-3 col-sm-6"
                 onclick="NaoseiCep()"
-                type="button"
-                style="margin-top:-1rem;">
-            <i class="material-icons left">search</i>Não sei o CEP
+                type="button">
+            <i class="fa fa-search"></i>Não sei o CEP
         </button>
+    <div class="col-xl-4 col-md-6 col-sm-12">
+        <label class="col-form-label" id="lblEnderecoEntrega" for="endEntrega">ENDEREÇO </label>
+        <input class="form-control" name="EndEtg_endereco" id="enderecoEntrega" type="text" />
     </div>
-    <div class="input-field col s4">
-        <input name="EndEtg_endereco" id="enderecoEntrega" type="text" />
-        <label id="lblEnderecoEntrega" for="endEntrega">ENDEREÇO </label>
+    <div class="col-xl-1 col-sm-6">
+        <label class="col-form-label" id="lblNumeroEntrega" for="numEntrega">NÚMERO </label>
+        <input class="form-control" name="EndEtg_endereco_numero" id="numEntrega" type="text" />
     </div>
-    <div class="input-field col s2">
-        <input name="EndEtg_endereco_numero" id="numEntrega" type="text" />
-        <label id="lblNumeroEntrega" for="numEntrega">NÚMERO </label>
-    </div>
-    <div class="input-field col s2">
-        <input name="EndEtg_endereco_complemento" id="compEntrega" type="text" />
-        <label id="lblComplementoEntrega" for="compEntrega">COMPLEMENTO</label>
+    <div class="col-xl-2 col-sm-6">
+        <label class="col-form-label" id="lblComplementoEntrega" for="compEntrega">COMPLEMENTO</label>
+        <input class="form-control" name="EndEtg_endereco_complemento" id="compEntrega" type="text" />
     </div>
 </div>
-<div class="row col s12">
-    <div class="input-field col s3">
-        <input name="EndEtg_bairro" id="bairroEntrega" type="text" />
-        <label id="lblBairroEntrega" for="bairroEntrega">BAIRRO</label>
+<div class="row">
+    <div class="col-sm-4">
+        <label class="col-form-label" id="lblBairroEntrega" for="bairroEntrega">BAIRRO</label>
+        <input class="form-control" name="EndEtg_bairro" id="bairroEntrega" type="text" />
     </div>
-    <div class="input-field col s3">
-        <input name="EndEtg_cidade" id="cidadeEntrega" type="text" />
-        <label id="lblCidadeEntrega" for="cidadeEntrega">CIDADE</label>
+    <div class="col-sm-4">
+        <label class="col-form-label" id="lblCidadeEntrega" for="cidadeEntrega">CIDADE</label>
+        <input class="form-control" name="EndEtg_cidade" id="cidadeEntrega" type="text" />
     </div>
-    <div class="input-field col s3">
-        <input name="EndEtg_uf" id="ufEntrega" type="text" />
-        <label id="lblUfEntrega" for="ufEntrega">UF</label>
+    <div class="col-sm-4">
+        <label class="col-form-label" id="lblUfEntrega" for="ufEntrega">UF</label>
+        <input class="form-control" name="EndEtg_uf" id="ufEntrega" type="text" />
     </div>
 </div>
 
@@ -294,7 +292,6 @@
                 var select = $('#lstufs');
                 $.each(data, function (i, d) {
                     select.append("<option value='" + d + "'>" + d + "</option>");
-                    select.formSelect();
                 });
             }
         });
@@ -424,9 +421,7 @@
         background-color: #d1d1d1 !important;
     }
 
-    #naoseicep {
-        width: 70% !important;
-    }
+    
 
     .dropdown-content select-dropdown {
         position: fixed;
