@@ -41,6 +41,7 @@ namespace InfraBanco.Modelos
         [Column("anulado_status")]
         public short Anulado_Status { get; set; }
 
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         [Column("data")]
         [Required]
         public DateTime Data { get; set; }
@@ -64,6 +65,7 @@ namespace InfraBanco.Modelos
 
         [Column("kit")]
         public short Kit { get; set; }
+#endif
     }
 }
 
