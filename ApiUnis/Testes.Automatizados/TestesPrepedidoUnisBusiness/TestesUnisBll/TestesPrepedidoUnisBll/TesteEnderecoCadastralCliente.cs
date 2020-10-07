@@ -45,7 +45,6 @@ public    class TesteEnderecoCadastralCliente : TestesPrepedidoUnisBll
         {
             Teste(c => c.EnderecoCadastralCliente.Endereco_cep = "nao existe", "Cep não existe!");
         }
-        //todo: terminar o teste do EnderecoCadastralCliente, mas reaproveitar o código de teste
 
 
         // Foi solicitado pelo Hamilton que removesse a confrontação de nome do cliente para ApiUnis.

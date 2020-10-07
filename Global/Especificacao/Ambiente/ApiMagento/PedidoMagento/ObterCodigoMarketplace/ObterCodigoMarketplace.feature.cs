@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Especificacao.Comuns.Api.Autenticacao
+namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,21 +19,21 @@ namespace Especificacao.Especificacao.Comuns.Api.Autenticacao
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "ListaDependencias")]
-    public partial class AutenticacaoListaDependenciasFeature : object, Xunit.IClassFixture<AutenticacaoListaDependenciasFeature.FixtureData>, System.IDisposable
+    [Xunit.TraitAttribute("Category", "Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace.ObterCodigoMarketplace")]
+    public partial class ObterCodigoMarketplaceFeature : object, Xunit.IClassFixture<ObterCodigoMarketplaceFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "ListaDependencias"};
+                "Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace.ObterCodigoMarketplace"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "AutenticacaoListaDependencias.feature"
+#line 1 "ObterCodigoMarketplace.feature"
 #line hidden
         
-        public AutenticacaoListaDependenciasFeature(AutenticacaoListaDependenciasFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public ObterCodigoMarketplaceFeature(ObterCodigoMarketplaceFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,8 +42,8 @@ namespace Especificacao.Especificacao.Comuns.Api.Autenticacao
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Autenticacao ListaDependencias", null, ProgrammingLanguage.CSharp, new string[] {
-                        "ListaDependencias"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ObterCodigoMarketplace", null, ProgrammingLanguage.CSharp, new string[] {
+                        "Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace.ObterCodigoMarketplace"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -83,14 +83,14 @@ namespace Especificacao.Especificacao.Comuns.Api.Autenticacao
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Autenticacao ListaDependencias Configuração")]
-        [Xunit.TraitAttribute("FeatureTitle", "Autenticacao ListaDependencias")]
-        [Xunit.TraitAttribute("Description", "Autenticacao ListaDependencias Configuração")]
-        public virtual void AutenticacaoListaDependenciasConfiguracao()
+        [Xunit.SkippableFactAttribute(DisplayName="retorna o que existe")]
+        [Xunit.TraitAttribute("FeatureTitle", "ObterCodigoMarketplace")]
+        [Xunit.TraitAttribute("Description", "retorna o que existe")]
+        public virtual void RetornaOQueExiste()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Autenticacao ListaDependencias Configuração", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("retorna o que existe", null, tagsOfScenario, argumentsOfScenario);
 #line 4
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -111,23 +111,8 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
- testRunner.Given("Nome deste item \"Especificacao.Comuns.Api.Autenticacao\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 6
- testRunner.And("Implementado em \"Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepe" +
-                        "didoListaDependencias\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 7
- testRunner.And("Implementado em \"Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.BuscarQt" +
-                        "deParcCartaoVisaListaDependencias\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 8
- testRunner.And("Implementado em \"Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace.ObterCo" +
-                        "digoMarketplaceListaDependencias\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 9
- testRunner.And("Fim da configuração", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 10
+ testRunner.Then("Resposta com número certo de registros", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -140,12 +125,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                AutenticacaoListaDependenciasFeature.FeatureSetup();
+                ObterCodigoMarketplaceFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                AutenticacaoListaDependenciasFeature.FeatureTearDown();
+                ObterCodigoMarketplaceFeature.FeatureTearDown();
             }
         }
     }

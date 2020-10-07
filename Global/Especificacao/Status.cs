@@ -11,19 +11,8 @@ using Xunit;
  *      feito loja/PedidoNovoProdCompostoMask.asp
  *      feito loja/PedidoNovo.asp 
  *      feito loja/PedidoNovoConsiste.asp 
- * 
-    AFAZER: TODO: onde salva: loja/PedidoNovoConfirma.asp repassar o FluxoGravacaoPedido.feature e o ValidacaoEstoque.feature
-    pergunta: pode ter a evaporadora de um CD e a condensadora de outro? -> o sistema pode, mas isso não é ruim?
-    no verdinhio, consigo colocar um prepedido com só uma evaporadora? -> sim
-
-    AFAZER: TODO: 
-Validações ao salvar:
-1:
-if Not ESTOQUE_produto_saida_v2(usuario, id_pedido_temp, vEmpresaAutoSplit(iv), .fabricante, .produto, vProdRegra(iRegra).regra.regraUF.regraPessoa.vCD(iCD).estoque.qtde_solicitada, qtde_spe, qtde_estoque_vendido_aux, qtde_estoque_sem_presenca_aux, msg_erro) then
-2:
-								alerta = "Senha de autorização para desconto superior não encontrado."
-
-* * 
+ *      feito loja/PedidoNovoConfirma.asp 
+ *      
  * */
 
 namespace Especificacao
@@ -40,7 +29,6 @@ namespace Especificacao
 
 
 /*
- * todo: melhorar as dependencias
 todo: implementar cadastro do prepedidoapi
 
  * todo: fazer validação dos dados cadastrais na API (no ERP, estas mensagens devem estar separadas pq vamos falar para o usuário editar o cliente antes de continuar)

@@ -165,7 +165,7 @@ VlTotalDestePedido	number($double)
 
 
         /*
-         * todo: testar o resto das estruturas
+         * faltando testar o resto das estruturas
          * 
         EnderecoCadastralCliente	EnderecoCadastralClientePrepedidoUnisDto{...}
         OutroEndereco*	boolean

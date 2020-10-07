@@ -43,6 +43,7 @@ namespace Especificacao.Testes.Utils.InjecaoDependencia
             services.AddTransient<Testes.Utils.InjecaoDependencia.ClasseInjetada, Testes.Utils.InjecaoDependencia.ClasseInjetada>();
 
             Ambiente.ApiUnis.InjecaoDependencias.ConfigurarDependencias(services);
+            Ambiente.ApiMagento.InjecaoDependencias.ConfigurarDependencias(services);
 
             Servicos = services.BuildServiceProvider();
 

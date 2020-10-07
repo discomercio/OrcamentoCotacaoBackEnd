@@ -43,6 +43,7 @@ namespace Especificacao.Testes.Utils.ListaDependencias
 
         private void VerificarFimConfiguracao(bool exigir)
         {
+            //quando termina o cenário, exige que tenha sido usado
             if (!fimConfiguracao && exigir)
                 Assert.Equal("", "Fim da configuração deve ser o último item do cenário");
             if (fimConfiguracao && !exigir)

@@ -19,6 +19,10 @@ namespace Especificacao.Comuns.Api.Autenticacao
             base.AdicionarImplementacao(new Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.Autenticacao());
             RegistroDependencias.AdicionarDependencia("Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.BuscarQtdeParcCartaoVisaListaDependencias", 
                 "Especificacao.Comuns.Api.Autenticacao");
+
+            base.AdicionarImplementacao(new Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace.Autenticacao());
+            RegistroDependencias.AdicionarDependencia("Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace.ObterCodigoMarketplaceListaDependencias",
+                "Especificacao.Comuns.Api.Autenticacao");
         }
 
         [Given(@"Dado base")]

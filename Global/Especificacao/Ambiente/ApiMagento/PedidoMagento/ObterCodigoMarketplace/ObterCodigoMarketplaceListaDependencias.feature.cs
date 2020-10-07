@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Especificacao.Comuns.Api.Autenticacao
+namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace
 {
     using TechTalk.SpecFlow;
     using System;
@@ -20,7 +20,7 @@ namespace Especificacao.Especificacao.Comuns.Api.Autenticacao
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "ListaDependencias")]
-    public partial class AutenticacaoListaDependenciasFeature : object, Xunit.IClassFixture<AutenticacaoListaDependenciasFeature.FixtureData>, System.IDisposable
+    public partial class ListaDependenciasFeature : object, Xunit.IClassFixture<ListaDependenciasFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -30,10 +30,10 @@ namespace Especificacao.Especificacao.Comuns.Api.Autenticacao
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "AutenticacaoListaDependencias.feature"
+#line 1 "ObterCodigoMarketplaceListaDependencias.feature"
 #line hidden
         
-        public AutenticacaoListaDependenciasFeature(AutenticacaoListaDependenciasFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public ListaDependenciasFeature(ListaDependenciasFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,7 +42,7 @@ namespace Especificacao.Especificacao.Comuns.Api.Autenticacao
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Autenticacao ListaDependencias", null, ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ListaDependencias", null, ProgrammingLanguage.CSharp, new string[] {
                         "ListaDependencias"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -83,14 +83,14 @@ namespace Especificacao.Especificacao.Comuns.Api.Autenticacao
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Autenticacao ListaDependencias Configuração")]
-        [Xunit.TraitAttribute("FeatureTitle", "Autenticacao ListaDependencias")]
-        [Xunit.TraitAttribute("Description", "Autenticacao ListaDependencias Configuração")]
-        public virtual void AutenticacaoListaDependenciasConfiguracao()
+        [Xunit.SkippableFactAttribute(DisplayName="Lista de verificações feitas")]
+        [Xunit.TraitAttribute("FeatureTitle", "ListaDependencias")]
+        [Xunit.TraitAttribute("Description", "Lista de verificações feitas")]
+        public virtual void ListaDeVerificacoesFeitas()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Autenticacao ListaDependencias Configuração", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Lista de verificações feitas", null, tagsOfScenario, argumentsOfScenario);
 #line 4
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -112,21 +112,17 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 5
- testRunner.Given("Nome deste item \"Especificacao.Comuns.Api.Autenticacao\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 6
- testRunner.And("Implementado em \"Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepe" +
-                        "didoListaDependencias\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("Nome deste item \"Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace.ObterCo" +
+                        "digoMarketplaceListaDependencias\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 7
- testRunner.And("Implementado em \"Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.BuscarQt" +
-                        "deParcCartaoVisaListaDependencias\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 8
- testRunner.And("Implementado em \"Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace.ObterCo" +
-                        "digoMarketplaceListaDependencias\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Especificado em \"Especificacao.Comuns.Api.Autenticacao\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 9
+ testRunner.And("Especificado em \"Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace.ObterCo" +
+                        "digoMarketplace\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 10
  testRunner.And("Fim da configuração", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -140,12 +136,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                AutenticacaoListaDependenciasFeature.FeatureSetup();
+                ListaDependenciasFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                AutenticacaoListaDependenciasFeature.FeatureTearDown();
+                ListaDependenciasFeature.FeatureTearDown();
             }
         }
     }
