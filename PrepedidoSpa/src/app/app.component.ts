@@ -120,5 +120,5 @@ export class AppComponent implements OnInit {
     this.prepedidoListarService.limpar(true);
   }
 
-  title = 'Sistema de pré-pedidos';
+  title = 'Sistema de pedidos';
 }

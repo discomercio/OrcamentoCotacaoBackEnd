@@ -1,8 +1,8 @@
 <section [ngClass]="{'sectionDesktop': telaDesktop, 'sectionCelular': !telaDesktop}">
     <form style="display: contents;" *ngIf="prePedidoDto">
         <header>
-            <ng-container *ngIf="criando; else tituloEditando">Criar Pré-Pedido</ng-container>
-            <ng-template #tituloEditando>Editar Pré-pedido</ng-template>
+            <ng-container *ngIf="criando; else tituloEditando">Criar Pedido</ng-container>
+            <ng-template #tituloEditando>Editar Pedido</ng-template>
             - Confirmar
         </header>
         <article class="indicadorlinha">
