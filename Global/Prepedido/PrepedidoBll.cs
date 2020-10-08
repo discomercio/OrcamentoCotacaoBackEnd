@@ -745,7 +745,7 @@ namespace Prepedido
                 var prepedidoJaCadastradoNumero = await new Prepedido.PrepedidoRepetidoBll(contextoProvider).PrepedidoJaCadastradoCriterioSiteColors(prePedido);
                 if (!String.IsNullOrEmpty(prepedidoJaCadastradoNumero))
                 {
-                    lstErros.Add($"Este pré-pedido já foi gravado com o número {prepedidoJaCadastradoNumero}");
+                    lstErros.Add($"Esta solicitação já foi gravada com o número {prepedidoJaCadastradoNumero}");
                     return lstErros;
                 }
             }
@@ -758,7 +758,7 @@ namespace Prepedido
 
             if (prePedido.ListaProdutos.Count > 12)
             {
-                lstErros.Add("É permitido apenas 12 itens por Pré-Pedido!");
+                lstErros.Add("É permitido apenas 12 itens.");
                 return lstErros;
             }
             if (!await Util.LojaHabilitadaProdutosECommerce(prePedido.DadosCliente.Loja, contextoProvider))
