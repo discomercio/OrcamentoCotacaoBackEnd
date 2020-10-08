@@ -599,7 +599,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
             //se a lista de produtos estiver com 11 itens, não iremos add um produto composto
             //mostraremos uma msg que este item é composto por 2 ou mais itens
             if (this.prePedidoDto.ListaProdutos.length == 11 && itemrepetido.length == 0) {
-              this.alertaService.mostrarMensagem("É permitido apenas 12 itens por Pré-Pedido!\n" +
+              this.alertaService.mostrarMensagem("É permitido apenas 12 itens por Pedido!\n" +
                 "O produto " + selecProdInfo.Produto + " é composto por " + filhosDiretosNovo.length + " itens!");
               return false;
             }
@@ -609,7 +609,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
             itemrepetido = this.prePedidoDto.ListaProdutos.filter(y => y.Produto == selecProdInfo.Produto);
           }
           if (this.prePedidoDto.ListaProdutos.length >= 12 && itemrepetido.length == 0) {
-            this.alertaService.mostrarMensagem("É permitido apenas 12 itens por Pré-Pedido!");
+            this.alertaService.mostrarMensagem("É permitido apenas 12 itens por Pedido!");
             return false;
           }
           else {
@@ -645,7 +645,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
                 }
               }
               else {
-                this.alertaService.mostrarMensagem("É permitido apenas 12 itens por Pré-Pedido!");
+                this.alertaService.mostrarMensagem("É permitido apenas 12 itens por Pedido!");
                 return false;
               }
             }

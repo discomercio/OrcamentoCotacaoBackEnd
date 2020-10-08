@@ -7,28 +7,36 @@ no celular aparece sempre -->
         </div>
         <div [class]="menuDesktop? 'spanMenu': 'spanTela'">
             <a *ngIf="!menuDesktop" color="accent" class="botaoTela" mat-raised-button
-                [routerLink]="['/novo-prepedido']" (click)="cliqueNovoPrepedido()"> Incluir Pré-Pedido </a>
+                [routerLink]="['/novo-prepedido']" (click)="cliqueNovoPrepedido()">
+                Incluir Pedido
+            </a>
             <a *ngIf="menuDesktop" color="accent" class="botaoMenu" mat-button [routerLink]="['/novo-prepedido']"
-                (click)="cliqueNovoPrepedido()"> Incluir Pré-Pedido </a>
+                (click)="cliqueNovoPrepedido()">
+                Incluir Pedido
+            </a>
         </div>
         <div [class]="menuDesktop? 'spanMenu': 'spanTela'">
             <a *ngIf="!menuDesktop" color="accent" class="botaoTela" mat-raised-button
-                [routerLink]="['/prepedido/consulta']"> Consultar Pré-Pedidos </a>
+                [routerLink]="['/prepedido/consulta']">
+                Consultar Pedidos
+            </a>
             <a *ngIf="menuDesktop" color="accent" class="botaoMenu" mat-button [routerLink]="['/prepedido/consulta']">
-                Consultar Pré-Pedidos </a>
+                Consultar Pedidos
+            </a>
         </div>
         <div [class]="menuDesktop? 'spanMenu': 'spanTela'">
-            <a *ngIf="!menuDesktop" color="accent" class="botaoTela" mat-raised-button
-                [routerLink]="['/pedido/consulta']"> Consultar
-                Pedidos </a>
-            <a *ngIf="menuDesktop" color="accent" class="botaoMenu" mat-button [routerLink]="['/pedido/consulta']">
-                Consultar
-                Pedidos </a>
+            <a *ngIf="!menuDesktop" color="accent" class="botaoTela" style="line-height: 120%; padding: 1px;" mat-raised-button
+                [routerLink]="['/pedido/consulta']">
+                Consultar Pedidos em <br />Processamento
+            </a>
+            <a *ngIf="menuDesktop" color="accent" class="botaoMenu" style="line-height: 120%" mat-button [routerLink]="['/pedido/consulta']">
+                Consultar Pedidos em <br />Processamento
+            </a>
         </div>
         <!-- teste alterar senha -->
         <div [class]="menuDesktop? 'spanMenu': 'spanTela'">
-            <a *ngIf="!menuDesktop" color="accent" class="botaoTela" mat-raised-button
-                [routerLink]="['/alterarsenha']"> Alterar senha</a>
+            <a *ngIf="!menuDesktop" color="accent" class="botaoTela" mat-raised-button [routerLink]="['/alterarsenha']">
+                Alterar senha</a>
             <a *ngIf="menuDesktop" color="accent" class="botaoMenu" mat-button [routerLink]="['/alterarsenha']">
                 Alterar senha </a>
         </div>

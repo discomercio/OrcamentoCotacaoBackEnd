@@ -9,7 +9,7 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 	<header *ngIf="!prePedidoDto" [ngClass]="{'carregando': carregandoDto || carregandoProds}">Carregando dados</header>
 	<form style="display: contents;" *ngIf="prePedidoDto" (keydown.enter)="continuar()">
 		<header>
-			<ng-container *ngIf="criando; else tituloEditando">Criar Pré-Pedido</ng-container>
+			<ng-container *ngIf="criando; else tituloEditando">Criar Pedido</ng-container>
 			<ng-template #tituloEditando>Editar Pré-pedido</ng-template>
 		</header>
 		<article class="indicadorlinha" [ngClass]="{'carregando': carregandoProds && clicouAddProd}">

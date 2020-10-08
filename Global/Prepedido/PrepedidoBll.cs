@@ -160,7 +160,7 @@ namespace Prepedido
                 lstdados = lst.Select(r => new PrepedidosCadastradosPrepedidoDados
                 {
 
-                    Status = r.St_Orc_Virou_Pedido == 1 ? "Pré-Pedido - Com Pedido" : "Pré-Pedido - Sem Pedido",
+                    Status = r.St_Orc_Virou_Pedido == 1 ? "Pedido em Processamento" : "Pedido em Análise",
                     DataPrePedido = r.Data,
                     NumeroPrepedido = r.Orcamento,
                     NomeCliente = r.Tcliente.Nome,

@@ -32,7 +32,7 @@
                         <span class='STP'>{{this.prepedidoDto.DataHoraPedido}} </span>
                     </td>
                     <td valign='bottom' align='right' nowrap>
-                        <span class='PREPEDIDO'>Pré-Pedido Nº&nbsp;{{this.prepedidoDto.NumeroPrePedido}}</span>
+                        <span class='PREPEDIDO'>Nº&nbsp;{{this.prepedidoDto.NumeroPrePedido}}</span>
                     </td>
                 </tr>
                 <tr *ngIf="prepedidoDto.TextoHeader == '' || prepedidoDto.TextoHeader == null">
@@ -43,7 +43,7 @@
                         </span>
                     </td>
                     <td valign='bottom' align='right' nowrap>
-                        <span class='PREPEDIDO'>Pré-Pedido Nº&nbsp;{{this.prepedidoDto.NumeroPrePedido}}</span>
+                        <span class='PREPEDIDO'>Nº&nbsp;{{this.prepedidoDto.NumeroPrePedido}}</span>
                     </td>
                 </tr>
 
@@ -273,7 +273,7 @@
                             <tr>
                                 <td width="45%" align="left">&nbsp;</td>
                                 <td align="right" *ngIf="this.prepedidoDto?.PermiteRAStatus == '1'">
-                                    <table cellspacing="0" cellpadding="0">
+                                    <table cellspacing="0" cellpadding="0" *ngIf="!impressaoService.emImpressao()">
                                         <tr>
                                             <td class="MTBE" align="left" nowrap><span class="PLTe">&nbsp;RA</span>
                                             </td>

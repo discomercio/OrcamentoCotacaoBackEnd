@@ -92,7 +92,7 @@
                     </span>
                 </td>
                 <td valign='bottom' align='right' nowrap>
-                    <span class='PEDIDO'>Pedido Nº&nbsp;{{pedido?.NumeroPedido}}</span>
+                    <span class='PEDIDO'>Nº&nbsp;{{pedido?.NumeroPedido}}</span>
                 </td>
             </tr>
         </table>
@@ -325,7 +325,7 @@
                         <tr>
                             <td width="50%" align="left">&nbsp;</td>
                             <td *ngIf="pedido?.OpcaoPossuiRA == 'S'" align="right">
-                                <table cellspacing="0" cellpadding="0" style="margin-right:2px;">
+                                <table *ngIf="!impressaoService.emImpressao()" cellspacing="0" cellpadding="0" style="margin-right:2px;">
                                     <tr>
                                         <td class="MTBE" align="left" nowrap><span class="PLTe">&nbsp;RA
                                                 Bruto</span>
