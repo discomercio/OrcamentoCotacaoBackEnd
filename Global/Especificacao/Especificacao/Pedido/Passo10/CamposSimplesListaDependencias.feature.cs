@@ -117,9 +117,6 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
  testRunner.Given("Implementado em \"Especificacao.Pedido.Pedido.PedidoListaDependencias\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 7
- testRunner.And("Fim da configuração", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
             }
             this.ScenarioCleanup();
         }

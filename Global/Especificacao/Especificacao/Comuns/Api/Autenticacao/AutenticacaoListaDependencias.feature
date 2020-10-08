@@ -6,5 +6,4 @@ Scenario: Autenticacao ListaDependencias Configuração
 	And Implementado em "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedidoListaDependencias"
 	And Implementado em "Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.BuscarQtdeParcCartaoVisaListaDependencias"	
 	And Implementado em "Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace.ObterCodigoMarketplaceListaDependencias"	
-	And Fim da configuração
 

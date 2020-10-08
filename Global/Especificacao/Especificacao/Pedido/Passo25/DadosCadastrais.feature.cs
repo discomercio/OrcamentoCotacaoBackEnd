@@ -120,9 +120,6 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Given("Implementado em \"Especificacao.Pedido.Pedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 12
- testRunner.And("Fim da configuração", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 13
  testRunner.Then("Fazer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

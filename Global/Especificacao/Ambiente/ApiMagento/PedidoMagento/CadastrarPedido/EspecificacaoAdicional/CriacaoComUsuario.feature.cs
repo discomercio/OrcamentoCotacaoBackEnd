@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj
+namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
 {
     using TechTalk.SpecFlow;
     using System;
@@ -20,26 +20,20 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "ignore")]
-    [Xunit.TraitAttribute("Category", "Especificacao/Pedido")]
-    [Xunit.TraitAttribute("Category", "Ambiente/PrepedidoApi")]
-    [Xunit.TraitAttribute("Category", "Ambiente/ApiUnis")]
-    public partial class PedidoDeClientePJComEnderecoDeEntregaFeature : object, Xunit.IClassFixture<PedidoDeClientePJComEnderecoDeEntregaFeature.FixtureData>, System.IDisposable
+    public partial class CriacaoComUsuarioFeature : object, Xunit.IClassFixture<CriacaoComUsuarioFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "ignore",
-                "Especificacao/Pedido",
-                "Ambiente/PrepedidoApi",
-                "Ambiente/ApiUnis"};
+                "ignore"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "CampoEndEtg_tipo_pessoa.feature"
+#line 1 "CriacaoComUsuario.feature"
 #line hidden
         
-        public PedidoDeClientePJComEnderecoDeEntregaFeature(PedidoDeClientePJComEnderecoDeEntregaFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public CriacaoComUsuarioFeature(CriacaoComUsuarioFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -48,11 +42,8 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Pedido de cliente PJ com endereço de entrega", null, ProgrammingLanguage.CSharp, new string[] {
-                        "ignore",
-                        "Especificacao/Pedido",
-                        "Ambiente/PrepedidoApi",
-                        "Ambiente/ApiUnis"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "CriacaoComUsuario", null, ProgrammingLanguage.CSharp, new string[] {
+                        "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -92,15 +83,18 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Configuração")]
-        [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega")]
-        [Xunit.TraitAttribute("Description", "Configuração")]
-        public virtual void Configuracao()
+        [Xunit.SkippableFactAttribute(DisplayName="Testar criando o usuário e cadastrando o pedido em uma única operação (verificar " +
+            "que o sistema_responsavel_cadastro é o magento)")]
+        [Xunit.TraitAttribute("FeatureTitle", "CriacaoComUsuario")]
+        [Xunit.TraitAttribute("Description", "Testar criando o usuário e cadastrando o pedido em uma única operação (verificar " +
+            "que o sistema_responsavel_cadastro é o magento)")]
+        public virtual void TestarCriandoOUsuarioECadastrandoOPedidoEmUmaUnicaOperacaoVerificarQueOSistema_Responsavel_CadastroEOMagento()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Configuração", null, tagsOfScenario, argumentsOfScenario);
-#line 7
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Testar criando o usuário e cadastrando o pedido em uma única operação (verificar " +
+                    "que o sistema_responsavel_cadastro é o magento)", null, tagsOfScenario, argumentsOfScenario);
+#line 16
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -120,67 +114,59 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 8
- testRunner.Given("Nome deste item \"Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj.CampoEndE" +
-                        "tg_tipo_pessoa\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 9
- testRunner.Given("Implementado em \"Especificacao.Pedido.Pedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 17
+ testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validar tipo de pessoa 1")]
-        [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega")]
-        [Xunit.TraitAttribute("Description", "Validar tipo de pessoa 1")]
-        public virtual void ValidarTipoDePessoa1()
+        [Xunit.SkippableFactAttribute(DisplayName="Testar cadastrando o pedido com um usuário já existente no banco (verificar que n" +
+            "ão atualiza os dados de cadastro)")]
+        [Xunit.TraitAttribute("FeatureTitle", "CriacaoComUsuario")]
+        [Xunit.TraitAttribute("Description", "Testar cadastrando o pedido com um usuário já existente no banco (verificar que n" +
+            "ão atualiza os dados de cadastro)")]
+        public virtual void TestarCadastrandoOPedidoComUmUsuarioJaExistenteNoBancoVerificarQueNaoAtualizaOsDadosDeCadastro()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar tipo de pessoa 1", null, tagsOfScenario, argumentsOfScenario);
-#line 11
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 18
- testRunner.Given("Pedido base cliente PJ com endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Testar cadastrando o pedido com um usuário já existente no banco (verificar que n" +
+                    "ão atualiza os dados de cadastro)", null, tagsOfScenario, argumentsOfScenario);
 #line 19
- testRunner.When("Informo \"EndEtg_tipo_pessoa\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioInitialize(scenarioInfo);
 #line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
 #line 20
- testRunner.Then("Erro \"Necessário escolher Pessoa Jurídica ou Pessoa Física no Endereço de entrega" +
-                        "!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validar tipo de pessoa 2")]
-        [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega")]
-        [Xunit.TraitAttribute("Description", "Validar tipo de pessoa 2")]
-        public virtual void ValidarTipoDePessoa2()
+        [Xunit.SkippableFactAttribute(DisplayName="falta: sexo e data de nascimento - vao ficar em branco")]
+        [Xunit.TraitAttribute("FeatureTitle", "CriacaoComUsuario")]
+        [Xunit.TraitAttribute("Description", "falta: sexo e data de nascimento - vao ficar em branco")]
+        public virtual void FaltaSexoEDataDeNascimento_VaoFicarEmBranco()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar tipo de pessoa 2", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("falta: sexo e data de nascimento - vao ficar em branco", null, tagsOfScenario, argumentsOfScenario);
 #line 22
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -201,28 +187,21 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 23
- testRunner.Given("Pedido base cliente PJ com endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 24
- testRunner.When("Informo \"EndEtg_tipo_pessoa\" = \"XX\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 25
- testRunner.Then("Erro \"Necessário escolher Pessoa Jurídica ou Pessoa Física no Endereço de entrega" +
-                        "!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validar tipo de pessoa 3")]
-        [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega")]
-        [Xunit.TraitAttribute("Description", "Validar tipo de pessoa 3")]
-        public virtual void ValidarTipoDePessoa3()
+        [Xunit.SkippableFactAttribute(DisplayName="Endereco_produtor_rural_status e Endereco_contribuinte_icms_status")]
+        [Xunit.TraitAttribute("FeatureTitle", "CriacaoComUsuario")]
+        [Xunit.TraitAttribute("Description", "Endereco_produtor_rural_status e Endereco_contribuinte_icms_status")]
+        public virtual void Endereco_Produtor_Rural_StatusEEndereco_Contribuinte_Icms_Status()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar tipo de pessoa 3", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Endereco_produtor_rural_status e Endereco_contribuinte_icms_status", null, tagsOfScenario, argumentsOfScenario);
 #line 27
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -243,57 +222,8 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 28
- testRunner.Given("Pedido base cliente PJ com endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 29
- testRunner.When("Informo \"EndEtg_tipo_pessoa\" = \"PJ\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 30
- testRunner.Then("Sem erro \"Necessário escolher Pessoa Jurídica ou Pessoa Física no Endereço de ent" +
-                        "rega!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="Validar tipo de pessoa 4")]
-        [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega")]
-        [Xunit.TraitAttribute("Description", "Validar tipo de pessoa 4")]
-        public virtual void ValidarTipoDePessoa4()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar tipo de pessoa 4", null, tagsOfScenario, argumentsOfScenario);
-#line 32
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 33
- testRunner.Given("Pedido base cliente PJ com endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 34
- testRunner.When("Informo \"EndEtg_tipo_pessoa\" = \"PF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 35
- testRunner.Then("Sem erro \"Necessário escolher Pessoa Jurídica ou Pessoa Física no Endereço de ent" +
-                        "rega!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -306,12 +236,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                PedidoDeClientePJComEnderecoDeEntregaFeature.FeatureSetup();
+                CriacaoComUsuarioFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                PedidoDeClientePJComEnderecoDeEntregaFeature.FeatureTearDown();
+                CriacaoComUsuarioFeature.FeatureTearDown();
             }
         }
     }

@@ -62,7 +62,6 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         [MaxLength(500)]
         public string Obs_1 { get; set; }
 
-        public string PontoReferencia { get; set; }
         public decimal? Frete { get; set; }
 
         public static Pedido.Dados.Criacao.PedidoCriacaoDados PedidoDadosCriacaoDePedidoMagentoDto(Cliente.Dados.DadosClienteCadastroDados dadosClienteMagento,

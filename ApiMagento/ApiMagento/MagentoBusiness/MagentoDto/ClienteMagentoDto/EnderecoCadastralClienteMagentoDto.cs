@@ -14,7 +14,14 @@ namespace MagentoBusiness.MagentoDto.ClienteMagentoDto
         [MaxLength(20)]
         public string Endereco_numero { get; set; }
 
-        [MaxLength(60)]
+        /*
+# Colocar a informação do ponto de referência no campo 'Constar na NF'. Comparar o conteúdo do ponto de referência
+# com o campo complemento. Se forem iguais, não colocar em 'Constar na NF'. Se o campo complemento exceder o
+# tamanho do BD e precisar ser truncado, copiá-lo no campo 'Constar na NF', junto com o ponto de referência.
+
+Por isso, temos o MaxLength 800 aqui
+*/
+        [MaxLength(800)]
         public string Endereco_complemento { get; set; }
 
         [MaxLength(72)]
@@ -99,6 +106,10 @@ Ao cadastrar o cliente:
 
         [MaxLength(30)]
         public string Endereco_contato { get; set; }
+
+        [MaxLength(800)]
+        public string PontoReferencia { get; set; }
+
 
         public static Cliente.Dados.EnderecoCadastralClientePrepedidoDados EnderecoCadastralClientePrepedidoDados_De_EnderecoCadastralClienteMagentoDto(EnderecoCadastralClienteMagentoDto endCadastralMagento)
         {

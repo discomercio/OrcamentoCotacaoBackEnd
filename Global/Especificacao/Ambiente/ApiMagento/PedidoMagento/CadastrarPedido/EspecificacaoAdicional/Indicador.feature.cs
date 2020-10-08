@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
+namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
 {
     using TechTalk.SpecFlow;
     using System;

@@ -43,7 +43,6 @@ Background: Configurar lojas para teste
 Scenario: Configuração
 	Given Nome deste item "Especificacao.Pedido.Passo40.LojaIndicou"
 	Given Implementado em "Especificacao.Pedido.Pedido"
-	And Fim da configuração
 
 Scenario: Seomnte pode existir se for vendedor externo
 

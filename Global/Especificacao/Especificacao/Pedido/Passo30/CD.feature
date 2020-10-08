@@ -8,7 +8,6 @@ Background: Reiniciar banco
 Scenario: Configuração
 	Given Nome deste item "Especificacao.Pedido.Passo30.CD"
 	Given Implementado em "Especificacao.Pedido.Pedido"
-	And Fim da configuração
 
 Scenario: Lista de CDs disponíveis
 	Given afazer todo: terminar de fazer

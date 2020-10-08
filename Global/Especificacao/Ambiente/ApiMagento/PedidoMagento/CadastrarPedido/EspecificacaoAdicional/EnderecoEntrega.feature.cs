@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Testes.Utils.ListaDependencias
+namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,21 +19,21 @@ namespace Especificacao.Testes.Utils.ListaDependencias
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "Testes.TesteListaDependencias.Inicial")]
-    public partial class TesteDaListaDependenciasParte1QueDeveSerExecutadaPrimeiroFeature : object, Xunit.IClassFixture<TesteDaListaDependenciasParte1QueDeveSerExecutadaPrimeiroFeature.FixtureData>, System.IDisposable
+    [Xunit.TraitAttribute("Category", "ignore")]
+    public partial class EnderecoEntregaFeature : object, Xunit.IClassFixture<EnderecoEntregaFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "Testes.TesteListaDependencias.Inicial"};
+                "ignore"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "TesteListaDependenciasInicial.feature"
+#line 1 "EnderecoEntrega.feature"
 #line hidden
         
-        public TesteDaListaDependenciasParte1QueDeveSerExecutadaPrimeiroFeature(TesteDaListaDependenciasParte1QueDeveSerExecutadaPrimeiroFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public EnderecoEntregaFeature(EnderecoEntregaFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,17 +42,8 @@ namespace Especificacao.Testes.Utils.ListaDependencias
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Teste da Lista Dependencias parte 1 que deve ser executada primeiro", @"Usamos isto para garantir que um teste seja executado em dois ambientes.
-Exemplo: o endereço cadastrarl deve ser validado no pedido e no prepedido.
-Para não duplicar o teste, a implementação executa os testes nos dois ambientes ao mesmo tempo.
-
-Então, neste exemplo, vamos descrever a funcionalidade no Pedido. No Prepedido, marcamos que essa validação existe com um .feature, que verifica se foi executada. 
-Neste exemplo, este arquivo seria a descrição efetiva (do pedido) e o TesteListaDependenciasFinal seria o do prepedido, que somente garante que foi executada
-através do pedido.
-
-Explicando de novo: na implementação dos passos do pedido, testamos tanto o pedido quanto o prepedido. E na implementação do prepedido somente
-garantimos que tenha sido executada no pedido.", ProgrammingLanguage.CSharp, new string[] {
-                        "Testes.TesteListaDependencias.Inicial"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "EnderecoEntrega", null, ProgrammingLanguage.CSharp, new string[] {
+                        "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -92,15 +83,15 @@ garantimos que tenha sido executada no pedido.", ProgrammingLanguage.CSharp, new
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Teste")]
-        [Xunit.TraitAttribute("FeatureTitle", "Teste da Lista Dependencias parte 1 que deve ser executada primeiro")]
-        [Xunit.TraitAttribute("Description", "Teste")]
-        public virtual void Teste()
+        [Xunit.SkippableFactAttribute(DisplayName="EnderecoEntrega PF/PJ")]
+        [Xunit.TraitAttribute("FeatureTitle", "EnderecoEntrega")]
+        [Xunit.TraitAttribute("Description", "EnderecoEntrega PF/PJ")]
+        public virtual void EnderecoEntregaPFPJ()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Teste", null, tagsOfScenario, argumentsOfScenario);
-#line 14
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EnderecoEntrega PF/PJ", null, tagsOfScenario, argumentsOfScenario);
+#line 15
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -120,14 +111,8 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 15
- testRunner.Given("Passo 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
 #line 16
- testRunner.When("Passo 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 17
- testRunner.Then("Passo 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -140,12 +125,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                TesteDaListaDependenciasParte1QueDeveSerExecutadaPrimeiroFeature.FeatureSetup();
+                EnderecoEntregaFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                TesteDaListaDependenciasParte1QueDeveSerExecutadaPrimeiroFeature.FeatureTearDown();
+                EnderecoEntregaFeature.FeatureTearDown();
             }
         }
     }

@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Testes.Utils.ListaDependencias
+namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,21 +19,21 @@ namespace Especificacao.Testes.Utils.ListaDependencias
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "Testes.TesteListaDependencias.Final")]
-    public partial class TesteListaDependenciasFinal_Parte2_QueDeveSerExecutadaDepoisListaDependenciasFeature : object, Xunit.IClassFixture<TesteListaDependenciasFinal_Parte2_QueDeveSerExecutadaDepoisListaDependenciasFeature.FixtureData>, System.IDisposable
+    [Xunit.TraitAttribute("Category", "ignore")]
+    public partial class COD_FORMA_PAGTO_PARCELADO_CARTAOFeature : object, Xunit.IClassFixture<COD_FORMA_PAGTO_PARCELADO_CARTAOFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "Testes.TesteListaDependencias.Final"};
+                "ignore"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "TesteListaDependenciasFinal.feature"
+#line 1 "COD_FORMA_PAGTO_PARCELADO_CARTAO.feature"
 #line hidden
         
-        public TesteListaDependenciasFinal_Parte2_QueDeveSerExecutadaDepoisListaDependenciasFeature(TesteListaDependenciasFinal_Parte2_QueDeveSerExecutadaDepoisListaDependenciasFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public COD_FORMA_PAGTO_PARCELADO_CARTAOFeature(COD_FORMA_PAGTO_PARCELADO_CARTAOFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,11 +42,10 @@ namespace Especificacao.Testes.Utils.ListaDependencias
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TesteListaDependencias final - parte 2 - que deve ser executada depois ListaDepen" +
-                    "dencias", "Descrição em TesteExecucaoCruzadaInicial\r\n\r\nIMPORTANTE: o nome desta fetuare PREC" +
-                    "ISA ter o texto ListaDependencias no nome. Isso garante que ela seja executada n" +
-                    "a ordem certa.", ProgrammingLanguage.CSharp, new string[] {
-                        "Testes.TesteListaDependencias.Final"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "COD_FORMA_PAGTO_PARCELADO_CARTAO", "pergunta: se COD_FORMA_PAGTO_PARCELADO_CARTAO temos que usar os coeficientes do f" +
+                    "abricante?\r\nrespsota: sim, mas precisa manter o valor do preço e o total da nota" +
+                    " igual. Vamos colocar essa diferença no Vl Lista", ProgrammingLanguage.CSharp, new string[] {
+                        "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -86,16 +85,15 @@ namespace Especificacao.Testes.Utils.ListaDependencias
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Garantir que executou")]
-        [Xunit.TraitAttribute("FeatureTitle", "TesteListaDependencias final - parte 2 - que deve ser executada depois ListaDepen" +
-            "dencias")]
-        [Xunit.TraitAttribute("Description", "Garantir que executou")]
-        public virtual void GarantirQueExecutou()
+        [Xunit.SkippableFactAttribute(DisplayName="COD_FORMA_PAGTO_PARCELADO_CARTAO")]
+        [Xunit.TraitAttribute("FeatureTitle", "COD_FORMA_PAGTO_PARCELADO_CARTAO")]
+        [Xunit.TraitAttribute("Description", "COD_FORMA_PAGTO_PARCELADO_CARTAO")]
+        public virtual void COD_FORMA_PAGTO_PARCELADO_CARTAO()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Garantir que executou", null, tagsOfScenario, argumentsOfScenario);
-#line 8
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("COD_FORMA_PAGTO_PARCELADO_CARTAO", null, tagsOfScenario, argumentsOfScenario);
+#line 6
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -115,8 +113,8 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 9
- testRunner.Then("Garantir que executou", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 7
+ testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -129,12 +127,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                TesteListaDependenciasFinal_Parte2_QueDeveSerExecutadaDepoisListaDependenciasFeature.FeatureSetup();
+                COD_FORMA_PAGTO_PARCELADO_CARTAOFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                TesteListaDependenciasFinal_Parte2_QueDeveSerExecutadaDepoisListaDependenciasFeature.FeatureTearDown();
+                COD_FORMA_PAGTO_PARCELADO_CARTAOFeature.FeatureTearDown();
             }
         }
     }

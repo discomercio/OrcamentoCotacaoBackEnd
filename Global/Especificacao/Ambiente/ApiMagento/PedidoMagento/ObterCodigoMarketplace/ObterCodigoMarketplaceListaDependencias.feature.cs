@@ -122,8 +122,45 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("Especificado em \"Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace.ObterCo" +
                         "digoMarketplace\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 10
- testRunner.And("Fim da configuração", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="este é feito nele mesmo")]
+        [Xunit.TraitAttribute("FeatureTitle", "ListaDependencias")]
+        [Xunit.TraitAttribute("Description", "este é feito nele mesmo")]
+        public virtual void EsteEFeitoNeleMesmo()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("este é feito nele mesmo", null, tagsOfScenario, argumentsOfScenario);
+#line 11
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 12
+ testRunner.Given("Nome deste item \"Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace.ObterCo" +
+                        "digoMarketplace\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 13
+ testRunner.And("Implementado em \"Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace.ObterCo" +
+                        "digoMarketplaceListaDependencias\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Especificacao.Pedido.Passo10
+namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
 {
     using TechTalk.SpecFlow;
     using System;
@@ -20,22 +20,20 @@ namespace Especificacao.Especificacao.Pedido.Passo10
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "ignore")]
-    [Xunit.TraitAttribute("Category", "Especificacao/Pedido")]
-    public partial class ValidarPermissoesFeature : object, Xunit.IClassFixture<ValidarPermissoesFeature.FixtureData>, System.IDisposable
+    public partial class FretePontoReferenciaFeature : object, Xunit.IClassFixture<FretePontoReferenciaFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "ignore",
-                "Especificacao/Pedido"};
+                "ignore"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "Permissoes.feature"
+#line 1 "FretePontoReferencia.feature"
 #line hidden
         
-        public ValidarPermissoesFeature(ValidarPermissoesFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public FretePontoReferenciaFeature(FretePontoReferenciaFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -44,9 +42,8 @@ namespace Especificacao.Especificacao.Pedido.Passo10
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Validar permissões", null, ProgrammingLanguage.CSharp, new string[] {
-                        "ignore",
-                        "Especificacao/Pedido"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "FretePontoReferencia", null, ProgrammingLanguage.CSharp, new string[] {
+                        "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -86,15 +83,15 @@ namespace Especificacao.Especificacao.Pedido.Passo10
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Configuração")]
-        [Xunit.TraitAttribute("FeatureTitle", "Validar permissões")]
-        [Xunit.TraitAttribute("Description", "Configuração")]
-        public virtual void Configuracao()
+        [Xunit.SkippableFactAttribute(DisplayName="campo \"frete\" -> se for <> 0, vamos usar o indicador. se for 0, sem indicador")]
+        [Xunit.TraitAttribute("FeatureTitle", "FretePontoReferencia")]
+        [Xunit.TraitAttribute("Description", "campo \"frete\" -> se for <> 0, vamos usar o indicador. se for 0, sem indicador")]
+        public virtual void CampoFrete_SeFor0VamosUsarOIndicador_SeFor0SemIndicador()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Configuração", null, tagsOfScenario, argumentsOfScenario);
-#line 6
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("campo \"frete\" -> se for <> 0, vamos usar o indicador. se for 0, sem indicador", null, tagsOfScenario, argumentsOfScenario);
+#line 4
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -114,24 +111,21 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 7
- testRunner.Given("Nome deste item \"Especificacao.Pedido.Passo10.Permissoes\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
 #line 8
- testRunner.Given("Implementado em \"Especificacao.Pedido.Pedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validar permissão de criação")]
-        [Xunit.TraitAttribute("FeatureTitle", "Validar permissões")]
-        [Xunit.TraitAttribute("Description", "Validar permissão de criação")]
-        public virtual void ValidarPermissaoDeCriacao()
+        [Xunit.SkippableFactAttribute(DisplayName="campo \"frete\" salvo em t_PEDIDO.vl_frete")]
+        [Xunit.TraitAttribute("FeatureTitle", "FretePontoReferencia")]
+        [Xunit.TraitAttribute("Description", "campo \"frete\" salvo em t_PEDIDO.vl_frete")]
+        public virtual void CampoFreteSalvoEmT_PEDIDO_Vl_Frete()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar permissão de criação", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("campo \"frete\" salvo em t_PEDIDO.vl_frete", null, tagsOfScenario, argumentsOfScenario);
 #line 10
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -152,31 +146,22 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 16
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 17
- testRunner.And("Não possuo a permissão \"OP_LJA_CADASTRA_NOVO_PEDIDO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 18
- testRunner.When("Crio um pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 19
- testRunner.Then("Erro \"usuário não tem permissão\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 14
+ testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="OP_LJA_EXIBIR_CAMPO_INSTALADOR_INSTALA_AO_CADASTRAR_NOVO_PEDIDO")]
-        [Xunit.TraitAttribute("FeatureTitle", "Validar permissões")]
-        [Xunit.TraitAttribute("Description", "OP_LJA_EXIBIR_CAMPO_INSTALADOR_INSTALA_AO_CADASTRAR_NOVO_PEDIDO")]
-        public virtual void OP_LJA_EXIBIR_CAMPO_INSTALADOR_INSTALA_AO_CADASTRAR_NOVO_PEDIDO()
+        [Xunit.SkippableFactAttribute(DisplayName="Ponto de Referência")]
+        [Xunit.TraitAttribute("FeatureTitle", "FretePontoReferencia")]
+        [Xunit.TraitAttribute("Description", "Ponto de Referência")]
+        public virtual void PontoDeReferencia()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("OP_LJA_EXIBIR_CAMPO_INSTALADOR_INSTALA_AO_CADASTRAR_NOVO_PEDIDO", null, tagsOfScenario, argumentsOfScenario);
-#line 21
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ponto de Referência", null, tagsOfScenario, argumentsOfScenario);
+#line 16
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -196,15 +181,8 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 26
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 27
- testRunner.And("Não possuo a permissão \"OP_LJA_EXIBIR_CAMPO_INSTALADOR_INSTALA_AO_CADASTRAR_NOVO_" +
-                        "PEDIDO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 28
-testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 21
+ testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -217,12 +195,12 @@ testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.
             
             public FixtureData()
             {
-                ValidarPermissoesFeature.FeatureSetup();
+                FretePontoReferenciaFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                ValidarPermissoesFeature.FeatureTearDown();
+                FretePontoReferenciaFeature.FeatureTearDown();
             }
         }
     }

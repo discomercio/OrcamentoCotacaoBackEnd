@@ -6,7 +6,6 @@ Validações do PedidoNovoProdCompostoMask
 Scenario: Configuração
 	Given Nome deste item "Especificacao.Pedido.Passo40.PedidoNovoProdCompostoMask"
 	Given Implementado em "Especificacao.Pedido.Pedido"
-	And Fim da configuração
 
 
 Scenario: Número preenchido

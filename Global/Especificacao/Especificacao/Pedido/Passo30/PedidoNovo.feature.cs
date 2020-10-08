@@ -117,9 +117,6 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
  testRunner.Given("Implementado em \"Especificacao.Pedido.Pedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 7
- testRunner.And("Fim da configuração", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
             }
             this.ScenarioCleanup();
         }
@@ -146,7 +143,7 @@ this.ScenarioInitialize(scenarioInfo);
 				end if
 			end if
 		end if", tagsOfScenario, argumentsOfScenario);
-#line 10
+#line 9
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -166,7 +163,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 26
+#line 25
 testRunner.Given("fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }
@@ -183,7 +180,7 @@ testRunner.Given("fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ddd_res", "\t\'\tDDD VÁLIDO?\r\n\t\tif Not ddd_ok(r_cliente.ddd_res) then\r\n\t\t\tif alerta <> \"\" then " +
                     "alerta = alerta & \"<br><br>\" & String(80,\"=\") & \"<br><br>\"\r\n\t\t\talerta = alerta &" +
                     " \"DDD do telefone residencial é inválido!!\"\r\n\t\t\tend if", tagsOfScenario, argumentsOfScenario);
-#line 29
+#line 28
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -203,31 +200,31 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 35
+#line 34
  testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 36
+#line 35
  testRunner.And("Informo \"ddd_res\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 37
+#line 36
  testRunner.Then("Erro \"DDD do telefone residencial é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 38
+ testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 39
- testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 40
  testRunner.And("Informo \"ddd_res\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 41
+#line 40
  testRunner.Then("Erro \"DDD do telefone residencial é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 43
+#line 42
  testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 44
+#line 43
  testRunner.And("Informo \"ddd_res\" = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 45
+#line 44
  testRunner.Then("Sem erro \"DDD do telefone residencial é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -244,7 +241,7 @@ this.ScenarioInitialize(scenarioInfo);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ddd_com", "\t\tif Not ddd_ok(r_cliente.ddd_com) then\r\n\t\t\tif alerta <> \"\" then alerta = alerta " +
                     "& \"<br><br>\" & String(80,\"=\") & \"<br><br>\"\r\n\t\t\talerta = alerta & \"DDD do telefon" +
                     "e comercial é inválido!!\"\r\n\t\t\tend if", tagsOfScenario, argumentsOfScenario);
-#line 47
+#line 46
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -264,31 +261,31 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 53
+#line 52
  testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 54
+#line 53
  testRunner.And("Informo \"ddd_com\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 55
+#line 54
  testRunner.Then("Erro \"DDD do telefone comercial é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 56
+ testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 57
- testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 58
  testRunner.And("Informo \"ddd_com\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 59
+#line 58
  testRunner.Then("Erro \"DDD do telefone comercial é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 61
+#line 60
  testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 62
+#line 61
  testRunner.And("Informo \"ddd_com\" = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 63
+#line 62
  testRunner.Then("Sem erro \"DDD do telefone comercial é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -309,7 +306,7 @@ this.ScenarioInitialize(scenarioInfo);
 						""<br>"" & ""Certifique-se de que a UF informada corresponde à UF responsável pelo registro da IE.""
 				end if
 			end if", tagsOfScenario, argumentsOfScenario);
-#line 65
+#line 64
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -329,7 +326,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 73
+#line 72
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
@@ -345,7 +342,7 @@ this.ScenarioInitialize(scenarioInfo);
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("MUNICÍPIO DE ACORDO C/ TABELA DO IBGE?", "\t\tif Not consiste_municipio_IBGE_ok(r_cliente.cidade, r_cliente.uf, s_lista_suger" +
                     "ida_municipios, msg_erro) then", tagsOfScenario, argumentsOfScenario);
-#line 75
+#line 74
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -365,7 +362,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 77
+#line 76
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
@@ -382,7 +379,7 @@ this.ScenarioInitialize(scenarioInfo);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("MUNICÍPIO DE ENTREGA DE ACORDO C/ TABELA DO IBGE?", "\t\tif rb_end_entrega = \"S\" then\r\n\t\t\'\tMUNICÍPIO DE ACORDO C/ TABELA DO IBGE?\r\n\t\t\tif" +
                     " Not consiste_municipio_IBGE_ok(EndEtg_cidade, EndEtg_uf, s_lista_sugerida_munic" +
                     "ipios, msg_erro) then", tagsOfScenario, argumentsOfScenario);
-#line 80
+#line 79
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -402,7 +399,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 84
+#line 83
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
@@ -419,7 +416,7 @@ this.ScenarioInitialize(scenarioInfo);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("\'VERIFICA SE O MESMO CÓDIGO FOI DIGITADO REPETIDO EM VÁRIAS LINHAS", "alerta=alerta & \"Produto \" & vDuplic(i).produto & \" do fabricante \" & vDuplic(i)." +
                     "fabricante & \": linha \" & renumera_com_base1(LBound(vDuplic),i) & \" repete o mes" +
                     "mo produto da linha \" & renumera_com_base1(LBound(vDuplic),j)", tagsOfScenario, argumentsOfScenario);
-#line 86
+#line 85
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -439,7 +436,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 88
+#line 87
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
@@ -454,7 +451,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("alert(\"Não há produtos na lista!!\");", null, tagsOfScenario, argumentsOfScenario);
-#line 90
+#line 89
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -474,7 +471,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 91
+#line 90
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
@@ -489,7 +486,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Especifique a loja que fez a indicação", null, tagsOfScenario, argumentsOfScenario);
-#line 93
+#line 92
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -509,7 +506,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 100
+#line 99
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
@@ -524,7 +521,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Selecione o \"indicador\"", null, tagsOfScenario, argumentsOfScenario);
-#line 102
+#line 101
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -544,7 +541,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 103
+#line 102
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
@@ -562,7 +559,7 @@ this.ScenarioInitialize(scenarioInfo);
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Somente na tela: avisar O indicador selecionado é diferente do indicador que cons" +
                     "ta no cadastro deste cliente", null, tagsOfScenario, argumentsOfScenario);
-#line 150
+#line 149
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -582,7 +579,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 151
+#line 150
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
@@ -597,7 +594,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Não foi informada a forma de pagamento!", null, tagsOfScenario, argumentsOfScenario);
-#line 153
+#line 152
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -617,23 +614,23 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 154
+#line 153
  testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 155
+#line 154
  testRunner.And("Informo \"custoFinancFornecTipoParcelamento\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 156
+#line 155
  testRunner.Then("Erro \"Não foi informada a forma de pagamento!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 158
+#line 157
  testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 159
+#line 158
  testRunner.And("Informo \"custoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC_FORNEC_TIPO_PARCE" +
                         "LAMENTO__COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 160
+#line 159
  testRunner.Then("Sem Erro \"Não foi informada a forma de pagamento!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -648,7 +645,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Não foi informada a quantidade de parcelas da forma de pagamento!", null, tagsOfScenario, argumentsOfScenario);
-#line 162
+#line 161
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -668,56 +665,56 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 163
+#line 162
  testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 163
+ testRunner.And("Informo \"custoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC_FORNEC_TIPO_PARCE" +
+                        "LAMENTO__COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 164
- testRunner.And("Informo \"custoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC_FORNEC_TIPO_PARCE" +
-                        "LAMENTO__COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Informo \"custoFinancFornecQtdeParcelas\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 165
- testRunner.And("Informo \"custoFinancFornecQtdeParcelas\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 166
  testRunner.Then("Erro \"Não foi informada a quantidade de parcelas da forma de pagamento!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 168
+#line 167
  testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 169
+#line 168
  testRunner.And("Informo \"custoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC_FORNEC_TIPO_PARCE" +
                         "LAMENTO__COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 170
+#line 169
  testRunner.And("Informo \"custoFinancFornecQtdeParcelas\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 171
+#line 170
  testRunner.Then("Sem Erro \"Não foi informada a quantidade de parcelas da forma de pagamento!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 173
+#line 172
  testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 173
+ testRunner.And("Informo \"custoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC_FORNEC_TIPO_PARCE" +
+                        "LAMENTO__SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 174
- testRunner.And("Informo \"custoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC_FORNEC_TIPO_PARCE" +
-                        "LAMENTO__SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 175
  testRunner.And("Informo \"custoFinancFornecQtdeParcelas\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 176
+#line 175
  testRunner.Then("Erro \"Não foi informada a quantidade de parcelas da forma de pagamento!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 178
+#line 177
  testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 179
+#line 178
  testRunner.And("Informo \"custoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC_FORNEC_TIPO_PARCE" +
                         "LAMENTO__SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 180
+#line 179
  testRunner.And("Informo \"custoFinancFornecQtdeParcelas\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 181
+#line 180
  testRunner.Then("Sem Erro \"Não foi informada a quantidade de parcelas da forma de pagamento!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -732,7 +729,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A forma de pagamento não está disponível para o(s) produto(s)", null, tagsOfScenario, argumentsOfScenario);
-#line 183
+#line 182
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -752,7 +749,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 189
+#line 188
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
