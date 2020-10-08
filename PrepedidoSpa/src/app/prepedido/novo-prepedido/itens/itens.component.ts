@@ -494,7 +494,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
 
   removerLinha(i: PrepedidoProdutoDtoPrepedido) {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      data: `Remover este item do pré-pedido?`
+      data: `Remover este item do pedido?`
     });
 
     dialogRef.afterClosed().subscribe((result) => {

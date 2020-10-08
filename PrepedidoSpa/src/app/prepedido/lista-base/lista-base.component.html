@@ -112,9 +112,9 @@
                         {{dataFormatarTela(option.DataPrePedido)}}
                     </div>
                     <span style="float: right"><button
-                            *ngIf="(option.Status.toLowerCase().indexOf('com pedido') == -1) && option.Status != 'Excluído'"
+                            *ngIf="(option.Status.toLowerCase().indexOf('em processamento') == -1) && option.Status != 'Excluído'"
                             mat-button (click)="removerPrepedido(option.NumeroPrepedido)">
-                            <mat-icon class="icone-lixeira" title="Remover pré-pedido" class="mat-column-Remover">delete
+                            <mat-icon class="icone-lixeira" title="Remover pedido" class="mat-column-Remover">delete
                             </mat-icon>
                         </button>
                     </span>
