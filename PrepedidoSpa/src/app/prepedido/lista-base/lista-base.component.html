@@ -156,10 +156,10 @@
     </article>
     <footer id="header" *ngIf="!telaDesktop && emPrepedidos" style="justify-content: space-between; ">
         <div style="float: left;" class="textocelnumero">
-            Pré-pedidos localizados: {{(prepedidos$|async)?.length}}
+            Pedidos localizados: {{(prepedidos$|async)?.length}}
         </div>
         <button mat-raised-button color="accent" *ngIf="!telaDesktop" (click)="voltar()"
-            style="float: right; font-size: 80%;"
+            style="float: right;"
             [ngClass]="{'botaoDesktop': telaDesktop, 'botaoCelular': !telaDesktop}">Nova
             busca</button>
     </footer>
@@ -167,9 +167,9 @@
     <div style="float: left; text-align: center; padding: 3%" class="textocelnumero"
         *ngIf="!telaDesktop && !emPrepedidos">
         <span>
-            {{dataFormatarTela(pedidoListarService.data_mobile_inicial)}}
+            {{dataFormatarTela(data_FormTela(pedidoListarService.paramsBuscaPedido.dataInicial))}}
             até
-            {{dataFormatarTela(pedidoListarService.data_mobile_final)}}
+            {{dataFormatarTela(data_FormTela(pedidoListarService.paramsBuscaPedido.dataFinal))}}
         </span>
     </div>
     <article id="content" *ngIf="!telaDesktop && !emPrepedidos">

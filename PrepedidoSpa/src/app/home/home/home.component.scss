@@ -14,6 +14,7 @@
   //width: calc(100% - 3em);
   width: 200px;
   margin-top: 15px;
+  padding: 10px;
 }
 .spanTela {
   flex: 1;
@@ -39,7 +40,8 @@
 .botaoMenu {
   text-align: left;
   width: 100%;
-  margin-top: 15px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   font-size: small;
   color: $cor-botoes-menu-desktop;
 }
