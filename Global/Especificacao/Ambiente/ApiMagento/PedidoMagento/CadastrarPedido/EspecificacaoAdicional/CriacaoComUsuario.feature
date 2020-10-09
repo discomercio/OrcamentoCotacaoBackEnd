@@ -26,7 +26,7 @@ Scenario: falta: sexo e data de nascimento - vao ficar em branco
 
 Scenario: Endereco_produtor_rural_status e Endereco_contribuinte_icms_status
 #Ao cadastrar o cliente:
-#- se for PF, assumimos Endereco_produtor_rural_status = COD_ST_CLIENTE_PRODUTOR_RURAL_NAO e Endereco_contribuinte_icms_status = NAO
+#- se for PF, assumimos Endereco_produtor_rural_status = COD_ST_CLIENTE_PRODUTOR_RURAL_NAO e Endereco_contribuinte_icms_status = INICIAL
 #- se for PJ, deixar o pedido st_etg_imediata = 1 (não)
 #	e colocar Endereco_contribuinte_icms_status = inicial, Endereco_ie = vazio
 #Contribuinte ICMS

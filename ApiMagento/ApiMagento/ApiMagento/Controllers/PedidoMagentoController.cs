@@ -38,7 +38,7 @@ namespace ApiMagento.Controllers
         [HttpPost("cadastrarPedido")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public async Task<ActionResult<PedidoResultadoMagentoDto>> CadastrarPrepedido(PedidoMagentoDto pedido)
+        public async Task<ActionResult<PedidoResultadoMagentoDto>> CadastrarPedido(PedidoMagentoDto pedido)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             if (!servicoValidarTokenApiMagento.ValidarToken(pedido.TokenAcesso, out string usuario))

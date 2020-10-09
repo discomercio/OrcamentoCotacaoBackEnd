@@ -23,6 +23,10 @@ namespace Especificacao.Comuns.Api.Autenticacao
             base.AdicionarImplementacao(new Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace.Autenticacao());
             RegistroDependencias.AdicionarDependencia("Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace.ObterCodigoMarketplaceListaDependencias",
                 "Especificacao.Comuns.Api.Autenticacao");
+
+            base.AdicionarImplementacao(new Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Autenticacao());
+            RegistroDependencias.AdicionarDependencia("Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedidoListaDependencias",
+                "Especificacao.Comuns.Api.Autenticacao");
         }
 
         [Given(@"Dado base")]

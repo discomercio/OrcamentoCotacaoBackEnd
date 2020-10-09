@@ -26,5 +26,10 @@ namespace Especificacao.Testes.Utils.ListaDependencias
             RegistroDependencias.GivenImplementadoEm(p0, nomeItem);
         }
 
+        [Given(@"AdicionarDependencia ambiente = ""(.*)"", especificacao = ""(.*)""")]
+        public void GivenAdicionarDependenciaAmbienteEspecificacao(string p0, string p1)
+        {
+            RegistroDependencias.AdicionarDependencia(p0, p1);
+        }
     }
 }

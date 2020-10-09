@@ -52,11 +52,34 @@ namespace Especificacao.Testes.Utils.ListaDependencias
         public static void TodosVerificados()
         {
             DumpMapa(ambientesRegistrados, "ambientesRegistrados");
+            //estes são uteis para debug
             DumpMapa(ambientesEspecificados, "ambientesEspecificados");
             DumpMapa(ambientesImplementados, "ambientesImplementados");
 
+
+            DumpMapaInvertido(ambientesRegistrados, "ambientesRegistrados invertido");
+
             VerificarUmaLista(ambientesEspecificados);
             VerificarUmaLista(ambientesImplementados);
+        }
+
+        private static void DumpMapaInvertido(Dictionary<string, List<string>> ambientes, string msg)
+        {
+            //invertemos o mapa: ao invés de primeiro a implementação e depois a especificação, fazemos ao contrário
+            Dictionary<string, List<string>> ambientesInvertidos = new Dictionary<string, List<string>>();
+            foreach (var ambiente in ambientes.Keys.ToList().OrderBy(r => r))
+            {
+                foreach (var especificacao in ambientes[ambiente].OrderBy(r => r))
+                {
+                    if (!ambientesInvertidos.ContainsKey(especificacao))
+                        ambientesInvertidos.Add(especificacao, new List<string>());
+
+                    if (!ambientesInvertidos[especificacao].Contains(ambiente))
+                        ambientesInvertidos[especificacao].Add(ambiente);
+                }
+            }
+
+            DumpMapa(ambientesInvertidos, msg);
         }
 
         private static void DumpMapa(Dictionary<string, List<string>> ambientes, string msg)

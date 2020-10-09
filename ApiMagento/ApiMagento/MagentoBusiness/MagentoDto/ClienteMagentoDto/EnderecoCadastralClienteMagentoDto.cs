@@ -89,7 +89,7 @@ Por isso, temos o MaxLength 800 aqui
          * 
 Ao chegar um pedido, se o cliente não exisditr, cadstramos ele imediatamente.
 Ao cadastrar o cliente:
-- se for PF, assumimos Endereco_produtor_rural_status = COD_ST_CLIENTE_PRODUTOR_RURAL_NAO e Endereco_contribuinte_icms_status = NAO
+- se for PF, assumimos Endereco_produtor_rural_status = COD_ST_CLIENTE_PRODUTOR_RURAL_NAO e Endereco_contribuinte_icms_status = INICIAL
 - se for PJ, deixar o pedido st_etg_imediata = 1 (não)
 	e colocar Endereco_contribuinte_icms_status = inicial, Endereco_ie = vazio
 
@@ -174,7 +174,7 @@ Ao cadastrar o cliente:
                 TelComercial2 = dadosClienteMagento.Endereco_tel_com_2,
                 Ramal2 = dadosClienteMagento.Endereco_ramal_com_2,
                 /*
-                - se for PF, assumimos Endereco_produtor_rural_status = COD_ST_CLIENTE_PRODUTOR_RURAL_NAO e Endereco_contribuinte_icms_status = NAO
+                - se for PF, assumimos Endereco_produtor_rural_status = COD_ST_CLIENTE_PRODUTOR_RURAL_NAO e Endereco_contribuinte_icms_status = INICIAL
                 - se for PJ, deixar o pedido st_etg_imediata = 1 (não)
                     e colocar Endereco_contribuinte_icms_status = inicial, Endereco_ie = vazio
                 */
@@ -183,8 +183,8 @@ Ao cadastrar o cliente:
                     (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO :
                     (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL,
                 Contribuinte_Icms_Status = dadosClienteMagento.Endereco_tipo_pessoa == Constantes.ID_PF ?
-                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO :
-                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL,
+                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL :
+                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL, //inicial nos dois casos
                 Email = dadosClienteMagento.Endereco_email,
                 EmailXml = dadosClienteMagento.Endereco_email_xml,
                 Cep = dadosClienteMagento.Endereco_cep,

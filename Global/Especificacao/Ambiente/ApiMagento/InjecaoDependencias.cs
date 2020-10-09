@@ -38,15 +38,9 @@ namespace Especificacao.Ambiente.ApiMagento
             services.AddTransient<Cep.IBancoNFeMunicipio, Testes.Utils.BancoTestes.TestesBancoNFeMunicipio>();
             services.AddSingleton<MagentoBusiness.UtilsMagento.ConfiguracaoApiMagento>(c =>
             {
-                var ret = new MagentoBusiness.UtilsMagento.ConfiguracaoApiMagento
-                {
-                    SegredoToken = "appSettings.SegredoToken",
-                    ValidadeTokenMinutos = 2628000,
-                    ApelidoPerfilLiberaAcessoApiMagento = "USUARIOAPIMAGENTO"
-                };
-
-                //para nao dar erro...
-                ret.LimitePedidos.LimitePrepedidosExatamenteIguais_Numero = 1000;
+                //trabalhamos com um singelton porque queremos alterar valores durante os testes
+                var ret = new MagentoBusiness.UtilsMagento.ConfiguracaoApiMagento();
+                InicializarConfiguracaoApiMagento(ret);
                 return ret;
             });
 
@@ -76,5 +70,20 @@ namespace Especificacao.Ambiente.ApiMagento
 
             new InfraIdentity.ApiMagento.SetupAutenticacaoApiMagento().ConfigurarTokenApiMagento(services);
         }
+
+
+        public static void InicializarConfiguracaoApiMagento(MagentoBusiness.UtilsMagento.ConfiguracaoApiMagento configuracaoApiMagento)
+        {
+
+            configuracaoApiMagento.SegredoToken = "appSettings.SegredoToken";
+            configuracaoApiMagento.ValidadeTokenMinutos = 2628000;
+            configuracaoApiMagento.ApelidoPerfilLiberaAcessoApiMagento = "USUARIOAPIMAGENTO";
+
+            configuracaoApiMagento.DadosOrcamentista.Orcamentista = "FRETE que nao existe";
+
+            //para nao dar erro...
+            configuracaoApiMagento.LimitePedidos.LimitePrepedidosExatamenteIguais_Numero = 1000;
+        }
     }
 }
+

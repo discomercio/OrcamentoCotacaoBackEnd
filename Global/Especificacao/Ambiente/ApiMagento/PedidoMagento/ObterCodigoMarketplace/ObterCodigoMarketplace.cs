@@ -9,11 +9,11 @@ using Xunit;
 
 namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace
 {
-    class ObterCodigoMarketplace
+    class CadastrarPedido
     {
         private readonly global::ApiMagento.Controllers.PedidoMagentoController pedidoMagentoController;
         private readonly Testes.Utils.LogTestes logTestes = Testes.Utils.LogTestes.GetInstance();
-        public ObterCodigoMarketplace()
+        public CadastrarPedido()
         {
             pedidoMagentoController = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos().GetRequiredService<global::ApiMagento.Controllers.PedidoMagentoController>();
         }
