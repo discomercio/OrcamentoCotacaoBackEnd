@@ -1,0 +1,64 @@
+﻿{
+  "TokenAcesso": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJzdXBvcnRlIDEiLCJ1bmlxdWVfbmFtZSI6IkdVSUxIRVJNRSBHT01FUyBQSUVEQURFIC0gUyIsInJvbGUiOiJBcGlNYWdlbnRvIiwibmJmIjoxNjAxMDYzMzE3LCJleHAiOjE3NTg3NDMzMTcsImlhdCI6MTYwMTA2MzMxN30.wU56GsuPwyISJc8BnG08waX1j20KTZ1yghhvYzyf21Q",
+  "Cnpj_Cpf": "14039603052",
+  "InfCriacaoPedido": {
+    "Pedido_bs_x_ac": "123456789",
+    "Marketplace_codigo_origem": "",
+    "Pedido_bs_x_marketplace": ""
+  },
+  "EnderecoCadastralCliente": {
+    "Endereco_logradouro": "Rua Francisco Pecoraro",
+    "Endereco_numero": "101",
+    "Endereco_complemento": "",
+    "Endereco_bairro": "Água Fria",
+    "Endereco_cidade": "São Paulo",
+    "Endereco_uf": "SP",
+    "Endereco_cep": "02408150",
+    "Endereco_email": "magento@magento.com.teste",
+    "Endereco_email_xml": "",
+    "Endereco_nome": "Teste Cliente Magento 2",
+    "Endereco_ddd_res": "11",
+    "Endereco_tel_res": "112252333",
+    "Endereco_ddd_com": "",
+    "Endereco_tel_com": "",
+    "Endereco_ramal_com": "",
+    "Endereco_ddd_cel": "11",
+    "Endereco_tel_cel": "98755252",
+    "Endereco_ddd_com_2": "",
+    "Endereco_tel_com_2": "",
+    "Endereco_ramal_com_2": "",
+    "Endereco_tipo_pessoa": "PF",
+    "Endereco_cnpj_cpf": "14039603052",
+    "PontoReferencia": "",
+    "Endereco_contato": ""
+  },
+  "OutroEndereco": false,
+  "EnderecoEntrega": {
+
+  },
+  "ListaProdutos": [
+    {
+      "Fabricante": "003",
+      "Produto": "003220",
+      "Qtde": 2,
+      "Preco_Venda": 626.58,
+      "Preco_NF": 659.3
+    },
+    {
+      "Fabricante": "003",
+      "Produto": "003221",
+      "Qtde": 2,
+      "Preco_Venda": 939.87,
+      "Preco_NF": 988.95
+    }
+  ],
+  "VlTotalDestePedido": 3296.5,
+  "FormaPagtoCriacao": {
+    "Tipo_Parcelamento": 1,
+    "C_pu_valor": 0,
+    "C_pc_qtde": 0,
+    "C_pc_valor": 0
+  },
+  "Obs_1": "teste magento",
+  "Frete": 0
+}

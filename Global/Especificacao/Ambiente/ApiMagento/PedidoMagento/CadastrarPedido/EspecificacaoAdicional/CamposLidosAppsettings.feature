@@ -11,7 +11,6 @@ Scenario: Lista de verificações feitas
 	And Implementado em "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedidoListaDependencias"
 
 
-
 @ignore
 Scenario: Orcamentista = "FRETE" (vamos ler do appsettings) - precisa existir
 	#Vamos colocar um indicador no appsettings que não esteja cadastrado no banco e ver se ele testa

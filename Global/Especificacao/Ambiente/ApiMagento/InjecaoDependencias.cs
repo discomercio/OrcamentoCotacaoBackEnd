@@ -79,7 +79,7 @@ namespace Especificacao.Ambiente.ApiMagento
             configuracaoApiMagento.ValidadeTokenMinutos = 2628000;
             configuracaoApiMagento.ApelidoPerfilLiberaAcessoApiMagento = "USUARIOAPIMAGENTO";
 
-            configuracaoApiMagento.DadosOrcamentista.Orcamentista = "FRETE que nao existe";
+            configuracaoApiMagento.DadosOrcamentista.Orcamentista = "FRETE";
 
             //para nao dar erro...
             configuracaoApiMagento.LimitePedidos.LimitePrepedidosExatamenteIguais_Numero = 1000;

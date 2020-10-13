@@ -8,7 +8,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
     public class InfCriacaoPedidoMagentoDto
     {
         /// <summary>
-        /// Este é o número do pedido no magento (no ASP, é C_numero_magento)
+        /// Este é o número do pedido no magento (no ASP, é C_numero_magento; precisa ter 9 dígitos)
         /// <hr />
         /// </summary>
         [Required]

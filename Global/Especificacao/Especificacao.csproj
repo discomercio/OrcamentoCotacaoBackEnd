@@ -25,6 +25,7 @@
     <None Remove="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CadastrarPedidoDados.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\Tcliente.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\TcodigoDescricao.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\Tcontrole.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\TorcamentistaEindicador.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\Tparametro.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\Tperfil.json" />
@@ -229,6 +230,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CadastrarPedidoDados.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tcontrole.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TperfilUsuario.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tperfil.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tparametro.json" />

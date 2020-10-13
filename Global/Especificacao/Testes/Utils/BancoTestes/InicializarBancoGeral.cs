@@ -55,54 +55,14 @@ namespace Especificacao.Testes.Utils.BancoTestes
         {
             using (var db = contextoBdProvider.GetContextoGravacaoParaUsing())
             {
-                if (apagarDadosExistentes)
-                {
-                    foreach (var c in db.Tclientes)
-                        db.Tclientes.Remove(c);
-                }
-                InicializarTabela<Tcliente>("Tcliente", db);
-
-                if (apagarDadosExistentes)
-                {
-                    foreach (var c in db.tcodigoDescricaos)
-                        db.tcodigoDescricaos.Remove(c);
-                }
-                InicializarTabela<TcodigoDescricao>("TcodigoDescricao", db);
-
-                if (apagarDadosExistentes)
-                {
-                    foreach (var c in db.TorcamentistaEindicadors)
-                        db.TorcamentistaEindicadors.Remove(c);
-                }
-                InicializarTabela<TorcamentistaEindicador>("TorcamentistaEindicador", db);
-
-                if (apagarDadosExistentes)
-                {
-                    foreach (var c in db.Tusuarios)
-                        db.Tusuarios.Remove(c);
-                }
-                InicializarTabela<Tusuario>("Tusuario", db);
-
-                if (apagarDadosExistentes)
-                {
-                    foreach (var c in db.Tparametros)
-                        db.Tparametros.Remove(c);
-                }
-                InicializarTabela<Tparametro>("Tparametro", db);
-
-                if (apagarDadosExistentes)
-                {
-                    foreach (var c in db.Tperfils)
-                        db.Tperfils.Remove(c);
-                }
-                InicializarTabela<Tperfil>("Tperfil", db);
-
-                if (apagarDadosExistentes)
-                {
-                    foreach (var c in db.TperfilUsuarios)
-                        db.TperfilUsuarios.Remove(c);
-                }
-                InicializarTabela<TperfilUsuario>("TperfilUsuario", db);
+                InicializarTabela<Tcliente>(db.Tclientes, "Tcliente", db, apagarDadosExistentes);
+                InicializarTabela<TcodigoDescricao>(db.tcodigoDescricaos, "TcodigoDescricao", db, apagarDadosExistentes);
+                InicializarTabela<Tcontrole>(db.Tcontroles, "Tcontrole", db, apagarDadosExistentes);
+                InicializarTabela<TorcamentistaEindicador>(db.TorcamentistaEindicadors, "TorcamentistaEindicador", db, apagarDadosExistentes);
+                InicializarTabela<Tusuario>(db.Tusuarios, "Tusuario", db, apagarDadosExistentes);
+                InicializarTabela<Tparametro>(db.Tparametros, "Tparametro", db, apagarDadosExistentes);
+                InicializarTabela<Tperfil>(db.Tperfils, "Tperfil", db, apagarDadosExistentes);
+                InicializarTabela<TperfilUsuario>(db.TperfilUsuarios, "TperfilUsuario", db, apagarDadosExistentes);
                 db.SaveChanges();
             }
 
@@ -116,8 +76,19 @@ namespace Especificacao.Testes.Utils.BancoTestes
             */
         }
 
-        private void InicializarTabela<TipoDados>(string nomeTabela, ContextoBdGravacao db)
+        private void InicializarTabela<TipoDados>(Microsoft.EntityFrameworkCore.DbSet<TipoDados> dbSet,
+            string nomeTabela,
+            ContextoBdGravacao db,
+            bool apagarDadosExistentes)
+                where TipoDados : class
         {
+            if (apagarDadosExistentes)
+            {
+                foreach (var c in dbSet)
+                    dbSet.Remove(c);
+            }
+
+
             var nomeArquivo = "Especificacao.Testes.Utils.BancoTestes.Dados." + nomeTabela + ".json";
             using Stream? stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(nomeArquivo);
             if (stream == null)

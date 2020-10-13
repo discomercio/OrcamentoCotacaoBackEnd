@@ -99,7 +99,7 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
                 Pedido.Dados.Criacao.PedidoCriacaoRetornoDados ret = await pedidoCriacao.CadastrarPedido(pedidoDados,
                     Convert.ToDecimal(configuracaoApiMagento.LimiteArredondamentoPrecoVendaOrcamentoItem), 0.1M,
                     pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac, pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem,
-                    pedidoMagento.InfCriacaoPedido.Pedido_bs_x_marketplace, 
+                    pedidoMagento.InfCriacaoPedido.Pedido_bs_x_marketplace,
                     (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__APIMAGENTO);
 
                 resultado.IdPedidoCadastrado = ret.Id;
@@ -129,7 +129,7 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
 
             if (lstTodosProdutos?.Count > 0)
             {
-                foreach(var y in pedidoMagento.ListaProdutos)
+                foreach (var y in pedidoMagento.ListaProdutos)
                 {
                     Produto.Dados.ProdutoDados produto = lstTodosProdutos.Select(x => x)
                     .Where(x => x.Fabricante == y.Fabricante && x.Produto == y.Produto)
@@ -198,7 +198,7 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
             }
 
 
-            foreach(var x in listarCodigo)
+            foreach (var x in listarCodigo)
             {
                 resultado.ListaMarketplace.Add(new MarketplaceMagentoDto()
                 {
@@ -223,41 +223,47 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
         {
             var db = contextoProvider.GetContextoLeitura();
             //vamos validar o número do pedido magento
-            if (!string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac))
-            {
-                if (pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac.Length != Constantes.MAX_TAMANHO_ID_PEDIDO_MAGENTO)
-                {
-                    lstErros.Add("Nº pedido Magento(Pedido_bs_x_ac) com formato inválido!");
-                    return false;
-                }
-
-                if (!string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Pedido_bs_x_marketplace))
-                {
-                    if (string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem))
-                    {
-                        lstErros.Add("Informe o código Marketplace.");
-                        return false;
-                    }
-                }
-
-                if (!string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem))
-                {
-                    List<InfraBanco.Modelos.TcodigoDescricao> listarCodigo = (await UtilsGlobais.Util.ListarCodigoMarketPlace(contextoProvider)).ToList();
-
-                    InfraBanco.Modelos.TcodigoDescricao tcodigo = listarCodigo.Select(x => x)
-                        .Where(x => x.Codigo == pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem)
-                        .FirstOrDefault();
-
-                    if (tcodigo == null)
-                    {
-                        lstErros.Add("Código Marketplace não encontrado.");
-                        return false;
-                    }
-                }
-            }
-            else
+            if (string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac))
             {
                 lstErros.Add("Favor informar o número do pedido Magento(Pedido_bs_x_ac)!");
+                return false;
+            }
+
+            if (pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac.Length != Constantes.MAX_TAMANHO_ID_PEDIDO_MAGENTO)
+            {
+                lstErros.Add("Nº pedido Magento(Pedido_bs_x_ac) com formato inválido!");
+                return false;
+            }
+
+
+            /*
+             * Pedido_bs_x_marketplace e Marketplace_codigo_origem
+             * ou os dois existem ou nenhum dos dois existe
+             * */
+            if (string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Pedido_bs_x_marketplace) && string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem))
+                return true;
+
+            if (string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Pedido_bs_x_marketplace) && !string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem))
+            {
+                lstErros.Add("Informe o Pedido_bs_x_marketplace.");
+                return false;
+            }
+            if (!string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Pedido_bs_x_marketplace) && string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem))
+            {
+                lstErros.Add("Informe o Marketplace_codigo_origem.");
+                return false;
+            }
+
+            //validar o Marketplace_codigo_origem
+            List<InfraBanco.Modelos.TcodigoDescricao> listarCodigo = (await UtilsGlobais.Util.ListarCodigoMarketPlace(contextoProvider)).ToList();
+            //todo: afazer: veriicar como é validado
+            InfraBanco.Modelos.TcodigoDescricao tcodigo = listarCodigo.Select(x => x)
+                .Where(x => x.Codigo == pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem)
+                .FirstOrDefault();
+
+            if (tcodigo == null)
+            {
+                lstErros.Add("Código Marketplace não encontrado.");
                 return false;
             }
 

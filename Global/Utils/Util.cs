@@ -846,71 +846,77 @@ namespace UtilsGlobais
 
         public static async Task<string> GerarNsu(ContextoBdGravacao dbgravacao, string id_nsu)
         {
-            string retorno = "";
+            if (string.IsNullOrEmpty(id_nsu))
+                throw new ArgumentException("Não foi especificado o NSU a ser gerado!");
+
+            var queryControle= from c in dbgravacao.Tcontroles
+                      where c.Id_Nsu == id_nsu
+                      select c;
+
+            var controle = await queryControle.FirstOrDefaultAsync();
+            if (controle == null)
+                throw new ArgumentException($"Não existe registro na tabela de controle para poder gerar este NSU!! id_nsu:{id_nsu}");
+
             int n_nsu = -1;
-            string s = "0";
-            int asc;
-            char chr;
-
-            if (id_nsu == "")
-                retorno = "Não foi especificado o NSU a ser gerado!";
-
-            for (int i = 0; i <= 100; i++)
+            if (!string.IsNullOrEmpty(controle.Nsu))
             {
-                var ret = from c in dbgravacao.Tcontroles
-                          where c.Id_Nsu == id_nsu
-                          select c;
-
-                var controle = await ret.FirstOrDefaultAsync();
-
-
-                if (!string.IsNullOrEmpty(controle.Nsu))
+                if (int.TryParse(controle.Nsu, out _))
                 {
-                    if (controle.Seq_Anual != 0)
+                    if (controle.Seq_Anual != null && controle.Seq_Anual != 0)
                     {
+                        //'	CASO O RELÓGIO DO SERVIDOR SEJA ALTERADO P/ DATAS FUTURAS E PASSADAS, EVITA QUE O CAMPO 'ano_letra_seq' SEJA INCREMENTADO VÁRIAS VEZES
                         if (DateTime.Now.Year > controle.Dt_Ult_Atualizacao.Year)
                         {
-                            s = Normaliza_Codigo(s, Constantes.TAM_MAX_NSU);
+                            string saux = "0";
+                            saux = Normaliza_Codigo(saux, Constantes.TAM_MAX_NSU);
+                            controle.Nsu = saux;
                             controle.Dt_Ult_Atualizacao = DateTime.Now;
                             if (!String.IsNullOrEmpty(controle.Ano_Letra_Seq))
                             {
-                                asc = int.Parse(controle.Ano_Letra_Seq) + controle.Ano_Letra_Step;
+                                int asc;
+                                char chr;
+                                asc = Encoding.ASCII.GetBytes(controle.Ano_Letra_Seq)[0] + controle.Ano_Letra_Step;
                                 chr = (char)asc;
+                                controle.Ano_Letra_Seq = chr.ToString();
                             }
                         }
                     }
                     n_nsu = int.Parse(controle.Nsu);
                 }
-                if (n_nsu < 0)
+            }
+
+
+            if (n_nsu < 0)
+            {
+                throw new ApplicationException($"O NSU gerado é inválido! id_nsu:{id_nsu}");
+            }
+
+            n_nsu += 1;
+            string s;
+            s = Convert.ToString(n_nsu);
+            s = Normaliza_Codigo(s, Constantes.TAM_MAX_NSU);
+            if (s.Length == 12)
+            {
+                //para salvar o novo numero
+                controle.Nsu = s;
+                if (DateTime.Now > controle.Dt_Ult_Atualizacao)
+                    controle.Dt_Ult_Atualizacao = DateTime.Now;
+
+                string retorno = controle.Nsu;
+
+                try
                 {
-                    retorno = "O NSU gerado é inválido!";
+                    dbgravacao.Update(controle);
+                    await dbgravacao.SaveChangesAsync();
+                    return retorno;
                 }
-                n_nsu += 1;
-                s = Convert.ToString(n_nsu);
-                s = Normaliza_Codigo(s, Constantes.TAM_MAX_NSU);
-                if (s.Length == 12)
+                catch (Exception ex)
                 {
-                    i = 101;
-                    //para salvar o novo numero
-                    controle.Nsu = s;
-                    if (DateTime.Now > controle.Dt_Ult_Atualizacao)
-                        controle.Dt_Ult_Atualizacao = DateTime.Now;
-
-                    retorno = controle.Nsu;
-
-                    try
-                    {
-                        dbgravacao.Update(controle);
-                        await dbgravacao.SaveChangesAsync();
-                    }
-                    catch (Exception ex)
-                    {
-                        retorno = "Não foi possível gerar o NSU, pois ocorreu o seguinte erro: " + ex.HResult + ":" + ex.Message;
-                    }
+                    throw new ApplicationException("Não foi possível gerar o NSU, pois ocorreu o seguinte erro: " + ex.HResult + ":" + ex.Message);
                 }
             }
 
-            return retorno;
+            throw new ApplicationException($"Não foi possível gerar o NSU, tamanho diferente de 12.  id_nsu:{id_nsu}");
         }
 
         public static async Task<IEnumerable<TcodigoDescricao>> ListarCodigoMarketPlace(ContextoBdProvider contextoProvider)
