@@ -41,9 +41,11 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
 
         public async Task<PedidoResultadoMagentoDto> CadastrarPedidoMagento(PedidoMagentoDto pedidoMagento, string usuario)
         {
-            PedidoResultadoMagentoDto resultado = new PedidoResultadoMagentoDto();
-            resultado.IdsPedidosFilhotes = new List<string>();
-            resultado.ListaErros = new List<string>();
+            PedidoResultadoMagentoDto resultado = new PedidoResultadoMagentoDto
+            {
+                IdsPedidosFilhotes = new List<string>(),
+                ListaErros = new List<string>()
+            };
 
             string orcamentista = configuracaoApiMagento.DadosOrcamentista.Orcamentista;
             string vendedor = usuario;
@@ -56,18 +58,19 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
                 return resultado;
             }
 
-            Cliente.Dados.ClienteCadastroDados clienteMagento = await clienteBll.BuscarCliente(pedidoMagento?.Cnpj_Cpf, orcamentista);
+            Cliente.Dados.ClienteCadastroDados clienteMagento = await clienteBll.BuscarCliente(pedidoMagento.Cnpj_Cpf, orcamentista);
 
-            Cliente.Dados.DadosClienteCadastroDados dadosCliente = new Cliente.Dados.DadosClienteCadastroDados();
             //Cadastrar cliente
             if (clienteMagento == null)
             {
                 //vamos seguir o fluxo para cadastrar o cliente e depois fazer o cadastro do pedido
-                Cliente.Dados.ClienteCadastroDados clienteCadastro = new Cliente.Dados.ClienteCadastroDados();
-                clienteCadastro.DadosCliente =
-                    EnderecoCadastralClienteMagentoDto.DadosClienteDeEnderecoCadastralClienteMagentoDto(pedidoMagento.EnderecoCadastralCliente, loja, pedidoMagento.Frete, vendedor, orcamentista);
-                clienteCadastro.RefBancaria = new List<Cliente.Dados.Referencias.RefBancariaClienteDados>();
-                clienteCadastro.RefComercial = new List<Cliente.Dados.Referencias.RefComercialClienteDados>();
+                Cliente.Dados.ClienteCadastroDados clienteCadastro = new Cliente.Dados.ClienteCadastroDados
+                {
+                    DadosCliente =
+                    EnderecoCadastralClienteMagentoDto.DadosClienteDeEnderecoCadastralClienteMagentoDto(pedidoMagento.EnderecoCadastralCliente, loja, pedidoMagento.Frete, vendedor, orcamentista),
+                    RefBancaria = new List<Cliente.Dados.Referencias.RefBancariaClienteDados>(),
+                    RefComercial = new List<Cliente.Dados.Referencias.RefComercialClienteDados>()
+                };
 
                 //criei o código para sistema_responsavel_cadastro 
                 List<string> lstRet = (await clienteBll.CadastrarCliente(clienteCadastro, orcamentista,
@@ -94,7 +97,7 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
             {
                 //estamos criando o pedido com os dados do cliente que vem e não com os dados do cliente que esta na base
                 //ex: se o cliente já cadastrado, utilizamos o que vem em PedidoMagentoDto.EnderecoCadastralClienteMagentoDto
-                Pedido.Dados.Criacao.PedidoCriacaoDados pedidoDados = await CriarPedidoCriacaoDados(pedidoMagento, dadosCliente, orcamentista, loja, vendedor);
+                Pedido.Dados.Criacao.PedidoCriacaoDados pedidoDados = await CriarPedidoCriacaoDados(pedidoMagento, orcamentista, loja, vendedor);
 
                 Pedido.Dados.Criacao.PedidoCriacaoRetornoDados ret = await pedidoCriacao.CadastrarPedido(pedidoDados,
                     Convert.ToDecimal(configuracaoApiMagento.LimiteArredondamentoPrecoVendaOrcamentoItem), 0.1M,
@@ -154,10 +157,10 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
         }
 
         private async Task<Pedido.Dados.Criacao.PedidoCriacaoDados> CriarPedidoCriacaoDados(PedidoMagentoDto pedidoMagento,
-            Cliente.Dados.DadosClienteCadastroDados dadosCliente, string orcamentista, string loja, string vendedor)
+            string orcamentista, string loja, string vendedor)
         {
             //o cliente existe então vamos converter os dados do cliente para DadosCliente e EnderecoCadastral
-            dadosCliente =
+            Cliente.Dados.DadosClienteCadastroDados dadosCliente =
                 EnderecoCadastralClienteMagentoDto.DadosClienteDeEnderecoCadastralClienteMagentoDto(pedidoMagento.EnderecoCadastralCliente, loja,
                 pedidoMagento.Frete, vendedor, orcamentista);
 
@@ -184,9 +187,11 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
 
         public async Task<MarketplaceResultadoDto> ObterCodigoMarketplace()
         {
-            MarketplaceResultadoDto resultado = new MarketplaceResultadoDto();
-            resultado.ListaMarketplace = new List<MarketplaceMagentoDto>();
-            resultado.ListaErros = new List<string>();
+            MarketplaceResultadoDto resultado = new MarketplaceResultadoDto
+            {
+                ListaMarketplace = new List<MarketplaceMagentoDto>(),
+                ListaErros = new List<string>()
+            };
 
 
             List<InfraBanco.Modelos.TcodigoDescricao> listarCodigo = (await UtilsGlobais.Util.ListarCodigoMarketPlace(contextoProvider)).ToList();

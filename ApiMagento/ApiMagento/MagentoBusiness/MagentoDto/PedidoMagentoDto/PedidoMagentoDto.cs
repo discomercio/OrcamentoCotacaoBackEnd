@@ -10,24 +10,32 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 {
     public class PedidoMagentoDto
     {
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         [Required]
         public string TokenAcesso { get; set; }
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
         //Orcamentista = "FRETE" (vamos ler do appsettings)
         //Loja = "201" (vamos ler do appsettings)
         //Vendedor = usuário que fez o login (ler do token)
 
 
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         [MaxLength(14)]
         [Required]
         public string Cnpj_Cpf { get; set; }
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
 
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         [Required]
         public InfCriacaoPedidoMagentoDto InfCriacaoPedido { get; set; }
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         [Required]
         public EnderecoCadastralClienteMagentoDto EnderecoCadastralCliente { get; set; }
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
         /// <summary>
         /// Indica se existe um endereço de entrega
@@ -36,10 +44,12 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         [Required]
         public bool OutroEndereco { get; set; }
 
-        public EnderecoEntregaClienteMagentoDto EnderecoEntrega { get; set; }
+        public EnderecoEntregaClienteMagentoDto? EnderecoEntrega { get; set; }
 
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         [Required]
         public List<PedidoProdutoMagentoDto> ListaProdutos { get; set; }
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
         //PermiteRAStatus = true, sempre
 
@@ -52,15 +62,17 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         // BemDeUso_Consumo = COD_ST_BEM_USO_CONSUMO_SIM
         //InstaladorInstala = COD_INSTALADOR_INSTALA_NAO
 
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         [Required]
         public FormaPagtoCriacaoMagentoDto FormaPagtoCriacao { get; set; }
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
         //CDManual = false
         //PercRT = calculado automaticamente{ get; set; }
         //OpcaoPossuiRA = sim
 
         [MaxLength(500)]
-        public string Obs_1 { get; set; }
+        public string? Obs_1 { get; set; }
 
         public decimal? Frete { get; set; }
 
@@ -69,7 +81,9 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             List<Pedido.Dados.Criacao.PedidoProdutoPedidoDados> lstProdutosMagento, Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados formaPagtoCriacaoMagento, 
             decimal vlTotalDestePedido, PedidoMagentoDto pedidoMagento)
         {
+#pragma warning disable IDE0017 // Simplify object initialization
             Pedido.Dados.Criacao.PedidoCriacaoDados pedidoCriacao = new Pedido.Dados.Criacao.PedidoCriacaoDados();
+#pragma warning restore IDE0017 // Simplify object initialization
 
             pedidoCriacao.LojaUsuario = dadosClienteMagento.Loja;
             //Armazena nome do usuário logado
@@ -99,7 +113,9 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             pedidoCriacao.FormaPagtoCriacao = formaPagtoCriacaoMagento;
 
             //Armazena os dados de entrega imediata, obs, instalador instala, bem de uso comum
+#pragma warning disable IDE0017 // Simplify object initialization
             pedidoCriacao.DetalhesPedido = new Prepedido.Dados.DetalhesPrepedido.DetalhesPrepedidoDados();
+#pragma warning restore IDE0017 // Simplify object initialization
             pedidoCriacao.DetalhesPedido.BemDeUso_Consumo = (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_SIM;
             pedidoCriacao.DetalhesPedido.InstaladorInstala = (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_NAO;
             pedidoCriacao.DetalhesPedido.EntregaImediata = dadosClienteMagento.Tipo == Constantes.ID_PF ?

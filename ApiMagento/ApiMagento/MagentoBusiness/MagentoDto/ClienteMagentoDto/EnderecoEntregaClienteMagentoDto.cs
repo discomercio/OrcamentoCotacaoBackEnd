@@ -8,11 +8,17 @@ namespace MagentoBusiness.MagentoDto.ClienteMagentoDto
 {
     public class EnderecoEntregaClienteMagentoDto
     {
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+        [Required]
         [MaxLength(80)]
         public string EndEtg_endereco { get; set; }
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         [MaxLength(20)]
+        [Required]
         public string EndEtg_endereco_numero { get; set; }
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
         /*
 # Colocar a informação do ponto de referência no campo 'Constar na NF'. Comparar o conteúdo do ponto de referência
@@ -22,68 +28,90 @@ namespace MagentoBusiness.MagentoDto.ClienteMagentoDto
 Por isso, temos o MaxLength 800 aqui
 */
         [MaxLength(800)]
-        public string EndEtg_endereco_complemento { get; set; }
+        public string? EndEtg_endereco_complemento { get; set; }
 
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+        [Required]
         [MaxLength(72)]
         public string EndEtg_bairro { get; set; }
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+        [Required]
         [MaxLength(60)]
         public string EndEtg_cidade { get; set; }
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+        [Required]
         [MaxLength(2)]
         public string EndEtg_uf { get; set; }
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+        [Required]
         [MaxLength(8)]
         public string EndEtg_cep { get; set; }
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
         [MaxLength(60)]
-        public string EndEtg_email { get; set; }
+        public string? EndEtg_email { get; set; }
 
+        [Required]
         [MaxLength(60)]
-        public string EndEtg_email_xml { get; set; }
+        public string? EndEtg_email_xml { get; set; }
 
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+        [Required]
         [MaxLength(60)]
         public string EndEtg_nome { get; set; }
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
         [MaxLength(4)]
-        public string EndEtg_ddd_res { get; set; }
+        public string? EndEtg_ddd_res { get; set; }
 
         [MaxLength(11)]
-        public string EndEtg_tel_res { get; set; }
+        public string? EndEtg_tel_res { get; set; }
 
         [MaxLength(4)]
-        public string EndEtg_ddd_com { get; set; }
+        public string? EndEtg_ddd_com { get; set; }
 
         [MaxLength(11)]
-        public string EndEtg_tel_com { get; set; }
+        public string? EndEtg_tel_com { get; set; }
 
         [MaxLength(4)]
-        public string EndEtg_ramal_com { get; set; }
+        public string? EndEtg_ramal_com { get; set; }
 
         [MaxLength(2)]
-        public string EndEtg_ddd_cel { get; set; }
+        public string? EndEtg_ddd_cel { get; set; }
 
         [MaxLength(9)]
-        public string EndEtg_tel_cel { get; set; }
+        public string? EndEtg_tel_cel { get; set; }
 
         [MaxLength(2)]
-        public string EndEtg_ddd_com_2 { get; set; }
+        public string? EndEtg_ddd_com_2 { get; set; }
 
         [MaxLength(9)]
-        public string EndEtg_tel_com_2 { get; set; }
+        public string? EndEtg_tel_com_2 { get; set; }
 
         [MaxLength(4)]
-        public string EndEtg_ramal_com_2 { get; set; }
+        public string? EndEtg_ramal_com_2 { get; set; }
 
         /// <summary>
         /// EndEtg_tipo_pessoa = "PF", "PJ"
         /// <hr />
         /// </summary>
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+        [Required]
         [MaxLength(2)]
         public string EndEtg_tipo_pessoa { get; set; }
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+        [Required]
         [MaxLength(14)]
         public string EndEtg_cnpj_cpf { get; set; }
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
 
         /*
@@ -105,14 +133,17 @@ se o clinte for PF, estes campos são desnecessários
         */
 
         [MaxLength(800)]
-        public string PontoReferencia { get; set; }
+        public string? PontoReferencia { get; set; }
 
-        public static Cliente.Dados.EnderecoEntregaClienteCadastroDados EnderecoEntregaDeEnderecoEntregaClienteMagentoDto(EnderecoEntregaClienteMagentoDto endEtg, bool outroEnd)
+        public static Cliente.Dados.EnderecoEntregaClienteCadastroDados EnderecoEntregaDeEnderecoEntregaClienteMagentoDto(
+            EnderecoEntregaClienteMagentoDto? endEtg, bool outroEnd)
         {
-            Cliente.Dados.EnderecoEntregaClienteCadastroDados ret = new Cliente.Dados.EnderecoEntregaClienteCadastroDados();
-            ret.OutroEndereco = outroEnd;
+            Cliente.Dados.EnderecoEntregaClienteCadastroDados ret = new Cliente.Dados.EnderecoEntregaClienteCadastroDados
+            {
+                OutroEndereco = outroEnd
+            };
 
-            if (outroEnd)
+            if (outroEnd && endEtg!= null)
             {
                 ret.EndEtg_endereco = endEtg.EndEtg_endereco;
                 ret.EndEtg_endereco_numero = endEtg.EndEtg_endereco_numero;

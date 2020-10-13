@@ -8,11 +8,17 @@ namespace MagentoBusiness.MagentoDto.ClienteMagentoDto
 {
     public class EnderecoCadastralClienteMagentoDto
     {
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+        [Required]
         [MaxLength(80)]
         public string Endereco_logradouro { get; set; }
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+        [Required]
         [MaxLength(20)]
         public string Endereco_numero { get; set; }
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
         /*
 # Colocar a informação do ponto de referência no campo 'Constar na NF'. Comparar o conteúdo do ponto de referência
@@ -22,68 +28,89 @@ namespace MagentoBusiness.MagentoDto.ClienteMagentoDto
 Por isso, temos o MaxLength 800 aqui
 */
         [MaxLength(800)]
-        public string Endereco_complemento { get; set; }
+        public string? Endereco_complemento { get; set; }
 
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+        [Required]
         [MaxLength(72)]
         public string Endereco_bairro { get; set; }
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+        [Required]
         [MaxLength(60)]
         public string Endereco_cidade { get; set; }
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+        [Required]
         [MaxLength(2)]
         public string Endereco_uf { get; set; }
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+        [Required]
         [MaxLength(8)]
         public string Endereco_cep { get; set; }
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
         [MaxLength(60)]
-        public string Endereco_email { get; set; }
+        public string? Endereco_email { get; set; }
 
         [MaxLength(60)]
-        public string Endereco_email_xml { get; set; }
+        public string? Endereco_email_xml { get; set; }
 
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+        [Required]
         [MaxLength(60)]
         public string Endereco_nome { get; set; }
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
         [MaxLength(4)]
-        public string Endereco_ddd_res { get; set; }
+        public string? Endereco_ddd_res { get; set; }
 
         [MaxLength(11)]
-        public string Endereco_tel_res { get; set; }
+        public string? Endereco_tel_res { get; set; }
 
         [MaxLength(4)]
-        public string Endereco_ddd_com { get; set; }
+        public string? Endereco_ddd_com { get; set; }
 
         [MaxLength(11)]
-        public string Endereco_tel_com { get; set; }
+        public string? Endereco_tel_com { get; set; }
 
         [MaxLength(4)]
-        public string Endereco_ramal_com { get; set; }
+        public string? Endereco_ramal_com { get; set; }
 
         [MaxLength(2)]
-        public string Endereco_ddd_cel { get; set; }
+        public string? Endereco_ddd_cel { get; set; }
 
         [MaxLength(9)]
-        public string Endereco_tel_cel { get; set; }
+        public string? Endereco_tel_cel { get; set; }
 
         [MaxLength(2)]
-        public string Endereco_ddd_com_2 { get; set; }
+        public string? Endereco_ddd_com_2 { get; set; }
 
         [MaxLength(9)]
-        public string Endereco_tel_com_2 { get; set; }
+        public string? Endereco_tel_com_2 { get; set; }
 
         [MaxLength(4)]
-        public string Endereco_ramal_com_2 { get; set; }
+        public string? Endereco_ramal_com_2 { get; set; }
 
         /// <summary>
         /// Endereco_tipo_pessoa = "PF", "PJ"
         /// <hr />
         /// </summary>
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+        [Required]
         [MaxLength(2)]
         public string Endereco_tipo_pessoa { get; set; }
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+        [Required]
         [MaxLength(14)]
         public string Endereco_cnpj_cpf { get; set; }
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
         /*
          * 
@@ -105,15 +132,17 @@ Ao cadastrar o cliente:
 */
 
         [MaxLength(30)]
-        public string Endereco_contato { get; set; }
+        public string? Endereco_contato { get; set; }
 
         [MaxLength(800)]
-        public string PontoReferencia { get; set; }
+        public string? PontoReferencia { get; set; }
 
 
         public static Cliente.Dados.EnderecoCadastralClientePrepedidoDados EnderecoCadastralClientePrepedidoDados_De_EnderecoCadastralClienteMagentoDto(EnderecoCadastralClienteMagentoDto endCadastralMagento)
         {
+#pragma warning disable IDE0017 // Simplify object initialization
             Cliente.Dados.EnderecoCadastralClientePrepedidoDados ret = new Cliente.Dados.EnderecoCadastralClientePrepedidoDados();
+#pragma warning restore IDE0017 // Simplify object initialization
             ret.Endereco_logradouro = endCadastralMagento.Endereco_logradouro;
             ret.Endereco_numero = endCadastralMagento.Endereco_numero;
             ret.Endereco_complemento = endCadastralMagento.Endereco_complemento;
@@ -124,8 +153,8 @@ Ao cadastrar o cliente:
             ret.Endereco_email = endCadastralMagento.Endereco_email;
             ret.Endereco_email_xml = endCadastralMagento.Endereco_email_xml;
             ret.Endereco_nome = endCadastralMagento.Endereco_nome;
-            ret.Endereco_ddd_res = endCadastralMagento.Endereco_ddd_res == null ? "" : endCadastralMagento.Endereco_ddd_res;
-            ret.Endereco_tel_res = endCadastralMagento.Endereco_tel_res == null ? "" : endCadastralMagento.Endereco_tel_res;
+            ret.Endereco_ddd_res = endCadastralMagento.Endereco_ddd_res ?? "";
+            ret.Endereco_tel_res = endCadastralMagento.Endereco_tel_res ?? "";
             ret.Endereco_ddd_com = endCadastralMagento.Endereco_ddd_com;
             ret.Endereco_tel_com = endCadastralMagento.Endereco_tel_com;
             ret.Endereco_ramal_com = endCadastralMagento.Endereco_ramal_com;
@@ -165,8 +194,8 @@ Ao cadastrar o cliente:
                 Nascimento = null,
                 DddCelular = dadosClienteMagento.Endereco_ddd_cel,
                 Celular = dadosClienteMagento.Endereco_tel_cel,
-                DddResidencial = dadosClienteMagento.Endereco_ddd_res == null ? "" : dadosClienteMagento.Endereco_ddd_res,
-                TelefoneResidencial = dadosClienteMagento.Endereco_tel_res == null ? "" : dadosClienteMagento.Endereco_tel_res,
+                DddResidencial = dadosClienteMagento.Endereco_ddd_res ?? "",
+                TelefoneResidencial = dadosClienteMagento.Endereco_tel_res ?? "",
                 DddComercial = dadosClienteMagento.Endereco_ddd_com,
                 TelComercial = dadosClienteMagento.Endereco_tel_com,
                 Ramal = dadosClienteMagento.Endereco_ramal_com,

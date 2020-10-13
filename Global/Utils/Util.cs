@@ -1126,15 +1126,15 @@ namespace UtilsGlobais
 
             string[] cpf_cnpjConsulta = new string[] { ddd, "0" + ddd };
             var lstClienteTask = await (from c in db.Tclientes
-                                        where cpf_cnpjConsulta.Contains(c.Ddd_Res) && c.Tel_Res == tel ||
-                                              cpf_cnpjConsulta.Contains(c.Ddd_Com) && c.Tel_Com == tel ||
-                                              cpf_cnpjConsulta.Contains(c.Ddd_Cel) && c.Tel_Cel == tel ||
-                                              cpf_cnpjConsulta.Contains(c.Ddd_Com_2) && c.Tel_Com_2 == tel
+                                        where (cpf_cnpjConsulta.Contains(c.Ddd_Res) && c.Tel_Res == tel) ||
+                                              (cpf_cnpjConsulta.Contains(c.Ddd_Com) && c.Tel_Com == tel) ||
+                                              (cpf_cnpjConsulta.Contains(c.Ddd_Cel) && c.Tel_Cel == tel) ||
+                                              (cpf_cnpjConsulta.Contains(c.Ddd_Com_2) && c.Tel_Com_2 == tel)
                                         select c).ToListAsync();
 
             var lstOrcamentista = await (from c in db.TorcamentistaEindicadors
-                                         where cpf_cnpjConsulta.Contains(c.Ddd) && c.Telefone == tel &&
-                                               cpf_cnpjConsulta.Contains(c.Ddd_cel) && c.Tel_cel == tel
+                                         where (cpf_cnpjConsulta.Contains(c.Ddd) && c.Telefone == tel) ||
+                                               (cpf_cnpjConsulta.Contains(c.Ddd_cel) && c.Tel_cel == tel)
                                          select c).ToListAsync();
 
             int qtdCliente = 0;

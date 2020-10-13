@@ -17,6 +17,11 @@ namespace Testes.Automatizados.InicializarBanco
         {
             this.contextoBdProvider = contextoBdProvider;
             this.inicializarCep = inicializarCep;
+            GarantirInicializado();
+        }
+
+        public void GarantirInicializado()
+        {
             if (!_inicialziado)
             {
                 _inicialziado = true;

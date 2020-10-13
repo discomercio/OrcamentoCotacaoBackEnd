@@ -1302,7 +1302,7 @@ namespace Pedido
         public void VerificarCaracteresInvalidosEnderecoEntregaClienteCadastro(
             Cliente.Dados.EnderecoEntregaClienteCadastroDados endEtg, List<string> lstErros)
         {
-            string caracteres = "";
+            string caracteres;
             if (UtilsGlobais.Util.IsTextoValido(endEtg.EndEtg_endereco, out caracteres).Length > 0)
                 lstErros.Add("O CAMPO 'ENDEREÇO DE ENTREGA' POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
 

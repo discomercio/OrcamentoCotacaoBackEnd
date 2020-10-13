@@ -19,17 +19,14 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
     {
         private readonly PrePedidoUnisBll prepedidoUnisBll;
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
-        private readonly InicializarBancoGeral inicializarBanco;
         private readonly ITestOutputHelper output;
-        private readonly ClienteBll clienteBll;
-        private readonly ClienteUnisBll clienteUnisBll;
         public VerificaDadosPrepedidoCadastrado(PrePedidoUnisBll prepedidoUnisBll, InfraBanco.ContextoBdProvider contextoProvider,
-            InicializarBancoGeral inicializarBanco, ITestOutputHelper output, ClienteBll clienteBll, ClienteUnisBll clienteUnisBll)
+            InicializarBancoGeral inicializarBanco, ITestOutputHelper output, ClienteUnisBll clienteUnisBll)
         {
             this.prepedidoUnisBll = prepedidoUnisBll;
             this.contextoProvider = contextoProvider;
-            this.inicializarBanco = inicializarBanco;
-            this.clienteUnisBll = clienteUnisBll;
+            inicializarBanco.GarantirInicializado();
+            this.output = output;
 
             var cliente = InicializarClienteDados.ClienteNaoCadastradoPF();
             cliente.DadosCliente.Cnpj_Cpf = DadosPrepedidoUnisBll.PrepedidoParceladoCartao1vez().Cnpj_Cpf;
