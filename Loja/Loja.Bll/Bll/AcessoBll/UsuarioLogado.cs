@@ -84,7 +84,7 @@ namespace Loja.Bll.Bll.AcessoBll
             if (loja_nome == null)
                 loja_nome = await usuarioAcessoBll.Loja_nome(loja);
 
-            usuarioLogadoParaLAterarSessao.Loja_atual_id = loja;
+            usuarioLogadoParaLAterarSessao.Loja_atual_id = tusuario.SessionCtrlLoja;
             usuarioLogadoParaLAterarSessao.Usuario_nome_atual = tusuario.Nome;
             usuarioLogadoParaLAterarSessao.Loja_nome_atual = loja_nome ?? "";
             usuarioLogadoParaLAterarSessao.Vendedor_loja = tusuario.Vendedor_Loja != 0;

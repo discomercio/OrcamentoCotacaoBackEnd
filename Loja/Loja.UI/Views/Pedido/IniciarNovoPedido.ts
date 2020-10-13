@@ -38,7 +38,8 @@ declare var permiteRAStatus: number;
 //let formata = new MoedaUtils();
 //alert("alterdado6 " + formata.formatarMoedaComPrefixo(123));
 
-declare function modalError(): any;
+declare function ModalSimples(mensagem): any;
+
 declare function AbrirModalProdutos(): any;
 
 
@@ -117,8 +118,8 @@ function inicializaCampos(v: number) {
     }
 }
 
-$(".prod").click(function () {
-    $(".prod input").prop('checked', false);
+$("#prod").click(function () {
+    $("#prod input").prop('checked', false);
     $(this).find("input").prop('checked', true);
 });
 
@@ -134,7 +135,7 @@ $("#buscaproduto").keyup(function () {
 
     $(".tabelaProd tr").hide();
     if (buscaProduto != "") {
-        $(".prod").filter(function () {
+        $("#prod").filter(function () {
             if ($(this).text().toLowerCase().indexOf(buscaProduto) >= 0) {
                 $(this).show();
                 if ($(this).next().hasClass("trfilho")) {
@@ -169,45 +170,44 @@ window.VerificarPercMaxDescEComissao = (e: HTMLInputElement) => {
     e.value = moedaUtils.formatarMoedaSemPrefixo(val);
 
 
-    let msgErro: string = "";
+    let msgErro: string[];
     let percMax = new PercentualMaximoDto()
     percMax = percentualMaximoDto;
 
     if (val < 0 || val > 100) {
-        msgErro = "Percentual de comissão inválido.";
+        msgErro.push("Percentual de comissão inválido.");
     }
     if (val > percentualMaximoDto.PercMaxComissao) {
-        msgErro = "O percentual de comissão excede o máximo permitido.";
+        msgErro.push("O percentual de comissão excede o máximo permitido.");
     }
 
-    if (msgErro != "") {
+    if (msgErro.length > 0) {
         //chama a modal caso seja maior ou tiver erros
-        modalError();
-        let err = new ErrorModal();
-        err.MostrarMsg(msgErro);
+        ModalSimples(msgErro);
         return false;
     }
 }
 
 //como é chamadado diretamente do HTML, tem que estar na window
 window.InserirProdutoLinha = () => {
-
     let selectProdInfo = new SelectProdInfo();
     //estou pegando a linha
     if ($("#qtde").val() != "" && $("#qtde").val() != "undefined") {
-        $('.prod').children().find('input').filter(function () {
-            if ($(this).prop('checked') == true) {
-                var elem = $(this).parent().parent().parent();
-                elem.children().each(function () {
-                    selectProdInfo.Fabricante = elem.children()[0].textContent.trim();
-                    selectProdInfo.Produto = elem.children()[1].textContent.trim();
+        $('#prod').children().find('input').filter(function () {
+            if ($(this).prop('checked') == true) {                
+                //pegando a linha tr
+                let elem = $(this).parent().parent().parent().parent().parent();
+                elem.each(function (index, e) {
+                    debugger;
+                    selectProdInfo.Fabricante = e.getElementsByTagName('input')[0].value.trim();
+                    selectProdInfo.Produto = e.getElementsByTagName('input')[1].value.trim();
                     selectProdInfo.Qte = parseInt($("#qtde").val().toString());
                     selectProdInfo.ClicouOk = true;
                 });
                 return true;
             }
         });
-
+        
         itens.dtoProdutoCombo = lstprodutos;//pegando da tela
         itens.selectProdInfo = selectProdInfo;
         itens.pedidoDto = new PedidoDto();
@@ -225,16 +225,14 @@ window.InserirProdutoLinha = () => {
 
         PedidoAlterado();
         //limpar tirar o check do produto selecionado
-        $('.prod').children().find('input').filter(function () {
+        $('#prod').children().find('input').filter(function () {
             if ($(this).prop('checked') == true)
                 $(this).prop('checked', false);
             return true;
         });
 
         if (itens.msgErro != "" && itens.msgErro != undefined) {
-            modalError();
-            let err = new ErrorModal();
-            err.MostrarMsg(itens.msgErro);
+            ModalSimples(itens.msgErro);
         }
     }
     else {
@@ -443,7 +441,6 @@ window.formataVlVenda = (v: HTMLInputElement) => {
     let r: PedidoProdutosPedidoDto[] = new Array<PedidoProdutosPedidoDto>();
     r = lstProdSelecionados.filter(e => e.NumProduto == numProduto);
 
-    debugger;
     if (parseFloat(val) == 0 && val.length > 2) {
         val = r[0].VlUnitario.toString();
     }
@@ -462,8 +459,6 @@ window.formatarPreco_Lista = (v: HTMLInputElement) => {
     let numProduto: string = linha.children[0].children[0].value;
     let r: PedidoProdutosPedidoDto[] = new Array<PedidoProdutosPedidoDto>();
     r = lstProdSelecionados.filter(e => e.NumProduto == numProduto);
-
-    debugger;
     if (parseFloat(val) == 0 && val.length > 2) {
         val = r[0].Preco_Lista.toString();
     }
@@ -637,7 +632,6 @@ window.digitouPreco_Lista = (v: HTMLInputElement) => {
 }
 
 function calcula_total_RA_liquido(percentual_desagio_RA_liquida: number, vl_total_RA: number): number {
-    debugger;
     let vl_total_RA_liquido: number;
     //let blnAplicouDesagioRA = true;
     if (vl_total_RA == 0 || vl_total_RA < 0) {
@@ -688,7 +682,6 @@ function somarRALiquido(): void {
     let total = totalPedido();
     let totalRa = totalPedidoRA();
 
-    debugger;
     let somaRA = parseFloat((totalRa - total).toFixed(2));
 
     //total ra liquido = totalNF - totalVenda
@@ -716,7 +709,6 @@ function totalPedidoRA(): number {
 
 //calculamos os produtos e somamos o total
 function totalPedido(): number {
-    debugger;
     let total: number = parseFloat(lstProdSelecionados.reduce((sum, current) => sum + current.TotalItem, 0).toFixed(2));
 
     $("#totalPedido").text(moedaUtils.formatarMoedaSemPrefixo(total));
@@ -736,6 +728,7 @@ $("#totalPedido").ready(() => {
     novoPedidoDadosService.pedidoDto = new PedidoDto();
     novoPedidoDadosService.pedidoDto.ListaProdutos = new Array<PedidoProdutosPedidoDto>();
     novoPedidoDadosService.pedidoDto.ListaProdutos = lstProdSelecionados;
+    
     let totalP: string = $("#totalPedido").val().toString();
 
     if (totalP != "0") {
@@ -803,23 +796,23 @@ function zerarCamposDadosPagto(editandoLinha: boolean) {
     //    ($("#enumFormaPagto") as any).formSelect();
     //}
 
-    if (dadosPagto.enumFormaPagto == 1) {
-        //A vista   
-        //$("#Avista").css("display", "none");
-        selecione = $("#opcaoPagtoAvista").children()[0];
-        $("#opcaoPagtoAvista").html(selecione);
-        ($("#opcaoPagtoAvista") as any).formSelect();
+    //if (dadosPagto.enumFormaPagto == 1) {
+    //    //A vista   
+    //    //$("#Avista").css("display", "none");
+    //    selecione = $("#opcaoPagtoAvista").children()[0];
+    //    $("#opcaoPagtoAvista").html(selecione);
+    //    ($("#opcaoPagtoAvista") as any).formSelect();
 
-        $("#meioPagtoAVista").prop('selectedIndex', 0);
-        ($("#meioPagtoAVista") as any).formSelect();
-    }
+    //    $("#meioPagtoAVista").prop('selectedIndex', 0);
+    //    ($("#meioPagtoAVista") as any).formSelect();
+    //}
 
     //ParcCartaoInternet
     if (dadosPagto.enumFormaPagto == 2) {
 
         selecione = $("#opcaoPagtoParcCartaoInternet").children()[0];
         $("#opcaoPagtoParcCartaoInternet").html(selecione);
-        ($("#opcaoPagtoParcCartaoInternet") as any).formSelect();
+        //($("#opcaoPagtoParcCartaoInternet") as any).formSelect();
     }
 
     if (dadosPagto.enumFormaPagto == 3) {
@@ -828,14 +821,14 @@ function zerarCamposDadosPagto(editandoLinha: boolean) {
         //$("#vlEntrada").val('');
 
         //$("#meioPagtoEntrada").prop('selectedIndex', 0);
-        ($("#meioPagtoEntrada") as any).formSelect();
+        //($("#meioPagtoEntrada") as any).formSelect();
 
-        selecione = $("#opcaoPagtoParcComEntrada").children()[0];
-        $("#opcaoPagtoParcComEntrada").html(selecione);
-        ($("#opcaoPagtoParcComEntrada") as any).formSelect();
+        //selecione = $("#opcaoPagtoParcComEntrada").children()[0];
+        //$("#opcaoPagtoParcComEntrada").html(selecione);
+        //($("#opcaoPagtoParcComEntrada") as any).formSelect();
 
-        $("#meioPagtoEntradaPrest").prop('selectedIndex', 0);
-        ($("#meioPagtoEntradaPrest") as any).formSelect();
+        //$("#meioPagtoEntradaPrest").prop('selectedIndex', 0);
+        //($("#meioPagtoEntradaPrest") as any).formSelect();
 
         //$("#diasVenc").val('');
     }
@@ -843,12 +836,12 @@ function zerarCamposDadosPagto(editandoLinha: boolean) {
     if (dadosPagto.enumFormaPagto == 5) {
         //ParcUnica
         //$("#ParcUnica").css("display", "none");
-        selecione = $("#opcaoPagtoParcUnica").children()[0];
-        $("#opcaoPagtoParcUnica").html(selecione);
-        ($("#opcaoPagtoParcUnica") as any).formSelect();
+        //selecione = $("#opcaoPagtoParcUnica").children()[0];
+        //$("#opcaoPagtoParcUnica").html(selecione);
+        //($("#opcaoPagtoParcUnica") as any).formSelect();
 
-        $("#meioPagtoParcUnica").prop('selectedIndex', 0);
-        ($("#meioPagtoParcUnica") as any).formSelect();
+        //$("#meioPagtoParcUnica").prop('selectedIndex', 0);
+        //($("#meioPagtoParcUnica") as any).formSelect();
 
         //$("#diasVencParcUnica").val('');
     }
@@ -856,16 +849,15 @@ function zerarCamposDadosPagto(editandoLinha: boolean) {
     if (dadosPagto.enumFormaPagto == 6) {
         //ParcCartaoMaquineta
         //$("#PagtoCartaoMaquineta").css("display", "none");
-        selecione = $("#opcaoPagtoParcCartaoMaquineta").children()[0];
-        $("#opcaoPagtoParcCartaoMaquineta").html(selecione);
-        ($("#opcaoPagtoParcCartaoMaquineta") as any).formSelect();
+        //selecione = $("#opcaoPagtoParcCartaoMaquineta").children()[0];
+        //$("#opcaoPagtoParcCartaoMaquineta").html(selecione);
+        //($("#opcaoPagtoParcCartaoMaquineta") as any).formSelect();
     }
 }
 
 
 function RecalcularValoresSemCoeficiente(v: any, editandoLinha: boolean, semVerificarServidor: boolean) {
     //zerarCamposDadosPagto(editandoLinha);
-    debugger;
     InicializaDadosPagto();
     if (v == "" || v == undefined || v == null || v == 0) {
         v = 1;
@@ -890,15 +882,12 @@ function RecalcularValoresSemCoeficiente(v: any, editandoLinha: boolean, semVeri
 
 
         if (dadosPagto.msgErro != "" && dadosPagto.msgErro != undefined) {
-            modalError();
-            let err = new ErrorModal();
-            err.MostrarMsg(dadosPagto.msgErro);
+            ModalSimples(dadosPagto.msgErro);
             dadosPagto.msgErro = "";
             return false;
         }
 
-        AtribuirListaParaSelect();
-        debugger;
+        //AtribuirListaParaSelect();
         //vamos apagar a linha de produtos selecionados e montar novamente com os valores atualizados
         //remover todas as linhas da tabela para adicionar novamente.
 
@@ -987,9 +976,7 @@ window.recalcularValoresComCoeficiente = (e: HTMLSelectElement) => {
 
 
     if (lstProdSelecionados.length == 0) {
-        modalError();
-        let erro = new ErrorModal();
-        erro.MostrarMsg("Selecione ao menos um produto!");
+        ModalSimples("Selecione ao menos um produto!");
         return false;
     }
 
@@ -1103,7 +1090,7 @@ function AtribuirListaParaSelect() {
         dadosPagto.lstMsg.forEach((value) => {
             $("#opcaoPagtoAvista").append("<option selected>" + value + "</option>");
         });
-        ($("#opcaoPagtoAvista") as any).formSelect();
+        //($("#opcaoPagtoAvista") as any).formSelect();
     }
     if (dadosPagto.enumFormaPagto == 2) {
         //ParcCartaoInternet
@@ -1113,14 +1100,14 @@ function AtribuirListaParaSelect() {
         });
 
         //($("#opcaoPagtoParcCartaoInternet") as any).addEventListener('onclick', 'RecalcularListaProdutos(this)');
-        ($("#opcaoPagtoParcCartaoInternet") as any).formSelect();
+        //($("#opcaoPagtoParcCartaoInternet") as any).formSelect();
     }
     if (dadosPagto.enumFormaPagto == 3) {
         //ParcComEnt
         dadosPagto.lstMsg.forEach((value) => {
             $("#opcaoPagtoParcComEntrada").append("<option>" + value + "</option>");
         });
-        ($("#opcaoPagtoParcComEntrada") as any).formSelect();
+        //($("#opcaoPagtoParcComEntrada") as any).formSelect();
     }
     //NÃO ESTA SENDO USADO
     if (dadosPagto.enumFormaPagto == 4) {
@@ -1128,7 +1115,7 @@ function AtribuirListaParaSelect() {
         dadosPagto.lstMsg.forEach((value) => {
             $("#opcaoPagtoParcSemEntrada").append("<option>" + value + "</option>");
         });
-        ($("#opcaoPagtoParcSemEntrada") as any).formSelect();
+        //($("#opcaoPagtoParcSemEntrada") as any).formSelect();
     }
 
     if (dadosPagto.enumFormaPagto == 5) {
@@ -1136,14 +1123,14 @@ function AtribuirListaParaSelect() {
         dadosPagto.lstMsg.forEach((value) => {
             $("#opcaoPagtoParcUnica").append("<option selected>" + value + "</option>");
         });
-        ($("#opcaoPagtoParcUnica") as any).formSelect();
+        //($("#opcaoPagtoParcUnica") as any).formSelect();
     }
     if (dadosPagto.enumFormaPagto == 6) {
         //ParcCartaoMaquineta
         dadosPagto.lstMsg.forEach((value) => {
             $("#opcaoPagtoParcCartaoMaquineta").append("<option>" + value + "</option>");
         });
-        ($("#opcaoPagtoParcCartaoMaquineta") as any).formSelect();
+        //($("#opcaoPagtoParcCartaoMaquineta") as any).formSelect();
     }
 
 }
@@ -1437,14 +1424,11 @@ declare var erroPercNovo: boolean;
 erroPercNovo = false;
 //iremos fazer a validação na tela
 window.continuar = (): any => {
-
-    let err = new ErrorModal();
     //verificar se tem produtos com qtde maior que o permitido
     let q: number = 0;
 
     if (dadosPagto.pedidoDto == null || dadosPagto.pedidoDto == undefined) {
-        modalError();
-        err.MostrarMsg("Selecione ao menos um produto para continuar.");
+        ModalSimples("Selecione ao menos um produto para continuar.");
         return false;
     } else {
         dadosPagto.pedidoDto.ListaProdutos.forEach(r => {
@@ -1454,15 +1438,13 @@ window.continuar = (): any => {
         });
 
         if (q > 0) {
-            modalError();
-            err.MostrarMsg("Produtos com quantidades maiores que a quantidade máxima permitida para venda!");
+            ModalSimples("Produtos com quantidades maiores que a quantidade máxima permitida para venda!");
             //this.alertaService.mostrarMensagem("Produtos com quantidades maiores que a quantidade máxima permitida para venda!");
             return false;
         }
         //validação: tem que ter algum produto
         if (dadosPagto.pedidoDto.ListaProdutos.length === 0) {
-            modalError();
-            err.MostrarMsg("Selecione ao menos um produto para continuar.");
+            ModalSimples("Selecione ao menos um produto para continuar.");
 
             return false;
         }
@@ -1474,8 +1456,7 @@ window.continuar = (): any => {
             //necessário atribuir a forma de pagmento para dadosPagto
 
             if (dadosPagto.msgErro != "") {
-                modalError();
-                err.MostrarMsg(dadosPagto.msgErro);
+                ModalSimples(dadosPagto.msgErro);
                 return false;
             }
             return;
@@ -1497,7 +1478,7 @@ window.continuar = (): any => {
 
                     let vlAux = (this.percentualVlPedidoRA / 100) * this.totalPedido();
                     if (this.somaRA > vlAux) {
-                        this.alertaService.mostrarMensagem("O valor total de RA excede o limite permitido!");
+                        ModalSimples("O valor total de RA excede o limite permitido!");
                         return;
                     }
                 }
@@ -1525,8 +1506,7 @@ window.continuar = (): any => {
                 lstErros.forEach((e) => {
                     msg += e + "\n";
                 });
-                modalError();
-                err.MostrarMsg(msg);
+                ModalSimples(msg);
             }
 
 
@@ -1554,8 +1534,6 @@ function verifica_excedente_max_desconto(perc_max_comissao_e_desconto_a_utilizar
     let vl_preco_venda: number = 0;
     let perc_desc: number = 0;
     //let perc_RT_novo: number = 0;
-
-    let err = new ErrorModal();
 
 
     lstProdSelecionados.forEach((e) => {
@@ -1588,8 +1566,7 @@ function verifica_excedente_max_desconto(perc_max_comissao_e_desconto_a_utilizar
                         // Senha de desconto NÃO cobre desconto
                         if (perc_senha_desconto < perc_desc) {
                             //vamos armazenar uma lista de erros para verificar na hora que estiver validando
-                            modalError();
-                            err.MostrarMsg("O desconto do produto '" + e.Descricao + "' (" +
+                            ModalSimples("O desconto do produto '" + e.Descricao + "' (" +
                                 perc_desc + " %) excede o máximo autorizado!");
                             erroPercNovo = true;
                             return;
@@ -1598,8 +1575,7 @@ function verifica_excedente_max_desconto(perc_max_comissao_e_desconto_a_utilizar
                     }
                     // Não tem senha de desconto
                     else {
-                        modalError();
-                        err.MostrarMsg("O desconto do produto '" + e.Descricao + "' (" +
+                        ModalSimples("O desconto do produto '" + e.Descricao + "' (" +
                             moedaUtils.formatarMoedaSemPrefixo(perc_desc) + "%) excede o máximo permitido!");
                         erroPercNovo = true;
                         return;
@@ -1621,7 +1597,7 @@ function verifica_excedente_max_desconto(perc_max_comissao_e_desconto_a_utilizar
     if (percComissao != 0) {
         // RT excede limite máximo?
         if (percComissao > perc_max_RT) {
-            err.MostrarMsg("Percentual de comissão excede o máximo permitido!");
+            ModalSimples("Percentual de comissão excede o máximo permitido!");
             return;
         }
 

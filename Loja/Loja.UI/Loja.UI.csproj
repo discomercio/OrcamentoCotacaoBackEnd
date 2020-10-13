@@ -65,7 +65,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.6" >
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.6">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -82,6 +82,7 @@
 
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Global\Infra\InfraBanco\InfraBanco.csproj" />
     <ProjectReference Include="..\Loja.Bll\Loja.Bll.csproj" />
   </ItemGroup>
 
@@ -97,6 +98,7 @@
 
 
   <ItemGroup>
+    <Folder Include="Views\Pedido\NewFolder\" />
     <Folder Include="wwwroot\scriptsJs\" />
   </ItemGroup>
 

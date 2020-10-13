@@ -4,216 +4,193 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h5>Pedido Novo</h5>
-
-<div class="col s12 sectionDesktop">
-    @using (Html.BeginForm("Cadastrar_Indicador_SelecaoCD", "Pedido", FormMethod.Post,
-new { enctype = "multipart/form-data", onsubmit = "return continuar()", id="formulario" }))
-    {
-        <article>
-            @* Nome do cliente *@
-            <div class="row">
-                <div class="col s12">
-                    <span class="caixa">
-                        <strong>
-                            <span class="rotulo">Cliente:</span>
-                            <span class="dado" name="nome" id="nome"> @Model.NomeCliente</span>
-                        </strong>
-                    </span>
+<div class="page-header card">
+    <div class="row align-items-end">
+        <div class="col-lg-8">
+            <div class="page-header-title">
+                <i class="icon-user bg-c-blue"></i>
+                <div class="d-inline">
+                    <h5>Indicador e Centro de distribuição</h5>
+                    <span>Opções de com ou sem indicador e CD manual ou automático</span>
                 </div>
             </div>
-            @* Indicadores *@
-
-        <div class="row">
-            @if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
-.Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
-            {
-                @* Indicação *@
-                <div class="col s6">
-                    <span class="caixa">
-                        <span class="rotulo">Indicação</span>
-                    </span>
-                </div>
-                @* Seleção CD *@
-                <div class="col s6">
-                    <span class="caixa">
-                        <span class="rotulo">Modo de Seleção do CD (Auto-Split)</span>
-                    </span>
-                </div>
-                @* Check Com ou Sem indicação *@
-                <div class="col s2">
-                    <label>
-                        <input class="with-gap" type="radio" id="chkSemIndicacao" name="comIndicacao" value="0" />
-                        <span class="dado">Sem Indicação</span>
-                    </label>
-                </div>
-                <div class="col s2">
-                    <label>
-                        <input class="with-gap" type="radio" id="chkComIndicacao" name="comIndicacao" value="0" />
-                        <span class="dado">Com Indicação</span>
-                    </label>
-                </div>
-                <div class="col s2">
-                    <input type="hidden" />
-                </div>
-            }
-            @if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
-.Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD.ToString()) != -1)
-            {
-
-
-                <div class="col s2">
-                    <label>
-                        <input class="with-gap" type="radio" id="chkAutomatico" name="cdAutomatico" value="false" />
-                        <span class="dado">Aultomático</span>
-                    </label>
-                </div>
-                <div class="col s2">
-                    <label>
-                        <input class="with-gap" type="radio" id="chkManual" name="cdManual" value="false" />
-                        <span class="dado">Manual</span>
-                    </label>
-                </div>
-            }
-            <input type="hidden" />
-            <input type="hidden" />
-            <div class="col s12">
-                <input type="hidden" />
-            </div>
-            @if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
-.Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
-            {
-                <div class="col s4" id="divIndicadores">
-                    <div class="input-field">
-                        <select id="indicador" name="indicador" onchange="VerificaPermiteRA(this)">
-                            <option value="">Selecione</option>
-                            @*aqui vai o select de indicadores com "apelido - razao social"*@
-                        </select>
-                        <label>Indicadores</label>
-                    </div>
-                </div>
-                //ao selecionar a lista vamos verificar se o indicador selecionado permite RA para poder habilitar ou desabilitar
-            }
-            <div class="col s2">
-                <input type="hidden" />
-            </div>
-            @if (Model.ListaOperacoesPermitidas.IndexOf(
- Loja.Bll.Constantes.Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD.ToString()) != -1)
-            {
-                <div class="col s4" id="divSelecaoCd">
-                    <div class="input-field">
-                        @Html.DropDownList(
-            "ListaCD",
-            new SelectList(Model.ListaCD, "Value", "Text"),
-            new { @id = "selecaoCd", @name = "nomeCD" })
-                        <label>Centro de Distribuição</label>
-                    </div>
-                    <div class="col s4" id="divMsgCD" style="line-height:normal; display:none;position:absolute;">
-                        <span id="msgCD" style="word-break:break-word; color:red;font-weight:bold"></span>
-                    </div>
-                </div>
-            }
-            <input type="hidden" />
-            <input type="hidden" />
-            <div class="col s12">
-                <input type="hidden" />
-            </div>
-            @if (Model.ListaOperacoesPermitidas.IndexOf(
- Loja.Bll.Constantes.Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
-            {
-                <div class="col s2" id="divComRA">
-                    <label>
-                        <input class="with-gap" type="radio" id="chkComRa" name="comRA" value="false" />
-                        <span class="dado">Com RA</span>
-                    </label>
-                </div>
-                <div class="col s2" id="divSemRA">
-                    <label>
-                        <input class="with-gap" type="radio" id="chkSemRa" name="comRA" value="false" />
-                        <span class="dado">Sem RA</span>
-                    </label>
-                </div>
-
-                <input type="hidden" />
-                <input type="hidden" />
-                <div class="col s12">
-                    <input type="hidden" />
-                </div>
-                <div class="col s2" id="divCOM">
-                    <div class="input-field">
-                        <input type="text" onblur="VerificarPercMaxDescEComissao(this);" onkeyup="formataPercComissao(this)" id="percComissao" name="percComissao" />
-                        <label>COM(%)</label>
-                    </div>
-                </div>
-#pragma warning disable CS0162
-                if (Loja.Bll.Constantes.Constantes.ID_PARAM_SITE == Loja.Bll.Constantes.Constantes.COD_SITE_ASSISTENCIA_TECNICA)
-                {
-                    <div class="col s2" id="divPedBonshop">
-                        <div class="input-field">
-                            <input type="text" id="pedBonshop" name="pedBonshop" />
-                            <label>COM(%)</label>
-                        </div>
-                    </div>
-                    <div class="col s4" id="divPedBonshop">
-                        <div class="input-field">
-                            @Html.DropDownList("PedBonshop", new SelectList(
-             Model.PedBonshop, "Value", "Text"),
-             new { @id = "pedBonshop", @name = "pedBonshop" })
-                            <label>Ref. Pedido Bonshop</label>
-                        </div>
-                        <div class="col s4" id="divMsgCD" style="line-height:normal; display:none;position:absolute;">
-                            <span id="msgCD" style="word-break:break-word; color:red;font-weight:bold"></span>
-                        </div>
-                    </div>
-                }
-#pragma warning restore CS0162
-            }
-            @section RodapePagina {
-                <footer class="page-footer">
-                    <div class="row col s12">
-                        <div class="col s1"></div>
-                        <div class="input-field col s4 center">
-                            <button class="waves-effect waves-light btn-small"
-                                    type="button">
-                                <i class="material-icons left">arrow_back</i>Voltar
-                            </button>
-                        </div>
-                        <div class="col s2"></div>
-                        <div class="input-field col s4 center">
-                            <button class="waves-effect waves-light btn-small"
-                                    type="submit" onclick="$('#formulario').submit()">
-                                <i class="material-icons left">arrow_forward</i>Avançar
-                            </button>
-                        </div>
-                        <div class="col s1"></div>
-                    </div>
-                </footer>
-            }
-            @*<footer class="page-footer">
-                <div class="row col s12">
-                    <div class="col s1"></div>
-                    <div class="input-field col s2">
-                        <button class="waves-effect waves-light btn-small"
-                                type="button"
-                                style="margin-top:2%;">
-                            <i class="material-icons left">arrow_back</i>Voltar
-                        </button>
-                    </div>
-                    <div class="col s5"></div>
-                    <div class="input-field col s2">
-                        <button class="waves-effect waves-light btn-small"
-                                type="submit"
-                                style="margin-top:2%;">
-                            <i class="material-icons left">arrow_forward</i>Avançar
-                        </button>
-                    </div>
-                </div>
-            </footer>*@
         </div>
-        </article>
-        <input type="hidden" name="semIndicacao" id="semIndicacao" />
-    }
+        <div class="col-lg-4">
+            <div class="page-header-breadcrumb">
+                <ul class=" breadcrumb breadcrumb-title">
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Home")"><i class="icon icon-home"></i></a>
+                    </li>
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Cliente" )">Cliente</a> </li>
+                    <li class="breadcrumb-item"><a href="@Url.Action("BuscarCliente", "Cliente", new { cpf_cnpj = Model.CpfCnpj, novoCliente = false})">Cadastro Cliente</a> </li>
+                    <li class="breadcrumb-item"><a href="#!">Indicador e CD</a> </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
+<div class="pcoded-inner-content" style="min-height: 75vh;">
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="page-body">
+                <div class="row">
+                    <div class="col-md-12 col-xl-12">
+                        <div class="card" style="min-height: 75vh;">
+
+                            <div class="page-header card">
+                                @using (Html.BeginForm("Cadastrar_Indicador_SelecaoCD", "Pedido", FormMethod.Post,
+                     new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "formulario" }))
+                                {
+
+                                    <div class="row">
+                                        <div class="col s12">
+                                            <span class="caixa">
+                                                <strong>
+                                                    <span class="rotulo">Cliente:</span>
+                                                    <span class="dado" name="nome" id="nome"> @Model.NomeCliente</span>
+                                                </strong>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row col s12"></div>
+                                    <div class="form-group row">
+                                        @if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
+.Constantes.OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO.ToString()) != -1)
+                                        {
+                                            <div class="col-md-12 col-xl-6">
+                                                <div class="card-header">
+                                                    <h5>Indicação</h5>
+                                                </div>
+                                                <div class="card-block">
+                                                    <div class="form-radio">
+                                                        <div class="radio radio-inline">
+                                                            <label>
+                                                                <input type="radio" id="chkSemIndicacao" class="js-programmatic-disable" checked name="comIndicacao" value="0" />
+                                                                <i class="helper"></i>Sem Indicação
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio radio-inline">
+                                                            <label>
+                                                                <input type="radio" id="chkComIndicacao" name="comIndicacao" class="js-programmatic-enable" value="0" />
+                                                                <i class="helper"></i>Com Indicação
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    @* inserir o select de indicadores aqui *@
+                                                    <div id="indicadores">
+                                                        @Html.DropDownList("ListaIndicadores", new SelectList(Model.ListaIndicadores, "Value", "Text"),
+                                                       new { @id = "indicador", @name = "indicador", @class = "form-control js-example-disabled" })
+                                                    </div>
+                                                </div>
+                                                <div class="card-block">
+                                                    <div class="form-radio">
+                                                        <div class="radio radio-inline">
+                                                            <label>
+                                                                <input type="radio" id="chkSemRa" name="comRA" value="false" />
+                                                                <i class="helper"></i>Sem RA
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio radio-inline">
+                                                            <label>
+                                                                <input type="radio" id="chkComRa" name="comRA" value="false" />
+                                                                <i class="helper"></i>Com RA
+                                                            </label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group" id="RA">
+                                                        <label class="col-form-label" for="percComissao">COM(%)</label>
+                                                        <input type="text" onblur="VerificarPercMaxDescEComissao(this);" onkeyup="formataPercComissao(this)"
+                                                               id="percComissao" name="percComissao" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        @if (Model.ListaOperacoesPermitidas.IndexOf(Loja.Bll.Constantes
+.Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD.ToString()) != -1)
+                                        {
+                                            <div class="col-md-12 col-xl-6">
+                                                <div class="card-header">
+                                                    <h5>Modo de Seleção do CD (Auto-Split)</h5>
+                                                </div>
+                                                <div class="card-block">
+                                                    <div class="form-radio">
+                                                        <div class="radio radio-inline">
+                                                            <label>
+                                                                <input type="radio" id="chkAutomatico" class="js-programmatic-disable" name="cdAutomatico" value="false" />
+                                                                <i class="helper"></i>Automático
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio radio-inline">
+                                                            <label>
+                                                                <input type="radio" id="chkManual" class="js-programmatic-enable" name="cdManual" value="0" />
+                                                                <i class="helper"></i>Manual
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    @* inserir o select de cd aqui *@
+                                                    <div id="cd">
+                                                        <label class="col-form-label" for="selecaoCd">Centro de Distribuição</label>
+                                                        @Html.DropDownList("ListaCD", new SelectList(Model.ListaCD, "Value", "Text"),
+                                                       new { @id = "selecaoCd", @name = "nomeCD", @class = "form-control js-example-disabled" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                    @*if (Loja.Bll.Constantes.Constantes.ID_PARAM_SITE == Loja.Bll.Constantes.Constantes.COD_SITE_ASSISTENCIA_TECNICA)
+                                           {
+                                               <div class="col s2" id="divPedBonshop">
+                                                   <div class="input-field">
+                                                       <input type="text" id="pedBonshop" name="pedBonshop" />
+                                                       <label>COM(%)</label>
+                                                   </div>
+                                               </div>
+                                               <div class="col s4" id="divPedBonshop">
+                                                   <div class="input-field">
+                                                       @Html.DropDownList("PedBonshop", new SelectList(
+                                        Model.PedBonshop, "Value", "Text"),
+                                        new { @id = "pedBonshop", @name = "pedBonshop" })
+                                                       <label>Ref. Pedido Bonshop</label>
+                                                   </div>
+                                                   <div class="col s4" id="divMsgCD" style="line-height:normal; display:none;position:absolute;">
+                                                       <span id="msgCD" style="word-break:break-word; color:red;font-weight:bold"></span>
+                                                   </div>
+                                               </div>
+                                           }*@
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section RodapePagina {
+    <footer class="m-2">
+        <div class="row col-lg-12">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-3">
+                <a class="btn btn-primary waves-effect waves-light"
+                   a href="@Url.Action("BuscarCliente", "Cliente", new { cpf_cnpj = Model.CpfCnpj, novoCliente = false})">
+                    <i class="fa fa-arrow-left"></i>Voltar
+                </a>
+            </div>
+            <div class="col-lg-1"></div>
+            <div class="col-lg-3">
+                <button class="btn btn-primary waves-effect waves-light"
+                        type="submit" onclick="$('#formulario').submit()">
+                    <i class="fa fa-arrow-right"></i>Avançar
+                </button>
+            </div>
+            <div class="col-lg-1"></div>
+        </div>
+    </footer>
+}
+
+
 
 <div id="modalConfirm" class="modal">
     <div class="modal-content">

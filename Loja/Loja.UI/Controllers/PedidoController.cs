@@ -78,9 +78,11 @@ namespace Loja.UI.Controllers
             //aqui esta demorando
             var lstProdutosTask = produtoBll.ListaProdutosCombo(usuarioLogado.Loja_atual_id,
                 usuarioLogado.Cliente_Selecionado.DadosCliente.Id, pedidoDto);
+            viewModel.ProdutoCombo = await lstProdutosTask;
 
             //pegamos o clienteque esta na session
             viewModel.NomeCliente = usuarioLogado.Cliente_Selecionado.DadosCliente.Nome;
+            viewModel.CpfCnpj = usuarioLogado.Cliente_Selecionado.DadosCliente.Cnpj_Cpf;
             viewModel.TipoCliente = usuarioLogado.Cliente_Selecionado.DadosCliente.Tipo;
 
             //buscamos a lista com as possiveis formas de pagamentos
@@ -326,6 +328,7 @@ namespace Loja.UI.Controllers
             Indicador_SelecaoCDViewModel viewModel = new Indicador_SelecaoCDViewModel();
             //pegamos o clienteque esta na session
             viewModel.NomeCliente = usuarioLogado.Cliente_Selecionado.DadosCliente.Nome;
+            viewModel.CpfCnpj = usuarioLogado.Cliente_Selecionado.DadosCliente.Cnpj_Cpf;
 
             //buscamos o indicador original para fazer a comparação
             viewModel.IndicadorOriginal = usuarioLogado.Cliente_Selecionado.DadosCliente.Indicador_Orcamentista.ToString();
@@ -334,6 +337,14 @@ namespace Loja.UI.Controllers
             viewModel.LojaAtual = usuarioLogado.Loja_atual_id;
 
             //lista completa de indicadores
+            List<IndicadorDto> lstIndicadores = (await pedidoBll.BuscarOrcamentistaEIndicadorListaCompleta(usuarioLogado.Usuario_atual,
+                usuarioLogado.S_lista_operacoes_permitidas, usuarioLogado.Loja_atual_id)).ToList();
+            List<SelectListItem> lstIndicador = new List<SelectListItem>();
+            foreach(var i in lstIndicadores)
+            {
+                lstIndicador.Add(new SelectListItem { Value = i.Apelido, Text = i.Apelido + " - " + i.RazaoSocial });
+            }
+            viewModel.ListaIndicadores = new SelectList(lstIndicador, "Value", "Text");
             //viewModel.ListaIndicadores = (await pedidoBll.BuscarOrcamentistaEIndicadorListaCompleta(usuarioLogado.Usuario_atual,
             //    usuarioLogado.S_lista_operacoes_permitidas, usuarioLogado.Loja_atual_id)).ToList();
 

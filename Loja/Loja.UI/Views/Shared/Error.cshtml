@@ -3,28 +3,127 @@
     ViewData["Title"] = "Error";
 }
 
-<div id="modalErro" class="modal">
-    <div class="modal-content">
-        <p id="teste" style="font-size:15px;color:black;white-space:initial;line-height:initial;"></p>
-    </div>
-    <div class="modal-footer">
-        <button type="button" href="#!" class="modal-close waves-effect waves-green btn">OK</button>
+
+<div class="col-lg-12 col-xl-6" style="display:none">
+    <div class="card">
+        <div class="card-header">
+            <h5>Bootstrap Modals</h5>
+        </div>
+        <div class="card-block">
+            <p>use code<code> modal-lg, modal-sm</code> to use large and small popup modal.</p>
+            <ul>
+                <!-- Static Modal -->
+                <li>
+                    <button type="button" class="btn btn-default waves-effect" data-toggle="modal" data-target="#default-Modal">Static</button>
+                    <div class="modal fade" id="default-Modal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Modal title</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <h5>Static Modal</h5>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing lorem impus dolorsit.onsectetur adipiscing</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default waves-effect " data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary waves-effect waves-light ">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <!-- Default Modal -->
+                <li>
+
+                    <button type="button" class="btn btn-primary waves-effect" data-toggle="modal" data-target="#large-Modal">Large</button>
+                    <div class="modal fade" id="large-Modal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Modal title</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <h5>Default Modal</h5>
+                                    <p>This is Photoshop's version of Lorem IpThis is Photoshop's version of Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit.</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default waves-effect " data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary waves-effect waves-light ">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <!-- Small Modal -->
+                <li>
+
+                    <button type="button" class="btn btn-success waves-effect" data-toggle="modal" data-target="#small-Modal">Small</button>
+                    <div class="modal fade" id="small-Modal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Modal title</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <h5>Small Modal</h5>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing .</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default waves-effect " data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
 
-<script>
-    var ErrorModalTeste;
+@* Modal Gabriel *@
+<div class="modal fade" id="modal-simples" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="moda-body mt-3 ml-2 mr-2">
+                <p id="mensagem"></p>
+            </div>
+            <div class="modal-footer justify-content-center py-3">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+            </div>
 
-    function modalError() {
-        let modal = "#modalErro";
-        let Modalelem = document.querySelector(modal);
-        let instanceModal = M.Modal.init(Modalelem);
-        instanceModal.open();
-    };
-</script>
+        </div>
+    </div>
+</div>
 <style>
-    #modalErro{
-        width:30% !important;
-        white-space:nowrap;
+
+    #modal-simples > .modal-dialog {
+        margin-top: calc(100vh - 500px);
+    }
+
+    #mensagem {
+        text-align: center;
     }
 </style>
+<script>
+
+    function ModalSimples(mensagem) {
+        $("#modal-simples").modal("show");
+        $("#mensagem").text(mensagem);
+    }
+
+    $("#modal-simples").on("hide.bs.modal", function () {
+        $("#mensagem").text('');
+    });
+
+    var ErrorModalTeste;
+</script>

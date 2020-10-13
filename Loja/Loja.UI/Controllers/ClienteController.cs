@@ -84,7 +84,7 @@ namespace Loja.UI.Controllers
 
             if (!novoCliente)
             {
-                clienteCadastroDto = await clienteBll.BuscarCliente(cpf_cnpj, usuarioLogado.Usuario_atual);
+                clienteCadastroDto = await clienteBll.BuscarCliente(UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj), usuarioLogado.Usuario_atual);
 
                 usuarioLogado.Cliente_Selecionado = clienteCadastroDto;
 

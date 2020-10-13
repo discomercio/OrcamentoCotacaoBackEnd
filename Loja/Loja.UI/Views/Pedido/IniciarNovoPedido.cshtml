@@ -6,559 +6,410 @@
 
 @* Esta tela irá mostrar a lista de produtos selecionados pelo cliente e a forma de pagamento*@
 
-<h5>Criar Novo Pedido</h5>
-
-
-
-<div class="col s12 sectionDesktop" style="margin-left:5%">
-    @using (Html.BeginForm("PreparaParaCadastrarPedido", "Pedido", FormMethod.Post,
-new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "formulario" }))
-    {
-    <article>
-        <div class="row">
-            <div class="col s12">
-                <span class="caixa">
-                    <strong>
-                        <span class="rotulo">Cliente:</span>
-                        <span class="dado" name="nome" id="nome"> @Model.NomeCliente</span>
-                    </strong>
-                </span>
-            </div>
-            <div class="col s12">
-                <span class="caixa">
-                    <strong>
-                        <span class="rotulo">Percentual comissão:</span>
-                        <span class="dado" name="perComissao" id="perComissao" style="padding-right:0px;">@Model.PercComissao</span><strong>%</strong>
-                        <input type="hidden" id="percComissao" name="percComissao" />
-                    </strong>
-                </span>
+<div class="page-header card">
+    <div class="row align-items-end">
+        <div class="col-lg-8">
+            <div class="page-header-title">
+                <i class="icon-user bg-c-blue"></i>
+                <div class="d-inline">
+                    <h5>Produtos e Forma de Pagamento</h5>
+                    <span>Adicione os produtos e a forma de pagamento</span>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col s10"></div>
-            <div class="input-field col s2">
-                <a class="waves-effect waves-light btn-small" id="btnModalProdutos"
-                   style="margin-top:2%;">
-                    <i class="material-icons left">add</i>Adicionar produto
-                </a>
+        <div class="col-lg-4">
+            <div class="page-header-breadcrumb">
+                <ul class=" breadcrumb breadcrumb-title">
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Home")"><i class="icon icon-home"></i></a>
+                    </li>
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Cliente" )">Cliente</a> </li>
+                    <li class="breadcrumb-item"><a href="@Url.Action("BuscarCliente", "Cliente", new { cpf_cnpj = Model.CpfCnpj, novoCliente = false})">Cadastro Cliente</a> </li>
+                    <li class="breadcrumb-item"><a href="@Url.Action("Indicador_SelecaoCD", "Pedido")">Indicador e CD</a> </li>
+                    <li class="breadcrumb-item"><a href="#!">Produtos e Pagamento</a> </li>
+                </ul>
             </div>
         </div>
-        @* Produtos adicionados *@
-        <div class="row">
-
-            <div class="col s12">
-                @{
-                    var indice = 0;
-                    <input type="hidden" id="indice" value="" />
-
-                    <table class="col s12 tabelaitens destaquelinha" style="white-space:nowrap">
-                        <thead>
-                            <tr>
-                                <th style="width: auto;" scope="col" valign="bottom">
-                                    <span>Produto</span>
-                                </th>
-                                <th scope="col" class="hquantidade" valign="bottom">
-                                    <span class="PLTd">Qtde</span>
-                                </th>
-                                @if (Model.Permite_RA_Status == 1)//NÃO SOMENTE VERIFICANDO ESSE PARAM
-                                {
-                                    <th scope="col" class="hpreco" valign="bottom">
-                                        <span class="PLTd">Preço</span>
-                                    </th>
-                                }
-                                <th scope="col" class="hpreco" valign="bottom">
-                                    <span class="PLTd">VL Lista</span>
-                                </th>
-                                <th scope="col" class="hdesconto" valign="bottom">
-                                    <span class="PLTd">
-                                        Desc%
-                                        &nbsp;&nbsp;
-                                    </span>
-                                </th>
-                                <th scope="col" class="hpreco" valign="bottom">
-                                    <span class="PLTd">VL Venda</span>
-                                </th>
-                                <th scope="col" class="hpreco" valign="bottom">
-                                    <span class="PLTd">VL Total</span>
-                                </th>
-                                <th scope="col" style="width: 7%;">
-                                    <!-- excluir  -->
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @* Parte de produtos do Model *@
-                            @{
-                                @* Mudamos para não repetir código, o bloco antigo de modelo para adição de 01 item *@
-                                int indexnumero = 0;
-                                @for (int ilista = 0; ilista <= (Model.ListaProdutos?.Count() ?? 0); ilista++)
-                                {
-                                    //bool linhaNovoProduto = true;
-                                    string index = "trocarporindex";
-                                    string classe = "class=\"novoProduto\"";
-                                    string classenovoProdutoEstoque = "class=\"novoProdutoEstoque\"";
-                                    string classenovoProdutoAviso = "class=\"novoProdutoAviso\"";
-                                    string classenovoProdutoQtdeMaxPermitida = "class=\"novoProdutoQtdeMaxPermitida\"";
-                                    string estilo = "style=\"display:none\"";
-                                    Loja.Bll.Dto.PedidoDto.DetalhesPedido.PedidoProdutosDtoPedido i = new Loja.Bll.Dto.PedidoDto.DetalhesPedido.PedidoProdutosDtoPedido();
-                                    if (ilista != (Model.ListaProdutos?.Count() ?? 0))
-                                    {
-                                        //linhaNovoProduto = false;
-                                        i = Model.ListaProdutos[ilista];
-                                        index = indexnumero.ToString();
-                                        classe = "";
-                                        classenovoProdutoEstoque = "";
-                                        classenovoProdutoAviso = "";
-                                        classenovoProdutoQtdeMaxPermitida = "";
-                                        estilo = "";
-                                    }
-
-                                    //Lista de Produtos
-                                    <tr @Html.Raw(classe) @Html.Raw(estilo) style="display:block !important">
-
-                                        <td style="cursor:pointer;" scope="col" onclick="mostrarProdutos(i)">
-                                            <span name="[@index].NumProduto"></span>
-                                            <input type="hidden" name="[@index].Fabricante" value="@i.Fabricante" />
-                                            <input class="numProduto" type="hidden" name="[@index].NumProduto" value="@i.NumProduto?">
-                                        </td>
-                                        <td>
-                                            <div class="input-field quantidade">
-                                                <input class="qtdeProduto" style="text-align:right;"
-                                                       type="number" min="1"
-                                                       name="[@index].Qtde" id="@i.Qtde" onkeyup="digitouQtde(this)"
-                                                       onchange="digitouQtde(this)" />
-                                            </div>
-                                        </td>
-                                        @if (Model.Permite_RA_Status == 1)
-                                        {
-                                            <td>
-                                                <div class="input-field preco" style="float:right; max-width:80%;width:80%;">
-                                                    <input class="precoProduto" style="text-align:right" type="text" name="[@index].Preco_Lista" id="@i.Preco_Lista"
-                                                           onkeyup="formatarPreco_Lista(this)" onchange="digitouPreco_Lista(this)" />
-                                                </div>
-                                            </td>
-                                        }
-                                        <td class="vlListaProduto" style="text-align:right" name="[@index].VlLista" id="@i.VlLista">
-                                        </td>
-                                        <td class="vlListaProdutoInput" style="display:none;">
-                                            <input type="hidden" name="[@index].VlLista" />
-                                        </td>
-                                        <td class="PrecoProdutoInput" style="display:none;">
-                                            <input type="hidden" name="[@index].Preco" />
-                                        </td>
-                                        <td>
-                                            <div class="input-field desconto" style="float:right; max-width:80%;width:80%;">
-                                                <input class="descProduto" type="text" name="[@index].Desconto" id="@i.Desconto"
-                                                       style="text-align:right" onchange="digitouDesc(this)"
-                                                       onkeyup="formatarDesc(this)" />  %
-
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="input-field" style="float:right; max-width:80%;width:80%;">
-                                                <input class="vlUnitario" type="text" name="[@index].VlUnitario" id="@i.VlUnitario"
-                                                       style="text-align:right" onchange="digitouVlVenda(this)"
-                                                       onkeyup="formataVlVenda(this)" />
-                                            </div>
-                                        </td>
-                                        <td class="vlTotalItem" style="text-align:right" name="[@index].VlTotalItem">
-                                        </td>
-                                        <td class="vlTotalItemInput" style="display:none;">
-                                            <input type="hidden" name="[@index].VlTotalItem" />
-                                        </td>
-                                        <td>
-                                            <div class="input-field">
-                                                <span>
-                                                    <i class="material-icons icone-lixeira" title="Remover linha"
-                                                       onclick="removerLinha(this);">delete</i>
-                                                </span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    //Estoque indisponivel
-                                    <tr @Html.Raw(classenovoProdutoEstoque) @Html.Raw(estilo)>
-                                        @* Se for diferente de verdadeiro *@
-                                        @if (Model.Permite_RA_Status == 0)
-                                        {
-                                            <td colspan="7" class="avisoestoque" name="estoqueIndisponivel">
-                                                Quantidade solicitada é maior que o estoque disponível!
-                                            </td>
-                                        }
-                                        @if (Model.Permite_RA_Status == 1)
-                                        {
-                                            <td colspan="8" class="avisoestoque" name="estoqueIndisponivel">
-                                                Quantidade solicitada é maior que o estoque disponível!
-                                            </td>
-                                        }
-                                    </tr>
-
-                                    //Avido de Produto
-                                    <tr @Html.Raw(classenovoProdutoAviso) @Html.Raw(estilo)>
-                                        @if (Model.Permite_RA_Status == 0)
-                                        {
-                                            <td colspan="7" class="avisoProduto">
-                                                Aviso:
-                                                <span name="produtoAviso"></span>
-                                            </td>
-                                        }
-                                        @if (Model.Permite_RA_Status == 1)
-                                        {
-                                            <td colspan="8" class="avisoProduto">
-                                                Aviso:
-                                                <span name="produtoAviso"></span>
-                                            </td>
-                                        }
-                                    </tr>
-
-                                    //Msg Qtde permitida
-                                    <tr @Html.Raw(classenovoProdutoQtdeMaxPermitida) @Html.Raw(estilo)>
-                                        @if (Model.Permite_RA_Status == 0)
-                                        {
-                                            <td colspan="7" class="avisoestoque">
-                                                Aviso:
-                                                <span name="msgQtdePermitida"></span>
-                                            </td>
-                                        }
-                                        @if (Model.Permite_RA_Status == 1)
-                                        {
-                                            <td colspan="8" class="avisoestoque">
-                                                Aviso:
-                                                <span name="msgQtdePermitida"></span>
-                                            </td>
-                                        }
-                                    </tr>
-
-                                    indexnumero++;
-                                    indice++;
-                                }
-
-                            }
-
-                            <tr class="trTotal">
-                                <!-- pula as colunas vazias -->
-                                @if (Model.Permite_RA_Status == 1)
-                                {
-                                    <td style="text-align:right">
-                                        RA Líquido
-                                        <strong id="totalValorRALiquido"></strong>
-                                        <input type="hidden" id="totalValorRALiquidoInput"
-                                               name="totalValorRALiquidoInput" value="@Model.TotalPedidoRALiquido" />
-                                        &nbsp;&nbsp; RA Bruto
-                                        <strong id="totalValorRABruto"></strong>
-                                        <input type="hidden" id="totalValorRABrutoInput"
-                                               name="totalValorRABrutoInput" value="@Model.TotalPedidoRABruto" />
-                                    </td>
-                                }
-                                else
-                                {
-                                    <td>
-                                    </td>
-                                }
-                                <td> </td>
-                                @if (Model.Permite_RA_Status == 1)
-                                {
-                                    //valor total ra
-                                    <td style="text-align:right;">
-                                        <strong id="totalPedidoRABruto"></strong>
-                                        <input type="hidden" id="totalPedidoRABrutoInput"
-                                               name="totalPedidoRABruto" value="@Model.TotalPedidoRABruto" />
-                                    </td>
-                                }
-                                <td> </td>
-                                <td> </td>
-                                <td> </td>
-
-                                <td style="text-align:right;">
-                                    <strong id="totalPedido"></strong>
-                                    <input type="hidden" id="totalPedidoInput"
-                                           name="totalDestePedido" value="@Model.VlTotalDestePedido" />
-                                </td>
-                                <td> </td>
-
-
-                            </tr>
-                            @* Aqui vai o produto selecionado e o foreach com os produtos já existentes no pedido *@
-                            @* Verificar com o Edu como passar os valores para cá *@
-                            @* Alterar os nomes das function que serão usadas nesse bloco
-                            para poder chamar apenas no .ts da view
-                            *@
-                            @*Nova linha para produto*@
-                            @*Lista de Produtos*@
-
-                        </tbody>
-                    </table>
-                }
-            </div>
-        </div>
-        @* Aqui vai a parte de Forma de Pagamento *@
-        @* preciso saber se da para passar uma variavel para esse drop para poder saber se
-        o valor corresponde a qual forma de pagamento para que possa se tornar visivel*@
-
-        <div class="row">
-            <div class="input-field col s3">
-                @Html.DropDownList("FormaPagto", new SelectList(Model.EnumFormaPagto, "Value", "Text",
-               Model.EnumFormaPagto), new { @id = "enumFormaPagto", @onchange = "recalcularValoresComCoeficiente(this);" })
-                <label>Forma de Pagamento *</label>
-            </div>
-        </div>
-
-        @* aqui vai a condição para mostrar a div A vista *@
-        @if (Model.FormaPagto.ListaAvista != null)
-        {
-            <div class="row col s12" id="Avista" style="display:none">
-                @* Parcelamento *@
-                <div class="input-field col s3">
-                    <select name="" id="opcaoPagtoAvista">
-                        <option value="0">Selecione</option>
-                        @* Aqui vai o select com os valores calculados *@
-                        @*@foreach ()
-                        {
-
-                        }*@
-                    </select>
-                    <label>Parcelamento</label>
-                </div>
-                @* Meio de pagamento *@
-                <div class="input-field col s3">
-                    <select name="" id="meioPagtoAVista">
-                        <option value="0">Selecione</option>
-                        @foreach (var i in Model.FormaPagto.ListaAvista)
-                        {
-                            <option value="@i.Id">@i.Descricao</option>
-                        }
-                    </select>
-                    <label>Meio de Pagamento</label>
-                </div>
-            </div>
-        }
-
-
-        @* aqui vai a condição para mostrar a div Parcela Unica *@
-        @if (Model.FormaPagto.ListaParcUnica != null)
-        {
-            <div class="row col s12" id="ParcUnica" style="display:none">
-                @* Parcelamento *@
-                <div class="input-field col s3">
-                    <select name="" id="opcaoPagtoParcUnica">
-                        <option value="0">Selecione</option>
-                        @* Aqui vai o select com os valores calculados *@
-                        @*@foreach ()
-                        {
-
-                        }*@
-                    </select>
-                    <label>Parcelamento</label>
-                </div>
-                @* Meio de pagamento *@
-                <div class="input-field col s3">
-                    <select name="" id="meioPagtoParcUnica">
-                        <option value="0">Selecione</option>
-                        @foreach (var i in Model.FormaPagto.ListaParcUnica)
-                        {
-                            <option value="@i.Id">@i.Descricao</option>
-                        }
-                    </select>
-                    <label>Meio de Pagamento</label>
-                </div>
-                @* Dias para vencimento *@
-                <div class="input-field col s2">
-                    <input type="text" id="diasVencParcUnica" />
-                    <label>Dias para vencimento</label>
-                </div>
-            </div>
-        }
-
-        @* aqui vai a condição para mostrar a div Parcela com entrada *@
-        @if (Model.FormaPagto.ListaParcComEntrada != null)
-        {
-            <div id="ParcComEntrada" style="display:none">
-                <div class="row col s12">
-                    @* Valor da entrada *@
-                    <div class="input-field col s3">
-                        <input id="vlEntrada" type="text" onblur="digitouVlEntrada(this)" onkeyup="formatarVlEntrada(this)" />
-                        <label>Valor Entrada</label>
-                    </div>
-                    @* meio de pagamento Entrada *@
-                    <div class="input-field col s3">
-                        <select name="" id="meioPagtoEntrada">
-                            <option value="0">Selecione</option>
-                            @foreach (var v in Model.FormaPagto.ListaParcComEntrada)
-                            {
-                                <option value="@v.Id">@v.Descricao</option>
-                            }
-                        </select>
-                    </div>
-                </div>
-                <div class="row col s12">
-                    @* Parcelamento  *@
-                    <div class="input-field col s3">
-                        <select name="" id="opcaoPagtoParcComEntrada">
-                            <option value="0">Selecione</option>
-                            @* Aqui vai o select com os valores calculados *@
-                            @*@foreach ()
-                            {
-
-                            }*@
-                        </select>
-                        <label>Parcelamento</label>
-                    </div>
-                    @* Meio de pagamento parcela prestação *@
-                    <div class="input-field col s3">
-                        @* Meio de pagamento *@
-                        <select name="" id="meioPagtoEntradaPrest">
-                            <option value="0">Selecione</option>
-                            @foreach (var i in Model.FormaPagto.ListaParcComEntPrestacao)
-                            {
-                                <option value="@i.Id">@i.Descricao</option>
-                            }
-                        </select>
-                        <label>Meio de Pagamento</label>
-                    </div>
-                    @* dias para vencimento *@
-                    @* fazer a condição aqui para saber se é diferente de cartões *@
-                    <div class="input-field col s3">
-                        <input type="text" id="diasVenc" maxlength="3" />
-                        <label>Dias para vencimento Prest</label>
-                    </div>
-                </div>
-            </div>
-        }
-
-        @* aqui vai a condição para mostrar a div Pagamento com Cartão Internet *@
-        @if (Model.FormaPagto.ParcCartaoInternet)
-        {
-            <div class="row col s12" id="PagtoCartaoInternet" style="display:none">
-                @* Parcelamento  *@
-                <div class="input-field col s3">
-                    <select name="" id="opcaoPagtoParcCartaoInternet">
-                        <option value="0">Selecione</option>
-                        @* Aqui vai o select com os valores calculados *@
-                        @*@foreach ()
-                        {
-
-                        }*@
-                    </select>
-                    <label>Parcelamento</label>
-                </div>
-            </div>
-        }
-
-        @* aqui vai a condição para mostrar a div Pagamento com Cartão Maquineta *@
-        @if (Model.FormaPagto.ParcCartaoMaquineta)
-        {
-            <div class="row col s12" id="PagtoCartaoMaquineta" style="display:none">
-                @* Parcelamento  *@
-                <div class="input-field col s3">
-                    <select name="" id="opcaoPagtoParcCartaoMaquineta">
-                        <option value="0">Selecione</option>
-                        @* Aqui vai o select com os valores calculados *@
-                        @*@foreach ()
-                        {
-
-                        }*@
-                    </select>
-                    <label>Parcelamento</label>
-                </div>
-
-            </div>
-        }
-
-
-
-    </article>
-        @* Botões *@
-        @section RodapePagina {
-            <footer class="page-footer">
-                <div class="row col s12">
-                    <div class="col s1"></div>
-                    <div class="input-field col s4 center">
-                        <button class="waves-effect waves-light btn-small"
-                                type="button">
-                            <i class="material-icons left">arrow_back</i>Voltar
-                        </button>
-                    </div>
-                    <div class="col s2"></div>
-                    <div class="input-field col s4 center">
-                        <button class="waves-effect waves-light btn-small"
-                                type="submit" onclick="$('#formulario').submit()">
-                            <i class="material-icons left">arrow_forward</i>Avançar
-                        </button>
-                    </div>
-                    <div class="col s1"></div>
-                </div>
-            </footer>
-        }
-
-        @* criar os campos de FormaPagtoCriacao *@
-        <input type="hidden" name="Totaldestepedido" id="TotalDestePedido" value="@Model.VlTotalDestePedido" />
-        <input type="hidden" name="Qtde_parcelas" id="Qtde_Parcelas" value="@Model.FormaPagtoCriacao.Qtde_Parcelas" /> @*Descrição da forma de pagto*@
-        <input type="hidden" name="Rb_forma_pagto" id="Rb_forma_pagto" value="@Model.FormaPagtoCriacao.Rb_forma_pagto" /> @*Tipo da forma de pagto*@
-        <input type="hidden" name="Op_av_forma_pagto" id="Op_av_forma_pagto" />
-        <input type="hidden" name="Op_pu_forma_pagto" id="Op_pu_forma_pagto" />
-        <input type="hidden" name="C_pu_valor" id="C_pu_valor" />
-        <input type="hidden" name="C_pu_vencto_apos" id="C_pu_vencto_apos" />
-        <input type="hidden" name="C_pc_qtde" id="C_pc_qtde" />
-        <input type="hidden" name="C_pc_valor" id="C_pc_valor" />
-        <input type="hidden" name="C_pc_maquineta_qtde" id="C_pc_maquineta_qtde" />
-        <input type="hidden" name="C_pc_maquineta_valor" id="C_pc_maquineta_valor" />
-        <input type="hidden" name="Op_pce_entrada_forma_pagto" id="Op_pce_entrada_forma_pagto" />
-        <input type="hidden" name="C_pce_entrada_valor" id="C_pce_entrada_valor" />
-        <input type="hidden" name="Op_pce_prestacao_forma_pagto" id="Op_pce_prestacao_forma_pagto" />
-        <input type="hidden" name="C_pce_prestacao_qtde" id="C_pce_prestacao_qtde" />
-        <input type="hidden" name="C_pce_prestacao_valor" id="C_pce_prestacao_valor" />
-        <input type="hidden" name="C_pce_prestacao_periodo" id="C_pce_prestacao_periodo" />
-        <input type="hidden" name="Op_pse_prim_prest_forma_pagto" id="Op_pse_prim_prest_forma_pagto" />
-        <input type="hidden" name="C_pse_prim_prest_valor" id="C_pse_prim_prest_valor" />
-        <input type="hidden" name="C_pse_prim_prest_apos" id="C_pse_prim_prest_apos" />
-        <input type="hidden" name="Op_pse_demais_prest_forma_pagto" id="Op_pse_demais_prest_forma_pagto" />
-        <input type="hidden" name="C_pse_demais_prest_qtde" id="C_pse_demais_prest_qtde" />
-        <input type="hidden" name="C_pse_demais_prest_valor" id="C_pse_demais_prest_valor" />
-        <input type="hidden" name="C_pse_demais_prest_periodo" id="C_pse_demais_prest_periodo" />
-        <input type="hidden" name="C_forma_pagto" id="C_forma_pagto" />
-        <input type="hidden" name="Descricao_meio_pagto" id="Descricao_meio_pagto" />
-        <input type="hidden" name="FormaPagtoCriacao.Tipo_parcelamento" id="Tipo_parcelamento" />
-
-    }
+    </div>
 </div>
 
-@* Modal para mostrar os produtos *@
-<div id="modal1" class="modal">
-    <div class="modal-content">
-        <section>
-            <article class="fixo">
-                <div class="row col s12">
-                    <div class="input-field col s8">
-                        @* ao digitar o produto, teremos que fazer uma busca na lista de produtos para
-                            trazer o registro informado*@
-                        <input name="buscaproduto" id="buscaproduto" type="text" class="autocomplete" />
-                        <label id="lblbuscaproduto" for="buscaproduto">Produto (código) </label>
-                    </div>
-                    <div class="input-field col s3">
-                        <input class="validate" name="qtde" id="qtde" type="number" placeholder="Quantidade" value="1" />
+<div class="pcoded-inner-content" style="min-height: 75vh;">
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="page-body">
+                <div class="row">
+                    <div class="col-md-12 col-xl-12">
+                        <div class="card" style="min-height: 75vh;">
+
+                            @using (Html.BeginForm("PreparaParaCadastrarPedido", "Pedido", FormMethod.Post,
+new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "formulario" }))
+                            {
+                                <div class="page-header card col-12">
+
+                                    <div class="row col-xl-12 col-lg-12">
+                                        <div class="col-xl-12 col-lg-11">
+                                            <span class="caixa">
+                                                <strong>
+                                                    <span class="rotulo">Cliente:</span>
+                                                    <span class="dado" name="nome" id="nome"> @Model.NomeCliente</span>
+                                                </strong>
+                                            </span>
+                                        </div>
+                                        <div class="col-xl-9 col-lg-8 col-sm-8">
+                                            <span class="caixa">
+                                                <strong>
+                                                    <span class="rotulo">Percentual comissão:</span>
+                                                    <span class="dado" name="perComissao" id="perComissao" style="padding-right:0px;">@Model.PercComissao</span><strong>%</strong>
+                                                    <input type="hidden" id="percComissao" name="percComissao" />
+                                                </strong>
+                                            </span>
+                                        </div>
+                                        <div class="col-xl-2 col-lg-2">
+                                            <a data-toggle="modal" class="btn btn-primary" data-target="#modal1">
+                                                <i class="fa fa-plus"></i>Adicionar produto
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="page-header card"></div>
+                                <div class="page-header card my-1">
+                                    <div class="card-body px-0">
+                                        @{
+                                            var indice = 0;
+                                            <input type="hidden" id="indice" value="" />
+
+                                            <table class="table table-responsive">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col" class="produto">
+                                                            Produto
+                                                        </th>
+                                                        <th scope="col" style="text-align:right">
+                                                            Qtde
+                                                        </th>
+                                                        @if (Model.Permite_RA_Status == 1)//NÃO SOMENTE VERIFICANDO ESSE PARAM
+                                                        {
+                                                            <th scope="col" style="text-align:right">
+                                                                Preço
+                                                            </th>
+                                                        }
+                                                        <th scope="col" style="text-align:right">
+                                                            VL Lista
+                                                        </th>
+                                                        <th scope="col" style="text-align:right">
+                                                            Desc%
+                                                        </th>
+                                                        <th scope="col" style="text-align:right">
+                                                            VL Venda
+                                                        </th>
+                                                        <th scope="col" style="text-align:right">
+                                                            VL Total
+                                                        </th>
+                                                        <th scope="col" style="text-align:right">
+
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @{
+                                                        @* Mudamos para não repetir código, o bloco antigo de modelo para adição de 01 item *@
+                                                        int indexnumero = 0;
+                                                        @for (int ilista = 0; ilista <= (Model.ListaProdutos?.Count() ?? 0); ilista++)
+                                                        {
+                                                            //bool linhaNovoProduto = true;
+                                                            string index = "trocarporindex";
+                                                            string classe = "class=\"novoProduto\"";
+                                                            string classenovoProdutoEstoque = "class=\"novoProdutoEstoque\"";
+                                                            string classenovoProdutoAviso = "class=\"novoProdutoAviso\"";
+                                                            string classenovoProdutoQtdeMaxPermitida = "class=\"novoProdutoQtdeMaxPermitida\"";
+                                                            string estilo = "style=\"display:none\"";
+                                                            Loja.Bll.Dto.PedidoDto.DetalhesPedido.PedidoProdutosDtoPedido i = new Loja.Bll.Dto.PedidoDto.DetalhesPedido.PedidoProdutosDtoPedido();
+                                                            if (ilista != (Model.ListaProdutos?.Count() ?? 0))
+                                                            {
+                                                                //linhaNovoProduto = false;
+                                                                i = Model.ListaProdutos[ilista];
+                                                                index = indexnumero.ToString();
+                                                                classe = "";
+                                                                classenovoProdutoEstoque = "";
+                                                                classenovoProdutoAviso = "";
+                                                                classenovoProdutoQtdeMaxPermitida = "";
+                                                                estilo = "";
+                                                            }
+
+
+                                                            <tr @Html.Raw(classe) @Html.Raw(estilo)>
+
+                                                                <td class="desc-produto" name="[@index].NumProduto">
+                                                                    <input type="hidden" name="[@index].Fabricante" value="@i.Fabricante" />
+                                                                    <input class="numProduto" type="hidden" name="[@index].NumProduto" value="@i.NumProduto?">
+                                                                </td>
+                                                                <td class="qtde">
+                                                                    <input class="qtde" type="number" min="1" name="[@index].Qtde" id="@i.Qtde"
+                                                                           onkeyup="digitouQtde(this)" onchange="digitouQtde(this)" />
+                                                                </td>
+
+                                                                @if (Model.Permite_RA_Status == 1)
+                                                                {
+                                                                    <td class="preco-input">
+                                                                        <input type="text" name="[@index].Preco_Lista" id="@i.Preco_Lista"
+                                                                               onkeyup="formatarPreco_Lista(this)"
+                                                                               onchange="digitouPreco_Lista(this)" />
+                                                                    </td>
+                                                                }
+
+                                                                <td class="preco-text" name="[@index].VlLista" id="@i.VlLista">
+                                                                </td>
+                                                                <td style="display:none">
+                                                                    <input type="hidden" name="[@index].VlLista" />
+                                                                </td>
+                                                                <td style="display:none">
+                                                                    <input type="hidden" name="[@index].Preco" />
+                                                                </td>
+                                                                <td class="desconto">
+                                                                    <input class="desconto" type="text" name="[@index].Desconto"
+                                                                           id="@i.Desconto" onchange="digitouDesc(this)"
+                                                                           onkeyup="formatarDesc(this)" />  %
+                                                                </td>
+                                                                <td class="preco-input">
+                                                                    <input type="text" name="[@index].VlUnitario"
+                                                                           id="@i.VlUnitario" onchange="digitouVlVenda(this)"
+                                                                           onkeyup="formataVlVenda(this)" />
+                                                                </td>
+                                                                <td class="preco-text" name="[@index].VlTotalItem">
+                                                                </td>
+                                                                <td style="display:none">
+                                                                    <input type="hidden" name="[@index].VlTotalItem" />
+                                                                </td>
+                                                                <td class="lixeira">
+                                                                    <div class="form-control">
+                                                                        <span>
+                                                                            <i class="fa fa-trash" title="Remover linha"
+                                                                               onclick="removerLinha(this);"></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        }
+
+
+
+                                                        <tr class="trTotal">
+                                                            <!-- pula as colunas vazias -->
+                                                            @if (Model.Permite_RA_Status == 1)
+                                                            {
+                                                                <td style="text-align:right">
+                                                                    RA Líquido
+                                                                    <strong id="totalValorRALiquido" style="font-weight:bold"></strong>
+                                                                    <input type="hidden" id="totalValorRALiquidoInput"
+                                                                           name="totalValorRALiquidoInput" value="@Model.TotalPedidoRALiquido" />
+                                                                    &nbsp;&nbsp; RA Bruto
+                                                                    <strong id="totalValorRABruto" style="font-weight:bold"></strong>
+                                                                    <input type="hidden" id="totalValorRABrutoInput"
+                                                                           name="totalValorRABrutoInput" value="@Model.TotalPedidoRABruto" />
+                                                                </td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td>
+                                                                </td>
+                                                            }
+                                                            <td> </td>
+                                                            @if (Model.Permite_RA_Status == 1)
+                                                            {
+                                                                //valor total ra
+                                                                <td style="text-align:right;">
+                                                                    <strong id="totalPedidoRABruto"></strong>
+                                                                    <input type="hidden" id="totalPedidoRABrutoInput"
+                                                                           name="totalPedidoRABruto" value="@Model.TotalPedidoRABruto" />
+                                                                </td>
+                                                            }
+                                                            <td> </td>
+                                                            <td> </td>
+                                                            <td> </td>
+                                                            <td style="text-align:right;">
+                                                                <strong id="totalPedido" style="font-weight:bold"></strong>
+                                                                <input type="hidden" id="totalPedidoInput"
+                                                                       name="totalDestePedido" value="@Model.VlTotalDestePedido" />
+                                                            </td>
+                                                            <td> </td>
+
+
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
                     </div>
                 </div>
-                <div style="max-height:80% !important" class="listaprods">
-                    <div class="row col s12 center" id="msg"></div>
-                    <table class="destaquelinha tabelaProd"
-                           style="max-height:50%;">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<style>
+    .table thead th {
+        padding-bottom: 0px;
+        padding-top: 0px;
+        font-size: 1.7ch;
+    }
+
+    .table td {
+        text-align: right;
+    }
+
+    .produto {
+        width: 100%;
+        min-width: 100px;
+        text-align: left !important;
+    }
+
+    .desc-produto {
+        width: 100%;
+        min-width: 100px;
+        text-align: left !important;
+        white-space: pre-line;
+    }
+
+    .preco-text {
+        text-align: right;
+        width: 100px;
+    }
+
+    .qtde {
+        text-align: right;
+        width: 60px;
+    }
+
+    .preco-input {
+        width: 130px;
+    }
+
+        .preco-input input {
+            text-align: right;
+            width: 100px !important;
+        }
+
+    .desconto {
+        text-align: right;
+        width: 80px !important;
+    }
+
+    .vl-venda input {
+        text-align: right;
+    }
+
+    .lixeira {
+        width: 30px;
+    }
+
+        .lixeira div {
+            text-align: center;
+        }
+
+        .lixeira span {
+            color: red;
+        }
+
+    .table-responsive tbody :hover {
+        background-color: #d1d1d1 !important;
+    }
+
+    .descricao-produto {
+        text-align: left;
+    }
+
+    .table-modal {
+        display: table !important;
+    }
+
+        .table-modal tbody tr td label {
+            margin-bottom: 0px !important;
+        }
+
+        .table-modal tbody tr td {
+            padding: 0px !important;
+            text-align: left !important;
+            white-space: inherit;
+            border: 3px solid white;
+        }
+
+        .trfilho{
+            font-size:smaller;
+        }
+        
+            
+        
+</style>
+
+
+@section RodapePagina {
+    <footer class="m-2">
+        <div class="row col-lg-12">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-3">
+                <a class="btn btn-primary waves-effect waves-light"
+                   href="@Url.Action("Indicador_SelecaoCD", "Pedido")">
+                    <i class="fa fa-arrow-left"></i>Voltar
+                </a>
+            </div>
+            <div class="col-lg-1"></div>
+            <div class="col-lg-3">
+                <button class="btn btn-primary waves-effect waves-light"
+                        type="submit" onclick="$('#formulario').submit()">
+                    <i class="fa fa-arrow-right"></i>Avançar
+                </button>
+            </div>
+            <div class="col-lg-1"></div>
+        </div>
+    </footer>
+}
+
+@* Modal para mostrar os produtos *@
+<div class="modal fade" id="modal1" tabindex="-1" role="dialog" style="height:60%">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="form-group row col-xl-12 col-lg-12">
+                    <div class="col-xl-9 col-lg-9">
+                        <label class="col-form-label" id="lblbuscaproduto" for="buscaproduto">Produto (código) </label>
+                        <input name="buscaproduto" id="buscaproduto" type="text" class="form-control" />
+                    </div>
+                    <div class="col-xl-3 col-lg-3">
+                        <label class="col-form-label" for="qtde">Qtde </label>
+                        <input class="form-control" name="qtde" id="qtde" type="number" min="1" placeholder="Quantidade" value="1" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body" style="width:101%">
+                <div class="listaprods" style="height:calc(100vh - 540px); overflow-x:hidden; border:1px solid #cecece">
+                    <div class="row center" id="msg"></div>
+                    <table class="table table-responsive table-modal">
                         <tbody>
                             @foreach (var i in Model.ProdutoCombo.ProdutoDto)
                             {
                                 if (i.Preco_lista > 0)
                                 {
-                                    <tr class="prod">
-                                        <td style="display:none">
-                                            @i.Fabricante
-                                        </td>
+                                    <tr id="prod">
                                         <td>
-                                            <label>
-                                                <input class="with-gap check" type="radio" value="@i.Produto" />
-                                                <span style="color:black !important;">@i.Produto</span>
-                                            </label>
+                                            <div class="form-radio ml-1">
+                                                <div class="radio radio-inline">
+                                                    <label>
+                                                        <input type="radio" value="@i.Fabricante" />
+                                                        <i class="helper"></i> @i.Fabricante/ @i.Produto
+                                                        <input type="hidden" value="@i.Produto" />
+                                                    </label>
+                                                </div>
+                                            </div>
                                         </td>
-                                        @*<td> @i.Produto</td>*@
-                                        <td> @Html.Raw(i.Descricao_html)</td>
-                                        <td class="tdtabela preco">@string.Format("{0:c2}", i.Preco_lista)</td>
+                                        <td class="descricao-produto">@Html.Raw(i.Descricao_html)</td>
+                                        <td>@string.Format("{0:c2}", i.Preco_lista)</td>
                                     </tr>
                                     {
                                         var filhosDiretos = Model.ProdutoCombo.ProdutoCompostoDto.Where(el => el.PaiFabricante == i.Fabricante && el.PaiProduto == i.Produto);
@@ -569,41 +420,30 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "fo
                                                 var dadofilhote = Model.ProdutoCombo.ProdutoDto.Where(el => el.Fabricante == filhote.Fabricante && el.Produto == filhote.Produto);
                                                 foreach (var filhotetela in dadofilhote)
                                                 {
-                                                    <tr class="trfilho">
-                                                        <td class="itemfilho">
-                                                            <span style="padding-left:40px !important;">
-                                                                @filhote.Qtde x
-                                                                @filhote.Fabricante/@filhote.Fabricante_Nome/
-                                                                @filhotetela.Produto
-                                                            </span>
-                                                        </td>
-                                                        <td class="itemfilho">
-                                                            @Html.Raw(filhotetela.Descricao_html)
-                                                        </td>
-                                                        <td class="itemfilho preco">@string.Format("{0:c2}", filhotetela.Preco_lista)</td>
+                                                    <tr style="font-size:small">
+                                                        <td style="padding-left: 4% !important; ">@filhote.Qtde x @filhote.Fabricante/@filhotetela.Produto</td>
+                                                        <td>@Html.Raw(filhotetela.Descricao_html)</td>
+                                                        <td style="text-align:end">@string.Format("{0:c2}", filhotetela.Preco_lista)</td>
                                                     </tr>
                                                 }
                                             }
                                         }
-
                                     }
                                 }
                             }
                         </tbody>
                     </table>
                 </div>
-            </article>
-            <div class="modal-footer col s12" id="footer">
-                <div class="container">
-                    <button type="button" href="#!" class="modal-close waves-effect waves-green btn">Cancelar</button>
-                    <button type="button" onclick="InserirProdutoLinha()" class="modal-close waves-effect waves-green btn">
-                        Modificar
-                    </button>
-                </div>
+
             </div>
-        </section>
+
+            <div class="modal-footer justify-content-center py-1">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="InserirProdutoLinha()">OK</button>
+            </div>
+        </div>
     </div>
 </div>
+
 
 
 <script>
@@ -617,10 +457,7 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "fo
     //abrir modal para seleção de produtos
     function AbrirModalProdutos() {
         //'#modal1' modal de produtos
-        let modal = "#modal1";
-        let Modalelem = document.querySelector(modal);
-        let instanceModal = M.Modal.init(Modalelem);
-        instanceModal.open();
+        $("#modal1").modal("show");
     }
 
     function continuar() {
@@ -659,220 +496,224 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "fo
     var erroPercNovo;
 
 </script>
-<style>
-    .page-footer {
-        background-color: transparent;
-    }
 
-    .listaprods {
-        flex: 1 1 auto;
-        /*overflow-y: auto;*/
-    }
+@*<style>
 
-    .modal {
-        width: 70% !important;
-        max-height: 80% !important;
-        overflow-y: inherit !important;
-        border-radius: 4px !important;
-    }
 
-    .prod {
-        padding: 0.5em;
-        background-color: #fbfbfb !important;
-        /*border: 1px solid white;*/
-        text-align: left !important;
-    }
 
-        .prod td {
-            padding: 0px !important;
-            padding-right: 10px !important;
-            width: 10%;
+        /*.table input{
+            max-width: 50%;
+        }*/
+
+        .table td {
+            padding: .3rem !important;
         }
 
-    .trfilho {
-        font-size: 80%;
-        padding: 0.5em;
-        background-color: #fbfbfb !important;
-        /*border: 1px solid white;*/
-        text-align: left !important;
-    }
 
-    .itemfilho {
-        padding-left: 3em;
-        padding-right: 0;
-        padding-bottom: 6px;
-    }
+        .listaprods {
+            flex: 1 1 auto;
+            /*overflow-y: auto;*/
+        }
 
-    /*.tdtabela {
-                padding-left: 0;
-                padding-right: 0;
-                padding-bottom: 6px;
-            }*/
+        /*.modal {
+                                    width: 70% !important;
+                                    max-height: 80% !important;
+                                    overflow-y: inherit !important;
+                                    border-radius: 4px !important;
+                                }*/
 
-    .tabelaProd {
-        border: 1px solid #ccc;
-        border-collapse: collapse;
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        table-layout: fixed;
-    }
-
-        .tabelaProd tbody {
+        .prod {
             display: block;
-            height: auto;
-            max-height: 25ch;
-            overflow: auto;
+            /*background-color: #fbfbfb !important;*/
+            /*border: 1px solid white;*/
+            text-align: left !important;
         }
 
-        .tabelaProd tr {
-            background-color: #fbfbfb;
-            border: 1px solid #ddd;
-            padding: 0.35em;
-            line-height: 5ch;
+            .prod td {
+                padding: 0px !important;
+                padding-right: 10px !important;
+                width: 10%;
+            }
+
+
+
+
+        /*.itemfilho {
+            padding-left: 3em;
+            padding-right: 0;
+            padding-bottom: 6px;
+        }*/
+
+        /*.tdtabela {
+                                            padding-left: 0;
+                                            padding-right: 0;
+                                            padding-bottom: 6px;
+                                        }*/
+
+        .tabelaProd {
+            border: 1px solid #ccc;
+            border-collapse: collapse;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            table-layout: fixed;
         }
 
-        .tabelaProd th,
-        .tabelaProd td {
-            padding: 0.625em;
-            padding-left: 0.4em;
-            padding-right: 0.4em;
-            border: 1px solid white;
-            border-spacing: 2px;
-            /*width: 25% !important;*/
-            /*white-space: nowrap;*/
-            word-break: break-word;
+            .tabelaProd tbody {
+                display: block;
+                height: auto;
+                max-height: 25ch;
+                overflow: auto;
+            }
+
+            .tabelaProd tr {
+                background-color: #fbfbfb;
+                border: 1px solid #ddd;
+                padding: 0.35em;
+                line-height: 5ch;
+            }
+
+            .tabelaProd th,
+            .tabelaProd td {
+                padding: 0.625em;
+                padding-left: 0.4em;
+                padding-right: 0.4em;
+                border: 1px solid white;
+                border-spacing: 2px;
+                /*width: 25% !important;*/
+                /*white-space: nowrap;*/
+                word-break: break-word;
+            }
+
+            .tabelaProd th {
+                font-size: 0.85em;
+                letter-spacing: 0.1em;
+            }
+
+        /*#footer {
+                                    text-align: center;
+                                    padding: 1em;
+                                    flex-grow: 0;
+                                    flex-shrink: 0;
+                                }*/
+
+        /*.preco {
+            width: 10ch;
+            text-align: right;
+        }*/
+
+        /*fim modal*/
+
+        .caixa {
+            display: inline-block;
+            padding: 0.5em;
+            padding-left: 0em;
         }
 
-        .tabelaProd th {
-            font-size: 0.85em;
-            letter-spacing: 0.1em;
-        }
+            .caixa .rotulo {
+                display: inline;
+                font-weight: bold;
+                opacity: 0.9;
+                padding-right: 0.5em;
+            }
 
-    #footer {
-        text-align: center;
-        padding: 1em;
-        flex-grow: 0;
-        flex-shrink: 0;
-    }
+            .caixa .dado {
+                display: inline;
+                padding-right: 1.0em;
+            }
 
-    .preco {
-        width: 10ch;
-        text-align: right;
-    }
-
-    /*fim modal*/
-
-    .caixa {
-        display: inline-block;
-        padding: 0.5em;
-        padding-left: 0em;
-    }
-
-        .caixa .rotulo {
-            display: inline;
-            font-weight: bold;
-            opacity: 0.9;
-            padding-right: 0.5em;
-        }
-
-        .caixa .dado {
-            display: inline;
-            padding-right: 1.0em;
-        }
-
-    /*tabela corpo*/
-    .destaquelinha :hover {
-        background-color: #d1d1d1 !important;
-    }
-
-    .tabelaitens {
-        border: 1px solid #ccc;
-        border-collapse: collapse;
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        table-layout: fixed;
-    }
-
-        .tabelaitens tr {
-            background-color: #fbfbfb;
-            border: 1px solid #ddd;
-            padding: 0.35em;
-        }
-
-
-        /*.tabelaitens th,
-                .tabelaitens td {
-                    padding-left: 0.4em;
-                    padding-right: 0.4em;
-                }*/
-
-        .tabelaitens tbody td {
-            white-space: initial;
-            line-height: initial;
-        }
-
-    /*.tabelaitens th {
-                    font-size: 0.85em;
-                    letter-spacing: 0.1em;
-                }*/
-
-    /*thead tr*/
-    .hquantidade {
-        min-width: 6ch;
-        width: 6ch;
-        text-align: right;
-    }
-
-    .hpreco {
-        min-width: 12ch;
-        width: 12ch;
-        text-align: right;
-    }
-
-    .hdesconto {
-        min-width: 11ch;
-        width: 11ch;
-        text-align: right;
-    }
-
-    .quantidade {
-        width: 6ch;
-    }
-
-    .desconto {
-        width: 6ch;
-        padding-right: 0 !important;
-        white-space: nowrap;
-    }
-
-    .sectionDesktop .tabelaitens th,
-    .sectionDesktop .tabelaitens td {
-        padding: 0.625em;
-        padding-left: 0.4em;
-        padding-right: 0.4em;
-    }
-
-    .icone-lixeira {
-        color: red;
-    }
-
-        .icone-lixeira:hover {
+        /*tabela corpo*/
+        .destaquelinha :hover {
             background-color: #d1d1d1 !important;
-            cursor: pointer;
         }
 
-        .icone-lixeira:hover {
-            background-color: #bdbdbd !important;
-            cursor: pointer;
+        .tabelaitens {
+            border: 1px solid #ccc;
+            border-collapse: collapse;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            table-layout: fixed;
         }
 
-    .avisoestoque, .avisoProduto {
-        padding-left: 5em !important;
-        color: red;
-    }
-</style>
+            .tabelaitens tr {
+                background-color: #fbfbfb;
+                border: 1px solid #ddd;
+                padding: 0.35em;
+            }
+
+
+            /*.tabelaitens th,
+                                            .tabelaitens td {
+                                                padding-left: 0.4em;
+                                                padding-right: 0.4em;
+                                            }*/
+
+            .tabelaitens tbody td {
+                white-space: initial;
+                line-height: initial;
+            }
+
+        /*.tabelaitens th {
+                                                font-size: 0.85em;
+                                                letter-spacing: 0.1em;
+                                            }*/
+
+        /*thead tr*/
+        .hquantidade {
+            min-width: 6ch;
+            width: 6ch;
+            text-align: right;
+        }
+
+        .hpreco {
+            min-width: 12ch;
+            width: 12ch;
+            text-align: right;
+        }
+
+        .hdesconto {
+            min-width: 11ch;
+            width: 11ch;
+            text-align: right;
+        }
+
+        .quantidade {
+            width: 6ch;
+        }
+
+        .desconto {
+            width: 6ch;
+            padding-right: 0 !important;
+            white-space: nowrap;
+        }
+
+        /*.sectionDesktop .tabelaitens th,
+                                .sectionDesktop .tabelaitens td {
+                                    padding: 0.625em;
+                                    padding-left: 0.4em;
+                                    padding-right: 0.4em;
+                                }*/
+
+        .icone-lixeira {
+            color: red;
+        }
+
+            .icone-lixeira:hover {
+                background-color: #d1d1d1 !important;
+                cursor: pointer;
+            }
+
+            .icone-lixeira:hover {
+                background-color: #bdbdbd !important;
+                cursor: pointer;
+            }
+
+        .avisoestoque, .avisoProduto {
+            padding-left: 5em !important;
+            color: red;
+        }
+    </style>*@
 <script>
     requirejs(["Views/Pedido/IniciarNovoPedido"], function (util) {
 
