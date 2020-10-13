@@ -153,7 +153,7 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
         this.prepedidoRemoverService.remover(numeroPrepedio).subscribe(
           {
             next() {
-              const msg = `Pré-pedido ${numeroPrepedio} removido.`;
+              const msg = `Pedido ${numeroPrepedio} removido.`;
               snack.open(msg, undefined, {
                 duration: environment.esperaErros
               });
@@ -161,7 +161,7 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
               prepedidoListarService.atualizar();
             },
             error() {
-              const msg = `Erro: erro ao remover pré-pedido  ${numeroPrepedio}.`;
+              const msg = `Erro: erro ao remover Pedido  ${numeroPrepedio}.`;
               snack.open(msg, undefined, {
                 duration: environment.esperaErros
               });
