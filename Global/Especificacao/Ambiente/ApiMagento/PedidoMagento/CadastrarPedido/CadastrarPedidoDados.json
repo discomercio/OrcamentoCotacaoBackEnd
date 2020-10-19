@@ -2,7 +2,7 @@
   "TokenAcesso": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJzdXBvcnRlIDEiLCJ1bmlxdWVfbmFtZSI6IkdVSUxIRVJNRSBHT01FUyBQSUVEQURFIC0gUyIsInJvbGUiOiJBcGlNYWdlbnRvIiwibmJmIjoxNjAxMDYzMzE3LCJleHAiOjE3NTg3NDMzMTcsImlhdCI6MTYwMTA2MzMxN30.wU56GsuPwyISJc8BnG08waX1j20KTZ1yghhvYzyf21Q",
   "Cnpj_Cpf": "14039603052",
   "InfCriacaoPedido": {
-    "Pedido_bs_x_ac": "1",
+    "Pedido_bs_x_ac": "123456789",
     "Marketplace_codigo_origem": "",
     "Pedido_bs_x_marketplace": ""
   },
@@ -33,26 +33,24 @@
     "Endereco_contato": ""
   },
   "OutroEndereco": false,
-  "EnderecoEntrega": {
-
-  },
+  "EnderecoEntrega": null,
   "ListaProdutos": [
     {
       "Fabricante": "003",
       "Produto": "003220",
       "Qtde": 2,
       "Preco_Venda": 626.58,
-      "Preco_NF": 659.3
+      "Preco_NF": 626.58
     },
     {
       "Fabricante": "003",
       "Produto": "003221",
       "Qtde": 2,
       "Preco_Venda": 939.87,
-      "Preco_NF": 988.95
+      "Preco_NF": 939.87
     }
   ],
-  "VlTotalDestePedido": 3296.5,
+  "VlTotalDestePedido": 3132.9,
   "FormaPagtoCriacao": {
     "Tipo_Parcelamento": 1,
     "C_pu_valor": 0,

@@ -190,6 +190,33 @@ namespace Produto
             return lstTodosProdutos;
         }
 
+        public async Task<IEnumerable<Produto.Dados.ProdutoDados>> BuscarProdutosEspecificos(string loja, List<string> lstProdutos)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+
+            var todosProdutosTask = from c in db.Tprodutos
+                                    join pl in db.TprodutoLojas on c.Produto equals pl.Produto
+                                    join fab in db.Tfabricantes on c.Fabricante equals fab.Fabricante
+                                    where pl.Vendavel == "S" &&
+                                          pl.Loja == loja &&
+                                          lstProdutos.Contains(c.Produto)
+                                    select new Produto.Dados.ProdutoDados
+                                    {
+                                        Fabricante = c.Fabricante,
+                                        Fabricante_Nome = fab.Nome,
+                                        Produto = pl.Produto,
+                                        Descricao_html = c.Descricao_Html,
+                                        Descricao = c.Descricao,
+                                        Preco_lista = pl.Preco_Lista,
+                                        Qtde_Max_Venda = pl.Qtde_Max_Venda,
+                                        Desc_Max = pl.Desc_Max
+                                    };
+
+            List<Produto.Dados.ProdutoDados> lstTodosProdutos = await todosProdutosTask.ToListAsync();
+
+            return lstTodosProdutos;
+        }
+
         /*Analisar a necessidade, 
          * pois estamos realizando a busca apenas em produtos que 
          * a subtração entre qtde e qtde_utilizada seja maior que 0

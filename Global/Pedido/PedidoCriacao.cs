@@ -13,9 +13,10 @@ using Cliente.Dados;
 using Cliente;
 using Cep;
 
+#nullable enable
+
 namespace Pedido
 {
-#nullable enable
 
     public class PedidoCriacao
     {
@@ -74,7 +75,7 @@ namespace Pedido
 
             //7- se tiver "vendedor_externo", busca (nome, razão social) na t_LOJA
             //vamos validar o usuario e atribuir alguns valores da base de dados
-            Tusuario tUsuario = db.Tusuarios.Where(x => x.Usuario == pedido.Usuario).FirstOrDefault();
+            Tusuario tUsuario = db.Tusuarios.Where(x => x.Usuario.ToUpper() == pedido.Usuario.ToUpper()).FirstOrDefault();
             if (tUsuario == null)
             {
                 pedidoRetorno.ListaErros.Add("Usuário não encontrado.");
@@ -110,17 +111,13 @@ namespace Pedido
                     pedidoRetorno.ListaErros.Add("Não foi especificada a loja que fez a indicação.");
                     return pedidoRetorno;
                 }
-                else
-                {
-                    Tloja tLoja = db.Tlojas.Where(x => x.Loja == tUsuario.Loja).FirstOrDefault();
-                    if (tLoja == null)
-                    {
-                        pedidoRetorno.ListaErros.Add("Loja " + tUsuario.Loja + " não está cadastrada.");
-                        return pedidoRetorno;
-                    }
-                    //Obs: a condição 
-                }
 
+                var tLoja = db.Tlojas.Where(x => x.Loja == tUsuario.Loja).Count();
+                if (tLoja == 0)
+                {
+                    pedidoRetorno.ListaErros.Add("Loja " + tUsuario.Loja + " não está cadastrada.");
+                    return pedidoRetorno;
+                }
             }
 
             if (tUsuario.Loja == Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE)
@@ -265,19 +262,20 @@ namespace Pedido
             DadosClienteCadastroDados clienteCadastro = clienteBll.ObterDadosClienteCadastro(tcliente, pedido.LojaUsuario);
 
             /* 6- instancia v_item = recebe os campos do produto (produtos, fabricante, qtde) */
-            List<cl_ITEM_PEDIDO_NOVO> v_item = new List<cl_ITEM_PEDIDO_NOVO>();
+            List<Cl_ITEM_PEDIDO_NOVO> v_item = new List<Cl_ITEM_PEDIDO_NOVO>();
             short sequencia = 0;
             foreach (var x in pedido.ListaProdutos)
             {
                 sequencia++;
-                v_item.Add(new cl_ITEM_PEDIDO_NOVO
+                v_item.Add(new Cl_ITEM_PEDIDO_NOVO(
+                    produto: x.Produto,
+                    fabricante: x.Fabricante,
+                    qtde: x.Qtde
+                    )
                 {
-                    produto = x.Produto,
-                    Fabricante = x.Fabricante,
-                    Qtde = (short)(x.Qtde ?? 0),
                     Preco_Venda = x.Preco_Venda,
                     Preco_NF = x.Preco_NF,
-                    qtde_estoque_total_disponivel = 0,
+                    Qtde_estoque_total_disponivel = 0,
                     Qtde_estoque_vendido = 0,
                     Qtde_estoque_sem_presenca = 0,
                     Sequencia = sequencia
@@ -304,7 +302,7 @@ namespace Pedido
             //Faz a verificação de regra de cada produto
             //RECUPERA OS PRODUTOS QUE O CLIENTE CONCORDOU EM COMPRAR MESMO SEM PRESENÇA NO ESTOQUE.
             //v_spe
-            List<cl_CTRL_ESTOQUE_PEDIDO_ITEM_NOVO> v_spe = new List<cl_CTRL_ESTOQUE_PEDIDO_ITEM_NOVO>();
+            List<Cl_CTRL_ESTOQUE_PEDIDO_ITEM_NOVO> v_spe = new List<Cl_CTRL_ESTOQUE_PEDIDO_ITEM_NOVO>();
             //essa lista armazena a qtde de empresas que irá atender um produto
             List<int> vEmpresaAutoSplit = new List<int>();
             /* 16- verifica a regra para consumo de estoque
@@ -331,7 +329,7 @@ namespace Pedido
             foreach (var produto in pedido.ListaProdutos)
             {
                 //COMPARAR SE É EXATAMENTE A MESMA REGRA
-                ProdutoValidadoComEstoqueDados produto_validado_item = new ProdutoValidadoComEstoqueDados();
+                ProdutoValidadoComEstoqueDados produto_validado_item;
 
                 //vamos buscar as regras relacionadas ao produto
                 produto_validado_item = await pedidoBll.VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado(produto,
@@ -343,13 +341,18 @@ namespace Pedido
                     {
                         if (erro.Contains("PRODUTO SEM PRESENÇA"))
                         {
-                            v_spe.Add(new cl_CTRL_ESTOQUE_PEDIDO_ITEM_NOVO
-                            {
-                                Produto = produto_validado_item.Produto.Produto,
-                                Fabricante = UtilsGlobais.Util.Normaliza_Codigo(produto.Fabricante, Constantes.TAM_MIN_FABRICANTE),
-                                Qtde_solicitada = (short)(produto_validado_item.Produto.QtdeSolicitada ?? 0),
-                                Qtde_estoque = (short)produto_validado_item.Produto.Estoque
-                            });
+                            v_spe.Add(new Cl_CTRL_ESTOQUE_PEDIDO_ITEM_NOVO
+                            (
+                                produto: produto_validado_item.Produto.Produto,
+                                fabricante: UtilsGlobais.Util.Normaliza_Codigo(produto.Fabricante, Constantes.TAM_MIN_FABRICANTE),
+                                qtde_solicitada: (short)(produto_validado_item.Produto.QtdeSolicitada ?? 0),
+                                qtde_estoque: (short)produto_validado_item.Produto.Estoque,
+                                qtde_estoque_vendido: 0,
+                                qtde_estoque_sem_presenca: 0,
+                                qtde_estoque_global: 0,
+                                descricao: "",
+                                descricao_html: ""
+                            ));
                             pedido.OpcaoVendaSemEstoque = true;
                             foreach (var x in produto_validado_item.Produto.Lst_empresa_selecionada)
                                 if (!vEmpresaAutoSplit.Contains(x))
@@ -376,7 +379,7 @@ namespace Pedido
                 Constantes.ID_PARAM_CAD_VL_APROV_AUTO_ANALISE_CREDITO);
 
             //obtenção de transportadora que atenda ao cep informado, se houver
-            TtransportadoraCep transportadora = pedido.EnderecoEntrega.OutroEndereco == true &&
+            TtransportadoraCep? transportadora = pedido.EnderecoEntrega.OutroEndereco == true &&
                 !string.IsNullOrEmpty(pedido.EnderecoEntrega.EndEtg_cep) ?
                 await pedidoBll.ObterTransportadoraPeloCep(pedido.EnderecoEntrega.EndEtg_cep) :
                 await pedidoBll.ObterTransportadoraPeloCep(pedido.DadosCliente.Cep);
@@ -386,10 +389,16 @@ namespace Pedido
             List<RegrasBll> lstRegras = new List<RegrasBll>();
             foreach (var produto in pedido.ListaProdutos)
             {
-                List<RegrasBll> lstRegrast = new List<RegrasBll>();
-                lstRegrast = (await pedidoBll.VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado_Teste(
-                    produto, pedido.DadosCliente.Cnpj_Cpf, pedido.IdNfeSelecionadoManual)).ToList();
-                lstRegras.Add(lstRegrast[0]);
+                var lstRegrast = (await pedidoBll.VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado_Teste(
+                    produto, pedido.DadosCliente.Cnpj_Cpf, pedido.IdNfeSelecionadoManual));
+                //todo: revisar isto
+                if (lstRegrast.regrasBlls.Count > 0)
+                    lstRegras.Add(lstRegrast.regrasBlls[0]);
+                if (lstRegrast.prodValidadoEstoqueListaErros.Count > 0)
+                {
+                    pedidoRetorno.ListaErros.Add($"Sem regra de consumo de estoque para o produto: {produto.Fabricante} {produto.Produto}");
+                    pedidoRetorno.ListaErros.AddRange(lstRegrast.prodValidadoEstoqueListaErros);
+                }
             }
 
             //cadastra o pedido 1734 ate 2016

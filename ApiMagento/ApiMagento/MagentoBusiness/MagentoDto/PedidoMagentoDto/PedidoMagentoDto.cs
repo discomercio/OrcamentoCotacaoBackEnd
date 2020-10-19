@@ -13,29 +13,20 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 #pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         [Required]
         public string TokenAcesso { get; set; }
-#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
         //Orcamentista = "FRETE" (vamos ler do appsettings)
         //Loja = "201" (vamos ler do appsettings)
         //Vendedor = usuário que fez o login (ler do token)
 
-
-#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         [MaxLength(14)]
         [Required]
         public string Cnpj_Cpf { get; set; }
-#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
-
-#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         [Required]
         public InfCriacaoPedidoMagentoDto InfCriacaoPedido { get; set; }
-#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
-#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         [Required]
         public EnderecoCadastralClienteMagentoDto EnderecoCadastralCliente { get; set; }
-#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
         /// <summary>
         /// Indica se existe um endereço de entrega
@@ -46,10 +37,8 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 
         public EnderecoEntregaClienteMagentoDto? EnderecoEntrega { get; set; }
 
-#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         [Required]
         public List<PedidoProdutoMagentoDto> ListaProdutos { get; set; }
-#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
         //PermiteRAStatus = true, sempre
 
@@ -62,10 +51,8 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         // BemDeUso_Consumo = COD_ST_BEM_USO_CONSUMO_SIM
         //InstaladorInstala = COD_INSTALADOR_INSTALA_NAO
 
-#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         [Required]
         public FormaPagtoCriacaoMagentoDto FormaPagtoCriacao { get; set; }
-#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
         //CDManual = false
         //PercRT = calculado automaticamente{ get; set; }
@@ -75,10 +62,11 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         public string? Obs_1 { get; set; }
 
         public decimal? Frete { get; set; }
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
         public static Pedido.Dados.Criacao.PedidoCriacaoDados PedidoDadosCriacaoDePedidoMagentoDto(Cliente.Dados.DadosClienteCadastroDados dadosClienteMagento,
             Cliente.Dados.EnderecoCadastralClientePrepedidoDados enderecoCadastralClienteMagento, Cliente.Dados.EnderecoEntregaClienteCadastroDados enderecoEntregaMagento,
-            List<Pedido.Dados.Criacao.PedidoProdutoPedidoDados> lstProdutosMagento, Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados formaPagtoCriacaoMagento, 
+            List<Pedido.Dados.Criacao.PedidoProdutoPedidoDados> lstProdutosMagento, Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados formaPagtoCriacaoMagento,
             decimal vlTotalDestePedido, PedidoMagentoDto pedidoMagento)
         {
 #pragma warning disable IDE0017 // Simplify object initialization
@@ -128,19 +116,21 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 
             //Flag para saber se tem indicador selecionado 
             //campo "frete"->se for <> 0, vamos usar o indicador.se for 0, sem indicador
-            pedidoCriacao.ComIndicador = !string.IsNullOrEmpty(dadosClienteMagento.Vendedor) ? true : false;
+            pedidoCriacao.ComIndicador = ((pedidoMagento.Frete ?? 0) != 0) ? true : false;
 
             //Armazena o nome do indicador selecionado
-            pedidoCriacao.NomeIndicador = !string.IsNullOrEmpty(dadosClienteMagento.Vendedor) ? dadosClienteMagento.Vendedor : null;
+            //campo "frete"->se for <> 0, vamos usar o indicador.se for 0, sem indicador
+            pedidoCriacao.NomeIndicador = ((pedidoMagento.Frete ?? 0) != 0) ? dadosClienteMagento.Vendedor : "";
 
             //Armazena o percentual de comissão para o indicador selecionado
-            //afazer: verificar se esta calculando corretamente
+            //todo: afazer: verificar se esta calculando corretamente
             float percRT = 0f;
-            foreach(var x in lstProdutosMagento)
+            foreach (var x in lstProdutosMagento)
             {
                 percRT = percRT + (float)((x.Preco_Lista - (x.Preco_Venda + 1)) / x.Preco_Venda * 100);
             };
             pedidoCriacao.PercRT = percRT;
+            pedidoCriacao.PercRT = 0;
 
             //Armazena "S" ou "N" para caso de o indicador selecionado permita RA
             pedidoCriacao.OpcaoPossuiRa = true;
@@ -154,12 +144,11 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             pedidoCriacao.OpcaoVendaSemEstoque = true;
 
             //Armazena o valor total do pedido
-            decimal vl_total = lstProdutosMagento.Select(x => x.TotalItem).Sum();
-            pedidoCriacao.Vl_total = vl_total;
+            pedidoCriacao.Vl_total = vlTotalDestePedido;
 
             //Armazena o valor total de pedido com RA
-            //Caso o indicador selecionado permita RA esse campo deve receber o valor total do Pedido com RA
-            pedidoCriacao.Vl_total_NF = vlTotalDestePedido;
+            decimal vl_total = lstProdutosMagento.Select(x => x.TotalItemRA ?? 0).Sum();
+            pedidoCriacao.Vl_total_NF = vl_total;
 
             return pedidoCriacao;
         }

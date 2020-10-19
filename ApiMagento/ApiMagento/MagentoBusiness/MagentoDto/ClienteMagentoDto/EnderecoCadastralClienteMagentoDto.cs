@@ -185,7 +185,7 @@ Ao cadastrar o cliente:
             {
                 Indicador_Orcamentista = orcamentista,
                 Loja = loja,
-                Vendedor = frete > 0 ? vendedor : "",//campo "frete"->se for <> 0, vamos usar o indicador.se for 0, sem indicador
+                Vendedor = vendedor,
                 Nome = dadosClienteMagento.Endereco_nome,
                 Cnpj_Cpf = UtilsGlobais.Util.SoDigitosCpf_Cnpj(dadosClienteMagento.Endereco_cnpj_cpf.Trim()),
                 Tipo = dadosClienteMagento.Endereco_tipo_pessoa,

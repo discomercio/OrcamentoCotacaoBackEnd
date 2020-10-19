@@ -80,6 +80,7 @@ namespace Especificacao.Ambiente.ApiMagento
             configuracaoApiMagento.ApelidoPerfilLiberaAcessoApiMagento = "USUARIOAPIMAGENTO";
 
             configuracaoApiMagento.DadosOrcamentista.Orcamentista = "FRETE";
+            configuracaoApiMagento.DadosOrcamentista.Loja = "202";
 
             //para nao dar erro...
             configuracaoApiMagento.LimitePedidos.LimitePrepedidosExatamenteIguais_Numero = 1000;

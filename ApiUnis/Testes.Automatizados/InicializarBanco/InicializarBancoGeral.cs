@@ -270,7 +270,7 @@ namespace Testes.Automatizados.InicializarBanco
 
         private static void InicializarListaEnderecoEntregaJustificativa(ContextoBdGravacao db)
         {
-            db.tcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
+            db.TcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
             {
                 Grupo = Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
                 Lojas_Habilitadas = null,
@@ -279,7 +279,7 @@ namespace Testes.Automatizados.InicializarBanco
                 Descricao = "Casa de Veraneio"
             });
 
-            db.tcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
+            db.TcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
             {
                 //não posso adicionar o "Grupo" para os outros 
                 Grupo = Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
@@ -289,7 +289,7 @@ namespace Testes.Automatizados.InicializarBanco
                 Descricao = "Doação"
             });
 
-            db.tcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
+            db.TcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
             {
                 Grupo = Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
                 Lojas_Habilitadas = null,
@@ -297,7 +297,7 @@ namespace Testes.Automatizados.InicializarBanco
                 Codigo = "003",
                 Descricao = "Nova Unidade da Empresa/Filial"
             });
-            db.tcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
+            db.TcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
             {
                 Grupo = Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
                 Lojas_Habilitadas = null,
@@ -305,7 +305,7 @@ namespace Testes.Automatizados.InicializarBanco
                 Codigo = "004",
                 Descricao = "Parente do Proprietário (Pais, Filhos e Irmãos)"
             });
-            db.tcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
+            db.TcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
             {
                 Grupo = Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
                 Lojas_Habilitadas = null,
@@ -313,7 +313,7 @@ namespace Testes.Automatizados.InicializarBanco
                 Codigo = "005",
                 Descricao = "Residência do Proprietário"
             });
-            db.tcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
+            db.TcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
             {
                 Grupo = Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
                 Lojas_Habilitadas = null,
@@ -321,7 +321,7 @@ namespace Testes.Automatizados.InicializarBanco
                 Codigo = "006",
                 Descricao = "Endereço Comercial do Proprietário"
             });
-            db.tcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
+            db.TcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
             {
                 Grupo = Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
                 Lojas_Habilitadas = null,
@@ -329,7 +329,7 @@ namespace Testes.Automatizados.InicializarBanco
                 Codigo = "007",
                 Descricao = "Pedido Arclube"
             });
-            db.tcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
+            db.TcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
             {
                 Grupo = Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
                 Lojas_Habilitadas = null,
@@ -337,7 +337,7 @@ namespace Testes.Automatizados.InicializarBanco
                 Codigo = "008",
                 Descricao = "Endereço da Obra"
             });
-            db.tcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
+            db.TcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
             {
                 Grupo = Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
                 Lojas_Habilitadas = null,
@@ -345,7 +345,7 @@ namespace Testes.Automatizados.InicializarBanco
                 Codigo = "009",
                 Descricao = "Endereço Novo Cliente"
             });
-            db.tcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
+            db.TcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
             {
                 Grupo = Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
                 Lojas_Habilitadas = null,

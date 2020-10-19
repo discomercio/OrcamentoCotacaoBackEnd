@@ -39,6 +39,17 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
                 case "TokenAcesso":
                     pedidoMagentoDto.TokenAcesso = p1;
                     break;
+
+                case "InfCriacaoPedido.Pedido_bs_x_ac":
+                    pedidoMagentoDto.InfCriacaoPedido.Pedido_bs_x_ac = p1;
+                    break;
+                case "InfCriacaoPedido.Pedido_bs_x_marketplace":
+                    pedidoMagentoDto.InfCriacaoPedido.Pedido_bs_x_marketplace = p1;
+                    break;
+                case "InfCriacaoPedido.Marketplace_codigo_origem":
+                    pedidoMagentoDto.InfCriacaoPedido.Marketplace_codigo_origem = p1;
+                    break;
+
                 default:
                     Assert.Equal("", $"{p0} desconhecido");
                     break;
@@ -84,11 +95,19 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
                 = (MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto)((Microsoft.AspNetCore.Mvc.OkObjectResult)res).Value;
 
             if (erroDeveExistir)
+            {
+                if (!pedidoResultadoMagentoDto.ListaErros.Contains(erro ?? ""))
+                    logTestes.LogMensagem($"Erro: {erro} em {string.Join(" - ", pedidoResultadoMagentoDto.ListaErros)}");
                 Assert.Contains(erro, pedidoResultadoMagentoDto.ListaErros);
+            }
             else
             {
                 if (erro == null)
+                {
+                    if (pedidoResultadoMagentoDto.ListaErros.Count != 0)
+                        logTestes.LogMensagem($"Erro: {erro} em {string.Join(" - ", pedidoResultadoMagentoDto.ListaErros)}");
                     Assert.Empty(pedidoResultadoMagentoDto.ListaErros);
+                }
                 else
                     Assert.DoesNotContain(erro, pedidoResultadoMagentoDto.ListaErros);
             }

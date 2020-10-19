@@ -55,14 +55,40 @@ namespace Especificacao.Testes.Utils.BancoTestes
         {
             using (var db = contextoBdProvider.GetContextoGravacaoParaUsing())
             {
+                //estas, só apagamos
+                InicializarTabela<TpedidoItem>(db.TpedidoItems, null, db, apagarDadosExistentes);
+                InicializarTabela<Tdesconto>(db.Tdescontos, null, db, apagarDadosExistentes);
+                InicializarTabela<TfinControle>(db.TfinControles, null, db, apagarDadosExistentes);
+                InicializarTabela<TpedidoAnaliseEndereco>(db.TpedidoAnaliseEnderecos, null, db, apagarDadosExistentes);
+                InicializarTabela<TpedidoAnaliseEnderecoConfrontacao>(db.TpedidoAnaliseConfrontacaos, null, db, apagarDadosExistentes);
+                InicializarTabela<TusuarioXLoja>(db.TusuarioXLojas, null, db, apagarDadosExistentes);
+                InicializarTabela<TclienteRefComercial>(db.TclienteRefComercials, null, db, apagarDadosExistentes);
+                InicializarTabela<TclienteRefBancaria>(db.TclienteRefBancarias, null, db, apagarDadosExistentes);
+
                 InicializarTabela<Tcliente>(db.Tclientes, "Tcliente", db, apagarDadosExistentes);
-                InicializarTabela<TcodigoDescricao>(db.tcodigoDescricaos, "TcodigoDescricao", db, apagarDadosExistentes);
+                InicializarTabela<TcodigoDescricao>(db.TcodigoDescricaos, "TcodigoDescricao", db, apagarDadosExistentes);
                 InicializarTabela<Tcontrole>(db.Tcontroles, "Tcontrole", db, apagarDadosExistentes);
+                InicializarTabela<Testoque>(db.Testoques, "Testoque", db, apagarDadosExistentes);
+                InicializarTabela<TestoqueItem>(db.TestoqueItems, "TestoqueItem", db, apagarDadosExistentes);
+                InicializarTabela<TestoqueLog>(db.TestoqueLogs, null, db, apagarDadosExistentes);
+                InicializarTabela<TestoqueMovimento>(db.TestoqueMovimentos, "TestoqueMovimento", db, apagarDadosExistentes);
+                InicializarTabela<Tfabricante>(db.Tfabricantes, "Tfabricante", db, apagarDadosExistentes);
+                InicializarTabela<TformaPagto>(db.TformaPagtos, "TformaPagto", db, apagarDadosExistentes);
+                InicializarTabela<Tloja>(db.Tlojas, "Tlojas", db, apagarDadosExistentes);
+                InicializarTabela<TnfEmitente>(db.TnfEmitentes, "TnfEmitente", db, apagarDadosExistentes);
                 InicializarTabela<TorcamentistaEindicador>(db.TorcamentistaEindicadors, "TorcamentistaEindicador", db, apagarDadosExistentes);
-                InicializarTabela<Tusuario>(db.Tusuarios, "Tusuario", db, apagarDadosExistentes);
                 InicializarTabela<Tparametro>(db.Tparametros, "Tparametro", db, apagarDadosExistentes);
+                InicializarTabela<Tpedido>(db.Tpedidos, "Tpedido", db, apagarDadosExistentes);
                 InicializarTabela<Tperfil>(db.Tperfils, "Tperfil", db, apagarDadosExistentes);
                 InicializarTabela<TperfilUsuario>(db.TperfilUsuarios, "TperfilUsuario", db, apagarDadosExistentes);
+                InicializarTabela<Tproduto>(db.Tprodutos, "Tproduto", db, apagarDadosExistentes);
+                InicializarTabela<TprodutoLoja>(db.TprodutoLojas, "TprodutoLoja", db, apagarDadosExistentes);
+                InicializarTabela<TprodutoXwmsRegraCd>(db.TprodutoXwmsRegraCds, "TprodutoXwmsRegraCd", db, apagarDadosExistentes);
+                InicializarTabela<Tusuario>(db.Tusuarios, "Tusuario", db, apagarDadosExistentes);
+                InicializarTabela<TwmsRegraCd>(db.TwmsRegraCds, "TwmsRegraCd", db, apagarDadosExistentes);
+                InicializarTabela<TwmsRegraCdXUf>(db.TwmsRegraCdXUfs, "TwmsRegraCdXUf", db, apagarDadosExistentes);
+                InicializarTabela<TwmsRegraCdXUfPessoa>(db.TwmsRegraCdXUfPessoas, "TwmsRegraCdXUfPessoa", db, apagarDadosExistentes);
+                InicializarTabela<TwmsRegraCdXUfXPessoaXCd>(db.TwmsRegraCdXUfXPessoaXCds, "TwmsRegraCdXUfXPessoaXCd", db, apagarDadosExistentes);
                 db.SaveChanges();
             }
 
@@ -77,7 +103,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
         }
 
         private void InicializarTabela<TipoDados>(Microsoft.EntityFrameworkCore.DbSet<TipoDados> dbSet,
-            string nomeTabela,
+            string? nomeTabela,
             ContextoBdGravacao db,
             bool apagarDadosExistentes)
                 where TipoDados : class
@@ -87,7 +113,8 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 foreach (var c in dbSet)
                     dbSet.Remove(c);
             }
-
+            if (nomeTabela == null)
+                return;
 
             var nomeArquivo = "Especificacao.Testes.Utils.BancoTestes.Dados." + nomeTabela + ".json";
             using Stream? stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(nomeArquivo);

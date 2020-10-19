@@ -1,0 +1,57 @@
+﻿[
+  {
+    "fabricante": "001",
+    "produto": "001000",
+    "id_wms_regra_cd": 2,
+    "usuario_cadastro": "CARLOS",
+    "dt_cadastro": "2017-05-11T03:00:00Z",
+    "dt_hr_cadastro": "2017-05-11T23:16:29Z",
+    "usuario_ult_atualizacao": "ADAILTON S",
+    "dt_ult_atualizacao": "2020-02-03T03:00:00Z",
+    "dt_hr_ult_atualizacao": "2020-02-03T17:13:12Z"
+  },
+  {
+    "fabricante": "001",
+    "produto": "001001",
+    "id_wms_regra_cd": 2,
+    "usuario_cadastro": "CARLOS",
+    "dt_cadastro": "2017-05-11T03:00:00Z",
+    "dt_hr_cadastro": "2017-05-11T23:16:29Z",
+    "usuario_ult_atualizacao": "ADAILTON S",
+    "dt_ult_atualizacao": "2020-02-03T03:00:00Z",
+    "dt_hr_ult_atualizacao": "2020-02-03T17:13:12Z"
+  },
+  {
+    "fabricante": "001",
+    "produto": "001002",
+    "id_wms_regra_cd": 2,
+    "usuario_cadastro": "CARLOS",
+    "dt_cadastro": "2017-05-11T03:00:00Z",
+    "dt_hr_cadastro": "2017-05-11T23:16:29Z",
+    "usuario_ult_atualizacao": "CARLOS",
+    "dt_ult_atualizacao": "2020-01-28T03:00:00Z",
+    "dt_hr_ult_atualizacao": "2020-01-28T14:15:18Z"
+  },
+  {
+    "fabricante": "003",
+    "produto": "003220",
+    "id_wms_regra_cd": 5,
+    "usuario_cadastro": "ADAILTON S",
+    "dt_cadastro": "2017-11-13T02:00:00Z",
+    "dt_hr_cadastro": "2017-11-13T18:25:54Z",
+    "usuario_ult_atualizacao": "ADAILTON S",
+    "dt_ult_atualizacao": "2020-02-19T03:00:00Z",
+    "dt_hr_ult_atualizacao": "2020-02-19T18:14:22Z"
+  },
+  {
+    "fabricante": "003",
+    "produto": "003221",
+    "id_wms_regra_cd": 5,
+    "usuario_cadastro": "ADAILTON S",
+    "dt_cadastro": "2017-11-13T02:00:00Z",
+    "dt_hr_cadastro": "2017-11-13T18:25:54Z",
+    "usuario_ult_atualizacao": "ADAILTON S",
+    "dt_ult_atualizacao": "2020-02-19T03:00:00Z",
+    "dt_hr_ult_atualizacao": "2020-02-19T18:14:22Z"
+  }
+]

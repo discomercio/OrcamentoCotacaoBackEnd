@@ -34,8 +34,8 @@ namespace MagentoBusiness.UtilsMagento
 
         public class OrcamentistaMagento
         {
-            public string Orcamentista { get; set; } = "";
-            public string Loja { get; set; } = "";
+            public string Orcamentista { get; set; } = "FRETE";
+            public string Loja { get; set; } = "202";
         }
 
         public OrcamentistaMagento DadosOrcamentista { get; set; } = new OrcamentistaMagento();

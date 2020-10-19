@@ -1,0 +1,974 @@
+﻿[
+  {
+    "id": 1,
+    "id_wms_regra_cd": 1,
+    "uf": "AC",
+    "st_inativo": 0
+  },
+  {
+    "id": 2,
+    "id_wms_regra_cd": 1,
+    "uf": "AL",
+    "st_inativo": 0
+  },
+  {
+    "id": 3,
+    "id_wms_regra_cd": 1,
+    "uf": "AM",
+    "st_inativo": 0
+  },
+  {
+    "id": 4,
+    "id_wms_regra_cd": 1,
+    "uf": "AP",
+    "st_inativo": 0
+  },
+  {
+    "id": 5,
+    "id_wms_regra_cd": 1,
+    "uf": "BA",
+    "st_inativo": 0
+  },
+  {
+    "id": 6,
+    "id_wms_regra_cd": 1,
+    "uf": "CE",
+    "st_inativo": 0
+  },
+  {
+    "id": 7,
+    "id_wms_regra_cd": 1,
+    "uf": "DF",
+    "st_inativo": 0
+  },
+  {
+    "id": 8,
+    "id_wms_regra_cd": 1,
+    "uf": "ES",
+    "st_inativo": 1
+  },
+  {
+    "id": 9,
+    "id_wms_regra_cd": 1,
+    "uf": "GO",
+    "st_inativo": 0
+  },
+  {
+    "id": 10,
+    "id_wms_regra_cd": 1,
+    "uf": "MA",
+    "st_inativo": 0
+  },
+  {
+    "id": 11,
+    "id_wms_regra_cd": 1,
+    "uf": "MG",
+    "st_inativo": 0
+  },
+  {
+    "id": 12,
+    "id_wms_regra_cd": 1,
+    "uf": "MS",
+    "st_inativo": 0
+  },
+  {
+    "id": 13,
+    "id_wms_regra_cd": 1,
+    "uf": "MT",
+    "st_inativo": 0
+  },
+  {
+    "id": 14,
+    "id_wms_regra_cd": 1,
+    "uf": "PA",
+    "st_inativo": 0
+  },
+  {
+    "id": 15,
+    "id_wms_regra_cd": 1,
+    "uf": "PB",
+    "st_inativo": 0
+  },
+  {
+    "id": 16,
+    "id_wms_regra_cd": 1,
+    "uf": "PE",
+    "st_inativo": 0
+  },
+  {
+    "id": 17,
+    "id_wms_regra_cd": 1,
+    "uf": "PI",
+    "st_inativo": 0
+  },
+  {
+    "id": 18,
+    "id_wms_regra_cd": 1,
+    "uf": "PR",
+    "st_inativo": 0
+  },
+  {
+    "id": 19,
+    "id_wms_regra_cd": 1,
+    "uf": "RJ",
+    "st_inativo": 0
+  },
+  {
+    "id": 20,
+    "id_wms_regra_cd": 1,
+    "uf": "RN",
+    "st_inativo": 0
+  },
+  {
+    "id": 21,
+    "id_wms_regra_cd": 1,
+    "uf": "RO",
+    "st_inativo": 0
+  },
+  {
+    "id": 22,
+    "id_wms_regra_cd": 1,
+    "uf": "RR",
+    "st_inativo": 0
+  },
+  {
+    "id": 23,
+    "id_wms_regra_cd": 1,
+    "uf": "RS",
+    "st_inativo": 0
+  },
+  {
+    "id": 24,
+    "id_wms_regra_cd": 1,
+    "uf": "SC",
+    "st_inativo": 0
+  },
+  {
+    "id": 25,
+    "id_wms_regra_cd": 1,
+    "uf": "SE",
+    "st_inativo": 0
+  },
+  {
+    "id": 26,
+    "id_wms_regra_cd": 1,
+    "uf": "SP",
+    "st_inativo": 0
+  },
+  {
+    "id": 27,
+    "id_wms_regra_cd": 1,
+    "uf": "TO",
+    "st_inativo": 0
+  },
+  {
+    "id": 28,
+    "id_wms_regra_cd": 2,
+    "uf": "AC",
+    "st_inativo": 0
+  },
+  {
+    "id": 29,
+    "id_wms_regra_cd": 2,
+    "uf": "AL",
+    "st_inativo": 0
+  },
+  {
+    "id": 30,
+    "id_wms_regra_cd": 2,
+    "uf": "AM",
+    "st_inativo": 0
+  },
+  {
+    "id": 31,
+    "id_wms_regra_cd": 2,
+    "uf": "AP",
+    "st_inativo": 0
+  },
+  {
+    "id": 32,
+    "id_wms_regra_cd": 2,
+    "uf": "BA",
+    "st_inativo": 0
+  },
+  {
+    "id": 33,
+    "id_wms_regra_cd": 2,
+    "uf": "CE",
+    "st_inativo": 0
+  },
+  {
+    "id": 34,
+    "id_wms_regra_cd": 2,
+    "uf": "DF",
+    "st_inativo": 0
+  },
+  {
+    "id": 35,
+    "id_wms_regra_cd": 2,
+    "uf": "ES",
+    "st_inativo": 1
+  },
+  {
+    "id": 36,
+    "id_wms_regra_cd": 2,
+    "uf": "GO",
+    "st_inativo": 0
+  },
+  {
+    "id": 37,
+    "id_wms_regra_cd": 2,
+    "uf": "MA",
+    "st_inativo": 0
+  },
+  {
+    "id": 38,
+    "id_wms_regra_cd": 2,
+    "uf": "MG",
+    "st_inativo": 0
+  },
+  {
+    "id": 39,
+    "id_wms_regra_cd": 2,
+    "uf": "MS",
+    "st_inativo": 0
+  },
+  {
+    "id": 40,
+    "id_wms_regra_cd": 2,
+    "uf": "MT",
+    "st_inativo": 0
+  },
+  {
+    "id": 41,
+    "id_wms_regra_cd": 2,
+    "uf": "PA",
+    "st_inativo": 0
+  },
+  {
+    "id": 42,
+    "id_wms_regra_cd": 2,
+    "uf": "PB",
+    "st_inativo": 0
+  },
+  {
+    "id": 43,
+    "id_wms_regra_cd": 2,
+    "uf": "PE",
+    "st_inativo": 0
+  },
+  {
+    "id": 44,
+    "id_wms_regra_cd": 2,
+    "uf": "PI",
+    "st_inativo": 0
+  },
+  {
+    "id": 45,
+    "id_wms_regra_cd": 2,
+    "uf": "PR",
+    "st_inativo": 0
+  },
+  {
+    "id": 46,
+    "id_wms_regra_cd": 2,
+    "uf": "RJ",
+    "st_inativo": 0
+  },
+  {
+    "id": 47,
+    "id_wms_regra_cd": 2,
+    "uf": "RN",
+    "st_inativo": 0
+  },
+  {
+    "id": 48,
+    "id_wms_regra_cd": 2,
+    "uf": "RO",
+    "st_inativo": 0
+  },
+  {
+    "id": 49,
+    "id_wms_regra_cd": 2,
+    "uf": "RR",
+    "st_inativo": 0
+  },
+  {
+    "id": 50,
+    "id_wms_regra_cd": 2,
+    "uf": "RS",
+    "st_inativo": 0
+  },
+  {
+    "id": 51,
+    "id_wms_regra_cd": 2,
+    "uf": "SC",
+    "st_inativo": 0
+  },
+  {
+    "id": 52,
+    "id_wms_regra_cd": 2,
+    "uf": "SE",
+    "st_inativo": 0
+  },
+  {
+    "id": 53,
+    "id_wms_regra_cd": 2,
+    "uf": "SP",
+    "st_inativo": 0
+  },
+  {
+    "id": 54,
+    "id_wms_regra_cd": 2,
+    "uf": "TO",
+    "st_inativo": 0
+  },
+  {
+    "id": 55,
+    "id_wms_regra_cd": 3,
+    "uf": "AC",
+    "st_inativo": 0
+  },
+  {
+    "id": 56,
+    "id_wms_regra_cd": 3,
+    "uf": "AL",
+    "st_inativo": 0
+  },
+  {
+    "id": 57,
+    "id_wms_regra_cd": 3,
+    "uf": "AM",
+    "st_inativo": 0
+  },
+  {
+    "id": 58,
+    "id_wms_regra_cd": 3,
+    "uf": "AP",
+    "st_inativo": 0
+  },
+  {
+    "id": 59,
+    "id_wms_regra_cd": 3,
+    "uf": "BA",
+    "st_inativo": 0
+  },
+  {
+    "id": 60,
+    "id_wms_regra_cd": 3,
+    "uf": "CE",
+    "st_inativo": 0
+  },
+  {
+    "id": 61,
+    "id_wms_regra_cd": 3,
+    "uf": "DF",
+    "st_inativo": 0
+  },
+  {
+    "id": 62,
+    "id_wms_regra_cd": 3,
+    "uf": "ES",
+    "st_inativo": 1
+  },
+  {
+    "id": 63,
+    "id_wms_regra_cd": 3,
+    "uf": "GO",
+    "st_inativo": 0
+  },
+  {
+    "id": 64,
+    "id_wms_regra_cd": 3,
+    "uf": "MA",
+    "st_inativo": 0
+  },
+  {
+    "id": 65,
+    "id_wms_regra_cd": 3,
+    "uf": "MG",
+    "st_inativo": 0
+  },
+  {
+    "id": 66,
+    "id_wms_regra_cd": 3,
+    "uf": "MS",
+    "st_inativo": 0
+  },
+  {
+    "id": 67,
+    "id_wms_regra_cd": 3,
+    "uf": "MT",
+    "st_inativo": 0
+  },
+  {
+    "id": 68,
+    "id_wms_regra_cd": 3,
+    "uf": "PA",
+    "st_inativo": 0
+  },
+  {
+    "id": 69,
+    "id_wms_regra_cd": 3,
+    "uf": "PB",
+    "st_inativo": 0
+  },
+  {
+    "id": 70,
+    "id_wms_regra_cd": 3,
+    "uf": "PE",
+    "st_inativo": 0
+  },
+  {
+    "id": 71,
+    "id_wms_regra_cd": 3,
+    "uf": "PI",
+    "st_inativo": 0
+  },
+  {
+    "id": 72,
+    "id_wms_regra_cd": 3,
+    "uf": "PR",
+    "st_inativo": 0
+  },
+  {
+    "id": 73,
+    "id_wms_regra_cd": 3,
+    "uf": "RJ",
+    "st_inativo": 0
+  },
+  {
+    "id": 74,
+    "id_wms_regra_cd": 3,
+    "uf": "RN",
+    "st_inativo": 0
+  },
+  {
+    "id": 75,
+    "id_wms_regra_cd": 3,
+    "uf": "RO",
+    "st_inativo": 0
+  },
+  {
+    "id": 76,
+    "id_wms_regra_cd": 3,
+    "uf": "RR",
+    "st_inativo": 0
+  },
+  {
+    "id": 77,
+    "id_wms_regra_cd": 3,
+    "uf": "RS",
+    "st_inativo": 0
+  },
+  {
+    "id": 78,
+    "id_wms_regra_cd": 3,
+    "uf": "SC",
+    "st_inativo": 0
+  },
+  {
+    "id": 79,
+    "id_wms_regra_cd": 3,
+    "uf": "SE",
+    "st_inativo": 0
+  },
+  {
+    "id": 80,
+    "id_wms_regra_cd": 3,
+    "uf": "SP",
+    "st_inativo": 0
+  },
+  {
+    "id": 81,
+    "id_wms_regra_cd": 3,
+    "uf": "TO",
+    "st_inativo": 0
+  },
+  {
+    "id": 82,
+    "id_wms_regra_cd": 4,
+    "uf": "AC",
+    "st_inativo": 0
+  },
+  {
+    "id": 83,
+    "id_wms_regra_cd": 4,
+    "uf": "AL",
+    "st_inativo": 0
+  },
+  {
+    "id": 84,
+    "id_wms_regra_cd": 4,
+    "uf": "AM",
+    "st_inativo": 0
+  },
+  {
+    "id": 85,
+    "id_wms_regra_cd": 4,
+    "uf": "AP",
+    "st_inativo": 0
+  },
+  {
+    "id": 86,
+    "id_wms_regra_cd": 4,
+    "uf": "BA",
+    "st_inativo": 0
+  },
+  {
+    "id": 87,
+    "id_wms_regra_cd": 4,
+    "uf": "CE",
+    "st_inativo": 0
+  },
+  {
+    "id": 88,
+    "id_wms_regra_cd": 4,
+    "uf": "DF",
+    "st_inativo": 0
+  },
+  {
+    "id": 89,
+    "id_wms_regra_cd": 4,
+    "uf": "ES",
+    "st_inativo": 0
+  },
+  {
+    "id": 90,
+    "id_wms_regra_cd": 4,
+    "uf": "GO",
+    "st_inativo": 0
+  },
+  {
+    "id": 91,
+    "id_wms_regra_cd": 4,
+    "uf": "MA",
+    "st_inativo": 0
+  },
+  {
+    "id": 92,
+    "id_wms_regra_cd": 4,
+    "uf": "MG",
+    "st_inativo": 0
+  },
+  {
+    "id": 93,
+    "id_wms_regra_cd": 4,
+    "uf": "MS",
+    "st_inativo": 0
+  },
+  {
+    "id": 94,
+    "id_wms_regra_cd": 4,
+    "uf": "MT",
+    "st_inativo": 0
+  },
+  {
+    "id": 95,
+    "id_wms_regra_cd": 4,
+    "uf": "PA",
+    "st_inativo": 0
+  },
+  {
+    "id": 96,
+    "id_wms_regra_cd": 4,
+    "uf": "PB",
+    "st_inativo": 0
+  },
+  {
+    "id": 97,
+    "id_wms_regra_cd": 4,
+    "uf": "PE",
+    "st_inativo": 0
+  },
+  {
+    "id": 98,
+    "id_wms_regra_cd": 4,
+    "uf": "PI",
+    "st_inativo": 0
+  },
+  {
+    "id": 99,
+    "id_wms_regra_cd": 4,
+    "uf": "PR",
+    "st_inativo": 0
+  },
+  {
+    "id": 100,
+    "id_wms_regra_cd": 4,
+    "uf": "RJ",
+    "st_inativo": 0
+  },
+  {
+    "id": 101,
+    "id_wms_regra_cd": 4,
+    "uf": "RN",
+    "st_inativo": 0
+  },
+  {
+    "id": 102,
+    "id_wms_regra_cd": 4,
+    "uf": "RO",
+    "st_inativo": 0
+  },
+  {
+    "id": 103,
+    "id_wms_regra_cd": 4,
+    "uf": "RR",
+    "st_inativo": 0
+  },
+  {
+    "id": 104,
+    "id_wms_regra_cd": 4,
+    "uf": "RS",
+    "st_inativo": 0
+  },
+  {
+    "id": 105,
+    "id_wms_regra_cd": 4,
+    "uf": "SC",
+    "st_inativo": 0
+  },
+  {
+    "id": 106,
+    "id_wms_regra_cd": 4,
+    "uf": "SE",
+    "st_inativo": 0
+  },
+  {
+    "id": 107,
+    "id_wms_regra_cd": 4,
+    "uf": "SP",
+    "st_inativo": 0
+  },
+  {
+    "id": 108,
+    "id_wms_regra_cd": 4,
+    "uf": "TO",
+    "st_inativo": 0
+  },
+  {
+    "id": 109,
+    "id_wms_regra_cd": 5,
+    "uf": "AC",
+    "st_inativo": 0
+  },
+  {
+    "id": 110,
+    "id_wms_regra_cd": 5,
+    "uf": "AL",
+    "st_inativo": 0
+  },
+  {
+    "id": 111,
+    "id_wms_regra_cd": 5,
+    "uf": "AM",
+    "st_inativo": 0
+  },
+  {
+    "id": 112,
+    "id_wms_regra_cd": 5,
+    "uf": "AP",
+    "st_inativo": 0
+  },
+  {
+    "id": 113,
+    "id_wms_regra_cd": 5,
+    "uf": "BA",
+    "st_inativo": 0
+  },
+  {
+    "id": 114,
+    "id_wms_regra_cd": 5,
+    "uf": "CE",
+    "st_inativo": 0
+  },
+  {
+    "id": 115,
+    "id_wms_regra_cd": 5,
+    "uf": "DF",
+    "st_inativo": 0
+  },
+  {
+    "id": 116,
+    "id_wms_regra_cd": 5,
+    "uf": "ES",
+    "st_inativo": 0
+  },
+  {
+    "id": 117,
+    "id_wms_regra_cd": 5,
+    "uf": "GO",
+    "st_inativo": 0
+  },
+  {
+    "id": 118,
+    "id_wms_regra_cd": 5,
+    "uf": "MA",
+    "st_inativo": 0
+  },
+  {
+    "id": 119,
+    "id_wms_regra_cd": 5,
+    "uf": "MG",
+    "st_inativo": 0
+  },
+  {
+    "id": 120,
+    "id_wms_regra_cd": 5,
+    "uf": "MS",
+    "st_inativo": 0
+  },
+  {
+    "id": 121,
+    "id_wms_regra_cd": 5,
+    "uf": "MT",
+    "st_inativo": 0
+  },
+  {
+    "id": 122,
+    "id_wms_regra_cd": 5,
+    "uf": "PA",
+    "st_inativo": 0
+  },
+  {
+    "id": 123,
+    "id_wms_regra_cd": 5,
+    "uf": "PB",
+    "st_inativo": 0
+  },
+  {
+    "id": 124,
+    "id_wms_regra_cd": 5,
+    "uf": "PE",
+    "st_inativo": 0
+  },
+  {
+    "id": 125,
+    "id_wms_regra_cd": 5,
+    "uf": "PI",
+    "st_inativo": 0
+  },
+  {
+    "id": 126,
+    "id_wms_regra_cd": 5,
+    "uf": "PR",
+    "st_inativo": 0
+  },
+  {
+    "id": 127,
+    "id_wms_regra_cd": 5,
+    "uf": "RJ",
+    "st_inativo": 0
+  },
+  {
+    "id": 128,
+    "id_wms_regra_cd": 5,
+    "uf": "RN",
+    "st_inativo": 0
+  },
+  {
+    "id": 129,
+    "id_wms_regra_cd": 5,
+    "uf": "RO",
+    "st_inativo": 0
+  },
+  {
+    "id": 130,
+    "id_wms_regra_cd": 5,
+    "uf": "RR",
+    "st_inativo": 0
+  },
+  {
+    "id": 131,
+    "id_wms_regra_cd": 5,
+    "uf": "RS",
+    "st_inativo": 0
+  },
+  {
+    "id": 132,
+    "id_wms_regra_cd": 5,
+    "uf": "SC",
+    "st_inativo": 0
+  },
+  {
+    "id": 133,
+    "id_wms_regra_cd": 5,
+    "uf": "SE",
+    "st_inativo": 0
+  },
+  {
+    "id": 134,
+    "id_wms_regra_cd": 5,
+    "uf": "SP",
+    "st_inativo": 0
+  },
+  {
+    "id": 135,
+    "id_wms_regra_cd": 5,
+    "uf": "TO",
+    "st_inativo": 0
+  },
+  {
+    "id": 136,
+    "id_wms_regra_cd": 6,
+    "uf": "AC",
+    "st_inativo": 0
+  },
+  {
+    "id": 137,
+    "id_wms_regra_cd": 6,
+    "uf": "AL",
+    "st_inativo": 0
+  },
+  {
+    "id": 138,
+    "id_wms_regra_cd": 6,
+    "uf": "AM",
+    "st_inativo": 0
+  },
+  {
+    "id": 139,
+    "id_wms_regra_cd": 6,
+    "uf": "AP",
+    "st_inativo": 0
+  },
+  {
+    "id": 140,
+    "id_wms_regra_cd": 6,
+    "uf": "BA",
+    "st_inativo": 0
+  },
+  {
+    "id": 141,
+    "id_wms_regra_cd": 6,
+    "uf": "CE",
+    "st_inativo": 0
+  },
+  {
+    "id": 142,
+    "id_wms_regra_cd": 6,
+    "uf": "DF",
+    "st_inativo": 0
+  },
+  {
+    "id": 143,
+    "id_wms_regra_cd": 6,
+    "uf": "ES",
+    "st_inativo": 0
+  },
+  {
+    "id": 144,
+    "id_wms_regra_cd": 6,
+    "uf": "GO",
+    "st_inativo": 0
+  },
+  {
+    "id": 145,
+    "id_wms_regra_cd": 6,
+    "uf": "MA",
+    "st_inativo": 0
+  },
+  {
+    "id": 146,
+    "id_wms_regra_cd": 6,
+    "uf": "MG",
+    "st_inativo": 0
+  },
+  {
+    "id": 147,
+    "id_wms_regra_cd": 6,
+    "uf": "MS",
+    "st_inativo": 0
+  },
+  {
+    "id": 148,
+    "id_wms_regra_cd": 6,
+    "uf": "MT",
+    "st_inativo": 0
+  },
+  {
+    "id": 149,
+    "id_wms_regra_cd": 6,
+    "uf": "PA",
+    "st_inativo": 0
+  },
+  {
+    "id": 150,
+    "id_wms_regra_cd": 6,
+    "uf": "PB",
+    "st_inativo": 0
+  },
+  {
+    "id": 151,
+    "id_wms_regra_cd": 6,
+    "uf": "PE",
+    "st_inativo": 0
+  },
+  {
+    "id": 152,
+    "id_wms_regra_cd": 6,
+    "uf": "PI",
+    "st_inativo": 0
+  },
+  {
+    "id": 153,
+    "id_wms_regra_cd": 6,
+    "uf": "PR",
+    "st_inativo": 0
+  },
+  {
+    "id": 154,
+    "id_wms_regra_cd": 6,
+    "uf": "RJ",
+    "st_inativo": 0
+  },
+  {
+    "id": 155,
+    "id_wms_regra_cd": 6,
+    "uf": "RN",
+    "st_inativo": 0
+  },
+  {
+    "id": 156,
+    "id_wms_regra_cd": 6,
+    "uf": "RO",
+    "st_inativo": 0
+  },
+  {
+    "id": 157,
+    "id_wms_regra_cd": 6,
+    "uf": "RR",
+    "st_inativo": 0
+  },
+  {
+    "id": 158,
+    "id_wms_regra_cd": 6,
+    "uf": "RS",
+    "st_inativo": 0
+  },
+  {
+    "id": 159,
+    "id_wms_regra_cd": 6,
+    "uf": "SC",
+    "st_inativo": 0
+  },
+  {
+    "id": 160,
+    "id_wms_regra_cd": 6,
+    "uf": "SE",
+    "st_inativo": 0
+  },
+  {
+    "id": 161,
+    "id_wms_regra_cd": 6,
+    "uf": "SP",
+    "st_inativo": 0
+  },
+  {
+    "id": 162,
+    "id_wms_regra_cd": 6,
+    "uf": "TO",
+    "st_inativo": 0
+  }
+]

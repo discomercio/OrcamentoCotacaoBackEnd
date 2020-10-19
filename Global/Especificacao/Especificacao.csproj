@@ -26,11 +26,26 @@
     <None Remove="Testes\Utils\BancoTestes\Dados\Tcliente.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\TcodigoDescricao.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\Tcontrole.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\Testoque.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\TestoqueItem.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\TestoqueMovimento.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\Tfabricante.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\TformaPagto.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\Tlojas.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\TnfEmitente.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\TorcamentistaEindicador.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\Tparametro.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\Tpedido.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\Tperfil.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\TperfilUsuario.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\Tproduto.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\TprodutoLoja.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\TprodutoXwmsRegraCd.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\Tusuario.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\TwmsRegraCd.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\TwmsRegraCdXUf.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\TwmsRegraCdXUfPessoa.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\TwmsRegraCdXUfXPessoaXCd.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -230,7 +245,22 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CadastrarPedidoDados.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Testoque.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TestoqueMovimento.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TestoqueItem.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TnfEmitente.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tpedido.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TwmsRegraCdXUfXPessoaXCd.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TwmsRegraCdXUfPessoa.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TwmsRegraCdXUf.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TwmsRegraCd.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TprodutoXwmsRegraCd.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TformaPagto.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tlojas.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tcontrole.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tfabricante.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TprodutoLoja.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tproduto.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TperfilUsuario.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tperfil.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tparametro.json" />

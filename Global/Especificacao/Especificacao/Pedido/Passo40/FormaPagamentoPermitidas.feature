@@ -33,4 +33,5 @@ Feature: FormaPagamentoPermitidas
 @mytag
 Scenario: validar op_pce_prestacao_forma_pagto
 	When Fazer esta validação
+	Then Erro "Forma de pagamento não aceita para esse indicador."
 

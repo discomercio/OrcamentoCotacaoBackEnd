@@ -93,71 +93,74 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
                 }
             }
 
-            if (await ValidarPedidoMagentoEMarketplace(pedidoMagento, resultado.ListaErros))
-            {
-                //estamos criando o pedido com os dados do cliente que vem e não com os dados do cliente que esta na base
-                //ex: se o cliente já cadastrado, utilizamos o que vem em PedidoMagentoDto.EnderecoCadastralClienteMagentoDto
-                Pedido.Dados.Criacao.PedidoCriacaoDados pedidoDados = await CriarPedidoCriacaoDados(pedidoMagento, orcamentista, loja, vendedor);
+            if (!await ValidarPedidoMagentoEMarketplace(pedidoMagento, resultado.ListaErros))
+                return resultado;
 
-                Pedido.Dados.Criacao.PedidoCriacaoRetornoDados ret = await pedidoCriacao.CadastrarPedido(pedidoDados,
-                    Convert.ToDecimal(configuracaoApiMagento.LimiteArredondamentoPrecoVendaOrcamentoItem), 0.1M,
-                    pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac, pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem,
-                    pedidoMagento.InfCriacaoPedido.Pedido_bs_x_marketplace,
-                    (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__APIMAGENTO);
+            //estamos criando o pedido com os dados do cliente que vem e não com os dados do cliente que esta na base
+            //ex: se o cliente já cadastrado, utilizamos o que vem em PedidoMagentoDto.EnderecoCadastralClienteMagentoDto
+            Pedido.Dados.Criacao.PedidoCriacaoDados pedidoDados = await CriarPedidoCriacaoDados(pedidoMagento, orcamentista, loja, vendedor, resultado.ListaErros);
+            if (resultado.ListaErros.Count != 0)
+                return resultado;
 
-                resultado.IdPedidoCadastrado = ret.Id;
-                resultado.IdsPedidosFilhotes = ret.ListaIdPedidosFilhotes;
-                resultado.ListaErros = ret.ListaErros;
-            }
+            Pedido.Dados.Criacao.PedidoCriacaoRetornoDados ret = await pedidoCriacao.CadastrarPedido(pedidoDados,
+                Convert.ToDecimal(configuracaoApiMagento.LimiteArredondamentoPrecoVendaOrcamentoItem), 0.1M,
+                pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac, pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem,
+                pedidoMagento.InfCriacaoPedido.Pedido_bs_x_marketplace,
+                (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__APIMAGENTO);
+
+            resultado.IdPedidoCadastrado = ret.Id;
+            resultado.IdsPedidosFilhotes = ret.ListaIdPedidosFilhotes;
+            resultado.ListaErros = ret.ListaErros;
 
             return resultado;
         }
 
         public async Task<IEnumerable<Pedido.Dados.Criacao.PedidoProdutoPedidoDados>> ConverterProdutosMagento(PedidoMagentoDto pedidoMagento,
-            Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados formaPagtoCriacao, string loja)
+            Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados formaPagtoCriacao, string loja, List<string> lstErros)
         {
             List<Pedido.Dados.Criacao.PedidoProdutoPedidoDados> listaProdutos = new List<Pedido.Dados.Criacao.PedidoProdutoPedidoDados>();
             List<string> lstFornec = new List<string>();
             lstFornec = pedidoMagento.ListaProdutos.Select(x => x.Fabricante).Distinct().ToList();
 
             //preciso da lista de coeficientes de cada fabricante da lista de produtos
-            List<Produto.Dados.CoeficienteDados> lstCoeficiente = new List<Produto.Dados.CoeficienteDados>();
             //preciso obter a qtde de parcelas e a sigla de pagto
             var qtdeParcelas = prepedidoBll.ObterQtdeParcelasFormaPagto(formaPagtoCriacao);
             var siglaParc = prepedidoBll.ObterSiglaFormaPagto(formaPagtoCriacao);
-            lstCoeficiente = (await validacoesPrepedidoBll.MontarListaCoeficiente(lstFornec, qtdeParcelas,
+            List<Produto.Dados.CoeficienteDados> lstCoeficiente = (await validacoesPrepedidoBll.MontarListaCoeficiente(lstFornec, qtdeParcelas,
                 prepedidoBll.ObterSiglaFormaPagto(formaPagtoCriacao))).ToList();
 
-            List<Produto.Dados.ProdutoDados> lstTodosProdutos = (await produtoGeralBll.BuscarTodosProdutos(loja)).ToList();
+            List<string> lstProdutosDistintos = pedidoMagento.ListaProdutos.Select(x => x.Produto).Distinct().ToList();
+            List<Produto.Dados.ProdutoDados> lstProdutosUsados = (await produtoGeralBll.BuscarProdutosEspecificos(loja, lstProdutosDistintos)).ToList();
 
-            if (lstTodosProdutos?.Count > 0)
+            foreach (var y in pedidoMagento.ListaProdutos)
             {
-                foreach (var y in pedidoMagento.ListaProdutos)
+                Produto.Dados.ProdutoDados produto = (from c in lstProdutosUsados
+                                                      where c.Fabricante == y.Fabricante && c.Produto == y.Produto
+                                                      select c).FirstOrDefault();
+
+                Produto.Dados.CoeficienteDados coeficiente = (from c in lstCoeficiente
+                                                              where c.Fabricante == y.Fabricante &&
+                                                                    c.TipoParcela == siglaParc
+                                                              select c).FirstOrDefault();
+
+                if (produto != null && coeficiente != null)
                 {
-                    Produto.Dados.ProdutoDados produto = lstTodosProdutos.Select(x => x)
-                    .Where(x => x.Fabricante == y.Fabricante && x.Produto == y.Produto)
-                    .FirstOrDefault();
-
-                    Produto.Dados.CoeficienteDados coeficiente = (from c in lstCoeficiente
-                                                                  where c.Fabricante == produto.Fabricante &&
-                                                                        c.TipoParcela == siglaParc
-                                                                  select c).FirstOrDefault();
-
-                    if (y.Fabricante == produto.Fabricante &&
-                        y.Fabricante == coeficiente.Fabricante &&
-                        y.Produto == produto.Produto && y.Fabricante == coeficiente.Fabricante)
-                    {
-                        listaProdutos.Add(PedidoProdutoMagentoDto.ProdutosDePedidoProdutoMagentoDto(y, produto, coeficiente.Coeficiente));
-                    }
-
-                };
+                    listaProdutos.Add(PedidoProdutoMagentoDto.ProdutosDePedidoProdutoMagentoDto(y, produto, coeficiente.Coeficiente));
+                }
+                else
+                {
+                    if (produto == null)
+                        lstErros.Add($"Produto não cadastrado para a loja. Produto: {y.Produto}, loja: {loja}");
+                    if (coeficiente == null)
+                        lstErros.Add($"Coeficiente não cadastrado para o fabricante. Fabricante: {y.Fabricante}, TipoParcela: {siglaParc}");
+                }
             }
 
             return await Task.FromResult(listaProdutos);
         }
 
         private async Task<Pedido.Dados.Criacao.PedidoCriacaoDados> CriarPedidoCriacaoDados(PedidoMagentoDto pedidoMagento,
-            string orcamentista, string loja, string vendedor)
+            string orcamentista, string loja, string vendedor, List<string> lstErros)
         {
             //o cliente existe então vamos converter os dados do cliente para DadosCliente e EnderecoCadastral
             Cliente.Dados.DadosClienteCadastroDados dadosCliente =
@@ -175,7 +178,7 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
                 configuracaoApiMagento, pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem);
 
             List<Pedido.Dados.Criacao.PedidoProdutoPedidoDados> listaProdutos =
-                (await ConverterProdutosMagento(pedidoMagento, formaPagtoCriacao, configuracaoApiMagento.DadosOrcamentista.Loja)).ToList();
+                (await ConverterProdutosMagento(pedidoMagento, formaPagtoCriacao, configuracaoApiMagento.DadosOrcamentista.Loja, lstErros)).ToList();
 
             //Precisamos buscar os produtos para poder incluir os valores para incluir na classe de produto
             Pedido.Dados.Criacao.PedidoCriacaoDados pedidoDadosCriacao =

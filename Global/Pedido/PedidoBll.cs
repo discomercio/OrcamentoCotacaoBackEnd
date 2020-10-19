@@ -12,6 +12,8 @@ using UtilsGlobais;
 using Produto;
 using InfraBanco;
 
+#nullable enable
+
 namespace Pedido
 {
     public class PedidoBll
@@ -54,7 +56,7 @@ namespace Pedido
             }
         }
 
-        public async Task VerificarSePedidoExite(List<cl_ITEM_PEDIDO_NOVO> v_item, PedidoCriacaoDados pedido,
+        public async Task VerificarSePedidoExite(List<Cl_ITEM_PEDIDO_NOVO> v_item, PedidoCriacaoDados pedido,
             string usuario, List<string> lstErros)
         {
             var db = contextoProvider.GetContextoLeitura();
@@ -62,29 +64,29 @@ namespace Pedido
             //verificar se o pedido existe
             string hora_atual = UtilsGlobais.Util.TransformaHora_Minutos();
 
-            List<cl_ITEM_PEDIDO_NOVO> lstProdTask = await (from c in db.TpedidoItems
-                                                           where c.Tpedido.Id_Cliente == pedido.DadosCliente.Id &&
-                                                                 c.Tpedido.Data == DateTime.Now.Date &&
-                                                                 c.Tpedido.Loja == pedido.DadosCliente.Loja &&
-                                                                 c.Tpedido.Vendedor == usuario &&
-                                                                 c.Tpedido.Data >= DateTime.Now.Date &&
-                                                                 c.Tpedido.Hora.CompareTo(hora_atual) <= 0 &&
-                                                                 c.Tpedido.St_Entrega != Constantes.ST_ENTREGA_CANCELADO
-                                                           orderby c.Pedido, c.Sequencia
-                                                           select new cl_ITEM_PEDIDO_NOVO
-                                                           {
-                                                               Pedido = c.Pedido,
-                                                               produto = c.Produto,
-                                                               Fabricante = c.Fabricante,
-                                                               Qtde = (short)c.Qtde,
-                                                               Preco_Venda = c.Preco_Venda
-                                                           }).ToListAsync();
+            var lstProdTask = await (from c in db.TpedidoItems
+                                     where c.Tpedido.Id_Cliente == pedido.DadosCliente.Id &&
+                                           c.Tpedido.Data == DateTime.Now.Date &&
+                                           c.Tpedido.Loja == pedido.DadosCliente.Loja &&
+                                           c.Tpedido.Vendedor == usuario &&
+                                           c.Tpedido.Data >= DateTime.Now.Date &&
+                                           c.Tpedido.Hora.CompareTo(hora_atual) <= 0 &&
+                                           c.Tpedido.St_Entrega != Constantes.ST_ENTREGA_CANCELADO
+                                     orderby c.Pedido, c.Sequencia
+                                     select new
+                                     {
+                                         c.Pedido,
+                                         c.Produto,
+                                         c.Fabricante,
+                                         Qtde = c.Qtde ?? 0,
+                                         c.Preco_Venda
+                                     }).ToListAsync();
 
             foreach (var x in lstProdTask)
             {
                 foreach (var y in v_item)
                 {
-                    if (x.produto == y.produto &&
+                    if (x.Produto == y.Produto &&
                         x.Fabricante == y.Fabricante &&
                         x.Qtde == y.Qtde &&
                         x.Preco_Venda == y.Preco_Venda)
@@ -242,7 +244,7 @@ namespace Pedido
             return percDescComissaoUtilizar;
         }
 
-        public async Task VerificarDescontoArredondado(string loja, List<cl_ITEM_PEDIDO_NOVO> v_item,
+        public async Task VerificarDescontoArredondado(string loja, List<Cl_ITEM_PEDIDO_NOVO> v_item,
             List<string> lstErros, string c_custoFinancFornecTipoParcelamento, short c_custoFinancFornecQtdeParcelas,
             string id_cliente, float percDescComissaoUtilizar, List<string> vdesconto)
         {
@@ -258,30 +260,30 @@ namespace Pedido
             {
                 var produtoLojaTask = (from c in db.TprodutoLojas.Include(x => x.Tproduto).Include(x => x.Tfabricante)
                                        where c.Tproduto.Fabricante == item.Fabricante &&
-                                             c.Tproduto.Produto == item.produto &&
+                                             c.Tproduto.Produto == item.Produto &&
                                              c.Loja == loja
                                        select c).FirstOrDefaultAsync();
 
                 if (produtoLojaTask == null)
-                    lstErros.Add("Produto " + item.produto + " do fabricante " + item.Fabricante + "NÃO está " +
+                    lstErros.Add("Produto " + item.Produto + " do fabricante " + item.Fabricante + "NÃO está " +
                         "cadastrado para a loja " + loja);
                 else
                 {
                     TprodutoLoja produtoLoja = await produtoLojaTask;
-                    item.Preco_lista = (decimal)produtoLoja.Preco_Lista;
-                    item.Margem = (float)produtoLoja.Margem;
-                    item.Desc_max = (float)produtoLoja.Desc_Max;
-                    item.Comissao = (float)produtoLoja.Comissao;
-                    item.Preco_fabricante = (decimal)produtoLoja.Tproduto.Preco_Fabricante;
+                    item.Preco_lista = produtoLoja.Preco_Lista ?? 0;
+                    item.Margem = produtoLoja.Margem ?? 0;
+                    item.Desc_max = produtoLoja.Desc_Max ?? 0;
+                    item.Comissao = produtoLoja.Comissao ?? 0;
+                    item.Preco_fabricante = produtoLoja.Tproduto.Preco_Fabricante ?? 0;
                     item.Vl_custo2 = produtoLoja.Tproduto.Vl_Custo2;
                     item.Descricao = produtoLoja.Tproduto.Descricao;
                     item.Descricao_html = produtoLoja.Tproduto.Descricao_Html;
                     item.Ean = produtoLoja.Tproduto.Ean;
                     item.Grupo = produtoLoja.Tproduto.Grupo;
-                    item.Peso = (float)produtoLoja.Tproduto.Peso;
-                    item.Qtde_volumes = (short)produtoLoja.Tproduto.Qtde_Volumes;
+                    item.Peso = produtoLoja.Tproduto.Peso;
+                    item.Qtde_volumes = produtoLoja.Tproduto.Qtde_Volumes ?? 0;
                     item.Markup_fabricante = produtoLoja.Tfabricante.Markup;
-                    item.cubagem = produtoLoja.Tproduto.Cubagem;
+                    item.Cubagem = produtoLoja.Tproduto.Cubagem;
                     item.Ncm = produtoLoja.Tproduto.Ncm;
                     item.Cst = produtoLoja.Tproduto.Cst;
                     item.Descontinuado = produtoLoja.Tproduto.Descontinuado;
@@ -310,7 +312,7 @@ namespace Pedido
 
                     }
 
-                    item.custoFinancFornecCoeficiente = coeficiente;
+                    item.CustoFinancFornecCoeficiente = coeficiente;
 
                     if (item.Preco_lista == 0)
                     {
@@ -330,7 +332,7 @@ namespace Pedido
                                             where c.Usado_status == 0 &&
                                                   c.Id_cliente == id_cliente &&
                                                   c.Fabricante == item.Fabricante &&
-                                                  c.Produto == item.produto &&
+                                                  c.Produto == item.Produto &&
                                                   c.Loja == loja &&
                                                   c.Data >= DateTime.Now.AddMinutes(-30)
                                             orderby c.Data descending
@@ -340,19 +342,19 @@ namespace Pedido
 
                         if (tdesconto == null)
                         {
-                            lstErros.Add("Produto " + item.produto + " do fabricante " + item.Fabricante +
+                            lstErros.Add("Produto " + item.Produto + " do fabricante " + item.Fabricante +
                                 ": desconto de " + item.Desc_Dado + "% excede o máximo permitido.");
                         }
                         else
                         {
                             tdesconto = await tDescontoTask.FirstOrDefaultAsync();
                             if ((decimal)item.Desc_Dado >= tdesconto.Desc_max)
-                                lstErros.Add("Produto " + item.produto + " do fabricante " + item.Fabricante +
+                                lstErros.Add("Produto " + item.Produto + " do fabricante " + item.Fabricante +
                                     ": desconto de " + item.Desc_Dado + " % excede o máximo autorizado.");
                             else
                             {
                                 item.Abaixo_min_status = 1;
-                                item.abaixo_min_autorizacao = tdesconto.Id;
+                                item.Abaixo_min_autorizacao = tdesconto.Id;
                                 item.Abaixo_min_autorizador = tdesconto.Autorizador;
                                 item.Abaixo_min_superv_autorizador = tdesconto.Supervisor_autorizador;
 
@@ -404,7 +406,7 @@ namespace Pedido
                     if (percCusto != null)
                     {
                         coeficiente = percCusto.Coeficiente;
-                        i.Preco_Lista = (decimal)coeficiente * (decimal)i.CustoFinancFornecPrecoListaBase;
+                        i.Preco_Lista = (decimal)coeficiente * (i.CustoFinancFornecPrecoListaBase ?? 0);
                     }
                     else
                     {
@@ -429,8 +431,7 @@ namespace Pedido
 
             Tcliente cliente = await clienteTask.FirstOrDefaultAsync();
 
-            ProdutoValidadoComEstoqueDados prodValidadoEstoque = new ProdutoValidadoComEstoqueDados();
-            prodValidadoEstoque.ListaErros = new List<string>();
+            var prodValidadoEstoqueListaErros = new List<string>();
 
             //obtém  a sigla para regra
             string cliente_regra = Produto.UtilsProduto.MultiCdRegraDeterminaPessoa(cliente.Tipo, cliente.Contribuinte_Icms_Status,
@@ -440,42 +441,45 @@ namespace Pedido
             //PedidoProdutosDtoPedido produto = new PedidoProdutosDtoPedido();
 
             List<RegrasBll> regraCrtlEstoque = (await ObterCtrlEstoqueProdutoRegraParaUMProduto(produto, cliente,
-                prodValidadoEstoque.ListaErros)).ToList();
+                prodValidadoEstoqueListaErros)).ToList();
 
             //afazer: verificar se há necessidade de continuar com esse método, pois acima faz a mesma coisa com validação
-            await UtilsProduto.ObterCtrlEstoqueProdutoRegra_Teste(prodValidadoEstoque.ListaErros, regraCrtlEstoque, cliente.Uf, cliente_regra, contextoProvider);
+            await UtilsProduto.ObterCtrlEstoqueProdutoRegra_Teste(prodValidadoEstoqueListaErros, regraCrtlEstoque, cliente.Uf, cliente_regra, contextoProvider);
 
-            VerificarRegrasAssociadasParaUMProduto(regraCrtlEstoque, prodValidadoEstoque.ListaErros, cliente, id_nfe_emitente_selecao_manual);
+            VerificarRegrasAssociadasParaUMProduto(regraCrtlEstoque, prodValidadoEstoqueListaErros, cliente, id_nfe_emitente_selecao_manual);
 
             if (id_nfe_emitente_selecao_manual != 0)
-                await VerificarCDHabilitadoTodasRegras(regraCrtlEstoque, id_nfe_emitente_selecao_manual, prodValidadoEstoque.ListaErros);
+                await VerificarCDHabilitadoTodasRegras(regraCrtlEstoque, id_nfe_emitente_selecao_manual, prodValidadoEstoqueListaErros);
 
-            await ObterDisponibilidadeEstoque(regraCrtlEstoque, produto, prodValidadoEstoque.ListaErros, id_nfe_emitente_selecao_manual);
+            await ObterDisponibilidadeEstoque(regraCrtlEstoque, produto, prodValidadoEstoqueListaErros, id_nfe_emitente_selecao_manual);
 
             //meto responsavel por atribuir a qtde de estoque ao produto
             //await Util.Util.VerificarEstoque(regraCrtlEstoque, produto, id_nfe_emitente_selecao_manual, contextoProvider);
 
             bool estoqueInsuficiente = VerificarEstoqueInsuficienteUMProduto(regraCrtlEstoque, produto,
-                id_nfe_emitente_selecao_manual, prodValidadoEstoque.ListaErros);
+                id_nfe_emitente_selecao_manual, prodValidadoEstoqueListaErros);
 
-            VerificarQtdePedidosAutoSplit(regraCrtlEstoque, prodValidadoEstoque.ListaErros, produto, id_nfe_emitente_selecao_manual);
+            VerificarQtdePedidosAutoSplit(regraCrtlEstoque, prodValidadoEstoqueListaErros, produto, id_nfe_emitente_selecao_manual);
 
             List<int> lst_empresa_selecionada = ContagemEmpresasUsadasAutoSplit(regraCrtlEstoque, id_nfe_emitente_selecao_manual);
 
-            await ExisteProdutoDescontinuado(produto, prodValidadoEstoque.ListaErros);
+            await ExisteProdutoDescontinuado(produto, prodValidadoEstoqueListaErros);
 
-            prodValidadoEstoque.Produto = new ProdutoPedidoDados();
-            prodValidadoEstoque.Produto.Produto = produto.Produto;
-            prodValidadoEstoque.Produto.Fabricante = produto.Fabricante;
-            prodValidadoEstoque.Produto.Estoque = (int)produto.Qtde_estoque_total_disponivel;
-            prodValidadoEstoque.Produto.QtdeSolicitada = produto.Qtde;
-            prodValidadoEstoque.Produto.Preco_lista = produto.Preco_Lista;
-            prodValidadoEstoque.Produto.Descricao_html = produto.Descricao;
-            prodValidadoEstoque.Produto.Lst_empresa_selecionada = lst_empresa_selecionada;
+            var prodValidadoEstoqueProduto = new ProdutoPedidoDados();
+            prodValidadoEstoqueProduto.Produto = produto.Produto;
+            prodValidadoEstoqueProduto.Fabricante = produto.Fabricante;
+            prodValidadoEstoqueProduto.Estoque = produto.Qtde_estoque_total_disponivel ?? 0;
+            prodValidadoEstoqueProduto.QtdeSolicitada = produto.Qtde;
+            prodValidadoEstoqueProduto.Preco_lista = produto.Preco_Lista;
+            prodValidadoEstoqueProduto.Descricao_html = produto.Descricao;
+            prodValidadoEstoqueProduto.Lst_empresa_selecionada = lst_empresa_selecionada;
+            ProdutoValidadoComEstoqueDados prodValidadoEstoque = new ProdutoValidadoComEstoqueDados(prodValidadoEstoqueProduto,
+                prodValidadoEstoqueListaErros);
 
             return prodValidadoEstoque;
         }
 
+        //todo: afazer: tentar unificar com Prepedido.PrepedidoBll.ObterCtrlEstoqueProdutoRegra
         public async Task<IEnumerable<RegrasBll>> ObterCtrlEstoqueProdutoRegraParaUMProduto(PedidoProdutoPedidoDados produto,
             Tcliente tcliente, List<string> lstErros)
         {
@@ -869,7 +873,6 @@ namespace Pedido
         private async Task<t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD> BuscarListaQtdeEstoque(t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD regra)
         {
             var db = contextoProvider.GetContextoLeitura();
-            List<ProdutosEstoqueDados> produtosEstoqueDados = new List<ProdutosEstoqueDados>();
             int qtde = 0;
             int qtdeUtilizada = 0;
             int saldo = 0;
@@ -883,8 +886,8 @@ namespace Pedido
                                            (c.Qtde - c.Qtde_utilizada) > 0
                                      select new
                                      {
-                                         qtde = (int)c.Qtde,
-                                         qtdeUtilizada = (int)c.Qtde_utilizada
+                                         qtde = c.Qtde ?? 0,
+                                         qtdeUtilizada = c.Qtde_utilizada ?? 0
                                      });
                 if (estoqueCDTask != null)
                 {
@@ -903,8 +906,8 @@ namespace Pedido
                                                     .Select(r => r.Id).Contains(c.Testoque.Id_nfe_emitente))
                                              select new
                                              {
-                                                 qtde = (int)c.Qtde,
-                                                 qtdeUtilizada = (int)c.Qtde_utilizada
+                                                 qtde = c.Qtde ?? 0,
+                                                 qtdeUtilizada = c.Qtde_utilizada ?? 0
                                              });
                     qtde = await estoqueGlobalTask.SumAsync(x => x.qtde);
                     qtdeUtilizada = await estoqueGlobalTask.SumAsync(x => x.qtdeUtilizada);
@@ -1031,7 +1034,8 @@ namespace Pedido
                                         re.Id_nfe_emitente > 0 &&
                                         re.Id_nfe_emitente == regra.TwmsRegraCdXUfXPessoa.Spe_id_nfe_emitente)
                                     {
-                                        re.Estoque_Qtde_Solicitado += (short)qtde_a_alocar;
+                                        re.Estoque_Qtde_Solicitado ??= 0;
+                                        re.Estoque_Qtde_Solicitado = (short)(re.Estoque_Qtde_Solicitado + qtde_a_alocar);
                                         qtde_a_alocar = 0;
                                     }
                                 }
@@ -1043,7 +1047,8 @@ namespace Pedido
                                        re.Id_nfe_emitente > 0 &&
                                        re.Id_nfe_emitente == regra.TwmsRegraCdXUfXPessoa.Spe_id_nfe_emitente)
                                     {
-                                        re.Estoque_Qtde_Solicitado += (short)qtde_a_alocar;
+                                        re.Estoque_Qtde_Solicitado ??= 0;
+                                        re.Estoque_Qtde_Solicitado = (short)(re.Estoque_Qtde_Solicitado + qtde_a_alocar);
                                         qtde_a_alocar = 0;//verificar esse valor
                                     }
                                 }
@@ -1114,7 +1119,12 @@ namespace Pedido
             }
         }
 
-        public async Task<IEnumerable<RegrasBll>> VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado_Teste(PedidoProdutoPedidoDados produto,
+        public class VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado_TesteRetorno
+        {
+            public List<RegrasBll> regrasBlls = new List<RegrasBll>();
+            public List<string> prodValidadoEstoqueListaErros = new List<string>();
+        }
+        public async Task<VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado_TesteRetorno> VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado_Teste(PedidoProdutoPedidoDados produto,
             string cpf_cnpj, int id_nfe_emitente_selecao_manual)
         {
             var db = contextoProvider.GetContextoLeitura();
@@ -1125,8 +1135,7 @@ namespace Pedido
 
             Tcliente cliente = await clienteTask.FirstOrDefaultAsync();
 
-            ProdutoValidadoComEstoqueDados prodValidadoEstoque = new ProdutoValidadoComEstoqueDados();
-            prodValidadoEstoque.ListaErros = new List<string>();
+            var retorno = new VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado_TesteRetorno();
 
             //obtém  a sigla para regra
             string cliente_regra = UtilsProduto.MultiCdRegraDeterminaPessoa(cliente.Tipo, cliente.Contribuinte_Icms_Status,
@@ -1136,35 +1145,36 @@ namespace Pedido
             //PedidoProdutosDtoPedido produto = new PedidoProdutosDtoPedido();
 
             List<RegrasBll> regraCrtlEstoque = (await ObterCtrlEstoqueProdutoRegraParaUMProduto(produto, cliente,
-                prodValidadoEstoque.ListaErros)).ToList();
+                retorno.prodValidadoEstoqueListaErros)).ToList();
 
-            await UtilsProduto.ObterCtrlEstoqueProdutoRegra_Teste(prodValidadoEstoque.ListaErros, regraCrtlEstoque, cliente.Uf,
+            await UtilsProduto.ObterCtrlEstoqueProdutoRegra_Teste(retorno.prodValidadoEstoqueListaErros, regraCrtlEstoque, cliente.Uf,
                 cliente_regra, contextoProvider);
 
-            VerificarRegrasAssociadasParaUMProduto(regraCrtlEstoque, prodValidadoEstoque.ListaErros, cliente,
+            VerificarRegrasAssociadasParaUMProduto(regraCrtlEstoque, retorno.prodValidadoEstoqueListaErros, cliente,
                 id_nfe_emitente_selecao_manual);
 
             if (id_nfe_emitente_selecao_manual != 0)
                 await VerificarCDHabilitadoTodasRegras(regraCrtlEstoque, id_nfe_emitente_selecao_manual,
-                    prodValidadoEstoque.ListaErros);
+                    retorno.prodValidadoEstoqueListaErros);
 
-            await ObterDisponibilidadeEstoque(regraCrtlEstoque, produto, prodValidadoEstoque.ListaErros,
+            await ObterDisponibilidadeEstoque(regraCrtlEstoque, produto, retorno.prodValidadoEstoqueListaErros,
                 id_nfe_emitente_selecao_manual);
 
             //meto responsavel por atribuir a qtde de estoque ao produto
             //await Util.Util.VerificarEstoque(regraCrtlEstoque, produto, id_nfe_emitente_selecao_manual, contextoProvider);
 
             bool estoqueInsuficiente = VerificarEstoqueInsuficienteUMProduto(regraCrtlEstoque, produto,
-                id_nfe_emitente_selecao_manual, prodValidadoEstoque.ListaErros);
+                id_nfe_emitente_selecao_manual, retorno.prodValidadoEstoqueListaErros);
 
-            regraCrtlEstoque = VerificarQtdePedidosAutoSplit(regraCrtlEstoque, prodValidadoEstoque.ListaErros, produto, id_nfe_emitente_selecao_manual);
+            regraCrtlEstoque = VerificarQtdePedidosAutoSplit(regraCrtlEstoque, retorno.prodValidadoEstoqueListaErros, produto, id_nfe_emitente_selecao_manual);
 
             List<int> lst_empresa_selecionada = ContagemEmpresasUsadasAutoSplit(regraCrtlEstoque, id_nfe_emitente_selecao_manual);
 
-            await ExisteProdutoDescontinuado(produto, prodValidadoEstoque.ListaErros);
+            await ExisteProdutoDescontinuado(produto, retorno.prodValidadoEstoqueListaErros);
 
+            retorno.regrasBlls = regraCrtlEstoque;
 
-            return regraCrtlEstoque;
+            return retorno;
         }
 
 
@@ -1340,7 +1350,7 @@ namespace Pedido
             bool retorno = false;
 
             if (pedidoCriacao.FormaPagtoCriacao.Rb_forma_pagto != Constantes.COD_FORMA_PAGTO_A_VISTA)
-            { 
+            {
                 var db = contextoProvider.GetContextoLeitura();
 
                 foreach (var prod in pedidoCriacao.ListaProdutos)
@@ -1354,7 +1364,7 @@ namespace Pedido
                     if (custoFinancFornec == null)
                         lstErros.Add("Opção de parcelamento não disponível para fornecedor " + prod.Fabricante + ": " +
                             DecodificaCustoFinanFornecQtdeParcelas(siglaCustoFinancFornec, (short)qtdeParcCustoFinancFornec) + " parcela(s).");
-                    
+
 
                     TprodutoLoja prodLoja = await (from c in db.TprodutoLojas.Include(x => x.Tproduto)
                                                    where c.Tproduto.Produto == prod.Produto &&
@@ -1364,7 +1374,7 @@ namespace Pedido
 
                     if (prodLoja == null)
                         lstErros.Add("Produto " + prod.Produto + " não localizado para a loja " + pedidoCriacao.LojaUsuario + ".");
-                    
+
                 }
 
             }
