@@ -6,63 +6,87 @@
     }
 </style>
 
+@*Pedidos*@
 <ul class="pcoded-item pcoded-left-item">
-    @*Pedidos*@
     <li class="pcoded-hasmenu">
         <a href="javascript:void(0)" class="waves-effect waves-dark">
-            <span class="pcoded-micon"><i class="icon icon-home"></i></span>
+            <span class="pcoded-micon"><i class="feather icon-home"></i></span>
             <span class="pcoded-mtext">Pedidos</span>
         </a>
         <ul class="pcoded-submenu">
             <li>
-                <a class="menudesabilitado waves-effect waves-dark" href="#!">Análise de Pré Pedidos</a>
+                <a class="menudesabilitado waves-effect waves-dark" href="#!">
+                    <span class="pcoded-mtext">Análise de Pré Pedidos</span>
+                </a>
             </li>
             <li>
-                <a href="@Url.Action("Index", "Cliente")" class="waves-effect waves-dark">Novo Pedido</a>
+                <a href="@Url.Action("Index", "Cliente")" class="waves-effect waves-dark">
+                    <span class="pcoded-mtext">Novo Pedido</span>
+                </a>
             </li>
             <li>
-                <a href="@Url.Action("CancelamentoAutomatico", "Pedido")" class="waves-effect waves-dark"><span>Cancelamento Automático</span></a>
+                <a href="@Url.Action("CancelamentoAutomatico", "Pedido")" class="waves-effect waves-dark">
+                    <span class="pcoded-mtext">Cancelamento Automático</span>
+                </a>
             </li>
             <li>
-                <a class="menudesabilitado waves-effect waves-dark" href="#!">Indicadores</a>
+                <a class="menudesabilitado waves-effect waves-dark" href="#!">
+                    <span class="pcoded-mtext">Indicadores</span>
+                </a>
             </li>
             <li>
-                <a class="menudesabilitado waves-effect waves-dark" href="#!">Consulta Pedido</a>
+                <a class="menudesabilitado waves-effect waves-dark" href="#!">
+                    <span class="pcoded-mtext">Consulta Pedido</span>
+                </a>
             </li>
             <li>
                 @if (Loja.UI.Controllers.PrepedidoController.PermissaoPagina("Index", Model))
                 {
-                    <a href="@Url.Action("Index", "Prepedido")" class="waves-effect waves-dark"><span>Consulta Pré Pedido</span></a>
+                    <a href="@Url.Action("Index", "Prepedido")" class="waves-effect waves-dark">
+                        <span class="pcoded-mtext">Consulta Pré Pedido</span>
+                    </a>
                 }
                 else
                 {
-                    <a class="menudesabilitado waves-effect waves-dark" href="#!">Consulta Pré Pedido</a>
+                    <a class="menudesabilitado waves-effect waves-dark" href="#!">
+                        <span class="pcoded-mtext">Consulta Pré Pedido</span>
+                    </a>
                 }
             </li>
         </ul>
     </li>
-    @*Produtos*@
+</ul>
+@*Produtos*@
+<ul class="pcoded-item pcoded-left-item">
     <li class="pcoded-hasmenu">
         <a href="javascript:void(0)" class="waves-effect waves-dark">
-            <span class="pcoded-micon"><i class="icon icon-home"></i></span>
+            <span class="pcoded-micon"><i class="feather icon-home"></i></span>
             <span class="pcoded-mtext">Produtos</span>
         </a>
         <ul class="pcoded-submenu">
             <li>
-                <a href="@Url.Action("Index", "Produtos")" class="waves-effect waves-dark">Consulta Lista de Preços</a>
+                <a href="@Url.Action("Index", "Produtos")" class="waves-effect waves-dark">
+                    <span class="pcoded-mtext">Consulta Lista de Preços</span>
+                </a>
             </li>
             <li>
-                <a class="menudesabilitado waves-effect waves-dark" href="#!">Consulta Custo Financeiro</a>
+                <a class="menudesabilitado waves-effect waves-dark" href="#!">
+                    <span class="pcoded-mtext">Consulta Custo Financeiro</span>
+                </a>
             </li>
             <li>
-                <a class="menudesabilitado waves-effect waves-dark" href="#!">Indicadores</a>
+                <a class="menudesabilitado waves-effect waves-dark" href="#!">
+                    <span class="pcoded-mtext">Indicadores</span>
+                </a>
             </li>
         </ul>
     </li>
-    @*Relatórios*@
+</ul>
+@*Relatórios*@
+<ul class="pcoded-item pcoded-left-item">
     <li class="pcoded-hasmenu">
         <a href="javascript:void(0)" class="waves-effect waves-dark">
-            <span class="pcoded-micon"><i class="icon icon-home"></i></span>
+            <span class="pcoded-micon"><i class="feather icon-home"></i></span>
             <span class="pcoded-mtext">Relatórios</span>
         </a>
         <ul class="pcoded-submenu">
@@ -73,20 +97,61 @@
                 </div>
             </li>
             <li>
-                <a class="menudesabilitado waves-effect waves-dark" href="#!">Pedidos Indicadores</a>
+                <a class="menudesabilitado waves-effect waves-dark" href="#!">
+                    <span class="pcoded-mtext">Pedidos Indicadores</span>
+                </a>
             </li>
             <li>
-                <a class="menudesabilitado waves-effect waves-dark" href="#!">Faturamento</a>
+                <a class="menudesabilitado waves-effect waves-dark" href="#!">
+                    <span class="pcoded-mtext">Faturamento</span>
+                </a>
             </li>
             <li>
-                <a class="menudesabilitado waves-effect waves-dark" href="#!">Vendas</a>
+                <a class="menudesabilitado waves-effect waves-dark" href="#!">
+                    <span class="pcoded-mtext">Vendas</span>
+                </a>
             </li>
             <li>
-                <a class="menudesabilitado waves-effect waves-dark" href="#!">Vendas com Desc. Superior</a>
+                <a class="menudesabilitado waves-effect waves-dark" href="#!">
+                    <span class="pcoded-mtext">Vendas com Desc. Superior</span>
+                </a>
             </li>
         </ul>
     </li>
 </ul>
 
 
+<script>
+    $(document).ready(function () {
+        var url = this.location.pathname;
+
+        //TEMOS UM PROBLEMA NESSA ROTINA
+        //Não podemos adicionar o pathname no localStorage ,
+        //pois se utilizarmos 2 abas aberta o menu não irá funcionar da forma correta
+        //NECESSÁRIO UTILIZAR OUTRA ABORDAGEM PARA ARMAZENAR
+        //é o Home
+        if (url.length == 1) {
+            window.localStorage.setItem("item_active", "");
+            return;
+        }
+
+        var itemMenu = $('.main-menu').find("a[href='" + url + "']");
+        var localStorage_itemMenu = "";
+        if (itemMenu != undefined) {
+            if (itemMenu.length > 0) {
+                window.localStorage.setItem("item_active", url);
+                localStorage_itemMenu = window.localStorage.getItem("item_active");
+                $('a[href="' + localStorage_itemMenu + '"]').parent().addClass('active');
+                $('a[href="' + localStorage_itemMenu + '"]').parent().parent().parent().addClass('active');
+                $('a[href="' + localStorage_itemMenu + '"]').parent().parent().show();
+                $('a[href="' + localStorage_itemMenu + '"]').parent().parent().click();
+            } else {
+                localStorage_itemMenu = window.localStorage.getItem("item_active");
+                $('a[href="' + localStorage_itemMenu + '"]').parent().addClass('active');
+                $('a[href="' + localStorage_itemMenu + '"]').parent().parent().show();
+                $('a[href="' + localStorage_itemMenu + '"]').parent().parent().click();
+            }
+        }
+    });
+</script>
 

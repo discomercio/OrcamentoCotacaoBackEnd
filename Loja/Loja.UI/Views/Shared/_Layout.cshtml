@@ -25,37 +25,42 @@
     <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/waves.min.css" media="all">
 
     <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/feather.css">
-
-    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/sweetalert.css">
-
-
     <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/font-awesome-n.min.css">
+
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/switchery.min.css">
 
     <link rel="stylesheet" href="~/template_bootstrap/css/chartist.css" type="text/css" media="all">
 
-    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/style.css">
-    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/widget.css">
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/sweetalert.css">
 
-    <link rel="stylesheet" href="~/template_bootstrap/css/select2.min.css" />
-    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/bootstrap-multiselect.css" />
-    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/multi-select.css" />
-    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/simple-line-icons.css">
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/style.css">
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/pages.css">
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/widget.css">
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/toggle/css/bootstrap4-toggle.min.css">
+
+    @*<link rel="stylesheet" href="~/template_bootstrap/css/select2.min.css" />
+        <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/bootstrap-multiselect.css" />
+        <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/multi-select.css" />*@
+    @*<link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/simple-line-icons.css">*@
 
     @* SCRIPTS *@
-    <script type="text/javascript" src="/template_bootstrap/js/jquery.min.js"></script>
+    <script type="text/javascript" src="~/template_bootstrap/js/jquery.min.js"></script>
     <script type="text/javascript" src="~/template_bootstrap/js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="~/template_bootstrap/js/popper.min.js"></script>
     <script type="text/javascript" src="~/template_bootstrap/js/bootstrap.min.js"></script>
 
-    <script type="text/javascript" src="~/template_bootstrap/js/waves.min.js"></script>
-
     <script type="text/javascript" src="~/template_bootstrap/js/jquery.slimscroll.js"></script>
+
+    <script type="text/javascript" src="~/template_bootstrap/js/waves.min.js"></script>
 
     <script type="text/javascript" src="~/template_bootstrap/js/modernizr.js"></script>
     <script type="text/javascript" src="~/template_bootstrap/js/css-scrollbars.js"></script>
 
+
     <script type="text/javascript" src="~/template_bootstrap/js/sweetalert.min.js"></script>
     @*<script type="text/javascript" src="~/template_bootstrap/js/modal.js"></script>*@
+
+
 
     <script type="text/javascript" src="~/template_bootstrap/js/classie.js"></script>
     <script type="text/javascript" src="~/template_bootstrap/js/modaleffects.js"></script>
@@ -69,23 +74,36 @@
     <script type="text/javascript" src="~/template_bootstrap/js/curvedlines.js"></script>
     <script type="text/javascript" src="~/template_bootstrap/js/jquery.flot.tooltip.min.js"></script>
 
+    <script type="text/javascript" src="~/template_bootstrap/toggle/js/bootstrap4-toggle.min.js"></script>
+    @*<script type="text/javascript" src="~/template_bootstrap/js/switchery.min.js"></script>*@
 
     <script type="text/javascript" src="~/template_bootstrap/js/serial.js"></script>
     <script type="text/javascript" src="~/template_bootstrap/js/light.js"></script>
+
+    @*<script type="text/javascript" src="~/template_bootstrap/js/jquery.steps.js"></script>*@
+    <script type="text/javascript" src="~/template_bootstrap/js/jquery.validate.js"></script>
+    @*<script type="text/javascript" src="~/template_bootstrap/js/form-wizard.js"></script>*@
+
+    @*<script type="text/javascript" src="~/template_bootstrap/js/bootstrap-tagsinput.js"></script>
+        <script type="text/javascript" src="~/template_bootstrap/js/typeahead.bundle.min.js"></script>
+        <script type="text/javascript" src="~/template_bootstrap/js/bootstrap-maxlength.js"></script>*@
+    @*<script type="text/javascript" src="~/template_bootstrap/js/swithces.js"></script>*@
 
     <script type="text/javascript" src="~/template_bootstrap/js/pcoded.min.js"></script>
     <script type="text/javascript" src="~/template_bootstrap/js/vertical-layout.min.js"></script>
     <script type="text/javascript" src="~/template_bootstrap/js/custom-dashboard.min.js"></script>
     <script type="text/javascript" src="~/template_bootstrap/js/script.min.js"></script>
-    <script type="text/javascript" src="~/template_bootstrap/js/select2.full.min.js"></script>
-    <script type="text/javascript" src="~/template_bootstrap/js/jquery.multi-select.js"></script>
+    @*<script type="text/javascript" src="~/template_bootstrap/js/select2.full.min.js"></script>
+        <script type="text/javascript" src="~/template_bootstrap/js/jquery.multi-select.js"></script>*@
     <script type="text/javascript" src="~/template_bootstrap/js/jquery.quicksearch.js"></script>
-    <script type="text/javascript" src="~/template_bootstrap/js/select2-custom.js"></script>
+    @*<script type="text/javascript" src="~/template_bootstrap/js/select2-custom.js"></script>*@
 
 
 
     <script type="text/javascript" src="~/template_bootstrap/js/script.js"></script>
     <script src="~/template_bootstrap/js/rocket-loader.min.js" data-cf-settings="d28fd8086f5eb18f81d8672a-|49" defer=""></script>
+
+
 
     <script src="~/js/Util.js"></script>
     @RenderSection("ScriptsDiretos", required: false)
@@ -109,6 +127,8 @@
                 //requirejs(['app'], function (app) { });
     </script>
     @RenderSection("Scripts", required: false)
+
+
 </head>
 
 @{
@@ -143,10 +163,10 @@
 
 
                             <a class="mobile-menu" id="mobile-collapse" href="#!">
-                                <i class="icon icon-menu icon-toggle-right"></i>
+                                <i class="feather icon-menu icon-toggle-right"></i>
                             </a>
                             <a class="mobile-options waves-effect waves-light">
-                                <i class="feather icon-more-horizontal"></i>
+                                <i class="feather icon-menu icon-toggle-right"></i>
                             </a>
                         </div>
                         <div class="navbar-container container-fluid">
@@ -172,11 +192,8 @@
                                     </a>
                                 </li>
                             </ul>
-                            <ul class="nav-right">
-                                <li class="user-profile header-notification">
-                                    <partial name="~/Views/Shared/Cabecalho.cshtml" model="usuarioLogado" />
-                                </li>
-                            </ul>
+                            <partial name="~/Views/Shared/Cabecalho.cshtml" model="usuarioLogado" />
+
                         </div>
                     </div>
                 </nav>
@@ -214,9 +231,12 @@
 
 
     <style>
+        .pcoded-navbar {
+            top: 79px !important;
+        }
 
         .pcoded-main-container {
-            margin-top: calc(100vh - 684px) !important;
+            margin-top: calc(100vh - 670px) !important;
         }
 
         .footer {
@@ -242,4 +262,5 @@
     <script src="~/template_bootstrap/js/rocket-loader.min.js" data-cf-settings="d2d1d6e2f87cbebdf4013b26-|49" defer=""></script>
 </body>
 </html>
+
 

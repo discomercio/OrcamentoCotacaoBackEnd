@@ -42,6 +42,7 @@
     /* espaçamento dos botoes */
     .dataTables_wrapper .dataTables_paginate .paginate_button {
         padding: 0.5em 0.4em;
+        color: #fff !important;
     }
 
     .dataTables_wrapper .dataTables_paginate .first,
@@ -62,7 +63,7 @@
         /*btn-small*/
         text-decoration: none;
         color: #fff;
-        background-color: #26a69a;
+        /*background-color: #26a69a;*/
         text-align: center;
         letter-spacing: .5px;
         -webkit-transition: background-color .2s ease-out;
@@ -85,9 +86,8 @@
     }
 
         .dataTables_paginate a:hover {
-            background-color: #2bbbad;
-            -webkit-box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 1px 7px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -1px rgba(0, 0, 0, 0.2);
-            box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 1px 7px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -1px rgba(0, 0, 0, 0.2);
+            background-color: #73b4ff;
+
         }
 
         .dataTables_paginate a:focus {
@@ -95,8 +95,7 @@
         }
 
         .dataTables_wrapper .dataTables_paginate .paginate_button:active {
-        background: white;
-        box-shadow: none;
+        background: #73b4ff;
     }
 
     .dataTables_paginate .disabled a {
@@ -104,22 +103,52 @@
     }
 
     .dataTables_paginate .pagination li.active {
-        background-color: white !important;
+        background-color: #73b4ff !important;
     }
 
     .dataTables_paginate .paginate_button:hover {
-        background: white !important;
-        border: 1px solid white !important;
+        background: #73b4ff !important;
+        border: 1px solid #73b4ff !important;
     }
 
     .dataTables_paginate .pagination li a {
         font-size: 13px; /*1.0em;*/
     }
 
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover{
+        color: #fff !important;
+        background: #73b4ff !important;
+        border: 1px solid #73b4ff !important;
+    }
+
     .dataTables_length {
         float: right !important;
-        margin-left: 30px;
+        margin-left: 0px;
+        align-self:flex-end;
     }
+
+    .dataTables_filter{
+        float:left !important;
+        margin-left:auto;
+    }
+    .dataTables_filter {
+        text-align:left !important;
+    }
+    .dataTables_filter > label > input{
+        margin-left:0px !important;
+    }
+
+    .dt-buttons{
+        text-align:end !important;
+    }
+    #tabeladados_paginate{
+        text-align:center;
+    }
+
+    table.dataTable tbody td{
+        white-space:pre-line !important;
+    }
+
 </style>
 <script>
     var DataTables_language = {
@@ -227,16 +256,43 @@ jQuery.extend( jQuery.fn.dataTableExt.oSort, {
         config.buttons= DataTables_buttons;
 
         //nao funciona!
-        //digo, funciona, mas precisa redesenhar as classes. 
+        //digo, funciona, mas precisa redesenhar as classes.
         //$.fn.dataTable.ext.classes.sPageButton = "paginate_button waves-effect waves-light btn-small";
 
         let ret = $(seletor).DataTable(config);
 
-        $(".dt-buttons button").addClass("waves-effect waves-light btn-small");
+        let tabeladados_length = $("#tabeladados_wrapper").children()[0].outerHTML;
+        let tabeladados_filter = $("#tabeladados_wrapper").children()[1].outerHTML;
+        $("#tabeladados_wrapper").children()[0].remove();
+        $("#tabeladados_wrapper").children()[0].remove();
+        let div = "<div class='row' id='nova_div'>" + tabeladados_length + tabeladados_filter + "</div>";
+        $("#tabeladados_wrapper").prepend(div);
+
+        debugger;
+        //paginação
+        let dt_buttons = $(".dt-buttons")[0].outerHTML;
+        let tabeladados_paginate = $("#tabeladados_paginate")[0].outerHTML;
+        $(".dt-buttons")[0].remove();
+        $("#tabeladados_paginate")[0].remove();
+        let div_pag = "<div class='row' id='nova_paginate'>" + dt_buttons + tabeladados_paginate + "</div>";
+        $(".dataTables_info").append(div_pag);
+        $(".dt-buttons").addClass("col-xl-12 col-lg-12");
+        $("#tabeladados_paginate").addClass("col-xl-12 col-lg-12");
+
+
+        $(".dataTables_info").addClass("col-xl-12 col-lg-12");
+        $(".dataTables_length").addClass("form-group col-xl-6 col-lg-6");
+        $(".dataTables_length").find('select').addClass("custom-select ml-0");
+        $(".dataTables_length").find('label').addClass("col-form-label");
+        $(".dataTables_filter").addClass("form-group");
+        $(".dataTables_filter").find('label').addClass('col-form-label');
+        $(".dataTables_filter").children().find('input').addClass('form-control');
+        $(".dt-buttons button").addClass("btn btn-primary btn-sm paginate_button");
+        $(".paginate_button").addClass("btn btn-primary");
         $(".dt-buttons button").removeClass("dt-button");
-        $(".dataTables_paginate a").addClass("waves-effect waves-light btn-small");
+        $(".dataTables_paginate a").addClass("btn btn-primary btn-sm");
         $(seletor).on(  'draw.dt', function () {
-            $(".dataTables_paginate a").addClass("waves-effect waves-light btn-small");
+            $(".dataTables_paginate a").addClass("btn btn-primary btn-sm");
         });
 
         $(seletor).show();

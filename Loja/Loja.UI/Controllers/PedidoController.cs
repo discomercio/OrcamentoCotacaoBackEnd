@@ -206,11 +206,11 @@ namespace Loja.UI.Controllers
                 //retornar erro para modal
             }
             //vamos mandar para um controller para montar a modelView de Observações
-            return RedirectToAction("ObeservacoesPedido");
+            return RedirectToAction("ObservacoesPedido");
         }
 
 
-        public async Task<IActionResult> ObeservacoesPedido()
+        public async Task<IActionResult> ObservacoesPedido()
         {
             /*
              * montar a tela de observações 

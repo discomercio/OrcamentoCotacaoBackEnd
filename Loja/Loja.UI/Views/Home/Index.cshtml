@@ -3,22 +3,24 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div>
-    Olá @User?.Identity?.Name
+    <div>
+        Olá @User?.Identity?.Name
 
-    <br />
-    <br />
-    <br />
-    Loja ativa: @(string.IsNullOrWhiteSpace(Model.LojaAtivaNome) ? "nenhuma" : Model.LojaAtivaNome)
-    @if (Model.ErroChavearLoja)
-    {
         <br />
         <br />
         <br />
-        <span class="materialize-red-text">
-            Erro: não foi possível chavear para a loja @(Model.LojaTentandoChavearId). Verifique com o administrador que você possui permissão.
-        </span>
-    }
+        Loja ativa: @(string.IsNullOrWhiteSpace(Model.LojaAtivaNome) ? "nenhuma" : Model.LojaAtivaNome)
 
-    <a class="btn btn-primary" href="!#" data-toggle="modal" data-target="#modal-simples">abrir modal</a>
-</div>
+        @if (Model.ErroChavearLoja)
+        {
+            <br />
+            <br />
+            <br />
+            <span class="materialize-red-text">
+                Erro: não foi possível chavear para a loja @(Model.LojaTentandoChavearId). Verifique com o administrador que você possui permissão.
+            </span>
+
+
+            
+        }
+    </div>

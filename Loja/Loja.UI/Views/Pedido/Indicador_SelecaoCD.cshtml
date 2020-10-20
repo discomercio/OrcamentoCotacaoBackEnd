@@ -8,9 +8,9 @@
     <div class="row align-items-end">
         <div class="col-lg-8">
             <div class="page-header-title">
-                <i class="icon-user bg-c-blue"></i>
+                <i class="feather icon-user bg-c-blue"></i>
                 <div class="d-inline">
-                    <h5>Indicador e Centro de distribuição</h5>
+                    <h5>Novo Pedido</h5>
                     <span>Opções de com ou sem indicador e CD manual ou automático</span>
                 </div>
             </div>
@@ -19,7 +19,7 @@
             <div class="page-header-breadcrumb">
                 <ul class=" breadcrumb breadcrumb-title">
                     <li class="breadcrumb-item">
-                        <a href="@Url.Action("Index", "Home")"><i class="icon icon-home"></i></a>
+                        <a href="@Url.Action("Index", "Home")"><i class="feather icon-home"></i></a>
                     </li>
                     <li class="breadcrumb-item"><a href="@Url.Action("Index", "Cliente" )">Cliente</a> </li>
                     <li class="breadcrumb-item"><a href="@Url.Action("BuscarCliente", "Cliente", new { cpf_cnpj = Model.CpfCnpj, novoCliente = false})">Cadastro Cliente</a> </li>
@@ -29,17 +29,58 @@
         </div>
     </div>
 </div>
-<div class="pcoded-inner-content" style="min-height: 75vh;">
+<div class="pcoded-inner-content pb-0" style="min-height:64vh">
     <div class="main-body">
-        <div class="page-wrapper">
+        <div class="page-wrapper pb-0">
             <div class="page-body">
                 <div class="row">
                     <div class="col-md-12 col-xl-12">
-                        <div class="card" style="min-height: 75vh;">
+                        <div class="card mb-0">
+                            <div class="page-header card mb-4">
+                                <div class="row col-lg-12 col-xl-12 pr-0">
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0"
+                                         style="height:70px;">
+                                        <div class="card py-4 px-2 mb-0"
+                                             style="background-color:#eee;height:70px; text-align:left;
+                                                    color:#aaa; display:block; box-shadow:none">
+                                            <span class="number">1.</span>
+                                            Cadastro Cliente
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12"
+                                         style="height:70px;">
+                                        <div class="card py-4 px-2 mb-0"
+                                             style="background-color:#4099ff; text-align:left; color:#fff;
+                                                    display:block;box-shadow:none">
+                                            <span class="number">2. </span>
+                                            CD e Indicador
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12"
+                                         style="height:70px">
+                                        <div class="card py-4 px-2 mb-0"
+                                             style="background-color:#eee; text-align:left; color:#aaa;
+                                                    display:block;box-shadow:none">
+                                            <span class="number">3.</span>
+                                            Produtos e Forma Pagamento
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pr-0"
+                                         style="height:70px;">
+                                        <div class="card py-4 px-2 mb-0"
+                                             style="background-color:#eee; text-align:left; color:#aaa;
+                                                    display:block;box-shadow:none">
+                                            <span class="number">4.</span>
+                                            Informações Adicionais
+                                        </div>
+                                    </div>
+                                </div>
 
-                            <div class="page-header card">
+
+                            </div>
+                            <div class="page-header card" style="border:1px solid #ccc; padding:20px">
                                 @using (Html.BeginForm("Cadastrar_Indicador_SelecaoCD", "Pedido", FormMethod.Post,
-                     new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "formulario" }))
+new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "formulario" }))
                                 {
 
                                     <div class="row">
@@ -79,7 +120,7 @@
                                                     @* inserir o select de indicadores aqui *@
                                                     <div id="indicadores">
                                                         @Html.DropDownList("ListaIndicadores", new SelectList(Model.ListaIndicadores, "Value", "Text"),
-                                                       new { @id = "indicador", @name = "indicador", @class = "form-control js-example-disabled" })
+                                                       new { @id = "indicador", @name = "indicador", @class = "custom-select" })
                                                     </div>
                                                 </div>
                                                 <div class="card-block">
@@ -132,32 +173,32 @@
                                                     <div id="cd">
                                                         <label class="col-form-label" for="selecaoCd">Centro de Distribuição</label>
                                                         @Html.DropDownList("ListaCD", new SelectList(Model.ListaCD, "Value", "Text"),
-                                                       new { @id = "selecaoCd", @name = "nomeCD", @class = "form-control js-example-disabled" })
+                                                       new { @id = "selecaoCd", @name = "nomeCD", @class = "custom-select" })
                                                     </div>
                                                 </div>
                                             </div>
                                         }
                                     </div>
                                     @*if (Loja.Bll.Constantes.Constantes.ID_PARAM_SITE == Loja.Bll.Constantes.Constantes.COD_SITE_ASSISTENCIA_TECNICA)
-                                           {
-                                               <div class="col s2" id="divPedBonshop">
-                                                   <div class="input-field">
-                                                       <input type="text" id="pedBonshop" name="pedBonshop" />
-                                                       <label>COM(%)</label>
-                                                   </div>
-                                               </div>
-                                               <div class="col s4" id="divPedBonshop">
-                                                   <div class="input-field">
-                                                       @Html.DropDownList("PedBonshop", new SelectList(
-                                        Model.PedBonshop, "Value", "Text"),
-                                        new { @id = "pedBonshop", @name = "pedBonshop" })
-                                                       <label>Ref. Pedido Bonshop</label>
-                                                   </div>
-                                                   <div class="col s4" id="divMsgCD" style="line-height:normal; display:none;position:absolute;">
-                                                       <span id="msgCD" style="word-break:break-word; color:red;font-weight:bold"></span>
-                                                   </div>
-                                               </div>
-                                           }*@
+                   {
+                       <div class="col s2" id="divPedBonshop">
+                           <div class="input-field">
+                               <input type="text" id="pedBonshop" name="pedBonshop" />
+                               <label>COM(%)</label>
+                           </div>
+                       </div>
+                       <div class="col s4" id="divPedBonshop">
+                           <div class="input-field">
+                               @Html.DropDownList("PedBonshop", new SelectList(
+                Model.PedBonshop, "Value", "Text"),
+                new { @id = "pedBonshop", @name = "pedBonshop" })
+                               <label>Ref. Pedido Bonshop</label>
+                           </div>
+                           <div class="col s4" id="divMsgCD" style="line-height:normal; display:none;position:absolute;">
+                               <span id="msgCD" style="word-break:break-word; color:red;font-weight:bold"></span>
+                           </div>
+                       </div>
+                   }*@
                                 }
                             </div>
                         </div>
@@ -171,15 +212,15 @@
 @section RodapePagina {
     <footer class="m-2">
         <div class="row col-lg-12">
-            <div class="col-lg-3"></div>
-            <div class="col-lg-3">
+            <div class="col-lg-3 col-sm-10"></div>
+            <div class="col-lg-3 col-sm-10">
                 <a class="btn btn-primary waves-effect waves-light"
                    a href="@Url.Action("BuscarCliente", "Cliente", new { cpf_cnpj = Model.CpfCnpj, novoCliente = false})">
                     <i class="fa fa-arrow-left"></i>Voltar
                 </a>
             </div>
             <div class="col-lg-1"></div>
-            <div class="col-lg-3">
+            <div class="col-lg-3 col-sm-10">
                 <button class="btn btn-primary waves-effect waves-light"
                         type="submit" onclick="$('#formulario').submit()">
                     <i class="fa fa-arrow-right"></i>Avançar

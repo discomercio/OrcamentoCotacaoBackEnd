@@ -151,7 +151,6 @@ export class RecalcularComCoeficiente {
                         //Parcela com entrada
                         if (tipoFormaPagto == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA &&
                             enumFP.toString() == this.constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA) {
-                            debugger;
                             if (!!vlEntrada && vlEntrada != 0.00) {
 
                                 this.vlEntrada = vlEntrada;
@@ -204,7 +203,6 @@ export class RecalcularComCoeficiente {
                             coeficienteFornec.forEach(x => {
                                 this.ProdutosCalculados = new ProdutosCalculados();
                                 if (!!this.permiteRAStatus && this.permiteRAStatus == 1) {
-                                    debugger;
                                     p.VlTotalItem = p.AlterouValorRa && p.AlterouValorRa != undefined ? (p.Preco_Lista * p.Qtde) :
                                         (p.Preco * x.Coeficiente) * p.Qtde;
                                     this.ProdutosCalculados.QtdeParcela = x.QtdeParcelas;
@@ -292,7 +290,6 @@ export class RecalcularComCoeficiente {
                                     }
                                 }
                             }
-                            debugger;
                             lstMsg.push(i + " X " +
                                 this.moedaUtils.formatarMoedaComPrefixo(parseFloat((valorTotalParc / i).toFixed(2))));
                         }
@@ -401,7 +398,6 @@ export class RecalcularComCoeficiente {
                         if ((enumFP.toString() == this.constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO ||
                             enumFP.toString() == this.constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA) &&
                             tipoFormaPagto == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA) {
-                            debugger;
 
                             //preciso pegar a qtde de parcelas que foi selecionado
 
@@ -417,7 +413,6 @@ export class RecalcularComCoeficiente {
                                     produto.VlLista = (produto.Preco * x.Coeficiente);//só altera se calcular coeficiente
                                 }
                                 else {
-                                    debugger;
                                     produto.VlUnitario = (produto.Preco * x.Coeficiente);
                                     produto.VlTotalItem = (produto.Preco * x.Coeficiente);
                                     produto.VlLista = (produto.Preco * x.Coeficiente);//só altera se calcular coeficiente

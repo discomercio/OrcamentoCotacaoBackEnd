@@ -10,9 +10,9 @@
     <div class="row align-items-end">
         <div class="col-lg-8">
             <div class="page-header-title">
-                <i class="icon-user bg-c-blue"></i>
+                <i class="feather icon-clipboard bg-c-blue"></i>
                 <div class="d-inline">
-                    <h5>Produtos e Forma de Pagamento</h5>
+                    <h5>Novo Pedido</h5>
                     <span>Adicione os produtos e a forma de pagamento</span>
                 </div>
             </div>
@@ -21,7 +21,7 @@
             <div class="page-header-breadcrumb">
                 <ul class=" breadcrumb breadcrumb-title">
                     <li class="breadcrumb-item">
-                        <a href="@Url.Action("Index", "Home")"><i class="icon icon-home"></i></a>
+                        <a href="@Url.Action("Index", "Home")"><i class="feather icon-home"></i></a>
                     </li>
                     <li class="breadcrumb-item"><a href="@Url.Action("Index", "Cliente" )">Cliente</a> </li>
                     <li class="breadcrumb-item"><a href="@Url.Action("BuscarCliente", "Cliente", new { cpf_cnpj = Model.CpfCnpj, novoCliente = false})">Cadastro Cliente</a> </li>
@@ -33,212 +33,428 @@
     </div>
 </div>
 
-<div class="pcoded-inner-content" style="min-height: 75vh;">
+<div class="pcoded-inner-content pb-0" style="min-height: 75vh;">
     <div class="main-body">
-        <div class="page-wrapper">
+        <div class="page-wrapper pb-0">
             <div class="page-body">
                 <div class="row">
                     <div class="col-md-12 col-xl-12">
-                        <div class="card" style="min-height: 75vh;">
+                        <div class="card mb-0" style="min-height: 75vh;">
+                            <div class="page-header card mb-4">
+                                <div class="row col-lg-12 col-xl-12 pr-0">
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0"
+                                         style="height:70px;">
+                                        <div class="card py-4 px-2 mb-0"
+                                             style="background-color:#eee;height:70px; text-align:left;
+                                                    color:#aaa; display:block; box-shadow:none">
+                                            <span class="number">1.</span>
+                                            Cadastro Cliente
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12"
+                                         style="height:70px;">
+                                        <div class="card py-4 px-2 mb-0"
+                                             style="background-color:#eee; text-align:left; color:#aaa;
+                                                    display:block;box-shadow:none">
+                                            <span class="number">2. </span>
+                                            CD e Indicador
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12"
+                                         style="height:70px">
+                                        <div class="card py-4 px-2 mb-0"
+                                             style="background-color:#4099ff; text-align:left; color:#fff;
+                                                    display:block;box-shadow:none">
+                                            <span class="number">3.</span>
+                                            Produtos e Forma Pagamento
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pr-0"
+                                         style="height:70px;">
+                                        <div class="card py-4 px-4 mb-0"
+                                             style="background-color:#eee; text-align:left; color:#aaa;
+                                                    display:block;box-shadow:none">
+                                            <span class="number">4.</span>
+                                            Informações Adicionais
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
 
                             @using (Html.BeginForm("PreparaParaCadastrarPedido", "Pedido", FormMethod.Post,
 new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "formulario" }))
                             {
-                                <div class="page-header card col-12">
+                                <div class="page-header card" style="border: 1px solid #ccc; padding:20px">
+                                    <div class="row">
 
-                                    <div class="row col-xl-12 col-lg-12">
-                                        <div class="col-xl-12 col-lg-11">
-                                            <span class="caixa">
-                                                <strong>
-                                                    <span class="rotulo">Cliente:</span>
-                                                    <span class="dado" name="nome" id="nome"> @Model.NomeCliente</span>
-                                                </strong>
-                                            </span>
-                                        </div>
-                                        <div class="col-xl-9 col-lg-8 col-sm-8">
-                                            <span class="caixa">
-                                                <strong>
-                                                    <span class="rotulo">Percentual comissão:</span>
-                                                    <span class="dado" name="perComissao" id="perComissao" style="padding-right:0px;">@Model.PercComissao</span><strong>%</strong>
-                                                    <input type="hidden" id="percComissao" name="percComissao" />
-                                                </strong>
-                                            </span>
-                                        </div>
-                                        <div class="col-xl-2 col-lg-2">
-                                            <a data-toggle="modal" class="btn btn-primary" data-target="#modal1">
-                                                <i class="fa fa-plus"></i>Adicionar produto
-                                            </a>
+                                        <div class="row col-xl-12 col-lg-12">
+                                            <div class="col-xl-12 col-lg-11">
+                                                <span class="caixa">
+                                                    <strong>
+                                                        <span class="rotulo">Cliente:</span>
+                                                        <span class="dado" name="nome" id="nome"> @Model.NomeCliente</span>
+                                                    </strong>
+                                                </span>
+                                            </div>
+                                            <div class="col-xl-9 col-lg-8 col-sm-8">
+                                                <span class="caixa">
+                                                    <strong>
+                                                        <span class="rotulo">Percentual comissão:</span>
+                                                        <span class="dado" name="perComissao" id="perComissao" style="padding-right:0px;">@Model.PercComissao</span><strong>%</strong>
+                                                        <input type="hidden" id="percComissao" name="percComissao" />
+                                                    </strong>
+                                                </span>
+                                            </div>
+                                            <div class="col-xl-2 col-lg-2">
+                                                <button data-toggle="modal" class="btn btn-primary" data-target="#modal1" type="button">
+                                                    <i class="fa fa-plus"></i>Adicionar produto
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="page-header card"></div>
-                                <div class="page-header card my-1">
-                                    <div class="card-body px-0">
-                                        @{
-                                            var indice = 0;
-                                            <input type="hidden" id="indice" value="" />
+                                    <div class="page-header card"></div>
+                                    @*PRODUTOS*@
+                                    <div class="row">
+                                        <div class="col-xl-12 col-lg-12">
+                                            <div class="card-body px-0">
+                                                @{
+                                                    var indice = 0;
+                                                    <input type="hidden" id="indice" value="" />
 
-                                            <table class="table table-responsive">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col" class="produto">
-                                                            Produto
-                                                        </th>
-                                                        <th scope="col" style="text-align:right">
-                                                            Qtde
-                                                        </th>
-                                                        @if (Model.Permite_RA_Status == 1)//NÃO SOMENTE VERIFICANDO ESSE PARAM
-                                                        {
-                                                            <th scope="col" style="text-align:right">
-                                                                Preço
-                                                            </th>
-                                                        }
-                                                        <th scope="col" style="text-align:right">
-                                                            VL Lista
-                                                        </th>
-                                                        <th scope="col" style="text-align:right">
-                                                            Desc%
-                                                        </th>
-                                                        <th scope="col" style="text-align:right">
-                                                            VL Venda
-                                                        </th>
-                                                        <th scope="col" style="text-align:right">
-                                                            VL Total
-                                                        </th>
-                                                        <th scope="col" style="text-align:right">
-
-                                                        </th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @{
-                                                        @* Mudamos para não repetir código, o bloco antigo de modelo para adição de 01 item *@
-                                                        int indexnumero = 0;
-                                                        @for (int ilista = 0; ilista <= (Model.ListaProdutos?.Count() ?? 0); ilista++)
-                                                        {
-                                                            //bool linhaNovoProduto = true;
-                                                            string index = "trocarporindex";
-                                                            string classe = "class=\"novoProduto\"";
-                                                            string classenovoProdutoEstoque = "class=\"novoProdutoEstoque\"";
-                                                            string classenovoProdutoAviso = "class=\"novoProdutoAviso\"";
-                                                            string classenovoProdutoQtdeMaxPermitida = "class=\"novoProdutoQtdeMaxPermitida\"";
-                                                            string estilo = "style=\"display:none\"";
-                                                            Loja.Bll.Dto.PedidoDto.DetalhesPedido.PedidoProdutosDtoPedido i = new Loja.Bll.Dto.PedidoDto.DetalhesPedido.PedidoProdutosDtoPedido();
-                                                            if (ilista != (Model.ListaProdutos?.Count() ?? 0))
-                                                            {
-                                                                //linhaNovoProduto = false;
-                                                                i = Model.ListaProdutos[ilista];
-                                                                index = indexnumero.ToString();
-                                                                classe = "";
-                                                                classenovoProdutoEstoque = "";
-                                                                classenovoProdutoAviso = "";
-                                                                classenovoProdutoQtdeMaxPermitida = "";
-                                                                estilo = "";
-                                                            }
-
-
-                                                            <tr @Html.Raw(classe) @Html.Raw(estilo)>
-
-                                                                <td class="desc-produto" name="[@index].NumProduto">
-                                                                    <input type="hidden" name="[@index].Fabricante" value="@i.Fabricante" />
-                                                                    <input class="numProduto" type="hidden" name="[@index].NumProduto" value="@i.NumProduto?">
-                                                                </td>
-                                                                <td class="qtde">
-                                                                    <input class="qtde" type="number" min="1" name="[@index].Qtde" id="@i.Qtde"
-                                                                           onkeyup="digitouQtde(this)" onchange="digitouQtde(this)" />
-                                                                </td>
-
-                                                                @if (Model.Permite_RA_Status == 1)
+                                                    <table class="table table-responsive">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col" class="produto">
+                                                                    Produto
+                                                                </th>
+                                                                <th scope="col" style="text-align:right">
+                                                                    Qtde
+                                                                </th>
+                                                                @if (Model.Permite_RA_Status == 1)//NÃO SOMENTE VERIFICANDO ESSE PARAM
                                                                 {
-                                                                    <td class="preco-input">
-                                                                        <input type="text" name="[@index].Preco_Lista" id="@i.Preco_Lista"
-                                                                               onkeyup="formatarPreco_Lista(this)"
-                                                                               onchange="digitouPreco_Lista(this)" />
-                                                                    </td>
+                                                                    <th scope="col" style="text-align:right">
+                                                                        Preço
+                                                                    </th>
+                                                                }
+                                                                <th scope="col" style="text-align:right">
+                                                                    VL Lista
+                                                                </th>
+                                                                <th scope="col" style="text-align:right">
+                                                                    Desc%
+                                                                </th>
+                                                                <th scope="col" style="text-align:right">
+                                                                    VL Venda
+                                                                </th>
+                                                                <th scope="col" style="text-align:right">
+                                                                    VL Total
+                                                                </th>
+                                                                <th scope="col" style="text-align:right">
+
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @{
+                                                                @* Mudamos para não repetir código, o bloco antigo de modelo para adição de 01 item *@
+                                                                int indexnumero = 0;
+                                                                @for (int ilista = 0; ilista <= (Model.ListaProdutos?.Count() ?? 0); ilista++)
+                                                                {
+                                                                    //bool linhaNovoProduto = true;
+                                                                    string index = "trocarporindex";
+                                                                    string classe = "class=\"novoProduto\"";
+                                                                    string classenovoProdutoEstoque = "class=\"novoProdutoEstoque\"";
+                                                                    string classenovoProdutoAviso = "class=\"novoProdutoAviso\"";
+                                                                    string classenovoProdutoQtdeMaxPermitida = "class=\"novoProdutoQtdeMaxPermitida\"";
+                                                                    string estilo = "style=\"display:none\"";
+                                                                    Loja.Bll.Dto.PedidoDto.DetalhesPedido.PedidoProdutosDtoPedido i = new Loja.Bll.Dto.PedidoDto.DetalhesPedido.PedidoProdutosDtoPedido();
+                                                                    if (ilista != (Model.ListaProdutos?.Count() ?? 0))
+                                                                    {
+                                                                        //linhaNovoProduto = false;
+                                                                        i = Model.ListaProdutos[ilista];
+                                                                        index = indexnumero.ToString();
+                                                                        classe = "";
+                                                                        classenovoProdutoEstoque = "";
+                                                                        classenovoProdutoAviso = "";
+                                                                        classenovoProdutoQtdeMaxPermitida = "";
+                                                                        estilo = "";
+                                                                    }
+
+
+                                                                    <tr @Html.Raw(classe) @Html.Raw(estilo)>
+
+                                                                        <td class="desc-produto" name="[@index].NumProduto">
+                                                                            <input type="hidden" name="[@index].Fabricante" value="@i.Fabricante" />
+                                                                            <input class="numProduto" type="hidden" name="[@index].NumProduto" value="@i.NumProduto?">
+                                                                        </td>
+                                                                        <td class="qtde">
+                                                                            <input class="qtde" type="number" min="1" name="[@index].Qtde" id="@i.Qtde"
+                                                                                   onkeyup="digitouQtde(this)" onchange="digitouQtde(this)" />
+                                                                        </td>
+
+                                                                        @if (Model.Permite_RA_Status == 1)
+                                                                        {
+                                                                            <td class="preco-input">
+                                                                                <input type="text" name="[@index].Preco_Lista" id="@i.Preco_Lista"
+                                                                                       onkeyup="formatarPreco_Lista(this)"
+                                                                                       onchange="digitouPreco_Lista(this)" />
+                                                                            </td>
+                                                                        }
+
+                                                                        <td class="preco-text" name="[@index].VlLista" id="@i.VlLista">
+                                                                        </td>
+                                                                        <td style="display:none">
+                                                                            <input type="hidden" name="[@index].VlLista" />
+                                                                        </td>
+                                                                        <td style="display:none">
+                                                                            <input type="hidden" name="[@index].Preco" />
+                                                                        </td>
+                                                                        <td class="desconto">
+                                                                            <input class="desconto" type="text" name="[@index].Desconto"
+                                                                                   id="@i.Desconto" onchange="digitouDesc(this)"
+                                                                                   onkeyup="formatarDesc(this)" />  %
+                                                                        </td>
+                                                                        <td class="preco-input">
+                                                                            <input type="text" name="[@index].VlUnitario"
+                                                                                   id="@i.VlUnitario" onchange="digitouVlVenda(this)"
+                                                                                   onkeyup="formataVlVenda(this)" />
+                                                                        </td>
+                                                                        <td class="preco-text" name="[@index].VlTotalItem">
+                                                                        </td>
+                                                                        <td style="display:none">
+                                                                            <input type="hidden" name="[@index].VlTotalItem" />
+                                                                        </td>
+                                                                        <td class="lixeira">
+                                                                            <div class="form-control">
+                                                                                <span>
+                                                                                    <i class="fa fa-trash" title="Remover linha"
+                                                                                       onclick="removerLinha(this);"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
                                                                 }
 
-                                                                <td class="preco-text" name="[@index].VlLista" id="@i.VlLista">
-                                                                </td>
-                                                                <td style="display:none">
-                                                                    <input type="hidden" name="[@index].VlLista" />
-                                                                </td>
-                                                                <td style="display:none">
-                                                                    <input type="hidden" name="[@index].Preco" />
-                                                                </td>
-                                                                <td class="desconto">
-                                                                    <input class="desconto" type="text" name="[@index].Desconto"
-                                                                           id="@i.Desconto" onchange="digitouDesc(this)"
-                                                                           onkeyup="formatarDesc(this)" />  %
-                                                                </td>
-                                                                <td class="preco-input">
-                                                                    <input type="text" name="[@index].VlUnitario"
-                                                                           id="@i.VlUnitario" onchange="digitouVlVenda(this)"
-                                                                           onkeyup="formataVlVenda(this)" />
-                                                                </td>
-                                                                <td class="preco-text" name="[@index].VlTotalItem">
-                                                                </td>
-                                                                <td style="display:none">
-                                                                    <input type="hidden" name="[@index].VlTotalItem" />
-                                                                </td>
-                                                                <td class="lixeira">
-                                                                    <div class="form-control">
-                                                                        <span>
-                                                                            <i class="fa fa-trash" title="Remover linha"
-                                                                               onclick="removerLinha(this);"></i>
-                                                                        </span>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
+
+
+                                                                <tr class="trTotal">
+                                                                    <!-- pula as colunas vazias -->
+                                                                    @if (Model.Permite_RA_Status == 1)
+                                                                    {
+                                                                        <td style="text-align:right">
+                                                                            RA Líquido
+                                                                            <strong id="totalValorRALiquido" style="font-weight:bold"></strong>
+                                                                            <input type="hidden" id="totalValorRALiquidoInput"
+                                                                                   name="totalValorRALiquidoInput" value="@Model.TotalPedidoRALiquido" />
+                                                                            &nbsp;&nbsp; RA Bruto
+                                                                            <strong id="totalValorRABruto" style="font-weight:bold"></strong>
+                                                                            <input type="hidden" id="totalValorRABrutoInput"
+                                                                                   name="totalValorRABrutoInput" value="@Model.TotalPedidoRABruto" />
+                                                                        </td>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <td>
+                                                                        </td>
+                                                                    }
+                                                                    <td> </td>
+                                                                    @if (Model.Permite_RA_Status == 1)
+                                                                    {
+                                                                        //valor total ra
+                                                                        <td style="text-align:right;">
+                                                                            <strong id="totalPedidoRABruto"></strong>
+                                                                            <input type="hidden" id="totalPedidoRABrutoInput"
+                                                                                   name="totalPedidoRABruto" value="@Model.TotalPedidoRABruto" />
+                                                                        </td>
+                                                                    }
+                                                                    <td> </td>
+                                                                    <td> </td>
+                                                                    <td> </td>
+                                                                    <td style="text-align:right;">
+                                                                        <strong id="totalPedido" style="font-weight:bold"></strong>
+                                                                        <input type="hidden" id="totalPedidoInput"
+                                                                               name="totalDestePedido" value="@Model.VlTotalDestePedido" />
+                                                                    </td>
+                                                                    <td> </td>
+
+
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*FORMA PAGTO*@
+                                    <div class="row">
+                                        <div class="row col-xl-12 col-lg-12">
+                                            <div class="col-xl-6 col-lg-6">
+                                                @* Radio's *@
+                                                <h4 class="sub-title">Tipo Forma Pagamento</h4>
+                                                <div class="form-radio">
+                                                    <div class="radio radio-inline">
+                                                        @foreach (var i in Model.EnumFormaPagto)
+                                                        {
+                                                            if (i.Text != "Selecionar")
+                                                            {
+                                                                <label>
+                                                                    <input type="radio" name="radio" id="enumFormaPagto" value="@i.Value"
+                                                                           onclick="recalcularValoresComCoeficiente(this)">
+                                                                    <i class="helper"></i>@i.Text
+                                                                </label>
+                                                            }
                                                         }
+                                                    </div>
+                                                </div>
+                                                @*<div class="form-group">
+                                                        <label class="col-form-label">Tipo Forma Pagamento</label>
+                                                        @Html.DropDownList("FormaPagto", new SelectList(Model.EnumFormaPagto, "Value", "Text",
+                                                       Model.EnumFormaPagto), new
+                                                       {
+                                                           @id = "enumFormaPagto",
+                                                           @onchange = "recalcularValoresComCoeficiente(this);",
+                                                           @class = "custom-select"
+                                                       })
+                                                    </div>*@
 
 
-
-                                                        <tr class="trTotal">
-                                                            <!-- pula as colunas vazias -->
-                                                            @if (Model.Permite_RA_Status == 1)
-                                                            {
-                                                                <td style="text-align:right">
-                                                                    RA Líquido
-                                                                    <strong id="totalValorRALiquido" style="font-weight:bold"></strong>
-                                                                    <input type="hidden" id="totalValorRALiquidoInput"
-                                                                           name="totalValorRALiquidoInput" value="@Model.TotalPedidoRALiquido" />
-                                                                    &nbsp;&nbsp; RA Bruto
-                                                                    <strong id="totalValorRABruto" style="font-weight:bold"></strong>
-                                                                    <input type="hidden" id="totalValorRABrutoInput"
-                                                                           name="totalValorRABrutoInput" value="@Model.TotalPedidoRABruto" />
-                                                                </td>
-                                                            }
-                                                            else
-                                                            {
-                                                                <td>
-                                                                </td>
-                                                            }
-                                                            <td> </td>
-                                                            @if (Model.Permite_RA_Status == 1)
-                                                            {
-                                                                //valor total ra
-                                                                <td style="text-align:right;">
-                                                                    <strong id="totalPedidoRABruto"></strong>
-                                                                    <input type="hidden" id="totalPedidoRABrutoInput"
-                                                                           name="totalPedidoRABruto" value="@Model.TotalPedidoRABruto" />
-                                                                </td>
-                                                            }
-                                                            <td> </td>
-                                                            <td> </td>
-                                                            <td> </td>
-                                                            <td style="text-align:right;">
-                                                                <strong id="totalPedido" style="font-weight:bold"></strong>
-                                                                <input type="hidden" id="totalPedidoInput"
-                                                                       name="totalDestePedido" value="@Model.VlTotalDestePedido" />
-                                                            </td>
-                                                            <td> </td>
-
-
-                                                        </tr>
+                                            </div>
+                                            @* Observação forma pagamento *@
+                                            <div class="col-xl-6 col-lg-6 pr-0">
+                                                <h4 class="sub-title">Dados Pagamento</h4>
+                                                <div class="form-group">
+                                                    @* aqui vai a condição para mostrar a div A vista *@
+                                                    @if (Model.FormaPagto.ListaAvista != null)
+                                                    {
+                                                        <div class="form-group Avista" style="display:none">
+                                                            <label class="col-form-label">Parcelamento</label>
+                                                            @* Parcelamento *@
+                                                            <select class="custom-select" name="" id="opcaoPagtoAvista">
+                                                                <option value="0">Selecione</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group Avista" style="display:none">
+                                                            <label class="col-form-label">Meio de Pagamento</label>
+                                                            <select class="custom-select" name="" id="meioPagtoAVista">
+                                                                <option value="0">Selecione</option>
+                                                                @foreach (var i in Model.FormaPagto.ListaAvista)
+                                                                {
+                                                                    <option value="@i.Id">@i.Descricao</option>
+                                                                }
+                                                            </select>
+                                                        </div>
                                                     }
-                                                </tbody>
-                                            </table>
-                                        }
+
+                                                    @* aqui vai a condição para mostrar a div Parcela Unica *@
+                                                    @if (Model.FormaPagto.ListaParcUnica != null)
+                                                    {
+                                                        <div class="form-group ParcUnica" style="display:none">
+                                                            <label class="col-form-label">Parcelamento</label>
+                                                            @* Parcelamento *@
+                                                            <select class="custom-select" name="" id="opcaoPagtoParcUnica">
+                                                                <option value="0">Selecione</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group ParcUnica" style="display:none">
+                                                            <label class="col-form-label">Meio de Pagamento</label>
+                                                            <select class="custom-select" name="" id="meioPagtoParcUnica">
+                                                                <option value="0">Selecione</option>
+                                                                @foreach (var i in Model.FormaPagto.ListaParcUnica)
+                                                                {
+                                                                    <option value="@i.Id">@i.Descricao</option>
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group ParcUnica" style="display:none">
+                                                            <label class="col-form-label">Dias para vencimento</label>
+                                                            <input class="form-control" type="number" min="1" max="30" id="diasVencParcUnica" />
+                                                        </div>
+                                                    }
+
+                                                    @* aqui vai a condição para mostrar a div Parcela com entrada *@
+                                                    @if (Model.FormaPagto.ListaParcComEntrada != null)
+                                                    {
+                                                        //Entrada
+                                                        <div class="row form-group ParcComEntrada col-lg-12 m-0 p-0" style="display:none; ">
+                                                            <div class="col-lg-6 pl-0" style="align-self:flex-end;">
+                                                                <label class="col-form-label">Valor Entrada</label>
+                                                                <input class="form-control" id="vlEntrada" type="text" onblur="digitouVlEntrada(this)"
+                                                                       onkeyup="formatarVlEntrada(this)" />
+                                                            </div>
+                                                            <div class="col-lg-6 p-0" style="float:right">
+                                                                <label class="col-form-label">Meio Pagamento Entrada</label>
+                                                                <select class="custom-select" name="" id="meioPagtoEntrada">
+                                                                    <option value="0">Selecione</option>
+                                                                    @foreach (var v in Model.FormaPagto.ListaParcComEntrada)
+                                                                    {
+                                                                        <option value="@v.Id">@v.Descricao</option>
+                                                                    }
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        //Prestações
+                                                        <div class="row form-group ParcComEntrada col-lg-12 m-0 p-0" style="display:none">
+                                                            @* Parcelamento *@
+                                                            <div class="col-lg-6 pl-0" style="align-self:flex-end">
+                                                                <label class="col-form-label">Parcelamento</label>
+                                                                <select class="custom-select" name="" id="opcaoPagtoParcComEntrada">
+                                                                    <option value="0">Selecione</option>
+                                                                </select>
+                                                            </div>
+
+                                                            @*Meio de Pagamento*@
+                                                            <div class="col-lg-6 p-0" style="float:right">
+                                                                <label class="col-form-label">Meio de Pagamento</label>
+                                                                <select class="custom-select" name="" id="meioPagtoEntradaPrest">
+                                                                    <option value="0">Selecione</option>
+                                                                    @foreach (var i in Model.FormaPagto.ListaParcComEntPrestacao)
+                                                                    {
+                                                                        <option value="@i.Id">@i.Descricao</option>
+                                                                    }
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group ParcComEntrada col-lg-12 m-0 p-0" style="display:none">
+                                                            <label class="col-form-label">Dias para vencimento Prest</label>
+                                                            <input class="form-control" type="text" id="diasVenc" maxlength="3" />
+                                                        </div>
+                                                    }
+
+                                                    @* aqui vai a condição para mostrar a div Pagamento com Cartão Internet *@
+                                                    @if (Model.FormaPagto.ParcCartaoInternet)
+                                                    {
+                                                        <div class="form-group PagtoCartaoInternet" style="display:none">
+                                                            @* Parcelamento  *@
+                                                            <label class="col-form-label">Parcelamento</label>
+                                                            <select class="custom-select" id="opcaoPagtoParcCartaoInternet">
+                                                                <option value="0">Selecione</option>
+                                                            </select>
+                                                        </div>
+                                                    }
+
+                                                    @* aqui vai a condição para mostrar a div Pagamento com Cartão Maquineta *@
+                                                    @if (Model.FormaPagto.ParcCartaoMaquineta)
+                                                    {
+                                                        <div class="form-group PagtoCartaoMaquineta" style="display:none">
+                                                            @* Parcelamento  *@
+                                                            <label class="col-form-label">Parcelamento</label>
+                                                            <select class="custom-select" name="" id="opcaoPagtoParcCartaoMaquineta">
+                                                                <option value="0">Selecione</option>
+                                                            </select>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @* Observação forma pagamento *@
+                                        <div class="col-xl-12 col-lg-12">
+                                            <div class="form-group">
+                                                <label class="col-form-label">Observações da forma de pagamento</label>
+                                                <textarea class="form-control" rows="6"></textarea>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             }
@@ -340,27 +556,42 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "fo
             border: 3px solid white;
         }
 
-        .trfilho{
-            font-size:smaller;
+    .trfilho {
+        font-size: smaller;
+    }
+
+    .caixa {
+        display: inline-block;
+        padding: 0.5em;
+        padding-left: 0em;
+    }
+
+        .caixa .rotulo {
+            display: inline;
+            font-weight: bold;
+            opacity: 0.9;
+            padding-right: 0.5em;
         }
-        
-            
-        
+
+        .caixa .dado {
+            display: inline;
+            padding-right: 1.0em;
+        }
 </style>
 
 
 @section RodapePagina {
     <footer class="m-2">
         <div class="row col-lg-12">
-            <div class="col-lg-3"></div>
-            <div class="col-lg-3">
+            <div class="col-lg-3 col-sm-10"></div>
+            <div class="col-lg-3 col-sm-10">
                 <a class="btn btn-primary waves-effect waves-light"
                    href="@Url.Action("Indicador_SelecaoCD", "Pedido")">
                     <i class="fa fa-arrow-left"></i>Voltar
                 </a>
             </div>
             <div class="col-lg-1"></div>
-            <div class="col-lg-3">
+            <div class="col-lg-3 col-sm-10">
                 <button class="btn btn-primary waves-effect waves-light"
                         type="submit" onclick="$('#formulario').submit()">
                     <i class="fa fa-arrow-right"></i>Avançar

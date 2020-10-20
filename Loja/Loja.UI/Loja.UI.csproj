@@ -98,7 +98,6 @@
 
 
   <ItemGroup>
-    <Folder Include="Views\Pedido\NewFolder\" />
     <Folder Include="wwwroot\scriptsJs\" />
   </ItemGroup>
 
