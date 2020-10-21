@@ -148,6 +148,9 @@
     table.dataTable tbody td{
         white-space:pre-line !important;
     }
+    table.dataTable thead th{
+        white-space:pre-line !important;
+    }
 
 </style>
 <script>
@@ -261,25 +264,9 @@ jQuery.extend( jQuery.fn.dataTableExt.oSort, {
 
         let ret = $(seletor).DataTable(config);
 
-        let tabeladados_length = $("#tabeladados_wrapper").children()[0].outerHTML;
-        let tabeladados_filter = $("#tabeladados_wrapper").children()[1].outerHTML;
-        $("#tabeladados_wrapper").children()[0].remove();
-        $("#tabeladados_wrapper").children()[0].remove();
-        let div = "<div class='row' id='nova_div'>" + tabeladados_length + tabeladados_filter + "</div>";
-        $("#tabeladados_wrapper").prepend(div);
-
-        debugger;
-        //paginação
-        let dt_buttons = $(".dt-buttons")[0].outerHTML;
-        let tabeladados_paginate = $("#tabeladados_paginate")[0].outerHTML;
-        $(".dt-buttons")[0].remove();
-        $("#tabeladados_paginate")[0].remove();
-        let div_pag = "<div class='row' id='nova_paginate'>" + dt_buttons + tabeladados_paginate + "</div>";
-        $(".dataTables_info").append(div_pag);
-        $(".dt-buttons").addClass("col-xl-12 col-lg-12");
-        $("#tabeladados_paginate").addClass("col-xl-12 col-lg-12");
-
-
+        $(".dt-buttons").addClass("col-xl-12 col-lg-12 col-md-12 col-sm-12");
+        $(".dataTables_paginate").addClass("col-xl-12 col-lg-12 col-md-12 col-sm-12");
+        $(".dataTables_wrapper").addClass("row");
         $(".dataTables_info").addClass("col-xl-12 col-lg-12");
         $(".dataTables_length").addClass("form-group col-xl-6 col-lg-6");
         $(".dataTables_length").find('select').addClass("custom-select ml-0");
