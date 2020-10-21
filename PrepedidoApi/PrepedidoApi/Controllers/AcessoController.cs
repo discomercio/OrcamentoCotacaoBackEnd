@@ -70,7 +70,7 @@ namespace PrepedidoApi.Controllers
             string token = servicoAutenticacao.RenovarTokenAutenticacao(apelido, nome, loja, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos, Utils.Autenticacao.RoleAcesso);
 
             if (token == null)
-                return BadRequest(new { message = "Erro no sistema de autenticação. O usuário pode ter sido editando no banco de dados." });
+                return BadRequest(new { message = "Erro no sistema de autenticação. O usuário pode ter sido editado no banco de dados." });
 
             return Ok(token);
         }

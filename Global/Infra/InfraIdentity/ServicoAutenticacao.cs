@@ -33,34 +33,19 @@ namespace InfraIdentity
                 return user.IdErro.ToString();
             }
             
-            // authentication successful so generate jwt token
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(segredoToken);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.NameIdentifier, user.Apelido),
-                    new Claim(ClaimTypes.Name, user.Nome),
-                    new Claim(ClaimTypes.Surname, user.Loja),
-                    new Claim(ClaimTypes.Role, role)
-                }),
-                Expires = DateTime.UtcNow.AddMinutes(validadeTokenMinutos),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-
-            //util para debugar:
-            //Microsoft_IdentityModel_Logging_IdentityModelEventSource_ShowPII = true;
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var ret = tokenHandler.WriteToken(token);
-            return ret;
+            return GerarTokenAutenticacao(user.Apelido, user.Nome, user.Loja, segredoToken, validadeTokenMinutos, role);
         }
 
         public string RenovarTokenAutenticacao(string apelido, string nome, string loja, string segredoToken, int validadeTokenMinutos, string role)
         {
             //vamos verificar se usuario ainda tem permissão
+            //ainda nao estamos fazendo, deveráimos fazer?
 
+            return GerarTokenAutenticacao(apelido, nome, loja, segredoToken, validadeTokenMinutos, role);
+        }
+
+        private static string GerarTokenAutenticacao(string apelido, string nome, string loja, string segredoToken, int validadeTokenMinutos, string role)
+        {
             // authentication successful so generate jwt token
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(segredoToken);
@@ -81,7 +66,6 @@ namespace InfraIdentity
             var ret = tokenHandler.WriteToken(token);
             return ret;
         }
-
     }
 }
 
