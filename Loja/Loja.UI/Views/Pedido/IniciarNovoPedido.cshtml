@@ -23,10 +23,7 @@
                     <li class="breadcrumb-item">
                         <a href="@Url.Action("Index", "Home")"><i class="feather icon-home"></i></a>
                     </li>
-                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Cliente" )">Cliente</a> </li>
-                    <li class="breadcrumb-item"><a href="@Url.Action("BuscarCliente", "Cliente", new { cpf_cnpj = Model.CpfCnpj, novoCliente = false})">Cadastro Cliente</a> </li>
-                    <li class="breadcrumb-item"><a href="@Url.Action("Indicador_SelecaoCD", "Pedido")">Indicador e CD</a> </li>
-                    <li class="breadcrumb-item"><a href="#!">Produtos e Pagamento</a> </li>
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Cliente" )">Novo Pedido</a> </li>
                 </ul>
             </div>
         </div>
@@ -40,9 +37,9 @@
                 <div class="row">
                     <div class="col-md-12 col-xl-12">
                         <div class="card mb-0" style="min-height: 75vh;">
-                            <div class="page-header card mb-4">
-                                <div class="row col-lg-12 col-xl-12 pr-0">
-                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0"
+                            <div class="page-header card mb-0">
+                                <div class="row col-lg-12 col-xl-12 pr-0 mb-2">
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0 pr-4 mb-2"
                                          style="height:70px;">
                                         <div class="card py-4 px-2 mb-0"
                                              style="background-color:#eee;height:70px; text-align:left;
@@ -51,7 +48,7 @@
                                             Cadastro Cliente
                                         </div>
                                     </div>
-                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12"
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0 pr-4 mb-2"
                                          style="height:70px;">
                                         <div class="card py-4 px-2 mb-0"
                                              style="background-color:#eee; text-align:left; color:#aaa;
@@ -60,7 +57,7 @@
                                             CD e Indicador
                                         </div>
                                     </div>
-                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12"
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0 pr-4 mb-2"
                                          style="height:70px">
                                         <div class="card py-4 px-2 mb-0"
                                              style="background-color:#4099ff; text-align:left; color:#fff;
@@ -69,7 +66,7 @@
                                             Produtos e Forma Pagamento
                                         </div>
                                     </div>
-                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pr-0"
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0 pr-4"
                                          style="height:70px;">
                                         <div class="card py-4 px-4 mb-0"
                                              style="background-color:#eee; text-align:left; color:#aaa;
@@ -581,25 +578,35 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "fo
 
 
 @section RodapePagina {
-    <footer class="m-2">
-        <div class="row col-lg-12">
-            <div class="col-lg-3 col-sm-10"></div>
-            <div class="col-lg-3 col-sm-10">
-                <a class="btn btn-primary waves-effect waves-light"
-                   href="@Url.Action("Indicador_SelecaoCD", "Pedido")">
-                    <i class="fa fa-arrow-left"></i>Voltar
-                </a>
+    <div class="pcoded-inner-content">
+        <div class="main-body">
+            <div class="page-wrapper">
+                <div class="page-body">
+                    <footer>
+                        <div class="row">
+                            <div class="col-xl-12" style="display:flex">
+                                <div class="col-xl-3 col-lg-3 col-md-2 col-sm-2"></div>
+                                <div class="col-xl-3 col-lg-3 col-md-2 col-sm-2 px-0">
+                                    <a class="btn btn-primary"
+                                       href="@Url.Action("Indicador_SelecaoCD", "Pedido")">
+                                        <i class="fa fa-arrow-left"></i>Voltar
+                                    </a>
+                                </div>
+                                <div class="col-lg-1 col-md-3 col-sm-3"></div>
+                                <div class="col-xl-3 col-lg-3 col-md-2 col-sm-2 px-0">
+                                    <button class="btn btn-primary"
+                                            type="submit" onclick="$('#formulario').submit()">
+                                        <i class="fa fa-arrow-right"></i>Avançar
+                                    </button>
+                                </div>
+                                <div class="col-lg-1"></div>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
             </div>
-            <div class="col-lg-1"></div>
-            <div class="col-lg-3 col-sm-10">
-                <button class="btn btn-primary waves-effect waves-light"
-                        type="submit" onclick="$('#formulario').submit()">
-                    <i class="fa fa-arrow-right"></i>Avançar
-                </button>
-            </div>
-            <div class="col-lg-1"></div>
         </div>
-    </footer>
+    </div>
 }
 
 @* Modal para mostrar os produtos *@
