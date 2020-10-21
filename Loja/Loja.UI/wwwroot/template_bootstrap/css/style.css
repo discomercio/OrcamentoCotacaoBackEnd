@@ -3387,7 +3387,11 @@ table tbody .border-bottom-info td, table tbody .border-bottom-info th, table th
         box-shadow: 0 2px 15px 0 rgba(43,43,43,.2)
     }
 
-@media only screen and (max-width:992px) {
+/* 
+    GABRIEL ALTEROU 
+    estou alterando de 992px para 1070px que é quando fica ruim o cabeçãho do lado esquerdo
+ */
+@media only screen and (max-width: 992px) {
     .pcoded .pcoded-navbar .nav-list {
         height: 100%
     }
@@ -11179,7 +11183,11 @@ table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child:before, table
         }
 }
 
-@media only screen and (max-width:992px) {
+/* 
+    GABRIEL ALTEROU 
+    estou alterando de 992px para 1070px que é quando fica ruim o cabeçãho do lado esquerdo
+ */
+@media only screen and (max-width:1070px) {
     .navbar, .navbar .navbar-logo {
         width: 100%
     }

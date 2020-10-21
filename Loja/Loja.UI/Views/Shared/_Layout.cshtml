@@ -24,6 +24,8 @@
 
     <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/waves.min.css" media="all">
 
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/icofont.css">
+
     <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/feather.css">
     <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/font-awesome-n.min.css">
 
@@ -154,7 +156,7 @@
         <div class="pcoded-container navbar-wrapper">
             @if (usuarioLogado.SessaoAtiva)
             {
-                <nav class="navbar header-navbar pcoded-header">
+                <nav class="navbar header-navbar pcoded-header" style="height:84px !important">
                     <div class="navbar-wrapper">
                         <div class="navbar-logo">
                             <a href="@Url.Action("Index", "Home")" title="Home" class="show-on-medium-and-down">
@@ -231,12 +233,12 @@
 
 
     <style>
-        .pcoded-navbar {
-            top: 79px !important;
-        }
 
         .pcoded-main-container {
-            margin-top: calc(100vh - 670px) !important;
+            /*margin-top: calc(100vh - 670px) !important;*/
+        }
+        .pcoded-navbar{
+            top:84.35px !important;
         }
 
         .footer {

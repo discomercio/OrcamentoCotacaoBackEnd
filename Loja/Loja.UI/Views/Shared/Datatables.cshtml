@@ -266,11 +266,11 @@ jQuery.extend( jQuery.fn.dataTableExt.oSort, {
 
         let ret = $(seletor).DataTable(config);
 
-        $(".dt-buttons").addClass("col-xl-12 col-lg-12 col-md-12 col-sm-12");
-        $(".dataTables_paginate").addClass("col-xl-12 col-lg-12 col-md-12 col-sm-12");
-        $(".dataTables_wrapper").addClass("row");
+        $(".dt-buttons").addClass("col-xl-12 col-lg-12 col-md-12 col-sm-12 pr-0");
+        $(".dataTables_paginate").addClass("col-xl-12 col-lg-12 col-md-12 col-sm-12 pr-0");
+        $(".dataTables_wrapper").addClass("row px-3");
         $(".dataTables_info").addClass("col-xl-12 col-lg-12");
-        $(".dataTables_length").addClass("form-group col-xl-6 col-lg-6 col-md-6 col-sm-12");
+        $(".dataTables_length").addClass("form-group col-xl-6 col-lg-6 col-md-6 col-sm-12 pl-0");
         $(".dataTables_length").find('select').addClass("custom-select ml-0");
         $(".dataTables_length").find('label').addClass("col-form-label");
         $(".dataTables_filter").addClass("form-group");

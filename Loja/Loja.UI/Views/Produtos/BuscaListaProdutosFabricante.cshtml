@@ -12,180 +12,121 @@
     };
 </script>
 
-@if (Model != null)
-{
-    @if (Model.Fabricante != null)
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 px-0">
+    @if (Model != null)
     {
-        <h5>
-            Lista de Produtos -
-            <span style="font-weight: bold">
-                @Model.Fabricante
-            </span>
-        </h5>
+        @if (Model.Fabricante != null)
+        {
+            <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 px-0">
+                <h5>
+                    Lista de Produtos -
+                    <span style="font-weight: bold">
+                        @Model.Fabricante
+                    </span>
+                </h5>
+                <partial name="~/Views/Shared/Datatables.cshtml" />
+            </div>
 
 
-        <partial name="~/Views/Shared/Datatables.cshtml" />
 
-        <script>
-            $(document).ready(function () {
-                intiDatatables('#tabela', {
-                    columnDefs: [
-                        { type: "moeda", targets: 2 }
-                    ]
+
+
+
+
+            <script>
+                $(document).ready(function () {
+                    intiDatatables('#tabela', {
+                        columnDefs: [
+                            { type: "moeda", targets: 2 }
+                        ]
+                    });
                 });
-            });
-        </script>
+            </script>
 
 
-        <table id="tabela" style="display: none;">
-            <thead>
-                <tr>
-                    <th>Produto</th>
-                    <th>Descrição</th>
-                    <th class="right-align">Preço</th>
-                </tr>
-            </thead>
-
-
-            <tbody>
-
-                @foreach (var item in Model.LstProdutos)
-                {
+            <table id="tabela" style="display: none;">
+                <thead>
                     <tr>
-                        <td>@item.Produto</td>
-                        <td>@item.Descricao</td>
-                        <td class="right-align">@Loja.Bll.Util.Util.FormataMoeda(item.Preco)</td>
+                        <th>Produto</th>
+                        <th>Descrição</th>
+                        <th class="right-align">Preço</th>
                     </tr>
+                </thead>
 
-                }
-            </tbody>
 
-        </table>
-        <div class="row" style="margin-left:7%">
-            <div class="row col xl12 l12 m12 s12">
-                <button class="waves-effect waves-light btn-small"
-                        style="margin-top:2.5%; float:right"
-                        onclick="Imprimir()">
-                    Imprimir
-                </button>
-            </div>
-        </div>
-    }
-    else
-    {
-        <body onload="testeModal()">
+                <tbody>
 
-            @*<a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>*@
-            <div id="modal1" class="modal" style="width:30%;">
-                <div class="modal-content">
-                    <h4>Error</h4>
-                    <p>Fabricante não encontrado!!</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" href="#!" class="modal-close waves-effect waves-green btn">OK</button>
+                    @foreach (var item in Model.LstProdutos)
+                    {
+                        <tr>
+                            <td>@item.Produto</td>
+                            <td>@item.Descricao</td>
+                            <td class="right-align">@Loja.Bll.Util.Util.FormataMoeda(item.Preco)</td>
+                        </tr>
+
+                    }
+                </tbody>
+
+            </table>
+            <div class="content">
+                <div class="form-group mt-2" style="text-align:right">
+                    <button class="btn btn-primary"
+                            onclick="Imprimir()">
+                        Imprimir
+                    </button>
                 </div>
             </div>
-        </body>
+        }
+        else
+        {
+            <script>
+                $(document).ready(function () {
+                    ModalSimples("Erro", "Fabricante não encontrado!");
+                });
+            </script>
+        }
     }
-}
 
 
 
 
-@* Impressão *@
-@if (Model != null)
-{
-    @if (Model.Fabricante != null)
+    @* Impressão *@
+    @if (Model != null)
     {
-        <table id="tabelateste" style="visibility:collapse;
+        @if (Model.Fabricante != null)
+        {
+            <table id="tabelateste" style="visibility:collapse;
                                width:649px;
                                border-right:1pt solid #C0C0C0;
                                border-bottom:1pt solid #c0c0c0;
                                font-family:Arial, Helvetica, sans-serif;
                                font-size:10pt;
                                border-left:1pt solid #c0c0c0;"
-               cellpadding="4">
-            <tbody>
-                <tr>
-                    <td align="center" style="background-color:azure;
+                   cellpadding="4"
+                   class="table-responsive">
+                <tbody>
+                    <tr>
+                        <td align="center" style="background-color:azure;
                                       background-size:auto;
                                       background-origin:padding-box;
                                       background-clip:border-box;
                                       border-top:1pt solid #C0C0C0;
                                       border-bottom:1pt solid #C0C0C0"
-                        colspan="3">
-                        <p style="color:#000000;
+                            colspan="3">
+                            <p style="color:#000000;
                           font-size:9pt;
                           font-weight:bold;
                           font-style:normal;
                           margin:0pt 4pt 0pt 4pt">
-                            @Model.Fabricante
+                                @Model.Fabricante
 
-                        </p>
-                    </td>
-                </tr>
-                <tr style="background-color:#fff0e0;
+                            </p>
+                        </td>
+                    </tr>
+                    <tr style="background-color:#fff0e0;
                        background-size:auto;
                        background-origin:padding-box;
                        background-clip:border-box">
-                    @*<td style="background-color:#ffffff;
-                           background-size:auto;
-                           background-origin:padding-box;
-                           background-clip:border-box;
-                           border-right:1pt solid #C0C0C0;
-                           font-family:Arial, Helvetica, sans-serif;
-                           font-size:10pt;
-                           width:5px"
-                        valign="bottom"></td>*@
-                    <td style="width:70px;
-                           border-right:1pt solid #C0C0C0;
-                           border-bottom:1pt solid #C0C0C0;
-                           font-family:Arial, Helvetica, sans-serif;
-                           font-size:10pt;"
-                        valign="bottom">
-                        <p style="font-family:Arial, Helvetica, sans-serif;
-                              color:#808080;
-                              font-weight:bold;
-                              font-size:8pt;
-                              vertical-align:top;
-                              margin:1pt 0pt 0pt 2pt">
-                            Produto
-                        </p>
-                    </td>
-                    <td style="border-right:1pt solid #C0C0C0;
-                           border-bottom:1pt solid #C0C0C0;
-                           font-family:Arial, Helvetica, sans-serif;
-                           font-size:10pt;
-                           width:280px;
-                           " valign="bottom">
-                        <p style="font-family:Arial, Helvetica, sans-serif;
-                              color:#808080;
-                              font-weight:bold;
-                              font-size:8pt;
-                              vertical-align:top;
-                              margin:1pt 0pt 0pt 2pt">
-                            Descrição
-                        </p>
-                    </td>
-                    <td style="width:100px;
-                           border-bottom:1pt solid #C0C0C0;
-                           font-family:Arial, Helvetica, sans-serif;
-                           font-size:10pt;"
-                        valign="bottom" ;>
-                        <p style="font-weight:bold;
-                              font-family:Arial, Helvetica, sans-serif;
-                              color:#808080;
-                              font-size:8pt;
-                              vertical-align:top;
-                              margin:0pt 4pt 0pt 2pt;
-                              text-align:right">
-                            Preço
-                        </p>
-                    </td>
-                </tr>
-                @foreach (var i in Model.LstProdutos)
-                {
-                    <tr>
                         @*<td style="background-color:#ffffff;
                                background-size:auto;
                                background-origin:padding-box;
@@ -202,12 +143,12 @@
                            font-size:10pt;"
                             valign="bottom">
                             <p style="font-family:Arial, Helvetica, sans-serif;
-                              color:black;
+                              color:#808080;
                               font-weight:bold;
                               font-size:8pt;
                               vertical-align:top;
-                              margin:0pt 2pt 1pt 2pt">
-                                @i.Produto
+                              margin:1pt 0pt 0pt 2pt">
+                                Produto
                             </p>
                         </td>
                         <td style="border-right:1pt solid #C0C0C0;
@@ -217,12 +158,12 @@
                            width:280px;
                            " valign="bottom">
                             <p style="font-family:Arial, Helvetica, sans-serif;
-                              color:black;
+                              color:#808080;
                               font-weight:bold;
                               font-size:8pt;
                               vertical-align:top;
-                              margin:0pt 2pt 1pt 2pt">
-                                @i.Descricao
+                              margin:1pt 0pt 0pt 2pt">
+                                Descrição
                             </p>
                         </td>
                         <td style="width:100px;
@@ -230,22 +171,82 @@
                            font-family:Arial, Helvetica, sans-serif;
                            font-size:10pt;"
                             valign="bottom" ;>
-                            <p onload="moeda(this)" style="font-weight:bold;
+                            <p style="font-weight:bold;
+                              font-family:Arial, Helvetica, sans-serif;
+                              color:#808080;
+                              font-size:8pt;
+                              vertical-align:top;
+                              margin:0pt 4pt 0pt 2pt;
+                              text-align:right">
+                                Preço
+                            </p>
+                        </td>
+                    </tr>
+                    @foreach (var i in Model.LstProdutos)
+                    {
+                        <tr>
+                            @*<td style="background-color:#ffffff;
+                                   background-size:auto;
+                                   background-origin:padding-box;
+                                   background-clip:border-box;
+                                   border-right:1pt solid #C0C0C0;
+                                   font-family:Arial, Helvetica, sans-serif;
+                                   font-size:10pt;
+                                   width:5px"
+                                valign="bottom"></td>*@
+                            <td style="width:70px;
+                           border-right:1pt solid #C0C0C0;
+                           border-bottom:1pt solid #C0C0C0;
+                           font-family:Arial, Helvetica, sans-serif;
+                           font-size:10pt;"
+                                valign="bottom">
+                                <p style="font-family:Arial, Helvetica, sans-serif;
+                              color:black;
+                              font-weight:bold;
+                              font-size:8pt;
+                              vertical-align:top;
+                              margin:0pt 2pt 1pt 2pt">
+                                    @i.Produto
+                                </p>
+                            </td>
+                            <td style="border-right:1pt solid #C0C0C0;
+                           border-bottom:1pt solid #C0C0C0;
+                           font-family:Arial, Helvetica, sans-serif;
+                           font-size:10pt;
+                           width:280px;
+                           " valign="bottom">
+                                <p style="font-family:Arial, Helvetica, sans-serif;
+                              color:black;
+                              font-weight:bold;
+                              font-size:8pt;
+                              vertical-align:top;
+                              margin:0pt 2pt 1pt 2pt">
+                                    @i.Descricao
+                                </p>
+                            </td>
+                            <td style="width:100px;
+                           border-bottom:1pt solid #C0C0C0;
+                           font-family:Arial, Helvetica, sans-serif;
+                           font-size:10pt;"
+                                valign="bottom" ;>
+                                <p onload="moeda(this)" style="font-weight:bold;
                               font-family:Arial, Helvetica, sans-serif;
                               color:black;
                               font-size:8pt;
                               vertical-align:top;
                               margin:0pt 4pt 0pt 2pt;
                               text-align:right">
-                                @String.Format("{0:c}", i.Preco)
-                            </p>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                                    @String.Format("{0:c}", i.Preco)
+                                </p>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
     }
-}
+
+</div>
 <script>
     function mascara(o, f) {
         v_obj = o;

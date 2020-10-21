@@ -95,6 +95,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="moda-body mt-3 ml-2 mr-2">
+                <h5 id="header"></h5>
                 <p id="mensagem"></p>
             </div>
             <div class="modal-footer justify-content-center py-3">
@@ -110,18 +111,20 @@
         margin-top: calc(100vh - 500px);
     }
 
-    #mensagem {
+    #mensagem , #header{
         text-align: center;
     }
 </style>
 <script>
 
-    function ModalSimples(mensagem) {
+    function ModalSimples(header, mensagem) {
         $("#modal-simples").modal("show");
+        $("#header").text(header);
         $("#mensagem").text(mensagem);
     }
 
     $("#modal-simples").on("hide.bs.modal", function () {
+        $("#header").text('');
         $("#mensagem").text('');
     });
 
