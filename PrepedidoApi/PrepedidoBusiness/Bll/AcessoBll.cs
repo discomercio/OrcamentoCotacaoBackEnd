@@ -99,6 +99,15 @@ namespace PrepedidoBusiness.Bll
             return await Task.FromResult(loja);
         }
 
+        public async Task<string> Buscar_unidade_negocio(string loja)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+            var unidade_negocio = await ((from c in db.Tlojas
+                                   where c.Loja == loja.Trim()
+                                   select c.Unidade_Negocio).FirstOrDefaultAsync());
+            return unidade_negocio;
+        }
+
         public async Task GravarSessaoComTransacao(string ip, string apelido, string userAgent)
         {
             string loja = await BuscarLojaUsuario(apelido);
@@ -147,6 +156,10 @@ namespace PrepedidoBusiness.Bll
 
         public async Task FazerLogout(string apelido)
         {
+            //proteção adicional, só por proteger mesmo
+            if (string.IsNullOrEmpty(apelido))
+                return;
+
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
             {
                 var sessaoHistTask = (from c in dbgravacao.TsessaoHistoricos

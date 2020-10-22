@@ -756,7 +756,7 @@ namespace UtilsGlobais
             return log;
         }
         public static bool GravaLog(ContextoBdGravacao dbgravacao, string apelido, string loja, string pedido, string id_cliente,
-            string operação, string log)
+            string operacao, string log)
         {
             if (apelido == null)
                 return false;
@@ -768,7 +768,7 @@ namespace UtilsGlobais
                 Loja = loja,
                 Pedido = pedido,
                 Id_Cliente = id_cliente,
-                Operacao = operação,
+                Operacao = operacao,
                 Complemento = log
             };
 
