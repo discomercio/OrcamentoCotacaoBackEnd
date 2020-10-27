@@ -39,7 +39,7 @@ namespace Loja.UI.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> ValidarCliente(string cpf_cnpj)
         {
             cpf_cnpj = Loja.Bll.Util.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
@@ -49,12 +49,15 @@ namespace Loja.UI.Controllers
             {
                 //colocar uma msg de erro para retornar para a tela
                 novoCliente = true;
-                return RedirectToAction("BuscarCliente", new { cpf_cnpj = cpf_cnpj, novoCliente = novoCliente });
+                return Json(novoCliente);
+                //return RedirectToAction("Index", new { cpf_cnpj = cpf_cnpj, novoCliente = novoCliente });
             }
             else
-                return RedirectToAction("BuscarCliente", new { cpf_cnpj = cpf_cnpj, novoCliente = novoCliente }); //editar cliente
+                return Json(novoCliente = false);
+                //return RedirectToAction("BuscarCliente", new { cpf_cnpj = cpf_cnpj, novoCliente = novoCliente }); //editar cliente
         }
 
+        [HttpPost]
         public async Task<IActionResult> BuscarCliente(string cpf_cnpj, bool novoCliente)
         {
             /*Passo a passo da entrada 

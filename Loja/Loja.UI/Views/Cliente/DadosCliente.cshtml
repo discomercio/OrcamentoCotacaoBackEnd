@@ -32,23 +32,7 @@
 {
 
     <script>
-        // Passamos true para confirmar o fechamento da modal
-        //estamos verificando se clicou em "Cadastrar = true" ou "Cancelar = false"
-        //no caso de clicar "Cancelar" voltamos para a tela para inserir novo cpf/cnpj
-        swal({
-            title: "Cliente não cadastrado!",
-            text: "Deseja cadastrar o cliente?",
-            type: "warning",
-            showCancelButton: true,
-            cancelButtonText: "Cancelar",
-            confirmButtonClass: "btn-danger",
-            confirmButtonText: "Cadastrar",
-            closeOnConfirm: true,
-            closeOnCancel: true
-        },
-            function (ok) {
-                if (!ok) document.getElementById("voltar").click();
-            });
+        
     </script>
 }
 
@@ -370,71 +354,75 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                         @{
                                                             var indice = 0;
 
-                                                            <div class="card-body form-control-right">
-                                                                <hr />
-                                                                <a class="btn btn-link btn-block text-right" id="addRefBancaria" style="color:black !important;">
-                                                                    Adicionar Referência
-                                                                    <i class="fa fa-plus"></i>
-                                                                </a>
-                                                                <hr />
+                                                                                                                <div class="card-body form-control-right">
+                                                                                                                    <hr />
+                                                                                                                    <a class="btn btn-link btn-block text-right" id="addRefBancaria" style="color:black !important;">
+                                                                                                                        Adicionar Referência
+                                                                                                                        <i class="fa fa-plus"></i>
+                                                                                                                    </a>
+                                                                                                                    <hr />
 
 
-                                                                @while (Model.RefBancaria?.Count < 3)
-                                                                {
-                                                                    Model.RefBancaria.Add(new Loja.Bll.Dto.ClienteDto.RefBancariaDtoCliente());
-                                                                }
+                                                                                                                    @while (Model.RefBancaria?.Count < 3)
+                                                                                                                    {
+                                                                                                                        Model.RefBancaria.Add(new Loja.Bll.Dto.ClienteDto.RefBancariaDtoCliente());
+                                                                                                                    }
 
-                                                                @foreach (var r in Model.RefBancaria)
-                                                                {
-                                                                    string visible = "display: none;";
-                                                                    if (!String.IsNullOrWhiteSpace(r.ContaBanco))
-                                                                    {
-                                                                        visible = "display: block";
-                                                                    }
+                                                                                                                    @if (Model.RefBancaria?.Count > 0)
+                                                                                                                    {
+                                                                                                                        @foreach (var r in Model.RefBancaria)
+                                                                                                                        {
+                                                                                                                            string visible = "display: none;";
+                                                                                                                            if (!String.IsNullOrWhiteSpace(r.ContaBanco))
+                                                                                                                            {
+                                                                                                                                visible = "display: block";
+                                                                                                                            }
 
-                                                                    <div class="form-group row" id="RefBancariabody-@indice" style="@visible">
-                                                                        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
-                                                                            <label class="col-form-label" for="@indice-banco">BANCO</label>
-                                                                            @Html.DropDownList("[" + indice + "].Banco",
-                                                                           new SelectList(Model.LstComboBanco, "Value", "Text", r.Banco),
-                                                                           new
-                                                                                {
-                                                                               @id = indice + "-banco",
-                                                                               @name = "[" + indice + "].BancoDescricao",
-                                                                               @class = "custom-select"
-                                                                           })
-                                                                        </div>
-                                                                        <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6">
-                                                                            <label class="col-form-label">AGÊNCIA</label>
-                                                                            <input name="[@indice].Agencia" id="@indice-agencia"
-                                                                                   type="text"
-                                                                                   value="@r.Agencia"
-                                                                                   class="form-control" />
-                                                                        </div>
-                                                                        <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6">
-                                                                            <label class="col-form-label" for="@indice-conta">CONTA</label>
-                                                                            <input name="[@indice].ContaBanco" id="@indice-conta"
-                                                                                   type="text"
-                                                                                   value="@r.ContaBanco"
-                                                                                   class="form-control" />
-                                                                        </div>
-                                                                        <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6">
-                                                                            <label class="col-form-label" for="@indice-telBanco">TELEFONE</label>
-                                                                            <input name="[@indice].TelefoneBanco" id="@indice-telBanco"
-                                                                                   type="text"
-                                                                                   value="@r.TelefoneBanco"
-                                                                                   class="form-control" />
-                                                                        </div>
-                                                                        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
-                                                                            <label class="col-form-label">CONTATO</label>
-                                                                            <input name="[@indice].ContatoBanco" id="@indice-contatoBanco"
-                                                                                   type="text"
-                                                                                   value="@r.ContatoBanco"
-                                                                                   class="form-control" />
-                                                                        </div>
-                                                                    </div>
-                                                                }
-                                                            </div>
+                                                                                                                            <div class="form-group row" id="RefBancariabody-@indice" style="@visible">
+                                                                                                                                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                                                                                                                                    <label class="col-form-label" for="@indice-banco">BANCO</label>
+                                                                                                                                    @Html.DropDownList("[" + indice + "].Banco",
+                                                                                                                                   new SelectList(Model.LstComboBanco, "Value", "Text", r.Banco),
+                                                                                                                                   new
+                                                                                                                                        {
+                                                                                                                                       @id = indice + "-banco",
+                                                                                                                                       @name = "[" + indice + "].BancoDescricao",
+                                                                                                                                       @class = "custom-select"
+                                                                                                                                   })
+                                                                                                                                </div>
+                                                                                                                                <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6">
+                                                                                                                                    <label class="col-form-label">AGÊNCIA</label>
+                                                                                                                                    <input name="[@indice].Agencia" id="@indice-agencia"
+                                                                                                                                           type="text"
+                                                                                                                                           value="@r.Agencia"
+                                                                                                                                           class="form-control" />
+                                                                                                                                </div>
+                                                                                                                                <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6">
+                                                                                                                                    <label class="col-form-label" for="@indice-conta">CONTA</label>
+                                                                                                                                    <input name="[@indice].ContaBanco" id="@indice-conta"
+                                                                                                                                           type="text"
+                                                                                                                                           value="@r.ContaBanco"
+                                                                                                                                           class="form-control" />
+                                                                                                                                </div>
+                                                                                                                                <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6">
+                                                                                                                                    <label class="col-form-label" for="@indice-telBanco">TELEFONE</label>
+                                                                                                                                    <input name="[@indice].TelefoneBanco" id="@indice-telBanco"
+                                                                                                                                           type="text"
+                                                                                                                                           value="@r.TelefoneBanco"
+                                                                                                                                           class="form-control" />
+                                                                                                                                </div>
+                                                                                                                                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                                                                                                                                    <label class="col-form-label">CONTATO</label>
+                                                                                                                                    <input name="[@indice].ContatoBanco" id="@indice-contatoBanco"
+                                                                                                                                           type="text"
+                                                                                                                                           value="@r.ContatoBanco"
+                                                                                                                                           class="form-control" />
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        }
+                                                                                                                    }
+
+                                                                                                                </div>
                                                         }
 
                                                     </div>

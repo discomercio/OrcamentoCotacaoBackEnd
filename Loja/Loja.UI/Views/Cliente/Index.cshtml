@@ -37,30 +37,30 @@
                             <div class="page-header card">
                                 <div class="content col-xl-12 col-lg-12 px-0">
                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 px-0">
-                                        @using (Html.BeginForm("ValidarCliente", "Cliente", FormMethod.Post,
-                                        new
-                                        {
-                                            enctype = "multipart/form-data",
-                                            onsubmit = "return ValidarCpfCnpj()",
-                                            id = "formulario"
-                                        }
-                                         ))
+                                        @using (Html.BeginForm("BuscarCliente", "Cliente", FormMethod.Post,
+                                      new
+                                      {
+                                          enctype = "multipart/form-data",                                          
+                                          id = "formulario"
+                                      }
+                                       ))
                                         {
                                             <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 px-0">
+                                                <input type="hidden" name="novoCliente" id="novoCliente" value="" />
                                                 <label class="col-form-label" for="cpf_cnpj">CPF / CNPJ</label>
                                                 <input type="text" name="cpf_cnpj" id="cpf_cnpj"
                                                        class="form-control col-xl-6 col-lg-6 col-md-6 col-sm-6 mb-2"
                                                        placeholder="Informe CPF/CNPJ"
                                                        style="display:inline-block">
                                                 <button class="btn btn-primary btn-sm col-xl-2 col-lg-3 col-md-3 col-sm-3 mt-0"
-                                                        type="submit" onclick="$('#formulario').submit()" style="margin-top:2.5%">
+                                                        type="button" onclick="ValidarCpfCnpj()" style="margin-top:2.5%">
                                                     <i class="fa fa-search"></i>
                                                     Pesquisar
                                                 </button>
                                             </div>
                                         }
                                     </div>
-                                </div>                                
+                                </div>
                             </div>
                         </div>
                     </div>
