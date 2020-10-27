@@ -35,86 +35,100 @@ dadosPagto = new DadosPagto();
 declare var lstCoeficiente: CoeficienteDto[];
 declare var qtdeParcVisa: number;
 declare var permiteRAStatus: number;
-//let formata = new MoedaUtils();
-//alert("alterdado6 " + formata.formatarMoedaComPrefixo(123));
 
-declare function modalError(): any;
+declare function swal(header, mensagem): any;
+
 declare function AbrirModalProdutos(): any;
 
 
 function inicializaCampos(v: number) {
-    var div;
+    let div: any;
     var disp;
     if (v.toString() == "1") {
-        div = document.getElementById("Avista");
-        disp = div.style.display;
-        if (disp == 'none') {
-            div.style.display = 'block';
+        div = document.getElementsByClassName("Avista");
+        for (let i = 0; i < div.length; i++) {
+            disp = div[i].style.display;
+            if (disp == 'none') {
+                div[i].style.display = 'block';
+            }
         }
     }
     else {
-        div = document.getElementById("Avista");
-        if (div != null) {
-            disp = div.style.display;
-            div.style.display = 'none';
+        div = document.getElementsByClassName("Avista");
+        if (div.length > 0) {
+            for (let i = 0; i < div.length; i++) {
+                div[i].style.display = 'none';
+            }
         }
     }
     if (v.toString() == "5") {
-        div = document.getElementById("ParcUnica");
-        disp = div.style.display;
-        if (disp == 'none') {
-            div.style.display = 'block';
+        div = document.getElementsByClassName("ParcUnica");
+        for (let i = 0; i < div.length; i++) {
+            disp = div[i].style.display;
+            if (disp == 'none') {
+                div[i].style.display = 'block';
+            }
         }
     }
     else {
-        div = document.getElementById("ParcUnica");
-        if (div != null) {
-            disp = div.style.display;
-            div.style.display = 'none';
+        div = document.getElementsByClassName("ParcUnica");
+        if (div.length > 0) {
+            for (let i = 0; i < div.length; i++) {
+                div[i].style.display = 'none';
+            }
         }
     }
     if (v.toString() == "3") {
-        div = document.getElementById("ParcComEntrada");
-        disp = div.style.display;
-        if (disp == 'none') {
-            div.style.display = 'block';
+        div = document.getElementsByClassName("ParcComEntrada");
+        for (let i = 0; i < div.length; i++) {
+            disp = div[i].style.display;
+            if (disp == 'none') {
+                div[i].style.display = 'inline-flex';
+            }
         }
     }
     else {
-        div = document.getElementById("ParcComEntrada");
-        if (div != null) {
-            disp = div.style.display;
-            div.style.display = 'none';
+        div = document.getElementsByClassName("ParcComEntrada");
+        if (div.length > 0) {
+            for (let i = 0; i < div.length; i++) {
+                div[i].style.display = 'none';
+            }
         }
     }
     if (v.toString() == "2") {
-        div = document.getElementById("PagtoCartaoInternet");
-        disp = div.style.display;
-        if (disp == 'none') {
-            div.style.display = 'block';
+        div = document.getElementsByClassName("PagtoCartaoInternet");
+        for (let i = 0; i < div.length; i++) {
+            disp = div[i].style.display;
+            if (disp == 'none') {
+                div[i].style.display = 'block';
+            }
         }
     }
     else {
-        div = document.getElementById("PagtoCartaoInternet");
-        if (div != null) {
-            disp = div.style.display;
-            div.style.display = 'none';
+        div = document.getElementsByClassName("PagtoCartaoInternet");
+        if (div.length > 0) {
+            for (let i = 0; i < div.length; i++)
+                div[i].style.display = 'none';
         }
     }
     if (v.toString() == "6") {
-        div = document.getElementById("PagtoCartaoMaquineta");
-        disp = div.style.display;
-        if (disp == 'none') {
-            div.style.display = 'block';
+        div = document.getElementsByClassName("PagtoCartaoMaquineta");
+        for (let i = 0; i < div.length; i++) {
+            disp = div[i].style.display;
+            if (disp == 'none') {
+                div[i].style.display = 'block';
+            }
         }
     }
     else {
-        div = document.getElementById("PagtoCartaoMaquineta");
-        if (div != null) {
-            disp = div.style.display;
-            div.style.display = 'none';
+        div = document.getElementsByClassName("PagtoCartaoMaquineta");
+        if (div.length > 0) {
+            for (let i = 0; i < div.length; i++)
+                div[i].style.display = 'none';
         }
     }
+
+
 }
 
 $(".prod").click(function () {
@@ -128,11 +142,13 @@ $("#btnModalProdutos").click(function () {
     return true;
 });
 
-//limpando campos ao fechar a modal
+
+
+//buscando produtos 
 $("#buscaproduto").keyup(function () {
     let buscaProduto: string = $("#buscaproduto").val().toString();
 
-    $(".tabelaProd tr").hide();
+    $("#tbody_modal tr").hide();
     if (buscaProduto != "") {
         $(".prod").filter(function () {
             if ($(this).text().toLowerCase().indexOf(buscaProduto) >= 0) {
@@ -146,7 +162,7 @@ $("#buscaproduto").keyup(function () {
         });
     }
     else {
-        $(".tabelaProd tr").show();
+        $("#tbody_modal tr").show();
     }
 });
 
@@ -168,51 +184,44 @@ window.VerificarPercMaxDescEComissao = (e: HTMLInputElement) => {
     val = (val / 100).toFixed(2) + '';
     e.value = moedaUtils.formatarMoedaSemPrefixo(val);
 
-
+    let headerErro: string = "";
     let msgErro: string = "";
     let percMax = new PercentualMaximoDto()
     percMax = percentualMaximoDto;
 
     if (val < 0 || val > 100) {
         msgErro = "Percentual de comissão inválido.";
+        swal(headerErro, msgErro);
+        return false;
     }
     if (val > percentualMaximoDto.PercMaxComissao) {
         msgErro = "O percentual de comissão excede o máximo permitido.";
-    }
-
-    if (msgErro != "") {
-        //chama a modal caso seja maior ou tiver erros
-        modalError();
-        let err = new ErrorModal();
-        err.MostrarMsg(msgErro);
+        swal(headerErro, msgErro);
         return false;
     }
 }
 
 //como é chamadado diretamente do HTML, tem que estar na window
 window.InserirProdutoLinha = () => {
-
     let selectProdInfo = new SelectProdInfo();
-    //estou pegando a linha
     if ($("#qtde").val() != "" && $("#qtde").val() != "undefined") {
-        $('.prod').children().find('input').filter(function () {
-            if ($(this).prop('checked') == true) {
-                var elem = $(this).parent().parent().parent();
-                elem.children().each(function () {
-                    selectProdInfo.Fabricante = elem.children()[0].textContent.trim();
-                    selectProdInfo.Produto = elem.children()[1].textContent.trim();
-                    selectProdInfo.Qte = parseInt($("#qtde").val().toString());
-                    selectProdInfo.ClicouOk = true;
-                });
-                return true;
-            }
-        });
+
+        //estou pegando a linha
+        $("#tbody_modal").find('input:checked').parent().closest(".prod")
+        //pegando os valores de fabricante e produto e qtde
+        let fabricante: string = $("#tbody_modal").find('input:checked').parent().closest(".prod").children().find('input')[0].value;
+        let produto: string = $("#tbody_modal").find('input:checked').parent().closest(".prod").children().find('input')[1].value;
+        let qtde: number = parseInt($("#qtde").val().toString());
+
+        selectProdInfo.Fabricante = fabricante;
+        selectProdInfo.Produto = produto;
+        selectProdInfo.Qte = qtde;
 
         itens.dtoProdutoCombo = lstprodutos;//pegando da tela
         itens.selectProdInfo = selectProdInfo;
+        itens.selectProdInfo.ClicouOk = true;
         itens.pedidoDto = new PedidoDto();
         itens.mostrarProdutos(null);
-
 
         //estamos arrumando a qtde, verificando se existe e inserindo o produto
         arrumarProdsRepetidosTeste();
@@ -222,19 +231,17 @@ window.InserirProdutoLinha = () => {
         //estamos passando o enum do dadosPagto para recalcular a lista de parcelamento
         RecalcularValoresSemCoeficiente(dadosPagto.enumFormaPagto, true, true);
 
-
         PedidoAlterado();
-        //limpar tirar o check do produto selecionado
-        $('.prod').children().find('input').filter(function () {
-            if ($(this).prop('checked') == true)
-                $(this).prop('checked', false);
-            return true;
-        });
 
+        //vamos limpar os campos da modal de produtos e limpar os checkbox
+        $("#tbody_modal").find('input:checked').prop('checked', false);
+        $("#qtde").val(1);
+        $("#buscaproduto").val("");
+        $("#tbody_modal tr").show();
+
+        let headerErro: string = "Erro";
         if (itens.msgErro != "" && itens.msgErro != undefined) {
-            modalError();
-            let err = new ErrorModal();
-            err.MostrarMsg(itens.msgErro);
+            swal(headerErro, itens.msgErro);
         }
     }
     else {
@@ -443,7 +450,6 @@ window.formataVlVenda = (v: HTMLInputElement) => {
     let r: PedidoProdutosPedidoDto[] = new Array<PedidoProdutosPedidoDto>();
     r = lstProdSelecionados.filter(e => e.NumProduto == numProduto);
 
-    debugger;
     if (parseFloat(val) == 0 && val.length > 2) {
         val = r[0].VlUnitario.toString();
     }
@@ -462,8 +468,6 @@ window.formatarPreco_Lista = (v: HTMLInputElement) => {
     let numProduto: string = linha.children[0].children[0].value;
     let r: PedidoProdutosPedidoDto[] = new Array<PedidoProdutosPedidoDto>();
     r = lstProdSelecionados.filter(e => e.NumProduto == numProduto);
-
-    debugger;
     if (parseFloat(val) == 0 && val.length > 2) {
         val = r[0].Preco_Lista.toString();
     }
@@ -480,14 +484,14 @@ window.formatarVlEntrada = (v: HTMLInputElement) => {
 }
 
 window.digitouDesc = (v: HTMLInputElement) => {
-
+    
     let valor: string = v.value;
     let val: any = valor.replace(/\D/g, '');
     val = (val / 100).toFixed(2) + '';
 
     //pegar o valor para buscar na lista
     let linha: any = v.parentElement.parentElement.parentElement;
-    let numProduto: string = linha.children[0].children[0].value;
+    let numProduto: string = linha.children[0].value;
     let r: PedidoProdutosPedidoDto[] = new Array<PedidoProdutosPedidoDto>();
     r = lstProdSelecionados.filter(e => e.NumProduto == numProduto);
     r[0].Desconto = val;
@@ -522,7 +526,7 @@ window.digitouDesc = (v: HTMLInputElement) => {
         somarRABruto();
     }
     else {
-        linha.children[6].children[0].children[0].value = moedaUtils.formatarMoedaSemPrefixo(r[0].VlUnitario);
+        linha.children[6].children[0].value = moedaUtils.formatarMoedaSemPrefixo(r[0].VlUnitario);
         linha.children[7].textContent = moedaUtils.formatarMoedaSemPrefixo(r[0].VlTotalItem);
         linha.children[7].value = moedaUtils.formatarMoedaSemPrefixo(r[0].VlTotalItem);
     }
@@ -532,14 +536,16 @@ window.digitouDesc = (v: HTMLInputElement) => {
 }
 
 window.digitouVlVenda = (v: HTMLInputElement) => {
+
+    debugger;
     let valor: string = v.value;
     let val: any = valor.replace(/\D/g, '');
 
     val = (val / 100).toFixed(2) + '';
     v.value = moedaUtils.formatarMoedaSemPrefixo(val);
 
-    let linha: any = v.parentElement.parentElement.parentElement;
-    let numProduto: string = linha.children[0].children[0].value;
+    let linha: any = v.parentElement.parentElement;
+    let numProduto: string = linha.children[0].value;
     let r: PedidoProdutosPedidoDto[] = new Array<PedidoProdutosPedidoDto>();
     r = lstProdSelecionados.filter(e => e.NumProduto == numProduto);
 
@@ -567,7 +573,7 @@ window.digitouVlVenda = (v: HTMLInputElement) => {
     }
     else {
         linha.children[5].children[0].children[0].value = moedaUtils.formatarMoedaSemPrefixo(r[0].Desconto);
-        linha.children[6].children[0].children[0].value = moedaUtils.formatarMoedaSemPrefixo(r[0].VlUnitario);
+        linha.children[6].children[0].value = moedaUtils.formatarMoedaSemPrefixo(r[0].VlUnitario);
         linha.children[7].textContent = moedaUtils.formatarMoedaSemPrefixo(r[0].TotalItem);
 
     }
@@ -637,7 +643,6 @@ window.digitouPreco_Lista = (v: HTMLInputElement) => {
 }
 
 function calcula_total_RA_liquido(percentual_desagio_RA_liquida: number, vl_total_RA: number): number {
-    debugger;
     let vl_total_RA_liquido: number;
     //let blnAplicouDesagioRA = true;
     if (vl_total_RA == 0 || vl_total_RA < 0) {
@@ -688,18 +693,16 @@ function somarRALiquido(): void {
     let total = totalPedido();
     let totalRa = totalPedidoRA();
 
-    debugger;
     let somaRA = parseFloat((totalRa - total).toFixed(2));
 
     //total ra liquido = totalNF - totalVenda
     //r_RA_liquido = new calcula_total_RA_liquido(PERC_DESAGIO_RA_LIQUIDA_PEDIDO, vl_RA);
-    let constantes = new Constantes();
 
     $('#totalValorRALiquido').text(moedaUtils.formatarMoedaSemPrefixo(
-        calcula_total_RA_liquido(constantes.PERC_DESAGIO_RA_LIQUIDA, somaRA)));
+        calcula_total_RA_liquido(Constantes.PERC_DESAGIO_RA_LIQUIDA, somaRA)));
 
     $('#totalValorRALiquidoInput').val(moedaUtils.formatarMoedaSemPrefixo(
-        calcula_total_RA_liquido(constantes.PERC_DESAGIO_RA_LIQUIDA, somaRA)));
+        calcula_total_RA_liquido(Constantes.PERC_DESAGIO_RA_LIQUIDA, somaRA)));
 
     //return somaRA;
 }
@@ -716,7 +719,6 @@ function totalPedidoRA(): number {
 
 //calculamos os produtos e somamos o total
 function totalPedido(): number {
-    debugger;
     let total: number = parseFloat(lstProdSelecionados.reduce((sum, current) => sum + current.TotalItem, 0).toFixed(2));
 
     $("#totalPedido").text(moedaUtils.formatarMoedaSemPrefixo(total));
@@ -736,6 +738,7 @@ $("#totalPedido").ready(() => {
     novoPedidoDadosService.pedidoDto = new PedidoDto();
     novoPedidoDadosService.pedidoDto.ListaProdutos = new Array<PedidoProdutosPedidoDto>();
     novoPedidoDadosService.pedidoDto.ListaProdutos = lstProdSelecionados;
+
     let totalP: string = $("#totalPedido").val().toString();
 
     if (totalP != "0") {
@@ -803,23 +806,23 @@ function zerarCamposDadosPagto(editandoLinha: boolean) {
     //    ($("#enumFormaPagto") as any).formSelect();
     //}
 
-    if (dadosPagto.enumFormaPagto == 1) {
-        //A vista   
-        //$("#Avista").css("display", "none");
-        selecione = $("#opcaoPagtoAvista").children()[0];
-        $("#opcaoPagtoAvista").html(selecione);
-        ($("#opcaoPagtoAvista") as any).formSelect();
+    //if (dadosPagto.enumFormaPagto == 1) {
+    //    //A vista   
+    //    //$("#Avista").css("display", "none");
+    //    selecione = $("#opcaoPagtoAvista").children()[0];
+    //    $("#opcaoPagtoAvista").html(selecione);
+    //    ($("#opcaoPagtoAvista") as any).formSelect();
 
-        $("#meioPagtoAVista").prop('selectedIndex', 0);
-        ($("#meioPagtoAVista") as any).formSelect();
-    }
+    //    $("#meioPagtoAVista").prop('selectedIndex', 0);
+    //    ($("#meioPagtoAVista") as any).formSelect();
+    //}
 
     //ParcCartaoInternet
     if (dadosPagto.enumFormaPagto == 2) {
 
         selecione = $("#opcaoPagtoParcCartaoInternet").children()[0];
         $("#opcaoPagtoParcCartaoInternet").html(selecione);
-        ($("#opcaoPagtoParcCartaoInternet") as any).formSelect();
+        //($("#opcaoPagtoParcCartaoInternet") as any).formSelect();
     }
 
     if (dadosPagto.enumFormaPagto == 3) {
@@ -828,14 +831,14 @@ function zerarCamposDadosPagto(editandoLinha: boolean) {
         //$("#vlEntrada").val('');
 
         //$("#meioPagtoEntrada").prop('selectedIndex', 0);
-        ($("#meioPagtoEntrada") as any).formSelect();
+        //($("#meioPagtoEntrada") as any).formSelect();
 
-        selecione = $("#opcaoPagtoParcComEntrada").children()[0];
-        $("#opcaoPagtoParcComEntrada").html(selecione);
-        ($("#opcaoPagtoParcComEntrada") as any).formSelect();
+        //selecione = $("#opcaoPagtoParcComEntrada").children()[0];
+        //$("#opcaoPagtoParcComEntrada").html(selecione);
+        //($("#opcaoPagtoParcComEntrada") as any).formSelect();
 
-        $("#meioPagtoEntradaPrest").prop('selectedIndex', 0);
-        ($("#meioPagtoEntradaPrest") as any).formSelect();
+        //$("#meioPagtoEntradaPrest").prop('selectedIndex', 0);
+        //($("#meioPagtoEntradaPrest") as any).formSelect();
 
         //$("#diasVenc").val('');
     }
@@ -843,12 +846,12 @@ function zerarCamposDadosPagto(editandoLinha: boolean) {
     if (dadosPagto.enumFormaPagto == 5) {
         //ParcUnica
         //$("#ParcUnica").css("display", "none");
-        selecione = $("#opcaoPagtoParcUnica").children()[0];
-        $("#opcaoPagtoParcUnica").html(selecione);
-        ($("#opcaoPagtoParcUnica") as any).formSelect();
+        //selecione = $("#opcaoPagtoParcUnica").children()[0];
+        //$("#opcaoPagtoParcUnica").html(selecione);
+        //($("#opcaoPagtoParcUnica") as any).formSelect();
 
-        $("#meioPagtoParcUnica").prop('selectedIndex', 0);
-        ($("#meioPagtoParcUnica") as any).formSelect();
+        //$("#meioPagtoParcUnica").prop('selectedIndex', 0);
+        //($("#meioPagtoParcUnica") as any).formSelect();
 
         //$("#diasVencParcUnica").val('');
     }
@@ -856,16 +859,15 @@ function zerarCamposDadosPagto(editandoLinha: boolean) {
     if (dadosPagto.enumFormaPagto == 6) {
         //ParcCartaoMaquineta
         //$("#PagtoCartaoMaquineta").css("display", "none");
-        selecione = $("#opcaoPagtoParcCartaoMaquineta").children()[0];
-        $("#opcaoPagtoParcCartaoMaquineta").html(selecione);
-        ($("#opcaoPagtoParcCartaoMaquineta") as any).formSelect();
+        //selecione = $("#opcaoPagtoParcCartaoMaquineta").children()[0];
+        //$("#opcaoPagtoParcCartaoMaquineta").html(selecione);
+        //($("#opcaoPagtoParcCartaoMaquineta") as any).formSelect();
     }
 }
 
 
 function RecalcularValoresSemCoeficiente(v: any, editandoLinha: boolean, semVerificarServidor: boolean) {
     //zerarCamposDadosPagto(editandoLinha);
-    debugger;
     InicializaDadosPagto();
     if (v == "" || v == undefined || v == null || v == 0) {
         v = 1;
@@ -888,17 +890,15 @@ function RecalcularValoresSemCoeficiente(v: any, editandoLinha: boolean, semVeri
         dadosPagto.RecalcularListaProdutos();
         lstProdSelecionados = dadosPagto.pedidoDto.ListaProdutos;
 
+        let headerErro: string = "Erro";
 
         if (dadosPagto.msgErro != "" && dadosPagto.msgErro != undefined) {
-            modalError();
-            let err = new ErrorModal();
-            err.MostrarMsg(dadosPagto.msgErro);
+            swal(headerErro, dadosPagto.msgErro);
             dadosPagto.msgErro = "";
             return false;
         }
 
         AtribuirListaParaSelect();
-        debugger;
         //vamos apagar a linha de produtos selecionados e montar novamente com os valores atualizados
         //remover todas as linhas da tabela para adicionar novamente.
 
@@ -942,6 +942,8 @@ function CopiarTRsMsgEProduto(): string {
     novoProduto.html(htmlnovoProduto);
     novoProduto.removeClass(".novoProduto");
     novoProduto.addClass(novaClasse);
+    novoProduto.css('background-color', "#f8f8ff");
+    
     $(".trTotal").before(novoProduto);
 
     //novoProdutoEstoque    
@@ -983,13 +985,19 @@ function CopiarTRsMsgEProduto(): string {
 
 }
 
-window.recalcularValoresComCoeficiente = (e: HTMLSelectElement) => {
+// vamos alterar o select dos tipos de forma pagamento para utilizar radio
+// todas as opções de pagamento ficarão visiveis a todo momento
+// para isso iremos utilizar 2 blocos na mesma linha
+// no bloco da esquerda iremos incluir os radio's com todos os tipos 
+// no bloco da direita iremos deixar as respectivas div's escondidas e iremos mostrar apenas a que esta selecionada no radio
+// ao alterar a seleção de radio iremos esconder todas e mostrar apenas a que esta selecionada
+// SOBRE OS MÉTODOS
+// iremos fazer um método para cada clique ou iremos passar o valor diretamenta 
 
+window.recalcularValoresComCoeficiente = (e: HTMLInputElement) => {
 
     if (lstProdSelecionados.length == 0) {
-        modalError();
-        let erro = new ErrorModal();
-        erro.MostrarMsg("Selecione ao menos um produto!");
+        swal("Erro", "Selecione ao menos um produto!");
         return false;
     }
 
@@ -997,11 +1005,11 @@ window.recalcularValoresComCoeficiente = (e: HTMLSelectElement) => {
 
     InicializaDadosPagto();
     //let v = e.selectedIndex;
-    let v = parseInt(e.selectedOptions[0].value);
+    //let v = parseInt(e.selectedOptions[0].value);
+    let v = parseInt(e.value);
 
 
     inicializaCampos(v);
-
     //estou incluindo uma flag nesse metodo abaixo para não ir até a servidor para verificar, pois
     //estamos apenas recalculando com coeficiente
     RecalcularValoresSemCoeficiente(v, true, false);
@@ -1097,13 +1105,12 @@ $("#opcaoPagtoParcCartaoMaquineta").on('change', () => {
 
 function AtribuirListaParaSelect() {
 
-
     if (dadosPagto.enumFormaPagto == 1) {
         //A vista   
         dadosPagto.lstMsg.forEach((value) => {
             $("#opcaoPagtoAvista").append("<option selected>" + value + "</option>");
         });
-        ($("#opcaoPagtoAvista") as any).formSelect();
+        //($("#opcaoPagtoAvista") as any).formSelect();
     }
     if (dadosPagto.enumFormaPagto == 2) {
         //ParcCartaoInternet
@@ -1113,14 +1120,14 @@ function AtribuirListaParaSelect() {
         });
 
         //($("#opcaoPagtoParcCartaoInternet") as any).addEventListener('onclick', 'RecalcularListaProdutos(this)');
-        ($("#opcaoPagtoParcCartaoInternet") as any).formSelect();
+        //($("#opcaoPagtoParcCartaoInternet") as any).formSelect();
     }
     if (dadosPagto.enumFormaPagto == 3) {
         //ParcComEnt
         dadosPagto.lstMsg.forEach((value) => {
             $("#opcaoPagtoParcComEntrada").append("<option>" + value + "</option>");
         });
-        ($("#opcaoPagtoParcComEntrada") as any).formSelect();
+        //($("#opcaoPagtoParcComEntrada") as any).formSelect();
     }
     //NÃO ESTA SENDO USADO
     if (dadosPagto.enumFormaPagto == 4) {
@@ -1128,7 +1135,7 @@ function AtribuirListaParaSelect() {
         dadosPagto.lstMsg.forEach((value) => {
             $("#opcaoPagtoParcSemEntrada").append("<option>" + value + "</option>");
         });
-        ($("#opcaoPagtoParcSemEntrada") as any).formSelect();
+        //($("#opcaoPagtoParcSemEntrada") as any).formSelect();
     }
 
     if (dadosPagto.enumFormaPagto == 5) {
@@ -1136,14 +1143,14 @@ function AtribuirListaParaSelect() {
         dadosPagto.lstMsg.forEach((value) => {
             $("#opcaoPagtoParcUnica").append("<option selected>" + value + "</option>");
         });
-        ($("#opcaoPagtoParcUnica") as any).formSelect();
+        //($("#opcaoPagtoParcUnica") as any).formSelect();
     }
     if (dadosPagto.enumFormaPagto == 6) {
         //ParcCartaoMaquineta
         dadosPagto.lstMsg.forEach((value) => {
             $("#opcaoPagtoParcCartaoMaquineta").append("<option>" + value + "</option>");
         });
-        ($("#opcaoPagtoParcCartaoMaquineta") as any).formSelect();
+        //($("#opcaoPagtoParcCartaoMaquineta") as any).formSelect();
     }
 
 }
@@ -1152,7 +1159,6 @@ function InicializaDadosPagto() {
     dadosPagto.coeficienteDto = new Array<CoeficienteDto>();//lista de coeficiente
     dadosPagto.pedidoDto = new PedidoDto();//Pedido
     dadosPagto.pedidoDto.ListaProdutos = new Array<PedidoProdutosPedidoDto>();//lista de produtos selecionados
-    dadosPagto.constantes = new Constantes();//será utilizado para comparação
     dadosPagto.moedaUtils = new MoedaUtils();
     dadosPagto.lstMsg = new Array();
     //dadosPagto.tipoFormaPagto = 
@@ -1299,66 +1305,65 @@ function obtem_perc_comissao_e_desconto_a_utilizar(): number {
 
     //é para verificar o tipo do meio de pagamento
 
-    let constantes = new Constantes();
     //pagto avista
-    if (dadosPagto.enumFormaPagto.toString() == constantes.COD_FORMA_PAGTO_A_VISTA) {
+    if (dadosPagto.enumFormaPagto.toString() == Constantes.COD_FORMA_PAGTO_A_VISTA) {
         if (dadosPagto.meioPagtoAVista.toString() == "") {
-            return (tipoCliente == constantes.ID_PJ ? percentualMaximoDto.PercMaxComissaoEDescontoPJ :
+            return (tipoCliente == Constantes.ID_PJ ? percentualMaximoDto.PercMaxComissaoEDescontoPJ :
                 percentualMaximoDto.PercMaxComissaoEDesconto);
         }
         vMPN2.forEach((e) => {
             if (dadosPagto.meioPagtoAVista.toString() == e.toString()) {
 
-                return (tipoCliente == constantes.ID_PJ ? percentualMaximoDto.PercMaxComissaoEDescontoNivel2PJ :
+                return (tipoCliente == Constantes.ID_PJ ? percentualMaximoDto.PercMaxComissaoEDescontoNivel2PJ :
                     percentualMaximoDto.PercMaxComissaoEDescontoNivel2);
             }
         });
 
-        return (tipoCliente == constantes.ID_PJ ? percentualMaximoDto.PercMaxComissaoEDescontoPJ :
+        return (tipoCliente == Constantes.ID_PJ ? percentualMaximoDto.PercMaxComissaoEDescontoPJ :
             percentualMaximoDto.PercMaxComissaoEDesconto);
     }
 
     //Parcela ùnica
-    if (dadosPagto.enumFormaPagto.toString() == constantes.COD_FORMA_PAGTO_PARCELA_UNICA) {
+    if (dadosPagto.enumFormaPagto.toString() == Constantes.COD_FORMA_PAGTO_PARCELA_UNICA) {
         if (dadosPagto.meioPagtoParcUnica.toString() == "") {
-            return (tipoCliente == constantes.ID_PJ ? percentualMaximoDto.PercMaxComissaoEDescontoPJ :
+            return (tipoCliente == Constantes.ID_PJ ? percentualMaximoDto.PercMaxComissaoEDescontoPJ :
                 percentualMaximoDto.PercMaxComissaoEDesconto);
         }
 
         vMPN2.forEach((e) => {
             if (dadosPagto.meioPagtoParcUnica.toString() == e.toString()) {
-                return (tipoCliente == constantes.ID_PJ ? percentualMaximoDto.PercMaxComissaoEDescontoNivel2PJ :
+                return (tipoCliente == Constantes.ID_PJ ? percentualMaximoDto.PercMaxComissaoEDescontoNivel2PJ :
                     percentualMaximoDto.PercMaxComissaoEDescontoNivel2);
             }
         });
 
-        return (tipoCliente == constantes.ID_PJ ? percentualMaximoDto.PercMaxComissaoEDescontoPJ :
+        return (tipoCliente == Constantes.ID_PJ ? percentualMaximoDto.PercMaxComissaoEDescontoPJ :
             percentualMaximoDto.PercMaxComissaoEDesconto);
     }
 
     //Parcelado no Cartão (internet)
-    if (dadosPagto.enumFormaPagto.toString() == constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO) {
+    if (dadosPagto.enumFormaPagto.toString() == Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO) {
         vMPN2.forEach((e) => {
-            if (constantes.ID_FORMA_PAGTO_CARTAO == e.toString()) {
-                return (tipoCliente == constantes.ID_PJ ? percentualMaximoDto.PercMaxComissaoEDescontoNivel2PJ :
+            if (Constantes.ID_FORMA_PAGTO_CARTAO == e.toString()) {
+                return (tipoCliente == Constantes.ID_PJ ? percentualMaximoDto.PercMaxComissaoEDescontoNivel2PJ :
                     percentualMaximoDto.PercMaxComissaoEDescontoNivel2);
             }
         });
 
-        return (tipoCliente == constantes.ID_PJ ? percentualMaximoDto.PercMaxComissaoEDescontoPJ :
+        return (tipoCliente == Constantes.ID_PJ ? percentualMaximoDto.PercMaxComissaoEDescontoPJ :
             percentualMaximoDto.PercMaxComissaoEDesconto);
     }
 
     //Parcelado no Cartão (maquineta)
-    if (dadosPagto.enumFormaPagto.toString() == constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA) {
+    if (dadosPagto.enumFormaPagto.toString() == Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA) {
         vMPN2.forEach((e) => {
-            if (constantes.ID_FORMA_PAGTO_CARTAO_MAQUINETA == e.toString()) {
-                return (tipoCliente == constantes.ID_PJ ? percentualMaximoDto.PercMaxComissaoEDescontoNivel2PJ :
+            if (Constantes.ID_FORMA_PAGTO_CARTAO_MAQUINETA == e.toString()) {
+                return (tipoCliente == Constantes.ID_PJ ? percentualMaximoDto.PercMaxComissaoEDescontoNivel2PJ :
                     percentualMaximoDto.PercMaxComissaoEDescontoNivel2);
             }
         });
 
-        return (tipoCliente == constantes.ID_PJ ? percentualMaximoDto.PercMaxComissaoEDescontoPJ :
+        return (tipoCliente == Constantes.ID_PJ ? percentualMaximoDto.PercMaxComissaoEDescontoPJ :
             percentualMaximoDto.PercMaxComissaoEDesconto);
     }
 
@@ -1366,7 +1371,7 @@ function obtem_perc_comissao_e_desconto_a_utilizar(): number {
     let vlNivel2: number;
     let vlNivel1: number;
     //Parcelado Com Entrada
-    if (dadosPagto.enumFormaPagto.toString() == constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA) {
+    if (dadosPagto.enumFormaPagto.toString() == Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA) {
         vMPN2.forEach((e) => {
             if (dadosPagto.meioPagtoEntrada.toString() == e.toString()) {
                 blnPreferencial = true;
@@ -1399,11 +1404,11 @@ function obtem_perc_comissao_e_desconto_a_utilizar(): number {
         }
 
         if (vlNivel2 > (totalPedido() / 2)) {
-            return (tipoCliente == constantes.ID_PJ ? percentualMaximoDto.PercMaxComissaoEDescontoNivel2PJ :
+            return (tipoCliente == Constantes.ID_PJ ? percentualMaximoDto.PercMaxComissaoEDescontoNivel2PJ :
                 percentualMaximoDto.PercMaxComissaoEDescontoNivel2);
         }
         //	O meio de pagamento não é preferencial
-        return (tipoCliente == constantes.ID_PJ ? percentualMaximoDto.PercMaxComissaoEDescontoPJ :
+        return (tipoCliente == Constantes.ID_PJ ? percentualMaximoDto.PercMaxComissaoEDescontoPJ :
             percentualMaximoDto.PercMaxComissaoEDesconto);
     }
 
@@ -1437,14 +1442,13 @@ declare var erroPercNovo: boolean;
 erroPercNovo = false;
 //iremos fazer a validação na tela
 window.continuar = (): any => {
-
-    let err = new ErrorModal();
     //verificar se tem produtos com qtde maior que o permitido
     let q: number = 0;
 
+    let headerErro: string = "Erro";
+
     if (dadosPagto.pedidoDto == null || dadosPagto.pedidoDto == undefined) {
-        modalError();
-        err.MostrarMsg("Selecione ao menos um produto para continuar.");
+        swal(headerErro, "Selecione ao menos um produto para continuar.");
         return false;
     } else {
         dadosPagto.pedidoDto.ListaProdutos.forEach(r => {
@@ -1454,16 +1458,12 @@ window.continuar = (): any => {
         });
 
         if (q > 0) {
-            modalError();
-            err.MostrarMsg("Produtos com quantidades maiores que a quantidade máxima permitida para venda!");
-            //this.alertaService.mostrarMensagem("Produtos com quantidades maiores que a quantidade máxima permitida para venda!");
+            swal(headerErro, "Produtos com quantidades maiores que a quantidade máxima permitida para venda!");
             return false;
         }
         //validação: tem que ter algum produto
         if (dadosPagto.pedidoDto.ListaProdutos.length === 0) {
-            modalError();
-            err.MostrarMsg("Selecione ao menos um produto para continuar.");
-
+            swal(headerErro, "Selecione ao menos um produto para continuar.");
             return false;
         }
 
@@ -1474,8 +1474,7 @@ window.continuar = (): any => {
             //necessário atribuir a forma de pagmento para dadosPagto
 
             if (dadosPagto.msgErro != "") {
-                modalError();
-                err.MostrarMsg(dadosPagto.msgErro);
+                swal(headerErro, dadosPagto.msgErro);
                 return false;
             }
             return;
@@ -1497,7 +1496,7 @@ window.continuar = (): any => {
 
                     let vlAux = (this.percentualVlPedidoRA / 100) * this.totalPedido();
                     if (this.somaRA > vlAux) {
-                        this.alertaService.mostrarMensagem("O valor total de RA excede o limite permitido!");
+                        swal(headerErro, "O valor total de RA excede o limite permitido!");
                         return;
                     }
                 }
@@ -1506,7 +1505,6 @@ window.continuar = (): any => {
             let perc_max_comissao_e_desconto_a_utilizar = obtem_perc_comissao_e_desconto_a_utilizar();
 
             let perc_desc_medio = calcula_desconto_medio();
-            debugger;
             // Verifica se todos os produtos cujo desconto excedem o máximo permitido possuem senha de desconto disponível
             //afazer: essa var deverá ser inclusa na tela para mostrar que teve alteração no percentual escolhido na tela anterior
             perc_RT_novo = verifica_excedente_max_desconto(perc_max_comissao_e_desconto_a_utilizar, perc_desc_medio);
@@ -1518,18 +1516,7 @@ window.continuar = (): any => {
 
             //linha 2230 pedidonovoconsiste
             //não vamos fazer pois é sobre a tela de observações
-
-            //vamos verificar se tem msg para mostrar
-            let msg = "";
-            if (lstErros.length > 0) {
-                lstErros.forEach((e) => {
-                    msg += e + "\n";
-                });
-                modalError();
-                err.MostrarMsg(msg);
-            }
-
-
+                       
             //aqui finaliza - tudo ok!
             //vamos tentar retornar o objeto serializado para a tela mandar para o controller
             dadosPagto.novoPedidoDadosService.pedidoDto.FormaPagtoCriacao = dadosPagto.pedidoDto.FormaPagtoCriacao;
@@ -1553,10 +1540,9 @@ function verifica_excedente_max_desconto(perc_max_comissao_e_desconto_a_utilizar
     let vl_preco_lista: number = 0;
     let vl_preco_venda: number = 0;
     let perc_desc: number = 0;
-    //let perc_RT_novo: number = 0;
 
-    let err = new ErrorModal();
-
+    let headerErro: string = "Erro";
+    let msgErro: string = "";
 
     lstProdSelecionados.forEach((e) => {
         if (e.NumProduto != "") {
@@ -1569,7 +1555,6 @@ function verifica_excedente_max_desconto(perc_max_comissao_e_desconto_a_utilizar
             else {
                 perc_desc = 100 * (vl_preco_lista - vl_preco_venda) / vl_preco_lista;
             }
-            debugger;
             // Tem desconto: sim
             if (perc_desc != 0) {
                 // Desconto excede limite máximo: sim
@@ -1588,20 +1573,20 @@ function verifica_excedente_max_desconto(perc_max_comissao_e_desconto_a_utilizar
                         // Senha de desconto NÃO cobre desconto
                         if (perc_senha_desconto < perc_desc) {
                             //vamos armazenar uma lista de erros para verificar na hora que estiver validando
-                            modalError();
-                            err.MostrarMsg("O desconto do produto '" + e.Descricao + "' (" +
-                                perc_desc + " %) excede o máximo autorizado!");
+                            msgErro = "O desconto do produto '" + e.Descricao + "' (" +
+                                perc_desc + " %) excede o máximo autorizado!";
                             erroPercNovo = true;
+                            swal(headerErro, msgErro);
                             return;
 
                         }
                     }
                     // Não tem senha de desconto
                     else {
-                        modalError();
-                        err.MostrarMsg("O desconto do produto '" + e.Descricao + "' (" +
-                            moedaUtils.formatarMoedaSemPrefixo(perc_desc) + "%) excede o máximo permitido!");
+                        msgErro = "O desconto do produto '" + e.Descricao + "' (" +
+                            moedaUtils.formatarMoedaSemPrefixo(perc_desc) + "%) excede o máximo permitido!";
                         erroPercNovo = true;
+                        swal(headerErro, msgErro);
                         return;
                     }
 
@@ -1610,7 +1595,6 @@ function verifica_excedente_max_desconto(perc_max_comissao_e_desconto_a_utilizar
         }
     });
     //não é possivel continuar    
-    debugger;
     if (erroPercNovo) {
         return;
     }
@@ -1621,7 +1605,8 @@ function verifica_excedente_max_desconto(perc_max_comissao_e_desconto_a_utilizar
     if (percComissao != 0) {
         // RT excede limite máximo?
         if (percComissao > perc_max_RT) {
-            err.MostrarMsg("Percentual de comissão excede o máximo permitido!");
+            msgErro = "Percentual de comissão excede o máximo permitido!";
+            swal(headerErro, msgErro);
             return;
         }
 
@@ -1636,7 +1621,6 @@ function verifica_excedente_max_desconto(perc_max_comissao_e_desconto_a_utilizar
 
         // O percentual de RT será alterado automaticamente, solicita confirmação
         if (perc_RT_novo != percComissao) {
-            debugger;
             //afazer: peciso fazer uma modal de confirmar para esperar o retorno disso
             let s = "A soma dos percentuais de comissão (" + moedaUtils.formatarMoedaSemPrefixo(percComissao) +
                 "%) e de desconto médio do(s) produto(s) (" + moedaUtils.formatarMoedaSemPrefixo(perc_desc_medio) + "%) totaliza " +
@@ -1679,7 +1663,6 @@ function calcula_desconto_medio(): number {
             vl_total_preco_venda += e.Qtde * e.VlUnitario;
         }
     });
-    debugger;
     if (vl_total_preco_lista == 0) {
         perc_desc_medio = 0;
     }

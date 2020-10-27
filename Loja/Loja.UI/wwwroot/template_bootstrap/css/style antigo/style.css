@@ -3387,11 +3387,7 @@ table tbody .border-bottom-info td, table tbody .border-bottom-info th, table th
         box-shadow: 0 2px 15px 0 rgba(43,43,43,.2)
     }
 
-/* 
-    GABRIEL ALTEROU 
-    estou alterando de 992px para 1070px que é quando fica ruim o cabeçãho do lado esquerdo
- */
-@media only screen and (max-width: 992px) {
+@media only screen and (max-width:992px) {
     .pcoded .pcoded-navbar .nav-list {
         height: 100%
     }
@@ -3413,7 +3409,8 @@ table tbody .border-bottom-info td, table tbody .border-bottom-info th, table th
     display: block;
     position: relative;
     background: #f2f7fb;
-    min-height: calc(100vh - 70px)
+    min-height: calc(100vh - 70px);
+    margin-top: 60.6px !important; /*GABRIEL ALTERANDO*/
 }
 
 .pcoded .pcoded-content {
@@ -4603,7 +4600,7 @@ body[themebg-pattern=theme6] {
 .pcoded .pcoded-navbar[navbar-theme=theme1] .nav-user a, .pcoded .pcoded-navbar[navbar-theme=theme1] .nav-user span {
     color: #b7c0cd
 }
-
+/*GABRIEL VERIFICANDO COMO CRIAR UM NAVBAR THEME*/
 .pcoded .pcoded-navbar[navbar-theme=theme1] .nav-user, .pcoded .pcoded-navbar[navbar-theme=theme1] .pcoded-inner-navbar {
     background-color: #263544
 }
@@ -4620,13 +4617,17 @@ body[themebg-pattern=theme6] {
 .pcoded .pcoded-navbar[navbar-theme=theme1] .main-menu .main-menu-content .more-details a {
     color: #b7c0cd
 }
+/*GABRIEL ALTERANDO*/
+/*.pcoded .pcoded-navbar[navbar-theme=theme1] .pcoded-item > li > a {
+    color: #fff
+}*/
 
-.pcoded .pcoded-navbar[navbar-theme=theme1] .pcoded-item > li > a {
-    color: #b7c0cd
-}
+    .pcoded .pcoded-navbar[navbar-theme=theme1] .pcoded-item > li > a:hover {
+        color: #b7c0cd;
+    }
 
     .pcoded .pcoded-navbar[navbar-theme=theme1] .pcoded-item > li > a .pcoded-micon {
-        color: #b7c0cd
+        color: #b7c0cd;
     }
 
 .pcoded .pcoded-navbar[navbar-theme=theme1] .pcoded-item > li.active > a {
@@ -4652,15 +4653,15 @@ body[themebg-pattern=theme6] {
 }
 
 .pcoded .pcoded-navbar[navbar-theme=theme1] .pcoded-item > li.active:hover > a, .pcoded .pcoded-navbar[navbar-theme=theme1] .pcoded-item > li:hover > a {
-    color: #b7c0cd
+    color: #b7c0cd;
 }
 
 .pcoded .pcoded-navbar[navbar-theme=theme1] .pcoded-item .pcoded-hasmenu .pcoded-submenu li:hover > a {
-    color: #b7c0cd
+    color: #b7c0cd;
 }
 
     .pcoded .pcoded-navbar[navbar-theme=theme1] .pcoded-item .pcoded-hasmenu .pcoded-submenu li:hover > a:before {
-        border-left-color: transparent
+        border-left-color: transparent;
     }
 
 .pcoded .pcoded-navbar[navbar-theme=theme1] .pcoded-item .pcoded-hasmenu .pcoded-submenu li.active > a {
@@ -4676,11 +4677,11 @@ body[themebg-pattern=theme6] {
 }
 
 .pcoded .pcoded-navbar[navbar-theme=theme1] .pcoded-item > li:hover > a:before {
-    border-left-color: #263544
+    border-left-color: #263544;
 }
 
 .pcoded .pcoded-navbar[navbar-theme=theme1] .pcoded-item > li.pcoded-hasmenu:hover > a:after {
-    color: #b7c0cd
+    color: #b7c0cd;
 }
 
 .pcoded .pcoded-navbar[navbar-theme=theme1] .pcoded-item > li.pcoded-trigger > a {
@@ -4688,7 +4689,7 @@ body[themebg-pattern=theme6] {
 }
 
 .pcoded .pcoded-navbar[navbar-theme=theme1] .pcoded-item > li.pcoded-hasmenu .pcoded-submenu li.pcoded-hasmenu:hover > a:after {
-    color: #b7c0cd
+    color: #b7c0cd;
 }
 
 .pcoded .pcoded-navbar[theme-layout=vertical][vertical-nav-type=collapsed] .pcoded-navbar[navbar-theme=theme1] .pcoded-item > .pcoded-hasmenu.pcoded-trigger > .pcoded-submenu, .pcoded .pcoded-navbar[theme-layout=vertical][vertical-nav-type=sub-expanded] .pcoded-navbar[navbar-theme=theme1] .pcoded-item > .pcoded-hasmenu.pcoded-trigger > .pcoded-submenu {
@@ -4768,13 +4769,13 @@ body[themebg-pattern=theme6] {
         .pcoded .pcoded-navbar[navbar-theme=themelight1] .pcoded-item .pcoded-submenu li.active > a .pcoded-mtext:after {
             border-left-color: #fff
         }
-
+/*GABRIEL ALTERANDO*/
 .pcoded[theme-layout=vertical] .pcoded-navbar[active-item-theme=theme1] .pcoded-item li .pcoded-submenu {
-    border-left-color: #42a5f5
+    border-left-color: #42a5f5;
 }
-
+    /*GABRIEL ALTERANDO*/
     .pcoded[theme-layout=vertical] .pcoded-navbar[active-item-theme=theme1] .pcoded-item li .pcoded-submenu li.active > a, .pcoded[theme-layout=vertical] .pcoded-navbar[active-item-theme=theme1] .pcoded-item li .pcoded-submenu li:hover > a {
-        color: #42a5f5
+        color: #42a5f5;
     }
 
     .pcoded[theme-layout=vertical] .pcoded-navbar[active-item-theme=theme1] .pcoded-item li .pcoded-submenu li.active > a {
@@ -4782,23 +4783,23 @@ body[themebg-pattern=theme6] {
     }
 
 .pcoded[theme-layout=vertical] .pcoded-navbar[active-item-theme=theme1] .pcoded-item li:hover > a {
-    color: #42a5f5
+    color: #42a5f5;
 }
 
     .pcoded[theme-layout=vertical] .pcoded-navbar[active-item-theme=theme1] .pcoded-item li:hover > a .pcoded-micon {
-        color: #42a5f5
+        color: #42a5f5;
     }
 
     .pcoded[theme-layout=vertical] .pcoded-navbar[active-item-theme=theme1] .pcoded-item li:hover > a:before {
-        border-left-color: transparent
+        border-left-color: transparent;
     }
 
 .pcoded[theme-layout=vertical] .pcoded-navbar[active-item-theme=theme1] .pcoded-item > li.active > a:before, .pcoded[theme-layout=vertical] .pcoded-navbar[active-item-theme=theme1] .pcoded-item > li.active:hover > a:before, .pcoded[theme-layout=vertical] .pcoded-navbar[active-item-theme=theme1] .pcoded-item > li.pcoded-trigger > a:before, .pcoded[theme-layout=vertical] .pcoded-navbar[active-item-theme=theme1] .pcoded-item > li.pcoded-trigger:hover > a:before, .pcoded[theme-layout=vertical] .pcoded-navbar[active-item-theme=theme1] .pcoded-item > li:hover > a:before, .pcoded[theme-layout=vertical] .pcoded-navbar[active-item-theme=theme1] .pcoded-item > li:hover:hover > a:before {
     border-left-color: transparent
 }
-
+/*GABRIEL ALTERANDO*/
 .pcoded[theme-layout=vertical] .pcoded-navbar[active-item-theme=theme1] .pcoded-item > li.active > a, .pcoded[theme-layout=vertical] .pcoded-navbar[active-item-theme=theme1] .pcoded-item > li.active:hover > a, .pcoded[theme-layout=vertical] .pcoded-navbar[active-item-theme=theme1] .pcoded-item > li.pcoded-trigger > a, .pcoded[theme-layout=vertical] .pcoded-navbar[active-item-theme=theme1] .pcoded-item > li.pcoded-trigger:hover > a {
-    border-left-color: #42a5f5
+    border-left-color: #42a5f5;
 }
 
 .pcoded[theme-layout=vertical] .pcoded-navbar[active-item-theme=theme2] .pcoded-item li .pcoded-submenu {
@@ -4806,7 +4807,7 @@ body[themebg-pattern=theme6] {
 }
 
     .pcoded[theme-layout=vertical] .pcoded-navbar[active-item-theme=theme2] .pcoded-item li .pcoded-submenu li.active > a, .pcoded[theme-layout=vertical] .pcoded-navbar[active-item-theme=theme2] .pcoded-item li .pcoded-submenu li:hover > a {
-        color: #ff5370
+        color: #ff5370;
     }
 
     .pcoded[theme-layout=vertical] .pcoded-navbar[active-item-theme=theme2] .pcoded-item li .pcoded-submenu li.active > a {
@@ -7047,6 +7048,7 @@ body[themebg-pattern=theme6] {
     .pcoded .pcoded-header[header-theme=theme6] .dropdown-toggle, .pcoded .pcoded-header[header-theme=theme6] .input-group-addon, .pcoded .pcoded-header[header-theme=theme6] a {
         color: #fff
     }
+
 
 .pcoded .pcoded-header[header-theme=themelight1] {
     background: #fff
@@ -9931,15 +9933,13 @@ body.horizontal-icon .pcoded[pcoded-device-type=desktop] .pcoded-navbar .pcoded-
 .select2-container--default.select2-container--focus .select2-selection--multiple {
     border: 1px solid #4099ff
 }
-
+/*GABRIEL ALTERANDO*/
 .select2-container--default .select2-selection--single {
     color: #fff;
-    /*Gabriel alterou*/
     height: 50% !important;
 }
-
+    /*GABRIEL ALTERANDO*/
     .select2-container--default .select2-selection--single .select2-selection__rendered {
-        /*Gabriel alterou*/
         background-color: #fff;
         color: #fff;
         /*padding: 8px 30px 8px 20px*/
@@ -11183,11 +11183,7 @@ table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child:before, table
         }
 }
 
-/* 
-    GABRIEL ALTEROU 
-    estou alterando de 992px para 1070px que é quando fica ruim o cabeçãho do lado esquerdo
- */
-@media only screen and (max-width:1070px) {
+@media only screen and (max-width:992px) {
     .navbar, .navbar .navbar-logo {
         width: 100%
     }

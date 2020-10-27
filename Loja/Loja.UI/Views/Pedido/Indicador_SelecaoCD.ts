@@ -8,20 +8,20 @@ import { IndicadorDto } from "../../DtosTs/IndicadorDto/IndicadorDto";
 declare var moedaUtils: MoedaUtils;
 moedaUtils = new MoedaUtils();
 declare var percentualMaximoDto: PercentualMaximoDto;
-declare function modalError(): any;
+declare function swal(header, mensagem): any;
 declare var window: any;
 declare var indicadorOriginal: string;
 declare var listaIndicadoresDto: IndicadorDto[];
-declare function modalError(): any;
 
 
-$("#divCOM").children().find("input").prop('disabled', true);
 
 $("#chkSemRa").prop("checked", true);
 
 $("#chkComRa").click(() => {
     $("#chkSemRa").prop("checked", false);
     $("[name='comRA']").val(1);
+    $("#RA").css("opacity", "1");
+    $("#percComissao").prop("disabled", false);
     //$("#chkSemRa").val(0);
     //$("#chkComRa").val(1);
 });
@@ -29,80 +29,72 @@ $("#chkComRa").click(() => {
 $("#chkSemRa").click(() => {
     $("#chkComRa").prop("checked", false);
     $("[name='comRA']").val(0);
+    $("#RA").css("opacity", "0.7");
+    $("#percComissao").prop("disabled", true);
     //$("#chkComRa").val(0);
     //$("#chkSemRa").val(1);
 });
 
 if ($("#chkSemRa").prop("checked") == true) {
     $("[name='comRA']").val(0);
+    $("#RA").css("opacity", "0.7");
+    $("#percComissao").prop("disabled", true);
     //$("#chkSemRa").val(1);
     //$("#chkComRa").val(0);
 }
 if ($("#chkSemRa").prop("checked") == false) {
     $("[name='comRA']").val(1);
+    $("#RA").css("opacity", "1");
+    $("#percComissao").prop("disabled", false);
     //$("#chkSemRa").val(0);
     //$("#chkComRa").val(1);
 }
 
-$("#divIndicadores").children().find("input").prop('disabled', true);
-//$("#chkSemIndicacao").prop("checked", true);
-$("#chkSemIndicacao").click(() => {
+if ($("#chkSemIndicacao").prop('checked') == true) {
     $("#chkComIndicacao").prop("checked", false);
     $("[name='comIndicacao']").val("0");
-    
-    $("#divIndicadores").children().find("input").prop('disabled', true);
-    $("#divCOM").children().find("input").prop('disabled', true);
-    LimparListaIndicadores();
+    $("#indicadores").css("opacity", "0.7");
+}
+$("#chkSemIndicacao").click(() => {
+    $("#chkComIndicacao").prop("checked", false);    
+    $("[name='comIndicacao']").val("0");
+    $("#indicadores").css("opacity", "0.7");
 });
 
 if ($("#chkComIndicacao").prop('checked') == true) {
-
-    //$("#divIndicadores").children().find("input").prop('disabled', false);
     $("#chkComIndicacao").prop('checked', true);
     $("[name='comIndicacao']").val("1");
-
-    $("#divComRA").prop('disabled', true);
-    $("#divSemRA").prop('disabled', true);
-
-    $("#divCOM").children().find("input").prop('disabled', false);
+    $("#indicadores").css("opacity", "1");
 }
 
-$("#divComRA").children().find("input").prop('disabled', true);
-$("#divSemRA").children().find("input").prop('disabled', true);
 $("#chkComIndicacao").click(() => {
     $("#chkSemIndicacao").prop("checked", false);
     $("[name='comIndicacao']").val("1");
-
-    $("#divIndicadores").children().find("input").prop('disabled', false);
-    
-    $("#divCOM").children().find("input").prop('disabled', false);
-
-    if ($("#indicador option").length <= 1)
-        MontarListaIndicadores();
+    $("#indicadores").css("opacity", "1");
 });
 
-$("#divSelecaoCd").children().find("input").prop('disabled', true);
+
 $("#chkAutomatico").click(() => {
     $("#chkAutomatico").val(1);
-    $("#chkManual").prop("checked", false);
+    $("#chkManual").prop("checked", false);    
     $("#chkManual").val(0);
-    $("#divSelecaoCd").children().find("input").prop('disabled', true);
     $("#msgCD").text('');
+    $("#cd").css("opacity", "0.7");
 });
 if ($("#chkManual").prop('checked') == true) {
     $("#chkManual").val(1);
     $("#chkManual").prop('checked', true);
     $("#chkManual").val(0);
-    $("#divSelecaoCd").children().find("input").prop('disabled', false);
     $("#msgCD").text('');
+    $("#cd").css("opacity", "1");
 }
 
 $("#chkManual").click(() => {
     $("#chkManual").val(1);
     $("#chkAutomatico").prop("checked", false);
     $("#chkAutomatico").val(0);
-    $("#divSelecaoCd").children().find("input").prop('disabled', false);
     $("#msgCD").text('');
+    $("#cd").css("opacity", "1");
 });
 
 $("#percComissao").keyup(() => {
@@ -124,21 +116,21 @@ $("#selecaoCd").change(function () {
 
 
 //afazer: montar o select da lista de indicadores, ao clicar com indicação
-function MontarListaIndicadores() {
-    if (listaIndicadoresDto.length > 0) {
-        listaIndicadoresDto.forEach((indicadorDto) => {
-            $("#indicador").append("<option value=" + indicadorDto.Apelido + ">" + indicadorDto.Apelido + " - " + indicadorDto.RazaoSocial + "</option>");
-        });
+//function MontarListaIndicadores() {
+//    if (listaIndicadoresDto.length > 0) {
+//        listaIndicadoresDto.forEach((indicadorDto) => {
+//            $("#indicador").append("<option value=" + indicadorDto.Apelido + ">" + indicadorDto.Apelido + " - " + indicadorDto.RazaoSocial + "</option>");
+//        });
 
-        ($("#indicador") as any).formSelect();
-    }
-}
+//        //($("#indicador") as any).formSelect();
+//    }
+//}
 
-function LimparListaIndicadores() {
-    $("#indicador").empty();
+//function LimparListaIndicadores() {
+//    $("#indicador").empty();
 
-    ($("#indicador") as any).formSelect();
-}
+//    //($("#indicador") as any).formSelect();
+//}
 
 
 window.VerificaPermiteRA = (e: HTMLSelectElement) => {
@@ -171,7 +163,7 @@ window.VerificarPercMaxDescEComissao = (e: HTMLInputElement) => {
     val = (val / 100).toFixed(2) + '';
     e.value = moedaUtils.formatarMoedaSemPrefixo(val);
 
-
+    let headerErro: string = "Erro";
     let msgErro: string = "";
     let percMax = new PercentualMaximoDto()
     percMax = percentualMaximoDto;
@@ -185,20 +177,18 @@ window.VerificarPercMaxDescEComissao = (e: HTMLInputElement) => {
 
     if (msgErro != "") {
         //chama a modal caso seja maior ou tiver erros
-        modalError();
-        let err = new ErrorModal();
-        err.MostrarMsg(msgErro);
-        return false;
+        swal(headerErro,msgErro);
     }
 }
 
 function ValidarCamposSelecaoCD(): boolean {
-    let err = new ErrorModal();
+    let headerErro: string = "Erro";
+    let msgErro: string = "";
     let retorno: boolean = true;
 
     if ($("#chkManual").prop("checked") == false && $("#chkAutomatico").prop("checked") == false) {
-        modalError();
-        err.MostrarMsg("Necessário selecionar o modo de seleção do CD");
+        msgErro = "Necessário selecionar o modo de seleção do CD";
+        swal(headerErro, msgErro);
         retorno = false;
     }
 
@@ -206,8 +196,8 @@ function ValidarCamposSelecaoCD(): boolean {
 
         let selecaoCD: any = $("#selecaoCd").val();
         if (selecaoCD == "0") {
-            modalError();
-            err.MostrarMsg("É necessário selecionar o CD que irá atender o pedido(sem auto-split)!");
+            msgErro = "É necessário selecionar o CD que irá atender o pedido(sem auto-split)!";
+            swal(headerErro, msgErro);
             retorno = false;
         }
     }
@@ -216,26 +206,27 @@ function ValidarCamposSelecaoCD(): boolean {
 }
 
 function ValidarCamposIndicador(): boolean {
-    let err = new ErrorModal();
+    let headerErro: string = "Erro";
+    let msgErro: string = "";
     let retorno: boolean = true;
 
     if ($("#chkSemIndicacao").prop('checked') == false && $("#chkComIndicacao").prop('checked') == false) {
-        modalError();
-        err.MostrarMsg("Informe se o pedido é com ou sem indicação!");
+        msgErro = "Informe se o pedido é com ou sem indicação!";
+        swal(headerErro, msgErro);
         return false;
     }
 
     //afazer: validar se é com indicação, devemos validar os dados do indicador
     if ($("#chkComIndicacao").prop('checked') == true) {
         if ($("#indicador").val() == "" || $("#indicador").val() == undefined) {
-            modalError();
-            err.MostrarMsg('Selecione o "indicador"!');
+            msgErro = 'Selecione o "indicador"!';
+            swal(headerErro, msgErro);
             return false;
         }
         debugger;
         if ($("#chkSemRa").prop("checked") == false && $("#chkComRa").prop("checked") == false) {
-            modalError();
-            err.MostrarMsg("Informe se o pedido possui RA ou não!");
+            msgErro = "Informe se o pedido possui RA ou não!";
+            swal(headerErro, msgErro);
             return false;
         }
 
@@ -249,8 +240,8 @@ function ValidarCamposIndicador(): boolean {
                     "\n\n##################################################\nFAVOR COMUNICAR AO GERENTE!!\n##################################################\n\nContinua mesmo assim ? ";
                 //afazer:modal de continuar para mostrar o continuar
 
-                $("#msg").append(msg);
-                AbrirModalConfirm();
+                //$("#msg").append(msg);
+                //AbrirModalConfirm();
                 return false;
             }
         }
@@ -289,7 +280,6 @@ function continuar() : boolean {
 }
 
 window.continuar = (): any => {
-    debugger;
     if (continuar() == false) {
         return false;
     }

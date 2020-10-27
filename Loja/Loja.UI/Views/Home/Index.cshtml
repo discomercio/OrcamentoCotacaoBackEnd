@@ -3,20 +3,39 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div>
-    Olá @User?.Identity?.Name
+<div class="pcoded-inner-content" style="min-height: 75vh;">
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="page-body">
+                <div class="row">
+                    <div class="col-md-12 col-xl-12">
+                        <div class="card" style="min-height:calc(100vh - 250px)">
+                            <div class="page-header card">
+                                <div class="row col-lg-12 col-xl-12 pr-0 mb-2">
+                                    Olá @User?.Identity?.Name
 
-    <br />
-    <br />
-    <br />
-    Loja ativa: @(string.IsNullOrWhiteSpace(Model.LojaAtivaNome) ? "nenhuma" : Model.LojaAtivaNome)
-    @if (Model.ErroChavearLoja)
-    {
-        <br />
-        <br />
-        <br />
-        <span class="materialize-red-text">
-            Erro: não foi possível chavear para a loja @(Model.LojaTentandoChavearId). Verifique com o administrador que você possui permissão.
-        </span>
-    }
+                                    <br />
+                                    <br />
+                                    <br />
+                                    Loja ativa: @(string.IsNullOrWhiteSpace(Model.LojaAtivaNome) ? "nenhuma" : Model.LojaAtivaNome)
+
+                                    @if (Model.ErroChavearLoja)
+                                    {
+                                        <br />
+                                        <br />
+                                        <br />
+                                        <span>
+                                            Erro: não foi possível chavear para a loja @(Model.LojaTentandoChavearId). Verifique com o administrador que você possui permissão.
+                                        </span>
+
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+

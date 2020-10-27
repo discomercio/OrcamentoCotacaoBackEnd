@@ -5,15 +5,15 @@
 @*<a class="material-icons">notifications</a>*@
 
 @*<style>
-    .select2-selection, .select2-selection--single{
-        height:auto !important;
-    }
+        .select2-selection, .select2-selection--single{
+            height:auto !important;
+        }
 
-    .js-example-basic-hide-search{
-        background-color:white;
-    }
+        .js-example-basic-hide-search{
+            background-color:white;
+        }
 
-</style>*@
+    </style>*@
 @if (usuarioLogado.SessaoAtiva)
 {
 
@@ -22,54 +22,29 @@
     //fica confuso ter um menu do lado direito e outro do lado esquerdo
     //para resolver, acho que deveria ir para uma página com o combo de lojas
     //com isto, o drop-down de loja não funciona: overflow: hidden;
-    <div class="dropdown-primary dropdown">
-        <div class="dropdown-toggle" data-toggle="dropdown">
-        </div>
+    <ul class="nav-right">
+        <li class="user-profile header-notification">
+            <div class="dropdown-primary dropdown">
+                <div class="dropdown-toggle" data-toggle="dropdown">
+                </div>
 
-        <div class="dropdown-toggle" data-toggle="dropdown">
-            <span>Olá @usuarioLogado.Usuario_nome_atual</span>
-        </div>
+                <div class="dropdown-toggle" data-toggle="dropdown">
+                    <span>Olá @usuarioLogado.Usuario_nome_atual</span>
+                </div>
+            </div>
+        </li>
 
         @if (usuarioLogado.Operacao_permitida(Loja.Bll.Constantes.Constantes.OP_LJA_LOGIN_TROCA_RAPIDA_LOJA))
         {
             var lista = usuarioLogado.LojasDisponiveis.OrderBy(r => r.Nome).ToList();
             if (lista.Count > 0)
             {
-                <li>
-                    <span>Loja:</span>
-                    @{
-                        var listaSl = new List<SelectListItem>();
-                        foreach (var item in lista)
-                        {
-                            listaSl.Add(new SelectListItem(item.Nome, item.Id));
-                        }
-                        ViewData["cabecacomboLojas"] = usuarioLogado.Loja_atual_id;
-                    }
+                <li class="user-profile header-notification">
+                    <div class="dropdown-primary dropdown">
+                        <div class="dropdown-toggle" data-toggle="dropdown">
+                        </div>
 
-                    @Html.DropDownList("cabecacomboLojas", listaSl, new
-               {
-                   @id = "cabecacomboLojas",
-                   @class = "form-control js-example-basic-hide-search"
-
-               })
-                </li>
-            }
-        }
-    </div>
-    @*<div class="divcabecalho hide-on-med-and-down">
-            <ul class="right">
-                <li style="font-size: 20px;padding-right: 16px;">
-                    Olá @usuarioLogado.Usuario_nome_atual
-                </li>
-                @if (usuarioLogado.Operacao_permitida(Loja.Bll.Constantes.Constantes.OP_LJA_LOGIN_TROCA_RAPIDA_LOJA))
-                {
-                    var lista = usuarioLogado.LojasDisponiveis.OrderBy(r => r.Nome).ToList();
-                    if (lista.Count > 0)
-                    {
-                        <li style="font-size: 20px; padding-right: 16px">
-                            Loja:
-                        </li>
-                        <li style="padding-top: 18px; padding-left: 0px" title="Alterar loja ativa">
+                        <div class="form-group dropdown-toggle mb-0">
                             @{
                                 var listaSl = new List<SelectListItem>();
                                 foreach (var item in lista)
@@ -79,18 +54,24 @@
                                 ViewData["cabecacomboLojas"] = usuarioLogado.Loja_atual_id;
                             }
 
-                            @Html.DropDownList("cabecacomboLojas", listaSl, new { @id = "cabecacomboLojas" })
-                        </li>
-                    }
-                }
+                            @Html.DropDownList("cabecacomboLojas", listaSl, new
+                       {
+                           @id = "cabecacomboLojas",
+                           @class = "custom-select"
 
-                <li>
-                    <a href="~/Acesso/Logout" class="material-icons" title="Logout" style="vertical-align: text-bottom;">
-                        exit_to_app
-                    </a>
+                       })
+                        </div>
+                    </div>
                 </li>
-            </ul>
-        </div>*@
+            }
+        }
+        <li>
+            <a href="~/Acesso/Logout" title="Logout" style="vertical-align: text-bottom;">
+                <i class="feather icon-log-out" style="font-size:x-large"></i>
+            </a>
+        </li>
+
+    </ul>
 }
 else
 {

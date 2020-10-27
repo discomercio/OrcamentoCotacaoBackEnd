@@ -39,10 +39,12 @@ namespace Loja.UI.Controllers
 
         public async Task<IActionResult> BuscaListaProdutosFabricante(string fabricante, string loja)
         {
-            //var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
-            //string teste = HttpContext.Session.GetString("usuario");
+            var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
+            string teste = HttpContext.Session.GetString("usuario");
 
-            if (!String.IsNullOrEmpty(fabricante))
+            loja = usuarioLogado.Loja_atual_id;
+
+            if (!String.IsNullOrEmpty(fabricante) && !string.IsNullOrEmpty(loja))
             {
                 string fab = await produtoBll.BuscarFabricante(fabricante);
 

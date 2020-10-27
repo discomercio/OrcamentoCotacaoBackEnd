@@ -6,43 +6,43 @@
 
 
 
-<div class="row" id="container_cep" style="align-items:flex-end">
-    @if (Model != null)
-        @Model.ListaCep[0].Endereco
-    <div class="col-xl-3 col-md-3 col-sm-6">
-        @* ao sair do campo chamar o metodo cep/buscarCep/ *@
-        <label class="col-form-label" for="cepEntrega" id="lblcep">CEP</label>
-        <input class="form-control" name="EndEtg_cep" type="text" id="cepEntrega" onblur="buscarCep()" />
-    </div>
-        
+    <div class="row" id="container_cep" style="align-items:flex-end">
+        @if (Model != null)
+            @Model.ListaCep[0].Endereco
+        <div class="col-xl-3 col-md-3 col-sm-6">
+            @* ao sair do campo chamar o metodo cep/buscarCep/ *@
+            <label class="col-form-label" for="cepEntrega" id="lblcep">CEP</label>
+            <input class="form-control" name="EndEtg_cep" type="text" id="cepEntrega" onblur="buscarCep()" />
+        </div>
+
         <button class="btn btn-sm btn-primary waves-effect waves-light col-xl-2 col-md-3 col-sm-6"
                 onclick="NaoseiCep()"
                 type="button">
             <i class="fa fa-search"></i>Não sei o CEP
         </button>
-    <div class="col-xl-4 col-md-6 col-sm-12">
-        <label class="col-form-label" id="lblEnderecoEntrega" for="endEntrega">ENDEREÇO </label>
-        <input class="form-control" name="EndEtg_endereco" id="enderecoEntrega" type="text" />
+        <div class="col-xl-5 col-md-6 col-sm-12">
+            <label class="col-form-label" id="lblEnderecoEntrega" for="endEntrega">ENDEREÇO </label>
+            <input class="form-control" name="EndEtg_endereco" id="enderecoEntrega" type="text" />
+        </div>
+        <div class="col-xl-2 col-lg-2 col-md-2 col-sm-3">
+            <label class="col-form-label" id="lblNumeroEntrega" for="numEntrega">NÚMERO </label>
+            <input class="form-control" name="EndEtg_endereco_numero" id="numEntrega" type="text" />
+        </div>
+        <div class="col-xl-6 col-lg-5 col-md-5 col-sm-9">
+            <label class="col-form-label" id="lblComplementoEntrega" for="compEntrega">COMPLEMENTO</label>
+            <input class="form-control" name="EndEtg_endereco_complemento" id="compEntrega" type="text" />
+        </div>
+        <div class="col-xl-6 col-lg-5 col-md-5 col-sm-12">
+            <label class="col-form-label" id="lblBairroEntrega" for="bairroEntrega">BAIRRO</label>
+            <input class="form-control" name="EndEtg_bairro" id="bairroEntrega" type="text" />
+        </div>
     </div>
-    <div class="col-xl-1 col-sm-6">
-        <label class="col-form-label" id="lblNumeroEntrega" for="numEntrega">NÚMERO </label>
-        <input class="form-control" name="EndEtg_endereco_numero" id="numEntrega" type="text" />
-    </div>
-    <div class="col-xl-2 col-sm-6">
-        <label class="col-form-label" id="lblComplementoEntrega" for="compEntrega">COMPLEMENTO</label>
-        <input class="form-control" name="EndEtg_endereco_complemento" id="compEntrega" type="text" />
-    </div>
-</div>
-<div class="row">
-    <div class="col-sm-4">
-        <label class="col-form-label" id="lblBairroEntrega" for="bairroEntrega">BAIRRO</label>
-        <input class="form-control" name="EndEtg_bairro" id="bairroEntrega" type="text" />
-    </div>
-    <div class="col-sm-4">
+<div class="row">    
+    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
         <label class="col-form-label" id="lblCidadeEntrega" for="cidadeEntrega">CIDADE</label>
         <input class="form-control" name="EndEtg_cidade" id="cidadeEntrega" type="text" />
     </div>
-    <div class="col-sm-4">
+    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
         <label class="col-form-label" id="lblUfEntrega" for="ufEntrega">UF</label>
         <input class="form-control" name="EndEtg_uf" id="ufEntrega" type="text" />
     </div>

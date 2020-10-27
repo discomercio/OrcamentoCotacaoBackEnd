@@ -82,6 +82,7 @@
 
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Global\Infra\InfraBanco\InfraBanco.csproj" />
     <ProjectReference Include="..\Loja.Bll\Loja.Bll.csproj" />
   </ItemGroup>
 

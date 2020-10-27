@@ -1,0 +1,222 @@
+﻿@model Loja.UI.Models.Pedido.ObservacoesViewModel
+@{
+    ViewData["Title"] = "ObservacoesPedido";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="page-header card">
+    <div class="row align-items-end">
+        <div class="col-lg-8">
+            <div class="page-header-title">
+                <i class="fa fa-sticky-note bg-c-blue"></i>
+                <div class="d-inline">
+                    <h5>Novo Pedido</h5>
+                    <span>Observações adicionais</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pcoded-inner-content pb-0" style="min-height: 75vh;">
+    <div class="main-body">
+        <div class="page-wrapper pb-0">
+            <div class="page-body">
+                <div class="row">
+                    <div class="col-md-12 col-xl-12">
+                        <div class="card mb-0" style="min-height: 75vh;">
+                            <div class="page-header card mb-0">
+                                <div class="row col-lg-12 col-xl-12 pr-0 mb-2">
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0 pr-4 mb-2"
+                                         style="height:70px;">
+                                        <div class="card py-4 px-2 mb-0"
+                                             style="background-color:#eee;height:70px; text-align:left;
+                                                    color:#aaa; display:block; box-shadow:none">
+                                            <span class="number">1.</span>
+                                            Cadastro Cliente
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0 pr-4 mb-2"
+                                         style="height:70px;">
+                                        <div class="card py-4 px-2 mb-0"
+                                             style="background-color:#eee; text-align:left; color:#aaa;
+                                                    display:block;box-shadow:none">
+                                            <span class="number">2. </span>
+                                            CD e Indicador
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0 pr-4 mb-2"
+                                         style="height:70px">
+                                        <div class="card py-4 px-2 mb-0"
+                                             style="background-color:#eee; text-align:left; color:#aaa;
+                                                    display:block;box-shadow:none">
+                                            <span class="number">3.</span>
+                                            Produtos e Forma Pagamento
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0 pr-4"
+                                         style="height:70px;">
+                                        <div class="card py-4 px-4 mb-0"
+                                             style="background-color:#4099ff; text-align:left; color:#fff;
+                                                    display:block;box-shadow:none">
+                                            <span class="number">4.</span>
+                                            Informações Adicionais
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            @using (Html.BeginForm("CadastrarPedido", "Pedido", FormMethod.Post,
+                            new
+                            {
+                                enctype = "multipart/form-data",
+                                onsubmit = "return ValidarFormulario()",
+                                id = "formulario"
+                            }))
+                            {
+                                <div class="page-header card" style="border: 1px solid #ccc; padding:20px">
+
+                                    <div class="row">
+
+                                        <div class="row col-xl-12 col-lg-12">
+                                            <div class="col-xl-12 col-lg-11">
+                                                <span class="caixa">
+                                                    <span class="rotulo">Cliente:</span>
+                                                    <span class="dado" name="nome" id="nome">@Model.Cnpj_Cpf - @Model.NomeCliente</span>
+                                                </span>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-sm-12">
+                                                <span class="caixa">
+                                                    <span class="rotulo">
+                                                        Total do pedido:
+                                                    </span>
+                                                    <span class="dado">
+                                                        @Model.VlTotalPedido
+                                                    </span>
+
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="form-group row col-xl-12 col-lg-12 px-0">
+                                        <div class="col-xl-6 col-lg-6">
+                                            <div class="card-header pl-0 caixa">
+                                                <h5>Detalhes da entrega</h5>
+                                            </div>
+                                            <div class="card-block" style="height:50px;">
+                                                <div class="form-group" style="display:flex;height:50px">
+                                                    <input type="checkbox" data-toggle="toggle" data-size="xs"
+                                                           value="@Model.EntregaImediata" checked id="entregaImediata" name="EntregaImediata" />
+                                                    <div class="ml-3">
+                                                        <span>Entrega Imediata</span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" id="div-previsao" style="display:none">
+                                                    <label class="col-form-label">Previsão de entrega</label>
+                                                    <input class="form-control" type="date" id="previsao" name="Previsao" />
+                                                </div>
+                                                <div class="form-group" style="display:flex;height:50px">
+                                                    <input type="checkbox" data-toggle="toggle" data-size="xs"
+                                                           id="bemDeUso" name="BemConsumo" checked value="@Model.BemConsumo" />
+                                                    <div class="ml-3">
+                                                        <span>Bem de uso/Consumo</span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" style="display:flex;height:50px">
+                                                    <input type="checkbox" data-toggle="toggle" data-size="xs"
+                                                           id="InstaladorInstala" checked name="InstaladorInstala" value="@Model.InstaladorInstala" />
+                                                    <div class="ml-3">
+                                                        <span>Instalador Instala</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xl-6 col-lg-6 pl-0">
+                                            <div class="card-header">
+                                                <h5>
+                                                    Observações adicionais
+                                                </h5>
+                                            </div>
+                                            <div class="card-block form-group">
+                                                <label class="col-form-label">Observações</label>
+                                                <textarea class="form-control" rows="9" maxlength="500" onkeyup="Contador()"
+                                                          id="observacoes" name="Observacoes"></textarea>
+                                                <span class="right" id="limiteCaracteres" style="font-size: x-small; color:rgba(0, 0, 0, 0.54);">
+                                                    Limite de caracteres <span id="cont"></span> / 500
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section RodapePagina {
+    <div class="pcoded-inner-content">
+        <div class="main-body">
+            <div class="page-wrapper">
+                <div class="page-body">
+                    <footer>
+                        <div class="row">
+                            <div class="col-xl-12" style="display:flex">
+                                <div class="col-xl-3 col-lg-3 col-md-2 col-sm-2"></div>
+                                <div class="col-xl-3 col-lg-3 col-md-2 col-sm-2 px-0">
+                                    <a class="btn btn-primary"
+                                       href="@Url.Action("BuscarCliente", "Cliente", new { cpf_cnpj = Model.Cnpj_Cpf, novoCliente = false})">
+                                        <i class="fa fa-arrow-left"></i>Voltar
+                                    </a>
+                                </div>
+                                <div class="col-lg-1 col-md-3 col-sm-3"></div>
+                                <div class="col-xl-3 col-lg-3 col-md-2 col-sm-2 px-0">
+                                    <button class="btn btn-primary"
+                                            type="submit" onclick="$('#formulario').submit()">
+                                        <i class="fa fa-arrow-right"></i>Avançar
+                                    </button>
+                                </div>
+                                <div class="col-lg-1"></div>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    requirejs(["Views/Pedido/ObservacoesPedido"], function (util) {
+
+    });
+
+</script>
+<style>
+    .caixa {
+        display: inline-block;
+        padding: 0.5em;
+        padding-left: 0em;
+    }
+
+        .caixa .rotulo {
+            display: inline;
+            font-weight: bold;
+            opacity: 0.9;
+            padding-right: 0.5em;
+        }
+
+        .caixa .dado {
+            display: inline;
+            padding-right: 1.0em;
+        }
+</style>

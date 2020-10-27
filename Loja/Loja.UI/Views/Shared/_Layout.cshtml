@@ -11,7 +11,7 @@
     Podemos criar um theme em "style.css" para criar uma nova cor
 *@
 
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -24,50 +24,86 @@
 
     <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/waves.min.css" media="all">
 
-    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/feather.css">
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/icofont.css">
 
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/feather.css">
     <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/font-awesome-n.min.css">
+
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/switchery.min.css">
 
     <link rel="stylesheet" href="~/template_bootstrap/css/chartist.css" type="text/css" media="all">
 
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/sweetalert.css">
+
     <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/style.css">
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/pages.css">
     <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/widget.css">
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/toggle/css/bootstrap4-toggle.min.css">
 
-    <link rel="stylesheet" href="~/template_bootstrap/css/select2.min.css" />
-    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/bootstrap-multiselect.css" />
-    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/multi-select.css" />
+    @*<link rel="stylesheet" href="~/template_bootstrap/css/select2.min.css" />
+        <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/bootstrap-multiselect.css" />
+        <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/multi-select.css" />*@
+    @*<link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/simple-line-icons.css">*@
 
-    <script src="/template_bootstrap/js/jquery.min.js"></script>
-    @*<script data-cfasync="false" src="~/template_bootstrap/js/email-decode.min.js"></script>*@
-
+    @* SCRIPTS *@
+    <script type="text/javascript" src="~/template_bootstrap/js/jquery.min.js"></script>
     <script type="text/javascript" src="~/template_bootstrap/js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="~/template_bootstrap/js/popper.min.js"></script>
     <script type="text/javascript" src="~/template_bootstrap/js/bootstrap.min.js"></script>
 
-    <script src="~/template_bootstrap/js/waves.min.js" type="text/javascript"></script>
-
     <script type="text/javascript" src="~/template_bootstrap/js/jquery.slimscroll.js"></script>
-    <script src="~/template_bootstrap/js/chartist.js" type="text/javascript"></script>
 
-    <script src="~/template_bootstrap/js/amcharts.js" type="text/javascript"></script>
+    <script type="text/javascript" src="~/template_bootstrap/js/waves.min.js"></script>
 
-    <script src="~/template_bootstrap/js/jquery.flot.js" type="text/javascript"></script>
-    <script src="~/template_bootstrap/js/jquery.flot.categories.js" type="text/javascript"></script>
-    <script src="~/template_bootstrap/js/curvedlines.js" type="text/javascript"></script>
-    <script src="~/template_bootstrap/js/jquery.flot.tooltip.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="~/template_bootstrap/js/modernizr.js"></script>
+    <script type="text/javascript" src="~/template_bootstrap/js/css-scrollbars.js"></script>
+    
+    <script type="text/javascript" src="~/template_bootstrap/js/sweetalert.min.js"></script>
+       
+    <script type="text/javascript" src="~/template_bootstrap/js/classie.js"></script>
+    <script type="text/javascript" src="~/template_bootstrap/js/modaleffects.js"></script>
 
+    <script type="text/javascript" src="~/template_bootstrap/js/chartist.js"></script>
 
-    <script src="~/template_bootstrap/js/serial.js" type="text/javascript"></script>
-    <script src="~/template_bootstrap/js/light.js" type="text/javascript"></script>
+    <script type="text/javascript" src="~/template_bootstrap/js/amcharts.js"></script>
 
-    <script src="~/template_bootstrap/js/pcoded.min.js" type="text/javascript"></script>
-    <script src="~/template_bootstrap/js/vertical-layout.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="~/template_bootstrap/js/jquery.flot.js"></script>
+    <script type="text/javascript" src="~/template_bootstrap/js/jquery.flot.categories.js"></script>
+    <script type="text/javascript" src="~/template_bootstrap/js/curvedlines.js"></script>
+    <script type="text/javascript" src="~/template_bootstrap/js/jquery.flot.tooltip.min.js"></script>
+
+    <script type="text/javascript" src="~/template_bootstrap/toggle/js/bootstrap4-toggle.min.js"></script>
+    @*<script type="text/javascript" src="~/template_bootstrap/js/switchery.min.js"></script>*@
+
+    <script type="text/javascript" src="~/template_bootstrap/js/serial.js"></script>
+    <script type="text/javascript" src="~/template_bootstrap/js/light.js"></script>
+
+    @*<script type="text/javascript" src="~/template_bootstrap/js/jquery.steps.js"></script>*@
+
+    @*<script type="text/javascript" src="~/template_bootstrap/js/form-wizard.js"></script>*@
+
+    @*<script type="text/javascript" src="~/template_bootstrap/js/bootstrap-tagsinput.js"></script>
+        <script type="text/javascript" src="~/template_bootstrap/js/typeahead.bundle.min.js"></script>
+        <script type="text/javascript" src="~/template_bootstrap/js/bootstrap-maxlength.js"></script>*@
+    @*<script type="text/javascript" src="~/template_bootstrap/js/swithces.js"></script>*@
+
+    
+
+    <script type="text/javascript" src="~/template_bootstrap/js/pcoded.min.js"></script>
+    <script type="text/javascript" src="~/template_bootstrap/js/vertical-layout.min.js"></script>
     <script type="text/javascript" src="~/template_bootstrap/js/custom-dashboard.min.js"></script>
     <script type="text/javascript" src="~/template_bootstrap/js/script.min.js"></script>
-    <script type="text/javascript" src="~/template_bootstrap/js/select2.full.min.js"></script>
-    <script type="text/javascript" src="~/template_bootstrap/js/jquery.multi-select.js"></script>
+    @*<script type="text/javascript" src="~/template_bootstrap/js/select2.full.min.js"></script>
+        <script type="text/javascript" src="~/template_bootstrap/js/jquery.multi-select.js"></script>*@
     <script type="text/javascript" src="~/template_bootstrap/js/jquery.quicksearch.js"></script>
-    <script type="text/javascript" src="~/template_bootstrap/js/select2-custom.js"></script>
+    @*<script type="text/javascript" src="~/template_bootstrap/js/select2-custom.js"></script>*@
+
+
+
+    <script type="text/javascript" src="~/template_bootstrap/js/script.js"></script>
+    <script src="~/template_bootstrap/js/rocket-loader.min.js" data-cf-settings="d28fd8086f5eb18f81d8672a-|49" defer=""></script>
+
+
 
     <script src="~/js/Util.js"></script>
     @RenderSection("ScriptsDiretos", required: false)
@@ -91,6 +127,8 @@
                 //requirejs(['app'], function (app) { });
     </script>
     @RenderSection("Scripts", required: false)
+
+
 </head>
 
 @{
@@ -116,7 +154,7 @@
         <div class="pcoded-container navbar-wrapper">
             @if (usuarioLogado.SessaoAtiva)
             {
-                <nav class="navbar header-navbar pcoded-header">
+                <nav class="navbar header-navbar pcoded-header" style="height:auto">
                     <div class="navbar-wrapper">
                         <div class="navbar-logo">
                             <a href="@Url.Action("Index", "Home")" title="Home" class="show-on-medium-and-down">
@@ -128,7 +166,7 @@
                                 <i class="feather icon-menu icon-toggle-right"></i>
                             </a>
                             <a class="mobile-options waves-effect waves-light">
-                                <i class="feather icon-more-horizontal"></i>
+                                <i class="feather icon-menu icon-toggle-right"></i>
                             </a>
                         </div>
                         <div class="navbar-container container-fluid">
@@ -154,11 +192,8 @@
                                     </a>
                                 </li>
                             </ul>
-                            <ul class="nav-right">
-                                <li class="user-profile header-notification">
-                                    <partial name="~/Views/Shared/Cabecalho.cshtml" model="usuarioLogado" />
-                                </li>
-                            </ul>
+                            <partial name="~/Views/Shared/Cabecalho.cshtml" model="usuarioLogado" />
+
                         </div>
                     </div>
                 </nav>
@@ -178,98 +213,40 @@
                     }
 
                     <div class="pcoded-content">
-                        <div class="pcoded-inner-content">
-                            <div class="main-body">
-                                <div class="page-wrapper">
-                                    <div class="col-sm-12">
-                                        @RenderBody()
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        @RenderBody()
 
-                    <div id="styleSelector">
+
                     </div>
-                    @*<div style="flex-grow: 1; flex-shrink: 1; overflow: auto; ">
-                            @{
-                                //para a página de login não pode ter o padding
-                                var estilo = "";
-                                if (!usuarioLogado.SessaoAtiva)
-                                {
-                                    estilo = "padding-left: 38px;";
-                                }
-                            }
-                            <main role="main" class="container corpo" style="max-width: initial; width: 100%; @estilo">
-                                @RenderBody()
-                            </main>
-                        </div>*@
-                    <div style="flex-grow: 0; flex-shrink: 0; ">
+                    <div class="pcoded-content">
                         @RenderSection("RodapePagina", required: false)
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    @*<div style="display: flex; flex-direction: row; height: 100%; width: 100%;">
-            @if (usuarioLogado.SessaoAtiva)
-            {
-                <ul id="slide-out" class="sidenav sidenav-fixed" style="flex-grow: 0; flex-shrink: 0; width: 300px;">
-                    <partial name="~/Views/Shared/Menu.cshtml" model="usuarioLogado" />
-                </ul>
-            }
-
-            <div style="flex-grow: 1; flex-shrink: 1; ">
-                <div style="display: flex; flex-direction: column; height: 100vh; width: 100vw;">
-                    <div style="flex-grow: 0; flex-shrink: 0; ">
-                        @{
-                            //para a página de login não pode ter o padding
-                            var estilo = "";
-                            if (!usuarioLogado.SessaoAtiva)
-                            {
-                                estilo = "padding-left: 300px;";
-                            }
-                        }
-                        <header style="@estilo">
-                            <div class="navbar navbar-fixed alturaheader">
-                                <nav class="navbar">
-                                    @if (usuarioLogado.SessaoAtiva)
-                                    {
-                                        <a href="#" data-target="slide-out" class="sidenav-trigger" title="Menu"><i class="material-icons">menu</i></a>
-                                    }
-
-                                    <partial name="~/Views/Shared/Cabecalho.cshtml" model="usuarioLogado" />
-                                </nav>
-                            </div>
-                        </header>
-                    </div>
-
-
-                    <div style="flex-grow: 1; flex-shrink: 1; overflow: auto; ">
-                        @{
-                            //para a página de login não pode ter o padding
-                            estilo = "";
-                            if (!usuarioLogado.SessaoAtiva)
-                            {
-                                estilo = "padding-left: 38px;";
-                            }
-                        }
-                        <main role="main" class="container corpo" style="max-width: initial; width: 100%; @estilo">
-                            @RenderBody()
-                        </main>
-                    </div>
-                    <div style="flex-grow: 0; flex-shrink: 0; ">
-                        @RenderSection("RodapePagina", required: false)
-                    </div>
-                </div>
-            </div>
-        </div>*@
     <partial name="~/Views/Shared/Error.cshtml" />
 
+    <div id="styleSelector">
+    </div>
 
 
+    <style>
 
+        .pcoded-main-container {
+            /*margin-top: calc(100vh - 670px) !important;*/
+        }
+        /*.pcoded-navbar{
+            top:71px !important;
+        }*/
 
+        .footer {
+            background-color: #fff;
+        }
+
+        /*label{
+            font-weight:bold;
+        }*/
+    </style>
 
 
 
@@ -285,4 +262,5 @@
     <script src="~/template_bootstrap/js/rocket-loader.min.js" data-cf-settings="d2d1d6e2f87cbebdf4013b26-|49" defer=""></script>
 </body>
 </html>
+
 
