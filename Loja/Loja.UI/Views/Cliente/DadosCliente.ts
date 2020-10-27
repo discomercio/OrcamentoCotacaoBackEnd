@@ -406,7 +406,7 @@ function ValidarProdutorIcms(cpfCnpj) {
     let retorno: boolean = true;
 
     let erroModal = new ErrorModal();
-    let msg: string = "<b>Preencha os campos marcados como obrigatório:</b><br>";
+    let msg: string = "";
 
     let ie: string = $('#ie').val()?.toString();
     let produtor: string = $('#produtor').val().toString();
