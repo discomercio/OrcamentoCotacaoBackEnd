@@ -15,28 +15,28 @@ $('#cpf_cnpj').val(CpfCnpjUtils.cnpj_cpf_formata(cpfCnpj));
 
 $(function () {
 
-    $('#cepEntrega').mask("00000-000");
-    $('#cep').mask("00000-000");
-    $('#ie').mask("000.000.000.000");
-    $('#telRes').mask("(00) 0000-0000");
+    ($('#cepEntrega') as any).mask("00000-000");
+    ($('#cep') as any).mask("00000-000");
+    ($('#ie') as any).mask("000.000.000.000");
+    ($('#telRes') as any).mask("(00) 0000-0000");
     //$('#celular').mask("(00) 00000-0000");
     $('#celular').blur(function () {
         if ($('#celular').val().toString().length == 14) {
-            $('#celular').mask("(99) 9999-9999");
+            ($('#celular') as any).mask("(99) 9999-9999");
         }
         else {
-            $('#celular').mask("(99) 99999-9999");
+            ($('#celular') as any).mask("(99) 99999-9999");
         }
-    })
+    });
 
-    $('#telCom').mask("(00) 0000-0000");
+    ($('#telCom') as any).mask("(00) 0000-0000");
 
     $('#telCom2').blur(function () {
         if ($('#telCom2').val().toString().length == 14) {
-            $('#telCom2').mask("(99) 9999-9999");
+            ($('#telCom2') as any).mask("(99) 9999-9999");
         }
         else {
-            $('#telCom2').mask("(99) 99999-9999");
+            ($('#telCom2') as any).mask("(99) 99999-9999");
         }
     })
 
@@ -63,7 +63,7 @@ $(function () {
         linha += "</div></div>";
 
         $('#collapsible-body-comercial').append(linha);
-        $('#' + index + '-Telefone').mask("(00) 0000-0000");
+        ($('#' + index + '-Telefone') as any).mask("(00) 0000-0000");
 
         index++;
         $('#index').val(index);
@@ -72,10 +72,10 @@ $(function () {
     //mascara de telefone para ref bancaria
     $("#0-telBanco").blur(function () {
         if ($('#0-telBanco').val().toString().length == 14) {
-            $('#0-telBanco').mask("(99) 9999-9999");
+            ($('#0-telBanco') as any).mask("(99) 9999-9999");
         }
         else {
-            $('#0-telBanco').mask("(99) 99999-9999");
+            ($('#0-telBanco') as any).mask("(99) 99999-9999");
         }
     });
 
@@ -539,7 +539,7 @@ function ValidarEnderecoEntrega() {
     let ufEntrega: string = $('#ufEntrega').val().toString();
     let cidadeEntrega: string = $('#cidadeEntrega').val().toString();
     let justificaticaEntrega: string = $('#justificativa').val().toString();
-    
+
     if (!cepEntrega || ufEntrega === "" || cidadeEntrega === "") {
         $('#cepEntrega').addClass("is-invalid");
         msg += "Caso seja selecionado outro endereço, informe um CEP válido!<br>";

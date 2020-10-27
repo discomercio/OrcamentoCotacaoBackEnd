@@ -89,6 +89,8 @@ namespace Loja.UI
             services.AddTransient<Pedido.PedidoCriacao, Pedido.PedidoCriacao>();
             services.AddTransient<Pedido.PedidoBll, Pedido.PedidoBll>();
 
+            services.AddTransient<Loja.Bll.Bll.AcessoBll.SiteColorsBll, Loja.Bll.Bll.AcessoBll.SiteColorsBll>();
+
 
             //ContextoProvider
             services.AddTransient<InfraBanco.ContextoBdProvider, InfraBanco.ContextoBdProvider>();

@@ -158,10 +158,10 @@ namespace Loja.Bll.Bll.AcessoBll
                 return ret;
             }
 
-            var cadastrado = false;
+            var usuarioTemAcessoLoja = false;
             var Lista_operacoes_permitidas = await clienteBll.BuscaListaOperacoesPermitidas(usuario);
             if (UsuarioLogado.Operacao_permitida_estatica(Constantes.Constantes.OP_CEN_ACESSO_TODAS_LOJAS, Lista_operacoes_permitidas))
-                cadastrado = true;
+                usuarioTemAcessoLoja = true;
             /*
             if vendedor_loja then
                 s = "SELECT loja FROM t_USUARIO_X_LOJA WHERE (usuario='" & usuario & "') AND (CONVERT(smallint,loja)=" & loja & ")"
@@ -170,7 +170,7 @@ namespace Loja.Bll.Bll.AcessoBll
                 if Not rs2.Eof then cadastrado = true
                 end if
                 */
-            if (rs.Vendedor_Loja != 0 && !cadastrado)
+            if (rs.Vendedor_Loja != 0 && !usuarioTemAcessoLoja)
             {
                 loja = loja ?? "";
                 var existeLoja = await (from usuarioXloja in contextoProvider.GetContextoLeitura().TusuarioXLojas
@@ -178,7 +178,7 @@ namespace Loja.Bll.Bll.AcessoBll
                                         && usuarioXloja.Loja == loja
                                         select 1).AnyAsync();
                 if (existeLoja)
-                    cadastrado = true;
+                    usuarioTemAcessoLoja = true;
                 if (!existeLoja)
                 {
                     //já voltamos daqui....
@@ -189,9 +189,9 @@ namespace Loja.Bll.Bll.AcessoBll
             }
 
 
-            if (!cadastrado)
+            if (!usuarioTemAcessoLoja)
             {
-                logger.LogInformation($"LoginUsuario !cadastrado: usuario={usuario} remoteIpAddress={remoteIpAddress} userAgent={userAgent}");
+                logger.LogInformation($"LoginUsuario Loja_sem_acesso e não é Vendedor_Loja: usuario={usuario} remoteIpAddress={remoteIpAddress} userAgent={userAgent}");
                 return ret;
             }
 
@@ -208,7 +208,7 @@ namespace Loja.Bll.Bll.AcessoBll
 				end if
 */
 
-            var senha_banco = new SenhaBll().DecodificaSenha(rs.Datastamp);
+            var senha_banco = UtilsGlobais.SenhaBll.DecodificaSenha(rs.Datastamp);
             senha = senha.ToUpper() ?? "";
             if (senha != senha_banco)
             {
@@ -340,6 +340,27 @@ namespace Loja.Bll.Bll.AcessoBll
             }
             return lista;
         }
+
+        //ao cahvear a loja atual, precisamos gravar na t_usuario
+        //para que o sistema em ASP consiga pegar a alteração na loja
+        public async Task Loja_troca_rapida_gravar_tusuario(string usuario, string loja)
+        {
+            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+            {
+                var rsUsuario = await (from u in dbgravacao.Tusuarios
+                                       where usuario == u.Usuario.Trim().ToUpper()
+                                       select u).FirstOrDefaultAsync();
+                if (rsUsuario == null)
+                    throw new ArgumentException($"Loja_troca_rapida_gravar_tusuario: Usuário {usuario} não encontrado no banco de dados");
+
+                rsUsuario.SessionCtrlModulo = Constantes.Constantes.SESSION_CTRL_MODULO_LOJA;
+                rsUsuario.SessionCtrlLoja = loja;
+
+                await dbgravacao.SaveChangesAsync();
+                dbgravacao.transacao.Commit();
+            }
+        }
+
         public async Task<string?> Loja_nome(string loja)
         {
             var query = from l in contextoProvider.GetContextoLeitura().Tlojas
