@@ -3,12 +3,22 @@
 @{
     ViewData["Title"] = "ERP";
 }
-<div style="height: 20px"></div>
+
+<div class="pcoded-inner-content pb-2" style="min-height: 75vh;">
+    <div class="main-body">
+        <div class="page-wrapper pb-0">
+            <div class="page-body">
+                <div class="row">
 
 
-@*
-    exemplo de src:
-    http://its-appdev:9010/loja/quadroavisomostra.asp?SessionCtrlInfo=0xa31bf9b9692dc3b5651da38f4d1bc9ffa71f5f0fd39fe981c19bd7a5573d67b5e7f73dd1b74587cd01d7bd5b3d610fe98933df055f8169054317f125610b438363d513ff83cd934f8bfd3f718be33977a70d4b9bd10d491fcb3779b3f51767b5f35b89c71f4d89c5
-*@
-<iframe src="@Model.Url()"
-        style="width: 100%; height: calc(100vh - 70px - 40px - 20px);"></iframe>
+                    @*
+                        exemplo de src:
+                        http://its-appdev:9010/loja/quadroavisomostra.asp?SessionCtrlInfo=0xa31bf9b9692dc3b5651da38f4d1bc9ffa71f5f0fd39fe981c19bd7a5573d67b5e7f73dd1b74587cd01d7bd5b3d610fe98933df055f8169054317f125610b438363d513ff83cd934f8bfd3f718be33977a70d4b9bd10d491fcb3779b3f51767b5f35b89c71f4d89c5
+                    *@
+                    <iframe src="@Model.Url()"
+                            style="width: 100%; height: calc(100vh - 70px - 40px);"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
