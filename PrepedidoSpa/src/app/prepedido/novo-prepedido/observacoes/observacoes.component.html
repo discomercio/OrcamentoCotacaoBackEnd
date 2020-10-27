@@ -2,8 +2,8 @@
         <!-- [ngClass]="{'carregando': carregandoDto || carregandoProds}" -->
     <form style="display: contents;" *ngIf="prePedidoDto">
         <header>
-            <ng-container *ngIf="criando; else tituloEditando">Criar Pré-Pedido</ng-container>
-            <ng-template #tituloEditando>Editar Pré-pedido</ng-template>
+            <ng-container *ngIf="criando; else tituloEditando">Criar Pedido</ng-container>
+            <ng-template #tituloEditando>Editar Pedido</ng-template>
             - Observações
         </header>
         <article class="indicadorlinha">
@@ -20,7 +20,7 @@
             <div>
                 <!-- ************   OBSERVAÇÕES   ************  -->
                 <mat-form-field class="edicao-endereco" floatLabel="floatLabel()" style="width: 25ch;">
-                    <textarea matInput type="text" placeholder="Observações adicionais do Pré-Pedido" (keyup) = "contarCaracter()"
+                    <textarea matInput type="text" placeholder="Observações adicionais do Pedido" (keyup) = "contarCaracter()"
                         [ngModelOptions]="{standalone: true}" [(ngModel)]="prePedidoDto.DetalhesPrepedido.Observacoes"
                         #autosize="cdkTextareaAutosize" maxlength="500" cdkTextareaAutosize cdkAutosizeMinRows="5"
                         cdkAutosizeMaxRows="5"></textarea>

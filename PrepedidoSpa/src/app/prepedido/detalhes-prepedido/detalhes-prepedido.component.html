@@ -4,7 +4,7 @@
     *ngIf="!impressaoService.emImpressao() && (prepedidoBuscarService.carregando || pedidoBuscarService.carregando)">
     <!-- somente enquanto está carregando -->
     <header id="header" *ngIf="emPrepedidos">
-        <div class="titulopagina"> Detalhes do Pré-Pedido {{numeroPrepedido}}</div>
+        <div class="titulopagina"> Detalhes do Pedido {{numeroPrepedido}}</div>
     </header>
     <header id="header" *ngIf="!emPrepedidos">
         <div class="titulopagina"> Detalhes do Pedido {{numeroPedido}}</div>
