@@ -31,21 +31,22 @@ namespace PrepedidoApi.Utils
             //caso usuário com senha expirada ou bloqueado, retornamos um número 
             if (!string.IsNullOrEmpty(dadosCliente))
             {
-                if(int.TryParse(dadosCliente, out idErro))
+                if (int.TryParse(dadosCliente, out idErro))
                 {
                     //temos um problema e precisamos mandar algum valor para avisar que é senha expirada ou usuario bloqueado para mostrar na tela
                     UsuarioLogin usuario = new UsuarioLogin { IdErro = idErro };
                     return usuario;
-                }                
+                }
             }
-            
+
 
             if (string.IsNullOrEmpty(dadosCliente))
                 return null;
             else
             {
                 var loja = await acessoBll.BuscarLojaUsuario(apelido);
-                UsuarioLogin usuario = new UsuarioLogin { Apelido = apelido, Nome = dadosCliente.ToString(), Loja = loja};
+                var unidade_negocio = await acessoBll.Buscar_unidade_negocio(loja);
+                UsuarioLogin usuario = new UsuarioLogin { Apelido = apelido, Nome = dadosCliente.ToString(), Loja = loja, Unidade_negocio = unidade_negocio };
                 return usuario;
             }
         }
