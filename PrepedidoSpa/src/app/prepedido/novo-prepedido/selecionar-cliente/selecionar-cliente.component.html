@@ -1,7 +1,7 @@
 <form *ngIf="telaDesktop" #loginForm="ngForm" class="container" [class]="telaDesktop? 'containerDesktop': 'containerCelular'"
     (ngSubmit)="buscar()">
 
-    <div class="titulopagina" [ngClass]="{'tituloDesktop': telaDesktop}"> Novo Pré-Pedido </div>
+    <div class="titulopagina" [ngClass]="{'tituloDesktop': telaDesktop}"> Novo Pedido </div>
 
     <div [class]="telaDesktop ? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'">
 
@@ -23,7 +23,7 @@
     <div [class]="telaDesktop ? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'">
         <div style="flex-grow: 0.8" *ngIf="!telaDesktop">
         </div>
-        <div class="titulopagina" [ngClass]="{'tituloDesktop': telaDesktop}"> Novo Pré-Pedido </div>
+        <div class="titulopagina" [ngClass]="{'tituloDesktop': telaDesktop}"> Novo Pedido </div>
 
         <div style="flex-grow: 0.01" *ngIf="!telaDesktop">
         </div>

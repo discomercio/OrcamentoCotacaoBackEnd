@@ -1,7 +1,7 @@
 <div [class]="telaDesktop? 'corpohome corpohomeDesktop': 'corpohome corpohomeCelular'">
-    <div *ngIf="emPrepedidos" class="titulopagina" [ngClass]="{'tituloDesktop': telaDesktop}"> Consultar Pré-Pedidos
+    <div *ngIf="emPrepedidos" class="titulopagina" [ngClass]="{'tituloDesktop': telaDesktop}"> Consultar Pedidos
     </div>
-    <div *ngIf="!emPrepedidos" class="titulopagina" [ngClass]="{'tituloDesktop': telaDesktop}"> Consultar Pedidos </div>
+    <div *ngIf="!emPrepedidos" class="titulopagina" [ngClass]="{'tituloDesktop': telaDesktop}"> Consultar Pedidos em Processamento </div>
 
     <form #loginForm="ngForm" class="container" [class]="telaDesktop? 'containerDesktop': 'containerCelular'"
         (ngSubmit)="buscar()">
@@ -25,7 +25,7 @@
             </div>
             <div class="item item-3" [ngClass]="{'margemdesktop': telaDesktop}">
                 <mat-form-field [class]="telaDesktop? 'campoTextoDesktop': 'campoTextoCel'">
-                    <input *ngIf="emPrepedidos" matInput type="text" placeholder="Número Pré-Pedido"
+                    <input *ngIf="emPrepedidos" matInput type="text" placeholder="Número Pedido"
                         [(ngModel)]="prepedidoListarService.paramsBuscaPrepedido.numeroPrePedido"
                         name="numeroPrePedidoBusca" list="dlnumpedidoBUsca1">
                     <input *ngIf="!emPrepedidos" matInput type="text" placeholder="Número Pedido"
@@ -63,13 +63,13 @@
             <div *ngIf="emPrepedidos" [class]="telaDesktop? 'campoTextoDesktop cbdesktop': 'campoTextoCel cbcel'">
                 <mat-checkbox class="checkboxes" (click)="checkBuscas()"
                     [(ngModel)]="prepedidoListarService.paramsBuscaPrepedido.tipoBuscaAndamento"
-                    name="tipoBuscaAndamento">Em andamento
+                    name="tipoBuscaAndamento">Em análise
                 </mat-checkbox>
             </div>
             <div *ngIf="emPrepedidos" [class]="telaDesktop? 'campoTextoDesktop cbdesktop': 'campoTextoCel cbcel'">
                 <mat-checkbox class="checkboxes" (click)="checkBuscas()"
-                    [(ngModel)]="prepedidoListarService.paramsBuscaPrepedido.tipoBuscaPedido" name="tipoBuscaPedido">Que
-                    viraram pedidos
+                    [(ngModel)]="prepedidoListarService.paramsBuscaPrepedido.tipoBuscaPedido" name="tipoBuscaPedido">
+                    Em processamento
                 </mat-checkbox>
             </div>
             <div *ngIf="emPrepedidos" [class]="telaDesktop? 'campoTextoDesktop cbdesktop': 'campoTextoCel cbcel'">

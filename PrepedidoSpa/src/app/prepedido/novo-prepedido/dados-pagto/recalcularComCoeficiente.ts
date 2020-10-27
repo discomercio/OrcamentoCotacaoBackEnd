@@ -180,7 +180,7 @@ export class RecalcularComCoeficiente {
                 //vamos testar para saber se parcela com entrada
                 if (!!this.vlEntrada) {
                   if (this.vlEntrada > valorTotalParc) {
-                    this.alertaService.mostrarMensagem("Valor da entrada é maior que o total do Pré-pedido!");
+                    this.alertaService.mostrarMensagem("Valor da entrada é maior que o total do Pedido!");
                     this.vlEntrada = null;
                     lstMsg = new Array();
                     return;

@@ -58,7 +58,7 @@ export class ConfirmarPrepedidoComponent extends PassoPrepedidoBase implements O
           this.alertaService.mostrarMensagem("Erros ao salvar. \nLista de erros: \n" + r.join("\n"));
           return;
         }
-        this.alertaService.mostrarMensagem("Pré-pedido criado com sucesso.");
+        this.alertaService.mostrarMensagem("Pedido criado com sucesso.");
         this.router.navigate(["/"]);
       },
       error: (r) => this.alertaService.mostrarErroInternet(r)
