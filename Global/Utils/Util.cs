@@ -485,57 +485,6 @@ namespace UtilsGlobais
             return strDestino;
         }
 
-        public static string DecodificaSenha(string origem, string chave)
-        {
-            string s_destino = "";
-            string s_origem = origem;
-            int i = s_origem.Length - 2;
-
-            s_origem = s_origem.Substring(s_origem.Length - i, i);
-            s_origem = s_origem.ToUpper();
-
-            string s;
-            string codificar = "";
-
-            for (i = 1; i <= s_origem.Length; i++)
-            {
-                s = s_origem.Substring((i - 1), 2);
-                if (s != "00")
-                {
-                    codificar = s_origem.Substring((i - 1), (s_origem.Length - i + 1)); ;
-                    break;
-                }
-                i++;
-            }
-
-            for (i = 0; i < codificar.Length; i++)
-            {
-                s = codificar.Substring(i, 2);
-                int hexNumber = int.Parse(s, System.Globalization.NumberStyles.HexNumber);
-                s_destino += (char)(hexNumber);
-                i++;
-            }
-            s_origem = s_destino;
-            s_destino = "";
-
-            string letra;
-
-            for (i = 0; i < s_origem.Length; i++)
-            {
-                //pega a letra
-                letra = chave.Substring(i, 1);
-                //Converte para char
-                int i_chave = (Convert.ToChar(letra) * 2) + 1;
-                int i_dado = Convert.ToChar(s_origem.Substring(i, 1));
-
-                int contaMod = i_chave ^ i_dado;
-                contaMod /= 2;
-                s_destino += (char)contaMod;
-            }
-
-            return s_destino;
-        }
-
         public static string codificaDado(String strOrigem, bool blnIncluiPreenchimento)
         {
             byte i;

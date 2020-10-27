@@ -41,7 +41,7 @@ namespace Loja.UI.Controllers
             if (!string.IsNullOrWhiteSpace(novaloja))
             {
                 model.LojaTentandoChavearId = novaloja;
-                if (!usuarioLogado.LojaAtivaAlterar(novaloja))
+                if (!usuarioLogado.LojaAtivaAlterar(novaloja, usuarioAcessoBll))
                 {
                     model.ErroChavearLoja = true;
                 }
