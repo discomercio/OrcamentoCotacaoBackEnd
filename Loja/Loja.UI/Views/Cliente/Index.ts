@@ -1,21 +1,26 @@
 ﻿import { CpfCnpjUtils } from "../../UtilTs/CpfCnpjUtils/CpfCnpjUtils";
-import { StringUtils } from "../../UtilTs/stringUtils/stringUtils";
+import { ErrorModal } from "../Shared/Error";
 
 
 declare var window: any;
-declare function swal(header, mensagem): any;
 
 window.ValidarCpfCnpj = () => {
+
+    let erroModal = new ErrorModal();
+    let msg: string = "";
+
     if ($("#cpf_cnpj").val() != "") {
         let cpfCnpj :string  = $("#cpf_cnpj").val().toString();
 
         if (!CpfCnpjUtils.cnpj_cpf_ok(cpfCnpj)) {
-            swal("Erro", "CNPJ/CPF inválido.");
+            msg = "CNPJ/CPF inválido.";
+            erroModal.ModalInnerHTML(msg);
             return false;
         }
     }
     else {
-        swal("Erro", "CNPJ/CPF inválido ou vazio.");
+        msg = "CNPJ/CPF inválido ou vazio.";
+        erroModal.ModalInnerHTML(msg);
         return false;
     }
     
