@@ -300,7 +300,7 @@ namespace Loja.UI.Controllers
 
             //se esta tudo ok redirecionamos para a tela de Pedido
             //return RedirectToAction("BuscarPedido", new { numPedido = "Implementando novo cadastro de pedido" });
-            return RedirectToAction("Index", "Cliente", new { numPedido = "--------------------pedido não foi salvo, implementando novo cadastro de pedido" });
+            return RedirectToAction("Index", "Cliente", new { numPedido = "pedido não foi salvo, implementando novo cadastro de pedido" });
         }
 
         public async Task<IActionResult> BuscarPedido(string numPedido)

@@ -5,11 +5,27 @@
 
 
 @section ScriptsDiretos{
-    <link rel="stylesheet" type="text/css" href="~/lib/datatables/datatables.min.css" />
-    <script type="text/javascript" src="~/lib/datatables/datatables.min.js"></script>
+    @*<link rel="stylesheet" type="text/css" href="~/lib/datatables/datatables.min.css" />
+        <script type="text/javascript" src="~/lib/datatables/datatables.min.js"></script>*@
 
+    <script src="~/template_bootstrap/js/jquery.datatables.min.js" type="text/javascript"></script>
+    <script src="~/template_bootstrap/js/datatables.buttons.min.js" type="text/javascript"></script>
+    <script src="~/template_bootstrap/js/jszip.min.js" type="text/javascript"></script>
+    <script src="~/template_bootstrap/js/pdfmake.min.js" type="text/javascript"></script>
+    <script src="~/template_bootstrap/js/vfs_fonts.js" type="text/javascript"></script>
+    <script src="~/template_bootstrap/js/buttons.print.min.js" type="text/javascript"></script>
+    <script src="~/template_bootstrap/js/buttons.html5.min.js" type="text/javascript"></script>
+    <script src="~/template_bootstrap/js/datatables.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/template_bootstrap/js/datatables.responsive.min.js" type="text/javascript"></script>
+    <script src="~/template_bootstrap/js/responsive.bootstrap4.min.js" type="text/javascript"></script>
+
+    <script src="~/template_bootstrap/js/data-table-custom.js" type="text/javascript"></script>
+
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/datatables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/buttons.datatables.min.css">
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/responsive.bootstrap4.min.css">
     @*<link rel="stylesheet" type="text/css" href="~/lib/datatables-materialize/dataTables.materialize.css" />
-    <script type="text/javascript" src="~/lib/datatables-materialize/dataTables.materialize.js"></script>*@
+        <script type="text/javascript" src="~/lib/datatables-materialize/dataTables.materialize.js"></script>*@
 }
 
 
@@ -19,18 +35,19 @@
 
 <script>
     $(document).ready(function () {
-        intiDatatables('#tabeladados', {
+        intiDatatables('.tabeladados', {
             columnDefs: [
                 { type: "databr", targets: 1 }
             ]
         });
     });
 
+
 </script>
 
 <div class="page-header card">
     <div class="row align-items-end">
-        <div class="col-lg-8">
+        <div class="col-lg-6">
             <div class="page-header-title">
                 <i class="fa fa-trash bg-c-blue"></i>
                 <div class="d-inline">
@@ -39,20 +56,27 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-4">
-            <div class="page-header-breadcrumb">
-                <ul class=" breadcrumb breadcrumb-title">
-                    <li class="breadcrumb-item">
-                        <a href="@Url.Action("Index", "Home")"><i class="feather icon-home"></i></a>
-                    </li>
-                    <li class="breadcrumb-item"><a href="#">Cancelamento Atutomático</a> </li>
-                </ul>
-            </div>
+
+        <div class="col-lg-6">
+            @if (Model.ListaLojasViewModel.MostrarLoja)
+            {
+                Model.ListaLojasViewModel.NomeTabelaHtml = "tabeladados";
+                Model.ListaLojasViewModel.NumeroColunaDaLoja = 3;
+                <partial name="~/Views/Comuns/ListaLojas.cshtml" for="ListaLojasViewModel" />
+            }
+            @*<div class="page-header-breadcrumb">
+                    <ul class=" breadcrumb breadcrumb-title">
+                        <li class="breadcrumb-item">
+                            <a href="@Url.Action("Index", "Home")"><i class="feather icon-home"></i></a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="#">Cancelamento Atutomático</a> </li>
+                    </ul>
+                </div>*@
         </div>
     </div>
 </div>
 
-<div class="pcoded-inner-content pb-0" style="min-height: 75vh;">
+<div class="pcoded-inner-content pb-2" style="min-height: 75vh;">
     <div class="main-body">
         <div class="page-wrapper pb-0">
             <div class="page-body">
@@ -63,12 +87,12 @@
                                 <div class="row col-xl-12 col-lg-12">
 
                                 </div>
-                                @if (Model.ListaLojasViewModel.MostrarLoja)
-                                {
-                                    Model.ListaLojasViewModel.NomeTabelaHtml = "tabeladados";
-                                    Model.ListaLojasViewModel.NumeroColunaDaLoja = 3;
-                                    <partial name="~/Views/Comuns/ListaLojas.cshtml" for="ListaLojasViewModel" />
-                                }
+                                @*@if (Model.ListaLojasViewModel.MostrarLoja)
+                                    {
+                                        Model.ListaLojasViewModel.NomeTabelaHtml = "tabeladados";
+                                        Model.ListaLojasViewModel.NumeroColunaDaLoja = 3;
+                                        <partial name="~/Views/Comuns/ListaLojas.cshtml" for="ListaLojasViewModel" />
+                                    }*@
 
                                 @if (Model.CancelamentoAutomaticoItems.Count < 1)
                                 {
@@ -77,67 +101,70 @@
                                     </span>
                                 }
                                 else
-                                { 
-                                    <table class="table-responsive" id="tabeladados" style="display: none;">
-                                        <thead>
-                                            <tr>
-                                                <th></th>
-                                                <th>
-                                                    Data final
-                                                </th>
-                                                <th>
-                                                    Pedido
-                                                </th>
-                                                @if (Model.ListaLojasViewModel.MostrarLoja)
-                                                {
-                                                    <th>
-                                                        Loja
-                                                    </th>
-                                                }
-                                                <th>
-                                                    Vendedor
-                                                </th>
-                                                <th>
-                                                    Nome do cliente
-                                                </th>
-                                                <th>
-                                                    Análise de crédito
-                                                </th>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody>
-                                            @foreach (var c in Model.CancelamentoAutomaticoItems)
-                                            {
+                                {
+                                    <div class="dt-responsive table-responsive table-responsive-lg">
+                                        <table class="table table-striped table-bordered tabeladados">
+                                            <thead>
                                                 <tr>
-                                                    <td style="text-align: right">
-                                                        @c.NumeroLinha
-                                                    </td>
-                                                    <td>
-                                                        @c.DataFinal?.ToShortDateString()
-                                                    </td>
-                                                    <td>
-                                                        @c.Pedido
-                                                    </td>
+                                                    <th></th>
+                                                    <th>
+                                                        Data final
+                                                    </th>
+                                                    <th>
+                                                        Pedido
+                                                    </th>
                                                     @if (Model.ListaLojasViewModel.MostrarLoja)
                                                     {
-                                                        <td>
-                                                            @c.LojaNome
-                                                        </td>
+                                                        <th>
+                                                            Loja
+                                                        </th>
                                                     }
-                                                    <td>
-                                                        @c.Vendedor
-                                                    </td>
-                                                    <td>
-                                                        @c.NomeDoCliente
-                                                    </td>
-                                                    <td>
-                                                        @c.Analise_credito_descricao
-                                                    </td>
+                                                    <th>
+                                                        Vendedor
+                                                    </th>
+                                                    <th>
+                                                        Nome do cliente
+                                                    </th>
+                                                    <th>
+                                                        Análise de crédito
+                                                    </th>
                                                 </tr>
-                                            }
-                                        </tbody>
-                                    </table>
+                                            </thead>
+
+                                            <tbody>
+                                                @foreach (var c in Model.CancelamentoAutomaticoItems)
+                                                {
+                                                    <tr>
+                                                        <td style="text-align: right">
+                                                            @c.NumeroLinha
+                                                        </td>
+                                                        <td>
+                                                            @c.DataFinal?.ToShortDateString()
+                                                        </td>
+                                                        <td>
+                                                            @c.Pedido
+                                                        </td>
+                                                        @if (Model.ListaLojasViewModel.MostrarLoja)
+                                                        {
+                                                            <td>
+                                                                @c.LojaNome
+                                                            </td>
+                                                        }
+                                                        <td>
+                                                            @c.Vendedor
+                                                        </td>
+                                                        <td>
+                                                            @c.NomeDoCliente
+                                                        </td>
+                                                        <td>
+                                                            @c.Analise_credito_descricao
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+
                                 }
                             </div>
                         </div>

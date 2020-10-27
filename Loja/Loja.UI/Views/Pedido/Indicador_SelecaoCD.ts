@@ -8,7 +8,7 @@ import { IndicadorDto } from "../../DtosTs/IndicadorDto/IndicadorDto";
 declare var moedaUtils: MoedaUtils;
 moedaUtils = new MoedaUtils();
 declare var percentualMaximoDto: PercentualMaximoDto;
-declare function ModalSimples(mensagem): any;
+declare function swal(header, mensagem): any;
 declare var window: any;
 declare var indicadorOriginal: string;
 declare var listaIndicadoresDto: IndicadorDto[];
@@ -163,7 +163,7 @@ window.VerificarPercMaxDescEComissao = (e: HTMLInputElement) => {
     val = (val / 100).toFixed(2) + '';
     e.value = moedaUtils.formatarMoedaSemPrefixo(val);
 
-
+    let headerErro: string = "Erro";
     let msgErro: string = "";
     let percMax = new PercentualMaximoDto()
     percMax = percentualMaximoDto;
@@ -177,17 +177,18 @@ window.VerificarPercMaxDescEComissao = (e: HTMLInputElement) => {
 
     if (msgErro != "") {
         //chama a modal caso seja maior ou tiver erros
-        ModalSimples(msgErro);
+        swal(headerErro,msgErro);
     }
 }
 
 function ValidarCamposSelecaoCD(): boolean {
-    let err :string[];
+    let headerErro: string = "Erro";
+    let msgErro: string = "";
     let retorno: boolean = true;
 
     if ($("#chkManual").prop("checked") == false && $("#chkAutomatico").prop("checked") == false) {
-        err.push("Necessário selecionar o modo de seleção do CD");
-        ModalSimples(err);
+        msgErro = "Necessário selecionar o modo de seleção do CD";
+        swal(headerErro, msgErro);
         retorno = false;
     }
 
@@ -195,8 +196,8 @@ function ValidarCamposSelecaoCD(): boolean {
 
         let selecaoCD: any = $("#selecaoCd").val();
         if (selecaoCD == "0") {
-            err.push("É necessário selecionar o CD que irá atender o pedido(sem auto-split)!");
-            ModalSimples(err);
+            msgErro = "É necessário selecionar o CD que irá atender o pedido(sem auto-split)!";
+            swal(headerErro, msgErro);
             retorno = false;
         }
     }
@@ -205,26 +206,27 @@ function ValidarCamposSelecaoCD(): boolean {
 }
 
 function ValidarCamposIndicador(): boolean {
-    let err :string[];
+    let headerErro: string = "Erro";
+    let msgErro: string = "";
     let retorno: boolean = true;
 
     if ($("#chkSemIndicacao").prop('checked') == false && $("#chkComIndicacao").prop('checked') == false) {
-        err.push("Informe se o pedido é com ou sem indicação!");
-        ModalSimples(err);
+        msgErro = "Informe se o pedido é com ou sem indicação!";
+        swal(headerErro, msgErro);
         return false;
     }
 
     //afazer: validar se é com indicação, devemos validar os dados do indicador
     if ($("#chkComIndicacao").prop('checked') == true) {
         if ($("#indicador").val() == "" || $("#indicador").val() == undefined) {
-            err.push('Selecione o "indicador"!');
-            ModalSimples(err);
+            msgErro = 'Selecione o "indicador"!';
+            swal(headerErro, msgErro);
             return false;
         }
         debugger;
         if ($("#chkSemRa").prop("checked") == false && $("#chkComRa").prop("checked") == false) {
-            err.push("Informe se o pedido possui RA ou não!");
-            ModalSimples(err);
+            msgErro = "Informe se o pedido possui RA ou não!";
+            swal(headerErro, msgErro);
             return false;
         }
 

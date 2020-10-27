@@ -72,7 +72,7 @@ namespace Loja.UI.Controllers
 
             cliente.PermiteEdicao = Loja.Bll.Util.Util.OpercaoPermitida(Loja.Bll.Constantes.Constantes.OP_LJA_EDITA_CLIENTE_DADOS_CADASTRAIS
                 , usuarioLogado.S_lista_operacoes_permitidas) ? true : false;
-
+            //vamos verificar se o cliente é novo
 
             //somente para teste remover após concluir
             //cliente.PermiteEdicao = false;
@@ -94,6 +94,7 @@ namespace Loja.UI.Controllers
             }
             else
             {
+                cliente.PermiteEdicao = true;
                 clienteCadastroDto.DadosCliente = new DadosClienteCadastroDto();
                 clienteCadastroDto.DadosCliente.Cnpj_Cpf = cpf_cnpj;
                 if (cpf_cnpj.Length == 11)

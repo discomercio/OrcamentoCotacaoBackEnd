@@ -22,65 +22,65 @@
     //fica confuso ter um menu do lado direito e outro do lado esquerdo
     //para resolver, acho que deveria ir para uma página com o combo de lojas
     //com isto, o drop-down de loja não funciona: overflow: hidden;
-<ul class="nav-right">
-    <li class="user-profile header-notification">
-        <div class="dropdown-primary dropdown">
-            <div class="dropdown-toggle" data-toggle="dropdown">
-            </div>
+    <ul class="nav-right">
+        <li class="user-profile header-notification">
+            <div class="dropdown-primary dropdown">
+                <div class="dropdown-toggle" data-toggle="dropdown">
+                </div>
 
-            <div class="dropdown-toggle" data-toggle="dropdown">
-                <span>Olá @usuarioLogado.Usuario_nome_atual</span>
+                <div class="dropdown-toggle" data-toggle="dropdown">
+                    <span>Olá @usuarioLogado.Usuario_nome_atual</span>
+                </div>
             </div>
-        </div>
-    </li>
+        </li>
 
-    @if (usuarioLogado.Operacao_permitida(Loja.Bll.Constantes.Constantes.OP_LJA_LOGIN_TROCA_RAPIDA_LOJA))
+        @if (usuarioLogado.Operacao_permitida(Loja.Bll.Constantes.Constantes.OP_LJA_LOGIN_TROCA_RAPIDA_LOJA))
         {
             var lista = usuarioLogado.LojasDisponiveis.OrderBy(r => r.Nome).ToList();
             if (lista.Count > 0)
             {
-    <li class="user-profile header-notification">
-        <div class="dropdown-primary dropdown">
-            <div class="dropdown-toggle" data-toggle="dropdown">
-            </div>
+                <li class="user-profile header-notification">
+                    <div class="dropdown-primary dropdown">
+                        <div class="dropdown-toggle" data-toggle="dropdown">
+                        </div>
 
-            <div class="form-group dropdown-toggle">
-                @{
+                        <div class="form-group dropdown-toggle mb-0">
+                            @{
                                 var listaSl = new List<SelectListItem>();
                                 foreach (var item in lista)
                                 {
                                     listaSl.Add(new SelectListItem(item.Nome, item.Id));
                                 }
                                 ViewData["cabecacomboLojas"] = usuarioLogado.Loja_atual_id;
-                }
+                            }
 
-                @Html.DropDownList("cabecacomboLojas", listaSl, new
-           {
-               @id = "cabecacomboLojas",
-               @class = "custom-select"
+                            @Html.DropDownList("cabecacomboLojas", listaSl, new
+                       {
+                           @id = "cabecacomboLojas",
+                           @class = "custom-select"
 
-           })
-            </div>
-        </div>
-    </li>
+                       })
+                        </div>
+                    </div>
+                </li>
             }
         }
-    <li>
-        <a href="~/Acesso/Logout" title="Logout" style="vertical-align: text-bottom;">
-            <i class="feather icon-log-out" style="font-size:x-large"></i>
-        </a>
-    </li>
+        <li>
+            <a href="~/Acesso/Logout" title="Logout" style="vertical-align: text-bottom;">
+                <i class="feather icon-log-out" style="font-size:x-large"></i>
+            </a>
+        </li>
 
-</ul>
+    </ul>
 }
 else
 {
     //não temos botão de ologin pq já está na pagina de login - mas precisa para outras páginas, que eventualemte não tenham a proteção, como a home
     if (!(ViewBag.PaginaDeLogin ?? false))
     {
-<div class="right" style="margin-right: 10px">
-    <a href="~/Acesso/Login" class="btn">Login</a>
-</div>
+        <div class="right" style="margin-right: 10px">
+            <a href="~/Acesso/Login" class="btn">Login</a>
+        </div>
     }
 }
 <script>

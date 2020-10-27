@@ -1,7 +1,7 @@
 ﻿import { DataUtils } from "../../UtilTs/DataUtils/DataUtils";
 
 declare var window: any;
-declare function ModalSimples(mensagem): any;
+declare function swal(header, mensagem): any;
 
 $(function () {
     //Entrega Imediata
@@ -10,7 +10,7 @@ $(function () {
             $("#entregaImediata").val("1");
             let divPai = $("#entregaImediata").parent().parent();
             divPai.css('margin-bottom', "0px");
-            divPai.css("height", '30px');            
+            divPai.css("height", '30px');
             $("#div-previsao").css('height', '90px');
             $("#div-previsao").css('display', 'block');
         }
@@ -21,7 +21,7 @@ $(function () {
             divPai.css("height", '50px')
             $("#div-previsao").css('display', 'none');
         }
-    });  
+    });
 
     if ($("#entregaImediata").val() == "1") {
         $("#entregaImediata").prop("checked", false);
@@ -85,8 +85,9 @@ $(function () {
     $("#cont").text(0);
 });
 
-function Contador() {
-    let msgEntrega : any = $("#observacoes").val();
+window.Contador = (): any => {
+    debugger;
+    let msgEntrega: any = $("#observacoes").val();
     $("#cont").text(msgEntrega.length);
 }
 
@@ -99,13 +100,13 @@ window.ValidarFormulario = (): any => {
             let previsao: any = $("#previsao").val();
             if (DataUtils.formata_formulario_date(previsao) <= new Date()) {
                 $("#previsao").val("");
-                ModalSimples("A data para entrega deve ser posterior a data atual!");
+                swal("Erro", "A data para entrega deve ser posterior a data atual!");
                 return false;
             }
         }
         else {
-            ModalSimples("Favor informar a data para entrega.");
+            swal("Erro", "Favor informar a data para entrega.");
             return false;
         }
-    }    
+    }
 }

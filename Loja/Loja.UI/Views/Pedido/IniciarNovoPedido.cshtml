@@ -17,16 +17,6 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-4">
-            <div class="page-header-breadcrumb">
-                <ul class=" breadcrumb breadcrumb-title">
-                    <li class="breadcrumb-item">
-                        <a href="@Url.Action("Index", "Home")"><i class="feather icon-home"></i></a>
-                    </li>
-                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Cliente" )">Novo Pedido</a> </li>
-                </ul>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -152,7 +142,7 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "fo
                                                                 </th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody>
+                                                        <tbody id="body_produtos">
                                                             @{
                                                                 @* Mudamos para não repetir código, o bloco antigo de modelo para adição de 01 item *@
                                                                 int indexnumero = 0;
@@ -181,19 +171,19 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "fo
 
                                                                     <tr @Html.Raw(classe) @Html.Raw(estilo)>
 
-                                                                        <td class="desc-produto" name="[@index].NumProduto">
+                                                                        <td class="descri-produto" name="[@index].NumProduto">
                                                                             <input type="hidden" name="[@index].Fabricante" value="@i.Fabricante" />
                                                                             <input class="numProduto" type="hidden" name="[@index].NumProduto" value="@i.NumProduto?">
                                                                         </td>
                                                                         <td class="qtde">
-                                                                            <input class="qtde" type="number" min="1" name="[@index].Qtde" id="@i.Qtde"
+                                                                            <input class="form-control qtde" type="number" min="1" name="[@index].Qtde" id="@i.Qtde"
                                                                                    onkeyup="digitouQtde(this)" onchange="digitouQtde(this)" />
                                                                         </td>
 
                                                                         @if (Model.Permite_RA_Status == 1)
                                                                         {
                                                                             <td class="preco-input">
-                                                                                <input type="text" name="[@index].Preco_Lista" id="@i.Preco_Lista"
+                                                                                <input class="form-control" type="text" name="[@index].Preco_Lista" id="@i.Preco_Lista"
                                                                                        onkeyup="formatarPreco_Lista(this)"
                                                                                        onchange="digitouPreco_Lista(this)" />
                                                                             </td>
@@ -208,12 +198,15 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "fo
                                                                             <input type="hidden" name="[@index].Preco" />
                                                                         </td>
                                                                         <td class="desconto">
-                                                                            <input class="desconto" type="text" name="[@index].Desconto"
-                                                                                   id="@i.Desconto" onchange="digitouDesc(this)"
-                                                                                   onkeyup="formatarDesc(this)" />  %
+                                                                            <div class="form-group mb-0" style="display:flex">
+                                                                                <input class="form-control desconto" type="text" name="[@index].Desconto"
+                                                                                       id="@i.Desconto" onchange="digitouDesc(this)"
+                                                                                       onkeyup="formatarDesc(this)"/> 
+                                                                                <span class="mt-2">%</span>
+                                                                            </div>                                                                            
                                                                         </td>
                                                                         <td class="preco-input">
-                                                                            <input type="text" name="[@index].VlUnitario"
+                                                                            <input type="text" name="[@index].VlUnitario" class="form-control"
                                                                                    id="@i.VlUnitario" onchange="digitouVlVenda(this)"
                                                                                    onkeyup="formataVlVenda(this)" />
                                                                         </td>
@@ -223,7 +216,7 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "fo
                                                                             <input type="hidden" name="[@index].VlTotalItem" />
                                                                         </td>
                                                                         <td class="lixeira">
-                                                                            <div class="form-control">
+                                                                            <div>
                                                                                 <span>
                                                                                     <i class="fa fa-trash" title="Remover linha"
                                                                                        onclick="removerLinha(this);"></i>
@@ -231,53 +224,106 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "fo
                                                                             </div>
                                                                         </td>
                                                                     </tr>
+
+                                                                    <tr @Html.Raw(classenovoProdutoEstoque) @Html.Raw(estilo)>
+                                                                        @* Se for diferente de verdadeiro *@
+                                                                        @if (Model.Permite_RA_Status == 0)
+                                                                        {
+                                                                            <td colspan="7" class="avisoestoque" name="estoqueIndisponivel">
+                                                                                Quantidade solicitada é maior que o estoque disponível!
+                                                                            </td>
+                                                                        }
+                                                                        @if (Model.Permite_RA_Status == 1)
+                                                                        {
+                                                                            <td colspan="8" class="avisoestoque" name="estoqueIndisponivel">
+                                                                                Quantidade solicitada é maior que o estoque disponível!
+                                                                            </td>
+                                                                        }
+                                                                    </tr>
+
+                                                                    //Avido de Produto
+                                                                    <tr @Html.Raw(classenovoProdutoAviso) @Html.Raw(estilo)>
+                                                                        @if (Model.Permite_RA_Status == 0)
+                                                                        {
+                                                                            <td colspan="7" class="avisoProduto">
+                                                                                Aviso:
+                                                                                <span name="produtoAviso"></span>
+                                                                            </td>
+                                                                        }
+                                                                        @if (Model.Permite_RA_Status == 1)
+                                                                        {
+                                                                            <td colspan="8" class="avisoProduto">
+                                                                                Aviso:
+                                                                                <span name="produtoAviso"></span>
+                                                                            </td>
+                                                                        }
+                                                                    </tr>
+
+                                                                    //Msg Qtde permitida
+                                                                    <tr @Html.Raw(classenovoProdutoQtdeMaxPermitida) @Html.Raw(estilo)>
+                                                                        @if (Model.Permite_RA_Status == 0)
+                                                                        {
+                                                                            <td colspan="7" class="avisoestoque">
+                                                                                Aviso:
+                                                                                <span name="msgQtdePermitida"></span>
+                                                                            </td>
+                                                                        }
+                                                                        @if (Model.Permite_RA_Status == 1)
+                                                                        {
+                                                                            <td colspan="8" class="avisoestoque">
+                                                                                Aviso:
+                                                                                <span name="msgQtdePermitida"></span>
+                                                                            </td>
+                                                                        }
+                                                                    </tr>
+                                                                    indexnumero++;
+                                                                    indice++;
                                                                 }
 
-
-
-                                                                <tr class="trTotal">
-                                                                    <!-- pula as colunas vazias -->
-                                                                    @if (Model.Permite_RA_Status == 1)
-                                                                    {
-                                                                        <td style="text-align:right">
-                                                                            RA Líquido
-                                                                            <strong id="totalValorRALiquido" style="font-weight:bold"></strong>
-                                                                            <input type="hidden" id="totalValorRALiquidoInput"
-                                                                                   name="totalValorRALiquidoInput" value="@Model.TotalPedidoRALiquido" />
-                                                                            &nbsp;&nbsp; RA Bruto
-                                                                            <strong id="totalValorRABruto" style="font-weight:bold"></strong>
-                                                                            <input type="hidden" id="totalValorRABrutoInput"
-                                                                                   name="totalValorRABrutoInput" value="@Model.TotalPedidoRABruto" />
-                                                                        </td>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <td>
-                                                                        </td>
-                                                                    }
-                                                                    <td> </td>
-                                                                    @if (Model.Permite_RA_Status == 1)
-                                                                    {
-                                                                        //valor total ra
-                                                                        <td style="text-align:right;">
-                                                                            <strong id="totalPedidoRABruto"></strong>
-                                                                            <input type="hidden" id="totalPedidoRABrutoInput"
-                                                                                   name="totalPedidoRABruto" value="@Model.TotalPedidoRABruto" />
-                                                                        </td>
-                                                                    }
-                                                                    <td> </td>
-                                                                    <td> </td>
-                                                                    <td> </td>
-                                                                    <td style="text-align:right;">
-                                                                        <strong id="totalPedido" style="font-weight:bold"></strong>
-                                                                        <input type="hidden" id="totalPedidoInput"
-                                                                               name="totalDestePedido" value="@Model.VlTotalDestePedido" />
-                                                                    </td>
-                                                                    <td> </td>
-
-
-                                                                </tr>
                                                             }
+
+                                                            <tr class="trTotal">
+                                                                <!-- pula as colunas vazias -->
+                                                                @if (Model.Permite_RA_Status == 1)
+                                                                {
+                                                                    <td style="text-align:right">
+                                                                        RA Líquido
+                                                                        <strong id="totalValorRALiquido" style="font-weight:bold"></strong>
+                                                                        <input type="hidden" id="totalValorRALiquidoInput"
+                                                                               name="totalValorRALiquidoInput" value="@Model.TotalPedidoRALiquido" />
+                                                                        &nbsp;&nbsp; RA Bruto
+                                                                        <strong id="totalValorRABruto" style="font-weight:bold"></strong>
+                                                                        <input type="hidden" id="totalValorRABrutoInput"
+                                                                               name="totalValorRABrutoInput" value="@Model.TotalPedidoRABruto" />
+                                                                    </td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td>
+                                                                    </td>
+                                                                }
+                                                                <td> </td>
+                                                                @if (Model.Permite_RA_Status == 1)
+                                                                {
+                                                                    //valor total ra
+                                                                    <td style="text-align:right;">
+                                                                        <strong id="totalPedidoRABruto"></strong>
+                                                                        <input type="hidden" id="totalPedidoRABrutoInput"
+                                                                               name="totalPedidoRABruto" value="@Model.TotalPedidoRABruto" />
+                                                                    </td>
+                                                                }
+                                                                <td> </td>
+                                                                <td> </td>
+                                                                <td> </td>
+                                                                <td style="text-align:right;">
+                                                                    <strong id="totalPedido" style="font-weight:bold"></strong>
+                                                                    <input type="hidden" id="totalPedidoInput"
+                                                                           name="totalDestePedido" value="@Model.VlTotalDestePedido" />
+                                                                </td>
+                                                                <td> </td>
+
+
+                                                            </tr>
                                                         </tbody>
                                                     </table>
                                                 }
@@ -285,43 +331,32 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "fo
                                         </div>
                                     </div>
                                     @*FORMA PAGTO*@
-                                    <div class="row">
-                                        <div class="row col-xl-12 col-lg-12">
-                                            <div class="col-xl-6 col-lg-6">
-                                                @* Radio's *@
-                                                <h4 class="sub-title">Tipo Forma Pagamento</h4>
-                                                <div class="form-radio">
-                                                    <div class="radio radio-inline">
-                                                        @foreach (var i in Model.EnumFormaPagto)
-                                                        {
-                                                            if (i.Text != "Selecionar")
-                                                            {
-                                                                <label>
-                                                                    <input type="radio" name="radio" id="enumFormaPagto" value="@i.Value"
-                                                                           onclick="recalcularValoresComCoeficiente(this)">
-                                                                    <i class="helper"></i>@i.Text
-                                                                </label>
-                                                            }
-                                                        }
-                                                    </div>
-                                                </div>
-                                                @*<div class="form-group">
-                                                        <label class="col-form-label">Tipo Forma Pagamento</label>
-                                                        @Html.DropDownList("FormaPagto", new SelectList(Model.EnumFormaPagto, "Value", "Text",
-                                                       Model.EnumFormaPagto), new
-                                                       {
-                                                           @id = "enumFormaPagto",
-                                                           @onchange = "recalcularValoresComCoeficiente(this);",
-                                                           @class = "custom-select"
-                                                       })
-                                                    </div>*@
-
-
+                                    <div class="form-group row mb-0">
+                                        <div class="col-xl-6 col-lg-6 col-md-6 pr-0">
+                                            <div class="card-header pl-0 caixa">
+                                                <h5 class="rotulo">Tipo Forma Pagamento</h5>
                                             </div>
-                                            @* Observação forma pagamento *@
-                                            <div class="col-xl-6 col-lg-6 pr-0">
-                                                <h4 class="sub-title">Dados Pagamento</h4>
-                                                <div class="form-group">
+                                            <div class="card-block form-radio">
+                                                <div class="radio radio-inline">
+                                                    @foreach (var i in Model.EnumFormaPagto)
+                                                    {
+                                                        if (i.Text != "Selecionar")
+                                                        {
+                                                            <label>
+                                                                <input type="radio" name="radio" id="enumFormaPagto" value="@i.Value"
+                                                                       onclick="recalcularValoresComCoeficiente(this)">
+                                                                <i class="helper"></i>@i.Text
+                                                            </label>
+                                                        }
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xl-6 col-lg-6 px-0">
+                                            <div class="card-header pl-0 pb-0 caixa col-xl-12 col-lg-12 col-md-12">
+                                                <h5 class="rotulo">Dados Pagamento</h5>
+                                                <div class="card-block form-group pr-0">
                                                     @* aqui vai a condição para mostrar a div A vista *@
                                                     @if (Model.FormaPagto.ListaAvista != null)
                                                     {
@@ -332,7 +367,7 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "fo
                                                                 <option value="0">Selecione</option>
                                                             </select>
                                                         </div>
-                                                        <div class="form-group Avista" style="display:none">
+                                                        <div class="form-group Avista mb-0" style="display:none">
                                                             <label class="col-form-label">Meio de Pagamento</label>
                                                             <select class="custom-select" name="" id="meioPagtoAVista">
                                                                 <option value="0">Selecione</option>
@@ -445,6 +480,9 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "fo
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="row">
+
                                         @* Observação forma pagamento *@
                                         <div class="col-xl-12 col-lg-12">
                                             <div class="form-group">
@@ -453,6 +491,7 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "fo
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
                             }
                         </div>
@@ -467,6 +506,10 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "fo
 
 
 <style>
+    #body_produtos tr input:hover{
+        background-color:#fff !important;
+    }
+
     .table thead th {
         padding-bottom: 0px;
         padding-top: 0px;
@@ -475,6 +518,7 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "fo
 
     .table td {
         text-align: right;
+        vertical-align:inherit;
     }
 
     .produto {
@@ -483,7 +527,7 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "fo
         text-align: left !important;
     }
 
-    .desc-produto {
+    .descri-produto {
         width: 100%;
         min-width: 100px;
         text-align: left !important;
@@ -610,7 +654,7 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "fo
 }
 
 @* Modal para mostrar os produtos *@
-<div class="modal fade" id="modal1" tabindex="-1" role="dialog" style="height:60%">
+<div class="modal fade" id="modal1" tabindex="-1" role="dialog" style="height:70%">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -629,12 +673,12 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "fo
                 <div class="listaprods" style="height:calc(100vh - 540px); overflow-x:hidden; border:1px solid #cecece">
                     <div class="row center" id="msg"></div>
                     <table class="table table-responsive table-modal">
-                        <tbody>
+                        <tbody id="tbody_modal">
                             @foreach (var i in Model.ProdutoCombo.ProdutoDto)
                             {
                                 if (i.Preco_lista > 0)
                                 {
-                                    <tr id="prod">
+                                    <tr class="prod">
                                         <td>
                                             <div class="form-radio ml-1">
                                                 <div class="radio radio-inline">
@@ -658,7 +702,7 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "fo
                                                 var dadofilhote = Model.ProdutoCombo.ProdutoDto.Where(el => el.Fabricante == filhote.Fabricante && el.Produto == filhote.Produto);
                                                 foreach (var filhotetela in dadofilhote)
                                                 {
-                                                    <tr style="font-size:small">
+                                                    <tr class="trfilho" style="font-size:small">
                                                         <td style="padding-left: 4% !important; ">@filhote.Qtde x @filhote.Fabricante/@filhotetela.Produto</td>
                                                         <td>@Html.Raw(filhotetela.Descricao_html)</td>
                                                         <td style="text-align:end">@string.Format("{0:c2}", filhotetela.Preco_lista)</td>

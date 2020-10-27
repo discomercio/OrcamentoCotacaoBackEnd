@@ -15,16 +15,16 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-4">
-            <div class="page-header-breadcrumb">
-                <ul class=" breadcrumb breadcrumb-title">
-                    <li class="breadcrumb-item">
-                        <a href="@Url.Action("Index", "Home")"><i class="feather icon-home"></i></a>
-                    </li>
-                    <li class="breadcrumb-item"><a href="#!">Novo Pedido</a> </li>
-                </ul>
-            </div>
-        </div>
+        @*<div class="col-lg-4">
+                <div class="page-header-breadcrumb">
+                    <ul class=" breadcrumb breadcrumb-title">
+                        <li class="breadcrumb-item">
+                            <a href="@Url.Action("Index", "Home")"><i class="feather icon-home"></i></a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="#!">Novo Pedido</a> </li>
+                    </ul>
+                </div>
+            </div>*@
     </div>
 </div>
 <div class="pcoded-inner-content" style="min-height: 75vh;">
@@ -33,32 +33,34 @@
             <div class="page-body">
                 <div class="row">
                     <div class="col-md-12 col-xl-12">
-                        <div class="card" style="min-height:calc(100vh - 250px)">
+                        <div class="card mb-0" style="min-height:calc(100vh - 250px)">
                             <div class="page-header card">
-                                @using (Html.BeginForm("ValidarCliente", "Cliente", FormMethod.Post, 
-                                     new 
-                                     {
-                                         enctype = "multipart/form-data",
-                                         onsubmit = "return ValidarCpfCnpj()",
-                                         id = "formulario"
-                                     }
-                                     ))
-                                {
-                                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 mr-0 pr-0">
-                                        <div class="form-group" style="display:contents">
-                                            <label class="col-form-label pr-2 pl-0 mt-2">CPF / CNPJ</label>
-                                            <input type="text" 
-                                                   class="form-control col-xl-6 col-lg-6 col-md-6 col-sm-12 pr-3 mr-2 mt-2" 
-                                                   name="cpf_cnpj"
-                                                   id="cpf_cnpj" placeholder="Informe CPF/CNPJ">
-                                            <button class="form-control btn btn-md btn-primary col-xl-2 col-lg-2 col-md-2 mr-2 mt-2"
-                                                    type="submit" onclick="$('#formulario').submit()">
-                                                Pesquisar
-                                            </button>
-
-                                        </div>
+                                <div class="content col-xl-12 col-lg-12 px-0">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 px-0">
+                                        @using (Html.BeginForm("ValidarCliente", "Cliente", FormMethod.Post,
+                                        new
+                                        {
+                                            enctype = "multipart/form-data",
+                                            onsubmit = "return ValidarCpfCnpj()",
+                                            id = "formulario"
+                                        }
+                                         ))
+                                        {
+                                            <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 px-0">
+                                                <label class="col-form-label" for="cpf_cnpj">CPF / CNPJ</label>
+                                                <input type="text" name="cpf_cnpj" id="cpf_cnpj"
+                                                       class="form-control col-xl-6 col-lg-6 col-md-6 col-sm-6 mb-2"
+                                                       placeholder="Informe CPF/CNPJ"
+                                                       style="display:inline-block">
+                                                <button class="btn btn-primary btn-sm col-xl-2 col-lg-3 col-md-3 col-sm-3 mt-0"
+                                                        type="submit" onclick="$('#formulario').submit()" style="margin-top:2.5%">
+                                                    <i class="fa fa-search"></i>
+                                                    Pesquisar
+                                                </button>
+                                            </div>
+                                        }
                                     </div>
-                                }
+                                </div>                                
                             </div>
                         </div>
                     </div>

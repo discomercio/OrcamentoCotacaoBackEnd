@@ -25,7 +25,6 @@ export class RecalcularComCoeficiente {
 
 
         let fornecedores: string[] = new Array();
-
         this.lstProdutos.forEach(element => {
             fornecedores.push(element.Fabricante);
         });
@@ -43,7 +42,7 @@ export class RecalcularComCoeficiente {
 
     }
     novoPrepedidoDadosService: NovoPedidoDadosService;
-    constantes = new Constantes();
+    
     lstProdutosCalculados: ProdutosCalculados[];
     ProdutosCalculados: ProdutosCalculados;
     permiteRAStatus: number;
@@ -72,8 +71,8 @@ export class RecalcularComCoeficiente {
 
 
                         //A vista
-                        if (tipoFormaPagto == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA &&
-                            enumFP.toString() == this.constantes.COD_FORMA_PAGTO_A_VISTA) {
+                        if (tipoFormaPagto == Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA &&
+                            enumFP.toString() == Constantes.COD_FORMA_PAGTO_A_VISTA) {
                             coeficienteFornec = element.filter(x => x.Fabricante == p.Fabricante);
                             if (!!coeficienteFornec[0]) {
                                 if (coeficienteFornec[0].Fabricante == p.Fabricante) {
@@ -107,12 +106,12 @@ export class RecalcularComCoeficiente {
                         }
 
                         //Parcela única
-                        if (tipoFormaPagto == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA &&
-                            enumFP.toString() == this.constantes.COD_FORMA_PAGTO_PARCELA_UNICA) {
+                        if (tipoFormaPagto == Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA &&
+                            enumFP.toString() == Constantes.COD_FORMA_PAGTO_PARCELA_UNICA) {
                             totalProduto = (p.Preco * p.Qtde) * (1 - p.Desconto / 100);
 
                             coeficienteFornec = element.filter(x => x.Fabricante == p.Fabricante &&
-                                x.TipoParcela == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA);
+                                x.TipoParcela == Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA);
 
                             if (!!coeficienteFornec[0]) {
                                 if (coeficienteFornec[0].Fabricante == p.Fabricante) {
@@ -149,8 +148,8 @@ export class RecalcularComCoeficiente {
                             }
                         }
                         //Parcela com entrada
-                        if (tipoFormaPagto == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA &&
-                            enumFP.toString() == this.constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA) {
+                        if (tipoFormaPagto == Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA &&
+                            enumFP.toString() == Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA) {
                             if (!!vlEntrada && vlEntrada != 0.00) {
 
                                 this.vlEntrada = vlEntrada;
@@ -158,7 +157,7 @@ export class RecalcularComCoeficiente {
                                 totalProduto = (p.Preco * p.Qtde) * (1 - p.Desconto / 100);
 
                                 coeficienteFornec = element.filter(x => x.Fabricante == p.Fabricante &&
-                                    x.TipoParcela == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA);
+                                    x.TipoParcela == Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA);
 
                                 coeficienteFornec.forEach(x => {
                                     this.ProdutosCalculados = new ProdutosCalculados();
@@ -193,12 +192,12 @@ export class RecalcularComCoeficiente {
                         }
 
                         //cartão internet e maquineta
-                        if (tipoFormaPagto == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA &&
-                            (enumFP.toString() == this.constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO ||
-                                enumFP.toString() == this.constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA)) {
+                        if (tipoFormaPagto == Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA &&
+                            (enumFP.toString() == Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO ||
+                                enumFP.toString() == Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA)) {
 
                             coeficienteFornec = element.filter(x => x.Fabricante == p.Fabricante &&
-                                x.TipoParcela == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA);
+                                x.TipoParcela == Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA);
 
                             coeficienteFornec.forEach(x => {
                                 this.ProdutosCalculados = new ProdutosCalculados();
@@ -235,7 +234,7 @@ export class RecalcularComCoeficiente {
                 })
                 //vamos verificar se é avista para sair do foreach do coeficiente que não é utilizado para este tipo
                 if (!!enumFP)
-                    if (enumFP.toString() == this.constantes.COD_FORMA_PAGTO_A_VISTA) {
+                    if (enumFP.toString() == Constantes.COD_FORMA_PAGTO_A_VISTA) {
                         return false;
                     }
 
@@ -259,7 +258,7 @@ export class RecalcularComCoeficiente {
     CalcularTotalOrcamento(qtdeParcVisa: number, enumFP: number): string[] {
         let lstMsg: string[] = new Array();
         if (!!enumFP) {
-            if (enumFP.toString() == this.constantes.COD_FORMA_PAGTO_A_VISTA) {
+            if (enumFP.toString() == Constantes.COD_FORMA_PAGTO_A_VISTA) {
 
                 let filtrarParcela = this.lstProdutosCalculados.filter(x => x.QtdeParcela == 1);
                 let valorTotalParc = filtrarParcela.reduce((sum, prod) => sum + prod.Valor, 0);
@@ -275,7 +274,7 @@ export class RecalcularComCoeficiente {
                         let valorTotalParc = parseFloat(filtrarParcela.reduce((sum, prod) => sum + prod.Valor, 0).toFixed(2));
 
                         if (!!valorTotalParc) {
-                            if (enumFP.toString() == this.constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA) {
+                            if (enumFP.toString() == Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA) {
                                 //vamos testar para saber se parcela com entrada
                                 if (!!this.vlEntrada) {
                                     if (this.vlEntrada > valorTotalParc) {
@@ -314,8 +313,8 @@ export class RecalcularComCoeficiente {
                     this.lstProdutos.forEach(produto => {
 
                         //vamos verificar se é pagto á vista
-                        if (enumFP.toString() == this.constantes.COD_FORMA_PAGTO_A_VISTA &&
-                            tipoFormaPagto == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA) {
+                        if (enumFP.toString() == Constantes.COD_FORMA_PAGTO_A_VISTA &&
+                            tipoFormaPagto == Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA) {
 
                             if (produto.AlterouVlVenda) {
                                 //devemos alterar o valor de desconto
@@ -337,8 +336,8 @@ export class RecalcularComCoeficiente {
                         }
 
                         //vamos testar se é pagto parcela única
-                        if (enumFP.toString() == this.constantes.COD_FORMA_PAGTO_PARCELA_UNICA &&
-                            tipoFormaPagto == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA) {
+                        if (enumFP.toString() == Constantes.COD_FORMA_PAGTO_PARCELA_UNICA &&
+                            tipoFormaPagto == Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA) {
 
                             //vamos filtrar o coeficiente
                             coeficiente = coef.filter(x => x.Fabricante == produto.Fabricante &&
@@ -367,8 +366,8 @@ export class RecalcularComCoeficiente {
                         }
 
                         //vamos testar se é pagto com entrada 
-                        if (enumFP.toString() == this.constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA &&
-                            tipoFormaPagto == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA) {
+                        if (enumFP.toString() == Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA &&
+                            tipoFormaPagto == Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA) {
 
                             coeficiente = coef.filter(x => x.Fabricante == produto.Fabricante &&
                                 x.TipoParcela == tipoFormaPagto && x.QtdeParcelas == qtdeParc);
@@ -395,9 +394,9 @@ export class RecalcularComCoeficiente {
                         }
 
                         //vamos testar se é pagto com Cartão e Maquininha
-                        if ((enumFP.toString() == this.constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO ||
-                            enumFP.toString() == this.constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA) &&
-                            tipoFormaPagto == this.constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA) {
+                        if ((enumFP.toString() == Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO ||
+                            enumFP.toString() == Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA) &&
+                            tipoFormaPagto == Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA) {
 
                             //preciso pegar a qtde de parcelas que foi selecionado
 

@@ -17,16 +17,6 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-4">
-            <div class="page-header-breadcrumb">
-                <ul class=" breadcrumb breadcrumb-title">
-                    <li class="breadcrumb-item">
-                        <a href="@Url.Action("Index", "Home")"><i class="feather icon-home"></i></a>
-                    </li>
-                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Cliente" )">Novo Pedido</a> </li>
-                </ul>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -81,10 +71,12 @@
                             </div>
 
                             @using (Html.BeginForm("CadastrarPedido", "Pedido", FormMethod.Post,
-                                new { 
-                                    enctype = "multipart/form-data", 
-                                    onsubmit = "return ValidarFormulario()", 
-                                    id = "formulario"}))
+                            new
+                            {
+                                enctype = "multipart/form-data",
+                                onsubmit = "return ValidarFormulario()",
+                                id = "formulario"
+                            }))
                             {
                                 <div class="page-header card" style="border: 1px solid #ccc; padding:20px">
 
@@ -111,39 +103,47 @@
                                         </div>
                                     </div>
                                     <br />
-                                    <div class="row col-vl-12 col-lg-12">
-                                        <div class="col-xl-6 col-lg-6 pl-0 pr-4">
-                                            <h4 class="sub-title"><strong>Detalhes da entrega</strong></h4>
-                                            <br />
-                                            <div class="form-group" style="display:flex;height:50px">
-                                                <input type="checkbox" data-toggle="toggle" data-size="xs"
-                                                       value="@Model.EntregaImediata" checked id="entregaImediata" name="EntregaImediata" />
-                                                <div class="ml-3">
-                                                    <span>Entrega Imediata</span>
-                                                </div>
-                                            </div>                                            
-                                            <div class="form-group" id="div-previsao" style="display:none">
-                                                <label class="col-form-label">Previsão de entrega</label>
-                                                <input class="form-control" type="date" id="previsao" name="Previsao" />
+                                    <div class="form-group row col-xl-12 col-lg-12 px-0">
+                                        <div class="col-xl-6 col-lg-6">
+                                            <div class="card-header pl-0 caixa">
+                                                <h5>Detalhes da entrega</h5>
                                             </div>
-                                            <div class="form-group" style="display:flex;height:50px">
-                                                <input type="checkbox" data-toggle="toggle" data-size="xs"
-                                                       id="bemDeUso" name="BemConsumo" checked value="@Model.BemConsumo" />
-                                                <div class="ml-3">
-                                                    <span>Bem de uso/Consumo</span>
+                                            <div class="card-block" style="height:50px;">
+                                                <div class="form-group" style="display:flex;height:50px">
+                                                    <input type="checkbox" data-toggle="toggle" data-size="xs"
+                                                           value="@Model.EntregaImediata" checked id="entregaImediata" name="EntregaImediata" />
+                                                    <div class="ml-3">
+                                                        <span>Entrega Imediata</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="form-group" style="display:flex;height:50px">
-                                                <input type="checkbox" data-toggle="toggle" data-size="xs"
-                                                       id="InstaladorInstala" checked name="InstaladorInstala" value="@Model.InstaladorInstala" />
-                                                <div class="ml-3">
-                                                    <span>Instalador Instala</span>
+                                                <div class="form-group" id="div-previsao" style="display:none">
+                                                    <label class="col-form-label">Previsão de entrega</label>
+                                                    <input class="form-control" type="date" id="previsao" name="Previsao" />
+                                                </div>
+                                                <div class="form-group" style="display:flex;height:50px">
+                                                    <input type="checkbox" data-toggle="toggle" data-size="xs"
+                                                           id="bemDeUso" name="BemConsumo" checked value="@Model.BemConsumo" />
+                                                    <div class="ml-3">
+                                                        <span>Bem de uso/Consumo</span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" style="display:flex;height:50px">
+                                                    <input type="checkbox" data-toggle="toggle" data-size="xs"
+                                                           id="InstaladorInstala" checked name="InstaladorInstala" value="@Model.InstaladorInstala" />
+                                                    <div class="ml-3">
+                                                        <span>Instalador Instala</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+
                                         <div class="col-xl-6 col-lg-6 pl-0">
-                                            <h4 class="sub-title"><strong>Observações adicionais</strong></h4>
-                                            <div class="form-group">
+                                            <div class="card-header">
+                                                <h5>
+                                                    Observações adicionais
+                                                </h5>
+                                            </div>
+                                            <div class="card-block form-group">
                                                 <label class="col-form-label">Observações</label>
                                                 <textarea class="form-control" rows="9" maxlength="500" onkeyup="Contador()"
                                                           id="observacoes" name="Observacoes"></textarea>
@@ -195,11 +195,11 @@
     </div>
 }
 
-<script> 
+<script>
     requirejs(["Views/Pedido/ObservacoesPedido"], function (util) {
 
     });
-    
+
 </script>
 <style>
     .caixa {

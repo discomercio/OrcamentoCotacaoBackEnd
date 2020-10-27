@@ -3,21 +3,17 @@
     ViewData["Title"] = "BuscaListaProdutosFabricante";
 }
 
-<script>
 
-    function testeModal() {
-        let Modalelem = document.querySelector('.modal');
-        let instanceModal = M.Modal.init(Modalelem);
-        instanceModal.open();
-    };
-</script>
+
+
+
 
 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 px-0">
     @if (Model != null)
     {
         @if (Model.Fabricante != null)
         {
-            <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 px-0">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 px-0">
                 <h5>
                     Lista de Produtos -
                     <span style="font-weight: bold">
@@ -35,7 +31,7 @@
 
             <script>
                 $(document).ready(function () {
-                    intiDatatables('#tabela', {
+                    intiDatatables('.tabeladados', {
                         columnDefs: [
                             { type: "moeda", targets: 2 }
                         ]
@@ -43,34 +39,36 @@
                 });
             </script>
 
-
-            <table id="tabela" style="display: none;">
-                <thead>
-                    <tr>
-                        <th>Produto</th>
-                        <th>Descrição</th>
-                        <th class="right-align">Preço</th>
-                    </tr>
-                </thead>
-
-
-                <tbody>
-
-                    @foreach (var item in Model.LstProdutos)
-                    {
+            <div class="dt-responsive table-responsive table-responsive-lg">
+                <table class="table table-striped table-bordered tabeladados" style="display: none;">
+                    <thead>
                         <tr>
-                            <td>@item.Produto</td>
-                            <td>@item.Descricao</td>
-                            <td class="right-align">@Loja.Bll.Util.Util.FormataMoeda(item.Preco)</td>
+                            <th>Produto</th>
+                            <th>Descrição</th>
+                            <th class="right-align">Preço</th>
                         </tr>
+                    </thead>
 
-                    }
-                </tbody>
 
-            </table>
+                    <tbody>
+
+                        @foreach (var item in Model.LstProdutos)
+                        {
+                            <tr>
+                                <td>@item.Produto</td>
+                                <td>@item.Descricao</td>
+                                <td class="right-align">@Loja.Bll.Util.Util.FormataMoeda(item.Preco)</td>
+                            </tr>
+
+                        }
+                    </tbody>
+
+                </table>
+
+            </div>
             <div class="content">
                 <div class="form-group mt-2" style="text-align:right">
-                    <button class="btn btn-primary"
+                    <button class="btn btn-primary btn-sm"
                             onclick="Imprimir()">
                         Imprimir
                     </button>
@@ -81,7 +79,7 @@
         {
             <script>
                 $(document).ready(function () {
-                    ModalSimples("Erro", "Fabricante não encontrado!");
+                    swal("Erro", "Fabricante não encontrado!");
                 });
             </script>
         }
@@ -285,14 +283,14 @@
         v = v.replace(/(\d{3})(\d)/, "$1.$2"); //Coloca um ponto entre o terceiro e o quarto dígitos
         v = v.replace(/(\d{3})(\d)/, "$1.$2"); //Coloca um ponto entre o terceiro e o quarto dígitos
         //de novo (para o segundo bloco de números)
-        v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2"); //Coloca um hífen entre o terceiro e o quarto dígitos
+        v = v.replace(/(\d{3})(\d{1, 2})$/, "$1-$2"); //Coloca um hífen entre o terceiro e o quarto dígitos
         return v;
     }
 
     function cep(v) {
         v = v.replace(/\D/g, ""); //Remove tudo o que não é dígito
         v = v.replace(/(\d{2})(\d)/, "$1.$2"); //Coloca um ponto entre o terceiro e o quarto dígitos
-        v = v.replace(/(\d{3})(\d{1,3})$/, "$1-$2"); //Coloca um hífen entre o terceiro e o quarto dígitos
+        v = v.replace(/(\d{3})(\d{1, 3})$/, "$1-$2"); //Coloca um hífen entre o terceiro e o quarto dígitos
         return v;
     }
 
@@ -309,7 +307,7 @@
         v = v.toUpperCase(); //Maiúsculas
         v = v.replace(/[^IVXLCDM]/g, ""); //Remove tudo o que não for I, V, X, L, C, D ou M
         //Essa é complicada! Copiei daqui: http://www.diveintopython.org/refactoring/refactoring.html 41
-        while (v.replace(/^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$/, "") != "");
+        while (v.replace(/^M{0, 4}(CM|CD|D?C{0, 3})(XC|XL|L?X{0, 3})(IX|IV|V?I{0, 3})$/, "") != "");
         v = v.replace(/.$/, "");
         return v;
     }
@@ -328,7 +326,7 @@
         v = v.replace(/(\d{1})(\d{13})$/, "$1.$2"); // coloca ponto antes dos ultimos 13 digitos
         v = v.replace(/(\d{1})(\d{10})$/, "$1.$2"); // coloca ponto antes dos ultimos 10 digitos
         v = v.replace(/(\d{1})(\d{7})$/, "$1.$2"); // coloca ponto antes dos ultimos 7 digitos
-        v = v.replace(/(\d{1})(\d{1,4})$/, "$1,$2"); // coloca virgula antes dos ultimos 4 digitos
+        v = v.replace(/(\d{1})(\d{1, 4})$/, "$1,$2"); // coloca virgula antes dos ultimos 4 digitos
         return v;
     }
 
