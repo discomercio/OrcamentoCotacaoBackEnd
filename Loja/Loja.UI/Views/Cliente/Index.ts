@@ -2,12 +2,15 @@
 import { ErrorModal } from "../Shared/Error";
 import { Callbacks } from "jquery";
 import { StringUtils } from "../../UtilTs/stringUtils/stringUtils";
+import { Loading } from "../../UtilTs/Loading/Loading";
 
 
 declare var window: any;
 declare function swal(corpo: any, func: any): any;
 
 window.ValidarCpfCnpj = () => {
+
+    Loading.Carregando(true);
 
     let erroModal = new ErrorModal();
     let msg: string = "";
@@ -16,6 +19,7 @@ window.ValidarCpfCnpj = () => {
         let cpfCnpj: string = StringUtils.retorna_so_digitos($("#cpf_cnpj").val().toString());
 
         if (!CpfCnpjUtils.cnpj_cpf_ok(cpfCnpj)) {
+            Loading.Carregando(false);
             msg = "CNPJ/CPF inválido.";
             erroModal.ModalInnerHTML(msg);
             return false;
@@ -24,6 +28,7 @@ window.ValidarCpfCnpj = () => {
         ValidarCliente(cpfCnpj);
     }
     else {
+        Loading.Carregando(false);
         msg = "CNPJ/CPF inválido ou vazio.";
         erroModal.ModalInnerHTML(msg);
         return false;
@@ -49,6 +54,7 @@ function ValidarCliente(cpf_cnpj: string): any {
             }
         },
         error: function () {
+            Loading.Carregando(false);
             erroModal.ModalInnerHTML("Falha ao buscar o cliente!");
             return false;
         }
@@ -72,6 +78,7 @@ function ModalConfirma() {
         closeOnCancel: true
     },
         function (ok: boolean) {
+            Loading.Carregando(false);
             if (ok) $("#formulario").submit();
         });
 }

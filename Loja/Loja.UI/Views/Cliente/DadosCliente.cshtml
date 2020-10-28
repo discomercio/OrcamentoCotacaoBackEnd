@@ -32,7 +32,7 @@
 {
 
     <script>
-        
+
     </script>
 }
 
@@ -46,47 +46,41 @@
                         <div class="card mb-0" style="min-height:calc(100vh - 250px)">
                             @* wizard *@
                             <div class="page-header card mb-0">
-                                <div class="row col-lg-12 col-xl-12 pr-0 mb-2">
-                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0 pr-4 mb-2"
-                                         style="height:70px;">
-                                        <div class="card py-4 px-2 mb-0"
-                                             style="background-color:#4099ff;height:70px; text-align:left;
-                                                    color:#fff; display:block; box-shadow:none">
-                                            <span class="number">1.</span>
-                                            Cadastro Cliente
+                                <div class="row col-lg-12 col-xl-12 px-0 mb-2 ml-0 wizard">
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0 mb-2" id="wizard-cadastro">
+                                        <div class="card py-4 px-2 mb-0 wizard-box"
+                                             style="background-color:#4099ff; text-align:left; height:100%;
+                                                    color:#fff; box-shadow:none">
+                                            <span class="number">1. Cadastro Cliente</span>                                            
                                         </div>
                                     </div>
-                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0 pr-4 mb-2"
-                                         style="height:70px;">
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0 mb-2" id="wizard-indicador">
                                         <div class="card py-4 px-2 mb-0"
-                                             style="background-color:#eee; text-align:left; color:#aaa;
-                                                    display:block;box-shadow:none">
-                                            <span class="number">2. </span>
-                                            CD e Indicador
+                                             style="background-color:#eee; text-align:left; color:#aaa; height:100%;
+                                                    box-shadow:none">
+                                            <span class="number">2. CD e Indicador</span>
+                                            
                                         </div>
                                     </div>
-                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0 pr-4 mb-2"
-                                         style="height:70px">
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0 mb-2" id="wizard-produto">
                                         <div class="card py-4 px-2 mb-0"
-                                             style="background-color:#eee; text-align:left; color:#aaa;
-                                                    display:block;box-shadow:none">
-                                            <span class="number">3.</span>
-                                            Produtos e Forma Pagamento
+                                             style="background-color:#eee; text-align:left; color:#aaa; height:100%;
+                                                    box-shadow:none">
+                                            <span class="number">3. Produtos e Pagamento</span>
                                         </div>
                                     </div>
-                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0 pr-4"
-                                         style="height:70px;">
-                                        <div class="card py-4 px-4 mb-0"
-                                             style="background-color:#eee; text-align:left; color:#aaa;
-                                                    display:block;box-shadow:none">
-                                            <span class="number">4.</span>
-                                            Informações Adicionais
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0 mb-2" id="wizard-obs">
+                                        <div class="card py-4 px-2 mb-0"
+                                             style="background-color:#eee; text-align:left; color:#aaa; height:100%;
+                                                    box-shadow:none">
+                                            <span class="number">4. Informações Adicionais</span>
+                                            
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             @* Fomrulário *@
-                            <div class="page-header card" style="border:1px solid #ccc; padding:20px">
+                            <div class="page-header card mt-0" style="border:1px solid #ccc; padding:20px">
                                 @using (Html.BeginForm("CadastrarCliente", "Cliente", FormMethod.Post,
 new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", id = "formulario" }))
                                 {
@@ -130,8 +124,8 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                         }
                                         else
                                         {
-                                            <div class="form-group row">
-                                                <div class="col-sm-12">
+                                            <div class="row">
+                                                <div class="form-group col-sm-12">
                                                     <label class="col-form-label">RAZÃO SOCIAL</label>
                                                     <input type="text" class="form-control" name="Nome" id="razao"
                                                            placeholder="RAZÃO SOCIAL"
@@ -140,8 +134,8 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                 </div>
                                             </div>
 
-                                            <div class="form-group row">
-                                                <div class="col-sm-12">
+                                            <div class="row">
+                                                <div class="form-group col-sm-12">
                                                     <label class="col-form-label">CNPJ</label>
                                                     <input name="Cnpj_Cpf" id="cpf_cnpj" type="text"
                                                            class="form-control" value="@Model.DadosCliente.Cnpj_Cpf" />
@@ -189,34 +183,34 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                         //Telefones
                                         @if (Model.DadosCliente?.Tipo == "PF")
                                         {
-                                            <div class="form-group row" style="align-items:flex-end">
-                                                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
+                                            <div class="row" style="align-items:flex-end">
+                                                <div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-6">
                                                     <label class="col-form-label">FONE RESIDENCIAL</label>
                                                     <input name="TelefoneResidencial" id="telRes" type="tel"
                                                            class="form-control"
                                                            value="@Model.DadosCliente?.TelefoneResidencial" />
                                                 </div>
-                                                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
+                                                <div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-6">
                                                     <label class="col-form-label">CELULAR</label>
                                                     <input name="Celular" id="celular" type="tel"
                                                            class="form-control"
                                                            value="@Model.DadosCliente?.Celular" />
                                                 </div>
-                                                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
+                                                <div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-6">
                                                     <label class="col-form-label">FONE COMERCIAL</label>
                                                     <input name="TelComercial" id="telCom" type="tel"
                                                            class="form-control"
                                                            value="@Model.DadosCliente?.TelComercial" />
                                                 </div>
-                                                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
+                                                <div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-6">
                                                     <label class="col-form-label">RAMAL</label>
                                                     <input name="Ramal" id="ramal" type="tel"
                                                            class="form-control"
                                                            value="@Model.DadosCliente?.Ramal" />
                                                 </div>
                                             </div>
-                                            <div class="form-group row">
-                                                <div class="col-sm-12">
+                                            <div class="row">
+                                                <div class="form-group col-sm-12">
                                                     <label class="col-form-label">OBSERVAÇÕES</label>
                                                     <input name="Observacao_Filiacao" id="observacoes" type="text"
                                                            class="form-control"
@@ -227,34 +221,34 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                         else
                                         {
                                             //aqui vai o PJ
-                                            <div class="form-group row">
-                                                <div class="col-lg-4 col-md-3 col-sm-12">
+                                            <div class="row">
+                                                <div class="form-group col-lg-4 col-md-3 col-sm-12">
                                                     <label class="col-form-label">TELEFONE 1</label>
                                                     <input name="telComercial" id="telCom" type="tel"
                                                            class="form-control"
                                                            value="@Model.DadosCliente?.TelComercial" />
                                                 </div>
-                                                <div class="col-lg-4 col-md-3 col-sm-12">
+                                                <div class="form-group col-lg-4 col-md-3 col-sm-12">
                                                     <label class="col-form-label">RAMAL</label>
                                                     <input name="ramal" id="ramal" type="text"
                                                            class="form-control"
                                                            value="@Model.DadosCliente?.Ramal" />
                                                 </div>
-                                                <div class="col-lg-4 col-md-3 col-sm-12">
+                                                <div class="form-group col-lg-4 col-md-3 col-sm-12">
                                                     <label class="col-form-label">TELEFONE 2</label>
                                                     <input name="telComercial2" id="telCom2" type="tel"
                                                            class="form-control"
                                                            value="@Model.DadosCliente?.TelComercial2" />
                                                 </div>
-                                                <div class="col-lg-4 col-md-3 col-sm-12">
+                                                <div class="form-group col-lg-4 col-md-3 col-sm-12">
                                                     <label class="col-form-label">RAMAL</label>
                                                     <input name="ramal2" id="ramal2" type="text"
                                                            class="form-control"
                                                            value="@Model.DadosCliente?.Ramal2" />
                                                 </div>
                                             </div>
-                                            <div class="form-group row">
-                                                <div class="col-sm-12">
+                                            <div class="row">
+                                                <div class="form-group col-sm-12">
                                                     <label class="col-form-label">NOME DA PESSOA NA EMPRESA</label>
                                                     <input name="contato" id="contatoNaEmpresa" type="text"
                                                            class="form-control"
@@ -354,75 +348,75 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                         @{
                                                             var indice = 0;
 
-                                                                                                                <div class="card-body form-control-right">
-                                                                                                                    <hr />
-                                                                                                                    <a class="btn btn-link btn-block text-right" id="addRefBancaria" style="color:black !important;">
-                                                                                                                        Adicionar Referência
-                                                                                                                        <i class="fa fa-plus"></i>
-                                                                                                                    </a>
-                                                                                                                    <hr />
+                                                            <div class="card-body form-control-right">
+                                                                <hr />
+                                                                <a class="btn btn-link btn-block text-right" id="addRefBancaria" style="color:black !important;">
+                                                                    Adicionar Referência
+                                                                    <i class="fa fa-plus"></i>
+                                                                </a>
+                                                                <hr />
 
 
-                                                                                                                    @while (Model.RefBancaria?.Count < 3)
-                                                                                                                    {
-                                                                                                                        Model.RefBancaria.Add(new Loja.Bll.Dto.ClienteDto.RefBancariaDtoCliente());
-                                                                                                                    }
+                                                                @while (Model.RefBancaria?.Count < 3)
+                                                                {
+                                                                    Model.RefBancaria.Add(new Loja.Bll.Dto.ClienteDto.RefBancariaDtoCliente());
+                                                                }
 
-                                                                                                                    @if (Model.RefBancaria?.Count > 0)
-                                                                                                                    {
-                                                                                                                        @foreach (var r in Model.RefBancaria)
-                                                                                                                        {
-                                                                                                                            string visible = "display: none;";
-                                                                                                                            if (!String.IsNullOrWhiteSpace(r.ContaBanco))
-                                                                                                                            {
-                                                                                                                                visible = "display: block";
-                                                                                                                            }
+                                                                @if (Model.RefBancaria?.Count > 0)
+                                                                {
+                                                                    @foreach (var r in Model.RefBancaria)
+                                                                    {
+                                                                        string visible = "display: none;";
+                                                                        if (!String.IsNullOrWhiteSpace(r.ContaBanco))
+                                                                        {
+                                                                            visible = "display: block";
+                                                                        }
 
-                                                                                                                            <div class="form-group row" id="RefBancariabody-@indice" style="@visible">
-                                                                                                                                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
-                                                                                                                                    <label class="col-form-label" for="@indice-banco">BANCO</label>
-                                                                                                                                    @Html.DropDownList("[" + indice + "].Banco",
-                                                                                                                                   new SelectList(Model.LstComboBanco, "Value", "Text", r.Banco),
-                                                                                                                                   new
-                                                                                                                                        {
-                                                                                                                                       @id = indice + "-banco",
-                                                                                                                                       @name = "[" + indice + "].BancoDescricao",
-                                                                                                                                       @class = "custom-select"
-                                                                                                                                   })
-                                                                                                                                </div>
-                                                                                                                                <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6">
-                                                                                                                                    <label class="col-form-label">AGÊNCIA</label>
-                                                                                                                                    <input name="[@indice].Agencia" id="@indice-agencia"
-                                                                                                                                           type="text"
-                                                                                                                                           value="@r.Agencia"
-                                                                                                                                           class="form-control" />
-                                                                                                                                </div>
-                                                                                                                                <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6">
-                                                                                                                                    <label class="col-form-label" for="@indice-conta">CONTA</label>
-                                                                                                                                    <input name="[@indice].ContaBanco" id="@indice-conta"
-                                                                                                                                           type="text"
-                                                                                                                                           value="@r.ContaBanco"
-                                                                                                                                           class="form-control" />
-                                                                                                                                </div>
-                                                                                                                                <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6">
-                                                                                                                                    <label class="col-form-label" for="@indice-telBanco">TELEFONE</label>
-                                                                                                                                    <input name="[@indice].TelefoneBanco" id="@indice-telBanco"
-                                                                                                                                           type="text"
-                                                                                                                                           value="@r.TelefoneBanco"
-                                                                                                                                           class="form-control" />
-                                                                                                                                </div>
-                                                                                                                                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
-                                                                                                                                    <label class="col-form-label">CONTATO</label>
-                                                                                                                                    <input name="[@indice].ContatoBanco" id="@indice-contatoBanco"
-                                                                                                                                           type="text"
-                                                                                                                                           value="@r.ContatoBanco"
-                                                                                                                                           class="form-control" />
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                        }
-                                                                                                                    }
+                                                                        <div class="row" id="RefBancariabody-@indice" style="@visible">
+                                                                            <div class="form-group col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                                                                                <label class="col-form-label" for="@indice-banco">BANCO</label>
+                                                                                @Html.DropDownList("[" + indice + "].Banco",
+                                                                               new SelectList(Model.LstComboBanco, "Value", "Text", r.Banco),
+                                                                               new
+                                                                                    {
+                                                                                   @id = indice + "-banco",
+                                                                                   @name = "[" + indice + "].BancoDescricao",
+                                                                                   @class = "custom-select"
+                                                                               })
+                                                                            </div>
+                                                                            <div class="form-group col-xl-2 col-lg-3 col-md-3 col-sm-6">
+                                                                                <label class="col-form-label">AGÊNCIA</label>
+                                                                                <input name="[@indice].Agencia" id="@indice-agencia"
+                                                                                       type="text"
+                                                                                       value="@r.Agencia"
+                                                                                       class="form-control" />
+                                                                            </div>
+                                                                            <div class="form-group col-xl-2 col-lg-3 col-md-3 col-sm-6">
+                                                                                <label class="col-form-label" for="@indice-conta">CONTA</label>
+                                                                                <input name="[@indice].ContaBanco" id="@indice-conta"
+                                                                                       type="text"
+                                                                                       value="@r.ContaBanco"
+                                                                                       class="form-control" />
+                                                                            </div>
+                                                                            <div class="form-group col-xl-2 col-lg-3 col-md-3 col-sm-6">
+                                                                                <label class="col-form-label" for="@indice-telBanco">TELEFONE</label>
+                                                                                <input name="[@indice].TelefoneBanco" id="@indice-telBanco"
+                                                                                       type="text"
+                                                                                       value="@r.TelefoneBanco"
+                                                                                       class="form-control" />
+                                                                            </div>
+                                                                            <div class="form-group col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                                                                                <label class="col-form-label">CONTATO</label>
+                                                                                <input name="[@indice].ContatoBanco" id="@indice-contatoBanco"
+                                                                                       type="text"
+                                                                                       value="@r.ContatoBanco"
+                                                                                       class="form-control" />
+                                                                            </div>
+                                                                        </div>
+                                                                    }
+                                                                }
 
-                                                                                                                </div>
+                                                            </div>
                                                         }
 
                                                     </div>
@@ -455,22 +449,22 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                                     @foreach (var r in Model.RefComercial)
                                                                     {
                                                                         <hr />
-                                                                        <div class="form-group row">
-                                                                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                                                                        <div class="row">
+                                                                            <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-12">
                                                                                 <label for="Nome_Empresa" class="col-form-label">NOME DA EMPRESA</label>
                                                                                 <input name="[@index].Nome_Empresa" id="@index-Nome_Empresa"
                                                                                        type="text"
                                                                                        value="@r.Nome_Empresa"
                                                                                        class="form-control" />
                                                                             </div>
-                                                                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6">
+                                                                            <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-6">
                                                                                 <label for="Contato" class="col-form-label">CONTATO</label>
                                                                                 <input name="[@index].Contato" id="@index-Contato"
                                                                                        type="text"
                                                                                        value="@r.Contato"
                                                                                        class="form-control" />
                                                                             </div>
-                                                                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6">
+                                                                            <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-6">
                                                                                 <label for="Telefone" class="col-form-label">TELEFONE</label>
                                                                                 <input name="[@index].Telefone" id="@index-Telefone"
                                                                                        type="text"
@@ -574,7 +568,7 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
 
                                         @* Telefones *@
                                         <div class="row">
-                                            <div class="col s12">
+                                            <div class="col-xl-12">
                                                 <span class="caixa">
                                                     <span class="rotulo">Telefones:</span>
                                                     @if (!String.IsNullOrEmpty(Model.DadosCliente.DddResidencial) &&
@@ -608,7 +602,7 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                         {
                                             @* Observações *@
                                             <div class="row">
-                                                <div class="col s12">
+                                                <div class="col-xl-12">
                                                     <span class="caixa">
                                                         <span class="rotulo">Observações:</span>
                                                         <span class="dado" id="observacoes" name="observacoes">@Model.DadosCliente.Observacao_Filiacao</span>
@@ -629,7 +623,7 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                         }
                                         @* E-mail *@
                                         <div class="row">
-                                            <div class="col s12">
+                                            <div class="col-xl-12">
                                                 <span class="caixa">
                                                     <span class="rotulo">Email:</span>
                                                     <span class="dado" id="email" name="email">@Model.DadosCliente.Email</span>
@@ -638,7 +632,7 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                         </div>
                                         @* E-mailXml *@
                                         <div class="row">
-                                            <div class="col s12">
+                                            <div class="col-xl-12">
                                                 <span class="caixa">
                                                     <span class="rotulo">Email (xml):</span>
                                                     <span class="dado" id="emailXml" name="emailXml">@Model.DadosCliente.EmailXml</span>
@@ -649,27 +643,23 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                         @if (Model.DadosCliente?.Tipo == "PF")
                                         {
                                             <div class="row">
-                                                <div class="col-xl-12">
-                                                    <div class="form-group">
-                                                        @Html.DropDownList("ProdutorRural",
-                                                        new SelectList(Model.LstProdutoRural, "Value", "Text",
-                                                        Model.DadosCliente?.ProdutorRural),
-                                                        new { @id = "produtor", @class = "custom-select" })
-                                                        <label>PRODUTO RURAL</label>
-                                                    </div>
-                                                    <div id="ehProdutor">
-                                                        <div class="form-group">
-                                                            <input name="ie" id="ie" type="text" value="@Model.DadosCliente?.Ie" />
-                                                            <label id="lblIe" for="ie">IE</label>
-                                                        </div>
-                                                        <div class="input-field col s2">
-                                                            @Html.DropDownList("Contribuinte_Icms_Status",
-                                                            new SelectList(Model.LstContribuinte, "Value", "Text",
-                                                            Model.DadosCliente?.Contribuinte_Icms_Status),
-                                                            new { @id = "contribuinte", @class = "custom-select" })
-                                                            <label>CONTRIBUINTE ICMS</label>
-                                                        </div>
-                                                    </div>
+                                                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                                                    <label>PRODUTOR RURAL</label>
+                                                    @Html.DropDownList("ProdutorRural",
+                                                    new SelectList(Model.LstProdutoRural, "Value", "Text",
+                                                    Model.DadosCliente?.ProdutorRural),
+                                                    new { @id = "produtor", @class = "custom-select" })
+                                                </div>
+                                                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-12" id="ehProdutor">
+                                                    <label id="lblIe" for="ie">IE</label>
+                                                    <input class="form-control" name="ie" id="ie" type="text" value="@Model.DadosCliente?.Ie" />
+                                                </div>
+                                                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                                                    <label>CONTRIBUINTE ICMS</label>
+                                                    @Html.DropDownList("Contribuinte_Icms_Status",
+                                                    new SelectList(Model.LstContribuinte, "Value", "Text",
+                                                    Model.DadosCliente?.Contribuinte_Icms_Status),
+                                                    new { @id = "contribuinte", @class = "custom-select" })
                                                 </div>
                                             </div>
                                         }
@@ -904,6 +894,8 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
     .boxnovoednereco {
         padding-top: 1em;
     }
+
+
 </style>
 
 <script>

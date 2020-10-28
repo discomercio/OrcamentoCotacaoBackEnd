@@ -108,7 +108,7 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "fo
                                                     @* inserir o select de indicadores aqui *@
                                                     <div id="indicadores">
                                                         @Html.DropDownList("ListaIndicadores", new SelectList(Model.ListaIndicadores, "Value", "Text"),
-                                                       new { @id = "indicador", @name = "indicador", @class = "custom-select" })
+                                                       new { @id = "indicador", @name = "indicador", @class = "form-control custom-select" })
                                                     </div>
                                                 </div>
                                                 <div class="card-block pl-0">

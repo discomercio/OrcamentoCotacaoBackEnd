@@ -161,20 +161,17 @@
 
         var itemMenu = $('.main-menu').find("a[href='" + url + "']");
         var localStorage_itemMenu = "";
+
         if (itemMenu != undefined) {
-            if (itemMenu.length > 0) {
+            debugger;
+            if (itemMenu.length > 0)
                 window.localStorage.setItem("item_active", url);
-                localStorage_itemMenu = window.localStorage.getItem("item_active");
-                $('a[href="' + localStorage_itemMenu + '"]').parent().addClass('active');
-                $('a[href="' + localStorage_itemMenu + '"]').parent().parent().parent().addClass('active');
-                $('a[href="' + localStorage_itemMenu + '"]').parent().parent().show();
-                $('a[href="' + localStorage_itemMenu + '"]').parent().parent().click();
-            } else {
-                localStorage_itemMenu = window.localStorage.getItem("item_active");
-                $('a[href="' + localStorage_itemMenu + '"]').parent().addClass('active');
-                $('a[href="' + localStorage_itemMenu + '"]').parent().parent().show();
-                $('a[href="' + localStorage_itemMenu + '"]').parent().parent().click();
-            }
+
+            localStorage_itemMenu = window.localStorage.getItem("item_active");
+            $('a[href="' + localStorage_itemMenu + '"]').parent().addClass('active');
+            $('a[href="' + localStorage_itemMenu + '"]').closest(".pcoded-hasmenu").addClass('active');
+            $('a[href="' + localStorage_itemMenu + '"]').closest(".pcoded-hasmenu").show();
+            $('a[href="' + localStorage_itemMenu + '"]').closest(".pcoded-hasmenu").click();
         }
     });
 </script>

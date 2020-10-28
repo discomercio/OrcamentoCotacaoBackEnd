@@ -4,6 +4,7 @@ import { Constantes } from "../../UtilTs/Constantes/Constantes";
 import { isNumeric } from "jquery";
 import { DataUtils } from "../../UtilTs/DataUtils/DataUtils";
 import { ErrorModal } from "../Shared/Error";
+import { Loading } from "../../UtilTs/Loading/Loading";
 
 declare var window: any;
 declare function swal(header, msg): any;
@@ -271,6 +272,8 @@ window.DigitouCepCadastro = () => {
 }
 
 window.ValidarFormulario = () => {
+    Loading.Carregando(true);
+
     let erroModal = new ErrorModal();
     let msg: string = "";
 
@@ -307,6 +310,7 @@ window.ValidarFormulario = () => {
             }
 
             if (msg.length > 0) {
+                Loading.Carregando(false);
                 msg = "<b>Preencha os campos marcados como obrigatório:</b><br>" + msg;
                 erroModal.ModalInnerHTML(msg);
                 return false;
@@ -332,6 +336,7 @@ window.ValidarFormulario = () => {
             }
 
             if (msg.length > 0) {
+                Loading.Carregando(false);
                 msg = "<b>Preencha os campos marcados como obrigatório:</b><br>" + msg;
                 erroModal.ModalInnerHTML(msg);
                 return false;
@@ -363,6 +368,7 @@ window.ValidarFormulario = () => {
         }
 
         if (msg.length > 0) {
+            Loading.Carregando(false);
             msg = "<b>Preencha os campos marcados como obrigatório:</b><br>" + msg;
             erroModal.ModalInnerHTML(msg);
             return false;
@@ -389,6 +395,7 @@ window.ValidarFormulario = () => {
         }
 
         if (msg.length > 0) {
+            Loading.Carregando(false);
             erroModal.ModalInnerHTML(msg);
             return false;
         }
@@ -453,6 +460,7 @@ function ValidarProdutorIcms(cpfCnpj) {
         }
 
         if (msg.length > 0) {
+            Loading.Carregando(false);
             msg = "<b>Preencha os campos marcados como obrigatório: </b><br>" + msg;
             erroModal.ModalInnerHTML(msg);
             return retorno;
@@ -493,6 +501,7 @@ function ValidarProdutorIcms(cpfCnpj) {
         }
 
         if (msg.length > 0) {
+            Loading.Carregando(false);
             msg = "<b>Preencha os campos marcados como obrigatório: </b><br>" + msg;
             erroModal.ModalInnerHTML(msg);
             return retorno;
@@ -521,6 +530,7 @@ function ValidarProdutorIcms(cpfCnpj) {
     }
 
     if (msg.length > 0) {
+        Loading.Carregando(false);
         msg = "<b>Preencha os campos marcados como obrigatório: </b><br>" + msg;
         erroModal.ModalInnerHTML(msg);
         return retorno;
@@ -558,6 +568,7 @@ function ValidarEnderecoEntrega() {
     }
 
     if (msg.length > 0) {
+        Loading.Carregando(false);
         msg = "<b>Preencha os campos marcados como obrigatório: </b><br>" + msg;
         erroModal.ModalInnerHTML(msg);
         return false;
