@@ -11,15 +11,13 @@
 }
 
 
-<div class="page-header card">
-
+<div class="page-header card my-3">
     <div class="row align-items-end">
         <div class="col-lg-8">
             <div class="page-header-title">
                 <i class="feather icon-user bg-c-blue"></i>
                 <div class="d-inline">
-                    <h5>Novo Pedido</h5>
-                    <span>Informações do cliente</span>
+                    <h5 class="pt-2">Novo Pedido</h5>
                 </div>
             </div>
         </div>
@@ -37,9 +35,9 @@
 }
 
 
-<div class="pcoded-inner-content pb-0">
+<div class="pcoded-inner-content py-0">
     <div class="main-body">
-        <div class="page-wrapper pb-0">
+        <div class="page-wrapper py-0">
             <div class="page-body">
                 <div class="row">
                     <div class="col-md-12 col-xl-12">
@@ -51,7 +49,7 @@
                                         <div class="card py-4 px-2 mb-0 wizard-box"
                                              style="background-color:#4099ff; text-align:left; height:100%;
                                                     color:#fff; box-shadow:none">
-                                            <span class="number">1. Cadastro Cliente</span>                                            
+                                            <span class="number">1. Cadastro Cliente</span>
                                         </div>
                                     </div>
                                     <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0 mb-2" id="wizard-indicador">
@@ -59,7 +57,7 @@
                                              style="background-color:#eee; text-align:left; color:#aaa; height:100%;
                                                     box-shadow:none">
                                             <span class="number">2. CD e Indicador</span>
-                                            
+
                                         </div>
                                     </div>
                                     <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0 mb-2" id="wizard-produto">
@@ -74,7 +72,7 @@
                                              style="background-color:#eee; text-align:left; color:#aaa; height:100%;
                                                     box-shadow:none">
                                             <span class="number">4. Informações Adicionais</span>
-                                            
+
                                         </div>
                                     </div>
                                 </div>
@@ -84,7 +82,7 @@
                                 @using (Html.BeginForm("CadastrarCliente", "Cliente", FormMethod.Post,
 new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", id = "formulario" }))
                                 {
-                                    <div class="row col s12"></div>
+                                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12"></div>
                                     <input type="hidden" value="@Model.DadosCliente.Tipo" name="Tipo" id="tipo" />
                                     <input type="hidden" value="@Model.PermiteEdicao.ToString()" name="permiteEditar" id="permiteEditar" />
 
@@ -499,7 +497,7 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                         {
                                             //Não permite edição PF
                                             <div class="row">
-                                                <div class="col s12">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                                     <span class="caixa">
                                                         <span class="rotulo">Nome:</span>
                                                         <span class="dado" name="nome" id="nome"> @Model.DadosCliente.Nome</span>
@@ -507,7 +505,7 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col s12">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                                     <span class="caixa">
                                                         @*<input name="cpf_cnpj" value="@Model.DadosCliente.Cnpj_Cpf" />*@
                                                         <span class="rotulo">CPF:</span>
@@ -531,7 +529,7 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                         else
                                         {
                                             <div class="row">
-                                                <div class="col s12">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                                     <span class="caixa">
                                                         <span class="rotulo">Razão Social:</span>
                                                         <span class="dado" name="razao" id="nome"> @Model.DadosCliente.Nome</span>
@@ -539,7 +537,7 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col s12">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                                     <span class="caixa">
                                                         <span class="rotulo">CNPJ:</span>
                                                         <span class="dado" name="cpf_cnpj" id="cpf_cnpj"> @Model.DadosCliente.Cnpj_Cpf</span>
@@ -549,7 +547,7 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                         }
                                         @* Endereço *@
                                         <div class="row">
-                                            <div class="col s12">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                                 <span class="caixa">
                                                     <span class="rotulo">Endereço:</span>
                                                     <span class="dado" id="endereco" name="endereco">
@@ -613,7 +611,7 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                         else
                                         {
                                             <div class="row">
-                                                <div class="col s12">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                                     <span class="caixa">
                                                         <span class="rotulo">Nome da pessoa para contato na empresa:</span>
                                                         <span class="dado" id="contatoEmpresa" name="contato">@Model.DadosCliente.Contato</span>
@@ -666,7 +664,7 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                         else
                                         {
                                             <div class="row">
-                                                <div class="col s12">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                                     <span class="caixa">
                                                         <span class="rotulo">IE:</span>
                                                         <span class="dado" id="ie" name="ie">@Model.DadosCliente.Ie</span>
@@ -674,7 +672,7 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col s12">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                                     <div class="input-field col s4">
                                                         @Html.DropDownList("Contribuinte_Icms_Status",
                                                         new SelectList(Model.LstContribuinte, "Value", "Text",
@@ -684,60 +682,96 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col s10">
-                                                    <div class="input-field">
-                                                        <ul class="collapsible">
-                                                            <li>
-                                                                <div class="collapsible-header" style="color:black!important">Referências Bancárias (@Model.RefBancaria.Count)</div>
-                                                                @foreach (var r in Model.RefBancaria)
-                                                                {<div class="collapsible-body">
-                                                                        <span class="caixa">
-                                                                            <span class="rotulo">Banco: </span>
-                                                                            <span class="dado">@r.BancoDescricao </span>
-                                                                        </span>
-                                                                        <span class="caixa">
-                                                                            <span class="rotulo">Agência: </span>
-                                                                            <span class="dado">@r.Agencia</span>
-                                                                        </span>
-                                                                        <span class="caixa">
-                                                                            <span class="rotulo">Conta: </span>
-                                                                            <span class="dado">@r.ContaBanco </span>
-                                                                        </span>
-                                                                        <span class="caixa">
-                                                                            <span class="rotulo">Telefone: </span>
-                                                                            <span class="dado">@r.TelefoneBanco</span>
-                                                                        </span>
-                                                                    </div>
-                                                                }
-                                                            </li>
-                                                            <li>
-                                                                <div class="collapsible-header" style="color:black!important">Referências Comerciais (@Model.RefComercial.Count)</div>
-                                                                @foreach (var r in Model.RefComercial)
+
+                                            <div class="accordion" id="accordionBancaria">
+                                                <div class="card">
+                                                    @* Cabeçalho do accordion *@
+                                                    <div class="card-header" id="headingOne">
+                                                        <h2 class="mb-0">
+                                                            <a class="btn btn-link btn-block text-left px-0" data-toggle="collapse" data-target="#collapseOneBancaria" aria-expanded="true" aria-controls="collapseOne">
+                                                                Referências Bancárias (@Model.RefBancaria?.Count)
+                                                            </a>
+                                                        </h2>
+                                                    </div>
+                                                    @* Item do accordion *@
+                                                    <div id="collapseOneBancaria" class="panel-collapse collapse in" aria-labelledby="headingOne" data-parent="#accordionBancaria">
+
+                                                        @{
+                                                            <div class="card-body form-control-right">
+
+
+                                                                @if (Model.RefBancaria?.Count > 0)
                                                                 {
-                                                                    <div class="collapsible-body">
-                                                                        <span class="caixa">
-                                                                            <span class="rotulo">Empresa: </span>
-                                                                            <span class="dado">@r.Nome_Empresa </span>
-                                                                        </span>
-                                                                        <span class="caixa">
-                                                                            <span class="rotulo">Contato: </span>
-                                                                            <span class="dado">@r.Contato</span>
-                                                                        </span>
-                                                                        <span class="caixa">
-                                                                            <span class="rotulo">Telefone: </span>
-                                                                            <span class="dado">@r.Telefone </span>
-                                                                        </span>
-                                                                    </div>
-
+                                                                    @foreach (var r in Model.RefBancaria)
+                                                                    {<div class="form-group">
+                                                                            <span class="caixa">
+                                                                                <span class="rotulo">Banco: </span>
+                                                                                <span class="dado">@r.BancoDescricao </span>
+                                                                            </span>
+                                                                            <span class="caixa">
+                                                                                <span class="rotulo">Agência: </span>
+                                                                                <span class="dado">@r.Agencia</span>
+                                                                            </span>
+                                                                            <span class="caixa">
+                                                                                <span class="rotulo">Conta: </span>
+                                                                                <span class="dado">@r.ContaBanco </span>
+                                                                            </span>
+                                                                            <span class="caixa">
+                                                                                <span class="rotulo">Telefone: </span>
+                                                                                <span class="dado">@r.TelefoneBanco</span>
+                                                                            </span>
+                                                                        </div>
+                                                                    }
                                                                 }
 
-                                                            </li>
-                                                        </ul>
+                                                            </div>
+                                                        }
+
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="accordion" id="accordionComercial">
+                                                <div class="card">
+                                                    @* Cabeçalho do accordion *@
+                                                    <div class="card-header" id="headingOne">
+                                                        <h2 class="mb-0">
+                                                            <a class="btn btn-link btn-block text-left px-0" data-toggle="collapse" data-target="#collapseOneComercial" aria-expanded="true" aria-controls="collapseOne">
+                                                                Referências Comerciais (@Model.RefComercial?.Count)
+                                                            </a>
+                                                        </h2>
+                                                    </div>
+                                                    <div id="collapseOneComercial" class="panel-collapse collapse in" aria-labelledby="headingOne" data-parent="#accordionComercial">
+                                                        @{
+                                                            @if (Model.RefComercial?.Count > 0)
+                                                            {
+                                                                <div class="card-body form-control-right pt-0" id="collapsible-body-comercial">
 
+                                                                    @foreach (var r in Model.RefComercial)
+                                                                    {
+                                                                        <hr />
+                                                                        <div class="form-group mb-0">
+                                                                            <span class="caixa col-xl-12 pb-0">
+                                                                                <span class="rotulo">Empresa: </span>
+                                                                                <span class="dado">@r.Nome_Empresa </span>
+                                                                            </span>
+                                                                            <div style="display:flex">
+                                                                                <span class="caixa col-xl-6 col-lg-6 pr-0">
+                                                                                    <span class="rotulo">Contato: </span>
+                                                                                    <span class="dado">@r.Contato</span>
+                                                                                </span>
+                                                                                <span class="caixa col-xl-6 pr-0">
+                                                                                    <span class="rotulo">Telefone: </span>
+                                                                                    <span class="dado">@r.Telefone </span>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    }
+                                                                </div>
+                                                            }
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
                                         }
                                     }
                                     @* Indicadores *@
@@ -894,8 +928,6 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
     .boxnovoednereco {
         padding-top: 1em;
     }
-
-
 </style>
 
 <script>

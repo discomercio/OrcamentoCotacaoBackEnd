@@ -4,75 +4,66 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="page-header card">
+<div class="page-header card my-3">
     <div class="row align-items-end">
         <div class="col-lg-8">
             <div class="page-header-title">
                 <i class="fa fa-truck bg-c-blue"></i>
                 <div class="d-inline">
-                    <h5>Novo Pedido</h5>
-                    <span>Opções de com ou sem indicador e CD manual ou automático</span>
+                    <h5 class="pt-2">Novo Pedido</h5>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<div class="pcoded-inner-content pb-0" style="min-height:64vh">
+<div class="pcoded-inner-content py-0" style="min-height:64vh">
     <div class="main-body">
-        <div class="page-wrapper pb-0">
+        <div class="page-wrapper py-0">
             <div class="page-body">
                 <div class="row">
                     <div class="col-md-12 col-xl-12">
                         <div class="card mb-0">
                             <div class="page-header card mb-0">
-                                <div class="row col-lg-12 col-xl-12 pr-0 mb-2">
-                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0 pr-4 mb-2"
-                                         style="height:70px;">
-                                        <div class="card py-4 px-2 mb-0"
-                                             style="background-color:#eee;height:70px; text-align:left;
-                                                    color:#aaa; display:block; box-shadow:none">
-                                            <span class="number">1.</span>
-                                            Cadastro Cliente
+                                <div class="row col-lg-12 col-xl-12 px-0 mb-2 ml-0 wizard">
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0 mb-2" id="wizard-cadastro">
+                                        <div class="card py-4 px-2 mb-0 wizard-box"
+                                             style="background-color:#eee; text-align:left; height:100%;
+                                                    color:#aaa; box-shadow:none">
+                                            <span class="number">1. Cadastro Cliente</span>
                                         </div>
                                     </div>
-                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0 pr-4 mb-2"
-                                         style="height:70px;">
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0 mb-2" id="wizard-indicador">
                                         <div class="card py-4 px-2 mb-0"
-                                             style="background-color:#4099ff; text-align:left; color:#fff;
-                                                    display:block;box-shadow:none">
-                                            <span class="number">2. </span>
-                                            CD e Indicador
+                                             style="background-color:#4099ff; text-align:left; color:#fff; height:100%;
+                                                    box-shadow:none">
+                                            <span class="number">2. CD e Indicador</span>
+
                                         </div>
                                     </div>
-                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0 pr-4 mb-2"
-                                         style="height:70px">
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0 mb-2" id="wizard-produto">
                                         <div class="card py-4 px-2 mb-0"
-                                             style="background-color:#eee; text-align:left; color:#aaa;
-                                                    display:block;box-shadow:none">
-                                            <span class="number">3.</span>
-                                            Produtos e Forma Pagamento
+                                             style="background-color:#eee; text-align:left; color:#aaa; height:100%;
+                                                    box-shadow:none">
+                                            <span class="number">3. Produtos e Pagamento</span>
                                         </div>
                                     </div>
-                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0 pr-4"
-                                         style="height:70px;">
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0 mb-2" id="wizard-obs">
                                         <div class="card py-4 px-2 mb-0"
-                                             style="background-color:#eee; text-align:left; color:#aaa;
-                                                    display:block;box-shadow:none">
-                                            <span class="number">4.</span>
-                                            Informações Adicionais
+                                             style="background-color:#eee; text-align:left; color:#aaa; height:100%;
+                                                    box-shadow:none">
+                                            <span class="number">4. Informações Adicionais</span>
+
                                         </div>
                                     </div>
                                 </div>
-
-
                             </div>
-                            <div class="page-header card" style="border:1px solid #ccc; padding:20px">
+                            <div class="page-header card mt-0" style="border:1px solid #ccc; padding:20px">
                                 @using (Html.BeginForm("Cadastrar_Indicador_SelecaoCD", "Pedido", FormMethod.Post,
 new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "formulario" }))
                                 {
 
                                     <div class="row">
-                                        <div class="col s12">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                             <span class="caixa">
                                                 <strong>
                                                     <span class="rotulo">Cliente:</span>

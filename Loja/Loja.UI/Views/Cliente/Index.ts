@@ -8,6 +8,7 @@ import { Loading } from "../../UtilTs/Loading/Loading";
 declare var window: any;
 declare function swal(corpo: any, func: any): any;
 
+
 window.ValidarCpfCnpj = () => {
 
     Loading.Carregando(true);

@@ -38,7 +38,7 @@
     }
 }
 @media(min-width: 992px) and (max-width: 1199.99px) {
-    #wizard-obs{
+    #wizard-obs {
         padding-right: 0 !important;
     }
 }
@@ -49,6 +49,15 @@
 }
 @media (min-width: 576px) and (max-width: 767.92px) {
     #wizard-cadastro, #wizard-indicador, #wizard-produto, #wizard-obs {
-        box-sizing:content-box !important;
+        box-sizing: content-box !important;
+        padding-right: 0 !important;
     }
+}
+
+@media (max-width: 576.99px) {
+    #wizard-cadastro, #wizard-indicador, #wizard-produto, #wizard-obs {
+        box-sizing: content-box !important;
+        padding-right: 0 !important;
+    }
+
 }
