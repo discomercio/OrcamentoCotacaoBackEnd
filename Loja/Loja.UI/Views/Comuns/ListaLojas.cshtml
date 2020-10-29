@@ -5,9 +5,9 @@
 
 @if (Model.ConsultaUniversalPedidoOrcamento)
 {
-    <div class="col-xl-12 col-lg-12 pr-0 pl-0">
-        <div class="col-xl-6 col-lg-6 pr-0 pl-0" style="float:right">
-            <label>Filtrar por loja:</label>
+    <div class="d-inline">
+        <div class="form-group mb-0" style="display:inline-block; float:right">
+            <label class="col-form-label">Filtrar por loja:</label>
             @{
                 var lista = Model.LojasDisponiveis.OrderBy(r => r.Nome).ToList();
                 var listaSl = new List<SelectListItem>();
@@ -32,9 +32,16 @@
                     listaSl.Add(new SelectListItem(texto, item.Nome));
                 }
             }
-            @Html.DropDownList("comboLojas", listaSl, new { @id = "comboLojas", @class = "custom-select" })
+            @Html.DropDownList("comboLojas", listaSl, new { @id = "comboLojas", @class = "custom-select col-md-8 col-sm-8" })
         </div>
     </div>
+    
+
+    <style>
+        #comboLojas{
+            float:right !important;
+        }
+    </style>
 
     @if (Model.NumeroColunaDaLoja >= 0)
     {

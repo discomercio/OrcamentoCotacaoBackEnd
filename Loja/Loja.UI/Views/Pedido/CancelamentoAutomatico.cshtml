@@ -45,40 +45,42 @@
 
 </script>
 
-<div class="page-header card">
+<div class="page-header card my-3">
     <div class="row align-items-end">
-        <div class="col-lg-6">
-            <div class="page-header-title">
+        <div class="col-lg-6 col-md-6 col-sm-6 meu-header">
+            <div class="page-header-title" id="title-icone">
                 <i class="fa fa-trash bg-c-blue"></i>
                 <div class="d-inline">
-                    <h5>Cancelamento Automático</h5>
-                    <span>Cancelamento Automático de Pedidos</span>
+                    <h5 class="pt-2 ">Cancelamento Automático</h5>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-6">
-            @if (Model.ListaLojasViewModel.MostrarLoja)
-            {
-                Model.ListaLojasViewModel.NomeTabelaHtml = "tabeladados";
-                Model.ListaLojasViewModel.NumeroColunaDaLoja = 3;
-                <partial name="~/Views/Comuns/ListaLojas.cshtml" for="ListaLojasViewModel" />
-            }
-            @*<div class="page-header-breadcrumb">
-                    <ul class=" breadcrumb breadcrumb-title">
-                        <li class="breadcrumb-item">
-                            <a href="@Url.Action("Index", "Home")"><i class="feather icon-home"></i></a>
-                        </li>
-                        <li class="breadcrumb-item"><a href="#">Cancelamento Atutomático</a> </li>
-                    </ul>
-                </div>*@
-        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 meu-header">
+            <div class="page-header-title" id="title-combo-loja">
+                @if (Model.ListaLojasViewModel.MostrarLoja)
+                {
+                    Model.ListaLojasViewModel.NomeTabelaHtml = "tabeladados";
+                    Model.ListaLojasViewModel.NumeroColunaDaLoja = 3;
+                    <partial name="~/Views/Comuns/ListaLojas.cshtml" for="ListaLojasViewModel" />
+                }
+            </div>
+                
+                @*<div class="page-header-breadcrumb">
+            <ul class=" breadcrumb breadcrumb-title">
+                <li class="breadcrumb-item">
+                    <a href="@Url.Action("Index", "Home")"><i class="feather icon-home"></i></a>
+                </li>
+                <li class="breadcrumb-item"><a href="#">Cancelamento Atutomático</a> </li>
+            </ul>
+        </div>*@
+            </div>
     </div>
 </div>
 
-<div class="pcoded-inner-content pb-2">
+<div class="pcoded-inner-content py-0">
     <div class="main-body">
-        <div class="page-wrapper pb-0">
+        <div class="page-wrapper py-0">
             <div class="page-body">
                 <div class="row">
                     <div class="col-md-12 col-xl-12">
@@ -175,5 +177,10 @@
     </div>
 </div>
 
+<script>
+    requirejs(["Views/Pedido/CancelamentoAutomatico"], function (util) {
 
+    });
+
+</script>
 

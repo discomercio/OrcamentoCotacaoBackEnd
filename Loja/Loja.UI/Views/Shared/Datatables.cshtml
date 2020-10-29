@@ -163,6 +163,10 @@
 </style>
 
 <style>
+    table.dataTable{
+        border-collapse:collapse !important;
+    }
+
     .table {
         font-size: smaller;
     }
@@ -199,6 +203,8 @@
     .dataTables_paginate{
         text-align:right !important;
     }
+
+
 </style>
 <script>
     var DataTables_language = {
@@ -324,10 +330,10 @@
         $(".dataTables_paginate").addClass("col-xl-6 col-lg-7 col-md-7 col-sm-12 px-0");
         $(".dataTables_wrapper").addClass("row");
         $(".dataTables_info").addClass("col-xl-6 col-lg-5 col-md-5 pl-0");
-        $(".dataTables_length").addClass("form-group col-xl-6 col-lg-6 col-md-6 col-sm-12 pl-0");
+        $(".dataTables_length").addClass("form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 pl-0");
         $(".dataTables_length").find('select').addClass("custom-select ml-0");
         $(".dataTables_length").find('label').addClass("col-form-label");
-        $(".dataTables_filter").addClass("form-group col-xl-6 col-lg-6 col-md-6 col-sm-12 pr-0");
+        $(".dataTables_filter").addClass("form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 pr-0");
         $(".dataTables_filter").find('label').addClass('col-form-label');
         $(".dataTables_filter").children().find('input').addClass('form-control');
         $(".dt-buttons a").addClass("btn btn-primary btn-sm paginate_button");
@@ -343,5 +349,25 @@
         return ret;
     }
 
+    $(window).resize(function () {
+        if (window.innerWidth < 767)
+            AlterarClasse_length_filter();
+    });
+
+    $(function () {
+    //se a tela estive nessa resolução ao atualizar 
+    if (window.innerWidth < 767) {
+        AlterarClasse_length_filter();
+    }
+
+});
+
+    function AlterarClasse_length_filter() {
+        $(".dataTables_filter").removeClass("col-sm-6");
+        $(".dataTables_filter").addClass("col-sm-12");
+
+        $(".dataTables_length").removeClass("col-sm-12");
+        $(".dataTables_length").addClass("col-sm-6");
+    }
 
 </script>

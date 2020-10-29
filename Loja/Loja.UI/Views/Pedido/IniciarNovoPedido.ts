@@ -40,6 +40,30 @@ declare function swal(header, mensagem): any;
 
 declare function AbrirModalProdutos(): any;
 
+//alterando botão para add produtos 
+$(window).resize(function () {
+    //se redimensionar a tela 
+    if (window.innerWidth < 663) {
+        AlterarClasse();
+    }
+    if (window.innerWidth > 663) {
+        $("#btn-addProd").removeClass("btn-sm");
+    }
+});
+$(function () {
+    //se a tela estive nessa resolução ao atualizar 
+    if (window.innerWidth < 663) {
+        AlterarClasse();
+    }
+
+    if (window.innerWidth > 663) {
+        $("#btn-addProd").removeClass("btn-sm");
+    }
+
+});
+function AlterarClasse() {
+    $("#btn-addProd").addClass("btn-sm");
+}
 
 function inicializaCampos(v: number) {
     let div: any;

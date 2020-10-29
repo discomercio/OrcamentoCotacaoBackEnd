@@ -37,16 +37,19 @@
         padding-right: 0 !important;
     }
 }
+
 @media(min-width: 992px) and (max-width: 1199.99px) {
     #wizard-obs {
         padding-right: 0 !important;
     }
 }
+
 @media (min-width: 768px) and (max-width: 991.99px) {
     #wizard-obs {
         padding-right: 0 !important;
     }
 }
+
 @media (min-width: 576px) and (max-width: 767.92px) {
     #wizard-cadastro, #wizard-indicador, #wizard-produto, #wizard-obs {
         box-sizing: content-box !important;
@@ -59,5 +62,80 @@
         box-sizing: content-box !important;
         padding-right: 0 !important;
     }
+}
+
+/*Alterando a forma de visualização de tela */
+@media (max-width: 991px) {
+    #title-icone {
+        text-align: left !important;
+        display: inline-flex !important;
+    }
+    /*.page-header.card .align-items-end .page-header-title {
+        text-align: left !important;
+        display: inline-flex !important;
+    }*/
+
+    .page-header.card .align-items-end .page-header-title i {
+        margin-bottom: 0px !important;
+        margin-right: 10px !important;
+    }
+
+    #title-combo-loja {
+        float: right !important;
+        text-align: center !important;
+    }
+}
+
+@media(max-width:768px) {
+    .meu-header {
+        max-width: none !important;
+    }
+
+    #title-combo-loja {
+        display: inherit !important;
+        float: inherit !important;
+        text-align: left !important;
+    }
+
+        #title-combo-loja .form-group {
+            float: left !important;
+            width: 100% !important;
+            margin-top: 8px !important;
+        }
+
+    .page-header.card .align-items-end {
+        display: block !important;
+    }
+
+        .page-header.card .align-items-end h5 {
+            /*padding-top: 2px !important;*/
+        }
+
+        .page-header.card .align-items-end .page-header-title {
+            text-align: inherit !important;
+        }
+}
+
+@media (max-width: 480px) {
+    .meu-header {
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+    }
+}
+/*Alterando dataTable */
+@media(max-width:767px) {
+    .dataTables_filter, div.dataTables_filter {
+        text-align: left !important;
+        padding-left: 0px !important;
+    }
+
+    .dataTables_length {
+        margin-bottom: 0px !important;
+    }
+}
+
+
+/* Alterando botão para adicionar produtos */
+@media (max-width:663px) {
 
 }

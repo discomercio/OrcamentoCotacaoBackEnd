@@ -8,8 +8,8 @@
 
 <div class="page-header card my-3">
     <div class="row align-items-end">
-        <div class="col-lg-8">
-            <div class="page-header-title">
+        <div class="col-lg-8 meu-header">
+            <div class="page-header-title" id="title-icone">
                 <i class="feather icon-clipboard bg-c-blue"></i>
                 <div class="d-inline">
                     <h5 class="pt-2">Novo Pedido</h5>
@@ -66,8 +66,7 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "fo
                             {
                                 <div class="page-header card mt-0" style="border: 1px solid #ccc; padding:20px">
                                     <div class="row">
-
-                                        <div class="row col-xl-12 col-lg-12">
+                                        <div class="col-xl-12 col-lg-12 px-0">
                                             <div class="col-xl-12 col-lg-11">
                                                 <span class="caixa">
                                                     <strong>
@@ -76,20 +75,23 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "fo
                                                     </strong>
                                                 </span>
                                             </div>
-                                            <div class="col-xl-9 col-lg-8 col-sm-8">
-                                                <span class="caixa">
-                                                    <strong>
-                                                        <span class="rotulo">Percentual comissão:</span>
-                                                        <span class="dado" name="perComissao" id="perComissao" style="padding-right:0px;">@Model.PercComissao</span><strong>%</strong>
-                                                        <input type="hidden" id="percComissao" name="percComissao" />
-                                                    </strong>
-                                                </span>
-                                            </div>
-                                            <div class="col-xl-2 col-lg-2">
-                                                <button data-toggle="modal" class="btn btn-primary" data-target="#modal1" type="button">
-                                                    <i class="fa fa-plus"></i>Adicionar produto
-                                                </button>
-                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12" style="display:inline-flex">
+                                                <div class="col-xl-9 col-lg-9 col-md-7 col-sm-7 pl-0">
+                                                    <span class="caixa">
+                                                        <strong>
+                                                            <span class="rotulo">Percentual comissão:</span>
+                                                            <span class="dado" name="perComissao" id="perComissao" style="padding-right:0px;">@Model.PercComissao</span><strong>%</strong>
+                                                            <input type="hidden" id="percComissao" name="percComissao" />
+                                                        </strong>
+                                                    </span>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-3 pr-0">
+                                                    <button data-toggle="modal" class="btn btn-primary" id="btn-addProd"
+                                                            data-target="#modal1" type="button" style="float:right">
+                                                        <i class="fa fa-plus"></i>Adicionar produto
+                                                    </button>
+                                                </div>
+                                            </div>                                            
                                         </div>
                                     </div>
                                     <div class="page-header card"></div>
