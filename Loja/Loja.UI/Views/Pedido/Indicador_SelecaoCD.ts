@@ -22,8 +22,6 @@ $("#chkComRa").click(() => {
     $("[name='comRA']").val(1);
     $("#RA").css("opacity", "1");
     $("#percComissao").prop("disabled", false);
-    //$("#chkSemRa").val(0);
-    //$("#chkComRa").val(1);
 });
 
 $("#chkSemRa").click(() => {
@@ -31,46 +29,42 @@ $("#chkSemRa").click(() => {
     $("[name='comRA']").val(0);
     $("#RA").css("opacity", "0.7");
     $("#percComissao").prop("disabled", true);
-    //$("#chkComRa").val(0);
-    //$("#chkSemRa").val(1);
 });
 
 if ($("#chkSemRa").prop("checked") == true) {
     $("[name='comRA']").val(0);
     $("#RA").css("opacity", "0.7");
     $("#percComissao").prop("disabled", true);
-    //$("#chkSemRa").val(1);
-    //$("#chkComRa").val(0);
 }
 if ($("#chkSemRa").prop("checked") == false) {
     $("[name='comRA']").val(1);
     $("#RA").css("opacity", "1");
     $("#percComissao").prop("disabled", false);
-    //$("#chkSemRa").val(0);
-    //$("#chkComRa").val(1);
 }
 
 if ($("#chkSemIndicacao").prop('checked') == true) {
     $("#chkComIndicacao").prop("checked", false);
     $("[name='comIndicacao']").val("0");
-    $("#indicadores").css("opacity", "0.7");
+    $("#indicador").prop("disabled", true);
+    //$("#indicador").prop("cursor", true);
+    
 }
 $("#chkSemIndicacao").click(() => {
     $("#chkComIndicacao").prop("checked", false);    
     $("[name='comIndicacao']").val("0");
-    $("#indicadores").css("opacity", "0.7");
+    $("#indicador").prop("disabled", true);
 });
 
 if ($("#chkComIndicacao").prop('checked') == true) {
     $("#chkComIndicacao").prop('checked', true);
     $("[name='comIndicacao']").val("1");
-    $("#indicadores").css("opacity", "1");
+    $("#indicador").prop("disabled", false);
 }
 
 $("#chkComIndicacao").click(() => {
     $("#chkSemIndicacao").prop("checked", false);
     $("[name='comIndicacao']").val("1");
-    $("#indicadores").css("opacity", "1");
+    $("#indicador").prop("disabled", false);
 });
 
 
@@ -110,28 +104,6 @@ $("#selecaoCd").change(function () {
     $("#msgCD").text('');
 
 });
-
-
-
-
-
-//afazer: montar o select da lista de indicadores, ao clicar com indicação
-//function MontarListaIndicadores() {
-//    if (listaIndicadoresDto.length > 0) {
-//        listaIndicadoresDto.forEach((indicadorDto) => {
-//            $("#indicador").append("<option value=" + indicadorDto.Apelido + ">" + indicadorDto.Apelido + " - " + indicadorDto.RazaoSocial + "</option>");
-//        });
-
-//        //($("#indicador") as any).formSelect();
-//    }
-//}
-
-//function LimparListaIndicadores() {
-//    $("#indicador").empty();
-
-//    //($("#indicador") as any).formSelect();
-//}
-
 
 window.VerificaPermiteRA = (e: HTMLSelectElement) => {
     debugger;

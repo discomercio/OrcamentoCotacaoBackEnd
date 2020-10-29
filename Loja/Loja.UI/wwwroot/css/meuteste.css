@@ -1,0 +1,63 @@
+﻿/*
+    ESTA FUNCIONANDO
+    para utilizar precisamos inserir a classe carregando para onde desejar
+    e remover classe depois de carregado
+
+*/
+
+@keyframes loading {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.carregando {
+    overflow: hidden !important;
+    transform: translate3d(0, 0, 0);
+    cursor: wait;
+}
+
+    .carregando:after {
+        overflow: hidden !important;
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        opacity: 1;
+        background: linear-gradient( 45deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.9) 70%, rgba(255, 255, 255, 0) 0% );
+        transform: translateX(-100%);
+        animation: loading 1s infinite;
+    }
+
+/*=====================*/
+@media (min-width: 1200px) {
+    #wizard-obs {
+        padding-right: 0 !important;
+    }
+}
+@media(min-width: 992px) and (max-width: 1199.99px) {
+    #wizard-obs {
+        padding-right: 0 !important;
+    }
+}
+@media (min-width: 768px) and (max-width: 991.99px) {
+    #wizard-obs {
+        padding-right: 0 !important;
+    }
+}
+@media (min-width: 576px) and (max-width: 767.92px) {
+    #wizard-cadastro, #wizard-indicador, #wizard-produto, #wizard-obs {
+        box-sizing: content-box !important;
+        padding-right: 0 !important;
+    }
+}
+
+@media (max-width: 576.99px) {
+    #wizard-cadastro, #wizard-indicador, #wizard-produto, #wizard-obs {
+        box-sizing: content-box !important;
+        padding-right: 0 !important;
+    }
+
+}
