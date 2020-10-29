@@ -17,9 +17,9 @@ namespace Loja.UI.Models.SiteColors
         public string Url()
         {
             BaseSite = @"http://localhost:9010/loja/";
-            BaseSite = @"http://its-appdev:9010/loja/";
+            //BaseSite = @"http://its-appdev:9010/loja/";
             //return BaseSite + Pagina + "?SessionCtrlInfo=0x" + SessionCtrlInfo;
-            return $@"{BaseSite}resumo.asp?SessionCtrlInfo=0x" + SessionCtrlInfo;
+            return $@"{BaseSite}resumo.asp?SessionCtrlInfo=0x" + SessionCtrlInfo + "&OrigemSolicitacao=LojaMvc";
         }
 
         public string BaseSite { get; private set; } = @"http://its-appdev:9010/loja/";

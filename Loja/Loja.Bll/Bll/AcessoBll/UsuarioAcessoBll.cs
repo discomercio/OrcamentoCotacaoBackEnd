@@ -341,8 +341,9 @@ namespace Loja.Bll.Bll.AcessoBll
             return lista;
         }
 
-        //ao cahvear a loja atual, precisamos gravar na t_usuario
+        //ao chavear a loja atual, precisamos gravar na t_usuario
         //para que o sistema em ASP consiga pegar a alteração na loja
+        //é o mesmo comportamento do verdinho
         public async Task Loja_troca_rapida_gravar_tusuario(string usuario, string loja)
         {
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())

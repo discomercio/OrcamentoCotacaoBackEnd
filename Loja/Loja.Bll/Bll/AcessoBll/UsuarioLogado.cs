@@ -57,6 +57,21 @@ namespace Loja.Bll.Bll.AcessoBll
             {
                 CriarSessao_carregar_permissoes_banco(logger, clienteBll, this, usuarioAcessoBll, null, null, null).Wait();
             }
+
+            /*
+            a loja sempre é lida do banco?
+            A favor: 
+                - se tiver outra sessão aberta e a loja for alterada, ela é alterada para todo mundo
+            Contra:
+                - não podemos ter abas separadas em lojas separadas
+            if (usuarioAcessoBll != null)
+            {
+                var tusuario = usuarioAcessoBll.UsuarioCarregar(Usuario_atual).Result;
+                if (tusuario != null)
+                    Loja_atual_id = tusuario.SessionCtrlLoja;
+            }
+            */
+
         }
 
         private static async Task CriarSessao_carregar_permissoes_banco(ILogger<UsuarioLogado> logger, ClienteBll.ClienteBll clienteBll, UsuarioLogado usuarioLogadoParaLAterarSessao,
@@ -81,18 +96,17 @@ namespace Loja.Bll.Bll.AcessoBll
             //mais dados na session
             if (tusuario == null)
                 tusuario = await usuarioAcessoBll.UsuarioCarregar(usuarioLogadoParaLAterarSessao.Usuario_atual);
-            if (loja == null)
-                loja = tusuario.Loja;
+            //primeiro carregarmos da sessão; se não existir, carregamos a default do usuário
             if (String.IsNullOrEmpty(loja))
                 loja = tusuario.SessionCtrlLoja;
+            if (String.IsNullOrEmpty(loja))
+                loja = tusuario.Loja;
             if (loja_nome == null)
                 loja_nome = await usuarioAcessoBll.Loja_nome(loja);
 
-            //tusuario.SessionCtrlLoja esta chegando como null e gerando erro
-            //estou incluindo a verificação para passar vazio no caso de null
-            usuarioLogadoParaLAterarSessao.Loja_atual_id = tusuario.SessionCtrlLoja ?? "";
+            usuarioLogadoParaLAterarSessao.Loja_atual_id = loja;
             usuarioLogadoParaLAterarSessao.Usuario_nome_atual = tusuario.Nome;
-            usuarioLogadoParaLAterarSessao.Loja_nome_atual = loja_nome ?? "";
+            usuarioLogadoParaLAterarSessao.Loja_atual_nome = loja_nome ?? "";
             usuarioLogadoParaLAterarSessao.Vendedor_loja = tusuario.Vendedor_Loja != 0;
             usuarioLogadoParaLAterarSessao.Vendedor_externo = tusuario.Vendedor_Externo != 0;
 
@@ -283,7 +297,7 @@ namespace Loja.Bll.Bll.AcessoBll
             }
         }
 
-        public bool LojaAtivaAlterar(string novaloja, UsuarioAcessoBll usuarioAcessoBll)
+        public bool Loja_atual_alterar(string novaloja, UsuarioAcessoBll usuarioAcessoBll)
         {
             //verifica se pode ir para essa loja
             if (!LojasDisponiveis.Any(r => r.Id == novaloja))
@@ -343,7 +357,7 @@ namespace Loja.Bll.Bll.AcessoBll
             get => httpContextSession.GetString(StringsSession.Usuario_nome_atual) ?? "";
             private set => httpContextSession.SetString(StringsSession.Usuario_nome_atual, value);
         }
-        public string Loja_nome_atual
+        public string Loja_atual_nome
         {
             get => httpContextSession.GetString(StringsSession.Loja_nome_atual) ?? "";
             private set => httpContextSession.SetString(StringsSession.Loja_nome_atual, value);
