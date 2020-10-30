@@ -138,16 +138,16 @@ namespace Loja.UI
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseStaticFiles();
             Configuracao configuracao = new Configuracao(Configuration);
-            if (env.IsDevelopment())
+            app.UseStaticFiles(configuracao.Diretorios.RaizSiteLojaMvc);
+            if (!string.IsNullOrWhiteSpace(configuracao.Diretorios.RaizSiteLojaMvc))
             {
+                app.UsePathBase(configuracao.Diretorios.RaizSiteLojaMvc);
+                app.UseStaticFiles(configuracao.Diretorios.RaizSiteLojaMvc);
             }
             else
-            {
-                if (!string.IsNullOrWhiteSpace(configuracao.Diretorios.RaizSiteLojaMvc))
-                    app.UsePathBase(configuracao.Diretorios.RaizSiteLojaMvc);
-            }
+                app.UseStaticFiles();
+
 
             app.UseRouting();
 
