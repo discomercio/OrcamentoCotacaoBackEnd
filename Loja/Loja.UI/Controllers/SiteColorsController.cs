@@ -34,7 +34,7 @@ namespace Loja.UI.Controllers
 
             var sessionCtrlInfo = await siteColorsBll.MontaSessionCtrlInfo(usuarioLogado);
 
-            var model = new Models.SiteColors.SiteColorsViewModel(sessionCtrlInfo, "resumo.asp");
+            var model = new Models.SiteColors.SiteColorsViewModel(sessionCtrlInfo, "resumo.asp", configuracao);
 
             return View(model);
         }

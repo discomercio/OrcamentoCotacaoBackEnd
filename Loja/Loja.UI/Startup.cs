@@ -59,6 +59,9 @@ namespace Loja.UI
                 options.FallbackPolicy = policy;
             });
 
+            //precisa para permitir rodar fora da raiz e usar o iframe com o SiteColors
+            services.AddAntiforgery((r) => { r.SuppressXFrameOptionsHeader = true; });
+
 
             services.AddRazorPages();
             services.AddControllers().AddNewtonsoftJson(options =>
@@ -118,6 +121,7 @@ namespace Loja.UI
                 options.UseSqlServer(Configuration.GetConnectionString("conexaoNfe"));
                 options.EnableSensitiveDataLogging();
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -133,7 +137,17 @@ namespace Loja.UI
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
             app.UseStaticFiles();
+            Configuracao configuracao = new Configuracao(Configuration);
+            if (env.IsDevelopment())
+            {
+            }
+            else
+            {
+                if (!string.IsNullOrWhiteSpace(configuracao.Diretorios.RaizSiteLojaMvc))
+                    app.UsePathBase(configuracao.Diretorios.RaizSiteLojaMvc);
+            }
 
             app.UseRouting();
 

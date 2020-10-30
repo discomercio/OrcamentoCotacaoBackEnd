@@ -111,9 +111,9 @@
 
     <script src="~/lib/require.js"></script>
     @{
-        string baseurl = "/scriptsJsMin";
+        string baseurl = configuracao.Diretorios.RaizSiteLojaMvc + "/scriptsJsMin";
 #if DEBUG
-        baseurl = "/scriptsJs";
+        baseurl = configuracao.Diretorios.RaizSiteLojaMvc + "/scriptsJs";
 #endif
     }
     <script>
@@ -253,7 +253,7 @@
             gtag('config', 'UA-23581568-13');
         </script>*@
     <script src="~/template_bootstrap/js/rocket-loader.min.js" data-cf-settings="d2d1d6e2f87cbebdf4013b26-|49" defer=""></script>
-    
+
 </body>
 </html>
 
