@@ -29,8 +29,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Etc", "Etc", "{DE89B737-FCF
 	ProjectSection(SolutionItems) = preProject
 		PrepedidoApi\AtualizarSonar.bat = PrepedidoApi\AtualizarSonar.bat
 		Global\Infra\InfraBanco\configuracoes_solucao.txt = Global\Infra\InfraBanco\configuracoes_solucao.txt
-		diretorios.txt = diretorios.txt
+		documentacao\diretorios.txt = documentacao\diretorios.txt
 		Global\Especificacao\ExecutarOpenCoverParaTela.bat = Global\Especificacao\ExecutarOpenCoverParaTela.bat
+		documentacao\limpar cache dos testes.bat = documentacao\limpar cache dos testes.bat
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infra", "Infra", "{7267E515-4E22-42C8-A2F8-88A600B24F7A}"

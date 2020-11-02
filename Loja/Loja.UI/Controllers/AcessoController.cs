@@ -82,7 +82,7 @@ namespace Loja.UI.Controllers
 
             loginViewModel.Apelido = loginViewModel.Apelido?.ToUpper().Trim() ?? "";
             loginViewModel.Senha = loginViewModel.Senha?.ToUpper() ?? "";
-            loginViewModel.ReturnUrl = loginViewModel.ReturnUrl ?? "/";
+            loginViewModel.ReturnUrl = loginViewModel.ReturnUrl ?? configuracao.Diretorios.RaizSiteLojaMvc + "/";
 
             if (String.IsNullOrEmpty(loginViewModel.Apelido) || String.IsNullOrEmpty(loginViewModel.Senha))
             {

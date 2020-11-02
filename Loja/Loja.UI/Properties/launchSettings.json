@@ -2,6 +2,10 @@
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost:9010/lojamvc",
+      "sslPort": 0
+    },
     "iisExpress": {
       "applicationUrl": "http://localhost:54515",
       "sslPort": 0
@@ -23,6 +27,11 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "http://localhost:5000"
+    },
+    "SiteColors": {
+      "commandName": "IIS",
+      "launchBrowser": true,
+      "launchUrl": "http://localhost:9010/lojamvc"
     }
   }
 }
