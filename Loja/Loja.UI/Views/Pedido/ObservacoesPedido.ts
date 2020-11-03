@@ -2,6 +2,7 @@
 
 declare var window: any;
 declare function swal(header, mensagem): any;
+declare function swal(header, mensagem, tipo): any;
 
 $(function () {
     //Entrega Imediata
@@ -93,6 +94,7 @@ window.Contador = (): any => {
 
 window.ValidarFormulario = (): any => {
     debugger;
+    let pedido = "1234N";
     //valida entrega imediata
     if ($("#entregaImediata").prop("checked") == false) {
         //vamos validar a previsão de entrega
@@ -109,4 +111,21 @@ window.ValidarFormulario = (): any => {
             return false;
         }
     }
+    //Modal de sucesso
+    //swal("Pedido " + pedido, "", "success");
+    swal({
+        title: "Pedido " + pedido,
+        text: "Tela em construção!",
+        type: "warning",
+        showCancelButton: false,
+        cancelButtonText: "Cancelar",
+        confirmButtonClass: "btn-primary",
+        confirmButtonText: "Ok",
+        closeOnConfirm: true,
+        closeOnCancel: true
+    },
+        function (ok: boolean) {
+            debugger;
+            if (ok) $("#formulario").submit();
+        });
 }

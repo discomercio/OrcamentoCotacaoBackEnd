@@ -1,19 +1,20 @@
 ﻿import { MoedaUtils } from "../../UtilTs/MoedaUtils/moedaUtils";
-import { ErrorModal } from "../Shared/Error";
 import { PercentualMaximoDto } from "../../DtosTs/PedidoDto/PercentualMaximoDto";
 import { IndicadorDto } from "../../DtosTs/IndicadorDto/IndicadorDto";
 
 
 //declarações
-declare var moedaUtils: MoedaUtils;
-moedaUtils = new MoedaUtils();
-declare var percentualMaximoDto: PercentualMaximoDto;
 declare function swal(header, mensagem): any;
 declare var window: any;
 declare var indicadorOriginal: string;
+declare var flagConfirmaIndicadorDiferente: boolean;
+
+declare var moedaUtils: MoedaUtils;
+moedaUtils = new MoedaUtils();
+declare var percentualMaximoDto: PercentualMaximoDto;
 declare var listaIndicadoresDto: IndicadorDto[];
 
-
+declare function AbrirModalConfirm(): any;
 
 $("#chkSemRa").prop("checked", true);
 
@@ -36,6 +37,7 @@ if ($("#chkSemRa").prop("checked") == true) {
     $("#RA").css("opacity", "0.7");
     $("#percComissao").prop("disabled", true);
 }
+
 if ($("#chkSemRa").prop("checked") == false) {
     $("[name='comRA']").val(1);
     $("#RA").css("opacity", "1");
@@ -46,9 +48,8 @@ if ($("#chkSemIndicacao").prop('checked') == true) {
     $("#chkComIndicacao").prop("checked", false);
     $("[name='comIndicacao']").val("0");
     $("#indicador").prop("disabled", true);
-    //$("#indicador").prop("cursor", true);
-    
 }
+
 $("#chkSemIndicacao").click(() => {
     $("#chkComIndicacao").prop("checked", false);    
     $("[name='comIndicacao']").val("0");
@@ -67,7 +68,6 @@ $("#chkComIndicacao").click(() => {
     $("#indicador").prop("disabled", false);
 });
 
-
 $("#chkAutomatico").click(() => {
     $("#chkAutomatico").val(1);
     $("#chkManual").prop("checked", false);    
@@ -75,6 +75,7 @@ $("#chkAutomatico").click(() => {
     $("#msgCD").text('');
     $("#cd").css("opacity", "0.7");
 });
+
 if ($("#chkManual").prop('checked') == true) {
     $("#chkManual").val(1);
     $("#chkManual").prop('checked', true);
@@ -106,7 +107,6 @@ $("#selecaoCd").change(function () {
 });
 
 window.VerificaPermiteRA = (e: HTMLSelectElement) => {
-    debugger;
     let apelido = e.selectedOptions[0].value;
 
     let indicadorDto: IndicadorDto = listaIndicadoresDto.filter(x => x.Apelido == apelido)[0];
@@ -117,7 +117,6 @@ window.VerificaPermiteRA = (e: HTMLSelectElement) => {
         $("#divSemRA").children().find("input").prop('disabled', false);
     }
 }
-
 
 window.formataPercComissao = (e: HTMLInputElement) => {
     moedaUtils = new MoedaUtils();
@@ -222,10 +221,6 @@ function ValidarCamposIndicador(): boolean {
     return retorno;
 }
 
-
-//if (!flagConfirmaIndicadorDiferente) {
-declare function AbrirModalConfirm(): any;
-declare var flagConfirmaIndicadorDiferente: boolean;
 window.DeclinarIndicadorDigerente = () => {
     flagConfirmaIndicadorDiferente = false;
 }
@@ -236,8 +231,6 @@ window.ConfirmarIndicadorDiferente = () => {
     if (continuar()) {
         $("#form").submit();
     }
-
-    
 }
 
 function continuar() : boolean {
@@ -255,8 +248,4 @@ window.continuar = (): any => {
     if (continuar() == false) {
         return false;
     }
-        
-    
-    
-
 }

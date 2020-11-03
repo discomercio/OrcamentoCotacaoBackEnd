@@ -1,168 +1,5 @@
 ﻿
 <style>
-
-    @* apra deixar as setas de ordenação antes dos nomes das colunas
-        na lista de produtos tem uma coluna muito grande e fica estrannho no fim dela
-        *@
-    /*table.dataTable thead .sorting_asc {
-        background: url("http://cdn.datatables.net/1.10.0/images/sort_asc.png") no-repeat center left;
-    }
-
-    table.dataTable thead .sorting_desc {
-        background: url("http://cdn.datatables.net/1.10.0/images/sort_desc.png") no-repeat center left;
-    }
-
-    table.dataTable thead .sorting {
-        background: url("http://cdn.datatables.net/1.10.0/images/sort_both.png") no-repeat center left;
-    }*/
-    @* diversos*@
-    /*.dataTables_length select {
-        display: inline-block;
-        height: auto;
-        width: auto;
-    }*/
-
-    /*botoes ficam à direita*/
-    /*div.dt-buttons {
-        display: inline;
-        float: right;
-        padding-top: 0.75em;
-        padding-left: 10px;
-    }*/
-
-    /* cores dos botoes de paginacao */
-    /*.dataTables_paginate .pagination li a {
-        color: #fff;
-    }*/
-
-    /*.dataTables_paginate .pagination li.active a {
-        color: #444;
-    }*/
-
-    /* espaçamento dos botoes */
-    /*.dataTables_wrapper .dataTables_paginate .paginate_button {
-        padding: 0.5em 0.4em;
-        color: #fff !important;
-    }*/
-
-    /*.dataTables_wrapper .dataTables_paginate .first,
-    .dataTables_wrapper .dataTables_paginate .previous,
-    .dataTables_wrapper .dataTables_paginate .next,
-    .dataTables_wrapper .dataTables_paginate .last {
-        width: 85px;
-    }*/
-
-    /*.dataTables_wrapper .dataTables_paginate .previous {
-        margin-right: 10px;
-    }
-
-    .ellipsis::after{
-        display:none !important;
-    }*/
-
-    /*usando waves-effect waves-light btn-small
-        deixamos duplicado para não piscar, mas a que vale mesmo está na rotina de incializacao
-    */
-    /*.dataTables_paginate a {
-        btn-small
-        text-decoration: none;
-        color: #fff;
-        background-color: #26a69a;
-        text-align: center;
-        letter-spacing: .5px;
-        -webkit-transition: background-color .2s ease-out;
-        transition: background-color .2s ease-out;
-        cursor: pointer;
-        waves-effect
-        position: relative;
-        cursor: pointer;
-        display: inline-block;
-        overflow: hidden;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-        -webkit-tap-highlight-color: transparent;
-        vertical-align: middle;
-        z-index: 1;
-        -webkit-transition: .3s ease-out;
-        transition: .3s ease-out;
-    }
-
-        .dataTables_paginate a:hover {
-            background-color: #73b4ff;
-
-        }
-
-        .dataTables_paginate a:focus {
-            background-color: #007bff;
-        }
-
-        .dataTables_wrapper .dataTables_paginate .paginate_button:active {
-        background: #73b4ff;
-    }
-
-    .dataTables_paginate .disabled a {
-        color: #c5c5c5 !important;
-    }
-
-    .dataTables_paginate .pagination li.active {
-        background-color: #73b4ff !important;
-    }
-
-    .dataTables_paginate .paginate_button:hover {
-        background: #73b4ff !important;
-        border: 1px solid #73b4ff !important;
-    }
-
-    .dataTables_paginate .pagination li a {
-        font-size: 13px; 1.0em;
-    }
-
-    .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover{
-        color: #fff !important;
-        background: #73b4ff !important;
-        border: 1px solid #73b4ff !important;
-    }
-
-    .dataTables_length {
-        float: right !important;
-        margin-left: 0px;
-        align-self:flex-end;
-        white-space:pre-line !important;
-        text-align:left !important;
-    }
-
-    .dataTables_filter{
-        float:left !important;
-        margin-left:auto;
-    }
-    .dataTables_filter {
-        text-align:left !important;
-    }
-    .dataTables_filter > label > input{
-        margin-left:0px !important;
-    }
-
-    .dt-buttons{
-        text-align:end !important;
-    }
-    #tabeladados_paginate{
-        text-align:center;
-    }
-
-    table.dataTable tbody td{
-        white-space:pre-line !important;
-    }
-    table.dataTable thead th{
-        white-space:pre-line !important;
-    }*/
-
-
-
-</style>
-
-<style>
     table.dataTable{
         border-collapse:collapse !important;
     }
@@ -173,7 +10,6 @@
 
         .table thead tr th {
             white-space: initial;
-            /*vertical-align: text-top !important;*/
         }
 
         .table tbody td {
@@ -277,7 +113,7 @@
         }
     });
 
-    jQuery.extend(jQuery.fn.DataTable.ext.pager.numbers_length = 5);
+    jQuery.extend(jQuery.fn.DataTable.ext.pager.numbers_length = 8);
 
 
     var DataTables_dom_botoes = 'lfrtipB';
@@ -296,7 +132,7 @@
             extend: 'excel', text: 'Exportar para Excel'
         },
         {
-            extend: 'pdf', text: 'Exportar para PDF'
+            extend: 'pdf' , text: 'Exportar para PDF'
         }
     ];
 
@@ -305,8 +141,6 @@
     function intiDatatables(seletor, config) {
 
         //queremos estas classes
-        //$(seletor).addClass("striped destaquelincol");
-
         config.sPaginationType = "simple_numbers";
         config.lengthMenu = DataTables_lengthMenu;
         config.language = DataTables_language;
@@ -324,8 +158,6 @@
 
         $(".dt-responsive").addClass("px-3");
 
-        //$(".first").hide();
-        //$(".last").hide();
         $(".tabeladados").addClass("px-0");
         $(".dataTables_paginate").addClass("col-xl-6 col-lg-7 col-md-7 col-sm-12 px-0");
         $(".dataTables_wrapper").addClass("row");
@@ -338,12 +170,7 @@
         $(".dataTables_filter").children().find('input').addClass('form-control');
         $(".dt-buttons a").addClass("btn btn-primary btn-sm paginate_button");
         $(".buttons-excel").addClass("mr-2");
-        //$(".paginate_button").addClass("btn btn-primary");
         $(".dt-buttons a").removeClass("dt-button");
-        //$(".dataTables_paginate a").addClass("btn btn-primary btn-sm");
-        //$(seletor).on(  'draw.dt', function () {
-        //    $(".dataTables_paginate a").addClass("btn btn-primary btn-sm");
-        //});
 
         $(seletor).show();
         return ret;

@@ -220,8 +220,6 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "fo
     </div>
 }
 
-
-
 <div id="modalConfirm" class="modal">
     <div class="modal-content">
         <section>
@@ -245,16 +243,7 @@ new { enctype = "multipart/form-data", onsubmit = "return continuar()", id = "fo
     var percentualMaximoDto = JSON.parse(@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(Json.Serialize(Model.PercMaxPorLoja).ToString(), true)));
     var moedaUtils;
     var flagConfirmaIndicadorDiferente;
-
-    //
-    function AbrirModalConfirm() {
-        //'#modal1' modal de produtos
-        let modal = "#modalConfirm";
-        let Modalelem = document.querySelector(modal);
-        let instanceModal = M.Modal.init(Modalelem);
-        instanceModal.open();
-    }
-</script>
+ </script>
 
 <script>
     requirejs(["Views/Pedido/Indicador_SelecaoCD"], function (util) {

@@ -11185,8 +11185,13 @@ table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child:before, table
 
 /* 
     GABRIEL ALTEROU 
-    estou alterando de 992px para 1070px que é quando fica ruim o cabeçãho do lado esquerdo
+    estou alterando de 992px para 1070px que é quando fica ruim o cabeçalho do lado esquerdo
  */
+@media only screen and (min-width:1070.99px){
+    .header-navbar .navbar-container .nav-left, .header-navbar .navbar-wrapper .navbar-container .nav-right {
+        display: inline-block !important;
+    }
+}
 @media only screen and (max-width:1070px) {
     .navbar, .navbar .navbar-logo {
         width: 100%

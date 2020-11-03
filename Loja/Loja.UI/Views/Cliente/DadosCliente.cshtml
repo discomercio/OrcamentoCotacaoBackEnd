@@ -7,9 +7,7 @@
 
 @section ScriptsDiretos{
     <script src="~/lib/jquery-mask/jquery.mask.js"></script>
-
 }
-
 
 <div class="page-header card my-3">
     <div class="row align-items-end">
@@ -23,17 +21,6 @@
         </div>
     </div>
 </div>
-
-
-@* Cliente novo ??? *@
-@if (string.IsNullOrEmpty(Model.DadosCliente.Id))
-{
-
-    <script>
-
-    </script>
-}
-
 
 <div class="pcoded-inner-content py-0">
     <div class="main-body">
@@ -507,7 +494,6 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                             <div class="row">
                                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                                     <span class="caixa">
-                                                        @*<input name="cpf_cnpj" value="@Model.DadosCliente.Cnpj_Cpf" />*@
                                                         <span class="rotulo">CPF:</span>
                                                         <span class="dado" id="cpf_cnpj">@Model.DadosCliente.Cnpj_Cpf</span>
                                                     </span>
@@ -880,17 +866,6 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
     </div>
 }
 
-
-@* Modal Erro *@
-@*<div id="modalErro" class="modal">
-        <div class="modal-content">
-            <p id="teste" style="font-size:15px;color:black;white-space:initial;line-height:initial;"></p>
-        </div>
-        <div class="modal-footer">
-            <button type="button" href="#!" class="modal-close waves-effect waves-green btn">OK</button>
-        </div>
-    </div>*@
-
 <style>
     .collapsible-header {
         color: black;
@@ -934,6 +909,4 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
     requirejs(["Views/Cliente/DadosCliente"], function (util) {
 
     });
-
-
 </script>

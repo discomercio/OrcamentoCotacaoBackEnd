@@ -18,26 +18,41 @@ import { PercentualMaximoDto } from "../../DtosTs/PedidoDto/PercentualMaximoDto"
 import { MeioPagtoPreferenciais } from "../../DtosTs/FormaPagtoDto/MeioPagtoPreferenciais";
 import { ObjetoSenhaDesconto } from "../../DtosTs/LojaDto/ObjetoSenhaDesconto";
 
-
-//moedaUtils.formatarPorcentagemUmaCasa(i.Desconto)
-declare var lstprodutos: ProdutoComboDto;
-declare var produtoDto: ProdutoDto;
-declare var itens: Itens;
-itens = new Itens();
-//essa variavel esta sendo usada para armazenar os itens selecionados pelo cliente
-declare var lstProdSelecionados: PedidoProdutosPedidoDto[];
 declare var window: any;
 declare var indice: number;
+declare var qtdeParcVisa: number;
+declare var permiteRAStatus: number;
+declare var percComissao: number;//comissão informada em selecaoCD = perc_RT
+declare var perc_RT_novo: number;
+declare var FormaPagtoServidor: any;
+declare var cdSelecionadoId: any;
+
+declare var lstprodutos: ProdutoComboDto;
+declare var produtoDto: ProdutoDto;
+//essa variavel esta sendo usada para armazenar os itens selecionados pelo cliente
+declare var lstProdSelecionados: PedidoProdutosPedidoDto[];
+declare var lstCoeficiente: CoeficienteDto[];
+declare var percentualMaximoDto: PercentualMaximoDto;
+declare var enumFormaPagto: EnumFormaPagto;
+declare var meiosPagtoPreferenciais: MeioPagtoPreferenciais;
+declare var listaObjetoSenhaDesconto: ObjetoSenhaDesconto[];
+
+
+itens = new Itens();
+declare var itens: Itens;
 declare var moedaUtils: MoedaUtils;
 moedaUtils = new MoedaUtils();
 declare var dadosPagto: DadosPagto;
 dadosPagto = new DadosPagto();
-declare var lstCoeficiente: CoeficienteDto[];
-declare var qtdeParcVisa: number;
-declare var permiteRAStatus: number;
+declare var erroPercNovo: boolean;
+erroPercNovo = false;
+declare var novoPedidoDadosService: NovoPedidoDadosService;
+novoPedidoDadosService = new NovoPedidoDadosService();
+declare var lstErros: string[];
+lstErros = new Array();
 
 declare function swal(header, mensagem): any;
-
+declare function swal(header, mensagem, tipo): any;
 declare function AbrirModalProdutos(): any;
 
 //alterando botão para add produtos 
@@ -63,6 +78,12 @@ $(function () {
 });
 function AlterarClasse() {
     $("#btn-addProd").addClass("btn-sm");
+}
+
+//abrir modal para seleção de produtos
+window.AbrirModalProdutos = () => {
+    //'#modal1' modal de produtos
+    $("#modal1").modal("show");
 }
 
 function inicializaCampos(v: number) {
@@ -160,15 +181,12 @@ $(".prod").click(function () {
     $(this).find("input").prop('checked', true);
 });
 
-
 $("#btnModalProdutos").click(function () {
     AbrirModalProdutos();
     return true;
 });
 
-
-
-//buscando produtos 
+//buscando produtos
 $("#buscaproduto").keyup(function () {
     let buscaProduto: string = $("#buscaproduto").val().toString();
 
@@ -197,9 +215,6 @@ $("#percComissao").keyup(() => {
     val = (val / 100).toFixed(2) + '';
     $("#percComissao").val(moedaUtils.formatarMoedaSemPrefixo(val));
 });
-
-
-//declare var percentualMaximoDto: PercentualMaximoDto;
 
 window.VerificarPercMaxDescEComissao = (e: HTMLInputElement) => {
     let valor = e.value;
@@ -331,8 +346,6 @@ function arrumarProdsRepetidosTeste() {
     }
 }
 
-
-
 function removerTodosProdutos() {
     let tbody: any = $(".novoProduto").parent();
     let tbodyCount: number = tbody.children().length;
@@ -350,33 +363,48 @@ function removerTodosProdutos() {
     indice = 0;
     $("#indice").val(indice);
 }
-declare var enumFormaPagto: EnumFormaPagto;
+
+function AbrirModalParaRemoverProduto() {
+    swal(
+        {
+            title: "Excluir Produto",
+            text: "Tem certeza que deseja remover este produto?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Sim, remove!",
+            cancelButtonText: "Não, cancele!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                swal("Removido!", "Este produto foi removido", "success");
+            }
+        });
+}
 
 window.removerLinha = (v: HTMLElement) => {
-    //fazer a perngunta para saber se confirma remover 
-    //const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-    //    data: `Remover este item do pré-pedido?`
-    //});
     if (true) {
+        let remove: boolean;
+        AbrirModalParaRemoverProduto();
+
         //v = campo html
         let t = v as HTMLElement;
         //pegando o tr
         let linha: any = t.closest("tr");// t.parentElement.parentElement.parentElement.parentElement;
         let classeName = linha.className;
         $("." + classeName + "").remove();
-        //linha.remove();
 
         //pegando o td
         let codProduto: string = linha.cells[0].children[0].value;
         //pegando o produto para alterar o valor
-
         let produto: PedidoProdutosPedidoDto[] = new Array<PedidoProdutosPedidoDto>();
         produto = lstProdSelecionados.filter(e => e.NumProduto == codProduto);
 
         let i = lstProdSelecionados.indexOf(produto[0]);
         lstProdSelecionados.splice(i, 1);
-
-
+        
         let indice: number = parseInt($("#indice").val().toString());
         $("#indice").val(indice--);
 
@@ -397,8 +425,7 @@ window.digitouQtde = (v: HTMLInputElement) => {
     let linha: any = t.parentElement.parentElement.parentElement;
     //pegando o td
     let codProduto: string = linha.cells[0].children[0].value;
-
-
+    
     lstProdSelecionados = dadosPagto.pedidoDto.ListaProdutos;
     //pegando o produto para alterar o valor
     let produto: PedidoProdutosPedidoDto[] = lstProdSelecionados.filter(e => e.NumProduto == codProduto);
@@ -413,14 +440,13 @@ window.digitouQtde = (v: HTMLInputElement) => {
     PedidoAlterado();
 
     itens.pedidoDto.ListaProdutos = lstProdSelecionados;
-    //teste
+
     zerarCamposDadosPagto(null);
 
     //aqui espera receber o enum que esta sendo usado
     RecalcularValoresSemCoeficiente(dadosPagto.enumFormaPagto, true, true);
-
-
-    ////passando para o valor para tela
+    
+    //passando para o valor para tela
     //linha.children[4].children[0].children[0].value = moedaUtils.formatarMoedaSemPrefixo(produto[0].VlUnitario);
     if (permiteRAStatus == 1) {
         linha.children[8].textContent = moedaUtils.formatarMoedaSemPrefixo(produto[0].TotalItem);
@@ -433,20 +459,8 @@ window.digitouQtde = (v: HTMLInputElement) => {
     }
 
     PedidoAlterado();//chamamos aqui para inicializar as variaveis
-    //dadosPagto.prepedidoAlterado();
-    //zerarCamposDadosPagto(true);
 }
 
-//Dessa forma eu consigo utilizar a modal de erro
-//essa function esta em Views/Shared/Error.cshtml
-//criamos um Error.ts para inserir a msg na modal de erros
-/*
- * Exemplo de como acessar:
- *      modalError();
- *      let err = new ErroModal();
- *      err.MostrarMsg("passar msg aqui");
- *  fazendo esses passos já estaremos solicitando que mostre a modal com a msg
- */
 window.formatarDesc = (v: HTMLInputElement) => {
     let valor: string = v.value;
     let val: any = valor.replace(/\D/g, '');
@@ -508,7 +522,7 @@ window.formatarVlEntrada = (v: HTMLInputElement) => {
 }
 
 window.digitouDesc = (v: HTMLInputElement) => {
-    
+
     let valor: string = v.value;
     let val: any = valor.replace(/\D/g, '');
     val = (val / 100).toFixed(2) + '';
@@ -561,7 +575,6 @@ window.digitouDesc = (v: HTMLInputElement) => {
 
 window.digitouVlVenda = (v: HTMLInputElement) => {
 
-    debugger;
     let valor: string = v.value;
     let val: any = valor.replace(/\D/g, '');
 
@@ -668,7 +681,6 @@ window.digitouPreco_Lista = (v: HTMLInputElement) => {
 
 function calcula_total_RA_liquido(percentual_desagio_RA_liquida: number, vl_total_RA: number): number {
     let vl_total_RA_liquido: number;
-    //let blnAplicouDesagioRA = true;
     if (vl_total_RA == 0 || vl_total_RA < 0) {
         vl_total_RA_liquido = 0.001;
     }
@@ -684,6 +696,7 @@ if (lstProdSelecionados.length == 0) {
     $('#totalValorRABruto').text(moedaUtils.formatarMoedaSemPrefixo(0.001));
     $('#totalValorRALiquido').text(moedaUtils.formatarMoedaSemPrefixo(0.001));
 }
+
 $('#totalValorRABruto').ready(() => {
     if (parseFloat($('#totalValorRABruto').text()) == 0 || $('#totalValorRABruto').text() == undefined) {
         $('#totalValorRABruto').text(moedaUtils.formatarMoedaSemPrefixo(0.001));
@@ -709,8 +722,6 @@ function somarRABruto(): void {
 
     $('#totalValorRABrutoInput').val(moedaUtils.formatarMoedaSemPrefixo(
         calcula_RA(total, totalRa)));
-
-
 }
 
 function somarRALiquido(): void {
@@ -719,16 +730,11 @@ function somarRALiquido(): void {
 
     let somaRA = parseFloat((totalRa - total).toFixed(2));
 
-    //total ra liquido = totalNF - totalVenda
-    //r_RA_liquido = new calcula_total_RA_liquido(PERC_DESAGIO_RA_LIQUIDA_PEDIDO, vl_RA);
-
     $('#totalValorRALiquido').text(moedaUtils.formatarMoedaSemPrefixo(
         calcula_total_RA_liquido(Constantes.PERC_DESAGIO_RA_LIQUIDA, somaRA)));
 
     $('#totalValorRALiquidoInput').val(moedaUtils.formatarMoedaSemPrefixo(
         calcula_total_RA_liquido(Constantes.PERC_DESAGIO_RA_LIQUIDA, somaRA)));
-
-    //return somaRA;
 }
 
 function totalPedidoRA(): number {
@@ -743,6 +749,7 @@ function totalPedidoRA(): number {
 
 //calculamos os produtos e somamos o total
 function totalPedido(): number {
+    debugger;
     let total: number = parseFloat(lstProdSelecionados.reduce((sum, current) => sum + current.TotalItem, 0).toFixed(2));
 
     $("#totalPedido").text(moedaUtils.formatarMoedaSemPrefixo(total));
@@ -755,10 +762,7 @@ $('#diasVenc').keyup(function (this: any) {
     $(this).val(this.value.replace(/\D/g, ''));
 });
 
-declare var novoPedidoDadosService: NovoPedidoDadosService;
-novoPedidoDadosService = new NovoPedidoDadosService();
 $("#totalPedido").ready(() => {
-    //itens.pedidoDto.ListaProdutos = lstProdSelecionados;
     novoPedidoDadosService.pedidoDto = new PedidoDto();
     novoPedidoDadosService.pedidoDto.ListaProdutos = new Array<PedidoProdutosPedidoDto>();
     novoPedidoDadosService.pedidoDto.ListaProdutos = lstProdSelecionados;
@@ -776,10 +780,8 @@ function InserirNovoProduto(produto: PedidoProdutosPedidoDto, editandoLinha: boo
     //novo.removeClass("novoProduto")
     //$(".novoProduto").parent().append(novo);
 
-
     let indice: number = null;
 
-    //if (!editandoLinha)
     indice = parseInt($("#indice").val().toString());
 
     if (indice.toString() == "NaN") {
@@ -801,9 +803,6 @@ function InserirNovoProduto(produto: PedidoProdutosPedidoDto, editandoLinha: boo
 //iremos inicializar as variaveis
 function PedidoAlterado() {
 
-    //Forma pagamento
-    //$("#enumFormaPagto").prop('selectedIndex', 0);
-    //($("#enumFormaPagto") as any).formSelect();
     totalPedido();
 
     if (permiteRAStatus == 1) {
@@ -814,57 +813,19 @@ function PedidoAlterado() {
 
     dadosPagto.tipoFormaPagto;
     dadosPagto.pedidoAlterado();
-
-
-
 }
 
-declare var FormaPagtoServidor: any;
 function zerarCamposDadosPagto(editandoLinha: boolean) {
-
-
     let selecione: any;
-
-    //if (editandoLinha) {
-    //    $("#enumFormaPagto").prop('selectedIndex', 0);
-    //    ($("#enumFormaPagto") as any).formSelect();
-    //}
-
-    //if (dadosPagto.enumFormaPagto == 1) {
-    //    //A vista   
-    //    //$("#Avista").css("display", "none");
-    //    selecione = $("#opcaoPagtoAvista").children()[0];
-    //    $("#opcaoPagtoAvista").html(selecione);
-    //    ($("#opcaoPagtoAvista") as any).formSelect();
-
-    //    $("#meioPagtoAVista").prop('selectedIndex', 0);
-    //    ($("#meioPagtoAVista") as any).formSelect();
-    //}
 
     //ParcCartaoInternet
     if (dadosPagto.enumFormaPagto == 2) {
 
         selecione = $("#opcaoPagtoParcCartaoInternet").children()[0];
         $("#opcaoPagtoParcCartaoInternet").html(selecione);
-        //($("#opcaoPagtoParcCartaoInternet") as any).formSelect();
     }
 
     if (dadosPagto.enumFormaPagto == 3) {
-        //ParcComEnt
-        //$("#ParcComEntrada").css("display", "none");
-        //$("#vlEntrada").val('');
-
-        //$("#meioPagtoEntrada").prop('selectedIndex', 0);
-        //($("#meioPagtoEntrada") as any).formSelect();
-
-        //selecione = $("#opcaoPagtoParcComEntrada").children()[0];
-        //$("#opcaoPagtoParcComEntrada").html(selecione);
-        //($("#opcaoPagtoParcComEntrada") as any).formSelect();
-
-        //$("#meioPagtoEntradaPrest").prop('selectedIndex', 0);
-        //($("#meioPagtoEntradaPrest") as any).formSelect();
-
-        //$("#diasVenc").val('');
     }
 
     if (dadosPagto.enumFormaPagto == 5) {
@@ -926,7 +887,6 @@ function RecalcularValoresSemCoeficiente(v: any, editandoLinha: boolean, semVeri
         //vamos apagar a linha de produtos selecionados e montar novamente com os valores atualizados
         //remover todas as linhas da tabela para adicionar novamente.
 
-
         if (editandoLinha) {
             removerTodosProdutos();
             lstProdSelecionados.forEach((value) => {
@@ -943,7 +903,6 @@ function RecalcularValoresSemCoeficiente(v: any, editandoLinha: boolean, semVeri
     }
 }
 
-
 //estamos add e escondendo as msg para fazer a verificação
 function CopiarTRsMsgEProduto(): string {
     let indice: number = null;
@@ -958,7 +917,6 @@ function CopiarTRsMsgEProduto(): string {
     //criar nova classe
     let novaClasse = "trProduto_" + indice;
 
-
     //novoProduto
     let novoProduto = CriarLinha();
     let htmlnovoProduto = $(".novoProduto").html();
@@ -967,7 +925,7 @@ function CopiarTRsMsgEProduto(): string {
     novoProduto.removeClass(".novoProduto");
     novoProduto.addClass(novaClasse);
     novoProduto.css('background-color', "#f8f8ff");
-    
+
     $(".trTotal").before(novoProduto);
 
     //novoProdutoEstoque    
@@ -1000,13 +958,10 @@ function CopiarTRsMsgEProduto(): string {
     indice++;
     $("#indice").val(indice);
 
-
-
     function CriarLinha() {
         return $('<tr><\tr>');
     }
     return novaClasse;
-
 }
 
 // vamos alterar o select dos tipos de forma pagamento para utilizar radio
@@ -1028,11 +983,8 @@ window.recalcularValoresComCoeficiente = (e: HTMLInputElement) => {
     zerarCamposDadosPagto(null);
 
     InicializaDadosPagto();
-    //let v = e.selectedIndex;
-    //let v = parseInt(e.selectedOptions[0].value);
     let v = parseInt(e.value);
-
-
+    
     inicializaCampos(v);
     //estou incluindo uma flag nesse metodo abaixo para não ir até a servidor para verificar, pois
     //estamos apenas recalculando com coeficiente
@@ -1126,7 +1078,6 @@ $("#opcaoPagtoParcCartaoMaquineta").on('change', () => {
     }
 });
 
-
 function AtribuirListaParaSelect() {
 
     if (dadosPagto.enumFormaPagto == 1) {
@@ -1134,24 +1085,18 @@ function AtribuirListaParaSelect() {
         dadosPagto.lstMsg.forEach((value) => {
             $("#opcaoPagtoAvista").append("<option selected>" + value + "</option>");
         });
-        //($("#opcaoPagtoAvista") as any).formSelect();
     }
     if (dadosPagto.enumFormaPagto == 2) {
         //ParcCartaoInternet
-
         dadosPagto.lstMsg.forEach((value) => {
             $("#opcaoPagtoParcCartaoInternet").append("<option>" + value + "</option>");
         });
-
-        //($("#opcaoPagtoParcCartaoInternet") as any).addEventListener('onclick', 'RecalcularListaProdutos(this)');
-        //($("#opcaoPagtoParcCartaoInternet") as any).formSelect();
     }
     if (dadosPagto.enumFormaPagto == 3) {
         //ParcComEnt
         dadosPagto.lstMsg.forEach((value) => {
             $("#opcaoPagtoParcComEntrada").append("<option>" + value + "</option>");
         });
-        //($("#opcaoPagtoParcComEntrada") as any).formSelect();
     }
     //NÃO ESTA SENDO USADO
     if (dadosPagto.enumFormaPagto == 4) {
@@ -1159,7 +1104,6 @@ function AtribuirListaParaSelect() {
         dadosPagto.lstMsg.forEach((value) => {
             $("#opcaoPagtoParcSemEntrada").append("<option>" + value + "</option>");
         });
-        //($("#opcaoPagtoParcSemEntrada") as any).formSelect();
     }
 
     if (dadosPagto.enumFormaPagto == 5) {
@@ -1167,14 +1111,12 @@ function AtribuirListaParaSelect() {
         dadosPagto.lstMsg.forEach((value) => {
             $("#opcaoPagtoParcUnica").append("<option selected>" + value + "</option>");
         });
-        //($("#opcaoPagtoParcUnica") as any).formSelect();
     }
     if (dadosPagto.enumFormaPagto == 6) {
         //ParcCartaoMaquineta
         dadosPagto.lstMsg.forEach((value) => {
             $("#opcaoPagtoParcCartaoMaquineta").append("<option>" + value + "</option>");
         });
-        //($("#opcaoPagtoParcCartaoMaquineta") as any).formSelect();
     }
 
 }
@@ -1185,13 +1127,9 @@ function InicializaDadosPagto() {
     dadosPagto.pedidoDto.ListaProdutos = new Array<PedidoProdutosPedidoDto>();//lista de produtos selecionados
     dadosPagto.moedaUtils = new MoedaUtils();
     dadosPagto.lstMsg = new Array();
-    //dadosPagto.tipoFormaPagto = 
 
     dadosPagto.coeficienteDto = lstCoeficiente;//recebe a lista que veio do servidor
-    dadosPagto.pedidoDto.ListaProdutos = lstProdSelecionados;//recebe lst dos produtos selcionados    
-    //dadosPagto.enumFormaPagto = enumFormaPagto;//variavel com a opção da forma de pagto selecionada
-
-
+    dadosPagto.pedidoDto.ListaProdutos = lstProdSelecionados;//recebe lst dos produtos selcionados   
 }
 
 function InscreveLinhaProduto(produto: PedidoProdutosPedidoDto, index: any) {
@@ -1229,11 +1167,8 @@ function VerificarEstoque(itens: Itens, produto: PedidoProdutosPedidoDto, novaCl
     }
 }
 
-declare var cdSelecionadoId;
 function verificarRegraProdutoCD(novaclasse: string, produto: PedidoProdutosPedidoDto) {
 
-    //let cdManual = $("#chkManual").prop('checked');
-    //let selecaoCd = $("#selecaoCd").val();
     if (!!produto.NumProduto && !!produto.Fabricante) {
         $.ajax({
             url: "../Produtos/VerificarRegraProdutoCD/",
@@ -1261,8 +1196,6 @@ function AdicionarMsgProdutoECD(v: ProdutoValidadoComEstoqueDto, novaClasse: str
 
     //vamos verificar o retorno para mostrar as msg que estão retornando do servidor
     if (!!produtoValidadoComEstoque) {
-
-
         produtoValidadoComEstoque.ListaErros.forEach(function (linha) {
             if (linha.indexOf("PRODUTO SEM PRESENÇA") != -1) {
                 let span = $("." + novaClasse + "").find('[name="produtoAviso"]');
@@ -1282,14 +1215,11 @@ function AdicionarMsgProdutoECD(v: ProdutoValidadoComEstoqueDto, novaClasse: str
         //vamos atribuir o produto estoque ao produto da lista lstProdutos
         AtribuirEstoqueAoProduto(produtoValidadoComEstoque.Produto);
     }
-
-
 }
 
 function AtribuirEstoqueAoProduto(produto: ProdutoDto) {
     lstprodutos.ProdutoDto.filter((e) => {
         if (e.Produto == produto.Produto && e.Fabricante == produto.Fabricante) {
-
             e.Estoque = produto.Estoque;
         }
     });
@@ -1448,7 +1378,6 @@ if (percComissao.toString() != "") {
     $("#perComissao").text(moedaUtils.formatarMoedaSemPrefixo(val));
 }
 
-
 window.formataPercentual = () => {
     let valor: string = percComissao.toString();
     let val: any = valor.replace(/\D/g, '');
@@ -1457,13 +1386,6 @@ window.formataPercentual = () => {
     $("#percComissao").text(val);
 }
 
-declare var meiosPagtoPreferenciais: MeioPagtoPreferenciais;
-
-declare var percComissao: number;//comissão informada em selecaoCD = perc_RT
-declare var percentualMaximoDto: PercentualMaximoDto;
-declare var perc_RT_novo: number;
-declare var erroPercNovo: boolean;
-erroPercNovo = false;
 //iremos fazer a validação na tela
 window.continuar = (): any => {
     //verificar se tem produtos com qtde maior que o permitido
@@ -1540,7 +1462,7 @@ window.continuar = (): any => {
 
             //linha 2230 pedidonovoconsiste
             //não vamos fazer pois é sobre a tela de observações
-                       
+
             //aqui finaliza - tudo ok!
             //vamos tentar retornar o objeto serializado para a tela mandar para o controller
             dadosPagto.novoPedidoDadosService.pedidoDto.FormaPagtoCriacao = dadosPagto.pedidoDto.FormaPagtoCriacao;
@@ -1554,10 +1476,6 @@ window.continuar = (): any => {
         }
     }
 }
-//vamos armazenar os erros que estão ocorrendo na hora que estiver em "window.continuar"
-declare var lstErros: string[];
-lstErros = new Array();
-declare var listaObjetoSenhaDesconto: ObjetoSenhaDesconto[];
 
 function verifica_excedente_max_desconto(perc_max_comissao_e_desconto_a_utilizar: number, perc_desc_medio: number): number {
     let perc_senha_desconto: number = 0;
@@ -1623,7 +1541,6 @@ function verifica_excedente_max_desconto(perc_max_comissao_e_desconto_a_utilizar
         return;
     }
 
-
     let perc_max_RT = percentualMaximoDto.PercMaxComissao;
     // Tem RT: sim
     if (percComissao != 0) {
@@ -1638,8 +1555,7 @@ function verifica_excedente_max_desconto(perc_max_comissao_e_desconto_a_utilizar
         // ou possuem senha de desconto autorizando.
         // Verifica-se agora se é necessário reduzir automaticamente o percentual da RT usando p/ o cálculo
         // o percentual de desconto médio.
-
-
+        
         perc_RT_novo = Math.min(percComissao, (perc_max_comissao_e_desconto_a_utilizar - perc_desc_medio));
         if (perc_RT_novo < 0) perc_RT_novo = 0;
 
@@ -1672,8 +1588,6 @@ function verifica_excedente_max_desconto(perc_max_comissao_e_desconto_a_utilizar
         }
     }
 }
-
-
 
 function calcula_desconto_medio(): number {
     let vl_total_preco_lista: number = 0;
@@ -1759,7 +1673,6 @@ function AtribuirValoresFormaPagtoCriacao(): boolean {
         return true;
     }
 }
-
 
 function AtribuirFormaPagtoParaDadosPagto(): void {
     let err = new ErrorModal();

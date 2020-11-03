@@ -2,26 +2,23 @@
 @{
     var usuarioLogado = Model;
 }
-@*<a class="material-icons">notifications</a>*@
 
-@*<style>
-        .select2-selection, .select2-selection--single{
-            height:auto !important;
+@*<script>
+    $(".mobile-options").click(function () {
+        if ($(".nav-right").css('display') == "none") {
+            $(".nav-right").css('display', 'inline-block');
         }
-
-        .js-example-basic-hide-search{
-            background-color:white;
+        else {
+            $(".nav-right").css('display', 'none');
         }
+    });
+</script>*@
 
-    </style>*@
 @if (usuarioLogado.SessaoAtiva)
 {
 
 
     //deixamos ocultando em tela pequena
-    //fica confuso ter um menu do lado direito e outro do lado esquerdo
-    //para resolver, acho que deveria ir para uma página com o combo de lojas
-    //com isto, o drop-down de loja não funciona: overflow: hidden;
     <ul class="nav-right">
         <li class="user-profile header-notification">
             <div class="dropdown-primary dropdown">
@@ -39,7 +36,8 @@
             var lista = usuarioLogado.LojasDisponiveis.OrderBy(r => r.Nome).ToList();
             if (lista.Count > 0)
             {
-                <li class="user-profile header-notification">
+                <li class="user-profile header-notification" data-toggle="tooltip" , data-placement="bottom"
+                    title="Mudança rápida de loja">
                     <div class="dropdown-primary dropdown">
                         <div class="dropdown-toggle" data-toggle="dropdown">
                         </div>
@@ -66,7 +64,7 @@
             }
         }
         <li>
-            <a href="~/Acesso/Logout" title="Logout" style="vertical-align: text-bottom;">
+            <a href="~/Acesso/Logout" data-toggle="tooltip" data-placement="bottom" title="Sair" style="vertical-align: text-bottom;">
                 <i class="feather icon-log-out" style="font-size:x-large"></i>
             </a>
         </li>
@@ -75,7 +73,8 @@
 }
 else
 {
-    //não temos botão de ologin pq já está na pagina de login - mas precisa para outras páginas, que eventualemte não tenham a proteção, como a home
+    //não temos botão de login pq já está na pagina de login -
+    //mas precisa para outras páginas, que eventualemte não tenham a proteção, como a home
     if (!(ViewBag.PaginaDeLogin ?? false))
     {
         <div class="right" style="margin-right: 10px">
@@ -84,7 +83,6 @@ else
     }
 }
 <script>
-
     $(document).ready(function () {
         $('#cabecacomboLojas').change(function () {
             document.location = "/?novaloja=" + $('#cabecacomboLojas').val();

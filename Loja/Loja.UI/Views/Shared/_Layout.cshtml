@@ -7,8 +7,8 @@
 <!DOCTYPE html>
 
 @* OBS:
-    Consegui alterar a cor do navbar em "vertical_layout.min.js" alterarndo "HeaderBackground: "theme6","
-    Podemos criar um theme em "style.css" para criar uma nova cor
+    Consegui alterar a cor do navbar em "vertical_layout.min.js" alterando "HeaderBackground: "theme6","
+    Podemos criar um theme em "template_bootstrap/css/style.css" para criar uma nova cor
 *@
 
 <html lang="pt-br">
@@ -16,7 +16,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Loja.UI</title>
-
+    @* ===================== STYLES ===================== *@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Quicksand:500,700" rel="stylesheet">
 
@@ -35,18 +35,18 @@
 
     <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/sweetalert.css">
 
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/toggle/css/bootstrap4-toggle.min.css">
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/widget.css">
+    <link rel="stylesheet" type="text/css" href="~/css/site.css">
+
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/component.css">
+
+
     <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/style.css">
     <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/pages.css">
-    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/widget.css">
-    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/toggle/css/bootstrap4-toggle.min.css">
-    <link rel="stylesheet" type="text/css" href="~/css/meuteste.css">
 
-    @*<link rel="stylesheet" href="~/template_bootstrap/css/select2.min.css" />
-        <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/bootstrap-multiselect.css" />
-        <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/multi-select.css" />*@
-    @*<link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/simple-line-icons.css">*@
 
-    @* SCRIPTS *@
+    @* ===================== SCRIPTS ===================== *@
     <script type="text/javascript" src="~/template_bootstrap/js/jquery.min.js"></script>
     <script type="text/javascript" src="~/template_bootstrap/js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="~/template_bootstrap/js/popper.min.js"></script>
@@ -73,38 +73,19 @@
     <script type="text/javascript" src="~/template_bootstrap/js/curvedlines.js"></script>
     <script type="text/javascript" src="~/template_bootstrap/js/jquery.flot.tooltip.min.js"></script>
 
-    <script type="text/javascript" src="~/template_bootstrap/toggle/js/bootstrap4-toggle.min.js"></script>
-    @*<script type="text/javascript" src="~/template_bootstrap/js/switchery.min.js"></script>*@
 
     <script type="text/javascript" src="~/template_bootstrap/js/serial.js"></script>
     <script type="text/javascript" src="~/template_bootstrap/js/light.js"></script>
-
-    @*<script type="text/javascript" src="~/template_bootstrap/js/jquery.steps.js"></script>*@
-
-    @*<script type="text/javascript" src="~/template_bootstrap/js/form-wizard.js"></script>*@
-
-    @*<script type="text/javascript" src="~/template_bootstrap/js/bootstrap-tagsinput.js"></script>
-        <script type="text/javascript" src="~/template_bootstrap/js/typeahead.bundle.min.js"></script>
-        <script type="text/javascript" src="~/template_bootstrap/js/bootstrap-maxlength.js"></script>*@
-    @*<script type="text/javascript" src="~/template_bootstrap/js/swithces.js"></script>*@
-
-
+    <script type="text/javascript" src="~/template_bootstrap/toggle/js/bootstrap4-toggle.min.js"></script>
+    <script type="text/javascript" src="~/template_bootstrap/js/jquery.quicksearch.js"></script>
 
     <script type="text/javascript" src="~/template_bootstrap/js/pcoded.min.js"></script>
     <script type="text/javascript" src="~/template_bootstrap/js/vertical-layout.min.js"></script>
     <script type="text/javascript" src="~/template_bootstrap/js/custom-dashboard.min.js"></script>
-    <script type="text/javascript" src="~/template_bootstrap/js/script.min.js"></script>
-    @*<script type="text/javascript" src="~/template_bootstrap/js/select2.full.min.js"></script>
-        <script type="text/javascript" src="~/template_bootstrap/js/jquery.multi-select.js"></script>*@
-    <script type="text/javascript" src="~/template_bootstrap/js/jquery.quicksearch.js"></script>
-    @*<script type="text/javascript" src="~/template_bootstrap/js/select2-custom.js"></script>*@
-
-
-
     <script type="text/javascript" src="~/template_bootstrap/js/script.js"></script>
+
+    @*<script type="text/javascript" src="~/template_bootstrap/js/script.min.js"></script>*@
     <script src="~/template_bootstrap/js/rocket-loader.min.js" data-cf-settings="d28fd8086f5eb18f81d8672a-|49" defer=""></script>
-
-
 
     <script src="~/js/Util.js"></script>
     @RenderSection("ScriptsDiretos", required: false)
@@ -125,7 +106,6 @@
                         jquery: '/template_bootstrap/js/jquery.min'
                     }
                 });
-                //requirejs(['app'], function (app) { });
     </script>
     @RenderSection("Scripts", required: false)
 
@@ -147,9 +127,6 @@
 }
 
 <body>
-    @*<script type="text/javascript" src="/lib/jquery/dist/jquery.min.js"></script>*@
-
-
     <div id="pcoded" class="pcoded">
         <div class="pcoded-overlay-box"></div>
         <div class="pcoded-container navbar-wrapper">
@@ -162,12 +139,12 @@
                                 <i class="fa fa-home" style="font-size:xx-large"></i>
                             </a>
 
-
-                            <a class="mobile-menu" id="mobile-collapse" href="#!">
+                            <a class="mobile-menu" id="mobile-collapse" href="#!" data-toggle="tooltip"
+                               data-placement="bottom" title="Abrir/Fechar menu">
                                 <i class="feather icon-menu icon-toggle-right"></i>
                             </a>
-                            <a class="mobile-options waves-effect waves-light">
-                                <i class="feather icon-menu icon-toggle-right"></i>
+                            <a class="mobile-options waves-effect waves-light" href="#!">
+                                <i class="feather icon-more-horizontal"></i>
                             </a>
                         </div>
                         <div class="navbar-container container-fluid">
@@ -188,22 +165,25 @@
                                 </li>
                                 @* Maximiza tela *@
                                 <li>
-                                    <a href="#!" onclick="if (!window.__cfRLUnblockHandlers) return false; javascript:toggleFullScreen()" class="waves-effect waves-light" data-cf-modified-d2d1d6e2f87cbebdf4013b26-="">
+                                    <a href="#!" onclick="if (!window.__cfRLUnblockHandlers) return false; javascript:toggleFullScreen()"
+                                       class="waves-effect waves-light" data-cf-modified-d2d1d6e2f87cbebdf4013b26-="" data-toggle="tooltip"
+                                       data-placement="bottom" title="Tela inteira">
                                         <i class="full-screen feather icon-maximize"></i>
                                     </a>
                                 </li>
                             </ul>
+                            @* Header *@
                             <partial name="~/Views/Shared/Cabecalho.cshtml" model="usuarioLogado" />
 
                         </div>
                     </div>
                 </nav>
-
             }
             <div class="pcoded-main-container">
                 <div class="pcoded-wrapper">
                     @if (usuarioLogado.SessaoAtiva)
                     {
+                        //Menu
                         <nav class="pcoded-navbar">
                             <div class="nav-list">
                                 <div class="pcoded-inner-navbar main-menu">
@@ -212,12 +192,11 @@
                             </div>
                         </nav>
                     }
-
+                    @* Body *@
                     <div class="pcoded-content">
                         @RenderBody()
-
-
                     </div>
+                    @* Footer *@
                     <div class="pcoded-content">
                         @RenderSection("RodapePagina", required: false)
                     </div>
@@ -225,35 +204,13 @@
             </div>
         </div>
     </div>
+    @* Error *@
     <partial name="~/Views/Shared/Error.cshtml" />
 
     <div id="styleSelector">
     </div>
 
-
-    <style>
-
-
-
-
-        .footer {
-            background-color: #fff;
-        }
-    </style>
-
-
-
-
-    @*<script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
-        <script type="d2d1d6e2f87cbebdf4013b26-text/javascript">
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-
-            gtag('config', 'UA-23581568-13');
-        </script>*@
     <script src="~/template_bootstrap/js/rocket-loader.min.js" data-cf-settings="d2d1d6e2f87cbebdf4013b26-|49" defer=""></script>
-    
 </body>
 </html>
 

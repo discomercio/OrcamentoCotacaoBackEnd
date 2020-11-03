@@ -4,8 +4,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
-
 <div class="page-header card my-3">
     <div class="row align-items-end">
         <div class="col-lg-8 meu-header">
@@ -62,12 +60,12 @@
                             </div>
 
                             @using (Html.BeginForm("CadastrarPedido", "Pedido", FormMethod.Post,
-                            new
-                            {
-                                enctype = "multipart/form-data",
-                                onsubmit = "return ValidarFormulario()",
-                                id = "formulario"
-                            }))
+                        new
+                        {
+                            enctype = "multipart/form-data",
+                             //onsubmit = "return ValidarFormulario()",
+                             id = "formulario"
+                        }))
                             {
                                 <div class="page-header card mt-0" style="border: 1px solid #ccc; padding:20px">
 
@@ -101,8 +99,9 @@
                                             </div>
                                             <div class="card-block pb-0">
                                                 <div class="form-group" style="display:flex;height:50px">
-                                                    <input type="checkbox" data-toggle="toggle" data-size="xs"
-                                                           value="@Model.EntregaImediata" checked id="entregaImediata" name="EntregaImediata" />
+                                                    <input type="checkbox" data-toggle="toggle" data-size="small"
+                                                           value="@Model.EntregaImediata" checked id="entregaImediata"
+                                                           name="EntregaImediata" />
                                                     <div class="ml-3">
                                                         <span>Entrega Imediata</span>
                                                     </div>
@@ -112,14 +111,14 @@
                                                     <input class="form-control" type="date" id="previsao" name="Previsao" />
                                                 </div>
                                                 <div class="form-group" style="display:flex;height:50px">
-                                                    <input type="checkbox" data-toggle="toggle" data-size="xs"
+                                                    <input type="checkbox" data-toggle="toggle" data-size="small"
                                                            id="bemDeUso" name="BemConsumo" checked value="@Model.BemConsumo" />
                                                     <div class="ml-3">
                                                         <span>Bem de uso/Consumo</span>
                                                     </div>
                                                 </div>
                                                 <div class="form-group mb-0" style="display:flex;height:50px">
-                                                    <input type="checkbox" data-toggle="toggle" data-size="xs"
+                                                    <input type="checkbox" data-toggle="toggle" data-size="small"
                                                            id="InstaladorInstala" checked name="InstaladorInstala" value="@Model.InstaladorInstala" />
                                                     <div class="ml-3">
                                                         <span>Instalador Instala</span>
@@ -172,7 +171,7 @@
                                 <div class="col-lg-1 col-md-3 col-sm-3"></div>
                                 <div class="col-xl-3 col-lg-3 col-md-2 col-sm-2 px-0">
                                     <button class="btn btn-primary"
-                                            type="submit" onclick="$('#formulario').submit()">
+                                            type="button" onclick="ValidarFormulario()">
                                         <i class="fa fa-arrow-right"></i>Avançar
                                     </button>
                                 </div>
