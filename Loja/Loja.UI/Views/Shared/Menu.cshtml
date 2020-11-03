@@ -126,16 +126,32 @@
         </a>
         <ul class="pcoded-submenu">
             <li>
-                <a class="waves-effect waves-dark" href="@Url.Action("Index", "SiteColors")">Início do Colors</a>
+                <a class="waves-effect waves-dark" href="@Url.Action("Index", "SiteColors")"><span style="color:green">Início do Colors</span></a>
             </li>
             <li>
-                <a class="menudesabilitado waves-effect waves-dark" href="#!">Faturamento</a>
+                <a class="waves-effect waves-dark" href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pedidos_com_Credito_Pendente)">
+                    Pedidos com Crédito Pendente
+                </a>
             </li>
             <li>
-                <a class="menudesabilitado waves-effect waves-dark" href="#!">Vendas</a>
+                <a class="waves-effect waves-dark" href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pedidos_com_Credito_Pendente_Vendas)">
+                    Pedidos com Crédito Pendente Vendas
+                </a>
             </li>
             <li>
-                <a class="menudesabilitado waves-effect waves-dark" href="#!">Vendas com Desc. Superior</a>
+                <a class="waves-effect waves-dark" href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pedidos_Pendentes_Cartao_de_Credito)">
+                    Pedidos Pendentes Cartão de Crédito
+                </a>
+            </li>
+            <li>
+                <a class="waves-effect waves-dark" href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pedidos_com_Endereco_Pendente)">
+                    Pedidos com Endereço Pendente
+                </a>
+            </li>
+            <li>
+                <a class="waves-effect waves-dark" href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pesquisa_pedidos_anteriormente_efetuados_por_um_cliente_nesta_loja)">
+                    Pesquisa pedidos anteriormente efetuados por um cliente nesta loja
+                </a>
             </li>
         </ul>
     </li>
