@@ -1,1 +1,0 @@
-define(["require","exports"],function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.StringUtils=void 0;var r=function(){function e(){}return e.retorna_so_digitos=function(e){return e.replace(/\D/g,"")},e.TextoDeHtml=function(e){return e?e.replace(/<[^>]*>?/gm,""):""},e}();t.StringUtils=r});
