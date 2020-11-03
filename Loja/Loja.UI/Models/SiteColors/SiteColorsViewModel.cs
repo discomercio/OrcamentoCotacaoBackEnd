@@ -17,11 +17,16 @@ namespace Loja.UI.Models.SiteColors
 
         public string Url()
         {
-            var ret = $@"{BaseSite}/resumo.asp?SessionCtrlInfo=0x" + SessionCtrlInfo + "&OrigemSolicitacao=LojaMvc";
+            var ret = $@"{BaseSite}/{Pagina}";
+            if (ret.Contains("?"))
+                ret += "&";
+            else
+                ret += "?";
+            ret += "SessionCtrlInfo=0x" + SessionCtrlInfo + "&OrigemSolicitacao=LojaMvc";
             return ret;
         }
 
-        public string BaseSite { get; private set; } 
+        public string BaseSite { get; private set; }
         public string SessionCtrlInfo { get; }
         public string Pagina { get; }
     }

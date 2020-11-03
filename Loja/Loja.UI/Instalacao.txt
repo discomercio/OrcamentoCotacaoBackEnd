@@ -1,4 +1,4 @@
-﻿Para isntalar:
+﻿Para instalar:
 - No IIS, instalar o Colors
 - cirar um diretório lojamvc 
 - botão direito, Converter para aplicação, usar as configurações padrão
