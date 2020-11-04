@@ -4,72 +4,48 @@
 }
 
 @*<script>
-    $(".mobile-options").click(function () {
-        if ($(".nav-right").css('display') == "none") {
-            $(".nav-right").css('display', 'inline-block');
-        }
-        else {
-            $(".nav-right").css('display', 'none');
-        }
-    });
-</script>*@
+        $(".mobile-options").click(function () {
+            if ($(".nav-right").css('display') == "none") {
+                $(".nav-right").css('display', 'inline-block');
+            }
+            else {
+                $(".nav-right").css('display', 'none');
+            }
+        });
+    </script>*@
 
 @if (usuarioLogado.SessaoAtiva)
 {
 
 
     //deixamos ocultando em tela pequena
-    <ul class="nav-right">
-        <li class="user-profile header-notification">
+    
+
+        @* fazer aqui o avatar *@
+    <div id="teste" class="col-md-2 p-0" style="float:right; width:auto">
+        <div class="user-profile header-notification text-center px-0" data-toggle="tooltip" data-placement="top"
+             title="" id="menu-usuario">
+
             <div class="dropdown-primary dropdown">
                 <div class="dropdown-toggle" data-toggle="dropdown">
+                    <span class="avatar avatar-48 img-circle p-2" id="avatar"></span>
                 </div>
-
-                <div class="dropdown-toggle" data-toggle="dropdown">
-                    <span>Olá @usuarioLogado.Usuario_nome_atual</span>
-                </div>
+                <ul class="show-notification profile-notification dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+                    <li>
+                        <a href="#!">
+                            <i class="fa fa-lock"></i> Alterar senha
+                        </a>
+                    </li>
+                    <li>
+                        <a href="~/Acesso/Logout" data-toggle="tooltip" data-placement="bottom" title="Sair" style="vertical-align: text-bottom;">
+                            <i class="feather icon-log-out" style="font-size:large"></i> Sair
+                        </a>
+                    </li>
+                </ul>
             </div>
-        </li>
-
-        @if (usuarioLogado.Operacao_permitida(Loja.Bll.Constantes.Constantes.OP_LJA_LOGIN_TROCA_RAPIDA_LOJA))
-        {
-            var lista = usuarioLogado.LojasDisponiveis.OrderBy(r => r.Nome).ToList();
-            if (lista.Count > 0)
-            {
-                <li class="user-profile header-notification" data-toggle="tooltip" , data-placement="bottom"
-                    title="Mudança rápida de loja">
-                    <div class="dropdown-primary dropdown">
-                        <div class="dropdown-toggle" data-toggle="dropdown">
-                        </div>
-
-                        <div class="form-group dropdown-toggle mb-0">
-                            @{
-                                var listaSl = new List<SelectListItem>();
-                                foreach (var item in lista)
-                                {
-                                    listaSl.Add(new SelectListItem(item.Nome, item.Id));
-                                }
-                                ViewData["cabecacomboLojas"] = usuarioLogado.Loja_atual_id;
-                            }
-
-                            @Html.DropDownList("cabecacomboLojas", listaSl, new
-                       {
-                           @id = "cabecacomboLojas",
-                           @class = "custom-select"
-
-                       })
-                        </div>
-                    </div>
-                </li>
-            }
-        }
-        <li>
-            <a href="~/Acesso/Logout" data-toggle="tooltip" data-placement="bottom" title="Sair" style="vertical-align: text-bottom;">
-                <i class="feather icon-log-out" style="font-size:x-large"></i>
-            </a>
-        </li>
-
-    </ul>
+        </div>
+    </div>
+    
 }
 else
 {
@@ -83,6 +59,37 @@ else
     }
 }
 <script>
+    var usuarioLogado = JSON.parse(@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(Json.Serialize(Model.Usuario_nome_atual).ToString(), true)))
+
+    $(document).ready(() => {
+
+        if (usuarioLogado != "" && usuarioLogado != undefined) {
+            var split = usuarioLogado.split(' ');
+            if (split.length > 1) {
+                debugger;
+            }
+            else {
+                var letra = usuarioLogado.substring(0, 2);
+                setRandomColor();
+                $("#avatar").text(letra.toUpperCase());
+                $("#menu-usuario").attr("data-original-title", usuarioLogado);
+            }
+
+        }
+
+    });
+    function setRandomColor() {
+        $("#avatar").css("background-color", getRandomColor());
+    }
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+
     $(document).ready(function () {
         $('#cabecacomboLojas').change(function () {
             document.location = "@Url.Action("Index", "Home")/?novaloja=" + $('#cabecacomboLojas').val();
