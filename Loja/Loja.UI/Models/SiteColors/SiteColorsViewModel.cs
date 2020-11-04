@@ -8,21 +8,25 @@ namespace Loja.UI.Models.SiteColors
 {
     public class SiteColorsViewModel
     {
-        public SiteColorsViewModel(string sessionCtrlInfo, string pagina)
+        public SiteColorsViewModel(string sessionCtrlInfo, string pagina, Bll.Util.Configuracao configuracao)
         {
             SessionCtrlInfo = sessionCtrlInfo;
             Pagina = pagina;
+            BaseSite = configuracao.Diretorios.RaizSiteColorsLoja;
         }
 
         public string Url()
         {
-            BaseSite = @"http://localhost:9010/loja/";
-            BaseSite = @"http://its-appdev:9010/loja/";
-            //return BaseSite + Pagina + "?SessionCtrlInfo=0x" + SessionCtrlInfo;
-            return $@"{BaseSite}resumo.asp?SessionCtrlInfo=0x" + SessionCtrlInfo;
+            var ret = $@"{BaseSite}/{Pagina}";
+            if (ret.Contains("?"))
+                ret += "&";
+            else
+                ret += "?";
+            ret += "SessionCtrlInfo=0x" + SessionCtrlInfo + "&OrigemSolicitacao=LojaMvc";
+            return ret;
         }
 
-        public string BaseSite { get; private set; } = @"http://its-appdev:9010/loja/";
+        public string BaseSite { get; private set; }
         public string SessionCtrlInfo { get; }
         public string Pagina { get; }
     }

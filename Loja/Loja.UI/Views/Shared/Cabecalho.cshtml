@@ -85,7 +85,7 @@ else
 <script>
     $(document).ready(function () {
         $('#cabecacomboLojas').change(function () {
-            document.location = "/?novaloja=" + $('#cabecacomboLojas').val();
+            document.location = "@Url.Action("Index", "Home")/?novaloja=" + $('#cabecacomboLojas').val();
         });
     });
 </script>

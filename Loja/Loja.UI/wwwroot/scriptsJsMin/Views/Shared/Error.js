@@ -1,1 +1,0 @@
-define(["require","exports"],function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var r=function(){function e(){}return e.prototype.MostrarMsg=function(e){$("#teste").empty().append(e)},e}();t.ErrorModal=r});
