@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 
 @{
-//todo: afazer: tirar testando_iframe 
+    //todo: afazer: tirar testando_iframe
     var testando_iframe = false;
 }
 
@@ -42,16 +42,16 @@
 
         <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/sweetalert.css">
 
-    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/toggle/css/bootstrap4-toggle.min.css">
-    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/widget.css">
-    <link rel="stylesheet" type="text/css" href="~/css/site.css">
+        <link rel="stylesheet" type="text/css" href="~/template_bootstrap/toggle/css/bootstrap4-toggle.min.css">
+        <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/widget.css">
+        <link rel="stylesheet" type="text/css" href="~/css/site.css">
 
-    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/component.css">
+        <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/component.css">
 
 
-    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/style.css">
-    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/pages.css">
-
+        <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/style.css">
+        <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/pages.css">
+    }
 
     @* ===================== SCRIPTS ===================== *@
     <script type="text/javascript" src="~/template_bootstrap/js/jquery.min.js"></script>
@@ -101,7 +101,7 @@
     @{
         string baseurl = configuracao.Diretorios.RaizSiteLojaMvc + "/scriptsJsMin";
 #if DEBUG
-baseurl = configuracao.Diretorios.RaizSiteLojaMvc + "/scriptsJs";
+        baseurl = configuracao.Diretorios.RaizSiteLojaMvc + "/scriptsJs";
 #endif
     }
     <script>
@@ -134,82 +134,82 @@ baseurl = configuracao.Diretorios.RaizSiteLojaMvc + "/scriptsJs";
 }
 
 <body>
-            $(document).ready(function () {
-                $('body').css("background", "#c3c3fd");
-            });
-        </script>
-        <div class="container">
-            <table>
-                <tr>
-                    <td style="vertical-align:top;">
-                        <ul>
-                            <li>
-                                <a href="@Url.Action("Index", "Produtos")" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Consulta Lista de Preços</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="waves-effect waves-dark" href="@Url.Action("Index", "SiteColors")">Início do Colors</a>
-                            </li>
-                            <li>
-                                <a class="waves-effect waves-dark" href="~/Acesso/Logout">Logout</a>
-                            </li>
-                        </ul>
+    $(document).ready(function () {
+    $('body').css("background", "#c3c3fd");
+    });
+    </script>
+    <div class="container">
+        <table>
+            <tr>
+                <td style="vertical-align:top;">
+                    <ul>
+                        <li>
+                            <a href="@Url.Action("Index", "Produtos")" class="waves-effect waves-dark">
+                                <span class="pcoded-mtext">Consulta Lista de Preços</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="waves-effect waves-dark" href="@Url.Action("Index", "SiteColors")">Início do Colors</a>
+                        </li>
+                        <li>
+                            <a class="waves-effect waves-dark" href="~/Acesso/Logout">Logout</a>
+                        </li>
+                    </ul>
 
-                    </td>
-                    <td style="vertical-align:top;">
-                        <ul>
-                            <li>
-                                <a class="waves-effect waves-dark" href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pedidos_com_Credito_Pendente)">
-                                    Pedidos com Crédito Pendente
-                                </a>
-                            </li>
-                            <li>
-                                <a class="waves-effect waves-dark" href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pedidos_com_Credito_Pendente_Vendas)">
-                                    Pedidos com Crédito Pendente Vendas
-                                </a>
-                            </li>
-                            <li>
-                                <a class="waves-effect waves-dark" href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pedidos_Pendentes_Cartao_de_Credito)">
-                                    Pedidos Pendentes Cartão de Crédito
-                                </a>
-                            </li>
-                            <li>
-                                <a class="waves-effect waves-dark" href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pedidos_com_Endereco_Pendente)">
-                                    Pedidos com Endereço Pendente
-                                </a>
-                            </li>
-                            <li>
-                                <a class="waves-effect waves-dark" href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pesquisa_pedidos_anteriormente_efetuados_por_um_cliente_nesta_loja)">
-                                    Pesquisa pedidos anteriormente efetuados por um cliente nesta loja
-                                </a>
-                            </li>
-                        </ul>
-                    </td>
-                    <td style="vertical-align:top;">
-                        @if (usuarioLogado.SessaoAtiva)
-                        {
-                            <partial name="~/Views/Shared/Cabecalho.cshtml" model="usuarioLogado" />
-                        }
-                    </td>
-                </tr>
-            </table>
-            @RenderBody()
-        </div>
+                </td>
+                <td style="vertical-align:top;">
+                    <ul>
+                        <li>
+                            <a class="waves-effect waves-dark" href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pedidos_com_Credito_Pendente)">
+                                Pedidos com Crédito Pendente
+                            </a>
+                        </li>
+                        <li>
+                            <a class="waves-effect waves-dark" href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pedidos_com_Credito_Pendente_Vendas)">
+                                Pedidos com Crédito Pendente Vendas
+                            </a>
+                        </li>
+                        <li>
+                            <a class="waves-effect waves-dark" href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pedidos_Pendentes_Cartao_de_Credito)">
+                                Pedidos Pendentes Cartão de Crédito
+                            </a>
+                        </li>
+                        <li>
+                            <a class="waves-effect waves-dark" href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pedidos_com_Endereco_Pendente)">
+                                Pedidos com Endereço Pendente
+                            </a>
+                        </li>
+                        <li>
+                            <a class="waves-effect waves-dark" href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pesquisa_pedidos_anteriormente_efetuados_por_um_cliente_nesta_loja)">
+                                Pesquisa pedidos anteriormente efetuados por um cliente nesta loja
+                            </a>
+                        </li>
+                    </ul>
+                </td>
+                <td style="vertical-align:top;">
+                    @if (usuarioLogado.SessaoAtiva)
+                    {
+                        <partial name="~/Views/Shared/Cabecalho.cshtml" model="usuarioLogado" />
+                    }
+                </td>
+            </tr>
+        </table>
+        @RenderBody()
+    </div>
     }
     else
     {
-        <div id="pcoded" class="pcoded">
-            <div class="pcoded-overlay-box"></div>
-            <div class="pcoded-container navbar-wrapper">
-                @if (usuarioLogado.SessaoAtiva)
-                {
-                    <nav class="navbar header-navbar pcoded-header" style="height:auto">
-                        <div class="navbar-wrapper">
-                            <div class="navbar-logo">
-                                <a href="@Url.Action("Index", "Home")" title="Home" class="show-on-medium-and-down">
-                                    <i class="fa fa-home" style="font-size:xx-large"></i>
-                                </a>
+    <div id="pcoded" class="pcoded">
+        <div class="pcoded-overlay-box"></div>
+        <div class="pcoded-container navbar-wrapper">
+            @if (usuarioLogado.SessaoAtiva)
+            {
+                <nav class="navbar header-navbar pcoded-header" style="height:auto">
+                    <div class="navbar-wrapper">
+                        <div class="navbar-logo">
+                            <a href="@Url.Action("Index", "Home")" title="Home" class="show-on-medium-and-down">
+                                <i class="fa fa-home" style="font-size:xx-large"></i>
+                            </a>
 
                             <a class="mobile-menu" id="mobile-collapse" href="#!" data-toggle="tooltip"
                                data-placement="bottom" title="Abrir/Fechar menu">
