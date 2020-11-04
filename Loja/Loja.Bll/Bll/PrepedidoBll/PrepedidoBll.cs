@@ -9,7 +9,7 @@ using Loja.Bll.Bll.AcessoBll;
 using System.Threading.Tasks;
 
 #nullable enable
-namespace Loja.Bll.Bll.PrepedidoBll
+namespace Loja.Bll.PrepedidoBll
 {
     public class PrepedidoBll
     {

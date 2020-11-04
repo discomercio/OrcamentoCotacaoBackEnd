@@ -115,8 +115,8 @@ window.ValidarFormulario = (): any => {
     //swal("Pedido " + pedido, "", "success");
     swal({
         title: "Pedido " + pedido,
-        text: "Tela em construção!",
-        type: "warning",
+        text: "Tela do pedido em construção!",
+        type: "success",
         showCancelButton: false,
         cancelButtonText: "Cancelar",
         confirmButtonClass: "btn-primary",

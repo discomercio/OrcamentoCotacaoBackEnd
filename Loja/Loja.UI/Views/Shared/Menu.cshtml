@@ -6,6 +6,8 @@
     }
 </style>
 
+
+
 @*Pedidos*@
 <ul class="pcoded-item pcoded-left-item">
     <li class="pcoded-hasmenu">
@@ -167,7 +169,7 @@
         //pois se utilizarmos 2 abas aberta o menu não irá funcionar da forma correta
         //NECESSÁRIO UTILIZAR OUTRA ABORDAGEM PARA ARMAZENAR
         //é o Home
-        if (url.length == 1) {
+        if (url == "/lojamvc" && url.length == 8) {
             window.localStorage.setItem("item_active", "");
             return;
         }

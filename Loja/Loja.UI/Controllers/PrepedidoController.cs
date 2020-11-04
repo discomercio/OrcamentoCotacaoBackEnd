@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Loja.Bll.Bll.AcessoBll;
-using Loja.Bll.Bll.PrepedidoBll;
+using Loja.Bll.PrepedidoBll;
 using Loja.Bll.ClienteBll;
 using Loja.Bll.Constantes;
 using Loja.Bll.Util;
@@ -30,7 +30,7 @@ namespace Loja.UI.Controllers
         private readonly ILogger<UsuarioLogado> loggerUsuarioLogado;
         private readonly ClienteBll clienteBll;
 
-        public PrepedidoController(Loja.Bll.Bll.PrepedidoBll.PrepedidoBll prepedidoBll, UsuarioAcessoBll usuarioAcessoBll, Configuracao configuracao,
+        public PrepedidoController(Loja.Bll.PrepedidoBll.PrepedidoBll prepedidoBll, UsuarioAcessoBll usuarioAcessoBll, Configuracao configuracao,
             ILogger<UsuarioLogado> loggerUsuarioLogado, ClienteBll clienteBll)
         {
             this.prepedidoBll = prepedidoBll;

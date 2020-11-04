@@ -11,6 +11,7 @@ using Loja.UI.Models.Home;
 using Loja.Bll.ClienteBll;
 using Loja.Bll.Bll.AcessoBll;
 using Loja.Bll.Util;
+using Loja.Bll.PrepedidoBll;
 
 namespace Loja.UI.Controllers
 {
@@ -21,19 +22,21 @@ namespace Loja.UI.Controllers
         private readonly UsuarioAcessoBll usuarioAcessoBll;
         private readonly Configuracao configuracao;
         private readonly ILogger<UsuarioLogado> loggerUsuarioLogado;
+        private readonly PrepedidoBll prepedidoBll;
 
         public HomeController(ILogger<HomeController> logger, ClienteBll clienteBll, UsuarioAcessoBll usuarioAcessoBll, Configuracao configuracao,
-            ILogger<UsuarioLogado> loggerUsuarioLogado)
+            ILogger<UsuarioLogado> loggerUsuarioLogado, PrepedidoBll prepedidoBll)
         {
             _logger = logger;
             this.clienteBll = clienteBll;
             this.usuarioAcessoBll = usuarioAcessoBll;
             this.configuracao = configuracao;
             this.loggerUsuarioLogado = loggerUsuarioLogado;
+            this.prepedidoBll = prepedidoBll;
             _logger.LogDebug(1, "NLog injected into HomeController");
         }
 
-        public IActionResult Index(string novaloja)
+        public async Task<IActionResult> Index(string novaloja)
         {
             var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
 
@@ -48,6 +51,20 @@ namespace Loja.UI.Controllers
             }
             model.LojaAtivaId = usuarioLogado.Loja_atual_id;
             model.LojaAtivaNome = usuarioLogado.LojasDisponiveis.FirstOrDefault(r => r.Id == model.LojaAtivaId)?.Nome;
+
+            //vamos buscar a quantidade de orcamentos novos
+            var resumoPrepedidoListaDto = await prepedidoBll.ResumoPrepedidoLista(usuarioLogado);
+            var itensLoja = (from i in resumoPrepedidoListaDto.Itens
+                             group i by i.LojaId
+                             into g
+                             select new Models.Comuns.ListaLojasViewModel.ItemLoja
+                             {
+                                 Loja = g.Key,
+                                 NumeroItens = g.Count()
+                             });
+
+            var select = resumoPrepedidoListaDto.Itens.Where(x => x.LojaId == usuarioLogado.Loja_atual_id);
+
             return View(model);
         }
 

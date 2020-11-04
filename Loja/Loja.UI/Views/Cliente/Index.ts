@@ -40,7 +40,7 @@ function ValidarCliente(cpf_cnpj: string): any {
     let erroModal = new ErrorModal();
     
     $.ajax({
-        url: "../Cliente/ValidarCliente/",
+        url: "../lojamvc/Cliente/ValidarCliente/",
         type: "GET",
         data: { cpf_cnpj: cpf_cnpj },
         dataType: "json",
