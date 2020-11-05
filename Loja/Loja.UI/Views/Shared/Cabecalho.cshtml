@@ -61,38 +61,13 @@ else
 <script>
     var usuarioLogado = JSON.parse(@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(Json.Serialize(Model.Usuario_nome_atual).ToString(), true)))
 
-    $(document).ready(() => {
-
-        if (usuarioLogado != "" && usuarioLogado != undefined) {
-            var split = usuarioLogado.split(' ');
-            if (split.length > 1) {
-                debugger;
-            }
-            else {
-                var letra = usuarioLogado.substring(0, 2);
-                setRandomColor();
-                $("#avatar").text(letra.toUpperCase());
-                $("#menu-usuario").attr("data-original-title", usuarioLogado);
-            }
-
-        }
-
-    });
-    function setRandomColor() {
-        $("#avatar").css("background-color", getRandomColor());
-    }
-    function getRandomColor() {
-        var letters = '0123456789ABCDEF';
-        var color = '#';
-        for (var i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-    }
-
     $(document).ready(function () {
         $('#cabecacomboLojas').change(function () {
             document.location = "@Url.Action("Index", "Home")/?novaloja=" + $('#cabecacomboLojas').val();
         });
+    });
+
+    requirejs(["Views/Shared/Cabecalho"], function (util) {
+
     });
 </script>
