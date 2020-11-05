@@ -16,7 +16,7 @@
         var lista = usuarioLogado.LojasDisponiveis.OrderBy(r => r.Nome).ToList();
         if (lista.Count > 0)
         {
-            <ul class="pcoded-item pcoded-left-item">
+            <ul class="pcoded-item pcoded-left-item" data-toggle="tooltip" data-placement="right" title="Mudança rápida de loja">
                 <li class="pcoded-hasmenu p-3">
                         @{
                             var listaSl = new List<SelectListItem>();

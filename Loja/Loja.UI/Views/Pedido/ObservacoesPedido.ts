@@ -6,6 +6,9 @@ declare function swal(header, mensagem, tipo): any;
 
 $(function () {
     //Entrega Imediata
+    $(".toggle-group label").css("font-size", "12px");
+    $(".toggle-group label").css("padding-top", "7.5px");
+
     $("#entregaImediata").change(function () {
         if ($("#entregaImediata").prop("checked") == false) {
             $("#entregaImediata").val("1");

@@ -60,12 +60,12 @@
                             </div>
 
                             @using (Html.BeginForm("CadastrarPedido", "Pedido", FormMethod.Post,
-                        new
-                        {
-                            enctype = "multipart/form-data",
-                             //onsubmit = "return ValidarFormulario()",
-                             id = "formulario"
-                        }))
+                       new
+                       {
+                           enctype = "multipart/form-data",
+                                            //onsubmit = "return ValidarFormulario()",
+                                            id = "formulario"
+                       }))
                             {
                                 <div class="page-header card mt-0" style="border: 1px solid #ccc; padding:20px">
 
@@ -98,9 +98,13 @@
                                                 <h5>Detalhes da entrega</h5>
                                             </div>
                                             <div class="card-block pb-0">
+                                                @* 
+                                                    label for="entregaImediata" é criado auto precisa alterar o line-height:0px ou outra coisa
+
+                                                *@
                                                 <div class="form-group" style="display:flex;height:50px">
-                                                    <input type="checkbox" data-toggle="toggle" data-size="small"
-                                                           data-height="20" style="padding-top:11px"
+                                                    <input type="checkbox" data-toggle="toggle" data-size="mini"
+                                                           data-height="10" style="padding-top:11px"
                                                            value="@Model.EntregaImediata" checked id="entregaImediata"
                                                            name="EntregaImediata" />
                                                     <div class="ml-3">
@@ -112,7 +116,7 @@
                                                     <input class="form-control" type="date" id="previsao" name="Previsao" />
                                                 </div>
                                                 <div class="form-group" style="display:flex;height:50px">
-                                                    <input type="checkbox" data-toggle="toggle" data-size="small"
+                                                    <input type="checkbox" data-toggle="toggle" data-size="mini"
                                                            data-height="20"
                                                            id="bemDeUso" name="BemConsumo" checked value="@Model.BemConsumo" />
                                                     <div class="ml-3">
@@ -120,7 +124,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group mb-0" style="display:flex;height:50px">
-                                                    <input type="checkbox" data-toggle="toggle" data-size="small"
+                                                    <input type="checkbox" data-toggle="toggle" data-size="mini"
                                                            data-height="20"
                                                            id="InstaladorInstala" checked name="InstaladorInstala" value="@Model.InstaladorInstala" />
                                                     <div class="ml-3">
