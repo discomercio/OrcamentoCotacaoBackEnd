@@ -9,14 +9,18 @@
             <div class="page-body">
                 @* Inicio dos card's *@
                 <div class="row">
-                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                    <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12">
                         <div class="card comp-card">
                             <div class="card-body">
-                                <div class="row align-items-center">
+                                <div class="row align-items-top">
                                     <div class="col">
-                                        <h6 class="m-b-25">Quantidade de Pedidos</h6>
-                                        <h3 class="f-w-700 text-c-blue">30 Pedidos</h3>
-                                        <p class="m-b-0">01 Junho - 04 Novembro (2020)</p>
+                                        <h6 class="m-b-25">Pré-pedidos Pendentes</h6>
+                                        <h3 class="f-w-700 text-c-blue">40 Pré-pedidos</h3>
+                                        <p class="m-b-0">KONAR - 12 Pré-pedidos</p>
+                                        <p class="m-b-0">MARISARJ - 10 Pré-pedidos</p>
+                                        <p class="m-b-0">POLITÉCNIC - 8 Pré-pedidos</p>
+                                        <p class="m-b-0">PRAGMÁTICA - 8 Pré-pedidos</p>
+                                        <p class="m-b-0">Outros orçamentistas - 2 Pré-pedidos</p>
                                     </div>
                                     <div class="col-auto">
                                         <i class="fas fa-eye bg-c-blue"></i>
@@ -25,14 +29,18 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                    <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12">
                         <div class="card comp-card">
                             <div class="card-body">
-                                <div class="row align-items-center">
+                                <div class="row align-items-top">
                                     <div class="col">
-                                        <h6 class="m-b-25">Quantidade de Pré-pedidos</h6>
-                                        <h3 class="f-w-700 text-c-blue">50 Pré-pedidos</h3>
-                                        <p class="m-b-0">01 Setembro - 04 Novembro (2020)</p>
+                                        <h6 class="m-b-25">Últimos Pedidos</h6>
+                                        <h3 class="f-w-700 text-c-blue">50 Pedidos</h3>
+                                        <p class="m-b-0">ANDREZA - 22 Pedidos</p>
+                                        <p class="m-b-0">LUCYANE - 10 Pedidos</p>
+                                        <p class="m-b-0">VANESSA - 8 Pedidos</p>
+                                        <p class="m-b-0">AGNALDO - 8 Pedidos</p>
+                                        <p class="m-b-0">Outros vendedores - 2 Pedidos</p>
                                     </div>
                                     <div class="col-auto">
                                         <i class="fas fa-eye bg-c-blue"></i>
@@ -41,14 +49,18 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                    <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12">
                         <div class="card comp-card">
                             <div class="card-body">
-                                <div class="row align-items-center">
+                                <div class="row align-items-top">
                                     <div class="col">
-                                        <h6 class="m-b-25">Valor total de pedidos</h6>
-                                        <h3 class="f-w-700 text-c-blue">130.999,00</h3>
-                                        <p class="m-b-0">01 Setembro - 04 Novembro (2020)</p>
+                                        <h6 class="m-b-25">Cancelamento automático de pedidos</h6>
+                                        <h3 class="f-w-700 text-c-blue">32 Pedidos</h3>
+                                        <p class="m-b-0">01/07/2020 - 12/09/2020</p>
+                                        <p class="m-b-0">Unis - Instaladores - 12 Pedidos</p>
+                                        <p class="m-b-0">Unis - Instaladores II - 10 Pedidos</p>
+                                        <p class="m-b-0">Arclube - 8 Pedidos</p>
+                                        <p class="m-b-0">Outras lojas - 2 Pedidos</p>
                                     </div>
                                     <div class="col-auto">
                                         <i class="fas fa-eye bg-c-blue"></i>
@@ -65,12 +77,15 @@
                                 <div class="row">
                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
                                         <div class="col-xl-12 col-lg-12 p-0">
-                                            <h5 style="font-weight:600">Busca de Pedido</h5>
+                                            <h5 style="font-weight:600">Busca de Pré-pedido</h5>
                                         </div>
                                         <div class="form-group col-xl-12 mt-2 px-0">
-                                            <label class="col-form-label pr-1" for="pedido">Pedido</label>
-                                            <input class="form-control mr-2" type="text" id="pedido" name="pedido"
-                                                   placeholder="Informe o pedido" />
+                                            <label class="col-form-label pr-1" for="pedido">Pré-pedido</label>
+                                            <input class="form-control mr-2" type="text" id="pre-pedido" name="pre-pedido"
+                                                   placeholder="Informe o pré-pedido" />
+                                            <label class="col-form-label pr-1" for="pedido">Orçamentista</label>
+                                            <input class="form-control mr-2" type="text" id="pre-pedido" name="pre-pedido"
+                                                   placeholder="Informe o orçamentista" />
                                         </div>
                                         <div>
                                             <button class="btn btn-primary btn-sm" style="float:right">Buscar</button>
@@ -80,19 +95,24 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <div class="card">
                             <div class="card-block p-b-0">
                                 <div class="row">
                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
                                         <div class="col-xl-12 col-lg-12 p-0">
-                                            <h5 style="font-weight:600">Busca de Pré-pedido</h5>
+                                            <h5 style="font-weight:600">Busca de Pedido</h5>
                                         </div>
                                         <div class="form-group col-xl-12 mt-2 px-0">
-                                            <label class="col-form-label pr-1" for="pedido">Pré-pedido</label>
-                                            <input class="form-control mr-2" type="text" id="pre-pedido" name="pre-pedido"
-                                                   placeholder="Informe o pré-pedido" />
+                                            <label class="col-form-label pr-1" for="pedido">Pedido</label>
+                                            <input class="form-control mr-2" type="text" id="pedido" name="pedido"
+                                                   placeholder="Informe o número do pedido" />
+                                            <label class="col-form-label pr-1" for="pedido">Nota Fiscal</label>
+                                            <input class="form-control mr-2" type="text" id="pedido" name="pedido"
+                                                   placeholder="Informe o número da nota fiscal" />
+                                            <label class="col-form-label pr-1" for="pedido">Cliente</label>
+                                            <input class="form-control mr-2" type="text" id="pedido" name="pedido"
+                                                   placeholder="Informe o CPF/CNJ ou parte do nome do cliente" />
                                         </div>
                                         <div>
                                             <button class="btn btn-primary btn-sm" style="float:right">Buscar</button>
