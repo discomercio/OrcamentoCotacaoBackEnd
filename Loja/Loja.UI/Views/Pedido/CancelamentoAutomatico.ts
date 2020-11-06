@@ -20,6 +20,4 @@ function AlterarClasse() {
     $(".meu-header").removeClass("col-sm-12");
     $("#comboLojas").removeClass("col-sm-8");
     $("#comboLojas").addClass("col-sm-12");
-    
-
 }
