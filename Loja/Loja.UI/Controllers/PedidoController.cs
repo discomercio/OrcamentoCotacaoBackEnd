@@ -438,6 +438,32 @@ namespace Loja.UI.Controllers
                 new Models.Comuns.ListaLojasViewModel(usuarioLogado, itensLoja.ToList()));
             return View(model);
         }
+
+        
+        public async Task<IActionResult> ListarUltimosPedidos()
+        {
+            var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
+
+            var lista = await pedidoBll.ListaUltimosPedidos(usuarioLogado.Loja_atual_id);
+            List<UltimosPedidosViewModel> model = new List<UltimosPedidosViewModel>();
+
+            foreach(var i in lista)
+            {
+                model.Add(new UltimosPedidosViewModel
+                {
+                    Data = i.Data,
+                    Pedido = i.Pedido,
+                    St_Entrega = i.St_Entrega,
+                    Vendedor = i.Vendedor,
+                    CnpjCpf = i.CnpjCpf,
+                    NomeIniciaisEmMaiusculas = i.NomeIniciaisEmMaiusculas,
+                    AnaliseCredito = i.AnaliseCredito,
+                    AnaliseCreditoPendenteVendasMotivo = i.AnaliseCreditoPendenteVendasMotivo
+                });
+            }
+
+            return View(model);
+        }
     }
 }
 

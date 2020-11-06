@@ -27,7 +27,7 @@ namespace Loja.Bll.PedidoBll
 {
     public class PedidoBll
     {
-        private readonly ContextoBdProvider contextoProvider;
+        public readonly ContextoBdProvider contextoProvider;
         private readonly ContextoCepProvider contextoCepProvider;
         private readonly ContextoNFeProvider contextoNFeProvider;
         private readonly Loja.Bll.ProdutoBll.ProdutoBll produtoBll;
@@ -3314,5 +3314,45 @@ namespace Loja.Bll.PedidoBll
 
         //}
 
+        public async Task<IEnumerable<UltimosPedidosDto>> ListaUltimosPedidos(string loja)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+            //SELECT data, pedido, st_entrega, vendedor, cnpj_cpf, nome_iniciais_em_maiusculas, 
+            //       analise_credito, analise_credito_pendente_vendas_motivo 
+            //FROM t_PEDIDO 
+            //INNER JOIN t_CLIENTE ON t_PEDIDO.id_cliente = t_CLIENTE.id
+            //WHERE (loja='" & loja & "')
+            //AND (st_entrega<>'" & ST_ENTREGA_CANCELADO & "')
+            //AND (st_entrega<>'" & ST_ENTREGA_ENTREGUE & "')"
+            List<UltimosPedidosDto> lista = await (from c in db.Tpedidos.Include(x => x.Tcliente)
+                                                   where c.Loja == loja &&
+                                                         c.St_Entrega != Constantes.Constantes.ST_ENTREGA_CANCELADO &&
+                                                         c.St_Entrega != Constantes.Constantes.ST_ENTREGA_ENTREGUE
+                                                   orderby c.Data descending,
+                                                           c.Hora descending,
+                                                           c.Pedido descending
+                                                   select new UltimosPedidosDto
+                                                   {
+                                                       Data = c.Data,
+                                                       Pedido = c.Pedido,
+                                                       NomeIniciaisEmMaiusculas = c.Tcliente.Nome_Iniciais_Em_Maiusculas,
+                                                       St_Entrega = c.St_Entrega,
+                                                       Vendedor = c.Vendedor,
+                                                       AnaliseCredito = c.Analise_Credito,
+                                                       AnaliseCreditoPendenteVendasMotivo = c.Analise_Credito_Pendente_Vendas_Motivo
+                                                   }).ToListAsync();
+
+            //if (lista.Count > 0)
+            //{
+            //    foreach (var c in lista)
+            //    {
+            //        if (!string.IsNullOrEmpty(c.AnaliseCreditoPendenteVendasMotivo))
+            //            c.AnaliseCreditoPendenteVendasMotivo = await Util.Util.ObterDescricao_Cod(Constantes.Constantes.GRUPO_T_CODIGO_DESCRICAO__AC_PENDENTE_VENDAS_MOTIVO,
+            //                c.AnaliseCreditoPendenteVendasMotivo, contextoProvider);
+            //    }
+            //}
+
+            return lista;
+        }
     }
 }
