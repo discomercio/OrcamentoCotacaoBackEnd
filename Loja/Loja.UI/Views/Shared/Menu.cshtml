@@ -18,21 +18,21 @@
         {
             <ul class="pcoded-item pcoded-left-item" data-toggle="tooltip" data-placement="right" title="Mudança rápida de loja">
                 <li class="pcoded-hasmenu p-3">
-                        @{
-                            var listaSl = new List<SelectListItem>();
-                            foreach (var item in lista)
-                            {
-                                listaSl.Add(new SelectListItem(item.Nome, item.Id));
-                            }
-                            ViewData["cabecacomboLojas"] = usuarioLogado.Loja_atual_id;
+                    @{
+                        var listaSl = new List<SelectListItem>();
+                        foreach (var item in lista)
+                        {
+                            listaSl.Add(new SelectListItem(item.Nome, item.Id));
                         }
+                        ViewData["cabecacomboLojas"] = usuarioLogado.Loja_atual_id;
+                    }
 
-                        @Html.DropDownList("cabecacomboLojas", listaSl, new
-                   {
-                       @id = "cabecacomboLojas",
-                       @class = "custom-select"
+                    @Html.DropDownList("cabecacomboLojas", listaSl, new
+               {
+                   @id = "cabecacomboLojas",
+                   @class = "custom-select"
 
-                   })
+               })
                 </li>
             </ul>
         }
@@ -50,7 +50,9 @@
         <ul class="pcoded-submenu">
             <li>
                 <a class="menudesabilitado waves-effect waves-dark" href="#!">
-                    <span class="pcoded-mtext">Análise de Pré Pedidos</span>
+                    <span class="pcoded-mtext">
+                        Novo Pedido E-COMMERCE (Semi-automático)
+                    </span>
                 </a>
             </li>
             <li>
@@ -63,33 +65,108 @@
                     <span class="pcoded-mtext">Cancelamento Automático</span>
                 </a>
             </li>
-            <li>
-                <a class="menudesabilitado waves-effect waves-dark" href="#!">
-                    <span class="pcoded-mtext">Indicadores</span>
-                </a>
-            </li>
-            <li>
-                <a class="menudesabilitado waves-effect waves-dark" href="#!">
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)" class="waves-effect waves-dark">
                     <span class="pcoded-mtext">Consulta Pedido</span>
                 </a>
+                <ul class="pcoded-submenu">
+                    <li>
+                        <a href="@Url.Action("ListarUltimosPedidos", "Pedido")" class="waves-effect waves-dark">
+                            <span class="pcoded-mtext">
+                                Lista dos últimos pedidos
+                            </span>
+                        </a>
+                    </li>
+                    @*<li>
+                            <a href="#!" class="menudesabilitado waves-effect waves-dark">
+                                <span class="pcoded-mtext">
+                                    Exibir lista dos últimos pedidos
+                                </span>
+                            </a>
+                        </li>*@
+                    <li>
+                        <a class="waves-effect waves-dark" href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pedidos_com_Credito_Pendente)">
+                            <span class="pcoded-mtext">
+                                Pedidos com Crédito Pendente
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark" href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pedidos_com_Credito_Pendente_Vendas)">
+                            <span class="pcoded-mtext">
+                                Pedidos com Crédito Pendente Vendas
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark" href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pedidos_Pendentes_Cartao_de_Credito)">
+                            <span class="pcoded-mtext">
+                                Pedidos Pendentes Cartão de Crédito
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark" href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pedidos_com_Endereco_Pendente)">
+                            <span class="pcoded-mtext">
+                                Pedidos com Endereço Pendente
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark" href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pesquisa_pedidos_anteriormente_efetuados_por_um_cliente_nesta_loja)">
+                            <span class="pcoded-mtext">
+                                Pesquisa pedidos anteriormente efetuados por um cliente nesta loja
+                            </span>
+                        </a>
+                    </li>
+                </ul>
             </li>
             <li>
-                @if (Loja.UI.Controllers.PrepedidoController.PermissaoPagina("Index", Model))
-                {
-                    <a href="@Url.Action("Index", "Prepedido")" class="waves-effect waves-dark">
-                        <span class="pcoded-mtext">Consulta Pré Pedido</span>
-                    </a>
-                }
-                else
-                {
-                    <a class="menudesabilitado waves-effect waves-dark" href="#!">
-                        <span class="pcoded-mtext">Consulta Pré Pedido</span>
-                    </a>
-                }
+                <a class="menudesabilitado waves-effect waves-dark" href="#!">
+                    <span class="pcoded-mtext">
+                        Consultar por número
+                    </span>
+                </a>
             </li>
         </ul>
     </li>
 </ul>
+@* Pré-pedidos *@
+@if (Loja.UI.Controllers.PrepedidoController.PermissaoPagina("Index", Model))
+{
+    <ul class="pcoded-item pcoded-left-item">
+        <li class="pcoded-hasmenu">
+            <a href="javascript:void(0)" class="waves-effect waves-dark">
+                <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                <span class="pcoded-mtext">Pré-pedidos</span>
+            </a>
+            <ul class="pcoded-submenu">
+                <li>
+                    <a href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Prepedido_em_Aberto)"
+                       class="waves-effect waves-dark">
+                        <span class="pcoded-mtext">
+                            Pré-Pedido em aberto
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Relatorio_Multicriterio_Prepedido)"
+                       class="waves-effect waves-dark">
+                        <span class="pcoded-mtext">
+                            Relatório multicritério de Pré-Pedido
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="menudesabilitado waves-effect waves-dark">
+                        <span class="pcoded-mtext">Consulta por número</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+}
+
 @*Produtos*@
 <ul class="pcoded-item pcoded-left-item">
     <li class="pcoded-hasmenu">
@@ -99,18 +176,29 @@
         </a>
         <ul class="pcoded-submenu">
             <li>
+                <a class="menudesabilitado waves-effect waves-dark" href="#!">
+                    <span class="pcoded-mtext">
+                        Consulta disponibilidade no estoque
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a class="menudesabilitado waves-effect waves-dark" href="#!">
+                    <span class="pcoded-mtext">
+                        Produtos "BLOQUEADOS" no estoque de entrega
+                    </span>
+                </a>
+            </li>
+            <li>
                 <a href="@Url.Action("Index", "Produtos")" class="waves-effect waves-dark">
-                    <span class="pcoded-mtext">Consulta Lista de Preços</span>
+                    <span class="pcoded-mtext">Lista de preços</span>
                 </a>
             </li>
             <li>
                 <a class="menudesabilitado waves-effect waves-dark" href="#!">
-                    <span class="pcoded-mtext">Consulta Custo Financeiro</span>
-                </a>
-            </li>
-            <li>
-                <a class="menudesabilitado waves-effect waves-dark" href="#!">
-                    <span class="pcoded-mtext">Indicadores</span>
+                    <span class="pcoded-mtext">
+                        Tabela de custo financeiro
+                    </span>
                 </a>
             </li>
         </ul>
@@ -124,73 +212,421 @@
             <span class="pcoded-mtext">Relatórios</span>
         </a>
         <ul class="pcoded-submenu">
-            <li>
-                <div class="input-field col s3">
-                    <input id="pesquisa" type="text" />
-                    <label for="pesquisa">Pesquisar</label>
-                </div>
-            </li>
-            <li>
-                <a class="menudesabilitado waves-effect waves-dark" href="#!">
-                    <span class="pcoded-mtext">Pedidos Indicadores</span>
+            @* Pedidos *@
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)" class="waves-effect waves-dark">
+                    <span class="pcoded-mtext">Pedidos</span>
                 </a>
+                <ul class="pcoded-submenu">
+                    <li>
+                        <a class="waves-effect waves-dark"
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Relatorio_de_Pedidos_Indicadores)">
+                            <span class="pcoded-mtext">
+                                Relatório de Pedidos Indicadores
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark"
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Relatorio_de_Pedidos_Indicadores_Processado)">
+                            <span class="pcoded-mtext">
+                                Relatório de Pedidos Indicadores (Processado)
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark" 
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Relatorio_de_Pedidos_Indicadores_Preview)">
+                            <span class="pcoded-mtext">
+                                Relatório de Pedidos Indicadores (Preview)
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark"
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Relatorio_Multicriterio_de_Pedidos)">
+                            <span class="pcoded-mtext">
+                                Relatório Multicritério de Pedidos
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark"
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pedidos_Colocados_no_Mes)">
+                            <span class="pcoded-mtext">
+                                Pedidos Colocados no Mês
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark"
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Relatorio_de_Pedidos_Cancelados)">
+                            <span class="pcoded-mtext">
+                                Relatório de Pedidos Cancelados
+                            </span>
+                        </a>
+                    </li>
+                </ul>
             </li>
-            <li>
-                <a class="menudesabilitado waves-effect waves-dark" href="#!">
-                    <span class="pcoded-mtext">Faturamento</span>
+            @* Marketplace *@
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)" class="waves-effect waves-dark">
+                    <span class="pcoded-mtext">
+                        Marketplace
+                    </span>
                 </a>
+                <ul class="pcoded-submenu">
+                    <li>
+                        <a class="waves-effect waves-dark"
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Registro_de_Pedidos_de_Marketplace_Nao_Recebidos_Pelo_Cliente)">
+                            <span class="pcoded-mtext">
+                                Registro de Pedidos de Marketplace Não Recebidos Pelo Cliente
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark"
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Registro_de_Pedidos_de_Marketplace_Recebidos_Pelo_Cliente)">
+                            <span class="pcoded-mtext">
+                                Registro de Pedidos de Marketplace Recebidos Pelo Cliente
+                            </span>
+                        </a>
+                    </li>
+                </ul>
             </li>
-            <li>
-                <a class="menudesabilitado waves-effect waves-dark" href="#!">
-                    <span class="pcoded-mtext">Vendas</span>
+            @* Vendas *@
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)" class="waves-effect waves-dark">
+                    <span class="pcoded-mtext">
+                        Vendas
+                    </span>
                 </a>
+                <ul class="pcoded-submenu">
+                    <li>
+                        <a class="waves-effect waves-dark"
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Vendas)">
+                            <span class="pcoded-mtext">
+                                Vendas
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark" 
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Vendas_com_Desconto_Superior)">
+                            <span class="pcoded-mtext">
+                                Vendas com Desconto Superior
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark"
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Estoque_de_Venda_Antigo)">
+                            <span class="pcoded-mtext">
+                                Estoque de Venda (Antigo)
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark"
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Estoque_de_Vendas)">
+                            <span class="pcoded-mtext">
+                                Estoque de Venda
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark"
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Relatorio_Gerencial_de_Vendas)">
+                            <span class="pcoded-mtext">
+                                Relatório Gerencial de Vendas
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark"
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Relatorio_de_Vendas_por_Boleto)">
+                            <span class="pcoded-mtext">
+                                Relatório de Vendas por Boleto
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark"
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Meio_de_Divulgacao)">
+                            <span class="pcoded-mtext">
+                                Meio de Divulgação
+                            </span>
+                        </a>
+                    </li>
+                </ul>
             </li>
-            <li>
-                <a class="menudesabilitado waves-effect waves-dark" href="#!">
-                    <span class="pcoded-mtext">Vendas com Desc. Superior</span>
+            @* Faturamento *@
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)" class="waves-effect waves-dark">
+                    <span class="pcoded-mtext">
+                        Faturamento
+                    </span>
                 </a>
+                <ul class="pcoded-submenu">
+                    <li>
+                        <a class="waves-effect waves-dark"
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Faturamento_Antigo)">
+                            <span class="pcoded-mtext">
+                                Faturamento (Antigo)
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark"
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Faturamento)">
+                            <span class="pcoded-mtext">
+                                Faturamento
+                            </span>
+                        </a>
+                    </li>
+                </ul>
             </li>
-        </ul>
-    </li>
-    @*Site Colors*@
-    <li class="pcoded-hasmenu">
-        <a href="javascript:void(0)" class="waves-effect waves-dark">
-            <span class="pcoded-micon"><i class="feather icon-home"></i></span>
-            <span class="pcoded-mtext">ERP</span>
-        </a>
-        <ul class="pcoded-submenu">
-            <li>
-                <a class="waves-effect waves-dark" href="@Url.Action("Index", "SiteColors")"><span style="color:green">Início do Colors</span></a>
-            </li>
-            <li>
-                <a class="waves-effect waves-dark" href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pedidos_com_Credito_Pendente)">
-                    Pedidos com Crédito Pendente
+            @* Ocorrências e Chamados *@
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)" class="waves-effect waves-dark">
+                    <span class="pcoded-mtext">
+                        Ocorrências e Chamados
+                    </span>
                 </a>
+                <ul class="pcoded-submenu">
+                    <li>
+                        <a class="waves-effect waves-dark"
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Relatorio_de_Pre_Devolucoes)">
+                            <span class="pcoded-mtext">
+                                Relatório de Pré-Devoluções
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark"
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Produtos_no_Estoque_de_Devolucao)">
+                            <span class="pcoded-mtext">
+                                Produtos no Estoque de Devolução
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark"
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Devolucao_de_Produtos)">
+                            <span class="pcoded-mtext">
+                                Devolução de Produtos
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark"
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Relatorio_de_Divergencia_Cliente_Indicador)">
+                            <span class="pcoded-mtext">
+                                Relatório de Divergência Cliente/Indicador
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark"
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Ocorrencias)">
+                            <span class="pcoded-mtext">
+                                Ocorrências
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark"
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Relatorio_de_Estatisticas_de_Ocorrencias)">
+                            <span class="pcoded-mtext">
+                                Relatório de Estatísticas de Ocorrências
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark"
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Acompanhamento_de_Chamados)">
+                            <span class="pcoded-mtext">
+                                Acompanhamento de Chamados
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark"
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Relatorio_de_Chamados)">
+                            <span class="pcoded-mtext">
+                                Relatório de Chamados
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark"
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Relatorio_de_Estatisticas_de_Chamados)">
+                            <span class="pcoded-mtext">
+                                Relatório de Estatísticas de Chamados
+                            </span>
+                        </a>
+                    </li>
+                </ul>
             </li>
-            <li>
-                <a class="waves-effect waves-dark" href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pedidos_com_Credito_Pendente_Vendas)">
-                    Pedidos com Crédito Pendente Vendas
+            @* Vendedores/Indicadores *@
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)" class="waves-effect waves-dark">
+                    <span class="pcoded-mtext">
+                        Vendedores / Indicadores
+                    </span>
                 </a>
+                <ul class="pcoded-submenu">
+                    <li>
+                        <a class="waves-effect waves-dark"
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Comissao_aos_Vendedores)">
+                            <span class="pcoded-mtext">
+                                Comissão aos Vendedores
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark"
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Comissao_aos_Vendedores_Sintetico_Tabela_Progressiva)">
+                            <span class="pcoded-mtext">
+                                Comissão aos Vendedores Sintético (Tabela Progressiva)
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark"
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Comissao_aos_Vendedores_Analitico_Tabela_Progressiva)">
+                            <span class="pcoded-mtext">
+                                Comissão aos Vendedores Analítico (Tabela Progressiva)
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark"
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pesquisa_de_Indicadores)">
+                            <span class="pcoded-mtext">
+                                Pesquisa de Indicadores
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark"
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Checagem_de_Novos_Parceiros)">
+                            <span class="pcoded-mtext">
+                                Checagem de Novos Parceiros
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark"
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Relatorio_de_Metas_do_Indicador)">
+                            <span class="pcoded-mtext">
+                                Relatório de Metas do Indicador
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark"
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Relatorio_de_Performance_por_Indicador)">
+                            <span class="pcoded-mtext">
+                                Relatório de Performance por Indicador
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark"
+                           href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Relatorio_de_Indicadores_sem_Atividade_Recente)">
+                            <span class="pcoded-mtext">
+                                Relatório de Indicadores sem Atividade Recente
+                            </span>
+                        </a>
+                    </li>
+                </ul>
             </li>
-            <li>
-                <a class="waves-effect waves-dark" href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pedidos_Pendentes_Cartao_de_Credito)">
-                    Pedidos Pendentes Cartão de Crédito
-                </a>
-            </li>
-            <li>
-                <a class="waves-effect waves-dark" href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pedidos_com_Endereco_Pendente)">
-                    Pedidos com Endereço Pendente
-                </a>
-            </li>
-            <li>
-                <a class="waves-effect waves-dark" href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pesquisa_pedidos_anteriormente_efetuados_por_um_cliente_nesta_loja)">
-                    Pesquisa pedidos anteriormente efetuados por um cliente nesta loja
+            @* INDICADORES SEM ATIVIDADE RECENTE *@
+            <li class="pcoded-hasmenu">
+                <a class="waves-effect waves-dark" 
+                   href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Indicadores_sem_atividade_recente)">
+                    <span class="pcoded-mtext">
+                        Indicadores sem atividade recente
+                    </span>
                 </a>
             </li>
         </ul>
     </li>
 </ul>
-
+@* Outros *@
+<ul class="pcoded-item pcoded-left-item">
+    <li class="pcoded-hasmenu">
+        <a href="javascript:void(0)" class="waves-effect waves-dark">
+            <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+            <span class="pcoded-mtext">Outros</span>
+        </a>
+        <ul class="pcoded-submenu">
+            <li>
+                <a class="waves-effect waves-dark"
+                   href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pesquisar_CEP)">
+                    <span>
+                        Pesquisar CEP
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a class="waves-effect waves-dark"
+                   href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.altera_senha)">
+                    <span>
+                        Altera senha
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a class="menudesabilitado waves-effect waves-dark" href="#!">
+                    <span>
+                        Novo Pedido / Cadastro de Clientes
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a class="menudesabilitado waves-effect waves-dark" href="#!">
+                    <span>
+                        Indicadores
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a class="waves-effect waves-dark"
+                   href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.OUTRAS_FUNCOES_Ler_Quadro_de_Avisos_somente_nao_lidos)">
+                    <span>
+                        OUTRAS FUNÇÕES / Ler Quadro de Avisos (somente não lidos)
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a class="waves-effect waves-dark"
+                   href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.OUTRAS_FUNCOES_Ler_Quadro_de_Avisos_todos_os_avisos)">
+                    <span>
+                        OUTRAS FUNÇÕES / Ler Quadro de Avisos (todos os avisos)
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a class="waves-effect waves-dark"
+                   href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.OUTRAS_FUNCOES_Funcoes_Administrativas)">
+                    <span>
+                        OUTRAS FUNÇÕES / Funções Administrativas
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a class="waves-effect waves-dark"
+                   href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.pagina_inicial_do_colors)">
+                    <span>
+                        Página inicial do colors
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </li>
+</ul>
 
 <script>
     $(document).ready(function () {

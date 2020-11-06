@@ -12,6 +12,7 @@ using Loja.Bll.Dto.ProdutoDto;
 using Loja.Bll.Dto.PedidoDto.DetalhesPedido;
 using System.Globalization;
 using InfraBanco.Modelos;
+using InfraBanco;
 
 namespace Loja.Bll.Util
 {
@@ -1148,7 +1149,7 @@ namespace Loja.Bll.Util
             return data;
         }
 
-        public static async Task<string> ObterDescricao_Cod(string grupo, string cod, InfraBanco.ContextoBdProvider contextoProvider)
+        public static async Task<string> ObterDescricao_Cod(string grupo, string cod, ContextoBdProvider contextoProvider)
         {
             var db = contextoProvider.GetContextoLeitura();
 

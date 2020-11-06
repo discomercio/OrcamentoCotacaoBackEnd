@@ -3,17 +3,11 @@ class SiteColorsIndex {
     constructor() {
         $(document).ready(() => {
 
-            window.addEventListener('message', event => {
-                console.log(event);
-                console.log(event.data);
-            });
-
-
+            
             //carregamos a página e tiramos o estilo de carregamento quando terminar
             this.iframeJquery = $(this.seletorIframe);
             this.iframe = this.iframeJquery[0];
             this.iframeJquery.parent().addClass("carregando");
-            this.iframe.src = this.urlIframe;
             this.iframe.onload = () => {
                 this.removerElementosTela();
                 this.iframeJquery.parent().removeClass("carregando");
@@ -23,6 +17,7 @@ class SiteColorsIndex {
                     this.iframeJquery.parent().addClass("carregando");
                 });
             };
+            this.iframe.src = this.urlIframe;
         });
     }
 
