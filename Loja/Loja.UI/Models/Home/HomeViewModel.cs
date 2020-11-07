@@ -11,7 +11,7 @@ namespace Loja.UI.Models.Home
         public string LojaAtivaNome { get; set; }
         public bool ErroChavearLoja { get; set; }
         public string LojaTentandoChavearId { get; set; }
-        public Loja.UI.Models.Pedido.CancelamentoAutomaticoViewModel CancelamentoAutomaticoViewModel { get; set; } = null;
+        public List<Bll.Bll.pedidoBll.CancelamentoAutomaticoBll.CancelamentoAutomaticoItem> CancelamentoAutomaticoItems { get; set; } = null;
         public Bll.Dto.PrepedidoDto.ResumoPrepedidoListaDto ResumoPrepedidoListaDto { get; set; } = null;
     }
 }

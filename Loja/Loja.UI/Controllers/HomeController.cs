@@ -58,10 +58,10 @@ namespace Loja.UI.Controllers
 
             //vamos buscar a quantidade de orcamentos novos; na home somente mostramos da loja atual
             var taskResumoPrepedidoListaDto = prepedidoBll.ResumoPrepedidoLista(usuarioLogado, true);
-            var taskCancelamentoAutomaticoViewModel = PedidoController.CancelamentoAutomaticoDados(usuarioLogado, cancelamentoAutomaticoBll);
+            var taskCancelamentoAutomaticoViewModel = cancelamentoAutomaticoBll.DadosTela(usuarioLogado);
 
             model.ResumoPrepedidoListaDto = await taskResumoPrepedidoListaDto;
-            model.CancelamentoAutomaticoViewModel = await taskCancelamentoAutomaticoViewModel;
+            model.CancelamentoAutomaticoItems = (await taskCancelamentoAutomaticoViewModel).cancelamentoAutomaticoItems;
             return View(model);
         }
 

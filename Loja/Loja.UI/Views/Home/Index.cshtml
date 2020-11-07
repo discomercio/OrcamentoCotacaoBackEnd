@@ -83,7 +83,7 @@
                                 </a>
                             </div>
                         </div>
-                        @if (Model.CancelamentoAutomaticoViewModel != null)
+                        @if (Model.CancelamentoAutomaticoItems != null)
                         {
                             <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 ">
                                 <div class="card comp-card cards-mesma-altura">
@@ -92,13 +92,13 @@
                                             <div class="row align-items-top justify-content-between">
                                                 <div class="col-auto">
                                                     <h6 class="m-b-25">Cancelamento Automático de Pedidos</h6>
-                                                    <h3 class="f-w-700 text-info">@Model.CancelamentoAutomaticoViewModel.CancelamentoAutomaticoItems.Count Pedidos</h3>
-                                                    @if (@Model.CancelamentoAutomaticoViewModel.CancelamentoAutomaticoItems.Min(r => r.DataFinal) != null)
+                                                    <h3 class="f-w-700 text-info">@Model.CancelamentoAutomaticoItems.Count Pedidos</h3>
+                                                    @if (@Model.CancelamentoAutomaticoItems.Min(r => r.DataFinal) != null)
                                                     {
                                                         <p class="m-b-0">
-                                                            @Model.CancelamentoAutomaticoViewModel.CancelamentoAutomaticoItems.Min(r => r.DataFinal)?.ToShortDateString()
+                                                            @Model.CancelamentoAutomaticoItems.Min(r => r.DataFinal)?.ToShortDateString()
                                                             -
-                                                            @Model.CancelamentoAutomaticoViewModel.CancelamentoAutomaticoItems.Max(r => r.DataFinal)?.ToShortDateString()
+                                                            @Model.CancelamentoAutomaticoItems.Max(r => r.DataFinal)?.ToShortDateString()
                                                         </p>
                                                     }
                                                     @*
@@ -108,11 +108,11 @@
                                                         <p class="m-b-0">LUCAS V - 8 Pedidos</p>
                                                         <p class="m-b-0">Outros vendedores - 2 Pedidos</p>*@
                                                     @{
-                                                        var vendedores = (from r in Model.CancelamentoAutomaticoViewModel.CancelamentoAutomaticoItems
+                                                        var vendedores = (from r in Model.CancelamentoAutomaticoItems
                                                                           group r by r.Vendedor
                                                                           into g
                                                                           select new { Vendedor = g.Key, Pedidos = g.Count() });
-                                                        var total = Model.CancelamentoAutomaticoViewModel.CancelamentoAutomaticoItems.Count;
+                                                        var total = Model.CancelamentoAutomaticoItems.Count;
                                                     }
                                                     @foreach (var registro in vendedores.OrderByDescending(r => r.Pedidos).Take(NumeroLinhasOrcamentistasVendodresNosCards))
                                                     {

@@ -434,25 +434,15 @@ namespace Loja.UI.Controllers
             return View(await CancelamentoAutomaticoDados(usuarioLogado, cancelamentoAutomaticoBll));
         }
 
-        public static async Task<Loja.UI.Models.Pedido.CancelamentoAutomaticoViewModel> CancelamentoAutomaticoDados(UsuarioLogado usuarioLogado,
+        private static async Task<Loja.UI.Models.Pedido.CancelamentoAutomaticoViewModel> CancelamentoAutomaticoDados(UsuarioLogado usuarioLogado,
             CancelamentoAutomaticoBll cancelamentoAutomaticoBll)
         {
-            //todo: afazer: passar esa lógia toda para o cancelamentoAutomaticoBll
-            bool consultaUniversalPedidoOrcamento = usuarioLogado.Operacao_permitida(Constantes.OP_LJA_CONSULTA_UNIVERSAL_PEDIDO_ORCAMENTO);
-            //nunca mostramos outras lojas
-            consultaUniversalPedidoOrcamento = false;
-            var lojasDisponiveis = usuarioLogado.LojasDisponiveis;
-            if (!consultaUniversalPedidoOrcamento)
-            {
-                lojasDisponiveis = new List<UsuarioAcessoBll.LojaPermtidaUsuario>();
-                lojasDisponiveis.Add(new UsuarioAcessoBll.LojaPermtidaUsuario(id: usuarioLogado.Loja_atual_id, nome: usuarioLogado.Loja_atual_nome));
-            }
-            var cancelamentoAutomaticoItems = await cancelamentoAutomaticoBll.DadosTela(consultaUniversalPedidoOrcamento, usuarioLogado, lojasDisponiveis);
-            var itensLoja = (from i in cancelamentoAutomaticoItems group i by i.LojaId into g select new Models.Comuns.ListaLojasViewModel.ItemLoja { Loja = g.Key, NumeroItens = g.Count() });
-            var model = new Loja.UI.Models.Pedido.CancelamentoAutomaticoViewModel(cancelamentoAutomaticoItems,
+            var dadosTelaRetorno= await cancelamentoAutomaticoBll.DadosTela(usuarioLogado);
+            var itensLoja = (from i in dadosTelaRetorno.cancelamentoAutomaticoItems group i by i.LojaId into g select new Models.Comuns.ListaLojasViewModel.ItemLoja { Loja = g.Key, NumeroItens = g.Count() });
+            var model = new Loja.UI.Models.Pedido.CancelamentoAutomaticoViewModel(dadosTelaRetorno.cancelamentoAutomaticoItems,
                 new Models.Comuns.ListaLojasViewModel(usuarioLogado, itensLoja.ToList()));
             //desligamos o combo de lojas
-            model.ListaLojasViewModel.MostrarLoja = consultaUniversalPedidoOrcamento;
+            model.ListaLojasViewModel.MostrarLoja = dadosTelaRetorno.consultaUniversalPedidoOrcamento;
             return model;
         }
 
