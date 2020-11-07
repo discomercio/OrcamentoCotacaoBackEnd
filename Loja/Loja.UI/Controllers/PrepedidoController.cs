@@ -45,7 +45,7 @@ namespace Loja.UI.Controllers
             if (!PermissaoPagina("Index", usuarioLogado))
                 return Forbid();
 
-            var resumoPrepedidoListaDto = await prepedidoBll.ResumoPrepedidoLista(usuarioLogado);
+            var resumoPrepedidoListaDto = await prepedidoBll.ResumoPrepedidoLista(usuarioLogado, false);
             var itensLoja = (from i in resumoPrepedidoListaDto.Itens group i by i.LojaId into g select new Models.Comuns.ListaLojasViewModel.ItemLoja { Loja = g.Key, NumeroItens = g.Count() });
             var model = new Loja.UI.Models.Prepedido.PrepedidoIndexViewModel(resumoPrepedidoListaDto,
                 new Models.Comuns.ListaLojasViewModel(usuarioLogado, itensLoja.ToList()));
