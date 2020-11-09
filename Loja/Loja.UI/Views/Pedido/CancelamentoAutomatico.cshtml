@@ -74,13 +74,7 @@
                                 <div class="row col-xl-12 col-lg-12">
 
                                 </div>
-                                @*@if (Model.ListaLojasViewModel.MostrarLoja)
-                                    {
-                                        Model.ListaLojasViewModel.NomeTabelaHtml = "tabeladados";
-                                        Model.ListaLojasViewModel.NumeroColunaDaLoja = 3;
-                                        <partial name="~/Views/Comuns/ListaLojas.cshtml" for="ListaLojasViewModel" />
-                                    }*@
-
+                                
                                 @if (Model.CancelamentoAutomaticoItems.Count < 1)
                                 {
                                     <span>
@@ -93,7 +87,7 @@
                                         <table class="table table-striped table-bordered tabeladados">
                                             <thead>
                                                 <tr>
-                                                    <th></th>
+                                                    <th>&nbsp;</th>
                                                     <th>
                                                         Data final
                                                     </th>

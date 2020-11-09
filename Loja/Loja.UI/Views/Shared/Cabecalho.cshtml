@@ -18,9 +18,8 @@
 {
 
     <ul class="nav-right">
+        @* troca rápido de loja *@
         <li class="header-notification">
-
-            @* troca rápido de loja *@
             @if (usuarioLogado.SessaoAtiva)
             {
                 @if (usuarioLogado.Operacao_permitida(Loja.Bll.Constantes.Constantes.OP_LJA_LOGIN_TROCA_RAPIDA_LOJA))
@@ -50,6 +49,7 @@
             }
 
         </li>
+        @* Avisos *@
         <li class="header-notification">
             <div class="dropdown-primary dropdown">
                 <div class="dropdown-toggle" data-toggle="dropdown">
@@ -65,7 +65,7 @@
                     <li>
                         <div class="media">
                             <div class="media-body">
-                                <p class="notification-msg">
+                                <p class="notification-msg" id="paragrafo-avisos">
                                     Para conhecimento de todos
                                     Apesar de já ter sido comunicado anteriormente aos gestores do departamento comercial, gostaríamos de reforçar:
                                     Não será permitido a colocação de entregue nos pedidos de maneira antecipada, como já foi feito algumas vezes no passado, ou seja, somente após carregamento será executado o status de entregue no sistema.
@@ -81,7 +81,7 @@
                     </li>
                     <li>
                         <div class="media">
-                            <div class="media-body">
+                            <div class="media-body" id="paragrafo-avisos">
                                 <p class="notification-msg">
                                     Atenção devido as fortes chuvas em São Paulo e região.
 
@@ -97,8 +97,8 @@
                 </ul>
             </div>
         </li>
-        @* fazer aqui o avatar *@
-        <li class="user-profile header-notification" data-toggle="tooltip" data-placement="left" 
+        @* Avatar e dropdown *@
+        <li class="user-profile header-notification" data-toggle="tooltip" data-placement="left"
             title="" id="menu-usuario">
             <div class="dropdown-primary dropdown">
                 <div class="dropdown-toggle" data-toggle="dropdown">

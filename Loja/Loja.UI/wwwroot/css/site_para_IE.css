@@ -12,3 +12,15 @@
 .table-responsive th{
     font-size:0.93rem !important;
 }
+
+#paragrafo-avisos{
+    line-height:23px !important;
+}
+.header-navbar .navbar-wrapper .navbar-container .header-notification .show-notification li, 
+.header-navbar .navbar-wrapper .navbar-container .header-notification .profile-notification li{
+    line-height:40px !important;
+}
+
+.dt-buttons{
+    text-align: right !important;
+}
