@@ -92,6 +92,7 @@ namespace Loja.UI
             services.AddTransient<Pedido.MontarLogPedidoBll, Pedido.MontarLogPedidoBll>();
             services.AddTransient<Pedido.PedidoCriacao, Pedido.PedidoCriacao>();
             services.AddTransient<Pedido.PedidoBll, Pedido.PedidoBll>();
+            services.AddTransient<Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll, Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll>();
 
             services.AddTransient<Loja.Bll.Bll.AcessoBll.SiteColorsBll, Loja.Bll.Bll.AcessoBll.SiteColorsBll>();
 

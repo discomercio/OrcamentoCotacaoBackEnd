@@ -831,7 +831,7 @@ namespace Prepedido.PedidoVisualizacao
             return cor;
         }
 
-        private string FormataSatusPedido(string status)
+        public string FormataSatusPedido(string status)
         {
             string retorno = "";
 

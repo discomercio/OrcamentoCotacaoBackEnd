@@ -452,7 +452,7 @@ namespace Loja.UI.Controllers
 
             var lista = await pedidoBll.ListaUltimosPedidos(usuarioLogado.Loja_atual_id);
             List<UltimosPedidosViewModel> model = new List<UltimosPedidosViewModel>();
-
+            
             foreach (var i in lista)
             {
                 model.Add(new UltimosPedidosViewModel

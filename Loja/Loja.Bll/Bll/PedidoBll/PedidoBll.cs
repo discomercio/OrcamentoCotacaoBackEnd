@@ -22,6 +22,7 @@ using Pedido.Dados.Criacao;
 using Pedido;
 using InfraBanco.Modelos;
 using InfraBanco;
+using Prepedido.PedidoVisualizacao;
 
 namespace Loja.Bll.PedidoBll
 {
@@ -32,16 +33,19 @@ namespace Loja.Bll.PedidoBll
         private readonly ContextoNFeProvider contextoNFeProvider;
         private readonly Loja.Bll.ProdutoBll.ProdutoBll produtoBll;
         private readonly Loja.Bll.ClienteBll.ClienteBll clienteBll;
+        private readonly Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll pedidoVisualizacaoBll;
         //private readonly Loja.Bll.Bll.PedidoBll.EfetivaPedido.EfetivaPedido efetivarPedido;
 
         public PedidoBll(ContextoBdProvider contextoProvider, ContextoCepProvider contextoCepProvider,
-            ContextoNFeProvider contextoNFeProvider, ProdutoBll.ProdutoBll produtoBll, ClienteBll.ClienteBll clienteBll)
+            ContextoNFeProvider contextoNFeProvider, ProdutoBll.ProdutoBll produtoBll, ClienteBll.ClienteBll clienteBll,
+            PedidoVisualizacaoBll pedidoVisualizacaoBll)
         {
             this.contextoProvider = contextoProvider;
             this.contextoCepProvider = contextoCepProvider;
             this.contextoNFeProvider = contextoNFeProvider;
             this.produtoBll = produtoBll;
             this.clienteBll = clienteBll;
+            this.pedidoVisualizacaoBll = pedidoVisualizacaoBll;
             //this.efetivarPedido = efetivarPedido;
         }
 
@@ -3336,21 +3340,28 @@ namespace Loja.Bll.PedidoBll
                                                        Data = c.Data,
                                                        Pedido = c.Pedido,
                                                        NomeIniciaisEmMaiusculas = c.Tcliente.Nome_Iniciais_Em_Maiusculas,
-                                                       St_Entrega = c.St_Entrega,
+                                                       St_Entrega = pedidoVisualizacaoBll.FormataSatusPedido(c.St_Entrega),
                                                        Vendedor = c.Vendedor,
-                                                       AnaliseCredito = c.Analise_Credito,
+                                                       AnaliseCredito = pedidoVisualizacaoBll.DescricaoAnaliseCreditoCadastroPedido(Convert.ToString(c.Analise_Credito)),
                                                        AnaliseCreditoPendenteVendasMotivo = c.Analise_Credito_Pendente_Vendas_Motivo
                                                    }).ToListAsync();
 
-            //if (lista.Count > 0)
-            //{
-            //    foreach (var c in lista)
-            //    {
-            //        if (!string.IsNullOrEmpty(c.AnaliseCreditoPendenteVendasMotivo))
-            //            c.AnaliseCreditoPendenteVendasMotivo = await Util.Util.ObterDescricao_Cod(Constantes.Constantes.GRUPO_T_CODIGO_DESCRICAO__AC_PENDENTE_VENDAS_MOTIVO,
-            //                c.AnaliseCreditoPendenteVendasMotivo, contextoProvider);
-            //    }
-            //}
+            if (lista.Count > 0)
+            {
+                foreach (var c in lista)
+                {
+                    if (!string.IsNullOrEmpty(c.AnaliseCredito) && 
+                        !string.IsNullOrEmpty(c.AnaliseCreditoPendenteVendasMotivo))
+                    {
+                        if(c.AnaliseCredito == Constantes.Constantes.COD_AN_CREDITO_PENDENTE_VENDAS)
+                        {
+                            c.AnaliseCredito = c.AnaliseCredito  + "(" + await UtilsGlobais.Util.ObterDescricao_Cod(Constantes.Constantes.GRUPO_T_CODIGO_DESCRICAO__AC_PENDENTE_VENDAS_MOTIVO,
+                            c.AnaliseCreditoPendenteVendasMotivo, contextoProvider) + ")";
+                        }
+                        
+                    }
+                }
+            }
 
             return lista;
         }

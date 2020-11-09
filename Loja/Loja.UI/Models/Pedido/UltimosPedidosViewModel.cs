@@ -13,7 +13,7 @@ namespace Loja.UI.Models.Pedido
         public string Vendedor { get; set; }
         public string CnpjCpf { get; set; }
         public string NomeIniciaisEmMaiusculas { get; set; }
-        public short AnaliseCredito { get; set; }
+        public string AnaliseCredito { get; set; }
         public string AnaliseCreditoPendenteVendasMotivo { get; set; }
     }
 }
