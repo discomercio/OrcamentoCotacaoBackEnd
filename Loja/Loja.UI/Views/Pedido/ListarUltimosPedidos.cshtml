@@ -90,7 +90,9 @@
                                                 {
                                                     <tr>
                                                         <td> @(i.Data?.ToShortDateString())</td>
-                                                        <td><a href="#">@i.Pedido</a></td>
+                                                        <td><a href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pedido, i?.Pedido)">
+                                                            @i.Pedido
+                                                            </a></td>
                                                         <td>@i.Vendedor</td>
                                                         <td>@i.NomeIniciaisEmMaiusculas</td>
                                                         <td>@i.AnaliseCredito</td>
