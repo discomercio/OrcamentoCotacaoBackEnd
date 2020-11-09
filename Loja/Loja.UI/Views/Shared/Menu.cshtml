@@ -8,36 +8,7 @@
     }
 </style>
 
-@* troca rápido de loja *@
-@if (usuarioLogado.SessaoAtiva)
-{
-    @if (usuarioLogado.Operacao_permitida(Loja.Bll.Constantes.Constantes.OP_LJA_LOGIN_TROCA_RAPIDA_LOJA))
-    {
-        var lista = usuarioLogado.LojasDisponiveis.OrderBy(r => r.Nome).ToList();
-        if (lista.Count > 0)
-        {
-            <ul class="pcoded-item pcoded-left-item" data-toggle="tooltip" data-placement="right" title="Mudança rápida de loja">
-                <li class="pcoded-hasmenu p-3">
-                    @{
-                        var listaSl = new List<SelectListItem>();
-                        foreach (var item in lista)
-                        {
-                            listaSl.Add(new SelectListItem(item.Nome, item.Id));
-                        }
-                        ViewData["cabecacomboLojas"] = usuarioLogado.Loja_atual_id;
-                    }
 
-                    @Html.DropDownList("cabecacomboLojas", listaSl, new
-               {
-                   @id = "cabecacomboLojas",
-                   @class = "custom-select"
-
-               })
-                </li>
-            </ul>
-        }
-    }
-}
 
 
 @*Pedidos*@

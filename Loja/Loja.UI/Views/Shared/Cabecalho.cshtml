@@ -17,45 +17,109 @@
 @if (usuarioLogado.SessaoAtiva)
 {
 
+    <ul class="nav-right">
+        <li class="header-notification">
 
-    //deixamos ocultando em tela pequena
+            @* troca rápido de loja *@
+            @if (usuarioLogado.SessaoAtiva)
+            {
+                @if (usuarioLogado.Operacao_permitida(Loja.Bll.Constantes.Constantes.OP_LJA_LOGIN_TROCA_RAPIDA_LOJA))
+                {
+                    var lista = usuarioLogado.LojasDisponiveis.OrderBy(r => r.Nome).ToList();
+                    if (lista.Count > 0)
+                    {
+                        <div class="dropdown-primary dropdown">
+                            @{
+                                var listaSl = new List<SelectListItem>();
+                                foreach (var item in lista)
+                                {
+                                    listaSl.Add(new SelectListItem(item.Nome, item.Id));
+                                }
+                                ViewData["cabecacomboLojas"] = usuarioLogado.Loja_atual_id;
+                            }
 
+                            @Html.DropDownList("cabecacomboLojas", listaSl, new
+                            {
+                                @id = "cabecacomboLojas",
+                                @class = "custom-select"
 
-    @* fazer aqui o avatar *@
-    <div class="dropdown-toggle" data-toggle="dropdown">
-        <i class="feather icon-bell"></i>
-        <span class="badge bg-c-red">5</span>
-    </div>
-    <ul class="show-notification notification-view dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
-        @* aqui vai a lista de mensagens *@
-    </ul>
-    <li class="user-profile header-notification">
-        <div class="dropdown-primary dropdown">
-            <div class="dropdown-toggle" data-toggle="dropdown">
-                <span class="avatar avatar-48 img-circle p-2" id="avatar"></span>
+                            })
+                        </div>
+                    }
+                }
+            }
+
+        </li>
+        <li class="header-notification">
+            <div class="dropdown-primary dropdown">
+                <div class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="feather icon-bell"></i>
+                    <span class="badge bg-c-red">2</span>
+                </div>
+                <ul class="show-notification notification-view dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+                    @* aqui vai a lista de mensagens *@
+                    <li>
+                        <h6>Avisos</h6>
+                        <label class="label label-danger">Novas</label>
+                    </li>
+                    <li>
+                        <div class="media">
+                            <div class="media-body">
+                                <p class="notification-msg">
+                                    Para conhecimento de todos
+                                    Apesar de já ter sido comunicado anteriormente aos gestores do departamento comercial, gostaríamos de reforçar:
+                                    Não será permitido a colocação de entregue nos pedidos de maneira antecipada, como já foi feito algumas vezes no passado, ou seja, somente após carregamento será executado o status de entregue no sistema.
+                                    Esta é uma prática incorreta e que pode acarretar erros operacionais.
+
+                                    Grato
+
+                                    Depto de Logistica
+                                </p>
+                                <span class="notification-time">Divulgado em: 09/11/2020 12:23:36</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="media">
+                            <div class="media-body">
+                                <p class="notification-msg">
+                                    Atenção devido as fortes chuvas em São Paulo e região.
+
+                                    O setor de logísticas está adiando as entregas de hoje para essas localidade, estaremos alinhando junto aos clientes uma data futura adequada.
+
+                                    Att...
+                                    Logística.
+                                </p>
+                                <span class="notification-time">Divulgado em: 06/11/2020 10:23:36</span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
             </div>
-            <ul class="show-notification profile-notification dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut"
-                data-toggle="tooltip" data-placement="left" title="" id="menu-usuario">
-                <li>
-                    <a href="#!">
-                        <i class="fa fa-lock"></i> Alterar senha
-                    </a>
-                </li>
-                <li>
-                    <a href="~/Acesso/Logout" data-toggle="tooltip" data-placement="bottom" title="Sair" style="vertical-align: text-bottom;">
-                        <i class="feather icon-log-out" style="font-size:large"></i> Sair
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </li>
-    @*<div class="user-profile header-notification text-center px-0" data-toggle="tooltip" data-placement="left"
-             title="" id="menu-usuario">
-        </div>*@
-
-    @*<div id="cabecalho" class="col-md-2 p-0" style="float:right; width:auto">
-
-        </div>*@
+        </li>
+        @* fazer aqui o avatar *@
+        <li class="user-profile header-notification" data-toggle="tooltip" data-placement="left" 
+            title="" id="menu-usuario">
+            <div class="dropdown-primary dropdown">
+                <div class="dropdown-toggle" data-toggle="dropdown">
+                    <span class="avatar avatar-48 img-circle p-2" id="avatar"></span>
+                    <i class="feather icon-chevron-down"></i>
+                </div>
+                <ul class="show-notification profile-notification dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+                    <li>
+                        <a href="#!">
+                            <i class="fa fa-lock"></i> Alterar senha
+                        </a>
+                    </li>
+                    <li>
+                        <a href="~/Acesso/Logout" data-toggle="tooltip" data-placement="bottom" title="Sair" style="vertical-align: text-bottom;">
+                            <i class="feather icon-log-out" style="font-size:large"></i> Sair
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+    </ul>
 
 }
 else
