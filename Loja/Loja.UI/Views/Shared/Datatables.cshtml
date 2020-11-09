@@ -1,7 +1,7 @@
 ﻿
 <style>
-    table.dataTable{
-        border-collapse:collapse !important;
+    table.dataTable {
+        border-collapse: collapse !important;
     }
 
     .table {
@@ -24,23 +24,26 @@
         text-align: left !important;
     }
 
-    .dataTable_wrapper{
-        display:contents;
+    .dataTable_wrapper {
+        display: contents;
     }
 
-    .dt-buttons{
-        text-align:end !important;
+    .dt-buttons {
+        text-align: end !important;
     }
 
-    .dataTables_info{
-        font-size:smaller !important;
+    .dataTables_info {
+        font-size: smaller !important;
     }
 
-    .dataTables_paginate{
-        text-align:right !important;
+    .dataTables_paginate {
+        text-align: right !important;
     }
 
-
+    /*fica ruim nobr IE*/
+    div.dataTables_wrapper div.dataTables_length select {
+        width: 90px;
+    }
 </style>
 <script>
     var DataTables_language = {
@@ -132,7 +135,7 @@
             extend: 'excel', text: 'Exportar para Excel'
         },
         {
-            extend: 'pdf' , text: 'Exportar para PDF'
+            extend: 'pdf', text: 'Exportar para PDF'
         }
     ];
 
@@ -182,12 +185,12 @@
     });
 
     $(function () {
-    //se a tela estive nessa resolução ao atualizar 
-    if (window.innerWidth < 767) {
-        AlterarClasse_length_filter();
-    }
+        //se a tela estive nessa resolução ao atualizar
+        if (window.innerWidth < 767) {
+            AlterarClasse_length_filter();
+        }
 
-});
+    });
 
     function AlterarClasse_length_filter() {
         $(".dataTables_filter").removeClass("col-sm-6");

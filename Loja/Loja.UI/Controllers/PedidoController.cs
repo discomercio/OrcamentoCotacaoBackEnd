@@ -87,11 +87,11 @@ namespace Loja.UI.Controllers
 
             //buscamos a lista com as possiveis formas de pagamentos
             viewModel.FormaPagto = await formaPagtoBll.ObterFormaPagto(usuarioLogado.Usuario_atual,
-                usuarioLogado.Cliente_Selecionado.DadosCliente.Tipo, usuarioLogado.Loja_atual_id, 
+                usuarioLogado.Cliente_Selecionado.DadosCliente.Tipo, usuarioLogado.Loja_atual_id,
                 usuarioLogado.PedidoDto.ComIndicador);
 
             var lstEnumPagto = await formaPagtoBll.MontarListaFormaPagto(usuarioLogado.Usuario_atual,
-                usuarioLogado.Cliente_Selecionado.DadosCliente.Tipo, usuarioLogado.Loja_atual_id, 
+                usuarioLogado.Cliente_Selecionado.DadosCliente.Tipo, usuarioLogado.Loja_atual_id,
                 usuarioLogado.PedidoDto.ComIndicador);
             viewModel.EnumFormaPagto = new SelectList(lstEnumPagto, "Value", "Text");
 
@@ -146,7 +146,7 @@ namespace Loja.UI.Controllers
 
         [HttpPost]
         public async Task<IActionResult> PreparaParaCadastrarPedido(decimal totalDestePedido,
-            List<PedidoProdutosDtoPedido> lst, FormaPagtoCriacaoDto pagtoForma, float percComissao, 
+            List<PedidoProdutosDtoPedido> lst, FormaPagtoCriacaoDto pagtoForma, float percComissao,
             decimal totalValorRABrutoInput, decimal totalValorRALiquidoInput)
         {
             //necessário formatar o valor de desconto para colocar ponto
@@ -172,8 +172,8 @@ namespace Loja.UI.Controllers
 
                 pedidoDtoSession.FormaPagtoCriacao = pagtoForma;
                 pedidoDtoSession.ListaProdutos = lst;
-                
-                if(pedidoDtoSession.PercRT != percComissao)
+
+                if (pedidoDtoSession.PercRT != percComissao)
                 {
                     pedidoDtoSession.PercRT = percComissao;
                 }
@@ -265,7 +265,7 @@ namespace Loja.UI.Controllers
             // vamos pegar a session de pedido para atribuir valores para a view
 
             var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
-            
+
             PedidoDto pedidoDtoSession = usuarioLogado.PedidoDto;
 
             pedidoDtoSession.DetalhesNF = new DetalhesNFPedidoDtoPedido();
@@ -340,7 +340,7 @@ namespace Loja.UI.Controllers
             List<IndicadorDto> lstIndicadores = (await pedidoBll.BuscarOrcamentistaEIndicadorListaCompleta(usuarioLogado.Usuario_atual,
                 usuarioLogado.S_lista_operacoes_permitidas, usuarioLogado.Loja_atual_id)).ToList();
             List<SelectListItem> lstIndicador = new List<SelectListItem>();
-            foreach(var i in lstIndicadores)
+            foreach (var i in lstIndicadores)
             {
                 lstIndicador.Add(new SelectListItem { Value = i.Apelido, Text = i.Apelido + " - " + i.RazaoSocial });
             }
@@ -412,7 +412,7 @@ namespace Loja.UI.Controllers
                     pedidoDto.CDSelecionado = cdManual == 1 ? ListaCD : 0;
                     pedidoDto.ComIndicador = int.Parse(comIndicacao) != 0 ? 1 : 0;
                     pedidoDto.NomeIndicador = int.Parse(comIndicacao) == 1 ? indicador : null;
-                    
+
 
                     //afazer: PedBonShop
                     pedidoDto.PedBonshop = "";
@@ -431,15 +431,21 @@ namespace Loja.UI.Controllers
         {
             var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
 
-            bool consultaUniversalPedidoOrcamento = usuarioLogado.Operacao_permitida(Constantes.OP_LJA_CONSULTA_UNIVERSAL_PEDIDO_ORCAMENTO);
-            var cancelamentoAutomaticoItems = await cancelamentoAutomaticoBll.DadosTela(consultaUniversalPedidoOrcamento, usuarioLogado, usuarioLogado.LojasDisponiveis);
-            var itensLoja = (from i in cancelamentoAutomaticoItems group i by i.LojaId into g select new Models.Comuns.ListaLojasViewModel.ItemLoja { Loja = g.Key, NumeroItens = g.Count() });
-            var model = new Loja.UI.Models.Pedido.CancelamentoAutomaticoViewModel(cancelamentoAutomaticoItems,
-                new Models.Comuns.ListaLojasViewModel(usuarioLogado, itensLoja.ToList()));
-            return View(model);
+            return View(await CancelamentoAutomaticoDados(usuarioLogado, cancelamentoAutomaticoBll));
         }
 
-        
+        private static async Task<Loja.UI.Models.Pedido.CancelamentoAutomaticoViewModel> CancelamentoAutomaticoDados(UsuarioLogado usuarioLogado,
+            CancelamentoAutomaticoBll cancelamentoAutomaticoBll)
+        {
+            var dadosTelaRetorno= await cancelamentoAutomaticoBll.DadosTela(usuarioLogado);
+            var itensLoja = (from i in dadosTelaRetorno.cancelamentoAutomaticoItems group i by i.LojaId into g select new Models.Comuns.ListaLojasViewModel.ItemLoja { Loja = g.Key, NumeroItens = g.Count() });
+            var model = new Loja.UI.Models.Pedido.CancelamentoAutomaticoViewModel(dadosTelaRetorno.cancelamentoAutomaticoItems,
+                new Models.Comuns.ListaLojasViewModel(usuarioLogado, itensLoja.ToList()));
+            //desligamos o combo de lojas
+            model.ListaLojasViewModel.MostrarLoja = dadosTelaRetorno.consultaUniversalPedidoOrcamento;
+            return model;
+        }
+
         public async Task<IActionResult> ListarUltimosPedidos()
         {
             var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
@@ -447,7 +453,7 @@ namespace Loja.UI.Controllers
             var lista = await pedidoBll.ListaUltimosPedidos(usuarioLogado.Loja_atual_id);
             List<UltimosPedidosViewModel> model = new List<UltimosPedidosViewModel>();
 
-            foreach(var i in lista)
+            foreach (var i in lista)
             {
                 model.Add(new UltimosPedidosViewModel
                 {

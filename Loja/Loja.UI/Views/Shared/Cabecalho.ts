@@ -3,17 +3,14 @@ declare var usuarioLogado: any;
 
 $(function () {
     if (usuarioLogado != "" && usuarioLogado != undefined) {
+        let letra = usuarioLogado.substring(0, 2);
         let split = usuarioLogado.split(' ');
         if (split.length > 1) {
-            debugger;
+            letra = usuarioLogado.substring(0, 1) + split[split.length - 1].substring(0, 1);
         }
-        else {
-            let letra = usuarioLogado.substring(0, 2);
-            setRandomColor();
-            $("#avatar").text(letra.toUpperCase());
-            $("#menu-usuario").attr("data-original-title", usuarioLogado);
-        }
-
+        setRandomColor();
+        $("#avatar").text(letra.toUpperCase());
+        $("#menu-usuario").attr("data-original-title", usuarioLogado);
     }
 });
 

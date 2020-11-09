@@ -35,9 +35,25 @@ namespace Loja.Bll.Bll.pedidoBll
             public string LojaId { get; set; }
         }
 
-        public async Task<List<CancelamentoAutomaticoItem>> DadosTela(bool ConsultaUniversalPedidoOrcamento, UsuarioLogado usuarioLogado,
-            List<UsuarioAcessoBll.LojaPermtidaUsuario> listaLojas)
+        public class DadosTelaRetorno
         {
+            public List<CancelamentoAutomaticoItem> cancelamentoAutomaticoItems;
+            public bool consultaUniversalPedidoOrcamento;
+        }
+        public async Task<DadosTelaRetorno> DadosTela(UsuarioLogado usuarioLogado)
+        {
+            DadosTelaRetorno dadosTelaRetorno = new DadosTelaRetorno();
+            List<UsuarioAcessoBll.LojaPermtidaUsuario> listaLojas;
+            dadosTelaRetorno.consultaUniversalPedidoOrcamento = usuarioLogado.Operacao_permitida(Loja.Bll.Constantes.Constantes.OP_LJA_CONSULTA_UNIVERSAL_PEDIDO_ORCAMENTO);
+            //nunca mostramos outras lojas
+            dadosTelaRetorno.consultaUniversalPedidoOrcamento = false;
+            listaLojas = usuarioLogado.LojasDisponiveis;
+            if (!dadosTelaRetorno.consultaUniversalPedidoOrcamento)
+            {
+                listaLojas = new List<UsuarioAcessoBll.LojaPermtidaUsuario>();
+                listaLojas.Add(new UsuarioAcessoBll.LojaPermtidaUsuario(id: usuarioLogado.Loja_atual_id, nome: usuarioLogado.Loja_atual_nome));
+            }
+
             var strWhereBase = " (t1.st_entrega <> '" + Constantes.Constantes.ST_ENTREGA_ENTREGUE + "')" +
                                         " AND (t1.st_entrega <> '" + Constantes.Constantes.ST_ENTREGA_CANCELADO + "')" +
                                         " AND (t1.st_entrega <> '" + Constantes.Constantes.ST_ENTREGA_A_ENTREGAR + "')" +
@@ -233,8 +249,8 @@ namespace Loja.Bll.Bll.pedidoBll
                 //ret.AddRange(DadosDeTeste());
                 //está ordenando por data da análise de crédito, já está ordenado na query
                 //    deixa o cliente verificar se isso é um problema... acho que é o comportamento esperado
-
-                return await Task.FromResult(ret);
+                dadosTelaRetorno.cancelamentoAutomaticoItems = ret;
+                return await Task.FromResult(dadosTelaRetorno);
             }
         }
     }

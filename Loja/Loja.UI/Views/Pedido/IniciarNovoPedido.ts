@@ -83,7 +83,8 @@ function AlterarClasse() {
 //abrir modal para seleção de produtos
 window.AbrirModalProdutos = () => {
     //'#modal1' modal de produtos
-    $("#modal1").modal("show");
+    //todo: verificar pq dá erro de compilação
+    ($("#modal1") as any).modal("show");
 }
 
 function inicializaCampos(v: number) {
