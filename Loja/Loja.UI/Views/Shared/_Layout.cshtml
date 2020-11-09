@@ -6,11 +6,6 @@
 @inject Microsoft.Extensions.Logging.ILogger<Loja.Bll.Bll.AcessoBll.UsuarioLogado> loggerUsuarioLogado
 <!DOCTYPE html>
 
-@{
-    //todo: afazer: tirar testando_iframe
-    var testando_iframe = false;
-}
-
 @* OBS:
     Consegui alterar a cor do navbar em "vertical_layout.min.js" alterando "HeaderBackground: "theme6","
     Podemos criar um theme em "template_bootstrap/css/style.css" para criar uma nova cor
@@ -25,36 +20,57 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Quicksand:500,700" rel="stylesheet">
 
-    @if (!testando_iframe)
-    {
-        <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/bootstrap.min.css">
+    <script>
+        /*
+        ajuda MNUITO a debugar
+        */
+        //tratamento das excecoes nao gerenciadas
+        function CExceptUnhandled(message, url, code) {
+            //o firefox coloca "uncaught exception: " na frente
+            /*
+            var remover = "uncaught exception: ";
+            var msg = message;
+            if(msg.toString().substring(0, remover.length) == remover)
+                msg = msg.toString().substring(remover.length, msg.toString().length);
+            */
+            alert("ERRO: " + message + " - " + url + " - " + code);
+            return true;
+        }
+        try {
+            window.onerror = CExceptUnhandled;
+        }
+        catch (e) {
+        }
 
-        <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/waves.min.css" media="all">
+    </script>
 
-        <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/icofont.css">
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/bootstrap.min.css">
 
-        <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/feather.css">
-        <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/font-awesome-n.min.css">
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/waves.min.css" media="all">
 
-        <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/switchery.min.css">
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/icofont.css">
 
-        <link rel="stylesheet" href="~/template_bootstrap/css/chartist.css" type="text/css" media="all">
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/feather.css">
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/font-awesome-n.min.css">
 
-        <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/sweetalert.css">
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/switchery.min.css">
 
-        <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/widget.css">
-        <link rel="stylesheet" type="text/css" href="~/css/site.css">
-        <!--[if IE]-->
-        <link rel="stylesheet" type="text/css" href="~/css/site_para_IE.css">
-        <!--[endif]-->
+    <link rel="stylesheet" href="~/template_bootstrap/css/chartist.css" type="text/css" media="all">
 
-        <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/component.css">
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/sweetalert.css">
+
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/widget.css">
+    <link rel="stylesheet" type="text/css" href="~/css/site.css">
+    <!--[if IE]-->
+    <link rel="stylesheet" type="text/css" href="~/css/site_para_IE.css">
+    <!--[endif]-->
+
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/component.css">
 
 
-        <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/style.css">
-        <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/pages.css">
-        <link rel="stylesheet" type="text/css" href="~/template_bootstrap/toggle/css/bootstrap4-toggle.min.css">
-    }
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/style.css">
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/pages.css">
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/toggle/css/bootstrap4-toggle.min.css">
 
     @* ===================== SCRIPTS ===================== *@
     <script type="text/javascript" src="~/template_bootstrap/js/jquery.min.js"></script>
@@ -138,156 +154,88 @@
 }
 
 <body>
-    @if (testando_iframe)
-    {
-        <script>
-            $(document).ready(function () {
-                $('body').css("background", "#c3c3fd");
-            });
-        </script>
-        <div class="container">
-            <table>
-                <tr>
-                    <td style="vertical-align:top;">
-                        <ul>
-                            <li>
-                                <a href="@Url.Action("Index", "Produtos")" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Consulta Lista de Preços</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="waves-effect waves-dark" href="@Url.Action("Index", "SiteColors")">Início do Colors</a>
-                            </li>
-                            <li>
-                                <a class="waves-effect waves-dark" href="~/Acesso/Logout">Logout</a>
-                            </li>
-                        </ul>
+    <div id="pcoded" class="pcoded">
+        <div class="pcoded-overlay-box"></div>
+        <div class="pcoded-container navbar-wrapper">
+            @if (usuarioLogado.SessaoAtiva)
+            {
+                <nav class="navbar header-navbar pcoded-header" style="height:auto">
+                    <div class="navbar-wrapper">
+                        <div class="navbar-logo">
+                            <a href="@Url.Action("Index", "Home")" title="Home" class="show-on-medium-and-down">
+                                <i class="fa fa-home" style="font-size:xx-large"></i>
+                            </a>
 
-                    </td>
-                    <td style="vertical-align:top;">
-                        <ul>
-                            <li>
-                                <a class="waves-effect waves-dark" href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pedidos_com_Credito_Pendente)">
-                                    Pedidos com Crédito Pendente
-                                </a>
-                            </li>
-                            <li>
-                                <a class="waves-effect waves-dark" href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pedidos_com_Credito_Pendente_Vendas)">
-                                    Pedidos com Crédito Pendente Vendas
-                                </a>
-                            </li>
-                            <li>
-                                <a class="waves-effect waves-dark" href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pedidos_Pendentes_Cartao_de_Credito)">
-                                    Pedidos Pendentes Cartão de Crédito
-                                </a>
-                            </li>
-                            <li>
-                                <a class="waves-effect waves-dark" href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pedidos_com_Endereco_Pendente)">
-                                    Pedidos com Endereço Pendente
-                                </a>
-                            </li>
-                            <li>
-                                <a class="waves-effect waves-dark" href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pesquisa_pedidos_anteriormente_efetuados_por_um_cliente_nesta_loja)">
-                                    Pesquisa pedidos anteriormente efetuados por um cliente nesta loja
-                                </a>
-                            </li>
-                        </ul>
-                    </td>
-                    <td style="vertical-align:top;">
-                        @if (usuarioLogado.SessaoAtiva)
-                        {
-                            <partial name="~/Views/Shared/Cabecalho.cshtml" model="usuarioLogado" />
-                        }
-                    </td>
-                </tr>
-            </table>
-            @RenderBody()
-        </div>
-    }
-    else
-    {
-        <div id="pcoded" class="pcoded">
-            <div class="pcoded-overlay-box"></div>
-            <div class="pcoded-container navbar-wrapper">
-                @if (usuarioLogado.SessaoAtiva)
-                {
-                    <nav class="navbar header-navbar pcoded-header" style="height:auto">
-                        <div class="navbar-wrapper">
-                            <div class="navbar-logo">
-                                <a href="@Url.Action("Index", "Home")" title="Home" class="show-on-medium-and-down">
-                                    <i class="fa fa-home" style="font-size:xx-large"></i>
-                                </a>
+                            <a class="mobile-menu" id="mobile-collapse" href="#!" data-toggle="tooltip"
+                               data-placement="bottom" title="Abrir/Fechar menu">
+                                <i class="feather icon-menu icon-toggle-right"></i>
+                            </a>
+                            <a class="mobile-options waves-effect waves-light" href="#!">
+                                <i class="feather icon-more-horizontal"></i>
+                            </a>
 
-                                <a class="mobile-menu" id="mobile-collapse" href="#!" data-toggle="tooltip"
-                                   data-placement="bottom" title="Abrir/Fechar menu">
-                                    <i class="feather icon-menu icon-toggle-right"></i>
-                                </a>
-                                <a class="mobile-options waves-effect waves-light" href="#!">
-                                    <i class="feather icon-more-horizontal"></i>
-                                </a>
-
-                            </div>
-                            <div class="navbar-container container-fluid">
-                                <ul class="nav-left">
-                                    @* Pesquisa *@
-                                    @*<li class="header-search">
-                                            <div class="main-search morphsearch-search">
-                                                <div class="input-group">
-                                                    <span class="input-group-prepend search-close">
-                                                        <i class="feather icon-x input-group-text"></i>
-                                                    </span>
-                                                    <input type="text" class="form-control" placeholder="Pesquisar">
-                                                    <span class="input-group-append search-btn">
-                                                        <i class="feather icon-search input-group-text"></i>
-                                                    </span>
-                                                </div>
+                        </div>
+                        <div class="navbar-container container-fluid">
+                            <ul class="nav-left">
+                                @* Pesquisa *@
+                                @*<li class="header-search">
+                                        <div class="main-search morphsearch-search">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend search-close">
+                                                    <i class="feather icon-x input-group-text"></i>
+                                                </span>
+                                                <input type="text" class="form-control" placeholder="Pesquisar">
+                                                <span class="input-group-append search-btn">
+                                                    <i class="feather icon-search input-group-text"></i>
+                                                </span>
                                             </div>
-                                        </li>*@
-                                    @* Maximiza tela *@
-                                    <li>
-                                        <a href="#!" onclick="if (!window.__cfRLUnblockHandlers) return false; javascript:toggleFullScreen()"
-                                           class="waves-effect waves-light" data-cf-modified-d2d1d6e2f87cbebdf4013b26-="" data-toggle="tooltip"
-                                           data-placement="bottom" title="Tela inteira">
-                                            <i class="full-screen feather icon-maximize"></i>
-                                        </a>
-                                    </li>
-                                </ul>
-                                @* Header *@
+                                        </div>
+                                    </li>*@
+                                @* Maximiza tela *@
+                                <li>
+                                    <a href="#!" onclick="if (!window.__cfRLUnblockHandlers) return false; javascript:toggleFullScreen()"
+                                       class="waves-effect waves-light" data-cf-modified-d2d1d6e2f87cbebdf4013b26-="" data-toggle="tooltip"
+                                       data-placement="bottom" title="Tela inteira">
+                                        <i class="full-screen feather icon-maximize"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                            @* Header *@
 
-                                <partial name="~/Views/Shared/Cabecalho.cshtml" model="usuarioLogado" />
+                            <partial name="~/Views/Shared/Cabecalho.cshtml" model="usuarioLogado" />
 
 
 
-                            </div>
                         </div>
-                    </nav>
-                }
-                <div class="pcoded-main-container">
-                    <div class="pcoded-wrapper">
-                        @if (usuarioLogado.SessaoAtiva)
-                        {
-                            //Menu
-                            <nav class="pcoded-navbar">
-                                <div class="nav-list">
-                                    <div class="pcoded-inner-navbar main-menu">
-                                        <partial name="~/Views/Shared/Menu.cshtml" model="usuarioLogado" />
-                                    </div>
+                    </div>
+                </nav>
+            }
+            <div class="pcoded-main-container">
+                <div class="pcoded-wrapper">
+                    @if (usuarioLogado.SessaoAtiva)
+                    {
+                        //Menu
+                        <nav class="pcoded-navbar">
+                            <div class="nav-list">
+                                <div class="pcoded-inner-navbar main-menu">
+                                    <partial name="~/Views/Shared/Menu.cshtml" model="usuarioLogado" />
                                 </div>
-                            </nav>
-                        }
-                        @* Body *@
-                        <div class="pcoded-content">
-                            @RenderBody()
-                        </div>
-                        @* Footer *@
-                        <div class="pcoded-content">
-                            @RenderSection("RodapePagina", required: false)
-                        </div>
+                            </div>
+                        </nav>
+                    }
+                    @* Body *@
+                    <div class="pcoded-content">
+                        @RenderBody()
+                    </div>
+                    @* Footer *@
+                    <div class="pcoded-content">
+                        @RenderSection("RodapePagina", required: false)
                     </div>
                 </div>
             </div>
         </div>
-    }
+    </div>
+
     @* Error *@
     <partial name="~/Views/Shared/Error.cshtml" />
 

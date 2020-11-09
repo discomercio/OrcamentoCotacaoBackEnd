@@ -17,8 +17,8 @@ namespace Loja.UI.Controllers
         {
             var ret = urlHelper.Action("Index", "SiteColors", new
             {
-                //convertemos para int para não passar o texto
-                pagina = (int)pagina
+                //queremos um núemro pequeno e não-sequencial
+                pagina = (int)(Math.Abs(pagina.ToString().GetHashCode()))
             });
             return ret;
         }
@@ -26,17 +26,20 @@ namespace Loja.UI.Controllers
         {
             var ret = urlHelper.Action("Index", "SiteColors", new
             {
-                //convertemos para int para não passar o texto
-                pagina = (int)pagina,
-                param = param
+                //queremos um núemro pequeno e não-sequencial
+                pagina = (int)(Math.Abs(pagina.ToString().GetHashCode())),
+                param
             });
             return ret;
         }
 
         public enum ListaPaginasColors
         {
+            //ATENÇÃO: NÃO MUDAR OS NOMES DESTE ENUM
+            //eles não aparecem para o usuário, mas o hashcode da string faz parte das URLs. Se o usuário salva um favorito
+            // e a gente mudar a string, o favorito vai parar de funcionar
+
             //Pedidos
-            Pedido,
             Pedidos_com_Credito_Pendente,
             Pedidos_com_Credito_Pendente_Vendas,
             Pedidos_Pendentes_Cartao_de_Credito,
@@ -96,6 +99,11 @@ namespace Loja.UI.Controllers
             OUTRAS_FUNCOES_Ler_Quadro_de_Avisos_somente_nao_lidos,
             OUTRAS_FUNCOES_Ler_Quadro_de_Avisos_todos_os_avisos,
             OUTRAS_FUNCOES_Funcoes_Administrativas,
+
+            //página do pedido
+            Orcamento_asp, //precisa de parâmetro, orcamento_selecionado
+            Pedido,
+
             pagina_inicial_do_colors
         }
 
@@ -115,15 +123,27 @@ namespace Loja.UI.Controllers
             this.usuarioAcessoBll = usuarioAcessoBll;
             this.loggerUsuarioLogado = loggerUsuarioLogado;
         }
-        public async Task<IActionResult> Index(ListaPaginasColors? pagina, string param)
+        public async Task<IActionResult> Index(int? pagina, string param)
         {
             var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
 
-            var sessionCtrlInfo = await siteColorsBll.MontaSessionCtrlInfo(usuarioLogado);
-            var paginaUrl = pagina switch
+
+            ListaPaginasColors? paginaEnum = null;
+            //a página é quem tem Math.Abs(pagina.ToString().GetHashCode())
+            if (pagina.HasValue)
             {
-                //Pedidos
-                ListaPaginasColors.Pedido => "pedido.asp?pedido_selecionado=" +param??"",
+                foreach (ListaPaginasColors i in Enum.GetValues(typeof(ListaPaginasColors)))
+                {
+                    if (Math.Abs( i.ToString().GetHashCode()) == pagina)
+                    {
+                        paginaEnum = i;
+                        break;
+                    }
+                }
+            }
+
+            var paginaUrl = paginaEnum switch
+            {
                 ListaPaginasColors.Pedidos_com_Credito_Pendente => "RelPedidosCredPendFiltro.asp",
                 ListaPaginasColors.Pedidos_com_Credito_Pendente_Vendas => "RelPedidosCredPendVendasFiltro.asp",
                 ListaPaginasColors.Pedidos_Pendentes_Cartao_de_Credito => "RelPedidosPendentesCartaoFiltro.asp",
@@ -184,9 +204,16 @@ namespace Loja.UI.Controllers
                 //para a página abaixo será necessário passar parâmetro na url
                 ListaPaginasColors.OUTRAS_FUNCOES_Ler_Quadro_de_Avisos_todos_os_avisos => "quadroavisomostra.asp?opcao_selecionada=S",
                 ListaPaginasColors.OUTRAS_FUNCOES_Funcoes_Administrativas => "MenuFuncoesAdministrativas.asp",
+
+                //Pedidos
+                ListaPaginasColors.Pedido => "pedido.asp?pedido_selecionado=" + param ?? "",
+                ListaPaginasColors.Orcamento_asp => "Orcamento.asp?orcamento_selecionado=" + param ?? "",
+
                 ListaPaginasColors.pagina_inicial_do_colors => "resumo.asp",
                 _ => "resumo.asp",
             };
+
+            var sessionCtrlInfo = await siteColorsBll.MontaSessionCtrlInfo(usuarioLogado);
             var model = new Models.SiteColors.SiteColorsViewModel(sessionCtrlInfo, paginaUrl, configuracao);
 
             return View(model);

@@ -31,7 +31,11 @@
 }
 
 <partial name="~/Views/Shared/Datatables.cshtml" />
-
+<style>
+    .coluna-direita {
+        text-align: right;
+    }
+</style>
 <div class="page-header card my-3">
     <div class="row align-items-end">
         <div class="col-lg-8 meu-header">
@@ -89,8 +93,8 @@
                                                     <th>
                                                         Cliente
                                                     </th>
-                                                    <th class="right-align">
-                                                        VL Total
+                                                    <th class="coluna-direita">
+                                                        Valor Total
                                                     </th>
                                                 </tr>
                                             </thead>
@@ -111,7 +115,9 @@
                                                             @c.Orcamentista
                                                         </td>
                                                         <td>
-                                                            @c.Prepedido
+                                                            <a href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Orcamento_asp, @c.Prepedido)">
+                                                                @c.Prepedido
+                                                            </a>
                                                         </td>
                                                         <td>
                                                             @(c.Data?.ToShortDateString())
@@ -119,7 +125,7 @@
                                                         <td>
                                                             @c.Cliente
                                                         </td>
-                                                        <td class="right-align">
+                                                        <td class="coluna-direita">
                                                             @Loja.Bll.Util.Util.FormataMoeda(c.VlTotal)
                                                         </td>
                                                     </tr>

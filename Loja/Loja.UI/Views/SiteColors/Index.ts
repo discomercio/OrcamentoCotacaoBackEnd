@@ -3,7 +3,7 @@ class SiteColorsIndex {
     constructor() {
         $(document).ready(() => {
 
-            
+
             //carregamos a página e tiramos o estilo de carregamento quando terminar
             this.iframeJquery = $(this.seletorIframe);
             this.iframe = this.iframeJquery[0];
@@ -21,11 +21,20 @@ class SiteColorsIndex {
         });
     }
 
-    private removerElementosTela()
-    {
+    private removerElementosTela() {
         this.removerLinhaCopyright();
         $(this.iframe.contentDocument).find(".LSessaoEncerra").hide();
         $(this.iframe.contentDocument).find(".LPagInicial").hide();
+
+        //Orcamento.asp
+        $(this.iframe.contentDocument).find("#divConsultaOrcamentoWrapper").hide();
+        $(this.iframe.contentDocument).find("#divConsultaPedidoWrapper").hide();
+
+        //bota voltar, só na pagina que foi carrega pelo MVC
+        if (this.iframe.contentDocument.location.href.indexOf(this.urlIframe) >= 0) {
+            $(this.iframe.contentDocument).find('#bVOLTAR').hide();
+            $(this.iframe.contentDocument).find('#bVOLTA').hide();
+        }
     }
     private removerLinhaCopyright() {
         let css = this.iframe.contentDocument.styleSheets[0];
