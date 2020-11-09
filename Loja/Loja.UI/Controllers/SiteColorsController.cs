@@ -22,9 +22,21 @@ namespace Loja.UI.Controllers
             });
             return ret;
         }
+        public static string UrlAction(IUrlHelper urlHelper, ListaPaginasColors pagina, string param)
+        {
+            var ret = urlHelper.Action("Index", "SiteColors", new
+            {
+                //convertemos para int para não passar o texto
+                pagina = (int)pagina,
+                param = param
+            });
+            return ret;
+        }
+
         public enum ListaPaginasColors
         {
             //Pedidos
+            Pedido,
             Pedidos_com_Credito_Pendente,
             Pedidos_com_Credito_Pendente_Vendas,
             Pedidos_Pendentes_Cartao_de_Credito,
@@ -103,7 +115,7 @@ namespace Loja.UI.Controllers
             this.usuarioAcessoBll = usuarioAcessoBll;
             this.loggerUsuarioLogado = loggerUsuarioLogado;
         }
-        public async Task<IActionResult> Index(ListaPaginasColors? pagina)
+        public async Task<IActionResult> Index(ListaPaginasColors? pagina, string param)
         {
             var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
 
@@ -111,6 +123,7 @@ namespace Loja.UI.Controllers
             var paginaUrl = pagina switch
             {
                 //Pedidos
+                ListaPaginasColors.Pedido => "pedido.asp?pedido_selecionado=" +param??"",
                 ListaPaginasColors.Pedidos_com_Credito_Pendente => "RelPedidosCredPendFiltro.asp",
                 ListaPaginasColors.Pedidos_com_Credito_Pendente_Vendas => "RelPedidosCredPendVendasFiltro.asp",
                 ListaPaginasColors.Pedidos_Pendentes_Cartao_de_Credito => "RelPedidosPendentesCartaoFiltro.asp",
