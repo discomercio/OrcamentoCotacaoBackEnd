@@ -222,16 +222,15 @@
                                    data-placement="bottom" title="Abrir/Fechar menu">
                                     <i class="feather icon-menu icon-toggle-right"></i>
                                 </a>
-                                @* Não queremos alterar o menu *@
-                                @*<a class="mobile-options waves-effect waves-light" href="#!">
+                                <a class="mobile-options waves-effect waves-light" href="#!">
                                         <i class="feather icon-more-horizontal"></i>
-                                    </a>*@
+                                    </a>
 
                             </div>
                             <div class="navbar-container container-fluid">
                                 <ul class="nav-left">
                                     @* Pesquisa *@
-                                    <li class="header-search">
+                                    @*<li class="header-search">
                                         <div class="main-search morphsearch-search">
                                             <div class="input-group">
                                                 <span class="input-group-prepend search-close">
@@ -243,7 +242,7 @@
                                                 </span>
                                             </div>
                                         </div>
-                                    </li>
+                                    </li>*@
                                     @* Maximiza tela *@
                                     <li>
                                         <a href="#!" onclick="if (!window.__cfRLUnblockHandlers) return false; javascript:toggleFullScreen()"
@@ -254,7 +253,14 @@
                                     </li>
                                 </ul>
                                 @* Header *@
-                                <partial name="~/Views/Shared/Cabecalho.cshtml" model="usuarioLogado" />
+                                <ul class="nav-right">
+                                    <li class="header-notification">
+                                        <div class="dropdown-primary dropdown">
+                                            <partial name="~/Views/Shared/Cabecalho.cshtml" model="usuarioLogado" />
+                                        </div>
+                                    </li>
+                                </ul>
+                                
 
                             </div>
                         </div>

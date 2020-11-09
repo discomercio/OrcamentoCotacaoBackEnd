@@ -130,7 +130,7 @@
 
 /* Alterando botão para adicionar produtos */
 @media (max-width:1069.99px) {
-    #teste{
-        margin-top :calc(0vh - 69px);
+    #cabecalho {
+        margin-top: calc(0vh - 69px);
     }
 }

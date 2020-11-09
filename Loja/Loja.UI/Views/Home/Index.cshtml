@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Home Page";
 
-    var NumeroLinhasOrcamentistasVendodresNosCards = 4;
+    var NumeroLinhasOrcamentistasVendodresNosCards = 3;
 }
 
 <style>
@@ -72,11 +72,10 @@
                                                 <p class="m-b-0">ANDREZA - 22 Pedidos</p>
                                                 <p class="m-b-0">LUCYANE - 10 Pedidos</p>
                                                 <p class="m-b-0">VANESSA - 8 Pedidos</p>
-                                                <p class="m-b-0">AGNALDO - 8 Pedidos</p>
                                                 <p class="m-b-0">Outros vendedores - 2 Pedidos</p>
                                             </div>
                                             <div class="col-auto">
-                                                <i class="fas fa-eye bg-c-blue"></i>
+                                                <i class="fas fa-eye bg-c-purple"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -91,16 +90,9 @@
                                         <div class="card-body">
                                             <div class="row align-items-top justify-content-between">
                                                 <div class="col-auto">
-                                                    <h6 class="m-b-25">Cancelamento Automático de Pedidos</h6>
+                                                    <h6 class="m-b-25">Cancelamento Automático</h6>
                                                     <h3 class="f-w-700 text-info">@Model.CancelamentoAutomaticoItems.Count Pedidos</h3>
-                                                    @if (@Model.CancelamentoAutomaticoItems.Min(r => r.DataFinal) != null)
-                                                    {
-                                                        <p class="m-b-0">
-                                                            @Model.CancelamentoAutomaticoItems.Min(r => r.DataFinal)?.ToShortDateString()
-                                                            -
-                                                            @Model.CancelamentoAutomaticoItems.Max(r => r.DataFinal)?.ToShortDateString()
-                                                        </p>
-                                                    }
+
                                                     @*
                                                         o que queremos:
                                                         <p class="m-b-0">GUSTAVO S - 12 Pedidos</p>
@@ -125,7 +117,7 @@
                                                     }
                                                 </div>
                                                 <div class="col-auto">
-                                                    <i class="fas fa-eye bg-c-blue"></i>
+                                                    <i class="fas fa-eye bg-c-yellow"></i>
                                                 </div>
                                             </div>
                                         </div>
@@ -193,4 +185,5 @@
             </div>
         </div>
     </div>
+</div>
 
