@@ -223,26 +223,26 @@
                                     <i class="feather icon-menu icon-toggle-right"></i>
                                 </a>
                                 <a class="mobile-options waves-effect waves-light" href="#!">
-                                        <i class="feather icon-more-horizontal"></i>
-                                    </a>
+                                    <i class="feather icon-more-horizontal"></i>
+                                </a>
 
                             </div>
                             <div class="navbar-container container-fluid">
                                 <ul class="nav-left">
                                     @* Pesquisa *@
                                     @*<li class="header-search">
-                                        <div class="main-search morphsearch-search">
-                                            <div class="input-group">
-                                                <span class="input-group-prepend search-close">
-                                                    <i class="feather icon-x input-group-text"></i>
-                                                </span>
-                                                <input type="text" class="form-control" placeholder="Pesquisar">
-                                                <span class="input-group-append search-btn">
-                                                    <i class="feather icon-search input-group-text"></i>
-                                                </span>
+                                            <div class="main-search morphsearch-search">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend search-close">
+                                                        <i class="feather icon-x input-group-text"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control" placeholder="Pesquisar">
+                                                    <span class="input-group-append search-btn">
+                                                        <i class="feather icon-search input-group-text"></i>
+                                                    </span>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </li>*@
+                                        </li>*@
                                     @* Maximiza tela *@
                                     <li>
                                         <a href="#!" onclick="if (!window.__cfRLUnblockHandlers) return false; javascript:toggleFullScreen()"
@@ -253,14 +253,10 @@
                                     </li>
                                 </ul>
                                 @* Header *@
-                                <ul class="nav-right">
-                                    <li class="header-notification">
-                                        <div class="dropdown-primary dropdown">
-                                            <partial name="~/Views/Shared/Cabecalho.cshtml" model="usuarioLogado" />
-                                        </div>
-                                    </li>
-                                </ul>
-                                
+
+                                <partial name="~/Views/Shared/Cabecalho.cshtml" model="usuarioLogado" />
+
+
 
                             </div>
                         </div>
