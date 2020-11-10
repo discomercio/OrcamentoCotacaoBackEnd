@@ -348,16 +348,18 @@ function arrumarProdsRepetidosTeste() {
 }
 
 function removerTodosProdutos() {
-    let tbody: any = $(".novoProduto").parent();
-    let tbodyCount: number = tbody.children().length;
-
-
-    if (tbodyCount >= 4) {
-        for (tbodyCount; tbodyCount > 4; tbodyCount--) {
-            let trTotal = tbody.children()[tbodyCount - 1].className;
-            if (trTotal != "trTotal") {
-                tbody.children()[tbodyCount - 1].remove();
-            }
+    debugger;
+    //let tbody: any = $(".novoProduto").parent();
+    indice = Number($("#indice").val());
+    let body_produtos: any = document.getElementById("body_produtos");
+    let count = indice;
+    for (count; count > 0; count--) {
+        debugger;
+        let tr: any = document.getElementsByClassName("trProduto_" + (count - 1));
+        let qtde: any = tr.length;
+        while (qtde != 0) {
+            body_produtos.removeChild(tr[qtde -1]);
+            qtde--;
         }
     }
 
@@ -395,6 +397,7 @@ window.removerLinha = (v: HTMLElement) => {
         //pegando o tr
         let linha: any = t.closest("tr");// t.parentElement.parentElement.parentElement.parentElement;
         let classeName = linha.className;
+        debugger;
         $("." + classeName + "").remove();
 
         //pegando o td
@@ -405,7 +408,7 @@ window.removerLinha = (v: HTMLElement) => {
 
         let i = lstProdSelecionados.indexOf(produto[0]);
         lstProdSelecionados.splice(i, 1);
-        
+
         let indice: number = parseInt($("#indice").val().toString());
         $("#indice").val(indice--);
 
@@ -426,7 +429,7 @@ window.digitouQtde = (v: HTMLInputElement) => {
     let linha: any = t.parentElement.parentElement.parentElement;
     //pegando o td
     let codProduto: string = linha.cells[0].children[0].value;
-    
+
     lstProdSelecionados = dadosPagto.pedidoDto.ListaProdutos;
     //pegando o produto para alterar o valor
     let produto: PedidoProdutosPedidoDto[] = lstProdSelecionados.filter(e => e.NumProduto == codProduto);
@@ -446,7 +449,7 @@ window.digitouQtde = (v: HTMLInputElement) => {
 
     //aqui espera receber o enum que esta sendo usado
     RecalcularValoresSemCoeficiente(dadosPagto.enumFormaPagto, true, true);
-    
+
     //passando para o valor para tela
     //linha.children[4].children[0].children[0].value = moedaUtils.formatarMoedaSemPrefixo(produto[0].VlUnitario);
     if (permiteRAStatus == 1) {
@@ -985,7 +988,7 @@ window.recalcularValoresComCoeficiente = (e: HTMLInputElement) => {
 
     InicializaDadosPagto();
     let v = parseInt(e.value);
-    
+
     inicializaCampos(v);
     //estou incluindo uma flag nesse metodo abaixo para não ir até a servidor para verificar, pois
     //estamos apenas recalculando com coeficiente
@@ -1556,7 +1559,7 @@ function verifica_excedente_max_desconto(perc_max_comissao_e_desconto_a_utilizar
         // ou possuem senha de desconto autorizando.
         // Verifica-se agora se é necessário reduzir automaticamente o percentual da RT usando p/ o cálculo
         // o percentual de desconto médio.
-        
+
         perc_RT_novo = Math.min(percComissao, (perc_max_comissao_e_desconto_a_utilizar - perc_desc_medio));
         if (perc_RT_novo < 0) perc_RT_novo = 0;
 
