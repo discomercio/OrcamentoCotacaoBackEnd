@@ -47,7 +47,7 @@ namespace InfraBanco.Modelos
         [MaxLength(8)]
         public string Produto { get; set; }
 
-        [Column("desc_max")]
+        [Column("desc_max", TypeName = "real")]
         public decimal? Desc_max { get; set; }
 
         [Column("loja")]

@@ -9,7 +9,7 @@ using Loja.Bll.Bll.AcessoBll;
 using System.Threading.Tasks;
 
 #nullable enable
-namespace Loja.Bll.Bll.PrepedidoBll
+namespace Loja.Bll.PrepedidoBll
 {
     public class PrepedidoBll
     {
@@ -24,7 +24,7 @@ namespace Loja.Bll.Bll.PrepedidoBll
             this.clienteBll = clienteBll;
         }
 
-        public async Task<ResumoPrepedidoListaDto> ResumoPrepedidoLista(UsuarioLogado usuarioLogado)
+        public async Task<ResumoPrepedidoListaDto> ResumoPrepedidoLista(UsuarioLogado usuarioLogado, bool somenteLojaAtiva)
         {
             var db = contextoProvider.GetContextoLeitura();
             var sql = from t_ORCAMENTO in db.Torcamentos
@@ -55,7 +55,7 @@ namespace Loja.Bll.Bll.PrepedidoBll
 
             //'	CRITÉRIO: LOJA (CADA LOJA SÓ PODE CONSULTAR SEUS PRÓPRIOS ORÇAMENTOS)
             //mostramos todas as lojas e o usuário pode filtar se ele tiver a permissão
-            if (!usuarioLogado.Operacao_permitida(Constantes.Constantes.OP_LJA_LOGIN_TROCA_RAPIDA_LOJA))
+            if (!usuarioLogado.Operacao_permitida(Constantes.Constantes.OP_LJA_LOGIN_TROCA_RAPIDA_LOJA) || somenteLojaAtiva)
             {
                 sql = sql.Where(r => r.Loja == usuarioLogado.Loja_atual_id);
             }

@@ -11,6 +11,8 @@ using Loja.UI.Models.Home;
 using Loja.Bll.ClienteBll;
 using Loja.Bll.Bll.AcessoBll;
 using Loja.Bll.Util;
+using Loja.Bll.PrepedidoBll;
+using Loja.Bll.Bll.pedidoBll;
 
 namespace Loja.UI.Controllers
 {
@@ -21,19 +23,24 @@ namespace Loja.UI.Controllers
         private readonly UsuarioAcessoBll usuarioAcessoBll;
         private readonly Configuracao configuracao;
         private readonly ILogger<UsuarioLogado> loggerUsuarioLogado;
+        private readonly PrepedidoBll prepedidoBll;
+        private readonly CancelamentoAutomaticoBll cancelamentoAutomaticoBll;
 
         public HomeController(ILogger<HomeController> logger, ClienteBll clienteBll, UsuarioAcessoBll usuarioAcessoBll, Configuracao configuracao,
-            ILogger<UsuarioLogado> loggerUsuarioLogado)
+            ILogger<UsuarioLogado> loggerUsuarioLogado, PrepedidoBll prepedidoBll,
+            Bll.Bll.pedidoBll.CancelamentoAutomaticoBll cancelamentoAutomaticoBll)
         {
             _logger = logger;
             this.clienteBll = clienteBll;
             this.usuarioAcessoBll = usuarioAcessoBll;
             this.configuracao = configuracao;
             this.loggerUsuarioLogado = loggerUsuarioLogado;
+            this.prepedidoBll = prepedidoBll;
+            this.cancelamentoAutomaticoBll = cancelamentoAutomaticoBll;
             _logger.LogDebug(1, "NLog injected into HomeController");
         }
 
-        public IActionResult Index(string novaloja)
+        public async Task<IActionResult> Index(string novaloja)
         {
             var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
 
@@ -41,13 +48,20 @@ namespace Loja.UI.Controllers
             if (!string.IsNullOrWhiteSpace(novaloja))
             {
                 model.LojaTentandoChavearId = novaloja;
-                if (!usuarioLogado.LojaAtivaAlterar(novaloja))
+                if (!usuarioLogado.Loja_atual_alterar(novaloja, usuarioAcessoBll))
                 {
                     model.ErroChavearLoja = true;
                 }
             }
             model.LojaAtivaId = usuarioLogado.Loja_atual_id;
             model.LojaAtivaNome = usuarioLogado.LojasDisponiveis.FirstOrDefault(r => r.Id == model.LojaAtivaId)?.Nome;
+
+            //vamos buscar a quantidade de orcamentos novos; na home somente mostramos da loja atual
+            var taskResumoPrepedidoListaDto = prepedidoBll.ResumoPrepedidoLista(usuarioLogado, true);
+            var taskCancelamentoAutomaticoViewModel = cancelamentoAutomaticoBll.DadosTela(usuarioLogado);
+
+            model.ResumoPrepedidoListaDto = await taskResumoPrepedidoListaDto;
+            model.CancelamentoAutomaticoItems = (await taskCancelamentoAutomaticoViewModel).cancelamentoAutomaticoItems;
             return View(model);
         }
 

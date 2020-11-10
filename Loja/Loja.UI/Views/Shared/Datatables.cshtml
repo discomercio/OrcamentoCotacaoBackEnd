@@ -1,124 +1,48 @@
 ﻿
 <style>
-
-    @* apra deixar as setas de ordenação antes dos nomes das colunas
-        na lista de produtos tem uma coluna muito grande e fica estrannho no fim dela
-        *@
-    table.dataTable thead .sorting_asc {
-        background: url("http://cdn.datatables.net/1.10.0/images/sort_asc.png") no-repeat center left;
+    table.dataTable {
+        border-collapse: collapse !important;
     }
 
-    table.dataTable thead .sorting_desc {
-        background: url("http://cdn.datatables.net/1.10.0/images/sort_desc.png") no-repeat center left;
+    .table {
+        font-size: smaller;
     }
 
-    table.dataTable thead .sorting {
-        background: url("http://cdn.datatables.net/1.10.0/images/sort_both.png") no-repeat center left;
-    }
-    @* diversos*@
-    .dataTables_length select {
-        display: inline-block;
-        height: auto;
-        width: auto;
-    }
-
-    /*botoes ficam à direita*/
-    div.dt-buttons {
-        display: inline;
-        float: right;
-        padding-top: 0.75em;
-        padding-left: 10px;
-    }
-
-    /* cores dos botoes de paginacao */
-    .dataTables_paginate .pagination li a {
-        color: #fff;
-    }
-
-    .dataTables_paginate .pagination li.active a {
-        color: #444;
-    }
-
-    /* espaçamento dos botoes */
-    .dataTables_wrapper .dataTables_paginate .paginate_button {
-        padding: 0.5em 0.4em;
-    }
-
-    .dataTables_wrapper .dataTables_paginate .first,
-    .dataTables_wrapper .dataTables_paginate .previous,
-    .dataTables_wrapper .dataTables_paginate .next,
-    .dataTables_wrapper .dataTables_paginate .last {
-        width: 85px;
-    }
-
-    .dataTables_wrapper .dataTables_paginate .previous {
-        margin-right: 10px;
-    }
-
-    /*usando waves-effect waves-light btn-small
-        deixamos duplicado para não piscar, mas a que vale mesmo está na rotina de incializacao
-    */
-    .dataTables_paginate a {
-        /*btn-small*/
-        text-decoration: none;
-        color: #fff;
-        background-color: #26a69a;
-        text-align: center;
-        letter-spacing: .5px;
-        -webkit-transition: background-color .2s ease-out;
-        transition: background-color .2s ease-out;
-        cursor: pointer;
-        /*waves-effect*/
-        position: relative;
-        cursor: pointer;
-        display: inline-block;
-        overflow: hidden;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-        -webkit-tap-highlight-color: transparent;
-        vertical-align: middle;
-        z-index: 1;
-        -webkit-transition: .3s ease-out;
-        transition: .3s ease-out;
-    }
-
-        .dataTables_paginate a:hover {
-            background-color: #2bbbad;
-            -webkit-box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 1px 7px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -1px rgba(0, 0, 0, 0.2);
-            box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 1px 7px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -1px rgba(0, 0, 0, 0.2);
+        .table thead tr th {
+            white-space: initial;
         }
 
-        .dataTables_paginate a:focus {
-            background-color: #1d7d74;
+        .table tbody td {
+            white-space: initial;
         }
-
-        .dataTables_wrapper .dataTables_paginate .paginate_button:active {
-        background: white;
-        box-shadow: none;
-    }
-
-    .dataTables_paginate .disabled a {
-        color: #c5c5c5 !important;
-    }
-
-    .dataTables_paginate .pagination li.active {
-        background-color: white !important;
-    }
-
-    .dataTables_paginate .paginate_button:hover {
-        background: white !important;
-        border: 1px solid white !important;
-    }
-
-    .dataTables_paginate .pagination li a {
-        font-size: 13px; /*1.0em;*/
-    }
 
     .dataTables_length {
         float: right !important;
-        margin-left: 30px;
+        margin-left: 0px;
+        align-self: flex-end;
+        white-space: pre-line !important;
+        text-align: left !important;
+    }
+
+    .dataTable_wrapper {
+        display: contents;
+    }
+
+    .dt-buttons {
+        text-align: end !important;
+    }
+
+    .dataTables_info {
+        font-size: smaller !important;
+    }
+
+    .dataTables_paginate {
+        text-align: right !important;
+    }
+
+    /*fica ruim nobr IE*/
+    div.dataTables_wrapper div.dataTables_length select {
+        width: 90px;
     }
 </style>
 <script>
@@ -153,58 +77,60 @@
         }
     };
 
-jQuery.extend( jQuery.fn.dataTableExt.oSort, {
-    "moeda-pre": function (a) {
-        a = (a === "-") ? 0 : a.replace(/[^\d\-]/g, "");
-        console.log(parseFloat( a ));
-        return parseFloat( a );
-    },
+    jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+        "moeda-pre": function (a) {
+            a = (a === "-") ? 0 : a.replace(/[^\d\-]/g, "");
+            console.log(parseFloat(a));
+            return parseFloat(a);
+        },
 
-    "moeda-asc": function ( a, b ) {
-        return a - b;
-    },
+        "moeda-asc": function (a, b) {
+            return a - b;
+        },
 
-    "moeda-desc": function ( a, b ) {
-        return b - a;
-    }
-});
+        "moeda-desc": function (a, b) {
+            return b - a;
+        }
+    });
 
-jQuery.extend( jQuery.fn.dataTableExt.oSort, {
-    "databr-pre": function (a) {
-        //order por datas, em dd/mm/aa
-        let partes = a.toString().split('/');
-        let ret = 0;
-        if (partes.length > 0)
-            ret += parseInt(partes[0]);
-        if (partes.length > 1)
-            ret += parseInt(partes[1])*32;
-        if (partes.length > 2)
-            ret += parseInt(partes[2])*380;
-        return ret;
-    },
+    jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+        "databr-pre": function (a) {
+            //order por datas, em dd/mm/aa
+            let partes = a.toString().split('/');
+            let ret = 0;
+            if (partes.length > 0)
+                ret += parseInt(partes[0]);
+            if (partes.length > 1)
+                ret += parseInt(partes[1]) * 32;
+            if (partes.length > 2)
+                ret += parseInt(partes[2]) * 380;
+            return ret;
+        },
 
-    "databr-asc": function ( a, b ) {
-        return a - b;
-    },
+        "databr-asc": function (a, b) {
+            return a - b;
+        },
 
-    "databr-desc": function ( a, b ) {
-        return b - a;
-    }
-});
+        "databr-desc": function (a, b) {
+            return b - a;
+        }
+    });
+
+    jQuery.extend(jQuery.fn.DataTable.ext.pager.numbers_length = 8);
 
 
-    var DataTables_dom_botoes = 'lfrtiBp';
+    var DataTables_dom_botoes = 'lfrtipB';
     var DataTables_dom = 'lfrtip';
     var DataTables_buttons = [
-        @*
+
         //botao copiar, nao temos como traduzir a mensagem...
-        {
-            extend: 'copy', text: 'Copiar',
-            fnComplete: function (nButton, oConfig, oFlash, sFlash) {
-                alert('Button action complete');
-            }
-        },
-            *@
+        //{
+        //    extend: 'copy', text: 'Copiar',
+        //    fnComplete: function (nButton, oConfig, oFlash, sFlash) {
+        //        alert('Button action complete');
+        //    }
+        //},
+
         {
             extend: 'excel', text: 'Exportar para Excel'
         },
@@ -218,30 +144,60 @@ jQuery.extend( jQuery.fn.dataTableExt.oSort, {
     function intiDatatables(seletor, config) {
 
         //queremos estas classes
-        $(seletor).addClass("striped destaquelincol");
-
-        config.sPaginationType = "full_numbers";
-        config.lengthMenu= DataTables_lengthMenu;
-        config.language= DataTables_language;
-        config.dom= DataTables_dom_botoes;
-        config.buttons= DataTables_buttons;
+        config.sPaginationType = "simple_numbers";
+        config.lengthMenu = DataTables_lengthMenu;
+        config.language = DataTables_language;
+        config.dom = DataTables_dom_botoes;
+        config.buttons = DataTables_buttons;
 
         //nao funciona!
-        //digo, funciona, mas precisa redesenhar as classes. 
+        //digo, funciona, mas precisa redesenhar as classes.
         //$.fn.dataTable.ext.classes.sPageButton = "paginate_button waves-effect waves-light btn-small";
 
         let ret = $(seletor).DataTable(config);
 
-        $(".dt-buttons button").addClass("waves-effect waves-light btn-small");
-        $(".dt-buttons button").removeClass("dt-button");
-        $(".dataTables_paginate a").addClass("waves-effect waves-light btn-small");
-        $(seletor).on(  'draw.dt', function () {
-            $(".dataTables_paginate a").addClass("waves-effect waves-light btn-small");
-        });
+        $(".buttons-copy").hide();
+        $(".dt-buttons").addClass("col-xl-12 col-lg-12 col-md-12 col-sm-12 px-0 mt-2");
+
+        $(".dt-responsive").addClass("px-3");
+
+        $(".tabeladados").addClass("px-0");
+        $(".dataTables_paginate").addClass("col-xl-6 col-lg-7 col-md-7 col-sm-12 px-0");
+        $(".dataTables_wrapper").addClass("row");
+        $(".dataTables_info").addClass("col-xl-6 col-lg-5 col-md-5 pl-0");
+        $(".dataTables_length").addClass("form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 pl-0");
+        $(".dataTables_length").find('select').addClass("custom-select ml-0");
+        $(".dataTables_length").find('label').addClass("col-form-label");
+        $(".dataTables_filter").addClass("form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 pr-0");
+        $(".dataTables_filter").find('label').addClass('col-form-label');
+        $(".dataTables_filter").children().find('input').addClass('form-control');
+        $(".dt-buttons a").addClass("btn btn-primary btn-sm paginate_button");
+        $(".buttons-excel").addClass("mr-2");
+        $(".dt-buttons a").removeClass("dt-button");
 
         $(seletor).show();
         return ret;
     }
 
+    $(window).resize(function () {
+        if (window.innerWidth < 767)
+            AlterarClasse_length_filter();
+    });
+
+    $(function () {
+        //se a tela estive nessa resolução ao atualizar
+        if (window.innerWidth < 767) {
+            AlterarClasse_length_filter();
+        }
+
+    });
+
+    function AlterarClasse_length_filter() {
+        $(".dataTables_filter").removeClass("col-sm-6");
+        $(".dataTables_filter").addClass("col-sm-12");
+
+        $(".dataTables_length").removeClass("col-sm-12");
+        $(".dataTables_length").addClass("col-sm-6");
+    }
 
 </script>

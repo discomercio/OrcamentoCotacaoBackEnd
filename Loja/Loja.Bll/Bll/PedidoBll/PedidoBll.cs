@@ -22,26 +22,30 @@ using Pedido.Dados.Criacao;
 using Pedido;
 using InfraBanco.Modelos;
 using InfraBanco;
+using Prepedido.PedidoVisualizacao;
 
 namespace Loja.Bll.PedidoBll
 {
     public class PedidoBll
     {
-        private readonly ContextoBdProvider contextoProvider;
+        public readonly ContextoBdProvider contextoProvider;
         private readonly ContextoCepProvider contextoCepProvider;
         private readonly ContextoNFeProvider contextoNFeProvider;
         private readonly Loja.Bll.ProdutoBll.ProdutoBll produtoBll;
         private readonly Loja.Bll.ClienteBll.ClienteBll clienteBll;
+        private readonly Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll pedidoVisualizacaoBll;
         //private readonly Loja.Bll.Bll.PedidoBll.EfetivaPedido.EfetivaPedido efetivarPedido;
 
         public PedidoBll(ContextoBdProvider contextoProvider, ContextoCepProvider contextoCepProvider,
-            ContextoNFeProvider contextoNFeProvider, ProdutoBll.ProdutoBll produtoBll, ClienteBll.ClienteBll clienteBll)
+            ContextoNFeProvider contextoNFeProvider, ProdutoBll.ProdutoBll produtoBll, ClienteBll.ClienteBll clienteBll,
+            PedidoVisualizacaoBll pedidoVisualizacaoBll)
         {
             this.contextoProvider = contextoProvider;
             this.contextoCepProvider = contextoCepProvider;
             this.contextoNFeProvider = contextoNFeProvider;
             this.produtoBll = produtoBll;
             this.clienteBll = clienteBll;
+            this.pedidoVisualizacaoBll = pedidoVisualizacaoBll;
             //this.efetivarPedido = efetivarPedido;
         }
 
@@ -3314,5 +3318,52 @@ namespace Loja.Bll.PedidoBll
 
         //}
 
+        public async Task<IEnumerable<UltimosPedidosDto>> ListaUltimosPedidos(string loja)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+            //SELECT data, pedido, st_entrega, vendedor, cnpj_cpf, nome_iniciais_em_maiusculas, 
+            //       analise_credito, analise_credito_pendente_vendas_motivo 
+            //FROM t_PEDIDO 
+            //INNER JOIN t_CLIENTE ON t_PEDIDO.id_cliente = t_CLIENTE.id
+            //WHERE (loja='" & loja & "')
+            //AND (st_entrega<>'" & ST_ENTREGA_CANCELADO & "')
+            //AND (st_entrega<>'" & ST_ENTREGA_ENTREGUE & "')"
+            List<UltimosPedidosDto> lista = await (from c in db.Tpedidos.Include(x => x.Tcliente)
+                                                   where c.Loja == loja &&
+                                                         c.St_Entrega != Constantes.Constantes.ST_ENTREGA_CANCELADO &&
+                                                         c.St_Entrega != Constantes.Constantes.ST_ENTREGA_ENTREGUE
+                                                   orderby c.Data descending,
+                                                           c.Hora descending,
+                                                           c.Pedido descending
+                                                   select new UltimosPedidosDto
+                                                   {
+                                                       Data = c.Data,
+                                                       Pedido = c.Pedido,
+                                                       NomeIniciaisEmMaiusculas = c.Tcliente.Nome_Iniciais_Em_Maiusculas,
+                                                       St_Entrega = pedidoVisualizacaoBll.FormataSatusPedido(c.St_Entrega),
+                                                       Vendedor = c.Vendedor,
+                                                       AnaliseCredito = pedidoVisualizacaoBll.DescricaoAnaliseCreditoCadastroPedido(Convert.ToString(c.Analise_Credito)),
+                                                       AnaliseCreditoPendenteVendasMotivo = c.Analise_Credito_Pendente_Vendas_Motivo
+                                                   }).ToListAsync();
+
+            if (lista.Count > 0)
+            {
+                foreach (var c in lista)
+                {
+                    if (!string.IsNullOrEmpty(c.AnaliseCredito) && 
+                        !string.IsNullOrEmpty(c.AnaliseCreditoPendenteVendasMotivo))
+                    {
+                        if(c.AnaliseCredito == Constantes.Constantes.COD_AN_CREDITO_PENDENTE_VENDAS)
+                        {
+                            c.AnaliseCredito = c.AnaliseCredito  + "(" + await UtilsGlobais.Util.ObterDescricao_Cod(Constantes.Constantes.GRUPO_T_CODIGO_DESCRICAO__AC_PENDENTE_VENDAS_MOTIVO,
+                            c.AnaliseCreditoPendenteVendasMotivo, contextoProvider) + ")";
+                        }
+                        
+                    }
+                }
+            }
+
+            return lista;
+        }
     }
 }

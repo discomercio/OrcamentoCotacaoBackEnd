@@ -18,10 +18,10 @@ namespace InfraIdentity
         public string ObterApelidoOrcamentista(ClaimsPrincipal User)
         {
             if (User == null)
-                return null;
+                return "";
             var aux = User.Claims.FirstOrDefault(r => r.Type == System.Security.Claims.ClaimTypes.NameIdentifier);
             if(aux == null)
-                return null;
+                return "";
             string apelido = aux.Value;
             return apelido;
         }

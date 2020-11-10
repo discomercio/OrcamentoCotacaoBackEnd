@@ -9,145 +9,192 @@
     ViewData["Title"] = "Login";
     ViewBag.PaginaDeLogin = true;
 }
-
-
-<br />
-<br />
-<br />
-<br />
-<br />
+<style>
+    .pcoded-content {
+        margin-left: 0px !important;
+    }
+</style>
 
 @{
     var usuarioLogado = new Loja.Bll.Bll.AcessoBll.UsuarioLogado(loggerUsuarioLogado, User, HttpContextAccessor.HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
 }
 
-
-@using (Html.BeginForm("LoginSubmit", "Acesso", FormMethod.Post))
-{
-    @Html.HiddenFor(m => m.ReturnUrl)
-
-    <div class="container centered" style="line-height: initial;">
-        @if (Model.AcessoNegado)
-        {
-            <div class="row">
-                <div class="col s4"></div>
-                <div class="col s4">
-                    Acesso negado: você deve fazer o login novamente. Por motivos de segurança, periodicamente
-                    você deve refazer o login.
-                    <br />
-                    <br />
-                    Se você acabou de fazer o login e continua a receber esta mensagem,
-                    é possível que o seu usuário não possua autorização para acessar essa página.
-                    Nesse caso, faça o login como outro usuário ou entre em contato com o administrador do sistema.
+<div class="theme-loader">
+    <div class="loader-track">
+        <div class="preloader-wrapper">
+            <div class="spinner-layer spinner-blue">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
                 </div>
-                <div class="col s4"></div>
-            </div>
-        }
-
-
-        @if (Model.LoginUsuarioRetorno?.Usuario_bloqueado ?? false)
-        {
-            <div class="row">
-                <div class="col s4"></div>
-                <div class="col s4">
-                    Acesso negado: o seu usuário está bloqueado.
-                    <br />
-                    <br />
-                    Entre em contato com o administrador do sistema.
+                <div class="gap-patch">
+                    <div class="circle"></div>
                 </div>
-                <div class="col s4"></div>
-            </div>
-        }
-        @if (Model.LoginUsuarioRetorno?.Loja_nao_existe ?? false)
-        {
-            <div class="row">
-                <div class="col s4"></div>
-                <div class="col s4">
-                    Acesso negado: a loja especificada não existe.
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
                 </div>
-                <div class="col s4"></div>
             </div>
-        }
-        @if (Model.LoginUsuarioRetorno?.Loja_sem_acesso ?? false)
-        {
-            <div class="row">
-                <div class="col s4"></div>
-                <div class="col s4">
-                    Acesso negado: seu usuário não tem acesso à loja especificada.
-                    <br />
-                    <br />
-                    Faça o login com outra loja ou entre em contato com o administrador do sistema.
+            <div class="spinner-layer spinner-red">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
                 </div>
-                <div class="col s4"></div>
-            </div>
-        }
-
-        <div class="row">
-            <div class="col s4"></div>
-            <div class="input-field col s4">
-                @*//o browser pode preenhcer o formulário autoamticamente
-                    para resolver, tirei o label*@
-                <div style="height:1em;">Loja</div>
-                <br />
-                <div>@Html.TextBoxFor(m => m.Loja, new { @class = "form-control active", autofocus = "true" })</div>
-            </div>
-            <div class="col s4"></div>
-        </div>
-        <div class="row">
-            <div class="col s4"></div>
-            <div class="input-field col s4">
-                @*//o browser pode preenhcer o formulário autoamticamente
-                    para resolver, tirei o label*@
-                <div style="height:1em;">Nome do usuário</div>
-                <br />
-                <div>@Html.TextBoxFor(m => m.Apelido, new { @class = "form-control active" })</div>
-            </div>
-            <div class="col s4"></div>
-        </div>
-        <div class="row">
-            <div class="col s4"></div>
-            <div class="input-field col s4">
-                <div style="height:1em;">Senha</div>
-                <br />
-                @{
-                    var estilos = "";
-                    if (Model.ErroUsuarioSenha)
-                    {
-                        estilos = " validate invalid";
-                    }
-                }
-                @Html.PasswordFor(m => m.Senha, new { @class = "form-control active " + estilos })
-                <span class="helper-text" data-error="Nome de usuário ou senha incorretos."></span>
-            </div>
-            <div class="col s4"></div>
-        </div>
-
-        @if (Model.PermitirManterConectado)
-        {
-            <div class="row">
-                <div class="col s4"></div>
-                <div class="input-field col s4 center">
-                    <label>
-                        @Html.CheckBoxFor(m => m.ManterConectado, new { @class = "filled-in " + estilos })
-                        <span>Manter conectado</span>
-                    </label>
-                    @*espacador*@
+                <div class="gap-patch">
+                    <div class="circle"></div>
                 </div>
-                <div class="col s4"></div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
             </div>
-        }
-
-        <div class="row">
-            <div class="col s4"></div>
-            <div class="col s4 center">
-                <div style="height:3em;"> </div>
-                <button class="waves-effect waves-light btn-small"
-                        type="submit">
-                    Enviar
-                </button>
+            <div class="spinner-layer spinner-yellow">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
             </div>
-            <div class="col s4"></div>
+            <div class="spinner-layer spinner-green">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
         </div>
     </div>
-}
+</div>
+
+<section class="login-block">
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                @using (Html.BeginForm("LoginSubmit", "Acesso", FormMethod.Post,
+      new
+      {
+          @class = "md-float-material form-material",
+
+      }))
+                {
+                    @Html.HiddenFor(m => m.ReturnUrl)
+
+                    @if (Model.AcessoNegado)
+                    {
+                        <div class="auth-box">
+                            <div class="m-b-20">
+                                Acesso negado: você deve fazer o login novamente. Por motivos de segurança, periodicamente
+                                você deve refazer o login.
+                                <br />
+                                Se você acabou de fazer o login e continua a receber esta mensagem,
+                                é possível que o seu usuário não possua autorização para acessar essa página.
+                                Nesse caso, faça o login como outro usuário ou entre em contato com o administrador do sistema.
+                            </div>
+                        </div>
+                    }
+                    @if (Model.LoginUsuarioRetorno?.Usuario_bloqueado ?? false)
+                    {
+                        <div class="auth-box">
+                            <div class="m-b-20" style="text-align:center">
+                                Acesso negado: o seu usuário está bloqueado.
+                                <br />
+                                Entre em contato com o administrador do sistema.
+                            </div>
+                        </div>
+                    }
+                    @if (Model.LoginUsuarioRetorno?.Loja_nao_existe ?? false)
+                    {
+                        <div class="auth-box">
+                            <div class="m-b-20" style="text-align:center">
+                                Acesso negado: a loja especificada não existe.
+                            </div>
+                            <div class="col s4"></div>
+                        </div>
+                    }
+                    @if (Model.LoginUsuarioRetorno?.Loja_sem_acesso ?? false)
+                    {
+                        <div class="auth-box">
+                            <div class="m-b-20" style="text-align:center">
+                                Acesso negado: seu usuário não tem acesso à loja especificada.
+                                <br />
+                                Faça o login com outra loja ou entre em contato com o administrador do sistema.
+                            </div>
+                            <div class="col s4"></div>
+                        </div>
+                    }
+
+                    //Corpo do login
+                    <div class="auth-box card">
+                        <div class="card-block">
+                            <div class="row m-b-20">
+                                <div class="col-md-12" style="text-align:center">
+                                    <img src="~/logos/logo_arclube.png" style="height:20px;padding:inherit;margin-bottom:10px" />
+                                    <img src="~/logos/LogoUnis.png" style="height:23px;padding:inherit;margin-bottom:10px" />
+                                    <img src="~/logos/bonshop.png" style="height:23px;padding:inherit;margin-bottom:10px" />
+                                    <img src="~/logos/Logo-ShopVendas.png" style="height:24px;padding:inherit;margin-bottom:10px" />
+                                </div>
+                            </div>
+                            <div class="row m-b-20">
+                                <div class="col-md-12 mt-3" style="text-align:center">
+                                    <h3 style="font-weight:600">Central Administrativa</h3>
+                                </div>
+                            </div>
+                            <p class="text-muted text-center p-b-5">Faça login com sua conta normal</p>
+                            <div class="form-group form-primary">
+                                @Html.TextBoxFor(m => m.Loja, new { @class = "form-control", autofocus = "true", @id = "loja" })
+                                <label class="float-label">Loja</label>
+                                <span class="form-bar"></span>
+                            </div>
+                            <div class="form-group form-primary">
+                                @Html.TextBoxFor(m => m.Apelido, new { @class = "form-control", @id = "usuario" })
+                                <span class="form-bar"></span>
+                                <label class="float-label">Nome do usuário</label>
+                            </div>
+                            <div class="form-group form-primary">
+                                @{
+                                    var estilos = "";
+                                    if (Model.ErroUsuarioSenha)
+                                    {
+                                        estilos = "required";
+                                    }
+                                }
+                                @Html.PasswordFor(m => m.Senha, new { @class = "form-control " + estilos })
+                                <span class="form-bar"></span>
+                                <label class="float-label">Senha</label>
+                            </div>
+                            <div class="row m-t-25 text-left">
+                                <div class="col-12">
+                                    <div class="checkbox-fade fade-in-primary">
+                                        <label>
+                                            @Html.CheckBoxFor(m => m.ManterConectado, new { @class = "checkbox " + estilos })
+                                            <span class="cr"><i class="cr-icon icofont icofont-ui-check txt-primary"></i></span>
+                                            <span class="text-inverse">Manter conectado</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row m-t-30">
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">
+                                        Enviar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    requirejs(["Views/Acesso/Login"], function (util) {
+
+    });
+</script>
 

@@ -3,51 +3,45 @@
     select para escolher a loja a usar
 *@
 
-<style>
-    .semespacamento {
-        margin-bottom: 0px;
-        padding-bottom: 0px !important;
-    }
-</style>
 @if (Model.ConsultaUniversalPedidoOrcamento)
 {
+    <div class="d-inline">
+        <div class="form-group mb-0" style="display:inline-block; float:right">
+            <label class="col-form-label">Filtrar por loja:</label>
+            @{
+                var lista = Model.LojasDisponiveis.OrderBy(r => r.Nome).ToList();
+                var listaSl = new List<SelectListItem>();
+                if (Model.ItensLoja != null)
+                {
+                    int numero = Model.ItensLoja.Select(r => r.NumeroItens).Sum();
+                    listaSl.Add(new SelectListItem($"Todas ({numero} itens)", ""));
+                }
+                else
+                {
+                    listaSl.Add(new SelectListItem("Todas", ""));
+                }
 
-    <div class="semespacamento row " style="padding-bottom: 0px !important;">
-        <div class="semespacamento col s12 " style="padding-bottom: 0px !important;">
-            <div class="semespacamento col s8 " style="padding-bottom: 0px !important;">
-            </div>
-            <div class="semespacamento input-field col s4 " style="padding-bottom: 0px !important;">
-                <div class="input-field">
-                    @{
-                        var lista = Model.LojasDisponiveis.OrderBy(r => r.Nome).ToList();
-                        var listaSl = new List<SelectListItem>();
-                        if (Model.ItensLoja != null)
-                        {
-                            int numero = Model.ItensLoja.Select(r => r.NumeroItens).Sum();
-                            listaSl.Add(new SelectListItem($"Todas ({numero} itens)", ""));
-                        }
-                        else
-                        {
-                            listaSl.Add(new SelectListItem("Todas", ""));
-                        }
-
-                        foreach (var item in lista)
-                        {
-                            string texto = item.Nome;
-                            if (Model.ItensLoja != null)
-                            {
-                                var numero = Model.ItensLoja.Where(r2 => r2.Loja == item.Id).FirstOrDefault()?.NumeroItens ?? 0;
-                                texto = $"{texto} ({numero} itens)";
-                            }
-                            listaSl.Add(new SelectListItem(texto, item.Nome));
-                        }
+                foreach (var item in lista)
+                {
+                    string texto = item.Nome;
+                    if (Model.ItensLoja != null)
+                    {
+                        var numero = Model.ItensLoja.Where(r2 => r2.Loja == item.Id).FirstOrDefault()?.NumeroItens ?? 0;
+                        texto = $"{texto} ({numero} itens)";
                     }
-                    @Html.DropDownList("comboLojas", listaSl, new { @id = "comboLojas" })
-                    <label>Filtrar por loja:</label>
-                </div>
-            </div>
+                    listaSl.Add(new SelectListItem(texto, item.Nome));
+                }
+            }
+            @Html.DropDownList("comboLojas", listaSl, new { @id = "comboLojas", @class = "custom-select col-md-8 col-sm-8" })
         </div>
     </div>
+    
+
+    <style>
+        #comboLojas{
+            float:right !important;
+        }
+    </style>
 
     @if (Model.NumeroColunaDaLoja >= 0)
     {

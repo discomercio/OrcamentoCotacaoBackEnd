@@ -9,7 +9,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Serialization;
-
+using Microsoft.Extensions.Logging;
 
 namespace PrepedidoApi.Controllers
 {
@@ -47,14 +47,16 @@ namespace PrepedidoApi.Controllers
         private readonly IConfiguration configuration;
         private readonly PrepedidoBusiness.Bll.AcessoBll acessoBll;
         private readonly IServicoDecodificarToken servicoDecodificarToken;
+        private readonly ILogger<AcessoController> logger;
 
         public AcessoController(IServicoAutenticacao servicoAutenticacao, IConfiguration configuration, PrepedidoBusiness.Bll.AcessoBll acessoBll,
-            IServicoDecodificarToken servicoDecodificarToken)
+            IServicoDecodificarToken servicoDecodificarToken, ILogger<AcessoController> logger)
         {
             this.servicoAutenticacao = servicoAutenticacao;
             this.configuration = configuration;
             this.acessoBll = acessoBll;
             this.servicoDecodificarToken = servicoDecodificarToken;
+            this.logger = logger;
         }
 
 
@@ -67,10 +69,17 @@ namespace PrepedidoApi.Controllers
             string apelido = User.Claims.FirstOrDefault(r => r.Type == ClaimTypes.NameIdentifier).Value.Trim();
             string nome = User.Claims.FirstOrDefault(r => r.Type == ClaimTypes.Name).Value;
             string loja = User.Claims.FirstOrDefault(r => r.Type == ClaimTypes.Surname).Value;
-            string token = servicoAutenticacao.RenovarTokenAutenticacao(apelido, nome, loja, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos, Utils.Autenticacao.RoleAcesso);
+            string unidade_negocio = User.Claims.FirstOrDefault(r => r.Type == "unidade_negocio").Value;
+            string token = servicoAutenticacao.RenovarTokenAutenticacao(apelido, nome, loja, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos, Utils.Autenticacao.RoleAcesso, unidade_negocio, out bool unidade_negocio_desconhecida);
+
+            if (unidade_negocio_desconhecida)
+            {
+                logger.LogWarning($"RenovarToken unidade_negocio_desconhecida apelido:{apelido}");
+                return Forbid();
+            }
 
             if (token == null)
-                return BadRequest(new { message = "Erro no sistema de autenticação. O usuário pode ter sido editando no banco de dados." });
+                return BadRequest(new { message = "Erro no sistema de autenticação. O usuário pode ter sido editado no banco de dados." });
 
             return Ok(token);
         }
@@ -78,6 +87,7 @@ namespace PrepedidoApi.Controllers
 
 
         //este é o único que permite acesso anônimo
+        //erro 403: t_LOJA.unidade_negocio desconhecida
         [AllowAnonymous]
         [HttpPost("fazerLogin")]
         public async Task<IActionResult> FazerLogin(PrepedidoBusiness.Dto.Acesso.LoginDto login)
@@ -86,7 +96,13 @@ namespace PrepedidoApi.Controllers
             var appSettings = appSettingsSection.Get<Utils.Configuracao>();
             string apelido = login.Apelido;
             string senha = login.Senha;
-            string token = await servicoAutenticacao.ObterTokenAutenticacao(apelido, senha, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos, Utils.Autenticacao.RoleAcesso, new ServicoAutenticacaoProvider(acessoBll));
+            string token = servicoAutenticacao.ObterTokenAutenticacao(apelido, senha, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos, Utils.Autenticacao.RoleAcesso, new ServicoAutenticacaoProvider(acessoBll), out bool unidade_negocio_desconhecida);
+
+            if (unidade_negocio_desconhecida)
+            {
+                logger.LogWarning($"FazerLogin unidade_negocio_desconhecida apelido:{login.Apelido}");
+                return Forbid();
+            }
 
             string ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
             string userAgent = Request.Headers["User-agent"];

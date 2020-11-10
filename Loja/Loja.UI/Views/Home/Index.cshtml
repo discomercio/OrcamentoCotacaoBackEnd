@@ -1,22 +1,212 @@
 ﻿@model Loja.UI.Models.Home.HomeViewModel
 @{
     ViewData["Title"] = "Home Page";
+
+    var NumeroLinhasOrcamentistasVendodresNosCards = 3;
 }
 
-<div>
-    Olá @User?.Identity?.Name
-
-    <br />
-    <br />
-    <br />
-    Loja ativa: @(string.IsNullOrWhiteSpace(Model.LojaAtivaNome) ? "nenhuma" : Model.LojaAtivaNome)
-    @if (Model.ErroChavearLoja)
-    {
-        <br />
-        <br />
-        <br />
-        <span class="materialize-red-text">
-            Erro: não foi possível chavear para a loja @(Model.LojaTentandoChavearId). Verifique com o administrador que você possui permissão.
-        </span>
+<style>
+    .cards-mesma-altura {
+        height: calc(100% - 30px);
     }
+
+    .icones-cards-1::before {
+        font-size: 2em;
+        color: #7272ff;
+    }
+
+    .icones-cards-2::before {
+        font-size: 2em;
+        color: #479e05;
+    }
+
+    .icones-cards-3::before {
+        font-size: 2em;
+        color: red;
+    }
+</style>
+<div class="pcoded-inner-content">
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="page-body">
+                @* Inicio dos card's *@
+                <div class="container-fluid">
+                    <div class="row">
+                        @if (Model.ResumoPrepedidoListaDto != null)
+                        {
+                            <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 ">
+                                <div class="card comp-card cards-mesma-altura">
+                                    <a href="@Url.Action("Index", "Prepedido")">
+                                        <div class="card-body">
+                                            <div class="row align-items-top justify-content-between">
+                                                <div class="col-12">
+                                                    <h6 class="m-b-25">
+                                                        <span style="float: right">
+                                                            <i class="fa fa-shopping-basket icones-cards-1"></i>
+                                                        </span>
+                                                        Pré-Pedidos Pendentes
+                                                    </h6>
+                                                    <h3 class="f-w-700 text-info">@Model.ResumoPrepedidoListaDto.Itens.Count Pré-Pedidos</h3>
+                                                    @*
+                                                            o que queremos:
+                                                        <p class="m-b-0">KONAR - 12 Pré-Pedidos</p>
+                                                        <p class="m-b-0">MARISARJ - 10 Pré-Pedidos</p>
+                                                        <p class="m-b-0">POLITÉCNIC - 8 Pré-Pedidos</p>
+                                                        <p class="m-b-0">PRAGMÁTICA - 8 Pré-Pedidos</p>
+                                                        <p class="m-b-0">Outros orçamentistas - 2 Pré-Pedidos</p>
+                                                    *@
+                                                    @{
+                                                        var orcamentistas = (from r in Model.ResumoPrepedidoListaDto.Itens
+                                                                             group r by r.Orcamentista
+                                                                          into g
+                                                                             select new { Orcamentista = g.Key, Pedidos = g.Count() });
+                                                        var total = Model.ResumoPrepedidoListaDto.Itens.Count;
+                                                    }
+                                                    @foreach (var registro in orcamentistas.OrderByDescending(r => r.Pedidos).Take(NumeroLinhasOrcamentistasVendodresNosCards))
+                                                    {
+                                                        <p class="m-b-0">@registro.Orcamentista - @registro.Pedidos Pré-Pedidos</p>
+                                                        total -= registro.Pedidos;
+                                                    }
+                                                    @if (total > 0)
+                                                    {
+                                                        <p class="m-b-0">Outros orçamentistas - @total Pré-Pedidos</p>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                        <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 ">
+                            <div class="card comp-card cards-mesma-altura">
+                                <a href="#" onclick="swal('Ops!', 'Ainda não implementado!')">
+                                    <div class="card-body">
+                                        <div class="row align-items-top justify-content-between">
+                                            <div class="col-12">
+                                                <h6 class="m-b-25">
+                                                    <span style="float: right">
+                                                        <i class="fa fa-shopping-bag icones-cards-2"></i>
+                                                    </span>
+                                                    Últimos Pedidos (dados fixos)
+                                                </h6>
+                                                <h3 class="f-w-700 text-info">50 Pedidos</h3>
+                                                <p class="m-b-0">ANDREZA - 22 Pedidos</p>
+                                                <p class="m-b-0">LUCYANE - 10 Pedidos</p>
+                                                <p class="m-b-0">VANESSA - 8 Pedidos</p>
+                                                <p class="m-b-0">Outros vendedores - 2 Pedidos</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        @if (Model.CancelamentoAutomaticoItems != null)
+                        {
+                            <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 ">
+                                <div class="card comp-card cards-mesma-altura">
+                                    <a href="@Url.Action("CancelamentoAutomatico", "Pedido")">
+                                        <div class="card-body">
+                                            <div class="row align-items-top justify-content-between">
+                                                <div class="col-12">
+                                                    <h6 class="m-b-25">
+                                                        <span style="float: right">
+                                                            <i class="fa fa-bolt icones-cards-3"></i>  
+                                                        </span>
+                                                        Cancelamento Automático
+                                                    </h6>
+                                                    <h3 class="f-w-700 text-info">@Model.CancelamentoAutomaticoItems.Count Pedidos</h3>
+
+                                                    @*
+                                                        o que queremos:
+                                                        <p class="m-b-0">GUSTAVO S - 12 Pedidos</p>
+                                                        <p class="m-b-0">VITOR - 10 Pedidos</p>
+                                                        <p class="m-b-0">LUCAS V - 8 Pedidos</p>
+                                                        <p class="m-b-0">Outros vendedores - 2 Pedidos</p>*@
+                                                    @{
+                                                        var vendedores = (from r in Model.CancelamentoAutomaticoItems
+                                                                          group r by r.Vendedor
+                                                                          into g
+                                                                          select new { Vendedor = g.Key, Pedidos = g.Count() });
+                                                        var total = Model.CancelamentoAutomaticoItems.Count;
+                                                    }
+                                                    @foreach (var registro in vendedores.OrderByDescending(r => r.Pedidos).Take(NumeroLinhasOrcamentistasVendodresNosCards))
+                                                    {
+                                                        <p class="m-b-0">@registro.Vendedor - @registro.Pedidos Pedidos</p>
+                                                        total -= registro.Pedidos;
+                                                    }
+                                                    @if (total > 0)
+                                                    {
+                                                        <p class="m-b-0">Outros vendedores - @total Pedidos</p>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                            <div class="card cards-mesma-altura">
+                                <div class="card-block p-b-0">
+                                    <div class="row">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
+                                            <div class="col-xl-12 col-lg-12 p-0">
+                                                <h5 style=" font-weight: 600 ">
+                                                    Busca de Pré-Pedido
+                                                </h5>
+                                            </div>
+                                            <div class="form-group col-xl-12 mt-2 px-0">
+                                                <label class="col-form-label pr-1" for="pedido">Pré-Pedido</label>
+                                                <input class="form-control mr-2" type="text" id="pre-pedido" name="pre-pedido"
+                                                       placeholder="Informe o pré-pedido" />
+                                                <label class="col-form-label pr-1" for="pedido">Orçamentista</label>
+                                                <input class="form-control mr-2" type="text" id="pre-pedido" name="pre-pedido"
+                                                       placeholder="Informe o orçamentista" />
+                                            </div>
+                                            <div>
+                                                <button class="btn btn-primary btn-sm" style="float:right" onclick="swal('Ops!', 'Ainda não implementado!')">Buscar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                            <div class="card cards-mesma-altura">
+                                <div class="card-block p-b-0">
+                                    <div class="row">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
+                                            <div class="col-xl-12 col-lg-12 p-0">
+                                                <h5 style="font-weight:600">Busca de Pedido</h5>
+                                            </div>
+                                            <div class="form-group col-xl-12 mt-2 px-0">
+                                                <label class="col-form-label pr-1" for="pedido">Pedido</label>
+                                                <input class="form-control mr-2" type="text" id="pedido" name="pedido"
+                                                       placeholder="Informe o número do pedido" />
+                                                <label class="col-form-label pr-1" for="pedido">Nota Fiscal</label>
+                                                <input class="form-control mr-2" type="text" id="pedido" name="pedido"
+                                                       placeholder="Informe o número da nota fiscal" />
+                                                <label class="col-form-label pr-1" for="pedido">Cliente</label>
+                                                <input class="form-control mr-2" type="text" id="pedido" name="pedido"
+                                                       placeholder="Informe o CPF/CNJ ou parte do nome do cliente" />
+                                            </div>
+                                            <div>
+                                                <button class="btn btn-primary btn-sm" style="float:right" onclick="swal('Ops!', 'Ainda não implementado!')">Buscar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+

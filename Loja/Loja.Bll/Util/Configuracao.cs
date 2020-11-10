@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+#nullable enable
 namespace Loja.Bll.Util
 {
     public class Configuracao
@@ -12,6 +13,7 @@ namespace Loja.Bll.Util
         public Configuracao(IConfiguration configuration)
         {
             this.configuration = configuration;
+            this.Diretorios = new ClasseDiretorios(configuration);
         }
 
         public bool PermitirManterConectado
@@ -49,6 +51,30 @@ namespace Loja.Bll.Util
                 return configuration.GetSection("Acesso")?.GetValue<long>("RecarregarPermissoesUsuarioMinutos") ?? 10;
             }
         }
+
+        public class ClasseDiretorios
+        {
+            private readonly IConfiguration configuration;
+            public ClasseDiretorios(IConfiguration configuration)
+            {
+                this.configuration = configuration;
+            }
+            public string RaizSiteLojaMvc
+            {
+                get
+                {
+                    return configuration.GetSection("Diretorios")?.GetValue<string>("RaizSiteLojaMvc") ?? "";
+                }
+            }
+            public string RaizSiteColorsLoja
+            {
+                get
+                {
+                    return configuration.GetSection("Diretorios")?.GetValue<string>("RaizSiteColorsLoja") ?? "";
+                }
+            }
+        }
+        public ClasseDiretorios Diretorios;
 
     }
 }

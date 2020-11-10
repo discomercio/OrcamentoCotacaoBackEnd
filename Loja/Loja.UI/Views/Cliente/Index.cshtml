@@ -4,24 +4,63 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h5>Novo Pedido</h5>
-
-<div class="row">
-    @using (Html.BeginForm("ValidarCliente", "Cliente", FormMethod.Post))
-    {
-        <div class="row col s12">
-            <div class="input-field col s5">
-                <input id="cpf_cnpj" name="cpf_cnpj" type="text" class="validate" />
-                <label for="cpf_cnpj">CPF / CNPJ</label>
-
-            </div>
-            <div class="input-field col s3">
-                <button class="waves-effect waves-light btn-small"
-                        type="submit"
-                        style="margin-top:-1rem">
-                    Pesquisar
-                </button>
+<div class="page-header card my-3">
+    <div class="row align-items-end">
+        <div class="col-lg-8 meu-header">
+            <div class="page-header-title" id="title-icone">
+                <i class="feather icon-user bg-c-blue"></i>
+                <div class="d-inline">
+                    <h5 class="pt-2">Cadastro Cliente</h5>
+                </div>
             </div>
         </div>
-    }
+    </div>
 </div>
+
+<div class="pcoded-inner-content pt-0">
+    <div class="main-body">
+        <div class="page-wrapper pt-0">
+            <div class="page-body">
+                <div class="row">
+                    <div class="col-md-12 col-xl-12">
+                        <div class="card mb-0" style="min-height:calc(100vh - 250px)">
+                            <div class="page-header card">
+                                <div class="content col-xl-12 col-lg-12 px-0">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 px-0">
+                                        @using (Html.BeginForm("BuscarCliente", "Cliente", FormMethod.Post,
+                                      new
+                                      {
+                                          enctype = "multipart/form-data",                                          
+                                          id = "formulario"
+                                      }
+                                       ))
+                                        {
+                                            <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 px-0">
+                                                <input type="hidden" name="novoCliente" id="novoCliente" value="" />
+                                                <label class="col-form-label" for="cpf_cnpj">CPF / CNPJ</label>
+                                                <input type="text" name="cpf_cnpj" id="cpf_cnpj"
+                                                       class="form-control col-xl-6 col-lg-6 col-md-6 col-sm-6 mb-2"
+                                                       placeholder="Informe CPF/CNPJ"
+                                                       style="display:inline-block">
+                                                <button class="btn btn-primary btn-sm col-xl-2 col-lg-3 col-md-3 col-sm-3 mt-0"
+                                                        type="button" onclick="ValidarCpfCnpj()" style="margin-top:2.5%">
+                                                    <i class="fa fa-search"></i>
+                                                    Pesquisar
+                                                </button>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    requirejs(["Views/Cliente/Index"], function (util) {
+
+    });
+</script>

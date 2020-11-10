@@ -36,6 +36,9 @@ namespace InfraBanco.Constantes
 
         public const string AGUARDANDO_EMISSAO_BOLETO = "006";
         public const string ANALISE_CREDITO_USUARIO_AUTOMATICO = "AUTOMÁTICO";
+
+        //'	Criptografia em SessionCtrl (tratamento da sessão expirada)
+        public const int FATOR_CRIPTO_SESSION_CTRL = 1329;
 #endif
 
 

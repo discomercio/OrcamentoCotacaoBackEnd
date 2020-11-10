@@ -5,49 +5,138 @@
 @inject Loja.Bll.Util.Configuracao configuracao
 @inject Microsoft.Extensions.Logging.ILogger<Loja.Bll.Bll.AcessoBll.UsuarioLogado> loggerUsuarioLogado
 <!DOCTYPE html>
-<html lang="en">
+
+@* OBS:
+    Consegui alterar a cor do navbar em "vertical_layout.min.js" alterando "HeaderBackground: "theme6","
+    Podemos criar um theme em "template_bootstrap/css/style.css" para criar uma nova cor
+*@
+
+<html lang="pt-br">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Loja.UI</title>
-    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="~/css/site.css" />*@
-    <environment include="Development">
-        <link rel="stylesheet" href="~/css/materialize.css" />
-    </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="~/css/materialize.css" />
-    </environment>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="~/css/personalizado.css?rnd=6" rel="stylesheet" />
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    @*<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-        <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
-        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>*@
-    <script src="~/js/initiComponentesMat.js"></script>
-    <script src="~/js/materialize.js"></script>
+    @* ===================== STYLES ===================== *@
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:500,700" rel="stylesheet">
+
+    <script>
+        /*
+        ajuda MNUITO a debugar
+        */
+        //tratamento das excecoes nao gerenciadas
+        function CExceptUnhandled(message, url, code) {
+            //o firefox coloca "uncaught exception: " na frente
+            /*
+            var remover = "uncaught exception: ";
+            var msg = message;
+            if(msg.toString().substring(0, remover.length) == remover)
+                msg = msg.toString().substring(remover.length, msg.toString().length);
+            */
+            alert("ERRO: " + message + " - " + url + " - " + code);
+            return true;
+        }
+        try {
+            window.onerror = CExceptUnhandled;
+        }
+        catch (e) {
+        }
+
+    </script>
+
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/bootstrap.min.css">
+
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/waves.min.css" media="all">
+
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/icofont.css">
+
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/feather.css">
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/font-awesome-n.min.css">
+
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/switchery.min.css">
+
+    <link rel="stylesheet" href="~/template_bootstrap/css/chartist.css" type="text/css" media="all">
+
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/sweetalert.css">
+
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/widget.css">
+    <link rel="stylesheet" type="text/css" href="~/css/site.css">
+    <!--[if IE]-->
+    <link rel="stylesheet" type="text/css" href="~/css/site_para_IE.css">
+    <!--[endif]-->
+
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/component.css">
+
+
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/style.css">
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/pages.css">
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/toggle/css/bootstrap4-toggle.min.css">
+
+    @* ===================== SCRIPTS ===================== *@
+    <script type="text/javascript" src="~/template_bootstrap/js/jquery.min.js"></script>
+    <script type="text/javascript" src="~/template_bootstrap/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="~/template_bootstrap/js/popper.min.js"></script>
+    <script type="text/javascript" src="~/template_bootstrap/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="~/template_bootstrap/js/jquery.slimscroll.js"></script>
+
+    <script type="text/javascript" src="~/template_bootstrap/js/waves.min.js"></script>
+
+    <script type="text/javascript" src="~/template_bootstrap/js/modernizr.js"></script>
+    <script type="text/javascript" src="~/template_bootstrap/js/css-scrollbars.js"></script>
+
+    <script type="text/javascript" src="~/template_bootstrap/js/sweetalert.min.js"></script>
+
+    <script type="text/javascript" src="~/template_bootstrap/js/classie.js"></script>
+    <script type="text/javascript" src="~/template_bootstrap/js/modaleffects.js"></script>
+
+    <script type="text/javascript" src="~/template_bootstrap/js/chartist.js"></script>
+
+    <script type="text/javascript" src="~/template_bootstrap/js/amcharts.js"></script>
+
+    <script type="text/javascript" src="~/template_bootstrap/js/jquery.flot.js"></script>
+    <script type="text/javascript" src="~/template_bootstrap/js/jquery.flot.categories.js"></script>
+    <script type="text/javascript" src="~/template_bootstrap/js/curvedlines.js"></script>
+    <script type="text/javascript" src="~/template_bootstrap/js/jquery.flot.tooltip.min.js"></script>
+
+
+    <script type="text/javascript" src="~/template_bootstrap/js/serial.js"></script>
+    <script type="text/javascript" src="~/template_bootstrap/js/light.js"></script>
+    <script type="text/javascript" src="~/template_bootstrap/js/jquery.quicksearch.js"></script>
+
+    <script type="text/javascript" src="~/template_bootstrap/js/pcoded.min.js"></script>
+    <script type="text/javascript" src="~/template_bootstrap/js/vertical-layout.min.js"></script>
+    <script type="text/javascript" src="~/template_bootstrap/js/custom-dashboard.min.js"></script>
+    <script type="text/javascript" src="~/template_bootstrap/toggle/js/bootstrap4-toggle.min.js"></script>
+
+    <script type="text/javascript" src="~/template_bootstrap/js/script.js"></script>
+
+    @*<script type="text/javascript" src="~/template_bootstrap/js/script.min.js"></script>*@
+    <script src="~/template_bootstrap/js/rocket-loader.min.js" data-cf-settings="d28fd8086f5eb18f81d8672a-|49" defer=""></script>
+
     <script src="~/js/Util.js"></script>
     @RenderSection("ScriptsDiretos", required: false)
 
     <script src="~/lib/require.js"></script>
     @{
-        string baseurl = "/scriptsJsMin";
+        string baseurl = configuracao.Diretorios.RaizSiteLojaMvc + "/scriptsJsMin";
 #if DEBUG
-        baseurl = "/scriptsJs";
+        baseurl = configuracao.Diretorios.RaizSiteLojaMvc + "/scriptsJs";
 #endif
     }
     <script>
-        requirejs.config({
-            //baseUrl: '/jsts',
-            //baseUrl: '/jstsmin',
-            baseUrl: "@baseurl",
-            paths: {
-                jquery: '/lib/jquery/dist/jquery.min'
-            }
-        });
-        //requirejs(['app'], function (app) { });
+                requirejs.config({
+                    //baseUrl: '/jsts',
+                    //baseUrl: '/jstsmin',
+                    baseUrl: "@baseurl",
+                    paths: {
+                        jquery: '/template_bootstrap/js/jquery.min'
+                    }
+                });
     </script>
     @RenderSection("Scripts", required: false)
+
+
 </head>
 
 @{
@@ -65,61 +154,96 @@
 }
 
 <body>
+    <div id="pcoded" class="pcoded">
+        <div class="pcoded-overlay-box"></div>
+        <div class="pcoded-container navbar-wrapper">
+            @if (usuarioLogado.SessaoAtiva)
+            {
+                <nav class="navbar header-navbar pcoded-header" style="height:auto">
+                    <div class="navbar-wrapper">
+                        <div class="navbar-logo">
+                            <a href="@Url.Action("Index", "Home")" title="Home" class="show-on-medium-and-down">
+                                <i class="fa fa-home" style="font-size:xx-large"></i>
+                            </a>
 
-    <div style="display: flex; flex-direction: row; height: 100%; width: 100%;">
-        @if (usuarioLogado.SessaoAtiva)
-        {
-            <ul id="slide-out" class="sidenav sidenav-fixed" style="flex-grow: 0; flex-shrink: 0; width: 300px;">
-                <partial name="~/Views/Shared/Menu.cshtml" model="usuarioLogado" />
-            </ul>
-        }
+                            <a class="mobile-menu" id="mobile-collapse" href="#!" data-toggle="tooltip"
+                               data-placement="bottom" title="Abrir/Fechar menu">
+                                <i class="feather icon-menu icon-toggle-right"></i>
+                            </a>
+                            <a class="mobile-options waves-effect waves-light" href="#!">
+                                <i class="feather icon-more-horizontal"></i>
+                            </a>
 
-        <div style="flex-grow: 1; flex-shrink: 1; ">
-            <div style="display: flex; flex-direction: column; height: 100vh; width: 100vw;">
-                <div style="flex-grow: 0; flex-shrink: 0; ">
-                    @{
-                        //para a página de login não pode ter o padding
-                        var estilo = "";
-                        if (!usuarioLogado.SessaoAtiva)
-                        {
-                            estilo = "padding-left: 300px;";
-                        }
-                    }
-                    <header style="@estilo">
-                        <div class="navbar navbar-fixed alturaheader">
-                            <nav class="navbar">
-                                @if (usuarioLogado.SessaoAtiva)
-                                {
-                                    <a href="#" data-target="slide-out" class="sidenav-trigger" title="Menu"><i class="material-icons">menu</i></a>
-                                }
-
-                                <partial name="~/Views/Shared/Cabecalho.cshtml" model="usuarioLogado" />
-                            </nav>
                         </div>
-                    </header>
-                </div>
+                        <div class="navbar-container container-fluid">
+                            <ul class="nav-left">
+                                @* Pesquisa *@
+                                @*<li class="header-search">
+                                        <div class="main-search morphsearch-search">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend search-close">
+                                                    <i class="feather icon-x input-group-text"></i>
+                                                </span>
+                                                <input type="text" class="form-control" placeholder="Pesquisar">
+                                                <span class="input-group-append search-btn">
+                                                    <i class="feather icon-search input-group-text"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </li>*@
+                                @* Maximiza tela *@
+                                <li>
+                                    <a href="#!" onclick="if (!window.__cfRLUnblockHandlers) return false; javascript:toggleFullScreen()"
+                                       class="waves-effect waves-light" data-cf-modified-d2d1d6e2f87cbebdf4013b26-="" data-toggle="tooltip"
+                                       data-placement="bottom" title="Tela inteira">
+                                        <i class="full-screen feather icon-maximize"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                            @* Header *@
+
+                            <partial name="~/Views/Shared/Cabecalho.cshtml" model="usuarioLogado" />
 
 
-                <div style="flex-grow: 1; flex-shrink: 1; overflow: auto; ">
-                    @{
-                        //para a página de login não pode ter o padding
-                        estilo = "";
-                        if (!usuarioLogado.SessaoAtiva)
-                        {
-                            estilo = "padding-left: 38px;";
-                        }
+
+                        </div>
+                    </div>
+                </nav>
+            }
+            <div class="pcoded-main-container">
+                <div class="pcoded-wrapper">
+                    @if (usuarioLogado.SessaoAtiva)
+                    {
+                        //Menu
+                        <nav class="pcoded-navbar">
+                            <div class="nav-list">
+                                <div class="pcoded-inner-navbar main-menu">
+                                    <partial name="~/Views/Shared/Menu.cshtml" model="usuarioLogado" />
+                                </div>
+                            </div>
+                        </nav>
                     }
-                    <main role="main" class="container corpo" style="max-width: initial; width: 100%; @estilo">
+                    @* Body *@
+                    <div class="pcoded-content">
                         @RenderBody()
-                    </main>
-                </div>
-                <div style="flex-grow: 0; flex-shrink: 0; ">
-                    @RenderSection("RodapePagina", required: false)
+                    </div>
+                    @* Footer *@
+                    <div class="pcoded-content">
+                        @RenderSection("RodapePagina", required: false)
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    @* Error *@
     <partial name="~/Views/Shared/Error.cshtml" />
 
+    <div id="styleSelector">
+    </div>
+
+    <script src="~/template_bootstrap/js/rocket-loader.min.js" data-cf-settings="d2d1d6e2f87cbebdf4013b26-|49" defer=""></script>
 </body>
 </html>
+
+
