@@ -348,13 +348,11 @@ function arrumarProdsRepetidosTeste() {
 }
 
 function removerTodosProdutos() {
-    debugger;
     //let tbody: any = $(".novoProduto").parent();
     indice = Number($("#indice").val());
     let body_produtos: any = document.getElementById("body_produtos");
     let count = indice;
     for (count; count > 0; count--) {
-        debugger;
         let tr: any = document.getElementsByClassName("trProduto_" + (count - 1));
         let qtde: any = tr.length;
         while (qtde != 0) {
@@ -753,7 +751,6 @@ function totalPedidoRA(): number {
 
 //calculamos os produtos e somamos o total
 function totalPedido(): number {
-    debugger;
     let total: number = parseFloat(lstProdSelecionados.reduce((sum, current) => sum + current.TotalItem, 0).toFixed(2));
 
     $("#totalPedido").text(moedaUtils.formatarMoedaSemPrefixo(total));
