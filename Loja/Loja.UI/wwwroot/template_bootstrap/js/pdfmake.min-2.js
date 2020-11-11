@@ -378,7 +378,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	Buffer.poolSize = 8192 // not used by this implementation
 
-	// TODO: Legacy, not needed anymore. Remove in next major version.
+	//TINHAUMTODOAQUI: Legacy, not needed anymore. Remove in next major version.
 	Buffer._augment = function (arr) {
 	  arr.__proto__ = Buffer.prototype
 	  return arr
@@ -2442,7 +2442,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			} else if (item.item._height) {
 				return item.item._height;
 			} else {
-				// TODO: add support for next item types
+				//TINHAUMTODOAQUI: add support for next item types
 				return 0;
 			}
 		}
@@ -2648,7 +2648,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		textDecorator.drawBackground(line, x, y, pdfKitDoc);
 
-		//TODO: line.optimizeInlines();
+		//TINHAUMTODOAQUI: line.optimizeInlines();
 		for (var i = 0, l = line.inlines.length; i < l; i++) {
 			var inline = line.inlines[i];
 			var shiftToBaseline = lineHeight - ((inline.font.ascender / 1000) * inline.fontSize) - descent;
@@ -2697,7 +2697,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function renderVector(vector, pdfKitDoc) {
-		//TODO: pdf optimization (there's no need to write all properties everytime)
+		//TINHAUMTODOAQUI: pdf optimization (there's no need to write all properties everytime)
 		pdfKitDoc.lineWidth(vector.lineWidth || 1);
 		if (vector.dash) {
 			pdfKitDoc.dash(vector.dash.length, {space: vector.dash.space || vector.dash.length, phase: vector.dash.phase || 0});
@@ -2706,7 +2706,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 		pdfKitDoc.lineJoin(vector.lineJoin || 'miter');
 
-		//TODO: clipping
+		//TINHAUMTODOAQUI: clipping
 
 		switch (vector.type) {
 			case 'ellipse':
@@ -20364,7 +20364,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			self.processNode(item);
 			addAll(node.positions, item.positions);
 
-			//TODO: paragraph gap
+			//TINHAUMTODOAQUI: paragraph gap
 		});
 	};
 
@@ -20617,8 +20617,8 @@ return /******/ (function(modules) { // webpackBootstrap
 		var height = node._minHeight;
 
 		if (this.writer.context().availableHeight < height) {
-			// TODO: support for canvas larger than a page
-			// TODO: support for other overflow methods
+			//TINHAUMTODOAQUI: support for canvas larger than a page
+			//TINHAUMTODOAQUI: support for other overflow methods
 
 			this.writer.moveToNextPage();
 		}
@@ -20975,7 +20975,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		var self = this;
 
 		return this.styleStack.auto(node, function () {
-			// TODO: refactor + rethink whether this is the proper way to handle margins
+			//TINHAUMTODOAQUI: refactor + rethink whether this is the proper way to handle margins
 			node._margin = getNodeMargin(node);
 
 			if (node.columns) {
@@ -21202,7 +21202,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	DocMeasure.prototype.buildUnorderedMarker = function (styleStack, gapSize, type) {
 		function buildDisc(gapSize, color) {
-			// TODO: ascender-based calculations
+			//TINHAUMTODOAQUI: ascender-based calculations
 			var radius = gapSize.fontSize / 6;
 			return {
 				canvas: [{
@@ -21217,7 +21217,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 
 		function buildSquare(gapSize, color) {
-			// TODO: ascender-based calculations
+			//TINHAUMTODOAQUI: ascender-based calculations
 			var size = gapSize.fontSize / 3;
 			return {
 				canvas: [{
@@ -21232,7 +21232,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 
 		function buildCircle(gapSize, color) {
-			// TODO: ascender-based calculations
+			//TINHAUMTODOAQUI: ascender-based calculations
 			var radius = gapSize.fontSize / 6;
 			return {
 				canvas: [{
@@ -21406,7 +21406,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				if (item.listMarker._inlines) {
 					node._gapSize.width = Math.max(node._gapSize.width, item.listMarker._inlines[0].width);
 				}
-			}  // TODO: else - nested lists numbering
+			}  //TINHAUMTODOAQUI: else - nested lists numbering
 
 			node._minWidth = Math.max(node._minWidth, items[i]._minWidth);
 			node._maxWidth = Math.max(node._maxWidth, items[i]._maxWidth);
@@ -21774,7 +21774,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	TextTools.prototype.sizeOfString = function (text, styleContextStack) {
 		text = text ? text.toString().replace('\t', '    ') : '';
 
-		//TODO: refactor - extract from measure
+		//TINHAUMTODOAQUI: refactor - extract from measure
 		var fontName = getStyleProperty({}, styleContextStack, 'font', 'Roboto');
 		var fontSize = getStyleProperty({}, styleContextStack, 'fontSize', 12);
 		var bold = getStyleProperty({}, styleContextStack, 'bold', false);
@@ -21829,7 +21829,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function copyStyle(source, destination) {
 		destination = destination || {};
-		source = source || {}; //TODO: default style
+		source = source || {}; //TINHAUMTODOAQUI: default style
 
 		for (var key in source) {
 			if (key != 'text' && source.hasOwnProperty(key)) {
@@ -23171,7 +23171,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		return column.width === null || column.width === undefined || column.width === '*' || column.width === 'star';
 	}
 
-	//TODO: refactor and reuse in measureTable
+	//TINHAUMTODOAQUI: refactor and reuse in measureTable
 	function measureMinMax(columns) {
 		var result = {min: 0, max: 0};
 
@@ -24407,7 +24407,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				fragment.xOffset = forcedX;
 				fragment.yOffset = forcedY;
 
-				//TODO: vectors can influence height in some situations
+				//TINHAUMTODOAQUI: vectors can influence height in some situations
 				if (nbPages > 1) {
 					// on out-of-context blocs (headers, footers, background) height should be the whole DocumentContext height
 					if (forcedX !== undefined || forcedY !== undefined) {
@@ -24441,7 +24441,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		rep.xOffset = this.originalX;
 
-		//TODO: vectors can influence height in some situations
+		//TINHAUMTODOAQUI: vectors can influence height in some situations
 		rep.height = unbreakableContext.y;
 
 		return rep;
@@ -25110,7 +25110,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			if (writer.context().page != ys[yi].page) {
 				writer.context().page = ys[yi].page;
 
-				//TODO: buggy, availableHeight should be updated on every pageChanged event
+				//TINHAUMTODOAQUI: buggy, availableHeight should be updated on every pageChanged event
 				// TableProcessor should be pageChanged listener, instead of processRow
 				this.reservedAtBottom = 0;
 			}
@@ -26031,7 +26031,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Stream = __webpack_require__(38);
 	/*</replacement>*/
 
-	// TODO(bmeurer): Change this back to const once hole checks are
+	//TINHAUMTODOAQUI(bmeurer): Change this back to const once hole checks are
 	// properly optimized away early in Ignition+TurboFan.
 	/*<replacement>*/
 	var Buffer = __webpack_require__(39).Buffer;
@@ -27988,7 +27988,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function writeAfterEnd(stream, cb) {
 	  var er = new Error('write after end');
-	  // TODO: defer error events consistently everywhere, not just the cb
+	  //TINHAUMTODOAQUI: defer error events consistently everywhere, not just the cb
 	  stream.emit('error', er);
 	  processNextTick(cb, er);
 	}
@@ -33862,7 +33862,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  this.dmax = 0;              /* zlib header max distance (INFLATE_STRICT) */
 	  this.check = 0;             /* protected copy of check value */
 	  this.total = 0;             /* protected copy of output count */
-	  // TODO: may be {}
+	  //TINHAUMTODOAQUI: may be {}
 	  this.head = null;           /* where to save gzip header information */
 
 	  /* sliding window */
@@ -34394,7 +34394,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (have === 0) { break inf_leave; }
 	        copy = 0;
 	        do {
-	          // TODO: 2 or 1 bytes?
+	          //TINHAUMTODOAQUI: 2 or 1 bytes?
 	          len = input[next + copy++];
 	          /* use constant limit because in js we should not preallocate memory */
 	          if (state.head && len &&
@@ -40121,7 +40121,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  CFFBlendOp.decode = function decode(stream, parent, operands) {
 	    var numBlends = operands.pop();
 
-	    // TODO: actually blend. For now just consume the deltas
+	    //TINHAUMTODOAQUI: actually blend. For now just consume the deltas
 	    // since we don't use any of the values anyway.
 	    while (operands.length > numBlends) {
 	      operands.pop();
@@ -40521,7 +40521,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    ranges: new r.Array(Range1, 'nRanges')
 	  }
 
-	  // TODO: supplement?
+	  //TINHAUMTODOAQUI: supplement?
 	});
 
 	var CFFEncoding = new PredefinedOp([StandardEncoding, ExpertEncoding], new CFFPointer(CFFCustomEncoding, { lazy: true }));
@@ -41546,7 +41546,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  scriptList: new r.Array(JstfScriptRecord, 'scriptCount')
 	});
 
-	// TODO: add this to restructure
+	//TINHAUMTODOAQUI: add this to restructure
 
 	var VariableSizeNumber = function () {
 	  function VariableSizeNumber(size) {
@@ -43047,7 +43047,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    for (var index = 0; index < glyphs.length; index++) {
 	      var glyph = glyphs[index];
 	      if (glyph.isMark) {
-	        // TODO: handle ligatures
+	        //TINHAUMTODOAQUI: handle ligatures
 	        clusterEnd = index;
 	      } else {
 	        if (clusterStart !== clusterEnd) {
@@ -46509,7 +46509,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      var GDEF = this._font.GDEF;
 	      if (GDEF && GDEF.glyphClassDef) {
-	        // TODO: clean this up
+	        //TINHAUMTODOAQUI: clean this up
 	        var classID = OTProcessor.prototype.getClassID(id, GDEF.glyphClassDef);
 	        this.isBase = classID === 1;
 	        this.isLigature = classID === 2;
@@ -47111,7 +47111,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    plan.indicConfig = INDIC_CONFIGS[plan.unicodeScript] || INDIC_CONFIGS.Default;
 	    plan.isOldSpec = plan.indicConfig.hasOldSpec && plan.script[plan.script.length - 1] !== '2';
 
-	    // TODO: turn off kern (Khmer) and liga features.
+	    //TINHAUMTODOAQUI: turn off kern (Khmer) and liga features.
 	  };
 
 	  IndicShaper.assignFeatures = function assignFeatures(plan, glyphs) {
@@ -47129,7 +47129,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 
 	    // Decompose split matras
-	    // TODO: do this in a more general unicode normalizer
+	    //TINHAUMTODOAQUI: do this in a more general unicode normalizer
 	    for (var i = glyphs.length - 1; i >= 0; i--) {
 	      _loop(i);
 	    }
@@ -48047,7 +48047,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 
 	    // Decompose split vowels
-	    // TODO: do this in a more general unicode normalizer
+	    //TINHAUMTODOAQUI: do this in a more general unicode normalizer
 	    for (var i = glyphs.length - 1; i >= 0; i--) {
 	      _loop(i);
 	    }
@@ -48416,7 +48416,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          // Alternate Substitution
 	          var _index2 = this.coverageIndex(table.coverage);
 	          if (_index2 !== -1) {
-	            var USER_INDEX = 0; // TODO
+				  var USER_INDEX = 0; //TINHAUMTODOAQUI
 	            this.glyphIterator.cur.id = table.alternateSet.get(_index2)[USER_INDEX];
 	            return true;
 	          }
@@ -48640,7 +48640,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 
-	    // TODO: device tables
+	    //TINHAUMTODOAQUI: device tables
 	  };
 
 	  GPOSProcessor.prototype.applyLookup = function applyLookup(lookupType, table) {
@@ -48914,7 +48914,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 
 	  GPOSProcessor.prototype.getAnchor = function getAnchor(anchor) {
-	    // TODO: contour point, device tables
+	    //TINHAUMTODOAQUI: contour point, device tables
 	    var x = anchor.xCoordinate;
 	    var y = anchor.yCoordinate;
 
@@ -49736,7 +49736,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.codePoints = codePoints;
 	    this._font = font;
 
-	    // TODO: get this info from GDEF if available
+	    //TINHAUMTODOAQUI: get this info from GDEF if available
 	    this.isMark = this.codePoints.every(unicode.isMark);
 	    this.isLigature = this.codePoints.length > 1;
 	  }
@@ -52043,7 +52043,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    //         table: cmapTable
 	    //     ]
 
-	    // TODO: subset prep, cvt, fpgm?
+	    //TINHAUMTODOAQUI: subset prep, cvt, fpgm?
 	    Directory.encode(stream, {
 	      tables: {
 	        head: head,
@@ -55923,7 +55923,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    nextChar = uCode; // Current character will be written too in the next iteration.
 
 	                } else {
-	                    // TODO: What if we have no default? (resCode == undefined)
+	                    //TINHAUMTODOAQUI: What if we have no default? (resCode == undefined)
 	                    // Then, we should write first char of the sequence as-is and try the rest recursively.
 	                    // Didn't do it for now because no encoding has this situation yet.
 	                    // Currently, just skip the sequence and write current char.
@@ -56047,7 +56047,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            // Normal character, just use it.
 	        }
 	        else if (uCode === UNASSIGNED) { // Unknown char.
-	            // TODO: Callback with seq.
+	            //TINHAUMTODOAQUI: Callback with seq.
 	            //var curSeq = (seqStart >= 0) ? buf.slice(seqStart, i+1) : prevBuf.slice(seqStart + prevBufOffset, i+1 + prevBufOffset);
 	            i = seqStart; // Try to parse again, after skipping first byte of the sequence ('i' will be incremented by 'for' cycle).
 	            uCode = this.defaultCharUnicode.charCodeAt(0);
@@ -56200,9 +56200,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        encodeAdd: {'\u00a5': 0x5C, '\u203E': 0x7E},
 	    },
 
-	    // TODO: KDDI extension to Shift_JIS
-	    // TODO: IBM CCSID 942 = CP932, but F0-F9 custom chars and other char changes.
-	    // TODO: IBM CCSID 943 = Shift_JIS = CP932 with original Shift_JIS lower 128 chars.
+	    //TINHAUMTODOAQUI: KDDI extension to Shift_JIS
+	    //TINHAUMTODOAQUI: IBM CCSID 942 = CP932, but F0-F9 custom chars and other char changes.
+	    //TINHAUMTODOAQUI: IBM CCSID 943 = Shift_JIS = CP932 with original Shift_JIS lower 128 chars.
 
 
 	    // == Chinese/GBK ==========================================================
@@ -56660,7 +56660,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            buf.copy(this, offset, 0, length);
 	            return length;
 
-	            // TODO: Set _charsWritten.
+	            //TINHAUMTODOAQUI: Set _charsWritten.
 	        }
 
 
