@@ -1,9 +1,14 @@
-﻿Para instalar:
-- No IIS, instalar o Colors
-- cirar um diretório lojamvc 
-- botão direito, Converter para aplicação, usar as configurações padrão
+﻿Para instalar, criar um site com a seguinte esturura de pastas (podem ser pastas físicas ou virtuais):
+	sistema
+	homologacao
+	sistemamvc
+		lojamvc
+		centralmvc
+	homologacaomvc
+		lojamvc
+		centralmvc
+cada uma com seu application pool
 
-O acesso ao módulo Loja será: http://<<sitecolors>>//lojamvc
-Se for o caso, bloquear o acesso ao site da loja (renomeando o loja/Conecta.asp ou mudando TrataSessaoExpirada.asp
-para só permitir acesso ao módulo loja se for feito com OrigemSolicitacao=LojaMvc)
+O acesso ao módulo Loja será: http://<<sitecolors>>/homologacaomvc/lojamvc
+e o verdinho da loja será: http://<<sitecolors>>/homologacao/loja
 
