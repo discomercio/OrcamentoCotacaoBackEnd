@@ -52,6 +52,14 @@ namespace Loja.UI.Controllers
         [HttpGet]
         public IActionResult Login(string ReturnUrl)
         {
+            //vamos verificar se o usuario esta logado
+            var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
+
+            if (usuarioLogado.SessaoAtiva)
+            {
+                return LocalRedirect(configuracao.Diretorios.RaizSiteLojaMvc);
+            }
+
             LoginViewModel loginViewModel = new LoginViewModel
             {
                 ReturnUrl = ReturnUrl,
