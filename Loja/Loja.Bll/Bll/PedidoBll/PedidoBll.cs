@@ -23,6 +23,7 @@ using Pedido;
 using InfraBanco.Modelos;
 using InfraBanco;
 using Prepedido.PedidoVisualizacao;
+using Prepedido.PedidoVisualizacao.Dados.DetalhesPedido;
 
 namespace Loja.Bll.PedidoBll
 {
@@ -310,6 +311,7 @@ namespace Loja.Bll.PedidoBll
 
         //    return lstProduto;
         //}
+
 
         //public async Task<PedidoDto> BuscarPedido(string apelido, string numPedido)
         //{
@@ -1134,6 +1136,18 @@ namespace Loja.Bll.PedidoBll
 
         //    return await ret.FirstOrDefaultAsync();
         //}
+
+        public async Task<PedidoDto> BuscarPedido(string apelido, string pedido)
+        {
+
+            //vamos buscar o pedido
+            PedidoDados pedidoDados = await pedidoVisualizacaoBll.BuscarPedido(apelido, pedido);
+
+            //vamos converter o pedidoDados em pedidoDto
+            PedidoDto pedidoDto = PedidoDto.PedidoDto_De_PedidoDados(pedidoDados);
+
+            return pedidoDto;
+        }
 
         public async Task<IEnumerable<string>> ValidarIndicador_SelecaoCD(string loja_atual, string idCliente, string usuario_atual,
             string lstOperacoesPermitidas, string cpf_cnpj, int comIndicacao, int cdAutomatico, int cdManual,
@@ -3350,15 +3364,15 @@ namespace Loja.Bll.PedidoBll
             {
                 foreach (var c in lista)
                 {
-                    if (!string.IsNullOrEmpty(c.AnaliseCredito) && 
+                    if (!string.IsNullOrEmpty(c.AnaliseCredito) &&
                         !string.IsNullOrEmpty(c.AnaliseCreditoPendenteVendasMotivo))
                     {
-                        if(c.AnaliseCredito == Constantes.Constantes.COD_AN_CREDITO_PENDENTE_VENDAS)
+                        if (c.AnaliseCredito == Constantes.Constantes.COD_AN_CREDITO_PENDENTE_VENDAS)
                         {
-                            c.AnaliseCredito = c.AnaliseCredito  + "(" + await UtilsGlobais.Util.ObterDescricao_Cod(Constantes.Constantes.GRUPO_T_CODIGO_DESCRICAO__AC_PENDENTE_VENDAS_MOTIVO,
+                            c.AnaliseCredito = c.AnaliseCredito + "(" + await UtilsGlobais.Util.ObterDescricao_Cod(Constantes.Constantes.GRUPO_T_CODIGO_DESCRICAO__AC_PENDENTE_VENDAS_MOTIVO,
                             c.AnaliseCreditoPendenteVendasMotivo, contextoProvider) + ")";
                         }
-                        
+
                     }
                 }
             }

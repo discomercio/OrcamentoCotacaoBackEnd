@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Prepedido.PedidoVisualizacao.Dados.DetalhesPedido;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -15,11 +16,28 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
         public short StBemUsoConsumo { get; set; }
         public short InstaladorInstala { get; set; }
         public string GarantiaIndicadorStatus { get; set; }
+        public string PrevisaoEntrega { get; set; }
         //Campos para incluir
         //NumeroMagento = nº do pedido Magento
         //NumeroPedidoMarketplace
         //OrigemPedido = de qual loja esta vindo
 
-
+        public static DetalhesNFPedidoDtoPedido DetalhesNFPedidoDtoPedido_De_DetalhesNFPedidoPedidoDados(DetalhesNFPedidoPedidoDados origem)
+        {
+            if (origem == null) return null;
+            return new DetalhesNFPedidoDtoPedido()
+            {
+                Observacoes = origem.Observacoes,
+                ConstaNaNF = origem.ConstaNaNF,
+                XPed = origem.XPed,
+                NumeroNF = origem.NumeroNF,
+                NFSimples = origem.NFSimples,
+                EntregaImediata = origem.EntregaImediata,
+                StBemUsoConsumo = origem.StBemUsoConsumo,
+                InstaladorInstala = origem.InstaladorInstala,
+                GarantiaIndicadorStatus = origem.GarantiaIndicadorStatus,
+                PrevisaoEntrega = origem.PrevisaoEntrega
+            };
+        }
     }
 }
