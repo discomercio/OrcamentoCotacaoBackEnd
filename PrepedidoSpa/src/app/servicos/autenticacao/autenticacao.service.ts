@@ -51,7 +51,7 @@ export class AutenticacaoService {
     this.salvar = salvar;
     this._NomeUsuario = null;
     let msg = "";
-
+    debugger;
 
     this.http.post(environment.apiUrl + 'acesso/fazerLogin', { apelido: usuario, senha: senha },
       {
@@ -60,6 +60,15 @@ export class AutenticacaoService {
         headers: new HttpHeaders({ 'Content-Type': 'application/json', 'responseType': 'text' })
       }).subscribe({
         next: (e) => {
+          /*
+            estamos atribuindo o nome do usuário para, caso o usuário esteja 
+            fazendo o primeiro acesso ele terá que alterar a senha 
+            Na validação da alteração de senha é feito a comparação da nova senha com o nome do usuário, 
+            pois a senha não pode ser o nome de usuário
+          */
+          //No caso de primeiro acesso retornamos o código "4"
+          this._NomeUsuario = usuario;
+          
           //aqui vai as condições que irão verificar se o retorno é um erro
           if (e.toString().length == 1) {
             if (e.toString() == this.constantes.ERR_USUARIO_BLOQUEADO) {
@@ -80,6 +89,7 @@ export class AutenticacaoService {
               });
               return;
             }
+
             if (e.toString() == this.constantes.ERR_SENHA_EXPIRADA) {
               this.senhaExpirada = true;
               router.navigateByUrl('/alterarsenha');
