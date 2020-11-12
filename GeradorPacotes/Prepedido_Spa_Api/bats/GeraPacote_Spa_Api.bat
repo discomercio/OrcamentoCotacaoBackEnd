@@ -37,7 +37,7 @@ goto final
 :compilar_ng
 call ng build --prod
 IF %ERRORLEVEL% EQU 0 goto empacotar
-echo ERRO NA COMPILACAO DO SPA.
+echo ERRO NA COMPILACAO DO SPA. VERIFIQUE SE RODOU O COMANDO "npm install" NO DIRETORIO "..\PrepedidoSpa".
 IF "%~1" NEQ "sem_pausa" pause
 goto final
 
