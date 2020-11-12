@@ -60,6 +60,7 @@
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\CaminhoFelizAsp.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\FluxoCriacaoPedido.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo10\AutenticacaoListaDependencias.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo10\CamposSimples - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo20\EnderecoEntrega\ClientePj\CampoEndEtg_tipo_pessoa - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo20\EnderecoEntrega\ClientePj\CamposSimples.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo20\EnderecoEntrega\ClientePj\EntregaPj - Copy.feature.cs" />
@@ -117,11 +118,11 @@
     <Compile Update="Especificacao\Pedido\FluxoCriacaoPedido.feature.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
-    <Compile Update="Especificacao\Pedido\Passo10\CamposSimplesListaDependencias.feature.cs">
-      <DependentUpon>CamposSimplesListaDependencias.feature</DependentUpon>
+    <Compile Update="Especificacao\Pedido\Passo10\CamposSimplesPj.feature.cs">
+      <DependentUpon>CamposSimplesPj.feature</DependentUpon>
     </Compile>
-    <Compile Update="Especificacao\Pedido\Passo10\CamposSimples.feature.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
+    <Compile Update="Especificacao\Pedido\Passo10\CamposSimplesPf.feature.cs">
+      <DependentUpon>CamposSimplesPf.feature</DependentUpon>
     </Compile>
     <Compile Update="Especificacao\Pedido\Passo20\EnderecoEntrega\ClientePj\CampoEndEtg_tipo_pessoa.feature.cs">
       <DependentUpon>CampoEndEtg_tipo_pessoa.feature</DependentUpon>
@@ -180,11 +181,11 @@
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
-    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo10\CamposSimplesListaDependencias.feature">
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo10\CamposSimplesPj.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
-    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo10\CamposSimples.feature">
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo10\CamposSimplesPf.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>

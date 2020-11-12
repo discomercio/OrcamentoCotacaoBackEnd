@@ -44,7 +44,6 @@ namespace ApiMagento.Controllers
             if (string.IsNullOrEmpty(usuario))
                 return Unauthorized();
 
-            //string apelido = servicoDecodificarTokenApiMagento.ObterApelidoOrcamentista(User);
             string apelido = usuario;
 
             var ret = await pedidoMagentoBll.CadastrarPedidoMagento(pedido, apelido);

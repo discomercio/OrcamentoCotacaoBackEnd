@@ -97,7 +97,7 @@ Por isso, temos o MaxLength 800 aqui
         public string? Endereco_ramal_com_2 { get; set; }
 
         /// <summary>
-        /// Endereco_tipo_pessoa = "PF", "PJ"
+        /// Endereco_tipo_pessoa = "PF", "PJ". No momento somente é aceito PF.
         /// <hr />
         /// </summary>
 #pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.

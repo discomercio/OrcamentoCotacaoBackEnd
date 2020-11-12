@@ -39,6 +39,32 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
             this.pedidoCriacao = pedidoCriacao;
         }
 
+        private void LimitarPedidosMagentoPJ(PedidoMagentoDto pedidoMagento, PedidoResultadoMagentoDto resultado)
+        {
+            /*
+             * definido em 201021 
+             
+            magento: problema no cadastro de PJ, vai puxar do estoque errado se for contribuinte de ICMS.
+            Hoje não usa, mas é importante ter o recurso.
+            O problema é: se a gente presumir o ICMS da PJ, vamos criar o pedido pegando do estoque errado.
+            Hamilton vai conversar com Karina para saber como funciona. Mas é um BELO problema.
+
+            Boa tarde
+            @Edu  conversei com a @Karina e ficou decidido que neste primeiro momento a integração com o Magento 
+            não irá tratar os pedidos de clientes PJ. Esses pedidos continuarão sendo cadastrados através do 
+            processo semi-automático. Então creio que seria melhor fazer normalmente a validação do campo de 
+            contribuinte ICMS para rejeitar os pedidos que vierem sem essa informação p/ garantir a consistência 
+            dos dados caso seja enviado um pedido de cliente PJ.
+
+            Conversei com o time e pegando alguns pontos que eles comentaram é melhor seguir com semi-automático mesmo e no futuro se surgir alguma ideia ou solução a gente adapta. 
+
+            Resumo: API do Magento para PJ não aceita nenhum pedido, tods serão feitos no semi-automático
+            */
+            if (pedidoMagento.EnderecoCadastralCliente.Endereco_tipo_pessoa != Constantes.ID_PF)
+                resultado.ListaErros.Add("A API somente aceita pedidos para PF.");
+
+        }
+
         public async Task<PedidoResultadoMagentoDto> CadastrarPedidoMagento(PedidoMagentoDto pedidoMagento, string usuario)
         {
             PedidoResultadoMagentoDto resultado = new PedidoResultadoMagentoDto
@@ -51,6 +77,10 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
             string vendedor = usuario;
             string loja = configuracaoApiMagento.DadosOrcamentista.Loja;
 
+            LimitarPedidosMagentoPJ(pedidoMagento, resultado);
+            if (resultado.ListaErros.Count > 0)
+                return resultado;
+
             InfraBanco.Modelos.TorcamentistaEindicador torcamentista = await prepedidoBll.BuscarTorcamentista(orcamentista);
             if (torcamentista == null)
             {
@@ -59,6 +89,13 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
             }
 
             Cliente.Dados.ClienteCadastroDados clienteMagento = await clienteBll.BuscarCliente(pedidoMagento.Cnpj_Cpf, orcamentista);
+
+            //exigimos que o CPF/CNPJ esteja igual nos dois blocos de informação
+            if (UtilsGlobais.Util.SoDigitosCpf_Cnpj(pedidoMagento.Cnpj_Cpf) != UtilsGlobais.Util.SoDigitosCpf_Cnpj(pedidoMagento.EnderecoCadastralCliente.Endereco_cnpj_cpf))
+            {
+                resultado.ListaErros.Add("Cnpj_Cpf está diferente de EnderecoCadastralCliente.Endereco_cnpj_cpf.");
+                return resultado;
+            }
 
             //Cadastrar cliente
             if (clienteMagento == null)

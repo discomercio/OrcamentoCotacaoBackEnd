@@ -731,7 +731,7 @@ namespace Prepedido
                     if (!string.IsNullOrEmpty(endEtg.EndEtg_ie))
                     {
                         lstErros.Add("Endereço de entrega: se cliente é não produtor rural, o IE " +
-                            "deve ser preenchido!");
+                            "não deve ser preenchido!");
                     }
                 }
             }

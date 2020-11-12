@@ -73,6 +73,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
         }
         public void ThenErroStatusCode(int statusCode)
         {
+            if (ignorarFeature) return;
             logTestes.LogMensagem("prepedidoUnisController.CadastrarPrepedido ThenErroStatusCode");
             Microsoft.AspNetCore.Mvc.ActionResult<PrePedidoResultadoUnisDto> ret = prepedidoUnisController.CadastrarPrepedido(prePedidoUnisDto).Result;
             Microsoft.AspNetCore.Mvc.ActionResult res = ret.Result;
@@ -94,6 +95,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
 
         public void ThenErro(string? erro, bool erroDeveExistir)
         {
+            if (ignorarFeature) return;
             if (erro != null)
                 erro = Testes.Utils.MapeamentoMensagens.MapearMensagem(this.GetType().FullName, erro);
 
@@ -120,10 +122,10 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
 
         }
 
-        //não fazemos este teste aqui
-        public void GivenIgnorarFeatureNoAmbiente(string p0)
+        private bool ignorarFeature = false;
+        public void GivenIgnorarFeatureNoAmbiente2(string p0)
         {
+            Testes.Pedido.PedidoPassosComuns.IgnorarFeatureNoAmbiente(p0, ref ignorarFeature, this.GetType());
         }
-
     }
 }

@@ -13,6 +13,19 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
     {
         public static MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoMagentoDto PedidoBase()
         {
+            var ret = LerJson();
+            ret.EnderecoEntrega = null;
+            ret.OutroEndereco = false;
+            return ret;
+        }
+        public static MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoMagentoDto PedidoBaseComEnderecoDeEntrega()
+        {
+            var ret = LerJson();
+            return ret;
+        }
+
+        private static MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoMagentoDto LerJson()
+        {
             var nomeArquivo = "Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedidoDados.json";
             using Stream? stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(nomeArquivo);
             if (stream == null)

@@ -1,10 +1,15 @@
 ﻿@Especificacao.Pedido.Passo10.CamposSimples
-Feature: Validar campos simples
+Feature: Validar campos simples Pf
 
 Background: Configuração
 	#na ApiUnis, ele exige que o cliente já esteja cadastrado, então não valida o CPF/CNPJ
 	#por enquanto, ignoramos no prepedido inteiro
 	Given Ignorar feature no ambiente "Especificacao.Prepedido.PrepedidoSteps"
+
+@ListaDependencias
+Scenario: CamposSimples ListaDependencias Configuração
+	Given Nome deste item "Especificacao.Pedido.Passo10.CamposSimplesPfListaDependencias"
+	Given Implementado em "Especificacao.Pedido.Pedido.PedidoListaDependencias"
 
 Scenario: Validar CPF
 em loja/resumo.asp:
@@ -12,36 +17,19 @@ em loja/resumo.asp:
 
 	When Pedido base
 	And Informo "CPF/CNPJ" = "089.617.758/99"
-	Then Erro "CNPJ/CPF inválido!!"
+	And  Informo "EnderecoCadastralCliente.Endereco_tipo_pessoa" = "PF"
+	Then Erro "CPF INVÁLIDO."
 	When Pedido base
 	And  Informo "CPF/CNPJ" = "089.617.758/990"
-	Then Erro "CNPJ/CPF inválido!!"
+	And  Informo "EnderecoCadastralCliente.Endereco_tipo_pessoa" = "PF"
+	Then Erro "CPF INVÁLIDO."
 	When Pedido base
 	And  Informo "CPF/CNPJ" = "089.617.758/00"
-	Then Erro "CNPJ/CPF inválido!!"
+	And  Informo "EnderecoCadastralCliente.Endereco_tipo_pessoa" = "PF"
+	Then Erro "CPF INVÁLIDO."
 
 	When Pedido base
 	And  Informo "CPF/CNPJ" = "089.617.758/04"
-	Then Sem erro "CNPJ/CPF inválido!!"
-
-Scenario: Validar CNPJ
-	When Pedido base
-	And  Informo "CPF/CNPJ" = "12.584.718/0001-5"
-	Then Erro "CNPJ/CPF inválido!!"
-	When Pedido base
-	And  Informo "CPF/CNPJ" = "12.584.718/0001-99"
-	Then Erro "CNPJ/CPF inválido!!"
-	When Pedido base
-	And  Informo "CPF/CNPJ" = "12.584.718/0001-xx"
-	Then Erro "CNPJ/CPF inválido!!"
-	When Pedido base
-	And  Informo "CPF/CNPJ" = "12.584.718/0001-11"
-	Then Erro "CNPJ/CPF inválido!!"
-	When Pedido base
-	And  Informo "CPF/CNPJ" = "12.584.718/0001-53"
-	Then Erro "CNPJ/CPF inválido!!"
-
-	When Pedido base
-	And  Informo "CPF/CNPJ" = "12.584.718/0001-51"
-	Then Sem erro "CNPJ/CPF inválido!!"
+	And  Informo "EnderecoCadastralCliente.Endereco_tipo_pessoa" = "PF"
+	Then Sem Erro "CPF INVÁLIDO."
 

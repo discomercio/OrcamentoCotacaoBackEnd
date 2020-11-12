@@ -44,6 +44,12 @@ Scenario: InfCriacaoPedido Marketplace_codigo_origem
 Scenario: EnderecoCadastralCliente
 	When Fazer esta validação
 
+Scenario: EnderecoCadastralCliente CPF diferente do principal
+	Given Pedido base
+	And Informo "EnderecoCadastralCliente.Endereco_cnpj_cpf" = "1"
+	And Informo "pedidoMagentoDto.Cnpj_Cpf" = "2"
+	Then Erro "Cnpj_Cpf está diferente de EnderecoCadastralCliente.Endereco_cnpj_cpf."
+
 @ignore
 Scenario: DetalhesPedidoMagentoDto
 	#//nao existe o DetalhesPedidoMagentoDto. Os valores a usar são:

@@ -122,6 +122,13 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("Especificado em \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoA" +
                         "dicional.CamposLidosAppsettings\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+#line 10
+ testRunner.And("Especificado em \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoA" +
+                        "dicional.SemPedidosPj\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 12
+ testRunner.And("Especificado em \"Especificacao.Pedido.Pedido.PedidoListaDependencias\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
             }
             this.ScenarioCleanup();
         }

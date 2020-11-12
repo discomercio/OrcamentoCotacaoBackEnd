@@ -11,9 +11,12 @@ namespace Especificacao.Especificacao.Pedido
         public PedidoSteps()
         {
             base.AdicionarImplementacao(new Especificacao.Prepedido.PrepedidoSteps());
-            RegistroDependencias.AdicionarDependencia("Especificacao.Prepedido.Prepedido.PrepedidoListaDependencias", "Especificacao.Pedido.Pedido.PedidoListaDependencias");
+            RegistroDependencias.AdicionarDependencia("Especificacao.Prepedido.Prepedido.PrepedidoListaDependencias",
+                "Especificacao.Pedido.Pedido.PedidoListaDependencias");
 
-            //todo: afazer: tesmo que implementar o pedido em algum lugar
+            base.AdicionarImplementacao(new Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido());
+            RegistroDependencias.AdicionarDependencia("Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedidoListaDependencias",
+                "Especificacao.Pedido.Pedido.PedidoListaDependencias");
         }
         [Given(@"O pedido não tem nenhum passo individual, somente passos incluídos pela PedidoListaDependencias")]
         public void GivenOPedidoNaoTemNenhumPassoIndividualSomentePassosIncluidosPelaPedidoListaDependencias()

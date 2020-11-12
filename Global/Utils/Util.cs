@@ -57,9 +57,7 @@ namespace UtilsGlobais
 
         public static bool ValidaCPF(string cpf)
         {
-            string valor = cpf.Replace(".", "").Replace("/", "").Replace("-", "");
-
-            valor = valor.Replace("-", "");
+            string valor = System.Text.RegularExpressions.Regex.Replace(cpf, @"\D", "");
 
             if (valor.Length != 11) return false;
 
@@ -126,7 +124,8 @@ namespace UtilsGlobais
             string p1 = "543298765432";
             string p2 = "6543298765432";
 
-            cnpj = cnpj.Replace(".", "").Replace("/", "").Replace("-", "");
+            //ficamos somente com dígitos
+            cnpj = System.Text.RegularExpressions.Regex.Replace(cnpj, @"\D", "");
             if (cnpj == "") return true;
             if (cnpj.Length != 14) return false;
 
@@ -798,9 +797,9 @@ namespace UtilsGlobais
             if (string.IsNullOrEmpty(id_nsu))
                 throw new ArgumentException("Não foi especificado o NSU a ser gerado!");
 
-            var queryControle= from c in dbgravacao.Tcontroles
-                      where c.Id_Nsu == id_nsu
-                      select c;
+            var queryControle = from c in dbgravacao.Tcontroles
+                                where c.Id_Nsu == id_nsu
+                                select c;
 
             var controle = await queryControle.FirstOrDefaultAsync();
             if (controle == null)

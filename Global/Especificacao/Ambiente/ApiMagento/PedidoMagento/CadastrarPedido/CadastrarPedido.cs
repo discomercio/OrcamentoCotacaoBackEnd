@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 {
-    class CadastrarPedido
+    class CadastrarPedido : Testes.Pedido.IPedidoPassosComuns
     {
         private readonly global::ApiMagento.Controllers.PedidoMagentoController pedidoMagentoController;
         private readonly Testes.Utils.LogTestes logTestes = Testes.Utils.LogTestes.GetInstance();
@@ -27,6 +27,21 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
             pedidoMagentoDto = CadastrarPedidoDados.PedidoBase();
             pedidoMagentoDto.TokenAcesso = Ambiente.ApiMagento.InjecaoDependencias.TokenAcessoApiMagento();
         }
+        public void GivenDadoBaseComEnderecoDeEntrega()
+        {
+            pedidoMagentoDto = CadastrarPedidoDados.PedidoBaseComEnderecoDeEntrega();
+            pedidoMagentoDto.TokenAcesso = Ambiente.ApiMagento.InjecaoDependencias.TokenAcessoApiMagento();
+        }
+
+        public void GivenPedidoBaseComEnderecoDeEntrega()
+        {
+            GivenDadoBaseComEnderecoDeEntrega();
+        }
+
+        public void WhenPedidoBase()
+        {
+            GivenDadoBase();
+        }
 
         public void WhenInformo(string p0, string p1)
         {
@@ -40,6 +55,58 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
                     pedidoMagentoDto.TokenAcesso = p1;
                     break;
 
+                case "CPF/CNPJ":
+                    pedidoMagentoDto.Cnpj_Cpf = p1;
+                    pedidoMagentoDto.EnderecoCadastralCliente.Endereco_cnpj_cpf = p1;
+                    break;
+                case "pedidoMagentoDto.Cnpj_Cpf":
+                    pedidoMagentoDto.Cnpj_Cpf = p1;
+                    break;
+                case "EnderecoCadastralCliente.Endereco_cnpj_cpf":
+                    pedidoMagentoDto.EnderecoCadastralCliente.Endereco_cnpj_cpf = p1;
+                    break;
+
+                case "EnderecoCadastralCliente.Endereco_tipo_pessoa":
+                    pedidoMagentoDto.EnderecoCadastralCliente.Endereco_tipo_pessoa = p1;
+                    break;
+
+                case "OutroEndereco":
+                    if (bool.TryParse(p1, out bool valor))
+                        pedidoMagentoDto.OutroEndereco = valor;
+                    break;
+                //endetg
+                case "EndEtg_bairro":
+                    pedidoMagentoDto.EnderecoEntrega ??= new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
+                    pedidoMagentoDto.EnderecoEntrega.EndEtg_bairro = p1;
+                    break;
+                case "EndEtg_cep":
+                    pedidoMagentoDto.EnderecoEntrega ??= new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
+                    pedidoMagentoDto.EnderecoEntrega.EndEtg_cep = p1;
+                    break;
+                case "EndEtg_endereco_numero":
+                    pedidoMagentoDto.EnderecoEntrega ??= new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
+                    pedidoMagentoDto.EnderecoEntrega.EndEtg_endereco_numero = p1;
+                    break;
+                case "EndEtg_uf":
+                    pedidoMagentoDto.EnderecoEntrega ??= new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
+                    pedidoMagentoDto.EnderecoEntrega.EndEtg_uf = p1;
+                    break;
+                case "EndEtg_endereco":
+                    pedidoMagentoDto.EnderecoEntrega ??= new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
+                    pedidoMagentoDto.EnderecoEntrega.EndEtg_endereco = p1;
+                    break;
+                case "EndEtg_cidade":
+                    pedidoMagentoDto.EnderecoEntrega ??= new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
+                    pedidoMagentoDto.EnderecoEntrega.EndEtg_cidade = p1;
+                    break;
+                case "EndEtg_obs":
+                    /* nao temos justificativa
+                    pedidoMagentoDto.EnderecoEntrega ??= new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
+                    pedidoMagentoDto.EnderecoEntrega.EndEtg_cod_justificativa = p1;
+                    */
+                    break;
+
+
                 case "InfCriacaoPedido.Pedido_bs_x_ac":
                     pedidoMagentoDto.InfCriacaoPedido.Pedido_bs_x_ac = p1;
                     break;
@@ -51,12 +118,13 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
                     break;
 
                 default:
-                    Assert.Equal("", $"{p0} desconhecido");
+                    Assert.Equal("", $"{p0} desconhecido na rotina WhenInformo");
                     break;
             }
         }
         public void ThenErroStatusCode(int statusCode)
         {
+            if (ignorarFeature) return;
             logTestes.LogMensagem("pedidoMagentoController.CadastrarPedido");
             Microsoft.AspNetCore.Mvc.ActionResult<MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto> ret
                 = pedidoMagentoController.CadastrarPedido(pedidoMagentoDto).Result;
@@ -79,6 +147,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 
         public void ThenErro(string? erro, bool erroDeveExistir)
         {
+            if (ignorarFeature) return;
             if (erro != null)
                 erro = Testes.Utils.MapeamentoMensagens.MapearMensagem(this.GetType().FullName, erro);
 
@@ -112,6 +181,12 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
                     Assert.DoesNotContain(erro, pedidoResultadoMagentoDto.ListaErros);
             }
 
+        }
+
+        private bool ignorarFeature = false;
+        public void GivenIgnorarFeatureNoAmbiente2(string p0)
+        {
+            Testes.Pedido.PedidoPassosComuns.IgnorarFeatureNoAmbiente(p0, ref ignorarFeature, this.GetType());
         }
     }
 }
