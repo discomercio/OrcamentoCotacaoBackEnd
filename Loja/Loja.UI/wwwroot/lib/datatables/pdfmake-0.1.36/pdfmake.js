@@ -297,7 +297,7 @@ function Buffer (arg, encodingOrOffset, length) {
 
 Buffer.poolSize = 8192 // not used by this implementation
 
-// TODO: Legacy, not needed anymore. Remove in next major version.
+// TINHAUMTODOAQUI: Legacy, not needed anymore. Remove in next major version.
 Buffer._augment = function (arr) {
   arr.__proto__ = Buffer.prototype
   return arr
@@ -4059,7 +4059,7 @@ TextTools.prototype.buildInlines = function (textArray, styleContextStack) {
 TextTools.prototype.sizeOfString = function (text, styleContextStack) {
 	text = text ? text.toString().replace(/\t/g, '    ') : '';
 
-	//TODO: refactor - extract from measure
+	//TINHAUMTODOAQUI: refactor - extract from measure
 	var fontName = getStyleProperty({}, styleContextStack, 'font', 'Roboto');
 	var fontSize = getStyleProperty({}, styleContextStack, 'fontSize', 12);
 	var fontFeatures = getStyleProperty({}, styleContextStack, 'fontFeatures', null);
@@ -4115,7 +4115,7 @@ function splitWords(text, noWrap) {
 
 function copyStyle(source, destination) {
 	destination = destination || {};
-	source = source || {}; //TODO: default style
+    source = source || {}; //TINHAUMTODOAQUI: default style
 
 	for (var key in source) {
 		if (key != 'text' && source.hasOwnProperty(key)) {
@@ -4483,7 +4483,7 @@ function isStarColumn(column) {
 	return column.width === null || column.width === undefined || column.width === '*' || column.width === 'star';
 }
 
-//TODO: refactor and reuse in measureTable
+//TINHAUMTODOAQUI: refactor and reuse in measureTable
 function measureMinMax(columns) {
 	var result = {min: 0, max: 0};
 
@@ -4832,7 +4832,7 @@ Writable.prototype.pipe = function () {
 
 function writeAfterEnd(stream, cb) {
   var er = new Error('write after end');
-  // TODO: defer error events consistently everywhere, not just the cb
+  // TINHAUMTODOAQUI: defer error events consistently everywhere, not just the cb
   stream.emit('error', er);
   processNextTick(cb, er);
 }
@@ -13247,7 +13247,7 @@ function calculatePageHeight(pages, margins) {
 		} else if (item.item._height) {
 			return item.item._height;
 		} else {
-			// TODO: add support for next item types
+			//TINHAUMTODOAQUI: add support for next item types
 			return 0;
 		}
 	}
@@ -13464,7 +13464,7 @@ function renderLine(line, x, y, pdfKitDoc) {
 
 	textDecorator.drawBackground(line, x, y, pdfKitDoc);
 
-	//TODO: line.optimizeInlines();
+	//TINHAUMTODOAQUI: line.optimizeInlines();
 	for (var i = 0, l = line.inlines.length; i < l; i++) {
 		var inline = line.inlines[i];
 		var shiftToBaseline = lineHeight - ((inline.font.ascender / 1000) * inline.fontSize) - descent;
@@ -13518,7 +13518,7 @@ function renderWatermark(page, pdfKitDoc) {
 }
 
 function renderVector(vector, pdfKitDoc) {
-	//TODO: pdf optimization (there's no need to write all properties everytime)
+	//TINHAUMTODOAQUI: pdf optimization (there's no need to write all properties everytime)
 	pdfKitDoc.lineWidth(vector.lineWidth || 1);
 	if (vector.dash) {
 		pdfKitDoc.dash(vector.dash.length, {space: vector.dash.space || vector.dash.length, phase: vector.dash.phase || 0});
@@ -13528,7 +13528,7 @@ function renderVector(vector, pdfKitDoc) {
 	pdfKitDoc.lineJoin(vector.lineJoin || 'miter');
 	pdfKitDoc.lineCap(vector.lineCap || 'butt');
 
-	//TODO: clipping
+	//TINHAUMTODOAQUI: clipping
 
 	switch (vector.type) {
 		case 'ellipse':
@@ -14105,7 +14105,7 @@ LayoutBuilder.prototype.processVerticalContainer = function (node) {
 		self.processNode(item);
 		addAll(node.positions, item.positions);
 
-		//TODO: paragraph gap
+		//TINHAUMTODOAQUI: paragraph gap
 	});
 };
 
@@ -14376,8 +14376,8 @@ LayoutBuilder.prototype.processCanvas = function (node) {
 	var height = node._minHeight;
 
 	if (node.absolutePosition === undefined && this.writer.context().availableHeight < height) {
-		// TODO: support for canvas larger than a page
-		// TODO: support for other overflow methods
+		//TINHAUMTODOAQUI: support for canvas larger than a page
+		//TINHAUMTODOAQUI: support for other overflow methods
 
 		this.writer.moveToNextPage();
 	}
@@ -14660,7 +14660,7 @@ DocMeasure.prototype.measureNode = function (node) {
 	var self = this;
 
 	return this.styleStack.auto(node, function () {
-		// TODO: refactor + rethink whether this is the proper way to handle margins
+		//TINHAUMTODOAQUI: refactor + rethink whether this is the proper way to handle margins
 		node._margin = getNodeMargin(node);
 
 		if (node.columns) {
@@ -14891,7 +14891,7 @@ DocMeasure.prototype.gapSizeForList = function () {
 
 DocMeasure.prototype.buildUnorderedMarker = function (styleStack, gapSize, type) {
 	function buildDisc(gapSize, color) {
-		// TODO: ascender-based calculations
+		//TINHAUMTODOAQUI: ascender-based calculations
 		var radius = gapSize.fontSize / 6;
 		return {
 			canvas: [{
@@ -14906,7 +14906,7 @@ DocMeasure.prototype.buildUnorderedMarker = function (styleStack, gapSize, type)
 	}
 
 	function buildSquare(gapSize, color) {
-		// TODO: ascender-based calculations
+		//TINHAUMTODOAQUI: ascender-based calculations
 		var size = gapSize.fontSize / 3;
 		return {
 			canvas: [{
@@ -14921,7 +14921,7 @@ DocMeasure.prototype.buildUnorderedMarker = function (styleStack, gapSize, type)
 	}
 
 	function buildCircle(gapSize, color) {
-		// TODO: ascender-based calculations
+		//TINHAUMTODOAQUI: ascender-based calculations
 		var radius = gapSize.fontSize / 6;
 		return {
 			canvas: [{
@@ -15095,7 +15095,7 @@ DocMeasure.prototype.measureOrderedList = function (node) {
 			if (item.listMarker._inlines) {
 				node._gapSize.width = Math.max(node._gapSize.width, item.listMarker._inlines[0].width);
 			}
-		}  // TODO: else - nested lists numbering
+        }  //TINHAUMTODOAQUI: else - nested lists numbering
 
 		node._minWidth = Math.max(node._minWidth, items[i]._minWidth);
 		node._maxWidth = Math.max(node._maxWidth, items[i]._maxWidth);
@@ -16539,7 +16539,7 @@ PageElementWriter.prototype.commitUnbreakableBlock = function (forcedX, forcedY)
 			fragment.xOffset = forcedX;
 			fragment.yOffset = forcedY;
 
-			//TODO: vectors can influence height in some situations
+			//TINHAUMTODOAQUI: vectors can influence height in some situations
 			if (nbPages > 1) {
 				// on out-of-context blocs (headers, footers, background) height should be the whole DocumentContext height
 				if (forcedX !== undefined || forcedY !== undefined) {
@@ -16573,7 +16573,7 @@ PageElementWriter.prototype.currentBlockToRepeatable = function () {
 
 	rep.xOffset = this.originalX;
 
-	//TODO: vectors can influence height in some situations
+	//TINHAUMTODOAQUI: vectors can influence height in some situations
 	rep.height = unbreakableContext.y;
 
 	return rep;
@@ -17203,7 +17203,7 @@ TableProcessor.prototype.endRow = function (rowIndex, writer, pageBreaks) {
 		if (writer.context().page != ys[yi].page) {
 			writer.context().page = ys[yi].page;
 
-			//TODO: buggy, availableHeight should be updated on every pageChanged event
+			//TINHAUMTODOAQUI: buggy, availableHeight should be updated on every pageChanged event
 			// TableProcessor should be pageChanged listener, instead of processRow
 			this.reservedAtBottom = 0;
 		}
@@ -21888,7 +21888,7 @@ function InflateState() {
   this.dmax = 0;              /* zlib header max distance (INFLATE_STRICT) */
   this.check = 0;             /* protected copy of check value */
   this.total = 0;             /* protected copy of output count */
-  // TODO: may be {}
+  //TINHAUMTODOAQUI: may be {}
   this.head = null;           /* where to save gzip header information */
 
   /* sliding window */
@@ -22420,7 +22420,7 @@ function inflate(strm, flush) {
           if (have === 0) { break inf_leave; }
           copy = 0;
           do {
-            // TODO: 2 or 1 bytes?
+            //TINHAUMTODOAQUI: 2 or 1 bytes?
             len = input[next + copy++];
             /* use constant limit because in js we should not preallocate memory */
             if (state.head && len &&
@@ -26992,7 +26992,7 @@ var CFFBlendOp = function () {
   CFFBlendOp.decode = function decode(stream, parent, operands) {
     var numBlends = operands.pop();
 
-    // TODO: actually blend. For now just consume the deltas
+    //TINHAUMTODOAQUI: actually blend. For now just consume the deltas
     // since we don't use any of the values anyway.
     while (operands.length > numBlends) {
       operands.pop();
@@ -27392,7 +27392,7 @@ var CFFCustomEncoding = new r.VersionedStruct(new CFFEncodingVersion(), {
     ranges: new r.Array(Range1, 'nRanges')
   }
 
-  // TODO: supplement?
+  //TINHAUMTODOAQUI: supplement?
 });
 
 var CFFEncoding = new PredefinedOp([StandardEncoding, ExpertEncoding], new CFFPointer(CFFCustomEncoding, { lazy: true }));
@@ -28417,7 +28417,7 @@ var JSTF = new r.Struct({
   scriptList: new r.Array(JstfScriptRecord, 'scriptCount')
 });
 
-// TODO: add this to restructure
+//TINHAUMTODOAQUI: add this to restructure
 
 var VariableSizeNumber = function () {
   function VariableSizeNumber(size) {
@@ -29918,7 +29918,7 @@ var UnicodeLayoutEngine = function () {
     for (var index = 0; index < glyphs.length; index++) {
       var glyph = glyphs[index];
       if (glyph.isMark) {
-        // TODO: handle ligatures
+        //TINHAUMTODOAQUI: handle ligatures
         clusterEnd = index;
       } else {
         if (clusterStart !== clusterEnd) {
@@ -33380,7 +33380,7 @@ var GlyphInfo = function () {
 
       var GDEF = this._font.GDEF;
       if (GDEF && GDEF.glyphClassDef) {
-        // TODO: clean this up
+        //TINHAUMTODOAQUI: clean this up
         var classID = OTProcessor.prototype.getClassID(id, GDEF.glyphClassDef);
         this.isBase = classID === 1;
         this.isLigature = classID === 2;
@@ -33982,7 +33982,7 @@ var IndicShaper = (_temp$2 = _class$6 = function (_DefaultShaper) {
     plan.indicConfig = INDIC_CONFIGS[plan.unicodeScript] || INDIC_CONFIGS.Default;
     plan.isOldSpec = plan.indicConfig.hasOldSpec && plan.script[plan.script.length - 1] !== '2';
 
-    // TODO: turn off kern (Khmer) and liga features.
+    //TINHAUMTODOAQUI: turn off kern (Khmer) and liga features.
   };
 
   IndicShaper.assignFeatures = function assignFeatures(plan, glyphs) {
@@ -34000,7 +34000,7 @@ var IndicShaper = (_temp$2 = _class$6 = function (_DefaultShaper) {
     };
 
     // Decompose split matras
-    // TODO: do this in a more general unicode normalizer
+    //TINHAUMTODOAQUI: do this in a more general unicode normalizer
     for (var i = glyphs.length - 1; i >= 0; i--) {
       _loop(i);
     }
@@ -34918,7 +34918,7 @@ var UniversalShaper = (_temp$3 = _class$7 = function (_DefaultShaper) {
     };
 
     // Decompose split vowels
-    // TODO: do this in a more general unicode normalizer
+    //TINHAUMTODOAQUI: do this in a more general unicode normalizer
     for (var i = glyphs.length - 1; i >= 0; i--) {
       _loop(i);
     }
@@ -35287,7 +35287,7 @@ var GSUBProcessor = function (_OTProcessor) {
           // Alternate Substitution
           var _index2 = this.coverageIndex(table.coverage);
           if (_index2 !== -1) {
-            var USER_INDEX = 0; // TODO
+              var USER_INDEX = 0; //TINHAUMTODOAQUI
             this.glyphIterator.cur.id = table.alternateSet.get(_index2)[USER_INDEX];
             return true;
           }
@@ -35511,7 +35511,7 @@ var GPOSProcessor = function (_OTProcessor) {
       }
     }
 
-    // TODO: device tables
+    //TINHAUMTODOAQUI: device tables
   };
 
   GPOSProcessor.prototype.applyLookup = function applyLookup(lookupType, table) {
@@ -35785,7 +35785,7 @@ var GPOSProcessor = function (_OTProcessor) {
   };
 
   GPOSProcessor.prototype.getAnchor = function getAnchor(anchor) {
-    // TODO: contour point, device tables
+    //TINHAUMTODOAQUI: contour point, device tables
     var x = anchor.xCoordinate;
     var y = anchor.yCoordinate;
 
@@ -36607,7 +36607,7 @@ var Glyph = (_class$8 = function () {
     this.codePoints = codePoints;
     this._font = font;
 
-    // TODO: get this info from GDEF if available
+    //TINHAUMTODOAQUI: get this info from GDEF if available
     this.isMark = this.codePoints.every(unicode.isMark);
     this.isLigature = this.codePoints.length > 1;
   }
@@ -38914,7 +38914,7 @@ var TTFSubset = function (_Subset) {
     //         table: cmapTable
     //     ]
 
-    // TODO: subset prep, cvt, fpgm?
+    //TINHAUMTODOAQUI: subset prep, cvt, fpgm?
     Directory.encode(stream, {
       tables: {
         head: head,
@@ -42539,7 +42539,7 @@ DBCSEncoder.prototype.write = function(str) {
                     nextChar = uCode; // Current character will be written too in the next iteration.
 
                 } else {
-                    // TODO: What if we have no default? (resCode == undefined)
+                    //TINHAUMTODOAQUI: What if we have no default? (resCode == undefined)
                     // Then, we should write first char of the sequence as-is and try the rest recursively.
                     // Didn't do it for now because no encoding has this situation yet.
                     // Currently, just skip the sequence and write current char.
@@ -42663,7 +42663,7 @@ DBCSDecoder.prototype.write = function(buf) {
             // Normal character, just use it.
         }
         else if (uCode === UNASSIGNED) { // Unknown char.
-            // TODO: Callback with seq.
+            //TINHAUMTODOAQUI: Callback with seq.
             //var curSeq = (seqStart >= 0) ? buf.slice(seqStart, i+1) : prevBuf.slice(seqStart + prevBufOffset, i+1 + prevBufOffset);
             i = seqStart; // Try to parse again, after skipping first byte of the sequence ('i' will be incremented by 'for' cycle).
             uCode = this.defaultCharUnicode.charCodeAt(0);
@@ -42817,9 +42817,9 @@ module.exports = {
         encodeAdd: {'\u00a5': 0x5C, '\u203E': 0x7E},
     },
 
-    // TODO: KDDI extension to Shift_JIS
-    // TODO: IBM CCSID 942 = CP932, but F0-F9 custom chars and other char changes.
-    // TODO: IBM CCSID 943 = Shift_JIS = CP932 with original Shift_JIS lower 128 chars.
+    //TINHAUMTODOAQUI: KDDI extension to Shift_JIS
+    //TINHAUMTODOAQUI: IBM CCSID 942 = CP932, but F0-F9 custom chars and other char changes.
+    //TINHAUMTODOAQUI: IBM CCSID 943 = Shift_JIS = CP932 with original Shift_JIS lower 128 chars.
 
 
     // == Chinese/GBK ==========================================================
@@ -43261,7 +43261,7 @@ module.exports = function (iconv) {
             buf.copy(this, offset, 0, length);
             return length;
 
-            // TODO: Set _charsWritten.
+            //TINHAUMTODOAQUI: Set _charsWritten.
         }
 
 
