@@ -76,11 +76,11 @@
         <div class="row">
             <div class="col-sm-12">
                 @using (Html.BeginForm("LoginSubmit", "Acesso", FormMethod.Post,
-      new
-      {
-          @class = "md-float-material form-material",
-
-      }))
+     new
+     {
+         @class = "md-float-material form-material",
+         onsubmit = "return continuar()"
+     }))
                 {
                     @Html.HiddenFor(m => m.ReturnUrl)
 
@@ -163,7 +163,7 @@
                                         estilos = "required";
                                     }
                                 }
-                                @Html.PasswordFor(m => m.Senha, new { @class = "form-control " + estilos })
+                                @Html.PasswordFor(m => m.Senha, new { @class = "form-control " + estilos, @id = "senha" })
                                 <span class="form-bar"></span>
                                 <label class="float-label">Senha</label>
                             </div>
@@ -180,7 +180,7 @@
                             </div>
                             <div class="row m-t-30">
                                 <div class="col-md-12">
-                                    <button type="submit" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">
+                                    <button id="btnLogin" type="submit" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">
                                         Enviar
                                     </button>
                                 </div>
