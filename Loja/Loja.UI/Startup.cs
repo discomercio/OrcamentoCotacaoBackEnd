@@ -31,7 +31,12 @@ namespace Loja.UI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<Configuracao, Configuracao>();
+            services.AddSingleton<Configuracao, Configuracao>(c => {
+                IConfiguration configuration = c.GetService<IConfiguration>();
+                var appSettingsSectionSingleton = configuration.GetSection("AppSettings");
+                var configuracaoLoja = appSettingsSectionSingleton.Get<Configuracao>();
+                return configuracaoLoja;
+            });
             Configuracao configuracao = new Configuracao(Configuration);
 
             services.AddHttpContextAccessor();
