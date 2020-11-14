@@ -12,7 +12,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
     class CadastrarPedido : Testes.Pedido.IPedidoPassosComuns
     {
         private readonly global::ApiMagento.Controllers.PedidoMagentoController pedidoMagentoController;
-        private readonly Testes.Utils.LogTestes logTestes = Testes.Utils.LogTestes.GetInstance();
+        private readonly Testes.Utils.LogTestes.LogTestes logTestes = Testes.Utils.LogTestes.LogTestes.GetInstance();
         readonly global::MagentoBusiness.UtilsMagento.ConfiguracaoApiMagento configuracaoApiMagento = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos().GetRequiredService<global::MagentoBusiness.UtilsMagento.ConfiguracaoApiMagento>();
 
         public CadastrarPedido()
@@ -24,11 +24,13 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 
         public void GivenDadoBase()
         {
+            if (ignorarFeature) return;
             pedidoMagentoDto = CadastrarPedidoDados.PedidoBase();
             pedidoMagentoDto.TokenAcesso = Ambiente.ApiMagento.InjecaoDependencias.TokenAcessoApiMagento();
         }
         public void GivenDadoBaseComEnderecoDeEntrega()
         {
+            if (ignorarFeature) return;
             pedidoMagentoDto = CadastrarPedidoDados.PedidoBaseComEnderecoDeEntrega();
             pedidoMagentoDto.TokenAcesso = Ambiente.ApiMagento.InjecaoDependencias.TokenAcessoApiMagento();
         }
@@ -45,6 +47,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 
         public void WhenInformo(string p0, string p1)
         {
+            if (ignorarFeature) return;
             switch (p0)
             {
                 case "appsettings.Orcamentista":
@@ -134,18 +137,21 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 
         public void ThenErro(string p0)
         {
+            if (ignorarFeature) return;
             ThenErro(p0, true);
         }
         public void ThenSemErro(string p0)
         {
+            if (ignorarFeature) return;
             ThenErro(p0, false);
         }
         public void ThenSemNenhumErro()
         {
+            if (ignorarFeature) return;
             ThenErro(null, false);
         }
 
-        public void ThenErro(string? erro, bool erroDeveExistir)
+        private void ThenErro(string? erro, bool erroDeveExistir)
         {
             if (ignorarFeature) return;
             if (erro != null)

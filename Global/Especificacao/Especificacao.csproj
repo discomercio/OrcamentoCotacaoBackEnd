@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <None Remove="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CadastrarPedidoDados.json" />
+    <None Remove="appsettings.testes.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\Tcliente.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\TcodigoDescricao.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\Tcontrole.json" />
@@ -70,6 +71,14 @@
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Validacao\Estoque.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Prepedido\Pedido.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\TesteExecucaoCruzadaPedido - Copy.feature.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.testes.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

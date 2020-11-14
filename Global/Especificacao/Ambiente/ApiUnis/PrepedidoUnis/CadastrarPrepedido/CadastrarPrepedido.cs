@@ -10,7 +10,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
     class CadastrarPrepedido : Testes.Pedido.IPedidoPassosComuns
     {
         private readonly PrepedidoAPIUnis.Controllers.PrepedidoUnisController prepedidoUnisController;
-        private readonly Testes.Utils.LogTestes logTestes = Testes.Utils.LogTestes.GetInstance();
+        private readonly Testes.Utils.LogTestes.LogTestes logTestes = Testes.Utils.LogTestes.LogTestes.GetInstance();
 
         public CadastrarPrepedido()
         {
@@ -20,10 +20,12 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
         private PrePedidoUnisDto prePedidoUnisDto = CadastrarPrepedidoDados.PrepedidoBase();
         public void GivenPrepedidoBase()
         {
+            if (ignorarFeature) return;
             prePedidoUnisDto = CadastrarPrepedidoDados.PrepedidoBase();
         }
         public void GivenPedidoBaseComEnderecoDeEntrega()
         {
+            if (ignorarFeature) return;
             prePedidoUnisDto = CadastrarPrepedidoDados.PrepedidoBaseComEnderecoDeEntrega();
         }
 
@@ -34,6 +36,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
 
         public void WhenInformo(string p0, string p1)
         {
+            if (ignorarFeature) return;
             switch (p0)
             {
                 case "TokenAcesso":
@@ -82,18 +85,21 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
 
         public void ThenErro(string p0)
         {
+            if (ignorarFeature) return;
             ThenErro(p0, true);
         }
         public void ThenSemErro(string p0)
         {
+            if (ignorarFeature) return;
             ThenErro(p0, false);
         }
         public void ThenSemNenhumErro()
         {
+            if (ignorarFeature) return;
             ThenErro(null, false);
         }
 
-        public void ThenErro(string? erro, bool erroDeveExistir)
+        private void ThenErro(string? erro, bool erroDeveExistir)
         {
             if (ignorarFeature) return;
             if (erro != null)

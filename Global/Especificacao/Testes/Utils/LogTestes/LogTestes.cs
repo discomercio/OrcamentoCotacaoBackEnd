@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Especificacao.Testes.Utils
+namespace Especificacao.Testes.Utils.LogTestes
 {
     public class LogTestes : IDisposable
     {
@@ -17,17 +18,38 @@ namespace Especificacao.Testes.Utils
 
         private LogTestes()
         {
-            if (!Directory.Exists(DiretorioLog))
-                Directory.CreateDirectory(DiretorioLog);
-            Writer = new StreamWriter(new FileStream(DiretorioLog + @"\" + CaminhoLog, FileMode.Append));
+            var config = new Microsoft.Extensions.Configuration.ConfigurationBuilder()
+                .AddJsonFile("appsettings.testes.json").Build();
+            var configuracaoTestes = config.Get<ConfiguracaoTestes>();
+
+            var DiretorioLogs = configuracaoTestes.DiretorioLogs;
+            var ArquivoLog = configuracaoTestes.ArquivoLog;
+            if (!Directory.Exists(DiretorioLogs))
+                Directory.CreateDirectory(DiretorioLogs);
+            if (configuracaoTestes.SubstituirArquivos)
+            {
+                Writer = new StreamWriter(new FileStream(DiretorioLogs + @"\" + ArquivoLog, FileMode.Create));
+                WriterMapa = new StreamWriter(new FileStream(DiretorioLogs + @"\" + configuracaoTestes.ArquivoMapa, FileMode.Create));
+            }
+            else
+            {
+                Writer = new StreamWriter(new FileStream(DiretorioLogs + @"\" + ArquivoLog, FileMode.Append));
+                WriterMapa = new StreamWriter(new FileStream(DiretorioLogs + @"\" + configuracaoTestes.ArquivoMapa, FileMode.Append));
+            }
         }
-        private static readonly string CaminhoLog = @"log.txt";
-        private static readonly string DiretorioLog = @"c:\temp\arclube_testes_log";
         private readonly StreamWriter Writer;
+        private readonly StreamWriter WriterMapa;
+
+        public void Mapa(string? msg)
+        {
+            msg ??= "vazio";
+            WriterMapa.WriteLine(msg);
+            WriterMapa.Flush();
+        }
 
         public static void Log(string? msg)
         {
-            msg = msg ?? "vazio";
+            msg ??= "vazio";
             GetInstance().LogMensagem(msg);
         }
 
@@ -56,6 +78,7 @@ namespace Especificacao.Testes.Utils
                 if (disposing)
                 {
                     Writer.Dispose();
+                    WriterMapa.Dispose();
                 }
                 disposedValue = true;
             }

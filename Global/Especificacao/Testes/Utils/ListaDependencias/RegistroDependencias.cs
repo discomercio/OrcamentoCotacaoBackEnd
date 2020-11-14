@@ -53,8 +53,8 @@ namespace Especificacao.Testes.Utils.ListaDependencias
         {
             DumpMapa(ambientesRegistrados, "ambientesRegistrados");
             //estes são uteis para debug
-            DumpMapa(ambientesEspecificados, "ambientesEspecificados");
-            DumpMapa(ambientesImplementados, "ambientesImplementados");
+            //DumpMapa(ambientesEspecificados, "ambientesEspecificados");
+            //DumpMapa(ambientesImplementados, "ambientesImplementados");
 
 
             DumpMapaInvertido(ambientesRegistrados, "ambientesRegistrados invertido");
@@ -84,18 +84,43 @@ namespace Especificacao.Testes.Utils.ListaDependencias
 
         private static void DumpMapa(Dictionary<string, List<string>> ambientes, string msg)
         {
-            //registrar todo o mapa no log
             msg += "\r\n";
-            foreach (var ambiente in ambientes.Keys.ToList().OrderBy(r => r))
+            msg = DumpMapaItem(ambientes, ambientes, msg);
+            msg += "\r\n";
+            msg += "\r\n";
+            LogTestes.LogTestes.GetInstance().Mapa(msg);
+        }
+        private static string DumpMapaItem(Dictionary<string, List<string>> ambientesFiltrados,
+            Dictionary<string, List<string>> ambientesTodos,
+            string msg, int identacao = 0)
+        {
+            if (identacao > 20)
             {
-                msg += "\r\n";
-                msg += "\r\n" + ambiente;
-                foreach (var especificacao in ambientes[ambiente].OrderBy(r => r))
-                    msg += "\r\n\t" + especificacao;
+                msg += "LIMITE DE RECURSÃO ATINGIDO!";
+                return msg;
             }
-            msg += "\r\n";
-            msg += "\r\n";
-            LogTestes.Log(msg);
+
+            //registrar todo o mapa no log
+            foreach (var ambiente in ambientesFiltrados.Keys.ToList().OrderBy(r => r))
+            {
+                if (identacao == 0)
+                    msg += "\r\n";
+                msg += "\r\n" + new string('\t', identacao) + ambiente;
+                foreach (var especificacao in ambientesFiltrados[ambiente].OrderBy(r => r))
+                {
+                    if (ambientesTodos.ContainsKey(especificacao))
+                    {
+                        var filtrado = new Dictionary<string, List<string>>();
+                        filtrado.Add(especificacao, ambientesTodos[especificacao]);
+                        msg = DumpMapaItem(filtrado, ambientesTodos, msg, identacao + 1);
+                    }
+                    else
+                    {
+                        msg += "\r\n\t" + new string('\t', identacao) + especificacao;
+                    }
+                }
+            }
+            return msg;
         }
 
         private static void VerificarUmaLista(Dictionary<string, List<string>> ambientesVerificados)

@@ -21,7 +21,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
         private static bool _inicialziado = false;
         private readonly ContextoBdProvider contextoBdProvider;
         private readonly ContextoCepProvider contextoCepProvider;
-        private readonly LogTestes logTestes = LogTestes.GetInstance();
+        private readonly LogTestes.LogTestes logTestes = LogTestes.LogTestes.GetInstance();
 
         public InicializarBancoGeral(InfraBanco.ContextoBdProvider contextoBdProvider, InfraBanco.ContextoCepProvider contextoCepProvider)
         {

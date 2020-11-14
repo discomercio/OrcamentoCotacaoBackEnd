@@ -7,7 +7,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.Valida
     public class CpfCnpjSteps
     {
         private readonly CadastrarPrepedido cadastrarPrepedido = new CadastrarPrepedido();
-        private readonly Testes.Utils.LogTestes logTestes = Testes.Utils.LogTestes.GetInstance();
+        private readonly Testes.Utils.LogTestes.LogTestes logTestes = Testes.Utils.LogTestes.LogTestes.GetInstance();
 
         [When(@"Prepedido base")]
         public void WhenPrepedidoBase()

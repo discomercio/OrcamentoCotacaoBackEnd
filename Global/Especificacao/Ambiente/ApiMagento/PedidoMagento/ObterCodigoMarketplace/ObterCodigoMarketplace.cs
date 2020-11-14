@@ -12,7 +12,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace
     class CadastrarPedido
     {
         private readonly global::ApiMagento.Controllers.PedidoMagentoController pedidoMagentoController;
-        private readonly Testes.Utils.LogTestes logTestes = Testes.Utils.LogTestes.GetInstance();
+        private readonly Testes.Utils.LogTestes.LogTestes logTestes = Testes.Utils.LogTestes.LogTestes.GetInstance();
         public CadastrarPedido()
         {
             pedidoMagentoController = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos().GetRequiredService<global::ApiMagento.Controllers.PedidoMagentoController>();

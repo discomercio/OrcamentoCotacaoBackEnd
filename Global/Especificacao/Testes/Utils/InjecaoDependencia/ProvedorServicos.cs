@@ -21,7 +21,7 @@ namespace Especificacao.Testes.Utils.InjecaoDependencia
         private ServiceProvider Servicos { get; set; }
         private ProvedorServicos()
         {
-            var logTestes = LogTestes.GetInstance();
+            var logTestes = LogTestes.LogTestes.GetInstance();
             logTestes.LogMensagem("ProvedorServicos inicio");
 
             var services = new ServiceCollection();
