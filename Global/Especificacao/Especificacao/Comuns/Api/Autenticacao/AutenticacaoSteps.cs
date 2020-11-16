@@ -17,7 +17,7 @@ namespace Especificacao.Comuns.Api.Autenticacao
                 "Especificacao.Comuns.Api.Autenticacao");
 
             base.AdicionarImplementacao(new Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.Autenticacao());
-            RegistroDependencias.AdicionarDependencia("Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.BuscarQtdeParcCartaoVisaListaDependencias", 
+            RegistroDependencias.AdicionarDependencia("Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.BuscarQtdeParcCartaoVisaListaDependencias",
                 "Especificacao.Comuns.Api.Autenticacao");
 
             base.AdicionarImplementacao(new Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace.Autenticacao());
@@ -32,19 +32,21 @@ namespace Especificacao.Comuns.Api.Autenticacao
         [Given(@"Dado base")]
         public void GivenDadoBase()
         {
+            Testes.Utils.LogTestes.LogOperacoes.DadoBase(this.GetType());
             base.Executar(i => i.GivenDadoBase());
         }
 
         [When(@"Informo ""(.*)"" = ""(.*)""")]
         public void WhenInformo(string p0, string p1)
         {
-            logTestes.LogMensagem($"AutenticacaoSteps WhenInformo({p0}, {p1})");
+            Testes.Utils.LogTestes.LogOperacoes.Informo(p0, p1, this.GetType());
             base.Executar(i => i.WhenInformo(p0, p1));
         }
 
         [Then(@"Erro status code ""(.*)""")]
         public void ThenErroStatusCode(int p0)
         {
+            Testes.Utils.LogTestes.LogOperacoes.ErroStatusCode(p0, this.GetType());
             base.Executar(i => i.ThenErroStatusCode(p0));
         }
     }

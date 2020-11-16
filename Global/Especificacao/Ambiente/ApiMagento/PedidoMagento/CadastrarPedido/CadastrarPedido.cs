@@ -12,7 +12,6 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
     class CadastrarPedido : Testes.Pedido.IPedidoPassosComuns
     {
         private readonly global::ApiMagento.Controllers.PedidoMagentoController pedidoMagentoController;
-        private readonly Testes.Utils.LogTestes.LogTestes logTestes = Testes.Utils.LogTestes.LogTestes.GetInstance();
         readonly global::MagentoBusiness.UtilsMagento.ConfiguracaoApiMagento configuracaoApiMagento = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos().GetRequiredService<global::MagentoBusiness.UtilsMagento.ConfiguracaoApiMagento>();
 
         public CadastrarPedido()
@@ -25,12 +24,14 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
         public void GivenDadoBase()
         {
             if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes.DadoBase(this.GetType());
             pedidoMagentoDto = CadastrarPedidoDados.PedidoBase();
             pedidoMagentoDto.TokenAcesso = Ambiente.ApiMagento.InjecaoDependencias.TokenAcessoApiMagento();
         }
         public void GivenDadoBaseComEnderecoDeEntrega()
         {
             if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes.DadoBaseComEnderecoDeEntrega(this.GetType());
             pedidoMagentoDto = CadastrarPedidoDados.PedidoBaseComEnderecoDeEntrega();
             pedidoMagentoDto.TokenAcesso = Ambiente.ApiMagento.InjecaoDependencias.TokenAcessoApiMagento();
         }
@@ -48,6 +49,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
         public void WhenInformo(string p0, string p1)
         {
             if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes.Informo(p0, p1, this.GetType());
             switch (p0)
             {
                 case "appsettings.Orcamentista":
@@ -128,7 +130,8 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
         public void ThenErroStatusCode(int statusCode)
         {
             if (ignorarFeature) return;
-            logTestes.LogMensagem("pedidoMagentoController.CadastrarPedido");
+            Testes.Utils.LogTestes.LogOperacoes.ErroStatusCode(statusCode, this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes.ChamadaController(pedidoMagentoController.GetType(), "CadastrarPedido", this.GetType());
             Microsoft.AspNetCore.Mvc.ActionResult<MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto> ret
                 = pedidoMagentoController.CadastrarPedido(pedidoMagentoDto).Result;
             Microsoft.AspNetCore.Mvc.ActionResult res = ret.Result;
@@ -138,16 +141,19 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
         public void ThenErro(string p0)
         {
             if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes.Erro(p0, this.GetType());
             ThenErro(p0, true);
         }
         public void ThenSemErro(string p0)
         {
             if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes.SemErro(p0, this.GetType());
             ThenErro(p0, false);
         }
         public void ThenSemNenhumErro()
         {
             if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes.SemNenhumErro(this.GetType());
             ThenErro(null, false);
         }
 
@@ -157,7 +163,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
             if (erro != null)
                 erro = Testes.Utils.MapeamentoMensagens.MapearMensagem(this.GetType().FullName, erro);
 
-            logTestes.LogMensagem($"pedidoMagentoController.CadastrarPedido ThenErro({erro}, {erroDeveExistir})");
+            Testes.Utils.LogTestes.LogOperacoes.ChamadaController(pedidoMagentoController.GetType(), "CadastrarPedido", this.GetType());
             Microsoft.AspNetCore.Mvc.ActionResult<MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto> ret
                 = pedidoMagentoController.CadastrarPedido(pedidoMagentoDto).Result;
             Microsoft.AspNetCore.Mvc.ActionResult res = ret.Result;
@@ -172,7 +178,11 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
             if (erroDeveExistir)
             {
                 if (!pedidoResultadoMagentoDto.ListaErros.Contains(erro ?? ""))
-                    logTestes.LogMensagem($"Erro: {erro} em {string.Join(" - ", pedidoResultadoMagentoDto.ListaErros)}");
+                {
+                    Testes.Utils.LogTestes.LogOperacoes.MensagemEspecial(
+                        $"Erro: {erro} em {string.Join(" - ", pedidoResultadoMagentoDto.ListaErros)}",
+                        this.GetType());
+                }
                 Assert.Contains(erro, pedidoResultadoMagentoDto.ListaErros);
             }
             else
@@ -180,7 +190,9 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
                 if (erro == null)
                 {
                     if (pedidoResultadoMagentoDto.ListaErros.Count != 0)
-                        logTestes.LogMensagem($"Erro: {erro} em {string.Join(" - ", pedidoResultadoMagentoDto.ListaErros)}");
+                        Testes.Utils.LogTestes.LogOperacoes.MensagemEspecial(
+                            $"Erro: {erro} em {string.Join(" - ", pedidoResultadoMagentoDto.ListaErros)}",
+                            this.GetType());
                     Assert.Empty(pedidoResultadoMagentoDto.ListaErros);
                 }
                 else

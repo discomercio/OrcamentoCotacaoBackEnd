@@ -47,12 +47,25 @@ namespace Especificacao.Testes.Utils.LogTestes
             WriterMapa.Flush();
         }
 
-        public static void Log(string? msg)
+        public static void LogMensagemOperacao(string msg, Type getType)
         {
-            msg ??= "vazio";
-            GetInstance().LogMensagem(msg);
+            string typeFullName = NomeTipo(getType);
+
+            string msglog = DateTime.Now.ToString("yyyy.MM.dd HH:mm:ss:ffff") + " - " + typeFullName + " " + msg;
+            GetInstance().Writer.WriteLine(msglog);
+            GetInstance().Writer.Flush();
         }
 
+        public static string NomeTipo(Type getType)
+        {
+            var typeFullName = getType.FullName ?? "sem tipo";
+            //mal resolvido: temos um Especificacao na frente.... bom, tiramos!
+            typeFullName = typeFullName.Replace("Especificacao.Ambiente.", "Ambiente.");
+            typeFullName = typeFullName.Replace("Especificacao.Especificacao.", "Especificacao.");
+            return typeFullName;
+        }
+
+        //todo: afazer: apaga resta rotina
         public void LogMensagem(string msg)
         {
             string msglog = DateTime.Now.ToString("yyyy.MM.dd HH:mm:ss:ffff") + " - " + msg;

@@ -42,24 +42,28 @@ namespace Especificacao.Especificacao.Pedido
         [When(@"Pedido base")]
         new public void WhenPedidoBase()
         {
+            Testes.Utils.LogTestes.LogOperacoes.DadoBase(this.GetType());
             base.WhenPedidoBase();
         }
 
         [When(@"Informo ""(.*)"" = ""(.*)""")]
         new public void WhenInformo(string p0, string p1)
         {
+            Testes.Utils.LogTestes.LogOperacoes.Informo(p0, p1, this.GetType());
             base.WhenInformo(p0, p1);
         }
 
         [Then(@"Erro ""(.*)""")]
         new public void ThenErro(string p0)
         {
+            Testes.Utils.LogTestes.LogOperacoes.Erro(p0, this.GetType());
             base.ThenErro(p0);
         }
 
         [Then(@"Sem [Ee]rro ""(.*)""")]
         new public void ThenSemErro(string p0)
         {
+            Testes.Utils.LogTestes.LogOperacoes.SemErro(p0, this.GetType());
             base.ThenSemErro(p0);
         }
 
@@ -72,18 +76,21 @@ namespace Especificacao.Especificacao.Pedido
         [Given(@"Ignorar feature no ambiente ""(.*)""")]
         new public void GivenIgnorarFeatureNoAmbiente2(string p0)
         {
+            Testes.Utils.LogTestes.LogOperacoes.IgnorarFeatureNoAmbiente(p0, this.GetType());
             base.GivenIgnorarFeatureNoAmbiente2(p0);
         }
 
         [Given(@"Pedido base com endereço de entrega")]
         new public void GivenPedidoBaseComEnderecoDeEntrega()
         {
+            Testes.Utils.LogTestes.LogOperacoes.DadoBaseComEnderecoDeEntrega(this.GetType());
             base.GivenPedidoBaseComEnderecoDeEntrega();
         }
 
         [Then(@"Sem nenhum erro")]
         new public void ThenSemNenhumErro()
         {
+            Testes.Utils.LogTestes.LogOperacoes.SemNenhumErro(this.GetType());
             base.ThenSemNenhumErro();
         }
 

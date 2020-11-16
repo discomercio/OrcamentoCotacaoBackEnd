@@ -12,17 +12,19 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace
 
         public void WhenInformo(string p0, string p1)
         {
+            Testes.Utils.LogTestes.LogOperacoes.Informo(p0, p1, this.GetType());
             obterCodigoMarketplace.WhenInformo(p0, p1);
         }
 
         public void ThenErroStatusCode(int p0)
         {
-            logTestes.LogMensagem("Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace Autenticacao");
+            Testes.Utils.LogTestes.LogOperacoes.ErroStatusCode(p0, this.GetType());
             obterCodigoMarketplace.ThenErroStatusCode(p0);
         }
 
         public void GivenDadoBase()
         {
+            Testes.Utils.LogTestes.LogOperacoes.DadoBase(this.GetType());
             obterCodigoMarketplace.GivenDadoBase();
         }
     }

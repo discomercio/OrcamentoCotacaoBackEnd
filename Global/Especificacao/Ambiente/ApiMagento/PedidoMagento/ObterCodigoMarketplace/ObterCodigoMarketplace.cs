@@ -22,11 +22,13 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace
 
         public void GivenDadoBase()
         {
+            Testes.Utils.LogTestes.LogOperacoes.DadoBase(this.GetType());
             tokenAcesso = Ambiente.ApiMagento.InjecaoDependencias.TokenAcessoApiMagento();
         }
 
         public void WhenInformo(string p0, string p1)
         {
+            Testes.Utils.LogTestes.LogOperacoes.Informo(p0, p1, this.GetType());
             switch (p0)
             {
                 case "TokenAcesso":
@@ -39,7 +41,8 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace
         }
         public void ThenErroStatusCode(int statusCode)
         {
-            logTestes.LogMensagem("pedidoMagentoController.ObterCodigoMarketplace");
+            Testes.Utils.LogTestes.LogOperacoes.ErroStatusCode(statusCode, this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes.ChamadaController(pedidoMagentoController.GetType(), "ObterCodigoMarketplace", this.GetType());
             Microsoft.AspNetCore.Mvc.ActionResult<MagentoBusiness.MagentoDto.MarketplaceDto.MarketplaceResultadoDto> ret = pedidoMagentoController.ObterCodigoMarketplace(tokenAcesso).Result;
             Microsoft.AspNetCore.Mvc.ActionResult res = ret.Result;
             Testes.Utils.StatusCodes.TestarStatusCode(statusCode, res);

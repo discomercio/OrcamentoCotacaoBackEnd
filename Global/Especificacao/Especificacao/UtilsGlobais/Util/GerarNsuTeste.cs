@@ -20,6 +20,7 @@ namespace Especificacao.Especificacao.UtilsGlobais.Util
 
         public GerarNsuTeste()
         {
+            Testes.Utils.LogTestes.LogOperacoes.MensagemEspecial("construtor GerarNsuTeste", this.GetType());
         }
 
         private void Apagar_t_CONTROLE()
@@ -171,6 +172,7 @@ namespace Especificacao.Especificacao.UtilsGlobais.Util
             {
                 if (disposing)
                 {
+                    Testes.Utils.LogTestes.LogOperacoes.MensagemEspecial("destrutor GerarNsuTeste", this.GetType());
                     this.inicializarBanco.InicializarForcado();
                 }
                 disposedValue = true;

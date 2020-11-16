@@ -35,7 +35,9 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace
         [Then(@"Resposta com número certo de registros")]
         public void ThenRespostaComNumeroCertoDeRegistros()
         {
-            logTestes.LogMensagem("pedidoMagentoController.ObterCodigoMarketplace");
+            Testes.Utils.LogTestes.LogOperacoes.MensagemEspecial("ThenRespostaComNumeroCertoDeRegistros", this.GetType());
+
+            Testes.Utils.LogTestes.LogOperacoes.ChamadaController(pedidoMagentoController.GetType(), "ObterCodigoMarketplace", this.GetType());
             Microsoft.AspNetCore.Mvc.ActionResult<MagentoBusiness.MagentoDto.MarketplaceDto.MarketplaceResultadoDto> ret = pedidoMagentoController.ObterCodigoMarketplace(tokenAcesso).Result;
             Microsoft.AspNetCore.Mvc.ActionResult res = ret.Result;
 
@@ -46,6 +48,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace
             MarketplaceResultadoDto marketplaceResultadoDto = (MarketplaceResultadoDto)((Microsoft.AspNetCore.Mvc.OkObjectResult)res).Value;
             Assert.Empty(marketplaceResultadoDto.ListaErros);
 
+            Testes.Utils.LogTestes.LogOperacoes.BancoDados.Verificacao("db.TcodigoDescricaos", this.GetType());
             var db = contextoBdProvider.GetContextoLeitura();
             var lstTcodigo = from c in db.TcodigoDescricaos
                              where c.Grupo == InfraBanco.Constantes.Constantes.GRUPO_T_CODIGO_DESCRICAO__PEDIDOECOMMERCE_ORIGEM &&
