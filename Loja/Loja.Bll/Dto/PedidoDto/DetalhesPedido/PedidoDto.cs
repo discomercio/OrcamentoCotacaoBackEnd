@@ -21,10 +21,10 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
         public short CDManual { get; set; }
         public decimal TotalFamiliaParcelaRA { get; set; }
         public short PermiteRAStatus { get; set; }
-        public bool OpcaoPossuiRA { get; set; }
-        public float PercRT { get; set; }
-        public decimal ValorTotalDestePedidoComRA { get; set; }
-        public decimal VlTotalDestePedido { get; set; }
+        public string OpcaoPossuiRA { get; set; }
+        public float? PercRT { get; set; }
+        public decimal? ValorTotalDestePedidoComRA { get; set; }
+        public decimal? VlTotalDestePedido { get; set; }
         public FormaPagtoCriacaoDto FormaPagtoCriacao { get; set; }
         public int ComIndicador { get; set; }
         public string NomeIndicador { get; set; }
@@ -85,14 +85,14 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
                 DetalhesPedido = DetalhesNFPedidoDtoPedido.DetalhesPrepedidoDados_De_DetalhesNFPedidoDtoPedido(pedidoDto.DetalhesNF),
                 ComIndicador = pedidoDto.ComIndicador != 0,
                 NomeIndicador = pedidoDto.NomeIndicador,
-                PercRT = pedidoDto.PercRT,
-                OpcaoPossuiRa = pedidoDto.OpcaoPossuiRA,
+                PercRT = (float)pedidoDto.PercRT,
+                OpcaoPossuiRa = pedidoDto.OpcaoPossuiRA == "S" ? true : false,
                 IdNfeSelecionadoManual = pedidoDto.CDManual,
                 //todo: corrigir
                 VendedorExterno = vendedorExterno ? "" : "Vendedor externo",
                 OpcaoVendaSemEstoque = pedidoDto.OpcaoVendaSemEstoque,
-                Vl_total = pedidoDto.VlTotalDestePedido,
-                Vl_total_NF = pedidoDto.ValorTotalDestePedidoComRA,
+                Vl_total = (decimal)pedidoDto.VlTotalDestePedido,
+                Vl_total_NF = (decimal)pedidoDto.ValorTotalDestePedidoComRA,
                 PermiteRAStatus = pedidoDto.PermiteRAStatus
             };
             return ret;
