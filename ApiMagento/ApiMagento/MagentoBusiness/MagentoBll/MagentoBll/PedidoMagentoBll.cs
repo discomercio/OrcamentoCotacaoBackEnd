@@ -111,7 +111,7 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
 
                 //criei o código para sistema_responsavel_cadastro 
                 List<string> lstRet = (await clienteBll.CadastrarCliente(clienteCadastro, orcamentista,
-                    (byte)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__APIMAGENTO)).ToList();
+                    Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__APIMAGENTO)).ToList();
 
                 //é erro
                 if (lstRet.Count > 1)
@@ -135,15 +135,15 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
 
             //estamos criando o pedido com os dados do cliente que vem e não com os dados do cliente que esta na base
             //ex: se o cliente já cadastrado, utilizamos o que vem em PedidoMagentoDto.EnderecoCadastralClienteMagentoDto
-            Pedido.Dados.Criacao.PedidoCriacaoDados pedidoDados = await CriarPedidoCriacaoDados(pedidoMagento, orcamentista, loja, vendedor, resultado.ListaErros);
-            if (resultado.ListaErros.Count != 0)
-                return resultado;
-
-            Pedido.Dados.Criacao.PedidoCriacaoRetornoDados ret = await pedidoCriacao.CadastrarPedido(pedidoDados,
+            Pedido.Dados.Criacao.PedidoCriacaoDados pedidoDados = await CriarPedidoCriacaoDados(pedidoMagento, orcamentista, loja, vendedor, resultado.ListaErros,
                 Convert.ToDecimal(configuracaoApiMagento.LimiteArredondamentoPrecoVendaOrcamentoItem), 0.1M,
                 pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac, pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem,
                 pedidoMagento.InfCriacaoPedido.Pedido_bs_x_marketplace,
-                (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__APIMAGENTO);
+                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__APIMAGENTO);
+            if (resultado.ListaErros.Count != 0)
+                return resultado;
+
+            Pedido.Dados.Criacao.PedidoCriacaoRetornoDados ret = await pedidoCriacao.CadastrarPedido(pedidoDados);
 
             resultado.IdPedidoCadastrado = ret.Id;
             resultado.IdsPedidosFilhotes = ret.ListaIdPedidosFilhotes;
@@ -197,7 +197,10 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
         }
 
         private async Task<Pedido.Dados.Criacao.PedidoCriacaoDados> CriarPedidoCriacaoDados(PedidoMagentoDto pedidoMagento,
-            string orcamentista, string loja, string vendedor, List<string> lstErros)
+            string orcamentista, string loja, string vendedor, List<string> lstErros,
+            decimal limiteArredondamento,
+            decimal maxErroArredondamento, string? pedido_bs_x_ac, string? marketplace_codigo_origem, string? pedido_bs_x_marketplace,
+            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro)
         {
             //o cliente existe então vamos converter os dados do cliente para DadosCliente e EnderecoCadastral
             Cliente.Dados.DadosClienteCadastroDados dadosCliente =
@@ -220,7 +223,10 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
             //Precisamos buscar os produtos para poder incluir os valores para incluir na classe de produto
             Pedido.Dados.Criacao.PedidoCriacaoDados pedidoDadosCriacao =
                 PedidoMagentoDto.PedidoDadosCriacaoDePedidoMagentoDto(dadosCliente, enderecoCadastral, enderecoEntrega,
-                listaProdutos, formaPagtoCriacao, pedidoMagento.VlTotalDestePedido, pedidoMagento);
+                listaProdutos, formaPagtoCriacao, pedidoMagento.VlTotalDestePedido, pedidoMagento,
+                limiteArredondamento,
+                maxErroArredondamento, pedido_bs_x_ac, marketplace_codigo_origem, pedido_bs_x_marketplace,
+                sistemaResponsavelCadastro);
 
             return await Task.FromResult(pedidoDadosCriacao);
         }

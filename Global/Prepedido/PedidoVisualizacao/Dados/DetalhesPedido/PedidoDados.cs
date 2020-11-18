@@ -17,7 +17,7 @@ namespace Prepedido.PedidoVisualizacao.Dados.DetalhesPedido
         public List<PedidoProdutosPedidoDados> ListaProdutos { get; set; }
         public decimal TotalFamiliaParcelaRA { get; set; }
         public short PermiteRAStatus { get; set; }
-        public string OpcaoPossuiRA { get; set; }
+        public bool OpcaoPossuiRA { get; set; }
         public float? PercRT { get; set; }
         public decimal? ValorTotalDestePedidoComRA { get; set; }
         public decimal? VlTotalDestePedido { get; set; }

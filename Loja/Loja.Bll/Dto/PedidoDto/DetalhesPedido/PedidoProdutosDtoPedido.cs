@@ -50,31 +50,16 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
                     Descricao = origem.Descricao,
                     Qtde = origem.Qtde ?? 0,
                     Qtde_estoque_total_disponivel = origem.Qtde_estoque_total_disponivel,
-                    Preco_Lista = origem.Preco_Lista ?? 0,
+                    Preco_Lista = origem.VlLista,
                     Comissao = origem.Comissao,
 
-                    CustoFinancFornecPrecoListaBase = origem.Preco_Lista ?? 0,
-                    Preco_NF = origem.Preco ?? 0,
+                    CustoFinancFornecPrecoListaBase = origem.VlLista,
+                    Preco_NF = origem.Preco_Lista ?? 0,
                     Desc_Dado = origem.Desconto,
-                    Preco_Venda = origem.Preco ?? 0,
+                    Preco_Venda = origem.VlVenda ?? 0,
                     TotalItem = origem.VlTotalItem ?? 0,
                     TotalItemRA = origem.VlTotalItemComRA,
                     CustoFinancFornecCoeficiente = 0
-
-                    corrigir:
-                    Fabricante = origem.Fabricante,
-                    NumProduto = origem.Produto,
-                    Descricao = origem.Descricao,
-                    Qtde = origem.Qtde,
-                    Faltando = origem.Faltando,
-                    CorFaltante = origem.CorFaltante,
-                    Preco_Lista = origem.Preco_NF,
-                    VlLista = origem.Preco_Lista,
-                    Desconto = origem.Desc_Dado,
-                    VlVenda = origem.Preco_Venda ?? 0m,
-                    VlTotalItem = origem.VlTotalItem,
-                    VlTotalItemComRA = origem.VlTotalItemComRA,
-                    Comissao = origem.Comissao
 
                     //acertar as variáveis novas
                     //CustoFinancFornecPrecoListaBase = origem.CustoFinancFornecPrecoListaBase,

@@ -524,7 +524,7 @@ namespace Prepedido.PedidoVisualizacao
                 ListaProdutos = (await ObterProdutos(numPedido)).ToList(),
                 TotalFamiliaParcelaRA = await vlFamiliaParcelaRATask,
                 PermiteRAStatus = p.Permite_RA_Status,
-                OpcaoPossuiRA = p.Opcao_Possui_RA,
+                OpcaoPossuiRA = p.Opcao_Possui_RA == "S",
                 PercRT = p.Perc_RT,
                 ValorTotalDestePedidoComRA = vlTotalDestePedidoComRATask,
                 VlTotalDestePedido = vlTotalDestePedidoTask,

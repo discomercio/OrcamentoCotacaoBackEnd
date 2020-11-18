@@ -52,9 +52,7 @@ namespace Pedido
         //as mensagens de erro e as mensagens de erro da validação dos 
         //dados cadastrais (quer dizer, duas listas de erro.) 
         //É que na loja o tratamento dos erros dos dados cadastrais vai ser diferente).
-        public async Task<PedidoCriacaoRetornoDados> CadastrarPedido(PedidoCriacaoDados pedido, decimal limiteArredondamento,
-            decimal maxErroArredondamento, string? pedido_bs_x_ac, string? marketplace_codigo_origem, string? pedido_bs_x_marketplace,
-            byte sistemaResponsavelCadastro)
+        public async Task<PedidoCriacaoRetornoDados> CadastrarPedido(PedidoCriacaoDados pedido)
         {
             PedidoCriacaoRetornoDados pedidoRetorno = new PedidoCriacaoRetornoDados
             {
@@ -89,7 +87,7 @@ namespace Pedido
             List<Cliente.Dados.ListaBancoDados> lstBanco = (await clienteBll.ListarBancosCombo()).ToList();
             await Cliente.ValidacoesClienteBll.ValidarDadosCliente(pedido.DadosCliente, null, null, pedidoRetorno.ListaErros,
                 contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, pedido.DadosCliente.Tipo == Constantes.ID_PF ? true : false,
-                sistemaResponsavelCadastro);
+                pedido.SistemaResponsavelCadastro);
 
             if (!validacoesPrepedidoBll.ValidarDetalhesPrepedido(pedido.DetalhesPedido, pedidoRetorno.ListaErros))
             {
@@ -169,7 +167,7 @@ namespace Pedido
                 c_custoFinancFornecQtdeParcelas))
             {
                 if (validacoesFormaPagtoBll.ValidarFormaPagto(pedido.FormaPagtoCriacao, pedidoRetorno.ListaErros,
-                limiteArredondamento, maxErroArredondamento, c_custoFinancFornecTipoParcelamento, formasPagto,
+                pedido.LimiteArredondamento, pedido.MaxErroArredondamento, c_custoFinancFornecTipoParcelamento, formasPagto,
                 tOrcamentista.Permite_RA_Status, pedido.Vl_total_NF, pedido.Vl_total))
                 {
                     //vamos fazer a validação de Especificacao/Especificacao/Pedido/Passo40/FormaPagamentoProdutos.feature
@@ -228,7 +226,7 @@ namespace Pedido
             Prepedido.Dados.DetalhesPrepedido.PrePedidoDados prepedido = PedidoCriacaoDados.PrePedidoDadosDePedidoCriacaoDados(pedido);
             await validacoesPrepedidoBll.MontarProdutosParaComparacao(prepedido,
                         c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas,
-                        pedido.DadosCliente.Loja, pedidoRetorno.ListaErros, perc_limite_RA_sem_desagio, limiteArredondamento);
+                        pedido.DadosCliente.Loja, pedidoRetorno.ListaErros, perc_limite_RA_sem_desagio, pedido.LimiteArredondamento);
 
             //vamos verificar os caracteres inválidos no endereço de entrega
             if (pedido.EnderecoEntrega.OutroEndereco)
@@ -407,11 +405,10 @@ namespace Pedido
                 //vamos efetivar o cadastro do pedido
                 //vamos abrir uma nova transaction do contexto que esta sendo utilizado para Using
                 using var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing();
-                pedidoRetorno.Id = await efetivaPedidoBll.Novo_EfetivarCadastroPedido(pedido, vEmpresaAutoSplit,
+                pedidoRetorno.Id = await efetivaPedidoBll.EfetivarCadastroPedido(pedido, vEmpresaAutoSplit,
                     pedido.Usuario, c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas, transportadora,
                     v_item, v_spe, vdesconto, lstRegras, perc_limite_RA_sem_desagio, pedido.LojaUsuario, perc_desagio_RA,
-                    tcliente, !string.IsNullOrEmpty(pedido.VendedorExterno), pedidoRetorno.ListaErros, dbgravacao,
-                    pedido_bs_x_ac, pedido_bs_x_marketplace, marketplace_codigo_origem);
+                    tcliente, pedidoRetorno.ListaErros, dbgravacao);
 
 
                 await dbgravacao.SaveChangesAsync();

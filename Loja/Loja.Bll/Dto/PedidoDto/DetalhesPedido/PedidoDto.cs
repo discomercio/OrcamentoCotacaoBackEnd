@@ -56,9 +56,9 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
                 TotalFamiliaParcelaRA = origem.TotalFamiliaParcelaRA,
                 PermiteRAStatus = origem.PermiteRAStatus,
                 OpcaoPossuiRA = origem.OpcaoPossuiRA,
-                PercRT = origem.PercRT,
-                ValorTotalDestePedidoComRA = origem.ValorTotalDestePedidoComRA,
-                VlTotalDestePedido = origem.VlTotalDestePedido,
+                PercRT = origem.PercRT ?? 0,
+                ValorTotalDestePedidoComRA = origem.ValorTotalDestePedidoComRA ?? 0,
+                VlTotalDestePedido = origem.VlTotalDestePedido ?? 0,
                 DetalhesNF = DetalhesNFPedidoDtoPedido.DetalhesNFPedidoDtoPedido_De_DetalhesNFPedidoPedidoDados(origem.DetalhesNF),
                 DetalhesFormaPagto = DetalhesFormaPagamentos.DetalhesFormaPagamentos_De_DetalhesFormaPagamentosDados(origem.DetalhesFormaPagto),
                 ListaProdutoDevolvido = ProdutoDevolvidoDtoPedido.ListaProdutoDevolvidoDtoPedido_De_ProdutoDevolvidoPedidoDados(origem.ListaProdutoDevolvido),
@@ -70,7 +70,9 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
         }
 
         public static Pedido.Dados.Criacao.PedidoCriacaoDados PedidoCriacaoDados_De_PedidoDto(PedidoDto pedidoDto,
-            string lojaUsuario, string usuario, bool vendedorExterno)
+            string lojaUsuario, string usuario, bool venda_externa, decimal limiteArredondamento,
+            decimal maxErroArredondamento, string pedido_bs_x_ac, string marketplace_codigo_origem, string pedido_bs_x_marketplace,
+            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro)
         {
             if (pedidoDto == null) return null;
             var ret = new Pedido.Dados.Criacao.PedidoCriacaoDados()
@@ -88,12 +90,17 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
                 PercRT = pedidoDto.PercRT,
                 OpcaoPossuiRa = pedidoDto.OpcaoPossuiRA,
                 IdNfeSelecionadoManual = pedidoDto.CDManual,
-                //todo: corrigir
-                VendedorExterno = vendedorExterno ? "" : "Vendedor externo",
+                Venda_Externa = venda_externa,
                 OpcaoVendaSemEstoque = pedidoDto.OpcaoVendaSemEstoque,
                 Vl_total = pedidoDto.VlTotalDestePedido,
                 Vl_total_NF = pedidoDto.ValorTotalDestePedidoComRA,
-                PermiteRAStatus = pedidoDto.PermiteRAStatus
+                PermiteRAStatus = pedidoDto.PermiteRAStatus,
+                LimiteArredondamento = limiteArredondamento,
+                MaxErroArredondamento = maxErroArredondamento,
+                Pedido_bs_x_ac = pedido_bs_x_ac,
+                Marketplace_codigo_origem = marketplace_codigo_origem,
+                Pedido_bs_x_marketplace = pedido_bs_x_marketplace,
+                SistemaResponsavelCadastro = sistemaResponsavelCadastro,
             };
             return ret;
         }
