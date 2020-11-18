@@ -6,14 +6,28 @@
 @inject Microsoft.Extensions.Logging.ILogger<Loja.Bll.Bll.AcessoBll.UsuarioLogado> loggerUsuarioLogado
 @using Newtonsoft.Json
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "Loja - Login";
     ViewBag.PaginaDeLogin = true;
 }
+
+
+<script>
+    var login;
+    requirejs(["Views/Acesso/Login"], function () {
+        login = new Login();
+        login.selector = "#formulario";
+    });
+</script>
+
+
 <style>
     .pcoded-content {
         margin-left: 0px !important;
     }
 </style>
+
+
+
 
 @{
     var usuarioLogado = new Loja.Bll.Bll.AcessoBll.UsuarioLogado(loggerUsuarioLogado, User, HttpContextAccessor.HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
@@ -76,11 +90,11 @@
         <div class="row">
             <div class="col-sm-12">
                 @using (Html.BeginForm("LoginSubmit", "Acesso", FormMethod.Post,
-     new
-     {
-         @class = "md-float-material form-material",
-         onsubmit = "return continuar()"
-     }))
+new
+{
+   @class = "md-float-material form-material",
+    @id = "formulario"
+}))
                 {
                     @Html.HiddenFor(m => m.ReturnUrl)
 
@@ -192,9 +206,5 @@
         </div>
     </div>
 </section>
-<script>
-    requirejs(["Views/Acesso/Login"], function (util) {
 
-    });
-</script>
 
