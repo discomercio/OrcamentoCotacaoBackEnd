@@ -60,12 +60,11 @@
                             </div>
 
                             @using (Html.BeginForm("CadastrarPedido", "Pedido", FormMethod.Post,
-                       new
-                       {
-                           enctype = "multipart/form-data",
-                                            //onsubmit = "return ValidarFormulario()",
-                                            id = "formulario"
-                       }))
+                      new
+                      {
+                          enctype = "multipart/form-data",
+                          id = "formulario"
+                      }))
                             {
                                 <div class="page-header card mt-0" style="border: 1px solid #ccc; padding:20px">
 
@@ -98,7 +97,7 @@
                                                 <h5>Detalhes da entrega</h5>
                                             </div>
                                             <div class="card-block pb-0">
-                                                @* 
+                                                @*
                                                     label for="entregaImediata" é criado auto precisa alterar o line-height:0px ou outra coisa
 
                                                 *@

@@ -17,7 +17,6 @@ Background: Pedido base
 Scenario: Configuração
 	Given Nome deste item "Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj.EntregaPfTelefones"
 	Given Implementado em "Especificacao.Pedido.Pedido"
-	And Fim da configuração
 
 
 #-------------------------------------------------------------

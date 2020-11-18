@@ -155,7 +155,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 11
  testRunner.Given("Dado base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 12
+#line 13
  testRunner.Then("Erro status code \"200\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

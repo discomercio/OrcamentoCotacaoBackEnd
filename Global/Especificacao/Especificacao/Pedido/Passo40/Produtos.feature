@@ -4,7 +4,6 @@ Feature: Produtos
 Scenario: Configuração
 	Given Nome deste item "Especificacao.Pedido.Passo40.Produtos"
 	Given Implementado em "Especificacao.Pedido.Pedido"
-	And Fim da configuração
 
 
 Scenario: Sem quantidade zero

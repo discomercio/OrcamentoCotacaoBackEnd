@@ -9,5 +9,4 @@ Mas pela API precisa desta verificação
 Scenario: PedidoDadosCadastraisVerificarQueExecutou Configuração
 	Given Nome deste item "Especificacao.Pedido.Passo25.DadosCadastrais"
 	Given Implementado em "Especificacao.Pedido.Pedido"
-	And Fim da configuração
 	Then Fazer

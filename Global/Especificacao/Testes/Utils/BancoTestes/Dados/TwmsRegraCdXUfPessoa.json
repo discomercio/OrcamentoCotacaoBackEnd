@@ -1,0 +1,5672 @@
+﻿[
+  {
+    "id": 1,
+    "id_wms_regra_cd_x_uf": 1,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 2,
+    "id_wms_regra_cd_x_uf": 1,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 3,
+    "id_wms_regra_cd_x_uf": 1,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 4,
+    "id_wms_regra_cd_x_uf": 1,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 5,
+    "id_wms_regra_cd_x_uf": 1,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 6,
+    "id_wms_regra_cd_x_uf": 2,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 7,
+    "id_wms_regra_cd_x_uf": 2,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 8,
+    "id_wms_regra_cd_x_uf": 2,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 9,
+    "id_wms_regra_cd_x_uf": 2,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 10,
+    "id_wms_regra_cd_x_uf": 2,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 11,
+    "id_wms_regra_cd_x_uf": 3,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 12,
+    "id_wms_regra_cd_x_uf": 3,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 13,
+    "id_wms_regra_cd_x_uf": 3,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 14,
+    "id_wms_regra_cd_x_uf": 3,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 15,
+    "id_wms_regra_cd_x_uf": 3,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 16,
+    "id_wms_regra_cd_x_uf": 4,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 17,
+    "id_wms_regra_cd_x_uf": 4,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 18,
+    "id_wms_regra_cd_x_uf": 4,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 19,
+    "id_wms_regra_cd_x_uf": 4,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 20,
+    "id_wms_regra_cd_x_uf": 4,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 21,
+    "id_wms_regra_cd_x_uf": 5,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 22,
+    "id_wms_regra_cd_x_uf": 5,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 23,
+    "id_wms_regra_cd_x_uf": 5,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 24,
+    "id_wms_regra_cd_x_uf": 5,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 25,
+    "id_wms_regra_cd_x_uf": 5,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 26,
+    "id_wms_regra_cd_x_uf": 6,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 27,
+    "id_wms_regra_cd_x_uf": 6,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 28,
+    "id_wms_regra_cd_x_uf": 6,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 29,
+    "id_wms_regra_cd_x_uf": 6,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 30,
+    "id_wms_regra_cd_x_uf": 6,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 31,
+    "id_wms_regra_cd_x_uf": 7,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 32,
+    "id_wms_regra_cd_x_uf": 7,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 33,
+    "id_wms_regra_cd_x_uf": 7,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 34,
+    "id_wms_regra_cd_x_uf": 7,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 35,
+    "id_wms_regra_cd_x_uf": 7,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 36,
+    "id_wms_regra_cd_x_uf": 8,
+    "tipo_pessoa": "PF",
+    "st_inativo": 1,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 37,
+    "id_wms_regra_cd_x_uf": 8,
+    "tipo_pessoa": "PR",
+    "st_inativo": 1,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 38,
+    "id_wms_regra_cd_x_uf": 8,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 1,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 39,
+    "id_wms_regra_cd_x_uf": 8,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 1,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 40,
+    "id_wms_regra_cd_x_uf": 8,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 1,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 41,
+    "id_wms_regra_cd_x_uf": 9,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 42,
+    "id_wms_regra_cd_x_uf": 9,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 43,
+    "id_wms_regra_cd_x_uf": 9,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 44,
+    "id_wms_regra_cd_x_uf": 9,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 45,
+    "id_wms_regra_cd_x_uf": 9,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 46,
+    "id_wms_regra_cd_x_uf": 10,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 47,
+    "id_wms_regra_cd_x_uf": 10,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 48,
+    "id_wms_regra_cd_x_uf": 10,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 49,
+    "id_wms_regra_cd_x_uf": 10,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 50,
+    "id_wms_regra_cd_x_uf": 10,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 51,
+    "id_wms_regra_cd_x_uf": 11,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 52,
+    "id_wms_regra_cd_x_uf": 11,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 53,
+    "id_wms_regra_cd_x_uf": 11,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 54,
+    "id_wms_regra_cd_x_uf": 11,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 55,
+    "id_wms_regra_cd_x_uf": 11,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 56,
+    "id_wms_regra_cd_x_uf": 12,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 57,
+    "id_wms_regra_cd_x_uf": 12,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 58,
+    "id_wms_regra_cd_x_uf": 12,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 59,
+    "id_wms_regra_cd_x_uf": 12,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 60,
+    "id_wms_regra_cd_x_uf": 12,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 61,
+    "id_wms_regra_cd_x_uf": 13,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 62,
+    "id_wms_regra_cd_x_uf": 13,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 63,
+    "id_wms_regra_cd_x_uf": 13,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 64,
+    "id_wms_regra_cd_x_uf": 13,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 65,
+    "id_wms_regra_cd_x_uf": 13,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 66,
+    "id_wms_regra_cd_x_uf": 14,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 67,
+    "id_wms_regra_cd_x_uf": 14,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 68,
+    "id_wms_regra_cd_x_uf": 14,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 69,
+    "id_wms_regra_cd_x_uf": 14,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 70,
+    "id_wms_regra_cd_x_uf": 14,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 71,
+    "id_wms_regra_cd_x_uf": 15,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 72,
+    "id_wms_regra_cd_x_uf": 15,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 73,
+    "id_wms_regra_cd_x_uf": 15,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 74,
+    "id_wms_regra_cd_x_uf": 15,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 75,
+    "id_wms_regra_cd_x_uf": 15,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 76,
+    "id_wms_regra_cd_x_uf": 16,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 77,
+    "id_wms_regra_cd_x_uf": 16,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 78,
+    "id_wms_regra_cd_x_uf": 16,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 79,
+    "id_wms_regra_cd_x_uf": 16,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 80,
+    "id_wms_regra_cd_x_uf": 16,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 81,
+    "id_wms_regra_cd_x_uf": 17,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 82,
+    "id_wms_regra_cd_x_uf": 17,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 83,
+    "id_wms_regra_cd_x_uf": 17,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 84,
+    "id_wms_regra_cd_x_uf": 17,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 85,
+    "id_wms_regra_cd_x_uf": 17,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 86,
+    "id_wms_regra_cd_x_uf": 18,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 87,
+    "id_wms_regra_cd_x_uf": 18,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 88,
+    "id_wms_regra_cd_x_uf": 18,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 89,
+    "id_wms_regra_cd_x_uf": 18,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 90,
+    "id_wms_regra_cd_x_uf": 18,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 91,
+    "id_wms_regra_cd_x_uf": 19,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 92,
+    "id_wms_regra_cd_x_uf": 19,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 93,
+    "id_wms_regra_cd_x_uf": 19,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 94,
+    "id_wms_regra_cd_x_uf": 19,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 95,
+    "id_wms_regra_cd_x_uf": 19,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 96,
+    "id_wms_regra_cd_x_uf": 20,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 97,
+    "id_wms_regra_cd_x_uf": 20,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 98,
+    "id_wms_regra_cd_x_uf": 20,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 99,
+    "id_wms_regra_cd_x_uf": 20,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 100,
+    "id_wms_regra_cd_x_uf": 20,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 101,
+    "id_wms_regra_cd_x_uf": 21,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 102,
+    "id_wms_regra_cd_x_uf": 21,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 103,
+    "id_wms_regra_cd_x_uf": 21,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 104,
+    "id_wms_regra_cd_x_uf": 21,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 105,
+    "id_wms_regra_cd_x_uf": 21,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 106,
+    "id_wms_regra_cd_x_uf": 22,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 107,
+    "id_wms_regra_cd_x_uf": 22,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 108,
+    "id_wms_regra_cd_x_uf": 22,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 109,
+    "id_wms_regra_cd_x_uf": 22,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 110,
+    "id_wms_regra_cd_x_uf": 22,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 111,
+    "id_wms_regra_cd_x_uf": 23,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 112,
+    "id_wms_regra_cd_x_uf": 23,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 113,
+    "id_wms_regra_cd_x_uf": 23,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 114,
+    "id_wms_regra_cd_x_uf": 23,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 115,
+    "id_wms_regra_cd_x_uf": 23,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 116,
+    "id_wms_regra_cd_x_uf": 24,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 117,
+    "id_wms_regra_cd_x_uf": 24,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 118,
+    "id_wms_regra_cd_x_uf": 24,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 119,
+    "id_wms_regra_cd_x_uf": 24,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 120,
+    "id_wms_regra_cd_x_uf": 24,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 121,
+    "id_wms_regra_cd_x_uf": 25,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 122,
+    "id_wms_regra_cd_x_uf": 25,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 123,
+    "id_wms_regra_cd_x_uf": 25,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 124,
+    "id_wms_regra_cd_x_uf": 25,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 125,
+    "id_wms_regra_cd_x_uf": 25,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 126,
+    "id_wms_regra_cd_x_uf": 26,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4001
+  },
+  {
+    "id": 127,
+    "id_wms_regra_cd_x_uf": 26,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4001
+  },
+  {
+    "id": 128,
+    "id_wms_regra_cd_x_uf": 26,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4001
+  },
+  {
+    "id": 129,
+    "id_wms_regra_cd_x_uf": 26,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4001
+  },
+  {
+    "id": 130,
+    "id_wms_regra_cd_x_uf": 26,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4001
+  },
+  {
+    "id": 131,
+    "id_wms_regra_cd_x_uf": 27,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 132,
+    "id_wms_regra_cd_x_uf": 27,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 133,
+    "id_wms_regra_cd_x_uf": 27,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 134,
+    "id_wms_regra_cd_x_uf": 27,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 135,
+    "id_wms_regra_cd_x_uf": 27,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 136,
+    "id_wms_regra_cd_x_uf": 28,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 137,
+    "id_wms_regra_cd_x_uf": 28,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 138,
+    "id_wms_regra_cd_x_uf": 28,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 139,
+    "id_wms_regra_cd_x_uf": 28,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 140,
+    "id_wms_regra_cd_x_uf": 28,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 141,
+    "id_wms_regra_cd_x_uf": 29,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 142,
+    "id_wms_regra_cd_x_uf": 29,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 143,
+    "id_wms_regra_cd_x_uf": 29,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 144,
+    "id_wms_regra_cd_x_uf": 29,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 145,
+    "id_wms_regra_cd_x_uf": 29,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 146,
+    "id_wms_regra_cd_x_uf": 30,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 147,
+    "id_wms_regra_cd_x_uf": 30,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 148,
+    "id_wms_regra_cd_x_uf": 30,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 149,
+    "id_wms_regra_cd_x_uf": 30,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 150,
+    "id_wms_regra_cd_x_uf": 30,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 151,
+    "id_wms_regra_cd_x_uf": 31,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 152,
+    "id_wms_regra_cd_x_uf": 31,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 153,
+    "id_wms_regra_cd_x_uf": 31,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 154,
+    "id_wms_regra_cd_x_uf": 31,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 155,
+    "id_wms_regra_cd_x_uf": 31,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 156,
+    "id_wms_regra_cd_x_uf": 32,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 157,
+    "id_wms_regra_cd_x_uf": 32,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 158,
+    "id_wms_regra_cd_x_uf": 32,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 159,
+    "id_wms_regra_cd_x_uf": 32,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 160,
+    "id_wms_regra_cd_x_uf": 32,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 161,
+    "id_wms_regra_cd_x_uf": 33,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 162,
+    "id_wms_regra_cd_x_uf": 33,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 163,
+    "id_wms_regra_cd_x_uf": 33,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 164,
+    "id_wms_regra_cd_x_uf": 33,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 165,
+    "id_wms_regra_cd_x_uf": 33,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 166,
+    "id_wms_regra_cd_x_uf": 34,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 167,
+    "id_wms_regra_cd_x_uf": 34,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 168,
+    "id_wms_regra_cd_x_uf": 34,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 169,
+    "id_wms_regra_cd_x_uf": 34,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 170,
+    "id_wms_regra_cd_x_uf": 34,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 171,
+    "id_wms_regra_cd_x_uf": 35,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 172,
+    "id_wms_regra_cd_x_uf": 35,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 173,
+    "id_wms_regra_cd_x_uf": 35,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 174,
+    "id_wms_regra_cd_x_uf": 35,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 175,
+    "id_wms_regra_cd_x_uf": 35,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 176,
+    "id_wms_regra_cd_x_uf": 36,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 177,
+    "id_wms_regra_cd_x_uf": 36,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 178,
+    "id_wms_regra_cd_x_uf": 36,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 179,
+    "id_wms_regra_cd_x_uf": 36,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 180,
+    "id_wms_regra_cd_x_uf": 36,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 181,
+    "id_wms_regra_cd_x_uf": 37,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 182,
+    "id_wms_regra_cd_x_uf": 37,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 183,
+    "id_wms_regra_cd_x_uf": 37,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 184,
+    "id_wms_regra_cd_x_uf": 37,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 185,
+    "id_wms_regra_cd_x_uf": 37,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 186,
+    "id_wms_regra_cd_x_uf": 38,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 187,
+    "id_wms_regra_cd_x_uf": 38,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 188,
+    "id_wms_regra_cd_x_uf": 38,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 189,
+    "id_wms_regra_cd_x_uf": 38,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 190,
+    "id_wms_regra_cd_x_uf": 38,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 191,
+    "id_wms_regra_cd_x_uf": 39,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 192,
+    "id_wms_regra_cd_x_uf": 39,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 193,
+    "id_wms_regra_cd_x_uf": 39,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 194,
+    "id_wms_regra_cd_x_uf": 39,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 195,
+    "id_wms_regra_cd_x_uf": 39,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 196,
+    "id_wms_regra_cd_x_uf": 40,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 197,
+    "id_wms_regra_cd_x_uf": 40,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 198,
+    "id_wms_regra_cd_x_uf": 40,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 199,
+    "id_wms_regra_cd_x_uf": 40,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 200,
+    "id_wms_regra_cd_x_uf": 40,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 201,
+    "id_wms_regra_cd_x_uf": 41,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 202,
+    "id_wms_regra_cd_x_uf": 41,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 203,
+    "id_wms_regra_cd_x_uf": 41,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 204,
+    "id_wms_regra_cd_x_uf": 41,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 205,
+    "id_wms_regra_cd_x_uf": 41,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 206,
+    "id_wms_regra_cd_x_uf": 42,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 207,
+    "id_wms_regra_cd_x_uf": 42,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 208,
+    "id_wms_regra_cd_x_uf": 42,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 209,
+    "id_wms_regra_cd_x_uf": 42,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 210,
+    "id_wms_regra_cd_x_uf": 42,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 211,
+    "id_wms_regra_cd_x_uf": 43,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 212,
+    "id_wms_regra_cd_x_uf": 43,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 213,
+    "id_wms_regra_cd_x_uf": 43,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 214,
+    "id_wms_regra_cd_x_uf": 43,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 215,
+    "id_wms_regra_cd_x_uf": 43,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 216,
+    "id_wms_regra_cd_x_uf": 44,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 217,
+    "id_wms_regra_cd_x_uf": 44,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 218,
+    "id_wms_regra_cd_x_uf": 44,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 219,
+    "id_wms_regra_cd_x_uf": 44,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 220,
+    "id_wms_regra_cd_x_uf": 44,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 221,
+    "id_wms_regra_cd_x_uf": 45,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 222,
+    "id_wms_regra_cd_x_uf": 45,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 223,
+    "id_wms_regra_cd_x_uf": 45,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 224,
+    "id_wms_regra_cd_x_uf": 45,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 225,
+    "id_wms_regra_cd_x_uf": 45,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 226,
+    "id_wms_regra_cd_x_uf": 46,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 227,
+    "id_wms_regra_cd_x_uf": 46,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 228,
+    "id_wms_regra_cd_x_uf": 46,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 229,
+    "id_wms_regra_cd_x_uf": 46,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 230,
+    "id_wms_regra_cd_x_uf": 46,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 231,
+    "id_wms_regra_cd_x_uf": 47,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 232,
+    "id_wms_regra_cd_x_uf": 47,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 233,
+    "id_wms_regra_cd_x_uf": 47,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 234,
+    "id_wms_regra_cd_x_uf": 47,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 235,
+    "id_wms_regra_cd_x_uf": 47,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 236,
+    "id_wms_regra_cd_x_uf": 48,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 237,
+    "id_wms_regra_cd_x_uf": 48,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 238,
+    "id_wms_regra_cd_x_uf": 48,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 239,
+    "id_wms_regra_cd_x_uf": 48,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 240,
+    "id_wms_regra_cd_x_uf": 48,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 241,
+    "id_wms_regra_cd_x_uf": 49,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 242,
+    "id_wms_regra_cd_x_uf": 49,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 243,
+    "id_wms_regra_cd_x_uf": 49,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 244,
+    "id_wms_regra_cd_x_uf": 49,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 245,
+    "id_wms_regra_cd_x_uf": 49,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 246,
+    "id_wms_regra_cd_x_uf": 50,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 247,
+    "id_wms_regra_cd_x_uf": 50,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 248,
+    "id_wms_regra_cd_x_uf": 50,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 249,
+    "id_wms_regra_cd_x_uf": 50,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 250,
+    "id_wms_regra_cd_x_uf": 50,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 251,
+    "id_wms_regra_cd_x_uf": 51,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 252,
+    "id_wms_regra_cd_x_uf": 51,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 253,
+    "id_wms_regra_cd_x_uf": 51,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 254,
+    "id_wms_regra_cd_x_uf": 51,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 255,
+    "id_wms_regra_cd_x_uf": 51,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 256,
+    "id_wms_regra_cd_x_uf": 52,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 257,
+    "id_wms_regra_cd_x_uf": 52,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 258,
+    "id_wms_regra_cd_x_uf": 52,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 259,
+    "id_wms_regra_cd_x_uf": 52,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 260,
+    "id_wms_regra_cd_x_uf": 52,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 261,
+    "id_wms_regra_cd_x_uf": 53,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 262,
+    "id_wms_regra_cd_x_uf": 53,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 263,
+    "id_wms_regra_cd_x_uf": 53,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 264,
+    "id_wms_regra_cd_x_uf": 53,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 265,
+    "id_wms_regra_cd_x_uf": 53,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 266,
+    "id_wms_regra_cd_x_uf": 54,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 267,
+    "id_wms_regra_cd_x_uf": 54,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 268,
+    "id_wms_regra_cd_x_uf": 54,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 269,
+    "id_wms_regra_cd_x_uf": 54,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 270,
+    "id_wms_regra_cd_x_uf": 54,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 271,
+    "id_wms_regra_cd_x_uf": 55,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 272,
+    "id_wms_regra_cd_x_uf": 55,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 273,
+    "id_wms_regra_cd_x_uf": 55,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 274,
+    "id_wms_regra_cd_x_uf": 55,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 275,
+    "id_wms_regra_cd_x_uf": 55,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 276,
+    "id_wms_regra_cd_x_uf": 56,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 277,
+    "id_wms_regra_cd_x_uf": 56,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 278,
+    "id_wms_regra_cd_x_uf": 56,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 279,
+    "id_wms_regra_cd_x_uf": 56,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 280,
+    "id_wms_regra_cd_x_uf": 56,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 281,
+    "id_wms_regra_cd_x_uf": 57,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 282,
+    "id_wms_regra_cd_x_uf": 57,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 283,
+    "id_wms_regra_cd_x_uf": 57,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 284,
+    "id_wms_regra_cd_x_uf": 57,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 285,
+    "id_wms_regra_cd_x_uf": 57,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 286,
+    "id_wms_regra_cd_x_uf": 58,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 287,
+    "id_wms_regra_cd_x_uf": 58,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 288,
+    "id_wms_regra_cd_x_uf": 58,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 289,
+    "id_wms_regra_cd_x_uf": 58,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 290,
+    "id_wms_regra_cd_x_uf": 58,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 291,
+    "id_wms_regra_cd_x_uf": 59,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 292,
+    "id_wms_regra_cd_x_uf": 59,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 293,
+    "id_wms_regra_cd_x_uf": 59,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 294,
+    "id_wms_regra_cd_x_uf": 59,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 295,
+    "id_wms_regra_cd_x_uf": 59,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 296,
+    "id_wms_regra_cd_x_uf": 60,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 297,
+    "id_wms_regra_cd_x_uf": 60,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 298,
+    "id_wms_regra_cd_x_uf": 60,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 299,
+    "id_wms_regra_cd_x_uf": 60,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 300,
+    "id_wms_regra_cd_x_uf": 60,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 301,
+    "id_wms_regra_cd_x_uf": 61,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 302,
+    "id_wms_regra_cd_x_uf": 61,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 303,
+    "id_wms_regra_cd_x_uf": 61,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 304,
+    "id_wms_regra_cd_x_uf": 61,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 305,
+    "id_wms_regra_cd_x_uf": 61,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 306,
+    "id_wms_regra_cd_x_uf": 62,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 307,
+    "id_wms_regra_cd_x_uf": 62,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 308,
+    "id_wms_regra_cd_x_uf": 62,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 309,
+    "id_wms_regra_cd_x_uf": 62,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 310,
+    "id_wms_regra_cd_x_uf": 62,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 311,
+    "id_wms_regra_cd_x_uf": 63,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 312,
+    "id_wms_regra_cd_x_uf": 63,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 313,
+    "id_wms_regra_cd_x_uf": 63,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 314,
+    "id_wms_regra_cd_x_uf": 63,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 315,
+    "id_wms_regra_cd_x_uf": 63,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 316,
+    "id_wms_regra_cd_x_uf": 64,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 317,
+    "id_wms_regra_cd_x_uf": 64,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 318,
+    "id_wms_regra_cd_x_uf": 64,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 319,
+    "id_wms_regra_cd_x_uf": 64,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 320,
+    "id_wms_regra_cd_x_uf": 64,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 321,
+    "id_wms_regra_cd_x_uf": 65,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 322,
+    "id_wms_regra_cd_x_uf": 65,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 323,
+    "id_wms_regra_cd_x_uf": 65,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 324,
+    "id_wms_regra_cd_x_uf": 65,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 325,
+    "id_wms_regra_cd_x_uf": 65,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 326,
+    "id_wms_regra_cd_x_uf": 66,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 327,
+    "id_wms_regra_cd_x_uf": 66,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 328,
+    "id_wms_regra_cd_x_uf": 66,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 329,
+    "id_wms_regra_cd_x_uf": 66,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 330,
+    "id_wms_regra_cd_x_uf": 66,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 331,
+    "id_wms_regra_cd_x_uf": 67,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 332,
+    "id_wms_regra_cd_x_uf": 67,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 333,
+    "id_wms_regra_cd_x_uf": 67,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 334,
+    "id_wms_regra_cd_x_uf": 67,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 335,
+    "id_wms_regra_cd_x_uf": 67,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 336,
+    "id_wms_regra_cd_x_uf": 68,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 337,
+    "id_wms_regra_cd_x_uf": 68,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 338,
+    "id_wms_regra_cd_x_uf": 68,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 339,
+    "id_wms_regra_cd_x_uf": 68,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 340,
+    "id_wms_regra_cd_x_uf": 68,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 341,
+    "id_wms_regra_cd_x_uf": 69,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 342,
+    "id_wms_regra_cd_x_uf": 69,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 343,
+    "id_wms_regra_cd_x_uf": 69,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 344,
+    "id_wms_regra_cd_x_uf": 69,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 345,
+    "id_wms_regra_cd_x_uf": 69,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 346,
+    "id_wms_regra_cd_x_uf": 70,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 347,
+    "id_wms_regra_cd_x_uf": 70,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 348,
+    "id_wms_regra_cd_x_uf": 70,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 349,
+    "id_wms_regra_cd_x_uf": 70,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 350,
+    "id_wms_regra_cd_x_uf": 70,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 351,
+    "id_wms_regra_cd_x_uf": 71,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 352,
+    "id_wms_regra_cd_x_uf": 71,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 353,
+    "id_wms_regra_cd_x_uf": 71,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 354,
+    "id_wms_regra_cd_x_uf": 71,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 355,
+    "id_wms_regra_cd_x_uf": 71,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 356,
+    "id_wms_regra_cd_x_uf": 72,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 357,
+    "id_wms_regra_cd_x_uf": 72,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 358,
+    "id_wms_regra_cd_x_uf": 72,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 359,
+    "id_wms_regra_cd_x_uf": 72,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 360,
+    "id_wms_regra_cd_x_uf": 72,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 361,
+    "id_wms_regra_cd_x_uf": 73,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 362,
+    "id_wms_regra_cd_x_uf": 73,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 363,
+    "id_wms_regra_cd_x_uf": 73,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 364,
+    "id_wms_regra_cd_x_uf": 73,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 365,
+    "id_wms_regra_cd_x_uf": 73,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 366,
+    "id_wms_regra_cd_x_uf": 74,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 367,
+    "id_wms_regra_cd_x_uf": 74,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 368,
+    "id_wms_regra_cd_x_uf": 74,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 369,
+    "id_wms_regra_cd_x_uf": 74,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 370,
+    "id_wms_regra_cd_x_uf": 74,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 371,
+    "id_wms_regra_cd_x_uf": 75,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 372,
+    "id_wms_regra_cd_x_uf": 75,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 373,
+    "id_wms_regra_cd_x_uf": 75,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 374,
+    "id_wms_regra_cd_x_uf": 75,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 375,
+    "id_wms_regra_cd_x_uf": 75,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 376,
+    "id_wms_regra_cd_x_uf": 76,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 377,
+    "id_wms_regra_cd_x_uf": 76,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 378,
+    "id_wms_regra_cd_x_uf": 76,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 379,
+    "id_wms_regra_cd_x_uf": 76,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 380,
+    "id_wms_regra_cd_x_uf": 76,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 381,
+    "id_wms_regra_cd_x_uf": 77,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 382,
+    "id_wms_regra_cd_x_uf": 77,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 383,
+    "id_wms_regra_cd_x_uf": 77,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 384,
+    "id_wms_regra_cd_x_uf": 77,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 385,
+    "id_wms_regra_cd_x_uf": 77,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 386,
+    "id_wms_regra_cd_x_uf": 78,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 387,
+    "id_wms_regra_cd_x_uf": 78,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 388,
+    "id_wms_regra_cd_x_uf": 78,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 389,
+    "id_wms_regra_cd_x_uf": 78,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 390,
+    "id_wms_regra_cd_x_uf": 78,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 391,
+    "id_wms_regra_cd_x_uf": 79,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 392,
+    "id_wms_regra_cd_x_uf": 79,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 393,
+    "id_wms_regra_cd_x_uf": 79,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 394,
+    "id_wms_regra_cd_x_uf": 79,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 395,
+    "id_wms_regra_cd_x_uf": 79,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 396,
+    "id_wms_regra_cd_x_uf": 80,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 397,
+    "id_wms_regra_cd_x_uf": 80,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 398,
+    "id_wms_regra_cd_x_uf": 80,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 399,
+    "id_wms_regra_cd_x_uf": 80,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 400,
+    "id_wms_regra_cd_x_uf": 80,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 401,
+    "id_wms_regra_cd_x_uf": 81,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 402,
+    "id_wms_regra_cd_x_uf": 81,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 403,
+    "id_wms_regra_cd_x_uf": 81,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 404,
+    "id_wms_regra_cd_x_uf": 81,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 405,
+    "id_wms_regra_cd_x_uf": 81,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4006
+  },
+  {
+    "id": 406,
+    "id_wms_regra_cd_x_uf": 82,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 407,
+    "id_wms_regra_cd_x_uf": 82,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 408,
+    "id_wms_regra_cd_x_uf": 82,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 409,
+    "id_wms_regra_cd_x_uf": 82,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 410,
+    "id_wms_regra_cd_x_uf": 82,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 411,
+    "id_wms_regra_cd_x_uf": 83,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 412,
+    "id_wms_regra_cd_x_uf": 83,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 413,
+    "id_wms_regra_cd_x_uf": 83,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 414,
+    "id_wms_regra_cd_x_uf": 83,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 415,
+    "id_wms_regra_cd_x_uf": 83,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 416,
+    "id_wms_regra_cd_x_uf": 84,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 417,
+    "id_wms_regra_cd_x_uf": 84,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 418,
+    "id_wms_regra_cd_x_uf": 84,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 419,
+    "id_wms_regra_cd_x_uf": 84,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 420,
+    "id_wms_regra_cd_x_uf": 84,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 421,
+    "id_wms_regra_cd_x_uf": 85,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 422,
+    "id_wms_regra_cd_x_uf": 85,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 423,
+    "id_wms_regra_cd_x_uf": 85,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 424,
+    "id_wms_regra_cd_x_uf": 85,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 425,
+    "id_wms_regra_cd_x_uf": 85,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 426,
+    "id_wms_regra_cd_x_uf": 86,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 427,
+    "id_wms_regra_cd_x_uf": 86,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 428,
+    "id_wms_regra_cd_x_uf": 86,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 429,
+    "id_wms_regra_cd_x_uf": 86,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 430,
+    "id_wms_regra_cd_x_uf": 86,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 431,
+    "id_wms_regra_cd_x_uf": 87,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 432,
+    "id_wms_regra_cd_x_uf": 87,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 433,
+    "id_wms_regra_cd_x_uf": 87,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 434,
+    "id_wms_regra_cd_x_uf": 87,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 435,
+    "id_wms_regra_cd_x_uf": 87,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 436,
+    "id_wms_regra_cd_x_uf": 88,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 437,
+    "id_wms_regra_cd_x_uf": 88,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 438,
+    "id_wms_regra_cd_x_uf": 88,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 439,
+    "id_wms_regra_cd_x_uf": 88,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 440,
+    "id_wms_regra_cd_x_uf": 88,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 441,
+    "id_wms_regra_cd_x_uf": 89,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 442,
+    "id_wms_regra_cd_x_uf": 89,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 443,
+    "id_wms_regra_cd_x_uf": 89,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 444,
+    "id_wms_regra_cd_x_uf": 89,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 445,
+    "id_wms_regra_cd_x_uf": 89,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 446,
+    "id_wms_regra_cd_x_uf": 90,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 447,
+    "id_wms_regra_cd_x_uf": 90,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 448,
+    "id_wms_regra_cd_x_uf": 90,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 449,
+    "id_wms_regra_cd_x_uf": 90,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 450,
+    "id_wms_regra_cd_x_uf": 90,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 451,
+    "id_wms_regra_cd_x_uf": 91,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 452,
+    "id_wms_regra_cd_x_uf": 91,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 453,
+    "id_wms_regra_cd_x_uf": 91,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 454,
+    "id_wms_regra_cd_x_uf": 91,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 455,
+    "id_wms_regra_cd_x_uf": 91,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 456,
+    "id_wms_regra_cd_x_uf": 92,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 457,
+    "id_wms_regra_cd_x_uf": 92,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 458,
+    "id_wms_regra_cd_x_uf": 92,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 459,
+    "id_wms_regra_cd_x_uf": 92,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 460,
+    "id_wms_regra_cd_x_uf": 92,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 461,
+    "id_wms_regra_cd_x_uf": 93,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 462,
+    "id_wms_regra_cd_x_uf": 93,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 463,
+    "id_wms_regra_cd_x_uf": 93,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 464,
+    "id_wms_regra_cd_x_uf": 93,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 465,
+    "id_wms_regra_cd_x_uf": 93,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 466,
+    "id_wms_regra_cd_x_uf": 94,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 467,
+    "id_wms_regra_cd_x_uf": 94,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 468,
+    "id_wms_regra_cd_x_uf": 94,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 469,
+    "id_wms_regra_cd_x_uf": 94,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 470,
+    "id_wms_regra_cd_x_uf": 94,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 471,
+    "id_wms_regra_cd_x_uf": 95,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 472,
+    "id_wms_regra_cd_x_uf": 95,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 473,
+    "id_wms_regra_cd_x_uf": 95,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 474,
+    "id_wms_regra_cd_x_uf": 95,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 475,
+    "id_wms_regra_cd_x_uf": 95,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 476,
+    "id_wms_regra_cd_x_uf": 96,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 477,
+    "id_wms_regra_cd_x_uf": 96,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 478,
+    "id_wms_regra_cd_x_uf": 96,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 479,
+    "id_wms_regra_cd_x_uf": 96,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 480,
+    "id_wms_regra_cd_x_uf": 96,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 481,
+    "id_wms_regra_cd_x_uf": 97,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 482,
+    "id_wms_regra_cd_x_uf": 97,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 483,
+    "id_wms_regra_cd_x_uf": 97,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 484,
+    "id_wms_regra_cd_x_uf": 97,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 485,
+    "id_wms_regra_cd_x_uf": 97,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 486,
+    "id_wms_regra_cd_x_uf": 98,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 487,
+    "id_wms_regra_cd_x_uf": 98,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 488,
+    "id_wms_regra_cd_x_uf": 98,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 489,
+    "id_wms_regra_cd_x_uf": 98,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 490,
+    "id_wms_regra_cd_x_uf": 98,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 491,
+    "id_wms_regra_cd_x_uf": 99,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 492,
+    "id_wms_regra_cd_x_uf": 99,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 493,
+    "id_wms_regra_cd_x_uf": 99,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 494,
+    "id_wms_regra_cd_x_uf": 99,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 495,
+    "id_wms_regra_cd_x_uf": 99,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 496,
+    "id_wms_regra_cd_x_uf": 100,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 497,
+    "id_wms_regra_cd_x_uf": 100,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 498,
+    "id_wms_regra_cd_x_uf": 100,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 499,
+    "id_wms_regra_cd_x_uf": 100,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 500,
+    "id_wms_regra_cd_x_uf": 100,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 501,
+    "id_wms_regra_cd_x_uf": 101,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 502,
+    "id_wms_regra_cd_x_uf": 101,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 503,
+    "id_wms_regra_cd_x_uf": 101,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 504,
+    "id_wms_regra_cd_x_uf": 101,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 505,
+    "id_wms_regra_cd_x_uf": 101,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 506,
+    "id_wms_regra_cd_x_uf": 102,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 507,
+    "id_wms_regra_cd_x_uf": 102,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 508,
+    "id_wms_regra_cd_x_uf": 102,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 509,
+    "id_wms_regra_cd_x_uf": 102,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 510,
+    "id_wms_regra_cd_x_uf": 102,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 511,
+    "id_wms_regra_cd_x_uf": 103,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 512,
+    "id_wms_regra_cd_x_uf": 103,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 513,
+    "id_wms_regra_cd_x_uf": 103,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 514,
+    "id_wms_regra_cd_x_uf": 103,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 515,
+    "id_wms_regra_cd_x_uf": 103,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 516,
+    "id_wms_regra_cd_x_uf": 104,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 517,
+    "id_wms_regra_cd_x_uf": 104,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 518,
+    "id_wms_regra_cd_x_uf": 104,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 519,
+    "id_wms_regra_cd_x_uf": 104,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 520,
+    "id_wms_regra_cd_x_uf": 104,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 521,
+    "id_wms_regra_cd_x_uf": 105,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 522,
+    "id_wms_regra_cd_x_uf": 105,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 523,
+    "id_wms_regra_cd_x_uf": 105,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 524,
+    "id_wms_regra_cd_x_uf": 105,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 525,
+    "id_wms_regra_cd_x_uf": 105,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 526,
+    "id_wms_regra_cd_x_uf": 106,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 527,
+    "id_wms_regra_cd_x_uf": 106,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 528,
+    "id_wms_regra_cd_x_uf": 106,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 529,
+    "id_wms_regra_cd_x_uf": 106,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 530,
+    "id_wms_regra_cd_x_uf": 106,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 531,
+    "id_wms_regra_cd_x_uf": 107,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 532,
+    "id_wms_regra_cd_x_uf": 107,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 533,
+    "id_wms_regra_cd_x_uf": 107,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 534,
+    "id_wms_regra_cd_x_uf": 107,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 535,
+    "id_wms_regra_cd_x_uf": 107,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 536,
+    "id_wms_regra_cd_x_uf": 108,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 537,
+    "id_wms_regra_cd_x_uf": 108,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 538,
+    "id_wms_regra_cd_x_uf": 108,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 539,
+    "id_wms_regra_cd_x_uf": 108,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 540,
+    "id_wms_regra_cd_x_uf": 108,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 541,
+    "id_wms_regra_cd_x_uf": 109,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 542,
+    "id_wms_regra_cd_x_uf": 109,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 543,
+    "id_wms_regra_cd_x_uf": 109,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 544,
+    "id_wms_regra_cd_x_uf": 109,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 545,
+    "id_wms_regra_cd_x_uf": 109,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 546,
+    "id_wms_regra_cd_x_uf": 110,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 547,
+    "id_wms_regra_cd_x_uf": 110,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 548,
+    "id_wms_regra_cd_x_uf": 110,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 549,
+    "id_wms_regra_cd_x_uf": 110,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 550,
+    "id_wms_regra_cd_x_uf": 110,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 551,
+    "id_wms_regra_cd_x_uf": 111,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 552,
+    "id_wms_regra_cd_x_uf": 111,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 553,
+    "id_wms_regra_cd_x_uf": 111,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 554,
+    "id_wms_regra_cd_x_uf": 111,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 555,
+    "id_wms_regra_cd_x_uf": 111,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 556,
+    "id_wms_regra_cd_x_uf": 112,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 557,
+    "id_wms_regra_cd_x_uf": 112,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 558,
+    "id_wms_regra_cd_x_uf": 112,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 559,
+    "id_wms_regra_cd_x_uf": 112,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 560,
+    "id_wms_regra_cd_x_uf": 112,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 561,
+    "id_wms_regra_cd_x_uf": 113,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 562,
+    "id_wms_regra_cd_x_uf": 113,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 563,
+    "id_wms_regra_cd_x_uf": 113,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 564,
+    "id_wms_regra_cd_x_uf": 113,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 565,
+    "id_wms_regra_cd_x_uf": 113,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 566,
+    "id_wms_regra_cd_x_uf": 114,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 567,
+    "id_wms_regra_cd_x_uf": 114,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 568,
+    "id_wms_regra_cd_x_uf": 114,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 569,
+    "id_wms_regra_cd_x_uf": 114,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 570,
+    "id_wms_regra_cd_x_uf": 114,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 571,
+    "id_wms_regra_cd_x_uf": 115,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 572,
+    "id_wms_regra_cd_x_uf": 115,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 573,
+    "id_wms_regra_cd_x_uf": 115,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 574,
+    "id_wms_regra_cd_x_uf": 115,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 575,
+    "id_wms_regra_cd_x_uf": 115,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 576,
+    "id_wms_regra_cd_x_uf": 116,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 577,
+    "id_wms_regra_cd_x_uf": 116,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 578,
+    "id_wms_regra_cd_x_uf": 116,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 579,
+    "id_wms_regra_cd_x_uf": 116,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 580,
+    "id_wms_regra_cd_x_uf": 116,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 581,
+    "id_wms_regra_cd_x_uf": 117,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 582,
+    "id_wms_regra_cd_x_uf": 117,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 583,
+    "id_wms_regra_cd_x_uf": 117,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 584,
+    "id_wms_regra_cd_x_uf": 117,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 585,
+    "id_wms_regra_cd_x_uf": 117,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 586,
+    "id_wms_regra_cd_x_uf": 118,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 587,
+    "id_wms_regra_cd_x_uf": 118,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 588,
+    "id_wms_regra_cd_x_uf": 118,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 589,
+    "id_wms_regra_cd_x_uf": 118,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 590,
+    "id_wms_regra_cd_x_uf": 118,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 591,
+    "id_wms_regra_cd_x_uf": 119,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 592,
+    "id_wms_regra_cd_x_uf": 119,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 593,
+    "id_wms_regra_cd_x_uf": 119,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 594,
+    "id_wms_regra_cd_x_uf": 119,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 595,
+    "id_wms_regra_cd_x_uf": 119,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 596,
+    "id_wms_regra_cd_x_uf": 120,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 597,
+    "id_wms_regra_cd_x_uf": 120,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 598,
+    "id_wms_regra_cd_x_uf": 120,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 599,
+    "id_wms_regra_cd_x_uf": 120,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 600,
+    "id_wms_regra_cd_x_uf": 120,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 601,
+    "id_wms_regra_cd_x_uf": 121,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 602,
+    "id_wms_regra_cd_x_uf": 121,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 603,
+    "id_wms_regra_cd_x_uf": 121,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 604,
+    "id_wms_regra_cd_x_uf": 121,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 605,
+    "id_wms_regra_cd_x_uf": 121,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 606,
+    "id_wms_regra_cd_x_uf": 122,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 607,
+    "id_wms_regra_cd_x_uf": 122,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 608,
+    "id_wms_regra_cd_x_uf": 122,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 609,
+    "id_wms_regra_cd_x_uf": 122,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 610,
+    "id_wms_regra_cd_x_uf": 122,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 611,
+    "id_wms_regra_cd_x_uf": 123,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 612,
+    "id_wms_regra_cd_x_uf": 123,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 613,
+    "id_wms_regra_cd_x_uf": 123,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 614,
+    "id_wms_regra_cd_x_uf": 123,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 615,
+    "id_wms_regra_cd_x_uf": 123,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 616,
+    "id_wms_regra_cd_x_uf": 124,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 617,
+    "id_wms_regra_cd_x_uf": 124,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 618,
+    "id_wms_regra_cd_x_uf": 124,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 619,
+    "id_wms_regra_cd_x_uf": 124,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 620,
+    "id_wms_regra_cd_x_uf": 124,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 621,
+    "id_wms_regra_cd_x_uf": 125,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 622,
+    "id_wms_regra_cd_x_uf": 125,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 623,
+    "id_wms_regra_cd_x_uf": 125,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 624,
+    "id_wms_regra_cd_x_uf": 125,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 625,
+    "id_wms_regra_cd_x_uf": 125,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 626,
+    "id_wms_regra_cd_x_uf": 126,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 627,
+    "id_wms_regra_cd_x_uf": 126,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 628,
+    "id_wms_regra_cd_x_uf": 126,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 629,
+    "id_wms_regra_cd_x_uf": 126,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 630,
+    "id_wms_regra_cd_x_uf": 126,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 631,
+    "id_wms_regra_cd_x_uf": 127,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 632,
+    "id_wms_regra_cd_x_uf": 127,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 633,
+    "id_wms_regra_cd_x_uf": 127,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 634,
+    "id_wms_regra_cd_x_uf": 127,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 635,
+    "id_wms_regra_cd_x_uf": 127,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 636,
+    "id_wms_regra_cd_x_uf": 128,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 637,
+    "id_wms_regra_cd_x_uf": 128,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 638,
+    "id_wms_regra_cd_x_uf": 128,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 639,
+    "id_wms_regra_cd_x_uf": 128,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 640,
+    "id_wms_regra_cd_x_uf": 128,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 641,
+    "id_wms_regra_cd_x_uf": 129,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 642,
+    "id_wms_regra_cd_x_uf": 129,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 643,
+    "id_wms_regra_cd_x_uf": 129,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 644,
+    "id_wms_regra_cd_x_uf": 129,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 645,
+    "id_wms_regra_cd_x_uf": 129,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 646,
+    "id_wms_regra_cd_x_uf": 130,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 647,
+    "id_wms_regra_cd_x_uf": 130,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 648,
+    "id_wms_regra_cd_x_uf": 130,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 649,
+    "id_wms_regra_cd_x_uf": 130,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 650,
+    "id_wms_regra_cd_x_uf": 130,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 651,
+    "id_wms_regra_cd_x_uf": 131,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 652,
+    "id_wms_regra_cd_x_uf": 131,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 653,
+    "id_wms_regra_cd_x_uf": 131,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 654,
+    "id_wms_regra_cd_x_uf": 131,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 655,
+    "id_wms_regra_cd_x_uf": 131,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 656,
+    "id_wms_regra_cd_x_uf": 132,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 657,
+    "id_wms_regra_cd_x_uf": 132,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 658,
+    "id_wms_regra_cd_x_uf": 132,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 659,
+    "id_wms_regra_cd_x_uf": 132,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 660,
+    "id_wms_regra_cd_x_uf": 132,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 661,
+    "id_wms_regra_cd_x_uf": 133,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 662,
+    "id_wms_regra_cd_x_uf": 133,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 663,
+    "id_wms_regra_cd_x_uf": 133,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 664,
+    "id_wms_regra_cd_x_uf": 133,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 665,
+    "id_wms_regra_cd_x_uf": 133,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 666,
+    "id_wms_regra_cd_x_uf": 134,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 667,
+    "id_wms_regra_cd_x_uf": 134,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 668,
+    "id_wms_regra_cd_x_uf": 134,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 669,
+    "id_wms_regra_cd_x_uf": 134,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 670,
+    "id_wms_regra_cd_x_uf": 134,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 671,
+    "id_wms_regra_cd_x_uf": 135,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 672,
+    "id_wms_regra_cd_x_uf": 135,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 673,
+    "id_wms_regra_cd_x_uf": 135,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 674,
+    "id_wms_regra_cd_x_uf": 135,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 675,
+    "id_wms_regra_cd_x_uf": 135,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 676,
+    "id_wms_regra_cd_x_uf": 136,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 677,
+    "id_wms_regra_cd_x_uf": 136,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 678,
+    "id_wms_regra_cd_x_uf": 136,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 679,
+    "id_wms_regra_cd_x_uf": 136,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 680,
+    "id_wms_regra_cd_x_uf": 136,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 681,
+    "id_wms_regra_cd_x_uf": 137,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 682,
+    "id_wms_regra_cd_x_uf": 137,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 683,
+    "id_wms_regra_cd_x_uf": 137,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 684,
+    "id_wms_regra_cd_x_uf": 137,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 685,
+    "id_wms_regra_cd_x_uf": 137,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 686,
+    "id_wms_regra_cd_x_uf": 138,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 687,
+    "id_wms_regra_cd_x_uf": 138,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 688,
+    "id_wms_regra_cd_x_uf": 138,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 689,
+    "id_wms_regra_cd_x_uf": 138,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 690,
+    "id_wms_regra_cd_x_uf": 138,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 691,
+    "id_wms_regra_cd_x_uf": 139,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 692,
+    "id_wms_regra_cd_x_uf": 139,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 693,
+    "id_wms_regra_cd_x_uf": 139,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 694,
+    "id_wms_regra_cd_x_uf": 139,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 695,
+    "id_wms_regra_cd_x_uf": 139,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 696,
+    "id_wms_regra_cd_x_uf": 140,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 697,
+    "id_wms_regra_cd_x_uf": 140,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 698,
+    "id_wms_regra_cd_x_uf": 140,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 699,
+    "id_wms_regra_cd_x_uf": 140,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 700,
+    "id_wms_regra_cd_x_uf": 140,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 701,
+    "id_wms_regra_cd_x_uf": 141,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 702,
+    "id_wms_regra_cd_x_uf": 141,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 703,
+    "id_wms_regra_cd_x_uf": 141,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 704,
+    "id_wms_regra_cd_x_uf": 141,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 705,
+    "id_wms_regra_cd_x_uf": 141,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 706,
+    "id_wms_regra_cd_x_uf": 142,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 707,
+    "id_wms_regra_cd_x_uf": 142,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 708,
+    "id_wms_regra_cd_x_uf": 142,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 709,
+    "id_wms_regra_cd_x_uf": 142,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 710,
+    "id_wms_regra_cd_x_uf": 142,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 711,
+    "id_wms_regra_cd_x_uf": 143,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 712,
+    "id_wms_regra_cd_x_uf": 143,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 713,
+    "id_wms_regra_cd_x_uf": 143,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 714,
+    "id_wms_regra_cd_x_uf": 143,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 715,
+    "id_wms_regra_cd_x_uf": 143,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4903
+  },
+  {
+    "id": 716,
+    "id_wms_regra_cd_x_uf": 144,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 717,
+    "id_wms_regra_cd_x_uf": 144,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 718,
+    "id_wms_regra_cd_x_uf": 144,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 719,
+    "id_wms_regra_cd_x_uf": 144,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 720,
+    "id_wms_regra_cd_x_uf": 144,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 721,
+    "id_wms_regra_cd_x_uf": 145,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 722,
+    "id_wms_regra_cd_x_uf": 145,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 723,
+    "id_wms_regra_cd_x_uf": 145,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 724,
+    "id_wms_regra_cd_x_uf": 145,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 725,
+    "id_wms_regra_cd_x_uf": 145,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 726,
+    "id_wms_regra_cd_x_uf": 146,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 727,
+    "id_wms_regra_cd_x_uf": 146,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 728,
+    "id_wms_regra_cd_x_uf": 146,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 729,
+    "id_wms_regra_cd_x_uf": 146,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 730,
+    "id_wms_regra_cd_x_uf": 146,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 731,
+    "id_wms_regra_cd_x_uf": 147,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 732,
+    "id_wms_regra_cd_x_uf": 147,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 733,
+    "id_wms_regra_cd_x_uf": 147,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 734,
+    "id_wms_regra_cd_x_uf": 147,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 735,
+    "id_wms_regra_cd_x_uf": 147,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 736,
+    "id_wms_regra_cd_x_uf": 148,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 737,
+    "id_wms_regra_cd_x_uf": 148,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 738,
+    "id_wms_regra_cd_x_uf": 148,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 739,
+    "id_wms_regra_cd_x_uf": 148,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 740,
+    "id_wms_regra_cd_x_uf": 148,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 741,
+    "id_wms_regra_cd_x_uf": 149,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 742,
+    "id_wms_regra_cd_x_uf": 149,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 743,
+    "id_wms_regra_cd_x_uf": 149,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 744,
+    "id_wms_regra_cd_x_uf": 149,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 745,
+    "id_wms_regra_cd_x_uf": 149,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 746,
+    "id_wms_regra_cd_x_uf": 150,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 747,
+    "id_wms_regra_cd_x_uf": 150,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 748,
+    "id_wms_regra_cd_x_uf": 150,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 749,
+    "id_wms_regra_cd_x_uf": 150,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 750,
+    "id_wms_regra_cd_x_uf": 150,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 751,
+    "id_wms_regra_cd_x_uf": 151,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 752,
+    "id_wms_regra_cd_x_uf": 151,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 753,
+    "id_wms_regra_cd_x_uf": 151,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 754,
+    "id_wms_regra_cd_x_uf": 151,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 755,
+    "id_wms_regra_cd_x_uf": 151,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 756,
+    "id_wms_regra_cd_x_uf": 152,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 757,
+    "id_wms_regra_cd_x_uf": 152,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 758,
+    "id_wms_regra_cd_x_uf": 152,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 759,
+    "id_wms_regra_cd_x_uf": 152,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 760,
+    "id_wms_regra_cd_x_uf": 152,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 761,
+    "id_wms_regra_cd_x_uf": 153,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 762,
+    "id_wms_regra_cd_x_uf": 153,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 763,
+    "id_wms_regra_cd_x_uf": 153,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 764,
+    "id_wms_regra_cd_x_uf": 153,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 765,
+    "id_wms_regra_cd_x_uf": 153,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 766,
+    "id_wms_regra_cd_x_uf": 154,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 767,
+    "id_wms_regra_cd_x_uf": 154,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 768,
+    "id_wms_regra_cd_x_uf": 154,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 769,
+    "id_wms_regra_cd_x_uf": 154,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 770,
+    "id_wms_regra_cd_x_uf": 154,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 771,
+    "id_wms_regra_cd_x_uf": 155,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 772,
+    "id_wms_regra_cd_x_uf": 155,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 773,
+    "id_wms_regra_cd_x_uf": 155,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 774,
+    "id_wms_regra_cd_x_uf": 155,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 775,
+    "id_wms_regra_cd_x_uf": 155,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 776,
+    "id_wms_regra_cd_x_uf": 156,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 777,
+    "id_wms_regra_cd_x_uf": 156,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 778,
+    "id_wms_regra_cd_x_uf": 156,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 779,
+    "id_wms_regra_cd_x_uf": 156,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 780,
+    "id_wms_regra_cd_x_uf": 156,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 781,
+    "id_wms_regra_cd_x_uf": 157,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 782,
+    "id_wms_regra_cd_x_uf": 157,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 783,
+    "id_wms_regra_cd_x_uf": 157,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 784,
+    "id_wms_regra_cd_x_uf": 157,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 785,
+    "id_wms_regra_cd_x_uf": 157,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 786,
+    "id_wms_regra_cd_x_uf": 158,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 787,
+    "id_wms_regra_cd_x_uf": 158,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 788,
+    "id_wms_regra_cd_x_uf": 158,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 789,
+    "id_wms_regra_cd_x_uf": 158,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 790,
+    "id_wms_regra_cd_x_uf": 158,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 791,
+    "id_wms_regra_cd_x_uf": 159,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 792,
+    "id_wms_regra_cd_x_uf": 159,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 793,
+    "id_wms_regra_cd_x_uf": 159,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 794,
+    "id_wms_regra_cd_x_uf": 159,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 795,
+    "id_wms_regra_cd_x_uf": 159,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 796,
+    "id_wms_regra_cd_x_uf": 160,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 797,
+    "id_wms_regra_cd_x_uf": 160,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 798,
+    "id_wms_regra_cd_x_uf": 160,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 799,
+    "id_wms_regra_cd_x_uf": 160,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 800,
+    "id_wms_regra_cd_x_uf": 160,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 801,
+    "id_wms_regra_cd_x_uf": 161,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 802,
+    "id_wms_regra_cd_x_uf": 161,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 803,
+    "id_wms_regra_cd_x_uf": 161,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 804,
+    "id_wms_regra_cd_x_uf": 161,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 805,
+    "id_wms_regra_cd_x_uf": 161,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 806,
+    "id_wms_regra_cd_x_uf": 162,
+    "tipo_pessoa": "PF",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 807,
+    "id_wms_regra_cd_x_uf": 162,
+    "tipo_pessoa": "PR",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 808,
+    "id_wms_regra_cd_x_uf": 162,
+    "tipo_pessoa": "PJC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 809,
+    "id_wms_regra_cd_x_uf": 162,
+    "tipo_pessoa": "PJNC",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  },
+  {
+    "id": 810,
+    "id_wms_regra_cd_x_uf": 162,
+    "tipo_pessoa": "PJI",
+    "st_inativo": 0,
+    "spe_id_nfe_emitente": 4003
+  }
+]

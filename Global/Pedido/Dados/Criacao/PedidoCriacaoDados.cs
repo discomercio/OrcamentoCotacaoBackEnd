@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
+//todo: religar nullable
+#nullable disable
+
 namespace Pedido.Dados.Criacao
 {
     public class PedidoCriacaoDados

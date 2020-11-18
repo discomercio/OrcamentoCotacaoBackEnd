@@ -155,7 +155,6 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
   },
   ""Perc_Desagio_RA_Liquida"": 25
 }"
-#pragma warning restore IDE0044 // Add readonly modifier
 ;
 
     }

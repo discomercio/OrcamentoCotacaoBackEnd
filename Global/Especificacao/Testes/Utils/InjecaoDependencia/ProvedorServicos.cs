@@ -21,7 +21,7 @@ namespace Especificacao.Testes.Utils.InjecaoDependencia
         private ServiceProvider Servicos { get; set; }
         private ProvedorServicos()
         {
-            var logTestes = LogTestes.GetInstance();
+            var logTestes = LogTestes.LogTestes.GetInstance();
             logTestes.LogMensagem("ProvedorServicos inicio");
 
             var services = new ServiceCollection();
@@ -43,6 +43,7 @@ namespace Especificacao.Testes.Utils.InjecaoDependencia
             services.AddTransient<Testes.Utils.InjecaoDependencia.ClasseInjetada, Testes.Utils.InjecaoDependencia.ClasseInjetada>();
 
             Ambiente.ApiUnis.InjecaoDependencias.ConfigurarDependencias(services);
+            Ambiente.ApiMagento.InjecaoDependencias.ConfigurarDependencias(services);
 
             Servicos = services.BuildServiceProvider();
 

@@ -8,7 +8,7 @@ namespace Especificacao.Testes.Pedido
 {
     public class PedidoPassosComuns : ListaImplementacoes<IPedidoPassosComuns>, IPedidoPassosComuns
     {
-        private readonly Testes.Utils.LogTestes logTestes = Testes.Utils.LogTestes.GetInstance();
+        private readonly Testes.Utils.LogTestes.LogTestes logTestes = Testes.Utils.LogTestes.LogTestes.GetInstance();
 
         public void WhenPedidoBase()
         {
@@ -47,9 +47,15 @@ namespace Especificacao.Testes.Pedido
         }
 
         private bool ignorarFeature = false;
-        public void GivenIgnorarFeatureNoAmbiente(string p0)
+        public void GivenIgnorarFeatureNoAmbiente2(string p0)
         {
-            var typeFullName = this.GetType().FullName;
+            IgnorarFeatureNoAmbiente(p0, ref ignorarFeature, this.GetType());
+            base.Executar(i => i.GivenIgnorarFeatureNoAmbiente2(p0));
+        }
+
+        public static void IgnorarFeatureNoAmbiente(string p0, ref bool ignorarFeature, Type getType)
+        {
+            var typeFullName = getType.FullName;
             if (typeFullName == null)
             {
                 Assert.Equal("", "sem this.GetType().FullName");
@@ -62,7 +68,6 @@ namespace Especificacao.Testes.Pedido
 
             if (typeFullName == p0)
                 ignorarFeature = true;
-            base.Executar(i => i.GivenIgnorarFeatureNoAmbiente(p0));
         }
 
         public void GivenPedidoBaseComEnderecoDeEntrega()

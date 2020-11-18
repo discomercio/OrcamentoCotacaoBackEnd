@@ -1,0 +1,24 @@
+﻿[
+  {
+    "id_movimento": "000002000001",
+    "data": "2016-06-02T03:00:00Z",
+    "hora": "162431",
+    "usuario": "HELENO",
+    "id_estoque": "",
+    "fabricante": "900",
+    "produto": "900000",
+    "qtde": 1,
+    "operacao": "VDA",
+    "estoque": "SPE",
+    "pedido": "000001N",
+    "loja": "",
+    "anulado_status": 1,
+    "anulado_data": "2016-06-02T03:00:00Z",
+    "anulado_hora": "165659",
+    "anulado_usuario": "HELENO",
+    "timestamp": "0x0000000001765d2f",
+    "kit": 0,
+    "kit_id_estoque": "",
+    "id_ordem_servico": null
+  }
+]

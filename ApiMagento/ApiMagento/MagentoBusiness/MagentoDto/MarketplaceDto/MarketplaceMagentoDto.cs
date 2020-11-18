@@ -9,11 +9,11 @@ namespace MagentoBusiness.MagentoDto
     {
         [Required]
         [MaxLength(60)]
-        public string Grupo { get; set; }
+        public string Grupo { get; set; } = "";
 
         [Required]
         [MaxLength(60)]
-        public string Descricao { get; set; }
+        public string Descricao { get; set; } = "";
 
         [Required]
         public short Parametro_1_campo_flag { get; set; }
@@ -31,16 +31,16 @@ namespace MagentoBusiness.MagentoDto
         public short Parametro_5_campo_flag { get; set; }
 
         [MaxLength(1024)]
-        public string Parametro_campo_texto { get; set; }
+        public string? Parametro_campo_texto { get; set; }
 
         [MaxLength(2048)]
-        public string Descricao_parametro { get; set; }
+        public string? Descricao_parametro { get; set; }
 
         [MaxLength(1024)]
-        public string Parametro_2_campo_texto { get; set; }
+        public string? Parametro_2_campo_texto { get; set; }
 
         [MaxLength(1024)]
-        public string Parametro_3_campo_texto { get; set; }
+        public string? Parametro_3_campo_texto { get; set; }
 
     }
 }

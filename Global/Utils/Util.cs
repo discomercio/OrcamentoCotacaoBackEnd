@@ -57,9 +57,7 @@ namespace UtilsGlobais
 
         public static bool ValidaCPF(string cpf)
         {
-            string valor = cpf.Replace(".", "").Replace("/", "").Replace("-", "");
-
-            valor = valor.Replace("-", "");
+            string valor = System.Text.RegularExpressions.Regex.Replace(cpf, @"\D", "");
 
             if (valor.Length != 11) return false;
 
@@ -126,7 +124,8 @@ namespace UtilsGlobais
             string p1 = "543298765432";
             string p2 = "6543298765432";
 
-            cnpj = cnpj.Replace(".", "").Replace("/", "").Replace("-", "");
+            //ficamos somente com dígitos
+            cnpj = System.Text.RegularExpressions.Regex.Replace(cnpj, @"\D", "");
             if (cnpj == "") return true;
             if (cnpj.Length != 14) return false;
 
@@ -795,71 +794,77 @@ namespace UtilsGlobais
 
         public static async Task<string> GerarNsu(ContextoBdGravacao dbgravacao, string id_nsu)
         {
-            string retorno = "";
+            if (string.IsNullOrEmpty(id_nsu))
+                throw new ArgumentException("Não foi especificado o NSU a ser gerado!");
+
+            var queryControle = from c in dbgravacao.Tcontroles
+                                where c.Id_Nsu == id_nsu
+                                select c;
+
+            var controle = await queryControle.FirstOrDefaultAsync();
+            if (controle == null)
+                throw new ArgumentException($"Não existe registro na tabela de controle para poder gerar este NSU!! id_nsu:{id_nsu}");
+
             int n_nsu = -1;
-            string s = "0";
-            int asc;
-            char chr;
-
-            if (id_nsu == "")
-                retorno = "Não foi especificado o NSU a ser gerado!";
-
-            for (int i = 0; i <= 100; i++)
+            if (!string.IsNullOrEmpty(controle.Nsu))
             {
-                var ret = from c in dbgravacao.Tcontroles
-                          where c.Id_Nsu == id_nsu
-                          select c;
-
-                var controle = await ret.FirstOrDefaultAsync();
-
-
-                if (!string.IsNullOrEmpty(controle.Nsu))
+                if (int.TryParse(controle.Nsu, out _))
                 {
-                    if (controle.Seq_Anual != 0)
+                    if (controle.Seq_Anual != null && controle.Seq_Anual != 0)
                     {
+                        //'	CASO O RELÓGIO DO SERVIDOR SEJA ALTERADO P/ DATAS FUTURAS E PASSADAS, EVITA QUE O CAMPO 'ano_letra_seq' SEJA INCREMENTADO VÁRIAS VEZES
                         if (DateTime.Now.Year > controle.Dt_Ult_Atualizacao.Year)
                         {
-                            s = Normaliza_Codigo(s, Constantes.TAM_MAX_NSU);
+                            string saux = "0";
+                            saux = Normaliza_Codigo(saux, Constantes.TAM_MAX_NSU);
+                            controle.Nsu = saux;
                             controle.Dt_Ult_Atualizacao = DateTime.Now;
                             if (!String.IsNullOrEmpty(controle.Ano_Letra_Seq))
                             {
-                                asc = int.Parse(controle.Ano_Letra_Seq) + controle.Ano_Letra_Step;
+                                int asc;
+                                char chr;
+                                asc = Encoding.ASCII.GetBytes(controle.Ano_Letra_Seq)[0] + controle.Ano_Letra_Step;
                                 chr = (char)asc;
+                                controle.Ano_Letra_Seq = chr.ToString();
                             }
                         }
                     }
                     n_nsu = int.Parse(controle.Nsu);
                 }
-                if (n_nsu < 0)
+            }
+
+
+            if (n_nsu < 0)
+            {
+                throw new ApplicationException($"O NSU gerado é inválido! id_nsu:{id_nsu}");
+            }
+
+            n_nsu += 1;
+            string s;
+            s = Convert.ToString(n_nsu);
+            s = Normaliza_Codigo(s, Constantes.TAM_MAX_NSU);
+            if (s.Length == 12)
+            {
+                //para salvar o novo numero
+                controle.Nsu = s;
+                if (DateTime.Now > controle.Dt_Ult_Atualizacao)
+                    controle.Dt_Ult_Atualizacao = DateTime.Now;
+
+                string retorno = controle.Nsu;
+
+                try
                 {
-                    retorno = "O NSU gerado é inválido!";
+                    dbgravacao.Update(controle);
+                    await dbgravacao.SaveChangesAsync();
+                    return retorno;
                 }
-                n_nsu += 1;
-                s = Convert.ToString(n_nsu);
-                s = Normaliza_Codigo(s, Constantes.TAM_MAX_NSU);
-                if (s.Length == 12)
+                catch (Exception ex)
                 {
-                    i = 101;
-                    //para salvar o novo numero
-                    controle.Nsu = s;
-                    if (DateTime.Now > controle.Dt_Ult_Atualizacao)
-                        controle.Dt_Ult_Atualizacao = DateTime.Now;
-
-                    retorno = controle.Nsu;
-
-                    try
-                    {
-                        dbgravacao.Update(controle);
-                        await dbgravacao.SaveChangesAsync();
-                    }
-                    catch (Exception ex)
-                    {
-                        retorno = "Não foi possível gerar o NSU, pois ocorreu o seguinte erro: " + ex.HResult + ":" + ex.Message;
-                    }
+                    throw new ApplicationException("Não foi possível gerar o NSU, pois ocorreu o seguinte erro: " + ex.HResult + ":" + ex.Message);
                 }
             }
 
-            return retorno;
+            throw new ApplicationException($"Não foi possível gerar o NSU, tamanho diferente de 12.  id_nsu:{id_nsu}");
         }
 
         public static async Task<IEnumerable<TcodigoDescricao>> ListarCodigoMarketPlace(ContextoBdProvider contextoProvider)
@@ -1069,15 +1074,15 @@ namespace UtilsGlobais
 
             string[] cpf_cnpjConsulta = new string[] { ddd, "0" + ddd };
             var lstClienteTask = await (from c in db.Tclientes
-                                        where cpf_cnpjConsulta.Contains(c.Ddd_Res) && c.Tel_Res == tel ||
-                                              cpf_cnpjConsulta.Contains(c.Ddd_Com) && c.Tel_Com == tel ||
-                                              cpf_cnpjConsulta.Contains(c.Ddd_Cel) && c.Tel_Cel == tel ||
-                                              cpf_cnpjConsulta.Contains(c.Ddd_Com_2) && c.Tel_Com_2 == tel
+                                        where (cpf_cnpjConsulta.Contains(c.Ddd_Res) && c.Tel_Res == tel) ||
+                                              (cpf_cnpjConsulta.Contains(c.Ddd_Com) && c.Tel_Com == tel) ||
+                                              (cpf_cnpjConsulta.Contains(c.Ddd_Cel) && c.Tel_Cel == tel) ||
+                                              (cpf_cnpjConsulta.Contains(c.Ddd_Com_2) && c.Tel_Com_2 == tel)
                                         select c).ToListAsync();
 
             var lstOrcamentista = await (from c in db.TorcamentistaEindicadors
-                                         where cpf_cnpjConsulta.Contains(c.Ddd) && c.Telefone == tel &&
-                                               cpf_cnpjConsulta.Contains(c.Ddd_cel) && c.Tel_cel == tel
+                                         where (cpf_cnpjConsulta.Contains(c.Ddd) && c.Telefone == tel) ||
+                                               (cpf_cnpjConsulta.Contains(c.Ddd_cel) && c.Tel_cel == tel)
                                          select c).ToListAsync();
 
             int qtdCliente = 0;

@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using InfraBanco.Constantes;
 
+#nullable enable
+
 namespace Pedido
 {
     public class MontarLogPedidoBll
@@ -147,7 +149,7 @@ namespace Pedido
             return await Task.FromResult(log);
         }
 
-        public string MontarCamposAInserirItensPedido(string log, List<cl_ITEM_PEDIDO_NOVO> v_item, string s_log_cliente_indicador)
+        public string MontarCamposAInserirItensPedido(string log, List<Cl_ITEM_PEDIDO_NOVO> v_item, string s_log_cliente_indicador)
         {
             string logItem = "";
 
@@ -167,7 +169,7 @@ namespace Pedido
             return log;
         }
 
-        private string MontarCamposAInserirItens(cl_ITEM_PEDIDO_NOVO item)
+        private string MontarCamposAInserirItens(Cl_ITEM_PEDIDO_NOVO item)
         {
             string campos_a_inserir = "";
 
@@ -182,10 +184,10 @@ namespace Pedido
             return campos_a_inserir;
         }
 
-        private string MontaLogInserirItens(cl_ITEM_PEDIDO_NOVO item, string campos_a_inserir, string log)
+        private string MontaLogInserirItens(Cl_ITEM_PEDIDO_NOVO item, string campos_a_inserir, string log)
         {
             //montamos o produto ex: 1x001001(001);
-            log += item.Qtde + "x" + item.produto;
+            log += item.Qtde + "x" + item.Produto;
             if (item.Fabricante != "" && item.Fabricante != null)
             {
                 log += "(" + item.Fabricante + ");";
@@ -198,7 +200,7 @@ namespace Pedido
                 foreach (var c in property)
                 {
                     //pegando o real nome da coluna 
-                    ColumnAttribute column = (ColumnAttribute)Attribute.GetCustomAttribute(c, typeof(ColumnAttribute));
+                    ColumnAttribute? column = (ColumnAttribute?)Attribute.GetCustomAttribute(c, typeof(ColumnAttribute));
                     if (column != null)
                     {
                         string coluna = column.Name;
@@ -208,7 +210,7 @@ namespace Pedido
                                 log = log + "\r";
                             //pegando o valor coluna
                             var value = (c.GetValue(item, null));
-                            if (string.IsNullOrEmpty(value.ToString()))
+                            if (value == null || string.IsNullOrEmpty(value.ToString()))
                                 log = log + coluna + "=" + "\"\"" + "; ";
                             else
                                 log = log + coluna + "=" + value + "; ";

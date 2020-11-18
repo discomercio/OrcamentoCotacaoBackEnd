@@ -10,7 +10,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
     class CadastrarPrepedido : Testes.Pedido.IPedidoPassosComuns
     {
         private readonly PrepedidoAPIUnis.Controllers.PrepedidoUnisController prepedidoUnisController;
-        private readonly Testes.Utils.LogTestes logTestes = Testes.Utils.LogTestes.GetInstance();
+        private readonly Testes.Utils.LogTestes.LogTestes logTestes = Testes.Utils.LogTestes.LogTestes.GetInstance();
 
         public CadastrarPrepedido()
         {
@@ -20,10 +20,14 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
         private PrePedidoUnisDto prePedidoUnisDto = CadastrarPrepedidoDados.PrepedidoBase();
         public void GivenPrepedidoBase()
         {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes.DadoBase(this.GetType());
             prePedidoUnisDto = CadastrarPrepedidoDados.PrepedidoBase();
         }
         public void GivenPedidoBaseComEnderecoDeEntrega()
         {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes.DadoBaseComEnderecoDeEntrega(this.GetType());
             prePedidoUnisDto = CadastrarPrepedidoDados.PrepedidoBaseComEnderecoDeEntrega();
         }
 
@@ -34,6 +38,8 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
 
         public void WhenInformo(string p0, string p1)
         {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes.Informo(p0, p1, this.GetType());
             switch (p0)
             {
                 case "TokenAcesso":
@@ -73,7 +79,9 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
         }
         public void ThenErroStatusCode(int statusCode)
         {
-            logTestes.LogMensagem("prepedidoUnisController.CadastrarPrepedido ThenErroStatusCode");
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes.ErroStatusCode(statusCode, this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes.ChamadaController(prepedidoUnisController.GetType(), "CadastrarPrepedido", this.GetType());
             Microsoft.AspNetCore.Mvc.ActionResult<PrePedidoResultadoUnisDto> ret = prepedidoUnisController.CadastrarPrepedido(prePedidoUnisDto).Result;
             Microsoft.AspNetCore.Mvc.ActionResult res = ret.Result;
             Testes.Utils.StatusCodes.TestarStatusCode(statusCode, res);
@@ -81,23 +89,30 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
 
         public void ThenErro(string p0)
         {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes.Erro(p0, this.GetType());
             ThenErro(p0, true);
         }
         public void ThenSemErro(string p0)
         {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes.SemErro(p0, this.GetType());
             ThenErro(p0, false);
         }
         public void ThenSemNenhumErro()
         {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes.SemNenhumErro(this.GetType());
             ThenErro(null, false);
         }
 
-        public void ThenErro(string? erro, bool erroDeveExistir)
+        private void ThenErro(string? erro, bool erroDeveExistir)
         {
+            if (ignorarFeature) return;
             if (erro != null)
                 erro = Testes.Utils.MapeamentoMensagens.MapearMensagem(this.GetType().FullName, erro);
 
-            logTestes.LogMensagem($"prepedidoUnisController.CadastrarPrepedido ThenErro({erro}, {erroDeveExistir})");
+            Testes.Utils.LogTestes.LogOperacoes.ChamadaController(prepedidoUnisController.GetType(), "CadastrarPrepedido", this.GetType());
 
             Microsoft.AspNetCore.Mvc.ActionResult<PrePedidoResultadoUnisDto> ret = prepedidoUnisController.CadastrarPrepedido(prePedidoUnisDto).Result;
             Microsoft.AspNetCore.Mvc.ActionResult res = ret.Result;
@@ -120,10 +135,10 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
 
         }
 
-        //não fazemos este teste aqui
-        public void GivenIgnorarFeatureNoAmbiente(string p0)
+        private bool ignorarFeature = false;
+        public void GivenIgnorarFeatureNoAmbiente2(string p0)
         {
+            Testes.Pedido.PedidoPassosComuns.IgnorarFeatureNoAmbiente(p0, ref ignorarFeature, this.GetType());
         }
-
     }
 }

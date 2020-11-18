@@ -1,0 +1,254 @@
+﻿[
+  {
+    "id_nsu": "CADASTRO_CLIENTES",
+    "nsu": "000000645636",
+    "seq_anual": 0,
+    "dt_ult_atualizacao": "2020-10-08T17:04:33Z",
+    "timestamp": "0x000000000229f6fd",
+    "ano_letra_seq": null,
+    "ano_letra_step": 0
+  },
+  {
+    "id_nsu": "DESC_SUP_AUTORIZACAO",
+    "nsu": "000000250065",
+    "seq_anual": 0,
+    "dt_ult_atualizacao": "2020-03-02T03:00:00Z",
+    "timestamp": "0x0000000002296870",
+    "ano_letra_seq": null,
+    "ano_letra_step": 0
+  },
+  {
+    "id_nsu": "ESTOQUE",
+    "nsu": "000000115370",
+    "seq_anual": 0,
+    "dt_ult_atualizacao": "2020-03-02T03:00:00Z",
+    "timestamp": "0x0000000002296749",
+    "ano_letra_seq": null,
+    "ano_letra_step": 0
+  },
+  {
+    "id_nsu": "ESTOQUE_MOVTO",
+    "nsu": "000002801468",
+    "seq_anual": 0,
+    "dt_ult_atualizacao": "2020-09-29T03:00:00Z",
+    "timestamp": "0x000000000229f69e",
+    "ano_letra_seq": null,
+    "ano_letra_step": 0
+  },
+  {
+    "id_nsu": "ESTOQUE_TEMPORARIO",
+    "nsu": "000000006011",
+    "seq_anual": 0,
+    "dt_ult_atualizacao": "2020-02-27T03:00:00Z",
+    "timestamp": "0x0000000002226951",
+    "ano_letra_seq": null,
+    "ano_letra_step": 0
+  },
+  {
+    "id_nsu": "MaxDiasDtInicFiltro",
+    "nsu": "34",
+    "seq_anual": 0,
+    "dt_ult_atualizacao": "2008-03-01T17:23:02Z",
+    "timestamp": "0x0000000001fc1fda",
+    "ano_letra_seq": null,
+    "ano_letra_step": 0
+  },
+  {
+    "id_nsu": "ORCAMENTO",
+    "nsu": "000000227901",
+    "seq_anual": 0,
+    "dt_ult_atualizacao": "2020-10-08T17:04:57Z",
+    "timestamp": "0x000000000229f6ff",
+    "ano_letra_seq": null,
+    "ano_letra_step": 0
+  },
+  {
+    "id_nsu": "ORCAMENTO_TEMPORARIO",
+    "nsu": "000000227465",
+    "seq_anual": 0,
+    "dt_ult_atualizacao": "2020-10-05T03:00:00Z",
+    "timestamp": "0x000000000229f6c4",
+    "ano_letra_seq": null,
+    "ano_letra_step": 0
+  },
+  {
+    "id_nsu": "PEDIDO",
+    "nsu": "000000176367",
+    "seq_anual": 0,
+    "dt_ult_atualizacao": "2020-09-29T03:00:00Z",
+    "timestamp": "0x000000000229f683",
+    "ano_letra_seq": "N",
+    "ano_letra_step": 1
+  },
+  {
+    "id_nsu": "PEDIDO_ITEM_DEVOLVID",
+    "nsu": "000000024212",
+    "seq_anual": 0,
+    "dt_ult_atualizacao": "2020-03-02T03:00:00Z",
+    "timestamp": "0x000000000229655e",
+    "ano_letra_seq": null,
+    "ano_letra_step": 0
+  },
+  {
+    "id_nsu": "PEDIDO_PAGAMENTO",
+    "nsu": "000000743004",
+    "seq_anual": 0,
+    "dt_ult_atualizacao": "2020-09-11T03:00:00Z",
+    "timestamp": "0x000000000229f1a3",
+    "ano_letra_seq": null,
+    "ano_letra_step": 0
+  },
+  {
+    "id_nsu": "PEDIDO_PAGTO_VISANET",
+    "nsu": "000000050000",
+    "seq_anual": 0,
+    "dt_ult_atualizacao": "2011-11-29T02:00:00Z",
+    "timestamp": "0x000000000175a143",
+    "ano_letra_seq": null,
+    "ano_letra_step": 0
+  },
+  {
+    "id_nsu": "PEDIDO_TEMPORARIO",
+    "nsu": "000000176400",
+    "seq_anual": 0,
+    "dt_ult_atualizacao": "2020-09-29T03:00:00Z",
+    "timestamp": "0x000000000229f661",
+    "ano_letra_seq": "N",
+    "ano_letra_step": 1
+  },
+  {
+    "id_nsu": "PEDIDO_VALOR_PERDA",
+    "nsu": "000000001001",
+    "seq_anual": 0,
+    "dt_ult_atualizacao": "2017-02-17T02:00:00Z",
+    "timestamp": "0x000000000181219b",
+    "ano_letra_seq": null,
+    "ano_letra_step": 0
+  },
+  {
+    "id_nsu": "PercDesagioRAIndicadorParaCadastroFeitoNaLoja",
+    "nsu": "1,50",
+    "seq_anual": 0,
+    "dt_ult_atualizacao": "2008-06-04T03:00:00Z",
+    "timestamp": "0x0000000000373265",
+    "ano_letra_seq": null,
+    "ano_letra_step": 0
+  },
+  {
+    "id_nsu": "PercLimRASemDesagio",
+    "nsu": "10,00",
+    "seq_anual": 0,
+    "dt_ult_atualizacao": "2011-08-23T15:03:48Z",
+    "timestamp": "0x0000000000a19596",
+    "ano_letra_seq": null,
+    "ano_letra_step": 0
+  },
+  {
+    "id_nsu": "PercMaxRT",
+    "nsu": "5,00",
+    "seq_anual": 0,
+    "dt_ult_atualizacao": "2011-06-10T13:32:34Z",
+    "timestamp": "0x00000000009d0d04",
+    "ano_letra_seq": null,
+    "ano_letra_step": 0
+  },
+  {
+    "id_nsu": "PercVlPedidoLimiteRA",
+    "nsu": "6,20",
+    "seq_anual": 0,
+    "dt_ult_atualizacao": "2015-03-02T17:18:21Z",
+    "timestamp": "0x00000000014fd398",
+    "ano_letra_seq": null,
+    "ano_letra_step": 0
+  },
+  {
+    "id_nsu": "QUADRO_DE_AVISOS",
+    "nsu": "000000005415",
+    "seq_anual": 0,
+    "dt_ult_atualizacao": "2020-02-29T03:00:00Z",
+    "timestamp": "0x000000000222bd2c",
+    "ano_letra_seq": null,
+    "ano_letra_step": 0
+  },
+  {
+    "id_nsu": "T_ORDEM_SERVICO",
+    "nsu": "000000005871",
+    "seq_anual": 0,
+    "dt_ult_atualizacao": "2020-03-02T03:00:00Z",
+    "timestamp": "0x0000000002294e64",
+    "ano_letra_seq": null,
+    "ano_letra_step": 0
+  },
+  {
+    "id_nsu": "T_PEDIDO_DEVOLUCAO",
+    "nsu": "000000001514",
+    "seq_anual": 0,
+    "dt_ult_atualizacao": "2020-03-02T03:00:00Z",
+    "timestamp": "0x0000000002296542",
+    "ano_letra_seq": null,
+    "ano_letra_step": 0
+  },
+  {
+    "id_nsu": "T_PERFIL",
+    "nsu": "000000020008",
+    "seq_anual": 0,
+    "dt_ult_atualizacao": "2020-07-29T03:00:00Z",
+    "timestamp": "0x000000000229da49",
+    "ano_letra_seq": null,
+    "ano_letra_step": 0
+  },
+  {
+    "id_nsu": "T_PERFIL_ITEM",
+    "nsu": "000000020735",
+    "seq_anual": 0,
+    "dt_ult_atualizacao": "2020-07-29T03:00:00Z",
+    "timestamp": "0x000000000229da4b",
+    "ano_letra_seq": null,
+    "ano_letra_step": 0
+  },
+  {
+    "id_nsu": "ULTIMA_LIMPEZA_BD",
+    "nsu": "000000000000",
+    "seq_anual": 0,
+    "dt_ult_atualizacao": "2003-04-17T03:00:00Z",
+    "timestamp": "0x0000000000001e08",
+    "ano_letra_seq": null,
+    "ano_letra_step": 0
+  },
+  {
+    "id_nsu": "ULTIMO_BACKUP_BD",
+    "nsu": "000000000000",
+    "seq_anual": 0,
+    "dt_ult_atualizacao": "2009-09-05T03:00:00Z",
+    "timestamp": "0x0000000000561473",
+    "ano_letra_seq": null,
+    "ano_letra_step": 0
+  },
+  {
+    "id_nsu": "VL_APR_AUTO_AN_CRED",
+    "nsu": "0,00",
+    "seq_anual": 0,
+    "dt_ult_atualizacao": "2008-05-07T14:18:48Z",
+    "timestamp": "0x0000000000364349",
+    "ano_letra_seq": null,
+    "ano_letra_step": 0
+  },
+  {
+    "id_nsu": "VlLimiteMensalIndicadorParaCadastroFeitoNaLoja",
+    "nsu": "10000,00",
+    "seq_anual": 0,
+    "dt_ult_atualizacao": "2008-06-04T03:00:00Z",
+    "timestamp": "0x0000000000373264",
+    "ano_letra_seq": null,
+    "ano_letra_step": 0
+  },
+  {
+    "id_nsu": "VlMaxSemAplicarBloqDescMaxSemZerarRT",
+    "nsu": "100,00",
+    "seq_anual": 0,
+    "dt_ult_atualizacao": "2008-05-26T03:00:00Z",
+    "timestamp": "0x000000000036da98",
+    "ano_letra_seq": null,
+    "ano_letra_step": 0
+  }
+]

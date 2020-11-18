@@ -16,7 +16,7 @@ namespace MagentoBusiness.MagentoBll.AcessoBll
         private readonly IServicoAutenticacaoApiMagento servicoAutenticacaoApiMagento;
         private readonly ContextoBdProvider contextoProvider;
 
-        public AcessoMagentoBll(ConfiguracaoApiMagento configuracaoApiMagento, 
+        public AcessoMagentoBll(ConfiguracaoApiMagento configuracaoApiMagento,
             IServicoAutenticacaoApiMagento servicoAutenticacaoApiMagento, InfraBanco.ContextoBdProvider contextoProvider)
         {
             this.configuracaoApiMagento = configuracaoApiMagento;
@@ -30,45 +30,43 @@ namespace MagentoBusiness.MagentoBll.AcessoBll
                 configuracaoApiMagento.SegredoToken, configuracaoApiMagento.ValidadeTokenMinutos,
                 AutenticacaoApiMagento.RoleAcesso, new ServicoAutenticacaoProviderApiMagento(contextoProvider),
                 ip, userAgent, configuracaoApiMagento.ApelidoPerfilLiberaAcessoApiMagento);
-            var retorno = new LoginResultadoMagentoDto()
-            {
-                TokenAcesso = autentica.TokenAcesso,
-                ListaErros = autentica.ListaErros
-            };
-
+            var retorno = new LoginResultadoMagentoDto(autentica.TokenAcesso, autentica.ListaErros);
             return retorno;
         }
 
-        public async Task<LogoutResultadoMagentoDto> FazerLogout(LogoutMagentoDto logout, string usuario)
+        public async Task<LogoutResultadoMagentoDto> FazerLogout(string usuario)
         {
-            LogoutResultadoMagentoDto ret = new LogoutResultadoMagentoDto();
-            ret.ListaErros = new List<string>();
+            LogoutResultadoMagentoDto ret = new LogoutResultadoMagentoDto
+            {
+                ListaErros = new List<string>()
+            };
             await (new ServicoAutenticacaoProviderApiMagento(contextoProvider).FazerLogout(usuario, ret));
             return ret;
         }
 
         public async Task<VersaoApiMagentoDto> VersaoApi()
         {
-            VersaoApiMagentoDto ret = new VersaoApiMagentoDto()
-            {
-                Ambiente = configuracaoApiMagento.VersaoApi.Ambiente,
-                Mensagem = configuracaoApiMagento.VersaoApi.Mensagem,
-                VersaoApi = configuracaoApiMagento.VersaoApi.VersaoApi
-            };
-
+            string retBuild;
             //vamos ler a DataCompilacao.txt
             var caminhoCompleto = Path.Combine(AppContext.BaseDirectory, "DataCompilacao.txt");
             if (!File.Exists(caminhoCompleto))
             {
-                ret.Build = "DEBUG";
+                retBuild = "DEBUG";
             }
             else
             {
-                ret.Build = await File.ReadAllTextAsync(caminhoCompleto);
-                ret.Build = ret.Build.Replace("\r", "");
-                ret.Build = ret.Build.Replace("\n", "");
-                ret.Build = ret.Build.Trim();
+                retBuild = await File.ReadAllTextAsync(caminhoCompleto);
+                retBuild = retBuild.Replace("\r", "");
+                retBuild = retBuild.Replace("\n", "");
+                retBuild = retBuild.Trim();
             }
+
+            VersaoApiMagentoDto ret = new VersaoApiMagentoDto(
+                ambiente: configuracaoApiMagento.VersaoApi.Ambiente,
+                mensagem: configuracaoApiMagento.VersaoApi.Mensagem,
+                versaoApi: configuracaoApiMagento.VersaoApi.VersaoApi,
+                build: retBuild
+            );
 
 
             return ret;

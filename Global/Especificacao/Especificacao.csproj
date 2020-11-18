@@ -22,16 +22,37 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CadastrarPedidoDados.json" />
+    <None Remove="appsettings.testes.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\Tcliente.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\TcodigoDescricao.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\Tcontrole.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\Testoque.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\TestoqueItem.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\TestoqueMovimento.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\Tfabricante.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\TformaPagto.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\Tlojas.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\TnfEmitente.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\TorcamentistaEindicador.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\Tparametro.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\Tpedido.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\Tperfil.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\TperfilUsuario.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\Tproduto.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\TprodutoLoja.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\TprodutoXwmsRegraCd.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\Tusuario.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\TwmsRegraCd.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\TwmsRegraCdXUf.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\TwmsRegraCdXUfPessoa.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\TwmsRegraCdXUfXPessoaXCd.json" />
   </ItemGroup>
 
   <ItemGroup>
+    <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\ObterCodigoMarketplaceListaDependencias.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiMagento\PedidoMagento\ObterCodigoMarketplace\BuscarQtdeParcCartaoVisaListaDependencias.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiMagento\PedidoMagento\ObterCodigoMarketplace\QtdeParcCartaoVisa.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiUnis\PrepedidoUnis\BuscarQtdeParcCartaoVisa\ListaExecucao.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiUnis\PrepedidoUnis\CadastrarPrepedido\CadastrarPrepedidoVerificarQueExecutou - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiUnis\PrepedidoUnis\CadastrarPrepedido\Validacao\CamposSimples.feature.cs" />
@@ -40,6 +61,7 @@
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\CaminhoFelizAsp.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\FluxoCriacaoPedido.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo10\AutenticacaoListaDependencias.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo10\CamposSimples - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo20\EnderecoEntrega\ClientePj\CampoEndEtg_tipo_pessoa - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo20\EnderecoEntrega\ClientePj\CamposSimples.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo20\EnderecoEntrega\ClientePj\EntregaPj - Copy.feature.cs" />
@@ -49,6 +71,14 @@
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Validacao\Estoque.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Prepedido\Pedido.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\TesteExecucaoCruzadaPedido - Copy.feature.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.testes.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -70,6 +100,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CadastrarPedidoListaDependencias.feature.cs">
+      <DependentUpon>CadastrarPedidoListaDependencias.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Ambiente\ApiMagento\PedidoMagento\ObterCodigoMarketplace\ObterCodigoMarketplaceListaDependencias.feature.cs">
+      <DependentUpon>ObterCodigoMarketplaceListaDependencias.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Ambiente\ApiMagento\PedidoMagento\ObterCodigoMarketplace\ObterCodigoMarketplace.feature.cs">
+      <DependentUpon>ObterCodigoMarketplace.feature</DependentUpon>
+    </Compile>
     <Compile Update="Ambiente\ApiUnis\PrepedidoUnis\BuscarQtdeParcCartaoVisa\BuscarQtdeParcCartaoVisaListaDependencias.feature.cs">
       <DependentUpon>BuscarQtdeParcCartaoVisaListaDependencias.feature</DependentUpon>
     </Compile>
@@ -88,11 +127,11 @@
     <Compile Update="Especificacao\Pedido\FluxoCriacaoPedido.feature.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
-    <Compile Update="Especificacao\Pedido\Passo10\CamposSimplesListaDependencias.feature.cs">
-      <DependentUpon>CamposSimplesListaDependencias.feature</DependentUpon>
+    <Compile Update="Especificacao\Pedido\Passo10\CamposSimplesPj.feature.cs">
+      <DependentUpon>CamposSimplesPj.feature</DependentUpon>
     </Compile>
-    <Compile Update="Especificacao\Pedido\Passo10\CamposSimples.feature.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
+    <Compile Update="Especificacao\Pedido\Passo10\CamposSimplesPf.feature.cs">
+      <DependentUpon>CamposSimplesPf.feature</DependentUpon>
     </Compile>
     <Compile Update="Especificacao\Pedido\Passo20\EnderecoEntrega\ClientePj\CampoEndEtg_tipo_pessoa.feature.cs">
       <DependentUpon>CampoEndEtg_tipo_pessoa.feature</DependentUpon>
@@ -115,6 +154,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <SpecFlowFeatureFiles Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CadastrarPedidoListaDependencias.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Ambiente\ApiMagento\PedidoMagento\ObterCodigoMarketplace\ObterCodigoMarketplaceListaDependencias.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Ambiente\ApiMagento\PedidoMagento\ObterCodigoMarketplace\ObterCodigoMarketplace.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
     <SpecFlowFeatureFiles Update="Ambiente\ApiUnis\PrepedidoUnis\BuscarQtdeParcCartaoVisa\BuscarQtdeParcCartaoVisaListaDependencias.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
@@ -139,11 +190,11 @@
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
-    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo10\CamposSimplesListaDependencias.feature">
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo10\CamposSimplesPj.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
-    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo10\CamposSimples.feature">
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo10\CamposSimplesPf.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
@@ -191,13 +242,11 @@
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
-    <SpecFlowFeatureFiles Update="Testes\Utils\ListaDependencias\TesteListaDependenciasFinal.feature">
-      <Visible>$(UsingMicrosoftNETSdk)</Visible>
-      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
-    </SpecFlowFeatureFiles>
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\ApiMagento\ApiMagento\ApiMagento\ApiMagento.csproj" />
+    <ProjectReference Include="..\..\ApiMagento\ApiMagento\MagentoBusiness\MagentoBusiness.csproj" />
     <ProjectReference Include="..\..\ApiUnis\PrepedidoAPIUnis\PrepedidoAPIUnis.csproj" />
     <ProjectReference Include="..\..\ApiUnis\PrepedidoUnisBusiness\PrepedidoUnisBusiness.csproj" />
     <ProjectReference Include="..\..\PrepedidoApi\PrepedidoBusiness\PrepedidoBusiness.csproj" />
@@ -205,6 +254,23 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CadastrarPedidoDados.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Testoque.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TestoqueMovimento.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TestoqueItem.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TnfEmitente.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tpedido.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TwmsRegraCdXUfXPessoaXCd.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TwmsRegraCdXUfPessoa.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TwmsRegraCdXUf.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TwmsRegraCd.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TprodutoXwmsRegraCd.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TformaPagto.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tlojas.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tcontrole.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tfabricante.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TprodutoLoja.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tproduto.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TperfilUsuario.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tperfil.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tparametro.json" />

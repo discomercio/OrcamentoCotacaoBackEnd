@@ -157,12 +157,14 @@ namespace Cliente
                 else
                 {
                     //vamos validar o gênero do cliente
-                    if (string.IsNullOrEmpty(dadosCliente.Sexo) &&
-                        sistemaResponsavel !=
-                        (byte)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__APIMAGENTO)
+                    if (string.IsNullOrEmpty(dadosCliente.Sexo) )
                     {
-                        lstErros.Add(MensagensErro.GENERO_DO_CLIENTE_NAO_INFORMADO);
-                        retorno = false;
+                        if (sistemaResponsavel !=
+                        (byte)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__APIMAGENTO)
+                        {
+                            lstErros.Add(MensagensErro.GENERO_DO_CLIENTE_NAO_INFORMADO);
+                            retorno = false;
+                        }
                     }
                     else
                     {

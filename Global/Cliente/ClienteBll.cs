@@ -782,73 +782,9 @@ namespace Cliente
             return log;
         }
 
-        private async Task<string> GerarIdCliente(InfraBanco.ContextoBdGravacao dbgravacao, string id_nsu)
+        private Task<string> GerarIdCliente(InfraBanco.ContextoBdGravacao dbgravacao, string id_nsu)
         {
-            string retorno = "";
-            int n_nsu = -1;
-            string s = "0";
-            int asc;
-            char chr;
-
-            if (id_nsu == "")
-                retorno = "Não foi especificado o NSU a ser gerado!";
-
-            for (int i = 0; i <= 100; i++)
-            {
-                var ret = from c in dbgravacao.Tcontroles
-                          where c.Id_Nsu == id_nsu
-                          select c;
-
-                var controle = await ret.FirstOrDefaultAsync();
-
-
-                if (!string.IsNullOrEmpty(controle.Nsu))
-                {
-                    if (controle.Seq_Anual != 0)
-                    {
-                        if (DateTime.Now.Year > controle.Dt_Ult_Atualizacao.Year)
-                        {
-                            s = UtilsGlobais.Util.Normaliza_Codigo(s, Constantes.TAM_MAX_NSU);
-                            controle.Dt_Ult_Atualizacao = DateTime.Now;
-                            if (!String.IsNullOrEmpty(controle.Ano_Letra_Seq))
-                            {
-                                asc = int.Parse(controle.Ano_Letra_Seq) + controle.Ano_Letra_Step;
-                                chr = (char)asc;
-                            }
-                        }
-                    }
-                    n_nsu = int.Parse(controle.Nsu);
-                }
-                if (n_nsu < 0)
-                {
-                    retorno = "O NSU gerado é inválido!";
-                }
-                n_nsu += 1;
-                s = Convert.ToString(n_nsu);
-                s = UtilsGlobais.Util.Normaliza_Codigo(s, Constantes.TAM_MAX_NSU);
-                if (s.Length == 12)
-                {
-                    i = 101;
-                    //para salvar o novo numero
-                    controle.Nsu = s;
-                    if (DateTime.Now > controle.Dt_Ult_Atualizacao)
-                        controle.Dt_Ult_Atualizacao = DateTime.Now;
-
-                    retorno = controle.Nsu;
-
-                    try
-                    {
-                        dbgravacao.Update(controle);
-                        await dbgravacao.SaveChangesAsync();
-                    }
-                    catch (Exception ex)
-                    {
-                        retorno = "Não foi possível gerar o NSU, pois ocorreu o seguinte erro: " + ex.HResult + ":" + ex.Message;
-                    }
-                }
-            }
-
-            return retorno;
+            return UtilsGlobais.Util.GerarNsu(dbgravacao, id_nsu);
         }
 
         public async Task<string> BuscarIdCliente(string cpf_cnpj)

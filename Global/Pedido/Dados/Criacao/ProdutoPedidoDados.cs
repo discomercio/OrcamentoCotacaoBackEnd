@@ -7,6 +7,6 @@ namespace Pedido.Dados.Criacao
     public class ProdutoPedidoDados : Produto.Dados.ProdutoDados
     {
         public short? QtdeSolicitada { get; set; }
-        public List<int> Lst_empresa_selecionada { get; set; }
+        public List<int> Lst_empresa_selecionada { get; set; } = new List<int>();
     }
 }

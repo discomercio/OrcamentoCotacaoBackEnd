@@ -16,12 +16,35 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
         public short StBemUsoConsumo { get; set; }
         public short InstaladorInstala { get; set; }
         public string GarantiaIndicadorStatus { get; set; }
-        public string PrevisaoEntrega { get; set; }
         //Campos para incluir
         //NumeroMagento = nº do pedido Magento
         //NumeroPedidoMarketplace
         //OrigemPedido = de qual loja esta vindo
 
+        //todo: incluir na interface de usuário
+        public DateTime? EntregaImediataData { get; set; }
+        public string FormaDePagamento { get; set; }
+        public string DescricaoFormaPagamento { get; set; }
+        public string PrevisaoEntrega { get; set; }
+
+
+        public static Prepedido.Dados.DetalhesPrepedido.DetalhesPrepedidoDados DetalhesPrepedidoDados_De_DetalhesNFPedidoDtoPedido(DetalhesNFPedidoDtoPedido origem)
+        {
+            if (origem == null) return null;
+            return new Prepedido.Dados.DetalhesPrepedido.DetalhesPrepedidoDados()
+            {
+                Observacoes = origem.Observacoes,
+                NumeroNF = origem.NumeroNF,
+                EntregaImediata = origem.EntregaImediata,
+                EntregaImediataData = origem.EntregaImediataData,
+                BemDeUso_Consumo = origem.StBemUsoConsumo,
+                InstaladorInstala = origem.InstaladorInstala,
+                GarantiaIndicador = origem.GarantiaIndicadorStatus,
+                FormaDePagamento = origem.FormaDePagamento,
+                DescricaoFormaPagamento = origem.DescricaoFormaPagamento,
+                PrevisaoEntrega = origem.PrevisaoEntrega
+            };
+        }
         public static DetalhesNFPedidoDtoPedido DetalhesNFPedidoDtoPedido_De_DetalhesNFPedidoPedidoDados(DetalhesNFPedidoPedidoDados origem)
         {
             if (origem == null) return null;

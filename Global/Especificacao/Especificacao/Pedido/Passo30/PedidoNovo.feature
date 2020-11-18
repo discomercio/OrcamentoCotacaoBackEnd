@@ -4,7 +4,6 @@ Feature: Validações do PedidoNovo
 Scenario: Configuração
 	Given Nome deste item "Especificacao.Pedido.Passo30.PedidoNovo"
 	Given Implementado em "Especificacao.Pedido.Pedido"
-	And Fim da configuração
 
 
 Scenario: Validar CEP

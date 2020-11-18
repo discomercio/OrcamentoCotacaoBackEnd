@@ -260,7 +260,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
                 c.EnderecoEntrega.EndEtg_ramal_com_2 = "";
                 c.EnderecoEntrega.EndEtg_produtor_rural_status = 1;
                 c.EnderecoEntrega.EndEtg_contribuinte_icms_status = 1;
-            }, "Endereço de entrega: se cliente é não produtor rural, o IE deve ser preenchido!", true);
+            }, "Endereço de entrega: se cliente é não produtor rural, o IE não deve ser preenchido!", true);
         }
 
         [Fact]
