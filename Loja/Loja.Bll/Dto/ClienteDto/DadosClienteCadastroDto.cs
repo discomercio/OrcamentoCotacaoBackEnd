@@ -41,6 +41,48 @@ namespace Loja.Bll.Dto.ClienteDto
         public string EmailXml { get; set; }
         public string Contato { get; set; }
 
+
+        public static DadosClienteCadastroDto DadosClienteCadastroDto_De_DadosClienteCadastroDados(Cliente.Dados.DadosClienteCadastroDados origem)
+        {
+            if (origem == null) return null;
+            return new DadosClienteCadastroDto()
+            {
+                Loja = origem.Loja,
+                Indicador_Orcamentista = origem.Indicador_Orcamentista,
+                Vendedor = origem.Vendedor,
+                Id = origem.Id,
+                Cnpj_Cpf = origem.Cnpj_Cpf,
+                Rg = origem.Rg,
+                Ie = origem.Ie,
+                Contribuinte_Icms_Status = origem.Contribuinte_Icms_Status,
+                Tipo = origem.Tipo,
+                Observacao_Filiacao = origem.Observacao_Filiacao,
+                Nascimento = origem.Nascimento,
+                Sexo = origem.Sexo,
+                Nome = origem.Nome,
+                ProdutorRural = origem.ProdutorRural,
+                Endereco = origem.Endereco,
+                Numero = origem.Numero,
+                Complemento = origem.Complemento,
+                Bairro = origem.Bairro,
+                Cidade = origem.Cidade,
+                Uf = origem.Uf,
+                Cep = origem.Cep,
+                DddResidencial = origem.DddResidencial,
+                TelefoneResidencial = origem.TelefoneResidencial,
+                DddComercial = origem.DddComercial,
+                TelComercial = origem.TelComercial,
+                Ramal = origem.Ramal,
+                DddCelular = origem.DddCelular,
+                Celular = origem.Celular,
+                TelComercial2 = origem.TelComercial2,
+                DddComercial2 = origem.DddComercial2,
+                Ramal2 = origem.Ramal2,
+                Email = origem.Email,
+                EmailXml = origem.EmailXml,
+                Contato = origem.Contato
+            };
+        }
         public static Cliente.Dados.EnderecoCadastralClientePrepedidoDados EnderecoCadastralClientePrepedidoDados_De_DadosClienteCadastroDto(DadosClienteCadastroDto dadosClienteCadastroDto)
         {
             if (dadosClienteCadastroDto == null) return null;

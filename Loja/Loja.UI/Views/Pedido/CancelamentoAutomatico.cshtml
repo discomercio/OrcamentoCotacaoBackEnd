@@ -123,10 +123,14 @@
                                                             @c.DataFinal?.ToShortDateString()
                                                         </td>
                                                         <td>
-                                                            <a href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pedido, c?.Pedido)"
-                                                               type="text/html">
+                                                            @*BuscarPedido*@
+                                                            <a href="@Url.Action("BuscarPedido", "Pedido", new { numPedido = c.Pedido})" type="text/html">
                                                                 @c.Pedido
                                                             </a>
+                                                            @*<a href="@Loja.UI.Controllers.SiteColorsController.UrlAction(Url, Loja.UI.Controllers.SiteColorsController.ListaPaginasColors.Pedido, c?.Pedido)"
+                                                               type="text/html">
+                                                                @c.Pedido
+                                                            </a>*@
                                                         </td>
                                                         @if (Model.ListaLojasViewModel.MostrarLoja)
                                                         {

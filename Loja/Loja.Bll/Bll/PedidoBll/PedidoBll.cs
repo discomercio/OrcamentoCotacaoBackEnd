@@ -23,6 +23,7 @@ using Pedido;
 using InfraBanco.Modelos;
 using InfraBanco;
 using Prepedido.PedidoVisualizacao;
+using Prepedido.PedidoVisualizacao.Dados.DetalhesPedido;
 
 namespace Loja.Bll.PedidoBll
 {
@@ -311,6 +312,7 @@ namespace Loja.Bll.PedidoBll
 
         //    return lstProduto;
         //}
+
 
         //public async Task<PedidoDto> BuscarPedido(string apelido, string numPedido)
         //{
@@ -1135,6 +1137,18 @@ namespace Loja.Bll.PedidoBll
 
         //    return await ret.FirstOrDefaultAsync();
         //}
+
+        public async Task<PedidoDto> BuscarPedido(string apelido, string pedido)
+        {
+
+            //vamos buscar o pedido
+            PedidoDados pedidoDados = await pedidoVisualizacaoBll.BuscarPedido(apelido, pedido);
+
+            //vamos converter o pedidoDados em pedidoDto
+            PedidoDto pedidoDto = PedidoDto.PedidoDto_De_PedidoDados(pedidoDados);
+
+            return pedidoDto;
+        }
 
         public async Task<IEnumerable<string>> ValidarIndicador_SelecaoCD(string loja_atual, string idCliente, string usuario_atual,
             string lstOperacoesPermitidas, string cpf_cnpj, int comIndicacao, int cdAutomatico, int cdManual,
