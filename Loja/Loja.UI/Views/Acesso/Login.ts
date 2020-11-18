@@ -1,48 +1,66 @@
-﻿import { Loading } from "../../UtilTs/Loading/Loading";
+﻿
+class Login {
+    constructor() {
 
-$(function () {
-    $("#loja").prop('autofocus', false);
+        $(document).ready(() => {
+            this.form = $(this.selector);
+            debugger;
+            
+            $("#loja").prop('autofocus', false);
 
-    if ($("#loja").is(":focus"))
-        $("#loja").addClass("fill");
-    $("#loja").focusin(function () {
-        $("#loja").addClass("fill");
-    })
-    if ($("#loja").val() != '')
-        $("#loja").addClass("fill");
+            if ($("#loja").is(":focus"))
+                $("#loja").addClass("fill");
+            $("#loja").focusin(function () {
+                $("#loja").addClass("fill");
+            });
+            if ($("#loja").val() != '')
+                $("#loja").addClass("fill");
 
-    if ($("#usuario").val() != '')
-        $("#usuario").addClass("fill");
-});
+            if ($("#usuario").val() != '')
+                $("#usuario").addClass("fill");
 
-declare var window: any;
-declare function swal(header: any, body: any);
+            this.form.on("submit", () => {
+                debugger;
+
+                $(this.selector).addClass("carregando");
+                if (!this.ValidarForm()) {
+                    swal("Dados inválidos", "Os dados informados estão inválidos!");
+                    $(this.selector).removeClass("carregando");
+                    return false;
+                }
+
+                $(this.selector).removeClass("carregando");
+            });
 
 
-window.continuar = () => {
-    Loading.Carregando(true);
-    //vamos validar o form
-    if (!ValidarForm()) {
-        swal("Dados inválidos", "Os dados informados estão inválidos!");
-        Loading.Carregando(false);
-        return false;
+        });
     }
 
-}
+    private ValidarForm(): boolean {
+        let loja = $("#loja").val() as string;
+        let usuario = $("#usuario").val() as string;
+        let senha = $("#senha").val() as string;
 
+        let validou: boolean = false;
 
-function ValidarForm(): boolean {
-    let loja: any = $("#loja").val();
-    let usuario: any = $("#usuario").val();
-    let senha: any = $("#senha").val();
+        if (loja != undefined && loja != "" &&
+            usuario != undefined && usuario != "" &&
+            senha != undefined && senha != "") {
+            validou = true;
+        }
 
-    let validou: boolean = false;
-    debugger;
-    if (loja != undefined && loja != "" &&
-        usuario != undefined && usuario != "" &&
-        senha != undefined && senha != "") {
-        validou = true;
+        return validou;
     }
 
-    return validou;
+    public loja: HTMLInputElement;
+    public usuario: HTMLInputElement;
+    public senha: HTMLInputElement;
+    public form: JQuery<HTMLFormElement>;
+    public selector: string;
 }
+
+//declare var window: any;
+declare function swal(header, body);
+
+
+

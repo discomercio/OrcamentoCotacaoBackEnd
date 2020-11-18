@@ -412,7 +412,7 @@ namespace Loja.UI.Controllers
                     pedidoDto = usuarioLogado.PedidoDto;
                     pedidoDto.PercRT = percComissao;
                     pedidoDto.PermiteRAStatus = (short)comRA;
-                    pedidoDto.OpcaoPossuiRA = comRA == 1;
+                    pedidoDto.OpcaoPossuiRA = comRA == 1 ? "S":"N";
                     pedidoDto.CDManual = cdManual == 0 ? (short)0 : (short)1;
                     pedidoDto.CDSelecionado = cdManual == 1 ? ListaCD : 0;
                     pedidoDto.ComIndicador = int.Parse(comIndicacao) != 0 ? 1 : 0;
