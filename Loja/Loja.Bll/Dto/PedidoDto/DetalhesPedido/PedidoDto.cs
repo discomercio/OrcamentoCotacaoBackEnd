@@ -19,10 +19,10 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
         public short CDManual { get; set; }
         public decimal TotalFamiliaParcelaRA { get; set; }
         public short PermiteRAStatus { get; set; }
-        public string OpcaoPossuiRA { get; set; }
-        public float? PercRT { get; set; }
-        public decimal? ValorTotalDestePedidoComRA { get; set; }
-        public decimal? VlTotalDestePedido { get; set; }
+        public bool OpcaoPossuiRA { get; set; }
+        public float PercRT { get; set; }
+        public decimal ValorTotalDestePedidoComRA { get; set; }
+        public decimal VlTotalDestePedido { get; set; }
         public FormaPagtoCriacaoDto FormaPagtoCriacao { get; set; }
         public int ComIndicador { get; set; }
         public string NomeIndicador { get; set; }
@@ -37,5 +37,34 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
         public List<BlocoNotasDtoPedido> ListaBlocoNotas { get; set; }
         public List<BlocoNotasDevolucaoMercadoriasDtoPedido> ListaBlocoNotasDevolucao { get; set; }
         public string PedBonshop { get; set; }
+
+        public static Pedido.Dados.Criacao.PedidoCriacaoDados PedidoCriacaoDados_De_PedidoDto(PedidoDto pedidoDto,
+            string lojaUsuario, string usuario, bool vendedorExterno)
+        {
+            if (pedidoDto == null) return null;
+            var ret = new Pedido.Dados.Criacao.PedidoCriacaoDados()
+            {
+                LojaUsuario = lojaUsuario,
+                Usuario = usuario,
+                DadosCliente = DadosClienteCadastroDto.DadosClienteCadastroDados_De_DadosClienteCadastroDto(pedidoDto.DadosCliente),
+                EnderecoCadastralCliente = DadosClienteCadastroDto.EnderecoCadastralClientePrepedidoDados_De_DadosClienteCadastroDto(pedidoDto.DadosCliente),
+                EnderecoEntrega = EnderecoEntregaDtoClienteCadastro.EnderecoEntregaClienteCadastroDados_De_EnderecoEntregaDtoClienteCadastro(pedidoDto.EnderecoEntrega),
+                ListaProdutos = PedidoProdutosDtoPedido.List_PedidoProdutoPedidoDados_De_PedidoProdutosDtoPedido(pedidoDto.ListaProdutos),
+                FormaPagtoCriacao = pedidoDto.FormaPagtoCriacao,
+                DetalhesPedido = DetalhesNFPedidoDtoPedido.DetalhesPrepedidoDados_De_DetalhesNFPedidoDtoPedido(pedidoDto.DetalhesNF),
+                ComIndicador = pedidoDto.ComIndicador != 0,
+                NomeIndicador = pedidoDto.NomeIndicador,
+                PercRT = pedidoDto.PercRT,
+                OpcaoPossuiRa = pedidoDto.OpcaoPossuiRA,
+                IdNfeSelecionadoManual = pedidoDto.CDManual,
+                //todo: corrigir
+                VendedorExterno = vendedorExterno ? "" : "Vendedor externo",
+                OpcaoVendaSemEstoque = pedidoDto.OpcaoVendaSemEstoque,
+                Vl_total = pedidoDto.VlTotalDestePedido,
+                Vl_total_NF = pedidoDto.ValorTotalDestePedidoComRA,
+                PermiteRAStatus = pedidoDto.PermiteRAStatus
+            };
+            return ret;
+        }
     }
 }

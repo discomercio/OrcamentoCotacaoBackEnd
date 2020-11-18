@@ -34,11 +34,11 @@ namespace Loja.Bll.PedidoBll
         private readonly Loja.Bll.ProdutoBll.ProdutoBll produtoBll;
         private readonly Loja.Bll.ClienteBll.ClienteBll clienteBll;
         private readonly Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll pedidoVisualizacaoBll;
-        //private readonly Loja.Bll.Bll.PedidoBll.EfetivaPedido.EfetivaPedido efetivarPedido;
+        private readonly PedidoCriacao pedidoCriacao;
 
         public PedidoBll(ContextoBdProvider contextoProvider, ContextoCepProvider contextoCepProvider,
             ContextoNFeProvider contextoNFeProvider, ProdutoBll.ProdutoBll produtoBll, ClienteBll.ClienteBll clienteBll,
-            PedidoVisualizacaoBll pedidoVisualizacaoBll)
+            PedidoVisualizacaoBll pedidoVisualizacaoBll, PedidoCriacao pedidoCriacao)
         {
             this.contextoProvider = contextoProvider;
             this.contextoCepProvider = contextoCepProvider;
@@ -46,6 +46,7 @@ namespace Loja.Bll.PedidoBll
             this.produtoBll = produtoBll;
             this.clienteBll = clienteBll;
             this.pedidoVisualizacaoBll = pedidoVisualizacaoBll;
+            this.pedidoCriacao = pedidoCriacao;
             //this.efetivarPedido = efetivarPedido;
         }
 
@@ -3350,20 +3351,34 @@ namespace Loja.Bll.PedidoBll
             {
                 foreach (var c in lista)
                 {
-                    if (!string.IsNullOrEmpty(c.AnaliseCredito) && 
+                    if (!string.IsNullOrEmpty(c.AnaliseCredito) &&
                         !string.IsNullOrEmpty(c.AnaliseCreditoPendenteVendasMotivo))
                     {
-                        if(c.AnaliseCredito == Constantes.Constantes.COD_AN_CREDITO_PENDENTE_VENDAS)
+                        if (c.AnaliseCredito == Constantes.Constantes.COD_AN_CREDITO_PENDENTE_VENDAS)
                         {
-                            c.AnaliseCredito = c.AnaliseCredito  + "(" + await UtilsGlobais.Util.ObterDescricao_Cod(Constantes.Constantes.GRUPO_T_CODIGO_DESCRICAO__AC_PENDENTE_VENDAS_MOTIVO,
+                            c.AnaliseCredito = c.AnaliseCredito + "(" + await UtilsGlobais.Util.ObterDescricao_Cod(Constantes.Constantes.GRUPO_T_CODIGO_DESCRICAO__AC_PENDENTE_VENDAS_MOTIVO,
                             c.AnaliseCreditoPendenteVendasMotivo, contextoProvider) + ")";
                         }
-                        
+
                     }
                 }
             }
 
             return lista;
         }
+
+        public async Task<PedidoCriacaoRetornoDados> CadastrarPedido(PedidoDto pedidoDtoSession,
+            string lojaUsuario, string usuario, bool vendedorExterno)
+        {
+            PedidoCriacaoDados pedidoCriacaoDados;
+            pedidoCriacaoDados = PedidoDto.PedidoCriacaoDados_De_PedidoDto(pedidoDtoSession, lojaUsuario, usuario, vendedorExterno);
+            Pedido.Dados.Criacao.PedidoCriacaoRetornoDados pedidoCriacaoRetornoDados = await pedidoCriacao.CadastrarPedido(pedidoCriacaoDados,
+                0.1M, 0.1M,
+                null, null, null,
+                (int)InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS);
+
+            return pedidoCriacaoRetornoDados;
+        }
     }
+
 }

@@ -53,7 +53,7 @@ namespace Pedido
         //dados cadastrais (quer dizer, duas listas de erro.) 
         //É que na loja o tratamento dos erros dos dados cadastrais vai ser diferente).
         public async Task<PedidoCriacaoRetornoDados> CadastrarPedido(PedidoCriacaoDados pedido, decimal limiteArredondamento,
-            decimal maxErroArredondamento, string pedido_bs_x_ac, string? marketplace_codigo_origem, string? pedido_bs_x_marketplace,
+            decimal maxErroArredondamento, string? pedido_bs_x_ac, string? marketplace_codigo_origem, string? pedido_bs_x_marketplace,
             byte sistemaResponsavelCadastro)
         {
             PedidoCriacaoRetornoDados pedidoRetorno = new PedidoCriacaoRetornoDados

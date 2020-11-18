@@ -50,7 +50,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                 Produto = produtoDto.Produto,
                 Descricao = produtoDados.Descricao,
                 Qtde = produtoDto.Qtde,
-                CustoFinancFornecPrecoListaBase = produtoDados.Preco_lista,
+                CustoFinancFornecPrecoListaBase = produtoDados.Preco_lista ?? 0,
                 Preco_Lista = Math.Round((decimal)(produtoDados.Preco_lista ?? 0 * (decimal)coeficiente), 2),
                 Desc_Dado = 0, //produtoDto.Desc_Dado,
                 Preco_Venda = produtoDto.Preco_Venda,

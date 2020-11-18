@@ -36,7 +36,7 @@ namespace Pedido
             List<Cl_ITEM_PEDIDO_NOVO> v_item, List<Cl_CTRL_ESTOQUE_PEDIDO_ITEM_NOVO> v_spe, List<string> v_desconto,
             List<RegrasBll> lstRegras, float perc_limite_RA_sem_desagio,
             string loja_atual, float perc_desagio_RA, Tcliente cliente, bool vendedor_externo, List<string> lstErros,
-            ContextoBdGravacao dbGravacao, string pedido_bs_x_ac, string? marketplace_codigo_origem, string? pedido_bs_x_marketplace)
+            ContextoBdGravacao dbGravacao, string? pedido_bs_x_ac, string? marketplace_codigo_origem, string? pedido_bs_x_marketplace)
         {
             bool blnUsarMemorizacaoCompletaEnderecos =
                 await UtilsGlobais.Util.IsActivatedFlagPedidoUsarMemorizacaoCompletaEnderecos(contextoProvider);
@@ -768,7 +768,7 @@ namespace Pedido
         }
 
         private void MontarDetalhesPedido(Tpedido pedidonovo, PedidoCriacaoDados pedido, Tcliente cliente,
-            string usuario_atual, bool vendedor_externo, string pedido_bs_x_ac, string? marketplace_codigo_origem,
+            string usuario_atual, bool vendedor_externo, string? pedido_bs_x_ac, string? marketplace_codigo_origem,
             string? pedido_bs_x_marketplace)
         {
             //campos armazenados tanto no pedido - pai quanto no pedido - filhote
