@@ -1,14 +1,21 @@
 ﻿
 class SiteColorsIndex {
     constructor() {
-        $(document).ready(() => {
 
+        $(document).ready(() => {
 
             //carregamos a página e tiramos o estilo de carregamento quando terminar
             this.iframeJquery = $(this.seletorIframe);
             this.iframe = this.iframeJquery[0];
             this.iframeJquery.parent().addClass("carregando");
+            
             this.iframe.onload = () => {
+                
+                //não podemos ir para a tela principal do asp
+                if (this.iframe.contentDocument.location.href.indexOf("resumo.asp") != -1) {
+                    document.location.href = "/lojamvc";
+                }
+
                 this.removerElementosTela();
                 this.iframeJquery.parent().removeClass("carregando");
 
@@ -17,7 +24,9 @@ class SiteColorsIndex {
                     this.iframeJquery.parent().addClass("carregando");
                 });
             };
-            this.iframe.src = this.urlIframe;
+
+            if (document.URL)
+                this.iframe.src = this.urlIframe;
         });
     }
 
@@ -30,11 +39,12 @@ class SiteColorsIndex {
         $(this.iframe.contentDocument).find("#divConsultaOrcamentoWrapper").hide();
         $(this.iframe.contentDocument).find("#divConsultaPedidoWrapper").hide();
 
+
         //bota voltar, só na pagina que foi carrega pelo MVC
-        if (this.iframe.contentDocument.location.href.indexOf(this.urlIframe) >= 0) {
-            $(this.iframe.contentDocument).find('#bVOLTAR').hide();
-            $(this.iframe.contentDocument).find('#bVOLTA').hide();
-        }
+        //if (this.iframe.contentDocument.location.href.indexOf(this.urlIframe) >= 0) {
+        //    $(this.iframe.contentDocument).find('#bVOLTAR').hide();
+        //    $(this.iframe.contentDocument).find('#bVOLTA').hide();
+        //}
     }
     private removerLinhaCopyright() {
         let css = this.iframe.contentDocument.styleSheets[0];

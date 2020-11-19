@@ -4,7 +4,6 @@ class Login {
 
         $(document).ready(() => {
             this.form = $(this.selector);
-            debugger;
             
             $("#loja").prop('autofocus', false);
 
@@ -20,7 +19,6 @@ class Login {
                 $("#usuario").addClass("fill");
 
             this.form.on("submit", () => {
-                debugger;
 
                 $(this.selector).addClass("carregando");
                 if (!this.ValidarForm()) {
