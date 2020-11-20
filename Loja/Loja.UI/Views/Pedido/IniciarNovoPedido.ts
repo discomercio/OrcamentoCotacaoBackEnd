@@ -395,7 +395,7 @@ window.removerLinha = (v: HTMLElement) => {
         //pegando o tr
         let linha: any = t.closest("tr");// t.parentElement.parentElement.parentElement.parentElement;
         let classeName = linha.className;
-        debugger;
+        
         $("." + classeName + "").remove();
 
         //pegando o td

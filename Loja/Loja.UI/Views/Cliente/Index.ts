@@ -45,7 +45,7 @@ function ValidarCliente(cpf_cnpj: string): any {
         data: { cpf_cnpj: cpf_cnpj },
         dataType: "json",
         success: function (data) {
-            debugger;
+            
             $("#novoCliente").val(data);
             if (data) {
                 ModalConfirma();

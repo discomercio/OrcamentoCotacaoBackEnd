@@ -194,7 +194,7 @@ function ValidarCamposIndicador(): boolean {
             swal(headerErro, msgErro);
             return false;
         }
-        debugger;
+        
         if ($("#chkSemRa").prop("checked") == false && $("#chkComRa").prop("checked") == false) {
             msgErro = "Informe se o pedido possui RA ou não!";
             swal(headerErro, msgErro);
