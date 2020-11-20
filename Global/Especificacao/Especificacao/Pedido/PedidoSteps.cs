@@ -17,6 +17,10 @@ namespace Especificacao.Especificacao.Pedido
             base.AdicionarImplementacao(new Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido());
             RegistroDependencias.AdicionarDependencia("Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedidoListaDependencias",
                 "Especificacao.Pedido.Pedido.PedidoListaDependencias");
+
+            base.AdicionarImplementacao(new Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido());
+            RegistroDependencias.AdicionarDependencia("Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedidoListaDependencias",
+                "Especificacao.Pedido.Pedido.PedidoListaDependencias");
         }
         [Given(@"O pedido não tem nenhum passo individual, somente passos incluídos pela PedidoListaDependencias")]
         public void GivenOPedidoNaoTemNenhumPassoIndividualSomentePassosIncluidosPelaPedidoListaDependencias()

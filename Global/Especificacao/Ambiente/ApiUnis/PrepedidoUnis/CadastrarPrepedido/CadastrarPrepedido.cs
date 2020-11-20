@@ -31,6 +31,20 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
             prePedidoUnisDto = CadastrarPrepedidoDados.PrepedidoBaseComEnderecoDeEntrega();
         }
 
+        public void WhenPedidoBaseClientePF()
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes.DadoBaseComEnderecoDeEntrega(this.GetType());
+            prePedidoUnisDto = CadastrarPrepedidoDados.PrepedidoBaseClientePF();
+        }
+
+        public void WhenPedidoBaseClientePJ()
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes.DadoBaseComEnderecoDeEntrega(this.GetType());
+            prePedidoUnisDto = CadastrarPrepedidoDados.PrepedidoBaseClientePJ();
+        }
+
         public void WhenPedidoBase()
         {
             GivenPrepedidoBase();
@@ -109,8 +123,6 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
         private void ThenErro(string? erro, bool erroDeveExistir)
         {
             if (ignorarFeature) return;
-            if (erro != null)
-                erro = Testes.Utils.MapeamentoMensagens.MapearMensagem(this.GetType().FullName, erro);
 
             Testes.Utils.LogTestes.LogOperacoes.ChamadaController(prepedidoUnisController.GetType(), "CadastrarPrepedido", this.GetType());
 
@@ -123,16 +135,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
 
             PrePedidoResultadoUnisDto prePedidoResultadoUnisDto = (PrePedidoResultadoUnisDto)((Microsoft.AspNetCore.Mvc.OkObjectResult)res).Value;
 
-            if (erroDeveExistir)
-                Assert.Contains(erro, prePedidoResultadoUnisDto.ListaErros);
-            else
-            {
-                if (erro == null)
-                    Assert.Empty(prePedidoResultadoUnisDto.ListaErros);
-                else
-                    Assert.DoesNotContain(erro, prePedidoResultadoUnisDto.ListaErros);
-            }
-
+            Testes.Pedido.HelperImplementacaoPedido.ThenErroCompararacaoMensagens(erro, erroDeveExistir, prePedidoResultadoUnisDto.ListaErros, this.GetType());
         }
 
         private bool ignorarFeature = false;

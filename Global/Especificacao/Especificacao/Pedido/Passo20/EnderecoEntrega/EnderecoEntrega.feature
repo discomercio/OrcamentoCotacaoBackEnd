@@ -10,14 +10,14 @@ Background: Pedido base com endereço de entrega (pedido e prepedido)
 	Given Ignorar feature no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 
 	# Configuração
-	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "Selecione a justificativa do endereço de entrega!!" é "Código da justficativa inválida!"
+	#Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "Selecione a justificativa do endereço de entrega!!" é "Código da justficativa inválida!"
 	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "Preencha o endereço de entrega!!" é "PREENCHA O ENDEREÇO DE ENTREGA."
 	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "Preencha o número do endereço de entrega!!" é "PREENCHA O NÚMERO DO ENDEREÇO DE ENTREGA."
 	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "Preencha o bairro do endereço de entrega!!" é "PREENCHA O BAIRRO DO ENDEREÇO DE ENTREGA."
 	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "Preencha a cidade do endereço de entrega!!" é "PREENCHA A CIDADE DO ENDEREÇO DE ENTREGA."
 	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "UF inválida no endereço de entrega!!" é "UF INVÁLIDA NO ENDEREÇO DE ENTREGA."
 	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "CEP inválido no endereço de entrega!!" é "CEP INVÁLIDO NO ENDEREÇO DE ENTREGA."
-	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "Informe o CEP do endereço de entrega!!" é "CEP INVÁLIDO NO ENDEREÇO DE ENTREGA."
+	#Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "Informe o CEP do endereço de entrega!!" é "CEP INVÁLIDO NO ENDEREÇO DE ENTREGA."
 
 Scenario: Validação do endereço
 #loja/ClienteEdita.asp
@@ -92,7 +92,7 @@ loja/ClienteEdita.asp
 
 	#esta validação não está no ASP
 	When Informo "EndEtg_obs" = "987"
-	Then Erro "Código da justficativa inválida!"
+	Then Erro "Código da justficativa inválido!"
 
 Scenario: EndEtg_uf
 	When Informo "EndEtg_uf" = ""

@@ -44,7 +44,7 @@ namespace PrepedidoBusiness.Dto.Pedido.DetalhesPedido
                 ListaProdutos = PedidoProdutosDtoPedido.ListaPedidoProdutosDtoPedido_De_PedidoProdutosPedidoDados(origem.ListaProdutos),
                 TotalFamiliaParcelaRA = origem.TotalFamiliaParcelaRA,
                 PermiteRAStatus = origem.PermiteRAStatus,
-                OpcaoPossuiRA = origem.OpcaoPossuiRA,
+                OpcaoPossuiRA = origem.OpcaoPossuiRA ? "S" : "N",
                 PercRT = origem.PercRT,
                 ValorTotalDestePedidoComRA = origem.ValorTotalDestePedidoComRA,
                 VlTotalDestePedido = origem.VlTotalDestePedido,

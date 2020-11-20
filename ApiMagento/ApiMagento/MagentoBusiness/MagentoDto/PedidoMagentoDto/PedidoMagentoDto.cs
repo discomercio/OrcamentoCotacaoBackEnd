@@ -67,7 +67,10 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         public static Pedido.Dados.Criacao.PedidoCriacaoDados PedidoDadosCriacaoDePedidoMagentoDto(Cliente.Dados.DadosClienteCadastroDados dadosClienteMagento,
             Cliente.Dados.EnderecoCadastralClientePrepedidoDados enderecoCadastralClienteMagento, Cliente.Dados.EnderecoEntregaClienteCadastroDados enderecoEntregaMagento,
             List<Pedido.Dados.Criacao.PedidoProdutoPedidoDados> lstProdutosMagento, Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados formaPagtoCriacaoMagento,
-            decimal vlTotalDestePedido, PedidoMagentoDto pedidoMagento)
+            decimal vlTotalDestePedido, PedidoMagentoDto pedidoMagento,
+            decimal limiteArredondamento,
+            decimal maxErroArredondamento, string? pedido_bs_x_ac, string? marketplace_codigo_origem, string? pedido_bs_x_marketplace,
+            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro)
         {
 #pragma warning disable IDE0017 // Simplify object initialization
             Pedido.Dados.Criacao.PedidoCriacaoDados pedidoCriacao = new Pedido.Dados.Criacao.PedidoCriacaoDados();
@@ -81,9 +84,8 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
              * "vendedor_externo = 1" 
              */
             pedidoCriacao.Usuario = dadosClienteMagento.Vendedor;
-            //Armazena o nome do vendedor externo
-            //obs: analisar melhor quando esse campos será preenchido
-            pedidoCriacao.VendedorExterno = dadosClienteMagento.Vendedor;
+
+            pedidoCriacao.Venda_Externa = true;
 
             //Armazena os dados cadastrados do cliente
             pedidoCriacao.DadosCliente = dadosClienteMagento;
@@ -149,6 +151,13 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             //Armazena o valor total de pedido com RA
             decimal vl_total = lstProdutosMagento.Select(x => x.TotalItemRA ?? 0).Sum();
             pedidoCriacao.Vl_total_NF = vl_total;
+
+            pedidoCriacao.LimiteArredondamento = limiteArredondamento;
+            pedidoCriacao.MaxErroArredondamento = maxErroArredondamento;
+            pedidoCriacao.Pedido_bs_x_ac = pedido_bs_x_ac;
+            pedidoCriacao.Marketplace_codigo_origem = marketplace_codigo_origem;
+            pedidoCriacao.Pedido_bs_x_marketplace = pedido_bs_x_marketplace;
+            pedidoCriacao.SistemaResponsavelCadastro = sistemaResponsavelCadastro;
 
             return pedidoCriacao;
         }

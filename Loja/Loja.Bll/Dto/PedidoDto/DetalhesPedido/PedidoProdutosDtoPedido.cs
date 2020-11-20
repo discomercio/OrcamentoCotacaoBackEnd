@@ -7,6 +7,7 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
 {
     public class PedidoProdutosDtoPedido
     {
+        //todo: afazer: precisamos remover boa parte destas variáveis e usar as do bloco de baixo. Só vamos fazer isso quando normalizamormos os nomes dos campos no javascript/html
         public string Fabricante { get; set; }
         public string NumProduto { get; set; }
         public string Descricao { get; set; }
@@ -27,14 +28,15 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
         public string Alertas { get; set; }
 
 
-        ////acertar os nomes de variáveis para usar estes
-        //public decimal CustoFinancFornecPrecoListaBase { get; set; }
-        //public decimal Preco_NF { get; set; }
-        //public float? Desc_Dado { get; set; }
-        //public decimal Preco_Venda { get; set; }
-        //public decimal TotalItem { get; set; }
-        //public decimal? TotalItemRA { get; set; }
-        //public float CustoFinancFornecCoeficiente { get; set; }
+        //todo: afazer: acertar os nomes de variáveis para usar estes
+        public string Produto { get; set; }
+        public decimal CustoFinancFornecPrecoListaBase { get; set; }
+        public decimal Preco_NF { get; set; }
+        public float? Desc_Dado { get; set; }
+        public decimal Preco_Venda { get; set; }
+        public decimal TotalItem { get; set; }
+        public decimal? TotalItemRA { get; set; }
+        public float CustoFinancFornecCoeficiente { get; set; }
 
 
         public static List<Pedido.Dados.Criacao.PedidoProdutoPedidoDados> List_PedidoProdutoPedidoDados_De_PedidoProdutosDtoPedido(List<PedidoProdutosDtoPedido> origemLista)
@@ -46,44 +48,19 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
                 ret.Add(new Pedido.Dados.Criacao.PedidoProdutoPedidoDados()
                 {
                     Fabricante = origem.Fabricante,
-                    Produto = origem.NumProduto,
+                    Produto = origem.Produto,
                     Descricao = origem.Descricao,
                     Qtde = origem.Qtde ?? 0,
                     Qtde_estoque_total_disponivel = origem.Qtde_estoque_total_disponivel,
                     Preco_Lista = origem.Preco_Lista ?? 0,
                     Comissao = origem.Comissao,
-
-                    CustoFinancFornecPrecoListaBase = origem.Preco_Lista ?? 0,
-                    Preco_NF = origem.Preco ?? 0,
-                    Desc_Dado = origem.Desconto,
-                    Preco_Venda = origem.Preco ?? 0,
-                    TotalItem = origem.VlTotalItem ?? 0,
-                    TotalItemRA = origem.VlTotalItemComRA,
-                    CustoFinancFornecCoeficiente = 0
-
-                    //corrigir:
-                    //Fabricante = origem.Fabricante,
-                    //NumProduto = origem.Produto,
-                    //Descricao = origem.Descricao,
-                    //Qtde = origem.Qtde,
-                    //Faltando = origem.Faltando,
-                    //CorFaltante = origem.CorFaltante,
-                    //Preco_Lista = origem.Preco_NF,
-                    //VlLista = origem.Preco_Lista,
-                    //Desconto = origem.Desc_Dado,
-                    //VlVenda = origem.Preco_Venda ?? 0m,
-                    //VlTotalItem = origem.VlTotalItem,
-                    //VlTotalItemComRA = origem.VlTotalItemComRA,
-                    //Comissao = origem.Comissao
-
-                    //acertar as variáveis novas
-                    //CustoFinancFornecPrecoListaBase = origem.CustoFinancFornecPrecoListaBase,
-                    //Preco_NF = origem.Preco,
-                    //Desc_Dado = origem.Desc_Dado,
-                    //Preco_Venda = origem.Preco_Venda,
-                    //TotalItem = origem.TotalItem,
-                    //TotalItemRA = origem.TotalItemRA,
-                    //CustoFinancFornecCoeficiente = origem.CustoFinancFornecCoeficiente
+                    CustoFinancFornecPrecoListaBase = origem.CustoFinancFornecPrecoListaBase,
+                    Preco_NF = origem.Preco_NF,
+                    Desc_Dado = origem.Desc_Dado,
+                    Preco_Venda = origem.Preco_Venda,
+                    TotalItem = origem.TotalItem,
+                    TotalItemRA = origem.TotalItemRA,
+                    CustoFinancFornecCoeficiente = origem.CustoFinancFornecCoeficiente
                 });
             }
             return ret;
@@ -116,6 +93,17 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
                 VlTotalItem = origem.VlTotalItem,
                 VlTotalItemComRA = origem.VlTotalItemComRA,
                 Comissao = origem.Comissao
+
+                ////todo: verificar se isto fica...
+                ////ests são os campos definitivos
+                //Produto = origem.Produto,
+                ////CustoFinancFornecPrecoListaBase = origem.CustoFinancFornecPrecoListaBase,
+                //Preco_NF = origem.Preco_NF ?? 0,
+                //Desc_Dado = origem.Desc_Dado,
+                //Preco_Venda = origem.Preco_Venda ?? 0
+                ////TotalItem = origem.TotalItem,
+                ////TotalItemRA = origem.TotalItemRA,
+                ////CustoFinancFornecCoeficiente = origem.CustoFinancFornecCoeficiente
             };
         }
     }

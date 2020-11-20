@@ -89,11 +89,6 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega
  testRunner.Given("Ignorar feature no ambiente \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Ca" +
                     "dastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 13
- testRunner.Given("No ambiente \"Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" +
-                    "\" erro \"Selecione a justificativa do endereço de entrega!!\" é \"Código da justfic" +
-                    "ativa inválida!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
 #line 14
  testRunner.Given("No ambiente \"Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" +
                     "\" erro \"Preencha o endereço de entrega!!\" é \"PREENCHA O ENDEREÇO DE ENTREGA.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -122,11 +117,6 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega
  testRunner.Given("No ambiente \"Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" +
                     "\" erro \"CEP inválido no endereço de entrega!!\" é \"CEP INVÁLIDO NO ENDEREÇO DE EN" +
                     "TREGA.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 20
- testRunner.Given("No ambiente \"Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" +
-                    "\" erro \"Informe o CEP do endereço de entrega!!\" é \"CEP INVÁLIDO NO ENDEREÇO DE E" +
-                    "NTREGA.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
         }
         
@@ -465,7 +455,7 @@ this.FeatureBackground();
  testRunner.When("Informo \"EndEtg_obs\" = \"987\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 95
- testRunner.Then("Erro \"Código da justficativa inválida!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Erro \"Código da justficativa inválido!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

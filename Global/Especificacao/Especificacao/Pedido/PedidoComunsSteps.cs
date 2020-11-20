@@ -38,6 +38,21 @@ namespace Especificacao.Especificacao.Pedido
             }
         }
 
+        [When(@"Pedido base cliente PF")]
+        new public void WhenPedidoBaseClientePF()
+        {
+            Testes.Utils.LogTestes.LogOperacoes.DadoBaseClientePF(this.GetType());
+            base.WhenPedidoBaseClientePF();
+        }
+
+        [When(@"Pedido base cliente PJ")]
+        new public void WhenPedidoBaseClientePJ()
+        {
+            Testes.Utils.LogTestes.LogOperacoes.DadoBaseClientePJ(this.GetType());
+            base.WhenPedidoBaseClientePJ();
+        }
+
+
         [Given(@"Pedido base")]
         [When(@"Pedido base")]
         new public void WhenPedidoBase()

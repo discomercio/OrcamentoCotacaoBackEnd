@@ -31,12 +31,12 @@ namespace Pedido
             this.montarLogPedidoBll = montarLogPedidoBll;
         }
 
-        public async Task<string> Novo_EfetivarCadastroPedido(PedidoCriacaoDados pedido, List<int> vEmpresaAutoSplit, string usuario_atual,
+        public async Task<string> EfetivarCadastroPedido(PedidoCriacaoDados pedido, List<int> vEmpresaAutoSplit, string usuario_atual,
             string c_custoFinancFornecTipoParcelamento, short c_custoFinancFornecQtdeParcelas, TtransportadoraCep? transportadora,
             List<Cl_ITEM_PEDIDO_NOVO> v_item, List<Cl_CTRL_ESTOQUE_PEDIDO_ITEM_NOVO> v_spe, List<string> v_desconto,
             List<RegrasBll> lstRegras, float perc_limite_RA_sem_desagio,
-            string loja_atual, float perc_desagio_RA, Tcliente cliente, bool vendedor_externo, List<string> lstErros,
-            ContextoBdGravacao dbGravacao, string? pedido_bs_x_ac, string? marketplace_codigo_origem, string? pedido_bs_x_marketplace)
+            string loja_atual, float perc_desagio_RA, Tcliente cliente, List<string> lstErros,
+            ContextoBdGravacao dbGravacao)
         {
             bool blnUsarMemorizacaoCompletaEnderecos =
                 await UtilsGlobais.Util.IsActivatedFlagPedidoUsarMemorizacaoCompletaEnderecos(contextoProvider);
@@ -132,8 +132,7 @@ namespace Pedido
 
                     //CAMPOS ARMAZENADOS TANTO NO PEDIDO - PAI QUANTO NO PEDIDO - FILHOTE
                     //aqui também esta sendo salvo alguns campos a mais 
-                    MontarDetalhesPedido(pedidonovo, pedido, cliente, usuario_atual, vendedor_externo, pedido_bs_x_ac,
-                        marketplace_codigo_origem, pedido_bs_x_marketplace);
+                    MontarDetalhesPedido(pedidonovo, pedido, cliente, usuario_atual);
 
                     //Endereço de entrega
                     if (pedido.EnderecoEntrega.OutroEndereco == true)
@@ -768,8 +767,7 @@ namespace Pedido
         }
 
         private void MontarDetalhesPedido(Tpedido pedidonovo, PedidoCriacaoDados pedido, Tcliente cliente,
-            string usuario_atual, bool vendedor_externo, string? pedido_bs_x_ac, string? marketplace_codigo_origem,
-            string? pedido_bs_x_marketplace)
+            string usuario_atual)
         {
             //campos armazenados tanto no pedido - pai quanto no pedido - filhote
             pedidonovo.Id_Cliente = cliente.Id;
@@ -796,9 +794,9 @@ namespace Pedido
 
             //referente ao magento
             pedidonovo.Pedido_Bs_X_At = "";
-            pedidonovo.Pedido_Bs_X_Ac = pedido_bs_x_ac;  //s_pedido_ac id do pedido magento
-            pedidonovo.Pedido_Bs_X_Marketplace = pedido_bs_x_marketplace; //num pedido_marketplace
-            pedidonovo.Marketplace_codigo_origem = marketplace_codigo_origem; //s_origem_pedido
+            pedidonovo.Pedido_Bs_X_Ac = pedido.Pedido_bs_x_ac;  //s_pedido_ac id do pedido magento
+            pedidonovo.Pedido_Bs_X_Marketplace = pedido.Pedido_bs_x_marketplace; //num pedido_marketplace
+            pedidonovo.Marketplace_codigo_origem = pedido.Marketplace_codigo_origem; //s_origem_pedido
 
             //Nota Fiscal
             pedidonovo.Nfe_Texto_Constar = "";
@@ -807,8 +805,8 @@ namespace Pedido
             pedidonovo.Nfe_XPed = "";
 
             //Comissão
-            pedidonovo.Venda_Externa = vendedor_externo == true ? (short)1 : (short)0;//venda_externa vem da session
-            pedidonovo.Loja_Indicou = vendedor_externo == true ? pedido.DadosCliente.Loja : "";
+            pedidonovo.Venda_Externa = pedido.Venda_Externa ? (short)1 : (short)0;
+            pedidonovo.Loja_Indicou = pedido.Venda_Externa ? pedido.DadosCliente.Loja : "";
             pedidonovo.Comissao_Loja_Indicou = 0;//comissao_loja_indicou
             pedidonovo.Indicador = !string.IsNullOrWhiteSpace(pedido.NomeIndicador) ? pedido.NomeIndicador : "";
 

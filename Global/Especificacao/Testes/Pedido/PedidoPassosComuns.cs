@@ -8,18 +8,31 @@ namespace Especificacao.Testes.Pedido
 {
     public class PedidoPassosComuns : ListaImplementacoes<IPedidoPassosComuns>, IPedidoPassosComuns
     {
-        private readonly Testes.Utils.LogTestes.LogTestes logTestes = Testes.Utils.LogTestes.LogTestes.GetInstance();
-
         public void WhenPedidoBase()
         {
             if (ignorarFeature) return;
+            Utils.LogTestes.LogOperacoes.DadoBase(this.GetType());
             base.Executar(i => i.WhenPedidoBase());
+        }
+
+        public void WhenPedidoBaseClientePF()
+        {
+            if (ignorarFeature) return;
+            Utils.LogTestes.LogOperacoes.DadoBaseClientePF(this.GetType());
+            base.Executar(i => i.WhenPedidoBaseClientePF());
+        }
+
+        public void WhenPedidoBaseClientePJ()
+        {
+            if (ignorarFeature) return;
+            Utils.LogTestes.LogOperacoes.DadoBaseClientePJ(this.GetType());
+            base.Executar(i => i.WhenPedidoBaseClientePJ());
         }
 
         public void WhenInformo(string p0, string p1)
         {
             if (ignorarFeature) return;
-            logTestes.LogMensagem($"PedidoPassosComuns {this.GetType().FullName} WhenInformo({p0}, {p1})");
+            Utils.LogTestes.LogOperacoes.Informo(p0, p1, this.GetType());
             base.Executar(i => i.WhenInformo(p0, p1));
         }
 
@@ -27,7 +40,7 @@ namespace Especificacao.Testes.Pedido
         {
             if (ignorarFeature) return;
             mensagem = Utils.MapeamentoMensagens.MapearMensagem(this.GetType().FullName, mensagem);
-            logTestes.LogMensagem($"PedidoPassosComuns {this.GetType().FullName} ThenSemErro({mensagem})");
+            Utils.LogTestes.LogOperacoes.SemErro(mensagem, this.GetType());
             base.Executar(i => i.ThenSemErro(mensagem));
         }
 
@@ -35,14 +48,14 @@ namespace Especificacao.Testes.Pedido
         {
             if (ignorarFeature) return;
             mensagem = Utils.MapeamentoMensagens.MapearMensagem(this.GetType().FullName, mensagem);
-            logTestes.LogMensagem($"PedidoPassosComuns {this.GetType().FullName} ThenErro({mensagem})");
+            Utils.LogTestes.LogOperacoes.Erro(mensagem, this.GetType());
             base.Executar(i => i.ThenErro(mensagem));
         }
 
         public void ThenSemNenhumErro()
         {
             if (ignorarFeature) return;
-            logTestes.LogMensagem($"PedidoPassosComuns {this.GetType().FullName} ThenSemNenhumErro()");
+            Utils.LogTestes.LogOperacoes.SemNenhumErro(this.GetType());
             base.Executar(i => i.ThenSemNenhumErro());
         }
 

@@ -333,7 +333,7 @@ namespace Cliente
             return log;
         }
 
-        public async Task<List<string>> AtualizarClienteParcial(string apelido, Cliente.Dados.DadosClienteCadastroDados dadosClienteCadastroDados, byte sistemaResponsavel)
+        public async Task<List<string>> AtualizarClienteParcial(string apelido, Cliente.Dados.DadosClienteCadastroDados dadosClienteCadastroDados, InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavel)
         {
             /*
              * somente os seguintes campos serão atualizados:
@@ -572,7 +572,7 @@ namespace Cliente
          * usuário ao invés do Orçamentista
          */
         public async Task<IEnumerable<string>> CadastrarCliente(Cliente.Dados.ClienteCadastroDados clienteCadastroDados, string apelido,
-            int sistemaResponsavelCadastro)
+            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro)
         {
             string id_cliente = "";
 
@@ -594,7 +594,7 @@ namespace Cliente
             if (await Cliente.ValidacoesClienteBll.ValidarDadosCliente(clienteCadastroDados.DadosCliente,
                 clienteCadastroDados.RefBancaria,
                 clienteCadastroDados.RefComercial,
-                lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, false, (byte)sistemaResponsavelCadastro))
+                lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, false, sistemaResponsavelCadastro))
             {
                 if (lstErros.Count <= 0)
                 {
@@ -641,7 +641,7 @@ namespace Cliente
         }
 
         private async Task<string> CadastrarDadosClienteDados(InfraBanco.ContextoBdGravacao dbgravacao,
-            Cliente.Dados.DadosClienteCadastroDados clienteDados, string apelido, Tcliente tCliente, int sistemaResponsavelCadastro)
+            Cliente.Dados.DadosClienteCadastroDados clienteDados, string apelido, Tcliente tCliente, InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro)
         {
             string retorno;
             List<string> lstRetorno = new List<string>();
@@ -707,8 +707,8 @@ namespace Cliente
                 tCliente.Email_Xml = clienteDados.EmailXml;
                 tCliente.Dt_Ult_Atualizacao = DateTime.Now;
                 tCliente.Usuario_Ult_Atualizacao = apelido.ToUpper();
-                tCliente.Sistema_responsavel_cadastro = sistemaResponsavelCadastro;
-                tCliente.Sistema_responsavel_atualizacao = sistemaResponsavelCadastro;
+                tCliente.Sistema_responsavel_cadastro = (int)sistemaResponsavelCadastro;
+                tCliente.Sistema_responsavel_atualizacao = (int)sistemaResponsavelCadastro;
             };
 
             dbgravacao.Add(tCliente);

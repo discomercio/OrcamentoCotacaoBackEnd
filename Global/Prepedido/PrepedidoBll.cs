@@ -629,7 +629,7 @@ namespace Prepedido
                 enderecoEntrega.EndEtg_produtor_rural_status = p.EndEtg_produtor_rural_status;
                 enderecoEntrega.EndEtg_ie = p.EndEtg_ie;
                 enderecoEntrega.EndEtg_rg = p.EndEtg_rg;
-                enderecoEntrega.St_memorizacao_completa_enderecos = p.St_memorizacao_completa_enderecos;
+                enderecoEntrega.St_memorizacao_completa_enderecos = p.St_memorizacao_completa_enderecos == 1;
             }
 
             return enderecoEntrega;
@@ -648,7 +648,7 @@ namespace Prepedido
         }
 
         public async Task<IEnumerable<string>> CadastrarPrepedido(PrePedidoDados prePedido, string apelido, decimal limiteArredondamento,
-            bool verificarPrepedidoRepetido, int sistemaResponsavelCadastro)
+            bool verificarPrepedidoRepetido, InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro)
         {
             List<string> lstErros = new List<string>();
 
@@ -690,7 +690,7 @@ namespace Prepedido
                 // cliente pelo ERP para que a ApiUnis pudesse cadastrar um prepedido com o cadastro do cliente alterado
 
                 //Somente a ApiUnis poderá inserir um Prepedido com cliente PF com nome diferente do que está cadastrado na base
-                if (sistemaResponsavelCadastro != (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS)
+                if (sistemaResponsavelCadastro != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS)
                 {
                     if (cliente.DadosCliente.Tipo == Constantes.ID_PF)
                     {
@@ -734,7 +734,7 @@ namespace Prepedido
             await Cliente.ValidacoesClienteBll.ValidarDadosCliente(prePedido.DadosCliente,
                 null, null,
                 lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco,
-                prePedido.DadosCliente.Tipo == Constantes.ID_PF ? true : false, (byte)sistemaResponsavelCadastro);
+                prePedido.DadosCliente.Tipo == Constantes.ID_PF ? true : false, sistemaResponsavelCadastro);
 
             //if (lstErros.Count > 0)
             //    return lstErros;
@@ -921,7 +921,7 @@ namespace Prepedido
         }
 
         private async Task<string> EfetivarCadastroPrepedido(ContextoBdGravacao dbgravacao, PrePedidoDados prepedido,
-            TorcamentistaEindicador orcamentista, string siglaPagto, int sistemaResponsavelCadastro,
+            TorcamentistaEindicador orcamentista, string siglaPagto, InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
             float perc_limite_RA_sem_desagio = 0)
         {
             //vamos buscar a midia do cliente para cadastrar no orçamento
@@ -954,8 +954,8 @@ namespace Prepedido
             torcamento.Permite_RA_Status = orcamentista.Permite_RA_Status;
             torcamento.St_End_Entrega = prepedido.EnderecoEntrega.OutroEndereco == true ? (short)1 : (short)0;
             torcamento.CustoFinancFornecTipoParcelamento = siglaPagto;//sigla pagto
-            torcamento.Sistema_responsavel_cadastro = sistemaResponsavelCadastro;
-            torcamento.Sistema_responsavel_atualizacao = sistemaResponsavelCadastro;
+            torcamento.Sistema_responsavel_cadastro = (int)sistemaResponsavelCadastro;
+            torcamento.Sistema_responsavel_atualizacao = (int)sistemaResponsavelCadastro;
 
             //inclui os campos de endereço cadastral no Torccamento
             IncluirDadosClienteParaTorcamento(prepedido, torcamento);

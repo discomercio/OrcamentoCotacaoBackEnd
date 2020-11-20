@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 {
-    class CadastrarPedido : Testes.Pedido.IPedidoPassosComuns
+    class CadastrarPedido : Testes.Pedido.HelperImplementacaoPedido
     {
         private readonly global::ApiMagento.Controllers.PedidoMagentoController pedidoMagentoController;
         readonly global::MagentoBusiness.UtilsMagento.ConfiguracaoApiMagento configuracaoApiMagento = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos().GetRequiredService<global::MagentoBusiness.UtilsMagento.ConfiguracaoApiMagento>();
@@ -21,35 +21,62 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 
         private MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoMagentoDto pedidoMagentoDto = new MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoMagentoDto();
 
-        public void GivenDadoBase()
+
+        public void ThenErroStatusCode(int statusCode)
         {
             if (ignorarFeature) return;
-            Testes.Utils.LogTestes.LogOperacoes.DadoBase(this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes.ErroStatusCode(statusCode, this.GetType());
+            ActionResult res = AcessarControladorMagento();
+            Testes.Utils.StatusCodes.TestarStatusCode(statusCode, res);
+        }
+
+        private ActionResult AcessarControladorMagento()
+        {
+            Testes.Utils.LogTestes.LogOperacoes.ChamadaController(pedidoMagentoController.GetType(), "CadastrarPedido", this.GetType());
+            Microsoft.AspNetCore.Mvc.ActionResult<MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto> ret
+                = pedidoMagentoController.CadastrarPedido(pedidoMagentoDto).Result;
+            Microsoft.AspNetCore.Mvc.ActionResult res = ret.Result;
+            return res;
+        }
+
+        protected override List<string> AbstractListaErros()
+        {
+            ActionResult res = AcessarControladorMagento();
+
+            //deve ter retornado 200
+            if (res.GetType() != typeof(Microsoft.AspNetCore.Mvc.OkObjectResult))
+                Assert.Equal("", "Tipo não é OkObjectResult");
+
+            MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto pedidoResultadoMagentoDto
+                = (MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto)((Microsoft.AspNetCore.Mvc.OkObjectResult)res).Value;
+
+            return pedidoResultadoMagentoDto.ListaErros;
+        }
+
+        protected override void AbstractDadoBase()
+        {
             pedidoMagentoDto = CadastrarPedidoDados.PedidoBase();
             pedidoMagentoDto.TokenAcesso = Ambiente.ApiMagento.InjecaoDependencias.TokenAcessoApiMagento();
         }
-        public void GivenDadoBaseComEnderecoDeEntrega()
+
+        protected override void AbstractDadoBaseComEnderecoDeEntrega()
         {
-            if (ignorarFeature) return;
-            Testes.Utils.LogTestes.LogOperacoes.DadoBaseComEnderecoDeEntrega(this.GetType());
             pedidoMagentoDto = CadastrarPedidoDados.PedidoBaseComEnderecoDeEntrega();
             pedidoMagentoDto.TokenAcesso = Ambiente.ApiMagento.InjecaoDependencias.TokenAcessoApiMagento();
         }
-
-        public void GivenPedidoBaseComEnderecoDeEntrega()
+        protected override void AbstractDadoBaseClientePF()
         {
-            GivenDadoBaseComEnderecoDeEntrega();
+            pedidoMagentoDto = CadastrarPedidoDados.PedidoBaseClientePF();
+            pedidoMagentoDto.TokenAcesso = Ambiente.ApiMagento.InjecaoDependencias.TokenAcessoApiMagento();
+        }
+        protected override void AbstractDadoBaseClientePJ()
+        {
+            pedidoMagentoDto = CadastrarPedidoDados.PedidoBaseClientePJ();
+            pedidoMagentoDto.TokenAcesso = Ambiente.ApiMagento.InjecaoDependencias.TokenAcessoApiMagento();
         }
 
-        public void WhenPedidoBase()
+        protected override void AbstractInformo(string p0, string p1)
         {
-            GivenDadoBase();
-        }
-
-        public void WhenInformo(string p0, string p1)
-        {
-            if (ignorarFeature) return;
-            Testes.Utils.LogTestes.LogOperacoes.Informo(p0, p1, this.GetType());
             switch (p0)
             {
                 case "appsettings.Orcamentista":
@@ -123,88 +150,10 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
                     break;
 
                 default:
-                    Assert.Equal("", $"{p0} desconhecido na rotina WhenInformo");
+                    Assert.Equal("", $"{p0} desconhecido na rotina Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.AbstractInformo");
                     break;
             }
         }
-        public void ThenErroStatusCode(int statusCode)
-        {
-            if (ignorarFeature) return;
-            Testes.Utils.LogTestes.LogOperacoes.ErroStatusCode(statusCode, this.GetType());
-            Testes.Utils.LogTestes.LogOperacoes.ChamadaController(pedidoMagentoController.GetType(), "CadastrarPedido", this.GetType());
-            Microsoft.AspNetCore.Mvc.ActionResult<MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto> ret
-                = pedidoMagentoController.CadastrarPedido(pedidoMagentoDto).Result;
-            Microsoft.AspNetCore.Mvc.ActionResult res = ret.Result;
-            Testes.Utils.StatusCodes.TestarStatusCode(statusCode, res);
-        }
 
-        public void ThenErro(string p0)
-        {
-            if (ignorarFeature) return;
-            Testes.Utils.LogTestes.LogOperacoes.Erro(p0, this.GetType());
-            ThenErro(p0, true);
-        }
-        public void ThenSemErro(string p0)
-        {
-            if (ignorarFeature) return;
-            Testes.Utils.LogTestes.LogOperacoes.SemErro(p0, this.GetType());
-            ThenErro(p0, false);
-        }
-        public void ThenSemNenhumErro()
-        {
-            if (ignorarFeature) return;
-            Testes.Utils.LogTestes.LogOperacoes.SemNenhumErro(this.GetType());
-            ThenErro(null, false);
-        }
-
-        private void ThenErro(string? erro, bool erroDeveExistir)
-        {
-            if (ignorarFeature) return;
-            if (erro != null)
-                erro = Testes.Utils.MapeamentoMensagens.MapearMensagem(this.GetType().FullName, erro);
-
-            Testes.Utils.LogTestes.LogOperacoes.ChamadaController(pedidoMagentoController.GetType(), "CadastrarPedido", this.GetType());
-            Microsoft.AspNetCore.Mvc.ActionResult<MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto> ret
-                = pedidoMagentoController.CadastrarPedido(pedidoMagentoDto).Result;
-            Microsoft.AspNetCore.Mvc.ActionResult res = ret.Result;
-
-            //deve ter retornado 200
-            if (res.GetType() != typeof(Microsoft.AspNetCore.Mvc.OkObjectResult))
-                Assert.Equal("", "Tipo não é OkObjectResult");
-
-            MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto pedidoResultadoMagentoDto
-                = (MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto)((Microsoft.AspNetCore.Mvc.OkObjectResult)res).Value;
-
-            if (erroDeveExistir)
-            {
-                if (!pedidoResultadoMagentoDto.ListaErros.Contains(erro ?? ""))
-                {
-                    Testes.Utils.LogTestes.LogOperacoes.MensagemEspecial(
-                        $"Erro: {erro} em {string.Join(" - ", pedidoResultadoMagentoDto.ListaErros)}",
-                        this.GetType());
-                }
-                Assert.Contains(erro, pedidoResultadoMagentoDto.ListaErros);
-            }
-            else
-            {
-                if (erro == null)
-                {
-                    if (pedidoResultadoMagentoDto.ListaErros.Count != 0)
-                        Testes.Utils.LogTestes.LogOperacoes.MensagemEspecial(
-                            $"Erro: {erro} em {string.Join(" - ", pedidoResultadoMagentoDto.ListaErros)}",
-                            this.GetType());
-                    Assert.Empty(pedidoResultadoMagentoDto.ListaErros);
-                }
-                else
-                    Assert.DoesNotContain(erro, pedidoResultadoMagentoDto.ListaErros);
-            }
-
-        }
-
-        private bool ignorarFeature = false;
-        public void GivenIgnorarFeatureNoAmbiente2(string p0)
-        {
-            Testes.Pedido.PedidoPassosComuns.IgnorarFeatureNoAmbiente(p0, ref ignorarFeature, this.GetType());
-        }
     }
 }

@@ -14,6 +14,14 @@ namespace Especificacao.Testes.Utils.LogTestes
         {
             LogTestes.LogMensagemOperacao("DadoBase", getType);
         }
+        public static void DadoBaseClientePF(Type getType)
+        {
+            LogTestes.LogMensagemOperacao("DadoBaseClientePF", getType);
+        }
+        public static void DadoBaseClientePJ(Type getType)
+        {
+            LogTestes.LogMensagemOperacao("DadoBaseClientePJ", getType);
+        }
         public static void DadoBaseComEnderecoDeEntrega(Type getType)
         {
             LogTestes.LogMensagemOperacao("DadoBaseComEnderecoDeEntrega", getType);

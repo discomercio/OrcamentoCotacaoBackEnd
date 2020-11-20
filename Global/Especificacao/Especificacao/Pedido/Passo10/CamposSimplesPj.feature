@@ -14,31 +14,35 @@ Scenario: CamposSimples ListaDependencias Configuração
 	Given Implementado em "Especificacao.Pedido.Pedido.PedidoListaDependencias"
 
 
+Scenario: Validar quer CPF já esteja cadastrado
+	#está aqui porque a ApiMagento sempre cadastra o cliente, caso ele não exista
+	When Pedido base cliente PF
+	And  Informo "CPF/CNPJ" = "687.307.550-77"
+	Then Erro "O cliente não está cadastrado: 68730755077"
+	When Pedido base cliente PJ
+	And  Informo "CPF/CNPJ" = "12.584.718/0001-51"
+	Then Erro "O cliente não está cadastrado: 12584718000151"
+
+
 Scenario: Validar CNPJ
-	When Pedido base
+	When Pedido base cliente PJ
 	And  Informo "CPF/CNPJ" = "12.584.718/0001-5"
-	And  Informo "EnderecoCadastralCliente.Endereco_tipo_pessoa" = "PJ"
 	Then Erro "CNPJ INVÁLIDO."
-	When Pedido base
+	When Pedido base cliente PJ
 	And  Informo "CPF/CNPJ" = "12.584.718/0001-99"
-	And  Informo "EnderecoCadastralCliente.Endereco_tipo_pessoa" = "PJ"
 	Then Erro "CNPJ INVÁLIDO."
-	When Pedido base
+	When Pedido base cliente PJ
 	And  Informo "CPF/CNPJ" = "12.584.718/0001-xx"
-	And  Informo "EnderecoCadastralCliente.Endereco_tipo_pessoa" = "PJ"
 	Then Erro "CNPJ INVÁLIDO."
-	When Pedido base
+	When Pedido base cliente PJ
 	And  Informo "CPF/CNPJ" = "12.584.718/0001-11"
-	And  Informo "EnderecoCadastralCliente.Endereco_tipo_pessoa" = "PJ"
 	Then Erro "CNPJ INVÁLIDO."
-	When Pedido base
+	When Pedido base cliente PJ
 	And  Informo "CPF/CNPJ" = "12.584.718/0001-53"
-	And  Informo "EnderecoCadastralCliente.Endereco_tipo_pessoa" = "PJ"
 	Then Erro "CNPJ INVÁLIDO."
 
-	When Pedido base
+	When Pedido base cliente PJ
 	And  Informo "CPF/CNPJ" = "12.584.718/0001-51"
-	And  Informo "EnderecoCadastralCliente.Endereco_tipo_pessoa" = "PJ"
 	Then Sem Erro "CNPJ INVÁLIDO."
 
 Scenario: Validar EnderecoCadastralCliente.Endereco_tipo_pessoa
