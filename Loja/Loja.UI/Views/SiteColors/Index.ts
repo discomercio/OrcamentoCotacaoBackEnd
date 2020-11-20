@@ -17,26 +17,21 @@ class SiteColorsIndex {
             this.iframeJquery.parent().addClass("carregando");
 
             this.iframe.onload = () => {
-                let pagina = this.iframe.contentDocument.URL.replace("http://localhost:9010", "");
-                if (this.listaPaginas.indexOf(pagina) != -1) {
-                    //vamos mapear os hrefs
 
-                    this.AlterarHrefBtnVoltar();
-                }
-                else {
-                    //vamos verificar a página para saber se tem algum link para resumo.asp
-                    this.AlterarHrefPagina();
-                }
-
-                if (this.iframeJquery[0].src.indexOf("resumo.asp") != -1) {
-                    alert("estamos na resumo.asp");
-                }
-                //não podemos ir para a tela principal do asp
+                //estamos tratando os link's que direcionam para resumo.asp
+                this.AlterarHrefPagina();
+                
+                /* não podemos ir para a tela principal do asp.
+                 * mesmo verificando todos os links das páginas asp vamos manter este bloco.
+                 * sabendo que o asp pode redirecionar de forma automática para página principal do asp,
+                 * criamos esse bloco para caso ocorra o redirecionamento para resumo.asp, iremos redirecionar 
+                 * para a Home do mvc
+                 */
                 if (this.iframe.contentDocument.location.href.indexOf("resumo.asp") != -1) {
                     document.location.href = "/lojamvc";
                 }
 
-                //this.removerElementosTela();
+                this.removerElementosTela();
                 this.iframeJquery.parent().removeClass("carregando");
 
                 //para quando navegar dentro do frame, clicando em um link dirtamente dentro do iframe
@@ -52,45 +47,36 @@ class SiteColorsIndex {
 
     private AlterarHrefPagina() {
         let lstLink: JQuery<HTMLAnchorElement>;
-        let http: string = "/lojamvc";
         lstLink = $(this.iframe.contentDocument).find("a");
         for (let i = 0; i < lstLink.length; i++) {
             let link = lstLink[i];
 
             if (link.href.indexOf("resumo.asp") != -1) {
                 lstLink[i].setAttribute("target", "_parent");
-                lstLink[i].setAttribute("href", http);
+                lstLink[i].setAttribute("href", this.http);
             }
         }
     }
 
     private AlterarHrefBtnVoltar() {
-        let http: string = "/lojamvc";
 
         let href = $(this.iframe.contentDocument).find("#bVOLTAR").attr("href");
         if (href.indexOf("resumo.asp") != -1) {
-            debugger;
             $(this.iframe.contentDocument).find("#bVOLTAR").attr('target', "_parent");
-            $(this.iframe.contentDocument).find("#bVOLTAR").attr('href', http);
+            $(this.iframe.contentDocument).find("#bVOLTAR").attr('href', this.http);
         }
     }
 
     private removerElementosTela() {
         this.removerLinhaCopyright();
         $(this.iframe.contentDocument).find(".LSessaoEncerra").hide();
-        $(this.iframe.contentDocument).find(".LPagInicial").hide();
+        $(this.iframe.contentDocument).find(".LPagInicial").attr('target', "_parent");
 
         //Orcamento.asp
         $(this.iframe.contentDocument).find("#divConsultaOrcamentoWrapper").hide();
         $(this.iframe.contentDocument).find("#divConsultaPedidoWrapper").hide();
-
-
-        //bota voltar, só na pagina que foi carrega pelo MVC
-        //if (this.iframe.contentDocument.location.href.indexOf(this.urlIframe) >= 0) {
-        //    $(this.iframe.contentDocument).find('#bVOLTAR').hide();
-        //    $(this.iframe.contentDocument).find('#bVOLTA').hide();
-        //}
     }
+
     private removerLinhaCopyright() {
         let css = this.iframe.contentDocument.styleSheets[0];
         for (let i: number = 0; i < css.cssRules.length; i++) {
@@ -107,4 +93,7 @@ class SiteColorsIndex {
     public iframe: HTMLIFrameElement;
     public iframeJquery: JQuery<HTMLIFrameElement>;
     public listaPaginas: string[] = new Array();
+    public http: string = "/lojamvc";
+    public urlBase: string = "http://localhost:9010";
+
 }

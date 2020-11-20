@@ -247,42 +247,42 @@
 </html>
 
 <script>
-    //$(document).ready(function () {
-    //    if (!VerificarCampatibilidade()) {
-    //        //alert("Esta versão do navegador não é suportada!!\nPor favor, utilize o Internet Explorer versão 7 ou superior!!");
-    //        swal({
-    //            title: "Navegador não suportado",
-    //            text: "Esta versão do navegador não é suportada!\nPor favor, utilize o Internet Explorer versão 7 ou superior!",
-    //            type: "warning",
-    //            showCancelButton: false,
-    //            confirmButtonClass: "btn-primary",
-    //            confirmButtonText: "Ok",
-    //        },
-    //            function (ok) {
-    //                debugger;
-    //                if (ok) {
-    //                    $("#btnLogin").prop('disabled', true);
-    //                    return false;
-    //                } 
-    //            });
-    //    }
-    //});
+    $(document).ready(function () {
+        if (!VerificarCampatibilidade()) {
+            //alert("Esta versão do navegador não é suportada!!\nPor favor, utilize o Internet Explorer versão 7 ou superior!!");
+            swal({
+                title: "Navegador não suportado",
+                text: "Esta versão do navegador não é suportada!\nPor favor, utilize o Internet Explorer versão 7 ou superior!",
+                type: "warning",
+                showCancelButton: false,
+                confirmButtonClass: "btn-primary",
+                confirmButtonText: "Ok",
+            },
+                function (ok) {
+                    debugger;
+                    if (ok) {
+                        $("#btnLogin").prop('disabled', true);
+                        return false;
+                    } 
+                });
+        }
+    });
 
-    //function VerificarCampatibilidade() {
-    //    if (navigator.userAgent.toUpperCase().indexOf(" EDGE/") > -1) return true;
+    function VerificarCampatibilidade() {
+        if (navigator.userAgent.toUpperCase().indexOf(" EDGE/") > -1) return true;
 
-    //    if (navigator.userAgent.toUpperCase().indexOf("CHROME") > -1) return false;
-    //    if (navigator.userAgent.toUpperCase().indexOf("SAFARI") > -1) return false;
-    //    if (navigator.userAgent.toUpperCase().indexOf("FIREFOX") > -1) return false;
+        if (navigator.userAgent.toUpperCase().indexOf("CHROME") > -1) return false;
+        if (navigator.userAgent.toUpperCase().indexOf("SAFARI") > -1) return false;
+        if (navigator.userAgent.toUpperCase().indexOf("FIREFOX") > -1) return false;
 
-    //    if (navigator.appName.toUpperCase().indexOf("MICROSOFT") > -1) return true;
-    //    if (navigator.appName.toUpperCase().indexOf("INTERNET") > -1) return true;
-    //    if (navigator.appName.toUpperCase().indexOf("EXPLORER") > -1) return true;
-    //    if (navigator.appName.toUpperCase().indexOf("MSIE") > -1) return true;
+        if (navigator.appName.toUpperCase().indexOf("MICROSOFT") > -1) return true;
+        if (navigator.appName.toUpperCase().indexOf("INTERNET") > -1) return true;
+        if (navigator.appName.toUpperCase().indexOf("EXPLORER") > -1) return true;
+        if (navigator.appName.toUpperCase().indexOf("MSIE") > -1) return true;
 
-    //    if (navigator.userAgent.toUpperCase().indexOf("MSIE") > -1) return true;
-    //    if ((navigator.userAgent.toUpperCase().indexOf(".NET") > -1) && (navigator.userAgent.toUpperCase().indexOf(" RV:") > -1)) return true;
-    //    return false;
-    //}
+        if (navigator.userAgent.toUpperCase().indexOf("MSIE") > -1) return true;
+        if ((navigator.userAgent.toUpperCase().indexOf(".NET") > -1) && (navigator.userAgent.toUpperCase().indexOf(" RV:") > -1)) return true;
+        return false;
+    }
 </script>
 
