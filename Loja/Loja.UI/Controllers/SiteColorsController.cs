@@ -213,8 +213,20 @@ namespace Loja.UI.Controllers
                 _ => "resumo.asp",
             };
 
+            
+
+
             var sessionCtrlInfo = await siteColorsBll.MontaSessionCtrlInfo(usuarioLogado);
-            var model = new Models.SiteColors.SiteColorsViewModel(sessionCtrlInfo, paginaUrl, configuracao);
+            
+            List<string> listaPaginas = new List<string>();
+
+            var model = new Models.SiteColors.SiteColorsViewModel(sessionCtrlInfo, paginaUrl, configuracao, listaPaginas);
+
+            foreach (ListaPaginasColors i in Enum.GetValues(typeof(ListaPaginasColors)))
+            {
+                string url = model.Url();
+                model.ListaPaginas.Add(model.Url());
+            }
 
             return View(model);
         }
