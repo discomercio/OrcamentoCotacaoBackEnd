@@ -168,17 +168,7 @@ namespace UtilsGlobais
         public static string SoDigitosCpf_Cnpj(string cpf_cnpj)
         {
             string retorno;
-
-            if (cpf_cnpj.Length > 11)
-            {
-                if (cpf_cnpj.Length > 12)
-                    retorno = cpf_cnpj.Replace(".", "").Replace("/", "").Replace("-", "");
-                else
-                    retorno = cpf_cnpj.Replace(".", "");
-            }
-            else
-                retorno = cpf_cnpj.Replace(".", "").Replace("-", "");
-
+            retorno = System.Text.RegularExpressions.Regex.Replace(cpf_cnpj, @"\D", "");
             return retorno;
         }
 

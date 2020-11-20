@@ -27,24 +27,24 @@ namespace Pedido.Dados.Criacao
 
         public static List<PrepedidoProdutoPrepedidoDados> PrepedidoProdutoPrepedidoDadosDePedidoProdutoPedidoDados(List<PedidoProdutoPedidoDados> lstProdutoPedido)
         {
-            
+
             List<PrepedidoProdutoPrepedidoDados> lstPrepedidoProduto = new List<PrepedidoProdutoPrepedidoDados>();
 
-            lstProdutoPedido.ForEach(x =>
+            foreach (var x in lstProdutoPedido)
             {
                 PrepedidoProdutoPrepedidoDados produtoPrepedido = new PrepedidoProdutoPrepedidoDados();
                 produtoPrepedido.Fabricante = x.Fabricante;
                 produtoPrepedido.Produto = x.Produto;
-                produtoPrepedido.CustoFinancFornecPrecoListaBase = (decimal)x.CustoFinancFornecPrecoListaBase;
+                produtoPrepedido.CustoFinancFornecPrecoListaBase = x.CustoFinancFornecPrecoListaBase;
                 produtoPrepedido.CustoFinancFornecCoeficiente = x.CustoFinancFornecCoeficiente;
                 produtoPrepedido.Preco_Lista = x.Preco_Lista;
                 produtoPrepedido.Preco_Venda = x.Preco_Venda;
                 produtoPrepedido.Preco_NF = x.Preco_NF;
                 produtoPrepedido.Qtde = x.Qtde;
                 produtoPrepedido.TotalItem = x.TotalItem;
-                produtoPrepedido.TotalItemRA = (decimal)x.TotalItemRA;
+                produtoPrepedido.TotalItemRA = x.TotalItemRA ?? 0;
                 lstPrepedidoProduto.Add(produtoPrepedido);
-            });
+            }
 
 
             return lstPrepedidoProduto;

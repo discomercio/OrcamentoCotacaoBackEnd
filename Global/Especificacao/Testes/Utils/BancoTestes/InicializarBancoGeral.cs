@@ -42,11 +42,11 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 lock (_lockObject)
                 {
                     _inicialziado = true;
-                    logTestes.LogMensagem("InicializarBancoGeral Inicializar inicio");
+                    logTestes.LogMemoria("InicializarBancoGeral Inicializar inicio");
                     InicalizarInterno(apagarDadosExistentes);
                     logTestes.LogMensagem("InicializarBancoGeral CEP inicio");
                     new InicializarBancoCep(contextoCepProvider).Inicializar(apagarDadosExistentes);
-                    logTestes.LogMensagem("InicializarBancoGeral Inicializar fim");
+                    logTestes.LogMemoria("InicializarBancoGeral Inicializar fim");
                 }
             }
         }

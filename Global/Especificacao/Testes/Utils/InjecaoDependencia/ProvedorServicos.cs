@@ -22,7 +22,7 @@ namespace Especificacao.Testes.Utils.InjecaoDependencia
         private ProvedorServicos()
         {
             var logTestes = LogTestes.LogTestes.GetInstance();
-            logTestes.LogMensagem("ProvedorServicos inicio");
+            logTestes.LogMemoria("ProvedorServicos inicio");
 
             var services = new ServiceCollection();
 
@@ -44,6 +44,7 @@ namespace Especificacao.Testes.Utils.InjecaoDependencia
 
             Ambiente.ApiUnis.InjecaoDependencias.ConfigurarDependencias(services);
             Ambiente.ApiMagento.InjecaoDependencias.ConfigurarDependencias(services);
+            Ambiente.Loja.Loja_Bll.InjecaoDependencias.ConfigurarDependencias(services);
 
             Servicos = services.BuildServiceProvider();
 
@@ -52,7 +53,7 @@ namespace Especificacao.Testes.Utils.InjecaoDependencia
             var bd = new Testes.Utils.BancoTestes.InicializarBancoGeral(Servicos.GetRequiredService<InfraBanco.ContextoBdProvider>(), Servicos.GetRequiredService<InfraBanco.ContextoCepProvider>());
             bd.Inicializar(false);
 
-            logTestes.LogMensagem("ProvedorServicos fim");
+            logTestes.LogMemoria("ProvedorServicos fim");
         }
     }
 }

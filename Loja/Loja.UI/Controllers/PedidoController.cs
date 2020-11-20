@@ -25,6 +25,7 @@ using Microsoft.Extensions.Logging;
 using Loja.Bll.Dto.LojaDto;
 using Loja.Bll.Bll.pedidoBll;
 using Pedido;
+using InfraBanco;
 
 //TODO: habilitar nullable no projeto todo
 #nullable enable
@@ -42,10 +43,11 @@ namespace Loja.UI.Controllers
         private readonly UsuarioAcessoBll usuarioAcessoBll;
         private readonly Configuracao configuracao;
         private readonly ILogger<UsuarioLogado> loggerUsuarioLogado;
+        private readonly ContextoBdProvider contextoBdProvider;
 
         public PedidoController(Bll.PedidoBll.PedidoBll pedidoBll, ProdutoBll produtoBll, ClienteBll clienteBll, FormaPagtoBll formaPagtoBll, CoeficienteBll coeficienteBll,
             CancelamentoAutomaticoBll cancelamentoAutomaticoBll, UsuarioAcessoBll usuarioAcessoBll, Configuracao configuracao,
-            ILogger<UsuarioLogado> loggerUsuarioLogado)
+            ILogger<UsuarioLogado> loggerUsuarioLogado, InfraBanco.ContextoBdProvider contextoBdProvider)
         {
             this.pedidoBll = pedidoBll;
             this.produtoBll = produtoBll;
@@ -56,6 +58,7 @@ namespace Loja.UI.Controllers
             this.usuarioAcessoBll = usuarioAcessoBll;
             this.configuracao = configuracao;
             this.loggerUsuarioLogado = loggerUsuarioLogado;
+            this.contextoBdProvider = contextoBdProvider;
         }
 
         public IActionResult Index()
@@ -298,6 +301,25 @@ namespace Loja.UI.Controllers
             //    //deu erro
 
             //}
+
+            //todo: afazer: vamos remover estas conversões; estão aqui temporariamente até a gente mudar o HTML e javscript
+            foreach (var origem in pedidoDtoSession.ListaProdutos)
+            {
+                origem.Produto = origem.NumProduto;
+                origem.CustoFinancFornecPrecoListaBase = origem.VlLista;
+                origem.Preco_NF = origem.Preco_Lista ?? 0;
+                origem.Desc_Dado = origem.Desconto;
+                origem.Preco_Venda = origem.VlVenda ?? 0;
+                origem.TotalItem = origem.VlTotalItem ?? 0;
+                origem.TotalItemRA = origem.VlTotalItemComRA;
+                //este precisamos acessar o banco
+                origem.CustoFinancFornecCoeficiente = 0;
+                    //from c in contextoBdProvider.GetContextoLeitura().
+                    //                                   where c.Fabricante == origem.Fabricante && c.TipoParcela == siglaParc
+                    //                                  select 
+            }
+
+
 
             Pedido.Dados.Criacao.PedidoCriacaoRetornoDados ret = await pedidoBll.CadastrarPedido(pedidoDtoSession,
                 usuarioLogado.Loja_atual_id, usuarioLogado.Usuario_atual, usuarioLogado.Vendedor_externo);

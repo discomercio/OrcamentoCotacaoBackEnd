@@ -13,3 +13,6 @@ Scenario: Lista de dependências
 	And Especificado em "Especificacao.Pedido.Passo20.EnderecoEntrega.EnderecoEntregaListaDependencias"
 	And Implementado em "Especificacao.Prepedido.Prepedido.PrepedidoListaDependencias"
 	And Implementado em "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedidoListaDependencias"
+	
+	#na loja
+	And Implementado em "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedidoListaDependencias"

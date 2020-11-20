@@ -31,24 +31,19 @@ namespace Loja.Bll.PedidoBll
     {
         public readonly ContextoBdProvider contextoProvider;
         private readonly ContextoCepProvider contextoCepProvider;
-        private readonly ContextoNFeProvider contextoNFeProvider;
         private readonly Loja.Bll.ProdutoBll.ProdutoBll produtoBll;
-        private readonly Loja.Bll.ClienteBll.ClienteBll clienteBll;
         private readonly Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll pedidoVisualizacaoBll;
         private readonly PedidoCriacao pedidoCriacao;
 
         public PedidoBll(ContextoBdProvider contextoProvider, ContextoCepProvider contextoCepProvider,
-            ContextoNFeProvider contextoNFeProvider, ProdutoBll.ProdutoBll produtoBll, ClienteBll.ClienteBll clienteBll,
+            ProdutoBll.ProdutoBll produtoBll,
             PedidoVisualizacaoBll pedidoVisualizacaoBll, PedidoCriacao pedidoCriacao)
         {
             this.contextoProvider = contextoProvider;
             this.contextoCepProvider = contextoCepProvider;
-            this.contextoNFeProvider = contextoNFeProvider;
             this.produtoBll = produtoBll;
-            this.clienteBll = clienteBll;
             this.pedidoVisualizacaoBll = pedidoVisualizacaoBll;
             this.pedidoCriacao = pedidoCriacao;
-            //this.efetivarPedido = efetivarPedido;
         }
 
 
@@ -3381,11 +3376,11 @@ namespace Loja.Bll.PedidoBll
             return lista;
         }
 
-        public async Task<PedidoCriacaoRetornoDados> CadastrarPedido(PedidoDto pedidoDtoSession,
+        public async Task<PedidoCriacaoRetornoDados> CadastrarPedido(PedidoDto pedidoDto,
             string lojaUsuario, string usuario, bool vendedorExterno)
         {
             PedidoCriacaoDados pedidoCriacaoDados;
-            pedidoCriacaoDados = PedidoDto.PedidoCriacaoDados_De_PedidoDto(pedidoDtoSession, lojaUsuario, usuario, vendedorExterno,
+            pedidoCriacaoDados = PedidoDto.PedidoCriacaoDados_De_PedidoDto(pedidoDto, lojaUsuario, usuario, vendedorExterno,
                 0.1M, 0.1M,
                 null, null, null,
                 InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS);

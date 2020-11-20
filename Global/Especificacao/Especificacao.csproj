@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <None Remove="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CadastrarPedidoDados.json" />
+    <None Remove="Ambiente\Loja\Loja_Bll\Bll\PedidoBll\PedidoBll\CadastrarPedido\CadastrarPedidoDados.json" />
     <None Remove="appsettings.testes.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\Tcliente.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\TcodigoDescricao.json" />
@@ -56,6 +57,7 @@
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiUnis\PrepedidoUnis\BuscarQtdeParcCartaoVisa\ListaExecucao.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiUnis\PrepedidoUnis\CadastrarPrepedido\CadastrarPrepedidoVerificarQueExecutou - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiUnis\PrepedidoUnis\CadastrarPrepedido\Validacao\CamposSimples.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\Loja\Loja_Bll\Bll\PedidoBll\PedidoBll\CadastrarPedido\CadastrarPedidoListaDependencias.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Comuns\Api\Autenticacao\Autenticacao - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\CaminhoFelizApi.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\CaminhoFelizAsp.feature.cs" />
@@ -115,6 +117,9 @@
     <Compile Update="Ambiente\ApiUnis\PrepedidoUnis\CadastrarPrepedido\Validacao\CpfCnpj.feature.cs">
       <DependentUpon>CpfCnpj.feature</DependentUpon>
     </Compile>
+    <Compile Update="Ambiente\Loja\Loja_Bll\Bll\PedidoBll\PedidoBll\CadastrarPedido\CadastrarPedidoListaDependencias.feature.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
     <Compile Update="Especificacao\Comuns\Api\Autenticacao\AutenticacaoListaDependencias.feature.cs">
       <DependentUpon>AutenticacaoListaDependencias.feature</DependentUpon>
     </Compile>
@@ -171,6 +176,10 @@
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
     <SpecFlowFeatureFiles Update="Ambiente\ApiUnis\PrepedidoUnis\CadastrarPrepedido\Validacao\CpfCnpj.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Ambiente\Loja\Loja_Bll\Bll\PedidoBll\PedidoBll\CadastrarPedido\CadastrarPedidoListaDependencias.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
@@ -249,12 +258,14 @@
     <ProjectReference Include="..\..\ApiMagento\ApiMagento\MagentoBusiness\MagentoBusiness.csproj" />
     <ProjectReference Include="..\..\ApiUnis\PrepedidoAPIUnis\PrepedidoAPIUnis.csproj" />
     <ProjectReference Include="..\..\ApiUnis\PrepedidoUnisBusiness\PrepedidoUnisBusiness.csproj" />
+    <ProjectReference Include="..\..\Loja\Loja.Bll\Loja.Bll.csproj" />
     <ProjectReference Include="..\..\PrepedidoApi\PrepedidoBusiness\PrepedidoBusiness.csproj" />
     <ProjectReference Include="..\Infra\InfraBanco\InfraBanco.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CadastrarPedidoDados.json" />
+    <EmbeddedResource Include="Ambiente\Loja\Loja_Bll\Bll\PedidoBll\PedidoBll\CadastrarPedido\CadastrarPedidoDados.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Testoque.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TestoqueMovimento.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TestoqueItem.json" />

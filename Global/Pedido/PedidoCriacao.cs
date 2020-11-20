@@ -58,7 +58,10 @@ namespace Pedido
             {
                 ListaErros = new List<string>()
             };
-            //pedidoRetorno.ListaErros.Add("Ainda não implementado");
+
+            //normalizacao de campos
+            pedido.DadosCliente.Cnpj_Cpf = UtilsGlobais.Util.SoDigitosCpf_Cnpj(pedido.DadosCliente.Cnpj_Cpf);
+
             var db = contextoProvider.GetContextoLeitura();
 
             /* FLUXO DE CRIAÇÃO DE PEDIDO 1ºpasso
@@ -256,6 +259,12 @@ namespace Pedido
 
             /* 2- busca os dados do cliente */
             Tcliente tcliente = db.Tclientes.Where(r => r.Cnpj_Cpf == pedido.DadosCliente.Cnpj_Cpf).FirstOrDefault();
+            if (tcliente == null)
+            {
+                pedidoRetorno.ListaErros.Add($"O cliente não está cadastrado: {pedido.DadosCliente.Cnpj_Cpf}");
+                return pedidoRetorno;
+            }
+
             /* 5- recebe o retorno da busca do item 2 => dados do cliente*/
             DadosClienteCadastroDados clienteCadastro = clienteBll.ObterDadosClienteCadastro(tcliente, pedido.LojaUsuario);
 

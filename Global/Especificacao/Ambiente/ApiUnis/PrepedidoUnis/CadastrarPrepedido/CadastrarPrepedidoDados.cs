@@ -46,6 +46,21 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
             return ret;
         }
 
+        public static PrePedidoUnisDto PrepedidoBaseClientePF()
+        {
+            return PrepedidoParceladoCartao1vez();
+        }
+
+        public static PrePedidoUnisDto PrepedidoBaseClientePJ()
+        {
+            var ret = PrepedidoParceladoCartao1vez();
+            ret.EnderecoCadastralCliente.Endereco_tipo_pessoa = "PJ";
+            ret.EnderecoCadastralCliente.Endereco_cnpj_cpf = "76297703000195";
+            ret.EnderecoCadastralCliente.Endereco_contribuinte_icms_status = (byte)InfraBanco.Constantes.Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO;
+            ret.EnderecoCadastralCliente.Endereco_produtor_rural_status = (byte)InfraBanco.Constantes.Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL;
+            return ret;
+        }
+
         private static readonly string PrepedidoBaseParceladoCartao1vez = @"
 {
   ""TokenAcesso"": ""vai ser calculado dinamicamente"",

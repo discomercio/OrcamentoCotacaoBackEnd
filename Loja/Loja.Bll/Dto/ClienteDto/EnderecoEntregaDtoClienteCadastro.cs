@@ -40,7 +40,7 @@ namespace Loja.Bll.Dto.ClienteDto
         public byte EndEtg_produtor_rural_status { get; set; }
         public string EndEtg_ie { get; set; }
         public string EndEtg_rg { get; set; }
-        public byte St_memorizacao_completa_enderecos { get; set; }
+        public bool St_memorizacao_completa_enderecos { get; set; }
 
 
 

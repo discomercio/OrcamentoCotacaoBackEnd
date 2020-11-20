@@ -629,7 +629,7 @@ namespace Prepedido
                 enderecoEntrega.EndEtg_produtor_rural_status = p.EndEtg_produtor_rural_status;
                 enderecoEntrega.EndEtg_ie = p.EndEtg_ie;
                 enderecoEntrega.EndEtg_rg = p.EndEtg_rg;
-                enderecoEntrega.St_memorizacao_completa_enderecos = p.St_memorizacao_completa_enderecos;
+                enderecoEntrega.St_memorizacao_completa_enderecos = p.St_memorizacao_completa_enderecos == 1;
             }
 
             return enderecoEntrega;
