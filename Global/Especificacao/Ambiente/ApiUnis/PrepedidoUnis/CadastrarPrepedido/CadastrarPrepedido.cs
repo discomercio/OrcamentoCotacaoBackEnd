@@ -21,27 +21,27 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
         public void GivenPrepedidoBase()
         {
             if (ignorarFeature) return;
-            Testes.Utils.LogTestes.LogOperacoes.DadoBase(this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.DadoBase(this);
             prePedidoUnisDto = CadastrarPrepedidoDados.PrepedidoBase();
         }
         public void GivenPedidoBaseComEnderecoDeEntrega()
         {
             if (ignorarFeature) return;
-            Testes.Utils.LogTestes.LogOperacoes.DadoBaseComEnderecoDeEntrega(this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.DadoBaseComEnderecoDeEntrega(this);
             prePedidoUnisDto = CadastrarPrepedidoDados.PrepedidoBaseComEnderecoDeEntrega();
         }
 
         public void WhenPedidoBaseClientePF()
         {
             if (ignorarFeature) return;
-            Testes.Utils.LogTestes.LogOperacoes.DadoBaseComEnderecoDeEntrega(this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.DadoBaseComEnderecoDeEntrega(this);
             prePedidoUnisDto = CadastrarPrepedidoDados.PrepedidoBaseClientePF();
         }
 
         public void WhenPedidoBaseClientePJ()
         {
             if (ignorarFeature) return;
-            Testes.Utils.LogTestes.LogOperacoes.DadoBaseComEnderecoDeEntrega(this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.DadoBaseComEnderecoDeEntrega(this);
             prePedidoUnisDto = CadastrarPrepedidoDados.PrepedidoBaseClientePJ();
         }
 
@@ -53,7 +53,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
         public void WhenInformo(string p0, string p1)
         {
             if (ignorarFeature) return;
-            Testes.Utils.LogTestes.LogOperacoes.Informo(p0, p1, this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.Informo(p0, p1, this);
             switch (p0)
             {
                 case "TokenAcesso":
@@ -94,8 +94,8 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
         public void ThenErroStatusCode(int statusCode)
         {
             if (ignorarFeature) return;
-            Testes.Utils.LogTestes.LogOperacoes.ErroStatusCode(statusCode, this.GetType());
-            Testes.Utils.LogTestes.LogOperacoes.ChamadaController(prepedidoUnisController.GetType(), "CadastrarPrepedido", this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.ErroStatusCode(statusCode, this);
+            Testes.Utils.LogTestes.LogOperacoes2.ChamadaController(prepedidoUnisController.GetType(), "CadastrarPrepedido", this);
             Microsoft.AspNetCore.Mvc.ActionResult<PrePedidoResultadoUnisDto> ret = prepedidoUnisController.CadastrarPrepedido(prePedidoUnisDto).Result;
             Microsoft.AspNetCore.Mvc.ActionResult res = ret.Result;
             Testes.Utils.StatusCodes.TestarStatusCode(statusCode, res);
@@ -104,19 +104,19 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
         public void ThenErro(string p0)
         {
             if (ignorarFeature) return;
-            Testes.Utils.LogTestes.LogOperacoes.Erro(p0, this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.Erro(p0, this);
             ThenErro(p0, true);
         }
         public void ThenSemErro(string p0)
         {
             if (ignorarFeature) return;
-            Testes.Utils.LogTestes.LogOperacoes.SemErro(p0, this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.SemErro(p0, this);
             ThenErro(p0, false);
         }
         public void ThenSemNenhumErro()
         {
             if (ignorarFeature) return;
-            Testes.Utils.LogTestes.LogOperacoes.SemNenhumErro(this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.SemNenhumErro(this);
             ThenErro(null, false);
         }
 
@@ -124,7 +124,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
         {
             if (ignorarFeature) return;
 
-            Testes.Utils.LogTestes.LogOperacoes.ChamadaController(prepedidoUnisController.GetType(), "CadastrarPrepedido", this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.ChamadaController(prepedidoUnisController.GetType(), "CadastrarPrepedido", this);
 
             Microsoft.AspNetCore.Mvc.ActionResult<PrePedidoResultadoUnisDto> ret = prepedidoUnisController.CadastrarPrepedido(prePedidoUnisDto).Result;
             Microsoft.AspNetCore.Mvc.ActionResult res = ret.Result;
@@ -135,7 +135,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
 
             PrePedidoResultadoUnisDto prePedidoResultadoUnisDto = (PrePedidoResultadoUnisDto)((Microsoft.AspNetCore.Mvc.OkObjectResult)res).Value;
 
-            Testes.Pedido.HelperImplementacaoPedido.ThenErroCompararacaoMensagens(erro, erroDeveExistir, prePedidoResultadoUnisDto.ListaErros, this.GetType());
+            Testes.Pedido.HelperImplementacaoPedido.ThenErroCompararacaoMensagens(erro, erroDeveExistir, prePedidoResultadoUnisDto.ListaErros, this);
         }
 
         private bool ignorarFeature = false;

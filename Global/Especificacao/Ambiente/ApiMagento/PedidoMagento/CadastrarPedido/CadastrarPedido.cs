@@ -25,14 +25,14 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
         public void ThenErroStatusCode(int statusCode)
         {
             if (ignorarFeature) return;
-            Testes.Utils.LogTestes.LogOperacoes.ErroStatusCode(statusCode, this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.ErroStatusCode(statusCode, this);
             ActionResult res = AcessarControladorMagento();
             Testes.Utils.StatusCodes.TestarStatusCode(statusCode, res);
         }
 
         private ActionResult AcessarControladorMagento()
         {
-            Testes.Utils.LogTestes.LogOperacoes.ChamadaController(pedidoMagentoController.GetType(), "CadastrarPedido", this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.ChamadaController(pedidoMagentoController.GetType(), "CadastrarPedido", this);
             Microsoft.AspNetCore.Mvc.ActionResult<MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto> ret
                 = pedidoMagentoController.CadastrarPedido(pedidoMagentoDto).Result;
             Microsoft.AspNetCore.Mvc.ActionResult res = ret.Result;

@@ -20,7 +20,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa
         {
             //este é feito dentro dele mesmo
             RegistroDependencias.AdicionarDependencia(
-                "Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.BuscarQtdeParcCartaoVisaListaDependencias",
+                "Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.BuscarQtdeParcCartaoVisaListaDependencias", this,
                 "Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.QtdeParcCartaoVisa"
                 );
 
@@ -31,7 +31,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa
         [Given(@"Limpar tabela ""(.*)""")]
         public void GivenLimparTabela(string p0)
         {
-            Testes.Utils.LogTestes.LogOperacoes.BancoDados.LimparTabela(p0, this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.LimparTabela(p0, this);
             Assert.Equal("t_PRAZO_PAGTO_VISANET", p0);
             using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
             foreach (var c in db.TprazoPagtoVisanets)
@@ -44,7 +44,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa
         [Given(@"Gravar registro")]
         public void GivenGravarRegistro()
         {
-            Testes.Utils.LogTestes.LogOperacoes.BancoDados.GravarRegistro(this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.GravarRegistro(this);
             using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
             db.TprazoPagtoVisanets.Add(tprazoPagtoVisanet);
             db.SaveChanges();
@@ -53,7 +53,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa
         [Given(@"Novo registro em ""(.*)""")]
         public void GivenNovoRegistroEm(string p0)
         {
-            Testes.Utils.LogTestes.LogOperacoes.BancoDados.NovoRegistroEm(p0, this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.NovoRegistroEm(p0, this);
             Assert.Equal("t_PRAZO_PAGTO_VISANET", p0);
             tprazoPagtoVisanet = new InfraBanco.Modelos.TprazoPagtoVisanet();
         }
@@ -61,7 +61,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa
         [Given(@"Novo registro ""(.*)"" = ""(.*)""")]
         public void GivenNovoRegistro(string p0, string p1)
         {
-            Testes.Utils.LogTestes.LogOperacoes.BancoDados.NovoRegistro(p0, p1, this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.NovoRegistro(p0, p1, this);
             switch (p0)
             {
                 case "tipo":
@@ -92,9 +92,9 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa
         [Then(@"Resposta ""(.*)""")]
         public void ThenResposta(int p0)
         {
-            Testes.Utils.LogTestes.LogOperacoes.Resposta(p0, this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.Resposta(p0, this);
 
-            Testes.Utils.LogTestes.LogOperacoes.ChamadaController(prepedidoUnisController.GetType(), "BuscarQtdeParcCartaoVisa", this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.ChamadaController(prepedidoUnisController.GetType(), "BuscarQtdeParcCartaoVisa", this);
             Microsoft.AspNetCore.Mvc.ActionResult<QtdeParcCartaoVisaResultadoUnisDto> ret = prepedidoUnisController.BuscarQtdeParcCartaoVisa(tokenAcesso).Result;
             Microsoft.AspNetCore.Mvc.ActionResult res = ret.Result;
 
@@ -109,9 +109,9 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa
         [Then(@"Erro status code ""(.*)""")]
         public void ThenErroStatusCode(int statusCode)
         {
-            Testes.Utils.LogTestes.LogOperacoes.ErroStatusCode(statusCode, this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.ErroStatusCode(statusCode, this);
 
-            Testes.Utils.LogTestes.LogOperacoes.ChamadaController(prepedidoUnisController.GetType(), "BuscarQtdeParcCartaoVisa", this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.ChamadaController(prepedidoUnisController.GetType(), "BuscarQtdeParcCartaoVisa", this);
             Microsoft.AspNetCore.Mvc.ActionResult<QtdeParcCartaoVisaResultadoUnisDto> ret = prepedidoUnisController.BuscarQtdeParcCartaoVisa(tokenAcesso).Result;
             Microsoft.AspNetCore.Mvc.ActionResult res = ret.Result;
             Testes.Utils.StatusCodes.TestarStatusCode(statusCode, res);

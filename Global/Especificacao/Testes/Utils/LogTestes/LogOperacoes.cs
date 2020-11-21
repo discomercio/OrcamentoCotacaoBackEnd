@@ -4,90 +4,95 @@ using System.Text;
 
 namespace Especificacao.Testes.Utils.LogTestes
 {
-    public static class LogOperacoes
+    public static class LogOperacoes2
     {
-        public static void VerificacaoFinalListaDependencias(Type getType)
+        private static void GravarLog(string msg, object objeto)
         {
-            LogTestes.LogMensagemOperacao("VerificacaoFinalListaDependencias", getType);
+            ListaDependencias.RegistroDependencias.AdicionarMensagemLog(msg, objeto);
+            LogTestes.LogMensagemOperacao(msg, objeto.GetType());
         }
-        public static void DadoBase(Type getType)
+        public static void VerificacaoFinalListaDependencias(object objeto)
         {
-            LogTestes.LogMensagemOperacao("DadoBase", getType);
+            GravarLog("VerificacaoFinalListaDependencias", objeto);
         }
-        public static void DadoBaseClientePF(Type getType)
+        public static void DadoBase(object objeto)
         {
-            LogTestes.LogMensagemOperacao("DadoBaseClientePF", getType);
+            GravarLog("DadoBase", objeto);
         }
-        public static void DadoBaseClientePJ(Type getType)
+        public static void DadoBaseClientePF(object objeto)
         {
-            LogTestes.LogMensagemOperacao("DadoBaseClientePJ", getType);
+            GravarLog("DadoBaseClientePF", objeto);
         }
-        public static void DadoBaseComEnderecoDeEntrega(Type getType)
+        public static void DadoBaseClientePJ(object objeto)
         {
-            LogTestes.LogMensagemOperacao("DadoBaseComEnderecoDeEntrega", getType);
+            GravarLog("DadoBaseClientePJ", objeto);
         }
-        public static void Informo(string p0, string p1, Type getType)
+        public static void DadoBaseComEnderecoDeEntrega(object objeto)
         {
-            LogTestes.LogMensagemOperacao($@"Informo(""{p0}"", ""{p1}"")", getType);
+            GravarLog("DadoBaseComEnderecoDeEntrega", objeto);
         }
-        public static void Erro(string p0, Type getType)
+        public static void Informo(string p0, string p1, object objeto)
         {
-            LogTestes.LogMensagemOperacao($@"Erro(""{p0}"")", getType);
+            GravarLog($@"Informo(""{p0}"", ""{p1}"")", objeto);
         }
-        public static void ErroStatusCode(int p0, Type getType)
+        public static void Erro(string p0, object objeto)
         {
-            LogTestes.LogMensagemOperacao($@"Erro(""{p0}"")", getType);
+            GravarLog($@"Erro(""{p0}"")", objeto);
         }
-        public static void SemErro(string p0, Type getType)
+        public static void ErroStatusCode(int p0, object objeto)
         {
-            LogTestes.LogMensagemOperacao($@"SemErro(""{p0}"")", getType);
+            GravarLog($@"Erro(""{p0}"")", objeto);
         }
-        public static void SemNenhumErro(Type getType)
+        public static void SemErro(string p0, object objeto)
         {
-            LogTestes.LogMensagemOperacao("SemNenhumErro", getType);
+            GravarLog($@"SemErro(""{p0}"")", objeto);
         }
-        public static void Resposta(string p0, Type getType)
+        public static void SemNenhumErro(object objeto)
         {
-            LogTestes.LogMensagemOperacao($@"Resposta(""{p0}"")", getType);
+            GravarLog("SemNenhumErro", objeto);
         }
-        public static void Resposta(int p0, Type getType)
+        public static void Resposta(string p0, object objeto)
         {
-            LogTestes.LogMensagemOperacao($@"Resposta(""{p0}"")", getType);
+            GravarLog($@"Resposta(""{p0}"")", objeto);
         }
-        public static void IgnorarFeatureNoAmbiente(string p0, Type getType)
+        public static void Resposta(int p0, object objeto)
         {
-            LogTestes.LogMensagemOperacao($@"IgnorarFeatureNoAmbiente(""{p0}"")", getType);
+            GravarLog($@"Resposta(""{p0}"")", objeto);
         }
-        public static void ChamadaController(Type controllerType, string msg, Type getType)
+        public static void IgnorarFeatureNoAmbiente(string p0, object objeto)
+        {
+            GravarLog($@"IgnorarFeatureNoAmbiente(""{p0}"")", objeto);
+        }
+        public static void ChamadaController(Type controllerType, string msg, object objeto)
         {
             string controllerFullName = LogTestes.NomeTipo(controllerType);
-            LogTestes.LogMensagemOperacao(controllerFullName + ": " + msg, getType);
+            GravarLog(controllerFullName + ": " + msg, objeto);
         }
-        public static void MensagemEspecial(string msg, Type getType)
+        public static void MensagemEspecial(string msg, object objeto)
         {
-            LogTestes.LogMensagemOperacao(msg, getType);
+            GravarLog(msg, objeto);
         }
         public static class BancoDados
         {
-            public static void Verificacao(string msg, Type getType)
+            public static void Verificacao(string msg, object objeto)
             {
-                LogTestes.LogMensagemOperacao(msg, getType);
+                GravarLog(msg, objeto);
             }
-            public static void LimparTabela(string msg, Type getType)
+            public static void LimparTabela(string msg, object objeto)
             {
-                LogTestes.LogMensagemOperacao("LimparTabela: " + msg, getType);
+                GravarLog("LimparTabela: " + msg, objeto);
             }
-            public static void NovoRegistroEm(string msg, Type getType)
+            public static void NovoRegistroEm(string msg, object objeto)
             {
-                LogTestes.LogMensagemOperacao("NovoRegistroEm: " + msg, getType);
+                GravarLog("NovoRegistroEm: " + msg, objeto);
             }
-            public static void NovoRegistro(string p0, string p1, Type getType)
+            public static void NovoRegistro(string p0, string p1, object objeto)
             {
-                LogTestes.LogMensagemOperacao($@"NovoRegistro(""{p0}"", ""{p1}"")", getType);
+                GravarLog($@"NovoRegistro(""{p0}"", ""{p1}"")", objeto);
             }
-            public static void GravarRegistro(Type getType)
+            public static void GravarRegistro(object objeto)
             {
-                LogTestes.LogMensagemOperacao("GravarRegistro", getType);
+                GravarLog("GravarRegistro", objeto);
             }
         }
     }

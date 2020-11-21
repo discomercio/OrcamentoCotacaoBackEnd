@@ -12,19 +12,19 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
 
         public void WhenInformo(string p0, string p1)
         {
-            Testes.Utils.LogTestes.LogOperacoes.Informo(p0, p1, this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.Informo(p0, p1, this);
             cadastrarPrepedido.WhenInformo(p0, p1);
         }
 
         public void ThenErroStatusCode(int p0)
         {
-            Testes.Utils.LogTestes.LogOperacoes.ErroStatusCode(p0, this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.ErroStatusCode(p0, this);
             cadastrarPrepedido.ThenErroStatusCode(p0);
         }
 
         public void GivenDadoBase()
         {
-            Testes.Utils.LogTestes.LogOperacoes.DadoBase(this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.DadoBase(this);
             cadastrarPrepedido.GivenPrepedidoBase();
         }
     }

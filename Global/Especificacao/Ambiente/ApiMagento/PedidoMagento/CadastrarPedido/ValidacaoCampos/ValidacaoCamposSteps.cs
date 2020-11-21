@@ -17,35 +17,35 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Valida
         [Given(@"Pedido base")]
         public void GivenPedidoBase()
         {
-            Testes.Utils.LogTestes.LogOperacoes.DadoBase(this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.DadoBase(this);
             cadastrarPedido.GivenDadoBase();
         }
 
         [Given(@"Informo ""(.*)"" = ""(.*)""")]
         public void GivenInformo(string p0, string p1)
         {
-            Testes.Utils.LogTestes.LogOperacoes.Informo(p0,p1,this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.Informo(p0,p1,this);
             cadastrarPedido.WhenInformo(p0, p1);
         }
 
         [Then(@"Erro ""(.*)""")]
         public void ThenErro(string p0)
         {
-            Testes.Utils.LogTestes.LogOperacoes.Erro(p0,this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.Erro(p0,this);
             cadastrarPedido.ThenErro(p0);
         }
 
         [Then(@"Sem erro ""(.*)""")]
         public void ThenSemErro(string p0)
         {
-            Testes.Utils.LogTestes.LogOperacoes.SemErro(p0,this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.SemErro(p0,this);
             cadastrarPedido.ThenSemErro(p0);
         }
 
         [Then(@"Sem nenhum erro")]
         public void ThenSemNenhumErro()
         {
-            Testes.Utils.LogTestes.LogOperacoes.SemNenhumErro(this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.SemNenhumErro(this);
             cadastrarPedido.ThenSemNenhumErro();
         }
 

@@ -29,7 +29,7 @@ namespace Especificacao.Testes.Utils.ListaDependencias
         [Given(@"AdicionarDependencia ambiente = ""(.*)"", especificacao = ""(.*)""")]
         public void GivenAdicionarDependenciaAmbienteEspecificacao(string p0, string p1)
         {
-            RegistroDependencias.AdicionarDependencia(p0, p1);
+            RegistroDependencias.AdicionarDependencia(p0, null, p1);
         }
     }
 }

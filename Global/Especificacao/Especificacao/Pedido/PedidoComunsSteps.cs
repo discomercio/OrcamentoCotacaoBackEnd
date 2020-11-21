@@ -24,16 +24,18 @@ namespace Especificacao.Especificacao.Pedido
 
             if (tags.Contains("Especificacao.Pedido.Passo10.CamposSimples"))
             {
-                base.AdicionarImplementacao(new Especificacao.Pedido.PedidoSteps());
-                RegistroDependencias.AdicionarDependencia("Especificacao.Pedido.Pedido.PedidoListaDependencias",
+                var imp = new Especificacao.Pedido.PedidoSteps();
+                base.AdicionarImplementacao(imp);
+                RegistroDependencias.AdicionarDependencia("Especificacao.Pedido.Pedido.PedidoListaDependencias", imp,
                     "Especificacao.Pedido.Passo10.CamposSimplesPfListaDependencias");
-                RegistroDependencias.AdicionarDependencia("Especificacao.Pedido.Pedido.PedidoListaDependencias",
+                RegistroDependencias.AdicionarDependencia("Especificacao.Pedido.Pedido.PedidoListaDependencias", imp,
                     "Especificacao.Pedido.Passo10.CamposSimplesPjListaDependencias");
             }
             if (tags.Contains("Especificacao.Pedido.Passo20.EnderecoEntrega"))
             {
-                base.AdicionarImplementacao(new Especificacao.Pedido.PedidoSteps());
-                RegistroDependencias.AdicionarDependencia("Especificacao.Pedido.Pedido.PedidoListaDependencias",
+                var imp = new Especificacao.Pedido.PedidoSteps();
+                base.AdicionarImplementacao(imp);
+                RegistroDependencias.AdicionarDependencia("Especificacao.Pedido.Pedido.PedidoListaDependencias", imp,
                     "Especificacao.Pedido.Passo20.EnderecoEntrega.EnderecoEntregaListaDependencias");
             }
         }
@@ -41,14 +43,14 @@ namespace Especificacao.Especificacao.Pedido
         [When(@"Pedido base cliente PF")]
         new public void WhenPedidoBaseClientePF()
         {
-            Testes.Utils.LogTestes.LogOperacoes.DadoBaseClientePF(this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.DadoBaseClientePF(this);
             base.WhenPedidoBaseClientePF();
         }
 
         [When(@"Pedido base cliente PJ")]
         new public void WhenPedidoBaseClientePJ()
         {
-            Testes.Utils.LogTestes.LogOperacoes.DadoBaseClientePJ(this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.DadoBaseClientePJ(this);
             base.WhenPedidoBaseClientePJ();
         }
 
@@ -57,28 +59,28 @@ namespace Especificacao.Especificacao.Pedido
         [When(@"Pedido base")]
         new public void WhenPedidoBase()
         {
-            Testes.Utils.LogTestes.LogOperacoes.DadoBase(this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.DadoBase(this);
             base.WhenPedidoBase();
         }
 
         [When(@"Informo ""(.*)"" = ""(.*)""")]
         new public void WhenInformo(string p0, string p1)
         {
-            Testes.Utils.LogTestes.LogOperacoes.Informo(p0, p1, this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.Informo(p0, p1, this);
             base.WhenInformo(p0, p1);
         }
 
         [Then(@"Erro ""(.*)""")]
         new public void ThenErro(string p0)
         {
-            Testes.Utils.LogTestes.LogOperacoes.Erro(p0, this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.Erro(p0, this);
             base.ThenErro(p0);
         }
 
         [Then(@"Sem [Ee]rro ""(.*)""")]
         new public void ThenSemErro(string p0)
         {
-            Testes.Utils.LogTestes.LogOperacoes.SemErro(p0, this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.SemErro(p0, this);
             base.ThenSemErro(p0);
         }
 
@@ -91,21 +93,21 @@ namespace Especificacao.Especificacao.Pedido
         [Given(@"Ignorar feature no ambiente ""(.*)""")]
         new public void GivenIgnorarFeatureNoAmbiente2(string p0)
         {
-            Testes.Utils.LogTestes.LogOperacoes.IgnorarFeatureNoAmbiente(p0, this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.IgnorarFeatureNoAmbiente(p0, this);
             base.GivenIgnorarFeatureNoAmbiente2(p0);
         }
 
         [Given(@"Pedido base com endereço de entrega")]
         new public void GivenPedidoBaseComEnderecoDeEntrega()
         {
-            Testes.Utils.LogTestes.LogOperacoes.DadoBaseComEnderecoDeEntrega(this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.DadoBaseComEnderecoDeEntrega(this);
             base.GivenPedidoBaseComEnderecoDeEntrega();
         }
 
         [Then(@"Sem nenhum erro")]
         new public void ThenSemNenhumErro()
         {
-            Testes.Utils.LogTestes.LogOperacoes.SemNenhumErro(this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.SemNenhumErro(this);
             base.ThenSemNenhumErro();
         }
 

@@ -28,13 +28,13 @@ namespace Especificacao.Testes.Pedido
             if (ignorarFeature) return;
 
             List<string> listaErrosOriginal = AbstractListaErros();
-            ThenErroCompararacaoMensagens(erroOriginal, erroDeveExistir, listaErrosOriginal, this.GetType());
+            ThenErroCompararacaoMensagens(erroOriginal, erroDeveExistir, listaErrosOriginal, this);
         }
 
-        public static void ThenErroCompararacaoMensagens(string? erroOriginal, bool erroDeveExistir, List<string> listaErrosOriginal, Type thisGetType)
+        public static void ThenErroCompararacaoMensagens(string? erroOriginal, bool erroDeveExistir, List<string> listaErrosOriginal, object objeto)
         {
             if (erroOriginal != null)
-                erroOriginal = Testes.Utils.MapeamentoMensagens.MapearMensagem(thisGetType.FullName, erroOriginal);
+                erroOriginal = Testes.Utils.MapeamentoMensagens.MapearMensagem(objeto.GetType().FullName, erroOriginal);
             var erroParaTeste = MensagemLimpaParaComparacao(erroOriginal);
             var listaParaTeste = new List<string>();
             foreach (var m in listaErrosOriginal)
@@ -44,9 +44,9 @@ namespace Especificacao.Testes.Pedido
             {
                 if (!listaParaTeste.Contains(erroParaTeste ?? ""))
                 {
-                    Testes.Utils.LogTestes.LogOperacoes.MensagemEspecial(
+                    Testes.Utils.LogTestes.LogOperacoes2.MensagemEspecial(
                         $"Erro: {erroOriginal} em {string.Join(" - ", listaErrosOriginal)}",
-                        thisGetType);
+                        objeto);
                     Assert.Contains(erroOriginal, listaErrosOriginal);
                 }
             }
@@ -55,9 +55,9 @@ namespace Especificacao.Testes.Pedido
                 if (erroParaTeste == null)
                 {
                     if (listaParaTeste.Count != 0)
-                        Testes.Utils.LogTestes.LogOperacoes.MensagemEspecial(
+                        Testes.Utils.LogTestes.LogOperacoes2.MensagemEspecial(
                             $"Erro: {erroOriginal} em {string.Join(" - ", listaErrosOriginal)}",
-                            thisGetType);
+                            objeto);
                     Assert.Empty(listaParaTeste);
                 }
                 else
@@ -85,52 +85,52 @@ namespace Especificacao.Testes.Pedido
         public void ThenErro(string p0)
         {
             if (ignorarFeature) return;
-            Testes.Utils.LogTestes.LogOperacoes.Erro(p0, this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.Erro(p0, this);
             ThenErro(p0, true);
         }
         public void ThenSemErro(string p0)
         {
             if (ignorarFeature) return;
-            Testes.Utils.LogTestes.LogOperacoes.SemErro(p0, this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.SemErro(p0, this);
             ThenErro(p0, false);
         }
         public void ThenSemNenhumErro()
         {
             if (ignorarFeature) return;
-            Testes.Utils.LogTestes.LogOperacoes.SemNenhumErro(this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.SemNenhumErro(this);
             ThenErro(null, false);
         }
 
         public void WhenInformo(string p0, string p1)
         {
             if (ignorarFeature) return;
-            Testes.Utils.LogTestes.LogOperacoes.Informo(p0, p1, this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.Informo(p0, p1, this);
             AbstractInformo(p0, p1);
         }
 
         public void GivenDadoBase()
         {
             if (ignorarFeature) return;
-            Testes.Utils.LogTestes.LogOperacoes.DadoBase(this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.DadoBase(this);
             AbstractDadoBase();
         }
         public void GivenDadoBaseClientePF()
         {
             if (ignorarFeature) return;
-            Testes.Utils.LogTestes.LogOperacoes.DadoBaseClientePF(this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.DadoBaseClientePF(this);
             AbstractDadoBaseClientePF();
         }
         public void GivenDadoBaseClientePJ()
         {
             if (ignorarFeature) return;
-            Testes.Utils.LogTestes.LogOperacoes.DadoBaseClientePJ(this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.DadoBaseClientePJ(this);
             AbstractDadoBaseClientePJ();
         }
 
         public void GivenDadoBaseComEnderecoDeEntrega()
         {
             if (ignorarFeature) return;
-            Testes.Utils.LogTestes.LogOperacoes.DadoBaseComEnderecoDeEntrega(this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.DadoBaseComEnderecoDeEntrega(this);
             AbstractDadoBaseComEnderecoDeEntrega();
         }
 
