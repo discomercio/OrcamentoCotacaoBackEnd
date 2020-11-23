@@ -8,11 +8,12 @@ namespace Loja.UI.Models.SiteColors
 {
     public class SiteColorsViewModel
     {
-        public SiteColorsViewModel(string sessionCtrlInfo, string pagina, Bll.Util.Configuracao configuracao)
+        public SiteColorsViewModel(string sessionCtrlInfo, string pagina, Bll.Util.Configuracao configuracao, List<string> lstPaginas)
         {
             SessionCtrlInfo = sessionCtrlInfo;
             Pagina = pagina;
             BaseSite = configuracao.Diretorios.RaizSiteColorsLoja;
+            ListaPaginas = lstPaginas;
         }
 
         public string Url()
@@ -29,5 +30,6 @@ namespace Loja.UI.Models.SiteColors
         public string BaseSite { get; private set; }
         public string SessionCtrlInfo { get; }
         public string Pagina { get; }
+        public List<string> ListaPaginas { get; set; }
     }
 }
