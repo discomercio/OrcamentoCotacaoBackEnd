@@ -101,5 +101,7 @@ Passo90: log (Passo90/Log.feature)
 
 
 Scenario: Fluxo da gravação do pedido
-	When Tudo certo, só para aparecer na lista
+	When Pedido base
+	Then Sem nenhum erro
+
 

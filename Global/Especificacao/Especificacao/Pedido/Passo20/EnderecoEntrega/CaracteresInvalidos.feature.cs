@@ -19,14 +19,14 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "ignore")]
+    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo20.EnderecoEntrega")]
     public partial class EnderecoEntregaCaracteresInvalidosFeature : object, Xunit.IClassFixture<EnderecoEntregaCaracteresInvalidosFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "ignore"};
+                "Especificacao.Pedido.Passo20.EnderecoEntrega"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -43,7 +43,7 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "EnderecoEntrega CaracteresInvalidos", null, ProgrammingLanguage.CSharp, new string[] {
-                        "ignore"});
+                        "Especificacao.Pedido.Passo20.EnderecoEntrega"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -78,15 +78,6 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega
             testRunner.CollectScenarioErrors();
         }
         
-        public virtual void FeatureBackground()
-        {
-#line 4
-#line hidden
-#line 5
- testRunner.Given("pedido base com endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-        }
-        
         void System.IDisposable.Dispose()
         {
             this.TestTearDown();
@@ -95,12 +86,12 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega
         [Xunit.SkippableTheoryAttribute(DisplayName="EndEtg")]
         [Xunit.TraitAttribute("FeatureTitle", "EnderecoEntrega CaracteresInvalidos")]
         [Xunit.TraitAttribute("Description", "EndEtg")]
-        [Xunit.InlineDataAttribute("EndEtg_endereco", ".*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.*", new string[0])]
-        [Xunit.InlineDataAttribute("EndEtg_endereco_numero", ".*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.*", new string[0])]
-        [Xunit.InlineDataAttribute("EndEtg_endereco_complemento", ".*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.*", new string[0])]
-        [Xunit.InlineDataAttribute("EndEtg_bairro", ".*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.*", new string[0])]
-        [Xunit.InlineDataAttribute("EndEtg_cidade", ".*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.*", new string[0])]
-        [Xunit.InlineDataAttribute("EndEtg_nome", ".*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.*", new string[0])]
+        [Xunit.InlineDataAttribute("EndEtg_endereco", "regex .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.*", new string[0])]
+        [Xunit.InlineDataAttribute("EndEtg_endereco_numero", "regex .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.*", new string[0])]
+        [Xunit.InlineDataAttribute("EndEtg_endereco_complemento", "regex .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.*", new string[0])]
+        [Xunit.InlineDataAttribute("EndEtg_bairro", "regex .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.*", new string[0])]
+        [Xunit.InlineDataAttribute("EndEtg_cidade", "regex .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.*", new string[0])]
+        [Xunit.InlineDataAttribute("EndEtg_nome", "regex .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.*", new string[0])]
         public virtual void EndEtg(string campo, string erro, string[] exampleTags)
         {
             string[] tagsOfScenario = exampleTags;
@@ -108,7 +99,7 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega
             argumentsOfScenario.Add("campo", campo);
             argumentsOfScenario.Add("erro", erro);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg", null, tagsOfScenario, argumentsOfScenario);
-#line 20
+#line 18
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -128,35 +119,32 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 4
-this.FeatureBackground();
+#line 19
+ testRunner.Given("Pedido base com endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 20
+ testRunner.When(string.Format("Informo \"{0}\" = \"Carater inválido: €\"", campo), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 21
- testRunner.Given("pedido base com endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Then(string.Format("Erro \"{0}\"", erro), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 22
- testRunner.When(string.Format("Informo {0} = \"Carater inválido: €\"", campo), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base com endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 23
- testRunner.Then(string.Format("Erro regex {0}", erro), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When(string.Format("Informo \"{0}\" = \"Carater inválido: £\"", campo), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 24
- testRunner.Given("pedido base com endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Then(string.Format("Erro \"{0}\"", erro), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 25
- testRunner.When(string.Format("Informo {0} = \"Carater inválido: £\"", campo), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base com endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 26
- testRunner.Then(string.Format("Erro regex {0}", erro), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When(string.Format("Informo \"{0}\" = \"Texto\"", campo), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 27
- testRunner.Given("pedido base com endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 28
- testRunner.When(string.Format("Informo {0} = \"Texto\"", campo), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 29
- testRunner.Then(string.Format("Sem erro regex {0}", erro), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("Sem erro \"{0}\"", erro), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

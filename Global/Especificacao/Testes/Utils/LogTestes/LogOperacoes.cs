@@ -33,19 +33,19 @@ namespace Especificacao.Testes.Utils.LogTestes
         }
         public static void Informo(string p0, string p1, object objeto)
         {
-            GravarLog($@"Informo(""{p0}"", ""{p1}"")", objeto);
+            GravarLog($@"Informo ""{p0}"" = ""{p1}""", objeto);
         }
         public static void Erro(string p0, object objeto)
         {
-            GravarLog($@"Erro(""{p0}"")", objeto);
+            GravarLog($@"Erro ""{p0}""", objeto);
         }
         public static void ErroStatusCode(int p0, object objeto)
         {
-            GravarLog($@"Erro(""{p0}"")", objeto);
+            GravarLog($@"ErroStatusCode ""{p0}""", objeto);
         }
         public static void SemErro(string p0, object objeto)
         {
-            GravarLog($@"SemErro(""{p0}"")", objeto);
+            GravarLog($@"SemErro ""{p0}""", objeto);
         }
         public static void SemNenhumErro(object objeto)
         {
@@ -57,11 +57,11 @@ namespace Especificacao.Testes.Utils.LogTestes
         }
         public static void Resposta(int p0, object objeto)
         {
-            GravarLog($@"Resposta(""{p0}"")", objeto);
+            GravarLog($@"Resposta ""{p0}""", objeto);
         }
         public static void IgnorarFeatureNoAmbiente(string p0, object objeto)
         {
-            GravarLog($@"IgnorarFeatureNoAmbiente(""{p0}"")", objeto);
+            GravarLog($@"IgnorarFeatureNoAmbiente ""{p0}""", objeto);
         }
         public static void ChamadaController(Type controllerType, string msg, object objeto)
         {
@@ -80,15 +80,15 @@ namespace Especificacao.Testes.Utils.LogTestes
             }
             public static void LimparTabela(string msg, object objeto)
             {
-                GravarLog("LimparTabela: " + msg, objeto);
+                GravarLog("LimparTabela " + msg, objeto);
             }
             public static void NovoRegistroEm(string msg, object objeto)
             {
-                GravarLog("NovoRegistroEm: " + msg, objeto);
+                GravarLog("NovoRegistroEm " + msg, objeto);
             }
             public static void NovoRegistro(string p0, string p1, object objeto)
             {
-                GravarLog($@"NovoRegistro(""{p0}"", ""{p1}"")", objeto);
+                GravarLog($@"NovoRegistro ""{p0}"" = ""{p1}""", objeto);
             }
             public static void GravarRegistro(object objeto)
             {

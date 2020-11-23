@@ -28,21 +28,26 @@ namespace Especificacao.Testes.Pedido
             if (ignorarFeature) return;
 
             List<string> listaErrosOriginal = AbstractListaErros();
-            ThenErroCompararacaoMensagens(erroOriginal, erroDeveExistir, listaErrosOriginal, this);
+            CompararMensagemErro(erroOriginal, erroDeveExistir, listaErrosOriginal, this);
         }
 
-        public static void ThenErroCompararacaoMensagens(string? erroOriginal, bool erroDeveExistir, List<string> listaErrosOriginal, object objeto)
+        public static void CompararMensagemErro(string? erroOriginal, bool erroDeveExistir, List<string> listaErrosOriginal, object objeto)
         {
             if (erroOriginal != null)
                 erroOriginal = Testes.Utils.MapeamentoMensagens.MapearMensagem(objeto.GetType().FullName, erroOriginal);
+
+
             var erroParaTeste = MensagemLimpaParaComparacao(erroOriginal);
             var listaParaTeste = new List<string>();
             foreach (var m in listaErrosOriginal)
                 listaParaTeste.Add(MensagemLimpaParaComparacao(m) ?? "mensagem vazia");
 
+            bool regex = AcertosRegex(ref erroOriginal);
+
             if (erroDeveExistir)
             {
-                if (!listaParaTeste.Contains(erroParaTeste ?? ""))
+                bool contem = CompararListaMensagensRegex(erroOriginal, listaErrosOriginal, regex, erroParaTeste, listaParaTeste);
+                if (!contem)
                 {
                     Testes.Utils.LogTestes.LogOperacoes2.MensagemEspecial(
                         $"Erro: {erroOriginal} em {string.Join(" - ", listaErrosOriginal)}",
@@ -58,14 +63,61 @@ namespace Especificacao.Testes.Pedido
                         Testes.Utils.LogTestes.LogOperacoes2.MensagemEspecial(
                             $"Erro: {erroOriginal} em {string.Join(" - ", listaErrosOriginal)}",
                             objeto);
-                    Assert.Empty(listaParaTeste);
+                    Assert.Empty(listaErrosOriginal);
                 }
                 else
                 {
-                    if (listaParaTeste.Contains(erroParaTeste ?? ""))
+                    bool contem = CompararListaMensagensRegex(erroOriginal, listaErrosOriginal, regex, erroParaTeste, listaParaTeste);
+                    if (contem)
                         Assert.DoesNotContain(erroOriginal, listaErrosOriginal);
                 }
             }
+        }
+
+        private static bool AcertosRegex(ref string? erroOriginal)
+        {
+            bool regex = false;
+            if (erroOriginal != null)
+            {
+                string tentarRemover = "REGEX ";
+                if (erroOriginal.ToUpper().StartsWith(tentarRemover))
+                {
+                    regex = true;
+                    erroOriginal = erroOriginal.Substring(tentarRemover.Length);
+                }
+                tentarRemover = "REGEXP ";
+                if (erroOriginal.ToUpper().StartsWith(tentarRemover))
+                {
+                    regex = true;
+                    erroOriginal = erroOriginal.Substring(tentarRemover.Length);
+                }
+            }
+
+            return regex;
+        }
+
+        private static bool CompararListaMensagensRegex(string? erroOriginal, List<string> listaErrosOriginal, bool regex, string? erroParaTeste, List<string> listaParaTeste)
+        {
+            bool contem = listaParaTeste.Contains(erroParaTeste ?? "");
+            if (regex)
+            {
+                foreach (var m in listaErrosOriginal)
+                {
+                    //testamos todas as possibilidades
+                    if (System.Text.RegularExpressions.Regex.Match(m, erroOriginal).Success)
+                        contem = true;
+                    if (System.Text.RegularExpressions.Regex.Match(MensagemLimpaParaComparacao(m), erroOriginal).Success)
+                        contem = true;
+                    if (System.Text.RegularExpressions.Regex.Match(m, erroParaTeste).Success)
+                        contem = true;
+                    if (System.Text.RegularExpressions.Regex.Match(MensagemLimpaParaComparacao(m), erroParaTeste).Success)
+                        contem = true;
+                    if (contem)
+                        break;
+                }
+            }
+
+            return contem;
         }
 
         private static string? MensagemLimpaParaComparacao(string? msg)

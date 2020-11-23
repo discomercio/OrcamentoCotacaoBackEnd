@@ -130,30 +130,30 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
       ""Fabricante"": ""003"",
       ""Produto"": ""003220"",
       ""Qtde"": 2,
-      ""Desc_Dado"": 1,
-      ""Preco_Venda"": 687.11,
+      ""Desc_Dado"": 0,
+      ""Preco_Venda"": 659.60,
       ""Preco_Fabricante"": 659.3,
-      ""Preco_Lista"": 694.05,
+      ""Preco_Lista"": 659.60,
       ""Preco_NF"": 694.05,
       ""CustoFinancFornecCoeficiente"": 1.0527,
-      ""CustoFinancFornecPrecoListaBase"": 694.05
+      ""CustoFinancFornecPrecoListaBase"": 626.58
     },
     {
       ""Fabricante"": ""003"",
       ""Produto"": ""003221"",
       ""Qtde"": 2,
-      ""Desc_Dado"": 1,
-      ""Preco_Venda"": 1030.66,
+      ""Desc_Dado"": 0,
+      ""Preco_Venda"": 989.40,
       ""Preco_Fabricante"": 988.95,
-      ""Preco_Lista"": 1041.07,
+      ""Preco_Lista"": 989.40,
       ""Preco_NF"": 1041.07,
       ""CustoFinancFornecCoeficiente"": 1.0527,
-      ""CustoFinancFornecPrecoListaBase"": 1041.07
+      ""CustoFinancFornecPrecoListaBase"": 939.87
     }
   ],
   ""PermiteRAStatus"": true,
   ""ValorTotalDestePedidoComRA"": 3470.24,
-  ""VlTotalDestePedido"": 3435.54,
+  ""VlTotalDestePedido"": 3298,
   ""DetalhesPrepedido"": {
     ""St_Entrega_Imediata"": 2,
     ""PrevisaoEntregaData"": null,

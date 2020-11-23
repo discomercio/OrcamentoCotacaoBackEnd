@@ -1,0 +1,2198 @@
+﻿[
+  {
+    "fabricante": "001",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 1,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "001",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 2,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "001",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 3,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "001",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 4,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "001",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 5,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "001",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 6,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "001",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 7,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "001",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 8,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "001",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 9,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "001",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 10,
+    "coeficiente": 1.1
+  },
+  {
+    "fabricante": "001",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 11,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "001",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 12,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "001",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 13,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "001",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 14,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "001",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 15,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "001",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 1,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "001",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 2,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "001",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 3,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "001",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 4,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "001",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 5,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "001",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 6,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "001",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 7,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "001",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 8,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "001",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 9,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "001",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 10,
+    "coeficiente": 1.1
+  },
+  {
+    "fabricante": "001",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 11,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "001",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 12,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "001",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 13,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "001",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 14,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "001",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 15,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "002",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 1,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "002",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 2,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "002",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 3,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "002",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 4,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "002",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 5,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "002",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 6,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "002",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 7,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "002",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 8,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "002",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 9,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "002",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 10,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "002",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 11,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "002",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 12,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "002",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 13,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "002",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 14,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "002",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 15,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "002",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 1,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "002",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 2,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "002",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 3,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "002",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 4,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "002",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 5,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "002",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 6,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "002",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 7,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "002",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 8,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "002",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 9,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "002",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 10,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "002",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 11,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "002",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 12,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "002",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 13,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "002",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 14,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "002",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 15,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "003",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 1,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "003",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 2,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "003",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 3,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "003",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 4,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "003",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 5,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "003",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 6,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "003",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 7,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "003",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 8,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "003",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 9,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "003",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 10,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "003",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 11,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "003",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 12,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "003",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 13,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "003",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 14,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "003",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 15,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "003",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 1,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "003",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 2,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "003",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 3,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "003",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 4,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "003",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 5,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "003",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 6,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "003",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 7,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "003",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 8,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "003",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 9,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "003",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 10,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "003",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 11,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "003",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 12,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "003",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 13,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "003",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 14,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "003",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 15,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "003",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 16,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "004",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 1,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "004",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 2,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "004",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 3,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "004",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 4,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "004",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 5,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "004",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 6,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "004",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 7,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "004",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 8,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "004",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 9,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "004",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 10,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "004",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 11,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "004",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 12,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "004",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 13,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "004",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 14,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "004",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 15,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "004",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 1,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "004",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 2,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "004",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 3,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "004",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 4,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "004",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 5,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "004",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 6,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "004",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 7,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "004",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 8,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "004",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 9,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "004",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 10,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "004",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 11,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "004",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 12,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "004",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 13,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "004",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 14,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "004",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 15,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "005",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 1,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "005",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 2,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "005",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 3,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "005",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 4,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "005",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 5,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "005",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 6,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "005",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 7,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "005",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 8,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "005",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 9,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "005",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 10,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "005",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 11,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "005",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 12,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "005",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 13,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "005",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 14,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "005",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 1,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "005",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 2,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "005",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 3,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "005",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 4,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "005",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 5,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "005",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 6,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "005",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 7,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "005",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 8,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "005",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 9,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "005",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 10,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "005",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 11,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "005",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 12,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "005",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 13,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "005",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 14,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "005",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 15,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "006",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 1,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "006",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 2,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "006",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 3,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "006",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 4,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "006",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 5,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "006",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 6,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "006",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 7,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "006",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 8,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "006",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 9,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "006",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 10,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "006",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 11,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "006",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 12,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "006",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 13,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "006",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 14,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "006",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 15,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "006",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 1,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "006",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 2,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "006",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 3,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "006",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 4,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "006",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 5,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "006",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 6,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "006",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 7,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "006",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 8,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "006",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 9,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "006",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 10,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "006",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 11,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "006",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 12,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "006",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 13,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "006",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 14,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "006",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 15,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "007",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 1,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "007",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 2,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "007",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 3,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "007",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 4,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "007",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 5,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "007",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 6,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "007",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 7,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "007",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 8,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "007",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 9,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "007",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 10,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "007",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 1,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "007",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 2,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "007",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 3,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "007",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 4,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "007",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 5,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "007",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 6,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "007",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 7,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "007",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 8,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "007",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 9,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "007",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 10,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "007",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 11,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "008",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 1,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "008",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 2,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "008",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 3,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "008",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 4,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "008",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 5,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "008",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 6,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "008",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 7,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "008",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 8,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "008",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 9,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "008",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 10,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "008",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 11,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "008",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 12,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "008",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 13,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "008",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 14,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "008",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 1,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "008",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 2,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "008",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 3,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "008",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 4,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "008",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 5,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "008",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 6,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "008",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 7,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "008",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 8,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "008",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 9,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "008",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 10,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "008",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 11,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "008",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 12,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "008",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 13,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "008",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 14,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "008",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 15,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "009",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 1,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "009",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 2,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "009",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 3,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "009",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 4,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "009",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 5,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "009",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 6,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "009",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 7,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "009",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 8,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "009",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 9,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "009",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 10,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "009",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 11,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "009",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 12,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "009",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 13,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "009",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 14,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "009",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 15,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "009",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 1,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "009",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 2,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "009",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 3,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "009",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 4,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "009",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 5,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "009",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 6,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "009",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 7,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "009",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 8,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "009",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 9,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "009",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 10,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "009",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 11,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "009",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 12,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "009",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 13,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "009",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 14,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "009",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 15,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "036",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 1,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "036",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 2,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "036",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 3,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "036",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 4,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "036",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 5,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "036",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 6,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "036",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 7,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "036",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 8,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "036",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 9,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "036",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 10,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "036",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 1,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "036",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 2,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "036",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 3,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "036",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 4,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "036",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 5,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "036",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 6,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "036",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 7,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "036",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 8,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "036",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 9,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "036",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 10,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "300",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 1,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "300",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 2,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "300",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 3,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "300",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 4,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "300",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 5,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "300",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 6,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "300",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 7,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "300",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 8,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "300",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 9,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "300",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 1,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "300",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 2,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "300",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 3,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "300",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 4,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "300",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 5,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "300",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 6,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "300",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 7,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "300",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 8,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "300",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 9,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "300",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 10,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "900",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 1,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "900",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 2,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "900",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 3,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "900",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 4,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "900",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 5,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "900",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 6,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "900",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 7,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "900",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 8,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "900",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 9,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "900",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 1,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "900",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 2,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "900",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 3,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "900",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 4,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "900",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 5,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "900",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 6,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "900",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 7,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "900",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 8,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "900",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 9,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "900",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 10,
+    "coeficiente": 1.0527
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 1,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 2,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 3,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 4,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 5,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 6,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 7,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 8,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 9,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 10,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 11,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 12,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 13,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 14,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 15,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 16,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 17,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 18,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 19,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 20,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 21,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 22,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 23,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "CE",
+    "qtde_parcelas": 24,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 1,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 2,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 3,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 4,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 5,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 6,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 7,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 8,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 9,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 10,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 11,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 12,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 13,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 14,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 15,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 16,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 17,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 18,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 19,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 20,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 21,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 22,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 23,
+    "coeficiente": 1.0E-6
+  },
+  {
+    "fabricante": "999",
+    "tipo_parcelamento": "SE",
+    "qtde_parcelas": 24,
+    "coeficiente": 1.0E-6
+  }
+]

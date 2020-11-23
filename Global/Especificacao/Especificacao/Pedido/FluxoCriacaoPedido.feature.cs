@@ -104,14 +104,14 @@ namespace Especificacao.Especificacao.Pedido
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Fluxo da criação do pedido")]
+        [Xunit.SkippableFactAttribute(DisplayName="Pedido criado com sucesso")]
         [Xunit.TraitAttribute("FeatureTitle", "Fluxo da criação do pedido")]
-        [Xunit.TraitAttribute("Description", "Fluxo da criação do pedido")]
-        public virtual void FluxoDaCriacaoDoPedido()
+        [Xunit.TraitAttribute("Description", "Pedido criado com sucesso")]
+        public virtual void PedidoCriadoComSucesso()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fluxo da criação do pedido", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pedido criado com sucesso", null, tagsOfScenario, argumentsOfScenario);
 #line 37
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -133,7 +133,10 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 38
- testRunner.When("Tudo certo, só para aparecer na lista", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 39
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

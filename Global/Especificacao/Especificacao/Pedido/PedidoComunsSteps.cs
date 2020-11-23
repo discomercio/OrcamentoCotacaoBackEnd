@@ -15,7 +15,7 @@ namespace Especificacao.Especificacao.Pedido
     [Binding]
     [Scope(Tag = "Especificacao.Pedido.Passo10.CamposSimples")]
     [Scope(Tag = "Especificacao.Pedido.Passo20.EnderecoEntrega")]
-    [Scope(Tag = "@Especificacao.Pedido.Passo10.Permissoes")]
+    [Scope(Tag = "Especificacao.Pedido.FluxoCriacaoPedido")]
     public class PedidoComunsSteps : PedidoPassosComuns
     {
         public PedidoComunsSteps(FeatureContext featureContext)
@@ -30,6 +30,7 @@ namespace Especificacao.Especificacao.Pedido
                     "Especificacao.Pedido.Passo10.CamposSimplesPfListaDependencias");
                 RegistroDependencias.AdicionarDependencia("Especificacao.Pedido.Pedido.PedidoListaDependencias", imp,
                     "Especificacao.Pedido.Passo10.CamposSimplesPjListaDependencias");
+                return;
             }
             if (tags.Contains("Especificacao.Pedido.Passo20.EnderecoEntrega"))
             {
@@ -37,6 +38,16 @@ namespace Especificacao.Especificacao.Pedido
                 base.AdicionarImplementacao(imp);
                 RegistroDependencias.AdicionarDependencia("Especificacao.Pedido.Pedido.PedidoListaDependencias", imp,
                     "Especificacao.Pedido.Passo20.EnderecoEntrega.EnderecoEntregaListaDependencias");
+                return;
+            }
+            if (tags.Contains("Especificacao.Pedido.FluxoCriacaoPedido"))
+            {
+                var imp = new Especificacao.Pedido.PedidoSteps();
+                base.AdicionarImplementacao(imp);
+                //este nao tem registro de dependencias
+                //RegistroDependencias.AdicionarDependencia("Especificacao.Pedido.Pedido.PedidoListaDependencias", imp,
+                //    "Especificacao.Pedido.FluxoCriacaoPedidoDependencias");
+                return;
             }
         }
 

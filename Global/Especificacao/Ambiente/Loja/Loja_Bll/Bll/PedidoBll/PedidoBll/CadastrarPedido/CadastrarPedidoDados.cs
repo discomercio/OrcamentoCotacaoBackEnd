@@ -74,7 +74,7 @@ namespace Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadastrar
         {
             var ret = Testes.Utils.LerJson.LerArquivoEmbutido<global::Loja.Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto>(
                 "Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedidoDados.json");
-            lojaUsuario = "202";
+            lojaUsuario = "201";
             usuario = "USUARIOLOJA";
             vendedorExterno = true;
             return ret;

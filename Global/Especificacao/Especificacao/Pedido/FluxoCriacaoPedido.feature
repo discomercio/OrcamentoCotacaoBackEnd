@@ -34,7 +34,7 @@ Fluxo na API:
 Salvar o pedido (Passo60/Gravacao)
 	Enviar todos os dados para cadastrar o pedido
 
-Scenario: Fluxo da criação do pedido
-	When Tudo certo, só para aparecer na lista
-
+Scenario: Pedido criado com sucesso
+	When Pedido base
+	Then Sem nenhum erro
 

@@ -64,6 +64,9 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
                     break;
 
                 //endetg
+                case "EndEtg_nome":
+                    prePedidoUnisDto.EnderecoEntrega.EndEtg_nome = p1;
+                    break;
                 case "EndEtg_bairro":
                     prePedidoUnisDto.EnderecoEntrega.EndEtg_bairro = p1;
                     break;
@@ -79,6 +82,9 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
                 case "EndEtg_endereco":
                     prePedidoUnisDto.EnderecoEntrega.EndEtg_endereco = p1;
                     break;
+                case "EndEtg_endereco_complemento":
+                    prePedidoUnisDto.EnderecoEntrega.EndEtg_endereco_complemento = p1;
+                    break;
                 case "EndEtg_cidade":
                     prePedidoUnisDto.EnderecoEntrega.EndEtg_cidade = p1;
                     break;
@@ -87,7 +93,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
                     break;
 
                 default:
-                    Assert.Equal("", $"{p0} desconhecido");
+                    Assert.Equal("", $"{p0} desconhecido em Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.WhenInformo");
                     break;
             }
         }
@@ -135,7 +141,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
 
             PrePedidoResultadoUnisDto prePedidoResultadoUnisDto = (PrePedidoResultadoUnisDto)((Microsoft.AspNetCore.Mvc.OkObjectResult)res).Value;
 
-            Testes.Pedido.HelperImplementacaoPedido.ThenErroCompararacaoMensagens(erro, erroDeveExistir, prePedidoResultadoUnisDto.ListaErros, this);
+            Testes.Pedido.HelperImplementacaoPedido.CompararMensagemErro(erro, erroDeveExistir, prePedidoResultadoUnisDto.ListaErros, this);
         }
 
         private bool ignorarFeature = false;

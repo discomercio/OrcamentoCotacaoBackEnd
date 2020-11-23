@@ -22,15 +22,12 @@ namespace Prepedido.FormaPagto
             }
         }
 
-        public bool ValidarFormaPagto(FormaPagtoCriacaoDados formaPagtoPrepedido, List<string> lstErros,
+        public void ValidarFormaPagto(FormaPagtoCriacaoDados formaPagtoPrepedido, List<string> lstErros,
             decimal limiteArredondamento, decimal maxErroArredondamento, string c_custoFinancFornecTipoParcelamento,
             Prepedido.Dados.FormaPagto.FormaPagtoDados formaPagtoDados, short permiteRA, decimal vl_total_nf, decimal vl_total)
         {
             ////vamos verificar a forma de pagamento com base no orçamentista que esta sendo enviado
             //FormaPagtoDto formasPagto = await formaPagtoBll.ObterFormaPagto(orcamentista, prepedido.DadosCliente.Tipo);
-
-            bool retorno = false;
-
             if (!string.IsNullOrEmpty(formaPagtoPrepedido.CustoFinancFornecTipoParcelamento))
             {
                 ValidarSiglaFormaPagto(formaPagtoPrepedido, c_custoFinancFornecTipoParcelamento, lstErros);
@@ -80,11 +77,6 @@ namespace Prepedido.FormaPagto
             {
                 lstErros.Add("É obrigatório especificar a forma de pagamento");
             }
-
-            if (lstErros.Count == 0)
-                retorno = true;
-
-            return retorno;
         }
 
         private void ValidarFormaPagtoAVista(FormaPagtoCriacaoDados formaPagtoPrepedido, List<string> lstErros, decimal limiteArredondamento)
