@@ -122,7 +122,7 @@ namespace Prepedido.PedidoVisualizacao
                 {
                     string nome = await (from c in itens
                                          where c.Pedido == i.Pedido
-                                         select c.Tpedido.Tcliente.Nome_Iniciais_Em_Maiusculas).FirstOrDefaultAsync();
+                                         select c.Tpedido.Endereco_nome).FirstOrDefaultAsync();
 
                     lst_pedido.Add(new PedidosPedidoDados
                     {
