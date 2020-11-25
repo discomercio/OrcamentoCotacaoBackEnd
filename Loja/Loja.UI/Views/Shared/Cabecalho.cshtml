@@ -3,17 +3,6 @@
     var usuarioLogado = Model;
 }
 
-@*<script>
-        $(".mobile-options").click(function () {
-            if ($(".nav-right").css('display') == "none") {
-                $(".nav-right").css('display', 'inline-block');
-            }
-            else {
-                $(".nav-right").css('display', 'none');
-            }
-        });
-    </script>*@
-
 @if (usuarioLogado.SessaoAtiva)
 {
 
@@ -40,8 +29,8 @@
                             @Html.DropDownList("cabecacomboLojas", listaSl, new
                             {
                                 @id = "cabecacomboLojas",
-                                @class = "custom-select"
-
+                                @class = "custom-select",
+                                @onchange = "BuscarTodosAvisos()"
                             })
                         </div>
                     }
@@ -135,12 +124,12 @@ else
 }
 <script>
     var usuarioLogado = JSON.parse(@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(Json.Serialize(Model.Usuario_nome_atual).ToString(), true)))
-
-    $(document).ready(function () {
+    
+    @*$(document).ready(function () {
         $('#cabecacomboLojas').change(function () {
             document.location = "@Url.Action("Index", "Home")/?novaloja=" + $('#cabecacomboLojas').val();
         });
-    });
+    });*@
 
     requirejs(["Views/Shared/Cabecalho"], function (util) {
 

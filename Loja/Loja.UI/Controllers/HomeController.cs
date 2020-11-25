@@ -60,6 +60,9 @@ namespace Loja.UI.Controllers
             var taskResumoPrepedidoListaDto = prepedidoBll.ResumoPrepedidoLista(usuarioLogado, true);
             var taskCancelamentoAutomaticoViewModel = cancelamentoAutomaticoBll.DadosTela(usuarioLogado);
 
+            //vamos buscar os avisos não lidos
+            //Id / Mensagem / Usuario / Destinatario / Dt_Ult_Atualizacao
+
             model.ResumoPrepedidoListaDto = await taskResumoPrepedidoListaDto;
             model.CancelamentoAutomaticoItems = (await taskCancelamentoAutomaticoViewModel).cancelamentoAutomaticoItems;
             return View(model);

@@ -79,6 +79,9 @@ namespace InfraBanco
         public IQueryable<TtransportadoraCep>TtransportadoraCeps { get => contexto.TtransportadoraCeps.AsNoTracking(); }
 
         public IQueryable<TusuarioXLoja> TusuarioXLojas { get => contexto.TusuarioXLojas.AsNoTracking(); }
+        public IQueryable<Taviso> Tavisos { get => contexto.Tavisos.AsNoTracking(); }
+        public IQueryable<TavisoExibido> TavisoExibidos { get => contexto.TavisoExibidos.AsNoTracking(); }
+        public IQueryable<TavisoLido> TavisoLidos { get => contexto.TavisoLidos.AsNoTracking(); }
 #endif
 
     }

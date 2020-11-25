@@ -1,5 +1,8 @@
-﻿
+﻿import { Constantes } from "../../UtilTs/Constantes/Constantes";
+//OBS: não entendi o pq que temos que importar algo para remover o erro no window 
+
 declare var usuarioLogado: any;
+declare var window: any;
 
 $(function () {
     if (usuarioLogado != "" && usuarioLogado != undefined) {
@@ -24,4 +27,11 @@ function getRandomColor() {
         color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
+}
+
+declare var document: HTMLDocument;
+window.BuscarTodosAvisos = () => {
+    debugger;
+    document.location.href = "/lojamvc/Home/Index/?novaloja=" + $('#cabecacomboLojas').val();
+
 }
