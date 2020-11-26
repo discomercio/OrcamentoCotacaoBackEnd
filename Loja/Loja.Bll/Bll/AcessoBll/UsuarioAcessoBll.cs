@@ -1,4 +1,5 @@
 ﻿using InfraBanco.Modelos;
+using Loja.Bll.Dto.AvisosDto;
 using Loja.Bll.Util;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -369,6 +370,33 @@ namespace Loja.Bll.Bll.AcessoBll
                         select l.Nome;
             var lista = await query.FirstOrDefaultAsync();
             return lista;
+        }
+
+        public async Task<IEnumerable<AvisoDto>> BuscarAvisosNaoLidos(string loja, string usuario)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+            //vamos buscar todos os avisos
+            List<Taviso> avisos = (await UtilsGlobais.Util.BuscarAvisos(loja, usuario, contextoProvider)).ToList();
+
+            //vamos buscar os avisos lidos
+            List<AvisoDto> ret = new List<AvisoDto>();
+
+            if (avisos != null)
+            {
+                foreach (var i in avisos)
+                {
+                    ret.Add(new AvisoDto
+                    {
+                        Id = i.Id,
+                        Usuario = i.Usuario,
+                        Mensagem = i.Mensagem,
+                        Destinatario = i.Destinatario,
+                        Dt_ult_atualizacao = i.Dt_ult_atualizacao
+                    });
+                }
+            }
+
+            return ret;
         }
     }
 }

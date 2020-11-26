@@ -6,7 +6,7 @@ using System.Text;
 
 namespace InfraBanco.Modelos
 {
-    [Table("t_AVISO_EXIBIDO")]
+    [Table("t_AVISO_LIDO")]
     public class TavisoLido
     {
         [Required]
