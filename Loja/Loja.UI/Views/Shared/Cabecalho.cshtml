@@ -3,6 +3,22 @@
     var usuarioLogado = Model;
 }
 
+<style>
+    .badge {
+        min-width: 19px !important;
+        width: auto !important;
+    }
+
+    #drop_avisos {
+        overflow-y: scroll !important;
+        max-height: 800% !important;
+    }
+
+    #paragrafo-avisos {
+        white-space: pre-line !important;
+    }
+</style>
+
 @if (usuarioLogado.SessaoAtiva)
 {
 
@@ -43,46 +59,32 @@
             <div class="dropdown-primary dropdown">
                 <div class="dropdown-toggle" data-toggle="dropdown">
                     <i class="feather icon-bell"></i>
-                    <span class="badge bg-c-red">2</span>
+
+                    <span class="badge bg-c-red" id="qtdeMsg"></span>
                 </div>
-                <ul class="show-notification notification-view dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
-                    @* aqui vai a lista de mensagens *@
+                <ul id="drop_avisos" class="show-notification notification-view dropdown-menu" data-dropdown-in="fadeIn">
+
                     <li>
                         <h6>Avisos</h6>
                         <label class="label label-danger">Novas</label>
                     </li>
-                    <li>
+                    @* aqui vai a lista de mensagens *@
+                    <li class="linhas" id="itemMsg_" style="display:none">
                         <div class="media">
                             <div class="media-body">
-                                <p class="notification-msg" id="paragrafo-avisos">
-                                    Para conhecimento de todos
-                                    Apesar de já ter sido comunicado anteriormente aos gestores do departamento comercial, gostaríamos de reforçar:
-                                    Não será permitido a colocação de entregue nos pedidos de maneira antecipada, como já foi feito algumas vezes no passado, ou seja, somente após carregamento será executado o status de entregue no sistema.
-                                    Esta é uma prática incorreta e que pode acarretar erros operacionais.
-
-                                    Grato
-
-                                    Depto de Logistica
-                                </p>
-                                <span class="notification-time">Divulgado em: 09/11/2020 12:23:36</span>
+                                <span class="notification-time" id="divulgado_"></span>
+                                <p class="notification-msg" id="paragrafo-avisos"></p>
+                                <label>
+                                    <input type="checkbox" value="" id="chk_">
+                                    <span class="cr">
+                                        <i class="cr-icon icofont icofont-ui-check txt-primary"></i>
+                                    </span>
+                                    <span>Não exibir mais este aviso.</span>
+                                </label>
                             </div>
                         </div>
                     </li>
-                    <li>
-                        <div class="media">
-                            <div class="media-body" id="paragrafo-avisos">
-                                <p class="notification-msg">
-                                    Atenção devido as fortes chuvas em São Paulo e região.
-
-                                    O setor de logísticas está adiando as entregas de hoje para essas localidade, estaremos alinhando junto aos clientes uma data futura adequada.
-
-                                    Att...
-                                    Logística.
-                                </p>
-                                <span class="notification-time">Divulgado em: 06/11/2020 10:23:36</span>
-                            </div>
-                        </div>
-                    </li>
+                    
                 </ul>
             </div>
         </li>
@@ -124,7 +126,7 @@ else
 }
 <script>
     var usuarioLogado = JSON.parse(@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(Json.Serialize(Model.Usuario_nome_atual).ToString(), true)))
-    
+
     @*$(document).ready(function () {
         $('#cabecacomboLojas').change(function () {
             document.location = "@Url.Action("Index", "Home")/?novaloja=" + $('#cabecacomboLojas').val();

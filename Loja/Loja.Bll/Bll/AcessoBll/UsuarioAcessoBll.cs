@@ -374,6 +374,7 @@ namespace Loja.Bll.Bll.AcessoBll
 
         public async Task<IEnumerable<AvisoDto>> BuscarAvisosNaoLidos(string loja, string usuario)
         {
+            
             var db = contextoProvider.GetContextoLeitura();
             //vamos buscar todos os avisos
             List<Taviso> avisos = (await UtilsGlobais.Util.BuscarAvisos(loja, usuario, contextoProvider)).ToList();

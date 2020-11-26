@@ -13,6 +13,7 @@ using Loja.Bll.Bll.AcessoBll;
 using Loja.Bll.Util;
 using Loja.Bll.PrepedidoBll;
 using Loja.Bll.Bll.pedidoBll;
+using Loja.Bll.Dto.AvisosDto;
 
 namespace Loja.UI.Controllers
 {
@@ -68,6 +69,16 @@ namespace Loja.UI.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public async Task<List<AvisoDto>> BuscarAvisosNaoLidos()
+        {
+            var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
+
+            List<AvisoDto> lst = (await usuarioAcessoBll.BuscarAvisosNaoLidos(usuarioLogado.Loja_atual_id, usuarioLogado.Usuario_nome_atual)).ToList();
+
+            return lst;
+        }
+
         public IActionResult Privacy()
         {
             return View();
@@ -78,5 +89,7 @@ namespace Loja.UI.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+
     }
 }
