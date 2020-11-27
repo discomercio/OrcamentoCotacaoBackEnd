@@ -96,6 +96,12 @@ namespace InfraBanco
 
             modelBuilder.Entity<TestoqueLog>()
                .HasKey(x => new {x.Pedido_estoque_destino, x.Pedido_estoque_origem, x.Fabricante, x.Produto, x.Qtde_atendida });
+
+            modelBuilder.Entity<TavisoExibido>()
+                .HasKey(x => new { x.Id, x.Usuario });
+
+            modelBuilder.Entity<TavisoLido>()
+                .HasKey(x => new { x.Id, x.Usuario });
 #endif
         }
 
@@ -156,6 +162,9 @@ namespace InfraBanco
         public DbSet<TpedidoAnaliseEndereco> TpedidoAnaliseEnderecos { get; set; }
         public DbSet<TpedidoAnaliseEnderecoConfrontacao> TpedidoAnaliseConfrontacaos { get; set; }
         public DbSet<TusuarioXLoja> TusuarioXLojas { get; set; }
+        public DbSet<Taviso> Tavisos { get; set; }
+        public DbSet<TavisoExibido> TavisoExibidos { get; set; }
+        public DbSet<TavisoLido> TavisoLidos { get; set; }
 #endif
     }
 }

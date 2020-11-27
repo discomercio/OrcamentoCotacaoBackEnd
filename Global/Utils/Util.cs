@@ -1244,5 +1244,33 @@ namespace UtilsGlobais
             return retorno;
 #nullable disable
         }
+
+        public static async Task<IEnumerable<Taviso>> BuscarAvisos(string loja, string usuario, ContextoBdProvider contexto)
+        {
+            var db = contexto.GetContextoLeitura();
+            var ret = (from c in db.Tavisos
+                       where (!(from d in db.TavisoLidos
+                                where d.Usuario == usuario
+                                select d.Id).Contains(c.Id)) &&                       
+                       ((c.Destinatario == "") ||
+                             (c.Destinatario == null) ||
+                             (c.Destinatario == loja))
+                       select c).OrderByDescending(x => x.Dt_ult_atualizacao).ToListAsync();
+
+
+            return await ret;
+        }
+
+        public static async Task<IEnumerable<TavisoLido>> BuscarAvisosLidos(string usuario, ContextoBdProvider contexto)
+        {
+            var db = contexto.GetContextoLeitura();
+
+            var ret = (from c in db.TavisoLidos
+                       where c.Usuario == usuario
+                       select c).ToListAsync();
+
+            return await ret;
+        }
+
     }
 }
