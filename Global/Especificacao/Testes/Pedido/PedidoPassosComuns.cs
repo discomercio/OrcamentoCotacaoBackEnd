@@ -8,25 +8,25 @@ namespace Especificacao.Testes.Pedido
 {
     public class PedidoPassosComuns : ListaImplementacoes<IPedidoPassosComuns>, IPedidoPassosComuns
     {
-        public void WhenPedidoBase()
+        public void GivenPedidoBase()
         {
             if (ignorarFeature) return;
             Utils.LogTestes.LogOperacoes2.DadoBase(this);
-            base.Executar(i => i.WhenPedidoBase());
+            base.Executar(i => i.GivenPedidoBase());
         }
 
-        public void WhenPedidoBaseClientePF()
+        public void GivenPedidoBaseClientePF()
         {
             if (ignorarFeature) return;
             Utils.LogTestes.LogOperacoes2.DadoBaseClientePF(this);
-            base.Executar(i => i.WhenPedidoBaseClientePF());
+            base.Executar(i => i.GivenPedidoBaseClientePF());
         }
 
-        public void WhenPedidoBaseClientePJ()
+        public void GivenPedidoBaseClientePJ()
         {
             if (ignorarFeature) return;
             Utils.LogTestes.LogOperacoes2.DadoBaseClientePJ(this);
-            base.Executar(i => i.WhenPedidoBaseClientePJ());
+            base.Executar(i => i.GivenPedidoBaseClientePJ());
         }
 
         public void WhenInformo(string p0, string p1)
@@ -60,13 +60,13 @@ namespace Especificacao.Testes.Pedido
         }
 
         private bool ignorarFeature = false;
-        public void GivenIgnorarFeatureNoAmbiente2(string p0)
+        public void GivenIgnorarScenarioNoAmbiente(string p0)
         {
-            IgnorarFeatureNoAmbiente(p0, ref ignorarFeature, this.GetType());
-            base.Executar(i => i.GivenIgnorarFeatureNoAmbiente2(p0));
+            IgnorarScenarioNoAmbiente(p0, ref ignorarFeature, this.GetType());
+            base.Executar(i => i.GivenIgnorarScenarioNoAmbiente(p0));
         }
 
-        public static void IgnorarFeatureNoAmbiente(string p0, ref bool ignorarFeature, Type getType)
+        public static void IgnorarScenarioNoAmbiente(string p0, ref bool ignorarFeature, Type getType)
         {
             var typeFullName = getType.FullName;
             if (typeFullName == null)

@@ -59,9 +59,9 @@ namespace Especificacao.Testes.Utils.LogTestes
         {
             GravarLog($@"Resposta ""{p0}""", objeto);
         }
-        public static void IgnorarFeatureNoAmbiente(string p0, object objeto)
+        public static void IgnorarScenarioNoAmbiente(string p0, object objeto)
         {
-            GravarLog($@"IgnorarFeatureNoAmbiente ""{p0}""", objeto);
+            GravarLog($@"IgnorarScenarioNoAmbiente ""{p0}""", objeto);
         }
         public static void ChamadaController(Type controllerType, string msg, object objeto)
         {
@@ -82,17 +82,17 @@ namespace Especificacao.Testes.Utils.LogTestes
             {
                 GravarLog("LimparTabela " + msg, objeto);
             }
-            public static void NovoRegistroEm(string msg, object objeto)
+            public static void NovoRegistroNaTabela(string msg, object objeto)
             {
                 GravarLog("NovoRegistroEm " + msg, objeto);
             }
-            public static void NovoRegistro(string p0, string p1, object objeto)
+            public static void NovoRegistroEmCampo(string tabela, string p0, string p1, object objeto)
             {
                 GravarLog($@"NovoRegistro ""{p0}"" = ""{p1}""", objeto);
             }
-            public static void GravarRegistro(object objeto)
+            public static void GravarRegistroEm(string p0, object objeto)
             {
-                GravarLog("GravarRegistro", objeto);
+                GravarLog(@"GravarRegistro {p0}", objeto);
             }
         }
     }

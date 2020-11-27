@@ -12,7 +12,7 @@ Scenario: obs1 tamanho
 	#	alert('Conteúdo de "Observações " excede em ' + (s.length-MAX_TAM_OBS1) + ' caracteres o tamanho máximo de ' + MAX_TAM_OBS1 + '!!');
 	Given Pedido base
 	When Informo "obs1" = um texto com "501" caracteres
-	Then Erro regex "Conteúdo de "Observações " excede em .*"
+	Then Erro "regex .*Conteúdo de \"Observações \" excede em .*"
 
 	Given Pedido base
 	When Informo "obs1" = um texto com "500" caracteres

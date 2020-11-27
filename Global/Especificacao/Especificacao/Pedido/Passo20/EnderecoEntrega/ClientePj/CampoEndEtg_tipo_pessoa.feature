@@ -1,9 +1,8 @@
 ﻿@ignore
-@Especificacao/Pedido
-@Ambiente/PrepedidoApi
-@Ambiente/ApiUnis
+@Especificacao.Pedido.Passo20.EnderecoEntrega
 Feature: Pedido de cliente PJ com endereço de entrega
 
+@ListaDependencias
 Scenario: Configuração
 	Given Nome deste item "Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj.CampoEndEtg_tipo_pessoa"
 	Given Implementado em "Especificacao.Pedido.Pedido"

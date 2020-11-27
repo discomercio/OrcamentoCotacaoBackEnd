@@ -35,3 +35,6 @@ Scenario: pedBonshop (campo pedido_bs_x_at)
     # cn2.Close
     # set cn2 = nothing%>
 			 #       </select>
+
+#todo: verificar com o Hamilton o que fazer
+

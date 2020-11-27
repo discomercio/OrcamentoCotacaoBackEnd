@@ -17,9 +17,9 @@ namespace Especificacao.Testes.Pedido
         #endregion
 
         protected bool ignorarFeature = false;
-        public void GivenIgnorarFeatureNoAmbiente2(string p0)
+        public void GivenIgnorarScenarioNoAmbiente(string p0)
         {
-            Testes.Pedido.PedidoPassosComuns.IgnorarFeatureNoAmbiente(p0, ref ignorarFeature, this.GetType());
+            Testes.Pedido.PedidoPassosComuns.IgnorarScenarioNoAmbiente(p0, ref ignorarFeature, this.GetType());
         }
 
 
@@ -191,12 +191,12 @@ namespace Especificacao.Testes.Pedido
             GivenDadoBaseComEnderecoDeEntrega();
         }
 
-        public void WhenPedidoBase()
+        public void GivenPedidoBase()
         {
             GivenDadoBase();
         }
 
-        public void WhenPedidoBaseClientePF() => GivenDadoBaseClientePF();
-        public void WhenPedidoBaseClientePJ() => GivenDadoBaseClientePJ();
+        public void GivenPedidoBaseClientePF() => GivenDadoBaseClientePF();
+        public void GivenPedidoBaseClientePJ() => GivenDadoBaseClientePJ();
     }
 }

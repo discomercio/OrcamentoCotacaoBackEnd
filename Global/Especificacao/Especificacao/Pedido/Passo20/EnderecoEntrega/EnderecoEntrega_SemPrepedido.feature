@@ -5,11 +5,11 @@ Estes testes não se aplicam ao prepedido porque o flag já é um bool, não pod
 Background: Configuração
 	#na ApiUnis, ele exige que o cliente já esteja cadastrado, então não valida o CPF/CNPJ
 	#por enquanto, ignoramos no prepedido inteiro
-	Given Ignorar feature no ambiente "Especificacao.Prepedido.PrepedidoSteps"
+	Given Ignorar scenario no ambiente "Especificacao.Prepedido.PrepedidoSteps"
 	#na Ambiente.ApiMagento.PedidoMagento.CadastrarPedido o OutroEndereco só pode ser bool
-	Given Ignorar feature no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
+	Given Ignorar scenario no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 	#na "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido" o OutroEndereco só pode ser bool
-	Given Ignorar feature no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
+	Given Ignorar scenario no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 
 Scenario: Informado
 #loja/ClienteEdita.asp

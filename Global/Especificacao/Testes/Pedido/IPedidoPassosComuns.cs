@@ -3,13 +3,13 @@
     public interface IPedidoPassosComuns
     {
         void GivenPedidoBaseComEnderecoDeEntrega();
-        void WhenPedidoBase();
-        void WhenPedidoBaseClientePF();
-        void WhenPedidoBaseClientePJ();
+        void GivenPedidoBase();
+        void GivenPedidoBaseClientePF();
+        void GivenPedidoBaseClientePJ();
         void WhenInformo(string p0, string p1);
         void ThenSemErro(string p0);
         void ThenErro(string p0);
-        void GivenIgnorarFeatureNoAmbiente2(string p0);
+        void GivenIgnorarScenarioNoAmbiente(string p0);
         void ThenSemNenhumErro();
     }
 }

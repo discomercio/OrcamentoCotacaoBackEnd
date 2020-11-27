@@ -41,27 +41,29 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa
         }
 
         private InfraBanco.Modelos.TprazoPagtoVisanet tprazoPagtoVisanet = new InfraBanco.Modelos.TprazoPagtoVisanet();
-        [Given(@"Gravar registro")]
-        public void GivenGravarRegistro()
+        [Given(@"Gravar registro em ""(.*)""")]
+        public void GivenGravarRegistroEm(string p0)
         {
-            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.GravarRegistro(this);
+            Assert.Equal("t_PRAZO_PAGTO_VISANET", p0);
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.GravarRegistroEm(p0, this);
             using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
             db.TprazoPagtoVisanets.Add(tprazoPagtoVisanet);
             db.SaveChanges();
         }
 
-        [Given(@"Novo registro em ""(.*)""")]
-        public void GivenNovoRegistroEm(string p0)
+        [Given(@"Novo registro na tabela ""(.*)""")]
+        public void GivenNovoRegistroNaTabela(string p0)
         {
-            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.NovoRegistroEm(p0, this);
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.NovoRegistroNaTabela(p0, this);
             Assert.Equal("t_PRAZO_PAGTO_VISANET", p0);
             tprazoPagtoVisanet = new InfraBanco.Modelos.TprazoPagtoVisanet();
         }
 
-        [Given(@"Novo registro ""(.*)"" = ""(.*)""")]
-        public void GivenNovoRegistro(string p0, string p1)
+        [Given(@"Novo registro em ""(.*)"", campo ""(.*)"" = ""(.*)""")]
+        public void GivenNovoRegistroEmCampo(string tabela, string p0, string p1)
         {
-            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.NovoRegistro(p0, p1, this);
+            Assert.Equal("t_PRAZO_PAGTO_VISANET", tabela);
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.NovoRegistroEmCampo(tabela, p0, p1, this);
             switch (p0)
             {
                 case "tipo":

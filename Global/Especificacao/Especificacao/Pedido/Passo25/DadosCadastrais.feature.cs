@@ -42,9 +42,7 @@ namespace Especificacao.Especificacao.Pedido.Passo25
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "PedidoDadosCadastraisVerificarQueExecutou - VerificarQueExecutou", "Precisamos verificar os dados cadastrais\r\nQuando chama pelo ASP ou pela Loja, est" +
-                    "a verificação não precisa ser feita porque vamos usar os dados do cliente já cad" +
-                    "astrado.\r\nMas pela API precisa desta verificação", ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "PedidoDadosCadastraisVerificarQueExecutou - VerificarQueExecutou", null, ProgrammingLanguage.CSharp, new string[] {
                         "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }

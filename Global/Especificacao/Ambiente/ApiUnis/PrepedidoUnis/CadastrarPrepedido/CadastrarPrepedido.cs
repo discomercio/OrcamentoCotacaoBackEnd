@@ -31,21 +31,21 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
             prePedidoUnisDto = CadastrarPrepedidoDados.PrepedidoBaseComEnderecoDeEntrega();
         }
 
-        public void WhenPedidoBaseClientePF()
+        public void GivenPedidoBaseClientePF()
         {
             if (ignorarFeature) return;
             Testes.Utils.LogTestes.LogOperacoes2.DadoBaseComEnderecoDeEntrega(this);
             prePedidoUnisDto = CadastrarPrepedidoDados.PrepedidoBaseClientePF();
         }
 
-        public void WhenPedidoBaseClientePJ()
+        public void GivenPedidoBaseClientePJ()
         {
             if (ignorarFeature) return;
             Testes.Utils.LogTestes.LogOperacoes2.DadoBaseComEnderecoDeEntrega(this);
             prePedidoUnisDto = CadastrarPrepedidoDados.PrepedidoBaseClientePJ();
         }
 
-        public void WhenPedidoBase()
+        public void GivenPedidoBase()
         {
             GivenPrepedidoBase();
         }
@@ -145,9 +145,9 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
         }
 
         private bool ignorarFeature = false;
-        public void GivenIgnorarFeatureNoAmbiente2(string p0)
+        public void GivenIgnorarScenarioNoAmbiente(string p0)
         {
-            Testes.Pedido.PedidoPassosComuns.IgnorarFeatureNoAmbiente(p0, ref ignorarFeature, this.GetType());
+            Testes.Pedido.PedidoPassosComuns.IgnorarScenarioNoAmbiente(p0, ref ignorarFeature, this.GetType());
         }
     }
 }

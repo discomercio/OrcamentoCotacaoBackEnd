@@ -7,7 +7,7 @@ Background: Pedido base com endereço de entrega (pedido e prepedido)
 
 	#na API magneto sempre usa o endereço de entrega como endereço cadastral em PF
 	#todo: tirar esta linha e testar na api magento
-	Given Ignorar feature no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
+	Given Ignorar scenario no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 
 	# Configuração
 	#Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "Selecione a justificativa do endereço de entrega!!" é "Código da justficativa inválida!"
@@ -145,7 +145,7 @@ Scenario: EndEtg_cidade errado
 
 #validação da cidade que não está no IBGE
 @ignore
-#todo: afazer: clocar estes testes. Tewm que ver como inicializa o CEP
+#todo: afazer: clocar estes testes. Tem que ver como inicializa o CEP
 Scenario: EndEtg_cidade não no IBGE
 	When Informo "EndEtg_cep" = "68912350"
 	When Informo "EndEtg_cidade" = "Abacate da Pedreira"

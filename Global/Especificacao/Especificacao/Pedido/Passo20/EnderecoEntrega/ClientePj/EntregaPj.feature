@@ -1,5 +1,5 @@
 ﻿@ignore
-@Especificacao/Pedido
+@Especificacao.Pedido.Passo20.EnderecoEntrega
 Feature: Pedido de cliente PJ com endereço de entrega PJ
 #em loja/ClienteEdita.asp:
 #var EndEtg_tipo_pessoa = $('input[name="EndEtg_tipo_pessoa"]:checked').val();

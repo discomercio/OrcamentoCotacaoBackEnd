@@ -16,6 +16,8 @@ namespace Especificacao.Especificacao.Pedido
     [Scope(Tag = "Especificacao.Pedido.Passo10.CamposSimples")]
     [Scope(Tag = "Especificacao.Pedido.Passo20.EnderecoEntrega")]
     [Scope(Tag = "Especificacao.Pedido.FluxoCriacaoPedido")]
+    [Scope(Tag = "Especificacao.Pedido.Passo30")]
+    [Scope(Tag = "Especificacao.Pedido.Passo40")]
     public class PedidoComunsSteps : PedidoPassosComuns
     {
         public PedidoComunsSteps(FeatureContext featureContext)
@@ -49,29 +51,38 @@ namespace Especificacao.Especificacao.Pedido
                 //    "Especificacao.Pedido.FluxoCriacaoPedidoDependencias");
                 return;
             }
+            if (tags.Contains("Especificacao.Pedido.Passo30"))
+            {
+                throw new NotImplementedException("Implementar as dependências");
+            }
+            if (tags.Contains("Especificacao.Pedido.Passo40"))
+            {
+                throw new NotImplementedException("Implementar as dependências");
+            }
         }
 
+        [Given(@"Pedido base cliente PF")]
         [When(@"Pedido base cliente PF")]
-        new public void WhenPedidoBaseClientePF()
+        new public void GivenPedidoBaseClientePF()
         {
             Testes.Utils.LogTestes.LogOperacoes2.DadoBaseClientePF(this);
-            base.WhenPedidoBaseClientePF();
+            base.GivenPedidoBaseClientePF();
         }
 
         [When(@"Pedido base cliente PJ")]
-        new public void WhenPedidoBaseClientePJ()
+        new public void GivenPedidoBaseClientePJ()
         {
             Testes.Utils.LogTestes.LogOperacoes2.DadoBaseClientePJ(this);
-            base.WhenPedidoBaseClientePJ();
+            base.GivenPedidoBaseClientePJ();
         }
 
 
         [Given(@"Pedido base")]
         [When(@"Pedido base")]
-        new public void WhenPedidoBase()
+        new public void GivenPedidoBase()
         {
             Testes.Utils.LogTestes.LogOperacoes2.DadoBase(this);
-            base.WhenPedidoBase();
+            base.GivenPedidoBase();
         }
 
         [When(@"Informo ""(.*)"" = ""(.*)""")]
@@ -101,11 +112,11 @@ namespace Especificacao.Especificacao.Pedido
             Testes.Utils.MapeamentoMensagens.GivenNoAmbienteErroE(p0, p1, p2);
         }
 
-        [Given(@"Ignorar feature no ambiente ""(.*)""")]
-        new public void GivenIgnorarFeatureNoAmbiente2(string p0)
+        [Given(@"Ignorar scenario no ambiente ""(.*)""")]
+        new public void GivenIgnorarScenarioNoAmbiente(string p0)
         {
-            Testes.Utils.LogTestes.LogOperacoes2.IgnorarFeatureNoAmbiente(p0, this);
-            base.GivenIgnorarFeatureNoAmbiente2(p0);
+            Testes.Utils.LogTestes.LogOperacoes2.IgnorarScenarioNoAmbiente(p0, this);
+            base.GivenIgnorarScenarioNoAmbiente(p0);
         }
 
         [Given(@"Pedido base com endereço de entrega")]

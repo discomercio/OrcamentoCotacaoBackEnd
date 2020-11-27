@@ -20,13 +20,15 @@ namespace Especificacao.Especificacao.Pedido.Passo40
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "ignore")]
+    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo40")]
     public partial class FormaPagamentoPermitidasFeature : object, Xunit.IClassFixture<FormaPagamentoPermitidasFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "ignore"};
+                "ignore",
+                "Especificacao.Pedido.Passo40"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -43,7 +45,8 @@ namespace Especificacao.Especificacao.Pedido.Passo40
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "FormaPagamentoPermitidas", null, ProgrammingLanguage.CSharp, new string[] {
-                        "ignore"});
+                        "ignore",
+                        "Especificacao.Pedido.Passo40"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -78,22 +81,101 @@ namespace Especificacao.Especificacao.Pedido.Passo40
             testRunner.CollectScenarioErrors();
         }
         
+        public virtual void FeatureBackground()
+        {
+#line 63
+#line hidden
+#line 64
+ testRunner.Given("Reiniciar o banco ao terminar o cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 65
+ testRunner.Given("Limpar tabela \"t_FORMA_PAGTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 68
+ testRunner.Given("Novo registro na tabela \"t_FORMA_PAGTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 69
+ testRunner.And("Novo registro em \"t_FORMA_PAGTO\", campo \"id\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 70
+ testRunner.And("Gravar registro em \"t_FORMA_PAGTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 73
+ testRunner.Given("Novo registro na tabela \"t_FORMA_PAGTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 74
+ testRunner.And("Novo registro em \"t_FORMA_PAGTO\", campo \"id\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 75
+ testRunner.And("Gravar registro em \"t_FORMA_PAGTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 77
+ testRunner.Given("Novo registro na tabela \"t_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FORMA_PAGTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 78
+ testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FORMA_PAGTO\", campo \"id_fo" +
+                    "rma_pagto\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 79
+ testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FORMA_PAGTO\", campo \"id_or" +
+                    "camentista_e_indicador\" = \"especial: id do orcamentista\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 80
+ testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FORMA_PAGTO\", campo \"st_re" +
+                    "stricao_ativa\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 81
+ testRunner.And("Gravar registro em \"t_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FORMA_PAGTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 84
+ testRunner.Given("Novo registro na tabela \"t_FORMA_PAGTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 85
+ testRunner.And("Novo registro em \"t_FORMA_PAGTO\", campo \"id\" = \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 86
+ testRunner.And("Gravar registro em \"t_FORMA_PAGTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 88
+ testRunner.Given("Novo registro na tabela \"t_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FORMA_PAGTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 89
+ testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FORMA_PAGTO\", campo \"id_fo" +
+                    "rma_pagto\" = \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 90
+ testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FORMA_PAGTO\", campo \"id_or" +
+                    "camentista_e_indicador\" = \"especial: ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TO" +
+                    "DOS\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 91
+ testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FORMA_PAGTO\", campo \"st_re" +
+                    "stricao_ativa\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 92
+ testRunner.And("Gravar registro em \"t_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FORMA_PAGTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+        }
+        
         void System.IDisposable.Dispose()
         {
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="validar op_pce_prestacao_forma_pagto")]
+        [Xunit.SkippableTheoryAttribute(DisplayName="validar op_pce_prestacao_forma_pagto \"indicacao\" = \"S\"")]
         [Xunit.TraitAttribute("FeatureTitle", "FormaPagamentoPermitidas")]
-        [Xunit.TraitAttribute("Description", "validar op_pce_prestacao_forma_pagto")]
-        [Xunit.TraitAttribute("Category", "mytag")]
-        public virtual void ValidarOp_Pce_Prestacao_Forma_Pagto()
+        [Xunit.TraitAttribute("Description", "validar op_pce_prestacao_forma_pagto \"indicacao\" = \"S\"")]
+        [Xunit.InlineDataAttribute("op_pce_prestacao_forma_pagto", "COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA", new string[0])]
+        [Xunit.InlineDataAttribute("op_pse_prim_prest_forma_pagto", "COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA", new string[0])]
+        [Xunit.InlineDataAttribute("op_pse_demais_prest_forma_pagto", "COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA", new string[0])]
+        public virtual void ValidarOp_Pce_Prestacao_Forma_PagtoIndicacaoS(string campo, string rb_Forma_Pagto, string[] exampleTags)
         {
-            string[] tagsOfScenario = new string[] {
-                    "mytag"};
+            string[] tagsOfScenario = exampleTags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("validar op_pce_prestacao_forma_pagto", null, tagsOfScenario, argumentsOfScenario);
-#line 34
+            argumentsOfScenario.Add("campo", campo);
+            argumentsOfScenario.Add("rb_forma_pagto", rb_Forma_Pagto);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("validar op_pce_prestacao_forma_pagto \"indicacao\" = \"S\"", null, tagsOfScenario, argumentsOfScenario);
+#line 96
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -113,10 +195,152 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 35
- testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 63
+this.FeatureBackground();
 #line hidden
-#line 36
+#line 97
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 98
+ testRunner.When("Informo \"indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 99
+ testRunner.When(string.Format("Informo \"rb_forma_pagto\" = \"{0}\"", rb_Forma_Pagto), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 100
+ testRunner.When(string.Format("Informo \"{0}\" = \"1\"", campo), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 101
+ testRunner.Then("Sem erro \"Forma de pagamento não aceita para esse indicador.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 102
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 103
+ testRunner.When("Informo \"indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 104
+ testRunner.When(string.Format("Informo \"rb_forma_pagto\" = \"{0}\"", rb_Forma_Pagto), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 105
+ testRunner.When(string.Format("Informo \"{0}\" = \"2\"", campo), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 106
+ testRunner.Then("Erro \"Forma de pagamento não aceita para esse indicador.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 107
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 108
+ testRunner.When("Informo \"indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 109
+ testRunner.When(string.Format("Informo \"rb_forma_pagto\" = \"{0}\"", rb_Forma_Pagto), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 110
+ testRunner.When(string.Format("Informo \"{0}\" = \"3\"", campo), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 111
+ testRunner.Then("Erro \"Forma de pagamento não aceita para esse indicador.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableTheoryAttribute(DisplayName="validar op_pce_prestacao_forma_pagto \"indicacao\" = \"N\"")]
+        [Xunit.TraitAttribute("FeatureTitle", "FormaPagamentoPermitidas")]
+        [Xunit.TraitAttribute("Description", "validar op_pce_prestacao_forma_pagto \"indicacao\" = \"N\"")]
+        [Xunit.InlineDataAttribute("op_pce_prestacao_forma_pagto", "COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA", new string[0])]
+        [Xunit.InlineDataAttribute("op_pse_prim_prest_forma_pagto", "COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA", new string[0])]
+        [Xunit.InlineDataAttribute("op_pse_demais_prest_forma_pagto", "COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA", new string[0])]
+        public virtual void ValidarOp_Pce_Prestacao_Forma_PagtoIndicacaoN(string campo, string rb_Forma_Pagto, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("campo", campo);
+            argumentsOfScenario.Add("rb_forma_pagto", rb_Forma_Pagto);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("validar op_pce_prestacao_forma_pagto \"indicacao\" = \"N\"", null, tagsOfScenario, argumentsOfScenario);
+#line 119
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 63
+this.FeatureBackground();
+#line hidden
+#line 121
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 122
+ testRunner.When("Informo \"indicacao\" = \"N\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 123
+ testRunner.When(string.Format("Informo \"rb_forma_pagto\" = \"{0}\"", rb_Forma_Pagto), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 124
+ testRunner.When(string.Format("Informo \"{0}\" = \"1\"", campo), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 125
+ testRunner.Then("Sem erro \"Forma de pagamento não aceita para esse indicador.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 127
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 128
+ testRunner.When("Informo \"indicacao\" = \"N\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 129
+ testRunner.When(string.Format("Informo \"rb_forma_pagto\" = \"{0}\"", rb_Forma_Pagto), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 130
+ testRunner.When(string.Format("Informo \"{0}\" = \"2\"", campo), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 131
+ testRunner.Then("Sem erro \"Forma de pagamento não aceita para esse indicador.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 133
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 134
+ testRunner.When("Informo \"indicacao\" = \"N\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 135
+ testRunner.When(string.Format("Informo \"rb_forma_pagto\" = \"{0}\"", rb_Forma_Pagto), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 136
+ testRunner.When(string.Format("Informo \"{0}\" = \"3\"", campo), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 137
+ testRunner.Then("Sem erro \"Forma de pagamento não aceita para esse indicador.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 139
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 140
+ testRunner.When("Informo \"indicacao\" = \"N\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 141
+ testRunner.When(string.Format("Informo \"rb_forma_pagto\" = \"{0}\"", rb_Forma_Pagto), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 142
+ testRunner.When(string.Format("Informo \"{0}\" = \"4\"", campo), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 143
  testRunner.Then("Erro \"Forma de pagamento não aceita para esse indicador.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
