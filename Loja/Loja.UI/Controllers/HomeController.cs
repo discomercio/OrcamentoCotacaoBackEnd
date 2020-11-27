@@ -79,6 +79,21 @@ namespace Loja.UI.Controllers
             return lst;
         }
 
+        [HttpPost]
+        public async Task<bool> RemoverAvisos(List<string> itens)
+        {
+            var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
+            bool retorno = false;
+
+            if(itens != null)
+            {
+                retorno = await usuarioAcessoBll
+                .RemoverAvisos(usuarioLogado.Loja_atual_id, usuarioLogado.Usuario_nome_atual, itens);
+            }
+
+            return retorno;
+        }
+
         public IActionResult Privacy()
         {
             return View();

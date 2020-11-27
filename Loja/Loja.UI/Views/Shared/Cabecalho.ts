@@ -1,5 +1,6 @@
 ﻿import { Constantes } from "../../UtilTs/Constantes/Constantes";
 import { DataUtils } from "../../UtilTs/DataUtils/DataUtils";
+import { ErrorModal } from "./Error";
 //OBS: não entendi o pq que temos que importar algo para remover o erro no window 
 
 declare var usuarioLogado: any;
@@ -22,7 +23,7 @@ $(function () {
         //não deixar fechar dropdown ao clicar dentro
         $("#drop_avisos").click((e) => {
             e.stopImmediatePropagation();
-        })
+        });
     }
 });
 
@@ -38,14 +39,67 @@ function getRandomColor() {
     return color;
 }
 
+
 declare var document: HTMLDocument;
 window.BuscarTodosAvisos = () => {
-    debugger;
-    document.location.href = "/lojamvc/Home/Index/?novaloja=" + $('#cabecacomboLojas').val();
+    RecarregarPagina();
+}
 
+function RecarregarPagina() {
+    document.location.href = "/lojamvc/Home/Index/?novaloja=" + $('#cabecacomboLojas').val();
+}
+
+window.RemoverAvisosSelecionado = () => {
+    
+    //vamos buscar os itens selecionados
+    let itens: Array<string> = new Array();
+    
+    let c: JQuery<HTMLInputElement> = $('.linhas input');
+
+    for (let i = 0; i < c.length; i++) {
+        if (c[i].checked == true) {
+            itens.push(c[i].value);
+        }        
+    }
+    //vamos salvar os dados como lido
+    NaoExibirMaisEssesAvisos(itens);
+}
+
+function NaoExibirMaisEssesAvisos(itens:string[]) {
+    $.ajax({
+        url: "../lojamvc/Home/RemoverAvisos",
+        type: "POST",
+        data: { itens: itens },
+        dataType: "json",
+        success: function (t) {
+            RemoverDaTela();
+        },
+        error: function () {
+            debugger;
+            swal("Erro", "Falha ao remover avisos!");
+        }
+    });
+}
+
+function RemoverDaTela() {
+    document.getElementById("drop_avisos").scrollTop = 0;
+    let c: JQuery<HTMLInputElement> = $('.linhas input');
+    let item: HTMLInputElement;
+    for (let i = 0; i < c.length; i++) {
+        if (c[i].checked == true) {
+            item = c[i];
+            $(item).closest(".linhas").remove();
+        }
+    }
+    //fechamos o dropdown
+    $("#drop_avisos").removeClass("show");
+    //atualizamos a qtde de msg
+    c = $("#drop_avisos input[type=checkbox]");
+    $("#qtdeMsg").text(c.length - 1);
 }
 
 function BuscarAvisosNaoLidos() {
+
     $.ajax({
         url: "../lojamvc/Home/BuscarAvisosNaoLidos",
         type: "GET",
@@ -67,17 +121,10 @@ function TratarCamposAvisos(t: any) {
                 let linha: JQuery<HTMLElement> = $("#itemMsg_").clone();
                 linha.prop('id', "itemMsg_" + i);
                 //tratando checkbox
-                if (t[i].Id == undefined) {
-                    console.log(t[i]);
-                    debugger;
-
-                }
-
                 linha.children().find("#chk_").val(t[i].Id);
                 linha.children().find("#chk_").prop('id', "chk_" + i);
 
                 //tratando mensagem
-                //t[i].Mensagem.replace("\r\n", "<br\>");
                 linha.children().find("#paragrafo-avisos").html(t[i].Mensagem);
 
                 //divulgado em
@@ -90,11 +137,9 @@ function TratarCamposAvisos(t: any) {
             }
 
             let btn_remover: string = "<li id='btn_remover'>" +
-                "<button type='button' class='btn btn-primary col-xl-12' > Remover Avisos </button>" +
+                "<button type='button' class='btn btn-primary col-xl-12' onclick='RemoverAvisosSelecionado()'> Remover Avisos </button>" +
                 "</li>";
             $("#itemMsg_").parent().append(btn_remover);
         }
-
-
     }
 }
