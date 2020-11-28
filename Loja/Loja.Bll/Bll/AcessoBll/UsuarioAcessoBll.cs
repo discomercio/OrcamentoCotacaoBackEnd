@@ -384,6 +384,11 @@ namespace Loja.Bll.Bll.AcessoBll
         {
             return await avisosBll.RemoverAvisos(loja, usuario.ToUpper(), itens);
         }
+
+        public async Task<bool> MarcarAvisoExibido(List<string> lst, string usuario, string loja)
+        {
+            return await avisosBll.MarcarAvisoExibido(lst, usuario.ToUpper(), loja);
+        }
     }
 }
 

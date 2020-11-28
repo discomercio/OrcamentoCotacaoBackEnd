@@ -46,7 +46,7 @@
                             {
                                 @id = "cabecacomboLojas",
                                 @class = "custom-select",
-                                @onchange = "BuscarTodosAvisos()"
+                                @onchange = "AlterarLoja()"
                             })
                         </div>
                     }
@@ -57,7 +57,7 @@
         @* Avisos *@
         <li class="header-notification">
             <div class="dropdown-primary dropdown">
-                <div class="dropdown-toggle" data-toggle="dropdown">
+                <div class="dropdown-toggle" data-toggle="dropdown" id="sininho">
                     <i class="feather icon-bell"></i>
 
                     <span class="badge bg-c-red" id="qtdeMsg"></span>

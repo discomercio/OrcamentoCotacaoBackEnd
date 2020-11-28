@@ -1244,13 +1244,24 @@ namespace UtilsGlobais
 #nullable disable
         }
 
-        public static async Task<IEnumerable<Taviso>> BuscarAvisos(string loja, string usuario, ContextoBdProvider contexto)
+        public static async Task<IEnumerable<Taviso>> BuscarTodosAvisos(List<string> lst, ContextoBdProvider contexto)
+        {
+            var db = contexto.GetContextoLeitura();
+            var ret = (from c in db.Tavisos
+                       where (from d in lst
+                              select d).Contains(c.Id)
+                       select c).ToListAsync();
+
+            return await ret;
+        }
+
+        public static async Task<IEnumerable<Taviso>> BuscarAvisosNaoLidos(string loja, string usuario, ContextoBdProvider contexto)
         {
             var db = contexto.GetContextoLeitura();
             var ret = (from c in db.Tavisos
                        where (!(from d in db.TavisoLidos
                                 where d.Usuario == usuario
-                                select d.Id).Contains(c.Id)) &&                       
+                                select d.Id).Contains(c.Id)) &&
                        ((c.Destinatario == "") ||
                              (c.Destinatario == null) ||
                              (c.Destinatario == loja))
@@ -1271,5 +1282,15 @@ namespace UtilsGlobais
             return await ret;
         }
 
+        public static async Task<IEnumerable<TavisoExibido>> BuscarAvisosExibidos(string usuario, ContextoBdProvider contexto)
+        {
+            var db = contexto.GetContextoLeitura();
+
+            var ret = (from c in db.TavisoExibidos
+                       where c.Usuario == usuario
+                       select c).ToListAsync();
+
+            return await ret;
+        }
     }
 }

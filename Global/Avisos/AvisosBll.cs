@@ -23,7 +23,7 @@ namespace Avisos
         {
             var db = contextoProvider.GetContextoLeitura();
             //vamos buscar todos os avisos
-            List<Taviso> avisos = (await UtilsGlobais.Util.BuscarAvisos(loja, usuario, contextoProvider)).ToList();
+            List<Taviso> avisos = (await UtilsGlobais.Util.BuscarAvisosNaoLidos(loja, usuario, contextoProvider)).ToList();
 
             //vamos buscar os avisos lidos
             List<AvisoDados> ret = new List<AvisoDados>();
@@ -127,6 +127,101 @@ namespace Avisos
             }
 
             return await Task.FromResult(log);
+        }
+
+        public async Task<bool> MarcarAvisoExibido(List<string> lst, string usuario, string loja)
+        {
+            bool retorno = false;
+            List<Taviso> avisos = (await UtilsGlobais.Util.BuscarTodosAvisos(lst, contextoProvider)).ToList();
+            List<TavisoExibido> avisosExibidos = (await UtilsGlobais.Util.BuscarAvisosExibidos(usuario, contextoProvider)).ToList();
+            if (avisos != null)
+            {
+                if (lst.Count > 0)
+                {
+                    //vamos pegar o que não existe mais em avisos
+                    List<string> lstNaoExiste = (from c in avisos
+                                                 where !(from d in lst
+                                                         select d).Contains(c.Id)
+                                                 select c.Id).ToList();
+
+                    //vamos verificar o que não existe para remover da lista enviada
+                    if(lstNaoExiste != null)
+                    {
+                        if(lstNaoExiste.Count > 0)
+                        {
+                            foreach(var i in lstNaoExiste)
+                            {
+                                string id = (from c in lst
+                                             where c == i
+                                             select c).FirstOrDefault();
+
+                                lst.Remove(id);
+                            }
+                        }
+                    }
+
+                    //pegando avisos não exibidos
+                    List<string> lstAvisoNaoExibido = (from c in lst
+                                                       where !(from d in avisosExibidos
+                                                               where d.Usuario == usuario
+                                                               select d.Id).Contains(c)
+                                                       select c).ToList();
+
+                    List<TavisoExibido> lstAvisosJaExibidos = (from c in avisosExibidos
+                                                               where (from d in lst
+                                                                      select d).Contains(c.Id) &&
+                                                                      c.Usuario == usuario
+                                                               select c).ToList();
+
+                    using (var dbGravacao = contextoProvider.GetContextoGravacaoParaUsing())
+                    {
+                        //gravar os avisos não exibidos
+                        if (lstAvisoNaoExibido.Count > 0)
+                        {
+                            await GravarAvisoExibido(lstAvisoNaoExibido, usuario, dbGravacao);
+                        }
+
+                        //atualiza avisos ja exibidos
+                        if (lstAvisosJaExibidos.Count > 0)
+                        {
+                            await AtualizaAvisoJaExibido(lstAvisosJaExibidos, dbGravacao);
+                        }
+
+                        dbGravacao.transacao.Commit();
+                        retorno = true;
+                    }
+                }
+            }
+            return retorno;
+        }
+
+        private async Task GravarAvisoExibido(List<string> lstAvisoNaoExibido, string usuario,
+            ContextoBdGravacao dbGravacao)
+        {
+            foreach (var i in lstAvisoNaoExibido)
+            {
+                TavisoExibido naoExibido = new TavisoExibido
+                {
+                    Id = i,
+                    Usuario = usuario,
+                    Dt_hr_ult_exibicao = DateTime.Now
+                };
+
+                dbGravacao.Add(naoExibido);
+            }
+
+            await dbGravacao.SaveChangesAsync();
+        }
+
+        private async Task AtualizaAvisoJaExibido(List<TavisoExibido> lstAvisosJaExibidos, ContextoBdGravacao dbGravacao)
+        {
+            foreach (var i in lstAvisosJaExibidos)
+            {
+                i.Dt_hr_ult_exibicao = DateTime.Now;
+                dbGravacao.Update(i);
+            }
+
+            await dbGravacao.SaveChangesAsync();
         }
     }
 }

@@ -94,6 +94,18 @@ namespace Loja.UI.Controllers
             return retorno;
         }
 
+        [HttpPost]
+        public async Task<bool> MarcarAvisoExibido(List<string> lst)
+        {
+            var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
+
+            if(lst != null)
+            {
+                return await usuarioAcessoBll.MarcarAvisoExibido(lst, usuarioLogado.Usuario_nome_atual, usuarioLogado.Loja_atual_id);
+            }
+            return false;
+        }
+
         public IActionResult Privacy()
         {
             return View();

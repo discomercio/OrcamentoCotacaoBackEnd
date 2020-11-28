@@ -16,16 +16,59 @@ $(function () {
         setRandomColor();
         $("#avatar").text(letra.toUpperCase());
         $("#menu-usuario").attr("data-original-title", usuarioLogado);
+        debugger;
+        //O IE está armazenando a chamada ajax no cache, sendo assim, não faz novas chamadas
+        //forçamos para não guardar cache no IE
+        $.ajaxSetup({ cache: false });
 
-        //vamos buscar via ajax os avisos
         BuscarAvisosNaoLidos();
 
         //não deixar fechar dropdown ao clicar dentro
         $("#drop_avisos").click((e) => {
             e.stopImmediatePropagation();
         });
+
+        
     }
 });
+
+//ao abrir o dropdown
+$("#sininho").on('click', function () {
+    //vamos marcar na base que os avisos foram exibidos
+    MarcarAvisosExibido();
+});
+
+function MarcarAvisosExibido() {
+    let c: JQuery<HTMLInputElement> = $('.linhas input');
+
+    //vamos pegar os id's e mandar para o controller
+    let lstId: Array<string> = new Array();
+
+    for (let i = 0; i < c.length; i++) {
+        if (c[i].value != "") {
+            lstId.push(c[i].value);
+        }
+    }
+    //faz a chamada Ajax
+    MarcarAvisoExibido(lstId);
+}
+
+function MarcarAvisoExibido(lst: Array<string>) {
+    let url: string = "/lojamvc/Home/MarcarAvisoExibido";
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: { lst: lst },
+        dataType: "json",
+        success: function () {
+            debugger;
+        },
+        error: function (t) {
+            debugger;
+            swal("Erro", "Falha ao marcar avisos como exibidos!");
+        }
+    });
+}
 
 function setRandomColor() {
     $("#avatar").css("background-color", getRandomColor());
@@ -41,7 +84,7 @@ function getRandomColor() {
 
 
 declare var document: HTMLDocument;
-window.BuscarTodosAvisos = () => {
+window.AlterarLoja = () => {
     RecarregarPagina();
 }
 
@@ -50,24 +93,27 @@ function RecarregarPagina() {
 }
 
 window.RemoverAvisosSelecionado = () => {
-    
+
     //vamos buscar os itens selecionados
     let itens: Array<string> = new Array();
-    
+
     let c: JQuery<HTMLInputElement> = $('.linhas input');
 
     for (let i = 0; i < c.length; i++) {
         if (c[i].checked == true) {
             itens.push(c[i].value);
-        }        
+        }
     }
     //vamos salvar os dados como lido
     NaoExibirMaisEssesAvisos(itens);
 }
 
-function NaoExibirMaisEssesAvisos(itens:string[]) {
+function NaoExibirMaisEssesAvisos(itens: string[]) {
+
+    let url: string = "/lojamvc/Home/RemoverAvisos";
+
     $.ajax({
-        url: "../lojamvc/Home/RemoverAvisos",
+        url: url,
         type: "POST",
         data: { itens: itens },
         dataType: "json",
@@ -99,14 +145,21 @@ function RemoverDaTela() {
 }
 
 function BuscarAvisosNaoLidos() {
-
+    debugger;
+    //ao alterar a loja estamos com problema, pois a url esta mantendo "/lojamvc/Home/"
+    let url: string = "/lojamvc/Home/BuscarAvisosNaoLidos";
     $.ajax({
-        url: "../lojamvc/Home/BuscarAvisosNaoLidos",
+        url: url,
         type: "GET",
-        //data: { nendereco: $('#nendereco').val(), localidade: $('#localidade').val(), lstufs: $('#lstufs').val() },
         dataType: "json",
         success: function (t) {
+            debugger;
             TratarCamposAvisos(t);
+        },
+        error: function (t) {
+            debugger;
+
+            swal("Erro", "Falha ao buscar avisos!");
         }
     });
 }
