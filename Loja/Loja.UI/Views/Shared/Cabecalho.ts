@@ -1,6 +1,4 @@
-﻿import { Constantes } from "../../UtilTs/Constantes/Constantes";
-import { DataUtils } from "../../UtilTs/DataUtils/DataUtils";
-import { ErrorModal } from "./Error";
+﻿import { DataUtils } from "../../UtilTs/DataUtils/DataUtils";
 //OBS: não entendi o pq que temos que importar algo para remover o erro no window 
 
 declare var usuarioLogado: any;
@@ -16,7 +14,7 @@ $(function () {
         setRandomColor();
         $("#avatar").text(letra.toUpperCase());
         $("#menu-usuario").attr("data-original-title", usuarioLogado);
-        debugger;
+
         //O IE está armazenando a chamada ajax no cache, sendo assim, não faz novas chamadas
         //forçamos para não guardar cache no IE
         $.ajaxSetup({ cache: false });
@@ -61,10 +59,9 @@ function MarcarAvisoExibido(lst: Array<string>) {
         data: { lst: lst },
         dataType: "json",
         success: function () {
-            debugger;
+            //não fazemos nada
         },
         error: function (t) {
-            debugger;
             swal("Erro", "Falha ao marcar avisos como exibidos!");
         }
     });
@@ -121,7 +118,6 @@ function NaoExibirMaisEssesAvisos(itens: string[]) {
             RemoverDaTela();
         },
         error: function () {
-            debugger;
             swal("Erro", "Falha ao remover avisos!");
         }
     });
@@ -145,7 +141,6 @@ function RemoverDaTela() {
 }
 
 function BuscarAvisosNaoLidos() {
-    debugger;
     //ao alterar a loja estamos com problema, pois a url esta mantendo "/lojamvc/Home/"
     let url: string = "/lojamvc/Home/BuscarAvisosNaoLidos";
     $.ajax({
@@ -153,12 +148,9 @@ function BuscarAvisosNaoLidos() {
         type: "GET",
         dataType: "json",
         success: function (t) {
-            debugger;
             TratarCamposAvisos(t);
         },
         error: function (t) {
-            debugger;
-
             swal("Erro", "Falha ao buscar avisos!");
         }
     });
