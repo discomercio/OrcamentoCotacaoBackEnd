@@ -3,7 +3,11 @@
 
 declare var usuarioLogado: any;
 declare var window: any;
-
+declare var url_chaverLoja: string;
+declare var url_buscarAvisosNaoLidos: string;
+declare var url_MarcarAvisoExibido: string;
+declare var url_RemoverAvisos: string;
+declare var url_base: string;
 $(function () {
     if (usuarioLogado != "" && usuarioLogado != undefined) {
         let letra = usuarioLogado.substring(0, 2);
@@ -26,7 +30,7 @@ $(function () {
             e.stopImmediatePropagation();
         });
 
-        
+
     }
 });
 
@@ -52,9 +56,8 @@ function MarcarAvisosExibido() {
 }
 
 function MarcarAvisoExibido(lst: Array<string>) {
-    let url: string = "/lojamvc/Home/MarcarAvisoExibido";
     $.ajax({
-        url: url,
+        url: url_MarcarAvisoExibido,
         type: "POST",
         data: { lst: lst },
         dataType: "json",
@@ -86,7 +89,7 @@ window.AlterarLoja = () => {
 }
 
 function RecarregarPagina() {
-    document.location.href = "/lojamvc/Home/Index/?novaloja=" + $('#cabecacomboLojas').val();
+    document.location.href = url_chaverLoja + "/?novaloja=" + $('#cabecacomboLojas').val();
 }
 
 window.RemoverAvisosSelecionado = () => {
@@ -106,11 +109,9 @@ window.RemoverAvisosSelecionado = () => {
 }
 
 function NaoExibirMaisEssesAvisos(itens: string[]) {
-
-    let url: string = "/lojamvc/Home/RemoverAvisos";
-
+    
     $.ajax({
-        url: url,
+        url: url_RemoverAvisos,
         type: "POST",
         data: { itens: itens },
         dataType: "json",
@@ -141,10 +142,8 @@ function RemoverDaTela() {
 }
 
 function BuscarAvisosNaoLidos() {
-    //ao alterar a loja estamos com problema, pois a url esta mantendo "/lojamvc/Home/"
-    let url: string = "/lojamvc/Home/BuscarAvisosNaoLidos";
     $.ajax({
-        url: url,
+        url: url_buscarAvisosNaoLidos,
         type: "GET",
         dataType: "json",
         success: function (t) {
@@ -180,7 +179,6 @@ function TratarCamposAvisos(t: any) {
 
                 $("#itemMsg_").parent().append(linha);
             }
-            debugger;
             let btn_remover: string = "<li id='btn_remover'>" +
                 "<button type='button' class='btn btn-primary col-xl-12' onclick='RemoverAvisosSelecionado()'> Remover Avisos </button>" +
                 "</li>";

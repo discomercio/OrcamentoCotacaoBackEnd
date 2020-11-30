@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iis": {
-      "applicationUrl": "http://localhost:9010/lojamvc",
+      "applicationUrl": "http://localhost:9001/homologacaomvc/lojamvc",
       "sslPort": 0
     },
     "iisExpress": {
@@ -31,7 +31,7 @@
     "SiteColors": {
       "commandName": "IIS",
       "launchBrowser": true,
-      "launchUrl": "http://localhost:9010/lojamvc"
+      "launchUrl": "http://localhost:9001/homologacaomvc/lojamvc"
     }
   }
 }
