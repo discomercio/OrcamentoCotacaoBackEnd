@@ -11,28 +11,28 @@ namespace Especificacao.Testes.Pedido
         public void WhenPedidoBase()
         {
             if (ignorarFeature) return;
-            Utils.LogTestes.LogOperacoes.DadoBase(this.GetType());
+            Utils.LogTestes.LogOperacoes2.DadoBase(this);
             base.Executar(i => i.WhenPedidoBase());
         }
 
         public void WhenPedidoBaseClientePF()
         {
             if (ignorarFeature) return;
-            Utils.LogTestes.LogOperacoes.DadoBaseClientePF(this.GetType());
+            Utils.LogTestes.LogOperacoes2.DadoBaseClientePF(this);
             base.Executar(i => i.WhenPedidoBaseClientePF());
         }
 
         public void WhenPedidoBaseClientePJ()
         {
             if (ignorarFeature) return;
-            Utils.LogTestes.LogOperacoes.DadoBaseClientePJ(this.GetType());
+            Utils.LogTestes.LogOperacoes2.DadoBaseClientePJ(this);
             base.Executar(i => i.WhenPedidoBaseClientePJ());
         }
 
         public void WhenInformo(string p0, string p1)
         {
             if (ignorarFeature) return;
-            Utils.LogTestes.LogOperacoes.Informo(p0, p1, this.GetType());
+            Utils.LogTestes.LogOperacoes2.Informo(p0, p1, this);
             base.Executar(i => i.WhenInformo(p0, p1));
         }
 
@@ -40,7 +40,7 @@ namespace Especificacao.Testes.Pedido
         {
             if (ignorarFeature) return;
             mensagem = Utils.MapeamentoMensagens.MapearMensagem(this.GetType().FullName, mensagem);
-            Utils.LogTestes.LogOperacoes.SemErro(mensagem, this.GetType());
+            Utils.LogTestes.LogOperacoes2.SemErro(mensagem, this);
             base.Executar(i => i.ThenSemErro(mensagem));
         }
 
@@ -48,14 +48,14 @@ namespace Especificacao.Testes.Pedido
         {
             if (ignorarFeature) return;
             mensagem = Utils.MapeamentoMensagens.MapearMensagem(this.GetType().FullName, mensagem);
-            Utils.LogTestes.LogOperacoes.Erro(mensagem, this.GetType());
+            Utils.LogTestes.LogOperacoes2.Erro(mensagem, this);
             base.Executar(i => i.ThenErro(mensagem));
         }
 
         public void ThenSemNenhumErro()
         {
             if (ignorarFeature) return;
-            Utils.LogTestes.LogOperacoes.SemNenhumErro(this.GetType());
+            Utils.LogTestes.LogOperacoes2.SemNenhumErro(this);
             base.Executar(i => i.ThenSemNenhumErro());
         }
 

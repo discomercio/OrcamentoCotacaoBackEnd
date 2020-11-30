@@ -65,6 +65,10 @@ namespace Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadastrar
                         pedidoDto.EnderecoEntrega.OutroEndereco = valor;
                     break;
                 //endetg
+                case "EndEtg_nome":
+                    pedidoDto.EnderecoEntrega ??= new global::Loja.Bll.Dto.ClienteDto.EnderecoEntregaDtoClienteCadastro();
+                    pedidoDto.EnderecoEntrega.EndEtg_nome = p1;
+                    break;
                 case "EndEtg_bairro":
                     pedidoDto.EnderecoEntrega ??= new global::Loja.Bll.Dto.ClienteDto.EnderecoEntregaDtoClienteCadastro();
                     pedidoDto.EnderecoEntrega.EndEtg_bairro = p1;
@@ -84,6 +88,10 @@ namespace Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadastrar
                 case "EndEtg_endereco":
                     pedidoDto.EnderecoEntrega ??= new global::Loja.Bll.Dto.ClienteDto.EnderecoEntregaDtoClienteCadastro();
                     pedidoDto.EnderecoEntrega.EndEtg_endereco = p1;
+                    break;
+                case "EndEtg_endereco_complemento":
+                    pedidoDto.EnderecoEntrega ??= new global::Loja.Bll.Dto.ClienteDto.EnderecoEntregaDtoClienteCadastro();
+                    pedidoDto.EnderecoEntrega.EndEtg_endereco_complemento = p1;
                     break;
                 case "EndEtg_cidade":
                     pedidoDto.EnderecoEntrega ??= new global::Loja.Bll.Dto.ClienteDto.EnderecoEntregaDtoClienteCadastro();

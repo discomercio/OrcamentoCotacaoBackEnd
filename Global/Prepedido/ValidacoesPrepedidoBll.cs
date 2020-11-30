@@ -45,7 +45,7 @@ namespace Prepedido
             List<string> lstFornec = new List<string>();
             lstFornec = prepedido.ListaProdutos.Select(x => x.Fabricante).Distinct().ToList();
 
-            List<CoeficienteDados> lstCoeficiente = new List<CoeficienteDados>();
+            List<CoeficienteDados> lstCoeficiente;
             //precisa verificar se a forma de pagto é diferente de av para não dar erro na validação
 
             //buscar coeficiente 
@@ -136,7 +136,7 @@ namespace Prepedido
                     lstCoeficiente.ForEach(y =>
                     {
                         if (y.Fabricante == x.Fabricante && y.Coeficiente != x.CustoFinancFornecCoeficiente)
-                            lstErros.Add("Coeficiente do fabricante (" + x.Fabricante + ") esta incorreto!");
+                            lstErros.Add("Coeficiente do fabricante (" + x.Fabricante + ") está incorreto!");
                     });
                 }
                 else
@@ -320,24 +320,45 @@ namespace Prepedido
         }
 
 
-        public async Task<bool> ValidarEnderecoEntrega(Cliente.Dados.EnderecoEntregaClienteCadastroDados endEntrega,
+        public async Task ValidarEnderecoEntrega(Cliente.Dados.EnderecoEntregaClienteCadastroDados endEntrega,
             List<string> lstErros, string orcamentista, string tipoCliente)
         {
-            bool retorno = true;
-
             if (endEntrega.OutroEndereco)
             {
                 await ValidarDadosEnderecoEntrega(endEntrega, orcamentista, lstErros, contextoProvider);
 
                 ValidarDadosPessoaEnderecoEntrega(endEntrega, lstErros, false, tipoCliente);
-
-                if (lstErros.Count != 0)
-                {
-                    retorno = false;
-                }
+                VerificarCaracteresInvalidosEnderecoEntregaClienteCadastro(endEntrega, lstErros);
             }
+        }
 
-            return retorno;
+        private void VerificarCaracteresInvalidosEnderecoEntregaClienteCadastro(
+            Cliente.Dados.EnderecoEntregaClienteCadastroDados endEtg, List<string> lstErros)
+        {
+            string caracteres;
+            if (UtilsGlobais.Util.IsTextoValido(endEtg.EndEtg_endereco, out caracteres).Length > 0)
+                lstErros.Add("O CAMPO 'ENDEREÇO DE ENTREGA' POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
+
+            if (UtilsGlobais.Util.IsTextoValido(endEtg.EndEtg_endereco_numero ?? "", out caracteres).Length > 0)
+                lstErros.Add("O CAMPO NÚMERO DO ENDEREÇO DE ENTREGA POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
+
+            if (UtilsGlobais.Util.IsTextoValido(endEtg.EndEtg_endereco_complemento ?? "", out caracteres).Length > 0)
+                lstErros.Add("O CAMPO COMPLEMENTO DO ENDEREÇO DE ENTREGA POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
+
+            if (UtilsGlobais.Util.IsTextoValido(endEtg.EndEtg_bairro ?? "", out caracteres).Length > 0)
+                lstErros.Add("O CAMPO BAIRRO DO ENDEREÇO DE ENTREGA POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
+
+            if (UtilsGlobais.Util.IsTextoValido(endEtg.EndEtg_cidade ?? "", out caracteres).Length > 0)
+                lstErros.Add("O CAMPO CIDADE DO ENDEREÇO DE ENTREGA POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
+
+            if (UtilsGlobais.Util.IsTextoValido(endEtg.EndEtg_nome ?? "", out caracteres).Length > 0)
+                lstErros.Add("O CAMPO NOME DO ENDEREÇO DE ENTREGA POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
+
+            //vamos verificar se o endereço de entrega esta com os valores corretos
+            if (endEtg.EndEtg_endereco.Length > Constantes.MAX_TAMANHO_CAMPO_ENDERECO)
+                lstErros.Add("ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br> TAMANHO ATUAL: " +
+                    endEtg.EndEtg_endereco.Length + " CARACTERES <br> TAMANHO MÁXIMO: " +
+                    Constantes.MAX_TAMANHO_CAMPO_ENDERECO + " CARACTERES");
         }
 
         private async Task ValidarDadosEnderecoEntrega(Cliente.Dados.EnderecoEntregaClienteCadastroDados endEntrega,

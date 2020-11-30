@@ -21,7 +21,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace
         {
             //este é feito dentro dele mesmo
             RegistroDependencias.AdicionarDependencia(
-                "Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace.ObterCodigoMarketplaceListaDependencias",
+                "Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace.ObterCodigoMarketplaceListaDependencias", this,
                 "Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace.ObterCodigoMarketplace"
                 );
 
@@ -35,9 +35,9 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace
         [Then(@"Resposta com número certo de registros")]
         public void ThenRespostaComNumeroCertoDeRegistros()
         {
-            Testes.Utils.LogTestes.LogOperacoes.MensagemEspecial("ThenRespostaComNumeroCertoDeRegistros", this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.MensagemEspecial("ThenRespostaComNumeroCertoDeRegistros", this);
 
-            Testes.Utils.LogTestes.LogOperacoes.ChamadaController(pedidoMagentoController.GetType(), "ObterCodigoMarketplace", this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.ChamadaController(pedidoMagentoController.GetType(), "ObterCodigoMarketplace", this);
             Microsoft.AspNetCore.Mvc.ActionResult<MagentoBusiness.MagentoDto.MarketplaceDto.MarketplaceResultadoDto> ret = pedidoMagentoController.ObterCodigoMarketplace(tokenAcesso).Result;
             Microsoft.AspNetCore.Mvc.ActionResult res = ret.Result;
 
@@ -48,7 +48,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace
             MarketplaceResultadoDto marketplaceResultadoDto = (MarketplaceResultadoDto)((Microsoft.AspNetCore.Mvc.OkObjectResult)res).Value;
             Assert.Empty(marketplaceResultadoDto.ListaErros);
 
-            Testes.Utils.LogTestes.LogOperacoes.BancoDados.Verificacao("db.TcodigoDescricaos", this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.Verificacao("db.TcodigoDescricaos", this);
             var db = contextoBdProvider.GetContextoLeitura();
             var lstTcodigo = from c in db.TcodigoDescricaos
                              where c.Grupo == InfraBanco.Constantes.Constantes.GRUPO_T_CODIGO_DESCRICAO__PEDIDOECOMMERCE_ORIGEM &&

@@ -47,8 +47,8 @@ namespace Pedido
             this.cepBll = cepBll;
             this.bancoNFeMunicipio = bancoNFeMunicipio;
         }
-        //criar uma classe: Global/Pedido/PedidoBll/PedidoCriacao com a rotina CadastrarPrepedido, 
-        //quer vai retornar um PedidoCriacaoRetorno com o id do pedido, dos filhotes, 
+        //uma classe: Global/Pedido/PedidoBll/PedidoCriacao com a rotina CadastrarPrepedido, 
+        //que retorna um PedidoCriacaoRetorno com o id do pedido, dos filhotes, 
         //as mensagens de erro e as mensagens de erro da validação dos 
         //dados cadastrais (quer dizer, duas listas de erro.) 
         //É que na loja o tratamento dos erros dos dados cadastrais vai ser diferente).
@@ -166,81 +166,73 @@ namespace Pedido
             string c_custoFinancFornecTipoParcelamento = prepedidoBll.ObterSiglaFormaPagto(pedido.FormaPagtoCriacao);
             short c_custoFinancFornecQtdeParcelas = (Int16)prepedidoBll.ObterQtdeParcelasFormaPagto(pedido.FormaPagtoCriacao);
 
-            if (UtilsGlobais.Util.ValidarTipoCustoFinanceiroFornecedor(pedidoRetorno.ListaErros, c_custoFinancFornecTipoParcelamento,
-                c_custoFinancFornecQtdeParcelas))
-            {
-                if (validacoesFormaPagtoBll.ValidarFormaPagto(pedido.FormaPagtoCriacao, pedidoRetorno.ListaErros,
+            UtilsGlobais.Util.ValidarTipoCustoFinanceiroFornecedor(pedidoRetorno.ListaErros, c_custoFinancFornecTipoParcelamento,
+                c_custoFinancFornecQtdeParcelas);
+
+            validacoesFormaPagtoBll.ValidarFormaPagto(pedido.FormaPagtoCriacao, pedidoRetorno.ListaErros,
                 pedido.LimiteArredondamento, pedido.MaxErroArredondamento, c_custoFinancFornecTipoParcelamento, formasPagto,
-                tOrcamentista.Permite_RA_Status, pedido.Vl_total_NF, pedido.Vl_total))
+                tOrcamentista.Permite_RA_Status, pedido.Vl_total_NF, pedido.Vl_total);
+            if (pedidoRetorno.ListaErros.Any())
+                return pedidoRetorno;
+
+
+            //vamos fazer a validação de Especificacao/Especificacao/Pedido/Passo40/FormaPagamentoProdutos.feature
+            //vamos retornar true ou false
+            await pedidoBll.ValidarProdutosComFormaPagto(pedido, c_custoFinancFornecTipoParcelamento,
+                c_custoFinancFornecQtdeParcelas, pedidoRetorno.ListaErros);
+
+            /* 9- valida endereço de entrega */
+            await validacoesPrepedidoBll.ValidarEnderecoEntrega(pedido.EnderecoEntrega, pedidoRetorno.ListaErros,
+                pedido.DadosCliente.Indicador_Orcamentista, pedido.DadosCliente.Tipo);
+            if (pedidoRetorno.ListaErros.Any())
+                return pedidoRetorno;
+
+            /* 10- valida se o pedido é com ou sem indicação
+             * 11- valida percentual máximo de comissão */
+            if (pedido.ComIndicador)
+            {
+                if (string.IsNullOrEmpty(pedido.NomeIndicador))
                 {
-                    //vamos fazer a validação de Especificacao/Especificacao/Pedido/Passo40/FormaPagamentoProdutos.feature
-                    //vamos retornar true ou false
-                    if (await pedidoBll.ValidarProdutosComFormaPagto(pedido, c_custoFinancFornecTipoParcelamento,
-                        c_custoFinancFornecQtdeParcelas, pedidoRetorno.ListaErros))
-
-                        /* 9- valida endereço de entrega */
-                        // a Validação do arquivo EnderecoEntrega_SemPrepedido.feature não se aplica em nosso
-                        // o campo "OutroEndereco" é do tipo "bool"
-                        if (await validacoesPrepedidoBll.ValidarEnderecoEntrega(pedido.EnderecoEntrega, pedidoRetorno.ListaErros,
-                            pedido.DadosCliente.Indicador_Orcamentista, pedido.DadosCliente.Tipo))
-                        {
-                            /* 10- valida se o pedido é com ou sem indicação
-                             * 11- valida percentual máximo de comissão */
-                            if (pedido.ComIndicador)
-                            {
-                                if (string.IsNullOrEmpty(pedido.NomeIndicador))
-                                {
-                                    pedidoRetorno.ListaErros.Add("Informe quem é o indicador.");
-                                }
-
-                                #region Não estou retornando a mensagem abaixo, pois o campos pedido.OpcaoPossuiRa é bool, 
-                                //sendo assim não tem como ser vazio
-                                //elseif rb_RA = "" then
-                                //    alerta = "Informe se o pedido possui RA ou não."
-                                //end if
-                                #endregion
-                            }
-
-                            /* 3- busca o percentual máximo de comissão*/
-                            percentualMax = await pedidoBll.ObterPercentualMaxDescEComissao(pedido.LojaUsuario);
-
-                            if (pedido.DadosCliente.Tipo == Constantes.ID_PJ)
-                                percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDescPJ;
-                            else
-                                percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDesc;
-
-                            if (!string.IsNullOrEmpty(pedido.PercRT.ToString()))
-                                pedidoBll.ValidarPercentualRT((float)pedido.PercRT, percentualMax.PercMaxComissao, pedidoRetorno.ListaErros);
-
-                            if (pedido.ComIndicador)
-                            {
-                                //perc_desagio_RA
-                                perc_desagio_RA = await UtilsGlobais.Util.ObterPercentualDesagioRAIndicador(pedido.NomeIndicador, contextoProvider);
-                                perc_limite_RA_sem_desagio = await UtilsGlobais.Util.VerificarSemDesagioRA(contextoProvider);
-                                vl_limite_mensal = await UtilsGlobais.Util.ObterLimiteMensalComprasDoIndicador(pedido.NomeIndicador, contextoProvider);
-                                vl_limite_mensal_consumido = await UtilsGlobais.Util.CalcularLimiteMensalConsumidoDoIndicador(pedido.NomeIndicador, DateTime.Now, contextoProvider);
-                                vl_limite_mensal_disponivel = vl_limite_mensal - vl_limite_mensal_consumido;
-                            }
-                        }
+                    pedidoRetorno.ListaErros.Add("Informe quem é o indicador.");
                 }
+
+                #region Não estou retornando a mensagem abaixo, pois o campos pedido.OpcaoPossuiRa é bool, 
+                //sendo assim não tem como ser vazio
+                //elseif rb_RA = "" then
+                //    alerta = "Informe se o pedido possui RA ou não."
+                //end if
+                #endregion
             }
+
+            /* 3- busca o percentual máximo de comissão*/
+            percentualMax = await pedidoBll.ObterPercentualMaxDescEComissao(pedido.LojaUsuario);
+
+            if (pedido.DadosCliente.Tipo == Constantes.ID_PJ)
+                percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDescPJ;
+            else
+                percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDesc;
+
+            if (!string.IsNullOrEmpty(pedido.PercRT.ToString()))
+                pedidoBll.ValidarPercentualRT((float)pedido.PercRT, percentualMax.PercMaxComissao, pedidoRetorno.ListaErros);
+
+            if (pedido.ComIndicador)
+            {
+                //perc_desagio_RA
+                perc_desagio_RA = await UtilsGlobais.Util.ObterPercentualDesagioRAIndicador(pedido.NomeIndicador, contextoProvider);
+                perc_limite_RA_sem_desagio = await UtilsGlobais.Util.VerificarSemDesagioRA(contextoProvider);
+                vl_limite_mensal = await UtilsGlobais.Util.ObterLimiteMensalComprasDoIndicador(pedido.NomeIndicador, contextoProvider);
+                vl_limite_mensal_consumido = await UtilsGlobais.Util.CalcularLimiteMensalConsumidoDoIndicador(pedido.NomeIndicador, DateTime.Now, contextoProvider);
+                vl_limite_mensal_disponivel = vl_limite_mensal - vl_limite_mensal_consumido;
+            }
+
+
+
 
             //validar os produtos
             Prepedido.Dados.DetalhesPrepedido.PrePedidoDados prepedido = PedidoCriacaoDados.PrePedidoDadosDePedidoCriacaoDados(pedido);
             await validacoesPrepedidoBll.MontarProdutosParaComparacao(prepedido,
                         c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas,
                         pedido.DadosCliente.Loja, pedidoRetorno.ListaErros, perc_limite_RA_sem_desagio, pedido.LimiteArredondamento);
-
-            //vamos verificar os caracteres inválidos no endereço de entrega
-            if (pedido.EnderecoEntrega.OutroEndereco)
-            {
-                pedidoBll.VerificarCaracteresInvalidosEnderecoEntregaClienteCadastro(pedido.EnderecoEntrega, pedidoRetorno.ListaErros);
-                //vamos verificar se o endereço de entrega esta com os valores corretos
-                if (pedido.EnderecoEntrega.EndEtg_endereco.Length > Constantes.MAX_TAMANHO_CAMPO_ENDERECO)
-                    pedidoRetorno.ListaErros.Add("ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br> TAMANHO ATUAL: " +
-                        pedido.EnderecoEntrega.EndEtg_endereco.Length + " CARACTERES <br> TAMANHO MÁXIMO: " +
-                        Constantes.MAX_TAMANHO_CAMPO_ENDERECO + " CARACTERES");
-            }
 
             //se tiver erro vamos retornar
             if (pedidoRetorno.ListaErros.Count > 0) return pedidoRetorno;

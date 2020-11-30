@@ -30,23 +30,13 @@ namespace Especificacao.Testes.Utils.LogTestes
             if (configuracaoTestes.SubstituirArquivos)
             {
                 Writer = new StreamWriter(new FileStream(DiretorioLogs + @"\" + ArquivoLog, FileMode.Create));
-                WriterMapa = new StreamWriter(new FileStream(DiretorioLogs + @"\" + configuracaoTestes.ArquivoMapa, FileMode.Create));
             }
             else
             {
                 Writer = new StreamWriter(new FileStream(DiretorioLogs + @"\" + ArquivoLog, FileMode.Append));
-                WriterMapa = new StreamWriter(new FileStream(DiretorioLogs + @"\" + configuracaoTestes.ArquivoMapa, FileMode.Append));
             }
         }
         private readonly StreamWriter Writer;
-        private readonly StreamWriter WriterMapa;
-
-        public void Mapa(string? msg)
-        {
-            msg ??= "vazio";
-            WriterMapa.WriteLine(msg);
-            WriterMapa.Flush();
-        }
 
         public static void LogMensagemOperacao(string msg, Type getType)
         {
@@ -104,7 +94,6 @@ namespace Especificacao.Testes.Utils.LogTestes
                 if (disposing)
                 {
                     Writer.Dispose();
-                    WriterMapa.Dispose();
                 }
                 disposedValue = true;
             }

@@ -25,14 +25,14 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
         public void ThenErroStatusCode(int statusCode)
         {
             if (ignorarFeature) return;
-            Testes.Utils.LogTestes.LogOperacoes.ErroStatusCode(statusCode, this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.ErroStatusCode(statusCode, this);
             ActionResult res = AcessarControladorMagento();
             Testes.Utils.StatusCodes.TestarStatusCode(statusCode, res);
         }
 
         private ActionResult AcessarControladorMagento()
         {
-            Testes.Utils.LogTestes.LogOperacoes.ChamadaController(pedidoMagentoController.GetType(), "CadastrarPedido", this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.ChamadaController(pedidoMagentoController.GetType(), "CadastrarPedido", this);
             Microsoft.AspNetCore.Mvc.ActionResult<MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto> ret
                 = pedidoMagentoController.CadastrarPedido(pedidoMagentoDto).Result;
             Microsoft.AspNetCore.Mvc.ActionResult res = ret.Result;
@@ -107,6 +107,10 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
                         pedidoMagentoDto.OutroEndereco = valor;
                     break;
                 //endetg
+                case "EndEtg_nome":
+                    pedidoMagentoDto.EnderecoEntrega ??= new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
+                    pedidoMagentoDto.EnderecoEntrega.EndEtg_nome = p1;
+                    break;
                 case "EndEtg_bairro":
                     pedidoMagentoDto.EnderecoEntrega ??= new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
                     pedidoMagentoDto.EnderecoEntrega.EndEtg_bairro = p1;
@@ -126,6 +130,10 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
                 case "EndEtg_endereco":
                     pedidoMagentoDto.EnderecoEntrega ??= new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
                     pedidoMagentoDto.EnderecoEntrega.EndEtg_endereco = p1;
+                    break;
+                case "EndEtg_endereco_complemento":
+                    pedidoMagentoDto.EnderecoEntrega ??= new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
+                    pedidoMagentoDto.EnderecoEntrega.EndEtg_endereco_complemento = p1;
                     break;
                 case "EndEtg_cidade":
                     pedidoMagentoDto.EnderecoEntrega ??= new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();

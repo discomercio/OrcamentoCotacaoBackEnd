@@ -27,7 +27,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa
 
         public void WhenInformo(string p0, string p1)
         {
-            Testes.Utils.LogTestes.LogOperacoes.Informo(p0, p1, this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.Informo(p0, p1, this);
             switch (p0)
             {
                 case "TokenAcesso":
@@ -40,8 +40,8 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa
         }
         public void ThenErroStatusCode(int statusCode)
         {
-            Testes.Utils.LogTestes.LogOperacoes.ErroStatusCode(statusCode, this.GetType());
-            Testes.Utils.LogTestes.LogOperacoes.ChamadaController(prepedidoUnisController.GetType(), "BuscarQtdeParcCartaoVisa", this.GetType());
+            Testes.Utils.LogTestes.LogOperacoes2.ErroStatusCode(statusCode, this);
+            Testes.Utils.LogTestes.LogOperacoes2.ChamadaController(prepedidoUnisController.GetType(), "BuscarQtdeParcCartaoVisa", this);
             Microsoft.AspNetCore.Mvc.ActionResult<QtdeParcCartaoVisaResultadoUnisDto> ret = prepedidoUnisController.BuscarQtdeParcCartaoVisa(tokenAcesso).Result;
             Microsoft.AspNetCore.Mvc.ActionResult res = ret.Result;
             Testes.Utils.StatusCodes.TestarStatusCode(statusCode, res);

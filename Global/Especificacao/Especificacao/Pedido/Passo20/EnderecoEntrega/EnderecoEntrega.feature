@@ -55,19 +55,18 @@ Scenario: Endereço
 	When Informo "EndEtg_endereco" = ""
 	Then Erro "Preencha o endereço de entrega!!"
 
-@ignore
 Scenario: Endereço tamanho
 	#elseif Len(EndEtg_endereco) > CLng(MAX_TAMANHO_CAMPO_ENDERECO) then
 	#	alerta="ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: " & Cstr(Len(EndEtg_endereco)) & " CARACTERES<br>TAMANHO MÁXIMO: " & Cstr(MAX_TAMANHO_CAMPO_ENDERECO) & " CARACTERES"
 	#MAX_TAMANHO_CAMPO_ENDERECO = 60;
 	#                                          10        20        30       40         50        60
 	When Informo "EndEtg_endereco" = "123456789012345678901234567890123456789012345678901234567890123"
-	Then Erro regex "ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO.*"
-@ignore
+	Then Erro "regex ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO.*"
+
 Scenario: Endereço tamanho 2
 	#                                          10        20        30       40         50        60
 	When Informo "EndEtg_endereco" = "12345678901234567890123456789012345678901234567890123456789"
-	Then Sem Erro regex "ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO.*"
+	Then Sem erro "regex ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO.*"
 
 Scenario: EndEtg_endereco_numero
 	When Informo "EndEtg_endereco_numero" = ""

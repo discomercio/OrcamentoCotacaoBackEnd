@@ -733,17 +733,15 @@ namespace UtilsGlobais
             return retorno;
         }
 
-        public static bool ValidarTipoCustoFinanceiroFornecedor(List<string> lstErros, string custoFinanceiroTipoParcelato,
+        public static void ValidarTipoCustoFinanceiroFornecedor(List<string> lstErros, string custoFinanceiroTipoParcelato,
             int c_custoFinancFornecQtdeParcelas)
         {
-            bool retorno = true;
 
             if (custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA &&
                 custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA &&
                 custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA)
             {
                 lstErros.Add("A forma de pagamento não foi informada (à vista, com entrada, sem entrada).");
-                retorno = false;
             }
             if (custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA &&
                 custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA)
@@ -754,12 +752,9 @@ namespace UtilsGlobais
                     {
                         lstErros.Add("Não foi informada a quantidade de parcelas para a forma de pagamento selecionada " +
                             "(" + DescricaoCustoFornecTipoParcelamento(custoFinanceiroTipoParcelato) + ")");
-                        retorno = false;
                     }
                 }
             }
-
-            return retorno;
         }
 
         public static string DescricaoCustoFornecTipoParcelamento(string custoFinanceiro)
@@ -1227,20 +1222,26 @@ namespace UtilsGlobais
         public static string IsTextoValido(string texto, out string retorno)
         {
 #nullable enable
-            string caracterEncontrados = "";
-            string caracteres = "!#$%¨&*()-?:{}][ÄÅÁÂÀÃäáâàãÉÊËÈéêëèÍÎÏÌíîïìÖÓÔÒÕöóôòõÜÚÛüúûùÇç";
+            string caracteresInvalidos = "";
+            string caracteresValidos = "!#$%¨&*()-?:{}][ÄÅÁÂÀÃäáâàãÉÊËÈéêëèÍÎÏÌíîïìÖÓÔÒÕöóôòõÜÚÛüúûùÇç";
 
-            List<string> splitCaracteres = caracteres.Split().ToList();
+            foreach (char x in texto)
+            {
+                byte letra = (byte)x;
+                //if (Asc(c) < 32) Or(Asc(c) > 127) then
+                if ((letra < 32) || (letra > 127))
+                {
+                    if (!caracteresValidos.Contains(x))
+                    {
+                        if (caracteresInvalidos != "")
+                            caracteresInvalidos = caracteresInvalidos + " ";
+                        caracteresInvalidos += x;
+                    }
+                }
+            }
 
-            List<string> letras = texto.Split().ToList();
-
-            foreach (var x in letras)
-                foreach (var y in splitCaracteres)
-                    if (x == y)
-                        caracterEncontrados += y + " ";
-
-
-            return retorno = caracterEncontrados;
+            retorno = caracteresInvalidos;
+            return retorno;
 #nullable disable
         }
 

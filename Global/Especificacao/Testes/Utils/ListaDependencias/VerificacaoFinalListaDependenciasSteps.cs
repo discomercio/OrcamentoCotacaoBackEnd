@@ -9,7 +9,7 @@ namespace Especificacao.Testes.Utils.ListaDependencias
         [Given(@"VerificacaoFinalListaDependencias")]
         public void GivenVerificacaoFinalListaDependencias()
         {
-            LogTestes.LogOperacoes.VerificacaoFinalListaDependencias(this.GetType());
+            LogTestes.LogOperacoes2.VerificacaoFinalListaDependencias(this);
             RegistroDependencias.TodosVerificados();
         }
     }

@@ -75,6 +75,7 @@ namespace Especificacao.Ambiente.ApiUnis
 
                 //para nao dar erro...
                 ret.LimitePrepedidos.LimitePrepedidosExatamenteIguais_Numero = 1000;
+                ret.LimitePrepedidos.LimitePrepedidosMesmoCpfCnpj_Numero = 1000;
                 return ret;
             });
 

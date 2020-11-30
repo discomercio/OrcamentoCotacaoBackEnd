@@ -147,7 +147,7 @@ VlTotalDestePedido	number($double)
         {
             Teste(c =>
                 c.ListaProdutos[0].CustoFinancFornecCoeficiente = 11
-            , "Coeficiente do fabricante (003) esta incorreto!");
+            , "Coeficiente do fabricante (003) está incorreto!");
         }
         [Fact]
         public void Parcial_CustoFinancFornecCoeficiente_Avista()
@@ -155,7 +155,7 @@ VlTotalDestePedido	number($double)
             //Conforme foi incluido uma validação na forma de pagto, o teste não esta chegando para pegar essa msg
             //precisa fazer a busca de formaPagto para fazer a validação com a forma de pagto que esta sendo enviada 
             //para cadastrar Prepedido
-            TesteAvista(c => c.ListaProdutos[0].CustoFinancFornecCoeficiente = 2, "Coeficiente do fabricante (003) esta incorreto!");
+            TesteAvista(c => c.ListaProdutos[0].CustoFinancFornecCoeficiente = 2, "Coeficiente do fabricante (003) está incorreto!");
         }
         [Fact]
         public void Parcial_CustoFinancFornecPrecoListaBase()

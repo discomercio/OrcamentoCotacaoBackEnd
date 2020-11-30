@@ -1,8 +1,6 @@
-﻿@ignore
+﻿@Especificacao.Pedido.Passo20.EnderecoEntrega
 Feature: EnderecoEntrega CaracteresInvalidos
 
-Background: pedido base
-	Given pedido base com endereço de entrega
 #loja/PedidoNovoConsiste.asp
 #		if Not isTextoValido(EndEtg_endereco, s_caracteres_invalidos) then
 #			alerta="O CAMPO 'ENDEREÇO DE ENTREGA' POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " & s_caracteres_invalidos
@@ -18,21 +16,21 @@ Background: pedido base
 #			alerta="O CAMPO NOME DO ENDEREÇO DE ENTREGA POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " & s_caracteres_invalidos
 
 Scenario Outline: EndEtg
-	Given pedido base com endereço de entrega
-	When Informo <campo> = "Carater inválido: €"
-	Then Erro regex <erro>
-	Given pedido base com endereço de entrega
-	When Informo <campo> = "Carater inválido: £"
-	Then Erro regex <erro>
-	Given pedido base com endereço de entrega
-	When Informo <campo> = "Texto"
-	Then Sem erro regex <erro>
+	Given Pedido base com endereço de entrega
+	When Informo "<campo>" = "Carater inválido: €"
+	Then Erro "<erro>"
+	Given Pedido base com endereço de entrega
+	When Informo "<campo>" = "Carater inválido: £"
+	Then Erro "<erro>"
+	Given Pedido base com endereço de entrega
+	When Informo "<campo>" = "Texto"
+	Then Sem erro "<erro>"
 	Examples:
-		| campo                       | erro                                       |
-		| EndEtg_endereco             | .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.* |
-		| EndEtg_endereco_numero      | .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.* |
-		| EndEtg_endereco_complemento | .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.* |
-		| EndEtg_bairro               | .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.* |
-		| EndEtg_cidade               | .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.* |
-		| EndEtg_nome                 | .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.* |
+		| campo                       | erro                                             |
+		| EndEtg_endereco             | regex .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.* |
+		| EndEtg_endereco_numero      | regex .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.* |
+		| EndEtg_endereco_complemento | regex .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.* |
+		| EndEtg_bairro               | regex .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.* |
+		| EndEtg_cidade               | regex .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.* |
+		| EndEtg_nome                 | regex .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.* |
 

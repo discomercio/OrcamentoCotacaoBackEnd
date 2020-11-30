@@ -1309,29 +1309,6 @@ namespace Pedido
             return true;
         }
 
-        public void VerificarCaracteresInvalidosEnderecoEntregaClienteCadastro(
-            Cliente.Dados.EnderecoEntregaClienteCadastroDados endEtg, List<string> lstErros)
-        {
-            string caracteres;
-            if (UtilsGlobais.Util.IsTextoValido(endEtg.EndEtg_endereco, out caracteres).Length > 0)
-                lstErros.Add("O CAMPO 'ENDEREÇO DE ENTREGA' POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
-
-            if (UtilsGlobais.Util.IsTextoValido(endEtg.EndEtg_endereco_numero ?? "", out caracteres).Length > 0)
-                lstErros.Add("O CAMPO NÚMERO DO ENDEREÇO DE ENTREGA POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
-
-            if (UtilsGlobais.Util.IsTextoValido(endEtg.EndEtg_endereco_complemento ?? "", out caracteres).Length > 0)
-                lstErros.Add("O CAMPO COMPLEMENTO DO ENDEREÇO DE ENTREGA POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
-
-            if (UtilsGlobais.Util.IsTextoValido(endEtg.EndEtg_bairro ?? "", out caracteres).Length > 0)
-                lstErros.Add("O CAMPO BAIRRO DO ENDEREÇO DE ENTREGA POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
-
-            if (UtilsGlobais.Util.IsTextoValido(endEtg.EndEtg_cidade ?? "", out caracteres).Length > 0)
-                lstErros.Add("O CAMPO CIDADE DO ENDEREÇO DE ENTREGA POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
-
-            if (UtilsGlobais.Util.IsTextoValido(endEtg.EndEtg_nome ?? "", out caracteres).Length > 0)
-                lstErros.Add("O CAMPO NOME DO ENDEREÇO DE ENTREGA POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
-        }
-
         public void ConsisteProdutosValorZerados(List<PedidoProdutoPedidoDados> lstProdutos, List<string> lstErros,
             bool comIndicacao, short PermiteRaStatus)
         {
@@ -1344,11 +1321,9 @@ namespace Pedido
             };
         }
 
-        public async Task<bool> ValidarProdutosComFormaPagto(PedidoCriacaoDados pedidoCriacao, string siglaCustoFinancFornec,
+        public async Task ValidarProdutosComFormaPagto(PedidoCriacaoDados pedidoCriacao, string siglaCustoFinancFornec,
             int qtdeParcCustoFinancFornec, List<string> lstErros)
         {
-            bool retorno = false;
-
             if (pedidoCriacao.FormaPagtoCriacao.Rb_forma_pagto != Constantes.COD_FORMA_PAGTO_A_VISTA)
             {
                 var db = contextoProvider.GetContextoLeitura();
@@ -1378,10 +1353,6 @@ namespace Pedido
                 }
 
             }
-
-            if (lstErros.Count == 0) retorno = true;
-
-            return retorno;
         }
     }
 }
