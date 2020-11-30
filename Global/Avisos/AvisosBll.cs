@@ -2,11 +2,13 @@
 using InfraBanco;
 using InfraBanco.Constantes;
 using InfraBanco.Modelos;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace Avisos
 {
@@ -19,11 +21,60 @@ namespace Avisos
             this.contextoProvider = contextoProvider;
         }
 
+        public async Task<IEnumerable<Taviso>> BuscarTodosAvisos(List<string> lst)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+            var ret = (from c in db.Tavisos
+                       where (from d in lst
+                              select d).Contains(c.Id)
+                       select c).ToListAsync();
+
+            return await ret;
+        }
+
+        public async Task<IEnumerable<Taviso>> BuscarTodosAvisosNaoLidos(string loja, string usuario)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+            var ret = (from c in db.Tavisos
+                       where (!(from d in db.TavisoLidos
+                                where d.Usuario == usuario
+                                select d.Id).Contains(c.Id)) &&
+                       ((c.Destinatario == "") ||
+                             (c.Destinatario == null) ||
+                             (c.Destinatario == loja))
+                       select c).OrderByDescending(x => x.Dt_ult_atualizacao).ToListAsync();
+
+
+            return await ret;
+        }
+
+        public async Task<IEnumerable<TavisoLido>> BuscarAvisosLidos(string usuario)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+
+            var ret = (from c in db.TavisoLidos
+                       where c.Usuario == usuario
+                       select c).ToListAsync();
+
+            return await ret;
+        }
+
+        public async Task<IEnumerable<TavisoExibido>> BuscarAvisosExibidos(string usuario)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+
+            var ret = (from c in db.TavisoExibidos
+                       where c.Usuario == usuario
+                       select c).ToListAsync();
+
+            return await ret;
+        }
+
         public async Task<IEnumerable<AvisoDados>> BuscarAvisosNaoLidos(string loja, string usuario)
         {
             var db = contextoProvider.GetContextoLeitura();
             //vamos buscar todos os avisos
-            List<Taviso> avisos = (await UtilsGlobais.Util.BuscarAvisosNaoLidos(loja, usuario, contextoProvider)).ToList();
+            List<Taviso> avisos = (await BuscarTodosAvisosNaoLidos(loja, usuario)).ToList();
 
             //vamos buscar os avisos lidos
             List<AvisoDados> ret = new List<AvisoDados>();
@@ -50,7 +101,7 @@ namespace Avisos
         {
             bool retorno = false;
             //vamos verificar se o aviso existe e obter a info para log
-            List<TavisoLido> avisoLido = (await UtilsGlobais.Util.BuscarAvisosLidos(usuario, contextoProvider)).ToList();
+            List<TavisoLido> avisoLido = (await BuscarAvisosLidos(usuario)).ToList();
 
             if (avisoLido != null)
             {
@@ -132,8 +183,8 @@ namespace Avisos
         public async Task<bool> MarcarAvisoExibido(List<string> lst, string usuario, string loja)
         {
             bool retorno = false;
-            List<Taviso> avisos = (await UtilsGlobais.Util.BuscarTodosAvisos(lst, contextoProvider)).ToList();
-            List<TavisoExibido> avisosExibidos = (await UtilsGlobais.Util.BuscarAvisosExibidos(usuario, contextoProvider)).ToList();
+            List<Taviso> avisos = (await BuscarTodosAvisos(lst)).ToList();
+            List<TavisoExibido> avisosExibidos = (await BuscarAvisosExibidos(usuario)).ToList();
             if (avisos != null)
             {
                 if (lst.Count > 0)
@@ -225,3 +276,4 @@ namespace Avisos
         }
     }
 }
+

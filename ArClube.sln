@@ -70,7 +70,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Prepedido", "Global\Prepedi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cep", "Global\Cep\Cep.csproj", "{6F5A4E2A-4856-45DC-9B43-DE9E328D2B49}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avisos", "Global\Avisos\Avisos.csproj", "{5371E89C-155A-4AC3-B207-3374AF821C87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avisos", "Global\Avisos\Avisos.csproj", "{5371E89C-155A-4AC3-B207-3374AF821C87}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -128,13 +128,6 @@ Global
 		{132EB79A-CA9E-4CF9-93E5-0383012F9BE5}.Release_PrepedidoApi|Any CPU.Build.0 = Release|Any CPU
 		{132EB79A-CA9E-4CF9-93E5-0383012F9BE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{132EB79A-CA9E-4CF9-93E5-0383012F9BE5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E2DA0AD8-FD3B-4E38-80A5-EB6915E3CF42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E2DA0AD8-FD3B-4E38-80A5-EB6915E3CF42}.Release_ApiMagento|Any CPU.ActiveCfg = Release|Any CPU
-		{E2DA0AD8-FD3B-4E38-80A5-EB6915E3CF42}.Release_ApiUnis|Any CPU.ActiveCfg = Release|Any CPU
-		{E2DA0AD8-FD3B-4E38-80A5-EB6915E3CF42}.Release_Loja|Any CPU.ActiveCfg = Release|Any CPU
-		{E2DA0AD8-FD3B-4E38-80A5-EB6915E3CF42}.Release_PrepedidoApi|Any CPU.ActiveCfg = Release|Any CPU
-		{E2DA0AD8-FD3B-4E38-80A5-EB6915E3CF42}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E2DA0AD8-FD3B-4E38-80A5-EB6915E3CF42}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2589006C-BFB7-44BC-8664-ED0B63E2D18C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2589006C-BFB7-44BC-8664-ED0B63E2D18C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2589006C-BFB7-44BC-8664-ED0B63E2D18C}.Release_ApiMagento|Any CPU.ActiveCfg = Release|Any CPU
@@ -152,13 +145,6 @@ Global
 		{5DE945AF-921B-43EC-B5FF-467F72DFCD77}.Release_PrepedidoApi|Any CPU.ActiveCfg = Debug|Any CPU
 		{5DE945AF-921B-43EC-B5FF-467F72DFCD77}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{5DE945AF-921B-43EC-B5FF-467F72DFCD77}.Release|Any CPU.Build.0 = Debug|Any CPU
-		{CE3536B5-D0D1-4992-8822-05628902B7ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CE3536B5-D0D1-4992-8822-05628902B7ED}.Release_ApiMagento|Any CPU.ActiveCfg = Release|Any CPU
-		{CE3536B5-D0D1-4992-8822-05628902B7ED}.Release_ApiUnis|Any CPU.ActiveCfg = Release|Any CPU
-		{CE3536B5-D0D1-4992-8822-05628902B7ED}.Release_Loja|Any CPU.ActiveCfg = Release|Any CPU
-		{CE3536B5-D0D1-4992-8822-05628902B7ED}.Release_PrepedidoApi|Any CPU.ActiveCfg = Release|Any CPU
-		{CE3536B5-D0D1-4992-8822-05628902B7ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CE3536B5-D0D1-4992-8822-05628902B7ED}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D30D71EA-5D17-4CF0-BE73-02BD1C1ACD9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D30D71EA-5D17-4CF0-BE73-02BD1C1ACD9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D30D71EA-5D17-4CF0-BE73-02BD1C1ACD9D}.Release_ApiMagento|Any CPU.ActiveCfg = Debug|Any CPU
@@ -315,13 +301,10 @@ Global
 		{5371E89C-155A-4AC3-B207-3374AF821C87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5371E89C-155A-4AC3-B207-3374AF821C87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5371E89C-155A-4AC3-B207-3374AF821C87}.Release_ApiMagento|Any CPU.ActiveCfg = Release|Any CPU
-		{5371E89C-155A-4AC3-B207-3374AF821C87}.Release_ApiMagento|Any CPU.Build.0 = Release|Any CPU
 		{5371E89C-155A-4AC3-B207-3374AF821C87}.Release_ApiUnis|Any CPU.ActiveCfg = Release|Any CPU
-		{5371E89C-155A-4AC3-B207-3374AF821C87}.Release_ApiUnis|Any CPU.Build.0 = Release|Any CPU
 		{5371E89C-155A-4AC3-B207-3374AF821C87}.Release_Loja|Any CPU.ActiveCfg = Release|Any CPU
 		{5371E89C-155A-4AC3-B207-3374AF821C87}.Release_Loja|Any CPU.Build.0 = Release|Any CPU
 		{5371E89C-155A-4AC3-B207-3374AF821C87}.Release_PrepedidoApi|Any CPU.ActiveCfg = Release|Any CPU
-		{5371E89C-155A-4AC3-B207-3374AF821C87}.Release_PrepedidoApi|Any CPU.Build.0 = Release|Any CPU
 		{5371E89C-155A-4AC3-B207-3374AF821C87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5371E89C-155A-4AC3-B207-3374AF821C87}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection

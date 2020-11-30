@@ -69,6 +69,7 @@ namespace Loja.UI.Controllers
             return View(model);
         }
 
+        //incluir para não armazenar cache
         [HttpGet]
         public async Task<List<AvisoDto>> BuscarAvisosNaoLidos()
         {

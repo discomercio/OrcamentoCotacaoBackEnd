@@ -180,11 +180,11 @@ function TratarCamposAvisos(t: any) {
 
                 $("#itemMsg_").parent().append(linha);
             }
-
+            debugger;
             let btn_remover: string = "<li id='btn_remover'>" +
                 "<button type='button' class='btn btn-primary col-xl-12' onclick='RemoverAvisosSelecionado()'> Remover Avisos </button>" +
                 "</li>";
-            $("#itemMsg_").parent().append(btn_remover);
+            $("#drop_avisos").append(btn_remover);
         }
     }
 }
