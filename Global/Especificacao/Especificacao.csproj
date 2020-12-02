@@ -71,6 +71,10 @@
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo20\EnderecoEntrega\ClientePj\EntregaPjTelefones - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo20\EnderecoEntrega\ClientePj\EntregaPjTelefonesPj - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo20\EnderecoEntrega\EnderecoEntrega - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo40\LimiteDesconto - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo40\PedidoNovoProdCompostoMask - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Gravacao\Passo20\ValidacaoEstoque - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Gravacao\Passo20\ValidacaoEstoque2 - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Validacao\Estoque.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Prepedido\Pedido.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\TesteExecucaoCruzadaPedido - Copy.feature.cs" />
@@ -150,6 +154,18 @@
     </Compile>
     <Compile Update="Especificacao\Pedido\Passo20\EnderecoEntrega\EnderecoEntregaListaDependencias.feature.cs">
       <DependentUpon>EnderecoEntregaListaDependencias.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Especificacao\Pedido\Passo40\LimiteDesconto_t_DESCONTO.feature.cs">
+      <DependentUpon>LimiteDesconto_t_DESCONTO.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Especificacao\Pedido\Passo40\PedidoNovoProdCompostoMask_t_PRODUTO_LOJA.feature.cs">
+      <DependentUpon>PedidoNovoProdCompostoMask_t_PRODUTO_LOJA.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Especificacao\Pedido\Passo60\Gravacao\Passo20\ValidacaoEstoque3.feature.cs">
+      <DependentUpon>ValidacaoEstoque3.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Especificacao\Pedido\Passo60\Gravacao\Passo20\ValidacaoEstoque2.feature.cs">
+      <DependentUpon>ValidacaoEstoque2.feature</DependentUpon>
     </Compile>
     <Compile Update="Especificacao\Prepedido\Prepedido.feature.cs">
       <DependentUpon>Prepedido.feature</DependentUpon>
@@ -241,6 +257,22 @@
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
     <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo10\Permissoes.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo40\LimiteDesconto_t_DESCONTO.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo40\PedidoNovoProdCompostoMask_t_PRODUTO_LOJA.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo60\Gravacao\Passo20\ValidacaoEstoque3.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo60\Gravacao\Passo20\ValidacaoEstoque2.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>

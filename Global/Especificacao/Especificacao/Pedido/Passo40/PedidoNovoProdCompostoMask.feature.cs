@@ -20,20 +20,22 @@ namespace Especificacao.Especificacao.Pedido.Passo40
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "ignore")]
-    public partial class EnderecoFeature : object, Xunit.IClassFixture<EnderecoFeature.FixtureData>, System.IDisposable
+    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo40")]
+    public partial class EnderecoEProdutosFeature : object, Xunit.IClassFixture<EnderecoEProdutosFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "ignore"};
+                "ignore",
+                "Especificacao.Pedido.Passo40"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
 #line 1 "PedidoNovoProdCompostoMask.feature"
 #line hidden
         
-        public EnderecoFeature(EnderecoFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public EnderecoEProdutosFeature(EnderecoEProdutosFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,8 +44,9 @@ namespace Especificacao.Especificacao.Pedido.Passo40
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Endereco", "Validações do PedidoNovoProdCompostoMask", ProgrammingLanguage.CSharp, new string[] {
-                        "ignore"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Endereco e produtos", "Validações do PedidoNovoProdCompostoMask", ProgrammingLanguage.CSharp, new string[] {
+                        "ignore",
+                        "Especificacao.Pedido.Passo40"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -84,14 +87,14 @@ namespace Especificacao.Especificacao.Pedido.Passo40
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="Configuração")]
-        [Xunit.TraitAttribute("FeatureTitle", "Endereco")]
+        [Xunit.TraitAttribute("FeatureTitle", "Endereco e produtos")]
         [Xunit.TraitAttribute("Description", "Configuração")]
         public virtual void Configuracao()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Configuração", null, tagsOfScenario, argumentsOfScenario);
-#line 6
+#line 7
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -111,10 +114,10 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 7
+#line 8
  testRunner.Given("Nome deste item \"Especificacao.Pedido.Passo40.PedidoNovoProdCompostoMask\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 8
+#line 9
  testRunner.Given("Implementado em \"Especificacao.Pedido.Pedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }
@@ -122,14 +125,14 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="Número preenchido")]
-        [Xunit.TraitAttribute("FeatureTitle", "Endereco")]
+        [Xunit.TraitAttribute("FeatureTitle", "Endereco e produtos")]
         [Xunit.TraitAttribute("Description", "Número preenchido")]
         public virtual void NumeroPreenchido()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Número preenchido", "loja/PedidoNovoProdCompostoMask.asp linha 62", tagsOfScenario, argumentsOfScenario);
-#line 11
+#line 12
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -149,13 +152,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 20
+#line 21
  testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 21
+#line 22
  testRunner.And("Cadastro do cliente \"endereco_numero\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 22
+#line 23
  testRunner.Then("Erro \"ERR_CAD_CLIENTE_ENDERECO_NUMERO_NAO_PREENCHIDO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -163,14 +166,14 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="Tamanho do endereço")]
-        [Xunit.TraitAttribute("FeatureTitle", "Endereco")]
+        [Xunit.TraitAttribute("FeatureTitle", "Endereco e produtos")]
         [Xunit.TraitAttribute("Description", "Tamanho do endereço")]
         public virtual void TamanhoDoEndereco()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Tamanho do endereço", "loja/PedidoNovoProdCompostoMask.asp linha 62\r\ntambém em loja/PedidoNovo.asp", tagsOfScenario, argumentsOfScenario);
-#line 24
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Tamanho do endereço", null, tagsOfScenario, argumentsOfScenario);
+#line 25
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -190,32 +193,32 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 27
+#line 28
  testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 28
+#line 29
  testRunner.And("Cadastro do cliente \"endereco\" = \"um texto muito grande, maior que TAMANHO MÁXIMO" +
                         " DO CAMPO ENDEREÇO DEVIDO À RESTRIÇÃO EXISTENTE NA NOTA FISCAL ELETRÔNICA - MAX_" +
                         "TAMANHO_CAMPO_ENDERECO = 60\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 29
+#line 30
  testRunner.Then("Erro \"ERR_CAD_CLIENTE_ENDERECO_EXCEDE_TAMANHO_MAXIMO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 30
+#line 31
  testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 32
+#line 33
  testRunner.And("Cadastro do cliente \"endereco\" = \"12345678901234567890123456789012345678901234567" +
                         "89012345678901\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 33
+#line 34
  testRunner.Then("Erro \"ERR_CAD_CLIENTE_ENDERECO_EXCEDE_TAMANHO_MAXIMO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 34
+#line 35
  testRunner.And("Cadastro do cliente \"endereco\" = \"12345678901234567890123456789012345678901234567" +
                         "8901234567890\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 35
+#line 36
  testRunner.Then("Sem erro \"ERR_CAD_CLIENTE_ENDERECO_EXCEDE_TAMANHO_MAXIMO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -223,16 +226,14 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="ddd_res")]
-        [Xunit.TraitAttribute("FeatureTitle", "Endereco")]
+        [Xunit.TraitAttribute("FeatureTitle", "Endereco e produtos")]
         [Xunit.TraitAttribute("Description", "ddd_res")]
         public virtual void Ddd_Res()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ddd_res", "\t\'\tDDD VÁLIDO?\r\n\t\tif Not ddd_ok(r_cliente.ddd_res) then\r\n\t\t\tif alerta <> \"\" then " +
-                    "alerta = alerta & \"<br><br>\" & String(80,\"=\") & \"<br><br>\"\r\n\t\t\talerta = alerta &" +
-                    " \"DDD do telefone residencial é inválido!!\"\r\n\t\t\tend if", tagsOfScenario, argumentsOfScenario);
-#line 37
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ddd_res", null, tagsOfScenario, argumentsOfScenario);
+#line 38
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -252,31 +253,31 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 43
- testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 44
- testRunner.And("Informo \"ddd_res\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 45
- testRunner.Then("Erro \"DDD do telefone residencial é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("Informo \"ddd_res\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 47
- testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 46
+ testRunner.Then("Erro \"DDD do telefone residencial é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 48
- testRunner.And("Informo \"ddd_res\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 49
- testRunner.Then("Erro \"DDD do telefone residencial é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 51
  testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
+#line 49
+ testRunner.And("Informo \"ddd_res\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 50
+ testRunner.Then("Erro \"DDD do telefone residencial é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
 #line 52
- testRunner.And("Informo \"ddd_res\" = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 53
+ testRunner.And("Informo \"ddd_res\" = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 54
  testRunner.Then("Sem erro \"DDD do telefone residencial é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -284,16 +285,14 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="ddd_com")]
-        [Xunit.TraitAttribute("FeatureTitle", "Endereco")]
+        [Xunit.TraitAttribute("FeatureTitle", "Endereco e produtos")]
         [Xunit.TraitAttribute("Description", "ddd_com")]
         public virtual void Ddd_Com()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ddd_com", "\t\tif Not ddd_ok(r_cliente.ddd_com) then\r\n\t\t\tif alerta <> \"\" then alerta = alerta " +
-                    "& \"<br><br>\" & String(80,\"=\") & \"<br><br>\"\r\n\t\t\talerta = alerta & \"DDD do telefon" +
-                    "e comercial é inválido!!\"\r\n\t\t\tend if", tagsOfScenario, argumentsOfScenario);
-#line 55
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ddd_com", null, tagsOfScenario, argumentsOfScenario);
+#line 56
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -313,31 +312,31 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 60
- testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 61
- testRunner.And("Informo \"ddd_com\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 62
- testRunner.Then("Erro \"DDD do telefone comercial é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("Informo \"ddd_com\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 64
- testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 63
+ testRunner.Then("Erro \"DDD do telefone comercial é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 65
- testRunner.And("Informo \"ddd_com\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 66
- testRunner.Then("Erro \"DDD do telefone comercial é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 68
  testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
+#line 66
+ testRunner.And("Informo \"ddd_com\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 67
+ testRunner.Then("Erro \"DDD do telefone comercial é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
 #line 69
- testRunner.And("Informo \"ddd_com\" = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 70
+ testRunner.And("Informo \"ddd_com\" = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 71
  testRunner.Then("Sem erro \"DDD do telefone comercial é inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -345,14 +344,14 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="MUNICÍPIO DE ACORDO C/ TABELA DO IBGE?")]
-        [Xunit.TraitAttribute("FeatureTitle", "Endereco")]
+        [Xunit.TraitAttribute("FeatureTitle", "Endereco e produtos")]
         [Xunit.TraitAttribute("Description", "MUNICÍPIO DE ACORDO C/ TABELA DO IBGE?")]
         public virtual void MUNICIPIODEACORDOCTABELADOIBGE()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("MUNICÍPIO DE ACORDO C/ TABELA DO IBGE?", null, tagsOfScenario, argumentsOfScenario);
-#line 73
+#line 74
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -372,23 +371,23 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 76
+#line 77
  testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 77
+#line 78
  testRunner.And("Informo \"cidade\" = \"Cidade que não está no IBGE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 78
+#line 79
  testRunner.Then("erro regex \"Município .* não consta na relação de municípios do IBGE para a UF de" +
                         " ..\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 81
+#line 82
  testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 82
+#line 83
  testRunner.And("Informo \"EndEtg_cidade\" = \"Cidade que não está no IBGE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 83
+#line 84
  testRunner.Then("erro regex \"Município .* não consta na relação de municípios do IBGE para a UF de" +
                         " ..\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -397,7 +396,7 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="Produtos e quantidades devem existir")]
-        [Xunit.TraitAttribute("FeatureTitle", "Endereco")]
+        [Xunit.TraitAttribute("FeatureTitle", "Endereco e produtos")]
         [Xunit.TraitAttribute("Description", "Produtos e quantidades devem existir")]
         [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void ProdutosEQuantidadesDevemExistir()
@@ -406,7 +405,7 @@ this.ScenarioInitialize(scenarioInfo);
                     "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Produtos e quantidades devem existir", null, tagsOfScenario, argumentsOfScenario);
-#line 86
+#line 87
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -426,48 +425,48 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 106
- testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 107
- testRunner.And("Informo lista de itens linha \"1\" campo \"c_produto\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 108
- testRunner.Then("erro \"Informe o código do produto!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("Informo lista de itens linha \"1\" campo \"c_produto\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 109
- testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("Erro \"Informe o código do produto!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 110
- testRunner.And("Informo lista de itens linha \"1\" campo \"c_qtde\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 111
- testRunner.Then("erro \"Informe a quantidade!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("Informo lista de itens linha \"1\" campo \"c_qtde\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 112
- testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("erro \"Informe a quantidade!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 113
- testRunner.And("Informo lista de itens linha \"1\" campo \"c_qtde\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 114
- testRunner.Then("erro \"Quantidade inválida!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 115
  testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
+#line 114
+ testRunner.And("Informo lista de itens linha \"1\" campo \"c_qtde\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 115
+ testRunner.Then("Erro \"Quantidade inválida!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
 #line 116
- testRunner.And("Informo lista de itens linha \"1\" campo \"c_qtde\" = \"-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 117
- testRunner.Then("erro \"Quantidade inválida!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("Informo lista de itens linha \"1\" campo \"c_qtde\" = \"-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 118
+ testRunner.Then("Erro \"Quantidade inválida!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="Não aceitamos pedidos vazios")]
-        [Xunit.TraitAttribute("FeatureTitle", "Endereco")]
+        [Xunit.TraitAttribute("FeatureTitle", "Endereco e produtos")]
         [Xunit.TraitAttribute("Description", "Não aceitamos pedidos vazios")]
         [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void NaoAceitamosPedidosVazios()
@@ -476,7 +475,7 @@ this.ScenarioInitialize(scenarioInfo);
                     "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Não aceitamos pedidos vazios", null, tagsOfScenario, argumentsOfScenario);
-#line 121
+#line 122
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -496,51 +495,14 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 127
+#line 128
  testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 128
+#line 129
  testRunner.And("Removo todos os itenss da lista de itens", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 129
- testRunner.Then("erro \"Não há produtos na lista!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="Verificar produtos")]
-        [Xunit.TraitAttribute("FeatureTitle", "Endereco")]
-        [Xunit.TraitAttribute("Description", "Verificar produtos")]
-        [Xunit.TraitAttribute("Category", "ignore")]
-        public virtual void VerificarProdutos()
-        {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verificar produtos", null, tagsOfScenario, argumentsOfScenario);
-#line 132
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 153
-testRunner.Then("afazer: Verificar que os produtos existen com esse critério", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 130
+ testRunner.Then("Erro \"Não há produtos na lista!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -553,12 +515,12 @@ testRunner.Then("afazer: Verificar que os produtos existen com esse critério", 
             
             public FixtureData()
             {
-                EnderecoFeature.FeatureSetup();
+                EnderecoEProdutosFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                EnderecoFeature.FeatureTearDown();
+                EnderecoEProdutosFeature.FeatureTearDown();
             }
         }
     }

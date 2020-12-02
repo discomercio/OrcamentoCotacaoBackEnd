@@ -79,6 +79,7 @@ namespace Especificacao.Especificacao.Pedido
 
         [Given(@"Pedido base")]
         [When(@"Pedido base")]
+        [Then(@"Pedido base")]
         new public void GivenPedidoBase()
         {
             Testes.Utils.LogTestes.LogOperacoes2.DadoBase(this);
