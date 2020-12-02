@@ -19,14 +19,16 @@ namespace Loja.Bll.Bll.AcessoBll
         private readonly ClienteBll.ClienteBll clienteBll;
         private readonly ILogger<UsuarioAcessoBll> logger;
         private readonly ILogger<UsuarioLogado> loggerUsuarioLogado;
+        private readonly Avisos.AvisosBll avisosBll;
 
         public UsuarioAcessoBll(InfraBanco.ContextoBdProvider contextoProvider, ClienteBll.ClienteBll clienteBll, ILogger<UsuarioAcessoBll> logger,
-            ILogger<UsuarioLogado> loggerUsuarioLogado)
+            ILogger<UsuarioLogado> loggerUsuarioLogado, Avisos.AvisosBll avisosBll)
         {
             this.contextoProvider = contextoProvider;
             this.clienteBll = clienteBll;
             this.logger = logger;
             this.loggerUsuarioLogado = loggerUsuarioLogado;
+            this.avisosBll = avisosBll;
         }
 
         public class LoginUsuarioRetorno
@@ -374,70 +376,52 @@ namespace Loja.Bll.Bll.AcessoBll
 
         public async Task<IEnumerable<AvisoDto>> BuscarAvisosNaoLidos(string loja, string usuario)
         {
-
-            var db = contextoProvider.GetContextoLeitura();
-            //vamos buscar todos os avisos
-            List<Taviso> avisos = (await UtilsGlobais.Util.BuscarAvisos(loja, usuario, contextoProvider)).ToList();
-
-            //vamos buscar os avisos lidos
-            List<AvisoDto> ret = new List<AvisoDto>();
-
-            if (avisos != null)
-            {
-                foreach (var i in avisos)
-                {
-                    ret.Add(new AvisoDto
-                    {
-                        Id = i.Id,
-                        Usuario = i.Usuario,
-                        Mensagem = i.Mensagem,
-                        Destinatario = i.Destinatario,
-                        Dt_ult_atualizacao = i.Dt_ult_atualizacao
-                    });
-                }
-            }
-
-            return ret;
+            var ret = await avisosBll.BuscarAvisosNaoLidos(loja, usuario);
+            return AvisoDto.AvisoDto_De_AvisoDados(ret.ToList());
         }
 
         public async Task<bool> RemoverAvisos(string loja, string usuario, List<string> itens)
         {
+            return await avisosBll.RemoverAvisos(loja, usuario.ToUpper(), itens);
+        }
+
+        public async Task<bool> MarcarAvisoExibido(List<string> lst, string usuario, string loja)
+        {
+            return await avisosBll.MarcarAvisoExibido(lst, usuario.ToUpper(), loja);
+        }
+
+        public async Task<bool> AtualizarSessionCtrlTicket(UsuarioLogado usuarioLogado)
+        {
             bool retorno = false;
-            //vamos verificar se o aviso existe e obter a info para log
-            List<TavisoLido> avisoLido = (await UtilsGlobais.Util.BuscarAvisosLidos(usuario, contextoProvider)).ToList();
+            
 
-            if (avisoLido != null)
+            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
             {
-                //pegamos apenas o que não tem na lista de avisos lidos
-                List<string> lstNaoLido = (from c in itens
-                                           where (!(from d in avisoLido
-                                                    where d.Usuario == usuario.ToUpper()
-                                                    select d.Id).Contains(c))
-                                           select c).ToList();
+                var rsUsuario = await (from u in dbgravacao.Tusuarios
+                                       where usuarioLogado.Usuario_nome_atual.Trim().ToUpper() == u.Usuario.Trim().ToUpper()
+                                       select u).FirstOrDefaultAsync();
+                if (rsUsuario == null)
+                    return false;
 
-                if (lstNaoLido.Count > 0)
-                {
-                    //marcamos como lido
+                var ticket = Guid.NewGuid();
+                rsUsuario.Dt_Ult_Acesso = DateTime.Now;
+                rsUsuario.SessionCtrlDtHrLogon = DateTime.Now;
+                rsUsuario.SessionCtrlModulo = Constantes.Constantes.SESSION_CTRL_MODULO_LOJA;
+                rsUsuario.SessionCtrlLoja = usuarioLogado.Loja_atual_id;
+                rsUsuario.SessionCtrlTicket = ticket.ToString();
+                rsUsuario.SessionTokenModuloLoja = ticket;
+                rsUsuario.DtHrSessionTokenModuloLoja = DateTime.Now;
 
-                    //Montar log de aviso
-                    //Ex da msg de log: 
-                    //Leitura do aviso divulgado em: 29/02/2020 12:23:36 (id=000000005415); 10/02/2020 10:34:15 (id=000000005414)
-                    string log = "";
-                    foreach (var i in lstNaoLido)
-                    {
-                        if (!string.IsNullOrEmpty(log)) 
-                            log += "; ";
 
-                        log += DateTime.Now + " (id=" + i + ")";
-                    }
+                dbgravacao.Update(rsUsuario);
+                await dbgravacao.SaveChangesAsync();
 
-                    if (!string.IsNullOrEmpty(log))
-                    {
-                        log = "Leitura do aviso divulgado em: " + log;
-                    }
-                    //gravamos o log
+                dbgravacao.transacao.Commit();
 
-                }
+
+                usuarioLogado.LimparCacheInfsTusuario();
+
+                retorno = true;
             }
 
             return retorno;

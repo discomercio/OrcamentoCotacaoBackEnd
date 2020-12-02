@@ -4,7 +4,7 @@ class Login {
 
         $(document).ready(() => {
             this.form = $(this.selector);
-            
+
             $("#loja").prop('autofocus', false);
 
             if ($("#loja").is(":focus"))
@@ -12,11 +12,10 @@ class Login {
             $("#loja").focusin(function () {
                 $("#loja").addClass("fill");
             });
-            if ($("#loja").val() != '')
-                $("#loja").addClass("fill");
 
-            if ($("#usuario").val() != '')
-                $("#usuario").addClass("fill");
+            $("#loja").addClass("fill");
+            $("#senha").addClass("fill");
+            $("#usuario").addClass("fill");
 
             this.form.on("submit", () => {
 
@@ -29,8 +28,6 @@ class Login {
 
                 $(this.selector).removeClass("carregando");
             });
-
-
         });
     }
 

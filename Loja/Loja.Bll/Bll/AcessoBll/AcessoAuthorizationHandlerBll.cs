@@ -43,10 +43,12 @@ namespace Loja.Bll.Bll.AcessoBll
 
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, AcessoRequirement requirement)
         {
+            
             var usuarioLogado = new Loja.Bll.Bll.AcessoBll.UsuarioLogado(logger, context.User, httpContextAccessor.HttpContext.Session,
                 clienteBll, usuarioAcessoBll, configuracao);
             if (!usuarioLogado.SessaoAtiva)
             {
+
                 //sem login, ou sem sessão, conforme o cirtério do UsuarioLogado
                 context.Fail();
                 return Task.CompletedTask;

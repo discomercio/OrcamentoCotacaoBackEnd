@@ -3,6 +3,14 @@
     var usuarioLogado = Model;
 }
 
+<script>
+    var url_chaverLoja = "@Url.Action("Index", "Home")";
+    var url_buscarAvisosNaoLidos = "@Url.Action("BuscarAvisosNaoLidos", "Home")";
+    var url_MarcarAvisoExibido = "@Url.Action("MarcarAvisoExibido", "Home")";
+    var url_RemoverAvisos = "@Url.Action("RemoverAvisos", "Home")";
+</script>
+
+
 <style>
     .badge {
         min-width: 19px !important;
@@ -10,8 +18,20 @@
     }
 
     #drop_avisos {
-        overflow-y: scroll !important;
+        height:800% !important;
         max-height: 800% !important;
+    }
+    #msgs{
+        max-height:90% !important;
+        overflow-y: scroll !important;
+        padding:0 !important;
+    }
+    #msgs:hover{
+        background-color:transparent !important;
+    }
+
+    .naoExibir{
+        float:none !important;
     }
 
     #paragrafo-avisos {
@@ -46,7 +66,7 @@
                             {
                                 @id = "cabecacomboLojas",
                                 @class = "custom-select",
-                                @onchange = "BuscarTodosAvisos()"
+                                @onchange = "AlterarLoja()"
                             })
                         </div>
                     }
@@ -57,34 +77,36 @@
         @* Avisos *@
         <li class="header-notification">
             <div class="dropdown-primary dropdown">
-                <div class="dropdown-toggle" data-toggle="dropdown">
+                <div class="dropdown-toggle" data-toggle="dropdown" id="sininho">
                     <i class="feather icon-bell"></i>
 
                     <span class="badge bg-c-red" id="qtdeMsg"></span>
                 </div>
                 <ul id="drop_avisos" class="show-notification notification-view dropdown-menu" data-dropdown-in="fadeIn">
-
-                    <li>
-                        <h6>Avisos</h6>
-                        <label class="label label-danger">Novas</label>
-                    </li>
-                    @* aqui vai a lista de mensagens *@
-                    <li class="linhas" id="itemMsg_" style="display:none">
-                        <div class="media">
-                            <div class="media-body">
-                                <span class="notification-time" id="divulgado_"></span>
-                                <p class="notification-msg" id="paragrafo-avisos"></p>
-                                <label>
-                                    <input type="checkbox" value="" id="chk_" >
-                                    <span class="cr">
-                                        <i class="cr-icon icofont icofont-ui-check txt-primary"></i>
-                                    </span>
-                                    <span>Não exibir mais este aviso.</span>
-                                </label>
-                            </div>
-                        </div>
-                    </li>
-                    
+                    <li id="msgs">
+                        <ul id="lstAvisos">
+                            <li>
+                                <h6>Avisos</h6>
+                                <label class="label label-danger">Novas</label>
+                            </li>
+                            @* aqui vai a lista de mensagens *@
+                            <li class="linhas" id="itemMsg_" style="display:none">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <span class="notification-time" id="divulgado_"></span>
+                                        <p class="notification-msg" id="paragrafo-avisos"></p>
+                                        <label class="naoExibir">
+                                            <input type="checkbox" value="" id="chk_">
+                                            <span class="cr">
+                                                <i class="cr-icon icofont icofont-ui-check txt-primary"></i>
+                                            </span>
+                                            <span>Não exibir mais este aviso.</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>                    
                 </ul>
             </div>
         </li>

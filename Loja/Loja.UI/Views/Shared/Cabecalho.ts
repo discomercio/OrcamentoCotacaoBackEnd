@@ -1,11 +1,13 @@
-﻿import { Constantes } from "../../UtilTs/Constantes/Constantes";
-import { DataUtils } from "../../UtilTs/DataUtils/DataUtils";
-import { ErrorModal } from "./Error";
+﻿import { DataUtils } from "../../UtilTs/DataUtils/DataUtils";
 //OBS: não entendi o pq que temos que importar algo para remover o erro no window 
 
 declare var usuarioLogado: any;
 declare var window: any;
-
+declare var url_chaverLoja: string;
+declare var url_buscarAvisosNaoLidos: string;
+declare var url_MarcarAvisoExibido: string;
+declare var url_RemoverAvisos: string;
+declare var url_base: string;
 $(function () {
     if (usuarioLogado != "" && usuarioLogado != undefined) {
         let letra = usuarioLogado.substring(0, 2);
@@ -17,15 +19,56 @@ $(function () {
         $("#avatar").text(letra.toUpperCase());
         $("#menu-usuario").attr("data-original-title", usuarioLogado);
 
-        //vamos buscar via ajax os avisos
+        //O IE está armazenando a chamada ajax no cache, sendo assim, não faz novas chamadas
+        //forçamos para não guardar cache no IE
+        $.ajaxSetup({ cache: false });
+
         BuscarAvisosNaoLidos();
 
         //não deixar fechar dropdown ao clicar dentro
         $("#drop_avisos").click((e) => {
             e.stopImmediatePropagation();
         });
+
+
     }
 });
+
+//ao abrir o dropdown
+$("#sininho").on('click', function () {
+    //vamos marcar na base que os avisos foram exibidos
+    MarcarAvisosExibido();
+});
+
+function MarcarAvisosExibido() {
+    let c: JQuery<HTMLInputElement> = $('.linhas input');
+
+    //vamos pegar os id's e mandar para o controller
+    let lstId: Array<string> = new Array();
+
+    for (let i = 0; i < c.length; i++) {
+        if (c[i].value != "") {
+            lstId.push(c[i].value);
+        }
+    }
+    //faz a chamada Ajax
+    MarcarAvisoExibido(lstId);
+}
+
+function MarcarAvisoExibido(lst: Array<string>) {
+    $.ajax({
+        url: url_MarcarAvisoExibido,
+        type: "POST",
+        data: { lst: lst },
+        dataType: "json",
+        success: function () {
+            //não fazemos nada
+        },
+        error: function (t) {
+            swal("Erro", "Falha ao marcar avisos como exibidos!");
+        }
+    });
+}
 
 function setRandomColor() {
     $("#avatar").css("background-color", getRandomColor());
@@ -41,33 +84,34 @@ function getRandomColor() {
 
 
 declare var document: HTMLDocument;
-window.BuscarTodosAvisos = () => {
+window.AlterarLoja = () => {
     RecarregarPagina();
 }
 
 function RecarregarPagina() {
-    document.location.href = "/lojamvc/Home/Index/?novaloja=" + $('#cabecacomboLojas').val();
+    document.location.href = url_chaverLoja + "/?novaloja=" + $('#cabecacomboLojas').val();
 }
 
 window.RemoverAvisosSelecionado = () => {
-    
+
     //vamos buscar os itens selecionados
     let itens: Array<string> = new Array();
-    
+
     let c: JQuery<HTMLInputElement> = $('.linhas input');
 
     for (let i = 0; i < c.length; i++) {
         if (c[i].checked == true) {
             itens.push(c[i].value);
-        }        
+        }
     }
     //vamos salvar os dados como lido
     NaoExibirMaisEssesAvisos(itens);
 }
 
-function NaoExibirMaisEssesAvisos(itens:string[]) {
+function NaoExibirMaisEssesAvisos(itens: string[]) {
+    
     $.ajax({
-        url: "../lojamvc/Home/RemoverAvisos",
+        url: url_RemoverAvisos,
         type: "POST",
         data: { itens: itens },
         dataType: "json",
@@ -75,7 +119,6 @@ function NaoExibirMaisEssesAvisos(itens:string[]) {
             RemoverDaTela();
         },
         error: function () {
-            debugger;
             swal("Erro", "Falha ao remover avisos!");
         }
     });
@@ -99,14 +142,15 @@ function RemoverDaTela() {
 }
 
 function BuscarAvisosNaoLidos() {
-
     $.ajax({
-        url: "../lojamvc/Home/BuscarAvisosNaoLidos",
+        url: url_buscarAvisosNaoLidos,
         type: "GET",
-        //data: { nendereco: $('#nendereco').val(), localidade: $('#localidade').val(), lstufs: $('#lstufs').val() },
         dataType: "json",
         success: function (t) {
             TratarCamposAvisos(t);
+        },
+        error: function (t) {
+            swal("Erro", "Falha ao buscar avisos!");
         }
     });
 }
@@ -135,11 +179,10 @@ function TratarCamposAvisos(t: any) {
 
                 $("#itemMsg_").parent().append(linha);
             }
-
             let btn_remover: string = "<li id='btn_remover'>" +
                 "<button type='button' class='btn btn-primary col-xl-12' onclick='RemoverAvisosSelecionado()'> Remover Avisos </button>" +
                 "</li>";
-            $("#itemMsg_").parent().append(btn_remover);
+            $("#drop_avisos").append(btn_remover);
         }
     }
 }

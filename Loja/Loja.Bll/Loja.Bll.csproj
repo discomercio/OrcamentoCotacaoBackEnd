@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Global\Avisos\Avisos.csproj" />
     <ProjectReference Include="..\..\Global\Infra\InfraBanco\InfraBanco.csproj" />
     <ProjectReference Include="..\..\Global\Pedido\Pedido.csproj" />
     <ProjectReference Include="..\..\Global\Prepedido\Prepedido.csproj" />
