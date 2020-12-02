@@ -163,7 +163,7 @@ namespace Prepedido
                     Status = r.St_Orc_Virou_Pedido == 1 ? "Pedido em andamento" : "Pedido em processamento",
                     DataPrePedido = r.Data,
                     NumeroPrepedido = r.Orcamento,
-                    NomeCliente = r.Tcliente.Nome,
+                    NomeCliente = r.Endereco_nome,
                     ValoTotal = r.Permite_RA_Status == 1 ? r.Vl_Total_NF : r.Vl_Total
                 }).OrderByDescending(r => r.NumeroPrepedido).ToList();
             }
@@ -174,7 +174,7 @@ namespace Prepedido
                     Status = "Excluído",
                     DataPrePedido = r.Data,
                     NumeroPrepedido = r.Orcamento,
-                    NomeCliente = r.Tcliente.Nome,
+                    NomeCliente = r.Endereco_nome,
                     ValoTotal = r.Permite_RA_Status == 1 && r.Permite_RA_Status != 0 ? r.Vl_Total_NF : r.Vl_Total
                 }).OrderByDescending(r => r.NumeroPrepedido).ToList();
             }
