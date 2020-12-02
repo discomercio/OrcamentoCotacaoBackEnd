@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using InfraBanco;
 using Loja.Bll.Bll.AcessoBll;
 using Loja.Bll.ClienteBll;
 using Loja.Bll.Util;
@@ -112,21 +113,37 @@ namespace Loja.UI.Controllers
         private readonly ClienteBll clienteBll;
         private readonly UsuarioAcessoBll usuarioAcessoBll;
         private readonly ILogger<UsuarioLogado> loggerUsuarioLogado;
+        private readonly ContextoBdProvider contextoProvider;
 
         public SiteColorsController(SiteColorsBll siteColorsBll, Configuracao configuracao, ClienteBll clienteBll,
-            UsuarioAcessoBll usuarioAcessoBll,
-            ILogger<UsuarioLogado> loggerUsuarioLogado)
+            UsuarioAcessoBll usuarioAcessoBll, ILogger<UsuarioLogado> loggerUsuarioLogado,
+            ContextoBdProvider contextoProvider)
         {
             this.siteColorsBll = siteColorsBll;
             this.configuracao = configuracao;
             this.clienteBll = clienteBll;
             this.usuarioAcessoBll = usuarioAcessoBll;
             this.loggerUsuarioLogado = loggerUsuarioLogado;
+            this.contextoProvider = contextoProvider;
         }
         public async Task<IActionResult> Index(int? pagina, string param)
         {
             var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
+            
+            //é necessário mandar para TrataSessaoExpirada.asp
+            if (usuarioLogado.SessaoAtiva)
+            {
+                //vamos verificar se SessionCtrlTicket = null e SessionCtrlDtHrLogon = null
+                if (await usuarioLogado.SessionCtrlDtHrLogon(contextoProvider) == null ||
+                    await usuarioLogado.SessionCtrlTicket(contextoProvider) == null)
+                {
+                    bool atualizou = await usuarioAcessoBll.AtualizarSessionCtrlTicket(usuarioLogado);
 
+                    //se não atualizar???7
+                    if (!atualizou)
+                        return RedirectToAction("Index", "Home"); // ou podemos mostrar uma mensagem de erro
+                }
+            }
 
             ListaPaginasColors? paginaEnum = null;
             //a página é quem tem Math.Abs(pagina.ToString().GetHashCode())
@@ -134,7 +151,7 @@ namespace Loja.UI.Controllers
             {
                 foreach (ListaPaginasColors i in Enum.GetValues(typeof(ListaPaginasColors)))
                 {
-                    if (Math.Abs( i.ToString().GetHashCode()) == pagina)
+                    if (Math.Abs(i.ToString().GetHashCode()) == pagina)
                     {
                         paginaEnum = i;
                         break;
@@ -213,20 +230,10 @@ namespace Loja.UI.Controllers
                 _ => "resumo.asp",
             };
 
-            
-
 
             var sessionCtrlInfo = await siteColorsBll.MontaSessionCtrlInfo(usuarioLogado);
-            
-            List<string> listaPaginas = new List<string>();
 
-            var model = new Models.SiteColors.SiteColorsViewModel(sessionCtrlInfo, paginaUrl, configuracao, listaPaginas);
-
-            foreach (ListaPaginasColors i in Enum.GetValues(typeof(ListaPaginasColors)))
-            {
-                string url = model.Url();
-                model.ListaPaginas.Add(model.Url());
-            }
+            var model = new Models.SiteColors.SiteColorsViewModel(sessionCtrlInfo, paginaUrl, configuracao);
 
             return View(model);
         }

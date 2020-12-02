@@ -389,6 +389,43 @@ namespace Loja.Bll.Bll.AcessoBll
         {
             return await avisosBll.MarcarAvisoExibido(lst, usuario.ToUpper(), loja);
         }
+
+        public async Task<bool> AtualizarSessionCtrlTicket(UsuarioLogado usuarioLogado)
+        {
+            bool retorno = false;
+            
+
+            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+            {
+                var rsUsuario = await (from u in dbgravacao.Tusuarios
+                                       where usuarioLogado.Usuario_nome_atual.Trim().ToUpper() == u.Usuario.Trim().ToUpper()
+                                       select u).FirstOrDefaultAsync();
+                if (rsUsuario == null)
+                    return false;
+
+                var ticket = Guid.NewGuid();
+                rsUsuario.Dt_Ult_Acesso = DateTime.Now;
+                rsUsuario.SessionCtrlDtHrLogon = DateTime.Now;
+                rsUsuario.SessionCtrlModulo = Constantes.Constantes.SESSION_CTRL_MODULO_LOJA;
+                rsUsuario.SessionCtrlLoja = usuarioLogado.Loja_atual_id;
+                rsUsuario.SessionCtrlTicket = ticket.ToString();
+                rsUsuario.SessionTokenModuloLoja = ticket;
+                rsUsuario.DtHrSessionTokenModuloLoja = DateTime.Now;
+
+
+                dbgravacao.Update(rsUsuario);
+                await dbgravacao.SaveChangesAsync();
+
+                dbgravacao.transacao.Commit();
+
+
+                usuarioLogado.LimparCacheInfsTusuario();
+
+                retorno = true;
+            }
+
+            return retorno;
+        }
     }
 }
 

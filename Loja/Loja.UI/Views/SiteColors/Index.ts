@@ -92,7 +92,6 @@ class SiteColorsIndex {
     //este somente fica válido depois que o documento termina de carregar
     public iframe: HTMLIFrameElement;
     public iframeJquery: JQuery<HTMLIFrameElement>;
-    public listaPaginas: string[] = new Array();
     public http: string = "/lojamvc";
     public urlBase: string = "http://localhost:9010";
 
