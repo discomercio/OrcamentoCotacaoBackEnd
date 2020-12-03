@@ -6,5 +6,13 @@
     "usuario_cadastro": "PRAGMATICA",
     "excluido_status": 0,
     "timestamp": 0
+  },
+  {
+    "usuario": "USUARIOAPIMAGENTO",
+    "id_perfil": "000000020008",
+    "dt_cadastro": "2020-06-16T03:00:00Z",
+    "usuario_cadastro": "PRAGMATICA",
+    "excluido_status": 0,
+    "timestamp": 0
   }
 ]

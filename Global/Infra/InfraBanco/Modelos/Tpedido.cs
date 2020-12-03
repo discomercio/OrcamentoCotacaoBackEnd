@@ -6,6 +6,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
+//modelo para colocar campos que sejam somente para o pedido:
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+#endif
 
 namespace InfraBanco.Modelos
 {
@@ -488,5 +491,175 @@ namespace InfraBanco.Modelos
 
         [Column("PrevisaoEntregaDtHrUltAtualiz")]
         public DateTime? PrevisaoEntregaDtHrUltAtualiz { get; set; }
+
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+        public ICollection<TpedidoItemDevolvido> TpedidoItemDevolvido { get; set; }
+
+        [Column("st_auto_split")]
+        [Required]
+        public byte St_Auto_Split { get; set; }
+
+        [Column("dt_st_pagto")]
+        public DateTime? Dt_St_Pagto { get; set; }
+
+        [Column("dt_hr_st_pagto")]
+        public DateTime? Dt_Hr_St_Pagto { get; set; }
+
+        [Column("usuario_st_pagto")]
+        [MaxLength(20)]
+        public string Usuario_St_Pagto { get; set; }
+
+        [Column("st_recebido")]
+        [MaxLength(1)]
+        public string St_Recebido { get; set; }
+
+        [Column("custoFinancFornecQtdeParcelas")]
+        [Required]
+        public short CustoFinancFornecQtdeParcelas { get; set; }
+
+        [Column("qtde_parcelas")]
+        public short? Qtde_Parcelas { get; set; }
+
+        [Column("analise_credito_pendente_vendas_motivo")]
+        [MaxLength(3)]
+        public string Analise_Credito_Pendente_Vendas_Motivo { get; set; }
+
+        [Column("custoFinancFornecTipoParcelamento")]
+        [MaxLength(2)]
+        public string CustoFinancFornecTipoParcelamento { get; set; }
+
+        [Column("vl_total_RA", TypeName = "money")]
+        public decimal? Vl_Total_RA { get; set; }
+
+        [Column("perc_desagio_RA")]
+        public float? Perc_Desagio_RA { get; set; }
+
+        [Column("perc_limite_RA_sem_desagio")]
+        public float? Perc_Limite_RA_Sem_Desagio { get; set; }
+
+        [Column("midia")]
+        [MaxLength(3)]
+        public string Midia { get; set; }
+
+        [Column("servicos")]
+        [MaxLength(60)]
+        public string Servicos { get; set; }
+
+        [Column("usuario_cadastro")]
+        [MaxLength(10)]
+        [Required]
+        public string Usuario_Cadastro { get; set; }
+
+        [Column("pedido_bs_x_at")]
+        [MaxLength(9)]
+        public string Pedido_Bs_X_At { get; set; }
+
+        [Column("InstaladorInstalaUsuarioUltAtualiz")]
+        [MaxLength(10)]
+        public string InstaladorInstalaUsuarioUltAtualiz { get; set; }
+
+        [Column("InstaladorInstalaDtHrUltAtualiz")]
+        public DateTime? InstaladorInstalaDtHrUltAtualiz { get; set; }
+
+        [Column("venda_externa")]
+        public short? Venda_Externa { get; set; }
+
+        [Column("loja_indicou")]
+        [MaxLength(3)]
+        public string Loja_Indicou { get; set; }
+
+        [Column("comissao_loja_indicou")]
+        public float? Comissao_Loja_Indicou { get; set; }
+
+        [Column("GarantiaIndicadorUsuarioUltAtualiz")]
+        [MaxLength(10)]
+        public string GarantiaIndicadorUsuarioUltAtualiz { get; set; }
+
+        [Column("GarantiaIndicadorDtHrUltAtualiz")]
+        public DateTime? GarantiaIndicadorDtHrUltAtualiz { get; set; }
+
+        [Column("sistema_responsavel_atualizacao")]
+        [Required]
+        public int Sistema_responsavel_atualizacao { get; set; }
+
+        [Column("sistema_responsavel_cadastro")]
+        [Required]
+        public int Sistema_responsavel_cadastro { get; set; }
+
+        [Column("perc_desagio_RA_liquida")]
+        [Required]
+        public float Perc_Desagio_RA_Liquida { get; set; }
+
+        [Column("plataforma_origem_pedido")]
+        [Required]
+        public int Plataforma_Origem_Pedido { get; set; }
+
+        [Column("id_nfe_emitente")]
+        [Required]
+        public short Id_Nfe_Emitente { get; set; }
+
+        [Column("vl_total_RA_liquido", TypeName = "money")]
+        public decimal? Vl_Total_RA_Liquido { get; set; }
+
+        [Column("qtde_parcelas_desagio_RA")]
+        [Required]
+        public short Qtde_Parcelas_Desagio_RA { get; set; }
+
+        [Column("st_tem_desagio_RA")]
+        [Required]
+        public short St_Tem_Desagio_RA { get; set; }
+
+        [Column("st_end_entrega")]
+        [Required]
+        public short St_End_Entrega { get; set; }
+
+        [Column("analise_endereco_tratar_status")]
+        [Required]
+        public byte Analise_Endereco_Tratar_Status { get; set; }
+
+        [Column("transportadora_data")]
+        public DateTime? Transportadora_Data { get; set; }
+
+        [Column("transportadora_usuario")]
+        [MaxLength(10)]
+        public string Transportadora_Usuario { get; set; }
+
+        [Column("transportadora_selecao_auto_status")]
+        [Required]
+        public byte Transportadora_Selecao_Auto_Status { get; set; }
+
+        [Column("transportadora_selecao_auto_cep")]
+        [MaxLength(8)]
+        public string Transportadora_Selecao_Auto_Cep { get; set; }
+
+        [Column("transportadora_selecao_auto_tipo_endereco")]
+        [Required]
+        public byte Transportadora_Selecao_Auto_Tipo_Endereco { get; set; }
+
+        [Column("transportadora_selecao_auto_transportadora")]
+        [MaxLength(10)]
+        public string Transportadora_Selecao_Auto_Transportadora { get; set; }
+
+        [Column("transportadora_selecao_auto_data_hora")]
+        public DateTime? Transportadora_Selecao_Auto_Data_Hora { get; set; }
+
+        [Column("split_status")]
+        public short? Split_Status { get; set; }
+
+        [Column("split_data")]
+        public DateTime? Split_Data { get; set; }
+
+        [Column("split_hora")]
+        [MaxLength(6)]
+        public string Split_Hora { get; set; }
+
+        [Column("split_usuario")]
+        [MaxLength(10)]
+        public string Split_Usuario { get; set; }
+
+        [Column("data_hora")]
+        public DateTime? Data_Hora { get; }
+
+#endif
     }
 }

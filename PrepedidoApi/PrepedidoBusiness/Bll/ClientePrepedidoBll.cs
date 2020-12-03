@@ -28,7 +28,7 @@ namespace PrepedidoBusiness.Bll
             IEnumerable<EnderecoEntregaJustificativaDto> enderecoEntregaJustificativaDtos = EnderecoEntregaJustificativaDto.EnderecoEntregaJustificativaDto_De_EnderecoEntregaJustificativaDadosLista(retorno);
             return enderecoEntregaJustificativaDtos;
         }
-        public async Task<List<string>> AtualizarClienteParcial(string apelido, DadosClienteCadastroDto dadosClienteCadastroDto, byte sistemaResponsavel)
+        public async Task<List<string>> AtualizarClienteParcial(string apelido, DadosClienteCadastroDto dadosClienteCadastroDto, InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavel)
         {
             List<string> retorno = await clienteBll.AtualizarClienteParcial(apelido.Trim(), DadosClienteCadastroDto.DadosClienteCadastroDados_De_DadosClienteCadastroDto(dadosClienteCadastroDto), sistemaResponsavel);
             return retorno;
@@ -41,7 +41,7 @@ namespace PrepedidoBusiness.Bll
         public async Task<IEnumerable<string>> CadastrarCliente(ClienteCadastroDto clienteDto, string apelido)
         {
             IEnumerable<string> retorno = await clienteBll.CadastrarCliente(ClienteCadastroDto.ClienteCadastroDados_De_ClienteCadastroDto(clienteDto), apelido.Trim(),
-                (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS);
+                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS);
             return retorno;
         }
 

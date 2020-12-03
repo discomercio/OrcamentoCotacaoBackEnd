@@ -144,10 +144,14 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
           if (this.clicouAddProd)
             this.adicionarProduto();
         } else {
+          this.carregandoProds = false;
           this.alertaService.mostrarMensagem("Erro ao acessar a lista de produtos: nenhum produto retornado. Por favor, entre em contato com o suporte técnico.")
         }
       },
-      error: (r: ProdutoComboDto) => this.alertaService.mostrarErroInternet(r)
+      error: (r: ProdutoComboDto) => {
+        this.carregandoProds = false;
+        this.alertaService.mostrarErroInternet(r);
+      }
     });
   }
 
@@ -158,7 +162,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     }
 
     //procuramos esse item
-    const item = this.produtoComboDto.ProdutoDto.filter(el => el.Fabricante === i.Fabricante && el.Produto === i.NumProduto);
+    const item = this.produtoComboDto.ProdutoDto.filter(el => el.Fabricante === i.Fabricante && el.Produto === i.Produto);
     if (!item || item.length <= 0) {
       return null;
     }
@@ -249,12 +253,12 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
       i.Qtde = 1;
     }
 
-    i.TotalItem = this.moedaUtils.formatarDecimal(i.VlUnitario * i.Qtde); // VlUnitario = Vl Venda na tela
+    i.TotalItem = this.moedaUtils.formatarDecimal(i.Preco_Venda * i.Qtde); // preco_venda = Vl Venda na tela
     this.dadosPagto.prepedidoAlterado();
     this.novoPrepedidoDadosService.totalPedido();
 
     if (this.prePedidoDto.PermiteRAStatus == 1) {
-      i.TotalItemRA = this.moedaUtils.formatarDecimal(i.Preco_Lista * i.Qtde);
+      i.TotalItemRA = this.moedaUtils.formatarDecimal(i.Preco_NF * i.Qtde);
       this.novoPrepedidoDadosService.totalPedidoRA();
     }
   }
@@ -265,45 +269,45 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     v = (v / 100).toFixed(2) + '';
 
     //se não alteraram nada, ignoramos
-    if (i.Preco === Number.parseFloat(v))
+    if (i.CustoFinancFornecPrecoListaBase === Number.parseFloat(v))
       return;
 
-    i.Preco = Number.parseFloat(v);
-    if (i.Desconto) {
-      i.VlUnitario = this.moedaUtils.formatarDecimal(i.Preco * (1 - i.Desconto / 100));
+    i.CustoFinancFornecPrecoListaBase = Number.parseFloat(v);
+    if (i.Desc_Dado) {
+      i.Preco_Venda = this.moedaUtils.formatarDecimal(i.CustoFinancFornecPrecoListaBase * (1 - i.Desc_Dado / 100));
     }
     else {
-      i.VlUnitario = this.moedaUtils.formatarDecimal(i.Preco);
+      i.Preco_Venda = this.moedaUtils.formatarDecimal(i.CustoFinancFornecPrecoListaBase);
     }
 
     this.digitouQte(i);
   }
 
-  digitouPreco_Lista(e: Event, i: PrepedidoProdutoDtoPrepedido) {
+  digitouPreco_NF(e: Event, i: PrepedidoProdutoDtoPrepedido) {
     let valor = ((e.target) as HTMLInputElement).value;
     let v: any = valor.replace(/\D/g, '');
     v = Number.parseFloat((v / 100).toFixed(2) + '');
 
-    if (Number.parseFloat(i.VlLista.toFixed(2)) === v) {
+    if (Number.parseFloat(i.Preco_Lista.toFixed(2)) === v) {
       i.AlterouValorRa = false;
     }
     else {
       i.AlterouValorRa = true;
     }
 
-    i.Preco_Lista = this.moedaUtils.formatarDecimal(v);
+    i.Preco_NF = this.moedaUtils.formatarDecimal(v);
 
     this.somarRA();
 
     this.digitouQte(i);
   }
 
-  formatarPreco_Lista(e: Event, i: PrepedidoProdutoDtoPrepedido) {
+  formatarPreco_NF(e: Event, i: PrepedidoProdutoDtoPrepedido) {
     let valor = ((e.target) as HTMLInputElement).value;
     let v: any = valor.replace(/\D/g, '');
     v = (v / 100).toFixed(2) + '';
 
-    i.Preco_Lista = v;
+    i.Preco_NF = v;
   }
 
   somaRA: string;
@@ -321,30 +325,30 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     return this.somaRA;
   }
 
-  formataVlVenda(e: Event, i: PrepedidoProdutoDtoPrepedido) {
+  formataPreco_Venda(e: Event, i: PrepedidoProdutoDtoPrepedido) {
     let valor = ((e.target) as HTMLInputElement).value;
     let v: any = valor.replace(/\D/g, '');
     v = (v / 100).toFixed(2) + '';
 
-    i.VlUnitario = v;
+    i.Preco_Venda = v;
   }
 
-  digitouVlVenda(e: Event, i: PrepedidoProdutoDtoPrepedido) {
+  digitouPreco_Venda(e: Event, i: PrepedidoProdutoDtoPrepedido) {
     let valor = ((e.target) as HTMLInputElement).value;
     let v: any = valor.replace(/\D/g, '');
     v = (v / 100).toFixed(2) + '';
     
-    i.TotalItem = i.Qtde * i.VlLista;
-    i.VlTotalItem = i.Qtde * i.VlLista;
+    i.TotalItem = i.Qtde * i.Preco_Lista;
+    i.VlTotalItem = i.Qtde * i.Preco_Lista;
 
-    i.Desconto = 100 * (i.VlLista - v) / i.VlLista;
+    i.Desc_Dado = 100 * (i.Preco_Lista - v) / i.Preco_Lista;
     //calcula o desconto
-    i.Desconto = this.moedaUtils.formatarDecimal(i.Desconto);
+    i.Desc_Dado = this.moedaUtils.formatarDecimal(i.Desc_Dado);
 
-    if (i.VlLista == i.VlUnitario) {
-      i.AlterouVlVenda = false;
+    if (i.Preco_Lista == i.Preco_Venda) {
+      i.Alterou_Preco_Venda = false;
     } else {
-      i.AlterouVlVenda = true;
+      i.Alterou_Preco_Venda = true;
     }
 
     this.digitouQte(i);
@@ -357,10 +361,10 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     v = (v / 100).toFixed(2) + '';
 
     //se o desconto for digitado estamos alterando o valor de venda e não devemos mais alterar esse valor
-    if (i.Desconto == 0 || i.Desconto.toString() == '') {
-      i.AlterouVlVenda = false;
+    if (i.Desc_Dado == 0 || i.Desc_Dado.toString() == '') {
+      i.Alterou_Preco_Venda = false;
     } else {
-      i.AlterouVlVenda = true;
+      i.Alterou_Preco_Venda = true;
     }
 
     this.digitouDescValor(i, v);
@@ -371,22 +375,22 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     let v: any = valor.replace(/,/g, '');
     if (!isNaN(v)) {
       v = (v / 100).toFixed(2) + '';
-      i.Desconto = v;
+      i.Desc_Dado = v;
     }
   }
 
   digitouDescValor(i: PrepedidoProdutoDtoPrepedido, v: string) {
     
     //se não alteraram nada, ignoramos
-    if (i.Desconto === Number.parseFloat(v)){
-      if(i.Desconto == 0){
-        i.Desconto = 0;
+    if (i.Desc_Dado === Number.parseFloat(v)){
+      if(i.Desc_Dado == 0){
+        i.Desc_Dado = 0;
       }
       return;
     }
       
 
-    i.Desconto = Number.parseFloat(v);
+    i.Desc_Dado = Number.parseFloat(v);
     //não deixa números negativos e nem maior que 100
     /*
     //pensando bem, deixa negativos sim!
@@ -396,16 +400,16 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     }
     */
 
-    if (i.Desconto > 100) {
-      i.Desconto = 100;
+    if (i.Desc_Dado > 100) {
+      i.Desc_Dado = 100;
     }
 
-    if (i.Desconto) {
-      i.VlUnitario = i.VlLista * (1 - i.Desconto / 100);
-      i.VlUnitario = Number.parseFloat(i.VlUnitario.toFixed(2));
+    if (i.Desc_Dado) {
+      i.Preco_Venda = i.Preco_Lista * (1 - i.Desc_Dado / 100);
+      i.Preco_Venda = Number.parseFloat(i.Preco_Venda.toFixed(2));
     }
     else {
-      i.VlUnitario = i.VlLista;
+      i.Preco_Venda = i.Preco_Lista;
     }
     this.digitouQte(i);
   }
@@ -438,6 +442,9 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     //verificar se tem produtos com qtde maior que o permitido
     let q: number = 0;
     this.prePedidoDto.ListaProdutos.forEach(r => {
+      //afazer: recalcular desconto antes de cadastrar
+      r.Desc_Dado = 100 * (r.Preco_Lista - r.Preco_Venda) / r.Preco_Lista;
+
       if (this.qtdeVendaPermitida(r)) {
         q++;
       }
@@ -487,7 +494,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
 
   removerLinha(i: PrepedidoProdutoDtoPrepedido) {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      data: `Remover este item do pré-pedido?`
+      data: `Remover este item do pedido?`
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -522,7 +529,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
     selecProdInfo.produtoComboDto = this.produtoComboDto;
     selecProdInfo.ClicouOk = false;
     if (linha) {
-      selecProdInfo.Produto = linha.NumProduto;
+      selecProdInfo.Produto = linha.Produto;
       selecProdInfo.Fabricante = linha.Fabricante;
       selecProdInfo.Qte = linha.Qtde;
     }
@@ -551,7 +558,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
         if (linha) {
           //editando
           //se mudou o produto, temos que mdar vários campos
-          if (linha.NumProduto !== selecProdInfo.Produto || linha.Fabricante !== selecProdInfo.Fabricante) {
+          if (linha.Produto !== selecProdInfo.Produto || linha.Fabricante !== selecProdInfo.Fabricante) {
             //mudou o produto, temos que mudar muita coisa!
             const filhosDiretos = this.filhosDeProdutoComposto(selecProdInfo);
             if (!filhosDiretos) {
@@ -585,24 +592,24 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
             //pegamos 2 item se for repetido
             this.prePedidoDto.ListaProdutos.forEach(x => {
               filhosDiretosNovo.forEach(y => {
-                if (y.Produto == x.NumProduto)
+                if (y.Produto == x.Produto)
                   itemrepetido.push(y);
               })
             });
             //se a lista de produtos estiver com 11 itens, não iremos add um produto composto
             //mostraremos uma msg que este item é composto por 2 ou mais itens
             if (this.prePedidoDto.ListaProdutos.length == 11 && itemrepetido.length == 0) {
-              this.alertaService.mostrarMensagem("É permitido apenas 12 itens por Pré-Pedido!\n" +
+              this.alertaService.mostrarMensagem("É permitido apenas 12 itens por Pedido!\n" +
                 "O produto " + selecProdInfo.Produto + " é composto por " + filhosDiretosNovo.length + " itens!");
               return false;
             }
           }
           else {
             //pegamos 1 item se for repetido
-            itemrepetido = this.prePedidoDto.ListaProdutos.filter(y => y.NumProduto == selecProdInfo.Produto);
+            itemrepetido = this.prePedidoDto.ListaProdutos.filter(y => y.Produto == selecProdInfo.Produto);
           }
           if (this.prePedidoDto.ListaProdutos.length >= 12 && itemrepetido.length == 0) {
-            this.alertaService.mostrarMensagem("É permitido apenas 12 itens por Pré-Pedido!");
+            this.alertaService.mostrarMensagem("É permitido apenas 12 itens por Pedido!");
             return false;
           }
           else {
@@ -638,7 +645,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
                 }
               }
               else {
-                this.alertaService.mostrarMensagem("É permitido apenas 12 itens por Pré-Pedido!");
+                this.alertaService.mostrarMensagem("É permitido apenas 12 itens por Pedido!");
                 return false;
               }
             }
@@ -656,21 +663,21 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
       prodInfo = new ProdutoDto();
     }
     linha.Fabricante = fabricante;
-    linha.NumProduto = produto;
+    linha.Produto = produto;
     linha.Descricao = prodInfo.Descricao_html;
     //Obs: string;
     linha.Qtde = qtde;
     //Permite_Ra_Status: number;
     //BlnTemRa: boolean;
-    linha.Preco = prodInfo.Preco_lista;
-    linha.VlLista = prodInfo.Preco_lista;
-    linha.VlUnitario = prodInfo.Preco_lista;
+    linha.CustoFinancFornecPrecoListaBase = prodInfo.Preco_lista;
     linha.Preco_Lista = prodInfo.Preco_lista;
+    linha.Preco_Venda = prodInfo.Preco_lista;
+    linha.Preco_NF = prodInfo.Preco_lista;
 
-    if (!linha.Desconto) {
-      linha.Desconto = 0;
+    if (!linha.Desc_Dado) {
+      linha.Desc_Dado = 0;
     }
-    this.digitouDescValor(linha, linha.Desconto.toString());
+    this.digitouDescValor(linha, linha.Desc_Dado.toString());
     this.digitouQte(linha);
   }
 
@@ -715,7 +722,7 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
         continaurBuscaRepetido = false;
         for (let irepetido = i + 1; irepetido < lp.length; irepetido++) {
           let repetido = lp[irepetido];
-          if (este.Fabricante === repetido.Fabricante && este.NumProduto == repetido.NumProduto) {
+          if (este.Fabricante === repetido.Fabricante && este.Produto == repetido.Produto) {
             //repetido, tem que tirar este!
             continaurBuscaRepetido = true;
             este.Qtde += repetido.Qtde;

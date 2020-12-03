@@ -10,8 +10,25 @@ namespace Especificacao.Especificacao.Pedido
     {
         public PedidoSteps()
         {
-            base.AdicionarImplementacao(new Especificacao.Prepedido.PrepedidoSteps());
-            RegistroDependencias.AdicionarDependencia("Especificacao.Prepedido.Prepedido.PrepedidoListaDependencias", "Especificacao.Pedido.Pedido.PedidoListaDependencias");
+            {
+                var imp = new Especificacao.Prepedido.PrepedidoSteps();
+                base.AdicionarImplementacao(imp);
+                RegistroDependencias.AdicionarDependencia("Especificacao.Prepedido.Prepedido.PrepedidoListaDependencias", imp,
+                    "Especificacao.Pedido.Pedido.PedidoListaDependencias");
+            }
+
+            {
+                var imp = new Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido();
+                base.AdicionarImplementacao(imp);
+                RegistroDependencias.AdicionarDependencia("Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedidoListaDependencias", imp,
+                    "Especificacao.Pedido.Pedido.PedidoListaDependencias");
+            }
+            {
+                var imp = new Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido();
+                base.AdicionarImplementacao(imp);
+                RegistroDependencias.AdicionarDependencia("Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedidoListaDependencias", imp,
+                    "Especificacao.Pedido.Pedido.PedidoListaDependencias");
+            }
         }
         [Given(@"O pedido não tem nenhum passo individual, somente passos incluídos pela PedidoListaDependencias")]
         public void GivenOPedidoNaoTemNenhumPassoIndividualSomentePassosIncluidosPelaPedidoListaDependencias()

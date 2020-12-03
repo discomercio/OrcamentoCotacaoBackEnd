@@ -118,8 +118,8 @@ this.ScenarioInitialize(scenarioInfo);
 #line 8
  testRunner.And("Especificado em \"Especificacao.Comuns.Api.Autenticacao\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 11
- testRunner.And("Fim da configuração", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 10
+ testRunner.And("Especificado em \"Especificacao.Prepedido.Prepedido.PrepedidoListaDependencias\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

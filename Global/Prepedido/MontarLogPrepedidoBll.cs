@@ -82,7 +82,7 @@ namespace Prepedido
             return campos_a_inserir;
         }
 
-        private string MontarCamposAInserirFormaPagto(FormaPagtoCriacaoDados forma_pagto_criacao)
+        public string MontarCamposAInserirFormaPagto(FormaPagtoCriacaoDados forma_pagto_criacao)
         {
             string campos_a_inserir = "";
             campos_a_inserir += "tipo_parcelamento|";
@@ -120,7 +120,7 @@ namespace Prepedido
             return campos_a_inserir;
         }
 
-        private string MontaCamposAInserirEnderecoEntrega(Cliente.Dados.EnderecoEntregaClienteCadastroDados end)
+        public string MontaCamposAInserirEnderecoEntrega(Cliente.Dados.EnderecoEntregaClienteCadastroDados end)
         {
             string campos_a_inserir = "";
 
@@ -152,7 +152,7 @@ namespace Prepedido
             return campos_a_inserir;
         }
 
-        private string FormatarEnderecoEntregaParaLog(Cliente.Dados.EnderecoEntregaClienteCadastroDados end)
+        public string FormatarEnderecoEntregaParaLog(Cliente.Dados.EnderecoEntregaClienteCadastroDados end)
         {
             return end.EndEtg_endereco + ", " + end.EndEtg_endereco_numero + " " + end.EndEtg_endereco_complemento +
                 " - " + end.EndEtg_bairro + " - " + end.EndEtg_cidade + " - " + end.EndEtg_uf + " - "

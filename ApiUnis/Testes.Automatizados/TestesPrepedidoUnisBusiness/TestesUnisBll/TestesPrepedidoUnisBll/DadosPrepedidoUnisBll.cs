@@ -22,11 +22,11 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
             ret.FormaPagtoCriacao.Op_av_forma_pagto = "1";
 
             ret.ListaProdutos[0].CustoFinancFornecCoeficiente = 1;
-            ret.ListaProdutos[0].CustoFinancFornecPrecoListaBase = 659.30m;
+            ret.ListaProdutos[0].Preco_Lista = 659.30m;
             ret.ListaProdutos[0].Preco_Venda = 652.71m;
 
             ret.ListaProdutos[1].CustoFinancFornecCoeficiente = 1;
-            ret.ListaProdutos[1].CustoFinancFornecPrecoListaBase = 988.95m;
+            ret.ListaProdutos[1].Preco_Lista = 988.95m;
             ret.ListaProdutos[1].Preco_Venda = 979.06m;
 
             ret.VlTotalDestePedido = ret.ListaProdutos[0].Preco_Venda * ret.ListaProdutos[0].Qtde;
@@ -228,11 +228,11 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
       ""Qtde"": 2,
       ""Desc_Dado"": 1,
       ""Preco_Venda"": 687.11,
-      ""Preco_Fabricante"": 659.3,
+      ""CustoFinancFornecPrecoListaBase"": 659.3,
       ""Preco_Lista"": 694.05,
       ""Preco_NF"": 694.05,
       ""CustoFinancFornecCoeficiente"": 1.0527,
-      ""CustoFinancFornecPrecoListaBase"": 694.05
+      ""Preco_Lista"": 694.05
     },
     {
       ""Fabricante"": ""003"",
@@ -240,11 +240,11 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
       ""Qtde"": 2,
       ""Desc_Dado"": 1,
       ""Preco_Venda"": 1030.66,
-      ""Preco_Fabricante"": 988.95,
+      ""CustoFinancFornecPrecoListaBase"": 988.95,
       ""Preco_Lista"": 1041.07,
       ""Preco_NF"": 1041.07,
       ""CustoFinancFornecCoeficiente"": 1.0527,
-      ""CustoFinancFornecPrecoListaBase"": 1041.07
+      ""Preco_Lista"": 1041.07
     }
   ],
   ""PermiteRAStatus"": true,

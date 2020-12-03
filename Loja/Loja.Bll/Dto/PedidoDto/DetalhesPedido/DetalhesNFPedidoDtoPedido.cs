@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Prepedido.PedidoVisualizacao.Dados.DetalhesPedido;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -20,6 +21,46 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
         //NumeroPedidoMarketplace
         //OrigemPedido = de qual loja esta vindo
 
+        //todo: incluir na interface de usuário
+        public DateTime? EntregaImediataData { get; set; }
+        public string FormaDePagamento { get; set; }
+        public string DescricaoFormaPagamento { get; set; }
+        public string PrevisaoEntrega { get; set; }
 
+
+        public static Prepedido.Dados.DetalhesPrepedido.DetalhesPrepedidoDados DetalhesPrepedidoDados_De_DetalhesNFPedidoDtoPedido(DetalhesNFPedidoDtoPedido origem)
+        {
+            if (origem == null) return null;
+            return new Prepedido.Dados.DetalhesPrepedido.DetalhesPrepedidoDados()
+            {
+                Observacoes = origem.Observacoes,
+                NumeroNF = origem.NumeroNF,
+                EntregaImediata = origem.EntregaImediata,
+                EntregaImediataData = origem.EntregaImediataData,
+                BemDeUso_Consumo = origem.StBemUsoConsumo,
+                InstaladorInstala = origem.InstaladorInstala,
+                GarantiaIndicador = origem.GarantiaIndicadorStatus,
+                FormaDePagamento = origem.FormaDePagamento,
+                DescricaoFormaPagamento = origem.DescricaoFormaPagamento,
+                PrevisaoEntrega = origem.PrevisaoEntrega
+            };
+        }
+        public static DetalhesNFPedidoDtoPedido DetalhesNFPedidoDtoPedido_De_DetalhesNFPedidoPedidoDados(DetalhesNFPedidoPedidoDados origem)
+        {
+            if (origem == null) return null;
+            return new DetalhesNFPedidoDtoPedido()
+            {
+                Observacoes = origem.Observacoes,
+                ConstaNaNF = origem.ConstaNaNF,
+                XPed = origem.XPed,
+                NumeroNF = origem.NumeroNF,
+                NFSimples = origem.NFSimples,
+                EntregaImediata = origem.EntregaImediata,
+                StBemUsoConsumo = origem.StBemUsoConsumo,
+                InstaladorInstala = origem.InstaladorInstala,
+                GarantiaIndicadorStatus = origem.GarantiaIndicadorStatus,
+                PrevisaoEntrega = origem.PrevisaoEntrega
+            };
+        }
     }
 }

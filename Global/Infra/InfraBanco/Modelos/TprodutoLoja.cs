@@ -46,5 +46,9 @@ namespace InfraBanco.Modelos
 
         [Column("qtde_max_venda")]
         public short? Qtde_Max_Venda { get; set; }
+
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+        public Tfabricante Tfabricante { get; set; }
+#endif
     }
 }

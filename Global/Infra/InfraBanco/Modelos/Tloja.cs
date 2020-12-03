@@ -26,5 +26,22 @@ namespace InfraBanco.Modelos
         [Column("unidade_negocio")]
         [MaxLength(5)]
         public string Unidade_Negocio { get; set; }
+
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+        [Column("perc_max_comissao")]
+        public float Perc_Max_Comissao { get; set; }
+
+        [Column("perc_max_comissao_e_desconto")]
+        public float Perc_Max_Comissao_E_Desconto { get; set; }
+
+        [Column("perc_max_comissao_e_desconto_nivel2")]
+        public float Perc_Max_Comissao_E_Desconto_Nivel2 { get; set; }
+
+        [Column("perc_max_comissao_e_desconto_nivel2_pj")]
+        public float Perc_Max_Comissao_E_Desconto_Nivel2_Pj { get; set; }
+
+        [Column("perc_max_comissao_e_desconto_pj")]
+        public float Perc_Max_Comissao_E_Desconto_Pj { get; set; }
+#endif
     }
 }

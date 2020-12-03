@@ -51,7 +51,7 @@ namespace Loja.Bll.Constantes
         public const int PERC_DESAGIO_RA_LIQUIDA = 25;
 
         //'	Criptografia em SessionCtrl (tratamento da sessão expirada)
-        public const string FATOR_CRIPTO_SESSION_CTRL = "1329";
+        public const int FATOR_CRIPTO_SESSION_CTRL = 1329;
         public const string SESSION_CTRL_MODULO_CENTRAL = "CENTR";
         public const string SESSION_CTRL_MODULO_LOJA = "LOJA";
         public const string SESSION_CTRL_MODULO_ORCAMENTO = "ORCTO";

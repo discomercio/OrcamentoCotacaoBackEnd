@@ -6,7 +6,7 @@ namespace Cliente.Dados
 {
     public class EnderecoEntregaClienteCadastroDados
     {
-
+        //se foi selecionado um endereco diferente para a entrega (do spa para a api)
         public bool OutroEndereco { get; set; }
         public string EndEtg_endereco { get; set; }
         public string EndEtg_endereco_numero { get; set; }
@@ -19,7 +19,6 @@ namespace Cliente.Dados
         public string EndEtg_cod_justificativa { get; set; }
         //descrição da justificativa, preenchdio para mostrar (da api para o spa)
         public string EndEtg_descricao_justificativa { get; set; }
-        //se foi selecionado um endereco diferente para a entrega (do spa para a api)
 
         //Novos campos
         public string EndEtg_email { get; set; }
@@ -41,6 +40,6 @@ namespace Cliente.Dados
         public byte EndEtg_produtor_rural_status { get; set; }
         public string EndEtg_ie { get; set; }
         public string EndEtg_rg { get; set; }
-        public byte St_memorizacao_completa_enderecos { get; set; }
+        public bool St_memorizacao_completa_enderecos { get; set; }
     }
 }

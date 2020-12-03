@@ -39,7 +39,7 @@ namespace Loja.UI.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> ValidarCliente(string cpf_cnpj)
         {
             cpf_cnpj = Loja.Bll.Util.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
@@ -49,12 +49,15 @@ namespace Loja.UI.Controllers
             {
                 //colocar uma msg de erro para retornar para a tela
                 novoCliente = true;
-                return RedirectToAction("BuscarCliente", new { cpf_cnpj = cpf_cnpj, novoCliente = novoCliente });
+                return Json(novoCliente);
+                //return RedirectToAction("Index", new { cpf_cnpj = cpf_cnpj, novoCliente = novoCliente });
             }
             else
-                return RedirectToAction("BuscarCliente", new { cpf_cnpj = cpf_cnpj, novoCliente = novoCliente }); //editar cliente
+                return Json(novoCliente = false);
+                //return RedirectToAction("BuscarCliente", new { cpf_cnpj = cpf_cnpj, novoCliente = novoCliente }); //editar cliente
         }
 
+        
         public async Task<IActionResult> BuscarCliente(string cpf_cnpj, bool novoCliente)
         {
             /*Passo a passo da entrada 
@@ -72,7 +75,7 @@ namespace Loja.UI.Controllers
 
             cliente.PermiteEdicao = Loja.Bll.Util.Util.OpercaoPermitida(Loja.Bll.Constantes.Constantes.OP_LJA_EDITA_CLIENTE_DADOS_CADASTRAIS
                 , usuarioLogado.S_lista_operacoes_permitidas) ? true : false;
-
+            //vamos verificar se o cliente é novo
 
             //somente para teste remover após concluir
             //cliente.PermiteEdicao = false;
@@ -84,7 +87,7 @@ namespace Loja.UI.Controllers
 
             if (!novoCliente)
             {
-                clienteCadastroDto = await clienteBll.BuscarCliente(cpf_cnpj, usuarioLogado.Usuario_atual);
+                clienteCadastroDto = await clienteBll.BuscarCliente(UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj), usuarioLogado.Usuario_atual);
 
                 usuarioLogado.Cliente_Selecionado = clienteCadastroDto;
 
@@ -94,6 +97,7 @@ namespace Loja.UI.Controllers
             }
             else
             {
+                cliente.PermiteEdicao = true;
                 clienteCadastroDto.DadosCliente = new DadosClienteCadastroDto();
                 clienteCadastroDto.DadosCliente.Cnpj_Cpf = cpf_cnpj;
                 if (cpf_cnpj.Length == 11)
@@ -137,14 +141,26 @@ namespace Loja.UI.Controllers
             };
             cliente.LstContribuinte = new SelectList(lstContrICMS, "Value", "Text");
 
-            cliente.EndJustificativa = (await clienteBll.ListarComboJustificaEndereco(usuarioLogado.Usuario_atual)).ToList();
+            var lstJustificativas = (await clienteBll.ListarComboJustificaEndereco(usuarioLogado.Usuario_atual)).ToList();
+            List<SelectListItem> lstSelect = new List<SelectListItem>();
+            lstSelect.Add(new SelectListItem { Value = "", Text = "Selecione" });
+            foreach (var i in lstJustificativas)
+            {
+                lstSelect.Add(new SelectListItem { Value = i.EndEtg_cod_justificativa, Text = i.EndEtg_descricao_justificativa });
+            }
+
+            cliente.EndJustificativa = new SelectList(lstSelect, "Value", "Text");
 
             var lstBancos = (await clienteBll.ListarBancosCombo()).ToList();
             List<SelectListItem> lstbancos = new List<SelectListItem>();
             lstbancos.Add(new SelectListItem { Value = "", Text = "Selecione" });
             for (int i = 0; i < lstBancos.Count; i++)
             {
-                lstbancos.Add(new SelectListItem { Value = lstBancos[i].Codigo, Text = lstBancos[i].Descricao });
+                lstbancos.Add(new SelectListItem
+                {
+                    Value = lstBancos[i].Codigo,
+                    Text = lstBancos[i].Descricao
+                });
             }
             cliente.LstComboBanco = new SelectList(lstbancos, "Value", "Text");
 

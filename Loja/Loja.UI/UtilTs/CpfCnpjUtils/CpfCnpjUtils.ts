@@ -8,7 +8,6 @@ export class CpfCnpjUtils {
         var Soma: number;
         var Resto: number;
         Soma = 0;
-        //strCPF  = RetiraCaracteresInvalidos(strCPF,11);
         if (strCPF == "00000000000")
             return false;
         for (let i = 1; i <= 9; i++)

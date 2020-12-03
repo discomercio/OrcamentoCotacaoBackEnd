@@ -1,17 +1,18 @@
 ﻿@ignore
-@Especificacao/Pedido
-@Ambiente/PrepedidoApi
-@Ambiente/ApiUnis
+@Especificacao.Pedido.Passo20.EnderecoEntrega
 Feature: Pedido de cliente PJ com endereço de entrega
 
+@ListaDependencias
 Scenario: Configuração
 	Given Nome deste item "Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj.CampoEndEtg_tipo_pessoa"
 	Given Implementado em "Especificacao.Pedido.Pedido"
-	And Fim da configuração
 
 Scenario: Validar tipo de pessoa 1
-em loja/ClienteEdita.asp:
-var EndEtg_tipo_pessoa = $('input[name="EndEtg_tipo_pessoa"]:checked').val();
+#em loja/ClienteEdita.asp:
+#var EndEtg_tipo_pessoa = $('input[name="EndEtg_tipo_pessoa"]:checked').val();
+#loja/PedidoNovoConsiste.asp
+                #if EndEtg_tipo_pessoa <> "PJ" and EndEtg_tipo_pessoa <> "PF" then
+                #    alerta = "Necessário escolher Pessoa Jurídica ou Pessoa Física no Endereço de entrega!!"
 
 	Given Pedido base cliente PJ com endereço de entrega
 	When Informo "EndEtg_tipo_pessoa" = ""

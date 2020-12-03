@@ -18,7 +18,7 @@ namespace Loja.UI.Models.Cliente
         public SelectList LstIndicadores { get; set; }
         public SelectList LstProdutoRural { get; set; }
         public EnderecoEntregaDtoClienteCadastro EndEntrega { get; set; }
-        public List<EnderecoEntregaJustificativaDto> EndJustificativa { get; set; }
+        public SelectList EndJustificativa { get; set; }
         public CepViewModel Cep { get; set; }
         public Boolean PermiteEdicao { get; set; }
         public SelectList LstComboBanco { get; set; }

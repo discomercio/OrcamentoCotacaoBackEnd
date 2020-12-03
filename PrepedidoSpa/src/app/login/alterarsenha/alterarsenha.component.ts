@@ -36,6 +36,7 @@ export class AlterarsenhaComponent extends TelaDesktopBaseComponent implements O
   senhaExpirada: boolean = false;
 
   alterarSenha(): void {
+    debugger;
     let msg: string = "";
     let senha_nova = this.senhaNova.toUpperCase().trim();
     let senha_nova_confirma = this.senhaNovaConfirma.toUpperCase().trim();

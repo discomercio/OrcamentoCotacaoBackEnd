@@ -20,214 +20,191 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
         private readonly Cliente.ClienteBll clienteBll;
         private readonly Produto.ProdutoGeralBll produtoGeralBll;
-        private readonly Produto.CoeficienteBll coeficienteBll;
         private readonly ValidacoesPrepedidoBll validacoesPrepedidoBll;
         private readonly PrepedidoBll prepedidoBll;
         private readonly ConfiguracaoApiMagento configuracaoApiMagento;
+        private readonly Pedido.PedidoCriacao pedidoCriacao;
 
         public PedidoMagentoBll(InfraBanco.ContextoBdProvider contextoProvider,
             Cliente.ClienteBll clienteBll, Produto.ProdutoGeralBll produtoGeralBll,
-            Produto.CoeficienteBll coeficienteBll,
             Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll, PrepedidoBll prepedidoBll,
-            ConfiguracaoApiMagento configuracaoApiMagento)
+            ConfiguracaoApiMagento configuracaoApiMagento, Pedido.PedidoCriacao pedidoCriacao)
         {
             this.contextoProvider = contextoProvider;
             this.clienteBll = clienteBll;
             this.produtoGeralBll = produtoGeralBll;
-            this.coeficienteBll = coeficienteBll;
             this.validacoesPrepedidoBll = validacoesPrepedidoBll;
             this.prepedidoBll = prepedidoBll;
             this.configuracaoApiMagento = configuracaoApiMagento;
+            this.pedidoCriacao = pedidoCriacao;
+        }
+
+        private void LimitarPedidosMagentoPJ(PedidoMagentoDto pedidoMagento, PedidoResultadoMagentoDto resultado)
+        {
+            /*
+             * definido em 201021 
+             
+            magento: problema no cadastro de PJ, vai puxar do estoque errado se for contribuinte de ICMS.
+            Hoje não usa, mas é importante ter o recurso.
+            O problema é: se a gente presumir o ICMS da PJ, vamos criar o pedido pegando do estoque errado.
+            Hamilton vai conversar com Karina para saber como funciona. Mas é um BELO problema.
+
+            Boa tarde
+            @Edu  conversei com a @Karina e ficou decidido que neste primeiro momento a integração com o Magento 
+            não irá tratar os pedidos de clientes PJ. Esses pedidos continuarão sendo cadastrados através do 
+            processo semi-automático. Então creio que seria melhor fazer normalmente a validação do campo de 
+            contribuinte ICMS para rejeitar os pedidos que vierem sem essa informação p/ garantir a consistência 
+            dos dados caso seja enviado um pedido de cliente PJ.
+
+            Conversei com o time e pegando alguns pontos que eles comentaram é melhor seguir com semi-automático mesmo e no futuro se surgir alguma ideia ou solução a gente adapta. 
+
+            Resumo: API do Magento para PJ não aceita nenhum pedido, tods serão feitos no semi-automático
+            */
+            if (pedidoMagento.EnderecoCadastralCliente.Endereco_tipo_pessoa != Constantes.ID_PF)
+                resultado.ListaErros.Add("A API somente aceita pedidos para PF.");
+
         }
 
         public async Task<PedidoResultadoMagentoDto> CadastrarPedidoMagento(PedidoMagentoDto pedidoMagento, string usuario)
         {
-            /* Começar a implantar o 
-             * ArClube/ApiMagento/ApiMagento/ApiMagento/Controllers/PedidoMagentoController.cs CadastrarPrepedido
-             * Converter a estrutura de dados da Api Magento para PedidoDados
-             * começar as validações do PedidoCriacao/CadastrarPrepedido.
-             * Conforne precisar, mover código da PrepedidoAPi para GLobal/Utils ou GLobal/Prepedido.
-             * Isso a gente vai se falando.
-             * ========================================================================================
-             */
-            PedidoResultadoMagentoDto resultado = new PedidoResultadoMagentoDto();
-            resultado.IdsPedidosFilhotes = new List<string>();
-            resultado.ListaErros = new List<string>();
-
-            var db = contextoProvider.GetContextoLeitura();
+            PedidoResultadoMagentoDto resultado = new PedidoResultadoMagentoDto
+            {
+                IdsPedidosFilhotes = new List<string>(),
+                ListaErros = new List<string>()
+            };
 
             string orcamentista = configuracaoApiMagento.DadosOrcamentista.Orcamentista;
             string vendedor = usuario;
             string loja = configuracaoApiMagento.DadosOrcamentista.Loja;
 
+            LimitarPedidosMagentoPJ(pedidoMagento, resultado);
+            if (resultado.ListaErros.Count > 0)
+                return resultado;
+
             InfraBanco.Modelos.TorcamentistaEindicador torcamentista = await prepedidoBll.BuscarTorcamentista(orcamentista);
-            if (torcamentista != null)
+            if (torcamentista == null)
             {
                 resultado.ListaErros.Add("O Orçamentista não existe!");
                 return resultado;
             }
 
-            var clienteMagento = clienteBll.BuscarCliente(pedidoMagento?.Cnpj_Cpf, orcamentista);
+            Cliente.Dados.ClienteCadastroDados clienteMagento = await clienteBll.BuscarCliente(pedidoMagento.Cnpj_Cpf, orcamentista);
 
-            Cliente.Dados.DadosClienteCadastroDados dadosCliente = new Cliente.Dados.DadosClienteCadastroDados();
-            if (await clienteMagento == null)
+            //exigimos que o CPF/CNPJ esteja igual nos dois blocos de informação
+            if (UtilsGlobais.Util.SoDigitosCpf_Cnpj(pedidoMagento.Cnpj_Cpf) != UtilsGlobais.Util.SoDigitosCpf_Cnpj(pedidoMagento.EnderecoCadastralCliente.Endereco_cnpj_cpf))
             {
-                //vamos seguir o fluxo para cadastrar o cliente e depois fazer o cadastro do pedido
-                Cliente.Dados.ClienteCadastroDados clienteCadastro = new Cliente.Dados.ClienteCadastroDados();
-                clienteCadastro.DadosCliente =
-                    DadosClienteDeEnderecoCadastralClienteMagentoDto(pedidoMagento.EnderecoCadastralCliente, loja, pedidoMagento.Frete, vendedor, orcamentista);
-                clienteCadastro.RefBancaria = new List<Cliente.Dados.Referencias.RefBancariaClienteDados>();
-                clienteCadastro.RefComercial = new List<Cliente.Dados.Referencias.RefComercialClienteDados>();
-
-                //criei o código para sistema_responsavel_cadastro 
-                await clienteBll.CadastrarCliente(clienteCadastro, orcamentista,
-                    (byte)InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__APIMAGENTO);
+                resultado.ListaErros.Add("Cnpj_Cpf está diferente de EnderecoCadastralCliente.Endereco_cnpj_cpf.");
+                return resultado;
             }
 
-            /*
-             * olhar Marketplace_codigo_origem para saber se é marketplace ou magento
-             * se não tiver dados nele veio do magento
-             */
-            if (!string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem))
+            //Cadastrar cliente
+            if (clienteMagento == null)
             {
-                List<InfraBanco.Modelos.TcodigoDescricao> listarCodigo = (await UtilsGlobais.Util.ListarCodigoMarketPlace(contextoProvider)).ToList();
-
-                InfraBanco.Modelos.TcodigoDescricao tcodigo = listarCodigo.Select(x => x)
-                    .Where(x => x.Codigo == pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem)
-                    .FirstOrDefault();
-
-                if (tcodigo == null)
+                //vamos seguir o fluxo para cadastrar o cliente e depois fazer o cadastro do pedido
+                Cliente.Dados.ClienteCadastroDados clienteCadastro = new Cliente.Dados.ClienteCadastroDados
                 {
-                    resultado.ListaErros.Add("Código Marketplace não encontrado.");
+                    DadosCliente =
+                    EnderecoCadastralClienteMagentoDto.DadosClienteDeEnderecoCadastralClienteMagentoDto(pedidoMagento.EnderecoCadastralCliente, loja, pedidoMagento.Frete, vendedor, orcamentista),
+                    RefBancaria = new List<Cliente.Dados.Referencias.RefBancariaClienteDados>(),
+                    RefComercial = new List<Cliente.Dados.Referencias.RefComercialClienteDados>()
+                };
+
+                //criei o código para sistema_responsavel_cadastro 
+                List<string> lstRet = (await clienteBll.CadastrarCliente(clienteCadastro, orcamentista,
+                    Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI)).ToList();
+
+                //é erro
+                if (lstRet.Count > 1)
+                {
+                    resultado.ListaErros = lstRet;
                     return resultado;
+                }
+                else if (lstRet.Count == 1)
+                {
+                    //é o número do id do cliente
+                    if (lstRet[0].Length != 12)
+                    {
+                        resultado.ListaErros = lstRet;
+                        return resultado;
+                    }
                 }
             }
 
-            Pedido.PedidoCriacao pedidoCriacao = new Pedido.PedidoCriacao();
+            if (!await ValidarPedidoMagentoEMarketplace(pedidoMagento, resultado.ListaErros))
+                return resultado;
 
-            Pedido.Dados.Criacao.PedidoCriacaoRetornoDados ret =
-                await pedidoCriacao.CadastrarPedido(await CriarPedidoCriacaoDados(pedidoMagento, dadosCliente, orcamentista, loja, vendedor));
+            //estamos criando o pedido com os dados do cliente que vem e não com os dados do cliente que esta na base
+            //ex: se o cliente já cadastrado, utilizamos o que vem em PedidoMagentoDto.EnderecoCadastralClienteMagentoDto
+            Pedido.Dados.Criacao.PedidoCriacaoDados pedidoDados = await CriarPedidoCriacaoDados(pedidoMagento, orcamentista, loja, vendedor, resultado.ListaErros,
+                Convert.ToDecimal(configuracaoApiMagento.LimiteArredondamentoPrecoVendaOrcamentoItem), 0.1M,
+                pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac, pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem,
+                pedidoMagento.InfCriacaoPedido.Pedido_bs_x_marketplace,
+                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI);
+            if (resultado.ListaErros.Count != 0)
+                return resultado;
+
+            Pedido.Dados.Criacao.PedidoCriacaoRetornoDados ret = await pedidoCriacao.CadastrarPedido(pedidoDados, Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI);
 
             resultado.IdPedidoCadastrado = ret.Id;
             resultado.IdsPedidosFilhotes = ret.ListaIdPedidosFilhotes;
-            resultado.ListaErros = ret.ListaErrosValidacao;
+            resultado.ListaErros = ret.ListaErros;
 
             return resultado;
         }
 
-        private async Task<IEnumerable<Prepedido.Dados.DetalhesPrepedido.PrepedidoProdutoPrepedidoDados>> ConverterProdutosMagento(PedidoMagentoDto pedidoMagento,
-            Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados formaPagtoCriacao, string loja)
+        public async Task<IEnumerable<Pedido.Dados.Criacao.PedidoProdutoPedidoDados>> ConverterProdutosMagento(PedidoMagentoDto pedidoMagento,
+            Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados formaPagtoCriacao, string loja, List<string> lstErros)
         {
-            List<Prepedido.Dados.DetalhesPrepedido.PrepedidoProdutoPrepedidoDados> listaProdutos = new List<Prepedido.Dados.DetalhesPrepedido.PrepedidoProdutoPrepedidoDados>();
+            List<Pedido.Dados.Criacao.PedidoProdutoPedidoDados> listaProdutos = new List<Pedido.Dados.Criacao.PedidoProdutoPedidoDados>();
             List<string> lstFornec = new List<string>();
             lstFornec = pedidoMagento.ListaProdutos.Select(x => x.Fabricante).Distinct().ToList();
 
             //preciso da lista de coeficientes de cada fabricante da lista de produtos
-            List<Produto.Dados.CoeficienteDados> lstCoeficiente = new List<Produto.Dados.CoeficienteDados>();
             //preciso obter a qtde de parcelas e a sigla de pagto
             var qtdeParcelas = prepedidoBll.ObterQtdeParcelasFormaPagto(formaPagtoCriacao);
-            lstCoeficiente = (await validacoesPrepedidoBll.MontarListaCoeficiente(lstFornec, qtdeParcelas,
+            var siglaParc = prepedidoBll.ObterSiglaFormaPagto(formaPagtoCriacao);
+            List<Produto.Dados.CoeficienteDados> lstCoeficiente = (await validacoesPrepedidoBll.MontarListaCoeficiente(lstFornec, qtdeParcelas,
                 prepedidoBll.ObterSiglaFormaPagto(formaPagtoCriacao))).ToList();
 
-            List<Produto.Dados.ProdutoDados> lstTodosProdutos = (await produtoGeralBll.BuscarTodosProdutos(loja)).ToList();
+            List<string> lstProdutosDistintos = pedidoMagento.ListaProdutos.Select(x => x.Produto).Distinct().ToList();
+            List<Produto.Dados.ProdutoDados> lstProdutosUsados = (await produtoGeralBll.BuscarProdutosEspecificos(loja, lstProdutosDistintos)).ToList();
 
-            if (lstTodosProdutos?.Count > 0)
+            foreach (var y in pedidoMagento.ListaProdutos)
             {
-                pedidoMagento.ListaProdutos.ForEach(y =>
+                Produto.Dados.ProdutoDados produto = (from c in lstProdutosUsados
+                                                      where c.Fabricante == y.Fabricante && c.Produto == y.Produto
+                                                      select c).FirstOrDefault();
+
+                Produto.Dados.CoeficienteDados coeficiente = (from c in lstCoeficiente
+                                                              where c.Fabricante == y.Fabricante &&
+                                                                    c.TipoParcela == siglaParc
+                                                              select c).FirstOrDefault();
+
+                if (produto != null && coeficiente != null)
                 {
-                    Produto.Dados.ProdutoDados produto = lstTodosProdutos.Select(x => x)
-                    .Where(x => x.Fabricante == y.Fabricante && x.Produto == y.Produto)
-                    .FirstOrDefault();
-
-                    Produto.Dados.CoeficienteDados coeficiente = lstCoeficiente.Select(x => x)
-                    .Where(x => x.Fabricante == produto.Fabricante && x.QtdeParcelas == qtdeParcelas)
-                    .FirstOrDefault();
-
-                    if (y.Fabricante == produto.Fabricante &&
-                        y.Fabricante == coeficiente.Fabricante &&
-                        y.Produto == produto.Produto && y.Fabricante == coeficiente.Fabricante)
-                    {
-                        listaProdutos.Add(PedidoProdutoMagentoDto.ProdutosDePedidoProdutoMagentoDto(y, produto, coeficiente.Coeficiente));
-                    }
-
-                    //lstTodosProdutos.ForEach(x =>
-                    //{
-                    //    if (x.Fabricante == y.Fabricante && x.Produto == y.Produto)
-                    //    {
-                    //        lstCoeficiente.ForEach(z =>
-                    //        {
-                    //            if (y.Fabricante == z.Fabricante)
-                    //            {
-                    //                //criar a variável de produtos na entrada do método de conversão
-                    //                listaProdutos.Add(PedidoProdutoMagentoDto.ProdutosDePedidoProdutoMagentoDto(y, x, z.Coeficiente));
-                    //            }
-                    //        });
-                    //    }
-                    //});
-
-                });
+                    listaProdutos.Add(PedidoProdutoMagentoDto.ProdutosDePedidoProdutoMagentoDto(y, produto, coeficiente.Coeficiente));
+                }
+                else
+                {
+                    if (produto == null)
+                        lstErros.Add($"Produto não cadastrado para a loja. Produto: {y.Produto}, loja: {loja}");
+                    if (coeficiente == null)
+                        lstErros.Add($"Coeficiente não cadastrado para o fabricante. Fabricante: {y.Fabricante}, TipoParcela: {siglaParc}");
+                }
             }
 
             return await Task.FromResult(listaProdutos);
         }
 
-        /* Criamos essa classe apenas para converter os dados de Endereço cadastral para 
-         * Pedido.PedidoDadosCriacao.DadosCliente para montar os dados para inserir um novo Pedido
-         */
-        public static Cliente.Dados.DadosClienteCadastroDados DadosClienteDeEnderecoCadastralClienteMagentoDto(
-            EnderecoCadastralClienteMagentoDto dadosClienteMagento, string loja, decimal? frete,
-            string vendedor, string orcamentista)
-        {
-            var ret = new Cliente.Dados.DadosClienteCadastroDados()
-            {
-                Indicador_Orcamentista = orcamentista,
-                Loja = loja,
-                Vendedor = frete > 0 ? vendedor : "",//campo "frete"->se for <> 0, vamos usar o indicador.se for 0, sem indicador
-                Nome = dadosClienteMagento.Endereco_nome,
-                Cnpj_Cpf = UtilsGlobais.Util.SoDigitosCpf_Cnpj(dadosClienteMagento.Endereco_cnpj_cpf.Trim()),
-                Tipo = dadosClienteMagento.Endereco_tipo_pessoa,
-                Sexo = "",
-                Rg = "",
-                Nascimento = null,
-                DddCelular = dadosClienteMagento.Endereco_ddd_cel,
-                Celular = dadosClienteMagento.Endereco_tel_cel,
-                DddResidencial = dadosClienteMagento.Endereco_ddd_res == null ? "" : dadosClienteMagento.Endereco_ddd_res,
-                TelefoneResidencial = dadosClienteMagento.Endereco_tel_res == null ? "" : dadosClienteMagento.Endereco_tel_res,
-                DddComercial = dadosClienteMagento.Endereco_ddd_com,
-                TelComercial = dadosClienteMagento.Endereco_tel_com,
-                Ramal = dadosClienteMagento.Endereco_ramal_com,
-                DddComercial2 = dadosClienteMagento.Endereco_ddd_com_2,
-                TelComercial2 = dadosClienteMagento.Endereco_tel_com_2,
-                Ramal2 = dadosClienteMagento.Endereco_ramal_com_2,
-                Ie = "",
-                ProdutorRural = dadosClienteMagento.Endereco_tipo_pessoa == Constantes.ID_PJ ?
-                    (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL :
-                    (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO,
-                Contribuinte_Icms_Status = dadosClienteMagento.Endereco_tipo_pessoa == Constantes.ID_PJ ?
-                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL :
-                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO,
-                Email = dadosClienteMagento.Endereco_email,
-                EmailXml = dadosClienteMagento.Endereco_email_xml,
-                Cep = dadosClienteMagento.Endereco_cep,
-                Endereco = dadosClienteMagento.Endereco_logradouro,
-                Numero = dadosClienteMagento.Endereco_numero,
-                Bairro = dadosClienteMagento.Endereco_bairro,
-                Cidade = dadosClienteMagento.Endereco_cidade,
-                Uf = dadosClienteMagento.Endereco_uf,
-                Complemento = dadosClienteMagento.Endereco_complemento,
-                Contato = dadosClienteMagento.Endereco_contato
-                //Observacao_Filiacao = dadosClienteMagento.Observacao_Filiacao **Verificar se mandamos esse campo
-            };
-
-            return ret;
-        }
-
         private async Task<Pedido.Dados.Criacao.PedidoCriacaoDados> CriarPedidoCriacaoDados(PedidoMagentoDto pedidoMagento,
-            Cliente.Dados.DadosClienteCadastroDados dadosCliente, string orcamentista, string loja, string vendedor)
+            string orcamentista, string loja, string vendedor, List<string> lstErros,
+            decimal limiteArredondamento,
+            decimal maxErroArredondamento, string? pedido_bs_x_ac, string? marketplace_codigo_origem, string? pedido_bs_x_marketplace,
+            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro)
         {
             //o cliente existe então vamos converter os dados do cliente para DadosCliente e EnderecoCadastral
-            dadosCliente =
-                DadosClienteDeEnderecoCadastralClienteMagentoDto(pedidoMagento.EnderecoCadastralCliente, loja,
+            Cliente.Dados.DadosClienteCadastroDados dadosCliente =
+                EnderecoCadastralClienteMagentoDto.DadosClienteDeEnderecoCadastralClienteMagentoDto(pedidoMagento.EnderecoCadastralCliente, loja,
                 pedidoMagento.Frete, vendedor, orcamentista);
 
             Cliente.Dados.EnderecoCadastralClientePrepedidoDados enderecoCadastral =
@@ -240,23 +217,28 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
                 FormaPagtoCriacaoMagentoDto.FormaPagtoCriacaoDados_De_FormaPagtoCriacaoMagentoDto(pedidoMagento.FormaPagtoCriacao,
                 configuracaoApiMagento, pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem);
 
-            List<Prepedido.Dados.DetalhesPrepedido.PrepedidoProdutoPrepedidoDados> listaProdutos =
-                (await ConverterProdutosMagento(pedidoMagento, formaPagtoCriacao, configuracaoApiMagento.DadosOrcamentista.Loja)).ToList();
+            List<Pedido.Dados.Criacao.PedidoProdutoPedidoDados> listaProdutos =
+                (await ConverterProdutosMagento(pedidoMagento, formaPagtoCriacao, configuracaoApiMagento.DadosOrcamentista.Loja, lstErros)).ToList();
 
             //Precisamos buscar os produtos para poder incluir os valores para incluir na classe de produto
             Pedido.Dados.Criacao.PedidoCriacaoDados pedidoDadosCriacao =
-                PedidoMagentoDto.PedidoDadosCriacaoDePedidoMagentoDto(
-                    dadosCliente, enderecoCadastral, enderecoEntrega, listaProdutos, formaPagtoCriacao);
+                PedidoMagentoDto.PedidoDadosCriacaoDePedidoMagentoDto(dadosCliente, enderecoCadastral, enderecoEntrega,
+                listaProdutos, formaPagtoCriacao, pedidoMagento.VlTotalDestePedido, pedidoMagento,
+                limiteArredondamento,
+                maxErroArredondamento, pedido_bs_x_ac, marketplace_codigo_origem, pedido_bs_x_marketplace,
+                sistemaResponsavelCadastro);
 
             return await Task.FromResult(pedidoDadosCriacao);
         }
 
         public async Task<MarketplaceResultadoDto> ObterCodigoMarketplace()
         {
-            MarketplaceResultadoDto resultado = new MarketplaceResultadoDto();
-            resultado.ListaMarketplace = new List<MarketplaceMagentoDto>();
-            resultado.ListaErros = new List<string>();
-            
+            MarketplaceResultadoDto resultado = new MarketplaceResultadoDto
+            {
+                ListaMarketplace = new List<MarketplaceMagentoDto>(),
+                ListaErros = new List<string>()
+            };
+
 
             List<InfraBanco.Modelos.TcodigoDescricao> listarCodigo = (await UtilsGlobais.Util.ListarCodigoMarketPlace(contextoProvider)).ToList();
 
@@ -266,7 +248,8 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
                 return resultado;
             }
 
-            listarCodigo.ForEach(x =>
+
+            foreach (var x in listarCodigo)
             {
                 resultado.ListaMarketplace.Add(new MarketplaceMagentoDto()
                 {
@@ -282,9 +265,60 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
                     Parametro_5_campo_flag = x.Parametro_5_campo_flag,
                     Parametro_campo_texto = x.Parametro_campo_texto
                 });
-            });            
+            };
 
             return resultado;
+        }
+
+        private async Task<bool> ValidarPedidoMagentoEMarketplace(PedidoMagentoDto pedidoMagento, List<string> lstErros)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+            //vamos validar o número do pedido magento
+            if (string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac))
+            {
+                lstErros.Add("Favor informar o número do pedido Magento(Pedido_bs_x_ac)!");
+                return false;
+            }
+
+            if (pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac.Length != Constantes.MAX_TAMANHO_ID_PEDIDO_MAGENTO)
+            {
+                lstErros.Add("Nº pedido Magento(Pedido_bs_x_ac) com formato inválido!");
+                return false;
+            }
+
+
+            /*
+             * Pedido_bs_x_marketplace e Marketplace_codigo_origem
+             * ou os dois existem ou nenhum dos dois existe
+             * */
+            if (string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Pedido_bs_x_marketplace) && string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem))
+                return true;
+
+            if (string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Pedido_bs_x_marketplace) && !string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem))
+            {
+                lstErros.Add("Informe o Pedido_bs_x_marketplace.");
+                return false;
+            }
+            if (!string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Pedido_bs_x_marketplace) && string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem))
+            {
+                lstErros.Add("Informe o Marketplace_codigo_origem.");
+                return false;
+            }
+
+            //validar o Marketplace_codigo_origem
+            List<InfraBanco.Modelos.TcodigoDescricao> listarCodigo = (await UtilsGlobais.Util.ListarCodigoMarketPlace(contextoProvider)).ToList();
+            //todo: afazer: veriicar como é validado
+            InfraBanco.Modelos.TcodigoDescricao tcodigo = listarCodigo.Select(x => x)
+                .Where(x => x.Codigo == pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem)
+                .FirstOrDefault();
+
+            if (tcodigo == null)
+            {
+                lstErros.Add("Código Marketplace não encontrado.");
+                return false;
+            }
+
+            return true;
         }
 
     }

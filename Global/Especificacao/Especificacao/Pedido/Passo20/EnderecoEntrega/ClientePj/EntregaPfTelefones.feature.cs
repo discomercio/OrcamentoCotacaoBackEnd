@@ -20,7 +20,7 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "ignore")]
-    [Xunit.TraitAttribute("Category", "Especificacao/Pedido")]
+    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo20.EnderecoEntrega")]
     public partial class PedidoDeClientePJComEnderecoDeEntregaPF_ValidacaoDeTelefonesFeature : object, Xunit.IClassFixture<PedidoDeClientePJComEnderecoDeEntregaPF_ValidacaoDeTelefonesFeature.FixtureData>, System.IDisposable
     {
         
@@ -28,7 +28,7 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj
         
         private string[] _featureTags = new string[] {
                 "ignore",
-                "Especificacao/Pedido"};
+                "Especificacao.Pedido.Passo20.EnderecoEntrega"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -44,11 +44,9 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Pedido de cliente PJ com endereço de entrega PF - validação de telefones", "em loja/ClienteEdita.asp:\r\n                /*\r\n                telefones PF:\r\n   " +
-                    "             EndEtg_ddd_res\r\n                EndEtg_tel_res\r\n                End" +
-                    "Etg_ddd_cel\r\n                EndEtg_tel_cel\r\n                */", ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Pedido de cliente PJ com endereço de entrega PF - validação de telefones", null, ProgrammingLanguage.CSharp, new string[] {
                         "ignore",
-                        "Especificacao/Pedido"});
+                        "Especificacao.Pedido.Passo20.EnderecoEntrega"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -85,9 +83,9 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj
         
         public virtual void FeatureBackground()
         {
-#line 13
-#line hidden
 #line 14
+#line hidden
+#line 15
  testRunner.Given("Pedido base cliente PJ com endereço de entrega PF", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
         }
@@ -105,7 +103,7 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Configuração", null, tagsOfScenario, argumentsOfScenario);
-#line 16
+#line 17
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -125,18 +123,15 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 13
+#line 14
 this.FeatureBackground();
 #line hidden
-#line 17
+#line 18
  testRunner.Given("Nome deste item \"Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj.EntregaPf" +
                         "Telefones\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 18
- testRunner.Given("Implementado em \"Especificacao.Pedido.Pedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
 #line 19
- testRunner.And("Fim da configuração", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("Implementado em \"Especificacao.Pedido.Pedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -170,7 +165,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 13
+#line 14
 this.FeatureBackground();
 #line hidden
 #line 27
@@ -211,7 +206,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 13
+#line 14
 this.FeatureBackground();
 #line hidden
 #line 31
@@ -252,7 +247,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 13
+#line 14
 this.FeatureBackground();
 #line hidden
 #line 36
@@ -293,7 +288,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 13
+#line 14
 this.FeatureBackground();
 #line hidden
 #line 40
@@ -334,7 +329,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 13
+#line 14
 this.FeatureBackground();
 #line hidden
 #line 44
@@ -380,7 +375,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 13
+#line 14
 this.FeatureBackground();
 #line hidden
 #line 54
@@ -424,7 +419,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 13
+#line 14
 this.FeatureBackground();
 #line hidden
 #line 59
@@ -468,7 +463,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 13
+#line 14
 this.FeatureBackground();
 #line hidden
 #line 68
@@ -509,7 +504,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 13
+#line 14
 this.FeatureBackground();
 #line hidden
 #line 72
@@ -550,7 +545,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 13
+#line 14
 this.FeatureBackground();
 #line hidden
 #line 77
@@ -591,7 +586,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 13
+#line 14
 this.FeatureBackground();
 #line hidden
 #line 81
@@ -632,7 +627,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 13
+#line 14
 this.FeatureBackground();
 #line hidden
 #line 85
@@ -673,7 +668,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 13
+#line 14
 this.FeatureBackground();
 #line hidden
 #line 89
@@ -717,7 +712,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 13
+#line 14
 this.FeatureBackground();
 #line hidden
 #line 94
@@ -761,7 +756,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 13
+#line 14
 this.FeatureBackground();
 #line hidden
 #line 105
@@ -806,7 +801,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 13
+#line 14
 this.FeatureBackground();
 #line hidden
 #line 110
@@ -818,6 +813,94 @@ this.FeatureBackground();
 #line 112
  testRunner.Then("Erro \"Endereço de entrega: PJ não pode ter EndEtg_ddd_com_2 (acertar a mensagem)\"" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="nos telefones, os símbolos devem ser removidos")]
+        [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega PF - validação de telefones")]
+        [Xunit.TraitAttribute("Description", "nos telefones, os símbolos devem ser removidos")]
+        public virtual void NosTelefonesOsSimbolosDevemSerRemovidos()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("nos telefones, os símbolos devem ser removidos", null, tagsOfScenario, argumentsOfScenario);
+#line 114
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 14
+this.FeatureBackground();
+#line hidden
+#line 115
+ testRunner.When("Informo \"EndEtg_tel_cel\" = \"1234-5678\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 116
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 117
+ testRunner.And("No registro gravado, campo \"EndEtg_tel_cel\" = \"12345678\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="nos telefones, os símbolos devem ser removidos 2")]
+        [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega PF - validação de telefones")]
+        [Xunit.TraitAttribute("Description", "nos telefones, os símbolos devem ser removidos 2")]
+        public virtual void NosTelefonesOsSimbolosDevemSerRemovidos2()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("nos telefones, os símbolos devem ser removidos 2", null, tagsOfScenario, argumentsOfScenario);
+#line 119
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 14
+this.FeatureBackground();
+#line hidden
+#line 120
+ testRunner.When("Informo \"EndEtg_tel_cel\" = \"123,.;5678\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 121
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 122
+ testRunner.And("No registro gravado, campo \"EndEtg_tel_cel\" = \"1235678\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

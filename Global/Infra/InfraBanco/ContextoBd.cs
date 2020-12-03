@@ -17,6 +17,14 @@ namespace InfraBanco
             contexto.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+        //necessário apra poder mandar comandos SQL diretamente
+        public ContextoBdBasico GetContextoBdBasicoParaSql()
+        {
+            return contexto;
+        }
+#endif
+
         public IQueryable<Tcliente> Tclientes { get => contexto.Tclientes.AsNoTracking(); }
         public IQueryable<Torcamento> Torcamentos { get => contexto.Torcamentos.AsNoTracking(); }
         public IQueryable<TclienteRefBancaria> TclienteRefBancarias { get => contexto.TclienteRefBancarias.AsNoTracking(); }
@@ -29,7 +37,6 @@ namespace InfraBanco
         public IQueryable<TpedidoItemDevolvido> TpedidoItemDevolvidos { get => contexto.TpedidoItemDevolvidos.AsNoTracking(); }
         public IQueryable<TpedidoPerda> TpedidoPerdas { get => contexto.TpedidoPerdas.AsNoTracking(); }
         public IQueryable<TpedidoPagamento> TpedidoPagamentos { get => contexto.TpedidoPagamentos.AsNoTracking(); }
-        public IQueryable<TestoqueMovimento> TestoqueMovimentos { get => contexto.TestoqueMovimentos.AsNoTracking(); }
         public IQueryable<Ttransportadora> Ttransportadoras { get => contexto.Ttransportadoras.AsNoTracking(); }
         public IQueryable<TpedidoBlocosNotas> TpedidoBlocosNotas { get => contexto.TpedidoBlocosNotas.AsNoTracking(); }
         public IQueryable<TcodigoDescricao> TcodigoDescricaos { get => contexto.TcodigoDescricaos.AsNoTracking(); }
@@ -53,7 +60,6 @@ namespace InfraBanco
         public IQueryable<TwmsRegraCdXUfPessoa> TwmsRegraCdXUfPessoas { get => contexto.TwmsRegraCdXUfPessoas.AsNoTracking(); }
         public IQueryable<TwmsRegraCdXUfXPessoaXCd> TwmsRegraCdXUfXPessoaXCds { get => contexto.TwmsRegraCdXUfXPessoaXCds.AsNoTracking(); }
         public IQueryable<TecProdutoCompostoItem> TecProdutoCompostoItems { get => contexto.TecProdutoCompostoItems.AsNoTracking(); }
-        public IQueryable<Testoque> Testoques { get => contexto.Testoques.AsNoTracking(); }
         public IQueryable<TestoqueItem> TestoqueItems { get => contexto.TestoqueItems.AsNoTracking(); }
         public IQueryable<TprodutoXAlerta> TprodutoXAlertas { get => contexto.TprodutoXAlertas.AsNoTracking(); }
         public IQueryable<TalertaProduto> TalertaProdutos { get => contexto.TalertaProdutos.AsNoTracking(); }
@@ -64,6 +70,19 @@ namespace InfraBanco
         public IQueryable<Tusuario> Tusuarios { get => contexto.Tusuarios.AsNoTracking(); }
         public IQueryable<Tperfil> Tperfils { get => contexto.Tperfils.AsNoTracking(); }
         public IQueryable<TperfilUsuario> TperfilUsuarios { get => contexto.TperfilUsuarios.AsNoTracking(); }
+        public IQueryable<Testoque> Testoques { get => contexto.Testoques.AsNoTracking(); }
+        public IQueryable<TestoqueMovimento> TestoqueMovimentos { get => contexto.TestoqueMovimentos.AsNoTracking(); }
+
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+        public IQueryable<Tdesconto> Tdescontos { get => contexto.Tdescontos.AsNoTracking(); }
+
+        public IQueryable<TtransportadoraCep>TtransportadoraCeps { get => contexto.TtransportadoraCeps.AsNoTracking(); }
+
+        public IQueryable<TusuarioXLoja> TusuarioXLojas { get => contexto.TusuarioXLojas.AsNoTracking(); }
+        public IQueryable<Taviso> Tavisos { get => contexto.Tavisos.AsNoTracking(); }
+        public IQueryable<TavisoExibido> TavisoExibidos { get => contexto.TavisoExibidos.AsNoTracking(); }
+        public IQueryable<TavisoLido> TavisoLidos { get => contexto.TavisoLidos.AsNoTracking(); }
+#endif
 
     }
 }

@@ -1,71 +1,136 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
+﻿/*
+    CARREGAMENTO DE PÁGINA
+    ESTA FUNCIONANDO
+    para utilizar precisamos inserir a classe carregando para onde desejar
+    e remover classe depois de carregado
 
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
-}
+*/
 
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
-}
-
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+@keyframes loading {
+    100% {
+        transform: translateX(100%);
+    }
 }
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.carregando {
+    overflow: hidden !important;
+    transform: translate3d(0, 0, 0);
+    cursor: wait;
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  font-size: 14px;
-}
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    .carregando:after {
+        overflow: hidden !important;
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        opacity: 1;
+        background: linear-gradient( 45deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.9) 70%, rgba(255, 255, 255, 0) 0% );
+        transform: translateX(-100%);
+        animation: loading 1s infinite;
+    }
+
+/*=====================*/
+@media (min-width: 1200px) {
+    #wizard-obs {
+        padding-right: 0 !important;
+    }
 }
 
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
-}
-
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+@media(min-width: 992px) and (max-width: 1199.99px) {
+    #wizard-obs {
+        padding-right: 0 !important;
+    }
 }
 
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
+@media (min-width: 768px) and (max-width: 991.99px) {
+    #wizard-obs {
+        padding-right: 0 !important;
+    }
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  position: relative;
-  min-height: 100%;
+@media (min-width: 576px) and (max-width: 767.92px) {
+    #wizard-cadastro, #wizard-indicador, #wizard-produto, #wizard-obs {
+        box-sizing: content-box !important;
+        padding-right: 0 !important;
+    }
 }
 
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+@media (max-width: 576.99px) {
+    #wizard-cadastro, #wizard-indicador, #wizard-produto, #wizard-obs {
+        box-sizing: content-box !important;
+        padding-right: 0 !important;
+    }
 }
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+
+/*Alterando a forma de visualização de tela */
+@media (max-width: 991px) {
+    #title-icone {
+        text-align: left !important;
+        display: inline-flex !important;
+    }
+
+    .page-header.card .align-items-end .page-header-title i {
+        margin-bottom: 0px !important;
+        margin-right: 10px !important;
+    }
+
+    #title-combo-loja {
+        float: right !important;
+        text-align: center !important;
+    }
+}
+
+@media(max-width:768px) {
+    .meu-header {
+        max-width: none !important;
+    }
+
+    #title-combo-loja {
+        display: inherit !important;
+        float: inherit !important;
+        text-align: left !important;
+    }
+
+        #title-combo-loja .form-group {
+            float: left !important;
+            width: 100% !important;
+            margin-top: 8px !important;
+        }
+
+    .page-header.card .align-items-end {
+        display: block !important;
+    }
+
+        .page-header.card .align-items-end .page-header-title {
+            text-align: inherit !important;
+        }
+}
+
+@media (max-width: 480px) {
+    .meu-header {
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+    }
+}
+/*Alterando dataTable */
+@media(max-width:767px) {
+    .dataTables_filter, div.dataTables_filter {
+        text-align: left !important;
+        padding-left: 0px !important;
+    }
+
+    .dataTables_length {
+        margin-bottom: 0px !important;
+    }
+}
+
+
+/* Alterando botão para adicionar produtos */
+@media (max-width:1069.99px) {
+    #cabecalho {
+        margin-top: calc(0vh - 69px);
+    }
 }

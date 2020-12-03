@@ -45,7 +45,10 @@ namespace UtilsGlobais
 
         public static string Telefone_SoDigito(string tel)
         {
-            return tel.Replace("-", "");
+            if (tel == null)
+                tel = "";
+            tel = System.Text.RegularExpressions.Regex.Replace(tel, @"\D", "");
+            return tel;
         }
         public static string FormatarTelefones(string telefone)
         {
@@ -54,9 +57,7 @@ namespace UtilsGlobais
 
         public static bool ValidaCPF(string cpf)
         {
-            string valor = cpf.Replace(".", "").Replace("/", "").Replace("-", "");
-
-            valor = valor.Replace("-", "");
+            string valor = System.Text.RegularExpressions.Regex.Replace(cpf, @"\D", "");
 
             if (valor.Length != 11) return false;
 
@@ -123,7 +124,8 @@ namespace UtilsGlobais
             string p1 = "543298765432";
             string p2 = "6543298765432";
 
-            cnpj = cnpj.Replace(".", "").Replace("/", "").Replace("-", "");
+            //ficamos somente com dígitos
+            cnpj = System.Text.RegularExpressions.Regex.Replace(cnpj, @"\D", "");
             if (cnpj == "") return true;
             if (cnpj.Length != 14) return false;
 
@@ -166,17 +168,7 @@ namespace UtilsGlobais
         public static string SoDigitosCpf_Cnpj(string cpf_cnpj)
         {
             string retorno;
-
-            if (cpf_cnpj.Length > 11)
-            {
-                if (cpf_cnpj.Length > 12)
-                    retorno = cpf_cnpj.Replace(".", "").Replace("/", "").Replace("-", "");
-                else
-                    retorno = cpf_cnpj.Replace(".", "");
-            }
-            else
-                retorno = cpf_cnpj.Replace(".", "").Replace("-", "");
-
+            retorno = System.Text.RegularExpressions.Regex.Replace(cpf_cnpj, @"\D", "");
             return retorno;
         }
 
@@ -482,57 +474,6 @@ namespace UtilsGlobais
             return strDestino;
         }
 
-        public static string DecodificaSenha(string origem, string chave)
-        {
-            string s_destino = "";
-            string s_origem = origem;
-            int i = s_origem.Length - 2;
-
-            s_origem = s_origem.Substring(s_origem.Length - i, i);
-            s_origem = s_origem.ToUpper();
-
-            string s;
-            string codificar = "";
-
-            for (i = 1; i <= s_origem.Length; i++)
-            {
-                s = s_origem.Substring((i - 1), 2);
-                if (s != "00")
-                {
-                    codificar = s_origem.Substring((i - 1), (s_origem.Length - i + 1)); ;
-                    break;
-                }
-                i++;
-            }
-
-            for (i = 0; i < codificar.Length; i++)
-            {
-                s = codificar.Substring(i, 2);
-                int hexNumber = int.Parse(s, System.Globalization.NumberStyles.HexNumber);
-                s_destino += (char)(hexNumber);
-                i++;
-            }
-            s_origem = s_destino;
-            s_destino = "";
-
-            string letra;
-
-            for (i = 0; i < s_origem.Length; i++)
-            {
-                //pega a letra
-                letra = chave.Substring(i, 1);
-                //Converte para char
-                int i_chave = (Convert.ToChar(letra) * 2) + 1;
-                int i_dado = Convert.ToChar(s_origem.Substring(i, 1));
-
-                int contaMod = i_chave ^ i_dado;
-                contaMod /= 2;
-                s_destino += (char)contaMod;
-            }
-
-            return s_destino;
-        }
-
         public static string codificaDado(String strOrigem, bool blnIncluiPreenchimento)
         {
             byte i;
@@ -753,7 +694,7 @@ namespace UtilsGlobais
             return log;
         }
         public static bool GravaLog(ContextoBdGravacao dbgravacao, string apelido, string loja, string pedido, string id_cliente,
-            string operação, string log)
+            string operacao, string log)
         {
             if (apelido == null)
                 return false;
@@ -765,7 +706,7 @@ namespace UtilsGlobais
                 Loja = loja,
                 Pedido = pedido,
                 Id_Cliente = id_cliente,
-                Operacao = operação,
+                Operacao = operacao,
                 Complemento = log
             };
 
@@ -792,17 +733,15 @@ namespace UtilsGlobais
             return retorno;
         }
 
-        public static bool ValidarTipoCustoFinanceiroFornecedor(List<string> lstErros, string custoFinanceiroTipoParcelato,
+        public static void ValidarTipoCustoFinanceiroFornecedor(List<string> lstErros, string custoFinanceiroTipoParcelato,
             int c_custoFinancFornecQtdeParcelas)
         {
-            bool retorno = true;
 
             if (custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA &&
                 custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA &&
                 custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA)
             {
                 lstErros.Add("A forma de pagamento não foi informada (à vista, com entrada, sem entrada).");
-                retorno = false;
             }
             if (custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA &&
                 custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA)
@@ -813,12 +752,9 @@ namespace UtilsGlobais
                     {
                         lstErros.Add("Não foi informada a quantidade de parcelas para a forma de pagamento selecionada " +
                             "(" + DescricaoCustoFornecTipoParcelamento(custoFinanceiroTipoParcelato) + ")");
-                        retorno = false;
                     }
                 }
             }
-
-            return retorno;
         }
 
         public static string DescricaoCustoFornecTipoParcelamento(string custoFinanceiro)
@@ -841,73 +777,79 @@ namespace UtilsGlobais
             return retorno;
         }
 
-        public static async Task<string> GerarNsu(ContextoBdGravacao dbgravacao, string id_nsu, ContextoBdProvider contextoProvider)
+        public static async Task<string> GerarNsu(ContextoBdGravacao dbgravacao, string id_nsu)
         {
-            string retorno = "";
+            if (string.IsNullOrEmpty(id_nsu))
+                throw new ArgumentException("Não foi especificado o NSU a ser gerado!");
+
+            var queryControle = from c in dbgravacao.Tcontroles
+                                where c.Id_Nsu == id_nsu
+                                select c;
+
+            var controle = await queryControle.FirstOrDefaultAsync();
+            if (controle == null)
+                throw new ArgumentException($"Não existe registro na tabela de controle para poder gerar este NSU!! id_nsu:{id_nsu}");
+
             int n_nsu = -1;
-            string s = "0";
-            int asc;
-            char chr;
-
-            if (id_nsu == "")
-                retorno = "Não foi especificado o NSU a ser gerado!";
-
-            for (int i = 0; i <= 100; i++)
+            if (!string.IsNullOrEmpty(controle.Nsu))
             {
-                var ret = from c in dbgravacao.Tcontroles
-                          where c.Id_Nsu == id_nsu
-                          select c;
-
-                var controle = await ret.FirstOrDefaultAsync();
-
-
-                if (!string.IsNullOrEmpty(controle.Nsu))
+                if (int.TryParse(controle.Nsu, out _))
                 {
-                    if (controle.Seq_Anual != 0)
+                    if (controle.Seq_Anual != null && controle.Seq_Anual != 0)
                     {
+                        //'	CASO O RELÓGIO DO SERVIDOR SEJA ALTERADO P/ DATAS FUTURAS E PASSADAS, EVITA QUE O CAMPO 'ano_letra_seq' SEJA INCREMENTADO VÁRIAS VEZES
                         if (DateTime.Now.Year > controle.Dt_Ult_Atualizacao.Year)
                         {
-                            s = Normaliza_Codigo(s, Constantes.TAM_MAX_NSU);
+                            string saux = "0";
+                            saux = Normaliza_Codigo(saux, Constantes.TAM_MAX_NSU);
+                            controle.Nsu = saux;
                             controle.Dt_Ult_Atualizacao = DateTime.Now;
                             if (!String.IsNullOrEmpty(controle.Ano_Letra_Seq))
                             {
-                                asc = int.Parse(controle.Ano_Letra_Seq) + controle.Ano_Letra_Step;
+                                int asc;
+                                char chr;
+                                asc = Encoding.ASCII.GetBytes(controle.Ano_Letra_Seq)[0] + controle.Ano_Letra_Step;
                                 chr = (char)asc;
+                                controle.Ano_Letra_Seq = chr.ToString();
                             }
                         }
                     }
                     n_nsu = int.Parse(controle.Nsu);
                 }
-                if (n_nsu < 0)
+            }
+
+
+            if (n_nsu < 0)
+            {
+                throw new ApplicationException($"O NSU gerado é inválido! id_nsu:{id_nsu}");
+            }
+
+            n_nsu += 1;
+            string s;
+            s = Convert.ToString(n_nsu);
+            s = Normaliza_Codigo(s, Constantes.TAM_MAX_NSU);
+            if (s.Length == 12)
+            {
+                //para salvar o novo numero
+                controle.Nsu = s;
+                if (DateTime.Now > controle.Dt_Ult_Atualizacao)
+                    controle.Dt_Ult_Atualizacao = DateTime.Now;
+
+                string retorno = controle.Nsu;
+
+                try
                 {
-                    retorno = "O NSU gerado é inválido!";
+                    dbgravacao.Update(controle);
+                    await dbgravacao.SaveChangesAsync();
+                    return retorno;
                 }
-                n_nsu += 1;
-                s = Convert.ToString(n_nsu);
-                s = Normaliza_Codigo(s, Constantes.TAM_MAX_NSU);
-                if (s.Length == 12)
+                catch (Exception ex)
                 {
-                    i = 101;
-                    //para salvar o novo numero
-                    controle.Nsu = s;
-                    if (DateTime.Now > controle.Dt_Ult_Atualizacao)
-                        controle.Dt_Ult_Atualizacao = DateTime.Now;
-
-                    retorno = controle.Nsu;
-
-                    try
-                    {
-                        dbgravacao.Update(controle);
-                        await dbgravacao.SaveChangesAsync();
-                    }
-                    catch (Exception ex)
-                    {
-                        retorno = "Não foi possível gerar o NSU, pois ocorreu o seguinte erro: " + ex.HResult + ":" + ex.Message;
-                    }
+                    throw new ApplicationException("Não foi possível gerar o NSU, pois ocorreu o seguinte erro: " + ex.HResult + ":" + ex.Message);
                 }
             }
 
-            return retorno;
+            throw new ApplicationException($"Não foi possível gerar o NSU, tamanho diferente de 12.  id_nsu:{id_nsu}");
         }
 
         public static async Task<IEnumerable<TcodigoDescricao>> ListarCodigoMarketPlace(ContextoBdProvider contextoProvider)
@@ -938,7 +880,7 @@ namespace UtilsGlobais
             return retorno;
         }
 
-        
+
         private static async Task<bool> IsLojaVrf(string loja, ContextoBdProvider contextoProvider)
         {
             bool retorno = false;
@@ -1023,6 +965,30 @@ namespace UtilsGlobais
             return apelidoEmpresa;
         }
 
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+        //Afazer: Edu o método "ObterApelidoEmpresaNfeEmitentes" está sendo duplicado porque é utilizado
+        //dentro da transação do cadastro de pedido que utiliza o contexto de gravação, 
+        //não fazia sentido criar uma interface de contexto apenas para um método
+        public static async Task<string> ObterApelidoEmpresaNfeEmitentesGravacao(int id_nfe_emitente, ContextoBdGravacao dbGravacao)
+        {
+            string apelidoEmpresa = "";
+
+            if (id_nfe_emitente == 0)
+            {
+                apelidoEmpresa = "Cliente";
+                return apelidoEmpresa;
+            }
+
+            var apelidoTask = from c in dbGravacao.TnfEmitentes
+                              where c.Id == id_nfe_emitente
+                              select c.Apelido;
+
+            apelidoEmpresa = await apelidoTask.FirstOrDefaultAsync();
+
+            return apelidoEmpresa;
+        }
+#endif
+
         public static async Task<Tparametro> BuscarRegistroParametro(string id, ContextoBdProvider contextoProvider)
         {
             var db = contextoProvider.GetContextoLeitura();
@@ -1093,15 +1059,15 @@ namespace UtilsGlobais
 
             string[] cpf_cnpjConsulta = new string[] { ddd, "0" + ddd };
             var lstClienteTask = await (from c in db.Tclientes
-                                        where cpf_cnpjConsulta.Contains(c.Ddd_Res) && c.Tel_Res == tel ||
-                                              cpf_cnpjConsulta.Contains(c.Ddd_Com) && c.Tel_Com == tel ||
-                                              cpf_cnpjConsulta.Contains(c.Ddd_Cel) && c.Tel_Cel == tel ||
-                                              cpf_cnpjConsulta.Contains(c.Ddd_Com_2) && c.Tel_Com_2 == tel
+                                        where (cpf_cnpjConsulta.Contains(c.Ddd_Res) && c.Tel_Res == tel) ||
+                                              (cpf_cnpjConsulta.Contains(c.Ddd_Com) && c.Tel_Com == tel) ||
+                                              (cpf_cnpjConsulta.Contains(c.Ddd_Cel) && c.Tel_Cel == tel) ||
+                                              (cpf_cnpjConsulta.Contains(c.Ddd_Com_2) && c.Tel_Com_2 == tel)
                                         select c).ToListAsync();
 
             var lstOrcamentista = await (from c in db.TorcamentistaEindicadors
-                                         where cpf_cnpjConsulta.Contains(c.Ddd) && c.Telefone == tel &&
-                                               cpf_cnpjConsulta.Contains(c.Ddd_cel) && c.Tel_cel == tel
+                                         where (cpf_cnpjConsulta.Contains(c.Ddd) && c.Telefone == tel) ||
+                                               (cpf_cnpjConsulta.Contains(c.Ddd_cel) && c.Tel_cel == tel)
                                          select c).ToListAsync();
 
             int qtdCliente = 0;
@@ -1159,5 +1125,126 @@ namespace UtilsGlobais
 
             return cep;
         }
+
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+        public static async Task<float> ObterPercentualDesagioRAIndicador(string indicador, ContextoBdProvider contextoProvider)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+            var percDesagioIndicadorRATask = (from c in db.TorcamentistaEindicadors
+                                              where c.Apelido == indicador
+                                              select c.Perc_Desagio_RA).FirstOrDefaultAsync();
+
+            float percDesagioIndicadorRA = await percDesagioIndicadorRATask ?? 0;
+
+            return percDesagioIndicadorRA;
+        }
+
+        public static async Task<decimal> ObterLimiteMensalComprasDoIndicador(string indicador, ContextoBdProvider contextoProvider)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+            var vlLimiteMensalCompraTask = (from c in db.TorcamentistaEindicadors
+                                            where c.Apelido == indicador
+                                            select c.Vl_Limite_Mensal).FirstOrDefaultAsync();
+
+            decimal vlLimiteMensalCompra = await vlLimiteMensalCompraTask;
+
+            return vlLimiteMensalCompra;
+        }
+
+        public static async Task<decimal> CalcularLimiteMensalConsumidoDoIndicador(string indicador, DateTime data, ContextoBdProvider contextoProvider)
+        {
+            //buscar data por ano-mes-dia]
+            //SELECT ISNULL(SUM(qtde* preco_venda),0) AS vl_total
+            //FROM t_PEDIDO tP INNER JOIN t_PEDIDO_ITEM tPI ON(tP.pedido= tPI.pedido)
+            //WHERE(st_entrega <> 'CAN') AND
+            //     (indicador = 'POLITÉCNIC') AND
+            //     (data >= '2020-02-01') AND
+            //     (data < '2020-03-01')
+
+            var db = contextoProvider.GetContextoLeitura();
+
+            DateTime dataInferior = new DateTime(data.Year, data.Month, 1);
+            DateTime dataSuperior = dataInferior.AddMonths(1);
+
+
+            var vlTotalConsumidoTask = from c in db.TpedidoItems.Include(x => x.Tpedido)
+                                       where c.Tpedido.St_Entrega != "CAN" &&
+                                             c.Tpedido.Indicador == indicador &&
+                                             c.Tpedido.Data.HasValue &&
+                                             c.Tpedido.Data.Value.Date >= dataInferior &&
+                                             c.Tpedido.Data.Value.Date < dataSuperior
+                                       select new
+                                       {
+                                           qtde = c.Qtde,
+                                           precoVenda = c.Preco_Venda
+                                       };
+
+            decimal vlTotalConsumido = await vlTotalConsumidoTask.SumAsync(x => (short)x.qtde * x.precoVenda);
+
+            var vlTotalDevolvidoTask = from c in db.TpedidoItemDevolvidos.Include(x => x.Tpedido)
+                                       where c.Tpedido.Indicador == indicador &&
+                                             c.Tpedido.Data.HasValue &&
+                                             c.Tpedido.Data.Value.Date >= dataInferior &&
+                                             c.Tpedido.Data.Value.Date < dataSuperior
+                                       select new
+                                       {
+                                           qtde = c.Qtde,
+                                           precoVenda = c.Preco_Venda
+                                       };
+            decimal vlTotalDevolvido = await vlTotalDevolvidoTask.SumAsync(x => (short)x.qtde * x.precoVenda);
+
+            decimal vlTotalConsumidoRetorno = vlTotalConsumido - vlTotalDevolvido;
+
+            return vlTotalConsumidoRetorno;
+        }
+#endif
+
+        public static string TransformaHora_Minutos()
+        {
+            string hora = DateTime.Now.Hour.ToString().PadLeft(2, '0');
+            string minuto = DateTime.Now.AddMinutes(-10).ToString().PadLeft(2, '0');
+
+            return hora + minuto;
+        }
+
+        public static string RemoverAcentos(string text)
+        {
+            StringBuilder sbReturn = new StringBuilder();
+            var arrayText = text.Normalize(NormalizationForm.FormD).ToCharArray();
+            foreach (char letter in arrayText)
+            {
+                if (CharUnicodeInfo.GetUnicodeCategory(letter) != UnicodeCategory.NonSpacingMark)
+                    sbReturn.Append(letter);
+            }
+            return sbReturn.ToString();
+        }
+
+        public static string IsTextoValido(string texto, out string retorno)
+        {
+#nullable enable
+            string caracteresInvalidos = "";
+            string caracteresValidos = "!#$%¨&*()-?:{}][ÄÅÁÂÀÃäáâàãÉÊËÈéêëèÍÎÏÌíîïìÖÓÔÒÕöóôòõÜÚÛüúûùÇç";
+
+            foreach (char x in texto)
+            {
+                byte letra = (byte)x;
+                //if (Asc(c) < 32) Or(Asc(c) > 127) then
+                if ((letra < 32) || (letra > 127))
+                {
+                    if (!caracteresValidos.Contains(x))
+                    {
+                        if (caracteresInvalidos != "")
+                            caracteresInvalidos = caracteresInvalidos + " ";
+                        caracteresInvalidos += x;
+                    }
+                }
+            }
+
+            retorno = caracteresInvalidos;
+            return retorno;
+#nullable disable
+        }
+
+        
     }
 }

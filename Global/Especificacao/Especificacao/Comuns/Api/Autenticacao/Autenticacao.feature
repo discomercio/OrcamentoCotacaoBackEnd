@@ -9,5 +9,6 @@ Scenario: Autenticação inválida
 
 Scenario: Autenticação válida
 	Given Dado base
+	#status code 200 é sem erro
 	Then Erro status code "200"
 

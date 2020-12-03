@@ -17,6 +17,8 @@ namespace Especificacao.Testes.TesteListaDependencias
         private static readonly string NomeFeatureExecutadaNoFim1 = "VerificarQueExecutou";
         private static readonly string NomeFeatureExecutadaNoFim2 = "ListaExecucao";
 
+        private static readonly string NomeFeatureFimTudo = "VerificacaoFinalListaDependencias";
+
         /*
          * 
          * infelizmente, essa ordenação não funciona com o OpenCover
@@ -39,11 +41,14 @@ namespace Especificacao.Testes.TesteListaDependencias
             }
             */
 
-        //quem tem NomeFeatureExecutadaNoFim vai para o fim
-        var ret = testCollections.OrderBy(collection =>
-                collection.DisplayName.Contains(NomeFeatureExecutadaNoFim1)
-                || collection.DisplayName.Contains(NomeFeatureExecutadaNoFim2)
-                || collection.DisplayName.Contains(NomeFeatureExecutadaNoFim3));
+            //quem tem NomeFeatureExecutadaNoFim vai para o fim
+            var ret = testCollections.OrderBy(collection =>
+                    collection.DisplayName.Contains(NomeFeatureExecutadaNoFim1)
+                    || collection.DisplayName.Contains(NomeFeatureExecutadaNoFim2)
+                    || collection.DisplayName.Contains(NomeFeatureExecutadaNoFim3)
+                    || collection.DisplayName.Contains(NomeFeatureFimTudo))
+                .ThenBy(collection =>
+                    collection.DisplayName.Contains(NomeFeatureFimTudo));
             return ret;
         }
     }

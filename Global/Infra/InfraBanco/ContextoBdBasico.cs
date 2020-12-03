@@ -33,9 +33,6 @@ namespace InfraBanco
             modelBuilder.Entity<TecProdutoComposto>()
                 .HasKey(x => new { x.Fabricante_Composto, x.Produto_Composto });
 
-            modelBuilder.Entity<TpedidoItem>()
-                .HasKey(x => new { x.Pedido, x.Fabricante, x.Produto });
-
             modelBuilder.Entity<TprodutoXAlerta>()
                 .HasKey(x => new { x.Fabricante, x.Produto, x.Id_Alerta });
 
@@ -78,6 +75,34 @@ namespace InfraBanco
                 .HasKey(x => new { x.Grupo, x.Codigo });
             modelBuilder.Entity<TpercentualCustoFinanceiroFornecedor>()
                 .HasKey(x => new { x.Fabricante, x.Tipo_Parcelamento, x.Qtde_Parcelas });
+
+            modelBuilder.Entity<TestoqueItem>().HasKey(x => new { x.Id_estoque, x.Fabricante, x.Produto });
+
+            modelBuilder.Entity<TestoqueItem>()
+                .HasOne(x => x.Testoque)
+                .WithMany(x => x.TestoqueItem)
+                .HasForeignKey(x => x.Id_estoque);
+
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+            modelBuilder.Entity<TpedidoItemDevolvido>()
+                .HasOne(x => x.Tpedido)
+                .WithMany(x => x.TpedidoItemDevolvido)
+                .HasForeignKey(x => x.Pedido);
+
+            modelBuilder.Entity<TprodutoLoja>()
+                .HasOne(x => x.Tproduto)
+                .WithMany(x => x.TprodutoLoja)
+                .HasForeignKey(x => new { x.Fabricante, x.Produto });
+
+            modelBuilder.Entity<TestoqueLog>()
+               .HasKey(x => new {x.Pedido_estoque_destino, x.Pedido_estoque_origem, x.Fabricante, x.Produto, x.Qtde_atendida });
+
+            modelBuilder.Entity<TavisoExibido>()
+                .HasKey(x => new { x.Id, x.Usuario });
+
+            modelBuilder.Entity<TavisoLido>()
+                .HasKey(x => new { x.Id, x.Usuario });
+#endif
         }
 
         public DbSet<Tcliente> Tclientes { get; set; }
@@ -92,7 +117,6 @@ namespace InfraBanco
         public DbSet<TpedidoItemDevolvido> TpedidoItemDevolvidos { get; set; }
         public DbSet<TpedidoPerda> TpedidoPerdas { get; set; }
         public DbSet<TpedidoPagamento> TpedidoPagamentos { get; set; }
-        public DbSet<TestoqueMovimento> TestoqueMovimentos { get; set; }
         public DbSet<Ttransportadora> Ttransportadoras { get; set; }
         public DbSet<TpedidoBlocosNotas> TpedidoBlocosNotas { get; set; }
         public DbSet<TcodigoDescricao> TcodigoDescricaos { get; set; }
@@ -116,7 +140,6 @@ namespace InfraBanco
         public DbSet<TwmsRegraCdXUfPessoa> TwmsRegraCdXUfPessoas { get; set; }
         public DbSet<TwmsRegraCdXUfXPessoaXCd> TwmsRegraCdXUfXPessoaXCds { get; set; }
         public DbSet<TecProdutoCompostoItem> TecProdutoCompostoItems { get; set; }
-        public DbSet<Testoque> Testoques { get; set; }
         public DbSet<TestoqueItem> TestoqueItems { get; set; }
         public DbSet<TprodutoXAlerta> TprodutoXAlertas { get; set; }
         public DbSet<TalertaProduto> TalertaProdutos { get; set; }
@@ -128,5 +151,20 @@ namespace InfraBanco
         public DbSet<TsessaoAbandonada> TsessaoAbandonadas { get; set; }
         public DbSet<Tperfil> Tperfils { get; set; }
         public DbSet<TperfilUsuario> TperfilUsuarios { get; set; }
+        public DbSet<Testoque> Testoques { get; set; }
+        public DbSet<TestoqueMovimento> TestoqueMovimentos { get; set; }
+
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+        public DbSet<Tdesconto> Tdescontos { get; set; }
+        public DbSet<TtransportadoraCep> TtransportadoraCeps { get; set; }
+        public DbSet<TestoqueLog> TestoqueLogs { get; set; }
+        public DbSet<TfinControle> TfinControles { get; set; }
+        public DbSet<TpedidoAnaliseEndereco> TpedidoAnaliseEnderecos { get; set; }
+        public DbSet<TpedidoAnaliseEnderecoConfrontacao> TpedidoAnaliseConfrontacaos { get; set; }
+        public DbSet<TusuarioXLoja> TusuarioXLojas { get; set; }
+        public DbSet<Taviso> Tavisos { get; set; }
+        public DbSet<TavisoExibido> TavisoExibidos { get; set; }
+        public DbSet<TavisoLido> TavisoLidos { get; set; }
+#endif
     }
 }

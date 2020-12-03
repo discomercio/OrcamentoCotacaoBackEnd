@@ -20,7 +20,7 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "ignore")]
-    [Xunit.TraitAttribute("Category", "Especificacao/Pedido")]
+    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo20.EnderecoEntrega")]
     public partial class PedidoDeClientePJComEnderecoDeEntregaPJFeature : object, Xunit.IClassFixture<PedidoDeClientePJComEnderecoDeEntregaPJFeature.FixtureData>, System.IDisposable
     {
         
@@ -28,7 +28,7 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj
         
         private string[] _featureTags = new string[] {
                 "ignore",
-                "Especificacao/Pedido"};
+                "Especificacao.Pedido.Passo20.EnderecoEntrega"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -44,10 +44,9 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Pedido de cliente PJ com endereço de entrega PJ", "em loja/ClienteEdita.asp:\r\nvar EndEtg_tipo_pessoa = $(\'input[name=\"EndEtg_tipo_pe" +
-                    "ssoa\"]:checked\').val();\r\ne linhas para baixo", ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Pedido de cliente PJ com endereço de entrega PJ", null, ProgrammingLanguage.CSharp, new string[] {
                         "ignore",
-                        "Especificacao/Pedido"});
+                        "Especificacao.Pedido.Passo20.EnderecoEntrega"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -84,9 +83,9 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj
         
         public virtual void FeatureBackground()
         {
-#line 8
+#line 13
 #line hidden
-#line 9
+#line 14
  testRunner.Given("Pedido base cliente PJ com endereço de entrega PJ", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
         }
@@ -104,51 +103,6 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Configuração", null, tagsOfScenario, argumentsOfScenario);
-#line 11
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 8
-this.FeatureBackground();
-#line hidden
-#line 12
- testRunner.Given("Nome deste item \"Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj.EntregaPj" +
-                        "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 13
- testRunner.Given("Implementado em \"Especificacao.Pedido.Pedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 14
- testRunner.And("Fim da configuração", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="EndEtg_cnpj_cpf_PJ")]
-        [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega PJ")]
-        [Xunit.TraitAttribute("Description", "EndEtg_cnpj_cpf_PJ")]
-        public virtual void EndEtg_Cnpj_Cpf_PJ()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_cnpj_cpf_PJ", null, tagsOfScenario, argumentsOfScenario);
 #line 16
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -169,67 +123,29 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 8
+#line 13
 this.FeatureBackground();
 #line hidden
 #line 17
- testRunner.Given("Pedido base cliente PJ com endereço de entrega PJ", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Nome deste item \"Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj.EntregaPj" +
+                        "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 18
- testRunner.When("Informo \"EndEtg_cnpj_cpf_PJ\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 19
- testRunner.Then("Erro \"Endereço de entrega: CNPJ inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 21
- testRunner.Given("Pedido base cliente PJ com endereço de entrega PJ", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 22
- testRunner.When("Informo \"EndEtg_cnpj_cpf_PJ\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 23
- testRunner.Then("Erro \"Endereço de entrega: CNPJ inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 25
- testRunner.Given("Pedido base cliente PJ com endereço de entrega PJ", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 26
- testRunner.When("Informo \"EndEtg_cnpj_cpf_PJ\" = \"435.434.870-51\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 27
- testRunner.Then("Erro \"Endereço de entrega: CNPJ inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 29
- testRunner.Given("Pedido base cliente PJ com endereço de entrega PJ", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 30
- testRunner.When("Informo \"EndEtg_cnpj_cpf_PJ\" = \"40.745.075/0001-00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 31
- testRunner.Then("Erro \"Endereço de entrega: CNPJ inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 33
- testRunner.Given("Pedido base cliente PJ com endereço de entrega PJ", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 34
- testRunner.When("Informo \"EndEtg_cnpj_cpf_PJ\" = \"40.745.075/0001-16\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 35
- testRunner.Then("Sem erro \"Endereço de entrega: CNPJ inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("Implementado em \"Especificacao.Pedido.Pedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="EndEtg_contribuinte_icms_status_PJ")]
+        [Xunit.SkippableFactAttribute(DisplayName="EndEtg_cnpj_cpf_PJ")]
         [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega PJ")]
-        [Xunit.TraitAttribute("Description", "EndEtg_contribuinte_icms_status_PJ")]
-        public virtual void EndEtg_Contribuinte_Icms_Status_PJ()
+        [Xunit.TraitAttribute("Description", "EndEtg_cnpj_cpf_PJ")]
+        public virtual void EndEtg_Cnpj_Cpf_PJ()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_contribuinte_icms_status_PJ", null, tagsOfScenario, argumentsOfScenario);
-#line 37
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_cnpj_cpf_PJ", null, tagsOfScenario, argumentsOfScenario);
+#line 20
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -249,13 +165,93 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 8
+#line 13
 this.FeatureBackground();
 #line hidden
+#line 21
+ testRunner.Given("Pedido base cliente PJ com endereço de entrega PJ", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 22
+ testRunner.When("Informo \"EndEtg_cnpj_cpf_PJ\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 23
+ testRunner.Then("Erro \"Endereço de entrega: CNPJ inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 25
+ testRunner.Given("Pedido base cliente PJ com endereço de entrega PJ", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 26
+ testRunner.When("Informo \"EndEtg_cnpj_cpf_PJ\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 27
+ testRunner.Then("Erro \"Endereço de entrega: CNPJ inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 29
+ testRunner.Given("Pedido base cliente PJ com endereço de entrega PJ", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 30
+ testRunner.When("Informo \"EndEtg_cnpj_cpf_PJ\" = \"435.434.870-51\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 31
+ testRunner.Then("Erro \"Endereço de entrega: CNPJ inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 33
+ testRunner.Given("Pedido base cliente PJ com endereço de entrega PJ", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 34
+ testRunner.When("Informo \"EndEtg_cnpj_cpf_PJ\" = \"40.745.075/0001-00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 35
+ testRunner.Then("Erro \"Endereço de entrega: CNPJ inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 37
+ testRunner.Given("Pedido base cliente PJ com endereço de entrega PJ", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
 #line 38
- testRunner.When("Informo \"EndEtg_contribuinte_icms_status_PJ\" = \"-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"EndEtg_cnpj_cpf_PJ\" = \"40.745.075/0001-16\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 39
+ testRunner.Then("Sem erro \"Endereço de entrega: CNPJ inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="EndEtg_contribuinte_icms_status_PJ")]
+        [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega PJ")]
+        [Xunit.TraitAttribute("Description", "EndEtg_contribuinte_icms_status_PJ")]
+        public virtual void EndEtg_Contribuinte_Icms_Status_PJ()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_contribuinte_icms_status_PJ", null, tagsOfScenario, argumentsOfScenario);
+#line 41
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 13
+this.FeatureBackground();
+#line hidden
+#line 42
+ testRunner.When("Informo \"EndEtg_contribuinte_icms_status_PJ\" = \"-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 43
  testRunner.Then("Erro \"Endereço de entrega: informe se o cliente é contribuinte do ICMS, não contr" +
                         "ibuinte ou isento!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -271,7 +267,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_contribuinte_icms_status_PJ COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM", null, tagsOfScenario, argumentsOfScenario);
-#line 45
+#line 49
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -291,17 +287,17 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 8
+#line 13
 this.FeatureBackground();
 #line hidden
-#line 46
+#line 50
  testRunner.When("Informo \"EndEtg_contribuinte_icms_status_PJ\" = \"COD_ST_CLIENTE_CONTRIBUINTE_ICMS_" +
                         "SIM\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 47
+#line 51
  testRunner.And("Informo \"EndEtg_ie_PJ\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 48
+#line 52
  testRunner.Then("Erro \"Endereço de entrega: se o cliente é contribuinte do ICMS a inscrição estadu" +
                         "al deve ser preenchida!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -317,7 +313,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_contribuinte_icms_status_PJ COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM ISEN", null, tagsOfScenario, argumentsOfScenario);
-#line 50
+#line 54
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -337,17 +333,17 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 8
+#line 13
 this.FeatureBackground();
 #line hidden
-#line 51
+#line 55
  testRunner.When("Informo \"EndEtg_contribuinte_icms_status_PJ\" = \"COD_ST_CLIENTE_CONTRIBUINTE_ICMS_" +
                         "SIM\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 52
+#line 56
  testRunner.And("Informo \"EndEtg_ie_PJ\" = \"ISEN\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 53
+#line 57
  testRunner.Then("Erro \"Endereço de entrega: se cliente é contribuinte do ICMS, não pode ter o valo" +
                         "r ISENTO no campo de Inscrição Estadual!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -363,7 +359,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_contribuinte_icms_status_PJ COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO", null, tagsOfScenario, argumentsOfScenario);
-#line 55
+#line 59
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -383,17 +379,17 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 8
+#line 13
 this.FeatureBackground();
 #line hidden
-#line 56
+#line 60
  testRunner.When("Informo \"EndEtg_contribuinte_icms_status_PJ\" = \"COD_ST_CLIENTE_CONTRIBUINTE_ICMS_" +
                         "NAO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 57
+#line 61
  testRunner.And("Informo \"EndEtg_ie_PJ\" = \"ISEN\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 58
+#line 62
  testRunner.Then("Erro \"Endereço de entrega: se cliente é não contribuinte do ICMS, não pode ter o " +
                         "valor ISENTO no campo de Inscrição Estadual!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -409,7 +405,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_contribuinte_icms_status_PJ COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO 2", null, tagsOfScenario, argumentsOfScenario);
-#line 60
+#line 64
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -429,17 +425,17 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 8
+#line 13
 this.FeatureBackground();
 #line hidden
-#line 61
+#line 65
  testRunner.When("Informo \"EndEtg_contribuinte_icms_status_PJ\" = \"COD_ST_CLIENTE_CONTRIBUINTE_ICMS_" +
                         "NAO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 63
+#line 67
  testRunner.And("Informo \"EndEtg_ie_PJ\" = \"715255502973\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 64
+#line 68
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -454,7 +450,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_contribuinte_icms_status_PJ COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO opcional", null, tagsOfScenario, argumentsOfScenario);
-#line 66
+#line 70
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -474,17 +470,17 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 8
+#line 13
 this.FeatureBackground();
 #line hidden
-#line 67
+#line 71
  testRunner.When("Informo \"EndEtg_contribuinte_icms_status_PJ\" = \"COD_ST_CLIENTE_CONTRIBUINTE_ICMS_" +
                         "NAO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 68
+#line 72
  testRunner.And("Informo \"EndEtg_ie_PJ\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 69
+#line 73
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -499,7 +495,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_contribuinte_icms_status_PJ COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO 1", null, tagsOfScenario, argumentsOfScenario);
-#line 71
+#line 75
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -519,17 +515,17 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 8
+#line 13
 this.FeatureBackground();
 #line hidden
-#line 72
+#line 76
  testRunner.When("Informo \"EndEtg_contribuinte_icms_status_PJ\" = \"COD_ST_CLIENTE_CONTRIBUINTE_ICMS_" +
                         "ISENTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 73
+#line 77
  testRunner.And("Informo \"EndEtg_ie_PJ\" = \"ISEN\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 74
+#line 78
  testRunner.Then("Erro \"Endereço de entrega: se cliente é contribuinte do ICMS isento, não pode ter" +
                         " valor no campo de Inscrição Estadual!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -545,7 +541,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_contribuinte_icms_status_PJ COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO 2", null, tagsOfScenario, argumentsOfScenario);
-#line 76
+#line 80
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -565,17 +561,17 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 8
+#line 13
 this.FeatureBackground();
 #line hidden
-#line 77
+#line 81
  testRunner.When("Informo \"EndEtg_contribuinte_icms_status_PJ\" = \"COD_ST_CLIENTE_CONTRIBUINTE_ICMS_" +
                         "ISENTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 79
+#line 83
  testRunner.And("Informo \"EndEtg_ie_PJ\" = \"715255502973\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 80
+#line 84
  testRunner.Then("Erro \"Endereço de entrega: se cliente é contribuinte do ICMS isento, não pode ter" +
                         " valor no campo de Inscrição Estadual!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -591,7 +587,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_nome", null, tagsOfScenario, argumentsOfScenario);
-#line 82
+#line 86
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -611,13 +607,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 8
+#line 13
 this.FeatureBackground();
 #line hidden
-#line 83
+#line 87
  testRunner.When("Informo \"EndEtg_nome\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 84
+#line 88
  testRunner.Then("Erro \"Preencha a razão social no endereço de entrega!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

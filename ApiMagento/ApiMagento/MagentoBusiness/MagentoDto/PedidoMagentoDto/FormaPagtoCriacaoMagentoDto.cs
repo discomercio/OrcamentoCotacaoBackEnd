@@ -39,44 +39,45 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         //CustoFinancFornecQtdeParcelas = 1 se Tipo_Parcelamento = COD_FORMA_PAGTO_PARCELA_UNICA
         //CustoFinancFornecQtdeParcelas = C_pc_qtde se Tipo_Parcelamento = COD_FORMA_PAGTO_PARCELADO_CARTAO
 
-        public static Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados FormaPagtoCriacaoDados_De_FormaPagtoCriacaoMagentoDto(FormaPagtoCriacaoMagentoDto formaPagtoCriacaoMagento,
-            ConfiguracaoApiMagento configuracaoApiMagento, string marketplace_codigo_origem)
+        public static Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados FormaPagtoCriacaoDados_De_FormaPagtoCriacaoMagentoDto(
+            FormaPagtoCriacaoMagentoDto formaPagtoCriacaoMagento,
+            ConfiguracaoApiMagento configuracaoApiMagento, string? marketplace_codigo_origem)
         {
-            Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados  ret = new Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados();
+            Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados ret = new Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados();
 
-            if (formaPagtoCriacaoMagento?.Tipo_Parcelamento.ToString() ==
-                InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_A_VISTA && 
+            if (formaPagtoCriacaoMagento.Tipo_Parcelamento.ToString() ==
+                InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_A_VISTA &&
                 string.IsNullOrEmpty(marketplace_codigo_origem))
             {
                 ret.Qtde_Parcelas = 1;
-                ret.Op_av_forma_pagto = configuracaoApiMagento.FormaPagto.Op_av_forma_pagto;//boleto
-                ret.CustoFinancFornecTipoParcelamento = 
+                ret.Op_av_forma_pagto = configuracaoApiMagento.FormaPagto.Magento.Op_av_forma_pagto;//boleto
+                ret.CustoFinancFornecTipoParcelamento =
                     InfraBanco.Constantes.Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA;
             }
-            if (formaPagtoCriacaoMagento?.Tipo_Parcelamento.ToString() ==
+            if (formaPagtoCriacaoMagento.Tipo_Parcelamento.ToString() ==
                 InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_PARCELA_UNICA &&
                 !string.IsNullOrEmpty(marketplace_codigo_origem))
             {
                 ret.Qtde_Parcelas = 1;
                 ret.C_pu_valor = formaPagtoCriacaoMagento.C_pu_valor;
-                ret.Op_pu_forma_pagto = configuracaoApiMagento.FormaPagto.Op_pu_forma_pagto; //Depósito
-                ret.C_pu_vencto_apos = configuracaoApiMagento.FormaPagto.C_pu_vencto_apos;//ler do appsettings = 30 dias
-                ret.CustoFinancFornecTipoParcelamento = 
+                ret.Op_pu_forma_pagto = configuracaoApiMagento.FormaPagto.Markeplace.Op_pu_forma_pagto; //Depósito
+                ret.C_pu_vencto_apos = configuracaoApiMagento.FormaPagto.Markeplace.C_pu_vencto_apos;//ler do appsettings = 30 dias
+                ret.CustoFinancFornecTipoParcelamento =
                     InfraBanco.Constantes.Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA;
             }
-            if (formaPagtoCriacaoMagento?.Tipo_Parcelamento.ToString() ==
-                InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO && 
+            if (formaPagtoCriacaoMagento.Tipo_Parcelamento.ToString() ==
+                InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO &&
                 string.IsNullOrEmpty(marketplace_codigo_origem))
             {
-                ret.Qtde_Parcelas = (int)formaPagtoCriacaoMagento.C_pc_qtde;
+                ret.Qtde_Parcelas = formaPagtoCriacaoMagento.C_pc_qtde ?? 1;
                 ret.C_pc_qtde = formaPagtoCriacaoMagento.C_pc_qtde;
                 ret.C_pc_valor = formaPagtoCriacaoMagento.C_pc_valor;
-                ret.CustoFinancFornecTipoParcelamento = 
+                ret.CustoFinancFornecTipoParcelamento =
                     InfraBanco.Constantes.Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA;
             }
 
-            ret.Rb_forma_pagto = formaPagtoCriacaoMagento?.Tipo_Parcelamento.ToString(); //Tipo da forma de pagto
-            
+            ret.Rb_forma_pagto = formaPagtoCriacaoMagento.Tipo_Parcelamento.ToString(); //Tipo da forma de pagto
+
             ret.C_pc_maquineta_qtde = 0;
             ret.C_pc_maquineta_valor = 0M;
             ret.Op_pce_entrada_forma_pagto = "0";

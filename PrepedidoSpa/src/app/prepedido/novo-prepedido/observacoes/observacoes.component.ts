@@ -65,6 +65,7 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
       this.salvando = false;
       return false;
     }
+    
     this.prepedidoBuscarService.cadastrarPrepedido(this.novoPrepedidoDadosService.prePedidoDto).subscribe({
       next: (r) => {
 
@@ -81,7 +82,7 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
           }
           else {
             this.salvando = false;
-            this.alertaService.mostrarMensagem("Pré-Pedido criado com sucesso.");
+            this.alertaService.mostrarMensagem("Pedido criado com sucesso.");
             localStorage.setItem('ultima_url', document.URL);
             this.router.navigate(["prepedido/detalhes/" + r[0]]);
           }

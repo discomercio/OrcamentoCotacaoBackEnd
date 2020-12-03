@@ -96,6 +96,7 @@
 	dim pagina_retorno
 	dim strScript
 	dim s_tel_com_2, s_ddd_com_2, s_tel_cel, s_ddd_cel, s_ramal_com_2
+	dim s_cliente_tipo
 	
 	operacao_selecionada=request("operacao_selecionada")
 	cliente_selecionado=retorna_so_digitos(trim(request("cliente_selecionado")))
@@ -138,6 +139,8 @@
 	s_tel_cel=retorna_so_digitos(Trim(request("tel_cel")))
 	s_ddd_cel=retorna_so_digitos(Trim(request("ddd_cel")))
 	s_ramal_com_2=retorna_so_digitos(Trim(request("ramal_com_2")))
+	eh_cpf=(len(cnpj_cpf_selecionado)=11)
+	if eh_cpf then s_cliente_tipo=ID_PF else s_cliente_tipo=ID_PJ
 	
 	pagina_retorno = Trim(request("pagina_retorno"))
 	if pagina_retorno <> "" then
@@ -158,16 +161,25 @@
 	s_mag_end_cob_completo = ""
 
 	dim operacao_origem, c_numero_magento, operationControlTicket, sessionToken, id_magento_api_pedido_xml
+	dim c_FlagCadSemiAutoPedMagento_FluxoOtimizado, rb_indicacao, rb_RA, c_indicador
 	operacao_origem = Trim(Request("operacao_origem"))
 	c_numero_magento = ""
 	operationControlTicket = ""
 	sessionToken = ""
 	id_magento_api_pedido_xml = ""
+	c_FlagCadSemiAutoPedMagento_FluxoOtimizado = ""
+	rb_indicacao = ""
+	rb_RA = ""
+	c_indicador = ""
 	if operacao_origem = OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO then
 		c_numero_magento = Trim(Request("c_numero_magento"))
 		operationControlTicket = Trim(Request("operationControlTicket"))
 		sessionToken = Trim(Request("sessionToken"))
 		id_magento_api_pedido_xml = Trim(Request("id_magento_api_pedido_xml"))
+		c_FlagCadSemiAutoPedMagento_FluxoOtimizado = Trim(Request.Form("c_FlagCadSemiAutoPedMagento_FluxoOtimizado"))
+		rb_indicacao = Trim(Request.Form("rb_indicacao"))
+		rb_RA = Trim(Request.Form("rb_RA"))
+		c_indicador = Trim(Request.Form("c_indicador"))
 
 		If Not cria_recordset_otimista(tMAP_XML, msg_erro) then Response.Redirect("aviso.asp?id=" & ERR_FALHA_OPERACAO_CRIAR_ADO)
 		If Not cria_recordset_otimista(tMAP_END_ETG, msg_erro) then Response.Redirect("aviso.asp?id=" & ERR_FALHA_OPERACAO_CRIAR_ADO)
@@ -306,8 +318,6 @@
 	erro_consistencia=false
 	erro_fatal=false
 	
-	eh_cpf=(len(cnpj_cpf_selecionado)=11)
-
 '	DADOS DO SÓCIO MAJORITÁRIO
 	dim blnCadSocioMaj, blnConsistir, blnConsistirDadosBancarios
 	dim strSocMajNome, strSocMajCpf, strSocMajBanco, strSocMajAgencia, strSocMajConta
@@ -429,8 +439,6 @@
 		alerta="CNPJ/CPF NÃO FORNECIDO."
 	elseif Not cnpj_cpf_ok(cnpj_cpf_selecionado) then
 		alerta="CNPJ/CPF INVÁLIDO."
-	elseif eh_cpf And (Not sexo_ok(s_sexo)) then
-		alerta="INDIQUE QUAL O SEXO."
 	elseif s_nome = "" then
 		if eh_cpf then
 			alerta="PREENCHA O NOME DO CLIENTE."
@@ -488,6 +496,14 @@
 		end if
 
 	if alerta = "" then
+		if False then
+			if eh_cpf And (Not sexo_ok(s_sexo)) then
+				alerta="INDIQUE QUAL O SEXO."
+				end if
+			end if
+		end if
+
+	if alerta = "" then
 		if (s_produtor_rural = COD_ST_CLIENTE_PRODUTOR_RURAL_SIM) Then
 			if (s_contribuinte_icms <> COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM) Or (s_ie = "") then
 				alerta = "Para ser cadastrado como Produtor Rural, é necessário ser contribuinte do ICMS e possuir nº de IE"
@@ -500,7 +516,11 @@
 	s_tabela_municipios_IBGE = ""
 	if alerta = "" then
 	'	I.E. É VÁLIDA?
-		if s_ie <> "" then
+		if ( (s_cliente_tipo = ID_PF) And (Cstr(s_produtor_rural) = Cstr(COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)) ) _
+			Or _
+			( (s_cliente_tipo = ID_PJ) And (Cstr(s_contribuinte_icms) = Cstr(COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)) ) _
+			Or _
+			( (s_cliente_tipo = ID_PJ) And (Cstr(s_contribuinte_icms) = Cstr(COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO)) And (s_ie <> "") ) then
 			if Not isInscricaoEstadualValida(s_ie, s_uf) then
 				alerta="Preencha a IE (Inscrição Estadual) com um número válido!!" & _
 						"<br>" & "Certifique-se de que a UF informada corresponde à UF responsável pelo registro da IE."
@@ -969,8 +989,7 @@
 				s_cep_novo = s_cep
 				
 				r("cnpj_cpf")=cnpj_cpf_selecionado
-				if eh_cpf then s=ID_PF else s=ID_PJ
-				r("tipo")=s
+				r("tipo")=s_cliente_tipo
 				r("ie")=s_ie
 				r("rg")=s_rg
 				s_nome_original = Trim("" & r("nome"))
@@ -2152,6 +2171,12 @@ function fNEWConcluir( f ){
 	<input type="hidden" name="c_numero_magento" id="c_numero_magento" value="<%=c_numero_magento%>" />
 	<input type="hidden" name="operationControlTicket" id="operationControlTicket" value="<%=operationControlTicket%>" />
 	<input type="hidden" name="sessionToken" id="sessionToken" value="<%=sessionToken%>" />
+	<% if operacao_origem = OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO then %>
+	<input type="hidden" name="c_FlagCadSemiAutoPedMagento_FluxoOtimizado" id="c_FlagCadSemiAutoPedMagento_FluxoOtimizado" value="<%=c_FlagCadSemiAutoPedMagento_FluxoOtimizado%>" />
+	<input type="hidden" name="rb_indicacao" id="rb_indicacao" value="<%=rb_indicacao%>" />
+	<input type="hidden" name="c_indicador" id="c_indicador" value="<%=c_indicador%>" />
+	<input type="hidden" name="rb_RA" id="rb_RA" value="<%=rb_RA%>" />
+	<% end if %>
 
 
 <!-- ************   ENDEREÇO DE ENTREGA: S/N   ************ -->

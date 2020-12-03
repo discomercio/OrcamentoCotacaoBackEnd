@@ -54,8 +54,10 @@ namespace Produto
             UtilsProduto.ObterDisponibilidadeEstoque(lst_cliente_regra, lstTodosProdutos, lstErros, contextoProvider);
 
             //retorna as qtdes disponiveis
+            //Estoque.asp => estoque_verifica_disponibilidade_integral_v2
+            //método que executa essa parte no asp
             await UtilsProduto.VerificarEstoque(lst_cliente_regra, contextoProvider);
-            await UtilsProduto.VerificarEstoqueComSubQuery(lst_cliente_regra, contextoProvider);
+            await UtilsProduto.VerificarEstoqueGlobal(lst_cliente_regra, contextoProvider);
 
             //buscar o parametro produto 001020 indice 12
             Tparametro tparametro = await UtilsProduto.BuscarRegistroParametro(Constantes.ID_PARAMETRO_Flag_Orcamento_ConsisteDisponibilidadeEstoqueGlobal, contextoProvider);
@@ -171,6 +173,33 @@ namespace Produto
                                     join fab in db.Tfabricantes on c.Fabricante equals fab.Fabricante
                                     where pl.Vendavel == "S" &&
                                           pl.Loja == loja
+                                    select new Produto.Dados.ProdutoDados
+                                    {
+                                        Fabricante = c.Fabricante,
+                                        Fabricante_Nome = fab.Nome,
+                                        Produto = pl.Produto,
+                                        Descricao_html = c.Descricao_Html,
+                                        Descricao = c.Descricao,
+                                        Preco_lista = pl.Preco_Lista,
+                                        Qtde_Max_Venda = pl.Qtde_Max_Venda,
+                                        Desc_Max = pl.Desc_Max
+                                    };
+
+            List<Produto.Dados.ProdutoDados> lstTodosProdutos = await todosProdutosTask.ToListAsync();
+
+            return lstTodosProdutos;
+        }
+
+        public async Task<IEnumerable<Produto.Dados.ProdutoDados>> BuscarProdutosEspecificos(string loja, List<string> lstProdutos)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+
+            var todosProdutosTask = from c in db.Tprodutos
+                                    join pl in db.TprodutoLojas on c.Produto equals pl.Produto
+                                    join fab in db.Tfabricantes on c.Fabricante equals fab.Fabricante
+                                    where pl.Vendavel == "S" &&
+                                          pl.Loja == loja &&
+                                          lstProdutos.Contains(c.Produto)
                                     select new Produto.Dados.ProdutoDados
                                     {
                                         Fabricante = c.Fabricante,

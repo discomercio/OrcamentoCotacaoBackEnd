@@ -160,10 +160,10 @@ namespace Prepedido
                 lstdados = lst.Select(r => new PrepedidosCadastradosPrepedidoDados
                 {
 
-                    Status = r.St_Orc_Virou_Pedido == 1 ? "Pré-Pedido - Com Pedido" : "Pré-Pedido - Sem Pedido",
+                    Status = r.St_Orc_Virou_Pedido == 1 ? "Pedido em andamento" : "Pedido em processamento",
                     DataPrePedido = r.Data,
                     NumeroPrepedido = r.Orcamento,
-                    NomeCliente = r.Tcliente.Nome,
+                    NomeCliente = r.Endereco_nome,
                     ValoTotal = r.Permite_RA_Status == 1 ? r.Vl_Total_NF : r.Vl_Total
                 }).OrderByDescending(r => r.NumeroPrepedido).ToList();
             }
@@ -174,7 +174,7 @@ namespace Prepedido
                     Status = "Excluído",
                     DataPrePedido = r.Data,
                     NumeroPrepedido = r.Orcamento,
-                    NomeCliente = r.Tcliente.Nome,
+                    NomeCliente = r.Endereco_nome,
                     ValoTotal = r.Permite_RA_Status == 1 && r.Permite_RA_Status != 0 ? r.Vl_Total_NF : r.Vl_Total
                 }).OrderByDescending(r => r.NumeroPrepedido).ToList();
             }
@@ -194,7 +194,7 @@ namespace Prepedido
                                 select c;
                 Torcamento prePedido = await prepedido.FirstOrDefaultAsync();
 
-                if (!string.IsNullOrEmpty(prePedido.ToString()))
+                if (prePedido != null)
                 {
                     prePedido.St_Orcamento = "CAN";
                     prePedido.Cancelado_Data = DateTime.Now;
@@ -265,7 +265,7 @@ namespace Prepedido
 
             var vltotalRa = lstProdutoTask.Select(r => r.VlTotalRA).Sum();
             var totalDestePedidoComRa = lstProdutoTask.Select(r => r.TotalItemRA).Sum();
-            var totalDestePedido = lstProdutoTask.Select(r => r.TotalItem).Sum();
+            var totalDestePedido = lstProdutoTask.Select(r => r.VlTotalItem).Sum();
 
 
             PrePedidoDados prepedidoDados = new PrePedidoDados
@@ -283,8 +283,8 @@ namespace Prepedido
                 PermiteRAStatus = pp.Permite_RA_Status,
                 CorTotalFamiliaRA = vltotalRa > 0 ? "green" : "red",
                 PercRT = pp.Perc_RT,
-                ValorTotalDestePedidoComRA = totalDestePedidoComRa,
-                VlTotalDestePedido = totalDestePedido,
+                Vl_total_NF = totalDestePedidoComRa,
+                Vl_total = totalDestePedido,
                 DetalhesPrepedido = ObterDetalhesPrePedido(pp, apelido),
                 FormaPagto = ObterFormaPagto(pp).ToList(),
                 FormaPagtoCriacao = await ObterFormaPagtoPrePedido(pp)
@@ -385,10 +385,8 @@ namespace Prepedido
                 EntregaImediata = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
                 "NÃO (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" :
                 "SIM (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")",
-                BemDeUso_Consumo = torcamento.StBemUsoConsumo == (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_NAO ?
-                "NÃO" : "SIM",
-                InstaladorInstala = torcamento.InstaladorInstalaStatus == (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_NAO ?
-                "NÃO" : "SIM",
+                BemDeUso_Consumo = torcamento.StBemUsoConsumo,
+                InstaladorInstala = torcamento.InstaladorInstalaStatus,
                 GarantiaIndicador = Convert.ToString(torcamento.GarantiaIndicadorStatus) ==
                 Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO ?
                 "NÃO" : "SIM",
@@ -468,23 +466,22 @@ namespace Prepedido
                 PrepedidoProdutoPrepedidoDados produtoPrepedido = new PrepedidoProdutoPrepedidoDados
                 {
                     Fabricante = p.Fabricante,
-                    NumProduto = p.Produto,
+                    Produto = p.Produto,
                     Descricao = p.Descricao_Html,
                     Obs = p.Obs,
                     Qtde = p.Qtde,
                     Permite_Ra_Status = orc.Permite_RA_Status,
                     BlnTemRa = p.Preco_NF != p.Preco_Venda ? true : false,
-                    //estamos alterando os valores de "Preco" para "p.Preco_Lista" e
-                    //"VlLista" para "p.Preco_NF"
-                    Preco = p.Preco_NF,//essa variavel não pode ter o valor alterado
-                    VlLista = (decimal)p.Preco_Lista,//essa variavel é o valor base para calcular 
-                    Desconto = p.Desc_Dado,
-                    VlUnitario = p.Preco_Venda,
+                    Preco_NF = p.Preco_NF ?? 0,
+                    CustoFinancFornecPrecoListaBase = p.CustoFinancFornecPrecoListaBase,//essa variavel não pode ter o valor alterado
+                    Preco_Lista = (decimal)p.Preco_Lista,//essa variavel é o valor base para calcular 
+                    Desc_Dado = p.Desc_Dado ?? 0,
+                    Preco_Venda = p.Preco_Venda,
                     VlTotalRA = (decimal)(p.Qtde * (p.Preco_NF - p.Preco_Venda)),
                     Comissao = orc.Perc_RT,
-                    TotalItemRA = p.Qtde * p.Preco_NF,
-                    TotalItem = p.Qtde * p.Preco_Venda,
-                    VlTotalItem = p.Qtde * p.Preco_Venda
+                    TotalItemRA = (p.Qtde ?? 0) * (p.Preco_NF ?? 0),
+                    TotalItem = (p.Qtde ?? 0) * (p.Preco_Venda),
+                    VlTotalItem = (p.Qtde ?? 0) * (p.Preco_Venda)
 
                 };
 
@@ -632,7 +629,7 @@ namespace Prepedido
                 enderecoEntrega.EndEtg_produtor_rural_status = p.EndEtg_produtor_rural_status;
                 enderecoEntrega.EndEtg_ie = p.EndEtg_ie;
                 enderecoEntrega.EndEtg_rg = p.EndEtg_rg;
-                enderecoEntrega.St_memorizacao_completa_enderecos = p.St_memorizacao_completa_enderecos;
+                enderecoEntrega.St_memorizacao_completa_enderecos = p.St_memorizacao_completa_enderecos == 1;
             }
 
             return enderecoEntrega;
@@ -651,7 +648,7 @@ namespace Prepedido
         }
 
         public async Task<IEnumerable<string>> CadastrarPrepedido(PrePedidoDados prePedido, string apelido, decimal limiteArredondamento,
-            bool verificarPrepedidoRepetido, int sistemaResponsavelCadastro)
+            bool verificarPrepedidoRepetido, InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro)
         {
             List<string> lstErros = new List<string>();
 
@@ -685,14 +682,26 @@ namespace Prepedido
 
             if (cliente != null)
             {
-                if (cliente.DadosCliente.Tipo == Constantes.ID_PF)
+                // Foi solicitado pelo Hamilton que removesse a confrontação de nome do cliente para ApiUnis.
+                // Impossibilitava que para cliente tipo PF não poderia ter o nome diferente do cadastro.
+                // Para flexibilizar estamos alterando a validação e iremos salvar para o prepedido
+                // o nome que vier na solicitação de cadastro de prepedido.Caso ocorra alteração no cadastro do cliente
+                // isso impediria de realizar o cadastro de prepedido e acarretaria que, alguém deveria ajustar o cadastro do
+                // cliente pelo ERP para que a ApiUnis pudesse cadastrar um prepedido com o cadastro do cliente alterado
+
+                //Somente a ApiUnis poderá inserir um Prepedido com cliente PF com nome diferente do que está cadastrado na base
+                if (sistemaResponsavelCadastro != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS)
                 {
-                    if (prePedido.EnderecoCadastroClientePrepedido.Endereco_nome.ToUpper() !=
-                        cliente.DadosCliente.Nome.ToUpper())
+                    if (cliente.DadosCliente.Tipo == Constantes.ID_PF)
                     {
-                        lstErros.Add("Nome do cliente diferente do nome cadastrado!");
+                        if (prePedido.EnderecoCadastroClientePrepedido.Endereco_nome.ToUpper() !=
+                            cliente.DadosCliente.Nome.ToUpper())
+                        {
+                            lstErros.Add("Nome do cliente diferente do nome cadastrado!");
+                        }
                     }
                 }
+
 
                 prePedido.DadosCliente.Id = cliente.DadosCliente.Id;
                 prePedido.DadosCliente.Sexo = cliente.DadosCliente.Sexo;
@@ -725,7 +734,7 @@ namespace Prepedido
             await Cliente.ValidacoesClienteBll.ValidarDadosCliente(prePedido.DadosCliente,
                 null, null,
                 lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco,
-                prePedido.DadosCliente.Tipo == Constantes.ID_PF ? true : false, (byte)sistemaResponsavelCadastro);
+                prePedido.DadosCliente.Tipo == Constantes.ID_PF ? true : false, sistemaResponsavelCadastro);
 
             //if (lstErros.Count > 0)
             //    return lstErros;
@@ -736,7 +745,7 @@ namespace Prepedido
                 var prepedidoJaCadastradoNumero = await new Prepedido.PrepedidoRepetidoBll(contextoProvider).PrepedidoJaCadastradoCriterioSiteColors(prePedido);
                 if (!String.IsNullOrEmpty(prepedidoJaCadastradoNumero))
                 {
-                    lstErros.Add($"Este pré-pedido já foi gravado com o número {prepedidoJaCadastradoNumero}");
+                    lstErros.Add($"Esta solicitação já foi gravada com o número {prepedidoJaCadastradoNumero}");
                     return lstErros;
                 }
             }
@@ -749,7 +758,7 @@ namespace Prepedido
 
             if (prePedido.ListaProdutos.Count > 12)
             {
-                lstErros.Add("É permitido apenas 12 itens por Pré-Pedido!");
+                lstErros.Add("É permitido apenas 12 itens.");
                 return lstErros;
             }
             if (!await Util.LojaHabilitadaProdutosECommerce(prePedido.DadosCliente.Loja, contextoProvider))
@@ -760,108 +769,114 @@ namespace Prepedido
 
 
             //Validar endereço de entraga
-            if (await validacoesPrepedidoBll.ValidarEnderecoEntrega(prePedido, lstErros))
+            await validacoesPrepedidoBll.ValidarEnderecoEntrega(prePedido.EnderecoEntrega, lstErros,
+                prePedido.DadosCliente.Indicador_Orcamentista, prePedido.DadosCliente.Tipo);
+            if (lstErros.Any())
+                return lstErros;
+
+            //busca a sigla do tipo de pagamento pelo código enviado
+            string c_custoFinancFornecTipoParcelamento = ObterSiglaFormaPagto(prePedido.FormaPagtoCriacao);
+
+            //precisa incluir uma validação de forma de pagamento com base no orçamentista enviado
+            FormaPagtoDados formasPagto = await formaPagtoBll.ObterFormaPagto(tOrcamentista.Apelido, prePedido.DadosCliente.Tipo);
+            validacoesFormaPagtoBll.ValidarFormaPagto(prePedido.FormaPagtoCriacao, lstErros, limiteArredondamento,
+                0.1M, c_custoFinancFornecTipoParcelamento, formasPagto, prePedido.PermiteRAStatus,
+                prePedido.Vl_total_NF, prePedido.Vl_total);
+            if (lstErros.Any())
+                return lstErros;
+
+            //Esta sendo verificado qual o tipo de pagamento que esta sendo feito e retornando a quantidade de parcelas
+            int c_custoFinancFornecQtdeParcelas = ObterQtdeParcelasFormaPagto(prePedido.FormaPagtoCriacao);
+
+            float perc_limite_RA_sem_desagio = await Util.VerificarSemDesagioRA(contextoProvider);
+
+            //Vamos conforntar os valores de cada item, total do prepedido e o percentual máximo de RA
+            await validacoesPrepedidoBll.MontarProdutosParaComparacao(prePedido,
+                c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas,
+                prePedido.DadosCliente.Loja, lstErros, perc_limite_RA_sem_desagio, limiteArredondamento);
+
+
+            Util.ValidarTipoCustoFinanceiroFornecedor(lstErros, c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas);
+            if (lstErros.Count > 0)
+                return lstErros;
+
+            //Calculamos os produtos com o coeficiente e retornamos uma lista de coeficientes dos fabricantes
+            List<TpercentualCustoFinanceiroFornecedor> lstPercentualCustoFinanFornec =
+            (await BuscarCoeficientePercentualCustoFinanFornec(prePedido,
+                (short)c_custoFinancFornecQtdeParcelas, c_custoFinancFornecTipoParcelamento, lstErros)).ToList();
+
+            Tparametro parametroRegra = await Util.BuscarRegistroParametro(Constantes.ID_PARAMETRO_Flag_Orcamento_ConsisteDisponibilidadeEstoqueGlobal,
+                contextoProvider);
+            //esse metodo tb tras a sigla da pessoa
+            string tipoPessoa = UtilsProduto.MultiCdRegraDeterminaPessoa(prePedido.DadosCliente.Tipo, prePedido.DadosCliente.Contribuinte_Icms_Status,
+                prePedido.DadosCliente.ProdutorRural);
+            string descricao = Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo);
+
+            //List<RegrasBll> regraCrtlEstoque = new List<RegrasBll>();
+            List<RegrasBll> regraCrtlEstoque = (await ObterCtrlEstoqueProdutoRegra(prePedido, lstErros)).ToList();
+            await UtilsProduto.ObterCtrlEstoqueProdutoRegra_Teste(lstErros, regraCrtlEstoque, prePedido.DadosCliente.Uf, tipoPessoa, contextoProvider);
+
+            Produto.ProdutoGeralBll.VerificarRegrasAssociadasAosProdutos(regraCrtlEstoque, lstErros, prePedido.DadosCliente.Uf, prePedido.DadosCliente.Tipo);
+            //obtendo qtde disponivel
+            await UtilsProduto.VerificarEstoque(regraCrtlEstoque, contextoProvider);
+
+            ObterDisponibilidadeEstoque(regraCrtlEstoque, prePedido, parametroRegra, lstErros);
+
+            VerificarEstoqueInsuficiente(regraCrtlEstoque, prePedido, parametroRegra);
+
+            //realiza a análise da quantidade de pedidos necessária(auto-split)
+            VerificarQtdePedidosAutoSplit(regraCrtlEstoque, lstErros, prePedido);
+
+            //contagem de empresas que serão usadas no auto-split, ou seja, a quantidade de pedidos que será cadastrada, 
+            //já que cada pedido se refere ao estoque de uma empresa
+            List<int> lst_empresa_selecionada = ContagemEmpresasUsadasAutoSplit(regraCrtlEstoque, prePedido);
+
+            //há algum produto descontinuado?
+            await ExisteProdutoDescontinuado(prePedido, lstErros);
+
+            if (lstErros.Count <= 0)
             {
-                //busca a sigla do tipo de pagamento pelo código enviado
-                string c_custoFinancFornecTipoParcelamento = ObterSiglaFormaPagto(prePedido.FormaPagtoCriacao);
-
-                //precisa incluir uma validação de forma de pagamento com base no orçamentista enviado
-                FormaPagtoDados formasPagto = await formaPagtoBll.ObterFormaPagto(tOrcamentista.Apelido, prePedido.DadosCliente.Tipo);
-                if (validacoesFormaPagtoBll.ValidarFormaPagto(prePedido, lstErros, limiteArredondamento,
-                    0.1M, c_custoFinancFornecTipoParcelamento, formasPagto))
+                using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
                 {
-                    //Esta sendo verificado qual o tipo de pagamento que esta sendo feito e retornando a quantidade de parcelas
-                    int c_custoFinancFornecQtdeParcelas = ObterQtdeParcelasFormaPagto(prePedido.FormaPagtoCriacao);
-
-                    float perc_limite_RA_sem_desagio = await Util.VerificarSemDesagioRA(contextoProvider);
-
-                    //Vamos conforntar os valores de cada item, total do prepedido e o percentual máximo de RA
-                    await validacoesPrepedidoBll.MontarProdutosParaComparacao(prePedido,
-                        c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas,
-                        prePedido.DadosCliente.Loja, lstErros, perc_limite_RA_sem_desagio, limiteArredondamento);
-
-                    //if (lstErros.Count > 0)
-                    //    return lstErros;
-
-                    if (Util.ValidarTipoCustoFinanceiroFornecedor(lstErros, c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas))
+                    //Se orcamento existir, fazer o delete das informações
+                    if (!string.IsNullOrEmpty(prePedido.NumeroPrePedido))
                     {
-                        //Calculamos os produtos com o coeficiente e retornamos uma lista de coeficientes dos fabricantes
-                        List<TpercentualCustoFinanceiroFornecedor> lstPercentualCustoFinanFornec =
-                        (await BuscarCoeficientePercentualCustoFinanFornec(prePedido,
-                            (short)c_custoFinancFornecQtdeParcelas, c_custoFinancFornecTipoParcelamento, lstErros)).ToList();
-
-                        Tparametro parametroRegra = await Util.BuscarRegistroParametro(Constantes.ID_PARAMETRO_Flag_Orcamento_ConsisteDisponibilidadeEstoqueGlobal,
-                            contextoProvider);
-                        //esse metodo tb tras a sigla da pessoa
-                        string tipoPessoa = UtilsProduto.MultiCdRegraDeterminaPessoa(prePedido.DadosCliente.Tipo, prePedido.DadosCliente.Contribuinte_Icms_Status,
-                            prePedido.DadosCliente.ProdutorRural);
-                        string descricao = Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo);
-
-                        //List<RegrasBll> regraCrtlEstoque = new List<RegrasBll>();
-                        List<RegrasBll> regraCrtlEstoque = (await ObterCtrlEstoqueProdutoRegra(prePedido, lstErros)).ToList();
-                        await UtilsProduto.ObterCtrlEstoqueProdutoRegra_Teste(lstErros, regraCrtlEstoque, prePedido.DadosCliente.Uf, tipoPessoa, contextoProvider);
-
-                        Produto.ProdutoGeralBll.VerificarRegrasAssociadasAosProdutos(regraCrtlEstoque, lstErros, prePedido.DadosCliente.Uf, prePedido.DadosCliente.Tipo);
-                        //obtendo qtde disponivel
-                        await UtilsProduto.VerificarEstoque(regraCrtlEstoque, contextoProvider);
-
-                        ObterDisponibilidadeEstoque(regraCrtlEstoque, prePedido, parametroRegra, lstErros);
-
-                        VerificarEstoqueInsuficiente(regraCrtlEstoque, prePedido, parametroRegra);
-
-                        //realiza a análise da quantidade de pedidos necessária(auto-split)
-                        VerificarQtdePedidosAutoSplit(regraCrtlEstoque, lstErros, prePedido);
-
-                        //contagem de empresas que serão usadas no auto-split, ou seja, a quantidade de pedidos que será cadastrada, 
-                        //já que cada pedido se refere ao estoque de uma empresa
-                        List<int> lst_empresa_selecionada = ContagemEmpresasUsadasAutoSplit(regraCrtlEstoque, prePedido);
-
-                        //há algum produto descontinuado?
-                        await ExisteProdutoDescontinuado(prePedido, lstErros);
-
-                        if (lstErros.Count <= 0)
-                        {
-                            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
-                            {
-                                //Se orcamento existir, fazer o delete das informações
-                                if (!string.IsNullOrEmpty(prePedido.NumeroPrePedido))
-                                {
-                                    await DeletarOrcamentoExiste(dbgravacao, prePedido, apelido);
-                                }
-
-                                if (string.IsNullOrEmpty(prePedido.NumeroPrePedido))
-                                {
-                                    //gerar o numero de orçamento
-                                    await GerarNumeroOrcamento(dbgravacao, prePedido);
-                                }
-
-                                if (string.IsNullOrEmpty(prePedido.NumeroPrePedido))
-                                    lstErros.Add("FALHA NA OPERAÇÃO COM O BANCO DE DADOS AO TENTAR GERAR NSU.");
-
-                                //Cadastrar dados do Orcamento e endereço de entrega 
-                                string log = await EfetivarCadastroPrepedido(dbgravacao,
-                                    prePedido, tOrcamentista, c_custoFinancFornecTipoParcelamento,
-                                    sistemaResponsavelCadastro, perc_limite_RA_sem_desagio);
-                                //Cadastrar orcamento itens
-                                List<TorcamentoItem> lstOrcamentoItem = (await MontaListaOrcamentoItem(prePedido,
-                                    lstPercentualCustoFinanFornec, dbgravacao)).ToList();
-
-                                //vamos passar o coeficiente que foi criado na linha 596 e passar como param para cadastrar nos itens
-                                //await ComplementarInfosOrcamentoItem(dbgravacao, lstOrcamentoItem,
-                                //    prePedido.DadosCliente.Loja);
-
-                                log = await CadastrarOrctoItens(dbgravacao, lstOrcamentoItem, log);
-
-                                bool gravouLog = Util.GravaLog(dbgravacao, apelido, prePedido.DadosCliente.Loja, prePedido.NumeroPrePedido,
-                                    prePedido.DadosCliente.Id, Constantes.OP_LOG_ORCAMENTO_NOVO, log);
-
-                                dbgravacao.transacao.Commit();
-                                lstErros.Add(prePedido.NumeroPrePedido);
-                            }
-                        }
+                        await DeletarOrcamentoExiste(dbgravacao, prePedido, apelido);
                     }
+
+                    if (string.IsNullOrEmpty(prePedido.NumeroPrePedido))
+                    {
+                        //gerar o numero de orçamento
+                        await GerarNumeroOrcamento(dbgravacao, prePedido);
+                    }
+
+                    if (string.IsNullOrEmpty(prePedido.NumeroPrePedido))
+                        lstErros.Add("FALHA NA OPERAÇÃO COM O BANCO DE DADOS AO TENTAR GERAR NSU.");
+
+                    //Cadastrar dados do Orcamento e endereço de entrega 
+                    string log = await EfetivarCadastroPrepedido(dbgravacao,
+                        prePedido, tOrcamentista, c_custoFinancFornecTipoParcelamento,
+                        sistemaResponsavelCadastro, perc_limite_RA_sem_desagio);
+                    //Cadastrar orcamento itens
+                    List<TorcamentoItem> lstOrcamentoItem = (await MontaListaOrcamentoItem(prePedido,
+                        lstPercentualCustoFinanFornec, dbgravacao)).ToList();
+
+                    //vamos passar o coeficiente que foi criado na linha 596 e passar como param para cadastrar nos itens
+                    //await ComplementarInfosOrcamentoItem(dbgravacao, lstOrcamentoItem,
+                    //    prePedido.DadosCliente.Loja);
+
+                    log = await CadastrarOrctoItens(dbgravacao, lstOrcamentoItem, log);
+
+                    bool gravouLog = Util.GravaLog(dbgravacao, apelido, prePedido.DadosCliente.Loja, prePedido.NumeroPrePedido,
+                        prePedido.DadosCliente.Id, Constantes.OP_LOG_ORCAMENTO_NOVO, log);
+
+                    dbgravacao.transacao.Commit();
+                    lstErros.Add(prePedido.NumeroPrePedido);
                 }
             }
+
+
+
 
 
             return lstErros;
@@ -910,7 +925,7 @@ namespace Prepedido
         }
 
         private async Task<string> EfetivarCadastroPrepedido(ContextoBdGravacao dbgravacao, PrePedidoDados prepedido,
-            TorcamentistaEindicador orcamentista, string siglaPagto, int sistemaResponsavelCadastro,
+            TorcamentistaEindicador orcamentista, string siglaPagto, InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
             float perc_limite_RA_sem_desagio = 0)
         {
             //vamos buscar a midia do cliente para cadastrar no orçamento
@@ -943,8 +958,8 @@ namespace Prepedido
             torcamento.Permite_RA_Status = orcamentista.Permite_RA_Status;
             torcamento.St_End_Entrega = prepedido.EnderecoEntrega.OutroEndereco == true ? (short)1 : (short)0;
             torcamento.CustoFinancFornecTipoParcelamento = siglaPagto;//sigla pagto
-            torcamento.Sistema_responsavel_cadastro = sistemaResponsavelCadastro;
-            torcamento.Sistema_responsavel_atualizacao = sistemaResponsavelCadastro;
+            torcamento.Sistema_responsavel_cadastro = (int)sistemaResponsavelCadastro;
+            torcamento.Sistema_responsavel_atualizacao = (int)sistemaResponsavelCadastro;
 
             //inclui os campos de endereço cadastral no Torccamento
             IncluirDadosClienteParaTorcamento(prepedido, torcamento);
@@ -1098,11 +1113,11 @@ namespace Prepedido
             torcamento.Obs_2 = prepedido.DetalhesPrepedido.NumeroNF == null ?
                 "" : prepedido.DetalhesPrepedido.NumeroNF;
             torcamento.StBemUsoConsumo = prepedido.DetalhesPrepedido.BemDeUso_Consumo !=
-                Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_NAO.ToString() ?
+                (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_NAO ?
                 (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_SIM : (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_NAO;
 
             torcamento.InstaladorInstalaStatus = prepedido.DetalhesPrepedido.InstaladorInstala ==
-                Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_SIM.ToString() ?
+                (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_SIM ?
                 (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_SIM :
                 (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_NAO;
 
@@ -1248,9 +1263,9 @@ namespace Prepedido
 
             foreach (var p in prepedido.ListaProdutos)
             {
-                if (!string.IsNullOrEmpty(p.NumProduto))
+                if (!string.IsNullOrEmpty(p.Produto))
                 {
-                    vl_total += (decimal)(p.Qtde * p.VlUnitario);
+                    vl_total += (decimal)(p.Qtde * p.Preco_Venda);
                 }
             }
 
@@ -1263,9 +1278,9 @@ namespace Prepedido
 
             foreach (var p in prepedido.ListaProdutos)
             {
-                if (!string.IsNullOrEmpty(p.NumProduto))
+                if (!string.IsNullOrEmpty(p.Produto))
                 {
-                    vl_total_NF += (decimal)(p.Qtde * p.Preco_Lista);
+                    vl_total_NF += (decimal)(p.Qtde * p.Preco_NF);
                 }
             }
 
@@ -1278,17 +1293,17 @@ namespace Prepedido
 
             foreach (var p in prepedido.ListaProdutos)
             {
-                if (!string.IsNullOrEmpty(p.NumProduto) && !string.IsNullOrEmpty(p.Fabricante))
+                if (!string.IsNullOrEmpty(p.Produto) && !string.IsNullOrEmpty(p.Fabricante))
                 {
                     var produtoTask = (from c in db.Tprodutos
-                                       where c.Produto == p.NumProduto && c.Fabricante == p.Fabricante
+                                       where c.Produto == p.Produto && c.Fabricante == p.Fabricante
                                        select c.Descontinuado).FirstOrDefaultAsync();
                     var produto = await produtoTask;
 
                     if (produto != null && produto.ToUpper() == "S")
                     {
                         if (p.Qtde > p.Qtde_estoque_total_disponivel)
-                            lstErros.Add("Produto (" + p.Fabricante + ")" + p.NumProduto +
+                            lstErros.Add("Produto (" + p.Fabricante + ")" + p.Produto +
                                 " consta como 'descontinuado' e não há mais saldo suficiente no estoque para atender à quantidade solicitada.");
                     }
                 }
@@ -1328,7 +1343,7 @@ namespace Prepedido
 
             foreach (var p in prepedido.ListaProdutos)
             {
-                if (!string.IsNullOrEmpty(p.NumProduto))
+                if (!string.IsNullOrEmpty(p.Produto))
                 {
                     qtde_a_alocar = (int)p.Qtde;
 
@@ -1346,7 +1361,7 @@ namespace Prepedido
                                 {
                                     if (re.St_inativo == 0)
                                     {
-                                        if (regra.Fabricante == p.Fabricante && regra.Produto == p.NumProduto)
+                                        if (regra.Fabricante == p.Fabricante && regra.Produto == p.Produto)
                                         {
                                             if (re.Estoque_Qtde >= qtde_a_alocar)
                                             {
@@ -1371,12 +1386,12 @@ namespace Prepedido
                         {
                             if (qtde_a_alocar == 0)
                                 break;
-                            if (regra.Produto == p.NumProduto && regra.Fabricante == p.Fabricante)
+                            if (regra.Produto == p.Produto && regra.Fabricante == p.Fabricante)
                             {
                                 foreach (var re in regra.TwmsCdXUfXPessoaXCd)
                                 {
                                     if (regra.Fabricante == p.Fabricante &&
-                                       regra.Produto == p.NumProduto &&
+                                       regra.Produto == p.Produto &&
                                        re.Id_nfe_emitente > 0 &&
                                        re.Id_nfe_emitente == regra.TwmsRegraCdXUfXPessoa.Spe_id_nfe_emitente)
                                     {
@@ -1390,7 +1405,7 @@ namespace Prepedido
                     if (qtde_a_alocar > 0)
                     {
                         lstErros.Add("Falha ao processar a alocação de produtos no estoque: restaram " + qtde_a_alocar + " unidades do produto (" +
-                            p.Fabricante + ")" + p.NumProduto + " que não puderam ser alocados na lista de produtos sem presença no estoque de nenhum CD");
+                            p.Fabricante + ")" + p.Produto + " que não puderam ser alocados na lista de produtos sem presença no estoque de nenhum CD");
                     }
                 }
             }
@@ -1405,7 +1420,7 @@ namespace Prepedido
 
             foreach (var p in prepedido.ListaProdutos)
             {
-                if (!string.IsNullOrEmpty(p.NumProduto) && !string.IsNullOrEmpty(p.Fabricante))
+                if (!string.IsNullOrEmpty(p.Produto) && !string.IsNullOrEmpty(p.Fabricante))
                 {
                     foreach (var regra in lstRegras)
                     {
@@ -1417,7 +1432,7 @@ namespace Prepedido
                                 {
                                     if (r.St_inativo == 0)
                                     {
-                                        if (regra.Fabricante == p.Fabricante && regra.Produto == p.NumProduto)
+                                        if (regra.Fabricante == p.Fabricante && regra.Produto == p.Produto)
                                         {
                                             qtde_estoque_total_disponivel += r.Estoque_Qtde;
                                         }
@@ -1464,10 +1479,10 @@ namespace Prepedido
                             {
                                 foreach (var p in prepedido.ListaProdutos)
                                 {
-                                    if (regra.Fabricante == p.Fabricante && regra.Produto == p.NumProduto)
+                                    if (regra.Fabricante == p.Fabricante && regra.Produto == p.Produto)
                                     {
                                         re.Estoque_Fabricante = p.Fabricante;
-                                        re.Estoque_Produto = p.NumProduto;
+                                        re.Estoque_Produto = p.Produto;
                                         re.Estoque_Descricao = p.Descricao;
                                         re.Estoque_DescricaoHtml = p.Descricao;
                                         re.Estoque_Qtde_Solicitado = p.Qtde;
@@ -1509,7 +1524,7 @@ namespace Prepedido
                         {
                             if (percCustoTask != null)
                             {
-                                i.VlLista = (decimal)percCustoTask.Coeficiente * (decimal)i.Preco;
+                                i.Preco_Lista = (decimal)percCustoTask.Coeficiente * (decimal)i.CustoFinancFornecPrecoListaBase;
                             }
                             else
                             {
@@ -1534,7 +1549,7 @@ namespace Prepedido
             {
                 var regraProdutoTask = from c in db.TprodutoXwmsRegraCds
                                        where c.Fabricante == item.Fabricante &&
-                                             c.Produto == item.NumProduto
+                                             c.Produto == item.Produto
                                        select c;
 
                 var regra = await regraProdutoTask.FirstOrDefaultAsync();
@@ -1543,14 +1558,14 @@ namespace Prepedido
                 {
                     lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
                         Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': produto (" + item.Fabricante + ")" +
-                        item.NumProduto + " não possui regra associada");
+                        item.Produto + " não possui regra associada");
                 }
                 else
                 {
                     if (regra.Id_wms_regra_cd == 0)
                         lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
                             Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': produto (" + item.Fabricante + ")" +
-                            item.NumProduto + " não está associado a nenhuma regra");
+                            item.Produto + " não está associado a nenhuma regra");
                     else
                     {
                         var wmsRegraTask = from c in db.TwmsRegraCds
@@ -1561,12 +1576,12 @@ namespace Prepedido
                         if (wmsRegra == null)
                             lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
                                 Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': regra associada ao produto (" + item.Fabricante + ")" +
-                                item.NumProduto + " não foi localizada no banco de dados (Id=" + regra.Id_wms_regra_cd + ")");
+                                item.Produto + " não foi localizada no banco de dados (Id=" + regra.Id_wms_regra_cd + ")");
                         else
                         {
                             RegrasBll itemRegra = new RegrasBll();
                             itemRegra.Fabricante = item.Fabricante;
-                            itemRegra.Produto = item.NumProduto;
+                            itemRegra.Produto = item.Produto;
 
                             itemRegra.TwmsRegraCd = new Produto.RegrasCrtlEstoque.t_WMS_REGRA_CD
                             {
@@ -1587,7 +1602,7 @@ namespace Prepedido
                                 itemRegra.St_Regra = false;
                                 lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
                                     Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': regra associada ao produto (" + item.Fabricante + ")" +
-                                    item.NumProduto + " não está cadastrada para a UF '" + prePedido.DadosCliente.Uf + "' (Id=" + regra.Id_wms_regra_cd + ")");
+                                    item.Produto + " não está cadastrada para a UF '" + prePedido.DadosCliente.Uf + "' (Id=" + regra.Id_wms_regra_cd + ")");
                             }
                             else
                             {
@@ -1615,7 +1630,7 @@ namespace Prepedido
                                     itemRegra.St_Regra = false;
                                     lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
                                         Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': regra associada ao produto (" + item.Fabricante + ")" +
-                                        item.NumProduto + " não está cadastrada para a UF '" + prePedido.DadosCliente.Uf + "' (Id=" + regra.Id_wms_regra_cd + ")");
+                                        item.Produto + " não está cadastrada para a UF '" + prePedido.DadosCliente.Uf + "' (Id=" + regra.Id_wms_regra_cd + ")");
                                 }
                                 else
                                 {
@@ -1633,7 +1648,7 @@ namespace Prepedido
                                         itemRegra.St_Regra = false;
                                         lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
                                             Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': regra associada ao produto (" + item.Fabricante + ")" +
-                                            item.NumProduto + " não especifica nenhum CD para aguardar produtos sem presença no estoque (Id=" + regra.Id_wms_regra_cd + ")");
+                                            item.Produto + " não especifica nenhum CD para aguardar produtos sem presença no estoque (Id=" + regra.Id_wms_regra_cd + ")");
                                     }
                                     else
                                     {
@@ -1649,7 +1664,7 @@ namespace Prepedido
                                                 itemRegra.St_Regra = false;
                                                 lstErros.Add("Falha na regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
                                                     Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': regra associada ao produto (" + item.Fabricante +
-                                                    ")" + item.NumProduto + " especifica um CD para aguardar produtos sem presença no estoque que não está habilitado " +
+                                                    ")" + item.Produto + " especifica um CD para aguardar produtos sem presença no estoque que não está habilitado " +
                                                     "(Id=" + regra.Id_wms_regra_cd + ")");
                                             }
                                         }
@@ -1664,7 +1679,7 @@ namespace Prepedido
                                             itemRegra.St_Regra = false;
                                             lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
                                                 Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': regra associada ao produto (" + item.Fabricante + ")" +
-                                                item.NumProduto + " não especifica nenhum CD para consumo do estoque (Id=" + regra.Id_wms_regra_cd + ")");
+                                                item.Produto + " não especifica nenhum CD para consumo do estoque (Id=" + regra.Id_wms_regra_cd + ")");
                                         }
                                         else
                                         {
@@ -1702,7 +1717,7 @@ namespace Prepedido
                                                     if (i.St_inativo == 1)
                                                         lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
                                                             Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': regra associada ao produto (" +
-                                                            item.Fabricante + ")" + item.NumProduto + " especifica o CD '" + Util.ObterApelidoEmpresaNfeEmitentes(wmsRegraCdXUfXPessoa.Spe_id_nfe_emitente, contextoProvider) +
+                                                            item.Fabricante + ")" + item.Produto + " especifica o CD '" + Util.ObterApelidoEmpresaNfeEmitentes(wmsRegraCdXUfXPessoa.Spe_id_nfe_emitente, contextoProvider) +
                                                             "' para alocação de produtos sem presença no estoque, sendo que este CD está desativado para " +
                                                             "processar produtos disponíveis (Id=" + regra.Id_wms_regra_cd + ")");
                                                 }
@@ -1811,14 +1826,14 @@ namespace Prepedido
                 TorcamentoItem item = new TorcamentoItem
                 {
                     Orcamento = prepedido.NumeroPrePedido,
-                    Produto = p.NumProduto,
+                    Produto = p.Produto,
                     Fabricante = UtilsGlobais.Util.Normaliza_Codigo(p.Fabricante, Constantes.TAM_MIN_FABRICANTE),
                     Qtde = p.Qtde,
-                    Preco_Venda = Math.Round(p.VlUnitario, 2),
-                    Preco_NF = prepedido.PermiteRAStatus == 1 ? Math.Round((decimal)p.Preco_Lista, 2) : Math.Round(p.VlUnitario, 2),
+                    Preco_Venda = Math.Round(p.Preco_Venda, 2),
+                    Preco_NF = prepedido.PermiteRAStatus == 1 ? Math.Round((decimal)p.Preco_NF, 2) : Math.Round(p.Preco_Venda, 2),
                     Obs = p.Obs == null ? "" : p.Obs,
-                    Desc_Dado = p.Desconto,
-                    Preco_Lista = Math.Round(p.VlLista, 2),
+                    Desc_Dado = p.Desc_Dado,
+                    Preco_Lista = Math.Round(p.Preco_Lista, 2),
                     CustoFinancFornecCoeficiente = 1
                 };
                 lstOrcamentoItem.Add(item);
@@ -1841,14 +1856,14 @@ namespace Prepedido
                         TorcamentoItem item = new TorcamentoItem
                         {
                             Orcamento = prepedido.NumeroPrePedido,
-                            Produto = p.NumProduto,
+                            Produto = p.Produto,
                             Fabricante = UtilsGlobais.Util.Normaliza_Codigo(p.Fabricante, Constantes.TAM_MIN_FABRICANTE),
                             Qtde = p.Qtde,
-                            Preco_Venda = Math.Round(p.VlUnitario, 2),
-                            Preco_NF = prepedido.PermiteRAStatus == 1 ? Math.Round((decimal)p.Preco_Lista, 2) : Math.Round(p.VlUnitario, 2),
+                            Preco_Venda = Math.Round(p.Preco_Venda, 2),
+                            Preco_NF = prepedido.PermiteRAStatus == 1 ? Math.Round((decimal)p.Preco_NF, 2) : Math.Round(p.Preco_Venda, 2),
                             Obs = p.Obs == null ? "" : p.Obs,
-                            Desc_Dado = p.Desconto,
-                            Preco_Lista = Math.Round(p.VlLista, 2),
+                            Desc_Dado = p.Desc_Dado,
+                            Preco_Lista = Math.Round(p.Preco_Lista, 2),
                             CustoFinancFornecCoeficiente = percCustoFinanFornec.Coeficiente
                         };
                         lstOrcamentoItem.Add(item);
@@ -1902,7 +1917,7 @@ namespace Prepedido
         {
             string sufixoIdOrcamento = Constantes.SUFIXO_ID_ORCAMENTO;
 
-            var nsuTask = await Util.GerarNsu(dbgravacao, Constantes.NSU_ORCAMENTO, contextoProvider);
+            var nsuTask = await Util.GerarNsu(dbgravacao, Constantes.NSU_ORCAMENTO);
             string nsu = nsuTask.ToString();
 
             int ndescarte = nsu.Length - Constantes.TAM_MIN_NUM_ORCAMENTO;

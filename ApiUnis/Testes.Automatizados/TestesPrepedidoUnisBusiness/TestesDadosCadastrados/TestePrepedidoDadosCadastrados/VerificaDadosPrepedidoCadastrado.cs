@@ -19,17 +19,14 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
     {
         private readonly PrePedidoUnisBll prepedidoUnisBll;
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
-        private readonly InicializarBancoGeral inicializarBanco;
         private readonly ITestOutputHelper output;
-        private readonly ClienteBll clienteBll;
-        private readonly ClienteUnisBll clienteUnisBll;
         public VerificaDadosPrepedidoCadastrado(PrePedidoUnisBll prepedidoUnisBll, InfraBanco.ContextoBdProvider contextoProvider,
-            InicializarBancoGeral inicializarBanco, ITestOutputHelper output, ClienteBll clienteBll, ClienteUnisBll clienteUnisBll)
+            InicializarBancoGeral inicializarBanco, ITestOutputHelper output, ClienteUnisBll clienteUnisBll)
         {
             this.prepedidoUnisBll = prepedidoUnisBll;
             this.contextoProvider = contextoProvider;
-            this.inicializarBanco = inicializarBanco;
-            this.clienteUnisBll = clienteUnisBll;
+            inicializarBanco.GarantirInicializado();
+            this.output = output;
 
             var cliente = InicializarClienteDados.ClienteNaoCadastradoPF();
             cliente.DadosCliente.Cnpj_Cpf = DadosPrepedidoUnisBll.PrepedidoParceladoCartao1vez().Cnpj_Cpf;
@@ -73,9 +70,9 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
             prePedido.Indicador_Orcamentista = "Apelido_sem_ra";
             prePedido.PermiteRAStatus = false;
             prePedido.ListaProdutos[0].Preco_NF = 652.71m;
-            prePedido.ListaProdutos[0].Preco_Lista = 652.71m;
+            //prePedido.ListaProdutos[0].Preco_Lista = 652.71m;
             prePedido.ListaProdutos[1].Preco_NF = 979.06m;
-            prePedido.ListaProdutos[1].Preco_Lista = 979.06m;
+            //prePedido.ListaProdutos[1].Preco_Lista = 979.06m;
 
             res = prepedidoUnisBll.CadastrarPrepedidoUnis(prePedido).Result;
             if (res.ListaErros.Count == 0)
@@ -243,7 +240,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
                            select c).FirstOrDefault();
 
                 Assert.Equal((2 * 687.11m) + (2 * 1030.66m), ret.Vl_Total);
-                Assert.Equal((2 * 694.05m) + (2 * 1041.07m), ret.Vl_Total_NF);
+                Assert.Equal((2 * 687.11m) + (2 * 1030.66m), ret.Vl_Total_NF);
                 Assert.Equal(0m, ret.Vl_Total_RA);
             }
             else

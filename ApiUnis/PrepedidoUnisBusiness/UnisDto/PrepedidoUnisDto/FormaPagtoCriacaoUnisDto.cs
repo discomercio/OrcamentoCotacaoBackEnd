@@ -281,5 +281,39 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
 
             return ret;
         }
+
+        public static Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados FormaPagtoCriacaoDadosDeFormaPagtoCriacaoUnisDto(FormaPagtoCriacaoUnisDto fpCriacaoUnis)
+        {
+            var ret = new Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados()
+            {
+                Qtde_Parcelas = fpCriacaoUnis.CustoFinancFornecQtdeParcelas,
+                Rb_forma_pagto = fpCriacaoUnis.Tipo_Parcelamento.ToString(),
+                Op_av_forma_pagto = fpCriacaoUnis.Op_av_forma_pagto,
+                Op_pu_forma_pagto = fpCriacaoUnis.Op_pu_forma_pagto,
+                C_pu_valor = fpCriacaoUnis.C_pu_valor,
+                C_pu_vencto_apos = fpCriacaoUnis.C_pu_vencto_apos,
+                C_pc_qtde = fpCriacaoUnis.C_pc_qtde,
+                C_pc_valor = fpCriacaoUnis.C_pc_valor,
+                C_pc_maquineta_qtde = fpCriacaoUnis.C_pc_maquineta_qtde,
+                C_pc_maquineta_valor = fpCriacaoUnis.C_pc_maquineta_valor,
+                Op_pce_entrada_forma_pagto = fpCriacaoUnis.Op_pce_entrada_forma_pagto,
+                C_pce_entrada_valor = fpCriacaoUnis.C_pce_entrada_valor,
+                Op_pce_prestacao_forma_pagto = fpCriacaoUnis.Op_pce_prestacao_forma_pagto,
+                C_pce_prestacao_qtde = fpCriacaoUnis.C_pce_prestacao_qtde,
+                C_pce_prestacao_valor = fpCriacaoUnis.C_pce_prestacao_valor,
+                C_pce_prestacao_periodo = fpCriacaoUnis.C_pce_prestacao_periodo,
+                Op_pse_prim_prest_forma_pagto = fpCriacaoUnis.Op_pse_prim_prest_forma_pagto,
+                C_pse_prim_prest_valor = fpCriacaoUnis.C_pse_prim_prest_valor,
+                C_pse_prim_prest_apos = fpCriacaoUnis.C_pse_prim_prest_apos,
+                Op_pse_demais_prest_forma_pagto = fpCriacaoUnis.Op_pse_demais_prest_forma_pagto,
+                C_pse_demais_prest_qtde = fpCriacaoUnis.C_pse_demais_prest_qtde,
+                C_pse_demais_prest_valor = fpCriacaoUnis.C_pse_demais_prest_valor,
+                C_pse_demais_prest_periodo = fpCriacaoUnis.C_pse_demais_prest_periodo,
+                C_forma_pagto = fpCriacaoUnis.C_forma_pagto,
+                CustoFinancFornecTipoParcelamento = fpCriacaoUnis.CustoFinancFornecTipoParcelamento
+            };
+
+            return ret;
+        }
     }
 }

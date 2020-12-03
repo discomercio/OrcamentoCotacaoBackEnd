@@ -1,9 +1,14 @@
 ﻿@ignore
-@Especificacao/Pedido
+@Especificacao.Pedido.Passo20.EnderecoEntrega
 Feature: Pedido de cliente PJ com endereço de entrega PJ
-em loja/ClienteEdita.asp:
-var EndEtg_tipo_pessoa = $('input[name="EndEtg_tipo_pessoa"]:checked').val();
-e linhas para baixo
+#em loja/ClienteEdita.asp:
+#var EndEtg_tipo_pessoa = $('input[name="EndEtg_tipo_pessoa"]:checked').val();
+#e linhas para baixo
+#loja/PedidoNovoConsiste.asp
+#                    if EndEtg_cnpj_cpf = "" or not cnpj_ok(EndEtg_cnpj_cpf) then
+#....até....
+#				        alerta="Endereço de entrega: preencha a IE (Inscrição Estadual) com um número válido!!" & _
+
 
 Background: Pedido base
 	Given Pedido base cliente PJ com endereço de entrega PJ
@@ -11,7 +16,6 @@ Background: Pedido base
 Scenario: Configuração
 	Given Nome deste item "Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj.EntregaPj"
 	Given Implementado em "Especificacao.Pedido.Pedido"
-	And Fim da configuração
 
 Scenario: EndEtg_cnpj_cpf_PJ
 	Given Pedido base cliente PJ com endereço de entrega PJ

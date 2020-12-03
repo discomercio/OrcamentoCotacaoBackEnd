@@ -1,4 +1,5 @@
-﻿using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
+﻿using InfraBanco.Constantes;
+using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,7 +17,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         /// </summary>
         [Required]
         public short St_Entrega_Imediata { get; set; }
-        
+
         public DateTime? PrevisaoEntregaData { get; set; }
 
         /// <summary>
@@ -47,14 +48,29 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
             return ret;
         }
 
-        public static DetalhesDtoPrepedido DetalhesPrePedidoDtoDeDetalhesPrePedidoUnisDto(DetalhesPrePedidoUnisDto  detalhesPrePedidoUnisDto)
+        public static DetalhesDtoPrepedido DetalhesPrePedidoDtoDeDetalhesPrePedidoUnisDto(DetalhesPrePedidoUnisDto detalhesPrePedidoUnisDto)
         {
             var ret = new DetalhesDtoPrepedido()
             {
                 EntregaImediata = detalhesPrePedidoUnisDto.St_Entrega_Imediata.ToString(),
                 EntregaImediataData = detalhesPrePedidoUnisDto.PrevisaoEntregaData,
-                BemDeUso_Consumo = detalhesPrePedidoUnisDto.BemDeUso_Consumo.ToString(),
-                InstaladorInstala = detalhesPrePedidoUnisDto.InstaladorInstala.ToString(),
+                BemDeUso_Consumo = detalhesPrePedidoUnisDto.BemDeUso_Consumo ==
+                    (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_NAO ? "NÃO" : "SIM",
+                InstaladorInstala = detalhesPrePedidoUnisDto.InstaladorInstala ==
+                    (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_NAO ? "NÃO" : "SIM",
+                Observacoes = detalhesPrePedidoUnisDto.Obs_1
+            };
+            return ret;
+        }
+
+        public static Prepedido.Dados.DetalhesPrepedido.DetalhesPrepedidoDados DetalhesPrepedidoDadosDeDetalhesPrePedidoUnisDto(DetalhesPrePedidoUnisDto detalhesPrePedidoUnisDto)
+        {
+            var ret = new Prepedido.Dados.DetalhesPrepedido.DetalhesPrepedidoDados()
+            {
+                EntregaImediata = detalhesPrePedidoUnisDto.St_Entrega_Imediata.ToString(),
+                EntregaImediataData = detalhesPrePedidoUnisDto.PrevisaoEntregaData,
+                BemDeUso_Consumo = detalhesPrePedidoUnisDto.BemDeUso_Consumo,
+                InstaladorInstala = detalhesPrePedidoUnisDto.InstaladorInstala,
                 Observacoes = detalhesPrePedidoUnisDto.Obs_1
             };
             return ret;

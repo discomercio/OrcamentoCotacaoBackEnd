@@ -8,10 +8,12 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Configuration;
 using Loja.Bll.Util;
-using Loja.Modelos;
 using Microsoft.Extensions.Logging;
 using Loja.Bll.Dto.ClienteDto;
 using Loja.Bll.Dto.PedidoDto.DetalhesPedido;
+using InfraBanco.Modelos;
+using Microsoft.EntityFrameworkCore;
+using InfraBanco;
 
 #nullable enable
 
@@ -55,6 +57,21 @@ namespace Loja.Bll.Bll.AcessoBll
             {
                 CriarSessao_carregar_permissoes_banco(logger, clienteBll, this, usuarioAcessoBll, null, null, null).Wait();
             }
+
+            /*
+            a loja sempre é lida do banco?
+            A favor: 
+                - se tiver outra sessão aberta e a loja for alterada, ela é alterada para todo mundo
+            Contra:
+                - não podemos ter abas separadas em lojas separadas
+            if (usuarioAcessoBll != null)
+            {
+                var tusuario = usuarioAcessoBll.UsuarioCarregar(Usuario_atual).Result;
+                if (tusuario != null)
+                    Loja_atual_id = tusuario.SessionCtrlLoja;
+            }
+            */
+
         }
 
         private static async Task CriarSessao_carregar_permissoes_banco(ILogger<UsuarioLogado> logger, ClienteBll.ClienteBll clienteBll, UsuarioLogado usuarioLogadoParaLAterarSessao,
@@ -79,14 +96,17 @@ namespace Loja.Bll.Bll.AcessoBll
             //mais dados na session
             if (tusuario == null)
                 tusuario = await usuarioAcessoBll.UsuarioCarregar(usuarioLogadoParaLAterarSessao.Usuario_atual);
-            if (loja == null)
+            //primeiro carregarmos da sessão; se não existir, carregamos a default do usuário
+            if (String.IsNullOrEmpty(loja))
+                loja = tusuario.SessionCtrlLoja;
+            if (String.IsNullOrEmpty(loja))
                 loja = tusuario.Loja;
             if (loja_nome == null)
                 loja_nome = await usuarioAcessoBll.Loja_nome(loja);
 
             usuarioLogadoParaLAterarSessao.Loja_atual_id = loja;
             usuarioLogadoParaLAterarSessao.Usuario_nome_atual = tusuario.Nome;
-            usuarioLogadoParaLAterarSessao.Loja_nome_atual = loja_nome ?? "";
+            usuarioLogadoParaLAterarSessao.Loja_atual_nome = loja_nome ?? "";
             usuarioLogadoParaLAterarSessao.Vendedor_loja = tusuario.Vendedor_Loja != 0;
             usuarioLogadoParaLAterarSessao.Vendedor_externo = tusuario.Vendedor_Externo != 0;
 
@@ -175,7 +195,42 @@ namespace Loja.Bll.Bll.AcessoBll
             return Operacao_permitida_estatica(id_operacao, S_lista_operacoes_permitidas);
         }
 
+        #region Dados que ficam na tusuario
+        public async Task<string?> SessionCtrlTicket(InfraBanco.ContextoBdProvider contextoBdProvider)
+        {
+            await AtualizarInfsTusuario(contextoBdProvider);
+            return _sessionCtrlTicket;
+        }
 
+        public async Task<DateTime?> SessionCtrlDtHrLogon(InfraBanco.ContextoBdProvider contextoBdProvider)
+        {
+            await AtualizarInfsTusuario(contextoBdProvider);
+            return _sessionCtrlDtHrLogon;
+        }
+
+        private async Task AtualizarInfsTusuario(ContextoBdProvider contextoBdProvider)
+        {
+            if (_atualizarInfsTusuarioFeito)
+                return;
+            var dados = await (from u in contextoBdProvider.GetContextoLeitura().Tusuarios
+                               where u.Usuario.ToUpper().Trim() == Usuario_atual.ToUpper().Trim()
+                               select new { u.SessionCtrlTicket, u.SessionCtrlDtHrLogon }).FirstOrDefaultAsync();
+            if (dados != null)
+            {
+                _sessionCtrlTicket = dados.SessionCtrlTicket;
+                _sessionCtrlDtHrLogon = dados.SessionCtrlDtHrLogon;
+            }
+            _atualizarInfsTusuarioFeito = true;
+        }
+        private bool _atualizarInfsTusuarioFeito = false;
+        private string? _sessionCtrlTicket = null;
+        private DateTime? _sessionCtrlDtHrLogon = null;
+        #endregion
+
+        public void LimparCacheInfsTusuario()
+        {
+            _atualizarInfsTusuarioFeito = false;
+        }
 
         //o que colocamos na session
         private static class StringsSession
@@ -247,11 +302,12 @@ namespace Loja.Bll.Bll.AcessoBll
             }
         }
 
-        public bool LojaAtivaAlterar(string novaloja)
+        public bool Loja_atual_alterar(string novaloja, UsuarioAcessoBll usuarioAcessoBll)
         {
             //verifica se pode ir para essa loja
             if (!LojasDisponiveis.Any(r => r.Id == novaloja))
                 return false;
+            usuarioAcessoBll.Loja_troca_rapida_gravar_tusuario(Usuario_atual, novaloja).Wait();
             Loja_atual_id = novaloja;
             return true;
         }
@@ -306,7 +362,7 @@ namespace Loja.Bll.Bll.AcessoBll
             get => httpContextSession.GetString(StringsSession.Usuario_nome_atual) ?? "";
             private set => httpContextSession.SetString(StringsSession.Usuario_nome_atual, value);
         }
-        public string Loja_nome_atual
+        public string Loja_atual_nome
         {
             get => httpContextSession.GetString(StringsSession.Loja_nome_atual) ?? "";
             private set => httpContextSession.SetString(StringsSession.Loja_nome_atual, value);

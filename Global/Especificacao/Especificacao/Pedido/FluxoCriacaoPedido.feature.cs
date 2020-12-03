@@ -62,8 +62,8 @@ namespace Especificacao.Especificacao.Pedido
                     "es e alterar valores e forma de pagamento\r\n5 - Passo50: Informar observações (en" +
                     "trega imediata, instalador instala, etc) \r\n6 - Passo60: Salvar o pedido\r\n--- \r\nF" +
                     "luxo na ApaiMagento:\r\n1 - Validar o pedido\r\n2 - se o cliente não existir, cadast" +
-                    "rar o cliente\r\n3 - salvar o pedido\r\n--- \r\nFluxo na API:\r\nSalvar o pedido\r\n\tEnvia" +
-                    "r todos os dados para cadastrar o pedido", ProgrammingLanguage.CSharp, new string[] {
+                    "rar o cliente\r\n3 - salvar o pedido\r\n--- \r\nFluxo na API:\r\nSalvar o pedido (Passo6" +
+                    "0/Gravacao)\r\n\tEnviar todos os dados para cadastrar o pedido", ProgrammingLanguage.CSharp, new string[] {
                         "Especificacao.Pedido.FluxoCriacaoPedido"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -104,14 +104,14 @@ namespace Especificacao.Especificacao.Pedido
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Fluxo da criação do pedido")]
+        [Xunit.SkippableFactAttribute(DisplayName="Pedido criado com sucesso")]
         [Xunit.TraitAttribute("FeatureTitle", "Fluxo da criação do pedido")]
-        [Xunit.TraitAttribute("Description", "Fluxo da criação do pedido")]
-        public virtual void FluxoDaCriacaoDoPedido()
+        [Xunit.TraitAttribute("Description", "Pedido criado com sucesso")]
+        public virtual void PedidoCriadoComSucesso()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fluxo da criação do pedido", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pedido criado com sucesso", null, tagsOfScenario, argumentsOfScenario);
 #line 37
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -132,8 +132,11 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
+#line 38
+ testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
 #line 39
- testRunner.When("Tudo certo, só para aparecer na lista", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

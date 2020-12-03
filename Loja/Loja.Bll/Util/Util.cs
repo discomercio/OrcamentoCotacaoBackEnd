@@ -1,18 +1,18 @@
-﻿using Loja.Data;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Loja.Modelos;
 using System.Reflection;
 using System.ComponentModel.DataAnnotations.Schema;
 using Loja.Bll.RegrasCtrlEstoque;
 using Loja.Bll.Dto.ProdutoDto;
 using Loja.Bll.Dto.PedidoDto.DetalhesPedido;
-using Loja.Modelo;
 using System.Globalization;
+using InfraBanco.Modelos;
+using InfraBanco;
 
 namespace Loja.Bll.Util
 {
@@ -88,87 +88,17 @@ namespace Loja.Bll.Util
             return retorno;
         }
 
-        public static async Task<bool> IsActivatedFlagPedidoUsarMemorizacaoCompletaEnderecos(LojaContextoBdProvider contexto)
+        public static async Task<bool> IsActivatedFlagPedidoUsarMemorizacaoCompletaEnderecos(InfraBanco.ContextoBdProvider contexto)
         {
             bool retorno = false;
 
             var db = contexto.GetContextoLeitura();
 
-            Tparametro tparametro = await BuscarRegistroParametro(Constantes.Constantes.ID_PARAMETRO_Flag_Pedido_MemorizacaoCompletaEnderecos,
-                contexto.GetContextoLeitura());
+            InfraBanco.Modelos.Tparametro tparametro = await BuscarRegistroParametro(Constantes.Constantes.ID_PARAMETRO_Flag_Pedido_MemorizacaoCompletaEnderecos,
+                db);
 
             if (tparametro.Campo_inteiro == 1)
                 retorno = true;
-
-            return retorno;
-        }
-
-        public static async Task<string> GerarNsu(LojaContextoBdGravacao dbgravacao, string id_nsu)
-        {
-            string retorno = "";
-            int n_nsu = -1;
-            string s = "0";
-            int asc;
-            char chr;
-
-            if (id_nsu == "")
-                retorno = "Não foi especificado o NSU a ser gerado!!";
-
-            for (int i = 0; i <= 100; i++)
-            {
-                var ret = from c in dbgravacao.Tcontroles
-                          where c.Id_Nsu == id_nsu
-                          select c;
-
-                var controle = await ret.FirstOrDefaultAsync();
-
-
-                if (!string.IsNullOrEmpty(controle.Nsu))
-                {
-                    if (controle.Seq_Anual != 0)
-                    {
-                        if (DateTime.Now.Year > controle.Dt_Ult_Atualizacao.Year)
-                        {
-                            s = Normaliza_Codigo(s, Constantes.Constantes.TAM_MAX_NSU);
-                            controle.Dt_Ult_Atualizacao = DateTime.Now;
-                            if (!String.IsNullOrEmpty(controle.Ano_Letra_Seq))
-                            {
-                                //Precisa revisar essa parte, pois lendo a doc do BD e analisando os dados na base não bate
-                                asc = int.Parse(controle.Ano_Letra_Seq) + controle.Ano_Letra_Step;
-                                chr = (char)asc;
-                            }
-                        }
-                    }
-                    n_nsu = int.Parse(controle.Nsu);
-                }
-                if (n_nsu < 0)
-                {
-                    retorno = "O NSU gerado é inválido!!";
-                }
-                n_nsu += 1;
-                s = Convert.ToString(n_nsu);
-                s = Normaliza_Codigo(s, Constantes.Constantes.TAM_MAX_NSU);
-                if (s.Length == 12)
-                {
-                    i = 101;
-                    //para salvar o novo numero
-                    controle.Nsu = s;
-                    if (DateTime.Now > controle.Dt_Ult_Atualizacao)
-                        controle.Dt_Ult_Atualizacao = DateTime.Now;
-
-                    retorno = controle.Nsu;
-
-                    try
-                    {
-                        dbgravacao.Update(controle);
-                        await dbgravacao.SaveChangesAsync();
-                    }
-                    catch (Exception ex)
-                    {
-                        retorno = "Não foi possível gerar o NSU, pois ocorreu o seguinte erro: " + ex.HResult + ":" + ex.Message;
-                    }
-                }
-            }
 
             return retorno;
         }
@@ -235,7 +165,7 @@ namespace Loja.Bll.Util
             return retorno;
         }
 
-        public static async Task<IEnumerable<string>> BuscarListaOrcamentistaEIndicador(LojaContextoBdProvider contexto,
+        public static async Task<IEnumerable<string>> BuscarListaOrcamentistaEIndicador(InfraBanco.ContextoBdProvider contexto,
             string indicador, string usuarioSistema, string loja)
         {
             //paraTeste
@@ -293,7 +223,7 @@ namespace Loja.Bll.Util
             return lstOrcaIndica;
         }
 
-        public static async Task<IEnumerable<string>> BuscarOrcamentistaEIndicadorParaProdutos(LojaContextoBdProvider contexto,
+        public static async Task<IEnumerable<string>> BuscarOrcamentistaEIndicadorParaProdutos(InfraBanco.ContextoBdProvider contexto,
             string usuarioSistema, string lstOperacoesPermitidas, string loja)
         {
             //paraTeste
@@ -365,7 +295,7 @@ namespace Loja.Bll.Util
             return retorno;
         }
 
-        public static async Task<IEnumerable<TorcamentistaEindicador>> BuscarOrcamentistaEIndicadorListaCompleta(LojaContextoBdProvider contexto,
+        public static async Task<IEnumerable<TorcamentistaEindicador>> BuscarOrcamentistaEIndicadorListaCompleta(InfraBanco.ContextoBdProvider contexto,
             string usuarioSistema, string lstOperacoesPermitidas, string loja)
         {
             List<TorcamentistaEindicador> lstOrcaIndica = new List<TorcamentistaEindicador>();
@@ -570,8 +500,8 @@ namespace Loja.Bll.Util
             return log;
         }
 
-        public static bool GravaLog(LojaContextoBdGravacao dbgravacao, string apelido, string loja, string pedido, string id_cliente,
-            string operação, string log, LojaContextoBdProvider contexto)
+        public static bool GravaLog(InfraBanco.ContextoBdGravacao dbgravacao, string apelido, string loja, string pedido, string id_cliente,
+            string operação, string log, InfraBanco.ContextoBdProvider contexto)
         {
             if (apelido == null)
                 return false;
@@ -667,7 +597,7 @@ namespace Loja.Bll.Util
         }
 
         public static async Task ObterCtrlEstoqueProdutoRegra_Teste(List<string> lstErros,
-            List<RegrasBll> lstRegrasCrtlEstoque, string uf, string cliente_regra, ILojaContextoBd db)
+            List<RegrasBll> lstRegrasCrtlEstoque, string uf, string cliente_regra, InfraBanco.ContextoBd db)
         {
             var dbTwmsRegraCdXUfXPessoaXCds = (from c in db.TwmsRegraCdXUfXPessoaXCds
                                                join nfe in db.TnfEmitentes on c.Id_nfe_emitente equals nfe.Id
@@ -745,7 +675,7 @@ namespace Loja.Bll.Util
             }
         }
 
-        public static async Task<string> ObterApelidoEmpresaNfeEmitentes(int id_nfe_emitente, ILojaContextoBd db)
+        public static async Task<string> ObterApelidoEmpresaNfeEmitentes(int id_nfe_emitente, InfraBanco.ContextoBdProvider contexto)
         {
             string apelidoEmpresa = "";
 
@@ -754,6 +684,8 @@ namespace Loja.Bll.Util
                 apelidoEmpresa = "Cliente";
                 return apelidoEmpresa;
             }
+
+            var db = contexto.GetContextoLeitura();
 
             var apelidoTask = from c in db.TnfEmitentes
                               where c.Id == id_nfe_emitente
@@ -793,7 +725,7 @@ namespace Loja.Bll.Util
         }
 
         public static void ObterDisponibilidadeEstoque(List<RegrasBll> lstRegrasCrtlEstoque, List<ProdutoDto> lst_produtos,
-            List<string> lstErros, LojaContextoBdProvider contextoProvider, int id_nfe_emitente_selecao_manual)
+            List<string> lstErros, InfraBanco.ContextoBdProvider contextoProvider, int id_nfe_emitente_selecao_manual)
         {
             id_nfe_emitente_selecao_manual = 0;
 
@@ -837,7 +769,7 @@ namespace Loja.Bll.Util
         }
 
         public static async Task<bool> EstoqueVerificaDisponibilidadeIntegralV2(t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD regra,
-            PedidoProdutosDtoPedido produto, ILojaContextoBd contextoBd)
+            PedidoProdutosDtoPedido produto, InfraBanco.ContextoBdProvider contextoBd)
         {
             bool retorno = false;
             if (regra.Estoque_Qtde_Solicitado > 0 && regra.Estoque_Produto != "")
@@ -849,7 +781,7 @@ namespace Loja.Bll.Util
             return retorno;
         }
 
-        public static async Task<float> ObterPercentualDesagioRAIndicador(string indicador, LojaContextoBdProvider contexto)
+        public static async Task<float> ObterPercentualDesagioRAIndicador(string indicador, InfraBanco.ContextoBdProvider contexto)
         {
             var db = contexto.GetContextoLeitura();
             var percDesagioIndicadorRATask = (from c in db.TorcamentistaEindicadors
@@ -860,7 +792,7 @@ namespace Loja.Bll.Util
 
             return percDesagioIndicadorRA;
         }
-        public static async Task<decimal> ObterLimiteMensalComprasDoIndicador(string indicador, LojaContextoBdProvider contexto)
+        public static async Task<decimal> ObterLimiteMensalComprasDoIndicador(string indicador, InfraBanco.ContextoBdProvider contexto)
         {
             var db = contexto.GetContextoLeitura();
             var vlLimiteMensalCompraTask = (from c in db.TorcamentistaEindicadors
@@ -872,7 +804,7 @@ namespace Loja.Bll.Util
             return vlLimiteMensalCompra;
         }
 
-        public static async Task<decimal> CalcularLimiteMensalConsumidoDoIndicador(string indicador, DateTime data, LojaContextoBdProvider contexto)
+        public static async Task<decimal> CalcularLimiteMensalConsumidoDoIndicador(string indicador, DateTime data, InfraBanco.ContextoBdProvider contexto)
         {
             //buscar data por ano-mes-dia]
             //SELECT ISNULL(SUM(qtde* preco_venda),0) AS vl_total
@@ -919,7 +851,7 @@ namespace Loja.Bll.Util
             return vlTotalConsumidoRetorno;
         }
 
-        public static async Task<float> VerificarSemDesagioRA(LojaContextoBdProvider contextoProvider)
+        public static async Task<float> VerificarSemDesagioRA(InfraBanco.ContextoBdProvider contextoProvider)
         {//busca o percentual de RA sem desagio ID_PARAM_PERC_LIMITE_RA_SEM_DESAGIO            
             string semDesagio = await LeParametroControle(
                 Constantes.Constantes.ID_PARAM_PERC_LIMITE_RA_SEM_DESAGIO, contextoProvider);
@@ -967,9 +899,9 @@ namespace Loja.Bll.Util
 
         //alterando o metodo para recebee o Produto e o cd selecionado
         private static async Task<t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD> BuscarListaQtdeEstoque(t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD regra,
-            ILojaContextoBd contextoBd)
+            InfraBanco.ContextoBdProvider contextoBd)
         {
-            var db = contextoBd;
+            var db = contextoBd.GetContextoLeitura();
             List<ProdutosEstoqueDto> produtosEstoqueDtos = new List<ProdutosEstoqueDto>();
             int qtde = 0;
             int qtdeUtilizada = 0;
@@ -1038,7 +970,7 @@ namespace Loja.Bll.Util
         //    return produtosEstoqueDtos;
         //}
 
-        public static async Task VerificarEstoqueComSubQuery(List<RegrasBll> lst_cliente_regra, LojaContextoBdProvider contextoProvider)
+        public static async Task VerificarEstoqueComSubQuery(List<RegrasBll> lst_cliente_regra, InfraBanco.ContextoBdProvider contextoProvider)
         {
             var lst2 = await BuscarListaQtdeEstoqueComSubquery(contextoProvider);
 
@@ -1066,7 +998,7 @@ namespace Loja.Bll.Util
             }
         }
 
-        private static async Task<IEnumerable<ProdutosEstoqueDto>> BuscarListaQtdeEstoqueComSubquery(LojaContextoBdProvider contextoProvider)
+        private static async Task<IEnumerable<ProdutosEstoqueDto>> BuscarListaQtdeEstoqueComSubquery(InfraBanco.ContextoBdProvider contextoProvider)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -1090,7 +1022,7 @@ namespace Loja.Bll.Util
             return produtosEstoqueDtos;
         }
 
-        public static async Task<bool> IsActivatedFlagPedidoUsarMemorizacaoCompletaEnderecos(ILojaContextoBd contexto)
+        public static async Task<bool> IsActivatedFlagPedidoUsarMemorizacaoCompletaEnderecos(InfraBanco.ContextoBd contexto)
         {
             bool retorno = false;
 
@@ -1114,7 +1046,7 @@ namespace Loja.Bll.Util
             return hora + minuto;
         }
 
-        public static async Task<Tparametro> BuscarRegistroParametro(string id, ILojaContextoBd contexto)
+        public static async Task<Tparametro> BuscarRegistroParametro(string id, InfraBanco.ContextoBd contexto)
         {
             var db = contexto;
 
@@ -1127,7 +1059,7 @@ namespace Loja.Bll.Util
             return parametro;
         }
 
-        public static async Task<IEnumerable<Tparametro>> BuscarRegistroParametroLista(string id, LojaContextoBdProvider contexto)
+        public static async Task<IEnumerable<Tparametro>> BuscarRegistroParametroLista(string id, InfraBanco.ContextoBdProvider contexto)
         {
             var db = contexto.GetContextoLeitura();
 
@@ -1147,7 +1079,7 @@ namespace Loja.Bll.Util
             return data;
         }
 
-        public static async Task<string> ObterDescricao_Cod(string grupo, string cod, LojaContextoBdProvider contextoProvider)
+        public static async Task<string> ObterDescricao_Cod(string grupo, string cod, ContextoBdProvider contextoProvider)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -1195,7 +1127,7 @@ namespace Loja.Bll.Util
         }
 
         public static async Task<IEnumerable<Tdesconto>> BuscarListaIndicadoresLoja(string cliente_id, string loja,
-            LojaContextoBdProvider contexto)
+            InfraBanco.ContextoBdProvider contexto)
         {
             var db = contexto.GetContextoLeitura();
 
@@ -1210,7 +1142,7 @@ namespace Loja.Bll.Util
             return lst_tdesconto;
         }
 
-        public static async Task<string> LeParametroControle(string id, LojaContextoBdProvider contextoBdProvider)
+        public static async Task<string> LeParametroControle(string id, InfraBanco.ContextoBdProvider contextoBdProvider)
         {
             var db = contextoBdProvider.GetContextoLeitura();
 
@@ -1223,7 +1155,7 @@ namespace Loja.Bll.Util
 
         }
 
-        public static async Task<int> Fin_gera_nsu(string id_nsu, List<string> lstErros, LojaContextoBdGravacao dbgravacao)
+        public static async Task<int> Fin_gera_nsu(string id_nsu, List<string> lstErros, InfraBanco.ContextoBdGravacao dbgravacao)
         {
             int intRetorno = 0;
             //int intRecordsAffected = 0;
@@ -1283,7 +1215,7 @@ namespace Loja.Bll.Util
             return tfincontroleEditando.Nsu;
         }
 
-        public static async Task<TtransportadoraCep> ObterTransportadoraPeloCep(string cep, ILojaContextoBd contextoDb)
+        public static async Task<TtransportadoraCep> ObterTransportadoraPeloCep(string cep, InfraBanco.ContextoBd contextoDb)
         {
             cep = cep.Replace("-", "").Trim();
 
@@ -1310,34 +1242,35 @@ namespace Loja.Bll.Util
         
         public static async Task<IEnumerable<RegrasBll>> Buscar_IdCDselecionado(PedidoProdutosDtoPedido produto, Tcliente cliente,
             int id_nfe_emitente_selecao_manual,
-            ProdutoValidadoComEstoqueDto prodValidadoEstoque, ILojaContextoBd contextoBd)
+            ProdutoValidadoComEstoqueDto prodValidadoEstoque, InfraBanco.ContextoBdProvider contexto)
         {
             string cliente_regra = MultiCdRegraDeterminaPessoa(cliente.Tipo,
                 cliente.Contribuinte_Icms_Status, cliente.Produtor_Rural_Status);
 
+            var db = contexto.GetContextoLeitura();
 
             List<RegrasBll> regraCrtlEstoque = (await
                 Loja.Bll.ProdutoBll.ProdutoBll.ObterCtrlEstoqueProdutoRegraParaUMProduto(
-                produto, cliente, prodValidadoEstoque.ListaErros, contextoBd)).ToList();
+                produto, cliente, prodValidadoEstoque.ListaErros, contexto)).ToList();
 
             await ObterCtrlEstoqueProdutoRegra_Teste(prodValidadoEstoque.ListaErros, regraCrtlEstoque, cliente.Uf,
-                cliente_regra, contextoBd);
+                cliente_regra, db);
 
             Loja.Bll.ProdutoBll.ProdutoBll.VerificarRegrasAssociadasParaUMProduto(regraCrtlEstoque,
                 prodValidadoEstoque.ListaErros, cliente, id_nfe_emitente_selecao_manual);
 
             if (id_nfe_emitente_selecao_manual != 0)
                 await Loja.Bll.ProdutoBll.ProdutoBll.VerificarCDHabilitadoTodasRegras(regraCrtlEstoque,
-                    id_nfe_emitente_selecao_manual, prodValidadoEstoque.ListaErros, contextoBd);
+                    id_nfe_emitente_selecao_manual, prodValidadoEstoque.ListaErros, contexto);
 
             await Loja.Bll.ProdutoBll.ProdutoBll.ObterDisponibilidadeEstoque(regraCrtlEstoque, produto,
-                prodValidadoEstoque.ListaErros, id_nfe_emitente_selecao_manual, contextoBd);
+                prodValidadoEstoque.ListaErros, id_nfe_emitente_selecao_manual, contexto);
 
             return regraCrtlEstoque;
         }
 
         public static async Task<TorcamentistaEindicador> BuscarOrcamentistaEIndicador(string indicador,
-            ILojaContextoBd contextoBd)
+            InfraBanco.ContextoBd contextoBd)
         {
             var db = contextoBd;
 
@@ -1400,7 +1333,7 @@ namespace Loja.Bll.Util
             string strProduto, short intQtdeSolicitada, short intQtdeAtendida, string strOperacao,
             string strCodEstoqueOrigem, string strCodEstoqueDestino, string strLojaEstoqueOrigem,
             string strLojaEstoqueDestino, string strPedidoEstoqueOrigem, string strPedidoEstoqueDestino,
-            string strDocumento, string strComplemento, string strIdOrdemServico, LojaContextoBdGravacao contexto)
+            string strDocumento, string strComplemento, string strIdOrdemServico, InfraBanco.ContextoBdGravacao contexto)
         {
 
             TestoqueLog testoqueLog = new TestoqueLog();

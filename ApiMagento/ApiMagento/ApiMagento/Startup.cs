@@ -70,18 +70,9 @@ namespace ApiMagento
                 c.IncludeXmlComments(xmlPath);
             });
 
+            global::ApiMagento.Startup.ConfigurarServicosComuns(services);
+
             //Bll's locais
-            services.AddTransient<AcessoMagentoBll, AcessoMagentoBll>();
-            services.AddTransient<PedidoMagentoBll, PedidoMagentoBll>();
-            services.AddTransient<Cep.CepBll, Cep.CepBll>();
-            services.AddTransient<Prepedido.PrepedidoBll, Prepedido.PrepedidoBll>();
-            services.AddTransient<Cliente.ClienteBll, Cliente.ClienteBll>();
-            services.AddTransient<Prepedido.FormaPagto.FormaPagtoBll, Prepedido.FormaPagto.FormaPagtoBll>();
-            services.AddTransient<Prepedido.FormaPagto.ValidacoesFormaPagtoBll, Prepedido.FormaPagto.ValidacoesFormaPagtoBll>();
-            services.AddTransient<Produto.CoeficienteBll, Produto.CoeficienteBll>();
-            services.AddTransient<Produto.ProdutoGeralBll, Produto.ProdutoGeralBll>();
-            services.AddTransient<Prepedido.ValidacoesPrepedidoBll, Prepedido.ValidacoesPrepedidoBll>();
-            services.AddTransient<Prepedido.MontarLogPrepedidoBll, Prepedido.MontarLogPrepedidoBll>();
             services.AddTransient<Cep.IBancoNFeMunicipio, Cep.BancoNFeMunicipio>();
 
             //Bll's Loja
@@ -91,14 +82,9 @@ namespace ApiMagento
             {
                 IConfiguration configuration = c.GetService<IConfiguration>();
                 var appSettingsSectionSingleton = configuration.GetSection("AppSettings");
-                var configuracaoApiUnis = appSettingsSectionSingleton.Get<ConfiguracaoApiMagento>();
-                return configuracaoApiUnis;
+                var configuracaoApiMagento = appSettingsSectionSingleton.Get<ConfiguracaoApiMagento>();
+                return configuracaoApiMagento;
             });
-
-            services.AddTransient<IServicoAutenticacaoApiMagento, ServicoAutenticacaoApiMagento>();
-            //como singleton para melhorar a performance
-            services.AddSingleton<MagentoBusiness.MagentoBll.AcessoBll.IServicoValidarTokenApiMagento, ServicoValidarTokenApiMagento>();
-            services.AddTransient<IServicoDecodificarTokenApiMagento, ServicoDecodificarTokenApiMagento>();
 
             //ContextoProvider
             services.AddTransient<InfraBanco.ContextoBdProvider, InfraBanco.ContextoBdProvider>();
@@ -186,6 +172,33 @@ namespace ApiMagento
 
             app.UseHttpsRedirection();
             app.UseMvc();
+        }
+
+        public static void ConfigurarServicosComuns(IServiceCollection services)
+        {
+            services.AddTransient<AcessoMagentoBll, AcessoMagentoBll>();
+            services.AddTransient<PedidoMagentoBll, PedidoMagentoBll>();
+
+            services.AddTransient<Cep.CepBll, Cep.CepBll>();
+            services.AddTransient<Prepedido.PrepedidoBll, Prepedido.PrepedidoBll>();
+            services.AddTransient<Cliente.ClienteBll, Cliente.ClienteBll>();
+            services.AddTransient<Prepedido.FormaPagto.FormaPagtoBll, Prepedido.FormaPagto.FormaPagtoBll>();
+            services.AddTransient<Prepedido.FormaPagto.ValidacoesFormaPagtoBll, Prepedido.FormaPagto.ValidacoesFormaPagtoBll>();
+            services.AddTransient<Produto.CoeficienteBll, Produto.CoeficienteBll>();
+            services.AddTransient<Produto.ProdutoGeralBll, Produto.ProdutoGeralBll>();
+            services.AddTransient<Prepedido.ValidacoesPrepedidoBll, Prepedido.ValidacoesPrepedidoBll>();
+            services.AddTransient<Prepedido.MontarLogPrepedidoBll, Prepedido.MontarLogPrepedidoBll>();
+            services.AddTransient<Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll, Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll>();
+            services.AddTransient<Pedido.EfetivaPedidoBll, Pedido.EfetivaPedidoBll>();
+            services.AddTransient<Pedido.MontarLogPedidoBll, Pedido.MontarLogPedidoBll>();
+            services.AddTransient<Pedido.PedidoCriacao, Pedido.PedidoCriacao>();
+            services.AddTransient<Pedido.PedidoBll, Pedido.PedidoBll>();
+
+            services.AddTransient<IServicoAutenticacaoApiMagento, ServicoAutenticacaoApiMagento>();
+            //como singleton para melhorar a performance
+            services.AddSingleton<MagentoBusiness.MagentoBll.AcessoBll.IServicoValidarTokenApiMagento, ServicoValidarTokenApiMagento>();
+            services.AddTransient<IServicoDecodificarTokenApiMagento, ServicoDecodificarTokenApiMagento>();
+
         }
     }
 }

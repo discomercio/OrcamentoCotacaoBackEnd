@@ -93,9 +93,10 @@ namespace PrepedidoAPIUnis.Controllers
             if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out _))
                 return Unauthorized();
 
-            FormaPagtoUnisDto retorno = await formaPagtoUnisBll.ObterFormaPagto(orcamentista.Trim().ToUpper(), tipo_pessoa.Trim().ToUpper());
-
+            FormaPagtoUnisDto retorno = await formaPagtoUnisBll.ObterFormaPagto(orcamentista?.Trim().ToUpper(), tipo_pessoa?.Trim().ToUpper());
+            
             return Ok(retorno);
+
         }
 
 
@@ -150,7 +151,7 @@ namespace PrepedidoAPIUnis.Controllers
             if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out string usuario))
                 return Unauthorized();
 
-            PermiteRaStatusResultadoUnisDto ret = await prepedidoUnisBll.Obter_Permite_RA_Status(orcamentista.ToUpper());
+            PermiteRaStatusResultadoUnisDto ret = await prepedidoUnisBll.Obter_Permite_RA_Status(orcamentista?.ToUpper());
             if (ret == null)
                 return NotFound("Orcamentista não localizado");
 

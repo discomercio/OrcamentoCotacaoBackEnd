@@ -17,22 +17,16 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
     public class VerificarDadosEnderecoCadastral
     {
         private readonly PrePedidoUnisBll prepedidoUnisBll;
-        private readonly PrePedidoUnisDto prePedidoUnisDto;
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
-        private readonly InicializarBancoGeral inicializarBanco;
         private readonly ITestOutputHelper output;
-        private readonly ClienteBll clienteBll;
-        private readonly ClienteUnisBll clienteUnisBll;
 
         public VerificarDadosEnderecoCadastral(PrePedidoUnisBll prepedidoUnisBll, InfraBanco.ContextoBdProvider contextoProvider,
-            InicializarBancoGeral inicializarBanco, ClienteBll clienteBll, ClienteUnisBll clienteUnisBll,
+            InicializarBancoGeral inicializarBanco, ClienteUnisBll clienteUnisBll,
             ITestOutputHelper output)
         {
             this.prepedidoUnisBll = prepedidoUnisBll;
             this.contextoProvider = contextoProvider;
-            this.inicializarBanco = inicializarBanco;
-            this.clienteBll = clienteBll;
-            this.clienteUnisBll = clienteUnisBll;
+            inicializarBanco.GarantirInicializado();
             this.output = output;
 
             var cliente = InicializarClienteDados.ClienteNaoCadastradoPF();

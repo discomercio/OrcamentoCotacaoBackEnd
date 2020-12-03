@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Loja.Bll.Bll.AcessoBll;
-using Loja.Bll.Bll.PrepedidoBll;
+using Loja.Bll.PrepedidoBll;
 using Loja.Bll.ClienteBll;
 using Loja.Bll.Constantes;
 using Loja.Bll.Util;
@@ -30,7 +30,7 @@ namespace Loja.UI.Controllers
         private readonly ILogger<UsuarioLogado> loggerUsuarioLogado;
         private readonly ClienteBll clienteBll;
 
-        public PrepedidoController(Loja.Bll.Bll.PrepedidoBll.PrepedidoBll prepedidoBll, UsuarioAcessoBll usuarioAcessoBll, Configuracao configuracao,
+        public PrepedidoController(Loja.Bll.PrepedidoBll.PrepedidoBll prepedidoBll, UsuarioAcessoBll usuarioAcessoBll, Configuracao configuracao,
             ILogger<UsuarioLogado> loggerUsuarioLogado, ClienteBll clienteBll)
         {
             this.prepedidoBll = prepedidoBll;
@@ -45,10 +45,13 @@ namespace Loja.UI.Controllers
             if (!PermissaoPagina("Index", usuarioLogado))
                 return Forbid();
 
-            var resumoPrepedidoListaDto = await prepedidoBll.ResumoPrepedidoLista(usuarioLogado);
+            //nunca mostramos de outras lojas
+            var mostrarLoja = false;
+            var resumoPrepedidoListaDto = await prepedidoBll.ResumoPrepedidoLista(usuarioLogado, !mostrarLoja);
             var itensLoja = (from i in resumoPrepedidoListaDto.Itens group i by i.LojaId into g select new Models.Comuns.ListaLojasViewModel.ItemLoja { Loja = g.Key, NumeroItens = g.Count() });
             var model = new Loja.UI.Models.Prepedido.PrepedidoIndexViewModel(resumoPrepedidoListaDto,
                 new Models.Comuns.ListaLojasViewModel(usuarioLogado, itensLoja.ToList()));
+            model.ListaLojasViewModel.MostrarLoja = mostrarLoja;
             return View(model);
         }
     }

@@ -95,7 +95,7 @@ export class DataUtils {
         const aux2 = new Date(aux);
         if (!aux2)
             return "";
-        const ret = DataUtils.dataLocal(aux2);
+        const ret = aux2.toLocaleTimeString(); //DataUtils.dataLocal(aux2);
         return ret.substr(0, ret.length - 3);
     }
 
@@ -115,7 +115,7 @@ export class DataUtils {
         const aux2 = new Date(aux);
         if (!aux2)
             return "";
-        const ret = DataUtils.dataLocal(aux2);
+        const ret = aux2.toLocaleTimeString(); //DataUtils.dataLocal(aux2);
         return ret;
     }
 
@@ -133,12 +133,12 @@ export class DataUtils {
     // '	que há informação sobre o horário armazenado.
     public static formata_data_e_talvez_hora_hhmm(dt: Date | string): string {
 
-        let decodifica_data = this.decodifica_data(dt);
+        let decodifica_data = DataUtils.decodifica_data(dt);
         if (!decodifica_data.sucesso)
             return "";
-        let s = this.formatarTela(dt);
+        let s = DataUtils.formatarTela(dt);
 
-        let decodifica_hora = this.decodifica_hora(dt);
+        let decodifica_hora = DataUtils.decodifica_hora(dt);
 
         if (decodifica_hora.sucesso &&
             (decodifica_hora.hora != "00" || decodifica_hora.min != "00" || decodifica_hora.seg != "00")) {
@@ -148,6 +148,25 @@ export class DataUtils {
         return s;
 
     }
+
+    public static formata_data_e_talvez_hora_hhmmss(dt: Date | string): string {
+
+        let decodifica_data = DataUtils.decodifica_data(dt);
+        if (!decodifica_data.sucesso)
+            return "";
+        let s = DataUtils.formatarTela(dt);
+
+        let decodifica_hora = DataUtils.decodifica_hora(dt);
+
+        if (decodifica_hora.sucesso &&
+            (decodifica_hora.hora != "00" || decodifica_hora.min != "00" || decodifica_hora.seg != "00")) {
+            s = s + " " + decodifica_hora.hora + ":" + decodifica_hora.min + ":" + decodifica_hora.seg;
+
+        }
+        return s;
+
+    }
+
 
     // ' ------------------------------------------------------------------------
     // '   DECODIFICA_DATA

@@ -1,4 +1,6 @@
 ﻿using InfraBanco;
+using Newtonsoft.Json;
+using PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto;
 using System;
 using System.Linq;
 using Testes.Automatizados.InicializarBanco;
@@ -29,6 +31,57 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             this.inicializarBanco = inicializarBanco;
             this.contextoProvider = contextoProvider;
             this.testesClienteUnisBll.Output = output;
+        }
+
+
+        [Fact]
+        public void Telefones_sem_separadores()
+        {
+            inicializarBanco.TclientesApagar();
+
+            //tem que rejeitar pq está pequeno
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.DddComercial = "12";
+                c.DadosCliente.TelComercial = "12-------";
+            },
+                "TELEFONE COMERCIAL INVÁLIDO.",
+                    TipoPessoa.PJ);
+
+
+            testesClienteUnisBll.TestarCadastro(c =>
+            {
+                c.DadosCliente.DddComercial = "12";
+                c.DadosCliente.TelComercial = "12-.+=,<>";
+            },
+                "TELEFONE COMERCIAL INVÁLIDO.",
+                    TipoPessoa.PJ);
+
+
+
+            //agora tem que cadastrar tirando o que não for digito
+            ClienteCadastroUnisDto clienteDto = InicializarClienteDados.ClienteNaoCadastradoPJ();
+            ClienteCadastroResultadoUnisDto res;
+            clienteDto.DadosCliente.DddComercial = "12";
+            clienteDto.DadosCliente.TelComercial = "1234-56789";
+            res = clienteUnisBll.CadastrarClienteUnis(clienteDto).Result;
+
+            if (res.ListaErros.Count > 0)
+                output.WriteLine(JsonConvert.SerializeObject(res));
+
+            Assert.Empty(res.ListaErros);
+
+            //verifica se salvou direito
+            var db = contextoProvider.GetContextoLeitura();
+
+            var ret = (from c in db.Tclientes
+                       where c.Id == res.IdClienteCadastrado
+                       select c).FirstOrDefault();
+
+            Assert.Equal("123456789", ret.Tel_Com);
+
+            //e apaga o registro
+            inicializarBanco.TclientesApagar();
         }
 
 

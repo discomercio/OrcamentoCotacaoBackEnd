@@ -51,7 +51,7 @@ export class AutenticacaoService {
     this.salvar = salvar;
     this._NomeUsuario = null;
     let msg = "";
-
+    debugger;
 
     this.http.post(environment.apiUrl + 'acesso/fazerLogin', { apelido: usuario, senha: senha },
       {
@@ -60,6 +60,15 @@ export class AutenticacaoService {
         headers: new HttpHeaders({ 'Content-Type': 'application/json', 'responseType': 'text' })
       }).subscribe({
         next: (e) => {
+          /*
+            estamos atribuindo o nome do usuário para, caso o usuário esteja 
+            fazendo o primeiro acesso ele terá que alterar a senha 
+            Na validação da alteração de senha é feito a comparação da nova senha com o nome do usuário, 
+            pois a senha não pode ser o nome de usuário
+          */
+          //No caso de primeiro acesso retornamos o código "4"
+          this._NomeUsuario = usuario;
+          
           //aqui vai as condições que irão verificar se o retorno é um erro
           if (e.toString().length == 1) {
             if (e.toString() == this.constantes.ERR_USUARIO_BLOQUEADO) {
@@ -80,6 +89,7 @@ export class AutenticacaoService {
               });
               return;
             }
+
             if (e.toString() == this.constantes.ERR_SENHA_EXPIRADA) {
               this.senhaExpirada = true;
               router.navigateByUrl('/alterarsenha');
@@ -102,6 +112,8 @@ export class AutenticacaoService {
           msg = "" + ((e && e.message) ? e.message : e.toString());
           if (e && e.status === 400)
             msg = "usuário e senha inválidos."
+          if (e && e.status === 403)
+            msg = "loja do usuário não possui unidade_negocio. Entre em contato com o suporte."
           if (e && e.status === 0)
             msg = "servidor de autenticação não disponível."
           if (e && e.status === 500)
@@ -119,6 +131,7 @@ export class AutenticacaoService {
   public authLogout(): void {
     this.authLogoutSemLayout();
     this.loja = null;
+    this.unidade_negocio = null;
     this.carregarLayout();
   }
 
@@ -248,8 +261,11 @@ export class AutenticacaoService {
       return false;
 
 
+    //passamos a exigir a unidade_negocio; se não tiver, tem que fazer o login com o novo formato
+    if (!user.unidade_negocio)
+      return false;
 
-    //vamos ver se extá expirado
+    //vamos ver se extá expirado  
     const expira: Date = new Date(user.exp * 1000);
     if (expira < new Date())
       return false;
@@ -313,60 +329,77 @@ export class AutenticacaoService {
   private _estilo: string = null;
   private _logo: string = null;
   public loja: string = null;
+  public unidade_negocio: string = null;
+
+  /*
+  en 20201021: alterações
+    unidade_negocio: BS ou VRF, se diferente dar erro no login
+    t_LOJA.unidade_negocio
+    BS = Bonshop
+    VRF = Unis
+    logo shopvendas deixou de existir
+  
+  Os arquivos que temos no assets:
+  
+  Logotipo:
+  bonshop.png
+  logo_arclube.png -> não será mais usado
+  Logo-ShopVendas.png -> não será mais usado
+  LogoUnis.png
+  
+  CSS:
+  shopVendas.css -> é o Bonshop, mantivemos o nome para manter a compatibilidade durante a mudança
+  Unis.css
+  
+  Fundo:
+  background-bonshop.jpg -> será usado para Bonshop
+  background-shopvendas.jpg -> não é usado
+  background-unis-filtro-branco80.jpg
+  backgrouns-unis.jpg -> não é usado
+  
+  Ícone:
+  favicon.ico -> alterado para o icones/ico-bonshop.ico
+  icones/ico-sv-*.ico -> não será mais usado (já não era usado)
+  icones/ico-unis-*.ico
+  icones/ico-bonshop.ico
+  
+  
+  */
   private carregarLayout(): void {
     //tentamos obter a loja do token. se nao tiver, fica com null
-    // let loja: string = null;
     if (this.authEstaLogado()) {
       const token = this.obterToken();
       const user = jtw_decode(token);
       this.loja = (user && user.family_name) ? user.family_name : null;
+      this.unidade_negocio = (user && user.unidade_negocio) ? user.unidade_negocio : null;
     }
 
     //define o estilo e o logo baseado na loja
-    if (this.loja == null) {
+    if (this.loja == null || this.unidade_negocio == null) {
       this._estilo = "";
+      this._logo = "";
       return;
     }
-    if (this.loja == "205" ||
-      this.loja == "206" ||
-      this.loja == "207" ||
-      this.loja == "208") {
-      this._estilo = "assets/Unis.css";
-      //passar o logo tb
-      this._logo = "assets/LogoUnis.png";
 
-      this.CarregarIconUnis();
-
-    }
-    else if (this.loja == "202") {
+    if (this.unidade_negocio && this.unidade_negocio.toUpperCase().trim() == "BS") {
+      //bonshop
+      this._estilo = "assets/shopVendas.css";// -> é o Bonshop, mantivemos o nome para manter a compatibilidade durante a mudança
       this._logo = "assets/bonshop.png";
-      this._estilo = "assets/shopVendas.css";
-
       this.CarregarIconBonshop();
+      return;
     }
-    else {
-      this._estilo = "assets/shopVendas.css";
-      this._logo = "assets/Logo-ShopVendas.png";
-      this.CarregarIconShopVendas();
+
+    if (this.unidade_negocio && this.unidade_negocio.toUpperCase().trim() == "VRF") {
+      //unis
+      this._estilo = "assets/Unis.css";
+      this._logo = "assets/LogoUnis.png";
+      this.CarregarIconUnis();
+      return;
     }
-    // if (this.loja == "203" ||
-    //   this.loja == "204") {
-    //   this._estilo = "assets/shopVendas.css";
-    //   //passar o logo tb
-    //   this._logo = "assets/Logo-ShopVendas.png";
 
-    //   this.CarregarIconShopVendas();
-    // }
-
-  }
-  //fim
-  private CarregarIconShopVendas(): void {
-    //teste para trocar o ico
-    const head = document.getElementsByTagName('head')[0];
-    let favicon = document.getElementById('favicon') as HTMLLinkElement;
-    favicon.href = 'assets/favicon.ico';
-    head.appendChild(favicon);
-
+    //nao deveria chegar aqui
+    this._estilo = "";
+    this._logo = "";
   }
   private CarregarIconUnis(): void {
     const head = document.getElementsByTagName('head')[0];
@@ -378,60 +411,30 @@ export class AutenticacaoService {
   private CarregarIconBonshop(): void {
     const head = document.getElementsByTagName('head')[0];
     let favicon = document.getElementById('favicon') as HTMLLinkElement;
-    favicon.href = 'assets/icones/ico-bonshop.ico';//alterar
+    favicon.href = 'assets/icones/ico-bonshop.ico';
     head.appendChild(favicon);
   }
 
   public BuscarImgFundo(): string {
-    if (this.loja == "205" ||
-      this.loja == "206" ||
-      this.loja == "207" ||
-      this.loja == "208") {
+    if (this.unidade_negocio && this.unidade_negocio.toUpperCase().trim() == "BS") {
+      //bonshop
+      return "url('/assets/background-bonshop.jpg')";
+    }
+
+    if (this.unidade_negocio && this.unidade_negocio.toUpperCase().trim() == "VRF") {
+      //unis
       return "url('/assets/background-unis-filtro-branco80.jpg')";
     }
-    else {
-      return "url('/assets/background-shopvendas.jpg')";
-    }
-    // if (this.loja == "202" ||
-    //   this.loja == "203" ||
-    //   this.loja == "204") {
 
-    //   return "url('/assets/background-shopvendas.jpg')";
-    // }
-
+    //nunca deveria chegar aqui, fallback
+    return "url('/assets/background-bonshop.jpg')";
   }
   public buscarAlturaImg(): string {
-    if (this.loja == "205" ||
-      this.loja == "206" ||
-      this.loja == "207" ||
-      this.loja == "208") {
-      return "calc(100vh - 53px)";
-    }
-    else {
-      return "calc(100vh - 53px)";
-    }
-    // if (this.loja == "202" ||
-    //   this.loja == "203" ||
-    //   this.loja == "204") {
-    //   return "calc(100vh - 53px)";
-    // }
+    return "calc(100vh - 53px)";
   }
 
   public buscarTamanhoImg(): string {
-    if (this.loja == "205" ||
-      this.loja == "206" ||
-      this.loja == "207" ||
-      this.loja == "208") {
-      return "100%";
-    }
-    else {
-      return "100%";
-    }
-    // if (this.loja == "202" ||
-    //   this.loja == "203" ||
-    //   this.loja == "204") {
-    //   return "100%";
-    // }
+    return "100%";
   }
 
 

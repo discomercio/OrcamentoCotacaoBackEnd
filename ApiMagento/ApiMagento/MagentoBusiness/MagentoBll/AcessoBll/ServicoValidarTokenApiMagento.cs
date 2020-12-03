@@ -10,7 +10,7 @@ namespace MagentoBusiness.MagentoBll.AcessoBll
 {
     public interface IServicoValidarTokenApiMagento
     {
-        bool ValidarToken(string tokenAcesso, out string usuario);
+        bool ValidarToken(string tokenAcesso, out string? usuario);
     }
 
     public class ServicoValidarTokenApiMagento:IServicoValidarTokenApiMagento
@@ -24,7 +24,7 @@ namespace MagentoBusiness.MagentoBll.AcessoBll
             this.logger = logger;
         }
 
-        public bool ValidarToken(string tokenAcesso, out string usuario)
+        public bool ValidarToken(string tokenAcesso, out string? usuario)
         {
             var handler = new JwtSecurityTokenHandler();
             var validations = new TokenValidationParameters

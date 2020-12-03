@@ -56,8 +56,8 @@ namespace PrepedidoApi.Controllers
              * tipo de contibuinte ICMS
              * */
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            List<string> retorno = await clientePrepedidoBll.AtualizarClienteParcial(apelido.Trim(), dadosClienteCadastroDto, 
-                (byte)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS);
+            List<string> retorno = await clientePrepedidoBll.AtualizarClienteParcial(apelido.Trim(), dadosClienteCadastroDto,
+                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS);
             if (retorno == null)
                 return NoContent();
             return Ok(retorno);

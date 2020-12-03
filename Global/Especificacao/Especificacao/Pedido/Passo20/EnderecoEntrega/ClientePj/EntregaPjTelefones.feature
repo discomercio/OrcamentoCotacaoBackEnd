@@ -1,16 +1,18 @@
 ﻿@ignore
-@Especificacao/Pedido
+@Especificacao.Pedido.Passo20.EnderecoEntrega
 Feature: Pedido de cliente PJ com endereço de entrega PJ - validação de telefones
-em loja/ClienteEdita.asp:
-                /*
-                telefones PJ:
-                EndEtg_ddd_com
-                EndEtg_tel_com
-                EndEtg_ramal_com
-                EndEtg_ddd_com_2
-                EndEtg_tel_com_2
-                EndEtg_ramal_com_2
-*/
+#em loja/ClienteEdita.asp:
+#                /*
+#                telefones PJ:
+#                EndEtg_ddd_com
+#                EndEtg_tel_com
+#                EndEtg_ramal_com
+#                EndEtg_ddd_com_2
+#                EndEtg_tel_com_2
+#                EndEtg_ramal_com_2
+#*/
+
+#também em loja/PedidoNovoConsiste.asp
 
 Background: Pedido base
 	Given Pedido base cliente PJ com endereço de entrega PJ
@@ -18,7 +20,6 @@ Background: Pedido base
 Scenario: Configuração
 	Given Nome deste item "Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj.EntregaPjTelefones"
 	Given Implementado em "Especificacao.Pedido.Pedido"
-	And Fim da configuração
 
 
 #-------------------------------------------------------------
@@ -128,4 +129,14 @@ Scenario: EndEtg_ddd_res
 	When Informo "EndEtg_ddd_res" = "12"
 	And Informo "EndEtg_tel_res" = "12345678"
 	Then Erro "Endereço de entrega: PJ não pode ter EndEtg_ddd_res (acertar a mensagem)"
+
+Scenario: nos telefones, os símbolos devem ser removidos
+	When Informo "EndEtg_tel_com" = "1234-5678"
+	Then Sem nenhum erro
+	And No registro gravado, campo "EndEtg_tel_com" = "12345678"
+
+Scenario: nos telefones, os símbolos devem ser removidos 2
+	When Informo "EndEtg_tel_com" = "123,.;5678"
+	Then Sem nenhum erro
+	And No registro gravado, campo "EndEtg_tel_com" = "1235678"
 

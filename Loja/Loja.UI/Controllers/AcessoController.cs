@@ -52,6 +52,14 @@ namespace Loja.UI.Controllers
         [HttpGet]
         public IActionResult Login(string ReturnUrl)
         {
+            //vamos verificar se o usuario esta logado
+            var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
+
+            if (usuarioLogado.SessaoAtiva)
+            {
+                return LocalRedirect(configuracao.Diretorios.RaizSiteLojaMvc);
+            }
+
             LoginViewModel loginViewModel = new LoginViewModel
             {
                 ReturnUrl = ReturnUrl,
@@ -82,7 +90,7 @@ namespace Loja.UI.Controllers
 
             loginViewModel.Apelido = loginViewModel.Apelido?.ToUpper().Trim() ?? "";
             loginViewModel.Senha = loginViewModel.Senha?.ToUpper() ?? "";
-            loginViewModel.ReturnUrl = loginViewModel.ReturnUrl ?? "/";
+            loginViewModel.ReturnUrl = loginViewModel.ReturnUrl ?? configuracao.Diretorios.RaizSiteLojaMvc + "/";
 
             if (String.IsNullOrEmpty(loginViewModel.Apelido) || String.IsNullOrEmpty(loginViewModel.Senha))
             {

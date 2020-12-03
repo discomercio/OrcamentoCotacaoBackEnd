@@ -19,14 +19,12 @@ namespace ApiMagento.Controllers
     {
         private readonly IServicoValidarTokenApiMagento servicoValidarTokenApiMagento;
         private readonly PedidoMagentoBll pedidoMagentoBll;
-        private readonly IServicoDecodificarTokenApiMagento servicoDecodificarTokenApiMagento;
 
         public PedidoMagentoController(IServicoValidarTokenApiMagento servicoValidarTokenApiMagento,
-            PedidoMagentoBll pedidoMagentoBll, IServicoDecodificarTokenApiMagento servicoDecodificarTokenApiMagento)
+            PedidoMagentoBll pedidoMagentoBll)
         {
             this.servicoValidarTokenApiMagento = servicoValidarTokenApiMagento;
             this.pedidoMagentoBll = pedidoMagentoBll;
-            this.servicoDecodificarTokenApiMagento = servicoDecodificarTokenApiMagento;
         }
 
         /// <summary>
@@ -38,16 +36,17 @@ namespace ApiMagento.Controllers
         [HttpPost("cadastrarPedido")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public async Task<ActionResult<PedidoResultadoMagentoDto>> CadastrarPrepedido(PedidoMagentoDto pedido)
+        public async Task<ActionResult<PedidoResultadoMagentoDto>> CadastrarPedido(PedidoMagentoDto pedido)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            if (!servicoValidarTokenApiMagento.ValidarToken(pedido.TokenAcesso, out _))
+            if (!servicoValidarTokenApiMagento.ValidarToken(pedido.TokenAcesso, out string? usuario))
+                return Unauthorized();
+            if (string.IsNullOrEmpty(usuario))
                 return Unauthorized();
 
-            string apelido = servicoDecodificarTokenApiMagento.ObterApelidoOrcamentista(User);
-                        
+            string apelido = usuario;
+
             var ret = await pedidoMagentoBll.CadastrarPedidoMagento(pedido, apelido);
-            ret.ListaErros.Add("Ainda não implementado");
             return Ok(ret);
         }
 
@@ -68,9 +67,9 @@ namespace ApiMagento.Controllers
         {
             if (!servicoValidarTokenApiMagento.ValidarToken(tokenAcesso, out _))
                 return Unauthorized();
-            
+
             var ret = await pedidoMagentoBll.ObterCodigoMarketplace();
-            
+
             return Ok(ret);
         }
     }

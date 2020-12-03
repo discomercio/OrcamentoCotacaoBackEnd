@@ -7,6 +7,5 @@ Scenario: Lista de verificações feitas
 	Given Nome deste item "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedidoListaDependencias"
 	And Especificado em "Especificacao.Comuns.Api.Autenticacao"
 	#todo: afazer: voltar 
-	#And Especificado em "Especificacao.Prepedido.Prepedido"
-	And Fim da configuração
+	And Especificado em "Especificacao.Prepedido.Prepedido.PrepedidoListaDependencias"
 

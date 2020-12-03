@@ -59,6 +59,10 @@ namespace Loja.UI
                 options.FallbackPolicy = policy;
             });
 
+            //precisa para permitir rodar fora da raiz e usar o iframe com o SiteColors
+            //services.AddAntiforgery((r) => { r.SuppressXFrameOptionsHeader = true; });
+            //services.AddAntiforgery(options => { options.Cookie.Expiration = TimeSpan.Zero; options.SuppressXFrameOptionsHeader = true; });
+
 
             services.AddRazorPages();
             services.AddControllers().AddNewtonsoftJson(options =>
@@ -78,42 +82,101 @@ namespace Loja.UI
             services.AddTransient<Bll.ClienteBll.ClienteBll, Bll.ClienteBll.ClienteBll>();
             services.AddTransient<Bll.CepBll.CepBll, Bll.CepBll.CepBll>();
             services.AddTransient<Bll.PedidoBll.PedidoBll, Bll.PedidoBll.PedidoBll>();
-            services.AddTransient<Loja.Bll.Bll.PrepedidoBll.PrepedidoBll, Loja.Bll.Bll.PrepedidoBll.PrepedidoBll>();
+            services.AddTransient<Loja.Bll.PrepedidoBll.PrepedidoBll, Loja.Bll.PrepedidoBll.PrepedidoBll>();
             services.AddTransient<Loja.Bll.PedidoBll.PedidoLogBll, Loja.Bll.PedidoBll.PedidoLogBll>();
             services.AddTransient<Bll.FormaPagtoBll.FormaPagtoBll, Bll.FormaPagtoBll.FormaPagtoBll>();
             services.AddTransient<Bll.CoeficienteBll.CoeficienteBll, Bll.CoeficienteBll.CoeficienteBll>();
             services.AddTransient<Loja.Bll.Bll.AcessoBll.UsuarioAcessoBll, Loja.Bll.Bll.AcessoBll.UsuarioAcessoBll>();
             services.AddTransient<Loja.Bll.Bll.AcessoBll.AcessoAuthorizationHandlerBll, Loja.Bll.Bll.AcessoBll.AcessoAuthorizationHandlerBll>();
-            services.AddTransient<Loja.Bll.Bll.PedidoBll.EfetivaPedido.EfetivaPedidoBll, Loja.Bll.Bll.PedidoBll.EfetivaPedido.EfetivaPedidoBll>();
+            services.AddTransient<Pedido.EfetivaPedidoBll, Pedido.EfetivaPedidoBll>();
+            services.AddTransient<Pedido.MontarLogPedidoBll, Pedido.MontarLogPedidoBll>();
+            services.AddTransient<Pedido.PedidoCriacao, Pedido.PedidoCriacao>();
+            services.AddTransient<Pedido.PedidoBll, Pedido.PedidoBll>();
+            services.AddTransient<Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll, Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll>();
+            services.AddTransient<Prepedido.FormaPagto.ValidacoesFormaPagtoBll, Prepedido.FormaPagto.ValidacoesFormaPagtoBll>();
+            services.AddTransient<Prepedido.PrepedidoBll, Prepedido.PrepedidoBll>();
+            services.AddTransient<Cliente.ClienteBll, Cliente.ClienteBll>();
+            services.AddTransient<Cep.CepBll, Cep.CepBll>();
+            services.AddTransient<Cep.IBancoNFeMunicipio, Cep.BancoNFeMunicipio>();
+            services.AddTransient<Prepedido.ValidacoesPrepedidoBll, Prepedido.ValidacoesPrepedidoBll>();
+            services.AddTransient<Prepedido.MontarLogPrepedidoBll, Prepedido.MontarLogPrepedidoBll>();
+            services.AddTransient<Produto.CoeficienteBll, Produto.CoeficienteBll>();
+            services.AddTransient<Produto.ProdutoGeralBll, Produto.ProdutoGeralBll>();
+            services.AddTransient<Prepedido.FormaPagto.FormaPagtoBll, Prepedido.FormaPagto.FormaPagtoBll>();
+            services.AddTransient<Prepedido.FormaPagto.ValidacoesFormaPagtoBll, Prepedido.FormaPagto.ValidacoesFormaPagtoBll>();
+            services.AddTransient<Avisos.AvisosBll, Avisos.AvisosBll>();
+
+            services.AddTransient<Loja.Bll.Bll.AcessoBll.SiteColorsBll, Loja.Bll.Bll.AcessoBll.SiteColorsBll>();
 
 
             //ContextoProvider
-            services.AddTransient<Data.LojaContextoBdProvider, Data.LojaContextoBdProvider>();
-            services.AddTransient<Data.LojaContextoCepProvider, Data.LojaContextoCepProvider>();
-            services.AddTransient<Data.LojaContextoNFeProvider, Data.LojaContextoNFeProvider>();
+            services.AddTransient<InfraBanco.ContextoBdProvider, InfraBanco.ContextoBdProvider>();
+            services.AddTransient<InfraBanco.ContextoCepProvider, InfraBanco.ContextoCepProvider>();
+            services.AddTransient<InfraBanco.ContextoNFeProvider, InfraBanco.ContextoNFeProvider>();
+            //services.AddTransient<Data.LojaContextoBdProvider, Data.LojaContextoBdProvider>();
+            //services.AddTransient<Data.LojaContextoCepProvider, Data.LojaContextoCepProvider>();
+            //services.AddTransient<Data.LojaContextoNFeProvider, Data.LojaContextoNFeProvider>();
 
             //banco de dados
-            services.AddDbContext<Loja.Data.LojaContextoBdBasico>(options =>
+            //banco de dados
+            string conexaoBasica = Configuration.GetConnectionString("conexao");
+            services.AddDbContext<InfraBanco.ContextoBdBasico>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("conexaohomologa"));
+                options.UseSqlServer(conexaoBasica);
                 options.EnableSensitiveDataLogging();
             });
-            services.AddDbContext<Loja.Data.LojaContextoCepBd>(options =>
+            services.AddDbContext<InfraBanco.ContextoCepBd>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("conexaoCep"));
                 options.EnableSensitiveDataLogging();
             });
-            services.AddDbContext<Loja.Data.LojaContextoNFeBd >(options =>
+            services.AddDbContext<InfraBanco.ContextoNFeBd>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("conexaoNfe"));
                 options.EnableSensitiveDataLogging();
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseSession();
+            Configuracao configuracao = new Configuracao(Configuration);
+
+            if (env.IsDevelopment())
+            {
+                // em desenvolvimento, não queremos que funcione a partir da raiz para que a gente teste melhor
+                app.Use(async (context, next) =>
+                {
+                    if (context.Request.Method.ToUpper() == "GET")
+                    {
+                        bool requestLojaMvc = false;
+                        if (!string.IsNullOrWhiteSpace(context.Request.Path))
+                            if (context.Request.Path.Value.ToLower().Contains(configuracao.Diretorios.RaizSiteLojaMvc.ToLower()))
+                                requestLojaMvc = true;
+                        if (!string.IsNullOrWhiteSpace(context.Request.PathBase))
+                            if (context.Request.PathBase.Value.ToLower().Contains(configuracao.Diretorios.RaizSiteLojaMvc.ToLower()))
+                                requestLojaMvc = true;
+
+                        if (!requestLojaMvc)
+                        {
+                            /*
+                             * sem cache
+                                Cache-Control: no-store,no-cache
+                                Pragma: no-cache
+                                */
+                            context.Response.Headers.Add("Cache-Control", "no-store,no-cache");
+                            context.Response.Headers.Add("Pragma", "no-cache");
+                            context.Response.StatusCode = 404;  //not found
+                            return;
+                        }
+                    }
+
+                    await next();
+                });
+            }
+
 
             if (env.IsDevelopment())
             {
@@ -123,6 +186,9 @@ namespace Loja.UI
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            if (!string.IsNullOrWhiteSpace(configuracao.Diretorios.RaizSiteLojaMvc))
+                app.UsePathBase(configuracao.Diretorios.RaizSiteLojaMvc);
             app.UseStaticFiles();
 
             app.UseRouting();

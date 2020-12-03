@@ -1738,6 +1738,7 @@ dim blnUsarMemorizacaoCompletaEnderecos
 			.endereco_produtor_rural_status = 0
 			.endereco_ie = ""
 			.endereco_rg = ""
+			.endereco_contato = ""
 
 			.endereco_memorizado_status		= rs("endereco_memorizado_status")
 			if CLng(.endereco_memorizado_status) <> 0 then
@@ -1769,6 +1770,7 @@ dim blnUsarMemorizacaoCompletaEnderecos
 					.endereco_produtor_rural_status = rs("endereco_produtor_rural_status")
 					.endereco_ie = Trim("" & rs("endereco_ie"))
 					.endereco_rg = Trim("" & rs("endereco_rg"))
+					.endereco_contato = Trim("" & rs("endereco_contato"))
 					end if
 				end if
 
@@ -2743,6 +2745,7 @@ dim rs
 			.id_nfe_emitente		= rs("id_nfe_emitente")
             .entrada_tipo           = Trim("" & rs("entrada_tipo"))
             .perc_agio      		= rs("perc_agio")
+            .data_emissao_NF_entrada   		= rs("data_emissao_NF_entrada")
 			end with
 		end if	
 
@@ -6150,6 +6153,18 @@ dim rFPUECM
 	set rFPUECM = get_registro_t_parametro(ID_PARAMETRO_Flag_Pedido_MemorizacaoCompletaEnderecos)
 	if Trim("" & rFPUECM.campo_inteiro) = "1" then isActivatedFlagPedidoUsarMemorizacaoCompletaEnderecos = True
 	set rFPUECM = Nothing
+end function
+
+
+' ________________________________________________________
+' isActivatedFlagCadSemiAutoPedMagentoCadAutoClienteNovo
+'
+function isActivatedFlagCadSemiAutoPedMagentoCadAutoClienteNovo
+dim rFCSAPMCACN
+	isActivatedFlagCadSemiAutoPedMagentoCadAutoClienteNovo = False
+	set rFCSAPMCACN = get_registro_t_parametro(ID_PARAMETRO_FLAG_CAD_SEMI_AUTO_PED_MAGENTO_CADASTRAR_AUTOMATICAMENTE_CLIENTE_NOVO)
+	if Trim("" & rFCSAPMCACN.campo_inteiro) = "1" then isActivatedFlagCadSemiAutoPedMagentoCadAutoClienteNovo = True
+	set rFCSAPMCACN = Nothing
 end function
 
 

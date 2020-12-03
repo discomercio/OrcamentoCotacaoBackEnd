@@ -20,7 +20,7 @@ namespace Especificacao.Especificacao.Pedido.Passo10
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "ignore")]
-    [Xunit.TraitAttribute("Category", "Especificacao/Pedido")]
+    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo10.CamposSimples")]
     public partial class ValidarPermissoesFeature : object, Xunit.IClassFixture<ValidarPermissoesFeature.FixtureData>, System.IDisposable
     {
         
@@ -28,7 +28,7 @@ namespace Especificacao.Especificacao.Pedido.Passo10
         
         private string[] _featureTags = new string[] {
                 "ignore",
-                "Especificacao/Pedido"};
+                "Especificacao.Pedido.Passo10.CamposSimples"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -46,7 +46,7 @@ namespace Especificacao.Especificacao.Pedido.Passo10
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Validar permissões", null, ProgrammingLanguage.CSharp, new string[] {
                         "ignore",
-                        "Especificacao/Pedido"});
+                        "Especificacao.Pedido.Passo10.CamposSimples"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -81,6 +81,15 @@ namespace Especificacao.Especificacao.Pedido.Passo10
             testRunner.CollectScenarioErrors();
         }
         
+        public virtual void FeatureBackground()
+        {
+#line 5
+#line hidden
+#line 6
+ testRunner.Given("Reinciar permissões ao terminar a feature", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+        }
+        
         void System.IDisposable.Dispose()
         {
             this.TestTearDown();
@@ -89,12 +98,14 @@ namespace Especificacao.Especificacao.Pedido.Passo10
         [Xunit.SkippableFactAttribute(DisplayName="Configuração")]
         [Xunit.TraitAttribute("FeatureTitle", "Validar permissões")]
         [Xunit.TraitAttribute("Description", "Configuração")]
+        [Xunit.TraitAttribute("Category", "ListaDependencias")]
         public virtual void Configuracao()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ListaDependencias"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Configuração", null, tagsOfScenario, argumentsOfScenario);
-#line 6
+#line 9
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -114,14 +125,14 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 7
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 10
  testRunner.Given("Nome deste item \"Especificacao.Pedido.Passo10.Permissoes\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 8
+#line 11
  testRunner.Given("Implementado em \"Especificacao.Pedido.Pedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 9
- testRunner.And("Fim da configuração", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -134,10 +145,8 @@ this.ScenarioInitialize(scenarioInfo);
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar permissão de criação", "em loja/resumo.asp:\r\nif operacao_permitida(OP_LJA_CADASTRA_NOVO_PEDIDO, s_lista_o" +
-                    "peracoes_permitidas) then\r\n\r\nem loja/ClienteEdita.asp\r\n<% if operacao_permitida(" +
-                    "OP_LJA_CADASTRA_NOVO_PEDIDO, s_lista_operacoes_permitidas) then %>", tagsOfScenario, argumentsOfScenario);
-#line 11
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar permissão de criação", null, tagsOfScenario, argumentsOfScenario);
+#line 14
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -157,17 +166,65 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 17
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 18
- testRunner.And("Não possuo a permissão \"OP_LJA_CADASTRA_NOVO_PEDIDO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 19
- testRunner.When("Crio um pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 5
+this.FeatureBackground();
 #line hidden
 #line 20
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 21
+ testRunner.And("Não possuo a permissão \"OP_LJA_CADASTRA_NOVO_PEDIDO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 22
  testRunner.Then("Erro \"usuário não tem permissão\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="OP_LJA_EXIBIR_CAMPO_INSTALADOR_INSTALA_AO_CADASTRAR_NOVO_PEDIDO")]
+        [Xunit.TraitAttribute("FeatureTitle", "Validar permissões")]
+        [Xunit.TraitAttribute("Description", "OP_LJA_EXIBIR_CAMPO_INSTALADOR_INSTALA_AO_CADASTRAR_NOVO_PEDIDO")]
+        public virtual void OP_LJA_EXIBIR_CAMPO_INSTALADOR_INSTALA_AO_CADASTRAR_NOVO_PEDIDO()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("OP_LJA_EXIBIR_CAMPO_INSTALADOR_INSTALA_AO_CADASTRAR_NOVO_PEDIDO", null, tagsOfScenario, argumentsOfScenario);
+#line 24
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 29
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 30
+ testRunner.And("Não possuo a permissão \"OP_LJA_EXIBIR_CAMPO_INSTALADOR_INSTALA_AO_CADASTRAR_NOVO_" +
+                        "PEDIDO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 31
+ testRunner.When("Informo \"instalador_instala\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 32
+ testRunner.Then("Erro \"Usuário não tem permissão para informar o campo instalador_instala.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

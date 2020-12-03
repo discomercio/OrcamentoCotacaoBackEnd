@@ -20,6 +20,7 @@ namespace Loja.UI.Models.Pedido
         public ProdutoComboDto ProdutoCombo { get; set; }
         //public DadosClienteCadastroDto DadosCliente { get; set; }
         public string NomeCliente { get; set; }
+        public string CpfCnpj { get; set; }
         public string TipoCliente { get; set; }
         public EnderecoEntregaDtoClienteCadastro EnderecoEntrega { get; set; }
         public List<PedidoProdutosDtoPedido> ListaProdutos { get; set; }

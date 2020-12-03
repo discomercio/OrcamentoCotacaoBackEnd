@@ -1,0 +1,3 @@
+﻿Para testar com o SiteColors:
+- usar SiteColors ao invés de IIS Express na opção de execução;
+- configurar o IIS local para servir o site Colors (o ASP) em localhost:9010

@@ -5,8 +5,6 @@ using Xunit;
 
 namespace Especificacao.Testes.Utils.ListaDependencias
 {
-    //todo: tirar
-
     public class ListaImplementacoes<Implementacao>
     {
         protected List<Implementacao> implementacoes = new List<Implementacao>();

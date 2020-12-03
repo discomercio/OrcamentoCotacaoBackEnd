@@ -12,7 +12,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa
     class BuscarQtdeParcCartaoVisa
     {
         private readonly PrepedidoAPIUnis.Controllers.PrepedidoUnisController prepedidoUnisController;
-        private readonly Testes.Utils.LogTestes logTestes = Testes.Utils.LogTestes.GetInstance();
+        private readonly Testes.Utils.LogTestes.LogTestes logTestes = Testes.Utils.LogTestes.LogTestes.GetInstance();
         public BuscarQtdeParcCartaoVisa()
         {
             prepedidoUnisController = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos().GetRequiredService<PrepedidoAPIUnis.Controllers.PrepedidoUnisController>();
@@ -27,6 +27,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa
 
         public void WhenInformo(string p0, string p1)
         {
+            Testes.Utils.LogTestes.LogOperacoes2.Informo(p0, p1, this);
             switch (p0)
             {
                 case "TokenAcesso":
@@ -39,7 +40,8 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa
         }
         public void ThenErroStatusCode(int statusCode)
         {
-            logTestes.LogMensagem("prepedidoUnisController.BuscarQtdeParcCartaoVisa");
+            Testes.Utils.LogTestes.LogOperacoes2.ErroStatusCode(statusCode, this);
+            Testes.Utils.LogTestes.LogOperacoes2.ChamadaController(prepedidoUnisController.GetType(), "BuscarQtdeParcCartaoVisa", this);
             Microsoft.AspNetCore.Mvc.ActionResult<QtdeParcCartaoVisaResultadoUnisDto> ret = prepedidoUnisController.BuscarQtdeParcCartaoVisa(tokenAcesso).Result;
             Microsoft.AspNetCore.Mvc.ActionResult res = ret.Result;
             Testes.Utils.StatusCodes.TestarStatusCode(statusCode, res);

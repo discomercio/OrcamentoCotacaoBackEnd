@@ -1,8 +1,6 @@
 ﻿using Loja.Bll.Dto;
 using Loja.Bll.Dto.ClienteDto;
 using Loja.Bll.CepBll;
-using Loja.Data;
-using Loja.Modelos;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,16 +9,17 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Loja.Bll.Dto.CepDto;
+using InfraBanco.Modelos;
 
 namespace Loja.Bll.ClienteBll
 {
     public class ClienteBll
     {
-        private readonly LojaContextoBdProvider contextoProvider;
-        private readonly LojaContextoCepProvider contextoCepProvider;
-        private readonly LojaContextoNFeProvider contextoNFeProvider;
+        private readonly InfraBanco.ContextoBdProvider contextoProvider;
+        private readonly InfraBanco.ContextoCepProvider contextoCepProvider;
+        private readonly InfraBanco.ContextoNFeProvider contextoNFeProvider;
 
-        public ClienteBll(LojaContextoBdProvider contextoProvider, LojaContextoCepProvider contextoCepProvider, LojaContextoNFeProvider contextoNFeProvider)
+        public ClienteBll(InfraBanco.ContextoBdProvider contextoProvider, InfraBanco.ContextoCepProvider contextoCepProvider, InfraBanco.ContextoNFeProvider contextoNFeProvider)
         {
             this.contextoProvider = contextoProvider;
             this.contextoCepProvider = contextoCepProvider;
@@ -76,7 +75,7 @@ namespace Loja.Bll.ClienteBll
             var db = contextoProvider.GetContextoLeitura();
 
             var nivelTask = from c in db.Tperfils
-                            join d in db.TperfiUsuarios on c.Id equals d.Id_perfil
+                            join d in db.TperfilUsuarios on c.Id equals d.Id_perfil
                             where d.Usuario == apelido
                             select c;
 
@@ -93,7 +92,7 @@ namespace Loja.Bll.ClienteBll
             var db = contextoProvider.GetContextoLeitura();
 
             var nivelTask = from c in db.Tperfils
-                            join d in db.TperfiUsuarios on c.Id equals d.Id_perfil
+                            join d in db.TperfilUsuarios on c.Id equals d.Id_perfil
                             where d.Usuario == apelido
                             select c;
 
@@ -371,7 +370,7 @@ namespace Loja.Bll.ClienteBll
             }
             return lstErros;
         }
-        public async Task AtualizarCadastroCliente(LojaContextoBdGravacao dbgravacao,
+        public async Task AtualizarCadastroCliente(InfraBanco.ContextoBdGravacao dbgravacao,
             DadosClienteCadastroDto dadosCliente, string apelido, string loja)
         {
             List<string> lstRetorno = new List<string>();
@@ -727,77 +726,12 @@ namespace Loja.Bll.ClienteBll
 
             return lstErros;
         }
-        private async Task<string> GerarIdCliente(LojaContextoBdGravacao dbgravacao, string id_nsu)
+        private Task<string> GerarIdCliente(InfraBanco.ContextoBdGravacao dbgravacao, string id_nsu)
         {
-            string retorno = "";
-            int n_nsu = -1;
-            string s = "0";
-            int asc;
-            char chr;
-
-            if (id_nsu == "")
-                retorno = "Não foi especificado o NSU a ser gerado!!";
-
-            for (int i = 0; i <= 100; i++)
-            {
-                var ret = from c in dbgravacao.Tcontroles
-                          where c.Id_Nsu == id_nsu
-                          select c;
-
-                var controle = await ret.FirstOrDefaultAsync();
-
-
-                if (!string.IsNullOrEmpty(controle.Nsu))
-                {
-                    if (controle.Seq_Anual != 0)
-                    {
-                        if (DateTime.Now.Year > controle.Dt_Ult_Atualizacao.Year)
-                        {
-                            s = Util.Util.Normaliza_Codigo(s, Constantes.Constantes.TAM_MAX_NSU);
-                            controle.Dt_Ult_Atualizacao = DateTime.Now;
-                            if (!String.IsNullOrEmpty(controle.Ano_Letra_Seq))
-                            {
-                                //Precisa revisar essa parte, pois lendo a doc do BD e analisando os dados na base não bate
-                                asc = int.Parse(controle.Ano_Letra_Seq) + controle.Ano_Letra_Step;
-                                chr = (char)asc;
-                            }
-                        }
-                    }
-                    n_nsu = int.Parse(controle.Nsu);
-                }
-                if (n_nsu < 0)
-                {
-                    retorno = "O NSU gerado é inválido!!";
-                }
-                n_nsu += 1;
-                s = Convert.ToString(n_nsu);
-                s = Util.Util.Normaliza_Codigo(s, Constantes.Constantes.TAM_MAX_NSU);
-                if (s.Length == 12)
-                {
-                    i = 101;
-                    //para salvar o novo numero
-                    controle.Nsu = s;
-                    if (DateTime.Now > controle.Dt_Ult_Atualizacao)
-                        controle.Dt_Ult_Atualizacao = DateTime.Now;
-
-                    retorno = controle.Nsu;
-
-                    try
-                    {
-                        dbgravacao.Update(controle);
-                        await dbgravacao.SaveChangesAsync();
-                    }
-                    catch (Exception ex)
-                    {
-                        retorno = "Não foi possível gerar o NSU, pois ocorreu o seguinte erro: " + ex.HResult + ":" + ex.Message;
-                    }
-                }
-            }
-
-            return retorno;
+            return UtilsGlobais.Util.GerarNsu(dbgravacao, id_nsu);
         }
 
-        private async Task<string> CadastrarDadosClienteDto(LojaContextoBdGravacao dbgravacao, DadosClienteCadastroDto clienteDto, string apelido, string log)
+        private async Task<string> CadastrarDadosClienteDto(InfraBanco.ContextoBdGravacao dbgravacao, DadosClienteCadastroDto clienteDto, string apelido, string log)
         {
             string retorno = "";
             List<string> lstRetorno = new List<string>();
@@ -870,7 +804,7 @@ namespace Loja.Bll.ClienteBll
             return retorno;
         }
 
-        private async Task AtualizarRefBancaria(LojaContextoBdGravacao dbgravacao, string id_cliente, string loja,
+        private async Task AtualizarRefBancaria(InfraBanco.ContextoBdGravacao dbgravacao, string id_cliente, string loja,
             List<RefBancariaDtoCliente> lstRefBancaria, string apelido)
         {
             int qtdeRef = 1;
@@ -879,7 +813,7 @@ namespace Loja.Bll.ClienteBll
             //afazer: verificar se é uma inclusão de nova ref
 
             //buscamos as referencias para poder comparar os dados
-            var lstRefBase = from c in dbgravacao.tclienteRefBancarias
+            var lstRefBase = from c in dbgravacao.TclienteRefBancarias
                              where c.Id_Cliente == id_cliente
                              select c;
             //montamos a lista para comparar
@@ -983,7 +917,7 @@ namespace Loja.Bll.ClienteBll
             await dbgravacao.SaveChangesAsync();
         }
 
-        private async Task<string> CadastrarRefBancaria(LojaContextoBdGravacao dbgravacao, List<RefBancariaDtoCliente> lstRefBancaria, string apelido, string id_cliente, string log)
+        private async Task<string> CadastrarRefBancaria(InfraBanco.ContextoBdGravacao dbgravacao, List<RefBancariaDtoCliente> lstRefBancaria, string apelido, string id_cliente, string log)
         {
             int qtdeRef = 1;
             string campos_a_omitir_ref_bancaria = "id_cliente|ordem|excluido_status|dt_cadastro|usuario_cadastro";
@@ -1018,7 +952,7 @@ namespace Loja.Bll.ClienteBll
             return log;
         }
 
-        private async Task AtualizarRefComercial(LojaContextoBdGravacao dbgravacao, string id_cliente, string loja,
+        private async Task AtualizarRefComercial(InfraBanco.ContextoBdGravacao dbgravacao, string id_cliente, string loja,
             List<RefComercialDtoCliente> lstRefComercial, string apelido)
         {
             int qtdeRef = 1;
@@ -1026,7 +960,7 @@ namespace Loja.Bll.ClienteBll
             string campos_a_omitir_ref_comercial = "id_cliente|ordem|excluido_status|dt_cadastro|usuario_cadastro";
 
             //buscar os dados na base para comparar
-            var lstRefComercialTask = from c in dbgravacao.tclienteRefComercials
+            var lstRefComercialTask = from c in dbgravacao.TclienteRefComercials
                                       where c.Id_Cliente == id_cliente
                                       select c;
 
@@ -1121,7 +1055,7 @@ namespace Loja.Bll.ClienteBll
             await dbgravacao.SaveChangesAsync();
         }
 
-        private async Task<string> CadastrarRefComercial(LojaContextoBdGravacao dbgravacao, List<RefComercialDtoCliente> lstRefComercial, string apelido, string id_cliente, string log)
+        private async Task<string> CadastrarRefComercial(InfraBanco.ContextoBdGravacao dbgravacao, List<RefComercialDtoCliente> lstRefComercial, string apelido, string id_cliente, string log)
         {
             int qtdeRef = 1;
 

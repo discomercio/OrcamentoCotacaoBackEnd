@@ -8,41 +8,67 @@ namespace Especificacao.Testes.Pedido
 {
     public class PedidoPassosComuns : ListaImplementacoes<IPedidoPassosComuns>, IPedidoPassosComuns
     {
-        private readonly Testes.Utils.LogTestes logTestes = Testes.Utils.LogTestes.GetInstance();
-
-        public void WhenPedidoBase()
+        public void GivenPedidoBase()
         {
             if (ignorarFeature) return;
-            base.Executar(i => i.WhenPedidoBase());
+            Utils.LogTestes.LogOperacoes2.DadoBase(this);
+            base.Executar(i => i.GivenPedidoBase());
+        }
+
+        public void GivenPedidoBaseClientePF()
+        {
+            if (ignorarFeature) return;
+            Utils.LogTestes.LogOperacoes2.DadoBaseClientePF(this);
+            base.Executar(i => i.GivenPedidoBaseClientePF());
+        }
+
+        public void GivenPedidoBaseClientePJ()
+        {
+            if (ignorarFeature) return;
+            Utils.LogTestes.LogOperacoes2.DadoBaseClientePJ(this);
+            base.Executar(i => i.GivenPedidoBaseClientePJ());
         }
 
         public void WhenInformo(string p0, string p1)
         {
             if (ignorarFeature) return;
-            logTestes.LogMensagem($"PedidoPassosComuns {this.GetType().FullName} WhenInformo({p0}, {p1})");
+            Utils.LogTestes.LogOperacoes2.Informo(p0, p1, this);
             base.Executar(i => i.WhenInformo(p0, p1));
         }
 
         public void ThenSemErro(string mensagem)
         {
             if (ignorarFeature) return;
-            mensagem = MapearMensagem(this.GetType().FullName, mensagem);
-            logTestes.LogMensagem($"PedidoPassosComuns {this.GetType().FullName} ThenSemErro({mensagem})");
+            mensagem = Utils.MapeamentoMensagens.MapearMensagem(this.GetType().FullName, mensagem);
+            Utils.LogTestes.LogOperacoes2.SemErro(mensagem, this);
             base.Executar(i => i.ThenSemErro(mensagem));
         }
 
         public void ThenErro(string mensagem)
         {
             if (ignorarFeature) return;
-            mensagem = MapearMensagem(this.GetType().FullName, mensagem);
-            logTestes.LogMensagem($"PedidoPassosComuns {this.GetType().FullName} ThenErro({mensagem})");
+            mensagem = Utils.MapeamentoMensagens.MapearMensagem(this.GetType().FullName, mensagem);
+            Utils.LogTestes.LogOperacoes2.Erro(mensagem, this);
             base.Executar(i => i.ThenErro(mensagem));
         }
 
-        private bool ignorarFeature = false;
-        public void GivenIgnorarFeatureNoAmbiente(string p0)
+        public void ThenSemNenhumErro()
         {
-            var typeFullName = this.GetType().FullName;
+            if (ignorarFeature) return;
+            Utils.LogTestes.LogOperacoes2.SemNenhumErro(this);
+            base.Executar(i => i.ThenSemNenhumErro());
+        }
+
+        private bool ignorarFeature = false;
+        public void GivenIgnorarScenarioNoAmbiente(string p0)
+        {
+            IgnorarScenarioNoAmbiente(p0, ref ignorarFeature, this.GetType());
+            base.Executar(i => i.GivenIgnorarScenarioNoAmbiente(p0));
+        }
+
+        public static void IgnorarScenarioNoAmbiente(string p0, ref bool ignorarFeature, Type getType)
+        {
+            var typeFullName = getType.FullName;
             if (typeFullName == null)
             {
                 Assert.Equal("", "sem this.GetType().FullName");
@@ -55,42 +81,12 @@ namespace Especificacao.Testes.Pedido
 
             if (typeFullName == p0)
                 ignorarFeature = true;
-            base.Executar(i => i.GivenIgnorarFeatureNoAmbiente(p0));
         }
 
-        //fazemos como static para facilitar MUITO vida
-        private static Dictionary<string, Dictionary<string, string>> dicionarioMensagens = new Dictionary<string, Dictionary<string, string>>();
-        public static void GivenNoAmbienteErroE(string ambiente, string msgOriginal, string msgSubstituta)
+        public void GivenPedidoBaseComEnderecoDeEntrega()
         {
-            if (!dicionarioMensagens.ContainsKey(ambiente))
-                dicionarioMensagens.Add(ambiente, new Dictionary<string, string>());
-            var mensagens = dicionarioMensagens[ambiente];
-            if (!mensagens.ContainsKey(msgOriginal))
-                mensagens.Add(msgOriginal, msgSubstituta);
-
-            //se tentarem colocar mensagens diferentes damos erro
-            Assert.Equal(mensagens[msgOriginal], msgSubstituta);
+            if (ignorarFeature) return;
+            base.Executar(i => i.GivenPedidoBaseComEnderecoDeEntrega());
         }
-        public static string MapearMensagem(string? typeFullName, string msgOriginal)
-        {
-            if (typeFullName == null)
-            {
-                Assert.Equal("", "sem this.GetType().FullName");
-                return msgOriginal;
-            }
-
-            //mal resolvido: temos um Especificacao na frente.... bom, tiramos!
-            typeFullName = typeFullName.Replace("Especificacao.Ambiente.", "Ambiente.");
-            typeFullName = typeFullName.Replace("Especificacao.Especificacao.", "Especificacao.");
-
-            if (!dicionarioMensagens.ContainsKey(typeFullName))
-                return msgOriginal;
-            var mensagens = dicionarioMensagens[typeFullName];
-            if (!mensagens.ContainsKey(msgOriginal))
-                return msgOriginal;
-            return mensagens[msgOriginal];
-        }
-
-
     }
 }

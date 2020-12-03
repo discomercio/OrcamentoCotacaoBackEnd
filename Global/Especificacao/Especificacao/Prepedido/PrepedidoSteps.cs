@@ -10,8 +10,9 @@ namespace Especificacao.Especificacao.Prepedido
     {
         public PrepedidoSteps()
         {
-            base.AdicionarImplementacao(new Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido());
-            RegistroDependencias.AdicionarDependencia("Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedidoListaDependencias", 
+            var imp = new Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido();
+            base.AdicionarImplementacao(imp);
+            RegistroDependencias.AdicionarDependencia("Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedidoListaDependencias", imp,
                 "Especificacao.Prepedido.Prepedido.PrepedidoListaDependencias");
         }
         [Given(@"O prepedido não tem nenhum passo individual, somente passos incluídos pela PedidoListaDependencias")]

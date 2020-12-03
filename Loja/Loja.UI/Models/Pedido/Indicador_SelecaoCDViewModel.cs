@@ -11,8 +11,9 @@ namespace Loja.UI.Models.Pedido
     public class Indicador_SelecaoCDViewModel
     {
         public string NomeCliente { get; set; }
+        public string CpfCnpj { get; set; }
         public string IndicadorOriginal { get; set; }
-        public List<IndicadorDto> ListaIndicadores { get; set; }
+        public SelectList ListaIndicadores { get; set; }
         public SelectList ListaCD { get; set; }
         public string ListaOperacoesPermitidas { get; set; }
         public SelectList PedBonshop { get; set; }

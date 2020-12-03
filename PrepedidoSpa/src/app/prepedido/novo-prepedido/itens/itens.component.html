@@ -9,8 +9,8 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 	<header *ngIf="!prePedidoDto" [ngClass]="{'carregando': carregandoDto || carregandoProds}">Carregando dados</header>
 	<form style="display: contents;" *ngIf="prePedidoDto" (keydown.enter)="continuar()">
 		<header>
-			<ng-container *ngIf="criando; else tituloEditando">Criar Pré-Pedido</ng-container>
-			<ng-template #tituloEditando>Editar Pré-pedido</ng-template>
+			<ng-container *ngIf="criando; else tituloEditando">Criar Pedido</ng-container>
+			<ng-template #tituloEditando>Editar Pedido</ng-template>
 		</header>
 		<article class="indicadorlinha" [ngClass]="{'carregando': carregandoProds && clicouAddProd}">
 			<div style="padding-bottom: 0.6em;"><strong>Cliente:</strong> {{cpfCnpj()}} -
@@ -75,7 +75,7 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 					<ng-container *ngFor="let i of prePedidoDto?.ListaProdutos">
 						<tr>
 							<td align="left" style="cursor: pointer;" (click)="mostrarProdutos(i)">
-								{{i.Fabricante}}/{{i.NumProduto}} -
+								{{i.Fabricante}}/{{i.Produto}} -
 								<span [innerHTML]="i.Descricao"></span>
 							</td>
 							<!-- esta coluna está oculta: 
@@ -96,30 +96,29 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 								</mat-form-field>
 							</td>
 							<td *ngIf="permite_RA_Status" align="right">
-								<!-- <input name="c_vl_NF" id="c_vl_NF" class="PLLd" style="width:62px;" value='{{i.Preco}}' /> -->
 								<mat-form-field class="preco">
 									<input matInput type="text" required
-										[value]="moedaUtils.formatarMoedaSemPrefixo(i.Preco_Lista)"
-										(keyup)="formatarPreco_Lista($event,i)" (blur)="digitouPreco_Lista($event,i)">
+										[value]="moedaUtils.formatarMoedaSemPrefixo(i.Preco_NF)"
+										(keyup)="formatarPreco_NF($event,i)" (blur)="digitouPreco_NF($event,i)">
 								</mat-form-field>
 							</td>
 
 							<td align="right">
-								{{moedaUtils.formatarMoedaSemPrefixo(i.VlLista)}}
+								{{moedaUtils.formatarMoedaSemPrefixo(i.Preco_Lista)}}
 							</td>
 
 
 							<td align="right">
 								<mat-form-field class="desconto">
-									<input matInput type="text" [value]="moedaUtils.formatarMoedaSemPrefixo(i.Desconto)"
+									<input matInput type="text" [value]="moedaUtils.formatarMoedaSemPrefixo(i.Desc_Dado)"
 										(keyup)="formatarDesc($event,i)" (blur)="digitouDesc($event,i)">
 								</mat-form-field>%
 							</td>
 							<td align="right">
 								<mat-form-field class="preco">
 									<input matInput type="text" required
-										[value]="moedaUtils.formatarMoedaSemPrefixo(i.VlUnitario)"
-										(keyup)="formataVlVenda($event,i)" (blur)="digitouVlVenda($event,i)">
+										[value]="moedaUtils.formatarMoedaSemPrefixo(i.Preco_Venda)"
+										(keyup)="formataPreco_Venda($event,i)" (blur)="digitouPreco_Venda($event,i)">
 								</mat-form-field>
 							</td>
 
@@ -201,7 +200,7 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 					<!-- sempre uma linha inteira -->
 					<div style="cursor: pointer; padding-bottom: 1em; text-align: center" (click)="mostrarProdutos(i)">
 						Produto
-						{{i.Fabricante}}/{{i.NumProduto}} -
+						{{i.Fabricante}}/{{i.Produto}} -
 						<span [innerHTML]="i.Descricao"></span>
 					</div>
 
@@ -214,18 +213,17 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 							</mat-form-field>
 						</span>
 						<span *ngIf="permite_RA_Status">
-							<!-- <input name="c_vl_NF" id="c_vl_NF" class="PLLd" style="width:62px;" value='{{i.Preco}}' /> -->
 							<mat-form-field class="preco">
 								<input matInput type="text" required
-									[value]="moedaUtils.formatarMoedaSemPrefixo(i.Preco_Lista)"
-									(keyup)="formatarPreco_Lista($event,i)" (blur)="digitouPreco_Lista($event,i)"
+									[value]="moedaUtils.formatarMoedaSemPrefixo(i.Preco_NF)"
+									(keyup)="formatarPreco_NF($event,i)" (blur)="digitouPreco_NF($event,i)"
 									placeholder="Preço">
 							</mat-form-field>
 						</span>
 
 						<span>
 							<mat-form-field class="desconto">
-								<input matInput type="text" [value]="moedaUtils.formatarPorcentagemUmaCasa(i.Desconto)"
+								<input matInput type="text" [value]="moedaUtils.formatarPorcentagemUmaCasa(i.Desc_Dado)"
 									(keyup)="formatarDesc($event,i)" (blur)="digitouDesc($event,i)"
 									placeholder="Desconto">
 							</mat-form-field>%
@@ -233,15 +231,15 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 						<span>
 							<mat-form-field class="preco">
 								<input matInput type="text" required
-									[value]="moedaUtils.formatarMoedaSemPrefixo(i.VlUnitario)"
-									(keyup)="formataVlVenda($event,i)" (blur)="digitouVlVenda($event,i)"
+									[value]="moedaUtils.formatarMoedaSemPrefixo(i.Preco_Venda)"
+									(keyup)="formataPreco_Venda($event,i)" (blur)="digitouPreco_Venda($event,i)"
 									placeholder=" VL Venda">
 							</mat-form-field>
 						</span>
 					</div>
 					<div style="display: flex; justify-content: space-around; align-items: center;">
 						<span>
-							VL Lista: {{moedaUtils.formatarMoedaSemPrefixo(i.VlLista)}}
+							VL Lista: {{moedaUtils.formatarMoedaSemPrefixo(i.Preco_Lista)}}
 						</span>
 
 						<span>VL Total:

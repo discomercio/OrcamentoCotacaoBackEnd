@@ -1,0 +1,14 @@
+﻿Para instalar, criar um site com a seguinte esturura de pastas (podem ser pastas físicas ou virtuais):
+	sistema
+	homologacao
+	sistemamvc
+		lojamvc
+		centralmvc
+	homologacaomvc
+		lojamvc
+		centralmvc
+cada uma com seu application pool
+
+O acesso ao módulo Loja será: http://<<sitecolors>>/homologacaomvc/lojamvc
+e o verdinho da loja será: http://<<sitecolors>>/homologacao/loja
+
