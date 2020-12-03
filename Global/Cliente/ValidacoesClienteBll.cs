@@ -161,7 +161,7 @@ namespace Cliente
                     //vamos validar o gênero do cliente
                     if (string.IsNullOrEmpty(dadosCliente.Sexo))
                     {
-                        if (sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__APIMAGENTO)
+                        if (sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI)
                         {
                             lstErros.Add(MensagensErro.GENERO_DO_CLIENTE_NAO_INFORMADO);
                             retorno = false;
@@ -170,13 +170,13 @@ namespace Cliente
                     else
                     {
                         if (dadosCliente.Sexo.Length > 1 &&
-                            sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__APIMAGENTO)
+                            sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI)
                         {
                             lstErros.Add("FORMATO DO TIPO DE SEXO INVÁLIDO!");
                             retorno = false;
                         }
                         if (dadosCliente.Sexo != "M" && dadosCliente.Sexo != "F" &&
-                            sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__APIMAGENTO)
+                            sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI)
                         {
                             lstErros.Add("INDIQUE QUAL O SEXO.");
                             retorno = false;
