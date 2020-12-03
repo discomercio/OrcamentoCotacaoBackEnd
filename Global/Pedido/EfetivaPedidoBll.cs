@@ -36,7 +36,8 @@ namespace Pedido
             List<Cl_ITEM_PEDIDO_NOVO> v_item, List<Cl_CTRL_ESTOQUE_PEDIDO_ITEM_NOVO> v_spe, List<string> v_desconto,
             List<RegrasBll> lstRegras, float perc_limite_RA_sem_desagio,
             string loja_atual, float perc_desagio_RA, Tcliente cliente, List<string> lstErros,
-            ContextoBdGravacao dbGravacao)
+            ContextoBdGravacao dbGravacao,
+            InfraBanco.Constantes.Constantes.CodSistemaResponsavel Plataforma_Origem_Pedido)
         {
             bool blnUsarMemorizacaoCompletaEnderecos =
                 await UtilsGlobais.Util.IsActivatedFlagPedidoUsarMemorizacaoCompletaEnderecos(contextoProvider);
@@ -172,17 +173,7 @@ namespace Pedido
 
                     MontarEnderecoCadastralCliente(pedidonovo, cliente);
 
-                    //referente ao magento
-                    string s_pedido_ac = "";
-                    if (operacao_origem == InfraBanco.Constantes.Constantes.OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO ||
-                        (pedidonovo.Loja) == InfraBanco.Constantes.Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE && s_pedido_ac != "")
-                    {
-                        pedidonovo.Plataforma_Origem_Pedido = (int)InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__APIMAGENTO;
-                    }
-                    else
-                    {
-                        pedidonovo.Plataforma_Origem_Pedido = (int)InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS;
-                    }
+                        pedidonovo.Plataforma_Origem_Pedido = (int)Plataforma_Origem_Pedido;
 
                     pedidonovo.Id_Nfe_Emitente = (short)empresa;
 

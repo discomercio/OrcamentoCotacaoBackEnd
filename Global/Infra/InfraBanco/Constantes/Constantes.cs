@@ -14,19 +14,27 @@ namespace InfraBanco.Constantes
         public static string TEL_BONSHOP_1 = "1139344400";
         public static string TEL_BONSHOP_2 = "1139344420";
         public static string TEL_BONSHOP_3 = "1139344411";
+
+        //todo: usar estes campos
+        public enum Cod_plataforma_origem
+        {
+            COD_PLATAFORMA_ORIGEM_PEDIDO__ERP = 0,
+            COD_PLATAFORMA_ORIGEM_PEDIDO__MAGENTO = 1
+        };
+
         public enum CodSistemaResponsavel
         {
             COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP = 1,
             COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS = 2,
             COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS = 3,
-            COD_SISTEMA_RESPONSAVEL_CADASTRO__APIMAGENTO = 4
+            COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI = 4   //API magento
         };
 
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         public const string T_PEDIDO_ANALISE_ENDERECO = "T_PEDIDO_ANALISE_ENDERECO";
         public const string T_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO = "T_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO";
 
-        public const string ID_FORMA_PAGTO_DINHEIRO = "1";  
+        public const string ID_FORMA_PAGTO_DINHEIRO = "1";
         public const string ID_FORMA_PAGTO_DEPOSITO = "2";
         public const string ID_FORMA_PAGTO_CHEQUE = "3";
         public const string ID_FORMA_PAGTO_BOLETO = "4";
@@ -421,7 +429,7 @@ namespace InfraBanco.Constantes
         //'	VISANET
 
         public const string VISANET_AUTHENTTYPE = "1";     /*'	AUTHENTTYPE = 1: AUTENTICAÇÃO FEITA ATRAVÉS DA DIGITAÇÃO DA SENHA PELO CLIENTE (DEPENDE DE INTEGRAÇÃO ENTRE VISANET E EMISSOR DO CARTÃO)*/
-                                                           //'	AUTHENTTYPE = 0: A TRANSAÇÃO NÃO FAZ AUTENTICAÇÃO
+        //'	AUTHENTTYPE = 0: A TRANSAÇÃO NÃO FAZ AUTENTICAÇÃO
 
         public const string VISANET_TIPO_CARTAO_CREDITO = "1";
 

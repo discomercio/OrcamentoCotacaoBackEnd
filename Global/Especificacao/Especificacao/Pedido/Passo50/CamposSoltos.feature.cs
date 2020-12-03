@@ -165,7 +165,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 27
- testRunner.When("Informo \"nf_texto\" = um texto com \"401\" caracteres", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"nf_texto\" = um texto com \"801\" caracteres", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 28
  testRunner.Then("Erro regex \"Conteúdo de \"Constar na NF\" excede em.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -174,7 +174,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 31
- testRunner.When("Informo \"nf_texto\" = um texto com \"400\" caracteres", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"nf_texto\" = um texto com \"800\" caracteres", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 32
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");

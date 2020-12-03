@@ -111,7 +111,7 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
 
                 //criei o código para sistema_responsavel_cadastro 
                 List<string> lstRet = (await clienteBll.CadastrarCliente(clienteCadastro, orcamentista,
-                    Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__APIMAGENTO)).ToList();
+                    Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI)).ToList();
 
                 //é erro
                 if (lstRet.Count > 1)
@@ -139,11 +139,11 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
                 Convert.ToDecimal(configuracaoApiMagento.LimiteArredondamentoPrecoVendaOrcamentoItem), 0.1M,
                 pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac, pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem,
                 pedidoMagento.InfCriacaoPedido.Pedido_bs_x_marketplace,
-                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__APIMAGENTO);
+                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI);
             if (resultado.ListaErros.Count != 0)
                 return resultado;
 
-            Pedido.Dados.Criacao.PedidoCriacaoRetornoDados ret = await pedidoCriacao.CadastrarPedido(pedidoDados);
+            Pedido.Dados.Criacao.PedidoCriacaoRetornoDados ret = await pedidoCriacao.CadastrarPedido(pedidoDados, Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI);
 
             resultado.IdPedidoCadastrado = ret.Id;
             resultado.IdsPedidosFilhotes = ret.ListaIdPedidosFilhotes;

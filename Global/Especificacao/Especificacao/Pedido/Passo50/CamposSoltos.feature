@@ -2,7 +2,7 @@
 Feature: CamposSoltos
 
 #var MAX_TAM_OBS1 = 500;
-#var MAX_TAM_NF_TEXTO = 400;
+#var MAX_TAM_NF_TEXTO = 800;
 #var MAX_TAM_FORMA_PAGTO = 250;
 
 Scenario: obs1 tamanho
@@ -24,11 +24,11 @@ Scenario: c_nf_texto tamanho
 	#if (s.length > MAX_TAM_NF_TEXTO) {
 	#    alert('Conteúdo de "Constar na NF" excede em ' + (s.length-MAX_TAM_NF_TEXTO) + ' caracteres o tamanho máximo de ' + MAX_TAM_NF_TEXTO + '!!');
 	Given Pedido base
-	When Informo "nf_texto" = um texto com "401" caracteres
+	When Informo "nf_texto" = um texto com "801" caracteres
 	Then Erro regex "Conteúdo de "Constar na NF" excede em.*"
 
 	Given Pedido base
-	When Informo "nf_texto" = um texto com "400" caracteres
+	When Informo "nf_texto" = um texto com "800" caracteres
 	Then Sem nenhum erro
 
 Scenario: forma_pagto tamanho

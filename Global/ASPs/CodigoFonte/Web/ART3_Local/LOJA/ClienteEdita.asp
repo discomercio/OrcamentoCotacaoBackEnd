@@ -183,17 +183,26 @@
 	s_mag_end_cob_completo = ""
 
 	dim operacao_origem, c_numero_magento, operationControlTicket, sessionToken, id_magento_api_pedido_xml
+	dim c_FlagCadSemiAutoPedMagento_FluxoOtimizado, rb_indicacao, rb_RA, c_indicador
 	operacao_origem = Trim(Request("operacao_origem"))
 	c_numero_magento = ""
 	operationControlTicket = ""
 	sessionToken = ""
 	id_magento_api_pedido_xml = ""
+	c_FlagCadSemiAutoPedMagento_FluxoOtimizado = ""
+	rb_indicacao = ""
+	rb_RA = ""
+	c_indicador = ""
 	if alerta = "" then
 		if operacao_origem = OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO then
 			c_numero_magento = Trim(Request("c_numero_magento"))
 			operationControlTicket = Trim(Request("operationControlTicket"))
 			sessionToken = Trim(Request("sessionToken"))
 			id_magento_api_pedido_xml = Trim(Request("id_magento_api_pedido_xml"))
+			c_FlagCadSemiAutoPedMagento_FluxoOtimizado = Trim(Request.Form("c_FlagCadSemiAutoPedMagento_FluxoOtimizado"))
+			rb_indicacao = Trim(Request.Form("rb_indicacao"))
+			rb_RA = Trim(Request.Form("rb_RA"))
+			c_indicador = Trim(Request.Form("c_indicador"))
 
 			If Not cria_recordset_otimista(tMAP_XML, msg_erro) then Response.Redirect("aviso.asp?id=" & ERR_FALHA_OPERACAO_CRIAR_ADO)
 			If Not cria_recordset_otimista(tMAP_END_ETG, msg_erro) then Response.Redirect("aviso.asp?id=" & ERR_FALHA_OPERACAO_CRIAR_ADO)
@@ -287,7 +296,8 @@
 				c_mag_end_cob_fax_ddd = s_ddd
 				c_mag_end_cob_fax_numero = s_tel
 				'NORMALIZA TELEFONES, VERIFICANDO INCLUSIVE REPETIÇÕES
-				call ec_dados_normaliza_telefones(c_mag_end_cob_telephone_ddd, c_mag_end_cob_telephone_numero, c_mag_end_cob_celular_ddd, c_mag_end_cob_celular_numero, c_mag_end_cob_fax_ddd, c_mag_end_cob_fax_numero)
+				'10/NOV/2020: Normalização cancelada devido à inversão de telefones nos campos que passou a ser inconveniente após a implementação do fluxo otimizado decorrente da memorização do endereço no pedido
+				'	call ec_dados_normaliza_telefones(c_mag_end_cob_telephone_ddd, c_mag_end_cob_telephone_numero, c_mag_end_cob_celular_ddd, c_mag_end_cob_celular_numero, c_mag_end_cob_fax_ddd, c_mag_end_cob_fax_numero)
 				c_mag_end_cob_endereco = Trim("" & tMAP_END_COB("endereco"))
 				c_mag_end_cob_endereco_numero = Trim("" & tMAP_END_COB("endereco_numero"))
 				c_mag_end_cob_complemento = Trim("" & tMAP_END_COB("endereco_complemento"))
@@ -309,7 +319,8 @@
 				c_mag_end_etg_fax_ddd = s_ddd
 				c_mag_end_etg_fax_numero = s_tel
 				'NORMALIZA TELEFONES, VERIFICANDO INCLUSIVE REPETIÇÕES
-				call ec_dados_normaliza_telefones(c_mag_end_etg_telephone_ddd, c_mag_end_etg_telephone_numero, c_mag_end_etg_celular_ddd, c_mag_end_etg_celular_numero, c_mag_end_etg_fax_ddd, c_mag_end_etg_fax_numero)
+				'10/NOV/2020: Normalização cancelada devido à inversão de telefones nos campos que passou a ser inconveniente após a implementação do fluxo otimizado decorrente da memorização do endereço no pedido
+				'	call ec_dados_normaliza_telefones(c_mag_end_etg_telephone_ddd, c_mag_end_etg_telephone_numero, c_mag_end_etg_celular_ddd, c_mag_end_etg_celular_numero, c_mag_end_etg_fax_ddd, c_mag_end_etg_fax_numero)
 				c_mag_end_etg_endereco = Trim("" & tMAP_END_ETG("endereco"))
 				c_mag_end_etg_endereco_numero = Trim("" & tMAP_END_ETG("endereco_numero"))
 				c_mag_end_etg_complemento = Trim("" & tMAP_END_ETG("endereco_complemento"))
@@ -1201,6 +1212,7 @@ end function
         }
 
         if (eh_cpf) {
+			<% if False then %>
             s = trim(f.sexo.value);
             if ((s == "") || (!sexo_ok(s))) {
                 alert('Indique qual o sexo!!');
@@ -1212,6 +1224,7 @@ end function
                 f.dt_nasc.focus();
                 return;
             }
+			<% end if %>
             if ((!f.rb_produtor_rural[0].checked) && (!f.rb_produtor_rural[1].checked)) {
                 alert('Informe se o cliente é produtor rural ou não!!');
                 return;
@@ -1250,12 +1263,15 @@ end function
             //	f.ie.focus();
             //	return;
             //	}
+			<% if CStr(loja) <> CStr(NUMERO_LOJA_ECOMMERCE_AR_CLUBE) then %>
             s = trim(f.contato.value);
             if (s == "") {
                 alert('Informe o nome da pessoa para contato!!');
                 f.contato.focus();
                 return;
             }
+			<% end if %>
+
             if ((!f.rb_contribuinte_icms[0].checked) && (!f.rb_contribuinte_icms[1].checked) && (!f.rb_contribuinte_icms[2].checked)) {
                 alert('Informe se o cliente é contribuinte do ICMS, não contribuinte ou isento!!');
                 return;
@@ -1870,6 +1886,12 @@ end function
 <input type="hidden" name="c_numero_magento" id="c_numero_magento" value="<%=c_numero_magento%>" />
 <input type="hidden" name="operationControlTicket" id="operationControlTicket" value="<%=operationControlTicket%>" />
 <input type="hidden" name="sessionToken" id="sessionToken" value="<%=sessionToken%>" />
+<% if operacao_origem = OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO then %>
+<input type="hidden" name="c_FlagCadSemiAutoPedMagento_FluxoOtimizado" id="c_FlagCadSemiAutoPedMagento_FluxoOtimizado" value="<%=c_FlagCadSemiAutoPedMagento_FluxoOtimizado%>" />
+<input type="hidden" name="rb_indicacao" id="rb_indicacao" value="<%=rb_indicacao%>" />
+<input type="hidden" name="c_indicador" id="c_indicador" value="<%=c_indicador%>" />
+<input type="hidden" name="rb_RA" id="rb_RA" value="<%=rb_RA%>" />
+<% end if %>
 
 
 <% if operacao_origem = OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO then %>
@@ -2880,6 +2902,13 @@ end function
 	<input type="hidden" name="c_numero_magento" id="c_numero_magento" value="<%=c_numero_magento%>" />
 	<input type="hidden" name="operationControlTicket" id="operationControlTicket" value="<%=operationControlTicket%>" />
 	<input type="hidden" name="sessionToken" id="sessionToken" value="<%=sessionToken%>" />
+	<% if operacao_origem = OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO then %>
+	<input type="hidden" name="c_FlagCadSemiAutoPedMagento_FluxoOtimizado" id="c_FlagCadSemiAutoPedMagento_FluxoOtimizado" value="<%=c_FlagCadSemiAutoPedMagento_FluxoOtimizado%>" />
+	<input type="hidden" name="rb_indicacao" id="rb_indicacao" value="<%=rb_indicacao%>" />
+	<input type="hidden" name="c_indicador" id="c_indicador" value="<%=c_indicador%>" />
+	<input type="hidden" name="rb_RA" id="rb_RA" value="<%=rb_RA%>" />
+	<% end if %>
+
 
 <!-- ************   ENDEREÇO DE ENTREGA: S/N   ************ -->
 <br>
