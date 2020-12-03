@@ -1,4 +1,4 @@
-﻿using Pedido.Dados.DetalhesPedido;
+﻿using Prepedido.PedidoVisualizacao.Dados.DetalhesPedido;
 using System;
 using System.Collections.Generic;
 using System.Text;

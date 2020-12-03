@@ -1,5 +1,4 @@
-﻿using Pedido;
-using PrepedidoUnisBusiness.UnisDto.PedidoUnisDto;
+﻿using PrepedidoUnisBusiness.UnisDto.PedidoUnisDto;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,12 +6,12 @@ namespace PrepedidoUnisBusiness.UnisBll.PedidoUnisBll
 {
     public class PedidoUnisBll
     {
-        private readonly PedidoBll pedidoBll;
+        private readonly Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll pedidoVisualizacaoBll;
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
 
-        public PedidoUnisBll(PedidoBll pedidoBll, InfraBanco.ContextoBdProvider contextoProvider)
+        public PedidoUnisBll(Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll  pedidoVisualizacaoBll, InfraBanco.ContextoBdProvider contextoProvider)
         {
-            this.pedidoBll = pedidoBll;
+            this.pedidoVisualizacaoBll = pedidoVisualizacaoBll;
             this.contextoProvider = contextoProvider;
         }
 
@@ -30,7 +29,7 @@ namespace PrepedidoUnisBusiness.UnisBll.PedidoUnisBll
                                        select c.Orcamentista).FirstOrDefault();
 
 
-                Pedido.Dados.DetalhesPedido.PedidoDados pedidoDados = await pedidoBll.BuscarPedido(orcamentista?.Trim(), pedido);
+                Prepedido.PedidoVisualizacao.Dados.DetalhesPedido.PedidoDados pedidoDados = await pedidoVisualizacaoBll.BuscarPedido(orcamentista?.Trim(), pedido);
 
                 if (pedidoDados != null)
                 {

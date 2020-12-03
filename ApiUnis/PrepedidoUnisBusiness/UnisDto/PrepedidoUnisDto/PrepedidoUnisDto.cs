@@ -33,8 +33,6 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
 
         [Required]
         public bool PermiteRAStatus { get; set; }
-        public decimal? ValorTotalDestePedidoComRA { get; set; }
-        public decimal? VlTotalDestePedido { get; set; }
 
         /// <summary>
         /// ValorTotalDestePedidoComRA = soma de Preco_NF * Qtde
