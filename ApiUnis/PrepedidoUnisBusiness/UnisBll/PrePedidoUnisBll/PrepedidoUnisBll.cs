@@ -200,7 +200,6 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
 
         public async Task<BuscarStatusPrepedidoRetornoUnisDto> BuscarStatusPrepedido(string orcamento)
         {
-            //afazer: implementar o método no global
             BuscarStatusPrepedidoRetornoUnisDto ret = BuscarStatusPrepedidoRetornoUnisDto.BuscarStatusPrepedidoRetornoUnisDto_De_BuscarStatusPrepedidoRetornoDados(await prepedidoBll.BuscarStatusPrepedido(orcamento));
 
             return await Task.FromResult(ret);
