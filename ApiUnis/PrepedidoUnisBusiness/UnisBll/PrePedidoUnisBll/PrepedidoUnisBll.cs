@@ -88,7 +88,7 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
                 return retorno;
             }
 
-            Cliente.Dados.EnderecoCadastralClientePrepedidoDados endCadastralDados = 
+            Cliente.Dados.EnderecoCadastralClientePrepedidoDados endCadastralDados =
                 EnderecoCadastralClientePrepedidoUnisDto
                 .EnderecoCadastralClientePrepedidoDadosDeEnderecoCadastralClientePrepedidoUnisDto(prePedidoUnis.EnderecoCadastralCliente);
 
@@ -204,5 +204,53 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
 
             return await Task.FromResult(ret);
         }
+
+        public async Task<ListaInformacoesPrepedidoRetornoUnisDto> ListarStatusPrepedido(FiltroInfosStatusPrepedidosUnisDto filtro)
+        {
+            // vamos buscar os dados do prepedido no Global
+            ListaInformacoesPrepedidoRetornoUnisDto lstInfoRetorno = new ListaInformacoesPrepedidoRetornoUnisDto();
+
+            //afazer : criar a conversão de dados para uma lista
+            //filtrar conforme a configuração nas respectivas listas
+
+            //bucar a lista completa
+            List<InformacoesStatusPrepedidoRetornoDados> lstStatusPrepedidoDados = await prepedidoBll.ListarStatusPrepedido(filtro.ListaPrepedidos, (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS);
+
+            if (lstStatusPrepedidoDados != null)
+            {
+                if (lstStatusPrepedidoDados.Count > 0)
+                {
+                    //vamos converter os dados
+                    List<InformacoesPrepedidoUnisDto> lstInfoPrepedidoUnisDto = InformacoesPrepedidoUnisDto.
+                        ListaInformacoesPrepedidoUnisDto_De_ListaInformacoesStatusPrepedidoRetornoDados(lstStatusPrepedidoDados);
+
+
+                    if (filtro.Cancelados)
+                    {
+                        lstInfoRetorno.ListaPrepedidosCanceladosUnisDto = lstInfoPrepedidoUnisDto
+                       .Where(x => x.St_orcamento == Constantes.ST_ORCAMENTO_CANCELADO &&
+                               x.Data >= DateTime.Now.AddDays(-configuracaoApiUnis.ParamBuscaListagemStatusPrepedido.CanceladoDias))
+                        .Select(c => c).ToList();
+                    }
+                    if (filtro.Pendentes)
+                    {
+                        lstInfoRetorno.ListaPrepedidosPendentesUnisDto = lstInfoPrepedidoUnisDto
+                            .Where(x => !x.St_virou_pedido &&
+                                x.Data >= DateTime.Now.AddDays(-configuracaoApiUnis.ParamBuscaListagemStatusPrepedido.PendentesDias))
+                            .Select(c => c).ToList();
+                    }
+                    if (filtro.VirouPedido)
+                    {
+                        lstInfoRetorno.ListaPrepedidosViraramPedidosUnisDto = lstInfoPrepedidoUnisDto
+                            .Where(x => x.St_virou_pedido &&
+                                x.Data >= DateTime.Now.AddDays(-configuracaoApiUnis.ParamBuscaListagemStatusPrepedido.VirouPedidoDias))
+                            .Select(c => c).ToList();
+                    }
+                }
+            }
+
+            return lstInfoRetorno;
+        }
     }
 }
+

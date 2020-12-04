@@ -198,5 +198,37 @@ namespace PrepedidoAPIUnis.Controllers
 
             return NoContent();
         }
+
+        /// <summary>
+        /// Rotina para buscar lote de status do Pré-Pedido
+        /// </summary>
+        /// <param name="lstPrepedido">Lista de Pré-pedidos. Exemplo: "123456Z", "654321Z".</param>
+        /// <returns>ListaInformacoesPrepedidoRetornoUnisDto</returns>
+        /// <response code="204">Não foi encontrado nenhum orçamento</response>
+        [AllowAnonymous]
+        [HttpPost("listarStatusPrepedido")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public async Task<ActionResult<ListaInformacoesPrepedidoRetornoUnisDto>> ListarStatusPrepedido(FiltroInfosStatusPrepedidosUnisDto filtroStatus)
+        {
+            if(filtroStatus != null)
+            {
+                if (!servicoValidarTokenApiUnis.ValidarToken(filtroStatus.TokenAcesso, out _))
+                    return Unauthorized();
+            }
+            
+            //vamos fazer a busca
+            if (filtroStatus.ListaPrepedidos != null)
+            {
+                if (filtroStatus.ListaPrepedidos.Count > 0)
+                {
+                    ListaInformacoesPrepedidoRetornoUnisDto lstInfo = await prepedidoUnisBll.ListarStatusPrepedido(filtroStatus);
+                    
+                    //confirmar se faremos a verificação de dados para retornar OK
+                    return Ok(lstInfo);
+                }
+            }
+
+            return NoContent();
+        }
     }
 }
