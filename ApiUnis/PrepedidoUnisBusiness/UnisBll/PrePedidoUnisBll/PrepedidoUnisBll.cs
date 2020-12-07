@@ -209,8 +209,9 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
         {
             // vamos buscar os dados do prepedido no Global
             ListaInformacoesPrepedidoRetornoUnisDto lstInfoRetorno = new ListaInformacoesPrepedidoRetornoUnisDto();
-
-            bool filtrarPor = filtro.FiltrarPrepedidos != null && filtro.FiltrarPrepedidos.Count > 0;
+            //se tiver item => não filtra por data
+            //se não tiver item e appsettings > 0 => filtra por data
+            bool filtrarPor = filtro.FiltrarPrepedidos == null || filtro.FiltrarPrepedidos.Count <= 0;
 
             int cancelado = configuracaoApiUnis.ParamBuscaListagemStatusPrepedido.CanceladoDias;
             DateTime paramCan = cancelado > 0 && filtrarPor ? DateTime.Now.AddDays(-cancelado) : new DateTime();
