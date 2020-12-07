@@ -35,9 +35,9 @@ namespace PrepedidoUnisBusiness.Utils
 
         public class PrepedidoListarStatusPrepedidoParametrizacao
         {
-            public int CanceladoDias { get; set; }
-            public int PendentesDias { get; set; }
-            public int VirouPedidoDias { get; set; }
+            public int CanceladoDias { get; set; } = 60;
+            public int PendentesDias { get; set; } = 60;
+            public int VirouPedidoDias { get; set; } = 60;
         }
 
         public PrepedidoListarStatusPrepedidoParametrizacao ParamBuscaListagemStatusPrepedido { get; set; } = new PrepedidoListarStatusPrepedidoParametrizacao();
