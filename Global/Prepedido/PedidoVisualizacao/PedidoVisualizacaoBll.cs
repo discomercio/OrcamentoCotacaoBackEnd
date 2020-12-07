@@ -1019,7 +1019,7 @@ namespace Prepedido.PedidoVisualizacao
             return retorno;
         }
 
-        private async Task<string> ObterAnaliseCreditoVisualizacao(string codigo, string numPedido, string apelido)
+        public async Task<string> ObterAnaliseCreditoVisualizacao(string codigo, string numPedido, string apelido)
         {
             //duplicado com código acima
             string retorno = "";
@@ -1308,7 +1308,7 @@ namespace Prepedido.PedidoVisualizacao
             return await Task.FromResult(lista);
         }
 
-        private async Task<IEnumerable<string>> ObterFormaPagto(Tpedido ped)
+        public async Task<IEnumerable<string>> ObterFormaPagto(Tpedido ped)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -1367,7 +1367,7 @@ namespace Prepedido.PedidoVisualizacao
             return await Task.FromResult(lista.ToList());
         }
 
-        private string StatusPagto(string status)
+        public string StatusPagto(string status)
         {
             string retorno = "";
 
