@@ -1982,12 +1982,38 @@ namespace Prepedido
             var db = contextoProvider.GetContextoLeitura();
 
             List<InformacoesStatusPrepedidoRetornoDados> lstInfosStatusPrepedido = new List<InformacoesStatusPrepedidoRetornoDados>();
+            List<Torcamento> lstTorcamento = new List<Torcamento>();
 
-            List<Torcamento> lstTorcamento = await (from c in db.Torcamentos
-                                                    where (from d in lstPrepedido
-                                                           select d).Contains(c.Orcamento) &&
-                                                          c.Sistema_responsavel_cadastro == sistema_responsavel
-                                                    select c).ToListAsync();
+            if(lstPrepedido == null || lstPrepedido.Count == 0)
+            {
+                lstTorcamento = await (from c in db.Torcamentos
+                                       where c.Sistema_responsavel_cadastro == sistema_responsavel
+                                       select c).ToListAsync();
+            }
+            else
+            {
+                lstTorcamento = await (from c in db.Torcamentos
+                                       where (from d in lstPrepedido
+                                              select d).Contains(c.Orcamento) &&
+                                             c.Sistema_responsavel_cadastro == sistema_responsavel
+                                       select c).ToListAsync();
+            }
+
+            //if (lstPrepedido != null)
+            //{
+            //    if (lstPrepedido.Count > 0)
+            //        lstTorcamento = await (from c in db.Torcamentos
+            //                               where (from d in lstPrepedido
+            //                                      select d).Contains(c.Orcamento) &&
+            //                                     c.Sistema_responsavel_cadastro == sistema_responsavel
+            //                               select c).ToListAsync();
+            //}
+            //else
+            //{
+            //    lstTorcamento = await (from c in db.Torcamentos
+            //                           where c.Sistema_responsavel_cadastro == sistema_responsavel
+            //                           select c).ToListAsync();
+            //}
 
             //vamos buscar todos que viraram pedido
             //aqui ja estamos buscando todos que contém o orçamento
