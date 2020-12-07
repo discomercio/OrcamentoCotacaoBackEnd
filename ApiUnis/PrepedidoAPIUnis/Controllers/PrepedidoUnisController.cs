@@ -94,7 +94,7 @@ namespace PrepedidoAPIUnis.Controllers
                 return Unauthorized();
 
             FormaPagtoUnisDto retorno = await formaPagtoUnisBll.ObterFormaPagto(orcamentista?.Trim().ToUpper(), tipo_pessoa?.Trim().ToUpper());
-            
+
             return Ok(retorno);
 
         }
@@ -210,21 +210,20 @@ namespace PrepedidoAPIUnis.Controllers
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<ActionResult<ListaInformacoesPrepedidoRetornoUnisDto>> ListarStatusPrepedido(FiltroInfosStatusPrepedidosUnisDto filtroStatus)
         {
-            if(filtroStatus != null)
+            if (filtroStatus != null)
             {
                 if (!servicoValidarTokenApiUnis.ValidarToken(filtroStatus.TokenAcesso, out _))
                     return Unauthorized();
             }
-            
+
             //vamos fazer a busca
-            if (filtroStatus.ListaPrepedidos != null)
+            if (filtroStatus.FiltrarPrepedidos != null)
             {
-                if (filtroStatus.ListaPrepedidos.Count > 0)
+                if (filtroStatus.FiltrarPrepedidos.Count > 0)
                 {
                     ListaInformacoesPrepedidoRetornoUnisDto lstInfo = await prepedidoUnisBll.ListarStatusPrepedido(filtroStatus);
-                    
-                    //confirmar se faremos a verificação de dados para retornar OK
-                    return Ok(lstInfo);
+                    if (lstInfo.ListaInformacoesPrepedidoRetorno != null)
+                        return Ok(lstInfo);
                 }
             }
 

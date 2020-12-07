@@ -8,9 +8,21 @@ namespace PrepedidoUnisBusiness.UnisDto.PrepedidoUnisDto
 {
     public class InformacoesPrepedidoUnisDto
     {
+        /// <summary>
+        /// Número do orçamento
+        /// </summary>
         public string Orcamento { get; set; }
+        /// <summary>
+        /// Data de criação
+        /// </summary>
         public DateTime Data { get; set; }
+        /// <summary>
+        /// Status do orçamento = "CAN", vazio ou nulo      
+        /// </summary>
         public string St_orcamento { get; set; }
+        /// <summary>
+        /// Flag se virou pedido
+        /// </summary>
         public bool St_virou_pedido { get; set; }
         public List<InformacoesPedidoUnisDto> LstInformacoesPedidoUnisDto { get; set; }
 
@@ -45,8 +57,9 @@ namespace PrepedidoUnisBusiness.UnisDto.PrepedidoUnisDto
 
     public class ListaInformacoesPrepedidoRetornoUnisDto
     {
-        public List<InformacoesPrepedidoUnisDto> ListaPrepedidosCanceladosUnisDto { get; set; }
-        public List<InformacoesPrepedidoUnisDto> ListaPrepedidosPendentesUnisDto { get; set; }
-        public List<InformacoesPrepedidoUnisDto> ListaPrepedidosViraramPedidosUnisDto { get; set; }
+        /// <summary>
+        /// Armazena a lista
+        /// </summary>
+        public List<InformacoesPrepedidoUnisDto> ListaInformacoesPrepedidoRetorno { get; set; }
     }
 }

@@ -210,11 +210,12 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
             // vamos buscar os dados do prepedido no Global
             ListaInformacoesPrepedidoRetornoUnisDto lstInfoRetorno = new ListaInformacoesPrepedidoRetornoUnisDto();
 
-            //afazer : criar a conversão de dados para uma lista
-            //filtrar conforme a configuração nas respectivas listas
+            int cancelado = configuracaoApiUnis.ParamBuscaListagemStatusPrepedido.CanceladoDias;
+            int pendentes = configuracaoApiUnis.ParamBuscaListagemStatusPrepedido.PendentesDias;
+            int virouPedido = configuracaoApiUnis.ParamBuscaListagemStatusPrepedido.VirouPedidoDias;
 
             //bucar a lista completa
-            List<InformacoesStatusPrepedidoRetornoDados> lstStatusPrepedidoDados = await prepedidoBll.ListarStatusPrepedido(filtro.ListaPrepedidos, (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS);
+            List<InformacoesStatusPrepedidoRetornoDados> lstStatusPrepedidoDados = await prepedidoBll.ListarStatusPrepedido(filtro.FiltrarPrepedidos, (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS);
 
             if (lstStatusPrepedidoDados != null)
             {
@@ -224,28 +225,61 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
                     List<InformacoesPrepedidoUnisDto> lstInfoPrepedidoUnisDto = InformacoesPrepedidoUnisDto.
                         ListaInformacoesPrepedidoUnisDto_De_ListaInformacoesStatusPrepedidoRetornoDados(lstStatusPrepedidoDados);
 
+                    if (lstInfoPrepedidoUnisDto != null)
+                    {
+                        if (lstInfoPrepedidoUnisDto.Count > 0)
+                        {
+                            lstInfoRetorno.ListaInformacoesPrepedidoRetorno = new List<InformacoesPrepedidoUnisDto>();
+                            foreach (var i in lstInfoPrepedidoUnisDto)
+                            {
+                                if (filtro.VirouPedido)
+                                {
+                                    if (i.St_virou_pedido && i.Data >= DateTime.Now.AddDays(-virouPedido))
+                                    {
+                                        lstInfoRetorno.ListaInformacoesPrepedidoRetorno.Add(i);
+                                    }
+                                }
+                                if (filtro.Pendentes)
+                                {
+                                    if (string.IsNullOrEmpty(i.St_orcamento) && !i.St_virou_pedido &&
+                                        i.Data >= DateTime.Now.AddDays(-pendentes))
+                                    {
+                                        lstInfoRetorno.ListaInformacoesPrepedidoRetorno.Add(i);
+                                    }
+                                }
+                                if (filtro.Cancelados)
+                                {
+                                    if (i.St_orcamento == InfraBanco.Constantes.Constantes.ST_ORCAMENTO_CANCELADO &&
+                                        i.Data >= DateTime.Now.AddDays(-cancelado))
+                                    {
+                                        lstInfoRetorno.ListaInformacoesPrepedidoRetorno.Add(i);
+                                    }
+                                }
+                            }
+                        }
+                    }
 
-                    if (filtro.Cancelados)
-                    {
-                        lstInfoRetorno.ListaPrepedidosCanceladosUnisDto = lstInfoPrepedidoUnisDto
-                       .Where(x => x.St_orcamento == Constantes.ST_ORCAMENTO_CANCELADO &&
-                               x.Data >= DateTime.Now.AddDays(-configuracaoApiUnis.ParamBuscaListagemStatusPrepedido.CanceladoDias))
-                        .Select(c => c).ToList();
-                    }
-                    if (filtro.Pendentes)
-                    {
-                        lstInfoRetorno.ListaPrepedidosPendentesUnisDto = lstInfoPrepedidoUnisDto
-                            .Where(x => !x.St_virou_pedido &&
-                                x.Data >= DateTime.Now.AddDays(-configuracaoApiUnis.ParamBuscaListagemStatusPrepedido.PendentesDias))
-                            .Select(c => c).ToList();
-                    }
-                    if (filtro.VirouPedido)
-                    {
-                        lstInfoRetorno.ListaPrepedidosViraramPedidosUnisDto = lstInfoPrepedidoUnisDto
-                            .Where(x => x.St_virou_pedido &&
-                                x.Data >= DateTime.Now.AddDays(-configuracaoApiUnis.ParamBuscaListagemStatusPrepedido.VirouPedidoDias))
-                            .Select(c => c).ToList();
-                    }
+                    //if (filtro.Cancelados)
+                    //{
+                    //    lstInfoRetorno.ListaInformacoesPrepedidoRetorno.Add(lstInfoPrepedidoUnisDto
+                    //   .Where(x => x.St_orcamento == Constantes.ST_ORCAMENTO_CANCELADO &&
+                    //           x.Data >= DateTime.Now.AddDays(-configuracaoApiUnis.ParamBuscaListagemStatusPrepedido.CanceladoDias))
+                    //    .Select(c => c).ToList());
+                    //}
+                    //if (filtro.Pendentes)
+                    //{
+                    //    lstInfoRetorno.ListaPrepedidosPendentesUnisDto = lstInfoPrepedidoUnisDto
+                    //        .Where(x => !x.St_virou_pedido &&
+                    //            x.Data >= DateTime.Now.AddDays(-configuracaoApiUnis.ParamBuscaListagemStatusPrepedido.PendentesDias))
+                    //        .Select(c => c).ToList();
+                    //}
+                    //if (filtro.VirouPedido)
+                    //{
+                    //    lstInfoRetorno.ListaPrepedidosViraramPedidosUnisDto = lstInfoPrepedidoUnisDto
+                    //        .Where(x => x.St_virou_pedido &&
+                    //            x.Data >= DateTime.Now.AddDays(-configuracaoApiUnis.ParamBuscaListagemStatusPrepedido.VirouPedidoDias))
+                    //        .Select(c => c).ToList();
+                    //}
                 }
             }
 

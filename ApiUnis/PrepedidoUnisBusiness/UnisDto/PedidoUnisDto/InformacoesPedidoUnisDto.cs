@@ -7,17 +7,84 @@ namespace PrepedidoUnisBusiness.UnisDto.PedidoUnisDto
 {
     public class InformacoesPedidoUnisDto
     {
+        /// <summary>
+        /// Número do pedido
+        /// </summary>
         public string Pedido { get; set; }
+        /// <summary>
+        /// ESP = Esperar Mercadoria, 
+        /// SPL = Split Possível, 
+        /// SEP = Separar Mercadoria, 
+        /// AET = A Entregar, 
+        /// ETG = Entregue, 
+        /// CAN = Cancelado, 
+        /// </summary>
         public string St_entrega { get; set; }
+        /// <summary>
+        /// Esperar Mercadoria, 
+        /// Split Possível, 
+        /// Separar Mercadoria, 
+        /// A Entregar, 
+        /// Entregue, 
+        /// Cancelado, 
+        /// </summary>
         public string DescricaoStatusEntrega { get; set; }
-        public DateTime Entregue_data { get; set; }
-        public DateTime Cancelado_data { get; set; }
-        public short PedidoRecebidoStatus { get; set; }
-        public DateTime PedidoRecebidoData { get; set; }
+        /// <summary>
+        /// Data da entrega do pedido
+        /// </summary>
+        public DateTime? Entregue_data { get; set; }
+        /// <summary>
+        /// Data de cancelamento do pedido
+        /// </summary>
+        public DateTime? Cancelado_data { get; set; }
+        /// <summary>
+        /// Flag para informar se o pedido foi recebido
+        /// </summary>
+        public bool PedidoRecebidoStatus { get; set; }
+        /// <summary>
+        /// Data de recebimento do pedido
+        /// </summary>
+        public DateTime? PedidoRecebidoData { get; set; }
+
+        /// <summary>
+        /// Aguardando Análise Inicial = 0, 
+        /// Pendente = 1, 
+        /// Crédito OK = 2, 
+        /// Pendente Endereço = 6, 
+        /// Crédito OK (depósito aguardando desbloqueio) = 7, 
+        /// Pendente Vendas = 8, 
+        /// Crédito OK (aguardando depósito) = 9, 
+        /// Pedido Sem Análise de Crédito = 10, 
+        /// Pendente Cartão de Crédito = PEND_CARTAO
+        /// </summary>
         public short Analise_credito { get; set; }
+        /// <summary>
+        /// Aguardando Análise Inicial, 
+        /// Pendente, 
+        /// Crédito OK, 
+        /// Pendente Endereço, 
+        /// Crédito OK (depósito aguardando desbloqueio), 
+        /// Pendente Vendas, 
+        /// Crédito OK (aguardando depósito), 
+        /// Pedido Sem Análise de Crédito, 
+        /// Pendente Cartão de Crédito, 
+        /// </summary>
         public string DescricaoAnaliseCredito { get; set; }
-        public DateTime Analise_credito_data { get; set; }
+        /// <summary>
+        /// Data da análise de crédito
+        /// </summary>
+        public DateTime? Analise_credito_data { get; set; }
+        /// <summary>
+        /// Pago = S, 
+        /// Não-Pago = N, 
+        /// Pago Parcial = P, 
+        /// </summary>
         public string St_pagto { get; set; }
+        /// <summary>
+        /// Pago, 
+        /// Não-Pago, 
+        /// Pago Parcial
+        /// </summary>
         public string DescricaoStatusPagto { get; set; }
 
 
@@ -35,10 +102,10 @@ namespace PrepedidoUnisBusiness.UnisDto.PedidoUnisDto
                         {
                             Pedido = i.Pedido,
                             St_entrega = i.St_entrega,
-                            //infosPedido.DescricaoStatusEntrega- filho.
+                            DescricaoStatusEntrega = i.DescricaoStatusEntrega,
                             Entregue_data = i.Entregue_data,
                             Cancelado_data = i.Cancelado_data,
-                            PedidoRecebidoStatus = i.PedidoRecebidoStatus,
+                            PedidoRecebidoStatus = Convert.ToBoolean(i.PedidoRecebidoStatus),
                             PedidoRecebidoData = i.PedidoRecebidoData,
                             Analise_credito = i.Analise_credito,
                             DescricaoAnaliseCredito = i.DescricaoAnaliseCredito,
