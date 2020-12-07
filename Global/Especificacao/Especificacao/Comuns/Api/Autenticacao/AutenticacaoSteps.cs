@@ -39,6 +39,12 @@ namespace Especificacao.Comuns.Api.Autenticacao
                 RegistroDependencias.AdicionarDependencia("Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedidoListaDependencias", imp,
                     "Especificacao.Comuns.Api.Autenticacao");
             }
+            {
+                var imp = new Ambiente.ApiUnis.PrepedidoUnis.BuscarStatusPrepedido.Autenticacao();
+                base.AdicionarImplementacao(imp);
+                RegistroDependencias.AdicionarDependencia("Ambiente.ApiUnis.PrepedidoUnis.BuscarStatusPrepedido.BuscarStatusPrepedidoListaDependencias", imp,
+                    "Especificacao.Comuns.Api.Autenticacao");
+            }
         }
 
         [Given(@"Dado base")]

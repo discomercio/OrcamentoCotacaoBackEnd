@@ -64,7 +64,7 @@ namespace PrepedidoAPIUnis.Controllers
         [HttpPost("cancelarPrepedido")]
         public async Task<IActionResult> CancelarPrePedido(CancelarPrepedidoUnisDto cancelarPrepedido)
         {
-            if (!servicoValidarTokenApiUnis.ValidarToken(cancelarPrepedido.TokenAcesso, out string usuario))
+            if (!servicoValidarTokenApiUnis.ValidarToken(cancelarPrepedido.TokenAcesso, out _))
                 return Unauthorized();
 
             //chamar bll para deletar
@@ -129,7 +129,7 @@ namespace PrepedidoAPIUnis.Controllers
         public async Task<ActionResult<List<List<CoeficienteUnisDto>>>> BuscarCoeficienteFornecedores(string tokenAcesso,
             List<string> lstFornecedores)
         {
-            if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out string usuario))
+            if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out _))
                 return Unauthorized();
 
             IEnumerable<IEnumerable<CoeficienteUnisDto>> ret = await coeficienteUnisBll.BuscarListaCoeficientesFornecedores(lstFornecedores);
@@ -148,7 +148,7 @@ namespace PrepedidoAPIUnis.Controllers
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<ActionResult<PermiteRaStatusResultadoUnisDto>> Obter_Permite_RA_Status(string tokenAcesso, string orcamentista)
         {
-            if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out string usuario))
+            if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out _))
                 return Unauthorized();
 
             PermiteRaStatusResultadoUnisDto ret = await prepedidoUnisBll.Obter_Permite_RA_Status(orcamentista?.ToUpper());
