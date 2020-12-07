@@ -211,8 +211,11 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
             ListaInformacoesPrepedidoRetornoUnisDto lstInfoRetorno = new ListaInformacoesPrepedidoRetornoUnisDto();
 
             int cancelado = configuracaoApiUnis.ParamBuscaListagemStatusPrepedido.CanceladoDias;
+            DateTime paramCan = cancelado > 0 ? DateTime.Now.AddDays(-cancelado) : new DateTime();
             int pendentes = configuracaoApiUnis.ParamBuscaListagemStatusPrepedido.PendentesDias;
+            DateTime paramPen = pendentes > 0 ? DateTime.Now.AddDays(-pendentes) : new DateTime();
             int virouPedido = configuracaoApiUnis.ParamBuscaListagemStatusPrepedido.VirouPedidoDias;
+            DateTime paramVir = virouPedido > 0 ? DateTime.Now.AddDays(-virouPedido) : new DateTime();
 
             //bucar a lista completa
             List<InformacoesStatusPrepedidoRetornoDados> lstStatusPrepedidoDados = await prepedidoBll.ListarStatusPrepedido(filtro.FiltrarPrepedidos, (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS);
@@ -234,7 +237,8 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
                             {
                                 if (filtro.VirouPedido)
                                 {
-                                    if (i.St_virou_pedido && i.Data >= DateTime.Now.AddDays(-virouPedido))
+                                    
+                                    if (i.St_virou_pedido && i.Data >= paramVir)
                                     {
                                         lstInfoRetorno.ListaInformacoesPrepedidoRetorno.Add(i);
                                     }
@@ -242,7 +246,7 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
                                 if (filtro.Pendentes)
                                 {
                                     if (string.IsNullOrEmpty(i.St_orcamento) && !i.St_virou_pedido &&
-                                        i.Data >= DateTime.Now.AddDays(-pendentes))
+                                        i.Data >= paramPen)
                                     {
                                         lstInfoRetorno.ListaInformacoesPrepedidoRetorno.Add(i);
                                     }
@@ -250,7 +254,7 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
                                 if (filtro.Cancelados)
                                 {
                                     if (i.St_orcamento == InfraBanco.Constantes.Constantes.ST_ORCAMENTO_CANCELADO &&
-                                        i.Data >= DateTime.Now.AddDays(-cancelado))
+                                        i.Data >= paramCan)
                                     {
                                         lstInfoRetorno.ListaInformacoesPrepedidoRetorno.Add(i);
                                     }
@@ -258,28 +262,6 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
                             }
                         }
                     }
-
-                    //if (filtro.Cancelados)
-                    //{
-                    //    lstInfoRetorno.ListaInformacoesPrepedidoRetorno.Add(lstInfoPrepedidoUnisDto
-                    //   .Where(x => x.St_orcamento == Constantes.ST_ORCAMENTO_CANCELADO &&
-                    //           x.Data >= DateTime.Now.AddDays(-configuracaoApiUnis.ParamBuscaListagemStatusPrepedido.CanceladoDias))
-                    //    .Select(c => c).ToList());
-                    //}
-                    //if (filtro.Pendentes)
-                    //{
-                    //    lstInfoRetorno.ListaPrepedidosPendentesUnisDto = lstInfoPrepedidoUnisDto
-                    //        .Where(x => !x.St_virou_pedido &&
-                    //            x.Data >= DateTime.Now.AddDays(-configuracaoApiUnis.ParamBuscaListagemStatusPrepedido.PendentesDias))
-                    //        .Select(c => c).ToList();
-                    //}
-                    //if (filtro.VirouPedido)
-                    //{
-                    //    lstInfoRetorno.ListaPrepedidosViraramPedidosUnisDto = lstInfoPrepedidoUnisDto
-                    //        .Where(x => x.St_virou_pedido &&
-                    //            x.Data >= DateTime.Now.AddDays(-configuracaoApiUnis.ParamBuscaListagemStatusPrepedido.VirouPedidoDias))
-                    //        .Select(c => c).ToList();
-                    //}
                 }
             }
 
