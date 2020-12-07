@@ -202,7 +202,7 @@ namespace PrepedidoAPIUnis.Controllers
         /// <summary>
         /// Rotina para buscar lote de status do Pré-Pedido
         /// </summary>
-        /// <param name="lstPrepedido">Lista de Pré-pedidos. Exemplo: "123456Z", "654321Z".</param>
+        /// <param name="filtroStatus"></param>
         /// <returns>ListaInformacoesPrepedidoRetornoUnisDto</returns>
         /// <response code="204">Não foi encontrado nenhum orçamento</response>
         [AllowAnonymous]
