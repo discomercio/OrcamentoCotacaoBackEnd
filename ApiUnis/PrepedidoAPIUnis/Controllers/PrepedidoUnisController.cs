@@ -218,10 +218,11 @@ namespace PrepedidoAPIUnis.Controllers
 
             //vamos fazer a busca
             ListaInformacoesPrepedidoRetornoUnisDto lstInfo = await prepedidoUnisBll.ListarStatusPrepedido(filtroStatus);
-            if (lstInfo.ListaInformacoesPrepedidoRetorno != null)
-                return Ok(lstInfo);
-
-            return NoContent();
+            if (lstInfo == null || lstInfo.ListaInformacoesPrepedidoRetorno == null)
+                return NoContent();
+            if (lstInfo.ListaInformacoesPrepedidoRetorno.Count() == 0)
+                return NoContent();
+            return Ok(lstInfo);
         }
     }
 }

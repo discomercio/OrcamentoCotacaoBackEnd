@@ -15,7 +15,7 @@ namespace PrepedidoUnisBusiness.UnisDto.PrepedidoUnisDto
         /// <summary>
         /// Data de criação
         /// </summary>
-        public DateTime Data { get; set; }
+        public DateTime? Data { get; set; }
         /// <summary>
         /// Status do orçamento = "CAN", vazio ou nulo      
         /// </summary>

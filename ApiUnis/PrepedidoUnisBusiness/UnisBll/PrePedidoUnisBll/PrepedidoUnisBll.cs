@@ -204,65 +204,77 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
 
         public async Task<ListaInformacoesPrepedidoRetornoUnisDto> ListarStatusPrepedido(FiltroInfosStatusPrepedidosUnisDto filtro)
         {
-            // vamos buscar os dados do prepedido no Global
-            ListaInformacoesPrepedidoRetornoUnisDto lstInfoRetorno = new ListaInformacoesPrepedidoRetornoUnisDto();
+            int cancelado = configuracaoApiUnis.ParamBuscaListagemStatusPrepedido.CanceladoDias;
+            DateTime? dataLimiteCan = cancelado > 0 ? DateTime.Now.AddDays(-cancelado) : (DateTime?)null;
+            int pendentes = configuracaoApiUnis.ParamBuscaListagemStatusPrepedido.PendentesDias;
+            DateTime? dataLimitePen = pendentes > 0 ? DateTime.Now.AddDays(-pendentes) : (DateTime?)null;
+            int virouPedido = configuracaoApiUnis.ParamBuscaListagemStatusPrepedido.VirouPedidoDias;
+            DateTime? dataLimiteVir = virouPedido > 0 ? DateTime.Now.AddDays(-virouPedido) : (DateTime?)null;
+
             //se tiver item => não filtra por data
             //se não tiver item e appsettings > 0 => filtra por data
-            bool filtrarPor = filtro.FiltrarPrepedidos == null || filtro.FiltrarPrepedidos.Count <= 0;
+            if (filtro.FiltrarPrepedidos != null && filtro.FiltrarPrepedidos.Count > 0)
+            {
+                dataLimiteCan = null;
+                dataLimitePen = null;
+                dataLimiteVir = null;
+            }
 
-            int cancelado = configuracaoApiUnis.ParamBuscaListagemStatusPrepedido.CanceladoDias;
-            DateTime paramCan = cancelado > 0 && filtrarPor ? DateTime.Now.AddDays(-cancelado) : new DateTime();
-            int pendentes = configuracaoApiUnis.ParamBuscaListagemStatusPrepedido.PendentesDias;
-            DateTime paramPen = pendentes > 0 && filtrarPor ? DateTime.Now.AddDays(-pendentes) : new DateTime();
-            int virouPedido = configuracaoApiUnis.ParamBuscaListagemStatusPrepedido.VirouPedidoDias;
-            DateTime paramVir = virouPedido > 0 && filtrarPor ? DateTime.Now.AddDays(-virouPedido) : new DateTime();
+            //vamos pegar a mero data
+            DateTime? dataLimiteMenor = dataLimiteCan;
+            if (dataLimitePen == null)
+                dataLimiteMenor = null;
+            if (dataLimiteVir == null)
+                dataLimiteMenor = null;
+
+            if (dataLimiteMenor.HasValue && dataLimitePen.HasValue && dataLimiteMenor.Value > dataLimitePen.Value)
+                dataLimiteMenor = dataLimitePen;
+            if (dataLimiteMenor.HasValue && dataLimiteVir.HasValue && dataLimiteMenor.Value > dataLimiteVir.Value)
+                dataLimiteMenor = dataLimiteVir;
 
             //bucar a lista completa
-            List<InformacoesStatusPrepedidoRetornoDados> lstStatusPrepedidoDados = await prepedidoBll.ListarStatusPrepedido(filtro.FiltrarPrepedidos, (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS);
+            // vamos buscar os dados do prepedido no Global
+            List<InformacoesStatusPrepedidoRetornoDados> lstStatusPrepedidoDados = await prepedidoBll.ListarStatusPrepedido(
+                dataLimiteMenor,
+                filtro.FiltrarPrepedidos, (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS);
 
-            if (lstStatusPrepedidoDados != null)
+            ListaInformacoesPrepedidoRetornoUnisDto lstInfoRetorno = new ListaInformacoesPrepedidoRetornoUnisDto
             {
-                if (lstStatusPrepedidoDados.Count > 0)
+                ListaInformacoesPrepedidoRetorno = new List<InformacoesPrepedidoUnisDto>()
+            };
+            if (lstStatusPrepedidoDados == null)
+                return lstInfoRetorno;
+
+            //vamos converter os dados
+            List<InformacoesPrepedidoUnisDto> lstInfoPrepedidoUnisDto = InformacoesPrepedidoUnisDto.
+                ListaInformacoesPrepedidoUnisDto_De_ListaInformacoesStatusPrepedidoRetornoDados(lstStatusPrepedidoDados);
+
+            foreach (var i in lstInfoPrepedidoUnisDto)
+            {
+                bool adicionar = false;
+                if (filtro.VirouPedido && i.St_virou_pedido)
                 {
-                    //vamos converter os dados
-                    List<InformacoesPrepedidoUnisDto> lstInfoPrepedidoUnisDto = InformacoesPrepedidoUnisDto.
-                        ListaInformacoesPrepedidoUnisDto_De_ListaInformacoesStatusPrepedidoRetornoDados(lstStatusPrepedidoDados);
-
-                    if (lstInfoPrepedidoUnisDto != null)
-                    {
-                        if (lstInfoPrepedidoUnisDto.Count > 0)
-                        {
-                            lstInfoRetorno.ListaInformacoesPrepedidoRetorno = new List<InformacoesPrepedidoUnisDto>();
-                            foreach (var i in lstInfoPrepedidoUnisDto)
-                            {
-                                if (filtro.VirouPedido)
-                                {
-
-                                    if (i.St_virou_pedido && i.Data >= paramVir)
-                                    {
-                                        lstInfoRetorno.ListaInformacoesPrepedidoRetorno.Add(i);
-                                    }
-                                }
-                                if (filtro.Pendentes)
-                                {
-                                    if (string.IsNullOrEmpty(i.St_orcamento) && !i.St_virou_pedido &&
-                                        i.Data >= paramPen)
-                                    {
-                                        lstInfoRetorno.ListaInformacoesPrepedidoRetorno.Add(i);
-                                    }
-                                }
-                                if (filtro.Cancelados)
-                                {
-                                    if (i.St_orcamento == InfraBanco.Constantes.Constantes.ST_ORCAMENTO_CANCELADO &&
-                                        i.Data >= paramCan)
-                                    {
-                                        lstInfoRetorno.ListaInformacoesPrepedidoRetorno.Add(i);
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    if (!dataLimiteVir.HasValue)
+                        adicionar = true;
+                    if (dataLimiteVir.HasValue && i.Data >= dataLimiteVir)
+                        adicionar = true;
                 }
+                if (filtro.Pendentes && string.IsNullOrEmpty(i.St_orcamento) && !i.St_virou_pedido)
+                {
+                    if (!dataLimitePen.HasValue)
+                        adicionar = true;
+                    if (dataLimitePen.HasValue && i.Data >= dataLimitePen)
+                        adicionar = true;
+                }
+                if (filtro.Cancelados && i.St_orcamento == InfraBanco.Constantes.Constantes.ST_ORCAMENTO_CANCELADO)
+                {
+                    if (!dataLimiteCan.HasValue)
+                        adicionar = true;
+                    if (dataLimiteCan.HasValue && i.Data >= dataLimiteCan)
+                        adicionar = true;
+                }
+                if (adicionar)
+                    lstInfoRetorno.ListaInformacoesPrepedidoRetorno.Add(i);
             }
 
             return lstInfoRetorno;

@@ -17,7 +17,7 @@ namespace PrepedidoUnisBusiness.UnisDto.PedidoUnisDto
         /// SEP = Separar Mercadoria, 
         /// AET = A Entregar, 
         /// ETG = Entregue, 
-        /// CAN = Cancelado, 
+        /// CAN = Cancelado
         /// </summary>
         public string St_entrega { get; set; }
         /// <summary>
@@ -26,11 +26,11 @@ namespace PrepedidoUnisBusiness.UnisDto.PedidoUnisDto
         /// Separar Mercadoria, 
         /// A Entregar, 
         /// Entregue, 
-        /// Cancelado, 
+        /// Cancelado
         /// </summary>
         public string DescricaoStatusEntrega { get; set; }
         /// <summary>
-        /// Data da entrega do pedido
+        /// Data em que o pedido foi coletado pela transportadora
         /// </summary>
         public DateTime? Entregue_data { get; set; }
         /// <summary>
@@ -38,11 +38,11 @@ namespace PrepedidoUnisBusiness.UnisDto.PedidoUnisDto
         /// </summary>
         public DateTime? Cancelado_data { get; set; }
         /// <summary>
-        /// Flag para informar se o pedido foi recebido
+        /// Flag para informar se o pedido foi recebido pelo cliente
         /// </summary>
         public bool PedidoRecebidoStatus { get; set; }
         /// <summary>
-        /// Data de recebimento do pedido
+        /// Data de recebimento do pedido pelo cliente
         /// </summary>
         public DateTime? PedidoRecebidoData { get; set; }
 
@@ -54,9 +54,9 @@ namespace PrepedidoUnisBusiness.UnisDto.PedidoUnisDto
         /// Crédito OK (depósito aguardando desbloqueio) = 7, 
         /// Pendente Vendas = 8, 
         /// Crédito OK (aguardando depósito) = 9, 
-        /// Pedido Sem Análise de Crédito = 10, 
-        /// Pendente Cartão de Crédito = PEND_CARTAO
+        /// Pedido Sem Análise de Crédito = 10
         /// </summary>
+        //nota: o texto PEND_CARTAO nunca exite no banco de dados
         public short Analise_credito { get; set; }
         /// <summary>
         /// Aguardando Análise Inicial, 
@@ -66,8 +66,7 @@ namespace PrepedidoUnisBusiness.UnisDto.PedidoUnisDto
         /// Crédito OK (depósito aguardando desbloqueio), 
         /// Pendente Vendas, 
         /// Crédito OK (aguardando depósito), 
-        /// Pedido Sem Análise de Crédito, 
-        /// Pendente Cartão de Crédito, 
+        /// Pedido Sem Análise de Crédito
         /// </summary>
         public string DescricaoAnaliseCredito { get; set; }
         /// <summary>
@@ -77,7 +76,7 @@ namespace PrepedidoUnisBusiness.UnisDto.PedidoUnisDto
         /// <summary>
         /// Pago = S, 
         /// Não-Pago = N, 
-        /// Pago Parcial = P, 
+        /// Pago Parcial = P
         /// </summary>
         public string St_pagto { get; set; }
         /// <summary>
