@@ -236,7 +236,7 @@ namespace InfraBanco.Modelos
         public byte GarantiaIndicadorStatus { get; set; }
 
         [Column("EndEtg_endereco_numero")]
-        [MaxLength(20)]
+        [MaxLength(60)]
         public string EndEtg_Endereco_Numero { get; set; }
 
         [Column("EndEtg_endereco_complemento")]
@@ -398,7 +398,7 @@ namespace InfraBanco.Modelos
         public string Endereco_cep { get; set; }
 
         [Column("endereco_numero")]
-        [MaxLength(20)]
+        [MaxLength(60)]
         public string Endereco_numero { get; set; }
 
         [Column("endereco_complemento")]
@@ -659,6 +659,9 @@ namespace InfraBanco.Modelos
 
         [Column("data_hora")]
         public DateTime? Data_Hora { get; }
+
+        [Column("st_forma_pagto_possui_parcela_cartao_maquineta")]
+        public byte? St_forma_pagto_possui_parcela_cartao_maquineta { get; }
 
 #endif
     }

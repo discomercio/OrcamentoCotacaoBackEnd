@@ -7,7 +7,7 @@
       "sslPort": 0
     },
     "iisExpress": {
-      "applicationUrl": "http://localhost:54515",
+      "applicationUrl": "http://localhost:54515/homologacaomvc/lojamvc",
       "sslPort": 0
     }
   },
@@ -15,7 +15,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "lojamvc",
+      "launchUrl": "http://localhost:54515/homologacaomvc/lojamvc",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
