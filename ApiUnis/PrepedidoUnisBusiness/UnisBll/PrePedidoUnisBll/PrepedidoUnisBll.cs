@@ -26,21 +26,16 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
 
         private readonly ConfiguracaoApiUnis configuracaoApiUnis;
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
-        private readonly InfraBanco.ContextoCepProvider contextoCepProvider;
         private readonly PrepedidoBll prepedidoBll;
         private readonly ClienteBll clienteBll;
-        private readonly Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll;
 
         public PrePedidoUnisBll(ConfiguracaoApiUnis configuracaoApiUnis, InfraBanco.ContextoBdProvider contextoProvider,
-            InfraBanco.ContextoCepProvider contextoCepProvider, PrepedidoBll prepedidoBll, ClienteBll clienteBll,
-            Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll)
+             PrepedidoBll prepedidoBll, ClienteBll clienteBll)
         {
             this.configuracaoApiUnis = configuracaoApiUnis;
             this.contextoProvider = contextoProvider;
-            this.contextoCepProvider = contextoCepProvider;
             this.prepedidoBll = prepedidoBll;
             this.clienteBll = clienteBll;
-            this.validacoesPrepedidoBll = validacoesPrepedidoBll;
         }
 
         public async Task<PrePedidoResultadoUnisDto> CadastrarPrepedidoUnis(PrePedidoUnisDto prePedidoUnis)
@@ -170,8 +165,10 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
 
         public async Task<PercentualVlPedidoRAResultadoUnisDto> ObtemPercentualVlPedidoRA()
         {
-            var ret = new PercentualVlPedidoRAResultadoUnisDto();
-            ret.PercentualVlPedidoRA = await prepedidoBll.ObtemPercentualVlPedidoRA();
+            var ret = new PercentualVlPedidoRAResultadoUnisDto
+            {
+                PercentualVlPedidoRA = await prepedidoBll.ObtemPercentualVlPedidoRA()
+            };
             return ret;
         }
 

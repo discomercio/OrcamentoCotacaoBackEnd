@@ -8,7 +8,6 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarStatusPrepedido
     public class Autenticacao : Comuns.Api.Autenticacao.IAutenticacaoSteps
     {
         private readonly BuscarStatusPrepedidoImplementacao buscarStatusPrepedidoImplementacao = new BuscarStatusPrepedidoImplementacao();
-        private readonly Testes.Utils.LogTestes.LogTestes logTestes = Testes.Utils.LogTestes.LogTestes.GetInstance();
 
         public void WhenInformo(string p0, string p1)
         {

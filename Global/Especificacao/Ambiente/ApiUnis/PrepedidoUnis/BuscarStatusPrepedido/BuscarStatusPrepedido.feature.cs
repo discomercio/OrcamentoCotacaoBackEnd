@@ -19,15 +19,13 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarStatusPrepedido
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "ignore")]
     [Xunit.TraitAttribute("Category", "Ambiente.ApiUnis.PrepedidoUnis.BuscarStatusPrepedido.BuscarStatusPrepedido")]
-    public partial class ListarStatusPrepedidoFeature : object, Xunit.IClassFixture<ListarStatusPrepedidoFeature.FixtureData>, System.IDisposable
+    public partial class BuscarStatusPrepedidoFeature : object, Xunit.IClassFixture<BuscarStatusPrepedidoFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "ignore",
                 "Ambiente.ApiUnis.PrepedidoUnis.BuscarStatusPrepedido.BuscarStatusPrepedido"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
@@ -35,7 +33,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarStatusPrepedido
 #line 1 "BuscarStatusPrepedido.feature"
 #line hidden
         
-        public ListarStatusPrepedidoFeature(ListarStatusPrepedidoFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public BuscarStatusPrepedidoFeature(BuscarStatusPrepedidoFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -44,8 +42,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarStatusPrepedido
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ListarStatusPrepedido", null, ProgrammingLanguage.CSharp, new string[] {
-                        "ignore",
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "BuscarStatusPrepedido", null, ProgrammingLanguage.CSharp, new string[] {
                         "Ambiente.ApiUnis.PrepedidoUnis.BuscarStatusPrepedido.BuscarStatusPrepedido"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -87,14 +84,14 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarStatusPrepedido
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="Prepedido não existe")]
-        [Xunit.TraitAttribute("FeatureTitle", "ListarStatusPrepedido")]
+        [Xunit.TraitAttribute("FeatureTitle", "BuscarStatusPrepedido")]
         [Xunit.TraitAttribute("Description", "Prepedido não existe")]
         public virtual void PrepedidoNaoExiste()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Prepedido não existe", null, tagsOfScenario, argumentsOfScenario);
-#line 5
+#line 4
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -114,10 +111,10 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 6
+#line 5
     testRunner.Given("Informo \"orcamento\" = \"nao existe\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 7
+#line 6
  testRunner.Then("Erro status code \"204\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -125,14 +122,14 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="Cria um prepedido")]
-        [Xunit.TraitAttribute("FeatureTitle", "ListarStatusPrepedido")]
+        [Xunit.TraitAttribute("FeatureTitle", "BuscarStatusPrepedido")]
         [Xunit.TraitAttribute("Description", "Cria um prepedido")]
         public virtual void CriaUmPrepedido()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cria um prepedido", null, tagsOfScenario, argumentsOfScenario);
-#line 9
+#line 8
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -152,13 +149,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
+#line 9
+    testRunner.Given("Criar prepedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
 #line 10
-    testRunner.Given("Prepedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.And("Informo \"orcamento\" = \"especial: prepedido criado\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 11
- testRunner.And("Criar prepedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 12
  testRunner.Then("Resposta \"St_orc_virou_pedido\" = \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -166,14 +163,14 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="Prepedido que virou pedido")]
-        [Xunit.TraitAttribute("FeatureTitle", "ListarStatusPrepedido")]
+        [Xunit.TraitAttribute("FeatureTitle", "BuscarStatusPrepedido")]
         [Xunit.TraitAttribute("Description", "Prepedido que virou pedido")]
         public virtual void PrepedidoQueVirouPedido()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Prepedido que virou pedido", null, tagsOfScenario, argumentsOfScenario);
-#line 14
+#line 13
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -193,16 +190,19 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 15
-    testRunner.Given("Prepedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 14
+    testRunner.Given("Criar prepedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 16
- testRunner.And("Criar prepedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 15
+    testRunner.And("Informo \"orcamento\" = \"especial: prepedido criado\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 17
- testRunner.And("Alterar prepedido criado, informo \"St_Orc_Virou_Pedido\" = \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 18
+ testRunner.And("Alterar prepedido criado, passar para pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 19
  testRunner.And("Resposta \"St_orc_virou_pedido\" = \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -216,12 +216,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                ListarStatusPrepedidoFeature.FeatureSetup();
+                BuscarStatusPrepedidoFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                ListarStatusPrepedidoFeature.FeatureTearDown();
+                BuscarStatusPrepedidoFeature.FeatureTearDown();
             }
         }
     }

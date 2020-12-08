@@ -8,8 +8,6 @@ namespace Especificacao.Comuns.Api.Autenticacao
     [Binding, Scope(Tag = "Especificacao.Comuns.Api.Autenticacao.Autenticacao")]
     public class AutenticacaoSteps : ListaImplementacoes<IAutenticacaoSteps>, IAutenticacaoSteps
     {
-        private readonly Testes.Utils.LogTestes.LogTestes logTestes = Testes.Utils.LogTestes.LogTestes.GetInstance();
-
         public AutenticacaoSteps()
         {
             {

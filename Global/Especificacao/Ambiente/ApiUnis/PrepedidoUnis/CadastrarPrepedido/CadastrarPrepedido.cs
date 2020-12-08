@@ -10,7 +10,6 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
     class CadastrarPrepedido : Testes.Pedido.IPedidoPassosComuns
     {
         private readonly PrepedidoAPIUnis.Controllers.PrepedidoUnisController prepedidoUnisController;
-        private readonly Testes.Utils.LogTestes.LogTestes logTestes = Testes.Utils.LogTestes.LogTestes.GetInstance();
 
         public CadastrarPrepedido()
         {
@@ -126,6 +125,10 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
             ThenErro(null, false);
         }
 
+
+        //para quando querem aessar o prepedido criado
+        public PrePedidoResultadoUnisDto? UltimoPrePedidoResultadoUnisDto { get; private set; }
+
         private void ThenErro(string? erro, bool erroDeveExistir)
         {
             if (ignorarFeature) return;
@@ -139,9 +142,9 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
             if (res.GetType() != typeof(Microsoft.AspNetCore.Mvc.OkObjectResult))
                 Assert.Equal("", "Tipo não é OkObjectResult");
 
-            PrePedidoResultadoUnisDto prePedidoResultadoUnisDto = (PrePedidoResultadoUnisDto)((Microsoft.AspNetCore.Mvc.OkObjectResult)res).Value;
+            UltimoPrePedidoResultadoUnisDto = (PrePedidoResultadoUnisDto)((Microsoft.AspNetCore.Mvc.OkObjectResult)res).Value;
 
-            Testes.Pedido.HelperImplementacaoPedido.CompararMensagemErro(erro, erroDeveExistir, prePedidoResultadoUnisDto.ListaErros, this);
+            Testes.Pedido.HelperImplementacaoPedido.CompararMensagemErro(erro, erroDeveExistir, UltimoPrePedidoResultadoUnisDto.ListaErros, this);
         }
 
         private bool ignorarFeature = false;
