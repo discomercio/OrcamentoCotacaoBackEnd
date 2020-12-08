@@ -14,7 +14,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
         [Required]
         public string EndEtg_endereco { get; set; }
 
-        [MaxLength(20)]
+        [MaxLength(60)]
         [Required]
         public string EndEtg_endereco_numero { get; set; }
 
