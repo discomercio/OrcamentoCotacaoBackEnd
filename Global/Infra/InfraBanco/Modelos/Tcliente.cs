@@ -122,7 +122,7 @@ namespace InfraBanco.Modelos
         public string Indicador { get; set; }
 
         [Column("endereco_numero")]
-        [MaxLength(20)]
+        [MaxLength(60)]
         public string Endereco_Numero { get; set; }
 
         [Column("endereco_complemento")]

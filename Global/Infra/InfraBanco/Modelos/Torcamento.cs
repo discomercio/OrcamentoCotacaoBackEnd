@@ -228,7 +228,7 @@ namespace InfraBanco.Modelos
         public short CustoFinancFornecQtdeParcelas { get; set; }
 
         [Column("EndEtg_endereco_numero")]
-        [MaxLength(20)]
+        [MaxLength(60)]
         public string EndEtg_Endereco_Numero { get; set; }
 
         [Column("EndEtg_endereco_complemento")]
@@ -297,7 +297,7 @@ namespace InfraBanco.Modelos
         public string Endereco_logradouro { get; set; }
 
         [Column("endereco_numero")]
-        [MaxLength(20)]
+        [MaxLength(60)]
         public string Endereco_numero { get; set; }
 
         [Column("endereco_complemento")]
@@ -485,5 +485,7 @@ namespace InfraBanco.Modelos
 
         [Column("PrevisaoEntregaDtHrUltAtualiz")]
         public DateTime? PrevisaoEntregaDtHrUltAtualiz { get; set; }
+
+
     }
 }

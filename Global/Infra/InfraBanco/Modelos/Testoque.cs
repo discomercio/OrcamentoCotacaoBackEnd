@@ -19,6 +19,9 @@ namespace InfraBanco.Modelos
         [Required]
         public short Id_nfe_emitente { get; set; }
 
+        [Column("data_emissao_NF_entrada")]
+        public DateTime? Data_emissao_NF_entrada { get; set; }
+
         public ICollection<TestoqueItem> TestoqueItem { get; set; }
 
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
