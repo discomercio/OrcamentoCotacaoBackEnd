@@ -246,8 +246,20 @@
 </body>
 </html>
 
+
+@{
+    int debug = 0;
+#if DEBUG
+    debug = 1;
+#endif
+
+}
+
 <script>
-    $(document).ready(function () {
+    
+    var debug  = @debug;
+    if (debug == 0) {
+         $(document).ready(function () {
         if (!VerificarCampatibilidade()) {
             //alert("Esta versão do navegador não é suportada!!\nPor favor, utilize o Internet Explorer versão 7 ou superior!!");
             swal({
@@ -259,11 +271,11 @@
                 confirmButtonText: "Ok",
             },
                 function (ok) {
-                    
+
                     if (ok) {
                         $("#btnLogin").prop('disabled', true);
                         return false;
-                    } 
+                    }
                 });
         }
     });
@@ -284,5 +296,7 @@
         if ((navigator.userAgent.toUpperCase().indexOf(".NET") > -1) && (navigator.userAgent.toUpperCase().indexOf(" RV:") > -1)) return true;
         return false;
     }
+    }
+
 </script>
 
