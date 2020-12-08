@@ -206,13 +206,16 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
         {
             // vamos buscar os dados do prepedido no Global
             ListaInformacoesPrepedidoRetornoUnisDto lstInfoRetorno = new ListaInformacoesPrepedidoRetornoUnisDto();
+            //se tiver item => não filtra por data
+            //se não tiver item e appsettings > 0 => filtra por data
+            bool filtrarPor = filtro.FiltrarPrepedidos == null || filtro.FiltrarPrepedidos.Count <= 0;
 
             int cancelado = configuracaoApiUnis.ParamBuscaListagemStatusPrepedido.CanceladoDias;
-            DateTime paramCan = cancelado > 0 ? DateTime.Now.AddDays(-cancelado) : new DateTime();
+            DateTime paramCan = cancelado > 0 && filtrarPor ? DateTime.Now.AddDays(-cancelado) : new DateTime();
             int pendentes = configuracaoApiUnis.ParamBuscaListagemStatusPrepedido.PendentesDias;
-            DateTime paramPen = pendentes > 0 ? DateTime.Now.AddDays(-pendentes) : new DateTime();
+            DateTime paramPen = pendentes > 0 && filtrarPor ? DateTime.Now.AddDays(-pendentes) : new DateTime();
             int virouPedido = configuracaoApiUnis.ParamBuscaListagemStatusPrepedido.VirouPedidoDias;
-            DateTime paramVir = virouPedido > 0 ? DateTime.Now.AddDays(-virouPedido) : new DateTime();
+            DateTime paramVir = virouPedido > 0 && filtrarPor ? DateTime.Now.AddDays(-virouPedido) : new DateTime();
 
             //bucar a lista completa
             List<InformacoesStatusPrepedidoRetornoDados> lstStatusPrepedidoDados = await prepedidoBll.ListarStatusPrepedido(filtro.FiltrarPrepedidos, (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS);
@@ -234,7 +237,7 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
                             {
                                 if (filtro.VirouPedido)
                                 {
-                                    
+
                                     if (i.St_virou_pedido && i.Data >= paramVir)
                                     {
                                         lstInfoRetorno.ListaInformacoesPrepedidoRetorno.Add(i);

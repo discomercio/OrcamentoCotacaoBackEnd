@@ -11,15 +11,16 @@ namespace PrepedidoUnisBusiness.UnisDto.PrepedidoUnisDto
         public string TokenAcesso { get; set; }
 
         /// <summary>
-        /// FiltrarPrepedidos = Lista de Pré-pedidos a serem buscados
+        /// FiltrarPrepedidos = Lista de Pré-pedidos a serem buscados<br/>
+        /// Obs: Caso não seja informado nenhum Pré-pedido nessa lista, retornará todos os Pré-pedidos
         /// </summary>
-        [Required]
         public List<string> FiltrarPrepedidos { get; set; }
-        [Required]
+
 
         /// <summary>
         /// VirouPedido = Filtro para buscar pré-pedidos que viraram pedidos
         /// </summary>
+        [Required]
         public bool VirouPedido { get; set; }
 
         /// <summary>
