@@ -44,11 +44,20 @@ Session.Timeout=480
 
 	Const COD_FC_AMBIENTE = "L"
 
-	Const SERVIDOR_BD = "ITS-DBDEV\DESE"
-	Const NOME_BD = "ARCLUBE_DIS"
+    'nova conexão ITS
+    Const SERVIDOR_BD = "ITS-DBDEV\\SQL2017"
+	Const NOME_BD = "ARCLUBE_DIS20201204"
 	Const USUARIO_BD = "appAirClube"
 	Const SCHEMA_BD = "dbo"
 	Const SENHA_BD = "0x00000000219ffb35810b0dff299b31" 'appAirClube
+
+    'antiga conexão com ITS
+	'Const SERVIDOR_BD = "ITS-DBDEV\DESE"
+	'Const NOME_BD = "ARCLUBE_DIS"
+	'Const USUARIO_BD = "appAirClube"
+	'Const SCHEMA_BD = "dbo"
+	'Const SENHA_BD = "0x00000000219ffb35810b0dff299b31" 'appAirClube
+
     'em homologacao
 	'Const SERVIDOR_BD = "sqlserver.central85.com.br,29981"
 	'Const NOME_BD = "DIS_Homologacao"
