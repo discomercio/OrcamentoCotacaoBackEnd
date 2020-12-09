@@ -14,7 +14,7 @@ namespace PrepedidoUnisBusiness.UnisDto.ClienteUnisDto
         [Required]
         public string Endereco_logradouro { get; set; }
 
-        [MaxLength(20)]
+        [MaxLength(60)]
         [Required]
         public string Endereco_numero { get; set; }
 

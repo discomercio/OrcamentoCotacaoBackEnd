@@ -52,7 +52,7 @@ namespace InfraBanco.Modelos
         public string Endereco_cep { get; set; }
 
         [Column("endereco_numero")]
-        [MaxLength(20)]
+        [MaxLength(60)]
         public string Endereco_numero { get; set; }
 
         [Column("endereco_complemento")]

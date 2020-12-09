@@ -15,7 +15,7 @@ namespace MagentoBusiness.MagentoDto.ClienteMagentoDto
 #pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
 #pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
-        [MaxLength(20)]
+        [MaxLength(60)]
         [Required]
         public string EndEtg_endereco_numero { get; set; }
 #pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
