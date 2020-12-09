@@ -7,33 +7,33 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.Valida
     public class CpfCnpjSteps
     {
         private readonly CadastrarPrepedido cadastrarPrepedido = new CadastrarPrepedido();
-        private readonly Testes.Utils.LogTestes logTestes = Testes.Utils.LogTestes.GetInstance();
+        private readonly Testes.Utils.LogTestes.LogTestes logTestes = Testes.Utils.LogTestes.LogTestes.GetInstance();
 
         [When(@"Prepedido base")]
         public void WhenPrepedidoBase()
         {
-            logTestes.LogMensagem("Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.Validacao.CpfCnpj WhenPrepedidoBase");
+            Testes.Utils.LogTestes.LogOperacoes2.DadoBase(this);
             cadastrarPrepedido.GivenPrepedidoBase();
         }
 
         [When(@"Informo ""(.*)"" = ""(.*)""")]
         public void WhenInformo(string p0, string p1)
         {
-            logTestes.LogMensagem($"Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.Validacao.CpfCnpj WhenInformo({p0}, {p1})");
+            Testes.Utils.LogTestes.LogOperacoes2.Informo(p0, p1, this);
             cadastrarPrepedido.WhenInformo(p0, p1);
         }
 
         [Then(@"Erro ""(.*)""")]
         public void ThenErro(string p0)
         {
-            logTestes.LogMensagem("Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.Validacao.CpfCnpj");
+            Testes.Utils.LogTestes.LogOperacoes2.Erro(p0, this);
             cadastrarPrepedido.ThenErro(p0);
         }
-        
+
         [Then(@"Sem erro ""(.*)""")]
         public void ThenSemErro(string p0)
         {
-            logTestes.LogMensagem("Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.Validacao.CpfCnpj");
+            Testes.Utils.LogTestes.LogOperacoes2.SemErro(p0, this);
             cadastrarPrepedido.ThenSemErro(p0);
         }
     }

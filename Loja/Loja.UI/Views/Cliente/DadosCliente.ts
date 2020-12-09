@@ -121,7 +121,7 @@ $("#cpf_cnpj").blur(() => {
     }
 });
 $("#nascimento").blur(() => {
-    debugger;
+    
     if (!new Date($("#nascimento").val()?.toString()).getTime()) {
         $("#nascimento").addClass("is-invalid");
     }

@@ -2,10 +2,17 @@
 using System.Collections.Generic;
 using System.Text;
 
+//todo: religar nullable
+#nullable disable
+
 namespace Pedido.Dados.Criacao
 {
     public class PedidoCriacaoDados
     {
+        public PedidoCriacaoDados()
+        {
+        }
+
         //Armazena a loja do usuário logado
         public string LojaUsuario { get; set; }
 
@@ -46,9 +53,8 @@ namespace Pedido.Dados.Criacao
         //Obs: armazena "0" caso seja automático
         public int IdNfeSelecionadoManual { get; set; }
 
-        //Armazena o nome do vendedor externo
-        //obs: analisar melhor quando esse campos será preenchido
-        public string VendedorExterno { get; set; }
+        //Armazena se é venda externa
+        public bool Venda_Externa { get; set; }
 
         //Flag para saber se o cliente aceitou finalizar o pedido mesmo com produto sem estoque
         public bool OpcaoVendaSemEstoque { get; set; }
@@ -61,6 +67,13 @@ namespace Pedido.Dados.Criacao
         public decimal Vl_total_NF { get; set; }
 
         public short PermiteRAStatus { get; set; }
+
+        public decimal LimiteArredondamento { get; set; }
+        public decimal MaxErroArredondamento { get; set; }
+        public string Pedido_bs_x_ac { get; set; }
+        public string Marketplace_codigo_origem { get; set; }
+        public string Pedido_bs_x_marketplace { get; set; }
+        public InfraBanco.Constantes.Constantes.CodSistemaResponsavel SistemaResponsavelCadastro { get; set; }
 
 
         public static Prepedido.Dados.DetalhesPrepedido.PrePedidoDados PrePedidoDadosDePedidoCriacaoDados(PedidoCriacaoDados pedido)

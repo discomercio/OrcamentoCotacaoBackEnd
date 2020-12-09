@@ -51,7 +51,7 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
                      */
                     retorno.ListaErros = (await clienteArclubeBll.CadastrarCliente(ClienteCadastroDto.ClienteCadastroDados_De_ClienteCadastroDto(clienteArclube),
                         orcamentista.Apelido,
-                        (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS)).ToList();
+                        Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS)).ToList();
 
                     if (retorno.ListaErros.Count <= 0)
                     {

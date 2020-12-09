@@ -42,9 +42,7 @@ namespace Especificacao.Especificacao.Pedido.Passo25
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "PedidoDadosCadastraisVerificarQueExecutou - VerificarQueExecutou", "Precisamos verificar os dados cadastrais\r\nQuando chama pelo ASP ou pela Loja, est" +
-                    "a verificação não precisa ser feita porque vamos usar os dados do cliente já cad" +
-                    "astrado.\r\nMas pela API precisa desta verificação", ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "PedidoDadosCadastraisVerificarQueExecutou - VerificarQueExecutou", null, ProgrammingLanguage.CSharp, new string[] {
                         "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -120,9 +118,6 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Given("Implementado em \"Especificacao.Pedido.Pedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 12
- testRunner.And("Fim da configuração", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 13
  testRunner.Then("Fazer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

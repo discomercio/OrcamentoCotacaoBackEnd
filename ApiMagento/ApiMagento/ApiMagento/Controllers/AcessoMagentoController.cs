@@ -43,9 +43,11 @@ namespace ApiMagento.Controllers
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<ActionResult<LogoutResultadoMagentoDto>> FazerLogout(LogoutMagentoDto logout)
         {
-            if (!servicoValidarTokenApiMagento.ValidarToken(logout.TokenAcesso, out string usuario))
+            if (!servicoValidarTokenApiMagento.ValidarToken(logout.TokenAcesso, out string? usuario))
                 return Unauthorized();
-            return Ok(await acessoMagentoBll.FazerLogout(logout, usuario));
+            if(string.IsNullOrEmpty(usuario))
+                return Unauthorized();
+            return Ok(await acessoMagentoBll.FazerLogout(usuario));
         }
 
         /// <summary>

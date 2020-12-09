@@ -324,7 +324,7 @@ namespace Prepedido.PedidoVisualizacao
             enderecoEntrega.EndEtg_produtor_rural_status = p.EndEtg_produtor_rural_status;
             enderecoEntrega.EndEtg_ie = p.EndEtg_ie;
             enderecoEntrega.EndEtg_rg = p.EndEtg_rg;
-            enderecoEntrega.St_memorizacao_completa_enderecos = p.St_memorizacao_completa_enderecos;
+            enderecoEntrega.St_memorizacao_completa_enderecos = p.St_memorizacao_completa_enderecos == 1;
 
             return enderecoEntrega;
         }
@@ -524,7 +524,7 @@ namespace Prepedido.PedidoVisualizacao
                 ListaProdutos = (await ObterProdutos(numPedido)).ToList(),
                 TotalFamiliaParcelaRA = await vlFamiliaParcelaRATask,
                 PermiteRAStatus = p.Permite_RA_Status,
-                OpcaoPossuiRA = p.Opcao_Possui_RA,
+                OpcaoPossuiRA = p.Opcao_Possui_RA == "S",
                 PercRT = p.Perc_RT,
                 ValorTotalDestePedidoComRA = vlTotalDestePedidoComRATask,
                 VlTotalDestePedido = vlTotalDestePedidoTask,
@@ -1019,7 +1019,7 @@ namespace Prepedido.PedidoVisualizacao
             return retorno;
         }
 
-        private async Task<string> ObterAnaliseCreditoVisualizacao(string codigo, string numPedido, string apelido)
+        public async Task<string> ObterAnaliseCreditoVisualizacao(string codigo, string numPedido, string apelido)
         {
             //duplicado com código acima
             string retorno = "";
@@ -1308,7 +1308,7 @@ namespace Prepedido.PedidoVisualizacao
             return await Task.FromResult(lista);
         }
 
-        private async Task<IEnumerable<string>> ObterFormaPagto(Tpedido ped)
+        public async Task<IEnumerable<string>> ObterFormaPagto(Tpedido ped)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -1367,7 +1367,7 @@ namespace Prepedido.PedidoVisualizacao
             return await Task.FromResult(lista.ToList());
         }
 
-        private string StatusPagto(string status)
+        public string StatusPagto(string status)
         {
             string retorno = "";
 

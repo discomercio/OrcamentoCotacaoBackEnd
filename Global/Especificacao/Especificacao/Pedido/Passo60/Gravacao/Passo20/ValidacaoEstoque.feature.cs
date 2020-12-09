@@ -20,7 +20,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "ignore")]
-    public partial class EstoqueFeature : object, Xunit.IClassFixture<EstoqueFeature.FixtureData>, System.IDisposable
+    public partial class ValidacaoEstoque_FeatureFeature : object, Xunit.IClassFixture<ValidacaoEstoque_FeatureFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -33,7 +33,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20
 #line 1 "ValidacaoEstoque.feature"
 #line hidden
         
-        public EstoqueFeature(EstoqueFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public ValidacaoEstoque_FeatureFeature(ValidacaoEstoque_FeatureFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,7 +42,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Estoque", null, ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ValidacaoEstoque.feature", null, ProgrammingLanguage.CSharp, new string[] {
                         "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -84,7 +84,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="Validar estoque")]
-        [Xunit.TraitAttribute("FeatureTitle", "Estoque")]
+        [Xunit.TraitAttribute("FeatureTitle", "ValidacaoEstoque.feature")]
         [Xunit.TraitAttribute("Description", "Validar estoque")]
         public virtual void ValidarEstoque()
         {
@@ -111,22 +111,19 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 126
- testRunner.When("Feito no FluxoGravacaoPedido.feature", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validar estoque 2")]
-        [Xunit.TraitAttribute("FeatureTitle", "Estoque")]
-        [Xunit.TraitAttribute("Description", "Validar estoque 2")]
-        public virtual void ValidarEstoque2()
+        [Xunit.SkippableFactAttribute(DisplayName="Validar estoque - erro leitura - 1")]
+        [Xunit.TraitAttribute("FeatureTitle", "ValidacaoEstoque.feature")]
+        [Xunit.TraitAttribute("Description", "Validar estoque - erro leitura - 1")]
+        public virtual void ValidarEstoque_ErroLeitura_1()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar estoque 2", null, tagsOfScenario, argumentsOfScenario);
-#line 128
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar estoque - erro leitura - 1", null, tagsOfScenario, argumentsOfScenario);
+#line 137
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -146,22 +143,22 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 175
- testRunner.When("Feito no FluxoGravacaoPedido.feature", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 150
+ testRunner.When("Afazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validar estoque 3")]
-        [Xunit.TraitAttribute("FeatureTitle", "Estoque")]
-        [Xunit.TraitAttribute("Description", "Validar estoque 3")]
-        public virtual void ValidarEstoque3()
+        [Xunit.SkippableFactAttribute(DisplayName="Validar estoque - não possui regra de consumo do estoque associada")]
+        [Xunit.TraitAttribute("FeatureTitle", "ValidacaoEstoque.feature")]
+        [Xunit.TraitAttribute("Description", "Validar estoque - não possui regra de consumo do estoque associada")]
+        public virtual void ValidarEstoque_NaoPossuiRegraDeConsumoDoEstoqueAssociada()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar estoque 3", null, tagsOfScenario, argumentsOfScenario);
-#line 177
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar estoque - não possui regra de consumo do estoque associada", null, tagsOfScenario, argumentsOfScenario);
+#line 152
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -181,22 +178,22 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 191
- testRunner.When("Feito no FluxoGravacaoPedido.feature", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 154
+ testRunner.When("Afazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="descontinuado")]
-        [Xunit.TraitAttribute("FeatureTitle", "Estoque")]
-        [Xunit.TraitAttribute("Description", "descontinuado")]
-        public virtual void Descontinuado()
+        [Xunit.SkippableFactAttribute(DisplayName="Validar estoque - Regra de consumo do estoque  - está desativada")]
+        [Xunit.TraitAttribute("FeatureTitle", "ValidacaoEstoque.feature")]
+        [Xunit.TraitAttribute("Description", "Validar estoque - Regra de consumo do estoque  - está desativada")]
+        public virtual void ValidarEstoque_RegraDeConsumoDoEstoque_EstaDesativada()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("descontinuado", null, tagsOfScenario, argumentsOfScenario);
-#line 194
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar estoque - Regra de consumo do estoque  - está desativada", null, tagsOfScenario, argumentsOfScenario);
+#line 156
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -216,8 +213,154 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 197
- testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 158
+ testRunner.When("Afazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Validar estoque - Regra de consumo do estoque  - está bloqueada para a UF")]
+        [Xunit.TraitAttribute("FeatureTitle", "ValidacaoEstoque.feature")]
+        [Xunit.TraitAttribute("Description", "Validar estoque - Regra de consumo do estoque  - está bloqueada para a UF")]
+        public virtual void ValidarEstoque_RegraDeConsumoDoEstoque_EstaBloqueadaParaAUF()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar estoque - Regra de consumo do estoque  - está bloqueada para a UF", null, tagsOfScenario, argumentsOfScenario);
+#line 160
+ this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 162
+ testRunner.When("Afazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Validar estoque - Regra de consumo do estoque  - está bloqueada para clientes")]
+        [Xunit.TraitAttribute("FeatureTitle", "ValidacaoEstoque.feature")]
+        [Xunit.TraitAttribute("Description", "Validar estoque - Regra de consumo do estoque  - está bloqueada para clientes")]
+        public virtual void ValidarEstoque_RegraDeConsumoDoEstoque_EstaBloqueadaParaClientes()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar estoque - Regra de consumo do estoque  - está bloqueada para clientes", null, tagsOfScenario, argumentsOfScenario);
+#line 164
+ this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 166
+ testRunner.When("Afazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Validar estoque - Regra de consumo do estoque  - não especifica nenhum CD para ag" +
+            "uardar produtos sem presença no estoque")]
+        [Xunit.TraitAttribute("FeatureTitle", "ValidacaoEstoque.feature")]
+        [Xunit.TraitAttribute("Description", "Validar estoque - Regra de consumo do estoque  - não especifica nenhum CD para ag" +
+            "uardar produtos sem presença no estoque")]
+        public virtual void ValidarEstoque_RegraDeConsumoDoEstoque_NaoEspecificaNenhumCDParaAguardarProdutosSemPresencaNoEstoque()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar estoque - Regra de consumo do estoque  - não especifica nenhum CD para ag" +
+                    "uardar produtos sem presença no estoque", null, tagsOfScenario, argumentsOfScenario);
+#line 168
+ this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 170
+ testRunner.When("Afazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Validar estoque - Regra de consumo do estoque  - não especifica nenhum CD ativo p" +
+            "ara clientes")]
+        [Xunit.TraitAttribute("FeatureTitle", "ValidacaoEstoque.feature")]
+        [Xunit.TraitAttribute("Description", "Validar estoque - Regra de consumo do estoque  - não especifica nenhum CD ativo p" +
+            "ara clientes")]
+        public virtual void ValidarEstoque_RegraDeConsumoDoEstoque_NaoEspecificaNenhumCDAtivoParaClientes()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar estoque - Regra de consumo do estoque  - não especifica nenhum CD ativo p" +
+                    "ara clientes", null, tagsOfScenario, argumentsOfScenario);
+#line 172
+ this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 174
+ testRunner.When("Afazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -230,12 +373,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                EstoqueFeature.FeatureSetup();
+                ValidacaoEstoque_FeatureFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                EstoqueFeature.FeatureTearDown();
+                ValidacaoEstoque_FeatureFeature.FeatureTearDown();
             }
         }
     }

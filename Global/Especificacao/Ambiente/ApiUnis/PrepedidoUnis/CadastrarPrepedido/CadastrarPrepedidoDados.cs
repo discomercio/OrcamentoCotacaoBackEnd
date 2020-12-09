@@ -46,6 +46,21 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
             return ret;
         }
 
+        public static PrePedidoUnisDto PrepedidoBaseClientePF()
+        {
+            return PrepedidoParceladoCartao1vez();
+        }
+
+        public static PrePedidoUnisDto PrepedidoBaseClientePJ()
+        {
+            var ret = PrepedidoParceladoCartao1vez();
+            ret.EnderecoCadastralCliente.Endereco_tipo_pessoa = "PJ";
+            ret.EnderecoCadastralCliente.Endereco_cnpj_cpf = "76297703000195";
+            ret.EnderecoCadastralCliente.Endereco_contribuinte_icms_status = (byte)InfraBanco.Constantes.Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO;
+            ret.EnderecoCadastralCliente.Endereco_produtor_rural_status = (byte)InfraBanco.Constantes.Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL;
+            return ret;
+        }
+
         private static readonly string PrepedidoBaseParceladoCartao1vez = @"
 {
   ""TokenAcesso"": ""vai ser calculado dinamicamente"",
@@ -115,30 +130,30 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
       ""Fabricante"": ""003"",
       ""Produto"": ""003220"",
       ""Qtde"": 2,
-      ""Desc_Dado"": 1,
-      ""Preco_Venda"": 687.11,
+      ""Desc_Dado"": 0,
+      ""Preco_Venda"": 659.60,
       ""Preco_Fabricante"": 659.3,
-      ""Preco_Lista"": 694.05,
+      ""Preco_Lista"": 659.60,
       ""Preco_NF"": 694.05,
       ""CustoFinancFornecCoeficiente"": 1.0527,
-      ""CustoFinancFornecPrecoListaBase"": 694.05
+      ""CustoFinancFornecPrecoListaBase"": 626.58
     },
     {
       ""Fabricante"": ""003"",
       ""Produto"": ""003221"",
       ""Qtde"": 2,
-      ""Desc_Dado"": 1,
-      ""Preco_Venda"": 1030.66,
+      ""Desc_Dado"": 0,
+      ""Preco_Venda"": 989.40,
       ""Preco_Fabricante"": 988.95,
-      ""Preco_Lista"": 1041.07,
+      ""Preco_Lista"": 989.40,
       ""Preco_NF"": 1041.07,
       ""CustoFinancFornecCoeficiente"": 1.0527,
-      ""CustoFinancFornecPrecoListaBase"": 1041.07
+      ""CustoFinancFornecPrecoListaBase"": 939.87
     }
   ],
   ""PermiteRAStatus"": true,
   ""ValorTotalDestePedidoComRA"": 3470.24,
-  ""VlTotalDestePedido"": 3435.54,
+  ""VlTotalDestePedido"": 3298,
   ""DetalhesPrepedido"": {
     ""St_Entrega_Imediata"": 2,
     ""PrevisaoEntregaData"": null,
@@ -155,7 +170,6 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
   },
   ""Perc_Desagio_RA_Liquida"": 25
 }"
-#pragma warning restore IDE0044 // Add readonly modifier
 ;
 
     }

@@ -4,7 +4,7 @@
 @inject Loja.Bll.Bll.AcessoBll.UsuarioAcessoBll usuarioAcessoBll
 @inject Loja.Bll.Util.Configuracao configuracao
 @inject Microsoft.Extensions.Logging.ILogger<Loja.Bll.Bll.AcessoBll.UsuarioLogado> loggerUsuarioLogado
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 
 @* OBS:
     Consegui alterar a cor do navbar em "vertical_layout.min.js" alterando "HeaderBackground: "theme6","
@@ -48,10 +48,10 @@
 
     <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/waves.min.css" media="all">
 
-    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/icofont.css">
+    @*<link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/icofont.css">*@
 
     <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/feather.css">
-    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/font-awesome-n.min.css">
+    <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/font-awesome.min.css">
 
     <link rel="stylesheet" type="text/css" href="~/template_bootstrap/css/switchery.min.css">
 
@@ -246,4 +246,43 @@
 </body>
 </html>
 
+<script>
+    $(document).ready(function () {
+        if (!VerificarCampatibilidade()) {
+            //alert("Esta versão do navegador não é suportada!!\nPor favor, utilize o Internet Explorer versão 7 ou superior!!");
+            swal({
+                title: "Navegador não suportado",
+                text: "Esta versão do navegador não é suportada!\nPor favor, utilize o Internet Explorer versão 7 ou superior!",
+                type: "warning",
+                showCancelButton: false,
+                confirmButtonClass: "btn-primary",
+                confirmButtonText: "Ok",
+            },
+                function (ok) {
+                    
+                    if (ok) {
+                        $("#btnLogin").prop('disabled', true);
+                        return false;
+                    } 
+                });
+        }
+    });
+
+    function VerificarCampatibilidade() {
+        if (navigator.userAgent.toUpperCase().indexOf(" EDGE/") > -1) return true;
+
+        if (navigator.userAgent.toUpperCase().indexOf("CHROME") > -1) return false;
+        if (navigator.userAgent.toUpperCase().indexOf("SAFARI") > -1) return false;
+        if (navigator.userAgent.toUpperCase().indexOf("FIREFOX") > -1) return false;
+
+        if (navigator.appName.toUpperCase().indexOf("MICROSOFT") > -1) return true;
+        if (navigator.appName.toUpperCase().indexOf("INTERNET") > -1) return true;
+        if (navigator.appName.toUpperCase().indexOf("EXPLORER") > -1) return true;
+        if (navigator.appName.toUpperCase().indexOf("MSIE") > -1) return true;
+
+        if (navigator.userAgent.toUpperCase().indexOf("MSIE") > -1) return true;
+        if ((navigator.userAgent.toUpperCase().indexOf(".NET") > -1) && (navigator.userAgent.toUpperCase().indexOf(" RV:") > -1)) return true;
+        return false;
+    }
+</script>
 

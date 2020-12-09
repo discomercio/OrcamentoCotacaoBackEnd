@@ -40,7 +40,7 @@
 	Const URL_FILE__JQUERY_MY_PLUGIN = "../Global/jquery-my-plugin.js?v=002"
 	Const URL_FILE__JQUERY_UI_MY_PLUGIN = "../Global/jquery-ui-my-plugin.js?v=002"
 	Const URL_FILE__JQUERY_MASKMONEY = "../Global/jquery.maskMoney.min.js?v=001"
-	Const URL_FILE__GLOBAL_JS = "../Global/global.js?v=065"
+	Const URL_FILE__GLOBAL_JS = "../Global/global.js?v=066"
 	Const URL_FILE__SSL_JS = "../Global/SSL.js?v=004"
 	Const URL_FILE__CONST_JS = "../Global/const.js?v=001"
 	Const URL_FILE__CONSTXL_JS = "../Global/constXL.js?v=001"
@@ -501,6 +501,7 @@
 	Const COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP = 1
 	Const COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS = 2
 	Const COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS = 3
+	Const COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI = 4
 
   ' CÓDIGOS PARA NÍVEL DOS USUÁRIOS
 	Const ID_VENDEDOR		= "V"
@@ -800,6 +801,10 @@
   
   ' TAMANHO MÁXIMO DO CAMPO ENDEREÇO DEVIDO À RESTRIÇÃO EXISTENTE NA NOTA FISCAL ELETRÔNICA
 	Const MAX_TAMANHO_CAMPO_ENDERECO = 60
+	Const MAX_TAMANHO_CAMPO_ENDERECO_NUMERO = 60
+	Const MAX_TAMANHO_CAMPO_ENDERECO_COMPLEMENTO = 60
+	Const MAX_TAMANHO_CAMPO_ENDERECO_BAIRRO = 60
+	Const MAX_TAMANHO_CAMPO_ENDERECO_CIDADE = 60
 
 '	ANÁLISE DE ENDEREÇO
 	Const MAX_AN_ENDERECO_QTDE_PEDIDOS_EXIBICAO = 40
@@ -857,6 +862,8 @@
 	Const ID_PARAMETRO_Flag_Pedido_MemorizacaoCompletaEnderecos = "Flag_Pedido_MemorizacaoCompletaEnderecos"
 	Const ID_PARAMETRO_MagentoPedidoComIndicadorListaLojaErp = "MagentoPedidoComIndicadorListaLojaErp"
 	Const ID_PARAMETRO_EmailDestinatarioAlertaEdicaoCadastroClienteComPedidoCreditoOkEntregaPendente = "EmailDestinatarioAlertaEdicaoCadastroClienteComPedidoCreditoOkEntregaPendente"
+	Const ID_PARAMETRO_EmailDestinatarioAlertaEdicaoFormaPagtoEmPedidoCreditoOk = "EmailDestinatarioAlertaEdicaoFormaPagtoEmPedidoCreditoOk"
+	Const ID_PARAMETRO_EmailDestinatarioAlertaAlteracaoIndicadorEmPedidoCreditoOk = "EmailDestinatarioAlertaAlteracaoIndicadorEmPedidoCreditoOk"
 	Const ID_PARAMETRO_CtrlRelatorio_RelControleImpostos_TimeoutLockEmMinutos = "CtrlRelatorio_RelControleImpostos_TimeoutLockEmMinutos"
     Const ID_PARAMETRO_CtrlRelatorio_RelControleImpostos_MaxQtdeResultadoPorConsulta = "CtrlRelatorio_RelControleImpostos_MaxQtdeResultadoPorConsulta"
 	Const ID_PARAMETRO_SSW_Rastreamento_Lista_Transportadoras = "SSW_Rastreamento_Lista_Transportadoras"
@@ -866,7 +873,7 @@
 	Const ID_PARAMETRO_EMAILSNDSVC_REMETENTE__CHAMADOS_EM_PEDIDOS = "EMAILSNDSVC_REMETENTE__CHAMADOS_EM_PEDIDOS"
 	Const ID_PARAMETRO_EMAILSNDSVC_REMETENTE__PEDIDO_DEVOLUCAO = "EMAILSNDSVC_REMETENTE__PEDIDO_DEVOLUCAO"
 	Const ID_PARAMETRO_EMAILSNDSVC_REMETENTE__SENTINELA_SISTEMA = "EMAILSNDSVC_REMETENTE__SENTINELA_SISTEMA"
-
+	Const ID_PARAMETRO_FLAG_CAD_SEMI_AUTO_PED_MAGENTO_CADASTRAR_AUTOMATICAMENTE_CLIENTE_NOVO = "CadSemiAutomaticoPedidoMagento_FlagWebApiCadastrarAutomaticamenteClienteNovo"
 
 '   CONSTANTES QUE IDENTIFICAM REGISTROS ARMAZENADOS NA TABELA "t_CTRL_RELATORIO"
     Const ID_CTRL_RELATORIO_RelControleImpostos = 1
@@ -937,6 +944,7 @@
 
 '   NÚMERO DE LINHAS DO CAMPO "TEXTO CONSTAR NF" DO PEDIDO
     Const MAX_LINHAS_NF_TEXTO_CONSTAR = 2
+	Const MAX_TAM_NF_TEXTO = 800
 	
 '	NÚMERO DE LINHAS DO CAMPO "MENSAGEM" AO CADASTRAR NOVA MENSAGEM NO BLOCO DE NOTAS DO PEDIDO
 	Const MAX_LINHAS_MENSAGEM_BLOCO_NOTAS = 5
@@ -2050,6 +2058,7 @@
 		dim endereco_produtor_rural_status
 		dim endereco_ie
 		dim endereco_rg
+		dim endereco_contato
 		dim EndEtg_email
 		dim EndEtg_email_xml
 		dim EndEtg_nome
@@ -2256,6 +2265,7 @@
 		dim obs
         dim entrada_tipo
         dim perc_agio
+        dim data_emissao_NF_entrada
 		end class
 
     class cl_ESTOQUE_TRANSFERENCIA_ITEM

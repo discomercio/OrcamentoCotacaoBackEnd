@@ -1,4 +1,5 @@
 ﻿@ignore
+@Especificacao.Pedido.Passo30
 Feature: Validações do perc_RT
 
 Background: Reiniciar banco
@@ -16,15 +17,15 @@ Scenario: Verificar se pode ser editado - precisa da permissão OP_LJA_EXIBIR_CA
 Scenario: Verificar se pode ser editado 2
 	Given Usuário com permissão "OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO"
 	And Loja do usuário = "202"
-	When Pedido Base
-	And Informo "perc_RT" = 1
+	When Pedido base
+	And Informo "perc_RT" = "1"
 	Then Sem erro "Usuário não pode editar perc_RT"
 
 Scenario: Verificar se pode ser editado 3 - NUMERO_LOJA_ECOMMERCE_AR_CLUBE nunca pode
 	Given Usuário com permissão "OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO"
 	And Loja do usuário = "NUMERO_LOJA_ECOMMERCE_AR_CLUBE"
 	When Pedido Base
-	And Informo "perc_RT" = 1
+	And Informo "perc_RT" = "1"
 	Then Erro "Usuário não pode editar perc_RT"
 
 Scenario: Limites do perc_RT 1
@@ -33,8 +34,8 @@ Scenario: Limites do perc_RT 1
 	#			alerta = "Percentual de comissão inválido."
 	Given Usuário com permissão "OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO"
 	And Loja do usuário = "202"
-	When Pedido Base
-	And Informo "perc_RT" = -1
+	When Pedido base
+	And Informo "perc_RT" = "-1"
 	Then Erro "perc_RT inválido"
 
 Scenario: Limites do perc_RT 2

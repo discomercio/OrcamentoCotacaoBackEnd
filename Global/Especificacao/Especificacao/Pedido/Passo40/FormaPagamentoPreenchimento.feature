@@ -1,4 +1,5 @@
 ﻿@ignore
+@Especificacao.Pedido.Passo40
 Feature: FormaPagamento
 
 #CUIDADO COM O NOME DA VARIÁVEL!!
@@ -28,22 +29,22 @@ Scenario: Não foi informada a quantidade de parcelas
 	Given Pedido base
 	When Informo "custoFinancFornecTipoParcelamento" = "COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA"
 	And Informo "custoFinancFornecQtdeParcelas" = "0"
-	Then Erro regex ""Não foi informada a quantidade de parcelas para a forma de pagamento selecionada.*"
+	Then Erro "regex Não foi informada a quantidade de parcelas para a forma de pagamento selecionada.*"
 
 	Given Pedido base
 	When Informo "custoFinancFornecTipoParcelamento" = "COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA"
 	And Informo "custoFinancFornecQtdeParcelas" = "-1"
-	Then Erro regex ""Não foi informada a quantidade de parcelas para a forma de pagamento selecionada.*"
+	Then Erro "regex Não foi informada a quantidade de parcelas para a forma de pagamento selecionada.*"
 
 	Given Pedido base
 	When Informo "custoFinancFornecTipoParcelamento" = "COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA"
 	And Informo "custoFinancFornecQtdeParcelas" = "0"
-	Then Erro regex ""Não foi informada a quantidade de parcelas para a forma de pagamento selecionada.*"
+	Then Erro "regex Não foi informada a quantidade de parcelas para a forma de pagamento selecionada.*"
 
 	Given Pedido base
 	When Informo "custoFinancFornecTipoParcelamento" = "COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA"
 	And Informo "custoFinancFornecQtdeParcelas" = "-1"
-	Then Erro regex ""Não foi informada a quantidade de parcelas para a forma de pagamento selecionada.*"
+	Then Erro "regex Não foi informada a quantidade de parcelas para a forma de pagamento selecionada.*"
 
 Scenario: Opção de parcelamento não disponível para fornecedor
 ##loja/PedidoNovoConsiste.asp
@@ -64,7 +65,16 @@ Scenario: Opção de parcelamento não disponível para fornecedor
 #mesma validação, mensagem:
 #alerta=alerta & "Opção de parcelamento não disponível para fornecedor " & .fabricante & ": " & decodificaCustoFinancFornecQtdeParcelas(c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas) & " parcela(s)"
 
-	When Fazer esta validação
+	Given Reinciar banco ao terminar cenário
+	Given Pedido base
+	When Informo "custoFinancFornecTipoParcelamento" = "COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA"
+	Then Sem nenhum erro
+
+	Given Pedido base
+	When Informo "custoFinancFornecTipoParcelamento" = "COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA"
+	Given Limpar tabela "t_PERCENTUAL_CUSTO_FINANCEIRO_FORNECEDOR"
+
+	Then Erro "regex Opção de parcelamento não disponível para fornecedor.*"
 
 
 #//	À Vista

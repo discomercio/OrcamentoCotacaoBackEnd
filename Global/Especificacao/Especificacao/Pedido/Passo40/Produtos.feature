@@ -1,10 +1,10 @@
 ﻿@ignore
+@Especificacao.Pedido.Passo40
 Feature: Produtos
 
 Scenario: Configuração
 	Given Nome deste item "Especificacao.Pedido.Passo40.Produtos"
 	Given Implementado em "Especificacao.Pedido.Pedido"
-	And Fim da configuração
 
 
 Scenario: Sem quantidade zero
@@ -12,22 +12,16 @@ Scenario: Sem quantidade zero
 	#				if .qtde <= 0 then
 	#					alerta=texto_add_br(alerta)
 	#					alerta=alerta & "Produto " & .produto & " do fabricante " & .fabricante & ": quantidade " & cstr(.qtde) & " é inválida."
+	Given Pedido base
 	When Lista de itens "0" informo "qtde" = 0
 	Then Erro "Item está com quatidade inválida"
+
+Scenario: Sem quantidade zero 2
+	Given Pedido base
 	When Lista de itens "0" informo "qtde" = -1
 	Then Erro "Item está com quatidade inválida"
 
-Scenario: Sem produtos compostos - t_EC_PRODUTO_COMPOSTO
-	#'	VERIFICA SE É PRODUTO COMPOSTO
-	#	strSql = "SELECT " & _
-	#				"*" & _
-	#			" FROM t_EC_PRODUTO_COMPOSTO t_EC_PC" & _
-	#			" WHERE" & _
-	#				" (fabricante_composto = '" & s_fabricante & "')" & _
-	#				" AND (produto_composto = '" & s_produto & "')"
-	When Fazer esta validação
-
-Scenario: Sem produtos compostos 2 - t_EC_PRODUTO_COMPOSTO_ITEM
+Scenario: Sem produtos compostos - t_EC_PRODUTO_COMPOSTO_ITEM
 	##loja/PedidoNovoConsiste.asp
 	#			s = "SELECT " & _
 	#					"*" & _
@@ -41,7 +35,13 @@ Scenario: Sem produtos compostos 2 - t_EC_PRODUTO_COMPOSTO_ITEM
 	#			set rs = cn.execute(s)
 	#			if Not rs.Eof then
 	#				alerta=alerta & "O código de produto " & v_item(i).produto & " do fabricante " & v_item(i).fabricante & " é somente um código auxiliar para agrupar os produtos " & s & " e não pode ser usado diretamente no pedido!!"
-	When Fazer esta validação
+	Given Reiniciar banco ao terminar cenário
+	And Limpar tabela "t_EC_PRODUTO_COMPOSTO_ITEM"
+	And Novo registro em "t_EC_PRODUTO_COMPOSTO_ITEM", campo "fabricante_composto" = "003"
+	And Novo registro em "t_EC_PRODUTO_COMPOSTO_ITEM", campo "produto_composto" = "0003220"
+	And Gravar registro em "t_EC_PRODUTO_COMPOSTO_ITEM"
+	Given Pedido base
+	Then Erro "regex .*é somente um código auxiliar para agrupar os produtos.*e não pode ser usado diretamente no pedido.*"
 
 Scenario: Produto disponível para a loja
 #strSql = "SELECT " & _
@@ -63,7 +63,8 @@ Scenario: Produto disponível para a loja
 #loja/PedidoNovoConfirma.asp
 #alerta=alerta & "Produto " & .produto & " do fabricante " & .fabricante & " NÃO está cadastrado para a loja " & loja
 
-	When Fazer esta validação
+#validação feita em
+#Especificacao\Pedido\Passo40\PedidoNovoProdCompostoMask_t_PRODUTO_LOJA.feature
 
 #em loja/PedidoNovoConsiste.asp
 #					if Ucase(Trim("" & rs("vendavel"))) <> "S" then
@@ -71,19 +72,21 @@ Scenario: Produto disponível para a loja
 #					elseif .qtde > rs("qtde_max_venda") then
 #						alerta=alerta & "Produto " & .produto & " do fabricante " & .fabricante & ": quantidade " & cstr(.qtde) & " excede o máximo permitido."
 
-	When Fazer esta validação
+	When Validação feita em outro arquivo: "Especificacao\Pedido\Passo40\PedidoNovoProdCompostoMask_t_PRODUTO_LOJA.feature"
 
 
 Scenario: Máximo de itens por pedido
 	#alerta=alerta & "O número de itens que está sendo cadastrado (" & CStr(n) & ") excede o máximo permitido por pedido (" & CStr(MAX_ITENS) & ")!!"
-	When Fazer esta validação
+	Given Pedido base
+	And Colocar 13 itens no pedido
+	Then Erro "regex .*excede o máximo permitido por pedido.*"
 
 
 Scenario: Sem produtos repetidos
 	#loja/PedidoNovoConsiste.asp
 	#						alerta=alerta & "Produto " & .produto & " do fabricante " & .fabricante & ": linha " & renumera_com_base1(Lbound(v_item),i) & " repete o mesmo produto da linha " & renumera_com_base1(Lbound(v_item),j) & "."
 	When Lista de itens copio item "1" para item "0"
-	Then Erro regex ".*repete o mesmo produto da linha.*"
+	Then Erro "regex .*repete o mesmo produto da linha.*"
 
 
 Scenario: // CONSISTÊNCIA PARA VALOR ZERADO
@@ -107,27 +110,50 @@ Scenario: // CONSISTÊNCIA PARA VALOR ZERADO
 #       }
 #   }
 
-#loja/PedidoNovoConfirma.asp
-#'	CONSISTÊNCIA PARA VALOR ZERADO
-#	if alerta="" then
-#		for i=Lbound(v_item) to Ubound(v_item)
-#			with v_item(i)
-#				if .preco_venda <= 0 then
-#					alerta=texto_add_br(alerta)
-#					alerta=alerta & "Produto '" & .produto & "' está com valor de venda zerado!"
-#				elseif ((rb_RA = "S") And (permite_RA_status = 1)) And (.preco_NF <= 0) then
-#					alerta=texto_add_br(alerta)
-#					alerta=alerta & "Produto '" & .produto & "' está com preço zerado!"
-#					end if
-#				end with
-#			next
-#		end if
+	#loja/PedidoNovoConfirma.asp
+	#'	CONSISTÊNCIA PARA VALOR ZERADO
+	#	if alerta="" then
+	#		for i=Lbound(v_item) to Ubound(v_item)
+	#			with v_item(i)
+	#				if .preco_venda <= 0 then
+	#					alerta=texto_add_br(alerta)
+	#					alerta=alerta & "Produto '" & .produto & "' está com valor de venda zerado!"
+	#				elseif ((rb_RA = "S") And (permite_RA_status = 1)) And (.preco_NF <= 0) then
+	#					alerta=texto_add_br(alerta)
+	#					alerta=alerta & "Produto '" & .produto & "' está com preço zerado!"
+	#					end if
+	#				end with
+	#			next
+	#		end if
+	Given Pedido base
+	And Informo produto "0" campo "vl_unitario" = "0"
+	Then Erro "regex .*está com valor de venda zerado.*"
 
-	When Fazer esta validação
+Scenario: // CONSISTÊNCIA PARA VALOR ZERADO 2
+	Given Pedido base
+	And Informo produto "0" campo "preco_venda" = "-1"
+	Then Erro "regex .*está com valor de venda zerado.*"
+
+Scenario: // CONSISTÊNCIA PARA VALOR ZERADO permite_RA_status 1
+	Given Pedido base
+	And Informo produto "0" campo "preco_NF" = "0"
+	And Informo "rb_RA" = "S"
+	And Informo "permite_RA_status" = "1"
+	Then Erro "regex .*está com valor de venda zerado.*"
+
+Scenario: // CONSISTÊNCIA PARA VALOR ZERADO permite_RA_status 2
+	#deve dar erro mesmo que não tenha RA
+	Given Pedido base
+	And Informo produto "0" campo "preco_NF" = "0"
+	And Informo "rb_RA" = "N"
+	And Informo "permite_RA_status" = "0"
+	Then Erro "regex .*está com valor de venda zerado.*"
 
 Scenario: // CONSISTÊNCIA PARA VALOR negativos
 	#loja/PedidoNovoConsiste.asp
 	#<input name="c_vl_NF" id="c_vl_NF" class="PLLd" style="width:62px;"
 	#	onkeypress="if (digitou_enter(true)) fPED.c_vl_unitario[<%=Cstr(i-1)%>].focus(); filtra_moeda_positivo();" onblur="this.value=formata_moeda(this.value); trata_edicao_RA(<%=Cstr(i-1)%>); recalcula_RA(); recalcula_RA_Liquido(); recalcula_parcelas();"
 	#Quer dizer, os preços devem ser positivos
-	When Fazer esta validação
+	Given Pedido base
+	And Informo produto "0" campo "vl_unitario" = "-1"
+	Then Erro "regex .*está com valor de venda zerado.*"

@@ -24,6 +24,8 @@ using Loja.Bll.Dto.IndicadorDto;
 using Microsoft.Extensions.Logging;
 using Loja.Bll.Dto.LojaDto;
 using Loja.Bll.Bll.pedidoBll;
+using Pedido;
+using InfraBanco;
 
 //TODO: habilitar nullable no projeto todo
 #nullable enable
@@ -32,7 +34,7 @@ namespace Loja.UI.Controllers
 {
     public class PedidoController : Controller
     {
-        private readonly PedidoBll pedidoBll;
+        private readonly Bll.PedidoBll.PedidoBll pedidoBll;
         private readonly ProdutoBll produtoBll;
         private readonly ClienteBll clienteBll;
         private readonly FormaPagtoBll formaPagtoBll;
@@ -41,10 +43,11 @@ namespace Loja.UI.Controllers
         private readonly UsuarioAcessoBll usuarioAcessoBll;
         private readonly Configuracao configuracao;
         private readonly ILogger<UsuarioLogado> loggerUsuarioLogado;
+        private readonly ContextoBdProvider contextoBdProvider;
 
-        public PedidoController(PedidoBll pedidoBll, ProdutoBll produtoBll, ClienteBll clienteBll, FormaPagtoBll formaPagtoBll, CoeficienteBll coeficienteBll,
+        public PedidoController(Bll.PedidoBll.PedidoBll pedidoBll, ProdutoBll produtoBll, ClienteBll clienteBll, FormaPagtoBll formaPagtoBll, CoeficienteBll coeficienteBll,
             CancelamentoAutomaticoBll cancelamentoAutomaticoBll, UsuarioAcessoBll usuarioAcessoBll, Configuracao configuracao,
-            ILogger<UsuarioLogado> loggerUsuarioLogado)
+            ILogger<UsuarioLogado> loggerUsuarioLogado, InfraBanco.ContextoBdProvider contextoBdProvider)
         {
             this.pedidoBll = pedidoBll;
             this.produtoBll = produtoBll;
@@ -55,6 +58,7 @@ namespace Loja.UI.Controllers
             this.usuarioAcessoBll = usuarioAcessoBll;
             this.configuracao = configuracao;
             this.loggerUsuarioLogado = loggerUsuarioLogado;
+            this.contextoBdProvider = contextoBdProvider;
         }
 
         public IActionResult Index()
@@ -298,9 +302,32 @@ namespace Loja.UI.Controllers
 
             //}
 
+            //todo: afazer: vamos remover estas conversões; estão aqui temporariamente até a gente mudar o HTML e javscript
+            foreach (var origem in pedidoDtoSession.ListaProdutos)
+            {
+                origem.Produto = origem.NumProduto;
+                origem.CustoFinancFornecPrecoListaBase = origem.VlLista;
+                origem.Preco_NF = origem.Preco_Lista ?? 0;
+                origem.Desc_Dado = origem.Desconto;
+                origem.Preco_Venda = origem.VlVenda ?? 0;
+                origem.TotalItem = origem.VlTotalItem ?? 0;
+                origem.TotalItemRA = origem.VlTotalItemComRA;
+                //este precisamos acessar o banco
+                origem.CustoFinancFornecCoeficiente = 0;
+                    //from c in contextoBdProvider.GetContextoLeitura().
+                    //                                   where c.Fabricante == origem.Fabricante && c.TipoParcela == siglaParc
+                    //                                  select 
+            }
+
+
+
+            Pedido.Dados.Criacao.PedidoCriacaoRetornoDados ret = await pedidoBll.CadastrarPedido(pedidoDtoSession,
+                usuarioLogado.Loja_atual_id, usuarioLogado.Usuario_atual, usuarioLogado.Vendedor_externo);
+
+            return Ok(ret);
             //se esta tudo ok redirecionamos para a tela de Pedido
-            //return RedirectToAction("BuscarPedido", new { numPedido = "Implementando novo cadastro de pedido" });
-            return RedirectToAction("Index", "Cliente", new { numPedido = "pedido não foi salvo, implementando novo cadastro de pedido" });
+            //return RedirectToAction("BuscarPedido", new { numPedido = ret.Id });
+            //return RedirectToAction("Index", "Cliente", new { numPedido = "pedido não foi salvo, implementando novo cadastro de pedido" });
         }
 
         public async Task<IActionResult> BuscarPedido(string numPedido)
@@ -407,7 +434,7 @@ namespace Loja.UI.Controllers
                     pedidoDto = usuarioLogado.PedidoDto;
                     pedidoDto.PercRT = percComissao;
                     pedidoDto.PermiteRAStatus = (short)comRA;
-                    pedidoDto.OpcaoPossuiRA = comRA == 1 ? "S" : "N";
+                    pedidoDto.OpcaoPossuiRA = comRA == 1 ? "S":"N";
                     pedidoDto.CDManual = cdManual == 0 ? (short)0 : (short)1;
                     pedidoDto.CDSelecionado = cdManual == 1 ? ListaCD : 0;
                     pedidoDto.ComIndicador = int.Parse(comIndicacao) != 0 ? 1 : 0;
@@ -437,7 +464,7 @@ namespace Loja.UI.Controllers
         private static async Task<Loja.UI.Models.Pedido.CancelamentoAutomaticoViewModel> CancelamentoAutomaticoDados(UsuarioLogado usuarioLogado,
             CancelamentoAutomaticoBll cancelamentoAutomaticoBll)
         {
-            var dadosTelaRetorno= await cancelamentoAutomaticoBll.DadosTela(usuarioLogado);
+            var dadosTelaRetorno = await cancelamentoAutomaticoBll.DadosTela(usuarioLogado);
             var itensLoja = (from i in dadosTelaRetorno.cancelamentoAutomaticoItems group i by i.LojaId into g select new Models.Comuns.ListaLojasViewModel.ItemLoja { Loja = g.Key, NumeroItens = g.Count() });
             var model = new Loja.UI.Models.Pedido.CancelamentoAutomaticoViewModel(dadosTelaRetorno.cancelamentoAutomaticoItems,
                 new Models.Comuns.ListaLojasViewModel(usuarioLogado, itensLoja.ToList()));
@@ -452,7 +479,7 @@ namespace Loja.UI.Controllers
 
             var lista = await pedidoBll.ListaUltimosPedidos(usuarioLogado.Loja_atual_id);
             List<UltimosPedidosViewModel> model = new List<UltimosPedidosViewModel>();
-            
+
             foreach (var i in lista)
             {
                 model.Add(new UltimosPedidosViewModel

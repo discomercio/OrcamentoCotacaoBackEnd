@@ -90,14 +90,11 @@ $(function () {
 });
 
 window.Contador = (): any => {
-    debugger;
     let msgEntrega: any = $("#observacoes").val();
     $("#cont").text(msgEntrega.length);
 }
 
 window.ValidarFormulario = (): any => {
-    debugger;
-    let pedido = "1234N";
     //valida entrega imediata
     if ($("#entregaImediata").prop("checked") == false) {
         //vamos validar a previsão de entrega
@@ -114,21 +111,40 @@ window.ValidarFormulario = (): any => {
             return false;
         }
     }
-    //Modal de sucesso
-    //swal("Pedido " + pedido, "", "success");
-    swal({
-        title: "Pedido " + pedido,
-        text: "Tela do pedido em construção!",
-        type: "success",
-        showCancelButton: false,
-        cancelButtonText: "Cancelar",
-        confirmButtonClass: "btn-primary",
-        confirmButtonText: "Ok",
-        closeOnConfirm: true,
-        closeOnCancel: true
-    },
-        function (ok: boolean) {
-            debugger;
-            if (ok) $("#formulario").submit();
-        });
+
+    var serializedForm = $("#formulario").serialize();
+    $.ajax({
+        url: ($("#formulario")[0] as any).action,
+        type: "POST",
+        data: serializedForm,
+        success: function (result) {
+            console.log(result);
+            alert("success " + JSON.stringify(result));
+        },
+        error: function (result) {
+            console.log(result);
+            alert("Failed " + JSON.stringify(result));
+        }
+    });
+
+    //$("#formulario").submit();
+    return false;
+
+    ////Modal de sucesso
+    ////swal("Pedido " + pedido, "", "success");
+    //let pedido = "1234N";
+    //swal({
+    //    title: "Pedido " + pedido,
+    //    text: "Tela do pedido em construção!",
+    //    type: "success",
+    //    showCancelButton: false,
+    //    cancelButtonText: "Cancelar",
+    //    confirmButtonClass: "btn-primary",
+    //    confirmButtonText: "Ok",
+    //    closeOnConfirm: true,
+    //    closeOnCancel: true
+    //},
+    //    function (ok: boolean) {
+    //        if (ok) $("#formulario").submit();
+    //    });
 }

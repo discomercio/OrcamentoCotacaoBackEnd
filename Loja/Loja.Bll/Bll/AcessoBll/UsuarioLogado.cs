@@ -227,6 +227,11 @@ namespace Loja.Bll.Bll.AcessoBll
         private DateTime? _sessionCtrlDtHrLogon = null;
         #endregion
 
+        public void LimparCacheInfsTusuario()
+        {
+            _atualizarInfsTusuarioFeito = false;
+        }
+
         //o que colocamos na session
         private static class StringsSession
         {

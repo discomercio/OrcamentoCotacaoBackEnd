@@ -1,4 +1,5 @@
 ﻿using InfraBanco.Modelos;
+using Loja.Bll.Dto.AvisosDto;
 using Loja.Bll.Util;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -18,14 +19,16 @@ namespace Loja.Bll.Bll.AcessoBll
         private readonly ClienteBll.ClienteBll clienteBll;
         private readonly ILogger<UsuarioAcessoBll> logger;
         private readonly ILogger<UsuarioLogado> loggerUsuarioLogado;
+        private readonly Avisos.AvisosBll avisosBll;
 
         public UsuarioAcessoBll(InfraBanco.ContextoBdProvider contextoProvider, ClienteBll.ClienteBll clienteBll, ILogger<UsuarioAcessoBll> logger,
-            ILogger<UsuarioLogado> loggerUsuarioLogado)
+            ILogger<UsuarioLogado> loggerUsuarioLogado, Avisos.AvisosBll avisosBll)
         {
             this.contextoProvider = contextoProvider;
             this.clienteBll = clienteBll;
             this.logger = logger;
             this.loggerUsuarioLogado = loggerUsuarioLogado;
+            this.avisosBll = avisosBll;
         }
 
         public class LoginUsuarioRetorno
@@ -369,6 +372,59 @@ namespace Loja.Bll.Bll.AcessoBll
                         select l.Nome;
             var lista = await query.FirstOrDefaultAsync();
             return lista;
+        }
+
+        public async Task<IEnumerable<AvisoDto>> BuscarAvisosNaoLidos(string loja, string usuario)
+        {
+            var ret = await avisosBll.BuscarAvisosNaoLidos(loja, usuario);
+            return AvisoDto.AvisoDto_De_AvisoDados(ret.ToList());
+        }
+
+        public async Task<bool> RemoverAvisos(string loja, string usuario, List<string> itens)
+        {
+            return await avisosBll.RemoverAvisos(loja, usuario.ToUpper(), itens);
+        }
+
+        public async Task<bool> MarcarAvisoExibido(List<string> lst, string usuario, string loja)
+        {
+            return await avisosBll.MarcarAvisoExibido(lst, usuario.ToUpper(), loja);
+        }
+
+        public async Task<bool> AtualizarSessionCtrlTicket(UsuarioLogado usuarioLogado)
+        {
+            bool retorno = false;
+            
+
+            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+            {
+                var rsUsuario = await (from u in dbgravacao.Tusuarios
+                                       where usuarioLogado.Usuario_nome_atual.Trim().ToUpper() == u.Usuario.Trim().ToUpper()
+                                       select u).FirstOrDefaultAsync();
+                if (rsUsuario == null)
+                    return false;
+
+                var ticket = Guid.NewGuid();
+                rsUsuario.Dt_Ult_Acesso = DateTime.Now;
+                rsUsuario.SessionCtrlDtHrLogon = DateTime.Now;
+                rsUsuario.SessionCtrlModulo = Constantes.Constantes.SESSION_CTRL_MODULO_LOJA;
+                rsUsuario.SessionCtrlLoja = usuarioLogado.Loja_atual_id;
+                rsUsuario.SessionCtrlTicket = ticket.ToString();
+                rsUsuario.SessionTokenModuloLoja = ticket;
+                rsUsuario.DtHrSessionTokenModuloLoja = DateTime.Now;
+
+
+                dbgravacao.Update(rsUsuario);
+                await dbgravacao.SaveChangesAsync();
+
+                dbgravacao.transacao.Commit();
+
+
+                usuarioLogado.LimparCacheInfsTusuario();
+
+                retorno = true;
+            }
+
+            return retorno;
         }
     }
 }

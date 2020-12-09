@@ -77,12 +77,12 @@ namespace PrepedidoBusiness.Dto.ClienteCadastro
                 EndEtg_produtor_rural_status = origem.EndEtg_produtor_rural_status,
                 EndEtg_ie = origem.EndEtg_ie,
                 EndEtg_rg = origem.EndEtg_rg,
-                St_memorizacao_completa_enderecos = origem.St_memorizacao_completa_enderecos
+                St_memorizacao_completa_enderecos = origem.St_memorizacao_completa_enderecos ? (byte)1 : (byte)0
             };
             return ret;
         }
 
-        public static Cliente.Dados.EnderecoEntregaClienteCadastroDados EnderecoEntregaClienteCadastroDados_De_EnderecoEntregaDtoClienteCadastro(EnderecoEntregaDtoClienteCadastro  origem)
+        public static Cliente.Dados.EnderecoEntregaClienteCadastroDados EnderecoEntregaClienteCadastroDados_De_EnderecoEntregaDtoClienteCadastro(EnderecoEntregaDtoClienteCadastro origem)
         {
             if (origem == null) return null;
             var ret = new Cliente.Dados.EnderecoEntregaClienteCadastroDados()
@@ -116,7 +116,7 @@ namespace PrepedidoBusiness.Dto.ClienteCadastro
                 EndEtg_produtor_rural_status = origem.EndEtg_produtor_rural_status,
                 EndEtg_ie = origem.EndEtg_ie,
                 EndEtg_rg = origem.EndEtg_rg,
-                St_memorizacao_completa_enderecos = origem.St_memorizacao_completa_enderecos
+                St_memorizacao_completa_enderecos = origem.St_memorizacao_completa_enderecos == 1
             };
             return ret;
         }

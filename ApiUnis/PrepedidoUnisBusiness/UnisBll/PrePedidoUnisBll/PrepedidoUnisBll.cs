@@ -26,21 +26,16 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
 
         private readonly ConfiguracaoApiUnis configuracaoApiUnis;
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
-        private readonly InfraBanco.ContextoCepProvider contextoCepProvider;
         private readonly PrepedidoBll prepedidoBll;
         private readonly ClienteBll clienteBll;
-        private readonly Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll;
 
         public PrePedidoUnisBll(ConfiguracaoApiUnis configuracaoApiUnis, InfraBanco.ContextoBdProvider contextoProvider,
-            InfraBanco.ContextoCepProvider contextoCepProvider, PrepedidoBll prepedidoBll, ClienteBll clienteBll,
-            Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll)
+             PrepedidoBll prepedidoBll, ClienteBll clienteBll)
         {
             this.configuracaoApiUnis = configuracaoApiUnis;
             this.contextoProvider = contextoProvider;
-            this.contextoCepProvider = contextoCepProvider;
             this.prepedidoBll = prepedidoBll;
             this.clienteBll = clienteBll;
-            this.validacoesPrepedidoBll = validacoesPrepedidoBll;
         }
 
         public async Task<PrePedidoResultadoUnisDto> CadastrarPrepedidoUnis(PrePedidoUnisDto prePedidoUnis)
@@ -88,7 +83,7 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
                 return retorno;
             }
 
-            Cliente.Dados.EnderecoCadastralClientePrepedidoDados endCadastralDados = 
+            Cliente.Dados.EnderecoCadastralClientePrepedidoDados endCadastralDados =
                 EnderecoCadastralClientePrepedidoUnisDto
                 .EnderecoCadastralClientePrepedidoDadosDeEnderecoCadastralClientePrepedidoUnisDto(prePedidoUnis.EnderecoCadastralCliente);
 
@@ -116,7 +111,7 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
             List<string> lstRet = (await prepedidoBll.CadastrarPrepedido(prePedidoDados,
                 prePedidoUnis.Indicador_Orcamentista.ToUpper(),
                 Convert.ToDecimal(configuracaoApiUnis.LimiteArredondamentoPrecoVendaOrcamentoItem), false,
-                (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS)).ToList();
+                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS)).ToList();
 
             if (lstRet.Count > 0)
             {
@@ -170,8 +165,10 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
 
         public async Task<PercentualVlPedidoRAResultadoUnisDto> ObtemPercentualVlPedidoRA()
         {
-            var ret = new PercentualVlPedidoRAResultadoUnisDto();
-            ret.PercentualVlPedidoRA = await prepedidoBll.ObtemPercentualVlPedidoRA();
+            var ret = new PercentualVlPedidoRAResultadoUnisDto
+            {
+                PercentualVlPedidoRA = await prepedidoBll.ObtemPercentualVlPedidoRA()
+            };
             return ret;
         }
 
@@ -197,5 +194,91 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
 
             return null;
         }
+
+        public async Task<BuscarStatusPrepedidoRetornoUnisDto> BuscarStatusPrepedido(string orcamento)
+        {
+            BuscarStatusPrepedidoRetornoUnisDto ret = BuscarStatusPrepedidoRetornoUnisDto.BuscarStatusPrepedidoRetornoUnisDto_De_BuscarStatusPrepedidoRetornoDados(await prepedidoBll.BuscarStatusPrepedido(orcamento));
+
+            return await Task.FromResult(ret);
+        }
+
+        public async Task<ListaInformacoesPrepedidoRetornoUnisDto> ListarStatusPrepedido(FiltroInfosStatusPrepedidosUnisDto filtro)
+        {
+            int cancelado = configuracaoApiUnis.ParamBuscaListagemStatusPrepedido.CanceladoDias;
+            DateTime? dataLimiteCan = cancelado > 0 ? DateTime.Now.AddDays(-cancelado) : (DateTime?)null;
+            int pendentes = configuracaoApiUnis.ParamBuscaListagemStatusPrepedido.PendentesDias;
+            DateTime? dataLimitePen = pendentes > 0 ? DateTime.Now.AddDays(-pendentes) : (DateTime?)null;
+            int virouPedido = configuracaoApiUnis.ParamBuscaListagemStatusPrepedido.VirouPedidoDias;
+            DateTime? dataLimiteVir = virouPedido > 0 ? DateTime.Now.AddDays(-virouPedido) : (DateTime?)null;
+
+            //se tiver item => não filtra por data
+            //se não tiver item e appsettings > 0 => filtra por data
+            if (filtro.FiltrarPrepedidos != null && filtro.FiltrarPrepedidos.Count > 0)
+            {
+                dataLimiteCan = null;
+                dataLimitePen = null;
+                dataLimiteVir = null;
+            }
+
+            //vamos pegar a mero data
+            DateTime? dataLimiteMenor = dataLimiteCan;
+            if (dataLimitePen == null)
+                dataLimiteMenor = null;
+            if (dataLimiteVir == null)
+                dataLimiteMenor = null;
+
+            if (dataLimiteMenor.HasValue && dataLimitePen.HasValue && dataLimiteMenor.Value > dataLimitePen.Value)
+                dataLimiteMenor = dataLimitePen;
+            if (dataLimiteMenor.HasValue && dataLimiteVir.HasValue && dataLimiteMenor.Value > dataLimiteVir.Value)
+                dataLimiteMenor = dataLimiteVir;
+
+            //bucar a lista completa
+            // vamos buscar os dados do prepedido no Global
+            List<InformacoesStatusPrepedidoRetornoDados> lstStatusPrepedidoDados = await prepedidoBll.ListarStatusPrepedido(
+                dataLimiteMenor,
+                filtro.FiltrarPrepedidos, (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS);
+
+            ListaInformacoesPrepedidoRetornoUnisDto lstInfoRetorno = new ListaInformacoesPrepedidoRetornoUnisDto
+            {
+                ListaInformacoesPrepedidoRetorno = new List<InformacoesPrepedidoUnisDto>()
+            };
+            if (lstStatusPrepedidoDados == null)
+                return lstInfoRetorno;
+
+            //vamos converter os dados
+            List<InformacoesPrepedidoUnisDto> lstInfoPrepedidoUnisDto = InformacoesPrepedidoUnisDto.
+                ListaInformacoesPrepedidoUnisDto_De_ListaInformacoesStatusPrepedidoRetornoDados(lstStatusPrepedidoDados);
+
+            foreach (var i in lstInfoPrepedidoUnisDto)
+            {
+                bool adicionar = false;
+                if (filtro.VirouPedido && i.St_virou_pedido)
+                {
+                    if (!dataLimiteVir.HasValue)
+                        adicionar = true;
+                    if (dataLimiteVir.HasValue && i.Data >= dataLimiteVir)
+                        adicionar = true;
+                }
+                if (filtro.Pendentes && string.IsNullOrEmpty(i.St_orcamento) && !i.St_virou_pedido)
+                {
+                    if (!dataLimitePen.HasValue)
+                        adicionar = true;
+                    if (dataLimitePen.HasValue && i.Data >= dataLimitePen)
+                        adicionar = true;
+                }
+                if (filtro.Cancelados && i.St_orcamento == InfraBanco.Constantes.Constantes.ST_ORCAMENTO_CANCELADO)
+                {
+                    if (!dataLimiteCan.HasValue)
+                        adicionar = true;
+                    if (dataLimiteCan.HasValue && i.Data >= dataLimiteCan)
+                        adicionar = true;
+                }
+                if (adicionar)
+                    lstInfoRetorno.ListaInformacoesPrepedidoRetorno.Add(i);
+            }
+
+            return lstInfoRetorno;
+        }
     }
 }
+

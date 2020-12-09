@@ -118,16 +118,17 @@ this.ScenarioInitialize(scenarioInfo);
     testRunner.Given("Limpar tabela \"t_PRAZO_PAGTO_VISANET\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 10
- testRunner.And("Novo registro em \"t_PRAZO_PAGTO_VISANET\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Novo registro na tabela \"t_PRAZO_PAGTO_VISANET\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 11
- testRunner.And("Novo registro \"tipo\" = \"Constantes.COD_VISANET_PRAZO_PAGTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Novo registro em \"t_PRAZO_PAGTO_VISANET\", campo \"tipo\" = \"Constantes.COD_VISANET_" +
+                        "PRAZO_PAGTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 12
- testRunner.And("Novo registro \"qtde_parcelas\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Novo registro em \"t_PRAZO_PAGTO_VISANET\", campo \"qtde_parcelas\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 13
- testRunner.And("Gravar registro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Gravar registro em \"t_PRAZO_PAGTO_VISANET\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 14
     testRunner.Then("Resposta \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -168,16 +169,17 @@ this.ScenarioInitialize(scenarioInfo);
     testRunner.Given("Limpar tabela \"t_PRAZO_PAGTO_VISANET\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 18
- testRunner.And("Novo registro em \"t_PRAZO_PAGTO_VISANET\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Novo registro na tabela \"t_PRAZO_PAGTO_VISANET\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 19
- testRunner.And("Novo registro \"tipo\" = \"Constantes.COD_VISANET_PRAZO_PAGTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Novo registro em \"t_PRAZO_PAGTO_VISANET\", campo \"tipo\" = \"Constantes.COD_VISANET_" +
+                        "PRAZO_PAGTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 20
- testRunner.And("Novo registro \"qtde_parcelas\" = \"321\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Novo registro em \"t_PRAZO_PAGTO_VISANET\", campo \"qtde_parcelas\" = \"321\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 21
- testRunner.And("Gravar registro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Gravar registro em \"t_PRAZO_PAGTO_VISANET\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 22
     testRunner.Then("Resposta \"321\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");

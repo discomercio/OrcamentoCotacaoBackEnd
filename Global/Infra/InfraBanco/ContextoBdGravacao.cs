@@ -96,7 +96,8 @@ namespace InfraBanco
         public DbSet<TprazoPagtoVisanet> TprazoPagtoVisanets { get => contexto.TprazoPagtoVisanets; }
         public DbSet<Tperfil> Tperfils { get => contexto.Tperfils; }
         public DbSet<TperfilUsuario> TperfilUsuarios { get => contexto.TperfilUsuarios; }
-        public DbSet<TcodigoDescricao> tcodigoDescricaos { get => contexto.TcodigoDescricaos; }
+        public DbSet<TcodigoDescricao> TcodigoDescricaos { get => contexto.TcodigoDescricaos; }
+        public DbSet<Tloja> Tlojas { get => contexto.Tlojas; }
 #endif
 
     }

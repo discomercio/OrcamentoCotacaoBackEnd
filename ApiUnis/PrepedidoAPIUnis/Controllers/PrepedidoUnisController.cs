@@ -10,8 +10,10 @@ using PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto;
 using PrepedidoUnisBusiness.UnisBll.AcessoBll;
 using PrepedidoUnisBusiness.UnisBll.CoeficienteUnisBll;
 using PrepedidoUnisBusiness.UnisBll.FormaPagtoUnisBll;
+using PrepedidoUnisBusiness.UnisBll.PedidoUnisBll;
 using PrepedidoUnisBusiness.UnisDto.CoeficienteUnisDto;
 using PrepedidoUnisBusiness.UnisDto.FormaPagtoUnisDto;
+using PrepedidoUnisBusiness.UnisDto.PedidoUnisDto;
 using PrepedidoUnisBusiness.UnisDto.PrepedidoUnisDto;
 
 namespace PrepedidoAPIUnis.Controllers
@@ -39,7 +41,7 @@ namespace PrepedidoAPIUnis.Controllers
         /// Rotina para cadastrar Pré-Pedido
         /// </summary>
         /// <param name="prePedido">PrePedidoUnisDto</param>
-        /// <returns>Retona classe PrePedidoResultadoUnisDto</returns>
+        /// <returns>PrePedidoResultadoUnisDto</returns>
         [AllowAnonymous]
         [HttpPost("cadastrarPrepedido")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
@@ -62,7 +64,7 @@ namespace PrepedidoAPIUnis.Controllers
         [HttpPost("cancelarPrepedido")]
         public async Task<IActionResult> CancelarPrePedido(CancelarPrepedidoUnisDto cancelarPrepedido)
         {
-            if (!servicoValidarTokenApiUnis.ValidarToken(cancelarPrepedido.TokenAcesso, out string usuario))
+            if (!servicoValidarTokenApiUnis.ValidarToken(cancelarPrepedido.TokenAcesso, out _))
                 return Unauthorized();
 
             //chamar bll para deletar
@@ -81,7 +83,7 @@ namespace PrepedidoAPIUnis.Controllers
         /// <param name="tokenAcesso"></param>
         /// <param name="tipo_pessoa"></param>
         /// <param name="orcamentista"></param>
-        /// <returns></returns>
+        /// <returns>FormaPagtoUnisDto</returns>
         [AllowAnonymous]
         [HttpGet("buscarFormasPagto")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
@@ -92,7 +94,7 @@ namespace PrepedidoAPIUnis.Controllers
                 return Unauthorized();
 
             FormaPagtoUnisDto retorno = await formaPagtoUnisBll.ObterFormaPagto(orcamentista?.Trim().ToUpper(), tipo_pessoa?.Trim().ToUpper());
-            
+
             return Ok(retorno);
 
         }
@@ -102,7 +104,7 @@ namespace PrepedidoAPIUnis.Controllers
         /// Rotina para buscar a quantidade máxima para parcelamento
         /// </summary>
         /// <param name="tokenAcesso"></param>
-        /// <returns></returns>
+        /// <returns>QtdeParcCartaoVisaResultadoUnisDto</returns>
         [AllowAnonymous]
         [HttpGet("buscarQtdeParcCartaoVisa")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
@@ -127,7 +129,7 @@ namespace PrepedidoAPIUnis.Controllers
         public async Task<ActionResult<List<List<CoeficienteUnisDto>>>> BuscarCoeficienteFornecedores(string tokenAcesso,
             List<string> lstFornecedores)
         {
-            if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out string usuario))
+            if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out _))
                 return Unauthorized();
 
             IEnumerable<IEnumerable<CoeficienteUnisDto>> ret = await coeficienteUnisBll.BuscarListaCoeficientesFornecedores(lstFornecedores);
@@ -140,13 +142,13 @@ namespace PrepedidoAPIUnis.Controllers
         /// </summary>
         /// <param name="tokenAcesso"></param>
         /// <param name="orcamentista"></param>
-        /// <returns></returns>
+        /// <returns>PermiteRaStatusResultadoUnisDto</returns>
         [AllowAnonymous]
         [HttpGet("obterPermiteRaStatus")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<ActionResult<PermiteRaStatusResultadoUnisDto>> Obter_Permite_RA_Status(string tokenAcesso, string orcamentista)
         {
-            if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out string usuario))
+            if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out _))
                 return Unauthorized();
 
             PermiteRaStatusResultadoUnisDto ret = await prepedidoUnisBll.Obter_Permite_RA_Status(orcamentista?.ToUpper());
@@ -160,7 +162,7 @@ namespace PrepedidoAPIUnis.Controllers
         /// Rotina para buscar o percentual máximo para Pré-Pedido com RA
         /// </summary>
         /// <param name="tokenAcesso"></param>
-        /// <returns></returns>
+        /// <returns>PercentualVlPedidoRAResultadoUnisDto</returns>
         [AllowAnonymous]
         [HttpGet("obtemPercentualVlPedidoRA")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
@@ -172,6 +174,55 @@ namespace PrepedidoAPIUnis.Controllers
             PercentualVlPedidoRAResultadoUnisDto ret = await prepedidoUnisBll.ObtemPercentualVlPedidoRA();
 
             return Ok(ret);
+        }
+
+        /// <summary>
+        /// Rotina para buscar status do Pré-Pedido
+        /// </summary>
+        /// <param name="tokenAcesso"></param>
+        /// <param name="orcamento"></param>
+        /// <returns>BuscarStatusPrepedidoRetornoUnisDto</returns>
+        /// <response code="204">Orçamento não existe ou número do orçamento inválido</response>
+        [AllowAnonymous]
+        [HttpGet("buscarStatusPrepedido")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public async Task<ActionResult<BuscarStatusPrepedidoRetornoUnisDto>> BuscarStatusPrepedido(string tokenAcesso, string orcamento)
+        {
+            if (!servicoValidarTokenApiUnis.ValidarToken(tokenAcesso, out _))
+                return Unauthorized();
+
+            BuscarStatusPrepedidoRetornoUnisDto ret = await prepedidoUnisBll.BuscarStatusPrepedido(orcamento);
+
+            if (ret.St_orc_virou_pedido != null)
+                return Ok(ret);
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Rotina para buscar lote de status do Pré-Pedido
+        /// </summary>
+        /// <param name="filtroStatus"></param>
+        /// <returns>ListaInformacoesPrepedidoRetornoUnisDto</returns>
+        /// <response code="204">Não foi encontrado nenhum orçamento</response>
+        [AllowAnonymous]
+        [HttpPost("listarStatusPrepedido")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public async Task<ActionResult<ListaInformacoesPrepedidoRetornoUnisDto>> ListarStatusPrepedido(FiltroInfosStatusPrepedidosUnisDto filtroStatus)
+        {
+            if (filtroStatus != null)
+            {
+                if (!servicoValidarTokenApiUnis.ValidarToken(filtroStatus.TokenAcesso, out _))
+                    return Unauthorized();
+            }
+
+            //vamos fazer a busca
+            ListaInformacoesPrepedidoRetornoUnisDto lstInfo = await prepedidoUnisBll.ListarStatusPrepedido(filtroStatus);
+            if (lstInfo == null || lstInfo.ListaInformacoesPrepedidoRetorno == null)
+                return NoContent();
+            if (lstInfo.ListaInformacoesPrepedidoRetorno.Count() == 0)
+                return NoContent();
+            return Ok(lstInfo);
         }
     }
 }

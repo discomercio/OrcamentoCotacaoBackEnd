@@ -13,6 +13,7 @@ using Loja.Bll.Bll.AcessoBll;
 using Loja.Bll.Util;
 using Loja.Bll.PrepedidoBll;
 using Loja.Bll.Bll.pedidoBll;
+using Loja.Bll.Dto.AvisosDto;
 
 namespace Loja.UI.Controllers
 {
@@ -60,9 +61,50 @@ namespace Loja.UI.Controllers
             var taskResumoPrepedidoListaDto = prepedidoBll.ResumoPrepedidoLista(usuarioLogado, true);
             var taskCancelamentoAutomaticoViewModel = cancelamentoAutomaticoBll.DadosTela(usuarioLogado);
 
+            //vamos buscar os avisos não lidos
+            //Id / Mensagem / Usuario / Destinatario / Dt_Ult_Atualizacao
+
             model.ResumoPrepedidoListaDto = await taskResumoPrepedidoListaDto;
             model.CancelamentoAutomaticoItems = (await taskCancelamentoAutomaticoViewModel).cancelamentoAutomaticoItems;
             return View(model);
+        }
+
+        //incluir para não armazenar cache
+        [HttpGet]
+        public async Task<List<AvisoDto>> BuscarAvisosNaoLidos()
+        {
+            var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
+
+            List<AvisoDto> lst = (await usuarioAcessoBll.BuscarAvisosNaoLidos(usuarioLogado.Loja_atual_id, usuarioLogado.Usuario_nome_atual)).ToList();
+
+            return lst;
+        }
+
+        [HttpPost]
+        public async Task<bool> RemoverAvisos(List<string> itens)
+        {
+            var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
+            bool retorno = false;
+
+            if(itens != null)
+            {
+                retorno = await usuarioAcessoBll
+                .RemoverAvisos(usuarioLogado.Loja_atual_id, usuarioLogado.Usuario_nome_atual, itens);
+            }
+
+            return retorno;
+        }
+
+        [HttpPost]
+        public async Task<bool> MarcarAvisoExibido(List<string> lst)
+        {
+            var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
+
+            if(lst != null)
+            {
+                return await usuarioAcessoBll.MarcarAvisoExibido(lst, usuarioLogado.Usuario_nome_atual, usuarioLogado.Loja_atual_id);
+            }
+            return false;
         }
 
         public IActionResult Privacy()
@@ -75,5 +117,7 @@ namespace Loja.UI.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+
     }
 }

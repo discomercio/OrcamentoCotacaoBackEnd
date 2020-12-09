@@ -6,10 +6,6 @@ namespace Prepedido.Dados.DetalhesPrepedido
 {
     public class PrepedidoProdutoPrepedidoDados
     {
-        /* AFAZER: alterar os nomes dos campos para facilitar a identificação dos campos com a tabela
-         * verificar se há necessidade de todos os campos que estão aqui.
-         */
-
         public string Fabricante { get; set; }
         public string Produto { get; set; }
         public string Descricao { get; set; }

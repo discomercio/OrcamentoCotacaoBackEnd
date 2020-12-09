@@ -45,7 +45,7 @@ namespace Prepedido
             List<string> lstFornec = new List<string>();
             lstFornec = prepedido.ListaProdutos.Select(x => x.Fabricante).Distinct().ToList();
 
-            List<CoeficienteDados> lstCoeficiente = new List<CoeficienteDados>();
+            List<CoeficienteDados> lstCoeficiente;
             //precisa verificar se a forma de pagto é diferente de av para não dar erro na validação
 
             //buscar coeficiente 
@@ -136,7 +136,7 @@ namespace Prepedido
                     lstCoeficiente.ForEach(y =>
                     {
                         if (y.Fabricante == x.Fabricante && y.Coeficiente != x.CustoFinancFornecCoeficiente)
-                            lstErros.Add("Coeficiente do fabricante (" + x.Fabricante + ") esta incorreto!");
+                            lstErros.Add("Coeficiente do fabricante (" + x.Fabricante + ") está incorreto!");
                     });
                 }
                 else
@@ -320,105 +320,121 @@ namespace Prepedido
         }
 
 
-        public async Task<bool> ValidarEnderecoEntrega(Cliente.Dados.EnderecoEntregaClienteCadastroDados endEntrega, 
+        public async Task ValidarEnderecoEntrega(Cliente.Dados.EnderecoEntregaClienteCadastroDados endEntrega,
             List<string> lstErros, string orcamentista, string tipoCliente)
         {
-            bool retorno = true;
-
             if (endEntrega.OutroEndereco)
             {
                 await ValidarDadosEnderecoEntrega(endEntrega, orcamentista, lstErros, contextoProvider);
 
                 ValidarDadosPessoaEnderecoEntrega(endEntrega, lstErros, false, tipoCliente);
-
-                if (lstErros.Count != 0)
-                {
-                    retorno = false;
-                }
+                VerificarCaracteresInvalidosEnderecoEntregaClienteCadastro(endEntrega, lstErros);
             }
+        }
 
-            return retorno;
+        private void VerificarCaracteresInvalidosEnderecoEntregaClienteCadastro(
+            Cliente.Dados.EnderecoEntregaClienteCadastroDados endEtg, List<string> lstErros)
+        {
+            string caracteres;
+            if (UtilsGlobais.Util.IsTextoValido(endEtg.EndEtg_endereco, out caracteres).Length > 0)
+                lstErros.Add("O CAMPO 'ENDEREÇO DE ENTREGA' POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
+
+            if (UtilsGlobais.Util.IsTextoValido(endEtg.EndEtg_endereco_numero ?? "", out caracteres).Length > 0)
+                lstErros.Add("O CAMPO NÚMERO DO ENDEREÇO DE ENTREGA POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
+
+            if (UtilsGlobais.Util.IsTextoValido(endEtg.EndEtg_endereco_complemento ?? "", out caracteres).Length > 0)
+                lstErros.Add("O CAMPO COMPLEMENTO DO ENDEREÇO DE ENTREGA POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
+
+            if (UtilsGlobais.Util.IsTextoValido(endEtg.EndEtg_bairro ?? "", out caracteres).Length > 0)
+                lstErros.Add("O CAMPO BAIRRO DO ENDEREÇO DE ENTREGA POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
+
+            if (UtilsGlobais.Util.IsTextoValido(endEtg.EndEtg_cidade ?? "", out caracteres).Length > 0)
+                lstErros.Add("O CAMPO CIDADE DO ENDEREÇO DE ENTREGA POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
+
+            if (UtilsGlobais.Util.IsTextoValido(endEtg.EndEtg_nome ?? "", out caracteres).Length > 0)
+                lstErros.Add("O CAMPO NOME DO ENDEREÇO DE ENTREGA POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
+
+            //vamos verificar se o endereço de entrega esta com os valores corretos
+            if (endEtg.EndEtg_endereco.Length > Constantes.MAX_TAMANHO_CAMPO_ENDERECO)
+                lstErros.Add("ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br> TAMANHO ATUAL: " +
+                    endEtg.EndEtg_endereco.Length + " CARACTERES <br> TAMANHO MÁXIMO: " +
+                    Constantes.MAX_TAMANHO_CAMPO_ENDERECO + " CARACTERES");
         }
 
         private async Task ValidarDadosEnderecoEntrega(Cliente.Dados.EnderecoEntregaClienteCadastroDados endEntrega,
             string orcamentista, List<string> lstErros,
             ContextoBdProvider contextoProvider)
         {
+            if (!endEntrega.OutroEndereco)
+                return;
 
-            if (endEntrega.OutroEndereco)
+            if (string.IsNullOrEmpty(endEntrega.EndEtg_cod_justificativa))
+                lstErros.Add("SELECIONE A JUSTIFICATIVA DO ENDEREÇO DE ENTREGA!");
+            else
             {
                 //verificar se a justificativa esta correta "ListarComboJustificaEndereco"
                 List<Cliente.Dados.EnderecoEntregaJustificativaDados> lstJustificativas =
                     (await clienteBll.ListarComboJustificaEndereco(orcamentista)).ToList();
-
-                bool achouJustifivcativa = false;
-                lstJustificativas.ForEach(x =>
+                if (!lstJustificativas.Where(r => r.EndEtg_cod_justificativa == endEntrega.EndEtg_cod_justificativa).Any())
                 {
-                    if (endEntrega.EndEtg_cod_justificativa == x.EndEtg_cod_justificativa)
-                    {
-                        achouJustifivcativa = true;
-                    }
-                });
+                    lstErros.Add("CÓDIGO DA JUSTFICATIVA INVÁLIDO!");
+                }
+            }
 
-                if (achouJustifivcativa)
+
+            if (string.IsNullOrEmpty(endEntrega.EndEtg_endereco))
+                lstErros.Add("PREENCHA O ENDEREÇO DE ENTREGA.");
+
+            if (endEntrega.EndEtg_endereco.Length > Constantes.MAX_TAMANHO_CAMPO_ENDERECO)
+                lstErros.Add("ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: " + endEntrega.EndEtg_endereco.Length +
+                    " CARACTERES<br>TAMANHO MÁXIMO: " + Constantes.MAX_TAMANHO_CAMPO_ENDERECO + " CARACTERES");
+
+            if (string.IsNullOrEmpty(endEntrega.EndEtg_endereco_numero))
+                lstErros.Add("PREENCHA O NÚMERO DO ENDEREÇO DE ENTREGA.");
+
+            if (string.IsNullOrEmpty(endEntrega.EndEtg_bairro))
+                lstErros.Add("PREENCHA O BAIRRO DO ENDEREÇO DE ENTREGA.");
+
+            if (string.IsNullOrEmpty(endEntrega.EndEtg_cidade))
+                lstErros.Add("PREENCHA A CIDADE DO ENDEREÇO DE ENTREGA.");
+
+            if (string.IsNullOrEmpty(endEntrega.EndEtg_uf) || !Util.VerificaUf(endEntrega.EndEtg_uf))
+                lstErros.Add("UF INVÁLIDA NO ENDEREÇO DE ENTREGA.");
+
+            if (string.IsNullOrEmpty(endEntrega.EndEtg_cep))
+                lstErros.Add("INFORME O CEP DO ENDEREÇO DE ENTREGA.");
+            else
+            {
+                if (!Util.VerificaCep(endEntrega.EndEtg_cep))
+                    lstErros.Add("CEP INVÁLIDO NO ENDEREÇO DE ENTREGA.");
+            }
+
+            if (lstErros.Count == 0)
+            {
+                //vamos comparar endereço
+                string cepSoDigito = endEntrega.EndEtg_cep.Replace(".", "").Replace("-", "");
+                List<Cep.Dados.CepDados> lstCepDados = (await cepBll.BuscarPorCep(cepSoDigito)).ToList();
+
+                if (lstCepDados.Count == 0)
                 {
-                    if (string.IsNullOrEmpty(endEntrega.EndEtg_cod_justificativa))
-                        lstErros.Add("SELECIONE A JUSTIFICATIVA DO ENDEREÇO DE ENTREGA!");
-
-                    if (string.IsNullOrEmpty(endEntrega.EndEtg_endereco))
-                        lstErros.Add("PREENCHA O ENDEREÇO DE ENTREGA.");
-
-                    if (endEntrega.EndEtg_endereco.Length > Constantes.MAX_TAMANHO_CAMPO_ENDERECO)
-                        lstErros.Add("ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: " + endEntrega.EndEtg_endereco.Length +
-                            " CARACTERES<br>TAMANHO MÁXIMO: " + Constantes.MAX_TAMANHO_CAMPO_ENDERECO + " CARACTERES");
-
-                    if (string.IsNullOrEmpty(endEntrega.EndEtg_endereco_numero))
-                        lstErros.Add("PREENCHA O NÚMERO DO ENDEREÇO DE ENTREGA.");
-
-                    if (string.IsNullOrEmpty(endEntrega.EndEtg_bairro))
-                        lstErros.Add("PREENCHA O BAIRRO DO ENDEREÇO DE ENTREGA.");
-
-                    if (string.IsNullOrEmpty(endEntrega.EndEtg_cidade))
-                        lstErros.Add("PREENCHA A CIDADE DO ENDEREÇO DE ENTREGA.");
-
-                    if (string.IsNullOrEmpty(endEntrega.EndEtg_uf) || !Util.VerificaUf(endEntrega.EndEtg_uf))
-                        lstErros.Add("UF INVÁLIDA NO ENDEREÇO DE ENTREGA.");
-
-                    if (!Util.VerificaCep(endEntrega.EndEtg_cep))
-                        lstErros.Add("CEP INVÁLIDO NO ENDEREÇO DE ENTREGA.");
-
-                    if (lstErros.Count == 0)
-                    {
-                        //vamos comparar endereço
-                        string cepSoDigito = endEntrega.EndEtg_cep.Replace(".", "").Replace("-", "");
-                        List<Cep.Dados.CepDados> lstCepDados = (await cepBll.BuscarPorCep(cepSoDigito)).ToList();
-
-                        if (lstCepDados.Count == 0)
-                        {
-                            lstErros.Add("Endereço Entrega: cep inválido!");
-                        }
-                        else
-                        {
-                            Cep.Dados.CepDados cep = new Cep.Dados.CepDados()
-                            {
-                                Cep = endEntrega.EndEtg_cep,
-                                Endereco = endEntrega.EndEtg_endereco,
-                                Bairro = endEntrega.EndEtg_bairro,
-                                Cidade = endEntrega.EndEtg_cidade,
-                                Uf = endEntrega.EndEtg_uf
-                            };
-                            await Cliente.ValidacoesClienteBll.VerificarEndereco(cep, lstCepDados, lstErros, contextoProvider,
-                                bancoNFeMunicipio);
-                        }
-
-                        await CepBll.ConsisteMunicipioIBGE(endEntrega.EndEtg_cidade,
-                            endEntrega.EndEtg_uf, lstErros, contextoProvider, bancoNFeMunicipio, true);
-                    }
+                    lstErros.Add("Endereço Entrega: cep inválido!");
                 }
                 else
                 {
-                    lstErros.Add("Código da justficativa inválida!");
+                    Cep.Dados.CepDados cep = new Cep.Dados.CepDados()
+                    {
+                        Cep = endEntrega.EndEtg_cep,
+                        Endereco = endEntrega.EndEtg_endereco,
+                        Bairro = endEntrega.EndEtg_bairro,
+                        Cidade = endEntrega.EndEtg_cidade,
+                        Uf = endEntrega.EndEtg_uf
+                    };
+                    await Cliente.ValidacoesClienteBll.VerificarEndereco(cep, lstCepDados, lstErros, contextoProvider,
+                        bancoNFeMunicipio);
                 }
+
+                await CepBll.ConsisteMunicipioIBGE(endEntrega.EndEtg_cidade,
+                    endEntrega.EndEtg_uf, lstErros, contextoProvider, bancoNFeMunicipio, true);
             }
         }
 
@@ -496,7 +512,7 @@ namespace Prepedido
                 {
                     if (!string.IsNullOrEmpty(endEntrega.EndEtg_ie))
                     {
-                        Cliente.ValidacoesClienteBll.VerificarInscricaoEstadualValida(endEntrega.EndEtg_ie, 
+                        Cliente.ValidacoesClienteBll.VerificarInscricaoEstadualValida(endEntrega.EndEtg_ie,
                             endEntrega.EndEtg_uf, lstErros, flagMsg_IE_Cadastro_PF);
                     }
                 }
@@ -731,7 +747,7 @@ namespace Prepedido
                     if (!string.IsNullOrEmpty(endEtg.EndEtg_ie))
                     {
                         lstErros.Add("Endereço de entrega: se cliente é não produtor rural, o IE " +
-                            "deve ser preenchido!");
+                            "não deve ser preenchido!");
                     }
                 }
             }

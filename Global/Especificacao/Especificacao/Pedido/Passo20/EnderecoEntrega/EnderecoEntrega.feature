@@ -5,15 +5,19 @@ Feature: Validar endereco de entrega
 Background: Pedido base com endereço de entrega (pedido e prepedido)
 	Given Pedido base com endereço de entrega
 
+	#na API magneto sempre usa o endereço de entrega como endereço cadastral em PF
+	#todo: tirar esta linha e testar na api magento
+	Given Ignorar scenario no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
+
 	# Configuração
-	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "Selecione a justificativa do endereço de entrega!!" é "Código da justficativa inválida!"
+	#Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "Selecione a justificativa do endereço de entrega!!" é "Código da justficativa inválida!"
 	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "Preencha o endereço de entrega!!" é "PREENCHA O ENDEREÇO DE ENTREGA."
 	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "Preencha o número do endereço de entrega!!" é "PREENCHA O NÚMERO DO ENDEREÇO DE ENTREGA."
 	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "Preencha o bairro do endereço de entrega!!" é "PREENCHA O BAIRRO DO ENDEREÇO DE ENTREGA."
 	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "Preencha a cidade do endereço de entrega!!" é "PREENCHA A CIDADE DO ENDEREÇO DE ENTREGA."
 	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "UF inválida no endereço de entrega!!" é "UF INVÁLIDA NO ENDEREÇO DE ENTREGA."
 	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "CEP inválido no endereço de entrega!!" é "CEP INVÁLIDO NO ENDEREÇO DE ENTREGA."
-	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "Informe o CEP do endereço de entrega!!" é "CEP INVÁLIDO NO ENDEREÇO DE ENTREGA."
+	#Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "Informe o CEP do endereço de entrega!!" é "CEP INVÁLIDO NO ENDEREÇO DE ENTREGA."
 
 Scenario: Validação do endereço
 #loja/ClienteEdita.asp
@@ -51,19 +55,18 @@ Scenario: Endereço
 	When Informo "EndEtg_endereco" = ""
 	Then Erro "Preencha o endereço de entrega!!"
 
-@ignore
 Scenario: Endereço tamanho
 	#elseif Len(EndEtg_endereco) > CLng(MAX_TAMANHO_CAMPO_ENDERECO) then
 	#	alerta="ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: " & Cstr(Len(EndEtg_endereco)) & " CARACTERES<br>TAMANHO MÁXIMO: " & Cstr(MAX_TAMANHO_CAMPO_ENDERECO) & " CARACTERES"
 	#MAX_TAMANHO_CAMPO_ENDERECO = 60;
 	#                                          10        20        30       40         50        60
 	When Informo "EndEtg_endereco" = "123456789012345678901234567890123456789012345678901234567890123"
-	Then Erro regex "ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO.*"
-@ignore
+	Then Erro "regex ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO.*"
+
 Scenario: Endereço tamanho 2
 	#                                          10        20        30       40         50        60
 	When Informo "EndEtg_endereco" = "12345678901234567890123456789012345678901234567890123456789"
-	Then Sem Erro regex "ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO.*"
+	Then Sem erro "regex ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO.*"
 
 Scenario: EndEtg_endereco_numero
 	When Informo "EndEtg_endereco_numero" = ""
@@ -88,7 +91,7 @@ loja/ClienteEdita.asp
 
 	#esta validação não está no ASP
 	When Informo "EndEtg_obs" = "987"
-	Then Erro "Código da justficativa inválida!"
+	Then Erro "Código da justficativa inválido!"
 
 Scenario: EndEtg_uf
 	When Informo "EndEtg_uf" = ""
@@ -142,7 +145,7 @@ Scenario: EndEtg_cidade errado
 
 #validação da cidade que não está no IBGE
 @ignore
-#todo: afazer: clocar estes testes. Tewm que ver como inicializa o CEP
+#todo: afazer: clocar estes testes. Tem que ver como inicializa o CEP
 Scenario: EndEtg_cidade não no IBGE
 	When Informo "EndEtg_cep" = "68912350"
 	When Informo "EndEtg_cidade" = "Abacate da Pedreira"

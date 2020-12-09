@@ -1,5 +1,5 @@
 ﻿@ignore
-@Especificacao/Pedido
+@Especificacao.Pedido.Passo20.EnderecoEntrega
 Feature: Pedido de cliente PJ com endereço de entrega PJ
 #em loja/ClienteEdita.asp:
 #var EndEtg_tipo_pessoa = $('input[name="EndEtg_tipo_pessoa"]:checked').val();
@@ -16,7 +16,6 @@ Background: Pedido base
 Scenario: Configuração
 	Given Nome deste item "Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj.EntregaPj"
 	Given Implementado em "Especificacao.Pedido.Pedido"
-	And Fim da configuração
 
 Scenario: EndEtg_cnpj_cpf_PJ
 	Given Pedido base cliente PJ com endereço de entrega PJ

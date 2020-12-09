@@ -83,14 +83,14 @@ namespace Especificacao.Especificacao.Cliente
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Afazer")]
+        [Xunit.SkippableFactAttribute(DisplayName="Afazer ClientePendentes")]
         [Xunit.TraitAttribute("FeatureTitle", "ClientePendentes")]
-        [Xunit.TraitAttribute("Description", "Afazer")]
-        public virtual void Afazer()
+        [Xunit.TraitAttribute("Description", "Afazer ClientePendentes")]
+        public virtual void AfazerClientePendentes()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Afazer", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Afazer ClientePendentes", null, tagsOfScenario, argumentsOfScenario);
 #line 7
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
