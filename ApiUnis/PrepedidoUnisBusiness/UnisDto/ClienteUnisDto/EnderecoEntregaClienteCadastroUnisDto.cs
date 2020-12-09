@@ -14,7 +14,8 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
         [Required]
         public string EndEtg_endereco { get; set; }
 
-        [MaxLength(60)]
+		//no banco está 60 mas deixamos 20 porque foi a API original
+        [MaxLength(20)]
         [Required]
         public string EndEtg_endereco_numero { get; set; }
 

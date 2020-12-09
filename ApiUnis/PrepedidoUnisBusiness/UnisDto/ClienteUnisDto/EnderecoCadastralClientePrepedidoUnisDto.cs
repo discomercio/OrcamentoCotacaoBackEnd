@@ -14,7 +14,8 @@ namespace PrepedidoUnisBusiness.UnisDto.ClienteUnisDto
         [Required]
         public string Endereco_logradouro { get; set; }
 
-        [MaxLength(60)]
+		//no banco está 60 mas deixamos 20 porque foi a API original
+        [MaxLength(20)]
         [Required]
         public string Endereco_numero { get; set; }
 
