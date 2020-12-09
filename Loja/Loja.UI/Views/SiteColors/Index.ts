@@ -15,6 +15,8 @@ class SiteColorsIndex {
             this.iframeJquery = $(this.seletorIframe);
             this.iframe = this.iframeJquery[0];
             this.iframeJquery.parent().addClass("carregando");
+            debugger;
+            this.iframe.contentDocument.getElementsByTagName('body')[0].style.cursor = "wait";
 
             this.iframe.onload = () => {
 
@@ -28,7 +30,7 @@ class SiteColorsIndex {
                  * para a Home do mvc
                  */
                 if (this.iframe.contentDocument.location.href.indexOf("resumo.asp") != -1) {
-                    document.location.href = "/lojamvc";
+                    document.location.href = this.http;
                 }
 
                 this.removerElementosTela();
@@ -92,7 +94,7 @@ class SiteColorsIndex {
     //este somente fica válido depois que o documento termina de carregar
     public iframe: HTMLIFrameElement;
     public iframeJquery: JQuery<HTMLIFrameElement>;
-    public http: string = "/lojamvc";
+    public http: string = "/homologacaomvc/lojamvc";
     public urlBase: string = "http://localhost:9010";
 
 }
