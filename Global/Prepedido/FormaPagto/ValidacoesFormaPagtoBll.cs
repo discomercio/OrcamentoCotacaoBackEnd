@@ -2,6 +2,7 @@
 using Prepedido.Dados.DetalhesPrepedido;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Prepedido.FormaPagto
 {
@@ -38,15 +39,15 @@ namespace Prepedido.FormaPagto
             if (formaPagtoPrepedido.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_A_VISTA)
             {
                 if (formaPagtoDados.ListaAvista?.Count > 0)
-                    ValidarFormaPagtoAVista(formaPagtoPrepedido, lstErros, limiteArredondamento);
+                    ValidarFormaPagtoAVista(formaPagtoPrepedido, lstErros, formaPagtoDados);
                 else lstErros.Add(msgNegarFormaPagto);
             }
 
             else if (formaPagtoPrepedido.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELA_UNICA)
             {
                 if (formaPagtoDados.ListaParcUnica?.Count > 0)
-                    ValidarFormaPagtoParcelaUnica(formaPagtoPrepedido, lstErros, maxErroArredondamento, 
-                        permiteRA, vl_total_nf, vl_total );
+                    ValidarFormaPagtoParcelaUnica(formaPagtoPrepedido, lstErros, maxErroArredondamento,
+                        permiteRA, vl_total_nf, vl_total, formaPagtoDados);
                 else lstErros.Add(msgNegarFormaPagto);
             }
             else if (formaPagtoPrepedido.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO)
@@ -64,13 +65,14 @@ namespace Prepedido.FormaPagto
             else if (formaPagtoPrepedido.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA)
             {
                 if (formaPagtoDados.ListaParcComEntrada?.Count > 0 && formaPagtoDados.ListaParcComEntPrestacao?.Count > 0)
-                    ValidarFormaPagtoComEntrada(formaPagtoPrepedido, lstErros, maxErroArredondamento, permiteRA, vl_total_nf, vl_total);
+                    ValidarFormaPagtoComEntrada(formaPagtoPrepedido, lstErros, maxErroArredondamento, permiteRA, vl_total_nf, vl_total,
+                        formaPagtoDados);
                 else lstErros.Add(msgNegarFormaPagto);
             }
             else if (formaPagtoPrepedido.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA)
             {
                 if (formaPagtoDados.ListaParcSemEntPrestacao?.Count > 0 && formaPagtoDados.ListaParcSemEntPrimPrest?.Count > 0)
-                    ValidarFormaPagtoSemEntrada(formaPagtoPrepedido, lstErros, maxErroArredondamento, permiteRA, vl_total_nf, vl_total);
+                    ValidarFormaPagtoSemEntrada(formaPagtoPrepedido, lstErros, maxErroArredondamento, permiteRA, vl_total_nf, vl_total, formaPagtoDados);
                 else lstErros.Add(msgNegarFormaPagto);
             }
             else
@@ -79,10 +81,20 @@ namespace Prepedido.FormaPagto
             }
         }
 
-        private void ValidarFormaPagtoAVista(FormaPagtoCriacaoDados formaPagtoPrepedido, List<string> lstErros, decimal limiteArredondamento)
+        private void ValidarFormaPagtoAVista(FormaPagtoCriacaoDados formaPagtoPrepedido, List<string> lstErros,
+            Prepedido.Dados.FormaPagto.FormaPagtoDados formaPagtoDados)
         {
             if (string.IsNullOrEmpty(formaPagtoPrepedido.Op_av_forma_pagto))
                 lstErros.Add("Indique a forma de pagamento (à vista).");
+            else
+            {
+                bool existePagto = formaPagtoDados.ListaAvista
+                    .Where(x => Convert.ToString(x.Id) == formaPagtoPrepedido.Op_av_forma_pagto)
+                    .Select(x => x.Id).Any();
+
+                if(!existePagto)
+                    lstErros.Add("Informe uma opção de pagamento (à vista) válida.");
+            }
 
             if (formaPagtoPrepedido.Qtde_Parcelas != 1)
             {
@@ -90,18 +102,28 @@ namespace Prepedido.FormaPagto
             }
         }
 
-        private void ValidarFormaPagtoParcelaUnica(FormaPagtoCriacaoDados formaPagtoPrepedido, List<string> lstErros, 
-            decimal maxErroArredondamento, short permiteRA, decimal vl_total_nf, decimal vl_total)
+        private void ValidarFormaPagtoParcelaUnica(FormaPagtoCriacaoDados formaPagtoPrepedido, List<string> lstErros,
+            decimal maxErroArredondamento, short permiteRA, decimal vl_total_nf, decimal vl_total,
+            Prepedido.Dados.FormaPagto.FormaPagtoDados formaPagtoDados)
         {
             if (string.IsNullOrEmpty(formaPagtoPrepedido.Op_pu_forma_pagto))
                 lstErros.Add("Indique a forma de pagamento da parcela única.");
-            else if (string.IsNullOrEmpty(formaPagtoPrepedido.C_pu_valor.ToString()))
+            if(formaPagtoDados.ListaParcUnica.Count > 0)
+            {
+                bool existePagto = formaPagtoDados.ListaParcUnica
+                    .Where(x => Convert.ToString(x.Id) == formaPagtoPrepedido.Op_pu_forma_pagto)
+                    .Select(x => x.Id).Any();
+
+                if(!existePagto)
+                    lstErros.Add("Informe a forma de pagamento da parcela única válida.");
+            }
+            if (string.IsNullOrEmpty(formaPagtoPrepedido.C_pu_valor.ToString()))
                 lstErros.Add("Indique o valor da parcela única.");
-            else if (formaPagtoPrepedido.C_pu_valor <= 0)
+            if (formaPagtoPrepedido.C_pu_valor <= 0)
                 lstErros.Add("Valor da parcela única é inválido.");
-            else if (string.IsNullOrEmpty(formaPagtoPrepedido.C_pu_vencto_apos.ToString()))
+            if (string.IsNullOrEmpty(formaPagtoPrepedido.C_pu_vencto_apos.ToString()))
                 lstErros.Add("Indique o intervalo de vencimento da parcela única.");
-            else if (formaPagtoPrepedido.C_pu_vencto_apos <= 0)
+            if (formaPagtoPrepedido.C_pu_vencto_apos <= 0)
                 lstErros.Add("Intervalo de vencimento da parcela única é inválido.");
 
             if (lstErros.Count == 0)
@@ -122,7 +144,7 @@ namespace Prepedido.FormaPagto
             }
         }
 
-        private void ValidarFormaPagtoParceladoCartao(FormaPagtoCriacaoDados formaPagtoPrepedido, List<string> lstErros, 
+        private void ValidarFormaPagtoParceladoCartao(FormaPagtoCriacaoDados formaPagtoPrepedido, List<string> lstErros,
             decimal maxErroArredondamento, short permiteRA, decimal vl_total_nf, decimal vl_total)
         {
             if (string.IsNullOrEmpty(formaPagtoPrepedido.C_pc_qtde.ToString()))
@@ -155,7 +177,7 @@ namespace Prepedido.FormaPagto
             }
         }
 
-        private void ValidarFormaPagtoParceladoCartaoMaquineta(FormaPagtoCriacaoDados formaPagtoPrepedido, List<string> lstErros, 
+        private void ValidarFormaPagtoParceladoCartaoMaquineta(FormaPagtoCriacaoDados formaPagtoPrepedido, List<string> lstErros,
             decimal maxErroArredondamento, short permiteRA, decimal vl_total_nf, decimal vl_total)
         {
             if (string.IsNullOrEmpty(formaPagtoPrepedido.C_pc_maquineta_qtde.ToString()))
@@ -189,36 +211,57 @@ namespace Prepedido.FormaPagto
             }
         }
 
-        private void ValidarFormaPagtoComEntrada(FormaPagtoCriacaoDados formaPagtoPrepedido, List<string> lstErros, 
-            decimal maxErroArredondamento, short permiteRA, decimal vl_total_nf, decimal vl_total)
+        private void ValidarFormaPagtoComEntrada(FormaPagtoCriacaoDados formaPagtoPrepedido, List<string> lstErros,
+            decimal maxErroArredondamento, short permiteRA, decimal vl_total_nf, decimal vl_total, 
+            Dados.FormaPagto.FormaPagtoDados formaPagtoDados)
         {
+
+
             if (string.IsNullOrEmpty(formaPagtoPrepedido.Op_pce_entrada_forma_pagto))
                 lstErros.Add("Indique a forma de pagamento da entrada (parcelado com entrada).");
-            else if (formaPagtoPrepedido.C_pce_entrada_valor <= 0)
+            if(formaPagtoDados.ListaParcComEntrada.Count > 0)
+            {
+                bool existePagto = formaPagtoDados.ListaParcComEntrada
+                    .Where(x => Convert.ToString(x.Id) == formaPagtoPrepedido.Op_pce_entrada_forma_pagto)
+                    .Select(x => x.Id).Any();
+
+                if(!existePagto)
+                    lstErros.Add("Informe a forma de pagamento da entrada (parcelado com entrada) válida.");
+            }
+            if (formaPagtoPrepedido.C_pce_entrada_valor <= 0)
                 lstErros.Add("Indique o valor da entrada (parcelado com entrada).");
-            else if (formaPagtoPrepedido.C_pce_entrada_valor <= 0 || 
+            if (formaPagtoPrepedido.C_pce_entrada_valor <= 0 ||
                 formaPagtoPrepedido.C_pce_entrada_valor == null)
                 lstErros.Add("Valor da entrada inválido (parcelado com entrada).");
-            else if (string.IsNullOrEmpty(formaPagtoPrepedido.Op_pce_prestacao_forma_pagto))
+            if (string.IsNullOrEmpty(formaPagtoPrepedido.Op_pce_prestacao_forma_pagto))
                 lstErros.Add("Indique a forma de pagamento das prestações (parcelado com entrada).");
-            else if (formaPagtoPrepedido.C_pce_prestacao_qtde <= 0)
+            if(formaPagtoDados.ListaParcComEntPrestacao.Count > 0)
+            {
+                bool existePagto = formaPagtoDados.ListaParcComEntPrestacao
+                    .Where(x => Convert.ToString(x.Id) == formaPagtoPrepedido.Op_pce_prestacao_forma_pagto)
+                    .Select(x => x.Id).Any();
+
+                if(!existePagto)
+                    lstErros.Add("Informe a forma de pagamento das prestações (parcelado com entrada) válida.");
+            }
+            if (formaPagtoPrepedido.C_pce_prestacao_qtde <= 0)
                 lstErros.Add("Indique a quantidade de prestações (parcelado com entrada).");
-            else if (formaPagtoPrepedido.C_pce_prestacao_qtde <= 0 ||
+            if (formaPagtoPrepedido.C_pce_prestacao_qtde <= 0 ||
                 formaPagtoPrepedido.C_pce_prestacao_qtde == null)
                 lstErros.Add("Quantidade de prestações inválida (parcelado com entrada).");
-            else if (formaPagtoPrepedido.C_pce_prestacao_valor <= 0)
+            if (formaPagtoPrepedido.C_pce_prestacao_valor <= 0)
                 lstErros.Add("Indique o valor da prestação (parcelado com entrada).");
-            else if (formaPagtoPrepedido.C_pce_prestacao_valor <= 0 ||
+            if (formaPagtoPrepedido.C_pce_prestacao_valor <= 0 ||
                 formaPagtoPrepedido.C_pce_prestacao_valor == null)
                 lstErros.Add("Valor de prestação inválido (parcelado com entrada).");
-            else if (formaPagtoPrepedido.Op_pce_prestacao_forma_pagto != "7" &&
+            if (formaPagtoPrepedido.Op_pce_prestacao_forma_pagto != "7" &&
                 formaPagtoPrepedido.Op_pce_prestacao_forma_pagto != "5")
             {
                 if (formaPagtoPrepedido.C_pce_prestacao_periodo <= 0 ||
                     formaPagtoPrepedido.C_pce_prestacao_periodo == null)
                     lstErros.Add("Indique o intervalo de vencimento entre as parcelas (parcelado com entrada).");
             }
-            else if (formaPagtoPrepedido.C_pce_prestacao_periodo <= 0)
+            if (formaPagtoPrepedido.C_pce_prestacao_periodo <= 0)
                 lstErros.Add("Intervalo de vencimento inválido (parcelado com entrada).");
 
 
@@ -246,32 +289,51 @@ namespace Prepedido.FormaPagto
             }
         }
 
-        private void ValidarFormaPagtoSemEntrada(FormaPagtoCriacaoDados formaPagtoPrepedido, List<string> lstErros, 
-            decimal maxErroArredondamento, short permiteRA, decimal vl_total_nf, decimal vl_total)
+        private void ValidarFormaPagtoSemEntrada(FormaPagtoCriacaoDados formaPagtoPrepedido, List<string> lstErros,
+            decimal maxErroArredondamento, short permiteRA, decimal vl_total_nf, decimal vl_total,
+            Dados.FormaPagto.FormaPagtoDados formaPagtoDados)
         {
             if (string.IsNullOrEmpty(formaPagtoPrepedido.Op_pse_prim_prest_forma_pagto))
                 lstErros.Add("Indique a forma de pagamento da 1ª prestação (parcelado sem entrada).");
-            else if (string.IsNullOrEmpty(formaPagtoPrepedido.C_pse_prim_prest_valor.ToString()))
+            if(formaPagtoDados.ListaParcSemEntPrimPrest.Count > 0)
+            {
+                bool existePagto = formaPagtoDados.ListaParcSemEntPrimPrest
+                    .Where(x => Convert.ToString(x.Id) == formaPagtoPrepedido.Op_pse_prim_prest_forma_pagto)
+                    .Select(x => x.Id).Any();
+
+                if(!existePagto)
+                    lstErros.Add("Informe a forma de pagamento da 1ª prestação (parcelado sem entrada) válida.");
+            }
+            if (string.IsNullOrEmpty(formaPagtoPrepedido.C_pse_prim_prest_valor.ToString()))
                 lstErros.Add("Indique o valor da 1ª prestação (parcelado sem entrada).");
-            else if (formaPagtoPrepedido.C_pse_prim_prest_valor <= 0)
+            if (formaPagtoPrepedido.C_pse_prim_prest_valor <= 0)
                 lstErros.Add("Valor da 1ª prestação inválido (parcelado sem entrada).");
-            else if (string.IsNullOrEmpty(formaPagtoPrepedido.C_pse_prim_prest_apos.ToString()))
+            if (string.IsNullOrEmpty(formaPagtoPrepedido.C_pse_prim_prest_apos.ToString()))
                 lstErros.Add("Indique o intervalo de vencimento da 1ª parcela (parcelado sem entrada).");
-            else if (formaPagtoPrepedido.C_pse_prim_prest_apos <= 0)
+            if (formaPagtoPrepedido.C_pse_prim_prest_apos <= 0)
                 lstErros.Add("Intervalo de vencimento da 1ª parcela é inválido (parcelado sem entrada).");
-            else if (string.IsNullOrEmpty(formaPagtoPrepedido.Op_pse_demais_prest_forma_pagto))
+            if (string.IsNullOrEmpty(formaPagtoPrepedido.Op_pse_demais_prest_forma_pagto))
                 lstErros.Add("Indique a forma de pagamento das demais prestações (parcelado sem entrada).");
-            else if (string.IsNullOrEmpty(formaPagtoPrepedido.C_pse_demais_prest_qtde.ToString()))
+            if(formaPagtoDados.ListaParcSemEntPrestacao.Count > 0)
+            {
+                bool existePagto = formaPagtoDados.ListaParcSemEntPrestacao
+                    .Where(x => Convert.ToString(x.Id) == formaPagtoPrepedido.Op_pse_demais_prest_forma_pagto)
+                    .Select(x => x.Id).Any();
+
+                if(!existePagto)
+                    lstErros.Add("Informe a forma de pagamento das demais prestações (parcelado sem entrada) válida.");
+            }
+            if (string.IsNullOrEmpty(formaPagtoPrepedido.C_pse_demais_prest_qtde.ToString()))
                 lstErros.Add("Indique a quantidade das demais prestações (parcelado sem entrada).");
-            else if (formaPagtoPrepedido.C_pse_demais_prest_qtde <= 0)
+            if (formaPagtoPrepedido.C_pse_demais_prest_qtde <= 0)
                 lstErros.Add("Quantidade de prestações inválida (parcelado sem entrada).");
-            else if (string.IsNullOrEmpty(formaPagtoPrepedido.C_pse_demais_prest_valor.ToString()))
+            if (string.IsNullOrEmpty(formaPagtoPrepedido.C_pse_demais_prest_valor.ToString()))
                 lstErros.Add("Indique o valor das demais prestações (parcelado sem entrada).");
-            else if (formaPagtoPrepedido.C_pse_demais_prest_valor <= 0)
+            if (formaPagtoPrepedido.C_pse_demais_prest_valor <= 0)
                 lstErros.Add("Valor de prestação inválido (parcelado sem entrada).");
-            else if (string.IsNullOrEmpty(formaPagtoPrepedido.C_pse_demais_prest_periodo.ToString()))
+            if (string.IsNullOrEmpty(formaPagtoPrepedido.C_pse_demais_prest_periodo.ToString()))
                 lstErros.Add("Indique o intervalo de vencimento entre as parcelas (parcelado sem entrada).");
-            else if (formaPagtoPrepedido.C_pse_demais_prest_periodo < 0)
+            if (formaPagtoPrepedido.C_pse_demais_prest_periodo < 0)
                 lstErros.Add("Intervalo de vencimento inválido (parcelado sem entrada).");
 
 
