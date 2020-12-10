@@ -794,6 +794,10 @@ namespace Prepedido
             float perc_limite_RA_sem_desagio = await Util.VerificarSemDesagioRA(contextoProvider);
 
             //Vamos conforntar os valores de cada item, total do prepedido e o percentual máximo de RA
+            //afazer: verificar se a lista de produtos contém itens
+            if (prePedido.ListaProdutos.Count <= 0)
+                lstErros.Add("Não há itens na lista de produtos!");
+
             await validacoesPrepedidoBll.MontarProdutosParaComparacao(prePedido,
                 c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas,
                 prePedido.DadosCliente.Loja, lstErros, perc_limite_RA_sem_desagio, limiteArredondamento);

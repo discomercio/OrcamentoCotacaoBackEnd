@@ -96,7 +96,7 @@ namespace Prepedido.FormaPagto
                     lstErros.Add("Informe uma opção de pagamento (à vista) válida.");
             }
 
-            if (formaPagtoPrepedido.Qtde_Parcelas != 1)
+            if (formaPagtoPrepedido.Qtde_Parcelas != 0)
             {
                 lstErros.Add("Quantidade da parcela esta divergente!");
             }
