@@ -17,13 +17,19 @@ class SiteColorsIndex {
             this.iframeJquery.parent().addClass("carregando");
             this.iframe.contentDocument.getElementsByTagName('body')[0].style.cursor = "wait";
 
-            
+
 
             this.iframe.onload = () => {
+
+                if (this.iframe.contentDocument.location.href.indexOf("AjaxCepPesqPopup.asp") != -1) {
+                    if (this.iframe.contentDocument.getElementById("bFechar").textContent == 'Fechar')
+                        this.iframe.contentDocument.getElementById("bFechar").textContent = 'Voltar';
+                    this.iframe.contentDocument.getElementById("bFechar").setAttribute('onclick', 'javascript:history.back();');
+                }
                 this.iframe.contentDocument.getElementsByTagName('html')[0].style.overflowX = "hidden";
                 //estamos tratando os link's que direcionam para resumo.asp
                 this.AlterarHrefPagina();
-                
+
                 /* não podemos ir para a tela principal do asp.
                  * mesmo verificando todos os links das páginas asp vamos manter este bloco.
                  * sabendo que o asp pode redirecionar de forma automática para página principal do asp,
