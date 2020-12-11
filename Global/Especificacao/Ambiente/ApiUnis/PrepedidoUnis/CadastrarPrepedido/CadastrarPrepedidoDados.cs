@@ -23,6 +23,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
             ret.FormaPagtoCriacao.CustoFinancFornecTipoParcelamento = "AV";
             ret.FormaPagtoCriacao.Tipo_Parcelamento = 1;
             ret.FormaPagtoCriacao.Op_av_forma_pagto = "1";
+            ret.FormaPagtoCriacao.CustoFinancFornecQtdeParcelas = 0;
 
             ret.ListaProdutos[0].CustoFinancFornecCoeficiente = 1;
             ret.ListaProdutos[0].Preco_Lista = 659.30m;

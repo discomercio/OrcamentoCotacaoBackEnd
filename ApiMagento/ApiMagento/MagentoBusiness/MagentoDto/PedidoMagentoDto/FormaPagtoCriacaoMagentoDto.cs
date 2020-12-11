@@ -49,7 +49,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                 InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_A_VISTA &&
                 string.IsNullOrEmpty(marketplace_codigo_origem))
             {
-                ret.Qtde_Parcelas = 1;
+                ret.Qtde_Parcelas = 0;
                 ret.Op_av_forma_pagto = configuracaoApiMagento.FormaPagto.Magento.Op_av_forma_pagto;//boleto
                 ret.CustoFinancFornecTipoParcelamento =
                     InfraBanco.Constantes.Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA;
