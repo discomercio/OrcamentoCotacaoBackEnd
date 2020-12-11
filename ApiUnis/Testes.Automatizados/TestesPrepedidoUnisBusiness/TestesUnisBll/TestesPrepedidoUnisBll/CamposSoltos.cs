@@ -155,7 +155,11 @@ VlTotalDestePedido	number($double)
             //Conforme foi incluido uma validação na forma de pagto, o teste não esta chegando para pegar essa msg
             //precisa fazer a busca de formaPagto para fazer a validação com a forma de pagto que esta sendo enviada 
             //para cadastrar Prepedido
-            TesteAvista(c => c.ListaProdutos[0].CustoFinancFornecCoeficiente = 2, "Coeficiente do fabricante (003) está incorreto!");
+            TesteAvista(c =>
+            {
+                c.ListaProdutos[0].CustoFinancFornecCoeficiente = 2;
+                c.FormaPagtoCriacao.CustoFinancFornecQtdeParcelas = 0;
+            }, "Coeficiente do fabricante (003) está incorreto!");
         }
         [Fact]
         public void Parcial_CustoFinancFornecPrecoListaBase()
@@ -185,6 +189,12 @@ VlTotalDestePedido	number($double)
             {
                 c.FormaPagtoCriacao.CustoFinancFornecQtdeParcelas = 2;
             }, "Quantidade da parcela esta divergente!", true);
+
+            TesteAvista(c =>
+            {
+                c.FormaPagtoCriacao.Op_av_forma_pagto = "2";
+            }, "Informe uma opção de pagamento (à vista) válida.", true);
+
         }
 
         [Fact]
@@ -367,15 +377,39 @@ VlTotalDestePedido	number($double)
                 c.FormaPagtoCriacao.C_pce_prestacao_periodo = 0;
             }, "Intervalo de vencimento inválido (parcelado com entrada).", true);
 
-            TestePagamentoComEntrada(c => { }, "Quantidade de parcelas esta divergente!", true);
+            TestePagamentoComEntrada(c =>
+            {
+                c.FormaPagtoCriacao.Op_pce_entrada_forma_pagto = "3";
+                c.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto = "3";
+            }, "Quantidade de parcelas esta divergente!", true);
 
             TestePagamentoComEntrada(c =>
             {
                 c.Indicador_Orcamentista = "Apelido_sem_ra";
                 c.PermiteRAStatus = false;
+                c.FormaPagtoCriacao.Op_pce_entrada_forma_pagto = "3";
+                c.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto = "3";
             }, "Valor total da forma de pagamento diferente do valor total!", true);
 
-            TestePagamentoComEntrada(c => { }, "Valor total da forma de pagamento diferente do valor total!", true);
+            TestePagamentoComEntrada(c =>
+            {
+                c.FormaPagtoCriacao.Op_pce_entrada_forma_pagto = "3";
+                c.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto = "3";
+            }, "Valor total da forma de pagamento diferente do valor total!", true);
+
+            TestePagamentoComEntrada(c => { }, "Informe a forma de pagamento da entrada (parcelado com entrada) válida.");
+
+            TestePagamentoComEntrada(c => { }, "Informe a forma de pagamento das prestações (parcelado com entrada) válida.");
+
+        }
+
+        [Fact]
+        public void VerificarListaProdutos()
+        {
+            TesteAvista(c =>
+            {
+                c.ListaProdutos = new System.Collections.Generic.List<PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto.PrePedidoProdutoPrePedidoUnisDto>();
+            }, "Não há itens na lista de produtos!");
         }
     }
 }

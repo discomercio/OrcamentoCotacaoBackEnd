@@ -18,6 +18,7 @@ using PrepedidoUnisBusiness.UnisBll.AcessoBll;
 using PrepedidoUnisBusiness.UnisBll.CepUnisBll;
 using PrepedidoUnisBusiness.UnisBll.CoeficienteUnisBll;
 using PrepedidoUnisBusiness.UnisBll.FormaPagtoUnisBll;
+using PrepedidoUnisBusiness.UnisBll.PedidoUnisBll;
 using PrepedidoUnisBusiness.UnisBll.ProdutoUnisBll;
 using PrepedidoUnisBusiness.Utils;
 
@@ -78,6 +79,7 @@ namespace PrepedidoAPIUnis
             services.AddTransient<CepUnisBll, CepUnisBll>();
             services.AddTransient<FormaPagtoUnisBll, FormaPagtoUnisBll>();
             services.AddTransient<CoeficienteUnisBll, CoeficienteUnisBll>();
+            services.AddTransient<PedidoUnisBll, PedidoUnisBll>();
 
             services.AddSingleton<ConfiguracaoApiUnis>(c =>
             {
@@ -105,6 +107,7 @@ namespace PrepedidoAPIUnis
             services.AddTransient<Prepedido.MontarLogPrepedidoBll, Prepedido.MontarLogPrepedidoBll>();
             services.AddTransient<Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll, Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll>();
             services.AddTransient<Cep.IBancoNFeMunicipio, Cep.BancoNFeMunicipio>();
+            services.AddTransient<Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll, Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll>();
 
             services.AddTransient<IServicoAutenticacaoApiUnis, ServicoAutenticacaoApiUnis>();
             //como singleton para melhorar a performance

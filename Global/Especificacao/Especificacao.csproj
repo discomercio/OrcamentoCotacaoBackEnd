@@ -58,6 +58,8 @@
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiUnis\PrepedidoUnis\BuscarQtdeParcCartaoVisa\ListaExecucao.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiUnis\PrepedidoUnis\CadastrarPrepedido\CadastrarPrepedidoVerificarQueExecutou - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiUnis\PrepedidoUnis\CadastrarPrepedido\Validacao\CamposSimples.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiUnis\PrepedidoUnis\BuscarStatusPrepedido\ListarStatusPrepedido.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiUnis\PrepedidoUnis\BuscarStatusPrepedido\ListarStatusPrepedidoListaDependencias.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\Loja\Loja_Bll\Bll\PedidoBll\PedidoBll\CadastrarPedido\CadastrarPedidoListaDependencias.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Comuns\Api\Autenticacao\Autenticacao - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\CaminhoFelizApi.feature.cs" />
@@ -122,6 +124,12 @@
     </Compile>
     <Compile Update="Ambiente\ApiUnis\PrepedidoUnis\CadastrarPrepedido\Validacao\CpfCnpj.feature.cs">
       <DependentUpon>CpfCnpj.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Ambiente\ApiUnis\PrepedidoUnis\BuscarStatusPrepedido\BuscarStatusPrepedido.feature.cs">
+      <DependentUpon>BuscarStatusPrepedido.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Ambiente\ApiUnis\PrepedidoUnis\BuscarStatusPrepedido\BuscarStatusPrepedidoListaDependencias.feature.cs">
+      <DependentUpon>BuscarStatusPrepedidoListaDependencias.feature</DependentUpon>
     </Compile>
     <Compile Update="Ambiente\Loja\Loja_Bll\Bll\PedidoBll\PedidoBll\CadastrarPedido\CadastrarPedidoListaDependencias.feature.cs">
       <DependentUpon>%(Filename)</DependentUpon>
@@ -197,6 +205,14 @@
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
     <SpecFlowFeatureFiles Update="Ambiente\ApiUnis\PrepedidoUnis\CadastrarPrepedido\Validacao\CpfCnpj.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Ambiente\ApiUnis\PrepedidoUnis\BuscarStatusPrepedido\BuscarStatusPrepedido.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Ambiente\ApiUnis\PrepedidoUnis\BuscarStatusPrepedido\BuscarStatusPrepedidoListaDependencias.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>

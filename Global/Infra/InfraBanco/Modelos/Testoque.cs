@@ -22,6 +22,9 @@ namespace InfraBanco.Modelos
         public ICollection<TestoqueItem> TestoqueItem { get; set; }
 
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+        [Column("data_emissao_NF_entrada")]
+        public DateTime? Data_emissao_NF_entrada { get; set; }
+
         [Column("data_ult_movimento")]
         [Required]
         public DateTime Data_ult_movimento { get; set; }

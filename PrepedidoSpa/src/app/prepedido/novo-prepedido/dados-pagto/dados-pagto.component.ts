@@ -111,7 +111,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
       //A vista      
       this.prePedidoDto.FormaPagtoCriacao.Rb_forma_pagto = this.enumFormaPagto.toString();
       this.prePedidoDto.FormaPagtoCriacao.Op_av_forma_pagto = this.meioPagtoAVista.toString();//meio de pagamento
-      this.prePedidoDto.FormaPagtoCriacao.Qtde_Parcelas = 1;
+      this.prePedidoDto.FormaPagtoCriacao.Qtde_Parcelas = 0;
     }
     if (this.enumFormaPagto == 2) {
       //ParcCartaoInternet
@@ -533,7 +533,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
     let retorno = "";
     this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento;
     this.recalcularValoresComCoeficiente(this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento);
-
+debugger;
     switch (this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento.toString()) {
       case this.constantes.COD_FORMA_PAGTO_A_VISTA:
         retorno = this.prePedidoDto.FormaPagtoCriacao.Qtde_Parcelas + " X " +

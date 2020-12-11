@@ -38,6 +38,8 @@ namespace Prepedido
                     string siglaFormaPagto, int qtdeParcelas, string loja, List<string> lstErros, float perc_limite_RA,
                     decimal limiteArredondamento)
         {
+
+
             List<PrepedidoProdutoPrepedidoDados> lstProdutosParaComparacao = new List<PrepedidoProdutoPrepedidoDados>();
             List<List<CoeficienteDados>> lstCoeficienteDadosArclube = new List<List<CoeficienteDados>>();
             List<CoeficienteDados> coefDadosArclube = new List<CoeficienteDados>();

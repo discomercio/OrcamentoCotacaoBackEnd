@@ -32,6 +32,8 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
             ret.VlTotalDestePedido = ret.ListaProdutos[0].Preco_Venda * ret.ListaProdutos[0].Qtde;
             ret.VlTotalDestePedido += ret.ListaProdutos[1].Preco_Venda * ret.ListaProdutos[1].Qtde;
 
+            ret.FormaPagtoCriacao.CustoFinancFornecQtdeParcelas = 0;
+
             return ret;
         }
 
@@ -69,7 +71,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
         {
             var ret = EnderecoCadastralPJ();
 
-            ret.FormaPagtoCriacao.Op_pu_forma_pagto = "1";
+            ret.FormaPagtoCriacao.Op_pu_forma_pagto = "5";
             ret.FormaPagtoCriacao.CustoFinancFornecTipoParcelamento = "SE";
             ret.FormaPagtoCriacao.Tipo_Parcelamento = 5;
             ret.FormaPagtoCriacao.C_pu_valor = 3470.24m;

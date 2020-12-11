@@ -175,9 +175,9 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
         {
             PrePedidoUnisDto prePedido = DadosPrepedidoUnisBll.PrepedidoPagtoComEntrada();
             prePedido.FormaPagtoCriacao.C_pce_entrada_valor = 100m;
-            prePedido.FormaPagtoCriacao.Op_pce_entrada_forma_pagto = "2";
+            prePedido.FormaPagtoCriacao.Op_pce_entrada_forma_pagto = "3";
             prePedido.FormaPagtoCriacao.C_pce_prestacao_valor = 1123.41m;
-            prePedido.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto = "2";
+            prePedido.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto = "3";
             prePedido.FormaPagtoCriacao.CustoFinancFornecQtdeParcelas = 4;
             prePedido.ListaProdutos[0].Preco_Venda = prePedido.ListaProdutos[0].Preco_Lista *
                 (decimal)(1 - prePedido.ListaProdutos[0].Desc_Dado / 100);
@@ -188,9 +188,9 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
 
             prePedido = DadosPrepedidoUnisBll.PrepedidoPagtoComEntrada();
             prePedido.FormaPagtoCriacao.C_pce_entrada_valor = 100m;
-            prePedido.FormaPagtoCriacao.Op_pce_entrada_forma_pagto = "2";
+            prePedido.FormaPagtoCriacao.Op_pce_entrada_forma_pagto = "3";
             prePedido.FormaPagtoCriacao.C_pce_prestacao_valor = 1111.85m;
-            prePedido.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto = "2";
+            prePedido.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto = "3";
             prePedido.FormaPagtoCriacao.CustoFinancFornecQtdeParcelas = 4;
             prePedido.VlTotalDestePedido = (2 * 687.11m) + (2 * 1030.66m);
             prePedido.ListaProdutos[0].Preco_Venda = 687.11m;
@@ -284,10 +284,10 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
             Assert.Equal(4, (short)orcamento.Qtde_Parcelas);
             Assert.Equal(3, orcamento.Tipo_Parcelamento);
             Assert.Equal(100m, orcamento.Pce_Entrada_Valor);
-            Assert.Equal(2, orcamento.Pce_Forma_Pagto_Entrada);
+            Assert.Equal(3, orcamento.Pce_Forma_Pagto_Entrada);
             if(orcamento.Permite_RA_Status == 1) Assert.Equal(1123.41m, orcamento.Pce_Prestacao_Valor);
             if(orcamento.Permite_RA_Status == 0) Assert.Equal(1111.85m, orcamento.Pce_Prestacao_Valor);
-            Assert.Equal(2, orcamento.Pce_Forma_Pagto_Prestacao);
+            Assert.Equal(3, orcamento.Pce_Forma_Pagto_Prestacao);
             Assert.Equal(3, orcamento.Pce_Prestacao_Qtde);
             Assert.Equal(15, orcamento.Pce_Prestacao_Periodo);
             Assert.Equal("CE", orcamento.CustoFinancFornecTipoParcelamento);
@@ -297,7 +297,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
         {
             Assert.Equal(1, (short)orcamento.Qtde_Parcelas);
             Assert.Equal(5, orcamento.Tipo_Parcelamento);
-            Assert.Equal(1, orcamento.Pu_Forma_Pagto);
+            Assert.Equal(5, orcamento.Pu_Forma_Pagto);  
             Assert.Equal(3470.24m, orcamento.Pu_Valor);
             Assert.Equal(20, orcamento.Pu_Vencto_Apos);
             Assert.Equal("SE", orcamento.CustoFinancFornecTipoParcelamento);
