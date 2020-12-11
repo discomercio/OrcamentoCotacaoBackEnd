@@ -92,8 +92,8 @@
                 @using (Html.BeginForm("LoginSubmit", "Acesso", FormMethod.Post,
 new
 {
-   @class = "md-float-material form-material",
-    @id = "formulario"
+@class = "md-float-material form-material",
+@id = "formulario"
 }))
                 {
                     @Html.HiddenFor(m => m.ReturnUrl)
@@ -181,17 +181,18 @@ new
                                 <span class="form-bar"></span>
                                 <label class="float-label">Senha</label>
                             </div>
-                            <div class="row m-t-25 text-left">
-                                <div class="col-12">
-                                    <div class="checkbox-fade fade-in-primary">
-                                        <label>
-                                            @Html.CheckBoxFor(m => m.ManterConectado, new { @class = "checkbox " + estilos })
-                                            <span class="cr"><i class="cr-icon icofont icofont-ui-check txt-primary"></i></span>
-                                            <span class="text-inverse">Manter conectado</span>
-                                        </label>
+                            @if (Model.PermitirManterConectado)
+                            {
+                                <div class="row m-t-25 text-left">
+                                    <div class="col-12">
+                                        <div class="checkbox-fade fade-in-primary">
+                                            <input type="checkbox" class="checkbox" id="chkManterConectado" name="ManterConectado"/>
+                                            <label>Manter conectado</label>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            }
+
                             <div class="row m-t-30">
                                 <div class="col-md-12">
                                     <button id="btnLogin" type="submit" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">

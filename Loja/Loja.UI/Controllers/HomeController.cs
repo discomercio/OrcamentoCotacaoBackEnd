@@ -102,7 +102,7 @@ namespace Loja.UI.Controllers
 
             if(lst != null)
             {
-                return await usuarioAcessoBll.MarcarAvisoExibido(lst, usuarioLogado.Usuario_nome_atual, usuarioLogado.Loja_atual_id);
+                return await usuarioAcessoBll.MarcarAvisoExibido(lst, usuarioLogado.Usuario_atual, usuarioLogado.Loja_atual_id);
             }
             return false;
         }

@@ -11,5 +11,6 @@ namespace Loja.UI.Models.Acesso
         public string Apelido { get; set; }
         public string Senha { get; set; }
         public string ReturnUrl { get; set; }
+        public bool ManterConectado { get; set; }
     }
 }

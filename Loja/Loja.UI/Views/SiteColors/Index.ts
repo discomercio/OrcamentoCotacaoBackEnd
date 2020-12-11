@@ -15,11 +15,12 @@ class SiteColorsIndex {
             this.iframeJquery = $(this.seletorIframe);
             this.iframe = this.iframeJquery[0];
             this.iframeJquery.parent().addClass("carregando");
-            debugger;
             this.iframe.contentDocument.getElementsByTagName('body')[0].style.cursor = "wait";
 
-            this.iframe.onload = () => {
+            
 
+            this.iframe.onload = () => {
+                this.iframe.contentDocument.getElementsByTagName('html')[0].style.overflowX = "hidden";
                 //estamos tratando os link's que direcionam para resumo.asp
                 this.AlterarHrefPagina();
                 
@@ -30,7 +31,7 @@ class SiteColorsIndex {
                  * para a Home do mvc
                  */
                 if (this.iframe.contentDocument.location.href.indexOf("resumo.asp") != -1) {
-                    document.location.href = this.http;
+                    document.location.href = this.urlBase;
                 }
 
                 this.removerElementosTela();
@@ -55,7 +56,7 @@ class SiteColorsIndex {
 
             if (link.href.indexOf("resumo.asp") != -1) {
                 lstLink[i].setAttribute("target", "_parent");
-                lstLink[i].setAttribute("href", this.http);
+                lstLink[i].setAttribute("href", this.urlBase);
             }
         }
     }
@@ -65,7 +66,7 @@ class SiteColorsIndex {
         let href = $(this.iframe.contentDocument).find("#bVOLTAR").attr("href");
         if (href.indexOf("resumo.asp") != -1) {
             $(this.iframe.contentDocument).find("#bVOLTAR").attr('target', "_parent");
-            $(this.iframe.contentDocument).find("#bVOLTAR").attr('href', this.http);
+            $(this.iframe.contentDocument).find("#bVOLTAR").attr('href', this.urlBase);
         }
     }
 
@@ -94,7 +95,6 @@ class SiteColorsIndex {
     //este somente fica válido depois que o documento termina de carregar
     public iframe: HTMLIFrameElement;
     public iframeJquery: JQuery<HTMLIFrameElement>;
-    public http: string = "/homologacaomvc/lojamvc";
-    public urlBase: string = "http://localhost:9010";
+    public urlBase: string;
 
 }
