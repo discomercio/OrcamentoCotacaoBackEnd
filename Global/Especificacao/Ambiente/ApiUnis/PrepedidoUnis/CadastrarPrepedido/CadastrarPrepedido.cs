@@ -145,9 +145,9 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
         }
 
         private bool ignorarFeature = false;
-        public void GivenIgnorarScenarioNoAmbiente(string p0)
+        public void GivenIgnorarCenarioNoAmbiente(string p0)
         {
-            Testes.Pedido.PedidoPassosComuns.IgnorarScenarioNoAmbiente(p0, ref ignorarFeature, this.GetType());
+            Testes.Pedido.PedidoPassosComuns.IgnorarCenarioNoAmbiente(p0, ref ignorarFeature, this.GetType());
         }
     }
 }

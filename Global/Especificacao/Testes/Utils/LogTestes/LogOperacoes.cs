@@ -59,9 +59,9 @@ namespace Especificacao.Testes.Utils.LogTestes
         {
             GravarLog($@"Resposta ""{p0}""", objeto);
         }
-        public static void IgnorarScenarioNoAmbiente(string p0, object objeto)
+        public static void IgnorarCenarioNoAmbiente(string p0, object objeto)
         {
-            GravarLog($@"IgnorarScenarioNoAmbiente ""{p0}""", objeto);
+            GravarLog($@"IgnorarCenarioNoAmbiente ""{p0}""", objeto);
         }
         public static void ChamadaController(Type controllerType, string msg, object objeto)
         {

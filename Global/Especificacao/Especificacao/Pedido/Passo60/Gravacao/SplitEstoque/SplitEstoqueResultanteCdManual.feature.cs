@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20
+namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
 {
     using TechTalk.SpecFlow;
     using System;
@@ -20,7 +20,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "ignore")]
-    public partial class ValidacaoEstoque2_FeatureFeature : object, Xunit.IClassFixture<ValidacaoEstoque2_FeatureFeature.FixtureData>, System.IDisposable
+    public partial class SplitEstoqueResultanteCdManualFeature : object, Xunit.IClassFixture<SplitEstoqueResultanteCdManualFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -30,10 +30,10 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "ValidacaoEstoque2.feature"
+#line 1 "SplitEstoqueResultanteCdManual.feature"
 #line hidden
         
-        public ValidacaoEstoque2_FeatureFeature(ValidacaoEstoque2_FeatureFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public SplitEstoqueResultanteCdManualFeature(SplitEstoqueResultanteCdManualFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,7 +42,9 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ValidacaoEstoque2.feature", null, ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "SplitEstoqueResultanteCdManual", "Vamos verificar se está fazendo o slipt corretamente quando tem o CD manual\r\nLemb" +
+                    "rando que o CD manual é usado mesmo que esteja desativado:\r\n\'A SELEÇÃO MANUAL DE" +
+                    " CD PERMITE O USO DE CD DESATIVADO", ProgrammingLanguage.CSharp, new string[] {
                         "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -83,15 +85,15 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validar estoque 2")]
-        [Xunit.TraitAttribute("FeatureTitle", "ValidacaoEstoque2.feature")]
-        [Xunit.TraitAttribute("Description", "Validar estoque 2")]
-        public virtual void ValidarEstoque2()
+        [Xunit.SkippableFactAttribute(DisplayName="SplitEstoqueResultanteCdManual")]
+        [Xunit.TraitAttribute("FeatureTitle", "SplitEstoqueResultanteCdManual")]
+        [Xunit.TraitAttribute("Description", "SplitEstoqueResultanteCdManual")]
+        public virtual void SplitEstoqueResultanteCdManual()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar estoque 2", null, tagsOfScenario, argumentsOfScenario);
-#line 4
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("SplitEstoqueResultanteCdManual", null, tagsOfScenario, argumentsOfScenario);
+#line 8
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -111,10 +113,8 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 51
- testRunner.When("Validação feita em outro lugar: \"A rotina estoque_verifica_disponibilidade_integr" +
-                        "al_v2 só dá erro se der erro no banco de dados. A lógiga em si está coberta pelo" +
-                        " Especificacao\\Pedido\\Passo60\\Gravacao\\FluxoGravacaoPedido.feature\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 9
+ testRunner.When("afazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -127,12 +127,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                ValidacaoEstoque2_FeatureFeature.FeatureSetup();
+                SplitEstoqueResultanteCdManualFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                ValidacaoEstoque2_FeatureFeature.FeatureTearDown();
+                SplitEstoqueResultanteCdManualFeature.FeatureTearDown();
             }
         }
     }
