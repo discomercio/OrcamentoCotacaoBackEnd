@@ -4,17 +4,20 @@
     ViewData["Title"] = "ERP";
 }
 
-<script>
-    var siteColorsIndex;
-    requirejs(["Views/SiteColors/Index"], function () {
+    <script>
+    var url = "@Url.Action("Index", "Home")";
+        var siteColorsIndex;
+        requirejs(["Views/SiteColors/Index"], function () {
         siteColorsIndex = new SiteColorsIndex();
         siteColorsIndex.urlIframe = @Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(Model.Url(), true));
         siteColorsIndex.seletorIframe = "#iframecolors";
+        siteColorsIndex.urlBase = url;
+        
     });
 
 
 
-</script>
+    </script>
 
 <div class="pcoded-inner-content pb-2">
     <div class="main-body">

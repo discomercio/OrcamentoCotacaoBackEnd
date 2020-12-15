@@ -16,6 +16,17 @@ class Login {
             $("#loja").addClass("fill");
             $("#senha").addClass("fill");
             $("#usuario").addClass("fill");
+            $("#chkManterConectado").val('false');
+
+
+            $("#chkManterConectado").click(() => {
+                if ($("#chkManterConectado").is(":checked")) {
+                    $("#chkManterConectado").val('true');
+                }
+                else {
+                    $("#chkManterConectado").val('false');
+                }
+            });
 
             this.form.on("submit", () => {
 

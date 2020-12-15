@@ -19,8 +19,9 @@ namespace Loja.UI.Controllers
             var ret = urlHelper.Action("Index", "SiteColors", new
             {
                 //queremos um núemro pequeno e não-sequencial
-                pagina = (int)(Math.Abs(pagina.ToString().GetHashCode()))
-            });
+                //pagina = (int)(Math.Abs(pagina.ToString().GetHashCode()))
+                pagina = (int)pagina
+            }); ;
             return ret;
         }
         public static string UrlAction(IUrlHelper urlHelper, ListaPaginasColors pagina, string param)
@@ -28,7 +29,8 @@ namespace Loja.UI.Controllers
             var ret = urlHelper.Action("Index", "SiteColors", new
             {
                 //queremos um núemro pequeno e não-sequencial
-                pagina = (int)(Math.Abs(pagina.ToString().GetHashCode())),
+                //pagina = (int)(Math.Abs(pagina.ToString().GetHashCode())),
+                pagina = (int)pagina,
                 param
             });
             return ret;
@@ -41,71 +43,71 @@ namespace Loja.UI.Controllers
             // e a gente mudar a string, o favorito vai parar de funcionar
 
             //Pedidos
-            Pedidos_com_Credito_Pendente,
-            Pedidos_com_Credito_Pendente_Vendas,
-            Pedidos_Pendentes_Cartao_de_Credito,
-            Pedidos_com_Endereco_Pendente,
-            Pesquisa_pedidos_anteriormente_efetuados_por_um_cliente_nesta_loja,
+            Pedidos_com_Credito_Pendente = 97531,
+            Pedidos_com_Credito_Pendente_Vendas = 97513,
+            Pedidos_Pendentes_Cartao_de_Credito = 97135,
+            Pedidos_com_Endereco_Pendente = 97153,
+            Pesquisa_pedidos_anteriormente_efetuados_por_um_cliente_nesta_loja = 97351,
             //Pré-Pedido
-            Prepedido_em_Aberto,
-            Relatorio_Multicriterio_Prepedido,
+            Prepedido_em_Aberto = 86420,
+            Relatorio_Multicriterio_Prepedido = 86402,
             //Produto -> afazer precisamos de tela para inserir dados para buscar
             //Relatórios/Pedidos
-            Relatorio_de_Pedidos_Indicadores,
-            Relatorio_de_Pedidos_Indicadores_Processado,
-            Relatorio_de_Pedidos_Indicadores_Preview,
-            Relatorio_Multicriterio_de_Pedidos,
-            Pedidos_Colocados_no_Mes,
-            Relatorio_de_Pedidos_Cancelados,
+            Relatorio_de_Pedidos_Indicadores = 79531,
+            Relatorio_de_Pedidos_Indicadores_Processado = 79513,
+            Relatorio_de_Pedidos_Indicadores_Preview = 79351,
+            Relatorio_Multicriterio_de_Pedidos = 79315,
+            Pedidos_Colocados_no_Mes = 79153,
+            Relatorio_de_Pedidos_Cancelados = 79135,
             //Relatórios/Marketplace
-            Registro_de_Pedidos_de_Marketplace_Nao_Recebidos_Pelo_Cliente,
-            Registro_de_Pedidos_de_Marketplace_Recebidos_Pelo_Cliente,
+            Registro_de_Pedidos_de_Marketplace_Nao_Recebidos_Pelo_Cliente = 68420,
+            Registro_de_Pedidos_de_Marketplace_Recebidos_Pelo_Cliente = 68402,
             //Relatórios/Vendas
-            Vendas,
-            Vendas_com_Desconto_Superior,
-            Estoque_de_Venda_Antigo,
-            Estoque_de_Vendas,
-            Relatorio_Gerencial_de_Vendas,
-            Relatorio_de_Vendas_por_Boleto,
-            Meio_de_Divulgacao,
+            Vendas = 59731,
+            Vendas_com_Desconto_Superior = 59713,
+            Estoque_de_Venda_Antigo = 59371,
+            Estoque_de_Vendas = 59317,
+            Relatorio_Gerencial_de_Vendas = 59173,
+            Relatorio_de_Vendas_por_Boleto = 59137,
+            Meio_de_Divulgacao = 57931,
             //Faturamento
-            Faturamento_Antigo,
-            Faturamento,
+            Faturamento_Antigo = 48620,
+            Faturamento = 48602,
             //Ocorrências e Chamados
-            Relatorio_de_Pre_Devolucoes,
-            Produtos_no_Estoque_de_Devolucao,
-            Devolucao_de_Produtos,
-            Relatorio_de_Divergencia_Cliente_Indicador,
-            Ocorrencias,
-            Relatorio_de_Estatisticas_de_Ocorrencias,
-            Acompanhamento_de_Chamados,
-            Relatorio_de_Chamados,
-            Relatorio_de_Estatisticas_de_Chamados,
+            Relatorio_de_Pre_Devolucoes = 39751,
+            Produtos_no_Estoque_de_Devolucao = 39715,
+            Devolucao_de_Produtos = 39571,
+            Relatorio_de_Divergencia_Cliente_Indicador = 39517,
+            Ocorrencias = 39157,
+            Relatorio_de_Estatisticas_de_Ocorrencias = 39175,
+            Acompanhamento_de_Chamados = 37951,
+            Relatorio_de_Chamados = 37915,
+            Relatorio_de_Estatisticas_de_Chamados = 35971,
             //Vendedores/Indicadores
-            Comissao_aos_Vendedores,
-            Comissao_aos_Vendedores_Sintetico_Tabela_Progressiva,
-            Comissao_aos_Vendedores_Analitico_Tabela_Progressiva,
-            Pesquisa_de_Indicadores,
-            Checagem_de_Novos_Parceiros,
-            Relatorio_de_Metas_do_Indicador,
-            Relatorio_de_Performance_por_Indicador,
-            Relatorio_de_Indicadores_sem_Atividade_Recente,
+            Comissao_aos_Vendedores = 28640,
+            Comissao_aos_Vendedores_Sintetico_Tabela_Progressiva = 28604,
+            Comissao_aos_Vendedores_Analitico_Tabela_Progressiva = 28406,
+            Pesquisa_de_Indicadores = 28460,
+            Checagem_de_Novos_Parceiros = 28064,
+            Relatorio_de_Metas_do_Indicador = 28046,
+            Relatorio_de_Performance_por_Indicador = 26840,
+            Relatorio_de_Indicadores_sem_Atividade_Recente = 26804,
             //INDICADORES SEM ATIVIDADE RECENTE
-            Indicadores_sem_atividade_recente,
+            Indicadores_sem_atividade_recente = 19753,
             //Outros
-            Pesquisar_CEP,
-            altera_senha,
-            NOVO_PEDIDO_CADASTRO_DE_CLIENTES,
-            INDICADORES,
-            OUTRAS_FUNCOES_Ler_Quadro_de_Avisos_somente_nao_lidos,
-            OUTRAS_FUNCOES_Ler_Quadro_de_Avisos_todos_os_avisos,
-            OUTRAS_FUNCOES_Funcoes_Administrativas,
+            Pesquisar_CEP = 08642,
+            altera_senha = 08624,
+            NOVO_PEDIDO_CADASTRO_DE_CLIENTES = 08426,
+            INDICADORES = 08462,
+            OUTRAS_FUNCOES_Ler_Quadro_de_Avisos_somente_nao_lidos = 08246,
+            OUTRAS_FUNCOES_Ler_Quadro_de_Avisos_todos_os_avisos = 08264,
+            OUTRAS_FUNCOES_Funcoes_Administrativas = 06842,
 
             //página do pedido
-            Orcamento_asp, //precisa de parâmetro, orcamento_selecionado
-            Pedido,
+            Orcamento_asp = 96351, //precisa de parâmetro, orcamento_selecionado
+            Pedido = 96315,
 
-            pagina_inicial_do_colors
+            pagina_inicial_do_colors = 96531
         }
 
         private readonly SiteColorsBll siteColorsBll;
@@ -151,7 +153,7 @@ namespace Loja.UI.Controllers
             {
                 foreach (ListaPaginasColors i in Enum.GetValues(typeof(ListaPaginasColors)))
                 {
-                    if (Math.Abs(i.ToString().GetHashCode()) == pagina)
+                    if ((int)i == pagina)
                     {
                         paginaEnum = i;
                         break;
