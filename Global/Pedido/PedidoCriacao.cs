@@ -233,7 +233,7 @@ namespace Pedido
             Prepedido.Dados.DetalhesPrepedido.PrePedidoDados prepedido = PedidoCriacaoDados.PrePedidoDadosDePedidoCriacaoDados(pedido);
             await validacoesPrepedidoBll.MontarProdutosParaComparacao(prepedido,
                         c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas,
-                        pedido.DadosCliente.Loja, pedidoRetorno.ListaErros, perc_limite_RA_sem_desagio, pedido.LimiteArredondamento);
+                        pedido.DadosCliente.Loja, pedidoRetorno.ListaErros, (decimal)perc_limite_RA_sem_desagio, pedido.LimiteArredondamento);
 
             //se tiver erro vamos retornar
             if (pedidoRetorno.ListaErros.Count > 0) return pedidoRetorno;

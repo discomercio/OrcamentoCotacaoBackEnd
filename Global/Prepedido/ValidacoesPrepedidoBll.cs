@@ -35,7 +35,7 @@ namespace Prepedido
 
         //vamos validar os produtos que foram enviados
         public async Task MontarProdutosParaComparacao(PrePedidoDados prepedido,
-                    string siglaFormaPagto, int qtdeParcelas, string loja, List<string> lstErros, float perc_limite_RA,
+                    string siglaFormaPagto, int qtdeParcelas, string loja, List<string> lstErros, decimal percVlPedidoRA,
                     decimal limiteArredondamento)
         {
 
@@ -71,7 +71,7 @@ namespace Prepedido
                     CalcularProdutoComCoeficiente(lstProdutosCompare, lstCoeficiente);
 
                 ConfrontarProdutos(prepedido, lstProdutosCompare, lstErros, limiteArredondamento);
-                ConfrontarTotaisEPercentualMaxRA(prepedido, lstErros, perc_limite_RA);
+                ConfrontarTotaisEPercentualMaxRA(prepedido, lstErros, percVlPedidoRA);
             }
         }
 
@@ -292,7 +292,7 @@ namespace Prepedido
         }
 
         private void ConfrontarTotaisEPercentualMaxRA(PrePedidoDados prepedido, List<string> lstErros,
-            float perc_limite_RA)
+            decimal percVlPedidoRA)
         {
             decimal totalCompare = 0;
             decimal totalRaCompare = 0;
@@ -313,7 +313,7 @@ namespace Prepedido
 
                 //vamos verificar o valor de RA
                 decimal ra = totalRaCompare - totalCompare;
-                decimal perc = Math.Round((decimal)(perc_limite_RA / 100), 2);
+                decimal perc = Math.Round((decimal)(percVlPedidoRA / 100), 2);
                 decimal percentual = Math.Round(perc * (decimal)prepedido.Vl_total, 2);
 
                 if (ra > percentual)
