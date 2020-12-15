@@ -113,6 +113,7 @@ namespace Especificacao.Especificacao.Pedido
             Testes.Utils.MapeamentoMensagens.GivenNoAmbienteErroE(p0, p1, p2);
         }
 
+        //o parâmetro é o nome da classe que efetivamente implementa
         [Given(@"Ignorar cenário no ambiente ""(.*)""")]
         new public void GivenIgnorarCenarioNoAmbiente(string p0)
         {
