@@ -37,5 +37,9 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
             ret.EnderecoCadastralCliente.Endereco_cnpj_cpf = "76297703000195";
             return ret;
         }
+        public static MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoMagentoDto PedidoBaseClientePjComEnderecoDeEntrega()
+        {
+            return PedidoBaseClientePJ();
+        }
     }
 }

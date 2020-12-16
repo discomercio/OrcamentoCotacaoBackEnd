@@ -29,6 +29,13 @@ namespace Especificacao.Testes.Pedido
             base.Executar(i => i.GivenPedidoBaseClientePJ());
         }
 
+        public void GivenPedidoBaseClientePJComEnderecoDeEntrega()
+        {
+            if (ignorarFeature) return;
+            Utils.LogTestes.LogOperacoes2.DadoBaseClientePJComEnderecoDeEntrega(this);
+            base.Executar(i => i.GivenPedidoBaseClientePJComEnderecoDeEntrega());
+        }
+
         public void WhenInformo(string p0, string p1)
         {
             if (ignorarFeature) return;

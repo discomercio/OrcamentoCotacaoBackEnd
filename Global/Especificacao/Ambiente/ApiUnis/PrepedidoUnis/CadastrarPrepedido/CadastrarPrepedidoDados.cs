@@ -55,11 +55,33 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
         public static PrePedidoUnisDto PrepedidoBaseClientePJ()
         {
             var ret = PrepedidoParceladoCartao1vez();
+            MudarParaClientePj(ret);
+            return ret;
+        }
+
+        public static PrePedidoUnisDto PrepedidoBaseClientePJComEnderecoDeEntrega()
+        {
+            var ret = PrepedidoBaseComEnderecoDeEntrega();
+            MudarParaClientePj(ret);
+            return ret;
+        }
+
+        private static void MudarParaClientePj(PrePedidoUnisDto ret)
+        {
             ret.EnderecoCadastralCliente.Endereco_tipo_pessoa = "PJ";
             ret.EnderecoCadastralCliente.Endereco_cnpj_cpf = "76297703000195";
             ret.EnderecoCadastralCliente.Endereco_contribuinte_icms_status = (byte)InfraBanco.Constantes.Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO;
             ret.EnderecoCadastralCliente.Endereco_produtor_rural_status = (byte)InfraBanco.Constantes.Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL;
-            return ret;
+            ret.EnderecoCadastralCliente.Endereco_contato = "Endereco_contato";
+
+            ret.EnderecoCadastralCliente.Endereco_ddd_res = "";
+            ret.EnderecoCadastralCliente.Endereco_tel_res = "";
+            ret.EnderecoCadastralCliente.Endereco_ddd_cel = "";
+            ret.EnderecoCadastralCliente.Endereco_tel_cel = "";
+            ret.EnderecoCadastralCliente.Endereco_ddd_com = "11";
+            ret.EnderecoCadastralCliente.Endereco_tel_com = "12345678";
+
+            ret.Cnpj_Cpf = ret.EnderecoCadastralCliente.Endereco_cnpj_cpf;
         }
 
         private static readonly string PrepedidoBaseParceladoCartao1vez = @"

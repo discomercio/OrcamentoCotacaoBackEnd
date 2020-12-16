@@ -44,6 +44,13 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
             prePedidoUnisDto = CadastrarPrepedidoDados.PrepedidoBaseClientePJ();
         }
 
+        public void GivenPedidoBaseClientePJComEnderecoDeEntrega()
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.DadoBaseClientePJComEnderecoDeEntrega(this);
+            prePedidoUnisDto = CadastrarPrepedidoDados.PrepedidoBaseClientePJComEnderecoDeEntrega();
+        }
+
         public void GivenPedidoBase()
         {
             GivenPrepedidoBase();
@@ -201,5 +208,6 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
         {
             Testes.Pedido.PedidoPassosComuns.IgnorarCenarioNoAmbiente(p0, ref ignorarFeature, this.GetType());
         }
+
     }
 }

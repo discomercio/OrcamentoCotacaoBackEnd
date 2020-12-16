@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Loja.Bll.Dto.PedidoDto.DetalhesPedido;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,6 +23,12 @@ namespace Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadastrar
             var ret = PedidoBaseaVista(out lojaUsuario, out usuario, out vendedorExterno);
             return ret;
         }
+        public static global::Loja.Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto PedidoBaseClientePJComEnderecoDeEntrega(out string lojaUsuario, out string usuario, out bool vendedorExterno)
+        {
+            var ret = PedidoBaseaVista(out lojaUsuario, out usuario, out vendedorExterno);
+            PassarParaClientePj(ret);
+            return ret;
+        }
         public static global::Loja.Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto PedidoBaseClientePF(out string lojaUsuario, out string usuario, out bool vendedorExterno)
         {
             var ret = PedidoBaseaVista(out lojaUsuario, out usuario, out vendedorExterno);
@@ -30,6 +37,12 @@ namespace Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadastrar
         public static global::Loja.Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto PedidoBaseClientePJ(out string lojaUsuario, out string usuario, out bool vendedorExterno)
         {
             var ret = PedidoBaseaVista(out lojaUsuario, out usuario, out vendedorExterno);
+            PassarParaClientePj(ret);
+            return ret;
+        }
+
+        private static void PassarParaClientePj(PedidoDto ret)
+        {
             ret.DadosCliente.Tipo = "PJ";
             ret.DadosCliente.Cnpj_Cpf = "76297703000195";
             ret.DadosCliente.Sexo = "";
@@ -44,7 +57,6 @@ namespace Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadastrar
             ret.DadosCliente.Contato = "José da Silva";
             ret.DadosCliente.Contribuinte_Icms_Status = (byte)InfraBanco.Constantes.Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO;
             ret.DadosCliente.ProdutorRural = (byte)InfraBanco.Constantes.Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL;
-            return ret;
         }
 
         public static global::Loja.Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto PedidoBaseaVista(out string lojaUsuario, out string usuario, out bool vendedorExterno)

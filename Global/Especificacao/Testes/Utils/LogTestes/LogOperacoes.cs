@@ -27,6 +27,14 @@ namespace Especificacao.Testes.Utils.LogTestes
         {
             GravarLog("DadoBaseClientePJ", objeto);
         }
+        public static void DadoBaseClientePJComEnderecoDeEntrega(object objeto)
+        {
+            GravarLog("DadoBaseClientePJComEnderecoDeEntrega", objeto);
+        }
+        public static void EnderecoDeEntregaDoEstado(string p0, object objeto)
+        {
+            GravarLog($@"EnderecoDeEntregaDoEstado ""{p0}"" ", objeto);
+        }
         public static void DadoBaseComEnderecoDeEntrega(object objeto)
         {
             GravarLog("DadoBaseComEnderecoDeEntrega", objeto);

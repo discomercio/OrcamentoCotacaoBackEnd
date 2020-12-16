@@ -64,6 +64,12 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
             pedidoMagentoDto = CadastrarPedidoDados.PedidoBaseComEnderecoDeEntrega();
             pedidoMagentoDto.TokenAcesso = Ambiente.ApiMagento.InjecaoDependencias.TokenAcessoApiMagento();
         }
+
+        protected override void AbstractDadoBaseClientePJComEnderecoDeEntrega()
+        {
+            pedidoMagentoDto = CadastrarPedidoDados.PedidoBaseClientePjComEnderecoDeEntrega();
+            pedidoMagentoDto.TokenAcesso = Ambiente.ApiMagento.InjecaoDependencias.TokenAcessoApiMagento();
+        }
         protected override void AbstractDadoBaseClientePF()
         {
             pedidoMagentoDto = CadastrarPedidoDados.PedidoBaseClientePF();

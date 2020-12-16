@@ -44,6 +44,10 @@ namespace Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadastrar
         {
             pedidoDto = CadastrarPedidoDados.PedidoBaseComEnderecoDeEntrega(out lojaUsuario, out usuario, out vendedorExterno);
         }
+        protected override void AbstractDadoBaseClientePJComEnderecoDeEntrega()
+        {
+            pedidoDto = CadastrarPedidoDados.PedidoBaseClientePJComEnderecoDeEntrega(out lojaUsuario, out usuario, out vendedorExterno);
+        }
 
         protected override void AbstractInformo(string p0, string p1)
         {

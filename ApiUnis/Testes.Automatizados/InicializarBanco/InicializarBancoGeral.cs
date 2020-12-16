@@ -85,6 +85,8 @@ namespace Testes.Automatizados.InicializarBanco
 
                 db.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.NSU_CADASTRO_CLIENTES, Nsu = "000000645506" });
                 db.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.NSU_ORCAMENTO, Nsu = "000000000006" });
+                //deixamos com 26% porque com 6,2% dá erro nos casos que a gente estava usando
+                db.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.ID_PARAM_PercVlPedidoLimiteRA, Nsu = "26,20" });
 
                 db.Tbancos.Add(new InfraBanco.Modelos.Tbanco() { Codigo = Testes.Automatizados.InicializarBanco.InicializarClienteDados.ClienteNaoCadastradoPJ().RefBancaria[0].Banco });
 

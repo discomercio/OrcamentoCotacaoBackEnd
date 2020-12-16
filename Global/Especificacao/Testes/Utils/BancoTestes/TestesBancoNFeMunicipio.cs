@@ -27,6 +27,14 @@ namespace Especificacao.Testes.Utils.BancoTestes
                     DescricaoSemAcento="São Paulo"
                 } }
             });
+            ret.Add(new UFeMunicipiosDados()
+            {
+                SiglaUF = "BA",
+                ListaMunicipio = new List<MunicipioDados>() { new MunicipioDados() {
+                    Descricao = "Salvador",
+                    DescricaoSemAcento="Salvador"
+                } }
+            });
             return Task.FromResult(ret.AsEnumerable());
         }
 
@@ -40,6 +48,8 @@ namespace Especificacao.Testes.Utils.BancoTestes
             //para o prepedido
             if (municipio == "São Paulo")
                 ret.Add(new NfeMunicipio() { Descricao = "São Paulo" });
+            if (municipio == "Salvador")
+                ret.Add(new NfeMunicipio() { Descricao = "Salvador" });
 
             return Task.FromResult(ret.AsEnumerable());
         }

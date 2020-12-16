@@ -3,6 +3,7 @@ using Especificacao.Testes.Utils.ListaDependencias;
 using System;
 using System.Linq;
 using TechTalk.SpecFlow;
+using Xunit;
 
 /*
  * esta classe serve para implementar muitos dos features.
@@ -84,6 +85,34 @@ namespace Especificacao.Especificacao.Pedido
         {
             Testes.Utils.LogTestes.LogOperacoes2.DadoBase(this);
             base.GivenPedidoBase();
+        }
+
+        [Given(@"Pedido base cliente PJ com endereço de entrega")]
+        new public void GivenPedidoBaseClientePJComEnderecoDeEntrega()
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.DadoBaseClientePJComEnderecoDeEntrega(this);
+            base.GivenPedidoBaseClientePJComEnderecoDeEntrega();
+        }
+
+        [When(@"Endereço de entrega do estado ""(.*)""")]
+        public void WhenEnderecoDeEntregaDoEstado(string p0)
+        {
+            //somente SP ou BA
+            Testes.Utils.LogTestes.LogOperacoes2.EnderecoDeEntregaDoEstado(p0, this);
+            string[] permitidos = { "SP", "BA" };
+            Assert.Contains(p0, permitidos);
+            if (p0 == "SP")
+                EnderecoDeEntregaDoEstado("02408150", "São Paulo", "Água Fria", "Rua Francisco Pecoraro", "SP");
+            if (p0 == "BA")
+                EnderecoDeEntregaDoEstado("40290050", "Salvador", "Acupe de Brotas", "Rua Prado Moraes", "BA");
+        }
+        private void EnderecoDeEntregaDoEstado(string EndEtg_cep, string EndEtg_cidade, string EndEtg_bairro, string EndEtg_endereco, string EndEtg_uf)
+        {
+            WhenInformo("EndEtg_cep", EndEtg_cep);
+            WhenInformo("EndEtg_cidade", EndEtg_cidade);
+            WhenInformo("EndEtg_bairro", EndEtg_bairro);
+            WhenInformo("EndEtg_endereco", EndEtg_endereco);
+            WhenInformo("EndEtg_uf", EndEtg_uf);
         }
 
         [When(@"Informo ""(.*)"" = ""(.*)""")]

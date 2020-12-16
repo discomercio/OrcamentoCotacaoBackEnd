@@ -12,6 +12,7 @@ namespace Especificacao.Testes.Pedido
         protected abstract void AbstractDadoBase();
         protected abstract void AbstractDadoBaseClientePF();
         protected abstract void AbstractDadoBaseClientePJ();
+        protected abstract void AbstractDadoBaseClientePJComEnderecoDeEntrega();
         protected abstract void AbstractInformo(string p0, string p1);
         protected abstract List<string> AbstractListaErros();
         #endregion
@@ -104,13 +105,13 @@ namespace Especificacao.Testes.Pedido
                 foreach (var m in listaErrosOriginal)
                 {
                     //testamos todas as possibilidades
-                    if (System.Text.RegularExpressions.Regex.Match(m, erroOriginal).Success)
+                    if (System.Text.RegularExpressions.Regex.Match(m, erroOriginal, System.Text.RegularExpressions.RegexOptions.IgnoreCase).Success)
                         contem = true;
-                    if (System.Text.RegularExpressions.Regex.Match(MensagemLimpaParaComparacao(m), erroOriginal).Success)
+                    if (System.Text.RegularExpressions.Regex.Match(MensagemLimpaParaComparacao(m), erroOriginal, System.Text.RegularExpressions.RegexOptions.IgnoreCase).Success)
                         contem = true;
-                    if (System.Text.RegularExpressions.Regex.Match(m, erroParaTeste).Success)
+                    if (System.Text.RegularExpressions.Regex.Match(m, erroParaTeste, System.Text.RegularExpressions.RegexOptions.IgnoreCase).Success)
                         contem = true;
-                    if (System.Text.RegularExpressions.Regex.Match(MensagemLimpaParaComparacao(m), erroParaTeste).Success)
+                    if (System.Text.RegularExpressions.Regex.Match(MensagemLimpaParaComparacao(m), erroParaTeste, System.Text.RegularExpressions.RegexOptions.IgnoreCase).Success)
                         contem = true;
                     if (contem)
                         break;
@@ -184,6 +185,12 @@ namespace Especificacao.Testes.Pedido
             if (ignorarFeature) return;
             Testes.Utils.LogTestes.LogOperacoes2.DadoBaseComEnderecoDeEntrega(this);
             AbstractDadoBaseComEnderecoDeEntrega();
+        }
+        public void GivenPedidoBaseClientePJComEnderecoDeEntrega()
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.DadoBaseClientePJComEnderecoDeEntrega(this);
+            AbstractDadoBaseClientePJComEnderecoDeEntrega();
         }
 
         public void GivenPedidoBaseComEnderecoDeEntrega()
