@@ -32,5 +32,14 @@ namespace PrepedidoUnisBusiness.Utils
         }
 
         public LimitePrepedidosUnis LimitePrepedidos { get; set; } = new LimitePrepedidosUnis();
+
+        public class PrepedidoListarStatusPrepedidoParametrizacao
+        {
+            public int CanceladoDias { get; set; } = 60;
+            public int PendentesDias { get; set; } = 60;
+            public int VirouPedidoDias { get; set; } = 60;
+        }
+
+        public PrepedidoListarStatusPrepedidoParametrizacao ParamBuscaListagemStatusPrepedido { get; set; } = new PrepedidoListarStatusPrepedidoParametrizacao();
     }
 }

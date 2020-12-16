@@ -13,8 +13,15 @@ namespace Especificacao.Testes.Utils
             switch (statusCode)
             {
                 case 200:
-                    if (res.GetType() != typeof(Microsoft.AspNetCore.Mvc.OkObjectResult))
-                        Assert.Equal("", "Tipo não é OkObjectResult");
+                    //aceitamos 200 e 204
+                    if (res.GetType() != typeof(Microsoft.AspNetCore.Mvc.OkObjectResult)
+                        && res.GetType() != typeof(Microsoft.AspNetCore.Mvc.NoContentResult))
+                        Assert.Equal("", "Tipo não é OkObjectResult e nem NoContentResult");
+                    break;
+
+                case 204:
+                    if (res.GetType() != typeof(Microsoft.AspNetCore.Mvc.NoContentResult))
+                        Assert.Equal("", "Tipo não é NoContentResult");
                     break;
 
                 case 401:

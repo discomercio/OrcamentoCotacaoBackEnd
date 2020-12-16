@@ -28,11 +28,13 @@ namespace Prepedido
         private readonly Prepedido.MontarLogPrepedidoBll montarLogPrepedidoBll;
         private readonly IBancoNFeMunicipio bancoNFeMunicipio;
         private readonly Prepedido.FormaPagto.FormaPagtoBll formaPagtoBll;
+        private readonly Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll pedidoVisualizacaoBll;
 
         public PrepedidoBll(ContextoBdProvider contextoProvider, Cliente.ClienteBll clienteBll,
             Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll, CepBll cepBll,
             ValidacoesFormaPagtoBll validacoesFormaPagtoBll, Prepedido.MontarLogPrepedidoBll montarLogPrepedidoBll,
-            IBancoNFeMunicipio bancoNFeMunicipio, Prepedido.FormaPagto.FormaPagtoBll formaPagtoBll)
+            IBancoNFeMunicipio bancoNFeMunicipio, Prepedido.FormaPagto.FormaPagtoBll formaPagtoBll,
+            PedidoVisualizacao.PedidoVisualizacaoBll pedidoVisualizacaoBll)
         {
             this.contextoProvider = contextoProvider;
             this.clienteBll = clienteBll;
@@ -42,6 +44,7 @@ namespace Prepedido
             this.montarLogPrepedidoBll = montarLogPrepedidoBll;
             this.bancoNFeMunicipio = bancoNFeMunicipio;
             this.formaPagtoBll = formaPagtoBll;
+            this.pedidoVisualizacaoBll = pedidoVisualizacaoBll;
         }
 
         public async Task<IEnumerable<string>> ListarNumerosPrepedidosCombo(string orcamentista)
@@ -791,6 +794,10 @@ namespace Prepedido
             float perc_limite_RA_sem_desagio = await Util.VerificarSemDesagioRA(contextoProvider);
 
             //Vamos conforntar os valores de cada item, total do prepedido e o percentual máximo de RA
+            //afazer: verificar se a lista de produtos contém itens
+            if (prePedido.ListaProdutos.Count <= 0)
+                lstErros.Add("Não há itens na lista de produtos!");
+
             await validacoesPrepedidoBll.MontarProdutosParaComparacao(prePedido,
                 c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas,
                 prePedido.DadosCliente.Loja, lstErros, perc_limite_RA_sem_desagio, limiteArredondamento);
@@ -1928,5 +1935,168 @@ namespace Prepedido
                 prepedido.NumeroPrePedido = nsu.Substring(ndescarte) + sufixoIdOrcamento;
             }
         }
+
+        public async Task<BuscarStatusPrepedidoRetornoDados> BuscarStatusPrepedido(string orcamento)
+        {
+            BuscarStatusPrepedidoRetornoDados ret = new BuscarStatusPrepedidoRetornoDados();
+
+            //vamos buscar o prepedido para verificar se ele virou pedido
+            var db = contextoProvider.GetContextoLeitura();
+
+            var orcamentotask = await (from c in db.Torcamentos
+                                       where c.Orcamento == orcamento
+                                       select c).FirstOrDefaultAsync();
+
+            if (orcamentotask != null)
+            {
+                ret.St_orc_virou_pedido = Convert.ToBoolean(orcamentotask.St_Orc_Virou_Pedido);
+
+                //virou
+                if ((bool)ret.St_orc_virou_pedido)
+                {
+                    Tpedido pedido_pai = (from c in db.Tpedidos
+                                          where c.Orcamento == orcamentotask.Orcamento
+                                          select c).FirstOrDefault();
+
+                    List<Tpedido> lstPedido = await (from c in db.Tpedidos
+                                                     where c.Pedido.Contains(pedido_pai.Pedido)
+                                                     select c).ToListAsync();
+
+                    if (lstPedido.Count > 0)
+                    {
+                        ret.Pedidos = new List<StatusPedidoPrepedidoDados>();
+                        lstPedido.ForEach(x =>
+                        {
+                            ret.Pedidos.Add(new StatusPedidoPrepedidoDados
+                            {
+                                Pedido = x.Pedido,
+                                St_Entrega = x.St_Entrega
+                            });
+                        });
+                    }
+                }
+            }
+
+            return ret;
+        }
+
+        public async Task<List<InformacoesStatusPrepedidoRetornoDados>> ListarStatusPrepedido(DateTime? dataLimiteInferior, List<string> lstPrepedido,
+            int sistema_responsavel)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+
+            List<InformacoesStatusPrepedidoRetornoDados> lstInfosStatusPrepedido = new List<InformacoesStatusPrepedidoRetornoDados>();
+
+            var lstTorcamentoQuery = from c in db.Torcamentos
+                                     where c.Sistema_responsavel_cadastro == sistema_responsavel
+                                     select c;
+            if (lstPrepedido != null && lstPrepedido.Count > 0)
+            {
+                lstTorcamentoQuery = from c in lstTorcamentoQuery
+                                     where lstPrepedido.Contains(c.Orcamento)
+                                     select c;
+            }
+
+            if (dataLimiteInferior != null)
+            {
+                lstTorcamentoQuery = from c in lstTorcamentoQuery
+                                     where c.Data >= dataLimiteInferior.Value
+                                     select c;
+            }
+
+            var lstTorcamento = await lstTorcamentoQuery.ToListAsync();
+
+            //vamos buscar todos que viraram pedido
+            //aqui ja estamos buscando todos que contém o orçamento
+            List<string> lstViraramPedido = (from d in lstTorcamento
+                                             where d.St_Orc_Virou_Pedido == 1
+                                             select d.Orcamento).ToList();
+
+            List<Tpedido> lstPedidosPai = await (from c in db.Tpedidos
+                                                 where lstViraramPedido.Contains(c.Orcamento)
+                                                 select c).ToListAsync();
+
+
+            lstInfosStatusPrepedido = MontarInformacoesStatusPrepedidoRetornoDados(lstTorcamento, lstPedidosPai);
+            return lstInfosStatusPrepedido;
+        }
+
+
+        private List<InformacoesStatusPrepedidoRetornoDados> MontarInformacoesStatusPrepedidoRetornoDados(List<Torcamento> lstTorcamento,
+            List<Tpedido> lstPedidos)
+        {
+            List<InformacoesStatusPrepedidoRetornoDados> lstRetPedido = new List<InformacoesStatusPrepedidoRetornoDados>();
+            foreach (var orcamento in lstTorcamento)
+            {
+#pragma warning disable IDE0017 // Simplify object initialization
+                InformacoesStatusPrepedidoRetornoDados info = new InformacoesStatusPrepedidoRetornoDados();
+#pragma warning restore IDE0017 // Simplify object initialization
+                info.Orcamento = orcamento.Orcamento;
+                info.Data = orcamento.Data;
+                info.St_orcamento = orcamento.St_Orcamento;
+                info.St_virou_pedido = Convert.ToBoolean(orcamento.St_Orc_Virou_Pedido);
+
+                if (orcamento.St_Orc_Virou_Pedido == 1)
+                {
+                    info.LstInformacoesPedido = new List<InformacoesPedidoRetornoDados>();
+
+                    Tpedido pedidoPai = lstPedidos
+                        .Where(x => x.Orcamento == orcamento.Orcamento)
+                        .Select(c => c).FirstOrDefault();
+
+                    if (pedidoPai != null)
+                        info.LstInformacoesPedido.Add(new InformacoesPedidoRetornoDados
+                        {
+                            Pedido = pedidoPai.Pedido,
+                            St_entrega = pedidoPai.St_Entrega,
+                            DescricaoStatusEntrega = pedidoVisualizacaoBll.FormataSatusPedido(pedidoPai.St_Entrega),
+                            Entregue_data = pedidoPai.Entregue_Data,
+                            Cancelado_data = pedidoPai.Cancelado_Data,
+                            PedidoRecebidoStatus = pedidoPai.PedidoRecebidoStatus,
+                            PedidoRecebidoData = pedidoPai.PedidoRecebidoData,
+                            Analise_credito = pedidoPai.Analise_Credito,
+                            DescricaoAnaliseCredito = pedidoVisualizacaoBll.DescricaoAnaliseCreditoCadastroPedido(Convert.ToString(pedidoPai.Analise_Credito)),
+                            Analise_credito_data = pedidoPai.Analise_credito_Data,
+                            St_pagto = pedidoPai.St_Pagto,
+                            DescricaoStatusPagto = pedidoVisualizacaoBll.StatusPagto(pedidoPai.St_Pagto)
+                        });
+
+                    //vamos buscar os filhotes desse pai
+                    List<Tpedido> lstfilhotes = lstPedidos
+                        .Where(x => x.Pedido.Contains(pedidoPai.Pedido + "-"))
+                        .Select(c => c).ToList();
+
+                    if (lstfilhotes != null)
+                    {
+                        if (lstfilhotes.Count > 0)
+                        {
+                            foreach (var filho in lstfilhotes)
+                            {
+                                info.LstInformacoesPedido.Add(new InformacoesPedidoRetornoDados
+                                {
+                                    Pedido = filho.Pedido,
+                                    St_entrega = filho.St_Entrega,
+                                    DescricaoStatusEntrega = pedidoVisualizacaoBll.FormataSatusPedido(filho.St_Entrega),
+                                    Entregue_data = filho.Entregue_Data,
+                                    Cancelado_data = filho.Cancelado_Data,
+                                    PedidoRecebidoStatus = filho.PedidoRecebidoStatus,
+                                    PedidoRecebidoData = filho.PedidoRecebidoData,
+                                    Analise_credito = pedidoPai.Analise_Credito,
+                                    DescricaoAnaliseCredito = pedidoVisualizacaoBll.DescricaoAnaliseCreditoCadastroPedido(Convert.ToString(pedidoPai.Analise_Credito)),
+                                    Analise_credito_data = pedidoPai.Analise_credito_Data,
+                                    St_pagto = pedidoPai.St_Pagto,
+                                    DescricaoStatusPagto = pedidoVisualizacaoBll.StatusPagto(pedidoPai.St_Pagto)
+                                });
+                            }
+                        }
+                    }
+                }
+
+                lstRetPedido.Add(info);
+            }
+
+            return lstRetPedido;
+        }
+
     }
 }

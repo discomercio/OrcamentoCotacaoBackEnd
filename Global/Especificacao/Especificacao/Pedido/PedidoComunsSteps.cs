@@ -113,11 +113,12 @@ namespace Especificacao.Especificacao.Pedido
             Testes.Utils.MapeamentoMensagens.GivenNoAmbienteErroE(p0, p1, p2);
         }
 
-        [Given(@"Ignorar scenario no ambiente ""(.*)""")]
-        new public void GivenIgnorarScenarioNoAmbiente(string p0)
+        //o parâmetro é o nome da classe que efetivamente implementa
+        [Given(@"Ignorar cenário no ambiente ""(.*)""")]
+        new public void GivenIgnorarCenarioNoAmbiente(string p0)
         {
-            Testes.Utils.LogTestes.LogOperacoes2.IgnorarScenarioNoAmbiente(p0, this);
-            base.GivenIgnorarScenarioNoAmbiente(p0);
+            Testes.Utils.LogTestes.LogOperacoes2.IgnorarCenarioNoAmbiente(p0, this);
+            base.GivenIgnorarCenarioNoAmbiente(p0);
         }
 
         [Given(@"Pedido base com endereço de entrega")]

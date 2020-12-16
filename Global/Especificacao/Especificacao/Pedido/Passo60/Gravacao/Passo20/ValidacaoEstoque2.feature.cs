@@ -112,10 +112,9 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 51
- testRunner.When("FAzer esta validação, ver se precisa mesmo", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 52
- testRunner.When("Feito no FluxoGravacaoPedido.feature", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Validação feita em outro lugar: \"A rotina estoque_verifica_disponibilidade_integr" +
+                        "al_v2 só dá erro se der erro no banco de dados. A lógiga em si está coberta pelo" +
+                        " Especificacao\\Pedido\\Passo60\\Gravacao\\FluxoGravacaoPedido.feature\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
             this.ScenarioCleanup();

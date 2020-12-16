@@ -7,7 +7,7 @@ Background: Pedido base com endereço de entrega (pedido e prepedido)
 
 	#na API magneto sempre usa o endereço de entrega como endereço cadastral em PF
 	#todo: tirar esta linha e testar na api magento
-	Given Ignorar scenario no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
+	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 
 	# Configuração
 	#Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "Selecione a justificativa do endereço de entrega!!" é "Código da justficativa inválida!"

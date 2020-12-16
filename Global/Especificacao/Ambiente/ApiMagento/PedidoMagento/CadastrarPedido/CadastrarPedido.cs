@@ -30,12 +30,12 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
             Testes.Utils.StatusCodes.TestarStatusCode(statusCode, res);
         }
 
+        public Microsoft.AspNetCore.Mvc.ActionResult<MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto>? UltimoAcessoFeito { get; private set; } = null;
         private ActionResult AcessarControladorMagento()
         {
             Testes.Utils.LogTestes.LogOperacoes2.ChamadaController(pedidoMagentoController.GetType(), "CadastrarPedido", this);
-            Microsoft.AspNetCore.Mvc.ActionResult<MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto> ret
-                = pedidoMagentoController.CadastrarPedido(pedidoMagentoDto).Result;
-            Microsoft.AspNetCore.Mvc.ActionResult res = ret.Result;
+            UltimoAcessoFeito = pedidoMagentoController.CadastrarPedido(pedidoMagentoDto).Result;
+            Microsoft.AspNetCore.Mvc.ActionResult res = UltimoAcessoFeito.Result;
             return res;
         }
 

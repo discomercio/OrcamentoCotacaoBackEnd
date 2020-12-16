@@ -1,0 +1,39 @@
+Configuração do log. 
+
+Válido para todos os projetos. Após alterar o appsettings.json é necessário reiniciar o site no IIS; alterações no nlog.config entram imediatamente.
+
+
+1 - Definindo o nível de log (simples)
+No arquivo appsettings.json
+
+  "Logging": {
+    "LogLevel": {
+      "Default": "Trace"
+    }
+  },
+
+Valores válidos, em ordem de detalhamento: Trace, Debug, Information, Warning, Error, Critical, None
+Referência: https://docs.microsoft.com/pt-br/aspnet/core/fundamentals/logging/?view=aspnetcore-3.1
+
+
+2 - Limitando o tamanho do log
+
+No arquivo nlog.config, archiveAboveSize indica o tamanho de cada arquivo de log e maxArchiveFiles indica o número máximo de arquivos de log.
+Entradas de log mais velhas são automaticamente apagadas.
+Existem várias entradas com esses valores; os erros e o log podem ter confiugrações diferentes.
+
+
+3 - Definindo o nível de log (avançado)
+
+Exemplo 1: para deixar de fazer o log das requisicções, mude writeTo="logrequisicao" para writeTo="naofazer_logrequisicao"
+Como não existe esse target, o log será jogado fora.
+
+Exemplo 2: para não ter o log do Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker, insira esta linha no começo do <rules>:
+    <logger name="Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker" minlevel="Trace" final="true" />
+Isso faz com que entradas com essa origem sejam descartadas e não sejam processadas pelos outros rules.
+
+Referência do nlog.config:
+https://nlog-project.org/config/
+Tem muitas, muitas opções!
+Por exemplo, pode-se enviar determinados erros por e-mail.
+

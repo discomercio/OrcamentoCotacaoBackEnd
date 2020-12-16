@@ -58,6 +58,8 @@
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiUnis\PrepedidoUnis\BuscarQtdeParcCartaoVisa\ListaExecucao.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiUnis\PrepedidoUnis\CadastrarPrepedido\CadastrarPrepedidoVerificarQueExecutou - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiUnis\PrepedidoUnis\CadastrarPrepedido\Validacao\CamposSimples.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiUnis\PrepedidoUnis\BuscarStatusPrepedido\ListarStatusPrepedido.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiUnis\PrepedidoUnis\BuscarStatusPrepedido\ListarStatusPrepedidoListaDependencias.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\Loja\Loja_Bll\Bll\PedidoBll\PedidoBll\CadastrarPedido\CadastrarPedidoListaDependencias.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Comuns\Api\Autenticacao\Autenticacao - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\CaminhoFelizApi.feature.cs" />
@@ -75,6 +77,7 @@
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo40\PedidoNovoProdCompostoMask - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Gravacao\Passo20\ValidacaoEstoque - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Gravacao\Passo20\ValidacaoEstoque2 - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\SplitEstoqueResultante3casos - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Validacao\Estoque.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Prepedido\Pedido.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\TesteExecucaoCruzadaPedido - Copy.feature.cs" />
@@ -122,6 +125,12 @@
     <Compile Update="Ambiente\ApiUnis\PrepedidoUnis\CadastrarPrepedido\Validacao\CpfCnpj.feature.cs">
       <DependentUpon>CpfCnpj.feature</DependentUpon>
     </Compile>
+    <Compile Update="Ambiente\ApiUnis\PrepedidoUnis\BuscarStatusPrepedido\BuscarStatusPrepedido.feature.cs">
+      <DependentUpon>BuscarStatusPrepedido.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Ambiente\ApiUnis\PrepedidoUnis\BuscarStatusPrepedido\BuscarStatusPrepedidoListaDependencias.feature.cs">
+      <DependentUpon>BuscarStatusPrepedidoListaDependencias.feature</DependentUpon>
+    </Compile>
     <Compile Update="Ambiente\Loja\Loja_Bll\Bll\PedidoBll\PedidoBll\CadastrarPedido\CadastrarPedidoListaDependencias.feature.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
@@ -167,6 +176,9 @@
     <Compile Update="Especificacao\Pedido\Passo60\Gravacao\Passo20\ValidacaoEstoque2.feature.cs">
       <DependentUpon>ValidacaoEstoque2.feature</DependentUpon>
     </Compile>
+    <Compile Update="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\SplitEstoqueResultanteCdManual.feature.cs">
+      <DependentUpon>SplitEstoqueResultanteCdManual.feature</DependentUpon>
+    </Compile>
     <Compile Update="Especificacao\Prepedido\Prepedido.feature.cs">
       <DependentUpon>Prepedido.feature</DependentUpon>
     </Compile>
@@ -193,6 +205,14 @@
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
     <SpecFlowFeatureFiles Update="Ambiente\ApiUnis\PrepedidoUnis\CadastrarPrepedido\Validacao\CpfCnpj.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Ambiente\ApiUnis\PrepedidoUnis\BuscarStatusPrepedido\BuscarStatusPrepedido.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Ambiente\ApiUnis\PrepedidoUnis\BuscarStatusPrepedido\BuscarStatusPrepedidoListaDependencias.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
@@ -273,6 +293,10 @@
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
     <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo60\Gravacao\Passo20\ValidacaoEstoque2.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\SplitEstoqueResultanteCdManual.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>

@@ -60,13 +60,13 @@ namespace Especificacao.Testes.Pedido
         }
 
         private bool ignorarFeature = false;
-        public void GivenIgnorarScenarioNoAmbiente(string p0)
+        public void GivenIgnorarCenarioNoAmbiente(string p0)
         {
-            IgnorarScenarioNoAmbiente(p0, ref ignorarFeature, this.GetType());
-            base.Executar(i => i.GivenIgnorarScenarioNoAmbiente(p0));
+            IgnorarCenarioNoAmbiente(p0, ref ignorarFeature, this.GetType());
+            base.Executar(i => i.GivenIgnorarCenarioNoAmbiente(p0));
         }
 
-        public static void IgnorarScenarioNoAmbiente(string p0, ref bool ignorarFeature, Type getType)
+        public static void IgnorarCenarioNoAmbiente(string p0, ref bool ignorarFeature, Type getType)
         {
             var typeFullName = getType.FullName;
             if (typeFullName == null)

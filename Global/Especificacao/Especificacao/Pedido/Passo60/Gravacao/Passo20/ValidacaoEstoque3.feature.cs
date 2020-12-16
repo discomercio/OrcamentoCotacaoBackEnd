@@ -83,14 +83,14 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validar estoque 3")]
+        [Xunit.SkippableFactAttribute(DisplayName="Validar estoque 3 - feito em outros arquivos")]
         [Xunit.TraitAttribute("FeatureTitle", "ValidacaoEstoque3.feature")]
-        [Xunit.TraitAttribute("Description", "Validar estoque 3")]
-        public virtual void ValidarEstoque3()
+        [Xunit.TraitAttribute("Description", "Validar estoque 3 - feito em outros arquivos")]
+        public virtual void ValidarEstoque3_FeitoEmOutrosArquivos()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar estoque 3", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar estoque 3 - feito em outros arquivos", null, tagsOfScenario, argumentsOfScenario);
 #line 4
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -112,24 +112,25 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 18
- testRunner.When("FAzer esta validação, ver se precisa mesmo e justificar", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Validação feita em outro lugar: \"Todo este fluxo é validado pelos testes de aloca" +
+                        "ção nos CDs (em Especificacao\\Pedido\\Passo60\\Gravacao\\SplitEstoque\\*)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 19
- testRunner.When("Feito no FluxoGravacaoPedido.feature", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Testado em \"Especificacao\\Pedido\\Passo60\\Gravacao\\SplitEstoque\\*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="descontinuado")]
+        [Xunit.SkippableFactAttribute(DisplayName="Validar estoque 3 - produto sem alocação")]
         [Xunit.TraitAttribute("FeatureTitle", "ValidacaoEstoque3.feature")]
-        [Xunit.TraitAttribute("Description", "descontinuado")]
-        public virtual void Descontinuado()
+        [Xunit.TraitAttribute("Description", "Validar estoque 3 - produto sem alocação")]
+        public virtual void ValidarEstoque3_ProdutoSemAlocacao()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("descontinuado", null, tagsOfScenario, argumentsOfScenario);
-#line 22
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar estoque 3 - produto sem alocação", null, tagsOfScenario, argumentsOfScenario);
+#line 21
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -149,7 +150,42 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 25
+#line 29
+ testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="descontinuado")]
+        [Xunit.TraitAttribute("FeatureTitle", "ValidacaoEstoque3.feature")]
+        [Xunit.TraitAttribute("Description", "descontinuado")]
+        public virtual void Descontinuado()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("descontinuado", null, tagsOfScenario, argumentsOfScenario);
+#line 33
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 36
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }

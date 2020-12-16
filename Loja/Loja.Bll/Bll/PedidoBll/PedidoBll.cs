@@ -3379,6 +3379,7 @@ namespace Loja.Bll.PedidoBll
         public async Task<PedidoCriacaoRetornoDados> CadastrarPedido(PedidoDto pedidoDto,
             string lojaUsuario, string usuario, bool vendedorExterno)
         {
+            pedidoDto.DadosCliente.Loja = lojaUsuario;
             PedidoCriacaoDados pedidoCriacaoDados;
             pedidoCriacaoDados = PedidoDto.PedidoCriacaoDados_De_PedidoDto(pedidoDto, lojaUsuario, usuario, vendedorExterno,
                 0.1M, 0.1M,

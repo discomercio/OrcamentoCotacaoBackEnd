@@ -4,9 +4,9 @@ Feature: Validar campos simples Pj
 Background: Configuração
 	#na ApiUnis, ele exige que o cliente já esteja cadastrado, então não valida o CPF/CNPJ
 	#por enquanto, ignoramos no prepedido inteiro
-	Given Ignorar scenario no ambiente "Especificacao.Prepedido.PrepedidoSteps"
+	Given Ignorar cenário no ambiente "Especificacao.Prepedido.PrepedidoSteps"
 	#também ignoramos na API magneto porque só aceita pedidos de PF
-	Given Ignorar scenario no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
+	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 
 @ListaDependencias
 Scenario: CamposSimples ListaDependencias Configuração

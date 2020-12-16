@@ -3,8 +3,7 @@ Feature: Validar campos simples Pf
 
 Background: Configuração
 	#na ApiUnis, ele exige que o cliente já esteja cadastrado, então não valida o CPF/CNPJ
-	#por enquanto, ignoramos no prepedido inteiro
-	Given Ignorar scenario no ambiente "Especificacao.Prepedido.PrepedidoSteps"
+	Given Ignorar cenário no ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido"
 
 @ListaDependencias
 Scenario: CamposSimples ListaDependencias Configuração

@@ -36,6 +36,7 @@ Scenario: Verificar produtos - sem erro
 
 Scenario: Verificar produtos - sem t_PRODUTO_LOJA
 	Given Pedido base
+	And Limpar tabela "t_PRODUTO_LOJA"
 	#não gravamos nada em t_PRODUTO_LOJA
 	Then Erro "Produto não cadastrado para loja"
 

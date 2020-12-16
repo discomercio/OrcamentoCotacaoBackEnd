@@ -8,8 +8,6 @@ namespace Especificacao.Comuns.Api.Autenticacao
     [Binding, Scope(Tag = "Especificacao.Comuns.Api.Autenticacao.Autenticacao")]
     public class AutenticacaoSteps : ListaImplementacoes<IAutenticacaoSteps>, IAutenticacaoSteps
     {
-        private readonly Testes.Utils.LogTestes.LogTestes logTestes = Testes.Utils.LogTestes.LogTestes.GetInstance();
-
         public AutenticacaoSteps()
         {
             {
@@ -37,6 +35,12 @@ namespace Especificacao.Comuns.Api.Autenticacao
                 var imp = new Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Autenticacao();
                 base.AdicionarImplementacao(imp);
                 RegistroDependencias.AdicionarDependencia("Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedidoListaDependencias", imp,
+                    "Especificacao.Comuns.Api.Autenticacao");
+            }
+            {
+                var imp = new Ambiente.ApiUnis.PrepedidoUnis.BuscarStatusPrepedido.Autenticacao();
+                base.AdicionarImplementacao(imp);
+                RegistroDependencias.AdicionarDependencia("Ambiente.ApiUnis.PrepedidoUnis.BuscarStatusPrepedido.BuscarStatusPrepedidoListaDependencias", imp,
                     "Especificacao.Comuns.Api.Autenticacao");
             }
         }

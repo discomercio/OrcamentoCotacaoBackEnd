@@ -48,6 +48,6 @@ Scenario: Validar estoque 2
 	#			if alerta <> "" then exit for
 	#			next
 	#		end if 'if alerta=""
-	When FAzer esta validação, ver se precisa mesmo
-	When Feito no FluxoGravacaoPedido.feature
+	When Validação feita em outro lugar: "A rotina estoque_verifica_disponibilidade_integral_v2 só dá erro se der erro no banco de dados. A lógiga em si está coberta pelo Especificacao\Pedido\Passo60\Gravacao\FluxoGravacaoPedido.feature"
+
 

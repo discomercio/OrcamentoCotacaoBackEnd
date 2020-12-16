@@ -102,6 +102,57 @@ namespace Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadastrar
                     pedidoDto.EnderecoEntrega.EndEtg_cod_justificativa = p1;
                     break;
 
+                case "EndEtg_ie":
+                    pedidoDto.EnderecoEntrega ??= new global::Loja.Bll.Dto.ClienteDto.EnderecoEntregaDtoClienteCadastro();
+                    pedidoDto.EnderecoEntrega.EndEtg_ie = p1;
+                    break;
+                case "EndEtg_contribuinte_icms_status":
+                    InfraBanco.Constantes.Constantes.ContribuinteICMS valorContribuinteICMS;
+                    switch (p1)
+                    {
+                        case "COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL":
+                            valorContribuinteICMS = InfraBanco.Constantes.Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL;
+                            break;
+                        case "COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO":
+                            valorContribuinteICMS = InfraBanco.Constantes.Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO;
+                            break;
+                        case "COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM":
+                            valorContribuinteICMS = InfraBanco.Constantes.Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM;
+                            break;
+                        case "COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO":
+                            valorContribuinteICMS = InfraBanco.Constantes.Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO;
+                            break;
+                        default:
+                            Assert.Equal("", $"{p1} desconhecido em Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.WhenInformo em EndEtg_contribuinte_icms_status");
+                            valorContribuinteICMS = InfraBanco.Constantes.Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL;
+                            break;
+                    }
+
+                    pedidoDto.EnderecoEntrega.EndEtg_contribuinte_icms_status = (byte)valorContribuinteICMS;
+                    break;
+
+                case "EndEtg_produtor_rural_status":
+                    InfraBanco.Constantes.Constantes.ProdutorRual valorProdutorRural;
+                    switch (p1)
+                    {
+                        case "COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL":
+                            valorProdutorRural = InfraBanco.Constantes.Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL;
+                            break;
+                        case "COD_ST_CLIENTE_PRODUTOR_RURAL_NAO":
+                            valorProdutorRural = InfraBanco.Constantes.Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO;
+                            break;
+                        case "COD_ST_CLIENTE_PRODUTOR_RURAL_SIM":
+                            valorProdutorRural = InfraBanco.Constantes.Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM;
+                            break;
+                        default:
+                            Assert.Equal("", $"{p1} desconhecido em Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.WhenInformo em EndEtg_produtor_rural_status");
+                            valorProdutorRural = InfraBanco.Constantes.Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL;
+                            break;
+                    }
+
+                    pedidoDto.EnderecoEntrega.EndEtg_produtor_rural_status = (byte)valorProdutorRural;
+                    break;
+
                 default:
                     Assert.Equal("", $"{p0} desconhecido na rotina Especificacao.Ambiente.Loja.Loja.Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.AbstractInformo");
                     break;

@@ -6,6 +6,7 @@ Vmaos verificar se está fazendo o slipt corretamente:
 - com um pedido atendido por dois CDs e ainda com quantidade sem presença no estoque
 
 Background: Background
+	Given Reiniciar banco ao terminar cenário
 	Given Pedido base sem itens
 	And Usando fabricante = "001", produto = "001000"
 	And Zerar todo o estoque
