@@ -205,10 +205,13 @@ namespace Loja.UI.Controllers
             clienteCadastro.RefBancaria = lstRefBancaria;
             clienteCadastro.RefComercial = lstRefCom;
 
-            //validar os dados do cliente             
+            //validar os dados do cliente 
+            //alterar para fazer o cadastro pelo Global/Cliente
             var retorno = await clienteBll.CadastrarCliente(clienteCadastro, usuarioLogado.Usuario_atual,
                 usuarioLogado.Loja_atual_id);
 
+            //Não iremos mais armazenar em session. Iremos enviar o dto de pedido e retornar o 
+            //dto do pedido em cada página.
             //Armazenando objeto na Session
             Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto dtoPedido = new Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto();
             dtoPedido.DadosCliente = new DadosClienteCadastroDto();
@@ -218,6 +221,7 @@ namespace Loja.UI.Controllers
             {
                 if (EndEntrega2.EndEtg_cep != null)
                 {
+                    //vamos validar o endereço de entrega no Global/Prepedido
                     dtoPedido.EnderecoEntrega = new EnderecoEntregaDtoClienteCadastro();
                     //vamos normalizar o cep enviado antes de armazenar na session
                     EndEntrega2.EndEtg_cep = EndEntrega2.EndEtg_cep.Replace("-", "");

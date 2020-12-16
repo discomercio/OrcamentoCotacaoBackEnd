@@ -1,7 +1,6 @@
 ﻿import { StringUtils } from "../../UtilTs/stringUtils/stringUtils";
 import { CpfCnpjUtils } from "../../UtilTs/CpfCnpjUtils/CpfCnpjUtils";
 import { Constantes } from "../../UtilTs/Constantes/Constantes";
-import { isNumeric } from "jquery";
 import { DataUtils } from "../../UtilTs/DataUtils/DataUtils";
 import { ErrorModal } from "../Shared/Error";
 import { Loading } from "../../UtilTs/Loading/Loading";
@@ -12,6 +11,10 @@ declare function swal(header, msg): any;
 let cpfCnpj = $('#cpf_cnpj').val().toString();
 $('#cpf_cnpj').val(CpfCnpjUtils.cnpj_cpf_formata(cpfCnpj));
 
+/* OBS: temos que fazer a validação para cadastrar o cliente
+ * no angular estamos fazendo a validação necessária => precisa revisar as rotinas com o angular 
+ * 
+ */
 
 
 $(function () {
