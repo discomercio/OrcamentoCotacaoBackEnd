@@ -56,99 +56,38 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
             GivenPrepedidoBase();
         }
 
-        public void WhenInformo(string p0, string p1)
+        public void WhenInformo(string campo, string valor)
         {
             if (ignorarFeature) return;
-            Testes.Utils.LogTestes.LogOperacoes2.Informo(p0, p1, this);
-            switch (p0)
+            Testes.Utils.LogTestes.LogOperacoes2.Informo(campo, valor, this);
+            switch (campo)
             {
                 case "TokenAcesso":
-                    prePedidoUnisDto.TokenAcesso = p1;
-                    break;
+                    prePedidoUnisDto.TokenAcesso = valor;
+                    return;
                 case "CPF/CNPJ":
-                    prePedidoUnisDto.Cnpj_Cpf = p1;
-                    break;
+                    prePedidoUnisDto.Cnpj_Cpf = valor;
+                    return;
+            }
 
-                //endetg
-                case "EndEtg_nome":
-                    prePedidoUnisDto.EnderecoEntrega.EndEtg_nome = p1;
-                    break;
-                case "EndEtg_bairro":
-                    prePedidoUnisDto.EnderecoEntrega.EndEtg_bairro = p1;
-                    break;
-                case "EndEtg_cep":
-                    prePedidoUnisDto.EnderecoEntrega.EndEtg_cep = p1;
-                    break;
-                case "EndEtg_endereco_numero":
-                    prePedidoUnisDto.EnderecoEntrega.EndEtg_endereco_numero = p1;
-                    break;
-                case "EndEtg_uf":
-                    prePedidoUnisDto.EnderecoEntrega.EndEtg_uf = p1;
-                    break;
-                case "EndEtg_endereco":
-                    prePedidoUnisDto.EnderecoEntrega.EndEtg_endereco = p1;
-                    break;
-                case "EndEtg_endereco_complemento":
-                    prePedidoUnisDto.EnderecoEntrega.EndEtg_endereco_complemento = p1;
-                    break;
-                case "EndEtg_cidade":
-                    prePedidoUnisDto.EnderecoEntrega.EndEtg_cidade = p1;
-                    break;
+            //acertos em campos
+            if (campo == "vl_total_NF")
+                campo = "ValorTotalDestePedidoComRA";
+
+            if (Testes.Utils.WhenInformoCampo.InformarCampo(campo, valor, prePedidoUnisDto))
+                return;
+            if (Testes.Utils.WhenInformoCampo.InformarCampo(campo, valor, prePedidoUnisDto.FormaPagtoCriacao))
+                return;
+            if (Testes.Utils.WhenInformoCampo.InformarCampo(campo, valor, prePedidoUnisDto.EnderecoEntrega))
+                return;
+
+            switch (campo)
+            {
                 case "EndEtg_obs":
-                    prePedidoUnisDto.EnderecoEntrega.EndEtg_cod_justificativa = p1;
-                    break;
-                case "EndEtg_ie":
-                    prePedidoUnisDto.EnderecoEntrega.EndEtg_ie = p1;
-                    break;
-                case "EndEtg_contribuinte_icms_status":
-                    InfraBanco.Constantes.Constantes.ContribuinteICMS valor;
-                    switch (p1)
-                    {
-                        case "COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL":
-                            valor = InfraBanco.Constantes.Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL;
-                            break;
-                        case "COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO":
-                            valor = InfraBanco.Constantes.Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO;
-                            break;
-                        case "COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM":
-                            valor = InfraBanco.Constantes.Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM;
-                            break;
-                        case "COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO":
-                            valor = InfraBanco.Constantes.Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO;
-                            break;
-                        default:
-                            Assert.Equal("", $"{p1} desconhecido em Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.WhenInformo em EndEtg_contribuinte_icms_status");
-                            valor = InfraBanco.Constantes.Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL;
-                            break;
-                    }
-
-                    prePedidoUnisDto.EnderecoEntrega.EndEtg_contribuinte_icms_status = (byte)valor;
-                    break;
-
-                case "EndEtg_produtor_rural_status":
-                    InfraBanco.Constantes.Constantes.ProdutorRual valorProdutorRural;
-                    switch (p1)
-                    {
-                        case "COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL":
-                            valorProdutorRural = InfraBanco.Constantes.Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL;
-                            break;
-                        case "COD_ST_CLIENTE_PRODUTOR_RURAL_NAO":
-                            valorProdutorRural = InfraBanco.Constantes.Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO;
-                            break;
-                        case "COD_ST_CLIENTE_PRODUTOR_RURAL_SIM":
-                            valorProdutorRural = InfraBanco.Constantes.Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM;
-                            break;
-                        default:
-                            Assert.Equal("", $"{p1} desconhecido em Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.WhenInformo em EndEtg_produtor_rural_status");
-                            valorProdutorRural = InfraBanco.Constantes.Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL;
-                            break;
-                    }
-
-                    prePedidoUnisDto.EnderecoEntrega.EndEtg_produtor_rural_status = (byte)valorProdutorRural;
-                    break;
-
+                    prePedidoUnisDto.EnderecoEntrega.EndEtg_cod_justificativa = valor;
+                    return;
                 default:
-                    Assert.Equal("", $"{p0} desconhecido na rotina Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.WhenInformo");
+                    Assert.Equal("", $"{campo} desconhecido na rotina Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.WhenInformo");
                     break;
             }
         }

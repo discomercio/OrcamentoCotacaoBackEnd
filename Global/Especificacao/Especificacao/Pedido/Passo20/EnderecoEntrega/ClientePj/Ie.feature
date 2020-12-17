@@ -1,8 +1,7 @@
-﻿@Especificacao.Pedido.Passo20.EnderecoEntrega
+﻿@Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj
 Feature: Ie no endereço de entrega
 
-Background: Configuração
-	#na ApiMagento não tem IE
+Background: Api MAgento somente aceita pedidos PF
 	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 
 Scenario: Validar IE sem erro

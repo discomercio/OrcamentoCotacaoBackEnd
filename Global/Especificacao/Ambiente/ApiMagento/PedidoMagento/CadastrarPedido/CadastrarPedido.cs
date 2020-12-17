@@ -81,90 +81,65 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
             pedidoMagentoDto.TokenAcesso = Ambiente.ApiMagento.InjecaoDependencias.TokenAcessoApiMagento();
         }
 
-        protected override void AbstractInformo(string p0, string p1)
+        protected override void AbstractInformo(string campo, string valor)
         {
-            switch (p0)
+            switch (campo)
             {
                 case "appsettings.Orcamentista":
-                    configuracaoApiMagento.DadosOrcamentista.Orcamentista = p1;
-                    break;
+                    configuracaoApiMagento.DadosOrcamentista.Orcamentista = valor;
+                    return;
 
                 case "TokenAcesso":
-                    pedidoMagentoDto.TokenAcesso = p1;
-                    break;
+                    pedidoMagentoDto.TokenAcesso = valor;
+                    return;
 
                 case "CPF/CNPJ":
-                    pedidoMagentoDto.Cnpj_Cpf = p1;
-                    pedidoMagentoDto.EnderecoCadastralCliente.Endereco_cnpj_cpf = p1;
-                    break;
+                    pedidoMagentoDto.Cnpj_Cpf = valor;
+                    pedidoMagentoDto.EnderecoCadastralCliente.Endereco_cnpj_cpf = valor;
+                    return;
                 case "pedidoMagentoDto.Cnpj_Cpf":
-                    pedidoMagentoDto.Cnpj_Cpf = p1;
-                    break;
+                    pedidoMagentoDto.Cnpj_Cpf = valor;
+                    return;
                 case "EnderecoCadastralCliente.Endereco_cnpj_cpf":
-                    pedidoMagentoDto.EnderecoCadastralCliente.Endereco_cnpj_cpf = p1;
-                    break;
+                    pedidoMagentoDto.EnderecoCadastralCliente.Endereco_cnpj_cpf = valor;
+                    return;
 
                 case "EnderecoCadastralCliente.Endereco_tipo_pessoa":
-                    pedidoMagentoDto.EnderecoCadastralCliente.Endereco_tipo_pessoa = p1;
-                    break;
+                    pedidoMagentoDto.EnderecoCadastralCliente.Endereco_tipo_pessoa = valor;
+                    return;
+            }
 
+            //acertos em campos
+            if (campo == "vl_total_NF")
+                campo = "VlTotalDestePedido";
+
+            if (Testes.Utils.WhenInformoCampo.InformarCampo(campo, valor, pedidoMagentoDto))
+                return;
+            if (Testes.Utils.WhenInformoCampo.InformarCampo(campo, valor, pedidoMagentoDto.FormaPagtoCriacao))
+                return;
+            pedidoMagentoDto.EnderecoEntrega ??= new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
+            if (Testes.Utils.WhenInformoCampo.InformarCampo(campo, valor, pedidoMagentoDto.EnderecoEntrega))
+                return;
+
+            switch (campo)
+            {
                 case "OutroEndereco":
-                    if (bool.TryParse(p1, out bool valor))
-                        pedidoMagentoDto.OutroEndereco = valor;
-                    break;
-                //endetg
-                case "EndEtg_nome":
-                    pedidoMagentoDto.EnderecoEntrega ??= new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
-                    pedidoMagentoDto.EnderecoEntrega.EndEtg_nome = p1;
-                    break;
-                case "EndEtg_bairro":
-                    pedidoMagentoDto.EnderecoEntrega ??= new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
-                    pedidoMagentoDto.EnderecoEntrega.EndEtg_bairro = p1;
-                    break;
-                case "EndEtg_cep":
-                    pedidoMagentoDto.EnderecoEntrega ??= new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
-                    pedidoMagentoDto.EnderecoEntrega.EndEtg_cep = p1;
-                    break;
-                case "EndEtg_endereco_numero":
-                    pedidoMagentoDto.EnderecoEntrega ??= new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
-                    pedidoMagentoDto.EnderecoEntrega.EndEtg_endereco_numero = p1;
-                    break;
-                case "EndEtg_uf":
-                    pedidoMagentoDto.EnderecoEntrega ??= new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
-                    pedidoMagentoDto.EnderecoEntrega.EndEtg_uf = p1;
-                    break;
-                case "EndEtg_endereco":
-                    pedidoMagentoDto.EnderecoEntrega ??= new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
-                    pedidoMagentoDto.EnderecoEntrega.EndEtg_endereco = p1;
-                    break;
-                case "EndEtg_endereco_complemento":
-                    pedidoMagentoDto.EnderecoEntrega ??= new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
-                    pedidoMagentoDto.EnderecoEntrega.EndEtg_endereco_complemento = p1;
-                    break;
-                case "EndEtg_cidade":
-                    pedidoMagentoDto.EnderecoEntrega ??= new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
-                    pedidoMagentoDto.EnderecoEntrega.EndEtg_cidade = p1;
-                    break;
-                case "EndEtg_obs":
-                    /* nao temos justificativa
-                    pedidoMagentoDto.EnderecoEntrega ??= new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
-                    pedidoMagentoDto.EnderecoEntrega.EndEtg_cod_justificativa = p1;
-                    */
-                    break;
-
+                    if (bool.TryParse(valor, out bool valorBool))
+                        pedidoMagentoDto.OutroEndereco = valorBool;
+                    return;
 
                 case "InfCriacaoPedido.Pedido_bs_x_ac":
-                    pedidoMagentoDto.InfCriacaoPedido.Pedido_bs_x_ac = p1;
-                    break;
+                    pedidoMagentoDto.InfCriacaoPedido.Pedido_bs_x_ac = valor;
+                    return;
                 case "InfCriacaoPedido.Pedido_bs_x_marketplace":
-                    pedidoMagentoDto.InfCriacaoPedido.Pedido_bs_x_marketplace = p1;
-                    break;
+                    pedidoMagentoDto.InfCriacaoPedido.Pedido_bs_x_marketplace = valor;
+                    return;
                 case "InfCriacaoPedido.Marketplace_codigo_origem":
-                    pedidoMagentoDto.InfCriacaoPedido.Marketplace_codigo_origem = p1;
-                    break;
+                    pedidoMagentoDto.InfCriacaoPedido.Marketplace_codigo_origem = valor;
+                    return;
 
                 default:
-                    Assert.Equal("", $"{p0} desconhecido na rotina Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.AbstractInformo");
+                    Assert.Equal("", $"{campo} desconhecido na rotina Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.AbstractInformo");
                     break;
             }
         }

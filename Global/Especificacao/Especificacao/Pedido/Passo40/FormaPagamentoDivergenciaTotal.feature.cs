@@ -114,20 +114,17 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 12
+#line 11
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 13
+#line 12
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_A_VISTA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
+#line 13
+ testRunner.When("Informo \"vl_total_NF\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
 #line 14
- testRunner.When("Informo \"vlTotalFormaPagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 15
  testRunner.And("Informo \"vl_total_NF\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 16
- testRunner.Then("Erro \"regex .*Há divergência entre o valor total do pedido.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -162,18 +159,40 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 33
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Reiniciar o banco ao terminar o cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 34
- testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELA_UNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Novo registro na tabela \"t_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FORMA_PAGTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 35
- testRunner.When("Informo \"c_pu_valor\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FORMA_PAGTO\", campo \"id_fo" +
+                        "rma_pagto\" = \"COD_FORMA_PAGTO_PARCELA_UNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 36
- testRunner.And("Informo \"vl_total_NF\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FORMA_PAGTO\", campo \"id_or" +
+                        "camentista_e_indicador\" = \"especial: ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TO" +
+                        "DOS\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 37
+ testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FORMA_PAGTO\", campo \"st_re" +
+                        "stricao_ativa\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 38
+ testRunner.And("Gravar registro em \"t_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FORMA_PAGTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 40
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 41
+ testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELA_UNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 42
+ testRunner.When("Informo \"c_pu_valor\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 43
+ testRunner.And("Informo \"vl_total_NF\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 44
  testRunner.Then("Erro \"regex .*Há divergência entre o valor total do pedido.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -188,7 +207,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("COD_FORMA_PAGTO_PARCELADO_CARTAO - Parcelado no cartão (internet) divergência", null, tagsOfScenario, argumentsOfScenario);
-#line 39
+#line 46
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -208,23 +227,23 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 49
+#line 56
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 50
+#line 57
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 51
+#line 58
  testRunner.When("Informo \"c_pc_qtde\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 52
+#line 59
  testRunner.When("Informo \"c_pc_valor\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 53
+#line 60
  testRunner.And("Informo \"vl_total_NF\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 54
+#line 61
  testRunner.Then("Erro \"regex .*Há divergência entre o valor total do pedido.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -242,7 +261,7 @@ this.ScenarioInitialize(scenarioInfo);
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA - Parcelado no cartão (maquineta) dive" +
                     "rgência", null, tagsOfScenario, argumentsOfScenario);
-#line 56
+#line 63
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -262,23 +281,23 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 67
+#line 74
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 68
+#line 75
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO" +
                         "_MAQUINETA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 69
+#line 76
  testRunner.When("Informo \"c_pc_maquineta_qtde\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 70
+#line 77
  testRunner.When("Informo \"c_pc_maquineta_valor\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 71
+#line 78
  testRunner.And("Informo \"vl_total_NF\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 72
+#line 79
  testRunner.Then("Erro \"regex .*Há divergência entre o valor total do pedido.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -293,7 +312,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA - Parcelado com entrada divergência", null, tagsOfScenario, argumentsOfScenario);
-#line 74
+#line 81
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -313,48 +332,48 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 84
+#line 91
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 85
- testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO" +
-                        "_MAQUINETA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 86
- testRunner.When("Informo \"c_pce_entrada_valor\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 87
- testRunner.When("Informo \"c_pce_prestacao_qtde\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 88
- testRunner.When("Informo \"c_pce_prestacao_valor\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 89
- testRunner.And("Informo \"vl_total_NF\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 90
- testRunner.Then("Erro \"regex .*Há divergência entre o valor total do pedido.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 92
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 93
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO" +
                         "_MAQUINETA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 94
+#line 93
  testRunner.When("Informo \"c_pce_entrada_valor\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 95
+#line 94
  testRunner.When("Informo \"c_pce_prestacao_qtde\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 96
+#line 95
  testRunner.When("Informo \"c_pce_prestacao_valor\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
+#line 96
+ testRunner.And("Informo \"vl_total_NF\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
 #line 97
+ testRunner.Then("Erro \"regex .*Há divergência entre o valor total do pedido.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 99
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 100
+ testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO" +
+                        "_MAQUINETA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 101
+ testRunner.When("Informo \"c_pce_entrada_valor\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 102
+ testRunner.When("Informo \"c_pce_prestacao_qtde\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 103
+ testRunner.When("Informo \"c_pce_prestacao_valor\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 104
  testRunner.And("Informo \"vl_total_NF\" = \"110\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 98
+#line 105
  testRunner.Then("Sem erro \"regex .*Há divergência entre o valor total do pedido.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -369,7 +388,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA - Parcelado sem entrada divergência", null, tagsOfScenario, argumentsOfScenario);
-#line 100
+#line 107
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -389,26 +408,26 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 110
+#line 117
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 111
+#line 118
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_SEM_EN" +
                         "TRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 112
+#line 119
  testRunner.When("Informo \"c_pse_prim_prest_valor\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 113
+#line 120
  testRunner.When("Informo \"c_pse_demais_prest_qtde\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 114
+#line 121
  testRunner.When("Informo \"c_pse_demais_prest_valor\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 115
+#line 122
  testRunner.And("Informo \"vl_total_NF\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 116
+#line 123
  testRunner.Then("Erro \"regex .*Há divergência entre o valor total do pedido.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -423,7 +442,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia", null, tagsOfScenario, argumentsOfScenario);
-#line 118
+#line 125
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -458,58 +477,7 @@ this.ScenarioInitialize(scenarioInfo);
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
                     "- COD_FORMA_PAGTO_A_VISTA 1", null, tagsOfScenario, argumentsOfScenario);
-#line 155
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 159
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 160
- testRunner.When("Informo \"FormaPagtoCriacao.rb_forma_pagto\" = \"COD_FORMA_PAGTO_A_VISTA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 161
- testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
-                        "_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 162
- testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 163
- testRunner.Then("Sem erro \"regex .*Foi detectada uma inconsistência.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_A_VISTA 2")]
-        [Xunit.TraitAttribute("FeatureTitle", "FormaPagamentoDivergenciaTotal")]
-        [Xunit.TraitAttribute("Description", "c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_A_VISTA 2")]
-        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_A_VISTA2()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-                    "- COD_FORMA_PAGTO_A_VISTA 2", null, tagsOfScenario, argumentsOfScenario);
-#line 165
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -540,28 +508,27 @@ this.ScenarioInitialize(scenarioInfo);
                         "_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 169
- testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 170
- testRunner.Then("Erro \"regex .*Foi detectada uma inconsistência na quantidade de parcelas de pagam" +
-                        "ento.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Sem erro \"regex .*Foi detectada uma inconsistência.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_A_VISTA 3")]
+            "- COD_FORMA_PAGTO_A_VISTA 2")]
         [Xunit.TraitAttribute("FeatureTitle", "FormaPagamentoDivergenciaTotal")]
         [Xunit.TraitAttribute("Description", "c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_A_VISTA 3")]
-        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_A_VISTA3()
+            "- COD_FORMA_PAGTO_A_VISTA 2")]
+        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_A_VISTA2()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-                    "- COD_FORMA_PAGTO_A_VISTA 3", null, tagsOfScenario, argumentsOfScenario);
-#line 171
+                    "- COD_FORMA_PAGTO_A_VISTA 2", null, tagsOfScenario, argumentsOfScenario);
+#line 172
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -581,38 +548,38 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 172
+#line 173
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 173
+#line 174
  testRunner.When("Informo \"FormaPagtoCriacao.rb_forma_pagto\" = \"COD_FORMA_PAGTO_A_VISTA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 174
- testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
-                        "_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 175
- testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
+                        "_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 176
- testRunner.Then("Erro \"regex .*Foi detectada uma inconsistência no tipo de parcelamento do pagamen" +
-                        "to.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 177
+ testRunner.Then("Erro \"regex .*Foi detectada uma inconsistência na quantidade de parcelas de pagam" +
+                        "ento.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_PARCELA_UNICA 1")]
+            "- COD_FORMA_PAGTO_A_VISTA 3")]
         [Xunit.TraitAttribute("FeatureTitle", "FormaPagamentoDivergenciaTotal")]
         [Xunit.TraitAttribute("Description", "c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_PARCELA_UNICA 1")]
-        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_PARCELA_UNICA1()
+            "- COD_FORMA_PAGTO_A_VISTA 3")]
+        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_A_VISTA3()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-                    "- COD_FORMA_PAGTO_PARCELA_UNICA 1", null, tagsOfScenario, argumentsOfScenario);
+                    "- COD_FORMA_PAGTO_A_VISTA 3", null, tagsOfScenario, argumentsOfScenario);
 #line 178
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -633,38 +600,39 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 182
+#line 179
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 183
- testRunner.When("Informo \"FormaPagtoCriacao.rb_forma_pagto\" = \"COD_FORMA_PAGTO_PARCELA_UNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 180
+ testRunner.When("Informo \"FormaPagtoCriacao.rb_forma_pagto\" = \"COD_FORMA_PAGTO_A_VISTA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 184
+#line 181
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
-                        "_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                        "_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 185
- testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 182
+ testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 186
- testRunner.Then("Sem erro \"regex .*Foi detectada uma inconsistência.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 183
+ testRunner.Then("Erro \"regex .*Foi detectada uma inconsistência no tipo de parcelamento do pagamen" +
+                        "to.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_PARCELA_UNICA 2")]
+            "- COD_FORMA_PAGTO_PARCELA_UNICA 1")]
         [Xunit.TraitAttribute("FeatureTitle", "FormaPagamentoDivergenciaTotal")]
         [Xunit.TraitAttribute("Description", "c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_PARCELA_UNICA 2")]
-        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_PARCELA_UNICA2()
+            "- COD_FORMA_PAGTO_PARCELA_UNICA 1")]
+        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_PARCELA_UNICA1()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-                    "- COD_FORMA_PAGTO_PARCELA_UNICA 2", null, tagsOfScenario, argumentsOfScenario);
-#line 188
+                    "- COD_FORMA_PAGTO_PARCELA_UNICA 1", null, tagsOfScenario, argumentsOfScenario);
+#line 185
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -695,28 +663,27 @@ this.ScenarioInitialize(scenarioInfo);
                         "_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 192
- testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 193
- testRunner.Then("Erro \"regex .*Foi detectada uma inconsistência na quantidade de parcelas de pagam" +
-                        "ento.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Sem erro \"regex .*Foi detectada uma inconsistência.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_PARCELA_UNICA 3")]
+            "- COD_FORMA_PAGTO_PARCELA_UNICA 2")]
         [Xunit.TraitAttribute("FeatureTitle", "FormaPagamentoDivergenciaTotal")]
         [Xunit.TraitAttribute("Description", "c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_PARCELA_UNICA 3")]
-        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_PARCELA_UNICA3()
+            "- COD_FORMA_PAGTO_PARCELA_UNICA 2")]
+        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_PARCELA_UNICA2()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-                    "- COD_FORMA_PAGTO_PARCELA_UNICA 3", null, tagsOfScenario, argumentsOfScenario);
-#line 194
+                    "- COD_FORMA_PAGTO_PARCELA_UNICA 2", null, tagsOfScenario, argumentsOfScenario);
+#line 195
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -736,38 +703,38 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 195
+#line 196
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 196
+#line 197
  testRunner.When("Informo \"FormaPagtoCriacao.rb_forma_pagto\" = \"COD_FORMA_PAGTO_PARCELA_UNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 197
- testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
-                        "_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 198
- testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
+                        "_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 199
- testRunner.Then("Erro \"regex .*Foi detectada uma inconsistência no tipo de parcelamento do pagamen" +
-                        "to.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 200
+ testRunner.Then("Erro \"regex .*Foi detectada uma inconsistência na quantidade de parcelas de pagam" +
+                        "ento.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_PARCELADO_CARTAO 1")]
+            "- COD_FORMA_PAGTO_PARCELA_UNICA 3")]
         [Xunit.TraitAttribute("FeatureTitle", "FormaPagamentoDivergenciaTotal")]
         [Xunit.TraitAttribute("Description", "c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_PARCELADO_CARTAO 1")]
-        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_PARCELADO_CARTAO1()
+            "- COD_FORMA_PAGTO_PARCELA_UNICA 3")]
+        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_PARCELA_UNICA3()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-                    "- COD_FORMA_PAGTO_PARCELADO_CARTAO 1", null, tagsOfScenario, argumentsOfScenario);
+                    "- COD_FORMA_PAGTO_PARCELA_UNICA 3", null, tagsOfScenario, argumentsOfScenario);
 #line 201
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -788,39 +755,39 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 205
+#line 202
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 206
- testRunner.When("Informo \"FormaPagtoCriacao.rb_forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 203
+ testRunner.When("Informo \"FormaPagtoCriacao.rb_forma_pagto\" = \"COD_FORMA_PAGTO_PARCELA_UNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 207
+#line 204
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
-                        "_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                        "_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 208
- testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"especial: igual a Fo" +
-                        "rmaPagtoCriacao.pc_qtde\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 205
+ testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 209
- testRunner.Then("Sem erro \"regex .*Foi detectada uma inconsistência.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 206
+ testRunner.Then("Erro \"regex .*Foi detectada uma inconsistência no tipo de parcelamento do pagamen" +
+                        "to.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_PARCELADO_CARTAO 2")]
+            "- COD_FORMA_PAGTO_PARCELADO_CARTAO 1")]
         [Xunit.TraitAttribute("FeatureTitle", "FormaPagamentoDivergenciaTotal")]
         [Xunit.TraitAttribute("Description", "c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_PARCELADO_CARTAO 2")]
-        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_PARCELADO_CARTAO2()
+            "- COD_FORMA_PAGTO_PARCELADO_CARTAO 1")]
+        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_PARCELADO_CARTAO1()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-                    "- COD_FORMA_PAGTO_PARCELADO_CARTAO 2", null, tagsOfScenario, argumentsOfScenario);
-#line 211
+                    "- COD_FORMA_PAGTO_PARCELADO_CARTAO 1", null, tagsOfScenario, argumentsOfScenario);
+#line 208
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -851,29 +818,28 @@ this.ScenarioInitialize(scenarioInfo);
                         "_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 215
- testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"especial: diferente " +
-                        "de FormaPagtoCriacao.pc_qtde\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"especial: igual a Fo" +
+                        "rmaPagtoCriacao.pc_qtde\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 216
- testRunner.Then("Erro \"regex .*Foi detectada uma inconsistência na quantidade de parcelas de pagam" +
-                        "ento.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Sem erro \"regex .*Foi detectada uma inconsistência.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_PARCELADO_CARTAO 3")]
+            "- COD_FORMA_PAGTO_PARCELADO_CARTAO 2")]
         [Xunit.TraitAttribute("FeatureTitle", "FormaPagamentoDivergenciaTotal")]
         [Xunit.TraitAttribute("Description", "c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_PARCELADO_CARTAO 3")]
-        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_PARCELADO_CARTAO3()
+            "- COD_FORMA_PAGTO_PARCELADO_CARTAO 2")]
+        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_PARCELADO_CARTAO2()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-                    "- COD_FORMA_PAGTO_PARCELADO_CARTAO 3", null, tagsOfScenario, argumentsOfScenario);
-#line 217
+                    "- COD_FORMA_PAGTO_PARCELADO_CARTAO 2", null, tagsOfScenario, argumentsOfScenario);
+#line 218
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -893,39 +859,39 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 218
+#line 219
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 219
+#line 220
  testRunner.When("Informo \"FormaPagtoCriacao.rb_forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 220
- testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
-                        "_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 221
- testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"especial: igual a Fo" +
-                        "rmaPagtoCriacao.pc_qtde\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
+                        "_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 222
- testRunner.Then("Erro \"regex .*Foi detectada uma inconsistência no tipo de parcelamento do pagamen" +
-                        "to.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"especial: diferente " +
+                        "de FormaPagtoCriacao.pc_qtde\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 223
+ testRunner.Then("Erro \"regex .*Foi detectada uma inconsistência na quantidade de parcelas de pagam" +
+                        "ento.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA 1")]
+            "- COD_FORMA_PAGTO_PARCELADO_CARTAO 3")]
         [Xunit.TraitAttribute("FeatureTitle", "FormaPagamentoDivergenciaTotal")]
         [Xunit.TraitAttribute("Description", "c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA 1")]
-        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA1()
+            "- COD_FORMA_PAGTO_PARCELADO_CARTAO 3")]
+        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_PARCELADO_CARTAO3()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-                    "- COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA 1", null, tagsOfScenario, argumentsOfScenario);
+                    "- COD_FORMA_PAGTO_PARCELADO_CARTAO 3", null, tagsOfScenario, argumentsOfScenario);
 #line 224
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -946,40 +912,40 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 228
+#line 225
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 229
- testRunner.When("Informo \"FormaPagtoCriacao.rb_forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO_MA" +
-                        "QUINETA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 226
+ testRunner.When("Informo \"FormaPagtoCriacao.rb_forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 230
+#line 227
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
-                        "_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                        "_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 231
+#line 228
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"especial: igual a Fo" +
-                        "rmaPagtoCriacao.pc_maquineta_qtde\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                        "rmaPagtoCriacao.pc_qtde\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 232
- testRunner.Then("Sem erro \"regex .*Foi detectada uma inconsistência.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 229
+ testRunner.Then("Erro \"regex .*Foi detectada uma inconsistência no tipo de parcelamento do pagamen" +
+                        "to.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA 2")]
+            "- COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA 1")]
         [Xunit.TraitAttribute("FeatureTitle", "FormaPagamentoDivergenciaTotal")]
         [Xunit.TraitAttribute("Description", "c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA 2")]
-        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA2()
+            "- COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA 1")]
+        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA1()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-                    "- COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA 2", null, tagsOfScenario, argumentsOfScenario);
-#line 234
+                    "- COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA 1", null, tagsOfScenario, argumentsOfScenario);
+#line 231
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1011,29 +977,28 @@ this.ScenarioInitialize(scenarioInfo);
                         "_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 238
- testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"especial: diferente " +
-                        "de FormaPagtoCriacao.pc_maquineta_qtde\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"especial: igual a Fo" +
+                        "rmaPagtoCriacao.pc_maquineta_qtde\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 239
- testRunner.Then("Erro \"regex .*Foi detectada uma inconsistência na quantidade de parcelas de pagam" +
-                        "ento.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Sem erro \"regex .*Foi detectada uma inconsistência.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA 3")]
+            "- COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA 2")]
         [Xunit.TraitAttribute("FeatureTitle", "FormaPagamentoDivergenciaTotal")]
         [Xunit.TraitAttribute("Description", "c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA 3")]
-        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA3()
+            "- COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA 2")]
+        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA2()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-                    "- COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA 3", null, tagsOfScenario, argumentsOfScenario);
-#line 240
+                    "- COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA 2", null, tagsOfScenario, argumentsOfScenario);
+#line 241
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1053,40 +1018,40 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 241
+#line 242
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 242
+#line 243
  testRunner.When("Informo \"FormaPagtoCriacao.rb_forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO_MA" +
                         "QUINETA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 243
- testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
-                        "_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 244
- testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"especial: igual a Fo" +
-                        "rmaPagtoCriacao.pc_maquineta_qtde\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
+                        "_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 245
- testRunner.Then("Erro \"regex .*Foi detectada uma inconsistência no tipo de parcelamento do pagamen" +
-                        "to.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"especial: diferente " +
+                        "de FormaPagtoCriacao.pc_maquineta_qtde\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 246
+ testRunner.Then("Erro \"regex .*Foi detectada uma inconsistência na quantidade de parcelas de pagam" +
+                        "ento.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA 1")]
+            "- COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA 3")]
         [Xunit.TraitAttribute("FeatureTitle", "FormaPagamentoDivergenciaTotal")]
         [Xunit.TraitAttribute("Description", "c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA 1")]
-        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA1()
+            "- COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA 3")]
+        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA3()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-                    "- COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA 1", null, tagsOfScenario, argumentsOfScenario);
+                    "- COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA 3", null, tagsOfScenario, argumentsOfScenario);
 #line 247
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -1107,40 +1072,41 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 251
+#line 248
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 252
- testRunner.When("Informo \"FormaPagtoCriacao.rb_forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRA" +
-                        "DA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 249
+ testRunner.When("Informo \"FormaPagtoCriacao.rb_forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO_MA" +
+                        "QUINETA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 253
+#line 250
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
                         "_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 254
+#line 251
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"especial: igual a Fo" +
-                        "rmaPagtoCriacao.pce_prestacao_qtde\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                        "rmaPagtoCriacao.pc_maquineta_qtde\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 255
- testRunner.Then("Sem erro \"regex .*Foi detectada uma inconsistência.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 252
+ testRunner.Then("Erro \"regex .*Foi detectada uma inconsistência no tipo de parcelamento do pagamen" +
+                        "to.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA 2")]
+            "- COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA 1")]
         [Xunit.TraitAttribute("FeatureTitle", "FormaPagamentoDivergenciaTotal")]
         [Xunit.TraitAttribute("Description", "c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA 2")]
-        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA2()
+            "- COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA 1")]
+        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA1()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-                    "- COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA 2", null, tagsOfScenario, argumentsOfScenario);
-#line 257
+                    "- COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA 1", null, tagsOfScenario, argumentsOfScenario);
+#line 254
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1172,29 +1138,28 @@ this.ScenarioInitialize(scenarioInfo);
                         "_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 261
- testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"especial: diferente " +
-                        "de FormaPagtoCriacao.pce_prestacao_qtde\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"especial: igual a Fo" +
+                        "rmaPagtoCriacao.pce_prestacao_qtde\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 262
- testRunner.Then("Erro \"regex .*Foi detectada uma inconsistência na quantidade de parcelas de pagam" +
-                        "ento.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Sem erro \"regex .*Foi detectada uma inconsistência.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA 3")]
+            "- COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA 2")]
         [Xunit.TraitAttribute("FeatureTitle", "FormaPagamentoDivergenciaTotal")]
         [Xunit.TraitAttribute("Description", "c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA 3")]
-        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA3()
+            "- COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA 2")]
+        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA2()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-                    "- COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA 3", null, tagsOfScenario, argumentsOfScenario);
-#line 263
+                    "- COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA 2", null, tagsOfScenario, argumentsOfScenario);
+#line 264
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1214,40 +1179,40 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 264
+#line 265
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 265
+#line 266
  testRunner.When("Informo \"FormaPagtoCriacao.rb_forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRA" +
                         "DA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 266
- testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
-                        "_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 267
- testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"especial: igual a Fo" +
-                        "rmaPagtoCriacao.pce_prestacao_qtde\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
+                        "_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 268
- testRunner.Then("Erro \"regex .*Foi detectada uma inconsistência no tipo de parcelamento do pagamen" +
-                        "to.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"especial: diferente " +
+                        "de FormaPagtoCriacao.pce_prestacao_qtde\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 269
+ testRunner.Then("Erro \"regex .*Foi detectada uma inconsistência na quantidade de parcelas de pagam" +
+                        "ento.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA 1")]
+            "- COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA 3")]
         [Xunit.TraitAttribute("FeatureTitle", "FormaPagamentoDivergenciaTotal")]
         [Xunit.TraitAttribute("Description", "c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA 1")]
-        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA1()
+            "- COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA 3")]
+        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA3()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-                    "- COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA 1", null, tagsOfScenario, argumentsOfScenario);
+                    "- COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA 3", null, tagsOfScenario, argumentsOfScenario);
 #line 270
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -1268,40 +1233,41 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 278
+#line 271
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 279
- testRunner.When("Informo \"FormaPagtoCriacao.rb_forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_SEM_ENTRA" +
+#line 272
+ testRunner.When("Informo \"FormaPagtoCriacao.rb_forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRA" +
                         "DA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 280
+#line 273
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
                         "_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 281
+#line 274
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"especial: igual a Fo" +
-                        "rmaPagtoCriacao.pse_demais_prest_qtde + 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                        "rmaPagtoCriacao.pce_prestacao_qtde\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 282
- testRunner.Then("Sem erro \"regex .*Foi detectada uma inconsistência.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 275
+ testRunner.Then("Erro \"regex .*Foi detectada uma inconsistência no tipo de parcelamento do pagamen" +
+                        "to.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA 2")]
+            "- COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA 1")]
         [Xunit.TraitAttribute("FeatureTitle", "FormaPagamentoDivergenciaTotal")]
         [Xunit.TraitAttribute("Description", "c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA 2")]
-        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA2()
+            "- COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA 1")]
+        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA1()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-                    "- COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA 2", null, tagsOfScenario, argumentsOfScenario);
-#line 284
+                    "- COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA 1", null, tagsOfScenario, argumentsOfScenario);
+#line 277
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1333,29 +1299,28 @@ this.ScenarioInitialize(scenarioInfo);
                         "_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 288
- testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"especial: diferente " +
-                        "de FormaPagtoCriacao.pse_demais_prest_qtde + 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"especial: igual a Fo" +
+                        "rmaPagtoCriacao.pse_demais_prest_qtde + 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 289
- testRunner.Then("Erro \"regex .*Foi detectada uma inconsistência na quantidade de parcelas de pagam" +
-                        "ento.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Sem erro \"regex .*Foi detectada uma inconsistência.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA 3")]
+            "- COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA 2")]
         [Xunit.TraitAttribute("FeatureTitle", "FormaPagamentoDivergenciaTotal")]
         [Xunit.TraitAttribute("Description", "c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA 3")]
-        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA3()
+            "- COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA 2")]
+        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA2()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-                    "- COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA 3", null, tagsOfScenario, argumentsOfScenario);
-#line 290
+                    "- COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA 2", null, tagsOfScenario, argumentsOfScenario);
+#line 291
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1375,40 +1340,40 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 291
+#line 292
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 292
+#line 293
  testRunner.When("Informo \"FormaPagtoCriacao.rb_forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_SEM_ENTRA" +
                         "DA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 293
- testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
-                        "_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 294
- testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"especial: igual a Fo" +
-                        "rmaPagtoCriacao.pse_demais_prest_qtde + 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
+                        "_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 295
- testRunner.Then("Erro \"regex .*Foi detectada uma inconsistência no tipo de parcelamento do pagamen" +
-                        "to.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"especial: diferente " +
+                        "de FormaPagtoCriacao.pse_demais_prest_qtde + 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 296
+ testRunner.Then("Erro \"regex .*Foi detectada uma inconsistência na quantidade de parcelas de pagam" +
+                        "ento.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- outros")]
+            "- COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA 3")]
         [Xunit.TraitAttribute("FeatureTitle", "FormaPagamentoDivergenciaTotal")]
         [Xunit.TraitAttribute("Description", "c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-            "- outros")]
-        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_Outros()
+            "- COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA 3")]
+        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA3()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
-                    "- outros", null, tagsOfScenario, argumentsOfScenario);
+                    "- COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA 3", null, tagsOfScenario, argumentsOfScenario);
 #line 297
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -1429,13 +1394,67 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 303
+#line 298
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
+#line 299
+ testRunner.When("Informo \"FormaPagtoCriacao.rb_forma_pagto\" = \"COD_FORMA_PAGTO_PARCELADO_SEM_ENTRA" +
+                        "DA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 300
+ testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
+                        "_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 301
+ testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"especial: igual a Fo" +
+                        "rmaPagtoCriacao.pse_demais_prest_qtde + 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 302
+ testRunner.Then("Erro \"regex .*Foi detectada uma inconsistência no tipo de parcelamento do pagamen" +
+                        "to.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
+            "- outros")]
+        [Xunit.TraitAttribute("FeatureTitle", "FormaPagamentoDivergenciaTotal")]
+        [Xunit.TraitAttribute("Description", "c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
+            "- outros")]
+        public virtual void C_CustoFinancFornecTipoParcelamentoEC_CustoFinancFornecQtdeParcelasConferencia_Outros()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia " +
+                    "- outros", null, tagsOfScenario, argumentsOfScenario);
 #line 304
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 310
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 311
  testRunner.When("Informo \"FormaPagtoCriacao.rb_forma_pagto\" = \"COD_FORMA_PAGTO inválido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 305
+#line 312
  testRunner.Then("Erro \"regex .*rb_forma_pagto inválido.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

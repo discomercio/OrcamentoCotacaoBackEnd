@@ -21,4 +21,8 @@ Scenario: VerificacaoFinalListaDependencias
 #só chamamos a rotina para fazer a verificação final
 #este teste provavelmente só passa quando todos os testes forem executados
 	Given VerificacaoFinalListaDependencias
+	Given ApagarMapaComChamadas.txt
+	#salvar o MapaComChamadas.txt demora tipo 40 segundos, gera um arquivo de tipo 400 mega
+	#Given SalvarMapaComChamadas.txt
+
 

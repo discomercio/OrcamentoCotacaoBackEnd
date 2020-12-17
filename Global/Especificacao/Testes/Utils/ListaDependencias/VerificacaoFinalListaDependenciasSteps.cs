@@ -12,5 +12,20 @@ namespace Especificacao.Testes.Utils.ListaDependencias
             LogTestes.LogOperacoes2.VerificacaoFinalListaDependencias(this);
             RegistroDependencias.TodosVerificados();
         }
+
+        [Given(@"ApagarMapaComChamadas\.txt")]
+        public void GivenApagarMapaComChamadas_Txt()
+        {
+            LogTestes.LogOperacoes2.MensagemEspecial("GivenApagarMapaComChamadas_Txt",this);
+            RegistroDependencias.ApagarMapaComChamadas_Txt();
+        }
+
+        [Given(@"SalvarMapaComChamadas\.txt")]
+        public void GivenSalvarMapaComChamadas_Txt()
+        {
+            LogTestes.LogOperacoes2.MensagemEspecial("GivenSalvarMapaComChamadas_Txt", this);
+            RegistroDependencias.SalvarMapaComChamadas_Txt();
+        }
+
     }
 }

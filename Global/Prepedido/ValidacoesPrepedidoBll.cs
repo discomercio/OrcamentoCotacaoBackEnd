@@ -580,6 +580,12 @@ namespace Prepedido
                             "não pode ter o valor ISENTO no campo de Inscrição Estadual!");
                 }
 
+                if (endEtg.EndEtg_contribuinte_icms_status ==
+                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO &&
+                    !string.IsNullOrEmpty(endEtg.EndEtg_ie))
+                    lstErros.Add("Endereço de entrega: se o Contribuinte ICMS é isento, " +
+                        "o campo IE deve ser vazio!");
+
             }
         }
 

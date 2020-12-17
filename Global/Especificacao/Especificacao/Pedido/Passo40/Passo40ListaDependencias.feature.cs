@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Testes.Utils.ListaDependencias
+namespace Especificacao.Especificacao.Pedido.Passo40
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,21 +19,21 @@ namespace Especificacao.Testes.Utils.ListaDependencias
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "Especificacao.Testes.Utils.ListaDependencias")]
-    public partial class VerificacaoFinalListaDependenciasFeature : object, Xunit.IClassFixture<VerificacaoFinalListaDependenciasFeature.FixtureData>, System.IDisposable
+    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo40")]
+    public partial class Passo40ListaDependenciasFeature : object, Xunit.IClassFixture<Passo40ListaDependenciasFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "Especificacao.Testes.Utils.ListaDependencias"};
+                "Especificacao.Pedido.Passo40"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "VerificacaoFinalListaDependencias.feature"
+#line 1 "Passo40ListaDependencias.feature"
 #line hidden
         
-        public VerificacaoFinalListaDependenciasFeature(VerificacaoFinalListaDependenciasFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public Passo40ListaDependenciasFeature(Passo40ListaDependenciasFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,21 +42,8 @@ namespace Especificacao.Testes.Utils.ListaDependencias
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "VerificacaoFinalListaDependencias", @"Temos um sistema de ListaDependencias: um arquivo .feature pode ser ""repetido"" por outros.
-
-Por exemplo, a autenticação da API: está esepcificada em 
-Especificacao\Comuns\Api\Autenticacao\Autenticacao.feature
-e a lsita de dependências está em 
-Especificacao\Comuns\Api\Autenticacao\AutenticacaoListaDependencias.feature
-
-Quer dizer, Especificacao\Comuns\Api\Autenticacao\Autenticacao.feature lista como testamos a autenticação.
-Esse teste é feito em vários lugares; por exemplo, em:
-	And Implementado em ""Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedidoListaDependencias""
-	And Implementado em ""Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.BuscarQtdeParcCartaoVisaListaDependencias""	
-	And Implementado em ""Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace.ObterCodigoMarketplaceListaDependencias""	
-
-Com esses registros, a gente amrca exatamente onde cada teste é feito.", ProgrammingLanguage.CSharp, new string[] {
-                        "Especificacao.Testes.Utils.ListaDependencias"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Passo40ListaDependencias", null, ProgrammingLanguage.CSharp, new string[] {
+                        "Especificacao.Pedido.Passo40"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -96,15 +83,17 @@ Com esses registros, a gente amrca exatamente onde cada teste é feito.", Progra
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="VerificacaoFinalListaDependencias")]
-        [Xunit.TraitAttribute("FeatureTitle", "VerificacaoFinalListaDependencias")]
-        [Xunit.TraitAttribute("Description", "VerificacaoFinalListaDependencias")]
-        public virtual void VerificacaoFinalListaDependencias()
+        [Xunit.SkippableFactAttribute(DisplayName="Passo40ListaDependencias ListaDependencias Configuração")]
+        [Xunit.TraitAttribute("FeatureTitle", "Passo40ListaDependencias")]
+        [Xunit.TraitAttribute("Description", "Passo40ListaDependencias ListaDependencias Configuração")]
+        [Xunit.TraitAttribute("Category", "ListaDependencias")]
+        public virtual void Passo40ListaDependenciasListaDependenciasConfiguracao()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ListaDependencias"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("VerificacaoFinalListaDependencias", null, tagsOfScenario, argumentsOfScenario);
-#line 20
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Passo40ListaDependencias ListaDependencias Configuração", null, tagsOfScenario, argumentsOfScenario);
+#line 6
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -124,12 +113,6 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 23
- testRunner.Given("VerificacaoFinalListaDependencias", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 24
- testRunner.Given("ApagarMapaComChamadas.txt", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
             }
             this.ScenarioCleanup();
         }
@@ -141,12 +124,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                VerificacaoFinalListaDependenciasFeature.FeatureSetup();
+                Passo40ListaDependenciasFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                VerificacaoFinalListaDependenciasFeature.FeatureTearDown();
+                Passo40ListaDependenciasFeature.FeatureTearDown();
             }
         }
     }

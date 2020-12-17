@@ -29,7 +29,7 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
         public int ComIndicador { get; set; }
         public string NomeIndicador { get; set; }
         public DetalhesNFPedidoDtoPedido DetalhesNF { get; set; }
-        public bool OpcaoVendaSemEstoque { get; set; }
+        public bool OpcaoVendaSemEstoque { get; set; } = true;
 
         //daqui para baixo antigo
         public DetalhesFormaPagamentos DetalhesFormaPagto { get; set; }

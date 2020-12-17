@@ -16,6 +16,7 @@ namespace Especificacao.Especificacao.Pedido
     [Binding]
     [Scope(Tag = "Especificacao.Pedido.Passo10.CamposSimples")]
     [Scope(Tag = "Especificacao.Pedido.Passo20.EnderecoEntrega")]
+    [Scope(Tag = "Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj")]
     [Scope(Tag = "Especificacao.Pedido.FluxoCriacaoPedido")]
     [Scope(Tag = "Especificacao.Pedido.Passo30")]
     [Scope(Tag = "Especificacao.Pedido.Passo40")]
@@ -33,6 +34,14 @@ namespace Especificacao.Especificacao.Pedido
                     "Especificacao.Pedido.Passo10.CamposSimplesPfListaDependencias");
                 RegistroDependencias.AdicionarDependencia("Especificacao.Pedido.Pedido.PedidoListaDependencias", imp,
                     "Especificacao.Pedido.Passo10.CamposSimplesPjListaDependencias");
+                return;
+            }
+            if (tags.Contains("Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj"))
+            {
+                var imp = new Especificacao.Pedido.PedidoSteps();
+                base.AdicionarImplementacao(imp);
+                RegistroDependencias.AdicionarDependencia("Especificacao.Pedido.Pedido.PedidoListaDependencias", imp,
+                    "Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj.ClientePjListaDependencias");
                 return;
             }
             if (tags.Contains("Especificacao.Pedido.Passo20.EnderecoEntrega"))
@@ -58,7 +67,11 @@ namespace Especificacao.Especificacao.Pedido
             }
             if (tags.Contains("Especificacao.Pedido.Passo40"))
             {
-                throw new NotImplementedException("Implementar as dependências");
+                var imp = new Especificacao.Pedido.PedidoSteps();
+                base.AdicionarImplementacao(imp);
+                RegistroDependencias.AdicionarDependencia("Especificacao.Pedido.Pedido.PedidoListaDependencias", imp,
+                    "Especificacao.Pedido.Passo40.Passo40ListaDependencias");
+                return;
             }
         }
 
@@ -92,6 +105,39 @@ namespace Especificacao.Especificacao.Pedido
         {
             Testes.Utils.LogTestes.LogOperacoes2.DadoBaseClientePJComEnderecoDeEntrega(this);
             base.GivenPedidoBaseClientePJComEnderecoDeEntrega();
+        }
+
+        [Given(@"Pedido base cliente PJ com endereço de entrega PJ")]
+        public void GivenPedidoBaseClientePJComEnderecoDeEntregaPJ()
+        {
+            GivenPedidoBaseClientePJComEnderecoDeEntrega();
+            WhenInformo("EndEtg_tipo_pessoa", "PJ");
+            WhenInformo("EndEtg_cnpj_cpf", "76297703000195");
+            WhenInformo("EndEtg_produtor_rural_status", "COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL");
+            WhenInformo("EndEtg_contribuinte_icms_status", "COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL");
+
+            WhenInformo("EndEtg_ddd_res", "");
+            WhenInformo("EndEtg_tel_res", "");
+            WhenInformo("EndEtg_ddd_cel", "");
+            WhenInformo("EndEtg_tel_cel", "");
+            WhenInformo("EndEtg_ddd_com",  "11");
+            WhenInformo("EndEtg_tel_com", "12345678");
+            WhenInformo("EndEtg_rg", "");
+        }
+        [Given(@"Pedido base cliente PJ com endereço de entrega PF")]
+        public void GivenPedidoBaseClientePJComEnderecoDeEntregaPF()
+        {
+            GivenPedidoBaseClientePJComEnderecoDeEntrega();
+            WhenInformo("EndEtg_tipo_pessoa", "PF");
+            WhenInformo("EndEtg_cnpj_cpf", "35270445824");
+            WhenInformo("EndEtg_produtor_rural_status", "COD_ST_CLIENTE_PRODUTOR_RURAL_NAO");
+            WhenInformo("EndEtg_contribuinte_icms_status", "COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO");
+
+            WhenInformo("EndEtg_ddd_res", "11");
+            WhenInformo("EndEtg_tel_res", "12345678");
+            WhenInformo("EndEtg_ddd_com", "");
+            WhenInformo("EndEtg_tel_com", "");
+            WhenInformo("EndEtg_rg", "12345678");
         }
 
         [When(@"Endereço de entrega do estado ""(.*)""")]

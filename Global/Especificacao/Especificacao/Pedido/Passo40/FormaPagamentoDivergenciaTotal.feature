@@ -8,12 +8,12 @@ Scenario: COD_FORMA_PAGTO_A_VISTA - divergência entre o valor total do pedido
 	#if Abs(vlTotalFormaPagto-vl_total_NF) > 0.1 then
 	#	alerta = "Há divergência entre o valor total do pedido (" & SIMBOLO_MONETARIO & " " & formata_moeda(vl_total_NF) & ") e o valor total descrito através da forma de pagamento (" & SIMBOLO_MONETARIO & " " & formata_moeda(vlTotalFormaPagto) & ")!!"
 	#este erro nunca vai acontecer porque ele deixa as duas variáveis iguais e depois testa se estão diferentes
-	#mas forçamos mesmo assim
 	Given Pedido base
 	When Informo "FormaPagtoCriacao.Tipo_Parcelamento" = "COD_FORMA_PAGTO_A_VISTA"
-	When Informo "vlTotalFormaPagto" = "1"
+	When Informo "vl_total_NF" = "1"
 	And Informo "vl_total_NF" = "2"
-	Then Erro "regex .*Há divergência entre o valor total do pedido.*"
+	#este erro nunca vai acontecer porque ele deixa as duas variáveis iguais e depois testa se estão diferentes
+	#Then Erro "regex .*Há divergência entre o valor total do pedido.*"
 
 
 Scenario: COD_FORMA_PAGTO_PARCELA_UNICA - divergência entre o valor total do pedido
@@ -30,6 +30,13 @@ Scenario: COD_FORMA_PAGTO_PARCELA_UNICA - divergência entre o valor total do pe
 	#	if alerta = "" then vlTotalFormaPagto = converte_numero(c_pu_valor)
 	#if Abs(vlTotalFormaPagto-vl_total_NF) > 0.1 then
 	#	alerta = "Há divergência entre o valor total do pedido (" & SIMBOLO_MONETARIO & " " & formata_moeda(vl_total_NF) & ") e o valor total descrito através da forma de pagamento (" & SIMBOLO_MONETARIO & " " & formata_moeda(vlTotalFormaPagto) & ")!!"
+	Given Reiniciar o banco ao terminar o cenário
+	Given Novo registro na tabela "t_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FORMA_PAGTO"
+	And Novo registro em "t_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FORMA_PAGTO", campo "id_forma_pagto" = "COD_FORMA_PAGTO_PARCELA_UNICA"
+	And Novo registro em "t_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FORMA_PAGTO", campo "id_orcamentista_e_indicador" = "especial: ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS"
+	And Novo registro em "t_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FORMA_PAGTO", campo "st_restricao_ativa" = "0"
+	And Gravar registro em "t_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FORMA_PAGTO"
+
 	Given Pedido base
 	When Informo "FormaPagtoCriacao.Tipo_Parcelamento" = "COD_FORMA_PAGTO_PARCELA_UNICA"
 	When Informo "c_pu_valor" = "1"
@@ -176,9 +183,9 @@ Scenario: c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasC
 	Then Erro "regex .*Foi detectada uma inconsistência no tipo de parcelamento do pagamento.*"
 
 Scenario: c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia - COD_FORMA_PAGTO_PARCELA_UNICA 1
-#	elseif rb_forma_pagto=COD_FORMA_PAGTO_PARCELA_UNICA then
-#		c_custoFinancFornecTipoParcelamentoConferencia=COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA
-#		c_custoFinancFornecQtdeParcelasConferencia="1"
+	#	elseif rb_forma_pagto=COD_FORMA_PAGTO_PARCELA_UNICA then
+	#		c_custoFinancFornecTipoParcelamentoConferencia=COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA
+	#		c_custoFinancFornecQtdeParcelasConferencia="1"
 	Given Pedido base
 	When Informo "FormaPagtoCriacao.rb_forma_pagto" = "COD_FORMA_PAGTO_PARCELA_UNICA"
 	When Informo "FormaPagtoCriacao.CustoFinancFornecTipoParcelamento" = "COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA"
@@ -199,9 +206,9 @@ Scenario: c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasC
 	Then Erro "regex .*Foi detectada uma inconsistência no tipo de parcelamento do pagamento.*"
 
 Scenario: c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia - COD_FORMA_PAGTO_PARCELADO_CARTAO 1
-#	elseif rb_forma_pagto=COD_FORMA_PAGTO_PARCELADO_CARTAO then
-#		c_custoFinancFornecTipoParcelamentoConferencia=COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA
-#		c_custoFinancFornecQtdeParcelasConferencia=c_pc_qtde
+	#	elseif rb_forma_pagto=COD_FORMA_PAGTO_PARCELADO_CARTAO then
+	#		c_custoFinancFornecTipoParcelamentoConferencia=COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA
+	#		c_custoFinancFornecQtdeParcelasConferencia=c_pc_qtde
 	Given Pedido base
 	When Informo "FormaPagtoCriacao.rb_forma_pagto" = "COD_FORMA_PAGTO_PARCELADO_CARTAO"
 	When Informo "FormaPagtoCriacao.CustoFinancFornecTipoParcelamento" = "COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA"
@@ -222,9 +229,9 @@ Scenario: c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasC
 	Then Erro "regex .*Foi detectada uma inconsistência no tipo de parcelamento do pagamento.*"
 
 Scenario: c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia - COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA 1
-#	elseif rb_forma_pagto=COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA then
-#		c_custoFinancFornecTipoParcelamentoConferencia=COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA
-#		c_custoFinancFornecQtdeParcelasConferencia=c_pc_maquineta_qtde
+	#	elseif rb_forma_pagto=COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA then
+	#		c_custoFinancFornecTipoParcelamentoConferencia=COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA
+	#		c_custoFinancFornecQtdeParcelasConferencia=c_pc_maquineta_qtde
 	Given Pedido base
 	When Informo "FormaPagtoCriacao.rb_forma_pagto" = "COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA"
 	When Informo "FormaPagtoCriacao.CustoFinancFornecTipoParcelamento" = "COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA"
@@ -245,9 +252,9 @@ Scenario: c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasC
 	Then Erro "regex .*Foi detectada uma inconsistência no tipo de parcelamento do pagamento.*"
 
 Scenario: c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia - COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA 1
-#	elseif rb_forma_pagto=COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA then
-#		c_custoFinancFornecTipoParcelamentoConferencia=COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA
-#		c_custoFinancFornecQtdeParcelasConferencia=c_pce_prestacao_qtde
+	#	elseif rb_forma_pagto=COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA then
+	#		c_custoFinancFornecTipoParcelamentoConferencia=COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA
+	#		c_custoFinancFornecQtdeParcelasConferencia=c_pce_prestacao_qtde
 	Given Pedido base
 	When Informo "FormaPagtoCriacao.rb_forma_pagto" = "COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA"
 	When Informo "FormaPagtoCriacao.CustoFinancFornecTipoParcelamento" = "COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA"
@@ -268,13 +275,13 @@ Scenario: c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasC
 	Then Erro "regex .*Foi detectada uma inconsistência no tipo de parcelamento do pagamento.*"
 
 Scenario: c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia - COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA 1
-#	elseif rb_forma_pagto=COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA then
-#		c_custoFinancFornecTipoParcelamentoConferencia=COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA
-#		c_custoFinancFornecQtdeParcelasConferencia=Cstr(converte_numero(c_pse_demais_prest_qtde)+1)
-#	else
-#		c_custoFinancFornecTipoParcelamentoConferencia=""
-#		c_custoFinancFornecQtdeParcelasConferencia="0"
-#		end if
+	#	elseif rb_forma_pagto=COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA then
+	#		c_custoFinancFornecTipoParcelamentoConferencia=COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA
+	#		c_custoFinancFornecQtdeParcelasConferencia=Cstr(converte_numero(c_pse_demais_prest_qtde)+1)
+	#	else
+	#		c_custoFinancFornecTipoParcelamentoConferencia=""
+	#		c_custoFinancFornecQtdeParcelasConferencia="0"
+	#		end if
 	Given Pedido base
 	When Informo "FormaPagtoCriacao.rb_forma_pagto" = "COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA"
 	When Informo "FormaPagtoCriacao.CustoFinancFornecTipoParcelamento" = "COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA"
@@ -295,11 +302,11 @@ Scenario: c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasC
 	Then Erro "regex .*Foi detectada uma inconsistência no tipo de parcelamento do pagamento.*"
 
 Scenario: c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia - outros
-#	else
-#		c_custoFinancFornecTipoParcelamentoConferencia=""
-#		c_custoFinancFornecQtdeParcelasConferencia="0"
-#		end if
-#nao temos como testar este, vai ser uma rb_forma_pagto inválida!
+	#	else
+	#		c_custoFinancFornecTipoParcelamentoConferencia=""
+	#		c_custoFinancFornecQtdeParcelasConferencia="0"
+	#		end if
+	#nao temos como testar este, vai ser uma rb_forma_pagto inválida!
 	Given Pedido base
 	When Informo "FormaPagtoCriacao.rb_forma_pagto" = "COD_FORMA_PAGTO inválido"
 	Then Erro "regex .*rb_forma_pagto inválido.*"

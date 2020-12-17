@@ -58,7 +58,6 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 //estas, só apagamos
                 InicializarTabela<TpedidoItem>(db.TpedidoItems, null, db, apagarDadosExistentes);
                 InicializarTabela<Tdesconto>(db.Tdescontos, null, db, apagarDadosExistentes);
-                InicializarTabela<TfinControle>(db.TfinControles, null, db, apagarDadosExistentes);
                 InicializarTabela<TpedidoAnaliseEndereco>(db.TpedidoAnaliseEnderecos, null, db, apagarDadosExistentes);
                 InicializarTabela<TpedidoAnaliseEnderecoConfrontacao>(db.TpedidoAnaliseConfrontacaos, null, db, apagarDadosExistentes);
                 InicializarTabela<TusuarioXLoja>(db.TusuarioXLojas, null, db, apagarDadosExistentes);
@@ -73,10 +72,12 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 InicializarTabela<TestoqueLog>(db.TestoqueLogs, null, db, apagarDadosExistentes);
                 InicializarTabela<TestoqueMovimento>(db.TestoqueMovimentos, "TestoqueMovimento", db, apagarDadosExistentes);
                 InicializarTabela<Tfabricante>(db.Tfabricantes, "Tfabricante", db, apagarDadosExistentes);
+                InicializarTabela<TfinControle>(db.TfinControles, "TfinControle", db, apagarDadosExistentes);
                 InicializarTabela<TformaPagto>(db.TformaPagtos, "TformaPagto", db, apagarDadosExistentes);
                 InicializarTabela<Tloja>(db.Tlojas, "Tlojas", db, apagarDadosExistentes);
                 InicializarTabela<TnfEmitente>(db.TnfEmitentes, "TnfEmitente", db, apagarDadosExistentes);
                 InicializarTabela<TorcamentistaEindicador>(db.TorcamentistaEindicadors, "TorcamentistaEindicador", db, apagarDadosExistentes);
+                InicializarTabela<TorcamentistaEIndicadorRestricaoFormaPagto>(db.torcamentistaEIndicadorRestricaoFormaPagtos, "TorcamentistaEIndicadorRestricaoFormaPagto", db, apagarDadosExistentes);
                 InicializarTabela<Tparametro>(db.Tparametros, "Tparametro", db, apagarDadosExistentes);
                 InicializarTabela<Tpedido>(db.Tpedidos, "Tpedido", db, apagarDadosExistentes);
                 InicializarTabela<TpercentualCustoFinanceiroFornecedor>(db.TpercentualCustoFinanceiroFornecedors, "TpercentualCustoFinanceiroFornecedors", db, apagarDadosExistentes);
