@@ -128,6 +128,9 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("Especificado em \"Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj.ClientePj" +
                         "ListaDependencias\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+#line 12
+ testRunner.And("Especificado em \"Especificacao.Pedido.Passo40.Passo40ListaDependencias\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
 #line 13
  testRunner.And("Implementado em \"Especificacao.Prepedido.Prepedido.PrepedidoListaDependencias\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden

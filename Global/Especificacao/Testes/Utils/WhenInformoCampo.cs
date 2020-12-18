@@ -63,6 +63,7 @@ namespace Especificacao.Testes.Utils
                             p.SetValue(destino, System.Decimal.Parse(valor));
                             break;
                         default:
+                            valor = ConverterCustoFinancFornecTipoParcelamento(campoSimples, valor);
                             //vai dar erro, tudo bem...
                             p.SetValue(destino, valor);
                             break;
@@ -96,6 +97,9 @@ namespace Especificacao.Testes.Utils
                     break;
                 case "COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA":
                     valor = InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA;
+                    break;
+                case "COD_FORMA_PAGTO inválido":
+                    valor = "99";
                     break;
                 default:
                     return valor;
@@ -147,6 +151,27 @@ namespace Especificacao.Testes.Utils
                     return valor;
             }
             return ((int)valorProdutorRural).ToString();
+        }
+
+        private static string ConverterCustoFinancFornecTipoParcelamento(string campo, string valor)
+        {
+            if (!campo.Contains("CustoFinancFornecTipoParcelamento"))
+                return valor;
+            switch (valor)
+            {
+                case "COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA":
+                    valor = InfraBanco.Constantes.Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA;
+                    break;
+                case "COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA":
+                    valor = InfraBanco.Constantes.Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA;
+                    break;
+                case "COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA":
+                    valor = InfraBanco.Constantes.Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA;
+                    break;
+                default:
+                    return valor;
+            }
+            return valor;
         }
     }
 }

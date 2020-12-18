@@ -165,7 +165,7 @@ namespace Pedido
             FormaPagtoDados formasPagto = await formaPagtoBll.ObterFormaPagto(tOrcamentista.Apelido, pedido.DadosCliente.Tipo);
 
             string c_custoFinancFornecTipoParcelamento = prepedidoBll.ObterSiglaFormaPagto(pedido.FormaPagtoCriacao);
-            short c_custoFinancFornecQtdeParcelas = (Int16)prepedidoBll.ObterQtdeParcelasFormaPagto(pedido.FormaPagtoCriacao);
+            short c_custoFinancFornecQtdeParcelas = (short)Prepedido.PrepedidoBll.ObterCustoFinancFornecQtdeParcelasDeFormaPagto(pedido.FormaPagtoCriacao);
 
             UtilsGlobais.Util.ValidarTipoCustoFinanceiroFornecedor(pedidoRetorno.ListaErros, c_custoFinancFornecTipoParcelamento,
                 c_custoFinancFornecQtdeParcelas);

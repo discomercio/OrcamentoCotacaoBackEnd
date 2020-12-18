@@ -6,7 +6,6 @@ namespace Prepedido.Dados.DetalhesPrepedido
 {
     public class FormaPagtoCriacaoDados
     {
-        public int Qtde_Parcelas { get; set; }
         public string Rb_forma_pagto { get; set; }//Tipo da forma de pagto
         public string Op_av_forma_pagto { get; set; }
         public string Op_pu_forma_pagto { get; set; }
@@ -33,7 +32,11 @@ namespace Prepedido.Dados.DetalhesPrepedido
         public string Descricao_meio_pagto { get; set; }//para mostrar 
         public short Tipo_parcelamento { get; set; }//informa o tipo de parcelamento que foi escolhido
 
-        //incluimos esse campo apenas para validar o que esta sendo enviado pela API Unis
         public string CustoFinancFornecTipoParcelamento { get; set; }
+        public int CustoFinancFornecQtdeParcelas { get; set; }
+
+        //somente para exibição
+        public int Qtde_Parcelas_Para_Exibicao { get; set; }
+
     }
 }

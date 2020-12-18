@@ -286,7 +286,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
         {
             var ret = new Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados()
             {
-                Qtde_Parcelas = fpCriacaoUnis.CustoFinancFornecQtdeParcelas,
+                CustoFinancFornecQtdeParcelas = fpCriacaoUnis.CustoFinancFornecQtdeParcelas,
                 Rb_forma_pagto = fpCriacaoUnis.Tipo_Parcelamento.ToString(),
                 Op_av_forma_pagto = fpCriacaoUnis.Op_av_forma_pagto,
                 Op_pu_forma_pagto = fpCriacaoUnis.Op_pu_forma_pagto,

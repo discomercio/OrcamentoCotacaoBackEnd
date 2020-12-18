@@ -188,7 +188,7 @@ VlTotalDestePedido	number($double)
             TesteAvista(c =>
             {
                 c.FormaPagtoCriacao.CustoFinancFornecQtdeParcelas = 2;
-            }, "Quantidade da parcela esta divergente!", true, false);
+            }, "Quantidade da parcela esta divergente!", true);
 
             TesteAvista(c =>
             {
@@ -228,7 +228,7 @@ VlTotalDestePedido	number($double)
             TesteParcUnica(c =>
             {
                 c.FormaPagtoCriacao.CustoFinancFornecQtdeParcelas = 2;
-            }, "Quantidade da parcela esta divergente!", true, false);
+            }, "Quantidade da parcela esta divergente!", true);
 
             TesteParcUnica(c =>
             {
@@ -272,7 +272,7 @@ VlTotalDestePedido	number($double)
             TesteParcCartao(c =>
             {
                 c.FormaPagtoCriacao.C_pc_qtde = 2;
-            }, "Quantidade de parcelas esta divergente!", true, false);
+            }, "Quantidade de parcelas esta divergente!", true);
 
             TesteParcCartao(c =>
             {
@@ -312,7 +312,7 @@ VlTotalDestePedido	number($double)
             TesteParcCartaoMaquineta(c =>
             {
                 c.FormaPagtoCriacao.C_pc_maquineta_qtde = 2;
-            }, "Quantidade de parcelas esta divergente!", true, false);
+            }, "Quantidade de parcelas esta divergente!", true);
 
             TesteParcCartaoMaquineta(c => { }, "Valor total da forma de pagamento diferente do valor total!", true);
 
@@ -385,7 +385,7 @@ VlTotalDestePedido	number($double)
                 c.FormaPagtoCriacao.Op_pce_entrada_forma_pagto = "3";
                 c.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto = "3";
                 c.FormaPagtoCriacao.CustoFinancFornecQtdeParcelas = 5;
-            }, "Quantidade de parcelas esta divergente!", true, false);
+            }, "Quantidade de parcelas esta divergente!", true);
 
             TestePagamentoComEntrada(c =>
             {

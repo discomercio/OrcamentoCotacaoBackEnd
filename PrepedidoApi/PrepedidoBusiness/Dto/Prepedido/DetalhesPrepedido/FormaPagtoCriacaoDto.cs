@@ -42,7 +42,7 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
             if (origem == null) return null;
             return new FormaPagtoCriacaoDto()
             {
-                Qtde_Parcelas = origem.Qtde_Parcelas,
+                Qtde_Parcelas = origem.Qtde_Parcelas_Para_Exibicao,
                 Rb_forma_pagto = origem.Rb_forma_pagto,
                 Op_av_forma_pagto = origem.Op_av_forma_pagto,
                 Op_pu_forma_pagto = origem.Op_pu_forma_pagto,
@@ -74,9 +74,8 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
         public static FormaPagtoCriacaoDados FormaPagtoCriacaoDados_De_FormaPagtoCriacaoDto(FormaPagtoCriacaoDto origem)
         {
             if (origem == null) return null;
-            return new FormaPagtoCriacaoDados()
+            var ret = new FormaPagtoCriacaoDados()
             {
-                Qtde_Parcelas = origem.Qtde_Parcelas,
                 Rb_forma_pagto = origem.Rb_forma_pagto,
                 Op_av_forma_pagto = origem.Op_av_forma_pagto,
                 Op_pu_forma_pagto = origem.Op_pu_forma_pagto,
@@ -104,6 +103,9 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
                 Tipo_parcelamento = origem.Tipo_parcelamento,
                 CustoFinancFornecTipoParcelamento = origem.CustoFinancFornecTipoParcelamento,
             };
+
+            ret.CustoFinancFornecQtdeParcelas = global::Prepedido.PrepedidoBll.ObterCustoFinancFornecQtdeParcelasDeFormaPagto(ret);
+            return ret;
         }
     }
 }

@@ -173,7 +173,7 @@ namespace Pedido
 
                     MontarEnderecoCadastralCliente(pedidonovo, cliente);
 
-                        pedidonovo.Plataforma_Origem_Pedido = (int)Plataforma_Origem_Pedido;
+                    pedidonovo.Plataforma_Origem_Pedido = (int)Plataforma_Origem_Pedido;
 
                     pedidonovo.Id_Nfe_Emitente = (short)empresa;
 
@@ -530,8 +530,8 @@ namespace Pedido
             if (pedidoCriacao.FormaPagtoCriacao.Rb_forma_pagto == InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_A_VISTA)
             {
                 pedidonovo.Av_Forma_Pagto = short.Parse(pedidoCriacao.FormaPagtoCriacao.Op_av_forma_pagto);
-                pedidonovo.CustoFinancFornecQtdeParcelas = 0;
-                pedidonovo.Qtde_Parcelas = 1;
+                pedidonovo.CustoFinancFornecQtdeParcelas = (short)Prepedido.PrepedidoBll.ObterCustoFinancFornecQtdeParcelasDeFormaPagto(pedidoCriacao.FormaPagtoCriacao);
+                pedidonovo.Qtde_Parcelas = Prepedido.PrepedidoBll.ObterQtdeParcelasDeFormaPagto(pedidoCriacao.FormaPagtoCriacao);
             }
 
             if (pedidoCriacao.FormaPagtoCriacao.Rb_forma_pagto == InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_PARCELA_UNICA)
@@ -539,16 +539,16 @@ namespace Pedido
                 pedidonovo.Pu_Forma_Pagto = short.Parse(pedidoCriacao.FormaPagtoCriacao.Op_pu_forma_pagto);
                 pedidonovo.Pu_Valor = pedidoCriacao.FormaPagtoCriacao.C_pu_valor;
                 pedidonovo.Pu_Vencto_Apos = (short)(pedidoCriacao.FormaPagtoCriacao.C_pu_vencto_apos ?? 1);
-                pedidonovo.CustoFinancFornecQtdeParcelas = 1;
-                pedidonovo.Qtde_Parcelas = 1;
+                pedidonovo.CustoFinancFornecQtdeParcelas = (short)Prepedido.PrepedidoBll.ObterCustoFinancFornecQtdeParcelasDeFormaPagto(pedidoCriacao.FormaPagtoCriacao);
+                pedidonovo.Qtde_Parcelas = Prepedido.PrepedidoBll.ObterQtdeParcelasDeFormaPagto(pedidoCriacao.FormaPagtoCriacao);
             }
 
             if (pedidoCriacao.FormaPagtoCriacao.Rb_forma_pagto == InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO)
             {
-                pedidonovo.Qtde_Parcelas = (short)(pedidoCriacao.FormaPagtoCriacao.C_pc_qtde ?? 1);
+                pedidonovo.Qtde_Parcelas = Prepedido.PrepedidoBll.ObterQtdeParcelasDeFormaPagto(pedidoCriacao.FormaPagtoCriacao); ;
                 pedidonovo.Pc_Qtde_Parcelas = (short)(pedidoCriacao.FormaPagtoCriacao.C_pc_qtde ?? 1);
                 pedidonovo.Pc_Valor_Parcela = pedidoCriacao.FormaPagtoCriacao.C_pc_valor;
-                pedidonovo.CustoFinancFornecQtdeParcelas = (short)(pedidoCriacao.FormaPagtoCriacao.C_pc_qtde ?? 1);
+                pedidonovo.CustoFinancFornecQtdeParcelas = (short)Prepedido.PrepedidoBll.ObterCustoFinancFornecQtdeParcelasDeFormaPagto(pedidoCriacao.FormaPagtoCriacao);
             }
             else
             {
@@ -559,8 +559,8 @@ namespace Pedido
             {
                 pedidonovo.Pc_Maquineta_Valor_Parcela = (pedidoCriacao.FormaPagtoCriacao.C_pc_maquineta_valor ?? 0);
                 pedidonovo.Pc_Maquineta_Qtde_Parcelas = (short)(pedidoCriacao.FormaPagtoCriacao.C_pc_maquineta_qtde ?? 1);
-                pedidonovo.Qtde_Parcelas = (short?)pedidoCriacao.FormaPagtoCriacao.C_pc_maquineta_qtde;
-                pedidonovo.CustoFinancFornecQtdeParcelas = (short)(pedidoCriacao.FormaPagtoCriacao.C_pc_maquineta_qtde ?? 1);
+                pedidonovo.Qtde_Parcelas = Prepedido.PrepedidoBll.ObterQtdeParcelasDeFormaPagto(pedidoCriacao.FormaPagtoCriacao);
+                pedidonovo.CustoFinancFornecQtdeParcelas = (short)Prepedido.PrepedidoBll.ObterCustoFinancFornecQtdeParcelasDeFormaPagto(pedidoCriacao.FormaPagtoCriacao);
             }
             if (pedidoCriacao.FormaPagtoCriacao.Rb_forma_pagto == InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA)
             {
@@ -572,8 +572,8 @@ namespace Pedido
                 if (pedidoCriacao.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto != "5" &&
                     pedidoCriacao.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto != "7")
                     pedidonovo.Pce_Prestacao_Periodo = (short)(pedidoCriacao.FormaPagtoCriacao.C_pce_prestacao_periodo ?? 1);
-                pedidonovo.Qtde_Parcelas = (short?)(pedidoCriacao.FormaPagtoCriacao.Qtde_Parcelas);
-                pedidonovo.CustoFinancFornecQtdeParcelas = (short)(pedidoCriacao.FormaPagtoCriacao.C_pce_prestacao_qtde ?? 1);
+                pedidonovo.Qtde_Parcelas = Prepedido.PrepedidoBll.ObterQtdeParcelasDeFormaPagto(pedidoCriacao.FormaPagtoCriacao);
+                pedidonovo.CustoFinancFornecQtdeParcelas = (short)Prepedido.PrepedidoBll.ObterCustoFinancFornecQtdeParcelasDeFormaPagto(pedidoCriacao.FormaPagtoCriacao);
             }
             if (pedidoCriacao.FormaPagtoCriacao.Rb_forma_pagto == InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA)
             {
@@ -584,8 +584,8 @@ namespace Pedido
                 pedidonovo.Pse_Demais_Prest_Qtde = (short)(pedidoCriacao.FormaPagtoCriacao.C_pse_demais_prest_qtde ?? 1);
                 pedidonovo.Pse_Demais_Prest_Valor = (decimal)(pedidoCriacao.FormaPagtoCriacao.C_pse_demais_prest_valor ?? 0);
                 pedidonovo.Pse_Demais_Prest_Periodo = (short)(pedidoCriacao.FormaPagtoCriacao.C_pse_demais_prest_periodo ?? 1);
-                pedidonovo.Qtde_Parcelas = (short)(pedidoCriacao.FormaPagtoCriacao.Qtde_Parcelas + 1);
-                pedidonovo.CustoFinancFornecQtdeParcelas = (short)((pedidoCriacao.FormaPagtoCriacao.C_pse_demais_prest_qtde ?? 1) + 1);
+                pedidonovo.Qtde_Parcelas = Prepedido.PrepedidoBll.ObterQtdeParcelasDeFormaPagto(pedidoCriacao.FormaPagtoCriacao);
+                pedidonovo.CustoFinancFornecQtdeParcelas = (short)Prepedido.PrepedidoBll.ObterCustoFinancFornecQtdeParcelasDeFormaPagto(pedidoCriacao.FormaPagtoCriacao);
             }
 
             pedidonovo.Forma_Pagto = pedidoCriacao.FormaPagtoCriacao.C_forma_pagto;

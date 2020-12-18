@@ -83,6 +83,7 @@ namespace Especificacao.Especificacao.Pedido
             base.GivenPedidoBaseClientePF();
         }
 
+        [Given(@"Pedido base cliente PJ")]
         [When(@"Pedido base cliente PJ")]
         new public void GivenPedidoBaseClientePJ()
         {

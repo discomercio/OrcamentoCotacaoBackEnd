@@ -161,7 +161,7 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
 
             //preciso da lista de coeficientes de cada fabricante da lista de produtos
             //preciso obter a qtde de parcelas e a sigla de pagto
-            var qtdeParcelas = prepedidoBll.ObterQtdeParcelasFormaPagto(formaPagtoCriacao);
+            var qtdeParcelas = PrepedidoBll.ObterCustoFinancFornecQtdeParcelasDeFormaPagto(formaPagtoCriacao);
             var siglaParc = prepedidoBll.ObterSiglaFormaPagto(formaPagtoCriacao);
             List<Produto.Dados.CoeficienteDados> lstCoeficiente = (await validacoesPrepedidoBll.MontarListaCoeficiente(lstFornec, qtdeParcelas,
                 prepedidoBll.ObterSiglaFormaPagto(formaPagtoCriacao))).ToList();

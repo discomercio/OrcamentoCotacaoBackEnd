@@ -92,11 +92,11 @@ namespace Prepedido.FormaPagto
                     .Where(x => Convert.ToString(x.Id) == formaPagtoPrepedido.Op_av_forma_pagto)
                     .Select(x => x.Id).Any();
 
-                if(!existePagto)
+                if (!existePagto)
                     lstErros.Add("Informe uma opção de pagamento (à vista) válida.");
             }
 
-            if (formaPagtoPrepedido.Qtde_Parcelas != 0)
+            if (formaPagtoPrepedido.CustoFinancFornecQtdeParcelas != 0)
             {
                 lstErros.Add("Quantidade da parcela esta divergente!");
             }
@@ -108,13 +108,13 @@ namespace Prepedido.FormaPagto
         {
             if (string.IsNullOrEmpty(formaPagtoPrepedido.Op_pu_forma_pagto))
                 lstErros.Add("Indique a forma de pagamento da parcela única.");
-            if(formaPagtoDados.ListaParcUnica.Count > 0)
+            if (formaPagtoDados.ListaParcUnica.Count > 0)
             {
                 bool existePagto = formaPagtoDados.ListaParcUnica
                     .Where(x => Convert.ToString(x.Id) == formaPagtoPrepedido.Op_pu_forma_pagto)
                     .Select(x => x.Id).Any();
 
-                if(!existePagto)
+                if (!existePagto)
                     lstErros.Add("Informe a forma de pagamento da parcela única válida.");
             }
             if (string.IsNullOrEmpty(formaPagtoPrepedido.C_pu_valor.ToString()))
@@ -128,7 +128,7 @@ namespace Prepedido.FormaPagto
 
             if (lstErros.Count == 0)
             {
-                if (formaPagtoPrepedido.Qtde_Parcelas != 1)
+                if (formaPagtoPrepedido.CustoFinancFornecQtdeParcelas != 1)
                     lstErros.Add("Quantidade da parcela esta divergente!");
 
                 if (permiteRA == 1)
@@ -158,7 +158,7 @@ namespace Prepedido.FormaPagto
 
             if (lstErros.Count == 0)
             {
-                if (formaPagtoPrepedido.C_pc_qtde != formaPagtoPrepedido.Qtde_Parcelas)
+                if (formaPagtoPrepedido.C_pc_qtde != formaPagtoPrepedido.CustoFinancFornecQtdeParcelas)
                 {
                     lstErros.Add("Quantidade de parcelas esta divergente!");
                 }
@@ -192,7 +192,7 @@ namespace Prepedido.FormaPagto
 
             if (lstErros.Count == 0)
             {
-                if (formaPagtoPrepedido.C_pc_maquineta_qtde != formaPagtoPrepedido.Qtde_Parcelas)
+                if (formaPagtoPrepedido.C_pc_maquineta_qtde != formaPagtoPrepedido.CustoFinancFornecQtdeParcelas)
                 {
                     lstErros.Add("Quantidade de parcelas esta divergente!");
                 }
@@ -212,20 +212,20 @@ namespace Prepedido.FormaPagto
         }
 
         private void ValidarFormaPagtoComEntrada(FormaPagtoCriacaoDados formaPagtoPrepedido, List<string> lstErros,
-            decimal maxErroArredondamento, short permiteRA, decimal vl_total_nf, decimal vl_total, 
+            decimal maxErroArredondamento, short permiteRA, decimal vl_total_nf, decimal vl_total,
             Dados.FormaPagto.FormaPagtoDados formaPagtoDados)
         {
 
 
             if (string.IsNullOrEmpty(formaPagtoPrepedido.Op_pce_entrada_forma_pagto))
                 lstErros.Add("Indique a forma de pagamento da entrada (parcelado com entrada).");
-            if(formaPagtoDados.ListaParcComEntrada.Count > 0)
+            if (formaPagtoDados.ListaParcComEntrada.Count > 0)
             {
                 bool existePagto = formaPagtoDados.ListaParcComEntrada
                     .Where(x => Convert.ToString(x.Id) == formaPagtoPrepedido.Op_pce_entrada_forma_pagto)
                     .Select(x => x.Id).Any();
 
-                if(!existePagto)
+                if (!existePagto)
                     lstErros.Add("Informe a forma de pagamento da entrada (parcelado com entrada) válida.");
             }
             if (formaPagtoPrepedido.C_pce_entrada_valor <= 0)
@@ -235,13 +235,13 @@ namespace Prepedido.FormaPagto
                 lstErros.Add("Valor da entrada inválido (parcelado com entrada).");
             if (string.IsNullOrEmpty(formaPagtoPrepedido.Op_pce_prestacao_forma_pagto))
                 lstErros.Add("Indique a forma de pagamento das prestações (parcelado com entrada).");
-            if(formaPagtoDados.ListaParcComEntPrestacao.Count > 0)
+            if (formaPagtoDados.ListaParcComEntPrestacao.Count > 0)
             {
                 bool existePagto = formaPagtoDados.ListaParcComEntPrestacao
                     .Where(x => Convert.ToString(x.Id) == formaPagtoPrepedido.Op_pce_prestacao_forma_pagto)
                     .Select(x => x.Id).Any();
 
-                if(!existePagto)
+                if (!existePagto)
                     lstErros.Add("Informe a forma de pagamento das prestações (parcelado com entrada) válida.");
             }
             if (formaPagtoPrepedido.C_pce_prestacao_qtde <= 0)
@@ -267,7 +267,7 @@ namespace Prepedido.FormaPagto
 
             if (lstErros.Count == 0)
             {
-                if ((formaPagtoPrepedido.C_pce_prestacao_qtde + 1) != formaPagtoPrepedido.Qtde_Parcelas)
+                if ((formaPagtoPrepedido.C_pce_prestacao_qtde) != formaPagtoPrepedido.CustoFinancFornecQtdeParcelas)
                 {
                     lstErros.Add("Quantidade de parcelas esta divergente!");
                 }
@@ -295,13 +295,13 @@ namespace Prepedido.FormaPagto
         {
             if (string.IsNullOrEmpty(formaPagtoPrepedido.Op_pse_prim_prest_forma_pagto))
                 lstErros.Add("Indique a forma de pagamento da 1ª prestação (parcelado sem entrada).");
-            if(formaPagtoDados.ListaParcSemEntPrimPrest.Count > 0)
+            if (formaPagtoDados.ListaParcSemEntPrimPrest.Count > 0)
             {
                 bool existePagto = formaPagtoDados.ListaParcSemEntPrimPrest
                     .Where(x => Convert.ToString(x.Id) == formaPagtoPrepedido.Op_pse_prim_prest_forma_pagto)
                     .Select(x => x.Id).Any();
 
-                if(!existePagto)
+                if (!existePagto)
                     lstErros.Add("Informe a forma de pagamento da 1ª prestação (parcelado sem entrada) válida.");
             }
             if (string.IsNullOrEmpty(formaPagtoPrepedido.C_pse_prim_prest_valor.ToString()))
@@ -314,13 +314,13 @@ namespace Prepedido.FormaPagto
                 lstErros.Add("Intervalo de vencimento da 1ª parcela é inválido (parcelado sem entrada).");
             if (string.IsNullOrEmpty(formaPagtoPrepedido.Op_pse_demais_prest_forma_pagto))
                 lstErros.Add("Indique a forma de pagamento das demais prestações (parcelado sem entrada).");
-            if(formaPagtoDados.ListaParcSemEntPrestacao.Count > 0)
+            if (formaPagtoDados.ListaParcSemEntPrestacao.Count > 0)
             {
                 bool existePagto = formaPagtoDados.ListaParcSemEntPrestacao
                     .Where(x => Convert.ToString(x.Id) == formaPagtoPrepedido.Op_pse_demais_prest_forma_pagto)
                     .Select(x => x.Id).Any();
 
-                if(!existePagto)
+                if (!existePagto)
                     lstErros.Add("Informe a forma de pagamento das demais prestações (parcelado sem entrada) válida.");
             }
             if (string.IsNullOrEmpty(formaPagtoPrepedido.C_pse_demais_prest_qtde.ToString()))
@@ -339,7 +339,7 @@ namespace Prepedido.FormaPagto
 
             if (lstErros.Count == 0)
             {
-                if ((formaPagtoPrepedido.C_pse_demais_prest_qtde + 1) != formaPagtoPrepedido.Qtde_Parcelas)
+                if ((formaPagtoPrepedido.C_pse_demais_prest_qtde + 1) != formaPagtoPrepedido.CustoFinancFornecQtdeParcelas)
                 {
                     lstErros.Add("Quantidade de parcelas esta divergente!");
                 }

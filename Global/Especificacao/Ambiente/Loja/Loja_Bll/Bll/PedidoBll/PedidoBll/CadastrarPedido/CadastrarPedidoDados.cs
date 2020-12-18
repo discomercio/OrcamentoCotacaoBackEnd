@@ -65,7 +65,7 @@ namespace Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadastrar
             ret.FormaPagtoCriacao.CustoFinancFornecTipoParcelamento = "AV";
             ret.FormaPagtoCriacao.Tipo_parcelamento = 1;
             ret.FormaPagtoCriacao.Op_av_forma_pagto = "1";
-            ret.FormaPagtoCriacao.Qtde_Parcelas = 0;
+            ret.FormaPagtoCriacao.CustoFinancFornecQtdeParcelas = 0;
 
             ret.ListaProdutos[0].CustoFinancFornecCoeficiente = 1;
             ret.ListaProdutos[0].Preco_Lista = 626.58m;
