@@ -19,6 +19,7 @@ echo %date% %time% >> "PacoteApiMagento/publish/DataCompilacao.txt"
 del PacoteApiMagento\publish\appsettings.json
 del PacoteApiMagento\publish\appsettings.Development.json
 del PacoteApiMagento\publish\nlog.config
+del PacoteApiMagento\publish\web.config
 
 echo pacote gerado em PacoteApiMagento
 IF "%~1" NEQ "sem_pausa" pause
