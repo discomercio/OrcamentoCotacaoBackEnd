@@ -135,20 +135,5 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarStatusPrepedido
             ThenResposta(p0, p1);
         }
 
-        private bool reiniciarBancoAoTerminarCenario = false;
-        [Given(@"Reiniciar banco ao terminar cenário")]
-        public void GivenReiniciarBancoAoTerminarCenario()
-        {
-            reiniciarBancoAoTerminarCenario = true;
-        }
-
-        [AfterScenario]
-        public void AfterScenario()
-        {
-            if (!reiniciarBancoAoTerminarCenario)
-                return;
-            var configuracaoApiMagento = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos().GetRequiredService<global::MagentoBusiness.UtilsMagento.ConfiguracaoApiMagento>();
-            Ambiente.ApiMagento.InjecaoDependencias.InicializarConfiguracaoApiMagento(configuracaoApiMagento);
-        }
     }
 }

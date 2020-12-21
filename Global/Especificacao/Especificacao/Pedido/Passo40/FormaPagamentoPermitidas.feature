@@ -1,5 +1,6 @@
 ﻿@ignore
 @Especificacao.Pedido.Passo40
+@GerenciamentoBanco
 Feature: FormaPagamentoPermitidas
 
 #loja/PedidoNovoConsiste.asp linha 3104 e seguintes
@@ -61,7 +62,7 @@ Feature: FormaPagamentoPermitidas
 #			" ordenacao"
 
 Background: preparar o banco
-	Given Reiniciar o banco ao terminar o cenário
+	Given Reiniciar banco ao terminar cenário
 	Given Limpar tabela "t_FORMA_PAGTO"
 
 	#id 1 permitido

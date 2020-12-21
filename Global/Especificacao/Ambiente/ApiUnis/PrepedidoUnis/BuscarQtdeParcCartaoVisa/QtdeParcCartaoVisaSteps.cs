@@ -28,17 +28,6 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa
             this.contextoBdProvider = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos().GetRequiredService<InfraBanco.ContextoBdProvider>();
             prepedidoUnisController = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos().GetRequiredService<PrepedidoAPIUnis.Controllers.PrepedidoUnisController>();
         }
-        [Given(@"Limpar tabela ""(.*)""")]
-        public void GivenLimparTabela(string p0)
-        {
-            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.LimparTabela(p0, this);
-            Assert.Equal("t_PRAZO_PAGTO_VISANET", p0);
-            using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
-            foreach (var c in db.TprazoPagtoVisanets)
-                db.TprazoPagtoVisanets.Remove(c);
-
-            db.SaveChanges();
-        }
 
         private InfraBanco.Modelos.TprazoPagtoVisanet tprazoPagtoVisanet = new InfraBanco.Modelos.TprazoPagtoVisanet();
         [Given(@"Gravar registro em ""(.*)""")]
@@ -118,17 +107,6 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa
             Microsoft.AspNetCore.Mvc.ActionResult res = ret.Result;
             Testes.Utils.StatusCodes.TestarStatusCode(statusCode, res);
         }
-
-
-        [AfterScenario]
-        public void AfterScenario()
-        {
-            var servicos = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos();
-            //precisa restaurar o banco
-            var bd = new Testes.Utils.BancoTestes.InicializarBancoGeral(servicos.GetRequiredService<InfraBanco.ContextoBdProvider>(), servicos.GetRequiredService<InfraBanco.ContextoCepProvider>());
-            bd.InicializarForcado();
-        }
-
 
     }
 }

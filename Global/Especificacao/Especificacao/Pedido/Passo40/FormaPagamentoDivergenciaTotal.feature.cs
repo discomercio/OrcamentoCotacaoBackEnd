@@ -1004,7 +1004,7 @@ this.FeatureBackground();
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 289
-  testRunner.Then("Erro \"Tipo do parcelamento (CustoFinancFornecTipoParcelamento \'CE\') está incorret" +
+ testRunner.Then("Erro \"Tipo do parcelamento (CustoFinancFornecTipoParcelamento \'CE\') está incorret" +
                         "o!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

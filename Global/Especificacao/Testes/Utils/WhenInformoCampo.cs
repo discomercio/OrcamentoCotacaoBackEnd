@@ -155,7 +155,7 @@ namespace Especificacao.Testes.Utils
 
         private static string ConverterCustoFinancFornecTipoParcelamento(string campo, string valor)
         {
-            if (!campo.Contains("CustoFinancFornecTipoParcelamento"))
+            if (!campo.ToLower().Contains("CustoFinancFornecTipoParcelamento".ToLower()))
                 return valor;
             switch (valor)
             {

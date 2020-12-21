@@ -121,7 +121,7 @@ namespace Especificacao.Especificacao.Pedido
             WhenInformo("EndEtg_tel_res", "");
             WhenInformo("EndEtg_ddd_cel", "");
             WhenInformo("EndEtg_tel_cel", "");
-            WhenInformo("EndEtg_ddd_com",  "11");
+            WhenInformo("EndEtg_ddd_com", "11");
             WhenInformo("EndEtg_tel_com", "12345678");
             WhenInformo("EndEtg_rg", "");
         }
@@ -139,6 +139,21 @@ namespace Especificacao.Especificacao.Pedido
             WhenInformo("EndEtg_ddd_com", "");
             WhenInformo("EndEtg_tel_com", "");
             WhenInformo("EndEtg_rg", "12345678");
+        }
+
+        [Given(@"Pedido base COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA")]
+        public void GivenPedidoBaseCOD_FORMA_PAGTO_PARCELADO_COM_ENTRADA()
+        {
+            GivenPedidoBaseClientePJ();
+            WhenInformo("FormaPagtoCriacao.Tipo_Parcelamento", "COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA");
+            WhenInformo("FormaPagtoCriacao.Op_pce_entrada_forma_pagto", "1");
+            WhenInformo("FormaPagtoCriacao.Op_pce_prestacao_forma_pagto", "1");
+            WhenInformo("FormaPagtoCriacao.C_pce_prestacao_valor", ((3470.24 - 1) / 3).ToString());
+            WhenInformo("FormaPagtoCriacao.C_pce_entrada_valor", "1");
+            WhenInformo("FormaPagtoCriacao.C_pce_prestacao_periodo", "1");
+            WhenInformo("FormaPagtoCriacao.CustoFinancFornecTipoParcelamento", "COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA");
+            WhenInformo("FormaPagtoCriacao.CustoFinancFornecQtdeParcelas", "3");
+            WhenInformo("FormaPagtoCriacao.C_pce_prestacao_qtde", "3");
         }
 
         [When(@"Endereço de entrega do estado ""(.*)""")]
