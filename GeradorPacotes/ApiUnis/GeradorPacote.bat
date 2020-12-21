@@ -19,6 +19,7 @@ echo %date% %time% >> "PacoteApiUnis\publish\DataCompilacao.txt"
 del PacoteApiUnis\publish\appsettings.json
 del PacoteApiUnis\publish\appsettings.Development.json
 del PacoteApiUnis\publish\nlog.config
+del PacoteApiUnis\publish\web.config
 
 echo pacote gerado em PacoteApiUnis
 IF "%~1" NEQ "sem_pausa" pause
