@@ -271,7 +271,7 @@ namespace Prepedido
                    {
                        //vamos confrontar os valores
                        if (Math.Abs(x.CustoFinancFornecPrecoListaBase - y.CustoFinancFornecPrecoListaBase) > limiteArredondamento)
-                           lstErros.Add($"Preço do fabricante (CustoFinancFornecPrecoListaBase {x.CustoFinancFornecPrecoListaBase} x {y.CustoFinancFornecPrecoListaBase}) está incorreto!");
+                           lstErros.Add($"Preço do fabricante (CustoFinancFornecPrecoListaBase {x.CustoFinancFornecPrecoListaBase} x {string.Format("{0:C}", y.CustoFinancFornecPrecoListaBase)}) está incorreto!");
 
                        if (x.Preco_Lista != y.Preco_Lista)
                            lstErros.Add($"Custo financeiro preço lista base (Preco_Lista " +
