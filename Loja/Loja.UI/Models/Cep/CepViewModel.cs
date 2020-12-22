@@ -9,6 +9,6 @@ namespace Loja.UI.Models.Cep
     public class CepViewModel
     {
         public List<CepDto> ListaCep { get; set; }
-        
+        public string ClienteTipo { get; set; }
     }
 }

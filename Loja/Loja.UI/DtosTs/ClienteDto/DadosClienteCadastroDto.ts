@@ -1,4 +1,4 @@
-﻿class DadosClienteCadastroDto {
+﻿export class DadosClienteCadastroDto {
     Loja: string;
     Indicador_Orcamentista: string;
     Vendedor: string;
@@ -29,9 +29,9 @@
     Celular: string;
     TelComercial2: string;
     DddComercial2: string;
-    ramal2: string;
-    email: string;
-    emailXml: string;
-    contato: string;
+    Ramal2: string;
+    Email: string;
+    EmailXml: string;
+    Contato: string;
 
 }

@@ -54,10 +54,10 @@ namespace Loja.UI.Controllers
             }
             else
                 return Json(novoCliente = false);
-                //return RedirectToAction("BuscarCliente", new { cpf_cnpj = cpf_cnpj, novoCliente = novoCliente }); //editar cliente
+            //return RedirectToAction("BuscarCliente", new { cpf_cnpj = cpf_cnpj, novoCliente = novoCliente }); //editar cliente
         }
 
-        
+
         public async Task<IActionResult> BuscarCliente(string cpf_cnpj, bool novoCliente)
         {
             /*Passo a passo da entrada 
@@ -93,17 +93,20 @@ namespace Loja.UI.Controllers
 
                 cliente.RefBancaria = clienteCadastroDto.RefBancaria;
                 cliente.RefComercial = clienteCadastroDto.RefComercial;
-
+                cliente.Cadastrando = false;
             }
             else
             {
                 cliente.PermiteEdicao = true;
                 clienteCadastroDto.DadosCliente = new DadosClienteCadastroDto();
                 clienteCadastroDto.DadosCliente.Cnpj_Cpf = cpf_cnpj;
-                if (cpf_cnpj.Length == 11)
+
+                if (UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj).Length == 11)
                     clienteCadastroDto.DadosCliente.Tipo = "PF";
-                if (cpf_cnpj.Length == 14)
+                if (UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj).Length == 14)
                     clienteCadastroDto.DadosCliente.Tipo = "PJ";
+
+                cliente.Cadastrando = true;
             }
 
             cliente.DadosCliente = clienteCadastroDto.DadosCliente;
@@ -121,6 +124,14 @@ namespace Loja.UI.Controllers
                 lst.Add(new SelectListItem { Value = lstInd[i], Text = lstInd[i] });
             }
             cliente.LstIndicadores = new SelectList(lst, "Value", "Text");
+
+            var lstSexo = new[]
+            {
+                new SelectListItem{Value = "", Text = "Selecione"},
+                new SelectListItem{Value = "M", Text = "Masculino"},
+                new SelectListItem{Value = "F", Text = "Feminino"}
+            };
+            cliente.LstSexo = new SelectList(lstSexo, "Value", "Text");
 
             //lista para carregar no select de Produtor Rural            
             var lstProdR = new[]
@@ -164,6 +175,8 @@ namespace Loja.UI.Controllers
             }
             cliente.LstComboBanco = new SelectList(lstbancos, "Value", "Text");
 
+            //vamos buscar a lista de IBGE para confrontar na validação de tela
+
 
             return View("DadosCliente", cliente);
         }
@@ -174,7 +187,7 @@ namespace Loja.UI.Controllers
             List<Loja.Bll.Dto.ClienteDto.RefComercialDtoCliente> lstRefCom,
             List<Loja.Bll.Dto.ClienteDto.RefBancariaDtoCliente> lstRefBancaria,
             Loja.Bll.Dto.ClienteDto.EnderecoEntregaDtoClienteCadastro EndEntrega2,
-            bool novoCliente)
+            bool cadastrando)
         {
             /*afazer: NECESSÁRIO FAZER O TRATAMENTO PARA ERROS 
              * CRIAR A TELA DE ERRO
@@ -189,11 +202,23 @@ namespace Loja.UI.Controllers
              * montar ModelView para listagem de produtos, forma de pagamento
              * 
              */
-
-            //afazer: preciso de uma flag para diferenciar se é cadastro ou alteração do cliente
-            //para teste: novoCliente 
             var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
 
+
+            if (cadastrando)
+            {
+                Bll.Dto.ClienteDto.ClienteCadastroDto novo_clienteCadastro = new Bll.Dto.ClienteDto.ClienteCadastroDto();
+
+                novo_clienteCadastro.DadosCliente = dados;
+                novo_clienteCadastro.RefBancaria = lstRefBancaria;
+                novo_clienteCadastro.RefComercial = lstRefCom;
+                //vamos cadastrar o cliente
+                List<string> novo_retorno = (await clienteBll.Novo_CadastrarCliente(novo_clienteCadastro, usuarioLogado.Usuario_atual)).ToList();
+                               
+                //depois de cadastrar, vamos redirecionar o usuário para a tela de cadastro do cliente cadastrado
+                //para caso queira realizar um novo pedido
+                return RedirectToAction("BuscarCliente", new { cpf_cnpj = novo_retorno, novoCliente = false });
+            }
 
             //afazer: alterar essa session para utilizar no usuarioLogado
             //string id_cliente = HttpContext.Session.GetString("cliente_selecionado");

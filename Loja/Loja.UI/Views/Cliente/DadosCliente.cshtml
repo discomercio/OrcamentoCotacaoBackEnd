@@ -72,7 +72,7 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12"></div>
                                     <input type="hidden" value="@Model.DadosCliente.Tipo" name="Tipo" id="tipo" />
                                     <input type="hidden" value="@Model.PermiteEdicao.ToString()" name="permiteEditar" id="permiteEditar" />
-
+                                    <input type="hidden" value="@Model.Cadastrando.ToString()" name="cadastrando" />
                                     @if (Model.PermiteEdicao)//adicionar uma flag para dizer se é novo
                                     {
                                         //Permite edição PF
@@ -88,22 +88,29 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                             </div>
                                             <div class="row">
                                                 <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 ">
-                                                    <label for="cpf_cnpj">CPF</label>
+                                                    <label class="col-form-label" for="cpf_cnpj">CPF</label>
                                                     <input class="form-control" name="Cnpj_Cpf" id="cpf_cnpj" type="text" value="@Model.DadosCliente?.Cnpj_Cpf" />
                                                 </div>
                                                 <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
-                                                    <label for="rg">RG</label>
+                                                    <label class="col-form-label" for="rg">RG</label>
                                                     <input class="form-control" name="Rg" id="rg" type="text" value="@Model.DadosCliente?.Rg" />
                                                 </div>
                                                 <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
-                                                    <label for="nascimento">NASCIMENTO</label>
+                                                    <label class="col-form-label" for="nascimento">NASCIMENTO</label>
                                                     <input class="form-control" name="Nascimento" id="nascimento" type="date"
                                                            value="@Model.DadosCliente?.Nascimento?.ToString("yyyy-MM-dd")" />
                                                 </div>
                                                 <div class="col-xl-2 col-lg-6 col-md-6 col-sm-12">
-                                                    <label for="sexo">SEXO</label>
-                                                    <input class="form-control" name="Sexo" id="sexo" type="text"
-                                                           value="@Model.DadosCliente?.Sexo" />
+                                                    <label class="col-form-label" for="sexo">SEXO</label>
+                                                    @Html.DropDownList("Sexo", new SelectList(Model.LstSexo, "Value", "Text",
+                                                   Model.DadosCliente?.Sexo),
+                                                   new
+                                                        {
+                                                        @id = "sexo",
+                                                        @name = "Sexo",
+                                                        @class = "custom-select"
+                                                   })
+
                                                 </div>
                                             </div>
                                         }
@@ -135,8 +142,8 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                 <label class="col-form-label">CEP</label>
                                                 <input name="cep" type="text" id="cep" class="form-control" onblur="DigitouCepCadastro()" value="@Model.DadosCliente?.Cep" />
                                             </div>
-                                            <button class="btn btn-sm btn-primary waves-effect waves-light col-xl-2 col-md-3 col-sm-6"
-                                                    onclick="NaoseiCep()"
+                                            <button class="btn btn-sm btn-primary waves-effect waves-light col-xl-2 col-md-3 col-sm-6 btnCepCadastro"
+                                                    data-toggle="modal" data-target="#modal1" value="1"
                                                     type="button">
                                                 <i class="fa fa-search"></i>Não sei o CEP
                                             </button>
@@ -160,11 +167,11 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                                 <label class="col-form-label">CIDADE</label>
                                                 <input name="cidade" id="cidade" type="text" class="form-control" value="@Model.DadosCliente?.Cidade" />
                                             </div>
-                                            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                                 <label class="col-form-label">UF</label>
                                                 <input name="uf" id="uf" type="text" class="form-control" value="@Model.DadosCliente?.Uf" />
                                             </div>
@@ -337,6 +344,7 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
 
                                                         @{
                                                             var indice = 0;
+                                                            <input type="hidden" id="indice" value="" />
 
                                                             <div class="card-body form-control-right">
                                                                 <hr />
@@ -361,6 +369,7 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                                         {
                                                                             visible = "display: block";
                                                                         }
+
 
                                                                         <div class="row" id="RefBancariabody-@indice" style="@visible">
                                                                             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
@@ -774,61 +783,69 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                             new { @id = "indicador", @class = "custom-select" })
                                         </div>
                                     </div>
-                                    @* Opção de endereço de entrega *@
-                                    <h6 class="pt-4">Endereço de Entrega</h6>
-                                    <div class="row">
-                                        @{
-                                            string marcadoMesmo = "checked";
-                                            string marcadoOutro = "checked";
-                                            if (Model.EndEntrega == null)
-                                            {
-                                                marcadoMesmo = "checked";
-                                                marcadoOutro = "";
+                                    //Se nã estiver cadastrando mostramos os campos de entrega
+                                    @if (!Model.Cadastrando)
+                                    {
+                                        @* Opção de endereço de entrega *@
+                                        <h6 class="pt-4">Endereço de Entrega</h6>
+                                        <div class="row">
+                                            @{
+                                                string marcadoMesmo = "checked";
+                                                string marcadoOutro = "checked";
+                                                if (Model.EndEntrega == null)
+                                                {
+                                                    marcadoMesmo = "checked";
+                                                    marcadoOutro = "";
+                                                }
+                                                else
+                                                {
+                                                    marcadoMesmo = "";
+                                                    marcadoOutro = "checked";
+                                                }
                                             }
-                                            else
-                                            {
-                                                marcadoMesmo = "";
-                                                marcadoOutro = "checked";
-                                            }
-                                        }
 
-                                        @* Radio endereço entrega *@
-                                        <div class="col-sm-12 col-md-6 col-xl-4 m-b-30">
-                                            <div class="form-radio">
-                                                <div class="radio radio-inline">
-                                                    <label>
-                                                        <input type="radio" id="mesmo" name="mesmo" @marcadoMesmo onclick="fechaDiv('outro_endereco');">
-                                                        <i class="helper"></i>O mesmo Endereço
-                                                    </label>
+                                            @* Radio endereço entrega *@
+                                            <div class="col-sm-12 col-md-6 col-xl-4">
+                                                <div class="form-radio">
+                                                    <div class="radio radio-inline">
+                                                        <label>
+                                                            <input type="radio" id="mesmo" name="mesmo" @marcadoMesmo onclick="fechaDiv('outro_endereco');">
+                                                            <i class="helper"></i>O mesmo Endereço
+                                                        </label>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="form-radio">
-                                                <div class="radio radio-inline">
-                                                    <label>
-                                                        <input type="radio" id="outro" name="OutroEndereco" @marcadoOutro onclick="mostraDiv('outro_endereco');">
-                                                        <i class="helper"></i>Outro Endereço
-                                                    </label>
+                                                <div class="form-radio">
+                                                    <div class="radio radio-inline">
+                                                        <label>
+                                                            <input type="radio" id="outro" name="OutroEndereco" @marcadoOutro onclick="mostraDiv('outro_endereco');">
+                                                            <i class="helper"></i>Outro Endereço
+                                                        </label>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    @* outro endereço *@
-                                    <div class="row col-xl-12 ml-0 px-0" id="outro_endereco" name="outro_endereco" style="display:none">
-                                        @*Justifique o Endereço*@
-                                        <div class="col-xl-12 px-0">
-                                            <label class="col-form-label" for="justificativa" id="lblJustificativa">Justifique o endereço</label>
-                                            @Html.DropDownList("JustificativaEndereco",
-                                                new SelectList(Model.EndJustificativa, "Value", "Text", Model.EndEntrega?.EndEtg_cod_justificativa),
-                                                new
-                                                     {
-                                                    @id = "justificativa",
-                                                    @name = "EndEtg_cod_justificativa",
-                                                    @class = "custom-select"
-                                                     })
+                                        @* outro endereço *@
+                                        <div class="row col-xl-12 ml-0 px-0" id="outro_endereco" name="outro_endereco" style="display:none">
+                                            @*Justifique o Endereço*@
+                                            <div class="col-xl-12 px-0">
+                                                <label class="col-form-label" for="justificativa" id="lblJustificativa">Justifique o endereço</label>
+                                                @Html.DropDownList("JustificativaEndereco",
+                                                    new SelectList(Model.EndJustificativa, "Value", "Text", Model.EndEntrega?.EndEtg_cod_justificativa),
+                                                    new
+                                                         {
+                                                        @id = "justificativa",
+                                                        @name = "EndEtg_cod_justificativa",
+                                                        @class = "custom-select"
+                                                         })
+                                            </div>
+                                            @{
+                                                Model.Cep = new Loja.UI.Models.Cep.CepViewModel();
+                                                Model.Cep.ClienteTipo = @Model.DadosCliente.Tipo;
+                                            }
+                                            <partial name="~/Views/Cep/Index.cshtml" model="@Model.Cep" />
                                         </div>
+                                    }
 
-                                        <partial name="~/Views/Cep/Index.cshtml" model="@Model.Cep" />
-                                    </div>
                                 }
                             </div>
                         </div>
@@ -856,10 +873,22 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                 </div>
                                 <div class="col-lg-1 col-md-3 col-sm-3"></div>
                                 <div class="col-xl-3 col-lg-3 col-md-2 col-sm-2 px-0">
-                                    <button class="btn btn-primary"
-                                            type="submit" onclick="$('#formulario').submit()">
-                                        <i class="fa fa-arrow-right"></i>Avançar
-                                    </button>
+
+                                    @if (!Model.Cadastrando)
+                                    {
+                                        <button class="btn btn-primary"
+                                                type="submit" onclick="$('#formulario').submit()">
+                                            <i class="fa fa-arrow-right"></i>Avançar
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-primary"
+                                                type="submit" onclick="$('#formulario').submit()">
+                                            <i class="fa fa-arrow-right"></i>Salvar
+                                        </button>
+                                    }
+
                                 </div>
                                 <div class="col-lg-1"></div>
                             </div>
@@ -870,6 +899,76 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
         </div>
     </div>
 }
+
+
+@* modal de cep *@
+<div class="modal fade" id="modal1" tabindex="-1" role="dialog" style="height:100%;">
+    <div class="modal-dialog" role="document" style="max-width:70% !important">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12" style="align-items:flex-end">
+
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2">
+                        <label class="col-form-label" id="lblUf" for="lstufs">UF</label>
+                        <select class="custom-select" id="lstufs" name="lstufs">
+                            <option value="">Selecione</option>
+                        </select>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
+                        <label class="col-form-label" for="localidade">Localidade</label>
+                        <input class="form-control" name="localidade" id="localidade" type="text" />
+                    </div>
+                    <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5">
+                        <label class="col-form-label" for="nendereco">Endereço</label>
+                        <input class="form-control" name="nendereco" id="nendereco" type="text" />
+                    </div>
+
+                    <button class="btn btn-sm btn-primary waves-effect waves-light col-xl-1 col-md-1 col-sm-1"
+                            type="button" id="btnBuscar">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            <div style="max-height:80% !important">
+                <div class="" id="msg" style="display:none;"></div>
+                <table class="tabela_endereco p-3"
+                       style="max-height:50%; display:none">
+                    <thead>
+                        <tr>
+                            <th style="width:3vw !important;">
+
+                            </th>
+                            <th align="left" valign="bottom">
+                                CEP
+                            </th>
+                            <th align="left" valign="bottom">
+                                UF
+                            </th>
+                            <th align="left" valign="bottom">
+                                Cidade
+                            </th>
+                            <th align="left" valign="bottom">
+                                Bairro
+                            </th>
+                            <th align="left" valign="bottom">
+                                Lougradouro
+                            </th>
+                            <th align="left" valign="bottom">
+                                Complemento
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="destaquelinha" id="tableBody">
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer justify-content-center py-1">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="btnModificar">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <style>
     .collapsible-header {
@@ -910,7 +1009,142 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
     }
 </style>
 
+<style>
+
+    .dropdown-content {
+        max-height: 400px;
+        border-radius: 1em;
+    }
+
+    tbody {
+        display: block;
+        height: auto;
+        max-height: 300px;
+        overflow: auto;
+    }
+
+        thead, tbody tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+    thead {
+        width: calc( 100% - 1em )
+    }
+
+    table {
+        width: 100%;
+    }
+
+    #footer {
+        text-align: center;
+        padding: 1em;
+        flex-grow: 0;
+        flex-shrink: 0;
+    }
+
+    .fixo {
+        display: flex;
+        flex-direction: column;
+        height: 25%;
+        min-height: 20vh;
+    }
+
+    .destaquelinha :hover {
+        background-color: #d1d1d1 !important;
+    }
+
+
+
+    .dropdown-content select-dropdown {
+        position: fixed;
+    }
+
+    .tabela_endereco {
+        border: 1px solid #ccc;
+        border-collapse: collapse;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+        .tabela_endereco caption {
+            font-size: 1.5em;
+            margin: 0.5em 0 0.75em;
+        }
+
+        .tabela_endereco tr {
+            background-color: #fbfbfb;
+            border: 1px solid #ddd;
+            padding: 0.35em;
+        }
+
+        .tabela_endereco th,
+        .tabela_endereco td {
+            padding: 0.625em;
+            padding-left: 0.4em;
+            padding-right: 0.4em;
+            /*//text-align: center;*/
+            font-size: 1vw !important;
+        }
+
+        .tabela_endereco tbody td {
+            white-space: initial;
+            line-height: initial;
+        }
+
+        .tabela_endereco th {
+            white-space: pre-line !important;
+        }
+
+    /*.tabela_endereco .mat-form-field {
+            padding: 0em;
+            padding-left: 0.4em;
+            padding-right: 0.4em;
+        }*/
+
+    .modal {
+        max-height: 100% !important;
+        overflow-y: inherit !important;
+        border-radius: 4px !important;
+    }
+</style>
 <script>
+    //para importar as classes é necessário declarar aqui e no .ts
+    //ex: declare var cepEntrega: CepEntrega;
+    //    cepEntrega = new CepEntrega();
+    var cepDto;
+    var cepEntrega
+    var validacoesCliente;//para validar
+    var dadosClienteCadastroDto;//para converter para validar
+    var clienteCadastro;
+    var lstRefBancaria;
+    var lstRefComercial;
+    var lstIBGE;
+
+    //estou deixando aqui pq não consegui usar o autocomplete no .ts
+    $("#lstufs").on('change', function (e) {
+        if ($('#localidade').val() != "") {
+            $('#localidade').val("");
+        }
+        if ($('#nendereco').val() != "") {
+            $('#nendereco').val("");
+        }
+
+        $.ajax({
+            url: "../Cep/BuscarLocalidades/",
+            type: "GET",
+            data: { uf: $(this).val() },
+            dataType: "json",
+            success: function (t) {
+                $("#localidade").autocomplete({
+                    source: t,
+                });
+            }
+        });
+    });
     requirejs(["Views/Cliente/DadosCliente"], function (util) {
 
     });

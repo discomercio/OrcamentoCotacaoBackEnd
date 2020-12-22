@@ -11,9 +11,11 @@ namespace Loja.UI.Models.Cliente
 {
     public class ClienteCadastroViewModel
     {
+        public bool Cadastrando { get; set; }
         public DadosClienteCadastroDto DadosCliente { get; set; }
         public List<RefBancariaDtoCliente> RefBancaria { get; set; }
         public List<RefComercialDtoCliente> RefComercial { get; set; }
+        public SelectList LstSexo { get; set; }
         public SelectList LstContribuinte { get; set; }
         public SelectList LstIndicadores { get; set; }
         public SelectList LstProdutoRural { get; set; }

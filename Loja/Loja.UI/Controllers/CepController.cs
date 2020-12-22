@@ -10,10 +10,12 @@ namespace Loja.UI.Controllers
 {
     public class CepController : Controller
     {
-        public readonly Bll.CepBll.CepBll cepBll;
+        private readonly Bll.CepBll.CepBll cepLojaBll;
+        private readonly Cep.CepBll cepBll;
 
-        public CepController(Bll.CepBll.CepBll cepBll)
+        public CepController(Bll.CepBll.CepBll cepLojaBll, Cep.CepBll cepBll)
         {
+            this.cepLojaBll = cepLojaBll;
             this.cepBll = cepBll;
         }
 
@@ -27,7 +29,7 @@ namespace Loja.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> BuscarCep(string cep, string endereco, string uf, string cidade)
         {
-            List<CepDto> lstCepDto = (await cepBll.BuscarCep(cep, endereco, uf, cidade)).ToList();
+            List<CepDto> lstCepDto = (await cepLojaBll.BuscarCep(cep, endereco, uf, cidade)).ToList();
 
             CepViewModel modelCep = new CepViewModel();
             modelCep.ListaCep = lstCepDto;
@@ -57,7 +59,7 @@ namespace Loja.UI.Controllers
         {
             //esse metodo esta buscando apenas 300 itens
             CepViewModel cep = new CepViewModel();
-            cep.ListaCep = (await cepBll.BuscarCepPorEndereco(nendereco, localidade, lstufs)).ToList();
+            cep.ListaCep = (await cepLojaBll.BuscarCepPorEndereco(nendereco, localidade, lstufs)).ToList();
 
 
             return Ok(cep);

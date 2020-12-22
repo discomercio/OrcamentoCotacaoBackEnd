@@ -3,41 +3,100 @@
 *@
 @model Loja.UI.Models.Cep.CepViewModel
 
-
-
-
-    <div class="row" id="container_cep" style="align-items:flex-end">
-        @if (Model != null)
-            @Model.ListaCep[0].Endereco
-        <div class="col-xl-3 col-md-3 col-sm-6">
-            @* ao sair do campo chamar o metodo cep/buscarCep/ *@
-            <label class="col-form-label" for="cepEntrega" id="lblcep">CEP</label>
-            <input class="form-control" name="EndEtg_cep" type="text" id="cepEntrega" onblur="buscarCep()" />
-        </div>
-
-        <button class="btn btn-sm btn-primary waves-effect waves-light col-xl-2 col-md-3 col-sm-6"
-                onclick="NaoseiCep()"
-                type="button">
-            <i class="fa fa-search"></i>Não sei o CEP
-        </button>
-        <div class="col-xl-5 col-md-6 col-sm-12">
-            <label class="col-form-label" id="lblEnderecoEntrega" for="endEntrega">ENDEREÇO </label>
-            <input class="form-control" name="EndEtg_endereco" id="enderecoEntrega" type="text" />
-        </div>
-        <div class="col-xl-2 col-lg-2 col-md-2 col-sm-3">
-            <label class="col-form-label" id="lblNumeroEntrega" for="numEntrega">NÚMERO </label>
-            <input class="form-control" name="EndEtg_endereco_numero" id="numEntrega" type="text" />
-        </div>
-        <div class="col-xl-6 col-lg-5 col-md-5 col-sm-9">
-            <label class="col-form-label" id="lblComplementoEntrega" for="compEntrega">COMPLEMENTO</label>
-            <input class="form-control" name="EndEtg_endereco_complemento" id="compEntrega" type="text" />
-        </div>
-        <div class="col-xl-6 col-lg-5 col-md-5 col-sm-12">
-            <label class="col-form-label" id="lblBairroEntrega" for="bairroEntrega">BAIRRO</label>
-            <input class="form-control" name="EndEtg_bairro" id="bairroEntrega" type="text" />
+@if (Model.ClienteTipo == "PJ")
+{
+    // Radio PF ou PJ
+    <div class="row pt-3">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+            <label id="rb_endEntrega_pf">
+                <input class='check' type='radio' id="EndEntregaTipoPF" value='PF' />
+                <span>Pessoa Física</span>
+            </label>
+            &nbsp;
+            <label id="rb_endEntrega_pj">
+                <input class='check' type='radio' id="EndEntregaTipoPJ" value='PJ' />
+                <span>Pessoa Jurídica</span>
+            </label>
         </div>
     </div>
-<div class="row">    
+
+    //PF
+    <div class="row" id="divEntregaPF" style="display:none">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+            <label class="col-form-label" for="endEntregaNome">Nome</label>
+            <input type="text" class="form-control" id="endEntregaNome" />
+        </div>
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+            <label class="col-form-label" for="endEntregaCPF">CPF</label>
+            <input type="text" class="form-control" id="endEntregaCPF" />
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+            <label class="col-form-label" for="endEntregaTelRes">Fone Residencial</label>
+            <input type="text" class="form-control" id="endEntregaTelRes" />
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+            <label class="col-form-label" for="endEntregaCel">Celular</label>
+            <input type="text" class="form-control" id="endEntregaCel" />
+        </div>
+    </div>
+    //PJ
+    <div class="row" id="divEntregaPJ" style="display:none">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+            <label class="col-form-label" for="endEntregaRazao">Razão Social</label>
+            <input type="text" class="form-control" id="endEntregaRazao" />
+        </div>
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+            <label class="col-form-label" for="endEntregaCNPJ">CNPJ</label>
+            <input type="text" class="form-control" id="endEntregaCNPJ" />
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-8">
+            <label class="col-form-label" for="endEntregaTelCom1">Telefone Com 1</label>
+            <input type="text" class="form-control" id="endEntregaTelCom1" />
+        </div>
+        <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4">
+            <label class="col-form-label" for="endEntregaRamal1">Ramal</label>
+            <input type="text" class="form-control" id="endEntregaRamal1" />
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-8">
+            <label class="col-form-label" for="endEntregaTelCom2">Telefone Com 2</label>
+            <input type="text" class="form-control" id="endEntregaTelCom2" />
+        </div>
+        <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4">
+            <label class="col-form-label" for="endEntregaRamal2">Ramal</label>
+            <input type="text" class="form-control" id="endEntregaRamal2" />
+        </div>
+    </div>
+
+}
+
+<div class="row" id="container_cep" style="align-items:flex-end">
+
+    <div class="col-xl-3 col-md-3 col-sm-6">
+        <label class="col-form-label" for="cepEntrega" id="lblcep">CEP</label>
+        <input class="form-control" name="EndEtg_cep" type="text" id="cepEntrega" onblur="buscarCep()" />
+    </div>
+    <button class="btn btn-sm btn-primary waves-effect waves-light col-xl-2 col-md-3 col-sm-6 btnCepCadastro"
+            type="button" data-toggle="modal" data-target="#modal1" value="2">
+        <i class="fa fa-search"></i>Não sei o CEP
+    </button>
+    <div class="col-xl-5 col-md-6 col-sm-12">
+        <label class="col-form-label" id="lblEnderecoEntrega" for="endEntrega">ENDEREÇO </label>
+        <input class="form-control" name="EndEtg_endereco" id="enderecoEntrega" type="text" />
+    </div>
+    <div class="col-xl-2 col-lg-2 col-md-2 col-sm-3">
+        <label class="col-form-label" id="lblNumeroEntrega" for="numEntrega">NÚMERO </label>
+        <input class="form-control" name="EndEtg_endereco_numero" id="numEntrega" type="text" />
+    </div>
+    <div class="col-xl-6 col-lg-5 col-md-5 col-sm-9">
+        <label class="col-form-label" id="lblComplementoEntrega" for="compEntrega">COMPLEMENTO</label>
+        <input class="form-control" name="EndEtg_endereco_complemento" id="compEntrega" type="text" />
+    </div>
+    <div class="col-xl-6 col-lg-5 col-md-5 col-sm-12">
+        <label class="col-form-label" id="lblBairroEntrega" for="bairroEntrega">BAIRRO</label>
+        <input class="form-control" name="EndEtg_bairro" id="bairroEntrega" type="text" />
+    </div>
+</div>
+<div class="row">
     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
         <label class="col-form-label" id="lblCidadeEntrega" for="cidadeEntrega">CIDADE</label>
         <input class="form-control" name="EndEtg_cidade" id="cidadeEntrega" type="text" />
@@ -48,432 +107,9 @@
     </div>
 </div>
 
-<div id="naoseicep" class="modal">
-    <div class="modal-content">
-        <section>
-            <header style="margin-left: -10px;" class="row">
-                Busca Cep
-            </header>
-            <article class="fixo">
-                <div class="row col s12">
-                    <div class="input-field col s2">
-                        <select id="lstufs" name="lstufs" onclick="buscarUfs();" style="position:fixed;">
-                            <option value="">Selecione</option>
-                        </select>
-                        <label>UF</label>
-                    </div>
-                    <div class="input-field col s4">
-                        @*<input type="text" class="autocomplete" />*@
-                        <input type="text" name="localidade" id="localidade" class="autocomplete" />
-                        <label id="lblLocalidade" for="localidade">Localidade</label>
-                    </div>
-                    <div class="input-field col s4">
-                        <input id="nendereco" name="nendereco" type="text" />
-                        <label id="nlblendereco" for="nendereco">Endereço</label>
-                    </div>
-                    <div class="input-field col s2">
-                        <button class="waves-effect waves-light btn-small"
-                                type="button"
-                                style="margin-top:2%;"
-                                id="btnBuscar">
-                            <i class="material-icons left">search</i>Buscar
-                        </button>
-                    </div>
-                </div>
-                <div style="max-height:80% !important">
-                    <div class="row col s12 center" id="msg" style="display:none;"></div>
-                    <table class="bordered striped centered highlight responsive-table tabela_endereco"
-                           style="max-height:50%; display:none">
-                        <thead>
-                            <tr>
-                                <th align="left" valign="bottom">
-
-                                </th>
-                                <th align="left" valign="bottom">
-                                    CEP
-                                </th>
-                                <th align="left" valign="bottom">
-                                    UF
-                                </th>
-                                <th align="left" valign="bottom">
-                                    Cidade
-                                </th>
-                                <th align="left" valign="bottom">
-                                    Bairro
-                                </th>
-                                <th align="left" valign="bottom">
-                                    Lougradouro
-                                </th>
-                                <th align="left" valign="bottom">
-                                    Complemento
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody class="destaquelinha" id="tableBody">
-                        </tbody>
-                    </table>
-                </div>
-            </article>
-            <div class="modal-footer col s12" id="footer">
-                <div class="container">
-                    <button type="button" href="#!" class="modal-close waves-effect waves-green btn">Cancelar</button>
-                    <button type="button" id="btnModificar" href="#!" class="modal-close waves-effect waves-green btn">
-                        Modificar
-                    </button>
-                </div>
-            </div>
-        </section>
-    </div>
-</div>
-
 <script>
 
-
-    $("#btnModificar").click(function () {
-        $('.teste').children().find('input').filter(function () {
-            if ($(this).prop('checked') == true) {
-                var elem = $(this).parent().parent().parent();
-                inscreve(elem[0].children);
-            }
-        });
-    });
-
-    function inscreve(o) {
-    //fazer a verificação para saber se tem valor no con[i]
-    //para ativar os campos e bloquear a edição de alguns campos caso não seja vazio
-
-    limparCamposEndEntrega();
-
-    
-    var con = $(o);
-    $('#cepEntrega').val(con[1].textContent);
-    $("#cep").addClass('valid');
-    $("#lblcep").addClass('active');
-
-
-    $('#ufEntrega').val(con[2].textContent);
-    $('#ufEntrega').prop('readonly', true);
-    $("#lblUfEntrega").addClass('active');
-
-    $('#cidadeEntrega').val(con[3].textContent);
-    $('#cidadeEntrega').prop('readonly', true);
-    $("#lblCidadeEntrega").addClass('active');
-
-    if (con[4].textContent.trim() != "") {
-        $('#bairroEntrega').prop("readonly", true);
-        $('#bairroEntrega').val(con[4].textContent);
-        $("#lblBairroEntrega").addClass('active');
-    }
-    else {
-        $('#bairroEntrega').prop("readonly", false);
-    }
-
-    if (con[5].textContent.trim() != "") {
-        $('#enderecoEntrega').prop("readonly", true);
-        $('#enderecoEntrega').val(con[5].textContent);
-        $("#lblEnderecoEntrega").addClass('active');
-    }
-    else {
-        $('#enderecoEntrega').prop("readonly", false);
-    }
-
-    if (con[6].textContent.trim() != "") {
-        $('#compEntrega').val(con[6].textContent);
-        $("#lblComplementoEntrega").addClass('active');
-    }
-}
-
-    function montaTabela(data) {
-        var cols = "";
-        
-        var lst = data["ListaCep"];
-
-        if (lst.length > 0) {
-            if ($('#msg').css("display", "block")) $('#msg').css("display", "none");
-            $('.tabela_endereco').css("display", "block");
-            for (var i = 0; i < lst.length; i++) {
-                cols += "<tr id='linha' class='teste'>";
-                cols += "<td>";
-                cols += "<label><input class='with-gap check' type='radio' value='" + i + "'></input><span></span></label>";
-                cols += "</td>";
-                cols += "<td>" + lst[i].Cep + "</td>";
-                cols += "<td>" + lst[i].Uf + "</td>";
-                cols += "<td>" + lst[i].Cidade + "</td>";
-                cols += "<td>" + lst[i].Bairro + "</td>";
-                cols += "<td>" + lst[i].Endereco + "</td>";
-                cols += "<td>" + lst[i].LogradouroComplemento + "</td></tr>";
-                $("#tableBody").empty().append(cols);
-            }
-
-            $(".teste").click(function () {
-
-                $(this).find('td').each(function (i) {
-                    if ($(this).find('label')) {
-                        $(this).find('label').each(function (s) {
-                            if ($(this).find('input')) {
-                                $(this).find('input').each(function (p) {
-                                    var cbs = document.getElementsByClassName("check");
-                                    for (var i = 0; i < cbs.length; i++) {
-                                        if (cbs[i] !== $(this)) cbs[i].checked = false;
-                                    }
-                                    $(this).prop('checked', true);
-                                })
-                            }
-                        })
-                    }
-                });
-            });
-        }
-        else {
-            if ($('.tabela_endereco').css("display", "block")) $('.tabela_endereco').css("display", "none");
-            var msg = "<span> Endereço não encontrado!</span>";
-            $("#msg").css("display", "block");
-            $("#msg").empty().append(msg);
-        }
-
-
-    }
-
-    function limparCamposEndEntrega() {
-        $('#cepEntrega').val('');
-        $('#ufEntrega').val('');
-        $('#cidadeEntrega').val('');
-        $('#bairroEntrega').val('');
-        $('#enderecoEntrega').val('');
-        $('#compEntrega').val('');
-        $('#numEntrega').val('');
-    }
-
-    
-
-    $('#btnBuscar').on('click', function () {
-        $.ajax({
-            url: "../Cep/BuscarCepPorEndereco/",
-            type: "GET",
-            data: { nendereco: $('#nendereco').val(), localidade: $('#localidade').val(), lstufs: $('#lstufs').val() },
-            dataType: "json",
-            success: function (t) {
-                montaTabela(t);
-            }
-        });
-    })
-
-    $("#lstufs").on('change', function (e) {
-        if ($('#localidade').val() != "") {
-            $('#localidade').val("");
-        }
-        if ($('#nendereco').val() != "") {
-            $('#nendereco').val("");
-        }
-
-        $.ajax({
-            url: "../Cep/BuscarLocalidades/",
-            type: "GET",
-            data: { uf: $(this).val() },
-            dataType: "json",
-            success: function (t) {
-                var city = {};
-                $.each(t, function (i, d) {
-                    city[d] = null;
-                });
-                $('input.autocomplete').autocomplete({
-                    data: city,
-                });
-            }
-        });
-    });
-
-    $("#lstufs").ready(function () {
-        $.ajax({
-            url: "../Cep/BuscarUfs/",
-            type: "GET",
-            dataType: "json",
-            success: function (data) {
-                var select = $('#lstufs');
-                $.each(data, function (i, d) {
-                    select.append("<option value='" + d + "'>" + d + "</option>");
-                });
-            }
-        });
-    });
-
-    function NaoseiCep() {
-        let Modalelem = document.getElementById('naoseicep');
-        let instanceModal = M.Modal.init(Modalelem);
-        instanceModal.open();
-    };
-
-    function buscarCep() {
-    if ($('#cepEntrega').val() != null) {
-        $('#naoseicep').addClass('pulse');
-
-        
-        $.ajax({
-            url: "../Cep/BuscarCep/",
-            type: "GET",
-            data: { cep: $('#cepEntrega').val() },
-            dataType: "json",
-            success: function (data) {
-                
-                if (data[0].Endereco != "") {
-                    $('#enderecoEntrega').prop("readonly", true);
-                    $("#enderecoEntrega").val(data[0].Endereco);
-                    $("#lblEnderecoEntrega").addClass('active');
-                }
-                else {
-                    $('#enderecoEntrega').prop("readonly", false);
-                }
-
-                if (data[0].Bairro != "") {
-                    $("#bairroEntrega").prop("readonly", true);
-                    $("#bairroEntrega").val(data[0].Bairro);
-                    $("#lblBairroEntrega").addClass('active');
-                }
-                else {
-                    $("#bairroEntrega").prop("readonly", false);
-                }
-
-                if (data[0].Cidade != "") {
-                    $("#cidadeEntrega").prop("readonly", true);
-                    $("#cidadeEntrega").val(data[0].Cidade);
-                    $("#lblCidadeEntrega").addClass('active');
-                }
-                else {
-                    $("#cidadeEntrega").prop("readonly", false);
-                }
-
-                if (data[0].Uf != "") {
-                    $("#ufEntrega").prop("readonly", true);
-                    $("#ufEntrega").val(data[0].Uf);
-                    $("#lblUfEntrega").addClass('active');
-                }
-                else {
-                    $("#ufEntrega").prop("readonly", false);
-                }
-
-                if (data[0].logradouroComplemento != "" &&
-                    data[0].logradouroComplemento != 'undefined' &&
-                    data[0].logradouroComplemento != null) {
-                    
-                    $('#compEntrega').val(data[0].LogradouroComplemento);
-                    $('#lblComplementoEntrega').addClass('active');
-                }
-
-                $('#naoseicep').removeClass('pulse');
-            },
-            error: function(data) {
-                console.log(data);
-            }
-        })
-    }
-}
-
-
-</script>
-@*<script>
     requirejs(["Views/Cep/Index"], function (util) {
     });
-</script>*@
+</script>
 
-<style>
-
-    .dropdown-content {
-        max-height: 400px;
-        border-radius: 1em;
-    }
-
-    tbody {
-        display: block;
-        height: auto;
-        max-height: 300px;
-        overflow: auto;
-    }
-
-        thead, tbody tr {
-            display: table;
-            width: 100%;
-            table-layout: fixed;
-        }
-
-    thead {
-        width: calc( 100% - 1em )
-    }
-
-    table {
-        width: 100%;
-    }
-
-    #footer {
-        text-align: center;
-        padding: 1em;
-        flex-grow: 0;
-        flex-shrink: 0;
-    }
-
-    .fixo {
-        display: flex;
-        flex-direction: column;
-        height: 25%;
-        min-height: 20vh;
-    }
-
-    .destaquelinha :hover {
-        background-color: #d1d1d1 !important;
-    }
-
-    
-
-    .dropdown-content select-dropdown {
-        position: fixed;
-    }
-
-    .tabela_endereco {
-        border: 1px solid #ccc;
-        border-collapse: collapse;
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        table-layout: fixed;
-    }
-
-        .tabela_endereco caption {
-            font-size: 1.5em;
-            margin: 0.5em 0 0.75em;
-        }
-
-        .tabela_endereco tr {
-            background-color: #fbfbfb;
-            border: 1px solid #ddd;
-            padding: 0.35em;
-        }
-
-        .tabela_endereco th,
-        .tabela_endereco td {
-            padding: 0.625em;
-            padding-left: 0.4em;
-            padding-right: 0.4em;
-            /*//text-align: center;*/
-        }
-
-        .tabela_endereco tbody td {
-            white-space: initial;
-            line-height: initial;
-        }
-
-        .tabela_endereco th {
-            font-size: 0.85em;
-            letter-spacing: 0.1em;
-        }
-
-    /*.tabela_endereco .mat-form-field {
-            padding: 0em;
-            padding-left: 0.4em;
-            padding-right: 0.4em;
-        }*/
-
-    .modal {
-        max-height: 80% !important;
-        overflow-y: inherit !important;
-        border-radius: 4px !important;
-    }
-</style>
