@@ -91,32 +91,33 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega
 #line hidden
 #line 14
  testRunner.Given("No ambiente \"Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" +
-                    "\" erro \"Preencha o endereço de entrega!!\" é \"PREENCHA O ENDEREÇO DE ENTREGA.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+                    "\" mapear erro \"Preencha o endereço de entrega!!\" para \"PREENCHA O ENDEREÇO DE EN" +
+                    "TREGA.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 15
  testRunner.Given("No ambiente \"Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" +
-                    "\" erro \"Preencha o número do endereço de entrega!!\" é \"PREENCHA O NÚMERO DO ENDE" +
-                    "REÇO DE ENTREGA.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+                    "\" mapear erro \"Preencha o número do endereço de entrega!!\" para \"PREENCHA O NÚME" +
+                    "RO DO ENDEREÇO DE ENTREGA.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 16
  testRunner.Given("No ambiente \"Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" +
-                    "\" erro \"Preencha o bairro do endereço de entrega!!\" é \"PREENCHA O BAIRRO DO ENDE" +
-                    "REÇO DE ENTREGA.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+                    "\" mapear erro \"Preencha o bairro do endereço de entrega!!\" para \"PREENCHA O BAIR" +
+                    "RO DO ENDEREÇO DE ENTREGA.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 17
  testRunner.Given("No ambiente \"Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" +
-                    "\" erro \"Preencha a cidade do endereço de entrega!!\" é \"PREENCHA A CIDADE DO ENDE" +
-                    "REÇO DE ENTREGA.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+                    "\" mapear erro \"Preencha a cidade do endereço de entrega!!\" para \"PREENCHA A CIDA" +
+                    "DE DO ENDEREÇO DE ENTREGA.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 18
  testRunner.Given("No ambiente \"Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" +
-                    "\" erro \"UF inválida no endereço de entrega!!\" é \"UF INVÁLIDA NO ENDEREÇO DE ENTR" +
-                    "EGA.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+                    "\" mapear erro \"UF inválida no endereço de entrega!!\" para \"UF INVÁLIDA NO ENDERE" +
+                    "ÇO DE ENTREGA.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 19
  testRunner.Given("No ambiente \"Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" +
-                    "\" erro \"CEP inválido no endereço de entrega!!\" é \"CEP INVÁLIDO NO ENDEREÇO DE EN" +
-                    "TREGA.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+                    "\" mapear erro \"CEP inválido no endereço de entrega!!\" para \"CEP INVÁLIDO NO ENDE" +
+                    "REÇO DE ENTREGA.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
         }
         

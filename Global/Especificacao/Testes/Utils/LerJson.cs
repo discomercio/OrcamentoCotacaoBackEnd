@@ -18,6 +18,7 @@ namespace Especificacao.Testes.Utils
             stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(nomeArquivo);
             if (stream == null)
             {
+                Testes.Utils.LogTestes.LogTestes.GetInstance().LogMensagem($"LerArquivoEmbutido: {nomeArquivo}" + $"StackTrace: '{Environment.StackTrace}'");
                 Assert.Equal("", nomeArquivo + $"StackTrace: '{Environment.StackTrace}'");
                 throw new NullReferenceException(nomeArquivo);
             }

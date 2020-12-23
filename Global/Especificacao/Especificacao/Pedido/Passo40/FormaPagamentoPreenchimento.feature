@@ -3,8 +3,9 @@ Feature: FormaPagamentoPreenchimento
 
 
 Background: não executado na api magento
-	#ignoramos na API magento porque não temos todos os campos, é somente PF, e estava dando mais probelma do que testando alguma coisa
+	#ignoramos na API magento porque é feito em Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\EspecificacaoAdicional\FormaPagtoCriacaoMagentoDto.feature
 	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
+
 	#para testar, afazer, voltar isto para testar o pedido!!!
 	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 

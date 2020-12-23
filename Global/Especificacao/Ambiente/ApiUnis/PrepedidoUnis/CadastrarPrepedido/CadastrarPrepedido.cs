@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using InfraBanco.Constantes;
+using Microsoft.Extensions.DependencyInjection;
 using PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto;
 using System;
 using System.Collections.Generic;
@@ -56,6 +57,124 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
             GivenPrepedidoBase();
         }
 
+        public void RecalcularTotaisDoPedido()
+        {
+            decimal totalCompare = 0;
+            decimal totalRaCompare = 0;
+            foreach (var x in prePedidoUnisDto.ListaProdutos)
+            {
+                totalCompare += Math.Round((decimal)(x.Preco_Venda * x.Qtde), 2);
+                totalRaCompare += Math.Round((decimal)(x.Preco_NF * x.Qtde), 2);
+            }
+            prePedidoUnisDto.VlTotalDestePedido = totalCompare;
+            prePedidoUnisDto.ValorTotalDestePedidoComRA = totalRaCompare;
+        }
+        public void DeixarFormaDePagamentoConsistente()
+        {
+            EstaticoDeixarFormaDePagamentoConsistente(prePedidoUnisDto);
+        }
+
+        //3 versoes da mesma rotina...
+        public static void EstaticoDeixarFormaDePagamentoConsistente(PrePedidoUnisDto prePedidoUnisDto)
+        {
+            var total = prePedidoUnisDto.ValorTotalDestePedidoComRA;
+            var fp = prePedidoUnisDto.FormaPagtoCriacao;
+            switch (fp.Tipo_Parcelamento.ToString())
+            {
+                case Constantes.COD_FORMA_PAGTO_A_VISTA:
+                    fp.Op_av_forma_pagto = Constantes.ID_FORMA_PAGTO_DEPOSITO;
+                    break;
+                case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO:
+                    fp.C_pc_qtde = fp.CustoFinancFornecQtdeParcelas;
+                    fp.C_pc_valor = total / fp.C_pc_qtde;
+                    break;
+                case Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA:
+                    fp.C_pce_entrada_valor = 3;
+                    fp.C_pce_prestacao_qtde = fp.CustoFinancFornecQtdeParcelas;
+                    fp.C_pce_prestacao_valor = (total - fp.C_pce_entrada_valor) / fp.C_pce_prestacao_qtde;
+                    fp.C_pce_prestacao_periodo = 5;
+                    fp.Op_pce_entrada_forma_pagto = Constantes.ID_FORMA_PAGTO_DEPOSITO;
+                    fp.Op_pce_prestacao_forma_pagto = Constantes.ID_FORMA_PAGTO_DEPOSITO;
+                    break;
+                case Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA:
+                    fp.C_pse_demais_prest_periodo = 10;
+                    fp.C_pse_demais_prest_qtde = fp.CustoFinancFornecQtdeParcelas;
+                    fp.C_pse_prim_prest_apos = 10;
+                    fp.C_pse_prim_prest_valor = 5;
+                    fp.C_pse_demais_prest_valor = (total - fp.C_pse_prim_prest_valor) / fp.C_pse_demais_prest_qtde;
+                    fp.Op_pse_demais_prest_forma_pagto = Constantes.ID_FORMA_PAGTO_DEPOSITO;
+                    fp.Op_pse_prim_prest_forma_pagto = Constantes.ID_FORMA_PAGTO_DEPOSITO;
+                    break;
+                case Constantes.COD_FORMA_PAGTO_PARCELA_UNICA:
+                    fp.C_pu_valor = total;
+                    fp.C_pu_vencto_apos = 5;
+                    fp.Op_pu_forma_pagto = Constantes.ID_FORMA_PAGTO_DEPOSITO;
+                    break;
+                case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA:
+                    fp.C_pc_maquineta_qtde = fp.CustoFinancFornecQtdeParcelas;
+                    fp.C_pc_maquineta_valor = total / fp.C_pc_maquineta_qtde;
+                    break;
+            }
+        }
+        //3 versoes da mesma rotina...
+        public static void EstaticoDeixarFormaDePagamentoConsistente(MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoMagentoDto prePedidoUnisDto)
+        {
+            var total = prePedidoUnisDto.VlTotalDestePedido;
+            var fp = prePedidoUnisDto.FormaPagtoCriacao;
+            switch (fp.Tipo_Parcelamento.ToString())
+            {
+                case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO:
+                    fp.C_pc_qtde = 2;
+                    fp.C_pc_valor = total / fp.C_pc_qtde;
+                    break;
+                case Constantes.COD_FORMA_PAGTO_PARCELA_UNICA:
+                    fp.C_pu_valor = total;
+                    break;
+            }
+        }
+        //3 versoes da mesma rotina...
+        public static void EstaticoDeixarFormaDePagamentoConsistente(global::Loja.Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto prePedidoUnisDto)
+        {
+            var total = prePedidoUnisDto.ValorTotalDestePedidoComRA;
+            var fp = prePedidoUnisDto.FormaPagtoCriacao;
+            switch (fp.Tipo_parcelamento.ToString())
+            {
+                case Constantes.COD_FORMA_PAGTO_A_VISTA:
+                    fp.Op_av_forma_pagto = Constantes.ID_FORMA_PAGTO_DEPOSITO;
+                    break;
+                case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO:
+                    fp.C_pc_qtde = fp.CustoFinancFornecQtdeParcelas;
+                    fp.C_pc_valor = total / fp.C_pc_qtde;
+                    break;
+                case Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA:
+                    fp.C_pce_entrada_valor = 3;
+                    fp.C_pce_prestacao_qtde = fp.CustoFinancFornecQtdeParcelas;
+                    fp.C_pce_prestacao_valor = (total - fp.C_pce_entrada_valor) / fp.C_pce_prestacao_qtde;
+                    fp.C_pce_prestacao_periodo = 5;
+                    fp.Op_pce_entrada_forma_pagto = Constantes.ID_FORMA_PAGTO_DEPOSITO;
+                    fp.Op_pce_prestacao_forma_pagto = Constantes.ID_FORMA_PAGTO_DEPOSITO;
+                    break;
+                case Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA:
+                    fp.C_pse_demais_prest_periodo = 10;
+                    fp.C_pse_demais_prest_qtde = fp.CustoFinancFornecQtdeParcelas;
+                    fp.C_pse_prim_prest_apos = 10;
+                    fp.C_pse_prim_prest_valor = 5;
+                    fp.C_pse_demais_prest_valor = (total - fp.C_pse_prim_prest_valor) / fp.C_pse_demais_prest_qtde;
+                    fp.Op_pse_demais_prest_forma_pagto = Constantes.ID_FORMA_PAGTO_DEPOSITO;
+                    fp.Op_pse_prim_prest_forma_pagto = Constantes.ID_FORMA_PAGTO_DEPOSITO;
+                    break;
+                case Constantes.COD_FORMA_PAGTO_PARCELA_UNICA:
+                    fp.C_pu_valor = total;
+                    fp.C_pu_vencto_apos = 5;
+                    fp.Op_pu_forma_pagto = Constantes.ID_FORMA_PAGTO_DEPOSITO;
+                    break;
+                case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA:
+                    fp.C_pc_maquineta_qtde = 2;
+                    fp.C_pc_maquineta_valor = total / fp.C_pc_maquineta_qtde;
+                    break;
+            }
+        }
+
         public void WhenInformo(string campo, string valor)
         {
             if (ignorarFeature) return;
@@ -91,6 +210,30 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
                     break;
             }
         }
+
+        public void ListaDeItensComXitens(int numeroItens)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensComXitens(numeroItens, this);
+            numeroItens = numeroItens < 0 ? 0 : numeroItens;
+            numeroItens = numeroItens > 100? 100 : numeroItens;
+            var lp = prePedidoUnisDto.ListaProdutos;
+            while (lp.Count < numeroItens)
+                lp.Add(new PrePedidoProdutoPrePedidoUnisDto());
+            while (lp.Count > numeroItens)
+                lp.RemoveAt(lp.Count - 1);
+        }
+
+        public void ListaDeItensInformo(int numeroItem, string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensInformo(numeroItem, campo, valor, this);
+            var item = prePedidoUnisDto.ListaProdutos[numeroItem];
+            if (Testes.Utils.WhenInformoCampo.InformarCampo(campo, valor, item))
+                return;
+            Assert.Equal("", $"{campo} desconhecido na rotina Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.ListaDeItensInformo");
+        }
+
         public void ThenErroStatusCode(int statusCode)
         {
             if (ignorarFeature) return;

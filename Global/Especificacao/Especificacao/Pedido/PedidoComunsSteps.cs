@@ -199,6 +199,7 @@ namespace Especificacao.Especificacao.Pedido
         }
 
         [Given(@"No ambiente ""(.*)"" erro ""(.*)"" é ""(.*)""")]
+        [Given(@"No ambiente ""(.*)"" mapear erro ""(.*)"" para ""(.*)""")]
         public void GivenNoAmbienteErroE(string p0, string p1, string p2)
         {
             Testes.Utils.MapeamentoMensagens.GivenNoAmbienteErroE(p0, p1, p2);
@@ -224,6 +225,32 @@ namespace Especificacao.Especificacao.Pedido
         {
             Testes.Utils.LogTestes.LogOperacoes2.SemNenhumErro(this);
             base.ThenSemNenhumErro();
+        }
+
+        [When(@"Lista de itens ""(.*)"" informo ""(.*)"" = ""(.*)""")]
+        public void WhenListaDeItensInformo(int numeroItem, string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensInformo(numeroItem, campo, valor, this);
+            base.ListaDeItensInformo(numeroItem, campo, valor);
+        }
+
+        [When(@"Recalcular totais do pedido")]
+        public void WhenRecalcularTotaisDoPedido()
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.RecalcularTotaisDoPedido(this);
+            base.RecalcularTotaisDoPedido();
+        }
+        [When(@"Deixar forma de pagamento consistente")]
+        public void WhenDeixarFormaDePagamentoConsistente()
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.DeixarFormaDePagamentoConsistente(this);
+            base.DeixarFormaDePagamentoConsistente();
+        }
+        [When(@"Lista de itens com ""(.*)"" itens")]
+        public void WhenListaDeItensComXitens(int p0)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensComXitens(p0, this);
+            base.ListaDeItensComXitens(p0);
         }
 
     }

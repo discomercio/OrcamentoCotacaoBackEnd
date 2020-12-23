@@ -19,6 +19,31 @@ namespace Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadastrar
         private string lojaUsuario = "";
         private string usuario = "";
         private bool vendedorExterno = false;
+        protected override void AbstractListaDeItensComXitens(int numeroItens)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensComXitens(numeroItens, this);
+            numeroItens = numeroItens < 0 ? 0 : numeroItens;
+            numeroItens = numeroItens > 100 ? 100 : numeroItens;
+            var lp = pedidoDto.ListaProdutos;
+            while (lp.Count < numeroItens)
+                lp.Add(new global::Loja.Bll.Dto.PedidoDto.DetalhesPedido.PedidoProdutosDtoPedido());
+            while (lp.Count > numeroItens)
+                lp.RemoveAt(lp.Count - 1);
+        }
+        protected override void AbstractRecalcularTotaisDoPedido()
+        {
+            decimal totalCompare = 0;
+            decimal totalRaCompare = 0;
+            foreach (var x in pedidoDto.ListaProdutos)
+            {
+                totalCompare += Math.Round((decimal)(x.Preco_Venda * x.Qtde ?? (short)0), 2);
+                totalRaCompare += Math.Round((decimal)(x.Preco_NF * x.Qtde ?? (short)0), 2);
+            }
+            pedidoDto.VlTotalDestePedido = totalCompare;
+            pedidoDto.ValorTotalDestePedidoComRA = totalRaCompare;
+        }
+
 
         protected override List<string> AbstractListaErros()
         {
@@ -26,7 +51,10 @@ namespace Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadastrar
             var ret = ret1.Result;
             return ret.ListaErros;
         }
-
+        protected override void AbstractDeixarFormaDePagamentoConsistente()
+        {
+            Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido.EstaticoDeixarFormaDePagamentoConsistente(pedidoDto);
+        }
         protected override void AbstractDadoBase()
         {
             pedidoDto = CadastrarPedidoDados.PedidoBase(out lojaUsuario, out usuario, out vendedorExterno);
@@ -48,6 +76,17 @@ namespace Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadastrar
         {
             pedidoDto = CadastrarPedidoDados.PedidoBaseClientePJComEnderecoDeEntrega(out lojaUsuario, out usuario, out vendedorExterno);
         }
+
+        protected override void AbstractListaDeItensInformo(int numeroItem, string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensInformo(numeroItem, campo, valor, this);
+            var item = pedidoDto.ListaProdutos[numeroItem];
+            if (Testes.Utils.WhenInformoCampo.InformarCampo(campo, valor, item))
+                return;
+            Assert.Equal("", $"{campo} desconhecido na rotina Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.ListaDeItensInformo");
+        }
+
 
         protected override void AbstractInformo(string campo, string valor)
         {

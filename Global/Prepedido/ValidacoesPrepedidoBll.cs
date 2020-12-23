@@ -57,6 +57,8 @@ namespace Prepedido
             //validar se os coeficientes estão ok
             ValidarCustoFinancFornecCoeficiente(prepedido.ListaProdutos, lstCoeficiente, lstErros);
 
+            //valida valores zerados ou negativos
+            ValidarPrecoQuantidadeZerada(prepedido.ListaProdutos, lstErros);
 
             if (lstErros.Count == 0)
             {
@@ -146,6 +148,21 @@ namespace Prepedido
                     lstErros.Add("Fabricante cód.(" + x.Fabricante + ") não possui cadastro de coeficiente!");
                 }
             });
+        }
+
+        public void ValidarPrecoQuantidadeZerada(List<PrepedidoProdutoPrepedidoDados> lstProdutos, List<string> lstErros)
+        {
+            foreach (var p in lstProdutos)
+            {
+                if (p.Qtde <= 0)
+                    lstErros.Add($"Produto {p.Fabricante} {p.Produto} com Qtde menor ou igual a zero!");
+                if (p.Preco_Lista <= 0)
+                    lstErros.Add($"Produto {p.Fabricante} {p.Produto} com Preco_Lista menor ou igual a zero!");
+                if (p.Preco_NF <= 0)
+                    lstErros.Add($"Produto {p.Fabricante} {p.Produto} com Preco_NF menor ou igual a zero!");
+                if (p.Preco_Venda <= 0)
+                    lstErros.Add($"Produto {p.Fabricante} {p.Produto} com Preco_Venda menor ou igual a zero!");
+            }
         }
 
         public async Task<IEnumerable<CoeficienteDados>> BuscarListaCoeficientesFornecedores(List<string> lstFornecedores, int qtdeParcelas, string siglaFP)
@@ -299,8 +316,8 @@ namespace Prepedido
 
             prepedido.ListaProdutos.ForEach(x =>
             {
-                totalCompare += Math.Round((decimal)(x.Preco_Venda * x.Qtde), 2);
-                totalRaCompare += Math.Round((decimal)(x.Preco_NF * x.Qtde), 2);
+                totalCompare += Math.Round((decimal)(x.Preco_Venda * (x.Qtde ?? 0)), 2);
+                totalRaCompare += Math.Round((decimal)(x.Preco_NF * (x.Qtde ?? 0)), 2);
             });
 
             if (totalCompare != (decimal)prepedido.Vl_total)

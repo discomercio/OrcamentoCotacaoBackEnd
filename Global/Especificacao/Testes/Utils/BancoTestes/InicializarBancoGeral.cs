@@ -124,6 +124,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             using Stream? stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(nomeArquivo);
             if (stream == null)
             {
+                Testes.Utils.LogTestes.LogOperacoes2.Excecao("InicializarTabela: " + nomeArquivo + $"StackTrace: '{Environment.StackTrace}'", this);
                 Assert.Equal("", nomeArquivo + $"StackTrace: '{Environment.StackTrace}'");
                 throw new NullReferenceException(nomeArquivo);
             }
@@ -192,6 +193,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
                     InicializarTabela<TprazoPagtoVisanet>(db.TprazoPagtoVisanets, null, db, true);
                     break;
                 default:
+                    Testes.Utils.LogTestes.LogOperacoes2.Excecao($"Especificacao.Testes.Utils.BancoTestes.InicializarBancoGeral.LimparTabela nome de tabela desconhecido: {tabela}" + $"StackTrace: '{Environment.StackTrace}'", this);
                     throw new ArgumentException($"Especificacao.Testes.Utils.BancoTestes.InicializarBancoGeral.LimparTabela nome de tabela desconhecido: {tabela}");
             }
             db.SaveChanges();

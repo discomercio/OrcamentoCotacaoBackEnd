@@ -14,6 +14,10 @@ namespace Especificacao.Testes.Pedido
         protected abstract void AbstractDadoBaseClientePJ();
         protected abstract void AbstractDadoBaseClientePJComEnderecoDeEntrega();
         protected abstract void AbstractInformo(string p0, string p1);
+        protected abstract void AbstractListaDeItensInformo(int numeroItem, string campo, string valor);
+        protected abstract void AbstractRecalcularTotaisDoPedido();
+        protected abstract void AbstractDeixarFormaDePagamentoConsistente();
+        protected abstract void AbstractListaDeItensComXitens(int numeroItens);
         protected abstract List<string> AbstractListaErros();
         #endregion
 
@@ -180,6 +184,19 @@ namespace Especificacao.Testes.Pedido
             AbstractDadoBaseClientePJ();
         }
 
+        public void RecalcularTotaisDoPedido()
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.RecalcularTotaisDoPedido(this);
+            AbstractRecalcularTotaisDoPedido();
+        }
+        public void DeixarFormaDePagamentoConsistente()
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.DeixarFormaDePagamentoConsistente(this);
+            AbstractDeixarFormaDePagamentoConsistente();
+        }
+
         public void GivenDadoBaseComEnderecoDeEntrega()
         {
             if (ignorarFeature) return;
@@ -205,5 +222,19 @@ namespace Especificacao.Testes.Pedido
 
         public void GivenPedidoBaseClientePF() => GivenDadoBaseClientePF();
         public void GivenPedidoBaseClientePJ() => GivenDadoBaseClientePJ();
+
+        public void ListaDeItensInformo(int numeroItem, string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensInformo(numeroItem, campo, valor, this);
+            AbstractListaDeItensInformo(numeroItem, campo, valor);
+        }
+
+        public void ListaDeItensComXitens(int numeroItens)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensComXitens(numeroItens, this);
+            AbstractListaDeItensComXitens(numeroItens);
+        }
     }
 }

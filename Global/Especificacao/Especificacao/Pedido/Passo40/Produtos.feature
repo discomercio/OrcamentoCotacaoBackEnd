@@ -2,24 +2,23 @@
 @Especificacao.Pedido.Passo40
 Feature: Produtos
 
-Scenario: Configuração
-	Given Nome deste item "Especificacao.Pedido.Passo40.Produtos"
-	Given Implementado em "Especificacao.Pedido.Pedido"
-
-
 Scenario: Sem quantidade zero
 	#loja/PedidoNovoConsiste.asp
 	#				if .qtde <= 0 then
 	#					alerta=texto_add_br(alerta)
 	#					alerta=alerta & "Produto " & .produto & " do fabricante " & .fabricante & ": quantidade " & cstr(.qtde) & " é inválida."
 	Given Pedido base
-	When Lista de itens "0" informo "qtde" = 0
-	Then Erro "Item está com quatidade inválida"
+	When Lista de itens "0" informo "qtde" = "0"
+	And Recalcular totais do pedido
+	And Deixar forma de pagamento consistente
+	Then Erro "regex .* com Qtde menor ou igual a zero!"
 
 Scenario: Sem quantidade zero 2
 	Given Pedido base
-	When Lista de itens "0" informo "qtde" = -1
-	Then Erro "Item está com quatidade inválida"
+	When Lista de itens "0" informo "qtde" = "-1"
+	And Recalcular totais do pedido
+	And Deixar forma de pagamento consistente
+	Then Erro "regex .* com Qtde menor ou igual a zero!"
 
 Scenario: Sem produtos compostos - t_EC_PRODUTO_COMPOSTO_ITEM
 	##loja/PedidoNovoConsiste.asp
@@ -78,15 +77,40 @@ Scenario: Produto disponível para a loja
 Scenario: Máximo de itens por pedido
 	#alerta=alerta & "O número de itens que está sendo cadastrado (" & CStr(n) & ") excede o máximo permitido por pedido (" & CStr(MAX_ITENS) & ")!!"
 	Given Pedido base
-	And Colocar 13 itens no pedido
-	Then Erro "regex .*excede o máximo permitido por pedido.*"
+	When Lista de itens com "13" itens
+	And Recalcular totais do pedido
+	And Deixar forma de pagamento consistente
+	Then Erro "É permitido apenas 12 itens."
 
 
 Scenario: Sem produtos repetidos
 	#loja/PedidoNovoConsiste.asp
 	#						alerta=alerta & "Produto " & .produto & " do fabricante " & .fabricante & ": linha " & renumera_com_base1(Lbound(v_item),i) & " repete o mesmo produto da linha " & renumera_com_base1(Lbound(v_item),j) & "."
-	When Lista de itens copio item "1" para item "0"
+	Given Pedido base
+	When Lista de itens "0" informo "produto" = "003220"
+	When Lista de itens "0" informo "fabricante" = "003"
+	When Lista de itens "0" informo "qtde" = "1"
+	When Lista de itens "1" informo "produto" = "003221"
+	When Lista de itens "1" informo "fabricante" = "003"
+	When Lista de itens "1" informo "qtde" = "2"
+	And Recalcular totais do pedido
+	And Deixar forma de pagamento consistente
 	Then Erro "regex .*repete o mesmo produto da linha.*"
+
+
+Scenario: Sem produtos
+	Given Pedido base
+	When Lista de itens com "0" itens
+	And Recalcular totais do pedido
+	And Deixar forma de pagamento consistente
+	Then Erro "Não há itens na lista de produtos!"
+
+Scenario: Sem produtos2
+	Given Pedido base COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA
+	When Lista de itens com "0" itens
+	And Recalcular totais do pedido
+	And Deixar forma de pagamento consistente
+	Then Erro "Não há itens na lista de produtos!"
 
 
 Scenario: // CONSISTÊNCIA PARA VALOR ZERADO
@@ -126,28 +150,20 @@ Scenario: // CONSISTÊNCIA PARA VALOR ZERADO
 	#			next
 	#		end if
 	Given Pedido base
-	And Informo produto "0" campo "vl_unitario" = "0"
-	Then Erro "regex .*está com valor de venda zerado.*"
+	When Lista de itens "0" informo "preco_venda" = "-1"
+	And Recalcular totais do pedido
+	And Deixar forma de pagamento consistente
+	Then Erro "regex .* com preco_venda menor ou igual a zero!"
 
 Scenario: // CONSISTÊNCIA PARA VALOR ZERADO 2
 	Given Pedido base
-	And Informo produto "0" campo "preco_venda" = "-1"
-	Then Erro "regex .*está com valor de venda zerado.*"
+	When Lista de itens "0" informo "preco_venda" = "0"
+	And Recalcular totais do pedido
+	And Deixar forma de pagamento consistente
+	Then Erro "regex .* com preco_venda menor ou igual a zero!"
 
-Scenario: // CONSISTÊNCIA PARA VALOR ZERADO permite_RA_status 1
-	Given Pedido base
-	And Informo produto "0" campo "preco_NF" = "0"
-	And Informo "rb_RA" = "S"
-	And Informo "permite_RA_status" = "1"
-	Then Erro "regex .*está com valor de venda zerado.*"
-
-Scenario: // CONSISTÊNCIA PARA VALOR ZERADO permite_RA_status 2
-	#deve dar erro mesmo que não tenha RA
-	Given Pedido base
-	And Informo produto "0" campo "preco_NF" = "0"
-	And Informo "rb_RA" = "N"
-	And Informo "permite_RA_status" = "0"
-	Then Erro "regex .*está com valor de venda zerado.*"
+#nao testamos o elseif ((rb_RA = "S") And (permite_RA_status = 1)) And (.preco_NF <= 0) then
+#porque sempre testamos, mais abaixo
 
 Scenario: // CONSISTÊNCIA PARA VALOR negativos
 	#loja/PedidoNovoConsiste.asp
@@ -155,5 +171,19 @@ Scenario: // CONSISTÊNCIA PARA VALOR negativos
 	#	onkeypress="if (digitou_enter(true)) fPED.c_vl_unitario[<%=Cstr(i-1)%>].focus(); filtra_moeda_positivo();" onblur="this.value=formata_moeda(this.value); trata_edicao_RA(<%=Cstr(i-1)%>); recalcula_RA(); recalcula_RA_Liquido(); recalcula_parcelas();"
 	#Quer dizer, os preços devem ser positivos
 	Given Pedido base
-	And Informo produto "0" campo "vl_unitario" = "-1"
-	Then Erro "regex .*está com valor de venda zerado.*"
+	When Lista de itens "0" informo "preco_NF" = "0"
+	And Recalcular totais do pedido
+	And Deixar forma de pagamento consistente
+	Then Erro "regex .* com preco_NF menor ou igual a zero!"
+
+	Given Pedido base
+	When Lista de itens "1" informo "preco_NF" = "0"
+	And Recalcular totais do pedido
+	And Deixar forma de pagamento consistente
+	Then Erro "regex .* com preco_NF menor ou igual a zero!"
+
+	Given Pedido base
+	When Lista de itens "1" informo "preco_NF" = "-1"
+	And Recalcular totais do pedido
+	And Deixar forma de pagamento consistente
+	Then Erro "regex .* com preco_NF menor ou igual a zero!"

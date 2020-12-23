@@ -39,6 +39,36 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
             return res;
         }
 
+        protected override void AbstractRecalcularTotaisDoPedido()
+        {
+            decimal totalCompare = 0;
+            decimal totalRaCompare = 0;
+            foreach (var x in pedidoMagentoDto.ListaProdutos)
+            {
+                totalCompare += Math.Round((decimal)(x.Preco_Venda * x.Qtde), 2);
+                totalRaCompare += Math.Round((decimal)(x.Preco_NF * x.Qtde), 2);
+            }
+            pedidoMagentoDto.VlTotalDestePedido = totalCompare;
+            //nao temos este campo: pedidoMagentoDto.ValorTotalDestePedidoComRA = totalRaCompare;
+        }
+        protected override void AbstractListaDeItensComXitens(int numeroItens)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensComXitens(numeroItens, this);
+            numeroItens = numeroItens < 0 ? 0 : numeroItens;
+            numeroItens = numeroItens > 100 ? 100 : numeroItens;
+            var lp = pedidoMagentoDto.ListaProdutos;
+            while (lp.Count < numeroItens)
+                lp.Add(new MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoProdutoMagentoDto());
+            while (lp.Count > numeroItens)
+                lp.RemoveAt(lp.Count - 1);
+        }
+
+        protected override void AbstractDeixarFormaDePagamentoConsistente()
+        {
+            Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido.EstaticoDeixarFormaDePagamentoConsistente(pedidoMagentoDto);
+        }
+
         protected override List<string> AbstractListaErros()
         {
             ActionResult res = AcessarControladorMagento();
@@ -79,6 +109,16 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
         {
             pedidoMagentoDto = CadastrarPedidoDados.PedidoBaseClientePJ();
             pedidoMagentoDto.TokenAcesso = Ambiente.ApiMagento.InjecaoDependencias.TokenAcessoApiMagento();
+        }
+
+        protected override void AbstractListaDeItensInformo(int numeroItem, string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensInformo(numeroItem, campo, valor, this);
+            var item = pedidoMagentoDto.ListaProdutos[numeroItem];
+            if (Testes.Utils.WhenInformoCampo.InformarCampo(campo, valor, item))
+                return;
+            Assert.Equal("", $"{campo} desconhecido na rotina Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.ListaDeItensInformo");
         }
 
         protected override void AbstractInformo(string campo, string valor)

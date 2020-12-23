@@ -76,9 +76,29 @@ namespace Especificacao.Testes.Utils.LogTestes
             string controllerFullName = LogTestes.NomeTipo(controllerType);
             GravarLog(controllerFullName + ": " + msg, objeto);
         }
+        public static void ListaDeItensInformo(int numeroItem, string campo, string valor, object objeto)
+        {
+            GravarLog($@"ListaDeItensInformo ""{numeroItem}"", ""{campo}"" = ""{valor}""", objeto);
+        }
+        public static void RecalcularTotaisDoPedido(object objeto)
+        {
+            GravarLog($@"RecalcularTotaisDoPedido ", objeto);
+        }
+        public static void DeixarFormaDePagamentoConsistente(object objeto)
+        {
+            GravarLog($@"DeixarFormaDePagamentoConsistente ", objeto);
+        }
+        public static void ListaDeItensComXitens(int i, object objeto)
+        {
+            GravarLog($@"ListaDeItensComXitens {i}", objeto);
+        }
         public static void MensagemEspecial(string msg, object objeto)
         {
             GravarLog(msg, objeto);
+        }
+        public static void Excecao(string msg, object objeto)
+        {
+            GravarLog("EXCEÇÃO: " + msg, objeto);
         }
         public static class BancoDados
         {
