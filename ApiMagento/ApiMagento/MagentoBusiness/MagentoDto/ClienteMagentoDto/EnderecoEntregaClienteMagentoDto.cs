@@ -57,7 +57,6 @@ Por isso, temos o MaxLength 800 aqui
         [MaxLength(60)]
         public string? EndEtg_email { get; set; }
 
-        [Required]
         [MaxLength(60)]
         public string? EndEtg_email_xml { get; set; }
 

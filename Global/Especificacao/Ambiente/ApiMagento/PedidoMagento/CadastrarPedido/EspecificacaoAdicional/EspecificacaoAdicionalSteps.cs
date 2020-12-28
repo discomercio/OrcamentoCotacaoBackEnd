@@ -20,6 +20,14 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Especi
             Testes.Utils.LogTestes.LogOperacoes2.DadoBase(this);
             cadastrarPedido.GivenDadoBase();
         }
+        [Given(@"Pedido base cliente PJ")]
+        [When(@"Pedido base cliente PJ")]
+        public void GivenPedidoBaseClientePJ()
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.DadoBaseClientePJ(this);
+            cadastrarPedido.GivenPedidoBaseClientePJ();
+        }
+
 
         [Given(@"Informo ""(.*)"" = ""(.*)""")]
         public void GivenInformo(string p0, string p1)

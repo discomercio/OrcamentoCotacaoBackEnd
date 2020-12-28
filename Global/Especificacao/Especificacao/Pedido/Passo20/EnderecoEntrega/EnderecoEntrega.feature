@@ -135,10 +135,6 @@ Scenario: EndEtg_uf errado
 	When Informo "EndEtg_uf" = "BA"
 	Then Erro "Estado não confere!"
 
-Scenario: EndEtg_cep errado
-	When Informo "EndEtg_cep" = "12345678"
-	Then Erro "Endereço Entrega: cep inválido!"
-
 Scenario: EndEtg_cidade errado
 	When Informo "EndEtg_cidade" = "12345678"
 	Then Erro "Cidade não confere"
@@ -155,7 +151,7 @@ Scenario: EndEtg_cidade não no IBGE
 	When Informo "EndEtg_cidade" = "Amapá"
 	Then Sem nenhum erro
 
-#se a cidade existir no OBGE, deve ser a mesma do CEP
+#se a cidade existir no IBGE, deve ser a mesma do CEP
 @ignore
 #todo: afazer: colocar estes testes. Tewm que ver como inicializa o CEP
 Scenario: EndEtg_cidade não no IBGE 2

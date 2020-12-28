@@ -770,8 +770,8 @@ this.FeatureBackground();
  testRunner.And("Informo \"EndEtg_tel_com\" = \"12345678\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 109
- testRunner.Then("Erro \"Endereço de entrega: PJ não pode ter EndEtg_ddd_com_2 (acertar a mensagem)\"" +
-                        "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Erro \"Endereço de entrega: cliente PJ com entrega PF não pode ter EndEtg_ddd_com_" +
+                        "2 (acertar a mensagem)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -815,8 +815,8 @@ this.FeatureBackground();
  testRunner.And("Informo \"EndEtg_tel_com\" = \"12345678\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 114
- testRunner.Then("Erro \"Endereço de entrega: PJ não pode ter EndEtg_ddd_com_2 (acertar a mensagem)\"" +
-                        "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Erro \"Endereço de entrega: cliente PJ com entrega PF não pode ter EndEtg_ddd_com_" +
+                        "2 (acertar a mensagem)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CadastrarPedidoDados.json" />
     <None Remove="Ambiente\Loja\Loja_Bll\Bll\PedidoBll\PedidoBll\CadastrarPedido\CadastrarPedidoDados.json" />
     <None Remove="appsettings.testes.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\Tcliente.json" />
@@ -203,6 +202,10 @@
 
   <ItemGroup>
     <SpecFlowFeatureFiles Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CadastrarPedidoListaDependencias.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\FluxoCadastroPedidoMagento_PF.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
