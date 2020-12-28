@@ -197,11 +197,14 @@
 	cursor: default;
 }
 .ui-menu {
-	list-style: none;
-	padding: 0;
-	margin: 0;
-	display: block;
-	outline: 0;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: block;
+    outline: 0;
+    max-height: 35vw !important;
+    overflow-x: auto !important;
+    /*overflow-y:hidden !important;*/
 }
 .ui-menu .ui-menu {
 	position: absolute;

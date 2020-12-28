@@ -136,39 +136,38 @@ export class ClienteCadastroUtils {
         //retorna null se não tiver nenhum erro
         let constantes = Constantes;
         let clienteCadastroUtils = this;
+        let msg: string = "";
+
         // copiado do ClienteEdita.asp
         if (clienteCadastroUtils.ehPf(dadosClienteCadastroDto)) {
 
-            if (!dadosClienteCadastroDto.ProdutorRural) {
-                return 'Informe se o cliente é produtor rural ou não!<br>';
-            }
             if ((dadosClienteCadastroDto.ProdutorRural !== constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
                 && (dadosClienteCadastroDto.ProdutorRural !== constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO)) {
-                return 'Informe se o cliente é produtor rural ou não!<br>';
+                msg += 'Informe se o cliente é produtor rural ou não!<br>';
             }
             if ((dadosClienteCadastroDto.ProdutorRural === constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM) &&
                 (dadosClienteCadastroDto.Contribuinte_Icms_Status !== constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)) {
-                return 'Para ser cadastrado como Produtor Rural, é necessário ser contribuinte do ICMS e possuir nº de IE<br>';
+                msg += 'Para ser cadastrado como Produtor Rural, é necessário ser contribuinte do ICMS e possuir nº de IE<br>';
             }
             if (dadosClienteCadastroDto.ProdutorRural == constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM) {
                 if ((dadosClienteCadastroDto.Contribuinte_Icms_Status !== constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO)
                     && (dadosClienteCadastroDto.Contribuinte_Icms_Status !== constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
                     && (dadosClienteCadastroDto.Contribuinte_Icms_Status !== constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO)) {
-                    return 'Informe se o cliente é contribuinte do ICMS, não contribuinte ou isento!<br>';
+                    msg += 'Informe se o cliente é contribuinte do ICMS, não contribuinte ou isento!<br>';
                 }
                 if ((dadosClienteCadastroDto.Contribuinte_Icms_Status === constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
                     && (!dadosClienteCadastroDto.Ie || (dadosClienteCadastroDto.Ie.trim() == ""))) {
-                    return 'Se o cliente é contribuinte do ICMS a inscrição estadual deve ser preenchida!<br>';
+                    msg += 'Se o cliente é contribuinte do ICMS a inscrição estadual deve ser preenchida!<br>';
                     //f.ie.focus();
                 }
                 if ((dadosClienteCadastroDto.Contribuinte_Icms_Status === constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO)
                     && (dadosClienteCadastroDto.Ie && (dadosClienteCadastroDto.Ie.toUpperCase().indexOf('ISEN') >= 0))) {
-                    return 'Se cliente é não contribuinte do ICMS, não pode ter o valor ISENTO no campo de Inscrição Estadual!<br>';
+                    msg += 'Se cliente é não contribuinte do ICMS, não pode ter o valor ISENTO no campo de Inscrição Estadual!<br>';
                     //f.ie.focus();
                 }
                 if ((dadosClienteCadastroDto.Contribuinte_Icms_Status === constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
                     && (!dadosClienteCadastroDto.Ie || dadosClienteCadastroDto.Ie.toUpperCase().indexOf('ISEN') >= 0)) {
-                    return 'Se cliente é contribuinte do ICMS, não pode ter o valor ISENTO no campo de Inscrição Estadual!<br>';
+                    msg += 'Se cliente é contribuinte do ICMS, não pode ter o valor ISENTO no campo de Inscrição Estadual!<br>';
                     //f.ie.focus();
                 }
             }
@@ -178,21 +177,21 @@ export class ClienteCadastroUtils {
             if ((dadosClienteCadastroDto.Contribuinte_Icms_Status !== constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO)
                 && (dadosClienteCadastroDto.Contribuinte_Icms_Status !== constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
                 && (dadosClienteCadastroDto.Contribuinte_Icms_Status !== constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO)) {
-                return 'Informe se o cliente é contribuinte do ICMS, não contribuinte ou isento!<br>';
+                msg += 'Informe se o cliente é contribuinte do ICMS, não contribuinte ou isento!<br>';
             }
             if ((dadosClienteCadastroDto.Contribuinte_Icms_Status === constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
                 && (!dadosClienteCadastroDto.Ie || (dadosClienteCadastroDto.Ie.trim() == ""))) {
-                return 'Se o cliente é contribuinte do ICMS a inscrição estadual deve ser preenchida!<br>';
+                msg += 'Se o cliente é contribuinte do ICMS a inscrição estadual deve ser preenchida!<br>';
                 //f.ie.focus();
             }
             if ((dadosClienteCadastroDto.Contribuinte_Icms_Status === constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO)
                 && (dadosClienteCadastroDto.Ie && (dadosClienteCadastroDto.Ie.toUpperCase().indexOf('ISEN') >= 0))) {
-                return 'Se cliente é não contribuinte do ICMS, não pode ter o valor ISENTO no campo de Inscrição Estadual!<br>';
+                msg += 'Se cliente é não contribuinte do ICMS, não pode ter o valor ISENTO no campo de Inscrição Estadual!<br>';
                 //f.ie.focus();
             }
             if ((dadosClienteCadastroDto.Contribuinte_Icms_Status === constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
                 && (!dadosClienteCadastroDto.Ie || dadosClienteCadastroDto.Ie.toUpperCase().indexOf('ISEN') >= 0)) {
-                return 'Se cliente é contribuinte do ICMS, não pode ter o valor ISENTO no campo de Inscrição Estadual!<br>';
+                msg += 'Se cliente é contribuinte do ICMS, não pode ter o valor ISENTO no campo de Inscrição Estadual!<br>';
                 //f.ie.focus();
             }
         }
@@ -202,7 +201,7 @@ export class ClienteCadastroUtils {
             if (dadosClienteCadastroDto.ProdutorRural && dadosClienteCadastroDto.ProdutorRural !== constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO) {
                 if (dadosClienteCadastroDto.Contribuinte_Icms_Status === constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO) {
                     if ((dadosClienteCadastroDto.Ie && (dadosClienteCadastroDto.Ie.trim() !== ""))) {
-                        return "Se o Contribuinte ICMS é isento, o campo IE deve ser vazio!<br>";
+                        msg += "Se o Contribuinte ICMS é isento, o campo IE deve ser vazio!<br>";
                         // fCAD.ie.focus();
                     }
                 }
@@ -212,14 +211,14 @@ export class ClienteCadastroUtils {
             //pessoa jurídica
             if (dadosClienteCadastroDto.Contribuinte_Icms_Status === constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO) {
                 if ((dadosClienteCadastroDto.Ie && (dadosClienteCadastroDto.Ie.trim() !== ""))) {
-                    return "Se o Contribuinte ICMS é isento, o campo IE deve ser vazio!<br>";
+                    msg += "Se o Contribuinte ICMS é isento, o campo IE deve ser vazio!<br>";
                     // fCAD.ie.focus();
                 }
             }
         }
 
         //tudo certo!
-        return null;
+        return msg;
     }
 
     //inicializa um DadosClienteCadastroDto
@@ -265,4 +264,5 @@ export class ClienteCadastroUtils {
         obj.Contribuinte_Icms_Status = 0;
         obj.ProdutorRural = 0;
     }
+
 }

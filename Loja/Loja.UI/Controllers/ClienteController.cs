@@ -204,7 +204,6 @@ namespace Loja.UI.Controllers
              */
             var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
 
-
             if (cadastrando)
             {
                 Bll.Dto.ClienteDto.ClienteCadastroDto novo_clienteCadastro = new Bll.Dto.ClienteDto.ClienteCadastroDto();

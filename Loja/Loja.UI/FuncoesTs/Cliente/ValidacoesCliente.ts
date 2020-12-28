@@ -35,7 +35,7 @@ export class ValidacoesCliente {
         }
 
         retorno += this.validarEndereco(dados, lstCidadesIBGE);
-
+        debugger;
         //inscricao estadual
         retorno += new ClienteCadastroUtils().validarInscricaoestadualIcms(dados);
 
@@ -44,20 +44,22 @@ export class ValidacoesCliente {
 
         //validar referências bancárias
         //não exigimos um número de referências, mas as que foram criadas devem estar preenchidas
+        if (!ehPf) {
+            for (let i = 0; i < clienteCadastroDto.RefBancaria.length; i++) {
+                let este = clienteCadastroDto.RefBancaria[i];
+                retorno += this.validarRefBancaria(este);
+            }
 
-        for (let i = 0; i < clienteCadastroDto.RefBancaria.length; i++) {
-            let este = clienteCadastroDto.RefBancaria[i];
-            retorno += this.validarRefBancaria(este);
+            //validar referências comerciais
+            //não exigimos um número de referências, mas as que foram criadas devem estar preenchidas    
+            for (let i = 0; i < clienteCadastroDto.RefComercial.length; i++) {
+                let este = clienteCadastroDto.RefComercial[i];
+                retorno += this.validarRefComerial(este);
+            }
+
+            retorno += this.verificarRefComercialDuplicada(clienteCadastroDto.RefComercial);
         }
-
-        //validar referências comerciais
-        //não exigimos um número de referências, mas as que foram criadas devem estar preenchidas    
-        for (let i = 0; i < clienteCadastroDto.RefComercial.length; i++) {
-            let este = clienteCadastroDto.RefComercial[i];
-            retorno += this.validarRefComerial(este);
-        }
-
-        retorno += this.verificarRefComercialDuplicada(clienteCadastroDto.RefComercial);
+        
 
         return retorno;
     }
@@ -131,11 +133,12 @@ export class ValidacoesCliente {
         let ret: string = "";
 
         let s = dadosClienteCadastroDto.Sexo;
-        if ((s == "") || (!ValidacoesUtils.sexo_ok(s))) {
-            ret = 'Indique qual o sexo!';
+        if (!!s) {
+            if (!ValidacoesUtils.sexo_ok(s)) {
+                ret = 'Indique qual o sexo!<br>';
+            }
         }
-        //nao validamos a data dessa forma, ela já é uma data no formulário: if (!isDate(f.dt_nasc)) {
-        //e ela é opcional, então não validamos nada!
+        
         return ret;
     }
 
@@ -144,6 +147,13 @@ export class ValidacoesCliente {
 
         if (dadosClienteCadastroDto.Endereco.trim() === "") {
             ret += 'Preencha o endereço!<br>';
+        }
+        else {
+            if (dadosClienteCadastroDto.Endereco.length > Constantes.MAX_TAMANHO_CAMPO_ENDERECO) {
+                ret += "ENDEREÇO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: " +
+                    "" + dadosClienteCadastroDto.Endereco.length + " CARACTERES<br>TAMANHO MÁXIMO: " +
+                    "" + Constantes.MAX_TAMANHO_CAMPO_ENDERECO + " CARACTERES<br>";
+            }
         }
 
         if (dadosClienteCadastroDto.Numero.trim() === "") {
@@ -388,4 +398,5 @@ export class ValidacoesCliente {
 
         return ret;
     }
+
 }

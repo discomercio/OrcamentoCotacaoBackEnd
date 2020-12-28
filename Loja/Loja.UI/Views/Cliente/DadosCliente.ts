@@ -10,6 +10,7 @@ import { ClienteCadastroDto } from "../../DtosTs/ClienteDto/ClienteCadastroDto";
 import { RefBancariaDtoCliente } from "../../DtosTs/ClienteDto/RefBancariaDtoCliente";
 import { RefComercialDtoCliente } from "../../DtosTs/ClienteDto/RefComercialDtoCliente";
 import { DadosClienteCadastroDto } from "../../DtosTs/ClienteDto/DadosClienteCadastroDto";
+import { FormatarTelefone } from "../../UtilTs/Fomatar/Mascaras/formataTelefone";
 
 declare var window: any;
 declare function swal(header, msg): any;
@@ -31,29 +32,9 @@ lstRefComercial = new Array();
 declare var lstIBGE: Array<string>;
 lstIBGE = new Array();
 
-/* NOVA VALIDAÇÃO PARA FAZER
- *  Teste cadastro de cliente PF no Asp => 
- *  Campos obrigatórios => CPF, Produtor rural, nome, endereço e apenas 1 telefone preenchido
- *  Informações sobre a validação => 
- *      não é permitido alterar:
- *          cpf ou cnpj do cliente = readonly;
- *      Valida apenas se esta vazio:
- *          endereço, numero, bairro
- *      Valida no ibge: 
- *          cidade, estado
- *      Valida telefone normalmente
- *      
- *      
- *      
- */
-
-
-
-
 let cpfCnpj = $('#cpf_cnpj').val().toString();
 $('#cpf_cnpj').val(CpfCnpjUtils.cnpj_cpf_formata(cpfCnpj));
-
-
+$("#cpf_cnpj").prop("readonly", true);
 $(function () {
 
     ($('#cepEntrega') as any).mask("00000-000");
@@ -71,6 +52,11 @@ $(function () {
     });
 
     ($('#telCom') as any).mask("(00) 0000-0000");
+    $('#telCom').blur(function () {
+        if ($('#telCom').val() != "") {
+            $('#telCom').removeClass("is-invalid");
+        }
+    })
 
     $('#telCom2').blur(function () {
         if ($('#telCom2').val().toString().length == 14) {
@@ -142,10 +128,10 @@ $(function () {
     }
 
 
+
 });
 
-//CONTROLE DE CAMPOS
-//===========================
+/* =============== CONTROLE DE CAMPOS ================== */
 //Tipo PF
 //Dados pessoais
 $("#nome").blur(() => {
@@ -193,12 +179,21 @@ $("#numero").blur(() => {
         $("#numero").removeClass("is-invalid");
     }
 });
+if ($("#numero").val() != "") {
+    $("#numero").removeClass("is-invalid");
+}
 $("#bairro").blur(() => {
     if ($("#bairro").val() == "") $("#bairro").addClass("is-invalid");
     if ($("#bairro").val()?.toString().length > 0 && $("#bairro").val() != "") {
         $("#bairro").removeClass("is-invalid");
     }
 });
+$("#bairro").change(function () {
+    if ($("#bairro").val() != "") {
+        $("#bairro").removeClass("is-invalid");
+    }
+});
+
 $("#cidade").blur(() => {
     if ($("#cidade").val() == "") $("#cidade").addClass("is-invalid");
     if ($("#cidade").val()?.toString().length > 0 && $("#cidade").val() != "") {
@@ -213,8 +208,6 @@ $("#uf").blur(() => {
         $("#uf").removeClass("is-invalid");
     }
 });
-//Telefones
-
 //E-mail
 $("#email").blur(() => {
     if ($("#email").val() == "") $("#email").addClass("is-invalid");
@@ -237,9 +230,87 @@ $("#produtor").change(() => {
         $("#produtor").removeClass("is-invalid");
     }
 });
+//Não sei o CEP
+$("#btnModificar").click(function () {
+    let tr_linha: JQuery<HTMLElement> = $(".tr_linha").children().find(":checked").closest(".tr_linha");
+    inscreve(tr_linha);
+});
+$('#btnBuscar').on('click', function () {
+    $(".modal-content").addClass("carregando");
+    $.ajax({
+        url: "../Cep/BuscarCepPorEndereco/",
+        type: "GET",
+        data: { nendereco: $('#nendereco').val(), localidade: $('#localidade').val(), lstufs: $('#lstufs').val() },
+        dataType: "json",
+        success: function (t) {
+            montaTabela(t);
+        },
+        error: function () {
+            $(".modal-content").removeClass("carregando");
+            swal("Erro", "Falha ao buscar endereços!");
+        }
+    });
+})
+$("#lstufs").ready(function () {
+    $.ajax({
+        url: "../Cep/BuscarUfs/",
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            var select = $('#lstufs');
+            $.each(data, function (i, d) {
+                select.append("<option value='" + d + "'>" + d + "</option>");
+            });
+        }
+    });
+});
 
-//FIM CONROLE DE CAMPOS
+let tipo_busca_cep: Number = 0;
+$(".btnCepCadastro").click(function () {
+    let button: HTMLButtonElement = this as HTMLButtonElement;
+    if (button.value == "1") {
+        tipo_busca_cep = 1;
+        return true;
+    }
 
+    if (button.value == "2") {
+        tipo_busca_cep = 2;
+        return true;
+    }
+
+    return false;
+});
+
+//PJ
+$("#razao").blur(function () {
+    if ($("#razao").val() != "") {
+        $("#razao").removeClass("is-invalid");
+    }
+});
+$("#contribuinte").blur(function () {
+    if ($("#contribuinte").val() != "") {
+        $("#contribuinte").removeClass("is-invalid");
+    }
+});
+$("#contatoNaEmpresa").blur(function () {
+    if ($("#contatoNaEmpresa").val() != "") {
+        $("#contatoNaEmpresa").removeClass("is-invalid");
+    }
+});
+
+
+$("#modal1").on("hidden.bs.modal", function () {
+    let tbody: JQuery<HTMLTableElement> = $(this).find("#tableBody") as JQuery<HTMLTableElement>;
+    //caso haja dados da busca anterior, vamos limpar
+    if (tbody.children().length > 1) {
+        limparModal();
+    }
+});
+
+/*================FIM CONROLE DE CAMPOS =================*/
+
+/* ========== CHAMADAS DIRETAS DA TELA ====================================*/
+//Mostra os campos de contribuinte e IE
 window.MostrarDivs = () => {
     if (Number($("#produtor").val()) == Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM) {
         $("#div_ie").css('visibility', 'visible');
@@ -250,12 +321,10 @@ window.MostrarDivs = () => {
         $("#div_contribuinte").css('visibility', 'hidden');
     }
 }
-
 //Busca o cep ao sair do campo de cep do cadastro do cliente
 window.DigitouCepCadastro = () => {
     let cep: string = $('#cep').val() as string;
 
-    debugger;
     if (!!cep) {
 
         $.ajax({
@@ -313,7 +382,61 @@ window.DigitouCepCadastro = () => {
         swal("", "É necessário informar um CEP válido!");
     }
 }
+//Validação de formulário
+window.ValidarFormulario = () => {
+    Loading.Carregando(true);
 
+    let erroModal = new ErrorModal();
+    let msg: string = "";
+
+    if ($('#permiteEditar').val() == "True") {
+
+        //vamos verificar se os campos obrigatórios estão vazios
+        msg = verificarCamposObrigatorios();
+
+        if (msg.length == 0) {
+            //vamos converter os dados do cliente para dadosClienteCadastroDto e passar para  validar
+            dadosClienteCadastroDto = converterParaDadosClienteCadastroDto();
+            //vamos converter os telefones para validar
+            dadosClienteCadastroDto = converterTelefones(dadosClienteCadastroDto);
+
+            clienteCadastro = converterParaClienteCadastroDto();
+
+            //vamos validar em outro arquivo os dados do cliente
+
+            //ESTOU AQUI!!
+            //PRECISO VALIDAR O ENDEREÇO DE ENTREGA CASO NÃO ESTEJA CADASTRANDO
+            msg = validacoesCliente.ValidarDadosClienteCadastro(dadosClienteCadastroDto, lstIBGE, clienteCadastro);
+
+            //verificar se tem msg para mostrar os erros na validação
+            if (msg.length > 0) {
+                Loading.Carregando(false);
+                msg = "<b>Lista de erros:</b><br>" + msg;
+                erroModal.ModalInnerHTML(msg);
+                return false;
+            }
+
+        }
+        else {
+            if (msg.length > 0) {
+                Loading.Carregando(false);
+                msg = "<b>Preencha os campos marcados como obrigatório:</b><br>" + msg;
+                erroModal.ModalInnerHTML(msg);
+                return false;
+            }
+        }
+    }
+}
+
+window.ChecarLinha = (el:JQuery<HTMLTableElement>) => {
+    $(".tr_linha").children().find("input:checked").prop("checked", false);
+    el.children().find(".check").prop("checked", true);
+}
+
+
+/* ============ FIM DE CHAMADAS DIRETAS DA TELA ===========*/
+
+/* ============ FUNÇÕES ===========*/
 function converterParaDadosClienteCadastroDto(): DadosClienteCadastroDto {
     //vamos converter o jquery para a classe
 
@@ -324,13 +447,13 @@ function converterParaDadosClienteCadastroDto(): DadosClienteCadastroDto {
     dadosClienteCadastroDto.Cnpj_Cpf = cpfCnpj;
     dadosClienteCadastroDto.Rg = $("#rg").val() as string;
     dadosClienteCadastroDto.Ie = $("#ie").val() as string;
-    dadosClienteCadastroDto.Contribuinte_Icms_Status = $("#contribuinte")?.val() as number;
-    dadosClienteCadastroDto.Tipo = $("#tipoCliente").val() as string;
+    dadosClienteCadastroDto.Contribuinte_Icms_Status = parseInt($("#contribuinte")?.val() as string);
+    dadosClienteCadastroDto.Tipo = $("#tipo").val() as string;
     dadosClienteCadastroDto.Observacao_Filiacao = $("#observacoes").val() as string;
     dadosClienteCadastroDto.Nascimento = $("#nascimento").val() as string;
     dadosClienteCadastroDto.Sexo = $("#sexo").val() as string;
     dadosClienteCadastroDto.Nome = $("#nome").val() as string;
-    dadosClienteCadastroDto.ProdutorRural = $('#produtor').val() as number;
+    dadosClienteCadastroDto.ProdutorRural = parseInt($('#produtor').val() as string);
     dadosClienteCadastroDto.Endereco = $("#endereco").val() as string;
     dadosClienteCadastroDto.Numero = $("#numero").val() as string;
     dadosClienteCadastroDto.Complemento = $("#complemento").val() as string;
@@ -350,189 +473,69 @@ function converterParaDadosClienteCadastroDto(): DadosClienteCadastroDto {
     dadosClienteCadastroDto.Ramal2 = $("#ramal2").val() as string;
     dadosClienteCadastroDto.Email = $("#email").val() as string;
     dadosClienteCadastroDto.EmailXml = $("#emailXml").val() as string;
-    dadosClienteCadastroDto.Contato = $("#contato").val() as string;
+    dadosClienteCadastroDto.Contato = $("#contatoNaEmpresa").val() as string;
 
     return dadosClienteCadastroDto;
 }
 
 function converterParaClienteCadastroDto(): ClienteCadastroDto {
+
+    //vamos passar dadosCliente para validar no caso de PJ
     clienteCadastro.DadosCliente = dadosClienteCadastroDto;
-    //vamos fazer um foreach para as referências
-    let indice = $("#indice").val() as number;
-    debugger;
+
+    //vamos montar o clienteCadatro para validar caso seja PJ
+    if (dadosClienteCadastroDto.Tipo == Constantes.ID_PJ) {
+
+        clienteCadastro.RefBancaria = converterParaRefBancaria();
+        clienteCadastro.RefComercial = converterParaRefComercial();
+    }
+
     return clienteCadastro;
 }
 
-function converterParaRefBancaria(): RefBancariaDtoCliente {
-    let ref: RefBancariaDtoCliente = new RefBancariaDtoCliente();
+function converterParaRefComercial(): Array<RefComercialDtoCliente> {
+    let indiceComercial = $("#indiceComercial").val() as number;
 
+    for (let i = 0; i < indiceComercial; i++) {
+        //pegamos os valores na tela
+        let nome_Empresa: string = $("#'" + i + "'-Nome_Empresa").val() as string;
+        let contato: string = $("#'" + i + "'-Contato").val() as string;
+        let telefone: string = $("#'" + i + "'-Telefone").val() as string;
+        //vamos passar para referência comercial
+        let refComercial: RefComercialDtoCliente = new RefComercialDtoCliente();
+        refComercial.Nome_Empresa = nome_Empresa;
+        refComercial.Contato = contato;
+        refComercial.Telefone = telefone;
 
+        lstRefComercial.push(refComercial);
+    }
 
-    return ref;
+    return lstRefComercial;
 }
 
-function converterParaRefComercial(): RefComercialDtoCliente {
-    let ref: RefComercialDtoCliente = new RefComercialDtoCliente();
+function converterParaRefBancaria(): Array<RefBancariaDtoCliente> {
+    //vamos fazer um foreach para as referências
+    let indiceBacaria = $("#indiceBancaria").val() as number;
 
-    return ref;
-}
+    for (let i = 0; i < indiceBacaria; i++) {
+        let banco: string = $("#'" + i + "'-banco").val() as string;
+        let agencia: string = $("#'" + i + "'-agencia").val() as string;
+        let conta: string = $("#'" + i + "'-conta").val() as string;
+        let telBanco: string = $("#'" + i + "'-telBanco").val() as string;
+        let contatoBanco: string = $("#'" + i + "'-contatoBanco").val() as string;
 
-window.ValidarFormulario = () => {
-    Loading.Carregando(true);
+        //vamos passar para referência bancária
+        let refBancaria: RefBancariaDtoCliente = new RefBancariaDtoCliente();
+        refBancaria.Banco = banco;
+        refBancaria.Agencia = agencia;
+        refBancaria.Conta = conta;
+        refBancaria.Telefone = telBanco;
+        refBancaria.Contato = contatoBanco;
 
-    let erroModal = new ErrorModal();
-    let msg: string = "";
-
-    if ($('#permiteEditar').val() == "True") {
-        //CPF
-        //vamos verificar se os campos obrigatórios estão vazios
-        msg = verificarCamposObrigatorios();
-
-        if (msg.length == 0) {
-            if (cpfCnpj) {
-                //vamos converter os dados do cliente para dadosClienteCadastroDto e passar para  
-                dadosClienteCadastroDto = converterParaDadosClienteCadastroDto();
-                clienteCadastro = converterParaClienteCadastroDto();
-                //vamos validar em outro arquivo os dados do cliente
-                //ESTOU AQUI, PREPARANDO OS DADOS PARA VALIDAR
-                msg = validacoesCliente.ValidarDadosClienteCadastro(dadosClienteCadastroDto, lstIBGE, clienteCadastro);
-
-                //verificar se tem msg para mostrar os erros na validação
-            }
-        }
-
-
-
-
-        if (CpfCnpjUtils.cnpj_cpf_ok(CpfCnpjUtils.cnpj_cpf_formata(cpfCnpj))) {
-            //Nova validação a ser feita
-            //verificar se o cpf esta ok
-            //verificar se os telefones estão ok
-            //verificar se a cidade e estado corresponde ao cep ou algo desse tipo
-
-            //validar campos de cadastro
-            if ($('#cpf_cnpj').val() == '') {
-                $("#cpf_cnpj").addClass("is-invalid");
-                msg += "Favor informar CPF ou CNPJ<br>";
-            }
-            else {
-                //vamos verificar se o cpf esta ok
-            }
-
-            if ($("#nome").val() == '') {
-                $("#nome").addClass("is-invalid");
-                msg += "Favor informar nome do cliente<br>";
-            }
-            if ($("#telRes").val() == '' &&
-                $("#celular").val() == '' &&
-                $("#telCom").val() == '') {
-                $("#telRes").addClass("is-invalid");
-                $("#celular").addClass("is-invalid");
-                $("#telCom").addClass("is-invalid");
-                msg += "Favor preencher ao menos um número de telefone!<br>";
-            }
-            else {
-                //vamos verificar se os telefones estão ok
-            }
-
-            if (msg.length > 0) {
-                Loading.Carregando(false);
-                msg = "<b>Preencha os campos marcados como obrigatório:</b><br>" + msg;
-                erroModal.ModalInnerHTML(msg);
-                return false;
-            }
-        }
-        //CNPJ
-        if (cpfCnpj.length == 14) {
-            if ($("#razao").val() == '') {
-                $("#razao").addClass("is-invalid");
-                msg += "Favor informar Razão Social!<br>";
-            }
-            if ($("#cpf_cnpj").val() == '') {
-                $("#cpf_cnpj").addClass("is-invalid");
-                msg += "Favor informar CNPJ!<br>";
-            }
-            if ($("#telCom").val() == '' &&
-                $("#telCom2").val() == '' &&
-                $("#celular").val() == '') {
-                $("#telCom").addClass("is-invalid");
-                $("#telCom2").addClass("is-invalid");
-                $("#celular").addClass("is-invalid");
-                msg += "Favor informar ao menos um número de telefone!<br>";
-            }
-
-            if (msg.length > 0) {
-                Loading.Carregando(false);
-                msg = "<b>Preencha os campos marcados como obrigatório:</b><br>" + msg;
-                erroModal.ModalInnerHTML(msg);
-                return false;
-            }
-        }
-        if ($("#cep").val() == '') {
-            $("#cep").addClass("is-invalid");
-            msg += "Favor informar cep<br>";
-        }
-        if ($("#endereco").val() == '') {
-            $("#endereco").addClass("is-invalid");
-            msg += "Favor informar endereco!<br>";
-        }
-        if ($("#numero").val() == '') {
-            $("#numero").addClass("is-invalid");
-            msg += "Favor informar número!<br>";
-        }
-        if ($("#bairro").val() == '') {
-            $("#bairro").addClass("is-invalid");
-            msg += "Favor informar bairro!<br>";
-        }
-        if ($("#cidade").val() == '') {
-            $("#cidade").addClass("is-invalid");
-            msg += "Favor informar cidade!<br>";
-        }
-        if ($("#uf").val() == '') {
-            $("#uf").addClass("is-invalid");
-            msg += "Favor informar UF!<br>";
-        }
-
-        if (msg.length > 0) {
-            Loading.Carregando(false);
-            msg = "<b>Preencha os campos marcados como obrigatório:</b><br>" + msg;
-            erroModal.ModalInnerHTML(msg);
-            return false;
-        }
-    }
-    else {
-        cpfCnpj = StringUtils.retorna_so_digitos($('#cpf_cnpj').text());
+        lstRefBancaria.push(refBancaria);
     }
 
-    //afazer: validar endereço de cadastro
-
-
-
-    let validou: boolean;
-    //verificar se é produtor rural
-    //1 = Não / 2 = sim
-    validou = ValidarProdutorIcms(cpfCnpj);
-
-    if (validou) {
-        //se estiver tudo ok seguimos
-        //if (!$('#indicador').val() || $('#indicador').val() == "undefined" || $('#indicador').val() == "0") {
-        //    $("#indicador").addClass("is-invalid");
-        //    msg += "Favor selecionar um indicador!<br>";
-        //}
-
-        if (msg.length > 0) {
-            Loading.Carregando(false);
-            erroModal.ModalInnerHTML(msg);
-            return false;
-        }
-
-        if ($('#outro').prop("checked")) {
-            //verifica se o endereço de entrega esta preenchido
-            $('#outro').val("true");
-            validou = ValidarEnderecoEntrega();
-        }
-    }
-    return validou;
+    return lstRefBancaria;
 }
 
 function verificarCamposObrigatorios() {
@@ -555,262 +558,164 @@ function verificarCamposObrigatorios() {
         msg += "Favor preencher ao menos um número de telefone!<br>";
     }
 
-
+    if ($("#tipo").val() == Constantes.ID_PJ) {
+        if ($("#razao").val() == "") {
+            msg += "Favor informar a Razão Social do cliente<br>";
+            $("#razao").addClass("is-invalid");
+        }
+        if ($("#contatoNaEmpresa").val() == "") {
+            msg += "Favor informar o nome da pessoa para contato!<br>";
+            $("#contatoNaEmpresa").addClass("is-invalid");
+        }
+        if ($("#email").val() == "") {
+            msg += "É obrigatório informar um endereço de e-mail.<br>";
+            $("#email").addClass("is-invalid");
+        }
+        if ($("#telCom").val() == "" &&
+            $("#telCom2").val() == "") {
+            msg += "Favor preencher ao menos um número de telefone!<br>";
+            $("#telCom").addClass("is-invalid");
+            $("#telCom2").addClass("is-invalid");
+        }
+        if ($("#cep").val() == "") {
+            msg += "Preencha o campo CEP.<br>";
+            $("#cep").addClass("is-invalid");
+        }
+        if ($("#endereco").val() == "") {
+            msg += "Preencha o campo endereço.<br>";
+            $("#endereco").addClass("is-invalid");
+        }
+        if ($("#numero").val() == "") {
+            msg += "Preencha o número do endereço.<br>";
+            $("#numero").addClass("is-invalid");
+        }
+        if ($("#bairro").val() == "") {
+            msg += "Preencha o bairro do endereço.<br>";
+            $("#bairro").addClass("is-invalid");
+        }
+        if ($("#cidade").val() == "") {
+            msg += "Preencha a cidade do endereço.<br>";
+            $("#cidade").addClass("is-invalid");
+        }
+        if ($("#uf").val() == "") {
+            msg += "Preencha o UF do endereço.<br>";
+            $("#uf").addClass("is-invalid");
+        }
+    }
 
     return msg;
 }
 
-function ValidarProdutorIcms(cpfCnpj) {
-    let retorno: boolean = true;
+function converterTelefones(dados: DadosClienteCadastroDto): DadosClienteCadastroDto {
 
-    let erroModal = new ErrorModal();
-    let msg: string = "";
-
-    let ie: string = $('#ie').val()?.toString();
-    let produtor: string = $('#produtor').val().toString();
-    let contribuinte: string = $("#contribuinte")?.val().toString();
-
-    if (cpfCnpj.length == 11) {
-        if (produtor == "") {
-            $('#produtor').addClass("is-invalid");
-            msg += 'Informe se o cliente é produtor rural ou não!<br>';
-            retorno = false;
-        }
-        if (produtor != "1" && produtor != "2") {
-            $('#produtor').addClass("is-invalid");
-            msg += 'Informe se o cliente é produtor rural ou não!<br>';
-            retorno = false;
-        }
-        //é produtor rural
-        if (produtor == "2") {
-            //contribuinte
-            //1 = não / 2 = sim / 3 = isento           
-
-            if (contribuinte != "1" && contribuinte != "2" && contribuinte != "3") {
-                $("#contribuinte").addClass("is-invalid");
-                msg += 'Informe se o cliente é contribuinte do ICMS, não contribuinte ou isento!<br>';
-                retorno = false;
-            }
-            if (contribuinte == "1" && (ie.trim() == "")) {
-                $("#contribuinte").addClass("is-invalid");
-                msg = 'Se o cliente é contribuinte do ICMS a inscrição estadual deve ser preenchida!<br>';
-                retorno = false;
-            }
-            if (contribuinte == "1" && ie && ie.toUpperCase().indexOf("ISEN") >= 0) {
-                $("#contribuinte").addClass("is-invalid");
-                msg += 'Se cliente é não contribuinte do ICMS, não pode ter o valor ISENTO ' +
-                    'no campo de Inscrição Estadual!<br>';
-                retorno = false;
-            }
-            if (contribuinte == "2" && (ie.toUpperCase().indexOf("ISEN") >= 0)) {
-                $("#contribuinte").addClass("is-invalid");
-                msg += 'Se cliente é contribuinte do ICMS, não pode ter o valor ISENTO ' +
-                    'no campo de Inscrição Estadual!<br>';
-                retorno = false;
-            }
-        }
-
-        if (msg.length > 0) {
-            Loading.Carregando(false);
-            msg = "<b>Preencha os campos marcados como obrigatório: </b><br>" + msg;
-            erroModal.ModalInnerHTML(msg);
-            return retorno;
-        }
-    }
-    else {
-        ie = StringUtils.retorna_so_digitos(ie);
-
-        if (contribuinte != "0" && contribuinte != "1" && contribuinte != "2" && contribuinte != "3") {
-            $("#contribuinte").addClass("is-invalid");
-            msg += 'Informe se o cliente é contribuinte do ICMS, não contribuinte ou isento!<br>';
-            retorno = false;
-        }
-        if (contribuinte == "2" && (ie == "")) {
-            $('#ie').addClass("is-invalid");
-            msg += 'Se o cliente é contribuinte do ICMS a inscrição estadual deve ser preenchida!<br>';
-            retorno = false;
-        }
-        if (contribuinte == "1" && ie != "") {
-            if (!$.isNumeric(ie)) {
-                if (ie.toUpperCase().indexOf("ISEN") >= 0) {
-                    $('#ie').addClass("is-invalid");
-                    msg += 'Se cliente é não contribuinte do ICMS, não pode ter o valor ISENTO ' +
-                        'no campo de Inscrição Estadual!<br>';
-                    retorno = false;
-                }
-            }
-        }
-        if (contribuinte == "2" && ie != "") {
-            if (!$.isNumeric(ie)) {
-                if (ie.toUpperCase().indexOf("ISEN") >= 0) {
-                    $('#ie').addClass("is-invalid");
-                    msg += 'Se cliente é contribuinte do ICMS, não pode ter o valor ISENTO ' +
-                        'no campo de Inscrição Estadual!<br>';
-                    retorno = false;
-                }
-            }
-        }
-
-        if (msg.length > 0) {
-            Loading.Carregando(false);
-            msg = "<b>Preencha os campos marcados como obrigatório: </b><br>" + msg;
-            erroModal.ModalInnerHTML(msg);
-            return retorno;
-        }
+    let s: any;
+    if (!!dados.TelefoneResidencial) {
+        s = FormatarTelefone.SepararTelefone(dados.TelefoneResidencial);
+        dados.TelefoneResidencial = s.Telefone;
+        dados.DddResidencial = s.Ddd;
     }
 
-    if (cpfCnpj.length == 11) {
-        if (produtor && produtor != "1") {
-            if (contribuinte == "3") {
-                if (ie && ie != "") {
-                    $("#ie").addClass("is-invalid");
-                    msg += "Se o Contribuinte ICMS é isento, o campo IE deve ser vazio!<br>";
-                    retorno = false;
-                }
-            }
-        }
-    }
-    else {
-        if (contribuinte == "3") {
-            if (ie && ie != "") {
-                $("#ie").addClass("is-invalid");
-                msg = "Se o Contribuinte ICMS é isento, o campo IE deve ser vazio!<br>";
-                retorno = false;
-            }
-        }
+    if (!!dados.Celular) {
+        s = FormatarTelefone.SepararTelefone(dados.Celular);
+        dados.Celular = s.Telefone;
+        dados.DddCelular = s.Ddd;
     }
 
-    if (msg.length > 0) {
-        Loading.Carregando(false);
-        msg = "<b>Preencha os campos marcados como obrigatório: </b><br>" + msg;
-        erroModal.ModalInnerHTML(msg);
-        return retorno;
+    if (!!dados.TelComercial) {
+        s = FormatarTelefone.SepararTelefone(dados.TelComercial);
+        dados.TelComercial = s.Telefone;
+        dados.DddComercial = s.Ddd;
     }
 
-    return retorno
+    if (dados.Tipo == Constantes.ID_PJ) {
+        if (!!dados.TelComercial2) {
+            s = FormatarTelefone.SepararTelefone(dados.TelComercial2);
+            dados.TelComercial2 = s.Telefone;
+            dados.DddComercial2 = s.Ddd;
+        }
+
+        //for (let i = 0; i < this.clienteCadastroDto.RefBancaria.length; i++) {
+        //    let este = this.clienteCadastroDto.RefBancaria[i];
+        //    let s = FormatarTelefone.SepararTelefone(este.Telefone);
+        //    este.Telefone = s.Telefone;
+        //    este.Ddd = s.Ddd;
+        //}
+
+        ////converter referências comerciais
+        //for (let i = 0; i < this.clienteCadastroDto.RefComercial.length; i++) {
+        //    let este = this.clienteCadastroDto.RefComercial[i];
+        //    let s = FormatarTelefone.SepararTelefone(este.Telefone);
+        //    este.Telefone = s.Telefone;
+        //    este.Ddd = s.Ddd;
+        //}
+    }
+
+
+
+    return dados;
 }
+//OBS => deixando aqui para caso haja necessidade de utilização
+function desconverterTelefones() {
+    {
+        this.dadosClienteCadastroDto.TelefoneResidencial = this.dadosClienteCadastroDto.DddResidencial + this.dadosClienteCadastroDto.TelefoneResidencial;
 
-function ValidarEnderecoEntrega() {
-    let erroModal = new ErrorModal();
-    let msg: string = "";
+        this.dadosClienteCadastroDto.Celular = this.dadosClienteCadastroDto.DddCelular + this.dadosClienteCadastroDto.Celular;
 
-    let cepEntrega: string = $('#cepEntrega').val().toString();
-    let enderecoEntrega: string = $('#enderecoEntrega').val().toString();
-    let numEntrega: string = $('#numEntrega').val().toString();
-    let ufEntrega: string = $('#ufEntrega').val().toString();
-    let cidadeEntrega: string = $('#cidadeEntrega').val().toString();
-    let justificaticaEntrega: string = $('#justificativa').val().toString();
+        this.dadosClienteCadastroDto.TelComercial = this.dadosClienteCadastroDto.DddComercial + this.dadosClienteCadastroDto.TelComercial;
 
-    if (!cepEntrega || ufEntrega === "" || cidadeEntrega === "") {
-        $('#cepEntrega').addClass("is-invalid");
-        msg += "Caso seja selecionado outro endereço, informe um CEP válido!<br>";
-    }
-    if (enderecoEntrega === "") {
-        $('#enderecoEntrega').addClass("is-invalid");
-        msg += "Caso seja selecionado outro endereço, informe um endereço!<br>";
-    }
-    if (justificaticaEntrega === "") {
-        $('#justificativa').addClass("is-invalid");
-        msg += "Caso seja selecionado outro endereço, selecione a justificativa do endereço de entrega!<br>";
-    }
-    if (numEntrega === "") {
-        $('#numEntrega').addClass("is-invalid");
-        msg += "Caso seja selecionado outro endereço, preencha o número do endereço de entrega!<br>";
+        this.dadosClienteCadastroDto.TelComercial2 = this.dadosClienteCadastroDto.DddComercial2 + this.dadosClienteCadastroDto.TelComercial2;
     }
 
-    if (msg.length > 0) {
-        Loading.Carregando(false);
-        msg = "<b>Preencha os campos marcados como obrigatório: </b><br>" + msg;
-        erroModal.ModalInnerHTML(msg);
-        return false;
+    //converter referências bancárias
+    for (let i = 0; i < this.clienteCadastroDto.RefBancaria.length; i++) {
+        let este = this.clienteCadastroDto.RefBancaria[i];
+        este.Telefone = este.Ddd + este.Telefone;
     }
+
+    //converter referências comerciais
+    for (let i = 0; i < this.clienteCadastroDto.RefComercial.length; i++) {
+        let este = this.clienteCadastroDto.RefComercial[i];
+        este.Telefone = este.Ddd + este.Telefone;
+    }
+
 }
-
-
-//CEP
-$("#btnModificar").click(function () {
-    let tr_linha: JQuery<HTMLElement> = $(".tr_linha").children().find(":checked").closest(".tr_linha");
-    inscreve(tr_linha);
-});
-
-$('#btnBuscar').on('click', function () {
-    $.ajax({
-        url: "../Cep/BuscarCepPorEndereco/",
-        type: "GET",
-        data: { nendereco: $('#nendereco').val(), localidade: $('#localidade').val(), lstufs: $('#lstufs').val() },
-        dataType: "json",
-        success: function (t) {
-            montaTabela(t);
-        }
-    });
-})
-
-
-$("#lstufs").ready(function () {
-    $.ajax({
-        url: "../Cep/BuscarUfs/",
-        type: "GET",
-        dataType: "json",
-        success: function (data) {
-            var select = $('#lstufs');
-            $.each(data, function (i, d) {
-                select.append("<option value='" + d + "'>" + d + "</option>");
-            });
-        }
-    });
-});
 
 function montaTabela(data: any) {
     var cols = "";
     var lst = data["ListaCep"];
-    if (lst.length > 0) {
-        if ($('#msg').css("display", "block")) {
-            $('#msg').css("display", "none");
+    if (!!lst) {
+        if (lst.length > 0) {
+            if ($('#msg').css("display", "block")) {
+                $('#msg').css("display", "none");
+            }
+            $('.tabela_endereco').css("display", "block");
+
+            for (var i = 0; i < lst.length; i++) {
+                cols += "<tr id='linha' class='tr_linha' onclick='ChecarLinha($(this))'>";
+                cols += "<td style='width: 3vw!important;'>";
+                cols += "<label><input class='check' type='radio' value='" + i + "'></input><span></span></label>";
+                cols += "</td>";
+                cols += "<td style='width: 7vw!important;'>" + lst[i].Cep + "</td>";
+                cols += "<td style='width: 3vw!important;'>" + lst[i].Uf + "</td>";
+                cols += "<td>" + lst[i].Cidade + "</td>";
+                cols += "<td>" + lst[i].Bairro + "</td>";
+                cols += "<td>" + lst[i].Endereco + "</td>";
+                cols += "<td>" + lst[i].LogradouroComplemento + "</td></tr>";
+                $("#tableBody").empty().append(cols);
+
+                $(".modal-content").removeClass("carregando");
+            }
         }
-        $('.tabela_endereco').css("display", "block");
-        for (var i = 0; i < lst.length; i++) {
-            cols += "<tr id='linha' class='tr_linha'>";
-            cols += "<td style='width: 3vw!important;'>";
-            cols += "<label><input class='check' type='radio' value='" + i + "'></input><span></span></label>";
-            cols += "</td>";
-            cols += "<td style='width: 7vw!important;'>" + lst[i].Cep + "</td>";
-            cols += "<td style='width: 3vw!important;'>" + lst[i].Uf + "</td>";
-            cols += "<td style='width: 10vw!important;'>" + lst[i].Cidade + "</td>";
-            cols += "<td style='width: 10vw!important;'>" + lst[i].Bairro + "</td>";
-            cols += "<td style='width: 10vw!important;'>" + lst[i].Endereco + "</td>";
-            cols += "<td style='width: 10vw!important;'>" + lst[i].LogradouroComplemento + "</td></tr>";
-            $("#tableBody").empty().append(cols);
+        else {
+            if ($('.tabela_endereco').css("display", "block")) $('.tabela_endereco').css("display", "none");
+            var msg = "<span> Endereço não encontrado!</span>";
+            $("#msg").css("display", "block");
+            $("#msg").empty().append(msg);
         }
-
-        $(".tr_linha").click(function () {
-
-            $(this).find('td').each(function (i) {
-                if ($(this).find('label')) {
-                    $(this).find('label').each(function (s) {
-                        if ($(this).find('input')) {
-                            $(this).find('input').each(function (p) {
-
-                                var cbs = document.getElementsByClassName("check");
-                                //cbs = $(this)
-                                for (var i = 0; i < cbs.length; i++) {
-                                    //if (cbs[i] !== $(this)) cbs[i].checked = false;
-                                }
-                                $(this).prop('checked', true);
-                            })
-                        }
-                    })
-                }
-            });
-        });
     }
     else {
-        if ($('.tabela_endereco').css("display", "block")) $('.tabela_endereco').css("display", "none");
-        var msg = "<span> Endereço não encontrado!</span>";
-        $("#msg").css("display", "block");
-        $("#msg").empty().append(msg);
+        $(".modal-content").removeClass("carregando");
     }
-
-
 }
 
 //Atribui os dados para a classe de CepDto
@@ -855,12 +760,14 @@ function inscreve(linha: JQuery<HTMLElement>) {
 //incluir os campos de da memorizacao de endereço no cep
 
 function limparModal() {
-    $(".tabela_endereco").remove();
+    $("#tableBody").children().remove();
+    $(".tabela_endereco").hide();
+    $("#msg").hide();
+
     let a: HTMLSelectElement = $("#lstufs")[0] as HTMLSelectElement;
     a.selectedIndex = 0;
     $("#localidade").val("");
     $("#nendereco").val("");
-    debugger;
 }
 
 function atribuirDadosParaEnderecoCadastro(cepDto: CepDto) {
@@ -878,33 +785,19 @@ function atribuirDadosParaEnderecoCadastro(cepDto: CepDto) {
     limparCepDto();
 }
 
-let tipo_busca_cep: Number = 0;
-
-
-$(".btnCepCadastro").click(function () {
-    let button: HTMLButtonElement = this as HTMLButtonElement;
-    if (button.value == "1") {
-        tipo_busca_cep = 1;
-        return true;
-    }
-
-    if (button.value == "2") {
-        tipo_busca_cep = 2;
-        return true;
-    }
-
-    return false;
-});
-
-
 function limparCamposEndereco() {
     $("#cep").val('');
+    $("#cep").removeClass('is-invalid');
     $("#endereco").val("");
+    $("#endereco").removeClass('is-invalid');
     $("#numero").val("");
     $("#complemento").val("");
     $("#bairro").val("");
+    $("#bairro").removeClass('is-invalid');
     $("#cidade").val("");
+    $("#cidade").removeClass('is-invalid');
     $("#uf").val("");
+    $("#uf").removeClass('is-invalid');
 }
 
 function limparCepDto() {
@@ -914,3 +807,5 @@ function limparCepDto() {
     cepDto.Bairro = "";
     cepDto.Endereco = "";
 }
+
+/* ========== FIM DAS FUNÇÕES =========== */

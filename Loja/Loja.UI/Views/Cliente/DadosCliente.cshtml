@@ -73,6 +73,8 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                     <input type="hidden" value="@Model.DadosCliente.Tipo" name="Tipo" id="tipo" />
                                     <input type="hidden" value="@Model.PermiteEdicao.ToString()" name="permiteEditar" id="permiteEditar" />
                                     <input type="hidden" value="@Model.Cadastrando.ToString()" name="cadastrando" />
+                                    <input type="hidden" name="clienteCadastro1" id="clienteCadastro" />
+
                                     @if (Model.PermiteEdicao)//adicionar uma flag para dizer se é novo
                                     {
                                         //Permite edição PF
@@ -288,12 +290,6 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                     })
                                                 </div>
 
-                                                <div id="div_ie" class="col-xl-4 col-lg-4 col-md-4 col-sm-12" style="visibility:hidden">
-                                                    <label class="col-form-label">IE</label>
-                                                    <input name="ie" id="ie" type="text"
-                                                           class="form-control"
-                                                           value="@Model.DadosCliente?.Ie" />
-                                                </div>
                                                 <div id="div_contribuinte" class="col-xl-4 col-lg-4 col-md-4 col-sm-12" style="visibility:hidden">
                                                     <label class="col-form-label" for="contribuinte">CONTRIBUINTE ICMS</label>
                                                     @Html.DropDownList("Contribuinte_Icms_Status",
@@ -305,15 +301,18 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                     @class = "custom-select"
                                                     })
                                                 </div>
+                                                <div id="div_ie" class="col-xl-4 col-lg-4 col-md-4 col-sm-12" style="visibility:hidden">
+                                                    <label class="col-form-label">IE</label>
+                                                    <input name="ie" id="ie" type="text"
+                                                           class="form-control"
+                                                           value="@Model.DadosCliente?.Ie" />
+                                                </div>
                                             </div>
                                         }
                                         else
                                         {
                                             <div class="row">
-                                                <div class="col-lg-6 col-md-6 col-sm-12">
-                                                    <label class="col-form-label">IE</label>
-                                                    <input name="ie" id="ie" type="text" class="form-control" value="@Model.DadosCliente?.Ie" />
-                                                </div>
+
                                                 <div class="col-lg-6 col-md-6 col-sm-12">
                                                     <label class="col-form-label" for="contribuinte">CONTRIBUINTE ICMS</label>
                                                     @Html.DropDownList("Contribuinte_Icms_Status",
@@ -326,7 +325,10 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                     @class = "custom-select"
                                                     })
                                                 </div>
-
+                                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                                    <label class="col-form-label">IE</label>
+                                                    <input name="ie" id="ie" type="text" class="form-control" value="@Model.DadosCliente?.Ie" />
+                                                </div>
                                             </div>
                                             //referencias permite edição
                                             <div class="accordion pt-4" id="accordionBancaria">
@@ -344,7 +346,7 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
 
                                                         @{
                                                             var indice = 0;
-                                                            <input type="hidden" id="indice" value="" />
+                                                            <input type="hidden" id="indiceBancaria" value="@indice" />
 
                                                             <div class="card-body form-control-right">
                                                                 <hr />
@@ -412,6 +414,7 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                                                        class="form-control" />
                                                                             </div>
                                                                         </div>
+                                                                        indice++;
                                                                     }
                                                                 }
 
@@ -435,6 +438,7 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                     <div id="collapseOneComercial" class="panel-collapse collapse in" aria-labelledby="headingOne" data-parent="#accordionComercial">
                                                         @{
                                                             var index = 0;
+
                                                             @if (Model.RefComercial?.Count > 0)
                                                             {
                                                                 <div class="card-body form-control-right" id="collapsible-body-comercial">
@@ -471,8 +475,10 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                                                        class="form-control" />
                                                                             </div>
                                                                         </div>
+                                                                        index++;
                                                                     }
                                                                     <input type="hidden" id="index" value="@index" />
+                                                                    <input type="hidden" id="indiceComercial" value="@index" />
                                                                 </div>
                                                             }
                                                             else
@@ -938,10 +944,10 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                             <th style="width:3vw !important;">
 
                             </th>
-                            <th align="left" valign="bottom">
+                            <th align="left" valign="bottom" style="width:7vw !important">
                                 CEP
                             </th>
-                            <th align="left" valign="bottom">
+                            <th align="left" valign="bottom" style="width:3vw !important">
                                 UF
                             </th>
                             <th align="left" valign="bottom">
