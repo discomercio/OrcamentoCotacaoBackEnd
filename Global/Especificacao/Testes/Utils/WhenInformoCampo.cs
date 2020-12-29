@@ -62,6 +62,9 @@ namespace Especificacao.Testes.Utils
                             valor = ConverterTipo_Parcelamento(campoSimples, valor);
                             p.SetValue(destino, System.Decimal.Parse(valor));
                             break;
+                        case "Boolean":
+                            p.SetValue(destino, System.Boolean.Parse(valor));
+                            break;
                         default:
                             valor = ConverterCustoFinancFornecTipoParcelamento(campoSimples, valor);
                             //vai dar erro, tudo bem...

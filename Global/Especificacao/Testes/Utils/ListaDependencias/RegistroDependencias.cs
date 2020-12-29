@@ -57,11 +57,14 @@ namespace Especificacao.Testes.Utils.ListaDependencias
         {
             var ambientes = ambientesRegistrados;
             if (!ambientes.ContainsKey(ambiente))
+            {
+                LogTestes.LogTestes.GetInstance().LogMensagem($"{ambiente}: implementacao nunca foi definida");
                 Assert.Equal("", $"{ambiente}: implementacao nunca foi definida");
+            }
 
             //para debug
             if (!ambientes[ambiente].Select(r => r.Texto).ToList().Contains(especificacao))
-                LogTestes.LogTestes.GetInstance().LogMensagem($"Erro: VerificarQueUsou {especificacao} em {String.Join(",", ambientes[ambiente].Select(r => r.Texto).ToList())} ");
+                LogTestes.LogTestes.GetInstance().LogMensagem($"Erro: VerificarQueUsou {especificacao} em {String.Join(",", ambientes[ambiente].Select(r => r.Texto).Distinct().ToList())} ");
 
             //este teste somente passa se executar todos os testes
             Assert.Contains(especificacao, ambientes[ambiente].Select(r => r.Texto).ToList());
@@ -170,8 +173,10 @@ namespace Especificacao.Testes.Utils.ListaDependencias
 
                     if (ambientesTodos.ContainsKey(especificacao.Texto ?? ""))
                     {
-                        var filtrado = new Dictionary<string, List<TextoInstancia>>();
-                        filtrado.Add(especificacao.Texto ?? "", ambientesTodos[especificacao.Texto ?? ""]);
+                        var filtrado = new Dictionary<string, List<TextoInstancia>>
+                        {
+                            { especificacao.Texto ?? "", ambientesTodos[especificacao.Texto ?? ""] }
+                        };
                         DumpMapaItem(writerMapa, filtrado, ambientesTodos, detalhesChamadas, identacao + 1);
                     }
                 }

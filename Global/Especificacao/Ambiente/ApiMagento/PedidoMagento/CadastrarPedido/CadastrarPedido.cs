@@ -63,6 +63,12 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
             while (lp.Count > numeroItens)
                 lp.RemoveAt(lp.Count - 1);
         }
+        protected override void AbstractLimparEnderecoDeEntrega()
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.LimparEnderecoDeEntrega(this);
+            pedidoMagentoDto.EnderecoEntrega = new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
+        }
 
         protected override void AbstractDeixarFormaDePagamentoConsistente()
         {

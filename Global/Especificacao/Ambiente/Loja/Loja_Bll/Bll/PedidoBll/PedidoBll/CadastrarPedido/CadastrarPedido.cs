@@ -44,6 +44,12 @@ namespace Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadastrar
             pedidoDto.ValorTotalDestePedidoComRA = totalRaCompare;
         }
 
+        protected override void AbstractLimparEnderecoDeEntrega()
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.LimparEnderecoDeEntrega(this);
+            pedidoDto.EnderecoEntrega = new global::Loja.Bll.Dto.ClienteDto.EnderecoEntregaDtoClienteCadastro();
+        }
 
         protected override List<string> AbstractListaErros()
         {

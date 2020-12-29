@@ -7,7 +7,8 @@ Scenario: Lista de verificações feitas
 	And Especificado em "Especificacao.Comuns.Api.Autenticacao"
 	#EspecificacaoAdicional
 	And Especificado em "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional.CamposLidosAppsettings"
-	And Especificado em "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional.SemPedidosPj"
+	And Especificado em "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CriacaoCliente.SemPedidosPj"
+	And Especificado em "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CriacaoCliente.CriacaoCliente_Pf"
 	#o pedido em si
 	And Especificado em "Especificacao.Pedido.Pedido.PedidoListaDependencias"
 

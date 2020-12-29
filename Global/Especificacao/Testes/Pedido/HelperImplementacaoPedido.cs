@@ -18,6 +18,7 @@ namespace Especificacao.Testes.Pedido
         protected abstract void AbstractRecalcularTotaisDoPedido();
         protected abstract void AbstractDeixarFormaDePagamentoConsistente();
         protected abstract void AbstractListaDeItensComXitens(int numeroItens);
+        protected abstract void AbstractLimparEnderecoDeEntrega();
         protected abstract List<string> AbstractListaErros();
         #endregion
 
@@ -182,6 +183,12 @@ namespace Especificacao.Testes.Pedido
             if (ignorarFeature) return;
             Testes.Utils.LogTestes.LogOperacoes2.DadoBaseClientePJ(this);
             AbstractDadoBaseClientePJ();
+        }
+        public void LimparEnderecoDeEntrega()
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.LimparEnderecoDeEntrega(this);
+            AbstractLimparEnderecoDeEntrega();
         }
 
         public void RecalcularTotaisDoPedido()

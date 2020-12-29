@@ -32,6 +32,8 @@ namespace MagentoBusiness.UtilsMagento
 
         public LimitePedidoMagento LimitePedidos { get; set; } = new LimitePedidoMagento();
 
+        public string EndEtg_cod_justificativa { get; set; } = "007";   //Pedido Arclube
+
         public class OrcamentistaMagento
         {
             public string Orcamentista { get; set; } = "FRETE";

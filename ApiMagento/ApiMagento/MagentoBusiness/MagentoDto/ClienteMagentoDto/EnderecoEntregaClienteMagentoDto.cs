@@ -12,13 +12,10 @@ namespace MagentoBusiness.MagentoDto.ClienteMagentoDto
         [Required]
         [MaxLength(80)]
         public string EndEtg_endereco { get; set; }
-#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
-#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         [MaxLength(60)]
         [Required]
         public string EndEtg_endereco_numero { get; set; }
-#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
         /*
 # Colocar a informação do ponto de referência no campo 'Constar na NF'. Comparar o conteúdo do ponto de referência
@@ -30,29 +27,21 @@ Por isso, temos o MaxLength 800 aqui
         [MaxLength(800)]
         public string? EndEtg_endereco_complemento { get; set; }
 
-#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         [Required]
         [MaxLength(72)]
         public string EndEtg_bairro { get; set; }
-#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
-#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         [Required]
         [MaxLength(60)]
         public string EndEtg_cidade { get; set; }
-#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
-#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         [Required]
         [MaxLength(2)]
         public string EndEtg_uf { get; set; }
-#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
-#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         [Required]
         [MaxLength(8)]
         public string EndEtg_cep { get; set; }
-#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
         [MaxLength(60)]
         public string? EndEtg_email { get; set; }
@@ -60,11 +49,9 @@ Por isso, temos o MaxLength 800 aqui
         [MaxLength(60)]
         public string? EndEtg_email_xml { get; set; }
 
-#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         [Required]
         [MaxLength(60)]
         public string EndEtg_nome { get; set; }
-#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
         [MaxLength(4)]
         public string? EndEtg_ddd_res { get; set; }
@@ -100,13 +87,10 @@ Por isso, temos o MaxLength 800 aqui
         /// EndEtg_tipo_pessoa = "PF", "PJ"
         /// <hr />
         /// </summary>
-#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         [Required]
         [MaxLength(2)]
         public string EndEtg_tipo_pessoa { get; set; }
-#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
-#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         [Required]
         [MaxLength(14)]
         public string EndEtg_cnpj_cpf { get; set; }
@@ -135,7 +119,7 @@ se o clinte for PF, estes campos são desnecessários
         public string? PontoReferencia { get; set; }
 
         public static Cliente.Dados.EnderecoEntregaClienteCadastroDados EnderecoEntregaDeEnderecoEntregaClienteMagentoDto(
-            EnderecoEntregaClienteMagentoDto? endEtg, bool outroEnd)
+            EnderecoEntregaClienteMagentoDto? endEtg, bool outroEnd, string EndEtg_cod_justificativa)
         {
             Cliente.Dados.EnderecoEntregaClienteCadastroDados ret = new Cliente.Dados.EnderecoEntregaClienteCadastroDados
             {
@@ -151,7 +135,7 @@ se o clinte for PF, estes campos são desnecessários
                 ret.EndEtg_cidade = endEtg.EndEtg_cidade;
                 ret.EndEtg_uf = endEtg.EndEtg_uf;
                 ret.EndEtg_cep = endEtg.EndEtg_cep;
-                //ret.EndEtg_cod_justificativa = endEtg.EndEtg_cod_justificativa; **Verificar o que passar para esse campo
+                ret.EndEtg_cod_justificativa = EndEtg_cod_justificativa;
                 ret.EndEtg_email = endEtg.EndEtg_email;
                 ret.EndEtg_email_xml = endEtg.EndEtg_email_xml;
                 ret.EndEtg_nome = endEtg.EndEtg_nome;

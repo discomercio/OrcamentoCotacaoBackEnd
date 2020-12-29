@@ -192,6 +192,9 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 case "t_PRAZO_PAGTO_VISANET":
                     InicializarTabela<TprazoPagtoVisanet>(db.TprazoPagtoVisanets, null, db, true);
                     break;
+                case "t_CLIENTE":
+                    InicializarTabela<Tcliente>(db.Tclientes, null, db, true);
+                    break;
                 default:
                     Testes.Utils.LogTestes.LogOperacoes2.Excecao($"Especificacao.Testes.Utils.BancoTestes.InicializarBancoGeral.LimparTabela nome de tabela desconhecido: {tabela}" + $"StackTrace: '{Environment.StackTrace}'", this);
                     throw new ArgumentException($"Especificacao.Testes.Utils.BancoTestes.InicializarBancoGeral.LimparTabela nome de tabela desconhecido: {tabela}");

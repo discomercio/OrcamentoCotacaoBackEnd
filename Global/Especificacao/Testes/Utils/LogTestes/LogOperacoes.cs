@@ -27,6 +27,10 @@ namespace Especificacao.Testes.Utils.LogTestes
         {
             GravarLog("DadoBaseClientePJ", objeto);
         }
+        public static void LimparEnderecoDeEntrega(object objeto)
+        {
+            GravarLog("LimparEnderecoDeEntrega", objeto);
+        }
         public static void DadoBaseClientePJComEnderecoDeEntrega(object objeto)
         {
             GravarLog("DadoBaseClientePJComEnderecoDeEntrega", objeto);

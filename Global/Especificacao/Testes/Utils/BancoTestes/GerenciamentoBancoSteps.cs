@@ -15,13 +15,8 @@ namespace Especificacao.Testes.Utils.BancoTestes
     [Binding, Scope(Tag = "GerenciamentoBanco")]
     public class GerenciamentoBancoSteps
     {
-        private readonly ScenarioContext scenarioContext;
-        private readonly FeatureContext featureContext;
-
-        public GerenciamentoBancoSteps(ScenarioContext scenarioContext, FeatureContext featureContext)
+        public GerenciamentoBancoSteps()
         {
-            this.scenarioContext = scenarioContext;
-            this.featureContext = featureContext;
         }
 
         [Given(@"Limpar tabela ""(.*)""")]

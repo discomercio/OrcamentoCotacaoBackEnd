@@ -5,12 +5,6 @@ Feature: CamposLidosAppsettings
 Scenario: AdicionarDependencia
 	Given AdicionarDependencia ambiente = "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedidoListaDependencias", especificacao = "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional.CamposLidosAppsettings"
 
-@ListaDependencias
-Scenario: Lista de verificações feitas
-	Given Nome deste item "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional.CamposLidosAppsettings"
-	And Implementado em "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedidoListaDependencias"
-
-
 Scenario: Orcamentista = "FRETE" (vamos ler do appsettings) - precisa existir
 	#Vamos colocar um indicador no appsettings que não esteja cadastrado no banco e ver se ele testa
 	Given Reiniciar appsettings
@@ -26,6 +20,9 @@ Scenario: Orcamentista = "FRETE" (vamos ler do appsettings) - precisa existir
 Scenario: Orcamentista = "FRETE" (vamos ler do appsettings)
 	#vamos verificar se salvou onde deveria
 	#vamos testar com o KONAR
+	Given Pedido base
+	Then Sem nenhum erro
+	And No pedido salvo, campo "indicador" = "FRETE"
 	When Fazer esta validação
 
 @ignore
