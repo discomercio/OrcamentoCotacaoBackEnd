@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
+namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,7 +19,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class FLuxoCadastroPedidoMagento_PFFeature : object, Xunit.IClassFixture<FLuxoCadastroPedidoMagento_PFFeature.FixtureData>, System.IDisposable
+    public partial class Tipo_ParcelamentoFeature : object, Xunit.IClassFixture<Tipo_ParcelamentoFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -28,10 +28,10 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "FluxoCadastroPedidoMagento_PF.feature"
+#line 1 "Tipo_Parcelamento.feature"
 #line hidden
         
-        public FLuxoCadastroPedidoMagento_PFFeature(FLuxoCadastroPedidoMagento_PFFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public Tipo_ParcelamentoFeature(Tipo_ParcelamentoFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -40,7 +40,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "FLuxoCadastroPedidoMagento - PF", null, ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Tipo_Parcelamento", null, ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -80,57 +80,17 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="salvando o pedido base")]
-        [Xunit.TraitAttribute("FeatureTitle", "FLuxoCadastroPedidoMagento - PF")]
-        [Xunit.TraitAttribute("Description", "salvando o pedido base")]
-        [Xunit.TraitAttribute("Category", "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional")]
-        public virtual void SalvandoOPedidoBase()
-        {
-            string[] tagsOfScenario = new string[] {
-                    "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional"};
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("salvando o pedido base", null, tagsOfScenario, argumentsOfScenario);
-#line 4
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 5
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 6
- testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="Fluxo de cadastro do magento")]
-        [Xunit.TraitAttribute("FeatureTitle", "FLuxoCadastroPedidoMagento - PF")]
-        [Xunit.TraitAttribute("Description", "Fluxo de cadastro do magento")]
+        [Xunit.SkippableFactAttribute(DisplayName="Tipo_Parcelamento")]
+        [Xunit.TraitAttribute("FeatureTitle", "Tipo_Parcelamento")]
+        [Xunit.TraitAttribute("Description", "Tipo_Parcelamento")]
         [Xunit.TraitAttribute("Category", "ignore")]
-        public virtual void FluxoDeCadastroDoMagento()
+        public virtual void Tipo_Parcelamento()
         {
             string[] tagsOfScenario = new string[] {
                     "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fluxo de cadastro do magento", null, tagsOfScenario, argumentsOfScenario);
-#line 9
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Tipo_Parcelamento", null, tagsOfScenario, argumentsOfScenario);
+#line 13
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -150,8 +110,8 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 88
- testRunner.Given("implementar daqui para baixo", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 14
+ testRunner.Given("fazere sta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -164,12 +124,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                FLuxoCadastroPedidoMagento_PFFeature.FeatureSetup();
+                Tipo_ParcelamentoFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                FLuxoCadastroPedidoMagento_PFFeature.FeatureTearDown();
+                Tipo_ParcelamentoFeature.FeatureTearDown();
             }
         }
     }

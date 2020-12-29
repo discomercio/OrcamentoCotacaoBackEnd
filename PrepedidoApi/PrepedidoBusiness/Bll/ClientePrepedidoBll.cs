@@ -41,7 +41,7 @@ namespace PrepedidoBusiness.Bll
         public async Task<IEnumerable<string>> CadastrarCliente(ClienteCadastroDto clienteDto, string apelido)
         {
             IEnumerable<string> retorno = await clienteBll.CadastrarCliente(ClienteCadastroDto.ClienteCadastroDados_De_ClienteCadastroDto(clienteDto), apelido.Trim(),
-                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS);
+                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS, apelido.Trim());
             return retorno;
         }
 

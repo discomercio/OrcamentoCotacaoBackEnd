@@ -339,7 +339,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             ClienteCadastroResultadoUnisDto res;
             clienteDto.DadosCliente.DddResidencial = "12";
             clienteDto.DadosCliente.TelefoneResidencial = "1234-56789";
-            res = clienteUnisBll.CadastrarClienteUnis(clienteDto).Result;
+            res = clienteUnisBll.CadastrarClienteUnis(clienteDto, clienteDto.DadosCliente.Indicador_Orcamentista).Result;
 
             if (res.ListaErros.Count > 0)
                 output.WriteLine(JsonConvert.SerializeObject(res));
@@ -373,7 +373,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             var mes = 11;
             var dia = 5;
             clienteDto.DadosCliente.Nascimento = new DateTime(ano, mes, dia, 12, 23, 34);
-            res = clienteUnisBll.CadastrarClienteUnis(clienteDto).Result;
+            res = clienteUnisBll.CadastrarClienteUnis(clienteDto, clienteDto.DadosCliente.Indicador_Orcamentista).Result;
 
             if (res.ListaErros.Count > 0)
                 output.WriteLine(JsonConvert.SerializeObject(res));
@@ -426,7 +426,7 @@ alerta="TELEFONE CELULAR (" & s_ddd_cel & ") " & s_tel_cel & " JÁ ESTÁ SENDO U
                 clienteDto.DadosCliente.Cnpj_Cpf = listaCpfs[i];
 
                 ClienteCadastroResultadoUnisDto res;
-                res = clienteUnisBll.CadastrarClienteUnis(clienteDto).Result;
+                res = clienteUnisBll.CadastrarClienteUnis(clienteDto, clienteDto.DadosCliente.Indicador_Orcamentista).Result;
 
                 if (res.ListaErros.Count > 0)
                     output.WriteLine(JsonConvert.SerializeObject(res));

@@ -502,103 +502,106 @@ this.FeatureBackground();
 #line 108
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 110
- testRunner.When("Informo \"EndEtg_tipo_pessoa\" = \"PF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 109
+ testRunner.When("Informo \"OutroEndereco\" = \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 111
+ testRunner.When("Informo \"EndEtg_tipo_pessoa\" = \"PF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 112
  testRunner.When("Informo \"EndEtg_cnpj_cpf\" = \"29756194804\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 115
+#line 116
  testRunner.When("Informo \"EndEtg_endereco_complemento\" = \"compl\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 116
+#line 117
  testRunner.When("Informo \"EndEtg_email\" = \"email@teste.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 117
+#line 118
  testRunner.When("Informo \"EndEtg_email_xml\" = \"emailxml@teste.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 118
+#line 119
  testRunner.When("Informo \"EndEtg_ddd_res\" = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 119
+#line 120
  testRunner.When("Informo \"EndEtg_tel_res\" = \"12345678\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 120
+#line 121
  testRunner.When("Informo \"EndEtg_ddd_com\" = \"34\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 121
+#line 122
  testRunner.When("Informo \"EndEtg_tel_com\" = \"34567890\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 122
+#line 123
  testRunner.When("Informo \"EndEtg_ramal_com\" = \"5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 123
+#line 124
  testRunner.When("Informo \"EndEtg_ddd_cel\" = \"45\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 124
+#line 125
  testRunner.When("Informo \"EndEtg_tel_cel\" = \"56789012\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 125
+#line 126
  testRunner.When("Informo \"EndEtg_ddd_com_2\" = \"56\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 126
+#line 127
  testRunner.When("Informo \"EndEtg_tel_com_2\" = \"56789012\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 127
+#line 128
  testRunner.When("Informo \"EndEtg_ramal_com_2\" = \"7\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 129
+#line 130
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 131
- testRunner.And("Tabela \"t_CLIENTE\" registro com campo \"cnpj_cpf\" = \"29756194804\", verificar campo" +
-                        " \"endereco_complemento\" = \"compl\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 132
  testRunner.And("Tabela \"t_CLIENTE\" registro com campo \"cnpj_cpf\" = \"29756194804\", verificar campo" +
-                        " \"email\" = \"email@teste.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        " \"endereco_complemento\" = \"compl\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 133
  testRunner.And("Tabela \"t_CLIENTE\" registro com campo \"cnpj_cpf\" = \"29756194804\", verificar campo" +
-                        " \"email_xml\" = \"emailxml@teste.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        " \"email\" = \"email@teste.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 134
  testRunner.And("Tabela \"t_CLIENTE\" registro com campo \"cnpj_cpf\" = \"29756194804\", verificar campo" +
-                        " \"ddd_res\" = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        " \"email_xml\" = \"emailxml@teste.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 135
  testRunner.And("Tabela \"t_CLIENTE\" registro com campo \"cnpj_cpf\" = \"29756194804\", verificar campo" +
-                        " \"tel_res\" = \"12345678\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        " \"ddd_res\" = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 136
  testRunner.And("Tabela \"t_CLIENTE\" registro com campo \"cnpj_cpf\" = \"29756194804\", verificar campo" +
-                        " \"ddd_com\" = \"34\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        " \"tel_res\" = \"12345678\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 137
  testRunner.And("Tabela \"t_CLIENTE\" registro com campo \"cnpj_cpf\" = \"29756194804\", verificar campo" +
-                        " \"tel_com\" = \"34567890\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        " \"ddd_com\" = \"34\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 138
  testRunner.And("Tabela \"t_CLIENTE\" registro com campo \"cnpj_cpf\" = \"29756194804\", verificar campo" +
-                        " \"ramal_com\" = \"5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        " \"tel_com\" = \"34567890\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 139
  testRunner.And("Tabela \"t_CLIENTE\" registro com campo \"cnpj_cpf\" = \"29756194804\", verificar campo" +
-                        " \"ddd_cel\" = \"45\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        " \"ramal_com\" = \"5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 140
  testRunner.And("Tabela \"t_CLIENTE\" registro com campo \"cnpj_cpf\" = \"29756194804\", verificar campo" +
-                        " \"tel_cel\" = \"56789012\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        " \"ddd_cel\" = \"45\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 141
  testRunner.And("Tabela \"t_CLIENTE\" registro com campo \"cnpj_cpf\" = \"29756194804\", verificar campo" +
-                        " \"ddd_com_2\" = \"56\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        " \"tel_cel\" = \"56789012\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 142
  testRunner.And("Tabela \"t_CLIENTE\" registro com campo \"cnpj_cpf\" = \"29756194804\", verificar campo" +
-                        " \"tel_com_2\" = \"56789012\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        " \"ddd_com_2\" = \"56\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 143
+ testRunner.And("Tabela \"t_CLIENTE\" registro com campo \"cnpj_cpf\" = \"29756194804\", verificar campo" +
+                        " \"tel_com_2\" = \"56789012\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 144
  testRunner.And("Tabela \"t_CLIENTE\" registro com campo \"cnpj_cpf\" = \"29756194804\", verificar campo" +
                         " \"ramal_com_2\" = \"7\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -616,7 +619,7 @@ this.FeatureBackground();
                     "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("validar emails", null, tagsOfScenario, argumentsOfScenario);
-#line 147
+#line 148
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -639,22 +642,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 36
 this.FeatureBackground();
 #line hidden
-#line 148
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
 #line 149
- testRunner.When("Informo \"EndEtg_email\" = \"email sem arroba\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 150
- testRunner.Then("Erro \"e-mail inválido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("Informo \"OutroEndereco\" = \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 151
+ testRunner.When("Informo \"EndEtg_email\" = \"email sem arroba\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 152
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 153
- testRunner.When("Informo \"EndEtg_email_xml\" = \"email sem arroba\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("Erro \"e-mail inválido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 154
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 155
+ testRunner.When("Informo \"EndEtg_email_xml\" = \"email sem arroba\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 156
  testRunner.Then("Erro \"e-mail inválido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -671,7 +677,7 @@ this.FeatureBackground();
                     "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("validar telefones", null, tagsOfScenario, argumentsOfScenario);
-#line 157
+#line 159
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -694,10 +700,13 @@ this.ScenarioInitialize(scenarioInfo);
 #line 36
 this.FeatureBackground();
 #line hidden
-#line 158
+#line 160
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 159
+#line 161
+ testRunner.When("Informo \"OutroEndereco\" = \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 162
  testRunner.Given("fazer este cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }
@@ -714,7 +723,7 @@ this.FeatureBackground();
                     "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Não atualizar dados se o cliente já existir", null, tagsOfScenario, argumentsOfScenario);
-#line 162
+#line 165
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -737,7 +746,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 36
 this.FeatureBackground();
 #line hidden
-#line 163
+#line 166
  testRunner.Given("fazer este cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }

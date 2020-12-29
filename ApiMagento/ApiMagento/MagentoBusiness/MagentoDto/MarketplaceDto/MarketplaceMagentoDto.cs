@@ -12,6 +12,10 @@ namespace MagentoBusiness.MagentoDto
         public string Grupo { get; set; } = "";
 
         [Required]
+        [MaxLength(3)]
+        public string Codigo { get; set; } = "";
+
+        [Required]
         [MaxLength(60)]
         public string Descricao { get; set; } = "";
 

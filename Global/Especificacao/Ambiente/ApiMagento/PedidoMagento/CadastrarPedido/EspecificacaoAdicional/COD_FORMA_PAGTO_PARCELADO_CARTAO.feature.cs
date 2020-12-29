@@ -42,9 +42,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Especi
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "COD_FORMA_PAGTO_PARCELADO_CARTAO", "pergunta: se COD_FORMA_PAGTO_PARCELADO_CARTAO temos que usar os coeficientes do f" +
-                    "abricante?\r\nrespsota: sim, mas precisa manter o valor do preço e o total da nota" +
-                    " igual. Vamos colocar essa diferença no Vl Lista", ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "COD_FORMA_PAGTO_PARCELADO_CARTAO", null, ProgrammingLanguage.CSharp, new string[] {
                         "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }

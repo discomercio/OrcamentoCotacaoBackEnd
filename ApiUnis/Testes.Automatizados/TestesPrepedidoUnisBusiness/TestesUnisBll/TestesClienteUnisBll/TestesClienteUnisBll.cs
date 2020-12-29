@@ -214,7 +214,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             clienteDto.DadosCliente.Cidade = Testes.Automatizados.Utils.TestesBancoNFeMunicipio.Cidade_somente_no_IBGE;
 
             ClienteCadastroResultadoUnisDto res;
-            res = clienteUnisBll.CadastrarClienteUnis(clienteDto).Result;
+            res = clienteUnisBll.CadastrarClienteUnis(clienteDto, clienteDto.DadosCliente.Indicador_Orcamentista).Result;
 
             if (res.ListaErros.Count > 0)
                 output.WriteLine(JsonConvert.SerializeObject(res));
@@ -252,7 +252,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             deixarDtoErrado(clienteDto);
 
             ClienteCadastroResultadoUnisDto res;
-            res = clienteUnisBll.CadastrarClienteUnis(clienteDto).Result;
+            res = clienteUnisBll.CadastrarClienteUnis(clienteDto, clienteDto.DadosCliente.Indicador_Orcamentista).Result;
 
             if (incluirEsteErro)
             {

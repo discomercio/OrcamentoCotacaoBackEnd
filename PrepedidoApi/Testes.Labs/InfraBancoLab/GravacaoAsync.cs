@@ -109,7 +109,7 @@ ou
             {
                 Id = "000000000002",
                 Dt_Cadastro = DateTime.Now,
-                Usuario_Cadastrado = "Apagar",
+                Usuario_Cadastro = "Apagar",
                 Indicador = "Apagar",
                 Nome = "Apagar, registro de teste",
                 Contribuinte_Icms_Data = DateTime.Now,

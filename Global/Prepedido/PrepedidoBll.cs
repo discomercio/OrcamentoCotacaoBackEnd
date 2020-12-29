@@ -1943,6 +1943,14 @@ namespace Prepedido
             return tOrcamentista;
         }
 
+        public async Task<bool> TorcamentistaExiste(string apelido)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+            return await ((from c in db.TorcamentistaEindicadors
+                                    where c.Apelido == apelido
+                                    select c).AnyAsync());
+        }
+
         public async Task GerarNumeroOrcamento(ContextoBdGravacao dbgravacao, PrePedidoDados prepedido)
         {
             string sufixoIdOrcamento = Constantes.SUFIXO_ID_ORCAMENTO;

@@ -852,16 +852,14 @@ namespace UtilsGlobais
             throw new ApplicationException($"Não foi possível gerar o NSU, tamanho diferente de 12.  id_nsu:{id_nsu}");
         }
 
-        public static async Task<IEnumerable<TcodigoDescricao>> ListarCodigoMarketPlace(ContextoBdProvider contextoProvider)
+        public static IQueryable<TcodigoDescricao> ListarCodigoMarketPlace(ContextoBdProvider contextoProvider)
         {
             var db = contextoProvider.GetContextoLeitura();
-
-            var lstTcodigo = from c in db.TcodigoDescricaos
+            IQueryable<TcodigoDescricao> lstTcodigo = (from c in db.TcodigoDescricaos
                              where c.Grupo == InfraBanco.Constantes.Constantes.GRUPO_T_CODIGO_DESCRICAO__PEDIDOECOMMERCE_ORIGEM &&
                                    c.St_Inativo == 0
-                             select c;
-
-            return await Task.FromResult(lstTcodigo);
+                             select c);
+            return lstTcodigo;
         }
 
         public static async Task<bool> LojaHabilitadaProdutosECommerce(string loja, ContextoBdProvider contextoProvider)

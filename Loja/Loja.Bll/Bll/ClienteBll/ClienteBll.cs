@@ -388,7 +388,7 @@ namespace Loja.Bll.ClienteBll
 
             cliente.Id = dadosCliente.Id;
             cliente.Dt_Cadastro = DateTime.Now;
-            cliente.Usuario_Cadastrado = tClienteBase.Usuario_Cadastrado.ToUpper();
+            cliente.Usuario_Cadastro = tClienteBase.Usuario_Cadastro.ToUpper();
             cliente.Indicador = dadosCliente.Indicador_Orcamentista;
             cliente.Cnpj_Cpf = Util.Util.SoDigitosCpf_Cnpj(dadosCliente.Cnpj_Cpf);
             cliente.Tipo = dadosCliente.Tipo.ToUpper();
@@ -749,7 +749,7 @@ namespace Loja.Bll.ClienteBll
                 {
                     Id = id_cliente,
                     Dt_Cadastro = DateTime.Now,
-                    Usuario_Cadastrado = apelido.ToUpper(),
+                    Usuario_Cadastro = apelido.ToUpper(),
                     Indicador = apelido.ToUpper(),
                     Cnpj_Cpf = clienteDto.Cnpj_Cpf.Replace(".", "").Replace("/", "").Replace("-", ""),
                     Tipo = clienteDto.Tipo.ToUpper(),

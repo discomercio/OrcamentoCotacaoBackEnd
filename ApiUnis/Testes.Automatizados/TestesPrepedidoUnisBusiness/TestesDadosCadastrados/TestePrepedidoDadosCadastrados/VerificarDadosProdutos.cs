@@ -36,7 +36,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
 
             var cliente = InicializarClienteDados.ClienteNaoCadastradoPJ();
             cliente.DadosCliente.Cnpj_Cpf = DadosPrepedidoUnisBll.PrepedidoParcelaUnica().Cnpj_Cpf;
-            clienteUnisBll.CadastrarClienteUnis(cliente).Wait();
+            clienteUnisBll.CadastrarClienteUnis(cliente, cliente.DadosCliente.Indicador_Orcamentista).Wait();
         }
 
         internal delegate void ArrumarDtoErrado(PrePedidoUnisDto prePedido);

@@ -143,11 +143,18 @@ namespace Pedido
             }
 
             //8- busca o orçamentista para saber se permite RA 
-            TorcamentistaEindicador tOrcamentista = await prepedidoBll.BuscarTorcamentista(pedido.DadosCliente.Indicador_Orcamentista);
-            if (tOrcamentista == null)
+            string? tOrcamentistaApelido = null;
+            short tOrcamentistaPermite_RA_Status = 0;
+            if (!String.IsNullOrEmpty(pedido.DadosCliente.Indicador_Orcamentista))
             {
-                pedidoRetorno.ListaErros.Add("Falha ao recuperar os dados do indicador!");
-                return pedidoRetorno;
+                TorcamentistaEindicador tOrcamentista = await prepedidoBll.BuscarTorcamentista(pedido.DadosCliente.Indicador_Orcamentista);
+                if (tOrcamentista == null)
+                {
+                    pedidoRetorno.ListaErros.Add($"Falha ao recuperar os dados do indicador! Indicador: {pedido.DadosCliente.Indicador_Orcamentista}");
+                    return pedidoRetorno;
+                }
+                tOrcamentistaApelido = tOrcamentista.Apelido;
+                tOrcamentistaPermite_RA_Status = tOrcamentista.Permite_RA_Status;
             }
 
 
@@ -162,7 +169,7 @@ namespace Pedido
 
             /* 13- valida o tipo de parcelamento "AV", "CE", "SE" */
             /* 14- valida a quantidade de parcela */
-            FormaPagtoDados formasPagto = await formaPagtoBll.ObterFormaPagto(tOrcamentista.Apelido, pedido.DadosCliente.Tipo);
+            FormaPagtoDados formasPagto = await formaPagtoBll.ObterFormaPagto(tOrcamentistaApelido, pedido.DadosCliente.Tipo);
 
             string c_custoFinancFornecTipoParcelamento = prepedidoBll.ObterSiglaFormaPagto(pedido.FormaPagtoCriacao);
             short c_custoFinancFornecQtdeParcelas = (short)Prepedido.PrepedidoBll.ObterCustoFinancFornecQtdeParcelasDeFormaPagto(pedido.FormaPagtoCriacao);
@@ -172,7 +179,7 @@ namespace Pedido
 
             validacoesFormaPagtoBll.ValidarFormaPagto(pedido.FormaPagtoCriacao, pedidoRetorno.ListaErros,
                 pedido.LimiteArredondamento, pedido.MaxErroArredondamento, c_custoFinancFornecTipoParcelamento, formasPagto,
-                tOrcamentista.Permite_RA_Status, pedido.Vl_total_NF, pedido.Vl_total);
+                tOrcamentistaPermite_RA_Status, pedido.Vl_total_NF, pedido.Vl_total);
             if (pedidoRetorno.ListaErros.Any())
                 return pedidoRetorno;
 

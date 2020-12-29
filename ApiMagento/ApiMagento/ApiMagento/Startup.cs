@@ -178,6 +178,7 @@ namespace ApiMagento
         {
             services.AddTransient<AcessoMagentoBll, AcessoMagentoBll>();
             services.AddTransient<PedidoMagentoBll, PedidoMagentoBll>();
+            services.AddTransient<MagentoBusiness.MagentoBll.MagentoBll.ObterCodigoMarketplaceBll, MagentoBusiness.MagentoBll.MagentoBll.ObterCodigoMarketplaceBll>();
 
             services.AddTransient<Cep.CepBll, Cep.CepBll>();
             services.AddTransient<Prepedido.PrepedidoBll, Prepedido.PrepedidoBll>();

@@ -10,6 +10,7 @@ using MagentoBusiness.MagentoDto.PedidoMagentoDto;
 using InfraIdentity.ApiMagento;
 using MagentoBusiness.MagentoDto;
 using MagentoBusiness.MagentoDto.MarketplaceDto;
+using MagentoBusiness.MagentoBll.MagentoBll;
 
 namespace ApiMagento.Controllers
 {
@@ -19,12 +20,14 @@ namespace ApiMagento.Controllers
     {
         private readonly IServicoValidarTokenApiMagento servicoValidarTokenApiMagento;
         private readonly PedidoMagentoBll pedidoMagentoBll;
+        private readonly ObterCodigoMarketplaceBll obterCodigoMarketplaceBll;
 
         public PedidoMagentoController(IServicoValidarTokenApiMagento servicoValidarTokenApiMagento,
-            PedidoMagentoBll pedidoMagentoBll)
+            PedidoMagentoBll pedidoMagentoBll, MagentoBusiness.MagentoBll.MagentoBll.ObterCodigoMarketplaceBll obterCodigoMarketplaceBll)
         {
             this.servicoValidarTokenApiMagento = servicoValidarTokenApiMagento;
             this.pedidoMagentoBll = pedidoMagentoBll;
+            this.obterCodigoMarketplaceBll = obterCodigoMarketplaceBll;
         }
 
         /// <summary>
@@ -35,9 +38,7 @@ namespace ApiMagento.Controllers
         [AllowAnonymous]
         [HttpPost("cadastrarPedido")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async Task<ActionResult<PedidoResultadoMagentoDto>> CadastrarPedido(PedidoMagentoDto pedido)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             if (!servicoValidarTokenApiMagento.ValidarToken(pedido.TokenAcesso, out string? usuario))
                 return Unauthorized();
@@ -61,14 +62,12 @@ namespace ApiMagento.Controllers
         [AllowAnonymous]
         [HttpPost("obterCodigoMarketplace")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async Task<ActionResult<MarketplaceResultadoDto>> ObterCodigoMarketplace(string tokenAcesso)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             if (!servicoValidarTokenApiMagento.ValidarToken(tokenAcesso, out _))
                 return Unauthorized();
 
-            var ret = await pedidoMagentoBll.ObterCodigoMarketplace();
+            var ret = await obterCodigoMarketplaceBll.ObterCodigoMarketplace();
 
             return Ok(ret);
         }

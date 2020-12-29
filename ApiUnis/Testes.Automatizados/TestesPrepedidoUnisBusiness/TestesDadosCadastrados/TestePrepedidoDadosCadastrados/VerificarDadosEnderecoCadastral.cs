@@ -31,11 +31,11 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
 
             var cliente = InicializarClienteDados.ClienteNaoCadastradoPF();
             cliente.DadosCliente.Cnpj_Cpf = DadosPrepedidoUnisBll.PrepedidoParceladoCartao1vez().Cnpj_Cpf;
-            clienteUnisBll.CadastrarClienteUnis(cliente).Wait();
+            clienteUnisBll.CadastrarClienteUnis(cliente, cliente.DadosCliente.Indicador_Orcamentista).Wait();
 
             var clientePJ = InicializarClienteDados.ClienteNaoCadastradoPJ();
             clientePJ.DadosCliente.Cnpj_Cpf = DadosPrepedidoUnisBll.PrepedidoParcelaUnica().Cnpj_Cpf;
-            clienteUnisBll.CadastrarClienteUnis(clientePJ).Wait();
+            clienteUnisBll.CadastrarClienteUnis(clientePJ, clientePJ.DadosCliente.Indicador_Orcamentista).Wait();
         }
 
         internal delegate void ArrumarDtoErrado(PrePedidoUnisDto prePedido);
@@ -168,7 +168,8 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
         [Fact]
         public void TestarEnderecoCadastralPJ()
         {
-            TesteEnderecoCadastralPJ(c => {
+            TesteEnderecoCadastralPJ(c =>
+            {
                 c.FormaPagtoCriacao.C_pc_qtde = 1;
                 c.FormaPagtoCriacao.C_pc_valor = 3470.24m;
             });

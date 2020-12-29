@@ -9,6 +9,7 @@ Scenario: Orcamentista = "FRETE" (vamos ler do appsettings) - precisa existir
 	#Vamos colocar um indicador no appsettings que não esteja cadastrado no banco e ver se ele testa
 	Given Reiniciar appsettings
 	And Pedido base
+	And Informo "frete" = "10"
 	And Informo "appsettings.Orcamentista" = "um orçamentista que não existe"
 	Then Erro "O Orçamentista não existe!"
 
@@ -21,6 +22,7 @@ Scenario: Orcamentista = "FRETE" (vamos ler do appsettings)
 	#vamos verificar se salvou onde deveria
 	#vamos testar com o KONAR
 	Given Pedido base
+	And Informo "frete" = "10"
 	Then Sem nenhum erro
 	And No pedido salvo, campo "indicador" = "FRETE"
 	When Fazer esta validação

@@ -111,7 +111,7 @@ namespace InfraBanco.Modelos
 
         [Column("usuario_cadastro")]
         [MaxLength(20)]
-        public string Usuario_Cadastrado { get; set; }
+        public string Usuario_Cadastro { get; set; }
 
         [Column("usuario_ult_atualizacao")]
         [MaxLength(20)]
