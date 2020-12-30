@@ -773,7 +773,7 @@ namespace Prepedido
 
             //Validar endereço de entraga
             await validacoesPrepedidoBll.ValidarEnderecoEntrega(prePedido.EnderecoEntrega, lstErros,
-                prePedido.DadosCliente.Indicador_Orcamentista, prePedido.DadosCliente.Tipo);
+                prePedido.DadosCliente.Indicador_Orcamentista, prePedido.DadosCliente.Tipo, true, prePedido.DadosCliente.Loja);
             if (lstErros.Any())
                 return lstErros;
 

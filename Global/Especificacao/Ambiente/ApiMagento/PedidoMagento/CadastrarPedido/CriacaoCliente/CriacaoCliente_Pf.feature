@@ -72,7 +72,9 @@ Scenario: Caminho feliz
 @ignore
 Scenario: Exigimos endereço de entrega para PF
 	#Se for PF, copio o endereço de entrega para o endereço de cobrança e apago o endereço de entrega.
-	#NOta: poderiamos usar o dado cadastral, mas a especificação está dizendo que sempre terá um endereço de entrega.
+	#201229 reuniao semanal.txt
+	#- fazer o endereço de entrega para PF obrigatório?
+	#sim, exigir.
 	Given Pedido base
 	When Informo "OutroEndereco" = "false"
 	Then Erro "Obrigatório informar um endereço de entrega na API Magento para cliente PF."
@@ -156,9 +158,24 @@ Scenario: validar emails
 	Then Erro "e-mail inválido"
 
 @ignore
+Scenario: validar telefones - especificação
+#pergunta:
+#	- exigir telefones com a lógica atual (exemplo: não permitir telefone comercial para PF)
+#	atualmente, se é cliente PF, não aceitamos nenhum telefone.
+#
+#	lógica do endereço de entrega:
+#	- se cliente PF, somente endereço e justificativa (proibimos os outros campos)
+#	- se cliente PJ, tem telefones, CPF/CNPJ, IE, razão social
+#	lógica do cadastro do cliente:
+#	- se cliente PF, exige pelo menos um telefone
+#
+#resposta:
+#	primeiro passar para o endereço de cobrança
+#	não exigir telefones e aceitamos todos que recebermos
+
+@ignore
 Scenario: validar telefones
 	Given Pedido base
-	When Informo "OutroEndereco" = "true"
 	Given fazer este cenário
 
 @ignore

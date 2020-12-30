@@ -191,7 +191,7 @@ namespace Pedido
 
             /* 9- valida endereço de entrega */
             await validacoesPrepedidoBll.ValidarEnderecoEntrega(pedido.EnderecoEntrega, pedidoRetorno.ListaErros,
-                pedido.DadosCliente.Indicador_Orcamentista, pedido.DadosCliente.Tipo);
+                pedido.DadosCliente.Indicador_Orcamentista, pedido.DadosCliente.Tipo, false, pedido.DadosCliente.Loja);
             if (pedidoRetorno.ListaErros.Any())
                 return pedidoRetorno;
 

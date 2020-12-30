@@ -340,11 +340,11 @@ namespace Prepedido
 
 
         public async Task ValidarEnderecoEntrega(Cliente.Dados.EnderecoEntregaClienteCadastroDados endEntrega,
-            List<string> lstErros, string orcamentista, string tipoCliente)
+            List<string> lstErros, string orcamentista, string tipoCliente, bool usarLojaOrcamentista, string loja)
         {
             if (endEntrega.OutroEndereco)
             {
-                await ValidarDadosEnderecoEntrega(endEntrega, orcamentista, lstErros, contextoProvider);
+                await ValidarDadosEnderecoEntrega(endEntrega, lstErros, contextoProvider, usarLojaOrcamentista, loja, orcamentista);
 
                 ValidarDadosPessoaEnderecoEntrega(endEntrega, lstErros, false, tipoCliente);
                 VerificarCaracteresInvalidosEnderecoEntregaClienteCadastro(endEntrega, lstErros);
@@ -381,8 +381,8 @@ namespace Prepedido
         }
 
         private async Task ValidarDadosEnderecoEntrega(Cliente.Dados.EnderecoEntregaClienteCadastroDados endEntrega,
-            string orcamentista, List<string> lstErros,
-            ContextoBdProvider contextoProvider)
+            List<string> lstErros,
+            ContextoBdProvider contextoProvider, bool usarLojaOrcamentista, string loja, string orcamentista)
         {
             if (!endEntrega.OutroEndereco)
                 return;
@@ -392,8 +392,17 @@ namespace Prepedido
             else
             {
                 //verificar se a justificativa esta correta "ListarComboJustificaEndereco"
-                List<Cliente.Dados.EnderecoEntregaJustificativaDados> lstJustificativas =
-                    (await clienteBll.ListarComboJustificaEndereco(orcamentista)).ToList();
+                List<Cliente.Dados.EnderecoEntregaJustificativaDados> lstJustificativas;
+                if (usarLojaOrcamentista)
+                {
+                    orcamentista = orcamentista ?? "";
+                    lstJustificativas = (await clienteBll.ListarComboJustificaEndereco(orcamentista)).ToList();
+                }
+                else
+                {
+                    loja = loja ?? "";
+                    lstJustificativas = (await clienteBll.ListarComboJustificaEnderecoPorLoja(contextoProvider.GetContextoLeitura(), loja)).ToList();
+                }
                 if (!lstJustificativas.Where(r => r.EndEtg_cod_justificativa == endEntrega.EndEtg_cod_justificativa).Any())
                 {
                     lstErros.Add("CÓDIGO DA JUSTFICATIVA INVÁLIDO!");

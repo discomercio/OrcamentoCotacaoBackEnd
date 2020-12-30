@@ -6,6 +6,8 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using InfraBanco.Constantes;
 using Cep;
+using Cliente.Dados;
+using InfraBanco;
 
 namespace Cliente
 {
@@ -448,6 +450,11 @@ namespace Cliente
                                  where c.Apelido == apelido
                                  select c.Loja).FirstOrDefaultAsync();
 
+            return await ListarComboJustificaEnderecoPorLoja(db, loja);
+        }
+
+        public async Task<IEnumerable<EnderecoEntregaJustificativaDados>> ListarComboJustificaEnderecoPorLoja(ContextoBd db, string loja)
+        {
             var retorno = from c in db.TcodigoDescricaos
                           where c.Grupo == Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA &&
                           (c.Lojas_Habilitadas == null || c.Lojas_Habilitadas.Length == 0 || c.Lojas_Habilitadas.Contains("|" + loja + "|")) &&

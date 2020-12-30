@@ -61,8 +61,7 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
             //estamos criando o pedido com os dados do cliente que vem e não com os dados do cliente que esta na base
             //ex: se o cliente já cadastrado, utilizamos o que vem em PedidoMagentoDto.EnderecoCadastralClienteMagentoDto
             Pedido.Dados.Criacao.PedidoCriacaoDados pedidoDados = await CriarPedidoCriacaoDados(pedidoMagento,
-                orcamentistaindicador_vendedor_loja.orcamentista_indicador, orcamentistaindicador_vendedor_loja.loja,
-                orcamentistaindicador_vendedor_loja.vendedor, resultado.ListaErros,
+                orcamentistaindicador_vendedor_loja, resultado.ListaErros,
                 Convert.ToDecimal(configuracaoApiMagento.LimiteArredondamentoPrecoVendaOrcamentoItem), 0.1M,
                 pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac, pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem,
                 pedidoMagento.InfCriacaoPedido.Pedido_bs_x_marketplace,
@@ -92,7 +91,7 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
                 DadosCliente =
                 EnderecoCadastralClienteMagentoDto.DadosClienteDeEnderecoCadastralClienteMagentoDto(pedidoMagento.EnderecoCadastralCliente,
                     orcamentistaindicador_vendedor_loja.loja, pedidoMagento.Frete, orcamentistaindicador_vendedor_loja.vendedor,
-                    orcamentistaindicador_vendedor_loja.orcamentista_indicador),
+                    configuracaoApiMagento.DadosOrcamentista.Orcamentista),
                 RefBancaria = new List<Cliente.Dados.Referencias.RefBancariaClienteDados>(),
                 RefComercial = new List<Cliente.Dados.Referencias.RefComercialClienteDados>()
             };
@@ -123,7 +122,7 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
             public readonly string vendedor;
             public readonly string loja;
 
-            public Orcamentistaindicador_vendedor_loja(string orcamentista_indicador, string vendedor, string loja)
+            public Orcamentistaindicador_vendedor_loja(string? orcamentista_indicador, string vendedor, string loja)
             {
                 this.orcamentista_indicador = orcamentista_indicador;
                 this.vendedor = vendedor;
@@ -141,9 +140,6 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
                 if (!await prepedidoBll.TorcamentistaExiste(orcamentista_indicador))
                     listaErros.Add("O Orçamentista não existe!");
             }
-            //todo: corrigir este erro
-            orcamentista_indicador = configuracaoApiMagento.DadosOrcamentista.Orcamentista;
-
             string vendedor = usuario;
             string loja = configuracaoApiMagento.DadosOrcamentista.Loja;
             return new Orcamentistaindicador_vendedor_loja(orcamentista_indicador, vendedor, loja);
@@ -205,15 +201,16 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
         }
 
         private async Task<Pedido.Dados.Criacao.PedidoCriacaoDados> CriarPedidoCriacaoDados(PedidoMagentoDto pedidoMagento,
-            string orcamentista, string loja, string vendedor, List<string> lstErros,
+            Orcamentistaindicador_vendedor_loja orcamentistaindicador_vendedor_loja , List<string> lstErros,
             decimal limiteArredondamento,
             decimal maxErroArredondamento, string? pedido_bs_x_ac, string? marketplace_codigo_origem, string? pedido_bs_x_marketplace,
             InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro)
         {
             //o cliente existe então vamos converter os dados do cliente para DadosCliente e EnderecoCadastral
             Cliente.Dados.DadosClienteCadastroDados dadosCliente =
-                EnderecoCadastralClienteMagentoDto.DadosClienteDeEnderecoCadastralClienteMagentoDto(pedidoMagento.EnderecoCadastralCliente, loja,
-                pedidoMagento.Frete, vendedor, orcamentista);
+                EnderecoCadastralClienteMagentoDto.DadosClienteDeEnderecoCadastralClienteMagentoDto(pedidoMagento.EnderecoCadastralCliente,
+                orcamentistaindicador_vendedor_loja.loja,
+                pedidoMagento.Frete, orcamentistaindicador_vendedor_loja.vendedor, configuracaoApiMagento.DadosOrcamentista.Orcamentista);
 
             Cliente.Dados.EnderecoCadastralClientePrepedidoDados enderecoCadastral =
                 EnderecoCadastralClienteMagentoDto.EnderecoCadastralClientePrepedidoDados_De_EnderecoCadastralClienteMagentoDto(pedidoMagento.EnderecoCadastralCliente);

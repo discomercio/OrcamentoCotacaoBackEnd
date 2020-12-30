@@ -10,6 +10,10 @@ Feature: EnderecoEntrega
 #	Comparação de endereço: qualquer campo diferente é diferente (inclusive complemento e ponto de referência)
 #Depois disso, se o cliente não existir, cadastrar com o endereço de cobrança
 
+#201229 reuniao semanal.txt
+#- fazer o endereço de entrega para PF obrigatório?
+#sim, exigir. 
+
 
 
 Scenario: EnderecoEntrega PF/PJ

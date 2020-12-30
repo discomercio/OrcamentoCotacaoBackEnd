@@ -38,6 +38,24 @@ Scenario: Fluxo de cadastro do magento
 #
 #   Sexo
 #   Retirar obrigatoriedade do preenchimento do sexo, permitindo deixá-lo vazio.
+#
+#201229 reuniao semanal.txt
+#- fazer o endereço de entrega para PF obrigatório?
+#sim, exigir. 
+#
+#pergunta:
+#	- exigir telefones com a lógica atual (exemplo: não permitir telefone comercial para PF)
+#	atualmente, se é cliente PF, não aceitamos nenhum telefone.
+#
+#	lógica do endereço de entrega:
+#	- se cliente PF, somente endereço e justificativa (proibimos os outros campos)
+#	- se cliente PJ, tem telefones, CPF/CNPJ, IE, razão social
+#	lógica do cadastro do cliente:
+#	- se cliente PF, exige pelo menos um telefone
+#
+#resposta:
+#	primeiro passar para o endereço de cobrança
+#	não exigir telefones e aceitamos todos que recebermos
 
 
 #Testado em Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\EspecificacaoAdicional\COD_FORMA_PAGTO_PARCELADO_CARTAO.feature
@@ -77,6 +95,15 @@ Scenario: Fluxo de cadastro do magento
 #	Entrega Imediata
 #	Se o cliente for PF, sempre colocar com entrega imediata SIM
 
+#Testado em Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\EspecificacaoAdicional\ProdutosPresencaEstoque.feature
+#	pergunta:
+#		No magento, caso o produto não tenha presença no estoque, salvamos o pedido normalmente?
+#	resposta:
+#		sim. quando entra o estoque, esse pedido é automaticamente suprido.
+#
+#	preço: aceitamos o valor que vier do magento. Não validamos o preço.
+#
+
 
 #Estoque: não é um problema.
 #
@@ -94,7 +121,5 @@ Scenario: Fluxo de cadastro do magento
 #caso exista, o número do pedido marketplace já estão cadastrados em algum pedido c/ st_entrega válido (diferente de cancelado).
 #
 #Validar se o que expomos pelo ObterCodigoMarketplace foi informado
-#
-#preço: aceitamos o valor que vier do magento. Não validamos o preço.
 #
 

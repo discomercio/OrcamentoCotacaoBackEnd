@@ -23,6 +23,9 @@ namespace Prepedido.FormaPagto
         {
             FormaPagtoDados formaPagto = new FormaPagtoDados();
 
+            //o apelido pode ser null
+            apelido = (apelido ?? "");
+
             //implementar as buscas
             formaPagto.ListaAvista = (await ObterFormaPagtoAVista(apelido, tipo_pessoa)).ToList();
             if (tipo_pessoa == Constantes.ID_PJ)
