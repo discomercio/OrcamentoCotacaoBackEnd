@@ -31,6 +31,10 @@ namespace Especificacao.Testes.Utils.LogTestes
         {
             GravarLog("LimparEnderecoDeEntrega", objeto);
         }
+        public static void LimparDadosCadastraisEEnderecoDeEntrega(object objeto)
+        {
+            GravarLog("LimparDadosCadastraisEEnderecoDeEntrega", objeto);
+        }
         public static void DadoBaseClientePJComEnderecoDeEntrega(object objeto)
         {
             GravarLog("DadoBaseClientePJComEnderecoDeEntrega", objeto);
@@ -120,11 +124,16 @@ namespace Especificacao.Testes.Utils.LogTestes
             }
             public static void NovoRegistroEmCampo(string tabela, string p0, string p1, object objeto)
             {
-                GravarLog($@"NovoRegistro ""{p0}"" = ""{p1}""", objeto);
+                GravarLog($@"NovoRegistro tabela=""{tabela}"", ""{p0}"" = ""{p1}""", objeto);
             }
             public static void GravarRegistroEm(string p0, object objeto)
             {
-                GravarLog(@"GravarRegistro {p0}", objeto);
+                GravarLog($@"GravarRegistro {p0}", objeto);
+            }
+            public static void TabelaRegistroComCampoVerificarCampo(string tabela, string campoBusca, string valorBusca, string campoDesejado, string valorDesejado, object objeto)
+            {
+                GravarLog($"TabelaRegistroComCampoVerificarCampo tabela {tabela}, campoBusca {campoBusca}, " +
+                    $"valorBusca {valorBusca}, campoDesejado {campoDesejado}, valorDesejado {valorDesejado}", objeto);
             }
         }
     }

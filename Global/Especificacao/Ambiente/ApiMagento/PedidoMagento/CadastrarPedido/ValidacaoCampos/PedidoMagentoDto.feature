@@ -28,7 +28,7 @@ Scenario: InfCriacaoPedido Pedido_bs_x_ac
 	Then Sem nenhum erro
 
 Scenario: InfCriacaoPedido Marketplace_codigo_origem
-#/// Número do pedido no marketplace (opcional, se o pedido é do magento este campo não existe)
+	#/// Número do pedido no marketplace (opcional, se o pedido é do magento este campo não existe)
 	Given Pedido base
 	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = "123"
 	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = ""
@@ -41,14 +41,26 @@ Scenario: InfCriacaoPedido Marketplace_codigo_origem
 
 
 @ignore
-Scenario: EnderecoCadastralCliente
+Scenario: Pedido_bs_x_marketplace e Marketplace_codigo_origem já existem
+#2) Seria necessário tratar a possibilidade de ocorrer acesso concorrente entre o cadastramento semi-automático e a integração.
+#Em ambos os casos, seria importante verificar no instante final antes da efetivar o cadastramento do pedido se o número Magento e,
+#caso exista, o número do pedido marketplace já estão cadastrados em algum pedido c/ st_entrega válido (diferente de cancelado).
 	When Fazer esta validação
+
+
+@ignore
+Scenario: Validar se o que expomos pelo ObterCodigoMarketplace foi informado
+	When Fazer esta validação
+
+
+Scenario: EnderecoCadastralCliente
+	#não precisamos validar porque o endereço de entregaécopiado sbre o endereço cadastral no caso de PF. E PJ não está sendo aceito pela API
 
 Scenario: EnderecoCadastralCliente CPF diferente do principal
 	Given Pedido base
 	And Informo "EnderecoCadastralCliente.Endereco_cnpj_cpf" = "1"
 	And Informo "pedidoMagentoDto.Cnpj_Cpf" = "2"
-	Then Erro "Cnpj_Cpf está diferente de EnderecoCadastralCliente.Endereco_cnpj_cpf."
+	Then Erro "Cnpj_Cpf está diferente de EnderecoEntrega.EndEtg_cnpj_cpf."
 
 @ignore
 Scenario: DetalhesPedidoMagentoDto

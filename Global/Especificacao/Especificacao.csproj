@@ -53,6 +53,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\CriacaoCliente_Pf - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\EspecificacaoAdicional\ListaDependencias.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\ObterCodigoMarketplaceListaDependencias.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiMagento\PedidoMagento\ObterCodigoMarketplace\BuscarQtdeParcCartaoVisaListaDependencias.feature.cs" />
@@ -117,6 +118,12 @@
   <ItemGroup>
     <Compile Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CadastrarPedidoListaDependencias.feature.cs">
       <DependentUpon>CadastrarPedidoListaDependencias.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\CriacaoCliente_Pf_Opcionais.feature.cs">
+      <DependentUpon>CriacaoCliente_Pf_Opcionais.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\CriacaoCliente_Pf_Obrigatorios.feature.cs">
+      <DependentUpon>CriacaoCliente_Pf_Obrigatorios.feature</DependentUpon>
     </Compile>
     <Compile Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\EspecificacaoAdicional\ListaDependencias.feature.cs">
       <DependentUpon>%(Filename)</DependentUpon>
@@ -206,6 +213,14 @@
 
   <ItemGroup>
     <SpecFlowFeatureFiles Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CadastrarPedidoListaDependencias.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\CriacaoCliente_Pf_Opcionais.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\CriacaoCliente_Pf_Obrigatorios.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>

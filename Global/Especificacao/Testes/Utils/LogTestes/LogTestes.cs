@@ -63,6 +63,11 @@ namespace Especificacao.Testes.Utils.LogTestes
             Writer.Flush();
         }
 
+        public static void ErroNosTestes(string msg)
+        {
+            GetInstance().LogMensagem("ERRO: " + msg);
+        }
+
         public void LogMemoria(string msg)
         {
             var memory = 0.0;

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MagentoBusiness.MagentoBll.AcessoBll;
-using MagentoBusiness.MagentoBll.PedidoMagentoBll;
 using MagentoBusiness.MagentoDto.PedidoMagentoDto;
 using InfraIdentity.ApiMagento;
 using MagentoBusiness.MagentoDto;

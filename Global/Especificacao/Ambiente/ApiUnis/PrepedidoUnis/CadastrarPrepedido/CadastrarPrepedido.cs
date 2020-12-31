@@ -199,11 +199,16 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
                 return;
             if (Testes.Utils.WhenInformoCampo.InformarCampo(campo, valor, prePedidoUnisDto.EnderecoEntrega))
                 return;
+            if (Testes.Utils.WhenInformoCampo.InformarCampo(campo, valor, prePedidoUnisDto.EnderecoCadastralCliente))
+                return;
 
             switch (campo)
             {
                 case "EndEtg_obs":
                     prePedidoUnisDto.EnderecoEntrega.EndEtg_cod_justificativa = valor;
+                    return;
+                case "Endereco_EmailXml":
+                    prePedidoUnisDto.EnderecoCadastralCliente.Endereco_email_xml = valor;
                     return;
                 default:
                     Assert.Equal("", $"{campo} desconhecido na rotina Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.WhenInformo");
@@ -216,7 +221,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
             if (ignorarFeature) return;
             Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensComXitens(numeroItens, this);
             numeroItens = numeroItens < 0 ? 0 : numeroItens;
-            numeroItens = numeroItens > 100? 100 : numeroItens;
+            numeroItens = numeroItens > 100 ? 100 : numeroItens;
             var lp = prePedidoUnisDto.ListaProdutos;
             while (lp.Count < numeroItens)
                 lp.Add(new PrePedidoProdutoPrePedidoUnisDto());

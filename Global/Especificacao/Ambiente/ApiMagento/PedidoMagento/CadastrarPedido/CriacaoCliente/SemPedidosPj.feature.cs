@@ -157,7 +157,8 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("Informo \"EnderecoCadastralCliente.Endereco_tipo_pessoa\" = \"XX\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 13
- testRunner.Then("Erro \"A API somente aceita pedidos para PF.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Erro \"A API Magento somente aceita pedidos para PF (EnderecoCadastralCliente.Ende" +
+                        "reco_tipo_pessoa).\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -198,7 +199,8 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("Informo \"EnderecoCadastralCliente.Endereco_tipo_pessoa\" = \"PJ\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 18
- testRunner.Then("Erro \"A API somente aceita pedidos para PF.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Erro \"A API Magento somente aceita pedidos para PF (EnderecoCadastralCliente.Ende" +
+                        "reco_tipo_pessoa).\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

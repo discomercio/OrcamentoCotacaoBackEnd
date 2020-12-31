@@ -1,12 +1,12 @@
-﻿Feature: FLuxoCadastroPedidoMagento - PF
+﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
+Feature: FLuxoCadastroPedidoMagento - PF
 
-@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
 Scenario: salvando o pedido base
 	Given Pedido base
 	Then Sem nenhum erro
 
-@ignore
 Scenario: Fluxo de cadastro do magento
+	Given Esta é a especificação, está sendo testado em outros .feature
 
 #Paradigma de salvamento: fazer o mesmo que acontece com o processo semi-automático.
 #Se o semi-automático der erro, damos erro. Se aceitar, aceitamos.
@@ -41,7 +41,7 @@ Scenario: Fluxo de cadastro do magento
 #
 #201229 reuniao semanal.txt
 #- fazer o endereço de entrega para PF obrigatório?
-#sim, exigir. 
+#sim, exigir.
 #
 #pergunta:
 #	- exigir telefones com a lógica atual (exemplo: não permitir telefone comercial para PF)
@@ -105,21 +105,20 @@ Scenario: Fluxo de cadastro do magento
 #
 
 
+#Testado em Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\ValidacaoCampos\PedidoMagentoDto.feature
+#	2) Seria necessário tratar a possibilidade de ocorrer acesso concorrente entre o cadastramento semi-automático e a integração.
+#	Em ambos os casos, seria importante verificar no instante final antes da efetivar o cadastramento do pedido se o número Magento e,
+#	caso exista, o número do pedido marketplace já estão cadastrados em algum pedido c/ st_entrega válido (diferente de cancelado).
+#
+#	Validar se o que expomos pelo ObterCodigoMarketplace foi informado
+#
+#
+
+
 #Estoque: não é um problema.
 #
 #centro de dsitribuição: o magento tem mas não usamos. Nem vamos expor esse flag.
 #
 #produtos: sempre virão divididos, nunca vai vir um produto composto.
-#
-
-	Given implementar daqui para baixo
-
-#
-#
-#2) Seria necessário tratar a possibilidade de ocorrer acesso concorrente entre o cadastramento semi-automático e a integração.
-#Em ambos os casos, seria importante verificar no instante final antes da efetivar o cadastramento do pedido se o número Magento e,
-#caso exista, o número do pedido marketplace já estão cadastrados em algum pedido c/ st_entrega válido (diferente de cancelado).
-#
-#Validar se o que expomos pelo ObterCodigoMarketplace foi informado
 #
 

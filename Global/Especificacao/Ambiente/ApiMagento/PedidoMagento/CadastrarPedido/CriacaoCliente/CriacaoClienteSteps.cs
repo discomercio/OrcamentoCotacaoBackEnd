@@ -28,11 +28,18 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Criaca
             cadastrarPedido.GivenPedidoBaseClientePJ();
         }
 
-        [Given(@"Limpar endereço de entrega")]
+        [Given(@"Limpar endereço de entrega2")]
         public void GivenLimparEnderecoDeEntrega()
         {
             Testes.Utils.LogTestes.LogOperacoes2.LimparEnderecoDeEntrega(this);
             cadastrarPedido.LimparEnderecoDeEntrega();
+        }
+
+        [Given(@"Limpar dados cadastrais e endereço de entrega")]
+        public void GivenLimparDadosCadastraisEEnderecoDeEntrega()
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.LimparDadosCadastraisEEnderecoDeEntrega(this);
+            cadastrarPedido.LimparDadosCadastraisEEnderecoDeEntrega();
         }
 
 

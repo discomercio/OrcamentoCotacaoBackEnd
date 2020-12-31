@@ -9,6 +9,9 @@ Scenario: Lista de verificações feitas
 	And Especificado em "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional.CamposLidosAppsettings"
 	And Especificado em "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CriacaoCliente.SemPedidosPj"
 	And Especificado em "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CriacaoCliente.CriacaoCliente_Pf"
+	And Especificado em "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CriacaoCliente.CriacaoCliente_Pf_Obrigatorios"
+	And Especificado em "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CriacaoCliente.CriacaoCliente_Pf_Opcionais"
+	And Especificado em "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CriacaoCliente.SemPedidosPj"
 	#o pedido em si
 	And Especificado em "Especificacao.Pedido.Pedido.PedidoListaDependencias"
 

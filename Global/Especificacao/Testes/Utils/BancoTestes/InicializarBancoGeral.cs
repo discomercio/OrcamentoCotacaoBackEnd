@@ -1,6 +1,7 @@
 ﻿using InfraBanco;
 using InfraBanco.Constantes;
 using InfraBanco.Modelos;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -16,6 +17,15 @@ namespace Especificacao.Testes.Utils.BancoTestes
 {
     public class InicializarBancoGeral
     {
+        //ára acessar o banco mais facilmente do debug
+        public static InfraBanco.ContextoBd ObterContextoBd()
+        {
+            var servicos = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos();
+            //precisa restaurar o banco
+            var bd = servicos.GetRequiredService<InfraBanco.ContextoBdProvider>();
+            return bd.GetContextoLeitura();
+        }
+
         //nao deveria precisar poruqe os testes são mono-thread, mas não custa colocar
         private static readonly object _lockObject = new object();
         private static bool _inicialziado = false;
@@ -181,25 +191,5 @@ namespace Especificacao.Testes.Utils.BancoTestes
             db.SaveChanges();
         }
 
-        public void LimparTabela(string tabela)
-        {
-            using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
-            switch (tabela)
-            {
-                case "t_PERCENTUAL_CUSTO_FINANCEIRO_FORNECEDOR":
-                    InicializarTabela<TpercentualCustoFinanceiroFornecedor>(db.TpercentualCustoFinanceiroFornecedors, null, db, true);
-                    break;
-                case "t_PRAZO_PAGTO_VISANET":
-                    InicializarTabela<TprazoPagtoVisanet>(db.TprazoPagtoVisanets, null, db, true);
-                    break;
-                case "t_CLIENTE":
-                    InicializarTabela<Tcliente>(db.Tclientes, null, db, true);
-                    break;
-                default:
-                    Testes.Utils.LogTestes.LogOperacoes2.Excecao($"Especificacao.Testes.Utils.BancoTestes.InicializarBancoGeral.LimparTabela nome de tabela desconhecido: {tabela}" + $"StackTrace: '{Environment.StackTrace}'", this);
-                    throw new ArgumentException($"Especificacao.Testes.Utils.BancoTestes.InicializarBancoGeral.LimparTabela nome de tabela desconhecido: {tabela}");
-            }
-            db.SaveChanges();
-        }
     }
 }

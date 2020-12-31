@@ -88,8 +88,8 @@ namespace Especificacao.Especificacao.Pedido.Passo10
 #line hidden
 #line 7
  testRunner.Given("No ambiente \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido\" m" +
-                    "apear erro \"Tipo de cliente não é PF nem PJ.\" para \"A API somente aceita pedidos" +
-                    " para PF.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+                    "apear erro \"Tipo de cliente não é PF nem PJ.\" para \"A API Magento somente aceita" +
+                    " pedidos para PF (EnderecoCadastralCliente.Endereco_tipo_pessoa).\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
         }
         

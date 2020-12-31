@@ -19,6 +19,7 @@ namespace Especificacao.Testes.Pedido
         protected abstract void AbstractDeixarFormaDePagamentoConsistente();
         protected abstract void AbstractListaDeItensComXitens(int numeroItens);
         protected abstract void AbstractLimparEnderecoDeEntrega();
+        protected abstract void AbstractLimparDadosCadastraisEEnderecoDeEntrega();
         protected abstract List<string> AbstractListaErros();
         #endregion
 
@@ -189,6 +190,12 @@ namespace Especificacao.Testes.Pedido
             if (ignorarFeature) return;
             Testes.Utils.LogTestes.LogOperacoes2.LimparEnderecoDeEntrega(this);
             AbstractLimparEnderecoDeEntrega();
+        }
+        public void LimparDadosCadastraisEEnderecoDeEntrega()
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.LimparDadosCadastraisEEnderecoDeEntrega(this);
+            AbstractLimparDadosCadastraisEEnderecoDeEntrega();
         }
 
         public void RecalcularTotaisDoPedido()

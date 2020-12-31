@@ -67,8 +67,15 @@ namespace Especificacao.Testes.Utils
                             break;
                         default:
                             valor = ConverterCustoFinancFornecTipoParcelamento(campoSimples, valor);
-                            //vai dar erro, tudo bem...
-                            p.SetValue(destino, valor);
+                            if (valor.ToLower() == "null")
+                            {
+                                p.SetValue(destino, null);
+                            }
+                            else
+                            {
+                                //se o tipo estiver errado vai dar erro, tudo bem...
+                                p.SetValue(destino, valor);
+                            }
                             break;
                     }
                     return true;

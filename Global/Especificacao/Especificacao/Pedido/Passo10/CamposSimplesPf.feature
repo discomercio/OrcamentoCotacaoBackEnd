@@ -4,7 +4,7 @@ Feature: Validar campos simples Pf
 Background: Configuração
 	#na ApiUnis, ele exige que o cliente já esteja cadastrado, então não valida o CPF/CNPJ
 	Given Ignorar cenário no ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido"
-	Given No ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido" mapear erro "Tipo de cliente não é PF nem PJ." para "A API somente aceita pedidos para PF."
+	Given No ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido" mapear erro "Tipo de cliente não é PF nem PJ." para "A API Magento somente aceita pedidos para PF (EnderecoCadastralCliente.Endereco_tipo_pessoa)."
 
 @ListaDependencias
 Scenario: CamposSimples ListaDependencias Configuração

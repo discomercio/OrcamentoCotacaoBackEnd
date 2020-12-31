@@ -19,12 +19,14 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    [Xunit.TraitAttribute("Category", "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional")]
     public partial class FLuxoCadastroPedidoMagento_PFFeature : object, Xunit.IClassFixture<FLuxoCadastroPedidoMagento_PFFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private string[] _featureTags = ((string[])(null));
+        private string[] _featureTags = new string[] {
+                "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -40,7 +42,8 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "FLuxoCadastroPedidoMagento - PF", null, ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "FLuxoCadastroPedidoMagento - PF", null, ProgrammingLanguage.CSharp, new string[] {
+                        "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -83,11 +86,9 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
         [Xunit.SkippableFactAttribute(DisplayName="salvando o pedido base")]
         [Xunit.TraitAttribute("FeatureTitle", "FLuxoCadastroPedidoMagento - PF")]
         [Xunit.TraitAttribute("Description", "salvando o pedido base")]
-        [Xunit.TraitAttribute("Category", "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional")]
         public virtual void SalvandoOPedidoBase()
         {
-            string[] tagsOfScenario = new string[] {
-                    "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("salvando o pedido base", null, tagsOfScenario, argumentsOfScenario);
 #line 4
@@ -123,14 +124,12 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableFactAttribute(DisplayName="Fluxo de cadastro do magento")]
         [Xunit.TraitAttribute("FeatureTitle", "FLuxoCadastroPedidoMagento - PF")]
         [Xunit.TraitAttribute("Description", "Fluxo de cadastro do magento")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void FluxoDeCadastroDoMagento()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fluxo de cadastro do magento", null, tagsOfScenario, argumentsOfScenario);
-#line 9
+#line 8
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -150,8 +149,8 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 115
- testRunner.Given("implementar daqui para baixo", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 9
+ testRunner.Given("Esta é a especificação, está sendo testado em outros .feature", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }
             this.ScenarioCleanup();

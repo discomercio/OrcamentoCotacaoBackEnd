@@ -126,7 +126,7 @@ se o clinte for PF, estes campos são desnecessários
                 OutroEndereco = outroEnd
             };
 
-            if (outroEnd && endEtg!= null)
+            if (outroEnd && endEtg != null)
             {
                 ret.EndEtg_endereco = endEtg.EndEtg_endereco;
                 ret.EndEtg_endereco_numero = endEtg.EndEtg_endereco_numero;
@@ -155,8 +155,8 @@ se o clinte for PF, estes campos são desnecessários
                     (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO :
                     (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL;
                 ret.EndEtg_contribuinte_icms_status = endEtg.EndEtg_tipo_pessoa == Constantes.ID_PF ?
-                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL :    //é infical nas duas opções
-                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL;
+                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL :
+                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL; //inicial nos dois casos
                 ret.EndEtg_ie = "";
                 ret.EndEtg_rg = "";
             }

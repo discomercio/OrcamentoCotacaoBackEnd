@@ -138,20 +138,20 @@ Scenario: c_indicador c_perc_RT rb_RA garantia_indicador somente se for indicaca
 	Given Pedido base
 	When Informo "indicador" = "ZEZINHO"
 	And Informo "indicacao" = "N"
-	Then No pedido gravado, "indicador" = ""
+	Then No pedido gravado, verificar campo "indicador" = ""
 
 	Given Pedido base
 	When Informo "perc_RT" = "123"
 	And Informo "indicacao" = "N"
-	Then No pedido gravado, "perc_RT" = ""
+	Then No pedido gravado, verificar campo "perc_RT" = ""
 
 	Given Pedido base
 	When Informo "RA" = "True"
 	And Informo "indicacao" = "N"
-	Then No pedido gravado, "RA" = "false"
+	Then No pedido gravado, verificar campo "RA" = "false"
 
 	Given Pedido base
 	When Informo "garantia_indicador" = "COD_GARANTIA_INDICADOR_STATUS__SIM"
 	And Informo "indicacao" = "N"
-	Then No pedido gravado, "garantia_indicador" = "COD_GARANTIA_INDICADOR_STATUS__NAO"
+	Then No pedido gravado, verificar campo "garantia_indicador" = "COD_GARANTIA_INDICADOR_STATUS__NAO"
 

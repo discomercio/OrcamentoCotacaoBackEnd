@@ -24,7 +24,7 @@ Scenario: Orcamentista = "FRETE" (vamos ler do appsettings)
 	Given Pedido base
 	And Informo "frete" = "10"
 	Then Sem nenhum erro
-	And No pedido salvo, campo "indicador" = "FRETE"
+	And No pedido gravado, verificar campo "indicador" = "FRETE"
 	When Fazer esta validação
 
 @ignore

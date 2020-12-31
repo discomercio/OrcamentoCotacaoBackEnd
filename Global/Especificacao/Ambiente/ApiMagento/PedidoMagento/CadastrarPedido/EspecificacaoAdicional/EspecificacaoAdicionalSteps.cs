@@ -14,6 +14,12 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Especi
         {
         }
 
+        [Given(@"Esta é a especificação, está sendo testado em outros \.feature")]
+        public void GivenEstaEAEspecificacaoEstaSendoTestadoEmOutros_Feature()
+        {
+            //nao fazemos nada mesmo
+        }
+
         [Given(@"Pedido base")]
         public void GivenPedidoBase()
         {

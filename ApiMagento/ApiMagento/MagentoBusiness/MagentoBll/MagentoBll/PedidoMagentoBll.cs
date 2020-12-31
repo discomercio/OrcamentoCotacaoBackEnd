@@ -15,46 +15,50 @@ using MagentoBusiness.MagentoDto.MarketplaceDto;
 
 #nullable enable
 
-namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
+namespace MagentoBusiness.MagentoBll.MagentoBll
 {
     public class PedidoMagentoBll
     {
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
-        private readonly Cliente.ClienteBll clienteBll;
         private readonly Produto.ProdutoGeralBll produtoGeralBll;
         private readonly ValidacoesPrepedidoBll validacoesPrepedidoBll;
         private readonly PrepedidoBll prepedidoBll;
         private readonly ConfiguracaoApiMagento configuracaoApiMagento;
         private readonly Pedido.PedidoCriacao pedidoCriacao;
+        private readonly PedidoMagentoClienteBll pedidoMagentoClienteBll;
 
         public PedidoMagentoBll(InfraBanco.ContextoBdProvider contextoProvider,
-            Cliente.ClienteBll clienteBll, Produto.ProdutoGeralBll produtoGeralBll,
+            Produto.ProdutoGeralBll produtoGeralBll,
             Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll, PrepedidoBll prepedidoBll,
-            ConfiguracaoApiMagento configuracaoApiMagento, Pedido.PedidoCriacao pedidoCriacao)
+            ConfiguracaoApiMagento configuracaoApiMagento, Pedido.PedidoCriacao pedidoCriacao,
+            PedidoMagentoClienteBll pedidoMagentoClienteBll)
         {
             this.contextoProvider = contextoProvider;
-            this.clienteBll = clienteBll;
             this.produtoGeralBll = produtoGeralBll;
             this.validacoesPrepedidoBll = validacoesPrepedidoBll;
             this.prepedidoBll = prepedidoBll;
             this.configuracaoApiMagento = configuracaoApiMagento;
             this.pedidoCriacao = pedidoCriacao;
+            this.pedidoMagentoClienteBll = pedidoMagentoClienteBll;
         }
 
         public async Task<PedidoResultadoMagentoDto> CadastrarPedidoMagento(PedidoMagentoDto pedidoMagento, string usuario)
         {
             PedidoResultadoMagentoDto resultado = new PedidoResultadoMagentoDto();
 
-            AcertosBasicosCampos(pedidoMagento, resultado.ListaErros);
             var orcamentistaindicador_vendedor_loja = await Calcular_orcamentistaindicador_vendedor_loja(pedidoMagento, usuario, resultado.ListaErros);
-            LimitarPedidosMagentoPJ(pedidoMagento, resultado);
+            pedidoMagentoClienteBll.LimitarPedidosMagentoPJ(pedidoMagento, resultado.ListaErros);
+            await ValidarPedidoMagentoEMarketplace(pedidoMagento, resultado.ListaErros);
             if (resultado.ListaErros.Count > 0)
                 return resultado;
 
             //Cadastrar cliente
-            await CadastrarClienteSeNaoExistir(pedidoMagento, resultado.ListaErros, orcamentistaindicador_vendedor_loja, usuario);
+            pedidoMagentoClienteBll.MoverEnderecoEntregaParaEnderecoCadastral(pedidoMagento, resultado.ListaErros);
+            //se der erro ao mover não podemos tentar cadastrar
+            if (resultado.ListaErros.Count > 0)
+                return resultado;
 
-            await ValidarPedidoMagentoEMarketplace(pedidoMagento, resultado.ListaErros);
+            await pedidoMagentoClienteBll.CadastrarClienteSeNaoExistir(pedidoMagento, resultado.ListaErros, orcamentistaindicador_vendedor_loja, usuario);
             if (resultado.ListaErros.Count > 0)
                 return resultado;
 
@@ -79,44 +83,7 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
             return resultado;
         }
 
-        private async Task CadastrarClienteSeNaoExistir(PedidoMagentoDto pedidoMagento, List<string> listaErros,
-            Orcamentistaindicador_vendedor_loja orcamentistaindicador_vendedor_loja, string usuario_cadastro)
-        {
-            if (await clienteBll.ClienteExiste(pedidoMagento.Cnpj_Cpf))
-                return;
-
-            //vamos seguir o fluxo para cadastrar o cliente e depois fazer o cadastro do pedido
-            Cliente.Dados.ClienteCadastroDados clienteCadastro = new Cliente.Dados.ClienteCadastroDados
-            {
-                DadosCliente =
-                EnderecoCadastralClienteMagentoDto.DadosClienteDeEnderecoCadastralClienteMagentoDto(pedidoMagento.EnderecoCadastralCliente,
-                    orcamentistaindicador_vendedor_loja.loja, pedidoMagento.Frete, orcamentistaindicador_vendedor_loja.vendedor,
-                    configuracaoApiMagento.DadosOrcamentista.Orcamentista),
-                RefBancaria = new List<Cliente.Dados.Referencias.RefBancariaClienteDados>(),
-                RefComercial = new List<Cliente.Dados.Referencias.RefComercialClienteDados>()
-            };
-
-            List<string> lstRet = (await clienteBll.CadastrarCliente(clienteCadastro,
-                orcamentistaindicador_vendedor_loja.orcamentista_indicador,
-                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI,
-                usuario_cadastro)).ToList();
-
-            //é erro
-            if (lstRet.Count > 1)
-            {
-                listaErros.AddRange(lstRet);
-            }
-            else if (lstRet.Count == 1)
-            {
-                //é o número do id do cliente
-                if (lstRet[0].Length != 12)
-                {
-                    listaErros.AddRange(lstRet);
-                }
-            }
-        }
-
-        private class Orcamentistaindicador_vendedor_loja
+        internal class Orcamentistaindicador_vendedor_loja
         {
             public readonly string? orcamentista_indicador;
             public readonly string vendedor;
@@ -143,17 +110,6 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
             string vendedor = usuario;
             string loja = configuracaoApiMagento.DadosOrcamentista.Loja;
             return new Orcamentistaindicador_vendedor_loja(orcamentista_indicador, vendedor, loja);
-        }
-
-        private void AcertosBasicosCampos(PedidoMagentoDto pedidoMagento, List<string> listaErros)
-        {
-            pedidoMagento.Cnpj_Cpf = UtilsGlobais.Util.SoDigitosCpf_Cnpj(pedidoMagento.Cnpj_Cpf);
-            pedidoMagento.EnderecoCadastralCliente.Endereco_cnpj_cpf = UtilsGlobais.Util.SoDigitosCpf_Cnpj(pedidoMagento.EnderecoCadastralCliente.Endereco_cnpj_cpf);
-            //exigimos que o CPF/CNPJ esteja igual nos dois blocos de informação
-            if (pedidoMagento.Cnpj_Cpf != pedidoMagento.EnderecoCadastralCliente.Endereco_cnpj_cpf)
-            {
-                listaErros.Add("Cnpj_Cpf está diferente de EnderecoCadastralCliente.Endereco_cnpj_cpf.");
-            }
         }
 
         private async Task<IEnumerable<Pedido.Dados.Criacao.PedidoProdutoPedidoDados>> ConverterProdutosMagento(PedidoMagentoDto pedidoMagento,
@@ -210,7 +166,7 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
             Cliente.Dados.DadosClienteCadastroDados dadosCliente =
                 EnderecoCadastralClienteMagentoDto.DadosClienteDeEnderecoCadastralClienteMagentoDto(pedidoMagento.EnderecoCadastralCliente,
                 orcamentistaindicador_vendedor_loja.loja,
-                pedidoMagento.Frete, orcamentistaindicador_vendedor_loja.vendedor, configuracaoApiMagento.DadosOrcamentista.Orcamentista);
+                orcamentistaindicador_vendedor_loja.vendedor, configuracaoApiMagento.DadosOrcamentista.Orcamentista);
 
             Cliente.Dados.EnderecoCadastralClientePrepedidoDados enderecoCadastral =
                 EnderecoCadastralClienteMagentoDto.EnderecoCadastralClientePrepedidoDados_De_EnderecoCadastralClienteMagentoDto(pedidoMagento.EnderecoCadastralCliente);
@@ -270,30 +226,5 @@ namespace MagentoBusiness.MagentoBll.PedidoMagentoBll
         }
 
 
-        private void LimitarPedidosMagentoPJ(PedidoMagentoDto pedidoMagento, PedidoResultadoMagentoDto resultado)
-        {
-            /*
-             * definido em 201021 
-             
-            magento: problema no cadastro de PJ, vai puxar do estoque errado se for contribuinte de ICMS.
-            Hoje não usa, mas é importante ter o recurso.
-            O problema é: se a gente presumir o ICMS da PJ, vamos criar o pedido pegando do estoque errado.
-            Hamilton vai conversar com Karina para saber como funciona. Mas é um BELO problema.
-
-            Boa tarde
-            @Edu  conversei com a @Karina e ficou decidido que neste primeiro momento a integração com o Magento 
-            não irá tratar os pedidos de clientes PJ. Esses pedidos continuarão sendo cadastrados através do 
-            processo semi-automático. Então creio que seria melhor fazer normalmente a validação do campo de 
-            contribuinte ICMS para rejeitar os pedidos que vierem sem essa informação p/ garantir a consistência 
-            dos dados caso seja enviado um pedido de cliente PJ.
-
-            Conversei com o time e pegando alguns pontos que eles comentaram é melhor seguir com semi-automático mesmo e no futuro se surgir alguma ideia ou solução a gente adapta. 
-
-            Resumo: API do Magento para PJ não aceita nenhum pedido, tods serão feitos no semi-automático
-            */
-            if (pedidoMagento.EnderecoCadastralCliente.Endereco_tipo_pessoa != Constantes.ID_PF)
-                resultado.ListaErros.Add("A API somente aceita pedidos para PF.");
-
-        }
     }
 }

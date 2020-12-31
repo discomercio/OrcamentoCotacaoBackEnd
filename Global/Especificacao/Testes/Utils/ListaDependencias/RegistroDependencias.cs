@@ -205,7 +205,26 @@ namespace Especificacao.Testes.Utils.ListaDependencias
 
                 //só apra facilitar o debug
                 if (registrados.Count != verificados.Count)
+                {
                     LogTestes.LogTestes.GetInstance().LogMensagem($"Erro: VerificarUmaLista {String.Join(", ", registrados)} diferente de {String.Join(",", verificados)} ");
+
+                    foreach (var registrado in registrados)
+                    {
+                        if (!verificados.Contains(registrado))
+                        {
+                            LogTestes.LogTestes.GetInstance().LogMensagem($"Erro: !verificados.Contains(registrado) {registrado} em {String.Join(",", verificados)} ");
+                            Assert.Equal("", $"{registrado} Erro: !verificados.Contains(registrado) ");
+                        }
+                    }
+                    foreach (var verificado in verificados)
+                    {
+                        if (!registrados.Contains(verificado))
+                        {
+                            LogTestes.LogTestes.GetInstance().LogMensagem($"Erro: !registrados.Contains(verificado) {verificado} em {String.Join(",", registrados)} ");
+                            Assert.Equal("", $"{verificado} Erro: !verificados.Contains(registrado) ");
+                        }
+                    }
+                }
 
 
                 //agora a verificaçaõ de verdade

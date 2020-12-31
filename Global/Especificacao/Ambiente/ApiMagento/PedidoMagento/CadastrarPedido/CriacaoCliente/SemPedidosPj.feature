@@ -10,9 +10,9 @@ Scenario: AdicionarDependencia
 Scenario: SemPedidosPj
 	Given Pedido base
 	And Informo "EnderecoCadastralCliente.Endereco_tipo_pessoa" = "XX"
-	Then Erro "A API somente aceita pedidos para PF."
+	Then Erro "A API Magento somente aceita pedidos para PF (EnderecoCadastralCliente.Endereco_tipo_pessoa)."
 
 Scenario: SemPedidosPj 2
 	Given Pedido base
 	And Informo "EnderecoCadastralCliente.Endereco_tipo_pessoa" = "PJ"
-	Then Erro "A API somente aceita pedidos para PF."
+	Then Erro "A API Magento somente aceita pedidos para PF (EnderecoCadastralCliente.Endereco_tipo_pessoa)."

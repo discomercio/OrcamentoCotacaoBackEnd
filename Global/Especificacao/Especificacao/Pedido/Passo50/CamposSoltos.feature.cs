@@ -557,7 +557,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("Informo \"indicacao\" = \"N\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 141
- testRunner.Then("No pedido gravado, \"indicador\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("No pedido gravado, verificar campo \"indicador\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 143
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -569,7 +569,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("Informo \"indicacao\" = \"N\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 146
- testRunner.Then("No pedido gravado, \"perc_RT\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("No pedido gravado, verificar campo \"perc_RT\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 148
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -581,7 +581,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("Informo \"indicacao\" = \"N\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 151
- testRunner.Then("No pedido gravado, \"RA\" = \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("No pedido gravado, verificar campo \"RA\" = \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 153
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -593,7 +593,8 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("Informo \"indicacao\" = \"N\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 156
- testRunner.Then("No pedido gravado, \"garantia_indicador\" = \"COD_GARANTIA_INDICADOR_STATUS__NAO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("No pedido gravado, verificar campo \"garantia_indicador\" = \"COD_GARANTIA_INDICADOR" +
+                        "_STATUS__NAO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

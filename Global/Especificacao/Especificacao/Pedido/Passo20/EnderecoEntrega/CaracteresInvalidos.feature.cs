@@ -83,23 +83,23 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega
             this.TestTearDown();
         }
         
-        [Xunit.SkippableTheoryAttribute(DisplayName="EndEtg")]
+        [Xunit.SkippableTheoryAttribute(DisplayName="CaracteresInvalidos")]
         [Xunit.TraitAttribute("FeatureTitle", "EnderecoEntrega CaracteresInvalidos")]
-        [Xunit.TraitAttribute("Description", "EndEtg")]
+        [Xunit.TraitAttribute("Description", "CaracteresInvalidos")]
         [Xunit.InlineDataAttribute("EndEtg_endereco", "regex .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.*", new string[0])]
         [Xunit.InlineDataAttribute("EndEtg_endereco_numero", "regex .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.*", new string[0])]
         [Xunit.InlineDataAttribute("EndEtg_endereco_complemento", "regex .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.*", new string[0])]
         [Xunit.InlineDataAttribute("EndEtg_bairro", "regex .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.*", new string[0])]
         [Xunit.InlineDataAttribute("EndEtg_cidade", "regex .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.*", new string[0])]
         [Xunit.InlineDataAttribute("EndEtg_nome", "regex .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.*", new string[0])]
-        public virtual void EndEtg(string campo, string erro, string[] exampleTags)
+        public virtual void CaracteresInvalidos(string campo, string erro, string[] exampleTags)
         {
             string[] tagsOfScenario = exampleTags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("campo", campo);
             argumentsOfScenario.Add("erro", erro);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg", null, tagsOfScenario, argumentsOfScenario);
-#line 18
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CaracteresInvalidos", null, tagsOfScenario, argumentsOfScenario);
+#line 37
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -119,31 +119,106 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 19
+#line 38
  testRunner.Given("Pedido base com endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 20
+#line 39
  testRunner.When(string.Format("Informo \"{0}\" = \"Carater inválido: €\"", campo), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 21
+#line 40
  testRunner.Then(string.Format("Erro \"{0}\"", erro), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 22
+#line 41
  testRunner.Given("Pedido base com endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 23
+#line 42
  testRunner.When(string.Format("Informo \"{0}\" = \"Carater inválido: £\"", campo), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 24
+#line 43
  testRunner.Then(string.Format("Erro \"{0}\"", erro), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 25
+#line 44
  testRunner.Given("Pedido base com endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 26
+#line 45
  testRunner.When(string.Format("Informo \"{0}\" = \"Texto\"", campo), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 27
+#line 46
+ testRunner.Then(string.Format("Sem erro \"{0}\"", erro), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableTheoryAttribute(DisplayName="CaracteresInvalidos fora API Magento")]
+        [Xunit.TraitAttribute("FeatureTitle", "EnderecoEntrega CaracteresInvalidos")]
+        [Xunit.TraitAttribute("Description", "CaracteresInvalidos fora API Magento")]
+        [Xunit.InlineDataAttribute("Endereco_rg", "regex .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.*", new string[0])]
+        [Xunit.InlineDataAttribute("Endereco_nome", "regex .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.*", new string[0])]
+        [Xunit.InlineDataAttribute("Endereco_logradouro", "regex .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.*", new string[0])]
+        [Xunit.InlineDataAttribute("Endereco_numero", "regex .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.*", new string[0])]
+        [Xunit.InlineDataAttribute("Endereco_complemento", "regex .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.*", new string[0])]
+        [Xunit.InlineDataAttribute("Endereco_bairro", "regex .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.*", new string[0])]
+        [Xunit.InlineDataAttribute("Endereco_cidade", "regex .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.*", new string[0])]
+        [Xunit.InlineDataAttribute("Endereco_contato", "regex .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.*", new string[0])]
+        [Xunit.InlineDataAttribute("Endereco_Email", "regex .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.*", new string[0])]
+        [Xunit.InlineDataAttribute("Endereco_EmailXml", "regex .*POSSUI UM OU MAIS CARACTERES INVÁLIDOS.*", new string[0])]
+        public virtual void CaracteresInvalidosForaAPIMagento(string campo, string erro, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("campo", campo);
+            argumentsOfScenario.Add("erro", erro);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CaracteresInvalidos fora API Magento", null, tagsOfScenario, argumentsOfScenario);
+#line 56
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 60
+ testRunner.Given("Ignorar cenário no ambiente \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Ca" +
+                        "dastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 61
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 62
+ testRunner.When(string.Format("Informo \"{0}\" = \"Carater inválido: €\"", campo), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 63
+ testRunner.Then(string.Format("Erro \"{0}\"", erro), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 64
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 65
+ testRunner.When(string.Format("Informo \"{0}\" = \"Carater inválido: £\"", campo), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 66
+ testRunner.Then(string.Format("Erro \"{0}\"", erro), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 67
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 68
+ testRunner.When(string.Format("Informo \"{0}\" = \"Texto\"", campo), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 69
  testRunner.Then(string.Format("Sem erro \"{0}\"", erro), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

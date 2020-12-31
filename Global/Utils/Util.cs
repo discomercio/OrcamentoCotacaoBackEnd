@@ -1220,6 +1220,11 @@ namespace UtilsGlobais
         public static string IsTextoValido(string texto, out string retorno)
         {
 #nullable enable
+            if(texto == null)
+            {
+                retorno = "";
+                return retorno;
+            }
             string caracteresInvalidos = "";
             string caracteresValidos = "!#$%¨&*()-?:{}][ÄÅÁÂÀÃäáâàãÉÊËÈéêëèÍÎÏÌíîïìÖÓÔÒÕöóôòõÜÚÛüúûùÇç";
 

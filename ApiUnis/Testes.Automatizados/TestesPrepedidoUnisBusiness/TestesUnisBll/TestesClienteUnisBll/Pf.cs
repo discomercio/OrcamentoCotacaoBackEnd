@@ -408,7 +408,9 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
 alerta="TELEFONE CELULAR (" & s_ddd_cel & ") " & s_tel_cel & " JÁ ESTÁ SENDO UTILIZADO NO CADASTRO DE OUTROS CLIENTES. <br>Não foi possível concluir o cadastro."
 */
             //precisamos de ums lista de CPFs
+#pragma warning disable IDE0028 // Simplify collection initialization
             var listaCpfs = new List<string>();
+#pragma warning restore IDE0028 // Simplify collection initialization
             listaCpfs.Add("43131718005");
             listaCpfs.Add("75215195900");
             listaCpfs.Add("25176423898");

@@ -649,7 +649,7 @@ namespace Cliente
         }
 
         private async Task<string> CadastrarDadosClienteDados(InfraBanco.ContextoBdGravacao dbgravacao,
-            Cliente.Dados.DadosClienteCadastroDados clienteDados, string indicador, Tcliente tCliente, 
+            Cliente.Dados.DadosClienteCadastroDados clienteDados, string indicador, Tcliente tCliente,
             InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
             string usuario_cadastro)
         {
@@ -671,8 +671,8 @@ namespace Cliente
                 tCliente.Id = id_cliente;
                 tCliente.Dt_Cadastro = DateTime.Now;
                 tCliente.Usuario_Cadastro = usuario_cadastro;
-                tCliente.Indicador = indicador;
-                tCliente.Cnpj_Cpf = clienteDados.Cnpj_Cpf.Replace(".", "").Replace("/", "").Replace("-", "");
+                tCliente.Indicador = indicador ?? ""; //não deve ser null
+                tCliente.Cnpj_Cpf = UtilsGlobais.Util.SoDigitosCpf_Cnpj(clienteDados.Cnpj_Cpf);
                 tCliente.Tipo = clienteDados.Tipo.ToUpper();
                 tCliente.Ie = clienteDados.Ie;
                 tCliente.Rg = clienteDados.Rg;
@@ -681,7 +681,7 @@ namespace Cliente
                 tCliente.Contribuinte_Icms_Status = clienteDados.Contribuinte_Icms_Status;
                 tCliente.Contribuinte_Icms_Data = DateTime.Now;
                 tCliente.Contribuinte_Icms_Data_Hora = DateTime.Now;
-                tCliente.Contribuinte_Icms_Usuario = usuario_cadastro; 
+                tCliente.Contribuinte_Icms_Usuario = usuario_cadastro;
                 tCliente.Produtor_Rural_Status = clienteDados.ProdutorRural;
                 if (clienteDados.ProdutorRural != (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL)
                 {
@@ -807,8 +807,8 @@ namespace Cliente
             var db = contextoProvider.GetContextoLeitura();
             cpf_cnpj = UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
             var retorno = await ((from c in db.Tclientes
-                             where c.Cnpj_Cpf == cpf_cnpj
-                             select c.Id).AnyAsync());
+                                  where c.Cnpj_Cpf == cpf_cnpj
+                                  select c.Id).AnyAsync());
             return retorno;
         }
 

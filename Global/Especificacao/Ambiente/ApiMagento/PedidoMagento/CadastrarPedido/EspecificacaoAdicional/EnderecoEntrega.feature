@@ -1,5 +1,5 @@
 ﻿@ignore
-Feature: EnderecoEntrega
+Feature: EnderecoEntrega (somente PF)
 #Endereço
 #Se o cliente for PF, sempre será usado somente o endereço de entrega como sendo o único endereço do cliente.
 #Se o cliente for PJ, será feita a comparação do endereço de entrega com o endereço de cobrança. Se forem iguais, descartar o endereço de entrega. Se forem diferentes, assumir que há endereço de entrega a ser usado.
@@ -16,6 +16,8 @@ Feature: EnderecoEntrega
 
 
 
-Scenario: EnderecoEntrega PF/PJ
+Scenario: EnderecoEntrega PF
 	When Fazer esta validação
 
+Scenario: Validação de telefones
+	When Fazer esta validação

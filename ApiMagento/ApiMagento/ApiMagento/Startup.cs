@@ -18,7 +18,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MagentoBusiness.MagentoBll.AcessoBll;
-using MagentoBusiness.MagentoBll.PedidoMagentoBll;
 using MagentoBusiness.UtilsMagento;
 
 namespace ApiMagento
@@ -177,8 +176,9 @@ namespace ApiMagento
         public static void ConfigurarServicosComuns(IServiceCollection services)
         {
             services.AddTransient<AcessoMagentoBll, AcessoMagentoBll>();
-            services.AddTransient<PedidoMagentoBll, PedidoMagentoBll>();
+            services.AddTransient<MagentoBusiness.MagentoBll.MagentoBll.PedidoMagentoBll, MagentoBusiness.MagentoBll.MagentoBll.PedidoMagentoBll>();
             services.AddTransient<MagentoBusiness.MagentoBll.MagentoBll.ObterCodigoMarketplaceBll, MagentoBusiness.MagentoBll.MagentoBll.ObterCodigoMarketplaceBll>();
+            services.AddTransient<MagentoBusiness.MagentoBll.MagentoBll.PedidoMagentoClienteBll, MagentoBusiness.MagentoBll.MagentoBll.PedidoMagentoClienteBll>();
 
             services.AddTransient<Cep.CepBll, Cep.CepBll>();
             services.AddTransient<Prepedido.PrepedidoBll, Prepedido.PrepedidoBll>();

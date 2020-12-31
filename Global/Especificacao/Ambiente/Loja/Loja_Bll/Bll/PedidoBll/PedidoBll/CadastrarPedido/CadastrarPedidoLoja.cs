@@ -6,6 +6,7 @@ using Xunit;
 
 namespace Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido
 {
+    //o nome do arquivo é diferente do nome da classe para ficar mais fácil de localizar no "Find All References". É que mistura do da loja e do magento.
     class CadastrarPedido : Testes.Pedido.HelperImplementacaoPedido
     {
         private readonly global::Loja.Bll.PedidoBll.PedidoBll pedidoBll;
@@ -49,6 +50,13 @@ namespace Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadastrar
             if (ignorarFeature) return;
             Testes.Utils.LogTestes.LogOperacoes2.LimparEnderecoDeEntrega(this);
             pedidoDto.EnderecoEntrega = new global::Loja.Bll.Dto.ClienteDto.EnderecoEntregaDtoClienteCadastro();
+        }
+        protected override void AbstractLimparDadosCadastraisEEnderecoDeEntrega()
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.LimparDadosCadastraisEEnderecoDeEntrega(this);
+            pedidoDto.EnderecoEntrega = new global::Loja.Bll.Dto.ClienteDto.EnderecoEntregaDtoClienteCadastro();
+            pedidoDto.DadosCliente = new global::Loja.Bll.Dto.ClienteDto.DadosClienteCadastroDto();
         }
 
         protected override List<string> AbstractListaErros()
@@ -130,6 +138,39 @@ namespace Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadastrar
                     pedidoDto.EnderecoEntrega ??= new global::Loja.Bll.Dto.ClienteDto.EnderecoEntregaDtoClienteCadastro();
                     pedidoDto.EnderecoEntrega.EndEtg_cod_justificativa = valor;
                     break;
+
+                //do DadosCliente
+                case "Endereco_nome":
+                    pedidoDto.DadosCliente.Nome = valor;
+                    break;
+                case "Endereco_logradouro":
+                    pedidoDto.DadosCliente.Endereco = valor;
+                    break;
+                case "Endereco_numero":
+                    pedidoDto.DadosCliente.Numero = valor;
+                    break;
+                case "Endereco_complemento":
+                    pedidoDto.DadosCliente.Complemento = valor;
+                    break;
+                case "Endereco_bairro":
+                    pedidoDto.DadosCliente.Bairro = valor;
+                    break;
+                case "Endereco_cidade":
+                    pedidoDto.DadosCliente.Cidade = valor;
+                    break;
+                case "Endereco_contato":
+                    pedidoDto.DadosCliente.Contato = valor;
+                    break;
+                case "Endereco_rg":
+                    pedidoDto.DadosCliente.Rg = valor;
+                    break;
+                case "Endereco_Email":
+                    pedidoDto.DadosCliente.Email = valor;
+                    break;
+                case "Endereco_EmailXml":
+                    pedidoDto.DadosCliente.EmailXml = valor;
+                    break;
+
 
                 default:
                     Assert.Equal("", $"{campo} desconhecido na rotina Especificacao.Ambiente.Loja.Loja.Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.AbstractInformo");

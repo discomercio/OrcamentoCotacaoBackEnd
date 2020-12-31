@@ -9,6 +9,7 @@ using Xunit;
 
 namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 {
+    //o nome do arquivo é diferente do nome da classe para ficar mais fácil de localizar no "Find All References". É que mistura do da loja e do magento.
     class CadastrarPedido : Testes.Pedido.HelperImplementacaoPedido
     {
         private readonly global::ApiMagento.Controllers.PedidoMagentoController pedidoMagentoController;
@@ -68,6 +69,13 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
             if (ignorarFeature) return;
             Testes.Utils.LogTestes.LogOperacoes2.LimparEnderecoDeEntrega(this);
             pedidoMagentoDto.EnderecoEntrega = new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
+        }
+        protected override void AbstractLimparDadosCadastraisEEnderecoDeEntrega()
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.LimparDadosCadastraisEEnderecoDeEntrega(this);
+            pedidoMagentoDto.EnderecoEntrega = new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
+            pedidoMagentoDto.EnderecoCadastralCliente = new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoCadastralClienteMagentoDto();
         }
 
         protected override void AbstractDeixarFormaDePagamentoConsistente()
@@ -140,18 +148,26 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
                     return;
 
                 case "CPF/CNPJ":
+                case "Cnpj_Cpf":
+                case "cnpj_cpf":
                     pedidoMagentoDto.Cnpj_Cpf = valor;
                     pedidoMagentoDto.EnderecoCadastralCliente.Endereco_cnpj_cpf = valor;
+                    pedidoMagentoDto.EnderecoEntrega ??= new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
+                    pedidoMagentoDto.EnderecoEntrega.EndEtg_cnpj_cpf = valor;
                     return;
                 case "pedidoMagentoDto.Cnpj_Cpf":
                     pedidoMagentoDto.Cnpj_Cpf = valor;
                     return;
                 case "EnderecoCadastralCliente.Endereco_cnpj_cpf":
                     pedidoMagentoDto.EnderecoCadastralCliente.Endereco_cnpj_cpf = valor;
+                    pedidoMagentoDto.EnderecoEntrega ??= new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
+                    pedidoMagentoDto.EnderecoEntrega.EndEtg_cnpj_cpf = valor;
                     return;
 
                 case "EnderecoCadastralCliente.Endereco_tipo_pessoa":
                     pedidoMagentoDto.EnderecoCadastralCliente.Endereco_tipo_pessoa = valor;
+                    pedidoMagentoDto.EnderecoEntrega ??= new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
+                    pedidoMagentoDto.EnderecoEntrega.EndEtg_tipo_pessoa = valor;
                     return;
             }
 
@@ -165,6 +181,8 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
                 return;
             pedidoMagentoDto.EnderecoEntrega ??= new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
             if (Testes.Utils.WhenInformoCampo.InformarCampo(campo, valor, pedidoMagentoDto.EnderecoEntrega))
+                return;
+            if (Testes.Utils.WhenInformoCampo.InformarCampo(campo, valor, pedidoMagentoDto.EnderecoCadastralCliente))
                 return;
 
             switch (campo)
