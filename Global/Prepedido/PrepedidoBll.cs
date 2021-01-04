@@ -739,9 +739,6 @@ namespace Prepedido
                 lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco,
                 prePedido.DadosCliente.Tipo == Constantes.ID_PF ? true : false, sistemaResponsavelCadastro);
 
-            //if (lstErros.Count > 0)
-            //    return lstErros;
-
             //verifica se o prepedio já foi gravado
             if (verificarPrepedidoRepetido)
             {

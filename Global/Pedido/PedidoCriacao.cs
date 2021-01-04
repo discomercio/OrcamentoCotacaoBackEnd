@@ -92,6 +92,8 @@ namespace Pedido
             await Cliente.ValidacoesClienteBll.ValidarDadosCliente(pedido.DadosCliente, null, null, pedidoRetorno.ListaErros,
                 contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, pedido.DadosCliente.Tipo == Constantes.ID_PF ? true : false,
                 pedido.SistemaResponsavelCadastro);
+            if (pedidoRetorno.ListaErros.Count > 0)
+                return pedidoRetorno;
 
             if (!validacoesPrepedidoBll.ValidarDetalhesPrepedido(pedido.DetalhesPedido, pedidoRetorno.ListaErros))
             {

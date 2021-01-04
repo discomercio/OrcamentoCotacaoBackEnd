@@ -44,7 +44,7 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
                     //precisamos passar os dados para o DTO de ClienteCadastroDto da ArClube
                     ClienteCadastroDto clienteArclube = ClienteCadastroUnisDto.ClienteCadastroDtoDeClienteCadastroUnisDto(clienteUnis, loja);
 
-                    /*VERIFICAR SE É RETORNA VAZIO MESMO
+                    /*
                      * vamos fazer a validação e retornar uma lista de erros, 
                      * se estiver vazia foi cadastrado com sucesso
                      * se estiver com itens na lista, ocorreu erro na validação

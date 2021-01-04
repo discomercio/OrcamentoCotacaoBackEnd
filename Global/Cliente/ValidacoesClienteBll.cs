@@ -28,15 +28,13 @@ namespace Cliente
             public static string CNPJ_INVALIDO = "CNPJ INVÁLIDO.";
         }
 
-        public static async Task<bool> ValidarDadosCliente(Cliente.Dados.DadosClienteCadastroDados dadosCliente,
+        public static async Task ValidarDadosCliente(Cliente.Dados.DadosClienteCadastroDados dadosCliente,
             List<Cliente.Dados.Referencias.RefBancariaClienteDados> lstRefBancaria,
             List<Cliente.Dados.Referencias.RefComercialClienteDados> lstRefComercial,
             List<string> lstErros, ContextoBdProvider contextoProvider, CepBll cepBll, IBancoNFeMunicipio bancoNFeMunicipio,
             List<Cliente.Dados.ListaBancoDados> lstBanco, bool flagMsg_IE_Cadastro_PF,
             InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavel)
         {
-            bool retorno;
-
             if (dadosCliente != null)
             {
                 //existe dados
@@ -59,7 +57,6 @@ namespace Cliente
                             if (lstRefBancaria.Count != 0)
                             {
                                 lstErros.Add("Se cliente tipo PF, não deve constar referência bancária!");
-                                return false;
                             }
                         }
 
@@ -68,20 +65,19 @@ namespace Cliente
                             if (lstRefComercial.Count != 0)
                             {
                                 lstErros.Add("Se cliente tipo PF, não deve constar referência comercial!");
-                                return false;
                             }
                         }
 
                         tipoDesconhecido = false;
                         //vamos verificar e validar os dados referente ao cliente PF
-                        retorno = await ValidarDadosCliente_PF(dadosCliente, cliente, lstErros, contextoProvider, sistemaResponsavel);
+                        await ValidarDadosCliente_PF(dadosCliente, cliente, lstErros, contextoProvider, sistemaResponsavel);
                     }
                     if (dadosCliente.Tipo == Constantes.ID_PJ)
                     {
                         tipoDesconhecido = false;
-                        retorno = await ValidarDadosCliente_PJ(dadosCliente, cliente, lstErros, contextoProvider);
+                        await ValidarDadosCliente_PJ(dadosCliente, cliente, lstErros, contextoProvider);
                         //vamos validar as referências
-                        retorno = ValidarReferencias_Bancarias_Comerciais(lstRefBancaria, lstRefComercial,
+                        ValidarReferencias_Bancarias_Comerciais(lstRefBancaria, lstRefComercial,
                             lstErros, dadosCliente.Tipo, lstBanco);
                     }
 
@@ -89,7 +85,7 @@ namespace Cliente
                         lstErros.Add(MensagensErro.Tipo_de_cliente_nao_e_PF_nem_PJ);
 
                     //validar endereço do cadastro                    
-                    retorno = await ValidarEnderecoCadastroCliente(dadosCliente, lstErros, cepBll, contextoProvider,
+                    await ValidarEnderecoCadastroCliente(dadosCliente, lstErros, cepBll, contextoProvider,
                         bancoNFeMunicipio);
                     VerificarCaracteresInvalidosEnderecoCadastral(dadosCliente, lstErros);
 
@@ -97,7 +93,7 @@ namespace Cliente
                     //vamos verificar o IE dos clientes
                     if (dadosCliente.Tipo == Constantes.ID_PJ ||
                         dadosCliente.Tipo == Constantes.ID_PF)
-                        retorno = ValidarIE_Cliente(dadosCliente, lstErros, contextoProvider,
+                        ValidarIE_Cliente(dadosCliente, lstErros, contextoProvider,
                             bancoNFeMunicipio, flagMsg_IE_Cadastro_PF);
 
                     await CepBll.ConsisteMunicipioIBGE(dadosCliente.Cidade, dadosCliente.Uf, lstErros, contextoProvider,
@@ -106,16 +102,12 @@ namespace Cliente
                 else
                 {
                     lstErros.Add(MensagensErro.INFORME_SE_O_CLIENTE_E_PF_OU_PJ);
-                    retorno = false;
                 }
             }
             else
             {
                 lstErros.Add("DADOS DO CLIENTE ESTA VAZIO!");
-                retorno = false;
             }
-
-            return retorno;
         }
 
         private static void VerificarCaracteresInvalidosEnderecoCadastral(
